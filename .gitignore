@@ -27,3 +27,9 @@ migrate_working_dir/
 **/doc/api/
 .dart_tool/
 build/
+/example/pubspec.lock
+/example/android/
+/example/ios/
+/example/linux/
+/example/macos/
+/example/web/
