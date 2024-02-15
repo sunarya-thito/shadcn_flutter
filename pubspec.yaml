@@ -1,15 +1,17 @@
 name: shadcn_flutter
-description: "A new Flutter project."
+description: "A port of shadcn to flutter"
 version: 0.0.1
-homepage:
+homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 
 environment:
   sdk: '>=3.2.5 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
+  email_validator: ^2.1.17
   flutter:
     sdk: flutter
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:

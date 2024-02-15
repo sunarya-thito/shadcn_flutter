@@ -50,21 +50,20 @@ class _AlertDialogState extends State<AlertDialog> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (widget.title != null)
-                        DefaultTextStyle.merge(
-                          style: themeData.typography.large,
-                          child: widget.title!,
-                        ),
+                        widget.title!.large().semiBold(),
                       if (widget.title != null && widget.content != null)
                         const SizedBox(height: 8),
                       if (widget.content != null)
-                        DefaultTextStyle.merge(
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: themeData.colorScheme.mutedForeground,
-                          ),
-                          child: widget.content!,
-                        ),
+                        widget.content!.small().muted(),
+
+                      // DefaultTextStyle.merge(
+                      //   style: TextStyle(
+                      //     fontSize: 14,
+                      //     fontWeight: FontWeight.w400,
+                      //     color: themeData.colorScheme.mutedForeground,
+                      //   ),
+                      //   child: widget.content!,
+                      // ),
                     ],
                   ),
                 ),

@@ -1,22 +1,36 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ThemeData {
+  final Brightness brightness;
   final ColorScheme colorScheme;
   final double radius;
-  final Typography typography;
 
   ThemeData({
+    required this.brightness,
     required this.colorScheme,
     required this.radius,
-    required this.typography,
   });
 
+  double get radiusXxl => radius * 24;
   double get radiusXl => radius * 20;
   double get radiusLg => radius * 16;
   double get radiusMd => radius * 12;
   double get radiusSm => radius * 8;
   double get radiusXs => radius * 4;
+
+  ThemeData copyWith({
+    Brightness? brightness,
+    ColorScheme? colorScheme,
+    double? radius,
+  }) {
+    return ThemeData(
+      brightness: brightness ?? this.brightness,
+      colorScheme: colorScheme ?? this.colorScheme,
+      radius: radius ?? this.radius,
+    );
+  }
 }
 
 class Theme extends InheritedWidget {

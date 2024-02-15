@@ -16,26 +16,22 @@ class UnderlineText extends StatelessWidget {
   Widget build(BuildContext context) {
     Color? underlineColor;
     TextStyle textStyle = DefaultTextStyle.of(context).style;
-    if (textStyle.color != null) {
-      underlineColor = textStyle.decorationColor ?? textStyle.color;
-    }
+    underlineColor = textStyle.decorationColor ?? textStyle.color;
     underlineColor ??= Theme.of(context).colorScheme.foreground;
-    return IntrinsicWidth(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          child,
-          Transform.translate(
-            offset: const Offset(0, -3),
-            child: Container(
-              height: 1,
-              margin: const EdgeInsets.only(top: 1),
-              color: underline ? underlineColor : const Color(0x00000000),
-            ),
-          )
-        ],
-      ),
+    return Stack(
+      children: [
+        child,
+        Positioned(
+          bottom: -0.2,
+          left: 0,
+          right: 0,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 50),
+            height: underline ? 1 : 0,
+            color: underlineColor,
+          ),
+        ),
+      ],
     );
   }
 }

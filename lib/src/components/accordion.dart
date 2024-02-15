@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../shadcn_flutter.dart';
@@ -24,13 +25,16 @@ class _AccordionState extends State<Accordion> {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
-              children: join(
-                  widget.items,
-                  AnimatedContainer(
-                    duration: kDefaultDuration,
-                    color: Theme.of(context).colorScheme.muted,
-                    height: 1,
-                  )).toList()),
+              children: [
+                ...join(
+                    widget.items,
+                    AnimatedContainer(
+                      duration: kDefaultDuration,
+                      color: Theme.of(context).colorScheme.muted,
+                      height: 1,
+                    )).toList(),
+                const Divider(),
+              ]),
         ));
   }
 }
@@ -79,6 +83,7 @@ class _AccordionItemState extends State<AccordionItem>
   @override
   void dispose() {
     _controller.dispose();
+    accordion?._expanded.removeListener(_onExpandedChanged);
     super.dispose();
   }
 
@@ -165,6 +170,7 @@ class AccordionTrigger extends StatefulWidget {
 class _AccordionTriggerState extends State<AccordionTrigger> {
   bool _expanded = false;
   bool _hovering = false;
+  bool _focusing = false;
   _AccordionItemState? _item;
 
   @override
@@ -187,63 +193,90 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
   }
 
   @override
+  void dispose() {
+    _item?._expanded.removeListener(_onExpandedChanged);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var themeData = Theme.of(context);
     return GestureDetector(
       onTap: () {
         _item?._dispatchToggle();
       },
       child: FocusableActionDetector(
         mouseCursor: SystemMouseCursors.click,
+        onShowFocusHighlight: (value) {
+          setState(() {
+            _focusing = value;
+          });
+        },
         actions: {
-          ActivateAction: CallbackAction(
+          ActivateIntent: CallbackAction(
             onInvoke: (Intent intent) {
               _item?._dispatchToggle();
+              return true;
             },
           ),
+        },
+        shortcuts: const {
+          SingleActivator(LogicalKeyboardKey.enter): ActivateIntent(),
+          SingleActivator(LogicalKeyboardKey.space): ActivateIntent(),
         },
         onShowHoverHighlight: (value) {
           setState(() {
             _hovering = value;
           });
         },
-        child: mergeAnimatedTextStyle(
+        child: AnimatedContainer(
           duration: kDefaultDuration,
-          style: const TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 14,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color:
+                  _focusing ? themeData.colorScheme.ring : Colors.transparent,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(themeData.radiusXs),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Row(
-              children: [
-                Expanded(
-                    child: Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: UnderlineText(
-                            underline: _hovering, child: widget.child))),
-                const SizedBox(width: 18),
-                TweenAnimationBuilder(
-                    tween: _expanded
-                        ? Tween(begin: 1.0, end: 0)
-                        : Tween(begin: 0, end: 1.0),
-                    duration: kDefaultDuration,
-                    builder: (context, value, child) {
-                      return Transform.rotate(
-                        angle: value * pi,
-                        child: AnimatedIconTheme(
-                          duration: kDefaultDuration,
-                          data: IconThemeData(
-                            color:
-                                Theme.of(context).colorScheme.mutedForeground,
+          child: mergeAnimatedTextStyle(
+            duration: kDefaultDuration,
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: UnderlineText(
+                              underline: _hovering, child: widget.child))),
+                  const SizedBox(width: 18),
+                  TweenAnimationBuilder(
+                      tween: _expanded
+                          ? Tween(begin: 1.0, end: 0)
+                          : Tween(begin: 0, end: 1.0),
+                      duration: kDefaultDuration,
+                      builder: (context, value, child) {
+                        return Transform.rotate(
+                          angle: value * pi,
+                          child: AnimatedIconTheme(
+                            duration: kDefaultDuration,
+                            data: IconThemeData(
+                              color: themeData.colorScheme.mutedForeground,
+                            ),
+                            child: Icon(Icons.keyboard_arrow_up,
+                                // color:
+                                //     Theme.of(context).colorScheme.mutedForeground,
+                                size: 18),
                           ),
-                          child: Icon(Icons.keyboard_arrow_up,
-                              // color:
-                              //     Theme.of(context).colorScheme.mutedForeground,
-                              size: 18),
-                        ),
-                      );
-                    }),
-              ],
+                        );
+                      }),
+                ],
+              ),
             ),
           ),
         ),
