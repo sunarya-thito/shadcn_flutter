@@ -1,1 +1,1 @@
-flutter build web --release --output-dir=../docs
+flutter build web --release --output-dir=../docs --base-href=/shadcn_flutter/
