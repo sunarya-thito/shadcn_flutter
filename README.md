@@ -1,5 +1,7 @@
 # shadcn_flutter
-This is a port of the shadcn package to flutter. It is a package that provides a set of widgets and utilities for building applications in flutter.
+A set of widgets and utilities for building applications in flutter.
+Optimized for web applications.
+This is a port of the shadcn package to flutter. 
 
 ## Getting started
 

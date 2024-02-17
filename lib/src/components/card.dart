@@ -19,12 +19,19 @@ class Card extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return OutlinedContainer(
-      backgroundColor: filled ? fillColor ?? theme.colorScheme.border : null,
+      backgroundColor: filled
+          ? fillColor ?? theme.colorScheme.border
+          : theme.colorScheme.card,
       child: AnimatedContainer(
-        duration: kDefaultDuration,
-        padding: padding,
-        child: child,
-      ),
+          duration: kDefaultDuration,
+          padding: padding,
+          child: mergeAnimatedTextStyle(
+            child: child,
+            duration: kDefaultDuration,
+            style: TextStyle(
+              color: theme.colorScheme.cardForeground,
+            ),
+          )),
     );
   }
 }

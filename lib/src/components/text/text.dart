@@ -300,8 +300,11 @@ extension TextExtension on Widget {
     return xLarge().semiBold();
   }
 
-  Widget p() {
-    return base().normal();
+  Widget p({bool firstChild = false}) {
+    if (firstChild) {
+      return base().normal();
+    }
+    return base().normal().padding(top: 24);
   }
 
   Widget blockQuote() {

@@ -33,3 +33,6 @@ build/
 /example/linux/
 /example/macos/
 /example/web/
+/example/windows/
+/.flutter-plugins
+/.flutter-plugins-dependencies

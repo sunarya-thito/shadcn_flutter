@@ -93,7 +93,42 @@ class ColorShades {
   Color get shade950 => _colors[950]!;
 }
 
+Color colorFromHex(String hex) {
+  if (hex.startsWith('#')) {
+    hex = hex.substring(1);
+  }
+  if (hex.length == 6) {
+    hex = 'FF$hex';
+  }
+  return Color(int.parse(hex, radix: 16));
+}
+
+String hexFromColor(Color color) {
+  return '#${color.value.toRadixString(16).toUpperCase()}';
+}
+
 class ColorScheme {
+  static const Set<String> colorKeys = {
+    'background',
+    'foreground',
+    'card',
+    'cardForeground',
+    'popover',
+    'popoverForeground',
+    'primary',
+    'primaryForeground',
+    'secondary',
+    'secondaryForeground',
+    'muted',
+    'mutedForeground',
+    'accent',
+    'accentForeground',
+    'destructive',
+    'destructiveForeground',
+    'border',
+    'input',
+    'ring',
+  };
   final Color background;
   final Color foreground;
   final Color card;
@@ -135,6 +170,99 @@ class ColorScheme {
     required this.input,
     required this.ring,
   });
+
+  ColorScheme.fromMap(Map<String, dynamic> map)
+      : background = colorFromHex(map['background']),
+        foreground = colorFromHex(map['foreground']),
+        card = colorFromHex(map['card']),
+        cardForeground = colorFromHex(map['cardForeground']),
+        popover = colorFromHex(map['popover']),
+        popoverForeground = colorFromHex(map['popoverForeground']),
+        primary = colorFromHex(map['primary']),
+        primaryForeground = colorFromHex(map['primaryForeground']),
+        secondary = colorFromHex(map['secondary']),
+        secondaryForeground = colorFromHex(map['secondaryForeground']),
+        muted = colorFromHex(map['muted']),
+        mutedForeground = colorFromHex(map['mutedForeground']),
+        accent = colorFromHex(map['accent']),
+        accentForeground = colorFromHex(map['accentForeground']),
+        destructive = colorFromHex(map['destructive']),
+        destructiveForeground = colorFromHex(map['destructiveForeground']),
+        border = colorFromHex(map['border']),
+        input = colorFromHex(map['input']),
+        ring = colorFromHex(map['ring']);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'background': hexFromColor(background),
+      'foreground': hexFromColor(foreground),
+      'card': hexFromColor(card),
+      'cardForeground': hexFromColor(cardForeground),
+      'popover': hexFromColor(popover),
+      'popoverForeground': hexFromColor(popoverForeground),
+      'primary': hexFromColor(primary),
+      'primaryForeground': hexFromColor(primaryForeground),
+      'secondary': hexFromColor(secondary),
+      'secondaryForeground': hexFromColor(secondaryForeground),
+      'muted': hexFromColor(muted),
+      'mutedForeground': hexFromColor(mutedForeground),
+      'accent': hexFromColor(accent),
+      'accentForeground': hexFromColor(accentForeground),
+      'destructive': hexFromColor(destructive),
+      'destructiveForeground': hexFromColor(destructiveForeground),
+      'border': hexFromColor(border),
+      'input': hexFromColor(input),
+      'ring': hexFromColor(ring),
+    };
+  }
+
+  Map<String, Color> toColorMap() {
+    return {
+      'background': background,
+      'foreground': foreground,
+      'card': card,
+      'cardForeground': cardForeground,
+      'popover': popover,
+      'popoverForeground': popoverForeground,
+      'primary': primary,
+      'primaryForeground': primaryForeground,
+      'secondary': secondary,
+      'secondaryForeground': secondaryForeground,
+      'muted': muted,
+      'mutedForeground': mutedForeground,
+      'accent': accent,
+      'accentForeground': accentForeground,
+      'destructive': destructive,
+      'destructiveForeground': destructiveForeground,
+      'border': border,
+      'input': input,
+      'ring': ring,
+    };
+  }
+
+  ColorScheme.fromColors({
+    required Map<String, Color> colors,
+  }) : this(
+          background: colors['background']!,
+          foreground: colors['foreground']!,
+          card: colors['card']!,
+          cardForeground: colors['cardForeground']!,
+          popover: colors['popover']!,
+          popoverForeground: colors['popoverForeground']!,
+          primary: colors['primary']!,
+          primaryForeground: colors['primaryForeground']!,
+          secondary: colors['secondary']!,
+          secondaryForeground: colors['secondaryForeground']!,
+          muted: colors['muted']!,
+          mutedForeground: colors['mutedForeground']!,
+          accent: colors['accent']!,
+          accentForeground: colors['accentForeground']!,
+          destructive: colors['destructive']!,
+          destructiveForeground: colors['destructiveForeground']!,
+          border: colors['border']!,
+          input: colors['input']!,
+          ring: colors['ring']!,
+        );
 
   ColorScheme copyWith({
     Color? background,

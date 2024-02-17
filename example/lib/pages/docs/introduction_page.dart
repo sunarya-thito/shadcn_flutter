@@ -9,6 +9,7 @@ class IntroductionPage extends StatefulWidget {
 }
 
 class _IntroductionPageState extends State<IntroductionPage> {
+  final DrawerKey _drawerKey = DrawerKey();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -29,11 +30,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
               trigger: AccordionTrigger(
                   child: const Text('Does this support GoRouter?')),
               content: Text(
-                      'Yes, it does. You can use GoRouter with shadcn_flutter. ')
-                  .thenButton(
-                child: Text('Click here to see the example'),
-                onPressed: () {},
-              ),
+                  'Yes, it does. You can use GoRouter with shadcn_flutter. '),
             ),
             AccordionItem(
               trigger: AccordionTrigger(

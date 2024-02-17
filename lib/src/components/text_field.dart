@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import '../../shadcn_flutter.dart';
 
 // just wrap around the material.TextField widget lmfaoo
-class TextField extends StatelessWidget {
+class TextField extends StatefulWidget {
   final TextEditingController? controller;
   final bool filled;
   final String? placeholder;
@@ -13,6 +13,9 @@ class TextField extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final EdgeInsetsGeometry? padding;
+  final ValueChanged<String>? onSubmitted;
+  final VoidCallback? onEditingComplete;
+  final FocusNode? focusNode;
   const TextField({
     Key? key,
     this.controller,
@@ -22,7 +25,46 @@ class TextField extends StatelessWidget {
     this.leading,
     this.trailing,
     this.padding,
+    this.onSubmitted,
+    this.onEditingComplete,
+    this.focusNode,
   }) : super(key: key);
+
+  @override
+  cupertino.State<TextField> createState() => _TextFieldState();
+}
+
+class _TextFieldState extends cupertino.State<TextField> {
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = widget.focusNode ?? FocusNode();
+    _focusNode.addListener(_onFocusChanged);
+  }
+
+  @override
+  void didUpdateWidget(covariant TextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.focusNode != oldWidget.focusNode) {
+      oldWidget.focusNode?.removeListener(_onFocusChanged);
+      _focusNode = widget.focusNode ?? FocusNode();
+      _focusNode.addListener(_onFocusChanged);
+    }
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusChanged);
+    super.dispose();
+  }
+
+  void _onFocusChanged() {
+    if (!_focusNode.hasFocus) {
+      widget.onEditingComplete?.call();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,27 +80,30 @@ class TextField extends StatelessWidget {
       child: material.Material(
         color: Colors.transparent,
         child: material.TextField(
-          controller: controller,
+          focusNode: _focusNode,
+          onSubmitted: widget.onSubmitted,
+          onEditingComplete: widget.onEditingComplete,
+          controller: widget.controller,
           style: defaultTextStyle.copyWith(
             fontSize: 14,
             fontWeight: FontWeight.w400,
             color: theme.colorScheme.foreground,
           ),
           decoration: material.InputDecoration(
-            prefix: leading,
-            suffix: trailing,
-            filled: filled,
+            prefix: widget.leading,
+            suffix: widget.trailing,
+            filled: widget.filled,
             isDense: true,
             fillColor: theme.colorScheme.muted,
-            hintText: placeholder,
+            hintText: widget.placeholder,
             hintStyle: defaultTextStyle.copyWith(
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: theme.colorScheme.mutedForeground,
             ),
-            border: !border
+            border: !widget.border
                 ? material.InputBorder.none
-                : filled
+                : widget.filled
                     ? material.OutlineInputBorder(
                         borderRadius: BorderRadius.circular(theme.radiusMd),
                         borderSide: BorderSide.none,
@@ -76,7 +121,7 @@ class TextField extends StatelessWidget {
             //     color: theme.colorScheme.ring,
             //   ),
             // ),
-            focusedBorder: !border
+            focusedBorder: !widget.border
                 ? material.InputBorder.none
                 : material.OutlineInputBorder(
                     borderRadius: BorderRadius.circular(theme.radiusMd),
@@ -95,9 +140,9 @@ class TextField extends StatelessWidget {
             //           color: theme.colorScheme.border,
             //         ),
             //       ),
-            enabledBorder: !border
+            enabledBorder: !widget.border
                 ? material.InputBorder.none
-                : filled
+                : widget.filled
                     ? material.OutlineInputBorder(
                         borderRadius: BorderRadius.circular(theme.radiusMd),
                         borderSide: BorderSide.none,
@@ -119,9 +164,9 @@ class TextField extends StatelessWidget {
             //           color: theme.colorScheme.border,
             //         ),
             //       ),
-            disabledBorder: !border
+            disabledBorder: !widget.border
                 ? material.InputBorder.none
-                : filled
+                : widget.filled
                     ? material.OutlineInputBorder(
                         borderRadius: BorderRadius.circular(theme.radiusMd),
                         borderSide: BorderSide.none,
@@ -143,9 +188,9 @@ class TextField extends StatelessWidget {
             //           color: theme.colorScheme.destructive,
             //         ),
             //       ),
-            errorBorder: !border
+            errorBorder: !widget.border
                 ? material.InputBorder.none
-                : filled
+                : widget.filled
                     ? material.OutlineInputBorder(
                         borderRadius: BorderRadius.circular(theme.radiusMd),
                         borderSide: BorderSide.none,
@@ -167,9 +212,9 @@ class TextField extends StatelessWidget {
             //           color: theme.colorScheme.ring,
             //         ),
             //       ),
-            focusedErrorBorder: !border
+            focusedErrorBorder: !widget.border
                 ? material.InputBorder.none
-                : filled
+                : widget.filled
                     ? material.OutlineInputBorder(
                         borderRadius: BorderRadius.circular(theme.radiusMd),
                         borderSide: BorderSide.none,
@@ -180,7 +225,7 @@ class TextField extends StatelessWidget {
                           color: theme.colorScheme.ring,
                         ),
                       ),
-            contentPadding: padding ??
+            contentPadding: widget.padding ??
                 const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 4 + 8,

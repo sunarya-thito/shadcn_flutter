@@ -35,8 +35,9 @@ class _DocsPageState extends State<DocsPage> {
     ShadcnDocsSection('Getting Started', [
       ShadcnDocsPage('Introduction', 'introduction'),
       ShadcnDocsPage('Installation', 'installation'),
-      ShadcnDocsPage('Theming', 'theming'),
+      ShadcnDocsPage('Theme', 'theme'),
       ShadcnDocsPage('Typography', 'typography'),
+      ShadcnDocsPage('Layout', 'layout'),
     ]),
     ShadcnDocsSection('Components', [
       ShadcnDocsPage('Accordion', 'accordion'),
@@ -48,14 +49,24 @@ class _DocsPageState extends State<DocsPage> {
       ShadcnDocsPage('Button', 'button'),
       ShadcnDocsPage('Card', 'card'),
       ShadcnDocsPage('Checkbox', 'checkbox'),
+      ShadcnDocsPage('Collapsible', 'collapsible'),
+      ShadcnDocsPage('Color Picker', 'color_picker'),
+      ShadcnDocsPage('ComboBox', 'combo_box'),
+      ShadcnDocsPage('Command', 'command'),
       ShadcnDocsPage('Dialog', 'dialog'),
+      ShadcnDocsPage('Divider', 'divider'),
+      ShadcnDocsPage('Drawer', 'drawer'),
+      ShadcnDocsPage('Dropdown', 'dropdown'),
+      ShadcnDocsPage('Data Table', 'data_table'),
+      ShadcnDocsPage('Form', 'form'),
       ShadcnDocsPage('Hover Card', 'hover_card'),
       ShadcnDocsPage('Popover', 'popover'),
-      // TODO: Progress
+      ShadcnDocsPage('Progress', 'progress'),
       ShadcnDocsPage('Radio Group', 'radio_group'),
       ShadcnDocsPage('Select', 'select'),
       ShadcnDocsPage('Separator', 'separator'),
       ShadcnDocsPage('Slider', 'slider'),
+      ShadcnDocsPage('Steps', 'steps'),
       ShadcnDocsPage('Switch', 'switch'),
       ShadcnDocsPage('TextField', 'text_field'),
       ShadcnDocsPage('Toggle', 'toggle'),
@@ -83,58 +94,57 @@ class _DocsPageState extends State<DocsPage> {
                 ),
                 const Divider(),
                 Expanded(
-                  child: Padding(
-                    padding: padding,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SingleChildScrollView(
-                          padding: const EdgeInsets.only(
-                              top: 32, left: 24, bottom: 32),
-                          child: SidebarNav(children: [
-                            for (var section in sections)
-                              SidebarSection(
-                                header: Text(section.title),
-                                children: [
-                                  for (var page in section.pages)
-                                    SidebarButton(
-                                      child: Text(page.title),
-                                      onPressed: () {
-                                        context.goNamed(page.name);
-                                      },
-                                      selected: page.name == widget.name,
-                                    ),
-                                ],
-                              ),
-                          ]),
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 40,
-                              vertical: 32,
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SingleChildScrollView(
+                        padding: EdgeInsets.only(
+                            top: 32, left: 24 + padding.left, bottom: 32),
+                        child: SidebarNav(children: [
+                          for (var section in sections)
+                            SidebarSection(
+                              header: Text(section.title),
                               children: [
-                                Breadcrumb(
-                                  separator: Breadcrumb.arrowSeparator,
-                                  children: [
-                                    Text('Docs'),
-                                    if (page != null) Text(page.title),
-                                  ],
-                                ),
-                                gap(16),
-                                widget.child,
+                                for (var page in section.pages)
+                                  SidebarButton(
+                                    onPressed: () {
+                                      context.goNamed(page.name);
+                                    },
+                                    selected: page.name == widget.name,
+                                    child: Text(page.title),
+                                  ),
                               ],
                             ),
+                        ]),
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 32,
+                          ).copyWith(
+                            right: padding.right,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Breadcrumb(
+                                separator: Breadcrumb.arrowSeparator,
+                                children: [
+                                  Text('Docs'),
+                                  if (page != null) Text(page.title),
+                                ],
+                              ),
+                              gap(16),
+                              widget.child,
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],

@@ -74,6 +74,7 @@ class SidebarNav extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
           children: join(children, gap(16)).toList(),
         ),
       ),

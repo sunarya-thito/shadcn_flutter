@@ -633,7 +633,7 @@ class PopupAnchorState extends State<PopupAnchor> {
           return FadeTransition(
             opacity: widget.animation,
             child: ScaleTransition(
-              alignment: _alignment,
+              alignment: _anchorAlignment,
               scale:
                   Tween<double>(begin: 0.9, end: 1).animate(widget.animation),
               child: widget.themes.wrap(widget.builder(context)),

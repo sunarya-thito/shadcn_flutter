@@ -1,6 +1,5 @@
 import 'package:email_validator/email_validator.dart' as email_validator;
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_flutter/src/components/divider.dart';
 
 import '../../../shadcn_flutter.dart';
 
@@ -408,6 +407,7 @@ abstract class FormEntryState<T extends FormEntry<V>, V> extends State<T> {
   ValidationResult? _validity;
   ValidationResult? get validity => _validity;
   V? get value => _value;
+  FormState? _form;
 
   set value(V? value) {
     if (_value != value) {
@@ -436,7 +436,21 @@ abstract class FormEntryState<T extends FormEntry<V>, V> extends State<T> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    FormState? oldForm = _form;
+    _form = Data.maybeOf(context);
+    if (_validity != null) {
+      oldForm?._removeValidity(_validity!);
+      _form?._addValidity(_validity!);
+    }
     validate();
+  }
+
+  @override
+  void dispose() {
+    if (_validity != null) {
+      _form?._removeValidity(_validity!);
+    }
+    super.dispose();
   }
 
   void validate() {
@@ -445,8 +459,12 @@ abstract class FormEntryState<T extends FormEntry<V>, V> extends State<T> {
       setState(() {
         ValidationResult? oldValidity = _validity;
         _validity = result;
-        // send notification to parent
-        FormValidityNotification(result, oldValidity).dispatch(context);
+        if (oldValidity != null) {
+          _form?._removeValidity(oldValidity);
+        }
+        if (_validity != null) {
+          _form?._addValidity(_validity!);
+        }
       });
     }
   }
@@ -464,20 +482,33 @@ class Form extends StatefulWidget {
 }
 
 class FormState extends State<Form> {
-  ValidationResult? _validity;
-  ValidationResult? get validity => _validity;
+  final List<ValidationResult> _validities = [];
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: widget.children,
-    );
+  void _addValidity(ValidationResult validity) {
+    if (!_validities.contains(validity)) {
+      setState(() {
+        _validities.add(validity);
+      });
+    }
+  }
+
+  void _removeValidity(ValidationResult validity) {
+    if (_validities.contains(validity)) {
+      setState(() {
+        _validities.remove(validity);
+      });
+    }
   }
 
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
+    return Data(
+      data: this,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: widget.children,
+      ),
+    );
   }
 }
 

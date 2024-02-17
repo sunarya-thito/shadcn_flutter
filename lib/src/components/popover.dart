@@ -159,7 +159,7 @@ class PopoverState extends State<Popover>
 
 class PopoverController {
   PopoverPortalState? _attached;
-  List<GlobalKey<PopupAnchorState>> _openPopovers = [];
+  final List<GlobalKey<PopupAnchorState>> _openPopovers = [];
 
   void _attach(PopoverPortalState state) {
     assert(_attached == null,
