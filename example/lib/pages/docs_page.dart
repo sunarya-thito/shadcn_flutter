@@ -5,15 +5,17 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class DocsPage extends StatefulWidget {
   final String name;
   final Widget child;
+  final Map<String, GlobalKey> onThisPage;
 
   const DocsPage({
     Key? key,
     required this.name,
     required this.child,
+    this.onThisPage = const {},
   }) : super(key: key);
 
   @override
-  _DocsPageState createState() => _DocsPageState();
+  DocsPageState createState() => DocsPageState();
 }
 
 class ShadcnDocsPage {
@@ -30,7 +32,7 @@ class ShadcnDocsSection {
   const ShadcnDocsSection(this.title, this.pages);
 }
 
-class _DocsPageState extends State<DocsPage> {
+class DocsPageState extends State<DocsPage> {
   static const List<ShadcnDocsSection> sections = [
     ShadcnDocsSection('Getting Started', [
       ShadcnDocsPage('Introduction', 'introduction'),
@@ -68,18 +70,22 @@ class _DocsPageState extends State<DocsPage> {
       ShadcnDocsPage('Slider', 'slider'),
       ShadcnDocsPage('Steps', 'steps'),
       ShadcnDocsPage('Switch', 'switch'),
+      ShadcnDocsPage('Tab List', 'tab_list'),
       ShadcnDocsPage('TextField', 'text_field'),
       ShadcnDocsPage('Toggle', 'toggle'),
       ShadcnDocsPage('Tooltip', 'tooltip'),
     ]),
   ];
   bool toggle = false;
+
   @override
   Widget build(BuildContext context) {
+    Map<String, GlobalKey> onThisPage = widget.onThisPage;
     ShadcnDocsPage? page = sections
         .expand((e) => e.pages)
         .where((e) => e.name == widget.name)
         .firstOrNull;
+
     return Scaffold(
       scrollable: false,
       body: StageContainer(
@@ -94,58 +100,94 @@ class _DocsPageState extends State<DocsPage> {
                 ),
                 const Divider(),
                 Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SingleChildScrollView(
-                        padding: EdgeInsets.only(
-                            top: 32, left: 24 + padding.left, bottom: 32),
-                        child: SidebarNav(children: [
-                          for (var section in sections)
-                            SidebarSection(
-                              header: Text(section.title),
-                              children: [
-                                for (var page in section.pages)
-                                  SidebarButton(
-                                    onPressed: () {
-                                      context.goNamed(page.name);
-                                    },
-                                    selected: page.name == widget.name,
-                                    child: Text(page.title),
-                                  ),
-                              ],
-                            ),
-                        ]),
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 32,
-                          ).copyWith(
-                            right: padding.right,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Breadcrumb(
-                                separator: Breadcrumb.arrowSeparator,
+                  child: Builder(builder: (context) {
+                    var hasOnThisPage = onThisPage.isNotEmpty;
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SingleChildScrollView(
+                          padding: EdgeInsets.only(
+                              top: 32, left: 24 + padding.left, bottom: 32),
+                          child: SidebarNav(children: [
+                            for (var section in sections)
+                              SidebarSection(
+                                header: Text(section.title),
                                 children: [
-                                  Text('Docs'),
-                                  if (page != null) Text(page.title),
+                                  for (var page in section.pages)
+                                    SidebarButton(
+                                      onPressed: () {
+                                        context.goNamed(page.name);
+                                      },
+                                      selected: page.name == widget.name,
+                                      child: Text(page.title),
+                                    ),
                                 ],
                               ),
-                              gap(16),
-                              widget.child,
-                            ],
+                          ]),
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            padding: !hasOnThisPage
+                                ? const EdgeInsets.symmetric(
+                                    horizontal: 40,
+                                    vertical: 32,
+                                  ).copyWith(
+                                    right: padding.right,
+                                  )
+                                : const EdgeInsets.symmetric(
+                                    horizontal: 40,
+                                    vertical: 32,
+                                  ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Breadcrumb(
+                                  separator: Breadcrumb.arrowSeparator,
+                                  children: [
+                                    Text('Docs'),
+                                    if (page != null) Text(page.title),
+                                  ],
+                                ),
+                                gap(16),
+                                widget.child,
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        if (hasOnThisPage)
+                          SingleChildScrollView(
+                            padding: EdgeInsets.only(
+                              top: 32,
+                              right: 24 + padding.right,
+                              bottom: 32,
+                            ),
+                            child: SidebarNav(children: [
+                              SidebarSection(
+                                header: Text('On This Page'),
+                                children: [
+                                  for (var key in onThisPage.keys)
+                                    SidebarButton(
+                                      onPressed: () {
+                                        Scrollable.ensureVisible(
+                                            onThisPage[key]!.currentContext!,
+                                            duration: kDefaultDuration,
+                                            alignmentPolicy:
+                                                ScrollPositionAlignmentPolicy
+                                                    .explicit);
+                                      },
+                                      selected: false,
+                                      child: Text(key),
+                                    ),
+                                ],
+                              ),
+                            ]),
+                          )
+                      ],
+                    );
+                  }),
                 ),
               ],
             ),

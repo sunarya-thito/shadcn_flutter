@@ -41,7 +41,7 @@ class Steps extends StatelessWidget {
               ],
             ),
             gap(18),
-            Expanded(child: children[i].padding(bottom: 32)),
+            Expanded(child: children[i].withPadding(bottom: 32)),
           ],
         ),
       ));

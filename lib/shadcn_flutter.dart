@@ -6,7 +6,8 @@ export 'package:flutter/cupertino.dart'
         cupertinoDesktopTextSelectionHandleControls;
 // export Icons from material
 export 'package:flutter/material.dart'
-    show Icons, Colors, MaterialPageRoute, MaterialPage;
+    show Icons, Colors, MaterialPageRoute, MaterialPage, SliverAppBar;
+export 'package:visibility_detector/visibility_detector.dart';
 
 export 'src/components/accordion.dart';
 export 'src/components/alert.dart';
@@ -34,6 +35,7 @@ export 'src/components/slider.dart';
 export 'src/components/stage_container.dart';
 export 'src/components/steps.dart';
 export 'src/components/switch.dart';
+export 'src/components/tab_list.dart';
 export 'src/components/text/text.dart';
 export 'src/components/text/underline_text.dart';
 export 'src/components/text_field.dart';

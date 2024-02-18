@@ -2,6 +2,8 @@ import 'package:example/main.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+import '../docs_page.dart';
+
 class ThemePage extends StatefulWidget {
   const ThemePage({Key? key}) : super(key: key);
 
@@ -49,6 +51,12 @@ class _ThemePageState extends State<ThemePage> {
   bool customColorScheme = false;
   bool applyDirectly = false;
 
+  final GlobalKey customColorSchemeKey = GlobalKey();
+  final GlobalKey premadeColorSchemeKey = GlobalKey();
+  final GlobalKey radiusKey = GlobalKey();
+  final GlobalKey previewKey = GlobalKey();
+  final GlobalKey codeKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -68,131 +76,144 @@ class _ThemePageState extends State<ThemePage> {
   @override
   Widget build(BuildContext context) {
     MyAppState state = Data.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text('Theme').h1(),
-        Text('Customize the look and feel of your app.').lead(),
-
-        // grid color
-        Row(
-          children: [
-            Expanded(
-                child: Text(
-                    'You can use your own color scheme to customize the look and feel of your app.')),
-            Checkbox(
-                state: applyDirectly
-                    ? CheckboxState.checked
-                    : CheckboxState.unchecked,
-                onChanged: (value) {
-                  setState(() {
-                    applyDirectly = value == CheckboxState.checked;
-                    if (applyDirectly) {
-                      state.changeRadius(radius);
-                      if (customColorScheme) {
-                        state.changeColorScheme(
-                            ColorScheme.fromColors(colors: colors));
-                      } else {
-                        state.changeColorScheme(colorScheme);
+    return DocsPage(
+      name: 'theme',
+      onThisPage: {
+        'Custom color scheme': customColorSchemeKey,
+        'Premade color scheme': premadeColorSchemeKey,
+        'Radius': radiusKey,
+        'Preview': previewKey,
+        'Code': codeKey,
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('Theme').h1(),
+          Text('Customize the look and feel of your app.').lead(),
+          Text('Custom color scheme').h2().keyed(customColorSchemeKey),
+          // grid color
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Text(
+                      'You can use your own color scheme to customize the look and feel of your app.')),
+              Checkbox(
+                  state: applyDirectly
+                      ? CheckboxState.checked
+                      : CheckboxState.unchecked,
+                  onChanged: (value) {
+                    setState(() {
+                      applyDirectly = value == CheckboxState.checked;
+                      if (applyDirectly) {
+                        state.changeRadius(radius);
+                        if (customColorScheme) {
+                          state.changeColorScheme(
+                              ColorScheme.fromColors(colors: colors));
+                        } else {
+                          state.changeColorScheme(colorScheme);
+                        }
                       }
-                    }
-                  });
-                },
-                trailing: Text('Apply directly')),
-          ],
-        ).p(),
-        GridView.count(
-          crossAxisCount: 4,
-          shrinkWrap: true,
-          children: colors.keys.map(buildGridTile).toList(),
-        ).p(),
-        Text('Premade color schemes').h2(),
-        // Text('You can also use premade color schemes.').p(),
-        Row(
-          children: [
-            Expanded(
-                child: Text(
-                    'You can also use premade color schemes to customize the look and feel of your app.')),
-            // apply directly
-            Checkbox(
-                state: applyDirectly
-                    ? CheckboxState.checked
-                    : CheckboxState.unchecked,
-                onChanged: (value) {
-                  setState(() {
-                    applyDirectly = value == CheckboxState.checked;
-                    if (applyDirectly) {
-                      state.changeRadius(radius);
-                      if (customColorScheme) {
-                        state.changeColorScheme(
-                            ColorScheme.fromColors(colors: colors));
-                      } else {
-                        state.changeColorScheme(colorScheme);
+                    });
+                  },
+                  trailing: Text('Apply directly')),
+            ],
+          ).p(),
+          GridView.count(
+            crossAxisCount: 4,
+            shrinkWrap: true,
+            children: colors.keys.map(buildGridTile).toList(),
+          ).p(),
+          Text('Premade color schemes').h2().keyed(premadeColorSchemeKey),
+          // Text('You can also use premade color schemes.').p(),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Text(
+                      'You can also use premade color schemes to customize the look and feel of your app.')),
+              // apply directly
+              Checkbox(
+                  state: applyDirectly
+                      ? CheckboxState.checked
+                      : CheckboxState.unchecked,
+                  onChanged: (value) {
+                    setState(() {
+                      applyDirectly = value == CheckboxState.checked;
+                      if (applyDirectly) {
+                        state.changeRadius(radius);
+                        if (customColorScheme) {
+                          state.changeColorScheme(
+                              ColorScheme.fromColors(colors: colors));
+                        } else {
+                          state.changeColorScheme(colorScheme);
+                        }
                       }
-                    }
-                  });
-                },
-                trailing: Text('Apply directly')),
-          ],
-        ).p(),
-        Wrap(
-          runSpacing: 8,
-          spacing: 8,
-          children:
-              colorSchemes.keys.map(buildPremadeColorSchemeButton).toList(),
-        ).p(),
-        Text('Radius').h2(),
-        Row(
-          children: [
-            Expanded(
-                child: Text(
-                    'You can customize how rounded your app looks by changing the radius.')),
-            Checkbox(
-                state: applyDirectly
-                    ? CheckboxState.checked
-                    : CheckboxState.unchecked,
-                onChanged: (value) {
-                  setState(() {
-                    applyDirectly = value == CheckboxState.checked;
-                    if (applyDirectly) {
-                      state.changeRadius(radius);
-                      // state.changeColorScheme(colorScheme);
-                      if (customColorScheme) {
-                        state.changeColorScheme(
-                            ColorScheme.fromColors(colors: colors));
-                      } else {
-                        state.changeColorScheme(colorScheme);
+                    });
+                  },
+                  trailing: Text('Apply directly')),
+            ],
+          ).p(),
+          Wrap(
+            runSpacing: 8,
+            spacing: 8,
+            children:
+                colorSchemes.keys.map(buildPremadeColorSchemeButton).toList(),
+          ).p(),
+          Text('Radius').h2().keyed(radiusKey),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Text(
+                      'You can customize how rounded your app looks by changing the radius.')),
+              Checkbox(
+                  state: applyDirectly
+                      ? CheckboxState.checked
+                      : CheckboxState.unchecked,
+                  onChanged: (value) {
+                    setState(() {
+                      applyDirectly = value == CheckboxState.checked;
+                      if (applyDirectly) {
+                        state.changeRadius(radius);
+                        // state.changeColorScheme(colorScheme);
+                        if (customColorScheme) {
+                          state.changeColorScheme(
+                              ColorScheme.fromColors(colors: colors));
+                        } else {
+                          state.changeColorScheme(colorScheme);
+                        }
                       }
-                    }
-                  });
-                },
-                trailing: Text('Apply directly')),
-          ],
-        ).p(),
-        Slider(
-          value: SliderValue.single(radius),
-          onChanged: (value) {
-            setState(() {
-              radius = value.value;
-              if (applyDirectly) {
-                state.changeRadius(radius);
-              }
-            });
-          },
-          min: 0,
-          max: 2,
-          divisions: 20,
-        ).p(),
-        Text('Preview').h2(),
-        Text('Preview the color scheme.').p(),
-        // TODO: add preview
-        Text('Code').h2(),
-        Text('Use the following code to apply the color scheme.').p(),
-        CodeSnippet(
-          code: customColorScheme ? buildCustomCode() : buildPremadeCode(),
-          mode: 'dart',
-        ).p(),
-      ],
+                    });
+                  },
+                  trailing: Text('Apply directly')),
+            ],
+          ).p(),
+          Slider(
+            value: SliderValue.single(radius),
+            onChanged: (value) {
+              setState(() {
+                radius = value.value;
+                if (applyDirectly) {
+                  state.changeRadius(radius);
+                }
+              });
+            },
+            min: 0,
+            max: 2,
+            divisions: 20,
+          ).p(),
+          Text('Preview').h2().keyed(previewKey),
+          Text('Preview the color scheme.').p(),
+          // TODO: add preview
+          Text('Code').h2().keyed(codeKey),
+          Text('Use the following code to apply the color scheme.').p(),
+          CodeSnippet(
+            code: customColorScheme ? buildCustomCode() : buildPremadeCode(),
+            mode: 'dart',
+          ).p(),
+        ],
+      ),
     );
   }
 

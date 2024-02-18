@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:example/pages/docs/components/accordion.dart';
+import 'package:example/pages/docs/components/alert.dart';
+import 'package:example/pages/docs/components/alert_dialog.dart';
+import 'package:example/pages/docs/components/avatar.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
+import 'package:example/pages/docs/layout_page.dart';
 import 'package:example/pages/docs/theme_page.dart';
 import 'package:example/pages/docs/typography_page.dart';
-import 'package:example/pages/docs_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -48,36 +52,55 @@ class MyAppState extends State<MyApp> {
   final GoRouter router = GoRouter(routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const DocsPage(
-        name: 'introduction',
-        child: IntroductionPage(),
-      ),
+      builder: (context, state) => IntroductionPage(),
       name: 'introduction',
     ),
     GoRoute(
       path: '/installation',
-      builder: (context, state) => const DocsPage(
-        name: 'installation',
-        child: InstallationPage(),
-      ),
+      builder: (context, state) => InstallationPage(),
       name: 'installation',
     ),
     GoRoute(
       path: '/theme',
-      builder: (context, state) => const DocsPage(
-        name: 'theme',
-        child: ThemePage(),
-      ),
+      builder: (context, state) => ThemePage(),
       name: 'theme',
     ),
     GoRoute(
       path: '/typography',
-      builder: (context, state) => const DocsPage(
-        name: 'typography',
-        child: TypographyPage(),
-      ),
+      builder: (context, state) => TypographyPage(),
       name: 'typography',
-    )
+    ),
+    GoRoute(
+      path: '/layout',
+      builder: (context, state) => LayoutPage(),
+      name: 'layout',
+    ),
+    GoRoute(
+        path: '/components',
+        builder: (context, state) => Container(),
+        name: 'components',
+        routes: [
+          GoRoute(
+            path: 'accordion',
+            builder: (context, state) => AccordionExample(),
+            name: 'accordion',
+          ),
+          GoRoute(
+            path: 'alert',
+            builder: (context, state) => AlertExample(),
+            name: 'alert',
+          ),
+          GoRoute(
+            path: 'alert-dialog',
+            builder: (context, state) => AlertDialogExample(),
+            name: 'alert_dialog',
+          ),
+          GoRoute(
+            path: 'avatar',
+            builder: (context, state) => AvatarExample(),
+            name: 'avatar',
+          ),
+        ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();
   // double radius = 0.5;
@@ -130,6 +153,15 @@ class MyAppState extends State<MyApp> {
           radius: radius,
         ),
       ),
+    );
+  }
+}
+
+extension Keyed on Widget {
+  KeyedSubtree keyed(Key key) {
+    return KeyedSubtree(
+      key: key,
+      child: this,
     );
   }
 }

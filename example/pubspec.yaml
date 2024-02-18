@@ -39,6 +39,7 @@ dependencies:
     path: ../
   go_router: ^13.2.0
   shared_preferences: ^2.2.2
+  sticky_headers: ^0.3.0+2
 
 dev_dependencies:
   flutter_test:

@@ -15,6 +15,7 @@ dependencies:
   flutter_highlight: ^0.7.0
   gap: ^3.0.1
   highlight: ^0.7.0
+  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   flutter_test:

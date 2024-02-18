@@ -304,7 +304,7 @@ extension TextExtension on Widget {
     if (firstChild) {
       return base().normal();
     }
-    return base().normal().padding(top: 24);
+    return base().normal().withPadding(top: 24);
   }
 
   Widget blockQuote() {
@@ -324,18 +324,21 @@ extension TextExtension on Widget {
     });
   }
 
-  Widget list() {
+  Widget li() {
     return Builder(
       builder: (context) {
         UnorderedListData? data = Data.maybeOf(context);
         int depth = data?.depth ?? 0;
         TextStyle style = DefaultTextStyle.of(context).style;
-        double size = style.fontSize! / 4;
+        double size = style.fontSize! / 16 * 6;
         return IntrinsicWidth(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              getBullet(context, depth, size),
+              SizedBox(
+                height: (style.fontSize!) * (style.height ?? 1.5),
+                child: getBullet(context, depth, size),
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Data(
@@ -360,7 +363,7 @@ extension TextExtension on Widget {
           horizontal: paddingHorizontal,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.muted,
           borderRadius: BorderRadius.circular(themeData.radiusSm),
         ),
         child: mono().small().semiBold(),
@@ -463,34 +466,41 @@ extension TextExtension on Widget {
 
 Widget getBullet(BuildContext context, int depth, double size) {
   final themeData = Theme.of(context);
+  final TextStyle style = DefaultTextStyle.of(context).style;
   if (depth == 0) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: themeData.colorScheme.foreground,
-        shape: BoxShape.circle,
+    return Center(
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: themeData.colorScheme.foreground,
+          shape: BoxShape.circle,
+        ),
       ),
     );
   }
   if (depth == 1) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: themeData.colorScheme.foreground,
-          width: 1,
+    return Center(
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: themeData.colorScheme.foreground,
+            width: 1,
+          ),
+          shape: BoxShape.circle,
         ),
-        shape: BoxShape.circle,
       ),
     );
   }
-  return Container(
-    width: size,
-    height: size,
-    decoration: BoxDecoration(
-      color: themeData.colorScheme.foreground,
+  return Center(
+    child: Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: themeData.colorScheme.foreground,
+      ),
     ),
   );
 }

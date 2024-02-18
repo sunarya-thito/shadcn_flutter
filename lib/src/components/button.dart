@@ -10,6 +10,7 @@ enum ButtonType {
   outline,
   ghost,
   link,
+  static,
 }
 
 enum ButtonSize {
@@ -279,7 +280,21 @@ class _ButtonState extends State<Button> {
         return buildGhost(context);
       case ButtonType.link:
         return buildLink(context);
+      case ButtonType.static:
+        return buildStatic(context);
     }
+  }
+
+  Widget buildStatic(BuildContext context) {
+    return AnimatedContainer(
+      duration: kDefaultDuration,
+      padding: padding,
+      child: Basic(
+        leading: widget.leading,
+        title: widget.child,
+        trailing: widget.trailing,
+      ),
+    );
   }
 
   bool get _disabled => widget.onPressed == null;

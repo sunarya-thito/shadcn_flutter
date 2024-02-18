@@ -63,7 +63,7 @@ extension WidgetExtension on Widget {
   //   );
   // }
 
-  Widget padding(
+  Widget withPadding(
       {double? top,
       double? bottom,
       double? left,
@@ -106,9 +106,45 @@ extension WidgetExtension on Widget {
     );
   }
 
-  Widget margin({EdgeInsetsGeometry margin = EdgeInsets.zero}) {
+  Widget withMargin(
+      {double? top,
+      double? bottom,
+      double? left,
+      double? right,
+      double? horizontal,
+      double? vertical,
+      double? all}) {
+    assert(() {
+      if (all != null) {
+        if (top != null ||
+            bottom != null ||
+            left != null ||
+            right != null ||
+            horizontal != null ||
+            vertical != null) {
+          throw FlutterError(
+              'All margin properties cannot be used with other margin properties.');
+        }
+      } else if (horizontal != null) {
+        if (left != null || right != null) {
+          throw FlutterError(
+              'Horizontal margin cannot be used with left or right margin.');
+        }
+      } else if (vertical != null) {
+        if (top != null || bottom != null) {
+          throw FlutterError(
+              'Vertical margin cannot be used with top or bottom margin.');
+        }
+      }
+      return true;
+    }());
     return Container(
-      margin: margin,
+      margin: EdgeInsets.only(
+        top: top ?? vertical ?? all ?? 0,
+        bottom: bottom ?? vertical ?? all ?? 0,
+        left: left ?? horizontal ?? all ?? 0,
+        right: right ?? horizontal ?? all ?? 0,
+      ),
       child: this,
     );
   }
@@ -120,7 +156,7 @@ extension WidgetExtension on Widget {
     );
   }
 
-  Widget align(AlignmentGeometry alignment) {
+  Widget withAlign(AlignmentGeometry alignment) {
     return Align(
       alignment: alignment,
       child: this,
@@ -146,7 +182,7 @@ extension WidgetExtension on Widget {
     );
   }
 
-  Widget opacity(double opacity) {
+  Widget withOpacity(double opacity) {
     return Opacity(
       opacity: opacity,
       child: this,

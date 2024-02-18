@@ -18,7 +18,7 @@ class SidebarSection extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        header.small().semiBold().padding(vertical: 4, horizontal: 8),
+        header.small().semiBold().withPadding(vertical: 4, horizontal: 8),
         gap(4),
         ...children,
       ],

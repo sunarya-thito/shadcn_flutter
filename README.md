@@ -1,24 +1,30 @@
 # shadcn_flutter
 A set of widgets and utilities for building applications in flutter.
 Optimized for web applications.
-This is a port of the shadcn package to flutter. 
+This is a port of the shadcn package to flutter.
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Widget Catalog: [shadcn_flutter](https://sunarya-thito.github.io/shadcn_flutter/)
 
 ## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
 ```dart
-const like = 'sample';
+import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ShadcnApp(
+      title: 'My App',
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: ColorSchemes.darkZync(),
+        radius: 0.5,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.

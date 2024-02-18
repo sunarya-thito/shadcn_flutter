@@ -21,7 +21,8 @@ class Divider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
+    return AnimatedContainer(
+      duration: kDefaultDuration,
       height: height ?? 1,
       color: color ?? theme.colorScheme.border,
       margin: EdgeInsets.only(left: indent ?? 0, right: endIndent ?? 0),
@@ -48,7 +49,8 @@ class VerticalDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
+    return AnimatedContainer(
+      duration: kDefaultDuration,
       width: width ?? 1,
       color: color ?? theme.colorScheme.border,
       margin: EdgeInsets.only(top: indent ?? 0, bottom: endIndent ?? 0),
