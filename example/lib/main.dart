@@ -4,6 +4,7 @@ import 'package:example/pages/docs/components/accordion.dart';
 import 'package:example/pages/docs/components/alert.dart';
 import 'package:example/pages/docs/components/alert_dialog.dart';
 import 'package:example/pages/docs/components/avatar.dart';
+import 'package:example/pages/docs/components/badge.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
 import 'package:example/pages/docs/layout_page.dart';
@@ -99,6 +100,11 @@ class MyAppState extends State<MyApp> {
             path: 'avatar',
             builder: (context, state) => AvatarExample(),
             name: 'avatar',
+          ),
+          GoRoute(
+            path: 'badge',
+            builder: (context, state) => BadgeExample(),
+            name: 'badge',
           ),
         ]),
   ]);
