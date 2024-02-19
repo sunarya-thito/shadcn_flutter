@@ -19,6 +19,7 @@ export 'src/components/breadcrumb.dart';
 export 'src/components/button.dart';
 export 'src/components/card.dart';
 export 'src/components/checkbox.dart';
+export 'src/components/circular_progerss_indicator.dart';
 export 'src/components/code_snippet.dart';
 export 'src/components/color_picker.dart';
 export 'src/components/combo_box.dart';
