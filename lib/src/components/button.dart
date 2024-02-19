@@ -299,6 +299,19 @@ class _ButtonState extends State<Button> {
 
   bool get _disabled => widget.onPressed == null;
 
+  Widget buildContent(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (widget.leading != null) widget.leading!,
+        if (widget.leading != null) const SizedBox(width: 8),
+        widget.child,
+        if (widget.trailing != null) const SizedBox(width: 8),
+        if (widget.trailing != null) widget.trailing!,
+      ],
+    );
+  }
+
   Widget buildPrimary(BuildContext context) {
     var themeData = Theme.of(context);
     return AnimatedContainer(
@@ -331,11 +344,7 @@ class _ButtonState extends State<Button> {
           data: IconThemeData(
             color: themeData.colorScheme.primaryForeground,
           ),
-          child: Basic(
-            leading: widget.leading,
-            title: widget.child,
-            trailing: widget.trailing,
-          ),
+          child: buildContent(context),
         ),
         duration: kDefaultDuration,
       ),
@@ -379,11 +388,7 @@ class _ButtonState extends State<Button> {
                 ? themeData.colorScheme.mutedForeground
                 : themeData.colorScheme.secondaryForeground,
           ),
-          child: Basic(
-            leading: widget.leading,
-            title: widget.child,
-            trailing: widget.trailing,
-          ),
+          child: buildContent(context),
         ),
       ),
     );
@@ -426,11 +431,7 @@ class _ButtonState extends State<Button> {
                 ? themeData.colorScheme.mutedForeground
                 : themeData.colorScheme.destructiveForeground,
           ),
-          child: Basic(
-            leading: widget.leading,
-            title: widget.child,
-            trailing: widget.trailing,
-          ),
+          child: buildContent(context),
         ),
       ),
     );
@@ -474,11 +475,7 @@ class _ButtonState extends State<Button> {
                 ? themeData.colorScheme.mutedForeground
                 : themeData.colorScheme.foreground,
           ),
-          child: Basic(
-            leading: widget.leading,
-            title: widget.child,
-            trailing: widget.trailing,
-          ),
+          child: buildContent(context),
         ),
       ),
     );
@@ -519,11 +516,7 @@ class _ButtonState extends State<Button> {
                 ? themeData.colorScheme.mutedForeground
                 : themeData.colorScheme.foreground,
           ),
-          child: Basic(
-            leading: widget.leading,
-            title: widget.child,
-            trailing: widget.trailing,
-          ),
+          child: buildContent(context),
         ),
       ),
     );
@@ -561,17 +554,7 @@ class _ButtonState extends State<Button> {
                 ? themeData.colorScheme.mutedForeground
                 : themeData.colorScheme.foreground,
           ),
-          child: Align(
-            alignment: widget.alignment,
-            child: Basic(
-              leading: widget.leading,
-              title: UnderlineText(
-                underline: _hovering && !_disabled,
-                child: widget.child,
-              ),
-              trailing: widget.trailing,
-            ),
-          ),
+          child: buildContent(context),
         ),
       ),
     );
