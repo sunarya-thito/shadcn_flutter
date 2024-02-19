@@ -6,6 +6,7 @@ import 'package:example/pages/docs/components/alert_dialog.dart';
 import 'package:example/pages/docs/components/avatar.dart';
 import 'package:example/pages/docs/components/badge.dart';
 import 'package:example/pages/docs/components/breadcrumb.dart';
+import 'package:example/pages/docs/components/button.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
 import 'package:example/pages/docs/layout_page.dart';
@@ -111,6 +112,11 @@ class MyAppState extends State<MyApp> {
             path: 'breadcrumb',
             builder: (context, state) => BreadcrumbExample(),
             name: 'breadcrumb',
+          ),
+          GoRoute(
+            path: 'button',
+            builder: (context, state) => ButtonExample(),
+            name: 'button',
           ),
         ]),
   ]);
