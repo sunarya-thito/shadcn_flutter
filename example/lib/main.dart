@@ -7,6 +7,10 @@ import 'package:example/pages/docs/components/avatar.dart';
 import 'package:example/pages/docs/components/badge.dart';
 import 'package:example/pages/docs/components/breadcrumb.dart';
 import 'package:example/pages/docs/components/button.dart';
+import 'package:example/pages/docs/components/card.dart';
+import 'package:example/pages/docs/components/checkbox.dart';
+import 'package:example/pages/docs/components/circular_progress.dart';
+import 'package:example/pages/docs/components/code_snippet.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
 import 'package:example/pages/docs/layout_page.dart';
@@ -117,6 +121,26 @@ class MyAppState extends State<MyApp> {
             path: 'button',
             builder: (context, state) => ButtonExample(),
             name: 'button',
+          ),
+          GoRoute(
+            path: 'card',
+            builder: (context, state) => CardExample(),
+            name: 'card',
+          ),
+          GoRoute(
+            path: 'checkbox',
+            builder: (context, state) => CheckboxExample(),
+            name: 'checkbox',
+          ),
+          GoRoute(
+            path: 'code-snippet',
+            builder: (context, state) => CodeSnippetExample(),
+            name: 'code_snippet',
+          ),
+          GoRoute(
+            path: 'circular-progress',
+            builder: (context, state) => CircularProgressExample(),
+            name: 'circular_progress',
           ),
         ]),
   ]);

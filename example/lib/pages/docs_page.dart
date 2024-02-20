@@ -51,6 +51,8 @@ class DocsPageState extends State<DocsPage> {
       ShadcnDocsPage('Button', 'button'),
       ShadcnDocsPage('Card', 'card'),
       ShadcnDocsPage('Checkbox', 'checkbox'),
+      ShadcnDocsPage('Circular Progress', 'circular_progress'),
+      ShadcnDocsPage('Code Snippet', 'code_snippet'),
       ShadcnDocsPage('Collapsible', 'collapsible'),
       ShadcnDocsPage('Color Picker', 'color_picker'),
       ShadcnDocsPage('ComboBox', 'combo_box'),
