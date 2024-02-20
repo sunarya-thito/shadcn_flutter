@@ -82,6 +82,7 @@ class _CheckboxState extends State<Checkbox> {
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             if (widget.leading != null) widget.leading!.small().medium(),
             // mergeAnimatedTextStyle(

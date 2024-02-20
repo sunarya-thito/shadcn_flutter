@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/src/components/divider.dart';
 
 typedef SearchFilter<T> = int Function(T item, String query);
 
@@ -276,25 +275,6 @@ class _ComboBoxPopupState<T> extends State<ComboBoxPopup<T>> {
                       ],
                     ),
                   ),
-                  // child: ListView.builder(
-                  //   shrinkWrap: true,
-                  //   itemCount: _filteredItems.length,
-                  //   padding: const EdgeInsets.all(4),
-                  //   itemBuilder: (context, index) {
-                  //     final item = _filteredItems[index];
-                  //     return Button(
-                  //       trailing: item.index == widget.selectedIndex
-                  //           ? const Icon(Icons.check, size: 16)
-                  //           : null,
-                  //       type: ButtonType.ghost,
-                  //       onPressed: () {
-                  //         widget.onChanged?.call(item.index);
-                  //         Navigator.of(context).pop();
-                  //       },
-                  //       child: widget.itemBuilder(context, item.item),
-                  //     );
-                  //   },
-                  // ),
                 ),
               ],
             ),

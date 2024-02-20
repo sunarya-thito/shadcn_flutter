@@ -174,7 +174,7 @@ class Button extends StatefulWidget {
   final FocusNode? focusNode;
   final bool focusable;
   final EdgeInsets? padding;
-  final AlignmentGeometry alignment;
+  final AlignmentGeometry? alignment;
   const Button({
     Key? key,
     this.type = ButtonType.primary,
@@ -187,7 +187,7 @@ class Button extends StatefulWidget {
     this.focusNode,
     this.focusable = true,
     this.padding,
-    this.alignment = Alignment.center,
+    this.alignment,
   }) : super(key: key);
 
   @override
@@ -289,27 +289,30 @@ class _ButtonState extends State<Button> {
     return AnimatedContainer(
       duration: kDefaultDuration,
       padding: padding,
-      child: Basic(
-        leading: widget.leading,
-        title: widget.child,
-        trailing: widget.trailing,
-      ),
+      child: buildContent(context),
     );
   }
 
   bool get _disabled => widget.onPressed == null;
 
-  Widget buildContent(BuildContext context) {
-    return Row(
+  Widget buildContent(BuildContext context, {bool underline = false}) {
+    Widget row = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.leading != null) widget.leading!,
         if (widget.leading != null) const SizedBox(width: 8),
-        widget.child,
+        underline ? widget.child.underline() : widget.child,
         if (widget.trailing != null) const SizedBox(width: 8),
         if (widget.trailing != null) widget.trailing!,
       ],
     );
+    if (widget.alignment != null) {
+      row = Align(
+        alignment: widget.alignment!,
+        child: row,
+      );
+    }
+    return row;
   }
 
   Widget buildPrimary(BuildContext context) {
@@ -554,7 +557,7 @@ class _ButtonState extends State<Button> {
                 ? themeData.colorScheme.mutedForeground
                 : themeData.colorScheme.foreground,
           ),
-          child: buildContent(context),
+          child: buildContent(context, underline: _hovering),
         ),
       ),
     );

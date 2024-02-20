@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -46,7 +47,8 @@ class _CodeSnippetState extends State<CodeSnippet> {
                   tabSize: 2,
                   language: widget.mode,
                   theme: getShadcnCodeSnippetTheme(context),
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  // padding: const EdgeInsets.symmetric(horizontal: 32),
+                  padding: const EdgeInsets.only(left: 32, right: 48),
                   textStyle: TextStyle(
                     fontFamily: 'GeistMono',
                     fontSize: 14,
