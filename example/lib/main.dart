@@ -11,6 +11,7 @@ import 'package:example/pages/docs/components/card.dart';
 import 'package:example/pages/docs/components/checkbox.dart';
 import 'package:example/pages/docs/components/circular_progress.dart';
 import 'package:example/pages/docs/components/code_snippet.dart';
+import 'package:example/pages/docs/components/color_picker.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
 import 'package:example/pages/docs/layout_page.dart';
@@ -141,6 +142,11 @@ class MyAppState extends State<MyApp> {
             path: 'circular-progress',
             builder: (context, state) => CircularProgressExample(),
             name: 'circular_progress',
+          ),
+          GoRoute(
+            path: 'color-picker',
+            builder: (context, state) => ColorPickerExample(),
+            name: 'color_picker',
           ),
         ]),
   ]);
