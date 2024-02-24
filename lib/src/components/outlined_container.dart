@@ -32,7 +32,6 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
         border: Border.all(
           color: widget.borderColor ?? theme.colorScheme.muted,
           width: 1,
-          strokeAlign: BorderSide.strokeAlignOutside,
         ),
         borderRadius: BorderRadius.circular(theme.radiusXl),
       ),
