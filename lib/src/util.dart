@@ -11,6 +11,19 @@ Widget gap(double gap, {double? crossGap}) {
   );
 }
 
+extension Joinable on List<Widget> {
+  List<Widget> joinSeparator(Widget separator) {
+    List<Widget> result = [];
+    for (int i = 0; i < length; i++) {
+      if (i > 0) {
+        result.add(separator);
+      }
+      result.add(this[i]);
+    }
+    return result;
+  }
+}
+
 extension WidgetExtension on Widget {
   Widget sized({double? width, double? height}) {
     if (this is SizedBox) {
@@ -70,7 +83,8 @@ extension WidgetExtension on Widget {
       double? right,
       double? horizontal,
       double? vertical,
-      double? all}) {
+      double? all,
+      EdgeInsetsGeometry? padding}) {
     assert(() {
       if (all != null) {
         if (top != null ||
@@ -96,12 +110,13 @@ extension WidgetExtension on Widget {
       return true;
     }());
     return Padding(
-      padding: EdgeInsets.only(
-        top: top ?? vertical ?? all ?? 0,
-        bottom: bottom ?? vertical ?? all ?? 0,
-        left: left ?? horizontal ?? all ?? 0,
-        right: right ?? horizontal ?? all ?? 0,
-      ),
+      padding: padding ??
+          EdgeInsets.only(
+            top: top ?? vertical ?? all ?? 0,
+            bottom: bottom ?? vertical ?? all ?? 0,
+            left: left ?? horizontal ?? all ?? 0,
+            right: right ?? horizontal ?? all ?? 0,
+          ),
       child: this,
     );
   }
