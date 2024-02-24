@@ -11,11 +11,9 @@ dependencies:
   email_validator: ^2.1.17
   flutter:
     sdk: flutter
-  flutter_code_editor: ^0.3.1
   flutter_highlight: ^0.7.0
   gap: ^3.0.1
   highlight: ^0.7.0
-  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   flutter_test:
