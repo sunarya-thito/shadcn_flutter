@@ -106,6 +106,8 @@ void main() {
           weight: 900
         - asset: "packages/shadcn_flutter/fonts/Geist-UltraLight.otf"
           weight: 200
+        - asset: "packages/shadcn_flutter/fonts/Geist-Regular.otf"
+          weight: 400
     - family: "GeistMono"
       fonts:
         - asset: "packages/shadcn_flutter/fonts/GeistMono-Black.otf"

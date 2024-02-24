@@ -39,7 +39,6 @@ dependencies:
     path: ../
   go_router: ^13.2.0
   shared_preferences: ^2.2.2
-  sticky_headers: ^0.3.0+2
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +111,8 @@ flutter:
           weight: 900
         - asset: "packages/shadcn_flutter/fonts/Geist-UltraLight.otf"
           weight: 200
+        - asset: "packages/shadcn_flutter/fonts/Geist-Regular.otf"
+          weight: 400
     - family: "GeistMono"
       fonts:
         - asset: "packages/shadcn_flutter/fonts/GeistMono-Black.otf"
