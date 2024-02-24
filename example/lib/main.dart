@@ -11,7 +11,11 @@ import 'package:example/pages/docs/components/card.dart';
 import 'package:example/pages/docs/components/checkbox.dart';
 import 'package:example/pages/docs/components/circular_progress.dart';
 import 'package:example/pages/docs/components/code_snippet.dart';
+import 'package:example/pages/docs/components/collapsible.dart';
 import 'package:example/pages/docs/components/color_picker.dart';
+import 'package:example/pages/docs/components/combobox.dart';
+import 'package:example/pages/docs/components/command.dart';
+import 'package:example/pages/docs/components/divider.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
 import 'package:example/pages/docs/layout_page.dart';
@@ -85,8 +89,12 @@ class MyAppState extends State<MyApp> {
     ),
     GoRoute(
         path: '/components',
-        builder: (context, state) => Container(),
         name: 'components',
+        redirect: (context, state) {
+          if (state.fullPath == '/components') {
+            return '/components/accordion';
+          }
+        },
         routes: [
           GoRoute(
             path: 'accordion',
@@ -147,6 +155,26 @@ class MyAppState extends State<MyApp> {
             path: 'color-picker',
             builder: (context, state) => ColorPickerExample(),
             name: 'color_picker',
+          ),
+          GoRoute(
+            path: 'combo-box',
+            builder: (context, state) => ComboBoxExample(),
+            name: 'combo_box',
+          ),
+          GoRoute(
+            path: 'divider',
+            builder: (context, state) => DividerExample(),
+            name: 'divider',
+          ),
+          GoRoute(
+            path: 'collapsible',
+            builder: (context, state) => CollapsibleExample(),
+            name: 'collapsible',
+          ),
+          GoRoute(
+            path: 'command',
+            builder: (context, state) => CommandExample(),
+            name: 'command',
           ),
         ]),
   ]);

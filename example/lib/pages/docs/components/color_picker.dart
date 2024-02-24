@@ -32,7 +32,16 @@ class _ColorPickerExampleState extends State<ColorPickerExample> {
               ),
             );
           },
-          code: '',
+          code: '''
+ColorPickerSet(
+  color: color,
+  onColorChanged: (value) {
+    setState(() {
+      color = value;
+    });
+  },
+)
+''',
         ),
       ],
     );
