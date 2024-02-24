@@ -157,68 +157,6 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
       _greenController.text = c.green.toString();
       _blueController.text = c.blue.toString();
     }
-    // _hexController.addListener(() {
-    //   if (_updating) return;
-    //   var hex = _hexController.text;
-    //   if (hex.startsWith('#')) {
-    //     hex = hex.substring(1);
-    //   }
-    //   if (hex.length == 6) {
-    //     widget.onColorChanged(HSVColor.fromColor(Color(int.parse('0xFF$hex'))));
-    //   } else if (hex.length == 8) {
-    //     widget.onColorChanged(HSVColor.fromColor(Color(int.parse('0x$hex'))));
-    //   }
-    // });
-    // _redController.addListener(() {
-    //   if (_updating) return;
-    //   var red = _redController.text;
-    //   if (red.isNotEmpty) {
-    //     widget.onColorChanged(HSVColor.fromColor(Color.fromRGBO(
-    //       int.tryParse(red) ?? 0,
-    //       color.toColor().green,
-    //       color.toColor().blue,
-    //       color.alpha,
-    //     )));
-    //   }
-    // });
-    // _greenController.addListener(() {
-    //   if (_updating) return;
-    //   var green = _greenController.text;
-    //   if (green.isNotEmpty) {
-    //     widget.onColorChanged(HSVColor.fromColor(Color.fromRGBO(
-    //       color.toColor().red,
-    //       int.tryParse(green) ?? 0,
-    //       color.toColor().blue,
-    //       color.alpha,
-    //     )));
-    //   }
-    // });
-    // _blueController.addListener(() {
-    //   if (_updating) return;
-    //   var blue = _blueController.text;
-    //   if (blue.isNotEmpty) {
-    //     widget.onColorChanged(HSVColor.fromColor(Color.fromRGBO(
-    //       color.toColor().red,
-    //       color.toColor().green,
-    //       int.tryParse(blue) ?? 0,
-    //       color.alpha,
-    //     )));
-    //   }
-    // });
-    // if (widget.showAlpha) {
-    //   _alphaController.addListener(() {
-    //     if (_updating) return;
-    //     var alpha = _alphaController.text;
-    //     if (alpha.isNotEmpty) {
-    //       widget.onColorChanged(HSVColor.fromAHSV(
-    //         (double.tryParse(alpha) ?? 0) / 100,
-    //         color.hue,
-    //         color.saturation,
-    //         color.value,
-    //       ));
-    //     }
-    //   });
-    // }
   }
 
   bool _updating = false;
@@ -260,7 +198,6 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: theme.colorScheme.border,
-                  strokeAlign: BorderSide.strokeAlignOutside,
                 ),
                 borderRadius: BorderRadius.circular(theme.radiusLg),
               ),
@@ -282,7 +219,6 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: theme.colorScheme.border,
-                  strokeAlign: BorderSide.strokeAlignOutside,
                 ),
                 borderRadius: BorderRadius.circular(theme.radiusLg),
               ),
@@ -309,7 +245,6 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: theme.colorScheme.border,
-                    strokeAlign: BorderSide.strokeAlignOutside,
                   ),
                   borderRadius: BorderRadius.circular(theme.radiusLg),
                 ),
@@ -879,19 +814,15 @@ class ColorPickerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // disable anti-aliasing
-    if (sliderType == ColorSliderType.hueAlpha ||
-        sliderType == ColorSliderType.satAlpha ||
-        sliderType == ColorSliderType.valAlpha) {
-      // has alpha, so draw checkboard to indicate transparency
-      // paintCheckboard(canvas, size);
-    }
     var pp = Paint();
     pp.isAntiAlias = false;
+    var canvasHeight = size.height + 1;
+    var canvasWidth = size.width + 1;
     if (sliderType == ColorSliderType.hueSat) {
       // if reverse, then its sat hue
       if (reverse) {
-        double width = size.width / 360;
-        double height = size.height / 100;
+        double width = canvasWidth / 360;
+        double height = canvasHeight / 100;
         // vertical for hue and horizontal for saturation
         for (var i = 0; i < 360; i++) {
           for (var j = 0; j < 100; j++) {
@@ -907,8 +838,8 @@ class ColorPickerPainter extends CustomPainter {
           }
         }
       } else {
-        double width = size.width / 100;
-        double height = size.height / 360;
+        double width = canvasWidth / 100;
+        double height = canvasHeight / 360;
         // horizontal for hue and vertical for saturation
         for (var i = 0; i < 100; i++) {
           for (var j = 0; j < 360; j++) {
@@ -927,8 +858,8 @@ class ColorPickerPainter extends CustomPainter {
     } else if (sliderType == ColorSliderType.hueVal) {
       // if reverse, then its val hue
       if (reverse) {
-        double width = size.width / 360;
-        double height = size.height / 100;
+        double width = canvasWidth / 360;
+        double height = canvasHeight / 100;
         // vertical for hue and horizontal for value
         for (var i = 0; i < 360; i++) {
           for (var j = 0; j < 100; j++) {
@@ -944,8 +875,8 @@ class ColorPickerPainter extends CustomPainter {
           }
         }
       } else {
-        double width = size.width / 100;
-        double height = size.height / 360;
+        double width = canvasWidth / 100;
+        double height = canvasHeight / 360;
         // horizontal for hue and vertical for value
         for (var i = 0; i < 100; i++) {
           for (var j = 0; j < 360; j++) {
@@ -964,8 +895,8 @@ class ColorPickerPainter extends CustomPainter {
     } else if (sliderType == ColorSliderType.satVal) {
       // if reverse, then its val sat
       if (reverse) {
-        double width = size.width / 100;
-        double height = size.height / 100;
+        double width = canvasWidth / 100;
+        double height = canvasHeight / 100;
         // horizontal for saturation and vertical for value
         for (var i = 0; i < 100; i++) {
           for (var j = 0; j < 100; j++) {
@@ -980,8 +911,8 @@ class ColorPickerPainter extends CustomPainter {
           }
         }
       } else {
-        double width = size.width / 100;
-        double height = size.height / 100;
+        double width = canvasWidth / 100;
+        double height = canvasHeight / 100;
         // horizontal for saturation and vertical for value
         for (var i = 0; i < 100; i++) {
           for (var j = 0; j < 100; j++) {
@@ -999,8 +930,8 @@ class ColorPickerPainter extends CustomPainter {
     } else if (sliderType == ColorSliderType.hueAlpha) {
       // if reverse, then its alpha hue
       if (reverse) {
-        double width = size.width / 360;
-        double height = size.height / 100;
+        double width = canvasWidth / 360;
+        double height = canvasHeight / 100;
         // vertical for hue and horizontal for alpha
         for (var i = 0; i < 360; i++) {
           for (var j = 0; j < 100; j++) {
@@ -1016,8 +947,8 @@ class ColorPickerPainter extends CustomPainter {
           }
         }
       } else {
-        double width = size.width / 100;
-        double height = size.height / 360;
+        double width = canvasWidth / 100;
+        double height = canvasHeight / 360;
         // horizontal for hue and vertical for alpha
         for (var i = 0; i < 100; i++) {
           for (var j = 0; j < 360; j++) {
@@ -1036,8 +967,8 @@ class ColorPickerPainter extends CustomPainter {
     } else if (sliderType == ColorSliderType.satAlpha) {
       // if reverse, then its alpha sat
       if (reverse) {
-        double width = size.width / 100;
-        double height = size.height / 100;
+        double width = canvasWidth / 100;
+        double height = canvasHeight / 100;
         // horizontal for saturation and vertical for alpha
         for (var i = 0; i < 100; i++) {
           for (var j = 0; j < 100; j++) {
@@ -1053,8 +984,8 @@ class ColorPickerPainter extends CustomPainter {
           }
         }
       } else {
-        double width = size.width / 100;
-        double height = size.height / 100;
+        double width = canvasWidth / 100;
+        double height = canvasHeight / 100;
         // horizontal for saturation and vertical for alpha
         for (var i = 0; i < 100; i++) {
           for (var j = 0; j < 100; j++) {
@@ -1073,8 +1004,8 @@ class ColorPickerPainter extends CustomPainter {
     } else if (sliderType == ColorSliderType.valAlpha) {
       // if reverse, then its alpha val
       if (reverse) {
-        double width = size.width / 100;
-        double height = size.height / 100;
+        double width = canvasWidth / 100;
+        double height = canvasHeight / 100;
         // horizontal for value and vertical for alpha
         for (var i = 0; i < 100; i++) {
           for (var j = 0; j < 100; j++) {
@@ -1090,8 +1021,8 @@ class ColorPickerPainter extends CustomPainter {
           }
         }
       } else {
-        double width = size.width / 100;
-        double height = size.height / 100;
+        double width = canvasWidth / 100;
+        double height = canvasHeight / 100;
         // horizontal for value and vertical for alpha
         for (var i = 0; i < 100; i++) {
           for (var j = 0; j < 100; j++) {
@@ -1109,7 +1040,7 @@ class ColorPickerPainter extends CustomPainter {
       }
     } else if (sliderType == ColorSliderType.hue) {
       if (reverse) {
-        double width = size.width / 360;
+        double width = canvasWidth / 360;
         for (var i = 0; i < 360; i++) {
           final result = HSVColor.fromAHSV(
               1, i.toDouble(), color.saturation, color.value.clamp(0, 1));
@@ -1117,12 +1048,12 @@ class ColorPickerPainter extends CustomPainter {
             ..color = result.toColor()
             ..style = PaintingStyle.fill;
           canvas.drawRect(
-            Rect.fromLTWH(i * width, 0, width, size.height),
+            Rect.fromLTWH(i * width, 0, width, canvasHeight),
             paint,
           );
         }
       } else {
-        double height = size.height / 360;
+        double height = canvasHeight / 360;
         for (var i = 0; i < 360; i++) {
           final result = HSVColor.fromAHSV(
               1, i.toDouble(), color.saturation, color.value.clamp(0, 1));
@@ -1130,14 +1061,14 @@ class ColorPickerPainter extends CustomPainter {
             ..color = result.toColor()
             ..style = PaintingStyle.fill;
           canvas.drawRect(
-            Rect.fromLTWH(0, i * height, size.width, height),
+            Rect.fromLTWH(0, i * height, canvasWidth, height),
             paint,
           );
         }
       }
     } else if (sliderType == ColorSliderType.sat) {
       if (reverse) {
-        double width = size.width / 100;
+        double width = canvasWidth / 100;
         for (var i = 0; i < 100; i++) {
           final result =
               HSVColor.fromAHSV(1, color.hue, i / 100, color.value.clamp(0, 1));
@@ -1145,12 +1076,12 @@ class ColorPickerPainter extends CustomPainter {
             ..color = result.toColor()
             ..style = PaintingStyle.fill;
           canvas.drawRect(
-            Rect.fromLTWH(i * width, 0, width, size.height),
+            Rect.fromLTWH(i * width, 0, width, canvasHeight),
             paint,
           );
         }
       } else {
-        double height = size.height / 100;
+        double height = canvasHeight / 100;
         for (var i = 0; i < 100; i++) {
           final result =
               HSVColor.fromAHSV(1, color.hue, i / 100, color.value.clamp(0, 1));
@@ -1158,14 +1089,14 @@ class ColorPickerPainter extends CustomPainter {
             ..color = result.toColor()
             ..style = PaintingStyle.fill;
           canvas.drawRect(
-            Rect.fromLTWH(0, i * height, size.width, height),
+            Rect.fromLTWH(0, i * height, canvasWidth, height),
             paint,
           );
         }
       }
     } else if (sliderType == ColorSliderType.val) {
       if (reverse) {
-        double width = size.width / 100;
+        double width = canvasWidth / 100;
         for (var i = 0; i < 100; i++) {
           final result =
               HSVColor.fromAHSV(1, color.hue, color.saturation, i / 100);
@@ -1173,12 +1104,12 @@ class ColorPickerPainter extends CustomPainter {
             ..color = result.toColor()
             ..style = PaintingStyle.fill;
           canvas.drawRect(
-            Rect.fromLTWH(i * width, 0, width, size.height),
+            Rect.fromLTWH(i * width, 0, width, canvasHeight),
             paint,
           );
         }
       } else {
-        double height = size.height / 100;
+        double height = canvasHeight / 100;
         for (var i = 0; i < 100; i++) {
           final result =
               HSVColor.fromAHSV(1, color.hue, color.saturation, i / 100);
@@ -1186,14 +1117,14 @@ class ColorPickerPainter extends CustomPainter {
             ..color = result.toColor()
             ..style = PaintingStyle.fill;
           canvas.drawRect(
-            Rect.fromLTWH(0, i * height, size.width, height),
+            Rect.fromLTWH(0, i * height, canvasWidth, height),
             paint,
           );
         }
       }
     } else if (sliderType == ColorSliderType.alpha) {
       if (reverse) {
-        double width = size.width / 100;
+        double width = canvasWidth / 100;
         for (var i = 0; i < 100; i++) {
           final result = HSVColor.fromAHSV(
               i / 100, color.hue, color.saturation, color.value.clamp(0, 1));
@@ -1201,12 +1132,12 @@ class ColorPickerPainter extends CustomPainter {
             ..color = result.toColor()
             ..style = PaintingStyle.fill;
           canvas.drawRect(
-            Rect.fromLTWH(i * width, 0, width, size.height),
+            Rect.fromLTWH(i * width, 0, width, canvasHeight),
             paint,
           );
         }
       } else {
-        double height = size.height / 100;
+        double height = canvasHeight / 100;
         for (var i = 0; i < 100; i++) {
           final result = HSVColor.fromAHSV(
               i / 100, color.hue, color.saturation, color.value.clamp(0, 1));
@@ -1214,7 +1145,7 @@ class ColorPickerPainter extends CustomPainter {
             ..color = result.toColor()
             ..style = PaintingStyle.fill;
           canvas.drawRect(
-            Rect.fromLTWH(0, i * height, size.width, height),
+            Rect.fromLTWH(0, i * height, canvasWidth, height),
             paint,
           );
         }
