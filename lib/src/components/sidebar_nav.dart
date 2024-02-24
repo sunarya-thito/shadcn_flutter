@@ -55,7 +55,7 @@ class SidebarButton extends StatelessWidget {
         type: ButtonType.link,
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: selected ? child.normal() : child.light(),
+        child: child,
       ),
     );
   }
