@@ -11,12 +11,14 @@ enum ButtonType {
   ghost,
   link,
   static,
+  dense,
 }
 
 enum ButtonSize {
   normal,
   icon,
   badge,
+  none,
 }
 
 class Toggle extends StatefulWidget {
@@ -263,6 +265,8 @@ class _ButtonState extends State<Button> {
         return const EdgeInsets.all(8);
       case ButtonSize.badge:
         return const EdgeInsets.symmetric(horizontal: 10, vertical: 2);
+      case ButtonSize.none:
+        return EdgeInsets.zero;
     }
   }
 
@@ -282,6 +286,8 @@ class _ButtonState extends State<Button> {
         return buildLink(context);
       case ButtonType.static:
         return buildStatic(context);
+      case ButtonType.dense:
+        return buildDense(context);
     }
   }
 
@@ -293,18 +299,45 @@ class _ButtonState extends State<Button> {
     );
   }
 
+  Widget buildDense(BuildContext context) {
+    // hover effect is the icon color and/or the text color
+    return AnimatedContainer(
+      duration: kDefaultDuration,
+      padding: padding,
+      child: mergeAnimatedTextStyle(
+        duration: kDefaultDuration,
+        style: TextStyle(
+          color: !_hovering
+              ? Theme.of(context).colorScheme.primary.withOpacity(0.8)
+              : Theme.of(context).colorScheme.foreground,
+        ),
+        child: AnimatedIconTheme.merge(
+          duration: kDefaultDuration,
+          data: IconThemeData(
+            color: !_hovering
+                ? Theme.of(context).colorScheme.primary.withOpacity(0.8)
+                : Theme.of(context).colorScheme.foreground,
+          ),
+          child: buildContent(context),
+        ),
+      ),
+    );
+  }
+
   bool get _disabled => widget.onPressed == null;
 
   Widget buildContent(BuildContext context, {bool underline = false}) {
-    Widget row = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (widget.leading != null) widget.leading!,
-        if (widget.leading != null) const SizedBox(width: 8),
-        underline ? widget.child.underline() : widget.child,
-        if (widget.trailing != null) const SizedBox(width: 8),
-        if (widget.trailing != null) widget.trailing!,
-      ],
+    Widget row = IntrinsicWidth(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (widget.leading != null) widget.leading!,
+          if (widget.leading != null) const SizedBox(width: 8),
+          Expanded(child: underline ? widget.child.underline() : widget.child),
+          if (widget.trailing != null) const SizedBox(width: 8),
+          if (widget.trailing != null) widget.trailing!,
+        ],
+      ),
     );
     if (widget.alignment != null) {
       row = Align(
