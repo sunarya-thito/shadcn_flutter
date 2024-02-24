@@ -7,7 +7,6 @@ export 'package:flutter/cupertino.dart'
 // export Icons from material
 export 'package:flutter/material.dart'
     show Icons, Colors, MaterialPageRoute, MaterialPage, SliverAppBar;
-export 'package:visibility_detector/visibility_detector.dart';
 
 export 'src/components/accordion.dart';
 export 'src/components/alert.dart';
@@ -21,8 +20,10 @@ export 'src/components/card.dart';
 export 'src/components/checkbox.dart';
 export 'src/components/circular_progerss_indicator.dart';
 export 'src/components/code_snippet.dart';
+export 'src/components/collapsible.dart';
 export 'src/components/color_picker.dart';
 export 'src/components/combo_box.dart';
+export 'src/components/command.dart';
 export 'src/components/divider.dart';
 export 'src/components/form/form.dart';
 export 'src/components/locale/shadcn_localizations.dart';
