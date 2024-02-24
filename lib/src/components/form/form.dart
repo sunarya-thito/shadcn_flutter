@@ -438,11 +438,13 @@ abstract class FormEntryState<T extends FormEntry<V>, V> extends State<T> {
     super.didChangeDependencies();
     FormState? oldForm = _form;
     _form = Data.maybeOf(context);
-    if (_validity != null) {
-      oldForm?._removeValidity(_validity!);
-      _form?._addValidity(_validity!);
+    if (oldForm != _form) {
+      if (_validity != null) {
+        oldForm?._removeValidity(_validity!);
+        _form?._addValidity(_validity!);
+      }
+      validate();
     }
-    validate();
   }
 
   @override
