@@ -73,9 +73,9 @@ class _ComboBoxState<T> extends State<ComboBox<T>> {
               context.showPopover();
             },
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Expanded(
-                  // child: placeholder.medium().small(),
                   child: widget.selectedIndex != null
                       ? widget.itemBuilder(
                           context,
@@ -90,8 +90,8 @@ class _ComboBoxState<T> extends State<ComboBox<T>> {
                     size: 15,
                     opacity: 0.5,
                   ),
-                  child: const Icon(Icons.unfold_more),
                   duration: kDefaultDuration,
+                  child: const Icon(Icons.unfold_more),
                 ),
               ],
             ),
