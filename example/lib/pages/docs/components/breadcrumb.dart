@@ -1,5 +1,4 @@
 import 'package:example/pages/docs/component_page.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
@@ -19,8 +18,16 @@ class BreadcrumbExample extends StatelessWidget {
             return Breadcrumb(
               separator: Breadcrumb.arrowSeparator,
               children: [
-                Text('Home'),
-                Text('Components'),
+                TextButton(
+                  child: Text('Home'),
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                ),
+                TextButton(
+                  child: Text('Components'),
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                ),
                 Text('Breadcrumb'),
               ],
             );

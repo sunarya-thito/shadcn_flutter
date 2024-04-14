@@ -389,6 +389,10 @@ class ShadcnPopupRoute<T> extends PopupRoute<T> {
     });
   }
 
+  void dispatchComplete(T? value) {
+    didComplete(value);
+  }
+
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
@@ -403,6 +407,7 @@ class ShadcnPopupRoute<T> extends PopupRoute<T> {
       anchorAlignment: anchorAlignment,
       widthConstraint: widthConstraint,
       heightConstraint: heightConstraint,
+      route: this,
     );
   }
 
@@ -433,6 +438,7 @@ class PopupAnchor extends StatefulWidget {
     this.widthConstraint = PopupConstraint.flexible,
     this.heightConstraint = PopupConstraint.flexible,
     this.anchorSize,
+    required this.route,
   });
 
   final Offset position;
@@ -444,6 +450,7 @@ class PopupAnchor extends StatefulWidget {
   final Animation<double> animation;
   final PopupConstraint widthConstraint;
   final PopupConstraint heightConstraint;
+  final ShadcnPopupRoute route;
 
   @override
   State<PopupAnchor> createState() => PopupAnchorState();
@@ -581,7 +588,12 @@ class PopupAnchorState extends State<PopupAnchor> {
     // Navigator.of(context).pop();
     // check if the widget is still mounted
     if (mounted) {
-      Navigator.of(context).pop();
+      // Navigator.of(context).removeRoute(widget.route);
+      // use pop until
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        Navigator.of(context).removeRoute(widget.route);
+        widget.route.dispatchComplete(null);
+      });
     }
   }
 

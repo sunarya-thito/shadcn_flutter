@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef CommandBuilder = Stream<List<Widget>> Function(
@@ -14,9 +12,10 @@ class CommandEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = ShadcnLocalizations.of(context);
     return Center(
         child:
-            const Text('No results found.').withPadding(vertical: 24).small());
+            Text(localizations.commandEmpty).withPadding(vertical: 24).small());
   }
 }
 
@@ -31,7 +30,7 @@ class Command extends StatefulWidget {
   const Command({
     Key? key,
     required this.builder,
-    this.debounceDuration = const Duration(milliseconds: 300),
+    this.debounceDuration = const Duration(milliseconds: 500),
     this.emptyBuilder,
     this.errorBuilder,
     this.loadingBuilder,
@@ -42,21 +41,21 @@ class Command extends StatefulWidget {
 }
 
 class _CommandState extends State<Command> {
+  final GlobalKey _textFieldKey = GlobalKey();
   final TextEditingController _controller = TextEditingController();
   final FocusNode _textFieldFocus = FocusNode();
-  final FocusScopeNode _focusScopeNode = FocusScopeNode();
-
-  late Stream<List<Widget>> _currentRequest;
+  final _focusScopeNode = FocusNode();
+  final ValueNotifier<String?> query = ValueNotifier<String?>(null);
 
   int requestCount = 0;
 
-  Stream<List<Widget>> _request(BuildContext context) async* {
+  Stream<List<Widget>> _request(BuildContext context, String? query) async* {
     int currentRequest = ++requestCount;
     yield [];
     await Future.delayed(widget.debounceDuration);
     if (!context.mounted || currentRequest != requestCount) return;
     List<Widget> resultItems = [];
-    await for (final items in widget.builder(context, _controller.text)) {
+    await for (final items in widget.builder(context, query)) {
       if (currentRequest != requestCount) continue;
       // append items
       resultItems.addAll(items);
@@ -67,12 +66,19 @@ class _CommandState extends State<Command> {
   @override
   void initState() {
     super.initState();
-    _currentRequest = _request(context);
     _controller.addListener(() {
-      setState(() {
-        _currentRequest = _request(context);
-      });
+      String? newQuery = _controller.text;
+      if (newQuery.isEmpty) newQuery = null;
+      if (newQuery != query.value) {
+        query.value = newQuery;
+      }
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant Command oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print('didUpdateWidget');
   }
 
   @override
@@ -95,15 +101,16 @@ class _CommandState extends State<Command> {
                 ),
                 Expanded(
                   child: TextField(
+                    key: _textFieldKey,
                     controller: _controller,
                     border: false,
                     focusNode: _textFieldFocus,
+                    placeholder: ShadcnLocalizations.of(context).commandSearch,
                   ),
                 ),
                 if (canPop)
-                  Button(
-                    type: ButtonType.dense,
-                    size: ButtonSize.none,
+                  DenseButton(
+                    padding: EdgeInsets.zero,
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -116,36 +123,43 @@ class _CommandState extends State<Command> {
             ).withPadding(horizontal: 12),
             const Divider(),
             Expanded(
-              child: FocusScope(
-                node: _focusScopeNode,
-                parentNode: _textFieldFocus,
-                skipTraversal: true,
-                child: StreamBuilder(
-                  stream: _currentRequest,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<Widget> items = List.of(snapshot.data!);
-                      if (snapshot.connectionState == ConnectionState.active) {
-                        items.add(
-                            const Center(child: CircularProgressIndicator())
-                                .withPadding(vertical: 24));
-                      } else if (items.isEmpty) {
-                        return widget.emptyBuilder?.call(context) ??
-                            const CommandEmpty();
-                      }
-                      return ListView.separated(
-                        separatorBuilder: (context, index) => const Divider(),
-                        shrinkWrap: true,
-                        itemCount: items.length,
-                        itemBuilder: (context, index) => items[index],
-                      );
-                    }
-                    return widget.loadingBuilder?.call(context) ??
-                        const Center(child: CircularProgressIndicator())
-                            .withPadding(vertical: 24);
-                  },
-                ),
-              ),
+              child: ValueListenableBuilder(
+                  valueListenable: query,
+                  builder: (context, value, child) {
+                    return TextFieldTapRegion(
+                      child: Focus(
+                        focusNode: _focusScopeNode,
+                        parentNode: _textFieldFocus,
+                        child: StreamBuilder(
+                          stream: _request(context, value),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              List<Widget> items = List.of(snapshot.data!);
+                              if (snapshot.connectionState ==
+                                  ConnectionState.active) {
+                                items.add(const Center(
+                                        child: CircularProgressIndicator())
+                                    .withPadding(vertical: 24));
+                              } else if (items.isEmpty) {
+                                return widget.emptyBuilder?.call(context) ??
+                                    const CommandEmpty();
+                              }
+                              return ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    const Divider(),
+                                shrinkWrap: true,
+                                itemCount: items.length,
+                                itemBuilder: (context, index) => items[index],
+                              );
+                            }
+                            return widget.loadingBuilder?.call(context) ??
+                                const Center(child: CircularProgressIndicator())
+                                    .withPadding(vertical: 24);
+                          },
+                        ),
+                      ),
+                    );
+                  }),
             ),
           ],
         ),

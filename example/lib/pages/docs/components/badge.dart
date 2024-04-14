@@ -1,6 +1,5 @@
 import 'package:example/pages/docs/component_page.dart';
 import 'package:example/pages/widget_usage_example.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class BadgeExample extends StatelessWidget {
@@ -14,7 +13,8 @@ class BadgeExample extends StatelessWidget {
         // Primary badge
         WidgetUsageExample(
             builder: (context) {
-              return Badge(
+              return PrimaryButton(
+                padding: Button.badgePadding,
                 child: Text('Primary'),
               );
             },
@@ -25,9 +25,9 @@ Badge(
         // Secondary badge
         WidgetUsageExample(
             builder: (context) {
-              return Badge(
+              return SecondaryButton(
+                padding: Button.badgePadding,
                 child: Text('Secondary'),
-                type: ButtonType.secondary,
               );
             },
             code: '''
@@ -38,9 +38,9 @@ Badge(
         // Outlined Badge
         WidgetUsageExample(
             builder: (context) {
-              return Badge(
+              return OutlineButton(
+                padding: Button.badgePadding,
                 child: Text('Outlined'),
-                type: ButtonType.outline,
               );
             },
             code: '''
@@ -51,9 +51,9 @@ Badge(
         // Destructive Badge
         WidgetUsageExample(
             builder: (context) {
-              return Badge(
+              return DestructiveButton(
+                padding: Button.badgePadding,
                 child: Text('Destructive'),
-                type: ButtonType.destructive,
               );
             },
             code: '''

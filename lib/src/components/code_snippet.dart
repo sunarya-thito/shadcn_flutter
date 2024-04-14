@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:highlight/highlight.dart';
 
 import '../../shadcn_flutter.dart';
@@ -60,9 +58,8 @@ class _CodeSnippetState extends State<CodeSnippet> {
           Positioned(
             right: 8,
             top: 8,
-            child: Button(
-              size: ButtonSize.icon,
-              type: ButtonType.ghost,
+            child: GhostButton(
+              padding: Button.iconPadding,
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: widget.code));
               },

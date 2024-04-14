@@ -6,7 +6,9 @@ export 'package:flutter/cupertino.dart'
         cupertinoDesktopTextSelectionHandleControls;
 // export Icons from material
 export 'package:flutter/material.dart'
-    show Icons, Colors, MaterialPageRoute, MaterialPage, SliverAppBar;
+    show Icons, Colors, MaterialPageRoute, MaterialPage, SliverAppBar
+    hide TextButton;
+export 'package:flutter/widgets.dart' hide ErrorWidgetBuilder, Form, FormState;
 
 export 'src/components/accordion.dart';
 export 'src/components/alert.dart';
@@ -27,6 +29,7 @@ export 'src/components/command.dart';
 export 'src/components/divider.dart';
 export 'src/components/form/form.dart';
 export 'src/components/locale/shadcn_localizations.dart';
+export 'src/components/menu.dart';
 export 'src/components/outlined_container.dart';
 export 'src/components/popover.dart';
 export 'src/components/radio_group.dart';
@@ -42,6 +45,7 @@ export 'src/components/text/text.dart';
 export 'src/components/text/underline_text.dart';
 export 'src/components/text_field.dart';
 export 'src/components/tooltip.dart';
+export 'src/components/triple_dots.dart';
 export 'src/components/widget_reporter.dart';
 export 'src/data.dart';
 export 'src/dialog.dart';

@@ -1,25 +1,26 @@
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:shadcn_flutter/src/components/focus_outline.dart';
 
 import '../../shadcn_flutter.dart';
 
-enum ButtonType {
-  primary,
-  secondary,
-  destructive,
-  outline,
-  ghost,
-  link,
-  static,
-  dense,
-}
-
-enum ButtonSize {
-  normal,
-  icon,
-  badge,
-  none,
-}
+// enum ButtonType {
+//   primary,
+//   secondary,
+//   destructive,
+//   outline,
+//   ghost,
+//   link,
+//   static,
+//   dense,
+//   text,
+// }
+//
+// enum ButtonSize {
+//   normal,
+//   icon,
+//   badge,
+//   none,
+// }
 
 class Toggle extends StatefulWidget {
   final bool value;
@@ -47,64 +48,58 @@ class _ToggleState extends State<Toggle> {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
-    return GestureDetector(
-      onTap: () {
-        widget.onChanged?.call(!widget.value);
-      },
-      child: FocusableActionDetector(
-        enabled: widget.onChanged != null,
-        mouseCursor: widget.onChanged != null
-            ? SystemMouseCursors.click
-            : SystemMouseCursors.basic,
-        onShowFocusHighlight: (value) {
-          setState(() {
-            _focusing = value;
-          });
+    return FocusOutline(
+      focused: _focusing,
+      borderRadius: BorderRadius.circular(themeData.radiusMd),
+      child: GestureDetector(
+        onTap: () {
+          widget.onChanged?.call(!widget.value);
         },
-        onShowHoverHighlight: (value) {
-          setState(() {
-            _hovering = value;
-          });
-        },
-        actions: {
-          ActivateIntent: CallbackAction(
-            onInvoke: (Intent intent) {
-              widget.onChanged?.call(!widget.value);
-              return true;
-            },
-          ),
-        },
-        shortcuts: const {
-          SingleActivator(LogicalKeyboardKey.enter): ActivateIntent(),
-          SingleActivator(LogicalKeyboardKey.space): ActivateIntent(),
-        },
-        child: AnimatedContainer(
-          duration: kDefaultDuration,
-          decoration: BoxDecoration(
-            color: _hovering || widget.value
-                ? themeData.colorScheme.muted
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(themeData.radiusMd),
-            border: _focusing
-                ? Border.all(
-                    color: themeData.colorScheme.ring,
-                    width: 1,
-                    strokeAlign: BorderSide.strokeAlignOutside,
-                  )
-                : Border.all(
-                    color: Colors.transparent,
-                    strokeAlign: BorderSide.strokeAlignOutside,
-                  ),
-          ),
-          padding: widget.padding,
-          child: mergeAnimatedTextStyle(
-            duration: kDefaultDuration,
-            style: TextStyle(
-              color: _hovering && !widget.value
-                  ? themeData.colorScheme.mutedForeground
-                  : themeData.colorScheme.foreground,
+        child: FocusableActionDetector(
+          enabled: widget.onChanged != null,
+          mouseCursor: widget.onChanged != null
+              ? SystemMouseCursors.click
+              : SystemMouseCursors.basic,
+          onShowFocusHighlight: (value) {
+            setState(() {
+              _focusing = value;
+            });
+          },
+          onShowHoverHighlight: (value) {
+            setState(() {
+              _hovering = value;
+            });
+          },
+          actions: {
+            ActivateIntent: CallbackAction(
+              onInvoke: (Intent intent) {
+                widget.onChanged?.call(!widget.value);
+                return true;
+              },
             ),
-            child: widget.child,
+          },
+          shortcuts: const {
+            SingleActivator(LogicalKeyboardKey.enter): ActivateIntent(),
+            SingleActivator(LogicalKeyboardKey.space): ActivateIntent(),
+          },
+          child: AnimatedContainer(
+            duration: kDefaultDuration,
+            decoration: BoxDecoration(
+              color: _hovering || widget.value
+                  ? themeData.colorScheme.muted
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(themeData.radiusMd),
+            ),
+            padding: widget.padding,
+            child: mergeAnimatedTextStyle(
+              duration: kDefaultDuration,
+              style: TextStyle(
+                color: _hovering && !widget.value
+                    ? themeData.colorScheme.mutedForeground
+                    : themeData.colorScheme.foreground,
+              ),
+              child: widget.child,
+            ),
           ),
         ),
       ),
@@ -112,94 +107,93 @@ class _ToggleState extends State<Toggle> {
   }
 }
 
-class Badge extends StatelessWidget {
-  final Widget child;
-  final ButtonType type;
-  final VoidCallback? onPressed;
+// class Badge extends StatefulWidget {
+//   final Widget child;
+//   final ButtonType type;
+//   final VoidCallback? onPressed;
+//
+//   const Badge({
+//     Key? key,
+//     required this.child,
+//     this.type = ButtonType.primary,
+//     this.onPressed,
+//   }) : super(key: key);
+//
+//   @override
+//   State<Badge> createState() => _BadgeState();
+// }
+//
+// class _BadgeState extends State<Badge> {
+//   final FocusNode _focusNode =
+//       FocusNode(canRequestFocus: false, skipTraversal: true);
+//   @override
+//   Widget build(BuildContext context) {
+//     return Button(
+//       focusNode: _focusNode,
+//       type: widget.type,
+//       onPressed: widget.onPressed ?? () {},
+//       size: ButtonSize.badge,
+//       mouseCursor: SystemMouseCursors.basic,
+//       child: DefaultTextStyle.merge(
+//         style: const TextStyle(
+//           fontSize: 12,
+//           height: 1.4,
+//         ),
+//         child: widget.child,
+//       ),
+//     );
+//   }
+// }
 
-  const Badge({
-    Key? key,
-    required this.child,
-    this.type = ButtonType.primary,
-    this.onPressed,
-  }) : super(key: key);
+abstract class Button extends StatefulWidget {
+  static const EdgeInsets normalPadding = EdgeInsets.symmetric(
+    horizontal: 16,
+    vertical: 8,
+  );
+  static const EdgeInsets iconPadding = EdgeInsets.all(8);
+  static const EdgeInsets badgePadding = EdgeInsets.symmetric(
+    horizontal: 10,
+    vertical: 2,
+  );
 
-  @override
-  Widget build(BuildContext context) {
-    return Button(
-      type: type,
-      onPressed: onPressed ?? () {},
-      size: ButtonSize.badge,
-      mouseCursor: SystemMouseCursors.basic,
-      child: DefaultTextStyle.merge(
-        style: const TextStyle(
-          fontSize: 12,
-          height: 1.4,
-        ),
-        child: child,
-      ),
-    );
-  }
-}
-
-class IconButton extends StatelessWidget {
-  final Widget icon;
-  final ButtonType type;
-  final VoidCallback? onPressed;
-
-  const IconButton({
-    Key? key,
-    required this.icon,
-    this.type = ButtonType.primary,
-    this.onPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Button(
-      type: type,
-      onPressed: onPressed,
-      size: ButtonSize.icon,
-      child: icon,
-    );
-  }
-}
-
-class Button extends StatefulWidget {
-  final ButtonType type;
   final Widget? leading;
   final Widget? trailing;
   final Widget child;
   final VoidCallback? onPressed;
-  final ButtonSize size;
   final MouseCursor mouseCursor;
   final FocusNode? focusNode;
   final bool focusable;
-  final EdgeInsets? padding;
+  final EdgeInsets padding;
   final AlignmentGeometry? alignment;
   const Button({
     Key? key,
-    this.type = ButtonType.primary,
     this.leading,
     this.trailing,
     required this.child,
     this.onPressed,
-    this.size = ButtonSize.normal,
     this.mouseCursor = SystemMouseCursors.click,
     this.focusNode,
     this.focusable = true,
-    this.padding,
+    this.padding = normalPadding,
     this.alignment,
   }) : super(key: key);
 
   @override
-  _ButtonState createState() => _ButtonState();
+  ButtonState createState();
 }
 
-class _ButtonState extends State<Button> {
+abstract class ButtonState<T extends Button> extends State<T> {
+  // bool isHovering = false;
+  // bool isFocusing = false;
   bool _hovering = false;
   bool _focusing = false;
+
+  bool get isHovering => _hovering;
+  bool get isFocusing => _focusing;
+
   late FocusNode _focusNode;
+
+  FocusNode get focusNode => _focusNode;
 
   @override
   void initState() {
@@ -208,7 +202,7 @@ class _ButtonState extends State<Button> {
   }
 
   @override
-  void didUpdateWidget(covariant Button oldWidget) {
+  void didUpdateWidget(covariant T oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
       oldWidget.focusNode?.dispose();
@@ -222,7 +216,7 @@ class _ButtonState extends State<Button> {
         widget.onPressed?.call();
       },
       child: FocusableActionDetector(
-        focusNode: _focusNode,
+        focusNode: focusNode,
         enabled: widget.onPressed != null,
         mouseCursor: widget.onPressed != null
             ? widget.mouseCursor
@@ -249,82 +243,22 @@ class _ButtonState extends State<Button> {
             _hovering = value;
           });
         },
-        child: buildButton(context),
+        child: FocusOutline(
+          focused: isFocusing,
+          borderRadius: BorderRadius.circular(Theme.of(context).radiusMd),
+          child: buildButton(context),
+        ),
       ),
     );
   }
 
   EdgeInsets get padding {
-    if (widget.padding != null) {
-      return widget.padding!;
-    }
-    switch (widget.size) {
-      case ButtonSize.normal:
-        return const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
-      case ButtonSize.icon:
-        return const EdgeInsets.all(8);
-      case ButtonSize.badge:
-        return const EdgeInsets.symmetric(horizontal: 10, vertical: 2);
-      case ButtonSize.none:
-        return EdgeInsets.zero;
-    }
+    return widget.padding;
   }
 
-  Widget buildButton(BuildContext context) {
-    switch (widget.type) {
-      case ButtonType.primary:
-        return buildPrimary(context);
-      case ButtonType.secondary:
-        return buildSecondary(context);
-      case ButtonType.destructive:
-        return buildDestructive(context);
-      case ButtonType.outline:
-        return buildOutline(context);
-      case ButtonType.ghost:
-        return buildGhost(context);
-      case ButtonType.link:
-        return buildLink(context);
-      case ButtonType.static:
-        return buildStatic(context);
-      case ButtonType.dense:
-        return buildDense(context);
-    }
-  }
+  Widget buildButton(BuildContext context);
 
-  Widget buildStatic(BuildContext context) {
-    return AnimatedContainer(
-      duration: kDefaultDuration,
-      padding: padding,
-      child: buildContent(context),
-    );
-  }
-
-  Widget buildDense(BuildContext context) {
-    // hover effect is the icon color and/or the text color
-    return AnimatedContainer(
-      duration: kDefaultDuration,
-      padding: padding,
-      child: mergeAnimatedTextStyle(
-        duration: kDefaultDuration,
-        style: TextStyle(
-          color: !_hovering
-              ? Theme.of(context).colorScheme.primary.withOpacity(0.8)
-              : Theme.of(context).colorScheme.foreground,
-        ),
-        child: AnimatedIconTheme.merge(
-          duration: kDefaultDuration,
-          data: IconThemeData(
-            color: !_hovering
-                ? Theme.of(context).colorScheme.primary.withOpacity(0.8)
-                : Theme.of(context).colorScheme.foreground,
-          ),
-          child: buildContent(context),
-        ),
-      ),
-    );
-  }
-
-  bool get _disabled => widget.onPressed == null;
+  bool get isDisabled => widget.onPressed == null;
 
   Widget buildContent(BuildContext context, {bool underline = false}) {
     Widget row = IntrinsicWidth(
@@ -347,31 +281,62 @@ class _ButtonState extends State<Button> {
     }
     return row;
   }
+}
 
-  Widget buildPrimary(BuildContext context) {
+class PrimaryButton extends Button {
+  const PrimaryButton({
+    Key? key,
+    Widget? leading,
+    Widget? trailing,
+    required Widget child,
+    VoidCallback? onPressed,
+    MouseCursor mouseCursor = SystemMouseCursors.click,
+    FocusNode? focusNode,
+    bool focusable = true,
+    EdgeInsets padding = Button.normalPadding,
+    AlignmentGeometry? alignment,
+  }) : super(
+          key: key,
+          leading: leading,
+          trailing: trailing,
+          child: child,
+          onPressed: onPressed,
+          mouseCursor: mouseCursor,
+          focusNode: focusNode,
+          focusable: focusable,
+          padding: padding,
+          alignment: alignment,
+        );
+
+  @override
+  _PrimaryButtonState createState() => _PrimaryButtonState();
+}
+
+class _PrimaryButtonState extends ButtonState<PrimaryButton> {
+  @override
+  Widget buildButton(BuildContext context) {
     var themeData = Theme.of(context);
     return AnimatedContainer(
       duration: kDefaultDuration,
       decoration: BoxDecoration(
-        color: _disabled
+        color: isDisabled
             ? themeData.colorScheme.mutedForeground
-            : _hovering
+            : isHovering
                 ? themeData.colorScheme.primary.withOpacity(0.8)
                 : themeData.colorScheme.primary,
         borderRadius: BorderRadius.circular(themeData.radiusMd),
-        border: _focusing
-            ? Border.all(
-                color: themeData.colorScheme.ring,
-                width: 1,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              )
-            : Border.all(
-                color: Colors.transparent,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              ),
+        border: Border.all(
+          color: isDisabled
+              ? themeData.colorScheme.mutedForeground
+              : isHovering
+                  ? themeData.colorScheme.primary.withOpacity(0.8)
+                  : themeData.colorScheme.primary,
+          width: 1,
+        ),
       ),
       padding: padding,
       child: mergeAnimatedTextStyle(
+        duration: kDefaultDuration,
         style: TextStyle(
           color: themeData.colorScheme.primaryForeground,
         ),
@@ -382,45 +347,66 @@ class _ButtonState extends State<Button> {
           ),
           child: buildContent(context),
         ),
-        duration: kDefaultDuration,
       ),
     );
   }
+}
 
-  Widget buildSecondary(BuildContext context) {
+class SecondaryButton extends Button {
+  const SecondaryButton({
+    Key? key,
+    Widget? leading,
+    Widget? trailing,
+    required Widget child,
+    VoidCallback? onPressed,
+    MouseCursor mouseCursor = SystemMouseCursors.click,
+    FocusNode? focusNode,
+    bool focusable = true,
+    EdgeInsets padding = Button.normalPadding,
+    AlignmentGeometry? alignment,
+  }) : super(
+          key: key,
+          leading: leading,
+          trailing: trailing,
+          child: child,
+          onPressed: onPressed,
+          mouseCursor: mouseCursor,
+          focusNode: focusNode,
+          focusable: focusable,
+          padding: padding,
+          alignment: alignment,
+        );
+
+  @override
+  _SecondaryButtonState createState() => _SecondaryButtonState();
+}
+
+class _SecondaryButtonState extends ButtonState<SecondaryButton> {
+  @override
+  Widget buildButton(BuildContext context) {
     var themeData = Theme.of(context);
     return AnimatedContainer(
       duration: kDefaultDuration,
       decoration: BoxDecoration(
-        color: _disabled
+        color: isDisabled
             ? themeData.colorScheme.primaryForeground
-            : _hovering
+            : isHovering
                 ? themeData.colorScheme.secondary.withOpacity(0.8)
                 : themeData.colorScheme.secondary,
         borderRadius: BorderRadius.circular(themeData.radiusMd),
-        border: _focusing
-            ? Border.all(
-                color: themeData.colorScheme.ring,
-                width: 1,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              )
-            : Border.all(
-                color: Colors.transparent,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              ),
       ),
       padding: padding,
       child: mergeAnimatedTextStyle(
         duration: kDefaultDuration,
         style: TextStyle(
-          color: _disabled
+          color: isDisabled
               ? themeData.colorScheme.mutedForeground
               : themeData.colorScheme.secondaryForeground,
         ),
         child: AnimatedIconTheme.merge(
           duration: kDefaultDuration,
           data: IconThemeData(
-            color: _disabled
+            color: isDisabled
                 ? themeData.colorScheme.mutedForeground
                 : themeData.colorScheme.secondaryForeground,
           ),
@@ -429,41 +415,403 @@ class _ButtonState extends State<Button> {
       ),
     );
   }
+}
 
-  Widget buildDestructive(BuildContext context) {
+class OutlineButton extends Button {
+  const OutlineButton({
+    Key? key,
+    Widget? leading,
+    Widget? trailing,
+    required Widget child,
+    VoidCallback? onPressed,
+    MouseCursor mouseCursor = SystemMouseCursors.click,
+    FocusNode? focusNode,
+    bool focusable = true,
+    EdgeInsets padding = Button.normalPadding,
+    AlignmentGeometry? alignment,
+  }) : super(
+          key: key,
+          leading: leading,
+          trailing: trailing,
+          child: child,
+          onPressed: onPressed,
+          mouseCursor: mouseCursor,
+          focusNode: focusNode,
+          focusable: focusable,
+          padding: padding,
+          alignment: alignment,
+        );
+
+  @override
+  _OutlineButtonState createState() => _OutlineButtonState();
+}
+
+class _OutlineButtonState extends ButtonState {
+  @override
+  Widget buildButton(BuildContext context) {
     var themeData = Theme.of(context);
     return AnimatedContainer(
       duration: kDefaultDuration,
       decoration: BoxDecoration(
-        color: _disabled
-            ? themeData.colorScheme.primaryForeground
-            : _hovering
-                ? themeData.colorScheme.destructive.withOpacity(0.8)
-                : themeData.colorScheme.destructive,
+        color: isDisabled
+            ? Colors.transparent
+            : isHovering
+                ? themeData.colorScheme.muted.withOpacity(0.8)
+                : Colors.transparent,
+        border: Border.all(
+          color: isDisabled
+              ? themeData.colorScheme.muted
+              : isHovering
+                  ? themeData.colorScheme.muted.withOpacity(0.8)
+                  : themeData.colorScheme.muted,
+          width: 1,
+        ),
         borderRadius: BorderRadius.circular(themeData.radiusMd),
-        border: _focusing
-            ? Border.all(
-                color: themeData.colorScheme.ring,
-                width: 1,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              )
-            : Border.all(
-                color: Colors.transparent,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              ),
       ),
       padding: padding,
       child: mergeAnimatedTextStyle(
         duration: kDefaultDuration,
         style: TextStyle(
-          color: _disabled
+          color: isDisabled
+              ? themeData.colorScheme.mutedForeground
+              : themeData.colorScheme.foreground,
+        ),
+        child: AnimatedIconTheme.merge(
+          duration: kDefaultDuration,
+          data: IconThemeData(
+            color: isDisabled
+                ? themeData.colorScheme.mutedForeground
+                : themeData.colorScheme.foreground,
+          ),
+          child: buildContent(context),
+        ),
+      ),
+    );
+  }
+}
+
+class GhostButton extends Button {
+  const GhostButton({
+    Key? key,
+    Widget? leading,
+    Widget? trailing,
+    required Widget child,
+    VoidCallback? onPressed,
+    MouseCursor mouseCursor = SystemMouseCursors.click,
+    FocusNode? focusNode,
+    bool focusable = true,
+    EdgeInsets padding = Button.normalPadding,
+    AlignmentGeometry? alignment,
+  }) : super(
+          key: key,
+          leading: leading,
+          trailing: trailing,
+          child: child,
+          onPressed: onPressed,
+          mouseCursor: mouseCursor,
+          focusNode: focusNode,
+          focusable: focusable,
+          padding: padding,
+          alignment: alignment,
+        );
+
+  @override
+  _GhostButtonState createState() => _GhostButtonState();
+}
+
+class _GhostButtonState extends ButtonState {
+  @override
+  Widget buildButton(BuildContext context) {
+    var themeData = Theme.of(context);
+    return AnimatedContainer(
+      duration: kDefaultDuration,
+      decoration: BoxDecoration(
+        color: isHovering && !isDisabled
+            ? themeData.colorScheme.muted.withOpacity(0.8)
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(themeData.radiusMd),
+      ),
+      padding: padding,
+      child: mergeAnimatedTextStyle(
+        duration: kDefaultDuration,
+        style: TextStyle(
+          color: isDisabled
+              ? themeData.colorScheme.mutedForeground
+              : themeData.colorScheme.foreground,
+        ),
+        child: AnimatedIconTheme.merge(
+          duration: kDefaultDuration,
+          data: IconThemeData(
+            color: isDisabled
+                ? themeData.colorScheme.mutedForeground
+                : themeData.colorScheme.foreground,
+          ),
+          child: buildContent(context),
+        ),
+      ),
+    );
+  }
+}
+
+class LinkButton extends Button {
+  const LinkButton({
+    Key? key,
+    Widget? leading,
+    Widget? trailing,
+    required Widget child,
+    VoidCallback? onPressed,
+    MouseCursor mouseCursor = SystemMouseCursors.click,
+    FocusNode? focusNode,
+    bool focusable = true,
+    EdgeInsets padding = Button.normalPadding,
+    AlignmentGeometry? alignment,
+  }) : super(
+          key: key,
+          leading: leading,
+          trailing: trailing,
+          child: child,
+          onPressed: onPressed,
+          mouseCursor: mouseCursor,
+          focusNode: focusNode,
+          focusable: focusable,
+          padding: padding,
+          alignment: alignment,
+        );
+
+  @override
+  _LinkButtonState createState() => _LinkButtonState();
+}
+
+class _LinkButtonState extends ButtonState {
+  @override
+  Widget buildButton(BuildContext context) {
+    var themeData = Theme.of(context);
+    return AnimatedContainer(
+      duration: kDefaultDuration,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(themeData.radiusMd),
+      ),
+      padding: padding,
+      child: mergeAnimatedTextStyle(
+        duration: kDefaultDuration,
+        style: TextStyle(
+          color: isDisabled
+              ? themeData.colorScheme.mutedForeground
+              : themeData.colorScheme.foreground,
+        ),
+        child: AnimatedIconTheme.merge(
+          duration: kDefaultDuration,
+          data: IconThemeData(
+            color: isDisabled
+                ? themeData.colorScheme.mutedForeground
+                : themeData.colorScheme.foreground,
+          ),
+          child: buildContent(context, underline: isHovering),
+        ),
+      ),
+    );
+  }
+}
+
+class TabButton extends Button {
+  const TabButton({
+    Key? key,
+    Widget? leading,
+    Widget? trailing,
+    required Widget child,
+    VoidCallback? onPressed,
+    MouseCursor mouseCursor = SystemMouseCursors.click,
+    FocusNode? focusNode,
+    bool focusable = true,
+    EdgeInsets padding = Button.normalPadding,
+    AlignmentGeometry? alignment,
+  }) : super(
+          key: key,
+          leading: leading,
+          trailing: trailing,
+          child: child,
+          onPressed: onPressed,
+          mouseCursor: mouseCursor,
+          focusNode: focusNode,
+          focusable: focusable,
+          padding: padding,
+          alignment: alignment,
+        );
+
+  @override
+  _StaticButtonState createState() => _StaticButtonState();
+}
+
+class _StaticButtonState extends ButtonState {
+  @override
+  Widget buildButton(BuildContext context) {
+    return AnimatedContainer(
+      duration: kDefaultDuration,
+      padding: padding,
+      child: buildContent(context),
+    );
+  }
+}
+
+class DenseButton extends Button {
+  const DenseButton({
+    Key? key,
+    Widget? leading,
+    Widget? trailing,
+    required Widget child,
+    VoidCallback? onPressed,
+    MouseCursor mouseCursor = SystemMouseCursors.click,
+    FocusNode? focusNode,
+    bool focusable = true,
+    EdgeInsets padding = EdgeInsets.zero,
+    AlignmentGeometry? alignment,
+  }) : super(
+          key: key,
+          leading: leading,
+          trailing: trailing,
+          child: child,
+          onPressed: onPressed,
+          mouseCursor: mouseCursor,
+          focusNode: focusNode,
+          focusable: focusable,
+          padding: padding,
+          alignment: alignment,
+        );
+
+  @override
+  _DenseButtonState createState() => _DenseButtonState();
+}
+
+class _DenseButtonState extends ButtonState {
+  @override
+  Widget buildButton(BuildContext context) {
+    return AnimatedContainer(
+      duration: kDefaultDuration,
+      padding: padding,
+      child: mergeAnimatedTextStyle(
+        duration: kDefaultDuration,
+        style: TextStyle(
+          color: !isHovering
+              ? Theme.of(context).colorScheme.primary.withOpacity(0.8)
+              : Theme.of(context).colorScheme.foreground,
+        ),
+        child: AnimatedIconTheme.merge(
+          duration: kDefaultDuration,
+          data: IconThemeData(
+            color: !isHovering
+                ? Theme.of(context).colorScheme.primary.withOpacity(0.8)
+                : Theme.of(context).colorScheme.foreground,
+          ),
+          child: buildContent(context),
+        ),
+      ),
+    );
+  }
+}
+
+class TextButton extends Button {
+  const TextButton({
+    Key? key,
+    Widget? leading,
+    Widget? trailing,
+    required Widget child,
+    VoidCallback? onPressed,
+    MouseCursor mouseCursor = SystemMouseCursors.click,
+    FocusNode? focusNode,
+    bool focusable = true,
+    EdgeInsets padding = Button.normalPadding,
+    AlignmentGeometry? alignment,
+  }) : super(
+          key: key,
+          leading: leading,
+          trailing: trailing,
+          child: child,
+          onPressed: onPressed,
+          mouseCursor: mouseCursor,
+          focusNode: focusNode,
+          focusable: focusable,
+          padding: padding,
+          alignment: alignment,
+        );
+
+  @override
+  _TextButtonState createState() => _TextButtonState();
+}
+
+class _TextButtonState extends ButtonState {
+  @override
+  Widget buildButton(BuildContext context) {
+    return AnimatedContainer(
+      duration: kDefaultDuration,
+      padding: padding,
+      child: mergeAnimatedTextStyle(
+        duration: kDefaultDuration,
+        style: TextStyle(
+          color: isHovering && !isDisabled
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.mutedForeground,
+        ),
+        child: buildContent(context),
+      ),
+    );
+  }
+}
+
+class DestructiveButton extends Button {
+  const DestructiveButton({
+    Key? key,
+    Widget? leading,
+    Widget? trailing,
+    required Widget child,
+    VoidCallback? onPressed,
+    MouseCursor mouseCursor = SystemMouseCursors.click,
+    FocusNode? focusNode,
+    bool focusable = true,
+    EdgeInsets padding = Button.normalPadding,
+    AlignmentGeometry? alignment,
+  }) : super(
+          key: key,
+          leading: leading,
+          trailing: trailing,
+          child: child,
+          onPressed: onPressed,
+          mouseCursor: mouseCursor,
+          focusNode: focusNode,
+          focusable: focusable,
+          padding: padding,
+          alignment: alignment,
+        );
+
+  @override
+  _DestructiveButtonState createState() => _DestructiveButtonState();
+}
+
+class _DestructiveButtonState extends ButtonState {
+  @override
+  Widget buildButton(BuildContext context) {
+    var themeData = Theme.of(context);
+    return AnimatedContainer(
+      duration: kDefaultDuration,
+      decoration: BoxDecoration(
+        color: isDisabled
+            ? themeData.colorScheme.primaryForeground
+            : isHovering
+                ? themeData.colorScheme.destructive.withOpacity(0.8)
+                : themeData.colorScheme.destructive,
+        borderRadius: BorderRadius.circular(themeData.radiusMd),
+      ),
+      padding: padding,
+      child: mergeAnimatedTextStyle(
+        duration: kDefaultDuration,
+        style: TextStyle(
+          color: isDisabled
               ? themeData.colorScheme.mutedForeground
               : themeData.colorScheme.destructiveForeground,
         ),
         child: AnimatedIconTheme.merge(
           duration: kDefaultDuration,
           data: IconThemeData(
-            color: _disabled
+            color: isDisabled
                 ? themeData.colorScheme.mutedForeground
                 : themeData.colorScheme.destructiveForeground,
           ),
@@ -472,197 +820,75 @@ class _ButtonState extends State<Button> {
       ),
     );
   }
-
-  Widget buildOutline(BuildContext context) {
-    var themeData = Theme.of(context);
-    return AnimatedContainer(
-      duration: kDefaultDuration,
-      decoration: BoxDecoration(
-        color: _disabled
-            ? Colors.transparent
-            : _focusing
-                ? themeData.colorScheme.ring
-                : _hovering
-                    ? themeData.colorScheme.muted.withOpacity(0.8)
-                    : Colors.transparent,
-        border: Border.all(
-          color: _disabled
-              ? themeData.colorScheme.muted
-              : _hovering
-                  ? themeData.colorScheme.muted.withOpacity(0.8)
-                  : themeData.colorScheme.muted,
-          width: 1,
-          strokeAlign: BorderSide.strokeAlignOutside,
-        ),
-        borderRadius: BorderRadius.circular(themeData.radiusMd),
-      ),
-      padding: padding,
-      child: mergeAnimatedTextStyle(
-        duration: kDefaultDuration,
-        style: TextStyle(
-          color: _disabled
-              ? themeData.colorScheme.mutedForeground
-              : themeData.colorScheme.foreground,
-        ),
-        child: AnimatedIconTheme.merge(
-          duration: kDefaultDuration,
-          data: IconThemeData(
-            color: _disabled
-                ? themeData.colorScheme.mutedForeground
-                : themeData.colorScheme.foreground,
-          ),
-          child: buildContent(context),
-        ),
-      ),
-    );
-  }
-
-  Widget buildGhost(BuildContext context) {
-    var themeData = Theme.of(context);
-    return AnimatedContainer(
-      duration: kDefaultDuration,
-      decoration: BoxDecoration(
-        color: _hovering && !_disabled
-            ? themeData.colorScheme.muted.withOpacity(0.8)
-            : Colors.transparent,
-        borderRadius: BorderRadius.circular(themeData.radiusMd),
-        border: _focusing
-            ? Border.all(
-                color: themeData.colorScheme.ring,
-                width: 1,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              )
-            : Border.all(
-                color: Colors.transparent,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              ),
-      ),
-      padding: padding,
-      child: mergeAnimatedTextStyle(
-        duration: kDefaultDuration,
-        style: TextStyle(
-          color: _disabled
-              ? themeData.colorScheme.mutedForeground
-              : themeData.colorScheme.foreground,
-        ),
-        child: AnimatedIconTheme.merge(
-          duration: kDefaultDuration,
-          data: IconThemeData(
-            color: _disabled
-                ? themeData.colorScheme.mutedForeground
-                : themeData.colorScheme.foreground,
-          ),
-          child: buildContent(context),
-        ),
-      ),
-    );
-  }
-
-  Widget buildLink(BuildContext context) {
-    var themeData = Theme.of(context);
-    return AnimatedContainer(
-      duration: kDefaultDuration,
-      padding: padding,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(themeData.radiusMd),
-        border: _focusing
-            ? Border.all(
-                color: themeData.colorScheme.ring,
-                width: 1,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              )
-            : Border.all(
-                color: Colors.transparent,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              ),
-      ),
-      child: mergeAnimatedTextStyle(
-        duration: kDefaultDuration,
-        style: TextStyle(
-          color: _disabled
-              ? themeData.colorScheme.mutedForeground
-              : themeData.colorScheme.foreground,
-        ),
-        child: AnimatedIconTheme.merge(
-          duration: kDefaultDuration,
-          data: IconThemeData(
-            color: _disabled
-                ? themeData.colorScheme.mutedForeground
-                : themeData.colorScheme.foreground,
-          ),
-          child: buildContent(context, underline: _hovering),
-        ),
-      ),
-    );
-  }
 }
 
-class LinkButton extends StatefulWidget {
-  final Widget child;
-  final VoidCallback? onPressed;
-  final bool? selected; // if this is not null, then its a toggle button
-
-  const LinkButton({
-    Key? key,
-    required this.child,
-    this.onPressed,
-    this.selected,
-  }) : super(key: key);
-
-  @override
-  State<LinkButton> createState() => _LinkButtonState();
-}
-
-class _LinkButtonState extends State<LinkButton> {
-  bool _hovering = false;
-  bool _focusing = false;
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        widget.onPressed?.call();
-      },
-      child: FocusableActionDetector(
-        mouseCursor: widget.onPressed != null
-            ? SystemMouseCursors.click
-            : SystemMouseCursors.basic,
-        onShowFocusHighlight: (value) {
-          setState(() {
-            _focusing = value;
-          });
-        },
-        onShowHoverHighlight: (value) {
-          setState(() {
-            _hovering = value;
-          });
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border: _focusing
-                ? Border.all(
-                    color: Theme.of(context).colorScheme.ring,
-                    width: 1,
-                    strokeAlign: BorderSide.strokeAlignOutside,
-                  )
-                : Border.all(
-                    color: Colors.transparent,
-                    strokeAlign: BorderSide.strokeAlignOutside,
-                  ),
-          ),
-          child: UnderlineText(
-            underline: _hovering,
-            child: mergeAnimatedTextStyle(
-              style: TextStyle(
-                color: widget.selected == null || widget.selected!
-                    ? Theme.of(context).colorScheme.foreground
-                    : Theme.of(context).colorScheme.mutedForeground,
-              ),
-              child: widget.child,
-              duration: kDefaultDuration,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//
+// class LinkButton extends StatefulWidget {
+//   final Widget child;
+//   final VoidCallback? onPressed;
+//   final bool? selected; // if this is not null, then its a toggle button
+//
+//   const LinkButton({
+//     Key? key,
+//     required this.child,
+//     this.onPressed,
+//     this.selected,
+//   }) : super(key: key);
+//
+//   @override
+//   State<LinkButton> createState() => _LinkButtonState();
+// }
+//
+// class _LinkButtonState extends State<LinkButton> {
+//   bool _hovering = false;
+//   bool _focusing = false;
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: () {
+//         widget.onPressed?.call();
+//       },
+//       child: FocusableActionDetector(
+//         mouseCursor: widget.onPressed != null
+//             ? SystemMouseCursors.click
+//             : SystemMouseCursors.basic,
+//         onShowFocusHighlight: (value) {
+//           setState(() {
+//             _focusing = value;
+//           });
+//         },
+//         onShowHoverHighlight: (value) {
+//           setState(() {
+//             _hovering = value;
+//           });
+//         },
+//         child: Container(
+//           decoration: BoxDecoration(
+//             border: _focusing
+//                 ? Border.all(
+//                     color: Theme.of(context).colorScheme.ring,
+//                     width: 1,
+//                     strokeAlign: BorderSide.strokeAlignOutside,
+//                   )
+//                 : Border.all(
+//                     color: Colors.transparent,
+//                     strokeAlign: BorderSide.strokeAlignOutside,
+//                   ),
+//           ),
+//           child: UnderlineText(
+//             underline: _hovering,
+//             child: mergeAnimatedTextStyle(
+//               style: TextStyle(
+//                 color: widget.selected == null || widget.selected!
+//                     ? Theme.of(context).colorScheme.foreground
+//                     : Theme.of(context).colorScheme.mutedForeground,
+//               ),
+//               child: widget.child,
+//               duration: kDefaultDuration,
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

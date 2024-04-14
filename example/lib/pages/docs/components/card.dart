@@ -1,6 +1,5 @@
 import 'package:example/pages/docs/component_page.dart';
 import 'package:example/pages/widget_usage_example.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class CardExample extends StatelessWidget {
@@ -35,13 +34,12 @@ class CardExample extends StatelessWidget {
                   const SizedBox(height: 24),
                   Row(
                     children: [
-                      Button(
+                      OutlineButton(
                         child: Text('Cancel'),
                         onPressed: () {},
-                        type: ButtonType.outline,
                       ),
                       Spacer(),
-                      Button(
+                      PrimaryButton(
                         child: Text('Deploy'),
                         onPressed: () {},
                       ),

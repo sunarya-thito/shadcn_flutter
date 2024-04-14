@@ -1,5 +1,4 @@
 import 'package:example/main.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../docs_page.dart';
@@ -260,41 +259,71 @@ class _ThemePageState extends State<ThemePage> {
 
   Widget buildPremadeColorSchemeButton(String name) {
     var scheme = colorSchemes[name]!;
-    return Button(
-      onPressed: () {
-        setState(() {
-          colorScheme = scheme;
-          colors = colorScheme.toColorMap();
-          customColorScheme = false;
-          if (applyDirectly) {
-            MyAppState state = Data.of(context);
-            state.changeColorScheme(colorScheme);
-          }
-        });
-      },
-      child: Row(
-        children: [
-          Container(
-            width: 16,
-            height: 16,
-            decoration: BoxDecoration(
-              color: scheme.primary,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: scheme.primaryForeground,
-                width: 2,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              ),
+    return !customColorScheme && scheme == colorScheme
+        ? PrimaryButton(
+            onPressed: () {
+              setState(() {
+                colorScheme = scheme;
+                colors = colorScheme.toColorMap();
+                customColorScheme = false;
+                if (applyDirectly) {
+                  MyAppState state = Data.of(context);
+                  state.changeColorScheme(colorScheme);
+                }
+              });
+            },
+            child: Row(
+              children: [
+                Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: scheme.primary,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: scheme.primaryForeground,
+                      width: 2,
+                      strokeAlign: BorderSide.strokeAlignOutside,
+                    ),
+                  ),
+                ),
+                gap(8),
+                Text(name),
+              ],
             ),
-          ),
-          gap(8),
-          Text(name),
-        ],
-      ),
-      type: !customColorScheme && scheme == colorScheme
-          ? ButtonType.primary
-          : ButtonType.outline,
-    );
+          )
+        : OutlineButton(
+            onPressed: () {
+              setState(() {
+                colorScheme = scheme;
+                colors = colorScheme.toColorMap();
+                customColorScheme = false;
+                if (applyDirectly) {
+                  MyAppState state = Data.of(context);
+                  state.changeColorScheme(colorScheme);
+                }
+              });
+            },
+            child: Row(
+              children: [
+                Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: scheme.primary,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: scheme.primaryForeground,
+                      width: 2,
+                      strokeAlign: BorderSide.strokeAlignOutside,
+                    ),
+                  ),
+                ),
+                gap(8),
+                Text(name),
+              ],
+            ),
+          );
   }
 
   Widget buildGridTile(String name) {

@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class SidebarSection extends StatelessWidget {
@@ -50,9 +49,8 @@ class SidebarButton extends StatelessWidget {
     }
     return Theme(
       data: data,
-      child: Button(
+      child: LinkButton(
         onPressed: onPressed,
-        type: ButtonType.link,
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: child,

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class WidgetUsageExample extends StatefulWidget {
@@ -26,23 +25,21 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
         TabList(
           index: index,
           children: [
-            Button(
-              type: ButtonType.static,
+            TabButton(
               onPressed: () {
                 setState(() {
                   index = 0;
                 });
               },
-              child: Text('Preview').semiBold(),
+              child: Text('Preview').semiBold().textSmall(),
             ),
-            Button(
-              type: ButtonType.static,
+            TabButton(
               onPressed: () {
                 setState(() {
                   index = 1;
                 });
               },
-              child: Text('Code').semiBold(),
+              child: Text('Code').semiBold().textSmall(),
             ),
           ],
         ),

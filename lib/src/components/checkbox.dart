@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:shadcn_flutter/src/components/focus_outline.dart';
 
 import '../../shadcn_flutter.dart';
 
@@ -81,7 +81,7 @@ class _CheckboxState extends State<Checkbox> {
           ),
         },
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             if (widget.leading != null) widget.leading!.small().medium(),
@@ -91,17 +91,9 @@ class _CheckboxState extends State<Checkbox> {
             //   duration: kDefaultDuration,
             // ),
             if (widget.leading != null) const SizedBox(width: 8),
-            AnimatedContainer(
-              duration: kDefaultDuration,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: _focusing
-                      ? themeData.colorScheme.ring
-                      : Colors.transparent,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(themeData.radiusSm),
-              ),
+            FocusOutline(
+              focused: _focusing,
+              borderRadius: BorderRadius.circular(themeData.radiusSm),
               child: Container(
                 width: 16,
                 height: 16,

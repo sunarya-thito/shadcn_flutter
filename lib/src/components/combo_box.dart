@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef SearchFilter<T> = int Function(T item, String query);
@@ -67,8 +66,8 @@ class _ComboBoxState<T> extends State<ComboBox<T>> {
       constraints: widget.constraints,
       child: Popover(
         builder: (context) {
-          return Button(
-            type: ButtonType.outline,
+          return OutlineButton(
+            focusNode: _focusNode,
             onPressed: () {
               context.showPopover();
             },
@@ -256,11 +255,10 @@ class _ComboBoxPopupState<T> extends State<ComboBoxPopup<T>> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         for (var item in _filteredItems)
-                          Button(
+                          GhostButton(
                             trailing: item.index == widget.selectedIndex
                                 ? const Icon(Icons.check, size: 16)
                                 : null,
-                            type: ButtonType.ghost,
                             onPressed: () {
                               // widget.onChanged?.call(item.index);
                               if (item.index == widget.selectedIndex) {

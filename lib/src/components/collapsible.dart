@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class Collapsible extends StatefulWidget {
@@ -80,9 +78,8 @@ class CollapsibleTrigger extends StatelessWidget {
     return Row(mainAxisSize: MainAxisSize.min, children: [
       Expanded(child: child.small().semiBold()),
       gap(16),
-      Button(
+      GhostButton(
         onPressed: state.handleTap,
-        type: ButtonType.ghost,
         child: Icon(
           state.isExpanded ? Icons.unfold_less : Icons.unfold_more,
           size: 12,

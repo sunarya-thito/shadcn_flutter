@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -157,7 +156,7 @@ class PopoverState extends State<Popover>
   }
 }
 
-class PopoverController {
+class PopoverController extends ChangeNotifier {
   PopoverPortalState? _attached;
   final List<GlobalKey<PopupAnchorState>> _openPopovers = [];
 
@@ -173,6 +172,10 @@ class PopoverController {
     _attached = null;
   }
 
+  bool get hasAttached => _attached != null;
+
+  bool get hasOpenPopovers => _openPopovers.isNotEmpty;
+
   Future<T?> show<T>({
     required WidgetBuilder builder,
     required Alignment alignment,
@@ -181,6 +184,7 @@ class PopoverController {
     PopupConstraint heightConstraint = PopupConstraint.flexible,
     bool modal = false,
     bool closeOthers = true,
+    Offset? offset,
   }) async {
     assert(_attached != null,
         'PopoverController not attached to any PopoverPortal');
@@ -189,6 +193,7 @@ class PopoverController {
     }
     GlobalKey<PopupAnchorState> key = GlobalKey<PopupAnchorState>();
     _openPopovers.add(key);
+    notifyListeners();
     RenderBox renderBox = _attached!.context.findRenderObject() as RenderBox;
     Offset position = renderBox.localToGlobal(Offset.zero);
     Size size = renderBox.size;
@@ -198,7 +203,7 @@ class PopoverController {
     );
     T? res = await showPopup(
       context: _attached!.context,
-      position: result,
+      position: result + (offset ?? Offset.zero),
       alignment: alignment,
       anchorAlignment: anchorAlignment,
       builder: builder,
@@ -209,6 +214,7 @@ class PopoverController {
       key: key,
     );
     _openPopovers.remove(key);
+    notifyListeners();
     return res;
   }
 

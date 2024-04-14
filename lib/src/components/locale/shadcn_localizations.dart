@@ -21,6 +21,12 @@ class ShadcnLocalizationsDelegate
 }
 
 abstract class ShadcnLocalizations {
+  static ShadcnLocalizations of(BuildContext context) {
+    return Localizations.of<ShadcnLocalizations>(
+            context, ShadcnLocalizations) ??
+        DefaultShadcnLocalizations.instance;
+  }
+
   String get formNotEmpty;
   String get invalidValue;
   String get invalidEmail;
@@ -38,12 +44,21 @@ abstract class ShadcnLocalizations {
   String get formPasswordLowercase;
   String get formPasswordUppercase;
   String get formPasswordSpecial;
+
+  String get commandSearch;
+  String get commandEmpty;
 }
 
 class DefaultShadcnLocalizations implements ShadcnLocalizations {
   static const ShadcnLocalizations instance = DefaultShadcnLocalizations();
 
   const DefaultShadcnLocalizations();
+
+  @override
+  String get commandSearch => 'Type a command or search...';
+
+  @override
+  String get commandEmpty => 'No results found.';
 
   @override
   String get formNotEmpty => 'This field cannot be empty';

@@ -1,6 +1,5 @@
 import 'package:example/pages/docs/component_page.dart';
 import 'package:example/pages/widget_usage_example.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class AlertDialogExample extends StatelessWidget {
@@ -14,7 +13,7 @@ class AlertDialogExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
             builder: (context) {
-              return Button(
+              return PrimaryButton(
                 child: Text('Click Here'),
                 onPressed: () {
                   showDialog(
@@ -26,14 +25,13 @@ class AlertDialogExample extends StatelessWidget {
                           content: Text(
                               'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
                           actions: [
-                            Button(
+                            OutlineButton(
                               child: Text('Cancel'),
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              type: ButtonType.outline,
                             ),
-                            Button(
+                            PrimaryButton(
                               child: Text('OK'),
                               onPressed: () {
                                 Navigator.pop(context);

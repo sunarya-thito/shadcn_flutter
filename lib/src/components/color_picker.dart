@@ -816,8 +816,9 @@ class ColorPickerPainter extends CustomPainter {
     // disable anti-aliasing
     var pp = Paint();
     pp.isAntiAlias = false;
-    var canvasHeight = size.height + 1;
-    var canvasWidth = size.width + 1;
+    pp.style = PaintingStyle.fill;
+    var canvasHeight = size.height;
+    var canvasWidth = size.width;
     if (sliderType == ColorSliderType.hueSat) {
       // if reverse, then its sat hue
       if (reverse) {

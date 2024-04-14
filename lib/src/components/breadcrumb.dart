@@ -1,11 +1,10 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../shadcn_flutter.dart';
 
 class Breadcrumb extends StatelessWidget {
   static final Widget arrowSeparator = Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 6),
+    padding: const EdgeInsets.symmetric(horizontal: 12),
     child: Builder(
       builder: (context) {
         final theme = Theme.of(context);

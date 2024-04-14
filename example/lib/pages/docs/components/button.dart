@@ -1,5 +1,4 @@
 import 'package:example/pages/docs/component_page.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
@@ -16,7 +15,7 @@ class ButtonExample extends StatelessWidget {
         // Primary button
         WidgetUsageExample(
           builder: (context) {
-            return Button(
+            return PrimaryButton(
               onPressed: () {},
               child: Text('Primary'),
             );
@@ -30,10 +29,9 @@ Button(
         // Secondary button
         WidgetUsageExample(
           builder: (context) {
-            return Button(
+            return SecondaryButton(
               onPressed: () {},
               child: Text('Secondary'),
-              type: ButtonType.secondary,
             );
           },
           code: '''
@@ -46,10 +44,9 @@ Button(
         // Outlined button
         WidgetUsageExample(
           builder: (context) {
-            return Button(
+            return OutlineButton(
               onPressed: () {},
               child: Text('Outlined'),
-              type: ButtonType.outline,
             );
           },
           code: '''
@@ -61,10 +58,9 @@ Button(
         ),
         WidgetUsageExample(
           builder: (context) {
-            return Button(
+            return GhostButton(
               onPressed: () {},
               child: Text('Ghost'),
-              type: ButtonType.ghost,
             );
           },
           code: '''
@@ -77,10 +73,9 @@ Button(
         // Destructive button
         WidgetUsageExample(
           builder: (context) {
-            return Button(
+            return DestructiveButton(
               onPressed: () {},
               child: Text('Destructive'),
-              type: ButtonType.destructive,
             );
           },
           code: '''
@@ -93,10 +88,9 @@ Button(
         // Link button
         WidgetUsageExample(
           builder: (context) {
-            return Button(
+            return LinkButton(
               onPressed: () {},
               child: Text('Link'),
-              type: ButtonType.link,
             );
           },
           code: '''
@@ -109,7 +103,7 @@ Button(
         // Disabled button
         WidgetUsageExample(
           builder: (context) {
-            return Button(
+            return PrimaryButton(
               child: Text('Disabled'),
             );
           },
@@ -121,9 +115,9 @@ Button(
         // Icon button
         WidgetUsageExample(
           builder: (context) {
-            return Button(
+            return PrimaryButton(
               onPressed: () {},
-              size: ButtonSize.icon,
+              padding: Button.iconPadding,
               child: Icon(Icons.add),
             );
           },
@@ -137,7 +131,7 @@ Button(
         // Icon button with text
         WidgetUsageExample(
           builder: (context) {
-            return Button(
+            return PrimaryButton(
               onPressed: () {},
               trailing: Icon(Icons.add),
               child: Text('Add'),
@@ -153,7 +147,7 @@ Button(
         // Loading button
         WidgetUsageExample(
           builder: (context) {
-            return Button(
+            return PrimaryButton(
               trailing: CircularProgressIndicator(),
               child: Text('Loading'),
             );

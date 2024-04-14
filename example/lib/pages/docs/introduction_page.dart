@@ -1,6 +1,5 @@
 import 'package:example/main.dart';
 import 'package:example/pages/docs_page.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class IntroductionPage extends StatefulWidget {
@@ -46,6 +45,22 @@ class _IntroductionPageState extends State<IntroductionPage> {
                 ),
                 content: Text(
                     'Yes! Free to use for personal and commercial projects. No attribution required.'),
+              ),
+              AccordionItem(
+                trigger: AccordionTrigger(
+                  child:
+                      Text('Can I use this with Material App/Cupertino App?'),
+                ),
+                content: Text(
+                    'No, you can\'t. This is a standalone package and not a theme.'),
+              ),
+              AccordionItem(
+                trigger: AccordionTrigger(
+                  child: Text(
+                      'Can I configure which style i would like to use? (Default/New York)'),
+                ),
+                content: Text(
+                    'Unfortunately you can\'t. This package only supports New York style.'),
               ),
             ],
           ),
