@@ -1,8 +1,45 @@
 import 'package:example/main.dart';
 import 'package:example/pages/docs_page.dart';
 import 'package:example/pages/widget_usage_example.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+import 'typography_page/typography_page_example_1.dart';
+import 'typography_page/typography_page_example_10.dart';
+import 'typography_page/typography_page_example_11.dart';
+import 'typography_page/typography_page_example_12.dart';
+import 'typography_page/typography_page_example_13.dart';
+import 'typography_page/typography_page_example_14.dart';
+import 'typography_page/typography_page_example_15.dart';
+import 'typography_page/typography_page_example_16.dart';
+import 'typography_page/typography_page_example_17.dart';
+import 'typography_page/typography_page_example_18.dart';
+import 'typography_page/typography_page_example_19.dart';
+import 'typography_page/typography_page_example_2.dart';
+import 'typography_page/typography_page_example_20.dart';
+import 'typography_page/typography_page_example_21.dart';
+import 'typography_page/typography_page_example_22.dart';
+import 'typography_page/typography_page_example_23.dart';
+import 'typography_page/typography_page_example_24.dart';
+import 'typography_page/typography_page_example_25.dart';
+import 'typography_page/typography_page_example_26.dart';
+import 'typography_page/typography_page_example_27.dart';
+import 'typography_page/typography_page_example_28.dart';
+import 'typography_page/typography_page_example_29.dart';
+import 'typography_page/typography_page_example_3.dart';
+import 'typography_page/typography_page_example_30.dart';
+import 'typography_page/typography_page_example_31.dart';
+import 'typography_page/typography_page_example_32.dart';
+import 'typography_page/typography_page_example_33.dart';
+import 'typography_page/typography_page_example_34.dart';
+import 'typography_page/typography_page_example_35.dart';
+import 'typography_page/typography_page_example_36.dart';
+import 'typography_page/typography_page_example_37.dart';
+import 'typography_page/typography_page_example_4.dart';
+import 'typography_page/typography_page_example_5.dart';
+import 'typography_page/typography_page_example_6.dart';
+import 'typography_page/typography_page_example_7.dart';
+import 'typography_page/typography_page_example_8.dart';
+import 'typography_page/typography_page_example_9.dart';
 
 class TypographyPage extends StatefulWidget {
   const TypographyPage({Key? key}) : super(key: key);
@@ -101,309 +138,189 @@ class _TypographyPageState extends State<TypographyPage> {
               .lead(),
           Text('Headline 1').h2().keyed(headline1Key),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Headline 1').h1();
-                  },
-                  code: 'Text(\'Headline 1\').h1();')
-              .p(),
+            child: TypographyPageExample1(),
+            path: 'typography_page/typography_page_example_1.dart',
+          ).p(),
           Text('Headline 2').h2().keyed(headline2Key),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Headline 2').h2();
-                  },
-                  code: 'Text(\'Headline 2\').h2();')
-              .p(),
+            child: TypographyPageExample2(),
+            path: 'typography_page/typography_page_example_2.dart',
+          ).p(),
           Text('Headline 3').h2().keyed(headline3Key),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Headline 3').h3();
-                  },
-                  code: 'Text(\'Headline 3\').h3();')
-              .p(),
+            child: TypographyPageExample3(),
+            path: 'typography_page/typography_page_example_3.dart',
+          ).p(),
           Text('Headline 4').h2().keyed(headline4Key),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Headline 4').h4();
-                  },
-                  code: 'Text(\'Headline 4\').h4();')
-              .p(),
+            child: TypographyPageExample4(),
+            path: 'typography_page/typography_page_example_4.dart',
+          ).p(),
           Text('Paragraph').h2().keyed(paragraphKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Paragraph').p();
-                  },
-                  code: 'Text(\'Paragraph\').p();')
-              .p(),
+            child: TypographyPageExample5(),
+            path: 'typography_page/typography_page_example_5.dart',
+          ).p(),
           Text('Blockquote').h2().keyed(blockquoteKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Blockquote').blockQuote();
-                  },
-                  code: 'Text(\'Blockquote\').blockQuote();')
-              .p(),
+            child: TypographyPageExample6(),
+            path: 'typography_page/typography_page_example_6.dart',
+          ).p(),
           Text('List').h2().keyed(listKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('List item 1').li(),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Nested list:'),
-                            Text('Nested list item 1').li(),
-                            Text('Nested list item 2').li(),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Nested list:'),
-                                Text('Nested list item 1').li(),
-                                Text('Nested list item 2').li(),
-                              ],
-                            ).li(),
-                          ],
-                        ).li(),
-                        Text('List item 3').li(),
-                      ],
-                    );
-                  },
-                  code: '''
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('List item 1').li(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Nested list:'),
-              Text('Nested list item 1').li(),
-              Text('Nested list item 2').li(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Nested list:'),
-                  Text('Nested list item 1').li(),
-                  Text('Nested list item 2').li(),
-                ],
-              ).li(),
-            ],
-          ).li(),
-          Text('List item 3').li(),
-        ],
-      );
-                  ''')
-              .p(),
+            child: TypographyPageExample7(),
+            path: 'typography_page/typography_page_example_7.dart',
+          ).p(),
           Text('Inline code').h2().keyed(inlineCodeKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('flutter pub add shadcn_flutter').inlineCode();
-                  },
-                  code: 'Text(\'Inline code\').inlineCode();')
-              .p(),
+            child: TypographyPageExample8(),
+            path: 'typography_page/typography_page_example_8.dart',
+          ).p(),
           Text('Lead').h2().keyed(leadKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lead').lead();
-                  },
-                  code: 'Text(\'Lead\').lead();')
-              .p(),
+            child: TypographyPageExample9(),
+            path: 'typography_page/typography_page_example_9.dart',
+          ).p(),
           Text('Large text').h2().keyed(largeTextKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Large text').textLarge();
-                  },
-                  code: 'Text(\'Large text\').textLarge();')
-              .p(),
+            child: TypographyPageExample10(),
+            path: 'typography_page/typography_page_example_10.dart',
+          ).p(),
           Text('Small text').h2().keyed(smallTextKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Small text').textSmall();
-                  },
-                  code: 'Text(\'Small text\').textSmall();')
-              .p(),
+            child: TypographyPageExample11(),
+            path: 'typography_page/typography_page_example_11.dart',
+          ).p(),
           Text('Muted text').h2().keyed(mutedTextKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Muted text').muted();
-                  },
-                  code: 'Text(\'Muted text\').muted();')
-              .p(),
+            child: TypographyPageExample12(),
+            path: 'typography_page/typography_page_example_12.dart',
+          ).p(),
           Text('Sans').h2().keyed(sansKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').sans();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').sans();')
-              .p(),
+            child: TypographyPageExample13(),
+            path: 'typography_page/typography_page_example_13.dart',
+          ).p(),
           Text('Mono').h2().keyed(monoKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').mono();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').mono();')
-              .p(),
+            child: TypographyPageExample14(),
+            path: 'typography_page/typography_page_example_14.dart',
+          ).p(),
           Text('Extra small').h2().keyed(xSmallKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').xSmall();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').xSmall();')
-              .p(),
+            child: TypographyPageExample15(),
+            path: 'typography_page/typography_page_example_15.dart',
+          ).p(),
           Text('Small').h2().keyed(smallKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').small();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').small();')
-              .p(),
+            child: TypographyPageExample16(),
+            path: 'typography_page/typography_page_example_16.dart',
+          ).p(),
           Text('Base').h2().keyed(baseKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').base();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').base();')
-              .p(),
+            child: TypographyPageExample17(),
+            path: 'typography_page/typography_page_example_17.dart',
+          ).p(),
           Text('Large').h2().keyed(largeKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').large();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').large();')
-              .p(),
+            child: TypographyPageExample18(),
+            path: 'typography_page/typography_page_example_18.dart',
+          ).p(),
           Text('Extra large').h2().keyed(xLargeKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').xLarge();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').xLarge();')
-              .p(),
+            child: TypographyPageExample19(),
+            path: 'typography_page/typography_page_example_19.dart',
+          ).p(),
           Text('Extra 2x large').h2().keyed(x2LargeKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').x2Large();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').x2Large();')
-              .p(),
+            child: TypographyPageExample20(),
+            path: 'typography_page/typography_page_example_20.dart',
+          ).p(),
           Text('Extra 3x large').h2().keyed(x3LargeKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').x3Large();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').x3Large();')
-              .p(),
+            child: TypographyPageExample21(),
+            path: 'typography_page/typography_page_example_21.dart',
+          ),
           Text('Extra 4x large').h2().keyed(x4LargeKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').x4Large();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').x4Large();')
-              .p(),
+            child: TypographyPageExample22(),
+            path: 'typography_page/typography_page_example_22.dart',
+          ).p(),
           Text('Extra 5x large').h2().keyed(x5LargeKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').x5Large();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').x5Large();')
-              .p(),
+            child: TypographyPageExample23(),
+            path: 'typography_page/typography_page_example_23.dart',
+          ).p(),
           Text('Extra 6x large').h2().keyed(x6LargeKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').x6Large();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').x6Large();')
-              .p(),
+            child: TypographyPageExample24(),
+            path: 'typography_page/typography_page_example_24.dart',
+          ).p(),
           Text('Extra 7x large').h2().keyed(x7LargeKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').x7Large();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').x7Large();')
-              .p(),
+            child: TypographyPageExample25(),
+            path: 'typography_page/typography_page_example_25.dart',
+          ).p(),
           Text('Extra 8x large').h2().keyed(x8LargeKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').x8Large();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').x8Large();')
-              .p(),
+            child: TypographyPageExample26(),
+            path: 'typography_page/typography_page_example_26.dart',
+          ).p(),
           Text('Extra 9x large').h2().keyed(x9LargeKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').x9Large();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').x9Large();')
-              .p(),
+            child: TypographyPageExample27(),
+            path: 'typography_page/typography_page_example_27.dart',
+          ).p(),
           Text('Thin').h2().keyed(thinKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').thin();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').thin();')
-              .p(),
+            child: TypographyPageExample28(),
+            path: 'typography_page/typography_page_example_28.dart',
+          ).p(),
           Text('Extra light').h2().keyed(extraLightKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').extraLight();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').extraLight();')
-              .p(),
+            child: TypographyPageExample29(),
+            path: 'typography_page/typography_page_example_29.dart',
+          ).p(),
           Text('Light').h2().keyed(lightKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').light();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').light();')
-              .p(),
+            child: TypographyPageExample30(),
+            path: 'typography_page/typography_page_example_30.dart',
+          ).p(),
           Text('Normal').h2().keyed(normalKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').normal();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').normal();')
-              .p(),
+            child: TypographyPageExample31(),
+            path: 'typography_page/typography_page_example_31.dart',
+          ).p(),
           Text('Medium').h2().keyed(mediumKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').medium();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').medium();')
-              .p(),
+            child: TypographyPageExample32(),
+            path: 'typography_page/typography_page_example_32.dart',
+          ).p(),
           Text('Semi bold').h2().keyed(semiBoldKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').semiBold();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').semiBold();')
-              .p(),
+            child: TypographyPageExample33(),
+            path: 'typography_page/typography_page_example_33.dart',
+          ).p(),
           Text('Bold').h2().keyed(boldKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').bold();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').bold();')
-              .p(),
+            child: TypographyPageExample34(),
+            path: 'typography_page/typography_page_example_34.dart',
+          ).p(),
           Text('Extra bold').h2().keyed(extraBoldKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').extraBold();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').extraBold();')
-              .p(),
+            child: TypographyPageExample35(),
+            path: 'typography_page/typography_page_example_35.dart',
+          ).p(),
           Text('Black').h2().keyed(blackKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').black();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').black();')
-              .p(),
+            child: TypographyPageExample36(),
+            path: 'typography_page/typography_page_example_36.dart',
+          ).p(),
           Text('Italic').h2().keyed(italicKey),
           WidgetUsageExample(
-                  builder: (context) {
-                    return Text('Lorem ipsum dolor sit amet').italic();
-                  },
-                  code: 'Text(\'Lorem ipsum dolor sit amet\').italic();')
-              .p(),
+            child: TypographyPageExample37(),
+            path: 'typography_page/typography_page_example_37.dart',
+          ).p(),
         ],
       ),
     );

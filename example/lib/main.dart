@@ -1,31 +1,31 @@
 import 'dart:convert';
 
-import 'package:example/pages/docs/components/accordion.dart';
-import 'package:example/pages/docs/components/alert.dart';
-import 'package:example/pages/docs/components/alert_dialog.dart';
-import 'package:example/pages/docs/components/avatar.dart';
-import 'package:example/pages/docs/components/badge.dart';
-import 'package:example/pages/docs/components/breadcrumb.dart';
-import 'package:example/pages/docs/components/button.dart';
-import 'package:example/pages/docs/components/card.dart';
-import 'package:example/pages/docs/components/checkbox.dart';
-import 'package:example/pages/docs/components/circular_progress.dart';
-import 'package:example/pages/docs/components/code_snippet.dart';
-import 'package:example/pages/docs/components/collapsible.dart';
-import 'package:example/pages/docs/components/color_picker.dart';
-import 'package:example/pages/docs/components/combobox.dart';
-import 'package:example/pages/docs/components/command.dart';
-import 'package:example/pages/docs/components/divider.dart';
+import 'package:example/pages/docs/components/accordion_example.dart';
+import 'package:example/pages/docs/components/alert_dialog_example.dart';
+import 'package:example/pages/docs/components/alert_example.dart';
+import 'package:example/pages/docs/components/avatar_example.dart';
+import 'package:example/pages/docs/components/combobox_example.dart';
+import 'package:example/pages/docs/components/divider_example.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
 import 'package:example/pages/docs/layout_page.dart';
 import 'package:example/pages/docs/theme_page.dart';
 import 'package:example/pages/docs/typography_page.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'pages/docs/components/badge_example.dart';
+import 'pages/docs/components/breadcrumb_example.dart';
+import 'pages/docs/components/button_example.dart';
+import 'pages/docs/components/card_example.dart';
+import 'pages/docs/components/checkbox_example.dart';
+import 'pages/docs/components/circular_progress_example.dart';
+import 'pages/docs/components/code_snippet_example.dart';
+import 'pages/docs/components/collapsible_example.dart';
+import 'pages/docs/components/color_picker_example.dart';
+import 'pages/docs/components/command_example.dart';
 
 void main() async {
   GoRouter.optionURLReflectsImperativeAPIs = true;
@@ -158,7 +158,7 @@ class MyAppState extends State<MyApp> {
           ),
           GoRoute(
             path: 'combo-box',
-            builder: (context, state) => ComboBoxExample(),
+            builder: (context, state) => ComboboxExample(),
             name: 'combo_box',
           ),
           GoRoute(

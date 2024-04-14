@@ -1,13 +1,13 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class WidgetUsageExample extends StatefulWidget {
-  final WidgetBuilder builder;
-  final String code;
+  final Widget child;
+  final String path;
 
   const WidgetUsageExample({
     Key? key,
-    required this.builder,
-    required this.code,
+    required this.child,
+    required this.path,
   }) : super(key: key);
 
   @override
@@ -49,11 +49,13 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
                 child: Container(
                   padding: const EdgeInsets.all(40),
                   constraints: const BoxConstraints(minHeight: 350),
-                  child: Center(child: widget.builder(context)),
+                  child: Center(
+                    child: widget.child,
+                  ),
                 ),
               )
             : CodeSnippet(
-                code: widget.code,
+                code: widget.path,
                 mode: 'dart',
               ),
       ],
