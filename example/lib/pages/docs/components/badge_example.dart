@@ -6,6 +6,7 @@ import 'badge/badge_example_1.dart';
 import 'badge/badge_example_2.dart';
 import 'badge/badge_example_3.dart';
 import 'badge/badge_example_4.dart';
+
 class BadgeExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -34,4 +35,3 @@ class BadgeExample extends StatelessWidget {
     );
   }
 }
-  

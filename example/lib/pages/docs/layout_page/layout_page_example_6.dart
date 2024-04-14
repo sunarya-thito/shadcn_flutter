@@ -4,14 +4,14 @@ class LayoutPageExample6 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(' Item 1 '),
-                      Text(' Item 2 '),
-                      Text(' Item 3 '),
-                    ],
-                  ).separator(VerticalDivider()),
-                );
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(' Item 1 '),
+          Text(' Item 2 '),
+          Text(' Item 3 '),
+        ],
+      ).separator(VerticalDivider()),
+    );
   }
 }

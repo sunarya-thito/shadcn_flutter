@@ -3,6 +3,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import '../../widget_usage_example.dart';
 import '../component_page.dart';
 import 'code_snippet/code_snippet_example_1.dart';
+
 class CodeSnippetExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,10 +14,10 @@ class CodeSnippetExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           child: CodeSnippetExample1(),
-          path: 'lib/pages/docs/components/code_snippet/code_snippet_example_1.dart',
+          path:
+              'lib/pages/docs/components/code_snippet/code_snippet_example_1.dart',
         ),
       ],
     );
   }
 }
-  

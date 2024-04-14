@@ -8,10 +8,12 @@ class CodeSnippet extends StatefulWidget {
   final BoxConstraints? constraints;
   final String code;
   final String mode;
+  final List<Widget> actions;
 
   const CodeSnippet({
     Key? key,
     this.constraints,
+    this.actions = const [],
     required this.code,
     required this.mode,
   }) : super(key: key);
@@ -58,16 +60,21 @@ class _CodeSnippetState extends State<CodeSnippet> {
           Positioned(
             right: 8,
             top: 8,
-            child: GhostButton(
-              padding: Button.iconPadding,
-              onPressed: () {
-                Clipboard.setData(ClipboardData(text: widget.code));
-              },
-              child: Icon(
-                Icons.copy,
-                size: 16,
-              ),
-            ),
+            child: Row(
+              children: [
+                ...widget.actions,
+                GhostButton(
+                  padding: Button.iconPadding,
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: widget.code));
+                  },
+                  child: Icon(
+                    Icons.copy,
+                    size: 16,
+                  ),
+                ),
+              ],
+            ).gap(4),
           ),
         ],
       ),

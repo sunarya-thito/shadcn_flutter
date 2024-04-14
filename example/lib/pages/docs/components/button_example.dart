@@ -12,12 +12,14 @@ import 'button/button_example_7.dart';
 import 'button/button_example_8.dart';
 import 'button/button_example_9.dart';
 import 'button/button_example_10.dart';
+
 class ButtonExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ComponentPage(
       name: 'button',
-      description: 'Buttons allow users to take actions, and make choices, with a single tap.',
+      description:
+          'Buttons allow users to take actions, and make choices, with a single tap.',
       displayName: 'Button',
       children: [
         WidgetUsageExample(
@@ -64,4 +66,3 @@ class ButtonExample extends StatelessWidget {
     );
   }
 }
-  

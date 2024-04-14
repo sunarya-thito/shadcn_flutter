@@ -3,6 +3,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import '../../widget_usage_example.dart';
 import '../component_page.dart';
 import 'collapsible/collapsible_example_1.dart';
+
 class CollapsibleExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,10 +14,10 @@ class CollapsibleExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           child: CollapsibleExample1(),
-          path: 'lib/pages/docs/components/collapsible/collapsible_example_1.dart',
+          path:
+              'lib/pages/docs/components/collapsible/collapsible_example_1.dart',
         ),
       ],
     );
   }
 }
-  
