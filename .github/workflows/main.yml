@@ -17,6 +17,9 @@ jobs:
           flutter-version: '3.22.0' 
           channel: 'stable' 
 
+      - name: Go to example
+        run: cd example
+
       - name: Enable Flutter Web
         run: flutter config --enable-web
 
