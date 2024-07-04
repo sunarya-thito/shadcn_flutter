@@ -13,6 +13,7 @@ class BreadcrumbExample1 extends StatelessWidget {
           onPressed: () {},
           padding: EdgeInsets.zero,
         ),
+        MoreDots(),
         TextButton(
           child: Text('Components'),
           onPressed: () {},

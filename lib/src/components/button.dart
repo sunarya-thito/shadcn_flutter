@@ -3,25 +3,6 @@ import 'package:shadcn_flutter/src/components/focus_outline.dart';
 
 import '../../shadcn_flutter.dart';
 
-// enum ButtonType {
-//   primary,
-//   secondary,
-//   destructive,
-//   outline,
-//   ghost,
-//   link,
-//   static,
-//   dense,
-//   text,
-// }
-//
-// enum ButtonSize {
-//   normal,
-//   icon,
-//   badge,
-//   none,
-// }
-
 class Toggle extends StatefulWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
@@ -107,44 +88,6 @@ class _ToggleState extends State<Toggle> {
   }
 }
 
-// class Badge extends StatefulWidget {
-//   final Widget child;
-//   final ButtonType type;
-//   final VoidCallback? onPressed;
-//
-//   const Badge({
-//     Key? key,
-//     required this.child,
-//     this.type = ButtonType.primary,
-//     this.onPressed,
-//   }) : super(key: key);
-//
-//   @override
-//   State<Badge> createState() => _BadgeState();
-// }
-//
-// class _BadgeState extends State<Badge> {
-//   final FocusNode _focusNode =
-//       FocusNode(canRequestFocus: false, skipTraversal: true);
-//   @override
-//   Widget build(BuildContext context) {
-//     return Button(
-//       focusNode: _focusNode,
-//       type: widget.type,
-//       onPressed: widget.onPressed ?? () {},
-//       size: ButtonSize.badge,
-//       mouseCursor: SystemMouseCursors.basic,
-//       child: DefaultTextStyle.merge(
-//         style: const TextStyle(
-//           fontSize: 12,
-//           height: 1.4,
-//         ),
-//         child: widget.child,
-//       ),
-//     );
-//   }
-// }
-
 abstract class Button extends StatefulWidget {
   static const EdgeInsets normalPadding = EdgeInsets.symmetric(
     horizontal: 16,
@@ -155,7 +98,14 @@ abstract class Button extends StatefulWidget {
     horizontal: 10,
     vertical: 2,
   );
-
+  static const TextStyle normalTextStyle = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+  );
+  static const TextStyle badgeTextStyle = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+  );
   final Widget? leading;
   final Widget? trailing;
   final Widget child;
@@ -165,6 +115,10 @@ abstract class Button extends StatefulWidget {
   final bool focusable;
   final EdgeInsets padding;
   final AlignmentGeometry? alignment;
+  final double? focusAlign;
+  final double? focusRadius;
+  final double? focusWidth;
+  final TextStyle? textStyle;
   const Button({
     Key? key,
     this.leading,
@@ -176,6 +130,10 @@ abstract class Button extends StatefulWidget {
     this.focusable = true,
     this.padding = normalPadding,
     this.alignment,
+    this.focusAlign,
+    this.focusRadius,
+    this.focusWidth,
+    this.textStyle = normalTextStyle,
   }) : super(key: key);
 
   @override
@@ -211,42 +169,49 @@ abstract class ButtonState<T extends Button> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        widget.onPressed?.call();
-      },
-      child: FocusableActionDetector(
-        focusNode: focusNode,
-        enabled: widget.onPressed != null,
-        mouseCursor: widget.onPressed != null
-            ? widget.mouseCursor
-            : SystemMouseCursors.basic,
-        shortcuts: const {
-          SingleActivator(LogicalKeyboardKey.enter): ActivateIntent(),
-          SingleActivator(LogicalKeyboardKey.space): ActivateIntent(),
+    return mergeAnimatedTextStyle(
+      duration: kDefaultDuration,
+      style: widget.textStyle,
+      child: GestureDetector(
+        onTap: () {
+          widget.onPressed?.call();
         },
-        actions: {
-          ActivateIntent: CallbackAction(
-            onInvoke: (Intent intent) {
-              widget.onPressed?.call();
-              return true;
-            },
+        child: FocusableActionDetector(
+          focusNode: focusNode,
+          enabled: widget.onPressed != null,
+          mouseCursor: widget.onPressed != null
+              ? widget.mouseCursor
+              : SystemMouseCursors.basic,
+          shortcuts: const {
+            SingleActivator(LogicalKeyboardKey.enter): ActivateIntent(),
+            SingleActivator(LogicalKeyboardKey.space): ActivateIntent(),
+          },
+          actions: {
+            ActivateIntent: CallbackAction(
+              onInvoke: (Intent intent) {
+                widget.onPressed?.call();
+                return true;
+              },
+            ),
+          },
+          onShowFocusHighlight: (value) {
+            setState(() {
+              _focusing = value;
+            });
+          },
+          onShowHoverHighlight: (value) {
+            setState(() {
+              _hovering = value;
+            });
+          },
+          child: FocusOutline(
+            focused: isFocusing,
+            borderRadius: BorderRadius.circular(Theme.of(context).radiusMd),
+            align: widget.focusAlign ?? 0,
+            width: widget.focusWidth ?? 1,
+            radius: widget.focusRadius,
+            child: buildButton(context),
           ),
-        },
-        onShowFocusHighlight: (value) {
-          setState(() {
-            _focusing = value;
-          });
-        },
-        onShowHoverHighlight: (value) {
-          setState(() {
-            _hovering = value;
-          });
-        },
-        child: FocusOutline(
-          focused: isFocusing,
-          borderRadius: BorderRadius.circular(Theme.of(context).radiusMd),
-          child: buildButton(context),
         ),
       ),
     );
@@ -295,6 +260,7 @@ class PrimaryButton extends Button {
     bool focusable = true,
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
+    TextStyle textStyle = Button.normalTextStyle,
   }) : super(
           key: key,
           leading: leading,
@@ -306,6 +272,7 @@ class PrimaryButton extends Button {
           focusable: focusable,
           padding: padding,
           alignment: alignment,
+          textStyle: textStyle,
         );
 
   @override
@@ -364,6 +331,7 @@ class SecondaryButton extends Button {
     bool focusable = true,
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
+    TextStyle textStyle = Button.normalTextStyle,
   }) : super(
           key: key,
           leading: leading,
@@ -375,6 +343,7 @@ class SecondaryButton extends Button {
           focusable: focusable,
           padding: padding,
           alignment: alignment,
+          textStyle: textStyle,
         );
 
   @override
@@ -429,6 +398,7 @@ class OutlineButton extends Button {
     bool focusable = true,
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
+    TextStyle textStyle = Button.normalTextStyle,
   }) : super(
           key: key,
           leading: leading,
@@ -440,6 +410,7 @@ class OutlineButton extends Button {
           focusable: focusable,
           padding: padding,
           alignment: alignment,
+          textStyle: textStyle,
         );
 
   @override
@@ -502,6 +473,7 @@ class GhostButton extends Button {
     bool focusable = true,
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
+    TextStyle textStyle = Button.normalTextStyle,
   }) : super(
           key: key,
           leading: leading,
@@ -513,6 +485,7 @@ class GhostButton extends Button {
           focusable: focusable,
           padding: padding,
           alignment: alignment,
+          textStyle: textStyle,
         );
 
   @override
@@ -625,6 +598,7 @@ class TabButton extends Button {
     bool focusable = true,
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
+    TextStyle textStyle = Button.normalTextStyle,
   }) : super(
           key: key,
           leading: leading,
@@ -636,6 +610,10 @@ class TabButton extends Button {
           focusable: focusable,
           padding: padding,
           alignment: alignment,
+          focusRadius: 0,
+          focusAlign: 2,
+          focusWidth: 2,
+          textStyle: textStyle,
         );
 
   @override
@@ -665,6 +643,7 @@ class DenseButton extends Button {
     bool focusable = true,
     EdgeInsets padding = EdgeInsets.zero,
     AlignmentGeometry? alignment,
+    TextStyle textStyle = Button.normalTextStyle,
   }) : super(
           key: key,
           leading: leading,
@@ -676,6 +655,7 @@ class DenseButton extends Button {
           focusable: focusable,
           padding: padding,
           alignment: alignment,
+          textStyle: textStyle,
         );
 
   @override
@@ -721,6 +701,7 @@ class TextButton extends Button {
     bool focusable = true,
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
+    TextStyle textStyle = Button.normalTextStyle,
   }) : super(
           key: key,
           leading: leading,
@@ -732,6 +713,7 @@ class TextButton extends Button {
           focusable: focusable,
           padding: padding,
           alignment: alignment,
+          textStyle: textStyle,
         );
 
   @override
@@ -769,6 +751,7 @@ class DestructiveButton extends Button {
     bool focusable = true,
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
+    TextStyle textStyle = Button.normalTextStyle,
   }) : super(
           key: key,
           leading: leading,
@@ -780,6 +763,7 @@ class DestructiveButton extends Button {
           focusable: focusable,
           padding: padding,
           alignment: alignment,
+          textStyle: textStyle,
         );
 
   @override
@@ -821,74 +805,3 @@ class _DestructiveButtonState extends ButtonState {
     );
   }
 }
-
-//
-// class LinkButton extends StatefulWidget {
-//   final Widget child;
-//   final VoidCallback? onPressed;
-//   final bool? selected; // if this is not null, then its a toggle button
-//
-//   const LinkButton({
-//     Key? key,
-//     required this.child,
-//     this.onPressed,
-//     this.selected,
-//   }) : super(key: key);
-//
-//   @override
-//   State<LinkButton> createState() => _LinkButtonState();
-// }
-//
-// class _LinkButtonState extends State<LinkButton> {
-//   bool _hovering = false;
-//   bool _focusing = false;
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () {
-//         widget.onPressed?.call();
-//       },
-//       child: FocusableActionDetector(
-//         mouseCursor: widget.onPressed != null
-//             ? SystemMouseCursors.click
-//             : SystemMouseCursors.basic,
-//         onShowFocusHighlight: (value) {
-//           setState(() {
-//             _focusing = value;
-//           });
-//         },
-//         onShowHoverHighlight: (value) {
-//           setState(() {
-//             _hovering = value;
-//           });
-//         },
-//         child: Container(
-//           decoration: BoxDecoration(
-//             border: _focusing
-//                 ? Border.all(
-//                     color: Theme.of(context).colorScheme.ring,
-//                     width: 1,
-//                     strokeAlign: BorderSide.strokeAlignOutside,
-//                   )
-//                 : Border.all(
-//                     color: Colors.transparent,
-//                     strokeAlign: BorderSide.strokeAlignOutside,
-//                   ),
-//           ),
-//           child: UnderlineText(
-//             underline: _hovering,
-//             child: mergeAnimatedTextStyle(
-//               style: TextStyle(
-//                 color: widget.selected == null || widget.selected!
-//                     ? Theme.of(context).colorScheme.foreground
-//                     : Theme.of(context).colorScheme.mutedForeground,
-//               ),
-//               child: widget.child,
-//               duration: kDefaultDuration,
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

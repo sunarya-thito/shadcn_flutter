@@ -1,3 +1,5 @@
+import 'package:shadcn_flutter/shadcn_flutter.dart';
+
 enum ShadcnState {
   hovered,
   focused,
@@ -6,46 +8,86 @@ enum ShadcnState {
   selected,
   scrolledUnder,
   disabled,
-  error,
+  error;
 }
 
-typedef ShadcnPropertyResolver<T> = T Function(Set<ShadcnState> states);
+class ButtonStates {
+  static ShadcnState get hovered => ShadcnState.hovered;
+  static ShadcnState get focused => ShadcnState.focused;
+  static ShadcnState get pressed => ShadcnState.pressed;
+  static ShadcnState get disabled => ShadcnState.disabled;
+
+  const ButtonStates._();
+}
 
 abstract class ShadcnStateProperty<T> {
   const ShadcnStateProperty._();
-  factory ShadcnStateProperty(ShadcnPropertyResolver<T> resolver) {
-    return ShadcnStatePropertyBuilder(resolver);
+
+  static ShadcnStateBuilder<T> builder<T>(
+      T Function(ThemeData theme) resolver) {
+    return ShadcnStateBuilder(resolver);
   }
-  factory ShadcnStateProperty.mapped(Map<Set<ShadcnState>, T> map) {
-    return ShadcnStatePropertyMap(map);
+
+  static ShadcnStateAll<T> all<T>(T Function(ThemeData theme) resolver) {
+    return ShadcnStateAll(resolver);
   }
-  T resolveFrom(Set<ShadcnState> states);
+
+  static ShadcnStateAll<T> direct<T>(T value) {
+    return ShadcnStateAll((_) => value);
+  }
+
+  T resolveFrom(Set<ShadcnState> states, ThemeData theme);
 }
 
-class ShadcnStatePropertyBuilder<T> extends ShadcnStateProperty<T> {
-  final ShadcnPropertyResolver<T> resolver;
+class ShadcnStateAll<T> extends ShadcnStateProperty<T> {
+  final T Function(ThemeData theme) _resolver;
 
-  const ShadcnStatePropertyBuilder(this.resolver) : super._();
+  ShadcnStateAll(T Function(ThemeData theme) resolver)
+      : _resolver = resolver,
+        super._();
 
   @override
-  T resolveFrom(Set<ShadcnState> states) {
-    return resolver(states);
+  T resolveFrom(Set<ShadcnState> states, ThemeData theme) {
+    return _resolver(theme);
   }
 }
 
-class ShadcnStatePropertyMap<T> extends ShadcnStateProperty<T> {
-  final Map<Set<ShadcnState>, T> _map;
+class ShadcnStateBuilder<T> extends ShadcnStateProperty<T> {
+  final Map<Set<ShadcnState>, T Function(ThemeData theme)> _map = {};
 
-  const ShadcnStatePropertyMap(this._map) : super._();
+  ShadcnStateBuilder(T Function(ThemeData theme) resolver) : super._() {
+    _map[{}] = resolver;
+  }
+
+  ShadcnStateBuilder<T> whenMultiple(
+      Set<ShadcnState> states, T Function(ThemeData theme) resolver) {
+    _map[states] = resolver;
+    return this;
+  }
+
+  ShadcnStateBuilder<T> when(
+      ShadcnState state, T Function(ThemeData theme) resolver) {
+    _map[{state}] = resolver;
+    return this;
+  }
+
+  ShadcnStateBuilder<T> direct(ShadcnState state, T value) {
+    _map[{state}] = (_) => value;
+    return this;
+  }
+
+  ShadcnStateBuilder<T> directMultiple(Set<ShadcnState> states, T value) {
+    _map[states] = (_) => value;
+    return this;
+  }
 
   @override
-  T resolveFrom(Set<ShadcnState> states) {
-    for (final entry in _map.entries) {
-      // contains any
-      if (entry.key.any((state) => states.contains(state))) {
-        return entry.value;
-      }
-    }
-    return _map[{}]!;
+  T resolveFrom(Set<ShadcnState> states, ThemeData theme) {
+    final matchingStates = _map.keys.firstWhere(
+      (element) => element.containsAll(states),
+      orElse: () => <ShadcnState>{},
+    );
+
+    return _map[matchingStates]!(theme);
   }
 }

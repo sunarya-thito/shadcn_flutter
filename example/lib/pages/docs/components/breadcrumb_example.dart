@@ -14,6 +14,7 @@ class BreadcrumbExample extends StatelessWidget {
       displayName: 'Breadcrumb',
       children: [
         WidgetUsageExample(
+          title: 'Breadcrumb Example',
           child: BreadcrumbExample1(),
           path:
               'lib/pages/docs/components/breadcrumb/breadcrumb_example_1.dart',

@@ -14,6 +14,7 @@ class AlertDialogExample extends StatelessWidget {
       displayName: 'Alert Dialog',
       children: [
         WidgetUsageExample(
+          title: 'Alert Dialog Example',
           child: AlertDialogExample1(),
           path:
               'lib/pages/docs/components/alert_dialog/alert_dialog_example_1.dart',

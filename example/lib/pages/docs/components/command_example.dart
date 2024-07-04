@@ -14,6 +14,7 @@ class CommandExample extends StatelessWidget {
       displayName: 'Command',
       children: [
         WidgetUsageExample(
+          title: 'Command Example',
           child: CommandExample1(),
           path: 'lib/pages/docs/components/command/command_example_1.dart',
         ),

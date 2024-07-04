@@ -1,4 +1,3 @@
-import 'package:example/main.dart';
 import 'package:example/pages/docs_page.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -10,7 +9,7 @@ class IntroductionPage extends StatefulWidget {
 }
 
 class _IntroductionPageState extends State<IntroductionPage> {
-  final GlobalKey faqKey = GlobalKey();
+  final OnThisPage faqKey = OnThisPage();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
           const Text('This is unofficial port of Shadcn for Flutter.'),
           const Text(
               'If you found any issues, please report it to our GitHub instead of Shadcn/ui.'),
-          const Text('Frequency Asked Questions').h2().keyed(faqKey),
+          const Text('Frequency Asked Questions').h2().anchored(faqKey),
           Accordion(
             items: [
               AccordionItem(

@@ -13,6 +13,7 @@ class CircularProgressExample extends StatelessWidget {
       displayName: 'Circular Progress',
       children: [
         WidgetUsageExample(
+          title: 'Circular Progress Example',
           child: CircularProgressExample1(),
           path:
               'lib/pages/docs/components/circular_progress/circular_progress_example_1.dart',

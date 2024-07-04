@@ -14,6 +14,7 @@ class AccordionExample extends StatelessWidget {
           'Each item can be "expanded" or "collapsed" to reveal the content associated with that item.',
       children: [
         WidgetUsageExample(
+          title: 'Accordion Example',
           child: AccordionExample1(),
           path: 'lib/pages/docs/components/accordion/accordion_example_1.dart',
         )

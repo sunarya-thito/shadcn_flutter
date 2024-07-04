@@ -4,11 +4,13 @@ import 'package:http/http.dart' as http;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class WidgetUsageExample extends StatefulWidget {
+  final String? title;
   final Widget child;
   final String path;
 
   const WidgetUsageExample({
     Key? key,
+    this.title,
     required this.child,
     required this.path,
   }) : super(key: key);
@@ -25,6 +27,8 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
+        if (widget.title != null) Text(widget.title!).h2(),
+        if (widget.title != null) gap(12),
         TabList(
           index: index,
           children: [
@@ -204,6 +208,26 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
 }
 
 String _formatCode(String code) {
+  // check if code uses stateful widget
+  if (code.contains('StatefulWidget')) {
+    RegExp exp = RegExp(r'extends[\s]*State<.+?>[\s]*{[\s]*\n(.*)[\s]*}',
+        multiLine: true, dotAll: true);
+    code = exp.firstMatch(code)!.group(1)!;
+    List<String> lines = code.split('\n');
+    String formatted = '';
+    // count the number of spaces in the 2nd line
+    int spaces = lines.first.length - lines.first.trimLeft().length;
+    // spaces is now the standard indentation length
+    // now replace the indentation with the standard indentation length
+    for (int i = 0; i < lines.length; i++) {
+      int sub = spaces.clamp(0, lines[i].length);
+      formatted += lines[i].substring(sub);
+      if (i < lines.length - 1) {
+        formatted += '\n';
+      }
+    }
+    return formatted;
+  }
   RegExp exp = RegExp(
     r'return[\s]*(.+)?[\s]*;[\s]*}[\s]*}',
     multiLine: true,
@@ -212,19 +236,23 @@ String _formatCode(String code) {
   code = exp.firstMatch(code)!.group(1)!;
   // remove the indentation by one level for each line except the first line
   List<String> lines = code.split('\n');
-  String formatted = lines.first + '\n';
+  String formatted = lines.first;
   if (lines.length < 2) {
     return code;
   }
+  formatted += '\n';
   // count the number of spaces in the 2nd line
   int spaces = lines[1].length - lines[1].trimLeft().length;
   // divide floor by 2 because 2
-  spaces = (spaces / 2).floor();
+  spaces = (spaces / 2).floor() + 1;
   // spaces is now the standard indentation length
   // now replace the indentation with the standard indentation length
   for (int i = 1; i < lines.length; i++) {
     int sub = spaces.clamp(0, lines[i].length);
-    formatted += lines[i].substring(sub) + '\n';
+    formatted += lines[i].substring(sub);
+    if (i < lines.length - 1) {
+      formatted += '\n';
+    }
   }
   return formatted;
 }

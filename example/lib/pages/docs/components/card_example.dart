@@ -14,6 +14,7 @@ class CardExample extends StatelessWidget {
       displayName: 'Card',
       children: [
         WidgetUsageExample(
+          title: 'Card Example',
           child: CardExample1(),
           path: 'lib/pages/docs/components/card/card_example_1.dart',
         ),

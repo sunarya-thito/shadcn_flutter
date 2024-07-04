@@ -16,14 +16,17 @@ class DividerExample extends StatelessWidget {
       displayName: 'Divider',
       children: [
         WidgetUsageExample(
+          title: 'Horizontal Divider Example',
           child: DividerExample1(),
           path: 'lib/pages/docs/components/divider/divider_example_1.dart',
         ),
         WidgetUsageExample(
+          title: 'Vertical Divider Example',
           child: DividerExample2(),
           path: 'lib/pages/docs/components/divider/divider_example_2.dart',
         ),
         WidgetUsageExample(
+          title: 'Divider with Text Example',
           child: DividerExample3(),
           path: 'lib/pages/docs/components/divider/divider_example_3.dart',
         ),

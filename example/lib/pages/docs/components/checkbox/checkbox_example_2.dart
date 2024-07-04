@@ -1,13 +1,13 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class CheckboxExample1 extends StatefulWidget {
-  const CheckboxExample1({super.key});
+class CheckboxExample2 extends StatefulWidget {
+  const CheckboxExample2({super.key});
 
   @override
-  State<CheckboxExample1> createState() => _CheckboxExample1State();
+  State<CheckboxExample2> createState() => _CheckboxExample2State();
 }
 
-class _CheckboxExample1State extends State<CheckboxExample1> {
+class _CheckboxExample2State extends State<CheckboxExample2> {
   CheckboxState _state = CheckboxState.unchecked;
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,7 @@ class _CheckboxExample1State extends State<CheckboxExample1> {
         });
       },
       trailing: Text('Remember me'),
+      tristate: true,
     );
   }
 }

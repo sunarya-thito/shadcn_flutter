@@ -16,11 +16,13 @@ class AlertExample extends StatelessWidget {
           'Alerts are used to communicate a state that affects the system.',
       children: [
         WidgetUsageExample(
+          title: 'Alert Example',
           child: AlertExample1(),
           path: 'lib/pages/docs/components/alert/alert_example_1.dart',
         ),
         // with destructive: true
         WidgetUsageExample(
+          title: 'Alert Example with destructive',
           child: Alert(
             title: Text('Alert title'),
             content: Text('This is alert content.'),

@@ -14,10 +14,12 @@ class AvatarExample extends StatelessWidget {
       displayName: 'Avatar',
       children: [
         WidgetUsageExample(
+          title: 'Avatar Example',
           child: AvatarExample1(),
           path: 'lib/pages/docs/components/avatar/avatar_example_1.dart',
         ),
         WidgetUsageExample(
+          title: 'Avatar Example with Username Initials',
           child: AvatarExample2(),
           path: 'lib/pages/docs/components/avatar/avatar_example_2.dart',
         ),

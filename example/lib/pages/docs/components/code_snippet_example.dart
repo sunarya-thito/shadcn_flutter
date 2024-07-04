@@ -13,6 +13,7 @@ class CodeSnippetExample extends StatelessWidget {
       displayName: 'Code Snippet',
       children: [
         WidgetUsageExample(
+          title: 'Code Snippet Example',
           child: CodeSnippetExample1(),
           path:
               'lib/pages/docs/components/code_snippet/code_snippet_example_1.dart',

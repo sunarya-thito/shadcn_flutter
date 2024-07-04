@@ -16,18 +16,22 @@ class BadgeExample extends StatelessWidget {
       displayName: 'Badge',
       children: [
         WidgetUsageExample(
+          title: 'Primary Badge Example',
           child: BadgeExample1(),
           path: 'lib/pages/docs/components/badge/badge_example_1.dart',
         ),
         WidgetUsageExample(
+          title: 'Secondary Badge Example',
           child: BadgeExample2(),
           path: 'lib/pages/docs/components/badge/badge_example_2.dart',
         ),
         WidgetUsageExample(
+          title: 'Outline Badge Example',
           child: BadgeExample3(),
           path: 'lib/pages/docs/components/badge/badge_example_3.dart',
         ),
         WidgetUsageExample(
+          title: 'Destructive Badge Example',
           child: BadgeExample4(),
           path: 'lib/pages/docs/components/badge/badge_example_4.dart',
         ),

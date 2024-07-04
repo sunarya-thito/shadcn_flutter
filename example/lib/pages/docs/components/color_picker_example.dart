@@ -14,6 +14,7 @@ class ColorPickerExample extends StatelessWidget {
       displayName: 'Color Picker',
       children: [
         WidgetUsageExample(
+          title: 'Color Picker Example',
           child: ColorPickerExample1(),
           path:
               'lib/pages/docs/components/color_picker/color_picker_example_1.dart',

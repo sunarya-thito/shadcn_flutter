@@ -1,4 +1,3 @@
-import 'package:example/main.dart';
 import 'package:example/pages/widget_usage_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -19,14 +18,14 @@ class LayoutPage extends StatefulWidget {
 }
 
 class _LayoutPageState extends State<LayoutPage> {
-  final GlobalKey paddingKey = GlobalKey();
-  final GlobalKey marginKey = GlobalKey();
-  final GlobalKey centerKey = GlobalKey();
-  final GlobalKey gappedColumnKey = GlobalKey();
-  final GlobalKey gappedRowKey = GlobalKey();
-  final GlobalKey separatedColumnKey = GlobalKey();
-  final GlobalKey separatedRowKey = GlobalKey();
-  final GlobalKey basicLayoutKey = GlobalKey();
+  final OnThisPage paddingKey = OnThisPage();
+  final OnThisPage marginKey = OnThisPage();
+  final OnThisPage centerKey = OnThisPage();
+  final OnThisPage gappedColumnKey = OnThisPage();
+  final OnThisPage gappedRowKey = OnThisPage();
+  final OnThisPage separatedColumnKey = OnThisPage();
+  final OnThisPage separatedRowKey = OnThisPage();
+  final OnThisPage basicLayoutKey = OnThisPage();
 
   @override
   Widget build(BuildContext context) {
@@ -48,37 +47,37 @@ class _LayoutPageState extends State<LayoutPage> {
         children: [
           Text('Layout Page').h1(),
           Text('Guide to layout in Shadcn Flutter.').lead(),
-          Text('Padding').h2().keyed(paddingKey),
+          Text('Padding').h2().anchored(paddingKey),
           WidgetUsageExample(
             child: LayoutPageExample1(),
             path: 'lib/pages/docs/layout_page/layout_page_example_1.dart',
           ).p(),
-          Text('Margin').h2().keyed(marginKey),
+          Text('Margin').h2().anchored(marginKey),
           WidgetUsageExample(
             child: LayoutPageExample2(),
             path: 'lib/pages/docs/layout_page/layout_page_example_2.dart',
           ).p(),
-          Text('Center').h2().keyed(centerKey),
+          Text('Center').h2().anchored(centerKey),
           WidgetUsageExample(
             child: LayoutPageExample3(),
             path: 'lib/pages/docs/layout_page/layout_page_example_3.dart',
           ).p(),
-          Text('Gapped Row').h2().keyed(gappedRowKey),
+          Text('Gapped Row').h2().anchored(gappedRowKey),
           WidgetUsageExample(
             child: LayoutPageExample4(),
             path: 'lib/pages/docs/layout_page/layout_page_example_4.dart',
           ).p(),
-          Text('Separated Column').h2().keyed(separatedColumnKey),
+          Text('Separated Column').h2().anchored(separatedColumnKey),
           WidgetUsageExample(
             child: LayoutPageExample5(),
             path: 'lib/pages/docs/layout_page/layout_page_example_5.dart',
           ).p(),
-          Text('Separated Row').h2().keyed(separatedRowKey),
+          Text('Separated Row').h2().anchored(separatedRowKey),
           WidgetUsageExample(
             child: LayoutPageExample6(),
             path: 'lib/pages/docs/layout_page/layout_page_example_6.dart',
           ).p(),
-          Text('Basic Layout').h2().keyed(basicLayoutKey),
+          Text('Basic Layout').h2().anchored(basicLayoutKey),
           WidgetUsageExample(
             child: LayoutPageExample7(),
             path: 'lib/pages/docs/layout_page/layout_page_example_7.dart',

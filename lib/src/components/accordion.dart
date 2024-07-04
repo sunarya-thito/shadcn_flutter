@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../shadcn_flutter.dart';
 
@@ -23,8 +22,8 @@ class _AccordionState extends State<Accordion> {
         data: this,
         child: IntrinsicWidth(
           child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 ...join(
                     widget.items,
@@ -268,10 +267,8 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
                             data: IconThemeData(
                               color: themeData.colorScheme.mutedForeground,
                             ),
-                            child: Icon(Icons.keyboard_arrow_up,
-                                // color:
-                                //     Theme.of(context).colorScheme.mutedForeground,
-                                size: 18),
+                            child:
+                                const Icon(Icons.keyboard_arrow_up, size: 18),
                           ),
                         );
                       }),

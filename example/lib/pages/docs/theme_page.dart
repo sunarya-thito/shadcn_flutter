@@ -50,11 +50,11 @@ class _ThemePageState extends State<ThemePage> {
   bool customColorScheme = false;
   bool applyDirectly = false;
 
-  final GlobalKey customColorSchemeKey = GlobalKey();
-  final GlobalKey premadeColorSchemeKey = GlobalKey();
-  final GlobalKey radiusKey = GlobalKey();
-  final GlobalKey previewKey = GlobalKey();
-  final GlobalKey codeKey = GlobalKey();
+  final OnThisPage customColorSchemeKey = OnThisPage();
+  final OnThisPage premadeColorSchemeKey = OnThisPage();
+  final OnThisPage radiusKey = OnThisPage();
+  final OnThisPage previewKey = OnThisPage();
+  final OnThisPage codeKey = OnThisPage();
 
   @override
   void initState() {
@@ -89,7 +89,7 @@ class _ThemePageState extends State<ThemePage> {
         children: [
           Text('Theme').h1(),
           Text('Customize the look and feel of your app.').lead(),
-          Text('Custom color scheme').h2().keyed(customColorSchemeKey),
+          Text('Custom color scheme').h2().anchored(customColorSchemeKey),
           // grid color
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +123,7 @@ class _ThemePageState extends State<ThemePage> {
             shrinkWrap: true,
             children: colors.keys.map(buildGridTile).toList(),
           ).p(),
-          Text('Premade color schemes').h2().keyed(premadeColorSchemeKey),
+          Text('Premade color schemes').h2().anchored(premadeColorSchemeKey),
           // Text('You can also use premade color schemes.').p(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +159,7 @@ class _ThemePageState extends State<ThemePage> {
             children:
                 colorSchemes.keys.map(buildPremadeColorSchemeButton).toList(),
           ).p(),
-          Text('Radius').h2().keyed(radiusKey),
+          Text('Radius').h2().anchored(radiusKey),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -202,10 +202,10 @@ class _ThemePageState extends State<ThemePage> {
             max: 2,
             divisions: 20,
           ).p(),
-          Text('Preview').h2().keyed(previewKey),
+          Text('Preview').h2().anchored(previewKey),
           Text('Preview the color scheme.').p(),
           // TODO: add preview
-          Text('Code').h2().keyed(codeKey),
+          Text('Code').h2().anchored(codeKey),
           Text('Use the following code to apply the color scheme.').p(),
           CodeSnippet(
             code: customColorScheme ? buildCustomCode() : buildPremadeCode(),

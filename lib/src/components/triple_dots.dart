@@ -1,6 +1,6 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class TripleDots extends StatelessWidget {
+class MoreDots extends StatelessWidget {
   final Axis direction;
   final int count;
   final double? size;
@@ -8,7 +8,7 @@ class TripleDots extends StatelessWidget {
   final double spacing;
   final EdgeInsetsGeometry? padding;
 
-  const TripleDots({
+  const MoreDots({
     Key? key,
     this.direction = Axis.horizontal,
     this.count = 3,

@@ -40,16 +40,16 @@ class SidebarButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var data = Theme.of(context);
-    if (!selected) {
+    if (selected) {
       data = data.copyWith(
         colorScheme: data.colorScheme.copyWith(
-          foreground: data.colorScheme.mutedForeground,
+          mutedForeground: data.colorScheme.primary,
         ),
       );
     }
     return Theme(
       data: data,
-      child: LinkButton(
+      child: TextButton(
         onPressed: onPressed,
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),

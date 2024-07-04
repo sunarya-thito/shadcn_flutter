@@ -13,6 +13,7 @@ class CollapsibleExample extends StatelessWidget {
       displayName: 'Collapsible',
       children: [
         WidgetUsageExample(
+          title: 'Collapsible Example',
           child: CollapsibleExample1(),
           path:
               'lib/pages/docs/components/collapsible/collapsible_example_1.dart',

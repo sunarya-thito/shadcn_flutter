@@ -14,6 +14,7 @@ class ComboboxExample extends StatelessWidget {
       displayName: 'ComboBox',
       children: [
         WidgetUsageExample(
+          title: 'ComboBox Example',
           child: ComboboxExample1(),
           path: 'lib/pages/docs/components/combobox/combobox_example_1.dart',
         ),
