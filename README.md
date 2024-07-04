@@ -1,7 +1,7 @@
 # shadcn_flutter
 A set of widgets and utilities for building applications in flutter.
 Optimized for web applications.
-This is a port of the shadcn package to flutter.
+This is a port of the shadcn UI package to flutter.
 
 Widget Catalog: [shadcn_flutter](https://sunarya-thito.github.io/shadcn_flutter/)
 
