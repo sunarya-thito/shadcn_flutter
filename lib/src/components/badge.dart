@@ -5,6 +5,8 @@ class PrimaryBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
+  final EdgeInsets? padding;
+  final TextStyle? textStyle;
 
   const PrimaryBadge({
     super.key,
@@ -12,6 +14,8 @@ class PrimaryBadge extends StatelessWidget {
     this.onPressed,
     this.leading,
     this.trailing,
+    this.padding,
+    this.textStyle,
   });
 
   @override
@@ -20,8 +24,8 @@ class PrimaryBadge extends StatelessWidget {
       leading: leading,
       trailing: trailing,
       onPressed: onPressed ?? () {},
-      padding: Button.badgePadding,
-      textStyle: Button.badgeTextStyle,
+      padding: padding ?? Button.badgePadding,
+      textStyle: textStyle ?? Button.badgeTextStyle,
       child: child,
     ).xSmall().semiBold();
   }
@@ -32,6 +36,8 @@ class SecondaryBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
+  final EdgeInsets? padding;
+  final TextStyle? textStyle;
 
   const SecondaryBadge({
     super.key,
@@ -39,6 +45,8 @@ class SecondaryBadge extends StatelessWidget {
     this.onPressed,
     this.leading,
     this.trailing,
+    this.padding,
+    this.textStyle,
   });
 
   @override
@@ -47,8 +55,8 @@ class SecondaryBadge extends StatelessWidget {
       leading: leading,
       trailing: trailing,
       onPressed: onPressed ?? () {},
-      padding: Button.badgePadding,
-      textStyle: Button.badgeTextStyle,
+      padding: padding ?? Button.badgePadding,
+      textStyle: textStyle ?? Button.badgeTextStyle,
       child: child,
     ).xSmall().semiBold();
   }
@@ -59,6 +67,8 @@ class OutlineBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
+  final EdgeInsets? padding;
+  final TextStyle? textStyle;
 
   const OutlineBadge({
     super.key,
@@ -66,6 +76,8 @@ class OutlineBadge extends StatelessWidget {
     this.onPressed,
     this.leading,
     this.trailing,
+    this.padding,
+    this.textStyle,
   });
 
   @override
@@ -74,8 +86,8 @@ class OutlineBadge extends StatelessWidget {
       leading: leading,
       trailing: trailing,
       onPressed: onPressed ?? () {},
-      padding: Button.badgePadding,
-      textStyle: Button.badgeTextStyle,
+      padding: padding ?? Button.badgePadding,
+      textStyle: textStyle ?? Button.badgeTextStyle,
       child: child,
     ).xSmall().semiBold();
   }
@@ -86,6 +98,8 @@ class DestructiveBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
+  final EdgeInsets? padding;
+  final TextStyle? textStyle;
 
   const DestructiveBadge({
     super.key,
@@ -93,6 +107,8 @@ class DestructiveBadge extends StatelessWidget {
     this.onPressed,
     this.leading,
     this.trailing,
+    this.padding,
+    this.textStyle,
   });
 
   @override
@@ -101,8 +117,8 @@ class DestructiveBadge extends StatelessWidget {
       leading: leading,
       trailing: trailing,
       onPressed: onPressed ?? () {},
-      padding: Button.badgePadding,
-      textStyle: Button.badgeTextStyle,
+      padding: padding ?? Button.badgePadding,
+      textStyle: textStyle ?? Button.badgeTextStyle,
       child: child,
     ).xSmall().semiBold();
   }

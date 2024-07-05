@@ -59,6 +59,40 @@ class SidebarButton extends StatelessWidget {
   }
 }
 
+class NavigationButton extends StatelessWidget {
+  final Widget child;
+  final VoidCallback? onPressed;
+  final bool selected;
+
+  const NavigationButton({
+    Key? key,
+    required this.child,
+    required this.onPressed,
+    required this.selected,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var data = Theme.of(context);
+    if (!selected) {
+      data = data.copyWith(
+        colorScheme: data.colorScheme.copyWith(
+          foreground: data.colorScheme.mutedForeground,
+        ),
+      );
+    }
+    return Theme(
+      data: data,
+      child: LinkButton(
+        onPressed: onPressed,
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        child: child,
+      ),
+    );
+  }
+}
+
 class SidebarNav extends StatelessWidget {
   final List<Widget> children;
 

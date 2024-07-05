@@ -68,77 +68,153 @@ class DocsPage extends StatefulWidget {
   DocsPageState createState() => DocsPageState();
 }
 
+enum ShadcnFeatureTag {
+  newFeature,
+  updated,
+  workInProgress;
+
+  Widget buildBadge(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    ThemeData copy;
+    String badgeText;
+    switch (this) {
+      case ShadcnFeatureTag.newFeature:
+        copy = theme.copyWith(
+          colorScheme: theme.colorScheme.copyWith(
+            primary: Colors.green,
+          ),
+        );
+        badgeText = 'New';
+        break;
+      case ShadcnFeatureTag.updated:
+        copy = theme.copyWith(
+          colorScheme: theme.colorScheme.copyWith(
+            primary: Colors.blue,
+          ),
+        );
+        badgeText = 'Updated';
+        break;
+      case ShadcnFeatureTag.workInProgress:
+        copy = theme.copyWith(
+          colorScheme: theme.colorScheme.copyWith(
+            primary: Colors.orange,
+          ),
+        );
+        badgeText = 'WIP';
+        break;
+    }
+    return Theme(
+      data: copy,
+      child: PrimaryBadge(
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        textStyle: const TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+        ),
+        child: Text(badgeText),
+      ),
+    );
+  }
+}
+
 class ShadcnDocsPage {
   final String title;
   final String name; // name for go_router
+  final ShadcnFeatureTag? tag;
 
-  const ShadcnDocsPage(this.title, this.name);
+  const ShadcnDocsPage(this.title, this.name, [this.tag]);
 }
 
 class ShadcnDocsSection {
   final String title;
   final List<ShadcnDocsPage> pages;
+  final IconData icon;
 
-  const ShadcnDocsSection(this.title, this.pages);
+  const ShadcnDocsSection(this.title, this.pages, [this.icon = Icons.book]);
 }
 
 class DocsPageState extends State<DocsPage> {
   static const List<ShadcnDocsSection> sections = [
-    ShadcnDocsSection('Getting Started', [
-      ShadcnDocsPage('Introduction', 'introduction'),
-      ShadcnDocsPage('Installation', 'installation'),
-      ShadcnDocsPage('Theme', 'theme'),
-      ShadcnDocsPage('Typography', 'typography'),
-      ShadcnDocsPage('Layout', 'layout'),
-    ]),
-    ShadcnDocsSection('Components', [
-      ShadcnDocsPage('Accordion', 'accordion'),
-      ShadcnDocsPage('Alert', 'alert'),
-      ShadcnDocsPage('Alert Dialog', 'alert_dialog'),
-      ShadcnDocsPage('Avatar', 'avatar'),
-      ShadcnDocsPage('Badge', 'badge'),
-      ShadcnDocsPage('Breadcrumb', 'breadcrumb'),
-      ShadcnDocsPage('Button', 'button'),
-      ShadcnDocsPage('Calendar', 'calendar'),
-      ShadcnDocsPage('Card', 'card'),
-      ShadcnDocsPage('Carousel', 'carousel'),
-      ShadcnDocsPage('Checkbox', 'checkbox'),
-      ShadcnDocsPage('Circular Progress', 'circular_progress'),
-      ShadcnDocsPage('Code Snippet', 'code_snippet'),
-      ShadcnDocsPage('Collapsible', 'collapsible'),
-      ShadcnDocsPage('Color Picker', 'color_picker'),
-      ShadcnDocsPage('Combo Box', 'combo_box'),
-      ShadcnDocsPage('Command', 'command'),
-      ShadcnDocsPage('Dialog', 'dialog'),
-      ShadcnDocsPage('Divider', 'divider'),
-      ShadcnDocsPage('Drawer', 'drawer'),
-      ShadcnDocsPage('Dropdown', 'dropdown'),
-      ShadcnDocsPage('Data Table', 'data_table'),
-      ShadcnDocsPage('Form', 'form'),
-      ShadcnDocsPage('Hover Card', 'hover_card'),
-      ShadcnDocsPage('Input', 'input'),
-      ShadcnDocsPage('Input OTP', 'input_otp'),
-      ShadcnDocsPage('Label', 'label'),
-      ShadcnDocsPage('Menubar', 'menubar'),
-      ShadcnDocsPage('Navigation Menu', 'navigation_menu'),
-      ShadcnDocsPage('Pagination', 'pagination'),
-      ShadcnDocsPage('Popover', 'popover'),
-      ShadcnDocsPage('Progress', 'progress'),
-      ShadcnDocsPage('Radio Group', 'radio_group'),
-      ShadcnDocsPage('Resizable', 'resizable'),
-      ShadcnDocsPage('Sheet', 'sheet'),
-      ShadcnDocsPage('Skeleton', 'skeleton'),
-      ShadcnDocsPage('Slider', 'slider'),
-      ShadcnDocsPage('Sonner', 'sonner'),
-      ShadcnDocsPage('Steps', 'steps'),
-      ShadcnDocsPage('Switch', 'switch'),
-      ShadcnDocsPage('Table', 'table'),
-      ShadcnDocsPage('Tabs', 'tabs'),
-      ShadcnDocsPage('Text Area', 'text_area'),
-      ShadcnDocsPage('Toast', 'toast'),
-      ShadcnDocsPage('Toggle', 'toggle'),
-      ShadcnDocsPage('Tooltip', 'tooltip'),
-    ]),
+    ShadcnDocsSection(
+        'Getting Started',
+        [
+          ShadcnDocsPage('Introduction', 'introduction'),
+          ShadcnDocsPage('Installation', 'installation'),
+          ShadcnDocsPage('Theme', 'theme'),
+          ShadcnDocsPage('Typography', 'typography'),
+          ShadcnDocsPage('Layout', 'layout'),
+        ],
+        Icons.book),
+    ShadcnDocsSection(
+        'Components',
+        [
+          ShadcnDocsPage('Accordion', 'accordion'),
+          ShadcnDocsPage('Alert', 'alert'),
+          ShadcnDocsPage('Alert Dialog', 'alert_dialog'),
+          ShadcnDocsPage('Avatar', 'avatar'),
+          ShadcnDocsPage('Badge', 'badge'),
+          ShadcnDocsPage('Breadcrumb', 'breadcrumb'),
+          ShadcnDocsPage('Button', 'button'),
+          ShadcnDocsPage(
+              'Calendar', 'calendar', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Card', 'card'),
+          ShadcnDocsPage(
+              'Carousel', 'carousel', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Checkbox', 'checkbox'),
+          ShadcnDocsPage('Circular Progress', 'circular_progress'),
+          ShadcnDocsPage('Code Snippet', 'code_snippet'),
+          ShadcnDocsPage('Collapsible', 'collapsible'),
+          ShadcnDocsPage('Color Picker', 'color_picker'),
+          ShadcnDocsPage('Combo Box', 'combo_box'),
+          ShadcnDocsPage('Command', 'command'),
+          ShadcnDocsPage(
+              'Context Menu', 'context_menu', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage(
+              'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage(
+              'Date Picker', 'date_picker', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Dialog', 'dialog', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Divider', 'divider'),
+          ShadcnDocsPage('Drawer', 'drawer', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage(
+              'Dropdown', 'dropdown', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage(
+              'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Form', 'form'),
+          ShadcnDocsPage(
+              'Hover Card', 'hover_card', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Input', 'input', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage(
+              'Input OTP', 'input_otp', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Label', 'label', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Menubar', 'menubar', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Navigation Menu', 'navigation_menu',
+              ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage(
+              'Pagination', 'pagination', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Popover', 'popover', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage(
+              'Progress', 'progress', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage(
+              'Radio Group', 'radio_group', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage(
+              'Resizable', 'resizable', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Sheet', 'sheet', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage(
+              'Skeleton', 'skeleton', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Slider', 'slider', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Sonner', 'sonner', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Steps', 'steps', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Switch', 'switch', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Tabs', 'tabs', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage(
+              'Text Area', 'text_area', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Toast', 'toast', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Toggle', 'toggle', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Tooltip', 'tooltip', ShadcnFeatureTag.workInProgress),
+        ],
+        Icons.widgets),
   ];
   bool toggle = false;
   List<OnThisPage> currentlyVisible = [];
@@ -179,6 +255,52 @@ class DocsPageState extends State<DocsPage> {
 
   bool isVisible(OnThisPage onThisPage) {
     return currentlyVisible.isNotEmpty && currentlyVisible[0] == onThisPage;
+  }
+
+  void showSearchBar() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: SizedBox(
+              width: 510,
+              height: 349,
+              child: Command(
+                builder: (context, query) async* {
+                  for (final section in sections) {
+                    final List<Widget> resultItems = [];
+                    for (final page in section.pages) {
+                      if (query == null ||
+                          page.title
+                              .toLowerCase()
+                              .contains(query.toLowerCase())) {
+                        resultItems.add(CommandItem(
+                          title: Text(page.title),
+                          trailing: Icon(section.icon),
+                          onTap: () {
+                            context.goNamed(page.name);
+                          },
+                        ));
+                      }
+                    }
+                    if (resultItems.isNotEmpty) {
+                      yield [
+                        CommandCategory(
+                          title: Text(section.title),
+                          children: resultItems,
+                        ),
+                      ];
+                    }
+                  }
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -228,12 +350,18 @@ class DocsPageState extends State<DocsPage> {
                                       header: Text(section.title),
                                       children: [
                                         for (var page in section.pages)
-                                          SidebarButton(
+                                          NavigationButton(
                                             onPressed: () {
                                               context.goNamed(page.name);
                                             },
                                             selected: page.name == widget.name,
-                                            child: Text(page.title),
+                                            child: Basic(
+                                              trailing:
+                                                  page.tag?.buildBadge(context),
+                                              trailingAlignment:
+                                                  Alignment.centerLeft,
+                                              content: Text(page.title),
+                                            ),
                                           ),
                                       ],
                                     ),
@@ -341,7 +469,21 @@ class DocsPageState extends State<DocsPage> {
                                   },
                                   child: Icon(Icons.menu),
                                 ),
-                                Spacer(),
+                                gap(18),
+                                Expanded(
+                                  child: OutlineButton(
+                                    onPressed: () {
+                                      showSearchBar();
+                                    },
+                                    child: Text('Search documentation...')
+                                        .muted()
+                                        .normal(),
+                                    trailing: Icon(Icons.search)
+                                        .iconSmall()
+                                        .iconMuted(),
+                                  ),
+                                ),
+                                gap(18),
                                 GhostButton(
                                   padding: Button.iconPadding,
                                   onPressed: () {
@@ -385,8 +527,26 @@ class DocsPageState extends State<DocsPage> {
                                   size: 32,
                                 ),
                                 gap(18),
-                                Text('Shadcn Flutter').textLarge(),
+                                Text(
+                                  'shadcn_flutter',
+                                ).textLarge().mono(),
                                 Spacer(),
+                                SizedBox(
+                                  width: 320,
+                                  // height: 32,
+                                  child: OutlineButton(
+                                    onPressed: () {
+                                      showSearchBar();
+                                    },
+                                    child: Text('Search documentation...')
+                                        .muted()
+                                        .normal(),
+                                    trailing: Icon(Icons.search)
+                                        .iconSmall()
+                                        .iconMuted(),
+                                  ),
+                                ),
+                                gap(18),
                                 GhostButton(
                                   padding: Button.iconPadding,
                                   onPressed: () {

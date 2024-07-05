@@ -106,11 +106,11 @@ class DefaultShadcnLocalizations implements ShadcnLocalizations {
       'Must be between ${formatNumber(min)} and ${formatNumber(max)} (exclusive)';
 
   @override
-  String formLengthLessThan(int value) => 'Must be less than $value characters';
+  String formLengthLessThan(int value) => 'Must be at least $value characters';
 
   @override
   String formLengthGreaterThan(int value) =>
-      'Must be greater than $value characters';
+      'Must be at most $value characters';
 
   @override
   String get formPasswordDigits => 'Must contain at least one digit';

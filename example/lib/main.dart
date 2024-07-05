@@ -26,6 +26,7 @@ import 'pages/docs/components/code_snippet_example.dart';
 import 'pages/docs/components/collapsible_example.dart';
 import 'pages/docs/components/color_picker_example.dart';
 import 'pages/docs/components/command_example.dart';
+import 'pages/docs/components/form_example.dart';
 
 void main() async {
   GoRouter.optionURLReflectsImperativeAPIs = true;
@@ -177,6 +178,11 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) => CommandExample(),
             name: 'command',
           ),
+          GoRoute(
+            path: 'form',
+            builder: (context, state) => FormExample(),
+            name: 'form',
+          )
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

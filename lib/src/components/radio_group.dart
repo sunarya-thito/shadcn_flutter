@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../shadcn_flutter.dart';
 
@@ -49,23 +48,25 @@ class PreviousItemIntent extends Intent {
   const PreviousItemIntent();
 }
 
-class RadioItem extends StatefulWidget {
+class RadioItem<T> extends StatefulWidget {
   final Widget? leading;
   final Widget? trailing;
   final ValueChanged<bool>? onSelected;
+  final T? value;
 
   const RadioItem({
     Key? key,
     this.leading,
     this.trailing,
     this.onSelected,
+    this.value,
   }) : super(key: key);
 
   @override
-  State<RadioItem> createState() => _RadioItemState();
+  State<RadioItem<T>> createState() => _RadioItemState<T>();
 }
 
-class _RadioItemState extends State<RadioItem> {
+class _RadioItemState<T> extends State<RadioItem<T>> {
   _RadioGroupState? _group;
   bool _selected = false;
   bool _focusing = false;
@@ -73,7 +74,7 @@ class _RadioItemState extends State<RadioItem> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _RadioGroupState newGroup = Data.of(context);
+    _RadioGroupState<T> newGroup = Data.of(context);
     if (_group != newGroup) {
       _group?._notifier.removeListener(_onChanged);
       _group?._focusing.removeListener(_onFocusChange);
@@ -151,7 +152,7 @@ class _RadioItemState extends State<RadioItem> {
   }
 }
 
-class RadioGroup extends StatefulWidget {
+class RadioGroup<T> extends StatefulWidget {
   final Widget child;
 
   const RadioGroup({
@@ -163,12 +164,12 @@ class RadioGroup extends StatefulWidget {
   _RadioGroupState createState() => _RadioGroupState();
 }
 
-class _RadioGroupState<T> extends State<RadioGroup> {
-  final List<_RadioItemState> _items = [];
-  final ValueNotifier<_RadioItemState?> _notifier = ValueNotifier(null);
+class _RadioGroupState<T> extends State<RadioGroup> with FormValueSupplier {
+  final List<_RadioItemState<T>> _items = [];
+  final ValueNotifier<_RadioItemState<T>?> _notifier = ValueNotifier(null);
   final ValueNotifier<bool> _focusing = ValueNotifier(false);
 
-  void _setSelected(_RadioItemState item) {
+  void _setSelected(_RadioItemState<T> item) {
     _RadioItemState? old = _notifier.value;
     if (old != item) {
       _notifier.value = item;
@@ -176,7 +177,26 @@ class _RadioGroupState<T> extends State<RadioGroup> {
         old.widget.onSelected?.call(false);
       }
       item.widget.onSelected?.call(true);
+      reportNewFormValue(item.widget.value, (value) {
+        _setSelectedValue(value);
+      });
     }
+  }
+
+  void _setSelectedValue(T? value) {
+    _RadioItemState<T>? item = findItem(value);
+    if (item != null) {
+      _setSelected(item);
+    }
+  }
+
+  _RadioItemState<T>? findItem(dynamic value) {
+    for (var item in _items) {
+      if (item.widget.value == value) {
+        return item;
+      }
+    }
+    return null;
   }
 
   void _next() {

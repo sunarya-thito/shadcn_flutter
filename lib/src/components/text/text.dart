@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import '../../../shadcn_flutter.dart';
 
 extension TextExtension on Widget {

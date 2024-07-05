@@ -41,10 +41,7 @@ class Command extends StatefulWidget {
 }
 
 class _CommandState extends State<Command> {
-  final GlobalKey _textFieldKey = GlobalKey();
   final TextEditingController _controller = TextEditingController();
-  final FocusNode _textFieldFocus = FocusNode();
-  final _focusScopeNode = FocusNode();
   final ValueNotifier<String?> query = ValueNotifier<String?>(null);
 
   int requestCount = 0;
@@ -76,12 +73,6 @@ class _CommandState extends State<Command> {
   }
 
   @override
-  void didUpdateWidget(covariant Command oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print('didUpdateWidget');
-  }
-
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     bool canPop = Navigator.of(context).canPop();
@@ -101,10 +92,9 @@ class _CommandState extends State<Command> {
                 ),
                 Expanded(
                   child: TextField(
-                    key: _textFieldKey,
                     controller: _controller,
                     border: false,
-                    focusNode: _textFieldFocus,
+                    // focusNode: _textFieldFocus,
                     placeholder: ShadcnLocalizations.of(context).commandSearch,
                   ),
                 ),
@@ -114,7 +104,7 @@ class _CommandState extends State<Command> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.close,
                       size: 16,
                     ),
@@ -126,38 +116,37 @@ class _CommandState extends State<Command> {
               child: ValueListenableBuilder(
                   valueListenable: query,
                   builder: (context, value, child) {
-                    return TextFieldTapRegion(
-                      child: Focus(
-                        focusNode: _focusScopeNode,
-                        parentNode: _textFieldFocus,
-                        child: StreamBuilder(
-                          stream: _request(context, value),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              List<Widget> items = List.of(snapshot.data!);
-                              if (snapshot.connectionState ==
-                                  ConnectionState.active) {
-                                items.add(const Center(
-                                        child: CircularProgressIndicator())
-                                    .withPadding(vertical: 24));
-                              } else if (items.isEmpty) {
-                                return widget.emptyBuilder?.call(context) ??
-                                    const CommandEmpty();
-                              }
-                              return ListView.separated(
-                                separatorBuilder: (context, index) =>
-                                    const Divider(),
-                                shrinkWrap: true,
-                                itemCount: items.length,
-                                itemBuilder: (context, index) => items[index],
-                              );
-                            }
-                            return widget.loadingBuilder?.call(context) ??
-                                const Center(child: CircularProgressIndicator())
-                                    .withPadding(vertical: 24);
-                          },
-                        ),
-                      ),
+                    return StreamBuilder(
+                      stream: _request(context, value),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<Widget> items = List.of(snapshot.data!);
+                          if (snapshot.connectionState ==
+                              ConnectionState.active) {
+                            items.add(IconTheme(
+                              data: IconThemeData(
+                                color: theme.colorScheme.mutedForeground,
+                              ),
+                              child: const Center(
+                                      child: CircularProgressIndicator())
+                                  .withPadding(vertical: 24),
+                            ));
+                          } else if (items.isEmpty) {
+                            return widget.emptyBuilder?.call(context) ??
+                                const CommandEmpty();
+                          }
+                          return ListView.separated(
+                            separatorBuilder: (context, index) =>
+                                const Divider(),
+                            shrinkWrap: true,
+                            itemCount: items.length,
+                            itemBuilder: (context, index) => items[index],
+                          );
+                        }
+                        return widget.loadingBuilder?.call(context) ??
+                            const Center(child: CircularProgressIndicator())
+                                .withPadding(vertical: 24);
+                      },
                     );
                   }),
             ),

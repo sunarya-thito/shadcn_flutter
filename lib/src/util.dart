@@ -4,6 +4,34 @@ import 'package:gap/gap.dart';
 
 const kDefaultDuration = Duration(milliseconds: 150);
 
+class WidgetTreeChangeDetector extends StatefulWidget {
+  final Widget child;
+  final void Function() onWidgetTreeChange;
+
+  const WidgetTreeChangeDetector({
+    Key? key,
+    required this.child,
+    required this.onWidgetTreeChange,
+  }) : super(key: key);
+
+  @override
+  _WidgetTreeChangeDetectorState createState() =>
+      _WidgetTreeChangeDetectorState();
+}
+
+class _WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
+  @override
+  void initState() {
+    super.initState();
+    widget.onWidgetTreeChange();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
+}
+
 Widget gap(double gap, {double? crossGap}) {
   return Gap(
     gap,
@@ -109,14 +137,14 @@ extension WidgetExtension on Widget {
       }
       return true;
     }());
+    var edgeInsets = EdgeInsets.only(
+      top: top ?? vertical ?? all ?? 0,
+      bottom: bottom ?? vertical ?? all ?? 0,
+      left: left ?? horizontal ?? all ?? 0,
+      right: right ?? horizontal ?? all ?? 0,
+    );
     return Padding(
-      padding: padding ??
-          EdgeInsets.only(
-            top: top ?? vertical ?? all ?? 0,
-            bottom: bottom ?? vertical ?? all ?? 0,
-            left: left ?? horizontal ?? all ?? 0,
-            right: right ?? horizontal ?? all ?? 0,
-          ),
+      padding: padding ?? edgeInsets,
       child: this,
     );
   }

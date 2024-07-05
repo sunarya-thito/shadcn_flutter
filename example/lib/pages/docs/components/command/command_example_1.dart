@@ -32,13 +32,13 @@ class CommandExample1 extends StatelessWidget {
             }
           }
           if (resultItems.isNotEmpty) {
+            await Future.delayed(Duration(seconds: 1));
             yield [
               CommandCategory(
                 title: Text(values.key),
                 children: resultItems,
               ),
             ];
-            await Future.delayed(Duration(seconds: 1));
           }
         }
       },

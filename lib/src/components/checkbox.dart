@@ -3,10 +3,15 @@ import 'package:shadcn_flutter/src/components/focus_outline.dart';
 
 import '../../shadcn_flutter.dart';
 
-enum CheckboxState {
+enum CheckboxState implements Comparable<CheckboxState> {
   checked,
   unchecked,
-  indeterminate,
+  indeterminate;
+
+  @override
+  int compareTo(CheckboxState other) {
+    return index.compareTo(other.index);
+  }
 }
 
 class Checkbox extends StatefulWidget {
@@ -29,27 +34,54 @@ class Checkbox extends StatefulWidget {
   _CheckboxState createState() => _CheckboxState();
 }
 
-class _CheckboxState extends State<Checkbox> {
+class _CheckboxState extends State<Checkbox> with FormValueSupplier {
   bool _focusing = false;
+
+  void _changeTo(CheckboxState state) {
+    if (widget.onChanged != null) {
+      widget.onChanged!(state);
+    }
+  }
+
   void _tap() {
     if (widget.tristate) {
       switch (widget.state) {
         case CheckboxState.checked:
-          widget.onChanged!(CheckboxState.unchecked);
+          _changeTo(CheckboxState.unchecked);
           break;
         case CheckboxState.unchecked:
-          widget.onChanged!(CheckboxState.indeterminate);
+          _changeTo(CheckboxState.indeterminate);
           break;
         case CheckboxState.indeterminate:
-          widget.onChanged!(CheckboxState.checked);
+          _changeTo(CheckboxState.checked);
           break;
       }
     } else {
-      widget.onChanged!(
+      _changeTo(
         widget.state == CheckboxState.checked
             ? CheckboxState.unchecked
             : CheckboxState.checked,
       );
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    reportNewFormValue(widget.state, (value) {
+      if (widget.onChanged != null) {
+        widget.onChanged!(value);
+      }
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant Checkbox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.state != oldWidget.state) {
+      reportNewFormValue(widget.state, (value) {
+        _changeTo(value);
+      });
     }
   }
 

@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import '../../shadcn_flutter.dart';
 
 class Basic extends StatelessWidget {
@@ -8,6 +6,11 @@ class Basic extends StatelessWidget {
   final Widget? subtitle;
   final Widget? content;
   final Widget? trailing;
+  final Alignment? leadingAlignment;
+  final Alignment? trailingAlignment;
+  final Alignment? titleAlignment;
+  final Alignment? subtitleAlignment;
+  final Alignment? contentAlignment;
 
   const Basic({
     Key? key,
@@ -16,6 +19,11 @@ class Basic extends StatelessWidget {
     this.subtitle,
     this.content,
     this.trailing,
+    this.leadingAlignment,
+    this.trailingAlignment,
+    this.titleAlignment,
+    this.subtitleAlignment,
+    this.contentAlignment,
   }) : super(key: key);
 
   @override
@@ -26,7 +34,11 @@ class Basic extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (leading != null) leading!,
+            if (leading != null)
+              Align(
+                alignment: leadingAlignment ?? Alignment.topCenter,
+                child: leading!,
+              ),
             if (leading != null &&
                 (title != null || content != null || subtitle != null))
               const SizedBox(width: 16),
@@ -42,7 +54,10 @@ class Basic extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
                           ),
-                          child: title!),
+                          child: Align(
+                            alignment: titleAlignment ?? Alignment.topLeft,
+                            child: title!,
+                          )),
                     if (title != null && subtitle != null)
                       const SizedBox(height: 2),
                     if (subtitle != null)
@@ -51,7 +66,10 @@ class Basic extends StatelessWidget {
                             fontSize: 12,
                             color: themeData.colorScheme.mutedForeground,
                           ),
-                          child: subtitle!),
+                          child: Align(
+                            alignment: subtitleAlignment ?? Alignment.topLeft,
+                            child: subtitle!,
+                          )),
                     if ((title != null || subtitle != null) && content != null)
                       const SizedBox(height: 4),
                     if (content != null)
@@ -59,7 +77,11 @@ class Basic extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 14,
                           ),
-                          child: content!),
+                          // child: content!),
+                          child: Align(
+                            alignment: contentAlignment ?? Alignment.topLeft,
+                            child: content!,
+                          )),
                   ],
                 ),
               ),
@@ -69,7 +91,12 @@ class Basic extends StatelessWidget {
                     leading != null ||
                     subtitle != null))
               const SizedBox(width: 16),
-            if (trailing != null) trailing!,
+            // if (trailing != null) trailing!,
+            if (trailing != null)
+              Align(
+                alignment: trailingAlignment ?? Alignment.topCenter,
+                child: trailing!,
+              ),
           ],
         ),
       ),

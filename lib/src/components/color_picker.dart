@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import '../../shadcn_flutter.dart';
 
 typedef ColorPickerPopupBuilder = Widget Function(
@@ -201,9 +199,9 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                 ),
                 borderRadius: BorderRadius.circular(theme.radiusLg),
               ),
+              clipBehavior: Clip.antiAlias,
               child: ColorPicker(
                 color: color,
-                radius: Radius.circular(theme.radiusLg),
                 onColorChanged: (value) {
                   widget.onColorChanged(value);
                 },

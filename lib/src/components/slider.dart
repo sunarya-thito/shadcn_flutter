@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../shadcn_flutter.dart';
 
@@ -71,7 +70,7 @@ class Slider extends StatefulWidget {
   _SliderState createState() => _SliderState();
 }
 
-class _SliderState extends State<Slider> {
+class _SliderState extends State<Slider> with FormValueSupplier {
   late SliderValue
       _currentValue; // used for the thumb position (not the trackbar)
   // trackbar position uses the widget.value
@@ -109,6 +108,17 @@ class _SliderState extends State<Slider> {
     }
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    reportNewFormValue(widget.value, (newValue) {
+      if (newValue != widget.value) {
+        widget.onChanged?.call(newValue);
+        widget.onChangeEnd?.call(newValue);
+      }
+    });
+  }
+
   void _dispatchValueChangeStart(SliderValue value) {
     widget.onChangeStart?.call(value);
   }
@@ -122,6 +132,38 @@ class _SliderState extends State<Slider> {
   void _dispatchValueChangeEnd(SliderValue value) {
     if (value != widget.value) {
       widget.onChangeEnd?.call(value);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant Slider oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.value != oldWidget.value) {
+      if (widget.value.isRanged) {
+        var start =
+            (widget.value.start - widget.min) / (widget.max - widget.min);
+        var end = (widget.value.end - widget.min) / (widget.max - widget.min);
+        if (widget.divisions != null) {
+          start = (start * widget.divisions!).round() / widget.divisions!;
+          end = (end * widget.divisions!).round() / widget.divisions!;
+        }
+        var newStart = min(start, end);
+        var newEnd = max(start, end);
+        setState(() {
+          _currentValue = SliderValue.ranged(newStart, newEnd);
+        });
+      } else {
+        // _currentValue = SliderValue.single(
+        //     (widget.value.value - widget.min) / (widget.max - widget.min));
+        var value =
+            (widget.value.value - widget.min) / (widget.max - widget.min);
+        if (widget.divisions != null) {
+          value = (value * widget.divisions!).round() / widget.divisions!;
+        }
+        setState(() {
+          _currentValue = SliderValue.single(value);
+        });
+      }
     }
   }
 

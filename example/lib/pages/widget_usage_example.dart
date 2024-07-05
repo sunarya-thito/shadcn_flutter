@@ -21,6 +21,7 @@ class WidgetUsageExample extends StatefulWidget {
 
 class _WidgetUsageExampleState extends State<WidgetUsageExample> {
   int index = 0;
+  final GlobalKey _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -51,20 +52,26 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
           ],
         ),
         gap(12),
-        index == 0
-            ? OutlinedContainer(
-                child: Container(
-                  padding: const EdgeInsets.all(40),
-                  constraints: const BoxConstraints(minHeight: 350),
-                  child: Center(
-                    child: widget.child,
-                  ),
-                ),
-              )
-            : CodeSnippetFutureBuilder(
-                path: widget.path,
-                mode: 'dart',
+        Offstage(
+          offstage: index != 0,
+          child: OutlinedContainer(
+            key: _key,
+            child: Container(
+              padding: const EdgeInsets.all(40),
+              constraints: const BoxConstraints(minHeight: 350),
+              child: Center(
+                child: widget.child,
               ),
+            ),
+          ),
+        ),
+        Offstage(
+          offstage: index != 1,
+          child: CodeSnippetFutureBuilder(
+            path: widget.path,
+            mode: 'dart',
+          ),
+        )
       ],
     );
   }

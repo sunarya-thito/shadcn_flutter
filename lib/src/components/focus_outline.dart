@@ -35,28 +35,29 @@ class FocusOutline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double align = -this.align;
-    return focused
-        ? Stack(
-            clipBehavior: Clip.none,
-            children: [
-              child,
-              Positioned(
-                top: align,
-                right: align,
-                bottom: align,
-                left: align,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: adjustedBorderRadius,
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.ring,
-                      width: width,
-                    ),
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        child,
+        if (focused)
+          Positioned(
+            top: align,
+            right: align,
+            bottom: align,
+            left: align,
+            child: IgnorePointer(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: adjustedBorderRadius,
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.ring,
+                    width: width,
                   ),
                 ),
               ),
-            ],
-          )
-        : child;
+            ),
+          ),
+      ],
+    );
   }
 }

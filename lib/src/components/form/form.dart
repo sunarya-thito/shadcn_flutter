@@ -1,11 +1,11 @@
 import 'package:email_validator/email_validator.dart' as email_validator;
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../shadcn_flutter.dart';
 
 abstract class Validator<T> {
   const Validator();
-  ValidationResult? validate(BuildContext context, T? value);
+  Future<ValidationResult?> validate(BuildContext context, T? value);
 
   Validator<T> combine(Validator<T> other) {
     return CompositeValidator([this, other]);
@@ -26,6 +26,8 @@ abstract class Validator<T> {
   Validator<T> operator +(Validator<T> other) {
     return combine(other);
   }
+
+  bool shouldRevalidate() => false;
 }
 
 class NotValidator<T> extends Validator<T> {
@@ -36,11 +38,11 @@ class NotValidator<T> extends Validator<T> {
   const NotValidator(this.validator, {this.message});
 
   @override
-  ValidationResult? validate(BuildContext context, T? value) {
-    var result = validator.validate(context, value);
+  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+    var localizations = Localizations.of(context, ShadcnLocalizations);
+    var result = await validator.validate(context, value);
     if (result == null) {
-      return InvalidResult(message ??
-          Localizations.of(context, ShadcnLocalizations).invalidValue);
+      return InvalidResult(message ?? localizations.invalidValue);
     }
     return null;
   }
@@ -52,10 +54,10 @@ class OrValidator<T> extends Validator<T> {
   const OrValidator(this.validators);
 
   @override
-  ValidationResult? validate(BuildContext context, T? value) {
+  Future<ValidationResult?> validate(BuildContext context, T? value) async {
     ValidationResult? result;
     for (var validator in validators) {
-      result = validator.validate(context, value);
+      result = await validator.validate(context, value);
       if (result == null) {
         return null;
       }
@@ -67,6 +69,16 @@ class OrValidator<T> extends Validator<T> {
   Validator<T> operator |(Validator<T> other) {
     return OrValidator([...validators, other]);
   }
+
+  @override
+  bool shouldRevalidate() {
+    for (var validator in validators) {
+      if (validator.shouldRevalidate()) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 class NonNullValidator<T> extends Validator<T> {
@@ -76,10 +88,10 @@ class NonNullValidator<T> extends Validator<T> {
   const NonNullValidator({this.message});
 
   @override
-  ValidationResult? validate(BuildContext context, T? value) {
+  Future<ValidationResult?> validate(BuildContext context, T? value) async {
     if (value == null) {
-      return InvalidResult(message ??
-          Localizations.of(context, ShadcnLocalizations).formNotEmpty);
+      var localizations = Localizations.of(context, ShadcnLocalizations);
+      return InvalidResult(message ?? localizations.formNotEmpty);
     }
     return null;
   }
@@ -89,10 +101,11 @@ class NotEmptyValidator extends NonNullValidator<String> {
   const NotEmptyValidator({String? message}) : super(message: message);
 
   @override
-  ValidationResult? validate(BuildContext context, String? value) {
+  Future<ValidationResult?> validate(
+      BuildContext context, String? value) async {
     if (value == null || value.isEmpty) {
-      return InvalidResult(message ??
-          Localizations.of(context, ShadcnLocalizations).formNotEmpty);
+      var localizations = Localizations.of(context, ShadcnLocalizations);
+      return InvalidResult(message ?? localizations.formNotEmpty);
     }
     return null;
   }
@@ -107,21 +120,101 @@ class LengthValidator extends Validator<String> {
   const LengthValidator({this.min, this.max, this.message});
 
   @override
-  ValidationResult? validate(BuildContext context, String? value) {
+  Future<ValidationResult?> validate(
+      BuildContext context, String? value) async {
     if (value == null) {
       return null;
     }
+    ShadcnLocalizations localizations =
+        Localizations.of(context, ShadcnLocalizations);
     if (min != null && value.length < min!) {
-      return InvalidResult(message ??
-          Localizations.of(context, ShadcnLocalizations)
-              .formLengthLessThan(min!));
+      return InvalidResult(message ?? localizations.formLengthLessThan(min!));
     }
     if (max != null && value.length > max!) {
-      return InvalidResult(message ??
-          Localizations.of(context, ShadcnLocalizations)
-              .formLengthGreaterThan(max!));
+      return InvalidResult(
+          message ?? localizations.formLengthGreaterThan(max!));
     }
     return null;
+  }
+}
+
+enum CompareType { greater, greaterOrEqual, less, lessOrEqual, equal }
+
+class CompareWith<T extends Comparable<T>> extends Validator<T> {
+  final FormKey<T> key;
+  final CompareType type;
+  final String?
+      message; // if null, use default message from ShadcnLocalizations
+
+  const CompareWith(this.key, this.type, {this.message});
+  const CompareWith.equal(this.key, {this.message}) : type = CompareType.equal;
+  const CompareWith.greater(this.key, {this.message})
+      : type = CompareType.greater;
+  const CompareWith.greaterOrEqual(this.key, {this.message})
+      : type = CompareType.greaterOrEqual;
+  const CompareWith.less(this.key, {this.message}) : type = CompareType.less;
+  const CompareWith.lessOrEqual(this.key, {this.message})
+      : type = CompareType.lessOrEqual;
+
+  int _compare(T? a, T? b) {
+    if (a == null && b == null) {
+      return 0;
+    }
+    if (a == null) {
+      return -1;
+    }
+    if (b == null) {
+      return 1;
+    }
+    return a.compareTo(b);
+  }
+
+  @override
+  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+    var localizations = Localizations.of(context, ShadcnLocalizations);
+    var otherValue = context.getFormValue(key);
+    if (otherValue == null) {
+      return InvalidResult(message ?? localizations.invalidValue);
+    }
+    var compare = _compare(value, otherValue);
+    switch (type) {
+      case CompareType.greater:
+        if (compare <= 0) {
+          return InvalidResult(
+              message ?? localizations.formGreaterThan(otherValue));
+        }
+        break;
+      case CompareType.greaterOrEqual:
+        if (compare < 0) {
+          return InvalidResult(
+              message ?? localizations.formGreaterThanOrEqualTo(otherValue));
+        }
+        break;
+      case CompareType.less:
+        if (compare >= 0) {
+          return InvalidResult(
+              message ?? localizations.formLessThan(otherValue));
+        }
+        break;
+      case CompareType.lessOrEqual:
+        if (compare > 0) {
+          return InvalidResult(
+              message ?? localizations.formLessThanOrEqualTo(otherValue));
+        }
+        break;
+      case CompareType.equal:
+        if (compare != 0) {
+          return InvalidResult(
+              message ?? localizations.formEqualTo(otherValue));
+        }
+        break;
+    }
+    return null;
+  }
+
+  @override
+  bool shouldRevalidate() {
+    return true;
   }
 }
 
@@ -141,7 +234,8 @@ class SafePasswordValidator extends Validator<String> {
       this.message});
 
   @override
-  ValidationResult? validate(BuildContext context, String? value) {
+  Future<ValidationResult?> validate(
+      BuildContext context, String? value) async {
     if (value == null) {
       return null;
     }
@@ -174,7 +268,7 @@ class MinValidator<T extends num> extends Validator<T> {
   const MinValidator(this.min, {this.inclusive = true, this.message});
 
   @override
-  ValidationResult? validate(BuildContext context, T? value) {
+  Future<ValidationResult?> validate(BuildContext context, T? value) async {
     if (value == null) {
       return null;
     }
@@ -204,7 +298,7 @@ class MaxValidator<T extends num> extends Validator<T> {
   const MaxValidator(this.max, {this.inclusive = true, this.message});
 
   @override
-  ValidationResult? validate(BuildContext context, T? value) {
+  Future<ValidationResult?> validate(BuildContext context, T? value) async {
     if (value == null) {
       return null;
     }
@@ -235,7 +329,7 @@ class RangeValidator<T extends num> extends Validator<T> {
       {this.inclusive = true, this.message});
 
   @override
-  ValidationResult? validate(BuildContext context, T? value) {
+  Future<ValidationResult?> validate(BuildContext context, T? value) async {
     if (value == null) {
       return null;
     }
@@ -264,7 +358,8 @@ class RegexValidator extends Validator<String> {
   const RegexValidator(this.pattern, {this.message});
 
   @override
-  ValidationResult? validate(BuildContext context, String? value) {
+  Future<ValidationResult?> validate(
+      BuildContext context, String? value) async {
     if (value == null) {
       return null;
     }
@@ -284,7 +379,8 @@ class EmailValidator extends Validator<String> {
   const EmailValidator({this.message});
 
   @override
-  ValidationResult? validate(BuildContext context, String? value) {
+  Future<ValidationResult?> validate(
+      BuildContext context, String? value) async {
     if (value == null) {
       return null;
     }
@@ -303,7 +399,8 @@ class URLValidator extends Validator<String> {
   const URLValidator({this.message});
 
   @override
-  ValidationResult? validate(BuildContext context, String? value) {
+  Future<ValidationResult?> validate(
+      BuildContext context, String? value) async {
     if (value == null) {
       return null;
     }
@@ -317,15 +414,84 @@ class URLValidator extends Validator<String> {
   }
 }
 
+class CompareTo<T extends Comparable<T>> extends Validator<T> {
+  final T? value;
+  final CompareType type;
+  final String?
+      message; // if null, use default message from ShadcnLocalizations
+
+  const CompareTo(this.value, this.type, {this.message});
+  const CompareTo.equal(this.value, {this.message}) : type = CompareType.equal;
+  const CompareTo.greater(this.value, {this.message})
+      : type = CompareType.greater;
+  const CompareTo.greaterOrEqual(this.value, {this.message})
+      : type = CompareType.greaterOrEqual;
+  const CompareTo.less(this.value, {this.message}) : type = CompareType.less;
+  const CompareTo.lessOrEqual(this.value, {this.message})
+      : type = CompareType.lessOrEqual;
+
+  int _compare(T? a, T? b) {
+    if (a == null && b == null) {
+      return 0;
+    }
+    if (a == null) {
+      return -1;
+    }
+    if (b == null) {
+      return 1;
+    }
+    return a.compareTo(b);
+  }
+
+  @override
+  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+    var localizations = Localizations.of(context, ShadcnLocalizations);
+    var compare = _compare(value, this.value);
+    switch (type) {
+      case CompareType.greater:
+        if (compare <= 0) {
+          return InvalidResult(
+              message ?? localizations.formGreaterThan(this.value));
+        }
+        break;
+      case CompareType.greaterOrEqual:
+        if (compare < 0) {
+          return InvalidResult(
+              message ?? localizations.formGreaterThanOrEqualTo(this.value));
+        }
+        break;
+      case CompareType.less:
+        if (compare >= 0) {
+          return InvalidResult(
+              message ?? localizations.formLessThan(this.value));
+        }
+        break;
+      case CompareType.lessOrEqual:
+        if (compare > 0) {
+          return InvalidResult(
+              message ?? localizations.formLessThanOrEqualTo(this.value));
+        }
+        break;
+      case CompareType.equal:
+        if (compare != 0) {
+          return InvalidResult(
+              message ?? localizations.formEqualTo(this.value));
+        }
+        break;
+    }
+    return null;
+  }
+}
+
 class CompositeValidator<T> extends Validator<T> {
   final List<Validator<T>> validators;
 
   const CompositeValidator(this.validators);
 
   @override
-  ValidationResult? validate(BuildContext context, T? value) {
+  Future<ValidationResult?> validate(BuildContext context, T? value) async {
     for (var validator in validators) {
-      var result = validator.validate(context, value);
+      var result = await validator.validate(context, value);
       if (result != null) {
         return result;
       }
@@ -336,6 +502,16 @@ class CompositeValidator<T> extends Validator<T> {
   @override
   Validator<T> combine(Validator<T> other) {
     return CompositeValidator([...validators, other]);
+  }
+
+  @override
+  bool shouldRevalidate() {
+    for (var validator in validators) {
+      if (validator.shouldRevalidate()) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
@@ -362,202 +538,565 @@ class FormValidityNotification extends Notification {
   const FormValidityNotification(this.newValidity, this.oldValidity);
 }
 
-class FormKey<T> extends LabeledGlobalKey<FormEntryState<FormEntry<T>, T>> {
-  FormKey(String? label) : super(label);
+class FormKey<T> extends LocalKey {
+  final Object key;
 
-  T? get value {
-    assert(currentState != null, 'FormKey is not attached to a FormEntry');
-    return currentState?.value;
+  const FormKey(this.key);
+
+  Type get type => T;
+
+  @override
+  bool operator ==(Object other) {
+    return other is FormKey && other.key == key;
   }
 
-  ValidationResult? get validity {
-    assert(currentState != null, 'FormKey is not attached to a FormEntry');
-    return currentState?.validity;
-  }
+  @override
+  int get hashCode => key.hashCode;
 
-  void validate() {
-    assert(currentState != null, 'FormKey is not attached to a FormEntry');
-    currentState?.validate();
-  }
-
-  void reset() {
-    assert(currentState != null, 'FormKey is not attached to a FormEntry');
-    currentState?.reset();
-  }
-
-  set value(T? value) {
-    assert(currentState != null, 'FormKey is not attached to a FormEntry');
-    currentState?.value = value;
+  @override
+  String toString() {
+    return 'FormKey($key)';
   }
 }
 
-abstract class FormEntry<T> extends StatefulWidget {
-  final Widget? label;
+mixin FormValueInput<T> on State<StatefulWidget> {}
+
+class FormEntry<T> extends StatefulWidget {
+  final Widget child;
   final Validator<T>? validator;
-  final T? initialValue;
-  final Widget? hint;
+
   const FormEntry(
-      {this.label, super.key, this.validator, this.initialValue, this.hint});
+      {required FormKey super.key, required this.child, this.validator});
+
   @override
-  FormEntryState<FormEntry<T>, T> createState();
+  FormKey get key => super.key as FormKey;
+
+  @override
+  State<FormEntry> createState() => FormEntryState();
 }
 
-abstract class FormEntryState<T extends FormEntry<V>, V> extends State<T> {
-  V? _value;
-  ValidationResult? _validity;
-  ValidationResult? get validity => _validity;
-  V? get value => _value;
-  FormState? _form;
+class FormEntryState extends State<FormEntry> {
+  FormController? _controller;
+  final ValueNotifier<ValidationResult?> _validity = ValueNotifier(null);
 
-  set value(V? value) {
-    if (_value != value) {
-      setState(() {
-        _value = value;
-      });
-      validate();
-    }
-  }
+  ValueListenable<ValidationResult?> get validity => _validity;
 
-  void reset() {
-    if (_value != widget.initialValue) {
-      setState(() {
-        _value = widget.initialValue;
-      });
-      validate();
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _value = widget.initialValue;
-  }
+  int _toWaitCounter = 0;
+  Future<ValidationResult?>? _toWait;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    FormState? oldForm = _form;
-    _form = Data.maybeOf(context);
-    if (oldForm != _form) {
-      if (_validity != null) {
-        oldForm?._removeValidity(_validity!);
-        _form?._addValidity(_validity!);
-      }
-      validate();
+    var oldController = _controller;
+    var newController = Data.maybeOf<FormController>(context);
+    if (oldController != newController) {
+      oldController?.removeListener(_onControllerChanged);
+      oldController?.detach(widget.key);
+      newController?.addListener(_onControllerChanged);
+      _controller = newController;
     }
   }
 
   @override
   void dispose() {
-    if (_validity != null) {
-      _form?._removeValidity(_validity!);
-    }
+    _controller?.removeListener(_onControllerChanged);
+    _controller?.detach(widget.key);
     super.dispose();
   }
 
-  void validate() {
-    ValidationResult? result = widget.validator?.validate(context, _value);
-    if (_validity != result) {
-      setState(() {
-        ValidationResult? oldValidity = _validity;
-        _validity = result;
-        if (oldValidity != null) {
-          _form?._removeValidity(oldValidity);
-        }
-        if (_validity != null) {
-          _form?._addValidity(_validity!);
-        }
-      });
+  void _onControllerChanged() {
+    var validityFuture = _controller?.getState(widget.key)?.validity;
+    if (validityFuture == _toWait) {
+      return;
     }
-  }
-
-  Widget buildEditor(BuildContext context);
-}
-
-class Form extends StatefulWidget {
-  final List<Widget> children;
-
-  const Form({super.key, required this.children});
-
-  @override
-  FormState createState() => FormState();
-}
-
-class FormState extends State<Form> {
-  final List<ValidationResult> _validities = [];
-
-  void _addValidity(ValidationResult validity) {
-    if (!_validities.contains(validity)) {
-      setState(() {
-        _validities.add(validity);
-      });
-    }
-  }
-
-  void _removeValidity(ValidationResult validity) {
-    if (_validities.contains(validity)) {
-      setState(() {
-        _validities.remove(validity);
-      });
-    }
+    _toWait = validityFuture;
+    int counter = ++_toWaitCounter;
+    _toWait?.then((value) {
+      if (counter == _toWaitCounter) {
+        _validity.value = value;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Data(
       data: this,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: widget.children,
+      child: widget.child,
+    );
+  }
+}
+
+class FormValueState<T> {
+  final T? value;
+  final Future<ValidationResult?>? validity;
+  final Validator<T>? validator;
+
+  FormValueState({this.value, this.validity, this.validator});
+
+  @override
+  String toString() {
+    return 'FormValueState($value, $validity, $validator)';
+  }
+}
+
+typedef FormSubmitCallback = void Function(
+    BuildContext context, Map<FormKey, dynamic> values);
+
+class Form extends StatefulWidget {
+  final Widget child;
+  final FormSubmitCallback? onSubmit;
+
+  const Form({super.key, required this.child, this.onSubmit});
+
+  @override
+  State<Form> createState() => FormState();
+}
+
+class FormController extends ChangeNotifier {
+  final Map<FormKey, FormValueState> _attachedInputs = {};
+
+  FormValueState? getState(FormKey key) {
+    return _attachedInputs[key];
+  }
+
+  void attach(BuildContext context, FormKey key, FormValueState state) {
+    final oldState = _attachedInputs[key];
+    if (oldState == state) {
+      return;
+    }
+    _attachedInputs[key] = state;
+    // check for revalidation
+    Map<FormKey, Future<ValidationResult?>> revalidate = {};
+    for (var entry in _attachedInputs.entries) {
+      var k = entry.key;
+      var value = entry.value;
+      if (key == k) {
+        continue;
+      }
+      if (value.validator != null && value.validator!.shouldRevalidate()) {
+        revalidate[k] = value.validator!.validate(context, value.value);
+      }
+    }
+    for (var entry in revalidate.entries) {
+      var k = entry.key;
+      var future = entry.value;
+      var attachedInput = _attachedInputs[k]!;
+      attachedInput = FormValueState(
+          value: attachedInput.value,
+          validity: future,
+          validator: attachedInput.validator);
+      _attachedInputs[k] = attachedInput;
+    }
+    notifyListeners();
+  }
+
+  void detach(FormKey key) {
+    if (_attachedInputs.containsKey(key)) {
+      _attachedInputs.remove(key);
+      notifyListeners();
+    }
+  }
+}
+
+class FormState extends State<Form> {
+  final FormController _controller = FormController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Data(
+      data: this,
+      child: Data(
+        data: _controller,
+        child: widget.child,
       ),
     );
   }
 }
 
-class FormHeader extends StatelessWidget {
-  final Widget title;
-  final Widget? subtitle;
+class FormEntryErrorBuilder extends StatelessWidget {
+  final Widget Function(
+      BuildContext context, ValidationResult? error, Widget? child) builder;
+  final Widget? child;
 
-  const FormHeader({super.key, required this.title, this.subtitle});
+  const FormEntryErrorBuilder({super.key, required this.builder, this.child});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    final formController = Data.maybeOf<FormEntryState>(context);
+    if (formController != null) {
+      return ValueListenableBuilder<ValidationResult?>(
+        valueListenable: formController._validity,
+        child: child,
+        builder: (context, validity, child) {
+          return builder(context, validity, child);
+        },
+      );
+    }
+    return builder(context, null, child);
+  }
+}
+
+class WaitingResult extends ValidationResult {
+  const WaitingResult();
+}
+
+class FormErrorBuilder extends StatelessWidget {
+  final Widget? child;
+  final Widget Function(BuildContext context,
+      Map<FormKey, ValidationResult> errors, Widget? child) builder;
+
+  const FormErrorBuilder({super.key, required this.builder, this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final formController = Data.maybeOf<FormController>(context);
+    if (formController != null) {
+      return AnimatedBuilder(
+        animation: formController,
+        builder: (context, child) {
+          final errors = <FormKey, Future<ValidationResult?>>{};
+          for (var entry in formController._attachedInputs.entries) {
+            var key = entry.key;
+            var value = entry.value;
+            if (value.validity != null) {
+              errors[key] = value.validity!;
+            }
+          }
+          // future builder
+          return FutureBuilder<List<MapEntry<FormKey, ValidationResult?>>>(
+            future: Future.wait(errors.entries.map((entry) async {
+              var key = entry.key;
+              var value = await entry.value;
+              return MapEntry(key, value);
+            })),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return builder(
+                    context,
+                    {
+                      for (var entry in formController._attachedInputs.entries)
+                        entry.key: const WaitingResult()
+                    },
+                    child);
+              }
+              if (snapshot.hasData) {
+                final errors = <FormKey, ValidationResult>{};
+                for (var entry in snapshot.data!) {
+                  var key = entry.key;
+                  var value = entry.value;
+                  if (value != null) {
+                    errors[key] = value;
+                  }
+                }
+                return builder(context, errors, child);
+              }
+              return builder(context, {}, child);
+            },
+          );
+        },
+      );
+    }
+    return builder(context, {}, child);
+  }
+}
+
+extension FormExtension on BuildContext {
+  T? getFormValue<T>(FormKey<T> key) {
+    final formController = Data.maybeOf<FormController>(this);
+    if (formController != null) {
+      final state = formController.getState(key);
+      if (state != null) {
+        return state.value;
+      }
+    }
+    return null;
+  }
+
+  Future<SubmissionResult> submitForm() async {
+    final formState = Data.maybeOf<FormState>(this);
+    assert(formState != null, 'Form not found');
+    final formController = Data.maybeOf<FormController>(this);
+    assert(formController != null, 'Form not found');
+    final values = <FormKey, dynamic>{};
+    final errors = <FormKey, ValidationResult>{};
+    for (var entry in formController!._attachedInputs.entries) {
+      var key = entry.key;
+      var value = entry.value;
+      values[key] = value.value;
+      if (value.validity != null) {
+        var result = await value.validity!;
+        if (result != null) {
+          errors[key] = result;
+        }
+      }
+    }
+    if (errors.isNotEmpty) {
+      return SubmissionResult(values, errors);
+    }
+    formState?.widget.onSubmit?.call(this, values);
+    return SubmissionResult(values, errors);
+  }
+
+  Future<ValidationResult?>? reportNewFormValue<T>(T value) async {
+    final formController = Data.maybeOf<FormController>(this);
+    if (formController != null) {
+      final formEntry = Data.maybeOf<FormEntryState>(this);
+      if (formEntry != null) {
+        var formKey = formEntry.widget.key;
+        Type type = formKey.type;
+        if (type == value.runtimeType) {
+          final oldState = formController.getState(formKey);
+          if (oldState != null) {
+            if (oldState.value == value) {
+              return null;
+            }
+            final oldFuture = oldState.validity;
+            if (oldFuture != null) {
+              return oldFuture.then((oldValidity) async {
+                var validity =
+                    formEntry.widget.validator?.validate(this, value);
+                formController.attach(
+                    this,
+                    formKey,
+                    FormValueState(
+                        value: value,
+                        validity: validity,
+                        validator: formEntry.widget.validator));
+                return validity;
+              });
+            }
+          }
+          var validity = formEntry.widget.validator?.validate(this, value);
+          formController.attach(
+              this,
+              formKey,
+              FormValueState(
+                  value: value,
+                  validity: validity,
+                  validator: formEntry.widget.validator));
+          return validity;
+        }
+      }
+    }
+    return null;
+  }
+}
+
+mixin FormValueSupplier<X extends StatefulWidget> on State<X> {
+  int _futureCounter = 0;
+  void reportNewFormValue<T>(T value, ValueChanged<T> onReplace) {
+    final currentCounter = ++_futureCounter;
+    context.reportNewFormValue(value)?.then((value) {
+      if (_futureCounter == currentCounter) {
+        if (value is ReplaceResult<T>) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            if (context.mounted) {
+              onReplace(value.value);
+            }
+          });
+        }
+      }
+    });
+  }
+}
+
+class SubmissionResult {
+  final Map<FormKey, dynamic> values;
+  final Map<FormKey, ValidationResult> errors;
+
+  const SubmissionResult(this.values, this.errors);
+}
+
+class FormRow<T> extends StatelessWidget {
+  final Widget label;
+  final Widget? hint;
+  final Widget child;
+  final Validator<T>? validator;
+
+  const FormRow({
+    required FormKey<T> super.key,
+    required this.label,
+    required this.child,
+    this.validator,
+    this.hint,
+  });
+
+  @override
+  FormKey<T> get key => super.key as FormKey<T>;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return FormEntry<T>(
+      key: key,
+      validator: validator,
+      child: FormEntryErrorBuilder(
+        builder: (context, error, child) {
+          return IntrinsicWidth(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                mergeAnimatedTextStyle(
+                  style: error != null
+                      ? TextStyle(color: theme.colorScheme.destructive)
+                      : null,
+                  child: label.textSmall(),
+                  duration: kDefaultDuration,
+                ),
+                gap(8),
+                child!,
+                if (hint != null) ...[
+                  gap(8),
+                  hint!.xSmall().muted(),
+                ],
+                if (error is InvalidResult) ...[
+                  gap(8),
+                  mergeAnimatedTextStyle(
+                    style: TextStyle(color: theme.colorScheme.destructive),
+                    child: Text(error.message).xSmall().medium(),
+                    duration: kDefaultDuration,
+                  ),
+                ],
+              ],
+            ),
+          );
+        },
+        child: child,
+      ),
+    );
+  }
+}
+
+class FormInline<T> extends StatelessWidget {
+  final Widget label;
+  final Widget? hint;
+  final Widget child;
+  final Validator<T>? validator;
+
+  const FormInline({
+    required FormKey<T> super.key,
+    required this.label,
+    required this.child,
+    this.validator,
+    this.hint,
+  });
+
+  @override
+  FormKey<T> get key => super.key as FormKey<T>;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return FormEntry<T>(
+      key: key,
+      validator: validator,
+      child: FormEntryErrorBuilder(
+        builder: (context, error, child) {
+          return IntrinsicWidth(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      mergeAnimatedTextStyle(
+                        style: error != null
+                            ? TextStyle(color: theme.colorScheme.destructive)
+                            : null,
+                        child: label.textSmall(),
+                        duration: kDefaultDuration,
+                      ),
+                      gap(8),
+                      Expanded(child: child!),
+                    ],
+                  ),
+                ),
+                if (hint != null) ...[
+                  gap(8),
+                  hint!.xSmall().muted(),
+                ],
+                if (error is InvalidResult) ...[
+                  gap(8),
+                  mergeAnimatedTextStyle(
+                    style: TextStyle(color: theme.colorScheme.destructive),
+                    child: Text(error.message).xSmall().medium(),
+                    duration: kDefaultDuration,
+                  ),
+                ],
+              ],
+            ),
+          );
+        },
+        child: child,
+      ),
+    );
+  }
+}
+
+class FormTableLayout extends StatelessWidget {
+  final List<FormRow> rows;
+
+  const FormTableLayout({super.key, required this.rows});
+
+  @override
+  Widget build(BuildContext context) {
+    return Table(
+      columnWidths: const {
+        0: IntrinsicColumnWidth(),
+        1: FlexColumnWidth(),
+      },
       children: [
-        title.large().medium(),
-        if (subtitle != null) subtitle!.small().muted(),
-        const SizedBox(height: 24),
-        const Divider(),
+        for (int i = 0; i < rows.length; i++)
+          TableRow(
+            children: [
+              rows[i]
+                  .label
+                  .textSmall()
+                  .withAlign(Alignment.centerRight)
+                  .withMargin(right: 16)
+                  .sized(height: 32)
+                  .withPadding(
+                    top: i == 0 ? 0 : 16,
+                  ),
+              FormEntry(
+                key: rows[i].key,
+                validator: rows[i].validator,
+                child: FormEntryErrorBuilder(
+                  builder: (context, error, child) {
+                    return IntrinsicWidth(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          child!,
+                          if (rows[i].hint != null) ...[
+                            gap(8),
+                            rows[i].hint!.xSmall().muted(),
+                          ],
+                          if (error is InvalidResult) ...[
+                            gap(8),
+                            mergeAnimatedTextStyle(
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .destructive),
+                              child: Text(error.message).xSmall().medium(),
+                              duration: kDefaultDuration,
+                            ),
+                          ],
+                        ],
+                      ),
+                    );
+                  },
+                  child: rows[i].child,
+                ),
+              ).withPadding(
+                top: i == 0 ? 0 : 16,
+              ),
+            ],
+          ),
       ],
-    );
-  }
-}
-
-class FormColumn extends StatelessWidget {
-  final List<Widget> children;
-  const FormColumn({super.key, required this.children});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: join(children, const SizedBox(height: 32)).toList(),
-    );
-  }
-}
-
-class FormRow extends StatelessWidget {
-  final List<Widget> children;
-  const FormRow({super.key, required this.children});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: join(children, const SizedBox(width: 32)).toList(),
     );
   }
 }
