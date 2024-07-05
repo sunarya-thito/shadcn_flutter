@@ -240,7 +240,9 @@ String _formatCode(String code) {
     multiLine: true,
     dotAll: true,
   );
-  code = exp.firstMatch(code)!.group(1)!;
+  var firstMatch = exp.firstMatch(code);
+  assert(firstMatch != null, 'Code snippet must have a return statement');
+  code = firstMatch!.group(1)!;
   // remove the indentation by one level for each line except the first line
   List<String> lines = code.split('\n');
   String formatted = lines.first;

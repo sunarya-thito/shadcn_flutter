@@ -26,7 +26,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                   'Beautifully designed components from Shadcn/UI is now available for Flutter.')
               .lead(),
           gap(32),
-          const Text('This is unofficial port of Shadcn for Flutter.'),
+          const Text('This is unofficial port of Shadcn/UI for Flutter.'),
           const Text(
               'If you found any issues, please report it to our GitHub instead of Shadcn/ui.'),
           const Text('Frequency Asked Questions').h2().anchored(faqKey),

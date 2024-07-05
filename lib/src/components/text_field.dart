@@ -108,7 +108,6 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
 
   @override
   Widget build(BuildContext context) {
-    print('rebuild TextField');
     final theme = Theme.of(context);
     TextStyle defaultTextStyle = DefaultTextStyle.of(context).style;
     return AnimatedBuilder(
