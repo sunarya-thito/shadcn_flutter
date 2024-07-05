@@ -27,7 +27,7 @@ abstract class Validator<T> {
     return combine(other);
   }
 
-  bool shouldRevalidate() => false;
+  bool shouldRevalidate(FormKey<dynamic> source) => false;
 }
 
 class NotValidator<T> extends Validator<T> {
@@ -71,9 +71,9 @@ class OrValidator<T> extends Validator<T> {
   }
 
   @override
-  bool shouldRevalidate() {
+  bool shouldRevalidate(FormKey<dynamic> source) {
     for (var validator in validators) {
-      if (validator.shouldRevalidate()) {
+      if (validator.shouldRevalidate(source)) {
         return true;
       }
     }
@@ -213,8 +213,8 @@ class CompareWith<T extends Comparable<T>> extends Validator<T> {
   }
 
   @override
-  bool shouldRevalidate() {
-    return true;
+  bool shouldRevalidate(FormKey<dynamic> source) {
+    return source == key;
   }
 }
 
@@ -505,9 +505,9 @@ class CompositeValidator<T> extends Validator<T> {
   }
 
   @override
-  bool shouldRevalidate() {
+  bool shouldRevalidate(FormKey<dynamic> source) {
     for (var validator in validators) {
-      if (validator.shouldRevalidate()) {
+      if (validator.shouldRevalidate(source)) {
         return true;
       }
     }
@@ -674,7 +674,7 @@ class FormController extends ChangeNotifier {
       if (key == k) {
         continue;
       }
-      if (value.validator != null && value.validator!.shouldRevalidate()) {
+      if (value.validator != null && value.validator!.shouldRevalidate(key)) {
         revalidate[k] = value.validator!.validate(context, value.value);
       }
     }
