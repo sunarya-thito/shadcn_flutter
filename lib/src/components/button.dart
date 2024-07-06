@@ -255,6 +255,8 @@ abstract class ButtonState<T extends Button> extends State<T> {
 
 class PrimaryButton extends Button {
   final ButtonShape shape;
+  final Color? color;
+  final BorderRadius? borderRadius;
   const PrimaryButton({
     Key? key,
     Widget? leading,
@@ -268,6 +270,8 @@ class PrimaryButton extends Button {
     AlignmentGeometry? alignment,
     TextStyle textStyle = Button.normalTextStyle,
     this.shape = ButtonShape.rectangle,
+    this.color,
+    this.borderRadius,
   }) : super(
           key: key,
           leading: leading,
@@ -294,12 +298,14 @@ class _PrimaryButtonState extends ButtonState<PrimaryButton> {
       duration: kDefaultDuration,
       decoration: widget.shape == ButtonShape.rectangle
           ? BoxDecoration(
-              color: isDisabled
-                  ? themeData.colorScheme.mutedForeground
-                  : isHovering
-                      ? themeData.colorScheme.primary.withOpacity(0.8)
-                      : themeData.colorScheme.primary,
-              borderRadius: BorderRadius.circular(themeData.radiusMd),
+              color: widget.color ??
+                  (isDisabled
+                      ? themeData.colorScheme.mutedForeground
+                      : isHovering
+                          ? themeData.colorScheme.primary.withOpacity(0.8)
+                          : themeData.colorScheme.primary),
+              borderRadius: widget.borderRadius ??
+                  BorderRadius.circular(themeData.radiusMd),
               border: Border.all(
                 color: isDisabled
                     ? themeData.colorScheme.mutedForeground
@@ -310,11 +316,12 @@ class _PrimaryButtonState extends ButtonState<PrimaryButton> {
               ),
             )
           : BoxDecoration(
-              color: isDisabled
-                  ? themeData.colorScheme.mutedForeground
-                  : isHovering
-                      ? themeData.colorScheme.primary.withOpacity(0.8)
-                      : themeData.colorScheme.primary,
+              color: widget.color ??
+                  (isDisabled
+                      ? themeData.colorScheme.mutedForeground
+                      : isHovering
+                          ? themeData.colorScheme.primary.withOpacity(0.8)
+                          : themeData.colorScheme.primary),
               shape: BoxShape.circle,
               border: Border.all(
                 color: isDisabled
@@ -345,6 +352,8 @@ class _PrimaryButtonState extends ButtonState<PrimaryButton> {
 
 class SecondaryButton extends Button {
   final ButtonShape shape;
+  final Color? color;
+  final BorderRadius? borderRadius;
   const SecondaryButton({
     Key? key,
     Widget? leading,
@@ -358,6 +367,8 @@ class SecondaryButton extends Button {
     AlignmentGeometry? alignment,
     TextStyle textStyle = Button.normalTextStyle,
     this.shape = ButtonShape.rectangle,
+    this.color,
+    this.borderRadius,
   }) : super(
           key: key,
           leading: leading,
@@ -384,19 +395,22 @@ class _SecondaryButtonState extends ButtonState<SecondaryButton> {
       duration: kDefaultDuration,
       decoration: widget.shape == ButtonShape.rectangle
           ? BoxDecoration(
-              color: isDisabled
-                  ? themeData.colorScheme.primaryForeground
-                  : isHovering
-                      ? themeData.colorScheme.secondary.withOpacity(0.8)
-                      : themeData.colorScheme.secondary,
-              borderRadius: BorderRadius.circular(themeData.radiusMd),
+              color: widget.color ??
+                  (isDisabled
+                      ? themeData.colorScheme.primaryForeground
+                      : isHovering
+                          ? themeData.colorScheme.secondary.withOpacity(0.8)
+                          : themeData.colorScheme.secondary),
+              borderRadius: widget.borderRadius ??
+                  BorderRadius.circular(themeData.radiusMd),
             )
           : BoxDecoration(
-              color: isDisabled
-                  ? themeData.colorScheme.primaryForeground
-                  : isHovering
-                      ? themeData.colorScheme.secondary.withOpacity(0.8)
-                      : themeData.colorScheme.secondary,
+              color: widget.color ??
+                  (isDisabled
+                      ? themeData.colorScheme.primaryForeground
+                      : isHovering
+                          ? themeData.colorScheme.secondary.withOpacity(0.8)
+                          : themeData.colorScheme.secondary),
               shape: BoxShape.circle,
             ),
       padding: padding,

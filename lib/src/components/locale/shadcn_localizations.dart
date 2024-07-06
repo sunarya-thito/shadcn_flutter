@@ -27,6 +27,8 @@ abstract class ShadcnLocalizations {
         DefaultShadcnLocalizations.instance;
   }
 
+  const ShadcnLocalizations();
+
   String get formNotEmpty;
   String get invalidValue;
   String get invalidEmail;
@@ -47,9 +49,80 @@ abstract class ShadcnLocalizations {
 
   String get commandSearch;
   String get commandEmpty;
+  String get abbreviatedMonday;
+  String get abbreviatedTuesday;
+  String get abbreviatedWednesday;
+  String get abbreviatedThursday;
+  String get abbreviatedFriday;
+  String get abbreviatedSaturday;
+  String get abbreviatedSunday;
+  String get monthJanuary;
+  String get monthFebruary;
+  String get monthMarch;
+  String get monthApril;
+  String get monthMay;
+  String get monthJune;
+  String get monthJuly;
+  String get monthAugust;
+  String get monthSeptember;
+  String get monthOctober;
+  String get monthNovember;
+  String get monthDecember;
+
+  String getAbbreviatedWeekday(int weekday) {
+    switch (weekday) {
+      case DateTime.monday:
+        return abbreviatedMonday;
+      case DateTime.tuesday:
+        return abbreviatedTuesday;
+      case DateTime.wednesday:
+        return abbreviatedWednesday;
+      case DateTime.thursday:
+        return abbreviatedThursday;
+      case DateTime.friday:
+        return abbreviatedFriday;
+      case DateTime.saturday:
+        return abbreviatedSaturday;
+      case DateTime.sunday:
+        return abbreviatedSunday;
+      default:
+        throw ArgumentError.value(weekday, 'weekday');
+    }
+  }
+
+  String getMonth(int month) {
+    switch (month) {
+      case DateTime.january:
+        return monthJanuary;
+      case DateTime.february:
+        return monthFebruary;
+      case DateTime.march:
+        return monthMarch;
+      case DateTime.april:
+        return monthApril;
+      case DateTime.may:
+        return monthMay;
+      case DateTime.june:
+        return monthJune;
+      case DateTime.july:
+        return monthJuly;
+      case DateTime.august:
+        return monthAugust;
+      case DateTime.september:
+        return monthSeptember;
+      case DateTime.october:
+        return monthOctober;
+      case DateTime.november:
+        return monthNovember;
+      case DateTime.december:
+        return monthDecember;
+      default:
+        throw ArgumentError.value(month, 'month');
+    }
+  }
 }
 
-class DefaultShadcnLocalizations implements ShadcnLocalizations {
+class DefaultShadcnLocalizations extends ShadcnLocalizations {
   static const ShadcnLocalizations instance = DefaultShadcnLocalizations();
 
   const DefaultShadcnLocalizations();
@@ -126,4 +199,61 @@ class DefaultShadcnLocalizations implements ShadcnLocalizations {
   @override
   String get formPasswordSpecial =>
       'Must contain at least one special character';
+
+  @override
+  String get abbreviatedMonday => 'Mo';
+
+  @override
+  String get abbreviatedTuesday => 'Tu';
+
+  @override
+  String get abbreviatedWednesday => 'We';
+
+  @override
+  String get abbreviatedThursday => 'Th';
+
+  @override
+  String get abbreviatedFriday => 'Fr';
+
+  @override
+  String get abbreviatedSaturday => 'Sa';
+
+  @override
+  String get abbreviatedSunday => 'Su';
+
+  @override
+  String get monthJanuary => 'January';
+
+  @override
+  String get monthFebruary => 'February';
+
+  @override
+  String get monthMarch => 'March';
+
+  @override
+  String get monthApril => 'April';
+
+  @override
+  String get monthMay => 'May';
+
+  @override
+  String get monthJune => 'June';
+
+  @override
+  String get monthJuly => 'July';
+
+  @override
+  String get monthAugust => 'August';
+
+  @override
+  String get monthSeptember => 'September';
+
+  @override
+  String get monthOctober => 'October';
+
+  @override
+  String get monthNovember => 'November';
+
+  @override
+  String get monthDecember => 'December';
 }

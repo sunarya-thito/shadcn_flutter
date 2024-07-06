@@ -19,6 +19,7 @@ export 'src/components/badge.dart';
 export 'src/components/basic.dart';
 export 'src/components/breadcrumb.dart';
 export 'src/components/button.dart';
+export 'src/components/calendar.dart';
 export 'src/components/card.dart';
 export 'src/components/carousel.dart';
 export 'src/components/checkbox.dart';

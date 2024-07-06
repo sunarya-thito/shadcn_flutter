@@ -4,6 +4,7 @@ import 'package:example/pages/docs/components/accordion_example.dart';
 import 'package:example/pages/docs/components/alert_dialog_example.dart';
 import 'package:example/pages/docs/components/alert_example.dart';
 import 'package:example/pages/docs/components/avatar_example.dart';
+import 'package:example/pages/docs/components/calendar_example.dart';
 import 'package:example/pages/docs/components/carousel_example.dart';
 import 'package:example/pages/docs/components/combobox_example.dart';
 import 'package:example/pages/docs/components/divider_example.dart';
@@ -188,6 +189,11 @@ class MyAppState extends State<MyApp> {
             path: 'carousel',
             builder: (context, state) => CarouselExample(),
             name: 'carousel',
+          ),
+          GoRoute(
+            path: 'calendar',
+            builder: (context, state) => CalendarExample(),
+            name: 'calendar',
           )
         ]),
   ]);
