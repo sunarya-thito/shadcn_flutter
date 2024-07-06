@@ -112,7 +112,7 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>> {
             context.showPopover();
           },
           child: value == null
-              ? widget.placeholder
+              ? widget.placeholder.muted()
               : widget.builder(context, value as T),
         );
       },
