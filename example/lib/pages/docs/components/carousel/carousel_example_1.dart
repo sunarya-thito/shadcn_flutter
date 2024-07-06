@@ -31,6 +31,8 @@ class _CarouselExample1State extends State<CarouselExample1> {
                 controller: controller,
                 sizeFactor: 0.8,
                 autoplayDuration: const Duration(seconds: 1),
+                itemCount: 5,
+                wrap: false,
                 itemBuilder: (context, index) {
                   return CarouselItem(
                     duration: Duration(seconds: 2),

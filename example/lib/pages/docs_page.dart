@@ -159,6 +159,7 @@ class DocsPageState extends State<DocsPage> {
               'Calendar', 'calendar', ShadcnFeatureTag.workInProgress),
           ShadcnDocsPage('Card', 'card'),
           ShadcnDocsPage('Carousel', 'carousel'),
+          ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
           ShadcnDocsPage('Checkbox', 'checkbox'),
           ShadcnDocsPage('Circular Progress', 'circular_progress'),
           ShadcnDocsPage('Code Snippet', 'code_snippet'),

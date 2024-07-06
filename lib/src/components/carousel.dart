@@ -4,8 +4,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/animation.dart';
 
-// TODO Circle Icon Button, Dot Navigation
-
 class CarouselController extends Listenable {
   final AnimationQueueController _controller = AnimationQueueController();
 
@@ -203,13 +201,15 @@ class _CarouselState extends State<Carousel>
       } else {
         Duration elapsedDuration = elapsed - _startTime!;
         if (elapsedDuration >= _currentSlideDuration!) {
+          print(
+              'elapsedDuration: $elapsedDuration _startTime: $_startTime _currentSlideDuration: $_currentSlideDuration');
           _controller.animateNext(widget.autoplayDuration!, widget.curve);
           _startTime = null;
         }
       }
     }
     if (_dragVelocity.abs() > 0.0001 && !dragging) {
-      _controller.jumpTo(_controller.value + _dragVelocity);
+      _controller.jumpTo(progressedValue + _dragVelocity);
       // decrease the drag velocity (consider the delta time)
       _dragVelocity *= pow(0.3, deltaMillis / 100);
       if (_dragVelocity.abs() < 0.0001) {
@@ -235,13 +235,20 @@ class _CarouselState extends State<Carousel>
 
   void _onControllerChange() {
     setState(() {});
+    if (!widget.wrap && widget.itemCount != null) {
+      if (_controller.value < 0) {
+        _controller._controller.value = 0;
+      } else if (_controller.value >= widget.itemCount!) {
+        _controller._controller.value = widget.itemCount!.toDouble() - 1;
+      }
+    }
     _dispatchControllerChange();
   }
 
   void _dispatchControllerChange() {
     double currentIndex = _controller.getCurrentIndex(widget.itemCount);
-    final duration = _quickAccessDuration[currentIndex.toInt()];
-    _currentSlideDuration = duration ?? widget.autoplayDuration;
+    var duration = _quickAccessDuration[currentIndex.toInt()];
+    _currentSlideDuration = duration;
     _check();
   }
 
@@ -296,7 +303,7 @@ class _CarouselState extends State<Carousel>
           setState(() {
             var increment = -details.primaryDelta! /
                 ((constraints.maxWidth * widget.sizeFactor) + widget.gap);
-            _controller.jumpTo(_controller.value + increment);
+            _controller.jumpTo(progressedValue + increment);
           });
         }
       },
@@ -327,7 +334,7 @@ class _CarouselState extends State<Carousel>
           setState(() {
             var increment = -details.primaryDelta! /
                 ((constraints.maxHeight * widget.sizeFactor) + widget.gap);
-            _controller.jumpTo(_controller.value + increment);
+            _controller.jumpTo(progressedValue + increment);
           });
         }
       },
@@ -342,6 +349,14 @@ class _CarouselState extends State<Carousel>
         _check();
       },
     );
+  }
+
+  double get progressedValue {
+    if (!widget.wrap && widget.itemCount != null) {
+      return _controller.value.clamp(0.0, widget.itemCount!.toDouble() - 1);
+    } else {
+      return _controller.value;
+    }
   }
 
   Widget buildCarousel(BuildContext context, BoxConstraints constraints) {
@@ -372,12 +387,16 @@ class _CarouselState extends State<Carousel>
     additionalPreviousItems += max(0, (gapBeforeItem / size).ceil());
     additionalNextItems += max(0, (gapAfterItem / size).ceil());
     List<PlacedCarouselItem> items = [];
-    double progressedIndex = _controller.value;
-    double currentIndex =
-        progressedIndex + (widget.gap / size) * progressedIndex;
+    double progressedIndex = progressedValue;
     // curving the index
     int start = progressedIndex.floor() - additionalPreviousItems;
     int end = progressedIndex.floor() + additionalNextItems;
+    if (!widget.wrap && widget.itemCount != null) {
+      start = start.clamp(0, widget.itemCount! - 1);
+      end = end.clamp(0, widget.itemCount! - 1);
+    }
+    double currentIndex =
+        progressedIndex + (widget.gap / size) * progressedIndex;
     for (int i = start; i <= end; i++) {
       double index;
       if (widget.itemCount != null) {
@@ -385,16 +404,10 @@ class _CarouselState extends State<Carousel>
       } else {
         index = i.toDouble();
       }
-      if (!widget.wrap && (index < 0 || index >= widget.itemCount!)) {
-        continue;
-      }
-      final item = widget.itemBuilder(
-          context, widget.reverse ? (-index).toInt() : index.toInt());
+      var itemIndex = widget.reverse ? (-index).toInt() : index.toInt();
+      final item = widget.itemBuilder(context, itemIndex);
       var duration = item.duration;
       if (duration != null) {
-        if (widget.autoplayDuration != null) {
-          duration += widget.autoplayDuration!;
-        }
         _quickAccessDuration[i] = duration;
       }
       double position = i.toDouble();
