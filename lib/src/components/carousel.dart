@@ -84,18 +84,10 @@ enum CarouselAlignment {
   end,
 }
 
-class CarouselItem {
-  final Widget child;
-  final Duration? duration;
-
-  const CarouselItem({
-    required this.child,
-    this.duration,
-  });
-}
-
 class Carousel extends StatefulWidget {
-  final CarouselItem Function(BuildContext context, int index) itemBuilder;
+  final Widget Function(BuildContext context, int index) itemBuilder;
+  final Duration? duration;
+  final Duration? Function(int index)? durationBuilder;
   final int? itemCount;
   final CarouselController? controller;
   final CarouselAlignment? snapAlignment;
@@ -126,6 +118,8 @@ class Carousel extends StatefulWidget {
     this.speed = const Duration(milliseconds: 200),
     this.curve = Curves.easeInOut,
     this.gap = 0,
+    this.duration,
+    this.durationBuilder,
   })  : assert(sizeFactor > 0, 'sizeFactor must be greater than 0'),
         assert(wrap || itemCount != null,
             'itemCount must be provided if wrap is false'),
@@ -138,14 +132,23 @@ class Carousel extends StatefulWidget {
 class _CarouselState extends State<Carousel>
     with SingleTickerProviderStateMixin {
   late CarouselController _controller;
-  final Map<int, Duration> _quickAccessDuration = {};
-  Duration? _currentSlideDuration;
+  // Duration? _currentSlideDuration;
   Duration? _startTime;
   late Ticker _ticker;
   bool hovered = false;
   bool dragging = false;
 
   double _dragVelocity = 0;
+
+  Duration? get _currentSlideDuration {
+    double currentIndex = _controller.getCurrentIndex(widget.itemCount);
+    final int index = currentIndex.floor();
+    Duration? duration = widget.durationBuilder?.call(index) ?? widget.duration;
+    if (duration != null && widget.autoplayDuration != null) {
+      duration += widget.autoplayDuration!;
+    }
+    return duration;
+  }
 
   @override
   void initState() {
@@ -201,9 +204,13 @@ class _CarouselState extends State<Carousel>
       } else {
         Duration elapsedDuration = elapsed - _startTime!;
         if (elapsedDuration >= _currentSlideDuration!) {
-          print(
-              'elapsedDuration: $elapsedDuration _startTime: $_startTime _currentSlideDuration: $_currentSlideDuration');
-          _controller.animateNext(widget.autoplayDuration!, widget.curve);
+          if (!widget.wrap &&
+              widget.itemCount != null &&
+              _controller.value >= widget.itemCount! - 1) {
+            _controller.animateTo(0, widget.speed, widget.curve);
+          } else {
+            _controller.animateNext(widget.autoplayDuration!, widget.curve);
+          }
           _startTime = null;
         }
       }
@@ -246,9 +253,6 @@ class _CarouselState extends State<Carousel>
   }
 
   void _dispatchControllerChange() {
-    double currentIndex = _controller.getCurrentIndex(widget.itemCount);
-    var duration = _quickAccessDuration[currentIndex.toInt()];
-    _currentSlideDuration = duration;
     _check();
   }
 
@@ -360,7 +364,6 @@ class _CarouselState extends State<Carousel>
   }
 
   Widget buildCarousel(BuildContext context, BoxConstraints constraints) {
-    _quickAccessDuration.clear();
     // count how many items can be displayed
     int additionalPreviousItems = 1;
     int additionalNextItems = 1;
@@ -406,15 +409,11 @@ class _CarouselState extends State<Carousel>
       }
       var itemIndex = widget.reverse ? (-index).toInt() : index.toInt();
       final item = widget.itemBuilder(context, itemIndex);
-      var duration = item.duration;
-      if (duration != null) {
-        _quickAccessDuration[i] = duration;
-      }
       double position = i.toDouble();
       // offset the gap
       items.add(PlacedCarouselItem(
         relativeIndex: i,
-        child: item.child,
+        child: item,
         position: position,
       ));
     }

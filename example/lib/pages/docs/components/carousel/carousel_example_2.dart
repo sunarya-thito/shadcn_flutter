@@ -34,11 +34,9 @@ class _CarouselExample2State extends State<CarouselExample2> {
                 sizeFactor: 0.8,
                 autoplayDuration: const Duration(seconds: 2),
                 itemBuilder: (context, index) {
-                  return CarouselItem(
-                    duration: Duration(seconds: 2),
-                    child: CarouselItemWidget(index: index),
-                  );
+                  return CarouselItemWidget(index: index);
                 },
+                duration: Duration(seconds: 2),
               ),
             ),
           ),

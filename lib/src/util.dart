@@ -5,20 +5,11 @@ import 'package:gap/gap.dart';
 const kDefaultDuration = Duration(milliseconds: 150);
 
 double wrapDouble(double value, double min, double max) {
-  // loop around the min and max
-  // for example, min is 0, and max is 10,
-  // then the loop is 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, ...
-  // the value then clamped between 0 and 10
   final range = max - min;
   if (range == 0) {
     return min;
   }
-  // get the normalized value
-  final normalized = (value - min) / range;
-  // get the looped value
-  final looped = normalized % 1.0;
-  // get the clamped value
-  return looped * range + min;
+  return (value - min) % range + min;
 }
 
 class WidgetTreeChangeDetector extends StatefulWidget {
