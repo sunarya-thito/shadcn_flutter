@@ -37,6 +37,7 @@ class FocusOutline extends StatelessWidget {
     double align = -this.align;
     return Stack(
       clipBehavior: Clip.none,
+      fit: StackFit.passthrough,
       children: [
         child,
         if (focused)

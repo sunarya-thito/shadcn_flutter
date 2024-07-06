@@ -20,6 +20,7 @@ export 'src/components/basic.dart';
 export 'src/components/breadcrumb.dart';
 export 'src/components/button.dart';
 export 'src/components/card.dart';
+export 'src/components/carousel.dart';
 export 'src/components/checkbox.dart';
 export 'src/components/circular_progerss_indicator.dart';
 export 'src/components/code_snippet.dart';

@@ -76,81 +76,84 @@ class _CommandState extends State<Command> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     bool canPop = Navigator.of(context).canPop();
-    return IntrinsicWidth(
-      child: OutlinedContainer(
-        clipBehavior: Clip.hardEdge,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.search,
-                  size: 16,
-                  color: theme.colorScheme.mutedForeground,
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    border: false,
-                    // focusNode: _textFieldFocus,
-                    placeholder: ShadcnLocalizations.of(context).commandSearch,
+    return FocusScope(
+      child: IntrinsicWidth(
+        child: OutlinedContainer(
+          clipBehavior: Clip.hardEdge,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.search,
+                    size: 16,
+                    color: theme.colorScheme.mutedForeground,
                   ),
-                ),
-                if (canPop)
-                  DenseButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Icon(
-                      Icons.close,
-                      size: 16,
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      border: false,
+                      // focusNode: _textFieldFocus,
+                      placeholder:
+                          ShadcnLocalizations.of(context).commandSearch,
                     ),
                   ),
-              ],
-            ).withPadding(horizontal: 12),
-            const Divider(),
-            Expanded(
-              child: ValueListenableBuilder(
-                  valueListenable: query,
-                  builder: (context, value, child) {
-                    return StreamBuilder(
-                      stream: _request(context, value),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          List<Widget> items = List.of(snapshot.data!);
-                          if (snapshot.connectionState ==
-                              ConnectionState.active) {
-                            items.add(IconTheme(
-                              data: IconThemeData(
-                                color: theme.colorScheme.mutedForeground,
-                              ),
-                              child: const Center(
-                                      child: CircularProgressIndicator())
-                                  .withPadding(vertical: 24),
-                            ));
-                          } else if (items.isEmpty) {
-                            return widget.emptyBuilder?.call(context) ??
-                                const CommandEmpty();
-                          }
-                          return ListView.separated(
-                            separatorBuilder: (context, index) =>
-                                const Divider(),
-                            shrinkWrap: true,
-                            itemCount: items.length,
-                            itemBuilder: (context, index) => items[index],
-                          );
-                        }
-                        return widget.loadingBuilder?.call(context) ??
-                            const Center(child: CircularProgressIndicator())
-                                .withPadding(vertical: 24);
+                  if (canPop)
+                    DenseButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        Navigator.of(context).pop();
                       },
-                    );
-                  }),
-            ),
-          ],
+                      child: const Icon(
+                        Icons.close,
+                        size: 16,
+                      ),
+                    ),
+                ],
+              ).withPadding(horizontal: 12),
+              const Divider(),
+              Expanded(
+                child: ValueListenableBuilder(
+                    valueListenable: query,
+                    builder: (context, value, child) {
+                      return StreamBuilder(
+                        stream: _request(context, value),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            List<Widget> items = List.of(snapshot.data!);
+                            if (snapshot.connectionState ==
+                                ConnectionState.active) {
+                              items.add(IconTheme(
+                                data: IconThemeData(
+                                  color: theme.colorScheme.mutedForeground,
+                                ),
+                                child: const Center(
+                                        child: CircularProgressIndicator())
+                                    .withPadding(vertical: 24),
+                              ));
+                            } else if (items.isEmpty) {
+                              return widget.emptyBuilder?.call(context) ??
+                                  const CommandEmpty();
+                            }
+                            return ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  const Divider(),
+                              shrinkWrap: true,
+                              itemCount: items.length,
+                              itemBuilder: (context, index) => items[index],
+                            );
+                          }
+                          return widget.loadingBuilder?.call(context) ??
+                              const Center(child: CircularProgressIndicator())
+                                  .withPadding(vertical: 24);
+                        },
+                      );
+                    }),
+              ),
+            ],
+          ),
         ),
       ),
     );

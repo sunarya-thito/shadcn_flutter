@@ -88,6 +88,11 @@ class _ToggleState extends State<Toggle> {
   }
 }
 
+enum ButtonShape {
+  rectangle,
+  circle,
+}
+
 abstract class Button extends StatefulWidget {
   static const EdgeInsets normalPadding = EdgeInsets.symmetric(
     horizontal: 16,
@@ -249,6 +254,7 @@ abstract class ButtonState<T extends Button> extends State<T> {
 }
 
 class PrimaryButton extends Button {
+  final ButtonShape shape;
   const PrimaryButton({
     Key? key,
     Widget? leading,
@@ -261,6 +267,7 @@ class PrimaryButton extends Button {
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
     TextStyle textStyle = Button.normalTextStyle,
+    this.shape = ButtonShape.rectangle,
   }) : super(
           key: key,
           leading: leading,
@@ -285,22 +292,39 @@ class _PrimaryButtonState extends ButtonState<PrimaryButton> {
     var themeData = Theme.of(context);
     return AnimatedContainer(
       duration: kDefaultDuration,
-      decoration: BoxDecoration(
-        color: isDisabled
-            ? themeData.colorScheme.mutedForeground
-            : isHovering
-                ? themeData.colorScheme.primary.withOpacity(0.8)
-                : themeData.colorScheme.primary,
-        borderRadius: BorderRadius.circular(themeData.radiusMd),
-        border: Border.all(
-          color: isDisabled
-              ? themeData.colorScheme.mutedForeground
-              : isHovering
-                  ? themeData.colorScheme.primary.withOpacity(0.8)
-                  : themeData.colorScheme.primary,
-          width: 1,
-        ),
-      ),
+      decoration: widget.shape == ButtonShape.rectangle
+          ? BoxDecoration(
+              color: isDisabled
+                  ? themeData.colorScheme.mutedForeground
+                  : isHovering
+                      ? themeData.colorScheme.primary.withOpacity(0.8)
+                      : themeData.colorScheme.primary,
+              borderRadius: BorderRadius.circular(themeData.radiusMd),
+              border: Border.all(
+                color: isDisabled
+                    ? themeData.colorScheme.mutedForeground
+                    : isHovering
+                        ? themeData.colorScheme.primary.withOpacity(0.8)
+                        : themeData.colorScheme.primary,
+                width: 1,
+              ),
+            )
+          : BoxDecoration(
+              color: isDisabled
+                  ? themeData.colorScheme.mutedForeground
+                  : isHovering
+                      ? themeData.colorScheme.primary.withOpacity(0.8)
+                      : themeData.colorScheme.primary,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isDisabled
+                    ? themeData.colorScheme.mutedForeground
+                    : isHovering
+                        ? themeData.colorScheme.primary.withOpacity(0.8)
+                        : themeData.colorScheme.primary,
+                width: 1,
+              ),
+            ),
       padding: padding,
       child: mergeAnimatedTextStyle(
         duration: kDefaultDuration,
@@ -320,6 +344,7 @@ class _PrimaryButtonState extends ButtonState<PrimaryButton> {
 }
 
 class SecondaryButton extends Button {
+  final ButtonShape shape;
   const SecondaryButton({
     Key? key,
     Widget? leading,
@@ -332,6 +357,7 @@ class SecondaryButton extends Button {
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
     TextStyle textStyle = Button.normalTextStyle,
+    this.shape = ButtonShape.rectangle,
   }) : super(
           key: key,
           leading: leading,
@@ -356,14 +382,23 @@ class _SecondaryButtonState extends ButtonState<SecondaryButton> {
     var themeData = Theme.of(context);
     return AnimatedContainer(
       duration: kDefaultDuration,
-      decoration: BoxDecoration(
-        color: isDisabled
-            ? themeData.colorScheme.primaryForeground
-            : isHovering
-                ? themeData.colorScheme.secondary.withOpacity(0.8)
-                : themeData.colorScheme.secondary,
-        borderRadius: BorderRadius.circular(themeData.radiusMd),
-      ),
+      decoration: widget.shape == ButtonShape.rectangle
+          ? BoxDecoration(
+              color: isDisabled
+                  ? themeData.colorScheme.primaryForeground
+                  : isHovering
+                      ? themeData.colorScheme.secondary.withOpacity(0.8)
+                      : themeData.colorScheme.secondary,
+              borderRadius: BorderRadius.circular(themeData.radiusMd),
+            )
+          : BoxDecoration(
+              color: isDisabled
+                  ? themeData.colorScheme.primaryForeground
+                  : isHovering
+                      ? themeData.colorScheme.secondary.withOpacity(0.8)
+                      : themeData.colorScheme.secondary,
+              shape: BoxShape.circle,
+            ),
       padding: padding,
       child: mergeAnimatedTextStyle(
         duration: kDefaultDuration,
@@ -387,6 +422,7 @@ class _SecondaryButtonState extends ButtonState<SecondaryButton> {
 }
 
 class OutlineButton extends Button {
+  final ButtonShape shape;
   const OutlineButton({
     Key? key,
     Widget? leading,
@@ -399,6 +435,7 @@ class OutlineButton extends Button {
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
     TextStyle textStyle = Button.normalTextStyle,
+    this.shape = ButtonShape.rectangle,
   }) : super(
           key: key,
           leading: leading,
@@ -417,28 +454,45 @@ class OutlineButton extends Button {
   _OutlineButtonState createState() => _OutlineButtonState();
 }
 
-class _OutlineButtonState extends ButtonState {
+class _OutlineButtonState extends ButtonState<OutlineButton> {
   @override
   Widget buildButton(BuildContext context) {
     var themeData = Theme.of(context);
     return AnimatedContainer(
       duration: kDefaultDuration,
-      decoration: BoxDecoration(
-        color: isDisabled
-            ? Colors.transparent
-            : isHovering
-                ? themeData.colorScheme.muted.withOpacity(0.8)
-                : Colors.transparent,
-        border: Border.all(
-          color: isDisabled
-              ? themeData.colorScheme.muted
-              : isHovering
-                  ? themeData.colorScheme.muted.withOpacity(0.8)
-                  : themeData.colorScheme.muted,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(themeData.radiusMd),
-      ),
+      decoration: widget.shape == ButtonShape.rectangle
+          ? BoxDecoration(
+              color: isDisabled
+                  ? Colors.transparent
+                  : isHovering
+                      ? themeData.colorScheme.muted.withOpacity(0.8)
+                      : Colors.transparent,
+              border: Border.all(
+                color: isDisabled
+                    ? themeData.colorScheme.muted
+                    : isHovering
+                        ? themeData.colorScheme.muted.withOpacity(0.8)
+                        : themeData.colorScheme.muted,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(themeData.radiusMd),
+            )
+          : BoxDecoration(
+              color: isDisabled
+                  ? Colors.transparent
+                  : isHovering
+                      ? themeData.colorScheme.muted.withOpacity(0.8)
+                      : Colors.transparent,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isDisabled
+                    ? themeData.colorScheme.muted
+                    : isHovering
+                        ? themeData.colorScheme.muted.withOpacity(0.8)
+                        : themeData.colorScheme.muted,
+                width: 1,
+              ),
+            ),
       padding: padding,
       child: mergeAnimatedTextStyle(
         duration: kDefaultDuration,
@@ -462,6 +516,7 @@ class _OutlineButtonState extends ButtonState {
 }
 
 class GhostButton extends Button {
+  final ButtonShape shape;
   const GhostButton({
     Key? key,
     Widget? leading,
@@ -474,6 +529,7 @@ class GhostButton extends Button {
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
     TextStyle textStyle = Button.normalTextStyle,
+    this.shape = ButtonShape.rectangle,
   }) : super(
           key: key,
           leading: leading,
@@ -492,18 +548,25 @@ class GhostButton extends Button {
   _GhostButtonState createState() => _GhostButtonState();
 }
 
-class _GhostButtonState extends ButtonState {
+class _GhostButtonState extends ButtonState<GhostButton> {
   @override
   Widget buildButton(BuildContext context) {
     var themeData = Theme.of(context);
     return AnimatedContainer(
       duration: kDefaultDuration,
-      decoration: BoxDecoration(
-        color: isHovering && !isDisabled
-            ? themeData.colorScheme.muted.withOpacity(0.8)
-            : Colors.transparent,
-        borderRadius: BorderRadius.circular(themeData.radiusMd),
-      ),
+      decoration: widget.shape == ButtonShape.rectangle
+          ? BoxDecoration(
+              color: isHovering && !isDisabled
+                  ? themeData.colorScheme.muted.withOpacity(0.8)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(themeData.radiusMd),
+            )
+          : BoxDecoration(
+              color: isHovering && !isDisabled
+                  ? themeData.colorScheme.muted.withOpacity(0.8)
+                  : Colors.transparent,
+              shape: BoxShape.circle,
+            ),
       padding: padding,
       child: mergeAnimatedTextStyle(
         duration: kDefaultDuration,
@@ -740,6 +803,7 @@ class _TextButtonState extends ButtonState {
 }
 
 class DestructiveButton extends Button {
+  final ButtonShape shape;
   const DestructiveButton({
     Key? key,
     Widget? leading,
@@ -752,6 +816,7 @@ class DestructiveButton extends Button {
     EdgeInsets padding = Button.normalPadding,
     AlignmentGeometry? alignment,
     TextStyle textStyle = Button.normalTextStyle,
+    this.shape = ButtonShape.rectangle,
   }) : super(
           key: key,
           leading: leading,
@@ -770,20 +835,29 @@ class DestructiveButton extends Button {
   _DestructiveButtonState createState() => _DestructiveButtonState();
 }
 
-class _DestructiveButtonState extends ButtonState {
+class _DestructiveButtonState extends ButtonState<DestructiveButton> {
   @override
   Widget buildButton(BuildContext context) {
     var themeData = Theme.of(context);
     return AnimatedContainer(
       duration: kDefaultDuration,
-      decoration: BoxDecoration(
-        color: isDisabled
-            ? themeData.colorScheme.primaryForeground
-            : isHovering
-                ? themeData.colorScheme.destructive.withOpacity(0.8)
-                : themeData.colorScheme.destructive,
-        borderRadius: BorderRadius.circular(themeData.radiusMd),
-      ),
+      decoration: widget.shape == ButtonShape.rectangle
+          ? BoxDecoration(
+              color: isDisabled
+                  ? themeData.colorScheme.primaryForeground
+                  : isHovering
+                      ? themeData.colorScheme.destructive.withOpacity(0.8)
+                      : themeData.colorScheme.destructive,
+              borderRadius: BorderRadius.circular(themeData.radiusMd),
+            )
+          : BoxDecoration(
+              color: isDisabled
+                  ? themeData.colorScheme.primaryForeground
+                  : isHovering
+                      ? themeData.colorScheme.destructive.withOpacity(0.8)
+                      : themeData.colorScheme.destructive,
+              shape: BoxShape.circle,
+            ),
       padding: padding,
       child: mergeAnimatedTextStyle(
         duration: kDefaultDuration,
