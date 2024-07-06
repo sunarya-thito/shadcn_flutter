@@ -55,7 +55,7 @@ class _CalendarExample1State extends State<CalendarExample1> {
                   _value = value;
                 });
               },
-              selectionMode: CalendarSelectionMode.multi,
+              selectionMode: CalendarSelectionMode.range,
             ),
           ],
         ),
