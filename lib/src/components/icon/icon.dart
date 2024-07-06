@@ -45,9 +45,10 @@ extension IconExtension on Widget {
     return Builder(
       builder: (context) {
         final theme = Theme.of(context);
-        return IconTheme(
+        return AnimatedIconTheme.merge(
           data: IconThemeData(color: theme.colorScheme.mutedForeground),
           child: this,
+          duration: kDefaultDuration,
         );
       },
     );

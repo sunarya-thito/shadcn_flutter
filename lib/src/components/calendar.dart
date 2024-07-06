@@ -1,28 +1,212 @@
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+class DatePickerDialog extends StatefulWidget {
+  final CalendarView initialView;
+  final CalendarSelectionMode selectionMode;
+  final CalendarValue? initialValue;
+  final ValueChanged<CalendarValue?>? onChanged;
+  final bool Function(DateTime date)? isDateEnabled;
+  final Widget? Function(BuildContext context, DateTime date)? dateBuilder;
+  final Widget? Function(BuildContext context, int weekday)? weekDayBuilder;
+
+  const DatePickerDialog({
+    super.key,
+    required this.initialView,
+    required this.selectionMode,
+    this.initialValue,
+    this.onChanged,
+    this.isDateEnabled,
+    this.dateBuilder,
+    this.weekDayBuilder,
+  });
+
+  @override
+  State<DatePickerDialog> createState() => _DatePickerDialogState();
+}
+
+class _DatePickerDialogState extends State<DatePickerDialog> {
+  late CalendarView _view;
+  late CalendarValue? _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _view = widget.initialView;
+    _value = widget.initialValue;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
+    if (widget.selectionMode == CalendarSelectionMode.range) {
+      return Card(
+        child: IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        OutlineButton(
+                          padding: Button.iconPadding,
+                          onPressed: () {
+                            setState(() {
+                              _view = _view.previous;
+                            });
+                          },
+                          child: Icon(Icons.arrow_back).iconXSmall(),
+                        ),
+                        Text('${localizations.getMonth(_view.month)} ${_view.year}')
+                            .small()
+                            .medium()
+                            .center()
+                            .expanded(),
+                        const SizedBox(
+                          width: 32,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 32,
+                        ),
+                        Text('${localizations.getMonth(_view.next.month)} ${_view.next.year}')
+                            .small()
+                            .medium()
+                            .center()
+                            .expanded(),
+                        OutlineButton(
+                          padding: Button.iconPadding,
+                          onPressed: () {
+                            setState(() {
+                              _view = _view.next;
+                            });
+                          },
+                          child: Icon(Icons.arrow_forward).iconXSmall(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              gap(16),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Calendar(
+                    value: _value,
+                    view: _view,
+                    onChanged: (value) {
+                      setState(() {
+                        _value = value;
+                        widget.onChanged?.call(value);
+                      });
+                    },
+                    selectionMode: CalendarSelectionMode.range,
+                  ),
+                  gap(16),
+                  Calendar(
+                    value: _value,
+                    view: _view.next,
+                    onChanged: (value) {
+                      setState(() {
+                        _value = value;
+                        widget.onChanged?.call(value);
+                      });
+                    },
+                    selectionMode: CalendarSelectionMode.range,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    return Card(
+      child: IntrinsicWidth(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                OutlineButton(
+                  padding: Button.iconPadding,
+                  onPressed: () {
+                    setState(() {
+                      _view = _view.previous;
+                    });
+                  },
+                  child: Icon(Icons.arrow_back).iconXSmall(),
+                ),
+                Text('${localizations.getMonth(_view.month)} ${_view.year}')
+                    .small()
+                    .medium()
+                    .center()
+                    .expanded(),
+                OutlineButton(
+                  padding: Button.iconPadding,
+                  onPressed: () {
+                    setState(() {
+                      _view = _view.next;
+                    });
+                  },
+                  child: Icon(Icons.arrow_forward).iconXSmall(),
+                ),
+              ],
+            ),
+            gap(16),
+            Calendar(
+              value: _value,
+              view: _view,
+              onChanged: (value) {
+                setState(() {
+                  _value = value;
+                  widget.onChanged?.call(value);
+                });
+              },
+              selectionMode: CalendarSelectionMode.single,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 abstract class CalendarValue {
   CalendarValueLookup lookup(DateTime date);
   const CalendarValue();
-  factory CalendarValue.single(DateTime date) {
-    return _SingleCalendarValue(date);
-  }
-  factory CalendarValue.range(DateTime start, DateTime end) {
-    return _RangedCalendarValue(start, end);
-  }
-  factory CalendarValue.multi(List<DateTime> dates) {
-    return _MultiCalendarValue(dates);
+  static SingleCalendarValue single(DateTime date) {
+    return SingleCalendarValue(date);
   }
 
-  CalendarValue toSingle();
-  CalendarValue toRange();
-  CalendarValue toMulti();
+  static RangeCalendarValue range(DateTime start, DateTime end) {
+    return RangeCalendarValue(start, end);
+  }
+
+  static MultiCalendarValue multi(List<DateTime> dates) {
+    return MultiCalendarValue(dates);
+  }
+
+  SingleCalendarValue toSingle();
+  RangeCalendarValue toRange();
+  MultiCalendarValue toMulti();
 }
 
-class _SingleCalendarValue extends CalendarValue {
+class SingleCalendarValue extends CalendarValue {
   final DateTime date;
 
-  _SingleCalendarValue(this.date);
+  SingleCalendarValue(this.date);
 
   @override
   CalendarValueLookup lookup(DateTime date) {
@@ -41,33 +225,33 @@ class _SingleCalendarValue extends CalendarValue {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is _SingleCalendarValue && other.date == date;
+    return other is SingleCalendarValue && other.date == date;
   }
 
   @override
   int get hashCode => date.hashCode;
 
   @override
-  CalendarValue toSingle() {
+  SingleCalendarValue toSingle() {
     return this;
   }
 
   @override
-  CalendarValue toRange() {
+  RangeCalendarValue toRange() {
     return CalendarValue.range(date, date);
   }
 
   @override
-  CalendarValue toMulti() {
+  MultiCalendarValue toMulti() {
     return CalendarValue.multi([date]);
   }
 }
 
-class _RangedCalendarValue extends CalendarValue {
+class RangeCalendarValue extends CalendarValue {
   final DateTime start;
   final DateTime end;
 
-  _RangedCalendarValue(DateTime start, DateTime end)
+  RangeCalendarValue(DateTime start, DateTime end)
       : start = start.isBefore(end) ? start : end,
         end = start.isBefore(end) ? end : start;
 
@@ -94,7 +278,7 @@ class _RangedCalendarValue extends CalendarValue {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is _RangedCalendarValue &&
+    return other is RangeCalendarValue &&
         other.start == start &&
         other.end == end;
   }
@@ -103,17 +287,17 @@ class _RangedCalendarValue extends CalendarValue {
   int get hashCode => start.hashCode ^ end.hashCode;
 
   @override
-  CalendarValue toSingle() {
+  SingleCalendarValue toSingle() {
     return CalendarValue.single(start);
   }
 
   @override
-  CalendarValue toRange() {
+  RangeCalendarValue toRange() {
     return this;
   }
 
   @override
-  CalendarValue toMulti() {
+  MultiCalendarValue toMulti() {
     List<DateTime> dates = [];
     for (DateTime date = start;
         date.isBefore(end);
@@ -125,10 +309,10 @@ class _RangedCalendarValue extends CalendarValue {
   }
 }
 
-class _MultiCalendarValue extends CalendarValue {
+class MultiCalendarValue extends CalendarValue {
   final List<DateTime> dates;
 
-  _MultiCalendarValue(this.dates);
+  MultiCalendarValue(this.dates);
 
   @override
   CalendarValueLookup lookup(DateTime date) {
@@ -147,19 +331,19 @@ class _MultiCalendarValue extends CalendarValue {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is _MultiCalendarValue && listEquals(other.dates, dates);
+    return other is MultiCalendarValue && listEquals(other.dates, dates);
   }
 
   @override
   int get hashCode => dates.hashCode;
 
   @override
-  CalendarValue toSingle() {
+  SingleCalendarValue toSingle() {
     return CalendarValue.single(dates.first);
   }
 
   @override
-  CalendarValue toRange() {
+  RangeCalendarValue toRange() {
     assert(dates.isNotEmpty, 'Cannot convert empty list to range');
     DateTime min = dates
         .reduce((value, element) => value.isBefore(element) ? value : element);
@@ -169,7 +353,7 @@ class _MultiCalendarValue extends CalendarValue {
   }
 
   @override
-  CalendarValue toMulti() {
+  MultiCalendarValue toMulti() {
     return this;
   }
 }
@@ -276,7 +460,7 @@ class Calendar extends StatelessWidget {
       return;
     }
     if (selectionMode == CalendarSelectionMode.single) {
-      if (calendarValue is _SingleCalendarValue &&
+      if (calendarValue is SingleCalendarValue &&
           _isSameDay(date, calendarValue.date)) {
         onChanged?.call(null);
         return;
@@ -292,12 +476,12 @@ class Calendar extends StatelessWidget {
       final lookup = calendarValue.lookup(date);
       if (lookup == CalendarValueLookup.none) {
         var multi = calendarValue.toMulti();
-        (multi as _MultiCalendarValue).dates.add(date);
+        (multi as MultiCalendarValue).dates.add(date);
         onChanged?.call(multi);
         return;
       } else {
         var multi = calendarValue.toMulti();
-        (multi as _MultiCalendarValue).dates.remove(date);
+        (multi as MultiCalendarValue).dates.remove(date);
         if (multi.dates.isEmpty) {
           onChanged?.call(null);
           return;
@@ -311,10 +495,10 @@ class Calendar extends StatelessWidget {
         onChanged?.call(CalendarValue.single(date));
         return;
       }
-      if (calendarValue is _MultiCalendarValue) {
+      if (calendarValue is MultiCalendarValue) {
         calendarValue = calendarValue.toRange();
       }
-      if (calendarValue is _SingleCalendarValue) {
+      if (calendarValue is SingleCalendarValue) {
         DateTime selectedDate = calendarValue.date;
         if (_isSameDay(date, selectedDate)) {
           onChanged?.call(null);
@@ -323,7 +507,7 @@ class Calendar extends StatelessWidget {
         onChanged?.call(CalendarValue.range(selectedDate, date));
         return;
       }
-      if (calendarValue is _RangedCalendarValue) {
+      if (calendarValue is RangeCalendarValue) {
         DateTime start = calendarValue.start;
         DateTime end = calendarValue.end;
         if (date.isBefore(start)) {
@@ -349,8 +533,11 @@ class Calendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // since the calendar grid starts from sunday
+    // theres a lot of stuff that needs to be tweaked
+    // since dart DateTime starts from monday
     final calendarValue = value;
-    int weekDayStart = (DateTime(view.year, view.month).weekday + 1) % 7;
+    int weekDayStart = (DateTime(view.year, view.month).weekday + 1);
     int daysInMonth = DateTime(view.year, view.month + 1, 0).day;
     ShadcnLocalizations localizations =
         Localizations.of(context, ShadcnLocalizations);
@@ -376,82 +563,108 @@ class Calendar extends StatelessWidget {
     ));
     // Days
     List<Widget> days = [];
+    // reduce the amount of unnecessary rows
+    while (weekDayStart > 7) {
+      weekDayStart -= 7;
+    }
     // start from the first day of the week
     for (int i = 1; i < weekDayStart; i++) {
       int previousMonthDay = daysInMonth - (weekDayStart - i);
       var dateTime = DateTime(view.year, view.month - 1, previousMonthDay);
       int indexAtRow = i - 1;
-      DateItemType type = DateItemType.none;
+      _DateItemType type = _DateItemType.none;
       if (calendarValue != null) {
         final lookup = calendarValue.lookup(dateTime);
         switch (lookup) {
           case CalendarValueLookup.none:
+            if (now != null && _isSameDay(now!, dateTime)) {
+              type = _DateItemType.today;
+            }
             break;
           case CalendarValueLookup.selected:
-            type = DateItemType.selected;
+            type = _DateItemType.selected;
             break;
           case CalendarValueLookup.start:
-            type = DateItemType.startRange;
+            type = _DateItemType.startRange;
             break;
           case CalendarValueLookup.end:
-            type = DateItemType.endRange;
+            type = _DateItemType.endRange;
             break;
           case CalendarValueLookup.inRange:
-            type = DateItemType.inRange;
+            type = _DateItemType.inRange;
             break;
         }
+      } else {
+        if (now != null && _isSameDay(now!, dateTime)) {
+          type = _DateItemType.today;
+        }
       }
-      days.add(dateBuilder?.call(
-            context,
-            dateTime,
-          ) ??
-          Opacity(
-            opacity: 0.5,
-            child: DateItem(
-              day: previousMonthDay,
-              type: type,
-              indexAtRow: indexAtRow,
-              onTap: () {
-                _handleTap(dateTime);
-              },
+      days.add(Hero(
+        tag: _HeroDateTime(dateTime),
+        child: dateBuilder?.call(
+              context,
+              dateTime,
+            ) ??
+            Opacity(
+              opacity: 0.5,
+              child: _DateItem(
+                key: ValueKey(dateTime),
+                day: previousMonthDay,
+                type: type,
+                indexAtRow: indexAtRow,
+                onTap: () {
+                  _handleTap(dateTime);
+                },
+              ),
             ),
-          ));
+      ));
     }
     // then the days of the month
     for (int i = 1; i <= daysInMonth; i++) {
       DateTime date = DateTime(view.year, view.month, i);
-      DateItemType type = DateItemType.none;
+      _DateItemType type = _DateItemType.none;
       int indexAtRow = (weekDayStart + i - 2) % 7;
       if (calendarValue != null) {
         final lookup = calendarValue.lookup(date);
         switch (lookup) {
           case CalendarValueLookup.none:
+            if (now != null && _isSameDay(now!, date)) {
+              type = _DateItemType.today;
+            }
             break;
           case CalendarValueLookup.selected:
-            type = DateItemType.selected;
+            type = _DateItemType.selected;
             break;
           case CalendarValueLookup.start:
-            type = DateItemType.startRangeSelected;
+            type = _DateItemType.startRangeSelected;
             break;
           case CalendarValueLookup.end:
-            type = DateItemType.endRangeSelected;
+            type = _DateItemType.endRangeSelected;
             break;
           case CalendarValueLookup.inRange:
-            type = DateItemType.inRange;
+            type = _DateItemType.inRange;
             break;
         }
+      } else {
+        if (now != null && _isSameDay(now!, date)) {
+          type = _DateItemType.today;
+        }
       }
-      days.add(dateBuilder?.call(context, date) ??
-          DateItem(
-            day: i,
-            type: type,
-            indexAtRow: indexAtRow,
-            onTap: () {
-              if (isDateEnabled?.call(date) ?? true) {
-                _handleTap(date);
-              }
-            },
-          ));
+      days.add(Hero(
+        tag: _HeroDateTime(date),
+        child: dateBuilder?.call(context, date) ??
+            _DateItem(
+              key: ValueKey(date),
+              day: i,
+              type: type,
+              indexAtRow: indexAtRow,
+              onTap: () {
+                if (isDateEnabled?.call(date) ?? true) {
+                  _handleTap(date);
+                }
+              },
+            ),
+      ));
     }
     // actual needed rows
     int neededRows = (days.length / 7).ceil();
@@ -462,38 +675,47 @@ class Calendar extends StatelessWidget {
       int nextMonthDay = i - length + 1;
       var dateTime = DateTime(view.year, view.month + 1, nextMonthDay);
       int indexAtRow = i % 7;
-      DateItemType type = DateItemType.none;
+      _DateItemType type = _DateItemType.none;
       if (calendarValue != null) {
         final lookup = calendarValue.lookup(dateTime);
         switch (lookup) {
           case CalendarValueLookup.none:
+            if (now != null && _isSameDay(now!, dateTime)) {
+              type = _DateItemType.today;
+            }
             break;
           case CalendarValueLookup.selected:
-            type = DateItemType.selected;
+            type = _DateItemType.selected;
             break;
           case CalendarValueLookup.start:
-            type = DateItemType.startRange;
+            type = _DateItemType.startRange;
             break;
           case CalendarValueLookup.end:
-            type = DateItemType.endRange;
+            type = _DateItemType.endRange;
             break;
           case CalendarValueLookup.inRange:
-            type = DateItemType.inRange;
+            type = _DateItemType.inRange;
             break;
         }
+      } else {
+        if (now != null && _isSameDay(now!, dateTime)) {
+          type = _DateItemType.today;
+        }
       }
-      days.add(dateBuilder?.call(context, dateTime) ??
-          Opacity(
-            opacity: 0.5,
-            child: DateItem(
-              day: nextMonthDay,
-              type: type,
-              indexAtRow: indexAtRow,
-              onTap: () {
-                _handleTap(dateTime);
-              },
-            ),
-          ));
+      days.add(Hero(
+          tag: _HeroDateTime(dateTime),
+          child: dateBuilder?.call(context, dateTime) ??
+              Opacity(
+                opacity: 0.5,
+                child: _DateItem(
+                  day: nextMonthDay,
+                  type: type,
+                  indexAtRow: indexAtRow,
+                  onTap: () {
+                    _handleTap(dateTime);
+                  },
+                ),
+              )));
     }
     // split the days into rows
     for (int i = 0; i < days.length; i += 7) {
@@ -511,6 +733,24 @@ class Calendar extends StatelessWidget {
   }
 }
 
+class _HeroDateTime {
+  final DateTime date;
+
+  _HeroDateTime(this.date);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is _HeroDateTime && _isSameDay(other.date, date);
+  }
+
+  @override
+  int get hashCode {
+    return date.year ^ date.month ^ date.day;
+  }
+}
+
 bool _isSameDay(DateTime a, DateTime b) {
   return a.year == b.year && a.month == b.month && a.day == b.day;
 }
@@ -519,7 +759,7 @@ bool _isInRange(DateTime date, DateTime start, DateTime end) {
   return date.isAfter(start) && date.isBefore(end);
 }
 
-enum DateItemType {
+enum _DateItemType {
   none,
   today,
   selected,
@@ -534,13 +774,13 @@ enum DateItemType {
   inRangeSelectedShort,
 }
 
-class DateItem extends StatelessWidget {
+class _DateItem extends StatelessWidget {
   final int day;
-  final DateItemType type;
+  final _DateItemType type;
   final VoidCallback? onTap;
   final int indexAtRow;
 
-  const DateItem({
+  const _DateItem({
     super.key,
     required this.day,
     required this.type,
@@ -552,7 +792,7 @@ class DateItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     switch (type) {
-      case DateItemType.none:
+      case _DateItemType.none:
         return SizedBox(
           width: 32,
           height: 32,
@@ -565,7 +805,7 @@ class DateItem extends StatelessWidget {
             ),
           ),
         );
-      case DateItemType.today:
+      case _DateItemType.today:
         return SizedBox(
           width: 32,
           height: 32,
@@ -578,7 +818,7 @@ class DateItem extends StatelessWidget {
             ),
           ),
         );
-      case DateItemType.selected:
+      case _DateItemType.selected:
         return SizedBox(
           width: 32,
           height: 32,
@@ -591,7 +831,7 @@ class DateItem extends StatelessWidget {
             ),
           ),
         );
-      case DateItemType.inRange:
+      case _DateItemType.inRange:
         return SizedBox(
           width: 32,
           height: 32,
@@ -615,7 +855,7 @@ class DateItem extends StatelessWidget {
             ),
           ),
         );
-      case DateItemType.startRange:
+      case _DateItemType.startRange:
         return SizedBox(
           width: 32,
           height: 32,
@@ -632,7 +872,7 @@ class DateItem extends StatelessWidget {
             ),
           ),
         );
-      case DateItemType.endRange:
+      case _DateItemType.endRange:
         return SizedBox(
           width: 32,
           height: 32,
@@ -649,7 +889,7 @@ class DateItem extends StatelessWidget {
             ),
           ),
         );
-      case DateItemType.startRangeSelected:
+      case _DateItemType.startRangeSelected:
         return SizedBox(
           width: 32,
           height: 32,
@@ -678,7 +918,7 @@ class DateItem extends StatelessWidget {
             ],
           ),
         );
-      case DateItemType.endRangeSelected:
+      case _DateItemType.endRangeSelected:
         return SizedBox(
           width: 32,
           height: 32,
@@ -707,7 +947,7 @@ class DateItem extends StatelessWidget {
             ],
           ),
         );
-      case DateItemType.startRangeSelectedShort:
+      case _DateItemType.startRangeSelectedShort:
         return SizedBox(
           width: 32,
           height: 32,
@@ -724,7 +964,7 @@ class DateItem extends StatelessWidget {
             ),
           ),
         );
-      case DateItemType.endRangeSelectedShort:
+      case _DateItemType.endRangeSelectedShort:
         return SizedBox(
           width: 32,
           height: 32,
@@ -741,7 +981,7 @@ class DateItem extends StatelessWidget {
             ),
           ),
         );
-      case DateItemType.inRangeSelectedShort:
+      case _DateItemType.inRangeSelectedShort:
         return SizedBox(
           width: 32,
           height: 32,

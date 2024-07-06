@@ -7,6 +7,7 @@ import 'package:example/pages/docs/components/avatar_example.dart';
 import 'package:example/pages/docs/components/calendar_example.dart';
 import 'package:example/pages/docs/components/carousel_example.dart';
 import 'package:example/pages/docs/components/combobox_example.dart';
+import 'package:example/pages/docs/components/date_picker_example.dart';
 import 'package:example/pages/docs/components/divider_example.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
@@ -194,7 +195,12 @@ class MyAppState extends State<MyApp> {
             path: 'calendar',
             builder: (context, state) => CalendarExample(),
             name: 'calendar',
-          )
+          ),
+          GoRoute(
+            path: 'date_picker',
+            builder: (context, state) => DatePickerExample(),
+            name: 'date_picker',
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

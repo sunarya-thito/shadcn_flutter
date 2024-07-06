@@ -170,8 +170,7 @@ class DocsPageState extends State<DocsPage> {
               'Context Menu', 'context_menu', ShadcnFeatureTag.workInProgress),
           ShadcnDocsPage(
               'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage(
-              'Date Picker', 'date_picker', ShadcnFeatureTag.workInProgress),
+          ShadcnDocsPage('Date Picker', 'date_picker'),
           ShadcnDocsPage('Dialog', 'dialog', ShadcnFeatureTag.workInProgress),
           ShadcnDocsPage('Divider', 'divider'),
           ShadcnDocsPage('Drawer', 'drawer', ShadcnFeatureTag.workInProgress),

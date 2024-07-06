@@ -31,6 +31,7 @@ export 'src/components/combo_box.dart';
 export 'src/components/command.dart';
 export 'src/components/divider.dart';
 export 'src/components/form/form.dart';
+export 'src/components/form/form_field.dart';
 export 'src/components/icon/icon.dart';
 export 'src/components/locale/shadcn_localizations.dart';
 export 'src/components/media_query.dart';

@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -202,7 +205,11 @@ class _ShadcnAppState extends State<ShadcnApp> {
   void initState() {
     super.initState();
     // _heroController = ShadcnApp.createMaterialHeroController();
-    _heroController = HeroController();
+    _heroController = HeroController(
+      createRectTween: (begin, end) {
+        return ShadcnRectArcTween(begin: begin, end: end);
+      },
+    );
   }
 
   @override
@@ -346,5 +353,274 @@ class _ShadcnAppState extends State<ShadcnApp> {
         child: result,
       ),
     );
+  }
+}
+
+class ShadcnRectArcTween extends RectTween {
+  ShadcnRectArcTween({
+    super.begin,
+    super.end,
+  });
+
+  bool _dirty = true;
+
+  void _initialize() {
+    assert(begin != null);
+    assert(end != null);
+    final Offset centersVector = end!.center - begin!.center;
+    final _BorderRadiusCorner diagonal = _findMax<_BorderRadiusCorner>(
+        _allDiagonals,
+        (_BorderRadiusCorner d) => _diagonalSupport(centersVector, d));
+    _beginArc = ShadcnPointArcTween(
+      begin: _cornerFor(begin!, diagonal.beginId),
+      end: _cornerFor(end!, diagonal.beginId),
+    );
+    _endArc = ShadcnPointArcTween(
+      begin: _cornerFor(begin!, diagonal.endId),
+      end: _cornerFor(end!, diagonal.endId),
+    );
+    _dirty = false;
+  }
+
+  double _diagonalSupport(Offset centersVector, _BorderRadiusCorner diagonal) {
+    final Offset delta = _cornerFor(begin!, diagonal.endId) -
+        _cornerFor(begin!, diagonal.beginId);
+    final double length = delta.distance;
+    return centersVector.dx * delta.dx / length +
+        centersVector.dy * delta.dy / length;
+  }
+
+  Offset _cornerFor(Rect rect, _CornerType id) {
+    return switch (id) {
+      _CornerType.topLeft => rect.topLeft,
+      _CornerType.topRight => rect.topRight,
+      _CornerType.bottomLeft => rect.bottomLeft,
+      _CornerType.bottomRight => rect.bottomRight,
+    };
+  }
+
+  ShadcnPointArcTween? get beginArc {
+    if (begin == null) {
+      return null;
+    }
+    if (_dirty) {
+      _initialize();
+    }
+    return _beginArc;
+  }
+
+  late ShadcnPointArcTween _beginArc;
+  ShadcnPointArcTween? get endArc {
+    if (end == null) {
+      return null;
+    }
+    if (_dirty) {
+      _initialize();
+    }
+    return _endArc;
+  }
+
+  late ShadcnPointArcTween _endArc;
+
+  @override
+  set begin(Rect? value) {
+    if (value != begin) {
+      super.begin = value;
+      _dirty = true;
+    }
+  }
+
+  @override
+  set end(Rect? value) {
+    if (value != end) {
+      super.end = value;
+      _dirty = true;
+    }
+  }
+
+  @override
+  Rect lerp(double t) {
+    if (_dirty) {
+      _initialize();
+    }
+    if (t == 0.0) {
+      return begin!;
+    }
+    if (t == 1.0) {
+      return end!;
+    }
+    return Rect.fromPoints(_beginArc.lerp(t), _endArc.lerp(t));
+  }
+}
+
+T _findMax<T>(Iterable<T> input, _KeyFunc<T> keyFunc) {
+  late T maxValue;
+  double? maxKey;
+  for (final T value in input) {
+    final double key = keyFunc(value);
+    if (maxKey == null || key > maxKey) {
+      maxValue = value;
+      maxKey = key;
+    }
+  }
+  return maxValue;
+}
+
+const List<_BorderRadiusCorner> _allDiagonals = <_BorderRadiusCorner>[
+  _BorderRadiusCorner(_CornerType.topLeft, _CornerType.bottomRight),
+  _BorderRadiusCorner(_CornerType.bottomRight, _CornerType.topLeft),
+  _BorderRadiusCorner(_CornerType.topRight, _CornerType.bottomLeft),
+  _BorderRadiusCorner(_CornerType.bottomLeft, _CornerType.topRight),
+];
+
+typedef _KeyFunc<T> = double Function(T input);
+
+enum _CornerType { topLeft, topRight, bottomLeft, bottomRight }
+
+class _BorderRadiusCorner {
+  const _BorderRadiusCorner(this.beginId, this.endId);
+  final _CornerType beginId;
+  final _CornerType endId;
+}
+
+const double _kOnAxisDelta = 2.0;
+
+class ShadcnPointArcTween extends Tween<Offset> {
+  ShadcnPointArcTween({
+    super.begin,
+    super.end,
+  });
+
+  bool _dirty = true;
+
+  void _initialize() {
+    assert(this.begin != null);
+    assert(this.end != null);
+
+    final Offset begin = this.begin!;
+    final Offset end = this.end!;
+
+    // An explanation with a diagram can be found at https://goo.gl/vMSdRg
+    final Offset delta = end - begin;
+    final double deltaX = delta.dx.abs();
+    final double deltaY = delta.dy.abs();
+    final double distanceFromAtoB = delta.distance;
+    final Offset c = Offset(end.dx, begin.dy);
+
+    double sweepAngle() => 2.0 * asin(distanceFromAtoB / (2.0 * _radius!));
+
+    if (deltaX > _kOnAxisDelta && deltaY > _kOnAxisDelta) {
+      if (deltaX < deltaY) {
+        _radius =
+            distanceFromAtoB * distanceFromAtoB / (c - begin).distance / 2.0;
+        _center = Offset(end.dx + _radius! * (begin.dx - end.dx).sign, end.dy);
+        if (begin.dx < end.dx) {
+          _beginAngle = sweepAngle() * (begin.dy - end.dy).sign;
+          _endAngle = 0.0;
+        } else {
+          _beginAngle = pi + sweepAngle() * (end.dy - begin.dy).sign;
+          _endAngle = pi;
+        }
+      } else {
+        _radius =
+            distanceFromAtoB * distanceFromAtoB / (c - end).distance / 2.0;
+        _center =
+            Offset(begin.dx, begin.dy + (end.dy - begin.dy).sign * _radius!);
+        if (begin.dy < end.dy) {
+          _beginAngle = -pi / 2.0;
+          _endAngle = _beginAngle! + sweepAngle() * (end.dx - begin.dx).sign;
+        } else {
+          _beginAngle = pi / 2.0;
+          _endAngle = _beginAngle! + sweepAngle() * (begin.dx - end.dx).sign;
+        }
+      }
+      assert(_beginAngle != null);
+      assert(_endAngle != null);
+    } else {
+      _beginAngle = null;
+      _endAngle = null;
+    }
+    _dirty = false;
+  }
+
+  Offset? get center {
+    if (begin == null || end == null) {
+      return null;
+    }
+    if (_dirty) {
+      _initialize();
+    }
+    return _center;
+  }
+
+  Offset? _center;
+  double? get radius {
+    if (begin == null || end == null) {
+      return null;
+    }
+    if (_dirty) {
+      _initialize();
+    }
+    return _radius;
+  }
+
+  double? _radius;
+  double? get beginAngle {
+    if (begin == null || end == null) {
+      return null;
+    }
+    if (_dirty) {
+      _initialize();
+    }
+    return _beginAngle;
+  }
+
+  double? _beginAngle;
+  double? get endAngle {
+    if (begin == null || end == null) {
+      return null;
+    }
+    if (_dirty) {
+      _initialize();
+    }
+    return _beginAngle;
+  }
+
+  double? _endAngle;
+
+  @override
+  set begin(Offset? value) {
+    if (value != begin) {
+      super.begin = value;
+      _dirty = true;
+    }
+  }
+
+  @override
+  set end(Offset? value) {
+    if (value != end) {
+      super.end = value;
+      _dirty = true;
+    }
+  }
+
+  @override
+  Offset lerp(double t) {
+    if (_dirty) {
+      _initialize();
+    }
+    if (t == 0.0) {
+      return begin!;
+    }
+    if (t == 1.0) {
+      return end!;
+    }
+    if (_beginAngle == null || _endAngle == null) {
+      return Offset.lerp(begin, end, t)!;
+    }
+    final double angle = lerpDouble(_beginAngle, _endAngle, t)!;
+    final double x = cos(angle) * _radius!;
+    final double y = sin(angle) * _radius!;
+    return _center! + Offset(x, y);
   }
 }

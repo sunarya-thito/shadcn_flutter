@@ -68,6 +68,14 @@ abstract class ShadcnLocalizations {
   String get monthOctober;
   String get monthNovember;
   String get monthDecember;
+  String get buttonCancel;
+  String get buttonOk;
+  String get buttonClose;
+  String get buttonSave;
+  String get buttonReset;
+  String formatDateTime(DateTime dateTime,
+      {bool showDate = true, bool showTime = true, bool showSeconds = false});
+  String get placeholderDatePicker;
 
   String getAbbreviatedWeekday(int weekday) {
     switch (weekday) {
@@ -256,4 +264,41 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get monthDecember => 'December';
+
+  @override
+  String get buttonCancel => 'Cancel';
+
+  @override
+  String get buttonOk => 'OK';
+
+  @override
+  String get buttonClose => 'Close';
+
+  @override
+  String get buttonSave => 'Save';
+
+  @override
+  String get buttonReset => 'Reset';
+
+  @override
+  String formatDateTime(DateTime dateTime,
+      {bool showDate = true, bool showTime = true, bool showSeconds = false}) {
+    String result = '';
+    if (showDate) {
+      result += '${getMonth(dateTime.month)} ${dateTime.day}, ${dateTime.year}';
+    }
+    if (showTime) {
+      if (result.isNotEmpty) {
+        result += ' ';
+      }
+      result += '${dateTime.hour}:${dateTime.minute}';
+      if (showSeconds) {
+        result += ':${dateTime.second}';
+      }
+    }
+    return result;
+  }
+
+  @override
+  String get placeholderDatePicker => 'Select a date';
 }
