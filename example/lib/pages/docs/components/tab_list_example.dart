@@ -15,7 +15,7 @@ class TabListExample extends StatelessWidget {
         WidgetUsageExample(
           title: 'Tab List Example',
           child: TabListExample1(),
-          path: 'lib/pages/docs/components/tab_list/tabs_example_1.dart',
+          path: 'lib/pages/docs/components/tab_list/tab_list_example_1.dart',
         ),
       ],
     );
