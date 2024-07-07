@@ -292,8 +292,9 @@ class _ComponentsPageState extends State<ComponentsPage> {
               example: Card(
                 child: TextField(
                   initialValue: 'Hello World',
+                  leading: Icon(Icons.edit),
                 ).sized(width: 250, height: 32),
-              ),
+              ).sized(height: 400),
             ),
             WIPComponentCard(title: 'Input OTP'),
             ComponentCard(
