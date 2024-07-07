@@ -12,11 +12,13 @@ import 'package:example/pages/docs/components/dialog_example.dart';
 import 'package:example/pages/docs/components/divider_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
+import 'package:example/pages/docs/components/popover_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
 import 'package:example/pages/docs/components/slider_example.dart';
 import 'package:example/pages/docs/components/steps_example.dart';
 import 'package:example/pages/docs/components/switch_example.dart';
 import 'package:example/pages/docs/components/tab_list_example.dart';
+import 'package:example/pages/docs/components/tooltip_example.dart';
 import 'package:example/pages/docs/components_page.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
@@ -247,7 +249,17 @@ class MyAppState extends State<MyApp> {
             path: 'tab_list',
             builder: (context, state) => TabListExample(),
             name: 'tab_list',
-          )
+          ),
+          GoRoute(
+            path: 'tooltip',
+            name: 'tooltip',
+            builder: (context, state) => TooltipExample(),
+          ),
+          GoRoute(
+            path: 'popover',
+            name: 'popover',
+            builder: (context, state) => PopoverExample(),
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

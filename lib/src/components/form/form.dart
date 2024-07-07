@@ -1065,8 +1065,9 @@ class FormInline<T> extends StatelessWidget {
 
 class FormTableLayout extends StatelessWidget {
   final List<FormRow> rows;
+  final double spacing;
 
-  const FormTableLayout({super.key, required this.rows});
+  const FormTableLayout({super.key, required this.rows, this.spacing = 16});
 
   @override
   Widget build(BuildContext context) {
@@ -1089,7 +1090,7 @@ class FormTableLayout extends StatelessWidget {
                     .withMargin(right: 16)
                     .sized(height: 32)
                     .withPadding(
-                      top: i == 0 ? 0 : 16,
+                      top: i == 0 ? 0 : spacing,
                       left: 16,
                     ),
                 FormEntry(
@@ -1124,7 +1125,7 @@ class FormTableLayout extends StatelessWidget {
                     child: rows[i].child,
                   ),
                 ).withPadding(
-                  top: i == 0 ? 0 : 16,
+                  top: i == 0 ? 0 : spacing,
                 ),
               ],
             ),

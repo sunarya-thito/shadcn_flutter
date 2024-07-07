@@ -44,8 +44,7 @@ class DialogExample1 extends StatelessWidget {
                   PrimaryButton(
                     child: Text('Save changes'),
                     onPressed: () {
-                      Navigator.of(context).pop();
-                      print(controller.values);
+                      Navigator.of(context).pop(controller.values);
                     },
                   ),
                 ],

@@ -621,14 +621,11 @@ class PopupAnchorState extends State<PopupAnchor> {
   }
 
   void close() {
-    // Navigator.of(context).pop();
-    // check if the widget is still mounted
     if (mounted) {
-      // Navigator.of(context).removeRoute(widget.route);
-      // use pop until
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        Navigator.of(context).removeRoute(widget.route);
-        widget.route.dispatchComplete(null);
+        if (mounted) {
+          Navigator.of(context).removeRoute(widget.route);
+        }
       });
     }
   }

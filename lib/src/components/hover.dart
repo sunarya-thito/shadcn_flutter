@@ -77,13 +77,16 @@ class _HoverState extends State<Hover> with SingleTickerProviderStateMixin {
     return MouseRegion(
       onEnter: (_) => _onEnter(),
       onExit: (_) => _onExit(true),
-      child: GestureDetector(
-        // for mobile platforms, hover is triggered by a long press
-        onLongPress: () {
-          _longPress = true;
-          _onEnter();
-        },
-        child: widget.child,
+      child: TapRegion(
+        onTapOutside: (details) => _onExit(true),
+        child: GestureDetector(
+          // for mobile platforms, hover is triggered by a long press
+          onLongPress: () {
+            _longPress = true;
+            _onEnter();
+          },
+          child: widget.child,
+        ),
       ),
     );
   }

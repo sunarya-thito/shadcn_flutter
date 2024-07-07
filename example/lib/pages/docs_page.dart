@@ -279,8 +279,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Dialog', 'dialog'),
         ShadcnDocsPage('Drawer', 'drawer', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Sheet', 'sheet', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Tooltip', 'tooltip', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Popover', 'popover', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Tooltip', 'tooltip'),
+        ShadcnDocsPage('Popover', 'popover'),
       ],
     ),
     ShadcnDocsSection(
