@@ -28,6 +28,7 @@ class TextField extends StatefulWidget {
   final int? minLines;
   final BorderRadius? borderRadius;
   final TextAlign textAlign;
+  final bool expands;
   const TextField({
     Key? key,
     this.controller,
@@ -52,6 +53,7 @@ class TextField extends StatefulWidget {
     this.initialValue,
     this.borderRadius,
     this.textAlign = TextAlign.start,
+    this.expands = false,
   }) : super(key: key);
 
   @override
@@ -157,7 +159,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
             fontWeight: FontWeight.w400,
             color: theme.colorScheme.foreground,
           ),
-          expands: true,
+          expands: widget.expands,
           decoration: material.InputDecoration(
             isCollapsed: true,
             prefixIcon: widget.leading,

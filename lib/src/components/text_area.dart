@@ -100,6 +100,7 @@ class _TextAreaState extends State<TextArea> {
           children: [
             Positioned.fill(
               child: TextField(
+                expands: true,
                 controller: widget.controller,
                 onSubmitted: widget.onSubmitted,
                 onEditingComplete: widget.onEditingComplete,

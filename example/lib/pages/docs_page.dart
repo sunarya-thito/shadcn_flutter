@@ -57,12 +57,14 @@ class DocsPage extends StatefulWidget {
   final String name;
   final Widget child;
   final Map<String, OnThisPage> onThisPage;
+  final List<Widget> navigationItems;
 
   const DocsPage({
     Key? key,
     required this.name,
     required this.child,
     this.onThisPage = const {},
+    this.navigationItems = const [],
   }) : super(key: key);
 
   @override
@@ -488,7 +490,14 @@ class DocsPageState extends State<DocsPage> {
                                       Breadcrumb(
                                         separator: Breadcrumb.arrowSeparator,
                                         children: [
-                                          Text('Docs'),
+                                          TextButton(
+                                            onPressed: () {
+                                              context.goNamed('introduction');
+                                            },
+                                            padding: EdgeInsets.zero,
+                                            child: Text('Docs'),
+                                          ),
+                                          ...widget.navigationItems,
                                           if (page != null) Text(page.title),
                                         ],
                                       ),

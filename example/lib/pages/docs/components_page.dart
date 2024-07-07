@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:example/pages/docs/components/breadcrumb/breadcrumb_example_1.dart';
 import 'package:example/pages/docs/components/calendar/calendar_example_2.dart';
 import 'package:example/pages/docs/components/card/card_example_1.dart';
@@ -21,6 +23,7 @@ class ComponentsPage extends StatefulWidget {
 }
 
 class _ComponentsPageState extends State<ComponentsPage> {
+  final OnThisPage animationKey = OnThisPage();
   final OnThisPage disclosureKey = OnThisPage();
   final OnThisPage feedbackKey = OnThisPage();
   final OnThisPage formsKey = OnThisPage();
@@ -59,6 +62,76 @@ class _ComponentsPageState extends State<ComponentsPage> {
             ),
           ),
           gap(32),
+          Text('Animation').h2().anchored(animationKey),
+          gap(16),
+          wrap(children: [
+            ComponentCard(
+              name: 'animated_value_builder',
+              title: 'Animated Value Builder',
+              scale: 2,
+              example: SizedBox(
+                height: 200,
+                width: 200,
+                child: Stack(
+                  fit: StackFit.passthrough,
+                  children: [
+                    Positioned.fill(
+                      child: RepeatedAnimationBuilder(
+                        start: Colors.red,
+                        end: Colors.blue,
+                        lerp: Color.lerp,
+                        duration: Duration(seconds: 1),
+                        mode: RepeatMode.pingPong,
+                        builder: (context, value, child) {
+                          return Container(
+                            color: value,
+                          );
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      left: 16,
+                      child: RepeatedAnimationBuilder(
+                        start: 0.0,
+                        end: 1.0,
+                        mode: RepeatMode.pingPong,
+                        duration: Duration(seconds: 1),
+                        builder: (context, value, child) {
+                          // 0.0 - 0.5 = 0
+                          // 0.5 - 1.0 = 1
+                          return Text(value.round().toString())
+                              .x3Large()
+                              .bold();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            ComponentCard(
+              name: 'repeated_animation_builder',
+              title: 'Repeated Animation Builder',
+              scale: 2,
+              horizontalOffset: 80,
+              example: RepeatedAnimationBuilder(
+                duration: Duration(seconds: 1),
+                start: 0.0,
+                end: 90.0,
+                builder: (context, value, child) {
+                  return Transform.rotate(
+                    angle: pi / 180 * value,
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      color: Colors.red,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ]),
           Text('Disclosure').h2().anchored(disclosureKey),
           gap(16),
           wrap(

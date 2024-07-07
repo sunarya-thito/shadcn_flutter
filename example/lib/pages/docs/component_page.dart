@@ -1,5 +1,6 @@
 import 'package:example/pages/docs_page.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../widget_usage_example.dart';
@@ -79,6 +80,15 @@ class _ComponentPageState extends State<ComponentPage> {
     return DocsPage(
       name: widget.name,
       onThisPage: onThisPage,
+      navigationItems: [
+        TextButton(
+          padding: EdgeInsets.zero,
+          onPressed: () {
+            context.pushNamed('components');
+          },
+          child: Text('Components'),
+        ),
+      ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
