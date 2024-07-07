@@ -8,12 +8,12 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  email_validator: ^2.1.17
+  email_validator: ">=2.1.17"
   flutter:
     sdk: flutter
-  flutter_highlight: ^0.7.0
-  gap: ^3.0.1
-  highlight: ^0.7.0
+  flutter_highlight: ">=0.7.0"
+  gap: ">=3.0.1"
+  highlight: ">=0.7.0"
 
 dev_dependencies:
   flutter_test:

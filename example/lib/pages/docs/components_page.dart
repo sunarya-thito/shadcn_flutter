@@ -323,8 +323,8 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         trailing: Text('Option 3'),
                       ),
                     ],
-                  ).gap(16),
-                ),
+                  ).gap(4),
+                ).sized(width: 300),
               ),
             ),
             ComponentCard(
@@ -425,7 +425,9 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Card(child: PaginationExample1()),
-                  Card(child: PaginationExample1()),
+                  Transform.translate(
+                      offset: Offset(250, 0),
+                      child: Card(child: PaginationExample1())),
                 ],
               ).gap(16),
             ),

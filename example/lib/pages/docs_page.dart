@@ -402,9 +402,9 @@ class DocsPageState extends State<DocsPage> {
 
     final theme = Theme.of(context);
 
-    return Scaffold(
-      scrollable: false,
-      body: PageStorage(
+    return Container(
+      color: theme.colorScheme.background,
+      child: PageStorage(
         bucket: docsBucket,
         child: StageContainer(
           builder: (context, padding) {

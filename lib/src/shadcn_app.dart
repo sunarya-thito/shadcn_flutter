@@ -229,21 +229,32 @@ class _ShadcnAppState extends State<ShadcnApp> {
 
   Widget _builder(BuildContext context, Widget? child) {
     final ThemeData theme = widget.theme;
-    return Theme(
-      data: theme,
-      child: widget.builder != null
-          ? Builder(
-              builder: (BuildContext context) {
-                return widget.builder!(context, child);
-              },
-            )
-          : child ?? const SizedBox.shrink(),
+    return mergeAnimatedTextStyle(
+      duration: kDefaultDuration,
+      style: TextStyle(
+        color: theme.colorScheme.foreground,
+      ),
+      child: AnimatedIconTheme.merge(
+        duration: kDefaultDuration,
+        data: IconThemeData(
+          color: theme.colorScheme.foreground,
+        ),
+        child: Theme(
+          data: theme,
+          child: widget.builder != null
+              ? Builder(
+                  builder: (BuildContext context) {
+                    return widget.builder!(context, child);
+                  },
+                )
+              : child ?? const SizedBox.shrink(),
+        ),
+      ),
     );
   }
 
   Widget _buildWidgetApp(BuildContext context) {
-    final Color materialColor =
-        widget.color ?? widget.theme.colorScheme.primary;
+    final Color primaryColor = widget.color ?? widget.theme.colorScheme.primary;
     if (_usesRouter) {
       return WidgetsApp.router(
         key: GlobalObjectKey(this),
@@ -259,7 +270,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
           fontFamily: 'GeistSans',
           color: widget.theme.colorScheme.foreground,
         ),
-        color: materialColor,
+        color: primaryColor,
         locale: widget.locale,
         localizationsDelegates: _localizationsDelegates,
         localeResolutionCallback: widget.localeResolutionCallback,
@@ -300,7 +311,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
         fontFamily: 'GeistSans',
         color: widget.theme.colorScheme.foreground,
       ),
-      color: materialColor,
+      color: primaryColor,
       locale: widget.locale,
       localizationsDelegates: _localizationsDelegates,
       localeResolutionCallback: widget.localeResolutionCallback,

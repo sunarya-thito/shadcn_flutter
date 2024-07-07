@@ -41,7 +41,6 @@ export 'src/components/pagination.dart';
 export 'src/components/popover.dart';
 export 'src/components/progress.dart';
 export 'src/components/radio_group.dart';
-export 'src/components/scaffold.dart';
 export 'src/components/scrollbar.dart';
 export 'src/components/sidebar_nav.dart';
 export 'src/components/slider.dart';
