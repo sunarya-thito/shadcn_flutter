@@ -11,6 +11,7 @@ import 'package:example/pages/docs/components/date_picker_example.dart';
 import 'package:example/pages/docs/components/dialog_example.dart';
 import 'package:example/pages/docs/components/divider_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
+import 'package:example/pages/docs/components/input_otp_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
 import 'package:example/pages/docs/components/popover_example.dart';
 import 'package:example/pages/docs/components/progress_example.dart';
@@ -272,6 +273,11 @@ class MyAppState extends State<MyApp> {
             name: 'tabs',
             builder: (context, state) => TabsExample(),
           ),
+          GoRoute(
+            path: 'input_otp',
+            builder: (context, state) => InputOTPExample(),
+            name: 'input_otp',
+          )
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

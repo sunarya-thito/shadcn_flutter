@@ -7,6 +7,7 @@ import 'package:example/pages/docs/components/color_picker/color_picker_example_
 import 'package:example/pages/docs/components/command/command_example_1.dart';
 import 'package:example/pages/docs/components/date_picker/date_picker_example_1.dart';
 import 'package:example/pages/docs/components/divider/divider_example_3.dart';
+import 'package:example/pages/docs/components/input_otp/input_otp_example_2.dart';
 import 'package:example/pages/docs/components/pagination/pagination_example_1.dart';
 import 'package:example/pages/docs_page.dart';
 import 'package:go_router/go_router.dart';
@@ -244,39 +245,28 @@ class _ComponentsPageState extends State<ComponentsPage> {
             ComponentCard(
               name: 'checkbox',
               title: 'Checkbox',
+              scale: 1.8,
               example: Card(
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 42,
-                        child: FittedBox(
-                            fit: BoxFit.fill,
-                            child: Checkbox(
-                              state: CheckboxState.checked,
-                              onChanged: null,
-                              trailing: Text('Checked'),
-                            )),
-                      ),
-                      Container(
-                        height: 42,
-                        child: FittedBox(
-                            fit: BoxFit.fill,
-                            child: Checkbox(
-                                state: CheckboxState.indeterminate,
-                                onChanged: null,
-                                trailing: Text('Indeterminate'))),
-                      ),
-                      Container(
-                        height: 42,
-                        child: FittedBox(
-                            fit: BoxFit.fill,
-                            child: Checkbox(
-                                state: CheckboxState.unchecked,
-                                onChanged: null,
-                                trailing: Text('Unchecked'))),
-                      ),
-                    ]).gap(16),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      state: CheckboxState.checked,
+                      trailing: Text('Checked'),
+                      onChanged: (value) {},
+                    ),
+                    Checkbox(
+                      state: CheckboxState.indeterminate,
+                      trailing: Text('Indeterminate'),
+                      onChanged: (value) {},
+                    ),
+                    Checkbox(
+                      state: CheckboxState.unchecked,
+                      trailing: Text('Unchecked'),
+                      onChanged: (value) {},
+                    ),
+                  ],
+                ).gap(4).sized(width: 300),
               ),
             ),
             ComponentCard(
@@ -303,7 +293,42 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 ).sized(width: 250, height: 32),
               ).sized(height: 400),
             ),
-            WIPComponentCard(title: 'Input OTP'),
+            ComponentCard(
+              title: 'Input OTP',
+              name: 'input_otp',
+              scale: 1,
+              example: Column(
+                children: [
+                  Card(
+                    child: InputOTPExample2(),
+                  ),
+                  gap(24),
+                  Transform.translate(
+                    offset: Offset(-150, 0),
+                    child: Card(
+                      child: InputOTP(
+                        initialValue: '123456'.codeUnits,
+                        children: [
+                          InputOTPChild.character(
+                              allowDigit: true, obscured: true),
+                          InputOTPChild.character(
+                              allowDigit: true, obscured: true),
+                          InputOTPChild.character(
+                              allowDigit: true, obscured: true),
+                          InputOTPChild.separator,
+                          InputOTPChild.character(
+                              allowDigit: true, obscured: true),
+                          InputOTPChild.character(
+                              allowDigit: true, obscured: true),
+                          InputOTPChild.character(
+                              allowDigit: true, obscured: true),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             ComponentCard(
               name: 'radio_group',
               title: 'Radio Group',

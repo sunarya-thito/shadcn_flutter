@@ -241,8 +241,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Color Picker', 'color_picker'),
         ShadcnDocsPage('Date Picker', 'date_picker'),
         ShadcnDocsPage('Input', 'input'),
-        ShadcnDocsPage(
-            'Input OTP', 'input_otp', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Input OTP', 'input_otp'),
         ShadcnDocsPage('Radio Group', 'radio_group'),
         ShadcnDocsPage('Switch', 'switch'),
         ShadcnDocsPage(
