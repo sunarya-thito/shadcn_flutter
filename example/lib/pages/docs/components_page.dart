@@ -558,7 +558,6 @@ class _ComponentsPageState extends State<ComponentsPage> {
               example: CommandExample1(),
             ),
             WIPComponentCard(title: 'Context Menu'),
-            WIPComponentCard(title: 'Label'),
           ]),
         ],
       ),
