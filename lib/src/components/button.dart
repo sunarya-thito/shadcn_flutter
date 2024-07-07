@@ -313,6 +313,7 @@ class _PrimaryButtonState extends ButtonState<PrimaryButton> {
                         ? themeData.colorScheme.primary.withOpacity(0.8)
                         : themeData.colorScheme.primary,
                 width: 1,
+                strokeAlign: BorderSide.strokeAlignInside,
               ),
             )
           : BoxDecoration(
@@ -329,6 +330,7 @@ class _PrimaryButtonState extends ButtonState<PrimaryButton> {
                     : isHovering
                         ? themeData.colorScheme.primary.withOpacity(0.8)
                         : themeData.colorScheme.primary,
+                strokeAlign: BorderSide.strokeAlignInside,
                 width: 1,
               ),
             ),

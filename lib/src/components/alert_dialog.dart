@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class AlertDialog extends StatefulWidget {
@@ -86,12 +85,15 @@ class _AlertDialogState extends State<AlertDialog> {
                             widget.leading != null))
                       const SizedBox(height: 16),
                     if (widget.actions != null && widget.actions!.isNotEmpty)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        // children: widget.actions!,
-                        children:
-                            join(widget.actions!, const SizedBox(width: 8))
-                                .toList(),
+                      IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          // children: widget.actions!,
+                          children:
+                              join(widget.actions!, const SizedBox(width: 8))
+                                  .toList(),
+                        ),
                       ),
                   ],
                 ),

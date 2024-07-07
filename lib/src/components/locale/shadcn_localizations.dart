@@ -76,6 +76,8 @@ abstract class ShadcnLocalizations {
   String formatDateTime(DateTime dateTime,
       {bool showDate = true, bool showTime = true, bool showSeconds = false});
   String get placeholderDatePicker;
+  String get buttonPrevious;
+  String get buttonNext;
 
   String getAbbreviatedWeekday(int weekday) {
     switch (weekday) {
@@ -301,4 +303,10 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get placeholderDatePicker => 'Select a date';
+
+  @override
+  String get buttonNext => 'Next';
+
+  @override
+  String get buttonPrevious => 'Previous';
 }

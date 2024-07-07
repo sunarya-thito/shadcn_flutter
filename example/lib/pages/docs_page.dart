@@ -143,76 +143,167 @@ class DocsPageState extends State<DocsPage> {
           ShadcnDocsPage('Theme', 'theme'),
           ShadcnDocsPage('Typography', 'typography'),
           ShadcnDocsPage('Layout', 'layout'),
+          ShadcnDocsPage('Components', 'components'),
         ],
         Icons.book),
+    // ShadcnDocsSection(
+    //     'Components',
+    //     [
+    //       ShadcnDocsPage('Accordion', 'accordion'),
+    //       ShadcnDocsPage('Alert', 'alert'),
+    //       ShadcnDocsPage('Alert Dialog', 'alert_dialog'),
+    //       ShadcnDocsPage('Avatar', 'avatar'),
+    //       ShadcnDocsPage('Badge', 'badge'),
+    //       ShadcnDocsPage('Breadcrumb', 'breadcrumb'),
+    //       ShadcnDocsPage('Button', 'button'),
+    //       ShadcnDocsPage('Calendar', 'calendar'),
+    //       ShadcnDocsPage('Card', 'card'),
+    //       ShadcnDocsPage('Carousel', 'carousel'),
+    //       ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Checkbox', 'checkbox'),
+    //       ShadcnDocsPage('Circular Progress', 'circular_progress'),
+    //       ShadcnDocsPage('Code Snippet', 'code_snippet'),
+    //       ShadcnDocsPage('Collapsible', 'collapsible'),
+    //       ShadcnDocsPage('Color Picker', 'color_picker'),
+    //       ShadcnDocsPage('Combo Box', 'combo_box'),
+    //       ShadcnDocsPage('Command', 'command'),
+    //       ShadcnDocsPage(
+    //           'Context Menu', 'context_menu', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage(
+    //           'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Date Picker', 'date_picker'),
+    //       ShadcnDocsPage('Dialog', 'dialog'),
+    //       ShadcnDocsPage('Divider', 'divider'),
+    //       ShadcnDocsPage('Drawer', 'drawer', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage(
+    //           'Dropdown', 'dropdown', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage(
+    //           'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Form', 'form'),
+    //       ShadcnDocsPage(
+    //           'Hover Card', 'hover_card', ShadcnFeatureTag.workInProgress), // deprecated
+    //       ShadcnDocsPage('Input', 'input', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage(
+    //           'Input OTP', 'input_otp', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Label', 'label', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Menubar', 'menubar', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Navigation Menu', 'navigation_menu',
+    //           ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Pagination', 'pagination'),
+    //       ShadcnDocsPage('Popover', 'popover', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage(
+    //           'Progress', 'progress', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage(
+    //           'Radio Group', 'radio_group', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage(
+    //           'Resizable', 'resizable', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Sheet', 'sheet', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage(
+    //           'Skeleton', 'skeleton', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Slider', 'slider', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Sonner', 'sonner', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Steps', 'steps', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Switch', 'switch', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Tabs', 'tabs', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage(
+    //           'Text Area', 'text_area', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Toast', 'toast', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Toggle', 'toggle', ShadcnFeatureTag.workInProgress),
+    //       ShadcnDocsPage('Tooltip', 'tooltip', ShadcnFeatureTag.workInProgress),
+    //     ],
+    //     Icons.widgets),
+    // Categorize the widgets above into different sections
     ShadcnDocsSection(
-        'Components',
-        [
-          ShadcnDocsPage('Accordion', 'accordion'),
-          ShadcnDocsPage('Alert', 'alert'),
-          ShadcnDocsPage('Alert Dialog', 'alert_dialog'),
-          ShadcnDocsPage('Avatar', 'avatar'),
-          ShadcnDocsPage('Badge', 'badge'),
-          ShadcnDocsPage('Breadcrumb', 'breadcrumb'),
-          ShadcnDocsPage('Button', 'button'),
-          ShadcnDocsPage('Calendar', 'calendar'),
-          ShadcnDocsPage('Card', 'card'),
-          ShadcnDocsPage('Carousel', 'carousel'),
-          ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Checkbox', 'checkbox'),
-          ShadcnDocsPage('Circular Progress', 'circular_progress'),
-          ShadcnDocsPage('Code Snippet', 'code_snippet'),
-          ShadcnDocsPage('Collapsible', 'collapsible'),
-          ShadcnDocsPage('Color Picker', 'color_picker'),
-          ShadcnDocsPage('Combo Box', 'combo_box'),
-          ShadcnDocsPage('Command', 'command'),
-          ShadcnDocsPage(
-              'Context Menu', 'context_menu', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage(
-              'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Date Picker', 'date_picker'),
-          ShadcnDocsPage('Dialog', 'dialog'),
-          ShadcnDocsPage('Divider', 'divider'),
-          ShadcnDocsPage('Drawer', 'drawer', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage(
-              'Dropdown', 'dropdown', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage(
-              'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Form', 'form'),
-          ShadcnDocsPage(
-              'Hover Card', 'hover_card', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Input', 'input', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage(
-              'Input OTP', 'input_otp', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Label', 'label', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Menubar', 'menubar', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Navigation Menu', 'navigation_menu',
-              ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage(
-              'Pagination', 'pagination', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Popover', 'popover', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage(
-              'Progress', 'progress', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage(
-              'Radio Group', 'radio_group', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage(
-              'Resizable', 'resizable', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Sheet', 'sheet', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage(
-              'Skeleton', 'skeleton', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Slider', 'slider', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Sonner', 'sonner', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Steps', 'steps', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Switch', 'switch', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Tabs', 'tabs', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage(
-              'Text Area', 'text_area', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Toast', 'toast', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Toggle', 'toggle', ShadcnFeatureTag.workInProgress),
-          ShadcnDocsPage('Tooltip', 'tooltip', ShadcnFeatureTag.workInProgress),
-        ],
-        Icons.widgets),
+      'Disclosures',
+      [
+        ShadcnDocsPage('Accordion', 'accordion'),
+        ShadcnDocsPage('Collapsible', 'collapsible'),
+      ],
+    ),
+    ShadcnDocsSection(
+      'Feedback',
+      [
+        ShadcnDocsPage('Alert', 'alert'),
+        ShadcnDocsPage('Alert Dialog', 'alert_dialog'),
+        ShadcnDocsPage('Circular Progress', 'circular_progress'),
+        ShadcnDocsPage('Progress', 'progress', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Skeleton', 'skeleton', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Sonner', 'sonner', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Toast', 'toast', ShadcnFeatureTag.workInProgress),
+      ],
+    ),
+    ShadcnDocsSection(
+      'Forms',
+      [
+        ShadcnDocsPage('Button', 'button'),
+        ShadcnDocsPage('Checkbox', 'checkbox'),
+        ShadcnDocsPage('Color Picker', 'color_picker'),
+        ShadcnDocsPage('Date Picker', 'date_picker'),
+        ShadcnDocsPage('Input', 'input', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage(
+            'Input OTP', 'input_otp', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage(
+            'Radio Group', 'radio_group', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Switch', 'switch', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage(
+            'Text Area', 'text_area', ShadcnFeatureTag.workInProgress),
+      ],
+    ),
+    ShadcnDocsSection(
+      'Layout',
+      [
+        ShadcnDocsPage('Card', 'card'),
+        ShadcnDocsPage('Carousel', 'carousel'),
+        ShadcnDocsPage('Divider', 'divider'),
+        ShadcnDocsPage(
+            'Resizable', 'resizable', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Steps', 'steps', ShadcnFeatureTag.workInProgress),
+      ],
+    ),
+    ShadcnDocsSection(
+      'Navigation',
+      [
+        ShadcnDocsPage('Breadcrumb', 'breadcrumb'),
+        ShadcnDocsPage('Menubar', 'menubar', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Navigation Menu', 'navigation_menu',
+            ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Pagination', 'pagination'),
+        ShadcnDocsPage('Tabs', 'tabs', ShadcnFeatureTag.workInProgress),
+      ],
+    ),
+    ShadcnDocsSection(
+      'Surfaces',
+      [
+        ShadcnDocsPage('Dialog', 'dialog'),
+        ShadcnDocsPage('Drawer', 'drawer', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Sheet', 'sheet', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Tooltip', 'tooltip', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Popover', 'popover', ShadcnFeatureTag.workInProgress),
+      ],
+    ),
+    ShadcnDocsSection(
+      'Data Display',
+      [
+        ShadcnDocsPage('Avatar', 'avatar'),
+        ShadcnDocsPage(
+            'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Code Snippet', 'code_snippet'),
+        ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.workInProgress),
+      ],
+    ),
+    ShadcnDocsSection(
+      'Utilities',
+      [
+        ShadcnDocsPage('Badge', 'badge'),
+        ShadcnDocsPage('Calendar', 'calendar'),
+        ShadcnDocsPage('Command', 'command'),
+        ShadcnDocsPage(
+            'Context Menu', 'context_menu', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Label', 'label', ShadcnFeatureTag.workInProgress),
+      ],
+    ),
   ];
   bool toggle = false;
   List<OnThisPage> currentlyVisible = [];

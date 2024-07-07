@@ -37,6 +37,7 @@ export 'src/components/locale/shadcn_localizations.dart';
 export 'src/components/media_query.dart';
 export 'src/components/menu.dart';
 export 'src/components/outlined_container.dart';
+export 'src/components/pagination.dart';
 export 'src/components/popover.dart';
 export 'src/components/radio_group.dart';
 export 'src/components/scaffold.dart';
