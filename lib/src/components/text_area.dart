@@ -20,8 +20,6 @@ class TextArea extends StatefulWidget {
   final String? initialValue;
   final int? maxLength;
   final MaxLengthEnforcement? maxLengthEnforcement;
-  final int? maxLines;
-  final int? minLines;
   final BorderRadius? borderRadius;
   final TextAlign textAlign;
   final bool expandableHeight;
@@ -61,8 +59,6 @@ class TextArea extends StatefulWidget {
     this.initialValue,
     this.maxLength,
     this.maxLengthEnforcement,
-    this.maxLines,
-    this.minLines,
     this.borderRadius,
     this.textAlign = TextAlign.start,
     this.minWidth = 100,
@@ -121,8 +117,8 @@ class _TextAreaState extends State<TextArea> {
                 initialValue: widget.initialValue,
                 maxLength: widget.maxLength,
                 maxLengthEnforcement: widget.maxLengthEnforcement,
-                maxLines: widget.maxLines,
-                minLines: widget.minLines,
+                maxLines: null,
+                minLines: null,
                 textAlign: widget.textAlign,
                 border: widget.border,
                 filled: widget.filled,

@@ -111,7 +111,6 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
   }
 
   void _onFocusChanged() {
-    print('text field focus: ${_focusNode.hasFocus}');
     if (!_focusNode.hasFocus) {
       widget.onEditingComplete?.call();
     }
@@ -153,6 +152,12 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
           focusNode: _focusNode,
           onSubmitted: widget.onSubmitted,
           onEditingComplete: widget.onEditingComplete,
+          buildCounter: (context,
+              {required currentLength,
+              required isFocused,
+              required maxLength}) {
+            return null;
+          },
           controller: _controller,
           style: defaultTextStyle.copyWith(
             fontSize: 14,
