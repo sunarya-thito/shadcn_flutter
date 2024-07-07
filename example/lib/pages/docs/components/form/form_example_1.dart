@@ -44,7 +44,9 @@ class _FormExample1State extends State<FormExample1> {
                   label: Text('Username'),
                   hint: Text('This is your public display name'),
                   validator: LengthValidator(min: 4),
-                  child: TextField(),
+                  child: TextField(
+                    initialValue: 'sunarya-thito',
+                  ),
                 ),
                 FormRow<String>(
                   key: _passwordKey,
