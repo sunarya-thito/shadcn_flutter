@@ -244,10 +244,10 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage(
             'Input OTP', 'input_otp', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Radio Group', 'radio_group'),
-        ShadcnDocsPage('Switch', 'switch', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Switch', 'switch'),
         ShadcnDocsPage(
             'Text Area', 'text_area', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Slider', 'slider', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Slider', 'slider'),
       ],
     ),
     ShadcnDocsSection(

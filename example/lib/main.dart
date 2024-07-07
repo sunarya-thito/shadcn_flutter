@@ -13,6 +13,8 @@ import 'package:example/pages/docs/components/divider_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
+import 'package:example/pages/docs/components/slider_example.dart';
+import 'package:example/pages/docs/components/switch_example.dart';
 import 'package:example/pages/docs/components_page.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
@@ -223,7 +225,17 @@ class MyAppState extends State<MyApp> {
             path: 'radio_group',
             builder: (context, state) => RadioGroupExample(),
             name: 'radio_group',
-          )
+          ),
+          GoRoute(
+            path: 'switch',
+            builder: (context, state) => SwitchExample(),
+            name: 'switch',
+          ),
+          GoRoute(
+            path: 'slider',
+            builder: (context, state) => SliderExample(),
+            name: 'slider',
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();
