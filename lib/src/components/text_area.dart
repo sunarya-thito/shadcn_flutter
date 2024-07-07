@@ -30,6 +30,10 @@ class TextArea extends StatefulWidget {
   final double initialWidth;
   final ValueChanged<double>? onHeightChanged;
   final ValueChanged<double>? onWidthChanged;
+  final double minWidth;
+  final double minHeight;
+  final double maxWidth;
+  final double maxHeight;
 
   const TextArea({
     super.key,
@@ -61,6 +65,10 @@ class TextArea extends StatefulWidget {
     this.minLines,
     this.borderRadius,
     this.textAlign = TextAlign.start,
+    this.minWidth = 100,
+    this.minHeight = 100,
+    this.maxWidth = double.infinity,
+    this.maxHeight = double.infinity,
   });
 
   @override
@@ -145,12 +153,15 @@ class _TextAreaState extends State<TextArea> {
                     if (widget.expandableHeight && _height.isFinite) {
                       setState(() {
                         _height += details.delta.dy;
+                        _height =
+                            _height.clamp(widget.minHeight, widget.maxHeight);
                         widget.onHeightChanged?.call(_height);
                       });
                     }
                     if (widget.expandableWidth && _width.isFinite) {
                       setState(() {
                         _width += details.delta.dx;
+                        _width = _width.clamp(widget.minWidth, widget.maxWidth);
                         widget.onWidthChanged?.call(_width);
                       });
                     }
