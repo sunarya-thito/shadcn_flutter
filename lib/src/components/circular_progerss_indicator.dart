@@ -1,32 +1,59 @@
 import 'package:flutter/material.dart' as mat;
-import 'package:flutter/widgets.dart';
 
 import '../../shadcn_flutter.dart';
 
 class CircularProgressIndicator extends StatelessWidget {
   final double? value;
+  final double? size;
+  final Duration duration;
+  final bool animated;
 
   const CircularProgressIndicator({
     Key? key,
     this.value,
+    this.size,
+    this.duration = kDefaultDuration,
+    this.animated = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final iconThemeData = IconTheme.of(context);
     final theme = Theme.of(context);
-    return RepaintBoundary(
-      child: SizedBox(
-        width: (iconThemeData.size ?? 24) - 8,
-        height: (iconThemeData.size ?? 24) - 8,
-        child: mat.CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(
-            iconThemeData.color ?? theme.colorScheme.primaryForeground,
+    if (value == null || !animated) {
+      return RepaintBoundary(
+        child: SizedBox(
+          width: size ?? (iconThemeData.size ?? 24) - 8,
+          height: size ?? (iconThemeData.size ?? 24) - 8,
+          child: mat.CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+              iconThemeData.color ?? theme.colorScheme.primaryForeground,
+            ),
+            strokeWidth: (size ?? (iconThemeData.size ?? 24)) / 12,
+            value: value,
           ),
-          strokeWidth: (iconThemeData.size ?? 24) / 12,
-          value: value,
         ),
-      ),
-    );
+      );
+    } else {
+      return AnimatedValueBuilder(
+        value: value!,
+        duration: duration,
+        builder: (context, value) {
+          return RepaintBoundary(
+            child: SizedBox(
+              width: size ?? (iconThemeData.size ?? 24) - 8,
+              height: size ?? (iconThemeData.size ?? 24) - 8,
+              child: mat.CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  iconThemeData.color ?? theme.colorScheme.primaryForeground,
+                ),
+                strokeWidth: (size ?? (iconThemeData.size ?? 24)) / 12,
+                value: value,
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 }

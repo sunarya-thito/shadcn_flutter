@@ -228,7 +228,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Alert', 'alert'),
         ShadcnDocsPage('Alert Dialog', 'alert_dialog'),
         ShadcnDocsPage('Circular Progress', 'circular_progress'),
-        ShadcnDocsPage('Progress', 'progress', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Progress', 'progress'),
         ShadcnDocsPage('Skeleton', 'skeleton', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Toast', 'toast', ShadcnFeatureTag.workInProgress),
       ],

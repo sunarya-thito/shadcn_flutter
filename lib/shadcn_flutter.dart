@@ -39,6 +39,7 @@ export 'src/components/menu.dart';
 export 'src/components/outlined_container.dart';
 export 'src/components/pagination.dart';
 export 'src/components/popover.dart';
+export 'src/components/progress.dart';
 export 'src/components/radio_group.dart';
 export 'src/components/scaffold.dart';
 export 'src/components/scrollbar.dart';

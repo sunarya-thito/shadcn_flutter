@@ -13,6 +13,7 @@ import 'package:example/pages/docs/components/divider_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
 import 'package:example/pages/docs/components/popover_example.dart';
+import 'package:example/pages/docs/components/progress_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
 import 'package:example/pages/docs/components/slider_example.dart';
 import 'package:example/pages/docs/components/steps_example.dart';
@@ -259,6 +260,11 @@ class MyAppState extends State<MyApp> {
             path: 'popover',
             name: 'popover',
             builder: (context, state) => PopoverExample(),
+          ),
+          GoRoute(
+            path: 'progress',
+            name: 'progress',
+            builder: (context, state) => ProgressExample(),
           ),
         ]),
   ]);
