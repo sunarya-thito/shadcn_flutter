@@ -14,6 +14,7 @@ import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
 import 'package:example/pages/docs/components/slider_example.dart';
+import 'package:example/pages/docs/components/steps_example.dart';
 import 'package:example/pages/docs/components/switch_example.dart';
 import 'package:example/pages/docs/components_page.dart';
 import 'package:example/pages/docs/installation_page.dart';
@@ -236,6 +237,11 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) => SliderExample(),
             name: 'slider',
           ),
+          GoRoute(
+            path: 'steps',
+            builder: (context, state) => StepsExample(),
+            name: 'steps',
+          )
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

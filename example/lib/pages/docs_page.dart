@@ -229,7 +229,6 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Circular Progress', 'circular_progress'),
         ShadcnDocsPage('Progress', 'progress', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Skeleton', 'skeleton', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Sonner', 'sonner', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Toast', 'toast', ShadcnFeatureTag.workInProgress),
       ],
     ),
@@ -258,7 +257,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Divider', 'divider'),
         ShadcnDocsPage(
             'Resizable', 'resizable', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Steps', 'steps', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Steps', 'steps'),
       ],
     ),
     ShadcnDocsSection(

@@ -193,7 +193,6 @@ class _ComponentsPageState extends State<ComponentsPage> {
             ),
             WIPComponentCard(title: 'Progress'),
             WIPComponentCard(title: 'Skeleton'),
-            WIPComponentCard(title: 'Sonner'),
             WIPComponentCard(title: 'Toast'),
           ]),
           Text('Forms').h2().anchored(formsKey),
