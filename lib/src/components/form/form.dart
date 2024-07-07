@@ -644,10 +644,11 @@ typedef FormSubmitCallback = void Function(
     BuildContext context, Map<FormKey, dynamic> values);
 
 class Form extends StatefulWidget {
+  final FormController? controller;
   final Widget child;
   final FormSubmitCallback? onSubmit;
 
-  const Form({super.key, required this.child, this.onSubmit});
+  const Form({super.key, required this.child, this.onSubmit, this.controller});
 
   @override
   State<Form> createState() => FormState();
@@ -655,6 +656,19 @@ class Form extends StatefulWidget {
 
 class FormController extends ChangeNotifier {
   final Map<FormKey, FormValueState> _attachedInputs = {};
+
+  Map<FormKey, dynamic> get values {
+    return {
+      for (var entry in _attachedInputs.entries) entry.key: entry.value.value
+    };
+  }
+
+  Map<FormKey, Future<ValidationResult?>> get errors {
+    return {
+      for (var entry in _attachedInputs.entries)
+        if (entry.value.validity != null) entry.key: entry.value.validity!
+    };
+  }
 
   FormValueState? getState(FormKey key) {
     return _attachedInputs[key];
@@ -700,7 +714,21 @@ class FormController extends ChangeNotifier {
 }
 
 class FormState extends State<Form> {
-  final FormController _controller = FormController();
+  late FormController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? FormController();
+  }
+
+  @override
+  void didUpdateWidget(covariant Form oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      _controller = widget.controller ?? FormController();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1042,61 +1070,66 @@ class FormTableLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Table(
-      columnWidths: const {
-        0: IntrinsicColumnWidth(),
-        1: FlexColumnWidth(),
-      },
-      children: [
-        for (int i = 0; i < rows.length; i++)
-          TableRow(
-            children: [
-              rows[i]
-                  .label
-                  .textSmall()
-                  .withAlign(Alignment.centerRight)
-                  .withMargin(right: 16)
-                  .sized(height: 32)
-                  .withPadding(
-                    top: i == 0 ? 0 : 16,
+    return mergeAnimatedTextStyle(
+      duration: kDefaultDuration,
+      style: TextStyle(color: Theme.of(context).colorScheme.foreground),
+      child: Table(
+        columnWidths: const {
+          0: IntrinsicColumnWidth(),
+          1: FlexColumnWidth(),
+        },
+        children: [
+          for (int i = 0; i < rows.length; i++)
+            TableRow(
+              children: [
+                rows[i]
+                    .label
+                    .textSmall()
+                    .withAlign(Alignment.centerRight)
+                    .withMargin(right: 16)
+                    .sized(height: 32)
+                    .withPadding(
+                      top: i == 0 ? 0 : 16,
+                      left: 16,
+                    ),
+                FormEntry(
+                  key: rows[i].key,
+                  validator: rows[i].validator,
+                  child: FormEntryErrorBuilder(
+                    builder: (context, error, child) {
+                      return IntrinsicWidth(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            child!,
+                            if (rows[i].hint != null) ...[
+                              gap(8),
+                              rows[i].hint!.xSmall().muted(),
+                            ],
+                            if (error is InvalidResult) ...[
+                              gap(8),
+                              mergeAnimatedTextStyle(
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .destructive),
+                                child: Text(error.message).xSmall().medium(),
+                                duration: kDefaultDuration,
+                              ),
+                            ],
+                          ],
+                        ),
+                      );
+                    },
+                    child: rows[i].child,
                   ),
-              FormEntry(
-                key: rows[i].key,
-                validator: rows[i].validator,
-                child: FormEntryErrorBuilder(
-                  builder: (context, error, child) {
-                    return IntrinsicWidth(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          child!,
-                          if (rows[i].hint != null) ...[
-                            gap(8),
-                            rows[i].hint!.xSmall().muted(),
-                          ],
-                          if (error is InvalidResult) ...[
-                            gap(8),
-                            mergeAnimatedTextStyle(
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .destructive),
-                              child: Text(error.message).xSmall().medium(),
-                              duration: kDefaultDuration,
-                            ),
-                          ],
-                        ],
-                      ),
-                    );
-                  },
-                  child: rows[i].child,
+                ).withPadding(
+                  top: i == 0 ? 0 : 16,
                 ),
-              ).withPadding(
-                top: i == 0 ? 0 : 16,
-              ),
-            ],
-          ),
-      ],
+              ],
+            ),
+        ],
+      ),
     );
   }
 }

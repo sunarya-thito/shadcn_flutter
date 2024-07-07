@@ -21,6 +21,7 @@ class TextField extends StatefulWidget {
   final bool readOnly;
   final bool obscureText;
   final String obscuringCharacter;
+  final String? initialValue;
   const TextField({
     Key? key,
     this.controller,
@@ -38,6 +39,7 @@ class TextField extends StatefulWidget {
     this.readOnly = false,
     this.obscureText = false,
     this.obscuringCharacter = '•',
+    this.initialValue,
   }) : super(key: key);
 
   @override
@@ -53,6 +55,9 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
   void initState() {
     super.initState();
     _controller = widget.controller ?? TextEditingController();
+    if (widget.initialValue != null) {
+      _controller.text = widget.initialValue!;
+    }
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_onFocusChanged);
     _controller.addListener(_onValueChanged);
