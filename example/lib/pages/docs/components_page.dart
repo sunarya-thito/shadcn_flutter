@@ -191,7 +191,14 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 child: CircularProgressIndicator(),
               ),
             ),
-            WIPComponentCard(title: 'Progress'),
+            ComponentCard(
+              title: 'Progress',
+              name: 'progress',
+              example: Progress(
+                progress: 0.75,
+              ),
+              center: true,
+            ),
             WIPComponentCard(title: 'Skeleton'),
             WIPComponentCard(title: 'Toast'),
           ]),
@@ -422,7 +429,32 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 ],
               ).gap(16),
             ),
-            WIPComponentCard(title: 'Tabs'),
+            ComponentCard(
+              title: 'Tabs',
+              name: 'tabs',
+              scale: 1.2,
+              example: Card(
+                child: Column(
+                  children: [
+                    Tabs(index: 0, onChanged: (value) {}, tabs: [
+                      Text('Tab 1'),
+                      Text('Tab 2'),
+                      Text('Tab 3'),
+                    ]),
+                    Tabs(index: 1, onChanged: (value) {}, tabs: [
+                      Text('Tab 1'),
+                      Text('Tab 2'),
+                      Text('Tab 3'),
+                    ]),
+                    Tabs(index: 2, onChanged: (value) {}, tabs: [
+                      Text('Tab 1'),
+                      Text('Tab 2'),
+                      Text('Tab 3'),
+                    ]),
+                  ],
+                ).gap(8),
+              ),
+            ),
             ComponentCard(
               name: 'tab_list',
               title: 'Tab List',

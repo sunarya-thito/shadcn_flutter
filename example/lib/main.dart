@@ -19,6 +19,7 @@ import 'package:example/pages/docs/components/slider_example.dart';
 import 'package:example/pages/docs/components/steps_example.dart';
 import 'package:example/pages/docs/components/switch_example.dart';
 import 'package:example/pages/docs/components/tab_list_example.dart';
+import 'package:example/pages/docs/components/tabs_example.dart';
 import 'package:example/pages/docs/components/tooltip_example.dart';
 import 'package:example/pages/docs/components_page.dart';
 import 'package:example/pages/docs/installation_page.dart';
@@ -265,6 +266,11 @@ class MyAppState extends State<MyApp> {
             path: 'progress',
             name: 'progress',
             builder: (context, state) => ProgressExample(),
+          ),
+          GoRoute(
+            path: 'tabs',
+            name: 'tabs',
+            builder: (context, state) => TabsExample(),
           ),
         ]),
   ]);

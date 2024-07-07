@@ -49,6 +49,7 @@ export 'src/components/stage_container.dart';
 export 'src/components/steps.dart';
 export 'src/components/switch.dart';
 export 'src/components/tab_list.dart';
+export 'src/components/tabs.dart';
 export 'src/components/text/text.dart';
 export 'src/components/text/underline_text.dart';
 export 'src/components/text_field.dart';

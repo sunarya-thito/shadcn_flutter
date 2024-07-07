@@ -27,8 +27,10 @@ class CircularProgressIndicator extends StatelessWidget {
           height: size ?? (iconThemeData.size ?? 24) - 8,
           child: mat.CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(
-              iconThemeData.color ?? theme.colorScheme.primaryForeground,
+              iconThemeData.color ?? theme.colorScheme.primary,
             ),
+            backgroundColor: iconThemeData.color?.withOpacity(0.2) ??
+                theme.colorScheme.primary.withOpacity(0.2),
             strokeWidth: (size ?? (iconThemeData.size ?? 24)) / 12,
             value: value,
           ),
@@ -45,8 +47,10 @@ class CircularProgressIndicator extends StatelessWidget {
               height: size ?? (iconThemeData.size ?? 24) - 8,
               child: mat.CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  iconThemeData.color ?? theme.colorScheme.primaryForeground,
+                  iconThemeData.color ?? theme.colorScheme.primary,
                 ),
+                backgroundColor: iconThemeData.color?.withOpacity(0.2) ??
+                    theme.colorScheme.primary.withOpacity(0.2),
                 strokeWidth: (size ?? (iconThemeData.size ?? 24)) / 12,
                 value: value,
               ),

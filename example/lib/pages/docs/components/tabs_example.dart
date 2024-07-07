@@ -1,21 +1,21 @@
-import 'package:example/pages/docs/components/tab_list/tab_list_example_1.dart';
+import 'package:example/pages/docs/components/tabs/tabs_example_1.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
 import '../component_page.dart';
 
-class TabListExample extends StatelessWidget {
+class TabsExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ComponentPage(
-      name: 'tab_list',
+      name: 'tabs',
       description: 'A list of tabs for selecting a single item.',
-      displayName: 'Tab List',
+      displayName: 'Tabs',
       children: [
         WidgetUsageExample(
-          title: 'Tab List Example',
-          child: TabListExample1(),
-          path: 'lib/pages/docs/components/tab_list/tabs_example_1.dart',
+          title: 'Tabs Example',
+          child: TabsExample1(),
+          path: 'lib/pages/docs/components/tabs/tabs_example_1.dart',
         ),
       ],
     );

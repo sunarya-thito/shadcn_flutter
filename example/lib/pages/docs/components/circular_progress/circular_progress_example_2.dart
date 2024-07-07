@@ -19,7 +19,7 @@ class _CircularProgressExample2State extends State<CircularProgressExample2> {
           value: _progress.clamp(0, 100) / 100,
           size: 48,
         ),
-        gap(16),
+        gap(48),
         Row(
           children: [
             DestructiveButton(
