@@ -579,7 +579,11 @@ class DocsPageState extends State<DocsPage> {
                                     openInNewTab(
                                         'https://github.com/sunarya-thito/shadcn_flutter');
                                   },
-                                  child: FaIcon(FontAwesomeIcons.github),
+                                  child: FaIcon(
+                                    FontAwesomeIcons.github,
+                                    color:
+                                        theme.colorScheme.secondaryForeground,
+                                  ),
                                 ),
                                 // pub.dev icon
                                 GhostButton(
@@ -591,7 +595,7 @@ class DocsPageState extends State<DocsPage> {
                                     child: ColorFiltered(
                                       // turns into white
                                       colorFilter: ColorFilter.mode(
-                                        theme.colorScheme.primary,
+                                        theme.colorScheme.secondaryForeground,
                                         BlendMode.srcIn,
                                       ),
                                       child: FlutterLogo(
@@ -642,7 +646,9 @@ class DocsPageState extends State<DocsPage> {
                                     openInNewTab(
                                         'https://github.com/sunarya-thito/shadcn_flutter');
                                   },
-                                  child: FaIcon(FontAwesomeIcons.github),
+                                  child: FaIcon(FontAwesomeIcons.github,
+                                      color: theme
+                                          .colorScheme.secondaryForeground),
                                 ),
                                 // pub.dev icon
                                 GhostButton(
@@ -654,7 +660,7 @@ class DocsPageState extends State<DocsPage> {
                                     child: ColorFiltered(
                                       // turns into white
                                       colorFilter: ColorFilter.mode(
-                                        theme.colorScheme.primary,
+                                        theme.colorScheme.secondaryForeground,
                                         BlendMode.srcIn,
                                       ),
                                       child: FlutterLogo(
