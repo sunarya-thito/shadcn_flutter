@@ -29,10 +29,10 @@ class CarouselExample extends StatelessWidget {
   }
 }
 
-class CarouselItemWidget extends StatelessWidget {
+class NumberedContainer extends StatelessWidget {
   final int index;
 
-  const CarouselItemWidget({Key? key, required this.index}) : super(key: key);
+  const NumberedContainer({Key? key, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

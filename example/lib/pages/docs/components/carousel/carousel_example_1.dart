@@ -34,7 +34,7 @@ class _CarouselExample1State extends State<CarouselExample1> {
                 itemCount: 5,
                 // wrap: false,
                 itemBuilder: (context, index) {
-                  return CarouselItemWidget(index: index);
+                  return NumberedContainer(index: index);
                 },
                 duration: Duration(seconds: 2),
               ),

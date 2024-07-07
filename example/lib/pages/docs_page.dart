@@ -270,8 +270,7 @@ class DocsPageState extends State<DocsPage> {
             ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Pagination', 'pagination'),
         ShadcnDocsPage('Tabs', 'tabs', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage(
-            'Tab List', 'tabs_list', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Tab List', 'tab_list'),
       ],
     ),
     ShadcnDocsSection(
