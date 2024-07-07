@@ -66,7 +66,7 @@ class RadioItem<T> extends StatefulWidget {
   State<RadioItem<T>> createState() => _RadioItemState<T>();
 }
 
-class _RadioItemState<T> extends State<RadioItem<T>> {
+class _RadioItemState<T> extends State<RadioItem<T>> with FormValueSupplier {
   _RadioGroupState? _group;
   bool _selected = false;
   bool _focusing = false;
@@ -83,16 +83,22 @@ class _RadioItemState<T> extends State<RadioItem<T>> {
       _group?._notifier.addListener(_onChanged);
       _group?._focusing.addListener(_onFocusChange);
       _group?._items.add(this);
-      if (_group?._notifier.value == null ||
-          !_group!._notifier.value!.mounted) {
-        _group?._notifier.value = this;
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (widget.onSelected != null) {
-            widget.onSelected!(_selected);
-          }
-        });
-      } else {
-        _selected = _group?._notifier.value == this;
+      if (_group?.widget.initialValue == null ||
+          _group?.widget.initialValue == widget.value) {
+        if (_group?._notifier.value == null ||
+            !_group!._notifier.value!.mounted) {
+          _group?._notifier.value = this;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (widget.onSelected != null) {
+              widget.onSelected!(_selected);
+            }
+            reportNewFormValue(widget.value, (value) {
+              _group?._setSelectedValue(value);
+            });
+          });
+        } else {
+          _selected = _group?._notifier.value == this;
+        }
       }
     }
   }
@@ -136,16 +142,18 @@ class _RadioItemState<T> extends State<RadioItem<T>> {
         cursor: widget.onSelected != null
             ? SystemMouseCursors.click
             : SystemMouseCursors.basic,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (widget.leading != null) widget.leading!,
-            if (widget.leading != null) const SizedBox(width: 8),
-            Radio(value: _selected, focusing: _focusing && _selected),
-            if (widget.trailing != null) const SizedBox(width: 8),
-            if (widget.trailing != null) widget.trailing!,
-          ],
+        child: IntrinsicHeight(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (widget.leading != null) widget.leading!,
+              if (widget.leading != null) const SizedBox(width: 8),
+              Radio(value: _selected, focusing: _focusing && _selected),
+              if (widget.trailing != null) const SizedBox(width: 8),
+              if (widget.trailing != null) widget.trailing!,
+            ],
+          ),
         ),
       ),
     );
@@ -154,17 +162,18 @@ class _RadioItemState<T> extends State<RadioItem<T>> {
 
 class RadioGroup<T> extends StatefulWidget {
   final Widget child;
-
+  final T? initialValue;
   const RadioGroup({
     Key? key,
     required this.child,
+    this.initialValue,
   }) : super(key: key);
 
   @override
-  _RadioGroupState createState() => _RadioGroupState();
+  _RadioGroupState<T> createState() => _RadioGroupState<T>();
 }
 
-class _RadioGroupState<T> extends State<RadioGroup> with FormValueSupplier {
+class _RadioGroupState<T> extends State<RadioGroup<T>> with FormValueSupplier {
   final List<_RadioItemState<T>> _items = [];
   final ValueNotifier<_RadioItemState<T>?> _notifier = ValueNotifier(null);
   final ValueNotifier<bool> _focusing = ValueNotifier(false);

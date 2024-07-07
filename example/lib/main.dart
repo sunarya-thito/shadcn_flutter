@@ -10,7 +10,9 @@ import 'package:example/pages/docs/components/combobox_example.dart';
 import 'package:example/pages/docs/components/date_picker_example.dart';
 import 'package:example/pages/docs/components/dialog_example.dart';
 import 'package:example/pages/docs/components/divider_example.dart';
+import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
+import 'package:example/pages/docs/components/radio_group_example.dart';
 import 'package:example/pages/docs/components_page.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
@@ -211,6 +213,16 @@ class MyAppState extends State<MyApp> {
             path: 'pagination',
             builder: (context, state) => PaginationExample(),
             name: 'pagination',
+          ),
+          GoRoute(
+            path: 'input',
+            builder: (context, state) => InputExample(),
+            name: 'input',
+          ),
+          GoRoute(
+            path: 'radio_group',
+            builder: (context, state) => RadioGroupExample(),
+            name: 'radio_group',
           )
         ]),
   ]);

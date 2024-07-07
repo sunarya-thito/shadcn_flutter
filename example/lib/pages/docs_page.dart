@@ -240,14 +240,14 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Checkbox', 'checkbox'),
         ShadcnDocsPage('Color Picker', 'color_picker'),
         ShadcnDocsPage('Date Picker', 'date_picker'),
-        ShadcnDocsPage('Input', 'input', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Input', 'input'),
         ShadcnDocsPage(
             'Input OTP', 'input_otp', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage(
-            'Radio Group', 'radio_group', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Radio Group', 'radio_group'),
         ShadcnDocsPage('Switch', 'switch', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage(
             'Text Area', 'text_area', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Slider', 'slider', ShadcnFeatureTag.workInProgress),
       ],
     ),
     ShadcnDocsSection(
@@ -270,6 +270,8 @@ class DocsPageState extends State<DocsPage> {
             ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Pagination', 'pagination'),
         ShadcnDocsPage('Tabs', 'tabs', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage(
+            'Tab List', 'tabs_list', ShadcnFeatureTag.workInProgress),
       ],
     ),
     ShadcnDocsSection(

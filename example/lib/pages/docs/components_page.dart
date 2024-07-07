@@ -321,6 +321,16 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
             ),
             ComponentCard(
+              name: 'slider',
+              title: 'Slider',
+              center: true,
+              scale: 2,
+              example: Slider(
+                value: SliderValue.single(0.75),
+                onChanged: (value) {},
+              ).sized(width: 100),
+            ),
+            ComponentCard(
               name: 'switch',
               title: 'Switch',
               scale: 2,
@@ -413,6 +423,22 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ).gap(16),
             ),
             WIPComponentCard(title: 'Tabs'),
+            ComponentCard(
+              name: 'tab_list',
+              title: 'Tab List',
+              scale: 1,
+              reverseVertical: true,
+              verticalOffset: 60,
+              example: TabList(
+                index: 0,
+                children: [
+                  TabButton(child: Text('Preview')),
+                  TabButton(child: Text('Code')),
+                  TabButton(child: Text('Design')),
+                  TabButton(child: Text('Settings')),
+                ],
+              ),
+            ),
           ]),
           Text('Surfaces').h2().anchored(surfacesKey),
           gap(16),
