@@ -216,7 +216,14 @@ class DocsPageState extends State<DocsPage> {
     //     Icons.widgets),
     // Categorize the widgets above into different sections
     ShadcnDocsSection(
-      'Disclosures',
+      'Animation',
+      [
+        ShadcnDocsPage('Animated Value', 'animated_value_builder'),
+        ShadcnDocsPage('Repeated Animation', 'repeated_animation_builder'),
+      ],
+    ),
+    ShadcnDocsSection(
+      'Disclosure',
       [
         ShadcnDocsPage('Accordion', 'accordion'),
         ShadcnDocsPage('Collapsible', 'collapsible'),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:example/pages/docs/components/accordion_example.dart';
 import 'package:example/pages/docs/components/alert_dialog_example.dart';
 import 'package:example/pages/docs/components/alert_example.dart';
+import 'package:example/pages/docs/components/animated_value_builder_example.dart';
 import 'package:example/pages/docs/components/avatar_example.dart';
 import 'package:example/pages/docs/components/calendar_example.dart';
 import 'package:example/pages/docs/components/carousel_example.dart';
@@ -16,6 +17,7 @@ import 'package:example/pages/docs/components/pagination_example.dart';
 import 'package:example/pages/docs/components/popover_example.dart';
 import 'package:example/pages/docs/components/progress_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
+import 'package:example/pages/docs/components/repeated_animation_builder_example.dart';
 import 'package:example/pages/docs/components/slider_example.dart';
 import 'package:example/pages/docs/components/steps_example.dart';
 import 'package:example/pages/docs/components/switch_example.dart';
@@ -283,7 +285,20 @@ class MyAppState extends State<MyApp> {
             path: 'text_area',
             builder: (context, state) => TextAreaExample(),
             name: 'text_area',
-          )
+          ),
+          GoRoute(
+            path: 'animated_value_builder',
+            name: 'animated_value_builder',
+            builder: (context, state) {
+              return AnimatedValueBuilderExample();
+            },
+          ),
+          GoRoute(
+              path: 'repeated_animation_builder',
+              name: 'repeated_animation_builder',
+              builder: (context, state) {
+                return RepeatedAnimationBuilderExample();
+              }),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();
