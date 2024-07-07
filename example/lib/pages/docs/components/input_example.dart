@@ -14,12 +14,12 @@ class InputExample extends StatelessWidget {
       displayName: 'Input',
       children: [
         WidgetUsageExample(
-          title: 'Input Example',
+          title: 'Example',
           child: InputExample1(),
           path: 'lib/pages/docs/components/input/input_example_1.dart',
         ),
         WidgetUsageExample(
-          title: 'Input with Initial Value Example',
+          title: 'Initial Value Example',
           child: InputExample2(),
           path: 'lib/pages/docs/components/input/input_example_2.dart',
         ),

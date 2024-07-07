@@ -14,13 +14,13 @@ class RadioGroupExample extends StatelessWidget {
       displayName: 'Radio Group',
       children: [
         WidgetUsageExample(
-          title: 'Radio Group Example',
+          title: 'Example',
           child: RadioGroupExample1(),
           path:
               'lib/pages/docs/components/radio_group/radio_group_example_1.dart',
         ),
         WidgetUsageExample(
-          title: 'Radio Group with Initial Value Example',
+          title: 'Initial Value Example',
           child: RadioGroupExample2(),
           path:
               'lib/pages/docs/components/radio_group/radio_group_example_2.dart',

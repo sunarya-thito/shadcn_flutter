@@ -52,6 +52,7 @@ export 'src/components/tab_list.dart';
 export 'src/components/tabs.dart';
 export 'src/components/text/text.dart';
 export 'src/components/text/underline_text.dart';
+export 'src/components/text_area.dart';
 export 'src/components/text_field.dart';
 export 'src/components/tooltip.dart';
 export 'src/components/triple_dots.dart';
