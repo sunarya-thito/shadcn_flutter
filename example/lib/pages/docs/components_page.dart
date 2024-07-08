@@ -772,7 +772,7 @@ class WIPComponentCard extends StatelessWidget {
   }
 }
 
-class ComponentCard extends StatelessWidget {
+class ComponentCard extends StatefulWidget {
   final String name;
   final String title;
   final Widget example;
@@ -798,13 +798,29 @@ class ComponentCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<ComponentCard> createState() => _ComponentCardState();
+}
+
+class _ComponentCardState extends State<ComponentCard> {
+  bool _hovering = false;
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return MouseRegion(
       cursor: SystemMouseCursors.click,
+      onEnter: (_) {
+        setState(() {
+          _hovering = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          _hovering = false;
+        });
+      },
       child: GestureDetector(
         onTap: () {
-          context.pushNamed(name);
+          context.pushNamed(widget.name);
         },
         child: SizedBox(
           height: 200,
@@ -821,54 +837,72 @@ class ComponentCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: theme.colorScheme.accent,
                         ),
-                        child: fit
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: example,
+                        child: AnimatedValueBuilder(
+                            value: _hovering ? 1.0 : 0.0,
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut,
+                            builder: (context, value) {
+                              return Transform.scale(
+                                scale: 1 + 0.3 * value,
+                                child: Transform.rotate(
+                                  angle: pi / 180 * 10 * value,
+                                  child: widget.fit
+                                      ? Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: FittedBox(
+                                            fit: BoxFit.contain,
+                                            child: widget.example,
+                                          ),
+                                        )
+                                      : widget.center
+                                          ? Center(
+                                              child: Transform.scale(
+                                                  scale: widget.scale,
+                                                  child: SingleChildScrollView(
+                                                    clipBehavior: Clip.none,
+                                                    child: widget.example,
+                                                  )),
+                                            ).withPadding(all: 24)
+                                          : Stack(
+                                              children: [
+                                                Positioned(
+                                                  top: !widget.reverseVertical
+                                                      ? widget.verticalOffset
+                                                      : null,
+                                                  right: widget.reverse
+                                                      ? widget.horizontalOffset
+                                                      : null,
+                                                  bottom: widget.reverseVertical
+                                                      ? widget.verticalOffset
+                                                      : null,
+                                                  left: !widget.reverse
+                                                      ? widget.horizontalOffset
+                                                      : null,
+                                                  child: Transform.scale(
+                                                    scale: widget.scale,
+                                                    alignment: widget.reverse
+                                                        ? widget.reverseVertical
+                                                            ? Alignment
+                                                                .bottomRight
+                                                            : Alignment.topRight
+                                                        : widget.reverseVertical
+                                                            ? Alignment
+                                                                .bottomLeft
+                                                            : Alignment.topLeft,
+                                                    child: widget.example,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                 ),
-                              )
-                            : center
-                                ? Center(
-                                    child: Transform.scale(
-                                        scale: scale,
-                                        child: SingleChildScrollView(
-                                          clipBehavior: Clip.none,
-                                          child: example,
-                                        )),
-                                  ).withPadding(all: 24)
-                                : Stack(
-                                    children: [
-                                      Positioned(
-                                        top: !reverseVertical
-                                            ? verticalOffset
-                                            : null,
-                                        right:
-                                            reverse ? horizontalOffset : null,
-                                        bottom: reverseVertical
-                                            ? verticalOffset
-                                            : null,
-                                        left:
-                                            !reverse ? horizontalOffset : null,
-                                        child: Transform.scale(
-                                          scale: scale,
-                                          alignment: reverse
-                                              ? reverseVertical
-                                                  ? Alignment.bottomRight
-                                                  : Alignment.topRight
-                                              : reverseVertical
-                                                  ? Alignment.bottomLeft
-                                                  : Alignment.topLeft,
-                                          child: example,
-                                        ),
-                                      ),
-                                    ],
-                                  )),
+                              );
+                            })),
                   ),
                 ),
                 Divider(),
-                Text(title).medium().withPadding(vertical: 12, horizontal: 16),
+                Text(widget.title)
+                    .medium()
+                    .withPadding(vertical: 12, horizontal: 16),
               ],
             ),
           ),
