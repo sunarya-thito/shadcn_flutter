@@ -249,7 +249,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Checkbox', 'checkbox'),
         ShadcnDocsPage('Color Picker', 'color_picker'),
         ShadcnDocsPage('Date Picker', 'date_picker'),
-        ShadcnDocsPage('Combobox', 'combobox'),
+        ShadcnDocsPage('Combobox', 'combo_box'),
         ShadcnDocsPage('Form', 'form'),
         ShadcnDocsPage('Input', 'input'),
         ShadcnDocsPage('Input OTP', 'input_otp'),
