@@ -825,24 +825,31 @@ class _ComponentCardState extends State<ComponentCard> {
         child: SizedBox(
           height: 200,
           width: 250,
-          child: OutlinedContainer(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: IgnorePointer(
-                    child: Container(
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.accent,
-                        ),
-                        child: AnimatedValueBuilder(
-                            value: _hovering ? 1.0 : 0.0,
-                            duration: const Duration(milliseconds: 200),
-                            curve: Curves.easeInOut,
-                            builder: (context, value) {
-                              return Transform.scale(
+          child: AnimatedValueBuilder(
+              value: _hovering ? 1.0 : 0.0,
+              duration: Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
+              builder: (context, value) {
+                final borderColor = Color.lerp(
+                    theme.colorScheme.border, theme.colorScheme.ring, value);
+                return OutlinedContainer(
+                  clipBehavior: Clip.antiAlias,
+                  borderColor: borderColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: IgnorePointer(
+                          child: Container(
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.accent,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(theme.radiusMd + 3),
+                                  topRight: Radius.circular(theme.radiusMd + 3),
+                                ),
+                              ),
+                              child: Transform.scale(
                                 scale: 1 + 0.3 * value,
                                 child: Transform.rotate(
                                   angle: pi / 180 * 10 * value,
@@ -895,17 +902,17 @@ class _ComponentCardState extends State<ComponentCard> {
                                               ],
                                             ),
                                 ),
-                              );
-                            })),
+                              )),
+                        ),
+                      ),
+                      Divider(),
+                      Text(widget.title)
+                          .medium()
+                          .withPadding(vertical: 12, horizontal: 16),
+                    ],
                   ),
-                ),
-                Divider(),
-                Text(widget.title)
-                    .medium()
-                    .withPadding(vertical: 12, horizontal: 16),
-              ],
-            ),
-          ),
+                );
+              }),
         ),
       ),
     );
