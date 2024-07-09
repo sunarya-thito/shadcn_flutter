@@ -6,3 +6,7 @@
 
 * Added missing components
 * Improved documentation pages
+
+## 0.0.3
+
+* Added wasm support
