@@ -6,6 +6,8 @@ class Progress extends StatelessWidget {
   final double max;
   final bool animated;
   final Duration duration;
+  final Color? color;
+  final Color? backgroundColor;
   const Progress({
     super.key,
     this.progress,
@@ -13,6 +15,8 @@ class Progress extends StatelessWidget {
     this.max = 1.0,
     this.animated = true,
     this.duration = kDefaultDuration,
+    this.color,
+    this.backgroundColor,
   }) : assert(progress != null && progress >= min && progress <= max,
             'Progress must be between min and max');
 
@@ -54,7 +58,7 @@ class Progress extends StatelessWidget {
         height: 8,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(theme.radiusMd),
-          color: theme.colorScheme.primary.withOpacity(0.2),
+          color: backgroundColor ?? theme.colorScheme.primary.withOpacity(0.2),
         ),
         clipBehavior: Clip.antiAlias,
         child: Stack(
@@ -62,9 +66,10 @@ class Progress extends StatelessWidget {
             Positioned.fill(
               left: startOffset * constraints.maxWidth,
               right: (1 - endOffset) * constraints.maxWidth,
-              child: Container(
+              child: AnimatedContainer(
+                duration: duration,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
+                  color: color ?? theme.colorScheme.primary,
                 ),
               ),
             ),
