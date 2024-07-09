@@ -1,4 +1,4 @@
-import 'dart:js' as js;
+import 'dart:js_interop' as js;
 import 'dart:math';
 import 'dart:ui';
 
