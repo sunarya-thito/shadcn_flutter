@@ -1,6 +1,6 @@
-import 'package:example/pages/docs_page.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+import '../docs_page.dart';
 
 class InstallationPage extends StatefulWidget {
   const InstallationPage({Key? key}) : super(key: key);
@@ -129,7 +129,7 @@ void main() {
         - asset: "packages/shadcn_flutter/fonts/GeistMono-UltraLight.otf"
           weight: 200''',
                     mode: 'yaml',
-                  ).p(),
+                  ).sized(height: 300).p(),
                 ],
               ),
               StepItem(

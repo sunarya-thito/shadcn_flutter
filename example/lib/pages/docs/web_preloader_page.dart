@@ -24,7 +24,13 @@ class WebPreloaderPage extends StatelessWidget {
                       code: 'flutter create . --platforms=web',
                       mode: 'shell',
                     ).p(),
-                    Text('* If you\'re using legacy flutter web, you need to upgrade it using the command above.')
+                    Text('* If you\'re using legacy flutter web, you need to upgrade it using the command above. ')
+                        .thenButton(
+                            onPressed: () {
+                              openInNewTab(
+                                  'https://docs.flutter.dev/platform-integration/web/initialization#upgrade-an-older-project');
+                            },
+                            child: Text('Click here for more information.'))
                         .italic()
                         .muted()
                         .withPadding(top: 8),
@@ -36,9 +42,10 @@ class WebPreloaderPage extends StatelessWidget {
                     Text('Next, create a \"flutter_bootstrap.js\" file in your web directory. Fill it with the following code:')
                         .p(),
                     CodeSnippetFutureBuilder(
-                            path: 'web/flutter_bootstrap.js',
-                            mode: 'javascript')
-                        .p(),
+                      path: 'web/flutter_bootstrap.js',
+                      mode: 'javascript',
+                      summarize: false,
+                    ).sized(height: 300).p(),
                   ],
                 ),
                 StepItem(

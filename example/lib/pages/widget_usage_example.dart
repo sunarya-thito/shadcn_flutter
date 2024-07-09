@@ -80,11 +80,13 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
 class CodeSnippetFutureBuilder extends StatefulWidget {
   final String path;
   final String mode;
+  final bool summarize;
 
   const CodeSnippetFutureBuilder({
     Key? key,
     required this.path,
     required this.mode,
+    this.summarize = true,
   }) : super(key: key);
 
   @override
@@ -102,7 +104,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
     futureCode =
         http.get(Uri.parse(url)).then((response) => response.body).then((code) {
       try {
-        return _formatCode(code);
+        return widget.summarize ? _formatCode(code) : code;
       } catch (e, stackTrace) {
         print(e);
         print(stackTrace);
