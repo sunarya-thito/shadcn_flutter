@@ -10,7 +10,7 @@ class ComponentPage extends StatefulWidget {
   final String displayName;
   final String description;
 
-  final List<WidgetUsageExample> children;
+  final List<Widget> children;
   const ComponentPage({
     Key? key,
     required this.name,
@@ -31,6 +31,9 @@ class _ComponentPageState extends State<ComponentPage> {
   void initState() {
     super.initState();
     for (final child in widget.children) {
+      if (child is! WidgetUsageExample) {
+        continue;
+      }
       final title = child.title;
       if (title == null) {
         continue;
@@ -48,6 +51,9 @@ class _ComponentPageState extends State<ComponentPage> {
       keys.clear();
       onThisPage.clear();
       for (final child in widget.children) {
+        if (child is! WidgetUsageExample) {
+          continue;
+        }
         final title = child.title;
         if (title == null) {
           continue;
@@ -62,8 +68,12 @@ class _ComponentPageState extends State<ComponentPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> remappedChildren = [];
-    for (int i = 0; i < widget.children.length; i++) {
-      final child = widget.children[i];
+    int i = 0;
+    for (final child in widget.children) {
+      if (child is! WidgetUsageExample) {
+        remappedChildren.add(child);
+        continue;
+      }
       final title = child.title;
       final key = keys[i];
       if (title == null) {
@@ -73,9 +83,10 @@ class _ComponentPageState extends State<ComponentPage> {
         PageItemWidget(
           onThisPage: onThisPage[title]!,
           key: key,
-          child: child.p(),
+          child: child,
         ),
       );
+      i++;
     }
     return DocsPage(
       name: widget.name,

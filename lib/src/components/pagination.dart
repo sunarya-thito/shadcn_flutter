@@ -68,6 +68,7 @@ class Pagination extends StatelessWidget {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     return IntrinsicHeight(
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (!hidePreviousOnFirstPage || hasPrevious)

@@ -1,3 +1,4 @@
+import 'dart:js' as js;
 import 'dart:math';
 import 'dart:ui';
 
@@ -198,6 +199,12 @@ class ShadcnScrollBehavior extends ScrollBehavior {
 class _ShadcnAppState extends State<ShadcnApp> {
   late HeroController _heroController;
 
+  void _revealCurtain() {
+    try {
+      js.context.callMethod("onAppReady", []);
+    } catch (e) {}
+  }
+
   bool get _usesRouter =>
       widget.routerDelegate != null || widget.routerConfig != null;
 
@@ -210,6 +217,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
         return ShadcnRectArcTween(begin: begin, end: end);
       },
     );
+    Future.delayed(const Duration(milliseconds: 10), _revealCurtain);
   }
 
   @override
@@ -229,25 +237,28 @@ class _ShadcnAppState extends State<ShadcnApp> {
 
   Widget _builder(BuildContext context, Widget? child) {
     final ThemeData theme = widget.theme;
-    return mergeAnimatedTextStyle(
-      duration: kDefaultDuration,
-      style: TextStyle(
-        color: theme.colorScheme.foreground,
-      ),
-      child: AnimatedIconTheme.merge(
+    return ShadcnSkeletonizerConfigLayer(
+      theme: theme,
+      child: mergeAnimatedTextStyle(
         duration: kDefaultDuration,
-        data: IconThemeData(
+        style: TextStyle(
           color: theme.colorScheme.foreground,
         ),
-        child: Theme(
-          data: theme,
-          child: widget.builder != null
-              ? Builder(
-                  builder: (BuildContext context) {
-                    return widget.builder!(context, child);
-                  },
-                )
-              : child ?? const SizedBox.shrink(),
+        child: AnimatedIconTheme.merge(
+          duration: kDefaultDuration,
+          data: IconThemeData(
+            color: theme.colorScheme.foreground,
+          ),
+          child: Theme(
+            data: theme,
+            child: widget.builder != null
+                ? Builder(
+                    builder: (BuildContext context) {
+                      return widget.builder!(context, child);
+                    },
+                  )
+                : child ?? const SizedBox.shrink(),
+          ),
         ),
       ),
     );
@@ -333,8 +344,8 @@ class _ShadcnAppState extends State<ShadcnApp> {
     Widget result = _buildWidgetApp(context);
     result = Focus(
       canRequestFocus: false,
-      onKey: (FocusNode node, RawKeyEvent event) {
-        if (event is! RawKeyDownEvent ||
+      onKeyEvent: (FocusNode node, KeyEvent event) {
+        if (event is! KeyDownEvent ||
             event.logicalKey != LogicalKeyboardKey.escape) {
           return KeyEventResult.ignored;
         }

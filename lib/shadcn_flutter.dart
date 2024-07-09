@@ -8,7 +8,10 @@ export 'package:flutter/cupertino.dart'
 export 'package:flutter/material.dart'
     show Icons, Colors, MaterialPageRoute, MaterialPage, SliverAppBar
     hide TextButton;
-export 'package:flutter/widgets.dart' hide ErrorWidgetBuilder, Form, FormState;
+export 'package:flutter/widgets.dart'
+    hide ErrorWidgetBuilder, Form, FormState, Table, TableRow;
+// bundle from skeletonizer https://pub.dev/packages/skeletonizer
+export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 
 export 'src/components/accordion.dart';
 export 'src/components/alert.dart';
@@ -44,11 +47,13 @@ export 'src/components/progress.dart';
 export 'src/components/radio_group.dart';
 export 'src/components/scrollbar.dart';
 export 'src/components/sidebar_nav.dart';
+export 'src/components/skeleton.dart';
 export 'src/components/slider.dart';
 export 'src/components/stage_container.dart';
 export 'src/components/steps.dart';
 export 'src/components/switch.dart';
 export 'src/components/tab_list.dart';
+export 'src/components/table.dart';
 export 'src/components/tabs.dart';
 export 'src/components/text/text.dart';
 export 'src/components/text/underline_text.dart';

@@ -1,5 +1,5 @@
 name: shadcn_flutter
-description: "A port of shadcn to flutter"
+description: "Beautifully designed components from Shadcn/UI is now available for Flutter"
 version: 0.0.1
 homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 
@@ -14,6 +14,7 @@ dependencies:
   flutter_highlight: ">=0.7.0"
   gap: ">=3.0.1"
   highlight: ">=0.7.0"
+  skeletonizer: ">=1.3.0"
 
 dev_dependencies:
   flutter_test:

@@ -453,10 +453,14 @@ extension TextExtension on Widget {
   }) {
     return then(
       WidgetSpan(
-        child: LinkButton(
-          onPressed: onPressed,
-          child: child,
-        ),
+        child: Builder(builder: (context) {
+          final textStyle = DefaultTextStyle.of(context);
+          return LinkButton(
+            padding: EdgeInsets.zero,
+            onPressed: onPressed,
+            child: DefaultTextStyle(style: textStyle.style, child: child),
+          );
+        }),
       ),
     );
   }

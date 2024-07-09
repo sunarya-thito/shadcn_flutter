@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart' as email_validator;
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart' as widgets;
 
 import '../../../shadcn_flutter.dart';
 
@@ -1074,14 +1075,14 @@ class FormTableLayout extends StatelessWidget {
     return mergeAnimatedTextStyle(
       duration: kDefaultDuration,
       style: TextStyle(color: Theme.of(context).colorScheme.foreground),
-      child: Table(
+      child: widgets.Table(
         columnWidths: const {
           0: IntrinsicColumnWidth(),
           1: FlexColumnWidth(),
         },
         children: [
           for (int i = 0; i < rows.length; i++)
-            TableRow(
+            widgets.TableRow(
               children: [
                 rows[i]
                     .label

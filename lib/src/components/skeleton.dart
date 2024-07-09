@@ -1,125 +1,88 @@
-import 'package:flutter/widgets.dart';
+import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../shadcn_flutter.dart';
+class ShadcnSkeletonizerConfigLayer extends StatelessWidget {
+  final ThemeData theme;
+  final Widget child;
 
-class Skeleton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 100,
-      color: Colors.grey[300],
-    );
-  }
-}
-
-class SkeletonShimmer extends StatefulWidget {
-  @override
-  State<SkeletonShimmer> createState() => _SkeletonShimmerState();
-}
-
-class _SkeletonShimmerState extends State<SkeletonShimmer>
-    with SingleTickerProviderStateMixin {
-  // create fade animation from primary-bg/10 with opacity from 1 to 0.5 and back
-  late final AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    )..repeat(reverse: true);
-  }
+  const ShadcnSkeletonizerConfigLayer({
+    Key? key,
+    required this.theme,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary
-                .withOpacity(0.1 + 0.4 * _controller.value),
+    return SkeletonizerConfig(
+        data: SkeletonizerConfigData(
+          effect: PulseEffect(
+            duration: const Duration(seconds: 1),
+            from: theme.colorScheme.primary.withOpacity(0.05),
+            to: theme.colorScheme.primary.withOpacity(0.1),
           ),
-        );
-      },
-    );
+          enableSwitchAnimation: true,
+        ),
+        child: child);
   }
 }
 
-enum SkeletonShape {
-  circle,
-  roundedSmall,
-  roundedMedium,
-  roundedLarge;
-}
+extension SkeletonExtension on Widget {
+  Widget asSkeletonSliver({bool enabled = true}) {
+    return Skeletonizer(
+      enabled: enabled,
+      ignoreContainers: false,
+      child: this,
+    );
+  }
 
-abstract class SkeletonContent {
-  const SkeletonContent();
-}
+  Widget asSkeleton(
+      {bool enabled = true,
+      bool leaf = false,
+      Widget? replacement,
+      bool unite = false,
+      AsyncSnapshot? snapshot}) {
+    if (snapshot != null) {
+      enabled = !snapshot.hasData;
+    }
+    if (this is Avatar || this is Image) {
+      // https://github.com/Milad-Akarie/skeletonizer/issues/17
+      return Skeleton.leaf(
+        enabled: enabled,
+        child: this,
+      );
+    }
+    if (unite) {
+      return Skeleton.unite(
+        unite: enabled,
+        child: this,
+      );
+    }
+    if (replacement != null) {
+      return Skeleton.replace(
+        replace: enabled,
+        child: replacement,
+      );
+    }
+    if (leaf) {
+      return Skeleton.leaf(
+        enabled: enabled,
+        child: this,
+      );
+    }
+    return Skeletonizer(
+      enabled: enabled,
+      child: this,
+    );
+  }
 
-class SkeletonItem extends SkeletonContent {
-  final double? width;
-  final double? height;
-  final SkeletonShape shape;
+  Widget ignoreSkeleton() {
+    return Skeleton.ignore(child: this);
+  }
 
-  const SkeletonItem({
-    this.width,
-    this.height,
-    this.shape = SkeletonShape.roundedSmall,
-  });
-}
-
-class SkeletonRow extends SkeletonContent {
-  final List<SkeletonContent> items;
-
-  const SkeletonRow({
-    required this.items,
-  });
-}
-
-class SkeletonColumn extends SkeletonContent {
-  final List<SkeletonContent> items;
-
-  const SkeletonColumn({
-    required this.items,
-  });
-}
-
-class SkeletonText extends SkeletonContent {
-  final double? length;
-  final double fontSize;
-
-  const SkeletonText({
-    this.length,
-    this.fontSize = 14,
-  });
-
-  const SkeletonText.xs({
-    this.length,
-  }) : fontSize = 12;
-
-  const SkeletonText.sm({
-    this.length,
-  }) : fontSize = 14;
-
-  const SkeletonText.md({
-    this.length,
-  }) : fontSize = 16;
-
-  const SkeletonText.lg({
-    this.length,
-  }) : fontSize = 18;
-
-  const SkeletonText.xl({
-    this.length,
-  }) : fontSize = 20;
-
-  const SkeletonText.xxl({
-    this.length,
-  }) : fontSize = 24;
+  Widget excludeSkeleton({bool exclude = true}) {
+    return Skeleton.keep(
+      keep: exclude,
+      child: this,
+    );
+  }
 }

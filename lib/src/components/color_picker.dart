@@ -157,12 +157,10 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
     }
   }
 
-  bool _updating = false;
   @override
   void didUpdateWidget(covariant ColorPickerSet oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.color != widget.color) {
-      _updating = true;
       if (widget.showAlpha) {
         _hexController.text = '#${color.toColor().value.toRadixString(16)}';
         Color c = color.toColor();
@@ -178,7 +176,6 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
         _greenController.text = c.green.toString();
         _blueController.text = c.blue.toString();
       }
-      _updating = false;
     }
   }
 

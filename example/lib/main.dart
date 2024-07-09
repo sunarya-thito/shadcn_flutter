@@ -18,6 +18,7 @@ import 'package:example/pages/docs/components/popover_example.dart';
 import 'package:example/pages/docs/components/progress_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
 import 'package:example/pages/docs/components/repeated_animation_builder_example.dart';
+import 'package:example/pages/docs/components/skeleton_example.dart';
 import 'package:example/pages/docs/components/slider_example.dart';
 import 'package:example/pages/docs/components/steps_example.dart';
 import 'package:example/pages/docs/components/switch_example.dart';
@@ -31,6 +32,7 @@ import 'package:example/pages/docs/introduction_page.dart';
 import 'package:example/pages/docs/layout_page.dart';
 import 'package:example/pages/docs/theme_page.dart';
 import 'package:example/pages/docs/typography_page.dart';
+import 'package:example/pages/docs/web_preloader_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -108,6 +110,11 @@ class MyAppState extends State<MyApp> {
       path: '/layout',
       builder: (context, state) => LayoutPage(),
       name: 'layout',
+    ),
+    GoRoute(
+      path: '/web_preloader',
+      name: 'web_preloader',
+      builder: (context, state) => WebPreloaderPage(),
     ),
     GoRoute(
         path: '/components',
@@ -299,6 +306,13 @@ class MyAppState extends State<MyApp> {
               builder: (context, state) {
                 return RepeatedAnimationBuilderExample();
               }),
+          GoRoute(
+            path: 'skeleton',
+            name: 'skeleton',
+            builder: (context, state) {
+              return SkeletonExample();
+            },
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

@@ -13,6 +13,7 @@ import 'package:example/pages/docs/components/divider/divider_example_3.dart';
 import 'package:example/pages/docs/components/form/form_example_1.dart';
 import 'package:example/pages/docs/components/input_otp/input_otp_example_2.dart';
 import 'package:example/pages/docs/components/pagination/pagination_example_1.dart';
+import 'package:example/pages/docs/components/text_area/text_area_example_3.dart';
 import 'package:example/pages/docs_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -275,7 +276,49 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
               center: true,
             ),
-            WIPComponentCard(title: 'Skeleton'),
+            ComponentCard(
+              title: 'Skeleton',
+              name: 'skeleton',
+              scale: 1,
+              example: Card(
+                child: Column(
+                  children: [
+                    Basic(
+                      title: Text('Skeleton Example 1'),
+                      content: Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+                      leading: Avatar(
+                        initials: '',
+                      ).asSkeleton(),
+                      // Note: Avatar and other Image related widget needs its own skeleton
+                      trailing: Icon(Icons.arrow_forward),
+                    ).asSkeleton(),
+                    gap(16),
+                    Basic(
+                      title: Text('Skeleton Example 1'),
+                      content: Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+                      leading: Avatar(
+                        initials: '',
+                      ).asSkeleton(),
+                      // Note: Avatar and other Image related widget needs its own skeleton
+                      trailing: Icon(Icons.arrow_forward),
+                    ).asSkeleton(),
+                    gap(16),
+                    Basic(
+                      title: Text('Skeleton Example 1'),
+                      content: Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+                      leading: Avatar(
+                        initials: '',
+                      ).asSkeleton(),
+                      // Note: Avatar and other Image related widget needs its own skeleton
+                      trailing: Icon(Icons.arrow_forward),
+                    ).asSkeleton(),
+                  ],
+                ),
+              ).sized(height: 300),
+            ),
             WIPComponentCard(title: 'Toast'),
           ]),
           Text('Forms').h2().anchored(formsKey),
@@ -463,7 +506,16 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 onChanged: (value) {},
               ),
             ),
-            WIPComponentCard(title: 'Text Area'),
+            ComponentCard(
+                title: 'Text Area',
+                name: 'text_area',
+                scale: 1.2,
+                example: Column(
+                  children: [
+                    Card(child: TextAreaExample3()),
+                    Card(child: TextAreaExample3()),
+                  ],
+                )),
           ]),
           Text('Layout').h2().anchored(layoutKey),
           gap(16),
