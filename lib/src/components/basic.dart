@@ -51,7 +51,8 @@ class Basic extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (title != null)
-                      DefaultTextStyle.merge(
+                      mergeAnimatedTextStyle(
+                          duration: kDefaultDuration,
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
@@ -63,7 +64,8 @@ class Basic extends StatelessWidget {
                     if (title != null && subtitle != null)
                       const SizedBox(height: 2),
                     if (subtitle != null)
-                      DefaultTextStyle.merge(
+                      mergeAnimatedTextStyle(
+                          duration: kDefaultDuration,
                           style: TextStyle(
                             fontSize: 12,
                             color: themeData.colorScheme.mutedForeground,
@@ -75,7 +77,8 @@ class Basic extends StatelessWidget {
                     if ((title != null || subtitle != null) && content != null)
                       const SizedBox(height: 4),
                     if (content != null)
-                      DefaultTextStyle.merge(
+                      mergeAnimatedTextStyle(
+                          duration: kDefaultDuration,
                           style: const TextStyle(
                             fontSize: 14,
                           ),
@@ -94,6 +97,96 @@ class Basic extends StatelessWidget {
                     subtitle != null))
               const SizedBox(width: 16),
             // if (trailing != null) trailing!,
+            if (trailing != null)
+              Align(
+                alignment: trailingAlignment ?? Alignment.topCenter,
+                child: trailing!,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Same as basic, but without forcing the text style
+class BasicLayout extends StatelessWidget {
+  final Widget? leading;
+  final Widget? title;
+  final Widget? subtitle;
+  final Widget? content;
+  final Widget? trailing;
+  final AlignmentGeometry? leadingAlignment;
+  final AlignmentGeometry? trailingAlignment;
+  final AlignmentGeometry? titleAlignment;
+  final AlignmentGeometry? subtitleAlignment;
+  final AlignmentGeometry? contentAlignment;
+
+  const BasicLayout({
+    Key? key,
+    this.leading,
+    this.title,
+    this.subtitle,
+    this.content,
+    this.trailing,
+    this.leadingAlignment,
+    this.trailingAlignment,
+    this.titleAlignment,
+    this.subtitleAlignment,
+    this.contentAlignment,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicWidth(
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (leading != null)
+              Align(
+                alignment: leadingAlignment ?? Alignment.topCenter,
+                child: leading!,
+              ),
+            if (leading != null &&
+                (title != null || content != null || subtitle != null))
+              const SizedBox(width: 16),
+            if (title != null || content != null || subtitle != null)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (title != null)
+                      Align(
+                        alignment: titleAlignment ?? Alignment.topLeft,
+                        child: title!,
+                      ),
+                    if (title != null && subtitle != null)
+                      const SizedBox(height: 2),
+                    if (subtitle != null)
+                      Align(
+                        alignment: subtitleAlignment ?? Alignment.topLeft,
+                        child: subtitle!,
+                      ),
+                    if ((title != null || subtitle != null) && content != null)
+                      const SizedBox(height: 4),
+                    if (content != null)
+                      Align(
+                        alignment: contentAlignment ?? Alignment.topLeft,
+                        child: content!,
+                      ),
+                  ],
+                ),
+              ),
+            if (trailing != null &&
+                (title != null ||
+                    content != null ||
+                    leading != null ||
+                    subtitle != null))
+              const SizedBox(width: 16),
             if (trailing != null)
               Align(
                 alignment: trailingAlignment ?? Alignment.topCenter,

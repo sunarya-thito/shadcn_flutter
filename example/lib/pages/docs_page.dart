@@ -109,12 +109,6 @@ enum ShadcnFeatureTag {
     return Theme(
       data: copy,
       child: PrimaryBadge(
-        padding: const EdgeInsets.symmetric(horizontal: 6),
-        textStyle: TextStyle(
-          fontSize: 10,
-          color: theme.colorScheme.primaryForeground,
-          fontWeight: FontWeight.w500,
-        ),
         child: Text(badgeText),
       ),
     );

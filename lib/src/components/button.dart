@@ -1,22 +1,19 @@
 import 'dart:math';
 
-import 'package:flutter/services.dart';
-import 'package:shadcn_flutter/src/components/clickable.dart';
-
 import '../../shadcn_flutter.dart';
 
 class Toggle extends StatefulWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
   final Widget child;
-  final EdgeInsets padding;
+  final ButtonStyle style;
 
   const Toggle({
     Key? key,
     required this.value,
     this.onChanged,
     required this.child,
-    this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    this.style = const ButtonStyle.ghost(),
   }) : super(key: key);
 
   @override
@@ -25,64 +22,31 @@ class Toggle extends StatefulWidget {
 
 // toggle button is just ghost button
 class _ToggleState extends State<Toggle> {
-  bool _hovering = false;
-  bool _focusing = false;
-
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
-    return GestureDetector(
-      onTap: () {
-        widget.onChanged?.call(!widget.value);
-      },
-      child: FocusableActionDetector(
-        enabled: widget.onChanged != null,
-        mouseCursor: widget.onChanged != null
-            ? SystemMouseCursors.click
-            : SystemMouseCursors.basic,
-        onShowFocusHighlight: (value) {
-          setState(() {
-            _focusing = value;
-          });
-        },
-        onShowHoverHighlight: (value) {
-          setState(() {
-            _hovering = value;
-          });
-        },
-        actions: {
-          ActivateIntent: CallbackAction(
-            onInvoke: (Intent intent) {
-              widget.onChanged?.call(!widget.value);
-              return true;
-            },
-          ),
-        },
-        shortcuts: const {
-          SingleActivator(LogicalKeyboardKey.enter): ActivateIntent(),
-          SingleActivator(LogicalKeyboardKey.space): ActivateIntent(),
-        },
-        child: AnimatedContainer(
-          duration: kDefaultDuration,
-          decoration: BoxDecoration(
-            color: _hovering || widget.value
-                ? themeData.colorScheme.muted
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(themeData.radiusMd),
-          ),
-          padding: widget.padding,
-          child: mergeAnimatedTextStyle(
-            duration: kDefaultDuration,
-            style: TextStyle(
-              color: _hovering && !widget.value
-                  ? themeData.colorScheme.mutedForeground
-                  : themeData.colorScheme.foreground,
-            ),
-            child: widget.child,
-          ),
-        ),
-      ),
-    );
+    return Button(
+        child: widget.child,
+        style: widget.value
+            ? ButtonStyle.secondary(
+                density: widget.style.density,
+                shape: widget.style.shape,
+                size: widget.style.size,
+              )
+            : widget.style.copyWith(
+                textStyle: (context, states, value) {
+                  final theme = Theme.of(context);
+                  return value.copyWith(
+                    color: states.contains(WidgetState.hovered)
+                        ? theme.colorScheme.mutedForeground
+                        : null,
+                  );
+                },
+              ),
+        onPressed: () {
+          if (widget.onChanged != null) {
+            widget.onChanged!(!widget.value);
+          }
+        });
   }
 }
 
@@ -224,7 +188,7 @@ class ButtonState<T extends Button> extends State<T> {
         return widget.style.iconTheme(context, states);
       }),
       onPressed: widget.onPressed,
-      child: Basic(
+      child: BasicLayout(
         trailing: widget.trailing,
         leading: widget.leading,
         content: UnderlineInterceptor(child: widget.child),
@@ -238,8 +202,8 @@ class ButtonState<T extends Button> extends State<T> {
 
 enum ButtonSize {
   normal(1),
-  xSmall(1 / 4),
-  small(1 / 2),
+  xSmall(1 / 2),
+  small(3 / 4),
   large(2),
   xLarge(3);
 
@@ -411,9 +375,13 @@ class ButtonStyle implements AbstractButtonStyle {
       return variance.textStyle;
     }
     return (context, states) {
+      var fontSize = variance.textStyle(context, states).fontSize;
+      if (fontSize == null) {
+        final textStyle = DefaultTextStyle.of(context).style;
+        fontSize = textStyle.fontSize ?? 14;
+      }
       return variance.textStyle(context, states).copyWith(
-            fontSize:
-                variance.textStyle(context, states).fontSize! * size.scale,
+            fontSize: fontSize * size.scale,
           );
     };
   }
@@ -424,8 +392,10 @@ class ButtonStyle implements AbstractButtonStyle {
       return variance.iconTheme;
     }
     return (context, states) {
+      var iconSize = variance.iconTheme(context, states).size;
+      iconSize ??= IconTheme.of(context).size ?? 24;
       return variance.iconTheme(context, states).copyWith(
-            size: variance.iconTheme(context, states).size! * size.scale,
+            size: iconSize * size.scale,
           );
     };
   }

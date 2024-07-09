@@ -5,8 +5,7 @@ class PrimaryBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
-  final EdgeInsets? padding;
-  final TextStyle? textStyle;
+  final ButtonStyle? style;
 
   const PrimaryBadge({
     super.key,
@@ -14,8 +13,7 @@ class PrimaryBadge extends StatelessWidget {
     this.onPressed,
     this.leading,
     this.trailing,
-    this.padding,
-    this.textStyle,
+    this.style,
   });
 
   @override
@@ -25,12 +23,20 @@ class PrimaryBadge extends StatelessWidget {
         leading: leading,
         trailing: trailing,
         onPressed: onPressed ?? () {},
-        style: ButtonVariance.primary.copyWith(
-          textStyle: (context, states, value) => textStyle ?? value,
-          padding: (context, states, value) => padding ?? Button.badgePadding,
-        ),
+        style: style ??
+            const ButtonStyle.primary(
+              size: ButtonSize.small,
+              density: ButtonDensity.dense,
+              shape: ButtonShape.rectangle,
+            ).copyWith(
+              textStyle: (context, states, value) {
+                return value.copyWith(
+                  fontWeight: FontWeight.w500,
+                );
+              },
+            ),
         child: child,
-      ).xSmall().semiBold(),
+      ),
     );
   }
 }
@@ -40,8 +46,7 @@ class SecondaryBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
-  final EdgeInsets? padding;
-  final TextStyle? textStyle;
+  final ButtonStyle? style;
 
   const SecondaryBadge({
     super.key,
@@ -49,8 +54,7 @@ class SecondaryBadge extends StatelessWidget {
     this.onPressed,
     this.leading,
     this.trailing,
-    this.padding,
-    this.textStyle,
+    this.style,
   });
 
   @override
@@ -60,12 +64,20 @@ class SecondaryBadge extends StatelessWidget {
         leading: leading,
         trailing: trailing,
         onPressed: onPressed ?? () {},
-        style: ButtonVariance.secondary.copyWith(
-          textStyle: (context, states, value) => textStyle ?? value,
-          padding: (context, states, value) => padding ?? Button.badgePadding,
-        ),
+        style: style ??
+            const ButtonStyle.secondary(
+              size: ButtonSize.small,
+              density: ButtonDensity.dense,
+              shape: ButtonShape.rectangle,
+            ).copyWith(
+              textStyle: (context, states, value) {
+                return value.copyWith(
+                  fontWeight: FontWeight.w500,
+                );
+              },
+            ),
         child: child,
-      ).xSmall().semiBold(),
+      ),
     );
   }
 }
@@ -75,8 +87,7 @@ class OutlineBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
-  final EdgeInsets? padding;
-  final TextStyle? textStyle;
+  final ButtonStyle? style;
 
   const OutlineBadge({
     super.key,
@@ -84,8 +95,7 @@ class OutlineBadge extends StatelessWidget {
     this.onPressed,
     this.leading,
     this.trailing,
-    this.padding,
-    this.textStyle,
+    this.style,
   });
 
   @override
@@ -95,12 +105,20 @@ class OutlineBadge extends StatelessWidget {
         leading: leading,
         trailing: trailing,
         onPressed: onPressed ?? () {},
-        style: ButtonVariance.outline.copyWith(
-          textStyle: (context, states, value) => textStyle ?? value,
-          padding: (context, states, value) => padding ?? Button.badgePadding,
-        ),
+        style: style ??
+            const ButtonStyle.outline(
+              size: ButtonSize.small,
+              density: ButtonDensity.dense,
+              shape: ButtonShape.rectangle,
+            ).copyWith(
+              textStyle: (context, states, value) {
+                return value.copyWith(
+                  fontWeight: FontWeight.w500,
+                );
+              },
+            ),
         child: child,
-      ).xSmall().semiBold(),
+      ),
     );
   }
 }
@@ -110,8 +128,7 @@ class DestructiveBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
-  final EdgeInsets? padding;
-  final TextStyle? textStyle;
+  final ButtonStyle? style;
 
   const DestructiveBadge({
     super.key,
@@ -119,8 +136,7 @@ class DestructiveBadge extends StatelessWidget {
     this.onPressed,
     this.leading,
     this.trailing,
-    this.padding,
-    this.textStyle,
+    this.style,
   });
 
   @override
@@ -130,12 +146,20 @@ class DestructiveBadge extends StatelessWidget {
         leading: leading,
         trailing: trailing,
         onPressed: onPressed ?? () {},
-        style: ButtonVariance.destructive.copyWith(
-          textStyle: (context, states, value) => textStyle ?? value,
-          padding: (context, states, value) => padding ?? Button.badgePadding,
-        ),
+        style: style ??
+            const ButtonStyle.destructive(
+              size: ButtonSize.small,
+              density: ButtonDensity.dense,
+              shape: ButtonShape.rectangle,
+            ).copyWith(
+              textStyle: (context, states, value) {
+                return value.copyWith(
+                  fontWeight: FontWeight.w500,
+                );
+              },
+            ),
         child: child,
-      ).xSmall().semiBold(),
+      ),
     );
   }
 }

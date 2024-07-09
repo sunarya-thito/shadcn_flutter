@@ -25,6 +25,7 @@ import 'package:example/pages/docs/components/switch_example.dart';
 import 'package:example/pages/docs/components/tab_list_example.dart';
 import 'package:example/pages/docs/components/tabs_example.dart';
 import 'package:example/pages/docs/components/text_area_example.dart';
+import 'package:example/pages/docs/components/toggle_example.dart';
 import 'package:example/pages/docs/components/tooltip_example.dart';
 import 'package:example/pages/docs/components_page.dart';
 import 'package:example/pages/docs/installation_page.dart';
@@ -311,6 +312,13 @@ class MyAppState extends State<MyApp> {
             name: 'skeleton',
             builder: (context, state) {
               return SkeletonExample();
+            },
+          ),
+          GoRoute(
+            path: 'toggle',
+            name: 'toggle',
+            builder: (context, state) {
+              return ToggleExample();
             },
           ),
         ]),

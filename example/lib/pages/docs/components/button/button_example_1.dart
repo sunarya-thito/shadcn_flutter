@@ -7,6 +7,7 @@ class ButtonExample1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return PrimaryButton(
       onPressed: () {},
+      size: ButtonSize.large,
       child: Text('Primary'),
     );
   }
