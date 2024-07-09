@@ -10,3 +10,4 @@
 ## 0.0.3
 
 * Added wasm support
+* Overhauled the button component and the badge component
