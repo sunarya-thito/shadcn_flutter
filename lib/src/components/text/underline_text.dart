@@ -1,6 +1,25 @@
-import 'package:flutter/widgets.dart';
-
 import '../../../shadcn_flutter.dart';
+
+class UnderlineInterceptor extends StatelessWidget {
+  final Widget child;
+
+  const UnderlineInterceptor({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var def = DefaultTextStyle.of(context);
+    if (def.style.decoration == TextDecoration.underline) {
+      return DefaultTextStyle.merge(
+        style: def.style.copyWith(decoration: TextDecoration.none),
+        child: UnderlineText(child: child),
+      );
+    }
+    return child;
+  }
+}
 
 class UnderlineText extends StatelessWidget {
   final Widget child;

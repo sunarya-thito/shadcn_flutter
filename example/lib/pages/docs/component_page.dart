@@ -93,7 +93,7 @@ class _ComponentPageState extends State<ComponentPage> {
       onThisPage: onThisPage,
       navigationItems: [
         TextButton(
-          padding: EdgeInsets.zero,
+          density: ButtonDensity.compact,
           onPressed: () {
             context.pushNamed('components');
           },

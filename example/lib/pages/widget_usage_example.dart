@@ -141,7 +141,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
             mode: widget.mode,
             actions: [
               GhostButton(
-                padding: Button.iconPadding,
+                density: ButtonDensity.icon,
                 onPressed: _refresh,
                 child: Icon(
                   Icons.refresh,
@@ -158,7 +158,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
               mode: widget.mode,
               actions: [
                 GhostButton(
-                  padding: Button.iconPadding,
+                  density: ButtonDensity.icon,
                   onPressed: () {
                     // open in new tab
                     //https://github.com/sunarya-thito/shadcn_flutter/blob/master/example/lib/pages/docs/layout_page/layout_page_example_1.dart
@@ -179,7 +179,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
             mode: widget.mode,
             actions: [
               GhostButton(
-                padding: Button.iconPadding,
+                density: ButtonDensity.icon,
                 onPressed: () {
                   // open in new tab
                   //https://github.com/sunarya-thito/shadcn_flutter/blob/master/example/lib/pages/docs/layout_page/layout_page_example_1.dart

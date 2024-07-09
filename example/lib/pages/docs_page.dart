@@ -110,9 +110,10 @@ enum ShadcnFeatureTag {
       data: copy,
       child: PrimaryBadge(
         padding: const EdgeInsets.symmetric(horizontal: 6),
-        textStyle: const TextStyle(
+        textStyle: TextStyle(
           fontSize: 10,
-          fontWeight: FontWeight.bold,
+          color: theme.colorScheme.primaryForeground,
+          fontWeight: FontWeight.w500,
         ),
         child: Text(badgeText),
       ),
@@ -258,6 +259,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Slider', 'slider'),
         ShadcnDocsPage('Switch', 'switch'),
         ShadcnDocsPage('Text Area', 'text_area'),
+        ShadcnDocsPage('Toggle', 'toggle', ShadcnFeatureTag.workInProgress),
       ],
     ),
     ShadcnDocsSection(
@@ -440,108 +442,115 @@ class DocsPageState extends State<DocsPage> {
                             children: [
                               MediaQueryVisibility(
                                 minWidth: breakpointWidth,
-                                child: SingleChildScrollView(
-                                  key: const PageStorageKey('sidebar'),
-                                  padding: EdgeInsets.only(
-                                      top: 32,
-                                      left: 24 + padding.left,
-                                      bottom: 32),
-                                  child: SidebarNav(children: [
-                                    for (var section in sections)
-                                      SidebarSection(
-                                        header: Text(section.title),
-                                        children: [
-                                          for (var page in section.pages)
-                                            NavigationButton(
-                                              onPressed: () {
-                                                context.goNamed(page.name);
-                                              },
-                                              selected:
-                                                  page.name == widget.name,
-                                              child: Basic(
-                                                trailing: page.tag
-                                                    ?.buildBadge(context),
-                                                trailingAlignment:
-                                                    Alignment.centerLeft,
-                                                content: Text(page.title),
+                                child: FocusTraversalGroup(
+                                  child: SingleChildScrollView(
+                                    key: const PageStorageKey('sidebar'),
+                                    padding: EdgeInsets.only(
+                                        top: 32,
+                                        left: 24 + padding.left,
+                                        bottom: 32),
+                                    child: SidebarNav(children: [
+                                      for (var section in sections)
+                                        SidebarSection(
+                                          header: Text(section.title),
+                                          children: [
+                                            for (var page in section.pages)
+                                              NavigationButton(
+                                                onPressed: () {
+                                                  context.goNamed(page.name);
+                                                },
+                                                selected:
+                                                    page.name == widget.name,
+                                                child: Basic(
+                                                  trailing: page.tag
+                                                      ?.buildBadge(context),
+                                                  trailingAlignment:
+                                                      Alignment.centerLeft,
+                                                  content: Text(page.title),
+                                                ),
                                               ),
-                                            ),
-                                        ],
-                                      ),
-                                  ]),
+                                          ],
+                                        ),
+                                    ]),
+                                  ),
                                 ),
                               ),
                               Expanded(
-                                child: SingleChildScrollView(
-                                  clipBehavior: Clip.none,
-                                  padding: !hasOnThisPage
-                                      ? const EdgeInsets.symmetric(
-                                          horizontal: 40,
-                                          vertical: 32,
-                                        ).copyWith(
-                                          right: padding.right,
-                                        )
-                                      : const EdgeInsets.symmetric(
-                                          horizontal: 40,
-                                          vertical: 32,
-                                        ).copyWith(right: 24),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Breadcrumb(
-                                        separator: Breadcrumb.arrowSeparator,
-                                        children: [
-                                          TextButton(
-                                            onPressed: () {
-                                              context.goNamed('introduction');
-                                            },
-                                            padding: EdgeInsets.zero,
-                                            child: Text('Docs'),
-                                          ),
-                                          ...widget.navigationItems,
-                                          if (page != null) Text(page.title),
-                                        ],
-                                      ),
-                                      gap(16),
-                                      widget.child,
-                                    ],
+                                child: FocusTraversalGroup(
+                                  child: SingleChildScrollView(
+                                    clipBehavior: Clip.none,
+                                    padding: !hasOnThisPage
+                                        ? const EdgeInsets.symmetric(
+                                            horizontal: 40,
+                                            vertical: 32,
+                                          ).copyWith(
+                                            right: padding.right,
+                                          )
+                                        : const EdgeInsets.symmetric(
+                                            horizontal: 40,
+                                            vertical: 32,
+                                          ).copyWith(right: 24),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Breadcrumb(
+                                          separator: Breadcrumb.arrowSeparator,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {
+                                                context.goNamed('introduction');
+                                              },
+                                              density: ButtonDensity.compact,
+                                              child: Text('Docs'),
+                                            ),
+                                            ...widget.navigationItems,
+                                            if (page != null) Text(page.title),
+                                          ],
+                                        ),
+                                        gap(16),
+                                        widget.child,
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                               if (hasOnThisPage)
                                 MediaQueryVisibility(
                                   minWidth: breakpointWidth2,
-                                  child: SingleChildScrollView(
-                                    padding: EdgeInsets.only(
-                                      top: 32,
-                                      right: 24 + padding.right,
-                                      bottom: 32,
-                                      left: 24,
-                                    ),
-                                    child: SidebarNav(children: [
-                                      SidebarSection(
-                                        header: const Text('On This Page'),
-                                        children: [
-                                          for (var key in onThisPage.keys)
-                                            SidebarButton(
-                                              onPressed: () {
-                                                Scrollable.ensureVisible(
-                                                    onThisPage[key]!
-                                                        .currentContext!,
-                                                    duration: kDefaultDuration,
-                                                    alignmentPolicy:
-                                                        ScrollPositionAlignmentPolicy
-                                                            .explicit);
-                                              },
-                                              selected:
-                                                  isVisible(onThisPage[key]!),
-                                              child: Text(key),
-                                            ),
-                                        ],
+                                  child: FocusTraversalGroup(
+                                    child: SingleChildScrollView(
+                                      padding: EdgeInsets.only(
+                                        top: 32,
+                                        right: 24 + padding.right,
+                                        bottom: 32,
+                                        left: 24,
                                       ),
-                                    ]),
+                                      child: SidebarNav(children: [
+                                        SidebarSection(
+                                          header: const Text('On This Page'),
+                                          children: [
+                                            for (var key in onThisPage.keys)
+                                              SidebarButton(
+                                                onPressed: () {
+                                                  Scrollable.ensureVisible(
+                                                      onThisPage[key]!
+                                                          .currentContext!,
+                                                      duration:
+                                                          kDefaultDuration,
+                                                      alignmentPolicy:
+                                                          ScrollPositionAlignmentPolicy
+                                                              .explicit);
+                                                },
+                                                selected:
+                                                    isVisible(onThisPage[key]!),
+                                                child: Text(key),
+                                              ),
+                                          ],
+                                        ),
+                                      ]),
+                                    ),
                                   ),
                                 )
                             ],
@@ -561,134 +570,140 @@ class DocsPageState extends State<DocsPage> {
                     children: [
                       MediaQueryVisibility(
                         minWidth: breakpointWidth,
-                        alternateChild: ClipRect(
-                          clipBehavior: Clip.hardEdge,
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                            child: Container(
-                              height: 72,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 32,
-                              ),
-                              child: Row(
-                                children: [
-                                  GhostButton(
-                                    padding: Button.iconPadding,
-                                    onPressed: () {
-                                      context.goNamed('home');
-                                    },
-                                    child: Icon(Icons.menu),
-                                  ),
-                                  gap(18),
-                                  Expanded(
-                                    child: OutlineButton(
+                        alternateChild: FocusTraversalGroup(
+                          child: ClipRect(
+                            clipBehavior: Clip.hardEdge,
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: Container(
+                                height: 72,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 32,
+                                ),
+                                child: Row(
+                                  children: [
+                                    GhostButton(
+                                      density: ButtonDensity.icon,
                                       onPressed: () {
-                                        showSearchBar();
+                                        context.goNamed('home');
                                       },
-                                      child: Text('Search documentation...')
-                                          .muted()
-                                          .normal(),
-                                      trailing: Icon(Icons.search)
-                                          .iconSmall()
-                                          .iconMuted(),
+                                      child: Icon(Icons.menu),
                                     ),
-                                  ),
-                                  gap(18),
-                                  GhostButton(
-                                    padding: Button.iconPadding,
-                                    onPressed: () {
-                                      openInNewTab(
-                                          'https://github.com/sunarya-thito/shadcn_flutter');
-                                    },
-                                    child: FaIcon(
-                                      FontAwesomeIcons.github,
-                                      color:
-                                          theme.colorScheme.secondaryForeground,
+                                    gap(18),
+                                    Expanded(
+                                      child: OutlineButton(
+                                        onPressed: () {
+                                          showSearchBar();
+                                        },
+                                        child: Text('Search documentation...')
+                                            .muted()
+                                            .normal(),
+                                        trailing: Icon(Icons.search)
+                                            .iconSmall()
+                                            .iconMuted(),
+                                      ),
                                     ),
-                                  ),
-                                  // pub.dev icon
-                                  GhostButton(
-                                      padding: Button.iconPadding,
+                                    gap(18),
+                                    GhostButton(
+                                      density: ButtonDensity.icon,
                                       onPressed: () {
                                         openInNewTab(
-                                            'https://pub.dev/packages/shadcn_flutter');
+                                            'https://github.com/sunarya-thito/shadcn_flutter');
                                       },
-                                      child: ColorFiltered(
-                                        // turns into white
-                                        colorFilter: ColorFilter.mode(
-                                          theme.colorScheme.secondaryForeground,
-                                          BlendMode.srcIn,
-                                        ),
-                                        child: FlutterLogo(
-                                          size: 24,
-                                        ),
-                                      )),
-                                ],
+                                      child: FaIcon(
+                                        FontAwesomeIcons.github,
+                                        color: theme
+                                            .colorScheme.secondaryForeground,
+                                      ),
+                                    ),
+                                    // pub.dev icon
+                                    GhostButton(
+                                        density: ButtonDensity.icon,
+                                        onPressed: () {
+                                          openInNewTab(
+                                              'https://pub.dev/packages/shadcn_flutter');
+                                        },
+                                        child: ColorFiltered(
+                                          // turns into white
+                                          colorFilter: ColorFilter.mode(
+                                            theme.colorScheme
+                                                .secondaryForeground,
+                                            BlendMode.srcIn,
+                                          ),
+                                          child: FlutterLogo(
+                                            size: 24,
+                                          ),
+                                        )),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        child: ClipRect(
-                          clipBehavior: Clip.hardEdge,
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                            child: Container(
-                              height: 72,
-                              padding: padding,
-                              child: Row(
-                                children: [
-                                  FlutterLogo(
-                                    size: 32,
-                                  ),
-                                  gap(18),
-                                  Text(
-                                    'shadcn_flutter',
-                                  ).textLarge().mono(),
-                                  Spacer(),
-                                  SizedBox(
-                                    width: 320,
-                                    // height: 32,
-                                    child: OutlineButton(
-                                      onPressed: () {
-                                        showSearchBar();
-                                      },
-                                      child: Text('Search documentation...')
-                                          .muted()
-                                          .normal(),
-                                      trailing: Icon(Icons.search)
-                                          .iconSmall()
-                                          .iconMuted(),
+                        child: FocusTraversalGroup(
+                          child: ClipRect(
+                            clipBehavior: Clip.hardEdge,
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: Container(
+                                height: 72,
+                                padding: padding,
+                                child: Row(
+                                  children: [
+                                    FlutterLogo(
+                                      size: 32,
                                     ),
-                                  ),
-                                  gap(18),
-                                  GhostButton(
-                                    padding: Button.iconPadding,
-                                    onPressed: () {
-                                      openInNewTab(
-                                          'https://github.com/sunarya-thito/shadcn_flutter');
-                                    },
-                                    child: FaIcon(FontAwesomeIcons.github,
-                                        color: theme
-                                            .colorScheme.secondaryForeground),
-                                  ),
-                                  // pub.dev icon
-                                  GhostButton(
-                                      padding: Button.iconPadding,
+                                    gap(18),
+                                    Text(
+                                      'shadcn_flutter',
+                                    ).textLarge().mono(),
+                                    Spacer(),
+                                    SizedBox(
+                                      width: 320,
+                                      // height: 32,
+                                      child: OutlineButton(
+                                        onPressed: () {
+                                          showSearchBar();
+                                        },
+                                        child: Text('Search documentation...')
+                                            .muted()
+                                            .normal(),
+                                        trailing: Icon(Icons.search)
+                                            .iconSmall()
+                                            .iconMuted(),
+                                      ),
+                                    ),
+                                    gap(18),
+                                    GhostButton(
+                                      density: ButtonDensity.icon,
                                       onPressed: () {
                                         openInNewTab(
-                                            'https://pub.dev/packages/shadcn_flutter');
+                                            'https://github.com/sunarya-thito/shadcn_flutter');
                                       },
-                                      child: ColorFiltered(
-                                        // turns into white
-                                        colorFilter: ColorFilter.mode(
-                                          theme.colorScheme.secondaryForeground,
-                                          BlendMode.srcIn,
-                                        ),
-                                        child: FlutterLogo(
-                                          size: 24,
-                                        ),
-                                      )),
-                                ],
+                                      child: FaIcon(FontAwesomeIcons.github,
+                                          color: theme
+                                              .colorScheme.secondaryForeground),
+                                    ),
+                                    // pub.dev icon
+                                    GhostButton(
+                                        density: ButtonDensity.icon,
+                                        onPressed: () {
+                                          openInNewTab(
+                                              'https://pub.dev/packages/shadcn_flutter');
+                                        },
+                                        child: ColorFiltered(
+                                          // turns into white
+                                          colorFilter: ColorFilter.mode(
+                                            theme.colorScheme
+                                                .secondaryForeground,
+                                            BlendMode.srcIn,
+                                          ),
+                                          child: FlutterLogo(
+                                            size: 24,
+                                          ),
+                                        )),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

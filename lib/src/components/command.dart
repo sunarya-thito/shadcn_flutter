@@ -101,8 +101,8 @@ class _CommandState extends State<Command> {
                     ),
                   ),
                   if (canPop)
-                    DenseButton(
-                      padding: EdgeInsets.zero,
+                    GhostButton(
+                      density: ButtonDensity.compact,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

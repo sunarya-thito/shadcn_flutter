@@ -20,14 +20,18 @@ class PrimaryBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PrimaryButton(
-      leading: leading,
-      trailing: trailing,
-      onPressed: onPressed ?? () {},
-      padding: padding ?? Button.badgePadding,
-      textStyle: textStyle ?? Button.badgeTextStyle,
-      child: child,
-    ).xSmall().semiBold();
+    return ExcludeFocus(
+      child: Button(
+        leading: leading,
+        trailing: trailing,
+        onPressed: onPressed ?? () {},
+        style: ButtonVariance.primary.copyWith(
+          textStyle: (context, states, value) => textStyle ?? value,
+          padding: (context, states, value) => padding ?? Button.badgePadding,
+        ),
+        child: child,
+      ).xSmall().semiBold(),
+    );
   }
 }
 
@@ -51,14 +55,18 @@ class SecondaryBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SecondaryButton(
-      leading: leading,
-      trailing: trailing,
-      onPressed: onPressed ?? () {},
-      padding: padding ?? Button.badgePadding,
-      textStyle: textStyle ?? Button.badgeTextStyle,
-      child: child,
-    ).xSmall().semiBold();
+    return ExcludeFocus(
+      child: Button(
+        leading: leading,
+        trailing: trailing,
+        onPressed: onPressed ?? () {},
+        style: ButtonVariance.secondary.copyWith(
+          textStyle: (context, states, value) => textStyle ?? value,
+          padding: (context, states, value) => padding ?? Button.badgePadding,
+        ),
+        child: child,
+      ).xSmall().semiBold(),
+    );
   }
 }
 
@@ -82,14 +90,18 @@ class OutlineBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlineButton(
-      leading: leading,
-      trailing: trailing,
-      onPressed: onPressed ?? () {},
-      padding: padding ?? Button.badgePadding,
-      textStyle: textStyle ?? Button.badgeTextStyle,
-      child: child,
-    ).xSmall().semiBold();
+    return ExcludeFocus(
+      child: Button(
+        leading: leading,
+        trailing: trailing,
+        onPressed: onPressed ?? () {},
+        style: ButtonVariance.outline.copyWith(
+          textStyle: (context, states, value) => textStyle ?? value,
+          padding: (context, states, value) => padding ?? Button.badgePadding,
+        ),
+        child: child,
+      ).xSmall().semiBold(),
+    );
   }
 }
 
@@ -113,13 +125,17 @@ class DestructiveBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DestructiveButton(
-      leading: leading,
-      trailing: trailing,
-      onPressed: onPressed ?? () {},
-      padding: padding ?? Button.badgePadding,
-      textStyle: textStyle ?? Button.badgeTextStyle,
-      child: child,
-    ).xSmall().semiBold();
+    return ExcludeFocus(
+      child: Button(
+        leading: leading,
+        trailing: trailing,
+        onPressed: onPressed ?? () {},
+        style: ButtonVariance.destructive.copyWith(
+          textStyle: (context, states, value) => textStyle ?? value,
+          padding: (context, states, value) => padding ?? Button.badgePadding,
+        ),
+        child: child,
+      ).xSmall().semiBold(),
+    );
   }
 }

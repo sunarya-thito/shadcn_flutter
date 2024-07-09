@@ -27,6 +27,7 @@ export 'src/components/card.dart';
 export 'src/components/carousel.dart';
 export 'src/components/checkbox.dart';
 export 'src/components/circular_progerss_indicator.dart';
+export 'src/components/clickable.dart';
 export 'src/components/code_snippet.dart';
 export 'src/components/collapsible.dart';
 export 'src/components/color_picker.dart';

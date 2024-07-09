@@ -53,7 +53,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     child: Row(
                       children: [
                         OutlineButton(
-                          padding: Button.iconPadding,
+                          density: ButtonDensity.icon,
                           onPressed: () {
                             setState(() {
                               _view = _view.previous;
@@ -84,7 +84,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                             .center()
                             .expanded(),
                         OutlineButton(
-                          padding: Button.iconPadding,
+                          density: ButtonDensity.icon,
                           onPressed: () {
                             setState(() {
                               _view = _view.next;
@@ -140,7 +140,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
             Row(
               children: [
                 OutlineButton(
-                  padding: Button.iconPadding,
+                  density: ButtonDensity.icon,
                   onPressed: () {
                     setState(() {
                       _view = _view.previous;
@@ -154,7 +154,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     .center()
                     .expanded(),
                 OutlineButton(
-                  padding: Button.iconPadding,
+                  density: ButtonDensity.icon,
                   onPressed: () {
                     setState(() {
                       _view = _view.next;
@@ -797,7 +797,7 @@ class _DateItem extends StatelessWidget {
           width: 32,
           height: 32,
           child: GhostButton(
-            padding: EdgeInsets.zero,
+            density: ButtonDensity.compact,
             alignment: Alignment.center,
             onPressed: onTap,
             child: Text(
@@ -810,7 +810,7 @@ class _DateItem extends StatelessWidget {
           width: 32,
           height: 32,
           child: SecondaryButton(
-            padding: EdgeInsets.zero,
+            density: ButtonDensity.compact,
             alignment: Alignment.center,
             onPressed: onTap,
             child: Text(
@@ -823,7 +823,7 @@ class _DateItem extends StatelessWidget {
           width: 32,
           height: 32,
           child: PrimaryButton(
-            padding: EdgeInsets.zero,
+            density: ButtonDensity.compact,
             alignment: Alignment.center,
             onPressed: onTap,
             child: Text(
@@ -835,21 +835,29 @@ class _DateItem extends StatelessWidget {
         return SizedBox(
           width: 32,
           height: 32,
-          child: SecondaryButton(
-            padding: EdgeInsets.zero,
+          child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
-            borderRadius: indexAtRow == 0
-                ? BorderRadius.only(
-                    topLeft: Radius.circular(theme.radiusMd),
-                    bottomLeft: Radius.circular(theme.radiusMd),
-                  )
-                : indexAtRow == 6
-                    ? BorderRadius.only(
-                        topRight: Radius.circular(theme.radiusMd),
-                        bottomRight: Radius.circular(theme.radiusMd),
-                      )
-                    : BorderRadius.zero,
+            style: const ButtonStyle(
+              variance: ButtonVariance.secondary,
+              density: ButtonDensity.compact,
+            ).copyWith(
+              decoration: (context, states, value) {
+                return (value as BoxDecoration).copyWith(
+                  borderRadius: indexAtRow == 0
+                      ? BorderRadius.only(
+                          topLeft: Radius.circular(theme.radiusMd),
+                          bottomLeft: Radius.circular(theme.radiusMd),
+                        )
+                      : indexAtRow == 6
+                          ? BorderRadius.only(
+                              topRight: Radius.circular(theme.radiusMd),
+                              bottomRight: Radius.circular(theme.radiusMd),
+                            )
+                          : BorderRadius.zero,
+                );
+              },
+            ),
             child: Text(
               '$day',
             ),
@@ -859,13 +867,21 @@ class _DateItem extends StatelessWidget {
         return SizedBox(
           width: 32,
           height: 32,
-          child: SecondaryButton(
-            padding: EdgeInsets.zero,
+          child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(theme.radiusMd),
-              bottomLeft: Radius.circular(theme.radiusMd),
+            style: const ButtonStyle(
+              variance: ButtonVariance.secondary,
+              density: ButtonDensity.compact,
+            ).copyWith(
+              decoration: (context, states, value) {
+                return (value as BoxDecoration).copyWith(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(theme.radiusMd),
+                    bottomLeft: Radius.circular(theme.radiusMd),
+                  ),
+                );
+              },
             ),
             child: Text(
               '$day',
@@ -876,13 +892,26 @@ class _DateItem extends StatelessWidget {
         return SizedBox(
           width: 32,
           height: 32,
-          child: SecondaryButton(
-            padding: EdgeInsets.zero,
+          child: Button(
+            // density: ButtonDensity.compact,
             alignment: Alignment.center,
             onPressed: onTap,
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(theme.radiusMd),
-              bottomRight: Radius.circular(theme.radiusMd),
+            // borderRadius: BorderRadius.only(
+            //   topRight: Radius.circular(theme.radiusMd),
+            //   bottomRight: Radius.circular(theme.radiusMd),
+            // ),
+            style: const ButtonStyle(
+              variance: ButtonVariance.secondary,
+              density: ButtonDensity.compact,
+            ).copyWith(
+              decoration: (context, states, value) {
+                return (value as BoxDecoration).copyWith(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(theme.radiusMd),
+                    bottomRight: Radius.circular(theme.radiusMd),
+                  ),
+                );
+              },
             ),
             child: Text(
               '$day',
@@ -908,7 +937,7 @@ class _DateItem extends StatelessWidget {
                 ),
               ),
               PrimaryButton(
-                padding: EdgeInsets.zero,
+                density: ButtonDensity.compact,
                 alignment: Alignment.center,
                 onPressed: onTap,
                 child: Text(
@@ -937,7 +966,7 @@ class _DateItem extends StatelessWidget {
                 ),
               ),
               PrimaryButton(
-                padding: EdgeInsets.zero,
+                density: ButtonDensity.compact,
                 alignment: Alignment.center,
                 onPressed: onTap,
                 child: Text(
@@ -951,13 +980,21 @@ class _DateItem extends StatelessWidget {
         return SizedBox(
           width: 32,
           height: 32,
-          child: PrimaryButton(
-            padding: EdgeInsets.zero,
+          child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(theme.radiusMd),
-              bottomLeft: Radius.circular(theme.radiusMd),
+            style: const ButtonStyle(
+              variance: ButtonVariance.primary,
+              density: ButtonDensity.compact,
+            ).copyWith(
+              decoration: (context, states, value) {
+                return (value as BoxDecoration).copyWith(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(theme.radiusMd),
+                    bottomLeft: Radius.circular(theme.radiusMd),
+                  ),
+                );
+              },
             ),
             child: Text(
               '$day',
@@ -968,13 +1005,21 @@ class _DateItem extends StatelessWidget {
         return SizedBox(
           width: 32,
           height: 32,
-          child: PrimaryButton(
-            padding: EdgeInsets.zero,
+          child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(theme.radiusMd),
-              bottomRight: Radius.circular(theme.radiusMd),
+            style: const ButtonStyle(
+              variance: ButtonVariance.primary,
+              density: ButtonDensity.compact,
+            ).copyWith(
+              decoration: (context, states, value) {
+                return (value as BoxDecoration).copyWith(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(theme.radiusMd),
+                    bottomRight: Radius.circular(theme.radiusMd),
+                  ),
+                );
+              },
             ),
             child: Text(
               '$day',
@@ -985,11 +1030,19 @@ class _DateItem extends StatelessWidget {
         return SizedBox(
           width: 32,
           height: 32,
-          child: PrimaryButton(
-            padding: EdgeInsets.zero,
+          child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
-            borderRadius: BorderRadius.zero,
+            style: const ButtonStyle(
+              variance: ButtonVariance.primary,
+              density: ButtonDensity.compact,
+            ).copyWith(
+              decoration: (context, states, value) {
+                return (value as BoxDecoration).copyWith(
+                  borderRadius: BorderRadius.zero,
+                );
+              },
+            ),
             child: Text(
               '$day',
             ),

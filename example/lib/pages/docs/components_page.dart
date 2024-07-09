@@ -858,20 +858,14 @@ class _ComponentCardState extends State<ComponentCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      onEnter: (_) {
-        setState(() {
-          _hovering = true;
-        });
-      },
-      onExit: (_) {
-        setState(() {
-          _hovering = false;
-        });
-      },
-      child: GestureDetector(
-        onTap: () {
+    return ExcludeFocus(
+      child: Clickable(
+        onHover: (value) {
+          setState(() {
+            _hovering = value;
+          });
+        },
+        onPressed: () {
           context.pushNamed(widget.name);
         },
         child: SizedBox(

@@ -22,7 +22,7 @@ class _CalendarExample3State extends State<CalendarExample3> {
             Row(
               children: [
                 OutlineButton(
-                  padding: Button.iconPadding,
+                  density: ButtonDensity.icon,
                   onPressed: () {
                     setState(() {
                       _view = _view.previous;
@@ -36,7 +36,7 @@ class _CalendarExample3State extends State<CalendarExample3> {
                     .center()
                     .expanded(),
                 OutlineButton(
-                  padding: Button.iconPadding,
+                  density: ButtonDensity.icon,
                   onPressed: () {
                     setState(() {
                       _view = _view.next;

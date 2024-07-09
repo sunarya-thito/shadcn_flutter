@@ -49,10 +49,14 @@ class SidebarButton extends StatelessWidget {
     }
     return Theme(
       data: data,
-      child: TextButton(
+      child: Button(
         onPressed: onPressed,
         alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        style: ButtonVariance.text.copyWith(
+          padding: (context, states, value) {
+            return const EdgeInsets.symmetric(vertical: 4, horizontal: 8);
+          },
+        ),
         child: child,
       ),
     );
@@ -83,10 +87,14 @@ class NavigationButton extends StatelessWidget {
     }
     return Theme(
       data: data,
-      child: LinkButton(
+      child: Button(
         onPressed: onPressed,
         alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        style: ButtonVariance.link.copyWith(
+          padding: (context, states, value) {
+            return const EdgeInsets.symmetric(vertical: 4, horizontal: 8);
+          },
+        ),
         child: child,
       ),
     );

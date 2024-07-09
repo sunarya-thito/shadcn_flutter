@@ -63,7 +63,7 @@ class _CodeSnippetState extends State<CodeSnippet> {
               children: [
                 ...widget.actions,
                 GhostButton(
-                  padding: Button.iconPadding,
+                  density: ButtonDensity.icon,
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: widget.code));
                   },

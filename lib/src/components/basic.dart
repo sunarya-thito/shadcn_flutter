@@ -6,11 +6,11 @@ class Basic extends StatelessWidget {
   final Widget? subtitle;
   final Widget? content;
   final Widget? trailing;
-  final Alignment? leadingAlignment;
-  final Alignment? trailingAlignment;
-  final Alignment? titleAlignment;
-  final Alignment? subtitleAlignment;
-  final Alignment? contentAlignment;
+  final AlignmentGeometry? leadingAlignment;
+  final AlignmentGeometry? trailingAlignment;
+  final AlignmentGeometry? titleAlignment;
+  final AlignmentGeometry? subtitleAlignment;
+  final AlignmentGeometry? contentAlignment;
 
   const Basic({
     Key? key,
@@ -32,7 +32,8 @@ class Basic extends StatelessWidget {
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (leading != null)
               Align(
@@ -46,6 +47,7 @@ class Basic extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (title != null)

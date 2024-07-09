@@ -11,13 +11,13 @@ class BreadcrumbExample1 extends StatelessWidget {
         TextButton(
           child: Text('Home'),
           onPressed: () {},
-          padding: EdgeInsets.zero,
+          density: ButtonDensity.compact,
         ),
         MoreDots(),
         TextButton(
           child: Text('Components'),
           onPressed: () {},
-          padding: EdgeInsets.zero,
+          density: ButtonDensity.compact,
         ),
         Text('Breadcrumb'),
       ],

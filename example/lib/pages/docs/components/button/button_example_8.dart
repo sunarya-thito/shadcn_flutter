@@ -7,7 +7,7 @@ class ButtonExample8 extends StatelessWidget {
   Widget build(BuildContext context) {
     return PrimaryButton(
       onPressed: () {},
-      padding: Button.iconPadding,
+      density: ButtonDensity.icon,
       child: Icon(Icons.add),
     );
   }
