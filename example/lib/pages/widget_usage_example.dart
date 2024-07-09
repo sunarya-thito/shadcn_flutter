@@ -1,7 +1,6 @@
-import 'dart:html';
-
 import 'package:http/http.dart' as http;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:web/web.dart' as html;
 
 class WidgetUsageExample extends StatefulWidget {
   final String? title;
@@ -165,7 +164,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
                     //https://github.com/sunarya-thito/shadcn_flutter/blob/master/example/lib/pages/docs/layout_page/layout_page_example_1.dart
                     String url =
                         'https://github.com/sunarya-thito/shadcn_flutter/blob/master/example/${widget.path}';
-                    window.open(url, 'blank');
+                    html.window.open(url, 'blank');
                   },
                   child: Icon(
                     Icons.open_in_new,
@@ -186,7 +185,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
                   //https://github.com/sunarya-thito/shadcn_flutter/blob/master/example/lib/pages/docs/layout_page/layout_page_example_1.dart
                   String url =
                       'https://github.com/sunarya-thito/shadcn_flutter/blob/master/example/${widget.path}';
-                  window.open(url, 'blank');
+                  html.window.open(url, 'blank');
                 },
                 child: Icon(
                   Icons.open_in_new,
