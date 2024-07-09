@@ -26,7 +26,7 @@ jobs:
         working-directory: './example'
 
       - name: Build
-        run: "flutter build web --base-href \"/shadcn_flutter/\""
+        run: "flutter build web --base-href \"/shadcn_flutter/\" --wasm"
         working-directory: './example'
 
       - name: Deploy
