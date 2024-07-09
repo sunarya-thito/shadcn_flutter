@@ -1,4 +1,5 @@
 import 'dart:js_interop' as js;
+import 'dart:js_interop_unsafe';
 import 'dart:math';
 import 'dart:ui';
 
@@ -201,7 +202,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
 
   void _revealCurtain() {
     try {
-      js.context.callMethod("onAppReady", []);
+      js.globalContext.callMethod("onAppReady".toJS);
     } catch (e) {}
   }
 
