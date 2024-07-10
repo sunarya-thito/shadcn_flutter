@@ -5,7 +5,7 @@ homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 
 environment:
   sdk: '>=3.1.4 <4.0.0'
-  flutter: ">=1.17.0"
+  flutter: ">=1.20.0"
 
 dependencies:
   email_validator: ">=2.1.17"
