@@ -99,7 +99,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
   void _refresh() {
     //https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/example/lib/pages/docs/layout_page/layout_page_example_1.dart
     String url =
-        'https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/example/${widget.path}';
+        'https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/example/${widget.path}';
     futureCode =
         http.get(Uri.parse(url)).then((response) => response.body).then((code) {
       try {

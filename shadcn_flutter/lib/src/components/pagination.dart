@@ -74,7 +74,7 @@ class Pagination extends StatelessWidget {
           if (!hidePreviousOnFirstPage || hasPrevious)
             GhostButton(
               onPressed: hasPrevious ? () => onPageChanged(page - 1) : null,
-              leading: Icon(Icons.arrow_back_ios_new).iconXSmall(),
+              leading: const Icon(Icons.arrow_back_ios_new).iconXSmall(),
               child: Text(localizations.buttonPrevious),
             ),
           if (hasMorePreviousPages) ...[
