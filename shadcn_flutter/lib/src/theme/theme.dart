@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ThemeData {
@@ -33,7 +32,7 @@ class ThemeData {
   }
 }
 
-class Theme extends InheritedWidget {
+class Theme extends InheritedTheme {
   final ThemeData data;
 
   const Theme({
@@ -53,5 +52,19 @@ class Theme extends InheritedWidget {
   @override
   bool updateShouldNotify(covariant Theme oldWidget) {
     return oldWidget.data != data;
+  }
+
+  @override
+  Widget wrap(BuildContext context, Widget child) {
+    final Theme? ancestorTheme = context.findAncestorWidgetOfExactType<Theme>();
+    return identical(this, ancestorTheme)
+        ? child
+        : Theme(data: data, child: child);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<ThemeData>('data', data));
   }
 }

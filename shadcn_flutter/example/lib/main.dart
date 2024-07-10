@@ -11,6 +11,7 @@ import 'package:example/pages/docs/components/combobox_example.dart';
 import 'package:example/pages/docs/components/date_picker_example.dart';
 import 'package:example/pages/docs/components/dialog_example.dart';
 import 'package:example/pages/docs/components/divider_example.dart';
+import 'package:example/pages/docs/components/drawer_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/input_otp_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
@@ -18,6 +19,7 @@ import 'package:example/pages/docs/components/popover_example.dart';
 import 'package:example/pages/docs/components/progress_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
 import 'package:example/pages/docs/components/repeated_animation_builder_example.dart';
+import 'package:example/pages/docs/components/sheet_example.dart';
 import 'package:example/pages/docs/components/skeleton_example.dart';
 import 'package:example/pages/docs/components/slider_example.dart';
 import 'package:example/pages/docs/components/steps_example.dart';
@@ -320,6 +322,20 @@ class MyAppState extends State<MyApp> {
             name: 'toggle',
             builder: (context, state) {
               return ToggleExample();
+            },
+          ),
+          GoRoute(
+            path: 'drawer',
+            name: 'drawer',
+            builder: (context, state) {
+              return DrawerExample();
+            },
+          ),
+          GoRoute(
+            path: 'sheet',
+            name: 'sheet',
+            builder: (context, state) {
+              return SheetExample();
             },
           ),
         ]),

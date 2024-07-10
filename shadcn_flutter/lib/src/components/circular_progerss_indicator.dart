@@ -41,7 +41,7 @@ class CircularProgressIndicator extends StatelessWidget {
       return AnimatedValueBuilder(
         value: value!,
         duration: duration,
-        builder: (context, value) {
+        builder: (context, value, child) {
           return RepaintBoundary(
             child: SizedBox(
               width: size ?? (iconThemeData.size ?? 24) - 8,

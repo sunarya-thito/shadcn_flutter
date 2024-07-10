@@ -4,10 +4,11 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
   final T? initialValue;
   final T value;
   final Duration duration;
-  final Widget Function(BuildContext context, T value) builder;
+  final Widget Function(BuildContext context, T value, Widget? child) builder;
   final void Function(T value)? onEnd;
   final Curve curve;
   final T Function(T a, T b, double t)? lerp;
+  final Widget? child;
 
   const AnimatedValueBuilder({
     Key? key,
@@ -18,6 +19,7 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
     this.onEnd,
     this.curve = Curves.linear,
     this.lerp,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -99,10 +101,10 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
     double progress = _controller.value;
     double curveProgress = widget.curve.transform(progress);
     if (progress == 1) {
-      return widget.builder(context, widget.value);
+      return widget.builder(context, widget.value, widget.child);
     }
     T newValue = lerpedValue(_value, widget.value, curveProgress);
-    return widget.builder(context, newValue);
+    return widget.builder(context, newValue, widget.child);
   }
 }
 

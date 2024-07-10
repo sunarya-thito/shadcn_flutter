@@ -283,8 +283,8 @@ class DocsPageState extends State<DocsPage> {
       'Surfaces',
       [
         ShadcnDocsPage('Dialog', 'dialog'),
-        ShadcnDocsPage('Drawer', 'drawer', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Sheet', 'sheet', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Drawer', 'drawer'),
+        ShadcnDocsPage('Sheet', 'sheet'),
         ShadcnDocsPage('Tooltip', 'tooltip'),
         ShadcnDocsPage('Popover', 'popover'),
       ],
@@ -409,12 +409,7 @@ class DocsPageState extends State<DocsPage> {
     final theme = Theme.of(context);
 
     return SafeArea(
-      child: Container(
-        clipBehavior: Clip.antiAlias,
-        // color: theme.colorScheme.background,
-        decoration: BoxDecoration(
-          color: theme.colorScheme.background,
-        ),
+      child: Scaffold(
         child: PageStorage(
           bucket: docsBucket,
           child: StageContainer(

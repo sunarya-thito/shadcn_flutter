@@ -43,7 +43,7 @@ class Progress extends StatelessWidget {
         return AnimatedValueBuilder(
           value: progress,
           duration: duration,
-          builder: (context, value) {
+          builder: (context, value, child) {
             return buildBar(context, 0.0, value);
           },
         );

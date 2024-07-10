@@ -14,7 +14,7 @@ class ComboBox<T> extends StatefulWidget {
   final FocusNode? focusNode;
   final BoxConstraints constraints;
   final BoxConstraints popupConstraints;
-  final PopupConstraint popupWidthConstraint;
+  final PopoverConstraint popupWidthConstraint;
 
   const ComboBox({
     Key? key,
@@ -28,7 +28,7 @@ class ComboBox<T> extends StatefulWidget {
     this.focusNode,
     this.constraints = const BoxConstraints(),
     this.popupConstraints = const BoxConstraints(),
-    this.popupWidthConstraint = PopupConstraint.anchorMinSize,
+    this.popupWidthConstraint = PopoverConstraint.anchorMinSize,
   }) : super(key: key);
 
   @override

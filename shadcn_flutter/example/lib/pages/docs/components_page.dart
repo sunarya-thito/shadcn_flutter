@@ -684,8 +684,43 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     ),
                   ],
                 )),
-            WIPComponentCard(title: 'Drawer'),
-            WIPComponentCard(title: 'Sheet'),
+            ComponentCard(
+              title: 'Drawer',
+              name: 'drawer',
+              scale: 1,
+              example: DrawerWrapper(
+                position: OverlayPosition.bottom,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Drawer!').large().medium(),
+                    gap(4),
+                    Text('This is a drawer that you can use to display content')
+                        .muted(),
+                  ],
+                ).withPadding(horizontal: 32),
+                size: Size(300, 300),
+              ).sized(width: 300, height: 300),
+            ),
+            ComponentCard(
+              title: 'Sheet',
+              name: 'sheet',
+              verticalOffset: 0,
+              scale: 1,
+              example: SheetWrapper(
+                position: OverlayPosition.right,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Sheet!').large().medium(),
+                    gap(4),
+                    Text('This is a sheet that you can use to display content')
+                        .muted(),
+                  ],
+                ).withPadding(horizontal: 32, vertical: 48),
+                size: Size(300, 300),
+              ).sized(width: 300, height: 300),
+            ),
             ComponentCard(
               name: 'tooltip',
               title: 'Tooltip',
@@ -875,7 +910,7 @@ class _ComponentCardState extends State<ComponentCard> {
               value: _hovering ? 1.0 : 0.0,
               duration: Duration(milliseconds: 200),
               curve: Curves.easeInOut,
-              builder: (context, value) {
+              builder: (context, value, child) {
                 final borderColor = Color.lerp(
                     theme.colorScheme.border, theme.colorScheme.ring, value);
                 return OutlinedContainer(

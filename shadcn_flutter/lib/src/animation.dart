@@ -2,6 +2,57 @@ import 'package:flutter/widgets.dart';
 
 typedef PropertyLerp<T> = T Function(T a, T b, double t);
 
+class ControlledAnimation extends Animation<double> {
+  final AnimationController _controller;
+
+  ControlledAnimation(this._controller);
+
+  double _from = 0;
+  double _to = 1;
+  Curve _curve = Curves.linear;
+
+  TickerFuture forward(double to, [Curve? curve]) {
+    _from = value;
+    this._to = to;
+    this._curve = curve ?? Curves.linear;
+    return _controller.forward(from: 0);
+  }
+
+  set value(double value) {
+    _from = value;
+    _to = value;
+    _curve = Curves.linear;
+    _controller.value = 0;
+  }
+
+  @override
+  void addListener(VoidCallback listener) {
+    _controller.addListener(listener);
+  }
+
+  @override
+  void addStatusListener(AnimationStatusListener listener) {
+    _controller.addStatusListener(listener);
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    _controller.removeListener(listener);
+  }
+
+  @override
+  void removeStatusListener(AnimationStatusListener listener) {
+    _controller.removeStatusListener(listener);
+  }
+
+  @override
+  AnimationStatus get status => _controller.status;
+
+  @override
+  double get value =>
+      _from + (_to - _from) * _curve.transform(_controller.value);
+}
+
 class Transformers {
   static PropertyLerp<double> typeDouble = (a, b, t) => a + (b - a) * t;
   static PropertyLerp<int> typeInt = (a, b, t) => (a + (b - a) * t).round();

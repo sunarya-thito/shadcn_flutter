@@ -22,7 +22,7 @@ class _AnimatedValueBuilderExample1State
           value: colors[index],
           duration: const Duration(seconds: 1),
           lerp: Color.lerp,
-          builder: (context, value) {
+          builder: (context, value, child) {
             return Container(
               width: 100,
               height: 100,
