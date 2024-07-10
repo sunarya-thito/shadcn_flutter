@@ -30,6 +30,8 @@ class _IntroductionPageState extends State<IntroductionPage> {
           const Text('Most of components are built from scratch.'),
           const Text(
               'If you found any issues, please report it to our GitHub instead of Shadcn/ui.'),
+          const Text(
+              'Currently there\'s 40 out of 49 components that has been implemented into this package.'),
           const Text('Frequency Asked Questions').h2().anchored(faqKey),
           Accordion(
             items: [
@@ -49,10 +51,10 @@ class _IntroductionPageState extends State<IntroductionPage> {
               AccordionItem(
                 trigger: AccordionTrigger(
                   child:
-                      Text('Can I use this with Material App/Cupertino App?'),
+                      Text('Can I use this with Material/Cupertino Widgets?'),
                 ),
                 content: Text(
-                    'No, you can\'t. This is a standalone package and not a theme.'),
+                    'No, you can\'t. This is a standalone package and not a theme. You would need to wrap your Material/Cupertino Widgets with MaterialApp/CupertinoApp.'),
               ),
               AccordionItem(
                 trigger: AccordionTrigger(

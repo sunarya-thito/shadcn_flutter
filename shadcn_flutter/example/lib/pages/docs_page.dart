@@ -308,6 +308,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Command', 'command'),
         ShadcnDocsPage(
             'Context Menu', 'context_menu', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage(
+            'Dropdown Menu', 'dropdown_menu', ShadcnFeatureTag.workInProgress),
       ],
     ),
   ];

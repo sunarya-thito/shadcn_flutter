@@ -218,7 +218,9 @@ class _ThemePageState extends State<ThemePage> {
 
   String buildCustomCode() {
     bool isDark = colorScheme.background.computeLuminance() > 0.5;
-    String buffer = 'ThemeData(';
+    String buffer = 'ShadcnApp(';
+    buffer += '\n...';
+    buffer += '\n\ttheme: ThemeData(';
     // buffer += 'brightness: ${isDark ? 'Brightness.dark' : 'Brightness.light'},';
     // buffer += 'colorScheme: ColorScheme(';
     // for (var key in colors.keys) {
@@ -228,14 +230,16 @@ class _ThemePageState extends State<ThemePage> {
     // buffer += 'radius: $radius,';
     // buffer += ')';
     buffer +=
-        '\n\tbrightness: ${isDark ? 'Brightness.dark' : 'Brightness.light'},';
-    buffer += '\n\tcolorScheme: ColorScheme(';
+        '\n\t\tbrightness: ${isDark ? 'Brightness.dark' : 'Brightness.light'},';
+    buffer += '\n\t\tcolorScheme: ColorScheme(';
     for (var key in colors.keys) {
       String hex = colors[key]!.value.toRadixString(16);
-      buffer += '\n\t\t$key: Color(0x$hex),';
+      buffer += '\n\t\t\t$key: Color(0x$hex),';
     }
+    buffer += '\n\t\t),';
+    buffer += '\n\t\tradius: $radius,';
     buffer += '\n\t),';
-    buffer += '\n\tradius: $radius,';
+    buffer += '\n...';
     buffer += '\n)';
     return buffer;
   }
@@ -244,11 +248,15 @@ class _ThemePageState extends State<ThemePage> {
     // return 'ColorSchemes.${nameFromColorScheme(colorScheme)}()';
     String name = nameFromColorScheme(colorScheme)!;
     bool isDark = name.contains('dark');
-    String buffer = 'ThemeData(';
+    String buffer = 'ShadcnApp(';
+    buffer += '\n...';
+    buffer += '\n\ttheme: ThemeData(';
     buffer +=
-        '\n\tbrightness: ${isDark ? 'Brightness.dark' : 'Brightness.light'},';
-    buffer += '\n\tcolorScheme: ColorSchemes.$name(),';
-    buffer += '\n\tradius: $radius,';
+        '\n\t\tbrightness: ${isDark ? 'Brightness.dark' : 'Brightness.light'},';
+    buffer += '\n\t\tcolorScheme: ColorSchemes.$name(),';
+    buffer += '\n\t\tradius: $radius,';
+    buffer += '\n\t),';
+    buffer += '\n...';
     buffer += '\n)';
     return buffer;
   }
