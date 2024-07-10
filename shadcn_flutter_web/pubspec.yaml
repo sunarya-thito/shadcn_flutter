@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  shadcn_flutter_platform_interface: ^0.0.2
+  shadcn_flutter_platform_interface: ^0.0.3
   web: ^0.5.1
 
 dev_dependencies:

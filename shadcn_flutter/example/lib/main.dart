@@ -384,6 +384,7 @@ class MyAppState extends State<MyApp> {
       data: this,
       child: ShadcnApp.router(
         routerConfig: router,
+        debugShowCheckedModeBanner: false,
         title: 'shadcn/ui Flutter',
         theme: ThemeData(
           brightness: Brightness.dark,

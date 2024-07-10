@@ -363,6 +363,7 @@ class DocsPageState extends State<DocsPage> {
               width: 510,
               height: 349,
               child: Command(
+                debounceDuration: Duration.zero,
                 builder: (context, query) async* {
                   for (final section in sections) {
                     final List<Widget> resultItems = [];
