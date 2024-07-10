@@ -5,10 +5,41 @@ class ButtonExample8 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PrimaryButton(
-      onPressed: () {},
-      density: ButtonDensity.icon,
-      child: Icon(Icons.add),
+    return Wrap(
+      runSpacing: 8,
+      spacing: 8,
+      children: [
+        PrimaryButton(
+          onPressed: () {},
+          density: ButtonDensity.icon,
+          child: Icon(Icons.add),
+        ),
+        SecondaryButton(
+          onPressed: () {},
+          density: ButtonDensity.icon,
+          child: Icon(Icons.add),
+        ),
+        OutlineButton(
+          onPressed: () {},
+          density: ButtonDensity.icon,
+          child: Icon(Icons.add),
+        ),
+        GhostButton(
+          onPressed: () {},
+          density: ButtonDensity.icon,
+          child: Icon(Icons.add),
+        ),
+        TextButton(
+          onPressed: () {},
+          density: ButtonDensity.icon,
+          child: Icon(Icons.add),
+        ),
+        DestructiveButton(
+          onPressed: () {},
+          density: ButtonDensity.icon,
+          child: Icon(Icons.add),
+        ),
+      ],
     );
   }
 }

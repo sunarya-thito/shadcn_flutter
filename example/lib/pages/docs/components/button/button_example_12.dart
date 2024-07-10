@@ -1,13 +1,13 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class ButtonExample1 extends StatelessWidget {
-  const ButtonExample1({super.key});
+class ButtonExample12 extends StatelessWidget {
+  const ButtonExample12({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return PrimaryButton(
+    return TextButton(
       onPressed: () {},
-      child: Text('Primary'),
+      child: Text('Text Button'),
     );
   }
 }

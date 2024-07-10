@@ -4,6 +4,9 @@ import '../../widget_usage_example.dart';
 import '../component_page.dart';
 import 'button/button_example_1.dart';
 import 'button/button_example_10.dart';
+import 'button/button_example_11.dart';
+import 'button/button_example_12.dart';
+import 'button/button_example_13.dart';
 import 'button/button_example_2.dart';
 import 'button/button_example_3.dart';
 import 'button/button_example_4.dart';
@@ -53,6 +56,11 @@ class ButtonExample extends StatelessWidget {
           path: 'lib/pages/docs/components/button/button_example_6.dart',
         ),
         WidgetUsageExample(
+          title: 'Text Button Example',
+          child: ButtonExample12(),
+          path: 'lib/pages/docs/components/button/button_example_12.dart',
+        ),
+        WidgetUsageExample(
           title: 'Disabled Button Example',
           child: ButtonExample7(),
           path: 'lib/pages/docs/components/button/button_example_7.dart',
@@ -68,9 +76,19 @@ class ButtonExample extends StatelessWidget {
           path: 'lib/pages/docs/components/button/button_example_9.dart',
         ),
         WidgetUsageExample(
-          title: 'Loading Button Example',
+          title: 'Button Size Example',
           child: ButtonExample10(),
           path: 'lib/pages/docs/components/button/button_example_10.dart',
+        ),
+        WidgetUsageExample(
+          title: 'Button Density Example',
+          child: ButtonExample11(),
+          path: 'lib/pages/docs/components/button/button_example_11.dart',
+        ),
+        WidgetUsageExample(
+          title: 'Button Shape Example',
+          child: ButtonExample13(),
+          path: 'lib/pages/docs/components/button/button_example_13.dart',
         ),
       ],
     );

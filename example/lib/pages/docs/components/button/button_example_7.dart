@@ -5,8 +5,29 @@ class ButtonExample7 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PrimaryButton(
-      child: Text('Disabled'),
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        PrimaryButton(
+          child: Text('Disabled'),
+        ),
+        SecondaryButton(
+          child: Text('Disabled'),
+        ),
+        OutlineButton(
+          child: Text('Disabled'),
+        ),
+        GhostButton(
+          child: Text('Disabled'),
+        ),
+        TextButton(
+          child: Text('Disabled'),
+        ),
+        DestructiveButton(
+          child: Text('Disabled'),
+        ),
+      ],
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class ButtonExample10 extends StatelessWidget {
-  const ButtonExample10({super.key});
+class ButtonExample11 extends StatelessWidget {
+  const ButtonExample11({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,29 +12,34 @@ class ButtonExample10 extends StatelessWidget {
       runAlignment: WrapAlignment.center,
       children: [
         PrimaryButton(
-          child: Text('Extra Small'),
-          size: ButtonSize.xSmall,
+          child: Text('Compact'),
           onPressed: () {},
+          density: ButtonDensity.compact,
         ),
         PrimaryButton(
-          child: Text('Small'),
+          child: Text('Dense'),
           onPressed: () {},
-          size: ButtonSize.small,
+          density: ButtonDensity.dense,
         ),
         PrimaryButton(
           child: Text('Normal'),
-          size: ButtonSize.normal,
           onPressed: () {},
+          density: ButtonDensity.normal,
         ),
         PrimaryButton(
-          child: Text('Large'),
-          size: ButtonSize.large,
+          child: Text('Comfortable'),
           onPressed: () {},
+          density: ButtonDensity.comfortable,
         ),
         PrimaryButton(
-          child: Text('Extra Large'),
-          size: ButtonSize.xLarge,
+          child: Text('Icon'),
           onPressed: () {},
+          density: ButtonDensity.icon,
+        ),
+        PrimaryButton(
+          child: Text('Icon Comfortable'),
+          onPressed: () {},
+          density: ButtonDensity.iconComfortable,
         ),
       ],
     );
