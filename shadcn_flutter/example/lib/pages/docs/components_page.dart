@@ -14,6 +14,7 @@ import 'package:example/pages/docs/components/form/form_example_1.dart';
 import 'package:example/pages/docs/components/input_otp/input_otp_example_2.dart';
 import 'package:example/pages/docs/components/pagination/pagination_example_1.dart';
 import 'package:example/pages/docs/components/text_area/text_area_example_3.dart';
+import 'package:example/pages/docs/components/toggle/toggle_example_2.dart';
 import 'package:example/pages/docs_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -516,6 +517,14 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     Card(child: TextAreaExample3()),
                   ],
                 )),
+            ComponentCard(
+              name: 'toggle',
+              title: 'Toggle',
+              scale: 1.2,
+              example: Card(
+                child: ToggleExample2().withAlign(Alignment.topLeft),
+              ).sized(height: 300, width: 300),
+            ),
           ]),
           Text('Layout').h2().anchored(layoutKey),
           gap(16),

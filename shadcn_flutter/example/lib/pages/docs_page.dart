@@ -253,7 +253,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Slider', 'slider'),
         ShadcnDocsPage('Switch', 'switch'),
         ShadcnDocsPage('Text Area', 'text_area'),
-        ShadcnDocsPage('Toggle', 'toggle', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Toggle', 'toggle'),
       ],
     ),
     ShadcnDocsSection(
