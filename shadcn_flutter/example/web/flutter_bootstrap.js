@@ -19,6 +19,7 @@ const shadcnLoaderConfig = {
         </div>`,
     backgroundColor: '#09090b',
     foregroundColor: '#ffffff',
+    loaderColor: '#3c83f6',
     fontFamily: 'Geist Sans',
     fontSize: '24px',
     fontWeight: '400',
@@ -58,13 +59,13 @@ const loaderStyle = `
     justify-content: ${shadcnLoaderConfig.mainAxisAlignment};
     align-items: ${shadcnLoaderConfig.crossAxisAlignment};
     position: fixed;
-    top: 7px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: ${shadcnLoaderConfig.backgroundColor};
     color: ${shadcnLoaderConfig.foregroundColor};
-    z-index: 9999;
+    z-index: 9998;
     font-family: ${shadcnLoaderConfig.fontFamily};
     font-size: ${shadcnLoaderConfig.fontSize};
     font-weight: ${shadcnLoaderConfig.fontWeight};
@@ -73,6 +74,30 @@ const loaderStyle = `
     opacity: 1;
     pointer-events: initial;
 `;
+
+const loaderBarCss = `
+/* HTML: <div class="loader"></div> */
+.loader {
+//  width: calc(80px / cos(45deg));
+  height: 7px;
+  background: repeating-linear-gradient(-45deg,${shadcnLoaderConfig.loaderColor} 0 15px,#000 0 20px) left/200% 100%;
+  animation: l3 20s infinite linear;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+@keyframes l3 {
+    100% {background-position:right}
+}`;
+
+function createStyleSheet(css) {
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+    document.head.appendChild(style);
+}
 
 function loadScriptDynamically(src, callback) {
     if (typeof src === 'string') {
@@ -107,6 +132,12 @@ loaderDiv.innerHTML = shadcnLoaderConfig.loaderWidget;
 document.body.appendChild(loaderDiv);
 
 document.body.style.backgroundColor = shadcnLoaderConfig.backgroundColor;
+
+const loaderBarDiv = document.createElement('div');
+loaderBarDiv.className = 'loader';
+loaderDiv.appendChild(loaderBarDiv);
+
+createStyleSheet(loaderBarCss);
 
 window.onAppReady = function() {
     loaderDiv.style.opacity = 0;
