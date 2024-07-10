@@ -1,25 +1,21 @@
-name: shadcn_flutter
-description: "Beautifully designed components from Shadcn/UI is now available for Flutter"
-version: 0.0.3
-homepage: "https://github.com/sunarya-thito/shadcn_flutter"
+name: shadcn_flutter_platform_interface
+description: "A new Flutter package project."
+version: 0.0.1
+homepage:
 
 environment:
-  sdk: '>=3.1.4 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
-  email_validator: ">=2.1.17"
   flutter:
     sdk: flutter
-  flutter_highlight: ">=0.7.0"
-  gap: ">=3.0.1"
-  highlight: ">=0.7.0"
-  skeletonizer: ">=1.3.0"
+  plugin_platform_interface: ^2.1.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
