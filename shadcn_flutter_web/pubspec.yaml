@@ -1,15 +1,19 @@
 name: shadcn_flutter_web
-description: "A new Flutter package project."
-version: 0.0.1
-homepage:
+description: "A web implementation for Shadcn Flutter components"
+version: 0.0.2
+homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 
 environment:
   sdk: '>=3.4.0 <4.0.0'
-  flutter: ">=1.17.0"
+  flutter: ">=1.20.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  shadcn_flutter_platform_interface: ^0.0.2
+  web: ^0.5.1
 
 dev_dependencies:
   flutter_test:
@@ -21,6 +25,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  plugin:
+    implements: shadcn_flutter
+    platforms:
+      web:
+        pluginClass: WebPlatformImplementations
+        fileName: shadcn_flutter_web.dart
 
   # To add assets to your package, add an assets section, like this:
   # assets:

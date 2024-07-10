@@ -1,7 +1,18 @@
 library shadcn_flutter_web;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
+
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:shadcn_flutter_platform_interface/shadcn_flutter_platform_interface.dart';
+
+class WebPlatformImplementations extends AbstractPlatformImplementations {
+  static void registerWith(Registrar? registrar) {
+    AbstractPlatformImplementations.instance = WebPlatformImplementations();
+  }
+
+  @override
+  void onAppInitialized() {
+    globalContext.callMethod("onAppReady".toJS);
+  }
 }
