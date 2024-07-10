@@ -11,6 +11,8 @@ class Basic extends StatelessWidget {
   final AlignmentGeometry? titleAlignment;
   final AlignmentGeometry? subtitleAlignment;
   final AlignmentGeometry? contentAlignment;
+  final double contentSpacing;
+  final double titleSpacing;
 
   const Basic({
     Key? key,
@@ -24,6 +26,8 @@ class Basic extends StatelessWidget {
     this.titleAlignment,
     this.subtitleAlignment,
     this.contentAlignment,
+    this.contentSpacing = 16,
+    this.titleSpacing = 4,
   }) : super(key: key);
 
   @override
@@ -42,7 +46,7 @@ class Basic extends StatelessWidget {
               ),
             if (leading != null &&
                 (title != null || content != null || subtitle != null))
-              const SizedBox(width: 16),
+              SizedBox(width: contentSpacing),
             if (title != null || content != null || subtitle != null)
               Expanded(
                 child: Column(
@@ -75,7 +79,7 @@ class Basic extends StatelessWidget {
                             child: subtitle!,
                           )),
                     if ((title != null || subtitle != null) && content != null)
-                      const SizedBox(height: 4),
+                      SizedBox(height: titleSpacing),
                     if (content != null)
                       mergeAnimatedTextStyle(
                           duration: kDefaultDuration,
@@ -95,7 +99,7 @@ class Basic extends StatelessWidget {
                     content != null ||
                     leading != null ||
                     subtitle != null))
-              const SizedBox(width: 16),
+              SizedBox(width: contentSpacing),
             // if (trailing != null) trailing!,
             if (trailing != null)
               Align(
@@ -121,6 +125,8 @@ class BasicLayout extends StatelessWidget {
   final AlignmentGeometry? titleAlignment;
   final AlignmentGeometry? subtitleAlignment;
   final AlignmentGeometry? contentAlignment;
+  final double contentSpacing;
+  final double titleSpacing;
 
   const BasicLayout({
     Key? key,
@@ -134,6 +140,8 @@ class BasicLayout extends StatelessWidget {
     this.titleAlignment,
     this.subtitleAlignment,
     this.contentAlignment,
+    this.contentSpacing = 16,
+    this.titleSpacing = 4,
   }) : super(key: key);
 
   @override
@@ -151,7 +159,7 @@ class BasicLayout extends StatelessWidget {
               ),
             if (leading != null &&
                 (title != null || content != null || subtitle != null))
-              const SizedBox(width: 16),
+              SizedBox(width: contentSpacing),
             if (title != null || content != null || subtitle != null)
               Expanded(
                 child: Column(
@@ -172,7 +180,7 @@ class BasicLayout extends StatelessWidget {
                         child: subtitle!,
                       ),
                     if ((title != null || subtitle != null) && content != null)
-                      const SizedBox(height: 4),
+                      SizedBox(height: titleSpacing),
                     if (content != null)
                       Align(
                         alignment: contentAlignment ?? Alignment.topLeft,
@@ -186,7 +194,7 @@ class BasicLayout extends StatelessWidget {
                     content != null ||
                     leading != null ||
                     subtitle != null))
-              const SizedBox(width: 16),
+              SizedBox(width: contentSpacing),
             if (trailing != null)
               Align(
                 alignment: trailingAlignment ?? Alignment.topCenter,

@@ -191,6 +191,7 @@ class ButtonState<T extends Button> extends State<T> {
       child: BasicLayout(
         trailing: widget.trailing,
         leading: widget.leading,
+        contentSpacing: 8,
         content: UnderlineInterceptor(child: widget.child),
         trailingAlignment: Alignment.center,
         leadingAlignment: Alignment.center,
@@ -332,14 +333,19 @@ class ButtonStyle implements AbstractButtonStyle {
 
   @override
   ButtonStateProperty<Decoration> get decoration {
-    if (shape == ButtonShape.rectangle) {
+    if (shape == ButtonShape.circle) {
       return (context, states) {
         var decoration = variance.decoration(context, states);
         if (decoration is BoxDecoration) {
-          return decoration.copyWith(
-            shape: shape == ButtonShape.circle
-                ? BoxShape.circle
-                : BoxShape.rectangle,
+          return BoxDecoration(
+            color: decoration.color,
+            image: decoration.image,
+            border: decoration.border,
+            borderRadius: null,
+            boxShadow: decoration.boxShadow,
+            gradient: decoration.gradient,
+            shape: BoxShape.circle,
+            backgroundBlendMode: decoration.backgroundBlendMode,
           );
         } else if (decoration is ShapeDecoration) {
           return decoration.copyWith(
@@ -629,9 +635,7 @@ IconThemeData _buttonPrimaryIconTheme(
     BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
   return IconThemeData(
-    color: states.contains(WidgetState.disabled)
-        ? themeData.colorScheme.mutedForeground
-        : themeData.colorScheme.primaryForeground,
+    color: themeData.colorScheme.primaryForeground,
   );
 }
 

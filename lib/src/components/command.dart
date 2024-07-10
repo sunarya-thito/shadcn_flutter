@@ -218,6 +218,7 @@ class _CommandItemState extends State<CommandItem> {
 
   @override
   Widget build(BuildContext context) {
+    UndoHistoryController c;
     var themeData = Theme.of(context);
     return GestureDetector(
       onTap: widget.onTap,
