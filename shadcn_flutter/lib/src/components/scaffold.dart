@@ -9,7 +9,8 @@ class Scaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return DrawerOverlay(
-      child: Container(
+      child: AnimatedContainer(
+        duration: kDefaultDuration,
         color: theme.colorScheme.background,
         child: child,
       ),
