@@ -13,9 +13,11 @@ Future<T?> openDrawer<T>({
   required OverlayPosition position,
   bool expands = false,
   bool draggable = true,
+  bool barrierDismissible = true,
 }) {
   return openRawDrawer<T>(
     context: context,
+    barrierDismissible: barrierDismissible,
     builder: (context, extraSize, size) {
       return DrawerWrapper(
         position: position,
@@ -34,10 +36,12 @@ Future<T?> openSheet<T>({
   required BuildContext context,
   required WidgetBuilder builder,
   required OverlayPosition position,
+  bool barrierDismissible = true,
 }) {
   return openRawDrawer<T>(
     context: context,
     transformBackdrop: false,
+    barrierDismissible: barrierDismissible,
     builder: (context, extraSize, size) {
       return SheetWrapper(
         position: position,
