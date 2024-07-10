@@ -22,7 +22,7 @@ class MoreDots extends StatelessWidget {
   Widget build(BuildContext context) {
     TextStyle style = DefaultTextStyle.of(context).style;
     Color color = this.color ?? style.color!;
-    double size = this.size ?? style.fontSize! * 0.2;
+    double size = this.size ?? (style.fontSize ?? 12) * 0.2;
     List<Widget> children = [];
     for (int i = 0; i < count; i++) {
       children.add(Container(
