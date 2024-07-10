@@ -1,10 +1,9 @@
-import 'dart:js_interop' as js;
-import 'dart:js_interop_unsafe';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter_platform_interface/shadcn_flutter_platform_interface.dart';
 
 class ShadcnApp extends StatefulWidget {
   const ShadcnApp({
@@ -200,10 +199,8 @@ class ShadcnScrollBehavior extends ScrollBehavior {
 class _ShadcnAppState extends State<ShadcnApp> {
   late HeroController _heroController;
 
-  void _revealCurtain() {
-    try {
-      js.globalContext.callMethod("onAppReady".toJS);
-    } catch (e) {}
+  void _dispatchAppInitialized() {
+    AbstractPlatformImplementations.instance.onAppInitialized();
   }
 
   bool get _usesRouter =>
@@ -218,7 +215,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
         return ShadcnRectArcTween(begin: begin, end: end);
       },
     );
-    Future.delayed(const Duration(milliseconds: 10), _revealCurtain);
+    Future.delayed(const Duration(milliseconds: 10), _dispatchAppInitialized);
   }
 
   @override

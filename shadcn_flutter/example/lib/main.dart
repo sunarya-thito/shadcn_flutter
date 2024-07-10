@@ -52,6 +52,7 @@ import 'pages/docs/components/command_example.dart';
 import 'pages/docs/components/form_example.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   GoRouter.optionURLReflectsImperativeAPIs = true;
   final prefs = await SharedPreferences.getInstance();
   var colorScheme = prefs.getString('colorScheme');
