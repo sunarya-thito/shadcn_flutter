@@ -59,13 +59,14 @@ class DocsPage extends StatefulWidget {
   final Widget child;
   final Map<String, OnThisPage> onThisPage;
   final List<Widget> navigationItems;
-
+  final bool scrollable;
   const DocsPage({
     Key? key,
     required this.name,
     required this.child,
     this.onThisPage = const {},
     this.navigationItems = const [],
+    this.scrollable = true,
   }) : super(key: key);
 
   @override
@@ -147,74 +148,6 @@ class DocsPageState extends State<DocsPage> {
           ShadcnDocsPage('Icons', 'icons'),
         ],
         Icons.book),
-    // ShadcnDocsSection(
-    //     'Components',
-    //     [
-    //       ShadcnDocsPage('Accordion', 'accordion'),
-    //       ShadcnDocsPage('Alert', 'alert'),
-    //       ShadcnDocsPage('Alert Dialog', 'alert_dialog'),
-    //       ShadcnDocsPage('Avatar', 'avatar'),
-    //       ShadcnDocsPage('Badge', 'badge'),
-    //       ShadcnDocsPage('Breadcrumb', 'breadcrumb'),
-    //       ShadcnDocsPage('Button', 'button'),
-    //       ShadcnDocsPage('Calendar', 'calendar'),
-    //       ShadcnDocsPage('Card', 'card'),
-    //       ShadcnDocsPage('Carousel', 'carousel'),
-    //       ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Checkbox', 'checkbox'),
-    //       ShadcnDocsPage('Circular Progress', 'circular_progress'),
-    //       ShadcnDocsPage('Code Snippet', 'code_snippet'),
-    //       ShadcnDocsPage('Collapsible', 'collapsible'),
-    //       ShadcnDocsPage('Color Picker', 'color_picker'),
-    //       ShadcnDocsPage('Combo Box', 'combo_box'),
-    //       ShadcnDocsPage('Command', 'command'),
-    //       ShadcnDocsPage(
-    //           'Context Menu', 'context_menu', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage(
-    //           'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Date Picker', 'date_picker'),
-    //       ShadcnDocsPage('Dialog', 'dialog'),
-    //       ShadcnDocsPage('Divider', 'divider'),
-    //       ShadcnDocsPage('Drawer', 'drawer', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage(
-    //           'Dropdown', 'dropdown', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage(
-    //           'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Form', 'form'),
-    //       ShadcnDocsPage(
-    //           'Hover Card', 'hover_card', ShadcnFeatureTag.workInProgress), // deprecated
-    //       ShadcnDocsPage('Input', 'input', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage(
-    //           'Input OTP', 'input_otp', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Label', 'label', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Menubar', 'menubar', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Navigation Menu', 'navigation_menu',
-    //           ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Pagination', 'pagination'),
-    //       ShadcnDocsPage('Popover', 'popover', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage(
-    //           'Progress', 'progress', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage(
-    //           'Radio Group', 'radio_group', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage(
-    //           'Resizable', 'resizable', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Sheet', 'sheet', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage(
-    //           'Skeleton', 'skeleton', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Slider', 'slider', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Sonner', 'sonner', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Steps', 'steps', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Switch', 'switch', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Tabs', 'tabs', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage(
-    //           'Text Area', 'text_area', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Toast', 'toast', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Toggle', 'toggle', ShadcnFeatureTag.workInProgress),
-    //       ShadcnDocsPage('Tooltip', 'tooltip', ShadcnFeatureTag.workInProgress),
-    //     ],
-    //     Icons.widgets),
-    // Categorize the widgets above into different sections
     ShadcnDocsSection(
       'Animation',
       [
@@ -478,47 +411,93 @@ class DocsPageState extends State<DocsPage> {
                                   ),
                                   Expanded(
                                     child: FocusTraversalGroup(
-                                      child: SingleChildScrollView(
-                                        clipBehavior: Clip.none,
-                                        padding: !hasOnThisPage
-                                            ? const EdgeInsets.symmetric(
-                                                horizontal: 40,
-                                                vertical: 32,
-                                              ).copyWith(
-                                                right: padding.right,
-                                              )
-                                            : const EdgeInsets.symmetric(
-                                                horizontal: 40,
-                                                vertical: 32,
-                                              ).copyWith(right: 24),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: [
-                                            Breadcrumb(
-                                              separator:
-                                                  Breadcrumb.arrowSeparator,
-                                              children: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    context.goNamed(
-                                                        'introduction');
-                                                  },
-                                                  density:
-                                                      ButtonDensity.compact,
-                                                  child: Text('Docs'),
-                                                ),
-                                                ...widget.navigationItems,
-                                                if (page != null)
-                                                  Text(page.title),
-                                              ],
+                                      child: widget.scrollable
+                                          ? SingleChildScrollView(
+                                              clipBehavior: Clip.none,
+                                              padding: !hasOnThisPage
+                                                  ? const EdgeInsets.symmetric(
+                                                      horizontal: 40,
+                                                      vertical: 32,
+                                                    ).copyWith(
+                                                      right: padding.right,
+                                                    )
+                                                  : const EdgeInsets.symmetric(
+                                                      horizontal: 40,
+                                                      vertical: 32,
+                                                    ).copyWith(right: 24),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.stretch,
+                                                children: [
+                                                  Breadcrumb(
+                                                    separator: Breadcrumb
+                                                        .arrowSeparator,
+                                                    children: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          context.goNamed(
+                                                              'introduction');
+                                                        },
+                                                        density: ButtonDensity
+                                                            .compact,
+                                                        child: Text('Docs'),
+                                                      ),
+                                                      ...widget.navigationItems,
+                                                      if (page != null)
+                                                        Text(page.title),
+                                                    ],
+                                                  ),
+                                                  gap(16),
+                                                  widget.child,
+                                                ],
+                                              ),
+                                            )
+                                          : Container(
+                                              clipBehavior: Clip.none,
+                                              padding: !hasOnThisPage
+                                                  ? const EdgeInsets.symmetric(
+                                                      horizontal: 40,
+                                                      vertical: 32,
+                                                    ).copyWith(
+                                                      right: padding.right,
+                                                      bottom: 0,
+                                                    )
+                                                  : const EdgeInsets.symmetric(
+                                                      horizontal: 40,
+                                                      vertical: 32,
+                                                    ).copyWith(
+                                                      right: 24,
+                                                      bottom: 0,
+                                                    ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.stretch,
+                                                children: [
+                                                  Breadcrumb(
+                                                    separator: Breadcrumb
+                                                        .arrowSeparator,
+                                                    children: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          context.goNamed(
+                                                              'introduction');
+                                                        },
+                                                        density: ButtonDensity
+                                                            .compact,
+                                                        child: Text('Docs'),
+                                                      ),
+                                                      ...widget.navigationItems,
+                                                      if (page != null)
+                                                        Text(page.title),
+                                                    ],
+                                                  ),
+                                                  gap(16),
+                                                  Expanded(child: widget.child),
+                                                ],
+                                              ),
                                             ),
-                                            gap(16),
-                                            widget.child,
-                                          ],
-                                        ),
-                                      ),
                                     ),
                                   ),
                                   if (hasOnThisPage)

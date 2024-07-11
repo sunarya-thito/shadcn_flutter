@@ -77,6 +77,7 @@ class _IconsPageState extends State<IconsPage> {
   Widget build(BuildContext context) {
     return DocsPage(
       name: 'icons',
+      scrollable: false,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -88,89 +89,100 @@ class _IconsPageState extends State<IconsPage> {
             placeholder: 'Search icons',
             controller: _controller,
           ),
-          AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                List<MapEntry<String, IconData>> filteredRadixIcons = [];
-                List<MapEntry<String, IconData>> filteredBootstrapIcons = [];
+          Expanded(
+            child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  List<MapEntry<String, IconData>> filteredRadixIcons = [];
+                  List<MapEntry<String, IconData>> filteredBootstrapIcons = [];
 
-                for (var entry in kRadixIcons.entries) {
-                  if (_controller.text.isEmpty) {
-                    filteredRadixIcons.add(entry);
-                    continue;
+                  for (var entry in kRadixIcons.entries) {
+                    if (_controller.text.isEmpty) {
+                      filteredRadixIcons.add(entry);
+                      continue;
+                    }
+                    String key = entry.key.toLowerCase();
+                    if (key.contains(_controller.text.toLowerCase())) {
+                      filteredRadixIcons.add(entry);
+                    }
                   }
-                  String key = entry.key.toLowerCase();
-                  if (key.contains(_controller.text.toLowerCase())) {
-                    filteredRadixIcons.add(entry);
+                  for (var entry in kBootstrapIcons.entries) {
+                    if (_controller.text.isEmpty) {
+                      filteredBootstrapIcons.add(entry);
+                      continue;
+                    }
+                    String key = entry.key.toLowerCase();
+                    if (key.contains(_controller.text.toLowerCase())) {
+                      filteredBootstrapIcons.add(entry);
+                    }
                   }
-                }
-                for (var entry in kBootstrapIcons.entries) {
-                  if (_controller.text.isEmpty) {
-                    filteredBootstrapIcons.add(entry);
-                    continue;
-                  }
-                  String key = entry.key.toLowerCase();
-                  if (key.contains(_controller.text.toLowerCase())) {
-                    filteredBootstrapIcons.add(entry);
-                  }
-                }
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (filteredRadixIcons.isNotEmpty) ...[
-                      Text('Radix Icons').h2(),
-                      gap(16),
-                      Wrap(
-                        runSpacing: 8,
-                        spacing: 8,
-                        children: filteredRadixIcons.map(
-                          (e) {
-                            return OutlineButton(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(e.value, size: 32),
-                                    gap(4),
-                                    Text(e.key),
-                                  ],
-                                ),
-                                onPressed: () {
-                                  _onTap('RadixIcons', e);
-                                });
-                          },
-                        ).toList(),
-                      ),
-                    ],
-                    if (filteredBootstrapIcons.isNotEmpty) ...[
-                      Text('Bootstrap Icons').h2(),
-                      gap(16),
-                      Wrap(
-                        runSpacing: 8,
-                        spacing: 8,
-                        children: filteredBootstrapIcons.map(
-                          (e) {
-                            return OutlineButton(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(e.value, size: 32),
-                                    gap(4),
-                                    Text(e.key),
-                                  ],
-                                ),
-                                onPressed: () {
-                                  _onTap('BootstrapIcons', e);
-                                });
-                          },
-                        ).toList(),
-                      ),
-                    ],
-                  ],
-                );
-              }),
+                  return ListView.separated(
+                    itemCount: filteredRadixIcons.length +
+                        filteredBootstrapIcons.length +
+                        2,
+                    padding: EdgeInsets.only(bottom: 32),
+                    separatorBuilder: (context, index) {
+                      return gap(8);
+                    },
+                    itemBuilder: (context, index) {
+                      if (filteredRadixIcons.isNotEmpty) {
+                        if (index == 0) {
+                          // the header
+                          return const Text('Radix Icons')
+                              .h2()
+                              .withPadding(bottom: 16);
+                        }
+                        if (index <= filteredRadixIcons.length) {
+                          var e = filteredRadixIcons[index - 1];
+                          return OutlineButton(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(e.value, size: 48),
+                                  gap(8),
+                                  Text(e.key),
+                                ],
+                              ),
+                              trailing: Icon(Icons.chevron_right),
+                              onPressed: () {
+                                _onTap('RadixIcons', e);
+                              });
+                        }
+                      }
+                      if (filteredBootstrapIcons.isNotEmpty) {
+                        if (index == filteredRadixIcons.length + 1) {
+                          // the header
+                          return const Text('Bootstrap Icons')
+                              .h2()
+                              .withPadding(bottom: 16);
+                        }
+                        if (index <=
+                            filteredRadixIcons.length +
+                                filteredBootstrapIcons.length +
+                                1) {
+                          var e = filteredBootstrapIcons[
+                              index - filteredRadixIcons.length - 2];
+                          return OutlineButton(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(e.value, size: 32),
+                                  gap(4),
+                                  Text(e.key),
+                                ],
+                              ),
+                              onPressed: () {
+                                _onTap('BootstrapIcons', e);
+                              });
+                        }
+                      }
+                      return null;
+                    },
+                  );
+                }),
+          ),
         ],
       ),
     );
