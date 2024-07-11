@@ -28,3 +28,7 @@
 ## 0.0.7
 
 * Fix broken links in README.md
+
+## 0.0.8
+
+* Updated installation guide
