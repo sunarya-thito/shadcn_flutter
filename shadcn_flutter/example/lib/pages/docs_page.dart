@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:example/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show FlutterLogo;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+import '../main.dart';
 
 const double breakpointWidth = 768;
 const double breakpointWidth2 = 1024;
@@ -412,11 +413,11 @@ class DocsPageState extends State<DocsPage> {
     final theme = Theme.of(context);
 
     return SafeArea(
-      child: Scaffold(
-        child: Builder(builder: (context) {
-          return PageStorage(
-            bucket: docsBucket,
-            child: StageContainer(
+      child: PageStorage(
+        bucket: docsBucket,
+        child: Scaffold(
+          child: Builder(builder: (context) {
+            return StageContainer(
               builder: (context, padding) {
                 return Stack(
                   children: [
@@ -732,9 +733,9 @@ class DocsPageState extends State<DocsPage> {
                   ],
                 );
               },
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }
