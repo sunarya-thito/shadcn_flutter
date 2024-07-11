@@ -28,7 +28,7 @@ class _InstallationPageState extends State<InstallationPage> {
                   Text('Create a new Flutter project using the following command:')
                       .p(),
                   CodeSnippet(
-                    code: 'flutter create my_app',
+                    code: 'flutter create my_app\ncd my_app',
                     mode: 'shell',
                   ).p(),
                 ],
