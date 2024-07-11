@@ -20,3 +20,11 @@
 
 * Fix platform support for windows, android, macos, linux, and ios
 * Added drawer and sheet
+
+## 0.0.6
+
+* Updated README.md
+
+## 0.0.7
+
+* Fix broken links in README.md

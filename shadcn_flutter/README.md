@@ -275,65 +275,65 @@ flutter run -d chrome
 ## Widgets
 
 ### Animation
-[![AnimatedValueBuilder](docs_images/animatedvaluebuilder.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/animated_value_builder)
-[![RepeatedAnimationBuilder](docs_images/repeatedanimationbuilder.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/repeated_animation_builder)
+[![AnimatedValueBuilder](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/animatedvaluebuilder.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/animated_value_builder)
+[![RepeatedAnimationBuilder](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/repeatedanimationbuilder.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/repeated_animation_builder)
 
 ### Disclosure
-[![Accordion](docs_images/accordion.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/accordion)
-[![Collapsible](docs_images/collapsible.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/collapsible)
+[![Accordion](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/accordion.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/accordion)
+[![Collapsible](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/collapsible.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/collapsible)
 
 ### Feedback
-[![Alert](docs_images/alert.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/alert)
-[![Alert Dialog](docs_images/alert_dialog.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/alert-dialog)
-[![Circular Progress](docs_images/circular_progress.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/circular-progress)
-[![Progress Bar](docs_images/progress.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/progress)
-[![Skeleton](docs_images/skeleton.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/skeleton)
+[![Alert](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/alert.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/alert)
+[![Alert Dialog](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/alert_dialog.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/alert-dialog)
+[![Circular Progress](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/circular_progress.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/circular-progress)
+[![Progress Bar](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/progress.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/progress)
+[![Skeleton](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/skeleton.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/skeleton)
 
 
 ### Forms
-[![Button](docs_images/button.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/button)
-[![Checkbox](docs_images/checkbox.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/checkbox)
-[![Color Picker](docs_images/colorpicker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/color-picker)
-[![Combobox](docs_images/combobox.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/combo-box)
-[![Date Picker](docs_images/datepicker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/date_picker)
-[![Form](docs_images/form.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/form)
-[![Input](docs_images/input.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/input)
-[![Input OTP](docs_images/inputotp.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/input_otp)
-[![Radio Group](docs_images/radiogroup.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/radio_group)
-[![Slider](docs_images/slider.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/slider)
-[![Switch](docs_images/switch.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/switch)
-[![Text Area](docs_images/textarea.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/text_area)
-[![Toggle](docs_images/toggle.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/toggle)
+[![Button](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/button.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/button)
+[![Checkbox](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/checkbox.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/checkbox)
+[![Color Picker](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/colorpicker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/color-picker)
+[![Combobox](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/combobox.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/combo-box)
+[![Date Picker](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/datepicker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/date_picker)
+[![Form](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/form.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/form)
+[![Input](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/input.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/input)
+[![Input OTP](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/inputotp.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/input_otp)
+[![Radio Group](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/radiogroup.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/radio_group)
+[![Slider](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/slider.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/slider)
+[![Switch](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/switch.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/switch)
+[![Text Area](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/textarea.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/text_area)
+[![Toggle](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/toggle.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/toggle)
 
 ### Layout
-[![Card](docs_images/card.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/card)
-[![Carousel](docs_images/carousel.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/carousel)
-[![Divider](docs_images/divider.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/divider)
-[![Steps](docs_images/steps.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/steps)
+[![Card](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/card.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/card)
+[![Carousel](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/carousel.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/carousel)
+[![Divider](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/divider.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/divider)
+[![Steps](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/steps.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/steps)
 
 ### Navigation
-[![Breadcrumb](docs_images/breadcrumb.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/breadcrumb)
-[![Pagination](docs_images/pagination.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/pagination)
-[![Tabs](docs_images/tabs.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tabs)
-[![Tab List](docs_images/tablist.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tab_list)
+[![Breadcrumb](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/breadcrumb.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/breadcrumb)
+[![Pagination](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/pagination.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/pagination)
+[![Tabs](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/tabs.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tabs)
+[![Tab List](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/tablist.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tab_list)
 
 
 ### Surfaces
-[![Dialog](docs_images/dialog.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/dialog)
-[![Drawer](docs_images/drawer.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/drawer)
-[![Popover](docs_images/popover.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/popover)
-[![Sheet](docs_images/sheet.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/sheet)
-[![Tooltip](docs_images/tooltip.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tooltip)
+[![Dialog](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/dialog.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/dialog)
+[![Drawer](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/drawer.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/drawer)
+[![Popover](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/popover.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/popover)
+[![Sheet](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/sheet.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/sheet)
+[![Tooltip](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/tooltip.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tooltip)
 
 ### Data Display
-![Avatar](docs_images/avatar.png)
-![Code Snippet](docs_images/codesnippet.png)
+![Avatar](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/avatar.png)
+![Code Snippet](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/codesnippet.png)
 
 ### Data Display
-[![Avatar](docs_images/avatar.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/avatar)
-[![Code Snippet](docs_images/codesnippet.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/code-snippet)
+[![Avatar](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/avatar.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/avatar)
+[![Code Snippet](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/codesnippet.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/code-snippet)
 
 ### Utilities
-[![Badge](docs_images/badge.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/badge)
-[![Calendar](docs_images/calendar.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/calendar)
-[![Command](docs_images/command.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/command)
+[![Badge](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/badge.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/badge)
+[![Calendar](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/calendar.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/calendar)
+[![Command](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/command.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/command)
