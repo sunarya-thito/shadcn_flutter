@@ -164,7 +164,7 @@ class _IconsPageState extends State<IconsPage> {
                           var e = filteredBootstrapIcons[
                               index - filteredRadixIcons.length - 2];
                           return OutlineButton(
-                              child: Column(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -173,6 +173,7 @@ class _IconsPageState extends State<IconsPage> {
                                   Text(e.key),
                                 ],
                               ),
+                              trailing: Icon(Icons.chevron_right),
                               onPressed: () {
                                 _onTap('BootstrapIcons', e);
                               });
