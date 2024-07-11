@@ -188,7 +188,16 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                     return gap(
                         widget.extraSize.width + _extraOffset.value.max(0));
                   }),
-              widget.child,
+              AnimatedBuilder(
+                builder: (context, child) {
+                  return Transform.scale(
+                      scaleX:
+                          1 + _extraOffset.value / getSize(context).width / 4,
+                      alignment: Alignment.centerRight,
+                      child: widget.child);
+                },
+                animation: _extraOffset,
+              ),
               gap(16),
               buildDraggableBar(theme),
               gap(16),
@@ -234,7 +243,16 @@ class _DrawerWrapperState extends State<DrawerWrapper>
               gap(16),
               buildDraggableBar(theme),
               gap(16),
-              widget.child,
+              AnimatedBuilder(
+                builder: (context, child) {
+                  return Transform.scale(
+                      scaleX:
+                          1 + _extraOffset.value / getSize(context).width / 4,
+                      alignment: Alignment.centerLeft,
+                      child: widget.child);
+                },
+                animation: _extraOffset,
+              ),
               AnimatedBuilder(
                   animation: _extraOffset,
                   builder: (context, child) {
@@ -286,7 +304,16 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                     return gap(
                         widget.extraSize.height + _extraOffset.value.max(0));
                   }),
-              widget.child,
+              AnimatedBuilder(
+                builder: (context, child) {
+                  return Transform.scale(
+                      scaleY:
+                          1 + _extraOffset.value / getSize(context).height / 4,
+                      alignment: Alignment.bottomCenter,
+                      child: widget.child);
+                },
+                animation: _extraOffset,
+              ),
               gap(16),
               buildDraggableBar(theme),
               gap(16),
@@ -332,7 +359,16 @@ class _DrawerWrapperState extends State<DrawerWrapper>
               gap(16),
               buildDraggableBar(theme),
               gap(16),
-              widget.child,
+              AnimatedBuilder(
+                builder: (context, child) {
+                  return Transform.scale(
+                      scaleY:
+                          1 + _extraOffset.value / getSize(context).height / 4,
+                      alignment: Alignment.topCenter,
+                      child: widget.child);
+                },
+                animation: _extraOffset,
+              ),
               AnimatedBuilder(
                   animation: _extraOffset,
                   builder: (context, child) {
