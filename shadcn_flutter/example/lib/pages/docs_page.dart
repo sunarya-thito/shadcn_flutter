@@ -759,6 +759,14 @@ class DocsPageState extends State<DocsPage> {
                   Text(
                     'shadcn_flutter',
                   ).medium().mono().expanded(),
+                  TextButton(
+                    density: ButtonDensity.icon,
+                    size: ButtonSize.small,
+                    onPressed: () {
+                      closeDrawer(context);
+                    },
+                    child: Icon(Icons.close),
+                  ),
                 ],
               ).withPadding(left: 32, right: 32),
               gap(32),
