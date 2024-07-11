@@ -46,6 +46,12 @@
       <excludeFolder url="file://$MODULE_DIR$/shadcn_flutter_independent/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/shadcn_flutter_independent/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/shadcn_flutter_independent/build" />
+      <excludeFolder url="file://$MODULE_DIR$/shadcn_flutter_cli/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/shadcn_flutter_cli/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/shadcn_flutter_cli/build" />
+      <excludeFolder url="file://$MODULE_DIR$/shadcn_flutter_test/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/shadcn_flutter_test/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/shadcn_flutter_test/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -163,7 +163,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
                     // open in new tab
                     //https://github.com/sunarya-thito/shadcn_flutter/blob/master/example/lib/pages/docs/layout_page/layout_page_example_1.dart
                     String url =
-                        'https://github.com/sunarya-thito/shadcn_flutter/blob/master/example/${widget.path}';
+                        'https://github.com/sunarya-thito/shadcn_flutter/blob/master/shadcn_flutter/example/${widget.path}';
                     // html.window.open(url, 'blank');
                     launchUrlString(url);
                   },
@@ -185,7 +185,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
                   // open in new tab
                   //https://github.com/sunarya-thito/shadcn_flutter/blob/master/example/lib/pages/docs/layout_page/layout_page_example_1.dart
                   String url =
-                      'https://github.com/sunarya-thito/shadcn_flutter/blob/master/example/${widget.path}';
+                      'https://github.com/sunarya-thito/shadcn_flutter/blob/master/shadcn_flutter/example/${widget.path}';
                   // html.window.open(url, 'blank');
                   launchUrlString(url);
                 },

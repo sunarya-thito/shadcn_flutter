@@ -19,6 +19,36 @@ class _InstallationPageState extends State<InstallationPage> {
         children: [
           Text('Installation').h1(),
           Text('Install and configure shadcn_flutter in your project.').lead(),
+          Text('Install using CLI').h2(),
+          gap(32),
+          // 1. Activate "shadcn_flutter_cli" package
+          // 2. Run "flutter pub global run shadcn_flutter_cli:setup"
+          Steps(
+            children: [
+              StepItem(
+                title: Text('Activate the package'),
+                content: [
+                  Text('Activate the shadcn_flutter_cli package.').p(),
+                  CodeSnippet(
+                    code: 'flutter pub global activate shadcn_flutter_cli',
+                    mode: 'shell',
+                  ).p(),
+                ],
+              ),
+              StepItem(
+                title: Text('Run the setup command'),
+                content: [
+                  Text('Run the setup command to add shadcn_flutter to your project.')
+                      .p(),
+                  CodeSnippet(
+                    code: 'flutter pub global run shadcn_flutter_cli:setup',
+                    mode: 'shell',
+                  ).p(),
+                ],
+              ),
+            ],
+          ),
+          Text('Install Manually').h2(),
           gap(32),
           Steps(
             children: [
@@ -88,6 +118,9 @@ void main() {
                   CodeSnippet(
                     code: '''
   fonts:
+    - family: RadixIcons
+      fonts:
+        - asset: "packages/shadcn_flutter/icons/RadixIcons.otf"
     - family: "GeistSans"
       fonts:
         - asset: "packages/shadcn_flutter/fonts/Geist-Black.otf"

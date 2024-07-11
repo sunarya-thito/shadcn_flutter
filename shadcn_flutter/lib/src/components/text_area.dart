@@ -127,6 +127,7 @@ class _TextAreaState extends State<TextArea> {
                 trailing: widget.trailing,
                 padding: widget.padding,
                 borderRadius: widget.borderRadius,
+                textAlignVertical: TextAlignVertical.top,
               ),
             ),
             Positioned(

@@ -30,6 +30,7 @@ import 'package:example/pages/docs/components/text_area_example.dart';
 import 'package:example/pages/docs/components/toggle_example.dart';
 import 'package:example/pages/docs/components/tooltip_example.dart';
 import 'package:example/pages/docs/components_page.dart';
+import 'package:example/pages/docs/icons_page.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
 import 'package:example/pages/docs/layout_page.dart';
@@ -338,6 +339,12 @@ class MyAppState extends State<MyApp> {
               return SheetExample();
             },
           ),
+          GoRoute(
+              path: 'icons',
+              name: 'icons',
+              builder: (context, state) {
+                return IconsPage();
+              }),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

@@ -144,6 +144,7 @@ class DocsPageState extends State<DocsPage> {
           ShadcnDocsPage('Layout', 'layout'),
           ShadcnDocsPage('Web Preloader', 'web_preloader'),
           ShadcnDocsPage('Components', 'components'),
+          ShadcnDocsPage('Icons', 'icons'),
         ],
         Icons.book),
     // ShadcnDocsSection(

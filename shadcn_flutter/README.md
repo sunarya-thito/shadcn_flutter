@@ -66,20 +66,31 @@ This is a port of the shadcn UI package to flutter.
 [![Command](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/command.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/command)
 
 ## Installation
-### 1. Create a new Flutter project
+### Using CLI
+#### 1. Activate the package
+```bash
+flutter pub global activate shadcn_flutter_cli
+```
+#### 2. Run the command
+```bash
+flutter pub global run shadcn_flutter_cli:setup
+```
+
+### Manual Installation
+#### 1. Create a new Flutter project
 ```bash
 flutter create my_app
 cd my_app
 ```
-### 2. Add the dependency
+#### 2. Add the dependency
 ```bash
 flutter pub add shadcn_flutter
 ```
-### 3. Import the package
+#### 3. Import the package
 ```dart
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 ```
-### 4. Use the widgets
+#### 4. Use the widgets
 ```dart
 void main() {
   runApp(
@@ -95,10 +106,13 @@ void main() {
   );
 }
 ```
-### 5. Add the fonts
+#### 5. Add the fonts
 Add the following fonts to your `pubspec.yaml` file.
 ```yaml
   fonts:
+    - family: RadixIcons
+      fonts:
+        - asset: "packages/shadcn_flutter/icons/RadixIcons.otf"
     - family: "GeistSans"
       fonts:
         - asset: "packages/shadcn_flutter/fonts/Geist-Black.otf"
@@ -140,7 +154,7 @@ Add the following fonts to your `pubspec.yaml` file.
         - asset: "packages/shadcn_flutter/fonts/GeistMono-UltraLight.otf"
           weight: 200
 ```
-### 6. Run the app
+#### 6. Run the app
 ```bash
 flutter run
 ```
