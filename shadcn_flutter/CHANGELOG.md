@@ -32,3 +32,7 @@
 ## 0.0.8
 
 * Updated installation guide
+
+## 0.0.9
+
+* Fixed duplicate widget entries
