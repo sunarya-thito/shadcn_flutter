@@ -652,8 +652,9 @@ class DocsPageState extends State<DocsPage> {
                                             'shadcn_flutter',
                                           ).textLarge().mono(),
                                           Spacer(),
+                                          gap(18),
                                           SizedBox(
-                                            width: 320,
+                                            width: 320 - 18,
                                             // height: 32,
                                             child: OutlineButton(
                                               onPressed: () {
