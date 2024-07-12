@@ -84,6 +84,13 @@ class _IconsPageState extends State<IconsPage> {
           Text('Icons').h1(),
           Text('Use bundled icons in your application').lead(),
           gap(32),
+          Alert(
+            leading: Icon(Icons.info_outline),
+            content: Text(
+                'Some icons might be visually glitched, this will be fixed in the future.'),
+            title: Text('Heads up!'),
+          ).withAlign(Alignment.centerLeft),
+          gap(32),
           Text(
               'Currently there are two icon sets bundled with shadcn_flutter:'),
           Text('Radix Icons (${kRadixIcons.length} Icons)').li(),
@@ -151,8 +158,9 @@ class _IconsPageState extends State<IconsPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(e.value, size: 48),
-                                  gap(8),
+                                  OutlinedContainer(
+                                      child: Icon(e.value, size: 48)),
+                                  gap(24),
                                   Text(e.key),
                                 ],
                               ),
@@ -177,8 +185,9 @@ class _IconsPageState extends State<IconsPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(e.value, size: 48),
-                                  gap(8),
+                                  OutlinedContainer(
+                                      child: Icon(e.value, size: 48)),
+                                  gap(24),
                                   Text(e.key),
                                 ],
                               ),
