@@ -142,7 +142,6 @@ createStyleSheet(loaderBarCss);
 window.onAppReady = function() {
     loaderDiv.style.opacity = 0;
     loaderDiv.style.pointerEvents = 'none';
-    delete window.onAppReady;
 };
 
 function loadExternalScripts(index, onDone) {
