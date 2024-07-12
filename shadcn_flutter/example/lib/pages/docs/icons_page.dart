@@ -84,6 +84,11 @@ class _IconsPageState extends State<IconsPage> {
           Text('Icons').h1(),
           Text('Use bundled icons in your application').lead(),
           gap(32),
+          Text(
+              'Currently there are two icon sets bundled with shadcn_flutter:'),
+          Text('Radix Icons (${kRadixIcons.length} Icons)').li(),
+          Text('Bootstrap Icons (${kBootstrapIcons.length} Icons)').li(),
+          gap(32),
           TextField(
             leading: Icon(Icons.search),
             placeholder: 'Search icons',
@@ -116,10 +121,17 @@ class _IconsPageState extends State<IconsPage> {
                       filteredBootstrapIcons.add(entry);
                     }
                   }
+                  int additionalLength = 0;
+                  if (filteredRadixIcons.isNotEmpty) {
+                    additionalLength += 1;
+                  }
+                  if (filteredBootstrapIcons.isNotEmpty) {
+                    additionalLength += 1;
+                  }
                   return ListView.separated(
                     itemCount: filteredRadixIcons.length +
                         filteredBootstrapIcons.length +
-                        2,
+                        additionalLength,
                     padding: EdgeInsets.only(bottom: 32),
                     separatorBuilder: (context, index) {
                       return gap(8);
@@ -149,27 +161,24 @@ class _IconsPageState extends State<IconsPage> {
                                 _onTap('RadixIcons', e);
                               });
                         }
+                        index -= filteredRadixIcons.length + 1;
                       }
                       if (filteredBootstrapIcons.isNotEmpty) {
-                        if (index == filteredRadixIcons.length + 1) {
+                        if (index == 0) {
                           // the header
                           return const Text('Bootstrap Icons')
                               .h2()
                               .withPadding(bottom: 16);
                         }
-                        if (index <=
-                            filteredRadixIcons.length +
-                                filteredBootstrapIcons.length +
-                                1) {
-                          var e = filteredBootstrapIcons[
-                              index - filteredRadixIcons.length - 2];
+                        if (index <= filteredBootstrapIcons.length) {
+                          var e = filteredBootstrapIcons[index - 1];
                           return OutlineButton(
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(e.value, size: 32),
-                                  gap(4),
+                                  Icon(e.value, size: 48),
+                                  gap(8),
                                   Text(e.key),
                                 ],
                               ),
@@ -178,6 +187,7 @@ class _IconsPageState extends State<IconsPage> {
                                 _onTap('BootstrapIcons', e);
                               });
                         }
+                        index -= filteredBootstrapIcons.length + 1;
                       }
                       return null;
                     },

@@ -1,0 +1,12 @@
+{
+  "name": "icon_optimizer",
+  "version": "1.0.0",
+  "description": "Optimizes svg for shadcn_flutter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "sunarya-thito",
+  "license": "ISC"
+}

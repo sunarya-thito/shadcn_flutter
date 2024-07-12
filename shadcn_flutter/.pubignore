@@ -1,0 +1,8 @@
+bin/
+example/
+icons/
+icons_optimized/
+themes/
+.idea/
+.dart_tool/
+docs_images/

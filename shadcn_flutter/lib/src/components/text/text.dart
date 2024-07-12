@@ -328,13 +328,13 @@ extension TextExtension on Widget {
         UnorderedListData? data = Data.maybeOf(context);
         int depth = data?.depth ?? 0;
         TextStyle style = DefaultTextStyle.of(context).style;
-        double size = style.fontSize! / 16 * 6;
+        double size = (style.fontSize ?? 12) / 16 * 6;
         return IntrinsicWidth(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: (style.fontSize!) * (style.height ?? 1.5),
+                height: (style.fontSize ?? 12) * (style.height ?? 1.5),
                 child: getBullet(context, depth, size),
               ),
               const SizedBox(width: 8),

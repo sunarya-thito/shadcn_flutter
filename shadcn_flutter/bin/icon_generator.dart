@@ -9,8 +9,7 @@ const List<String> keywords = [
 ];
 
 main() {
-  generateIcon('icons/radix', 'RadixIcons', 'radix_icons');
-  generateIcon('icons/bootstrap', 'BootstrapIcons', 'bootstrap_icons');
+  generateIcon('icons_optimized/radix', 'RadixIcons', 'radix_icons');
 }
 
 void generateIcon(String path, String name, String dartName) {
@@ -40,6 +39,7 @@ void generateIcon(String path, String name, String dartName) {
 
       print('Processing $name');
       var code = svgFile.readAsStringSync();
+
       svgMap[name] = code;
     }
   }
@@ -58,7 +58,7 @@ void generateIcon(String path, String name, String dartName) {
     fontFileName: '$name.otf',
   );
 
-  File('lib/src/$dartName.dart').writeAsStringSync(generatedClass);
+  File('lib/src/icons/$dartName.dart').writeAsStringSync(generatedClass);
 
   List<String> variableNames = _generateVariableNames(svgToOtfResult.glyphList);
 
@@ -134,7 +134,9 @@ SvgToOtfResult svgToOtf({
   List<Svg> svgList = [];
   for (final e in svgMap.entries) {
     try {
-      svgList.add(Svg.parse(e.key, e.value, ignoreShapes: ignoreShapes));
+      var svg = Svg.parse(e.key, e.value, ignoreShapes: ignoreShapes);
+      for (final element in svg.elementList) {}
+      svgList.add(svg);
     } catch (error, stackTrace) {
       print('Error parsing ${e.key}: $error');
       print(stackTrace);
@@ -144,11 +146,6 @@ SvgToOtfResult svgToOtf({
   if (!normalize) {
     for (var i = 1; i < svgList.length; i++) {
       if (svgList[i - 1].viewBox.height != svgList[i].viewBox.height) {
-        // logger.logOnce(
-        //     Level.warning,
-        //     'Some SVG files contain different view box height, '
-        //         'while normalization option is disabled. '
-        //         'This is not recommended.');
         print('Some SVG files contain different view box height, '
             'while normalization option is disabled. '
             'This is not recommended.');

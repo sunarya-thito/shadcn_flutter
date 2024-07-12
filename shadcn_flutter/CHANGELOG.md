@@ -36,3 +36,7 @@
 ## 0.0.9
 
 * Fixed duplicate widget entries
+
+## 0.0.10
+
+* Fixed icon visual glitch

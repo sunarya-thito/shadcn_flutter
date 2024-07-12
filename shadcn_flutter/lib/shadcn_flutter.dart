@@ -13,7 +13,6 @@ export 'package:flutter/widgets.dart'
 // bundle from skeletonizer https://pub.dev/packages/skeletonizer
 export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 
-export 'src/bootstrap_icons.dart';
 export 'src/components/accordion.dart';
 export 'src/components/alert.dart';
 export 'src/components/alert_dialog.dart';
@@ -68,7 +67,8 @@ export 'src/components/triple_dots.dart';
 export 'src/components/widget_reporter.dart';
 export 'src/data.dart';
 export 'src/dialog.dart';
-export 'src/radix_icons.dart';
+export 'src/icons/bootstrap_icons.dart';
+export 'src/icons/radix_icons.dart';
 export 'src/shadcn_app.dart';
 export 'src/theme/color_scheme.dart';
 export 'src/theme/generated_themes.dart';
