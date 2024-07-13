@@ -239,6 +239,7 @@ class _ActivePane {
   final int index;
   _ResizablePaneState? _attachedPane;
   double _sizeBeforeDrag = 0;
+  double _proposedSize = 0;
 
   _ActivePane({required this.index});
 }
@@ -262,19 +263,112 @@ class _ResizablePanelState extends State<ResizablePanel> {
       }
       var size = attachedPane.size;
       pane._sizeBeforeDrag = size;
+      pane._proposedSize = size;
       sizes.add(size);
     }
+
     _sizes = sizes;
   }
 
+  void _resetProposedSizes() {
+    for (int i = 0; i < _panes.length; i++) {
+      final pane = _panes[i];
+      pane._proposedSize = pane._attachedPane!.size;
+    }
+  }
+
   List<double>? _sizes;
+  List<bool>? _dirty;
 
   void _stopDragging() {
     _sizes = null;
+    _dirty = null;
   }
 
   int get totalDividerCount =>
       widget.children.length < 2 ? 0 : widget.children.length - 1;
+
+  // returns the amount of loan that has been paid
+  double _payOffLoanSize(int index, double delta, int direction) {
+    if (direction < 0) {
+      for (int i = 0; i < index; i++) {
+        double borrowedSize =
+            _panes[i]._proposedSize - _panes[i]._sizeBeforeDrag;
+        // if we have borrowed size, and we currently paying it, then:
+        if (borrowedSize < 0 && delta > 0) {
+          double newBorrowedSize = borrowedSize + delta;
+          _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
+          return delta;
+        } else if (borrowedSize > 0 && delta < 0) {
+          double newBorrowedSize = borrowedSize + delta;
+          _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
+          return delta;
+        }
+      }
+    } else if (direction > 0) {
+      for (int i = _panes.length - 1; i > index; i--) {
+        double borrowedSize =
+            _panes[i]._proposedSize - _panes[i]._sizeBeforeDrag;
+        // if we have borrowed size, and we currently paying it, then:
+        if (borrowedSize < 0 && delta > 0) {
+          double newBorrowedSize = borrowedSize + delta;
+          _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
+          return delta;
+        } else if (borrowedSize > 0 && delta < 0) {
+          double newBorrowedSize = borrowedSize + delta;
+          _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
+          return delta;
+        }
+      }
+    }
+    return 0;
+  }
+
+  double _borrowSize(int index, double delta, int direction) {
+    final pane = getAt(index);
+    if (pane == null) {
+      return 0;
+    }
+    double minSize = pane._attachedPane!.widget.minSize ?? 0;
+    double maxSize = pane._attachedPane!.widget.maxSize ?? double.infinity;
+
+    double newSize = pane._proposedSize + delta;
+
+    if (newSize < minSize) {
+      double overflow = newSize - minSize;
+      return _borrowSize(index + direction, overflow, direction);
+    }
+
+    if (newSize > maxSize) {
+      double maxOverflow = newSize - maxSize;
+      return _borrowSize(index + direction, maxOverflow, direction);
+    }
+
+    pane._proposedSize = newSize;
+    return delta;
+  }
+
+  void _applyProposedSizes() {
+    // print(
+    //     'apply proposed sizes: ${_panes.map((e) => e._proposedSize).toList()}');
+    for (int i = 0; i < _panes.length; i++) {
+      final pane = _panes[i];
+      final attachedPane = pane._attachedPane;
+      if (attachedPane == null) {
+        return;
+      }
+      attachedPane._changeSize(pane._proposedSize);
+    }
+  }
+
+  void _debugLoanedSizes() {
+    print(
+        'loaned sizes: ${_panes.map((e) => e._proposedSize - e._sizeBeforeDrag).toList()}');
+  }
+
+  void _debugProposedSizes() {
+    print('proposed sizes: ${_panes.map((e) => e._proposedSize).toList()}');
+  }
 
   bool _dragDivider(int index, double delta, int stackDepth,
       [int? originalIndex]) {
@@ -291,13 +385,38 @@ class _ResizablePanelState extends State<ResizablePanel> {
       return false;
     }
 
+    if (true) {
+      _debugLoanedSizes();
+      double borrowedRightSize = _borrowSize(index, -delta, 1);
+      double borrowedLeftSize = _borrowSize(index - 1, delta, -1);
+
+      double couldNotBorrowRight = borrowedRightSize + delta;
+      double couldNotBorrowLeft = borrowedLeftSize - delta;
+
+      _panes[index]._proposedSize -= couldNotBorrowLeft;
+      _panes[index - 1]._proposedSize -= couldNotBorrowRight;
+
+      double payOffLeft = _payOffLoanSize(index - 1, delta, -1);
+      double payOffRight = _payOffLoanSize(index, -delta, 1);
+
+      _panes[index]._proposedSize -= payOffRight;
+      _panes[index - 1]._proposedSize -= payOffLeft;
+
+      print('paid off left: $payOffLeft right: $payOffRight');
+
+      if (borrowedLeftSize != 0 && borrowedRightSize != 0) {
+        _applyProposedSizes();
+        return true;
+      }
+      _resetProposedSizes();
+      return false;
+    }
+
     {
-      print('at index $index');
       // max sibling check is 100 times
       final nextSibling = getAt(index);
       final previousSibling = getAt(index - 1);
       if (nextSibling == null || previousSibling == null) {
-        print('no next or previous sibling');
         return false;
       }
       if (delta == 0) {
@@ -306,7 +425,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
       final nextSiblingPane = nextSibling._attachedPane;
       final previousSiblingPane = previousSibling._attachedPane;
       if (nextSiblingPane == null || previousSiblingPane == null) {
-        print('no next or previous sibling pane');
         return false;
       }
 
@@ -344,59 +462,124 @@ class _ResizablePanelState extends State<ResizablePanel> {
       _sizes![index - 1] = newPreviousSize;
       _sizes![index] = newNextSize;
 
-      print(
-          '$index: overflow: $overflow, maxOverflow: $maxOverflow delta: $delta sizes: $_sizes borrow: ');
-
       bool shouldChange = true;
 
+      print('overflow: $overflow maxOverflow: $maxOverflow');
+
+      // negative overflow (overflow < 0) means the left side of divider is too small to be shrunk by delta (due to min size or < 0)
+      // positive overflow (overflow > 0) means the right side of divider is too small to be shrunk by delta (due to min size or < 0)
+      // negative maxOverflow (maxOverflow < 0) means the left side of divider is too big to be expanded by delta (due to max size)
+      // positive maxOverflow (maxOverflow > 0) means the right side of divider is too big to be expanded by delta (due to max size)
+
       if (overflow < 0) {
-        if (index - 1 > 0) {
-          if (!_dragDivider(index - 1, delta, stackDepth + 1, index)) {
-            print('SHOULD NOT CHANGE A');
-            shouldChange = false;
-          }
+        // negative overflow, means the left side of divider is too small to be shrunk by delta
+        // let's see if we can borrow from previous sibling of the left side
+        // left sibling is (index - 1), next sibling is (index)
+        if (index - 2 >= 0) {
+          // couldn't afford to resize, let's borrow from previous
+          double borrowedSize = _borrowSize(index - 2, overflow, -1);
+          // borrowedSize is the amount of size that can be and has already been borrowed from previous sibling,
+          // it could be zero if previous sibling is already at min size,
+          // whatever it is, be grateful for it, and let's resize the current pane by borrowedSize
+          final leftSibling = getAt(index - 1);
+          // cache the borrowed size so we know when we need to return it
+          leftSibling!._sizeBeforeDrag -= borrowedSize;
+          // resize the current pane by borrowedSize
+          leftSibling._attachedPane!
+              ._changeSize(newPreviousSize + borrowedSize);
         } else {
-          print('SHOULD NOT CHANGE B');
-          shouldChange = false;
-        }
-      } else if (overflow > 0) {
-        if (index + 1 <= totalDividerCount) {
-          if (!_dragDivider(index + 1, delta, stackDepth + 1, index)) {
-            print('SHOULD NOT CHANGE C');
-            shouldChange = false;
-          }
-        } else {
-          print('SHOULD NOT CHANGE D');
-          shouldChange = false;
-        }
-      }
-
-      if (maxOverflow > 0) {
-        if (index - 1 > 0) {
-          if (!_dragDivider(index - 1, delta, stackDepth + 1, index)) {
-            shouldChange = false;
-            print('SHOULD NOT CHANGE 1');
-          }
-        } else {
-          shouldChange = false;
-          print('SHOULD NOT CHANGE 2');
-        }
-      } else if (maxOverflow < 0) {
-        if (index + 1 <= totalDividerCount) {
-          if (!_dragDivider(index + 1, delta, stackDepth + 1, index)) {
-            shouldChange = false;
-            print('SHOULD NOT CHANGE 3');
-          }
-        } else {
-          // shouldChange = false;
-          shouldChange = false;
-          print('SHOULD NOT CHANGE 4');
+          // there's no previous sibling to borrow from, so we can't resize
+          return false;
         }
       }
 
-      List<double> sizeDiffs = List.generate(_sizes!.length,
-          (index) => _sizes![index] - _panes[index]._sizeBeforeDrag);
-      print('size diffs: $sizeDiffs');
+      // if (overflow < 0) {
+      //   if (index - 1 > 0) {
+      //     if (!_dragDivider(index - 1, delta, stackDepth + 1, index)) {
+      //       shouldChange = false;
+      //     }
+      //   } else {
+      //     shouldChange = false;
+      //   }
+      // } else if (overflow > 0) {
+      //   if (index + 1 <= totalDividerCount) {
+      //     if (!_dragDivider(index + 1, delta, stackDepth + 1, index)) {
+      //       shouldChange = false;
+      //     }
+      //   } else {
+      //     shouldChange = false;
+      //   }
+      // }
+      //
+      // if (maxOverflow > 0) {
+      //   if (index - 1 > 0) {
+      //     if (!_dragDivider(index - 1, delta, stackDepth + 1, index)) {
+      //       shouldChange = false;
+      //     }
+      //   } else {
+      //     shouldChange = false;
+      //   }
+      // } else if (maxOverflow < 0) {
+      //   if (index + 1 <= totalDividerCount) {
+      //     if (!_dragDivider(index + 1, delta, stackDepth + 1, index)) {
+      //       shouldChange = false;
+      //     }
+      //   } else {
+      //     // shouldChange = false;
+      //     shouldChange = false;
+      //   }
+      // }
+      //
+      // List<double> sizeDiffs = List.generate(_sizes!.length, (index) {
+      //   return _sizes![index] - _panes[index]._sizeBeforeDrag;
+      // });
+      //
+      // print('sizeDiffs: $sizeDiffs');
+      //
+      // if (delta < 0 && index >= originalIndex) {
+      //   for (int i = originalIndex + 1; i < _panes.length; i++) {
+      //     double borrowedNextSize = _sizes![i] - _panes[i]._sizeBeforeDrag;
+      //     if (borrowedNextSize < 0) {
+      //       double restoreBorrow = borrowedNextSize - delta;
+      //       if (restoreBorrow > 0) {
+      //         delta += restoreBorrow;
+      //       }
+      //       if (!_dragDivider(i, delta, stackDepth + 1, index)) {
+      //         shouldChange = false;
+      //       }
+      //       break;
+      //     }
+      //   }
+      //   // for (int i = originalIndex - 1; i > 1; i--) {
+      //   //   double borrowedPreviousSize =
+      //   //       _sizes![i - 2] - _panes[i - 2]._sizeBeforeDrag;
+      //   //   if (borrowedPreviousSize > 0) {
+      //   //     double restoreBorrow = borrowedPreviousSize - delta;
+      //   //     // if (restoreBorrow > 0) {
+      //   //     //   delta -= restoreBorrow;
+      //   //     // }
+      //   //     if (!_dragDivider(i, delta, stackDepth + 1, originalIndex)) {
+      //   //       shouldChange = false;
+      //   //     }
+      //   //     break;
+      //   //   }
+      //   // }
+      // } else if (delta > 0 && index <= originalIndex) {
+      //   for (int i = originalIndex - 1; i > 0; i--) {
+      //     double borrowedPreviousSize =
+      //         _sizes![i - 1] - _panes[i - 1]._sizeBeforeDrag;
+      //     if (borrowedPreviousSize < 0) {
+      //       double restoreBorrow = borrowedPreviousSize + delta;
+      //       if (restoreBorrow > 0) {
+      //         delta -= restoreBorrow;
+      //       }
+      //       if (!_dragDivider(i, delta, stackDepth + 1, index)) {
+      //         shouldChange = false;
+      //       }
+      //       break;
+      //     }
+      //   }
+      // }
 
       if (!shouldChange) {
         // reset

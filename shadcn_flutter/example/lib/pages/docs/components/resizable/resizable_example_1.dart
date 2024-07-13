@@ -9,7 +9,7 @@ class ResizableExample1 extends StatefulWidget {
 class _ResizableExample1State extends State<ResizableExample1> {
   final ResizablePaneController controller1 = ResizablePaneController(80);
   final ResizablePaneController controller2 = ResizablePaneController(80);
-  final ResizablePaneController controller3 = ResizablePaneController(80);
+  final ResizablePaneController controller3 = ResizablePaneController(120);
   final ResizablePaneController controller4 = ResizablePaneController(80);
   final ResizablePaneController controller5 = ResizablePaneController(80);
   @override
@@ -39,8 +39,8 @@ class _ResizableExample1State extends State<ResizableExample1> {
                 height: 200,
               ),
               controller: controller1,
-              // maxSize: 150,
-              // minSize: 20,
+              // maxSize: 200,
+              minSize: 20,
             ),
             ResizablePane.controlled(
               child: NumberedContainer(
@@ -48,8 +48,8 @@ class _ResizableExample1State extends State<ResizableExample1> {
                 height: 200,
               ),
               controller: controller2,
-              // maxSize: 100,
-              // minSize: 20,
+              maxSize: 100,
+              minSize: 20,
             ),
             ResizablePane.controlled(
               child: NumberedContainer(
@@ -57,8 +57,8 @@ class _ResizableExample1State extends State<ResizableExample1> {
                 height: 200,
               ),
               controller: controller3,
-              // minSize: 100,
-              // maxSize: 210,
+              minSize: 100,
+              maxSize: 210,
             ),
             ResizablePane.controlled(
               child: NumberedContainer(
@@ -66,8 +66,8 @@ class _ResizableExample1State extends State<ResizableExample1> {
                 height: 200,
               ),
               controller: controller4,
-              // maxSize: 100,
-              // minSize: 20,
+              maxSize: 100,
+              minSize: 20,
             ),
             ResizablePane.controlled(
               child: NumberedContainer(
@@ -75,8 +75,8 @@ class _ResizableExample1State extends State<ResizableExample1> {
                 height: 200,
               ),
               controller: controller5,
-              // maxSize: 150,
-              // minSize: 20,
+              // maxSize: 200,
+              minSize: 20,
             ),
           ],
         ),
