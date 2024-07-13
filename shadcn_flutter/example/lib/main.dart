@@ -19,6 +19,7 @@ import 'package:example/pages/docs/components/popover_example.dart';
 import 'package:example/pages/docs/components/progress_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
 import 'package:example/pages/docs/components/repeated_animation_builder_example.dart';
+import 'package:example/pages/docs/components/resizable_example.dart';
 import 'package:example/pages/docs/components/sheet_example.dart';
 import 'package:example/pages/docs/components/skeleton_example.dart';
 import 'package:example/pages/docs/components/slider_example.dart';
@@ -344,6 +345,12 @@ class MyAppState extends State<MyApp> {
               name: 'icons',
               builder: (context, state) {
                 return IconsPage();
+              }),
+          GoRoute(
+              path: 'resizable',
+              name: 'resizable',
+              builder: (context, state) {
+                return ResizableExample();
               }),
         ]),
   ]);

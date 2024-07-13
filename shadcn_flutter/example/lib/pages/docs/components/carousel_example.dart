@@ -31,12 +31,20 @@ class CarouselExample extends StatelessWidget {
 
 class NumberedContainer extends StatelessWidget {
   final int index;
-
-  const NumberedContainer({Key? key, required this.index}) : super(key: key);
+  final double? width;
+  final double? height;
+  const NumberedContainer({
+    Key? key,
+    required this.index,
+    this.width,
+    this.height,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: width,
+      height: height,
       decoration: BoxDecoration(
         color: Colors.primaries[index % Colors.primaries.length],
         borderRadius: BorderRadius.circular(8),

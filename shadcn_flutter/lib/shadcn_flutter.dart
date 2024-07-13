@@ -74,3 +74,4 @@ export 'src/theme/color_scheme.dart';
 export 'src/theme/generated_themes.dart';
 export 'src/theme/theme.dart';
 export 'src/util.dart';
+export 'src/components/resizable.dart';

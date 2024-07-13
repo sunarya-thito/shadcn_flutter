@@ -55,11 +55,13 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
           offstage: index != 0,
           child: OutlinedContainer(
             key: _key,
-            child: Container(
-              padding: const EdgeInsets.all(40),
-              constraints: const BoxConstraints(minHeight: 350),
-              child: Center(
-                child: widget.child,
+            child: ClipRect(
+              child: Container(
+                padding: const EdgeInsets.all(40),
+                constraints: const BoxConstraints(minHeight: 350),
+                child: Center(
+                  child: widget.child,
+                ),
               ),
             ),
           ),

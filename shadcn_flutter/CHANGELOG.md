@@ -40,3 +40,7 @@
 ## 0.0.10
 
 * Fixed icon visual glitch
+
+## 0.0.11
+
+* Fixed missing icons directory
