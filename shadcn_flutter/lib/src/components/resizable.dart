@@ -107,6 +107,13 @@ class _ResizablePaneState extends State<ResizablePane> {
   _ActivePane? _activePane;
 
   double _changeSize(double size) {
+    assert(size >= 0, 'Size must be greater than or equal to 0 (size: $size)');
+    assert((widget.minSize == null || size >= widget.minSize!) || collapsed,
+        'Size must be greater than or equal to minSize (size: $size, minSize: ${widget.minSize})');
+    assert(!collapsed || size == (widget.collapsedSize ?? 0),
+        'Size must be equal to collapsedSize if collapsed (size: $size, collapsedSize: ${widget.collapsedSize})');
+    assert(widget.maxSize == null || size <= widget.maxSize!,
+        'Size must be less than or equal to maxSize (size: $size, maxSize: ${widget.maxSize})');
     if (size == _controller.value.size) {
       return 0;
     }
@@ -117,6 +124,10 @@ class _ResizablePaneState extends State<ResizablePane> {
   }
 
   double get size => _controller.value.size;
+
+  double get viewSize => _controller.value.collapsed
+      ? widget.collapsedSize ?? 0
+      : _controller.value.size;
 
   bool get collapsed => _controller.value.collapsed;
 
@@ -268,7 +279,29 @@ class _ActivePane {
   final int index;
   _ResizablePaneState? _attachedPane;
   double _sizeBeforeDrag = 0;
-  double _proposedSize = 0;
+  double __proposedSize = 0;
+  // double _proposedSize = 0;
+
+  double get _proposedSize => __proposedSize;
+
+  set _proposedSize(double value) {
+    assert(
+        value >= 0, 'Size must be greater than or equal to 0 (size: $value)');
+    assert(
+        (_attachedPane!.widget.minSize == null ||
+                value >= _attachedPane!.widget.minSize!) ||
+            _attachedPane!.collapsed,
+        'Size must be greater than or equal to minSize (size: $value, minSize: ${_attachedPane!.widget.minSize})');
+    assert(
+        !_attachedPane!.collapsed ||
+            value == (_attachedPane!.widget.collapsedSize ?? 0),
+        'Size must be equal to collapsedSize if collapsed (size: $value, collapsedSize: ${_attachedPane!.widget.collapsedSize})');
+    assert(
+        _attachedPane!.widget.maxSize == null ||
+            value <= _attachedPane!.widget.maxSize!,
+        'Size must be less than or equal to maxSize (size: $value, maxSize: ${_attachedPane!.widget.maxSize})');
+    __proposedSize = value;
+  }
 
   _ActivePane({required this.index});
 }
@@ -292,17 +325,15 @@ class _ResizablePanelState extends State<ResizablePanel> {
 
   bool _isDragging = true;
   double _couldNotBorrow = 0;
-  double _couldNotExpand = 0;
 
   void _startDragging() {
     _couldNotBorrow = 0;
-    _couldNotExpand = 0;
     for (final pane in _panes) {
       final attachedPane = pane._attachedPane;
       if (attachedPane == null) {
         return;
       }
-      var size = attachedPane.size;
+      var size = attachedPane.viewSize;
       pane._sizeBeforeDrag = size;
       pane._proposedSize = size;
       // pane._couldNotBorrow = 0;
@@ -317,7 +348,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
   void _resetProposedSizes() {
     for (int i = 0; i < _panes.length; i++) {
       final pane = _panes[i];
-      pane._proposedSize = pane._attachedPane!.size;
+      pane._proposedSize = pane._attachedPane!.viewSize;
     }
   }
 
@@ -373,13 +404,26 @@ class _ResizablePanelState extends State<ResizablePanel> {
     return 0;
   }
 
-  _BorrowInfo _borrowSize(int index, double delta, int direction) {
-    print('_borrowSize index: $index delta: $delta direction: $direction');
+  _BorrowInfo _borrowSize(int index, double delta, int until, int direction) {
+    assert(direction == -1 || direction == 1, 'Direction must be -1 or 1');
+    // assert(
+    //     (direction == -1 && index >= until) ||
+    //         (direction == 1 && index <= until) ||
+    //         (index < 0 || index >= _panes.length) ||
+    //         (until < 0 || until >= _panes.length),
+    //     'Index must be greater than until if direction is -1, and less than until if direction is 1 (index: $index, until: $until, direction: $direction)');
+    print(
+        '_borrowSize index: $index delta: $delta direction: $direction until: $until');
     // delta in here does not mean direction of the drag!
     final pane = getAt(index);
     if (pane == null) {
       print('panel is null: $index');
       return _BorrowInfo(0, index - direction);
+    }
+
+    if (index == until + direction) {
+      print('index == until: $index');
+      return _BorrowInfo(0, index);
     }
     var attachedPane = pane._attachedPane;
     if (attachedPane == null) {
@@ -389,12 +433,10 @@ class _ResizablePanelState extends State<ResizablePanel> {
     double minSize = attachedPane.widget.minSize ?? 0;
     double maxSize = attachedPane.widget.maxSize ?? double.infinity;
 
-    double? collapsedSize = attachedPane.widget.collapsedSize;
-
     if (attachedPane.collapsed) {
       // nope, we're closed, go borrow to another neighbor
       print('collapsed: $index');
-      return _borrowSize(index + direction, delta, direction);
+      return _borrowSize(index + direction, delta, until, direction);
     }
 
     double newSize = pane._proposedSize + delta; // 98 + 5
@@ -406,28 +448,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
       print(
           'minSize: $minSize overflow: $overflow given: $given delta: $delta');
 
-      // print('cb: $_couldNotBorrow');
-      // // if it tries to shrink this pane even though it could not shrink no more:
-      // if (delta < 0 && collapsedSize != null && !attachedPane.collapsed) {
-      //   double threshold = (collapsedSize - minSize) / 2;
-      //   print('threshold: $threshold');
-      //   if (_couldNotBorrow < threshold) {
-      //     _couldNotBorrow = 0;
-      //     print('COLLAPSING $index');
-      //     attachedPane.collapsed = true;
-      //     double diff = minSize - collapsedSize;
-      //     return _BorrowInfo(-diff, index);
-      //   }
-      // }
-
-      var borrowSize = _borrowSize(index + direction, overflow, direction);
-      // if (borrowSize != null) {
-      //   pane._proposedSize = minSize;
-      //   // return borrowSize + given;
-      //   return _BorrowInfo(borrowSize.givenSize + given, borrowSize.from);
-      // }
-      // print('COULD NOT BORROW $index');
-      // return null;
+      var borrowSize =
+          _borrowSize(index + direction, overflow, until, direction);
       pane._proposedSize = minSize;
       return _BorrowInfo(borrowSize.givenSize + given, borrowSize.from);
     }
@@ -440,7 +462,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
       print(
           'maxSize: $maxSize maxOverflow: $maxOverflow given: $given delta: $delta');
 
-      var borrowSize = _borrowSize(index + direction, maxOverflow, direction);
+      var borrowSize =
+          _borrowSize(index + direction, maxOverflow, until, direction);
       // if (borrowSize != null) {
       //   pane._proposedSize = maxSize;
       //   return _BorrowInfo(borrowSize.givenSize + given, borrowSize.from);
@@ -490,32 +513,15 @@ class _ResizablePanelState extends State<ResizablePanel> {
     print(
         'Before sizes: ${_panes.map((e) => e._attachedPane?.size ?? 0).toList()}');
 
-    // _BorrowInfo? borrowedRight = _borrowSize(index, -delta, 1);
-    // _BorrowInfo? borrowedLeft = _borrowSize(index - 1, delta, -1);
-    //
-    // if (borrowedLeft == null || borrowedRight == null) {
-    //   _resetProposedSizes();
-    //   return;
-    // }
-
-    // double? borrowedRightSize = borrowedRight.givenSize;
-    // double borrowedLeftSize = borrowedLeft.givenSize;
-
-    // double? borrowedRightSize = _borrowSize(index, -delta, 1);
-    // double? borrowedLeftSize = _borrowSize(index - 1, delta, -1);
-    _BorrowInfo borrowedRight = _borrowSize(index, -delta, 1);
-    _BorrowInfo borrowedLeft = _borrowSize(index - 1, delta, -1);
-
-    // if (borrowedLeft == null || borrowedRight == null) {
-    //   print('l: null r: null d: $delta cb: $_couldNotBorrow');
-    //   _resetProposedSizes();
-    //   return;
-    // }
+    print('=== BORROWING LEFT');
+    _BorrowInfo borrowedLeft = _borrowSize(index - 1, delta, 0, -1);
+    print('=== BORROWING RIGHT');
+    _BorrowInfo borrowedRight =
+        _borrowSize(index, -delta, _panes.length - 1, 1);
+    print('=== END BORROWING');
 
     double borrowedRightSize = borrowedRight.givenSize;
     double borrowedLeftSize = borrowedLeft.givenSize;
-
-    // _couldNotBorrow = 0;
 
     double couldNotBorrowRight = borrowedRightSize + delta;
     double couldNotBorrowLeft = borrowedLeftSize - delta;
@@ -526,40 +532,33 @@ class _ResizablePanelState extends State<ResizablePanel> {
     } else {
       _couldNotBorrow = 0;
     }
-    //
-    // delta += couldNotBorrowLeft;
-    // delta -= couldNotBorrowRight;
-    //
-    // //
+    print('Temp Sizes: ${_panes.map((e) => e._proposedSize).toList()}');
+
     double givenBackLeft = 0;
     double givenBackRight = 0;
     if (couldNotBorrowLeft != -couldNotBorrowRight) {
       print('=== GIVING BACK');
-      givenBackLeft = _borrowSize(index + 1, -couldNotBorrowLeft, 1).givenSize;
+      givenBackLeft =
+          _borrowSize(borrowedRight.from, -couldNotBorrowLeft, index, -1)
+              .givenSize;
+      print('Giving back left from: ${borrowedRight.from} -> $givenBackLeft');
       givenBackRight =
-          _borrowSize(index - 1, -couldNotBorrowRight, -1).givenSize;
+          _borrowSize(borrowedLeft.from, -couldNotBorrowRight, index - 1, 1)
+              .givenSize;
+      print('Giving back right from: ${borrowedLeft.from} -> $givenBackRight');
       print('=== END GIVING BACK');
-
-      if (givenBackLeft != -couldNotBorrowLeft ||
-          givenBackRight != -couldNotBorrowRight) {
-        _resetProposedSizes();
-        return;
-      }
     }
 
-    // assert(givenBackLeft == -couldNotBorrowLeft,
-    //     'Layout changed unexpectedly during drag');
-    // assert(givenBackRight == -couldNotBorrowRight,
-    //     'Layout changed unexpectedly during drag');
+    if (givenBackLeft != -couldNotBorrowLeft ||
+        givenBackRight != -couldNotBorrowRight) {
+      print(
+          'RESET SIZES: $givenBackLeft != ${-couldNotBorrowLeft} || $givenBackRight != ${-couldNotBorrowRight} -> ${_panes.map((e) => e._proposedSize).toList()}');
+      _resetProposedSizes();
+      return;
+    }
 
-    //
-    // print('GIVEN BACK LEFT $givenBackLeft GIVEN BACK RIGHT $givenBackRight');
     print(
         'l: $borrowedLeftSize r: $borrowedRightSize d: $delta cb: $_couldNotBorrow cbL: $couldNotBorrowLeft cbR: $couldNotBorrowRight bfL: ${borrowedLeft.from} bfR: ${borrowedRight.from} gbL: $givenBackLeft gbR: $givenBackRight');
-    //
-    // // _panes[index]._proposedSize -= couldNotBorrowLeft;
-    // // _panes[index - 1]._proposedSize -= couldNotBorrowRight;
-    //
     double payOffLeft = _payOffLoanSize(index - 1, delta, -1);
     double payOffRight = _payOffLoanSize(index, -delta, 1);
     _panes[index]._proposedSize -= payOffRight;
@@ -576,8 +575,23 @@ class _ResizablePanelState extends State<ResizablePanel> {
           break;
         }
       }
+      print('CHECK COLLAPSING $index: $start == $endNotCollapsed');
       if (start == endNotCollapsed) {
-        print('CHECK COLLAPSIBLE RIGHT');
+        print('CHECK COLLAPSIBLE RIGHT $index');
+        _checkCollapseUntil(index, _couldNotBorrow);
+      }
+      int startExpanding = borrowedLeft.from;
+      int endCollapsed = 0;
+      for (int i = endCollapsed; i > startExpanding; i--) {
+        if (_panes[i]._attachedPane!.collapsed) {
+          endCollapsed = i;
+        } else {
+          break;
+        }
+      }
+      print('CHECK EXPANDING LEFT $index: $startExpanding == $endCollapsed');
+      if (startExpanding == endCollapsed) {
+        print('CHECK EXPANDING LEFT $index');
       }
     } else if (_couldNotBorrow < 0) {
       int start = borrowedLeft.from;
@@ -590,8 +604,21 @@ class _ResizablePanelState extends State<ResizablePanel> {
         }
       }
       if (start == endNotCollapsed) {
-        print('CHECK COLLAPSIBLE LEFT');
+        print('CHECK COLLAPSIBLE LEFT $index');
         _checkCollapseUntil(index, _couldNotBorrow);
+      }
+      int startExpanding = borrowedRight.from;
+      int endCollapsed = _panes.length - 1;
+      for (int i = endCollapsed; i > startExpanding; i--) {
+        if (_panes[i]._attachedPane!.collapsed) {
+          endCollapsed = i;
+        } else {
+          break;
+        }
+      }
+      print('CHECK EXPANDING RIGHT $index: $startExpanding == $endCollapsed');
+      if (startExpanding == endCollapsed) {
+        print('CHECK EXPANDING RIGHT $index');
       }
     }
 
@@ -621,7 +648,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
             if (couldNotBorrow < threshold) {
               print('COLLAPSING $i');
               var toBorrow = minSize - collapsibleSize;
-              var borrowed = _borrowSize(index, toBorrow, 1);
+              var borrowed = _borrowSize(index, toBorrow, _panes.length - 1, 1);
               double borrowedSize = borrowed.givenSize;
               print(
                   'BORROWED SIZE $borrowedSize ASKING FOR $toBorrow FROM ${index} ENDS AT ${borrowed.from}');
@@ -630,9 +657,46 @@ class _ResizablePanelState extends State<ResizablePanel> {
                 continue;
               }
               previousPane._attachedPane!.collapsed = true;
+              previousPane._proposedSize =
+                  previousPane._attachedPane?.widget.collapsedSize ?? 0;
+              previousPane._sizeBeforeDrag = previousPane._proposedSize;
               couldNotBorrow += borrowedSize;
               _applyProposedSizes();
               if (couldNotBorrow >= 0) {
+                break;
+              }
+            }
+          }
+        }
+      }
+    } else if (couldNotBorrow > 0) {
+      for (int i = index; i < _panes.length; i++) {
+        final nextPane = getAt(i);
+        if (nextPane != null) {
+          double? collapsibleSize =
+              nextPane._attachedPane!.widget.collapsedSize;
+          if (collapsibleSize != null && !nextPane._attachedPane!.collapsed) {
+            var minSize = nextPane._attachedPane!.widget.minSize ?? 0;
+            double threshold = (minSize - collapsibleSize) / 2;
+            print('THRESHOLD $threshold');
+            if (couldNotBorrow > threshold) {
+              print('COLLAPSING $i');
+              var toBorrow = minSize - collapsibleSize;
+              var borrowed = _borrowSize(index - 1, toBorrow, 0, -1);
+              double borrowedSize = borrowed.givenSize;
+              print(
+                  'BORROWED SIZE $borrowedSize ASKING FOR $toBorrow FROM ${index} ENDS AT ${borrowed.from}');
+              if (borrowedSize < toBorrow) {
+                _resetProposedSizes();
+                continue;
+              }
+              nextPane._attachedPane!.collapsed = true;
+              nextPane._proposedSize =
+                  nextPane._attachedPane?.widget.collapsedSize ?? 0;
+              nextPane._sizeBeforeDrag = nextPane._proposedSize;
+              couldNotBorrow += borrowedSize;
+              _applyProposedSizes();
+              if (couldNotBorrow <= 0) {
                 break;
               }
             }
@@ -731,7 +795,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
               end: 1.0,
               builder: (context, value, child) {
                 return Text(
-                    'Sum Sizes: ${_panes.map((e) => e._attachedPane?.size ?? 0).fold(0.0, (a, b) => a + b)}');
+                    'Sum Sizes: ${_panes.map((e) => e._attachedPane?.viewSize ?? 0).fold(0.0, (a, b) => a + b)}');
               },
             ),
           )
