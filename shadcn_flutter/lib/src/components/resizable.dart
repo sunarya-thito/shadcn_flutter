@@ -589,9 +589,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
           break;
         }
       }
-      print('CHECK EXPANDING LEFT $index: $startExpanding == $endCollapsed');
+      // print('CHECK EXPANDING LEFT $index: $startExpanding == $endCollapsed');
       if (startExpanding == endCollapsed) {
-        print('CHECK EXPANDING LEFT $index');
+        // print('CHECK EXPANDING LEFT $index');
       }
     } else if (_couldNotBorrow < 0) {
       int start = borrowedLeft.from;
@@ -604,7 +604,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         }
       }
       if (start == endNotCollapsed) {
-        print('CHECK COLLAPSIBLE LEFT $index');
+        // print('CHECK COLLAPSIBLE LEFT $index');
         _checkCollapseUntil(index, _couldNotBorrow);
       }
       int startExpanding = borrowedRight.from;
