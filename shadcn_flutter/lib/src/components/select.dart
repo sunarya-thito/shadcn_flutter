@@ -48,12 +48,14 @@ class SelectGroup extends StatelessWidget {
   final List<Widget> children;
   final List<Widget>? footers;
   final bool? showUnrelatedValues;
+  final int Function(String query)? computeIndexingScore;
 
   const SelectGroup({
     Key? key,
     this.headers,
     this.footers,
     this.showUnrelatedValues,
+    this.computeIndexingScore,
     required this.children,
   }) : super(key: key);
 
@@ -61,10 +63,14 @@ class SelectGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     final searchData = Data.maybeOf<_SelectData>(context);
     assert(searchData != null, 'SelectGroup must be a child of Select');
+    int? computedScore = searchData?.query != null
+        ? computeIndexingScore?.call(searchData!.query!)
+        : null;
     return _SelectValuesHolder(
       query: searchData?.query,
-      showUnrelatedValues:
-          showUnrelatedValues ?? searchData?.showUnrelatedValues ?? false,
+      computeIndexingScore: computeIndexingScore,
+      showUnrelatedValues: (computedScore != null && computedScore > 0) ||
+          (showUnrelatedValues ?? searchData?.showUnrelatedValues ?? false),
       builder: (children) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -394,6 +400,7 @@ class _SelectValuesHolder extends StatefulWidget {
   final String? query;
   final bool showUnrelatedValues;
   final Widget Function(List<Widget> children) builder;
+  final int Function(String query)? computeIndexingScore;
 
   const _SelectValuesHolder({
     Key? key,
@@ -401,6 +408,7 @@ class _SelectValuesHolder extends StatefulWidget {
     required this.showUnrelatedValues,
     this.query,
     required this.builder,
+    this.computeIndexingScore,
   }) : super(key: key);
 
   @override
@@ -418,6 +426,9 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
       if (handler != null) {
         score += handler.computeIndexingScore(query);
       }
+    }
+    if (widget.computeIndexingScore != null) {
+      score += widget.computeIndexingScore!(query);
     }
     return score;
   }

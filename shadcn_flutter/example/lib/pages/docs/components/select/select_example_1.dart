@@ -81,6 +81,9 @@ class _SelectExample1State extends State<SelectExample1> {
           ],
         ),
         SelectGroup(
+          computeIndexingScore: (query) {
+            return query.toLowerCase().contains('tomato') ? 1 : 0;
+          },
           headers: [
             SelectLabel(
               child: Text('Tomato'),
@@ -89,19 +92,19 @@ class _SelectExample1State extends State<SelectExample1> {
           children: [
             SelectItemButton(
               value: 'Red Tomato',
-              child: Text('Red Tomato'),
+              child: Text('Red'),
             ),
             SelectItemButton(
               value: 'Green Tomato',
-              child: Text('Green Tomato'),
+              child: Text('Green'),
             ),
             SelectItemButton(
               value: 'Yellow Tomato',
-              child: Text('Yellow Tomato'),
+              child: Text('Yellow'),
             ),
             SelectItemButton(
               value: 'Brown Tomato',
-              child: Text('Brown Tomato'),
+              child: Text('Brown'),
             ),
           ],
         ),
