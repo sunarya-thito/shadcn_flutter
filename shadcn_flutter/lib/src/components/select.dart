@@ -26,6 +26,9 @@ class SelectItemButton<T> extends StatelessWidget {
               vertical: 8,
               horizontal: 8,
             ),
+            mouseCursor: (context, states, value) {
+              return SystemMouseCursors.basic;
+            },
           ),
           trailing: selected
               ? const Icon(
@@ -434,7 +437,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
             final score = handler.computeIndexingScore(widget.query!);
             attachedValue.score = score;
           } else {
-            attachedValue.score = 0;
+            attachedValue.score = null;
           }
         }
       }
@@ -466,6 +469,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
               child: child,
             ),
             cachedScore,
+            i,
           ));
         } else {
           if (handler != null) {
@@ -476,21 +480,30 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
                 child: child,
               ),
               score,
+              i,
             ));
             attachedValue.score = score;
           } else {
-            attachedValue.score = 0; // should we cache this?
+            // attachedValue.score = 0; // should we cache this?
             queriedValues.add(_QueriedAttachedValue(
               Data(
                 data: attachedValue,
                 child: child,
               ),
               0,
+              i,
             ));
           }
         }
       }
-      queriedValues.sort((a, b) => b.score.compareTo(a.score));
+      // queriedValues.sort((a, b) => b.score.compareTo(a.score));
+      // sort by score, if same, then sort by index
+      queriedValues.sort((a, b) {
+        if (a.score == b.score) {
+          return a.index.compareTo(b.index);
+        }
+        return b.score.compareTo(a.score);
+      });
       for (final queriedValue in queriedValues) {
         if (queriedValue.score == 0 && !widget.showUnrelatedValues) {
           continue;
@@ -550,6 +563,12 @@ class _SelectValueHolderState extends State<_SelectValueHolder>
 class _QueriedAttachedValue {
   final Widget widget;
   final int score;
+  final int index;
 
-  _QueriedAttachedValue(this.widget, this.score);
+  _QueriedAttachedValue(this.widget, this.score, this.index);
+
+  @override
+  String toString() {
+    return 'QueriedAttachedValue{widget: $widget, score: $score, index: $index}';
+  }
 }
