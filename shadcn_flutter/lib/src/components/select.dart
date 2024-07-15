@@ -2,40 +2,71 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef SearchFilter<T> = int Function(T item, String query);
 
-class ComboBox<T> extends StatefulWidget {
-  final List<T> items;
+class SelectGroup extends StatelessWidget {
+  final List<Widget> children;
+
+  const SelectGroup({
+    Key? key,
+    required this.children,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: children,
+    );
+  }
+}
+
+class SelectItem<T> extends StatelessWidget {
+  final Widget child;
+  final T value;
+
+  const SelectItem({
+    Key? key,
+    required this.child,
+    required this.value,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    throw UnimplementedError();
+  }
+}
+
+class Select<T> extends StatefulWidget {
   final int? selectedIndex;
   final ValueChanged<int?>? onChanged; // if null, then it's a disabled combobox
   final SearchFilter<T>?
       searchFilter; // if its not null, then it's a searchable combobox
-  final Widget Function(BuildContext context, T item) itemBuilder;
   final Widget? placeholder; // placeholder when value is null
   final bool filled;
   final FocusNode? focusNode;
   final BoxConstraints constraints;
   final BoxConstraints popupConstraints;
   final PopoverConstraint popupWidthConstraint;
+  final List<Widget> children;
 
-  const ComboBox({
+  const Select({
     Key? key,
-    required this.items,
     this.selectedIndex,
     this.onChanged,
     this.searchFilter,
-    required this.itemBuilder,
     this.placeholder,
     this.filled = false,
     this.focusNode,
     this.constraints = const BoxConstraints(),
     this.popupConstraints = const BoxConstraints(),
     this.popupWidthConstraint = PopoverConstraint.anchorMinSize,
+    required this.children,
   }) : super(key: key);
 
   @override
-  _ComboBoxState<T> createState() => _ComboBoxState<T>();
+  _SelectState<T> createState() => _SelectState<T>();
 }
 
-class _ComboBoxState<T> extends State<ComboBox<T>> {
+class _SelectState<T> extends State<Select<T>> {
   late FocusNode _focusNode;
 
   @override
@@ -45,7 +76,7 @@ class _ComboBoxState<T> extends State<ComboBox<T>> {
   }
 
   @override
-  void didUpdateWidget(ComboBox<T> oldWidget) {
+  void didUpdateWidget(Select<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
       _focusNode = widget.focusNode ?? FocusNode();
@@ -138,16 +169,16 @@ class ComboBoxPopup<T> extends StatefulWidget {
   _ComboBoxPopupState<T> createState() => _ComboBoxPopupState<T>();
 }
 
-class ComboBoxItem<T> {
+class _ComboBoxItem<T> {
   final int index;
   final T item;
 
-  ComboBoxItem(this.index, this.item);
+  _ComboBoxItem(this.index, this.item);
 }
 
 class _ComboBoxPopupState<T> extends State<ComboBoxPopup<T>> {
   final TextEditingController _searchController = TextEditingController();
-  late List<ComboBoxItem<T>> _filteredItems;
+  late List<_ComboBoxItem<T>> _filteredItems;
 
   @override
   void initState() {
@@ -155,7 +186,7 @@ class _ComboBoxPopupState<T> extends State<ComboBoxPopup<T>> {
     _filteredItems = widget.items
         .asMap()
         .entries
-        .map((e) => ComboBoxItem(e.key, e.value))
+        .map((e) => _ComboBoxItem(e.key, e.value))
         .toList();
     _searchController.addListener(_onChanged);
   }
@@ -167,7 +198,7 @@ class _ComboBoxPopupState<T> extends State<ComboBoxPopup<T>> {
         _filteredItems = widget.items
             .asMap()
             .entries
-            .map((e) => ComboBoxItem(e.key, e.value))
+            .map((e) => _ComboBoxItem(e.key, e.value))
             .toList();
       });
       return;
@@ -202,7 +233,7 @@ class _ComboBoxPopupState<T> extends State<ComboBoxPopup<T>> {
     setState(() {
       // _filteredItems = filteredItems.map((e) => e.$3).toList();
       _filteredItems =
-          filteredItems.map((e) => ComboBoxItem(e.$2, e.$3)).toList();
+          filteredItems.map((e) => _ComboBoxItem(e.$2, e.$3)).toList();
     });
   }
 

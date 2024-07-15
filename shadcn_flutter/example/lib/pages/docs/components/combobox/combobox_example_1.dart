@@ -11,7 +11,7 @@ class _ComboboxExample1State extends State<ComboboxExample1> {
   int? selectedValue;
   @override
   Widget build(BuildContext context) {
-    return ComboBox(
+    return Select(
       selectedIndex: selectedValue,
       items: const [
         'Red Apple',

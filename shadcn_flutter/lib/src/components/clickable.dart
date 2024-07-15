@@ -15,6 +15,7 @@ class Clickable extends StatefulWidget {
   final VoidCallback? onPressed;
   final FocusNode? focusNode;
   final HitTestBehavior behavior;
+  final bool disableTransition;
 
   const Clickable({
     super.key,
@@ -30,6 +31,7 @@ class Clickable extends StatefulWidget {
     this.behavior = HitTestBehavior.translucent,
     this.onHover,
     this.onFocus,
+    this.disableTransition = false,
   });
 
   @override
@@ -137,18 +139,29 @@ class _ClickableState extends State<Clickable> {
                   duration: kDefaultDuration,
                   data: widget.iconTheme?.resolve(_controller.value) ??
                       const IconThemeData(),
-                  child: AnimatedContainer(
-                    duration: kDefaultDuration,
-                    decoration: widget.decoration?.resolve(_controller.value),
-                    padding: widget.padding?.resolve(_controller.value),
-                    child: widget.child,
-                  ),
+                  child: buildContainer(context),
                 ),
               ),
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget buildContainer(BuildContext context) {
+    if (widget.disableTransition) {
+      return Container(
+        decoration: widget.decoration?.resolve(_controller.value),
+        padding: widget.padding?.resolve(_controller.value),
+        child: widget.child,
+      );
+    }
+    return AnimatedContainer(
+      duration: kDefaultDuration,
+      decoration: widget.decoration?.resolve(_controller.value),
+      padding: widget.padding?.resolve(_controller.value),
+      child: widget.child,
     );
   }
 }

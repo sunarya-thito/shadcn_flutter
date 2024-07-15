@@ -60,6 +60,7 @@ class Button extends StatefulWidget {
     vertical: 2,
   );
   final bool enabled;
+  final bool disableTransition;
   final Widget? leading;
   final Widget? trailing;
   final Widget child;
@@ -77,6 +78,7 @@ class Button extends StatefulWidget {
     this.alignment,
     required this.style,
     this.enabled = true,
+    this.disableTransition = false,
   }) : super(key: key);
 
   const Button.primary({
@@ -89,6 +91,7 @@ class Button extends StatefulWidget {
     this.alignment,
     this.enabled = true,
     this.style = ButtonVariance.primary,
+    this.disableTransition = false,
   });
 
   const Button.secondary({
@@ -101,6 +104,7 @@ class Button extends StatefulWidget {
     this.alignment,
     this.enabled = true,
     this.style = ButtonVariance.secondary,
+    this.disableTransition = false,
   });
 
   const Button.outline({
@@ -113,6 +117,7 @@ class Button extends StatefulWidget {
     this.alignment,
     this.enabled = true,
     this.style = ButtonVariance.outline,
+    this.disableTransition = false,
   });
 
   const Button.ghost({
@@ -125,6 +130,7 @@ class Button extends StatefulWidget {
     this.alignment,
     this.enabled = true,
     this.style = ButtonVariance.ghost,
+    this.disableTransition = false,
   });
 
   const Button.link({
@@ -137,6 +143,7 @@ class Button extends StatefulWidget {
     this.alignment,
     this.enabled = true,
     this.style = ButtonVariance.link,
+    this.disableTransition = false,
   });
 
   const Button.text({
@@ -149,6 +156,7 @@ class Button extends StatefulWidget {
     this.alignment,
     this.enabled = true,
     this.style = ButtonVariance.text,
+    this.disableTransition = false,
   });
 
   const Button.destructive({
@@ -161,6 +169,7 @@ class Button extends StatefulWidget {
     this.alignment,
     this.enabled = true,
     this.style = ButtonVariance.destructive,
+    this.disableTransition = false,
   });
 
   @override
@@ -172,6 +181,7 @@ class ButtonState<T extends Button> extends State<T> {
   Widget build(BuildContext context) {
     return Clickable(
       enabled: widget.enabled && widget.onPressed != null,
+      disableTransition: widget.disableTransition,
       decoration: WidgetStateProperty.resolveWith((states) {
         return widget.style.decoration(context, states);
       }),
