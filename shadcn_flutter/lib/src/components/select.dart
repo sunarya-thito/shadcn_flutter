@@ -287,6 +287,24 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
   final ScrollController _scrollController = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+    // this is required due to late scroll controller attachment
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
@@ -337,46 +355,51 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                     child: Stack(
                       fit: StackFit.passthrough,
                       children: [
-                        SingleChildScrollView(
-                          controller: _scrollController,
-                          padding: const EdgeInsets.all(4),
-                          child: AnimatedBuilder(
-                            animation: _searchController,
-                            builder: (context, child) {
-                              String? text = _searchController.text;
-                              if (text.trim().isEmpty) {
-                                text = null;
-                              }
-                              return Data(
-                                data: _SelectData(
-                                  (item, query) {
-                                    return widget.searchFilter
-                                            ?.call(item, query) ??
-                                        0;
-                                  },
-                                  text,
-                                  (value) {
-                                    widget.onChanged?.call(value);
-                                    Navigator.of(context).pop(value);
-                                  },
-                                  widget.value,
-                                  widget.showUnrelatedValues,
-                                ),
-                                child: _SelectValuesHolder(
-                                  query: text,
-                                  showUnrelatedValues:
-                                      widget.showUnrelatedValues,
-                                  builder: (children) {
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: children,
-                                    );
-                                  },
-                                  children: widget.children,
-                                ),
-                              );
-                            },
+                        ScrollConfiguration(
+                          behavior: ScrollConfiguration.of(context).copyWith(
+                            scrollbars: false,
+                          ),
+                          child: SingleChildScrollView(
+                            controller: _scrollController,
+                            padding: const EdgeInsets.all(4),
+                            child: AnimatedBuilder(
+                              animation: _searchController,
+                              builder: (context, child) {
+                                String? text = _searchController.text;
+                                if (text.trim().isEmpty) {
+                                  text = null;
+                                }
+                                return Data(
+                                  data: _SelectData(
+                                    (item, query) {
+                                      return widget.searchFilter
+                                              ?.call(item, query) ??
+                                          0;
+                                    },
+                                    text,
+                                    (value) {
+                                      widget.onChanged?.call(value);
+                                      Navigator.of(context).pop(value);
+                                    },
+                                    widget.value,
+                                    widget.showUnrelatedValues,
+                                  ),
+                                  child: _SelectValuesHolder(
+                                    query: text,
+                                    showUnrelatedValues:
+                                        widget.showUnrelatedValues,
+                                    builder: (children) {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: children,
+                                      );
+                                    },
+                                    children: widget.children,
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                         AnimatedBuilder(
@@ -420,51 +443,43 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                         AnimatedBuilder(
                           animation: _scrollController,
                           builder: (context, child) {
-                            return AnimatedBuilder(
-                              animation: _scrollController.position,
-                              builder: (context, child) {
-                                return Visibility(
-                                  visible: _scrollController.hasClients &&
+                            return Visibility(
+                              visible: _scrollController.hasClients &&
+                                  _scrollController
+                                      .position.hasContentDimensions &&
+                                  _scrollController.offset <
                                       _scrollController
-                                          .position.hasContentDimensions &&
-                                      _scrollController.offset <
-                                          _scrollController
-                                              .position.maxScrollExtent,
-                                  child: Positioned(
-                                    bottom: 0,
-                                    left: 0,
-                                    right: 0,
-                                    child: HoverActivity(
-                                      hitTestBehavior:
-                                          HitTestBehavior.translucent,
-                                      debounceDuration:
-                                          const Duration(milliseconds: 16),
-                                      onHover: () {
-                                        // increase scroll offset
-                                        var value =
-                                            _scrollController.offset + 8;
-                                        value = value.clamp(
-                                          0.0,
-                                          _scrollController
-                                              .position.maxScrollExtent,
-                                        );
-                                        _scrollController.jumpTo(
-                                          value,
-                                        );
-                                      },
-                                      child: Container(
-                                        color: theme.colorScheme.background,
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 4),
-                                        child: Icon(
-                                          RadixIcons.chevronDown,
-                                          size: 8,
-                                        ),
-                                      ),
+                                          .position.maxScrollExtent,
+                              child: Positioned(
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                child: HoverActivity(
+                                  hitTestBehavior: HitTestBehavior.translucent,
+                                  debounceDuration:
+                                      const Duration(milliseconds: 16),
+                                  onHover: () {
+                                    // increase scroll offset
+                                    var value = _scrollController.offset + 8;
+                                    value = value.clamp(
+                                      0.0,
+                                      _scrollController
+                                          .position.maxScrollExtent,
+                                    );
+                                    _scrollController.jumpTo(
+                                      value,
+                                    );
+                                  },
+                                  child: Container(
+                                    color: theme.colorScheme.background,
+                                    padding: EdgeInsets.symmetric(vertical: 4),
+                                    child: Icon(
+                                      RadixIcons.chevronDown,
+                                      size: 8,
                                     ),
                                   ),
-                                );
-                              },
+                                ),
+                              ),
                             );
                           },
                         ),
