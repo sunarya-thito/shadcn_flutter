@@ -181,7 +181,8 @@ class _ResizablePaneState extends State<ResizablePane> {
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
       if (widget.flex != null) {
         __controller = ResizablePaneController(
-          containerData!.sparedFlexSpaceSize * widget.flex!,
+          (containerData!.sparedFlexSpaceSize * widget.flex!)
+              .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
           collapsed: widget.initialCollapsed,
         );
       } else {
@@ -216,7 +217,8 @@ class _ResizablePaneState extends State<ResizablePane> {
     if (widget.controller != oldWidget.controller) {
       if (widget.flex != null) {
         __controller = ResizablePaneController(
-          _sparedFlexSize! * widget.flex!,
+          (_sparedFlexSize! * widget.flex!)
+              .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
           collapsed: widget.initialCollapsed,
         );
       } else {
@@ -1061,8 +1063,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
           for (int i = 0; i < widget.children.length - 1; i++) {
             final child = widget.children[i];
             double size = child.flex != null
-                ? child.flex! * spacePerFlex
-                : (_panes[i]._attachedPane?.viewSize ?? child.initialSize)!;
+                ? (child.flex! * spacePerFlex)
+                    .clamp(child.minSize ?? 0, child.maxSize ?? double.infinity)
+                : (_panes[i]._attachedPane?.viewSize ??
+                    (child.initialCollapsed
+                        ? child.initialSize
+                        : (child.collapsedSize ?? 0)))!;
             offset += size;
             Widget dragger;
             if (widget.direction == Axis.horizontal) {
@@ -1146,8 +1152,10 @@ class _ResizablePanelState extends State<ResizablePanel> {
     List<Widget> dividers = [];
     double offset = 0;
     for (int i = 0; i < widget.children.length - 1; i++) {
-      double? currentSize =
-          _panes[i]._attachedPane?.viewSize ?? widget.children[i].initialSize;
+      final child = widget.children[i];
+      double? currentSize = child.initialCollapsed
+          ? child.initialSize
+          : (child.collapsedSize ?? 0);
       assert(currentSize != null, 'Size must not be null');
       offset += currentSize!;
       Widget dragger;
