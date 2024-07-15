@@ -1065,17 +1065,18 @@ class _ResizablePanelState extends State<ResizablePanel> {
           double extraFlexSpace = flexSpaceDiff / flexCount;
           List<Widget> dividers = [];
           double offset = 0;
-          print('extraFlexSpace: $extraFlexSpace');
           for (int i = 0; i < widget.children.length - 1; i++) {
             final child = widget.children[i];
             double size = _panes[i]._attachedPane?.viewSize ??
                 (child.initialCollapsed
                     ? (child.collapsedSize ?? 0)
                     : child.flex != null
-                        ? (child.flex! * spacePerFlex + extraFlexSpace).clamp(
-                            child.minSize ?? 0,
+                        ? (child.flex! * spacePerFlex).clamp(child.minSize ?? 0,
                             child.maxSize ?? double.infinity)
                         : (child.initialSize ?? 0));
+            if (child.flex != null) {
+              size += extraFlexSpace * child.flex!;
+            }
             offset += size;
             Widget dragger;
             if (widget.direction == Axis.horizontal) {
@@ -1083,23 +1084,26 @@ class _ResizablePanelState extends State<ResizablePanel> {
                 left: offset - widget.dividerSize / 2,
                 top: 0,
                 bottom: 0,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onPanStart: (details) {
-                    _startDragging();
-                  },
-                  onPanUpdate: (details) {
-                    _dragDivider(i + 1, details.delta.dx);
-                  },
-                  onPanEnd: (details) {
-                    _stopDragging();
-                  },
-                  child: SizedBox(
-                    width: widget.dividerSize,
-                    child: Builder(
-                      builder: (context) {
-                        return widget.draggerBuilder!(context);
-                      },
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.resizeLeftRight,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onPanStart: (details) {
+                      _startDragging();
+                    },
+                    onPanUpdate: (details) {
+                      _dragDivider(i + 1, details.delta.dx);
+                    },
+                    onPanEnd: (details) {
+                      _stopDragging();
+                    },
+                    child: SizedBox(
+                      width: widget.dividerSize,
+                      child: Builder(
+                        builder: (context) {
+                          return widget.draggerBuilder!(context);
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -1109,23 +1113,26 @@ class _ResizablePanelState extends State<ResizablePanel> {
                 top: offset - widget.dividerSize / 2,
                 left: 0,
                 right: 0,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onPanStart: (details) {
-                    _startDragging();
-                  },
-                  onPanUpdate: (details) {
-                    _dragDivider(i + 1, details.delta.dy);
-                  },
-                  onPanEnd: (details) {
-                    _stopDragging();
-                  },
-                  child: SizedBox(
-                    height: widget.dividerSize,
-                    child: Builder(
-                      builder: (context) {
-                        return widget.draggerBuilder!(context);
-                      },
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.resizeUpDown,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onPanStart: (details) {
+                      _startDragging();
+                    },
+                    onPanUpdate: (details) {
+                      _dragDivider(i + 1, details.delta.dy);
+                    },
+                    onPanEnd: (details) {
+                      _stopDragging();
+                    },
+                    child: SizedBox(
+                      height: widget.dividerSize,
+                      child: Builder(
+                        builder: (context) {
+                          return widget.draggerBuilder!(context);
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -1171,23 +1178,26 @@ class _ResizablePanelState extends State<ResizablePanel> {
           left: offset - widget.dividerSize / 2,
           top: 0,
           bottom: 0,
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onPanStart: (details) {
-              _startDragging();
-            },
-            onPanUpdate: (details) {
-              _dragDivider(i + 1, details.delta.dx);
-            },
-            onPanEnd: (details) {
-              _stopDragging();
-            },
-            child: SizedBox(
-              width: widget.dividerSize,
-              child: Builder(
-                builder: (context) {
-                  return widget.draggerBuilder!(context);
-                },
+          child: MouseRegion(
+            cursor: SystemMouseCursors.resizeLeftRight,
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onPanStart: (details) {
+                _startDragging();
+              },
+              onPanUpdate: (details) {
+                _dragDivider(i + 1, details.delta.dx);
+              },
+              onPanEnd: (details) {
+                _stopDragging();
+              },
+              child: SizedBox(
+                width: widget.dividerSize,
+                child: Builder(
+                  builder: (context) {
+                    return widget.draggerBuilder!(context);
+                  },
+                ),
               ),
             ),
           ),
@@ -1197,23 +1207,26 @@ class _ResizablePanelState extends State<ResizablePanel> {
           top: offset - widget.dividerSize / 2,
           left: 0,
           right: 0,
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onPanStart: (details) {
-              _startDragging();
-            },
-            onPanUpdate: (details) {
-              _dragDivider(i + 1, details.delta.dy);
-            },
-            onPanEnd: (details) {
-              _stopDragging();
-            },
-            child: SizedBox(
-              height: widget.dividerSize,
-              child: Builder(
-                builder: (context) {
-                  return widget.draggerBuilder!(context);
-                },
+          child: MouseRegion(
+            cursor: SystemMouseCursors.resizeUpDown,
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onPanStart: (details) {
+                _startDragging();
+              },
+              onPanUpdate: (details) {
+                _dragDivider(i + 1, details.delta.dy);
+              },
+              onPanEnd: (details) {
+                _stopDragging();
+              },
+              child: SizedBox(
+                height: widget.dividerSize,
+                child: Builder(
+                  builder: (context) {
+                    return widget.draggerBuilder!(context);
+                  },
+                ),
               ),
             ),
           ),
