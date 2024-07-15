@@ -4,7 +4,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef Predicate<T> = bool Function(T value);
 
-const kDebugResizable = false;
+const kDebugResizable = true;
 
 class ResizablePaneValue {
   final double size;
@@ -690,10 +690,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
               previousPane._proposedSize =
                   previousPane._attachedPane?.widget.collapsedSize ?? 0;
               previousPane._sizeBeforeDrag = previousPane._proposedSize;
-              couldNotBorrow += borrowedSize;
-              if (couldNotBorrow >= 0) {
-                break;
-              }
+              couldNotBorrow = 0;
             }
           }
         }
@@ -709,6 +706,10 @@ class _ResizablePanelState extends State<ResizablePanel> {
             double threshold = (minSize - collapsibleSize) / 2;
             if (kDebugResizable) print('THRESHOLD $threshold');
             if (couldNotBorrow > threshold) {
+              // disregard the delta here,
+              // even tho for example the delta is -10,
+              // and the amount of delta needed to collapse is -5,
+              // we will still consume the entire delta
               if (kDebugResizable) print('COLLAPSING $i');
               var toBorrow = minSize - collapsibleSize;
               var borrowed = _borrowSize(index - 1, toBorrow, 0, -1);
@@ -725,7 +726,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
                   nextPane._attachedPane?.widget.collapsedSize ?? 0;
               nextPane._sizeBeforeDrag = nextPane._proposedSize;
               couldNotBorrow = 0;
-              _applyProposedSizes();
             }
           }
         }
@@ -746,7 +746,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
             double threshold = (minSize - collapsibleSize) / 2;
             if (kDebugResizable) print('EXPANDING THRESHOLD $threshold');
             if (_couldNotBorrow >= threshold) {
-              _couldNotBorrow -= threshold;
               double toBorrow = collapsibleSize - minSize;
               var borrowed =
                   _borrowSize(toCheck + 1, toBorrow, _panes.length, 1);
@@ -762,6 +761,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
               pane._attachedPane!.collapsed = false;
               pane._proposedSize = minSize;
               pane._sizeBeforeDrag = minSize;
+              _couldNotBorrow = 0;
             }
             break;
           }
