@@ -600,6 +600,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       print(
           'Loaned Sizes: ${_panes.map((e) => e._sizeBeforeDrag - e._proposedSize).toList()}');
     }
+
     double payOffLeft = _payOffLoanSize(index - 1, delta, -1);
     double payOffRight = _payOffLoanSize(index, -delta, 1);
     // _panes[index]._proposedSize -= payOffRight;
