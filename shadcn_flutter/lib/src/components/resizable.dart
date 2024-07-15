@@ -173,6 +173,31 @@ class _ResizablePaneState extends State<ResizablePane> {
     assert(resizablePanelState != null,
         'ResizablePane must be a child of ResizablePanel');
     final direction = resizablePanelState!.widget.direction;
+    if (widget.flex != null) {
+      return Expanded(
+        flex: widget.flex!,
+        child: LayoutBuilder(builder: (context, constraints) {
+          double containerSize = direction == Axis.horizontal
+              ? constraints.maxWidth
+              : constraints.maxHeight;
+          containerSize = containerSize.clamp(
+              widget.minSize ?? 0, widget.maxSize ?? double.infinity);
+          _changeSize(containerSize);
+          return ConstrainedBox(
+            constraints: direction == Axis.horizontal
+                ? BoxConstraints.tightFor(width: containerSize)
+                : BoxConstraints.tightFor(height: containerSize),
+            child: buildContainer(context, resizablePanelState),
+          );
+        }),
+      );
+    }
+    return buildContainer(context, resizablePanelState);
+  }
+
+  Widget buildContainer(
+      BuildContext context, _ResizablePanelState? resizablePanelState) {
+    final direction = resizablePanelState!.widget.direction;
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
