@@ -172,20 +172,6 @@ class _ResizablePaneState extends State<ResizablePane> {
     final resizablePanelState = Data.maybeOf<_ResizablePanelState>(context);
     assert(resizablePanelState != null,
         'ResizablePane must be a child of ResizablePanel');
-    final direction = resizablePanelState!.widget.direction;
-    if (widget.flex != null) {
-      return Expanded(
-        flex: widget.flex!,
-        child: LayoutBuilder(builder: (context, constraints) {
-          double containerSize = direction == Axis.horizontal
-              ? constraints.maxWidth
-              : constraints.maxHeight;
-          resizablePanelState._reportActualSize(
-              _activePane!.index, containerSize);
-          return buildContainer(context, resizablePanelState);
-        }),
-      );
-    }
     return buildContainer(context, resizablePanelState);
   }
 
@@ -312,8 +298,6 @@ class _ActivePane {
   _ResizablePaneState? _attachedPane;
   double _sizeBeforeDrag = 0;
   double __proposedSize = 0;
-
-  double? _actualSize;
 
   double get _proposedSize => __proposedSize;
 
@@ -860,19 +844,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
     }
   }
 
-  void _reportActualSize(int index, double size) {
-    if (size != _panes[index]._actualSize) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        // second time check, to make sure that the widget is still mounted and size is still different
-        if (size != _panes[index]._actualSize && mounted) {
-          setState(() {
-            _panes[index]._actualSize = size;
-          });
-        }
-      });
-    }
-  }
-
   List<Widget> buildChildren(BuildContext context) {
     List<Widget> children = [];
     assert(widget.children.length == _panes.length,
@@ -931,9 +902,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
     List<Widget> dividers = [];
     double offset = 0;
     for (int i = 0; i < widget.children.length - 1; i++) {
-      double currentSize = _panes[i]._actualSize ??
-          _panes[i]._attachedPane?.viewSize ??
-          widget.children[i].initialSize;
+      double currentSize =
+          _panes[i]._attachedPane?.viewSize ?? widget.children[i].initialSize;
       offset += currentSize;
       Widget dragger;
       if (widget.direction == Axis.horizontal) {
