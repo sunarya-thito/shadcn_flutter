@@ -18,16 +18,22 @@ class SelectItemButton<T> extends StatelessWidget {
     return SelectItem<T>(
       value: value,
       builder: (context, selectItem, selected) {
-        return GhostButton(
+        return Button(
           disableTransition: true,
           onPressed: selectItem,
+          style: const ButtonStyle.ghost().copyWith(
+            padding: (context, states, value) => const EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 8,
+            ),
+          ),
           trailing: selected
               ? const Icon(
                   Icons.check,
                   size: 16,
                 )
               : null,
-          child: child,
+          child: child.normal(),
         );
       },
     );
@@ -111,8 +117,8 @@ class SelectLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: child,
+      padding: const EdgeInsets.all(8),
+      child: child.medium(),
     );
   }
 }
