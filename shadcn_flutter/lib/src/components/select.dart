@@ -283,6 +283,7 @@ class SelectPopup<T> extends StatefulWidget {
 
 class _SelectPopupState<T> extends State<SelectPopup<T>> {
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -326,43 +327,71 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                   ),
                 if (widget.searchFilter != null) const Divider(),
                 Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(4),
-                    child: AnimatedBuilder(
-                      animation: _searchController,
-                      builder: (context, child) {
-                        String? text = _searchController.text;
-                        if (text.trim().isEmpty) {
-                          text = null;
-                        }
-                        return Data(
-                          data: _SelectData(
-                            (item, query) {
-                              return widget.searchFilter?.call(item, query) ??
-                                  0;
-                            },
-                            text,
-                            (value) {
-                              widget.onChanged?.call(value);
-                              Navigator.of(context).pop(value);
-                            },
-                            widget.value,
-                            widget.showUnrelatedValues,
-                          ),
-                          child: _SelectValuesHolder(
-                            query: text,
-                            showUnrelatedValues: widget.showUnrelatedValues,
-                            builder: (children) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: children,
-                              );
-                            },
-                            children: widget.children,
-                          ),
-                        );
-                      },
-                    ),
+                  child: Stack(
+                    fit: StackFit.passthrough,
+                    children: [
+                      SingleChildScrollView(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.all(4),
+                        child: AnimatedBuilder(
+                          animation: _searchController,
+                          builder: (context, child) {
+                            String? text = _searchController.text;
+                            if (text.trim().isEmpty) {
+                              text = null;
+                            }
+                            return Data(
+                              data: _SelectData(
+                                (item, query) {
+                                  return widget.searchFilter
+                                          ?.call(item, query) ??
+                                      0;
+                                },
+                                text,
+                                (value) {
+                                  widget.onChanged?.call(value);
+                                  Navigator.of(context).pop(value);
+                                },
+                                widget.value,
+                                widget.showUnrelatedValues,
+                              ),
+                              child: _SelectValuesHolder(
+                                query: text,
+                                showUnrelatedValues: widget.showUnrelatedValues,
+                                builder: (children) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: children,
+                                  );
+                                },
+                                children: widget.children,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      AnimatedBuilder(
+                        animation: _scrollController,
+                        builder: (context, child) {
+                          return Visibility(
+                            visible: _scrollController.offset > 0,
+                            child: Positioned(
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8),
+                                child: Icon(
+                                  RadixIcons.chevronUp,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ],
