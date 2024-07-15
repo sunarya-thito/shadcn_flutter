@@ -49,6 +49,7 @@ class ResizablePane extends StatefulWidget {
   final double? maxSize;
   final double? collapsedSize;
   final ResizablePaneController? controller;
+  final int? flex;
 
   const ResizablePane({
     Key? key,
@@ -60,6 +61,7 @@ class ResizablePane extends StatefulWidget {
     this.maxSize,
     this.collapsedSize,
     this.initialCollapsed = false,
+    this.flex,
   })  : controller = null,
         super(key: key);
 
@@ -74,6 +76,7 @@ class ResizablePane extends StatefulWidget {
     required this.initialSize,
     required this.controller,
     this.initialCollapsed = false,
+    this.flex,
   }) : super(key: key);
 
   factory ResizablePane.controlled({
@@ -85,6 +88,7 @@ class ResizablePane extends StatefulWidget {
     double? maxSize,
     double? collapsedSize,
     required ResizablePaneController controller,
+    int? flex,
   }) {
     return ResizablePane._controlled(
       key: key,
@@ -97,6 +101,7 @@ class ResizablePane extends StatefulWidget {
       maxSize: maxSize,
       collapsedSize: collapsedSize,
       controller: controller,
+      flex: flex,
     );
   }
 
@@ -140,8 +145,9 @@ class _ResizablePaneState extends State<ResizablePane> {
   @override
   void initState() {
     super.initState();
-    _controller =
-        widget.controller ?? ResizablePaneController(widget.initialSize);
+    _controller = widget.controller ??
+        ResizablePaneController(widget.initialSize,
+            collapsed: widget.initialCollapsed);
   }
 
   @override
@@ -317,12 +323,14 @@ class _BorrowInfo {
 
 class _ResizablePanelState extends State<ResizablePanel> {
   late List<_ActivePane> _panes;
+  late bool _expands;
 
   @override
   void initState() {
     super.initState();
     _panes = List.generate(
         widget.children.length, (index) => _ActivePane(index: index));
+    _expands = widget.children.any((element) => element.flex != null);
   }
 
   bool _isDragging = true;
@@ -621,22 +629,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
       return;
     }
 
-    // double payingBackLeft =
-    //     _borrowSize(index - 1, -payOffRight, 0, -1).givenSize;
-    // double payingBackRight =
-    //     _borrowSize(index, -payOffLeft, _panes.length - 1, 1).givenSize;
-    // if (kDebugResizable)
-    //   print(
-    //       'payOffLeft: $payOffLeft payOffRight: $payOffRight payingBackLeft: $payingBackLeft payingBackRight: $payingBackRight');
-    //
-    // if (payingBackLeft != -payOffRight || payingBackRight != -payOffLeft) {
-    //   if (kDebugResizable)
-    //     print(
-    //         'RESET LOAN SIZES: $payingBackLeft != ${-payOffRight} || $payingBackRight != ${-payOffLeft} -> ${_panes.map((e) => e._proposedSize).toList()}');
-    //   _resetProposedSizes();
-    //   return;
-    // }
-
     // check if we have collapsible
     if (_couldNotBorrow > 0) {
       int start = borrowedRight.from;
@@ -675,10 +667,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
 
     _debugCouldNotBorrow();
 
-    // if (couldNotBorrowLeft != 0 && couldNotBorrowRight != 0) {
-    //   _resetProposedSizes();
-    //   return;
-    // }
     _applyProposedSizes();
     if (kDebugResizable) print('================ DRAG END ==================');
     return;
@@ -839,6 +827,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     if (!listEquals(oldWidget.children, widget.children)) {
       _panes = List.generate(
           widget.children.length, (index) => _ActivePane(index: index));
+      _expands = widget.children.any((element) => element.flex != null);
     }
   }
 
