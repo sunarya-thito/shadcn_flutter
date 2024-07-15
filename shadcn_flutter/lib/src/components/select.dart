@@ -44,10 +44,16 @@ class SelectItemButton<T> extends StatelessWidget {
 }
 
 class SelectGroup extends StatelessWidget {
+  final List<Widget>? headers;
   final List<Widget> children;
+  final List<Widget>? footers;
+  final bool? showUnrelatedValues;
 
   const SelectGroup({
     Key? key,
+    this.headers,
+    this.footers,
+    this.showUnrelatedValues,
     required this.children,
   }) : super(key: key);
 
@@ -57,11 +63,16 @@ class SelectGroup extends StatelessWidget {
     assert(searchData != null, 'SelectGroup must be a child of Select');
     return _SelectValuesHolder(
       query: searchData?.query,
-      showUnrelatedValues: searchData?.showUnrelatedValues ?? false,
+      showUnrelatedValues:
+          showUnrelatedValues ?? searchData?.showUnrelatedValues ?? false,
       builder: (children) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: children,
+          children: [
+            if (headers != null) ...headers!,
+            ...children,
+            if (footers != null) ...footers!,
+          ],
         );
       },
       children: children,
@@ -374,18 +385,8 @@ abstract class _SelectValueHandler {
 
 class _AttachedSelectValue {
   final GlobalKey key = GlobalKey();
-  _SelectValueHandler? _handler;
+  _SelectValueHandler? handler;
   int? score;
-
-  _SelectValueHandler? get handler => _handler;
-  set handler(_SelectValueHandler? value) {
-    print('handler set to $value');
-    _handler = value;
-  }
-
-  _AttachedSelectValue() {
-    print('created');
-  }
 }
 
 class _SelectValuesHolder extends StatefulWidget {
@@ -424,7 +425,6 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
   @override
   void initState() {
     super.initState();
-    print('initializing attached values');
     _attachedValues = List.generate(
       widget.children.length,
       (index) => _AttachedSelectValue(),
@@ -435,7 +435,6 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
   void didUpdateWidget(covariant _SelectValuesHolder oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget.children, oldWidget.children)) {
-      print('generating new attached values');
       _attachedValues = List.generate(
         widget.children.length,
         (index) => _AttachedSelectValue(),
@@ -477,7 +476,6 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
         final handler = attachedValue.handler;
         final cachedScore = attachedValue.score;
         if (cachedScore != null) {
-          print('cached score: $cachedScore');
           queriedValues.add(_QueriedAttachedValue(
             Data(
               key: attachedValue.key,
@@ -490,7 +488,6 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
         } else {
           if (handler != null) {
             final score = handler.computeIndexingScore(widget.query!);
-            print('score with handler: $score');
             queriedValues.add(_QueriedAttachedValue(
               Data(
                 key: attachedValue.key,
@@ -502,15 +499,13 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
             ));
             attachedValue.score = score;
           } else {
-            // attachedValue.score = 0; // should we cache this?
-            print('score without handler: 0');
             queriedValues.add(_QueriedAttachedValue(
               Data(
                 key: attachedValue.key,
                 data: attachedValue,
                 child: child,
               ),
-              9999999999999,
+              null,
               i,
             ));
           }
@@ -519,13 +514,19 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
       // queriedValues.sort((a, b) => b.score.compareTo(a.score));
       // sort by score, if same, then sort by index
       queriedValues.sort((a, b) {
-        if (a.score == b.score) {
+        final aScore = a.score;
+        final bScore = b.score;
+        if (aScore == bScore) {
           return a.index.compareTo(b.index);
         }
-        return b.score.compareTo(a.score);
+        if (aScore == null) {
+          return -1;
+        }
+        if (bScore == null) {
+          return 1;
+        }
+        return bScore.compareTo(aScore);
       });
-      print(queriedValues);
-      print('handlers: ${_attachedValues.map((e) => e.handler).toList()}');
       for (final queriedValue in queriedValues) {
         if (queriedValue.score == 0 && !widget.showUnrelatedValues) {
           continue;
@@ -588,7 +589,7 @@ class _SelectValueHolderState extends State<_SelectValueHolder>
 
 class _QueriedAttachedValue {
   final Widget widget;
-  final int score;
+  final int? score;
   final int index;
 
   _QueriedAttachedValue(this.widget, this.score, this.index);
