@@ -464,6 +464,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
       if (kDebugResizable) print('attachedPane is null: $index');
       return _BorrowInfo(0, index - direction);
     }
+
+    if (!attachedPane.widget.resizable) {
+      if (kDebugResizable) print('not resizable: $index');
+      return _BorrowInfo(0, index - direction);
+    }
+
     double minSize = attachedPane.widget.minSize ?? 0;
     double maxSize = attachedPane.widget.maxSize ?? double.infinity;
 
@@ -882,6 +888,18 @@ class _ResizablePanelState extends State<ResizablePanel> {
           ),
         );
     }
+  }
+
+  double get _dryViewSize {
+    double totalSize = 0;
+    for (final child in widget.children) {
+      if (child.initialCollapsed) {
+        totalSize += child.collapsedSize ?? 0;
+      } else {
+        totalSize += child.initialSize;
+      }
+    }
+    return totalSize;
   }
 
   @override
