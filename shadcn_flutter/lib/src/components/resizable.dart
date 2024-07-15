@@ -207,7 +207,18 @@ class _ResizablePaneState extends State<ResizablePane> {
           collapsed: widget.initialCollapsed,
         );
       }
-    } else {}
+    } else {
+      _sparedFlexSize = containerData?.sparedFlexSpaceSize;
+      _flexCount = containerData?.flexSpace;
+      if (widget.flex != null) {
+        double newSize =
+            (_sparedFlexSize! * (_activePane!._flex ?? widget.flex!))
+                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity);
+        if (newSize != _controller.value.size) {
+          _controller.size = newSize;
+        }
+      }
+    }
   }
 
   @override
@@ -1104,7 +1115,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
               }
             }
           }
-          print('flexCount: $flexCount $minSizeFlex');
           double containerSize = widget.direction == Axis.horizontal
               ? constraints.maxWidth
               : constraints.maxHeight;
