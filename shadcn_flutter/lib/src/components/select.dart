@@ -265,11 +265,12 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
 }
 
 abstract class _SelectValueHandler {
-  int? computeIndexingScore(String query);
+  int computeIndexingScore(String query);
 }
 
 class _AttachedSelectValue {
   _SelectValueHandler? handler;
+  int? score;
 }
 
 class _SelectValuesHolder extends StatefulWidget {
@@ -288,8 +289,35 @@ class _SelectValuesHolder extends StatefulWidget {
   State<_SelectValuesHolder> createState() => _SelectValuesHolderState();
 }
 
-class _SelectValuesHolderState extends State<_SelectValuesHolder> {
+class _SelectValuesHolderState extends State<_SelectValuesHolder>
+    implements _SelectValueHandler {
   late List<_AttachedSelectValue> _attachedValues;
+
+  _AttachedSelectValue? _currentAttached;
+
+  @override
+  int computeIndexingScore(String query) {
+    int score = 0;
+    for (int i = 0; i < widget.children.length; i++) {
+      final attachedValue = _attachedValues[i];
+      final handler = attachedValue.handler;
+      if (handler != null) {
+        score += handler.computeIndexingScore(query);
+      }
+    }
+    return score;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var newAttached = Data.maybeOf(context);
+    if (newAttached != _currentAttached) {
+      _currentAttached?.handler = null;
+      _currentAttached = newAttached;
+      _currentAttached?.handler = this;
+    }
+  }
 
   @override
   void initState() {
@@ -314,13 +342,43 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
-    for (int i = 0; i < widget.children.length; i++) {
-      final child = widget.children[i];
-      children.add(Data(
-        data: _attachedValues[i],
-        child: child,
-      ));
+    if (widget.query == null) {
+      for (int i = 0; i < widget.children.length; i++) {
+        final child = widget.children[i];
+        children.add(Data(
+          data: _attachedValues[i],
+          child: child,
+        ));
+      }
+    } else {
+      List<_QueriedAttachedValue> queriedValues = [];
+      for (int i = 0; i < widget.children.length; i++) {
+        final child = widget.children[i];
+        final attachedValue = _attachedValues[i];
+        final handler = attachedValue.handler;
+        final cachedScore = attachedValue.score;
+        if (cachedScore != null) {
+          queriedValues.add(_QueriedAttachedValue(
+            Data(
+              data: attachedValue,
+              child: child,
+            ),
+            cachedScore,
+          ));
+        }
+      }
+      queriedValues.sort((a, b) => b.score.compareTo(a.score));
+      for (final queriedValue in queriedValues) {
+        children.add(queriedValue.widget);
+      }
     }
     return widget.builder(children);
   }
+}
+
+class _QueriedAttachedValue {
+  final Widget widget;
+  final int score;
+
+  _QueriedAttachedValue(this.widget, this.score);
 }
