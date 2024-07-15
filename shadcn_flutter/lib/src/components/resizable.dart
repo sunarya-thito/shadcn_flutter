@@ -125,12 +125,9 @@ class ResizablePane extends StatefulWidget {
 }
 
 class ResizableContainerData {
-  final double maxSize;
-  final double nonFlexSpaceSize;
-  final double sparedFlexSpacceSize;
+  final double sparedFlexSpaceSize;
 
-  const ResizableContainerData(
-      this.maxSize, this.nonFlexSpaceSize, this.sparedFlexSpacceSize);
+  const ResizableContainerData(this.sparedFlexSpaceSize);
 }
 
 class _ResizablePaneState extends State<ResizablePane> {
@@ -924,14 +921,174 @@ class _ResizablePanelState extends State<ResizablePanel> {
     }
   }
 
+  Widget buildFlexContainer(BuildContext context, double sparedFlexSize) {
+    switch (widget.direction) {
+      case Axis.horizontal:
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: buildFlexChildren(context, sparedFlexSize),
+        );
+      case Axis.vertical:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: buildFlexChildren(context, sparedFlexSize),
+        );
+    }
+  }
+
+  List<Widget> buildFlexChildren(BuildContext context, double sparedFlexSize) {
+    List<Widget> children = [];
+    assert(widget.children.length == _panes.length,
+        'Children and panes length mismatch');
+    for (int i = 0; i < widget.children.length; i++) {
+      final child = widget.children[i];
+      final pane = _panes[i];
+      if (i > 0) {
+        children.add(
+          _ResizableDivider(
+            index: i,
+            child: Builder(
+              builder: (context) {
+                return widget.dividerBuilder!(context);
+              },
+            ),
+          ),
+        );
+      }
+      children.add(
+        Data(
+          data: pane,
+          child: Data(
+            data: ResizableContainerData(sparedFlexSize),
+            child: KeyedSubtree(
+              key: ValueKey(i),
+              child: child,
+            ),
+          ),
+        ),
+      );
+    }
+    return children;
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_expands) {
+      return Data(
+        data: this,
+        child: LayoutBuilder(builder: (context, constraints) {
+          double nonFlexSpace = 0;
+          int flexCount = 0;
+          for (final child in widget.children) {
+            if (child.flex == null) {
+              assert(
+                  child.initialSize != null, 'Initial size must not be null');
+              nonFlexSpace += child.initialSize!;
+            } else {
+              flexCount += child.flex!;
+            }
+          }
+          double containerSize = widget.direction == Axis.horizontal
+              ? constraints.maxWidth
+              : constraints.maxHeight;
+          double flexSpace = containerSize - nonFlexSpace;
+          double spacePerFlex = flexSpace / flexCount;
+          List<Widget> dividers = [];
+          double offset = 0;
+          for (int i = 0; i < widget.children.length - 1; i++) {
+            final child = widget.children[i];
+            double size = child.flex != null
+                ? child.flex! * spacePerFlex
+                : (_panes[i]._attachedPane?.viewSize ?? child.initialSize)!;
+            offset += size;
+            Widget dragger;
+            if (widget.direction == Axis.horizontal) {
+              dragger = Positioned(
+                left: offset - widget.dividerSize / 2,
+                top: 0,
+                bottom: 0,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onPanStart: (details) {
+                    _startDragging();
+                  },
+                  onPanUpdate: (details) {
+                    _dragDivider(i + 1, details.delta.dx);
+                  },
+                  onPanEnd: (details) {
+                    _stopDragging();
+                  },
+                  child: SizedBox(
+                    width: widget.dividerSize,
+                    child: Builder(
+                      builder: (context) {
+                        return widget.draggerBuilder!(context);
+                      },
+                    ),
+                  ),
+                ),
+              );
+            } else {
+              dragger = Positioned(
+                top: offset - widget.dividerSize / 2,
+                left: 0,
+                right: 0,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onPanStart: (details) {
+                    _startDragging();
+                  },
+                  onPanUpdate: (details) {
+                    _dragDivider(i + 1, details.delta.dy);
+                  },
+                  onPanEnd: (details) {
+                    _stopDragging();
+                  },
+                  child: SizedBox(
+                    height: widget.dividerSize,
+                    child: Builder(
+                      builder: (context) {
+                        return widget.draggerBuilder!(context);
+                      },
+                    ),
+                  ),
+                ),
+              );
+            }
+            dividers.add(dragger);
+          }
+          return Stack(
+            fit: StackFit.passthrough,
+            clipBehavior: Clip.none,
+            children: [
+              buildFlexContainer(context, spacePerFlex),
+              ...dividers,
+              Positioned(
+                top: -16,
+                child: RepeatedAnimationBuilder(
+                  duration: Duration(milliseconds: 1),
+                  start: 0.0,
+                  end: 1.0,
+                  builder: (context, value, child) {
+                    return Text(
+                        'Sum Sizes: ${_panes.map((e) => e._attachedPane?.viewSize ?? 0).fold(0.0, (a, b) => a + b)}');
+                  },
+                ),
+              )
+            ],
+          );
+        }),
+      );
+    }
     List<Widget> dividers = [];
     double offset = 0;
     for (int i = 0; i < widget.children.length - 1; i++) {
-      double currentSize =
-          _panes[i]._attachedPane?.viewSize ?? widget.children[i].initialSize!;
-      offset += currentSize;
+      double? currentSize =
+          _panes[i]._attachedPane?.viewSize ?? widget.children[i].initialSize;
+      assert(currentSize != null, 'Size must not be null');
+      offset += currentSize!;
       Widget dragger;
       if (widget.direction == Axis.horizontal) {
         dragger = Positioned(
