@@ -61,8 +61,8 @@ class ResizablePane extends StatefulWidget {
     this.maxSize,
     this.collapsedSize,
     this.initialCollapsed = false,
-    this.flex,
   })  : controller = null,
+  flex = null,
         super(key: key);
 
   ResizablePane._controlled({
