@@ -36,7 +36,7 @@ class ResizableTest extends StatelessWidget {
               index: 1,
               height: 200,
             ),
-            maxSize: 100,
+            // maxSize: 400,
             minSize: 20,
           ),
           ResizablePane(
