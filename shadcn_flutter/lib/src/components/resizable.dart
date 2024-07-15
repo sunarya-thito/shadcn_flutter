@@ -183,6 +183,8 @@ class _ResizablePaneState extends State<ResizablePane> {
           containerSize = containerSize.clamp(
               widget.minSize ?? 0, widget.maxSize ?? double.infinity);
           _changeSize(containerSize);
+          resizablePanelState._reportActualSize(
+              _activePane!.index, containerSize);
           return buildContainer(context, resizablePanelState);
         }),
       );
@@ -283,7 +285,10 @@ class ResizablePanel extends StatefulWidget {
   }
 
   static Widget _defaultDraggerBuilder(BuildContext context) {
-    return const SizedBox();
+    return Container(
+      color: Colors.yellow.withOpacity(0.2),
+    );
+    // return const SizedBox();
   }
 
   final List<ResizablePane> children;
@@ -310,7 +315,8 @@ class _ActivePane {
   _ResizablePaneState? _attachedPane;
   double _sizeBeforeDrag = 0;
   double __proposedSize = 0;
-  // double _proposedSize = 0;
+
+  double? _actualSize;
 
   double get _proposedSize => __proposedSize;
 
@@ -345,14 +351,12 @@ class _BorrowInfo {
 
 class _ResizablePanelState extends State<ResizablePanel> {
   late List<_ActivePane> _panes;
-  late bool _expands;
 
   @override
   void initState() {
     super.initState();
     _panes = List.generate(
         widget.children.length, (index) => _ActivePane(index: index));
-    _expands = widget.children.any((element) => element.flex != null);
   }
 
   bool _isDragging = true;
@@ -855,7 +859,19 @@ class _ResizablePanelState extends State<ResizablePanel> {
     if (!listEquals(oldWidget.children, widget.children)) {
       _panes = List.generate(
           widget.children.length, (index) => _ActivePane(index: index));
-      _expands = widget.children.any((element) => element.flex != null);
+    }
+  }
+
+  void _reportActualSize(int index, double size) {
+    if (size != _panes[index]._actualSize) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        // second time check, to make sure that the widget is still mounted and size is still different
+        if (size != _panes[index]._actualSize && mounted) {
+          setState(() {
+            _panes[index]._actualSize = size;
+          });
+        }
+      });
     }
   }
 
@@ -912,22 +928,53 @@ class _ResizablePanelState extends State<ResizablePanel> {
     }
   }
 
-  double get _dryViewSize {
-    double totalSize = 0;
-    for (final child in widget.children) {
-      if (child.initialCollapsed) {
-        totalSize += child.collapsedSize ?? 0;
-      } else {
-        totalSize += child.initialSize;
-      }
-    }
-    return totalSize;
-  }
-
   @override
   Widget build(BuildContext context) {
     List<Widget> dividers = [];
-    for (int i = 0; i < widget.children.length; i++) {}
+    double offset = 0;
+    for (int i = 0; i < widget.children.length; i++) {
+      double currentSize = _panes[i]._actualSize ??
+          _panes[i]._attachedPane?.viewSize ??
+          widget.children[i].initialSize;
+      offset += currentSize;
+      Widget dragger;
+      if (widget.direction == Axis.horizontal) {
+        dragger = Positioned(
+          left: offset - widget.dividerSize / 2,
+          top: 0,
+          bottom: 0,
+          child: SizedBox(
+            width: widget.dividerSize,
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              child: Builder(
+                builder: (context) {
+                  return widget.draggerBuilder!(context);
+                },
+              ),
+            ),
+          ),
+        );
+      } else {
+        dragger = Positioned(
+          top: offset - widget.dividerSize / 2,
+          left: 0,
+          right: 0,
+          child: SizedBox(
+            height: widget.dividerSize,
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              child: Builder(
+                builder: (context) {
+                  return widget.draggerBuilder!(context);
+                },
+              ),
+            ),
+          ),
+        );
+      }
+      dividers.add(dragger);
+    }
     return Data(
       data: this,
       child: Stack(
