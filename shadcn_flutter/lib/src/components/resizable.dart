@@ -126,14 +126,18 @@ class ResizablePane extends StatefulWidget {
 
 class ResizableContainerData {
   final double sparedFlexSpaceSize;
+  final double flexSpace;
+  final int flexCount;
 
-  const ResizableContainerData(this.sparedFlexSpaceSize);
+  const ResizableContainerData(
+      this.sparedFlexSpaceSize, this.flexSpace, this.flexCount);
 }
 
 class _ResizablePaneState extends State<ResizablePane> {
   ResizablePaneController? __controller;
   _ActivePane? _activePane;
   double? _sparedFlexSize;
+  double? _flexSpace;
 
   ResizablePaneController get _controller {
     assert(__controller != null, 'ResizablePane is not properly initialized');
@@ -179,6 +183,7 @@ class _ResizablePaneState extends State<ResizablePane> {
 
     if (__controller == null) {
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
+      _flexSpace = containerData?.flexSpace;
       if (widget.flex != null) {
         __controller = ResizablePaneController(
           (containerData!.sparedFlexSpaceSize * widget.flex!)
@@ -192,12 +197,12 @@ class _ResizablePaneState extends State<ResizablePane> {
         );
       }
     } else {
-      double diffSparedFlexSize =
-          containerData!.sparedFlexSpaceSize - _sparedFlexSize!;
-      if (diffSparedFlexSize != 0 && widget.flex != null) {
-        _sparedFlexSize = containerData.sparedFlexSpaceSize;
-        double newSize =
-            _controller.value.size + diffSparedFlexSize * widget.flex!;
+      _sparedFlexSize = containerData?.sparedFlexSpaceSize;
+      _flexSpace = containerData?.flexSpace;
+      double diffFlexSpace = containerData!.flexSpace - _flexSpace!;
+      if (diffFlexSpace != 0 && widget.flex != null) {
+        double newSize = _controller.value.size +
+            (diffFlexSpace / containerData.flexCount) * _computeCurrentFlex();
         newSize = newSize.clamp(
             widget.minSize ?? 0, widget.maxSize ?? double.infinity);
         _controller.size = newSize;
@@ -212,9 +217,12 @@ class _ResizablePaneState extends State<ResizablePane> {
   }
 
   double _computeCurrentFlex() {
-    assert(_sparedFlexSize != null,
+    assert(_flexSpace != null,
         'sparedFlexSize must not be null during flex computation');
-    double sparedFlexSize = _sparedFlexSize!;
+    double currentSize = _controller.value.size;
+    print(
+        'compute current flex: $currentSize / $_flexSpace = ${currentSize / _flexSpace!}');
+    return currentSize / _flexSpace!;
   }
 
   @override
@@ -991,24 +999,28 @@ class _ResizablePanelState extends State<ResizablePanel> {
     }
   }
 
-  Widget buildFlexContainer(BuildContext context, double sparedFlexSize) {
+  Widget buildFlexContainer(BuildContext context, double sparedFlexSize,
+      double flexSpace, int flexCount) {
     switch (widget.direction) {
       case Axis.horizontal:
         return Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
-          children: buildFlexChildren(context, sparedFlexSize),
+          children:
+              buildFlexChildren(context, sparedFlexSize, flexSpace, flexCount),
         );
       case Axis.vertical:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
-          children: buildFlexChildren(context, sparedFlexSize),
+          children:
+              buildFlexChildren(context, sparedFlexSize, flexSpace, flexCount),
         );
     }
   }
 
-  List<Widget> buildFlexChildren(BuildContext context, double sparedFlexSize) {
+  List<Widget> buildFlexChildren(BuildContext context, double sparedFlexSize,
+      double flexSpace, int flexCount) {
     List<Widget> children = [];
     assert(widget.children.length == _panes.length,
         'Children and panes length mismatch');
@@ -1031,7 +1043,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         Data(
           data: pane,
           child: Data(
-            data: ResizableContainerData(sparedFlexSize),
+            data: ResizableContainerData(sparedFlexSize, flexSpace, flexCount),
             child: KeyedSubtree(
               key: ValueKey(i),
               child: child,
@@ -1154,7 +1166,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
             fit: StackFit.passthrough,
             clipBehavior: Clip.none,
             children: [
-              buildFlexContainer(context, spacePerFlex),
+              buildFlexContainer(context, spacePerFlex, flexSpace, flexCount),
               ...dividers,
               Positioned(
                 top: -16,
