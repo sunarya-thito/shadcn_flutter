@@ -180,9 +180,6 @@ class _ResizablePaneState extends State<ResizablePane> {
           double containerSize = direction == Axis.horizontal
               ? constraints.maxWidth
               : constraints.maxHeight;
-          containerSize = containerSize.clamp(
-              widget.minSize ?? 0, widget.maxSize ?? double.infinity);
-          _changeSize(containerSize);
           resizablePanelState._reportActualSize(
               _activePane!.index, containerSize);
           return buildContainer(context, resizablePanelState);
@@ -550,15 +547,16 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   void _applyProposedSizes() {
-    for (int i = 0; i < _panes.length; i++) {
-      final pane = _panes[i];
-      final attachedPane = pane._attachedPane;
-      if (attachedPane == null) {
-        return;
+    setState(() {
+      for (int i = 0; i < _panes.length; i++) {
+        final pane = _panes[i];
+        final attachedPane = pane._attachedPane;
+        if (attachedPane == null) {
+          return;
+        }
+        attachedPane._changeSize(pane._proposedSize);
       }
-      attachedPane._changeSize(pane._proposedSize);
-      // pane._couldNotBorrow = 0;
-    }
+    });
   }
 
   void _debugCouldNotBorrow() {
@@ -932,7 +930,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
   Widget build(BuildContext context) {
     List<Widget> dividers = [];
     double offset = 0;
-    for (int i = 0; i < widget.children.length; i++) {
+    for (int i = 0; i < widget.children.length - 1; i++) {
       double currentSize = _panes[i]._actualSize ??
           _panes[i]._attachedPane?.viewSize ??
           widget.children[i].initialSize;
@@ -943,10 +941,19 @@ class _ResizablePanelState extends State<ResizablePanel> {
           left: offset - widget.dividerSize / 2,
           top: 0,
           bottom: 0,
-          child: SizedBox(
-            width: widget.dividerSize,
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onPanStart: (details) {
+              _startDragging();
+            },
+            onPanUpdate: (details) {
+              _dragDivider(i + 1, details.delta.dx);
+            },
+            onPanEnd: (details) {
+              _stopDragging();
+            },
+            child: SizedBox(
+              width: widget.dividerSize,
               child: Builder(
                 builder: (context) {
                   return widget.draggerBuilder!(context);
@@ -960,10 +967,19 @@ class _ResizablePanelState extends State<ResizablePanel> {
           top: offset - widget.dividerSize / 2,
           left: 0,
           right: 0,
-          child: SizedBox(
-            height: widget.dividerSize,
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onPanStart: (details) {
+              _startDragging();
+            },
+            onPanUpdate: (details) {
+              _dragDivider(i + 1, details.delta.dy);
+            },
+            onPanEnd: (details) {
+              _stopDragging();
+            },
+            child: SizedBox(
+              height: widget.dividerSize,
               child: Builder(
                 builder: (context) {
                   return widget.draggerBuilder!(context);
