@@ -195,7 +195,8 @@ class _ResizablePaneState extends State<ResizablePane> {
           containerData!.sparedFlexSpaceSize - _sparedFlexSize!;
       if (diffSparedFlexSize != 0) {
         _sparedFlexSize = containerData.sparedFlexSpaceSize;
-        double newSize = _controller.value.size + diffSparedFlexSize * widget.flex!;
+        double newSize =
+            _controller.value.size + diffSparedFlexSize * widget.flex!;
         newSize = newSize.clamp(
             widget.minSize ?? 0, widget.maxSize ?? double.infinity);
         _controller.size = newSize;
@@ -225,7 +226,13 @@ class _ResizablePaneState extends State<ResizablePane> {
         );
       }
     } else if (widget.flex != oldWidget.flex) {
-      double 
+      double oldFlexedSize = _sparedFlexSize! * oldWidget.flex!;
+      double newFlexedSize = _sparedFlexSize! * widget.flex!;
+      double diff = newFlexedSize - oldFlexedSize;
+      double newSize = _controller.value.size + diff;
+      newSize =
+          newSize.clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity);
+      _controller.size = newSize;
     }
   }
 
