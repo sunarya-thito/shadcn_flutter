@@ -199,16 +199,9 @@ class _ResizablePaneState extends State<ResizablePane> {
     } else {
       double currentFlex =
           _flexSpace == null ? widget.flex! : _computeCurrentFlex();
+      double oldSize = _controller.value.size;
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
       _flexSpace = containerData?.flexSpace;
-      double diffFlexSpace = containerData!.flexSpace - _flexSpace!;
-      if (diffFlexSpace != 0 && widget.flex != null) {
-        double newSize = _controller.value.size +
-            (diffFlexSpace / containerData.flexCount) * currentFlex;
-        newSize = newSize.clamp(
-            widget.minSize ?? 0, widget.maxSize ?? double.infinity);
-        _controller.size = newSize;
-      }
     }
 
     if (newActivePane != _activePane) {
@@ -1075,7 +1068,11 @@ class _ResizablePanelState extends State<ResizablePanel> {
                       ? (child.collapsedSize ?? 0)
                       : (child.initialSize ?? 0));
             } else {
-              flexCount += child.flex!;
+              // flexCount += child.flex!;
+              final attachedPane = _panes[i]._attachedPane;
+              if (attachedPane == null) {
+                flexCount += child.flex!;
+              }
             }
           }
           double containerSize = widget.direction == Axis.horizontal
