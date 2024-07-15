@@ -1074,18 +1074,23 @@ class _ResizablePanelState extends State<ResizablePanel> {
                   (child.initialCollapsed
                       ? (child.collapsedSize ?? 0)
                       : (child.initialSize ?? 0));
-            } else {
-              // flexCount += child.flex!;
-              final attachedPane = _panes[i]._attachedPane;
-              if (attachedPane == null) {
-                flexCount += child.flex!;
-              }
             }
           }
           double containerSize = widget.direction == Axis.horizontal
               ? constraints.maxWidth
               : constraints.maxHeight;
           double flexSpace = containerSize - nonFlexSpace;
+          for (int i = 0; i < widget.children.length; i++) {
+            final child = widget.children[i];
+            if (child.flex != null) {
+              final attachedPane = _panes[i]._attachedPane;
+              if (attachedPane == null) {
+                flexCount += child.flex!;
+              } else {
+                flexCount += attachedPane.viewSize / flexSpace;
+              }
+            }
+          }
           double spacePerFlex = flexSpace / flexCount;
           double flexSpaceDiff =
               _previousFlexSpace != null ? flexSpace - _previousFlexSpace! : 0;
