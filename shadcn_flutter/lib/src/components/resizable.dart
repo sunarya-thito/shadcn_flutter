@@ -1122,8 +1122,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
                 : (child.flex != null
                     ? ((_panes[i]._flex ?? child.flex)! * spacePerFlex).clamp(
                         child.minSize ?? 0, child.maxSize ?? double.infinity)
-                    : (child.initialSize ?? 0));
-            print('$i => $size flex: ${child.flex} pane flex: ${_panes[i]._flex}');
+                    : (_panes[i]._attachedPane?.viewSize ??
+                        child.initialSize ??
+                        0));
             offset += size;
             Widget dragger;
             if (widget.direction == Axis.horizontal) {
