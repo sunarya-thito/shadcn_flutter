@@ -17,10 +17,16 @@ class SelectItemButton<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return SelectItem<T>(
       value: value,
-      builder: (context, selectItem) {
+      builder: (context, selectItem, selected) {
         return GhostButton(
           disableTransition: true,
           onPressed: selectItem,
+          trailing: selected
+              ? const Icon(
+                  Icons.check,
+                  size: 16,
+                )
+              : null,
           child: child,
         );
       },
@@ -55,7 +61,7 @@ class SelectGroup extends StatelessWidget {
 
 typedef SelectItemReporter = void Function();
 typedef SelectItemBuilder = Widget Function(
-    BuildContext context, SelectItemReporter selectItem);
+    BuildContext context, SelectItemReporter selectItem, bool selected);
 
 class SelectItem<T> extends StatelessWidget {
   final SelectItemBuilder builder;
@@ -78,13 +84,16 @@ class SelectItem<T> extends StatelessWidget {
         if (computeIndexingScore != null) {
           return computeIndexingScore!(query);
         }
-        return searchData!.searchFilter?.call(value, query) ?? 0;
+        return searchData.searchFilter?.call(value, query) ?? 0;
       },
-      child: builder(
-        context,
-        () {
-          searchData!.onChanged(value);
-        },
+      child: Data<_SelectData>.boundary(
+        child: builder(
+          context,
+          () {
+            searchData.onChanged(value);
+          },
+          searchData!.value == value,
+        ),
       ),
     );
   }
@@ -120,6 +129,7 @@ class Select<T> extends StatefulWidget {
   final List<Widget> children;
   final T? value;
   final Widget Function(BuildContext context, T item) itemBuilder;
+  final bool showUnrelatedValues;
 
   const Select({
     Key? key,
@@ -132,6 +142,7 @@ class Select<T> extends StatefulWidget {
     this.popupConstraints = const BoxConstraints(),
     this.popupWidthConstraint = PopoverConstraint.anchorMinSize,
     this.value,
+    this.showUnrelatedValues = false,
     required this.itemBuilder,
     required this.children,
   }) : super(key: key);
@@ -207,6 +218,7 @@ class _SelectState<T> extends State<Select<T>> {
             constraints: widget.popupConstraints,
             onChanged: widget.onChanged,
             value: widget.value,
+            showUnrelatedValues: widget.showUnrelatedValues,
             children: widget.children,
           );
         },
@@ -224,6 +236,7 @@ class SelectPopup<T> extends StatefulWidget {
   final SearchFilter<T>? searchFilter;
   final BoxConstraints constraints;
   final List<Widget> children;
+  final bool showUnrelatedValues;
 
   const SelectPopup({
     Key? key,
@@ -231,6 +244,7 @@ class SelectPopup<T> extends StatefulWidget {
     required this.onChanged,
     this.searchFilter,
     this.constraints = const BoxConstraints(minWidth: 200),
+    this.showUnrelatedValues = false,
     required this.children,
   }) : super(key: key);
 
@@ -303,6 +317,8 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                               widget.onChanged?.call(value);
                               context.hidePopover();
                             },
+                            widget.value,
+                            widget.showUnrelatedValues,
                           ),
                           child: _SelectValuesHolder(
                             query: text,
@@ -331,9 +347,12 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
 class _SelectData {
   final SearchFilter? searchFilter;
   final String? query;
-  ValueChanged onChanged;
+  final dynamic value;
+  final ValueChanged onChanged;
+  final bool showUnrelatedValues;
 
-  _SelectData(this.searchFilter, this.query, this.onChanged);
+  _SelectData(this.searchFilter, this.query, this.onChanged, this.value,
+      this.showUnrelatedValues);
 }
 
 abstract class _SelectValueHandler {
@@ -507,8 +526,15 @@ class _SelectValueHolderState extends State<_SelectValueHolder>
 
   @override
   Widget build(BuildContext context) {
+    final selectData = Data.maybeOf<_SelectData>(context);
+    assert(selectData != null, 'SelectValueHolder must be a child of Select');
     return Data<_AttachedSelectValue>.boundary(
-      child: widget.child,
+      child: Offstage(
+        offstage: selectData!.showUnrelatedValues &&
+            selectData.query != null &&
+            (_currentAttached?.score ?? 0) == 0,
+        child: widget.child,
+      ),
     );
   }
 }

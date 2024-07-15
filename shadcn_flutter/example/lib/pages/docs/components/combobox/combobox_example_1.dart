@@ -8,7 +8,7 @@ class ComboboxExample1 extends StatefulWidget {
 }
 
 class _ComboboxExample1State extends State<ComboboxExample1> {
-  int? selectedValue;
+  String? selectedValue;
   @override
   Widget build(BuildContext context) {
     return Select<String>(
