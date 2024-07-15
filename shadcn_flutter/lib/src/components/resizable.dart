@@ -607,8 +607,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         print('CHECK COLLAPSIBLE RIGHT $index');
         _checkCollapseUntil(index, _couldNotBorrow);
       }
-      int startExpanding = borrowedLeft.from;
-      print('startExpanding: $startExpanding $index');
+      _checkExpanding(index);
     } else if (_couldNotBorrow < 0) {
       int start = borrowedLeft.from;
       int endNotCollapsed = 0;
@@ -710,6 +709,22 @@ class _ResizablePanelState extends State<ResizablePanel> {
 
   void _checkExpanding(int index) {
     if (_couldNotBorrow > 0) {
+      // check if we can expand from the left side
+      int toCheck = index - 1;
+      for (; toCheck >= 0; toCheck--) {
+        final pane = getAt(toCheck);
+        if (pane != null && pane._attachedPane!.collapsed) {
+          double? collapsibleSize = pane._attachedPane!.widget.collapsedSize;
+          if (collapsibleSize != null) {
+            double minSize = pane._attachedPane!.widget.minSize ?? 0;
+            double threshold = (minSize - collapsibleSize) / 2;
+            print('EXPANDING THRESHOLD $threshold');
+            break;
+          }
+          // we treat pane with no collapsibleSize as a non-collapsible pane
+        }
+      }
+    } else if (_couldNotBorrow < 0) {
       // check if we can expand from the right side
     }
   }
