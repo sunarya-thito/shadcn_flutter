@@ -394,8 +394,14 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                                       const Duration(milliseconds: 16),
                                   onHover: () {
                                     // decrease scroll offset
+                                    var value = _scrollController.offset - 8;
+                                    value = value.clamp(
+                                      0.0,
+                                      _scrollController
+                                          .position.maxScrollExtent,
+                                    );
                                     _scrollController.jumpTo(
-                                      _scrollController.offset - 8,
+                                      value,
                                     );
                                   },
                                   child: Container(
@@ -403,7 +409,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                                     padding: EdgeInsets.symmetric(vertical: 4),
                                     child: Icon(
                                       RadixIcons.chevronUp,
-                                      size: 16,
+                                      size: 8,
                                     ),
                                   ),
                                 ),
@@ -414,35 +420,51 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                         AnimatedBuilder(
                           animation: _scrollController,
                           builder: (context, child) {
-                            return Visibility(
-                              visible: _scrollController.hasClients &&
-                                  _scrollController.offset <
+                            return AnimatedBuilder(
+                              animation: _scrollController.position,
+                              builder: (context, child) {
+                                return Visibility(
+                                  visible: _scrollController.hasClients &&
                                       _scrollController
-                                          .position.maxScrollExtent,
-                              child: Positioned(
-                                bottom: 0,
-                                left: 0,
-                                right: 0,
-                                child: HoverActivity(
-                                  hitTestBehavior: HitTestBehavior.translucent,
-                                  debounceDuration:
-                                      const Duration(milliseconds: 16),
-                                  onHover: () {
-                                    // increase scroll offset
-                                    _scrollController.jumpTo(
-                                      _scrollController.offset + 8,
-                                    );
-                                  },
-                                  child: Container(
-                                    color: theme.colorScheme.background,
-                                    padding: EdgeInsets.symmetric(vertical: 4),
-                                    child: Icon(
-                                      RadixIcons.chevronDown,
-                                      size: 16,
+                                          .position.hasContentDimensions &&
+                                      _scrollController.offset <
+                                          _scrollController
+                                              .position.maxScrollExtent,
+                                  child: Positioned(
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: HoverActivity(
+                                      hitTestBehavior:
+                                          HitTestBehavior.translucent,
+                                      debounceDuration:
+                                          const Duration(milliseconds: 16),
+                                      onHover: () {
+                                        // increase scroll offset
+                                        var value =
+                                            _scrollController.offset + 8;
+                                        value = value.clamp(
+                                          0.0,
+                                          _scrollController
+                                              .position.maxScrollExtent,
+                                        );
+                                        _scrollController.jumpTo(
+                                          value,
+                                        );
+                                      },
+                                      child: Container(
+                                        color: theme.colorScheme.background,
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 4),
+                                        child: Icon(
+                                          RadixIcons.chevronDown,
+                                          size: 8,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             );
                           },
                         ),
