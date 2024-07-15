@@ -949,7 +949,7 @@ class FormRow<T> extends StatelessWidget {
     required this.child,
     this.validator,
     this.hint,
-  });
+  }) : assert(T == dynamic);
 
   @override
   FormKey<T> get key => super.key as FormKey<T>;
