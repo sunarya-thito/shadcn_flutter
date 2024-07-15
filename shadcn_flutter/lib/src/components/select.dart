@@ -23,16 +23,26 @@ class SelectGroup extends StatelessWidget {
 class SelectItem<T> extends StatelessWidget {
   final Widget child;
   final T value;
+  final int Function(String query)? computeIndexingScore;
 
   const SelectItem({
     Key? key,
     required this.child,
     required this.value,
+    this.computeIndexingScore,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError();
+    return _SelectValueHolder(
+      child: child,
+      computeIndexingScore: (query) {
+        if (computeIndexingScore != null) {
+          return computeIndexingScore!(query);
+        }
+        return 0;
+      },
+    );
   }
 }
 
@@ -184,13 +194,6 @@ class SelectPopup<T> extends StatefulWidget {
   _SelectPopupState<T> createState() => _SelectPopupState<T>();
 }
 
-class _ComboBoxItem<T> {
-  final int index;
-  final T item;
-
-  _ComboBoxItem(this.index, this.item);
-}
-
 class _SelectPopupState<T> extends State<SelectPopup<T>> {
   final TextEditingController _searchController = TextEditingController();
 
@@ -241,8 +244,12 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                     child: AnimatedBuilder(
                       animation: _searchController,
                       builder: (context, child) {
+                        String? text = _searchController.text;
+                        if (text.trim().isEmpty) {
+                          text = null;
+                        }
                         return _SelectValuesHolder(
-                          query: _searchController.text,
+                          query: text,
                           children: widget.children,
                           builder: (children) {
                             return Column(
@@ -289,13 +296,9 @@ class _SelectValuesHolder extends StatefulWidget {
   State<_SelectValuesHolder> createState() => _SelectValuesHolderState();
 }
 
-class _SelectValuesHolderState extends State<_SelectValuesHolder>
-    implements _SelectValueHandler {
+class _SelectValuesHolderState extends State<_SelectValuesHolder> {
   late List<_AttachedSelectValue> _attachedValues;
 
-  _AttachedSelectValue? _currentAttached;
-
-  @override
   int computeIndexingScore(String query) {
     int score = 0;
     for (int i = 0; i < widget.children.length; i++) {
@@ -306,17 +309,6 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder>
       }
     }
     return score;
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    var newAttached = Data.maybeOf(context);
-    if (newAttached != _currentAttached) {
-      _currentAttached?.handler = null;
-      _currentAttached = newAttached;
-      _currentAttached?.handler = this;
-    }
   }
 
   @override
@@ -336,6 +328,20 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder>
         widget.children.length,
         (index) => _AttachedSelectValue(),
       );
+    }
+    if (widget.query != oldWidget.query) {
+      // invalidate all scores
+      if (widget.query != null) {
+        for (final attachedValue in _attachedValues) {
+          final handler = attachedValue.handler;
+          if (handler != null) {
+            final score = handler.computeIndexingScore(widget.query!);
+            attachedValue.score = score;
+          } else {
+            attachedValue.score = 0;
+          }
+        }
+      }
     }
   }
 
@@ -365,6 +371,27 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder>
             ),
             cachedScore,
           ));
+        } else {
+          if (handler != null) {
+            final score = handler.computeIndexingScore(widget.query!);
+            queriedValues.add(_QueriedAttachedValue(
+              Data(
+                data: attachedValue,
+                child: child,
+              ),
+              score,
+            ));
+            attachedValue.score = score;
+          } else {
+            attachedValue.score = 0; // should we cache this?
+            queriedValues.add(_QueriedAttachedValue(
+              Data(
+                data: attachedValue,
+                child: child,
+              ),
+              0,
+            ));
+          }
         }
       }
       queriedValues.sort((a, b) => b.score.compareTo(a.score));
@@ -372,7 +399,52 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder>
         children.add(queriedValue.widget);
       }
     }
-    return widget.builder(children);
+    return _SelectValueHolder(
+      computeIndexingScore: computeIndexingScore,
+      child: widget.builder(children),
+    );
+  }
+}
+
+class _SelectValueHolder extends StatefulWidget {
+  final Widget child;
+  final int Function(String query) computeIndexingScore;
+
+  const _SelectValueHolder({
+    Key? key,
+    required this.child,
+    required this.computeIndexingScore,
+  }) : super(key: key);
+
+  @override
+  State<_SelectValueHolder> createState() => _SelectValueHolderState();
+}
+
+class _SelectValueHolderState extends State<_SelectValueHolder>
+    implements _SelectValueHandler {
+  _AttachedSelectValue? _currentAttached;
+
+  @override
+  int computeIndexingScore(String query) {
+    return widget.computeIndexingScore(query);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var newAttached = Data.maybeOf<_AttachedSelectValue>(context);
+    if (newAttached != _currentAttached) {
+      _currentAttached?.handler = null;
+      _currentAttached = newAttached;
+      _currentAttached?.handler = this;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Data<_AttachedSelectValue>.boundary(
+      child: widget.child,
+    );
   }
 }
 
