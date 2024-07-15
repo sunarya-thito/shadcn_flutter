@@ -213,13 +213,10 @@ class _ResizablePaneState extends State<ResizablePane> {
           : containerData.sparedFlexSpaceSize - _sparedFlexSize!;
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
       _flexCount = containerData?.flexSpace;
-      if (widget.flex != null &&
-          sparedFlexDiff != null &&
-          sparedFlexDiff != 0) {
-        double diffFlexSize =
-            sparedFlexDiff * (_activePane!._flex ?? widget.flex!);
-        double newSize = (_controller.value.size + diffFlexSize)
-            .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity);
+      if (widget.flex != null) {
+        double newSize =
+            (_sparedFlexSize! * (_activePane!._flex ?? widget.flex!))
+                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity);
         _controller.size = newSize;
       }
     }
