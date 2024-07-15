@@ -182,13 +182,22 @@ class _ResizablePaneState extends State<ResizablePane> {
     assert(containerData != null,
         'ResizablePane must be a child of ResizableContainer');
     var newActivePane = Data.maybeOf<_ActivePane>(context);
+    assert(
+        newActivePane != null, 'ResizablePane must be a child of ActivePane');
+
+    if (newActivePane != _activePane) {
+      _activePane?._attachedPane = null;
+      _activePane = newActivePane;
+      _activePane?._attachedPane = this;
+    }
 
     if (__controller == null) {
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
       _flexCount = containerData?.flexSpace;
       if (widget.flex != null) {
         __controller = ResizablePaneController(
-          (containerData!.sparedFlexSpaceSize * widget.flex!)
+          (containerData!.sparedFlexSpaceSize *
+                  (_activePane!._flex ?? widget.flex!))
               .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
           collapsed: widget.initialCollapsed,
         );
@@ -198,35 +207,7 @@ class _ResizablePaneState extends State<ResizablePane> {
           collapsed: widget.initialCollapsed,
         );
       }
-    } else {
-      double currentFlex = _computeCurrentFlex();
-      double diffSpared = _sparedFlexSize == null
-          ? 0
-          : containerData!.sparedFlexSpaceSize - _sparedFlexSize!;
-      _sparedFlexSize = containerData?.sparedFlexSpaceSize;
-      _flexCount = containerData?.flexCount;
-      if (diffSpared != 0 && widget.flex != null) {
-        double newSize = _controller.value.size - diffSpared * currentFlex;
-        newSize = newSize.clamp(
-            widget.minSize ?? 0, widget.maxSize ?? double.infinity);
-        _controller.size = newSize;
-      }
-    }
-
-    if (newActivePane != _activePane) {
-      _activePane?._attachedPane = null;
-      _activePane = newActivePane;
-      _activePane?._attachedPane = this;
-    }
-  }
-
-  double _computeCurrentFlex() {
-    assert(_flexCount != null,
-        '_flexCount must not be null during flex computation');
-    double currentSize = _controller.value.size;
-    print(
-        'compute current flex: $currentSize / $_flexCount = ${currentSize / _flexCount!}');
-    return currentSize / _flexCount!;
+    } else {}
   }
 
   @override
@@ -400,6 +381,7 @@ class _ActivePane {
   _ResizablePaneState? _attachedPane;
   double _sizeBeforeDrag = 0;
   double __proposedSize = 0;
+  double? _flex;
 
   double get _proposedSize => __proposedSize;
 
@@ -649,6 +631,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         }
         attachedPane._changeSize(pane._proposedSize);
       }
+      _recomputeFlex();
     });
   }
 
@@ -942,6 +925,30 @@ class _ResizablePanelState extends State<ResizablePanel> {
       return null;
     }
     return _panes[index];
+  }
+
+  void _recomputeFlex() {
+    double? minSize;
+    for (int i = 0; i < widget.children.length; i++) {
+      final pane = getAt(i);
+      if (pane != null && widget.children[i].flex != null) {
+        if (minSize == null) {
+          minSize = pane._attachedPane!.viewSize;
+        } else {
+          minSize = min(minSize, pane._attachedPane!.viewSize);
+        }
+      }
+    }
+    if (minSize != null) {
+      for (int i = 0; i < widget.children.length; i++) {
+        final pane = getAt(i);
+        if (pane != null && widget.children[i].flex != null) {
+          if (pane._flex != null) {
+            pane._flex = pane._attachedPane!.viewSize / minSize;
+          }
+        }
+      }
+    }
   }
 
   @override
