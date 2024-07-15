@@ -19,7 +19,7 @@ class _ResizableExample1State extends State<ResizableExample1> {
           ),
           initialSize: 120,
           minSize: 100,
-          maxSize: 150,
+          maxSize: 200,
           collapsedSize: 80,
         ),
         ResizablePane(

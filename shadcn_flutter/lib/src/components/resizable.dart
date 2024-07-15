@@ -4,7 +4,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef Predicate<T> = bool Function(T value);
 
-const kDebugResizable = true;
+const kDebugResizable = false;
 
 class ResizablePaneValue {
   final double size;
@@ -602,12 +602,24 @@ class _ResizablePanelState extends State<ResizablePanel> {
     }
     double payOffLeft = _payOffLoanSize(index - 1, delta, -1);
     double payOffRight = _payOffLoanSize(index, -delta, 1);
-    _panes[index]._proposedSize -= payOffRight;
-    _panes[index - 1]._proposedSize -= payOffLeft;
+    // _panes[index]._proposedSize -= payOffRight;
+    // _panes[index - 1]._proposedSize -= payOffLeft;
 
-    double paidBackLeft = _borrowSize(index - 1, -payOffRight, 0, -1).givenSize;
-    double paidBackRight =
-        _borrowSize(index, -payOffLeft, _panes.length - 1, 1).givenSize;
+    double payingBackLeft =
+        _borrowSize(index - 1, -payOffLeft, 0, -1).givenSize;
+    double payingBackRight =
+        _borrowSize(index, -payOffRight, _panes.length - 1, 1).givenSize;
+
+    if (payingBackLeft != -payOffLeft || payingBackRight != -payOffRight) {
+      // if somehow the paid and the requesting payment is not the same
+      // (meaning that the neighboring panes either being paid too much or less)
+      // then we reject the loan and reset the proposed sizes
+      if (kDebugResizable)
+        print(
+            'RESET LOAN SIZES: $payingBackLeft != ${-payOffLeft} || $payingBackRight != ${-payOffRight} -> ${_panes.map((e) => e._proposedSize).toList()}');
+      _resetProposedSizes();
+      return;
+    }
 
     // double payingBackLeft =
     //     _borrowSize(index - 1, -payOffRight, 0, -1).givenSize;
@@ -658,6 +670,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
           print('CHECK COLLAPSIBLE LEFT $start -> $endNotCollapsed');
         _checkCollapseUntil(index);
       }
+      _checkExpanding(index);
     }
 
     _debugCouldNotBorrow();
@@ -779,6 +792,37 @@ class _ResizablePanelState extends State<ResizablePanel> {
       }
     } else if (_couldNotBorrow < 0) {
       // check if we can expand from the right side
+      int toCheck = index;
+      for (; toCheck < _panes.length; toCheck++) {
+        final pane = getAt(toCheck);
+        if (pane != null && pane._attachedPane!.collapsed) {
+          double? collapsibleSize = pane._attachedPane!.widget.collapsedSize;
+          if (collapsibleSize != null) {
+            double minSize = pane._attachedPane!.widget.minSize ?? 0;
+            double threshold = (collapsibleSize - minSize) / 2;
+            if (kDebugResizable) print('EXPANDING THRESHOLD $threshold');
+            if (_couldNotBorrow <= threshold) {
+              double toBorrow = collapsibleSize - minSize;
+              var borrowed = _borrowSize(toCheck - 1, toBorrow, -1, -1);
+              double borrowedSize = borrowed.givenSize;
+              if (kDebugResizable)
+                print(
+                    'EXPANDING BORROWED SIZE $borrowedSize ASKING FOR $toBorrow FROM ${toCheck} ENDS AT ${borrowed.from}');
+              if (borrowedSize > toBorrow) {
+                // could not expand, not enough space
+                _resetProposedSizes();
+                continue;
+              }
+              pane._attachedPane!.collapsed = false;
+              pane._proposedSize = minSize;
+              pane._sizeBeforeDrag = minSize;
+              _couldNotBorrow = 0;
+            }
+            break;
+          }
+          // we treat pane with no collapsibleSize as a non-collapsible pane
+        }
+      }
     }
   }
 
