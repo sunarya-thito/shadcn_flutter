@@ -329,82 +329,125 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                   ),
                 if (widget.searchFilter != null) const Divider(),
                 Expanded(
-                  child: Stack(
-                    fit: StackFit.passthrough,
-                    children: [
-                      SingleChildScrollView(
-                        controller: _scrollController,
-                        padding: const EdgeInsets.all(4),
-                        child: AnimatedBuilder(
-                          animation: _searchController,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(theme.radiusXl),
+                      bottomRight: Radius.circular(theme.radiusXl),
+                    ),
+                    child: Stack(
+                      fit: StackFit.passthrough,
+                      children: [
+                        SingleChildScrollView(
+                          controller: _scrollController,
+                          padding: const EdgeInsets.all(4),
+                          child: AnimatedBuilder(
+                            animation: _searchController,
+                            builder: (context, child) {
+                              String? text = _searchController.text;
+                              if (text.trim().isEmpty) {
+                                text = null;
+                              }
+                              return Data(
+                                data: _SelectData(
+                                  (item, query) {
+                                    return widget.searchFilter
+                                            ?.call(item, query) ??
+                                        0;
+                                  },
+                                  text,
+                                  (value) {
+                                    widget.onChanged?.call(value);
+                                    Navigator.of(context).pop(value);
+                                  },
+                                  widget.value,
+                                  widget.showUnrelatedValues,
+                                ),
+                                child: _SelectValuesHolder(
+                                  query: text,
+                                  showUnrelatedValues:
+                                      widget.showUnrelatedValues,
+                                  builder: (children) {
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: children,
+                                    );
+                                  },
+                                  children: widget.children,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        AnimatedBuilder(
+                          animation: _scrollController,
                           builder: (context, child) {
-                            String? text = _searchController.text;
-                            if (text.trim().isEmpty) {
-                              text = null;
-                            }
-                            return Data(
-                              data: _SelectData(
-                                (item, query) {
-                                  return widget.searchFilter
-                                          ?.call(item, query) ??
-                                      0;
-                                },
-                                text,
-                                (value) {
-                                  widget.onChanged?.call(value);
-                                  Navigator.of(context).pop(value);
-                                },
-                                widget.value,
-                                widget.showUnrelatedValues,
-                              ),
-                              child: _SelectValuesHolder(
-                                query: text,
-                                showUnrelatedValues: widget.showUnrelatedValues,
-                                builder: (children) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: children,
-                                  );
-                                },
-                                children: widget.children,
+                            return Visibility(
+                              visible: _scrollController.offset > 0,
+                              child: Positioned(
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                child: HoverActivity(
+                                  hitTestBehavior: HitTestBehavior.translucent,
+                                  debounceDuration:
+                                      const Duration(milliseconds: 16),
+                                  onHover: () {
+                                    // decrease scroll offset
+                                    _scrollController.jumpTo(
+                                      _scrollController.offset - 8,
+                                    );
+                                  },
+                                  child: Container(
+                                    color: theme.colorScheme.background,
+                                    padding: EdgeInsets.symmetric(vertical: 4),
+                                    child: Icon(
+                                      RadixIcons.chevronUp,
+                                      size: 16,
+                                    ),
+                                  ),
+                                ),
                               ),
                             );
                           },
                         ),
-                      ),
-                      AnimatedBuilder(
-                        animation: _scrollController,
-                        builder: (context, child) {
-                          return Visibility(
-                            visible: _scrollController.offset > 0,
-                            child: Positioned(
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              child: HoverActivity(
-                                hitTestBehavior: HitTestBehavior.translucent,
-                                onHover: () {
-                                  // decrease scroll offset
-                                  _scrollController.jumpTo(
-                                    _scrollController.offset - 10,
-                                  );
-                                  print('jumping to previous');
-                                },
-                                child: Container(
-                                  color: theme.colorScheme.background,
-                                  padding: EdgeInsets.symmetric(vertical: 8),
-                                  child: Icon(
-                                    RadixIcons.chevronUp,
-                                    size: 16,
+                        AnimatedBuilder(
+                          animation: _scrollController,
+                          builder: (context, child) {
+                            return Visibility(
+                              visible: _scrollController.hasClients &&
+                                  _scrollController.offset <
+                                      _scrollController
+                                          .position.maxScrollExtent,
+                              child: Positioned(
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                child: HoverActivity(
+                                  hitTestBehavior: HitTestBehavior.translucent,
+                                  debounceDuration:
+                                      const Duration(milliseconds: 16),
+                                  onHover: () {
+                                    // increase scroll offset
+                                    _scrollController.jumpTo(
+                                      _scrollController.offset + 8,
+                                    );
+                                  },
+                                  child: Container(
+                                    color: theme.colorScheme.background,
+                                    padding: EdgeInsets.symmetric(vertical: 4),
+                                    child: Icon(
+                                      RadixIcons.chevronDown,
+                                      size: 16,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

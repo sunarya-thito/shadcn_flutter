@@ -39,10 +39,7 @@ class _HoverActivityState extends State<HoverActivity>
   }
 
   void _onStatusChanged(AnimationStatus status) {
-    print(status);
-    if (status == AnimationStatus.completed) {
-      widget.onHover?.call();
-    }
+    widget.onHover?.call();
   }
 
   @override
@@ -63,7 +60,7 @@ class _HoverActivityState extends State<HoverActivity>
       hitTestBehavior: widget.hitTestBehavior,
       onEnter: (_) {
         widget.onEnter?.call();
-        _controller.repeat();
+        _controller.repeat(reverse: true);
       },
       onExit: (_) {
         _controller.stop();
