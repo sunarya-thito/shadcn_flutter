@@ -48,6 +48,7 @@ class SelectGroup extends StatelessWidget {
     assert(searchData != null, 'SelectGroup must be a child of Select');
     return _SelectValuesHolder(
       query: searchData?.query,
+      showUnrelatedValues: searchData?.showUnrelatedValues ?? false,
       builder: (children) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -323,6 +324,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                           child: _SelectValuesHolder(
                             query: text,
                             children: widget.children,
+                            showUnrelatedValues: widget.showUnrelatedValues,
                             builder: (children) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -367,11 +369,13 @@ class _AttachedSelectValue {
 class _SelectValuesHolder extends StatefulWidget {
   final List<Widget> children;
   final String? query;
+  final bool showUnrelatedValues;
   final Widget Function(List<Widget> children) builder;
 
   const _SelectValuesHolder({
     Key? key,
     required this.children,
+    required this.showUnrelatedValues,
     this.query,
     required this.builder,
   }) : super(key: key);
@@ -480,6 +484,9 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
       }
       queriedValues.sort((a, b) => b.score.compareTo(a.score));
       for (final queriedValue in queriedValues) {
+        if (queriedValue.score == 0 && !widget.showUnrelatedValues) {
+          continue;
+        }
         children.add(queriedValue.widget);
       }
     }
@@ -526,15 +533,8 @@ class _SelectValueHolderState extends State<_SelectValueHolder>
 
   @override
   Widget build(BuildContext context) {
-    final selectData = Data.maybeOf<_SelectData>(context);
-    assert(selectData != null, 'SelectValueHolder must be a child of Select');
     return Data<_AttachedSelectValue>.boundary(
-      child: Offstage(
-        offstage: selectData!.showUnrelatedValues &&
-            selectData.query != null &&
-            (_currentAttached?.score ?? 0) == 0,
-        child: widget.child,
-      ),
+      child: widget.child,
     );
   }
 }

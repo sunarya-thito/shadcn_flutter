@@ -18,6 +18,9 @@ class _ComboboxExample1State extends State<ComboboxExample1> {
       searchFilter: (item, query) {
         return item.toLowerCase().contains(query.toLowerCase()) ? 1 : 0;
       },
+      popupConstraints: const BoxConstraints(
+        maxHeight: 200,
+      ),
       placeholder: Text('Select a fruit'),
       children: [
         SelectItemButton(
