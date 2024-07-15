@@ -373,6 +373,7 @@ abstract class _SelectValueHandler {
 }
 
 class _AttachedSelectValue {
+  final GlobalKey key = GlobalKey();
   _SelectValueHandler? _handler;
   int? score;
 
@@ -463,6 +464,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
       for (int i = 0; i < widget.children.length; i++) {
         final child = widget.children[i];
         children.add(Data(
+          key: _attachedValues[i].key,
           data: _attachedValues[i],
           child: child,
         ));
@@ -478,6 +480,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
           print('cached score: $cachedScore');
           queriedValues.add(_QueriedAttachedValue(
             Data(
+              key: attachedValue.key,
               data: attachedValue,
               child: child,
             ),
@@ -490,6 +493,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
             print('score with handler: $score');
             queriedValues.add(_QueriedAttachedValue(
               Data(
+                key: attachedValue.key,
                 data: attachedValue,
                 child: child,
               ),
@@ -502,10 +506,11 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
             print('score without handler: 0');
             queriedValues.add(_QueriedAttachedValue(
               Data(
+                key: attachedValue.key,
                 data: attachedValue,
                 child: child,
               ),
-              0,
+              9999999999999,
               i,
             ));
           }
