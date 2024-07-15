@@ -183,12 +183,7 @@ class _ResizablePaneState extends State<ResizablePane> {
           containerSize = containerSize.clamp(
               widget.minSize ?? 0, widget.maxSize ?? double.infinity);
           _changeSize(containerSize);
-          return ConstrainedBox(
-            constraints: direction == Axis.horizontal
-                ? BoxConstraints.tightFor(width: containerSize)
-                : BoxConstraints.tightFor(height: containerSize),
-            child: buildContainer(context, resizablePanelState),
-          );
+          return buildContainer(context, resizablePanelState);
         }),
       );
     }
@@ -284,15 +279,16 @@ class _ResizableDividerState extends State<_ResizableDivider> {
 
 class ResizablePanel extends StatefulWidget {
   static Widget _defaultDividerBuilder(BuildContext context) {
-    return Container(
-      width: 10,
-      height: 10,
-      color: Colors.yellow,
-    );
+    return const SizedBox();
+  }
+
+  static Widget _defaultDraggerBuilder(BuildContext context) {
+    return const SizedBox();
   }
 
   final List<ResizablePane> children;
   final WidgetBuilder? dividerBuilder;
+  final WidgetBuilder? draggerBuilder;
   final Axis direction;
   final double dividerSize;
 
@@ -302,6 +298,7 @@ class ResizablePanel extends StatefulWidget {
     this.direction = Axis.horizontal,
     this.dividerBuilder = _defaultDividerBuilder,
     this.dividerSize = 10,
+    this.draggerBuilder = _defaultDraggerBuilder,
   }) : super(key: key);
 
   @override
