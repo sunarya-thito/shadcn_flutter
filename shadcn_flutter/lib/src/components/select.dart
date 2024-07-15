@@ -13,10 +13,16 @@ class SelectGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final searchData = Data
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    final searchData = Data.maybeOf<_SelectData>(context);
+    assert(searchData != null, 'SelectGroup must be a child of Select');
+    return _SelectValuesHolder(
       children: children,
+      builder: (children) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: children,
+        );
+      },
     );
   }
 }
@@ -272,8 +278,8 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
   }
 }
 
-class _SelectData<T> {
-  final SearchFilter<T> searchFilter;
+class _SelectData {
+  final SearchFilter searchFilter;
 
   _SelectData(this.searchFilter);
 }
