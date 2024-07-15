@@ -999,16 +999,20 @@ class _ResizablePanelState extends State<ResizablePanel> {
   Widget buildContainer(BuildContext context) {
     switch (widget.direction) {
       case Axis.horizontal:
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: buildChildren(context),
+        return IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: buildChildren(context),
+          ),
         );
       case Axis.vertical:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: buildChildren(context),
+        return IntrinsicWidth(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: buildChildren(context),
+          ),
         );
     }
   }

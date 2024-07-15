@@ -35,6 +35,23 @@ class SelectItem<T> extends StatelessWidget {
   }
 }
 
+class SelectLabel extends StatelessWidget {
+  final Widget child;
+
+  const SelectLabel({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: child,
+    );
+  }
+}
+
 class Select<T> extends StatefulWidget {
   final ValueChanged<T?>? onChanged; // if null, then it's a disabled combobox
   final SearchFilter<T>?
@@ -47,6 +64,7 @@ class Select<T> extends StatefulWidget {
   final PopoverConstraint popupWidthConstraint;
   final List<Widget> children;
   final T? value;
+  final Widget Function(BuildContext context, T item) itemBuilder;
 
   const Select({
     Key? key,
@@ -59,6 +77,7 @@ class Select<T> extends StatefulWidget {
     this.popupConstraints = const BoxConstraints(),
     this.popupWidthConstraint = PopoverConstraint.anchorMinSize,
     this.value,
+    required this.itemBuilder,
     required this.children,
   }) : super(key: key);
 
@@ -106,10 +125,10 @@ class _SelectState<T> extends State<Select<T>> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Expanded(
-                  child: widget.selectedIndex != null
+                  child: widget.value != null
                       ? widget.itemBuilder(
                           context,
-                          widget.items[widget.selectedIndex!],
+                          widget.value!,
                         )
                       : placeholder,
                 ),
@@ -129,10 +148,11 @@ class _SelectState<T> extends State<Select<T>> {
         },
         popoverBuilder: (context) {
           return SelectPopup<T>(
-            selectedIndex: widget.selectedIndex,
-            onChanged: widget.onChanged,
             searchFilter: widget.searchFilter,
             constraints: widget.popupConstraints,
+            onChanged: widget.onChanged,
+            value: widget.value,
+            children: widget.children,
           );
         },
         alignment: Alignment.topCenter,
@@ -144,16 +164,16 @@ class _SelectState<T> extends State<Select<T>> {
 }
 
 class SelectPopup<T> extends StatefulWidget {
-  final int? selectedIndex;
-  final ValueChanged<int?>? onChanged;
+  final ValueChanged<T?>? onChanged;
+  final T? value;
   final SearchFilter<T>? searchFilter;
   final BoxConstraints constraints;
   final List<Widget> children;
 
   const SelectPopup({
     Key? key,
-    required this.selectedIndex,
-    this.onChanged,
+    required this.value,
+    required this.onChanged,
     this.searchFilter,
     this.constraints = const BoxConstraints(minWidth: 200),
     required this.children,
@@ -172,16 +192,10 @@ class _ComboBoxItem<T> {
 
 class _SelectPopupState<T> extends State<SelectPopup<T>> {
   final TextEditingController _searchController = TextEditingController();
-  late List<_ComboBoxItem<T>> _filteredItems;
 
   @override
   void initState() {
     super.initState();
-    _filteredItems = widget.items
-        .asMap()
-        .entries
-        .map((e) => _ComboBoxItem(e.key, e.value))
-        .toList();
     _searchController.addListener(_onChanged);
   }
 
