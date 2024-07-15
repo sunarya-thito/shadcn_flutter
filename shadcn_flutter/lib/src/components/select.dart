@@ -185,9 +185,13 @@ class _SelectState<T> extends State<Select<T>> {
         builder: (context) {
           return OutlineButton(
             focusNode: _focusNode,
-            onPressed: () {
-              context.showPopover();
-            },
+            onPressed: widget.onChanged == null
+                ? null
+                : () {
+                    context.showPopover().then((value) {
+                      widget.onChanged?.call(value);
+                    });
+                  },
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -195,7 +199,7 @@ class _SelectState<T> extends State<Select<T>> {
                   child: widget.value != null
                       ? widget.itemBuilder(
                           context,
-                          widget.value!,
+                          widget.value as T,
                         )
                       : placeholder,
                 ),
@@ -217,7 +221,6 @@ class _SelectState<T> extends State<Select<T>> {
           return SelectPopup<T>(
             searchFilter: widget.searchFilter,
             constraints: widget.popupConstraints,
-            onChanged: widget.onChanged,
             value: widget.value,
             showUnrelatedValues: widget.showUnrelatedValues,
             children: widget.children,
@@ -232,7 +235,6 @@ class _SelectState<T> extends State<Select<T>> {
 }
 
 class SelectPopup<T> extends StatefulWidget {
-  final ValueChanged<T?>? onChanged;
   final T? value;
   final SearchFilter<T>? searchFilter;
   final BoxConstraints constraints;
@@ -242,7 +244,6 @@ class SelectPopup<T> extends StatefulWidget {
   const SelectPopup({
     Key? key,
     required this.value,
-    required this.onChanged,
     this.searchFilter,
     this.constraints = const BoxConstraints(minWidth: 200),
     this.showUnrelatedValues = false,
@@ -315,15 +316,13 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                             },
                             text,
                             (value) {
-                              widget.onChanged?.call(value);
-                              context.hidePopover();
+                              Navigator.of(context).pop(value);
                             },
                             widget.value,
                             widget.showUnrelatedValues,
                           ),
                           child: _SelectValuesHolder(
                             query: text,
-                            children: widget.children,
                             showUnrelatedValues: widget.showUnrelatedValues,
                             builder: (children) {
                               return Column(
@@ -331,6 +330,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                                 children: children,
                               );
                             },
+                            children: widget.children,
                           ),
                         );
                       },

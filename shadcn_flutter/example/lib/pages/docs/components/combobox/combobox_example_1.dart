@@ -21,6 +21,12 @@ class _ComboboxExample1State extends State<ComboboxExample1> {
       popupConstraints: const BoxConstraints(
         maxHeight: 200,
       ),
+      onChanged: (value) {
+        setState(() {
+          selectedValue = value;
+        });
+      },
+      value: selectedValue,
       placeholder: Text('Select a fruit'),
       children: [
         SelectItemButton(
