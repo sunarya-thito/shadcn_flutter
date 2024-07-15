@@ -208,15 +208,19 @@ class _ResizablePaneState extends State<ResizablePane> {
         );
       }
     } else {
+      double? sparedFlexDiff = _sparedFlexSize == null || containerData == null
+          ? null
+          : containerData.sparedFlexSpaceSize - _sparedFlexSize!;
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
       _flexCount = containerData?.flexSpace;
-      if (widget.flex != null) {
-        double newSize =
-            (_sparedFlexSize! * (_activePane!._flex ?? widget.flex!))
-                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity);
-        if (newSize != _controller.value.size) {
-          _controller.size = newSize;
-        }
+      if (widget.flex != null &&
+          sparedFlexDiff != null &&
+          sparedFlexDiff != 0) {
+        double diffFlexSize =
+            sparedFlexDiff * (_activePane!._flex ?? widget.flex!);
+        double newSize = (_controller.value.size + diffFlexSize)
+            .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity);
+        _controller.size = newSize;
       }
     }
   }
@@ -304,7 +308,7 @@ class _ResizablePaneState extends State<ResizablePane> {
                         animation: _controller,
                         builder: (context, child) {
                           return Text(
-                              'Size: ${_controller.value.collapsed ? widget.collapsedSize : _controller.value.size}');
+                              'Size: ${_controller.value.collapsed ? widget.collapsedSize : _controller.value.size}\nFlex: ${_activePane?._flex}');
                         }),
                   ),
                 ],
@@ -954,9 +958,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       for (int i = 0; i < widget.children.length; i++) {
         final pane = getAt(i);
         if (pane != null && widget.children[i].flex != null) {
-          if (pane._flex != null) {
-            pane._flex = pane._attachedPane!.viewSize / minSize;
-          }
+          pane._flex = pane._attachedPane!.viewSize / minSize;
         }
       }
     }
