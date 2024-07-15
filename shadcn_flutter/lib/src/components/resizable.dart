@@ -1062,13 +1062,13 @@ class _ResizablePanelState extends State<ResizablePanel> {
           double offset = 0;
           for (int i = 0; i < widget.children.length - 1; i++) {
             final child = widget.children[i];
-            double size = child.flex != null
-                ? (child.flex! * spacePerFlex)
-                    .clamp(child.minSize ?? 0, child.maxSize ?? double.infinity)
-                : (_panes[i]._attachedPane?.viewSize ??
-                    (child.initialCollapsed
-                        ? child.initialSize
-                        : (child.collapsedSize ?? 0)))!;
+            double size = _panes[i]._attachedPane?.viewSize ??
+                (child.initialCollapsed
+                    ? (child.collapsedSize ?? 0)
+                    : child.flex != null
+                        ? (child.flex! * spacePerFlex).clamp(child.minSize ?? 0,
+                            child.maxSize ?? double.infinity)
+                        : (child.initialSize ?? 0));
             offset += size;
             Widget dragger;
             if (widget.direction == Axis.horizontal) {
@@ -1153,7 +1153,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     double offset = 0;
     for (int i = 0; i < widget.children.length - 1; i++) {
       final child = widget.children[i];
-      double? currentSize = child.initialCollapsed
+      double? currentSize = !child.initialCollapsed
           ? child.initialSize
           : (child.collapsedSize ?? 0);
       assert(currentSize != null, 'Size must not be null');
