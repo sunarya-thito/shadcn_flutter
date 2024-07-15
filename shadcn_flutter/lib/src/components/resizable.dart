@@ -194,7 +194,7 @@ class _ResizablePaneState extends State<ResizablePane> {
     } else {
       double diffSparedFlexSize =
           containerData!.sparedFlexSpaceSize - _sparedFlexSize!;
-      if (diffSparedFlexSize != 0) {
+      if (diffSparedFlexSize != 0 && widget.flex != null) {
         _sparedFlexSize = containerData.sparedFlexSpaceSize;
         double newSize =
             _controller.value.size + diffSparedFlexSize * widget.flex!;
@@ -417,6 +417,7 @@ class _BorrowInfo {
 class _ResizablePanelState extends State<ResizablePanel> {
   late List<_ActivePane> _panes;
   late bool _expands;
+  double? _previousFlexSpace;
 
   @override
   void initState() {
@@ -1058,15 +1059,21 @@ class _ResizablePanelState extends State<ResizablePanel> {
               : constraints.maxHeight;
           double flexSpace = containerSize - nonFlexSpace;
           double spacePerFlex = flexSpace / flexCount;
+          double flexSpaceDiff =
+              _previousFlexSpace != null ? flexSpace - _previousFlexSpace! : 0;
+          _previousFlexSpace = flexSpace;
+          double extraFlexSpace = flexSpaceDiff / flexCount;
           List<Widget> dividers = [];
           double offset = 0;
+          print('extraFlexSpace: $extraFlexSpace');
           for (int i = 0; i < widget.children.length - 1; i++) {
             final child = widget.children[i];
             double size = _panes[i]._attachedPane?.viewSize ??
                 (child.initialCollapsed
                     ? (child.collapsedSize ?? 0)
                     : child.flex != null
-                        ? (child.flex! * spacePerFlex).clamp(child.minSize ?? 0,
+                        ? (child.flex! * spacePerFlex + extraFlexSpace).clamp(
+                            child.minSize ?? 0,
                             child.maxSize ?? double.infinity)
                         : (child.initialSize ?? 0));
             offset += size;
