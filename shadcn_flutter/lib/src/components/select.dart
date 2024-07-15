@@ -423,6 +423,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
   @override
   void initState() {
     super.initState();
+    print('initializing attached values');
     _attachedValues = List.generate(
       widget.children.length,
       (index) => _AttachedSelectValue(),
