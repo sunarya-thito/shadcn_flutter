@@ -178,10 +178,10 @@ class _ResizablePaneState extends State<ResizablePane> {
     var newActivePane = Data.maybeOf<_ActivePane>(context);
 
     if (__controller == null) {
-      _sparedFlexSize = containerData!.sparedFlexSpaceSize;
+      _sparedFlexSize = containerData?.sparedFlexSpaceSize;
       if (widget.flex != null) {
         __controller = ResizablePaneController(
-          containerData.sparedFlexSpaceSize * widget.flex!,
+          containerData!.sparedFlexSpaceSize * widget.flex!,
           collapsed: widget.initialCollapsed,
         );
       } else {
@@ -195,6 +195,10 @@ class _ResizablePaneState extends State<ResizablePane> {
           containerData!.sparedFlexSpaceSize - _sparedFlexSize!;
       if (diffSparedFlexSize != 0) {
         _sparedFlexSize = containerData.sparedFlexSpaceSize;
+        double newSize = _controller.value.size + diffSparedFlexSize * widget.flex!;
+        newSize = newSize.clamp(
+            widget.minSize ?? 0, widget.maxSize ?? double.infinity);
+        _controller.size = newSize;
       }
     }
 
@@ -202,6 +206,26 @@ class _ResizablePaneState extends State<ResizablePane> {
       _activePane?._attachedPane = null;
       _activePane = newActivePane;
       _activePane?._attachedPane = this;
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant ResizablePane oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      if (widget.flex != null) {
+        __controller = ResizablePaneController(
+          _sparedFlexSize! * widget.flex!,
+          collapsed: widget.initialCollapsed,
+        );
+      } else {
+        __controller = ResizablePaneController(
+          widget.initialSize!,
+          collapsed: widget.initialCollapsed,
+        );
+      }
+    } else if (widget.flex != oldWidget.flex) {
+      double 
     }
   }
 
