@@ -610,7 +610,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       int startExpanding = borrowedLeft.from;
       int endCollapsed = 0;
       for (int i = endCollapsed; i > startExpanding; i--) {
-        if (_panes[i]._attachedPane!.collapsed) {
+        if (!_panes[i]._attachedPane!.collapsed) {
           endCollapsed = i;
         } else {
           break;
@@ -633,19 +633,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
       if (start == endNotCollapsed) {
         print('CHECK COLLAPSIBLE LEFT $index');
         _checkCollapseUntil(index, _couldNotBorrow);
-      }
-      int startExpanding = borrowedRight.from;
-      int endCollapsed = _panes.length - 1;
-      for (int i = endCollapsed; i > startExpanding; i--) {
-        if (_panes[i]._attachedPane!.collapsed) {
-          endCollapsed = i;
-        } else {
-          break;
-        }
-      }
-      print('CHECK EXPANDING RIGHT $index: $startExpanding == $endCollapsed');
-      if (startExpanding == endCollapsed) {
-        print('CHECK EXPANDING RIGHT $index');
       }
     }
 
