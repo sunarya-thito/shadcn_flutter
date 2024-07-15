@@ -139,7 +139,7 @@ class _ResizablePaneState extends State<ResizablePane> {
   ResizablePaneController? __controller;
   _ActivePane? _activePane;
   double? _sparedFlexSize;
-  double? _flexSpace;
+  double? _flexCount;
 
   ResizablePaneController get _controller {
     assert(__controller != null, 'ResizablePane is not properly initialized');
@@ -185,7 +185,7 @@ class _ResizablePaneState extends State<ResizablePane> {
 
     if (__controller == null) {
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
-      _flexSpace = containerData?.flexSpace;
+      _flexCount = containerData?.flexSpace;
       if (widget.flex != null) {
         __controller = ResizablePaneController(
           (containerData!.sparedFlexSpaceSize * widget.flex!)
@@ -199,14 +199,14 @@ class _ResizablePaneState extends State<ResizablePane> {
         );
       }
     } else {
+      double currentFlex = _computeCurrentFlex();
       double diffSpared = _sparedFlexSize == null
           ? 0
           : containerData!.sparedFlexSpaceSize - _sparedFlexSize!;
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
-      _flexSpace = containerData?.flexSpace;
-      print('diff: $diffSpared');
-      if (diffSpared != 0) {
-        double newSize = _controller.value.size + diffSpared * widget.flex!;
+      _flexCount = containerData?.flexCount;
+      if (diffSpared != 0 && widget.flex != null) {
+        double newSize = _controller.value.size - diffSpared * currentFlex;
         newSize = newSize.clamp(
             widget.minSize ?? 0, widget.maxSize ?? double.infinity);
         _controller.size = newSize;
@@ -221,12 +221,12 @@ class _ResizablePaneState extends State<ResizablePane> {
   }
 
   double _computeCurrentFlex() {
-    assert(_flexSpace != null,
-        'sparedFlexSize must not be null during flex computation');
+    assert(_flexCount != null,
+        '_flexCount must not be null during flex computation');
     double currentSize = _controller.value.size;
     print(
-        'compute current flex: $currentSize / $_flexSpace = ${currentSize / _flexSpace!}');
-    return currentSize / _flexSpace!;
+        'compute current flex: $currentSize / $_flexCount = ${currentSize / _flexCount!}');
+    return currentSize / _flexCount!;
   }
 
   @override
