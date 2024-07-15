@@ -463,6 +463,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
         final handler = attachedValue.handler;
         final cachedScore = attachedValue.score;
         if (cachedScore != null) {
+          print('cached score: $cachedScore');
           queriedValues.add(_QueriedAttachedValue(
             Data(
               data: attachedValue,
@@ -474,6 +475,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
         } else {
           if (handler != null) {
             final score = handler.computeIndexingScore(widget.query!);
+            print('score with handler: $score');
             queriedValues.add(_QueriedAttachedValue(
               Data(
                 data: attachedValue,
@@ -485,6 +487,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
             attachedValue.score = score;
           } else {
             // attachedValue.score = 0; // should we cache this?
+            print('score without handler: 0');
             queriedValues.add(_QueriedAttachedValue(
               Data(
                 data: attachedValue,
@@ -504,6 +507,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
         }
         return b.score.compareTo(a.score);
       });
+      print(queriedValues);
       for (final queriedValue in queriedValues) {
         if (queriedValue.score == 0 && !widget.showUnrelatedValues) {
           continue;
@@ -546,9 +550,13 @@ class _SelectValueHolderState extends State<_SelectValueHolder>
     super.didChangeDependencies();
     var newAttached = Data.maybeOf<_AttachedSelectValue>(context);
     if (newAttached != _currentAttached) {
+      int? cachedScore = _currentAttached?.score;
       _currentAttached?.handler = null;
       _currentAttached = newAttached;
       _currentAttached?.handler = this;
+      if (cachedScore != null) {
+        _currentAttached?.score = cachedScore;
+      }
     }
   }
 
