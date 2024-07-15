@@ -596,6 +596,10 @@ class _ResizablePanelState extends State<ResizablePanel> {
     if (kDebugResizable)
       print(
           'l: $borrowedLeftSize r: $borrowedRightSize d: $delta cb: $_couldNotBorrow cbL: $couldNotBorrowLeft cbR: $couldNotBorrowRight bfL: ${borrowedLeft.from} bfR: ${borrowedRight.from} gbL: $givenBackLeft gbR: $givenBackRight');
+    if (kDebugResizable) {
+      print(
+          'Loaned Sizes: ${_panes.map((e) => e._sizeBeforeDrag - e._proposedSize).toList()}');
+    }
     double payOffLeft = _payOffLoanSize(index - 1, delta, -1);
     double payOffRight = _payOffLoanSize(index, -delta, 1);
     // _panes[index]._proposedSize -= payOffRight;
@@ -631,7 +635,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         print('CHECK COLLAPSING $index: $start == $endNotCollapsed');
       if (start == endNotCollapsed) {
         if (kDebugResizable) print('CHECK COLLAPSIBLE RIGHT $index');
-        _checkCollapseUntil(index, _couldNotBorrow);
+        _checkCollapseUntil(index);
       }
       _checkExpanding(index);
     } else if (_couldNotBorrow < 0) {
@@ -647,7 +651,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       if (start == endNotCollapsed) {
         if (kDebugResizable)
           print('CHECK COLLAPSIBLE LEFT $start -> $endNotCollapsed');
-        _checkCollapseUntil(index, _couldNotBorrow);
+        _checkCollapseUntil(index);
       }
     }
 
@@ -662,8 +666,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
     return;
   }
 
-  void _checkCollapseUntil(int index, double couldNotBorrow) {
-    if (couldNotBorrow < 0) {
+  void _checkCollapseUntil(int index) {
+    if (_couldNotBorrow < 0) {
       for (int i = index - 1; i >= 0; i--) {
         final previousPane = getAt(i);
         if (previousPane != null) {
@@ -674,7 +678,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
             var minSize = previousPane._attachedPane!.widget.minSize ?? 0;
             double threshold = (collapsibleSize - minSize) / 2;
             if (kDebugResizable) print('THRESHOLD $threshold');
-            if (couldNotBorrow < threshold) {
+            if (_couldNotBorrow < threshold) {
               if (kDebugResizable) print('COLLAPSING $i');
               var toBorrow = minSize - collapsibleSize;
               var borrowed = _borrowSize(index, toBorrow, _panes.length - 1, 1);
@@ -690,12 +694,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
               previousPane._proposedSize =
                   previousPane._attachedPane?.widget.collapsedSize ?? 0;
               previousPane._sizeBeforeDrag = previousPane._proposedSize;
-              couldNotBorrow = 0;
+              _couldNotBorrow = 0;
             }
           }
         }
       }
-    } else if (couldNotBorrow > 0) {
+    } else if (_couldNotBorrow > 0) {
       for (int i = index; i < _panes.length; i++) {
         final nextPane = getAt(i);
         if (nextPane != null) {
@@ -705,7 +709,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
             var minSize = nextPane._attachedPane!.widget.minSize ?? 0;
             double threshold = (minSize - collapsibleSize) / 2;
             if (kDebugResizable) print('THRESHOLD $threshold');
-            if (couldNotBorrow > threshold) {
+            if (_couldNotBorrow > threshold) {
               // disregard the delta here,
               // even tho for example the delta is -10,
               // and the amount of delta needed to collapse is -5,
@@ -725,7 +729,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
               nextPane._proposedSize =
                   nextPane._attachedPane?.widget.collapsedSize ?? 0;
               nextPane._sizeBeforeDrag = nextPane._proposedSize;
-              couldNotBorrow = 0;
+              _couldNotBorrow = 0;
             }
           }
         }
