@@ -14,7 +14,7 @@ class ResizableTest extends StatelessWidget {
         ),
       ),
       child: ResizablePanel(
-        direction: Axis.horizontal,
+        direction: Axis.vertical,
         children: [
           ResizablePane(
             child: NumberedContainer(

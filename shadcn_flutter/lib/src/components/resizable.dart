@@ -139,7 +139,6 @@ class _ResizablePaneState extends State<ResizablePane> {
   ResizablePaneController? __controller;
   _ActivePane? _activePane;
   double? _sparedFlexSize;
-  double? _flexCount;
 
   ResizablePaneController get _controller {
     assert(__controller != null, 'ResizablePane is not properly initialized');
@@ -193,7 +192,6 @@ class _ResizablePaneState extends State<ResizablePane> {
 
     if (__controller == null) {
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
-      _flexCount = containerData?.flexSpace;
       if (widget.flex != null) {
         __controller = ResizablePaneController(
           (containerData!.sparedFlexSpaceSize *
@@ -208,11 +206,7 @@ class _ResizablePaneState extends State<ResizablePane> {
         );
       }
     } else {
-      double? sparedFlexDiff = _sparedFlexSize == null || containerData == null
-          ? null
-          : containerData.sparedFlexSpaceSize - _sparedFlexSize!;
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
-      _flexCount = containerData?.flexSpace;
       if (widget.flex != null) {
         double newSize =
             (_sparedFlexSize! * (_activePane!._flex ?? widget.flex!))
@@ -429,7 +423,6 @@ class _BorrowInfo {
 class _ResizablePanelState extends State<ResizablePanel> {
   late List<_ActivePane> _panes;
   late bool _expands;
-  double? _previousFlexSpace;
 
   @override
   void initState() {
@@ -1119,24 +1112,17 @@ class _ResizablePanelState extends State<ResizablePanel> {
               : constraints.maxHeight;
           double flexSpace = containerSize - nonFlexSpace;
           double spacePerFlex = flexSpace / flexCount;
-          double flexSpaceDiff =
-              _previousFlexSpace != null ? flexSpace - _previousFlexSpace! : 0;
-          _previousFlexSpace = flexSpace;
-          double extraFlexSpace = flexSpaceDiff / flexCount;
           List<Widget> dividers = [];
           double offset = 0;
           for (int i = 0; i < widget.children.length - 1; i++) {
             final child = widget.children[i];
-            double size = _panes[i]._attachedPane?.viewSize ??
-                (child.initialCollapsed
-                    ? (child.collapsedSize ?? 0)
-                    : child.flex != null
-                        ? (child.flex! * spacePerFlex).clamp(child.minSize ?? 0,
-                            child.maxSize ?? double.infinity)
-                        : (child.initialSize ?? 0));
-            if (child.flex != null) {
-              size += extraFlexSpace * child.flex!;
-            }
+            double size = (_panes[i]._attachedPane?.collapsed ??
+                    child.initialCollapsed)
+                ? (child.collapsedSize ?? 0)
+                : (child.flex != null
+                    ? ((_panes[i]._flex ?? child.flex)! * spacePerFlex).clamp(
+                        child.minSize ?? 0, child.maxSize ?? double.infinity)
+                    : (child.initialSize ?? 0));
             offset += size;
             Widget dragger;
             if (widget.direction == Axis.horizontal) {
