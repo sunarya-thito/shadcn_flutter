@@ -43,7 +43,7 @@ class ResizablePane extends StatefulWidget {
   final Widget child;
   final bool resizable;
   final ValueChanged<double>? onResize;
-  final double initialSize;
+  final double? initialSize;
   final bool initialCollapsed;
   final double? minSize;
   final double? maxSize;
@@ -56,13 +56,28 @@ class ResizablePane extends StatefulWidget {
     this.resizable = true,
     required this.child,
     this.onResize,
-    required this.initialSize,
+    required double initialSize,
     this.minSize,
     this.maxSize,
     this.collapsedSize,
     this.initialCollapsed = false,
   })  : controller = null,
-  flex = null,
+        flex = null,
+        this.initialSize = initialSize,
+        super(key: key);
+
+  const ResizablePane.flex({
+    Key? key,
+    this.resizable = true,
+    required this.child,
+    this.onResize,
+    this.minSize,
+    this.maxSize,
+    this.collapsedSize,
+    this.initialCollapsed = false,
+    this.flex = 1,
+  })  : controller = null,
+        initialSize = null,
         super(key: key);
 
   ResizablePane._controlled({
@@ -109,6 +124,15 @@ class ResizablePane extends StatefulWidget {
   State<ResizablePane> createState() => _ResizablePaneState();
 }
 
+class ResizableContainerData {
+  final double maxSize;
+  final double nonFlexSpaceSize;
+  final double sparedFlexSpacceSize;
+
+  const ResizableContainerData(
+      this.maxSize, this.nonFlexSpaceSize, this.sparedFlexSpacceSize);
+}
+
 class _ResizablePaneState extends State<ResizablePane> {
   late ResizablePaneController _controller;
   _ActivePane? _activePane;
@@ -145,9 +169,9 @@ class _ResizablePaneState extends State<ResizablePane> {
   @override
   void initState() {
     super.initState();
-    _controller = widget.controller ??
-        ResizablePaneController(widget.initialSize,
-            collapsed: widget.initialCollapsed);
+    // _controller = widget.controller ??
+    //     ResizablePaneController(widget.initialSize,
+    //         collapsed: widget.initialCollapsed);
   }
 
   @override
@@ -332,12 +356,18 @@ class _BorrowInfo {
 
 class _ResizablePanelState extends State<ResizablePanel> {
   late List<_ActivePane> _panes;
+  late bool _expands;
 
   @override
   void initState() {
     super.initState();
     _panes = List.generate(
         widget.children.length, (index) => _ActivePane(index: index));
+    _checkExpands();
+  }
+
+  void _checkExpands() {
+    _expands = widget.children.any((pane) => pane.flex != null);
   }
 
   bool _isDragging = true;
@@ -841,6 +871,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     if (!listEquals(oldWidget.children, widget.children)) {
       _panes = List.generate(
           widget.children.length, (index) => _ActivePane(index: index));
+      _checkExpands();
     }
   }
 
@@ -899,7 +930,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     double offset = 0;
     for (int i = 0; i < widget.children.length - 1; i++) {
       double currentSize =
-          _panes[i]._attachedPane?.viewSize ?? widget.children[i].initialSize;
+          _panes[i]._attachedPane?.viewSize ?? widget.children[i].initialSize!;
       offset += currentSize;
       Widget dragger;
       if (widget.direction == Axis.horizontal) {

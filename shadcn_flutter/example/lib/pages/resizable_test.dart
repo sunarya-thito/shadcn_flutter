@@ -31,13 +31,11 @@ class ResizableTest extends StatelessWidget {
             minSize: 20,
             collapsedSize: 5,
           ),
-          ResizablePane(
+          ResizablePane.flex(
             child: NumberedContainer(
               index: 1,
               height: 200,
             ),
-            flex: 1,
-            initialSize: 80,
             maxSize: 100,
             minSize: 20,
           ),
