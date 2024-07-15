@@ -188,9 +188,7 @@ class _SelectState<T> extends State<Select<T>> {
             onPressed: widget.onChanged == null
                 ? null
                 : () {
-                    context.showPopover().then((value) {
-                      widget.onChanged?.call(value);
-                    });
+                    context.showPopover();
                   },
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -223,6 +221,7 @@ class _SelectState<T> extends State<Select<T>> {
             constraints: widget.popupConstraints,
             value: widget.value,
             showUnrelatedValues: widget.showUnrelatedValues,
+            onChanged: widget.onChanged,
             children: widget.children,
           );
         },
@@ -240,6 +239,7 @@ class SelectPopup<T> extends StatefulWidget {
   final BoxConstraints constraints;
   final List<Widget> children;
   final bool showUnrelatedValues;
+  final ValueChanged<T?>? onChanged;
 
   const SelectPopup({
     Key? key,
@@ -247,6 +247,7 @@ class SelectPopup<T> extends StatefulWidget {
     this.searchFilter,
     this.constraints = const BoxConstraints(minWidth: 200),
     this.showUnrelatedValues = false,
+    this.onChanged,
     required this.children,
   }) : super(key: key);
 
@@ -316,6 +317,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                             },
                             text,
                             (value) {
+                              widget.onChanged?.call(value);
                               Navigator.of(context).pop(value);
                             },
                             widget.value,
