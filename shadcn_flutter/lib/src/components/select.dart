@@ -194,58 +194,6 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
   final TextEditingController _searchController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(_onChanged);
-  }
-
-  void _onChanged() {
-    final query = _searchController.text;
-    if (query.isEmpty) {
-      setState(() {
-        _filteredItems = widget.items
-            .asMap()
-            .entries
-            .map((e) => _ComboBoxItem(e.key, e.value))
-            .toList();
-      });
-      return;
-    }
-    final filteredItems = <(int, int, T)>[]; // (score, index, item)
-    for (var i = 0; i < widget.items.length; i++) {
-      final item = widget.items[i];
-      final score = widget.searchFilter!(item, query);
-      if (score > 0) {
-        // add to filtered items (but sort by relevance, or by its original index from original list)
-        bool added = false;
-        for (var j = 0; j < filteredItems.length; j++) {
-          if (score > filteredItems[j].$1) {
-            filteredItems.insert(j, (score, i, item));
-            added = true;
-            break;
-          } else if (score == filteredItems[j].$1) {
-            int byIndex = filteredItems[j].$2;
-            if (byIndex > i) {
-              filteredItems.insert(j, (score, i, item));
-              added = true;
-              break;
-            }
-          }
-        }
-        if (!added) {
-          filteredItems.add((score, i, item));
-        }
-      }
-    }
-    // sort by relevance
-    setState(() {
-      // _filteredItems = filteredItems.map((e) => e.$3).toList();
-      _filteredItems =
-          filteredItems.map((e) => _ComboBoxItem(e.$2, e.$3)).toList();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -289,27 +237,20 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                 Expanded(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(4),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        for (var item in _filteredItems)
-                          GhostButton(
-                            trailing: item.index == widget.selectedIndex
-                                ? const Icon(Icons.check, size: 16)
-                                : null,
-                            onPressed: () {
-                              // widget.onChanged?.call(item.index);
-                              if (item.index == widget.selectedIndex) {
-                                widget.onChanged?.call(null);
-                              } else {
-                                widget.onChanged?.call(item.index);
-                              }
-                              Navigator.of(context).pop();
-                            },
-                            child: widget.itemBuilder(context, item.item),
-                          ),
-                      ],
+                    child: AnimatedBuilder(
+                      animation: _searchController,
+                      builder: (context, child) {
+                        return _SelectValuesHolder(
+                          query: _searchController.text,
+                          children: widget.children,
+                          builder: (children) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: children,
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -320,4 +261,17 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
       ),
     );
   }
+}
+
+class _SelectValuesHolder extends StatelessWidget {
+  final List<Widget> children;
+  final String? query;
+  final Widget Function(List<Widget> children) builder;
+
+  const _SelectValuesHolder({
+    Key? key,
+    required this.children,
+    this.query,
+    required this.builder,
+  }) : super(key: key);
 }
