@@ -373,8 +373,18 @@ abstract class _SelectValueHandler {
 }
 
 class _AttachedSelectValue {
-  _SelectValueHandler? handler;
+  _SelectValueHandler? _handler;
   int? score;
+
+  _SelectValueHandler? get handler => _handler;
+  set handler(_SelectValueHandler? value) {
+    print('handler set to $value');
+    _handler = value;
+  }
+
+  _AttachedSelectValue() {
+    print('created');
+  }
 }
 
 class _SelectValuesHolder extends StatefulWidget {
@@ -423,6 +433,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
   void didUpdateWidget(covariant _SelectValuesHolder oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget.children, oldWidget.children)) {
+      print('generating new attached values');
       _attachedValues = List.generate(
         widget.children.length,
         (index) => _AttachedSelectValue(),
@@ -508,6 +519,7 @@ class _SelectValuesHolderState extends State<_SelectValuesHolder> {
         return b.score.compareTo(a.score);
       });
       print(queriedValues);
+      print('handlers: ${_attachedValues.map((e) => e.handler).toList()}');
       for (final queriedValue in queriedValues) {
         if (queriedValue.score == 0 && !widget.showUnrelatedValues) {
           continue;
