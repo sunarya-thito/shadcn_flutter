@@ -1,4 +1,6 @@
 // WIP
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -1065,6 +1067,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         child: LayoutBuilder(builder: (context, constraints) {
           double nonFlexSpace = 0;
           double flexCount = 0;
+          double minSizeFlex = double.infinity;
           for (int i = 0; i < widget.children.length; i++) {
             final child = widget.children[i];
             if (child.flex == null) {
@@ -1074,23 +1077,31 @@ class _ResizablePanelState extends State<ResizablePanel> {
                   (child.initialCollapsed
                       ? (child.collapsedSize ?? 0)
                       : (child.initialSize ?? 0));
+            } else {
+              double currentSize = _panes[i]._attachedPane?.viewSize ??
+                  (child.initialCollapsed
+                      ? (child.collapsedSize ?? 0)
+                      : (child.initialSize ?? 0));
+              minSizeFlex = min(minSizeFlex, currentSize);
             }
           }
-          double containerSize = widget.direction == Axis.horizontal
-              ? constraints.maxWidth
-              : constraints.maxHeight;
-          double flexSpace = containerSize - nonFlexSpace;
+
           for (int i = 0; i < widget.children.length; i++) {
             final child = widget.children[i];
             if (child.flex != null) {
               final attachedPane = _panes[i]._attachedPane;
-              if (attachedPane == null) {
+              if (minSizeFlex == double.infinity || attachedPane == null) {
                 flexCount += child.flex!;
               } else {
-                flexCount += attachedPane.viewSize / flexSpace;
+                flexCount += attachedPane.viewSize / minSizeFlex;
               }
             }
           }
+          print('flexCount: $flexCount $minSizeFlex');
+          double containerSize = widget.direction == Axis.horizontal
+              ? constraints.maxWidth
+              : constraints.maxHeight;
+          double flexSpace = containerSize - nonFlexSpace;
           double spacePerFlex = flexSpace / flexCount;
           double flexSpaceDiff =
               _previousFlexSpace != null ? flexSpace - _previousFlexSpace! : 0;
