@@ -6,7 +6,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef Predicate<T> = bool Function(T value);
 
-const kDebugResizable = false;
+const kDebugResizable = true;
 
 class ResizablePaneValue {
   final double size;
