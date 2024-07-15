@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef SearchFilter<T> = int Function(T item, String query);
@@ -263,7 +264,15 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
   }
 }
 
-class _SelectValuesHolder extends StatelessWidget {
+abstract class _SelectValueHandler {
+  int? computeIndexingScore(String query);
+}
+
+class _AttachedSelectValue {
+  _SelectValueHandler? handler;
+}
+
+class _SelectValuesHolder extends StatefulWidget {
   final List<Widget> children;
   final String? query;
   final Widget Function(List<Widget> children) builder;
@@ -274,4 +283,44 @@ class _SelectValuesHolder extends StatelessWidget {
     this.query,
     required this.builder,
   }) : super(key: key);
+
+  @override
+  State<_SelectValuesHolder> createState() => _SelectValuesHolderState();
+}
+
+class _SelectValuesHolderState extends State<_SelectValuesHolder> {
+  late List<_AttachedSelectValue> _attachedValues;
+
+  @override
+  void initState() {
+    super.initState();
+    _attachedValues = List.generate(
+      widget.children.length,
+      (index) => _AttachedSelectValue(),
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant _SelectValuesHolder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!listEquals(widget.children, oldWidget.children)) {
+      _attachedValues = List.generate(
+        widget.children.length,
+        (index) => _AttachedSelectValue(),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> children = [];
+    for (int i = 0; i < widget.children.length; i++) {
+      final child = widget.children[i];
+      children.add(Data(
+        data: _attachedValues[i],
+        child: child,
+      ));
+    }
+    return widget.builder(children);
+  }
 }
