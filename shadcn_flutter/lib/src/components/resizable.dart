@@ -608,18 +608,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _checkCollapseUntil(index, _couldNotBorrow);
       }
       int startExpanding = borrowedLeft.from;
-      int endCollapsed = 0;
-      for (int i = endCollapsed; i > startExpanding; i--) {
-        if (!_panes[i]._attachedPane!.collapsed) {
-          endCollapsed = i;
-        } else {
-          break;
-        }
-      }
-      print('CHECK EXPANDING LEFT $index: $startExpanding == $endCollapsed');
-      if (startExpanding == endCollapsed) {
-        print('CHECK EXPANDING LEFT $startExpanding -> $endCollapsed');
-      }
+      print('startExpanding: $startExpanding $index');
     } else if (_couldNotBorrow < 0) {
       int start = borrowedLeft.from;
       int endNotCollapsed = 0;
@@ -633,18 +622,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
       if (start == endNotCollapsed) {
         print('CHECK COLLAPSIBLE LEFT $start -> $endNotCollapsed');
         _checkCollapseUntil(index, _couldNotBorrow);
-      }
-      int startExpanding = borrowedRight.from;
-      int endCollapsed = _panes.length - 1;
-      for (int i = endCollapsed; i < startExpanding; i++) {
-        if (!_panes[i]._attachedPane!.collapsed) {
-          endCollapsed = i;
-        } else {
-          break;
-        }
-      }
-      if (startExpanding == endCollapsed) {
-        print('CHECK EXPANDING RIGHT $startExpanding -> $endCollapsed');
       }
     }
 
@@ -687,7 +664,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
                   previousPane._attachedPane?.widget.collapsedSize ?? 0;
               previousPane._sizeBeforeDrag = previousPane._proposedSize;
               couldNotBorrow += borrowedSize;
-              _applyProposedSizes();
               if (couldNotBorrow >= 0) {
                 break;
               }
@@ -729,6 +705,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
           }
         }
       }
+    }
+  }
+
+  void _checkExpanding(int index) {
+    if (_couldNotBorrow > 0) {
+      // check if we can expand from the right side
     }
   }
 
