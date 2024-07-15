@@ -184,7 +184,7 @@ class _ResizablePaneState extends State<ResizablePane> {
         return ConstrainedBox(
           constraints: size,
           child: Offstage(
-              offstage: _controller.value == 0,
+              offstage: _controller.value.size == 0,
               // child: widget.child,
               child: Stack(
                 fit: StackFit.passthrough,
@@ -695,11 +695,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
               nextPane._proposedSize =
                   nextPane._attachedPane?.widget.collapsedSize ?? 0;
               nextPane._sizeBeforeDrag = nextPane._proposedSize;
-              couldNotBorrow += borrowedSize;
+              couldNotBorrow = 0;
               _applyProposedSizes();
-              if (couldNotBorrow <= 0) {
-                break;
-              }
             }
           }
         }
@@ -719,6 +716,22 @@ class _ResizablePanelState extends State<ResizablePanel> {
             double minSize = pane._attachedPane!.widget.minSize ?? 0;
             double threshold = (minSize - collapsibleSize) / 2;
             print('EXPANDING THRESHOLD $threshold');
+            if (_couldNotBorrow >= threshold) {
+              _couldNotBorrow -= threshold;
+              double toBorrow = collapsibleSize - minSize;
+              var borrowed = _borrowSize(toCheck, toBorrow, 0, -1);
+              double borrowedSize = borrowed.givenSize;
+              print(
+                  'EXPANDING BORROWED SIZE $borrowedSize ASKING FOR $toBorrow FROM ${toCheck} ENDS AT ${borrowed.from}');
+              if (borrowedSize < toBorrow) {
+                // could not expand, not enough space
+                _resetProposedSizes();
+                continue;
+              }
+              pane._attachedPane!.collapsed = false;
+              pane._proposedSize = minSize;
+              pane._sizeBeforeDrag = minSize;
+            }
             break;
           }
           // we treat pane with no collapsibleSize as a non-collapsible pane
