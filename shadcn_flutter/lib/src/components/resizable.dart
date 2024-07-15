@@ -131,8 +131,14 @@ class ResizableContainerData {
 }
 
 class _ResizablePaneState extends State<ResizablePane> {
-  late ResizablePaneController _controller;
+  ResizablePaneController? __controller;
   _ActivePane? _activePane;
+  double? _sparedFlexSize;
+
+  ResizablePaneController get _controller {
+    assert(__controller != null, 'ResizablePane is not properly initialized');
+    return __controller!;
+  }
 
   double _changeSize(double size) {
     assert(size >= 0, 'Size must be greater than or equal to 0 (size: $size)');
@@ -164,17 +170,34 @@ class _ResizablePaneState extends State<ResizablePane> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    // _controller = widget.controller ??
-    //     ResizablePaneController(widget.initialSize,
-    //         collapsed: widget.initialCollapsed);
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    var containerData = Data.maybeOf<ResizableContainerData>(context);
+    assert(containerData != null,
+        'ResizablePane must be a child of ResizableContainer');
     var newActivePane = Data.maybeOf<_ActivePane>(context);
+
+    if (__controller == null) {
+      _sparedFlexSize = containerData!.sparedFlexSpaceSize;
+      if (widget.flex != null) {
+        __controller = ResizablePaneController(
+          containerData.sparedFlexSpaceSize * widget.flex!,
+          collapsed: widget.initialCollapsed,
+        );
+      } else {
+        __controller = ResizablePaneController(
+          widget.initialSize!,
+          collapsed: widget.initialCollapsed,
+        );
+      }
+    } else {
+      double diffSparedFlexSize =
+          containerData!.sparedFlexSpaceSize - _sparedFlexSize!;
+      if (diffSparedFlexSize != 0) {
+        _sparedFlexSize = containerData.sparedFlexSpaceSize;
+      }
+    }
+
     if (newActivePane != _activePane) {
       _activePane?._attachedPane = null;
       _activePane = newActivePane;
@@ -196,15 +219,22 @@ class _ResizablePaneState extends State<ResizablePane> {
     return buildContainer(context, resizablePanelState);
   }
 
+  Widget buildDataBoundary() {
+    return Data<_ResizablePaneState>.boundary(
+      child: Data<_ActivePane>.boundary(
+        child: Data<ResizablePaneController>.boundary(
+          child: widget.child,
+        ),
+      ),
+    );
+  }
+
   Widget buildContainer(
       BuildContext context, _ResizablePanelState? resizablePanelState) {
     final direction = resizablePanelState!.widget.direction;
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        // final size = direction == Axis.horizontal
-        //     ? BoxConstraints.tightFor(width: _controller.value)
-        //     : BoxConstraints.tightFor(height: _controller.value);
         BoxConstraints size;
         if (collapsed) {
           size = direction == Axis.horizontal
@@ -224,7 +254,7 @@ class _ResizablePaneState extends State<ResizablePane> {
                 fit: StackFit.passthrough,
                 clipBehavior: Clip.none,
                 children: [
-                  widget.child,
+                  buildDataBoundary(),
                   Positioned(
                     bottom: -(_activePane!.index + 1) * 16,
                     child: AnimatedBuilder(

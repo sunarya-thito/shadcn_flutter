@@ -20,21 +20,26 @@ class DataBuilder<T> extends StatelessWidget {
 }
 
 class Data<T> extends InheritedWidget {
-  final T data;
+  final T? data;
 
   const Data({
     Key? key,
-    required this.data,
+    required T this.data,
     required Widget child,
   }) : super(key: key, child: child);
+
+  const Data.boundary({
+    Key? key,
+    required Widget child,
+  })  : data = null,
+        super(key: key, child: child);
 
   static T of<T>(BuildContext context) {
     final type = _typeOf<Data<T>>();
     final widget = context.dependOnInheritedWidgetOfExactType<Data<T>>();
-    if (widget == null) {
-      throw Exception('No Data<$T> found in context');
-    }
-    return widget.data;
+    assert(widget != null, 'No Data<$T> found in context');
+    assert(widget!.data != null, 'No Data<$T> found in context');
+    return widget!.data!;
   }
 
   static T? maybeOf<T>(BuildContext context) {
