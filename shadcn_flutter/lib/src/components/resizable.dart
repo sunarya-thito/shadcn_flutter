@@ -1045,11 +1045,15 @@ class _ResizablePanelState extends State<ResizablePanel> {
         child: LayoutBuilder(builder: (context, constraints) {
           double nonFlexSpace = 0;
           int flexCount = 0;
-          for (final child in widget.children) {
+          for (int i = 0; i < widget.children.length; i++) {
+            final child = widget.children[i];
             if (child.flex == null) {
               assert(
                   child.initialSize != null, 'Initial size must not be null');
-              nonFlexSpace += child.initialSize!;
+              nonFlexSpace += _panes[i]._attachedPane?.viewSize ??
+                  (child.initialCollapsed
+                      ? (child.collapsedSize ?? 0)
+                      : (child.initialSize ?? 0));
             } else {
               flexCount += child.flex!;
             }

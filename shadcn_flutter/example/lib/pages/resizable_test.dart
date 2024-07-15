@@ -6,7 +6,13 @@ class ResizableTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(100),
+      margin: EdgeInsets.all(100),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.white,
+          width: 1,
+        ),
+      ),
       child: ResizablePanel(
         direction: Axis.horizontal,
         children: [
