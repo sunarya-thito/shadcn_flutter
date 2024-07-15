@@ -211,6 +211,12 @@ class _ResizablePaneState extends State<ResizablePane> {
     }
   }
 
+  double _computeCurrentFlex() {
+    assert(_sparedFlexSize != null,
+        'sparedFlexSize must not be null during flex computation');
+    double sparedFlexSize = _sparedFlexSize!;
+  }
+
   @override
   void didUpdateWidget(covariant ResizablePane oldWidget) {
     super.didUpdateWidget(oldWidget);
