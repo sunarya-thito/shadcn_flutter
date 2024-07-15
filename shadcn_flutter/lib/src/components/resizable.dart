@@ -602,23 +602,28 @@ class _ResizablePanelState extends State<ResizablePanel> {
     }
     double payOffLeft = _payOffLoanSize(index - 1, delta, -1);
     double payOffRight = _payOffLoanSize(index, -delta, 1);
-    // _panes[index]._proposedSize -= payOffRight;
-    // _panes[index - 1]._proposedSize -= payOffLeft;
-    double payingBackLeft =
-        _borrowSize(index - 1, payOffRight, 0, -1).givenSize;
-    double payingBackRight =
-        _borrowSize(index, -payOffLeft, _panes.length - 1, 1).givenSize;
-    if (kDebugResizable)
-      print(
-          'payOffLeft: $payOffLeft payOffRight: $payOffRight payingBackLeft: $payingBackLeft payingBackRight: $payingBackRight');
+    _panes[index]._proposedSize -= payOffRight;
+    _panes[index - 1]._proposedSize -= payOffLeft;
 
-    if (payingBackLeft != -payOffRight || payingBackRight != -payOffLeft) {
-      if (kDebugResizable)
-        print(
-            'RESET LOAN SIZES: $payingBackLeft != ${-payOffRight} || $payingBackRight != ${-payOffLeft} -> ${_panes.map((e) => e._proposedSize).toList()}');
-      _resetProposedSizes();
-      return;
-    }
+    double paidBackLeft = _borrowSize(index - 1, -payOffRight, 0, -1).givenSize;
+    double paidBackRight =
+        _borrowSize(index, -payOffLeft, _panes.length - 1, 1).givenSize;
+
+    // double payingBackLeft =
+    //     _borrowSize(index - 1, -payOffRight, 0, -1).givenSize;
+    // double payingBackRight =
+    //     _borrowSize(index, -payOffLeft, _panes.length - 1, 1).givenSize;
+    // if (kDebugResizable)
+    //   print(
+    //       'payOffLeft: $payOffLeft payOffRight: $payOffRight payingBackLeft: $payingBackLeft payingBackRight: $payingBackRight');
+    //
+    // if (payingBackLeft != -payOffRight || payingBackRight != -payOffLeft) {
+    //   if (kDebugResizable)
+    //     print(
+    //         'RESET LOAN SIZES: $payingBackLeft != ${-payOffRight} || $payingBackRight != ${-payOffLeft} -> ${_panes.map((e) => e._proposedSize).toList()}');
+    //   _resetProposedSizes();
+    //   return;
+    // }
 
     // check if we have collapsible
     if (_couldNotBorrow > 0) {
