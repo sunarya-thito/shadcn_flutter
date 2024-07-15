@@ -3,6 +3,31 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef SearchFilter<T> = int Function(T item, String query);
 
+class SelectItemButton<T> extends StatelessWidget {
+  final T value;
+  final Widget child;
+
+  const SelectItemButton({
+    Key? key,
+    required this.value,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SelectItem<T>(
+      value: value,
+      builder: (context, selectItem) {
+        return GhostButton(
+          disableTransition: true,
+          onPressed: selectItem,
+          child: child,
+        );
+      },
+    );
+  }
+}
+
 class SelectGroup extends StatelessWidget {
   final List<Widget> children;
 
@@ -16,39 +41,51 @@ class SelectGroup extends StatelessWidget {
     final searchData = Data.maybeOf<_SelectData>(context);
     assert(searchData != null, 'SelectGroup must be a child of Select');
     return _SelectValuesHolder(
-      children: children,
+      query: searchData?.query,
       builder: (children) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: children,
         );
       },
+      children: children,
     );
   }
 }
 
+typedef SelectItemReporter = void Function();
+typedef SelectItemBuilder = Widget Function(
+    BuildContext context, SelectItemReporter selectItem);
+
 class SelectItem<T> extends StatelessWidget {
-  final Widget child;
+  final SelectItemBuilder builder;
   final T value;
   final int Function(String query)? computeIndexingScore;
 
   const SelectItem({
     Key? key,
-    required this.child,
     required this.value,
     this.computeIndexingScore,
+    required this.builder,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final searchData = Data.maybeOf<_SelectData>(context);
+    assert(searchData != null, 'SelectItem must be a child of Select');
     return _SelectValueHolder(
       computeIndexingScore: (query) {
         if (computeIndexingScore != null) {
           return computeIndexingScore!(query);
         }
-        return 0;
+        return searchData!.searchFilter?.call(value, query) ?? 0;
       },
-      child: child,
+      child: builder(
+        context,
+        () {
+          searchData!.onChanged(value);
+        },
+      ),
     );
   }
 }
@@ -255,15 +292,28 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                         if (text.trim().isEmpty) {
                           text = null;
                         }
-                        return _SelectValuesHolder(
-                          query: text,
-                          children: widget.children,
-                          builder: (children) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: children,
-                            );
-                          },
+                        return Data(
+                          data: _SelectData(
+                            (item, query) {
+                              return widget.searchFilter?.call(item, query) ??
+                                  0;
+                            },
+                            text,
+                            (value) {
+                              widget.onChanged?.call(value);
+                              context.hidePopover();
+                            },
+                          ),
+                          child: _SelectValuesHolder(
+                            query: text,
+                            children: widget.children,
+                            builder: (children) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: children,
+                              );
+                            },
+                          ),
                         );
                       },
                     ),
@@ -279,9 +329,11 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
 }
 
 class _SelectData {
-  final SearchFilter searchFilter;
+  final SearchFilter? searchFilter;
+  final String? query;
+  ValueChanged onChanged;
 
-  _SelectData(this.searchFilter);
+  _SelectData(this.searchFilter, this.query, this.onChanged);
 }
 
 abstract class _SelectValueHandler {

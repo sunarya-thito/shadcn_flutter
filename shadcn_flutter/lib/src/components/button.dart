@@ -911,6 +911,7 @@ class PrimaryButton extends StatelessWidget {
   final ButtonDensity density;
   final ButtonShape shape;
   final FocusNode? focusNode;
+  final bool disableTransition;
 
   const PrimaryButton({
     Key? key,
@@ -924,6 +925,7 @@ class PrimaryButton extends StatelessWidget {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
     this.focusNode,
+    this.disableTransition = false,
   }) : super(key: key);
 
   @override
@@ -937,6 +939,7 @@ class PrimaryButton extends StatelessWidget {
       style: ButtonStyle.primary(size: size, density: density, shape: shape),
       focusNode: focusNode,
       child: child,
+      disableTransition: disableTransition,
     );
   }
 }
@@ -952,6 +955,7 @@ class SecondaryButton extends StatelessWidget {
   final ButtonDensity density;
   final ButtonShape shape;
   final FocusNode? focusNode;
+  final bool disableTransition;
 
   const SecondaryButton({
     Key? key,
@@ -965,6 +969,7 @@ class SecondaryButton extends StatelessWidget {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
     this.focusNode,
+    this.disableTransition = false,
   }) : super(key: key);
 
   @override
@@ -977,6 +982,7 @@ class SecondaryButton extends StatelessWidget {
       alignment: alignment,
       style: ButtonStyle.secondary(size: size, density: density, shape: shape),
       focusNode: focusNode,
+      disableTransition: disableTransition,
       child: child,
     );
   }
@@ -993,6 +999,7 @@ class OutlineButton extends StatelessWidget {
   final ButtonDensity density;
   final ButtonShape shape;
   final FocusNode? focusNode;
+  final bool disableTransition;
 
   const OutlineButton({
     Key? key,
@@ -1006,6 +1013,7 @@ class OutlineButton extends StatelessWidget {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
     this.focusNode,
+    this.disableTransition = false,
   }) : super(key: key);
 
   @override
@@ -1018,6 +1026,7 @@ class OutlineButton extends StatelessWidget {
       alignment: alignment,
       style: ButtonStyle.outline(size: size, density: density, shape: shape),
       focusNode: focusNode,
+      disableTransition: disableTransition,
       child: child,
     );
   }
@@ -1034,6 +1043,7 @@ class GhostButton extends StatelessWidget {
   final ButtonDensity density;
   final ButtonShape shape;
   final FocusNode? focusNode;
+  final bool disableTransition;
 
   const GhostButton({
     Key? key,
@@ -1047,6 +1057,7 @@ class GhostButton extends StatelessWidget {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
     this.focusNode,
+    this.disableTransition = false,
   }) : super(key: key);
 
   @override
@@ -1060,6 +1071,7 @@ class GhostButton extends StatelessWidget {
       style: ButtonStyle.ghost(size: size, density: density, shape: shape),
       focusNode: focusNode,
       child: child,
+      disableTransition: disableTransition,
     );
   }
 }
@@ -1075,6 +1087,7 @@ class LinkButton extends StatelessWidget {
   final ButtonDensity density;
   final ButtonShape shape;
   final FocusNode? focusNode;
+  final bool disableTransition;
 
   const LinkButton({
     Key? key,
@@ -1088,6 +1101,7 @@ class LinkButton extends StatelessWidget {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
     this.focusNode,
+    this.disableTransition = false,
   }) : super(key: key);
 
   @override
@@ -1100,6 +1114,7 @@ class LinkButton extends StatelessWidget {
       alignment: alignment,
       style: ButtonStyle.link(size: size, density: density, shape: shape),
       focusNode: focusNode,
+      disableTransition: disableTransition,
       child: child,
     );
   }
@@ -1116,6 +1131,7 @@ class TextButton extends StatelessWidget {
   final ButtonDensity density;
   final ButtonShape shape;
   final FocusNode? focusNode;
+  final bool disableTransition;
 
   const TextButton({
     Key? key,
@@ -1129,6 +1145,7 @@ class TextButton extends StatelessWidget {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
     this.focusNode,
+    this.disableTransition = false,
   }) : super(key: key);
 
   @override
@@ -1141,6 +1158,7 @@ class TextButton extends StatelessWidget {
       alignment: alignment,
       style: ButtonStyle.text(size: size, density: density, shape: shape),
       focusNode: focusNode,
+      disableTransition: disableTransition,
       child: child,
     );
   }
@@ -1157,6 +1175,7 @@ class DestructiveButton extends StatelessWidget {
   final ButtonDensity density;
   final ButtonShape shape;
   final FocusNode? focusNode;
+  final bool disableTransition;
 
   const DestructiveButton({
     Key? key,
@@ -1170,6 +1189,7 @@ class DestructiveButton extends StatelessWidget {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
     this.focusNode,
+    this.disableTransition = false,
   }) : super(key: key);
 
   @override
@@ -1183,6 +1203,7 @@ class DestructiveButton extends StatelessWidget {
       style:
           ButtonStyle.destructive(size: size, density: density, shape: shape),
       focusNode: focusNode,
+      disableTransition: disableTransition,
       child: child,
     );
   }
@@ -1199,6 +1220,7 @@ class TabButton extends StatelessWidget {
   final ButtonDensity density;
   final ButtonShape shape;
   final FocusNode? focusNode;
+  final bool disableTransition;
 
   const TabButton({
     Key? key,
@@ -1212,6 +1234,7 @@ class TabButton extends StatelessWidget {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
     this.focusNode,
+    this.disableTransition = false,
   }) : super(key: key);
 
   @override
@@ -1224,6 +1247,7 @@ class TabButton extends StatelessWidget {
       alignment: alignment,
       style: ButtonStyle.fixed(size: size, density: density, shape: shape),
       focusNode: focusNode,
+      disableTransition: disableTransition,
       child: child,
     );
   }
