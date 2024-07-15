@@ -8,13 +8,13 @@ import 'package:example/pages/docs/components/card/card_example_1.dart';
 import 'package:example/pages/docs/components/carousel/carousel_example_1.dart';
 import 'package:example/pages/docs/components/code_snippet/code_snippet_example_1.dart';
 import 'package:example/pages/docs/components/color_picker/color_picker_example_1.dart';
-import 'package:example/pages/docs/components/combobox/combobox_example_1.dart';
 import 'package:example/pages/docs/components/command/command_example_1.dart';
 import 'package:example/pages/docs/components/date_picker/date_picker_example_1.dart';
 import 'package:example/pages/docs/components/divider/divider_example_3.dart';
 import 'package:example/pages/docs/components/form/form_example_1.dart';
 import 'package:example/pages/docs/components/input_otp/input_otp_example_2.dart';
 import 'package:example/pages/docs/components/pagination/pagination_example_1.dart';
+import 'package:example/pages/docs/components/select/select_example_1.dart';
 import 'package:example/pages/docs/components/text_area/text_area_example_3.dart';
 import 'package:example/pages/docs/components/toggle/toggle_example_2.dart';
 import 'package:example/pages/docs_page.dart';
@@ -398,17 +398,6 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 ),
               ),
               ComponentCard(
-                name: 'combo_box',
-                title: 'Combo Box',
-                scale: 1.2,
-                example: Card(
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: ComboboxExample1(),
-                  ),
-                ).sized(height: 300, width: 200),
-              ),
-              ComponentCard(
                 name: 'color_picker',
                 title: 'Color Picker',
                 reverse: true,
@@ -495,6 +484,17 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     ).gap(4),
                   ).sized(width: 300),
                 ),
+              ),
+              ComponentCard(
+                name: 'select',
+                title: 'Select',
+                scale: 1.2,
+                example: Card(
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: SelectExample1(),
+                  ),
+                ).sized(height: 300, width: 200),
               ),
               ComponentCard(
                 name: 'slider',

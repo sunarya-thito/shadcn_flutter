@@ -7,7 +7,6 @@ import 'package:example/pages/docs/components/animated_value_builder_example.dar
 import 'package:example/pages/docs/components/avatar_example.dart';
 import 'package:example/pages/docs/components/calendar_example.dart';
 import 'package:example/pages/docs/components/carousel_example.dart';
-import 'package:example/pages/docs/components/combobox_example.dart';
 import 'package:example/pages/docs/components/date_picker_example.dart';
 import 'package:example/pages/docs/components/dialog_example.dart';
 import 'package:example/pages/docs/components/divider_example.dart';
@@ -20,6 +19,7 @@ import 'package:example/pages/docs/components/progress_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
 import 'package:example/pages/docs/components/repeated_animation_builder_example.dart';
 import 'package:example/pages/docs/components/resizable_example.dart';
+import 'package:example/pages/docs/components/select_example.dart';
 import 'package:example/pages/docs/components/sheet_example.dart';
 import 'package:example/pages/docs/components/skeleton_example.dart';
 import 'package:example/pages/docs/components/slider_example.dart';
@@ -196,9 +196,9 @@ class MyAppState extends State<MyApp> {
             name: 'color_picker',
           ),
           GoRoute(
-            path: 'combo-box',
-            builder: (context, state) => ComboboxExample(),
-            name: 'combo_box',
+            path: 'select',
+            builder: (context, state) => SelectExample(),
+            name: 'select',
           ),
           GoRoute(
             path: 'divider',
