@@ -197,11 +197,18 @@ class _ResizablePaneState extends State<ResizablePane> {
         );
       }
     } else {
-      double currentFlex =
-          _flexSpace == null ? widget.flex! : _computeCurrentFlex();
-      double oldSize = _controller.value.size;
+      double diffSpared = _sparedFlexSize == null
+          ? 0
+          : containerData!.sparedFlexSpaceSize - _sparedFlexSize!;
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
       _flexSpace = containerData?.flexSpace;
+      print('diff: $diffSpared');
+      if (diffSpared != 0) {
+        double newSize = _controller.value.size + diffSpared * widget.flex!;
+        newSize = newSize.clamp(
+            widget.minSize ?? 0, widget.maxSize ?? double.infinity);
+        _controller.size = newSize;
+      }
     }
 
     if (newActivePane != _activePane) {
