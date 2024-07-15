@@ -600,15 +600,14 @@ class _ResizablePanelState extends State<ResizablePanel> {
       print(
           'Loaned Sizes: ${_panes.map((e) => e._sizeBeforeDrag - e._proposedSize).toList()}');
     }
-
     double payOffLeft = _payOffLoanSize(index - 1, delta, -1);
     double payOffRight = _payOffLoanSize(index, -delta, 1);
     // _panes[index]._proposedSize -= payOffRight;
     // _panes[index - 1]._proposedSize -= payOffLeft;
     double payingBackLeft =
-        _borrowSize(index - 1, -payOffRight, 0, -1).givenSize;
+        _borrowSize(index - 1, payOffRight, 0, -1).givenSize;
     double payingBackRight =
-        _borrowSize(index, payOffLeft, _panes.length - 1, 1).givenSize;
+        _borrowSize(index, -payOffLeft, _panes.length - 1, 1).givenSize;
     if (kDebugResizable)
       print(
           'payOffLeft: $payOffLeft payOffRight: $payOffRight payingBackLeft: $payingBackLeft payingBackRight: $payingBackRight');
@@ -616,7 +615,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     if (payingBackLeft != -payOffRight || payingBackRight != -payOffLeft) {
       if (kDebugResizable)
         print(
-            'RESET SIZES: $payingBackLeft != ${-payOffRight} || $payingBackRight != ${-payOffLeft} -> ${_panes.map((e) => e._proposedSize).toList()}');
+            'RESET LOAN SIZES: $payingBackLeft != ${-payOffRight} || $payingBackRight != ${-payOffLeft} -> ${_panes.map((e) => e._proposedSize).toList()}');
       _resetProposedSizes();
       return;
     }
