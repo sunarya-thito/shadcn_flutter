@@ -285,21 +285,21 @@ class _ActivePane {
   double get _proposedSize => __proposedSize;
 
   set _proposedSize(double value) {
-    assert(
-        value >= 0, 'Size must be greater than or equal to 0 (size: $value)');
+    assert(value >= 0,
+        'Size must be greater than or equal to 0 (size: $value, index: $index)');
     assert(
         (_attachedPane!.widget.minSize == null ||
                 value >= _attachedPane!.widget.minSize!) ||
             _attachedPane!.collapsed,
-        'Size must be greater than or equal to minSize (size: $value, minSize: ${_attachedPane!.widget.minSize})');
+        'Size must be greater than or equal to minSize (size: $value, minSize: ${_attachedPane!.widget.minSize}, index: $index)');
     assert(
         !_attachedPane!.collapsed ||
             value == (_attachedPane!.widget.collapsedSize ?? 0),
-        'Size must be equal to collapsedSize if collapsed (size: $value, collapsedSize: ${_attachedPane!.widget.collapsedSize})');
+        'Size must be equal to collapsedSize if collapsed (size: $value, collapsedSize: ${_attachedPane!.widget.collapsedSize}, index: $index)');
     assert(
         _attachedPane!.widget.maxSize == null ||
             value <= _attachedPane!.widget.maxSize!,
-        'Size must be less than or equal to maxSize (size: $value, maxSize: ${_attachedPane!.widget.maxSize})');
+        'Size must be less than or equal to maxSize (size: $value, maxSize: ${_attachedPane!.widget.maxSize}, index: $index)');
     __proposedSize = value;
   }
 
@@ -354,6 +354,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
 
   // returns the amount of loan that has been paid
   double _payOffLoanSize(int index, double delta, int direction) {
+    print('PAYOFFLOAN index: $index delta: $delta direction: $direction');
     if (direction < 0) {
       for (int i = 0; i < index; i++) {
         double borrowedSize =
@@ -361,19 +362,25 @@ class _ResizablePanelState extends State<ResizablePanel> {
         // if we have borrowed size, and we currently paying it, then:
         if (borrowedSize < 0 && delta > 0) {
           double newBorrowedSize = borrowedSize + delta;
+          print('newBorrowedSize: $newBorrowedSize delta: $delta');
           if (newBorrowedSize > 0) {
             delta = -borrowedSize;
             newBorrowedSize = 0;
           }
           _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
+          print(
+              'borrowedSize: $borrowedSize delta: $delta newBorrowedSize: $newBorrowedSize proposedSize: ${_panes[i]._proposedSize}');
           return delta;
         } else if (borrowedSize > 0 && delta < 0) {
           double newBorrowedSize = borrowedSize + delta;
+          print('newBorrowedSize: $newBorrowedSize delta: $delta');
           if (newBorrowedSize < 0) {
             delta = -borrowedSize;
             newBorrowedSize = 0;
           }
           _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
+          print(
+              'borrowedSize: $borrowedSize delta: $delta newBorrowedSize: $newBorrowedSize proposedSize: ${_panes[i]._proposedSize}');
           return delta;
         }
       }
@@ -384,23 +391,30 @@ class _ResizablePanelState extends State<ResizablePanel> {
         // if we have borrowed size, and we currently paying it, then:
         if (borrowedSize < 0 && delta > 0) {
           double newBorrowedSize = borrowedSize + delta;
+          print('newBorrowedSize: $newBorrowedSize delta: $delta');
           if (newBorrowedSize > 0) {
             delta = -borrowedSize;
             newBorrowedSize = 0;
           }
           _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
+          print(
+              'borrowedSize: $borrowedSize delta: $delta newBorrowedSize: $newBorrowedSize proposedSize: ${_panes[i]._proposedSize}');
           return delta;
         } else if (borrowedSize > 0 && delta < 0) {
           double newBorrowedSize = borrowedSize + delta;
+          print('newBorrowedSize: $newBorrowedSize delta: $delta');
           if (newBorrowedSize < 0) {
             delta = -borrowedSize;
             newBorrowedSize = 0;
           }
           _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
+          print(
+              'borrowedSize: $borrowedSize delta: $delta newBorrowedSize: $newBorrowedSize proposedSize: ${_panes[i]._proposedSize}');
           return delta;
         }
       }
     }
+    print('No loan to pay');
     return 0;
   }
 
@@ -561,8 +575,21 @@ class _ResizablePanelState extends State<ResizablePanel> {
         'l: $borrowedLeftSize r: $borrowedRightSize d: $delta cb: $_couldNotBorrow cbL: $couldNotBorrowLeft cbR: $couldNotBorrowRight bfL: ${borrowedLeft.from} bfR: ${borrowedRight.from} gbL: $givenBackLeft gbR: $givenBackRight');
     double payOffLeft = _payOffLoanSize(index - 1, delta, -1);
     double payOffRight = _payOffLoanSize(index, -delta, 1);
-    _panes[index]._proposedSize -= payOffRight;
-    _panes[index - 1]._proposedSize -= payOffLeft;
+    // _panes[index]._proposedSize -= payOffRight;
+    // _panes[index - 1]._proposedSize -= payOffLeft;
+    double payingBackLeft =
+        _borrowSize(index - 1, -payOffRight, 0, -1).givenSize;
+    double payingBackRight =
+        _borrowSize(index, payOffLeft, _panes.length - 1, 1).givenSize;
+    print(
+        'payOffLeft: $payOffLeft payOffRight: $payOffRight payingBackLeft: $payingBackLeft payingBackRight: $payingBackRight');
+
+    if (payingBackLeft != -payOffRight || payingBackRight != -payOffLeft) {
+      print(
+          'RESET SIZES: $payingBackLeft != ${-payOffRight} || $payingBackRight != ${-payOffLeft} -> ${_panes.map((e) => e._proposedSize).toList()}');
+      _resetProposedSizes();
+      return;
+    }
 
     // check if we have collapsible
     if (_couldNotBorrow > 0) {
