@@ -49,7 +49,7 @@ class ResizablePane extends StatefulWidget {
   final double? maxSize;
   final double? collapsedSize;
   final ResizablePaneController? controller;
-  final int? flex;
+  final double? flex;
 
   const ResizablePane({
     Key? key,
@@ -103,7 +103,7 @@ class ResizablePane extends StatefulWidget {
     double? maxSize,
     double? collapsedSize,
     required ResizablePaneController controller,
-    int? flex,
+    double? flex,
   }) {
     return ResizablePane._controlled(
       key: key,
@@ -127,7 +127,7 @@ class ResizablePane extends StatefulWidget {
 class ResizableContainerData {
   final double sparedFlexSpaceSize;
   final double flexSpace;
-  final int flexCount;
+  final double flexCount;
 
   const ResizableContainerData(
       this.sparedFlexSpaceSize, this.flexSpace, this.flexCount);
@@ -197,12 +197,14 @@ class _ResizablePaneState extends State<ResizablePane> {
         );
       }
     } else {
+      double currentFlex =
+          _flexSpace == null ? widget.flex! : _computeCurrentFlex();
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
       _flexSpace = containerData?.flexSpace;
       double diffFlexSpace = containerData!.flexSpace - _flexSpace!;
       if (diffFlexSpace != 0 && widget.flex != null) {
         double newSize = _controller.value.size +
-            (diffFlexSpace / containerData.flexCount) * _computeCurrentFlex();
+            (diffFlexSpace / containerData.flexCount) * currentFlex;
         newSize = newSize.clamp(
             widget.minSize ?? 0, widget.maxSize ?? double.infinity);
         _controller.size = newSize;
@@ -1000,7 +1002,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   Widget buildFlexContainer(BuildContext context, double sparedFlexSize,
-      double flexSpace, int flexCount) {
+      double flexSpace, double flexCount) {
     switch (widget.direction) {
       case Axis.horizontal:
         return Row(
@@ -1020,7 +1022,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   List<Widget> buildFlexChildren(BuildContext context, double sparedFlexSize,
-      double flexSpace, int flexCount) {
+      double flexSpace, double flexCount) {
     List<Widget> children = [];
     assert(widget.children.length == _panes.length,
         'Children and panes length mismatch');
@@ -1062,7 +1064,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         data: this,
         child: LayoutBuilder(builder: (context, constraints) {
           double nonFlexSpace = 0;
-          int flexCount = 0;
+          double flexCount = 0;
           for (int i = 0; i < widget.children.length; i++) {
             final child = widget.children[i];
             if (child.flex == null) {
