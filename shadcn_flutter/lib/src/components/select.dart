@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/src/components/hover.dart';
 
 typedef SearchFilter<T> = int Function(T item, String query);
 
@@ -287,6 +288,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       constraints: widget.constraints,
@@ -380,11 +382,22 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                               top: 0,
                               left: 0,
                               right: 0,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8),
-                                child: Icon(
-                                  RadixIcons.chevronUp,
-                                  size: 16,
+                              child: HoverActivity(
+                                hitTestBehavior: HitTestBehavior.translucent,
+                                onHover: () {
+                                  // decrease scroll offset
+                                  _scrollController.jumpTo(
+                                    _scrollController.offset - 10,
+                                  );
+                                  print('jumping to previous');
+                                },
+                                child: Container(
+                                  color: theme.colorScheme.background,
+                                  padding: EdgeInsets.symmetric(vertical: 8),
+                                  child: Icon(
+                                    RadixIcons.chevronUp,
+                                    size: 16,
+                                  ),
                                 ),
                               ),
                             ),
