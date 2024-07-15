@@ -13,6 +13,7 @@ class SelectGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final searchData = Data
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: children,
@@ -35,13 +36,13 @@ class SelectItem<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SelectValueHolder(
-      child: child,
       computeIndexingScore: (query) {
         if (computeIndexingScore != null) {
           return computeIndexingScore!(query);
         }
         return 0;
       },
+      child: child,
     );
   }
 }
@@ -269,6 +270,12 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
       ),
     );
   }
+}
+
+class _SelectData<T> {
+  final SearchFilter<T> searchFilter;
+
+  _SelectData(this.searchFilter);
 }
 
 abstract class _SelectValueHandler {
