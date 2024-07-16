@@ -43,8 +43,21 @@ class MenuButton extends StatefulWidget {
 
 class _MenuButtonState extends State<MenuButton> {
   final PopoverController _popoverController = PopoverController();
+  late FocusNode _focusNode;
 
-  void openSubMenu() {}
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = widget.focusNode ?? FocusNode();
+  }
+
+  @override
+  void didUpdateWidget(covariant MenuButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.focusNode != oldWidget.focusNode) {
+      _focusNode = widget.focusNode ?? FocusNode();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,64 +67,88 @@ class _MenuButtonState extends State<MenuButton> {
       child: Data<MenubarState>.boundary(
         child: PopoverPortal(
           controller: _popoverController,
-          child: Button(
-            style: menuBarData == null
-                ? ButtonVariance.menu
-                : ButtonVariance.menubar,
-            trailing: menuBarData != null
-                ? widget.trailing
-                : Row(
-                    children: [
-                      if (widget.trailing != null) widget.trailing!,
-                      if (widget.subMenu != null && menuBarData == null)
-                        const Icon(
-                          RadixIcons.chevronRight,
-                          size: 16,
-                        ),
-                    ],
-                  ).gap(8),
-            leading: widget.leading,
-            disableTransition: true,
-            enabled: widget.enabled,
-            onHover: (value) {},
-            onPressed: () {
-              widget.onPressed?.call();
-              if (widget.subMenu != null) {
-                _popoverController.show(
-                  key: menuData!.popupKey,
-                  builder: (context) {
-                    return MenuGroup(
-                        children: widget.subMenu!,
-                        builder: (context, children) {
-                          return MenuPopup(
-                            children: children,
-                          );
-                        });
+          child: AnimatedBuilder(
+              animation: _popoverController,
+              builder: (context, child) {
+                return Button(
+                  style: (menuBarData == null
+                          ? ButtonVariance.menu
+                          : ButtonVariance.menubar)
+                      .copyWith(
+                    decoration: (context, states, value) {
+                      final theme = Theme.of(context);
+                      return (value as BoxDecoration).copyWith(
+                        color: _popoverController.hasOpenPopovers
+                            ? theme.colorScheme.accent
+                            : null,
+                        borderRadius: BorderRadius.circular(theme.radiusMd),
+                      );
+                    },
+                  ),
+                  trailing: menuBarData != null
+                      ? widget.trailing
+                      : Row(
+                          children: [
+                            if (widget.trailing != null) widget.trailing!,
+                            if (widget.subMenu != null && menuBarData == null)
+                              const Icon(
+                                RadixIcons.chevronRight,
+                                size: 16,
+                              ),
+                          ],
+                        ).gap(8),
+                  leading: widget.leading,
+                  disableTransition: true,
+                  enabled: widget.enabled,
+                  focusNode: _focusNode,
+                  onHover: (value) {
+                    if (value) {
+                      print('hover');
+                      _focusNode.requestFocus();
+                    }
                   },
-                  alignment: Alignment.topLeft,
-                  anchorAlignment: menuBarData != null
-                      ? Alignment.bottomLeft
-                      : Alignment.topRight,
-                  offset: menuBarData != null
-                      ? menuBarData.widget.border
-                          ? const Offset(-4, 8)
-                          : const Offset(0, 4)
-                      : const Offset(8, -4 + -1),
-                  closeOthers: true,
+                  onPressed: () {
+                    widget.onPressed?.call();
+                    if (widget.subMenu != null &&
+                        !_popoverController.hasOpenPopovers) {
+                      _popoverController.show(
+                        builder: (context) {
+                          return ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 192, // 12rem
+                            ),
+                            child: MenuGroup(
+                                children: widget.subMenu!,
+                                builder: (context, children) {
+                                  return MenuPopup(
+                                    children: children,
+                                  );
+                                }),
+                          );
+                        },
+                        alignment: Alignment.topLeft,
+                        anchorAlignment: menuBarData != null
+                            ? Alignment.bottomLeft
+                            : Alignment.topRight,
+                        offset: menuBarData != null
+                            ? menuBarData.widget.border
+                                ? const Offset(-4, 8)
+                                : const Offset(0, 4)
+                            : const Offset(8, -4 + -1),
+                        closeOthers: true,
+                      );
+                    }
+                  },
+                  child: widget.child,
                 );
-              }
-            },
-            child: widget.child,
-          ),
+              }),
         ),
       ),
     );
   }
 }
 
-class MenuData {
-  final GlobalKey<PopoverAnchorState> popupKey = GlobalKey();
-}
+class MenuData {}
 
 class MenuGroup extends StatefulWidget {
   final PopoverController? popoverController;
