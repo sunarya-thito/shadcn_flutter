@@ -1,4 +1,3 @@
-import 'package:example/pages/docs/components/carousel_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ResizableExample5 extends StatefulWidget {
@@ -16,20 +15,35 @@ class _ResizableExample5State extends State<ResizableExample5> {
         direction: Axis.horizontal,
         children: [
           ResizablePane.controlled(
-            child: NumberedContainer(
-              index: 0,
-              height: 200,
-              fill: false,
+            child: AnimatedBuilder(
+              animation: controller,
+              builder: (context, child) {
+                if (controller.collapsed) {
+                  return Container(
+                    alignment: Alignment.center,
+                    height: 200,
+                    child: RotatedBox(
+                      quarterTurns: -1,
+                      child: Text('Collapsed'),
+                    ),
+                  );
+                }
+                return Container(
+                  alignment: Alignment.center,
+                  height: 200,
+                  child: Text('Expanded'),
+                );
+              },
             ),
             minSize: 100,
             collapsedSize: 40,
             controller: controller,
           ),
           ResizablePane(
-            child: NumberedContainer(
-              index: 1,
+            child: Container(
+              alignment: Alignment.center,
               height: 200,
-              fill: false,
+              child: Text('Resizable'),
             ),
             initialSize: 300,
           ),
