@@ -64,9 +64,6 @@ class _MenuButtonState extends State<MenuButton> {
     final menuData = Data.maybeOf<MenuData>(context);
     assert(menuData != null || menuBarData != null,
         'MenuButton must be a descendant of Menubar or Menu');
-    var focusNode = menuBarData?.focusNode ?? menuData!.focusNode;
-    var parentFocusNode =
-        menuBarData?.parentFocusNode ?? menuData!.parentFocusNode;
     return Data<MenuData>.boundary(
       child: Data<MenubarData>.boundary(
         child: Popover(
@@ -79,13 +76,7 @@ class _MenuButtonState extends State<MenuButton> {
               leading: widget.leading,
               disableTransition: true,
               enabled: widget.enabled,
-              focusNode: focusNode,
-              onHover: (value) {
-                if (value &&
-                    (parentFocusNode.hasFocus || menuBarData == null)) {
-                  context.showPopover();
-                }
-              },
+              onHover: (value) {},
               onPressed: () {
                 widget.onPressed?.call();
                 if (widget.subMenu != null) {
@@ -108,9 +99,7 @@ class _MenuButtonState extends State<MenuButton> {
                   },
                   child: MenuGroup(
                     dataBuilder: () {
-                      return MenuData(
-                        parentFocusNode: _focusNode!,
-                      );
+                      return MenuData();
                     },
                     children: widget.subMenu!,
                     builder: (context, children) {
@@ -134,20 +123,15 @@ class _MenuButtonState extends State<MenuButton> {
   }
 }
 
-class MenubarData extends MenuData {
-  MenubarData({required super.parentFocusNode});
-}
+class MenubarData extends MenuData {}
 
 class MenuData {
   final GlobalKey itemKey = GlobalKey();
   final GlobalKey popupKey = GlobalKey();
   final FocusNode focusNode = FocusNode();
-  final FocusNode parentFocusNode;
 
   late int _index;
   late int _length;
-
-  MenuData({required this.parentFocusNode});
 }
 
 class MenuGroup<T extends MenuData> extends StatefulWidget {
