@@ -35,7 +35,6 @@ export 'src/components/command.dart';
 export 'src/components/divider.dart';
 export 'src/components/form/form.dart';
 export 'src/components/form/form_field.dart';
-export 'src/components/icon/emojis.dart';
 export 'src/components/icon/icon.dart';
 export 'src/components/input_otp.dart';
 export 'src/components/locale/shadcn_localizations.dart';

@@ -702,10 +702,6 @@ class DocsPageState extends State<DocsPage> {
                                                   size: 24,
                                                 ),
                                               )),
-                                          Container(
-                                            color: Colors.red,
-                                            child: Icon(Emojis.sad),
-                                          ),
                                         ],
                                       ),
                                     ),
