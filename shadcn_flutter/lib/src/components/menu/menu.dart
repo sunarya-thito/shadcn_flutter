@@ -10,6 +10,8 @@ class MenuDivider extends StatelessWidget {
       child: Divider(
         height: 1,
         thickness: 1,
+        indent: -4,
+        endIndent: -4,
         color: theme.colorScheme.border,
       ),
     );

@@ -16,6 +16,13 @@ class MenubarExample1 extends StatelessWidget {
             MenuButton(child: Text('Cut')),
             MenuButton(child: Text('Copy')),
             MenuButton(child: Text('Paste')),
+            MenuDivider(),
+            MenuButton(child: Text('Select All')),
+            MenuButton(child: Text('Delete')),
+            MenuDivider(),
+            MenuButton(child: Text('Find')),
+            MenuButton(child: Text('Replace')),
+            MenuButton(child: Text('Go To')),
           ],
         ),
         MenuButton(
