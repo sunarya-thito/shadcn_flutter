@@ -894,7 +894,8 @@ class _ComponentsPageState extends State<ComponentsPage> {
     );
   }
 
-  Widget wrap({required List<Widget> children}) {
+  Widget wrap({required List<IComponentPage> children}) {
+    children.sort((a, b) => a.title.compareTo(b.title));
     return Wrap(
       spacing: 16,
       runSpacing: 16,
@@ -903,7 +904,12 @@ class _ComponentsPageState extends State<ComponentsPage> {
   }
 }
 
-class WIPComponentCard extends StatelessWidget {
+abstract class IComponentPage extends Widget {
+  String get title;
+}
+
+class WIPComponentCard extends StatelessWidget implements IComponentPage {
+  @override
   final String title;
 
   const WIPComponentCard({
@@ -926,8 +932,9 @@ class WIPComponentCard extends StatelessWidget {
   }
 }
 
-class ComponentCard extends StatefulWidget {
+class ComponentCard extends StatefulWidget implements IComponentPage {
   final String name;
+  @override
   final String title;
   final Widget example;
   final bool center;

@@ -131,6 +131,10 @@ class ShadcnDocsSection {
   final IconData icon;
 
   const ShadcnDocsSection(this.title, this.pages, [this.icon = Icons.book]);
+
+  List<ShadcnDocsPage> get sortedPages {
+    return pages.toList()..sort((a, b) => a.title.compareTo(b.title));
+  }
 }
 
 class DocsPageState extends State<DocsPage> {
@@ -218,9 +222,9 @@ class DocsPageState extends State<DocsPage> {
       [
         ShadcnDocsPage('Dialog', 'dialog'),
         ShadcnDocsPage('Drawer', 'drawer'),
+        ShadcnDocsPage('Popover', 'popover'),
         ShadcnDocsPage('Sheet', 'sheet'),
         ShadcnDocsPage('Tooltip', 'tooltip'),
-        ShadcnDocsPage('Popover', 'popover'),
       ],
     ),
     ShadcnDocsSection(
@@ -761,7 +765,7 @@ class DocsPageState extends State<DocsPage> {
                         SidebarSection(
                           header: Text(section.title),
                           children: [
-                            for (var page in section.pages)
+                            for (var page in section.sortedPages)
                               NavigationButton(
                                 onPressed: () {
                                   context.goNamed(page.name);
