@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class Menubar extends StatefulWidget {
-  final FocusScopeNode? focusScopeNode;
+  final FocusNode? focusScopeNode;
   final List<Widget> children;
 
   const Menubar({
@@ -14,26 +14,26 @@ class Menubar extends StatefulWidget {
 }
 
 class _MenubarState extends State<Menubar> {
-  late FocusScopeNode _focusScopeNode;
+  late FocusNode _focusScopeNode;
 
   @override
   void initState() {
     super.initState();
-    _focusScopeNode = widget.focusScopeNode ?? FocusScopeNode();
+    _focusScopeNode = widget.focusScopeNode ?? FocusNode();
   }
 
   @override
   void didUpdateWidget(covariant Menubar oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusScopeNode != oldWidget.focusScopeNode) {
-      _focusScopeNode = widget.focusScopeNode ?? FocusScopeNode();
+      _focusScopeNode = widget.focusScopeNode ?? FocusNode();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FocusScope(
-      node: _focusScopeNode,
+    return Focus(
+      focusNode: _focusScopeNode,
       onFocusChange: (node) {
         print('focus changed ($_focusScopeNode): $node');
       },
@@ -41,7 +41,7 @@ class _MenubarState extends State<Menubar> {
         children: widget.children,
         dataBuilder: () {
           return MenubarData(
-            parentFocusScopeNode: _focusScopeNode,
+            parentFocusNode: _focusScopeNode,
           );
         },
         builder: (context, children) {

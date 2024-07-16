@@ -25,7 +25,7 @@ class MenuButton extends StatefulWidget {
   final Widget? trailing;
   final Widget? leading;
   final bool enabled;
-  final FocusScopeNode? focusScopeNode;
+  final FocusNode? focusNode;
 
   MenuButton({
     required this.child,
@@ -34,7 +34,7 @@ class MenuButton extends StatefulWidget {
     this.trailing,
     this.leading,
     this.enabled = true,
-    this.focusScopeNode,
+    this.focusNode,
   });
 
   @override
@@ -42,19 +42,19 @@ class MenuButton extends StatefulWidget {
 }
 
 class _MenuButtonState extends State<MenuButton> {
-  late FocusScopeNode? _focusScopeNode;
+  late FocusNode? _focusNode;
 
   @override
   void initState() {
     super.initState();
-    _focusScopeNode = widget.focusScopeNode ?? FocusScopeNode();
+    _focusNode = widget.focusNode ?? FocusNode();
   }
 
   @override
   void didUpdateWidget(covariant MenuButton oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.focusScopeNode != oldWidget.focusScopeNode) {
-      _focusScopeNode = widget.focusScopeNode ?? FocusScopeNode();
+    if (widget.focusNode != oldWidget.focusNode) {
+      _focusNode = widget.focusNode ?? FocusNode();
     }
   }
 
@@ -66,7 +66,7 @@ class _MenuButtonState extends State<MenuButton> {
         'MenuButton must be a descendant of Menubar or Menu');
     var focusNode = menuBarData?.focusNode ?? menuData!.focusNode;
     var parentFocusNode =
-        menuBarData?.parentFocusScopeNode ?? menuData!.parentFocusScopeNode;
+        menuBarData?.parentFocusNode ?? menuData!.parentFocusNode;
     return Data<MenuData>.boundary(
       child: Data<MenubarData>.boundary(
         child: Popover(
@@ -101,15 +101,15 @@ class _MenuButtonState extends State<MenuButton> {
                 padding: menuBarData != null
                     ? const EdgeInsets.only(top: 8)
                     : EdgeInsets.zero,
-                child: FocusScope(
-                  node: _focusScopeNode!,
+                child: Focus(
+                  focusNode: _focusNode!,
                   onFocusChange: (value) {
-                    print('focus changed ($_focusScopeNode): $value');
+                    print('focus changed ($_focusNode): $value');
                   },
                   child: MenuGroup(
                     dataBuilder: () {
                       return MenuData(
-                        parentFocusScopeNode: _focusScopeNode!,
+                        parentFocusNode: _focusNode!,
                       );
                     },
                     children: widget.subMenu!,
@@ -135,19 +135,19 @@ class _MenuButtonState extends State<MenuButton> {
 }
 
 class MenubarData extends MenuData {
-  MenubarData({required super.parentFocusScopeNode});
+  MenubarData({required super.parentFocusNode});
 }
 
 class MenuData {
   final GlobalKey itemKey = GlobalKey();
   final GlobalKey popupKey = GlobalKey();
   final FocusNode focusNode = FocusNode();
-  final FocusScopeNode parentFocusScopeNode;
+  final FocusNode parentFocusNode;
 
   late int _index;
   late int _length;
 
-  MenuData({required this.parentFocusScopeNode});
+  MenuData({required this.parentFocusNode});
 }
 
 class MenuGroup<T extends MenuData> extends StatefulWidget {
