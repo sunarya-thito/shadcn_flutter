@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class MenuButton extends StatelessWidget {
+class MenuButton extends StatefulWidget {
   final Widget child;
   final List<Widget>? subMenu;
   final VoidCallback? onPressed;
   final Widget? trailing;
   final Widget? leading;
   final bool enabled;
+  final FocusScopeNode? focusScopeNode;
 
   MenuButton({
     required this.child,
@@ -16,7 +17,29 @@ class MenuButton extends StatelessWidget {
     this.trailing,
     this.leading,
     this.enabled = true,
+    this.focusScopeNode,
   });
+
+  @override
+  State<MenuButton> createState() => _MenuButtonState();
+}
+
+class _MenuButtonState extends State<MenuButton> {
+  late FocusScopeNode? _focusScopeNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusScopeNode = widget.focusScopeNode ?? FocusScopeNode();
+  }
+
+  @override
+  void didUpdateWidget(covariant MenuButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.focusScopeNode != oldWidget.focusScopeNode) {
+      _focusScopeNode = widget.focusScopeNode ?? FocusScopeNode();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,33 +47,43 @@ class MenuButton extends StatelessWidget {
     final menuData = Data.maybeOf<MenuData>(context);
     assert(menuData != null || menuBarData != null,
         'MenuButton must be a descendant of Menubar or Menu');
+    var focusNode = menuBarData?.focusScopeNode ?? menuData!.focusScopeNode;
+    var parentFocusNode =
+        menuBarData?.parentFocusScopeNode ?? menuData!.parentFocusScopeNode;
     return Popover(
       builder: (context) {
         return Button(
           style: menuBarData == null
               ? ButtonVariance.menu
               : ButtonVariance.menubar,
-          trailing: trailing,
-          leading: leading,
+          trailing: widget.trailing,
+          leading: widget.leading,
           disableTransition: true,
-          enabled: enabled,
-          focusNode: menuBarData?.focusScopeNode ?? menuData?.focusScopeNode,
-          onPressed: () {
-            onPressed?.call();
-            if (subMenu != null) {
+          enabled: widget.enabled,
+          focusNode: focusNode,
+          onHover: (value) {
+            if (value && parentFocusNode.hasFocus) {
               context.showPopover();
             }
           },
-          child: child,
+          onPressed: () {
+            widget.onPressed?.call();
+            if (widget.subMenu != null) {
+              context.showPopover();
+            }
+          },
+          child: widget.child,
         );
       },
       popoverBuilder: (context) {
-        if (subMenu != null) {
+        if (widget.subMenu != null) {
           return MenuGroup(
             dataBuilder: () {
-              return MenuData();
+              return MenuData(
+                parentFocusScopeNode: _focusScopeNode!,
+              );
             },
-            children: subMenu!,
+            children: widget.subMenu!,
             builder: (context, children) {
               return MenuPopup(
                 children: children,
@@ -66,12 +99,17 @@ class MenuButton extends StatelessWidget {
   }
 }
 
-class MenubarData extends MenuData {}
+class MenubarData extends MenuData {
+  MenubarData({required super.parentFocusScopeNode});
+}
 
 class MenuData {
   final GlobalKey itemKey = GlobalKey();
   final GlobalKey popupKey = GlobalKey();
   final FocusScopeNode focusScopeNode = FocusScopeNode();
+  final FocusScopeNode parentFocusScopeNode;
+
+  MenuData({required this.parentFocusScopeNode});
 }
 
 class MenuGroup<T extends MenuData> extends StatefulWidget {

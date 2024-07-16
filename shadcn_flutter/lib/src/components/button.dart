@@ -68,6 +68,8 @@ class Button extends StatefulWidget {
   final FocusNode? focusNode;
   final AlignmentGeometry? alignment;
   final AbstractButtonStyle style;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocus;
   const Button({
     Key? key,
     this.leading,
@@ -79,6 +81,8 @@ class Button extends StatefulWidget {
     required this.style,
     this.enabled = true,
     this.disableTransition = false,
+    this.onFocus,
+    this.onHover,
   }) : super(key: key);
 
   const Button.primary({
@@ -92,6 +96,8 @@ class Button extends StatefulWidget {
     this.enabled = true,
     this.style = ButtonVariance.primary,
     this.disableTransition = false,
+    this.onFocus,
+    this.onHover,
   });
 
   const Button.secondary({
@@ -105,6 +111,8 @@ class Button extends StatefulWidget {
     this.enabled = true,
     this.style = ButtonVariance.secondary,
     this.disableTransition = false,
+    this.onFocus,
+    this.onHover,
   });
 
   const Button.outline({
@@ -118,6 +126,8 @@ class Button extends StatefulWidget {
     this.enabled = true,
     this.style = ButtonVariance.outline,
     this.disableTransition = false,
+    this.onFocus,
+    this.onHover,
   });
 
   const Button.ghost({
@@ -131,6 +141,8 @@ class Button extends StatefulWidget {
     this.enabled = true,
     this.style = ButtonVariance.ghost,
     this.disableTransition = false,
+    this.onFocus,
+    this.onHover,
   });
 
   const Button.link({
@@ -144,6 +156,8 @@ class Button extends StatefulWidget {
     this.enabled = true,
     this.style = ButtonVariance.link,
     this.disableTransition = false,
+    this.onFocus,
+    this.onHover,
   });
 
   const Button.text({
@@ -157,6 +171,8 @@ class Button extends StatefulWidget {
     this.enabled = true,
     this.style = ButtonVariance.text,
     this.disableTransition = false,
+    this.onFocus,
+    this.onHover,
   });
 
   const Button.destructive({
@@ -170,6 +186,8 @@ class Button extends StatefulWidget {
     this.enabled = true,
     this.style = ButtonVariance.destructive,
     this.disableTransition = false,
+    this.onFocus,
+    this.onHover,
   });
 
   const Button.fixed({
@@ -183,6 +201,8 @@ class Button extends StatefulWidget {
     this.enabled = true,
     this.style = ButtonVariance.fixed,
     this.disableTransition = false,
+    this.onFocus,
+    this.onHover,
   });
 
   @override
@@ -195,6 +215,8 @@ class ButtonState<T extends Button> extends State<T> {
     return Clickable(
       enabled: widget.enabled && widget.onPressed != null,
       disableTransition: widget.disableTransition,
+      onHover: widget.onHover,
+      onFocus: widget.onFocus,
       decoration: WidgetStateProperty.resolveWith((states) {
         return widget.style.decoration(context, states);
       }),
