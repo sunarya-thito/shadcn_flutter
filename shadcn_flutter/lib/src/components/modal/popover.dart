@@ -336,7 +336,6 @@ class PopoverAnchorState extends State<PopoverAnchor> {
   @override
   Widget build(BuildContext context) {
     return TapRegion(
-      consumeOutsideTaps: true,
       onTapOutside: (event) {
         widget.onTapOutside?.call();
       },
