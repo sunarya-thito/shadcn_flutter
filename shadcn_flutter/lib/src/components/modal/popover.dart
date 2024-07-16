@@ -247,13 +247,7 @@ class PopoverAnchorState extends State<PopoverAnchor> {
   }
 
   void close() {
-    if (mounted) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        if (mounted) {
-          Navigator.of(context).removeRoute(widget.route);
-        }
-      });
-    }
+    Navigator.of(context).removeRoute(widget.route);
   }
 
   @override

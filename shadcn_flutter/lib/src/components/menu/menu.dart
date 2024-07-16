@@ -139,10 +139,14 @@ class _MenuButtonState extends State<MenuButton> {
                       focusNode: _focusNode,
                       onHover: (value) {
                         if (value) {
-                          menuGroupData.closeOthers();
-                          if (menuBarData == null ||
-                              menuGroupData.hasOpenPopovers) {
-                            openSubMenu();
+                          if ((menuBarData == null ||
+                                  menuGroupData.hasOpenPopovers) &&
+                              widget.subMenu != null) {
+                            if (!menuData.popoverController.hasOpenPopovers) {
+                              openSubMenu();
+                            }
+                          } else {
+                            menuGroupData.closeOthers();
                           }
                         }
                       },
