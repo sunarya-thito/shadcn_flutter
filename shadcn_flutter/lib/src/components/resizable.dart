@@ -1508,6 +1508,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
                       : (child.initialSize ?? 0));
               minSizeFlex = min(minSizeFlex, currentSize);
             }
+            nonFlexSpace += (_panes[i].getDividerSize(widget.direction) ?? 0);
           }
 
           for (int i = 0; i < widget.children.length; i++) {
