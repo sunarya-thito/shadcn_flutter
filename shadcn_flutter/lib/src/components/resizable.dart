@@ -837,7 +837,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     print('minOverflow: $minOverflow maxOverflow: $maxOverflow');
     // adjust delta if we have overflow
     if (minOverflow < 0 && delta < 0) {
-      delta = delta + minOverflow;
+      delta = delta - minOverflow;
     }
     if (maxOverflow > 0 && delta > 0) {
       delta = delta - maxOverflow;
@@ -900,6 +900,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   bool _attemptCollapse(int index, int direction) {
+    _startDragging();
     if (index == 0) {
       direction = 1;
     } else if (index == _panes.length - 1) {
@@ -914,11 +915,13 @@ class _ResizablePanelState extends State<ResizablePanel> {
       _BorrowInfo borrowed = _borrowSize(index - 1, delta, 0, -1);
       if (borrowed.givenSize != delta) {
         _resetProposedSizes();
+        _stopDragging();
         return false;
       }
       _panes[index]._proposedSize = collapsedSize;
       _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
+      _stopDragging();
       return true;
     } else if (direction > 0) {
       // collapse to the right
@@ -929,11 +932,14 @@ class _ResizablePanelState extends State<ResizablePanel> {
       _BorrowInfo borrowed = _borrowSize(index, delta, _panes.length - 1, 1);
       if (borrowed.givenSize != delta) {
         _resetProposedSizes();
+        _stopDragging();
         return false;
       }
       _panes[index]._proposedSize = collapsedSize;
       _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
+      _stopDragging();
+      return true;
     } else if (direction == 0) {
       // collapse to both sides
       final child = widget.children[index];
@@ -947,11 +953,14 @@ class _ResizablePanelState extends State<ResizablePanel> {
       if (borrowedLeft.givenSize != halfDelta ||
           borrowedRight.givenSize != halfDelta) {
         _resetProposedSizes();
+        _stopDragging();
         return false;
       }
       _panes[index]._proposedSize = collapsedSize;
       _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
+      _stopDragging();
+      return true;
     }
     return false;
   }

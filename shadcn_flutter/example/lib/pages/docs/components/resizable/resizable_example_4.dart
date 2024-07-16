@@ -44,6 +44,7 @@ class _ResizableExample4State extends State<ResizableExample4> {
                   fill: false,
                 ),
                 controller: controller3,
+                maxSize: 200,
               ),
               ResizablePane.controlled(
                 child: NumberedContainer(
@@ -90,6 +91,30 @@ class _ResizableExample4State extends State<ResizableExample4> {
                 controller3.tryExpandSize(-20);
               },
               child: Text('Shrink Panel 2'),
+            ),
+            PrimaryButton(
+              onPressed: () {
+                controller1.tryExpandSize(20);
+              },
+              child: Text('Expand Panel 1'),
+            ),
+            PrimaryButton(
+              onPressed: () {
+                controller1.tryExpandSize(-20);
+              },
+              child: Text('Shrink Panel 1'),
+            ),
+            PrimaryButton(
+              onPressed: () {
+                controller5.tryExpandSize(20);
+              },
+              child: Text('Expand Panel 4'),
+            ),
+            PrimaryButton(
+              onPressed: () {
+                controller5.tryExpandSize(-20);
+              },
+              child: Text('Shrink Panel 4'),
             ),
           ],
         )
