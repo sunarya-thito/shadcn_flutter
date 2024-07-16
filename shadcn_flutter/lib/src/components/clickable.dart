@@ -12,6 +12,7 @@ class Clickable extends StatefulWidget {
   final WidgetStateProperty<EdgeInsetsGeometry?>? padding;
   final WidgetStateProperty<TextStyle?>? textStyle;
   final WidgetStateProperty<IconThemeData?>? iconTheme;
+  final WidgetStateProperty<EdgeInsetsGeometry?>? margin;
   final VoidCallback? onPressed;
   final FocusNode? focusNode;
   final HitTestBehavior behavior;
@@ -32,6 +33,7 @@ class Clickable extends StatefulWidget {
     this.onHover,
     this.onFocus,
     this.disableTransition = false,
+    this.margin,
   });
 
   @override
@@ -152,6 +154,7 @@ class _ClickableState extends State<Clickable> {
   Widget buildContainer(BuildContext context) {
     if (widget.disableTransition) {
       return Container(
+        margin: widget.margin?.resolve(_controller.value),
         decoration: widget.decoration?.resolve(_controller.value),
         padding: widget.padding?.resolve(_controller.value),
         child: widget.child,
@@ -159,6 +162,7 @@ class _ClickableState extends State<Clickable> {
     }
     return AnimatedContainer(
       duration: kDefaultDuration,
+      margin: widget.margin?.resolve(_controller.value),
       decoration: widget.decoration?.resolve(_controller.value),
       padding: widget.padding?.resolve(_controller.value),
       child: widget.child,

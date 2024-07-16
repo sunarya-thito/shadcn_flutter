@@ -53,9 +53,14 @@ class _MenuButtonState extends State<MenuButton> {
     return Popover(
       builder: (context) {
         return Button(
-          style: menuBarData == null
-              ? ButtonVariance.menu
-              : ButtonVariance.menubar,
+          style: (menuBarData == null
+                  ? ButtonVariance.menu
+                  : ButtonVariance.menubar)
+              .copyWith(
+            margin: (context, states, value) {
+              return value;
+            },
+          ),
           trailing: widget.trailing,
           leading: widget.leading,
           disableTransition: true,
@@ -112,6 +117,9 @@ class MenuData {
   final FocusScopeNode focusScopeNode = FocusScopeNode();
   final FocusScopeNode parentFocusScopeNode;
 
+  late int _index;
+  late int _length;
+
   MenuData({required this.parentFocusScopeNode});
 }
 
@@ -137,7 +145,11 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
   @override
   void initState() {
     super.initState();
-    _data = List.generate(widget.children.length, (_) => widget.dataBuilder());
+    _data = List.generate(widget.children.length, (i) {
+      return widget.dataBuilder()
+        .._index = i
+        .._length = widget.children.length;
+    });
   }
 
   @override
@@ -145,7 +157,7 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(oldWidget.children, widget.children)) {
       _data =
-          List.generate(widget.children.length, (_) => widget.dataBuilder());
+          List.generate(widget.children.length, (i) => widget.dataBuilder());
     }
   }
 
