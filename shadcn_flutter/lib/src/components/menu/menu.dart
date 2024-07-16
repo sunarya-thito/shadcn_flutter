@@ -77,18 +77,21 @@ class _MenuButtonState extends State<MenuButton> {
       },
       popoverBuilder: (context) {
         if (widget.subMenu != null) {
-          return MenuGroup(
-            dataBuilder: () {
-              return MenuData(
-                parentFocusScopeNode: _focusScopeNode!,
-              );
-            },
-            children: widget.subMenu!,
-            builder: (context, children) {
-              return MenuPopup(
-                children: children,
-              );
-            },
+          return FocusScope(
+            node: _focusScopeNode!,
+            child: MenuGroup(
+              dataBuilder: () {
+                return MenuData(
+                  parentFocusScopeNode: _focusScopeNode!,
+                );
+              },
+              children: widget.subMenu!,
+              builder: (context, children) {
+                return MenuPopup(
+                  children: children,
+                );
+              },
+            ),
           );
         }
         return const SizedBox();

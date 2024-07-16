@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import '../../shadcn_flutter.dart';
 
 class OutlinedContainer extends StatefulWidget {
@@ -7,13 +5,14 @@ class OutlinedContainer extends StatefulWidget {
   final Color? backgroundColor;
   final Color? borderColor;
   final Clip clipBehavior;
-
+  final double? borderRadius;
   const OutlinedContainer({
     Key? key,
     required this.child,
     this.borderColor,
     this.backgroundColor,
     this.clipBehavior = Clip.none,
+    this.borderRadius,
   }) : super(key: key);
 
   @override
@@ -33,7 +32,8 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
           color: widget.borderColor ?? theme.colorScheme.muted,
           width: 1,
         ),
-        borderRadius: BorderRadius.circular(theme.radiusXl),
+        borderRadius:
+            BorderRadius.circular(widget.borderRadius ?? theme.radiusXl),
       ),
       child: widget.child,
     );

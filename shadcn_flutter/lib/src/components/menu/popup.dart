@@ -7,11 +7,17 @@ class MenuPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicWidth(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: children,
+    final theme = Theme.of(context);
+    return OutlinedContainer(
+      borderRadius: theme.radiusMd,
+      backgroundColor: theme.colorScheme.popover,
+      borderColor: theme.colorScheme.border,
+      child: IntrinsicWidth(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: children,
+        ),
       ),
     );
   }
