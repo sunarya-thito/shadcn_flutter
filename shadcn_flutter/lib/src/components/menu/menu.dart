@@ -42,7 +42,6 @@ class MenuButton extends StatefulWidget {
 }
 
 class _MenuButtonState extends State<MenuButton> {
-  final PopoverController _popoverController = PopoverController();
   late FocusNode _focusNode;
 
   @override
@@ -66,9 +65,9 @@ class _MenuButtonState extends State<MenuButton> {
     return Data<MenuData>.boundary(
       child: Data<MenubarState>.boundary(
         child: PopoverPortal(
-          controller: _popoverController,
+          controller: menuData!.popoverController,
           child: AnimatedBuilder(
-              animation: _popoverController,
+              animation: menuData.popoverController,
               builder: (context, child) {
                 return Button(
                   style: (menuBarData == null
@@ -78,7 +77,7 @@ class _MenuButtonState extends State<MenuButton> {
                     decoration: (context, states, value) {
                       final theme = Theme.of(context);
                       return (value as BoxDecoration).copyWith(
-                        color: _popoverController.hasOpenPopovers
+                        color: menuData.popoverController.hasOpenPopovers
                             ? theme.colorScheme.accent
                             : null,
                         borderRadius: BorderRadius.circular(theme.radiusMd),
@@ -103,15 +102,14 @@ class _MenuButtonState extends State<MenuButton> {
                   focusNode: _focusNode,
                   onHover: (value) {
                     if (value) {
-                      print('hover');
                       _focusNode.requestFocus();
                     }
                   },
                   onPressed: () {
                     widget.onPressed?.call();
                     if (widget.subMenu != null &&
-                        !_popoverController.hasOpenPopovers) {
-                      _popoverController.show(
+                        !menuData.popoverController.hasOpenPopovers) {
+                      menuData.popoverController.show(
                         builder: (context) {
                           return ConstrainedBox(
                             constraints: const BoxConstraints(
@@ -135,7 +133,6 @@ class _MenuButtonState extends State<MenuButton> {
                                 ? const Offset(-4, 8)
                                 : const Offset(0, 4)
                             : const Offset(8, -4 + -1),
-                        closeOthers: true,
                       );
                     }
                   },
@@ -148,7 +145,9 @@ class _MenuButtonState extends State<MenuButton> {
   }
 }
 
-class MenuData {}
+class MenuData {
+  final PopoverController popoverController = PopoverController();
+}
 
 class MenuGroup extends StatefulWidget {
   final PopoverController? popoverController;
