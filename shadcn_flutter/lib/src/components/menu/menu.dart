@@ -50,9 +50,6 @@ class _MenuButtonState extends State<MenuButton> {
   Widget build(BuildContext context) {
     final menuBarData = Data.maybeOf<MenubarState>(context);
     final menuData = Data.maybeOf<MenuData>(context);
-    assert(menuData != null || menuBarData != null,
-        'MenuButton must be a descendant of Menubar or Menu');
-    final data = menuBarData ?? menuData!;
     return Data<MenuData>.boundary(
       child: Data<MenubarState>.boundary(
         child: PopoverPortal(
@@ -70,10 +67,9 @@ class _MenuButtonState extends State<MenuButton> {
               widget.onPressed?.call();
               if (widget.subMenu != null) {
                 _popoverController.show(
-                  key: data.popupKey,
+                  key: menuData!.popupKey,
                   builder: (context) {
                     return MenuGroup(
-                        dataBuilder: () => MenuData(),
                         children: widget.subMenu!,
                         builder: (context, children) {
                           return MenuPopup(

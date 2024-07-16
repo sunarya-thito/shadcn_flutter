@@ -36,9 +36,6 @@ class MenubarState extends State<Menubar> {
   Widget buildContainer(BuildContext context) {
     return MenuGroup(
       children: widget.children,
-      dataBuilder: () {
-        return MenubarData();
-      },
       builder: (context, children) {
         return IntrinsicHeight(
           child: Row(
