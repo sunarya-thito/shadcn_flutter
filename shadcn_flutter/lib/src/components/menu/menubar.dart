@@ -34,16 +34,19 @@ class MenubarState extends State<Menubar> {
   }
 
   Widget buildContainer(BuildContext context) {
-    return MenuGroup(
-      children: widget.children,
-      builder: (context, children) {
-        return IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: children,
-          ),
-        ).medium();
-      },
+    return Data(
+      data: this,
+      child: MenuGroup(
+        children: widget.children,
+        builder: (context, children) {
+          return IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: children,
+            ),
+          ).medium();
+        },
+      ),
     );
   }
 }

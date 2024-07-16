@@ -58,7 +58,15 @@ class _MenuButtonState extends State<MenuButton> {
             style: menuBarData == null
                 ? ButtonVariance.menu
                 : ButtonVariance.menubar,
-            trailing: widget.trailing,
+            trailing: Row(
+              children: [
+                if (widget.trailing != null) widget.trailing!,
+                if (widget.subMenu != null)
+                  Icon(
+                    Icons.arrow,
+                  ),
+              ],
+            ),
             leading: widget.leading,
             disableTransition: true,
             enabled: widget.enabled,
@@ -78,8 +86,14 @@ class _MenuButtonState extends State<MenuButton> {
                         });
                   },
                   alignment: Alignment.topLeft,
-                  anchorAlignment: Alignment.topRight,
-                  offset: const Offset(4, 0),
+                  anchorAlignment: menuBarData != null
+                      ? Alignment.bottomLeft
+                      : Alignment.topRight,
+                  offset: menuBarData != null
+                      ? menuBarData.widget.border
+                          ? const Offset(-4, 8)
+                          : const Offset(0, 4)
+                      : const Offset(8, -4 + -1),
                   closeOthers: true,
                 );
               }
