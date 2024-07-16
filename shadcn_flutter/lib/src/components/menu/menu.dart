@@ -135,6 +135,7 @@ class MenuData {
 }
 
 class MenuGroup<T extends MenuData> extends StatefulWidget {
+  final PopoverController? popoverController;
   final List<Widget> children;
   final T Function() dataBuilder;
   final Widget Function(BuildContext context, List<Widget> children) builder;
@@ -144,6 +145,7 @@ class MenuGroup<T extends MenuData> extends StatefulWidget {
     required this.dataBuilder,
     required this.children,
     required this.builder,
+    this.popoverController,
   });
 
   @override
@@ -152,10 +154,12 @@ class MenuGroup<T extends MenuData> extends StatefulWidget {
 
 class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
   late List<T> _data;
+  late PopoverController _popoverController;
 
   @override
   void initState() {
     super.initState();
+    _popoverController = widget.popoverController ?? PopoverController();
     _data = List.generate(widget.children.length, (i) {
       return widget.dataBuilder()
         .._index = i
@@ -166,6 +170,9 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
   @override
   void didUpdateWidget(covariant MenuGroup<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.popoverController != oldWidget.popoverController) {
+      _popoverController = widget.popoverController ?? PopoverController();
+    }
     if (!listEquals(oldWidget.children, widget.children)) {
       _data = List.generate(widget.children.length, (i) {
         return widget.dataBuilder()
