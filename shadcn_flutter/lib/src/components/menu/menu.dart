@@ -79,7 +79,7 @@ class _MenuButtonState extends State<MenuButton> {
           onPressed: () {
             widget.onPressed?.call();
             if (widget.subMenu != null) {
-              data._parent.openMenu(widget.subMenu!);
+              data._parent.openSubMenu(widget.subMenu!);
             }
           },
           child: widget.child,
@@ -130,12 +130,20 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
   late List<T> _data;
   late PopoverController _popoverController;
 
-  void openMenu(List<Widget> children) {
+  void openSubMenu(List<Widget> children) {
     _popoverController.show(
       builder: (context) {
-        return MenuPopup(
-          children: children,
-        );
+        return MenuGroup(
+            dataBuilder: widget.dataBuilder,
+            children: children,
+            builder: (context, children) {
+              return MenuPopup(
+                children: children,
+              );
+            },
+            popoverAlignment: Alignment.topLeft,
+            anchorAlignment: Alignment.topRight,
+            popoverOffset: const Offset(8, -4 + -1));
       },
       alignment: widget.popoverAlignment,
       anchorAlignment: widget.anchorAlignment,
