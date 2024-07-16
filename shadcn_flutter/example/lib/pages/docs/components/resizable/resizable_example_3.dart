@@ -1,18 +1,21 @@
 import 'package:example/pages/docs/components/carousel_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class ResizableExample1 extends StatefulWidget {
+class ResizableExample3 extends StatefulWidget {
   @override
-  State<ResizableExample1> createState() => _ResizableExample1State();
+  State<ResizableExample3> createState() => _ResizableExample3State();
 }
 
-class _ResizableExample1State extends State<ResizableExample1> {
+class _ResizableExample3State extends State<ResizableExample3> {
   @override
   Widget build(BuildContext context) {
     return OutlinedContainer(
       clipBehavior: Clip.antiAlias,
       child: ResizablePanel(
         direction: Axis.horizontal,
+        draggerBuilder: (context) {
+          return HorizontalResizableDragger();
+        },
         children: [
           ResizablePane(
             child: NumberedContainer(

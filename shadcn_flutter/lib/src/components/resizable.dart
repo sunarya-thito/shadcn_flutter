@@ -6,7 +6,58 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef Predicate<T> = bool Function(T value);
 
-const kDebugResizable = true;
+const _kDebugResizable = false;
+
+class HorizontalResizableDragger extends StatelessWidget {
+  const HorizontalResizableDragger({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.border,
+          borderRadius: BorderRadius.circular(theme.radiusSm),
+        ),
+        alignment: Alignment.center,
+        width: 3 * 4,
+        height: 4 * 4,
+        child: const Icon(
+          RadixIcons.dragHandleDots2,
+          size: 4 * 2.5,
+        ),
+      ),
+    );
+  }
+}
+
+class VerticalResizableDragger extends StatelessWidget {
+  const VerticalResizableDragger({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.border,
+          borderRadius: BorderRadius.circular(theme.radiusSm),
+        ),
+        alignment: Alignment.center,
+        width: 4 * 4,
+        height: 3 * 4,
+        child: Transform.rotate(
+          angle: pi / 2,
+          child: const Icon(
+            RadixIcons.dragHandleDots2,
+            size: 4 * 2.5,
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class ResizablePaneValue {
   final double size;
@@ -288,22 +339,24 @@ class _ResizablePaneState extends State<ResizablePane> {
           child: Offstage(
               offstage: _controller.value.size == 0,
               // child: widget.child,
-              child: Stack(
-                fit: StackFit.passthrough,
-                clipBehavior: Clip.none,
-                children: [
-                  buildDataBoundary(),
-                  Positioned(
-                    bottom: -(_activePane!.index + 1) * 16,
-                    child: AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, child) {
-                          return Text(
-                              'Size: ${_controller.value.collapsed ? widget.collapsedSize : _controller.value.size}\nFlex: ${_activePane?._flex}');
-                        }),
-                  ),
-                ],
-              )),
+              child: _kDebugResizable
+                  ? Stack(
+                      fit: StackFit.passthrough,
+                      clipBehavior: Clip.none,
+                      children: [
+                        buildDataBoundary(),
+                        Positioned(
+                          bottom: -(_activePane!.index + 1) * 16,
+                          child: AnimatedBuilder(
+                              animation: _controller,
+                              builder: (context, child) {
+                                return Text(
+                                    'Size: ${_controller.value.collapsed ? widget.collapsedSize : _controller.value.size}\nFlex: ${_activePane?._flex}');
+                              }),
+                        ),
+                      ],
+                    )
+                  : buildDataBoundary()),
         );
       },
     );
@@ -353,28 +406,42 @@ class _ResizableDividerState extends State<_ResizableDivider> {
 
 class ResizablePanel extends StatefulWidget {
   static Widget _defaultDividerBuilder(BuildContext context) {
-    return const SizedBox();
+    final state = Data.maybeOf<_ResizablePanelState>(context);
+    assert(state != null, 'ResizableDivider must be a child of ResizablePanel');
+    if (state!.widget.direction == Axis.horizontal) {
+      return const VerticalDivider();
+    } else {
+      return const Divider();
+    }
   }
 
   static Widget _defaultDraggerBuilder(BuildContext context) {
     // return Container(
     //   color: Colors.yellow.withOpacity(0.2),
     // );
-    return const SizedBox();
+    final state = Data.maybeOf<_ResizablePanelState>(context);
+    assert(state != null, 'ResizableDivider must be a child of ResizablePanel');
+    if (state!.widget.direction == Axis.horizontal) {
+      return const SizedBox(
+        width: 10,
+      );
+    } else {
+      return const SizedBox(
+        height: 10,
+      );
+    }
   }
 
   final List<ResizablePane> children;
   final WidgetBuilder? dividerBuilder;
   final WidgetBuilder? draggerBuilder;
   final Axis direction;
-  final double dividerSize;
 
   const ResizablePanel({
     Key? key,
     required this.children,
     this.direction = Axis.horizontal,
     this.dividerBuilder = _defaultDividerBuilder,
-    this.dividerSize = 10,
     this.draggerBuilder = _defaultDraggerBuilder,
   }) : super(key: key);
 
@@ -383,12 +450,25 @@ class ResizablePanel extends StatefulWidget {
 }
 
 class _ActivePane {
-  final GlobalKey key = GlobalKey();
+  final GlobalKey _key = GlobalKey();
   final int index;
   _ResizablePaneState? _attachedPane;
   double _sizeBeforeDrag = 0;
   double __proposedSize = 0;
   double? _flex;
+  final GlobalKey _dividerKey = GlobalKey();
+  double? getDividerSize(Axis direction) {
+    final RenderBox? renderBox =
+        _dividerKey.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox == null) {
+      return null;
+    }
+    if (direction == Axis.horizontal) {
+      return renderBox.size.width;
+    } else {
+      return renderBox.size.height;
+    }
+  }
 
   double get _proposedSize => __proposedSize;
 
@@ -431,6 +511,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
     _panes = List.generate(
         widget.children.length, (index) => _ActivePane(index: index));
     _checkExpands();
+    // Trigger 2nd build to recompute divider size
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   void _checkExpands() {
@@ -468,7 +554,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
 
   // returns the amount of loan that has been paid
   double _payOffLoanSize(int index, double delta, int direction) {
-    if (kDebugResizable)
+    if (_kDebugResizable)
       print('PAYOFFLOAN index: $index delta: $delta direction: $direction');
     if (direction < 0) {
       for (int i = 0; i < index; i++) {
@@ -477,27 +563,27 @@ class _ResizablePanelState extends State<ResizablePanel> {
         // if we have borrowed size, and we currently paying it, then:
         if (borrowedSize < 0 && delta > 0) {
           double newBorrowedSize = borrowedSize + delta;
-          if (kDebugResizable)
+          if (_kDebugResizable)
             print('newBorrowedSize: $newBorrowedSize delta: $delta');
           if (newBorrowedSize > 0) {
             delta = -borrowedSize;
             newBorrowedSize = 0;
           }
           _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
-          if (kDebugResizable)
+          if (_kDebugResizable)
             print(
                 'borrowedSize: $borrowedSize delta: $delta newBorrowedSize: $newBorrowedSize proposedSize: ${_panes[i]._proposedSize}');
           return delta;
         } else if (borrowedSize > 0 && delta < 0) {
           double newBorrowedSize = borrowedSize + delta;
-          if (kDebugResizable)
+          if (_kDebugResizable)
             print('newBorrowedSize: $newBorrowedSize delta: $delta');
           if (newBorrowedSize < 0) {
             delta = -borrowedSize;
             newBorrowedSize = 0;
           }
           _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
-          if (kDebugResizable)
+          if (_kDebugResizable)
             print(
                 'borrowedSize: $borrowedSize delta: $delta newBorrowedSize: $newBorrowedSize proposedSize: ${_panes[i]._proposedSize}');
           return delta;
@@ -510,34 +596,34 @@ class _ResizablePanelState extends State<ResizablePanel> {
         // if we have borrowed size, and we currently paying it, then:
         if (borrowedSize < 0 && delta > 0) {
           double newBorrowedSize = borrowedSize + delta;
-          if (kDebugResizable)
+          if (_kDebugResizable)
             print('newBorrowedSize: $newBorrowedSize delta: $delta');
           if (newBorrowedSize > 0) {
             delta = -borrowedSize;
             newBorrowedSize = 0;
           }
           _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
-          if (kDebugResizable)
+          if (_kDebugResizable)
             print(
                 'borrowedSize: $borrowedSize delta: $delta newBorrowedSize: $newBorrowedSize proposedSize: ${_panes[i]._proposedSize}');
           return delta;
         } else if (borrowedSize > 0 && delta < 0) {
           double newBorrowedSize = borrowedSize + delta;
-          if (kDebugResizable)
+          if (_kDebugResizable)
             print('newBorrowedSize: $newBorrowedSize delta: $delta');
           if (newBorrowedSize < 0) {
             delta = -borrowedSize;
             newBorrowedSize = 0;
           }
           _panes[i]._proposedSize = _panes[i]._sizeBeforeDrag + newBorrowedSize;
-          if (kDebugResizable)
+          if (_kDebugResizable)
             print(
                 'borrowedSize: $borrowedSize delta: $delta newBorrowedSize: $newBorrowedSize proposedSize: ${_panes[i]._proposedSize}');
           return delta;
         }
       }
     }
-    if (kDebugResizable) print('No loan to pay');
+    if (_kDebugResizable) print('No loan to pay');
     return 0;
   }
 
@@ -549,28 +635,28 @@ class _ResizablePanelState extends State<ResizablePanel> {
     //         (index < 0 || index >= _panes.length) ||
     //         (until < 0 || until >= _panes.length),
     //     'Index must be greater than until if direction is -1, and less than until if direction is 1 (index: $index, until: $until, direction: $direction)');
-    if (kDebugResizable)
+    if (_kDebugResizable)
       print(
           '_borrowSize index: $index delta: $delta direction: $direction until: $until');
     // delta in here does not mean direction of the drag!
     final pane = getAt(index);
     if (pane == null) {
-      if (kDebugResizable) print('panel is null: $index');
+      if (_kDebugResizable) print('panel is null: $index');
       return _BorrowInfo(0, index - direction);
     }
 
     if (index == until + direction) {
-      if (kDebugResizable) print('index == until: $index');
+      if (_kDebugResizable) print('index == until: $index');
       return _BorrowInfo(0, index);
     }
     var attachedPane = pane._attachedPane;
     if (attachedPane == null) {
-      if (kDebugResizable) print('attachedPane is null: $index');
+      if (_kDebugResizable) print('attachedPane is null: $index');
       return _BorrowInfo(0, index - direction);
     }
 
     if (!attachedPane.widget.resizable) {
-      if (kDebugResizable) print('not resizable: $index');
+      if (_kDebugResizable) print('not resizable: $index');
       return _BorrowInfo(0, index - direction);
     }
 
@@ -579,9 +665,11 @@ class _ResizablePanelState extends State<ResizablePanel> {
 
     if (attachedPane.collapsed) {
       // nope, we're closed, go borrow to another neighbor
-      // EDIT: actually nvm,
-      if (kDebugResizable) print('collapsed: $index');
+      if (_kDebugResizable) print('collapsed: $index');
       // return _borrowSize(index + direction, delta, until, direction);
+      if ((direction < 0 && delta < 0) || (direction > 0 && delta > 0)) {
+        return _borrowSize(index + direction, delta, until, direction);
+      }
       return _BorrowInfo(0, index);
     }
 
@@ -591,7 +679,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       double overflow = newSize - minSize;
       double given = delta - overflow;
 
-      if (kDebugResizable)
+      if (_kDebugResizable)
         print(
             'minSize: $minSize overflow: $overflow given: $given delta: $delta');
 
@@ -606,7 +694,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       double maxOverflow = newSize - maxSize; // 103 - 100 = 3
       double given = delta - maxOverflow; // 5 - 3 = 2
 
-      if (kDebugResizable)
+      if (_kDebugResizable)
         print(
             'maxSize: $maxSize maxOverflow: $maxOverflow given: $given delta: $delta');
 
@@ -621,7 +709,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
       return _BorrowInfo(borrowSize.givenSize + given, borrowSize.from);
     }
 
-    if (kDebugResizable) print('newSize: $newSize index: $index delta: $delta');
+    if (_kDebugResizable)
+      print('newSize: $newSize index: $index delta: $delta');
 
     pane._proposedSize = newSize;
     // return delta;
@@ -646,7 +735,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
   void _debugCouldNotBorrow() {
     // if (kDebugResizable) print('Could not borrow: ${_panes.map((e) => e._couldNotBorrow).toList()}');
     // if (kDebugResizable) print('Could not expand: ${_panes.map((e) => e._couldNotExpand).toList()}');
-    if (kDebugResizable)
+    if (_kDebugResizable)
       print('Proposed sizes: ${_panes.map((e) => e._proposedSize).toList()}');
   }
 
@@ -659,19 +748,19 @@ class _ResizablePanelState extends State<ResizablePanel> {
       return;
     }
 
-    if (kDebugResizable)
+    if (_kDebugResizable)
       print('================ DRAG START ==================');
 
-    if (kDebugResizable)
+    if (_kDebugResizable)
       print(
           'Before sizes: ${_panes.map((e) => e._attachedPane?.size ?? 0).toList()}');
 
-    if (kDebugResizable) print('=== BORROWING LEFT');
+    if (_kDebugResizable) print('=== BORROWING LEFT');
     _BorrowInfo borrowedLeft = _borrowSize(index - 1, delta, 0, -1);
-    if (kDebugResizable) print('=== BORROWING RIGHT');
+    if (_kDebugResizable) print('=== BORROWING RIGHT');
     _BorrowInfo borrowedRight =
         _borrowSize(index, -delta, _panes.length - 1, 1);
-    if (kDebugResizable) print('=== END BORROWING');
+    if (_kDebugResizable) print('=== END BORROWING');
 
     double borrowedRightSize = borrowedRight.givenSize;
     double borrowedLeftSize = borrowedLeft.givenSize;
@@ -685,40 +774,40 @@ class _ResizablePanelState extends State<ResizablePanel> {
     } else {
       _couldNotBorrow = 0;
     }
-    if (kDebugResizable)
+    if (_kDebugResizable)
       print('Temp Sizes: ${_panes.map((e) => e._proposedSize).toList()}');
 
     double givenBackLeft = 0;
     double givenBackRight = 0;
     if (couldNotBorrowLeft != -couldNotBorrowRight) {
-      if (kDebugResizable) print('=== GIVING BACK');
+      if (_kDebugResizable) print('=== GIVING BACK');
       givenBackLeft =
           _borrowSize(borrowedRight.from, -couldNotBorrowLeft, index, -1)
               .givenSize;
-      if (kDebugResizable)
+      if (_kDebugResizable)
         print('Giving back left from: ${borrowedRight.from} -> $givenBackLeft');
       givenBackRight =
           _borrowSize(borrowedLeft.from, -couldNotBorrowRight, index - 1, 1)
               .givenSize;
-      if (kDebugResizable)
+      if (_kDebugResizable)
         print(
             'Giving back right from: ${borrowedLeft.from} -> $givenBackRight');
-      if (kDebugResizable) print('=== END GIVING BACK');
+      if (_kDebugResizable) print('=== END GIVING BACK');
     }
 
     if (givenBackLeft != -couldNotBorrowLeft ||
         givenBackRight != -couldNotBorrowRight) {
-      if (kDebugResizable)
+      if (_kDebugResizable)
         print(
             'RESET SIZES: $givenBackLeft != ${-couldNotBorrowLeft} || $givenBackRight != ${-couldNotBorrowRight} -> ${_panes.map((e) => e._proposedSize).toList()}');
       _resetProposedSizes();
       return;
     }
 
-    if (kDebugResizable)
+    if (_kDebugResizable)
       print(
           'l: $borrowedLeftSize r: $borrowedRightSize d: $delta cb: $_couldNotBorrow cbL: $couldNotBorrowLeft cbR: $couldNotBorrowRight bfL: ${borrowedLeft.from} bfR: ${borrowedRight.from} gbL: $givenBackLeft gbR: $givenBackRight');
-    if (kDebugResizable) {
+    if (_kDebugResizable) {
       print(
           'Loaned Sizes: ${_panes.map((e) => e._sizeBeforeDrag - e._proposedSize).toList()}');
     }
@@ -736,7 +825,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       // if somehow the paid and the requesting payment is not the same
       // (meaning that the neighboring panes either being paid too much or less)
       // then we reject the loan and reset the proposed sizes
-      if (kDebugResizable)
+      if (_kDebugResizable)
         print(
             'RESET LOAN SIZES: $payingBackLeft != ${-payOffLeft} || $payingBackRight != ${-payOffRight} -> ${_panes.map((e) => e._proposedSize).toList()}');
       _resetProposedSizes();
@@ -754,10 +843,10 @@ class _ResizablePanelState extends State<ResizablePanel> {
           break;
         }
       }
-      if (kDebugResizable)
+      if (_kDebugResizable)
         print('CHECK COLLAPSING $index: $start == $endNotCollapsed');
       if (start == endNotCollapsed) {
-        if (kDebugResizable) print('CHECK COLLAPSIBLE RIGHT $index');
+        if (_kDebugResizable) print('CHECK COLLAPSIBLE RIGHT $index');
         _checkCollapseUntil(index);
       }
       _checkExpanding(index);
@@ -772,7 +861,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         }
       }
       if (start == endNotCollapsed) {
-        if (kDebugResizable)
+        if (_kDebugResizable)
           print('CHECK COLLAPSIBLE LEFT $start -> $endNotCollapsed');
         _checkCollapseUntil(index);
       }
@@ -782,7 +871,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     _debugCouldNotBorrow();
 
     _applyProposedSizes();
-    if (kDebugResizable) print('================ DRAG END ==================');
+    if (_kDebugResizable) print('================ DRAG END ==================');
     return;
   }
 
@@ -797,13 +886,13 @@ class _ResizablePanelState extends State<ResizablePanel> {
               !previousPane._attachedPane!.collapsed) {
             var minSize = previousPane._attachedPane!.widget.minSize ?? 0;
             double threshold = (collapsibleSize - minSize) / 2;
-            if (kDebugResizable) print('THRESHOLD $threshold');
+            if (_kDebugResizable) print('THRESHOLD $threshold');
             if (_couldNotBorrow < threshold) {
-              if (kDebugResizable) print('COLLAPSING $i');
+              if (_kDebugResizable) print('COLLAPSING $i');
               var toBorrow = minSize - collapsibleSize;
               var borrowed = _borrowSize(index, toBorrow, _panes.length - 1, 1);
               double borrowedSize = borrowed.givenSize;
-              if (kDebugResizable)
+              if (_kDebugResizable)
                 print(
                     'BORROWED SIZE $borrowedSize ASKING FOR $toBorrow FROM ${index} ENDS AT ${borrowed.from}');
               if (borrowedSize < toBorrow) {
@@ -828,17 +917,17 @@ class _ResizablePanelState extends State<ResizablePanel> {
           if (collapsibleSize != null && !nextPane._attachedPane!.collapsed) {
             var minSize = nextPane._attachedPane!.widget.minSize ?? 0;
             double threshold = (minSize - collapsibleSize) / 2;
-            if (kDebugResizable) print('THRESHOLD $threshold');
+            if (_kDebugResizable) print('THRESHOLD $threshold');
             if (_couldNotBorrow > threshold) {
               // disregard the delta here,
               // even tho for example the delta is -10,
               // and the amount of delta needed to collapse is -5,
               // we will still consume the entire delta
-              if (kDebugResizable) print('COLLAPSING $i');
+              if (_kDebugResizable) print('COLLAPSING $i');
               var toBorrow = minSize - collapsibleSize;
               var borrowed = _borrowSize(index - 1, toBorrow, 0, -1);
               double borrowedSize = borrowed.givenSize;
-              if (kDebugResizable)
+              if (_kDebugResizable)
                 print(
                     'BORROWED SIZE $borrowedSize ASKING FOR $toBorrow FROM ${index} ENDS AT ${borrowed.from}');
               if (borrowedSize < toBorrow) {
@@ -868,13 +957,13 @@ class _ResizablePanelState extends State<ResizablePanel> {
           if (collapsibleSize != null) {
             double minSize = pane._attachedPane!.widget.minSize ?? 0;
             double threshold = (minSize - collapsibleSize) / 2;
-            if (kDebugResizable) print('EXPANDING THRESHOLD $threshold');
+            if (_kDebugResizable) print('EXPANDING THRESHOLD $threshold');
             if (_couldNotBorrow >= threshold) {
               double toBorrow = collapsibleSize - minSize;
               var borrowed =
                   _borrowSize(toCheck + 1, toBorrow, _panes.length, 1);
               double borrowedSize = borrowed.givenSize;
-              if (kDebugResizable)
+              if (_kDebugResizable)
                 print(
                     'EXPANDING BORROWED SIZE $borrowedSize ASKING FOR $toBorrow FROM ${toCheck} ENDS AT ${borrowed.from}');
               if (borrowedSize > toBorrow) {
@@ -902,12 +991,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
           if (collapsibleSize != null) {
             double minSize = pane._attachedPane!.widget.minSize ?? 0;
             double threshold = (collapsibleSize - minSize) / 2;
-            if (kDebugResizable) print('EXPANDING THRESHOLD $threshold');
+            if (_kDebugResizable) print('EXPANDING THRESHOLD $threshold');
             if (_couldNotBorrow <= threshold) {
               double toBorrow = collapsibleSize - minSize;
               var borrowed = _borrowSize(toCheck - 1, toBorrow, -1, -1);
               double borrowedSize = borrowed.givenSize;
-              if (kDebugResizable)
+              if (_kDebugResizable)
                 print(
                     'EXPANDING BORROWED SIZE $borrowedSize ASKING FOR $toBorrow FROM ${toCheck} ENDS AT ${borrowed.from}');
               if (borrowedSize > toBorrow) {
@@ -977,6 +1066,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       if (i > 0) {
         children.add(
           _ResizableDivider(
+            key: _panes[i - 1]._dividerKey,
             index: i,
             child: Builder(
               builder: (context) {
@@ -990,7 +1080,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         Data(
           data: pane,
           child: KeyedSubtree(
-            key: _panes[i].key,
+            key: _panes[i]._key,
             child: child,
           ),
         ),
@@ -1051,6 +1141,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       if (i > 0) {
         children.add(
           _ResizableDivider(
+            key: _panes[i - 1]._dividerKey,
             index: i,
             child: Builder(
               builder: (context) {
@@ -1066,7 +1157,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
           child: Data(
             data: ResizableContainerData(sparedFlexSize, flexSpace, flexCount),
             child: KeyedSubtree(
-              key: _panes[i].key,
+              key: _panes[i]._key,
               child: child,
             ),
           ),
@@ -1132,28 +1223,28 @@ class _ResizablePanelState extends State<ResizablePanel> {
                     : (_panes[i]._attachedPane?.viewSize ??
                         child.initialSize ??
                         0));
-            offset += size;
+            offset += size + (_panes[i].getDividerSize(widget.direction) ?? 0);
             Widget dragger;
             if (widget.direction == Axis.horizontal) {
               dragger = Positioned(
-                left: offset - widget.dividerSize / 2,
+                left: offset,
                 top: 0,
                 bottom: 0,
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.resizeLeftRight,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onPanStart: (details) {
-                      _startDragging();
-                    },
-                    onPanUpdate: (details) {
-                      _dragDivider(i + 1, details.delta.dx);
-                    },
-                    onPanEnd: (details) {
-                      _stopDragging();
-                    },
-                    child: SizedBox(
-                      width: widget.dividerSize,
+                child: FractionalTranslation(
+                  translation: const Offset(-0.5, 0),
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.resizeLeftRight,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onPanStart: (details) {
+                        _startDragging();
+                      },
+                      onPanUpdate: (details) {
+                        _dragDivider(i + 1, details.delta.dx);
+                      },
+                      onPanEnd: (details) {
+                        _stopDragging();
+                      },
                       child: Builder(
                         builder: (context) {
                           return widget.draggerBuilder!(context);
@@ -1165,24 +1256,24 @@ class _ResizablePanelState extends State<ResizablePanel> {
               );
             } else {
               dragger = Positioned(
-                top: offset - widget.dividerSize / 2,
+                top: offset,
                 left: 0,
                 right: 0,
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.resizeUpDown,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onPanStart: (details) {
-                      _startDragging();
-                    },
-                    onPanUpdate: (details) {
-                      _dragDivider(i + 1, details.delta.dy);
-                    },
-                    onPanEnd: (details) {
-                      _stopDragging();
-                    },
-                    child: SizedBox(
-                      height: widget.dividerSize,
+                child: FractionalTranslation(
+                  translation: const Offset(0, -0.5),
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.resizeUpDown,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onPanStart: (details) {
+                        _startDragging();
+                      },
+                      onPanUpdate: (details) {
+                        _dragDivider(i + 1, details.delta.dy);
+                      },
+                      onPanEnd: (details) {
+                        _stopDragging();
+                      },
                       child: Builder(
                         builder: (context) {
                           return widget.draggerBuilder!(context);
@@ -1201,7 +1292,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
             children: [
               buildFlexContainer(context, spacePerFlex, flexSpace, flexCount),
               ...dividers,
-              if (kDebugResizable)
+              if (_kDebugResizable)
                 Positioned(
                   top: -16,
                   child: RepeatedAnimationBuilder(
@@ -1227,28 +1318,28 @@ class _ResizablePanelState extends State<ResizablePanel> {
           (child.initialCollapsed
               ? (child.collapsedSize ?? 0)
               : (child.initialSize ?? 0));
-      offset += currentSize;
+      offset += currentSize + (_panes[i].getDividerSize(widget.direction) ?? 0);
       Widget dragger;
       if (widget.direction == Axis.horizontal) {
         dragger = Positioned(
-          left: offset - widget.dividerSize / 2,
+          left: offset,
           top: 0,
           bottom: 0,
-          child: MouseRegion(
-            cursor: SystemMouseCursors.resizeLeftRight,
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onPanStart: (details) {
-                _startDragging();
-              },
-              onPanUpdate: (details) {
-                _dragDivider(i + 1, details.delta.dx);
-              },
-              onPanEnd: (details) {
-                _stopDragging();
-              },
-              child: SizedBox(
-                width: widget.dividerSize,
+          child: FractionalTranslation(
+            translation: const Offset(-0.5, 0),
+            child: MouseRegion(
+              cursor: SystemMouseCursors.resizeLeftRight,
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onPanStart: (details) {
+                  _startDragging();
+                },
+                onPanUpdate: (details) {
+                  _dragDivider(i + 1, details.delta.dx);
+                },
+                onPanEnd: (details) {
+                  _stopDragging();
+                },
                 child: Builder(
                   builder: (context) {
                     return widget.draggerBuilder!(context);
@@ -1260,24 +1351,24 @@ class _ResizablePanelState extends State<ResizablePanel> {
         );
       } else {
         dragger = Positioned(
-          top: offset - widget.dividerSize / 2,
+          top: offset,
           left: 0,
           right: 0,
-          child: MouseRegion(
-            cursor: SystemMouseCursors.resizeUpDown,
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onPanStart: (details) {
-                _startDragging();
-              },
-              onPanUpdate: (details) {
-                _dragDivider(i + 1, details.delta.dy);
-              },
-              onPanEnd: (details) {
-                _stopDragging();
-              },
-              child: SizedBox(
-                height: widget.dividerSize,
+          child: FractionalTranslation(
+            translation: const Offset(0, -0.5),
+            child: MouseRegion(
+              cursor: SystemMouseCursors.resizeUpDown,
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onPanStart: (details) {
+                  _startDragging();
+                },
+                onPanUpdate: (details) {
+                  _dragDivider(i + 1, details.delta.dy);
+                },
+                onPanEnd: (details) {
+                  _stopDragging();
+                },
                 child: Builder(
                   builder: (context) {
                     return widget.draggerBuilder!(context);
@@ -1298,7 +1389,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         children: [
           buildContainer(context),
           ...dividers,
-          if (kDebugResizable)
+          if (_kDebugResizable)
             Positioned(
               top: -16,
               child: RepeatedAnimationBuilder(

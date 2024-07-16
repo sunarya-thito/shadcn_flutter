@@ -38,7 +38,6 @@ import 'package:example/pages/docs/layout_page.dart';
 import 'package:example/pages/docs/theme_page.dart';
 import 'package:example/pages/docs/typography_page.dart';
 import 'package:example/pages/docs/web_preloader_page.dart';
-import 'package:example/pages/resizable_test.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -97,11 +96,6 @@ class MyAppState extends State<MyApp> {
       builder: (context, state) => IntroductionPage(),
       // builder: (context, state) => TestWidget(),
       name: 'introduction',
-    ),
-    GoRoute(
-      path: '/test',
-      builder: (context, state) => ResizableTest(),
-      name: 'test',
     ),
     GoRoute(
       path: '/installation',

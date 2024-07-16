@@ -33,11 +33,13 @@ class NumberedContainer extends StatelessWidget {
   final int index;
   final double? width;
   final double? height;
+  final bool fill;
   const NumberedContainer({
     Key? key,
     required this.index,
     this.width,
     this.height,
+    this.fill = true,
   }) : super(key: key);
 
   @override
@@ -46,7 +48,7 @@ class NumberedContainer extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.primaries[index % Colors.primaries.length],
+        color: fill ? Colors.primaries[index % Colors.primaries.length] : null,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Center(
