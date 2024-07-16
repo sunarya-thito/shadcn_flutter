@@ -1,7 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class MenuDivider extends StatelessWidget {
+abstract class MenuItem extends Widget {
+  bool get hasLeading;
+}
+
+class MenuDivider extends StatelessWidget implements MenuItem {
+  const MenuDivider({super.key});
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -16,11 +21,14 @@ class MenuDivider extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get hasLeading => false;
 }
 
-class MenuButton extends StatefulWidget {
+class MenuButton extends StatefulWidget implements MenuItem {
   final Widget child;
-  final List<Widget>? subMenu;
+  final List<MenuItem>? subMenu;
   final ContextedCallback? onPressed;
   final Widget? trailing;
   final Widget? leading;
@@ -39,6 +47,9 @@ class MenuButton extends StatefulWidget {
 
   @override
   State<MenuButton> createState() => _MenuButtonState();
+
+  @override
+  bool get hasLeading => leading != null;
 }
 
 class _MenuButtonState extends State<MenuButton> {
