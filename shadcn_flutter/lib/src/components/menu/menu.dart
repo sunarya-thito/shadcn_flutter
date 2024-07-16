@@ -79,7 +79,7 @@ class _MenuButtonState extends State<MenuButton> {
           onPressed: () {
             widget.onPressed?.call();
             if (widget.subMenu != null) {
-              data._parent.openSubMenu(widget.subMenu!);
+              data._parent.openSubMenu(data, widget.subMenu!);
             }
           },
           child: widget.child,
@@ -92,9 +92,7 @@ class _MenuButtonState extends State<MenuButton> {
 class MenubarData extends MenuData {}
 
 class MenuData {
-  final GlobalKey itemKey = GlobalKey();
-  final GlobalKey popupKey = GlobalKey();
-  final FocusNode focusNode = FocusNode();
+  final GlobalKey<PopoverAnchorState> popupKey = GlobalKey();
 
   late int _index;
   late int _length;
@@ -130,8 +128,9 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
   late List<T> _data;
   late PopoverController _popoverController;
 
-  void openSubMenu(List<Widget> children) {
+  void openSubMenu(MenuData data, List<Widget> children) {
     _popoverController.show(
+      key: data.popupKey,
       builder: (context) {
         return MenuGroup(
             dataBuilder: widget.dataBuilder,

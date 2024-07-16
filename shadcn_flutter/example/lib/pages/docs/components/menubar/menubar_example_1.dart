@@ -6,9 +6,6 @@ class MenubarExample1 extends StatelessWidget {
     return Column(
       children: [
         Menubar(
-          focusScopeNode: FocusScopeNode(
-            debugLabel: 'Menubar',
-          ),
           children: [
             MenuButton(child: Text('File'), subMenu: [
               MenuButton(child: Text('New'), subMenu: [
@@ -47,9 +44,6 @@ class MenubarExample1 extends StatelessWidget {
         gap(48),
         Menubar(
           border: false,
-          focusScopeNode: FocusScopeNode(
-            debugLabel: 'Menubar',
-          ),
           children: [
             MenuButton(child: Text('File'), subMenu: [
               MenuButton(child: Text('New'), subMenu: [
