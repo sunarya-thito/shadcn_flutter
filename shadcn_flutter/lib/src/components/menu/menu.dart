@@ -21,7 +21,7 @@ class MenuDivider extends StatelessWidget {
 class MenuButton extends StatefulWidget {
   final Widget child;
   final List<Widget>? subMenu;
-  final VoidCallback? onPressed;
+  final ContextedCallback? onPressed;
   final Widget? trailing;
   final Widget? leading;
   final bool enabled;
@@ -63,10 +63,8 @@ class _MenuButtonState extends State<MenuButton> {
     final menuBarData = Data.maybeOf<MenubarState>(context);
     final menuData = Data.maybeOf<MenuData>(context);
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
-    print('root: ${menuGroupData!.root} parent: ${menuGroupData!.parent}');
-
     void openSubMenu() {
-      menuGroupData.closeOthers();
+      menuGroupData!.closeOthers();
       menuData!.popoverController.show(
         regionGroupId: menuGroupData.root ?? menuGroupData,
         builder: (context) {
@@ -151,7 +149,7 @@ class _MenuButtonState extends State<MenuButton> {
                         }
                       },
                       onPressed: () {
-                        widget.onPressed?.call();
+                        widget.onPressed?.call(context);
                         if (widget.subMenu != null &&
                             !menuData.popoverController.hasOpenPopovers) {
                           openSubMenu();

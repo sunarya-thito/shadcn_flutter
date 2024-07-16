@@ -47,7 +47,6 @@ class PopoverRoute<T> extends PopupRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    print('regionGroupId $regionGroupId');
     return PopoverAnchor(
       key: key,
       position: position,
@@ -250,6 +249,16 @@ class PopoverAnchorState extends State<PopoverAnchor> {
     Navigator.of(context).removeRoute(widget.route);
   }
 
+  void closeLater() {
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          close();
+        }
+      });
+    }
+  }
+
   @override
   void didUpdateWidget(covariant PopoverAnchor oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -330,10 +339,8 @@ class PopoverAnchorState extends State<PopoverAnchor> {
 
   @override
   Widget build(BuildContext context) {
-    print('regionGroupId ${widget.regionGroupId}');
     return TapRegion(
       onTapOutside: (event) {
-        print('onTapOutside ${widget.regionGroupId}');
         widget.onTapOutside?.call();
       },
       groupId: widget.regionGroupId,
@@ -640,6 +647,12 @@ class PopoverController extends ChangeNotifier {
     _openPopovers.clear();
     notifyListeners();
   }
+
+  void closeLater() {
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.closeLater();
+    }
+  }
 }
 
 class PopoverPortal extends StatefulWidget {
@@ -680,7 +693,7 @@ class PopoverPortalState extends State<PopoverPortal> {
   @override
   void dispose() {
     widget.controller._attached = null;
-    widget.controller.close();
+    widget.controller.closeLater();
     super.dispose();
   }
 
