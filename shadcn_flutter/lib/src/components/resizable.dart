@@ -67,8 +67,20 @@ class ResizablePaneValue {
 }
 
 class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
+  _ResizablePaneState? _attachedState;
+
   ResizablePaneController(double size, {bool collapsed = false})
       : super(ResizablePaneValue(size, collapsed));
+
+  void _attachState(_ResizablePaneState state) {
+    assert(_attachedState == null, 'State is already attached');
+    _attachedState = state;
+  }
+
+  void _detachState(_ResizablePaneState state) {
+    assert(_attachedState == state, 'State is not attached');
+    _attachedState = null;
+  }
 
   set size(double newValue) {
     if (newValue < 0) {
@@ -244,17 +256,28 @@ class _ResizablePaneState extends State<ResizablePane> {
     if (__controller == null) {
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
       if (widget.flex != null) {
-        __controller = ResizablePaneController(
-          (containerData!.sparedFlexSpaceSize *
-                  (_activePane!._flex ?? widget.flex!))
-              .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
-          collapsed: widget.initialCollapsed,
-        );
+        if (widget.controller == null) {
+          __controller = ResizablePaneController(
+            (containerData!.sparedFlexSpaceSize *
+                    (_activePane!._flex ?? widget.flex!))
+                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
+            collapsed: widget.initialCollapsed,
+          );
+        } else {
+          __controller = widget.controller;
+          __controller!.value = ResizablePaneValue(
+            (containerData!.sparedFlexSpaceSize *
+                    (_activePane!._flex ?? widget.flex!))
+                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
+            widget.initialCollapsed,
+          );
+        }
       } else {
-        __controller = ResizablePaneController(
-          widget.initialSize!,
-          collapsed: widget.initialCollapsed,
-        );
+        __controller = widget.controller ??
+            ResizablePaneController(
+              widget.initialSize!,
+              collapsed: widget.initialCollapsed,
+            );
       }
     } else {
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
