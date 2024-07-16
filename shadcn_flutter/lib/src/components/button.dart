@@ -646,6 +646,16 @@ EdgeInsets _buttonPadding(BuildContext context, Set<WidgetState> states) {
   return Button.normalPadding;
 }
 
+// MENUBUTTON
+Decoration _buttonMenuDecoration(
+    BuildContext context, Set<WidgetState> states) {
+  var themeData = Theme.of(context);
+  if (states.contains(WidgetState.disabled)) {
+    return BoxDecoration();
+  }
+  return BoxDecoration();
+}
+
 // PRIMARY
 Decoration _buttonPrimaryDecoration(
     BuildContext context, Set<WidgetState> states) {

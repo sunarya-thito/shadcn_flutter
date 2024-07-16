@@ -19,7 +19,16 @@ class MenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Button(
+      style: ButtonVariance.ghost,
+      trailing: trailing,
+      leading: leading,
+      disableTransition: true,
+      enabled: enabled,
+      onPressed: () {
+        onPressed?.call();
+      },
+      child: child,
+    );
   }
 }

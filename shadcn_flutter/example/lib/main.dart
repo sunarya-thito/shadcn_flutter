@@ -13,6 +13,7 @@ import 'package:example/pages/docs/components/divider_example.dart';
 import 'package:example/pages/docs/components/drawer_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/input_otp_example.dart';
+import 'package:example/pages/docs/components/menu_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
 import 'package:example/pages/docs/components/popover_example.dart';
 import 'package:example/pages/docs/components/progress_example.dart';
@@ -352,6 +353,13 @@ class MyAppState extends State<MyApp> {
               builder: (context, state) {
                 return ResizableExample();
               }),
+          GoRoute(
+            path: 'menubar',
+            name: 'menubar',
+            builder: (context, state) {
+              return MenubarExample();
+            },
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();
