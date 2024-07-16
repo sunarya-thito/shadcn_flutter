@@ -61,6 +61,8 @@ class _ResizableExample4State extends State<ResizableExample4> {
                   fill: false,
                 ),
                 controller: controller5,
+                minSize: 80,
+                collapsedSize: 20,
               ),
             ],
           ),
@@ -115,6 +117,18 @@ class _ResizableExample4State extends State<ResizableExample4> {
                 controller5.tryExpandSize(-20);
               },
               child: Text('Shrink Panel 4'),
+            ),
+            PrimaryButton(
+              onPressed: () {
+                controller5.tryCollapse();
+              },
+              child: Text('Collapse Panel 4'),
+            ),
+            PrimaryButton(
+              onPressed: () {
+                controller5.tryExpand();
+              },
+              child: Text('Expand Panel 4'),
             ),
           ],
         )

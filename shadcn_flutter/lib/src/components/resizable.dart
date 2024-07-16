@@ -917,7 +917,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _stopDragging();
         return false;
       }
-      _panes[index]._proposedSize = collapsedSize;
       _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
       _stopDragging();
@@ -935,7 +934,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _stopDragging();
         return false;
       }
-      _panes[index]._proposedSize = collapsedSize;
       _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
       _stopDragging();
@@ -956,7 +954,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _stopDragging();
         return false;
       }
-      _panes[index]._proposedSize = collapsedSize;
       _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
       _stopDragging();
@@ -966,6 +963,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   bool _attemptExpandCollapse(int index, int direction) {
+    _startDragging();
     if (index == 0) {
       direction = 1;
     } else if (index == _panes.length - 1) {
@@ -980,10 +978,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
       _BorrowInfo borrowed = _borrowSize(index - 1, delta, 0, -1);
       if (borrowed.givenSize != delta) {
         _resetProposedSizes();
+        _stopDragging();
         return false;
       }
       _panes[index]._attachedPane!.collapsed = false;
       _applyProposedSizes();
+      _stopDragging();
       return true;
     } else if (direction > 0) {
       // expand to the right
@@ -991,14 +991,15 @@ class _ResizablePanelState extends State<ResizablePanel> {
       final minSize = child.minSize ?? 0.0;
       final collapsedSize = child.collapsedSize ?? 0.0;
       final delta = collapsedSize - minSize;
-      _BorrowInfo borrowed = _borrowSize(index, delta, _panes.length - 1, 1);
+      _BorrowInfo borrowed =
+          _borrowSize(index + 1, delta, _panes.length - 1, 1);
       if (borrowed.givenSize != delta) {
         _resetProposedSizes();
         return false;
       }
-      _panes[index]._proposedSize = minSize;
       _panes[index]._attachedPane!.collapsed = false;
       _applyProposedSizes();
+      _stopDragging();
       return true;
     } else if (direction == 0) {
       // expand to both sides
@@ -1013,11 +1014,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
       if (borrowedLeft.givenSize != halfDelta ||
           borrowedRight.givenSize != halfDelta) {
         _resetProposedSizes();
+        _stopDragging();
         return false;
       }
-      _panes[index]._proposedSize = minSize;
       _panes[index]._attachedPane!.collapsed = false;
       _applyProposedSizes();
+      _stopDragging();
       return true;
     }
     return false;
