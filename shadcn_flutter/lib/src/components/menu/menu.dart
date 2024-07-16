@@ -42,139 +42,97 @@ class MenuButton extends StatefulWidget {
 }
 
 class _MenuButtonState extends State<MenuButton> {
-  late FocusNode? _focusNode;
+  final PopoverController _popoverController = PopoverController();
 
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = widget.focusNode ?? FocusNode();
-  }
-
-  @override
-  void didUpdateWidget(covariant MenuButton oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.focusNode != oldWidget.focusNode) {
-      _focusNode = widget.focusNode ?? FocusNode();
-    }
-  }
+  void openSubMenu() {}
 
   @override
   Widget build(BuildContext context) {
-    final menuBarData = Data.maybeOf<MenubarData>(context);
+    final menuBarData = Data.maybeOf<MenubarState>(context);
     final menuData = Data.maybeOf<MenuData>(context);
     assert(menuData != null || menuBarData != null,
         'MenuButton must be a descendant of Menubar or Menu');
     final data = menuBarData ?? menuData!;
     return Data<MenuData>.boundary(
-      child: Data<MenubarData>.boundary(
-        child: Button(
-          style: menuBarData == null
-              ? ButtonVariance.menu
-              : ButtonVariance.menubar,
-          trailing: widget.trailing,
-          leading: widget.leading,
-          disableTransition: true,
-          enabled: widget.enabled,
-          onHover: (value) {},
-          onPressed: () {
-            widget.onPressed?.call();
-            if (widget.subMenu != null) {
-              data._parent.openSubMenu(data, widget.subMenu!);
-            }
-          },
-          child: widget.child,
+      child: Data<MenubarState>.boundary(
+        child: PopoverPortal(
+          controller: _popoverController,
+          child: Button(
+            style: menuBarData == null
+                ? ButtonVariance.menu
+                : ButtonVariance.menubar,
+            trailing: widget.trailing,
+            leading: widget.leading,
+            disableTransition: true,
+            enabled: widget.enabled,
+            onHover: (value) {},
+            onPressed: () {
+              widget.onPressed?.call();
+              if (widget.subMenu != null) {
+                _popoverController.show(
+                  key: data.popupKey,
+                  builder: (context) {
+                    return MenuGroup(
+                        dataBuilder: () => MenuData(),
+                        children: widget.subMenu!,
+                        builder: (context, children) {
+                          return MenuPopup(
+                            children: children,
+                          );
+                        });
+                  },
+                  alignment: Alignment.topLeft,
+                  anchorAlignment: Alignment.topRight,
+                  offset: const Offset(4, 0),
+                  closeOthers: true,
+                );
+              }
+            },
+            child: widget.child,
+          ),
         ),
       ),
     );
   }
 }
 
-class MenubarData extends MenuData {}
-
 class MenuData {
   final GlobalKey<PopoverAnchorState> popupKey = GlobalKey();
-
-  late int _index;
-  late int _length;
-
-  late _MenuGroupState _parent;
 }
 
-class MenuGroup<T extends MenuData> extends StatefulWidget {
+class MenuGroup extends StatefulWidget {
   final PopoverController? popoverController;
   final List<Widget> children;
-  final T Function() dataBuilder;
   final Widget Function(BuildContext context, List<Widget> children) builder;
-  final Alignment popoverAlignment;
-  final Alignment anchorAlignment;
-  final Offset? popoverOffset;
 
   MenuGroup({
     super.key,
-    required this.dataBuilder,
     required this.children,
     required this.builder,
     this.popoverController,
-    required this.popoverAlignment,
-    required this.anchorAlignment,
-    this.popoverOffset,
   });
 
   @override
-  State<MenuGroup<T>> createState() => _MenuGroupState<T>();
+  State<MenuGroup> createState() => _MenuGroupState();
 }
 
-class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
-  late List<T> _data;
-  late PopoverController _popoverController;
-
-  void openSubMenu(MenuData data, List<Widget> children) {
-    _popoverController.show(
-      key: data.popupKey,
-      builder: (context) {
-        return MenuGroup(
-            dataBuilder: widget.dataBuilder,
-            children: children,
-            builder: (context, children) {
-              return MenuPopup(
-                children: children,
-              );
-            },
-            popoverAlignment: Alignment.topLeft,
-            anchorAlignment: Alignment.topRight,
-            popoverOffset: const Offset(4, 0));
-      },
-      alignment: widget.popoverAlignment,
-      anchorAlignment: widget.anchorAlignment,
-      offset: widget.popoverOffset,
-      closeOthers: true,
-    );
-  }
+class _MenuGroupState extends State<MenuGroup> {
+  late List<MenuData> _data;
 
   @override
   void initState() {
     super.initState();
-    _popoverController = widget.popoverController ?? PopoverController();
     _data = List.generate(widget.children.length, (i) {
-      return widget.dataBuilder()
-        .._index = i
-        .._length = widget.children.length
-        .._parent = this;
+      return MenuData();
     });
   }
 
   @override
-  void didUpdateWidget(covariant MenuGroup<T> oldWidget) {
+  void didUpdateWidget(covariant MenuGroup oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.popoverController != oldWidget.popoverController) {
-      _popoverController = widget.popoverController ?? PopoverController();
-    }
     if (!listEquals(oldWidget.children, widget.children)) {
       _data = List.generate(widget.children.length, (i) {
-        return widget.dataBuilder()
-          .._index = i
-          .._length = widget.children.length
-          .._parent = this;
+        return MenuData();
       });
     }
   }
@@ -186,15 +144,12 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
       final child = widget.children[i];
       final data = _data[i];
       children.add(
-        Data<T>(
+        Data<MenuData>(
           data: data,
           child: child,
         ),
       );
     }
-    return PopoverPortal(
-      controller: _popoverController,
-      child: widget.builder(context, children),
-    );
+    return widget.builder(context, children);
   }
 }

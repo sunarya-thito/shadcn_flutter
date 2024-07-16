@@ -12,10 +12,10 @@ class Menubar extends StatefulWidget {
   });
 
   @override
-  State<Menubar> createState() => _MenubarState();
+  State<Menubar> createState() => MenubarState();
 }
 
-class _MenubarState extends State<Menubar> {
+class MenubarState extends State<Menubar> {
   @override
   Widget build(BuildContext context) {
     if (widget.border) {
@@ -34,11 +34,7 @@ class _MenubarState extends State<Menubar> {
   }
 
   Widget buildContainer(BuildContext context) {
-    return MenuGroup<MenubarData>(
-      anchorAlignment: Alignment.bottomLeft,
-      popoverAlignment: Alignment.topLeft,
-      popoverOffset: widget.popoverOffset ??
-          Offset(widget.border ? -4 : 0, widget.border ? 8 : 4),
+    return MenuGroup(
       children: widget.children,
       dataBuilder: () {
         return MenubarData();
