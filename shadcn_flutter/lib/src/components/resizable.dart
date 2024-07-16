@@ -917,8 +917,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _stopDragging();
         return false;
       }
-      _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
+      _panes[index]._attachedPane!.collapsed = true;
       _stopDragging();
       return true;
     } else if (direction > 0) {
@@ -934,8 +934,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _stopDragging();
         return false;
       }
-      _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
+      _panes[index]._attachedPane!.collapsed = true;
       _stopDragging();
       return true;
     } else if (direction == 0) {
@@ -954,8 +954,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _stopDragging();
         return false;
       }
-      _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
+      _panes[index]._attachedPane!.collapsed = true;
       _stopDragging();
       return true;
     }
@@ -981,8 +981,11 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _stopDragging();
         return false;
       }
-      _panes[index]._attachedPane!.collapsed = false;
       _applyProposedSizes();
+      _panes[index]._attachedPane!._controller.value = ResizablePaneValue(
+        minSize,
+        false,
+      );
       _stopDragging();
       return true;
     } else if (direction > 0) {
@@ -997,8 +1000,11 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
-      _panes[index]._attachedPane!.collapsed = false;
       _applyProposedSizes();
+      _panes[index]._attachedPane!._controller.value = ResizablePaneValue(
+        minSize,
+        false,
+      );
       _stopDragging();
       return true;
     } else if (direction == 0) {
@@ -1017,8 +1023,11 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _stopDragging();
         return false;
       }
-      _panes[index]._attachedPane!.collapsed = false;
       _applyProposedSizes();
+      _panes[index]._attachedPane!._controller.value = ResizablePaneValue(
+        minSize,
+        false,
+      );
       _stopDragging();
       return true;
     }
