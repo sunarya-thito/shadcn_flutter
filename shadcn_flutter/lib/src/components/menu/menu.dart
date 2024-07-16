@@ -69,74 +69,78 @@ class _MenuButtonState extends State<MenuButton> {
           child: AnimatedBuilder(
               animation: menuData.popoverController,
               builder: (context, child) {
-                return Button(
-                  style: (menuBarData == null
-                          ? ButtonVariance.menu
-                          : ButtonVariance.menubar)
-                      .copyWith(
-                    decoration: (context, states, value) {
-                      final theme = Theme.of(context);
-                      return (value as BoxDecoration).copyWith(
-                        color: menuData.popoverController.hasOpenPopovers
-                            ? theme.colorScheme.accent
-                            : null,
-                        borderRadius: BorderRadius.circular(theme.radiusMd),
-                      );
+                return TapRegion(
+                  groupId: this,
+                  child: Button(
+                    style: (menuBarData == null
+                            ? ButtonVariance.menu
+                            : ButtonVariance.menubar)
+                        .copyWith(
+                      decoration: (context, states, value) {
+                        final theme = Theme.of(context);
+                        return (value as BoxDecoration).copyWith(
+                          color: menuData.popoverController.hasOpenPopovers
+                              ? theme.colorScheme.accent
+                              : null,
+                          borderRadius: BorderRadius.circular(theme.radiusMd),
+                        );
+                      },
+                    ),
+                    trailing: menuBarData != null
+                        ? widget.trailing
+                        : Row(
+                            children: [
+                              if (widget.trailing != null) widget.trailing!,
+                              if (widget.subMenu != null && menuBarData == null)
+                                const Icon(
+                                  RadixIcons.chevronRight,
+                                  size: 16,
+                                ),
+                            ],
+                          ).gap(8),
+                    leading: widget.leading,
+                    disableTransition: true,
+                    enabled: widget.enabled,
+                    focusNode: _focusNode,
+                    onHover: (value) {
+                      if (value) {
+                        _focusNode.requestFocus();
+                      }
                     },
-                  ),
-                  trailing: menuBarData != null
-                      ? widget.trailing
-                      : Row(
-                          children: [
-                            if (widget.trailing != null) widget.trailing!,
-                            if (widget.subMenu != null && menuBarData == null)
-                              const Icon(
-                                RadixIcons.chevronRight,
-                                size: 16,
+                    onPressed: () {
+                      widget.onPressed?.call();
+                      if (widget.subMenu != null &&
+                          !menuData.popoverController.hasOpenPopovers) {
+                        menuData.popoverController.show(
+                          regionGroupId: this,
+                          builder: (context) {
+                            return ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                minWidth: 192, // 12rem
                               ),
-                          ],
-                        ).gap(8),
-                  leading: widget.leading,
-                  disableTransition: true,
-                  enabled: widget.enabled,
-                  focusNode: _focusNode,
-                  onHover: (value) {
-                    if (value) {
-                      _focusNode.requestFocus();
-                    }
-                  },
-                  onPressed: () {
-                    widget.onPressed?.call();
-                    if (widget.subMenu != null &&
-                        !menuData.popoverController.hasOpenPopovers) {
-                      menuData.popoverController.show(
-                        builder: (context) {
-                          return ConstrainedBox(
-                            constraints: const BoxConstraints(
-                              minWidth: 192, // 12rem
-                            ),
-                            child: MenuGroup(
-                                children: widget.subMenu!,
-                                builder: (context, children) {
-                                  return MenuPopup(
-                                    children: children,
-                                  );
-                                }),
-                          );
-                        },
-                        alignment: Alignment.topLeft,
-                        anchorAlignment: menuBarData != null
-                            ? Alignment.bottomLeft
-                            : Alignment.topRight,
-                        offset: menuBarData != null
-                            ? menuBarData.widget.border
-                                ? const Offset(-4, 8)
-                                : const Offset(0, 4)
-                            : const Offset(8, -4 + -1),
-                      );
-                    }
-                  },
-                  child: widget.child,
+                              child: MenuGroup(
+                                  children: widget.subMenu!,
+                                  builder: (context, children) {
+                                    return MenuPopup(
+                                      children: children,
+                                    );
+                                  }),
+                            );
+                          },
+                          alignment: Alignment.topLeft,
+                          anchorAlignment: menuBarData != null
+                              ? Alignment.bottomLeft
+                              : Alignment.topRight,
+                          offset: menuBarData != null
+                              ? menuBarData.widget.border
+                                  ? const Offset(-4, 8)
+                                  : const Offset(0, 4)
+                              : const Offset(8, -4 + -1),
+                        );
+                      }
+                    },
+                    child: widget.child,
+                  ),
                 );
               }),
         ),

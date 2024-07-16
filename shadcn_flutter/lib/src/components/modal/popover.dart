@@ -12,6 +12,7 @@ class PopoverRoute<T> extends PopupRoute<T> {
   final Alignment anchorAlignment;
   final PopoverConstraint widthConstraint;
   final PopoverConstraint heightConstraint;
+  final Object? regionGroupId;
 
   PopoverRoute({
     required this.builder,
@@ -25,7 +26,14 @@ class PopoverRoute<T> extends PopupRoute<T> {
     this.widthConstraint = PopoverConstraint.flexible,
     this.heightConstraint = PopoverConstraint.flexible,
     super.settings,
+    this.regionGroupId,
   }) : super(traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop);
+
+  @override
+  Widget buildModalBarrier() {
+    if (modal) return super.buildModalBarrier();
+    return const SizedBox();
+  }
 
   @override
   Color? get barrierColor => null;
@@ -35,21 +43,6 @@ class PopoverRoute<T> extends PopupRoute<T> {
 
   @override
   String? get barrierLabel => null;
-
-  @override
-  Widget buildModalBarrier() {
-    if (modal) {
-      return super.buildModalBarrier();
-    }
-    return Builder(builder: (context) {
-      return Listener(
-        onPointerDown: (event) {
-          Navigator.of(context).pop();
-        },
-        behavior: HitTestBehavior.translucent,
-      );
-    });
-  }
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
@@ -66,6 +59,10 @@ class PopoverRoute<T> extends PopupRoute<T> {
       widthConstraint: widthConstraint,
       heightConstraint: heightConstraint,
       route: this,
+      onTapOutside: () {
+        if (!modal) Navigator.of(context).pop();
+      },
+      regionGroupId: regionGroupId,
     );
   }
 
@@ -97,6 +94,8 @@ class PopoverAnchor extends StatefulWidget {
     this.heightConstraint = PopoverConstraint.flexible,
     this.anchorSize,
     required this.route,
+    this.onTapOutside,
+    this.regionGroupId,
   });
 
   final Offset position;
@@ -109,6 +108,8 @@ class PopoverAnchor extends StatefulWidget {
   final PopoverConstraint widthConstraint;
   final PopoverConstraint heightConstraint;
   final PopoverRoute route;
+  final VoidCallback? onTapOutside;
+  final Object? regionGroupId;
 
   @override
   State<PopoverAnchor> createState() => PopoverAnchorState();
@@ -129,6 +130,7 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
   final Size? anchorSize;
   final PopoverConstraint widthConstraint;
   final PopoverConstraint heightConstraint;
+  final Object? regionGroupId;
 
   PopoverLayoutDelegate({
     required this.alignment,
@@ -136,6 +138,7 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
     required this.anchorAlignment,
     required this.widthConstraint,
     required this.heightConstraint,
+    this.regionGroupId,
     this.anchorSize,
   });
 
@@ -332,32 +335,39 @@ class PopoverAnchorState extends State<PopoverAnchor> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomSingleChildLayout(
-      delegate: PopoverLayoutDelegate(
-        alignment: _alignment,
-        position: _position,
-        anchorSize: _anchorSize,
-        anchorAlignment: _anchorAlignment,
-        widthConstraint: _widthConstraint,
-        heightConstraint: _heightConstraint,
-      ),
-      child: MediaQuery.removePadding(
-        context: context,
-        removeBottom: true,
-        removeLeft: true,
-        removeRight: true,
-        removeTop: true,
-        child: Builder(builder: (context) {
-          return FadeTransition(
-            opacity: widget.animation,
-            child: ScaleTransition(
-              alignment: _anchorAlignment,
-              scale:
-                  Tween<double>(begin: 0.9, end: 1).animate(widget.animation),
-              child: widget.themes.wrap(widget.builder(context)),
-            ),
-          );
-        }),
+    return TapRegion(
+      consumeOutsideTaps: true,
+      onTapOutside: (event) {
+        widget.onTapOutside?.call();
+      },
+      groupId: widget.regionGroupId,
+      child: CustomSingleChildLayout(
+        delegate: PopoverLayoutDelegate(
+          alignment: _alignment,
+          position: _position,
+          anchorSize: _anchorSize,
+          anchorAlignment: _anchorAlignment,
+          widthConstraint: _widthConstraint,
+          heightConstraint: _heightConstraint,
+        ),
+        child: MediaQuery.removePadding(
+          context: context,
+          removeBottom: true,
+          removeLeft: true,
+          removeRight: true,
+          removeTop: true,
+          child: Builder(builder: (context) {
+            return FadeTransition(
+              opacity: widget.animation,
+              child: ScaleTransition(
+                alignment: _anchorAlignment,
+                scale:
+                    Tween<double>(begin: 0.9, end: 1).animate(widget.animation),
+                child: widget.themes.wrap(widget.builder(context)),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }
@@ -377,6 +387,7 @@ Future<T?> showPopover<T>({
   bool modal = true,
   Clip clipBehavior = Clip.none,
   RouteSettings? routeSettings,
+  Object? regionGroupId,
 }) {
   final NavigatorState navigator =
       Navigator.of(context, rootNavigator: useRootNavigator);
@@ -394,6 +405,7 @@ Future<T?> showPopover<T>({
     anchorAlignment: anchorAlignment ?? alignment * -1,
     widthConstraint: widthConstraint,
     heightConstraint: heightConstraint,
+    regionGroupId: regionGroupId,
   ));
 }
 
@@ -590,6 +602,7 @@ class PopoverController extends ChangeNotifier {
     bool closeOthers = true,
     Offset? offset,
     GlobalKey<PopoverAnchorState>? key,
+    Object? regionGroupId,
   }) async {
     assert(_attached != null,
         'PopoverController not attached to any PopoverPortal');
@@ -617,6 +630,7 @@ class PopoverController extends ChangeNotifier {
       widthConstraint: widthConstraint,
       heightConstraint: heightConstraint,
       key: key,
+      regionGroupId: regionGroupId,
     );
     _openPopovers.remove(key);
     notifyListeners();
