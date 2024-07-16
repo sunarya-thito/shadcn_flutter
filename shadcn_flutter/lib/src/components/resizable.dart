@@ -831,14 +831,20 @@ class _ResizablePanelState extends State<ResizablePanel> {
     double minSize = _panes[index]._attachedPane!.widget.minSize ?? 0;
     double maxSize =
         _panes[index]._attachedPane!.widget.maxSize ?? double.infinity;
-    double minOverflow = currentSize - minSize;
-    double maxOverflow = currentSize - maxSize;
+    double newSize = currentSize + delta;
+    double minOverflow = newSize - minSize;
+    double maxOverflow = newSize - maxSize;
+    print('minOverflow: $minOverflow maxOverflow: $maxOverflow');
     // adjust delta if we have overflow
     if (minOverflow < 0 && delta < 0) {
       delta = delta + minOverflow;
     }
     if (maxOverflow > 0 && delta > 0) {
       delta = delta - maxOverflow;
+    }
+    print('new delta: $delta');
+    if (delta == 0) {
+      return false;
     }
     _startDragging();
     if (index == 0) {
