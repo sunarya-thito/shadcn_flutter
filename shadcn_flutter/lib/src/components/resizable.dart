@@ -834,7 +834,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
     double newSize = currentSize + delta;
     double minOverflow = newSize - minSize;
     double maxOverflow = newSize - maxSize;
-    print('minOverflow: $minOverflow maxOverflow: $maxOverflow');
     // adjust delta if we have overflow
     if (minOverflow < 0 && delta < 0) {
       delta = delta - minOverflow;
@@ -842,7 +841,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
     if (maxOverflow > 0 && delta > 0) {
       delta = delta - maxOverflow;
     }
-    print('new delta: $delta');
     if (delta == 0) {
       return false;
     }
@@ -867,7 +865,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
       return true;
     } else if (direction > 0) {
       // expand to the right
-      _BorrowInfo borrowed = _borrowSize(index, -delta, _panes.length - 1, 1);
+      _BorrowInfo borrowed =
+          _borrowSize(index + 1, -delta, _panes.length - 1, 1);
       if (borrowed.givenSize != -delta) {
         _resetProposedSizes();
         _stopDragging();
@@ -929,7 +928,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
       final minSize = child.minSize ?? 0.0;
       final collapsedSize = child.collapsedSize ?? 0.0;
       final delta = minSize - collapsedSize;
-      _BorrowInfo borrowed = _borrowSize(index, delta, _panes.length - 1, 1);
+      _BorrowInfo borrowed =
+          _borrowSize(index + 1, delta, _panes.length - 1, 1);
       if (borrowed.givenSize != delta) {
         _resetProposedSizes();
         _stopDragging();
