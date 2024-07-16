@@ -162,7 +162,11 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
 
   void openMenu(List<Widget> children) {
     _popoverController.show(
-      builder: builder,
+      builder: (context) {
+        return MenuPopup(
+          children: children,
+        );
+      },
       alignment: widget.popoverAlignment,
       anchorAlignment: widget.anchorAlignment,
     );

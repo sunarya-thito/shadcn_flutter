@@ -589,13 +589,14 @@ class PopoverController extends ChangeNotifier {
     bool modal = false,
     bool closeOthers = true,
     Offset? offset,
+    GlobalKey<PopoverAnchorState>? key,
   }) async {
     assert(_attached != null,
         'PopoverController not attached to any PopoverPortal');
     if (closeOthers) {
       close();
     }
-    GlobalKey<PopoverAnchorState> key = GlobalKey<PopoverAnchorState>();
+    key ??= GlobalKey<PopoverAnchorState>();
     _openPopovers.add(key);
     notifyListeners();
     RenderBox renderBox = _attached!.context.findRenderObject() as RenderBox;
