@@ -14,53 +14,68 @@ class _ResizableExample4State extends State<ResizableExample4> {
   final ResizablePaneController controller5 = ResizablePaneController(80);
   @override
   Widget build(BuildContext context) {
-    return OutlinedContainer(
-      clipBehavior: Clip.antiAlias,
-      child: ResizablePanel(
-        direction: Axis.horizontal,
-        children: [
-          ResizablePane.controlled(
-            child: NumberedContainer(
-              index: 0,
-              width: 200,
-              fill: false,
-            ),
-            controller: controller1,
+    return Column(
+      children: [
+        OutlinedContainer(
+          clipBehavior: Clip.antiAlias,
+          child: ResizablePanel(
+            direction: Axis.horizontal,
+            children: [
+              ResizablePane.controlled(
+                child: NumberedContainer(
+                  index: 0,
+                  height: 200,
+                  fill: false,
+                ),
+                controller: controller1,
+              ),
+              ResizablePane.controlled(
+                child: NumberedContainer(
+                  index: 1,
+                  height: 200,
+                  fill: false,
+                ),
+                controller: controller2,
+              ),
+              ResizablePane.controlled(
+                child: NumberedContainer(
+                  index: 2,
+                  height: 200,
+                  fill: false,
+                ),
+                controller: controller3,
+              ),
+              ResizablePane.controlled(
+                child: NumberedContainer(
+                  index: 3,
+                  height: 200,
+                  fill: false,
+                ),
+                controller: controller4,
+              ),
+              ResizablePane.controlled(
+                child: NumberedContainer(
+                  index: 4,
+                  height: 200,
+                  fill: false,
+                ),
+                controller: controller5,
+              ),
+            ],
           ),
-          ResizablePane.controlled(
-            child: NumberedContainer(
-              index: 1,
-              width: 200,
-              fill: false,
+        ),
+        gap(48),
+        Wrap(
+          children: [
+            PrimaryButton(
+              onPressed: () {
+                print(controller3.tryExpandSize(20));
+              },
+              child: Text('Expand +20 Panel 2'),
             ),
-            controller: controller2,
-          ),
-          ResizablePane.controlled(
-            child: NumberedContainer(
-              index: 2,
-              width: 200,
-              fill: false,
-            ),
-            controller: controller3,
-          ),
-          ResizablePane.controlled(
-            child: NumberedContainer(
-              index: 3,
-              width: 200,
-              fill: false,
-            ),
-            controller: controller4,
-          ),
-          ResizablePane.controlled(
-            child: NumberedContainer(
-              index: 4,
-              width: 200,
-              fill: false,
-            ),
-            controller: controller5,
-          ),
-        ],
-      ),
+          ],
+        )
+      ],
     );
   }
 }

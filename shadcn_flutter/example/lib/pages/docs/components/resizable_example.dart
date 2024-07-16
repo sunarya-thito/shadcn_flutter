@@ -1,6 +1,7 @@
 import 'package:example/pages/docs/components/resizable/resizable_example_1.dart';
 import 'package:example/pages/docs/components/resizable/resizable_example_2.dart';
 import 'package:example/pages/docs/components/resizable/resizable_example_3.dart';
+import 'package:example/pages/docs/components/resizable/resizable_example_4.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
@@ -28,6 +29,11 @@ class ResizableExample extends StatelessWidget {
           title: 'Horizontal Example with Dragger',
           child: ResizableExample3(),
           path: 'lib/pages/docs/components/resizable/resizable_example_3.dart',
+        ),
+        WidgetUsageExample(
+          title: 'Controller Example',
+          child: ResizableExample4(),
+          path: 'lib/pages/docs/components/resizable/resizable_example_4.dart',
         ),
       ],
     );
