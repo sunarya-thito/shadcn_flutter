@@ -24,6 +24,7 @@ class _ResizableExample6State extends State<ResizableExample6> {
             minSize: 40,
           ),
           ResizablePane(
+            minSize: 100,
             child: ResizablePanel(
               direction: Axis.vertical,
               children: [
