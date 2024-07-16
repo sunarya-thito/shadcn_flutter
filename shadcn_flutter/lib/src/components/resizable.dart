@@ -742,6 +742,11 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   bool _attemptExpand(int index, int direction, double delta) {
+    if (index == 0) {
+      direction = 1;
+    } else if (index == _panes.length - 1) {
+      direction = -1;
+    }
     if (direction < 0) {
       // expand to the left
       _BorrowInfo borrowed = _borrowSize(index - 1, delta, 0, -1);
@@ -777,6 +782,11 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   bool _attemptCollapse(int index, int direction) {
+    if (index == 0) {
+      direction = 1;
+    } else if (index == _panes.length - 1) {
+      direction = -1;
+    }
     if (direction < 0) {
       // collapse to the left
       final child = widget.children[index];
@@ -826,6 +836,11 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   bool _attemptExpandCollapse(int index, int direction, double delta) {
+    if (index == 0) {
+      direction = 1;
+    } else if (index == _panes.length - 1) {
+      direction = -1;
+    }
     if (direction < 0) {
       // expand to the left
       final child = widget.children[index];
