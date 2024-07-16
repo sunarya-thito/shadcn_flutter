@@ -383,6 +383,7 @@ class ResizablePanel extends StatefulWidget {
 }
 
 class _ActivePane {
+  final GlobalKey key = GlobalKey();
   final int index;
   _ResizablePaneState? _attachedPane;
   double _sizeBeforeDrag = 0;
@@ -987,7 +988,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         Data(
           data: pane,
           child: KeyedSubtree(
-            key: ValueKey(i),
+            key: _panes[i].key,
             child: child,
           ),
         ),
@@ -1063,7 +1064,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
           child: Data(
             data: ResizableContainerData(sparedFlexSize, flexSpace, flexCount),
             child: KeyedSubtree(
-              key: ValueKey(i),
+              key: _panes[i].key,
               child: child,
             ),
           ),
@@ -1198,18 +1199,19 @@ class _ResizablePanelState extends State<ResizablePanel> {
             children: [
               buildFlexContainer(context, spacePerFlex, flexSpace, flexCount),
               ...dividers,
-              Positioned(
-                top: -16,
-                child: RepeatedAnimationBuilder(
-                  duration: Duration(milliseconds: 1),
-                  start: 0.0,
-                  end: 1.0,
-                  builder: (context, value, child) {
-                    return Text(
-                        'Sum Sizes: ${_panes.map((e) => e._attachedPane?.viewSize ?? 0).fold(0.0, (a, b) => a + b)}');
-                  },
-                ),
-              )
+              if (kDebugResizable)
+                Positioned(
+                  top: -16,
+                  child: RepeatedAnimationBuilder(
+                    duration: Duration(milliseconds: 1),
+                    start: 0.0,
+                    end: 1.0,
+                    builder: (context, value, child) {
+                      return Text(
+                          'Sum Sizes: ${_panes.map((e) => e._attachedPane?.viewSize ?? 0).fold(0.0, (a, b) => a + b)}');
+                    },
+                  ),
+                )
             ],
           );
         }),
@@ -1294,18 +1296,19 @@ class _ResizablePanelState extends State<ResizablePanel> {
         children: [
           buildContainer(context),
           ...dividers,
-          Positioned(
-            top: -16,
-            child: RepeatedAnimationBuilder(
-              duration: Duration(milliseconds: 1),
-              start: 0.0,
-              end: 1.0,
-              builder: (context, value, child) {
-                return Text(
-                    'Sum Sizes: ${_panes.map((e) => e._attachedPane?.viewSize ?? 0).fold(0.0, (a, b) => a + b)}');
-              },
-            ),
-          )
+          if (kDebugResizable)
+            Positioned(
+              top: -16,
+              child: RepeatedAnimationBuilder(
+                duration: Duration(milliseconds: 1),
+                start: 0.0,
+                end: 1.0,
+                builder: (context, value, child) {
+                  return Text(
+                      'Sum Sizes: ${_panes.map((e) => e._attachedPane?.viewSize ?? 0).fold(0.0, (a, b) => a + b)}');
+                },
+              ),
+            )
         ],
       ),
     );
