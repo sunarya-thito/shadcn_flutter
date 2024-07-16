@@ -66,12 +66,30 @@ class _ResizableExample4State extends State<ResizableExample4> {
         ),
         gap(48),
         Wrap(
+          spacing: 16,
+          runSpacing: 16,
           children: [
+            PrimaryButton(
+              onPressed: () {
+                controller1.trySetSize(80);
+                controller2.trySetSize(80);
+                controller3.trySetSize(120);
+                controller4.trySetSize(80);
+                controller5.trySetSize(80);
+              },
+              child: Text('Reset'),
+            ),
             PrimaryButton(
               onPressed: () {
                 controller3.tryExpandSize(20);
               },
-              child: Text('Expand +20 Panel 2'),
+              child: Text('Expand Panel 2'),
+            ),
+            PrimaryButton(
+              onPressed: () {
+                controller3.tryExpandSize(-20);
+              },
+              child: Text('Shrink Panel 2'),
             ),
           ],
         )

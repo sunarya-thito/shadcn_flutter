@@ -95,13 +95,26 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
     _attachedIndex = null;
   }
 
-  bool tryExpandSize(double size,
+  bool trySetSize(double newSize,
       [PanelSibling direction = PanelSibling.both]) {
-    if (value.size == size) {
+    if (value.size == newSize) {
       return false;
     }
-    if (size < 0) {
-      size = 0;
+    if (newSize < 0) {
+      newSize = 0;
+    }
+    double delta = newSize - value.size;
+    print('delta: $delta');
+    if (delta == 0) {
+      return false;
+    }
+    return tryExpandSize(delta, direction);
+  }
+
+  bool tryExpandSize(double size,
+      [PanelSibling direction = PanelSibling.both]) {
+    if (size == 0) {
+      return false;
     }
     assert(_attachedState != null, 'State is not attached');
     final activePane = _attachedState!._activePane;
@@ -835,6 +848,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
+      _panes[index]._proposedSize += delta;
       _applyProposedSizes();
       return true;
     } else if (direction == 0) {
@@ -848,6 +862,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
+      _panes[index]._proposedSize += delta;
       _applyProposedSizes();
     }
     return false;
@@ -870,6 +885,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
+      _panes[index]._proposedSize = collapsedSize;
       _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
       return true;
@@ -884,6 +900,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
+      _panes[index]._proposedSize = collapsedSize;
       _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
     } else if (direction == 0) {
@@ -901,6 +918,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
+      _panes[index]._proposedSize = collapsedSize;
       _panes[index]._attachedPane!.collapsed = true;
       _applyProposedSizes();
     }
@@ -938,6 +956,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
+      _panes[index]._proposedSize = minSize;
       _panes[index]._attachedPane!.collapsed = false;
       _applyProposedSizes();
       return true;
@@ -956,6 +975,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
+      _panes[index]._proposedSize = minSize;
       _panes[index]._attachedPane!.collapsed = false;
       _applyProposedSizes();
       return true;
