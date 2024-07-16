@@ -278,6 +278,7 @@ abstract class AbstractButtonStyle {
   ButtonStateProperty<EdgeInsetsGeometry> get padding;
   ButtonStateProperty<TextStyle> get textStyle;
   ButtonStateProperty<IconThemeData> get iconTheme;
+  ButtonStateProperty<EdgeInsetsGeometry> get margin;
 }
 
 class ButtonStyle implements AbstractButtonStyle {
@@ -415,6 +416,13 @@ class ButtonStyle implements AbstractButtonStyle {
           );
     };
   }
+
+  @override
+  ButtonStateProperty<EdgeInsetsGeometry> get margin {
+    return (context, states) {
+      return EdgeInsets.zero;
+    };
+  }
 }
 
 extension ShapeDecorationExtension on ShapeDecoration {
@@ -442,6 +450,7 @@ class ButtonVariance implements AbstractButtonStyle {
     padding: _buttonPadding,
     textStyle: _buttonPrimaryTextStyle,
     iconTheme: _buttonPrimaryIconTheme,
+    margin: _buttonZeroMargin,
   );
   static const ButtonVariance secondary = ButtonVariance(
     decoration: _buttonSecondaryDecoration,
@@ -449,6 +458,7 @@ class ButtonVariance implements AbstractButtonStyle {
     padding: _buttonPadding,
     textStyle: _buttonSecondaryTextStyle,
     iconTheme: _buttonSecondaryIconTheme,
+    margin: _buttonZeroMargin,
   );
   static const ButtonVariance outline = ButtonVariance(
     decoration: _buttonOutlineDecoration,
@@ -456,6 +466,7 @@ class ButtonVariance implements AbstractButtonStyle {
     padding: _buttonPadding,
     textStyle: _buttonOutlineTextStyle,
     iconTheme: _buttonOutlineIconTheme,
+    margin: _buttonZeroMargin,
   );
   static const ButtonVariance ghost = ButtonVariance(
     decoration: _buttonGhostDecoration,
@@ -463,6 +474,7 @@ class ButtonVariance implements AbstractButtonStyle {
     padding: _buttonPadding,
     textStyle: _buttonGhostTextStyle,
     iconTheme: _buttonGhostIconTheme,
+    margin: _buttonZeroMargin,
   );
   static const ButtonVariance link = ButtonVariance(
     decoration: _buttonLinkDecoration,
@@ -470,6 +482,7 @@ class ButtonVariance implements AbstractButtonStyle {
     padding: _buttonPadding,
     textStyle: _buttonLinkTextStyle,
     iconTheme: _buttonLinkIconTheme,
+    margin: _buttonZeroMargin,
   );
   static const ButtonVariance text = ButtonVariance(
     decoration: _buttonTextDecoration,
@@ -477,6 +490,7 @@ class ButtonVariance implements AbstractButtonStyle {
     padding: _buttonPadding,
     textStyle: _buttonTextTextStyle,
     iconTheme: _buttonTextIconTheme,
+    margin: _buttonZeroMargin,
   );
   static const ButtonVariance destructive = ButtonVariance(
     decoration: _buttonDestructiveDecoration,
@@ -484,6 +498,7 @@ class ButtonVariance implements AbstractButtonStyle {
     padding: _buttonPadding,
     textStyle: _buttonDestructiveTextStyle,
     iconTheme: _buttonDestructiveIconTheme,
+    margin: _buttonZeroMargin,
   );
   static const ButtonVariance fixed = ButtonVariance(
     decoration: _buttonTextDecoration,
@@ -491,6 +506,7 @@ class ButtonVariance implements AbstractButtonStyle {
     padding: _buttonPadding,
     textStyle: _buttonStaticTextStyle,
     iconTheme: _buttonStaticIconTheme,
+    margin: _buttonZeroMargin,
   );
 
   final ButtonStateProperty<Decoration> decoration;
@@ -498,6 +514,7 @@ class ButtonVariance implements AbstractButtonStyle {
   final ButtonStateProperty<EdgeInsets> padding;
   final ButtonStateProperty<TextStyle> textStyle;
   final ButtonStateProperty<IconThemeData> iconTheme;
+  final ButtonStateProperty<EdgeInsets> margin;
 
   const ButtonVariance({
     required this.decoration,
@@ -505,6 +522,7 @@ class ButtonVariance implements AbstractButtonStyle {
     required this.padding,
     required this.textStyle,
     required this.iconTheme,
+    required this.margin,
   });
 }
 
@@ -515,6 +533,7 @@ extension ButtonStyleExtension on AbstractButtonStyle {
     ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
     ButtonStatePropertyDelegate<TextStyle>? textStyle,
     ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
+    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
   }) {
     return _CopyWithButtonStyle(
       this,
@@ -523,6 +542,7 @@ extension ButtonStyleExtension on AbstractButtonStyle {
       padding,
       textStyle,
       iconTheme,
+      margin,
     );
   }
 }
@@ -536,6 +556,7 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? _padding;
   final ButtonStatePropertyDelegate<TextStyle>? _textStyle;
   final ButtonStatePropertyDelegate<IconThemeData>? _iconTheme;
+  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? _margin;
   final AbstractButtonStyle _delegate;
 
   const _CopyWithButtonStyle(
@@ -545,6 +566,7 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
     this._padding,
     this._textStyle,
     this._iconTheme,
+    this._margin,
   );
 
   @override
@@ -598,6 +620,20 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
           context, states, _delegate.decoration(context, states));
     };
   }
+
+  @override
+  ButtonStateProperty<EdgeInsetsGeometry> get margin {
+    if (_margin == null) {
+      return _delegate.margin;
+    }
+    return (context, states) {
+      return _margin!(context, states, _delegate.margin(context, states));
+    };
+  }
+}
+
+EdgeInsets _buttonZeroMargin(BuildContext context, Set<WidgetState> states) {
+  return EdgeInsets.zero;
 }
 
 MouseCursor _buttonMouseCursor(BuildContext context, Set<WidgetState> states) {
