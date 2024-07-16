@@ -197,8 +197,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Card', 'card'),
         ShadcnDocsPage('Carousel', 'carousel'),
         ShadcnDocsPage('Divider', 'divider'),
-        ShadcnDocsPage(
-            'Resizable', 'resizable', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Resizable', 'resizable'),
         ShadcnDocsPage('Steps', 'steps'),
       ],
     ),

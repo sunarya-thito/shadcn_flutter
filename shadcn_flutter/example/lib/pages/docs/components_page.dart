@@ -14,6 +14,7 @@ import 'package:example/pages/docs/components/divider/divider_example_3.dart';
 import 'package:example/pages/docs/components/form/form_example_1.dart';
 import 'package:example/pages/docs/components/input_otp/input_otp_example_2.dart';
 import 'package:example/pages/docs/components/pagination/pagination_example_1.dart';
+import 'package:example/pages/docs/components/resizable/resizable_example_3.dart';
 import 'package:example/pages/docs/components/text_area/text_area_example_3.dart';
 import 'package:example/pages/docs/components/toggle/toggle_example_2.dart';
 import 'package:example/pages/docs_page.dart';
@@ -597,7 +598,12 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 scale: 1.2,
                 example: Card(child: DividerExample3()),
               ),
-              WIPComponentCard(title: 'Resizable'),
+              ComponentCard(
+                title: 'Resizable',
+                name: 'resizable',
+                scale: 1,
+                example: ResizableExample3(),
+              ),
               ComponentCard(
                 name: 'steps',
                 title: 'Steps',
