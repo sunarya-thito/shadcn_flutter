@@ -66,57 +66,22 @@ class _MenuButtonState extends State<MenuButton> {
         'MenuButton must be a descendant of Menubar or Menu');
     return Data<MenuData>.boundary(
       child: Data<MenubarData>.boundary(
-        child: Popover(
-          builder: (context) {
-            return Button(
-              style: menuBarData == null
-                  ? ButtonVariance.menu
-                  : ButtonVariance.menubar,
-              trailing: widget.trailing,
-              leading: widget.leading,
-              disableTransition: true,
-              enabled: widget.enabled,
-              onHover: (value) {},
-              onPressed: () {
-                widget.onPressed?.call();
-                if (widget.subMenu != null) {
-                  context.showPopover();
-                }
-              },
-              child: widget.child,
-            );
-          },
-          popoverBuilder: (context) {
+        child: Button(
+          style: menuBarData == null
+              ? ButtonVariance.menu
+              : ButtonVariance.menubar,
+          trailing: widget.trailing,
+          leading: widget.leading,
+          disableTransition: true,
+          enabled: widget.enabled,
+          onHover: (value) {},
+          onPressed: () {
+            widget.onPressed?.call();
             if (widget.subMenu != null) {
-              return Padding(
-                padding: menuBarData != null
-                    ? const EdgeInsets.only(top: 8)
-                    : EdgeInsets.zero,
-                child: Focus(
-                  focusNode: _focusNode!,
-                  onFocusChange: (value) {
-                    print('focus changed ($_focusNode): $value');
-                  },
-                  child: MenuGroup(
-                    dataBuilder: () {
-                      return MenuData();
-                    },
-                    children: widget.subMenu!,
-                    builder: (context, children) {
-                      return MenuPopup(
-                        children: children,
-                      );
-                    },
-                  ),
-                ),
-              );
+              context.showPopover();
             }
-            return const SizedBox();
           },
-          popoverOffset: menuBarData != null ? null : const Offset(8, -4 + -1),
-          alignment: Alignment.topLeft,
-          anchorAlignment:
-              menuBarData != null ? Alignment.bottomLeft : Alignment.topRight,
+          child: widget.child,
         ),
       ),
     );
@@ -141,6 +106,7 @@ class MenuGroup<T extends MenuData> extends StatefulWidget {
   final Widget Function(BuildContext context, List<Widget> children) builder;
   final Alignment popoverAlignment;
   final Alignment anchorAlignment;
+  final Offset? popoverOffset;
 
   MenuGroup({
     super.key,
@@ -150,6 +116,7 @@ class MenuGroup<T extends MenuData> extends StatefulWidget {
     this.popoverController,
     required this.popoverAlignment,
     required this.anchorAlignment,
+    this.popoverOffset,
   });
 
   @override
@@ -169,6 +136,7 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
       },
       alignment: widget.popoverAlignment,
       anchorAlignment: widget.anchorAlignment,
+      closeOthers: true,
     );
   }
 

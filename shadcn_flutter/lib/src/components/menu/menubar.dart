@@ -3,9 +3,11 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class Menubar extends StatefulWidget {
   final FocusNode? focusScopeNode;
   final List<Widget> children;
+  final Offset? popoverOffset;
 
   const Menubar({
     this.focusScopeNode,
+    this.popoverOffset,
     required this.children,
   });
 
@@ -33,6 +35,9 @@ class _MenubarState extends State<Menubar> {
   @override
   Widget build(BuildContext context) {
     return MenuGroup<MenubarData>(
+      anchorAlignment: Alignment.bottomLeft,
+      popoverAlignment: Alignment.topLeft,
+      popoverOffset: widget.popoverOffset ?? const Offset(0, -8),
       children: widget.children,
       dataBuilder: () {
         return MenubarData();
