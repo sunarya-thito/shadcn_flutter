@@ -651,9 +651,33 @@ Decoration _buttonMenuDecoration(
     BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
-    return BoxDecoration();
+    return const BoxDecoration();
   }
-  return BoxDecoration();
+  if (states.contains(WidgetState.focused) ||
+      states.contains(WidgetState.hovered) ||
+      states.contains(WidgetState.selected)) {
+    return BoxDecoration(
+      color: themeData.colorScheme.accent,
+      borderRadius: BorderRadius.circular(themeData.radiusSm),
+    );
+  }
+  return const BoxDecoration();
+}
+
+TextStyle _buttonMenuTextStyle(BuildContext context, Set<WidgetState> states) {
+  var themeData = Theme.of(context);
+  return TextStyle(
+    color: themeData.colorScheme.accentForeground,
+  );
+}
+
+EdgeInsets _buttonMenuPadding(BuildContext context, Set<WidgetState> states) {
+  return const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
+}
+
+EdgeInsets _buttonMenubarPadding(
+    BuildContext context, Set<WidgetState> states) {
+  return const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
 }
 
 // PRIMARY
