@@ -66,21 +66,50 @@ class ResizablePaneValue {
   const ResizablePaneValue(this.size, this.collapsed);
 }
 
+enum PanelSibling {
+  before(-1),
+  after(1),
+  both(0);
+
+  final int direction;
+
+  const PanelSibling(this.direction);
+}
+
 class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
   _ResizablePaneState? _attachedState;
+  int? _attachedIndex;
 
   ResizablePaneController(double size, {bool collapsed = false})
       : super(ResizablePaneValue(size, collapsed));
 
-  void _attachState(_ResizablePaneState state) {
+  void _attachState(_ResizablePaneState state, int index) {
     assert(_attachedState == null, 'State is already attached');
     _attachedState = state;
+    _attachedIndex = index;
   }
 
   void _detachState(_ResizablePaneState state) {
     assert(_attachedState == state, 'State is not attached');
     _attachedState = null;
+    _attachedIndex = null;
   }
+
+  bool tryExpandSize(double size, [PanelSibling direction = PanelSibling.both]) {
+    assert(_attachedState != null, 'State is not attached');
+    final activePane = _attachedState!._activePane;
+    assert(activePane != null, 'ActivePane is not attached');
+    return activePane!._containerState._attemptExpand(activePane.index, direction.direction, size);
+  }
+
+  bool tryCollapse([PanelSibling direction = PanelSibling.both]) {
+    assert(_attachedState != null, 'State is not attached');
+    final activePane = _attachedState!._activePane;
+    assert(activePane != null, 'ActivePane is not attached');
+    return activePane!._containerState._attemptCollapse(activePane.index, direction.direction);
+  }
+
+  bool try
 
   set size(double newValue) {
     if (newValue < 0) {
@@ -473,6 +502,7 @@ class ResizablePanel extends StatefulWidget {
 }
 
 class _ActivePane {
+  final _ResizablePanelState _containerState;
   final GlobalKey _key = GlobalKey();
   final int index;
   _ResizablePaneState? _attachedPane;
@@ -514,7 +544,8 @@ class _ActivePane {
     __proposedSize = value;
   }
 
-  _ActivePane({required this.index});
+  _ActivePane({required this.index, required _ResizablePanelState containerState})
+      : _containerState = containerState;
 }
 
 class _BorrowInfo {
@@ -532,7 +563,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
   void initState() {
     super.initState();
     _panes = List.generate(
-        widget.children.length, (index) => _ActivePane(index: index));
+        widget.children.length, (index) => _ActivePane(index: index, containerState: this));
     _checkExpands();
     // Trigger 2nd build to recompute divider size
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -1224,7 +1255,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(oldWidget.children, widget.children)) {
       _panes = List.generate(
-          widget.children.length, (index) => _ActivePane(index: index));
+          widget.children.length, (index) => _ActivePane(index: index, containerState: this));
       _checkExpands();
     }
   }
