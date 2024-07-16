@@ -839,6 +839,11 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
+      double minSize = _panes[index]._attachedPane!.widget.minSize ?? 0;
+      double maxSize =
+          _panes[index]._attachedPane!.widget.maxSize ?? double.infinity;
+      _panes[index]._proposedSize =
+          (_panes[index]._proposedSize + delta).clamp(minSize, maxSize);
       _applyProposedSizes();
       return true;
     } else if (direction > 0) {
@@ -848,7 +853,11 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
-      _panes[index]._proposedSize += delta;
+      double minSize = _panes[index]._attachedPane!.widget.minSize ?? 0;
+      double maxSize =
+          _panes[index]._attachedPane!.widget.maxSize ?? double.infinity;
+      _panes[index]._proposedSize =
+          (_panes[index]._proposedSize + delta).clamp(minSize, maxSize);
       _applyProposedSizes();
       return true;
     } else if (direction == 0) {
@@ -862,7 +871,11 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
-      _panes[index]._proposedSize += delta;
+      double minSize = _panes[index]._attachedPane!.widget.minSize ?? 0;
+      double maxSize =
+          _panes[index]._attachedPane!.widget.maxSize ?? double.infinity;
+      _panes[index]._proposedSize =
+          (_panes[index]._proposedSize + delta).clamp(minSize, maxSize);
       _applyProposedSizes();
     }
     return false;
