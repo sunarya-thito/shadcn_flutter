@@ -8,15 +8,18 @@ class Menubar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MenuGroup<MenubarData>(
+      children: children,
       dataBuilder: () {
         return MenubarData();
       },
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: children,
-        ),
-      ).medium(),
+      builder: (context, children) {
+        return IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: children,
+          ),
+        ).medium();
+      },
     );
   }
 }

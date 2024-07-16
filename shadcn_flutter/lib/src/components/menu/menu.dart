@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class MenuButton extends StatelessWidget {
@@ -23,36 +24,103 @@ class MenuButton extends StatelessWidget {
     final menuData = Data.maybeOf<MenuData>(context);
     assert(menuData != null || menuBarData != null,
         'MenuButton must be a descendant of Menubar or Menu');
-    print('menuData: $menuData menuBarData: $menuBarData');
-    return Button(
-      style: menuBarData == null ? ButtonVariance.menu : ButtonVariance.menubar,
-      trailing: trailing,
-      leading: leading,
-      disableTransition: true,
-      enabled: enabled,
-      onPressed: () {
-        onPressed?.call();
+    return Popover(
+      builder: (context) {
+        return Button(
+          style: menuBarData == null
+              ? ButtonVariance.menu
+              : ButtonVariance.menubar,
+          trailing: trailing,
+          leading: leading,
+          disableTransition: true,
+          enabled: enabled,
+          focusNode: menuBarData?.focusScopeNode ?? menuData?.focusScopeNode,
+          onPressed: () {
+            onPressed?.call();
+            if (subMenu != null) {
+              context.showPopover();
+            }
+          },
+          child: child,
+        );
       },
-      child: child,
+      popoverBuilder: (context) {
+        if (subMenu != null) {
+          return MenuGroup(
+            dataBuilder: () {
+              return MenuData();
+            },
+            children: subMenu!,
+            builder: (context, children) {
+              return MenuPopup(
+                children: children,
+              );
+            },
+          );
+        }
+        return const SizedBox();
+      },
+      alignment: Alignment.topLeft,
+      anchorAlignment: Alignment.bottomLeft,
     );
   }
 }
 
 class MenubarData extends MenuData {}
 
-class MenuData {}
+class MenuData {
+  final GlobalKey itemKey = GlobalKey();
+  final GlobalKey popupKey = GlobalKey();
+  final FocusScopeNode focusScopeNode = FocusScopeNode();
+}
 
-class MenuGroup<T extends MenuData> extends StatelessWidget {
-  final Widget child;
+class MenuGroup<T extends MenuData> extends StatefulWidget {
+  final List<Widget> children;
   final T Function() dataBuilder;
+  final Widget Function(BuildContext context, List<Widget> children) builder;
 
-  const MenuGroup({required this.child, required this.dataBuilder});
+  MenuGroup({
+    super.key,
+    required this.dataBuilder,
+    required this.children,
+    required this.builder,
+  });
+
+  @override
+  State<MenuGroup<T>> createState() => _MenuGroupState<T>();
+}
+
+class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
+  late List<T> _data;
+
+  @override
+  void initState() {
+    super.initState();
+    _data = List.generate(widget.children.length, (_) => widget.dataBuilder());
+  }
+
+  @override
+  void didUpdateWidget(covariant MenuGroup<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!listEquals(oldWidget.children, widget.children)) {
+      _data =
+          List.generate(widget.children.length, (_) => widget.dataBuilder());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Data<T>(
-      data: dataBuilder(),
-      child: child,
-    );
+    List<Widget> children = [];
+    for (int i = 0; i < widget.children.length; i++) {
+      final child = widget.children[i];
+      final data = _data[i];
+      children.add(
+        Data<T>(
+          data: data,
+          child: child,
+        ),
+      );
+    }
+    return widget.builder(context, children);
   }
 }
