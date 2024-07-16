@@ -58,15 +58,18 @@ class _MenuButtonState extends State<MenuButton> {
             style: menuBarData == null
                 ? ButtonVariance.menu
                 : ButtonVariance.menubar,
-            trailing: Row(
-              children: [
-                if (widget.trailing != null) widget.trailing!,
-                if (widget.subMenu != null)
-                  Icon(
-                    Icons.arrow,
-                  ),
-              ],
-            ),
+            trailing: menuBarData != null
+                ? widget.trailing
+                : Row(
+                    children: [
+                      if (widget.trailing != null) widget.trailing!,
+                      if (widget.subMenu != null && menuBarData == null)
+                        const Icon(
+                          RadixIcons.chevronRight,
+                          size: 16,
+                        ),
+                    ],
+                  ).gap(8),
             leading: widget.leading,
             disableTransition: true,
             enabled: widget.enabled,

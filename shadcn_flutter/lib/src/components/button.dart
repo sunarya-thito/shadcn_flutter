@@ -740,7 +740,7 @@ TextStyle _buttonMenuTextStyle(BuildContext context, Set<WidgetState> states) {
 }
 
 EdgeInsets _buttonMenuPadding(BuildContext context, Set<WidgetState> states) {
-  return const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
+  return const EdgeInsets.only(left: 8, top: 6, right: 4, bottom: 6);
 }
 
 EdgeInsets _buttonMenubarPadding(
