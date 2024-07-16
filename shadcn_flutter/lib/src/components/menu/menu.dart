@@ -64,6 +64,7 @@ class _MenuButtonState extends State<MenuButton> {
     final menuData = Data.maybeOf<MenuData>(context);
     assert(menuData != null || menuBarData != null,
         'MenuButton must be a descendant of Menubar or Menu');
+    final data = menuBarData ?? menuData!;
     return Data<MenuData>.boundary(
       child: Data<MenubarData>.boundary(
         child: Button(
@@ -78,7 +79,7 @@ class _MenuButtonState extends State<MenuButton> {
           onPressed: () {
             widget.onPressed?.call();
             if (widget.subMenu != null) {
-              context.showPopover();
+              data._parent.openMenu(widget.subMenu!);
             }
           },
           child: widget.child,
@@ -97,6 +98,8 @@ class MenuData {
 
   late int _index;
   late int _length;
+
+  late _MenuGroupState _parent;
 }
 
 class MenuGroup<T extends MenuData> extends StatefulWidget {
@@ -147,7 +150,8 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
     _data = List.generate(widget.children.length, (i) {
       return widget.dataBuilder()
         .._index = i
-        .._length = widget.children.length;
+        .._length = widget.children.length
+        .._parent = this;
     });
   }
 
@@ -161,7 +165,8 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
       _data = List.generate(widget.children.length, (i) {
         return widget.dataBuilder()
           .._index = i
-          .._length = widget.children.length;
+          .._length = widget.children.length
+          .._parent = this;
       });
     }
   }
@@ -179,6 +184,9 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
         ),
       );
     }
-    return widget.builder(context, children);
+    return PopoverPortal(
+      controller: _popoverController,
+      child: widget.builder(context, children),
+    );
   }
 }
