@@ -827,6 +827,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   bool _attemptExpand(int index, int direction, double delta) {
+    _startDragging();
     if (index == 0) {
       direction = 1;
     } else if (index == _panes.length - 1) {
@@ -845,12 +846,14 @@ class _ResizablePanelState extends State<ResizablePanel> {
       _panes[index]._proposedSize =
           (_panes[index]._proposedSize + delta).clamp(minSize, maxSize);
       _applyProposedSizes();
+      _stopDragging();
       return true;
     } else if (direction > 0) {
       // expand to the right
       _BorrowInfo borrowed = _borrowSize(index, -delta, _panes.length - 1, 1);
       if (borrowed.givenSize != -delta) {
         _resetProposedSizes();
+        _stopDragging();
         return false;
       }
       double minSize = _panes[index]._attachedPane!.widget.minSize ?? 0;
@@ -859,6 +862,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       _panes[index]._proposedSize =
           (_panes[index]._proposedSize + delta).clamp(minSize, maxSize);
       _applyProposedSizes();
+      _stopDragging();
       return true;
     } else if (direction == 0) {
       // expand to both sides
@@ -869,6 +873,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       if (borrowedLeft.givenSize != -halfDelta ||
           borrowedRight.givenSize != -halfDelta) {
         _resetProposedSizes();
+        _stopDragging();
         return false;
       }
       double minSize = _panes[index]._attachedPane!.widget.minSize ?? 0;
@@ -877,6 +882,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
       _panes[index]._proposedSize =
           (_panes[index]._proposedSize + delta).clamp(minSize, maxSize);
       _applyProposedSizes();
+      _stopDragging();
+      return true;
     }
     return false;
   }

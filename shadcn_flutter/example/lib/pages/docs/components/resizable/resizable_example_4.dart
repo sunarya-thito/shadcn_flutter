@@ -71,11 +71,11 @@ class _ResizableExample4State extends State<ResizableExample4> {
           children: [
             PrimaryButton(
               onPressed: () {
-                controller1.trySetSize(80);
-                controller2.trySetSize(80);
-                controller3.trySetSize(120);
-                controller4.trySetSize(80);
-                controller5.trySetSize(80);
+                controller1.size = 80;
+                controller2.size = 80;
+                controller3.size = 120;
+                controller4.size = 80;
+                controller5.size = 80;
               },
               child: Text('Reset'),
             ),
