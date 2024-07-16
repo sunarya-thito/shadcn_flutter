@@ -301,6 +301,9 @@ class _ResizablePaneState extends State<ResizablePane> {
       _activePane?._attachedPane = null;
       _activePane = newActivePane;
       _activePane?._attachedPane = this;
+      if (__controller != null) {
+        __controller!._attachedIndex = _activePane!.index;
+      }
     }
 
     if (__controller == null) {
@@ -313,6 +316,7 @@ class _ResizablePaneState extends State<ResizablePane> {
                 .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
             collapsed: widget.initialCollapsed,
           );
+          __controller!._attachState(this, _activePane!.index);
         } else {
           __controller = widget.controller;
           __controller!.value = ResizablePaneValue(
@@ -321,6 +325,7 @@ class _ResizablePaneState extends State<ResizablePane> {
                 .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
             widget.initialCollapsed,
           );
+          __controller!._attachState(this, _activePane!.index);
         }
       } else {
         __controller = widget.controller ??
@@ -328,6 +333,7 @@ class _ResizablePaneState extends State<ResizablePane> {
               widget.initialSize!,
               collapsed: widget.initialCollapsed,
             );
+        __controller!._attachState(this, _activePane!.index);
       }
     } else {
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
@@ -344,17 +350,30 @@ class _ResizablePaneState extends State<ResizablePane> {
   void didUpdateWidget(covariant ResizablePane oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
+      __controller?._detachState(this);
       if (widget.flex != null) {
-        __controller = ResizablePaneController(
-          (_sparedFlexSize! * widget.flex!)
-              .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
-          collapsed: widget.initialCollapsed,
-        );
+        if (widget.controller == null) {
+          __controller = ResizablePaneController(
+            (_sparedFlexSize! * widget.flex!)
+                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
+            collapsed: widget.initialCollapsed,
+          );
+        } else {
+          __controller = widget.controller;
+          __controller!.value = ResizablePaneValue(
+            (_sparedFlexSize! * widget.flex!)
+                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
+            widget.initialCollapsed,
+          );
+          __controller!._attachState(this, _activePane!.index);
+        }
       } else {
-        __controller = ResizablePaneController(
-          widget.initialSize!,
-          collapsed: widget.initialCollapsed,
-        );
+        __controller = widget.controller ??
+            ResizablePaneController(
+              widget.initialSize!,
+              collapsed: widget.initialCollapsed,
+            );
+        __controller!._attachState(this, _activePane!.index);
       }
     } else if (widget.flex != oldWidget.flex) {
       double oldFlexedSize = _sparedFlexSize! * oldWidget.flex!;
@@ -802,8 +821,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
     }
     if (direction < 0) {
       // expand to the left
-      _BorrowInfo borrowed = _borrowSize(index - 1, delta, 0, -1);
-      if (borrowed.givenSize != delta) {
+      _BorrowInfo borrowed = _borrowSize(index - 1, -delta, 0, -1);
+      if (borrowed.givenSize != -delta) {
         _resetProposedSizes();
         return false;
       }
@@ -812,7 +831,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     } else if (direction > 0) {
       // expand to the right
       _BorrowInfo borrowed = _borrowSize(index, -delta, _panes.length - 1, 1);
-      if (borrowed.givenSize != delta) {
+      if (borrowed.givenSize != -delta) {
         _resetProposedSizes();
         return false;
       }
@@ -821,10 +840,10 @@ class _ResizablePanelState extends State<ResizablePanel> {
     } else if (direction == 0) {
       // expand to both sides
       double halfDelta = delta / 2;
-      _BorrowInfo borrowedLeft = _borrowSize(index - 1, halfDelta, 0, -1);
+      _BorrowInfo borrowedLeft = _borrowSize(index - 1, -halfDelta, 0, -1);
       _BorrowInfo borrowedRight =
-          _borrowSize(index, -halfDelta, _panes.length - 1, 1);
-      if (borrowedLeft.givenSize != halfDelta ||
+          _borrowSize(index + 1, -halfDelta, _panes.length - 1, 1);
+      if (borrowedLeft.givenSize != -halfDelta ||
           borrowedRight.givenSize != -halfDelta) {
         _resetProposedSizes();
         return false;
@@ -876,7 +895,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       double halfDelta = delta / 2;
       _BorrowInfo borrowedLeft = _borrowSize(index - 1, halfDelta, 0, -1);
       _BorrowInfo borrowedRight =
-          _borrowSize(index, halfDelta, _panes.length - 1, 1);
+          _borrowSize(index + 1, halfDelta, _panes.length - 1, 1);
       if (borrowedLeft.givenSize != halfDelta ||
           borrowedRight.givenSize != halfDelta) {
         _resetProposedSizes();
@@ -931,7 +950,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       double halfDelta = delta / 2;
       _BorrowInfo borrowedLeft = _borrowSize(index - 1, halfDelta, 0, -1);
       _BorrowInfo borrowedRight =
-          _borrowSize(index, halfDelta, _panes.length - 1, 1);
+          _borrowSize(index + 1, halfDelta, _panes.length - 1, 1);
       if (borrowedLeft.givenSize != halfDelta ||
           borrowedRight.givenSize != halfDelta) {
         _resetProposedSizes();

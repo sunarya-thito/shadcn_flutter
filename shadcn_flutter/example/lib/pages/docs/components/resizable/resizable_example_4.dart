@@ -69,7 +69,7 @@ class _ResizableExample4State extends State<ResizableExample4> {
           children: [
             PrimaryButton(
               onPressed: () {
-                print(controller3.tryExpandSize(20));
+                controller3.tryExpandSize(20);
               },
               child: Text('Expand +20 Panel 2'),
             ),
