@@ -64,6 +64,37 @@ class _MenuButtonState extends State<MenuButton> {
     final menuData = Data.maybeOf<MenuData>(context);
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
     print('root: ${menuGroupData!.root} parent: ${menuGroupData!.parent}');
+
+    void openSubMenu() {
+      menuGroupData.closeOthers();
+      menuData!.popoverController.show(
+        regionGroupId: menuGroupData.root ?? menuGroupData,
+        builder: (context) {
+          return ConstrainedBox(
+            constraints: const BoxConstraints(
+              minWidth: 192, // 12rem
+            ),
+            child: MenuGroup(
+                parent: menuGroupData,
+                children: widget.subMenu!,
+                builder: (context, children) {
+                  return MenuPopup(
+                    children: children,
+                  );
+                }),
+          );
+        },
+        alignment: Alignment.topLeft,
+        anchorAlignment:
+            menuBarData != null ? Alignment.bottomLeft : Alignment.topRight,
+        offset: menuBarData != null
+            ? menuBarData.widget.border
+                ? const Offset(-4, 8)
+                : const Offset(0, 4)
+            : const Offset(8, -4 + -1),
+      );
+    }
+
     return Data<MenuGroupData>.boundary(
       child: Data<MenuData>.boundary(
         child: Data<MenubarState>.boundary(
@@ -108,40 +139,18 @@ class _MenuButtonState extends State<MenuButton> {
                       focusNode: _focusNode,
                       onHover: (value) {
                         if (value) {
-                          if (menuBarData != null) {}
+                          menuGroupData.closeOthers();
+                          if (menuBarData == null ||
+                              menuGroupData.hasOpenPopovers) {
+                            openSubMenu();
+                          }
                         }
                       },
                       onPressed: () {
                         widget.onPressed?.call();
                         if (widget.subMenu != null &&
                             !menuData.popoverController.hasOpenPopovers) {
-                          menuData.popoverController.show(
-                            regionGroupId: menuGroupData.root ?? menuGroupData,
-                            builder: (context) {
-                              return ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                  minWidth: 192, // 12rem
-                                ),
-                                child: MenuGroup(
-                                    parent: menuGroupData,
-                                    children: widget.subMenu!,
-                                    builder: (context, children) {
-                                      return MenuPopup(
-                                        children: children,
-                                      );
-                                    }),
-                              );
-                            },
-                            alignment: Alignment.topLeft,
-                            anchorAlignment: menuBarData != null
-                                ? Alignment.bottomLeft
-                                : Alignment.topRight,
-                            offset: menuBarData != null
-                                ? menuBarData.widget.border
-                                    ? const Offset(-4, 8)
-                                    : const Offset(0, 4)
-                                : const Offset(8, -4 + -1),
-                          );
+                          openSubMenu();
                         }
                       },
                       child: widget.child,
@@ -161,6 +170,21 @@ class MenuGroupData {
   final List<MenuData> children;
 
   MenuGroupData(this.root, this.parent, this.children);
+
+  bool get hasOpenPopovers {
+    for (final child in children) {
+      if (child.popoverController.hasOpenPopovers) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void closeOthers() {
+    for (final child in children) {
+      child.popoverController.close();
+    }
+  }
 
   @override
   bool operator ==(Object other) {

@@ -643,6 +643,8 @@ class PopoverController extends ChangeNotifier {
     for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
       key.currentState?.close();
     }
+    _openPopovers.clear();
+    notifyListeners();
   }
 }
 
