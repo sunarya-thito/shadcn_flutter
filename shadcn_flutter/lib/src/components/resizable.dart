@@ -357,10 +357,10 @@ class ResizablePanel extends StatefulWidget {
   }
 
   static Widget _defaultDraggerBuilder(BuildContext context) {
-    return Container(
-      color: Colors.yellow.withOpacity(0.2),
-    );
-    // return const SizedBox();
+    // return Container(
+    //   color: Colors.yellow.withOpacity(0.2),
+    // );
+    return const SizedBox();
   }
 
   final List<ResizablePane> children;
