@@ -67,61 +67,67 @@ class _MenuButtonState extends State<MenuButton> {
     var focusNode = menuBarData?.focusNode ?? menuData!.focusNode;
     var parentFocusNode =
         menuBarData?.parentFocusScopeNode ?? menuData!.parentFocusScopeNode;
-    return Popover(
-      builder: (context) {
-        return Button(
-          style: menuBarData == null
-              ? ButtonVariance.menu
-              : ButtonVariance.menubar,
-          trailing: widget.trailing,
-          leading: widget.leading,
-          disableTransition: true,
-          enabled: widget.enabled,
-          focusNode: focusNode,
-          onHover: (value) {
-            print('onHover $value ${parentFocusNode.hasFocus}');
-            if (value && parentFocusNode.hasFocus) {
-              context.showPopover();
-            }
+    return Data<MenuData>.boundary(
+      child: Data<MenubarData>.boundary(
+        child: Popover(
+          builder: (context) {
+            return Button(
+              style: menuBarData == null
+                  ? ButtonVariance.menu
+                  : ButtonVariance.menubar,
+              trailing: widget.trailing,
+              leading: widget.leading,
+              disableTransition: true,
+              enabled: widget.enabled,
+              focusNode: focusNode,
+              onHover: (value) {
+                print('onHover $value ${parentFocusNode.hasFocus}');
+                if (value &&
+                    (parentFocusNode.hasFocus || menuBarData == null)) {
+                  context.showPopover();
+                }
+              },
+              onPressed: () {
+                widget.onPressed?.call();
+                if (widget.subMenu != null) {
+                  context.showPopover();
+                }
+              },
+              child: widget.child,
+            );
           },
-          onPressed: () {
-            widget.onPressed?.call();
+          popoverBuilder: (context) {
             if (widget.subMenu != null) {
-              context.showPopover();
+              return Padding(
+                padding: menuBarData != null
+                    ? const EdgeInsets.only(top: 8)
+                    : EdgeInsets.zero,
+                child: FocusScope(
+                  node: _focusScopeNode!,
+                  child: MenuGroup(
+                    dataBuilder: () {
+                      return MenuData(
+                        parentFocusScopeNode: _focusScopeNode!,
+                      );
+                    },
+                    children: widget.subMenu!,
+                    builder: (context, children) {
+                      return MenuPopup(
+                        children: children,
+                      );
+                    },
+                  ),
+                ),
+              );
             }
+            return const SizedBox();
           },
-          child: widget.child,
-        );
-      },
-      popoverBuilder: (context) {
-        if (widget.subMenu != null) {
-          return Padding(
-            padding: menuBarData != null
-                ? const EdgeInsets.only(top: 8)
-                : EdgeInsets.zero,
-            child: FocusScope(
-              node: _focusScopeNode!,
-              child: MenuGroup(
-                dataBuilder: () {
-                  return MenuData(
-                    parentFocusScopeNode: _focusScopeNode!,
-                  );
-                },
-                children: widget.subMenu!,
-                builder: (context, children) {
-                  return MenuPopup(
-                    children: children,
-                  );
-                },
-              ),
-            ),
-          );
-        }
-        return const SizedBox();
-      },
-      alignment: Alignment.topLeft,
-      anchorAlignment:
-          menuBarData != null ? Alignment.bottomLeft : Alignment.topRight,
+          popoverOffset: menuBarData != null ? null : const Offset(8, -4 + -1),
+          alignment: Alignment.topLeft,
+          anchorAlignment:
+              menuBarData != null ? Alignment.bottomLeft : Alignment.topRight,
+        ),
+      ),
     );
   }
 }

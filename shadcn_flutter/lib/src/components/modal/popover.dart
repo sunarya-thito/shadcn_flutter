@@ -418,6 +418,7 @@ class Popover extends StatefulWidget {
   final bool modal;
   final PopoverConstraint widthConstraint;
   final PopoverConstraint heightConstraint;
+  final Offset? popoverOffset;
 
   const Popover({
     Key? key,
@@ -429,6 +430,7 @@ class Popover extends StatefulWidget {
     this.modal = false,
     this.widthConstraint = PopoverConstraint.flexible,
     this.heightConstraint = PopoverConstraint.flexible,
+    this.popoverOffset,
   }) : super(key: key);
 
   @override
@@ -462,10 +464,13 @@ class PopoverState extends State<Popover>
           final Size size = renderBox.size;
           // find offset based on alignment
           // alignment.x and alignment.y is -1, 0, 1 (where 0 is center)
-          final Offset result = Offset(
+          Offset result = Offset(
             position.dx + size.width / 2 + size.width / 2 * alignment.x,
             position.dy + size.height / 2 + size.height / 2 * alignment.y,
           );
+          if (widget.popoverOffset != null) {
+            result += widget.popoverOffset!;
+          }
           state.position = result;
           state.alignment = widget.alignment;
           state.anchorSize = size;
@@ -530,10 +535,13 @@ class PopoverState extends State<Popover>
     final Size size = renderBox.size;
     // find offset based on alignment
     // alignment.x and alignment.y is -1, 0, 1 (where 0 is center)
-    final Offset result = Offset(
+    Offset result = Offset(
       position.dx + size.width / 2 + size.width / 2 * alignment.x,
       position.dy + size.height / 2 + size.height / 2 * alignment.y,
     );
+    if (widget.popoverOffset != null) {
+      result += widget.popoverOffset!;
+    }
     _scheduleShow();
     T? res = await showPopover(
         context: context,
