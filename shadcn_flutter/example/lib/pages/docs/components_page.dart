@@ -14,7 +14,6 @@ import 'package:example/pages/docs/components/divider/divider_example_3.dart';
 import 'package:example/pages/docs/components/form/form_example_1.dart';
 import 'package:example/pages/docs/components/input_otp/input_otp_example_2.dart';
 import 'package:example/pages/docs/components/pagination/pagination_example_1.dart';
-import 'package:example/pages/docs/components/select/select_example_1.dart';
 import 'package:example/pages/docs/components/text_area/text_area_example_3.dart';
 import 'package:example/pages/docs/components/toggle/toggle_example_2.dart';
 import 'package:example/pages/docs_page.dart';
@@ -492,7 +491,48 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 example: Card(
                   child: Align(
                     alignment: Alignment.topLeft,
-                    child: SelectExample1(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Select<String>(
+                          itemBuilder: (context, item) {
+                            return Text(item);
+                          },
+                          placeholder: Text('Select a fruit'),
+                          value: 'Apple',
+                          children: [
+                            SelectItemButton(
+                                value: 'Apple', child: Text('Apple')),
+                          ],
+                        ),
+                        SelectPopup(
+                          value: 'Apple',
+                          children: [
+                            SelectItemButton(
+                              value: 'Apple',
+                              child: Text('Apple'),
+                            ),
+                            SelectItemButton(
+                              value: 'Banana',
+                              child: Text('Banana'),
+                            ),
+                            SelectItemButton(
+                              value: 'Lemon',
+                              child: Text('Lemon'),
+                            ),
+                            SelectItemButton(
+                              value: 'Tomato',
+                              child: Text('Tomato'),
+                            ),
+                            SelectItemButton(
+                              value: 'Cucumber',
+                              child: Text('Cucumber'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ).sized(height: 300, width: 200),
               ),
