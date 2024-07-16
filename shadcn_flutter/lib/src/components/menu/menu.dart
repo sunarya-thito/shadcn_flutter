@@ -19,8 +19,13 @@ class MenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final menuBarData = Data.maybeOf<MenubarData>(context);
+    final menuData = Data.maybeOf<MenuData>(context);
+    assert(menuData != null || menuBarData != null,
+        'MenuButton must be a descendant of Menubar or Menu');
+    print('menuData: $menuData menuBarData: $menuBarData');
     return Button(
-      style: ButtonVariance.ghost,
+      style: menuBarData == null ? ButtonVariance.menu : ButtonVariance.menubar,
       trailing: trailing,
       leading: leading,
       disableTransition: true,
@@ -28,6 +33,25 @@ class MenuButton extends StatelessWidget {
       onPressed: () {
         onPressed?.call();
       },
+      child: child,
+    );
+  }
+}
+
+class MenubarData extends MenuData {}
+
+class MenuData {}
+
+class MenuGroup<T extends MenuData> extends StatelessWidget {
+  final Widget child;
+  final T Function() dataBuilder;
+
+  const MenuGroup({required this.child, required this.dataBuilder});
+
+  @override
+  Widget build(BuildContext context) {
+    return Data<T>(
+      data: dataBuilder(),
       child: child,
     );
   }

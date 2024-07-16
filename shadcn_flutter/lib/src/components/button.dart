@@ -172,6 +172,19 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
   });
 
+  const Button.fixed({
+    super.key,
+    this.leading,
+    this.trailing,
+    required this.child,
+    this.onPressed,
+    this.focusNode,
+    this.alignment,
+    this.enabled = true,
+    this.style = ButtonVariance.fixed,
+    this.disableTransition = false,
+  });
+
   @override
   ButtonState createState() => ButtonState();
 }
@@ -341,6 +354,18 @@ class ButtonStyle implements AbstractButtonStyle {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.fixed;
+
+  const ButtonStyle.menu({
+    this.size = ButtonSize.normal,
+    this.density = ButtonDensity.normal,
+    this.shape = ButtonShape.rectangle,
+  }) : variance = ButtonVariance.menu;
+
+  const ButtonStyle.menubar({
+    this.size = ButtonSize.normal,
+    this.density = ButtonDensity.normal,
+    this.shape = ButtonShape.rectangle,
+  }) : variance = ButtonVariance.menubar;
 
   @override
   ButtonStateProperty<Decoration> get decoration {
