@@ -51,13 +51,12 @@ class Divider extends StatelessWidget {
     final theme = Theme.of(context);
     if (child != null) {
       return IntrinsicHeight(
-        child: Column(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
-              child: Container(
+              child: SizedBox(
                 height: height ?? 1,
-                alignment: Alignment.centerRight,
                 child: AnimatedValueBuilder(
                     value: DividerProperties(
                       color: color ?? theme.colorScheme.border,
@@ -81,9 +80,8 @@ class Divider extends StatelessWidget {
             ),
             child!.muted().small().withPadding(padding: padding),
             Expanded(
-              child: Container(
+              child: SizedBox(
                 height: height ?? 1,
-                alignment: Alignment.centerLeft,
                 child: AnimatedValueBuilder(
                     value: DividerProperties(
                       color: color ?? theme.colorScheme.border,
@@ -109,37 +107,28 @@ class Divider extends StatelessWidget {
         ),
       );
     }
-    // return Container(
-    //   height: height ?? 1,
-    //   alignment: Alignment.center,
-    //   child: CustomPaint(
-    //     painter: DividerPainter(
-    //       color: color ?? theme.colorScheme.border,
-    //       thickness: thickness ?? 1,
-    //       indent: indent ?? 0,
-    //       endIndent: endIndent ?? 0,
-    //     ),
-    //   ),
-    // );
-    return AnimatedValueBuilder(
-        value: DividerProperties(
-          color: color ?? theme.colorScheme.border,
-          thickness: thickness ?? 1,
-          indent: indent ?? 0,
-          endIndent: endIndent ?? 0,
-        ),
-        lerp: DividerProperties.lerp,
-        duration: kDefaultDuration,
-        builder: (context, value, child) {
-          return CustomPaint(
-            painter: DividerPainter(
-              color: value.color,
-              thickness: value.thickness,
-              indent: value.indent,
-              endIndent: value.endIndent,
-            ),
-          );
-        });
+    return SizedBox(
+      height: height ?? 1,
+      child: AnimatedValueBuilder(
+          value: DividerProperties(
+            color: color ?? theme.colorScheme.border,
+            thickness: thickness ?? 1,
+            indent: indent ?? 0,
+            endIndent: endIndent ?? 0,
+          ),
+          lerp: DividerProperties.lerp,
+          duration: kDefaultDuration,
+          builder: (context, value, child) {
+            return CustomPaint(
+              painter: DividerPainter(
+                color: value.color,
+                thickness: value.thickness,
+                indent: value.indent,
+                endIndent: value.endIndent,
+              ),
+            );
+          }),
+    );
   }
 }
 
@@ -176,69 +165,13 @@ class DividerPainter extends CustomPainter {
   }
 }
 
-// class VerticalDivider extends StatelessWidget {
-//   final Color? color;
-//   final double? width;
-//   final double? thickness;
-//   final double? indent;
-//   final double? endIndent;
-//   final Widget? child;
-//   final EdgeInsets? padding;
-//
-//   const VerticalDivider({
-//     Key? key,
-//     this.color,
-//     this.width,
-//     this.thickness,
-//     this.indent,
-//     this.endIndent,
-//     this.child,
-//     this.padding = const EdgeInsets.symmetric(vertical: 8),
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final theme = Theme.of(context);
-//     if (child != null) {
-//       return IntrinsicHeight(
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: [
-//             Expanded(
-//               child: Container(
-//                 width: width ?? 1,
-//                 color: color ?? theme.colorScheme.border,
-//                 margin: EdgeInsets.only(top: indent ?? 0),
-//               ),
-//             ),
-//             child!.muted().small().withPadding(padding: padding),
-//             Expanded(
-//               child: Container(
-//                 width: width ?? 1,
-//                 color: color ?? theme.colorScheme.border,
-//                 margin: EdgeInsets.only(bottom: endIndent ?? 0),
-//               ),
-//             ),
-//           ],
-//         ),
-//       );
-//     }
-//     return AnimatedContainer(
-//       duration: kDefaultDuration,
-//       width: width ?? 1,
-//       color: color ?? theme.colorScheme.border,
-//       margin: EdgeInsets.only(top: indent ?? 0, bottom: endIndent ?? 0),
-//     );
-//   }
-// }
-
 class VerticalDividerPainter extends CustomPainter {
   final Color color;
   final double thickness;
   final double indent;
   final double endIndent;
 
-  VerticalDividerPainter({
+  const VerticalDividerPainter({
     required this.color,
     required this.thickness,
     required this.indent,
@@ -290,33 +223,83 @@ class VerticalDivider extends StatelessWidget {
     final theme = Theme.of(context);
     if (child != null) {
       return IntrinsicWidth(
-        child: Row(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
-              child: Container(
+              child: SizedBox(
                 width: width ?? 1,
-                color: color ?? theme.colorScheme.border,
-                margin: EdgeInsets.only(top: indent ?? 0),
+                child: AnimatedValueBuilder(
+                    value: DividerProperties(
+                      color: color ?? theme.colorScheme.border,
+                      thickness: thickness ?? 1,
+                      indent: indent ?? 0,
+                      endIndent: 0,
+                    ),
+                    duration: kDefaultDuration,
+                    lerp: DividerProperties.lerp,
+                    builder: (context, value, child) {
+                      return CustomPaint(
+                        painter: VerticalDividerPainter(
+                          color: value.color,
+                          thickness: value.thickness,
+                          indent: value.indent,
+                          endIndent: value.endIndent,
+                        ),
+                      );
+                    }),
               ),
             ),
             child!.muted().small().withPadding(padding: padding),
             Expanded(
-              child: Container(
+              child: SizedBox(
                 width: width ?? 1,
-                color: color ?? theme.colorScheme.border,
-                margin: EdgeInsets.only(bottom: endIndent ?? 0),
+                child: AnimatedValueBuilder(
+                    value: DividerProperties(
+                      color: color ?? theme.colorScheme.border,
+                      thickness: thickness ?? 1,
+                      indent: 0,
+                      endIndent: endIndent ?? 0,
+                    ),
+                    duration: kDefaultDuration,
+                    lerp: DividerProperties.lerp,
+                    builder: (context, value, child) {
+                      return CustomPaint(
+                        painter: VerticalDividerPainter(
+                          color: value.color,
+                          thickness: value.thickness,
+                          indent: value.indent,
+                          endIndent: value.endIndent,
+                        ),
+                      );
+                    }),
               ),
             ),
           ],
         ),
       );
     }
-    return AnimatedContainer(
-      duration: kDefaultDuration,
+    return SizedBox(
       width: width ?? 1,
-      color: color ?? theme.colorScheme.border,
-      margin: EdgeInsets.only(top: indent ?? 0, bottom: endIndent ?? 0),
+      child: AnimatedValueBuilder(
+          value: DividerProperties(
+            color: color ?? theme.colorScheme.border,
+            thickness: thickness ?? 1,
+            indent: indent ?? 0,
+            endIndent: endIndent ?? 0,
+          ),
+          lerp: DividerProperties.lerp,
+          duration: kDefaultDuration,
+          builder: (context, value, child) {
+            return CustomPaint(
+              painter: VerticalDividerPainter(
+                color: value.color,
+                thickness: value.thickness,
+                indent: value.indent,
+                endIndent: value.endIndent,
+              ),
+            );
+          }),
     );
   }
 }
