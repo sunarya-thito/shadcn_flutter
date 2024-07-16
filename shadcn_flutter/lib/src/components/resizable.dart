@@ -142,7 +142,7 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
     final activePane = _attachedState!._activePane;
     assert(activePane != null, 'ActivePane is not attached');
     return activePane!._containerState
-        ._attemptExpandCollapse(activePane.index, direction.direction);
+        ._attemptExpandCollapsed(activePane.index, direction.direction);
   }
 
   set size(double newValue) {
@@ -908,9 +908,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
     if (direction < 0) {
       // collapse to the left
       final child = widget.children[index];
-      final minSize = child.minSize ?? 0.0;
       final collapsedSize = child.collapsedSize ?? 0.0;
-      final delta = minSize - collapsedSize;
+      final currentSize = _panes[index]._attachedPane!.size;
+      final delta = currentSize - collapsedSize;
       _BorrowInfo borrowed = _borrowSize(index - 1, delta, 0, -1);
       if (borrowed.givenSize != delta) {
         _resetProposedSizes();
@@ -924,9 +924,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
     } else if (direction > 0) {
       // collapse to the right
       final child = widget.children[index];
-      final minSize = child.minSize ?? 0.0;
       final collapsedSize = child.collapsedSize ?? 0.0;
-      final delta = minSize - collapsedSize;
+      final currentSize = _panes[index]._attachedPane!.size;
+      final delta = currentSize - collapsedSize;
       _BorrowInfo borrowed =
           _borrowSize(index + 1, delta, _panes.length - 1, 1);
       if (borrowed.givenSize != delta) {
@@ -941,9 +941,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
     } else if (direction == 0) {
       // collapse to both sides
       final child = widget.children[index];
-      final minSize = child.minSize ?? 0.0;
       final collapsedSize = child.collapsedSize ?? 0.0;
-      final delta = minSize - collapsedSize;
+      final currentSize = _panes[index]._attachedPane!.size;
+      final delta = currentSize - collapsedSize;
       double halfDelta = delta / 2;
       _BorrowInfo borrowedLeft = _borrowSize(index - 1, halfDelta, 0, -1);
       _BorrowInfo borrowedRight =
@@ -962,7 +962,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     return false;
   }
 
-  bool _attemptExpandCollapse(int index, int direction) {
+  bool _attemptExpandCollapsed(int index, int direction) {
     _startDragging();
     if (index == 0) {
       direction = 1;
@@ -972,9 +972,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
     if (direction < 0) {
       // expand to the left
       final child = widget.children[index];
-      final minSize = child.minSize ?? 0.0;
+      final currentSize = _panes[index]._attachedPane!.size;
       final collapsedSize = child.collapsedSize ?? 0.0;
-      final delta = collapsedSize - minSize;
+      final delta = collapsedSize - currentSize;
       _BorrowInfo borrowed = _borrowSize(index - 1, delta, 0, -1);
       if (borrowed.givenSize != delta) {
         _resetProposedSizes();
@@ -983,7 +983,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       }
       _applyProposedSizes();
       _panes[index]._attachedPane!._controller.value = ResizablePaneValue(
-        minSize,
+        currentSize,
         false,
       );
       _stopDragging();
@@ -991,9 +991,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
     } else if (direction > 0) {
       // expand to the right
       final child = widget.children[index];
-      final minSize = child.minSize ?? 0.0;
+      final currentSize = _panes[index]._attachedPane!.size;
       final collapsedSize = child.collapsedSize ?? 0.0;
-      final delta = collapsedSize - minSize;
+      final delta = collapsedSize - currentSize;
       _BorrowInfo borrowed =
           _borrowSize(index + 1, delta, _panes.length - 1, 1);
       if (borrowed.givenSize != delta) {
@@ -1002,7 +1002,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       }
       _applyProposedSizes();
       _panes[index]._attachedPane!._controller.value = ResizablePaneValue(
-        minSize,
+        currentSize,
         false,
       );
       _stopDragging();
@@ -1010,9 +1010,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
     } else if (direction == 0) {
       // expand to both sides
       final child = widget.children[index];
-      final minSize = child.minSize ?? 0.0;
+      final currentSize = _panes[index]._attachedPane!.size;
       final collapsedSize = child.collapsedSize ?? 0.0;
-      final delta = collapsedSize - minSize;
+      final delta = collapsedSize - currentSize;
       double halfDelta = delta / 2;
       _BorrowInfo borrowedLeft = _borrowSize(index - 1, halfDelta, 0, -1);
       _BorrowInfo borrowedRight =
@@ -1025,7 +1025,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       }
       _applyProposedSizes();
       _panes[index]._attachedPane!._controller.value = ResizablePaneValue(
-        minSize,
+        currentSize,
         false,
       );
       _stopDragging();
