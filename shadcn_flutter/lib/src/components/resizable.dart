@@ -741,6 +741,141 @@ class _ResizablePanelState extends State<ResizablePanel> {
     // return delta;
   }
 
+  bool _attemptExpand(int index, int direction, double delta) {
+    if (direction < 0) {
+      // expand to the left
+      _BorrowInfo borrowed = _borrowSize(index - 1, delta, 0, -1);
+      if (borrowed.givenSize != delta) {
+        _resetProposedSizes();
+        return false;
+      }
+      _applyProposedSizes();
+      return true;
+    } else if (direction > 0) {
+      // expand to the right
+      _BorrowInfo borrowed = _borrowSize(index, -delta, _panes.length - 1, 1);
+      if (borrowed.givenSize != delta) {
+        _resetProposedSizes();
+        return false;
+      }
+      _applyProposedSizes();
+      return true;
+    } else if (direction == 0) {
+      // expand to both sides
+      double halfDelta = delta / 2;
+      _BorrowInfo borrowedLeft = _borrowSize(index - 1, halfDelta, 0, -1);
+      _BorrowInfo borrowedRight =
+          _borrowSize(index, -halfDelta, _panes.length - 1, 1);
+      if (borrowedLeft.givenSize != halfDelta ||
+          borrowedRight.givenSize != -halfDelta) {
+        _resetProposedSizes();
+        return false;
+      }
+      _applyProposedSizes();
+    }
+    return false;
+  }
+
+  bool _attemptCollapse(int index, int direction) {
+    if (direction < 0) {
+      // collapse to the left
+      final child = widget.children[index];
+      final minSize = child.minSize ?? 0.0;
+      final collapsedSize = child.collapsedSize ?? 0.0;
+      final delta = minSize - collapsedSize;
+      _BorrowInfo borrowed = _borrowSize(index - 1, delta, 0, -1);
+      if (borrowed.givenSize != delta) {
+        _resetProposedSizes();
+        return false;
+      }
+      _panes[index]._attachedPane!.collapsed = true;
+      _applyProposedSizes();
+      return true;
+    } else if (direction > 0) {
+      // collapse to the right
+      final child = widget.children[index];
+      final minSize = child.minSize ?? 0.0;
+      final collapsedSize = child.collapsedSize ?? 0.0;
+      final delta = minSize - collapsedSize;
+      _BorrowInfo borrowed = _borrowSize(index, delta, _panes.length - 1, 1);
+      if (borrowed.givenSize != delta) {
+        _resetProposedSizes();
+        return false;
+      }
+      _panes[index]._attachedPane!.collapsed = true;
+      _applyProposedSizes();
+    } else if (direction == 0) {
+      // collapse to both sides
+      final child = widget.children[index];
+      final minSize = child.minSize ?? 0.0;
+      final collapsedSize = child.collapsedSize ?? 0.0;
+      final delta = minSize - collapsedSize;
+      double halfDelta = delta / 2;
+      _BorrowInfo borrowedLeft = _borrowSize(index - 1, halfDelta, 0, -1);
+      _BorrowInfo borrowedRight =
+          _borrowSize(index, halfDelta, _panes.length - 1, 1);
+      if (borrowedLeft.givenSize != halfDelta ||
+          borrowedRight.givenSize != halfDelta) {
+        _resetProposedSizes();
+        return false;
+      }
+      _panes[index]._attachedPane!.collapsed = true;
+      _applyProposedSizes();
+    }
+    return false;
+  }
+
+  bool _attemptExpandCollapse(int index, int direction, double delta) {
+    if (direction < 0) {
+      // expand to the left
+      final child = widget.children[index];
+      final minSize = child.minSize ?? 0.0;
+      final collapsedSize = child.collapsedSize ?? 0.0;
+      final delta = collapsedSize - minSize;
+      _BorrowInfo borrowed = _borrowSize(index - 1, delta, 0, -1);
+      if (borrowed.givenSize != delta) {
+        _resetProposedSizes();
+        return false;
+      }
+      _panes[index]._attachedPane!.collapsed = false;
+      _applyProposedSizes();
+      return true;
+    } else if (direction > 0) {
+      // expand to the right
+      final child = widget.children[index];
+      final minSize = child.minSize ?? 0.0;
+      final collapsedSize = child.collapsedSize ?? 0.0;
+      final delta = collapsedSize - minSize;
+      _BorrowInfo borrowed = _borrowSize(index, delta, _panes.length - 1, 1);
+      if (borrowed.givenSize != delta) {
+        _resetProposedSizes();
+        return false;
+      }
+      _panes[index]._attachedPane!.collapsed = false;
+      _applyProposedSizes();
+      return true;
+    } else if (direction == 0) {
+      // expand to both sides
+      final child = widget.children[index];
+      final minSize = child.minSize ?? 0.0;
+      final collapsedSize = child.collapsedSize ?? 0.0;
+      final delta = collapsedSize - minSize;
+      double halfDelta = delta / 2;
+      _BorrowInfo borrowedLeft = _borrowSize(index - 1, halfDelta, 0, -1);
+      _BorrowInfo borrowedRight =
+          _borrowSize(index, halfDelta, _panes.length - 1, 1);
+      if (borrowedLeft.givenSize != halfDelta ||
+          borrowedRight.givenSize != halfDelta) {
+        _resetProposedSizes();
+        return false;
+      }
+      _panes[index]._attachedPane!.collapsed = false;
+      _applyProposedSizes();
+      return true;
+    }
+    return false;
+  }
+
   void _applyProposedSizes() {
     setState(() {
       for (int i = 0; i < _panes.length; i++) {
