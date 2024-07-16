@@ -34,6 +34,9 @@ class _MenubarState extends State<Menubar> {
   Widget build(BuildContext context) {
     return FocusScope(
       node: _focusScopeNode,
+      onFocusChange: (node) {
+        print('focus changed ($_focusScopeNode): $node');
+      },
       child: MenuGroup<MenubarData>(
         children: widget.children,
         dataBuilder: () {

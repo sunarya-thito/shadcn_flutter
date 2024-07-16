@@ -4,6 +4,9 @@ class MenubarExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Menubar(
+      focusScopeNode: FocusScopeNode(
+        debugLabel: 'Menubar',
+      ),
       children: [
         MenuButton(child: Text('File'), subMenu: [
           MenuButton(child: Text('New'), subMenu: [

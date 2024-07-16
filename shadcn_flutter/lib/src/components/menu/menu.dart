@@ -81,7 +81,6 @@ class _MenuButtonState extends State<MenuButton> {
               enabled: widget.enabled,
               focusNode: focusNode,
               onHover: (value) {
-                print('onHover $value ${parentFocusNode.hasFocus}');
                 if (value &&
                     (parentFocusNode.hasFocus || menuBarData == null)) {
                   context.showPopover();
@@ -104,6 +103,9 @@ class _MenuButtonState extends State<MenuButton> {
                     : EdgeInsets.zero,
                 child: FocusScope(
                   node: _focusScopeNode!,
+                  onFocusChange: (value) {
+                    print('focus changed ($_focusScopeNode): $value');
+                  },
                   child: MenuGroup(
                     dataBuilder: () {
                       return MenuData(
