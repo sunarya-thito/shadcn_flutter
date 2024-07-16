@@ -1,6 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+class MenuDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Divider(
+        height: 1,
+        thickness: 1,
+        color: theme.colorScheme.border,
+      ),
+    );
+  }
+}
+
 class MenuButton extends StatefulWidget {
   final Widget child;
   final List<Widget>? subMenu;
@@ -50,17 +65,14 @@ class _MenuButtonState extends State<MenuButton> {
     var focusNode = menuBarData?.focusScopeNode ?? menuData!.focusScopeNode;
     var parentFocusNode =
         menuBarData?.parentFocusScopeNode ?? menuData!.parentFocusScopeNode;
+    var index = menuBarData?._index ?? menuData!._index;
+    var length = menuBarData?._length ?? menuData!._length;
     return Popover(
       builder: (context) {
         return Button(
-          style: (menuBarData == null
-                  ? ButtonVariance.menu
-                  : ButtonVariance.menubar)
-              .copyWith(
-            margin: (context, states, value) {
-              return value;
-            },
-          ),
+          style: menuBarData == null
+              ? ButtonVariance.menu
+              : ButtonVariance.menubar,
           trailing: widget.trailing,
           leading: widget.leading,
           disableTransition: true,
@@ -156,8 +168,11 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
   void didUpdateWidget(covariant MenuGroup<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(oldWidget.children, widget.children)) {
-      _data =
-          List.generate(widget.children.length, (i) => widget.dataBuilder());
+      _data = List.generate(widget.children.length, (i) {
+        return widget.dataBuilder()
+          .._index = i
+          .._length = widget.children.length;
+      });
     }
   }
 

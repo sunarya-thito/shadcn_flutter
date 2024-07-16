@@ -565,7 +565,7 @@ class ButtonVariance implements AbstractButtonStyle {
     padding: _buttonMenuPadding,
     textStyle: _buttonMenuTextStyle,
     iconTheme: _buttonMenuIconTheme,
-    margin: _buttonMenuMargin,
+    margin: _buttonZeroMargin,
   );
 
   static const ButtonVariance menubar = ButtonVariance(
@@ -746,10 +746,6 @@ EdgeInsets _buttonMenuPadding(BuildContext context, Set<WidgetState> states) {
 EdgeInsets _buttonMenubarPadding(
     BuildContext context, Set<WidgetState> states) {
   return const EdgeInsets.symmetric(horizontal: 12, vertical: 4);
-}
-
-EdgeInsets _buttonMenuMargin(BuildContext context, Set<WidgetState> states) {
-  return const EdgeInsets.all(4);
 }
 
 IconThemeData _buttonMenuIconTheme(

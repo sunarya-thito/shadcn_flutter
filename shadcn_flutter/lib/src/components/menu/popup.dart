@@ -12,11 +12,14 @@ class MenuPopup extends StatelessWidget {
       borderRadius: theme.radiusMd,
       backgroundColor: theme.colorScheme.popover,
       borderColor: theme.colorScheme.border,
-      child: IntrinsicWidth(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: children,
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: children,
+          ),
         ),
       ),
     );
