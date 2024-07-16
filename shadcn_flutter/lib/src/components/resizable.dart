@@ -178,7 +178,7 @@ class _ResizablePaneState extends State<ResizablePane> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     var containerData = Data.maybeOf<ResizableContainerData>(context);
-    assert(containerData != null,
+    assert(widget.flex == null || containerData != null,
         'ResizablePane must be a child of ResizableContainer');
     var newActivePane = Data.maybeOf<_ActivePane>(context);
     assert(

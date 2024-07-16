@@ -501,6 +501,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           },
                           placeholder: Text('Select a fruit'),
                           value: 'Apple',
+                          onChanged: (value) {},
                           children: [
                             SelectItemButton(
                                 value: 'Apple', child: Text('Apple')),
