@@ -139,6 +139,8 @@ class MenuGroup<T extends MenuData> extends StatefulWidget {
   final List<Widget> children;
   final T Function() dataBuilder;
   final Widget Function(BuildContext context, List<Widget> children) builder;
+  final Alignment popoverAlignment;
+  final Alignment anchorAlignment;
 
   MenuGroup({
     super.key,
@@ -146,6 +148,8 @@ class MenuGroup<T extends MenuData> extends StatefulWidget {
     required this.children,
     required this.builder,
     this.popoverController,
+    required this.popoverAlignment,
+    required this.anchorAlignment,
   });
 
   @override
@@ -155,6 +159,13 @@ class MenuGroup<T extends MenuData> extends StatefulWidget {
 class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
   late List<T> _data;
   late PopoverController _popoverController;
+
+  void openMenu(List<Widget> children) {
+    _popoverController.show(
+        builder: builder,
+        alignment: alignment,
+        anchorAlignment: anchorAlignment);
+  }
 
   @override
   void initState() {
