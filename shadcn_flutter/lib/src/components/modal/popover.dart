@@ -47,6 +47,7 @@ class PopoverRoute<T> extends PopupRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
+    print('regionGroupId $regionGroupId');
     return PopoverAnchor(
       key: key,
       position: position,
@@ -335,8 +336,10 @@ class PopoverAnchorState extends State<PopoverAnchor> {
 
   @override
   Widget build(BuildContext context) {
+    print('regionGroupId ${widget.regionGroupId}');
     return TapRegion(
       onTapOutside: (event) {
+        print('onTapOutside ${widget.regionGroupId}');
         widget.onTapOutside?.call();
       },
       groupId: widget.regionGroupId,

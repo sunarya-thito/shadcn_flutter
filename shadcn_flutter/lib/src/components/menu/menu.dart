@@ -63,12 +63,12 @@ class _MenuButtonState extends State<MenuButton> {
     final menuBarData = Data.maybeOf<MenubarState>(context);
     final menuData = Data.maybeOf<MenuData>(context);
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
-    print('root: ${menuGroupData?.root} parent: ${menuGroupData?.parent}');
+    print('root: ${menuGroupData!.root} parent: ${menuGroupData!.parent}');
     return Data<MenuGroupData>.boundary(
       child: Data<MenuData>.boundary(
         child: Data<MenubarState>.boundary(
           child: TapRegion(
-            groupId: menuGroupData!.root,
+            groupId: menuGroupData!.root ?? menuGroupData,
             child: PopoverPortal(
               controller: menuData!.popoverController,
               child: AnimatedBuilder(
@@ -116,13 +116,14 @@ class _MenuButtonState extends State<MenuButton> {
                         if (widget.subMenu != null &&
                             !menuData.popoverController.hasOpenPopovers) {
                           menuData.popoverController.show(
-                            regionGroupId: menuGroupData.root,
+                            regionGroupId: menuGroupData.root ?? menuGroupData,
                             builder: (context) {
                               return ConstrainedBox(
                                 constraints: const BoxConstraints(
                                   minWidth: 192, // 12rem
                                 ),
                                 child: MenuGroup(
+                                    parent: menuGroupData,
                                     children: widget.subMenu!,
                                     builder: (context, children) {
                                       return MenuPopup(
