@@ -64,11 +64,9 @@ class _MenuButtonState extends State<MenuButton> {
     final menuData = Data.maybeOf<MenuData>(context);
     assert(menuData != null || menuBarData != null,
         'MenuButton must be a descendant of Menubar or Menu');
-    var focusNode = menuBarData?.focusScopeNode ?? menuData!.focusScopeNode;
+    var focusNode = menuBarData?.focusNode ?? menuData!.focusNode;
     var parentFocusNode =
         menuBarData?.parentFocusScopeNode ?? menuData!.parentFocusScopeNode;
-    var index = menuBarData?._index ?? menuData!._index;
-    var length = menuBarData?._length ?? menuData!._length;
     return Popover(
       builder: (context) {
         return Button(
@@ -81,6 +79,7 @@ class _MenuButtonState extends State<MenuButton> {
           enabled: widget.enabled,
           focusNode: focusNode,
           onHover: (value) {
+            print('onHover $value ${parentFocusNode.hasFocus}');
             if (value && parentFocusNode.hasFocus) {
               context.showPopover();
             }
@@ -96,27 +95,33 @@ class _MenuButtonState extends State<MenuButton> {
       },
       popoverBuilder: (context) {
         if (widget.subMenu != null) {
-          return FocusScope(
-            node: _focusScopeNode!,
-            child: MenuGroup(
-              dataBuilder: () {
-                return MenuData(
-                  parentFocusScopeNode: _focusScopeNode!,
-                );
-              },
-              children: widget.subMenu!,
-              builder: (context, children) {
-                return MenuPopup(
-                  children: children,
-                );
-              },
+          return Padding(
+            padding: menuBarData != null
+                ? const EdgeInsets.only(top: 8)
+                : EdgeInsets.zero,
+            child: FocusScope(
+              node: _focusScopeNode!,
+              child: MenuGroup(
+                dataBuilder: () {
+                  return MenuData(
+                    parentFocusScopeNode: _focusScopeNode!,
+                  );
+                },
+                children: widget.subMenu!,
+                builder: (context, children) {
+                  return MenuPopup(
+                    children: children,
+                  );
+                },
+              ),
             ),
           );
         }
         return const SizedBox();
       },
       alignment: Alignment.topLeft,
-      anchorAlignment: Alignment.bottomLeft,
+      anchorAlignment:
+          menuBarData != null ? Alignment.bottomLeft : Alignment.topRight,
     );
   }
 }
@@ -128,7 +133,7 @@ class MenubarData extends MenuData {
 class MenuData {
   final GlobalKey itemKey = GlobalKey();
   final GlobalKey popupKey = GlobalKey();
-  final FocusScopeNode focusScopeNode = FocusScopeNode();
+  final FocusNode focusNode = FocusNode();
   final FocusScopeNode parentFocusScopeNode;
 
   late int _index;

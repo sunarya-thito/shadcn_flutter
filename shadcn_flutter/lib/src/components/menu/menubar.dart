@@ -32,21 +32,24 @@ class _MenubarState extends State<Menubar> {
 
   @override
   Widget build(BuildContext context) {
-    return MenuGroup<MenubarData>(
-      children: widget.children,
-      dataBuilder: () {
-        return MenubarData(
-          parentFocusScopeNode: _focusScopeNode,
-        );
-      },
-      builder: (context, children) {
-        return IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: children,
-          ),
-        ).medium();
-      },
+    return FocusScope(
+      node: _focusScopeNode,
+      child: MenuGroup<MenubarData>(
+        children: widget.children,
+        dataBuilder: () {
+          return MenubarData(
+            parentFocusScopeNode: _focusScopeNode,
+          );
+        },
+        builder: (context, children) {
+          return IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: children,
+            ),
+          ).medium();
+        },
+      ),
     );
   }
 }

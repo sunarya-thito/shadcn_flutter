@@ -6,7 +6,13 @@ class MenubarExample1 extends StatelessWidget {
     return Menubar(
       children: [
         MenuButton(child: Text('File'), subMenu: [
-          MenuButton(child: Text('New')),
+          MenuButton(child: Text('New'), subMenu: [
+            MenuButton(child: Text('Project'), subMenu: [
+              MenuButton(child: Text('Dart')),
+              MenuButton(child: Text('Flutter')),
+            ]),
+            MenuButton(child: Text('File')),
+          ]),
           MenuButton(child: Text('Open')),
           MenuButton(child: Text('Save')),
         ]),
