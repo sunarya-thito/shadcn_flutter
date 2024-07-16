@@ -579,8 +579,10 @@ class _ResizablePanelState extends State<ResizablePanel> {
 
     if (attachedPane.collapsed) {
       // nope, we're closed, go borrow to another neighbor
+      // EDIT: actually nvm,
       if (kDebugResizable) print('collapsed: $index');
-      return _borrowSize(index + direction, delta, until, direction);
+      // return _borrowSize(index + direction, delta, until, direction);
+      return _BorrowInfo(0, index);
     }
 
     double newSize = pane._proposedSize + delta; // 98 + 5
