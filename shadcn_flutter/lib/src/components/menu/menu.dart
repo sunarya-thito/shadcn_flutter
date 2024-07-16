@@ -143,10 +143,11 @@ class _MenuGroupState<T extends MenuData> extends State<MenuGroup<T>> {
             },
             popoverAlignment: Alignment.topLeft,
             anchorAlignment: Alignment.topRight,
-            popoverOffset: const Offset(8, -4 + -1));
+            popoverOffset: const Offset(4, 0));
       },
       alignment: widget.popoverAlignment,
       anchorAlignment: widget.anchorAlignment,
+      offset: widget.popoverOffset,
       closeOthers: true,
     );
   }

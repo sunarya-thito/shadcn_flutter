@@ -55,7 +55,8 @@ class _MenubarState extends State<Menubar> {
     return MenuGroup<MenubarData>(
       anchorAlignment: Alignment.bottomLeft,
       popoverAlignment: Alignment.topLeft,
-      popoverOffset: widget.popoverOffset ?? const Offset(0, -8),
+      popoverOffset: widget.popoverOffset ??
+          Offset(widget.border ? -4 : 0, widget.border ? 8 : 4),
       children: widget.children,
       dataBuilder: () {
         return MenubarData();
