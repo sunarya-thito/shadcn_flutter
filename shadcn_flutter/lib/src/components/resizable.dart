@@ -827,6 +827,19 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   bool _attemptExpand(int index, int direction, double delta) {
+    double currentSize = _panes[index]._attachedPane!.size;
+    double minSize = _panes[index]._attachedPane!.widget.minSize ?? 0;
+    double maxSize =
+        _panes[index]._attachedPane!.widget.maxSize ?? double.infinity;
+    double minOverflow = currentSize - minSize;
+    double maxOverflow = currentSize - maxSize;
+    // adjust delta if we have overflow
+    if (minOverflow < 0 && delta < 0) {
+      delta = delta + minOverflow;
+    }
+    if (maxOverflow > 0 && delta > 0) {
+      delta = delta - maxOverflow;
+    }
     _startDragging();
     if (index == 0) {
       direction = 1;
@@ -840,9 +853,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _resetProposedSizes();
         return false;
       }
-      double minSize = _panes[index]._attachedPane!.widget.minSize ?? 0;
-      double maxSize =
-          _panes[index]._attachedPane!.widget.maxSize ?? double.infinity;
+
       _panes[index]._proposedSize =
           (_panes[index]._proposedSize + delta).clamp(minSize, maxSize);
       _applyProposedSizes();
@@ -856,9 +867,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _stopDragging();
         return false;
       }
-      double minSize = _panes[index]._attachedPane!.widget.minSize ?? 0;
-      double maxSize =
-          _panes[index]._attachedPane!.widget.maxSize ?? double.infinity;
       _panes[index]._proposedSize =
           (_panes[index]._proposedSize + delta).clamp(minSize, maxSize);
       _applyProposedSizes();
@@ -876,9 +884,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
         _stopDragging();
         return false;
       }
-      double minSize = _panes[index]._attachedPane!.widget.minSize ?? 0;
-      double maxSize =
-          _panes[index]._attachedPane!.widget.maxSize ?? double.infinity;
       _panes[index]._proposedSize =
           (_panes[index]._proposedSize + delta).clamp(minSize, maxSize);
       _applyProposedSizes();
