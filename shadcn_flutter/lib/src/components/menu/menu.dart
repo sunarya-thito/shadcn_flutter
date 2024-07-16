@@ -63,6 +63,7 @@ class _MenuButtonState extends State<MenuButton> {
     final menuBarData = Data.maybeOf<MenubarState>(context);
     final menuData = Data.maybeOf<MenuData>(context);
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
+    print('root: ${menuGroupData?.root} parent: ${menuGroupData?.parent}');
     return Data<MenuGroupData>.boundary(
       child: Data<MenuData>.boundary(
         child: Data<MenubarState>.boundary(
@@ -106,7 +107,9 @@ class _MenuButtonState extends State<MenuButton> {
                       enabled: widget.enabled,
                       focusNode: _focusNode,
                       onHover: (value) {
-                        if (value) {}
+                        if (value) {
+                          if (menuBarData != null) {}
+                        }
                       },
                       onPressed: () {
                         widget.onPressed?.call();
@@ -154,8 +157,27 @@ class _MenuButtonState extends State<MenuButton> {
 class MenuGroupData {
   final MenuGroupData? root;
   final MenuGroupData? parent;
+  final List<MenuData> children;
 
-  MenuGroupData(this.root, this.parent);
+  MenuGroupData(this.root, this.parent, this.children);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is MenuGroupData) {
+      return listEquals(children, other.children) &&
+          parent == other.parent &&
+          root == other.root;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        children,
+        parent,
+        root,
+      );
 }
 
 class MenuData {
@@ -215,7 +237,8 @@ class _MenuGroupState extends State<MenuGroup> {
       );
     }
     return Data(
-      data: MenuGroupData(widget.parent?.root ?? widget.parent, widget.parent),
+      data: MenuGroupData(
+          widget.parent?.root ?? widget.parent, widget.parent, _data),
       child: widget.builder(context, children),
     );
   }
