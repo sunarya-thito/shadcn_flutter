@@ -509,6 +509,24 @@ class ButtonVariance implements AbstractButtonStyle {
     margin: _buttonZeroMargin,
   );
 
+  static const ButtonVariance menu = ButtonVariance(
+    decoration: _buttonMenuDecoration,
+    mouseCursor: _buttonMouseCursor,
+    padding: _buttonMenuPadding,
+    textStyle: _buttonMenuTextStyle,
+    iconTheme: _buttonMenuIconTheme,
+    margin: _buttonMenuMargin,
+  );
+
+  static const ButtonVariance menubar = ButtonVariance(
+    decoration: _buttonMenuDecoration,
+    mouseCursor: _buttonMouseCursor,
+    padding: _buttonMenubarPadding,
+    textStyle: _buttonMenuTextStyle,
+    iconTheme: _buttonMenuIconTheme,
+    margin: _buttonZeroMargin,
+  );
+
   final ButtonStateProperty<Decoration> decoration;
   final ButtonStateProperty<MouseCursor> mouseCursor;
   final ButtonStateProperty<EdgeInsets> padding;
@@ -677,7 +695,19 @@ EdgeInsets _buttonMenuPadding(BuildContext context, Set<WidgetState> states) {
 
 EdgeInsets _buttonMenubarPadding(
     BuildContext context, Set<WidgetState> states) {
-  return const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
+  return const EdgeInsets.symmetric(horizontal: 12, vertical: 4);
+}
+
+EdgeInsets _buttonMenuMargin(BuildContext context, Set<WidgetState> states) {
+  return const EdgeInsets.all(4);
+}
+
+IconThemeData _buttonMenuIconTheme(
+    BuildContext context, Set<WidgetState> states) {
+  var themeData = Theme.of(context);
+  return IconThemeData(
+    color: themeData.colorScheme.accentForeground,
+  );
 }
 
 // PRIMARY
