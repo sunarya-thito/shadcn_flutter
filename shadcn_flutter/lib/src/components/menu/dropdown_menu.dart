@@ -14,7 +14,7 @@ class DropdownMenu extends StatefulWidget {
     required this.builder,
     required this.items,
     this.behavior = HitTestBehavior.translucent,
-    this.offset,
+    this.offset = const Offset(0, 4),
     this.alignment = Alignment.topCenter,
     this.anchorAlignment = Alignment.bottomCenter,
   }) : super(key: key);
@@ -75,9 +75,10 @@ class _DropdownMenuState extends State<DropdownMenu> {
               );
             });
       },
+      popoverOffset: widget.offset,
       alignment: widget.alignment,
       anchorAlignment: widget.anchorAlignment,
-      modal: false,
+      modal: true,
     );
   }
 }

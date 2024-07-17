@@ -139,7 +139,7 @@ class SelectLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8),
-      child: child.medium(),
+      child: child.semiBold(),
     );
   }
 }

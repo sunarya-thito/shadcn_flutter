@@ -219,7 +219,7 @@ class MenuLabel extends StatelessWidget implements MenuItem {
                     ),
                   ),
         trailing: trailing,
-        content: UnderlineInterceptor(child: child.medium()),
+        content: UnderlineInterceptor(child: child.semiBold()),
         trailingAlignment: Alignment.center,
         leadingAlignment: Alignment.center,
         contentAlignment: Alignment.centerLeft,

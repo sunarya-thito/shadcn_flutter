@@ -12,6 +12,7 @@ import 'package:example/pages/docs/components/date_picker_example.dart';
 import 'package:example/pages/docs/components/dialog_example.dart';
 import 'package:example/pages/docs/components/divider_example.dart';
 import 'package:example/pages/docs/components/drawer_example.dart';
+import 'package:example/pages/docs/components/dropdown_menu_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/input_otp_example.dart';
 import 'package:example/pages/docs/components/menubar_example.dart';
@@ -368,6 +369,13 @@ class MyAppState extends State<MyApp> {
               return ContextMenuExample();
             },
           ),
+          GoRoute(
+            path: 'dropdown_menu',
+            name: 'dropdown_menu',
+            builder: (context, state) {
+              return DropdownMenuExample();
+            },
+          )
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

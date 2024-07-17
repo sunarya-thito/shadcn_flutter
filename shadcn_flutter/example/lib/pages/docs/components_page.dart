@@ -12,17 +12,18 @@ import 'package:example/pages/docs/components/command/command_example_1.dart';
 import 'package:example/pages/docs/components/date_picker/date_picker_example_1.dart';
 import 'package:example/pages/docs/components/divider/divider_example_3.dart';
 import 'package:example/pages/docs/components/form/form_example_1.dart';
-import 'package:example/pages/docs/components/input_otp/input_otp_example_2.dart';
-import 'package:example/pages/docs/components/menubar/menubar_example_1.dart';
 import 'package:example/pages/docs/components/pagination/pagination_example_1.dart';
 import 'package:example/pages/docs/components/resizable/resizable_example_3.dart';
 import 'package:example/pages/docs/components/text_area/text_area_example_3.dart';
 import 'package:example/pages/docs/components/toggle/toggle_example_2.dart';
 import 'package:example/pages/docs_page.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+import 'components/input_otp/input_otp_example_2.dart';
 
 class ComponentsPage extends StatefulWidget {
   const ComponentsPage({Key? key}) : super(key: key);
@@ -652,19 +653,118 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ComponentCard(
                 title: 'Menubar',
                 name: 'menubar',
+                scale: 1,
                 example: Card(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      MenubarExample1(),
+                      OutlinedContainer(
+                        borderColor: theme.colorScheme.border,
+                        backgroundColor: theme.colorScheme.background,
+                        borderRadius: theme.radiusMd,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: IntrinsicHeight(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Button(
+                                  child: Text('File'),
+                                  onPressed: () {},
+                                  style: const ButtonStyle.menubar(),
+                                ),
+                                Button(
+                                  child: Text('Edit'),
+                                  onPressed: () {},
+                                  style: const ButtonStyle.menubar().copyWith(
+                                    decoration: (context, states, value) {
+                                      return (value as BoxDecoration).copyWith(
+                                        color: theme.colorScheme.accent,
+                                        borderRadius: BorderRadius.circular(
+                                            theme.radiusSm),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                Button(
+                                  child: Text('View'),
+                                  onPressed: () {},
+                                  style: const ButtonStyle.menubar(),
+                                ),
+                                Button(
+                                  child: Text('Help'),
+                                  onPressed: () {},
+                                  style: const ButtonStyle.menubar(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                       gap(4),
                       Container(
                         width: 192,
-                        child: MenuPopup(children: const [
+                        margin: EdgeInsets.only(left: 48),
+                        child: MenuPopup(children: [
                           Button(
                             style: ButtonStyle.menu(),
-                            child: Text('New Tab'),
+                            onPressed: () {},
+                            trailing: MenuShortcut(
+                              activator: SingleActivator(
+                                  LogicalKeyboardKey.keyZ,
+                                  control: true),
+                            ),
+                            child: Text('Undo'),
+                          ),
+                          Button(
+                            style: ButtonStyle.menu().copyWith(
+                                decoration: (context, states, value) {
+                              return (value as BoxDecoration).copyWith(
+                                color: theme.colorScheme.accent,
+                                borderRadius:
+                                    BorderRadius.circular(theme.radiusSm),
+                              );
+                            }),
+                            onPressed: () {},
+                            trailing: MenuShortcut(
+                              activator: SingleActivator(
+                                  LogicalKeyboardKey.keyY,
+                                  control: true),
+                            ),
+                            child: Text('Redo'),
+                          ),
+                          MenuDivider(),
+                          Button(
+                            style: ButtonStyle.menu(),
+                            onPressed: () {},
+                            trailing: MenuShortcut(
+                              activator: SingleActivator(
+                                  LogicalKeyboardKey.keyX,
+                                  control: true),
+                            ),
+                            child: Text('Cut'),
+                          ),
+                          Button(
+                            style: ButtonStyle.menu(),
+                            onPressed: () {},
+                            trailing: MenuShortcut(
+                              activator: SingleActivator(
+                                  LogicalKeyboardKey.keyC,
+                                  control: true),
+                            ),
+                            child: Text('Copy'),
+                          ),
+                          Button(
+                            style: ButtonStyle.menu(),
+                            onPressed: () {},
+                            trailing: MenuShortcut(
+                              activator: SingleActivator(
+                                  LogicalKeyboardKey.keyV,
+                                  control: true),
+                            ),
+                            child: Text('Paste'),
                           ),
                         ]),
                       ),
@@ -908,8 +1008,147 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 scale: 1,
                 example: CommandExample1(),
               ),
-              WIPComponentCard(title: 'Context Menu'),
-              WIPComponentCard(title: 'Dropdown Menu'),
+              ComponentCard(
+                title: 'Context Menu',
+                name: 'context_menu',
+                scale: 1.2,
+                example: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomPaint(
+                      painter: CursorPainter(),
+                    ),
+                    gap(24),
+                    Container(
+                      width: 192,
+                      child: MenuPopup(children: [
+                        Button(
+                          style: ButtonStyle.menu(),
+                          onPressed: () {},
+                          trailing: MenuShortcut(
+                            activator: SingleActivator(LogicalKeyboardKey.keyX,
+                                control: true),
+                          ),
+                          child: Text('Cut'),
+                        ),
+                        Button(
+                          style: ButtonStyle.menu(),
+                          onPressed: () {},
+                          trailing: MenuShortcut(
+                            activator: SingleActivator(LogicalKeyboardKey.keyC,
+                                control: true),
+                          ),
+                          child: Text('Copy'),
+                        ),
+                        Button(
+                          style: ButtonStyle.menu(),
+                          onPressed: () {},
+                          trailing: MenuShortcut(
+                            activator: SingleActivator(LogicalKeyboardKey.keyV,
+                                control: true),
+                          ),
+                          child: Text('Paste'),
+                        ),
+                        MenuDivider(),
+                        Button(
+                          style: ButtonStyle.menu(),
+                          onPressed: () {},
+                          trailing: MenuShortcut(
+                            activator:
+                                SingleActivator(LogicalKeyboardKey.delete),
+                          ),
+                          child: Text('Delete'),
+                        ),
+                        Button(
+                          style: ButtonStyle.menu(),
+                          onPressed: () {},
+                          trailing: MenuShortcut(
+                            activator: SingleActivator(LogicalKeyboardKey.keyA,
+                                control: true),
+                          ),
+                          child: Text('Select All'),
+                        ),
+                      ]),
+                    ),
+                  ],
+                ),
+              ),
+              ComponentCard(
+                title: 'Dropdown Menu',
+                name: 'dropdown_menu',
+                scale: 1,
+                example: Stack(
+                  children: [
+                    Card(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          OutlineButton(
+                            onPressed: () {},
+                            child: Text('Options'),
+                          ),
+                          gap(8),
+                          Container(
+                            width: 192,
+                            child: MenuPopup(children: [
+                              Button(
+                                style: ButtonStyle.menu(),
+                                onPressed: () {},
+                                child: Text('Profile'),
+                              ),
+                              Button(
+                                style: ButtonStyle.menu().copyWith(
+                                    decoration: (context, states, value) {
+                                  return (value as BoxDecoration).copyWith(
+                                    color: theme.colorScheme.accent,
+                                    borderRadius:
+                                        BorderRadius.circular(theme.radiusSm),
+                                  );
+                                }),
+                                onPressed: () {},
+                                child: Text('Billing'),
+                              ),
+                              MenuDivider(),
+                              Button(
+                                style: ButtonStyle.menu(),
+                                onPressed: () {},
+                                child: Text('Settings'),
+                              ),
+                              Button(
+                                style: ButtonStyle.menu(),
+                                onPressed: () {},
+                                trailing: MenuShortcut(
+                                  activator: SingleActivator(
+                                      LogicalKeyboardKey.keyC,
+                                      control: true),
+                                ),
+                                child: Text('Copy'),
+                              ),
+                              Button(
+                                style: ButtonStyle.menu(),
+                                onPressed: () {},
+                                trailing: MenuShortcut(
+                                  activator: SingleActivator(
+                                      LogicalKeyboardKey.keyV,
+                                      control: true),
+                                ),
+                                child: Text('Paste'),
+                              ),
+                            ]),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      top: 105,
+                      left: 170,
+                      child: CustomPaint(
+                        painter: CursorPainter(),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ]),
           ],
         ),
@@ -1139,5 +1378,39 @@ class _ComponentCardState extends State<ComponentCard> {
         ),
       ),
     );
+  }
+}
+
+// paint a cursor
+class CursorPainter extends CustomPainter {
+  // <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  // <path d="M4 0l16 12.279-6.951 1.17 4.325 8.817-3.596 1.734-4.35-8.879-5.428 4.702z"/></svg>
+  const CursorPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+    final path = Path()
+      ..moveTo(4, 0)
+      ..lineTo(20, 12.279)
+      ..lineTo(13.049, 13.449)
+      ..lineTo(17.374, 22.266)
+      ..lineTo(13.778, 24)
+      ..lineTo(9.428, 15.121)
+      ..lineTo(4, 19.823)
+      ..close();
+    canvas.drawPath(path, paint);
+    paint
+      ..color = Colors.black
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }

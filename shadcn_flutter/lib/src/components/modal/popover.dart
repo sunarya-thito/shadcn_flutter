@@ -13,6 +13,7 @@ class PopoverRoute<T> extends PopupRoute<T> {
   final PopoverConstraint widthConstraint;
   final PopoverConstraint heightConstraint;
   final Object? regionGroupId;
+  final Offset? offset;
 
   PopoverRoute({
     required this.builder,
@@ -27,6 +28,7 @@ class PopoverRoute<T> extends PopupRoute<T> {
     this.heightConstraint = PopoverConstraint.flexible,
     super.settings,
     this.regionGroupId,
+    this.offset,
   }) : super(traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop);
 
   @override
@@ -67,6 +69,7 @@ class PopoverRoute<T> extends PopupRoute<T> {
       heightConstraint: heightConstraint,
       route: this,
       regionGroupId: regionGroupId,
+      offset: offset,
     );
   }
 
@@ -100,6 +103,7 @@ class PopoverAnchor extends StatefulWidget {
     this.route,
     this.onTapOutside,
     this.regionGroupId,
+    this.offset,
   });
 
   final Offset position;
@@ -114,6 +118,7 @@ class PopoverAnchor extends StatefulWidget {
   final PopoverRoute? route;
   final VoidCallback? onTapOutside;
   final Object? regionGroupId;
+  final Offset? offset;
 
   @override
   State<PopoverAnchor> createState() => PopoverAnchorState();
@@ -134,6 +139,7 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
   final Size? anchorSize;
   final PopoverConstraint widthConstraint;
   final PopoverConstraint heightConstraint;
+  final Offset? offset;
 
   PopoverLayoutDelegate({
     required this.alignment,
@@ -142,6 +148,7 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
     required this.widthConstraint,
     required this.heightConstraint,
     this.anchorSize,
+    this.offset,
   });
 
   @override
@@ -177,6 +184,8 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
   @override
   Offset getPositionForChild(Size size, Size childSize) {
     // make sure the popup is within the size (with a margin of 8)
+    double offsetX = offset?.dx ?? 0;
+    double offsetY = offset?.dy ?? 0;
     double x =
         position.dx - childSize.width / 2 - (childSize.width / 2 * alignment.x);
     double y = position.dy -
@@ -195,6 +204,7 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
       }
       left = x - _margin;
       right = x + childSize.width + _margin;
+      offsetX *= -1;
     }
     if (top < 0 || bottom > size.height) {
       y = position.dy -
@@ -205,6 +215,7 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
       }
       top = y - _margin;
       bottom = y + childSize.height + _margin;
+      offsetY *= -1;
     }
     final double dx = left < 0
         ? -left
@@ -216,7 +227,7 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
         : bottom > size.height
             ? size.height - bottom
             : 0;
-    return Offset(x + dx, y + dy);
+    return Offset(x + dx + offsetX, y + dy + offsetY);
   }
 
   @override
@@ -230,15 +241,25 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
 class PopoverAnchorState extends State<PopoverAnchor> {
   // late ValueNotifier<Offset> _position;
   late Offset _position;
+  late Offset? _offset;
   late Alignment _alignment;
   late Alignment _anchorAlignment;
   late PopoverConstraint _widthConstraint;
   late PopoverConstraint _heightConstraint;
   Size? _anchorSize;
 
+  set offset(Offset? offset) {
+    if (offset != null) {
+      setState(() {
+        _offset = offset;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _offset = widget.offset;
     _position = widget.position;
     _alignment = widget.alignment;
     _anchorSize = widget.anchorSize;
@@ -294,6 +315,7 @@ class PopoverAnchorState extends State<PopoverAnchor> {
   Alignment get alignment => _alignment;
   PopoverConstraint get widthConstraint => _widthConstraint;
   PopoverConstraint get heightConstraint => _heightConstraint;
+  Offset? get offset => _offset;
 
   set position(Offset value) {
     if (_position != value) {
@@ -361,6 +383,7 @@ class PopoverAnchorState extends State<PopoverAnchor> {
           anchorAlignment: _anchorAlignment,
           widthConstraint: _widthConstraint,
           heightConstraint: _heightConstraint,
+          offset: _offset,
         ),
         child: MediaQuery.removePadding(
           context: context,
@@ -402,6 +425,7 @@ Future<T?> showPopover<T>({
   Clip clipBehavior = Clip.none,
   RouteSettings? routeSettings,
   Object? regionGroupId,
+  Offset? offset,
 }) {
   final NavigatorState navigator =
       Navigator.of(context, rootNavigator: useRootNavigator);
@@ -420,20 +444,9 @@ Future<T?> showPopover<T>({
     widthConstraint: widthConstraint,
     heightConstraint: heightConstraint,
     regionGroupId: regionGroupId,
+    offset: offset,
   ));
 }
-
-// extension PopoverExtension on BuildContext {
-//   Future<T?> showPopover<T>() {
-//     PopoverState state = Data.of(this);
-//     return state.show();
-//   }
-//
-//   void hidePopover() {
-//     PopoverState state = Data.of(this);
-//     state.close();
-//   }
-// }
 
 abstract class PopoverControl {
   Future<T?> show<T>();
@@ -503,9 +516,10 @@ class PopoverState extends State<Popover>
             position.dx + size.width / 2 + size.width / 2 * alignment.x,
             position.dy + size.height / 2 + size.height / 2 * alignment.y,
           );
-          if (widget.popoverOffset != null) {
-            result += widget.popoverOffset!;
-          }
+          // if (widget.popoverOffset != null) {
+          //   result += widget.popoverOffset!;
+          // }
+          state.offset = widget.popoverOffset;
           state.position = result;
           state.alignment = widget.alignment;
           state.anchorSize = size;
@@ -577,9 +591,9 @@ class PopoverState extends State<Popover>
       position.dx + size.width / 2 + size.width / 2 * alignment.x,
       position.dy + size.height / 2 + size.height / 2 * alignment.y,
     );
-    if (widget.popoverOffset != null) {
-      result += widget.popoverOffset!;
-    }
+    // if (widget.popoverOffset != null) {
+    //   result += widget.popoverOffset!;
+    // }
     _scheduleShow();
     T? res = await showPopover(
         context: context,
@@ -591,6 +605,7 @@ class PopoverState extends State<Popover>
         anchorSize: size,
         widthConstraint: widget.widthConstraint,
         heightConstraint: widget.heightConstraint,
+        offset: widget.popoverOffset,
         key: _key);
     _cancelShow();
     _key = null;
