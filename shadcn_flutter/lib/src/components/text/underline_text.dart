@@ -37,20 +37,41 @@ class UnderlineText extends StatelessWidget {
     TextStyle textStyle = DefaultTextStyle.of(context).style;
     underlineColor = textStyle.decorationColor ?? textStyle.color;
     underlineColor ??= Theme.of(context).colorScheme.foreground;
-    return Stack(
-      children: [
-        child,
-        Positioned(
-          bottom: -0.2,
-          left: 0,
-          right: 0,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 50),
-            height: underline ? 1 : 0,
-            color: underlineColor,
-          ),
-        ),
-      ],
+    return DefaultTextStyle.merge(
+      style: underline
+          ? textStyle.copyWith(
+              color: Colors.transparent,
+              decorationColor: underlineColor,
+              decoration: TextDecoration.underline,
+              decorationThickness: textStyle.decorationThickness,
+              decorationStyle: textStyle.decorationStyle,
+              shadows: [
+                  Shadow(
+                    color: textStyle.color ?? underlineColor,
+                    offset: const Offset(0, -4),
+                    blurRadius: 0,
+                  ),
+                ])
+          : textStyle,
+      child: Transform.translate(
+        offset: underline ? const Offset(0, 4) : Offset.zero,
+        child: child,
+      ),
     );
+    // return Stack(
+    //   children: [
+    //     child,
+    //     Positioned(
+    //       bottom: -0.2,
+    //       left: 0,
+    //       right: 0,
+    //       child: AnimatedContainer(
+    //         duration: const Duration(milliseconds: 50),
+    //         height: underline ? 1 : 0,
+    //         color: underlineColor,
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 }

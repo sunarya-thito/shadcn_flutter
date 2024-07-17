@@ -471,10 +471,25 @@ class _MenuGroupState extends State<MenuGroup> {
         oldKeyedData[oldWidget.children[i].key ?? ValueKey(i)] = _data[i];
       }
       _data = List.generate(widget.children.length, (i) {
-        return oldKeyedData[widget.children[i].key ?? ValueKey(i)] ??
-            MenuData();
+        var key = widget.children[i].key ?? ValueKey(i);
+        var data = oldKeyedData[key] ?? MenuData();
+        return data;
       });
+      // dispose unused data
+      for (var data in oldKeyedData.values) {
+        if (!_data.contains(data)) {
+          data.popoverController.dispose();
+        }
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    for (var data in _data) {
+      data.popoverController.dispose();
+    }
+    super.dispose();
   }
 
   @override
