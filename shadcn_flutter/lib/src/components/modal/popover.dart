@@ -86,14 +86,14 @@ class PopoverAnchor extends StatefulWidget {
     super.key,
     required this.position,
     required this.alignment,
-    required this.themes,
+    this.themes,
     required this.builder,
     required this.animation,
     required this.anchorAlignment,
     this.widthConstraint = PopoverConstraint.flexible,
     this.heightConstraint = PopoverConstraint.flexible,
     this.anchorSize,
-    required this.route,
+    this.route,
     this.onTapOutside,
     this.regionGroupId,
   });
@@ -101,13 +101,13 @@ class PopoverAnchor extends StatefulWidget {
   final Offset position;
   final Alignment alignment;
   final Alignment anchorAlignment;
-  final CapturedThemes themes;
+  final CapturedThemes? themes;
   final WidgetBuilder builder;
   final Size? anchorSize;
   final Animation<double> animation;
   final PopoverConstraint widthConstraint;
   final PopoverConstraint heightConstraint;
-  final PopoverRoute route;
+  final PopoverRoute? route;
   final VoidCallback? onTapOutside;
   final Object? regionGroupId;
 
@@ -130,7 +130,6 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
   final Size? anchorSize;
   final PopoverConstraint widthConstraint;
   final PopoverConstraint heightConstraint;
-  final Object? regionGroupId;
 
   PopoverLayoutDelegate({
     required this.alignment,
@@ -138,7 +137,6 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
     required this.anchorAlignment,
     required this.widthConstraint,
     required this.heightConstraint,
-    this.regionGroupId,
     this.anchorSize,
   });
 
@@ -246,7 +244,11 @@ class PopoverAnchorState extends State<PopoverAnchor> {
   }
 
   void close() {
-    Navigator.of(context).removeRoute(widget.route);
+    if (widget.route != null) {
+      Navigator.of(context).removeRoute(widget.route!);
+    } else {
+      Navigator.of(context).pop();
+    }
   }
 
   void closeLater() {
@@ -366,7 +368,9 @@ class PopoverAnchorState extends State<PopoverAnchor> {
                 alignment: _alignment,
                 scale:
                     Tween<double>(begin: 0.9, end: 1).animate(widget.animation),
-                child: widget.themes.wrap(widget.builder(context)),
+                child: widget.themes == null
+                    ? widget.builder(context)
+                    : widget.themes!.wrap(widget.builder(context)),
               ),
             );
           }),

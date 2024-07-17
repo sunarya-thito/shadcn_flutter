@@ -54,7 +54,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                       Text('Can I use this with Material/Cupertino Widgets?'),
                 ),
                 content: Text(
-                    'No, you can\'t. This is a standalone package and not a theme. You would need to wrap your Material/Cupertino Widgets with MaterialApp/CupertinoApp.'),
+                    'Sure but, you would need to wrap your Material/Cupertino Widgets with MaterialApp/CupertinoApp.'),
               ),
               AccordionItem(
                 trigger: AccordionTrigger(

@@ -13,6 +13,7 @@ import 'package:example/pages/docs/components/date_picker/date_picker_example_1.
 import 'package:example/pages/docs/components/divider/divider_example_3.dart';
 import 'package:example/pages/docs/components/form/form_example_1.dart';
 import 'package:example/pages/docs/components/input_otp/input_otp_example_2.dart';
+import 'package:example/pages/docs/components/menubar/menubar_example_1.dart';
 import 'package:example/pages/docs/components/pagination/pagination_example_1.dart';
 import 'package:example/pages/docs/components/resizable/resizable_example_3.dart';
 import 'package:example/pages/docs/components/text_area/text_area_example_3.dart';
@@ -648,7 +649,29 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   ],
                 ).gap(16),
               ),
-              WIPComponentCard(title: 'Menubar'),
+              ComponentCard(
+                title: 'Menubar',
+                name: 'menubar',
+                example: Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      MenubarExample1(),
+                      gap(4),
+                      Container(
+                        width: 192,
+                        child: MenuPopup(children: const [
+                          Button(
+                            style: ButtonStyle.menu(),
+                            child: Text('New Tab'),
+                          ),
+                        ]),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               WIPComponentCard(title: 'Navigation Menu'),
               ComponentCard(
                 title: 'Pagination',

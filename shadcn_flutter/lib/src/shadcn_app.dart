@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter_platform_interface/shadcn_flutter_platform_interface.dart';
@@ -216,6 +217,9 @@ class _ShadcnAppState extends State<ShadcnApp> {
       },
     );
     Future.delayed(const Duration(milliseconds: 10), _dispatchAppInitialized);
+    if (kIsWeb) {
+      BrowserContextMenu.disableContextMenu();
+    }
   }
 
   @override

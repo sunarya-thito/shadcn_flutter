@@ -101,6 +101,7 @@ class CharacterInputOTPChild extends InputOTPChild {
   @override
   Widget build(BuildContext context, InputOTPChildData data) {
     return _OTPCharacterInput(
+      key: data._key,
       data: data,
       predicate: predicate,
       transform: transform,
@@ -141,7 +142,23 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
   void _onControllerChanged() {
     String text = _controller.text;
     if (text.isNotEmpty) {
-      int codepoint = text.codeUnitAt(text.length - 1);
+      int codepoint = text.codeUnitAt(0);
+      if (text.length > 1) {
+        // forward to the next input
+        var currentIndex = widget.data.index;
+        var inputs = widget.data._state._children;
+        if (currentIndex + 1 < inputs.length) {
+          var nextInput = inputs[currentIndex + 1];
+          nextInput.key.currentState?._controller.text = text.substring(1);
+          if (text.length == 2) {
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              nextInput.key.currentState?._controller.text = text.substring(1);
+            });
+          } else {
+            nextInput.key.currentState?._controller.text = text.substring(1);
+          }
+        }
+      }
       if (widget.predicate != null && !widget.predicate!(codepoint)) {
         _value = null;
         _controller.clear();
@@ -300,7 +317,6 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
                 opacity: _value == null ? 1 : 0,
                 child: TextField(
                   border: false,
-                  maxLength: 1,
                   textAlign: TextAlign.center,
                   focusNode: widget.data.focusNode,
                   controller: _controller,
@@ -353,9 +369,11 @@ class InputOTPChildData {
   final int relativeIndex;
   final int? value;
   final _InputOTPState _state;
+  final GlobalKey<_OTPCharacterInputState>? _key;
 
   InputOTPChildData._(
-    this._state, {
+    this._state,
+    this._key, {
     required this.focusNode,
     required this.index,
     required this.groupIndex,
@@ -378,6 +396,7 @@ class _InputOTPChild {
   final int groupIndex;
   final int relativeIndex;
   int groupLength = 0;
+  final GlobalKey<_OTPCharacterInputState> key = GlobalKey();
 
   _InputOTPChild({
     required this.focusNode,
@@ -516,6 +535,7 @@ class _InputOTPState extends State<InputOTP> {
           context,
           InputOTPChildData._(
             this,
+            _children[i].key,
             focusNode: _children[i].focusNode,
             index: i,
             groupIndex: _children[i].groupIndex,
@@ -533,6 +553,7 @@ class _InputOTPState extends State<InputOTP> {
             context,
             InputOTPChildData._(
               this,
+              null,
               focusNode: null,
               index: -1,
               groupIndex: -1,

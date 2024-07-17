@@ -1,10 +1,17 @@
 import 'package:flutter/widgets.dart';
 
+typedef AnimatedChildBuilder<T> = Widget Function(
+    BuildContext context, T value, Widget? child);
+typedef AnimationBuilder<T> = Widget Function(
+    BuildContext context, Animation<T> animation);
+
 class AnimatedValueBuilder<T> extends StatefulWidget {
   final T? initialValue;
   final T value;
-  final Duration duration;
-  final Widget Function(BuildContext context, T value, Widget? child) builder;
+  final Duration? duration;
+  final Duration Function(T a, T b)? durationBuilder;
+  final AnimatedChildBuilder<T>? builder;
+  final AnimationBuilder<T>? animationBuilder;
   final void Function(T value)? onEnd;
   final Curve curve;
   final T Function(T a, T b, double t)? lerp;
@@ -14,13 +21,34 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
     Key? key,
     this.initialValue,
     required this.value,
-    required this.duration,
-    required this.builder,
+    this.duration,
+    this.durationBuilder,
+    required AnimatedChildBuilder this.builder,
     this.onEnd,
     this.curve = Curves.linear,
     this.lerp,
     this.child,
-  }) : super(key: key);
+  })  : animationBuilder = null,
+        assert(duration != null || durationBuilder != null,
+            'You must provide a duration or a durationBuilder.'),
+        super(key: key);
+
+  const AnimatedValueBuilder.animation({
+    Key? key,
+    this.initialValue,
+    required this.value,
+    this.duration,
+    this.durationBuilder,
+    required AnimationBuilder<T> builder,
+    this.onEnd,
+    this.curve = Curves.linear,
+    this.lerp,
+    this.child,
+  })  : builder = null,
+        animationBuilder = builder,
+        assert(duration != null || durationBuilder != null,
+            'You must provide a duration or a durationBuilder.'),
+        super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -29,24 +57,29 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
 }
 
 class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin
+    implements Animation<T> {
   late AnimationController _controller;
   late T _value;
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    );
+        vsync: this,
+        duration: widget.duration ??
+            widget.durationBuilder!(
+                widget.initialValue ?? widget.value, widget.value));
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _onEnd();
       }
     });
-    _controller.addListener(() {
-      setState(() {});
-    });
+    if (widget.animationBuilder == null) {
+      // animationBuilder does not need the widget to be rebuilt
+      _controller.addListener(() {
+        setState(() {});
+      });
+    }
     _value = widget.initialValue ?? widget.value;
     if (widget.initialValue != null) {
       _controller.forward();
@@ -77,7 +110,8 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
         oldWidget.value,
         oldWidget.curve.transform(_controller.value),
       );
-      _controller.duration = widget.duration;
+      _controller.duration = widget.duration ??
+          widget.durationBuilder!(currentValue, widget.value);
       _controller.reset();
       _controller.forward();
       _value = currentValue;
@@ -98,13 +132,64 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.animationBuilder != null) {
+      return widget.animationBuilder!(context, this);
+    }
     double progress = _controller.value;
     double curveProgress = widget.curve.transform(progress);
     if (progress == 1) {
-      return widget.builder(context, widget.value, widget.child);
+      return widget.builder!(context, widget.value, widget.child);
     }
     T newValue = lerpedValue(_value, widget.value, curveProgress);
-    return widget.builder(context, newValue, widget.child);
+    return widget.builder!(context, newValue, widget.child);
+  }
+
+  @override
+  void addListener(VoidCallback listener) {
+    _controller.addListener(listener);
+  }
+
+  @override
+  void addStatusListener(AnimationStatusListener listener) {
+    _controller.addStatusListener(listener);
+  }
+
+  @override
+  Animation<U> drive<U>(Animatable<U> child) {
+    return _controller.drive(child);
+  }
+
+  @override
+  bool get isCompleted => _controller.isCompleted;
+
+  @override
+  bool get isDismissed => _controller.isDismissed;
+
+  @override
+  void removeListener(VoidCallback listener) {
+    _controller.removeListener(listener);
+  }
+
+  @override
+  void removeStatusListener(AnimationStatusListener listener) {
+    _controller.removeStatusListener(listener);
+  }
+
+  @override
+  AnimationStatus get status => _controller.status;
+
+  @override
+  String toStringDetails() {
+    return 'value: $_value, controller: $_controller';
+  }
+
+  @override
+  T get value {
+    if (_controller.isCompleted || _controller.value >= 1) {
+      return widget.value;
+    }
+    return lerpedValue(
+        _value, widget.value, widget.curve.transform(_controller.value));
   }
 }
 

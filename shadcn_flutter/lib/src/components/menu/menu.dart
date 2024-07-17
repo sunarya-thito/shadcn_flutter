@@ -46,6 +46,7 @@ class MenuShortcut extends StatelessWidget {
 
 abstract class MenuItem extends Widget {
   bool get hasLeading;
+  PopoverController? get popoverController;
 }
 
 class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
@@ -61,6 +62,9 @@ class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
 
   @override
   bool get hasLeading => children.isNotEmpty;
+
+  @override
+  PopoverController? get popoverController => null;
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +144,9 @@ class MenuDivider extends StatelessWidget implements MenuItem {
 
   @override
   bool get hasLeading => false;
+
+  @override
+  PopoverController? get popoverController => null;
 }
 
 class MenuButton extends StatefulWidget implements MenuItem {
@@ -151,6 +158,8 @@ class MenuButton extends StatefulWidget implements MenuItem {
   final bool enabled;
   final FocusNode? focusNode;
   final bool autoClose;
+  @override
+  final PopoverController? popoverController;
   MenuButton({
     required this.child,
     this.subMenu,
@@ -160,6 +169,7 @@ class MenuButton extends StatefulWidget implements MenuItem {
     this.enabled = true,
     this.focusNode,
     this.autoClose = true,
+    this.popoverController,
   });
 
   @override
@@ -190,6 +200,8 @@ class MenuCheckbox extends StatelessWidget implements MenuItem {
 
   @override
   bool get hasLeading => true;
+  @override
+  PopoverController? get popoverController => null;
 
   @override
   Widget build(BuildContext context) {
@@ -432,7 +444,10 @@ class MenuGroupData {
 }
 
 class MenuData {
-  final PopoverController popoverController = PopoverController();
+  final PopoverController popoverController;
+
+  MenuData({PopoverController? popoverController})
+      : popoverController = popoverController ?? PopoverController();
 }
 
 class MenuGroup extends StatefulWidget {
@@ -471,9 +486,19 @@ class _MenuGroupState extends State<MenuGroup> {
         oldKeyedData[oldWidget.children[i].key ?? ValueKey(i)] = _data[i];
       }
       _data = List.generate(widget.children.length, (i) {
-        var key = widget.children[i].key ?? ValueKey(i);
-        var data = oldKeyedData[key] ?? MenuData();
-        return data;
+        var child = widget.children[i];
+        var key = child.key ?? ValueKey(i);
+        var oldData = oldKeyedData[key];
+        if (oldData != null) {
+          if (child.popoverController != null &&
+              oldData.popoverController != child.popoverController) {
+            oldData.popoverController.dispose();
+            oldData = MenuData(popoverController: child.popoverController);
+          }
+        } else {
+          oldData = MenuData(popoverController: child.popoverController);
+        }
+        return oldData;
       });
       // dispose unused data
       for (var data in oldKeyedData.values) {

@@ -30,6 +30,7 @@ class TextField extends StatefulWidget {
   final TextAlign textAlign;
   final bool expands;
   final TextAlignVertical? textAlignVertical;
+  final UndoHistoryController? undoController;
   const TextField({
     Key? key,
     this.controller,
@@ -56,6 +57,7 @@ class TextField extends StatefulWidget {
     this.textAlign = TextAlign.start,
     this.expands = false,
     this.textAlignVertical = TextAlignVertical.center,
+    this.undoController,
   }) : super(key: key);
 
   @override
@@ -66,11 +68,13 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
   late FocusNode _focusNode;
   final GlobalKey _key = GlobalKey();
   late TextEditingController _controller;
+  late UndoHistoryController _undoHistoryController;
 
   @override
   void initState() {
     super.initState();
     _controller = widget.controller ?? TextEditingController();
+    _undoHistoryController = widget.undoController ?? UndoHistoryController();
     if (widget.initialValue != null) {
       _controller.text = widget.initialValue!;
     }
@@ -102,6 +106,9 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
       _controller.removeListener(_onValueChanged);
       _controller = widget.controller ?? TextEditingController();
       _controller.addListener(_onValueChanged);
+    }
+    if (widget.undoController != oldWidget.undoController) {
+      _undoHistoryController = widget.undoController ?? UndoHistoryController();
     }
   }
 
@@ -142,6 +149,138 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
         color: Colors.transparent,
         child: material.TextField(
           key: _key,
+          contextMenuBuilder: (innerContext, editableTextState) {
+            var contextMenuButtonItems =
+                List.of(editableTextState.contextMenuButtonItems);
+
+            ContextMenuButtonItem? take(ContextMenuButtonType type) {
+              var item = contextMenuButtonItems
+                  .where((element) => element.type == type)
+                  .firstOrNull;
+              if (item != null) {
+                contextMenuButtonItems.remove(item);
+              }
+              return item;
+            }
+
+            var cutButton = take(ContextMenuButtonType.cut);
+            var copyButton = take(ContextMenuButtonType.copy);
+            var pasteButton = take(ContextMenuButtonType.paste);
+            var selectAllButton = take(ContextMenuButtonType.selectAll);
+            return AnimatedBuilder(
+                animation: _undoHistoryController,
+                builder: (context, child) {
+                  return ContextMenu(
+                    position:
+                        editableTextState.contextMenuAnchors.primaryAnchor +
+                            const Offset(8, -8),
+                    children: [
+                      MenuButton(
+                        enabled: _undoHistoryController.value.canUndo,
+                        onPressed: (context) {
+                          _undoHistoryController.undo();
+                        },
+                        trailing: const MenuShortcut(
+                          activator: SingleActivator(
+                            LogicalKeyboardKey.keyZ,
+                            control: true,
+                          ),
+                        ),
+                        child: Text('Undo'),
+                      ),
+                      MenuButton(
+                        enabled: _undoHistoryController.value.canRedo,
+                        onPressed: (context) {
+                          _undoHistoryController.redo();
+                        },
+                        trailing: const MenuShortcut(
+                          activator: SingleActivator(
+                            LogicalKeyboardKey.keyZ,
+                            control: true,
+                            shift: true,
+                          ),
+                        ),
+                        child: Text('Redo'),
+                      ),
+                      MenuDivider(),
+                      MenuButton(
+                        enabled: cutButton != null,
+                        onPressed: (context) {
+                          cutButton?.onPressed?.call();
+                        },
+                        trailing: const MenuShortcut(
+                          activator: SingleActivator(
+                            LogicalKeyboardKey.keyX,
+                            control: true,
+                          ),
+                        ),
+                        child: Text('Cut'),
+                      ),
+                      MenuButton(
+                        enabled: copyButton != null,
+                        onPressed: (context) {
+                          copyButton?.onPressed?.call();
+                        },
+                        trailing: const MenuShortcut(
+                          activator: SingleActivator(
+                            LogicalKeyboardKey.keyC,
+                            control: true,
+                          ),
+                        ),
+                        child: Text('Copy'),
+                      ),
+                      MenuButton(
+                        enabled: pasteButton != null,
+                        onPressed: (context) {
+                          pasteButton?.onPressed?.call();
+                        },
+                        trailing: const MenuShortcut(
+                          activator: SingleActivator(
+                            LogicalKeyboardKey.keyV,
+                            control: true,
+                          ),
+                        ),
+                        child: Text('Paste'),
+                      ),
+                      MenuButton(
+                        enabled: selectAllButton != null,
+                        onPressed: (context) {
+                          // somehow, we lost focus upon context menu open
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((timeStamp) {
+                            selectAllButton?.onPressed?.call();
+                          });
+                        },
+                        trailing: const MenuShortcut(
+                          activator: SingleActivator(
+                            LogicalKeyboardKey.keyA,
+                            control: true,
+                          ),
+                        ),
+                        child: Text('Select All'),
+                      ),
+                      if (contextMenuButtonItems.isNotEmpty) ...[
+                        // add the rest
+                        MenuDivider(),
+                        ...contextMenuButtonItems
+                            .map<MenuButton?>((e) {
+                              if (e.label == null) {
+                                return null;
+                              }
+                              return MenuButton(
+                                onPressed: (context) {
+                                  e.onPressed?.call();
+                                },
+                                child: Text(e.label!),
+                              );
+                            })
+                            .where((element) => element != null)
+                            .cast<MenuButton>(),
+                      ]
+                    ],
+                  );
+                });
+          },
           textAlign: widget.textAlign,
           obscureText: widget.obscureText,
           obscuringCharacter: widget.obscuringCharacter,
@@ -154,6 +293,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
           focusNode: _focusNode,
           onSubmitted: widget.onSubmitted,
           onEditingComplete: widget.onEditingComplete,
+          undoController: _undoHistoryController,
           buildCounter: (context,
               {required currentLength,
               required isFocused,

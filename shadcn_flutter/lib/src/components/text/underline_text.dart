@@ -45,33 +45,19 @@ class UnderlineText extends StatelessWidget {
               decoration: TextDecoration.underline,
               decorationThickness: textStyle.decorationThickness,
               decorationStyle: textStyle.decorationStyle,
+              height: 0,
               shadows: [
                   Shadow(
                     color: textStyle.color ?? underlineColor,
-                    offset: const Offset(0, -4),
+                    offset: const Offset(0, -2),
                     blurRadius: 0,
                   ),
                 ])
           : textStyle,
       child: Transform.translate(
-        offset: underline ? const Offset(0, 4) : Offset.zero,
+        offset: underline ? const Offset(0, 2) : Offset.zero,
         child: child,
       ),
     );
-    // return Stack(
-    //   children: [
-    //     child,
-    //     Positioned(
-    //       bottom: -0.2,
-    //       left: 0,
-    //       right: 0,
-    //       child: AnimatedContainer(
-    //         duration: const Duration(milliseconds: 50),
-    //         height: underline ? 1 : 0,
-    //         color: underlineColor,
-    //       ),
-    //     ),
-    //   ],
-    // );
   }
 }
