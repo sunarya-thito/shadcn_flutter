@@ -209,13 +209,13 @@ class _SelectState<T> extends State<Select<T>> {
     return ConstrainedBox(
       constraints: widget.constraints,
       child: Popover(
-        builder: (context) {
+        builder: (context, control) {
           return OutlineButton(
             focusNode: _focusNode,
             onPressed: widget.onChanged == null
                 ? null
                 : () {
-                    context.showPopover();
+                    control.show();
                   },
             child: Row(
               mainAxisSize: MainAxisSize.min,

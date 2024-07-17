@@ -244,10 +244,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Badge', 'badge'),
         ShadcnDocsPage('Calendar', 'calendar'),
         ShadcnDocsPage('Command', 'command'),
-        ShadcnDocsPage(
-            'Context Menu', 'context_menu', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage(
-            'Dropdown Menu', 'dropdown_menu', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Context Menu', 'context_menu'),
+        ShadcnDocsPage('Dropdown Menu', 'dropdown_menu'),
       ],
     ),
   ];

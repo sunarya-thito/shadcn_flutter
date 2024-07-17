@@ -104,12 +104,12 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>> {
       );
     }
     return Popover(
-      builder: (context) {
+      builder: (context, control) {
         return OutlineButton(
           trailing: widget.trailing?.iconMuted().iconSmall(),
           leading: widget.leading?.iconMuted().iconSmall(),
           onPressed: () {
-            context.showPopover();
+            control.show();
           },
           child: value == null
               ? widget.placeholder.muted()

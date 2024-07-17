@@ -179,6 +179,55 @@ class MenuButton extends StatefulWidget implements MenuItem {
   bool get hasLeading => leading != null;
 }
 
+class MenuLabel extends StatelessWidget implements MenuItem {
+  final Widget child;
+  final Widget? trailing;
+  final Widget? leading;
+
+  MenuLabel({
+    required this.child,
+    this.trailing,
+    this.leading,
+  });
+
+  @override
+  bool get hasLeading => leading != null;
+
+  @override
+  PopoverController? get popoverController => null;
+
+  @override
+  Widget build(BuildContext context) {
+    final menuGroupData = Data.maybeOf<MenuGroupData>(context);
+    assert(menuGroupData != null, 'MenuLabel must be a child of MenuGroup');
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6),
+      child: Basic(
+        contentSpacing: 8,
+        leading: leading == null && menuGroupData!.hasLeading
+            ? const SizedBox(width: 16)
+            : leading == null
+                ? null
+                : SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: IconTheme.merge(
+                      data: const IconThemeData(
+                        size: 16,
+                      ),
+                      child: leading!,
+                    ),
+                  ),
+        trailing: trailing,
+        content: UnderlineInterceptor(child: child.medium()),
+        trailingAlignment: Alignment.center,
+        leadingAlignment: Alignment.center,
+        contentAlignment: Alignment.centerLeft,
+      ),
+    );
+  }
+}
+
 class MenuCheckbox extends StatelessWidget implements MenuItem {
   final bool value;
   final ContextedValueChanged<bool>? onChanged;
@@ -272,6 +321,8 @@ class _MenuButtonState extends State<MenuButton> {
                   return MenuGroup(
                       parent: menuGroupData,
                       children: _children.value,
+                      onDismissed: menuGroupData.onDismissed,
+                      subMenuOffset: const Offset(8, -4 + -1),
                       builder: (context, children) {
                         return MenuPopup(
                           children: children,
@@ -283,11 +334,12 @@ class _MenuButtonState extends State<MenuButton> {
         alignment: Alignment.topLeft,
         anchorAlignment:
             menuBarData != null ? Alignment.bottomLeft : Alignment.topRight,
-        offset: menuBarData != null
-            ? menuBarData.widget.border
-                ? const Offset(-4, 8)
-                : const Offset(0, 4)
-            : const Offset(8, -4 + -1),
+        // offset: menuBarData != null
+        //     ? menuBarData.widget.border
+        //         ? const Offset(-4, 8)
+        //         : const Offset(0, 4)
+        //     : const Offset(8, -4 + -1),
+        offset: menuGroupData.subMenuOffset,
       );
     }
 
@@ -374,7 +426,8 @@ class _MenuButtonState extends State<MenuButton> {
                       },
                       onPressed: () {
                         widget.onPressed?.call(context);
-                        if (widget.subMenu != null) {
+                        if (widget.subMenu != null &&
+                            widget.subMenu!.isNotEmpty) {
                           if (!menuData.popoverController.hasOpenPopovers) {
                             openSubMenu();
                           }
@@ -396,16 +449,19 @@ class _MenuButtonState extends State<MenuButton> {
 }
 
 class MenuGroupData {
-  final MenuGroupData? root;
   final MenuGroupData? parent;
   final List<MenuData> children;
   final bool hasLeading;
+  final Offset? subMenuOffset;
+  final VoidCallback? onDismissed;
 
-  MenuGroupData(this.root, this.parent, this.children, this.hasLeading);
+  MenuGroupData(this.parent, this.children, this.hasLeading, this.subMenuOffset,
+      this.onDismissed);
 
   bool get hasOpenPopovers {
     for (final child in children) {
       if (child.popoverController.hasOpenPopovers) {
+        const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6);
         return true;
       }
     }
@@ -419,7 +475,13 @@ class MenuGroupData {
   }
 
   void closeAll() {
-    root?.closeOthers();
+    var menuGroupData = parent;
+    if (menuGroupData == null) {
+      onDismissed?.call();
+      return;
+    }
+    menuGroupData.closeOthers();
+    menuGroupData.closeAll();
   }
 
   @override
@@ -428,18 +490,28 @@ class MenuGroupData {
     if (other is MenuGroupData) {
       return listEquals(children, other.children) &&
           parent == other.parent &&
-          root == other.root &&
-          hasLeading == other.hasLeading;
+          hasLeading == other.hasLeading &&
+          subMenuOffset == other.subMenuOffset &&
+          onDismissed == other.onDismissed;
     }
     return false;
+  }
+
+  MenuGroupData get root {
+    var menuGroupData = parent;
+    if (menuGroupData == null) {
+      return this;
+    }
+    return menuGroupData.root;
   }
 
   @override
   int get hashCode => Object.hash(
         children,
         parent,
-        root,
         hasLeading,
+        subMenuOffset,
+        onDismissed,
       );
 }
 
@@ -454,12 +526,16 @@ class MenuGroup extends StatefulWidget {
   final List<MenuItem> children;
   final Widget Function(BuildContext context, List<Widget> children) builder;
   final MenuGroupData? parent;
+  final Offset? subMenuOffset;
+  final VoidCallback? onDismissed;
 
   MenuGroup({
     super.key,
     required this.children,
     required this.builder,
     this.parent,
+    this.subMenuOffset,
+    this.onDismissed,
   });
 
   @override
@@ -545,8 +621,13 @@ class _MenuGroupState extends State<MenuGroup> {
               DirectionalFocusIntent(TraversalDirection.right),
         },
         child: Data(
-          data: MenuGroupData(widget.parent?.root ?? widget.parent,
-              widget.parent, _data, hasLeading),
+          data: MenuGroupData(
+            widget.parent,
+            _data,
+            hasLeading,
+            widget.subMenuOffset,
+            widget.onDismissed,
+          ),
           child: widget.builder(context, children),
         ),
       ),

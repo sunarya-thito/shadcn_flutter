@@ -4,10 +4,10 @@ class PopoverExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Popover(
-      builder: (context) {
+      builder: (context, control) {
         return PrimaryButton(
           onPressed: () {
-            context.showPopover();
+            control.show();
           },
           child: Text('Open popover'),
         );

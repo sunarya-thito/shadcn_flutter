@@ -40,6 +40,7 @@ export 'src/components/input_otp.dart';
 export 'src/components/locale/shadcn_localizations.dart';
 export 'src/components/media_query.dart';
 export 'src/components/menu/context_menu.dart';
+export 'src/components/menu/dropdown_menu.dart';
 export 'src/components/menu/menu.dart';
 export 'src/components/menu/menubar.dart';
 export 'src/components/menu/popup.dart';

@@ -9,7 +9,7 @@ class MenubarExample extends StatelessWidget {
     return ComponentPage(
       name: 'menubar',
       description:
-          'A menubar is a horizontal bar that is typically placed at the top of a window or screen. It contains a list of menus that can be used to perform various actions.',
+          'A bar of buttons that provies quick access to common actions.',
       displayName: 'Menubar',
       children: [
         WidgetUsageExample(

@@ -32,7 +32,14 @@ class PopoverRoute<T> extends PopupRoute<T> {
   @override
   Widget buildModalBarrier() {
     if (modal) return super.buildModalBarrier();
-    return const SizedBox();
+    return Builder(builder: (context) {
+      return Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (event) {
+          Navigator.of(context).pop();
+        },
+      );
+    });
   }
 
   @override
@@ -59,9 +66,6 @@ class PopoverRoute<T> extends PopupRoute<T> {
       widthConstraint: widthConstraint,
       heightConstraint: heightConstraint,
       route: this,
-      onTapOutside: () {
-        if (!modal) Navigator.of(context).pop();
-      },
       regionGroupId: regionGroupId,
     );
   }
@@ -342,9 +346,12 @@ class PopoverAnchorState extends State<PopoverAnchor> {
   @override
   Widget build(BuildContext context) {
     return TapRegion(
-      onTapOutside: (event) {
-        widget.onTapOutside?.call();
-      },
+      enabled: widget.regionGroupId != null && widget.onTapOutside != null,
+      onTapOutside: widget.onTapOutside != null
+          ? (event) {
+              widget.onTapOutside?.call();
+            }
+          : null,
       groupId: widget.regionGroupId,
       child: CustomSingleChildLayout(
         delegate: PopoverLayoutDelegate(
@@ -416,20 +423,28 @@ Future<T?> showPopover<T>({
   ));
 }
 
-extension PopoverExtension on BuildContext {
-  Future<T?> showPopover<T>() {
-    PopoverState state = Data.of(this);
-    return state.show();
-  }
+// extension PopoverExtension on BuildContext {
+//   Future<T?> showPopover<T>() {
+//     PopoverState state = Data.of(this);
+//     return state.show();
+//   }
+//
+//   void hidePopover() {
+//     PopoverState state = Data.of(this);
+//     state.close();
+//   }
+// }
 
-  void hidePopover() {
-    PopoverState state = Data.of(this);
-    state.close();
-  }
+abstract class PopoverControl {
+  Future<T?> show<T>();
+  void hide();
 }
 
+typedef TriggerBuilder = Widget Function(
+    BuildContext context, PopoverControl control);
+
 class Popover extends StatefulWidget {
-  final WidgetBuilder builder;
+  final TriggerBuilder builder;
   final WidgetBuilder popoverBuilder;
   final Alignment alignment;
   final Alignment? anchorAlignment;
@@ -457,7 +472,8 @@ class Popover extends StatefulWidget {
 }
 
 class PopoverState extends State<Popover>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin
+    implements PopoverControl {
   late Ticker ticker;
   GlobalKey<PopoverAnchorState>? _key;
 
@@ -519,10 +535,11 @@ class PopoverState extends State<Popover>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return DataBuilder(
-      data: this,
-      builder: widget.builder,
-    );
+    return widget.builder(context, this);
+    // return DataBuilder(
+    //   data: this,
+    //   builder: widget.builder,
+    // );
   }
 
   void _scheduleShow() {
@@ -541,10 +558,12 @@ class PopoverState extends State<Popover>
     super.dispose();
   }
 
-  void close() {
+  @override
+  void hide() {
     _key?.currentState?.close();
   }
 
+  @override
   Future<T?> show<T>() async {
     Alignment alignment = widget.anchorAlignment ?? widget.alignment * -1;
     WidgetBuilder builder = widget.popoverBuilder;

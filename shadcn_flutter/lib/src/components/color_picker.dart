@@ -41,9 +41,9 @@ class _ColorPickerPopoverState extends State<ColorPickerPopover> {
   @override
   Widget build(BuildContext context) {
     return Popover(
-      builder: (context) {
+      builder: (context, control) {
         return widget.builder(context, () async {
-          await context.showPopover();
+          await control.show();
           widget.onColorChanged(color);
         });
       },

@@ -38,6 +38,7 @@ class MenubarState extends State<Menubar> {
       data: this,
       child: MenuGroup(
         children: widget.children,
+        subMenuOffset: widget.border ? const Offset(-4, 8) : const Offset(0, 4),
         builder: (context, children) {
           return IntrinsicHeight(
             child: Row(

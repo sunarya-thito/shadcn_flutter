@@ -7,13 +7,14 @@ import 'package:example/pages/docs/components/animated_value_builder_example.dar
 import 'package:example/pages/docs/components/avatar_example.dart';
 import 'package:example/pages/docs/components/calendar_example.dart';
 import 'package:example/pages/docs/components/carousel_example.dart';
+import 'package:example/pages/docs/components/context_menu_example.dart';
 import 'package:example/pages/docs/components/date_picker_example.dart';
 import 'package:example/pages/docs/components/dialog_example.dart';
 import 'package:example/pages/docs/components/divider_example.dart';
 import 'package:example/pages/docs/components/drawer_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/input_otp_example.dart';
-import 'package:example/pages/docs/components/menu_example.dart';
+import 'package:example/pages/docs/components/menubar_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
 import 'package:example/pages/docs/components/popover_example.dart';
 import 'package:example/pages/docs/components/progress_example.dart';
@@ -358,6 +359,13 @@ class MyAppState extends State<MyApp> {
             name: 'menubar',
             builder: (context, state) {
               return MenubarExample();
+            },
+          ),
+          GoRoute(
+            path: 'context_menu',
+            name: 'context_menu',
+            builder: (context, state) {
+              return ContextMenuExample();
             },
           ),
         ]),
