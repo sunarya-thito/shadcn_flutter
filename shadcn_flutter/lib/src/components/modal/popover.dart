@@ -690,7 +690,7 @@ class PopoverPortalState extends State<PopoverPortal> {
 
   @override
   void dispose() {
-    widget.controller._attached = null;
+    widget.controller._detach(this);
     widget.controller.closeLater();
     super.dispose();
   }

@@ -42,6 +42,7 @@ class MenubarState extends State<Menubar> {
           return IntrinsicHeight(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
               children: children,
             ),
           ).medium();
