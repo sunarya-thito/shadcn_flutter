@@ -44,3 +44,11 @@
 ## 0.0.11
 
 * Fixed missing icons directory
+
+## 0.0.12
+
+* Added Resizable component
+* Added Menubar component
+* Refactored ComboBox to Select
+* Added Context Menu component
+* Added Dropdown Menu component

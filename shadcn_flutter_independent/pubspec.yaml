@@ -1,11 +1,11 @@
 name: shadcn_flutter_independent
 description: "An independent implementation for Shadcn Flutter components"
-version: 0.0.1
+version: 0.0.3
 homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
-  flutter: ">=1.17.0"
+  flutter: ">=1.20.0"
 
 dependencies:
   flutter:
@@ -22,6 +22,19 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  plugin:
+    implements: shadcn_flutter
+    platforms:
+      windows:
+        dartPluginClass: IndependentPlatformImplementations
+      ios:
+        dartPluginClass: IndependentPlatformImplementations
+      android:
+        dartPluginClass: IndependentPlatformImplementations
+      linux:
+        dartPluginClass: IndependentPlatformImplementations
+      macos:
+        dartPluginClass: IndependentPlatformImplementations
 
   # To add assets to your package, add an assets section, like this:
   # assets:

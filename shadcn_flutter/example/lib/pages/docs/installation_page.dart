@@ -118,6 +118,9 @@ void main() {
                   CodeSnippet(
                     code: '''
   fonts:
+    - family: BootstrapIcons
+      fonts:
+        - asset: "packages/shadcn_flutter/icons/BootstrapIcons.otf"
     - family: RadixIcons
       fonts:
         - asset: "packages/shadcn_flutter/icons/RadixIcons.otf"

@@ -309,7 +309,7 @@ class _MenuButtonState extends State<MenuButton> {
     void openSubMenu() {
       menuGroupData!.closeOthers();
       menuData!.popoverController.show(
-        regionGroupId: menuGroupData.root ?? menuGroupData,
+        regionGroupId: menuGroupData.root,
         builder: (context) {
           return ConstrainedBox(
             constraints: const BoxConstraints(
@@ -347,7 +347,7 @@ class _MenuButtonState extends State<MenuButton> {
       child: Data<MenuData>.boundary(
         child: Data<MenubarState>.boundary(
           child: TapRegion(
-            groupId: menuGroupData!.root ?? menuGroupData,
+            groupId: menuGroupData!.root,
             child: PopoverPortal(
               controller: menuData!.popoverController,
               child: AnimatedBuilder(

@@ -22,6 +22,6 @@ class MenuPopup extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ).normal();
   }
 }

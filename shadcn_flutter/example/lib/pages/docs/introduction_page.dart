@@ -29,9 +29,9 @@ class _IntroductionPageState extends State<IntroductionPage> {
           const Text('This is unofficial port of Shadcn/UI for Flutter.'),
           const Text('Most of components are built from scratch.'),
           const Text(
-              'If you found any issues, please report it to our GitHub instead of Shadcn/ui.'),
+              'If you found any issues, please report it to our GitHub instead of Shadcn/UI.'),
           const Text(
-              'Currently there\'s 40 out of 49 components that has been implemented into this package.'),
+              'Currently there\'s 44 out of 49 components that has been implemented into this package.'),
           const Text('Frequency Asked Questions').h2().anchored(faqKey),
           Accordion(
             items: [

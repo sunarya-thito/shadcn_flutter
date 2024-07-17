@@ -1,6 +1,6 @@
 name: shadcn_flutter_platform_interface
 description: "A platform interface for Shadcn Flutter components"
-version: 0.0.2
+version: 0.0.4
 homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 
 environment:

@@ -1,3 +1,7 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Initial release
+
+## 0.0.3
+
+* Fixed platform interface initialization

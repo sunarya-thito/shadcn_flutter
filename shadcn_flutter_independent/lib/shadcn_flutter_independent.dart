@@ -2,10 +2,11 @@ library shadcn_flutter_independent;
 
 import 'package:shadcn_flutter_platform_interface/shadcn_flutter_platform_interface.dart';
 
-class FallbackPlatformImplementations extends AbstractPlatformImplementations {
-  static void register() {
+class IndependentPlatformImplementations
+    extends AbstractPlatformImplementations {
+  static void registerWith() {
     AbstractPlatformImplementations.instance =
-        FallbackPlatformImplementations();
+        IndependentPlatformImplementations();
   }
 
   @override

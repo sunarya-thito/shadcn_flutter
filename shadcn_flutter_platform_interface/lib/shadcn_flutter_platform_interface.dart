@@ -19,7 +19,7 @@ abstract class AbstractPlatformImplementations extends PlatformInterface {
     _instance = instance;
   }
 
-  static AbstractPlatformImplementations? _instance = null;
+  static AbstractPlatformImplementations? _instance;
 
   void onAppInitialized();
 }
