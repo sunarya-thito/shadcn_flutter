@@ -1,5 +1,17 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+class ShortcutActivatorDisplay extends StatelessWidget {
+  final ShortcutActivator activator;
+
+  const ShortcutActivatorDisplay({required this.activator});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(activator.toString());
+  }
+}
 
 abstract class MenuItem extends Widget {
   bool get hasLeading;
@@ -34,7 +46,7 @@ class MenuButton extends StatefulWidget implements MenuItem {
   final Widget? leading;
   final bool enabled;
   final FocusNode? focusNode;
-
+  final bool autoClose;
   MenuButton({
     required this.child,
     this.subMenu,
@@ -43,6 +55,7 @@ class MenuButton extends StatefulWidget implements MenuItem {
     this.leading,
     this.enabled = true,
     this.focusNode,
+    this.autoClose = true,
   });
 
   @override
@@ -142,7 +155,22 @@ class _MenuButtonState extends State<MenuButton> {
                                   ),
                               ],
                             ).gap(8),
-                      leading: widget.leading,
+                      leading: widget.leading == null &&
+                              menuGroupData.hasLeading &&
+                              menuBarData == null
+                          ? const SizedBox(width: 16)
+                          : widget.leading == null
+                              ? null
+                              : SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: IconTheme.merge(
+                                    data: const IconThemeData(
+                                      size: 11,
+                                    ),
+                                    child: widget.leading!,
+                                  ),
+                                ),
                       disableTransition: true,
                       enabled: widget.enabled,
                       focusNode: _focusNode,
@@ -159,11 +187,27 @@ class _MenuButtonState extends State<MenuButton> {
                           }
                         }
                       },
+                      onFocus: (value) {
+                        if (value) {
+                          if (widget.subMenu != null) {
+                            if (!menuData.popoverController.hasOpenPopovers) {
+                              openSubMenu();
+                            }
+                          } else {
+                            menuGroupData.closeOthers();
+                          }
+                        }
+                      },
                       onPressed: () {
                         widget.onPressed?.call(context);
-                        if (widget.subMenu != null &&
-                            !menuData.popoverController.hasOpenPopovers) {
-                          openSubMenu();
+                        if (widget.subMenu != null) {
+                          if (!menuData.popoverController.hasOpenPopovers) {
+                            openSubMenu();
+                          }
+                        } else {
+                          if (widget.autoClose) {
+                            menuGroupData.closeAll();
+                          }
                         }
                       },
                       child: widget.child,
@@ -181,8 +225,9 @@ class MenuGroupData {
   final MenuGroupData? root;
   final MenuGroupData? parent;
   final List<MenuData> children;
+  final bool hasLeading;
 
-  MenuGroupData(this.root, this.parent, this.children);
+  MenuGroupData(this.root, this.parent, this.children, this.hasLeading);
 
   bool get hasOpenPopovers {
     for (final child in children) {
@@ -199,13 +244,18 @@ class MenuGroupData {
     }
   }
 
+  void closeAll() {
+    root?.closeOthers();
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is MenuGroupData) {
       return listEquals(children, other.children) &&
           parent == other.parent &&
-          root == other.root;
+          root == other.root &&
+          hasLeading == other.hasLeading;
     }
     return false;
   }
@@ -215,6 +265,7 @@ class MenuGroupData {
         children,
         parent,
         root,
+        hasLeading,
       );
 }
 
@@ -223,8 +274,7 @@ class MenuData {
 }
 
 class MenuGroup extends StatefulWidget {
-  final PopoverController? popoverController;
-  final List<Widget> children;
+  final List<MenuItem> children;
   final Widget Function(BuildContext context, List<Widget> children) builder;
   final MenuGroupData? parent;
 
@@ -232,7 +282,6 @@ class MenuGroup extends StatefulWidget {
     super.key,
     required this.children,
     required this.builder,
-    this.popoverController,
     this.parent,
   });
 
@@ -264,9 +313,13 @@ class _MenuGroupState extends State<MenuGroup> {
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
+    bool hasLeading = false;
     for (int i = 0; i < widget.children.length; i++) {
       final child = widget.children[i];
       final data = _data[i];
+      if (child.hasLeading) {
+        hasLeading = true;
+      }
       children.add(
         Data<MenuData>(
           data: data,
@@ -274,10 +327,22 @@ class _MenuGroupState extends State<MenuGroup> {
         ),
       );
     }
-    return Data(
-      data: MenuGroupData(
-          widget.parent?.root ?? widget.parent, widget.parent, _data),
-      child: widget.builder(context, children),
+    return FocusTraversalGroup(
+      child: FocusableActionDetector(
+        shortcuts: const {
+          SingleActivator(LogicalKeyboardKey.arrowUp): PreviousFocusIntent(),
+          SingleActivator(LogicalKeyboardKey.arrowDown): NextFocusIntent(),
+          SingleActivator(LogicalKeyboardKey.arrowLeft):
+              DirectionalFocusIntent(TraversalDirection.left),
+          SingleActivator(LogicalKeyboardKey.arrowRight):
+              DirectionalFocusIntent(TraversalDirection.right),
+        },
+        child: Data(
+          data: MenuGroupData(widget.parent?.root ?? widget.parent,
+              widget.parent, _data, hasLeading),
+          child: widget.builder(context, children),
+        ),
+      ),
     );
   }
 }

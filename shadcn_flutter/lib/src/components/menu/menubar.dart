@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class Menubar extends StatefulWidget {
-  final List<Widget> children;
+  final List<MenuItem> children;
   final Offset? popoverOffset;
   final bool border;
 

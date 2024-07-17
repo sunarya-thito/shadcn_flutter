@@ -3,79 +3,179 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class MenubarExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Menubar(
       children: [
-        Menubar(
-          children: [
-            MenuButton(child: Text('File'), subMenu: [
-              MenuButton(child: Text('New'), subMenu: [
-                MenuButton(child: Text('Project'), subMenu: [
-                  MenuButton(child: Text('Dart')),
-                  MenuButton(child: Text('Flutter')),
-                ]),
-                MenuButton(child: Text('File')),
-              ]),
-              MenuButton(child: Text('Open')),
-              MenuButton(child: Text('Save')),
-            ]),
+        MenuButton(
+          child: Text('File'),
+          subMenu: [
             MenuButton(
-              child: Text('Edit'),
+              trailing: ShortcutActivatorDisplay(
+                activator: CharacterActivator(
+                  'T',
+                  control: true,
+                ),
+              ),
+              child: Text('New Tab'),
+            ),
+            MenuButton(
+              trailing: ShortcutActivatorDisplay(
+                activator: CharacterActivator(
+                  'N',
+                  control: true,
+                ),
+              ),
+              child: Text('New Window'),
+            ),
+            MenuButton(
+              enabled: false,
+              trailing: ShortcutActivatorDisplay(
+                activator: CharacterActivator(
+                  'Shift',
+                  control: true,
+                ),
+              ),
+              child: Text('New Incognito Window'),
+            ),
+            MenuDivider(),
+            MenuButton(
+              child: Text('Share'),
               subMenu: [
-                MenuButton(child: Text('Cut')),
-                MenuButton(child: Text('Copy')),
-                MenuButton(child: Text('Paste')),
-                MenuDivider(),
-                MenuButton(child: Text('Select All')),
-                MenuButton(child: Text('Delete')),
-                MenuDivider(),
-                MenuButton(child: Text('Find')),
-                MenuButton(child: Text('Replace')),
-                MenuButton(child: Text('Go To')),
+                MenuButton(
+                  child: Text('Email Link'),
+                ),
+                MenuButton(
+                  child: Text('Messages'),
+                ),
+                MenuButton(
+                  child: Text('Notes'),
+                ),
               ],
             ),
             MenuButton(
-              child: Text('Help'),
-              subMenu: [
-                MenuButton(child: Text('About')),
-              ],
+              trailing: ShortcutActivatorDisplay(
+                activator: CharacterActivator(
+                  'P',
+                  control: true,
+                ),
+              ),
+              child: Text('Print'),
             ),
           ],
         ),
-        gap(48),
-        Menubar(
-          border: false,
-          children: [
-            MenuButton(child: Text('File'), subMenu: [
-              MenuButton(child: Text('New'), subMenu: [
-                MenuButton(child: Text('Project'), subMenu: [
-                  MenuButton(child: Text('Dart')),
-                  MenuButton(child: Text('Flutter')),
-                ]),
-                MenuButton(child: Text('File')),
-              ]),
-              MenuButton(child: Text('Open')),
-              MenuButton(child: Text('Save')),
-            ]),
+        MenuButton(
+          child: Text('Edit'),
+          subMenu: [
             MenuButton(
-              child: Text('Edit'),
-              subMenu: [
-                MenuButton(child: Text('Cut')),
-                MenuButton(child: Text('Copy')),
-                MenuButton(child: Text('Paste')),
-                MenuDivider(),
-                MenuButton(child: Text('Select All')),
-                MenuButton(child: Text('Delete')),
-                MenuDivider(),
-                MenuButton(child: Text('Find')),
-                MenuButton(child: Text('Replace')),
-                MenuButton(child: Text('Go To')),
-              ],
+              trailing: ShortcutActivatorDisplay(
+                activator: CharacterActivator(
+                  'Z',
+                  control: true,
+                ),
+              ),
+              child: Text('Undo'),
             ),
             MenuButton(
-              child: Text('Help'),
+              trailing: ShortcutActivatorDisplay(
+                activator: CharacterActivator(
+                  'Z',
+                  control: true,
+                  meta: true,
+                ),
+              ),
+              child: Text('Redo'),
+            ),
+            MenuDivider(),
+            MenuButton(
+              child: Text('Find'),
               subMenu: [
-                MenuButton(child: Text('About')),
+                MenuButton(
+                  child: Text('Search the Web'),
+                ),
+                MenuDivider(),
+                MenuButton(
+                  child: Text('Find...'),
+                ),
+                MenuButton(
+                  child: Text('Find Next'),
+                ),
+                MenuButton(
+                  child: Text('Find Previous'),
+                ),
               ],
+            ),
+            MenuDivider(),
+            MenuButton(
+              child: Text('Cut'),
+            ),
+            MenuButton(
+              child: Text('Copy'),
+            ),
+            MenuButton(
+              child: Text('Paste'),
+            ),
+          ],
+        ),
+        MenuButton(
+          child: Text('View'),
+          subMenu: [
+            MenuButton(
+              child: Text('Always Show Bookmarks Bar'),
+            ),
+            MenuButton(
+              leading: Icon(RadixIcons.check),
+              child: Text('Always Show Full URLs'),
+            ),
+            MenuDivider(),
+            MenuButton(
+              trailing: ShortcutActivatorDisplay(
+                activator: CharacterActivator(
+                  'R',
+                  control: true,
+                ),
+              ),
+              child: Text('Reload'),
+            ),
+            MenuButton(
+              enabled: false,
+              trailing: ShortcutActivatorDisplay(
+                activator: CharacterActivator(
+                  'R',
+                  control: true,
+                  meta: true,
+                ),
+              ),
+              child: Text('Force Reload'),
+            ),
+            MenuDivider(),
+            MenuButton(
+              child: Text('Toggle Full Screen'),
+            ),
+            MenuDivider(),
+            MenuButton(
+              child: Text('Hide Sidebar'),
+            ),
+          ],
+        ),
+        MenuButton(
+          child: Text('Profiles'),
+          subMenu: [
+            MenuButton(
+              child: Text('Andy'),
+            ),
+            MenuButton(
+              leading: Icon(RadixIcons.dotFilled),
+              child: Text('Benoit'),
+            ),
+            MenuButton(
+              child: Text('Luis'),
+            ),
+            MenuDivider(),
+            MenuButton(
+              child: Text('Edit...'),
+            ),
+            MenuDivider(),
+            MenuButton(
+              child: Text('Add Profile...'),
             ),
           ],
         ),

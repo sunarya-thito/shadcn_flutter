@@ -393,6 +393,35 @@ class DocsPageState extends State<DocsPage> {
                                                 for (var page in section.pages)
                                                   NavigationButton(
                                                     onPressed: () {
+                                                      if (page.tag ==
+                                                          ShadcnFeatureTag
+                                                              .workInProgress) {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return Center(
+                                                              child:
+                                                                  AlertDialog(
+                                                                title: Text(
+                                                                    'Work in Progress'),
+                                                                content: Text(
+                                                                    'This page is still under development. Please come back later.'),
+                                                                actions: [
+                                                                  PrimaryButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      child: Text(
+                                                                          'Close')),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                        return;
+                                                      }
                                                       context
                                                           .goNamed(page.name);
                                                     },
@@ -768,6 +797,29 @@ class DocsPageState extends State<DocsPage> {
                             for (var page in section.sortedPages)
                               NavigationButton(
                                 onPressed: () {
+                                  if (page.tag ==
+                                      ShadcnFeatureTag.workInProgress) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Center(
+                                          child: AlertDialog(
+                                            title: Text('Work in Progress'),
+                                            content: Text(
+                                                'This page is still under development. Please come back later.'),
+                                            actions: [
+                                              PrimaryButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('Close')),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                    return;
+                                  }
                                   context.goNamed(page.name);
                                 },
                                 selected: page.name == widget.name,

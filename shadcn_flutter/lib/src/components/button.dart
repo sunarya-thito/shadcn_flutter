@@ -734,6 +734,11 @@ Decoration _buttonMenuDecoration(
 
 TextStyle _buttonMenuTextStyle(BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
+  if (states.contains(WidgetState.disabled)) {
+    return TextStyle(
+      color: themeData.colorScheme.accentForeground.withOpacity(0.5),
+    );
+  }
   return TextStyle(
     color: themeData.colorScheme.accentForeground,
   );
