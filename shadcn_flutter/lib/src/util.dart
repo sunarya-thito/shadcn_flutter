@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 const kDefaultDuration = Duration(milliseconds: 150);
 
 typedef ContextedCallback = void Function(BuildContext context);
+typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 
 double wrapDouble(double value, double min, double max) {
   final range = max - min;

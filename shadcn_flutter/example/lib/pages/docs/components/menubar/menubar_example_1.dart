@@ -1,6 +1,14 @@
+import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class MenubarExample1 extends StatelessWidget {
+class MenubarExample1 extends StatefulWidget {
+  @override
+  State<MenubarExample1> createState() => _MenubarExample1State();
+}
+
+class _MenubarExample1State extends State<MenubarExample1> {
+  bool _showBookmarksBar = false;
+  bool _showFullURLs = true;
   @override
   Widget build(BuildContext context) {
     return Menubar(
@@ -9,18 +17,19 @@ class MenubarExample1 extends StatelessWidget {
           child: Text('File'),
           subMenu: [
             MenuButton(
-              trailing: ShortcutActivatorDisplay(
-                activator: CharacterActivator(
-                  'T',
+              leading: Icon(RadixIcons.filePlus),
+              trailing: MenuShortcut(
+                activator: SingleActivator(
+                  LogicalKeyboardKey.keyT,
                   control: true,
                 ),
               ),
               child: Text('New Tab'),
             ),
             MenuButton(
-              trailing: ShortcutActivatorDisplay(
-                activator: CharacterActivator(
-                  'N',
+              trailing: MenuShortcut(
+                activator: SingleActivator(
+                  LogicalKeyboardKey.keyN,
                   control: true,
                 ),
               ),
@@ -28,12 +37,6 @@ class MenubarExample1 extends StatelessWidget {
             ),
             MenuButton(
               enabled: false,
-              trailing: ShortcutActivatorDisplay(
-                activator: CharacterActivator(
-                  'Shift',
-                  control: true,
-                ),
-              ),
               child: Text('New Incognito Window'),
             ),
             MenuDivider(),
@@ -52,9 +55,9 @@ class MenubarExample1 extends StatelessWidget {
               ],
             ),
             MenuButton(
-              trailing: ShortcutActivatorDisplay(
-                activator: CharacterActivator(
-                  'P',
+              trailing: MenuShortcut(
+                activator: SingleActivator(
+                  LogicalKeyboardKey.keyP,
                   control: true,
                 ),
               ),
@@ -66,20 +69,20 @@ class MenubarExample1 extends StatelessWidget {
           child: Text('Edit'),
           subMenu: [
             MenuButton(
-              trailing: ShortcutActivatorDisplay(
-                activator: CharacterActivator(
-                  'Z',
+              trailing: MenuShortcut(
+                activator: SingleActivator(
+                  LogicalKeyboardKey.keyZ,
                   control: true,
                 ),
               ),
               child: Text('Undo'),
             ),
             MenuButton(
-              trailing: ShortcutActivatorDisplay(
-                activator: CharacterActivator(
-                  'Z',
+              trailing: MenuShortcut(
+                activator: SingleActivator(
+                  LogicalKeyboardKey.keyZ,
                   control: true,
-                  meta: true,
+                  shift: true,
                 ),
               ),
               child: Text('Redo'),
@@ -118,18 +121,31 @@ class MenubarExample1 extends StatelessWidget {
         MenuButton(
           child: Text('View'),
           subMenu: [
-            MenuButton(
+            MenuCheckbox(
+              value: _showBookmarksBar,
+              onChanged: (context, value) {
+                setState(() {
+                  _showBookmarksBar = value;
+                });
+              },
+              autoClose: false,
               child: Text('Always Show Bookmarks Bar'),
             ),
-            MenuButton(
-              leading: Icon(RadixIcons.check),
+            MenuCheckbox(
+              value: _showFullURLs,
+              onChanged: (context, value) {
+                setState(() {
+                  _showFullURLs = value;
+                });
+              },
+              autoClose: false,
               child: Text('Always Show Full URLs'),
             ),
             MenuDivider(),
             MenuButton(
-              trailing: ShortcutActivatorDisplay(
-                activator: CharacterActivator(
-                  'R',
+              trailing: MenuShortcut(
+                activator: SingleActivator(
+                  LogicalKeyboardKey.keyR,
                   control: true,
                 ),
               ),
@@ -137,11 +153,11 @@ class MenubarExample1 extends StatelessWidget {
             ),
             MenuButton(
               enabled: false,
-              trailing: ShortcutActivatorDisplay(
-                activator: CharacterActivator(
-                  'R',
+              trailing: MenuShortcut(
+                activator: SingleActivator(
+                  LogicalKeyboardKey.keyR,
                   control: true,
-                  meta: true,
+                  shift: true,
                 ),
               ),
               child: Text('Force Reload'),

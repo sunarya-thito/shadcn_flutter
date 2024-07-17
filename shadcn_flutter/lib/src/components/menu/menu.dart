@@ -2,14 +2,45 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class ShortcutActivatorDisplay extends StatelessWidget {
+class MenuShortcut extends StatelessWidget {
   final ShortcutActivator activator;
 
-  const ShortcutActivatorDisplay({required this.activator});
+  const MenuShortcut({required this.activator});
 
   @override
   Widget build(BuildContext context) {
-    return Text(activator.toString());
+    if (activator is CharacterActivator) {
+      final characterActivator = activator as CharacterActivator;
+      String display = characterActivator.character;
+      if (characterActivator.meta) {
+        display = 'Meta + $display';
+      }
+      if (characterActivator.alt) {
+        display = 'Alt + $display';
+      }
+      if (characterActivator.control) {
+        display = 'Ctrl + $display';
+      }
+      return Text(display).xSmall().muted();
+    }
+    if (activator is SingleActivator) {
+      final singleActivator = activator as SingleActivator;
+      String display = singleActivator.trigger.keyLabel;
+      if (singleActivator.shift) {
+        display = 'Shift + $display';
+      }
+      if (singleActivator.meta) {
+        display = 'Meta + $display';
+      }
+      if (singleActivator.alt) {
+        display = 'Alt + $display';
+      }
+      if (singleActivator.control) {
+        display = 'Ctrl + $display';
+      }
+      return Text(display).xSmall().muted();
+    }
+    return Text(activator.toString()).xSmall().muted();
   }
 }
 
@@ -65,13 +96,62 @@ class MenuButton extends StatefulWidget implements MenuItem {
   bool get hasLeading => leading != null;
 }
 
+class MenuCheckbox extends StatelessWidget implements MenuItem {
+  final bool value;
+  final ContextedValueChanged<bool>? onChanged;
+  final Widget child;
+  final Widget? trailing;
+  final FocusNode? focusNode;
+  final bool enabled;
+  final bool autoClose;
+
+  MenuCheckbox({
+    this.value = false,
+    this.onChanged,
+    required this.child,
+    this.trailing,
+    this.focusNode,
+    this.enabled = true,
+    this.autoClose = true,
+  });
+
+  @override
+  bool get hasLeading => true;
+
+  @override
+  Widget build(BuildContext context) {
+    return MenuButton(
+      leading: value
+          ? const SizedBox(
+              width: 16,
+              height: 16,
+              child: Icon(
+                RadixIcons.check,
+                size: 11,
+              ),
+            )
+          : const SizedBox(width: 16),
+      onPressed: (context) {
+        onChanged?.call(context, !value);
+      },
+      enabled: enabled,
+      focusNode: focusNode,
+      autoClose: autoClose,
+      trailing: trailing,
+      child: child,
+    );
+  }
+}
+
 class _MenuButtonState extends State<MenuButton> {
   late FocusNode _focusNode;
+  final ValueNotifier<List<MenuItem>> _children = ValueNotifier([]);
 
   @override
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
+    _children.value = widget.subMenu ?? [];
   }
 
   @override
@@ -79,6 +159,11 @@ class _MenuButtonState extends State<MenuButton> {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
       _focusNode = widget.focusNode ?? FocusNode();
+    }
+    if (!listEquals(widget.subMenu, oldWidget.subMenu)) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _children.value = widget.subMenu ?? [];
+      });
     }
   }
 
@@ -96,13 +181,17 @@ class _MenuButtonState extends State<MenuButton> {
             constraints: const BoxConstraints(
               minWidth: 192, // 12rem
             ),
-            child: MenuGroup(
-                parent: menuGroupData,
-                children: widget.subMenu!,
-                builder: (context, children) {
-                  return MenuPopup(
-                    children: children,
-                  );
+            child: AnimatedBuilder(
+                animation: _children,
+                builder: (context, child) {
+                  return MenuGroup(
+                      parent: menuGroupData,
+                      children: _children.value,
+                      builder: (context, children) {
+                        return MenuPopup(
+                          children: children,
+                        );
+                      });
                 }),
           );
         },
@@ -166,7 +255,7 @@ class _MenuButtonState extends State<MenuButton> {
                                   height: 16,
                                   child: IconTheme.merge(
                                     data: const IconThemeData(
-                                      size: 11,
+                                      size: 16,
                                     ),
                                     child: widget.leading!,
                                   ),
@@ -304,8 +393,13 @@ class _MenuGroupState extends State<MenuGroup> {
   void didUpdateWidget(covariant MenuGroup oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(oldWidget.children, widget.children)) {
+      Map<Key, MenuData> oldKeyedData = {};
+      for (int i = 0; i < oldWidget.children.length; i++) {
+        oldKeyedData[oldWidget.children[i].key ?? ValueKey(i)] = _data[i];
+      }
       _data = List.generate(widget.children.length, (i) {
-        return MenuData();
+        return oldKeyedData[widget.children[i].key ?? ValueKey(i)] ??
+            MenuData();
       });
     }
   }
