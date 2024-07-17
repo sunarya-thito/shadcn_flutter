@@ -48,6 +48,79 @@ abstract class MenuItem extends Widget {
   bool get hasLeading;
 }
 
+class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
+  final T? value;
+  final ContextedValueChanged<T>? onChanged;
+  final List<Widget> children;
+
+  MenuRadioGroup({
+    required this.value,
+    required this.onChanged,
+    required this.children,
+  });
+
+  @override
+  bool get hasLeading => children.isNotEmpty;
+
+  @override
+  Widget build(BuildContext context) {
+    return Data<MenuRadioGroup<T>>(
+      data: this,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: children,
+      ),
+    );
+  }
+}
+
+class MenuRadio<T> extends StatelessWidget {
+  final T value;
+  final Widget child;
+  final Widget? trailing;
+  final FocusNode? focusNode;
+  final bool enabled;
+  final bool autoClose;
+
+  MenuRadio({
+    required this.value,
+    required this.child,
+    this.trailing,
+    this.focusNode,
+    this.enabled = true,
+    this.autoClose = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final radioGroup = Data.maybeOf<MenuRadioGroup<T>>(context);
+    assert(radioGroup != null, 'MenuRadio must be a child of MenuRadioGroup');
+    return Data<MenuRadioGroup<T>>.boundary(
+      child: MenuButton(
+        leading: radioGroup!.value == value
+            ? const SizedBox(
+                width: 16,
+                height: 16,
+                child: Icon(
+                  RadixIcons.dotFilled,
+                  size: 6,
+                ),
+              )
+            : const SizedBox(width: 16),
+        onPressed: (context) {
+          radioGroup.onChanged?.call(context, value);
+        },
+        enabled: enabled,
+        focusNode: focusNode,
+        autoClose: autoClose,
+        trailing: trailing,
+        child: child,
+      ),
+    );
+  }
+}
+
 class MenuDivider extends StatelessWidget implements MenuItem {
   const MenuDivider({super.key});
   @override

@@ -580,15 +580,13 @@ class PopoverController extends ChangeNotifier {
   final List<GlobalKey<PopoverAnchorState>> _openPopovers = [];
 
   void _attach(PopoverPortalState state) {
-    assert(_attached == null,
-        'PopoverController already attached to another PopoverPortal');
     _attached = state;
   }
 
   void _detach(PopoverPortalState state) {
-    assert(_attached == state,
-        'PopoverController not attached to this PopoverPortal');
-    _attached = null;
+    if (_attached == state) {
+      _attached = null;
+    }
   }
 
   bool get hasAttached => _attached != null;

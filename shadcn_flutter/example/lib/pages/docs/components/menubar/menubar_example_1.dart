@@ -9,6 +9,7 @@ class MenubarExample1 extends StatefulWidget {
 class _MenubarExample1State extends State<MenubarExample1> {
   bool _showBookmarksBar = false;
   bool _showFullURLs = true;
+  int _selectedProfile = 1;
   @override
   Widget build(BuildContext context) {
     return Menubar(
@@ -175,15 +176,30 @@ class _MenubarExample1State extends State<MenubarExample1> {
         MenuButton(
           child: Text('Profiles'),
           subMenu: [
-            MenuButton(
-              child: Text('Andy'),
-            ),
-            MenuButton(
-              leading: Icon(RadixIcons.dotFilled),
-              child: Text('Benoit'),
-            ),
-            MenuButton(
-              child: Text('Luis'),
+            MenuRadioGroup<int>(
+              value: _selectedProfile,
+              onChanged: (context, value) {
+                setState(() {
+                  _selectedProfile = value;
+                });
+              },
+              children: [
+                MenuRadio<int>(
+                  value: 0,
+                  autoClose: false,
+                  child: Text('Andy'),
+                ),
+                MenuRadio<int>(
+                  value: 1,
+                  autoClose: false,
+                  child: Text('Benoit'),
+                ),
+                MenuRadio<int>(
+                  value: 2,
+                  autoClose: false,
+                  child: Text('Luis'),
+                ),
+              ],
             ),
             MenuDivider(),
             MenuButton(
