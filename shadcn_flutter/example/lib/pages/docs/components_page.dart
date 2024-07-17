@@ -47,7 +47,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Data(
-      data: ComponentsMode.capture,
+      data: ComponentsMode.normal,
       child: DocsPage(
         name: 'components',
         onThisPage: {
