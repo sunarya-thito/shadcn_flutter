@@ -26,12 +26,12 @@ This is a port of the shadcn UI package to flutter.
 [![Button](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/button.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/button)
 [![Checkbox](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/checkbox.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/checkbox)
 [![Color Picker](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/colorpicker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/color-picker)
-[![Combobox](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/combobox.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/combo-box)
 [![Date Picker](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/datepicker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/date_picker)
 [![Form](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/form.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/form)
 [![Input](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/input.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/input)
 [![Input OTP](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/inputotp.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/input_otp)
 [![Radio Group](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/radiogroup.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/radio_group)
+[![Select](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/select.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/select)
 [![Slider](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/slider.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/slider)
 [![Switch](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/switch.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/switch)
 [![Text Area](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/textarea.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/text_area)
@@ -41,10 +41,12 @@ This is a port of the shadcn UI package to flutter.
 [![Card](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/card.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/card)
 [![Carousel](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/carousel.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/carousel)
 [![Divider](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/divider.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/divider)
+[![Resizable](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/resizable.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/resizable)
 [![Steps](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/steps.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/steps)
 
 ### Navigation
 [![Breadcrumb](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/breadcrumb.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/breadcrumb)
+[![Menubar](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/menubar.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/menubar)
 [![Pagination](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/pagination.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/pagination)
 [![Tabs](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/tabs.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tabs)
 [![Tab List](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/tablist.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tab_list)
@@ -64,6 +66,8 @@ This is a port of the shadcn UI package to flutter.
 [![Badge](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/badge.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/badge)
 [![Calendar](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/calendar.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/calendar)
 [![Command](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/command.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/command)
+[![Context Menu](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/context_menu.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/context_menu)
+[![Dropdown Menu](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/dropdown_menu.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/dropdown_menu)
 
 ## Installation
 ### Using CLI
