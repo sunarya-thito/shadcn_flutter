@@ -22,6 +22,9 @@ class PopoverRoute<T> extends PopupRoute<T> {
   final EdgeInsets margin;
   final bool follow;
   final bool consumeOutsideTaps;
+  final ValueChanged<PopoverAnchorState>? onTickFollow;
+  final bool allowInvertHorizontal;
+  final bool allowInvertVertical;
 
   PopoverRoute({
     required this.anchorContext,
@@ -42,6 +45,9 @@ class PopoverRoute<T> extends PopupRoute<T> {
     this.margin = const EdgeInsets.all(8),
     this.follow = true,
     this.consumeOutsideTaps = true,
+    this.onTickFollow,
+    this.allowInvertHorizontal = true,
+    this.allowInvertVertical = true,
   }) : super(traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop);
 
   @override
@@ -102,6 +108,9 @@ class PopoverRoute<T> extends PopupRoute<T> {
       margin: margin,
       follow: follow,
       consumeOutsideTaps: consumeOutsideTaps,
+      onTickFollow: onTickFollow,
+      allowInvertHorizontal: allowInvertHorizontal,
+      allowInvertVertical: allowInvertVertical,
     );
   }
 
@@ -141,6 +150,9 @@ class PopoverAnchor extends StatefulWidget {
     this.margin = const EdgeInsets.all(8),
     this.follow = true,
     this.consumeOutsideTaps = true,
+    this.onTickFollow,
+    this.allowInvertHorizontal = true,
+    this.allowInvertVertical = true,
   });
 
   final Offset position;
@@ -161,6 +173,9 @@ class PopoverAnchor extends StatefulWidget {
   final bool follow;
   final BuildContext anchorContext;
   final bool consumeOutsideTaps;
+  final ValueChanged<PopoverAnchorState>? onTickFollow;
+  final bool allowInvertHorizontal;
+  final bool allowInvertVertical;
 
   @override
   State<PopoverAnchor> createState() => PopoverAnchorState();
@@ -175,6 +190,7 @@ enum PopoverConstraint {
 
 class PopoverAnchorState extends State<PopoverAnchor>
     with SingleTickerProviderStateMixin {
+  late BuildContext _anchorContext;
   late Offset _position;
   late Offset? _offset;
   late Alignment _alignment;
@@ -184,6 +200,8 @@ class PopoverAnchorState extends State<PopoverAnchor>
   late EdgeInsets _margin;
   Size? _anchorSize;
   late bool _follow;
+  late bool _allowInvertHorizontal;
+  late bool _allowInvertVertical;
   late Ticker _ticker;
 
   set offset(Offset? offset) {
@@ -206,6 +224,9 @@ class PopoverAnchorState extends State<PopoverAnchor>
     _heightConstraint = widget.heightConstraint;
     _margin = widget.margin;
     _follow = widget.follow;
+    _anchorContext = widget.anchorContext;
+    _allowInvertHorizontal = widget.allowInvertHorizontal;
+    _allowInvertVertical = widget.allowInvertVertical;
     _ticker = createTicker(_tick);
     if (_follow) {
       _ticker.start();
@@ -238,9 +259,6 @@ class PopoverAnchorState extends State<PopoverAnchor>
   @override
   void didUpdateWidget(covariant PopoverAnchor oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.position != widget.position) {
-      _position = widget.position;
-    }
     if (oldWidget.alignment != widget.alignment) {
       _alignment = widget.alignment;
     }
@@ -270,6 +288,15 @@ class PopoverAnchorState extends State<PopoverAnchor>
         _ticker.stop();
       }
     }
+    if (oldWidget.anchorContext != widget.anchorContext) {
+      _anchorContext = widget.anchorContext;
+    }
+    if (oldWidget.allowInvertHorizontal != widget.allowInvertHorizontal) {
+      _allowInvertHorizontal = widget.allowInvertHorizontal;
+    }
+    if (oldWidget.allowInvertVertical != widget.allowInvertVertical) {
+      _allowInvertVertical = widget.allowInvertVertical;
+    }
   }
 
   Size? get anchorSize => _anchorSize;
@@ -281,14 +308,9 @@ class PopoverAnchorState extends State<PopoverAnchor>
   Offset? get offset => _offset;
   EdgeInsets get margin => _margin;
   bool get follow => _follow;
-
-  set position(Offset value) {
-    if (_position != value) {
-      setState(() {
-        _position = value;
-      });
-    }
-  }
+  BuildContext get anchorContext => _anchorContext;
+  bool get allowInvertHorizontal => _allowInvertHorizontal;
+  bool get allowInvertVertical => _allowInvertVertical;
 
   set alignment(Alignment value) {
     if (_alignment != value) {
@@ -343,6 +365,30 @@ class PopoverAnchorState extends State<PopoverAnchor>
     }
   }
 
+  set anchorContext(BuildContext value) {
+    if (_anchorContext != value) {
+      setState(() {
+        _anchorContext = value;
+      });
+    }
+  }
+
+  set allowInvertHorizontal(bool value) {
+    if (_allowInvertHorizontal != value) {
+      setState(() {
+        _allowInvertHorizontal = value;
+      });
+    }
+  }
+
+  set allowInvertVertical(bool value) {
+    if (_allowInvertVertical != value) {
+      setState(() {
+        _allowInvertVertical = value;
+      });
+    }
+  }
+
   @override
   void dispose() {
     _ticker.dispose();
@@ -350,10 +396,9 @@ class PopoverAnchorState extends State<PopoverAnchor>
   }
 
   void _tick(Duration elapsed) {
-    if (!mounted || !widget.anchorContext.mounted) return;
+    if (!mounted || !anchorContext.mounted) return;
     // update position based on anchorContext
-    RenderBox? renderBox =
-        widget.anchorContext.findRenderObject() as RenderBox?;
+    RenderBox? renderBox = anchorContext.findRenderObject() as RenderBox?;
     if (renderBox != null) {
       Offset pos = renderBox.localToGlobal(Offset.zero);
       Size size = renderBox.size;
@@ -363,6 +408,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
       );
       if (_position != newPos) {
         setState(() {
+          widget.onTickFollow?.call(this);
           _anchorSize = size;
           _position = newPos;
         });
@@ -400,6 +446,8 @@ class PopoverAnchorState extends State<PopoverAnchor>
               margin: _margin,
               scale: tweenValue(0.9, 1.0, widget.animation.value),
               scaleAlignment: widget.transitionAlignment ?? _alignment,
+              allowInvertVertical: _allowInvertVertical,
+              allowInvertHorizontal: _allowInvertHorizontal,
               child: child!,
             );
           },
@@ -434,6 +482,9 @@ Future<T?> showPopover<T>({
   EdgeInsets margin = const EdgeInsets.all(8),
   bool follow = true,
   bool consumeOutsideTaps = true,
+  ValueChanged<PopoverAnchorState>? onTickFollow,
+  bool allowInvertHorizontal = true,
+  bool allowInvertVertical = true,
 }) {
   anchorAlignment ??= alignment * -1;
   final NavigatorState navigator =
@@ -471,6 +522,9 @@ Future<T?> showPopover<T>({
     margin: margin,
     follow: follow,
     consumeOutsideTaps: consumeOutsideTaps,
+    onTickFollow: onTickFollow,
+    allowInvertHorizontal: allowInvertHorizontal,
+    allowInvertVertical: allowInvertVertical,
   ));
 }
 
@@ -479,11 +533,15 @@ class PopoverController extends ChangeNotifier {
 
   bool get hasOpenPopovers => _openPopovers.isNotEmpty;
 
+  Iterable<PopoverAnchorState> get openPopovers => _openPopovers
+      .map((key) => key.currentState)
+      .whereType<PopoverAnchorState>();
+
   Future<T?> show<T>({
     required BuildContext context,
     required WidgetBuilder builder,
     required Alignment alignment,
-    required Alignment anchorAlignment,
+    Alignment? anchorAlignment,
     PopoverConstraint widthConstraint = PopoverConstraint.flexible,
     PopoverConstraint heightConstraint = PopoverConstraint.flexible,
     bool modal = false,
@@ -493,6 +551,11 @@ class PopoverController extends ChangeNotifier {
     Object? regionGroupId,
     Alignment? transitionAlignment,
     bool consumeOutsideTaps = true,
+    EdgeInsets margin = const EdgeInsets.all(8),
+    ValueChanged<PopoverAnchorState>? onTickFollow,
+    bool follow = true,
+    bool allowInvertHorizontal = true,
+    bool allowInvertVertical = true,
   }) async {
     if (closeOthers) {
       close();
@@ -513,6 +576,11 @@ class PopoverController extends ChangeNotifier {
       offset: offset,
       transitionAlignment: transitionAlignment,
       consumeOutsideTaps: consumeOutsideTaps,
+      margin: margin,
+      onTickFollow: onTickFollow,
+      follow: follow,
+      allowInvertHorizontal: allowInvertHorizontal,
+      allowInvertVertical: allowInvertVertical,
     );
     _openPopovers.remove(key);
     notifyListeners();
@@ -533,6 +601,66 @@ class PopoverController extends ChangeNotifier {
     }
     _openPopovers.clear();
     notifyListeners();
+  }
+
+  set anchorContext(BuildContext value) {
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.anchorContext = value;
+    }
+  }
+
+  set alignment(Alignment value) {
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.alignment = value;
+    }
+  }
+
+  set anchorAlignment(Alignment value) {
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.anchorAlignment = value;
+    }
+  }
+
+  set widthConstraint(PopoverConstraint value) {
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.widthConstraint = value;
+    }
+  }
+
+  set heightConstraint(PopoverConstraint value) {
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.heightConstraint = value;
+    }
+  }
+
+  set margin(EdgeInsets value) {
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.margin = value;
+    }
+  }
+
+  set follow(bool value) {
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.follow = value;
+    }
+  }
+
+  set offset(Offset? value) {
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.offset = value;
+    }
+  }
+
+  set allowInvertHorizontal(bool value) {
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.allowInvertHorizontal = value;
+    }
+  }
+
+  set allowInvertVertical(bool value) {
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.allowInvertVertical = value;
+    }
   }
 
   @override
@@ -556,6 +684,8 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
   final double scale;
   final Alignment scaleAlignment;
   final FilterQuality? filterQuality;
+  final bool allowInvertHorizontal;
+  final bool allowInvertVertical;
   const PopoverLayout({
     Key? key,
     required this.alignment,
@@ -570,6 +700,8 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
     required this.scale,
     required this.scaleAlignment,
     this.filterQuality,
+    this.allowInvertHorizontal = true,
+    this.allowInvertVertical = true,
   }) : super(key: key, child: child);
 
   @override
@@ -585,6 +717,9 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
       margin: margin,
       scale: scale,
       scaleAlignment: scaleAlignment,
+      filterQuality: filterQuality,
+      allowInvertHorizontal: allowInvertHorizontal,
+      allowInvertVertical: allowInvertVertical,
     );
   }
 
@@ -636,6 +771,14 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
       renderObject._filterQuality = filterQuality;
       hasChanged = true;
     }
+    if (renderObject._allowInvertHorizontal != allowInvertHorizontal) {
+      renderObject._allowInvertHorizontal = allowInvertHorizontal;
+      hasChanged = true;
+    }
+    if (renderObject._allowInvertVertical != allowInvertVertical) {
+      renderObject._allowInvertVertical = allowInvertVertical;
+      hasChanged = true;
+    }
     if (hasChanged) {
       renderObject.markNeedsLayout();
     }
@@ -654,6 +797,8 @@ class PopoverLayoutRender extends RenderShiftedBox {
   double _scale;
   Alignment _scaleAlignment;
   FilterQuality? _filterQuality;
+  bool _allowInvertHorizontal;
+  bool _allowInvertVertical;
 
   bool _invertX = false;
   bool _invertY = false;
@@ -671,6 +816,8 @@ class PopoverLayoutRender extends RenderShiftedBox {
     required double scale,
     required Alignment scaleAlignment,
     FilterQuality? filterQuality,
+    bool allowInvertHorizontal = true,
+    bool allowInvertVertical = true,
   })  : _alignment = alignment,
         _position = position,
         _anchorAlignment = anchorAlignment,
@@ -682,6 +829,8 @@ class PopoverLayoutRender extends RenderShiftedBox {
         _scale = scale,
         _scaleAlignment = scaleAlignment,
         _filterQuality = filterQuality,
+        _allowInvertHorizontal = allowInvertHorizontal,
+        _allowInvertVertical = allowInvertVertical,
         super(child);
 
   @override
@@ -799,7 +948,7 @@ class PopoverLayoutRender extends RenderShiftedBox {
     double top = y - _margin.top;
     double right = x + childSize.width + _margin.right;
     double bottom = y + childSize.height + _margin.bottom;
-    if (left < 0 || right > size.width) {
+    if ((left < 0 || right > size.width) && _allowInvertHorizontal) {
       x = _position.dx -
           childSize.width / 2 -
           (childSize.width / 2 * -_alignment.x);
@@ -813,7 +962,7 @@ class PopoverLayoutRender extends RenderShiftedBox {
     } else {
       _invertX = false;
     }
-    if (top < 0 || bottom > size.height) {
+    if ((top < 0 || bottom > size.height) && _allowInvertVertical) {
       y = _position.dy -
           childSize.height / 2 -
           (childSize.height / 2 * -_alignment.y);

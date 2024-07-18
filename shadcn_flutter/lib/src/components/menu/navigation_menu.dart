@@ -209,6 +209,8 @@ class NavigationMenu extends StatefulWidget {
 
 class NavigationMenuState extends State<NavigationMenu> {
   static const Duration kDebounceDuration = Duration(milliseconds: 200);
+  // final GlobalKey<PopoverAnchorState> _popoverKey = GlobalKey();
+  // final ValueNotifier<bool> _visible = ValueNotifier(false);
   final PopoverController _popoverController = PopoverController();
   final ValueNotifier<int> _activeIndex = ValueNotifier(0);
   final Map<NavigationItemState, WidgetBuilder> _contentBuilders = {};
@@ -231,29 +233,35 @@ class NavigationMenuState extends State<NavigationMenu> {
     super.dispose();
   }
 
-  void _show() {
+  void _show(BuildContext context) {
     if (_popoverController.hasOpenPopovers) {
+      _popoverController.anchorContext = context;
       return;
     }
     _popoverController.show(
       context: context,
-      builder: buildPopover,
-      alignment: Alignment.topLeft,
-      anchorAlignment: Alignment.bottomLeft,
+      alignment: Alignment.topCenter,
       regionGroupId: this,
-      transitionAlignment: Alignment.center,
-      offset: const Offset(0, 6),
+      offset: const Offset(0, 4),
+      builder: buildPopover,
+      modal: false,
+      margin: requestMargin() ?? const EdgeInsets.all(8),
+      allowInvertHorizontal: false,
+      allowInvertVertical: false,
+      onTickFollow: (value) {
+        value.margin = requestMargin() ?? const EdgeInsets.all(8);
+      },
     );
   }
 
   void _activate(NavigationItemState item) {
     if (item.widget.content == null) {
-      _popoverController.closeLater();
+      close();
       return;
     }
     final index = widget.children.indexOf(item.widget);
     _activeIndex.value = index;
-    _show();
+    _show(item.context);
   }
 
   NavigationItemState? findByWidget(Widget widget) {
@@ -266,15 +274,17 @@ class NavigationMenuState extends State<NavigationMenu> {
     NavigationItemState? item = findByWidget(widget.children[index]);
     if (item != null) {
       return Data<NavigationMenuState>.boundary(
-        child: Data<NavigationMenuMarginData>.boundary(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: _contentBuilders[item]!(context),
-          ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: _contentBuilders[item]!(context),
         ),
       );
     }
     return Container();
+  }
+
+  void close() {
+    _popoverController.close();
   }
 
   Widget buildPopover(BuildContext context) {
@@ -288,7 +298,7 @@ class NavigationMenuState extends State<NavigationMenu> {
         int currentHoverCount = ++_hoverCount;
         Future.delayed(kDebounceDuration, () {
           if (currentHoverCount == _hoverCount && mounted) {
-            _popoverController.close();
+            close();
           }
         });
       },
@@ -314,15 +324,22 @@ class NavigationMenuState extends State<NavigationMenu> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Offset? margin;
+  EdgeInsets? requestMargin() {
     RenderBox? box = context.findRenderObject() as RenderBox?;
     if (box != null) {
       Offset globalPosition = box.localToGlobal(Offset.zero);
       Size size = box.size;
-      margin = globalPosition + Offset(0, size.height);
+      return EdgeInsets.only(
+          left: globalPosition.dx,
+          top: globalPosition.dy + size.height,
+          right: 8,
+          bottom: 8);
     }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return TapRegion(
       groupId: this,
       child: MouseRegion(
@@ -334,40 +351,21 @@ class NavigationMenuState extends State<NavigationMenu> {
           int currentHoverCount = ++_hoverCount;
           Future.delayed(kDebounceDuration, () {
             if (currentHoverCount == _hoverCount && mounted) {
-              _popoverController.close();
+              close();
             }
           });
         },
         child: IntrinsicHeight(
           child: Data(
             data: this,
-            child: Data(
-              data: NavigationMenuMarginData(margin),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: widget.children,
-              ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: widget.children,
             ),
           ),
         ),
       ),
     );
   }
-}
-
-class NavigationMenuMarginData {
-  final Offset? offset;
-
-  NavigationMenuMarginData(this.offset);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is NavigationMenuMarginData && other.offset == offset;
-  }
-
-  @override
-  int get hashCode => offset.hashCode;
 }
