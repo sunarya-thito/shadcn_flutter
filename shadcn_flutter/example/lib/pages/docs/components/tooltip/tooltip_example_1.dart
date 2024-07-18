@@ -5,6 +5,7 @@ class TooltipExample1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tooltip(
       child: PrimaryButton(
+        onPressed: () {},
         child: Text('Hover over me'),
       ),
       tooltip: TooltipContainer(
