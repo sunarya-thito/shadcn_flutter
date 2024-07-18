@@ -11,7 +11,6 @@ import 'package:example/pages/docs/components/color_picker/color_picker_example_
 import 'package:example/pages/docs/components/command/command_example_1.dart';
 import 'package:example/pages/docs/components/date_picker/date_picker_example_1.dart';
 import 'package:example/pages/docs/components/divider/divider_example_3.dart';
-import 'package:example/pages/docs/components/form/form_example_1.dart';
 import 'package:example/pages/docs/components/pagination/pagination_example_1.dart';
 import 'package:example/pages/docs/components/resizable/resizable_example_3.dart';
 import 'package:example/pages/docs/components/text_area/text_area_example_3.dart';
@@ -23,6 +22,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import 'components/form/form_example_1.dart';
 import 'components/input_otp/input_otp_example_2.dart';
 
 class ComponentsPage extends StatefulWidget {
@@ -772,7 +772,80 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   ),
                 ),
               ),
-              WIPComponentCard(title: 'Navigation Menu'),
+              ComponentCard(
+                title: 'Navigation Menu',
+                name: 'navigation_menu',
+                scale: 1,
+                example: Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      NavigationMenu(
+                        children: [
+                          Button(
+                            onPressed: () {},
+                            style: const ButtonStyle.ghost().copyWith(
+                              decoration: (context, states, value) {
+                                return (value as BoxDecoration).copyWith(
+                                  borderRadius:
+                                      BorderRadius.circular(theme.radiusMd),
+                                  color:
+                                      theme.colorScheme.muted.withOpacity(0.8),
+                                );
+                              },
+                            ),
+                            trailing: Icon(
+                              RadixIcons.chevronUp,
+                              size: 12,
+                            ),
+                            child: Text('Getting Started'),
+                          ),
+                          NavigationItem(
+                            content: const SizedBox(),
+                            child: Text('Components'),
+                          ),
+                        ],
+                      ),
+                      gap(8),
+                      OutlinedContainer(
+                        borderRadius: theme.radiusMd,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: NavigationContentList(
+                            children: [
+                              Button(
+                                style: ButtonVariance.ghost.copyWith(
+                                  padding: (context, states, value) {
+                                    return const EdgeInsets.all(12);
+                                  },
+                                  decoration: (context, states, value) {
+                                    return (value as BoxDecoration).copyWith(
+                                      borderRadius:
+                                          BorderRadius.circular(theme.radiusMd),
+                                      color: theme.colorScheme.muted
+                                          .withOpacity(0.8),
+                                    );
+                                  },
+                                ),
+                                onPressed: () {},
+                                alignment: Alignment.topLeft,
+                                child: Basic(
+                                  title: Text('Installation').medium(),
+                                  content: Text(
+                                          'How to install Shadcn/UI for Flutter')
+                                      .muted(),
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                ),
+                              ).constrained(maxWidth: 16 * 16),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               ComponentCard(
                 title: 'Pagination',
                 name: 'pagination',
