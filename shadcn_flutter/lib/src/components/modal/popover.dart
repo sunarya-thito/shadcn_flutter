@@ -737,8 +737,6 @@ class PopoverLayoutRender extends RenderShiftedBox {
       if (_filterQuality == null) {
         final Offset? childOffset = MatrixUtils.getAsTranslation(transform);
         if (childOffset == null) {
-          // if the matrix is singular the children would be compressed to a line or
-          // single point, instead short-circuit and paint nothing.
           final double det = transform.determinant();
           if (det == 0 || !det.isFinite) {
             layer = null;
@@ -786,7 +784,6 @@ class PopoverLayoutRender extends RenderShiftedBox {
 
   @override
   void performLayout() {
-    // make sure the popup is within the size (with a margin of 8)
     child!.layout(constraints.loosen(), parentUsesSize: true);
     size = constraints.biggest;
     Size childSize = child!.size;
