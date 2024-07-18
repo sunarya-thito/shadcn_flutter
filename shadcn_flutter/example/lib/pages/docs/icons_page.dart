@@ -37,7 +37,7 @@ class _IconsPageState extends State<IconsPage> {
     }).toList();
   }
 
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   void _onTap(String className, MapEntry<String, IconData> entry) {
     showDialog(
