@@ -31,25 +31,30 @@ class _CodeSnippetState extends State<CodeSnippet> {
   };
   static const Map<String, String> _languageAlias = {
     'yml': 'yaml',
+    // since its similar to dart, temporarily use dart as fallback to js and ts
+    'js': 'dart',
+    'ts': 'dart',
+    'javascript': 'dart',
+    //
   };
   static final Map<String, Future<void>> _initializedLanguages = {};
   static final Map<Brightness, Future<HighlighterTheme>> _initializedThemes =
       {};
-  static Future<bool> _initializeLanguage(String mode) {
+  static Future<String?> _initializeLanguage(String mode) {
     // check for alias
     if (_languageAlias.containsKey(mode)) {
       mode = _languageAlias[mode]!;
     }
     if (!_supportedLanguages.contains(mode)) {
-      return Future.value(false);
+      return Future.value(null);
     }
     if (_initializedLanguages.containsKey(mode)) {
       _initializedLanguages[mode]!;
-      return Future.value(true);
+      return Future.value(mode);
     }
     final future = Highlighter.initialize([mode]);
     _initializedLanguages[mode] = future;
-    return future.then((_) => true);
+    return future.then((_) => mode);
   }
 
   static Future<HighlighterTheme> _initializeTheme(Brightness brightness) {
@@ -83,11 +88,13 @@ class _CodeSnippetState extends State<CodeSnippet> {
   }
 
   Future<Highlighter?> _initializeHighlighter() async {
-    if (!await _initializeLanguage(widget.mode)) {
+    String mode = widget.mode;
+    String? language = await _initializeLanguage(mode);
+    if (language == null) {
       return null;
     }
     final themeData = await _initializeTheme(_brightness ?? Brightness.light);
-    return Highlighter(language: widget.mode, theme: themeData);
+    return Highlighter(language: language, theme: themeData);
   }
 
   @override
