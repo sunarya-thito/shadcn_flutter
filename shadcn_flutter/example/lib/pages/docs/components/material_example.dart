@@ -27,7 +27,7 @@ class MaterialExample extends StatelessWidget {
                     context.goNamed('theme');
                   },
                   child: Text(
-                      'Try changing the shadcn_flutter theme right here!.')),
+                      'Try changing the shadcn_flutter theme right here!')),
         ),
         WidgetUsageExample(
           title: 'Material Example',

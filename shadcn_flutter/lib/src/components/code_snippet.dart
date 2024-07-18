@@ -95,9 +95,12 @@ class _CodeSnippetState extends State<CodeSnippet> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                   child: data == null
-                      ? Text(widget.code).muted().mono().small()
+                      ? material.SelectableText(widget.code)
+                          .muted()
+                          .mono()
+                          .small()
                       : material.SelectableText.rich(
                           data.highlight(widget.code),
                         ).mono().small(),

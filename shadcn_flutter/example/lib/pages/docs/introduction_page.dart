@@ -1,4 +1,5 @@
 import 'package:example/pages/docs_page.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class IntroductionPage extends StatefulWidget {
@@ -31,7 +32,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
           const Text(
               'If you found any issues, please report it to our GitHub instead of Shadcn/UI.'),
           const Text(
-              'Currently there\'s 44 out of 49 components that has been implemented into this package.'),
+              'Currently there\'s 45 out of 49 components that has been implemented into this package.'),
           const Text('Frequency Asked Questions').h2().anchored(faqKey),
           Accordion(
             items: [
@@ -53,7 +54,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
                   child:
                       Text('Can I use this with Material/Cupertino Widgets?'),
                 ),
-                content: Text('Sure you can!'),
+                content: Text('Sure you can! ').thenButton(
+                    onPressed: () {
+                      context.goNamed('external');
+                    },
+                    child: Text('See this page!')),
               ),
               AccordionItem(
                 trigger: AccordionTrigger(
