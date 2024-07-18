@@ -14,41 +14,26 @@ class _RadioGroupExample1State extends State<RadioGroupExample1> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RadioGroup<int>(
+          value: selectedValue,
+          onChanged: (value) {
+            setState(() {
+              selectedValue = value;
+            });
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RadioItem(
                 value: 1,
                 trailing: Text('Option 1'),
-                onSelected: (selected) {
-                  if (selected) {
-                    setState(() {
-                      selectedValue = 1;
-                    });
-                  }
-                },
               ),
               RadioItem(
                 value: 2,
                 trailing: Text('Option 2'),
-                onSelected: (selected) {
-                  if (selected) {
-                    setState(() {
-                      selectedValue = 2;
-                    });
-                  }
-                },
               ),
               RadioItem(
                 value: 3,
                 trailing: Text('Option 3'),
-                onSelected: (selected) {
-                  if (selected) {
-                    setState(() {
-                      selectedValue = 3;
-                    });
-                  }
-                },
               ),
             ],
           ),

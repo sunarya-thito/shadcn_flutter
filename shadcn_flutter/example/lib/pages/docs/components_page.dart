@@ -475,12 +475,15 @@ class _ComponentsPageState extends State<ComponentsPage> {
                       children: [
                         RadioItem(
                           trailing: Text('Option 1'),
+                          value: null,
                         ),
                         RadioItem(
                           trailing: Text('Option 2'),
+                          value: null,
                         ),
                         RadioItem(
                           trailing: Text('Option 3'),
+                          value: null,
                         ),
                       ],
                     ).gap(4),

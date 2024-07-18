@@ -1,5 +1,4 @@
 import 'package:example/pages/docs/components/radio_group/radio_group_example_1.dart';
-import 'package:example/pages/docs/components/radio_group/radio_group_example_2.dart';
 import 'package:example/pages/widget_usage_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -18,12 +17,6 @@ class RadioGroupExample extends StatelessWidget {
           child: RadioGroupExample1(),
           path:
               'lib/pages/docs/components/radio_group/radio_group_example_1.dart',
-        ),
-        WidgetUsageExample(
-          title: 'Initial Value Example',
-          child: RadioGroupExample2(),
-          path:
-              'lib/pages/docs/components/radio_group/radio_group_example_2.dart',
         ),
       ],
     );

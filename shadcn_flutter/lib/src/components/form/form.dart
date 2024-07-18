@@ -918,19 +918,22 @@ extension FormExtension on BuildContext {
 
 mixin FormValueSupplier<X extends StatefulWidget> on State<X> {
   int _futureCounter = 0;
-  void reportNewFormValue<T>(T value, ValueChanged<T> onReplace) {
+  Future<bool> reportNewFormValue<T>(T value, ValueChanged<T> onReplace) {
     final currentCounter = ++_futureCounter;
-    context.reportNewFormValue(value)?.then((value) {
-      if (_futureCounter == currentCounter) {
-        if (value is ReplaceResult<T>) {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            if (context.mounted) {
-              onReplace(value.value);
+    return context.reportNewFormValue(value)?.then((value) {
+          if (_futureCounter == currentCounter) {
+            if (value is ReplaceResult<T>) {
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                if (context.mounted) {
+                  onReplace(value.value);
+                }
+              });
+              return false;
             }
-          });
-        }
-      }
-    });
+          }
+          return true;
+        }) ??
+        Future.value(true);
   }
 }
 

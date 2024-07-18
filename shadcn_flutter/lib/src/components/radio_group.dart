@@ -1,5 +1,3 @@
-import 'package:flutter/services.dart';
-
 import '../../shadcn_flutter.dart';
 
 class Radio extends StatelessWidget {
@@ -51,15 +49,17 @@ class PreviousItemIntent extends Intent {
 class RadioItem<T> extends StatefulWidget {
   final Widget? leading;
   final Widget? trailing;
-  final ValueChanged<bool>? onSelected;
-  final T? value;
+  final T value;
+  final bool enabled;
+  final FocusNode? focusNode;
 
   const RadioItem({
     Key? key,
     this.leading,
     this.trailing,
-    this.onSelected,
-    this.value,
+    required this.value,
+    this.enabled = true,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -67,92 +67,69 @@ class RadioItem<T> extends StatefulWidget {
 }
 
 class _RadioItemState<T> extends State<RadioItem<T>> with FormValueSupplier {
-  _RadioGroupState? _group;
-  bool _selected = false;
+  late FocusNode _focusNode;
+
   bool _focusing = false;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _RadioGroupState<T> newGroup = Data.of(context);
-    if (_group != newGroup) {
-      _group?._notifier.removeListener(_onChanged);
-      _group?._focusing.removeListener(_onFocusChange);
-      _group?._items.remove(this);
-      _group = newGroup;
-      _group?._notifier.addListener(_onChanged);
-      _group?._focusing.addListener(_onFocusChange);
-      _group?._items.add(this);
-      if (_group?.widget.initialValue == null ||
-          _group?.widget.initialValue == widget.value) {
-        if (_group?._notifier.value == null ||
-            !_group!._notifier.value!.mounted) {
-          _group?._notifier.value = this;
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (widget.onSelected != null) {
-              widget.onSelected!(_selected);
-            }
-            reportNewFormValue(widget.value, (value) {
-              _group?._setSelectedValue(value);
-            });
-          });
-        } else {
-          _selected = _group?._notifier.value == this;
-        }
-      }
-    }
+  void initState() {
+    super.initState();
+    _focusNode = widget.focusNode ?? FocusNode();
   }
 
   @override
-  void dispose() {
-    _group?._notifier.removeListener(_onChanged);
-    _group?._focusing.removeListener(_onFocusChange);
-    _group?._items.remove(this);
-    if (_group?._notifier.value == this) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _group?._next();
-      });
+  void didUpdateWidget(covariant RadioItem<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.focusNode != widget.focusNode) {
+      _focusNode.dispose();
+      _focusNode = widget.focusNode ?? FocusNode();
     }
-    super.dispose();
-  }
-
-  void _onFocusChange() {
-    if (!mounted) return;
-    setState(() {
-      _focusing = _group?._focusing.value ?? false;
-    });
-  }
-
-  void _onChanged() {
-    if (!mounted) return;
-    setState(() {
-      _selected = _group?._notifier.value == this;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final groupData = Data.maybeOf<RadioGroupData<T>>(context);
+    final group = Data.maybeOf<_RadioGroupState<T>>(context);
+    assert(groupData != null, 'RadioItem must be a descendant of RadioGroup');
     return GestureDetector(
-      onTap: widget.onSelected != null
+      onTap: widget.enabled
           ? () {
-              _group?._setSelected(this);
+              group?._setSelected(widget.value);
             }
           : null,
-      child: MouseRegion(
-        cursor: widget.onSelected != null
+      child: FocusableActionDetector(
+        focusNode: _focusNode,
+        mouseCursor: widget.enabled
             ? SystemMouseCursors.click
             : SystemMouseCursors.basic,
-        child: IntrinsicHeight(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (widget.leading != null) widget.leading!,
-              if (widget.leading != null) const SizedBox(width: 8),
-              Radio(value: _selected, focusing: _focusing && _selected),
-              if (widget.trailing != null) const SizedBox(width: 8),
-              if (widget.trailing != null) widget.trailing!,
-            ],
+        onShowFocusHighlight: (value) {
+          if (value && widget.enabled) {
+            group?._setSelected(widget.value);
+          }
+          if (value != _focusing) {
+            setState(() {
+              _focusing = value;
+            });
+          }
+        },
+        child: Data<RadioGroupData<T>>.boundary(
+          child: Data<_RadioItemState<T>>.boundary(
+            child: IntrinsicHeight(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (widget.leading != null) widget.leading!,
+                  if (widget.leading != null) const SizedBox(width: 8),
+                  Radio(
+                      value: groupData?.selectedItem == widget.value,
+                      focusing:
+                          _focusing && groupData?.selectedItem == widget.value),
+                  if (widget.trailing != null) const SizedBox(width: 8),
+                  if (widget.trailing != null) widget.trailing!,
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -162,108 +139,58 @@ class _RadioItemState<T> extends State<RadioItem<T>> with FormValueSupplier {
 
 class RadioGroup<T> extends StatefulWidget {
   final Widget child;
-  final T? initialValue;
+  final T? value;
+  final ValueChanged<T>? onChanged;
   const RadioGroup({
     Key? key,
     required this.child,
-    this.initialValue,
+    this.value,
+    this.onChanged,
   }) : super(key: key);
 
   @override
   _RadioGroupState<T> createState() => _RadioGroupState<T>();
 }
 
-class _RadioGroupState<T> extends State<RadioGroup<T>> with FormValueSupplier {
-  final List<_RadioItemState<T>> _items = [];
-  final ValueNotifier<_RadioItemState<T>?> _notifier = ValueNotifier(null);
-  final ValueNotifier<bool> _focusing = ValueNotifier(false);
+class RadioGroupData<T> {
+  final T? selectedItem;
 
-  void _setSelected(_RadioItemState<T> item) {
-    _RadioItemState? old = _notifier.value;
-    if (old != item) {
-      _notifier.value = item;
-      if (old != null) {
-        old.widget.onSelected?.call(false);
-      }
-      item.widget.onSelected?.call(true);
-      reportNewFormValue(item.widget.value, (value) {
-        _setSelectedValue(value);
+  RadioGroupData(this.selectedItem);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is RadioGroupData<T> && other.selectedItem == selectedItem;
+  }
+
+  @override
+  int get hashCode => selectedItem.hashCode;
+}
+
+class _RadioGroupState<T> extends State<RadioGroup<T>> with FormValueSupplier {
+  void _setSelected(T value) {
+    if (widget.value != value) {
+      reportNewFormValue(value, (value) {
+        widget.onChanged?.call(value);
+      }).then((success) {
+        if (success) {
+          widget.onChanged?.call(value);
+        }
       });
     }
-  }
-
-  void _setSelectedValue(T? value) {
-    _RadioItemState<T>? item = findItem(value);
-    if (item != null) {
-      _setSelected(item);
-    }
-  }
-
-  _RadioItemState<T>? findItem(dynamic value) {
-    for (var item in _items) {
-      if (item.widget.value == value) {
-        return item;
-      }
-    }
-    return null;
-  }
-
-  void _next() {
-    if (_items.isEmpty) return;
-    int index = _items.indexOf(_notifier.value!);
-    if (index == -1) {
-      // _notifier.value = _items.first;
-      _setSelected(_items.first);
-    } else {
-      // _notifier.value = _items[(index + 1) % _items.length];
-      _setSelected(_items[(index + 1) % _items.length]);
-    }
-  }
-
-  void _previous() {
-    if (_items.isEmpty) return;
-    int index = _items.indexOf(_notifier.value!);
-    if (index == -1) {
-      // _notifier.value = _items.last;
-      _setSelected(_items.last);
-    } else {
-      // _notifier.value = _items[(index - 1 + _items.length) % _items.length];
-      _setSelected(_items[(index - 1 + _items.length) % _items.length]);
-    }
-    // _notifier.value?.widget.onSelected?.call(true);
   }
 
   @override
   Widget build(BuildContext context) {
     return FocusableActionDetector(
-      shortcuts: {
-        LogicalKeySet(LogicalKeyboardKey.arrowDown): const NextItemIntent(),
-        LogicalKeySet(LogicalKeyboardKey.arrowUp): const PreviousItemIntent(),
-        // left
-        LogicalKeySet(LogicalKeyboardKey.arrowLeft): const PreviousItemIntent(),
-        // right
-        LogicalKeySet(LogicalKeyboardKey.arrowRight): const NextItemIntent(),
-      },
-      actions: {
-        NextItemIntent: CallbackAction(
-          onInvoke: (e) {
-            _next();
-            return;
-          },
-        ),
-        PreviousItemIntent: CallbackAction(
-          onInvoke: (e) {
-            _previous();
-            return;
-          },
-        ),
-      },
-      onShowFocusHighlight: (value) {
-        _focusing.value = value;
-      },
       child: Data(
         data: this,
-        child: widget.child,
+        child: Data(
+          data: RadioGroupData<T>(widget.value),
+          child: FocusTraversalGroup(
+            child: widget.child,
+          ),
+        ),
       ),
     );
   }
