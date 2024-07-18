@@ -391,14 +391,6 @@ class _ShadcnAppState extends State<ShadcnApp> {
               primary: widget.theme.colorScheme.primary,
               secondary: widget.theme.colorScheme.secondary,
               error: widget.theme.colorScheme.destructive,
-              onPrimary: widget.theme.colorScheme.primaryForeground,
-              onSecondary: widget.theme.colorScheme.secondaryForeground,
-              onSurface: widget.theme.colorScheme.foreground,
-              onPrimaryContainer: widget.theme.colorScheme.primaryForeground,
-              onSecondaryContainer:
-                  widget.theme.colorScheme.secondaryForeground,
-              onError: widget.theme.colorScheme.destructiveForeground,
-              onErrorContainer: widget.theme.colorScheme.destructiveForeground,
             ),
           ),
       child: c.CupertinoTheme(
