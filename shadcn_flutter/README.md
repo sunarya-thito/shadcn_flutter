@@ -103,7 +103,6 @@ void main() {
       title: 'My App',
       home: MyHomePage(),
       theme: ThemeData(
-        brightness: Brightness.dark,
         colorScheme: ColorSchemes.darkZync(),
         radius: 0.5,
       ),

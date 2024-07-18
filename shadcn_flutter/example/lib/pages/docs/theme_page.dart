@@ -48,7 +48,7 @@ class _ThemePageState extends State<ThemePage> {
   late double radius;
   late ColorScheme colorScheme;
   bool customColorScheme = false;
-  bool applyDirectly = false;
+  bool applyDirectly = true;
 
   final OnThisPage customColorSchemeKey = OnThisPage();
   final OnThisPage premadeColorSchemeKey = OnThisPage();
@@ -97,25 +97,25 @@ class _ThemePageState extends State<ThemePage> {
               Expanded(
                   child: Text(
                       'You can use your own color scheme to customize the look and feel of your app.')),
-              Checkbox(
-                  state: applyDirectly
-                      ? CheckboxState.checked
-                      : CheckboxState.unchecked,
-                  onChanged: (value) {
-                    setState(() {
-                      applyDirectly = value == CheckboxState.checked;
-                      if (applyDirectly) {
-                        state.changeRadius(radius);
-                        if (customColorScheme) {
-                          state.changeColorScheme(
-                              ColorScheme.fromColors(colors: colors));
-                        } else {
-                          state.changeColorScheme(colorScheme);
-                        }
-                      }
-                    });
-                  },
-                  trailing: Text('Apply directly')),
+              // Checkbox(
+              //     state: applyDirectly
+              //         ? CheckboxState.checked
+              //         : CheckboxState.unchecked,
+              //     onChanged: (value) {
+              //       setState(() {
+              //         applyDirectly = value == CheckboxState.checked;
+              //         if (applyDirectly) {
+              //           state.changeRadius(radius);
+              //           if (customColorScheme) {
+              //             state.changeColorScheme(
+              //                 ColorScheme.fromColors(colors: colors));
+              //           } else {
+              //             state.changeColorScheme(colorScheme);
+              //           }
+              //         }
+              //       });
+              //     },
+              //     trailing: Text('Apply directly')),
             ],
           ).p(),
           GridView.count(
@@ -132,25 +132,25 @@ class _ThemePageState extends State<ThemePage> {
                   child: Text(
                       'You can also use premade color schemes to customize the look and feel of your app.')),
               // apply directly
-              Checkbox(
-                  state: applyDirectly
-                      ? CheckboxState.checked
-                      : CheckboxState.unchecked,
-                  onChanged: (value) {
-                    setState(() {
-                      applyDirectly = value == CheckboxState.checked;
-                      if (applyDirectly) {
-                        state.changeRadius(radius);
-                        if (customColorScheme) {
-                          state.changeColorScheme(
-                              ColorScheme.fromColors(colors: colors));
-                        } else {
-                          state.changeColorScheme(colorScheme);
-                        }
-                      }
-                    });
-                  },
-                  trailing: Text('Apply directly')),
+              // Checkbox(
+              //     state: applyDirectly
+              //         ? CheckboxState.checked
+              //         : CheckboxState.unchecked,
+              //     onChanged: (value) {
+              //       setState(() {
+              //         applyDirectly = value == CheckboxState.checked;
+              //         if (applyDirectly) {
+              //           state.changeRadius(radius);
+              //           if (customColorScheme) {
+              //             state.changeColorScheme(
+              //                 ColorScheme.fromColors(colors: colors));
+              //           } else {
+              //             state.changeColorScheme(colorScheme);
+              //           }
+              //         }
+              //       });
+              //     },
+              //     trailing: Text('Apply directly')),
             ],
           ).p(),
           Wrap(
@@ -166,26 +166,26 @@ class _ThemePageState extends State<ThemePage> {
               Expanded(
                   child: Text(
                       'You can customize how rounded your app looks by changing the radius.')),
-              Checkbox(
-                  state: applyDirectly
-                      ? CheckboxState.checked
-                      : CheckboxState.unchecked,
-                  onChanged: (value) {
-                    setState(() {
-                      applyDirectly = value == CheckboxState.checked;
-                      if (applyDirectly) {
-                        state.changeRadius(radius);
-                        // state.changeColorScheme(colorScheme);
-                        if (customColorScheme) {
-                          state.changeColorScheme(
-                              ColorScheme.fromColors(colors: colors));
-                        } else {
-                          state.changeColorScheme(colorScheme);
-                        }
-                      }
-                    });
-                  },
-                  trailing: Text('Apply directly')),
+              // Checkbox(
+              //     state: applyDirectly
+              //         ? CheckboxState.checked
+              //         : CheckboxState.unchecked,
+              //     onChanged: (value) {
+              //       setState(() {
+              //         applyDirectly = value == CheckboxState.checked;
+              //         if (applyDirectly) {
+              //           state.changeRadius(radius);
+              //           // state.changeColorScheme(colorScheme);
+              //           if (customColorScheme) {
+              //             state.changeColorScheme(
+              //                 ColorScheme.fromColors(colors: colors));
+              //           } else {
+              //             state.changeColorScheme(colorScheme);
+              //           }
+              //         }
+              //       });
+              //     },
+              //     trailing: Text('Apply directly')),
             ],
           ).p(),
           Slider(
@@ -217,21 +217,13 @@ class _ThemePageState extends State<ThemePage> {
   }
 
   String buildCustomCode() {
-    bool isDark = colorScheme.background.computeLuminance() > 0.5;
+    bool isDark = colorScheme.background.computeLuminance() < 0.5;
     String buffer = 'ShadcnApp(';
     buffer += '\n...';
     buffer += '\n\ttheme: ThemeData(';
-    // buffer += 'brightness: ${isDark ? 'Brightness.dark' : 'Brightness.light'},';
-    // buffer += 'colorScheme: ColorScheme(';
-    // for (var key in colors.keys) {
-    //   buffer += '$key: ${colors[key]!.value},';
-    // }
-    // buffer += '),';
-    // buffer += 'radius: $radius,';
-    // buffer += ')';
-    buffer +=
-        '\n\t\tbrightness: ${isDark ? 'Brightness.dark' : 'Brightness.light'},';
     buffer += '\n\t\tcolorScheme: ColorScheme(';
+    buffer +=
+        '\n\t\t\tbrightness: ${isDark ? 'Brightness.dark' : 'Brightness.light'},';
     for (var key in colors.keys) {
       String hex = colors[key]!.value.toRadixString(16);
       buffer += '\n\t\t\t$key: Color(0x$hex),';
@@ -247,12 +239,9 @@ class _ThemePageState extends State<ThemePage> {
   String buildPremadeCode() {
     // return 'ColorSchemes.${nameFromColorScheme(colorScheme)}()';
     String name = nameFromColorScheme(colorScheme)!;
-    bool isDark = name.contains('dark');
     String buffer = 'ShadcnApp(';
     buffer += '\n...';
     buffer += '\n\ttheme: ThemeData(';
-    buffer +=
-        '\n\t\tbrightness: ${isDark ? 'Brightness.dark' : 'Brightness.light'},';
     buffer += '\n\t\tcolorScheme: ColorSchemes.$name(),';
     buffer += '\n\t\tradius: $radius,';
     buffer += '\n\t),';
@@ -356,8 +345,8 @@ class _ThemePageState extends State<ThemePage> {
                     customColorScheme = true;
                     if (applyDirectly) {
                       MyAppState state = Data.of(context);
-                      state.changeColorScheme(
-                          ColorScheme.fromColors(colors: colors));
+                      state.changeColorScheme(ColorScheme.fromColors(
+                          colors: colors, brightness: colorScheme.brightness));
                     }
                   });
                 }

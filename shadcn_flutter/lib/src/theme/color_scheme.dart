@@ -1,11 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/painting.dart';
 
 Color _fromAHSL(double a, double h, double s, double l) {
   return HSLColor.fromAHSL(a, h, s, l).toColor();
-}
-
-Color _hsl(double h, double s, double l) {
-  return HSLColor.fromAHSL(1.0, h, s, l).toColor();
 }
 
 class ColorShades {
@@ -129,6 +127,7 @@ class ColorScheme {
     'input',
     'ring',
   };
+  final Brightness brightness;
   final Color background;
   final Color foreground;
   final Color card;
@@ -150,6 +149,7 @@ class ColorScheme {
   final Color ring;
 
   const ColorScheme({
+    required this.brightness,
     required this.background,
     required this.foreground,
     required this.card,
@@ -190,7 +190,11 @@ class ColorScheme {
         destructiveForeground = colorFromHex(map['destructiveForeground']),
         border = colorFromHex(map['border']),
         input = colorFromHex(map['input']),
-        ring = colorFromHex(map['ring']);
+        ring = colorFromHex(map['ring']),
+        brightness = Brightness.values
+                .where((element) => element.name == map['brightness'])
+                .firstOrNull ??
+            Brightness.light;
 
   Map<String, dynamic> toMap() {
     return {
@@ -213,6 +217,7 @@ class ColorScheme {
       'border': hexFromColor(border),
       'input': hexFromColor(input),
       'ring': hexFromColor(ring),
+      'brightness': brightness.name,
     };
   }
 
@@ -242,7 +247,9 @@ class ColorScheme {
 
   ColorScheme.fromColors({
     required Map<String, Color> colors,
+    required Brightness brightness,
   }) : this(
+          brightness: brightness,
           background: colors['background']!,
           foreground: colors['foreground']!,
           card: colors['card']!,
@@ -265,6 +272,7 @@ class ColorScheme {
         );
 
   ColorScheme copyWith({
+    Brightness? brightness,
     Color? background,
     Color? foreground,
     Color? card,
@@ -286,6 +294,7 @@ class ColorScheme {
     Color? ring,
   }) {
     return ColorScheme(
+      brightness: brightness ?? this.brightness,
       background: background ?? this.background,
       foreground: foreground ?? this.foreground,
       card: card ?? this.card,

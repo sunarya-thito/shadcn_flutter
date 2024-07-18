@@ -455,12 +455,15 @@ extension TextExtension on Widget {
       WidgetSpan(
         child: Builder(builder: (context) {
           final textStyle = DefaultTextStyle.of(context);
-          return Button(
-            style: ButtonStyle.link(
-              density: ButtonDensity.compact,
+          return DefaultTextStyle(
+            style: textStyle.style,
+            child: Button(
+              style: const ButtonStyle.link(
+                density: ButtonDensity.compact,
+              ),
+              onPressed: onPressed,
+              child: child,
             ),
-            onPressed: onPressed,
-            child: DefaultTextStyle(style: textStyle.style, child: child),
           );
         }),
       ),

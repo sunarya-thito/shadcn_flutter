@@ -1,8 +1,9 @@
 import '../../shadcn_flutter.dart';
-import 'package:flutter/painting.dart';
+import 'dart:ui';
 class ColorSchemes {
 	static ColorScheme lightBlue() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 222.2, 0.84, 0.05).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -27,6 +28,7 @@ class ColorSchemes {
 
 	static ColorScheme darkBlue() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 222.2, 0.84, 0.05).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 210.0, 0.4, 0.98).toColor(),
 			card: const HSLColor.fromAHSL(1, 222.2, 0.84, 0.05).toColor(),
@@ -51,6 +53,7 @@ class ColorSchemes {
 
 	static ColorScheme lightGray() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 224.0, 0.71, 0.04).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -75,6 +78,7 @@ class ColorSchemes {
 
 	static ColorScheme darkGray() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 224.0, 0.71, 0.04).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 210.0, 0.2, 0.98).toColor(),
 			card: const HSLColor.fromAHSL(1, 224.0, 0.71, 0.04).toColor(),
@@ -99,6 +103,7 @@ class ColorSchemes {
 
 	static ColorScheme lightGreen() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 240.0, 0.1, 0.04).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -123,6 +128,7 @@ class ColorSchemes {
 
 	static ColorScheme darkGreen() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.95).toColor(),
 			card: const HSLColor.fromAHSL(1, 24.0, 0.1, 0.1).toColor(),
@@ -147,6 +153,7 @@ class ColorSchemes {
 
 	static ColorScheme lightNeutral() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.04).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -171,6 +178,7 @@ class ColorSchemes {
 
 	static ColorScheme darkNeutral() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.04).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.04).toColor(),
@@ -195,6 +203,7 @@ class ColorSchemes {
 
 	static ColorScheme lightOrange() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -219,6 +228,7 @@ class ColorSchemes {
 
 	static ColorScheme darkOrange() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
 			card: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
@@ -243,6 +253,7 @@ class ColorSchemes {
 
 	static ColorScheme lightRed() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.04).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -267,6 +278,7 @@ class ColorSchemes {
 
 	static ColorScheme darkRed() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.04).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.04).toColor(),
@@ -291,6 +303,7 @@ class ColorSchemes {
 
 	static ColorScheme lightRose() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 240.0, 0.1, 0.04).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -315,6 +328,7 @@ class ColorSchemes {
 
 	static ColorScheme darkRose() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.95).toColor(),
 			card: const HSLColor.fromAHSL(1, 24.0, 0.1, 0.1).toColor(),
@@ -339,6 +353,7 @@ class ColorSchemes {
 
 	static ColorScheme lightSlate() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 222.2, 0.84, 0.05).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -363,6 +378,7 @@ class ColorSchemes {
 
 	static ColorScheme darkSlate() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 222.2, 0.84, 0.05).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 210.0, 0.4, 0.98).toColor(),
 			card: const HSLColor.fromAHSL(1, 222.2, 0.84, 0.05).toColor(),
@@ -387,6 +403,7 @@ class ColorSchemes {
 
 	static ColorScheme lightStone() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -411,6 +428,7 @@ class ColorSchemes {
 
 	static ColorScheme darkStone() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
 			card: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
@@ -435,6 +453,7 @@ class ColorSchemes {
 
 	static ColorScheme lightViolet() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 224.0, 0.71, 0.04).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -459,6 +478,7 @@ class ColorSchemes {
 
 	static ColorScheme darkViolet() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 224.0, 0.71, 0.04).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 210.0, 0.2, 0.98).toColor(),
 			card: const HSLColor.fromAHSL(1, 224.0, 0.71, 0.04).toColor(),
@@ -483,6 +503,7 @@ class ColorSchemes {
 
 	static ColorScheme lightYellow() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -507,6 +528,7 @@ class ColorSchemes {
 
 	static ColorScheme darkYellow() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
 			card: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
@@ -531,6 +553,7 @@ class ColorSchemes {
 
 	static ColorScheme lightZync() {
 		return ColorScheme(
+			brightness: Brightness.light,
 			background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 240.0, 0.1, 0.04).toColor(),
 			card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -555,6 +578,7 @@ class ColorSchemes {
 
 	static ColorScheme darkZync() {
 		return ColorScheme(
+			brightness: Brightness.dark,
 			background: const HSLColor.fromAHSL(1, 240.0, 0.1, 0.04).toColor(),
 			foreground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
 			card: const HSLColor.fromAHSL(1, 240.0, 0.1, 0.04).toColor(),

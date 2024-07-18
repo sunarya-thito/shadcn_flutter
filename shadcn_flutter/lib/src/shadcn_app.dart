@@ -382,15 +382,43 @@ class _ShadcnAppState extends State<ShadcnApp> {
     }());
 
     return m.Theme(
-      data: widget.materialTheme ?? m.ThemeData(),
-      child: m.Material(
-        color: m.Colors.transparent,
-        child: m.ScaffoldMessenger(
-          child: ScrollConfiguration(
-            behavior: widget.scrollBehavior ?? const ShadcnScrollBehavior(),
-            child: HeroControllerScope(
-              controller: _heroController,
-              child: result,
+      data: widget.materialTheme ??
+          m.ThemeData.from(
+            colorScheme: m.ColorScheme.fromSeed(
+              seedColor: widget.theme.colorScheme.primary,
+              brightness: widget.theme.brightness,
+              surface: widget.theme.colorScheme.background,
+              primary: widget.theme.colorScheme.primary,
+              secondary: widget.theme.colorScheme.secondary,
+              error: widget.theme.colorScheme.destructive,
+              onPrimary: widget.theme.colorScheme.primaryForeground,
+              onSecondary: widget.theme.colorScheme.secondaryForeground,
+              onSurface: widget.theme.colorScheme.foreground,
+              onPrimaryContainer: widget.theme.colorScheme.primaryForeground,
+              onSecondaryContainer:
+                  widget.theme.colorScheme.secondaryForeground,
+              onError: widget.theme.colorScheme.destructiveForeground,
+              onErrorContainer: widget.theme.colorScheme.destructiveForeground,
+            ),
+          ),
+      child: c.CupertinoTheme(
+        data: c.CupertinoThemeData(
+          brightness: widget.theme.brightness,
+          primaryColor: widget.theme.colorScheme.primary,
+          barBackgroundColor: widget.theme.colorScheme.accent,
+          scaffoldBackgroundColor: widget.theme.colorScheme.background,
+          applyThemeToAll: true,
+          primaryContrastingColor: widget.theme.colorScheme.primaryForeground,
+        ),
+        child: m.Material(
+          color: m.Colors.transparent,
+          child: m.ScaffoldMessenger(
+            child: ScrollConfiguration(
+              behavior: widget.scrollBehavior ?? const ShadcnScrollBehavior(),
+              child: HeroControllerScope(
+                controller: _heroController,
+                child: result,
+              ),
             ),
           ),
         ),

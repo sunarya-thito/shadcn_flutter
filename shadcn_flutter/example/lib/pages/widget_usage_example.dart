@@ -6,12 +6,14 @@ class WidgetUsageExample extends StatefulWidget {
   final String? title;
   final Widget child;
   final String path;
+  final bool summarize;
 
   const WidgetUsageExample({
     Key? key,
     this.title,
     required this.child,
     required this.path,
+    this.summarize = true,
   }) : super(key: key);
 
   @override
@@ -71,6 +73,7 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
           child: CodeSnippetFutureBuilder(
             path: widget.path,
             mode: 'dart',
+            summarize: widget.summarize,
           ),
         )
       ],

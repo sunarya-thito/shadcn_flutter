@@ -2,12 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ThemeData {
-  final Brightness brightness;
   final ColorScheme colorScheme;
   final double radius;
 
   ThemeData({
-    required this.brightness,
     required this.colorScheme,
     required this.radius,
   });
@@ -19,13 +17,13 @@ class ThemeData {
   double get radiusSm => radius * 8;
   double get radiusXs => radius * 4;
 
+  Brightness get brightness => colorScheme.brightness;
+
   ThemeData copyWith({
-    Brightness? brightness,
     ColorScheme? colorScheme,
     double? radius,
   }) {
     return ThemeData(
-      brightness: brightness ?? this.brightness,
       colorScheme: colorScheme ?? this.colorScheme,
       radius: radius ?? this.radius,
     );

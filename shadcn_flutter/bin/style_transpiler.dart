@@ -28,7 +28,7 @@ main() {
   var files = dir.listSync();
   String result = '';
   result += 'import \'../../shadcn_flutter.dart\';\n';
-  result += 'import \'package:flutter/painting.dart\';\n';
+  result += 'import \'dart:ui\';\n';
   result += 'class ColorSchemes {\n';
 
   for (var file in files) {
@@ -72,6 +72,7 @@ String printTheme(File file) {
   result += '\tstatic ColorScheme light$name() {\n';
   // print('\t\treturn ColorScheme(');
   result += '\t\treturn ColorScheme(\n';
+  result += '\t\t\tbrightness: Brightness.light,\n';
   for (var key in values.keys) {
     var value = values[key]; // hsl
     var paramName = paramMapping[key];
@@ -108,6 +109,7 @@ String printTheme(File file) {
   result += '\n';
   result += '\tstatic ColorScheme dark$name() {\n';
   result += '\t\treturn ColorScheme(\n';
+  result += '\t\t\tbrightness: Brightness.dark,\n';
   for (var key in darkValues.keys) {
     var value = darkValues[key]; // hsl
     var paramName = paramMapping[key];
