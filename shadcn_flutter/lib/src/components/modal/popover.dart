@@ -238,22 +238,24 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
     if (left < 0 || right > size.width) {
       x = position.dx -
           childSize.width / 2 -
-          (childSize.width / 2 * -anchorAlignment.x);
+          (childSize.width / 2 * -alignment.x);
       if (anchorSize != null) {
-        x -= anchorSize!.width * alignment.x;
+        x -= anchorSize!.width * anchorAlignment.x;
       }
       left = x - margin.left;
       right = x + childSize.width + margin.right;
+      offsetX *= -1;
     }
     if (top < 0 || bottom > size.height) {
       y = position.dy -
           childSize.height / 2 -
-          (childSize.height / 2 * -anchorAlignment.y);
+          (childSize.height / 2 * -alignment.y);
       if (anchorSize != null) {
-        y -= anchorSize!.height * alignment.y;
+        y -= anchorSize!.height * anchorAlignment.y;
       }
       top = y - margin.top;
       bottom = y + childSize.height + margin.bottom;
+      offsetY *= -1;
     }
     final double dx = left < 0
         ? -left
