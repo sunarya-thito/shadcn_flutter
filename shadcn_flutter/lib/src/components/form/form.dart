@@ -703,13 +703,17 @@ class FormController extends ChangeNotifier {
           validator: attachedInput.validator);
       _attachedInputs[k] = attachedInput;
     }
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      notifyListeners();
+    });
   }
 
   void detach(FormKey key) {
     if (_attachedInputs.containsKey(key)) {
       _attachedInputs.remove(key);
-      notifyListeners();
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        notifyListeners();
+      });
     }
   }
 }
