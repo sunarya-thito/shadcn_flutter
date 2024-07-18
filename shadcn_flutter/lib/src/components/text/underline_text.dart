@@ -24,11 +24,13 @@ class UnderlineInterceptor extends StatelessWidget {
 class UnderlineText extends StatelessWidget {
   final Widget child;
   final bool underline;
+  final bool translate;
 
   const UnderlineText({
     Key? key,
     required this.child,
     this.underline = true,
+    this.translate = true,
   }) : super(key: key);
 
   @override
@@ -55,7 +57,7 @@ class UnderlineText extends StatelessWidget {
                 ])
           : textStyle,
       child: Transform.translate(
-        offset: underline ? const Offset(0, 2) : Offset.zero,
+        offset: underline && translate ? const Offset(0, 2) : Offset.zero,
         child: child,
       ),
     );

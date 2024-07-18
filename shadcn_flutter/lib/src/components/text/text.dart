@@ -460,10 +460,26 @@ extension TextExtension on Widget {
               density: ButtonDensity.compact,
             ),
             onPressed: onPressed,
-            child: DefaultTextStyle(
-              style: textStyle.style,
-              child: UnderlineInterceptor(child: child),
-            ),
+            child: Builder(builder: (context) {
+              final buttonStyle = DefaultTextStyle.of(context);
+              return DefaultTextStyle(
+                style: textStyle.style.copyWith(
+                  decoration: TextDecoration.none,
+                ),
+                textAlign: textStyle.textAlign,
+                softWrap: textStyle.softWrap,
+                overflow: textStyle.overflow,
+                maxLines: textStyle.maxLines,
+                textWidthBasis: textStyle.textWidthBasis,
+                textHeightBehavior: textStyle.textHeightBehavior,
+                child: UnderlineText(
+                  underline:
+                      buttonStyle.style.decoration == TextDecoration.underline,
+                  translate: false,
+                  child: child,
+                ),
+              );
+            }),
           );
         }),
       ),
