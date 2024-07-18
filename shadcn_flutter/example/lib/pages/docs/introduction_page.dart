@@ -53,8 +53,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                   child:
                       Text('Can I use this with Material/Cupertino Widgets?'),
                 ),
-                content: Text(
-                    'Sure but, you would need to wrap your Material/Cupertino Widgets with MaterialApp/CupertinoApp.'),
+                content: Text('Sure you can!'),
               ),
               AccordionItem(
                 trigger: AccordionTrigger(

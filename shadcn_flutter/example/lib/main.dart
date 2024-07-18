@@ -15,6 +15,7 @@ import 'package:example/pages/docs/components/drawer_example.dart';
 import 'package:example/pages/docs/components/dropdown_menu_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/input_otp_example.dart';
+import 'package:example/pages/docs/components/material_example.dart';
 import 'package:example/pages/docs/components/menubar_example.dart';
 import 'package:example/pages/docs/components/navigation_menu_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
@@ -121,6 +122,10 @@ class MyAppState extends State<MyApp> {
       builder: (context, state) => LayoutPage(),
       name: 'layout',
     ),
+    GoRoute(
+        path: '/external',
+        builder: (context, state) => MaterialExample(),
+        name: 'external'),
     GoRoute(
       path: '/web_preloader',
       name: 'web_preloader',

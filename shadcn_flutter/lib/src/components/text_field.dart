@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart' as cupertino;
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/services.dart';
 
@@ -61,7 +60,7 @@ class TextField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  cupertino.State<TextField> createState() => _TextFieldState();
+  State<TextField> createState() => _TextFieldState();
 }
 
 class _TextFieldState extends State<TextField> with FormValueSupplier {
@@ -138,299 +137,285 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     TextStyle defaultTextStyle = DefaultTextStyle.of(context).style;
-    return material.Localizations(
-      delegates: const [
-        material.DefaultMaterialLocalizations.delegate,
-        cupertino.DefaultCupertinoLocalizations.delegate,
-        DefaultWidgetsLocalizations.delegate,
-      ],
-      locale: Localizations.localeOf(context),
-      child: material.Theme(
-        data: material.ThemeData(
-          textSelectionTheme: material.TextSelectionThemeData(
-            cursorColor: theme.colorScheme.primary,
-            selectionColor: theme.colorScheme.primary.withOpacity(0.3),
-            selectionHandleColor: theme.colorScheme.primary,
-          ),
+    return material.Theme(
+      data: material.ThemeData(
+        textSelectionTheme: material.TextSelectionThemeData(
+          cursorColor: theme.colorScheme.primary,
+          selectionColor: theme.colorScheme.primary.withOpacity(0.3),
+          selectionHandleColor: theme.colorScheme.primary,
         ),
-        child: material.Material(
-          color: Colors.transparent,
-          child: material.TextField(
-            key: _key,
-            contextMenuBuilder: (innerContext, editableTextState) {
-              var contextMenuButtonItems =
-                  List.of(editableTextState.contextMenuButtonItems);
+      ),
+      child: material.TextField(
+        key: _key,
+        contextMenuBuilder: (innerContext, editableTextState) {
+          var contextMenuButtonItems =
+              List.of(editableTextState.contextMenuButtonItems);
 
-              ContextMenuButtonItem? take(ContextMenuButtonType type) {
-                var item = contextMenuButtonItems
-                    .where((element) => element.type == type)
-                    .firstOrNull;
-                if (item != null) {
-                  contextMenuButtonItems.remove(item);
-                }
-                return item;
-              }
+          ContextMenuButtonItem? take(ContextMenuButtonType type) {
+            var item = contextMenuButtonItems
+                .where((element) => element.type == type)
+                .firstOrNull;
+            if (item != null) {
+              contextMenuButtonItems.remove(item);
+            }
+            return item;
+          }
 
-              var cutButton = take(ContextMenuButtonType.cut);
-              var copyButton = take(ContextMenuButtonType.copy);
-              var pasteButton = take(ContextMenuButtonType.paste);
-              var selectAllButton = take(ContextMenuButtonType.selectAll);
-              return AnimatedBuilder(
-                  animation: _undoHistoryController,
-                  builder: (context, child) {
-                    return ContextMenuPopup(
-                      anchorContext: this.context,
-                      position:
-                          editableTextState.contextMenuAnchors.primaryAnchor +
-                              const Offset(8, -8),
-                      children: [
-                        MenuButton(
-                          enabled: _undoHistoryController.value.canUndo,
-                          onPressed: (context) {
-                            _undoHistoryController.undo();
-                          },
-                          trailing: const MenuShortcut(
-                            activator: SingleActivator(
-                              LogicalKeyboardKey.keyZ,
-                              control: true,
-                            ),
-                          ),
-                          child: Text('Undo'),
+          var cutButton = take(ContextMenuButtonType.cut);
+          var copyButton = take(ContextMenuButtonType.copy);
+          var pasteButton = take(ContextMenuButtonType.paste);
+          var selectAllButton = take(ContextMenuButtonType.selectAll);
+          return AnimatedBuilder(
+              animation: _undoHistoryController,
+              builder: (context, child) {
+                return ContextMenuPopup(
+                  anchorContext: this.context,
+                  position: editableTextState.contextMenuAnchors.primaryAnchor +
+                      const Offset(8, -8),
+                  children: [
+                    MenuButton(
+                      enabled: _undoHistoryController.value.canUndo,
+                      onPressed: (context) {
+                        _undoHistoryController.undo();
+                      },
+                      trailing: const MenuShortcut(
+                        activator: SingleActivator(
+                          LogicalKeyboardKey.keyZ,
+                          control: true,
                         ),
-                        MenuButton(
-                          enabled: _undoHistoryController.value.canRedo,
-                          onPressed: (context) {
-                            _undoHistoryController.redo();
-                          },
-                          trailing: const MenuShortcut(
-                            activator: SingleActivator(
-                              LogicalKeyboardKey.keyZ,
-                              control: true,
-                              shift: true,
-                            ),
-                          ),
-                          child: Text('Redo'),
+                      ),
+                      child: Text('Undo'),
+                    ),
+                    MenuButton(
+                      enabled: _undoHistoryController.value.canRedo,
+                      onPressed: (context) {
+                        _undoHistoryController.redo();
+                      },
+                      trailing: const MenuShortcut(
+                        activator: SingleActivator(
+                          LogicalKeyboardKey.keyZ,
+                          control: true,
+                          shift: true,
                         ),
-                        MenuDivider(),
-                        MenuButton(
-                          enabled: cutButton != null,
-                          onPressed: (context) {
-                            cutButton?.onPressed?.call();
-                          },
-                          trailing: const MenuShortcut(
-                            activator: SingleActivator(
-                              LogicalKeyboardKey.keyX,
-                              control: true,
-                            ),
-                          ),
-                          child: Text('Cut'),
+                      ),
+                      child: Text('Redo'),
+                    ),
+                    MenuDivider(),
+                    MenuButton(
+                      enabled: cutButton != null,
+                      onPressed: (context) {
+                        cutButton?.onPressed?.call();
+                      },
+                      trailing: const MenuShortcut(
+                        activator: SingleActivator(
+                          LogicalKeyboardKey.keyX,
+                          control: true,
                         ),
-                        MenuButton(
-                          enabled: copyButton != null,
-                          onPressed: (context) {
-                            copyButton?.onPressed?.call();
-                          },
-                          trailing: const MenuShortcut(
-                            activator: SingleActivator(
-                              LogicalKeyboardKey.keyC,
-                              control: true,
-                            ),
-                          ),
-                          child: Text('Copy'),
+                      ),
+                      child: Text('Cut'),
+                    ),
+                    MenuButton(
+                      enabled: copyButton != null,
+                      onPressed: (context) {
+                        copyButton?.onPressed?.call();
+                      },
+                      trailing: const MenuShortcut(
+                        activator: SingleActivator(
+                          LogicalKeyboardKey.keyC,
+                          control: true,
                         ),
-                        MenuButton(
-                          enabled: pasteButton != null,
-                          onPressed: (context) {
-                            pasteButton?.onPressed?.call();
-                          },
-                          trailing: const MenuShortcut(
-                            activator: SingleActivator(
-                              LogicalKeyboardKey.keyV,
-                              control: true,
-                            ),
-                          ),
-                          child: Text('Paste'),
+                      ),
+                      child: Text('Copy'),
+                    ),
+                    MenuButton(
+                      enabled: pasteButton != null,
+                      onPressed: (context) {
+                        pasteButton?.onPressed?.call();
+                      },
+                      trailing: const MenuShortcut(
+                        activator: SingleActivator(
+                          LogicalKeyboardKey.keyV,
+                          control: true,
                         ),
-                        MenuButton(
-                          enabled: selectAllButton != null,
-                          onPressed: (context) {
-                            // somehow, we lost focus upon context menu open
-                            WidgetsBinding.instance
-                                .addPostFrameCallback((timeStamp) {
-                              selectAllButton?.onPressed?.call();
-                            });
-                          },
-                          trailing: const MenuShortcut(
-                            activator: SingleActivator(
-                              LogicalKeyboardKey.keyA,
-                              control: true,
-                            ),
-                          ),
-                          child: Text('Select All'),
+                      ),
+                      child: Text('Paste'),
+                    ),
+                    MenuButton(
+                      enabled: selectAllButton != null,
+                      onPressed: (context) {
+                        // somehow, we lost focus upon context menu open
+                        WidgetsBinding.instance
+                            .addPostFrameCallback((timeStamp) {
+                          selectAllButton?.onPressed?.call();
+                        });
+                      },
+                      trailing: const MenuShortcut(
+                        activator: SingleActivator(
+                          LogicalKeyboardKey.keyA,
+                          control: true,
                         ),
-                        if (contextMenuButtonItems.isNotEmpty) ...[
-                          // add the rest
-                          MenuDivider(),
-                          ...contextMenuButtonItems
-                              .map<MenuButton?>((e) {
-                                if (e.label == null) {
-                                  return null;
-                                }
-                                return MenuButton(
-                                  onPressed: (context) {
-                                    e.onPressed?.call();
-                                  },
-                                  child: Text(e.label!),
-                                );
-                              })
-                              .where((element) => element != null)
-                              .cast<MenuButton>(),
-                        ]
-                      ],
-                    );
-                  });
-            },
-            textAlign: widget.textAlign,
-            obscureText: widget.obscureText,
-            obscuringCharacter: widget.obscuringCharacter,
-            enabled: widget.enabled,
-            readOnly: widget.readOnly,
-            maxLength: widget.maxLength,
-            maxLengthEnforcement: widget.maxLengthEnforcement,
-            maxLines: widget.maxLines,
-            onTap: widget.onTap,
-            focusNode: _focusNode,
-            onSubmitted: widget.onSubmitted,
-            onEditingComplete: widget.onEditingComplete,
-            undoController: _undoHistoryController,
-            buildCounter: (context,
-                {required currentLength,
-                required isFocused,
-                required maxLength}) {
-              return null;
-            },
-            controller: _controller,
-            style: defaultTextStyle.copyWith(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: theme.colorScheme.foreground,
-            ),
-            expands: widget.expands,
-            textAlignVertical: widget.textAlignVertical,
-            decoration: material.InputDecoration(
-              isCollapsed: true,
-              prefixIcon: widget.leading,
-              suffixIcon: widget.trailing,
-              filled: widget.filled,
-              isDense: true,
-              fillColor: theme.colorScheme.muted,
-              hintText: widget.placeholder,
-              hintStyle: defaultTextStyle.copyWith(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: theme.colorScheme.mutedForeground,
+                      ),
+                      child: Text('Select All'),
+                    ),
+                    if (contextMenuButtonItems.isNotEmpty) ...[
+                      // add the rest
+                      MenuDivider(),
+                      ...contextMenuButtonItems
+                          .map<MenuButton?>((e) {
+                            if (e.label == null) {
+                              return null;
+                            }
+                            return MenuButton(
+                              onPressed: (context) {
+                                e.onPressed?.call();
+                              },
+                              child: Text(e.label!),
+                            );
+                          })
+                          .where((element) => element != null)
+                          .cast<MenuButton>(),
+                    ]
+                  ],
+                );
+              });
+        },
+        textAlign: widget.textAlign,
+        obscureText: widget.obscureText,
+        obscuringCharacter: widget.obscuringCharacter,
+        enabled: widget.enabled,
+        readOnly: widget.readOnly,
+        maxLength: widget.maxLength,
+        maxLengthEnforcement: widget.maxLengthEnforcement,
+        maxLines: widget.maxLines,
+        onTap: widget.onTap,
+        focusNode: _focusNode,
+        onSubmitted: widget.onSubmitted,
+        onEditingComplete: widget.onEditingComplete,
+        undoController: _undoHistoryController,
+        buildCounter: (context,
+            {required currentLength, required isFocused, required maxLength}) {
+          return null;
+        },
+        controller: _controller,
+        style: defaultTextStyle.copyWith(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: theme.colorScheme.foreground,
+        ),
+        expands: widget.expands,
+        textAlignVertical: widget.textAlignVertical,
+        decoration: material.InputDecoration(
+          isCollapsed: true,
+          prefixIcon: widget.leading,
+          suffixIcon: widget.trailing,
+          filled: widget.filled,
+          isDense: true,
+          fillColor: theme.colorScheme.muted,
+          hintText: widget.placeholder,
+          hintStyle: defaultTextStyle.copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: theme.colorScheme.mutedForeground,
+          ),
+          border: !widget.border
+              ? material.InputBorder.none
+              : widget.filled
+                  ? material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide.none,
+                    )
+                  : material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide(
+                        color: theme.colorScheme.border,
+                      ),
+                    ),
+          hoverColor: Colors.transparent,
+          focusedBorder: !widget.border
+              ? material.InputBorder.none
+              : widget.filled
+                  ? material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide.none,
+                    )
+                  : material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide(
+                        color: theme.colorScheme.ring,
+                      ),
+                    ),
+          enabledBorder: !widget.border
+              ? material.InputBorder.none
+              : widget.filled
+                  ? material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide.none,
+                    )
+                  : material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide(
+                        color: theme.colorScheme.border,
+                      ),
+                    ),
+          disabledBorder: !widget.border
+              ? material.InputBorder.none
+              : widget.filled
+                  ? material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide.none,
+                    )
+                  : material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide(
+                        color: theme.colorScheme.border,
+                      ),
+                    ),
+          errorBorder: !widget.border
+              ? material.InputBorder.none
+              : widget.filled
+                  ? material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide.none,
+                    )
+                  : material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide(
+                        color: theme.colorScheme.destructive,
+                      ),
+                    ),
+          focusedErrorBorder: !widget.border
+              ? material.InputBorder.none
+              : widget.filled
+                  ? material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide.none,
+                    )
+                  : material.OutlineInputBorder(
+                      borderRadius: widget.borderRadius ??
+                          BorderRadius.circular(theme.radiusMd),
+                      borderSide: BorderSide(
+                        color: theme.colorScheme.destructive,
+                      ),
+                    ),
+          contentPadding: widget.padding ??
+              const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 4 + 8,
               ),
-              border: !widget.border
-                  ? material.InputBorder.none
-                  : widget.filled
-                      ? material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide.none,
-                        )
-                      : material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide(
-                            color: theme.colorScheme.border,
-                          ),
-                        ),
-              hoverColor: Colors.transparent,
-              focusedBorder: !widget.border
-                  ? material.InputBorder.none
-                  : widget.filled
-                      ? material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide.none,
-                        )
-                      : material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide(
-                            color: theme.colorScheme.ring,
-                          ),
-                        ),
-              enabledBorder: !widget.border
-                  ? material.InputBorder.none
-                  : widget.filled
-                      ? material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide.none,
-                        )
-                      : material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide(
-                            color: theme.colorScheme.border,
-                          ),
-                        ),
-              disabledBorder: !widget.border
-                  ? material.InputBorder.none
-                  : widget.filled
-                      ? material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide.none,
-                        )
-                      : material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide(
-                            color: theme.colorScheme.border,
-                          ),
-                        ),
-              errorBorder: !widget.border
-                  ? material.InputBorder.none
-                  : widget.filled
-                      ? material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide.none,
-                        )
-                      : material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide(
-                            color: theme.colorScheme.destructive,
-                          ),
-                        ),
-              focusedErrorBorder: !widget.border
-                  ? material.InputBorder.none
-                  : widget.filled
-                      ? material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide.none,
-                        )
-                      : material.OutlineInputBorder(
-                          borderRadius: widget.borderRadius ??
-                              BorderRadius.circular(theme.radiusMd),
-                          borderSide: BorderSide(
-                            color: theme.colorScheme.destructive,
-                          ),
-                        ),
-              contentPadding: widget.padding ??
-                  const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4 + 8,
-                  ),
-            ),
-            cursorColor: theme.colorScheme.primary,
-            cursorWidth: 1,
-          ),
         ),
+        cursorColor: theme.colorScheme.primary,
+        cursorWidth: 1,
       ),
     );
   }

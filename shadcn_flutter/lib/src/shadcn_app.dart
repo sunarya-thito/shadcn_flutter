@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart' as m;
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter_platform_interface/shadcn_flutter_platform_interface.dart';
@@ -41,6 +43,7 @@ class ShadcnApp extends StatefulWidget {
     this.actions,
     this.restorationScopeId,
     this.scrollBehavior,
+    this.materialTheme,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
@@ -75,6 +78,7 @@ class ShadcnApp extends StatefulWidget {
     this.actions,
     this.restorationScopeId,
     this.scrollBehavior,
+    this.materialTheme,
   })  : assert(routerDelegate != null || routerConfig != null),
         navigatorObservers = null,
         navigatorKey = null,
@@ -138,6 +142,7 @@ class ShadcnApp extends StatefulWidget {
   final String? restorationScopeId;
   final ScrollBehavior? scrollBehavior;
   final bool debugShowMaterialGrid;
+  final m.ThemeData? materialTheme;
 
   @override
   State<ShadcnApp> createState() => _ShadcnAppState();
@@ -234,6 +239,8 @@ class _ShadcnAppState extends State<ShadcnApp> {
     return <LocalizationsDelegate<dynamic>>[
       if (widget.localizationsDelegates != null)
         ...widget.localizationsDelegates!,
+      m.DefaultMaterialLocalizations.delegate,
+      c.DefaultCupertinoLocalizations.delegate,
       DefaultWidgetsLocalizations.delegate,
       ShadcnLocalizationsDelegate.delegate,
     ];
@@ -374,11 +381,19 @@ class _ShadcnAppState extends State<ShadcnApp> {
       return true;
     }());
 
-    return ScrollConfiguration(
-      behavior: widget.scrollBehavior ?? const ShadcnScrollBehavior(),
-      child: HeroControllerScope(
-        controller: _heroController,
-        child: result,
+    return m.Theme(
+      data: widget.materialTheme ?? m.ThemeData(),
+      child: m.Material(
+        color: m.Colors.transparent,
+        child: m.ScaffoldMessenger(
+          child: ScrollConfiguration(
+            behavior: widget.scrollBehavior ?? const ShadcnScrollBehavior(),
+            child: HeroControllerScope(
+              controller: _heroController,
+              child: result,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -650,5 +665,36 @@ class ShadcnPointArcTween extends Tween<Offset> {
     final double x = cos(angle) * _radius!;
     final double y = sin(angle) * _radius!;
     return _center! + Offset(x, y);
+  }
+}
+
+class ShadcnUI extends StatelessWidget {
+  final TextStyle? textStyle;
+  final Widget child;
+
+  const ShadcnUI({
+    Key? key,
+    this.textStyle,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(c.BuildContext context) {
+    final theme = Theme.of(context);
+    return mergeAnimatedTextStyle(
+      style: textStyle ??
+          TextStyle(
+            fontFamily: 'GeistSans',
+            color: theme.colorScheme.foreground,
+          ),
+      child: AnimatedIconTheme(
+        data: IconThemeData(
+          color: theme.colorScheme.foreground,
+        ),
+        child: child,
+        duration: kDefaultDuration,
+      ),
+      duration: kDefaultDuration,
+    );
   }
 }
