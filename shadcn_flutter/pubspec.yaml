@@ -1,6 +1,6 @@
 name: shadcn_flutter
 description: "Beautifully designed components from Shadcn/UI is now available for Flutter"
-version: 0.0.13
+version: 0.0.14
 homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 
 environment:

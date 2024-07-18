@@ -10,6 +10,7 @@ class PopoverRoute<T> extends PopupRoute<T> {
   final Offset position;
   final Alignment alignment;
   final CapturedThemes themes;
+  final CapturedData data;
   final Key? key;
   final bool modal;
   final Size? anchorSize;
@@ -33,6 +34,7 @@ class PopoverRoute<T> extends PopupRoute<T> {
     required this.alignment,
     required this.themes,
     required this.anchorAlignment,
+    required this.data,
     this.modal = false,
     this.key,
     this.anchorSize,
@@ -111,6 +113,7 @@ class PopoverRoute<T> extends PopupRoute<T> {
       onTickFollow: onTickFollow,
       allowInvertHorizontal: allowInvertHorizontal,
       allowInvertVertical: allowInvertVertical,
+      data: data,
     );
   }
 
@@ -153,12 +156,14 @@ class PopoverAnchor extends StatefulWidget {
     this.onTickFollow,
     this.allowInvertHorizontal = true,
     this.allowInvertVertical = true,
+    this.data,
   });
 
   final Offset position;
   final Alignment alignment;
   final Alignment anchorAlignment;
   final CapturedThemes? themes;
+  final CapturedData? data;
   final WidgetBuilder builder;
   final Size? anchorSize;
   final Animation<double> animation;
@@ -418,6 +423,13 @@ class PopoverAnchorState extends State<PopoverAnchor>
 
   @override
   Widget build(BuildContext context) {
+    Widget builtChild = widget.builder(context);
+    if (widget.themes != null) {
+      builtChild = widget.themes!.wrap(builtChild);
+    }
+    if (widget.data != null) {
+      builtChild = widget.data!.wrap(builtChild);
+    }
     return TapRegion(
       enabled: widget.consumeOutsideTaps,
       onTapOutside: widget.onTapOutside != null
@@ -453,9 +465,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
           },
           child: FadeTransition(
             opacity: widget.animation,
-            child: widget.themes == null
-                ? widget.builder(context)
-                : widget.themes!.wrap(widget.builder(context)),
+            child: builtChild,
           ),
         ),
       ),
@@ -491,6 +501,7 @@ Future<T?> showPopover<T>({
       Navigator.of(context, rootNavigator: useRootNavigator);
   final CapturedThemes themes =
       InheritedTheme.capture(from: context, to: navigator.context);
+  final CapturedData datas = Data.capture(from: context, to: navigator.context);
   Size? anchorSize;
   if (position == null) {
     RenderBox renderBox = context.findRenderObject() as RenderBox;
@@ -517,6 +528,7 @@ Future<T?> showPopover<T>({
     widthConstraint: widthConstraint,
     heightConstraint: heightConstraint,
     regionGroupId: regionGroupId,
+    data: datas,
     offset: offset,
     transitionAlignment: transitionAlignment,
     margin: margin,

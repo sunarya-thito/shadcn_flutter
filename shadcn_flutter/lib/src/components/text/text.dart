@@ -470,7 +470,6 @@ extension TextExtension on Widget {
 
 Widget getBullet(BuildContext context, int depth, double size) {
   final themeData = Theme.of(context);
-  final TextStyle style = DefaultTextStyle.of(context).style;
   if (depth == 0) {
     return Center(
       child: Container(

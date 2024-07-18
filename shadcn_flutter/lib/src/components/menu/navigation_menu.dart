@@ -307,15 +307,52 @@ class NavigationMenuState extends State<NavigationMenu> {
           builder: (context, child) {
             return AnimatedValueBuilder<double>(
               value: _activeIndex.value.toDouble(),
-              duration: kDefaultDuration,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOutCubic,
               builder: (context, value, child) {
                 int currentIndex = _activeIndex.value;
+                List<Widget> children = [];
+                if (currentIndex - 1 >= 0) {
+                  children.add(
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      child: Opacity(
+                        opacity: (1 + value - currentIndex).clamp(0.0, 1.0),
+                        child: FractionalTranslation(
+                          translation: Offset(-value + currentIndex - 1, 0),
+                          child: buildContent(currentIndex - 1),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+                if (currentIndex + 1 < widget.children.length) {
+                  children.add(
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Opacity(
+                        opacity: (1 - value + currentIndex).clamp(0.0, 1.0),
+                        child: FractionalTranslation(
+                          translation: Offset(-value + currentIndex + 1, 0),
+                          child: buildContent(currentIndex + 1),
+                        ),
+                      ),
+                    ),
+                  );
+                }
                 return OutlinedContainer(
                   clipBehavior: Clip.antiAlias,
                   borderRadius: theme.radiusMd,
-                  child: FractionalTranslation(
-                    translation: Offset(-value + currentIndex, 0),
-                    child: buildContent(currentIndex),
+                  child: Stack(
+                    children: [
+                      ...children,
+                      FractionalTranslation(
+                        translation: Offset(-value + currentIndex, 0),
+                        child: buildContent(currentIndex),
+                      ),
+                    ],
                   ),
                 );
               },

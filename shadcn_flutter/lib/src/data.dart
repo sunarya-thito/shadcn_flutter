@@ -35,7 +35,6 @@ class Data<T> extends InheritedWidget {
         super(key: key, child: child);
 
   static T of<T>(BuildContext context) {
-    final type = _typeOf<Data<T>>();
     final widget = context.dependOnInheritedWidgetOfExactType<Data<T>>();
     assert(widget != null, 'No Data<$T> found in context');
     assert(widget!.data != null, 'No Data<$T> found in context');
@@ -43,7 +42,6 @@ class Data<T> extends InheritedWidget {
   }
 
   static T? maybeOf<T>(BuildContext context) {
-    final type = _typeOf<Data<T>>();
     final widget = context.dependOnInheritedWidgetOfExactType<Data<T>>();
     if (widget == null) {
       return null;
@@ -51,10 +49,95 @@ class Data<T> extends InheritedWidget {
     return widget.data;
   }
 
-  static Type _typeOf<T>() => T;
+  static Widget captureAll(BuildContext context, Widget child,
+      {BuildContext? to}) {
+    return capture(from: context, to: to).wrap(child);
+  }
+
+  static CapturedData capture(
+      {required BuildContext from, required BuildContext? to}) {
+    if (from == to) {
+      return CapturedData._([]);
+    }
+    final data = <Data>[];
+    final Set<Type> dataTypes = <Type>{};
+    late bool debugDidFindAncestor;
+    assert(() {
+      debugDidFindAncestor = to == null;
+      return true;
+    }());
+
+    from.visitAncestorElements(
+      (ancestor) {
+        if (ancestor == to) {
+          assert(() {
+            debugDidFindAncestor = true;
+            return true;
+          }());
+          return false;
+        }
+        if (ancestor is InheritedElement && ancestor.widget is Data) {
+          final Data dataWidget = ancestor.widget as Data;
+          final Type dataType = dataWidget.dataType;
+          if (!dataTypes.contains(dataType)) {
+            dataTypes.add(dataType);
+            data.add(dataWidget);
+          }
+        }
+        return true;
+      },
+    );
+
+    assert(debugDidFindAncestor,
+        'The provided `to` context must be an ancestor of the `from` context.');
+
+    return CapturedData._(data);
+  }
+
+  Type get dataType => T;
 
   @override
   bool updateShouldNotify(covariant Data<T> oldWidget) {
     return oldWidget.data != data;
+  }
+
+  Widget? wrap(Widget child) {
+    final data = this.data;
+    if (data == null) {
+      return null;
+    }
+    return Data<T>(
+      data: data,
+      child: child,
+    );
+  }
+}
+
+class CapturedData {
+  CapturedData._(this._data);
+
+  final List<Data> _data;
+
+  Widget wrap(Widget child) {
+    return _CaptureAll(data: _data, child: child);
+  }
+}
+
+class _CaptureAll extends StatelessWidget {
+  const _CaptureAll({
+    required this.data,
+    required this.child,
+  });
+
+  final List<Data> data;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget result = child;
+    for (final data in data) {
+      result = data.wrap(result)!;
+    }
+    return result;
   }
 }

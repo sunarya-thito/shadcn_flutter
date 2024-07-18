@@ -56,3 +56,10 @@
 ## 0.0.13
 
 * Fixed platform interface initialization
+
+## 0.0.14
+
+* Overhauled popover system
+* Removed Popover, PopoverLayoutDelegate, PopoverExtension, and PopoverPortal
+* Added NavigationMenu component
+* Capture and re-wrap data widget in popover

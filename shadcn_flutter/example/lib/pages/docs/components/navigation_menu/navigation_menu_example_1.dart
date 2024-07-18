@@ -28,22 +28,26 @@ class NavigationMenuExample1 extends StatelessWidget {
                     Text('Styles and usage of typography in this package.'),
                 onPressed: () {},
               ),
-              Card(
-                borderRadius: theme.radiusMd,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FlutterLogo(),
-                    gap(16),
-                    Text('flutter_shadcn').mono().semiBold().large(),
-                    gap(8),
-                    Text('Beautifully designed components from Shadcn/UI is now available for Flutter')
-                        .muted(),
-                  ],
-                ),
-              ).constrained(maxWidth: 192),
+              Clickable(
+                mouseCursor:
+                    const WidgetStatePropertyAll(SystemMouseCursors.click),
+                child: Card(
+                  borderRadius: theme.radiusMd,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FlutterLogo(),
+                      gap(16),
+                      Text('shadcn_flutter').mono().semiBold().large(),
+                      gap(8),
+                      Text('Beautifully designed components from Shadcn/UI is now available for Flutter')
+                          .muted(),
+                    ],
+                  ),
+                ).constrained(maxWidth: 192),
+              ),
             ],
           ),
           child: Text('Getting started'),
