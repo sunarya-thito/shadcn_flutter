@@ -8,6 +8,9 @@ class DropdownMenuExample1 extends StatelessWidget {
         showPopover(
           context: context,
           alignment: Alignment.topCenter,
+          offset: const Offset(0, 4),
+          consumeOutsideTaps: false,
+          modal: false,
           builder: (context) {
             return DropdownMenu(
               children: [
