@@ -43,7 +43,7 @@ class SidebarButton extends StatelessWidget {
     if (selected) {
       data = data.copyWith(
         colorScheme: data.colorScheme.copyWith(
-          mutedForeground: data.colorScheme.primary,
+          mutedForeground: data.colorScheme.primaryForeground,
         ),
       );
     }
