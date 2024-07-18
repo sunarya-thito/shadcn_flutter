@@ -79,6 +79,7 @@ class Data<T> extends InheritedWidget {
         if (ancestor is InheritedElement && ancestor.widget is Data) {
           final Data dataWidget = ancestor.widget as Data;
           final Type dataType = dataWidget.dataType;
+          // data.add(dataWidget);
           if (!dataTypes.contains(dataType)) {
             dataTypes.add(dataType);
             data.add(dataWidget);
@@ -104,7 +105,7 @@ class Data<T> extends InheritedWidget {
   Widget? wrap(Widget child) {
     final data = this.data;
     if (data == null) {
-      return null;
+      return Data<T>.boundary(child: child);
     }
     return Data<T>(
       data: data,
@@ -136,7 +137,11 @@ class _CaptureAll extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget result = child;
     for (final data in data) {
-      result = data.wrap(result)!;
+      var wrap = data.wrap(result);
+      if (wrap == null) {
+        continue;
+      }
+      result = wrap;
     }
     return result;
   }

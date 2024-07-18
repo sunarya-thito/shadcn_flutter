@@ -63,3 +63,12 @@
 * Removed Popover, PopoverLayoutDelegate, PopoverExtension, and PopoverPortal
 * Added NavigationMenu component
 * Capture and re-wrap data widget in popover
+
+## 0.0.15
+
+* Added support for Material/Cupertino widgets
+
+## 0.0.16
+
+* Fixed bug with data not being bound to popover context
+* Fixed popover transformation matrix

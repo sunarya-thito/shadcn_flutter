@@ -306,7 +306,7 @@ class _MenuButtonState extends State<MenuButton> {
     final menuBarData = Data.maybeOf<MenubarState>(context);
     final menuData = Data.maybeOf<MenuData>(context);
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
-    void openSubMenu() {
+    void openSubMenu(BuildContext context) {
       menuGroupData!.closeOthers();
       menuData!.popoverController.show(
         context: context,
@@ -406,7 +406,7 @@ class _MenuButtonState extends State<MenuButton> {
                                 menuGroupData.hasOpenPopovers) &&
                             widget.subMenu != null) {
                           if (!menuData.popoverController.hasOpenPopovers) {
-                            openSubMenu();
+                            openSubMenu(context);
                           }
                         } else {
                           menuGroupData.closeOthers();
@@ -417,7 +417,7 @@ class _MenuButtonState extends State<MenuButton> {
                       if (value) {
                         if (widget.subMenu != null) {
                           if (!menuData.popoverController.hasOpenPopovers) {
-                            openSubMenu();
+                            openSubMenu(context);
                           }
                         } else {
                           menuGroupData.closeOthers();
@@ -425,11 +425,15 @@ class _MenuButtonState extends State<MenuButton> {
                       }
                     },
                     onPressed: () {
+                      RenderBox renderBox =
+                          context.findRenderObject() as RenderBox;
+                      final globalPosition =
+                          renderBox.localToGlobal(Offset.zero);
                       widget.onPressed?.call(context);
                       if (widget.subMenu != null &&
                           widget.subMenu!.isNotEmpty) {
                         if (!menuData.popoverController.hasOpenPopovers) {
-                          openSubMenu();
+                          openSubMenu(context);
                         }
                       } else {
                         if (widget.autoClose) {

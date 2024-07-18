@@ -865,18 +865,13 @@ class PopoverLayoutRender extends RenderShiftedBox {
         _invertY ? -scaleAlignment.y : scaleAlignment.y,
       );
     }
-    Offset alignedChildPosition = Offset(
-      childOffset.dx +
-          childSize.width / 2 +
-          childSize.width / 2 * scaleAlignment.x,
-      childOffset.dy +
-          childSize.height / 2 +
-          childSize.height / 2 * scaleAlignment.y,
-    );
     Matrix4 transform = Matrix4.identity();
-    transform.translate(alignedChildPosition.dx, alignedChildPosition.dy);
+    Offset alignmentTranslation = scaleAlignment.alongSize(childSize);
+    transform.translate(childOffset.dx, childOffset.dy);
+    transform.translate(alignmentTranslation.dx, alignmentTranslation.dy);
     transform.scale(_scale, _scale);
-    transform.translate(-alignedChildPosition.dx, -alignedChildPosition.dy);
+    transform.translate(-alignmentTranslation.dx, -alignmentTranslation.dy);
+    transform.translate(-childOffset.dx, -childOffset.dy);
     return transform;
   }
 
@@ -890,6 +885,16 @@ class PopoverLayoutRender extends RenderShiftedBox {
       },
     );
   }
+
+  @override
+  void applyPaintTransform(RenderBox child, Matrix4 transform) {
+    Matrix4 effectiveTransform = _effectiveTransform;
+    transform.multiply(effectiveTransform);
+    super.applyPaintTransform(child, transform);
+  }
+
+  @override
+  bool get alwaysNeedsCompositing => child != null && _filterQuality != null;
 
   @override
   void paint(PaintingContext context, Offset offset) {
@@ -936,11 +941,6 @@ class PopoverLayoutRender extends RenderShiftedBox {
         }());
       }
     }
-  }
-
-  @override
-  void applyPaintTransform(RenderBox child, Matrix4 transform) {
-    transform.multiply(_effectiveTransform);
   }
 
   @override
@@ -1001,5 +1001,10 @@ class PopoverLayoutRender extends RenderShiftedBox {
     Offset result = Offset(x + dx + offsetX, y + dy + offsetY);
     BoxParentData childParentData = child!.parentData as BoxParentData;
     childParentData.offset = result;
+  }
+
+  @override
+  ui.Size computeSizeForNoChild(BoxConstraints constraints) {
+    return constraints.biggest;
   }
 }

@@ -10,6 +10,7 @@ class MaterialExample extends StatelessWidget {
   Widget build(BuildContext context) {
     return ComponentPage(
       name: 'external',
+      component: false,
       description:
           'You can use Material/Cupertino Widgets with shadcn_flutter.',
       displayName: 'Material/Cupertino Widgets',

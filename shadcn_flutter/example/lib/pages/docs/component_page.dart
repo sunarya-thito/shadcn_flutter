@@ -9,14 +9,15 @@ class ComponentPage extends StatefulWidget {
   final String name;
   final String displayName;
   final String description;
-
   final List<Widget> children;
+  final bool component;
   const ComponentPage({
     Key? key,
     required this.name,
     required this.description,
     required this.displayName,
     required this.children,
+    this.component = true,
   }) : super(key: key);
 
   @override
@@ -92,13 +93,14 @@ class _ComponentPageState extends State<ComponentPage> {
       name: widget.name,
       onThisPage: onThisPage,
       navigationItems: [
-        TextButton(
-          density: ButtonDensity.compact,
-          onPressed: () {
-            context.pushNamed('components');
-          },
-          child: Text('Components'),
-        ),
+        if (widget.component)
+          TextButton(
+            density: ButtonDensity.compact,
+            onPressed: () {
+              context.pushNamed('components');
+            },
+            child: Text('Components'),
+          ),
       ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
