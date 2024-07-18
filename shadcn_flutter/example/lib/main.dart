@@ -16,6 +16,7 @@ import 'package:example/pages/docs/components/dropdown_menu_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/input_otp_example.dart';
 import 'package:example/pages/docs/components/menubar_example.dart';
+import 'package:example/pages/docs/components/navigation_menu_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
 import 'package:example/pages/docs/components/popover_example.dart';
 import 'package:example/pages/docs/components/progress_example.dart';
@@ -375,7 +376,14 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) {
               return DropdownMenuExample();
             },
-          )
+          ),
+          GoRoute(
+            path: 'navigation_menu',
+            name: 'navigation_menu',
+            builder: (context, state) {
+              return NavigationMenuExample();
+            },
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

@@ -53,7 +53,7 @@ class _ThemePageState extends State<ThemePage> {
   final OnThisPage customColorSchemeKey = OnThisPage();
   final OnThisPage premadeColorSchemeKey = OnThisPage();
   final OnThisPage radiusKey = OnThisPage();
-  final OnThisPage previewKey = OnThisPage();
+  // final OnThisPage previewKey = OnThisPage();
   final OnThisPage codeKey = OnThisPage();
 
   @override
@@ -81,7 +81,7 @@ class _ThemePageState extends State<ThemePage> {
         'Custom color scheme': customColorSchemeKey,
         'Premade color scheme': premadeColorSchemeKey,
         'Radius': radiusKey,
-        'Preview': previewKey,
+        // 'Preview': previewKey,
         'Code': codeKey,
       },
       child: Column(
@@ -202,9 +202,9 @@ class _ThemePageState extends State<ThemePage> {
             max: 2,
             divisions: 20,
           ).p(),
-          Text('Preview').h2().anchored(previewKey),
-          Text('Preview the color scheme.').p(),
-          // TODO: add preview
+          // Text('Preview').h2().anchored(previewKey),
+          // Text('Preview the color scheme.').p(),
+          // // TODO: add preview
           Text('Code').h2().anchored(codeKey),
           Text('Use the following code to apply the color scheme.').p(),
           CodeSnippet(

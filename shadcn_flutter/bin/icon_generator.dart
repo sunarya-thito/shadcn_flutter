@@ -135,7 +135,6 @@ SvgToOtfResult svgToOtf({
   for (final e in svgMap.entries) {
     try {
       var svg = Svg.parse(e.key, e.value, ignoreShapes: ignoreShapes);
-      for (final element in svg.elementList) {}
       svgList.add(svg);
     } catch (error, stackTrace) {
       print('Error parsing ${e.key}: $error');

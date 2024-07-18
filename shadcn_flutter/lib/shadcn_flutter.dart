@@ -43,6 +43,7 @@ export 'src/components/menu/context_menu.dart';
 export 'src/components/menu/dropdown_menu.dart';
 export 'src/components/menu/menu.dart';
 export 'src/components/menu/menubar.dart';
+export 'src/components/menu/navigation_menu.dart';
 export 'src/components/menu/popup.dart';
 export 'src/components/modal/drawer.dart';
 export 'src/components/modal/popover.dart';

@@ -37,6 +37,7 @@ class MenubarState extends State<Menubar> {
     return Data(
       data: this,
       child: MenuGroup(
+        regionGroupId: this,
         children: widget.children,
         subMenuOffset: widget.border ? const Offset(-4, 8) : const Offset(0, 4),
         builder: (context, children) {

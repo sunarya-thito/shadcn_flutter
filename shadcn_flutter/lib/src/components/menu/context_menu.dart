@@ -81,6 +81,7 @@ Future<void> _showContextMenu(
                 minWidth: 192,
               ),
               child: MenuGroup(
+                regionGroupId: regionGroupId,
                 children: children.value,
                 subMenuOffset: const Offset(8, -4),
                 onDismissed: () {

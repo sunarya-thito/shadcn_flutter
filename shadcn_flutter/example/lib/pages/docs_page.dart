@@ -210,8 +210,7 @@ class DocsPageState extends State<DocsPage> {
       [
         ShadcnDocsPage('Breadcrumb', 'breadcrumb'),
         ShadcnDocsPage('Menubar', 'menubar'),
-        ShadcnDocsPage('Navigation Menu', 'navigation_menu',
-            ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Navigation Menu', 'navigation_menu'),
         ShadcnDocsPage('Pagination', 'pagination'),
         ShadcnDocsPage('Tabs', 'tabs'),
         ShadcnDocsPage('Tab List', 'tab_list'),

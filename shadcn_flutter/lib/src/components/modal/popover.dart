@@ -14,6 +14,7 @@ class PopoverRoute<T> extends PopupRoute<T> {
   final PopoverConstraint heightConstraint;
   final Object? regionGroupId;
   final Offset? offset;
+  final Alignment? transitionAlignment;
 
   PopoverRoute({
     required this.builder,
@@ -29,19 +30,21 @@ class PopoverRoute<T> extends PopupRoute<T> {
     super.settings,
     this.regionGroupId,
     this.offset,
+    this.transitionAlignment,
   }) : super(traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop);
 
   @override
   Widget buildModalBarrier() {
     if (modal) return super.buildModalBarrier();
-    return Builder(builder: (context) {
-      return Listener(
-        behavior: HitTestBehavior.translucent,
-        onPointerDown: (event) {
-          Navigator.of(context).pop();
-        },
-      );
-    });
+    return const SizedBox();
+    // return Builder(builder: (context) {
+    //   return Listener(
+    //     behavior: HitTestBehavior.translucent,
+    //     onPointerDown: (event) {
+    //       Navigator.of(context).pop();
+    //     },
+    //   );
+    // });
   }
 
   @override
@@ -67,9 +70,15 @@ class PopoverRoute<T> extends PopupRoute<T> {
       anchorAlignment: anchorAlignment,
       widthConstraint: widthConstraint,
       heightConstraint: heightConstraint,
+      onTapOutside: () {
+        if (!modal) {
+          Navigator.of(context).pop();
+        }
+      },
       route: this,
       regionGroupId: regionGroupId,
       offset: offset,
+      transitionAlignment: transitionAlignment,
     );
   }
 
@@ -104,6 +113,7 @@ class PopoverAnchor extends StatefulWidget {
     this.onTapOutside,
     this.regionGroupId,
     this.offset,
+    this.transitionAlignment,
   });
 
   final Offset position;
@@ -119,6 +129,7 @@ class PopoverAnchor extends StatefulWidget {
   final VoidCallback? onTapOutside;
   final Object? regionGroupId;
   final Offset? offset;
+  final Alignment? transitionAlignment;
 
   @override
   State<PopoverAnchor> createState() => PopoverAnchorState();
@@ -395,7 +406,7 @@ class PopoverAnchorState extends State<PopoverAnchor> {
             return FadeTransition(
               opacity: widget.animation,
               child: ScaleTransition(
-                alignment: _alignment,
+                alignment: widget.transitionAlignment ?? _alignment,
                 scale:
                     Tween<double>(begin: 0.9, end: 1).animate(widget.animation),
                 child: widget.themes == null
@@ -426,6 +437,7 @@ Future<T?> showPopover<T>({
   RouteSettings? routeSettings,
   Object? regionGroupId,
   Offset? offset,
+  Alignment? transitionAlignment,
 }) {
   final NavigatorState navigator =
       Navigator.of(context, rootNavigator: useRootNavigator);
@@ -445,6 +457,7 @@ Future<T?> showPopover<T>({
     heightConstraint: heightConstraint,
     regionGroupId: regionGroupId,
     offset: offset,
+    transitionAlignment: transitionAlignment,
   ));
 }
 
@@ -642,6 +655,7 @@ class PopoverController extends ChangeNotifier {
     Offset? offset,
     GlobalKey<PopoverAnchorState>? key,
     Object? regionGroupId,
+    Alignment? transitionAlignment,
   }) async {
     assert(_attached != null,
         'PopoverController not attached to any PopoverPortal');
@@ -670,6 +684,7 @@ class PopoverController extends ChangeNotifier {
       heightConstraint: heightConstraint,
       key: key,
       regionGroupId: regionGroupId,
+      transitionAlignment: transitionAlignment,
     );
     _openPopovers.remove(key);
     notifyListeners();
@@ -688,6 +703,8 @@ class PopoverController extends ChangeNotifier {
     for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
       key.currentState?.closeLater();
     }
+    _openPopovers.clear();
+    notifyListeners();
   }
 }
 

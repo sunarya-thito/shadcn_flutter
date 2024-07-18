@@ -52,3 +52,7 @@
 * Refactored ComboBox to Select
 * Added Context Menu component
 * Added Dropdown Menu component
+
+## 0.0.13
+
+* Fixed platform interface initialization

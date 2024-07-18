@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter_platform_interface/shadcn_flutter_platform_interface.dart';
 
+import 'components/scrollview.dart';
+
 class ShadcnApp extends StatefulWidget {
   const ShadcnApp({
     super.key,
@@ -239,27 +241,29 @@ class _ShadcnAppState extends State<ShadcnApp> {
 
   Widget _builder(BuildContext context, Widget? child) {
     final ThemeData theme = widget.theme;
-    return ShadcnSkeletonizerConfigLayer(
-      theme: theme,
-      child: mergeAnimatedTextStyle(
-        duration: kDefaultDuration,
-        style: TextStyle(
-          color: theme.colorScheme.foreground,
-        ),
-        child: AnimatedIconTheme.merge(
+    return ScrollViewInterceptor(
+      child: ShadcnSkeletonizerConfigLayer(
+        theme: theme,
+        child: mergeAnimatedTextStyle(
           duration: kDefaultDuration,
-          data: IconThemeData(
+          style: TextStyle(
             color: theme.colorScheme.foreground,
           ),
-          child: Theme(
-            data: theme,
-            child: widget.builder != null
-                ? Builder(
-                    builder: (BuildContext context) {
-                      return widget.builder!(context, child);
-                    },
-                  )
-                : child ?? const SizedBox.shrink(),
+          child: AnimatedIconTheme.merge(
+            duration: kDefaultDuration,
+            data: IconThemeData(
+              color: theme.colorScheme.foreground,
+            ),
+            child: Theme(
+              data: theme,
+              child: widget.builder != null
+                  ? Builder(
+                      builder: (BuildContext context) {
+                        return widget.builder!(context, child);
+                      },
+                    )
+                  : child ?? const SizedBox.shrink(),
+            ),
           ),
         ),
       ),

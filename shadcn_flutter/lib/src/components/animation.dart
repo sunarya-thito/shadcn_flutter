@@ -23,7 +23,7 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
     required this.value,
     this.duration,
     this.durationBuilder,
-    required AnimatedChildBuilder this.builder,
+    required AnimatedChildBuilder<T> this.builder,
     this.onEnd,
     this.curve = Curves.linear,
     this.lerp,

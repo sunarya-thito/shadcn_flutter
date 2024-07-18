@@ -78,6 +78,7 @@ class Hover extends StatefulWidget {
   final Duration
       minDuration; // The minimum duration to show the hover, if the cursor is quickly moved over the widget.
   final Duration showDuration; // The duration to show the hover
+  final HitTestBehavior hitTestBehavior;
 
   const Hover({
     Key? key,
@@ -86,6 +87,7 @@ class Hover extends StatefulWidget {
     this.waitDuration = const Duration(milliseconds: 500),
     this.minDuration = const Duration(milliseconds: 0),
     this.showDuration = const Duration(milliseconds: 200),
+    this.hitTestBehavior = HitTestBehavior.deferToChild,
   }) : super(key: key);
 
   @override

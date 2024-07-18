@@ -78,21 +78,18 @@ enum PanelSibling {
 
 class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
   _ResizablePaneState? _attachedState;
-  int? _attachedIndex;
 
   ResizablePaneController(double size, {bool collapsed = false})
       : super(ResizablePaneValue(size, collapsed));
 
-  void _attachState(_ResizablePaneState state, int index) {
+  void _attachState(_ResizablePaneState state) {
     assert(_attachedState == null, 'State is already attached');
     _attachedState = state;
-    _attachedIndex = index;
   }
 
   void _detachState(_ResizablePaneState state) {
     assert(_attachedState == state, 'State is not attached');
     _attachedState = null;
-    _attachedIndex = null;
   }
 
   bool trySetSize(double newSize,
@@ -314,9 +311,6 @@ class _ResizablePaneState extends State<ResizablePane> {
       _activePane?._attachedPane = null;
       _activePane = newActivePane;
       _activePane?._attachedPane = this;
-      if (__controller != null) {
-        __controller!._attachedIndex = _activePane!.index;
-      }
     }
 
     if (__controller == null) {
@@ -329,7 +323,7 @@ class _ResizablePaneState extends State<ResizablePane> {
                 .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
             collapsed: widget.initialCollapsed,
           );
-          __controller!._attachState(this, _activePane!.index);
+          __controller!._attachState(this);
         } else {
           __controller = widget.controller;
           __controller!.value = ResizablePaneValue(
@@ -338,7 +332,7 @@ class _ResizablePaneState extends State<ResizablePane> {
                 .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
             widget.initialCollapsed,
           );
-          __controller!._attachState(this, _activePane!.index);
+          __controller!._attachState(this);
         }
       } else {
         __controller = widget.controller ??
@@ -346,7 +340,7 @@ class _ResizablePaneState extends State<ResizablePane> {
               widget.initialSize!,
               collapsed: widget.initialCollapsed,
             );
-        __controller!._attachState(this, _activePane!.index);
+        __controller!._attachState(this);
       }
     } else {
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
@@ -378,7 +372,7 @@ class _ResizablePaneState extends State<ResizablePane> {
                 .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
             widget.initialCollapsed,
           );
-          __controller!._attachState(this, _activePane!.index);
+          __controller!._attachState(this);
         }
       } else {
         __controller = widget.controller ??
@@ -386,7 +380,7 @@ class _ResizablePaneState extends State<ResizablePane> {
               widget.initialSize!,
               collapsed: widget.initialCollapsed,
             );
-        __controller!._attachState(this, _activePane!.index);
+        __controller!._attachState(this);
       }
     } else if (widget.flex != oldWidget.flex) {
       double oldFlexedSize = _sparedFlexSize! * oldWidget.flex!;

@@ -309,7 +309,7 @@ class _MenuButtonState extends State<MenuButton> {
     void openSubMenu() {
       menuGroupData!.closeOthers();
       menuData!.popoverController.show(
-        regionGroupId: menuGroupData.root,
+        regionGroupId: menuGroupData.regionGroupId,
         builder: (context) {
           return ConstrainedBox(
             constraints: const BoxConstraints(
@@ -322,6 +322,7 @@ class _MenuButtonState extends State<MenuButton> {
                       parent: menuGroupData,
                       children: _children.value,
                       onDismissed: menuGroupData.onDismissed,
+                      regionGroupId: menuGroupData.regionGroupId,
                       subMenuOffset: const Offset(8, -4 + -1),
                       builder: (context, children) {
                         return MenuPopup(
@@ -454,9 +455,10 @@ class MenuGroupData {
   final bool hasLeading;
   final Offset? subMenuOffset;
   final VoidCallback? onDismissed;
+  final Object? regionGroupId;
 
   MenuGroupData(this.parent, this.children, this.hasLeading, this.subMenuOffset,
-      this.onDismissed);
+      this.onDismissed, this.regionGroupId);
 
   bool get hasOpenPopovers {
     for (final child in children) {
@@ -528,6 +530,7 @@ class MenuGroup extends StatefulWidget {
   final MenuGroupData? parent;
   final Offset? subMenuOffset;
   final VoidCallback? onDismissed;
+  final Object? regionGroupId;
 
   MenuGroup({
     super.key,
@@ -536,6 +539,7 @@ class MenuGroup extends StatefulWidget {
     this.parent,
     this.subMenuOffset,
     this.onDismissed,
+    this.regionGroupId,
   });
 
   @override
@@ -627,6 +631,7 @@ class _MenuGroupState extends State<MenuGroup> {
             hasLeading,
             widget.subMenuOffset,
             widget.onDismissed,
+            widget.regionGroupId,
           ),
           child: widget.builder(context, children),
         ),
