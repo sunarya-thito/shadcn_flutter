@@ -13,6 +13,7 @@ class Basic extends StatelessWidget {
   final AlignmentGeometry? contentAlignment;
   final double contentSpacing;
   final double titleSpacing;
+  final MainAxisAlignment mainAxisAlignment;
 
   const Basic({
     Key? key,
@@ -28,6 +29,7 @@ class Basic extends StatelessWidget {
     this.contentAlignment,
     this.contentSpacing = 16,
     this.titleSpacing = 4,
+    this.mainAxisAlignment = MainAxisAlignment.center,
   }) : super(key: key);
 
   @override
@@ -51,8 +53,7 @@ class Basic extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: mainAxisAlignment,
                   children: [
                     if (title != null)
                       mergeAnimatedTextStyle(

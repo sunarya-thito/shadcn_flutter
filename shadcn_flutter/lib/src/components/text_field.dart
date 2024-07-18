@@ -179,6 +179,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                   animation: _undoHistoryController,
                   builder: (context, child) {
                     return ContextMenuPopup(
+                      anchorContext: this.context,
                       position:
                           editableTextState.contextMenuAnchors.primaryAnchor +
                               const Offset(8, -8),

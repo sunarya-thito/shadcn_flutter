@@ -1,69 +1,30 @@
 import '../../shadcn_flutter.dart';
 
-typedef ColorPickerPopupBuilder = Widget Function(
-    BuildContext context, VoidCallback showPicker);
-
-class ColorPickerPopover extends StatefulWidget {
-  final HSVColor color;
-  final ValueChanged<HSVColor> onColorChanged;
-  final bool showAlpha;
-  final ColorPickerPopupBuilder builder;
-
-  const ColorPickerPopover({
-    Key? key,
-    required this.color,
-    required this.onColorChanged,
-    this.showAlpha = true,
-    required this.builder,
-  }) : super(key: key);
-
-  @override
-  State<ColorPickerPopover> createState() => _ColorPickerPopoverState();
-}
-
-class _ColorPickerPopoverState extends State<ColorPickerPopover> {
-  late HSVColor color;
-
-  @override
-  void initState() {
-    super.initState();
-    color = widget.color;
-  }
-
-  @override
-  void didUpdateWidget(covariant ColorPickerPopover oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.color != widget.color) {
-      color = widget.color;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Popover(
-      builder: (context, control) {
-        return widget.builder(context, () async {
-          await control.show();
-          widget.onColorChanged(color);
-        });
-      },
-      popoverBuilder: (context) {
-        return SizedBox(
-          width: 300,
-          child: _ColorPickerPopup(
-            color: color,
-            onColorChanged: (value) {
-              color = value;
-              widget.onColorChanged(value);
-            },
-            showAlpha: widget.showAlpha,
-          ),
-        );
-      },
-      alignment: Alignment.bottomCenter,
-      anchorAlignment: Alignment.topCenter,
-    );
-  }
+Future<HSVColor?> showColorPicker({
+  required BuildContext context,
+  required HSVColor color,
+  Alignment alignment = Alignment.topCenter,
+  bool showAlpha = true,
+  Offset? offset,
+}) {
+  return showPopover(
+    context: context,
+    alignment: alignment,
+    modal: false,
+    offset: offset,
+    builder: (context) {
+      return SizedBox(
+        width: 300,
+        child: _ColorPickerPopup(
+          color: color,
+          onColorChanged: (value) {
+            Navigator.of(context).pop(value);
+          },
+          showAlpha: showAlpha,
+        ),
+      );
+    },
+  );
 }
 
 class _ColorPickerPopup extends StatefulWidget {

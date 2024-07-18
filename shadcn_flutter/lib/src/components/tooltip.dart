@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/src/components/hover.dart';
 
 import '../../shadcn_flutter.dart';
@@ -59,23 +58,22 @@ class _TooltipState extends State<Tooltip> {
   final PopoverController _controller = PopoverController();
   @override
   Widget build(BuildContext context) {
-    return PopoverPortal(
-        controller: _controller,
-        child: Hover(
-          child: widget.child,
-          onHover: (hovered) {
-            if (hovered) {
-              _controller.show(
-                builder: (context) {
-                  return widget.tooltip;
-                },
-                alignment: widget.alignment,
-                anchorAlignment: widget.anchorAlignment,
-              );
-            } else {
-              _controller.close();
-            }
-          },
-        ));
+    return Hover(
+      child: widget.child,
+      onHover: (hovered) {
+        if (hovered) {
+          _controller.show(
+            context: context,
+            builder: (context) {
+              return widget.tooltip;
+            },
+            alignment: widget.alignment,
+            anchorAlignment: widget.anchorAlignment,
+          );
+        } else {
+          _controller.close();
+        }
+      },
+    );
   }
 }

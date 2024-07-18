@@ -2,6 +2,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class PopoverRoute<T> extends PopupRoute<T> {
+  final BuildContext anchorContext;
   final WidgetBuilder builder;
   final Offset position;
   final Alignment alignment;
@@ -15,8 +16,12 @@ class PopoverRoute<T> extends PopupRoute<T> {
   final Object? regionGroupId;
   final Offset? offset;
   final Alignment? transitionAlignment;
+  final EdgeInsets margin;
+  final bool follow;
+  final bool consumeOutsideTaps;
 
   PopoverRoute({
+    required this.anchorContext,
     required this.builder,
     required this.position,
     required this.alignment,
@@ -31,20 +36,27 @@ class PopoverRoute<T> extends PopupRoute<T> {
     this.regionGroupId,
     this.offset,
     this.transitionAlignment,
+    this.margin = const EdgeInsets.all(8),
+    this.follow = true,
+    this.consumeOutsideTaps = true,
   }) : super(traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop);
 
   @override
   Widget buildModalBarrier() {
     if (modal) return super.buildModalBarrier();
+    if (!consumeOutsideTaps) {
+      return Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (event) {
+          if (isCurrent) {
+            Navigator.of(anchorContext).pop();
+          } else {
+            Navigator.of(anchorContext).removeRoute(this);
+          }
+        },
+      );
+    }
     return const SizedBox();
-    // return Builder(builder: (context) {
-    //   return Listener(
-    //     behavior: HitTestBehavior.translucent,
-    //     onPointerDown: (event) {
-    //       Navigator.of(context).pop();
-    //     },
-    //   );
-    // });
   }
 
   @override
@@ -61,6 +73,7 @@ class PopoverRoute<T> extends PopupRoute<T> {
       Animation<double> secondaryAnimation) {
     return PopoverAnchor(
       key: key,
+      anchorContext: anchorContext,
       position: position,
       alignment: alignment,
       themes: themes,
@@ -72,13 +85,20 @@ class PopoverRoute<T> extends PopupRoute<T> {
       heightConstraint: heightConstraint,
       onTapOutside: () {
         if (!modal) {
-          Navigator.of(context).pop();
+          if (isCurrent) {
+            Navigator.of(context).pop();
+          } else {
+            Navigator.of(context).removeRoute(this);
+          }
         }
       },
       route: this,
       regionGroupId: regionGroupId,
       offset: offset,
       transitionAlignment: transitionAlignment,
+      margin: margin,
+      follow: follow,
+      consumeOutsideTaps: consumeOutsideTaps,
     );
   }
 
@@ -100,6 +120,7 @@ class PopoverRoute<T> extends PopupRoute<T> {
 class PopoverAnchor extends StatefulWidget {
   const PopoverAnchor({
     super.key,
+    required this.anchorContext,
     required this.position,
     required this.alignment,
     this.themes,
@@ -114,6 +135,9 @@ class PopoverAnchor extends StatefulWidget {
     this.regionGroupId,
     this.offset,
     this.transitionAlignment,
+    this.margin = const EdgeInsets.all(8),
+    this.follow = true,
+    this.consumeOutsideTaps = true,
   });
 
   final Offset position;
@@ -130,6 +154,10 @@ class PopoverAnchor extends StatefulWidget {
   final Object? regionGroupId;
   final Offset? offset;
   final Alignment? transitionAlignment;
+  final EdgeInsets margin;
+  final bool follow;
+  final BuildContext anchorContext;
+  final bool consumeOutsideTaps;
 
   @override
   State<PopoverAnchor> createState() => PopoverAnchorState();
@@ -143,7 +171,6 @@ enum PopoverConstraint {
 }
 
 class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
-  static const double _margin = 8;
   final Alignment alignment;
   final Alignment anchorAlignment;
   final Offset position;
@@ -151,6 +178,7 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
   final PopoverConstraint widthConstraint;
   final PopoverConstraint heightConstraint;
   final Offset? offset;
+  final EdgeInsets margin;
 
   PopoverLayoutDelegate({
     required this.alignment,
@@ -160,6 +188,7 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
     required this.heightConstraint,
     this.anchorSize,
     this.offset,
+    this.margin = const EdgeInsets.all(8),
   });
 
   @override
@@ -202,31 +231,29 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
     double y = position.dy -
         childSize.height / 2 -
         (childSize.height / 2 * alignment.y);
-    double left = x - _margin;
-    double top = y - _margin;
-    double right = x + childSize.width + _margin;
-    double bottom = y + childSize.height + _margin;
+    double left = x - margin.left;
+    double top = y - margin.top;
+    double right = x + childSize.width + margin.right;
+    double bottom = y + childSize.height + margin.bottom;
     if (left < 0 || right > size.width) {
       x = position.dx -
           childSize.width / 2 -
-          (childSize.width / 2 * -alignment.x);
+          (childSize.width / 2 * -anchorAlignment.x);
       if (anchorSize != null) {
-        x -= anchorSize!.width * anchorAlignment.x;
+        x -= anchorSize!.width * alignment.x;
       }
-      left = x - _margin;
-      right = x + childSize.width + _margin;
-      offsetX *= -1;
+      left = x - margin.left;
+      right = x + childSize.width + margin.right;
     }
     if (top < 0 || bottom > size.height) {
       y = position.dy -
           childSize.height / 2 -
-          (childSize.height / 2 * -alignment.y);
+          (childSize.height / 2 * -anchorAlignment.y);
       if (anchorSize != null) {
-        y -= anchorSize!.height * anchorAlignment.y;
+        y -= anchorSize!.height * alignment.y;
       }
-      top = y - _margin;
-      bottom = y + childSize.height + _margin;
-      offsetY *= -1;
+      top = y - margin.top;
+      bottom = y + childSize.height + margin.bottom;
     }
     final double dx = left < 0
         ? -left
@@ -245,19 +272,26 @@ class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
   bool shouldRelayout(covariant PopoverLayoutDelegate oldDelegate) {
     return oldDelegate.alignment != alignment ||
         oldDelegate.position != position ||
-        oldDelegate.anchorSize != anchorSize;
+        oldDelegate.anchorSize != anchorSize ||
+        oldDelegate.widthConstraint != widthConstraint ||
+        oldDelegate.heightConstraint != heightConstraint ||
+        oldDelegate.offset != offset ||
+        oldDelegate.margin != margin;
   }
 }
 
-class PopoverAnchorState extends State<PopoverAnchor> {
-  // late ValueNotifier<Offset> _position;
+class PopoverAnchorState extends State<PopoverAnchor>
+    with SingleTickerProviderStateMixin {
   late Offset _position;
   late Offset? _offset;
   late Alignment _alignment;
   late Alignment _anchorAlignment;
   late PopoverConstraint _widthConstraint;
   late PopoverConstraint _heightConstraint;
+  late EdgeInsets _margin;
   Size? _anchorSize;
+  late bool _follow;
+  late Ticker _ticker;
 
   set offset(Offset? offset) {
     if (offset != null) {
@@ -277,21 +311,32 @@ class PopoverAnchorState extends State<PopoverAnchor> {
     _anchorAlignment = widget.anchorAlignment;
     _widthConstraint = widget.widthConstraint;
     _heightConstraint = widget.heightConstraint;
+    _margin = widget.margin;
+    _follow = widget.follow;
+    _ticker = createTicker(_tick);
+    if (_follow) {
+      _ticker.start();
+    }
   }
 
-  void close() {
-    if (widget.route != null) {
-      Navigator.of(context).removeRoute(widget.route!);
+  void close([bool immediate = false]) {
+    var route = widget.route;
+    if (route != null) {
+      if (route.isCurrent && !immediate) {
+        Navigator.of(context).pop();
+      } else {
+        Navigator.of(context).removeRoute(route);
+      }
     } else {
       Navigator.of(context).pop();
     }
   }
 
   void closeLater() {
-    if (mounted) {
+    if (mounted && widget.route != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
-          close();
+          Navigator.of(context).removeRoute(widget.route!);
         }
       });
     }
@@ -318,6 +363,20 @@ class PopoverAnchorState extends State<PopoverAnchor> {
     if (oldWidget.heightConstraint != widget.heightConstraint) {
       _heightConstraint = widget.heightConstraint;
     }
+    if (oldWidget.offset != widget.offset) {
+      _offset = widget.offset;
+    }
+    if (oldWidget.margin != widget.margin) {
+      _margin = widget.margin;
+    }
+    if (oldWidget.follow != widget.follow) {
+      _follow = widget.follow;
+      if (_follow) {
+        _ticker.start();
+      } else {
+        _ticker.stop();
+      }
+    }
   }
 
   Size? get anchorSize => _anchorSize;
@@ -327,6 +386,8 @@ class PopoverAnchorState extends State<PopoverAnchor> {
   PopoverConstraint get widthConstraint => _widthConstraint;
   PopoverConstraint get heightConstraint => _heightConstraint;
   Offset? get offset => _offset;
+  EdgeInsets get margin => _margin;
+  bool get follow => _follow;
 
   set position(Offset value) {
     if (_position != value) {
@@ -340,14 +401,6 @@ class PopoverAnchorState extends State<PopoverAnchor> {
     if (_alignment != value) {
       setState(() {
         _alignment = value;
-      });
-    }
-  }
-
-  set anchorSize(Size? value) {
-    if (_anchorSize != value) {
-      setState(() {
-        _anchorSize = value;
       });
     }
   }
@@ -376,10 +429,58 @@ class PopoverAnchorState extends State<PopoverAnchor> {
     }
   }
 
+  set margin(EdgeInsets value) {
+    if (_margin != value) {
+      setState(() {
+        _margin = value;
+      });
+    }
+  }
+
+  set follow(bool value) {
+    if (_follow != value) {
+      setState(() {
+        _follow = value;
+        if (_follow) {
+          _ticker.start();
+        } else {
+          _ticker.stop();
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _ticker.dispose();
+    super.dispose();
+  }
+
+  void _tick(Duration elapsed) {
+    if (!mounted || !widget.anchorContext.mounted) return;
+    // update position based on anchorContext
+    RenderBox? renderBox =
+        widget.anchorContext.findRenderObject() as RenderBox?;
+    if (renderBox != null) {
+      Offset pos = renderBox.localToGlobal(Offset.zero);
+      Size size = renderBox.size;
+      Offset newPos = Offset(
+        pos.dx + size.width / 2 + size.width / 2 * _anchorAlignment.x,
+        pos.dy + size.height / 2 + size.height / 2 * _anchorAlignment.y,
+      );
+      if (_position != newPos) {
+        setState(() {
+          _anchorSize = size;
+          _position = newPos;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return TapRegion(
-      enabled: widget.regionGroupId != null && widget.onTapOutside != null,
+      enabled: widget.consumeOutsideTaps,
       onTapOutside: widget.onTapOutside != null
           ? (event) {
               widget.onTapOutside?.call();
@@ -395,6 +496,7 @@ class PopoverAnchorState extends State<PopoverAnchor> {
           widthConstraint: _widthConstraint,
           heightConstraint: _heightConstraint,
           offset: _offset,
+          margin: _margin,
         ),
         child: MediaQuery.removePadding(
           context: context,
@@ -423,13 +525,12 @@ class PopoverAnchorState extends State<PopoverAnchor> {
 
 Future<T?> showPopover<T>({
   required BuildContext context,
-  required Offset position,
   required Alignment alignment,
   required WidgetBuilder builder,
+  Offset? position,
   Alignment? anchorAlignment,
   PopoverConstraint widthConstraint = PopoverConstraint.flexible,
   PopoverConstraint heightConstraint = PopoverConstraint.flexible,
-  Size? anchorSize,
   Key? key,
   bool useRootNavigator = true,
   bool modal = true,
@@ -438,12 +539,29 @@ Future<T?> showPopover<T>({
   Object? regionGroupId,
   Offset? offset,
   Alignment? transitionAlignment,
+  EdgeInsets margin = const EdgeInsets.all(8),
+  bool follow = true,
+  bool consumeOutsideTaps = true,
 }) {
+  anchorAlignment ??= alignment * -1;
   final NavigatorState navigator =
       Navigator.of(context, rootNavigator: useRootNavigator);
   final CapturedThemes themes =
       InheritedTheme.capture(from: context, to: navigator.context);
+  Size? anchorSize;
+  if (position == null) {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    Offset pos = renderBox.localToGlobal(Offset.zero);
+    anchorSize ??= renderBox.size;
+    position = Offset(
+      pos.dx + anchorSize.width / 2 + anchorSize.width / 2 * anchorAlignment.x,
+      pos.dy +
+          anchorSize.height / 2 +
+          anchorSize.height / 2 * anchorAlignment.y,
+    );
+  }
   return navigator.push(PopoverRoute(
+    anchorContext: context,
     key: key,
     builder: builder,
     position: position,
@@ -452,199 +570,25 @@ Future<T?> showPopover<T>({
     modal: modal,
     settings: routeSettings,
     anchorSize: anchorSize,
-    anchorAlignment: anchorAlignment ?? alignment * -1,
+    anchorAlignment: anchorAlignment,
     widthConstraint: widthConstraint,
     heightConstraint: heightConstraint,
     regionGroupId: regionGroupId,
     offset: offset,
     transitionAlignment: transitionAlignment,
+    margin: margin,
+    follow: follow,
+    consumeOutsideTaps: consumeOutsideTaps,
   ));
 }
 
-abstract class PopoverControl {
-  Future<T?> show<T>();
-  void hide();
-}
-
-typedef TriggerBuilder = Widget Function(
-    BuildContext context, PopoverControl control);
-
-class Popover extends StatefulWidget {
-  final TriggerBuilder builder;
-  final WidgetBuilder popoverBuilder;
-  final Alignment alignment;
-  final Alignment? anchorAlignment;
-  final bool follow;
-  final bool modal;
-  final PopoverConstraint widthConstraint;
-  final PopoverConstraint heightConstraint;
-  final Offset? popoverOffset;
-
-  const Popover({
-    Key? key,
-    required this.builder,
-    required this.popoverBuilder,
-    required this.alignment,
-    this.anchorAlignment,
-    this.follow = true,
-    this.modal = false,
-    this.widthConstraint = PopoverConstraint.flexible,
-    this.heightConstraint = PopoverConstraint.flexible,
-    this.popoverOffset,
-  }) : super(key: key);
-
-  @override
-  PopoverState createState() => PopoverState();
-}
-
-class PopoverState extends State<Popover>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin
-    implements PopoverControl {
-  late Ticker ticker;
-  GlobalKey<PopoverAnchorState>? _key;
-
-  @override
-  bool get wantKeepAlive {
-    // when follow is true, we want to keep the state alive
-    // so that the popover can follow the widget
-    // this is useful when the widget is in a list
-    // list items are destroyed and recreated when scrolling
-    return _key != null && widget.follow;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    ticker = createTicker((_) {
-      if (_key != null && widget.follow) {
-        PopoverAnchorState? state = _key!.currentState;
-        if (state != null) {
-          Alignment alignment = widget.anchorAlignment ?? widget.alignment * -1;
-          final RenderBox renderBox = context.findRenderObject() as RenderBox;
-          final Offset position = renderBox.localToGlobal(Offset.zero);
-          final Size size = renderBox.size;
-          // find offset based on alignment
-          // alignment.x and alignment.y is -1, 0, 1 (where 0 is center)
-          Offset result = Offset(
-            position.dx + size.width / 2 + size.width / 2 * alignment.x,
-            position.dy + size.height / 2 + size.height / 2 * alignment.y,
-          );
-          // if (widget.popoverOffset != null) {
-          //   result += widget.popoverOffset!;
-          // }
-          state.offset = widget.popoverOffset;
-          state.position = result;
-          state.alignment = widget.alignment;
-          state.anchorSize = size;
-          state.anchorAlignment =
-              widget.anchorAlignment ?? widget.alignment * -1;
-          state.widthConstraint = widget.widthConstraint;
-          state.heightConstraint = widget.heightConstraint;
-        }
-      }
-    });
-  }
-
-  @override
-  void didUpdateWidget(covariant Popover oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.follow != widget.follow) {
-      if (widget.follow) {
-        if (_key?.currentContext?.mounted ?? false) {
-          _scheduleShow();
-        }
-      } else {
-        _cancelShow();
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return widget.builder(context, this);
-    // return DataBuilder(
-    //   data: this,
-    //   builder: widget.builder,
-    // );
-  }
-
-  void _scheduleShow() {
-    if (!ticker.isActive && widget.follow) {
-      ticker.start();
-    }
-  }
-
-  void _cancelShow() {
-    ticker.stop();
-  }
-
-  @override
-  void dispose() {
-    ticker.dispose();
-    super.dispose();
-  }
-
-  @override
-  void hide() {
-    _key?.currentState?.close();
-  }
-
-  @override
-  Future<T?> show<T>() async {
-    Alignment alignment = widget.anchorAlignment ?? widget.alignment * -1;
-    WidgetBuilder builder = widget.popoverBuilder;
-    _key = GlobalKey<PopoverAnchorState>();
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
-    final Offset position = renderBox.localToGlobal(Offset.zero);
-    final Size size = renderBox.size;
-    // find offset based on alignment
-    // alignment.x and alignment.y is -1, 0, 1 (where 0 is center)
-    Offset result = Offset(
-      position.dx + size.width / 2 + size.width / 2 * alignment.x,
-      position.dy + size.height / 2 + size.height / 2 * alignment.y,
-    );
-    // if (widget.popoverOffset != null) {
-    //   result += widget.popoverOffset!;
-    // }
-    _scheduleShow();
-    T? res = await showPopover(
-        context: context,
-        position: result,
-        alignment: widget.alignment,
-        anchorAlignment: alignment,
-        builder: builder,
-        modal: widget.modal,
-        anchorSize: size,
-        widthConstraint: widget.widthConstraint,
-        heightConstraint: widget.heightConstraint,
-        offset: widget.popoverOffset,
-        key: _key);
-    _cancelShow();
-    _key = null;
-    return res;
-  }
-}
-
 class PopoverController extends ChangeNotifier {
-  PopoverPortalState? _attached;
   final List<GlobalKey<PopoverAnchorState>> _openPopovers = [];
-
-  void _attach(PopoverPortalState state) {
-    _attached = state;
-  }
-
-  void _detach(PopoverPortalState state) {
-    if (_attached == state) {
-      _attached = null;
-    }
-  }
-
-  bool get hasAttached => _attached != null;
 
   bool get hasOpenPopovers => _openPopovers.isNotEmpty;
 
   Future<T?> show<T>({
+    required BuildContext context,
     required WidgetBuilder builder,
     required Alignment alignment,
     required Alignment anchorAlignment,
@@ -656,44 +600,36 @@ class PopoverController extends ChangeNotifier {
     GlobalKey<PopoverAnchorState>? key,
     Object? regionGroupId,
     Alignment? transitionAlignment,
+    bool consumeOutsideTaps = true,
   }) async {
-    assert(_attached != null,
-        'PopoverController not attached to any PopoverPortal');
     if (closeOthers) {
       close();
     }
     key ??= GlobalKey<PopoverAnchorState>();
     _openPopovers.add(key);
     notifyListeners();
-    RenderBox renderBox = _attached!.context.findRenderObject() as RenderBox;
-    Offset position = renderBox.localToGlobal(Offset.zero);
-    Size size = renderBox.size;
-    Offset result = Offset(
-      position.dx + size.width / 2 + size.width / 2 * anchorAlignment.x,
-      position.dy + size.height / 2 + size.height / 2 * anchorAlignment.y,
-    );
     T? res = await showPopover(
-      context: _attached!.context,
-      position: result + (offset ?? Offset.zero),
+      context: context,
       alignment: alignment,
       anchorAlignment: anchorAlignment,
       builder: builder,
       modal: modal,
-      anchorSize: size,
       widthConstraint: widthConstraint,
       heightConstraint: heightConstraint,
       key: key,
       regionGroupId: regionGroupId,
+      offset: offset,
       transitionAlignment: transitionAlignment,
+      consumeOutsideTaps: consumeOutsideTaps,
     );
     _openPopovers.remove(key);
     notifyListeners();
     return res;
   }
 
-  void close() {
+  void close([bool immediate = false]) {
     for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
-      key.currentState?.close();
+      key.currentState?.close(immediate);
     }
     _openPopovers.clear();
     notifyListeners();
@@ -706,52 +642,12 @@ class PopoverController extends ChangeNotifier {
     _openPopovers.clear();
     notifyListeners();
   }
-}
-
-class PopoverPortal extends StatefulWidget {
-  final PopoverController controller;
-  final Widget child;
-
-  const PopoverPortal({
-    Key? key,
-    required this.controller,
-    required this.child,
-  }) : super(key: key);
-
-  @override
-  PopoverPortalState createState() => PopoverPortalState();
-}
-
-class PopoverPortalState extends State<PopoverPortal> {
-  @override
-  void initState() {
-    super.initState();
-    widget.controller._attach(this);
-  }
-
-  @override
-  void didUpdateWidget(covariant PopoverPortal oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller != widget.controller) {
-      oldWidget.controller._detach(this);
-      widget.controller._attach(this);
-      // transfer open popovers
-      for (GlobalKey<PopoverAnchorState> key
-          in oldWidget.controller._openPopovers) {
-        widget.controller._openPopovers.add(key);
-      }
-    }
-  }
 
   @override
   void dispose() {
-    widget.controller._detach(this);
-    widget.controller.closeLater();
+    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+      key.currentState?.closeLater();
+    }
     super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget.child;
   }
 }

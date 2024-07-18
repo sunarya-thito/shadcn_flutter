@@ -103,38 +103,37 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>> {
             : widget.builder(context, value as T),
       );
     }
-    return Popover(
-      builder: (context, control) {
-        return OutlineButton(
-          trailing: widget.trailing?.iconMuted().iconSmall(),
-          leading: widget.leading?.iconMuted().iconSmall(),
-          onPressed: () {
-            control.show();
+    return OutlineButton(
+      trailing: widget.trailing?.iconMuted().iconSmall(),
+      leading: widget.leading?.iconMuted().iconSmall(),
+      onPressed: () {
+        showPopover(
+          context: context,
+          alignment: widget.popoverAlignment ?? Alignment.topLeft,
+          anchorAlignment:
+              widget.popoverAnchorAlignment ?? Alignment.bottomLeft,
+          builder: (context) {
+            return Padding(
+              padding: widget.popoverPadding ??
+                  const EdgeInsets.symmetric(vertical: 8),
+              child: widget.editorBuilder(
+                context,
+                value,
+                (value) {
+                  setState(() {
+                    this.value = value;
+                  });
+                  widget.onChanged?.call(value);
+                  this.context.reportNewFormValue(value);
+                },
+              ),
+            );
           },
-          child: value == null
-              ? widget.placeholder.muted()
-              : widget.builder(context, value as T),
         );
       },
-      popoverBuilder: (context) {
-        return Padding(
-          padding:
-              widget.popoverPadding ?? const EdgeInsets.symmetric(vertical: 8),
-          child: widget.editorBuilder(
-            context,
-            value,
-            (value) {
-              setState(() {
-                this.value = value;
-              });
-              widget.onChanged?.call(value);
-              this.context.reportNewFormValue(value);
-            },
-          ),
-        );
-      },
-      alignment: widget.popoverAlignment ?? Alignment.topLeft,
-      anchorAlignment: widget.popoverAnchorAlignment ?? Alignment.bottomLeft,
+      child: value == null
+          ? widget.placeholder.muted()
+          : widget.builder(context, value as T),
     );
   }
 }

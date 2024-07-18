@@ -336,62 +336,67 @@ class _ThemePageState extends State<ThemePage> {
 
   Widget buildGridTile(String name) {
     final colors = this.colors;
-    return ColorPickerPopover(
-      color: HSVColor.fromColor(colors[name]!),
-      onColorChanged: (value) {
-        setState(() {
-          colors[name] = value.toColor();
-          customColorScheme = true;
-          if (applyDirectly) {
-            MyAppState state = Data.of(context);
-            state.changeColorScheme(ColorScheme.fromColors(colors: colors));
-          }
-        });
-      },
-      builder: (context, showPicker) {
-        return Container(
-          constraints: BoxConstraints(
-            minWidth: 100,
-            minHeight: 100,
-          ),
-          child: GestureDetector(
-            onTap: () {
-              showPicker();
-            },
-            child: FocusableActionDetector(
-              mouseCursor: SystemMouseCursors.click,
-              child: FittedBox(
-                child: AnimatedContainer(
-                  duration: kDefaultDuration,
-                  width: 200,
-                  height: 200,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: colors[name],
-                  ),
-                  child: Stack(
-                    children: [
-                      Text(name,
-                          style: TextStyle(
-                              color: getInvertedColor(colors[name]!))),
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: Text(
-                          colors[name]!.value.toRadixString(16),
-                          style: TextStyle(
-                            color: getInvertedColor(colors[name]!),
-                          ),
+    return Container(
+      constraints: BoxConstraints(
+        minWidth: 100,
+        minHeight: 100,
+      ),
+      child: Builder(builder: (context) {
+        return GestureDetector(
+          onTap: () {
+            showColorPicker(
+              context: context,
+              color: HSVColor.fromColor(colors[name]!),
+              offset: const Offset(0, 8),
+            ).then(
+              (value) {
+                if (value != null) {
+                  setState(() {
+                    colors[name] = value.toColor();
+                    customColorScheme = true;
+                    if (applyDirectly) {
+                      MyAppState state = Data.of(context);
+                      state.changeColorScheme(
+                          ColorScheme.fromColors(colors: colors));
+                    }
+                  });
+                }
+              },
+            );
+          },
+          child: FocusableActionDetector(
+            mouseCursor: SystemMouseCursors.click,
+            child: FittedBox(
+              child: AnimatedContainer(
+                duration: kDefaultDuration,
+                width: 200,
+                height: 200,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: colors[name],
+                ),
+                child: Stack(
+                  children: [
+                    Text(name,
+                        style:
+                            TextStyle(color: getInvertedColor(colors[name]!))),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Text(
+                        colors[name]!.value.toRadixString(16),
+                        style: TextStyle(
+                          color: getInvertedColor(colors[name]!),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
         );
-      },
+      }),
     );
   }
 }

@@ -236,14 +236,22 @@ class ButtonState<T extends Button> extends State<T> {
         return widget.style.iconTheme(context, states);
       }),
       onPressed: widget.onPressed,
-      child: BasicLayout(
-        trailing: widget.trailing,
-        leading: widget.leading,
-        contentSpacing: 8,
-        content: UnderlineInterceptor(child: widget.child),
-        trailingAlignment: Alignment.center,
-        leadingAlignment: Alignment.center,
-        contentAlignment: widget.alignment ?? Alignment.centerLeft,
+      child: IntrinsicWidth(
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (widget.leading != null) widget.leading!,
+              Expanded(
+                child: Align(
+                  alignment: widget.alignment ?? Alignment.centerLeft,
+                  child: UnderlineInterceptor(child: widget.child),
+                ),
+              ),
+              if (widget.trailing != null) widget.trailing!,
+            ].joinSeparator(const SizedBox(width: 8)),
+          ),
+        ),
       ),
     );
   }

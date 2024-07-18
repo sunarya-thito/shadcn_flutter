@@ -12,7 +12,6 @@ class NavigationItem extends StatefulWidget {
 }
 
 class NavigationItemState extends State<NavigationItem> {
-  static const Duration kDebounceDuration = Duration(milliseconds: 500);
   NavigationMenuState? _menuState;
 
   @override
@@ -94,53 +93,108 @@ class NavigationItemState extends State<NavigationItem> {
                 _menuState!._activate(this);
               }
             },
-            onPressed: () {
-              if (widget.onPressed != null) {
-                widget.onPressed!();
-              }
-              if (widget.content != null) {
-                _menuState!._activate(this);
-              }
-            },
+            onPressed: widget.onPressed != null || widget.content != null
+                ? () {
+                    if (widget.onPressed != null) {
+                      widget.onPressed!();
+                    }
+                    if (widget.content != null) {
+                      _menuState!._activate(this);
+                    }
+                  }
+                : null,
           );
         });
   }
 }
 
 class NavigationContent extends StatelessWidget {
-  final Widget child;
+  final Widget title;
+  final Widget? content;
+  final Widget? leading;
+  final Widget? trailing;
+  final VoidCallback? onPressed;
 
-  const NavigationContent({required this.child});
+  const NavigationContent({
+    required this.title,
+    this.content,
+    this.leading,
+    this.trailing,
+    this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError();
+    return Button(
+      style: ButtonVariance.ghost.copyWith(
+        padding: (context, states, value) {
+          return const EdgeInsets.all(12);
+        },
+      ),
+      onPressed: onPressed,
+      alignment: Alignment.topLeft,
+      child: Basic(
+        title: title.medium(),
+        content: content?.muted(),
+        trailing: trailing,
+        leading: leading,
+        mainAxisAlignment: MainAxisAlignment.start,
+      ),
+    ).constrained(maxWidth: 16 * 16);
   }
 }
 
 class NavigationContentList extends StatelessWidget {
-  final Widget? primary;
   final List<Widget> children;
+  final int crossAxisCount;
+  final double spacing;
+  final double runSpacing;
+  final bool reverse;
 
-  const NavigationContentList({this.primary, required this.children});
-
-  @override
-  Widget build(BuildContext context) {
-    throw UnimplementedError();
-  }
-}
-
-class NavigationContentItem extends StatelessWidget {
-  final Widget? icon;
-  final Widget title;
-  final Widget content;
-
-  const NavigationContentItem(
-      {this.icon, required this.title, required this.content});
+  const NavigationContentList({
+    required this.children,
+    this.crossAxisCount = 3,
+    this.spacing = 12,
+    this.runSpacing = 12,
+    this.reverse = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError();
+    List<Widget> columns = [];
+    List<Widget> rows = [];
+    for (final child in children) {
+      columns.add(Expanded(child: child));
+      if (columns.length == crossAxisCount) {
+        rows.add(IntrinsicWidth(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: columns.joinSeparator(SizedBox(height: spacing)),
+          ),
+        ));
+        columns = [];
+      }
+    }
+    if (columns.isNotEmpty) {
+      rows.add(IntrinsicWidth(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: columns.joinSeparator(SizedBox(height: runSpacing)),
+        ),
+      ));
+    }
+    return IntrinsicWidth(
+      child: IntrinsicHeight(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: (reverse ? rows.reversed.toList() : rows)
+              .joinSeparator(SizedBox(width: spacing)),
+        ),
+      ),
+    );
   }
 }
 
@@ -154,14 +208,12 @@ class NavigationMenu extends StatefulWidget {
 }
 
 class NavigationMenuState extends State<NavigationMenu> {
+  static const Duration kDebounceDuration = Duration(milliseconds: 200);
   final PopoverController _popoverController = PopoverController();
   final ValueNotifier<int> _activeIndex = ValueNotifier(0);
   final Map<NavigationItemState, WidgetBuilder> _contentBuilders = {};
 
   int _hoverCount = 0;
-
-  bool _hovered = false;
-  bool _popoverHovered = false;
 
   void _attachContentBuilder(NavigationItemState key, WidgetBuilder builder) {
     _contentBuilders[key] = builder;
@@ -174,7 +226,6 @@ class NavigationMenuState extends State<NavigationMenu> {
 
   @override
   void dispose() {
-    _popoverController.closeLater();
     _activeIndex.dispose();
     _popoverController.dispose();
     super.dispose();
@@ -185,6 +236,7 @@ class NavigationMenuState extends State<NavigationMenu> {
       return;
     }
     _popoverController.show(
+      context: context,
       builder: buildPopover,
       alignment: Alignment.topLeft,
       anchorAlignment: Alignment.bottomLeft,
@@ -213,7 +265,14 @@ class NavigationMenuState extends State<NavigationMenu> {
   Widget buildContent(int index) {
     NavigationItemState? item = findByWidget(widget.children[index]);
     if (item != null) {
-      return _contentBuilders[item]!(context);
+      return Data<NavigationMenuState>.boundary(
+        child: Data<NavigationMenuMarginData>.boundary(
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: _contentBuilders[item]!(context),
+          ),
+        ),
+      );
     }
     return Container();
   }
@@ -223,17 +282,13 @@ class NavigationMenuState extends State<NavigationMenu> {
     return MouseRegion(
       hitTestBehavior: HitTestBehavior.translucent,
       onEnter: (_) {
-        _popoverHovered = true;
+        _hoverCount++;
       },
       onExit: (event) {
         int currentHoverCount = ++_hoverCount;
-        Future.delayed(NavigationItemState.kDebounceDuration, () {
-          if (currentHoverCount == _hoverCount) {
-            _popoverHovered = false;
-            if (!_hovered) {
-              _popoverController.closeLater();
-              print('close');
-            }
+        Future.delayed(kDebounceDuration, () {
+          if (currentHoverCount == _hoverCount && mounted) {
+            _popoverController.close();
           }
         });
       },
@@ -244,57 +299,13 @@ class NavigationMenuState extends State<NavigationMenu> {
               value: _activeIndex.value.toDouble(),
               duration: kDefaultDuration,
               builder: (context, value, child) {
-                List<Widget> children = [];
                 int currentIndex = _activeIndex.value;
-                if (currentIndex - 1 >= 0) {
-                  children.add(
-                    Positioned.fill(
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          return FractionalTranslation(
-                            translation: Offset(-value + currentIndex - 1, 0),
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                    child: buildContent(currentIndex - 1)),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                }
-                if (currentIndex + 1 < widget.children.length) {
-                  children.add(
-                    Positioned.fill(
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          return FractionalTranslation(
-                            translation: Offset(-value + currentIndex + 1, 0),
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                    child: buildContent(currentIndex + 1)),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                }
-                children.add(
-                  FractionalTranslation(
-                    translation: Offset(-value + currentIndex, 0),
-                    child: buildContent(currentIndex),
-                  ),
-                );
                 return OutlinedContainer(
                   clipBehavior: Clip.antiAlias,
                   borderRadius: theme.radiusMd,
-                  child: Stack(
-                    children: children,
+                  child: FractionalTranslation(
+                    translation: Offset(-value + currentIndex, 0),
+                    child: buildContent(currentIndex),
                   ),
                 );
               },
@@ -305,29 +316,33 @@ class NavigationMenuState extends State<NavigationMenu> {
 
   @override
   Widget build(BuildContext context) {
+    Offset? margin;
+    RenderBox? box = context.findRenderObject() as RenderBox?;
+    if (box != null) {
+      Offset globalPosition = box.localToGlobal(Offset.zero);
+      Size size = box.size;
+      margin = globalPosition + Offset(0, size.height);
+    }
     return TapRegion(
       groupId: this,
       child: MouseRegion(
         hitTestBehavior: HitTestBehavior.translucent,
         onEnter: (_) {
-          _hovered = true;
+          _hoverCount++;
         },
         onExit: (_) {
           int currentHoverCount = ++_hoverCount;
-          Future.delayed(NavigationItemState.kDebounceDuration, () {
-            if (currentHoverCount == _hoverCount) {
-              _hovered = false;
-              if (!_popoverHovered) {
-                _popoverController.closeLater();
-              }
+          Future.delayed(kDebounceDuration, () {
+            if (currentHoverCount == _hoverCount && mounted) {
+              _popoverController.close();
             }
           });
         },
         child: IntrinsicHeight(
-          child: PopoverPortal(
-            controller: _popoverController,
+          child: Data(
+            data: this,
             child: Data(
-              data: this,
+              data: NavigationMenuMarginData(margin),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -339,4 +354,20 @@ class NavigationMenuState extends State<NavigationMenu> {
       ),
     );
   }
+}
+
+class NavigationMenuMarginData {
+  final Offset? offset;
+
+  NavigationMenuMarginData(this.offset);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is NavigationMenuMarginData && other.offset == offset;
+  }
+
+  @override
+  int get hashCode => offset.hashCode;
 }

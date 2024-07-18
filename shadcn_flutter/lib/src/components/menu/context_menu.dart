@@ -44,15 +44,12 @@ class _ContextMenuState extends State<ContextMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return TapRegion(
-      groupId: this,
-      child: GestureDetector(
-        behavior: widget.behavior,
-        onSecondaryTapDown: (details) {
-          _showContextMenu(context, details.globalPosition, _children, this);
-        },
-        child: widget.child,
-      ),
+    return GestureDetector(
+      behavior: widget.behavior,
+      onSecondaryTapDown: (details) {
+        _showContextMenu(context, details.globalPosition, _children);
+      },
+      child: widget.child,
     );
   }
 }
@@ -61,7 +58,6 @@ Future<void> _showContextMenu(
   BuildContext context,
   Offset position,
   ValueListenable<List<MenuItem>> children,
-  Object? regionGroupId,
 ) async {
   final key = GlobalKey<PopoverAnchorState>();
   return showPopover(
@@ -70,8 +66,10 @@ Future<void> _showContextMenu(
     position: position + const Offset(8, 0),
     alignment: Alignment.topLeft,
     anchorAlignment: Alignment.topRight,
-    regionGroupId: regionGroupId,
+    regionGroupId: key,
     modal: false,
+    follow: false,
+    consumeOutsideTaps: false,
     builder: (context) {
       return AnimatedBuilder(
           animation: children,
@@ -81,7 +79,7 @@ Future<void> _showContextMenu(
                 minWidth: 192,
               ),
               child: MenuGroup(
-                regionGroupId: regionGroupId,
+                regionGroupId: key,
                 children: children.value,
                 subMenuOffset: const Offset(8, -4),
                 onDismissed: () {
@@ -100,11 +98,13 @@ Future<void> _showContextMenu(
 }
 
 class ContextMenuPopup extends StatelessWidget {
+  final BuildContext anchorContext;
   final Offset position;
   final List<MenuItem> children;
   final CapturedThemes? themes;
   const ContextMenuPopup({
     Key? key,
+    required this.anchorContext,
     required this.position,
     required this.children,
     this.themes,
@@ -126,9 +126,11 @@ class ContextMenuPopup extends StatelessWidget {
       },
       builder: (context, animation) {
         return PopoverAnchor(
+          anchorContext: anchorContext,
           position: position,
           alignment: Alignment.topLeft,
           themes: themes,
+          follow: false,
           builder: (context) {
             return ConstrainedBox(
               constraints: const BoxConstraints(

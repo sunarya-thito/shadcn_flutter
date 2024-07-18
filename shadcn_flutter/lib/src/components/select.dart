@@ -208,53 +208,50 @@ class _SelectState<T> extends State<Select<T>> {
     final theme = Theme.of(context);
     return ConstrainedBox(
       constraints: widget.constraints,
-      child: Popover(
-        builder: (context, control) {
-          return OutlineButton(
-            focusNode: _focusNode,
-            onPressed: widget.onChanged == null
-                ? null
-                : () {
-                    control.show();
+      child: OutlineButton(
+        focusNode: _focusNode,
+        onPressed: widget.onChanged == null
+            ? null
+            : () {
+                showPopover(
+                  context: context,
+                  alignment: Alignment.topCenter,
+                  widthConstraint: widget.popupWidthConstraint,
+                  builder: (context) {
+                    return SelectPopup<T>(
+                      searchFilter: widget.searchFilter,
+                      constraints: widget.popupConstraints,
+                      value: widget.value,
+                      showUnrelatedValues: widget.showUnrelatedValues,
+                      onChanged: widget.onChanged,
+                      children: widget.children,
+                    );
                   },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                  child: widget.value != null
-                      ? widget.itemBuilder(
-                          context,
-                          widget.value as T,
-                        )
-                      : placeholder,
-                ),
-                const SizedBox(width: 8),
-                AnimatedIconTheme(
-                  data: IconThemeData(
-                    color: theme.colorScheme.foreground,
-                    size: 15,
-                    opacity: 0.5,
-                  ),
-                  duration: kDefaultDuration,
-                  child: const Icon(Icons.unfold_more),
-                ),
-              ],
+                );
+              },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: widget.value != null
+                  ? widget.itemBuilder(
+                      context,
+                      widget.value as T,
+                    )
+                  : placeholder,
             ),
-          );
-        },
-        popoverBuilder: (context) {
-          return SelectPopup<T>(
-            searchFilter: widget.searchFilter,
-            constraints: widget.popupConstraints,
-            value: widget.value,
-            showUnrelatedValues: widget.showUnrelatedValues,
-            onChanged: widget.onChanged,
-            children: widget.children,
-          );
-        },
-        alignment: Alignment.topCenter,
-        anchorAlignment: Alignment.bottomCenter,
-        widthConstraint: widget.popupWidthConstraint,
+            const SizedBox(width: 8),
+            AnimatedIconTheme(
+              data: IconThemeData(
+                color: theme.colorScheme.foreground,
+                size: 15,
+                opacity: 0.5,
+              ),
+              duration: kDefaultDuration,
+              child: const Icon(Icons.unfold_more),
+            ),
+          ],
+        ),
       ),
     );
   }

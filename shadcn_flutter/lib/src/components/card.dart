@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class Card extends StatelessWidget {
@@ -6,6 +5,7 @@ class Card extends StatelessWidget {
   final EdgeInsets padding;
   final bool filled;
   final Color? fillColor;
+  final double? borderRadius;
 
   const Card({
     Key? key,
@@ -13,12 +13,14 @@ class Card extends StatelessWidget {
     this.padding = const EdgeInsets.all(16),
     this.filled = false,
     this.fillColor,
+    this.borderRadius,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return OutlinedContainer(
+      borderRadius: borderRadius,
       backgroundColor: filled
           ? fillColor ?? theme.colorScheme.border
           : theme.colorScheme.card,

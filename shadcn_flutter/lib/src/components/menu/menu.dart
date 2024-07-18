@@ -309,7 +309,9 @@ class _MenuButtonState extends State<MenuButton> {
     void openSubMenu() {
       menuGroupData!.closeOthers();
       menuData!.popoverController.show(
+        context: context,
         regionGroupId: menuGroupData.regionGroupId,
+        consumeOutsideTaps: false,
         builder: (context) {
           return ConstrainedBox(
             constraints: const BoxConstraints(
@@ -349,99 +351,95 @@ class _MenuButtonState extends State<MenuButton> {
         child: Data<MenubarState>.boundary(
           child: TapRegion(
             groupId: menuGroupData!.root,
-            child: PopoverPortal(
-              controller: menuData!.popoverController,
-              child: AnimatedBuilder(
-                  animation: menuData.popoverController,
-                  builder: (context, child) {
-                    return Button(
-                      style: (menuBarData == null
-                              ? ButtonVariance.menu
-                              : ButtonVariance.menubar)
-                          .copyWith(
-                        decoration: (context, states, value) {
-                          final theme = Theme.of(context);
-                          return (value as BoxDecoration).copyWith(
-                            color: menuData.popoverController.hasOpenPopovers
-                                ? theme.colorScheme.accent
-                                : null,
-                            borderRadius: BorderRadius.circular(theme.radiusMd),
-                          );
-                        },
-                      ),
-                      trailing: menuBarData != null
-                          ? widget.trailing
-                          : Row(
-                              children: [
-                                if (widget.trailing != null) widget.trailing!,
-                                if (widget.subMenu != null &&
-                                    menuBarData == null)
-                                  const Icon(
-                                    RadixIcons.chevronRight,
+            child: AnimatedBuilder(
+                animation: menuData!.popoverController,
+                builder: (context, child) {
+                  return Button(
+                    style: (menuBarData == null
+                            ? ButtonVariance.menu
+                            : ButtonVariance.menubar)
+                        .copyWith(
+                      decoration: (context, states, value) {
+                        final theme = Theme.of(context);
+                        return (value as BoxDecoration).copyWith(
+                          color: menuData.popoverController.hasOpenPopovers
+                              ? theme.colorScheme.accent
+                              : null,
+                          borderRadius: BorderRadius.circular(theme.radiusMd),
+                        );
+                      },
+                    ),
+                    trailing: menuBarData != null
+                        ? widget.trailing
+                        : Row(
+                            children: [
+                              if (widget.trailing != null) widget.trailing!,
+                              if (widget.subMenu != null && menuBarData == null)
+                                const Icon(
+                                  RadixIcons.chevronRight,
+                                  size: 16,
+                                ),
+                            ],
+                          ).gap(8),
+                    leading: widget.leading == null &&
+                            menuGroupData.hasLeading &&
+                            menuBarData == null
+                        ? const SizedBox(width: 16)
+                        : widget.leading == null
+                            ? null
+                            : SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: IconTheme.merge(
+                                  data: const IconThemeData(
                                     size: 16,
                                   ),
-                              ],
-                            ).gap(8),
-                      leading: widget.leading == null &&
-                              menuGroupData.hasLeading &&
-                              menuBarData == null
-                          ? const SizedBox(width: 16)
-                          : widget.leading == null
-                              ? null
-                              : SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child: IconTheme.merge(
-                                    data: const IconThemeData(
-                                      size: 16,
-                                    ),
-                                    child: widget.leading!,
-                                  ),
+                                  child: widget.leading!,
                                 ),
-                      disableTransition: true,
-                      enabled: widget.enabled,
-                      focusNode: _focusNode,
-                      onHover: (value) {
-                        if (value) {
-                          if ((menuBarData == null ||
-                                  menuGroupData.hasOpenPopovers) &&
-                              widget.subMenu != null) {
-                            if (!menuData.popoverController.hasOpenPopovers) {
-                              openSubMenu();
-                            }
-                          } else {
-                            menuGroupData.closeOthers();
-                          }
-                        }
-                      },
-                      onFocus: (value) {
-                        if (value) {
-                          if (widget.subMenu != null) {
-                            if (!menuData.popoverController.hasOpenPopovers) {
-                              openSubMenu();
-                            }
-                          } else {
-                            menuGroupData.closeOthers();
-                          }
-                        }
-                      },
-                      onPressed: () {
-                        widget.onPressed?.call(context);
-                        if (widget.subMenu != null &&
-                            widget.subMenu!.isNotEmpty) {
+                              ),
+                    disableTransition: true,
+                    enabled: widget.enabled,
+                    focusNode: _focusNode,
+                    onHover: (value) {
+                      if (value) {
+                        if ((menuBarData == null ||
+                                menuGroupData.hasOpenPopovers) &&
+                            widget.subMenu != null) {
                           if (!menuData.popoverController.hasOpenPopovers) {
                             openSubMenu();
                           }
                         } else {
-                          if (widget.autoClose) {
-                            menuGroupData.closeAll();
-                          }
+                          menuGroupData.closeOthers();
                         }
-                      },
-                      child: widget.child,
-                    );
-                  }),
-            ),
+                      }
+                    },
+                    onFocus: (value) {
+                      if (value) {
+                        if (widget.subMenu != null) {
+                          if (!menuData.popoverController.hasOpenPopovers) {
+                            openSubMenu();
+                          }
+                        } else {
+                          menuGroupData.closeOthers();
+                        }
+                      }
+                    },
+                    onPressed: () {
+                      widget.onPressed?.call(context);
+                      if (widget.subMenu != null &&
+                          widget.subMenu!.isNotEmpty) {
+                        if (!menuData.popoverController.hasOpenPopovers) {
+                          openSubMenu();
+                        }
+                      } else {
+                        if (widget.autoClose) {
+                          menuGroupData.closeAll();
+                        }
+                      }
+                    },
+                    child: widget.child,
+                  );
+                }),
           ),
         ),
       ),
