@@ -61,6 +61,35 @@ class _CodeSnippetState extends State<CodeSnippet> {
     return future;
   }
 
+  late Future<Highlighter?> _highlighter;
+  Brightness? _brightness;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var newBrightness = Theme.of(context).brightness;
+    if (_brightness != newBrightness) {
+      _brightness = newBrightness;
+      _highlighter = _initializeHighlighter();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant CodeSnippet oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.mode != widget.mode) {
+      _highlighter = _initializeHighlighter();
+    }
+  }
+
+  Future<Highlighter?> _initializeHighlighter() async {
+    if (!await _initializeLanguage(widget.mode)) {
+      return null;
+    }
+    final themeData = await _initializeTheme(_brightness ?? Brightness.light);
+    return Highlighter(language: widget.mode, theme: themeData);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -76,38 +105,34 @@ class _CodeSnippetState extends State<CodeSnippet> {
       child: Stack(
         fit: StackFit.passthrough,
         children: [
-          FutureBuilder(future: () async {
-            if (!await _initializeLanguage(widget.mode)) {
-              return null;
-            }
-            final themeData = await _initializeTheme(theme.brightness);
-            return Highlighter(language: widget.mode, theme: themeData);
-          }(), builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            var data = snapshot.data;
-            return Container(
-              constraints: widget.constraints,
-              child: SingleChildScrollView(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                  child: data == null
-                      ? material.SelectableText(widget.code)
-                          .muted()
-                          .mono()
-                          .small()
-                      : material.SelectableText.rich(
-                          data.highlight(widget.code),
-                        ).mono().small(),
-                ),
-              ),
-            );
-          }),
+          FutureBuilder(
+              future: _highlighter,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                var data = snapshot.data;
+                return Container(
+                  constraints: widget.constraints,
+                  child: SingleChildScrollView(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16, horizontal: 20),
+                      child: data == null
+                          ? material.SelectableText(widget.code)
+                              .muted()
+                              .mono()
+                              .small()
+                          : material.SelectableText.rich(
+                              data.highlight(widget.code),
+                            ).mono().small(),
+                    ),
+                  ),
+                );
+              }),
           Positioned(
             right: 8,
             top: 8,
