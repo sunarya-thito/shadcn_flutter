@@ -44,6 +44,7 @@ class ShadcnApp extends StatefulWidget {
     this.restorationScopeId,
     this.scrollBehavior,
     this.materialTheme,
+    this.cupertinoTheme,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
@@ -79,6 +80,7 @@ class ShadcnApp extends StatefulWidget {
     this.restorationScopeId,
     this.scrollBehavior,
     this.materialTheme,
+    this.cupertinoTheme,
   })  : assert(routerDelegate != null || routerConfig != null),
         navigatorObservers = null,
         navigatorKey = null,
@@ -143,6 +145,7 @@ class ShadcnApp extends StatefulWidget {
   final ScrollBehavior? scrollBehavior;
   final bool debugShowMaterialGrid;
   final m.ThemeData? materialTheme;
+  final c.CupertinoThemeData? cupertinoTheme;
 
   @override
   State<ShadcnApp> createState() => _ShadcnAppState();
@@ -394,14 +397,16 @@ class _ShadcnAppState extends State<ShadcnApp> {
             ),
           ),
       child: c.CupertinoTheme(
-        data: c.CupertinoThemeData(
-          brightness: widget.theme.brightness,
-          primaryColor: widget.theme.colorScheme.primary,
-          barBackgroundColor: widget.theme.colorScheme.accent,
-          scaffoldBackgroundColor: widget.theme.colorScheme.background,
-          applyThemeToAll: true,
-          primaryContrastingColor: widget.theme.colorScheme.primaryForeground,
-        ),
+        data: widget.cupertinoTheme ??
+            c.CupertinoThemeData(
+              brightness: widget.theme.brightness,
+              primaryColor: widget.theme.colorScheme.primary,
+              barBackgroundColor: widget.theme.colorScheme.accent,
+              scaffoldBackgroundColor: widget.theme.colorScheme.background,
+              applyThemeToAll: true,
+              primaryContrastingColor:
+                  widget.theme.colorScheme.primaryForeground,
+            ),
         child: m.Material(
           color: m.Colors.transparent,
           child: m.ScaffoldMessenger(
