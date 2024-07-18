@@ -109,7 +109,9 @@ class _CodeSnippetState extends State<CodeSnippet> {
               future: _highlighter,
               builder: (context, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(
+                  return Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(16),
                     child: CircularProgressIndicator(),
                   );
                 }
