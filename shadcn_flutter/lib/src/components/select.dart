@@ -356,46 +356,50 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                           behavior: ScrollConfiguration.of(context).copyWith(
                             scrollbars: false,
                           ),
-                          child: SingleChildScrollView(
-                            controller: _scrollController,
-                            padding: const EdgeInsets.all(4),
-                            child: AnimatedBuilder(
-                              animation: _searchController,
-                              builder: (context, child) {
-                                String? text = _searchController.text;
-                                if (text.trim().isEmpty) {
-                                  text = null;
-                                }
-                                return Data(
-                                  data: _SelectData(
-                                    (item, query) {
-                                      return widget.searchFilter
-                                              ?.call(item, query) ??
-                                          0;
-                                    },
-                                    text,
-                                    (value) {
-                                      widget.onChanged?.call(value);
-                                      Navigator.of(context).pop(value);
-                                    },
-                                    widget.value,
-                                    widget.showUnrelatedValues,
-                                  ),
-                                  child: _SelectValuesHolder(
-                                    query: text,
-                                    showUnrelatedValues:
-                                        widget.showUnrelatedValues,
-                                    builder: (children) {
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: children,
-                                      );
-                                    },
-                                    children: widget.children,
-                                  ),
-                                );
-                              },
+                          child: Padding(
+                            // to fix visual glitch, add padding
+                            padding: const EdgeInsets.only(top: 1, bottom: 1),
+                            child: SingleChildScrollView(
+                              controller: _scrollController,
+                              padding: const EdgeInsets.all(4),
+                              child: AnimatedBuilder(
+                                animation: _searchController,
+                                builder: (context, child) {
+                                  String? text = _searchController.text;
+                                  if (text.trim().isEmpty) {
+                                    text = null;
+                                  }
+                                  return Data(
+                                    data: _SelectData(
+                                      (item, query) {
+                                        return widget.searchFilter
+                                                ?.call(item, query) ??
+                                            0;
+                                      },
+                                      text,
+                                      (value) {
+                                        widget.onChanged?.call(value);
+                                        Navigator.of(context).pop(value);
+                                      },
+                                      widget.value,
+                                      widget.showUnrelatedValues,
+                                    ),
+                                    child: _SelectValuesHolder(
+                                      query: text,
+                                      showUnrelatedValues:
+                                          widget.showUnrelatedValues,
+                                      builder: (children) {
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: children,
+                                        );
+                                      },
+                                      children: widget.children,
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),
