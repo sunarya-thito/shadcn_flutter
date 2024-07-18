@@ -1,3 +1,6 @@
+import 'dart:ui' as ui;
+
+import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -168,118 +171,6 @@ enum PopoverConstraint {
   anchorFixedSize,
   anchorMinSize,
   anchorMaxSize,
-}
-
-class PopoverLayoutDelegate extends SingleChildLayoutDelegate {
-  final Alignment alignment;
-  final Alignment anchorAlignment;
-  final Offset position;
-  final Size? anchorSize;
-  final PopoverConstraint widthConstraint;
-  final PopoverConstraint heightConstraint;
-  final Offset? offset;
-  final EdgeInsets margin;
-
-  PopoverLayoutDelegate({
-    required this.alignment,
-    required this.position,
-    required this.anchorAlignment,
-    required this.widthConstraint,
-    required this.heightConstraint,
-    this.anchorSize,
-    this.offset,
-    this.margin = const EdgeInsets.all(8),
-  });
-
-  @override
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double minWidth = 0;
-    double maxWidth = constraints.maxWidth;
-    double minHeight = 0;
-    double maxHeight = constraints.maxHeight;
-    if (widthConstraint == PopoverConstraint.anchorFixedSize) {
-      minWidth = anchorSize!.width;
-      maxWidth = anchorSize!.width;
-    } else if (widthConstraint == PopoverConstraint.anchorMinSize) {
-      minWidth = anchorSize!.width;
-    } else if (widthConstraint == PopoverConstraint.anchorMaxSize) {
-      maxWidth = anchorSize!.width;
-    }
-    if (heightConstraint == PopoverConstraint.anchorFixedSize) {
-      minHeight = anchorSize!.height;
-      maxHeight = anchorSize!.height;
-    } else if (heightConstraint == PopoverConstraint.anchorMinSize) {
-      minHeight = anchorSize!.height;
-    } else if (heightConstraint == PopoverConstraint.anchorMaxSize) {
-      maxHeight = anchorSize!.height;
-    }
-    return BoxConstraints(
-      minWidth: minWidth,
-      maxWidth: maxWidth,
-      minHeight: minHeight,
-      maxHeight: maxHeight,
-    );
-  }
-
-  @override
-  Offset getPositionForChild(Size size, Size childSize) {
-    // make sure the popup is within the size (with a margin of 8)
-    double offsetX = offset?.dx ?? 0;
-    double offsetY = offset?.dy ?? 0;
-    double x =
-        position.dx - childSize.width / 2 - (childSize.width / 2 * alignment.x);
-    double y = position.dy -
-        childSize.height / 2 -
-        (childSize.height / 2 * alignment.y);
-    double left = x - margin.left;
-    double top = y - margin.top;
-    double right = x + childSize.width + margin.right;
-    double bottom = y + childSize.height + margin.bottom;
-    if (left < 0 || right > size.width) {
-      x = position.dx -
-          childSize.width / 2 -
-          (childSize.width / 2 * -alignment.x);
-      if (anchorSize != null) {
-        x -= anchorSize!.width * anchorAlignment.x;
-      }
-      left = x - margin.left;
-      right = x + childSize.width + margin.right;
-      offsetX *= -1;
-    }
-    if (top < 0 || bottom > size.height) {
-      y = position.dy -
-          childSize.height / 2 -
-          (childSize.height / 2 * -alignment.y);
-      if (anchorSize != null) {
-        y -= anchorSize!.height * anchorAlignment.y;
-      }
-      top = y - margin.top;
-      bottom = y + childSize.height + margin.bottom;
-      offsetY *= -1;
-    }
-    final double dx = left < 0
-        ? -left
-        : right > size.width
-            ? size.width - right
-            : 0;
-    final double dy = top < 0
-        ? -top
-        : bottom > size.height
-            ? size.height - bottom
-            : 0;
-    return Offset(x + dx + offsetX, y + dy + offsetY);
-  }
-
-  @override
-  bool shouldRelayout(covariant PopoverLayoutDelegate oldDelegate) {
-    return oldDelegate.alignment != alignment ||
-        oldDelegate.position != position ||
-        oldDelegate.anchorSize != anchorSize ||
-        oldDelegate.widthConstraint != widthConstraint ||
-        oldDelegate.heightConstraint != heightConstraint ||
-        oldDelegate.offset != offset ||
-        oldDelegate.margin != margin;
-  }
 }
 
 class PopoverAnchorState extends State<PopoverAnchor>
@@ -489,36 +380,35 @@ class PopoverAnchorState extends State<PopoverAnchor>
             }
           : null,
       groupId: widget.regionGroupId,
-      child: CustomSingleChildLayout(
-        delegate: PopoverLayoutDelegate(
-          alignment: _alignment,
-          position: _position,
-          anchorSize: _anchorSize,
-          anchorAlignment: _anchorAlignment,
-          widthConstraint: _widthConstraint,
-          heightConstraint: _heightConstraint,
-          offset: _offset,
-          margin: _margin,
-        ),
-        child: MediaQuery.removePadding(
-          context: context,
-          removeBottom: true,
-          removeLeft: true,
-          removeRight: true,
-          removeTop: true,
-          child: Builder(builder: (context) {
-            return FadeTransition(
-              opacity: widget.animation,
-              child: ScaleTransition(
-                alignment: widget.transitionAlignment ?? _alignment,
-                scale:
-                    Tween<double>(begin: 0.9, end: 1).animate(widget.animation),
-                child: widget.themes == null
-                    ? widget.builder(context)
-                    : widget.themes!.wrap(widget.builder(context)),
-              ),
+      child: MediaQuery.removePadding(
+        context: context,
+        removeBottom: true,
+        removeLeft: true,
+        removeRight: true,
+        removeTop: true,
+        child: AnimatedBuilder(
+          animation: widget.animation,
+          builder: (context, child) {
+            return PopoverLayout(
+              alignment: _alignment,
+              position: _position,
+              anchorSize: _anchorSize,
+              anchorAlignment: _anchorAlignment,
+              widthConstraint: _widthConstraint,
+              heightConstraint: _heightConstraint,
+              offset: _offset,
+              margin: _margin,
+              scale: tweenValue(0.9, 1.0, widget.animation.value),
+              scaleAlignment: widget.transitionAlignment ?? _alignment,
+              child: child!,
             );
-          }),
+          },
+          child: FadeTransition(
+            opacity: widget.animation,
+            child: widget.themes == null
+                ? widget.builder(context)
+                : widget.themes!.wrap(widget.builder(context)),
+          ),
         ),
       ),
     );
@@ -651,5 +541,307 @@ class PopoverController extends ChangeNotifier {
       key.currentState?.closeLater();
     }
     super.dispose();
+  }
+}
+
+class PopoverLayout extends SingleChildRenderObjectWidget {
+  final Alignment alignment;
+  final Alignment anchorAlignment;
+  final Offset position;
+  final Size? anchorSize;
+  final PopoverConstraint widthConstraint;
+  final PopoverConstraint heightConstraint;
+  final Offset? offset;
+  final EdgeInsets margin;
+  final double scale;
+  final Alignment scaleAlignment;
+  final FilterQuality? filterQuality;
+  const PopoverLayout({
+    Key? key,
+    required this.alignment,
+    required this.position,
+    required this.anchorAlignment,
+    required this.widthConstraint,
+    required this.heightConstraint,
+    this.anchorSize,
+    this.offset,
+    this.margin = const EdgeInsets.all(8),
+    required Widget child,
+    required this.scale,
+    required this.scaleAlignment,
+    this.filterQuality,
+  }) : super(key: key, child: child);
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return PopoverLayoutRender(
+      alignment: alignment,
+      position: position,
+      anchorAlignment: anchorAlignment,
+      widthConstraint: widthConstraint,
+      heightConstraint: heightConstraint,
+      anchorSize: anchorSize,
+      offset: offset,
+      margin: margin,
+      scale: scale,
+      scaleAlignment: scaleAlignment,
+    );
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, covariant PopoverLayoutRender renderObject) {
+    bool hasChanged = false;
+    if (renderObject._alignment != alignment) {
+      renderObject._alignment = alignment;
+      hasChanged = true;
+    }
+    if (renderObject._position != position) {
+      renderObject._position = position;
+      hasChanged = true;
+    }
+    if (renderObject._anchorAlignment != anchorAlignment) {
+      renderObject._anchorAlignment = anchorAlignment;
+      hasChanged = true;
+    }
+    if (renderObject._widthConstraint != widthConstraint) {
+      renderObject._widthConstraint = widthConstraint;
+      hasChanged = true;
+    }
+    if (renderObject._heightConstraint != heightConstraint) {
+      renderObject._heightConstraint = heightConstraint;
+      hasChanged = true;
+    }
+    if (renderObject._anchorSize != anchorSize) {
+      renderObject._anchorSize = anchorSize;
+      hasChanged = true;
+    }
+    if (renderObject._offset != offset) {
+      renderObject._offset = offset;
+      hasChanged = true;
+    }
+    if (renderObject._margin != margin) {
+      renderObject._margin = margin;
+      hasChanged = true;
+    }
+    if (renderObject._scale != scale) {
+      renderObject._scale = scale;
+      hasChanged = true;
+    }
+    if (renderObject._scaleAlignment != scaleAlignment) {
+      renderObject._scaleAlignment = scaleAlignment;
+      hasChanged = true;
+    }
+    if (renderObject._filterQuality != filterQuality) {
+      renderObject._filterQuality = filterQuality;
+      hasChanged = true;
+    }
+    if (hasChanged) {
+      renderObject.markNeedsLayout();
+    }
+  }
+}
+
+class PopoverLayoutRender extends RenderShiftedBox {
+  Alignment _alignment;
+  Alignment _anchorAlignment;
+  Offset _position;
+  Size? _anchorSize;
+  PopoverConstraint _widthConstraint;
+  PopoverConstraint _heightConstraint;
+  Offset? _offset;
+  EdgeInsets _margin;
+  double _scale;
+  Alignment _scaleAlignment;
+  FilterQuality? _filterQuality;
+
+  bool _invertX = false;
+  bool _invertY = false;
+
+  PopoverLayoutRender({
+    RenderBox? child,
+    required Alignment alignment,
+    required Offset position,
+    required Alignment anchorAlignment,
+    required PopoverConstraint widthConstraint,
+    required PopoverConstraint heightConstraint,
+    Size? anchorSize,
+    Offset? offset,
+    EdgeInsets margin = const EdgeInsets.all(8),
+    required double scale,
+    required Alignment scaleAlignment,
+    FilterQuality? filterQuality,
+  })  : _alignment = alignment,
+        _position = position,
+        _anchorAlignment = anchorAlignment,
+        _widthConstraint = widthConstraint,
+        _heightConstraint = heightConstraint,
+        _anchorSize = anchorSize,
+        _offset = offset,
+        _margin = margin,
+        _scale = scale,
+        _scaleAlignment = scaleAlignment,
+        _filterQuality = filterQuality,
+        super(child);
+
+  @override
+  Size computeDryLayout(covariant BoxConstraints constraints) {
+    return constraints.biggest;
+  }
+
+  @override
+  bool hitTest(BoxHitTestResult result, {required Offset position}) {
+    return hitTestChildren(result, position: position);
+  }
+
+  Matrix4 get _effectiveTransform {
+    Size childSize = child!.size;
+    Offset childOffset = (child!.parentData as BoxParentData).offset;
+    var scaleAlignment = _scaleAlignment;
+    if (_invertX || _invertY) {
+      scaleAlignment = Alignment(
+        _invertX ? -scaleAlignment.x : scaleAlignment.x,
+        _invertY ? -scaleAlignment.y : scaleAlignment.y,
+      );
+    }
+    Offset alignedChildPosition = Offset(
+      childOffset.dx +
+          childSize.width / 2 +
+          childSize.width / 2 * scaleAlignment.x,
+      childOffset.dy +
+          childSize.height / 2 +
+          childSize.height / 2 * scaleAlignment.y,
+    );
+    Matrix4 transform = Matrix4.identity();
+    transform.translate(alignedChildPosition.dx, alignedChildPosition.dy);
+    transform.scale(_scale, _scale);
+    transform.translate(-alignedChildPosition.dx, -alignedChildPosition.dy);
+    return transform;
+  }
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
+    return result.addWithPaintTransform(
+      transform: _effectiveTransform,
+      position: position,
+      hitTest: (BoxHitTestResult result, Offset position) {
+        return super.hitTestChildren(result, position: position);
+      },
+    );
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (child != null) {
+      final Matrix4 transform = _effectiveTransform;
+      if (_filterQuality == null) {
+        final Offset? childOffset = MatrixUtils.getAsTranslation(transform);
+        if (childOffset == null) {
+          // if the matrix is singular the children would be compressed to a line or
+          // single point, instead short-circuit and paint nothing.
+          final double det = transform.determinant();
+          if (det == 0 || !det.isFinite) {
+            layer = null;
+            return;
+          }
+          layer = context.pushTransform(
+            needsCompositing,
+            offset,
+            transform,
+            super.paint,
+            oldLayer: layer is TransformLayer ? layer as TransformLayer? : null,
+          );
+        } else {
+          super.paint(context, offset + childOffset);
+          layer = null;
+        }
+      } else {
+        final Matrix4 effectiveTransform =
+            Matrix4.translationValues(offset.dx, offset.dy, 0.0)
+              ..multiply(transform)
+              ..translate(-offset.dx, -offset.dy);
+        final ui.ImageFilter filter = ui.ImageFilter.matrix(
+          effectiveTransform.storage,
+          filterQuality: _filterQuality!,
+        );
+        if (layer is ImageFilterLayer) {
+          final ImageFilterLayer filterLayer = layer! as ImageFilterLayer;
+          filterLayer.imageFilter = filter;
+        } else {
+          layer = ImageFilterLayer(imageFilter: filter);
+        }
+        context.pushLayer(layer!, super.paint, offset);
+        assert(() {
+          layer!.debugCreator = debugCreator;
+          return true;
+        }());
+      }
+    }
+  }
+
+  @override
+  void applyPaintTransform(RenderBox child, Matrix4 transform) {
+    transform.multiply(_effectiveTransform);
+  }
+
+  @override
+  void performLayout() {
+    // make sure the popup is within the size (with a margin of 8)
+    child!.layout(constraints.loosen(), parentUsesSize: true);
+    size = constraints.biggest;
+    Size childSize = child!.size;
+    double offsetX = _offset?.dx ?? 0;
+    double offsetY = _offset?.dy ?? 0;
+    double x = _position.dx -
+        childSize.width / 2 -
+        (childSize.width / 2 * _alignment.x);
+    double y = _position.dy -
+        childSize.height / 2 -
+        (childSize.height / 2 * _alignment.y);
+    double left = x - _margin.left;
+    double top = y - _margin.top;
+    double right = x + childSize.width + _margin.right;
+    double bottom = y + childSize.height + _margin.bottom;
+    if (left < 0 || right > size.width) {
+      x = _position.dx -
+          childSize.width / 2 -
+          (childSize.width / 2 * -_alignment.x);
+      if (_anchorSize != null) {
+        x -= _anchorSize!.width * _anchorAlignment.x;
+      }
+      left = x - _margin.left;
+      right = x + childSize.width + _margin.right;
+      offsetX *= -1;
+      _invertX = true;
+    } else {
+      _invertX = false;
+    }
+    if (top < 0 || bottom > size.height) {
+      y = _position.dy -
+          childSize.height / 2 -
+          (childSize.height / 2 * -_alignment.y);
+      if (_anchorSize != null) {
+        y -= _anchorSize!.height * _anchorAlignment.y;
+      }
+      top = y - _margin.top;
+      bottom = y + childSize.height + _margin.bottom;
+      offsetY *= -1;
+      _invertY = true;
+    } else {
+      _invertY = false;
+    }
+    final double dx = left < 0
+        ? -left
+        : right > size.width
+            ? size.width - right
+            : 0;
+    final double dy = top < 0
+        ? -top
+        : bottom > size.height
+            ? size.height - bottom
+            : 0;
+    Offset result = Offset(x + dx + offsetX, y + dy + offsetY);
+    BoxParentData childParentData = child!.parentData as BoxParentData;
+    childParentData.offset = result;
   }
 }

@@ -7,6 +7,12 @@ const kDefaultDuration = Duration(milliseconds: 150);
 typedef ContextedCallback = void Function(BuildContext context);
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 
+T tweenValue<T>(T begin, T end, double t) {
+  dynamic beginValue = begin;
+  dynamic endValue = end;
+  return (beginValue + (endValue - beginValue) * t) as T;
+}
+
 double wrapDouble(double value, double min, double max) {
   final range = max - min;
   if (range == 0) {
