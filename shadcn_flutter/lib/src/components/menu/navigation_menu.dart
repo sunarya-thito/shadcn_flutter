@@ -1,5 +1,4 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/src/components/hover.dart';
 
 class NavigationItem extends StatefulWidget {
   final VoidCallback? onPressed;
@@ -13,6 +12,7 @@ class NavigationItem extends StatefulWidget {
 }
 
 class NavigationItemState extends State<NavigationItem> {
+  static const Duration kDebounceDuration = Duration(milliseconds: 500);
   NavigationMenuState? _menuState;
 
   @override
@@ -158,6 +158,8 @@ class NavigationMenuState extends State<NavigationMenu> {
   final ValueNotifier<int> _activeIndex = ValueNotifier(0);
   final Map<NavigationItemState, WidgetBuilder> _contentBuilders = {};
 
+  int _hoverCount = 0;
+
   bool _hovered = false;
   bool _popoverHovered = false;
 
@@ -218,14 +220,22 @@ class NavigationMenuState extends State<NavigationMenu> {
 
   Widget buildPopover(BuildContext context) {
     final theme = Theme.of(context);
-    return Hover(
-      minDuration: const Duration(milliseconds: 500),
-      onHover: (hovered) {
-        _popoverHovered = hovered;
-        if (!_hovered && !hovered) {
-          _popoverController.closeLater();
-          print('close');
-        }
+    return MouseRegion(
+      hitTestBehavior: HitTestBehavior.translucent,
+      onEnter: (_) {
+        _popoverHovered = true;
+      },
+      onExit: (event) {
+        int currentHoverCount = ++_hoverCount;
+        Future.delayed(NavigationItemState.kDebounceDuration, () {
+          if (currentHoverCount == _hoverCount) {
+            _popoverHovered = false;
+            if (!_hovered) {
+              _popoverController.closeLater();
+              print('close');
+            }
+          }
+        });
       },
       child: AnimatedBuilder(
           animation: _activeIndex,
@@ -297,15 +307,21 @@ class NavigationMenuState extends State<NavigationMenu> {
   Widget build(BuildContext context) {
     return TapRegion(
       groupId: this,
-      child: Hover(
+      child: MouseRegion(
         hitTestBehavior: HitTestBehavior.translucent,
-        minDuration: const Duration(milliseconds: 500),
-        onHover: (hovered) {
-          _hovered = hovered;
-          if (!_popoverHovered && !hovered) {
-            _popoverController.closeLater();
-            print('close');
-          }
+        onEnter: (_) {
+          _hovered = true;
+        },
+        onExit: (_) {
+          int currentHoverCount = ++_hoverCount;
+          Future.delayed(NavigationItemState.kDebounceDuration, () {
+            if (currentHoverCount == _hoverCount) {
+              _hovered = false;
+              if (!_popoverHovered) {
+                _popoverController.closeLater();
+              }
+            }
+          });
         },
         child: IntrinsicHeight(
           child: PopoverPortal(
