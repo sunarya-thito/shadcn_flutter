@@ -90,7 +90,8 @@ class _RadioItemState<T> extends State<RadioItem<T>> with FormValueSupplier {
   Widget build(BuildContext context) {
     final groupData = Data.maybeOf<RadioGroupData<T>>(context);
     final group = Data.maybeOf<_RadioGroupState<T>>(context);
-    assert(groupData != null, 'RadioItem must be a descendant of RadioGroup');
+    assert(groupData != null,
+        'RadioItem<$T> must be a descendant of RadioGroup<$T>');
     return GestureDetector(
       onTap: widget.enabled
           ? () {

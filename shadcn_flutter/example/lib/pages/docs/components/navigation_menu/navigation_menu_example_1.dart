@@ -38,7 +38,9 @@ class NavigationMenuExample1 extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      FlutterLogo(),
+                      const FlutterLogo(
+                        size: 32,
+                      ),
                       gap(16),
                       Text('shadcn_flutter').mono().semiBold().large(),
                       gap(8),

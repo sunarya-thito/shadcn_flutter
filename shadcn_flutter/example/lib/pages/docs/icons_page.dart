@@ -87,9 +87,9 @@ class _IconsPageState extends State<IconsPage> {
               floating: true,
               backgroundColor: theme.colorScheme.background,
               automaticallyImplyLeading: false,
-              toolbarHeight: 40,
+              toolbarHeight: 50,
               collapsedHeight: 50,
-              expandedHeight: 335,
+              expandedHeight: 355,
               surfaceTintColor: theme.colorScheme.background,
               flexibleSpace: Stack(
                 fit: StackFit.passthrough,

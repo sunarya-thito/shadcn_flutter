@@ -56,6 +56,11 @@ class SidebarButton extends StatelessWidget {
           padding: (context, states, value) {
             return const EdgeInsets.symmetric(vertical: 4, horizontal: 8);
           },
+          textStyle: (context, states, value) {
+            return value.copyWith(
+              fontWeight: selected ? FontWeight.w500 : FontWeight.normal,
+            );
+          },
         ),
         child: child,
       ),
@@ -93,6 +98,11 @@ class NavigationButton extends StatelessWidget {
         style: ButtonVariance.link.copyWith(
           padding: (context, states, value) {
             return const EdgeInsets.symmetric(vertical: 4, horizontal: 8);
+          },
+          textStyle: (context, states, value) {
+            return value.copyWith(
+              fontWeight: selected ? FontWeight.w500 : FontWeight.normal,
+            );
           },
         ),
         child: child,

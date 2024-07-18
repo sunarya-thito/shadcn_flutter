@@ -469,21 +469,22 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 title: 'Radio Group',
                 scale: 2,
                 example: Card(
-                  child: RadioGroup(
+                  child: RadioGroup<int>(
+                    value: 1,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        RadioItem(
+                        RadioItem<int>(
                           trailing: Text('Option 1'),
-                          value: null,
+                          value: 0,
                         ),
-                        RadioItem(
+                        RadioItem<int>(
                           trailing: Text('Option 2'),
-                          value: null,
+                          value: 1,
                         ),
-                        RadioItem(
+                        RadioItem<int>(
                           trailing: Text('Option 3'),
-                          value: null,
+                          value: 2,
                         ),
                       ],
                     ).gap(4),
