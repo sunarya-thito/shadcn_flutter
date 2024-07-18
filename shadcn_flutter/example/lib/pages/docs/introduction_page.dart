@@ -10,6 +10,7 @@ class IntroductionPage extends StatefulWidget {
 }
 
 class _IntroductionPageState extends State<IntroductionPage> {
+  final OnThisPage featuresKey = OnThisPage();
   final OnThisPage faqKey = OnThisPage();
 
   @override
@@ -17,6 +18,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
     return DocsPage(
       name: 'introduction',
       onThisPage: {
+        'Features': featuresKey,
         'Frequency Asked Questions': faqKey,
       },
       child: Column(
@@ -33,6 +35,21 @@ class _IntroductionPageState extends State<IntroductionPage> {
               'If you found any issues, please report it to our GitHub instead of Shadcn/UI.'),
           const Text(
               'Currently there\'s 45 out of 49 components that has been implemented into this package.'),
+          const Text('Features').h2().anchored(featuresKey),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                      'Supports both Material and Cupertino Widgets with theme being able to adapt to the current shadcn_flutter theme.')
+                  .li(),
+              const Text('Pre-made themes from Shadcn/UI.').li(),
+              const Text('Supports mobile, web, and desktop platforms.').li(),
+              const Text('Supports middle drag scrolling.').li(),
+              const Text('Various widget extensions for typography purposes.')
+                  .li(),
+            ],
+          ).p(),
           const Text('Frequency Asked Questions').h2().anchored(faqKey),
           Accordion(
             items: [
