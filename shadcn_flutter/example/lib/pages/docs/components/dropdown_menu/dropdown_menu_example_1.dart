@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class DropdownMenuExample1 extends StatelessWidget {
+  const DropdownMenuExample1({super.key});
+
   @override
   Widget build(BuildContext context) {
     return OutlineButton(
@@ -12,7 +14,7 @@ class DropdownMenuExample1 extends StatelessWidget {
           consumeOutsideTaps: false,
           modal: false,
           builder: (context) {
-            return DropdownMenu(
+            return const DropdownMenu(
               children: [
                 MenuLabel(child: Text('My Account')),
                 MenuDivider(),
@@ -69,7 +71,7 @@ class DropdownMenuExample1 extends StatelessWidget {
           },
         );
       },
-      child: Text('Open'),
+      child: const Text('Open'),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ProgressExample1 extends StatefulWidget {
+  const ProgressExample1({super.key});
+
   @override
   State<ProgressExample1> createState() => _ProgressExample1State();
 }
@@ -26,7 +28,7 @@ class _ProgressExample1State extends State<ProgressExample1> {
                   _progress = 0;
                 });
               },
-              child: Text('Reset'),
+              child: const Text('Reset'),
             ),
             gap(16),
             PrimaryButton(
@@ -35,7 +37,7 @@ class _ProgressExample1State extends State<ProgressExample1> {
                   _progress -= 10;
                 });
               },
-              child: Text('Decrease by 10'),
+              child: const Text('Decrease by 10'),
             ),
             gap(16),
             PrimaryButton(
@@ -44,7 +46,7 @@ class _ProgressExample1State extends State<ProgressExample1> {
                   _progress += 10;
                 });
               },
-              child: Text('Increase by 10'),
+              child: const Text('Increase by 10'),
             ),
           ],
         )

@@ -12,29 +12,29 @@ class ButtonExample10 extends StatelessWidget {
       runAlignment: WrapAlignment.center,
       children: [
         PrimaryButton(
-          child: Text('Extra Small'),
           size: ButtonSize.xSmall,
           onPressed: () {},
+          child: const Text('Extra Small'),
         ),
         PrimaryButton(
-          child: Text('Small'),
           onPressed: () {},
           size: ButtonSize.small,
+          child: const Text('Small'),
         ),
         PrimaryButton(
-          child: Text('Normal'),
           size: ButtonSize.normal,
           onPressed: () {},
+          child: const Text('Normal'),
         ),
         PrimaryButton(
-          child: Text('Large'),
           size: ButtonSize.large,
           onPressed: () {},
+          child: const Text('Large'),
         ),
         PrimaryButton(
-          child: Text('Extra Large'),
           size: ButtonSize.xLarge,
           onPressed: () {},
+          child: const Text('Extra Large'),
         ),
       ],
     );

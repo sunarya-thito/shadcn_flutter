@@ -7,9 +7,11 @@ import '../../widget_usage_example.dart';
 import '../component_page.dart';
 
 class TextAreaExample extends StatelessWidget {
+  const TextAreaExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'text_area',
       description:
           'TextArea is a component that allows users to enter multiple lines of text.',

@@ -6,25 +6,25 @@ class AlertDialogExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PrimaryButton(
-      child: Text('Click Here'),
+      child: const Text('Click Here'),
       onPressed: () {
         showDialog(
           context: context,
           builder: (context) {
             return Center(
               child: AlertDialog(
-                title: Text('Alert title'),
-                content: Text(
+                title: const Text('Alert title'),
+                content: const Text(
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
                 actions: [
                   OutlineButton(
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                     onPressed: () {
                       Navigator.pop(context);
                     },
                   ),
                   PrimaryButton(
-                    child: Text('OK'),
+                    child: const Text('OK'),
                     onPressed: () {
                       Navigator.pop(context);
                     },

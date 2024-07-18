@@ -1,12 +1,14 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class RepeatedAnimationBuilderExample1 extends StatelessWidget {
+  const RepeatedAnimationBuilderExample1({super.key});
+
   @override
   Widget build(BuildContext context) {
     return RepeatedAnimationBuilder(
-      start: Offset(-100, 0),
-      end: Offset(100, 0),
-      duration: Duration(seconds: 1),
+      start: const Offset(-100, 0),
+      end: const Offset(100, 0),
+      duration: const Duration(seconds: 1),
       builder: (context, value, child) {
         return Transform.translate(
           offset: value,

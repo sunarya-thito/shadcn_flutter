@@ -6,31 +6,31 @@ class CardExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      padding: EdgeInsets.all(24),
+      padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Create project').semiBold(),
+          const Text('Create project').semiBold(),
           const SizedBox(height: 4),
-          Text('Deploy your new project in one-click').muted().small(),
+          const Text('Deploy your new project in one-click').muted().small(),
           const SizedBox(height: 24),
-          Text('Name').semiBold().small(),
+          const Text('Name').semiBold().small(),
           const SizedBox(height: 4),
-          TextField(placeholder: 'Name of your project'),
+          const TextField(placeholder: 'Name of your project'),
           const SizedBox(height: 16),
-          Text('Description').semiBold().small(),
+          const Text('Description').semiBold().small(),
           const SizedBox(height: 4),
-          TextField(placeholder: 'Description of your project'),
+          const TextField(placeholder: 'Description of your project'),
           const SizedBox(height: 24),
           Row(
             children: [
               OutlineButton(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {},
               ),
-              Spacer(),
+              const Spacer(),
               PrimaryButton(
-                child: Text('Deploy'),
+                child: const Text('Deploy'),
                 onPressed: () {},
               ),
             ],

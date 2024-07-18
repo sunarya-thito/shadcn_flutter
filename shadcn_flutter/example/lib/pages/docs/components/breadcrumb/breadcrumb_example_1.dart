@@ -9,17 +9,17 @@ class BreadcrumbExample1 extends StatelessWidget {
       separator: Breadcrumb.arrowSeparator,
       children: [
         TextButton(
-          child: Text('Home'),
           onPressed: () {},
           density: ButtonDensity.compact,
+          child: const Text('Home'),
         ),
-        MoreDots(),
+        const MoreDots(),
         TextButton(
-          child: Text('Components'),
           onPressed: () {},
           density: ButtonDensity.compact,
+          child: const Text('Components'),
         ),
-        Text('Breadcrumb'),
+        const Text('Breadcrumb'),
       ],
     );
   }

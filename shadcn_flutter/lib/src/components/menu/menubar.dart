@@ -5,7 +5,7 @@ class Menubar extends StatefulWidget {
   final Offset? popoverOffset;
   final bool border;
 
-  const Menubar({
+  const Menubar({super.key, 
     this.popoverOffset,
     this.border = true,
     required this.children,
@@ -38,7 +38,6 @@ class MenubarState extends State<Menubar> {
       data: this,
       child: MenuGroup(
         regionGroupId: this,
-        children: widget.children,
         subMenuOffset: widget.border ? const Offset(-4, 8) : const Offset(0, 4),
         builder: (context, children) {
           return IntrinsicHeight(
@@ -49,6 +48,7 @@ class MenubarState extends State<Menubar> {
             ),
           ).medium();
         },
+        children: widget.children,
       ),
     );
   }

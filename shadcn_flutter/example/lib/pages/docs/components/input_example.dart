@@ -6,22 +6,24 @@ import 'input/input_example_1.dart';
 import 'input/input_example_2.dart';
 
 class InputExample extends StatelessWidget {
+  const InputExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'input',
       description: 'An input is a field used to elicit a response from a user.',
       displayName: 'Input',
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: InputExample1(),
           path: 'lib/pages/docs/components/input/input_example_1.dart',
+          child: InputExample1(),
         ),
         WidgetUsageExample(
           title: 'Initial Value Example',
-          child: InputExample2(),
           path: 'lib/pages/docs/components/input/input_example_2.dart',
+          child: InputExample2(),
         ),
       ],
     );

@@ -5,9 +5,11 @@ import '../../widget_usage_example.dart';
 import '../component_page.dart';
 
 class AnimatedValueBuilderExample extends StatelessWidget {
+  const AnimatedValueBuilderExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'animated_value_builder',
       description:
           'AnimatedValueBuilder is a component that allows you to animate a value.',

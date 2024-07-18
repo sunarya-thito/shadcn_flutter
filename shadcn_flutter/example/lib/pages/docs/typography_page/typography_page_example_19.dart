@@ -1,8 +1,10 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class TypographyPageExample19 extends StatelessWidget {
+  const TypographyPageExample19({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Text('Lorem ipsum dolor sit amet').xLarge();
+    return const Text('Lorem ipsum dolor sit amet').xLarge();
   }
 }

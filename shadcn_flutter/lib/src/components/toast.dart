@@ -16,7 +16,7 @@ class ToastLayer extends StatefulWidget {
   final int maxStackedEntries;
   final EdgeInsets padding;
 
-  const ToastLayer({
+  const ToastLayer({super.key, 
     required this.child,
     this.maxStackedEntries = 3,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -86,7 +86,7 @@ class OverlaidToastEntry extends StatelessWidget {
   final ToastEntry entry;
   final Widget previousToast;
 
-  const OverlaidToastEntry({required this.entry, required this.previousToast});
+  const OverlaidToastEntry({super.key, required this.entry, required this.previousToast});
 
   @override
   Widget build(BuildContext context) {

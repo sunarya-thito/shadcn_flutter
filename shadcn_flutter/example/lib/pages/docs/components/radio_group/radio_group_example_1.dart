@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class RadioGroupExample1 extends StatefulWidget {
+  const RadioGroupExample1({super.key});
+
   @override
   State<RadioGroupExample1> createState() => _RadioGroupExample1State();
 }
@@ -20,7 +22,7 @@ class _RadioGroupExample1State extends State<RadioGroupExample1> {
               selectedValue = value;
             });
           },
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RadioItem(

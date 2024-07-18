@@ -7,9 +7,11 @@ import 'divider/divider_example_2.dart';
 import 'divider/divider_example_3.dart';
 
 class DividerExample extends StatelessWidget {
+  const DividerExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'divider',
       description:
           'A divider is a thin line that groups content in lists and layouts.',
@@ -17,18 +19,18 @@ class DividerExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Horizontal Divider Example',
-          child: DividerExample1(),
           path: 'lib/pages/docs/components/divider/divider_example_1.dart',
+          child: DividerExample1(),
         ),
         WidgetUsageExample(
           title: 'Vertical Divider Example',
-          child: DividerExample2(),
           path: 'lib/pages/docs/components/divider/divider_example_2.dart',
+          child: DividerExample2(),
         ),
         WidgetUsageExample(
           title: 'Divider with Text Example',
-          child: DividerExample3(),
           path: 'lib/pages/docs/components/divider/divider_example_3.dart',
+          child: DividerExample3(),
         ),
       ],
     );

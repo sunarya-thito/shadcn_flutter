@@ -6,9 +6,11 @@ import '../component_page.dart';
 import 'checkbox/checkbox_example_2.dart';
 
 class CheckboxExample extends StatelessWidget {
+  const CheckboxExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'checkbox',
       description:
           'Checkboxes allow the user to select one or more items from a set.',
@@ -16,13 +18,13 @@ class CheckboxExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Checkbox Example',
-          child: CheckboxExample1(),
           path: 'lib/pages/docs/components/checkbox/checkbox_example_1.dart',
+          child: CheckboxExample1(),
         ),
         WidgetUsageExample(
           title: 'Checkbox Example with Tristate',
-          child: CheckboxExample2(),
           path: 'lib/pages/docs/components/checkbox/checkbox_example_2.dart',
+          child: CheckboxExample2(),
         ),
       ],
     );

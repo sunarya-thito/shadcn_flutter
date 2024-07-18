@@ -7,7 +7,7 @@ class ButtonExample5 extends StatelessWidget {
   Widget build(BuildContext context) {
     return DestructiveButton(
       onPressed: () {},
-      child: Text('Destructive'),
+      child: const Text('Destructive'),
     );
   }
 }

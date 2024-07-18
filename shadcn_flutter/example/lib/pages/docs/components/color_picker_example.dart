@@ -5,9 +5,11 @@ import '../component_page.dart';
 import 'color_picker/color_picker_example_1.dart';
 
 class ColorPickerExample extends StatelessWidget {
+  const ColorPickerExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'color_picker',
       description:
           'A color picker is a widget that allows the user to pick a color.',
@@ -15,9 +17,9 @@ class ColorPickerExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Color Picker Example',
-          child: ColorPickerExample1(),
           path:
               'lib/pages/docs/components/color_picker/color_picker_example_1.dart',
+          child: ColorPickerExample1(),
         ),
       ],
     );

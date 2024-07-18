@@ -63,7 +63,7 @@ class DrawerWrapper extends StatefulWidget {
   final Size extraSize;
   final Size size;
 
-  const DrawerWrapper({
+  const DrawerWrapper({super.key, 
     required this.position,
     required this.child,
     this.expands = false,
@@ -445,7 +445,7 @@ Future<void> closeSheet(BuildContext context) {
 
 class SheetWrapper extends DrawerWrapper {
   const SheetWrapper(
-      {required super.position,
+      {super.key, required super.position,
       required super.child,
       required super.size,
       super.draggable = false,
@@ -680,7 +680,7 @@ class DrawerLayerData {
 class DrawerOverlay extends StatefulWidget {
   final Widget child;
 
-  const DrawerOverlay({required this.child});
+  const DrawerOverlay({super.key, required this.child});
 
   @override
   State<DrawerOverlay> createState() => _DrawerOverlayState();

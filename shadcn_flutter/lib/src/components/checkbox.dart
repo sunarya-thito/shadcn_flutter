@@ -1,4 +1,3 @@
-import 'package:shadcn_flutter/src/components/clickable.dart';
 
 import '../../shadcn_flutter.dart';
 
@@ -34,7 +33,7 @@ class Checkbox extends StatefulWidget {
 }
 
 class _CheckboxState extends State<Checkbox> with FormValueSupplier {
-  bool _focusing = false;
+  final bool _focusing = false;
 
   void _changeTo(CheckboxState state) {
     if (widget.onChanged != null) {
@@ -175,6 +174,9 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
     //   ),
     // );
     return Clickable(
+      enabled: widget.onChanged != null,
+      mouseCursor: const WidgetStatePropertyAll(SystemMouseCursors.click),
+      onPressed: widget.onChanged != null ? _tap : null,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -221,9 +223,6 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
           if (widget.trailing != null) widget.trailing!.small().medium(),
         ],
       ),
-      enabled: widget.onChanged != null,
-      mouseCursor: const WidgetStatePropertyAll(SystemMouseCursors.click),
-      onPressed: widget.onChanged != null ? _tap : null,
     );
   }
 }

@@ -5,9 +5,11 @@ import '../component_page.dart';
 import 'breadcrumb/breadcrumb_example_1.dart';
 
 class BreadcrumbExample extends StatelessWidget {
+  const BreadcrumbExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'breadcrumb',
       description:
           'Breadcrumbs are a secondary navigation scheme that reveals the user’s location in a website or web application.',
@@ -15,9 +17,9 @@ class BreadcrumbExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Breadcrumb Example',
-          child: BreadcrumbExample1(),
           path:
               'lib/pages/docs/components/breadcrumb/breadcrumb_example_1.dart',
+          child: BreadcrumbExample1(),
         ),
       ],
     );

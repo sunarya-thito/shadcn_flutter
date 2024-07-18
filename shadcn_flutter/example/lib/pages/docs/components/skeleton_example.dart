@@ -6,6 +6,8 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import '../component_page.dart';
 
 class SkeletonExample extends StatelessWidget {
+  const SkeletonExample({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ComponentPage(
@@ -14,17 +16,17 @@ class SkeletonExample extends StatelessWidget {
           'Skeleton is a placeholder for content that hasn\'t loaded yet.',
       displayName: 'Skeleton',
       children: [
-        Text('This component uses widget from ')
+        const Text('This component uses widget from ')
             .thenButton(
-                child: Text('https://pub.dev/packages/skeletonizer'),
+                child: const Text('https://pub.dev/packages/skeletonizer'),
                 onPressed: () {
                   openInNewTab('https://pub.dev/packages/skeletonizer');
                 })
             .p(),
-        WidgetUsageExample(
+        const WidgetUsageExample(
           title: 'Example',
-          child: SkeletonExample1(),
           path: 'lib/pages/docs/components/skeleton/skeleton_example_1.dart',
+          child: SkeletonExample1(),
         ),
       ],
     );

@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class AnimatedValueBuilderExample1 extends StatefulWidget {
+  const AnimatedValueBuilderExample1({super.key});
+
   @override
   State<AnimatedValueBuilderExample1> createState() =>
       _AnimatedValueBuilderExample1State();
@@ -37,7 +39,7 @@ class _AnimatedValueBuilderExample1State
               index = (index + 1) % colors.length;
             });
           },
-          child: Text('Change Color'),
+          child: const Text('Change Color'),
         ),
       ],
     );

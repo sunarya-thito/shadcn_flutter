@@ -8,7 +8,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class ScrollViewInterceptor extends StatefulWidget {
   final Widget child;
 
-  const ScrollViewInterceptor({required this.child});
+  const ScrollViewInterceptor({super.key, required this.child});
 
   @override
   State<ScrollViewInterceptor> createState() => _ScrollViewInterceptorState();

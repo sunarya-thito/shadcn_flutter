@@ -27,9 +27,9 @@ class _SelectExample1State extends State<SelectExample1> {
         });
       },
       value: selectedValue,
-      placeholder: Text('Select a fruit'),
+      placeholder: const Text('Select a fruit'),
       children: [
-        SelectGroup(
+        const SelectGroup(
           headers: [
             SelectLabel(
               child: Text('Apple'),
@@ -46,7 +46,7 @@ class _SelectExample1State extends State<SelectExample1> {
             ),
           ],
         ),
-        SelectGroup(
+        const SelectGroup(
           headers: [
             SelectLabel(
               child: Text('Banana'),
@@ -63,7 +63,7 @@ class _SelectExample1State extends State<SelectExample1> {
             ),
           ],
         ),
-        SelectGroup(
+        const SelectGroup(
           headers: [
             SelectLabel(
               child: Text('Lemon'),
@@ -84,12 +84,12 @@ class _SelectExample1State extends State<SelectExample1> {
           computeIndexingScore: (query) {
             return query.toLowerCase().contains('tomato') ? 1 : 0;
           },
-          headers: [
+          headers: const [
             SelectLabel(
               child: Text('Tomato'),
             ),
           ],
-          children: [
+          children: const [
             SelectItemButton(
               value: 'Red Tomato',
               child: Text('Red'),

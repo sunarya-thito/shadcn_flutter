@@ -8,9 +8,11 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'input_otp/input_otp_example_2.dart';
 
 class InputOTPExample extends StatelessWidget {
+  const InputOTPExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'input_otp',
       description:
           'Input OTP is a component that allows users to enter OTP code.',
@@ -18,23 +20,23 @@ class InputOTPExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: InputOTPExample1(),
           path: 'lib/pages/docs/components/input_otp/input_otp_example_1.dart',
+          child: InputOTPExample1(),
         ),
         WidgetUsageExample(
           title: 'Initial Value Example',
-          child: InputOTPExample2(),
           path: 'lib/pages/docs/components/input_otp/input_otp_example_2.dart',
+          child: InputOTPExample2(),
         ),
         WidgetUsageExample(
           title: 'Obscured Example',
-          child: InputOTPExample3(),
           path: 'lib/pages/docs/components/input_otp/input_otp_example_3.dart',
+          child: InputOTPExample3(),
         ),
         WidgetUsageExample(
           title: 'Upper Case Alphabet Example',
-          child: InputOTPExample4(),
           path: 'lib/pages/docs/components/input_otp/input_otp_example_4.dart',
+          child: InputOTPExample4(),
         ),
       ],
     );

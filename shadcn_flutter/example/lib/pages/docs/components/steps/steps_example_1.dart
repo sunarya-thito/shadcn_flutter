@@ -1,9 +1,11 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class StepsExample1 extends StatelessWidget {
+  const StepsExample1({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Steps(
+    return const Steps(
       children: [
         StepItem(
           title: Text('Create a project'),

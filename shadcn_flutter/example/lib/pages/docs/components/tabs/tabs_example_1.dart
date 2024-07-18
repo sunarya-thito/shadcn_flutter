@@ -2,6 +2,8 @@ import 'package:example/pages/docs/components/carousel_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class TabsExample1 extends StatefulWidget {
+  const TabsExample1({super.key});
+
   @override
   State<TabsExample1> createState() => _TabsExample1State();
 }
@@ -15,7 +17,7 @@ class _TabsExample1State extends State<TabsExample1> {
       children: [
         Tabs(
           index: index,
-          tabs: [
+          tabs: const [
             Text('Tab 1'),
             Text('Tab 2'),
             Text('Tab 3'),
@@ -29,7 +31,7 @@ class _TabsExample1State extends State<TabsExample1> {
         gap(8),
         IndexedStack(
           index: index,
-          children: [
+          children: const [
             NumberedContainer(
               index: 1,
             ),

@@ -176,7 +176,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                         control: true,
                       ),
                     ),
-                    child: Text('Undo'),
+                    child: const Text('Undo'),
                   ),
                   MenuButton(
                     enabled: _undoHistoryController.value.canRedo,
@@ -190,9 +190,9 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                         shift: true,
                       ),
                     ),
-                    child: Text('Redo'),
+                    child: const Text('Redo'),
                   ),
-                  MenuDivider(),
+                  const MenuDivider(),
                   MenuButton(
                     enabled: cutButton != null,
                     onPressed: (context) {
@@ -204,7 +204,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                         control: true,
                       ),
                     ),
-                    child: Text('Cut'),
+                    child: const Text('Cut'),
                   ),
                   MenuButton(
                     enabled: copyButton != null,
@@ -217,7 +217,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                         control: true,
                       ),
                     ),
-                    child: Text('Copy'),
+                    child: const Text('Copy'),
                   ),
                   MenuButton(
                     enabled: pasteButton != null,
@@ -230,7 +230,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                         control: true,
                       ),
                     ),
-                    child: Text('Paste'),
+                    child: const Text('Paste'),
                   ),
                   MenuButton(
                     enabled: selectAllButton != null,
@@ -246,11 +246,11 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                         control: true,
                       ),
                     ),
-                    child: Text('Select All'),
+                    child: const Text('Select All'),
                   ),
                   if (contextMenuButtonItems.isNotEmpty) ...[
                     // add the rest
-                    MenuDivider(),
+                    const MenuDivider(),
                     ...contextMenuButtonItems
                         .map<MenuButton?>((e) {
                           if (e.label == null) {

@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class FormExample2 extends StatefulWidget {
+  const FormExample2({super.key});
+
   @override
   State<FormExample2> createState() => _FormExample2State();
 }
@@ -22,12 +24,12 @@ class _FormExample2State extends State<FormExample2> {
             builder: (context) {
               return Center(
                 child: AlertDialog(
-                  title: Text('Form Values'),
+                  title: const Text('Form Values'),
                   content: Text(values.toString()),
                   actions: [
                     PrimaryButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: Text('Close'),
+                      child: const Text('Close'),
                     ),
                   ],
                 ),
@@ -44,32 +46,32 @@ class _FormExample2State extends State<FormExample2> {
               children: [
                 FormRow<String>(
                   key: _usernameKey,
-                  label: Text('Username'),
-                  hint: Text('This is your public display name'),
-                  validator: LengthValidator(min: 4),
-                  child: TextField(),
+                  label: const Text('Username'),
+                  hint: const Text('This is your public display name'),
+                  validator: const LengthValidator(min: 4),
+                  child: const TextField(),
                 ),
                 FormRow<String>(
                   key: _passwordKey,
-                  label: Text('Password'),
-                  validator: LengthValidator(min: 8),
-                  child: TextField(
+                  label: const Text('Password'),
+                  validator: const LengthValidator(min: 8),
+                  child: const TextField(
                     obscureText: true,
                   ),
                 ),
                 FormRow<String>(
                   key: _confirmPasswordKey,
-                  label: Text('Confirm Password'),
+                  label: const Text('Confirm Password'),
                   validator: CompareWith.equal(_passwordKey,
                       message: 'Passwords do not match'),
-                  child: TextField(
+                  child: const TextField(
                     obscureText: true,
                   ),
                 ),
                 FormInline<CheckboxState>(
                   key: _agreeKey,
-                  label: Text('I agree to the terms and conditions'),
-                  validator: CompareTo.equal(CheckboxState.checked,
+                  label: const Text('I agree to the terms and conditions'),
+                  validator: const CompareTo.equal(CheckboxState.checked,
                       message: 'You must agree to the terms and conditions'),
                   child: Align(
                     alignment: Alignment.centerRight,
@@ -89,7 +91,7 @@ class _FormExample2State extends State<FormExample2> {
               builder: (context, errors, child) {
                 return PrimaryButton(
                   onPressed: errors.isEmpty ? () => context.submitForm() : null,
-                  child: Text('Submit'),
+                  child: const Text('Submit'),
                 );
               },
             )

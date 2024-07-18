@@ -5,9 +5,11 @@ import '../component_page.dart';
 import 'command/command_example_1.dart';
 
 class CommandExample extends StatelessWidget {
+  const CommandExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'command',
       description:
           'A command is a component that allows you to search for items.',
@@ -15,8 +17,8 @@ class CommandExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Command Example',
-          child: CommandExample1(),
           path: 'lib/pages/docs/components/command/command_example_1.dart',
+          child: CommandExample1(),
         ),
       ],
     );

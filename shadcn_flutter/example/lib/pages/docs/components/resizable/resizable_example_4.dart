@@ -2,6 +2,8 @@ import 'package:example/pages/docs/components/carousel_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ResizableExample4 extends StatefulWidget {
+  const ResizableExample4({super.key});
+
   @override
   State<ResizableExample4> createState() => _ResizableExample4State();
 }
@@ -22,47 +24,47 @@ class _ResizableExample4State extends State<ResizableExample4> {
             direction: Axis.horizontal,
             children: [
               ResizablePane.controlled(
-                child: NumberedContainer(
+                controller: controller1,
+                child: const NumberedContainer(
                   index: 0,
                   height: 200,
                   fill: false,
                 ),
-                controller: controller1,
               ),
               ResizablePane.controlled(
-                child: NumberedContainer(
+                controller: controller2,
+                child: const NumberedContainer(
                   index: 1,
                   height: 200,
                   fill: false,
                 ),
-                controller: controller2,
               ),
               ResizablePane.controlled(
-                child: NumberedContainer(
+                controller: controller3,
+                maxSize: 200,
+                child: const NumberedContainer(
                   index: 2,
                   height: 200,
                   fill: false,
                 ),
-                controller: controller3,
-                maxSize: 200,
               ),
               ResizablePane.controlled(
-                child: NumberedContainer(
+                controller: controller4,
+                child: const NumberedContainer(
                   index: 3,
                   height: 200,
                   fill: false,
                 ),
-                controller: controller4,
               ),
               ResizablePane.controlled(
-                child: NumberedContainer(
+                controller: controller5,
+                minSize: 80,
+                collapsedSize: 20,
+                child: const NumberedContainer(
                   index: 4,
                   height: 200,
                   fill: false,
                 ),
-                controller: controller5,
-                minSize: 80,
-                collapsedSize: 20,
               ),
             ],
           ),
@@ -80,55 +82,55 @@ class _ResizableExample4State extends State<ResizableExample4> {
                 controller4.size = 80;
                 controller5.size = 80;
               },
-              child: Text('Reset'),
+              child: const Text('Reset'),
             ),
             PrimaryButton(
               onPressed: () {
                 controller3.tryExpandSize(20);
               },
-              child: Text('Expand Panel 2'),
+              child: const Text('Expand Panel 2'),
             ),
             PrimaryButton(
               onPressed: () {
                 controller3.tryExpandSize(-20);
               },
-              child: Text('Shrink Panel 2'),
+              child: const Text('Shrink Panel 2'),
             ),
             PrimaryButton(
               onPressed: () {
                 controller1.tryExpandSize(20);
               },
-              child: Text('Expand Panel 1'),
+              child: const Text('Expand Panel 1'),
             ),
             PrimaryButton(
               onPressed: () {
                 controller1.tryExpandSize(-20);
               },
-              child: Text('Shrink Panel 1'),
+              child: const Text('Shrink Panel 1'),
             ),
             PrimaryButton(
               onPressed: () {
                 controller5.tryExpandSize(20);
               },
-              child: Text('Expand Panel 4'),
+              child: const Text('Expand Panel 4'),
             ),
             PrimaryButton(
               onPressed: () {
                 controller5.tryExpandSize(-20);
               },
-              child: Text('Shrink Panel 4'),
+              child: const Text('Shrink Panel 4'),
             ),
             PrimaryButton(
               onPressed: () {
                 controller5.tryCollapse();
               },
-              child: Text('Collapse Panel 4'),
+              child: const Text('Collapse Panel 4'),
             ),
             PrimaryButton(
               onPressed: () {
                 controller5.tryExpand();
               },
-              child: Text('Expand Panel 4'),
+              child: const Text('Expand Panel 4'),
             ),
           ],
         )

@@ -97,295 +97,295 @@ class MyAppState extends State<MyApp> {
   final GoRouter router = GoRouter(routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => IntroductionPage(),
+      builder: (context, state) => const IntroductionPage(),
       // builder: (context, state) => TestWidget(),
       name: 'introduction',
     ),
     GoRoute(
       path: '/installation',
-      builder: (context, state) => InstallationPage(),
+      builder: (context, state) => const InstallationPage(),
       name: 'installation',
     ),
     GoRoute(
       path: '/theme',
-      builder: (context, state) => ThemePage(),
+      builder: (context, state) => const ThemePage(),
       name: 'theme',
     ),
     GoRoute(
       path: '/typography',
-      builder: (context, state) => TypographyPage(),
+      builder: (context, state) => const TypographyPage(),
       name: 'typography',
     ),
     GoRoute(
       path: '/layout',
-      builder: (context, state) => LayoutPage(),
+      builder: (context, state) => const LayoutPage(),
       name: 'layout',
     ),
     GoRoute(
         path: '/external',
-        builder: (context, state) => MaterialExample(),
+        builder: (context, state) => const MaterialExample(),
         name: 'external'),
     GoRoute(
       path: '/web_preloader',
       name: 'web_preloader',
-      builder: (context, state) => WebPreloaderPage(),
+      builder: (context, state) => const WebPreloaderPage(),
     ),
     GoRoute(
         path: '/components',
         name: 'components',
         builder: (context, state) {
-          return ComponentsPage();
+          return const ComponentsPage();
         },
         routes: [
           GoRoute(
             path: 'accordion',
-            builder: (context, state) => AccordionExample(),
+            builder: (context, state) => const AccordionExample(),
             name: 'accordion',
           ),
           GoRoute(
             path: 'alert',
-            builder: (context, state) => AlertExample(),
+            builder: (context, state) => const AlertExample(),
             name: 'alert',
           ),
           GoRoute(
             path: 'alert-dialog',
-            builder: (context, state) => AlertDialogExample(),
+            builder: (context, state) => const AlertDialogExample(),
             name: 'alert_dialog',
           ),
           GoRoute(
             path: 'avatar',
-            builder: (context, state) => AvatarExample(),
+            builder: (context, state) => const AvatarExample(),
             name: 'avatar',
           ),
           GoRoute(
             path: 'badge',
-            builder: (context, state) => BadgeExample(),
+            builder: (context, state) => const BadgeExample(),
             name: 'badge',
           ),
           GoRoute(
             path: 'breadcrumb',
-            builder: (context, state) => BreadcrumbExample(),
+            builder: (context, state) => const BreadcrumbExample(),
             name: 'breadcrumb',
           ),
           GoRoute(
             path: 'button',
-            builder: (context, state) => ButtonExample(),
+            builder: (context, state) => const ButtonExample(),
             name: 'button',
           ),
           GoRoute(
             path: 'card',
-            builder: (context, state) => CardExample(),
+            builder: (context, state) => const CardExample(),
             name: 'card',
           ),
           GoRoute(
             path: 'checkbox',
-            builder: (context, state) => CheckboxExample(),
+            builder: (context, state) => const CheckboxExample(),
             name: 'checkbox',
           ),
           GoRoute(
             path: 'code-snippet',
-            builder: (context, state) => CodeSnippetExample(),
+            builder: (context, state) => const CodeSnippetExample(),
             name: 'code_snippet',
           ),
           GoRoute(
             path: 'circular-progress',
-            builder: (context, state) => CircularProgressExample(),
+            builder: (context, state) => const CircularProgressExample(),
             name: 'circular_progress',
           ),
           GoRoute(
             path: 'color-picker',
-            builder: (context, state) => ColorPickerExample(),
+            builder: (context, state) => const ColorPickerExample(),
             name: 'color_picker',
           ),
           GoRoute(
             path: 'select',
-            builder: (context, state) => SelectExample(),
+            builder: (context, state) => const SelectExample(),
             name: 'select',
           ),
           GoRoute(
             path: 'divider',
-            builder: (context, state) => DividerExample(),
+            builder: (context, state) => const DividerExample(),
             name: 'divider',
           ),
           GoRoute(
             path: 'collapsible',
-            builder: (context, state) => CollapsibleExample(),
+            builder: (context, state) => const CollapsibleExample(),
             name: 'collapsible',
           ),
           GoRoute(
             path: 'command',
-            builder: (context, state) => CommandExample(),
+            builder: (context, state) => const CommandExample(),
             name: 'command',
           ),
           GoRoute(
             path: 'form',
-            builder: (context, state) => FormExample(),
+            builder: (context, state) => const FormExample(),
             name: 'form',
           ),
           GoRoute(
             path: 'carousel',
-            builder: (context, state) => CarouselExample(),
+            builder: (context, state) => const CarouselExample(),
             name: 'carousel',
           ),
           GoRoute(
             path: 'calendar',
-            builder: (context, state) => CalendarExample(),
+            builder: (context, state) => const CalendarExample(),
             name: 'calendar',
           ),
           GoRoute(
             path: 'date_picker',
-            builder: (context, state) => DatePickerExample(),
+            builder: (context, state) => const DatePickerExample(),
             name: 'date_picker',
           ),
           GoRoute(
             path: 'dialog',
-            builder: (context, state) => DialogExample(),
+            builder: (context, state) => const DialogExample(),
             name: 'dialog',
           ),
           GoRoute(
             path: 'pagination',
-            builder: (context, state) => PaginationExample(),
+            builder: (context, state) => const PaginationExample(),
             name: 'pagination',
           ),
           GoRoute(
             path: 'input',
-            builder: (context, state) => InputExample(),
+            builder: (context, state) => const InputExample(),
             name: 'input',
           ),
           GoRoute(
             path: 'radio_group',
-            builder: (context, state) => RadioGroupExample(),
+            builder: (context, state) => const RadioGroupExample(),
             name: 'radio_group',
           ),
           GoRoute(
             path: 'switch',
-            builder: (context, state) => SwitchExample(),
+            builder: (context, state) => const SwitchExample(),
             name: 'switch',
           ),
           GoRoute(
             path: 'slider',
-            builder: (context, state) => SliderExample(),
+            builder: (context, state) => const SliderExample(),
             name: 'slider',
           ),
           GoRoute(
             path: 'steps',
-            builder: (context, state) => StepsExample(),
+            builder: (context, state) => const StepsExample(),
             name: 'steps',
           ),
           GoRoute(
             path: 'tab_list',
-            builder: (context, state) => TabListExample(),
+            builder: (context, state) => const TabListExample(),
             name: 'tab_list',
           ),
           GoRoute(
             path: 'tooltip',
             name: 'tooltip',
-            builder: (context, state) => TooltipExample(),
+            builder: (context, state) => const TooltipExample(),
           ),
           GoRoute(
             path: 'popover',
             name: 'popover',
-            builder: (context, state) => PopoverExample(),
+            builder: (context, state) => const PopoverExample(),
           ),
           GoRoute(
             path: 'progress',
             name: 'progress',
-            builder: (context, state) => ProgressExample(),
+            builder: (context, state) => const ProgressExample(),
           ),
           GoRoute(
             path: 'tabs',
             name: 'tabs',
-            builder: (context, state) => TabsExample(),
+            builder: (context, state) => const TabsExample(),
           ),
           GoRoute(
             path: 'input_otp',
-            builder: (context, state) => InputOTPExample(),
+            builder: (context, state) => const InputOTPExample(),
             name: 'input_otp',
           ),
           GoRoute(
             path: 'text_area',
-            builder: (context, state) => TextAreaExample(),
+            builder: (context, state) => const TextAreaExample(),
             name: 'text_area',
           ),
           GoRoute(
             path: 'animated_value_builder',
             name: 'animated_value_builder',
             builder: (context, state) {
-              return AnimatedValueBuilderExample();
+              return const AnimatedValueBuilderExample();
             },
           ),
           GoRoute(
               path: 'repeated_animation_builder',
               name: 'repeated_animation_builder',
               builder: (context, state) {
-                return RepeatedAnimationBuilderExample();
+                return const RepeatedAnimationBuilderExample();
               }),
           GoRoute(
             path: 'skeleton',
             name: 'skeleton',
             builder: (context, state) {
-              return SkeletonExample();
+              return const SkeletonExample();
             },
           ),
           GoRoute(
             path: 'toggle',
             name: 'toggle',
             builder: (context, state) {
-              return ToggleExample();
+              return const ToggleExample();
             },
           ),
           GoRoute(
             path: 'drawer',
             name: 'drawer',
             builder: (context, state) {
-              return DrawerExample();
+              return const DrawerExample();
             },
           ),
           GoRoute(
             path: 'sheet',
             name: 'sheet',
             builder: (context, state) {
-              return SheetExample();
+              return const SheetExample();
             },
           ),
           GoRoute(
               path: 'icons',
               name: 'icons',
               builder: (context, state) {
-                return IconsPage();
+                return const IconsPage();
               }),
           GoRoute(
               path: 'resizable',
               name: 'resizable',
               builder: (context, state) {
-                return ResizableExample();
+                return const ResizableExample();
               }),
           GoRoute(
             path: 'menubar',
             name: 'menubar',
             builder: (context, state) {
-              return MenubarExample();
+              return const MenubarExample();
             },
           ),
           GoRoute(
             path: 'context_menu',
             name: 'context_menu',
             builder: (context, state) {
-              return ContextMenuExample();
+              return const ContextMenuExample();
             },
           ),
           GoRoute(
             path: 'dropdown_menu',
             name: 'dropdown_menu',
             builder: (context, state) {
-              return DropdownMenuExample();
+              return const DropdownMenuExample();
             },
           ),
           GoRoute(
             path: 'navigation_menu',
             name: 'navigation_menu',
             builder: (context, state) {
-              return NavigationMenuExample();
+              return const NavigationMenuExample();
             },
           ),
         ]),

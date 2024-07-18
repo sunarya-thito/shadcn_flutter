@@ -63,18 +63,18 @@ class _ComponentsPageState extends State<ComponentsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Components').h1(),
-            Text('Beautifully designed components from Shadcn/UI is now available for Flutter.')
+            const Text('Components').h1(),
+            const Text('Beautifully designed components from Shadcn/UI is now available for Flutter.')
                 .lead(),
             gap(16),
-            Align(
+            const Align(
               alignment: Alignment.centerLeft,
               child: PrimaryBadge(
                 child: Text('Work in Progress'),
               ),
             ),
             gap(32),
-            Text('Animation').h2().anchored(animationKey),
+            const Text('Animation').h2().anchored(animationKey),
             gap(16),
             wrap(children: [
               ComponentCard(
@@ -92,7 +92,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           start: Colors.red,
                           end: Colors.blue,
                           lerp: Color.lerp,
-                          duration: Duration(seconds: 1),
+                          duration: const Duration(seconds: 1),
                           mode: RepeatMode.pingPong,
                           builder: (context, value, child) {
                             return Container(
@@ -108,7 +108,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           start: 0.0,
                           end: 1.0,
                           mode: RepeatMode.pingPong,
-                          duration: Duration(seconds: 1),
+                          duration: const Duration(seconds: 1),
                           builder: (context, value, child) {
                             // 0.0 - 0.5 = 0
                             // 0.5 - 1.0 = 1
@@ -128,7 +128,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 scale: 2,
                 horizontalOffset: 80,
                 example: RepeatedAnimationBuilder(
-                  duration: Duration(seconds: 1),
+                  duration: const Duration(seconds: 1),
                   start: 0.0,
                   end: 90.0,
                   builder: (context, value, child) {
@@ -144,14 +144,14 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 ),
               ),
             ]),
-            Text('Disclosure').h2().anchored(disclosureKey),
+            const Text('Disclosure').h2().anchored(disclosureKey),
             gap(16),
             wrap(
               children: [
-                ComponentCard(
+                const ComponentCard(
                   name: 'accordion',
                   title: 'Accordion',
-                  example: Container(
+                  example: SizedBox(
                     width: 280,
                     child: Card(
                       child: Accordion(
@@ -183,18 +183,18 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   example: Card(
                     child: Collapsible(
                       children: [
-                        CollapsibleTrigger(
+                        const CollapsibleTrigger(
                           child: Text('@sunarya-thito starred 3 repositories'),
                         ),
                         OutlinedContainer(
-                          child: Text('@sunarya-thito/shadcn_flutter')
+                          child: const Text('@sunarya-thito/shadcn_flutter')
                               .small()
                               .mono()
                               .withPadding(horizontal: 16, vertical: 8),
                         ).withPadding(top: 8),
                         CollapsibleContent(
                           child: OutlinedContainer(
-                            child: Text('@flutter/flutter')
+                            child: const Text('@flutter/flutter')
                                 .small()
                                 .mono()
                                 .withPadding(horizontal: 16, vertical: 8),
@@ -202,24 +202,24 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         ),
                         CollapsibleContent(
                           child: OutlinedContainer(
-                            child: Text('@dart-lang/sdk')
+                            child: const Text('@dart-lang/sdk')
                                 .small()
                                 .mono()
                                 .withPadding(horizontal: 16, vertical: 8),
                           ).withPadding(top: 8),
                         ),
-                        CollapsibleTrigger(
+                        const CollapsibleTrigger(
                           child: Text('@flutter starred 1 repository'),
                         ).withPadding(top: 16),
                         OutlinedContainer(
-                          child: Text('@sunarya-thito/shadcn_flutter')
+                          child: const Text('@sunarya-thito/shadcn_flutter')
                               .small()
                               .mono()
                               .withPadding(horizontal: 16, vertical: 8),
                         ).withPadding(top: 8),
                         CollapsibleContent(
                           child: OutlinedContainer(
-                            child: Text('@flutter/flutter')
+                            child: const Text('@flutter/flutter')
                                 .small()
                                 .mono()
                                 .withPadding(horizontal: 16, vertical: 8),
@@ -227,7 +227,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         ),
                         CollapsibleContent(
                           child: OutlinedContainer(
-                            child: Text('@dart-lang/sdk')
+                            child: const Text('@dart-lang/sdk')
                                 .small()
                                 .mono()
                                 .withPadding(horizontal: 16, vertical: 8),
@@ -239,10 +239,10 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 ),
               ],
             ),
-            Text('Feedback').h2().anchored(feedbackKey),
+            const Text('Feedback').h2().anchored(feedbackKey),
             gap(16),
             wrap(children: [
-              ComponentCard(
+              const ComponentCard(
                 name: 'alert',
                 title: 'Alert',
                 center: true,
@@ -257,16 +257,16 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 title: 'Alert Dialog',
                 center: true,
                 example: AlertDialog(
-                  title: Text('Alert Dialog'),
-                  content: Text('This is an alert dialog.'),
+                  title: const Text('Alert Dialog'),
+                  content: const Text('This is an alert dialog.'),
                   actions: [
                     SecondaryButton(
                       onPressed: () {},
-                      child: Text('Cancel'),
+                      child: const Text('Cancel'),
                     ),
                     PrimaryButton(
                       onPressed: () {},
-                      child: Text('OK'),
+                      child: const Text('OK'),
                     ),
                   ],
                 ),
@@ -277,10 +277,10 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 center: true,
                 example: Transform.scale(
                   scale: 3,
-                  child: CircularProgressIndicator(),
+                  child: const CircularProgressIndicator(),
                 ),
               ),
-              ComponentCard(
+              const ComponentCard(
                 title: 'Progress',
                 name: 'progress',
                 example: Progress(
@@ -296,51 +296,51 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   child: Column(
                     children: [
                       Basic(
-                        title: Text('Skeleton Example 1'),
-                        content: Text(
+                        title: const Text('Skeleton Example 1'),
+                        content: const Text(
                             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-                        leading: Avatar(
+                        leading: const Avatar(
                           initials: '',
                         ).asSkeleton(),
                         // Note: Avatar and other Image related widget needs its own skeleton
-                        trailing: Icon(Icons.arrow_forward),
+                        trailing: const Icon(Icons.arrow_forward),
                       ).asSkeleton(),
                       gap(16),
                       Basic(
-                        title: Text('Skeleton Example 1'),
-                        content: Text(
+                        title: const Text('Skeleton Example 1'),
+                        content: const Text(
                             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-                        leading: Avatar(
+                        leading: const Avatar(
                           initials: '',
                         ).asSkeleton(),
                         // Note: Avatar and other Image related widget needs its own skeleton
-                        trailing: Icon(Icons.arrow_forward),
+                        trailing: const Icon(Icons.arrow_forward),
                       ).asSkeleton(),
                       gap(16),
                       Basic(
-                        title: Text('Skeleton Example 1'),
-                        content: Text(
+                        title: const Text('Skeleton Example 1'),
+                        content: const Text(
                             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-                        leading: Avatar(
+                        leading: const Avatar(
                           initials: '',
                         ).asSkeleton(),
                         // Note: Avatar and other Image related widget needs its own skeleton
-                        trailing: Icon(Icons.arrow_forward),
+                        trailing: const Icon(Icons.arrow_forward),
                       ).asSkeleton(),
                     ],
                   ),
                 ).sized(height: 300),
               ),
-              WIPComponentCard(title: 'Toast'),
+              const WIPComponentCard(title: 'Toast'),
             ]),
-            Text('Forms').h2().anchored(formsKey),
+            const Text('Forms').h2().anchored(formsKey),
             gap(16),
             wrap(children: [
               ComponentCard(
                 name: 'button',
                 title: 'Button',
                 scale: 1.5,
-                example: Container(
+                example: SizedBox(
                   width: 250,
                   child: Card(
                     child: Wrap(
@@ -349,22 +349,22 @@ class _ComponentsPageState extends State<ComponentsPage> {
                       children: [
                         PrimaryButton(
                           onPressed: () {},
-                          child: Text('Primary'),
+                          child: const Text('Primary'),
                         ),
                         SecondaryButton(
                           onPressed: () {},
-                          child: Text('Secondary'),
+                          child: const Text('Secondary'),
                         ),
                         OutlineButton(
                           onPressed: () {},
-                          child: Text('Outline'),
+                          child: const Text('Outline'),
                         ),
                         GhostButton(
                           onPressed: () {},
-                          child: Text('Ghost'),
+                          child: const Text('Ghost'),
                         ),
                         DestructiveButton(
-                          child: Text('Destructive'),
+                          child: const Text('Destructive'),
                           onPressed: () {},
                         ),
                       ],
@@ -382,37 +382,37 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     children: [
                       Checkbox(
                         state: CheckboxState.checked,
-                        trailing: Text('Checked'),
+                        trailing: const Text('Checked'),
                         onChanged: (value) {},
                       ),
                       Checkbox(
                         state: CheckboxState.indeterminate,
-                        trailing: Text('Indeterminate'),
+                        trailing: const Text('Indeterminate'),
                         onChanged: (value) {},
                       ),
                       Checkbox(
                         state: CheckboxState.unchecked,
-                        trailing: Text('Unchecked'),
+                        trailing: const Text('Unchecked'),
                         onChanged: (value) {},
                       ),
                     ],
                   ).gap(4).sized(width: 300),
                 ),
               ),
-              ComponentCard(
+              const ComponentCard(
                 name: 'color_picker',
                 title: 'Color Picker',
                 reverse: true,
                 reverseVertical: true,
                 example: ColorPickerExample1(),
               ),
-              ComponentCard(
+              const ComponentCard(
                 name: 'date_picker',
                 title: 'Date Picker',
                 horizontalOffset: 70,
                 example: CalendarExample2(),
               ),
-              ComponentCard(
+              const ComponentCard(
                 name: 'form',
                 title: 'Form',
                 example: Card(child: FormExample1()),
@@ -422,7 +422,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 title: 'Input',
                 scale: 2,
                 example: Card(
-                  child: TextField(
+                  child: const TextField(
                     initialValue: 'Hello World',
                     leading: Icon(Icons.edit),
                   ).sized(width: 250, height: 32),
@@ -434,12 +434,12 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 scale: 1,
                 example: Column(
                   children: [
-                    Card(
+                    const Card(
                       child: InputOTPExample2(),
                     ),
                     gap(24),
                     Transform.translate(
-                      offset: Offset(-150, 0),
+                      offset: const Offset(-150, 0),
                       child: Card(
                         child: InputOTP(
                           initialValue: '123456'.codeUnits,
@@ -471,7 +471,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 example: Card(
                   child: RadioGroup<int>(
                     value: 1,
-                    child: Column(
+                    child: const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         RadioItem<int>(
@@ -506,15 +506,15 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           itemBuilder: (context, item) {
                             return Text(item);
                           },
-                          placeholder: Text('Select a fruit'),
+                          placeholder: const Text('Select a fruit'),
                           value: 'Apple',
                           onChanged: (value) {},
-                          children: [
+                          children: const [
                             SelectItemButton(
                                 value: 'Apple', child: Text('Apple')),
                           ],
                         ),
-                        SelectPopup(
+                        const SelectPopup(
                           value: 'Apple',
                           children: [
                             SelectItemButton(
@@ -550,7 +550,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 center: true,
                 scale: 2,
                 example: Slider(
-                  value: SliderValue.single(0.75),
+                  value: const SliderValue.single(0.75),
                   onChanged: (value) {},
                 ).sized(width: 100),
               ),
@@ -564,7 +564,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   onChanged: (value) {},
                 ),
               ),
-              ComponentCard(
+              const ComponentCard(
                   title: 'Text Area',
                   name: 'text_area',
                   scale: 1.2,
@@ -579,38 +579,38 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 title: 'Toggle',
                 scale: 1.2,
                 example: Card(
-                  child: ToggleExample2().withAlign(Alignment.topLeft),
+                  child: const ToggleExample2().withAlign(Alignment.topLeft),
                 ).sized(height: 300, width: 300),
               ),
             ]),
-            Text('Layout').h2().anchored(layoutKey),
+            const Text('Layout').h2().anchored(layoutKey),
             gap(16),
             wrap(children: [
-              ComponentCard(
+              const ComponentCard(
                 name: 'card',
                 title: 'Card',
                 example: CardExample1(),
               ),
-              ComponentCard(
+              const ComponentCard(
                 name: 'carousel',
                 title: 'Carousel',
                 fit: true,
                 example: SizedBox(
                     width: 550, height: 200, child: CarouselExample1()),
               ),
-              ComponentCard(
+              const ComponentCard(
                 name: 'divider',
                 title: 'Divider',
                 scale: 1.2,
                 example: Card(child: DividerExample3()),
               ),
-              ComponentCard(
+              const ComponentCard(
                 title: 'Resizable',
                 name: 'resizable',
                 scale: 1,
                 example: ResizableExample3(),
               ),
-              ComponentCard(
+              const ComponentCard(
                 name: 'steps',
                 title: 'Steps',
                 example: Card(
@@ -638,14 +638,14 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 ),
               ),
             ]),
-            Text('Navigation').h2().anchored(navigationKey),
+            const Text('Navigation').h2().anchored(navigationKey),
             gap(16),
             wrap(children: [
               ComponentCard(
                 title: 'Breadcrumb',
                 name: 'breadcrumb',
                 // scale: 1,
-                example: Column(
+                example: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Card(child: BreadcrumbExample1()),
@@ -675,12 +675,11 @@ class _ComponentsPageState extends State<ComponentsPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Button(
-                                  child: Text('File'),
                                   onPressed: () {},
                                   style: const ButtonStyle.menubar(),
+                                  child: const Text('File'),
                                 ),
                                 Button(
-                                  child: Text('Edit'),
                                   onPressed: () {},
                                   style: const ButtonStyle.menubar().copyWith(
                                     decoration: (context, states, value) {
@@ -691,16 +690,17 @@ class _ComponentsPageState extends State<ComponentsPage> {
                                       );
                                     },
                                   ),
+                                  child: const Text('Edit'),
                                 ),
                                 Button(
-                                  child: Text('View'),
                                   onPressed: () {},
                                   style: const ButtonStyle.menubar(),
+                                  child: const Text('View'),
                                 ),
                                 Button(
-                                  child: Text('Help'),
                                   onPressed: () {},
                                   style: const ButtonStyle.menubar(),
+                                  child: const Text('Help'),
                                 ),
                               ],
                             ),
@@ -710,20 +710,20 @@ class _ComponentsPageState extends State<ComponentsPage> {
                       gap(4),
                       Container(
                         width: 192,
-                        margin: EdgeInsets.only(left: 48),
+                        margin: const EdgeInsets.only(left: 48),
                         child: MenuPopup(children: [
                           Button(
-                            style: ButtonStyle.menu(),
+                            style: const ButtonStyle.menu(),
                             onPressed: () {},
-                            trailing: MenuShortcut(
+                            trailing: const MenuShortcut(
                               activator: SingleActivator(
                                   LogicalKeyboardKey.keyZ,
                                   control: true),
                             ),
-                            child: Text('Undo'),
+                            child: const Text('Undo'),
                           ),
                           Button(
-                            style: ButtonStyle.menu().copyWith(
+                            style: const ButtonStyle.menu().copyWith(
                                 decoration: (context, states, value) {
                               return (value as BoxDecoration).copyWith(
                                 color: theme.colorScheme.accent,
@@ -732,43 +732,43 @@ class _ComponentsPageState extends State<ComponentsPage> {
                               );
                             }),
                             onPressed: () {},
-                            trailing: MenuShortcut(
+                            trailing: const MenuShortcut(
                               activator: SingleActivator(
                                   LogicalKeyboardKey.keyY,
                                   control: true),
                             ),
-                            child: Text('Redo'),
+                            child: const Text('Redo'),
                           ),
-                          MenuDivider(),
+                          const MenuDivider(),
                           Button(
-                            style: ButtonStyle.menu(),
+                            style: const ButtonStyle.menu(),
                             onPressed: () {},
-                            trailing: MenuShortcut(
+                            trailing: const MenuShortcut(
                               activator: SingleActivator(
                                   LogicalKeyboardKey.keyX,
                                   control: true),
                             ),
-                            child: Text('Cut'),
+                            child: const Text('Cut'),
                           ),
                           Button(
-                            style: ButtonStyle.menu(),
+                            style: const ButtonStyle.menu(),
                             onPressed: () {},
-                            trailing: MenuShortcut(
+                            trailing: const MenuShortcut(
                               activator: SingleActivator(
                                   LogicalKeyboardKey.keyC,
                                   control: true),
                             ),
-                            child: Text('Copy'),
+                            child: const Text('Copy'),
                           ),
                           Button(
-                            style: ButtonStyle.menu(),
+                            style: const ButtonStyle.menu(),
                             onPressed: () {},
-                            trailing: MenuShortcut(
+                            trailing: const MenuShortcut(
                               activator: SingleActivator(
                                   LogicalKeyboardKey.keyV,
                                   control: true),
                             ),
-                            child: Text('Paste'),
+                            child: const Text('Paste'),
                           ),
                         ]),
                       ),
@@ -799,14 +799,14 @@ class _ComponentsPageState extends State<ComponentsPage> {
                                 );
                               },
                             ),
-                            trailing: Icon(
+                            trailing: const Icon(
                               RadixIcons.chevronUp,
                               size: 12,
                             ),
-                            child: Text('Getting Started'),
+                            child: const Text('Getting Started'),
                           ),
-                          NavigationItem(
-                            content: const SizedBox(),
+                          const NavigationItem(
+                            content: SizedBox(),
                             child: Text('Components'),
                           ),
                         ],
@@ -835,8 +835,8 @@ class _ComponentsPageState extends State<ComponentsPage> {
                                 onPressed: () {},
                                 alignment: Alignment.topLeft,
                                 child: Basic(
-                                  title: Text('Installation').medium(),
-                                  content: Text(
+                                  title: const Text('Installation').medium(),
+                                  content: const Text(
                                           'How to install Shadcn/UI for Flutter')
                                       .muted(),
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -857,10 +857,10 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 example: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Card(child: PaginationExample1()),
+                    const Card(child: PaginationExample1()),
                     Transform.translate(
-                        offset: Offset(250, 0),
-                        child: Card(child: PaginationExample1())),
+                        offset: const Offset(250, 0),
+                        child: const Card(child: PaginationExample1())),
                   ],
                 ).gap(16),
               ),
@@ -871,17 +871,17 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 example: Card(
                   child: Column(
                     children: [
-                      Tabs(index: 0, onChanged: (value) {}, tabs: [
+                      Tabs(index: 0, onChanged: (value) {}, tabs: const [
                         Text('Tab 1'),
                         Text('Tab 2'),
                         Text('Tab 3'),
                       ]),
-                      Tabs(index: 1, onChanged: (value) {}, tabs: [
+                      Tabs(index: 1, onChanged: (value) {}, tabs: const [
                         Text('Tab 1'),
                         Text('Tab 2'),
                         Text('Tab 3'),
                       ]),
-                      Tabs(index: 2, onChanged: (value) {}, tabs: [
+                      Tabs(index: 2, onChanged: (value) {}, tabs: const [
                         Text('Tab 1'),
                         Text('Tab 2'),
                         Text('Tab 3'),
@@ -890,7 +890,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   ).gap(8),
                 ),
               ),
-              ComponentCard(
+              const ComponentCard(
                 name: 'tab_list',
                 title: 'Tab List',
                 scale: 1,
@@ -907,22 +907,22 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 ),
               ),
             ]),
-            Text('Surfaces').h2().anchored(surfacesKey),
+            const Text('Surfaces').h2().anchored(surfacesKey),
             gap(16),
             wrap(children: [
               ComponentCard(
                   title: 'Dialog',
                   name: 'dialog',
                   example: AlertDialog(
-                    title: Text('Edit profile'),
+                    title: const Text('Edit profile'),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                             'Make changes to your profile here. Click save when you\'re done'),
                         gap(16),
-                        Form(
+                        const Form(
                           child: FormTableLayout(rows: [
                             FormRow<String>(
                               key: FormKey(#name),
@@ -944,7 +944,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     ),
                     actions: [
                       PrimaryButton(
-                        child: Text('Save changes'),
+                        child: const Text('Save changes'),
                         onPressed: () {},
                       ),
                     ],
@@ -955,16 +955,16 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 scale: 1,
                 example: DrawerWrapper(
                   position: OverlayPosition.bottom,
+                  size: const Size(300, 300),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Drawer!').large().medium(),
+                      const Text('Drawer!').large().medium(),
                       gap(4),
-                      Text('This is a drawer that you can use to display content')
+                      const Text('This is a drawer that you can use to display content')
                           .muted(),
                     ],
                   ).withPadding(horizontal: 32),
-                  size: Size(300, 300),
                 ).sized(width: 300, height: 300),
               ),
               ComponentCard(
@@ -974,16 +974,16 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 scale: 1,
                 example: SheetWrapper(
                   position: OverlayPosition.right,
+                  size: const Size(300, 300),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Sheet!').large().medium(),
+                      const Text('Sheet!').large().medium(),
                       gap(4),
-                      Text('This is a sheet that you can use to display content')
+                      const Text('This is a sheet that you can use to display content')
                           .muted(),
                     ],
                   ).withPadding(horizontal: 32, vertical: 48),
-                  size: Size(300, 300),
                 ).sized(width: 300, height: 300),
               ),
               ComponentCard(
@@ -994,12 +994,12 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 example: Column(
                   children: [
                     DestructiveButton(
-                      leading: Icon(Icons.delete),
-                      child: Text('Delete'),
+                      leading: const Icon(Icons.delete),
+                      child: const Text('Delete'),
                       onPressed: () {},
                     ),
                     gap(4),
-                    TooltipContainer(
+                    const TooltipContainer(
                       child: Text('Click to delete this item'),
                     ),
                   ],
@@ -1013,15 +1013,15 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      DatePickerExample1(),
+                      const DatePickerExample1(),
                       gap(4),
-                      CalendarExample2(),
+                      const CalendarExample2(),
                     ],
                   ),
                 ),
               ),
             ]),
-            Text('Data Display').h2().anchored(dataDisplayKey),
+            const Text('Data Display').h2().anchored(dataDisplayKey),
             gap(16),
             wrap(children: [
               ComponentCard(
@@ -1044,18 +1044,18 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   ),
                 ),
               ),
-              WIPComponentCard(title: 'Data Table'),
-              WIPComponentCard(title: 'Chart'),
-              ComponentCard(
+              const WIPComponentCard(title: 'Data Table'),
+              const WIPComponentCard(title: 'Chart'),
+              const ComponentCard(
                   name: 'code_snippet',
                   title: 'Code Snippet',
                   scale: 1.5,
                   reverse: true,
                   reverseVertical: true,
                   example: CodeSnippetExample1()),
-              WIPComponentCard(title: 'Table'),
+              const WIPComponentCard(title: 'Table'),
             ]),
-            Text('Utilities').h2().anchored(utilitiesKey),
+            const Text('Utilities').h2().anchored(utilitiesKey),
             gap(16),
             wrap(children: [
               ComponentCard(
@@ -1063,7 +1063,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 title: 'Badge',
                 center: true,
                 scale: 1.5,
-                example: Column(
+                example: const Column(
                   children: [
                     PrimaryBadge(child: Text('Primary')),
                     SecondaryBadge(child: Text('Secondary')),
@@ -1079,7 +1079,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     view: CalendarView.now(),
                     selectionMode: CalendarSelectionMode.none),
               ),
-              ComponentCard(
+              const ComponentCard(
                 name: 'command',
                 title: 'Command',
                 scale: 1,
@@ -1092,58 +1092,58 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 example: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomPaint(
+                    const CustomPaint(
                       painter: CursorPainter(),
                     ),
                     gap(24),
-                    Container(
+                    SizedBox(
                       width: 192,
                       child: MenuPopup(children: [
                         Button(
-                          style: ButtonStyle.menu(),
+                          style: const ButtonStyle.menu(),
                           onPressed: () {},
-                          trailing: MenuShortcut(
+                          trailing: const MenuShortcut(
                             activator: SingleActivator(LogicalKeyboardKey.keyX,
                                 control: true),
                           ),
-                          child: Text('Cut'),
+                          child: const Text('Cut'),
                         ),
                         Button(
-                          style: ButtonStyle.menu(),
+                          style: const ButtonStyle.menu(),
                           onPressed: () {},
-                          trailing: MenuShortcut(
+                          trailing: const MenuShortcut(
                             activator: SingleActivator(LogicalKeyboardKey.keyC,
                                 control: true),
                           ),
-                          child: Text('Copy'),
+                          child: const Text('Copy'),
                         ),
                         Button(
-                          style: ButtonStyle.menu(),
+                          style: const ButtonStyle.menu(),
                           onPressed: () {},
-                          trailing: MenuShortcut(
+                          trailing: const MenuShortcut(
                             activator: SingleActivator(LogicalKeyboardKey.keyV,
                                 control: true),
                           ),
-                          child: Text('Paste'),
+                          child: const Text('Paste'),
                         ),
-                        MenuDivider(),
+                        const MenuDivider(),
                         Button(
-                          style: ButtonStyle.menu(),
+                          style: const ButtonStyle.menu(),
                           onPressed: () {},
-                          trailing: MenuShortcut(
+                          trailing: const MenuShortcut(
                             activator:
                                 SingleActivator(LogicalKeyboardKey.delete),
                           ),
-                          child: Text('Delete'),
+                          child: const Text('Delete'),
                         ),
                         Button(
-                          style: ButtonStyle.menu(),
+                          style: const ButtonStyle.menu(),
                           onPressed: () {},
-                          trailing: MenuShortcut(
+                          trailing: const MenuShortcut(
                             activator: SingleActivator(LogicalKeyboardKey.keyA,
                                 control: true),
                           ),
-                          child: Text('Select All'),
+                          child: const Text('Select All'),
                         ),
                       ]),
                     ),
@@ -1162,19 +1162,19 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         children: [
                           OutlineButton(
                             onPressed: () {},
-                            child: Text('Options'),
+                            child: const Text('Options'),
                           ),
                           gap(8),
-                          Container(
+                          SizedBox(
                             width: 192,
                             child: MenuPopup(children: [
                               Button(
-                                style: ButtonStyle.menu(),
+                                style: const ButtonStyle.menu(),
                                 onPressed: () {},
-                                child: Text('Profile'),
+                                child: const Text('Profile'),
                               ),
                               Button(
-                                style: ButtonStyle.menu().copyWith(
+                                style: const ButtonStyle.menu().copyWith(
                                     decoration: (context, states, value) {
                                   return (value as BoxDecoration).copyWith(
                                     color: theme.colorScheme.accent,
@@ -1183,40 +1183,40 @@ class _ComponentsPageState extends State<ComponentsPage> {
                                   );
                                 }),
                                 onPressed: () {},
-                                child: Text('Billing'),
+                                child: const Text('Billing'),
                               ),
-                              MenuDivider(),
+                              const MenuDivider(),
                               Button(
-                                style: ButtonStyle.menu(),
+                                style: const ButtonStyle.menu(),
                                 onPressed: () {},
-                                child: Text('Settings'),
+                                child: const Text('Settings'),
                               ),
                               Button(
-                                style: ButtonStyle.menu(),
+                                style: const ButtonStyle.menu(),
                                 onPressed: () {},
-                                trailing: MenuShortcut(
+                                trailing: const MenuShortcut(
                                   activator: SingleActivator(
                                       LogicalKeyboardKey.keyC,
                                       control: true),
                                 ),
-                                child: Text('Copy'),
+                                child: const Text('Copy'),
                               ),
                               Button(
-                                style: ButtonStyle.menu(),
+                                style: const ButtonStyle.menu(),
                                 onPressed: () {},
-                                trailing: MenuShortcut(
+                                trailing: const MenuShortcut(
                                   activator: SingleActivator(
                                       LogicalKeyboardKey.keyV,
                                       control: true),
                                 ),
-                                child: Text('Paste'),
+                                child: const Text('Paste'),
                               ),
                             ]),
                           ),
                         ],
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       top: 105,
                       left: 170,
                       child: CustomPaint(
@@ -1244,6 +1244,8 @@ class _ComponentsPageState extends State<ComponentsPage> {
 }
 
 abstract class IComponentPage extends Widget {
+  const IComponentPage({super.key});
+
   String get title;
 }
 
@@ -1263,7 +1265,7 @@ class WIPComponentCard extends StatelessWidget implements IComponentPage {
         name: '-',
         title: title,
         center: true,
-        example: PrimaryBadge(
+        example: const PrimaryBadge(
           child: Text('Work in Progress'),
         ),
       ),
@@ -1349,7 +1351,7 @@ class _ComponentCardState extends State<ComponentCard> {
               width: 250,
               child: AnimatedValueBuilder(
                   value: _hovering ? 1.0 : 0.0,
-                  duration: Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 200),
                   curve: Curves.easeInOut,
                   builder: (context, value, child) {
                     final borderColor = Color.lerp(theme.colorScheme.border,
@@ -1442,7 +1444,7 @@ class _ComponentCardState extends State<ComponentCard> {
                                   )),
                             ),
                           ),
-                          Divider(),
+                          const Divider(),
                           Text(widget.title)
                               .medium()
                               .withPadding(vertical: 12, horizontal: 16),

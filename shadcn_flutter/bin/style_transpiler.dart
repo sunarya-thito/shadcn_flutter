@@ -34,7 +34,7 @@ main() {
   for (var file in files) {
     if (file.path.endsWith('.css')) {
       String res = printTheme(File(file.path));
-      result += res + '\n';
+      result += '$res\n';
     }
   }
   result += '}';

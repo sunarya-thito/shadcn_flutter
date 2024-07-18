@@ -2,6 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ContextMenuExample1 extends StatefulWidget {
+  const ContextMenuExample1({super.key});
+
   @override
   State<ContextMenuExample1> createState() => _ContextMenuExample1State();
 }
@@ -14,17 +16,8 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ContextMenu(
-      child: Dashed(
-        borderRadius: BorderRadius.circular(theme.radiusMd),
-        width: 2,
-        gap: 2,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 72, vertical: 48),
-          child: const Text('Right click here'),
-        ),
-      ),
       items: [
-        MenuButton(
+        const MenuButton(
           trailing: MenuShortcut(
             activator: SingleActivator(
               LogicalKeyboardKey.bracketLeft,
@@ -33,7 +26,7 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
           ),
           child: Text('Back'),
         ),
-        MenuButton(
+        const MenuButton(
           trailing: MenuShortcut(
             activator: SingleActivator(
               LogicalKeyboardKey.bracketRight,
@@ -43,7 +36,7 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
           enabled: false,
           child: Text('Forward'),
         ),
-        MenuButton(
+        const MenuButton(
           trailing: MenuShortcut(
             activator: SingleActivator(
               LogicalKeyboardKey.keyR,
@@ -52,7 +45,7 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
           ),
           child: Text('Reload'),
         ),
-        MenuButton(
+        const MenuButton(
           subMenu: [
             MenuButton(
               trailing: MenuShortcut(
@@ -76,7 +69,7 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
           ],
           child: Text('More Tools'),
         ),
-        MenuDivider(),
+        const MenuDivider(),
         MenuCheckbox(
           value: showBookmarksBar,
           onChanged: (context, value) {
@@ -85,14 +78,14 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
             });
           },
           autoClose: false,
-          trailing: MenuShortcut(
+          trailing: const MenuShortcut(
             activator: SingleActivator(
               LogicalKeyboardKey.keyB,
               control: true,
               shift: true,
             ),
           ),
-          child: Text('Show Bookmarks Bar'),
+          child: const Text('Show Bookmarks Bar'),
         ),
         MenuCheckbox(
           value: showFullUrls,
@@ -102,11 +95,11 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
             });
           },
           autoClose: false,
-          child: Text('Show Full URLs'),
+          child: const Text('Show Full URLs'),
         ),
-        MenuDivider(),
-        MenuLabel(child: Text('People')),
-        MenuDivider(),
+        const MenuDivider(),
+        const MenuLabel(child: Text('People')),
+        const MenuDivider(),
         MenuRadioGroup(
           value: people,
           onChanged: (context, value) {
@@ -114,7 +107,7 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
               people = value;
             });
           },
-          children: [
+          children: const [
             MenuRadio(
               value: 0,
               autoClose: false,
@@ -128,6 +121,15 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
           ],
         ),
       ],
+      child: Dashed(
+        borderRadius: BorderRadius.circular(theme.radiusMd),
+        width: 2,
+        gap: 2,
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 72, vertical: 48),
+          child: Text('Right click here'),
+        ),
+      ),
     );
   }
 }

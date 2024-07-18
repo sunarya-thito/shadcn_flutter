@@ -5,9 +5,11 @@ import 'package:example/pages/widget_usage_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ToggleExample extends StatelessWidget {
+  const ToggleExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'toggle',
       description:
           'Toggle is a widget that can be used to switch between two states.',
@@ -15,13 +17,13 @@ class ToggleExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: ToggleExample1(),
           path: 'lib/pages/docs/components/toggle/toggle_example_1.dart',
+          child: ToggleExample1(),
         ),
         WidgetUsageExample(
           title: 'Group Example',
-          child: ToggleExample2(),
           path: 'lib/pages/docs/components/toggle/toggle_example_2.dart',
+          child: ToggleExample2(),
         )
       ],
     );

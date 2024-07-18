@@ -72,7 +72,7 @@ class WoffConverter {
       if (TableDirectoryEntry['compLength'] !=
           TableDirectoryEntry['origLength']) {
         // uncompressedData = zlib.decode(compressedData);
-        var decoder = ZLibDecoder();
+        var decoder = const ZLibDecoder();
         uncompressedData =
             Uint8List.fromList(decoder.decodeBytes(compressedData));
       } else {

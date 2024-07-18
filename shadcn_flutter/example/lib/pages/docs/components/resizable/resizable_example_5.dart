@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ResizableExample5 extends StatefulWidget {
+  const ResizableExample5({super.key});
+
   @override
   State<ResizableExample5> createState() => _ResizableExample5State();
 }
@@ -15,6 +17,9 @@ class _ResizableExample5State extends State<ResizableExample5> {
         direction: Axis.horizontal,
         children: [
           ResizablePane.controlled(
+            minSize: 100,
+            collapsedSize: 40,
+            controller: controller,
             child: AnimatedBuilder(
               animation: controller,
               builder: (context, child) {
@@ -22,7 +27,7 @@ class _ResizableExample5State extends State<ResizableExample5> {
                   return Container(
                     alignment: Alignment.center,
                     height: 200,
-                    child: RotatedBox(
+                    child: const RotatedBox(
                       quarterTurns: -1,
                       child: Text('Collapsed'),
                     ),
@@ -31,21 +36,18 @@ class _ResizableExample5State extends State<ResizableExample5> {
                 return Container(
                   alignment: Alignment.center,
                   height: 200,
-                  child: Text('Expanded'),
+                  child: const Text('Expanded'),
                 );
               },
             ),
-            minSize: 100,
-            collapsedSize: 40,
-            controller: controller,
           ),
           ResizablePane(
+            initialSize: 300,
             child: Container(
               alignment: Alignment.center,
               height: 200,
-              child: Text('Resizable'),
+              child: const Text('Resizable'),
             ),
-            initialSize: 300,
           ),
         ],
       ),

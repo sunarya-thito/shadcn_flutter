@@ -4,9 +4,11 @@ import 'package:example/pages/widget_usage_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class MenubarExample extends StatelessWidget {
+  const MenubarExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'menubar',
       description:
           'A bar of buttons that provies quick access to common actions.',
@@ -14,8 +16,8 @@ class MenubarExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: MenubarExample1(),
           path: 'lib/pages/docs/components/menubar/menubar_example_1.dart',
+          child: MenubarExample1(),
         ),
       ],
     );

@@ -249,7 +249,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Red'),
+                  const Text('Red'),
                   gap(4),
                   TextField(
                     controller: _redController,
@@ -272,7 +272,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Green'),
+                  const Text('Green'),
                   gap(4),
                   TextField(
                     controller: _greenController,
@@ -295,7 +295,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Blue'),
+                  const Text('Blue'),
                   gap(4),
                   TextField(
                     controller: _blueController,
@@ -320,7 +320,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Alpha'),
+                    const Text('Alpha'),
                     gap(4),
                     TextField(
                       onEditingComplete: () {

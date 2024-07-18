@@ -12,7 +12,7 @@ class Pagination extends StatelessWidget {
   final bool hidePreviousOnFirstPage;
   final bool hideNextOnLastPage;
 
-  Pagination({
+  const Pagination({super.key, 
     required this.page,
     required this.totalPages,
     required this.onPageChanged,
@@ -85,7 +85,7 @@ class Pagination extends StatelessWidget {
               ),
             GhostButton(
               onPressed: () => onPageChanged(firstShownPage - 1),
-              child: MoreDots(),
+              child: const MoreDots(),
             ),
           ],
           for (final p in pages)
@@ -102,7 +102,7 @@ class Pagination extends StatelessWidget {
           if (hasMoreNextPages) ...[
             GhostButton(
               onPressed: () => onPageChanged(lastShownPage + 1),
-              child: MoreDots(),
+              child: const MoreDots(),
             ),
             if (showSkipToLastPage && lastShownPage + 1 < totalPages)
               GhostButton(
@@ -113,7 +113,7 @@ class Pagination extends StatelessWidget {
           if (!hideNextOnLastPage || hasNext)
             GhostButton(
               onPressed: hasNext ? () => onPageChanged(page + 1) : null,
-              trailing: Icon(Icons.arrow_forward_ios).iconXSmall(),
+              trailing: const Icon(Icons.arrow_forward_ios).iconXSmall(),
               child: Text(localizations.buttonNext),
             ),
         ],

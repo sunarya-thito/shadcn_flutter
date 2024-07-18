@@ -5,7 +5,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class MenuShortcut extends StatelessWidget {
   final ShortcutActivator activator;
 
-  const MenuShortcut({required this.activator});
+  const MenuShortcut({super.key, required this.activator});
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +45,8 @@ class MenuShortcut extends StatelessWidget {
 }
 
 abstract class MenuItem extends Widget {
+  const MenuItem({super.key});
+
   bool get hasLeading;
   PopoverController? get popoverController;
 }
@@ -54,7 +56,7 @@ class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
   final ContextedValueChanged<T>? onChanged;
   final List<Widget> children;
 
-  MenuRadioGroup({
+  const MenuRadioGroup({super.key, 
     required this.value,
     required this.onChanged,
     required this.children,
@@ -87,7 +89,7 @@ class MenuRadio<T> extends StatelessWidget {
   final bool enabled;
   final bool autoClose;
 
-  MenuRadio({
+  const MenuRadio({super.key, 
     required this.value,
     required this.child,
     this.trailing,
@@ -160,7 +162,7 @@ class MenuButton extends StatefulWidget implements MenuItem {
   final bool autoClose;
   @override
   final PopoverController? popoverController;
-  MenuButton({
+  const MenuButton({super.key, 
     required this.child,
     this.subMenu,
     this.onPressed,
@@ -184,7 +186,7 @@ class MenuLabel extends StatelessWidget implements MenuItem {
   final Widget? trailing;
   final Widget? leading;
 
-  MenuLabel({
+  const MenuLabel({super.key, 
     required this.child,
     this.trailing,
     this.leading,
@@ -237,7 +239,7 @@ class MenuCheckbox extends StatelessWidget implements MenuItem {
   final bool enabled;
   final bool autoClose;
 
-  MenuCheckbox({
+  const MenuCheckbox({super.key, 
     this.value = false,
     this.onChanged,
     required this.child,
@@ -322,7 +324,6 @@ class _MenuButtonState extends State<MenuButton> {
                 builder: (context, child) {
                   return MenuGroup(
                       parent: menuGroupData,
-                      children: _children.value,
                       onDismissed: menuGroupData.onDismissed,
                       regionGroupId: menuGroupData.regionGroupId,
                       subMenuOffset: const Offset(8, -4 + -1),
@@ -330,7 +331,8 @@ class _MenuButtonState extends State<MenuButton> {
                         return MenuPopup(
                           children: children,
                         );
-                      });
+                      },
+                      children: _children.value);
                 }),
           );
         },
@@ -534,7 +536,7 @@ class MenuGroup extends StatefulWidget {
   final VoidCallback? onDismissed;
   final Object? regionGroupId;
 
-  MenuGroup({
+  const MenuGroup({
     super.key,
     required this.children,
     required this.builder,

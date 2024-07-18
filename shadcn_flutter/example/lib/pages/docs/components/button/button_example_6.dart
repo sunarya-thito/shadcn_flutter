@@ -7,7 +7,7 @@ class ButtonExample6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return LinkButton(
       onPressed: () {},
-      child: Text('Link'),
+      child: const Text('Link'),
     );
   }
 }

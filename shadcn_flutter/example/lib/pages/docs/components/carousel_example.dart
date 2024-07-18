@@ -6,9 +6,11 @@ import '../component_page.dart';
 import 'carousel/carousel_example_2.dart';
 
 class CarouselExample extends StatelessWidget {
+  const CarouselExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'carousel',
       description:
           'A carousel slider widget, support infinite scroll and custom child widget.',
@@ -16,13 +18,13 @@ class CarouselExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Horizontal Carousel Example',
-          child: CarouselExample1(),
           path: 'lib/pages/docs/components/carousel/carousel_example_1.dart',
+          child: CarouselExample1(),
         ),
         WidgetUsageExample(
           title: 'Vertical Carousel Example',
-          child: CarouselExample2(),
           path: 'lib/pages/docs/components/carousel/carousel_example_2.dart',
+          child: CarouselExample2(),
         ),
       ],
     );
@@ -54,7 +56,7 @@ class NumberedContainer extends StatelessWidget {
       child: Center(
         child: Text(
           index.toString(),
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 24,
           ),

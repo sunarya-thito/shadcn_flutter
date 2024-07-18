@@ -53,13 +53,13 @@ class _IntroductionPageState extends State<IntroductionPage> {
           const Text('Frequency Asked Questions').h2().anchored(faqKey),
           Accordion(
             items: [
-              AccordionItem(
+              const AccordionItem(
                 trigger: AccordionTrigger(
-                    child: const Text('Does this support GoRouter?')),
+                    child: Text('Does this support GoRouter?')),
                 content: Text(
                     'Yes, it does. You can use GoRouter with shadcn_flutter. '),
               ),
-              AccordionItem(
+              const AccordionItem(
                 trigger: AccordionTrigger(
                   child: Text('Can I use this in my project?'),
                 ),
@@ -67,17 +67,17 @@ class _IntroductionPageState extends State<IntroductionPage> {
                     'Yes! Free to use for personal and commercial projects. No attribution required.'),
               ),
               AccordionItem(
-                trigger: AccordionTrigger(
+                trigger: const AccordionTrigger(
                   child:
                       Text('Can I use this with Material/Cupertino Widgets?'),
                 ),
-                content: Text('Sure you can! ').thenButton(
+                content: const Text('Sure you can! ').thenButton(
                     onPressed: () {
                       context.goNamed('external');
                     },
-                    child: Text('See this page!')),
+                    child: const Text('See this page!')),
               ),
-              AccordionItem(
+              const AccordionItem(
                 trigger: AccordionTrigger(
                   child: Text(
                       'Can I configure which style i would like to use? (Default/New York)'),

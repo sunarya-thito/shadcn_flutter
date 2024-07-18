@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class NavigationMenuExample1 extends StatelessWidget {
+  const NavigationMenuExample1({super.key});
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -11,21 +13,21 @@ class NavigationMenuExample1 extends StatelessWidget {
             reverse: true,
             children: [
               NavigationContent(
-                title: Text('Introduction'),
-                content: Text(
+                title: const Text('Introduction'),
+                content: const Text(
                     'Component library for Flutter based on Shadcn/UI design.'),
                 onPressed: () {},
               ),
               NavigationContent(
-                title: Text('Installation'),
-                content: Text(
+                title: const Text('Installation'),
+                content: const Text(
                     'How to install this package in your Flutter project.'),
                 onPressed: () {},
               ),
               NavigationContent(
-                title: Text('Typography'),
+                title: const Text('Typography'),
                 content:
-                    Text('Styles and usage of typography in this package.'),
+                    const Text('Styles and usage of typography in this package.'),
                 onPressed: () {},
               ),
               Clickable(
@@ -42,9 +44,9 @@ class NavigationMenuExample1 extends StatelessWidget {
                         size: 32,
                       ),
                       gap(16),
-                      Text('shadcn_flutter').mono().semiBold().large(),
+                      const Text('shadcn_flutter').mono().semiBold().large(),
                       gap(8),
-                      Text('Beautifully designed components from Shadcn/UI is now available for Flutter')
+                      const Text('Beautifully designed components from Shadcn/UI is now available for Flutter')
                           .muted(),
                     ],
                   ),
@@ -52,44 +54,44 @@ class NavigationMenuExample1 extends StatelessWidget {
               ),
             ],
           ),
-          child: Text('Getting started'),
+          child: const Text('Getting started'),
         ),
         NavigationItem(
-          child: Text('Components'),
           content: NavigationContentList(
             children: [
               NavigationContent(
-                title: Text('Accordion'),
-                content: Text('Accordion component for Flutter.'),
+                title: const Text('Accordion'),
+                content: const Text('Accordion component for Flutter.'),
                 onPressed: () {},
               ),
               NavigationContent(
-                title: Text('Alert'),
-                content: Text('Alert component for Flutter.'),
+                title: const Text('Alert'),
+                content: const Text('Alert component for Flutter.'),
                 onPressed: () {},
               ),
               NavigationContent(
-                title: Text('Alert Dialog'),
-                content: Text('Alert Dialog component for Flutter.'),
+                title: const Text('Alert Dialog'),
+                content: const Text('Alert Dialog component for Flutter.'),
                 onPressed: () {},
               ),
               NavigationContent(
-                title: Text('Animation'),
-                content: Text('Animation component for Flutter.'),
+                title: const Text('Animation'),
+                content: const Text('Animation component for Flutter.'),
                 onPressed: () {},
               ),
               NavigationContent(
-                title: Text('Avatar'),
-                content: Text('Avatar component for Flutter.'),
+                title: const Text('Avatar'),
+                content: const Text('Avatar component for Flutter.'),
                 onPressed: () {},
               ),
               NavigationContent(
-                title: Text('Badge'),
-                content: Text('Badge component for Flutter.'),
+                title: const Text('Badge'),
+                content: const Text('Badge component for Flutter.'),
                 onPressed: () {},
               ),
             ],
           ),
+          child: const Text('Components'),
         ),
         NavigationItem(
           content: NavigationContentList(
@@ -97,27 +99,27 @@ class NavigationMenuExample1 extends StatelessWidget {
             children: [
               // latest news
               NavigationContent(
-                title: Text('Latest news'),
-                content: Text('Stay updated with the latest news.'),
+                title: const Text('Latest news'),
+                content: const Text('Stay updated with the latest news.'),
                 onPressed: () {},
               ),
               NavigationContent(
-                title: Text('Change log'),
-                content: Text('View the change log of this package.'),
+                title: const Text('Change log'),
+                content: const Text('View the change log of this package.'),
                 onPressed: () {},
               ),
               NavigationContent(
-                title: Text('Contributors'),
-                content: Text('List of contributors to this package.'),
+                title: const Text('Contributors'),
+                content: const Text('List of contributors to this package.'),
                 onPressed: () {},
               ),
             ],
           ),
-          child: Text('Blog'),
+          child: const Text('Blog'),
         ),
         NavigationItem(
           onPressed: () {},
-          child: Text('Documentation'),
+          child: const Text('Documentation'),
         ),
       ],
     );

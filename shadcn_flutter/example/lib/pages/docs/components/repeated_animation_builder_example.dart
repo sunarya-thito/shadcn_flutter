@@ -7,9 +7,11 @@ import '../../widget_usage_example.dart';
 import '../component_page.dart';
 
 class RepeatedAnimationBuilderExample extends StatelessWidget {
+  const RepeatedAnimationBuilderExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'repeated_animation_builder',
       description:
           'RepeatedAnimationBuilder is a component that allows you to animate a value repeatedly.',

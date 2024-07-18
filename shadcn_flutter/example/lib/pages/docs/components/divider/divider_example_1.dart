@@ -5,7 +5,7 @@ class DividerExample1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       width: 300,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

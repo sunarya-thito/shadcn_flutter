@@ -2,6 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class MenubarExample1 extends StatefulWidget {
+  const MenubarExample1({super.key});
+
   @override
   State<MenubarExample1> createState() => _MenubarExample1State();
 }
@@ -14,8 +16,7 @@ class _MenubarExample1State extends State<MenubarExample1> {
   Widget build(BuildContext context) {
     return Menubar(
       children: [
-        MenuButton(
-          child: Text('File'),
+        const MenuButton(
           subMenu: [
             MenuButton(
               leading: Icon(RadixIcons.filePlus),
@@ -42,7 +43,6 @@ class _MenubarExample1State extends State<MenubarExample1> {
             ),
             MenuDivider(),
             MenuButton(
-              child: Text('Share'),
               subMenu: [
                 MenuButton(
                   child: Text('Email Link'),
@@ -54,6 +54,7 @@ class _MenubarExample1State extends State<MenubarExample1> {
                   child: Text('Notes'),
                 ),
               ],
+              child: Text('Share'),
             ),
             MenuButton(
               trailing: MenuShortcut(
@@ -65,9 +66,9 @@ class _MenubarExample1State extends State<MenubarExample1> {
               child: Text('Print'),
             ),
           ],
+          child: Text('File'),
         ),
-        MenuButton(
-          child: Text('Edit'),
+        const MenuButton(
           subMenu: [
             MenuButton(
               trailing: MenuShortcut(
@@ -90,7 +91,6 @@ class _MenubarExample1State extends State<MenubarExample1> {
             ),
             MenuDivider(),
             MenuButton(
-              child: Text('Find'),
               subMenu: [
                 MenuButton(
                   child: Text('Search the Web'),
@@ -106,6 +106,7 @@ class _MenubarExample1State extends State<MenubarExample1> {
                   child: Text('Find Previous'),
                 ),
               ],
+              child: Text('Find'),
             ),
             MenuDivider(),
             MenuButton(
@@ -118,9 +119,9 @@ class _MenubarExample1State extends State<MenubarExample1> {
               child: Text('Paste'),
             ),
           ],
+          child: Text('Edit'),
         ),
         MenuButton(
-          child: Text('View'),
           subMenu: [
             MenuCheckbox(
               value: _showBookmarksBar,
@@ -130,7 +131,7 @@ class _MenubarExample1State extends State<MenubarExample1> {
                 });
               },
               autoClose: false,
-              child: Text('Always Show Bookmarks Bar'),
+              child: const Text('Always Show Bookmarks Bar'),
             ),
             MenuCheckbox(
               value: _showFullURLs,
@@ -140,10 +141,10 @@ class _MenubarExample1State extends State<MenubarExample1> {
                 });
               },
               autoClose: false,
-              child: Text('Always Show Full URLs'),
+              child: const Text('Always Show Full URLs'),
             ),
-            MenuDivider(),
-            MenuButton(
+            const MenuDivider(),
+            const MenuButton(
               trailing: MenuShortcut(
                 activator: SingleActivator(
                   LogicalKeyboardKey.keyR,
@@ -152,7 +153,7 @@ class _MenubarExample1State extends State<MenubarExample1> {
               ),
               child: Text('Reload'),
             ),
-            MenuButton(
+            const MenuButton(
               enabled: false,
               trailing: MenuShortcut(
                 activator: SingleActivator(
@@ -163,18 +164,18 @@ class _MenubarExample1State extends State<MenubarExample1> {
               ),
               child: Text('Force Reload'),
             ),
-            MenuDivider(),
-            MenuButton(
+            const MenuDivider(),
+            const MenuButton(
               child: Text('Toggle Full Screen'),
             ),
-            MenuDivider(),
-            MenuButton(
+            const MenuDivider(),
+            const MenuButton(
               child: Text('Hide Sidebar'),
             ),
           ],
+          child: const Text('View'),
         ),
         MenuButton(
-          child: Text('Profiles'),
           subMenu: [
             MenuRadioGroup<int>(
               value: _selectedProfile,
@@ -183,7 +184,7 @@ class _MenubarExample1State extends State<MenubarExample1> {
                   _selectedProfile = value;
                 });
               },
-              children: [
+              children: const [
                 MenuRadio<int>(
                   value: 0,
                   autoClose: false,
@@ -201,15 +202,16 @@ class _MenubarExample1State extends State<MenubarExample1> {
                 ),
               ],
             ),
-            MenuDivider(),
-            MenuButton(
+            const MenuDivider(),
+            const MenuButton(
               child: Text('Edit...'),
             ),
-            MenuDivider(),
-            MenuButton(
+            const MenuDivider(),
+            const MenuButton(
               child: Text('Add Profile...'),
             ),
           ],
+          child: const Text('Profiles'),
         ),
       ],
     );

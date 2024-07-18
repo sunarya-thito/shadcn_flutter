@@ -12,34 +12,34 @@ class ButtonExample11 extends StatelessWidget {
       runAlignment: WrapAlignment.center,
       children: [
         PrimaryButton(
-          child: Text('Compact'),
           onPressed: () {},
           density: ButtonDensity.compact,
+          child: const Text('Compact'),
         ),
         PrimaryButton(
-          child: Text('Dense'),
           onPressed: () {},
           density: ButtonDensity.dense,
+          child: const Text('Dense'),
         ),
         PrimaryButton(
-          child: Text('Normal'),
           onPressed: () {},
           density: ButtonDensity.normal,
+          child: const Text('Normal'),
         ),
         PrimaryButton(
-          child: Text('Comfortable'),
           onPressed: () {},
           density: ButtonDensity.comfortable,
+          child: const Text('Comfortable'),
         ),
         PrimaryButton(
-          child: Text('Icon'),
           onPressed: () {},
           density: ButtonDensity.icon,
+          child: const Text('Icon'),
         ),
         PrimaryButton(
-          child: Text('Icon Comfortable'),
           onPressed: () {},
           density: ButtonDensity.iconComfortable,
+          child: const Text('Icon Comfortable'),
         ),
       ],
     );

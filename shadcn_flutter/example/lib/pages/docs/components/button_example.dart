@@ -17,9 +17,11 @@ import 'button/button_example_8.dart';
 import 'button/button_example_9.dart';
 
 class ButtonExample extends StatelessWidget {
+  const ButtonExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'button',
       description:
           'Buttons allow users to take actions, and make choices, with a single tap.',
@@ -27,68 +29,68 @@ class ButtonExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Primary Button Example',
-          child: ButtonExample1(),
           path: 'lib/pages/docs/components/button/button_example_1.dart',
+          child: ButtonExample1(),
         ),
         WidgetUsageExample(
           title: 'Secondary Button Example',
-          child: ButtonExample2(),
           path: 'lib/pages/docs/components/button/button_example_2.dart',
+          child: ButtonExample2(),
         ),
         WidgetUsageExample(
           title: 'Outline Button Example',
-          child: ButtonExample3(),
           path: 'lib/pages/docs/components/button/button_example_3.dart',
+          child: ButtonExample3(),
         ),
         WidgetUsageExample(
           title: 'Ghost Button Example',
-          child: ButtonExample4(),
           path: 'lib/pages/docs/components/button/button_example_4.dart',
+          child: ButtonExample4(),
         ),
         WidgetUsageExample(
           title: 'Destructive Button Example',
-          child: ButtonExample5(),
           path: 'lib/pages/docs/components/button/button_example_5.dart',
+          child: ButtonExample5(),
         ),
         WidgetUsageExample(
           title: 'Link Button Example',
-          child: ButtonExample6(),
           path: 'lib/pages/docs/components/button/button_example_6.dart',
+          child: ButtonExample6(),
         ),
         WidgetUsageExample(
           title: 'Text Button Example',
-          child: ButtonExample12(),
           path: 'lib/pages/docs/components/button/button_example_12.dart',
+          child: ButtonExample12(),
         ),
         WidgetUsageExample(
           title: 'Disabled Button Example',
-          child: ButtonExample7(),
           path: 'lib/pages/docs/components/button/button_example_7.dart',
+          child: ButtonExample7(),
         ),
         WidgetUsageExample(
           title: 'Icon Button Example',
-          child: ButtonExample8(),
           path: 'lib/pages/docs/components/button/button_example_8.dart',
+          child: ButtonExample8(),
         ),
         WidgetUsageExample(
           title: 'Icon Button with Label Example',
-          child: ButtonExample9(),
           path: 'lib/pages/docs/components/button/button_example_9.dart',
+          child: ButtonExample9(),
         ),
         WidgetUsageExample(
           title: 'Button Size Example',
-          child: ButtonExample10(),
           path: 'lib/pages/docs/components/button/button_example_10.dart',
+          child: ButtonExample10(),
         ),
         WidgetUsageExample(
           title: 'Button Density Example',
-          child: ButtonExample11(),
           path: 'lib/pages/docs/components/button/button_example_11.dart',
+          child: ButtonExample11(),
         ),
         WidgetUsageExample(
           title: 'Button Shape Example',
-          child: ButtonExample13(),
           path: 'lib/pages/docs/components/button/button_example_13.dart',
+          child: ButtonExample13(),
         ),
       ],
     );

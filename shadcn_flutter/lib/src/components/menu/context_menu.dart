@@ -80,7 +80,6 @@ Future<void> _showContextMenu(
               ),
               child: MenuGroup(
                 regionGroupId: key,
-                children: children.value,
                 subMenuOffset: const Offset(8, -4),
                 onDismissed: () {
                   Navigator.of(context).pop();
@@ -90,6 +89,7 @@ Future<void> _showContextMenu(
                     children: children,
                   );
                 },
+                children: children.value,
               ),
             );
           });
@@ -118,7 +118,7 @@ class ContextMenuPopup extends StatelessWidget {
       durationBuilder: (a, b) {
         if (a < b) {
           // forward duration
-          return Duration(milliseconds: 100);
+          return const Duration(milliseconds: 100);
         } else {
           // reverse duration
           return kDefaultDuration;

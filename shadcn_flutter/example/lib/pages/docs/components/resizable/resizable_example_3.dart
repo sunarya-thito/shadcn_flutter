@@ -2,6 +2,8 @@ import 'package:example/pages/docs/components/carousel_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ResizableExample3 extends StatefulWidget {
+  const ResizableExample3({super.key});
+
   @override
   State<ResizableExample3> createState() => _ResizableExample3State();
 }
@@ -14,48 +16,48 @@ class _ResizableExample3State extends State<ResizableExample3> {
       child: ResizablePanel(
         direction: Axis.horizontal,
         draggerBuilder: (context) {
-          return HorizontalResizableDragger();
+          return const HorizontalResizableDragger();
         },
-        children: [
+        children: const [
           ResizablePane(
+            initialSize: 80,
             child: NumberedContainer(
               index: 0,
               height: 200,
               fill: false,
             ),
-            initialSize: 80,
           ),
           ResizablePane(
+            initialSize: 80,
             child: NumberedContainer(
               index: 1,
               height: 200,
               fill: false,
             ),
-            initialSize: 80,
           ),
           ResizablePane(
+            initialSize: 120,
             child: NumberedContainer(
               index: 2,
               height: 200,
               fill: false,
             ),
-            initialSize: 120,
           ),
           ResizablePane(
+            initialSize: 80,
             child: NumberedContainer(
               index: 3,
               height: 200,
               fill: false,
             ),
-            initialSize: 80,
           ),
           ResizablePane(
+            initialSize: 80,
             child: NumberedContainer(
               index: 4,
               height: 200,
               fill: false,
             ),
-            initialSize: 80,
           ),
         ],
       ),

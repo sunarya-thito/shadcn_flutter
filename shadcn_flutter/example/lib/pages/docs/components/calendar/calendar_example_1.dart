@@ -28,7 +28,7 @@ class _CalendarExample1State extends State<CalendarExample1> {
                       _view = _view.previous;
                     });
                   },
-                  child: Icon(Icons.arrow_back).iconXSmall(),
+                  child: const Icon(Icons.arrow_back).iconXSmall(),
                 ),
                 Text('${localizations.getMonth(_view.month)} ${_view.year}')
                     .small()
@@ -42,7 +42,7 @@ class _CalendarExample1State extends State<CalendarExample1> {
                       _view = _view.next;
                     });
                   },
-                  child: Icon(Icons.arrow_forward).iconXSmall(),
+                  child: const Icon(Icons.arrow_forward).iconXSmall(),
                 ),
               ],
             ),

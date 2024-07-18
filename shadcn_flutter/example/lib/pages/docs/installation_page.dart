@@ -17,30 +17,30 @@ class _InstallationPageState extends State<InstallationPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Installation').h1(),
-          Text('Install and configure shadcn_flutter in your project.').lead(),
-          Text('Install using CLI').h2(),
+          const Text('Installation').h1(),
+          const Text('Install and configure shadcn_flutter in your project.').lead(),
+          const Text('Install using CLI').h2(),
           gap(32),
           // 1. Activate "shadcn_flutter_cli" package
           // 2. Run "flutter pub global run shadcn_flutter_cli:setup"
           Steps(
             children: [
               StepItem(
-                title: Text('Activate the package'),
+                title: const Text('Activate the package'),
                 content: [
-                  Text('Activate the shadcn_flutter_cli package.').p(),
-                  CodeSnippet(
+                  const Text('Activate the shadcn_flutter_cli package.').p(),
+                  const CodeSnippet(
                     code: 'flutter pub global activate shadcn_flutter_cli',
                     mode: 'shell',
                   ).p(),
                 ],
               ),
               StepItem(
-                title: Text('Run the setup command'),
+                title: const Text('Run the setup command'),
                 content: [
-                  Text('Run the setup command to add shadcn_flutter to your project.')
+                  const Text('Run the setup command to add shadcn_flutter to your project.')
                       .p(),
-                  CodeSnippet(
+                  const CodeSnippet(
                     code: 'flutter pub global run shadcn_flutter_cli:setup',
                     mode: 'shell',
                   ).p(),
@@ -48,38 +48,38 @@ class _InstallationPageState extends State<InstallationPage> {
               ),
             ],
           ),
-          Text('Install Manually').h2(),
+          const Text('Install Manually').h2(),
           gap(32),
           Steps(
             children: [
               StepItem(
-                title: Text('Creating a new Flutter project'),
+                title: const Text('Creating a new Flutter project'),
                 content: [
-                  Text('Create a new Flutter project using the following command:')
+                  const Text('Create a new Flutter project using the following command:')
                       .p(),
-                  CodeSnippet(
+                  const CodeSnippet(
                     code: 'flutter create my_app\ncd my_app',
                     mode: 'shell',
                   ).p(),
                 ],
               ),
               StepItem(
-                title: Text('Adding the dependency'),
+                title: const Text('Adding the dependency'),
                 content: [
-                  Text('Next, add the shadcn_flutter dependency to your project.')
+                  const Text('Next, add the shadcn_flutter dependency to your project.')
                       .p(),
-                  CodeSnippet(
+                  const CodeSnippet(
                     code: 'flutter pub add shadcn_flutter',
                     mode: 'shell',
                   ).p(),
                 ],
               ),
               StepItem(
-                title: Text('Importing the package'),
+                title: const Text('Importing the package'),
                 content: [
-                  Text('Now, you can import the package in your Dart code.')
+                  const Text('Now, you can import the package in your Dart code.')
                       .p(),
-                  CodeSnippet(
+                  const CodeSnippet(
                     code:
                         'import \'package:shadcn_flutter/shadcn_flutter.dart\';',
                     mode: 'dart',
@@ -87,7 +87,7 @@ class _InstallationPageState extends State<InstallationPage> {
                 ],
               ),
               StepItem(
-                title: Text('Adding the ShadcnApp widget'),
+                title: const Text('Adding the ShadcnApp widget'),
                 content: [
                   const Text('Add the ShadcnApp widget to your main function.')
                       .p(),
@@ -111,10 +111,10 @@ void main() {
                 ],
               ),
               StepItem(
-                title: Text('Add the fonts'),
+                title: const Text('Add the fonts'),
                 content: [
-                  Text('Add the fonts to your pubspec.yaml file.').p(),
-                  CodeSnippet(
+                  const Text('Add the fonts to your pubspec.yaml file.').p(),
+                  const CodeSnippet(
                     code: '''
   fonts:
     - family: BootstrapIcons
@@ -168,10 +168,10 @@ void main() {
                 ],
               ),
               StepItem(
-                title: Text('Run the app'),
+                title: const Text('Run the app'),
                 content: [
-                  Text('Run the app using the following command:').p(),
-                  CodeSnippet(
+                  const Text('Run the app using the following command:').p(),
+                  const CodeSnippet(
                     code: 'flutter run',
                     mode: 'shell',
                   ).p(),

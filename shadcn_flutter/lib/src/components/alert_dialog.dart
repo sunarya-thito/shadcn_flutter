@@ -28,7 +28,7 @@ class _AlertDialogState extends State<AlertDialog> {
       child: IntrinsicWidth(
         child: Container(
           // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             color: themeData.colorScheme.popover,
             borderRadius: BorderRadius.circular(themeData.radiusXl),

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart' as shadcnui;
 
 class CupertinoExample1 extends StatefulWidget {
+  const CupertinoExample1({super.key});
+
   @override
   State<CupertinoExample1> createState() => _CupertinoExample1State();
 }
@@ -12,7 +14,7 @@ class _CupertinoExample1State extends State<CupertinoExample1> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
+      navigationBar: const CupertinoNavigationBar(
         middle: Text('My Cupertino App'),
       ),
       child: Center(
@@ -61,7 +63,7 @@ class _CupertinoExample1State extends State<CupertinoExample1> {
                         },
                       );
                     },
-                    child: Text('Open Cupertino Dialog'),
+                    child: const Text('Open Cupertino Dialog'),
                   ),
                   shadcnui.gap(8),
                   shadcnui.SecondaryButton(
@@ -87,7 +89,7 @@ class _CupertinoExample1State extends State<CupertinoExample1> {
                         },
                       );
                     },
-                    child: Text('Open shadcn_flutter Dialog'),
+                    child: const Text('Open shadcn_flutter Dialog'),
                   ),
                 ],
               ),

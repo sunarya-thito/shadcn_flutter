@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class TabList extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class Scaffold extends StatelessWidget {
   final Widget child;
 
-  const Scaffold({required this.child});
+  const Scaffold({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

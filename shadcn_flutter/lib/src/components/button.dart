@@ -25,7 +25,6 @@ class _ToggleState extends State<Toggle> {
   @override
   Widget build(BuildContext context) {
     return Button(
-        child: widget.child,
         style: widget.value
             ? ButtonStyle.secondary(
                 density: widget.style.density,
@@ -46,7 +45,8 @@ class _ToggleState extends State<Toggle> {
           if (widget.onChanged != null) {
             widget.onChanged!(!widget.value);
           }
-        });
+        },
+        child: widget.child);
   }
 }
 
@@ -585,11 +585,17 @@ class ButtonVariance implements AbstractButtonStyle {
     margin: _buttonZeroMargin,
   );
 
+  @override
   final ButtonStateProperty<Decoration> decoration;
+  @override
   final ButtonStateProperty<MouseCursor> mouseCursor;
+  @override
   final ButtonStateProperty<EdgeInsets> padding;
+  @override
   final ButtonStateProperty<TextStyle> textStyle;
+  @override
   final ButtonStateProperty<IconThemeData> iconTheme;
+  @override
   final ButtonStateProperty<EdgeInsets> margin;
 
   const ButtonVariance({
@@ -1097,8 +1103,8 @@ class PrimaryButton extends StatelessWidget {
       alignment: alignment,
       style: ButtonStyle.primary(size: size, density: density, shape: shape),
       focusNode: focusNode,
-      child: child,
       disableTransition: disableTransition,
+      child: child,
     );
   }
 }
@@ -1229,8 +1235,8 @@ class GhostButton extends StatelessWidget {
       alignment: alignment,
       style: ButtonStyle.ghost(size: size, density: density, shape: shape),
       focusNode: focusNode,
-      child: child,
       disableTransition: disableTransition,
+      child: child,
     );
   }
 }

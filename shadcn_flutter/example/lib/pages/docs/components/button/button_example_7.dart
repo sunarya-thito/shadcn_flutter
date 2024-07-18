@@ -5,7 +5,7 @@ class ButtonExample7 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    return const Wrap(
       spacing: 8,
       runSpacing: 8,
       children: [

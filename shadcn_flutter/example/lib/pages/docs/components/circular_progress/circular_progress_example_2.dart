@@ -28,7 +28,7 @@ class _CircularProgressExample2State extends State<CircularProgressExample2> {
                   _progress = 0;
                 });
               },
-              child: Text('Reset'),
+              child: const Text('Reset'),
             ),
             gap(16),
             PrimaryButton(
@@ -37,7 +37,7 @@ class _CircularProgressExample2State extends State<CircularProgressExample2> {
                   _progress -= 10;
                 });
               },
-              child: Text('Decrease by 10'),
+              child: const Text('Decrease by 10'),
             ),
             gap(16),
             PrimaryButton(
@@ -46,7 +46,7 @@ class _CircularProgressExample2State extends State<CircularProgressExample2> {
                   _progress += 10;
                 });
               },
-              child: Text('Increase by 10'),
+              child: const Text('Increase by 10'),
             ),
           ],
         )

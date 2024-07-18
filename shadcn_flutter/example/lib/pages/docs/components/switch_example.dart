@@ -5,9 +5,11 @@ import '../../widget_usage_example.dart';
 import '../component_page.dart';
 
 class SwitchExample extends StatelessWidget {
+  const SwitchExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'switch',
       description:
           'A switch is a visual toggle between two mutually exclusive states — on and off.',
@@ -15,8 +17,8 @@ class SwitchExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Switch Example',
-          child: SwitchExample1(),
           path: 'lib/pages/docs/components/switch/switch_example_1.dart',
+          child: SwitchExample1(),
         ),
       ],
     );

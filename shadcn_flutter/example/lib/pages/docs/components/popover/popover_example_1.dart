@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class PopoverExample1 extends StatelessWidget {
+  const PopoverExample1({super.key});
+
   @override
   Widget build(BuildContext context) {
     return PrimaryButton(
@@ -16,11 +18,11 @@ class PopoverExample1 extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text('Dimensions').large().medium(),
-                    Text('Set the dimensions for the layer.').muted(),
+                    const Text('Dimensions').large().medium(),
+                    const Text('Set the dimensions for the layer.').muted(),
                     Form(
                       controller: FormController(),
-                      child: FormTableLayout(
+                      child: const FormTableLayout(
                         rows: [
                           FormRow<double>(
                             key: FormKey(#width),
@@ -61,7 +63,7 @@ class PopoverExample1 extends StatelessWidget {
           },
         );
       },
-      child: Text('Open popover'),
+      child: const Text('Open popover'),
     );
   }
 }

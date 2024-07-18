@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart' as shadcnui;
 
 class MaterialExample1 extends StatefulWidget {
+  const MaterialExample1({super.key});
+
   @override
   State<MaterialExample1> createState() => _MaterialExample1State();
 }
@@ -25,7 +27,7 @@ class _MaterialExample1State extends State<MaterialExample1> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('My Material App'),
+        title: const Text('My Material App'),
       ),
       body: Center(
         child: Column(
@@ -67,7 +69,7 @@ class _MaterialExample1State extends State<MaterialExample1> {
                         },
                       );
                     },
-                    child: Text('Open Material Dialog'),
+                    child: const Text('Open Material Dialog'),
                   ),
                   shadcnui.gap(8),
                   shadcnui.SecondaryButton(
@@ -93,7 +95,7 @@ class _MaterialExample1State extends State<MaterialExample1> {
                         },
                       );
                     },
-                    child: Text('Open shadcn_flutter Dialog'),
+                    child: const Text('Open shadcn_flutter Dialog'),
                   ),
                 ],
               ),

@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class DatePickerExample1 extends StatefulWidget {
+  const DatePickerExample1({super.key});
+
   @override
   State<DatePickerExample1> createState() => _DatePickerExample1State();
 }

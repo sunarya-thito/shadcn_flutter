@@ -5,17 +5,19 @@ import '../../widget_usage_example.dart';
 import '../component_page.dart';
 
 class TabListExample extends StatelessWidget {
+  const TabListExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'tab_list',
       description: 'A list of tabs for selecting a single item.',
       displayName: 'Tab List',
       children: [
         WidgetUsageExample(
           title: 'Tab List Example',
-          child: TabListExample1(),
           path: 'lib/pages/docs/components/tab_list/tab_list_example_1.dart',
+          child: TabListExample1(),
         ),
       ],
     );

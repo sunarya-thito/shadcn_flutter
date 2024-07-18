@@ -13,8 +13,8 @@ class ControlledAnimation extends Animation<double> {
 
   TickerFuture forward(double to, [Curve? curve]) {
     _from = value;
-    this._to = to;
-    this._curve = curve ?? Curves.linear;
+    _to = to;
+    _curve = curve ?? Curves.linear;
     return _controller.forward(from: 0);
   }
 
@@ -60,7 +60,7 @@ class Transformers {
 }
 
 mixin AnimatedMixin on TickerProviderStateMixin {
-  List<AnimatedProperty> _animatedProperties = [];
+  final List<AnimatedProperty> _animatedProperties = [];
   AnimatedProperty<T> createAnimatedProperty<T>(T value, PropertyLerp<T> lerp) {
     final property = AnimatedProperty._(this, value, lerp, setState);
     _animatedProperties.add(property);

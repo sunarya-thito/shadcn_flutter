@@ -51,7 +51,7 @@ class _IconsPageState extends State<IconsPage> {
             content: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Use this code to display this icon:'),
+                const Text('Use this code to display this icon:'),
                 gap(8),
                 CodeSnippet(
                   code: 'Icon($className.${entry.key})',
@@ -64,7 +64,7 @@ class _IconsPageState extends State<IconsPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Close'),
+                child: const Text('Close'),
               ),
             ],
           ),
@@ -103,17 +103,17 @@ class _IconsPageState extends State<IconsPage> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text('Icons').h1(),
-                          Text('Use bundled icons in your application').lead(),
+                          const Text('Icons').h1(),
+                          const Text('Use bundled icons in your application').lead(),
                           gap(32),
-                          Alert(
+                          const Alert(
                             leading: Icon(Icons.info_outline),
                             content: Text(
                                 'Some icons might be visually glitched, this will be fixed in the future.'),
                             title: Text('Heads up!'),
                           ).withAlign(Alignment.centerLeft),
                           gap(32),
-                          Text(
+                          const Text(
                               'Currently there are two icon sets bundled with shadcn_flutter:'),
                           Text('Radix Icons (${kRadixIcons.length} Icons)')
                               .li(),
@@ -121,7 +121,7 @@ class _IconsPageState extends State<IconsPage> {
                               .li(),
                           gap(32),
                           TextField(
-                            leading: Icon(Icons.search),
+                            leading: const Icon(Icons.search),
                             placeholder: 'Search icons',
                             controller: _controller,
                           ),
@@ -171,7 +171,7 @@ class _IconsPageState extends State<IconsPage> {
                 itemCount: filteredRadixIcons.length +
                     filteredBootstrapIcons.length +
                     additionalLength,
-                padding: EdgeInsets.only(bottom: 32),
+                padding: const EdgeInsets.only(bottom: 32),
                 separatorBuilder: (context, index) {
                   return gap(8);
                 },
@@ -186,6 +186,10 @@ class _IconsPageState extends State<IconsPage> {
                     if (index <= filteredRadixIcons.length) {
                       var e = filteredRadixIcons[index - 1];
                       return OutlineButton(
+                          trailing: const Icon(Icons.chevron_right),
+                          onPressed: () {
+                            _onTap('RadixIcons', e);
+                          },
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -194,11 +198,7 @@ class _IconsPageState extends State<IconsPage> {
                               gap(24),
                               Text(e.key),
                             ],
-                          ),
-                          trailing: Icon(Icons.chevron_right),
-                          onPressed: () {
-                            _onTap('RadixIcons', e);
-                          });
+                          ));
                     }
                     index -= filteredRadixIcons.length + 1;
                   }
@@ -212,6 +212,10 @@ class _IconsPageState extends State<IconsPage> {
                     if (index <= filteredBootstrapIcons.length) {
                       var e = filteredBootstrapIcons[index - 1];
                       return OutlineButton(
+                          trailing: const Icon(Icons.chevron_right),
+                          onPressed: () {
+                            _onTap('BootstrapIcons', e);
+                          },
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -220,11 +224,7 @@ class _IconsPageState extends State<IconsPage> {
                               gap(24),
                               Text(e.key),
                             ],
-                          ),
-                          trailing: Icon(Icons.chevron_right),
-                          onPressed: () {
-                            _onTap('BootstrapIcons', e);
-                          });
+                          ));
                     }
                     index -= filteredBootstrapIcons.length + 1;
                   }

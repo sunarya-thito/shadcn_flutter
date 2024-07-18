@@ -5,7 +5,7 @@ class BadgeExample3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlineBadge(
+    return const OutlineBadge(
       child: Text('Outline'),
     );
   }

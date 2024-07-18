@@ -327,7 +327,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                             size: 16,
                             opacity: 0.5,
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.search,
                           ),
                         ),
@@ -336,7 +336,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                           child: TextField(
                             controller: _searchController,
                             border: false,
-                            padding: EdgeInsets.symmetric(vertical: 12),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
                         ),
                       ],
@@ -430,8 +430,8 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                                   },
                                   child: Container(
                                     color: theme.colorScheme.background,
-                                    padding: EdgeInsets.symmetric(vertical: 4),
-                                    child: Icon(
+                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                    child: const Icon(
                                       RadixIcons.chevronUp,
                                       size: 8,
                                     ),
@@ -473,8 +473,8 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                                   },
                                   child: Container(
                                     color: theme.colorScheme.background,
-                                    padding: EdgeInsets.symmetric(vertical: 4),
-                                    child: Icon(
+                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                    child: const Icon(
                                       RadixIcons.chevronDown,
                                       size: 8,
                                     ),

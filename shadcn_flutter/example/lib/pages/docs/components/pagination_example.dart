@@ -5,9 +5,11 @@ import '../../widget_usage_example.dart';
 import '../component_page.dart';
 
 class PaginationExample extends StatelessWidget {
+  const PaginationExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'pagination',
       description:
           'A pagination component is used to navigate through a series of pages.',
@@ -15,9 +17,9 @@ class PaginationExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Pagination Example',
-          child: PaginationExample1(),
           path:
               'lib/pages/docs/components/pagination/pagination_example_1.dart',
+          child: PaginationExample1(),
         ),
       ],
     );

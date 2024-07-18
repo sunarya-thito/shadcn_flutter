@@ -112,7 +112,7 @@ class _CodeSnippetState extends State<CodeSnippet> {
                   return Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(16),
-                    child: CircularProgressIndicator(),
+                    child: const CircularProgressIndicator(),
                   );
                 }
                 var data = snapshot.data;
@@ -146,7 +146,7 @@ class _CodeSnippetState extends State<CodeSnippet> {
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: widget.code));
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.copy,
                     size: 16,
                   ),

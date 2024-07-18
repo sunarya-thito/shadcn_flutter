@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class WebLayout extends StatelessWidget {

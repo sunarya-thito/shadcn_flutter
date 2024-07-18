@@ -40,7 +40,7 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
                   index = 0;
                 });
               },
-              child: Text('Preview').semiBold().textSmall(),
+              child: const Text('Preview').semiBold().textSmall(),
             ),
             TabButton(
               onPressed: () {
@@ -48,7 +48,7 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
                   index = 1;
                 });
               },
-              child: Text('Code').semiBold().textSmall(),
+              child: const Text('Code').semiBold().textSmall(),
             ),
           ],
         ),
@@ -148,7 +148,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
               GhostButton(
                 density: ButtonDensity.icon,
                 onPressed: _refresh,
-                child: Icon(
+                child: const Icon(
                   Icons.refresh,
                   size: 16,
                 ),
@@ -172,7 +172,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
                     // html.window.open(url, 'blank');
                     launchUrlString(url);
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.open_in_new,
                     size: 16,
                   ),
@@ -194,7 +194,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
                   // html.window.open(url, 'blank');
                   launchUrlString(url);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.open_in_new,
                   size: 16,
                 ),
@@ -212,7 +212,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
               borderRadius: BorderRadius.circular(theme.radiusLg),
             ),
             height: 350,
-            child: Center(
+            child: const Center(
               child: CircularProgressIndicator(),
             ),
           );

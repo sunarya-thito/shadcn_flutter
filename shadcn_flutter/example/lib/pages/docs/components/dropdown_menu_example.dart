@@ -5,9 +5,11 @@ import '../../widget_usage_example.dart';
 import 'dropdown_menu/dropdown_menu_example_1.dart';
 
 class DropdownMenuExample extends StatelessWidget {
+  const DropdownMenuExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'dropdown_menu',
       description:
           'Dropdown menu is a menu that appears when you click a button or other control.',
@@ -15,9 +17,9 @@ class DropdownMenuExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Dropdown Menu Example',
-          child: DropdownMenuExample1(),
           path:
               'lib/pages/docs/components/dropdown_menu/dropdown_menu_example_1.dart',
+          child: DropdownMenuExample1(),
         ),
       ],
     );

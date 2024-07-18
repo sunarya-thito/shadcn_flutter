@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class SheetExample1 extends StatefulWidget {
+  const SheetExample1({super.key});
+
   @override
   State<SheetExample1> createState() => _SheetExample1State();
 }
@@ -14,14 +16,14 @@ class _SheetExample1State extends State<SheetExample1> {
       builder: (context) {
         return Center(
           child: AlertDialog(
-            title: Text('Profile updated'),
+            title: const Text('Profile updated'),
             content: Text('Content: ${controller.values}'),
             actions: [
               PrimaryButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('Close'),
+                child: const Text('Close'),
               ),
             ],
           ),
@@ -32,8 +34,8 @@ class _SheetExample1State extends State<SheetExample1> {
 
   Widget buildSheet(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(24),
-      constraints: BoxConstraints(maxWidth: 400),
+      padding: const EdgeInsets.all(24),
+      constraints: const BoxConstraints(maxWidth: 400),
       child: Form(
         controller: controller,
         child: Column(
@@ -44,11 +46,11 @@ class _SheetExample1State extends State<SheetExample1> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Expanded(
-                  child: Text('Edit profile').large().medium(),
+                  child: const Text('Edit profile').large().medium(),
                 ),
                 TextButton(
                   density: ButtonDensity.icon,
-                  child: Icon(Icons.close),
+                  child: const Icon(Icons.close),
                   onPressed: () {
                     closeSheet(context);
                   },
@@ -56,25 +58,25 @@ class _SheetExample1State extends State<SheetExample1> {
               ],
             ),
             gap(8),
-            Text('Make changes to your profile here. Click save when you\'re done.')
+            const Text('Make changes to your profile here. Click save when you\'re done.')
                 .muted(),
             gap(16),
             FormTableLayout(
               rows: [
                 FormRow<String>(
-                  key: FormKey(#name),
-                  label: Text('Name'),
-                  validator: NotEmptyValidator() & LengthValidator(min: 4),
-                  child: TextField(
+                  key: const FormKey(#name),
+                  label: const Text('Name'),
+                  validator: const NotEmptyValidator() & const LengthValidator(min: 4),
+                  child: const TextField(
                     initialValue: 'Thito Yalasatria Sunarya',
                     placeholder: 'Your fullname',
                   ),
                 ),
                 FormRow<String>(
-                  key: FormKey(#username),
-                  label: Text('Username'),
-                  validator: NotEmptyValidator() & LengthValidator(min: 4),
-                  child: TextField(
+                  key: const FormKey(#username),
+                  label: const Text('Username'),
+                  validator: const NotEmptyValidator() & const LengthValidator(min: 4),
+                  child: const TextField(
                     initialValue: '@sunarya-thito',
                     placeholder: 'Your username',
                   ),
@@ -102,7 +104,7 @@ class _SheetExample1State extends State<SheetExample1> {
                               },
                             );
                           },
-                    child: Text('Save changes'),
+                    child: const Text('Save changes'),
                   );
                 },
               ),
@@ -125,7 +127,7 @@ class _SheetExample1State extends State<SheetExample1> {
           position: OverlayPosition.right,
         );
       },
-      child: Text('Open Sheet'),
+      child: const Text('Open Sheet'),
     );
   }
 }

@@ -6,9 +6,11 @@ import '../../widget_usage_example.dart';
 import '../component_page.dart';
 
 class SliderExample extends StatelessWidget {
+  const SliderExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'slider',
       description:
           'A slider is a control for selecting a single value from a range of values.',
@@ -16,13 +18,13 @@ class SliderExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Slider Example',
-          child: SliderExample1(),
           path: 'lib/pages/docs/components/slider/slider_example_1.dart',
+          child: SliderExample1(),
         ),
         WidgetUsageExample(
           title: 'Slider with Range Example',
-          child: SliderExample2(),
           path: 'lib/pages/docs/components/slider/slider_example_2.dart',
+          child: SliderExample2(),
         ),
       ],
     );

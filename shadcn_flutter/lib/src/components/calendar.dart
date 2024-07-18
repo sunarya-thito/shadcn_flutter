@@ -59,7 +59,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               _view = _view.previous;
                             });
                           },
-                          child: Icon(Icons.arrow_back).iconXSmall(),
+                          child: const Icon(Icons.arrow_back).iconXSmall(),
                         ),
                         Text('${localizations.getMonth(_view.month)} ${_view.year}')
                             .small()
@@ -90,7 +90,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               _view = _view.next;
                             });
                           },
-                          child: Icon(Icons.arrow_forward).iconXSmall(),
+                          child: const Icon(Icons.arrow_forward).iconXSmall(),
                         ),
                       ],
                     ),
@@ -146,7 +146,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                       _view = _view.previous;
                     });
                   },
-                  child: Icon(Icons.arrow_back).iconXSmall(),
+                  child: const Icon(Icons.arrow_back).iconXSmall(),
                 ),
                 Text('${localizations.getMonth(_view.month)} ${_view.year}')
                     .small()
@@ -160,7 +160,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                       _view = _view.next;
                     });
                   },
-                  child: Icon(Icons.arrow_forward).iconXSmall(),
+                  child: const Icon(Icons.arrow_forward).iconXSmall(),
                 ),
               ],
             ),
@@ -476,12 +476,12 @@ class Calendar extends StatelessWidget {
       final lookup = calendarValue.lookup(date);
       if (lookup == CalendarValueLookup.none) {
         var multi = calendarValue.toMulti();
-        (multi as MultiCalendarValue).dates.add(date);
+        (multi).dates.add(date);
         onChanged?.call(multi);
         return;
       } else {
         var multi = calendarValue.toMulti();
-        (multi as MultiCalendarValue).dates.remove(date);
+        (multi).dates.remove(date);
         if (multi.dates.isEmpty) {
           onChanged?.call(null);
           return;

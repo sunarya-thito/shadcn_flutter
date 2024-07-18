@@ -87,11 +87,11 @@ class _ThemePageState extends State<ThemePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Theme').h1(),
-          Text('Customize the look and feel of your app.').lead(),
-          Text('Custom color scheme').h2().anchored(customColorSchemeKey),
+          const Text('Theme').h1(),
+          const Text('Customize the look and feel of your app.').lead(),
+          const Text('Custom color scheme').h2().anchored(customColorSchemeKey),
           // grid color
-          Row(
+          const Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
@@ -123,9 +123,9 @@ class _ThemePageState extends State<ThemePage> {
             shrinkWrap: true,
             children: colors.keys.map(buildGridTile).toList(),
           ).p(),
-          Text('Premade color schemes').h2().anchored(premadeColorSchemeKey),
+          const Text('Premade color schemes').h2().anchored(premadeColorSchemeKey),
           // Text('You can also use premade color schemes.').p(),
-          Row(
+          const Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
@@ -159,8 +159,8 @@ class _ThemePageState extends State<ThemePage> {
             children:
                 colorSchemes.keys.map(buildPremadeColorSchemeButton).toList(),
           ).p(),
-          Text('Radius').h2().anchored(radiusKey),
-          Row(
+          const Text('Radius').h2().anchored(radiusKey),
+          const Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
@@ -205,8 +205,8 @@ class _ThemePageState extends State<ThemePage> {
           // Text('Preview').h2().anchored(previewKey),
           // Text('Preview the color scheme.').p(),
           // // TODO: add preview
-          Text('Code').h2().anchored(codeKey),
-          Text('Use the following code to apply the color scheme.').p(),
+          const Text('Code').h2().anchored(codeKey),
+          const Text('Use the following code to apply the color scheme.').p(),
           CodeSnippet(
             code: customColorScheme ? buildCustomCode() : buildPremadeCode(),
             mode: 'dart',
@@ -326,7 +326,7 @@ class _ThemePageState extends State<ThemePage> {
   Widget buildGridTile(String name) {
     final colors = this.colors;
     return Container(
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         minWidth: 100,
         minHeight: 100,
       ),

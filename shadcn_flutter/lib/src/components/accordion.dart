@@ -69,7 +69,7 @@ class _AccordionItemState extends State<AccordionItem>
     _expanded.value = widget.expanded;
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       value: _expanded.value ? 1 : 0,
     );
     _easeInAnimation = CurvedAnimation(

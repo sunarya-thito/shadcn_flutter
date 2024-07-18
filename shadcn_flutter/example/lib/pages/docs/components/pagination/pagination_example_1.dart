@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class PaginationExample1 extends StatefulWidget {
+  const PaginationExample1({super.key});
+
   @override
   State<PaginationExample1> createState() => _PaginationExample1State();
 }

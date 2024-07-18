@@ -5,7 +5,7 @@ class BadgeExample4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DestructiveBadge(
+    return const DestructiveBadge(
       child: Text('Destructive'),
     );
   }

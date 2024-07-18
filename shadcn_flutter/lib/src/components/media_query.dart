@@ -6,7 +6,7 @@ class MediaQueryVisibility extends StatelessWidget {
   final Widget child;
   final Widget? alternateChild;
 
-  MediaQueryVisibility({
+  const MediaQueryVisibility({super.key, 
     this.minWidth,
     this.maxWidth,
     required this.child,

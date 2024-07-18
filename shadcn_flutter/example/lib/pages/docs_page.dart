@@ -364,7 +364,7 @@ class DocsPageState extends State<DocsPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(height: 72 + 1),
+                          const SizedBox(height: 72 + 1),
                           Expanded(
                             child: Builder(builder: (context) {
                               var hasOnThisPage = onThisPage.isNotEmpty;
@@ -399,9 +399,9 @@ class DocsPageState extends State<DocsPage> {
                                                             return Center(
                                                               child:
                                                                   AlertDialog(
-                                                                title: Text(
+                                                                title: const Text(
                                                                     'Work in Progress'),
-                                                                content: Text(
+                                                                content: const Text(
                                                                     'This page is still under development. Please come back later.'),
                                                                 actions: [
                                                                   PrimaryButton(
@@ -410,7 +410,7 @@ class DocsPageState extends State<DocsPage> {
                                                                         Navigator.of(context)
                                                                             .pop();
                                                                       },
-                                                                      child: Text(
+                                                                      child: const Text(
                                                                           'Close')),
                                                                 ],
                                                               ),
@@ -470,7 +470,7 @@ class DocsPageState extends State<DocsPage> {
                                                         },
                                                         density: ButtonDensity
                                                             .compact,
-                                                        child: Text('Docs'),
+                                                        child: const Text('Docs'),
                                                       ),
                                                       ...widget.navigationItems,
                                                       if (page != null)
@@ -515,7 +515,7 @@ class DocsPageState extends State<DocsPage> {
                                                         },
                                                         density: ButtonDensity
                                                             .compact,
-                                                        child: Text('Docs'),
+                                                        child: const Text('Docs'),
                                                       ),
                                                       ...widget.navigationItems,
                                                       if (page != null)
@@ -608,7 +608,7 @@ class DocsPageState extends State<DocsPage> {
                                             onPressed: () {
                                               _openDrawer(context);
                                             },
-                                            child: Icon(Icons.menu),
+                                            child: const Icon(Icons.menu),
                                           ),
                                           gap(18),
                                           Expanded(
@@ -616,13 +616,13 @@ class DocsPageState extends State<DocsPage> {
                                               onPressed: () {
                                                 showSearchBar();
                                               },
-                                              child: Text(
+                                              trailing: const Icon(Icons.search)
+                                                  .iconSmall()
+                                                  .iconMuted(),
+                                              child: const Text(
                                                       'Search documentation...')
                                                   .muted()
                                                   .normal(),
-                                              trailing: Icon(Icons.search)
-                                                  .iconSmall()
-                                                  .iconMuted(),
                                             ),
                                           ),
                                           gap(18),
@@ -652,7 +652,7 @@ class DocsPageState extends State<DocsPage> {
                                                       .secondaryForeground,
                                                   BlendMode.srcIn,
                                                 ),
-                                                child: FlutterLogo(
+                                                child: const FlutterLogo(
                                                   size: 24,
                                                 ),
                                               )),
@@ -673,14 +673,14 @@ class DocsPageState extends State<DocsPage> {
                                       padding: padding,
                                       child: Row(
                                         children: [
-                                          FlutterLogo(
+                                          const FlutterLogo(
                                             size: 32,
                                           ),
                                           gap(18),
-                                          Text(
+                                          const Text(
                                             'shadcn_flutter',
                                           ).textLarge().mono(),
-                                          Spacer(),
+                                          const Spacer(),
                                           gap(18),
                                           SizedBox(
                                             width: 320 - 18,
@@ -689,13 +689,13 @@ class DocsPageState extends State<DocsPage> {
                                               onPressed: () {
                                                 showSearchBar();
                                               },
-                                              child: Text(
+                                              trailing: const Icon(Icons.search)
+                                                  .iconSmall()
+                                                  .iconMuted(),
+                                              child: const Text(
                                                       'Search documentation...')
                                                   .muted()
                                                   .normal(),
-                                              trailing: Icon(Icons.search)
-                                                  .iconSmall()
-                                                  .iconMuted(),
                                             ),
                                           ),
                                           gap(18),
@@ -724,7 +724,7 @@ class DocsPageState extends State<DocsPage> {
                                                       .secondaryForeground,
                                                   BlendMode.srcIn,
                                                 ),
-                                                child: FlutterLogo(
+                                                child: const FlutterLogo(
                                                   size: 24,
                                                 ),
                                               )),
@@ -735,7 +735,7 @@ class DocsPageState extends State<DocsPage> {
                                 ),
                               ),
                             ),
-                            Divider(),
+                            const Divider(),
                           ],
                         ),
                       ),
@@ -755,19 +755,19 @@ class DocsPageState extends State<DocsPage> {
       context: context,
       builder: (context) {
         return Container(
-          constraints: BoxConstraints(maxWidth: 400),
-          padding: EdgeInsets.only(top: 32),
+          constraints: const BoxConstraints(maxWidth: 400),
+          padding: const EdgeInsets.only(top: 32),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
                 children: [
-                  FlutterLogo(
+                  const FlutterLogo(
                     size: 24,
                   ),
                   gap(18),
-                  Text(
+                  const Text(
                     'shadcn_flutter',
                   ).medium().mono().expanded(),
                   TextButton(
@@ -776,7 +776,7 @@ class DocsPageState extends State<DocsPage> {
                     onPressed: () {
                       closeDrawer(context);
                     },
-                    child: Icon(Icons.close),
+                    child: const Icon(Icons.close),
                   ),
                 ],
               ).withPadding(left: 32, right: 32),
@@ -784,7 +784,7 @@ class DocsPageState extends State<DocsPage> {
               Expanded(
                 child: FocusTraversalGroup(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.only(left: 32, right: 32, bottom: 48),
+                    padding: const EdgeInsets.only(left: 32, right: 32, bottom: 48),
                     key: const PageStorageKey('sidebar'),
                     child: SidebarNav(children: [
                       for (var section in sections)
@@ -801,15 +801,15 @@ class DocsPageState extends State<DocsPage> {
                                       builder: (context) {
                                         return Center(
                                           child: AlertDialog(
-                                            title: Text('Work in Progress'),
-                                            content: Text(
+                                            title: const Text('Work in Progress'),
+                                            content: const Text(
                                                 'This page is still under development. Please come back later.'),
                                             actions: [
                                               PrimaryButton(
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
-                                                  child: Text('Close')),
+                                                  child: const Text('Close')),
                                             ],
                                           ),
                                         );

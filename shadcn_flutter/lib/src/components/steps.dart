@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class Steps extends StatelessWidget {
@@ -36,7 +35,7 @@ class Steps extends StatelessWidget {
                   ),
                 ),
                 gap(4),
-                Expanded(child: VerticalDivider()),
+                const Expanded(child: VerticalDivider()),
                 gap(4),
               ],
             ),

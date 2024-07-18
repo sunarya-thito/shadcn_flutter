@@ -7,7 +7,7 @@ class ButtonExample4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return GhostButton(
       onPressed: () {},
-      child: Text('Ghost'),
+      child: const Text('Ghost'),
     );
   }
 }

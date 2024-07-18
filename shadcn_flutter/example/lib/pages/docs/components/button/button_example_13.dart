@@ -12,14 +12,14 @@ class ButtonExample13 extends StatelessWidget {
       runAlignment: WrapAlignment.center,
       children: [
         PrimaryButton(
-          child: Icon(Icons.add),
           onPressed: () {},
           shape: ButtonShape.circle,
+          child: const Icon(Icons.add),
         ),
         PrimaryButton(
-          child: Text('Rectangle'),
           onPressed: () {},
           shape: ButtonShape.rectangle,
+          child: const Text('Rectangle'),
         ),
       ],
     );

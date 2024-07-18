@@ -5,9 +5,11 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'drawer/drawer_example_1.dart';
 
 class DrawerExample extends StatelessWidget {
+  const DrawerExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'drawer',
       description:
           'A drawer is a panel that slides in from the edge of a screen.',
@@ -15,8 +17,8 @@ class DrawerExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: DrawerExample1(),
           path: 'lib/pages/docs/components/drawer/drawer_example_1.dart',
+          child: DrawerExample1(),
         ),
       ],
     );

@@ -716,8 +716,8 @@ class ShadcnUI extends StatelessWidget {
         data: IconThemeData(
           color: theme.colorScheme.foreground,
         ),
-        child: child,
         duration: kDefaultDuration,
+        child: child,
       ),
       duration: kDefaultDuration,
     );

@@ -5,9 +5,11 @@ import '../../widget_usage_example.dart';
 import '../component_page.dart';
 
 class SheetExample extends StatelessWidget {
+  const SheetExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'sheet',
       description:
           'A sheet is a panel that slides in from the edge of a screen.',
@@ -15,8 +17,8 @@ class SheetExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: SheetExample1(),
           path: 'lib/pages/docs/components/sheet/sheet_example_1.dart',
+          child: SheetExample1(),
         ),
       ],
     );

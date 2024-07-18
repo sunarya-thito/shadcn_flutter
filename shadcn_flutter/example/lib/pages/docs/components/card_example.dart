@@ -5,9 +5,11 @@ import '../component_page.dart';
 import 'card/card_example_1.dart';
 
 class CardExample extends StatelessWidget {
+  const CardExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'card',
       description:
           'Cards are surfaces that display content and actions on a single topic.',
@@ -15,8 +17,8 @@ class CardExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Card Example',
-          child: CardExample1(),
           path: 'lib/pages/docs/components/card/card_example_1.dart',
+          child: CardExample1(),
         ),
       ],
     );

@@ -132,230 +132,230 @@ class _TypographyPageState extends State<TypographyPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Typography').h1(),
-          Text('Use typography to present your design and content as clearly and efficiently as possible.')
+          const Text('Typography').h1(),
+          const Text('Use typography to present your design and content as clearly and efficiently as possible.')
               .lead(),
-          Text('Headline 1').h2().anchored(headline1Key),
-          WidgetUsageExample(
-            child: TypographyPageExample1(),
+          const Text('Headline 1').h2().anchored(headline1Key),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_1.dart',
+            child: TypographyPageExample1(),
           ).p(),
-          Text('Headline 2').h2().anchored(headline2Key),
-          WidgetUsageExample(
-            child: TypographyPageExample2(),
+          const Text('Headline 2').h2().anchored(headline2Key),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_2.dart',
+            child: TypographyPageExample2(),
           ).p(),
-          Text('Headline 3').h2().anchored(headline3Key),
-          WidgetUsageExample(
-            child: TypographyPageExample3(),
+          const Text('Headline 3').h2().anchored(headline3Key),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_3.dart',
+            child: TypographyPageExample3(),
           ).p(),
-          Text('Headline 4').h2().anchored(headline4Key),
-          WidgetUsageExample(
-            child: TypographyPageExample4(),
+          const Text('Headline 4').h2().anchored(headline4Key),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_4.dart',
+            child: TypographyPageExample4(),
           ).p(),
-          Text('Paragraph').h2().anchored(paragraphKey),
-          WidgetUsageExample(
-            child: TypographyPageExample5(),
+          const Text('Paragraph').h2().anchored(paragraphKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_5.dart',
+            child: TypographyPageExample5(),
           ).p(),
-          Text('Blockquote').h2().anchored(blockquoteKey),
-          WidgetUsageExample(
-            child: TypographyPageExample6(),
+          const Text('Blockquote').h2().anchored(blockquoteKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_6.dart',
+            child: TypographyPageExample6(),
           ).p(),
-          Text('List').h2().anchored(listKey),
-          WidgetUsageExample(
-            child: TypographyPageExample7(),
+          const Text('List').h2().anchored(listKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_7.dart',
+            child: TypographyPageExample7(),
           ).p(),
-          Text('Inline code').h2().anchored(inlineCodeKey),
-          WidgetUsageExample(
-            child: TypographyPageExample8(),
+          const Text('Inline code').h2().anchored(inlineCodeKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_8.dart',
+            child: TypographyPageExample8(),
           ).p(),
-          Text('Lead').h2().anchored(leadKey),
-          WidgetUsageExample(
-            child: TypographyPageExample9(),
+          const Text('Lead').h2().anchored(leadKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_9.dart',
+            child: TypographyPageExample9(),
           ).p(),
-          Text('Large text').h2().anchored(largeTextKey),
-          WidgetUsageExample(
-            child: TypographyPageExample10(),
+          const Text('Large text').h2().anchored(largeTextKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_10.dart',
+            child: TypographyPageExample10(),
           ).p(),
-          Text('Small text').h2().anchored(smallTextKey),
-          WidgetUsageExample(
-            child: TypographyPageExample11(),
+          const Text('Small text').h2().anchored(smallTextKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_11.dart',
+            child: TypographyPageExample11(),
           ).p(),
-          Text('Muted text').h2().anchored(mutedTextKey),
-          WidgetUsageExample(
-            child: TypographyPageExample12(),
+          const Text('Muted text').h2().anchored(mutedTextKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_12.dart',
+            child: TypographyPageExample12(),
           ).p(),
-          Text('Sans').h2().anchored(sansKey),
-          WidgetUsageExample(
-            child: TypographyPageExample13(),
+          const Text('Sans').h2().anchored(sansKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_13.dart',
+            child: TypographyPageExample13(),
           ).p(),
-          Text('Mono').h2().anchored(monoKey),
-          WidgetUsageExample(
-            child: TypographyPageExample14(),
+          const Text('Mono').h2().anchored(monoKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_14.dart',
+            child: TypographyPageExample14(),
           ).p(),
-          Text('Extra small').h2().anchored(xSmallKey),
-          WidgetUsageExample(
-            child: TypographyPageExample15(),
+          const Text('Extra small').h2().anchored(xSmallKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_15.dart',
+            child: TypographyPageExample15(),
           ).p(),
-          Text('Small').h2().anchored(smallKey),
-          WidgetUsageExample(
-            child: TypographyPageExample16(),
+          const Text('Small').h2().anchored(smallKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_16.dart',
+            child: TypographyPageExample16(),
           ).p(),
-          Text('Base').h2().anchored(baseKey),
-          WidgetUsageExample(
-            child: TypographyPageExample17(),
+          const Text('Base').h2().anchored(baseKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_17.dart',
+            child: TypographyPageExample17(),
           ).p(),
-          Text('Large').h2().anchored(largeKey),
-          WidgetUsageExample(
-            child: TypographyPageExample18(),
+          const Text('Large').h2().anchored(largeKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_18.dart',
+            child: TypographyPageExample18(),
           ).p(),
-          Text('Extra large').h2().anchored(xLargeKey),
-          WidgetUsageExample(
-            child: TypographyPageExample19(),
+          const Text('Extra large').h2().anchored(xLargeKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_19.dart',
+            child: TypographyPageExample19(),
           ).p(),
-          Text('Extra 2x large').h2().anchored(x2LargeKey),
-          WidgetUsageExample(
-            child: TypographyPageExample20(),
+          const Text('Extra 2x large').h2().anchored(x2LargeKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_20.dart',
+            child: TypographyPageExample20(),
           ).p(),
-          Text('Extra 3x large').h2().anchored(x3LargeKey),
-          WidgetUsageExample(
-            child: TypographyPageExample21(),
+          const Text('Extra 3x large').h2().anchored(x3LargeKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_21.dart',
+            child: TypographyPageExample21(),
           ),
-          Text('Extra 4x large').h2().anchored(x4LargeKey),
-          WidgetUsageExample(
-            child: TypographyPageExample22(),
+          const Text('Extra 4x large').h2().anchored(x4LargeKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_22.dart',
+            child: TypographyPageExample22(),
           ).p(),
-          Text('Extra 5x large').h2().anchored(x5LargeKey),
-          WidgetUsageExample(
-            child: TypographyPageExample23(),
+          const Text('Extra 5x large').h2().anchored(x5LargeKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_23.dart',
+            child: TypographyPageExample23(),
           ).p(),
-          Text('Extra 6x large').h2().anchored(x6LargeKey),
-          WidgetUsageExample(
-            child: TypographyPageExample24(),
+          const Text('Extra 6x large').h2().anchored(x6LargeKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_24.dart',
+            child: TypographyPageExample24(),
           ).p(),
-          Text('Extra 7x large').h2().anchored(x7LargeKey),
-          WidgetUsageExample(
-            child: TypographyPageExample25(),
+          const Text('Extra 7x large').h2().anchored(x7LargeKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_25.dart',
+            child: TypographyPageExample25(),
           ).p(),
-          Text('Extra 8x large').h2().anchored(x8LargeKey),
-          WidgetUsageExample(
-            child: TypographyPageExample26(),
+          const Text('Extra 8x large').h2().anchored(x8LargeKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_26.dart',
+            child: TypographyPageExample26(),
           ).p(),
-          Text('Extra 9x large').h2().anchored(x9LargeKey),
-          WidgetUsageExample(
-            child: TypographyPageExample27(),
+          const Text('Extra 9x large').h2().anchored(x9LargeKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_27.dart',
+            child: TypographyPageExample27(),
           ).p(),
-          Text('Thin').h2().anchored(thinKey),
-          WidgetUsageExample(
-            child: TypographyPageExample28(),
+          const Text('Thin').h2().anchored(thinKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_28.dart',
+            child: TypographyPageExample28(),
           ).p(),
-          Text('Extra light').h2().anchored(extraLightKey),
-          WidgetUsageExample(
-            child: TypographyPageExample29(),
+          const Text('Extra light').h2().anchored(extraLightKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_29.dart',
+            child: TypographyPageExample29(),
           ).p(),
-          Text('Light').h2().anchored(lightKey),
-          WidgetUsageExample(
-            child: TypographyPageExample30(),
+          const Text('Light').h2().anchored(lightKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_30.dart',
+            child: TypographyPageExample30(),
           ).p(),
-          Text('Normal').h2().anchored(normalKey),
-          WidgetUsageExample(
-            child: TypographyPageExample31(),
+          const Text('Normal').h2().anchored(normalKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_31.dart',
+            child: TypographyPageExample31(),
           ).p(),
-          Text('Medium').h2().anchored(mediumKey),
-          WidgetUsageExample(
-            child: TypographyPageExample32(),
+          const Text('Medium').h2().anchored(mediumKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_32.dart',
+            child: TypographyPageExample32(),
           ).p(),
-          Text('Semi bold').h2().anchored(semiBoldKey),
-          WidgetUsageExample(
-            child: TypographyPageExample33(),
+          const Text('Semi bold').h2().anchored(semiBoldKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_33.dart',
+            child: TypographyPageExample33(),
           ).p(),
-          Text('Bold').h2().anchored(boldKey),
-          WidgetUsageExample(
-            child: TypographyPageExample34(),
+          const Text('Bold').h2().anchored(boldKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_34.dart',
+            child: TypographyPageExample34(),
           ).p(),
-          Text('Extra bold').h2().anchored(extraBoldKey),
-          WidgetUsageExample(
-            child: TypographyPageExample35(),
+          const Text('Extra bold').h2().anchored(extraBoldKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_35.dart',
+            child: TypographyPageExample35(),
           ).p(),
-          Text('Black').h2().anchored(blackKey),
-          WidgetUsageExample(
-            child: TypographyPageExample36(),
+          const Text('Black').h2().anchored(blackKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_36.dart',
+            child: TypographyPageExample36(),
           ).p(),
-          Text('Italic').h2().anchored(italicKey),
-          WidgetUsageExample(
-            child: TypographyPageExample37(),
+          const Text('Italic').h2().anchored(italicKey),
+          const WidgetUsageExample(
             path:
                 'lib/pages/docs/typography_page/typography_page_example_37.dart',
+            child: TypographyPageExample37(),
           ).p(),
         ],
       ),

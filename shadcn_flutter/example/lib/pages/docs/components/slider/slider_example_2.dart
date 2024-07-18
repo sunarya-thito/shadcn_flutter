@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class SliderExample2 extends StatefulWidget {
+  const SliderExample2({super.key});
+
   @override
   State<SliderExample2> createState() => _SliderExample2State();
 }

@@ -5,7 +5,7 @@ class NavigationItem extends StatefulWidget {
   final Widget? content;
   final Widget child;
 
-  const NavigationItem({this.onPressed, this.content, required this.child});
+  const NavigationItem({super.key, this.onPressed, this.content, required this.child});
 
   @override
   State<NavigationItem> createState() => NavigationItemState();
@@ -77,7 +77,6 @@ class NavigationItemState extends State<NavigationItem> {
                 return value;
               },
             ),
-            child: widget.child,
             trailing: widget.content != null
                 ? AnimatedRotation(
                     duration: kDefaultDuration,
@@ -103,6 +102,7 @@ class NavigationItemState extends State<NavigationItem> {
                     }
                   }
                 : null,
+            child: widget.child,
           );
         });
   }
@@ -115,7 +115,7 @@ class NavigationContent extends StatelessWidget {
   final Widget? trailing;
   final VoidCallback? onPressed;
 
-  const NavigationContent({
+  const NavigationContent({super.key, 
     required this.title,
     this.content,
     this.leading,
@@ -151,7 +151,7 @@ class NavigationContentList extends StatelessWidget {
   final double runSpacing;
   final bool reverse;
 
-  const NavigationContentList({
+  const NavigationContentList({super.key, 
     required this.children,
     this.crossAxisCount = 3,
     this.spacing = 12,
@@ -201,7 +201,7 @@ class NavigationContentList extends StatelessWidget {
 class NavigationMenu extends StatefulWidget {
   final List<Widget> children;
 
-  const NavigationMenu({required this.children});
+  const NavigationMenu({super.key, required this.children});
 
   @override
   State<NavigationMenu> createState() => NavigationMenuState();

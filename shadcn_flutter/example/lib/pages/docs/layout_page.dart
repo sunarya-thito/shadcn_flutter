@@ -45,42 +45,42 @@ class _LayoutPageState extends State<LayoutPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('Layout Page').h1(),
-          Text('Guide to layout in Shadcn Flutter.').lead(),
-          Text('Padding').h2().anchored(paddingKey),
-          WidgetUsageExample(
-            child: LayoutPageExample1(),
+          const Text('Layout Page').h1(),
+          const Text('Guide to layout in Shadcn Flutter.').lead(),
+          const Text('Padding').h2().anchored(paddingKey),
+          const WidgetUsageExample(
             path: 'lib/pages/docs/layout_page/layout_page_example_1.dart',
+            child: LayoutPageExample1(),
           ).p(),
-          Text('Margin').h2().anchored(marginKey),
-          WidgetUsageExample(
-            child: LayoutPageExample2(),
+          const Text('Margin').h2().anchored(marginKey),
+          const WidgetUsageExample(
             path: 'lib/pages/docs/layout_page/layout_page_example_2.dart',
+            child: LayoutPageExample2(),
           ).p(),
-          Text('Center').h2().anchored(centerKey),
-          WidgetUsageExample(
-            child: LayoutPageExample3(),
+          const Text('Center').h2().anchored(centerKey),
+          const WidgetUsageExample(
             path: 'lib/pages/docs/layout_page/layout_page_example_3.dart',
+            child: LayoutPageExample3(),
           ).p(),
-          Text('Gapped Row').h2().anchored(gappedRowKey),
-          WidgetUsageExample(
-            child: LayoutPageExample4(),
+          const Text('Gapped Row').h2().anchored(gappedRowKey),
+          const WidgetUsageExample(
             path: 'lib/pages/docs/layout_page/layout_page_example_4.dart',
+            child: LayoutPageExample4(),
           ).p(),
-          Text('Separated Column').h2().anchored(separatedColumnKey),
-          WidgetUsageExample(
-            child: LayoutPageExample5(),
+          const Text('Separated Column').h2().anchored(separatedColumnKey),
+          const WidgetUsageExample(
             path: 'lib/pages/docs/layout_page/layout_page_example_5.dart',
+            child: LayoutPageExample5(),
           ).p(),
-          Text('Separated Row').h2().anchored(separatedRowKey),
-          WidgetUsageExample(
-            child: LayoutPageExample6(),
+          const Text('Separated Row').h2().anchored(separatedRowKey),
+          const WidgetUsageExample(
             path: 'lib/pages/docs/layout_page/layout_page_example_6.dart',
+            child: LayoutPageExample6(),
           ).p(),
-          Text('Basic Layout').h2().anchored(basicLayoutKey),
-          WidgetUsageExample(
-            child: LayoutPageExample7(),
+          const Text('Basic Layout').h2().anchored(basicLayoutKey),
+          const WidgetUsageExample(
             path: 'lib/pages/docs/layout_page/layout_page_example_7.dart',
+            child: LayoutPageExample7(),
           ).p(),
         ],
       ),

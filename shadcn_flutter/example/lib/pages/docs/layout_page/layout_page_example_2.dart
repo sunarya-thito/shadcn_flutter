@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class LayoutPageExample2 extends StatelessWidget {
+  const LayoutPageExample2({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

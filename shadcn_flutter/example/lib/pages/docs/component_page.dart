@@ -99,7 +99,7 @@ class _ComponentPageState extends State<ComponentPage> {
             onPressed: () {
               context.pushNamed('components');
             },
-            child: Text('Components'),
+            child: const Text('Components'),
           ),
       ],
       child: Column(

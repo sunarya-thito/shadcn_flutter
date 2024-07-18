@@ -18,7 +18,7 @@ class _CheckboxExample1State extends State<CheckboxExample1> {
           _state = value;
         });
       },
-      trailing: Text('Remember me'),
+      trailing: const Text('Remember me'),
     );
   }
 }

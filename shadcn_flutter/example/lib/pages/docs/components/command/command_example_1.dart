@@ -12,12 +12,12 @@ class CommandExample1 extends StatelessWidget {
           'Settings': ['Profile', 'Mail', 'Settings'],
         };
         Map<String, Widget> icons = {
-          'Calendar': Icon(Icons.calendar_today),
-          'Search Emoji': Icon(Icons.emoji_emotions_outlined),
-          'Launch': Icon(Icons.rocket_launch_outlined),
-          'Profile': Icon(Icons.person_outline),
-          'Mail': Icon(Icons.mail_outline),
-          'Settings': Icon(Icons.settings_outlined),
+          'Calendar': const Icon(Icons.calendar_today),
+          'Search Emoji': const Icon(Icons.emoji_emotions_outlined),
+          'Launch': const Icon(Icons.rocket_launch_outlined),
+          'Profile': const Icon(Icons.person_outline),
+          'Mail': const Icon(Icons.mail_outline),
+          'Settings': const Icon(Icons.settings_outlined),
         };
         for (final values in items.entries) {
           List<Widget> resultItems = [];
@@ -32,7 +32,7 @@ class CommandExample1 extends StatelessWidget {
             }
           }
           if (resultItems.isNotEmpty) {
-            await Future.delayed(Duration(seconds: 1));
+            await Future.delayed(const Duration(seconds: 1));
             yield [
               CommandCategory(
                 title: Text(values.key),

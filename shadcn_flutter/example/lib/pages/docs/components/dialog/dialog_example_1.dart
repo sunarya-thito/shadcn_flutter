@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class DialogExample1 extends StatelessWidget {
+  const DialogExample1({super.key});
+
   @override
   Widget build(BuildContext context) {
     return PrimaryButton(
@@ -11,17 +13,17 @@ class DialogExample1 extends StatelessWidget {
             final FormController controller = FormController();
             return Center(
               child: AlertDialog(
-                title: Text('Edit profile'),
+                title: const Text('Edit profile'),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                         'Make changes to your profile here. Click save when you\'re done'),
                     gap(16),
                     Form(
                       controller: controller,
-                      child: FormTableLayout(rows: [
+                      child: const FormTableLayout(rows: [
                         FormRow<String>(
                           key: FormKey(#name),
                           label: Text('Name'),
@@ -42,7 +44,7 @@ class DialogExample1 extends StatelessWidget {
                 ),
                 actions: [
                   PrimaryButton(
-                    child: Text('Save changes'),
+                    child: const Text('Save changes'),
                     onPressed: () {
                       Navigator.of(context).pop(controller.values);
                     },
@@ -53,7 +55,7 @@ class DialogExample1 extends StatelessWidget {
           },
         );
       },
-      child: Text('Edit Profile'),
+      child: const Text('Edit Profile'),
     );
   }
 }
