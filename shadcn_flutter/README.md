@@ -47,6 +47,7 @@ This is a port of the shadcn UI package to flutter.
 ### Navigation
 [![Breadcrumb](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/breadcrumb.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/breadcrumb)
 [![Menubar](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/menubar.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/menubar)
+[![Navigation Menu](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/navigation_menu.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/navigation_menu)
 [![Pagination](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/pagination.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/pagination)
 [![Tabs](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/tabs.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tabs)
 [![Tab List](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/tablist.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tab_list)
