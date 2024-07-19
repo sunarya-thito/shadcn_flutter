@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../main.dart';
+import 'docs/sidebar_nav.dart';
 
 const double breakpointWidth = 768;
 const double breakpointWidth2 = 1024;
@@ -221,6 +222,7 @@ class DocsPageState extends State<DocsPage> {
       [
         ShadcnDocsPage('Dialog', 'dialog'),
         ShadcnDocsPage('Drawer', 'drawer'),
+        ShadcnDocsPage('Hover Card', 'hover_card'),
         ShadcnDocsPage('Popover', 'popover'),
         ShadcnDocsPage('Sheet', 'sheet'),
         ShadcnDocsPage('Tooltip', 'tooltip'),
@@ -470,7 +472,8 @@ class DocsPageState extends State<DocsPage> {
                                                         },
                                                         density: ButtonDensity
                                                             .compact,
-                                                        child: const Text('Docs'),
+                                                        child:
+                                                            const Text('Docs'),
                                                       ),
                                                       ...widget.navigationItems,
                                                       if (page != null)
@@ -515,7 +518,8 @@ class DocsPageState extends State<DocsPage> {
                                                         },
                                                         density: ButtonDensity
                                                             .compact,
-                                                        child: const Text('Docs'),
+                                                        child:
+                                                            const Text('Docs'),
                                                       ),
                                                       ...widget.navigationItems,
                                                       if (page != null)
@@ -784,7 +788,8 @@ class DocsPageState extends State<DocsPage> {
               Expanded(
                 child: FocusTraversalGroup(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.only(left: 32, right: 32, bottom: 48),
+                    padding:
+                        const EdgeInsets.only(left: 32, right: 32, bottom: 48),
                     key: const PageStorageKey('sidebar'),
                     child: SidebarNav(children: [
                       for (var section in sections)
@@ -801,7 +806,8 @@ class DocsPageState extends State<DocsPage> {
                                       builder: (context) {
                                         return Center(
                                           child: AlertDialog(
-                                            title: const Text('Work in Progress'),
+                                            title:
+                                                const Text('Work in Progress'),
                                             content: const Text(
                                                 'This page is still under development. Please come back later.'),
                                             actions: [

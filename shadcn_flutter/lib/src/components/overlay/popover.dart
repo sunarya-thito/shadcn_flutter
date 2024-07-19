@@ -543,7 +543,7 @@ Future<T?> showPopover<T>({
 class PopoverController extends ChangeNotifier {
   final List<GlobalKey<PopoverAnchorState>> _openPopovers = [];
 
-  bool get hasOpenPopovers => _openPopovers.isNotEmpty;
+  bool get hasOpenPopover => _openPopovers.isNotEmpty;
 
   Iterable<PopoverAnchorState> get openPopovers => _openPopovers
       .map((key) => key.currentState)
@@ -675,11 +675,15 @@ class PopoverController extends ChangeNotifier {
     }
   }
 
-  @override
-  void dispose() {
+  void disposePopovers() {
     for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
       key.currentState?.closeLater();
     }
+  }
+
+  @override
+  void dispose() {
+    disposePopovers();
     super.dispose();
   }
 }
@@ -1001,10 +1005,5 @@ class PopoverLayoutRender extends RenderShiftedBox {
     Offset result = Offset(x + dx + offsetX, y + dy + offsetY);
     BoxParentData childParentData = child!.parentData as BoxParentData;
     childParentData.offset = result;
-  }
-
-  @override
-  ui.Size computeSizeForNoChild(BoxConstraints constraints) {
-    return constraints.biggest;
   }
 }

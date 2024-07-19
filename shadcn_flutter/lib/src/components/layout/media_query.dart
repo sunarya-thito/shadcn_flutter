@@ -1,4 +1,4 @@
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 class MediaQueryVisibility extends StatelessWidget {
   final double? minWidth;
@@ -6,7 +6,8 @@ class MediaQueryVisibility extends StatelessWidget {
   final Widget child;
   final Widget? alternateChild;
 
-  const MediaQueryVisibility({super.key, 
+  const MediaQueryVisibility({
+    super.key,
     this.minWidth,
     this.maxWidth,
     required this.child,

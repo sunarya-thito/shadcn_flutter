@@ -1,5 +1,4 @@
-
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 class Alert extends StatelessWidget {
   final Widget? leading;

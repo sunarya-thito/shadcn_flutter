@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' as mat;
 
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 class CircularProgressIndicator extends StatelessWidget {
   final double? value;

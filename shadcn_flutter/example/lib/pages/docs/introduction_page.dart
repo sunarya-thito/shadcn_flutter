@@ -34,7 +34,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
           const Text(
               'If you found any issues, please report it to our GitHub instead of Shadcn/UI.'),
           const Text(
-              'Currently there\'s 45 out of 49 components that has been implemented into this package.'),
+              'Currently there\'s 46 out of 50 components that has been implemented into this package.'),
           const Text('Features').h2().anchored(featuresKey),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/services.dart';
 import 'package:syntax_highlight/syntax_highlight.dart';
 
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 class CodeSnippet extends StatefulWidget {
   final BoxConstraints? constraints;
@@ -128,8 +129,12 @@ class _CodeSnippetState extends State<CodeSnippet> {
                   child: SingleChildScrollView(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16, horizontal: 20),
+                      padding: const EdgeInsets.only(
+                        left: 18,
+                        right: 48,
+                        top: 14,
+                        bottom: 14,
+                      ),
                       child: data == null
                           ? material.SelectableText(widget.code)
                               .muted()

@@ -4,7 +4,7 @@
 
 import 'package:flutter/gestures.dart';
 
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 const double _kScrollbarMinLength = 48.0;
 const Duration _kScrollbarFadeDuration = Duration(milliseconds: 300);

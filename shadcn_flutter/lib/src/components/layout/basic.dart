@@ -1,4 +1,4 @@
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 class Basic extends StatelessWidget {
   final Widget? leading;

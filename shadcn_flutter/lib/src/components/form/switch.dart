@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 const kSwitchDuration = Duration(milliseconds: 100);
 

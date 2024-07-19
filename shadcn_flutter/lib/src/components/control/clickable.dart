@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/src/components/focus_outline.dart';
+import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 class Clickable extends StatefulWidget {
   final Widget child;

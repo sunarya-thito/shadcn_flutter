@@ -13,6 +13,7 @@ import 'package:example/pages/docs/components/dialog_example.dart';
 import 'package:example/pages/docs/components/divider_example.dart';
 import 'package:example/pages/docs/components/drawer_example.dart';
 import 'package:example/pages/docs/components/dropdown_menu_example.dart';
+import 'package:example/pages/docs/components/hover_card_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/input_otp_example.dart';
 import 'package:example/pages/docs/components/material_example.dart';
@@ -386,6 +387,13 @@ class MyAppState extends State<MyApp> {
             name: 'navigation_menu',
             builder: (context, state) {
               return const NavigationMenuExample();
+            },
+          ),
+          GoRoute(
+            name: 'hover_card',
+            path: 'hover_card',
+            builder: (context, state) {
+              return const HoverCardExample();
             },
           ),
         ]),

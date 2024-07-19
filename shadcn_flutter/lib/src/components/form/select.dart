@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/src/components/hover.dart';
+import 'package:shadcn_flutter/src/components/control/hover.dart';
 
 typedef SearchFilter<T> = int Function(T item, String query);
 
@@ -430,7 +430,8 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                                   },
                                   child: Container(
                                     color: theme.colorScheme.background,
-                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 4),
                                     child: const Icon(
                                       RadixIcons.chevronUp,
                                       size: 8,
@@ -473,7 +474,8 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                                   },
                                   child: Container(
                                     color: theme.colorScheme.background,
-                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 4),
                                     child: const Icon(
                                       RadixIcons.chevronDown,
                                       size: 8,

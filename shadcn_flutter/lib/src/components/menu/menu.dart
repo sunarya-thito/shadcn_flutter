@@ -56,7 +56,8 @@ class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
   final ContextedValueChanged<T>? onChanged;
   final List<Widget> children;
 
-  const MenuRadioGroup({super.key, 
+  const MenuRadioGroup({
+    super.key,
     required this.value,
     required this.onChanged,
     required this.children,
@@ -89,7 +90,8 @@ class MenuRadio<T> extends StatelessWidget {
   final bool enabled;
   final bool autoClose;
 
-  const MenuRadio({super.key, 
+  const MenuRadio({
+    super.key,
     required this.value,
     required this.child,
     this.trailing,
@@ -162,7 +164,8 @@ class MenuButton extends StatefulWidget implements MenuItem {
   final bool autoClose;
   @override
   final PopoverController? popoverController;
-  const MenuButton({super.key, 
+  const MenuButton({
+    super.key,
     required this.child,
     this.subMenu,
     this.onPressed,
@@ -186,7 +189,8 @@ class MenuLabel extends StatelessWidget implements MenuItem {
   final Widget? trailing;
   final Widget? leading;
 
-  const MenuLabel({super.key, 
+  const MenuLabel({
+    super.key,
     required this.child,
     this.trailing,
     this.leading,
@@ -239,7 +243,8 @@ class MenuCheckbox extends StatelessWidget implements MenuItem {
   final bool enabled;
   final bool autoClose;
 
-  const MenuCheckbox({super.key, 
+  const MenuCheckbox({
+    super.key,
     this.value = false,
     this.onChanged,
     required this.child,
@@ -364,7 +369,7 @@ class _MenuButtonState extends State<MenuButton> {
                       decoration: (context, states, value) {
                         final theme = Theme.of(context);
                         return (value as BoxDecoration).copyWith(
-                          color: menuData.popoverController.hasOpenPopovers
+                          color: menuData.popoverController.hasOpenPopover
                               ? theme.colorScheme.accent
                               : null,
                           borderRadius: BorderRadius.circular(theme.radiusMd),
@@ -407,7 +412,7 @@ class _MenuButtonState extends State<MenuButton> {
                         if ((menuBarData == null ||
                                 menuGroupData.hasOpenPopovers) &&
                             widget.subMenu != null) {
-                          if (!menuData.popoverController.hasOpenPopovers) {
+                          if (!menuData.popoverController.hasOpenPopover) {
                             openSubMenu(context);
                           }
                         } else {
@@ -418,7 +423,7 @@ class _MenuButtonState extends State<MenuButton> {
                     onFocus: (value) {
                       if (value) {
                         if (widget.subMenu != null) {
-                          if (!menuData.popoverController.hasOpenPopovers) {
+                          if (!menuData.popoverController.hasOpenPopover) {
                             openSubMenu(context);
                           }
                         } else {
@@ -427,14 +432,10 @@ class _MenuButtonState extends State<MenuButton> {
                       }
                     },
                     onPressed: () {
-                      RenderBox renderBox =
-                          context.findRenderObject() as RenderBox;
-                      final globalPosition =
-                          renderBox.localToGlobal(Offset.zero);
                       widget.onPressed?.call(context);
                       if (widget.subMenu != null &&
                           widget.subMenu!.isNotEmpty) {
-                        if (!menuData.popoverController.hasOpenPopovers) {
+                        if (!menuData.popoverController.hasOpenPopover) {
                           openSubMenu(context);
                         }
                       } else {
@@ -466,7 +467,7 @@ class MenuGroupData {
 
   bool get hasOpenPopovers {
     for (final child in children) {
-      if (child.popoverController.hasOpenPopovers) {
+      if (child.popoverController.hasOpenPopover) {
         const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6);
         return true;
       }

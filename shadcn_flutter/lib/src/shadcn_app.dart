@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter_platform_interface/shadcn_flutter_platform_interface.dart';
 
-import 'components/scrollview.dart';
+import 'components/control/scrollview.dart';
 
 class ShadcnApp extends StatefulWidget {
   const ShadcnApp({

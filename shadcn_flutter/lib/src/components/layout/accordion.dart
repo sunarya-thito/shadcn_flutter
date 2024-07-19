@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/services.dart';
 
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 class Accordion extends StatefulWidget {
   final List<Widget> items;

@@ -1,5 +1,4 @@
-
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 class Avatar extends StatefulWidget {
   static String getInitials(String name) {

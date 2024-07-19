@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 class Breadcrumb extends StatelessWidget {
   static final Widget arrowSeparator = Padding(

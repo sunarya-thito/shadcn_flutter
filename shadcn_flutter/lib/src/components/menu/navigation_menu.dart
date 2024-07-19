@@ -5,7 +5,8 @@ class NavigationItem extends StatefulWidget {
   final Widget? content;
   final Widget child;
 
-  const NavigationItem({super.key, this.onPressed, this.content, required this.child});
+  const NavigationItem(
+      {super.key, this.onPressed, this.content, required this.child});
 
   @override
   State<NavigationItem> createState() => NavigationItemState();
@@ -115,7 +116,8 @@ class NavigationContent extends StatelessWidget {
   final Widget? trailing;
   final VoidCallback? onPressed;
 
-  const NavigationContent({super.key, 
+  const NavigationContent({
+    super.key,
     required this.title,
     this.content,
     this.leading,
@@ -151,7 +153,8 @@ class NavigationContentList extends StatelessWidget {
   final double runSpacing;
   final bool reverse;
 
-  const NavigationContentList({super.key, 
+  const NavigationContentList({
+    super.key,
     required this.children,
     this.crossAxisCount = 3,
     this.spacing = 12,
@@ -222,7 +225,7 @@ class NavigationMenuState extends State<NavigationMenu> {
   }
 
   bool isActive(NavigationItemState item) {
-    return _popoverController.hasOpenPopovers &&
+    return _popoverController.hasOpenPopover &&
         widget.children[_activeIndex.value] == item.widget;
   }
 
@@ -234,7 +237,7 @@ class NavigationMenuState extends State<NavigationMenu> {
   }
 
   void _show(BuildContext context) {
-    if (_popoverController.hasOpenPopovers) {
+    if (_popoverController.hasOpenPopover) {
       _popoverController.anchorContext = context;
       return;
     }

@@ -1,4 +1,4 @@
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 class FocusOutline extends StatelessWidget {
   final Widget child;

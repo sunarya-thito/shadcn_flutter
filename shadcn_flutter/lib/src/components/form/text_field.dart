@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/services.dart';
 
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 // just wrap around the material.TextField widget
 class TextField extends StatefulWidget {

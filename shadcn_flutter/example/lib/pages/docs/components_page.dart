@@ -64,7 +64,8 @@ class _ComponentsPageState extends State<ComponentsPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text('Components').h1(),
-            const Text('Beautifully designed components from Shadcn/UI is now available for Flutter.')
+            const Text(
+                    'Beautifully designed components from Shadcn/UI is now available for Flutter.')
                 .lead(),
             gap(16),
             const Align(
@@ -961,11 +962,43 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     children: [
                       const Text('Drawer!').large().medium(),
                       gap(4),
-                      const Text('This is a drawer that you can use to display content')
+                      const Text(
+                              'This is a drawer that you can use to display content')
                           .muted(),
                     ],
                   ).withPadding(horizontal: 32),
                 ).sized(width: 300, height: 300),
+              ),
+              ComponentCard(
+                name: 'hover_card',
+                title: 'Hover Card',
+                scale: 1,
+                example: Stack(
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('@flutter').medium().underline(),
+                        gap(16),
+                        Card(
+                          child: Basic(
+                            leading: FlutterLogo(),
+                            title: Text('@flutter'),
+                            content: Text(
+                                'The Flutter SDK provides the tools to build beautiful apps for mobile, web, and desktop from a single codebase.'),
+                          ),
+                        ).sized(width: 300),
+                      ],
+                    ),
+                    const Positioned(
+                      top: 13,
+                      left: 160,
+                      child: CustomPaint(
+                        painter: CursorPainter(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               ComponentCard(
                 title: 'Sheet',
@@ -980,7 +1013,8 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     children: [
                       const Text('Sheet!').large().medium(),
                       gap(4),
-                      const Text('This is a sheet that you can use to display content')
+                      const Text(
+                              'This is a sheet that you can use to display content')
                           .muted(),
                     ],
                   ).withPadding(horizontal: 32, vertical: 48),
@@ -991,17 +1025,28 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 title: 'Tooltip',
                 center: true,
                 scale: 1,
-                example: Column(
+                example: Stack(
                   children: [
-                    DestructiveButton(
-                      leading: const Icon(Icons.delete),
-                      child: const Text('Delete'),
-                      onPressed: () {},
+                    Column(
+                      children: [
+                        DestructiveButton(
+                          leading: const Icon(Icons.delete),
+                          child: const Text('Delete'),
+                          onPressed: () {},
+                        ),
+                        gap(4),
+                        const TooltipContainer(
+                          child: Text('Click to delete this item'),
+                        ),
+                      ],
                     ),
-                    gap(4),
-                    const TooltipContainer(
-                      child: Text('Click to delete this item'),
-                    ),
+                    const Positioned(
+                      top: 25,
+                      left: 100,
+                      child: CustomPaint(
+                        painter: CursorPainter(),
+                      ),
+                    )
                   ],
                 ),
               ),

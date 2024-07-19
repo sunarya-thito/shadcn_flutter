@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 class OutlinedContainer extends StatefulWidget {
   final Widget child;

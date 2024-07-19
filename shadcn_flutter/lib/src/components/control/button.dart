@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import '../../shadcn_flutter.dart';
+import '../../../shadcn_flutter.dart';
 
 class Toggle extends StatefulWidget {
   final bool value;

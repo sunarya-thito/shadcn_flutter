@@ -55,6 +55,7 @@ This is a port of the shadcn UI package to flutter.
 ### Surfaces
 [![Dialog](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/dialog.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/dialog)
 [![Drawer](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/drawer.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/drawer)
+[![Hover Card](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/hover_card.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/hover_card)
 [![Popover](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/popover.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/popover)
 [![Sheet](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/sheet.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/sheet)
 [![Tooltip](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/tooltip.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tooltip)
