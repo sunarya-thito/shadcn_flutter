@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/src/components/overlay/toast.dart';
 import 'package:shadcn_flutter_platform_interface/shadcn_flutter_platform_interface.dart';
 
 import 'components/control/scrollview.dart';
@@ -266,13 +267,15 @@ class _ShadcnAppState extends State<ShadcnApp> {
             ),
             child: Theme(
               data: theme,
-              child: widget.builder != null
-                  ? Builder(
-                      builder: (BuildContext context) {
-                        return widget.builder!(context, child);
-                      },
-                    )
-                  : child ?? const SizedBox.shrink(),
+              child: ToastLayer(
+                child: widget.builder != null
+                    ? Builder(
+                        builder: (BuildContext context) {
+                          return widget.builder!(context, child);
+                        },
+                      )
+                    : child ?? const SizedBox.shrink(),
+              ),
             ),
           ),
         ),

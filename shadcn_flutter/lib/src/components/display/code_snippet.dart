@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:flutter/services.dart';
 import 'package:syntax_highlight/syntax_highlight.dart';
 
@@ -136,11 +135,8 @@ class _CodeSnippetState extends State<CodeSnippet> {
                         bottom: 14,
                       ),
                       child: data == null
-                          ? material.SelectableText(widget.code)
-                              .muted()
-                              .mono()
-                              .small()
-                          : material.SelectableText.rich(
+                          ? SelectableText(widget.code).muted().mono().small()
+                          : SelectableText.rich(
                               data.highlight(widget.code),
                             ).mono().small(),
                     ),

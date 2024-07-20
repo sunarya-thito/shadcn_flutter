@@ -1,5 +1,226 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+Widget buildEditableTextContextMenu(
+    BuildContext innerContext, EditableTextState editableTextState,
+    [UndoHistoryController? undoHistoryController]) {
+  var contextMenuButtonItems =
+      List.of(editableTextState.contextMenuButtonItems);
+
+  ContextMenuButtonItem? take(ContextMenuButtonType type) {
+    var item = contextMenuButtonItems
+        .where((element) => element.type == type)
+        .firstOrNull;
+    if (item != null) {
+      contextMenuButtonItems.remove(item);
+    }
+    return item;
+  }
+
+  var cutButton = take(ContextMenuButtonType.cut);
+  var copyButton = take(ContextMenuButtonType.copy);
+  var pasteButton = take(ContextMenuButtonType.paste);
+  var selectAllButton = take(ContextMenuButtonType.selectAll);
+  if (undoHistoryController == null) {
+    return ShadcnUI(
+      child: ContextMenuPopup(
+        anchorContext: innerContext,
+        position: editableTextState.contextMenuAnchors.primaryAnchor +
+            const Offset(8, -8),
+        children: [
+          MenuButton(
+            enabled: cutButton != null,
+            onPressed: (context) {
+              cutButton?.onPressed?.call();
+            },
+            trailing: const MenuShortcut(
+              activator: SingleActivator(
+                LogicalKeyboardKey.keyX,
+                control: true,
+              ),
+            ),
+            child: const Text('Cut'),
+          ),
+          MenuButton(
+            enabled: copyButton != null,
+            onPressed: (context) {
+              copyButton?.onPressed?.call();
+            },
+            trailing: const MenuShortcut(
+              activator: SingleActivator(
+                LogicalKeyboardKey.keyC,
+                control: true,
+              ),
+            ),
+            child: const Text('Copy'),
+          ),
+          MenuButton(
+            enabled: pasteButton != null,
+            onPressed: (context) {
+              pasteButton?.onPressed?.call();
+            },
+            trailing: const MenuShortcut(
+              activator: SingleActivator(
+                LogicalKeyboardKey.keyV,
+                control: true,
+              ),
+            ),
+            child: const Text('Paste'),
+          ),
+          MenuButton(
+            enabled: selectAllButton != null,
+            onPressed: (context) {
+              // somehow, we lost focus upon context menu open
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                selectAllButton?.onPressed?.call();
+              });
+            },
+            trailing: const MenuShortcut(
+              activator: SingleActivator(
+                LogicalKeyboardKey.keyA,
+                control: true,
+              ),
+            ),
+            child: const Text('Select All'),
+          ),
+          if (contextMenuButtonItems.isNotEmpty) ...[
+            // add the rest
+            const MenuDivider(),
+            ...contextMenuButtonItems
+                .map<MenuButton?>((e) {
+                  if (e.label == null) {
+                    return null;
+                  }
+                  return MenuButton(
+                    onPressed: (context) {
+                      e.onPressed?.call();
+                    },
+                    child: Text(e.label!),
+                  );
+                })
+                .where((element) => element != null)
+                .cast<MenuButton>(),
+          ]
+        ],
+      ),
+    );
+  }
+  return ShadcnUI(
+    child: AnimatedBuilder(
+        animation: undoHistoryController,
+        builder: (context, child) {
+          return ContextMenuPopup(
+            anchorContext: innerContext,
+            position: editableTextState.contextMenuAnchors.primaryAnchor +
+                const Offset(8, -8),
+            children: [
+              MenuButton(
+                enabled: undoHistoryController.value.canUndo,
+                onPressed: (context) {
+                  undoHistoryController.undo();
+                },
+                trailing: const MenuShortcut(
+                  activator: SingleActivator(
+                    LogicalKeyboardKey.keyZ,
+                    control: true,
+                  ),
+                ),
+                child: const Text('Undo'),
+              ),
+              MenuButton(
+                enabled: undoHistoryController.value.canRedo,
+                onPressed: (context) {
+                  undoHistoryController.redo();
+                },
+                trailing: const MenuShortcut(
+                  activator: SingleActivator(
+                    LogicalKeyboardKey.keyZ,
+                    control: true,
+                    shift: true,
+                  ),
+                ),
+                child: const Text('Redo'),
+              ),
+              const MenuDivider(),
+              MenuButton(
+                enabled: cutButton != null,
+                onPressed: (context) {
+                  cutButton?.onPressed?.call();
+                },
+                trailing: const MenuShortcut(
+                  activator: SingleActivator(
+                    LogicalKeyboardKey.keyX,
+                    control: true,
+                  ),
+                ),
+                child: const Text('Cut'),
+              ),
+              MenuButton(
+                enabled: copyButton != null,
+                onPressed: (context) {
+                  copyButton?.onPressed?.call();
+                },
+                trailing: const MenuShortcut(
+                  activator: SingleActivator(
+                    LogicalKeyboardKey.keyC,
+                    control: true,
+                  ),
+                ),
+                child: const Text('Copy'),
+              ),
+              MenuButton(
+                enabled: pasteButton != null,
+                onPressed: (context) {
+                  pasteButton?.onPressed?.call();
+                },
+                trailing: const MenuShortcut(
+                  activator: SingleActivator(
+                    LogicalKeyboardKey.keyV,
+                    control: true,
+                  ),
+                ),
+                child: const Text('Paste'),
+              ),
+              MenuButton(
+                enabled: selectAllButton != null,
+                onPressed: (context) {
+                  // somehow, we lost focus upon context menu open
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    selectAllButton?.onPressed?.call();
+                  });
+                },
+                trailing: const MenuShortcut(
+                  activator: SingleActivator(
+                    LogicalKeyboardKey.keyA,
+                    control: true,
+                  ),
+                ),
+                child: const Text('Select All'),
+              ),
+              if (contextMenuButtonItems.isNotEmpty) ...[
+                // add the rest
+                const MenuDivider(),
+                ...contextMenuButtonItems
+                    .map<MenuButton?>((e) {
+                      if (e.label == null) {
+                        return null;
+                      }
+                      return MenuButton(
+                        onPressed: (context) {
+                          e.onPressed?.call();
+                        },
+                        child: Text(e.label!),
+                      );
+                    })
+                    .where((element) => element != null)
+                    .cast<MenuButton>(),
+              ]
+            ],
+          );
+        }),
+  );
+}
 
 class ContextMenu extends StatefulWidget {
   final Widget child;

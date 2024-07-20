@@ -34,6 +34,7 @@ import 'package:example/pages/docs/components/switch_example.dart';
 import 'package:example/pages/docs/components/tab_list_example.dart';
 import 'package:example/pages/docs/components/tabs_example.dart';
 import 'package:example/pages/docs/components/text_area_example.dart';
+import 'package:example/pages/docs/components/toast_example.dart';
 import 'package:example/pages/docs/components/toggle_example.dart';
 import 'package:example/pages/docs/components/tooltip_example.dart';
 import 'package:example/pages/docs/components_page.dart';
@@ -396,6 +397,13 @@ class MyAppState extends State<MyApp> {
               return const HoverCardExample();
             },
           ),
+          GoRoute(
+            path: 'toast',
+            name: 'toast',
+            builder: (context, state) {
+              return const ToastExample();
+            },
+          )
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

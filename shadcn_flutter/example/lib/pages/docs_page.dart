@@ -175,7 +175,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Circular Progress', 'circular_progress'),
         ShadcnDocsPage('Progress', 'progress'),
         ShadcnDocsPage('Skeleton', 'skeleton'),
-        ShadcnDocsPage('Toast', 'toast', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Toast', 'toast'),
       ],
     ),
     ShadcnDocsSection(
