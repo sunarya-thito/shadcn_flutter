@@ -13,7 +13,7 @@ class _ColorPickerExample1State extends State<ColorPickerExample1> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 300,
-      child: ColorPickerSet(
+      child: HSVColorPickerSet(
         color: color,
         onColorChanged: (value) {
           setState(() {

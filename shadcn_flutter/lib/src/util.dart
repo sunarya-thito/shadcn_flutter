@@ -517,3 +517,58 @@ Widget mergeAnimatedTextStyle({
     },
   );
 }
+
+extension ColorExtension on Color {
+  Color getContrastColor([double luminanceContrast = 1]) {
+    // luminance contrast is between 0..1
+    assert(luminanceContrast >= 0 && luminanceContrast <= 1,
+        'luminanceContrast should be between 0 and 1');
+    final hsl = HSLColor.fromColor(this);
+    double currentLuminance = hsl.lightness;
+    double targetLuminance;
+    if (currentLuminance >= 0.5) {
+      targetLuminance =
+          currentLuminance - (currentLuminance * luminanceContrast);
+    } else {
+      targetLuminance =
+          currentLuminance + ((1 - currentLuminance) * luminanceContrast);
+    }
+    return hsl.withLightness(targetLuminance).toColor();
+  }
+
+  Color withLuminance(double luminance) {
+    final hsl = HSLColor.fromColor(this);
+    return hsl.withLightness(luminance).toColor();
+  }
+
+  String toHex({bool includeHashSign = false, bool includeAlpha = true}) {
+    String hex = value.toRadixString(16).padLeft(8, '0');
+    if (!includeAlpha) {
+      hex = hex.substring(2);
+    }
+    if (includeHashSign) {
+      hex = '#$hex';
+    }
+    return hex;
+  }
+
+  HSLColor toHSL() {
+    return HSLColor.fromColor(this);
+  }
+
+  HSVColor toHSV() {
+    return HSVColor.fromColor(this);
+  }
+}
+
+extension HSLColorExtension on HSLColor {
+  HSVColor toHSV() {
+    return HSVColor.fromAHSV(alpha, hue, saturation, lightness);
+  }
+}
+
+extension HSVColorExtension on HSVColor {
+  HSLColor toHSL() {
+    return HSLColor.fromAHSL(alpha, hue, saturation, value);
+  }
+}
