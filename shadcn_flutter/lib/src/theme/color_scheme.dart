@@ -91,15 +91,18 @@ class ColorShades {
   Color get shade950 => _colors[950]!;
 }
 
-Color colorFromHex(String hex) {
-  if (hex.startsWith('#')) {
-    hex = hex.substring(1);
-  }
-  if (hex.length == 6) {
-    hex = 'FF$hex';
-  }
-  return Color(int.parse(hex, radix: 16));
-}
+// Color colorFromHex(String? hex) {
+//
+//   if (hex.startsWith('#')) {
+//     hex = hex.substring(1);
+//   }
+//   if (hex.length == 6) {
+//     hex = 'FF$hex';
+//   }
+//   var parse = int.tryParse(hex, radix: 16);
+//   assert(parse != null, 'ColorScheme: Invalid hex color value $hex');
+//   return Color(parse!);
+// }
 
 String hexFromColor(Color color) {
   return '#${color.value.toRadixString(16).toUpperCase()}';
@@ -126,6 +129,11 @@ class ColorScheme {
     'border',
     'input',
     'ring',
+    'chart1',
+    'chart2',
+    'chart3',
+    'chart4',
+    'chart5',
   };
   final Brightness brightness;
   final Color background;
@@ -147,6 +155,11 @@ class ColorScheme {
   final Color border;
   final Color input;
   final Color ring;
+  final Color chart1;
+  final Color chart2;
+  final Color chart3;
+  final Color chart4;
+  final Color chart5;
 
   const ColorScheme({
     required this.brightness,
@@ -169,28 +182,38 @@ class ColorScheme {
     required this.border,
     required this.input,
     required this.ring,
+    required this.chart1,
+    required this.chart2,
+    required this.chart3,
+    required this.chart4,
+    required this.chart5,
   });
 
   ColorScheme.fromMap(Map<String, dynamic> map)
-      : background = colorFromHex(map['background']),
-        foreground = colorFromHex(map['foreground']),
-        card = colorFromHex(map['card']),
-        cardForeground = colorFromHex(map['cardForeground']),
-        popover = colorFromHex(map['popover']),
-        popoverForeground = colorFromHex(map['popoverForeground']),
-        primary = colorFromHex(map['primary']),
-        primaryForeground = colorFromHex(map['primaryForeground']),
-        secondary = colorFromHex(map['secondary']),
-        secondaryForeground = colorFromHex(map['secondaryForeground']),
-        muted = colorFromHex(map['muted']),
-        mutedForeground = colorFromHex(map['mutedForeground']),
-        accent = colorFromHex(map['accent']),
-        accentForeground = colorFromHex(map['accentForeground']),
-        destructive = colorFromHex(map['destructive']),
-        destructiveForeground = colorFromHex(map['destructiveForeground']),
-        border = colorFromHex(map['border']),
-        input = colorFromHex(map['input']),
-        ring = colorFromHex(map['ring']),
+      : background = map._col('background'),
+        foreground = map._col('foreground'),
+        card = map._col('card'),
+        cardForeground = map._col('cardForeground'),
+        popover = map._col('popover'),
+        popoverForeground = map._col('popoverForeground'),
+        primary = map._col('primary'),
+        primaryForeground = map._col('primaryForeground'),
+        secondary = map._col('secondary'),
+        secondaryForeground = map._col('secondaryForeground'),
+        muted = map._col('muted'),
+        mutedForeground = map._col('mutedForeground'),
+        accent = map._col('accent'),
+        accentForeground = map._col('accentForeground'),
+        destructive = map._col('destructive'),
+        destructiveForeground = map._col('destructiveForeground'),
+        border = map._col('border'),
+        input = map._col('input'),
+        ring = map._col('ring'),
+        chart1 = map._col('chart1'),
+        chart2 = map._col('chart2'),
+        chart3 = map._col('chart3'),
+        chart4 = map._col('chart4'),
+        chart5 = map._col('chart5'),
         brightness = Brightness.values
                 .where((element) => element.name == map['brightness'])
                 .firstOrNull ??
@@ -217,6 +240,11 @@ class ColorScheme {
       'border': hexFromColor(border),
       'input': hexFromColor(input),
       'ring': hexFromColor(ring),
+      'chart1': hexFromColor(chart1),
+      'chart2': hexFromColor(chart2),
+      'chart3': hexFromColor(chart3),
+      'chart4': hexFromColor(chart4),
+      'chart5': hexFromColor(chart5),
       'brightness': brightness.name,
     };
   }
@@ -242,6 +270,11 @@ class ColorScheme {
       'border': border,
       'input': input,
       'ring': ring,
+      'chart1': chart1,
+      'chart2': chart2,
+      'chart3': chart3,
+      'chart4': chart4,
+      'chart5': chart5,
     };
   }
 
@@ -269,6 +302,11 @@ class ColorScheme {
           border: colors['border']!,
           input: colors['input']!,
           ring: colors['ring']!,
+          chart1: colors['chart1']!,
+          chart2: colors['chart2']!,
+          chart3: colors['chart3']!,
+          chart4: colors['chart4']!,
+          chart5: colors['chart5']!,
         );
 
   ColorScheme copyWith({
@@ -315,6 +353,37 @@ class ColorScheme {
       border: border ?? this.border,
       input: input ?? this.input,
       ring: ring ?? this.ring,
+      chart1: chart1,
+      chart2: chart2,
+      chart3: chart3,
+      chart4: chart4,
+      chart5: chart5,
     );
+  }
+
+  List<Color> get chartColors => [chart1, chart2, chart3, chart4, chart5];
+}
+
+extension _MapColorGetter on Map<String, Color> {
+  Color _col(String name) {
+    Color? color = this[name];
+    assert(color != null, 'ColorScheme: Missing color for $name');
+    return color!;
+  }
+}
+
+extension _DynamicMapColorGetter on Map<String, dynamic> {
+  Color _col(String name) {
+    String? value = this[name];
+    assert(value != null, 'ColorScheme: Missing color for $name');
+    if (value!.startsWith('#')) {
+      value = value.substring(1);
+    }
+    if (value.length == 6) {
+      value = 'FF$value';
+    }
+    var parse = int.tryParse(value, radix: 16);
+    assert(parse != null, 'ColorScheme: Invalid hex color value $value');
+    return Color(parse!);
   }
 }

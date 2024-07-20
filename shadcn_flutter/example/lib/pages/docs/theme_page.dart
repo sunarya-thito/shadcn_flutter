@@ -33,8 +33,8 @@ final Map<String, ColorScheme> colorSchemes = {
   'darkViolet': ColorSchemes.darkViolet(),
   'lightYellow': ColorSchemes.lightYellow(),
   'darkYellow': ColorSchemes.darkYellow(),
-  'lightZync': ColorSchemes.lightZync(),
-  'darkZync': ColorSchemes.darkZync(),
+  'lightZinc': ColorSchemes.lightZinc(),
+  'darkZinc': ColorSchemes.darkZinc(),
 };
 
 String? nameFromColorScheme(ColorScheme scheme) {
@@ -59,7 +59,7 @@ class _ThemePageState extends State<ThemePage> {
   @override
   void initState() {
     super.initState();
-    colors = ColorSchemes.darkZync().toColorMap();
+    colors = ColorSchemes.darkZinc().toColorMap();
   }
 
   @override
@@ -97,25 +97,6 @@ class _ThemePageState extends State<ThemePage> {
               Expanded(
                   child: Text(
                       'You can use your own color scheme to customize the look and feel of your app.')),
-              // Checkbox(
-              //     state: applyDirectly
-              //         ? CheckboxState.checked
-              //         : CheckboxState.unchecked,
-              //     onChanged: (value) {
-              //       setState(() {
-              //         applyDirectly = value == CheckboxState.checked;
-              //         if (applyDirectly) {
-              //           state.changeRadius(radius);
-              //           if (customColorScheme) {
-              //             state.changeColorScheme(
-              //                 ColorScheme.fromColors(colors: colors));
-              //           } else {
-              //             state.changeColorScheme(colorScheme);
-              //           }
-              //         }
-              //       });
-              //     },
-              //     trailing: Text('Apply directly')),
             ],
           ).p(),
           GridView.count(
@@ -123,7 +104,9 @@ class _ThemePageState extends State<ThemePage> {
             shrinkWrap: true,
             children: colors.keys.map(buildGridTile).toList(),
           ).p(),
-          const Text('Premade color schemes').h2().anchored(premadeColorSchemeKey),
+          const Text('Premade color schemes')
+              .h2()
+              .anchored(premadeColorSchemeKey),
           // Text('You can also use premade color schemes.').p(),
           const Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,26 +114,6 @@ class _ThemePageState extends State<ThemePage> {
               Expanded(
                   child: Text(
                       'You can also use premade color schemes to customize the look and feel of your app.')),
-              // apply directly
-              // Checkbox(
-              //     state: applyDirectly
-              //         ? CheckboxState.checked
-              //         : CheckboxState.unchecked,
-              //     onChanged: (value) {
-              //       setState(() {
-              //         applyDirectly = value == CheckboxState.checked;
-              //         if (applyDirectly) {
-              //           state.changeRadius(radius);
-              //           if (customColorScheme) {
-              //             state.changeColorScheme(
-              //                 ColorScheme.fromColors(colors: colors));
-              //           } else {
-              //             state.changeColorScheme(colorScheme);
-              //           }
-              //         }
-              //       });
-              //     },
-              //     trailing: Text('Apply directly')),
             ],
           ).p(),
           Wrap(
@@ -166,26 +129,6 @@ class _ThemePageState extends State<ThemePage> {
               Expanded(
                   child: Text(
                       'You can customize how rounded your app looks by changing the radius.')),
-              // Checkbox(
-              //     state: applyDirectly
-              //         ? CheckboxState.checked
-              //         : CheckboxState.unchecked,
-              //     onChanged: (value) {
-              //       setState(() {
-              //         applyDirectly = value == CheckboxState.checked;
-              //         if (applyDirectly) {
-              //           state.changeRadius(radius);
-              //           // state.changeColorScheme(colorScheme);
-              //           if (customColorScheme) {
-              //             state.changeColorScheme(
-              //                 ColorScheme.fromColors(colors: colors));
-              //           } else {
-              //             state.changeColorScheme(colorScheme);
-              //           }
-              //         }
-              //       });
-              //     },
-              //     trailing: Text('Apply directly')),
             ],
           ).p(),
           Slider(
@@ -202,9 +145,6 @@ class _ThemePageState extends State<ThemePage> {
             max: 2,
             divisions: 20,
           ).p(),
-          // Text('Preview').h2().anchored(previewKey),
-          // Text('Preview the color scheme.').p(),
-          // // TODO: add preview
           const Text('Code').h2().anchored(codeKey),
           const Text('Use the following code to apply the color scheme.').p(),
           CodeSnippet(

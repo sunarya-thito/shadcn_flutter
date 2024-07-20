@@ -78,7 +78,7 @@ void main() async {
   }
   double initialRadius = prefs.getDouble('radius') ?? 0.5;
   runApp(MyApp(
-    initialColorScheme: initialColorScheme ?? colorSchemes['darkZync']!,
+    initialColorScheme: initialColorScheme ?? colorSchemes['darkZinc']!,
     initialRadius: initialRadius,
   ));
 }
