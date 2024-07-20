@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
@@ -563,12 +565,40 @@ extension ColorExtension on Color {
 
 extension HSLColorExtension on HSLColor {
   HSVColor toHSV() {
-    return HSVColor.fromAHSV(alpha, hue, saturation, lightness);
+    final double l = lightness;
+    final double s = saturation;
+    final double h = hue;
+    final double a = alpha;
+    final double v = l + s * min(l, 1 - l);
+    double newH;
+    double newS;
+    if (v == 0) {
+      newH = 0;
+      newS = 0;
+    } else {
+      newS = 2 * (1 - l / v);
+      newH = h;
+    }
+    return HSVColor.fromAHSV(a, newH, newS, v);
   }
 }
 
 extension HSVColorExtension on HSVColor {
   HSLColor toHSL() {
-    return HSLColor.fromAHSL(alpha, hue, saturation, value);
+    final double v = value;
+    final double s = saturation;
+    final double h = hue;
+    final double a = alpha;
+    final double l = v * (1 - s / 2);
+    double newH;
+    double newS;
+    if (l == 0 || l == 1) {
+      newH = 0;
+      newS = 0;
+    } else {
+      newS = (v - l) / min(l, 1 - l);
+      newH = h;
+    }
+    return HSLColor.fromAHSL(a, newH, newS, l);
   }
 }

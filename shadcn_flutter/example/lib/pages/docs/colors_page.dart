@@ -37,7 +37,7 @@ class _ColorsPageState extends State<ColorsPage> {
   final OnThisPage _predefinedColorsKey = OnThisPage();
   final OnThisPage _customColorKey = OnThisPage();
 
-  HSVColor _customColor = Colors.red.toHSV();
+  HSLColor _customColor = Colors.red.toHSL();
   static const _defaultHueShift = 0;
   static const _defaultSaturationStepUp = 0;
   static const _defaultSaturationStepDown = 0;
@@ -121,7 +121,7 @@ class _ColorsPageState extends State<ColorsPage> {
                       borderRadius: theme.borderRadiusMd,
                       border: shade == 500
                           ? Border.all(
-                              width: 4,
+                              width: 3,
                               color: theme.colorScheme.foreground,
                               strokeAlign: BorderSide.strokeAlignOutside)
                           : null,
@@ -170,8 +170,8 @@ class _ColorsPageState extends State<ColorsPage> {
                         showAlpha: false,
                         onColorChanged: (value) {
                           setState(() {
-                            _customColor = ColorShades.shiftHSV(
-                              value,
+                            _customColor = ColorShades.shiftHSL(
+                              value.toHSL(),
                               base: shade,
                               500,
                             );
@@ -194,6 +194,12 @@ class _ColorsPageState extends State<ColorsPage> {
                       decoration: BoxDecoration(
                         color: swatch[shade],
                         borderRadius: theme.borderRadiusMd,
+                        border: shade == 500
+                            ? Border.all(
+                                width: 3,
+                                color: theme.colorScheme.foreground,
+                                strokeAlign: BorderSide.strokeAlignOutside)
+                            : null,
                       ),
                       alignment: Alignment.center,
                       child: Visibility(
@@ -209,7 +215,10 @@ class _ColorsPageState extends State<ColorsPage> {
                 }),
               ),
               gap(8),
-              Text('$shade').xSmall().mono().muted(),
+              Text(
+                '${shade == 500 ? '500 (Base)' : shade}',
+                textAlign: TextAlign.center,
+              ).xSmall().mono().muted(),
             ],
           ),
         ),
@@ -223,11 +232,11 @@ class _ColorsPageState extends State<ColorsPage> {
 
   Widget buildCode() {
     return CodeSnippet(
-      code: generateCode(ColorShades.fromAccentHSV(
+      code: generateCode(ColorShades.fromAccentHSL(
         _customColor,
         hueShift: _hueShift,
-        valueStepDown: _lightnessStepDown,
-        valueStepUp: _lightnessStepUp,
+        lightnessStepDown: _lightnessStepDown,
+        lightnessStepUp: _lightnessStepUp,
         saturationStepDown: _saturationStepDown,
         saturationStepUp: _saturationStepUp,
       )),
@@ -288,7 +297,7 @@ class _ColorsPageState extends State<ColorsPage> {
                       OutlineButton(
                         onPressed: () {
                           setState(() {
-                            _customColor = color.value[500].toHSV();
+                            _customColor = color.value[500].toHSL();
                             Scrollable.ensureVisible(
                                 _customColorKey.currentContext!,
                                 duration: kDefaultDuration,
@@ -363,11 +372,11 @@ class _ColorsPageState extends State<ColorsPage> {
           buildEditableColorRow(
               context,
               'custom',
-              ColorShades.fromAccentHSV(
+              ColorShades.fromAccentHSL(
                 _customColor,
                 hueShift: _hueShift,
-                valueStepDown: _lightnessStepDown,
-                valueStepUp: _lightnessStepUp,
+                lightnessStepUp: _lightnessStepDown,
+                lightnessStepDown: _lightnessStepUp,
                 saturationStepDown: _saturationStepDown,
                 saturationStepUp: _saturationStepUp,
               )),
@@ -388,9 +397,9 @@ class _ColorsPageState extends State<ColorsPage> {
               label: Text('Hue Shift'),
               child: Slider(
                 value: SliderValue.single(_hueShift.toDouble()),
-                min: -100,
-                max: 100,
-                divisions: 200,
+                min: -360,
+                max: 360,
+                divisions: 100,
                 onChanged: (value) {
                   setState(() {
                     _hueShift = value.value.toInt();

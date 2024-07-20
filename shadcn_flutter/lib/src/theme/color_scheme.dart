@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/painting.dart';
+import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 Color _fromAHSL(double a, double h, double s, double l) {
   return HSLColor.fromAHSL(a, h, s, l).toColor();
@@ -76,6 +77,24 @@ class ColorShades implements Color, ColorSwatch {
     return slate;
   }
 
+  factory ColorShades.fromAccent(Color accent,
+      {int base = 500,
+      int hueShift = 0,
+      int saturationStepDown = 0,
+      int saturationStepUp = 0,
+      int lightnessStepDown = 8,
+      int lightnessStepUp = 9}) {
+    assert(_shadeValues.contains(base),
+        'ColorShades.fromAccent: Invalid base value');
+    final hsl = HSLColor.fromColor(accent);
+    return ColorShades.fromAccentHSL(hsl,
+        base: base,
+        hueShift: hueShift,
+        saturationStepDown: saturationStepDown,
+        saturationStepUp: saturationStepUp,
+        lightnessStepDown: lightnessStepDown,
+        lightnessStepUp: lightnessStepUp);
+  }
   factory ColorShades.fromAccentHSL(HSLColor accent,
       {int base = 500,
       int hueShift = 0,
@@ -85,20 +104,10 @@ class ColorShades implements Color, ColorSwatch {
       int lightnessStepUp = 9}) {
     assert(_shadeValues.contains(base),
         'ColorShades.fromAccent: Invalid base value');
-    assert(0 <= saturationStepDown && saturationStepDown <= 20,
-        'ColorShades.fromAccent: Invalid saturationStepDown value');
-    assert(0 <= saturationStepUp && saturationStepUp <= 20,
-        'ColorShades.fromAccent: Invalid saturationStepUp value');
-    assert(0 <= lightnessStepDown && lightnessStepDown <= 20,
-        'ColorShades.fromAccent: Invalid lightnessStepDown value');
-    assert(0 <= lightnessStepUp && lightnessStepUp <= 20,
-        'ColorShades.fromAccent: Invalid lightnessStepUp value');
-    assert(-100 <= hueShift && hueShift <= 100,
-        'ColorShades.fromAccent: Invalid hueShift value');
     final slate = ColorShades._();
     for (final key in _shadeValues) {
       double delta = (key - base) / _step;
-      double hueDelta = delta * hueShift;
+      double hueDelta = delta * (hueShift / 10);
       double saturationDelta =
           delta > 0 ? delta * saturationStepUp : delta * saturationStepDown;
       double lightnessDelta =
@@ -108,42 +117,6 @@ class ColorShades implements Color, ColorSwatch {
       final l = (accent.lightness * 100 - lightnessDelta).clamp(0, 100) / 100;
       final a = accent.alpha;
       slate._colors[key] = _fromAHSL(a, h, s, l);
-    }
-    return slate;
-  }
-
-  factory ColorShades.fromAccentHSV(HSVColor accent,
-      {int base = 500,
-      int hueShift = 0,
-      int saturationStepDown = 0,
-      int saturationStepUp = 0,
-      int valueStepDown = 8,
-      int valueStepUp = 9}) {
-    assert(_shadeValues.contains(base),
-        'ColorShades.fromAccent: Invalid base value');
-    assert(0 <= saturationStepDown && saturationStepDown <= 20,
-        'ColorShades.fromAccent: Invalid saturationStepDown value');
-    assert(0 <= saturationStepUp && saturationStepUp <= 20,
-        'ColorShades.fromAccent: Invalid saturationStepUp value');
-    assert(0 <= valueStepDown && valueStepDown <= 20,
-        'ColorShades.fromAccent: Invalid valueStepDown value');
-    assert(0 <= valueStepUp && valueStepUp <= 20,
-        'ColorShades.fromAccent: Invalid valueStepUp value');
-    assert(-100 <= hueShift && hueShift <= 100,
-        'ColorShades.fromAccent: Invalid hueShift value');
-    final slate = ColorShades._();
-    for (final key in _shadeValues) {
-      double delta = (key - base) / _step;
-      double hueDelta = delta * hueShift;
-      double saturationDelta =
-          delta > 0 ? delta * saturationStepUp : delta * saturationStepDown;
-      double valueDelta =
-          delta > 0 ? delta * valueStepUp : delta * valueStepDown;
-      final h = (accent.hue - hueDelta) % 360;
-      final s = (accent.saturation * 100 - saturationDelta).clamp(0, 100) / 100;
-      final v = (accent.value * 100 - valueDelta).clamp(0, 100) / 100;
-      final a = accent.alpha;
-      slate._colors[key] = HSVColor.fromAHSV(a, h, s, v).toColor();
     }
     return slate;
   }
@@ -160,18 +133,8 @@ class ColorShades implements Color, ColorSwatch {
   }) {
     assert(_shadeValues.contains(base),
         'ColorShades.fromAccent: Invalid base value');
-    assert(0 <= saturationStepDown && saturationStepDown <= 20,
-        'ColorShades.fromAccent: Invalid saturationStepDown value');
-    assert(0 <= saturationStepUp && saturationStepUp <= 20,
-        'ColorShades.fromAccent: Invalid saturationStepUp value');
-    assert(0 <= lightnessStepDown && lightnessStepDown <= 20,
-        'ColorShades.fromAccent: Invalid lightnessStepDown value');
-    assert(0 <= lightnessStepUp && lightnessStepUp <= 20,
-        'ColorShades.fromAccent: Invalid lightnessStepUp value');
-    assert(-100 <= hueShift && hueShift <= 100,
-        'ColorShades.fromAccent: Invalid hueShift value');
     double delta = (targetBase - base) / _step;
-    double hueDelta = delta * hueShift;
+    double hueDelta = delta * (hueShift / 10);
     double saturationDelta =
         delta > 0 ? delta * saturationStepUp : delta * saturationStepDown;
     double lightnessDelta =
@@ -181,40 +144,6 @@ class ColorShades implements Color, ColorSwatch {
     final l = (hsv.lightness * 100 - lightnessDelta).clamp(0, 100) / 100;
     final a = hsv.alpha;
     return HSLColor.fromAHSL(a, h, s, l);
-  }
-
-  static HSVColor shiftHSV(
-    HSVColor hsv,
-    int targetBase, {
-    int base = 500,
-    int hueShift = 0,
-    int saturationStepUp = 0,
-    int saturationStepDown = 0,
-    int valueStepUp = 9,
-    int valueStepDown = 8,
-  }) {
-    assert(_shadeValues.contains(base),
-        'ColorShades.fromAccent: Invalid base value');
-    assert(0 <= saturationStepDown && saturationStepDown <= 20,
-        'ColorShades.fromAccent: Invalid saturationStepDown value');
-    assert(0 <= saturationStepUp && saturationStepUp <= 20,
-        'ColorShades.fromAccent: Invalid saturationStepUp value');
-    assert(0 <= valueStepDown && valueStepDown <= 20,
-        'ColorShades.fromAccent: Invalid valueStepDown value');
-    assert(0 <= valueStepUp && valueStepUp <= 20,
-        'ColorShades.fromAccent: Invalid valueStepUp value');
-    assert(-100 <= hueShift && hueShift <= 100,
-        'ColorShades.fromAccent: Invalid hueShift value');
-    double delta = (targetBase - base) / _step;
-    double hueDelta = delta * hueShift;
-    double saturationDelta =
-        delta > 0 ? delta * saturationStepUp : delta * saturationStepDown;
-    double valueDelta = delta > 0 ? delta * valueStepUp : delta * valueStepDown;
-    final h = (hsv.hue + hueDelta) % 360;
-    final s = (hsv.saturation * 100 - saturationDelta).clamp(0, 100) / 100;
-    final v = (hsv.value * 100 - valueDelta).clamp(0, 100) / 100;
-    final a = hsv.alpha;
-    return HSVColor.fromAHSV(a, h, s, v);
   }
 
   factory ColorShades.fromMap(Map<int, Color> colors) {
