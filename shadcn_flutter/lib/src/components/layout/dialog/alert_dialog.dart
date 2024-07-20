@@ -53,9 +53,6 @@ class _AlertDialogState extends State<AlertDialog> {
                           ),
                           duration: kDefaultDuration,
                           child: widget.leading!),
-                    if (widget.leading != null &&
-                        (widget.title != null || widget.content != null))
-                      const SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
