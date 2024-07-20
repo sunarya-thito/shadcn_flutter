@@ -44,6 +44,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
               const Text('Supports middle drag scrolling.').li(),
               const Text('Various widget extensions for typography purposes.')
                   .li(),
+              const Text('Supports WebAssembly for better performance.').li(),
             ],
           ).p(),
           const Text('Notes').h2().anchored(notesKey),
