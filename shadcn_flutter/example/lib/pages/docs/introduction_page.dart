@@ -12,6 +12,7 @@ class IntroductionPage extends StatefulWidget {
 class _IntroductionPageState extends State<IntroductionPage> {
   final OnThisPage featuresKey = OnThisPage();
   final OnThisPage faqKey = OnThisPage();
+  final OnThisPage notesKey = OnThisPage();
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
       name: 'introduction',
       onThisPage: {
         'Features': featuresKey,
+        'Notes': notesKey,
         'Frequency Asked Questions': faqKey,
       },
       child: Column(
@@ -28,12 +30,12 @@ class _IntroductionPageState extends State<IntroductionPage> {
           const Text(
                   'Beautifully designed components from Shadcn/UI is now available for Flutter.')
               .lead(),
-          gap(32),
           const Text('Features').h2().anchored(featuresKey),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              const Text('50 type of components and growing!').li(),
               const Text(
                       'Supports both Material and Cupertino Widgets with theme being able to adapt to the current shadcn_flutter theme.')
                   .li(),
@@ -43,6 +45,14 @@ class _IntroductionPageState extends State<IntroductionPage> {
               const Text('Various widget extensions for typography purposes.')
                   .li(),
             ],
+          ).p(),
+          const Text('Notes').h2().anchored(notesKey),
+          const Text(
+                  'This package is still in development and may have breaking changes in the future. '
+                  'Please be cautious when using this package in production.')
+              .p(),
+          const Text(
+            'This package is not affiliated with Shadcn/UI. This package is a community-driven project.',
           ).p(),
           const Text('Frequency Asked Questions').h2().anchored(faqKey),
           Accordion(

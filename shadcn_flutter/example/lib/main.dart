@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:example/pages/docs/colors_page.dart';
 import 'package:example/pages/docs/components/accordion_example.dart';
 import 'package:example/pages/docs/components/alert_dialog_example.dart';
 import 'package:example/pages/docs/components/alert_example.dart';
@@ -131,6 +132,11 @@ class MyAppState extends State<MyApp> {
       path: '/web_preloader',
       name: 'web_preloader',
       builder: (context, state) => const WebPreloaderPage(),
+    ),
+    GoRoute(
+      path: '/colors',
+      name: 'colors',
+      builder: (context, state) => const ColorsPage(),
     ),
     GoRoute(
         path: '/components',

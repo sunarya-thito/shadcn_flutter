@@ -150,6 +150,7 @@ class DocsPageState extends State<DocsPage> {
           ShadcnDocsPage('Web Preloader', 'web_preloader'),
           ShadcnDocsPage('Components', 'components'),
           ShadcnDocsPage('Icons', 'icons'),
+          ShadcnDocsPage('Colors', 'colors'),
           ShadcnDocsPage('Material/Cupertino', 'external'),
         ],
         Icons.book),
