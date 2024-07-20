@@ -6,9 +6,15 @@ class ToastExample1 extends StatefulWidget {
 }
 
 class _ToastExample1State extends State<ToastExample1> {
-  Widget buildToast(BuildContext context) {
+  Widget buildToast(BuildContext context, ToastOverlay overlay) {
     return Card(
-      child: Text('Hello World'),
+      child: Basic(
+          content: Text('Hello World'),
+          trailing: PrimaryButton(
+              child: Text('Close'),
+              onPressed: () {
+                overlay.close();
+              })),
     );
   }
 
