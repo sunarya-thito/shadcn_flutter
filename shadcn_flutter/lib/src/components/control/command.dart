@@ -125,10 +125,11 @@ class _CommandState extends State<Command> {
                             List<Widget> items = List.of(snapshot.data!);
                             if (snapshot.connectionState ==
                                 ConnectionState.active) {
-                              items.add(IconTheme(
+                              items.add(AnimatedIconTheme(
                                 data: IconThemeData(
                                   color: theme.colorScheme.mutedForeground,
                                 ),
+                                duration: kDefaultDuration,
                                 child: const Center(
                                         child: CircularProgressIndicator())
                                     .withPadding(vertical: 24),
