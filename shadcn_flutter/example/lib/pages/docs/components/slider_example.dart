@@ -1,5 +1,6 @@
 import 'package:example/pages/docs/components/slider/slider_example_1.dart';
 import 'package:example/pages/docs/components/slider/slider_example_2.dart';
+import 'package:example/pages/docs/components/slider/slider_example_3.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
@@ -25,6 +26,11 @@ class SliderExample extends StatelessWidget {
           title: 'Slider with Range Example',
           path: 'lib/pages/docs/components/slider/slider_example_2.dart',
           child: SliderExample2(),
+        ),
+        WidgetUsageExample(
+          title: 'Slider with Divisions Example',
+          path: 'lib/pages/docs/components/slider/slider_example_3.dart',
+          child: SliderExample3(),
         ),
       ],
     );

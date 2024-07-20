@@ -29,6 +29,14 @@ class SliderValue {
 
   @override
   int get hashCode => _start.hashCode ^ _end.hashCode;
+
+  SliderValue roundToDivisions(int divisions) {
+    if (!isRanged) {
+      return SliderValue.single((_end * divisions).round() / divisions);
+    }
+    return SliderValue.ranged((_start! * divisions).round() / divisions,
+        (_end * divisions).round() / divisions);
+  }
 }
 
 class IncreaseSliderValue extends Intent {
@@ -54,7 +62,7 @@ class Slider extends StatefulWidget {
   const Slider({
     Key? key,
     required this.value,
-    required this.onChanged,
+    this.onChanged,
     this.onChangeStart,
     this.onChangeEnd,
     this.min = 0,
@@ -90,10 +98,10 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       //     (widget.value.end - widget.min) / (widget.max - widget.min));
       var start = (widget.value.start - widget.min) / (widget.max - widget.min);
       var end = (widget.value.end - widget.min) / (widget.max - widget.min);
-      if (widget.divisions != null) {
-        start = (start * widget.divisions!).round() / widget.divisions!;
-        end = (end * widget.divisions!).round() / widget.divisions!;
-      }
+      // if (widget.divisions != null) {
+      //   start = (start * widget.divisions!).round() / widget.divisions!;
+      //   end = (end * widget.divisions!).round() / widget.divisions!;
+      // }
       var newStart = min(start, end);
       var newEnd = max(start, end);
       _currentValue = SliderValue.ranged(newStart, newEnd);
@@ -101,9 +109,9 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       // _currentValue = SliderValue.single(
       //     (widget.value.value - widget.min) / (widget.max - widget.min));
       var value = (widget.value.value - widget.min) / (widget.max - widget.min);
-      if (widget.divisions != null) {
-        value = (value * widget.divisions!).round() / widget.divisions!;
-      }
+      // if (widget.divisions != null) {
+      //   value = (value * widget.divisions!).round() / widget.divisions!;
+      // }
       _currentValue = SliderValue.single(value);
     }
   }
@@ -120,16 +128,25 @@ class _SliderState extends State<Slider> with FormValueSupplier {
   }
 
   void _dispatchValueChangeStart(SliderValue value) {
+    if (widget.divisions != null) {
+      value = value.roundToDivisions(widget.divisions!);
+    }
     widget.onChangeStart?.call(value);
   }
 
   void _dispatchValueChange(SliderValue value) {
+    if (widget.divisions != null) {
+      value = value.roundToDivisions(widget.divisions!);
+    }
     if (value != widget.value) {
       widget.onChanged?.call(value);
     }
   }
 
   void _dispatchValueChangeEnd(SliderValue value) {
+    if (widget.divisions != null) {
+      value = value.roundToDivisions(widget.divisions!);
+    }
     if (value != widget.value) {
       widget.onChangeEnd?.call(value);
     }
@@ -138,31 +155,27 @@ class _SliderState extends State<Slider> with FormValueSupplier {
   @override
   void didUpdateWidget(covariant Slider oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.value != oldWidget.value) {
+    if (widget.value != oldWidget.value && !_dragging) {
       if (widget.value.isRanged) {
         var start =
             (widget.value.start - widget.min) / (widget.max - widget.min);
         var end = (widget.value.end - widget.min) / (widget.max - widget.min);
-        if (widget.divisions != null) {
-          start = (start * widget.divisions!).round() / widget.divisions!;
-          end = (end * widget.divisions!).round() / widget.divisions!;
-        }
+        // if (widget.divisions != null) {
+        //   start = (start * widget.divisions!).round() / widget.divisions!;
+        //   end = (end * widget.divisions!).round() / widget.divisions!;
+        // }
         var newStart = min(start, end);
         var newEnd = max(start, end);
-        setState(() {
-          _currentValue = SliderValue.ranged(newStart, newEnd);
-        });
+        _currentValue = SliderValue.ranged(newStart, newEnd);
       } else {
         // _currentValue = SliderValue.single(
         //     (widget.value.value - widget.min) / (widget.max - widget.min));
         var value =
             (widget.value.value - widget.min) / (widget.max - widget.min);
-        if (widget.divisions != null) {
-          value = (value * widget.divisions!).round() / widget.divisions!;
-        }
-        setState(() {
-          _currentValue = SliderValue.single(value);
-        });
+        // if (widget.divisions != null) {
+        //   value = (value * widget.divisions!).round() / widget.divisions!;
+        // }
+        _currentValue = SliderValue.single(value);
       }
     }
   }
@@ -189,26 +202,26 @@ class _SliderState extends State<Slider> with FormValueSupplier {
                       double newValue = offset / constraints.maxWidth;
                       double start = _currentValue.start;
                       double end = _currentValue.end;
-                      if (widget.divisions != null) {
-                        start = (start * widget.divisions!).round() /
-                            widget.divisions!;
-                        end = (end * widget.divisions!).round() /
-                            widget.divisions!;
-                      }
+                      // if (widget.divisions != null) {
+                      //   start = (start * widget.divisions!).round() /
+                      //       widget.divisions!;
+                      //   end = (end * widget.divisions!).round() /
+                      //       widget.divisions!;
+                      // }
                       _moveStart =
                           (start - newValue).abs() < (end - newValue).abs();
                       // find the closest thumb and move it to the tap position
                       if (_moveStart) {
-                        if (widget.divisions != null) {
-                          double deltaValue = newValue - start;
-                          if (deltaValue >= 0 &&
-                              deltaValue < 0.5 / widget.divisions!) {
-                            newValue += 0.5 / widget.divisions!;
-                          } else if (deltaValue < 0 &&
-                              deltaValue > -0.5 / widget.divisions!) {
-                            newValue -= 0.5 / widget.divisions!;
-                          }
-                        }
+                        // if (widget.divisions != null) {
+                        //   double deltaValue = newValue - start;
+                        //   if (deltaValue >= 0 &&
+                        //       deltaValue < 0.5 / widget.divisions!) {
+                        //     newValue += 0.5 / widget.divisions!;
+                        //   } else if (deltaValue < 0 &&
+                        //       deltaValue > -0.5 / widget.divisions!) {
+                        //     newValue -= 0.5 / widget.divisions!;
+                        //   }
+                        // }
                         SliderValue newSliderValue =
                             SliderValue.ranged(newValue, widget.value.end);
                         _dispatchValueChangeStart(newSliderValue);
@@ -218,16 +231,16 @@ class _SliderState extends State<Slider> with FormValueSupplier {
                           _currentValue = SliderValue.ranged(newValue, end);
                         });
                       } else {
-                        if (widget.divisions != null) {
-                          double deltaValue = newValue - end;
-                          if (deltaValue >= 0 &&
-                              deltaValue < 0.5 / widget.divisions!) {
-                            newValue += 0.5 / widget.divisions!;
-                          } else if (deltaValue < 0 &&
-                              deltaValue > -0.5 / widget.divisions!) {
-                            newValue -= 0.5 / widget.divisions!;
-                          }
-                        }
+                        // if (widget.divisions != null) {
+                        //   double deltaValue = newValue - end;
+                        //   if (deltaValue >= 0 &&
+                        //       deltaValue < 0.5 / widget.divisions!) {
+                        //     newValue += 0.5 / widget.divisions!;
+                        //   } else if (deltaValue < 0 &&
+                        //       deltaValue > -0.5 / widget.divisions!) {
+                        //     newValue -= 0.5 / widget.divisions!;
+                        //   }
+                        // }
                         SliderValue newSliderValue =
                             SliderValue.ranged(widget.value.start, newValue);
                         _dispatchValueChangeStart(newSliderValue);
@@ -242,18 +255,18 @@ class _SliderState extends State<Slider> with FormValueSupplier {
                       double offset = details.localPosition.dx;
                       double newValue = offset / constraints.maxWidth;
                       newValue = newValue.clamp(0, 1);
-                      if (widget.divisions != null) {
-                        double deltaValue = newValue - _currentValue.value;
-                        if (deltaValue >= 0 &&
-                            deltaValue < 0.5 / widget.divisions!) {
-                          newValue += 0.5 / widget.divisions!;
-                        } else if (deltaValue < 0 &&
-                            deltaValue > -0.5 / widget.divisions!) {
-                          newValue -= 0.5 / widget.divisions!;
-                        }
-                        newValue = (newValue * widget.divisions!).round() /
-                            widget.divisions!;
-                      }
+                      // if (widget.divisions != null) {
+                      //   double deltaValue = newValue - _currentValue.value;
+                      //   if (deltaValue >= 0 &&
+                      //       deltaValue < 0.5 / widget.divisions!) {
+                      //     newValue += 0.5 / widget.divisions!;
+                      //   } else if (deltaValue < 0 &&
+                      //       deltaValue > -0.5 / widget.divisions!) {
+                      //     newValue -= 0.5 / widget.divisions!;
+                      //   }
+                      //   newValue = (newValue * widget.divisions!).round() /
+                      //       widget.divisions!;
+                      // }
                       SliderValue newSliderValue = SliderValue.single(
                           newValue * (widget.max - widget.min) + widget.min);
                       _dispatchValueChangeStart(newSliderValue);
@@ -271,18 +284,13 @@ class _SliderState extends State<Slider> with FormValueSupplier {
                   double newValue = offset / constraints.maxWidth;
                   double start = _currentValue.start;
                   double end = _currentValue.end;
-                  if (widget.divisions != null) {
-                    start =
-                        (start * widget.divisions!).round() / widget.divisions!;
-                    end = (end * widget.divisions!).round() / widget.divisions!;
-                  }
+                  // if (widget.divisions != null) {
+                  //   start =
+                  //       (start * widget.divisions!).round() / widget.divisions!;
+                  //   end = (end * widget.divisions!).round() / widget.divisions!;
+                  // }
                   _moveStart =
                       (start - newValue).abs() < (end - newValue).abs();
-                  // _dispatchValueChangeEnd(SliderValue.ranged(
-                  //     (widget.value.start - widget.min) /
-                  //         (widget.max - widget.min),
-                  //     (widget.value.end - widget.min) /
-                  //         (widget.max - widget.min)));
                   var startValue =
                       start * (widget.max - widget.min) + widget.min;
                   var endValue = end * (widget.max - widget.min) + widget.min;
@@ -292,14 +300,11 @@ class _SliderState extends State<Slider> with FormValueSupplier {
                       SliderValue.ranged(newStartValue, newEndValue);
                   _dispatchValueChangeStart(newSliderValue);
                 } else {
-                  // _dispatchValueChangeEnd(SliderValue.single(
-                  //     (widget.value.value - widget.min) /
-                  //         (widget.max - widget.min)));
                   double value = _currentValue.value;
-                  if (widget.divisions != null) {
-                    value =
-                        (value * widget.divisions!).round() / widget.divisions!;
-                  }
+                  // if (widget.divisions != null) {
+                  //   value =
+                  //       (value * widget.divisions!).round() / widget.divisions!;
+                  // }
                   SliderValue newSliderValue = SliderValue.single(
                       value * (widget.max - widget.min) + widget.min);
                   _dispatchValueChangeStart(newSliderValue);
@@ -312,10 +317,8 @@ class _SliderState extends State<Slider> with FormValueSupplier {
                       double delta =
                           details.primaryDelta! / constraints.maxWidth;
                       if (_moveStart) {
-                        var start = _currentValue.start + delta;
-                        var end = _currentValue.end;
-                        var newStart = min(start, end);
-                        var newEnd = max(start, end);
+                        var newStart = _currentValue.start + delta;
+                        var newEnd = _currentValue.end;
                         newStart = newStart.clamp(0, 1);
                         newEnd = newEnd.clamp(0, 1);
                         var newInternalSliderValue =
@@ -325,26 +328,28 @@ class _SliderState extends State<Slider> with FormValueSupplier {
                         }
                         var sliderStart = newStart;
                         var sliderEnd = newEnd;
-                        if (widget.divisions != null) {
-                          sliderStart =
-                              (sliderStart * widget.divisions!).round() /
-                                  widget.divisions!;
-                          sliderEnd = (sliderEnd * widget.divisions!).round() /
-                              widget.divisions!;
-                        }
-                        var newSliderValue = SliderValue.ranged(
+                        // if (widget.divisions != null) {
+                        //   sliderStart =
+                        //       (sliderStart * widget.divisions!).round() /
+                        //           widget.divisions!;
+                        //   sliderEnd = (sliderEnd * widget.divisions!).round() /
+                        //       widget.divisions!;
+                        // }
+                        var startSliderValue =
                             sliderStart * (widget.max - widget.min) +
-                                widget.min,
-                            sliderEnd * (widget.max - widget.min) + widget.min);
+                                widget.min;
+                        var endSliderValue =
+                            sliderEnd * (widget.max - widget.min) + widget.min;
+                        var newSliderValue = SliderValue.ranged(
+                            min(startSliderValue, endSliderValue),
+                            max(startSliderValue, endSliderValue));
                         _dispatchValueChange(newSliderValue);
                         setState(() {
                           _currentValue = SliderValue.ranged(newStart, newEnd);
                         });
                       } else {
-                        var start = _currentValue.start;
-                        var end = _currentValue.end + delta;
-                        var newStart = min(start, end);
-                        var newEnd = max(start, end);
+                        var newStart = _currentValue.start;
+                        var newEnd = _currentValue.end + delta;
                         newStart = newStart.clamp(0, 1);
                         newEnd = newEnd.clamp(0, 1);
                         var newInternalSliderValue =
@@ -354,17 +359,21 @@ class _SliderState extends State<Slider> with FormValueSupplier {
                         }
                         var sliderStart = newStart;
                         var sliderEnd = newEnd;
-                        if (widget.divisions != null) {
-                          sliderStart =
-                              (sliderStart * widget.divisions!).round() /
-                                  widget.divisions!;
-                          sliderEnd = (sliderEnd * widget.divisions!).round() /
-                              widget.divisions!;
-                        }
-                        var newSliderValue = SliderValue.ranged(
+                        // if (widget.divisions != null) {
+                        //   sliderStart =
+                        //       (sliderStart * widget.divisions!).round() /
+                        //           widget.divisions!;
+                        //   sliderEnd = (sliderEnd * widget.divisions!).round() /
+                        //       widget.divisions!;
+                        // }
+                        var startSliderValue =
                             sliderStart * (widget.max - widget.min) +
-                                widget.min,
-                            sliderEnd * (widget.max - widget.min) + widget.min);
+                                widget.min;
+                        var endSliderValue =
+                            sliderEnd * (widget.max - widget.min) + widget.min;
+                        var newSliderValue = SliderValue.ranged(
+                            min(startSliderValue, endSliderValue),
+                            max(startSliderValue, endSliderValue));
                         _dispatchValueChange(newSliderValue);
                         setState(() {
                           _currentValue = SliderValue.ranged(newStart, newEnd);
@@ -377,11 +386,11 @@ class _SliderState extends State<Slider> with FormValueSupplier {
                       double newValue = _currentValue.value + delta;
                       newValue = newValue.clamp(0, 1);
                       var sliderValue = newValue;
-                      if (widget.divisions != null) {
-                        sliderValue =
-                            (sliderValue * widget.divisions!).round() /
-                                widget.divisions!;
-                      }
+                      // if (widget.divisions != null) {
+                      //   sliderValue =
+                      //       (sliderValue * widget.divisions!).round() /
+                      //           widget.divisions!;
+                      // }
                       var newSliderValue = SliderValue.single(
                           sliderValue * (widget.max - widget.min) + widget.min);
                       _dispatchValueChange(newSliderValue);
@@ -445,16 +454,17 @@ class _SliderState extends State<Slider> with FormValueSupplier {
           // and so decrease
           () {
             var value = _currentValue.value;
-            if (widget.divisions != null) {
-              value = (value * widget.divisions!).round() / widget.divisions!;
-            }
-            var step = widget.increaseStep ?? 1 / (widget.divisions ?? 100);
+            // if (widget.divisions != null) {
+            //   value = (value * widget.divisions!).round() / widget.divisions!;
+            // }
+            // var step = widget.increaseStep ?? 1 / (widget.divisions ?? 100);
+            var step = widget.increaseStep ?? 0.01;
             value = (value + step).clamp(0, 1);
             var sliderValue = value;
-            if (widget.divisions != null) {
-              sliderValue =
-                  (sliderValue * widget.divisions!).round() / widget.divisions!;
-            }
+            // if (widget.divisions != null) {
+            //   sliderValue =
+            //       (sliderValue * widget.divisions!).round() / widget.divisions!;
+            // }
             var newSliderValue = SliderValue.single(
                 sliderValue * (widget.max - widget.min) + widget.min);
             _dispatchValueChangeStart(newSliderValue);
@@ -466,16 +476,17 @@ class _SliderState extends State<Slider> with FormValueSupplier {
           },
           () {
             var value = _currentValue.value;
-            if (widget.divisions != null) {
-              value = (value * widget.divisions!).round() / widget.divisions!;
-            }
-            var step = widget.decreaseStep ?? 1 / (widget.divisions ?? 100);
+            // if (widget.divisions != null) {
+            //   value = (value * widget.divisions!).round() / widget.divisions!;
+            // }
+            // var step = widget.decreaseStep ?? 1 / (widget.divisions ?? 100);
+            var step = widget.decreaseStep ?? 0.01;
             value = (value - step).clamp(0, 1);
             var sliderValue = value;
-            if (widget.divisions != null) {
-              sliderValue =
-                  (sliderValue * widget.divisions!).round() / widget.divisions!;
-            }
+            // if (widget.divisions != null) {
+            //   sliderValue =
+            //       (sliderValue * widget.divisions!).round() / widget.divisions!;
+            // }
             var newSliderValue = SliderValue.single(
                 sliderValue * (widget.max - widget.min) + widget.min);
             _dispatchValueChangeStart(newSliderValue);
@@ -682,16 +693,17 @@ class _SliderState extends State<Slider> with FormValueSupplier {
           },
           () {
             var value = _currentValue.start;
-            if (widget.divisions != null) {
-              value = (value * widget.divisions!).round() / widget.divisions!;
-            }
-            var step = widget.increaseStep ?? 1 / (widget.divisions ?? 100);
+            // if (widget.divisions != null) {
+            //   value = (value * widget.divisions!).round() / widget.divisions!;
+            // }
+            // var step = widget.increaseStep ?? 1 / (widget.divisions ?? 100);
+            var step = widget.increaseStep ?? 0.01;
             value = (value + step).clamp(0, 1);
             var sliderValue = value;
-            if (widget.divisions != null) {
-              sliderValue =
-                  (sliderValue * widget.divisions!).round() / widget.divisions!;
-            }
+            // if (widget.divisions != null) {
+            //   sliderValue =
+            //       (sliderValue * widget.divisions!).round() / widget.divisions!;
+            // }
             var newSliderValue = SliderValue.ranged(
                 sliderValue * (widget.max - widget.min) + widget.min,
                 _currentValue.end * (widget.max - widget.min) + widget.min);
@@ -704,16 +716,17 @@ class _SliderState extends State<Slider> with FormValueSupplier {
           },
           () {
             var value = _currentValue.start;
-            if (widget.divisions != null) {
-              value = (value * widget.divisions!).round() / widget.divisions!;
-            }
-            var step = widget.decreaseStep ?? 1 / (widget.divisions ?? 100);
+            // if (widget.divisions != null) {
+            //   value = (value * widget.divisions!).round() / widget.divisions!;
+            // }
+            // var step = widget.decreaseStep ?? 1 / (widget.divisions ?? 100);
+            var step = widget.decreaseStep ?? 0.01;
             value = (value - step).clamp(0, 1);
             var sliderValue = value;
-            if (widget.divisions != null) {
-              sliderValue =
-                  (sliderValue * widget.divisions!).round() / widget.divisions!;
-            }
+            // if (widget.divisions != null) {
+            //   sliderValue =
+            //       (sliderValue * widget.divisions!).round() / widget.divisions!;
+            // }
             var newSliderValue = SliderValue.ranged(
                 sliderValue * (widget.max - widget.min) + widget.min,
                 _currentValue.end * (widget.max - widget.min) + widget.min);
@@ -738,16 +751,17 @@ class _SliderState extends State<Slider> with FormValueSupplier {
           },
           () {
             var value = _currentValue.end;
-            if (widget.divisions != null) {
-              value = (value * widget.divisions!).round() / widget.divisions!;
-            }
-            var step = widget.increaseStep ?? 1 / (widget.divisions ?? 100);
+            // if (widget.divisions != null) {
+            //   value = (value * widget.divisions!).round() / widget.divisions!;
+            // }
+            // var step = widget.increaseStep ?? 1 / (widget.divisions ?? 100);
+            var step = widget.increaseStep ?? 0.01;
             value = (value + step).clamp(0, 1);
             var sliderValue = value;
-            if (widget.divisions != null) {
-              sliderValue =
-                  (sliderValue * widget.divisions!).round() / widget.divisions!;
-            }
+            // if (widget.divisions != null) {
+            //   sliderValue =
+            //       (sliderValue * widget.divisions!).round() / widget.divisions!;
+            // }
             var newSliderValue = SliderValue.ranged(
                 _currentValue.start * (widget.max - widget.min) + widget.min,
                 sliderValue * (widget.max - widget.min) + widget.min);
@@ -760,16 +774,17 @@ class _SliderState extends State<Slider> with FormValueSupplier {
           },
           () {
             var value = _currentValue.end;
-            if (widget.divisions != null) {
-              value = (value * widget.divisions!).round() / widget.divisions!;
-            }
-            var step = widget.decreaseStep ?? 1 / (widget.divisions ?? 100);
+            // if (widget.divisions != null) {
+            //   value = (value * widget.divisions!).round() / widget.divisions!;
+            // }
+            // var step = widget.decreaseStep ?? 1 / (widget.divisions ?? 100);
+            var step = widget.decreaseStep ?? 0.01;
             value = (value - step).clamp(0, 1);
             var sliderValue = value;
-            if (widget.divisions != null) {
-              sliderValue =
-                  (sliderValue * widget.divisions!).round() / widget.divisions!;
-            }
+            // if (widget.divisions != null) {
+            //   sliderValue =
+            //       (sliderValue * widget.divisions!).round() / widget.divisions!;
+            // }
             var newSliderValue = SliderValue.ranged(
                 _currentValue.start * (widget.max - widget.min) + widget.min,
                 sliderValue * (widget.max - widget.min) + widget.min);
