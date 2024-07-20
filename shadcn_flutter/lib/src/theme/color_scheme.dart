@@ -91,19 +91,6 @@ class ColorShades {
   Color get shade950 => _colors[950]!;
 }
 
-// Color colorFromHex(String? hex) {
-//
-//   if (hex.startsWith('#')) {
-//     hex = hex.substring(1);
-//   }
-//   if (hex.length == 6) {
-//     hex = 'FF$hex';
-//   }
-//   var parse = int.tryParse(hex, radix: 16);
-//   assert(parse != null, 'ColorScheme: Invalid hex color value $hex');
-//   return Color(parse!);
-// }
-
 String hexFromColor(Color color) {
   return '#${color.value.toRadixString(16).toUpperCase()}';
 }
