@@ -15,6 +15,7 @@ class _SliderExample3State extends State<SliderExample3> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Slider(
+          max: 2,
           divisions: 10,
           value: value,
           onChanged: (value) {
