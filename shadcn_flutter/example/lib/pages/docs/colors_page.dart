@@ -75,7 +75,9 @@ class _ColorsPageState extends State<ColorsPage> {
                 const Text('Use this code to display this color:'),
                 gap(8),
                 CodeSnippet(
-                  code: shade == 500 ? 'Colors.${name.toLowerCase()}' : 'Colors.${name.toLowerCase()}[$shade]',
+                  code: shade == 500
+                      ? 'Colors.${name.toLowerCase()}'
+                      : 'Colors.${name.toLowerCase()}[$shade]',
                   mode: 'dart',
                 ),
               ],
@@ -120,7 +122,7 @@ class _ColorsPageState extends State<ColorsPage> {
                       border: shade == 500
                           ? Border.all(
                               width: 4,
-                              color: theme.colorScheme.ring,
+                              color: theme.colorScheme.foreground,
                               strokeAlign: BorderSide.strokeAlignOutside)
                           : null,
                     ),
