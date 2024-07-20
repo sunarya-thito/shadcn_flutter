@@ -15,7 +15,7 @@ ToastOverlay showToast({
   Curve curve = Curves.easeOutCubic,
   Duration entryDuration = const Duration(milliseconds: 500),
   VoidCallback? onClosed,
-  Duration showDuration = const Duration(seconds: 60),
+  Duration showDuration = const Duration(seconds: 5),
 }) {
   final layer = Data.maybeOf<_ToastLayerState>(context);
   assert(layer != null, 'No ToastLayer found in context');
@@ -492,7 +492,7 @@ class _OverlaidToastEntryState extends State<OverlaidToastEntry> {
         pow(widget.collapsedOpacity, indexProgress * nonCollapsingProgress);
 
     double scale =
-        1.0 * pow(widget.collapsedScale, indexProgress * nonCollapsingProgress);
+        1.0 * pow(widget.collapsedScale, indexProgress * (1 - expandProgress));
 
     return Align(
       alignment: widget.entryAlignment,
