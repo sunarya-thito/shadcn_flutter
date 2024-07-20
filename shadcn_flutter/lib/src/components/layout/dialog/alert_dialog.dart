@@ -37,80 +37,68 @@ class _AlertDialogState extends State<AlertDialog> {
               width: 1,
             ),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (widget.leading != null)
-                AnimatedIconTheme(
-                    data: IconThemeData(
-                      color: themeData.colorScheme.mutedForeground,
-                      size: 32,
-                    ),
-                    duration: kDefaultDuration,
-                    child: widget.leading!),
-              if (widget.leading != null &&
-                  (widget.title != null || widget.content != null))
-                const SizedBox(width: 16),
               Expanded(
-                child: Column(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (widget.title != null || widget.content != null)
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (widget.title != null)
-                              widget.title!.large().semiBold(),
-                            if (widget.title != null && widget.content != null)
-                              const SizedBox(height: 8),
-                            if (widget.content != null)
-                              widget.content!.small().muted(),
-
-                            // DefaultTextStyle.merge(
-                            //   style: TextStyle(
-                            //     fontSize: 14,
-                            //     fontWeight: FontWeight.w400,
-                            //     color: themeData.colorScheme.mutedForeground,
-                            //   ),
-                            //   child: widget.content!,
-                            // ),
-                          ],
-                        ),
+                    if (widget.leading != null)
+                      AnimatedIconTheme(
+                          data: IconThemeData(
+                            color: themeData.colorScheme.mutedForeground,
+                            size: 32,
+                          ),
+                          duration: kDefaultDuration,
+                          child: widget.leading!),
+                    if (widget.leading != null &&
+                        (widget.title != null || widget.content != null))
+                      const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (widget.title != null || widget.content != null)
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (widget.title != null)
+                                    widget.title!.large().semiBold(),
+                                  if (widget.content != null)
+                                    widget.content!.small().muted(),
+                                ],
+                              ).gap(8),
+                            ),
+                        ],
                       ),
-                    if (widget.actions != null &&
-                        (widget.title != null ||
-                            widget.content != null ||
-                            widget.leading != null))
-                      const SizedBox(height: 16),
-                    if (widget.actions != null && widget.actions!.isNotEmpty)
-                      IntrinsicHeight(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          // children: widget.actions!,
-                          children:
-                              join(widget.actions!, const SizedBox(width: 8))
-                                  .toList(),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              if (widget.trailing != null &&
-                  (widget.title != null || widget.content != null))
-                const SizedBox(width: 16),
-              if (widget.trailing != null)
-                AnimatedIconTheme(
-                    data: IconThemeData(
-                      color: themeData.colorScheme.mutedForeground,
-                      size: 32,
                     ),
-                    duration: kDefaultDuration,
-                    child: widget.trailing!),
+                    if (widget.trailing != null)
+                      AnimatedIconTheme(
+                          data: IconThemeData(
+                            color: themeData.colorScheme.mutedForeground,
+                            size: 32,
+                          ),
+                          duration: kDefaultDuration,
+                          child: widget.trailing!),
+                  ],
+                ).gap(16),
+              ),
+              if (widget.actions != null && widget.actions!.isNotEmpty)
+                IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    // children: widget.actions!,
+                    children: join(widget.actions!, const SizedBox(width: 8))
+                        .toList(),
+                  ),
+                ),
             ],
-          ),
+          ).gap(16),
         ),
       ),
     );
