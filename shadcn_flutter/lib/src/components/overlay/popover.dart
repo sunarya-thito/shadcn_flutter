@@ -947,9 +947,44 @@ class PopoverLayoutRender extends RenderShiftedBox {
     }
   }
 
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
+    double minWidth = 0;
+    double maxWidth = constraints.maxWidth;
+    double minHeight = 0;
+    double maxHeight = constraints.maxHeight;
+    if (_widthConstraint == PopoverConstraint.anchorFixedSize) {
+      assert(_anchorSize != null, 'anchorSize must not be null');
+      minWidth = _anchorSize!.width;
+      maxWidth = _anchorSize!.width;
+    } else if (_widthConstraint == PopoverConstraint.anchorMinSize) {
+      assert(_anchorSize != null, 'anchorSize must not be null');
+      minWidth = _anchorSize!.width;
+    } else if (_widthConstraint == PopoverConstraint.anchorMaxSize) {
+      assert(_anchorSize != null, 'anchorSize must not be null');
+      maxWidth = _anchorSize!.width;
+    }
+    if (_heightConstraint == PopoverConstraint.anchorFixedSize) {
+      assert(_anchorSize != null, 'anchorSize must not be null');
+      minHeight = _anchorSize!.height;
+      maxHeight = _anchorSize!.height;
+    } else if (_heightConstraint == PopoverConstraint.anchorMinSize) {
+      assert(_anchorSize != null, 'anchorSize must not be null');
+      minHeight = _anchorSize!.height;
+    } else if (_heightConstraint == PopoverConstraint.anchorMaxSize) {
+      assert(_anchorSize != null, 'anchorSize must not be null');
+      maxHeight = _anchorSize!.height;
+    }
+    return BoxConstraints(
+      minWidth: minWidth,
+      maxWidth: maxWidth,
+      minHeight: minHeight,
+      maxHeight: maxHeight,
+    );
+  }
+
   @override
   void performLayout() {
-    child!.layout(constraints.loosen(), parentUsesSize: true);
+    child!.layout(getConstraintsForChild(constraints), parentUsesSize: true);
     size = constraints.biggest;
     Size childSize = child!.size;
     double offsetX = _offset?.dx ?? 0;
