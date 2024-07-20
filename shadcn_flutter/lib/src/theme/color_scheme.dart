@@ -6,7 +6,47 @@ Color _fromAHSL(double a, double h, double s, double l) {
   return HSLColor.fromAHSL(a, h, s, l).toColor();
 }
 
-class ColorShades {
+class SingleChartColorScheme implements ChartColorScheme {
+  final Color color;
+
+  const SingleChartColorScheme(this.color);
+
+  @override
+  List<Color> get chartColors => [color, color, color, color, color];
+
+  @override
+  Color get chart1 => color;
+
+  @override
+  Color get chart2 => color;
+
+  @override
+  Color get chart3 => color;
+
+  @override
+  Color get chart4 => color;
+
+  @override
+  Color get chart5 => color;
+}
+
+class ChartColorScheme {
+  final List<Color> chartColors;
+
+  const ChartColorScheme(this.chartColors);
+
+  factory ChartColorScheme.single(Color color) {
+    return SingleChartColorScheme(color);
+  }
+
+  Color get chart1 => chartColors[0];
+  Color get chart2 => chartColors[1];
+  Color get chart3 => chartColors[2];
+  Color get chart4 => chartColors[3];
+  Color get chart5 => chartColors[4];
+}
+
+class ColorShades implements Color {
   static const int step = 100;
   static const List<int> _shadeValues = [
     50,
@@ -21,9 +61,19 @@ class ColorShades {
     900,
     950
   ];
-  final Map<int, Color> _colors = {};
+  final Map<int, Color> _colors;
 
-  ColorShades._();
+  ColorShades._() : _colors = {};
+
+  factory ColorShades.sorted(List<Color> colors) {
+    assert(colors.length == _shadeValues.length,
+        'ColorShades.sorted: Invalid number of colors');
+    final slate = ColorShades._();
+    for (int i = 0; i < _shadeValues.length; i++) {
+      slate._colors[_shadeValues[i]] = colors[i];
+    }
+    return slate;
+  }
 
   factory ColorShades.fromAccent(Color accent,
       {int base = 500,
@@ -73,6 +123,8 @@ class ColorShades {
     return slate;
   }
 
+  ColorShades._direct(this._colors);
+
   Color get(int key) {
     assert(_colors.containsKey(key), 'ColorShades.get: Missing value for $key');
     return _colors[key]!;
@@ -89,13 +141,92 @@ class ColorShades {
   Color get shade800 => _colors[800]!;
   Color get shade900 => _colors[900]!;
   Color get shade950 => _colors[950]!;
+
+  Color get _primary => _colors[500]!;
+
+  @override
+  int get alpha => _primary.alpha;
+
+  @override
+  int get blue => _primary.blue;
+
+  @override
+  double computeLuminance() {
+    return _primary.computeLuminance();
+  }
+
+  @override
+  int get green => _primary.green;
+
+  @override
+  double get opacity => _primary.opacity;
+
+  @override
+  int get red => _primary.red;
+
+  @override
+  int get value => _primary.value;
+
+  @override
+  ColorShades withAlpha(int a) {
+    Map<int, Color> colors = {};
+    for (final key in _shadeValues) {
+      colors[key] = _colors[key]!.withAlpha(a);
+    }
+    return ColorShades._direct(colors);
+  }
+
+  @override
+  ColorShades withBlue(int b) {
+    Map<int, Color> colors = {};
+    // calculate the difference between the current blue value and the new value
+    int delta = b - blue;
+    for (final key in _shadeValues) {
+      int safe = (_colors[key]!.blue + delta).clamp(0, 255);
+      colors[key] = _colors[key]!.withBlue(safe);
+    }
+    return ColorShades._direct(colors);
+  }
+
+  @override
+  Color withGreen(int g) {
+    Map<int, Color> colors = {};
+    // calculate the difference between the current green value and the new value
+    int delta = g - green;
+    for (final key in _shadeValues) {
+      int safe = (_colors[key]!.green + delta).clamp(0, 255);
+      colors[key] = _colors[key]!.withGreen(safe);
+    }
+    return ColorShades._direct(colors);
+  }
+
+  @override
+  Color withOpacity(double opacity) {
+    Map<int, Color> colors = {};
+    for (final key in _shadeValues) {
+      colors[key] = _colors[key]!.withOpacity(opacity);
+    }
+    return ColorShades._direct(colors);
+  }
+
+  @override
+  Color withRed(int r) {
+    Map<int, Color> colors = {};
+    // calculate the difference between the current red value and the new value
+    int delta = r - red;
+    for (final key in _shadeValues) {
+      int safe = (_colors[key]!.red + delta).clamp(0, 255);
+      colors[key] = _colors[key]!.withRed(safe);
+    }
+    return ColorShades._direct(colors);
+  }
 }
 
 String hexFromColor(Color color) {
   return '#${color.value.toRadixString(16).toUpperCase()}';
 }
 
-class ColorScheme {
+class ColorScheme implements ChartColorScheme {
   static const Set<String> colorKeys = {
     'background',
     'foreground',
@@ -142,10 +273,15 @@ class ColorScheme {
   final Color border;
   final Color input;
   final Color ring;
+  @override
   final Color chart1;
+  @override
   final Color chart2;
+  @override
   final Color chart3;
+  @override
   final Color chart4;
+  @override
   final Color chart5;
 
   const ColorScheme({
@@ -348,6 +484,7 @@ class ColorScheme {
     );
   }
 
+  @override
   List<Color> get chartColors => [chart1, chart2, chart3, chart4, chart5];
 }
 
