@@ -233,7 +233,8 @@ class _ToastLayerState extends State<ToastLayer> {
       }
       children.add(
         Positioned.fill(
-          child: Container(
+          child: Padding(
+            padding: widget.padding,
             child: Align(
               alignment: location.alignment,
               child: MouseRegion(
@@ -273,13 +274,10 @@ class _ToastLayerState extends State<ToastLayer> {
     }
     return Data(
       data: this,
-      child: Padding(
-        padding: widget.padding,
-        child: Stack(
-          clipBehavior: Clip.none,
-          fit: StackFit.passthrough,
-          children: children,
-        ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        fit: StackFit.passthrough,
+        children: children,
       ),
     );
   }

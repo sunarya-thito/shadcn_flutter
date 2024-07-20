@@ -29,12 +29,6 @@ class _IntroductionPageState extends State<IntroductionPage> {
                   'Beautifully designed components from Shadcn/UI is now available for Flutter.')
               .lead(),
           gap(32),
-          const Text('This is unofficial port of Shadcn/UI for Flutter.'),
-          const Text('Most of components are built from scratch.'),
-          const Text(
-              'If you found any issues, please report it to our GitHub instead of Shadcn/UI.'),
-          const Text(
-              'Currently there\'s 46 out of 50 components that has been implemented into this package.'),
           const Text('Features').h2().anchored(featuresKey),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
