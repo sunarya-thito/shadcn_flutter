@@ -273,23 +273,20 @@ class _ThemePageState extends State<ThemePage> {
       child: Builder(builder: (context) {
         return GestureDetector(
           onTap: () {
-            showColorPicker(
+            showHSVColorPicker(
               context: context,
               color: HSVColor.fromColor(colors[name]!),
               offset: const Offset(0, 8),
-            ).then(
-              (value) {
-                if (value != null) {
-                  setState(() {
-                    colors[name] = value.toColor();
-                    customColorScheme = true;
-                    if (applyDirectly) {
-                      MyAppState state = Data.of(context);
-                      state.changeColorScheme(ColorScheme.fromColors(
-                          colors: colors, brightness: colorScheme.brightness));
-                    }
-                  });
-                }
+              onColorChanged: (value) {
+                setState(() {
+                  colors[name] = value.toColor();
+                  customColorScheme = true;
+                  if (applyDirectly) {
+                    MyAppState state = Data.of(context);
+                    state.changeColorScheme(ColorScheme.fromColors(
+                        colors: colors, brightness: colorScheme.brightness));
+                  }
+                });
               },
             );
           },
