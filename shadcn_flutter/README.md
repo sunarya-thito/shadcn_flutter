@@ -21,6 +21,7 @@ This is a port of the shadcn UI package to flutter.
 [![Circular Progress](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/circular_progress.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/circular-progress)
 [![Progress Bar](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/progress.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/progress)
 [![Skeleton](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/skeleton.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/skeleton)
+[![Toast](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/toast.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/toast)
 
 ### Forms
 [![Button](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/button.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/button)

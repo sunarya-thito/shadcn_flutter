@@ -43,6 +43,18 @@ class _ComponentsPageState extends State<ComponentsPage> {
   final OnThisPage dataDisplayKey = OnThisPage();
   final OnThisPage utilitiesKey = OnThisPage();
 
+  Widget _buildToast() {
+    return Card(
+      child: Basic(
+        title: Text('Event has been created'),
+        subtitle: Text('Sunday, July 07, 2024 at 12:00 PM'),
+        trailing: PrimaryButton(
+            child: Text('Undo'), size: ButtonSize.small, onPressed: () {}),
+        trailingAlignment: Alignment.center,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -332,7 +344,37 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   ),
                 ).sized(height: 300),
               ),
-              const WIPComponentCard(title: 'Toast'),
+              ComponentCard(
+                title: 'Toast',
+                name: 'toast',
+                scale: 1.3,
+                reverseVertical: true,
+                example: Stack(
+                  children: [
+                    Transform.translate(
+                      offset: const Offset(0, -24),
+                      child: Transform.scale(
+                        scale: 0.9 * 0.9,
+                        child: Opacity(
+                          opacity: 0.5,
+                          child: _buildToast(),
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: const Offset(0, -12),
+                      child: Transform.scale(
+                        scale: 0.9,
+                        child: Opacity(
+                          opacity: 0.75,
+                          child: _buildToast(),
+                        ),
+                      ),
+                    ),
+                    _buildToast(),
+                  ],
+                ),
+              ),
             ]),
             const Text('Forms').h2().anchored(formsKey),
             gap(16),

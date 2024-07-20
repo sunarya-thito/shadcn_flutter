@@ -9,12 +9,16 @@ class _ToastExample1State extends State<ToastExample1> {
   Widget buildToast(BuildContext context, ToastOverlay overlay) {
     return Card(
       child: Basic(
-          content: Text('Hello World'),
-          trailing: PrimaryButton(
-              child: Text('Close'),
-              onPressed: () {
-                overlay.close();
-              })),
+        title: Text('Event has been created'),
+        subtitle: Text('Sunday, July 07, 2024 at 12:00 PM'),
+        trailing: PrimaryButton(
+            child: Text('Undo'),
+            size: ButtonSize.small,
+            onPressed: () {
+              overlay.close();
+            }),
+        trailingAlignment: Alignment.center,
+      ),
     );
   }
 

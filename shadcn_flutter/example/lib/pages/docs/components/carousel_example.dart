@@ -50,7 +50,12 @@ class NumberedContainer extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: fill ? Colors.primaries[index % Colors.primaries.length] : null,
+        // color: fill ? Colors.primaries[index % Colors.primaries.length] : null,
+        // flip the index
+        color: fill
+            ? Colors.primaries[
+                (Colors.primaries.length - 1 - index) % Colors.primaries.length]
+            : null,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Center(
