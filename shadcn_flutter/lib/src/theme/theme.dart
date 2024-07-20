@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -16,6 +17,13 @@ class ThemeData {
   double get radiusMd => radius * 12;
   double get radiusSm => radius * 8;
   double get radiusXs => radius * 4;
+
+  BorderRadius get borderRadiusXxl => BorderRadius.circular(radiusXxl);
+  BorderRadius get borderRadiusXl => BorderRadius.circular(radiusXl);
+  BorderRadius get borderRadiusLg => BorderRadius.circular(radiusLg);
+  BorderRadius get borderRadiusMd => BorderRadius.circular(radiusMd);
+  BorderRadius get borderRadiusSm => BorderRadius.circular(radiusSm);
+  BorderRadius get borderRadiusXs => BorderRadius.circular(radiusXs);
 
   Brightness get brightness => colorScheme.brightness;
 
