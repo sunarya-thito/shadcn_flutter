@@ -33,6 +33,7 @@ import 'package:example/pages/docs/components/slider_example.dart';
 import 'package:example/pages/docs/components/steps_example.dart';
 import 'package:example/pages/docs/components/switch_example.dart';
 import 'package:example/pages/docs/components/tab_list_example.dart';
+import 'package:example/pages/docs/components/table_example.dart';
 import 'package:example/pages/docs/components/tabs_example.dart';
 import 'package:example/pages/docs/components/text_area_example.dart';
 import 'package:example/pages/docs/components/toast_example.dart';
@@ -409,7 +410,14 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) {
               return const ToastExample();
             },
-          )
+          ),
+          GoRoute(
+            path: 'table',
+            name: 'table',
+            builder: (context, state) {
+              return TableExample();
+            },
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

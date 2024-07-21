@@ -158,6 +158,9 @@ class DocsPageState extends State<DocsPage> {
       'Animation',
       [
         ShadcnDocsPage('Animated Value', 'animated_value_builder'),
+        // TODO: https://nyxbui.design/docs/components/number-ticker
+        ShadcnDocsPage(
+            'Number Ticker', 'number_ticker', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Repeated Animation', 'repeated_animation_builder'),
       ],
     ),
@@ -186,14 +189,28 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Checkbox', 'checkbox'),
         ShadcnDocsPage('Color Picker', 'color_picker'),
         ShadcnDocsPage('Date Picker', 'date_picker'),
+        // TODO: https://file-vault-delta.vercel.app/ also https://uploader.sadmn.com/
+        ShadcnDocsPage(
+            'File Picker', 'file_picker', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Form', 'form'),
         ShadcnDocsPage('Input', 'input'),
         ShadcnDocsPage('Input OTP', 'input_otp'),
+        // TODO: https://shadcn-phone-input.vercel.app/
+        ShadcnDocsPage(
+            'Phone Input', 'phone_input', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Radio Group', 'radio_group'),
         ShadcnDocsPage('Select', 'select'),
+        // https://craft.mxkaske.dev/post/fancy-multi-select
+        ShadcnDocsPage(
+            'Select Chip', 'select_chip', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Slider', 'slider'),
+        // https://nyxbui.design/docs/components/star-rating
+        ShadcnDocsPage(
+            'Star Rating', 'star_rating', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Switch', 'switch'),
         ShadcnDocsPage('Text Area', 'text_area'),
+        // https://time.openstatus.dev/
+        ShadcnDocsPage('Time Picker', 'time_picker'),
         ShadcnDocsPage('Toggle', 'toggle'),
       ],
     ),
@@ -203,8 +220,15 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Card', 'card'),
         ShadcnDocsPage('Carousel', 'carousel'),
         ShadcnDocsPage('Divider', 'divider'),
+        // https://nextjs-shadcn-dnd.vercel.app/ (make it headless)
+        ShadcnDocsPage(
+            'Draggable', 'draggable', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Resizable', 'resizable'),
         ShadcnDocsPage('Steps', 'steps'),
+        // TODO: https://shadcn-stepper.vercel.app/
+        ShadcnDocsPage('Stepper', 'stepper', ShadcnFeatureTag.workInProgress),
+        // TODO: https://shadcn-timeline.vercel.app/
+        ShadcnDocsPage('Timeline', 'timeline', ShadcnFeatureTag.workInProgress),
       ],
     ),
     ShadcnDocsSection(
@@ -216,6 +240,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Pagination', 'pagination'),
         ShadcnDocsPage('Tabs', 'tabs'),
         ShadcnDocsPage('Tab List', 'tab_list'),
+        // TODO https://nyxbui.design/docs/components/file-tree
+        ShadcnDocsPage('Tree', 'tree', ShadcnFeatureTag.workInProgress),
       ],
     ),
     ShadcnDocsSection(
@@ -233,17 +259,25 @@ class DocsPageState extends State<DocsPage> {
       'Data Display',
       [
         ShadcnDocsPage('Avatar', 'avatar'),
+        // TODO: https://nyxbui.design/docs/components/avatar-circles
+        ShadcnDocsPage(
+            'Avatar Group', 'avatar_group', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage(
             'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
+        // TODO also make it zoomable like: https://zoom-chart-demo.vercel.app/
         ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Code Snippet', 'code_snippet'),
         ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.workInProgress),
+        // TODO: https://raw.tremor.so/docs/visualizations/tracker
+        ShadcnDocsPage('Tracker', 'tracker', ShadcnFeatureTag.workInProgress),
       ],
     ),
     ShadcnDocsSection(
       'Utilities',
       [
         ShadcnDocsPage('Badge', 'badge'),
+        // TODO: https://emblor.jaleelbennett.com/introduction
+        ShadcnDocsPage('Chip', 'chip', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Calendar', 'calendar'),
         ShadcnDocsPage('Command', 'command'),
         ShadcnDocsPage('Context Menu', 'context_menu'),
@@ -281,6 +315,7 @@ class DocsPageState extends State<DocsPage> {
   }
 
   void _onVisibilityChanged() {
+    if (!mounted) return;
     setState(() {
       currentlyVisible = widget.onThisPage.values
           .where((element) => element.isVisible.value)

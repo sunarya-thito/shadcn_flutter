@@ -15,7 +15,7 @@ export 'package:flutter/material.dart'
         FlutterLogo
     hide TextButton, Colors;
 export 'package:flutter/widgets.dart'
-    hide ErrorWidgetBuilder, Form, FormState, Table, TableRow;
+    hide ErrorWidgetBuilder, Form, FormState, Table, TableRow, TableCell;
 // bundle from skeletonizer https://pub.dev/packages/skeletonizer
 export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 
@@ -60,6 +60,7 @@ export 'src/components/layout/resizable.dart';
 export 'src/components/layout/scaffold.dart';
 export 'src/components/layout/stage_container.dart';
 export 'src/components/layout/steps.dart';
+export 'src/components/layout/table.dart';
 export 'src/components/locale/shadcn_localizations.dart';
 export 'src/components/menu/context_menu.dart';
 export 'src/components/menu/dropdown_menu.dart';
