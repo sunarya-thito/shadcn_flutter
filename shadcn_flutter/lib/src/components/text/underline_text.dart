@@ -45,9 +45,6 @@ class UnderlineText extends StatelessWidget {
               color: Colors.transparent,
               decorationColor: underlineColor,
               decoration: TextDecoration.underline,
-              decorationThickness: textStyle.decorationThickness,
-              decorationStyle: textStyle.decorationStyle,
-              height: 0,
               shadows: [
                   Shadow(
                     color: textStyle.color ?? underlineColor,

@@ -1,3 +1,5 @@
+import 'package:flutter/rendering.dart';
+
 import '../../../shadcn_flutter.dart';
 
 extension TextExtension on Widget {
@@ -428,14 +430,30 @@ extension TextExtension on Widget {
 
   Widget then(InlineSpan span) {
     if (this is RichText) {
-      return RichText(
-        text: TextSpan(children: [
-          (this as RichText).text,
-          span,
-        ]),
+      final text = this as RichText;
+      return _RichTextThenWidget(text: text, then: [span]);
+    }
+    if (this is Text) {
+      final text = this as Text;
+      return _TextThenWidget(text: text, then: [span]);
+    }
+    if (this is _RichTextThenWidget) {
+      final text = this as _RichTextThenWidget;
+      return _RichTextThenWidget(
+        text: text.text,
+        then: [...text.then, span],
       );
     }
-    InlineSpan currentSpan = WidgetSpan(child: this);
+    if (this is _TextThenWidget) {
+      final text = this as _TextThenWidget;
+      return _TextThenWidget(
+        text: text.text,
+        then: [...text.then, span],
+      );
+    }
+    InlineSpan currentSpan = WidgetSpan(
+      child: this,
+    );
     return RichText(
       text: TextSpan(
         children: [currentSpan, span],
@@ -453,6 +471,7 @@ extension TextExtension on Widget {
   }) {
     return then(
       WidgetSpan(
+        alignment: PlaceholderAlignment.middle,
         child: Builder(builder: (context) {
           final textStyle = DefaultTextStyle.of(context);
           return Button(
@@ -482,6 +501,122 @@ extension TextExtension on Widget {
             }),
           );
         }),
+      ),
+    );
+  }
+}
+
+class _TextThenWidget extends StatelessWidget {
+  final Text text;
+  final List<InlineSpan> then;
+
+  const _TextThenWidget({
+    Key? key,
+    required this.text,
+    required this.then,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
+    TextStyle? effectiveTextStyle = text.style;
+    if (text.style == null || text.style!.inherit) {
+      effectiveTextStyle = defaultTextStyle.style.merge(text.style);
+    }
+    if (MediaQuery.boldTextOf(context)) {
+      effectiveTextStyle = effectiveTextStyle!
+          .merge(const TextStyle(fontWeight: FontWeight.bold));
+    }
+    final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
+    final TextScaler textScaler =
+        switch ((text.textScaler, text.textScaleFactor)) {
+      (final TextScaler textScaler, _) => textScaler,
+      // For unmigrated apps, fall back to textScaleFactor.
+      (null, final double textScaleFactor) =>
+        TextScaler.linear(textScaleFactor),
+      (null, null) => MediaQuery.textScalerOf(context),
+    };
+    Widget result = RichText(
+      textAlign:
+          text.textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
+      textDirection: text
+          .textDirection, // RichText uses Directionality.of to obtain a default if this is null.
+      locale: text
+          .locale, // RichText uses Localizations.localeOf to obtain a default if this is null
+      softWrap: text.softWrap ?? defaultTextStyle.softWrap,
+      overflow: text.overflow ??
+          effectiveTextStyle?.overflow ??
+          defaultTextStyle.overflow,
+      textScaler: textScaler,
+      maxLines: text.maxLines ?? defaultTextStyle.maxLines,
+      strutStyle: text.strutStyle,
+      textWidthBasis: text.textWidthBasis ?? defaultTextStyle.textWidthBasis,
+      textHeightBehavior: text.textHeightBehavior ??
+          defaultTextStyle.textHeightBehavior ??
+          DefaultTextHeightBehavior.maybeOf(context),
+      selectionRegistrar: registrar,
+      selectionColor: text.selectionColor ??
+          DefaultSelectionStyle.of(context).selectionColor ??
+          DefaultSelectionStyle.defaultColor,
+      text: TextSpan(
+        style: effectiveTextStyle,
+        children: [
+          text.data == null ? text.textSpan! : TextSpan(text: text.data),
+          ...then,
+        ],
+      ),
+    );
+    if (registrar != null) {
+      result = MouseRegion(
+        cursor: DefaultSelectionStyle.of(context).mouseCursor ??
+            SystemMouseCursors.text,
+        child: result,
+      );
+    }
+    if (text.semanticsLabel != null) {
+      result = Semantics(
+        textDirection: text.textDirection,
+        label: text.semanticsLabel,
+        child: ExcludeSemantics(
+          child: result,
+        ),
+      );
+    }
+    return result;
+  }
+}
+
+class _RichTextThenWidget extends StatelessWidget {
+  final RichText text;
+  final List<InlineSpan> then;
+
+  const _RichTextThenWidget({
+    Key? key,
+    required this.text,
+    required this.then,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      textAlign: text.textAlign,
+      textDirection: text.textDirection,
+      locale: text.locale,
+      softWrap: text.softWrap,
+      overflow: text.overflow,
+      textWidthBasis: text.textWidthBasis,
+      textHeightBehavior: text.textHeightBehavior,
+      maxLines: text.maxLines,
+      strutStyle: text.strutStyle,
+      textScaleFactor: text.textScaleFactor,
+      selectionColor: text.selectionColor,
+      selectionRegistrar: text.selectionRegistrar,
+      textScaler: text.textScaler,
+      text: TextSpan(
+        children: [
+          text.text,
+          ...then,
+        ],
       ),
     );
   }

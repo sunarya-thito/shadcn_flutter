@@ -1,6 +1,7 @@
 import 'package:example/pages/docs_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class IntroductionPage extends StatefulWidget {
   const IntroductionPage({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
   final OnThisPage featuresKey = OnThisPage();
   final OnThisPage faqKey = OnThisPage();
   final OnThisPage notesKey = OnThisPage();
+  final OnThisPage linksKey = OnThisPage();
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
         'Features': featuresKey,
         'Notes': notesKey,
         'Frequency Asked Questions': faqKey,
+        'Links': linksKey,
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -82,16 +85,62 @@ class _IntroductionPageState extends State<IntroductionPage> {
                     },
                     child: const Text('See this page!')),
               ),
-              const AccordionItem(
+              AccordionItem(
                 trigger: AccordionTrigger(
                   child: Text(
                       'Can I configure which style i would like to use? (Default/New York)'),
                 ),
                 content: Text(
-                    'Unfortunately you can\'t. This package only supports New York style.'),
+                        'Unfortunately you can\'t. This package only supports New York style. '
+                        'But if you wish to have default style of Shadcn/UI, i would recommend ')
+                    .thenButton(
+                        onPressed: () {
+                          launchUrlString(
+                              'https://github.com/nank1ro/flutter-shadcn-ui');
+                        },
+                        child: Text('this package'))
+                    .thenText(' by ')
+                    .thenButton(
+                        onPressed: () {
+                          launchUrlString('https://x.com/nank1ro');
+                        },
+                        child: Text('@nank1ro'))
+                    .thenText('.'),
               ),
             ],
           ),
+          const Text('Links').h2().anchored(linksKey),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Github: ')
+                  .thenButton(
+                      onPressed: () {
+                        launchUrlString(
+                            'https://github.com/sunarya-thito/shadcn_flutter');
+                      },
+                      child: const Text(
+                          'https://github.com/sunarya-thito/shadcn_flutter'))
+                  .li(),
+              const Text('pub.dev: ')
+                  .thenButton(
+                      onPressed: () {
+                        launchUrlString(
+                            'https://pub.dev/packages/shadcn_flutter');
+                      },
+                      child:
+                          const Text('https://pub.dev/packages/shadcn_flutter'))
+                  .li(),
+              const Text('Discord: ')
+                  .thenButton(
+                      onPressed: () {
+                        launchUrlString('https://discord.gg/ZzfBPQG4sV');
+                      },
+                      child: const Text('https://discord.gg/ZzfBPQG4sV'))
+                  .li(),
+            ],
+          ).p(),
         ],
       ),
     );
