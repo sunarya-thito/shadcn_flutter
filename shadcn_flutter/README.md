@@ -1,9 +1,14 @@
 # shadcn_flutter
+![Pub Likes](https://img.shields.io/pub/likes/shadcn_flutter)
+![Pub Points](https://img.shields.io/pub/points/shadcn_flutter)
+![Pub Version](https://img.shields.io/pub/v/shadcn_flutter)
+![GitHub Repo stars](https://img.shields.io/github/stars/sunarya-thito/shadcn_flutter)
+
 A set of widgets and utilities for building applications in flutter.
 Optimized for web applications.
 This is a port of the shadcn UI package to flutter.
 
-[Visit Documentation](https://sunarya-thito.github.io/shadcn_flutter/)
+[Documentation](https://sunarya-thito.github.io/shadcn_flutter/) - [Pub.dev](https://pub.dev/packages/shadcn_flutter)
 
 ## Widgets
 
