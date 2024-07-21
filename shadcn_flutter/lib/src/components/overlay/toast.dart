@@ -392,64 +392,120 @@ class OverlaidToastEntry extends StatefulWidget {
 
 class _OverlaidToastEntryState extends State<OverlaidToastEntry> {
   bool _dismissing = false;
-  double _dismissProgress = 0;
+  double _dismissOffset = 0;
   late int index;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  double? _closeDismissing;
 
   @override
   Widget build(BuildContext context) {
     return widget.themes.wrap(
       widget.data.wrap(
-        AnimatedBuilder(
-            animation: widget.closing,
-            builder: (context, child) {
-              return AnimatedValueBuilder(
-                  value: widget.index.toDouble(),
-                  curve: widget.curve,
-                  duration: widget.duration,
-                  builder: (context, indexProgress, child) {
-                    return AnimatedValueBuilder(
-                      initialValue: widget.index > 0 ? 1.0 : 0.0,
-                      value: widget.closing.value && !_dismissing ? 0.0 : 1.0,
-                      curve: widget.curve,
-                      duration: widget.duration,
-                      onEnd: (value) {
-                        if (value == 0.0 && widget.closing.value) {
-                          widget.onClosed();
-                        }
-                      },
-                      builder: (context, showingProgress, child) {
-                        return AnimatedValueBuilder(
-                            value: widget.visible ? 1.0 : 0.0,
-                            curve: widget.curve,
-                            duration: widget.duration,
-                            builder: (context, visibleProgress, child) {
-                              return AnimatedValueBuilder(
-                                  value: widget.expanded ? 1.0 : 0.0,
-                                  curve: widget.expandingCurve,
-                                  duration: widget.expandingDuration,
-                                  builder: (context, expandProgress, child) {
-                                    return buildToast(
-                                        expandProgress,
-                                        showingProgress,
-                                        visibleProgress,
-                                        indexProgress);
-                                  });
-                            });
-                      },
-                    );
-                  });
-            }),
+        GestureDetector(
+          onHorizontalDragStart: (details) {
+            if (widget.dismissible) {
+              setState(() {
+                _dismissing = true;
+              });
+            }
+          },
+          onHorizontalDragUpdate: (details) {
+            if (widget.dismissible) {
+              setState(() {
+                _dismissOffset += details.primaryDelta! / context.size!.width;
+              });
+            }
+          },
+          onHorizontalDragEnd: (details) {
+            if (widget.dismissible) {
+              setState(() {
+                _dismissing = false;
+              });
+              // if its < -0.5 or > 0.5 dismiss it
+              if (_dismissOffset < -0.5) {
+                _closeDismissing = -1.0;
+              } else if (_dismissOffset > 0.5) {
+                _closeDismissing = 1.0;
+              } else {
+                _dismissOffset = 0;
+              }
+            }
+          },
+          child: AnimatedBuilder(
+              animation: widget.closing,
+              builder: (context, child) {
+                return AnimatedValueBuilder(
+                    value: _dismissOffset,
+                    duration: _dismissing ? Duration.zero : kDefaultDuration,
+                    builder: (context, dismissProgress, child) {
+                      return AnimatedValueBuilder(
+                          value: _closeDismissing ?? 0.0,
+                          duration: kDefaultDuration,
+                          onEnd: (value) {
+                            if (value == -1.0 || value == 1.0) {
+                              widget.onClosed();
+                            }
+                          },
+                          builder: (context, closeDismissingProgress, child) {
+                            return AnimatedValueBuilder(
+                                value: widget.index.toDouble(),
+                                curve: widget.curve,
+                                duration: widget.duration,
+                                builder: (context, indexProgress, child) {
+                                  return AnimatedValueBuilder(
+                                    initialValue: widget.index > 0 ? 1.0 : 0.0,
+                                    value: widget.closing.value && !_dismissing
+                                        ? 0.0
+                                        : 1.0,
+                                    curve: widget.curve,
+                                    duration: widget.duration,
+                                    onEnd: (value) {
+                                      if (value == 0.0 &&
+                                          widget.closing.value) {
+                                        widget.onClosed();
+                                      }
+                                    },
+                                    builder: (context, showingProgress, child) {
+                                      return AnimatedValueBuilder(
+                                          value: widget.visible ? 1.0 : 0.0,
+                                          curve: widget.curve,
+                                          duration: widget.duration,
+                                          builder: (context, visibleProgress,
+                                              child) {
+                                            return AnimatedValueBuilder(
+                                                value:
+                                                    widget.expanded ? 1.0 : 0.0,
+                                                curve: widget.expandingCurve,
+                                                duration:
+                                                    widget.expandingDuration,
+                                                builder: (context,
+                                                    expandProgress, child) {
+                                                  return buildToast(
+                                                      expandProgress,
+                                                      showingProgress,
+                                                      visibleProgress,
+                                                      indexProgress,
+                                                      dismissProgress,
+                                                      closeDismissingProgress);
+                                                });
+                                          });
+                                    },
+                                  );
+                                });
+                          });
+                    });
+              }),
+        ),
       ),
     );
   }
 
-  Widget buildToast(double expandProgress, double showingProgress,
-      double visibleProgress, double indexProgress) {
+  Widget buildToast(
+      double expandProgress,
+      double showingProgress,
+      double visibleProgress,
+      double indexProgress,
+      double dismissProgress,
+      double closeDismissingProgress) {
     double nonCollapsingProgress = (1.0 - expandProgress) * showingProgress;
     var offset = widget.entryOffset * (1.0 - showingProgress);
 
@@ -474,6 +530,11 @@ class _OverlaidToastEntryState extends State<OverlaidToastEntry> {
       widget.entryAlignment.y * (1.0 - showingProgress),
     );
 
+    fractionalOffset += Offset(
+      closeDismissingProgress + dismissProgress,
+      0,
+    );
+
     // when its behind another toast AND is expanded, shift it up based on index and the size of self
     fractionalOffset += Offset(
           expandProgress * widget.previousAlignment.x,
@@ -491,6 +552,8 @@ class _OverlaidToastEntryState extends State<OverlaidToastEntry> {
     opacity *=
         pow(widget.collapsedOpacity, indexProgress * nonCollapsingProgress);
 
+    opacity *= 1 - (closeDismissingProgress + dismissProgress).abs();
+
     double scale =
         1.0 * pow(widget.collapsedScale, indexProgress * (1 - expandProgress));
 
@@ -501,7 +564,7 @@ class _OverlaidToastEntryState extends State<OverlaidToastEntry> {
         child: FractionalTranslation(
           translation: fractionalOffset,
           child: Opacity(
-            opacity: opacity,
+            opacity: opacity.clamp(0, 1),
             child: Transform.scale(
               scale: scale,
               child: widget.child,
