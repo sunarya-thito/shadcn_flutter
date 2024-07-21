@@ -158,9 +158,8 @@ class DocsPageState extends State<DocsPage> {
       'Animation',
       [
         ShadcnDocsPage('Animated Value', 'animated_value_builder'),
-        // TODO: https://nyxbui.design/docs/components/number-ticker
-        ShadcnDocsPage(
-            'Number Ticker', 'number_ticker', ShadcnFeatureTag.workInProgress),
+        // https://nyxbui.design/docs/components/number-ticker
+        ShadcnDocsPage('Number Ticker', 'number_ticker'),
         ShadcnDocsPage('Repeated Animation', 'repeated_animation_builder'),
       ],
     ),
@@ -195,9 +194,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Form', 'form'),
         ShadcnDocsPage('Input', 'input'),
         ShadcnDocsPage('Input OTP', 'input_otp'),
-        // TODO: https://shadcn-phone-input.vercel.app/
-        ShadcnDocsPage(
-            'Phone Input', 'phone_input', ShadcnFeatureTag.workInProgress),
+        // https://shadcn-phone-input.vercel.app/
+        ShadcnDocsPage('Phone Input', 'phone_input'),
         ShadcnDocsPage('Radio Group', 'radio_group'),
         ShadcnDocsPage('Select', 'select'),
         // https://craft.mxkaske.dev/post/fancy-multi-select

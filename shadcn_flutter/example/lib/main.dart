@@ -20,7 +20,9 @@ import 'package:example/pages/docs/components/input_otp_example.dart';
 import 'package:example/pages/docs/components/material_example.dart';
 import 'package:example/pages/docs/components/menubar_example.dart';
 import 'package:example/pages/docs/components/navigation_menu_example.dart';
+import 'package:example/pages/docs/components/number_example.dart';
 import 'package:example/pages/docs/components/pagination_example.dart';
+import 'package:example/pages/docs/components/phone_input_example.dart';
 import 'package:example/pages/docs/components/popover_example.dart';
 import 'package:example/pages/docs/components/progress_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
@@ -416,6 +418,19 @@ class MyAppState extends State<MyApp> {
             name: 'table',
             builder: (context, state) {
               return TableExample();
+            },
+          ),
+          GoRoute(
+              path: 'number_ticker',
+              name: 'number_ticker',
+              builder: (context, state) {
+                return NumberTickerExample();
+              }),
+          GoRoute(
+            path: 'phone_input',
+            name: 'phone_input',
+            builder: (context, state) {
+              return const PhoneInputExample();
             },
           ),
         ]),

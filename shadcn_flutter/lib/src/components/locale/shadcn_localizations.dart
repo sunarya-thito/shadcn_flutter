@@ -79,6 +79,8 @@ abstract class ShadcnLocalizations {
   String get buttonPrevious;
   String get buttonNext;
 
+  String get searchPlaceholderCountry;
+
   String getAbbreviatedWeekday(int weekday) {
     switch (weekday) {
       case DateTime.monday:
@@ -309,4 +311,7 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get buttonPrevious => 'Previous';
+
+  @override
+  String get searchPlaceholderCountry => 'Search country...';
 }

@@ -25,6 +25,13 @@ class ThemeData {
   BorderRadius get borderRadiusSm => BorderRadius.circular(radiusSm);
   BorderRadius get borderRadiusXs => BorderRadius.circular(radiusXs);
 
+  Radius get radiusXxlRadius => Radius.circular(radiusXxl);
+  Radius get radiusXlRadius => Radius.circular(radiusXl);
+  Radius get radiusLgRadius => Radius.circular(radiusLg);
+  Radius get radiusMdRadius => Radius.circular(radiusMd);
+  Radius get radiusSmRadius => Radius.circular(radiusSm);
+  Radius get radiusXsRadius => Radius.circular(radiusXs);
+
   Brightness get brightness => colorScheme.brightness;
 
   ThemeData copyWith({

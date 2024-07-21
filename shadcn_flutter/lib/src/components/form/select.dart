@@ -31,12 +31,16 @@ class SelectItemButton<T> extends StatelessWidget {
               return SystemMouseCursors.basic;
             },
           ),
-          trailing: selected
+          trailing: selected == value
               ? const Icon(
                   Icons.check,
                   size: 16,
                 )
-              : null,
+              : selected != null
+                  ? const SizedBox(
+                      width: 16,
+                    )
+                  : null,
           child: child.normal(),
         );
       },
@@ -88,11 +92,11 @@ class SelectGroup extends StatelessWidget {
 }
 
 typedef SelectItemReporter = void Function();
-typedef SelectItemBuilder = Widget Function(
-    BuildContext context, SelectItemReporter selectItem, bool selected);
+typedef SelectItemBuilder<T> = Widget Function(
+    BuildContext context, SelectItemReporter selectItem, T selectedValue);
 
 class SelectItem<T> extends StatelessWidget {
-  final SelectItemBuilder builder;
+  final SelectItemBuilder<T> builder;
   final T value;
   final int Function(String query)? computeIndexingScore;
 
@@ -120,7 +124,7 @@ class SelectItem<T> extends StatelessWidget {
           () {
             searchData.onChanged(value);
           },
-          searchData!.value == value,
+          searchData!.value,
         ),
       ),
     );
@@ -158,6 +162,11 @@ class Select<T> extends StatefulWidget {
   final T? value;
   final Widget Function(BuildContext context, T item) itemBuilder;
   final bool showUnrelatedValues;
+  final BorderRadius? borderRadius;
+  final String? searchPlaceholder;
+  final EdgeInsetsGeometry? padding;
+  final Alignment popoverAlignment;
+  final Alignment? popoverAnchorAlignment;
 
   const Select({
     Key? key,
@@ -171,6 +180,11 @@ class Select<T> extends StatefulWidget {
     this.popupWidthConstraint = PopoverConstraint.anchorMinSize,
     this.value,
     this.showUnrelatedValues = false,
+    this.borderRadius,
+    this.searchPlaceholder,
+    this.padding,
+    this.popoverAlignment = Alignment.topCenter,
+    this.popoverAnchorAlignment,
     required this.itemBuilder,
     required this.children,
   }) : super(key: key);
@@ -208,17 +222,33 @@ class _SelectState<T> extends State<Select<T>> {
     final theme = Theme.of(context);
     return ConstrainedBox(
       constraints: widget.constraints,
-      child: OutlineButton(
+      child: Button(
         focusNode: _focusNode,
+        style:
+            (widget.filled ? ButtonVariance.secondary : ButtonVariance.outline)
+                .copyWith(
+          decoration: widget.borderRadius != null
+              ? (context, states, decoration) {
+                  return (decoration as BoxDecoration).copyWith(
+                    borderRadius: widget.borderRadius,
+                  );
+                }
+              : null,
+          padding: widget.padding != null
+              ? (context, states, value) => widget.padding!
+              : null,
+        ),
         onPressed: widget.onChanged == null
             ? null
             : () {
                 showPopover(
                   context: context,
-                  alignment: Alignment.topCenter,
+                  alignment: widget.popoverAlignment,
+                  anchorAlignment: widget.popoverAnchorAlignment,
                   widthConstraint: widget.popupWidthConstraint,
                   builder: (context) {
                     return SelectPopup<T>(
+                      searchPlaceholder: widget.searchPlaceholder,
                       searchFilter: widget.searchFilter,
                       constraints: widget.popupConstraints,
                       value: widget.value,
@@ -264,6 +294,7 @@ class SelectPopup<T> extends StatefulWidget {
   final List<Widget> children;
   final bool showUnrelatedValues;
   final ValueChanged<T?>? onChanged;
+  final String? searchPlaceholder;
 
   const SelectPopup({
     Key? key,
@@ -272,6 +303,7 @@ class SelectPopup<T> extends StatefulWidget {
     this.constraints = const BoxConstraints(minWidth: 200),
     this.showUnrelatedValues = false,
     this.onChanged,
+    this.searchPlaceholder,
     required this.children,
   }) : super(key: key);
 
@@ -336,6 +368,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                           child: TextField(
                             controller: _searchController,
                             border: false,
+                            placeholder: widget.searchPlaceholder,
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
                         ),
@@ -404,7 +437,10 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                           ),
                         ),
                         AnimatedBuilder(
-                          animation: _scrollController,
+                          animation: Listenable.merge([
+                            _scrollController,
+                            _searchController,
+                          ]),
                           builder: (context, child) {
                             return Visibility(
                               visible: _scrollController.offset > 0,
@@ -443,7 +479,10 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                           },
                         ),
                         AnimatedBuilder(
-                          animation: _scrollController,
+                          animation: Listenable.merge([
+                            _scrollController,
+                            _searchController,
+                          ]),
                           builder: (context, child) {
                             return Visibility(
                               visible: _scrollController.hasClients &&

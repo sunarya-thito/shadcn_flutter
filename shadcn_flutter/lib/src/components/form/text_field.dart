@@ -30,6 +30,8 @@ class TextField extends StatefulWidget {
   final bool expands;
   final TextAlignVertical? textAlignVertical;
   final UndoHistoryController? undoController;
+  final ValueChanged<String>? onChanged;
+  final Iterable<String>? autofillHints;
   const TextField({
     Key? key,
     this.controller,
@@ -56,7 +58,9 @@ class TextField extends StatefulWidget {
     this.textAlign = TextAlign.start,
     this.expands = false,
     this.textAlignVertical = TextAlignVertical.center,
+    this.autofillHints,
     this.undoController,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -143,6 +147,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
         return buildEditableTextContextMenu(
             context, editableTextState, _undoHistoryController);
       },
+      onChanged: widget.onChanged,
       textAlign: widget.textAlign,
       obscureText: widget.obscureText,
       obscuringCharacter: widget.obscuringCharacter,
@@ -156,6 +161,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
       onSubmitted: widget.onSubmitted,
       onEditingComplete: widget.onEditingComplete,
       undoController: _undoHistoryController,
+      autofillHints: widget.autofillHints,
       buildCounter: (context,
           {required currentLength, required isFocused, required maxLength}) {
         return null;

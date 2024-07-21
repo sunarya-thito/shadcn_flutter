@@ -1,5 +1,7 @@
 library shadcn_flutter;
 
+// bundle from https://pub.dev/packages/country_flags
+export 'package:country_flags/country_flags.dart' show CountryFlag;
 export 'package:flutter/cupertino.dart'
     show
         cupertinoDesktopTextSelectionControls,
@@ -16,6 +18,8 @@ export 'package:flutter/material.dart'
     hide TextButton, Colors;
 export 'package:flutter/widgets.dart'
     hide ErrorWidgetBuilder, Form, FormState, Table, TableRow, TableCell;
+// bundle from https://pub.dev/packages/phonecodes
+export 'package:phonecodes/phonecodes.dart' show Countries, Country;
 // bundle from skeletonizer https://pub.dev/packages/skeletonizer
 export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 
@@ -31,6 +35,7 @@ export 'src/components/display/carousel.dart';
 export 'src/components/display/circular_progerss_indicator.dart';
 export 'src/components/display/code_snippet.dart';
 export 'src/components/display/divider.dart';
+export 'src/components/display/number_ticker.dart';
 export 'src/components/display/progress.dart';
 export 'src/components/display/skeleton.dart';
 export 'src/components/form/checkbox.dart';
@@ -39,6 +44,7 @@ export 'src/components/form/date_picker.dart';
 export 'src/components/form/form.dart';
 export 'src/components/form/form_field.dart';
 export 'src/components/form/input_otp.dart';
+export 'src/components/form/phone_input.dart';
 export 'src/components/form/radio_group.dart';
 export 'src/components/form/select.dart';
 export 'src/components/form/slider.dart';

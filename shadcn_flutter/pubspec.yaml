@@ -20,6 +20,8 @@ dependencies:
   shadcn_flutter_web: ^0.0.2
   shadcn_flutter_independent: ^0.0.3
   syntax_highlight: ^0.4.0
+  country_flags: ^3.0.0
+  phonecodes: ^0.0.3
 
 dev_dependencies:
   flutter_test:
