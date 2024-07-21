@@ -30,12 +30,9 @@ ToastOverlay showToast({
     themes: themes,
     data: data,
     onClosed: onClosed,
+    showDuration: showDuration,
   );
-  var attachedEntry = layer.addEntry(entry);
-  Timer(showDuration, () {
-    attachedEntry.close();
-  });
-  return attachedEntry;
+  return layer.addEntry(entry);
 }
 
 enum ToastLocation {
@@ -218,6 +215,9 @@ class _ToastLayerState extends State<ToastLayer> {
             spacing: widget.spacing,
             index: toastIndex,
             actualIndex: entries.length - i - 1,
+            onClosing: () {
+              entry.close();
+            },
             child: ConstrainedBox(
               constraints: widget.toastConstraints,
               child: entry.entry.builder(context, entry),
@@ -321,6 +321,7 @@ class ToastEntry {
   final CapturedThemes themes;
   final CapturedData data;
   final VoidCallback? onClosed;
+  final Duration? showDuration;
 
   ToastEntry({
     required this.builder,
@@ -331,6 +332,7 @@ class ToastEntry {
     required this.themes,
     required this.data,
     this.onClosed,
+    this.showDuration = const Duration(seconds: 5),
   });
 }
 
@@ -358,6 +360,7 @@ class OverlaidToastEntry extends StatefulWidget {
   final double spacing;
   final int index;
   final int actualIndex;
+  final VoidCallback? onClosing;
 
   const OverlaidToastEntry({
     super.key,
@@ -384,6 +387,7 @@ class OverlaidToastEntry extends StatefulWidget {
     required this.spacing,
     required this.index,
     required this.actualIndex,
+    required this.onClosing,
   });
 
   @override
@@ -395,105 +399,140 @@ class _OverlaidToastEntryState extends State<OverlaidToastEntry> {
   double _dismissOffset = 0;
   late int index;
   double? _closeDismissing;
+  Timer? _closingTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startClosingTimer();
+  }
+
+  void _startClosingTimer() {
+    if (widget.entry.showDuration != null) {
+      _closingTimer?.cancel();
+      _closingTimer = Timer(widget.entry.showDuration!, () {
+        widget.onClosing?.call();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return widget.themes.wrap(
       widget.data.wrap(
-        GestureDetector(
-          onHorizontalDragStart: (details) {
-            if (widget.dismissible) {
-              setState(() {
-                _dismissing = true;
-              });
-            }
+        MouseRegion(
+          hitTestBehavior: HitTestBehavior.deferToChild,
+          onEnter: (event) {
+            _closingTimer?.cancel();
           },
-          onHorizontalDragUpdate: (details) {
-            if (widget.dismissible) {
-              setState(() {
-                _dismissOffset += details.primaryDelta! / context.size!.width;
-              });
-            }
+          onExit: (event) {
+            _startClosingTimer();
           },
-          onHorizontalDragEnd: (details) {
-            if (widget.dismissible) {
-              setState(() {
-                _dismissing = false;
-              });
-              // if its < -0.5 or > 0.5 dismiss it
-              if (_dismissOffset < -0.5) {
-                _closeDismissing = -1.0;
-              } else if (_dismissOffset > 0.5) {
-                _closeDismissing = 1.0;
-              } else {
-                _dismissOffset = 0;
+          child: GestureDetector(
+            onHorizontalDragStart: (details) {
+              if (widget.dismissible) {
+                setState(() {
+                  _closingTimer?.cancel();
+                  _dismissing = true;
+                });
               }
-            }
-          },
-          child: AnimatedBuilder(
-              animation: widget.closing,
-              builder: (context, child) {
-                return AnimatedValueBuilder(
-                    value: _dismissOffset,
-                    duration: _dismissing ? Duration.zero : kDefaultDuration,
-                    builder: (context, dismissProgress, child) {
-                      return AnimatedValueBuilder(
-                          value: _closeDismissing ?? 0.0,
-                          duration: kDefaultDuration,
-                          onEnd: (value) {
-                            if (value == -1.0 || value == 1.0) {
-                              widget.onClosed();
-                            }
-                          },
-                          builder: (context, closeDismissingProgress, child) {
-                            return AnimatedValueBuilder(
-                                value: widget.index.toDouble(),
-                                curve: widget.curve,
-                                duration: widget.duration,
-                                builder: (context, indexProgress, child) {
-                                  return AnimatedValueBuilder(
-                                    initialValue: widget.index > 0 ? 1.0 : 0.0,
-                                    value: widget.closing.value && !_dismissing
-                                        ? 0.0
-                                        : 1.0,
-                                    curve: widget.curve,
-                                    duration: widget.duration,
-                                    onEnd: (value) {
-                                      if (value == 0.0 &&
-                                          widget.closing.value) {
-                                        widget.onClosed();
-                                      }
-                                    },
-                                    builder: (context, showingProgress, child) {
-                                      return AnimatedValueBuilder(
-                                          value: widget.visible ? 1.0 : 0.0,
-                                          curve: widget.curve,
-                                          duration: widget.duration,
-                                          builder: (context, visibleProgress,
-                                              child) {
-                                            return AnimatedValueBuilder(
-                                                value:
-                                                    widget.expanded ? 1.0 : 0.0,
-                                                curve: widget.expandingCurve,
-                                                duration:
-                                                    widget.expandingDuration,
-                                                builder: (context,
-                                                    expandProgress, child) {
-                                                  return buildToast(
-                                                      expandProgress,
-                                                      showingProgress,
-                                                      visibleProgress,
-                                                      indexProgress,
-                                                      dismissProgress,
-                                                      closeDismissingProgress);
-                                                });
-                                          });
-                                    },
-                                  );
-                                });
-                          });
-                    });
-              }),
+            },
+            onHorizontalDragUpdate: (details) {
+              if (widget.dismissible) {
+                setState(() {
+                  _dismissOffset += details.primaryDelta! / context.size!.width;
+                });
+              }
+            },
+            onHorizontalDragEnd: (details) {
+              if (widget.dismissible) {
+                setState(() {
+                  _dismissing = false;
+                });
+                // if its < -0.5 or > 0.5 dismiss it
+                if (_dismissOffset < -0.5) {
+                  _closeDismissing = -1.0;
+                } else if (_dismissOffset > 0.5) {
+                  _closeDismissing = 1.0;
+                } else {
+                  _dismissOffset = 0;
+                  _startClosingTimer();
+                }
+              }
+            },
+            child: AnimatedBuilder(
+                animation: widget.closing,
+                builder: (context, child) {
+                  return AnimatedValueBuilder(
+                      value: widget.closing.value ? 0.0 : _dismissOffset,
+                      duration: _dismissing && !widget.closing.value
+                          ? Duration.zero
+                          : kDefaultDuration,
+                      builder: (context, dismissProgress, child) {
+                        return AnimatedValueBuilder(
+                            value: widget.closing.value
+                                ? 0.0
+                                : _closeDismissing ?? 0.0,
+                            duration: kDefaultDuration,
+                            onEnd: (value) {
+                              if (value == -1.0 || value == 1.0) {
+                                widget.onClosed();
+                              }
+                            },
+                            builder: (context, closeDismissingProgress, child) {
+                              return AnimatedValueBuilder(
+                                  value: widget.index.toDouble(),
+                                  curve: widget.curve,
+                                  duration: widget.duration,
+                                  builder: (context, indexProgress, child) {
+                                    return AnimatedValueBuilder(
+                                      initialValue:
+                                          widget.index > 0 ? 1.0 : 0.0,
+                                      value:
+                                          widget.closing.value && !_dismissing
+                                              ? 0.0
+                                              : 1.0,
+                                      curve: widget.curve,
+                                      duration: widget.duration,
+                                      onEnd: (value) {
+                                        if (value == 0.0 &&
+                                            widget.closing.value) {
+                                          widget.onClosed();
+                                        }
+                                      },
+                                      builder:
+                                          (context, showingProgress, child) {
+                                        return AnimatedValueBuilder(
+                                            value: widget.visible ? 1.0 : 0.0,
+                                            curve: widget.curve,
+                                            duration: widget.duration,
+                                            builder: (context, visibleProgress,
+                                                child) {
+                                              return AnimatedValueBuilder(
+                                                  value: widget.expanded
+                                                      ? 1.0
+                                                      : 0.0,
+                                                  curve: widget.expandingCurve,
+                                                  duration:
+                                                      widget.expandingDuration,
+                                                  builder: (context,
+                                                      expandProgress, child) {
+                                                    return buildToast(
+                                                        expandProgress,
+                                                        showingProgress,
+                                                        visibleProgress,
+                                                        indexProgress,
+                                                        dismissProgress,
+                                                        closeDismissingProgress);
+                                                  });
+                                            });
+                                      },
+                                    );
+                                  });
+                            });
+                      });
+                }),
+          ),
         ),
       ),
     );
