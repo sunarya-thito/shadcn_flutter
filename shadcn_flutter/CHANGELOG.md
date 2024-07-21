@@ -72,3 +72,12 @@
 
 * Fixed bug with data not being bound to popover context
 * Fixed popover transformation matrix
+
+## 0.0.17
+
+* Fixed chained text widget
+* Added toast component
+* Added colors constants
+* Added HSL color picker
+* Fixed color shades generation issue
+* Improved radio group widget
