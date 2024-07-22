@@ -105,8 +105,10 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
 
   PhoneNumber get value {
     var text = _controller.text;
-    if (widget.filterPlusCode && text.startsWith('+')) {
+    if (widget.filterPlusCode && text.startsWith(_country.dialCode)) {
       text = text.substring(_country.dialCode.length);
+    } else if (widget.filterPlusCode && text.startsWith('+')) {
+      text = text.substring(1);
     } else if (widget.filterZeroCode && text.startsWith('0')) {
       text = text.substring(1);
     } else if (widget.filterCountryCode &&

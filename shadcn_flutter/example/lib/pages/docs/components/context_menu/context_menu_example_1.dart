@@ -126,7 +126,7 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
         width: 2,
         gap: 2,
         child: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 72, vertical: 48),
+          padding: EdgeInsets.symmetric(horizontal: 172, vertical: 148),
           child: Text('Right click here'),
         ),
       ),

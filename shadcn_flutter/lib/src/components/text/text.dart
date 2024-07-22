@@ -26,81 +26,73 @@ extension TextExtension on Widget {
   Widget xSmall() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 12, height: 16 / 12),
+        const TextStyle(fontSize: 12),
       );
     }
-    return WrappedText(
-        style: const TextStyle(fontSize: 12, height: 16 / 12), child: this);
+    return WrappedText(style: const TextStyle(fontSize: 12), child: this);
   }
 
   Widget small() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 14, height: 20.0 / 14),
+        const TextStyle(fontSize: 14),
       );
     }
-    return WrappedText(
-        style: const TextStyle(fontSize: 14, height: 20.0 / 14), child: this);
+    return WrappedText(style: const TextStyle(fontSize: 14), child: this);
   }
 
   Widget base() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 16, height: 24 / 16),
+        const TextStyle(fontSize: 16),
       );
     }
-    return WrappedText(
-        style: const TextStyle(fontSize: 16, height: 24 / 16), child: this);
+    return WrappedText(style: const TextStyle(fontSize: 16), child: this);
   }
 
   Widget large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 18, height: 28 / 18),
+        const TextStyle(fontSize: 18),
       );
     }
-    return WrappedText(
-        style: const TextStyle(fontSize: 18, height: 28 / 18), child: this);
+    return WrappedText(style: const TextStyle(fontSize: 18), child: this);
   }
 
   Widget xLarge() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 20, height: 28 / 20),
+        const TextStyle(fontSize: 20),
       );
     }
-    return WrappedText(
-        style: const TextStyle(fontSize: 20, height: 28 / 20), child: this);
+    return WrappedText(style: const TextStyle(fontSize: 20), child: this);
   }
 
   Widget x2Large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 24, height: 32 / 24),
+        const TextStyle(fontSize: 24),
       );
     }
-    return WrappedText(
-        style: const TextStyle(fontSize: 24, height: 32 / 24), child: this);
+    return WrappedText(style: const TextStyle(fontSize: 24), child: this);
   }
 
   Widget x3Large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 30, height: 36 / 30),
+        const TextStyle(fontSize: 30),
       );
     }
-    return WrappedText(
-        style: const TextStyle(fontSize: 30, height: 36 / 30), child: this);
+    return WrappedText(style: const TextStyle(fontSize: 30), child: this);
   }
 
   Widget x4Large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 36, height: 40 / 36),
+        const TextStyle(fontSize: 36),
       );
     }
-    return WrappedText(
-        style: const TextStyle(fontSize: 36, height: 40 / 36), child: this);
+    return WrappedText(style: const TextStyle(fontSize: 36), child: this);
   }
 
   Widget x5Large() {
@@ -336,7 +328,7 @@ extension TextExtension on Widget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: (style.fontSize ?? 12) * (style.height ?? 1.5),
+                height: ((style.fontSize ?? 12) * (style.height ?? 1)) * 1.2,
                 child: getBullet(context, depth, size),
               ),
               const SizedBox(width: 8),

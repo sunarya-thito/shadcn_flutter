@@ -7,12 +7,8 @@ class DropdownMenuExample1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlineButton(
       onPressed: () {
-        showPopover(
+        showDropdown(
           context: context,
-          alignment: Alignment.topCenter,
-          offset: const Offset(0, 4),
-          consumeOutsideTaps: false,
-          modal: false,
           builder: (context) {
             return const DropdownMenu(
               children: [

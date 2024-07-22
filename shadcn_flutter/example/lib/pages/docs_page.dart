@@ -154,6 +154,7 @@ class DocsPageState extends State<DocsPage> {
           ShadcnDocsPage('Material/Cupertino', 'external'),
         ],
         Icons.book),
+    // COMPONENTS BEGIN
     ShadcnDocsSection(
       'Animation',
       [
@@ -283,6 +284,19 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Dropdown Menu', 'dropdown_menu'),
       ],
     ),
+    // COMPONENTS END
+  ];
+
+  List<String> componentCategories = [
+    'Animation',
+    'Disclosure',
+    'Feedback',
+    'Forms',
+    'Layout',
+    'Navigation',
+    'Surfaces',
+    'Data Display',
+    'Utilities',
   ];
   bool toggle = false;
   List<OnThisPage> currentlyVisible = [];
@@ -292,6 +306,23 @@ class DocsPageState extends State<DocsPage> {
     super.initState();
     for (final child in widget.onThisPage.values) {
       child.isVisible.addListener(_onVisibilityChanged);
+    }
+    // count compoents
+    int count = 0;
+    int workInProgress = 0;
+    for (var section in sections) {
+      if (componentCategories.contains(section.title)) {
+        count += section.pages.length;
+        for (var page in section.pages) {
+          if (page.tag == ShadcnFeatureTag.workInProgress) {
+            workInProgress++;
+          }
+        }
+      }
+    }
+    if (kDebugMode) {
+      print('Total components: $count');
+      print('Work in Progress: $workInProgress');
     }
   }
 
@@ -571,38 +602,43 @@ class DocsPageState extends State<DocsPage> {
                                   if (hasOnThisPage)
                                     MediaQueryVisibility(
                                       minWidth: breakpointWidth2,
-                                      child: FocusTraversalGroup(
-                                        child: SingleChildScrollView(
-                                          padding: EdgeInsets.only(
-                                            top: 32,
-                                            right: 24 + padding.right,
-                                            bottom: 32,
-                                            left: 24,
-                                          ),
-                                          child: SidebarNav(children: [
-                                            SidebarSection(
-                                              header:
-                                                  const Text('On This Page'),
-                                              children: [
-                                                for (var key in onThisPage.keys)
-                                                  SidebarButton(
-                                                    onPressed: () {
-                                                      Scrollable.ensureVisible(
-                                                          onThisPage[key]!
-                                                              .currentContext!,
-                                                          duration:
-                                                              kDefaultDuration,
-                                                          alignmentPolicy:
-                                                              ScrollPositionAlignmentPolicy
-                                                                  .explicit);
-                                                    },
-                                                    selected: isVisible(
-                                                        onThisPage[key]!),
-                                                    child: Text(key),
-                                                  ),
-                                              ],
+                                      child: Container(
+                                        width: padding.right + 200,
+                                        alignment: Alignment.topLeft,
+                                        child: FocusTraversalGroup(
+                                          child: SingleChildScrollView(
+                                            padding: const EdgeInsets.only(
+                                              top: 32,
+                                              right: 24,
+                                              bottom: 32,
+                                              left: 24,
                                             ),
-                                          ]),
+                                            child: SidebarNav(children: [
+                                              SidebarSection(
+                                                header:
+                                                    const Text('On This Page'),
+                                                children: [
+                                                  for (var key
+                                                      in onThisPage.keys)
+                                                    SidebarButton(
+                                                      onPressed: () {
+                                                        Scrollable.ensureVisible(
+                                                            onThisPage[key]!
+                                                                .currentContext!,
+                                                            duration:
+                                                                kDefaultDuration,
+                                                            alignmentPolicy:
+                                                                ScrollPositionAlignmentPolicy
+                                                                    .explicit);
+                                                      },
+                                                      selected: isVisible(
+                                                          onThisPage[key]!),
+                                                      child: Text(key),
+                                                    ),
+                                                ],
+                                              ),
+                                            ]),
+                                          ),
                                         ),
                                       ),
                                     )

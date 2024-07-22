@@ -46,14 +46,14 @@ class _ResizableExample6State extends State<ResizableExample6> {
                     direction: Axis.horizontal,
                     children: [
                       ResizablePane.flex(
-                        minSize: 40,
+                        // minSize: 40,
                         child: NumberedContainer(
                           index: 2,
                           fill: false,
                         ),
                       ),
                       ResizablePane.flex(
-                        minSize: 40,
+                        // minSize: 4/0,
                         child: NumberedContainer(
                           index: 3,
                           fill: false,

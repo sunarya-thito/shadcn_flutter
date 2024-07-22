@@ -69,6 +69,7 @@ class _TooltipState extends State<Tooltip> {
             },
             alignment: widget.alignment,
             anchorAlignment: widget.anchorAlignment,
+            dismissBackdropFocus: false,
           );
         } else {
           _controller.close();

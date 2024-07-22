@@ -20,7 +20,7 @@ class _NumberTickerExample1State extends State<NumberTickerExample1> {
           initialNumber: 0,
           number: _number,
           formatter: (number) {
-            return NumberFormat.currency().format(number);
+            return NumberFormat.compact().format(number);
           },
         ),
         gap(24),

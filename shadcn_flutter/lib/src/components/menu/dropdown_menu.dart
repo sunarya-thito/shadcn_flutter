@@ -1,5 +1,18 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+void showDropdown(
+    {required BuildContext context, required WidgetBuilder builder}) {
+  showPopover(
+    context: context,
+    alignment: Alignment.topCenter,
+    offset: const Offset(0, 4),
+    consumeOutsideTaps: false,
+    modal: false,
+    dismissBackdropFocus: true,
+    builder: builder,
+  );
+}
+
 class DropdownMenu extends StatefulWidget {
   final List<MenuItem> children;
 
@@ -22,7 +35,8 @@ class _DropdownMenuState extends State<DropdownMenu> {
       child: MenuGroup(
         subMenuOffset: const Offset(8, -4),
         onDismissed: () {
-          Navigator.of(context).pop();
+          // Navigator.of(context).pop();
+          closePopover(context);
         },
         builder: (context, children) {
           return MenuPopup(

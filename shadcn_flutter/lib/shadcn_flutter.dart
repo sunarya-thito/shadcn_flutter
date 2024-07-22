@@ -32,6 +32,7 @@ export 'src/components/display/avatar.dart';
 export 'src/components/display/badge.dart';
 export 'src/components/display/calendar.dart';
 export 'src/components/display/carousel.dart';
+export 'src/components/display/chip.dart';
 export 'src/components/display/circular_progerss_indicator.dart';
 export 'src/components/display/code_snippet.dart';
 export 'src/components/display/divider.dart';

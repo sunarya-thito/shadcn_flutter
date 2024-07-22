@@ -291,6 +291,7 @@ Future<void> _showContextMenu(
     modal: false,
     follow: false,
     consumeOutsideTaps: false,
+    dismissBackdropFocus: false,
     builder: (context) {
       return AnimatedBuilder(
           animation: children,
@@ -303,7 +304,8 @@ Future<void> _showContextMenu(
                 regionGroupId: key,
                 subMenuOffset: const Offset(8, -4),
                 onDismissed: () {
-                  Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
+                  closePopover(context);
                 },
                 builder: (context, children) {
                   return MenuPopup(

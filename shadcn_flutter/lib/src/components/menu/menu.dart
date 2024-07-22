@@ -319,6 +319,7 @@ class _MenuButtonState extends State<MenuButton> {
         context: context,
         regionGroupId: menuGroupData.regionGroupId,
         consumeOutsideTaps: false,
+        dismissBackdropFocus: false,
         builder: (context) {
           return ConstrainedBox(
             constraints: const BoxConstraints(

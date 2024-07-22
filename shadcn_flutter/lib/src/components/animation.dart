@@ -43,9 +43,9 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
     this.onEnd,
     this.curve = Curves.linear,
     this.lerp,
-    this.child,
   })  : builder = null,
         animationBuilder = builder,
+        child = null,
         assert(duration != null || durationBuilder != null,
             'You must provide a duration or a durationBuilder.'),
         super(key: key);
@@ -104,17 +104,21 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value ||
         oldWidget.duration != widget.duration ||
-        oldWidget.curve != widget.curve) {
-      T currentValue = lerpedValue(
-        _value,
-        oldWidget.value,
-        oldWidget.curve.transform(_controller.value),
-      );
+        oldWidget.curve != widget.curve ||
+        oldWidget.durationBuilder != widget.durationBuilder) {
+      T currentValue = _controller.value == 1
+          ? oldWidget.value
+          : lerpedValue(
+              _value,
+              oldWidget.value,
+              oldWidget.curve.transform(_controller.value),
+            );
       _controller.duration = widget.duration ??
           widget.durationBuilder!(currentValue, widget.value);
-      _controller.reset();
-      _controller.forward();
       _value = currentValue;
+      _controller.forward(
+        from: 0,
+      );
     }
   }
 
@@ -185,11 +189,16 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
 
   @override
   T get value {
-    if (_controller.isCompleted || _controller.value >= 1) {
+    double progress = _controller.value;
+    double curveProgress = widget.curve.transform(progress);
+    if (progress == 0) {
+      return _value;
+    }
+    if (progress == 1) {
       return widget.value;
     }
-    return lerpedValue(
-        _value, widget.value, widget.curve.transform(_controller.value));
+    T newValue = lerpedValue(_value, widget.value, curveProgress);
+    return newValue;
   }
 }
 

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/rendering.dart';
@@ -103,7 +104,20 @@ class PopoverRoute<T> extends PopupRoute<T> {
           }
         }
       },
-      route: this,
+      // route: this,
+      onClose: () {
+        if (isCurrent) {
+          Navigator.of(context).pop();
+        } else {
+          Navigator.of(context).removeRoute(this);
+        }
+      },
+      onImmediateClose: () {
+        Navigator.of(context).removeRoute(this);
+      },
+      onCloseWithResult: (result) {
+        Navigator.of(context).pop(result);
+      },
       regionGroupId: regionGroupId,
       offset: offset,
       transitionAlignment: transitionAlignment,
@@ -145,7 +159,7 @@ class PopoverAnchor extends StatefulWidget {
     this.widthConstraint = PopoverConstraint.flexible,
     this.heightConstraint = PopoverConstraint.flexible,
     this.anchorSize,
-    this.route,
+    // this.route,
     this.onTapOutside,
     this.regionGroupId,
     this.offset,
@@ -157,6 +171,9 @@ class PopoverAnchor extends StatefulWidget {
     this.allowInvertHorizontal = true,
     this.allowInvertVertical = true,
     this.data,
+    this.onClose,
+    this.onImmediateClose,
+    this.onCloseWithResult,
   });
 
   final Offset position;
@@ -169,7 +186,9 @@ class PopoverAnchor extends StatefulWidget {
   final Animation<double> animation;
   final PopoverConstraint widthConstraint;
   final PopoverConstraint heightConstraint;
-  final PopoverRoute? route;
+  // final PopoverRoute? route;
+  final VoidCallback? onClose;
+  final VoidCallback? onImmediateClose;
   final VoidCallback? onTapOutside;
   final Object? regionGroupId;
   final Offset? offset;
@@ -181,6 +200,7 @@ class PopoverAnchor extends StatefulWidget {
   final ValueChanged<PopoverAnchorState>? onTickFollow;
   final bool allowInvertHorizontal;
   final bool allowInvertVertical;
+  final ValueChanged<dynamic>? onCloseWithResult;
 
   @override
   State<PopoverAnchor> createState() => PopoverAnchorState();
@@ -239,23 +259,29 @@ class PopoverAnchorState extends State<PopoverAnchor>
   }
 
   void close([bool immediate = false]) {
-    var route = widget.route;
-    if (route != null) {
-      if (route.isCurrent && !immediate) {
-        Navigator.of(context).pop();
-      } else {
-        Navigator.of(context).removeRoute(route);
-      }
+    // var route = widget.route;
+    // if (route != null) {
+    //   if (route.isCurrent && !immediate) {
+    //     Navigator.of(context).pop();
+    //   } else {
+    //     Navigator.of(context).removeRoute(route);
+    //   }
+    // } else {
+    //   Navigator.of(context).pop();
+    // }
+    if (!immediate) {
+      widget.onClose?.call();
     } else {
-      Navigator.of(context).pop();
+      widget.onImmediateClose?.call();
     }
   }
 
   void closeLater() {
-    if (mounted && widget.route != null) {
+    if (mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
-          Navigator.of(context).removeRoute(widget.route!);
+          // Navigator.of(context).removeRoute(widget.route!);
+          widget.onImmediateClose?.call();
         }
       });
     }
@@ -430,47 +456,57 @@ class PopoverAnchorState extends State<PopoverAnchor>
     if (widget.data != null) {
       builtChild = widget.data!.wrap(builtChild);
     }
-    return TapRegion(
-      enabled: widget.consumeOutsideTaps,
-      onTapOutside: widget.onTapOutside != null
-          ? (event) {
-              widget.onTapOutside?.call();
-            }
-          : null,
-      groupId: widget.regionGroupId,
-      child: MediaQuery.removePadding(
-        context: context,
-        removeBottom: true,
-        removeLeft: true,
-        removeRight: true,
-        removeTop: true,
-        child: AnimatedBuilder(
-          animation: widget.animation,
-          builder: (context, child) {
-            return PopoverLayout(
-              alignment: _alignment,
-              position: _position,
-              anchorSize: _anchorSize,
-              anchorAlignment: _anchorAlignment,
-              widthConstraint: _widthConstraint,
-              heightConstraint: _heightConstraint,
-              offset: _offset,
-              margin: _margin,
-              scale: tweenValue(0.9, 1.0, widget.animation.value),
-              scaleAlignment: widget.transitionAlignment ?? _alignment,
-              allowInvertVertical: _allowInvertVertical,
-              allowInvertHorizontal: _allowInvertHorizontal,
-              child: child!,
-            );
-          },
-          child: FadeTransition(
-            opacity: widget.animation,
-            child: builtChild,
+    return Data(
+      data: this,
+      child: TapRegion(
+        enabled: widget.consumeOutsideTaps,
+        onTapOutside: widget.onTapOutside != null
+            ? (event) {
+                widget.onTapOutside?.call();
+              }
+            : null,
+        groupId: widget.regionGroupId,
+        child: MediaQuery.removePadding(
+          context: context,
+          removeBottom: true,
+          removeLeft: true,
+          removeRight: true,
+          removeTop: true,
+          child: AnimatedBuilder(
+            animation: widget.animation,
+            builder: (context, child) {
+              return PopoverLayout(
+                alignment: _alignment,
+                position: _position,
+                anchorSize: _anchorSize,
+                anchorAlignment: _anchorAlignment,
+                widthConstraint: _widthConstraint,
+                heightConstraint: _heightConstraint,
+                offset: _offset,
+                margin: _margin,
+                scale: tweenValue(0.9, 1.0, widget.animation.value),
+                scaleAlignment: widget.transitionAlignment ?? _alignment,
+                allowInvertVertical: _allowInvertVertical,
+                allowInvertHorizontal: _allowInvertHorizontal,
+                child: child!,
+              );
+            },
+            child: FadeTransition(
+              opacity: widget.animation,
+              child: builtChild,
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+void closePopover<T>(BuildContext context, [T? value]) {
+  Data.maybeOf<PopoverAnchorState>(context)
+      ?.widget
+      .onCloseWithResult
+      ?.call(value);
 }
 
 Future<T?> showPopover<T>({
@@ -495,8 +531,128 @@ Future<T?> showPopover<T>({
   ValueChanged<PopoverAnchorState>? onTickFollow,
   bool allowInvertHorizontal = true,
   bool allowInvertVertical = true,
+  bool dismissBackdropFocus = true,
 }) {
   anchorAlignment ??= alignment * -1;
+  if (!dismissBackdropFocus) {
+    final OverlayState overlay =
+        Overlay.of(context, rootOverlay: useRootNavigator);
+    final themes = InheritedTheme.capture(from: context, to: overlay.context);
+    final data = Data.capture(from: context, to: overlay.context);
+
+    Size? anchorSize;
+    if (position == null) {
+      RenderBox renderBox = context.findRenderObject() as RenderBox;
+      Offset pos = renderBox.localToGlobal(Offset.zero);
+      anchorSize ??= renderBox.size;
+      position = Offset(
+        pos.dx +
+            anchorSize.width / 2 +
+            anchorSize.width / 2 * anchorAlignment.x,
+        pos.dy +
+            anchorSize.height / 2 +
+            anchorSize.height / 2 * anchorAlignment.y,
+      );
+    }
+
+    ValueNotifier<bool> isClosed = ValueNotifier(false);
+    Completer<T?> completer = Completer();
+    OverlayEntry barrierEntry;
+    late OverlayEntry overlayEntry;
+    if (consumeOutsideTaps) {
+      barrierEntry = OverlayEntry(
+        builder: (context) {
+          return GestureDetector(
+            onTap: () {
+              isClosed.value = true;
+            },
+          );
+        },
+      );
+    } else {
+      barrierEntry = OverlayEntry(
+        builder: (context) {
+          return Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: (event) {
+              isClosed.value = true;
+            },
+          );
+        },
+      );
+    }
+    overlayEntry = OverlayEntry(
+      builder: (innerContext) {
+        return RepaintBoundary(
+          child: AnimatedBuilder(
+              animation: isClosed,
+              builder: (innerContext, child) {
+                return AnimatedValueBuilder.animation(
+                    value: isClosed.value ? 0.0 : 1.0,
+                    initialValue: 0.0,
+                    curve: isClosed.value
+                        ? const Interval(0, 2 / 3)
+                        : Curves.linear,
+                    duration: isClosed.value
+                        ? kDefaultDuration
+                        : const Duration(milliseconds: 100),
+                    onEnd: (value) {
+                      if (value == 0.0 && isClosed.value) {
+                        overlayEntry.remove();
+                        barrierEntry.remove();
+                        overlayEntry.dispose();
+                        barrierEntry.dispose();
+                      }
+                    },
+                    builder: (innerContext, animation) {
+                      var popoverAnchor = PopoverAnchor(
+                        animation: animation,
+                        key: key,
+                        anchorContext: context,
+                        position: position!,
+                        alignment: alignment,
+                        themes: themes,
+                        builder: builder,
+                        anchorSize: anchorSize,
+                        anchorAlignment: anchorAlignment ?? alignment * -1,
+                        widthConstraint: widthConstraint,
+                        heightConstraint: heightConstraint,
+                        regionGroupId: regionGroupId,
+                        offset: offset,
+                        transitionAlignment: transitionAlignment,
+                        margin: margin,
+                        follow: follow,
+                        consumeOutsideTaps: consumeOutsideTaps,
+                        onTickFollow: onTickFollow,
+                        allowInvertHorizontal: allowInvertHorizontal,
+                        allowInvertVertical: allowInvertVertical,
+                        data: data,
+                        onClose: () {
+                          isClosed.value = true;
+                          completer.complete();
+                        },
+                        onImmediateClose: () {
+                          overlayEntry.remove();
+                          barrierEntry.remove();
+                          overlayEntry.dispose();
+                          barrierEntry.dispose();
+                          completer.complete();
+                        },
+                        onCloseWithResult: (value) {
+                          isClosed.value = true;
+                          completer.complete(value);
+                        },
+                      );
+                      return popoverAnchor;
+                    });
+              }),
+        );
+      },
+    );
+    overlay.insert(barrierEntry);
+    overlay.insert(overlayEntry);
+    return completer.future;
+  }
   final NavigatorState navigator =
       Navigator.of(context, rootNavigator: useRootNavigator);
   final CapturedThemes themes =
@@ -568,6 +724,7 @@ class PopoverController extends ChangeNotifier {
     bool follow = true,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
+    bool dismissBackdropFocus = true,
   }) async {
     if (closeOthers) {
       close();
@@ -593,6 +750,7 @@ class PopoverController extends ChangeNotifier {
       follow: follow,
       allowInvertHorizontal: allowInvertHorizontal,
       allowInvertVertical: allowInvertVertical,
+      dismissBackdropFocus: dismissBackdropFocus,
     );
     _openPopovers.remove(key);
     notifyListeners();
