@@ -132,11 +132,21 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
             searchPlaceholder: localization.searchPlaceholderCountry,
             searchFilter: (item, query) {
               query = query.toLowerCase();
-              return item.name.toLowerCase().contains(query) ||
+              var searchScore = item.name.toLowerCase().contains(query) ||
                       item.dialCode.contains(query) ||
                       item.code.toLowerCase().contains(query)
                   ? 1
                   : 0;
+              return searchScore;
+            },
+            emptyBuilder: (context) {
+              return Container(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  localization.emptyCountryList,
+                  textAlign: TextAlign.center,
+                ).small().muted(),
+              );
             },
             value: _country,
             borderRadius: BorderRadius.only(

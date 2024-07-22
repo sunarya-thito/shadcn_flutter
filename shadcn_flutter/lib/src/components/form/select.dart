@@ -1,18 +1,25 @@
-import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/control/hover.dart';
 
 typedef SearchFilter<T> = int Function(T item, String query);
 
-class SelectItemButton<T> extends StatelessWidget {
+class SelectItemButton<T> extends StatelessWidget
+    implements AbstractSelectItem<T> {
   final T value;
   final Widget child;
+  final int Function(String query)? computeIndexingScore;
 
   const SelectItemButton({
     Key? key,
+    this.computeIndexingScore,
     required this.value,
     required this.child,
   }) : super(key: key);
+
+  @override
+  Iterable<T> get values {
+    return [value];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,84 +55,72 @@ class SelectItemButton<T> extends StatelessWidget {
   }
 }
 
-class SelectGroup extends StatelessWidget {
+class SelectGroup<T> extends StatelessWidget implements AbstractSelectItem<T> {
   final List<Widget>? headers;
-  final List<Widget> children;
+  final List<AbstractSelectItem<T>> children;
   final List<Widget>? footers;
   final bool? showUnrelatedValues;
-  final int Function(String query)? computeIndexingScore;
 
   const SelectGroup({
     Key? key,
     this.headers,
     this.footers,
     this.showUnrelatedValues,
-    this.computeIndexingScore,
     required this.children,
   }) : super(key: key);
 
   @override
+  Iterable<T> get values {
+    return children.expand((element) => element.values);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final searchData = Data.maybeOf<_SelectData>(context);
-    assert(searchData != null, 'SelectGroup must be a child of Select');
-    int? computedScore = searchData?.query != null
-        ? computeIndexingScore?.call(searchData!.query!)
-        : null;
-    return _SelectValuesHolder(
-      query: searchData?.query,
-      computeIndexingScore: computeIndexingScore,
-      showUnrelatedValues: (computedScore != null && computedScore > 0) ||
-          (showUnrelatedValues ?? searchData?.showUnrelatedValues ?? false),
-      builder: (children) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (headers != null) ...headers!,
-            ...children,
-            if (footers != null) ...footers!,
-          ],
-        );
-      },
-      children: children,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (headers != null) ...headers!,
+        ...children,
+        if (footers != null) ...footers!,
+      ],
     );
   }
 }
 
 typedef SelectItemReporter = void Function();
 typedef SelectItemBuilder<T> = Widget Function(
-    BuildContext context, SelectItemReporter selectItem, T selectedValue);
+    BuildContext context, SelectItemReporter selectItem, T? selectedValue);
 
-class SelectItem<T> extends StatelessWidget {
+abstract class AbstractSelectItem<T> extends Widget {
+  Iterable<T> get values;
+}
+
+class SelectItem<T> extends StatelessWidget implements AbstractSelectItem<T> {
   final SelectItemBuilder<T> builder;
   final T value;
-  final int Function(String query)? computeIndexingScore;
 
   const SelectItem({
     Key? key,
     required this.value,
-    this.computeIndexingScore,
     required this.builder,
   }) : super(key: key);
+
+  @override
+  Iterable<T> get values {
+    return [value];
+  }
 
   @override
   Widget build(BuildContext context) {
     final searchData = Data.maybeOf<_SelectData>(context);
     assert(searchData != null, 'SelectItem must be a child of Select');
-    return _SelectValueHolder(
-      computeIndexingScore: (query) {
-        if (computeIndexingScore != null) {
-          return computeIndexingScore!(query);
-        }
-        return searchData.searchFilter?.call(value, query) ?? 0;
-      },
-      child: Data<_SelectData>.boundary(
-        child: builder(
-          context,
-          () {
-            searchData.onChanged(value);
-          },
-          searchData!.value,
-        ),
+    return Data<_SelectData>.boundary(
+      child: builder(
+        context,
+        () {
+          searchData.onChanged(value);
+        },
+        searchData!.value,
       ),
     );
   }
@@ -158,7 +153,7 @@ class Select<T> extends StatefulWidget {
   final BoxConstraints constraints;
   final BoxConstraints popupConstraints;
   final PopoverConstraint popupWidthConstraint;
-  final List<Widget> children;
+  final List<AbstractSelectItem<T>> children;
   final T? value;
   final Widget Function(BuildContext context, T item) itemBuilder;
   final bool showUnrelatedValues;
@@ -167,6 +162,7 @@ class Select<T> extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
   final Alignment popoverAlignment;
   final Alignment? popoverAnchorAlignment;
+  final WidgetBuilder? emptyBuilder;
 
   const Select({
     Key? key,
@@ -185,6 +181,7 @@ class Select<T> extends StatefulWidget {
     this.padding,
     this.popoverAlignment = Alignment.topCenter,
     this.popoverAnchorAlignment,
+    this.emptyBuilder,
     required this.itemBuilder,
     required this.children,
   }) : super(key: key);
@@ -254,6 +251,7 @@ class _SelectState<T> extends State<Select<T>> {
                       value: widget.value,
                       showUnrelatedValues: widget.showUnrelatedValues,
                       onChanged: widget.onChanged,
+                      emptyBuilder: widget.emptyBuilder,
                       children: widget.children,
                     );
                   },
@@ -291,10 +289,11 @@ class SelectPopup<T> extends StatefulWidget {
   final T? value;
   final SearchFilter<T>? searchFilter;
   final BoxConstraints constraints;
-  final List<Widget> children;
+  final List<AbstractSelectItem<T>> children;
   final bool showUnrelatedValues;
   final ValueChanged<T?>? onChanged;
   final String? searchPlaceholder;
+  final WidgetBuilder? emptyBuilder;
 
   const SelectPopup({
     Key? key,
@@ -304,6 +303,7 @@ class SelectPopup<T> extends StatefulWidget {
     this.showUnrelatedValues = false,
     this.onChanged,
     this.searchPlaceholder,
+    this.emptyBuilder,
     required this.children,
   }) : super(key: key);
 
@@ -341,201 +341,220 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
       constraints: widget.constraints,
       child: OutlinedContainer(
         clipBehavior: Clip.hardEdge,
-        child: IntrinsicHeight(
-          child: IntrinsicWidth(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (widget.searchFilter != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Row(
-                      children: [
-                        AnimatedIconTheme(
-                          duration: kDefaultDuration,
-                          data: IconThemeData(
-                            color: Theme.of(context).colorScheme.foreground,
-                            size: 16,
-                            opacity: 0.5,
-                          ),
-                          child: const Icon(
-                            Icons.search,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: TextField(
-                            controller: _searchController,
-                            border: false,
-                            placeholder: widget.searchPlaceholder,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                          ),
-                        ),
-                      ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.searchFilter != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  children: [
+                    AnimatedIconTheme(
+                      duration: kDefaultDuration,
+                      data: IconThemeData(
+                        color: Theme.of(context).colorScheme.foreground,
+                        size: 16,
+                        opacity: 0.5,
+                      ),
+                      child: const Icon(
+                        Icons.search,
+                      ),
                     ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextField(
+                        controller: _searchController,
+                        border: false,
+                        placeholder: widget.searchPlaceholder,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            if (widget.searchFilter != null) const Divider(),
+            Flexible(
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(theme.radiusXl),
+                  bottomRight: Radius.circular(theme.radiusXl),
+                ),
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(
+                    scrollbars: false,
                   ),
-                if (widget.searchFilter != null) const Divider(),
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(theme.radiusXl),
-                      bottomRight: Radius.circular(theme.radiusXl),
-                    ),
-                    child: Stack(
-                      fit: StackFit.passthrough,
-                      children: [
-                        ScrollConfiguration(
-                          behavior: ScrollConfiguration.of(context).copyWith(
-                            scrollbars: false,
-                          ),
-                          child: Padding(
-                            // to fix visual glitch, add padding
-                            padding: const EdgeInsets.only(top: 1, bottom: 1),
-                            child: SingleChildScrollView(
-                              controller: _scrollController,
-                              padding: const EdgeInsets.all(4),
-                              child: AnimatedBuilder(
-                                animation: _searchController,
-                                builder: (context, child) {
-                                  String? text = _searchController.text;
-                                  if (text.trim().isEmpty) {
-                                    text = null;
-                                  }
-                                  return Data(
-                                    data: _SelectData(
-                                      (item, query) {
-                                        return widget.searchFilter
-                                                ?.call(item, query) ??
-                                            0;
-                                      },
-                                      text,
-                                      (value) {
-                                        widget.onChanged?.call(value);
-                                        Navigator.of(context).pop(value);
-                                      },
-                                      widget.value,
-                                      widget.showUnrelatedValues,
-                                    ),
-                                    child: _SelectValuesHolder(
-                                      query: text,
-                                      showUnrelatedValues:
-                                          widget.showUnrelatedValues,
-                                      builder: (children) {
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: children,
-                                        );
-                                      },
-                                      children: widget.children,
-                                    ),
-                                  );
-                                },
+                  child: AnimatedBuilder(
+                    animation: _searchController,
+                    builder: (context, child) {
+                      String text = _searchController.text;
+                      Map<AbstractSelectItem<T>, _SearchResult> resultMap = {};
+                      for (int i = 0; i < widget.children.length; i++) {
+                        var item = widget.children[i];
+                        if (text.isEmpty) {
+                          resultMap[item] = _SearchResult(0, i);
+                        } else {
+                          int score = 0;
+                          for (var val in item.values) {
+                            score += widget.searchFilter?.call(val, text) ?? 0;
+                          }
+                          if (score > 0 || widget.showUnrelatedValues) {
+                            resultMap[item] = _SearchResult(score, i);
+                          }
+                        }
+                      }
+                      List<Widget> children = [];
+                      // sort from largest score to lowest score, if score is same, then sort by index
+                      resultMap.entries.toList()
+                        ..sort((a, b) {
+                          if (a.value.score == b.value.score) {
+                            return a.value.index.compareTo(b.value.index);
+                          }
+                          return b.value.score.compareTo(a.value.score);
+                        })
+                        ..forEach((element) {
+                          children.add(element.key);
+                        });
+                      Widget child;
+                      if (children.isEmpty) {
+                        child = widget.emptyBuilder?.call(context) ??
+                            const SizedBox();
+                      } else {
+                        child = Stack(
+                          fit: StackFit.passthrough,
+                          children: [
+                            Padding(
+                              // to fix visual glitch, add padding
+                              padding: const EdgeInsets.only(top: 1, bottom: 1),
+                              child: ListView(
+                                controller: _scrollController,
+                                padding: const EdgeInsets.all(4),
+                                shrinkWrap: true,
+                                children: children,
                               ),
                             ),
-                          ),
-                        ),
-                        AnimatedBuilder(
-                          animation: Listenable.merge([
-                            _scrollController,
-                            _searchController,
-                          ]),
-                          builder: (context, child) {
-                            return Visibility(
-                              visible: _scrollController.offset > 0,
-                              child: Positioned(
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                child: HoverActivity(
-                                  hitTestBehavior: HitTestBehavior.translucent,
-                                  debounceDuration:
-                                      const Duration(milliseconds: 16),
-                                  onHover: () {
-                                    // decrease scroll offset
-                                    var value = _scrollController.offset - 8;
-                                    value = value.clamp(
-                                      0.0,
-                                      _scrollController
-                                          .position.maxScrollExtent,
-                                    );
-                                    _scrollController.jumpTo(
-                                      value,
-                                    );
-                                  },
-                                  child: Container(
-                                    color: theme.colorScheme.background,
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 4),
-                                    child: const Icon(
-                                      RadixIcons.chevronUp,
-                                      size: 8,
+                            AnimatedBuilder(
+                              animation: _scrollController,
+                              builder: (context, child) {
+                                return Visibility(
+                                  visible: _scrollController.offset > 0,
+                                  child: Positioned(
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: HoverActivity(
+                                      hitTestBehavior:
+                                          HitTestBehavior.translucent,
+                                      debounceDuration:
+                                          const Duration(milliseconds: 16),
+                                      onHover: () {
+                                        // decrease scroll offset
+                                        var value =
+                                            _scrollController.offset - 8;
+                                        value = value.clamp(
+                                          0.0,
+                                          _scrollController
+                                              .position.maxScrollExtent,
+                                        );
+                                        _scrollController.jumpTo(
+                                          value,
+                                        );
+                                      },
+                                      child: Container(
+                                        color: theme.colorScheme.background,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 4),
+                                        child: const Icon(
+                                          RadixIcons.chevronUp,
+                                          size: 8,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        AnimatedBuilder(
-                          animation: Listenable.merge([
-                            _scrollController,
-                            _searchController,
-                          ]),
-                          builder: (context, child) {
-                            return Visibility(
-                              visible: _scrollController.hasClients &&
-                                  _scrollController
-                                      .position.hasContentDimensions &&
-                                  _scrollController.offset <
+                                );
+                              },
+                            ),
+                            AnimatedBuilder(
+                              animation: _scrollController,
+                              builder: (context, child) {
+                                return Visibility(
+                                  visible: _scrollController.hasClients &&
                                       _scrollController
-                                          .position.maxScrollExtent,
-                              child: Positioned(
-                                bottom: 0,
-                                left: 0,
-                                right: 0,
-                                child: HoverActivity(
-                                  hitTestBehavior: HitTestBehavior.translucent,
-                                  debounceDuration:
-                                      const Duration(milliseconds: 16),
-                                  onHover: () {
-                                    // increase scroll offset
-                                    var value = _scrollController.offset + 8;
-                                    value = value.clamp(
-                                      0.0,
-                                      _scrollController
-                                          .position.maxScrollExtent,
-                                    );
-                                    _scrollController.jumpTo(
-                                      value,
-                                    );
-                                  },
-                                  child: Container(
-                                    color: theme.colorScheme.background,
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 4),
-                                    child: const Icon(
-                                      RadixIcons.chevronDown,
-                                      size: 8,
+                                          .position.hasContentDimensions &&
+                                      _scrollController.offset <
+                                          _scrollController
+                                              .position.maxScrollExtent,
+                                  child: Positioned(
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: HoverActivity(
+                                      hitTestBehavior:
+                                          HitTestBehavior.translucent,
+                                      debounceDuration:
+                                          const Duration(milliseconds: 16),
+                                      onHover: () {
+                                        // increase scroll offset
+                                        var value =
+                                            _scrollController.offset + 8;
+                                        value = value.clamp(
+                                          0.0,
+                                          _scrollController
+                                              .position.maxScrollExtent,
+                                        );
+                                        _scrollController.jumpTo(
+                                          value,
+                                        );
+                                      },
+                                      child: Container(
+                                        color: theme.colorScheme.background,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 4),
+                                        child: const Icon(
+                                          RadixIcons.chevronDown,
+                                          size: 8,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            );
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      }
+                      return Data(
+                        data: _SelectData(
+                          (item, query) {
+                            return widget.searchFilter?.call(item, query) ?? 0;
                           },
+                          text,
+                          (value) {
+                            widget.onChanged?.call(value);
+                            Navigator.of(context).pop(value);
+                          },
+                          widget.value,
+                          widget.showUnrelatedValues,
                         ),
-                      ],
-                    ),
+                        child: child,
+                      );
+                    },
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
+}
+
+class _SearchResult {
+  final int score;
+  final int index;
+
+  _SearchResult(this.score, this.index);
 }
 
 class _SelectData {
@@ -551,226 +570,4 @@ class _SelectData {
 
 abstract class _SelectValueHandler {
   int computeIndexingScore(String query);
-}
-
-class _AttachedSelectValue {
-  final GlobalKey key = GlobalKey();
-  _SelectValueHandler? handler;
-  int? score;
-}
-
-class _SelectValuesHolder extends StatefulWidget {
-  final List<Widget> children;
-  final String? query;
-  final bool showUnrelatedValues;
-  final Widget Function(List<Widget> children) builder;
-  final int Function(String query)? computeIndexingScore;
-
-  const _SelectValuesHolder({
-    Key? key,
-    required this.children,
-    required this.showUnrelatedValues,
-    this.query,
-    required this.builder,
-    this.computeIndexingScore,
-  }) : super(key: key);
-
-  @override
-  State<_SelectValuesHolder> createState() => _SelectValuesHolderState();
-}
-
-class _SelectValuesHolderState extends State<_SelectValuesHolder> {
-  late List<_AttachedSelectValue> _attachedValues;
-
-  int computeIndexingScore(String query) {
-    int score = 0;
-    for (int i = 0; i < widget.children.length; i++) {
-      final attachedValue = _attachedValues[i];
-      final handler = attachedValue.handler;
-      if (handler != null) {
-        score += handler.computeIndexingScore(query);
-      }
-    }
-    if (widget.computeIndexingScore != null) {
-      score += widget.computeIndexingScore!(query);
-    }
-    return score;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _attachedValues = List.generate(
-      widget.children.length,
-      (index) => _AttachedSelectValue(),
-    );
-  }
-
-  @override
-  void didUpdateWidget(covariant _SelectValuesHolder oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (!listEquals(widget.children, oldWidget.children)) {
-      _attachedValues = List.generate(
-        widget.children.length,
-        (index) => _AttachedSelectValue(),
-      );
-    }
-    if (widget.query != oldWidget.query) {
-      // invalidate all scores
-      if (widget.query != null) {
-        for (final attachedValue in _attachedValues) {
-          final handler = attachedValue.handler;
-          if (handler != null) {
-            final score = handler.computeIndexingScore(widget.query!);
-            attachedValue.score = score;
-          } else {
-            attachedValue.score = null;
-          }
-        }
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> children = [];
-    if (widget.query == null) {
-      for (int i = 0; i < widget.children.length; i++) {
-        final child = widget.children[i];
-        children.add(Data(
-          key: _attachedValues[i].key,
-          data: _attachedValues[i],
-          child: child,
-        ));
-      }
-    } else {
-      List<_QueriedAttachedValue> queriedValues = [];
-      for (int i = 0; i < widget.children.length; i++) {
-        final child = widget.children[i];
-        final attachedValue = _attachedValues[i];
-        final handler = attachedValue.handler;
-        final cachedScore = attachedValue.score;
-        if (cachedScore != null) {
-          queriedValues.add(_QueriedAttachedValue(
-            Data(
-              key: attachedValue.key,
-              data: attachedValue,
-              child: child,
-            ),
-            cachedScore,
-            i,
-          ));
-        } else {
-          if (handler != null) {
-            final score = handler.computeIndexingScore(widget.query!);
-            queriedValues.add(_QueriedAttachedValue(
-              Data(
-                key: attachedValue.key,
-                data: attachedValue,
-                child: child,
-              ),
-              score,
-              i,
-            ));
-            attachedValue.score = score;
-          } else {
-            queriedValues.add(_QueriedAttachedValue(
-              Data(
-                key: attachedValue.key,
-                data: attachedValue,
-                child: child,
-              ),
-              null,
-              i,
-            ));
-          }
-        }
-      }
-      // queriedValues.sort((a, b) => b.score.compareTo(a.score));
-      // sort by score, if same, then sort by index
-      queriedValues.sort((a, b) {
-        final aScore = a.score;
-        final bScore = b.score;
-        if (aScore == bScore) {
-          return a.index.compareTo(b.index);
-        }
-        if (aScore == null) {
-          return -1;
-        }
-        if (bScore == null) {
-          return 1;
-        }
-        return bScore.compareTo(aScore);
-      });
-      for (final queriedValue in queriedValues) {
-        if (queriedValue.score == 0 && !widget.showUnrelatedValues) {
-          continue;
-        }
-        children.add(queriedValue.widget);
-      }
-    }
-    return _SelectValueHolder(
-      computeIndexingScore: computeIndexingScore,
-      child: widget.builder(children),
-    );
-  }
-}
-
-class _SelectValueHolder extends StatefulWidget {
-  final Widget child;
-  final int Function(String query) computeIndexingScore;
-
-  const _SelectValueHolder({
-    Key? key,
-    required this.child,
-    required this.computeIndexingScore,
-  }) : super(key: key);
-
-  @override
-  State<_SelectValueHolder> createState() => _SelectValueHolderState();
-}
-
-class _SelectValueHolderState extends State<_SelectValueHolder>
-    implements _SelectValueHandler {
-  _AttachedSelectValue? _currentAttached;
-
-  @override
-  int computeIndexingScore(String query) {
-    return widget.computeIndexingScore(query);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    var newAttached = Data.maybeOf<_AttachedSelectValue>(context);
-    if (newAttached != _currentAttached) {
-      int? cachedScore = _currentAttached?.score;
-      _currentAttached?.handler = null;
-      _currentAttached = newAttached;
-      _currentAttached?.handler = this;
-      if (cachedScore != null) {
-        _currentAttached?.score = cachedScore;
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Data<_AttachedSelectValue>.boundary(
-      child: widget.child,
-    );
-  }
-}
-
-class _QueriedAttachedValue {
-  final Widget widget;
-  final int? score;
-  final int index;
-
-  _QueriedAttachedValue(this.widget, this.score, this.index);
-
-  @override
-  String toString() {
-    return 'QueriedAttachedValue{widget: $widget, score: $score, index: $index}';
-  }
 }

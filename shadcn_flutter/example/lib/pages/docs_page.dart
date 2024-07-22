@@ -194,21 +194,22 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Form', 'form'),
         ShadcnDocsPage('Input', 'input'),
         ShadcnDocsPage('Input OTP', 'input_otp'),
-        // https://shadcn-phone-input.vercel.app/
+        // TODO: https://shadcn-phone-input.vercel.app/
         ShadcnDocsPage('Phone Input', 'phone_input'),
         ShadcnDocsPage('Radio Group', 'radio_group'),
         ShadcnDocsPage('Select', 'select'),
-        // https://craft.mxkaske.dev/post/fancy-multi-select
+        // TODO: https://craft.mxkaske.dev/post/fancy-multi-select
         ShadcnDocsPage(
             'Select Chip', 'select_chip', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Slider', 'slider'),
-        // https://nyxbui.design/docs/components/star-rating
+        // TODO: https://nyxbui.design/docs/components/star-rating
         ShadcnDocsPage(
             'Star Rating', 'star_rating', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Switch', 'switch'),
         ShadcnDocsPage('Text Area', 'text_area'),
-        // https://time.openstatus.dev/
-        ShadcnDocsPage('Time Picker', 'time_picker'),
+        // TODO: https://time.openstatus.dev/
+        ShadcnDocsPage(
+            'Time Picker', 'time_picker', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Toggle', 'toggle'),
       ],
     ),

@@ -80,6 +80,7 @@ abstract class ShadcnLocalizations {
   String get buttonNext;
 
   String get searchPlaceholderCountry;
+  String get emptyCountryList;
 
   String getAbbreviatedWeekday(int weekday) {
     switch (weekday) {
@@ -314,4 +315,7 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get searchPlaceholderCountry => 'Search country...';
+
+  @override
+  String get emptyCountryList => 'No countries found';
 }

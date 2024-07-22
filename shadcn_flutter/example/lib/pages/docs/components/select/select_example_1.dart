@@ -19,7 +19,8 @@ class _SelectExample1State extends State<SelectExample1> {
         return item.toLowerCase().contains(query.toLowerCase()) ? 1 : 0;
       },
       popupConstraints: const BoxConstraints(
-        maxHeight: 200,
+        maxHeight: 300,
+        maxWidth: 200,
       ),
       onChanged: (value) {
         setState(() {
@@ -81,9 +82,6 @@ class _SelectExample1State extends State<SelectExample1> {
           ],
         ),
         SelectGroup(
-          computeIndexingScore: (query) {
-            return query.toLowerCase().contains('tomato') ? 1 : 0;
-          },
           headers: const [
             SelectLabel(
               child: Text('Tomato'),
