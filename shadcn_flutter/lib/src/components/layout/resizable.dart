@@ -83,12 +83,10 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
       : super(ResizablePaneValue(size, collapsed));
 
   void _attachState(_ResizablePaneState state) {
-    assert(_attachedState == null, 'State is already attached');
     _attachedState = state;
   }
 
   void _detachState(_ResizablePaneState state) {
-    assert(_attachedState == state, 'State is not attached');
     _attachedState = null;
   }
 
@@ -143,6 +141,7 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
   }
 
   set size(double newValue) {
+    assert(newValue.isFinite, 'Size must be finite');
     if (newValue < 0) {
       newValue = 0;
     }
@@ -650,7 +649,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
   void _resetProposedSizes() {
     for (int i = 0; i < _panes.length; i++) {
       final pane = _panes[i];
-      pane._proposedSize = pane._attachedPane!.viewSize;
+      if (pane._attachedPane != null) {
+        pane._proposedSize = pane._attachedPane!.viewSize;
+      }
     }
   }
 
@@ -1367,10 +1368,14 @@ class _ResizablePanelState extends State<ResizablePanel> {
     for (int i = 0; i < widget.children.length; i++) {
       final pane = getAt(i);
       if (pane != null && widget.children[i].flex != null) {
+        var viewSize2 = pane._attachedPane!.viewSize;
+        if (viewSize2 == 0) {
+          continue;
+        }
         if (minSize == null) {
-          minSize = pane._attachedPane!.viewSize;
+          minSize = viewSize2;
         } else {
-          minSize = min(minSize, pane._attachedPane!.viewSize);
+          minSize = min(minSize, viewSize2);
         }
       }
     }
@@ -1378,7 +1383,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
       for (int i = 0; i < widget.children.length; i++) {
         final pane = getAt(i);
         if (pane != null && widget.children[i].flex != null) {
-          pane._flex = pane._attachedPane!.viewSize / minSize;
+          pane._flex =
+              minSize == 0 ? 0 : pane._attachedPane!.viewSize / minSize;
         }
       }
     }
@@ -1449,27 +1455,28 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   Widget buildFlexContainer(BuildContext context, double sparedFlexSize,
-      double flexSpace, double flexCount) {
+      double flexSpace, double flexCount, bool dividerReady) {
+    // print('flex: $flexSpace $flexCount $sparedFlexSize');
     switch (widget.direction) {
       case Axis.horizontal:
         return Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
-          children:
-              buildFlexChildren(context, sparedFlexSize, flexSpace, flexCount),
+          children: buildFlexChildren(
+              context, sparedFlexSize, flexSpace, flexCount, dividerReady),
         );
       case Axis.vertical:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
-          children:
-              buildFlexChildren(context, sparedFlexSize, flexSpace, flexCount),
+          children: buildFlexChildren(
+              context, sparedFlexSize, flexSpace, flexCount, dividerReady),
         );
     }
   }
 
   List<Widget> buildFlexChildren(BuildContext context, double sparedFlexSize,
-      double flexSpace, double flexCount) {
+      double flexSpace, double flexCount, bool dividerReady) {
     List<Widget> children = [];
     assert(widget.children.length == _panes.length,
         'Children and panes length mismatch');
@@ -1488,6 +1495,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
             ),
           ),
         );
+      }
+      if (!dividerReady) {
+        continue;
       }
       children.add(
         Data(
@@ -1514,6 +1524,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
           double nonFlexSpace = 0;
           double flexCount = 0;
           double minSizeFlex = double.infinity;
+          bool dividerReady = true;
           for (int i = 0; i < widget.children.length; i++) {
             final child = widget.children[i];
             if (child.flex == null) {
@@ -1530,25 +1541,38 @@ class _ResizablePanelState extends State<ResizablePanel> {
                       : (child.initialSize ?? 0));
               minSizeFlex = min(minSizeFlex, currentSize);
             }
-            nonFlexSpace += (_panes[i].getDividerSize(widget.direction) ?? 0);
+            if (i >= widget.children.length - 1) {
+              continue;
+            }
+            var dividerSize = _panes[i].getDividerSize(widget.direction);
+            nonFlexSpace += (dividerSize ?? 0);
+            if (dividerSize == null) {
+              dividerReady = false;
+            }
           }
 
           for (int i = 0; i < widget.children.length; i++) {
             final child = widget.children[i];
             if (child.flex != null) {
               final attachedPane = _panes[i]._attachedPane;
-              if (minSizeFlex == double.infinity || attachedPane == null) {
-                flexCount += child.flex!;
+              if (minSizeFlex == double.infinity ||
+                  attachedPane == null ||
+                  minSizeFlex == 0) {
+                flexCount += _panes[i]._flex ?? child.flex!;
               } else {
                 flexCount += attachedPane.viewSize / minSizeFlex;
               }
             }
           }
+          if (flexCount.isNaN || flexCount.isInfinite) {
+            flexCount = 0;
+          }
           double containerSize = widget.direction == Axis.horizontal
               ? constraints.maxWidth
               : constraints.maxHeight;
           double flexSpace = containerSize - nonFlexSpace;
-          double spacePerFlex = flexSpace / flexCount;
+          double spacePerFlex = flexCount == 0 ? 0 : flexSpace / flexCount;
+
           List<Widget> dividers = [];
           double offset = 0;
           for (int i = 0; i < widget.children.length - 1; i++) {
@@ -1629,7 +1653,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
             fit: StackFit.passthrough,
             clipBehavior: Clip.none,
             children: [
-              buildFlexContainer(context, spacePerFlex, flexSpace, flexCount),
+              buildFlexContainer(
+                  context, spacePerFlex, flexSpace, flexCount, dividerReady),
               ...dividers,
               if (_kDebugResizable)
                 Positioned(
