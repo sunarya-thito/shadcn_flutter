@@ -163,6 +163,7 @@ class Select<T> extends StatefulWidget {
   final Alignment popoverAlignment;
   final Alignment? popoverAnchorAlignment;
   final WidgetBuilder? emptyBuilder;
+  final bool orderSelectedFirst;
 
   const Select({
     Key? key,
@@ -176,6 +177,7 @@ class Select<T> extends StatefulWidget {
     this.popupWidthConstraint = PopoverConstraint.anchorMinSize,
     this.value,
     this.showUnrelatedValues = false,
+    this.orderSelectedFirst = true,
     this.borderRadius,
     this.searchPlaceholder,
     this.padding,
@@ -245,6 +247,7 @@ class _SelectState<T> extends State<Select<T>> {
                   widthConstraint: widget.popupWidthConstraint,
                   builder: (context) {
                     return SelectPopup<T>(
+                      orderSelectedFirst: widget.orderSelectedFirst,
                       searchPlaceholder: widget.searchPlaceholder,
                       searchFilter: widget.searchFilter,
                       constraints: widget.popupConstraints,
@@ -294,6 +297,7 @@ class SelectPopup<T> extends StatefulWidget {
   final ValueChanged<T?>? onChanged;
   final String? searchPlaceholder;
   final WidgetBuilder? emptyBuilder;
+  final bool orderSelectedFirst;
 
   const SelectPopup({
     Key? key,
@@ -304,6 +308,7 @@ class SelectPopup<T> extends StatefulWidget {
     this.onChanged,
     this.searchPlaceholder,
     this.emptyBuilder,
+    this.orderSelectedFirst = true,
     required this.children,
   }) : super(key: key);
 
@@ -392,14 +397,27 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                       for (int i = 0; i < widget.children.length; i++) {
                         var item = widget.children[i];
                         if (text.isEmpty) {
-                          resultMap[item] = _SearchResult(0, i);
+                          bool hasSelectedValue = false;
+                          for (var val in item.values) {
+                            if (val == widget.value) {
+                              hasSelectedValue = true;
+                              break;
+                            }
+                          }
+                          resultMap[item] =
+                              _SearchResult(0, i, hasSelectedValue);
                         } else {
                           int score = 0;
+                          bool hasSelectedValue = false;
                           for (var val in item.values) {
                             score += widget.searchFilter?.call(val, text) ?? 0;
+                            if (val == widget.value) {
+                              hasSelectedValue = true;
+                            }
                           }
                           if (score > 0 || widget.showUnrelatedValues) {
-                            resultMap[item] = _SearchResult(score, i);
+                            resultMap[item] =
+                                _SearchResult(score, i, hasSelectedValue);
                           }
                         }
                       }
@@ -407,6 +425,16 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                       // sort from largest score to lowest score, if score is same, then sort by index
                       resultMap.entries.toList()
                         ..sort((a, b) {
+                          if (widget.orderSelectedFirst) {
+                            if (a.value.hasSelectedValue &&
+                                !b.value.hasSelectedValue) {
+                              return -1;
+                            }
+                            if (!a.value.hasSelectedValue &&
+                                b.value.hasSelectedValue) {
+                              return 1;
+                            }
+                          }
                           if (a.value.score == b.value.score) {
                             return a.value.index.compareTo(b.value.index);
                           }
@@ -553,8 +581,9 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
 class _SearchResult {
   final int score;
   final int index;
+  final bool hasSelectedValue;
 
-  _SearchResult(this.score, this.index);
+  _SearchResult(this.score, this.index, this.hasSelectedValue);
 }
 
 class _SelectData {
