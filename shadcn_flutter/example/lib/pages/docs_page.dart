@@ -276,8 +276,7 @@ class DocsPageState extends State<DocsPage> {
       'Utilities',
       [
         ShadcnDocsPage('Badge', 'badge'),
-        // TODO: https://emblor.jaleelbennett.com/introduction
-        ShadcnDocsPage('Chip', 'chip', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Chip', 'chip'),
         ShadcnDocsPage('Calendar', 'calendar'),
         ShadcnDocsPage('Command', 'command'),
         ShadcnDocsPage('Context Menu', 'context_menu'),
