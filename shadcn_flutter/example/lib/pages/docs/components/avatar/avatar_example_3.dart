@@ -1,14 +1,17 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class AvatarExample1 extends StatelessWidget {
-  const AvatarExample1({super.key});
+class AvatarExample3 extends StatelessWidget {
+  const AvatarExample3({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Avatar(
-      backgroundColor: Colors.red,
       initials: Avatar.getInitials('sunarya-thito'),
-      photoUrl: 'https://avatars.githubusercontent.com/u/64018564?v=4',
+      size: 64,
+      badge: AvatarBadge(
+        size: 20,
+        color: Colors.green,
+      ),
     );
   }
 }

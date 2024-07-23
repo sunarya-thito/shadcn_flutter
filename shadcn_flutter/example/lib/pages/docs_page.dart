@@ -193,6 +193,9 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage(
             'File Picker', 'file_picker', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Form', 'form'),
+        // TODO: Image Input (with cropper and rotate tool, upload from file or take photo from camera)
+        ShadcnDocsPage(
+            'Image Input', 'image_input', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Input', 'input'),
         ShadcnDocsPage('Input OTP', 'input_otp'),
         // TODO: https://shadcn-phone-input.vercel.app/
@@ -259,9 +262,7 @@ class DocsPageState extends State<DocsPage> {
       'Data Display',
       [
         ShadcnDocsPage('Avatar', 'avatar'),
-        // TODO: https://nyxbui.design/docs/components/avatar-circles
-        ShadcnDocsPage(
-            'Avatar Group', 'avatar_group', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Avatar Group', 'avatar_group'),
         ShadcnDocsPage(
             'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
         // TODO also make it zoomable like: https://zoom-chart-demo.vercel.app/
@@ -281,6 +282,9 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Command', 'command'),
         ShadcnDocsPage('Context Menu', 'context_menu'),
         ShadcnDocsPage('Dropdown Menu', 'dropdown_menu'),
+        // TODO: Same progress as image input
+        ShadcnDocsPage(
+            'Image Tools', 'image_tools', ShadcnFeatureTag.workInProgress),
       ],
     ),
     // COMPONENTS END

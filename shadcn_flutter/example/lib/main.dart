@@ -6,6 +6,7 @@ import 'package:example/pages/docs/components/alert_dialog_example.dart';
 import 'package:example/pages/docs/components/alert_example.dart';
 import 'package:example/pages/docs/components/animated_value_builder_example.dart';
 import 'package:example/pages/docs/components/avatar_example.dart';
+import 'package:example/pages/docs/components/avatar_group_example.dart';
 import 'package:example/pages/docs/components/calendar_example.dart';
 import 'package:example/pages/docs/components/carousel_example.dart';
 import 'package:example/pages/docs/components/chip_example.dart';
@@ -440,7 +441,14 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) {
               return const ChipExample();
             },
-          )
+          ),
+          GoRoute(
+            path: 'avatar_group',
+            name: 'avatar_group',
+            builder: (context, state) {
+              return const AvatarGroupExample();
+            },
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();
