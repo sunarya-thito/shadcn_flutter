@@ -6,7 +6,7 @@ class TimePickerExample1 extends StatefulWidget {
 }
 
 class _TimePickerExample1State extends State<TimePickerExample1> {
-  TimeOfDay? _value;
+  TimeOfDay _value = TimeOfDay.now();
   @override
   Widget build(BuildContext context) {
     return TimePicker(
@@ -14,7 +14,7 @@ class _TimePickerExample1State extends State<TimePickerExample1> {
       mode: PromptMode.popover,
       onChanged: (value) {
         setState(() {
-          _value = value;
+          _value = value ?? TimeOfDay.now();
         });
       },
     );

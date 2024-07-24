@@ -55,14 +55,14 @@ class TimePicker extends StatelessWidget {
 class TimePickerDialog extends StatefulWidget {
   final TimeOfDay? initialValue;
   final ValueChanged<TimeOfDay?>? onChanged;
-  final bool? use24HourFormat;
+  final bool use24HourFormat;
   final bool showSeconds;
 
   const TimePickerDialog({
     Key? key,
     this.initialValue,
     this.onChanged,
-    this.use24HourFormat,
+    required this.use24HourFormat,
     this.showSeconds = false,
   }) : super(key: key);
 
@@ -79,16 +79,13 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
     return value.toString().padLeft(2, '0');
   }
 
-  Widget _buildInput(
-      TextEditingController controller, String label, int? initialValue) {
+  Widget _buildInput(TextEditingController controller, String label) {
     return Stack(
       clipBehavior: Clip.none,
       children: [
         TextField(
           textAlign: TextAlign.center,
           controller: controller,
-          initialValue:
-              initialValue == null ? '00' : _formatDigits(initialValue),
           style: const TextStyle(
             fontSize: 32,
           ),
@@ -114,12 +111,10 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
     int hour = int.tryParse(_hourController.text) ?? 0;
     int minute = int.tryParse(_minuteController.text) ?? 0;
     int second = int.tryParse(_secondController.text) ?? 0;
-    if (widget.use24HourFormat ??
-        MediaQuery.of(context).alwaysUse24HourFormat) {
+    if (widget.use24HourFormat) {
       hour = hour.clamp(0, 23);
       minute = minute.clamp(0, 59);
       second = second.clamp(0, 59);
-      // widget.onChanged?.call(TimeOfDay(hour: hour, minute: minute));
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         widget.onChanged
             ?.call(TimeOfDay(hour: hour, minute: minute, second: second));
@@ -153,11 +148,13 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
   void initState() {
     super.initState();
     _pm = (widget.initialValue?.hour ?? 0) >= 12;
-    int initialHour = _pm
-        ? (widget.initialValue?.hour ?? 0) - 12
-        : (widget.initialValue?.hour ?? 0);
+    int initialHour = widget.initialValue?.hour ?? 0;
     int initialMinute = widget.initialValue?.minute ?? 0;
     int initialSecond = widget.initialValue?.second ?? 0;
+    if (!widget.use24HourFormat && initialHour > 12 && initialHour <= 23) {
+      initialHour -= 12;
+      _pm = true;
+    }
     _hourController = TextEditingController(
       text: _formatDigits(initialHour),
     );
@@ -174,8 +171,6 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var use24HourFormat =
-        widget.use24HourFormat ?? MediaQuery.of(context).alwaysUse24HourFormat;
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Padding(
@@ -188,7 +183,6 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
                 child: _buildInput(
                   _hourController,
                   'Hour',
-                  widget.initialValue?.hour,
                 ),
               ),
               _buildSeparator(),
@@ -197,7 +191,6 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
                 child: _buildInput(
                   _minuteController,
                   'Minute',
-                  widget.initialValue?.minute,
                 ),
               ),
               if (widget.showSeconds) ...[
@@ -207,11 +200,10 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
                   child: _buildInput(
                     _secondController,
                     'Second',
-                    widget.initialValue?.second,
                   ),
                 ),
               ],
-              if (!use24HourFormat) ...[
+              if (!widget.use24HourFormat) ...[
                 gap(8),
                 IntrinsicWidth(
                   child: Column(

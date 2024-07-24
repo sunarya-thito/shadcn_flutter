@@ -41,6 +41,7 @@ class ObjectFormField<T> extends StatefulWidget {
 class _ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     with FormValueSupplier {
   late T? value;
+  final PopoverController _popoverController = PopoverController();
 
   @override
   void initState() {
@@ -72,6 +73,12 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>>
         }
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _popoverController.dispose();
+    super.dispose();
   }
 
   @override
@@ -126,7 +133,7 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>>
       trailing: widget.trailing?.iconMuted().iconSmall(),
       leading: widget.leading?.iconMuted().iconSmall(),
       onPressed: () {
-        showPopover(
+        _popoverController.show(
           context: context,
           alignment: widget.popoverAlignment ?? Alignment.topLeft,
           anchorAlignment:
