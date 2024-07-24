@@ -38,7 +38,8 @@ class ObjectFormField<T> extends StatefulWidget {
   State<ObjectFormField<T>> createState() => _ObjectFormFieldState<T>();
 }
 
-class _ObjectFormFieldState<T> extends State<ObjectFormField<T>> {
+class _ObjectFormFieldState<T> extends State<ObjectFormField<T>>
+    with FormValueSupplier {
   late T? value;
 
   @override
@@ -48,10 +49,28 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    reportNewFormValue(
+      value,
+      (value) {
+        if (widget.onChanged != null) {
+          widget.onChanged!(value);
+        }
+      },
+    );
+  }
+
+  @override
   void didUpdateWidget(covariant ObjectFormField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
       value = widget.value;
+      reportNewFormValue(value, (value) {
+        if (widget.onChanged != null) {
+          widget.onChanged!(value);
+        }
+      });
     }
   }
 
