@@ -1,129 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-
-class _ChipInputController extends TextEditingController {
-  static const int kObjectReplacementChar = 0xFFFE;
-  final Widget Function(int index) chipBuilder;
-  final void Function(int index) onChipRemoved;
-  int _chipCount = 0;
-
-  _ChipInputController({
-    super.text,
-    required this.chipBuilder,
-    required this.onChipRemoved,
-  });
-
-  @override
-  set value(TextEditingValue value) {
-    // prevent composing from being out of range
-    int count = _chipCount;
-    var newText = value.text;
-    newText =
-        newText.replaceAll(String.fromCharCode(kObjectReplacementChar), '');
-    newText = String.fromCharCode(kObjectReplacementChar) * count + newText;
-    // prevent user from changing the chip count
-    var composing = value.composing;
-    if (composing.isValid) {
-      composing = TextRange(
-        start: composing.start.max(count),
-        end: composing.end.max(count),
-      );
-    }
-    var selection = value.selection;
-    selection = TextSelection(
-      baseOffset: selection.baseOffset.max(count),
-      extentOffset: selection.extentOffset.max(count),
-    );
-    super.value = TextEditingValue(
-      text: newText,
-      composing: composing,
-      selection: selection,
-    );
-  }
-
-  void changeChipCount(int count) {
-    _chipCount = count;
-    var text = value.text;
-    text = text.replaceAll(String.fromCharCode(kObjectReplacementChar), '');
-    text = String.fromCharCode(kObjectReplacementChar) * count + text;
-    super.value = TextEditingValue(
-      text: text,
-      composing: TextRange.empty,
-      selection: TextSelection.collapsed(offset: count),
-    );
-  }
-
-  Widget buildChip(int index) {
-    return TextFieldTapRegion(
-      child: Transform.translate(
-        offset: const Offset(-6, 4),
-        child: chipBuilder(index).withMargin(right: 2),
-      ),
-    );
-  }
-
-  @override
-  TextSpan buildTextSpan(
-      {required BuildContext context,
-      TextStyle? style,
-      required bool withComposing}) {
-    var text = value.text;
-    int count = _chipCount;
-    var composing = value.composing;
-
-    text = text.substring(count);
-    composing = _range(
-      composing.start - count,
-      composing.end - count,
-    );
-
-    var newValue = TextEditingValue(
-      text: text,
-      composing: composing,
-      selection: value.selection,
-    );
-
-    assert(
-        !composing.isValid || !withComposing || newValue.isComposingRangeValid);
-    final bool composingRegionOutOfRange =
-        !newValue.isComposingRangeValid || !withComposing;
-
-    if (composingRegionOutOfRange) {
-      // return TextSpan(style: style, text: text);
-      return TextSpan(
-        children: [
-          for (int i = 0; i < count; i++)
-            WidgetSpan(
-              child: buildChip(i),
-            ),
-          TextSpan(
-            style: style,
-            text: text,
-          ),
-        ],
-      );
-    }
-
-    final TextStyle composingStyle =
-        style?.merge(const TextStyle(decoration: TextDecoration.underline)) ??
-            const TextStyle(decoration: TextDecoration.underline);
-    return TextSpan(
-      style: style,
-      children: [
-        for (int i = 0; i < count; i++)
-          WidgetSpan(
-            child: buildChip(i),
-          ),
-        TextSpan(text: composing.textBefore(text)),
-        TextSpan(
-          style: composingStyle,
-          text: composing.textInside(text),
-        ),
-        TextSpan(text: composing.textAfter(text)),
-      ],
-    );
-  }
-}
 
 TextRange _range(int start, int end) {
   if (start <= -1 && end <= -1) {
@@ -138,13 +15,13 @@ class ChipInput extends StatefulWidget {
   final TextEditingController? controller;
   final BoxConstraints popoverConstraints;
   final UndoHistoryController? undoHistoryController;
-  final ValueChanged<String>? onTextChanged;
   final ValueChanged<String>? onSubmitted;
   final String? initialText;
   final FocusNode? focusNode;
   final List<Widget> suggestions;
   final List<Widget> chips;
-  final void Function(int index)? onChipRemoved;
+  final List<TextInputFormatter>? inputFormatters;
+  final void Function(int index)? onSuggestionChoosen;
   const ChipInput({
     Key? key,
     this.controller,
@@ -152,13 +29,13 @@ class ChipInput extends StatefulWidget {
       maxHeight: 300,
     ),
     this.undoHistoryController,
-    this.onTextChanged,
     this.initialText,
     this.onSubmitted,
     this.focusNode,
     this.suggestions = const [],
     this.chips = const [],
-    this.onChipRemoved,
+    this.inputFormatters,
+    this.onSuggestionChoosen,
   }) : super(key: key);
 
   @override
@@ -167,8 +44,9 @@ class ChipInput extends StatefulWidget {
 
 class ChipInputState extends State<ChipInput> {
   late FocusNode _focusNode;
-  late _ChipInputController _controller;
+  late TextEditingController _controller;
   late ValueNotifier<List<Widget>> _suggestions;
+  final ValueNotifier<int> _selectedSuggestions = ValueNotifier(-1);
   final PopoverController _popoverController = PopoverController();
 
   bool _isChangingText = false;
@@ -178,158 +56,80 @@ class ChipInputState extends State<ChipInput> {
     super.initState();
     _suggestions = ValueNotifier(widget.suggestions);
     _focusNode = widget.focusNode ?? FocusNode();
-    _controller = _ChipInputController(
-      chipBuilder: _chipBuilder,
-      onChipRemoved: (index) {
-        widget.onChipRemoved?.call(index);
-      },
-    );
-    if (widget.controller != null) {
-      _syncController();
-    } else if (widget.initialText != null) {
-      var text = widget.initialText!;
-      var char =
-          String.fromCharCode(_ChipInputController.kObjectReplacementChar);
-      text = char * widget.chips.length + text;
-      _controller.value = TextEditingValue(
-        text: text,
-        selection: TextSelection.collapsed(offset: text.length),
-      );
-    } else {
-      var text = '';
-      var char =
-          String.fromCharCode(_ChipInputController.kObjectReplacementChar);
-      text = char * widget.chips.length + text;
-      _controller.value = TextEditingValue(
-        text: text,
-        selection: TextSelection.collapsed(offset: text.length),
+    _controller = widget.controller ?? TextEditingController();
+    _suggestions.addListener(_onSuggestionsChanged);
+    _focusNode.addListener(_onSuggestionsChanged);
+  }
+
+  void _onSuggestionsChanged() {
+    if ((_suggestions.value.isEmpty || !_focusNode.hasFocus) &&
+        _popoverController.hasOpenPopover) {
+      _popoverController.close();
+    } else if (!_popoverController.hasOpenPopover &&
+        _suggestions.value.isNotEmpty) {
+      _popoverController.show(
+        context: context,
+        builder: (context) {
+          return buildPopover(context);
+        },
+        alignment: Alignment.topCenter,
+        widthConstraint: PopoverConstraint.anchorFixedSize,
+        dismissBackdropFocus: false,
+        showDuration: Duration.zero,
+        hideDuration: Duration.zero,
+        offset: const Offset(0, 4),
       );
     }
-    _controller.addListener(_onControllerChanged);
   }
 
   Widget _chipBuilder(int index) {
     return widget.chips[index];
   }
 
-  void _syncController() {
-    var controller = widget.controller!;
-    var value = controller.value;
-    var text = value.text;
-    var char = String.fromCharCode(_ChipInputController.kObjectReplacementChar);
-    text = char * widget.chips.length + text;
-    var composing = value.composing;
-    var selection = value.selection;
-    _controller.value = TextEditingValue(
-      text: text,
-      composing: composing.isCollapsed
-          ? TextRange.empty
-          : _range(
-              composing.start + widget.chips.length,
-              composing.end + widget.chips.length,
-            ),
-      selection: selection.copyWith(
-        baseOffset: selection.baseOffset + widget.chips.length,
-        extentOffset: selection.extentOffset + widget.chips.length,
-      ),
-    );
-    controller.addListener(_onExternalControllerChanged);
-  }
-
   @override
   void didUpdateWidget(covariant ChipInput oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.controller != oldWidget.controller) {
-      oldWidget.controller?.removeListener(_onExternalControllerChanged);
-      if (widget.controller != null) {
-        _syncController();
-      }
-    }
+    if (widget.controller != oldWidget.controller) {}
     if (widget.focusNode != oldWidget.focusNode) {
       _focusNode = widget.focusNode ?? FocusNode();
     }
     if (!listEquals(widget.suggestions, oldWidget.suggestions)) {
-      _suggestions.value = widget.suggestions;
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _suggestions.value = widget.suggestions;
+      });
     }
-    if (!listEquals(widget.chips, oldWidget.chips)) {
-      _controller.changeChipCount(widget.chips.length);
-    }
-  }
-
-  void _onExternalControllerChanged() {
-    var externalController = widget.controller;
-    if (externalController == null) {
-      return;
-    }
-    if (_isChangingText) {
-      return;
-    }
-    _isChangingText = true;
-    var value = externalController.value;
-    var text = value.text;
-    var composing = value.composing;
-    var selection = value.selection;
-    _controller.value = TextEditingValue(
-      text: text,
-      composing: composing,
-      selection: selection,
-    );
-    _isChangingText = false;
-  }
-
-  void _onControllerChanged() {
-    var externalController = widget.controller;
-    if (externalController == null) {
-      return;
-    }
-    if (_isChangingText) {
-      return;
-    }
-    _isChangingText = true;
-    var value = _controller.value;
-    var text = value.text;
-    var composing = value.composing;
-    var selection = value.selection;
-    int count = 0;
-    for (int i = 0; i < text.length; i++) {
-      if (text.codeUnitAt(i) == _ChipInputController.kObjectReplacementChar) {
-        count++;
-      } else {
-        break;
-      }
-    }
-    text = text.substring(count);
-    // composing = TextRange(
-    //   start: composing.start - count,
-    //   end: composing.end - count,
-    // );
-    composing = _range(
-      composing.start - count,
-      composing.end - count,
-    );
-    selection = TextSelection(
-      baseOffset: selection.baseOffset - count,
-      extentOffset: selection.extentOffset - count,
-    );
-    externalController.value = TextEditingValue(
-      text: text,
-      composing: composing,
-      selection: selection,
-    );
-    _isChangingText = false;
   }
 
   Widget buildPopover(BuildContext context) {
-    return Data(
-      data: this,
-      child: AnimatedBuilder(
-          animation: _suggestions,
-          builder: (context, child) {
-            return ListView(
-              shrinkWrap: true,
-              children: _suggestions.value,
-            );
-          }),
+    return TextFieldTapRegion(
+      child: Data(
+        data: this,
+        child: ConstrainedBox(
+          constraints: widget.popoverConstraints,
+          child: OutlinedContainer(
+            child: AnimatedBuilder(
+                animation:
+                    Listenable.merge([_suggestions, _selectedSuggestions]),
+                builder: (context, child) {
+                  return ListView(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(4),
+                      children: [
+                        for (int i = 0; i < _suggestions.value.length; i++)
+                          Toggle(
+                            value: i == _selectedSuggestions.value,
+                            onChanged: (value) {
+                              if (value) {
+                                widget.onSuggestionChoosen?.call(i);
+                              }
+                            },
+                            child: _suggestions.value[i],
+                          ),
+                      ]);
+                }),
+          ),
+        ),
+      ),
     );
   }
 
@@ -339,28 +139,146 @@ class ChipInputState extends State<ChipInput> {
     super.dispose();
   }
 
+  final GlobalKey _textFieldKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      focusNode: _focusNode,
-      initialValue: widget.initialText,
-      onChanged: widget.onTextChanged,
-      onSubmitted: (text) {
+    final theme = Theme.of(context);
+    return GestureDetector(
+      onTap: () {
         _focusNode.requestFocus();
-        int count = 0;
-        for (int i = 0; i < text.length; i++) {
-          if (text.codeUnitAt(i) ==
-              _ChipInputController.kObjectReplacementChar) {
-            count++;
-          } else {
-            break;
-          }
-        }
-        text = text.substring(count);
-        widget.onSubmitted?.call(text);
       },
-      controller: _controller,
-      undoController: widget.undoHistoryController,
+      child: FocusableActionDetector(
+        mouseCursor: SystemMouseCursors.text,
+        shortcuts: {
+          LogicalKeySet(LogicalKeyboardKey.tab): const SelectSuggestionIntent(),
+          LogicalKeySet(LogicalKeyboardKey.arrowDown):
+              const NextSuggestionIntent(),
+          LogicalKeySet(LogicalKeyboardKey.arrowUp):
+              const PreviousSuggestionIntent(),
+        },
+        actions: {
+          SelectSuggestionIntent: CallbackAction(
+            onInvoke: (intent) {
+              var index = _selectedSuggestions.value;
+              if (index >= 0 && index < _suggestions.value.length) {
+                widget.onSuggestionChoosen?.call(index);
+              } else if (_suggestions.value.isNotEmpty) {
+                _selectedSuggestions.value = 0;
+              }
+              return null;
+            },
+          ),
+          NextSuggestionIntent: CallbackAction(
+            onInvoke: (intent) {
+              var index = _selectedSuggestions.value;
+              if (index < _suggestions.value.length - 1) {
+                _selectedSuggestions.value = index + 1;
+              } else if (_suggestions.value.isNotEmpty) {
+                _selectedSuggestions.value = 0;
+              }
+              return null;
+            },
+          ),
+          PreviousSuggestionIntent: CallbackAction(
+            onInvoke: (intent) {
+              var index = _selectedSuggestions.value;
+              if (index > 0) {
+                _selectedSuggestions.value = index - 1;
+              } else if (_suggestions.value.isNotEmpty) {
+                _selectedSuggestions.value = _suggestions.value.length - 1;
+              }
+              return null;
+            },
+          ),
+        },
+        child: AnimatedBuilder(
+          animation: _focusNode,
+          builder: (context, child) {
+            if (widget.chips.isNotEmpty) {
+              if (_focusNode.hasFocus) {
+                child = Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    child!,
+                    Wrap(
+                      runSpacing: 4,
+                      spacing: 4,
+                      children: [
+                        for (int i = 0; i < widget.chips.length; i++)
+                          _chipBuilder(i),
+                      ],
+                    ).withPadding(
+                      left: 4,
+                      right: 4,
+                      bottom: 4,
+                    ),
+                  ],
+                );
+              } else {
+                child = Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    Visibility(
+                      visible: false,
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainInteractivity: true,
+                      maintainSize: true,
+                      maintainSemantics: true,
+                      child: child!,
+                    ),
+                    Wrap(
+                      runSpacing: 4,
+                      spacing: 4,
+                      children: [
+                        for (int i = 0; i < widget.chips.length; i++)
+                          _chipBuilder(i),
+                      ],
+                    ).withPadding(all: 4),
+                  ],
+                );
+              }
+            }
+            return TextFieldTapRegion(
+              child: OutlinedContainer(
+                borderRadius: theme.radiusMd,
+                borderColor: _focusNode.hasFocus
+                    ? theme.colorScheme.ring
+                    : theme.colorScheme.border,
+                child: child!,
+              ),
+            );
+          },
+          child: TextField(
+            key: _textFieldKey,
+            focusNode: _focusNode,
+            initialValue: widget.initialText,
+            inputFormatters: widget.inputFormatters,
+            border: false,
+            onSubmitted: (text) {
+              _focusNode.requestFocus();
+              if (text.isNotEmpty) {
+                widget.onSubmitted?.call(text);
+              }
+            },
+            controller: _controller,
+            undoController: widget.undoHistoryController,
+          ),
+        ),
+      ),
     );
   }
+}
+
+class SelectSuggestionIntent extends Intent {
+  const SelectSuggestionIntent();
+}
+
+class NextSuggestionIntent extends Intent {
+  const NextSuggestionIntent();
+}
+
+class PreviousSuggestionIntent extends Intent {
+  const PreviousSuggestionIntent();
 }

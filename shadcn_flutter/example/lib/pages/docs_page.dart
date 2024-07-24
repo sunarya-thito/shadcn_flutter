@@ -210,9 +210,7 @@ class DocsPageState extends State<DocsPage> {
             'Star Rating', 'star_rating', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Switch', 'switch'),
         ShadcnDocsPage('Text Area', 'text_area'),
-        // TODO: https://time.openstatus.dev/
-        ShadcnDocsPage(
-            'Time Picker', 'time_picker', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Time Picker', 'time_picker'),
         ShadcnDocsPage('Toggle', 'toggle'),
       ],
     ),

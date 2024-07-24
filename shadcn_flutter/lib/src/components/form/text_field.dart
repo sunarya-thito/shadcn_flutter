@@ -33,6 +33,8 @@ class TextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final Iterable<String>? autofillHints;
   final void Function(PointerDownEvent event)? onTapOutside;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextStyle? style;
   const TextField({
     Key? key,
     this.controller,
@@ -63,6 +65,8 @@ class TextField extends StatefulWidget {
     this.undoController,
     this.onChanged,
     this.onTapOutside,
+    this.inputFormatters,
+    this.style,
   }) : super(key: key);
 
   @override
@@ -142,13 +146,30 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    TextStyle defaultTextStyle = DefaultTextStyle.of(context).style;
+    TextStyle defaultTextStyle;
+    if (widget.style != null) {
+      defaultTextStyle = DefaultTextStyle.of(context)
+          .style
+          .copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: theme.colorScheme.foreground,
+          )
+          .merge(widget.style);
+    } else {
+      defaultTextStyle = DefaultTextStyle.of(context).style.copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: theme.colorScheme.foreground,
+          );
+    }
     return material.TextField(
       key: _key,
       contextMenuBuilder: (context, editableTextState) {
         return buildEditableTextContextMenu(
             context, editableTextState, _undoHistoryController);
       },
+      inputFormatters: widget.inputFormatters,
       onTapOutside: widget.onTapOutside,
       onChanged: widget.onChanged,
       textAlign: widget.textAlign,
@@ -170,11 +191,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
         return null;
       },
       controller: _controller,
-      style: defaultTextStyle.copyWith(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        color: theme.colorScheme.foreground,
-      ),
+      style: defaultTextStyle,
       expands: widget.expands,
       textAlignVertical: widget.textAlignVertical,
       decoration: material.InputDecoration(

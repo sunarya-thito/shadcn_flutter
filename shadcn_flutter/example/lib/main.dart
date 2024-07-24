@@ -41,6 +41,7 @@ import 'package:example/pages/docs/components/tab_list_example.dart';
 import 'package:example/pages/docs/components/table_example.dart';
 import 'package:example/pages/docs/components/tabs_example.dart';
 import 'package:example/pages/docs/components/text_area_example.dart';
+import 'package:example/pages/docs/components/time_picker_example.dart';
 import 'package:example/pages/docs/components/toast_example.dart';
 import 'package:example/pages/docs/components/toggle_example.dart';
 import 'package:example/pages/docs/components/tooltip_example.dart';
@@ -455,6 +456,13 @@ class MyAppState extends State<MyApp> {
             name: 'chip_input',
             builder: (context, state) {
               return const ChipInputExample();
+            },
+          ),
+          GoRoute(
+            path: 'time_picker',
+            name: 'time_picker',
+            builder: (context, state) {
+              return const TimePickerExample();
             },
           ),
         ]),

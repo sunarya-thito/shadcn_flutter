@@ -9,7 +9,6 @@ class DatePicker extends StatelessWidget {
   final bool Function(DateTime date)? isDateEnabled;
   final Widget Function(BuildContext context, DateTime date)? dateBuilder;
   final Widget Function(BuildContext context, int weekday)? weekDayBuilder;
-  final bool directApply;
   final Alignment? popoverAlignment;
   final Alignment? popoverAnchorAlignment;
   final EdgeInsets? popoverPadding;
@@ -24,7 +23,6 @@ class DatePicker extends StatelessWidget {
     this.isDateEnabled,
     this.dateBuilder,
     this.weekDayBuilder,
-    this.directApply = false,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
@@ -103,7 +101,6 @@ class DateRangePicker extends StatelessWidget {
   final bool Function(DateTime date)? isDateEnabled;
   final Widget Function(BuildContext context, DateTime date)? dateBuilder;
   final Widget Function(BuildContext context, int weekday)? weekDayBuilder;
-  final bool directApply;
   final Alignment? popoverAlignment;
   final Alignment? popoverAnchorAlignment;
   final EdgeInsets? popoverPadding;
@@ -118,7 +115,6 @@ class DateRangePicker extends StatelessWidget {
     this.isDateEnabled,
     this.dateBuilder,
     this.weekDayBuilder,
-    this.directApply = false,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,

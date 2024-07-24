@@ -51,6 +51,8 @@ class PopoverRoute<T> extends PopupRoute<T> {
     this.onTickFollow,
     this.allowInvertHorizontal = true,
     this.allowInvertVertical = true,
+    this.transitionDuration = const Duration(milliseconds: 100),
+    this.reverseTransitionDuration = kDefaultDuration,
   }) : super(traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop);
 
   @override
@@ -132,10 +134,9 @@ class PopoverRoute<T> extends PopupRoute<T> {
   }
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 100);
-
+  final Duration transitionDuration;
   @override
-  Duration get reverseTransitionDuration => kDefaultDuration;
+  final Duration reverseTransitionDuration;
 
   @override
   Animation<double> createAnimation() {
@@ -532,6 +533,8 @@ Future<T?> showPopover<T>({
   bool allowInvertHorizontal = true,
   bool allowInvertVertical = true,
   bool dismissBackdropFocus = true,
+  Duration? showDuration,
+  Duration? hideDuration,
 }) {
   anchorAlignment ??= alignment * -1;
   if (!dismissBackdropFocus) {
@@ -594,8 +597,8 @@ Future<T?> showPopover<T>({
                         ? const Interval(0, 2 / 3)
                         : Curves.linear,
                     duration: isClosed.value
-                        ? kDefaultDuration
-                        : const Duration(milliseconds: 100),
+                        ? (showDuration ?? kDefaultDuration)
+                        : (hideDuration ?? const Duration(milliseconds: 100)),
                     onEnd: (value) {
                       if (value == 0.0 && isClosed.value) {
                         overlayEntry.remove();
@@ -693,6 +696,8 @@ Future<T?> showPopover<T>({
     onTickFollow: onTickFollow,
     allowInvertHorizontal: allowInvertHorizontal,
     allowInvertVertical: allowInvertVertical,
+    transitionDuration: showDuration ?? const Duration(milliseconds: 100),
+    reverseTransitionDuration: hideDuration ?? kDefaultDuration,
   ));
 }
 
@@ -725,6 +730,8 @@ class PopoverController extends ChangeNotifier {
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
     bool dismissBackdropFocus = true,
+    Duration? showDuration,
+    Duration? hideDuration,
   }) async {
     if (closeOthers) {
       close();
@@ -751,6 +758,8 @@ class PopoverController extends ChangeNotifier {
       allowInvertHorizontal: allowInvertHorizontal,
       allowInvertVertical: allowInvertVertical,
       dismissBackdropFocus: dismissBackdropFocus,
+      showDuration: showDuration,
+      hideDuration: hideDuration,
     );
     _openPopovers.remove(key);
     notifyListeners();

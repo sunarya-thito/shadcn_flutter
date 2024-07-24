@@ -116,16 +116,18 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>> {
             return Padding(
               padding: widget.popoverPadding ??
                   const EdgeInsets.symmetric(vertical: 8),
-              child: widget.editorBuilder(
-                context,
-                value,
-                (value) {
-                  setState(() {
-                    this.value = value;
-                  });
-                  widget.onChanged?.call(value);
-                  this.context.reportNewFormValue(value);
-                },
+              child: Card(
+                child: widget.editorBuilder(
+                  context,
+                  value,
+                  (value) {
+                    setState(() {
+                      this.value = value;
+                    });
+                    widget.onChanged?.call(value);
+                    this.context.reportNewFormValue(value);
+                  },
+                ),
               ),
             );
           },

@@ -40,144 +40,140 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
   Widget build(BuildContext context) {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     if (widget.selectionMode == CalendarSelectionMode.range) {
-      return Card(
-        child: IntrinsicWidth(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        OutlineButton(
-                          density: ButtonDensity.icon,
-                          onPressed: () {
-                            setState(() {
-                              _view = _view.previous;
-                            });
-                          },
-                          child: const Icon(Icons.arrow_back).iconXSmall(),
-                        ),
-                        Text('${localizations.getMonth(_view.month)} ${_view.year}')
-                            .small()
-                            .medium()
-                            .center()
-                            .expanded(),
-                        const SizedBox(
-                          width: 32,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 32,
-                        ),
-                        Text('${localizations.getMonth(_view.next.month)} ${_view.next.year}')
-                            .small()
-                            .medium()
-                            .center()
-                            .expanded(),
-                        OutlineButton(
-                          density: ButtonDensity.icon,
-                          onPressed: () {
-                            setState(() {
-                              _view = _view.next;
-                            });
-                          },
-                          child: const Icon(Icons.arrow_forward).iconXSmall(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              gap(16),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Calendar(
-                    value: _value,
-                    view: _view,
-                    onChanged: (value) {
-                      setState(() {
-                        _value = value;
-                        widget.onChanged?.call(value);
-                      });
-                    },
-                    selectionMode: CalendarSelectionMode.range,
-                  ),
-                  gap(16),
-                  Calendar(
-                    value: _value,
-                    view: _view.next,
-                    onChanged: (value) {
-                      setState(() {
-                        _value = value;
-                        widget.onChanged?.call(value);
-                      });
-                    },
-                    selectionMode: CalendarSelectionMode.range,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-    return Card(
-      child: IntrinsicWidth(
+      return IntrinsicWidth(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                OutlineButton(
-                  density: ButtonDensity.icon,
-                  onPressed: () {
-                    setState(() {
-                      _view = _view.previous;
-                    });
-                  },
-                  child: const Icon(Icons.arrow_back).iconXSmall(),
+                Expanded(
+                  child: Row(
+                    children: [
+                      OutlineButton(
+                        density: ButtonDensity.icon,
+                        onPressed: () {
+                          setState(() {
+                            _view = _view.previous;
+                          });
+                        },
+                        child: const Icon(Icons.arrow_back).iconXSmall(),
+                      ),
+                      Text('${localizations.getMonth(_view.month)} ${_view.year}')
+                          .small()
+                          .medium()
+                          .center()
+                          .expanded(),
+                      const SizedBox(
+                        width: 32,
+                      ),
+                    ],
+                  ),
                 ),
-                Text('${localizations.getMonth(_view.month)} ${_view.year}')
-                    .small()
-                    .medium()
-                    .center()
-                    .expanded(),
-                OutlineButton(
-                  density: ButtonDensity.icon,
-                  onPressed: () {
-                    setState(() {
-                      _view = _view.next;
-                    });
-                  },
-                  child: const Icon(Icons.arrow_forward).iconXSmall(),
+                Expanded(
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 32,
+                      ),
+                      Text('${localizations.getMonth(_view.next.month)} ${_view.next.year}')
+                          .small()
+                          .medium()
+                          .center()
+                          .expanded(),
+                      OutlineButton(
+                        density: ButtonDensity.icon,
+                        onPressed: () {
+                          setState(() {
+                            _view = _view.next;
+                          });
+                        },
+                        child: const Icon(Icons.arrow_forward).iconXSmall(),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
             gap(16),
-            Calendar(
-              value: _value,
-              view: _view,
-              onChanged: (value) {
-                setState(() {
-                  _value = value;
-                  widget.onChanged?.call(value);
-                });
-              },
-              selectionMode: CalendarSelectionMode.single,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Calendar(
+                  value: _value,
+                  view: _view,
+                  onChanged: (value) {
+                    setState(() {
+                      _value = value;
+                      widget.onChanged?.call(value);
+                    });
+                  },
+                  selectionMode: CalendarSelectionMode.range,
+                ),
+                gap(16),
+                Calendar(
+                  value: _value,
+                  view: _view.next,
+                  onChanged: (value) {
+                    setState(() {
+                      _value = value;
+                      widget.onChanged?.call(value);
+                    });
+                  },
+                  selectionMode: CalendarSelectionMode.range,
+                ),
+              ],
             ),
           ],
         ),
+      );
+    }
+    return IntrinsicWidth(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              OutlineButton(
+                density: ButtonDensity.icon,
+                onPressed: () {
+                  setState(() {
+                    _view = _view.previous;
+                  });
+                },
+                child: const Icon(Icons.arrow_back).iconXSmall(),
+              ),
+              Text('${localizations.getMonth(_view.month)} ${_view.year}')
+                  .small()
+                  .medium()
+                  .center()
+                  .expanded(),
+              OutlineButton(
+                density: ButtonDensity.icon,
+                onPressed: () {
+                  setState(() {
+                    _view = _view.next;
+                  });
+                },
+                child: const Icon(Icons.arrow_forward).iconXSmall(),
+              ),
+            ],
+          ),
+          gap(16),
+          Calendar(
+            value: _value,
+            view: _view,
+            onChanged: (value) {
+              setState(() {
+                _value = value;
+                widget.onChanged?.call(value);
+              });
+            },
+            selectionMode: CalendarSelectionMode.single,
+          ),
+        ],
       ),
     );
   }

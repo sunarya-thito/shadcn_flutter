@@ -9,14 +9,40 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
   final List<String> _chips = [];
   final List<String> _suggestions = [];
   final TextEditingController _controller = TextEditingController();
+  static const List<String> _availableSuggestions = [
+    'hello world',
+    'lorem ipsum',
+    'do re mi',
+    'foo bar',
+    'flutter dart',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(
+      () {
+        setState(() {
+          var value = _controller.text;
+          _suggestions.clear();
+          if (value.isNotEmpty) {
+            _suggestions.addAll(_availableSuggestions.where((element) {
+              return element.startsWith(value);
+            }));
+          }
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChipInput(
       controller: _controller,
-      onTextChanged: (value) {},
       onSubmitted: (value) {
         setState(() {
           _chips.add(value);
+          _suggestions.clear();
           _controller.clear();
         });
       },
@@ -25,9 +51,10 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
           return Text(e);
         },
       ).toList(),
-      onChipRemoved: (index) {
+      onSuggestionChoosen: (index) {
         setState(() {
-          _chips.removeAt(index);
+          _chips.add(_suggestions[index]);
+          _controller.clear();
         });
       },
       chips: _chips.map(

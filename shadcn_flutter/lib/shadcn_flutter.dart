@@ -8,14 +8,8 @@ export 'package:flutter/cupertino.dart'
         cupertinoDesktopTextSelectionHandleControls;
 // export Icons from material
 export 'package:flutter/material.dart'
-    show
-        Icons,
-        Colors,
-        MaterialPageRoute,
-        MaterialPage,
-        SliverAppBar,
-        FlutterLogo
-    hide TextButton, Colors;
+    show Icons, MaterialPageRoute, MaterialPage, SliverAppBar, FlutterLogo
+    hide TextButton;
 export 'package:flutter/widgets.dart'
     hide ErrorWidgetBuilder, Form, FormState, Table, TableRow, TableCell;
 // bundle from https://pub.dev/packages/phonecodes
@@ -53,6 +47,7 @@ export 'src/components/form/slider.dart';
 export 'src/components/form/switch.dart';
 export 'src/components/form/text_area.dart';
 export 'src/components/form/text_field.dart';
+export 'src/components/form/time_picker.dart';
 export 'src/components/icon/icon.dart';
 export 'src/components/icon/triple_dots.dart';
 export 'src/components/layout/accordion.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+
+import '../../../shadcn_flutter.dart';
 
 class ShadcnLocalizationsDelegate
     extends LocalizationsDelegate<ShadcnLocalizations> {
@@ -74,8 +75,18 @@ abstract class ShadcnLocalizations {
   String get buttonSave;
   String get buttonReset;
   String formatDateTime(DateTime dateTime,
-      {bool showDate = true, bool showTime = true, bool showSeconds = false});
+      {bool showDate = true,
+      bool showTime = true,
+      bool showSeconds = false,
+      bool use24HourFormat = true});
+
+  String formatTimeOfDay(
+    TimeOfDay time, {
+    bool use24HourFormat = true,
+    bool showSeconds = false,
+  });
   String get placeholderDatePicker;
+  String get placeholderTimePicker;
   String get buttonPrevious;
   String get buttonNext;
 
@@ -287,18 +298,34 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String formatDateTime(DateTime dateTime,
-      {bool showDate = true, bool showTime = true, bool showSeconds = false}) {
+      {bool showDate = true,
+      bool showTime = true,
+      bool showSeconds = false,
+      bool use24HourFormat = true}) {
     String result = '';
     if (showDate) {
       result += '${getMonth(dateTime.month)} ${dateTime.day}, ${dateTime.year}';
     }
     if (showTime) {
-      if (result.isNotEmpty) {
-        result += ' ';
-      }
-      result += '${dateTime.hour}:${dateTime.minute}';
-      if (showSeconds) {
-        result += ':${dateTime.second}';
+      if (use24HourFormat) {
+        if (result.isNotEmpty) {
+          result += ' ';
+        }
+        result += '${dateTime.hour}:${dateTime.minute}';
+        if (showSeconds) {
+          result += ':${dateTime.second}';
+        }
+      } else {
+        if (result.isNotEmpty) {
+          result += ' ';
+        }
+        int hour = dateTime.hour;
+        if (hour > 12) {
+          hour -= 12;
+          result += '$hour:${dateTime.minute} PM';
+        } else {
+          result += '$hour:${dateTime.minute} AM';
+        }
       }
     }
     return result;
@@ -318,4 +345,41 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get emptyCountryList => 'No countries found';
+
+  @override
+  String get placeholderTimePicker => 'Select a time';
+
+  @override
+  String formatTimeOfDay(TimeOfDay time,
+      {bool use24HourFormat = true, bool showSeconds = false}) {
+    String result = '';
+    if (use24HourFormat) {
+      result +=
+          '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+      if (showSeconds) {
+        result += ':${time.second.toString().padLeft(2, '0')}';
+      }
+    } else {
+      int hour = time.hour;
+      if (hour > 12) {
+        hour -= 12;
+        if (showSeconds) {
+          result +=
+              '${hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}:${time.second.toString().padLeft(2, '0')} PM';
+        } else {
+          result +=
+              '${hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')} PM';
+        }
+      } else {
+        if (showSeconds) {
+          result +=
+              '${hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}:${time.second.toString().padLeft(2, '0')} AM';
+        } else {
+          result +=
+              '${hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')} AM';
+        }
+      }
+    }
+    return result;
+  }
 }
