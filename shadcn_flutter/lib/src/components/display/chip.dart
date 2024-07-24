@@ -65,6 +65,9 @@ class Chip extends StatelessWidget {
               ? SystemMouseCursors.click
               : SystemMouseCursors.basic;
         },
+        padding: (context, states, value) {
+          return const EdgeInsets.symmetric(horizontal: 8, vertical: 4);
+        },
       ),
       onPressed: onPressed ?? () {},
       leading: leading,

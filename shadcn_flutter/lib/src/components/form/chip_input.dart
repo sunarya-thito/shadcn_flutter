@@ -4,93 +4,61 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class _ChipInputController extends TextEditingController {
   static const int kObjectReplacementChar = 0xFFFE;
   final Widget Function(int index) chipBuilder;
+  final void Function(int index) onChipRemoved;
+  int _chipCount = 0;
 
   _ChipInputController({
     super.text,
     required this.chipBuilder,
+    required this.onChipRemoved,
   });
 
-  void changeText(TextEditingValue value) {
-    var text = value.text;
+  @override
+  set value(TextEditingValue value) {
+    // prevent composing from being out of range
+    int count = _chipCount;
+    var newText = value.text;
+    newText =
+        newText.replaceAll(String.fromCharCode(kObjectReplacementChar), '');
+    newText = String.fromCharCode(kObjectReplacementChar) * count + newText;
+    // prevent user from changing the chip count
     var composing = value.composing;
-    var selection = value.selection;
-    int count = 0;
-    for (int i = 0; i < text.length; i++) {
-      if (text.codeUnitAt(i) == kObjectReplacementChar) {
-        count++;
-      } else {
-        break;
-      }
+    if (composing.isValid) {
+      composing = TextRange(
+        start: composing.start.max(count),
+        end: composing.end.max(count),
+      );
     }
-    String char = String.fromCharCode(kObjectReplacementChar);
-    text = char * count + text;
-    // composing = TextRange(
-    //   start: composing.start + count,
-    //   end: composing.end + count,
-    // );
-    composing = _range(
-      composing.start + count,
-      composing.end + count,
-    );
+    var selection = value.selection;
     selection = TextSelection(
-      baseOffset: selection.baseOffset + count,
-      extentOffset: selection.extentOffset + count,
+      baseOffset: selection.baseOffset.max(count),
+      extentOffset: selection.extentOffset.max(count),
     );
-    this.value = TextEditingValue(
-      text: text,
+    super.value = TextEditingValue(
+      text: newText,
       composing: composing,
       selection: selection,
     );
   }
 
   void changeChipCount(int count) {
+    _chipCount = count;
     var text = value.text;
-    var composing = value.composing;
-    var selection = value.selection;
-    int currentCount = 0;
-    for (int i = 0; i < text.length; i++) {
-      if (text.codeUnitAt(i) == kObjectReplacementChar) {
-        currentCount++;
-      } else {
-        break;
-      }
-    }
-    if (count > currentCount) {
-      String char = String.fromCharCode(kObjectReplacementChar);
-      text = char * count + text.substring(currentCount);
-      // composing = TextRange(
-      //   start: composing.start + count,
-      //   end: composing.end + count,
-      // );
-      composing = _range(
-        composing.start + count,
-        composing.end + count,
-      );
-      selection = TextSelection(
-        baseOffset: selection.baseOffset + count,
-        extentOffset: selection.extentOffset + count,
-      );
-    } else if (count < currentCount) {
-      text = text.substring(count);
-      // composing = TextRange(
-      //   start: composing.start - count,
-      //   end: composing.end - count,
-      // );
-      composing = _range(
-        composing.start - count,
-        composing.end - count,
-      );
-      selection = TextSelection(
-        baseOffset: selection.baseOffset - count,
-        extentOffset: selection.extentOffset - count,
-      );
-    } else {
-      return;
-    }
-    value = TextEditingValue(
+    text = text.replaceAll(String.fromCharCode(kObjectReplacementChar), '');
+    text = String.fromCharCode(kObjectReplacementChar) * count + text;
+    super.value = TextEditingValue(
       text: text,
-      composing: composing,
-      selection: selection,
+      composing: TextRange.empty,
+      selection: TextSelection.collapsed(offset: count),
+    );
+  }
+
+  Widget buildChip(int index) {
+    return TextFieldTapRegion(
+      child: Transform.translate(
+        offset: const Offset(-6, 4),
+        child: chipBuilder(index).withMargin(right: 2),
+      ),
     );
   }
 
@@ -100,31 +68,25 @@ class _ChipInputController extends TextEditingController {
       TextStyle? style,
       required bool withComposing}) {
     var text = value.text;
-    int count = 0;
-    for (int i = 0; i < text.length; i++) {
-      if (text.codeUnitAt(i) == kObjectReplacementChar) {
-        count++;
-      } else {
-        break;
-      }
-    }
+    int count = _chipCount;
     var composing = value.composing;
-    assert(!composing.isValid || !withComposing || value.isComposingRangeValid);
-    // If the composing range is out of range for the current text, ignore it to
-    // preserve the tree integrity, otherwise in release mode a RangeError will
-    // be thrown and this EditableText will be built with a broken subtree.
-    final bool composingRegionOutOfRange =
-        !value.isComposingRangeValid || !withComposing;
 
     text = text.substring(count);
-    // composing = TextRange(
-    //   start: composing.start - count,
-    //   end: composing.end - count,
-    // );
     composing = _range(
       composing.start - count,
       composing.end - count,
     );
+
+    var newValue = TextEditingValue(
+      text: text,
+      composing: composing,
+      selection: value.selection,
+    );
+
+    assert(
+        !composing.isValid || !withComposing || newValue.isComposingRangeValid);
+    final bool composingRegionOutOfRange =
+        !newValue.isComposingRangeValid || !withComposing;
 
     if (composingRegionOutOfRange) {
       // return TextSpan(style: style, text: text);
@@ -132,7 +94,7 @@ class _ChipInputController extends TextEditingController {
         children: [
           for (int i = 0; i < count; i++)
             WidgetSpan(
-              child: chipBuilder(i),
+              child: buildChip(i),
             ),
           TextSpan(
             style: style,
@@ -150,7 +112,7 @@ class _ChipInputController extends TextEditingController {
       children: [
         for (int i = 0; i < count; i++)
           WidgetSpan(
-            child: chipBuilder(i),
+            child: buildChip(i),
           ),
         TextSpan(text: composing.textBefore(text)),
         TextSpan(
@@ -182,6 +144,7 @@ class ChipInput extends StatefulWidget {
   final FocusNode? focusNode;
   final List<Widget> suggestions;
   final List<Widget> chips;
+  final void Function(int index)? onChipRemoved;
   const ChipInput({
     Key? key,
     this.controller,
@@ -195,6 +158,7 @@ class ChipInput extends StatefulWidget {
     this.focusNode,
     this.suggestions = const [],
     this.chips = const [],
+    this.onChipRemoved,
   }) : super(key: key);
 
   @override
@@ -216,6 +180,9 @@ class ChipInputState extends State<ChipInput> {
     _focusNode = widget.focusNode ?? FocusNode();
     _controller = _ChipInputController(
       chipBuilder: _chipBuilder,
+      onChipRemoved: (index) {
+        widget.onChipRemoved?.call(index);
+      },
     );
     if (widget.controller != null) {
       _syncController();
@@ -302,27 +269,6 @@ class ChipInputState extends State<ChipInput> {
     var text = value.text;
     var composing = value.composing;
     var selection = value.selection;
-    int count = 0;
-    for (int i = 0; i < text.length; i++) {
-      if (text.codeUnitAt(i) == _ChipInputController.kObjectReplacementChar) {
-        count++;
-      } else {
-        break;
-      }
-    }
-    text = text.substring(count);
-    // composing = TextRange(
-    //   start: composing.start - count,
-    //   end: composing.end - count,
-    // );
-    composing = _range(
-      composing.start - count,
-      composing.end - count,
-    );
-    selection = TextSelection(
-      baseOffset: selection.baseOffset - count,
-      extentOffset: selection.extentOffset - count,
-    );
     _controller.value = TextEditingValue(
       text: text,
       composing: composing,
@@ -396,9 +342,11 @@ class ChipInputState extends State<ChipInput> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      focusNode: _focusNode,
       initialValue: widget.initialText,
       onChanged: widget.onTextChanged,
       onSubmitted: (text) {
+        _focusNode.requestFocus();
         int count = 0;
         for (int i = 0; i < text.length; i++) {
           if (text.codeUnitAt(i) ==

@@ -25,12 +25,19 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
           return Text(e);
         },
       ).toList(),
+      onChipRemoved: (index) {
+        setState(() {
+          _chips.removeAt(index);
+        });
+      },
       chips: _chips.map(
         (e) {
           return Chip(
             trailing: ChipButton(
               onPressed: () {
-                _chips.remove(e);
+                setState(() {
+                  _chips.remove(e);
+                });
               },
               child: const Icon(Icons.close),
             ),
