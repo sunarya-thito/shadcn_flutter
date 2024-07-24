@@ -12,6 +12,7 @@ class _TimePickerExample1State extends State<TimePickerExample1> {
     return TimePicker(
       value: _value,
       mode: PromptMode.popover,
+      use24HourFormat: true,
       onChanged: (value) {
         setState(() {
           _value = value;
