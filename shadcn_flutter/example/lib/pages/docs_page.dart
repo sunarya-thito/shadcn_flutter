@@ -220,10 +220,9 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Card', 'card'),
         ShadcnDocsPage('Carousel', 'carousel'),
         ShadcnDocsPage('Divider', 'divider'),
-        // https://nextjs-shadcn-dnd.vercel.app/ (make it headless)
-        ShadcnDocsPage(
-            'Draggable', 'draggable', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Resizable', 'resizable'),
+        // https://nextjs-shadcn-dnd.vercel.app/ (make it headless)
+        ShadcnDocsPage('Sortable', 'sortable', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Steps', 'steps'),
         // TODO: https://shadcn-stepper.vercel.app/
         ShadcnDocsPage('Stepper', 'stepper', ShadcnFeatureTag.workInProgress),
