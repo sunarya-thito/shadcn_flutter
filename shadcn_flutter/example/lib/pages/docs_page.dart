@@ -187,6 +187,7 @@ class DocsPageState extends State<DocsPage> {
       [
         ShadcnDocsPage('Button', 'button'),
         ShadcnDocsPage('Checkbox', 'checkbox'),
+        ShadcnDocsPage('Chip Input', 'chip_input'),
         ShadcnDocsPage('Color Picker', 'color_picker'),
         ShadcnDocsPage('Date Picker', 'date_picker'),
         // TODO: https://file-vault-delta.vercel.app/ also https://uploader.sadmn.com/
@@ -203,8 +204,6 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Radio Group', 'radio_group'),
         ShadcnDocsPage('Select', 'select'),
         // TODO: https://craft.mxkaske.dev/post/fancy-multi-select
-        ShadcnDocsPage(
-            'Select Chip', 'select_chip', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Slider', 'slider'),
         // TODO: https://nyxbui.design/docs/components/star-rating
         ShadcnDocsPage(

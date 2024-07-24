@@ -53,27 +53,31 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
           ],
         ),
         gap(12),
-        Offstage(
-          offstage: index != 0,
-          child: OutlinedContainer(
-            key: _key,
-            child: ClipRect(
-              child: Container(
-                padding: const EdgeInsets.all(40),
-                constraints: const BoxConstraints(minHeight: 350),
-                child: Center(
-                  child: widget.child,
+        RepaintBoundary(
+          child: Offstage(
+            offstage: index != 0,
+            child: OutlinedContainer(
+              key: _key,
+              child: ClipRect(
+                child: Container(
+                  padding: const EdgeInsets.all(40),
+                  constraints: const BoxConstraints(minHeight: 350),
+                  child: Center(
+                    child: widget.child,
+                  ),
                 ),
               ),
             ),
           ),
         ),
-        Offstage(
-          offstage: index != 1,
-          child: CodeSnippetFutureBuilder(
-            path: widget.path,
-            mode: 'dart',
-            summarize: widget.summarize,
+        RepaintBoundary(
+          child: Offstage(
+            offstage: index != 1,
+            child: CodeSnippetFutureBuilder(
+              path: widget.path,
+              mode: 'dart',
+              summarize: widget.summarize,
+            ),
           ),
         )
       ],

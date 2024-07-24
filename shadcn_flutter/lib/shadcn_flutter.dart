@@ -40,6 +40,7 @@ export 'src/components/display/number_ticker.dart';
 export 'src/components/display/progress.dart';
 export 'src/components/display/skeleton.dart';
 export 'src/components/form/checkbox.dart';
+export 'src/components/form/chip_input.dart';
 export 'src/components/form/color_picker.dart';
 export 'src/components/form/date_picker.dart';
 export 'src/components/form/form.dart';

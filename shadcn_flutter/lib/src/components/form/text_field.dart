@@ -32,6 +32,7 @@ class TextField extends StatefulWidget {
   final UndoHistoryController? undoController;
   final ValueChanged<String>? onChanged;
   final Iterable<String>? autofillHints;
+  final void Function(PointerDownEvent event)? onTapOutside;
   const TextField({
     Key? key,
     this.controller,
@@ -61,6 +62,7 @@ class TextField extends StatefulWidget {
     this.autofillHints,
     this.undoController,
     this.onChanged,
+    this.onTapOutside,
   }) : super(key: key);
 
   @override
@@ -147,6 +149,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
         return buildEditableTextContextMenu(
             context, editableTextState, _undoHistoryController);
       },
+      onTapOutside: widget.onTapOutside,
       onChanged: widget.onChanged,
       textAlign: widget.textAlign,
       obscureText: widget.obscureText,

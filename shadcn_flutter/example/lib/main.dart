@@ -10,6 +10,7 @@ import 'package:example/pages/docs/components/avatar_group_example.dart';
 import 'package:example/pages/docs/components/calendar_example.dart';
 import 'package:example/pages/docs/components/carousel_example.dart';
 import 'package:example/pages/docs/components/chip_example.dart';
+import 'package:example/pages/docs/components/chip_input_example.dart';
 import 'package:example/pages/docs/components/context_menu_example.dart';
 import 'package:example/pages/docs/components/date_picker_example.dart';
 import 'package:example/pages/docs/components/dialog_example.dart';
@@ -447,6 +448,13 @@ class MyAppState extends State<MyApp> {
             name: 'avatar_group',
             builder: (context, state) {
               return const AvatarGroupExample();
+            },
+          ),
+          GoRoute(
+            path: 'chip_input',
+            name: 'chip_input',
+            builder: (context, state) {
+              return const ChipInputExample();
             },
           ),
         ]),
