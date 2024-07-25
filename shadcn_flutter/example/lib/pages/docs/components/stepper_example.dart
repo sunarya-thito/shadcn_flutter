@@ -4,6 +4,7 @@ import 'package:example/pages/docs/components/stepper/stepper_example_2.dart';
 import 'package:example/pages/docs/components/stepper/stepper_example_3.dart';
 import 'package:example/pages/docs/components/stepper/stepper_example_4.dart';
 import 'package:example/pages/docs/components/stepper/stepper_example_5.dart';
+import 'package:example/pages/docs/components/stepper/stepper_example_6.dart';
 import 'package:example/pages/widget_usage_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -40,6 +41,11 @@ class StepperExample extends StatelessWidget {
           title: 'Custom Icon Example',
           child: StepperExample5(),
           path: 'lib/pages/docs/components/stepper/stepper_example_5.dart',
+        ),
+        WidgetUsageExample(
+          title: 'Variants Example',
+          child: StepperExample6(),
+          path: 'lib/pages/docs/components/stepper/stepper_example_6.dart',
         ),
       ],
     );
