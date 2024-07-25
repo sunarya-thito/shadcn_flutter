@@ -262,6 +262,36 @@ extension TextExtension on Widget {
     );
   }
 
+  Widget primaryForeground() {
+    return Builder(
+      builder: (context) {
+        final themeData = Theme.of(context);
+        return mergeAnimatedTextStyle(
+          child: this,
+          duration: kDefaultDuration,
+          style: TextStyle(
+            color: themeData.colorScheme.primaryForeground,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget secondaryForeground() {
+    return Builder(
+      builder: (context) {
+        final themeData = Theme.of(context);
+        return mergeAnimatedTextStyle(
+          child: this,
+          duration: kDefaultDuration,
+          style: TextStyle(
+            color: themeData.colorScheme.secondaryForeground,
+          ),
+        );
+      },
+    );
+  }
+
   Widget h1() {
     return x4Large().extraBold();
   }

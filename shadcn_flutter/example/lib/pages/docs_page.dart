@@ -221,8 +221,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Sortable', 'sortable', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Steps', 'steps'),
         ShadcnDocsPage('Stepper', 'stepper'),
-        // TODO: https://shadcn-timeline.vercel.app/
-        ShadcnDocsPage('Timeline', 'timeline', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Timeline', 'timeline'),
       ],
     ),
     ShadcnDocsSection(
