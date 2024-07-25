@@ -46,17 +46,16 @@ class NumberedContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
-        // color: fill ? Colors.primaries[index % Colors.primaries.length] : null,
-        // flip the index
         color: fill
             ? Colors.primaries[
                 (Colors.primaries.length - 1 - index) % Colors.primaries.length]
             : null,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: theme.borderRadiusMd,
       ),
       child: Center(
         child: Text(
