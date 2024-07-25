@@ -280,17 +280,23 @@ class _StepVariantCircleAlternative extends StepVariant {
                         i == 0
                             ? const Spacer()
                             : Expanded(
-                                child: Divider(
-                                  thickness: 2,
-                                  color: properties.hasFailure &&
-                                          properties.state.value.currentStep <=
-                                              i - 1
-                                      ? theme.colorScheme.destructive
-                                      : properties.state.value.currentStep >=
-                                              i - 1
-                                          ? theme.colorScheme.primary
-                                          : theme.colorScheme.border,
-                                ),
+                                child: AnimatedBuilder(
+                                    animation: properties.state,
+                                    builder: (context, child) {
+                                      return Divider(
+                                        thickness: 2,
+                                        color: properties.hasFailure &&
+                                                properties.state.value
+                                                        .currentStep <=
+                                                    i - 1
+                                            ? theme.colorScheme.destructive
+                                            : properties.state.value
+                                                        .currentStep >=
+                                                    i - 1
+                                                ? theme.colorScheme.primary
+                                                : theme.colorScheme.border,
+                                      );
+                                    }),
                               ),
                         gap(4),
                         steps[i].icon ?? const StepNumber(),
@@ -298,16 +304,23 @@ class _StepVariantCircleAlternative extends StepVariant {
                         i == steps.length - 1
                             ? const Spacer()
                             : Expanded(
-                                child: Divider(
-                                  thickness: 2,
-                                  color: properties.hasFailure &&
-                                          properties.state.value.currentStep <=
-                                              i
-                                      ? theme.colorScheme.destructive
-                                      : properties.state.value.currentStep >= i
-                                          ? theme.colorScheme.primary
-                                          : theme.colorScheme.border,
-                                ),
+                                child: AnimatedBuilder(
+                                    animation: properties.state,
+                                    builder: (context, child) {
+                                      return Divider(
+                                        thickness: 2,
+                                        color: properties.hasFailure &&
+                                                properties.state.value
+                                                        .currentStep <=
+                                                    i
+                                            ? theme.colorScheme.destructive
+                                            : properties.state.value
+                                                        .currentStep >=
+                                                    i
+                                                ? theme.colorScheme.primary
+                                                : theme.colorScheme.border,
+                                      );
+                                    }),
                               ),
                       ],
                     ),
