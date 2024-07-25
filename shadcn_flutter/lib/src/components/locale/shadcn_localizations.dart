@@ -74,6 +74,11 @@ abstract class ShadcnLocalizations {
   String get buttonClose;
   String get buttonSave;
   String get buttonReset;
+  String get timeHour;
+  String get timeMinute;
+  String get timeSecond;
+  String get timeAM;
+  String get timePM;
   String formatDateTime(DateTime dateTime,
       {bool showDate = true,
       bool showTime = true,
@@ -382,4 +387,19 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
     }
     return result;
   }
+
+  @override
+  String get timeHour => 'Hour';
+
+  @override
+  String get timeMinute => 'Minute';
+
+  @override
+  String get timeSecond => 'Second';
+
+  @override
+  String get timeAM => 'AM';
+
+  @override
+  String get timePM => 'PM';
 }

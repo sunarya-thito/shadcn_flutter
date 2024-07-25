@@ -96,7 +96,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
         ),
         Positioned(
           bottom: -16 - 4,
-          child: Text(label),
+          child: Text(label).muted(),
         ),
       ],
     );
@@ -171,6 +171,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = ShadcnLocalizations.of(context);
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Padding(
@@ -182,15 +183,14 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
               Expanded(
                 child: _buildInput(
                   _hourController,
-                  'Hour',
+                  localizations.timeHour,
                 ),
               ),
               _buildSeparator(),
-              // Expanded(child: TextField()),
               Expanded(
                 child: _buildInput(
                   _minuteController,
-                  'Minute',
+                  localizations.timeMinute,
                 ),
               ),
               if (widget.showSeconds) ...[
@@ -199,7 +199,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
                 Expanded(
                   child: _buildInput(
                     _secondController,
-                    'Second',
+                    localizations.timeSecond,
                   ),
                 ),
               ],
@@ -219,7 +219,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
                               _onChanged();
                             });
                           },
-                          child: Text('AM'),
+                          child: Text(localizations.timeAM),
                         ),
                       ),
                       Expanded(
@@ -231,7 +231,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
                               _onChanged();
                             });
                           },
-                          child: Text('PM'),
+                          child: Text(localizations.timePM),
                         ),
                       ),
                     ],
