@@ -11,7 +11,7 @@ class StarRating extends StatefulWidget {
   final double starPoints;
   final double starSize;
   final double starSpacing;
-  final double starPointRounding;
+  final double? starPointRounding;
   final double starValleyRounding;
   final double starSquash;
   final double starInnerRadiusRatio;
@@ -29,7 +29,7 @@ class StarRating extends StatefulWidget {
     this.starPoints = 5,
     this.starSize = 24.0,
     this.starSpacing = 5.0,
-    this.starPointRounding = 0.25,
+    this.starPointRounding,
     this.starValleyRounding = 0.0,
     this.starSquash = 0.0,
     this.starInnerRadiusRatio = 0.4,
@@ -65,6 +65,7 @@ class _StarRatingState extends State<StarRating> with FormValueSupplier {
   }
 
   Widget _buildStar(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: widget.starSize,
       height: widget.starSize,
@@ -72,7 +73,7 @@ class _StarRatingState extends State<StarRating> with FormValueSupplier {
         color: Colors.white,
         shape: StarBorder(
           points: widget.starPoints,
-          pointRounding: widget.starPointRounding,
+          pointRounding: widget.starPointRounding ?? (theme.radius / 2),
           valleyRounding: widget.starValleyRounding,
           squash: widget.starSquash,
           innerRadiusRatio: widget.starInnerRadiusRatio,
