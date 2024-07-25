@@ -35,6 +35,7 @@ import 'package:example/pages/docs/components/select_example.dart';
 import 'package:example/pages/docs/components/sheet_example.dart';
 import 'package:example/pages/docs/components/skeleton_example.dart';
 import 'package:example/pages/docs/components/slider_example.dart';
+import 'package:example/pages/docs/components/star_rating_example.dart';
 import 'package:example/pages/docs/components/steps_example.dart';
 import 'package:example/pages/docs/components/switch_example.dart';
 import 'package:example/pages/docs/components/tab_list_example.dart';
@@ -463,6 +464,13 @@ class MyAppState extends State<MyApp> {
             name: 'time_picker',
             builder: (context, state) {
               return const TimePickerExample();
+            },
+          ),
+          GoRoute(
+            path: 'star_rating',
+            name: 'star_rating',
+            builder: (context, state) {
+              return const StarRatingExample();
             },
           ),
         ]),

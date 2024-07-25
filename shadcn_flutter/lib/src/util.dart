@@ -319,7 +319,7 @@ extension WidgetExtension on Widget {
 }
 
 extension ColumnExtension on Column {
-  Widget gap(double gap) {
+  Column gap(double gap) {
     return Column(
       key: key,
       mainAxisAlignment: mainAxisAlignment,
@@ -335,7 +335,7 @@ extension ColumnExtension on Column {
     );
   }
 
-  Widget separator(Widget separator) {
+  Column separator(Widget separator) {
     return Column(
       key: key,
       mainAxisAlignment: mainAxisAlignment,
@@ -353,7 +353,7 @@ extension ColumnExtension on Column {
 }
 
 extension RowExtension on Row {
-  Widget gap(double gap) {
+  Row gap(double gap) {
     return Row(
       key: key,
       mainAxisAlignment: mainAxisAlignment,
@@ -369,9 +369,45 @@ extension RowExtension on Row {
     );
   }
 
-  Widget separator(Widget separator) {
+  Row separator(Widget separator) {
     return Row(
       key: key,
+      mainAxisAlignment: mainAxisAlignment,
+      mainAxisSize: mainAxisSize,
+      crossAxisAlignment: crossAxisAlignment,
+      textDirection: textDirection,
+      verticalDirection: verticalDirection,
+      textBaseline: textBaseline,
+      children: join(
+        children,
+        separator,
+      ).toList(growable: false),
+    );
+  }
+}
+
+extension FlexExtension on Flex {
+  Flex gap(double gap) {
+    return Flex(
+      key: key,
+      direction: direction,
+      mainAxisAlignment: mainAxisAlignment,
+      mainAxisSize: mainAxisSize,
+      crossAxisAlignment: crossAxisAlignment,
+      textDirection: textDirection,
+      verticalDirection: verticalDirection,
+      textBaseline: textBaseline,
+      children: join(
+        children,
+        SizedBox(width: gap),
+      ).toList(growable: false),
+    );
+  }
+
+  Flex separator(Widget separator) {
+    return Flex(
+      key: key,
+      direction: direction,
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
       crossAxisAlignment: crossAxisAlignment,

@@ -205,9 +205,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Select', 'select'),
         // TODO: https://craft.mxkaske.dev/post/fancy-multi-select
         ShadcnDocsPage('Slider', 'slider'),
-        // TODO: https://nyxbui.design/docs/components/star-rating
-        ShadcnDocsPage(
-            'Star Rating', 'star_rating', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Star Rating', 'star_rating'),
         ShadcnDocsPage('Switch', 'switch'),
         ShadcnDocsPage('Text Area', 'text_area'),
         ShadcnDocsPage('Time Picker', 'time_picker'),

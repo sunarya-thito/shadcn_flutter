@@ -44,6 +44,7 @@ export 'src/components/form/phone_input.dart';
 export 'src/components/form/radio_group.dart';
 export 'src/components/form/select.dart';
 export 'src/components/form/slider.dart';
+export 'src/components/form/star_rating.dart';
 export 'src/components/form/switch.dart';
 export 'src/components/form/text_area.dart';
 export 'src/components/form/text_field.dart';
