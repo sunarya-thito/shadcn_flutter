@@ -199,11 +199,9 @@ class DocsPageState extends State<DocsPage> {
             'Image Input', 'image_input', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Input', 'input'),
         ShadcnDocsPage('Input OTP', 'input_otp'),
-        // TODO: https://shadcn-phone-input.vercel.app/
         ShadcnDocsPage('Phone Input', 'phone_input'),
         ShadcnDocsPage('Radio Group', 'radio_group'),
         ShadcnDocsPage('Select', 'select'),
-        // TODO: https://craft.mxkaske.dev/post/fancy-multi-select
         ShadcnDocsPage('Slider', 'slider'),
         ShadcnDocsPage('Star Rating', 'star_rating'),
         ShadcnDocsPage('Switch', 'switch'),
@@ -222,8 +220,7 @@ class DocsPageState extends State<DocsPage> {
         // https://nextjs-shadcn-dnd.vercel.app/ (make it headless)
         ShadcnDocsPage('Sortable', 'sortable', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Steps', 'steps'),
-        // TODO: https://shadcn-stepper.vercel.app/
-        ShadcnDocsPage('Stepper', 'stepper', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Stepper', 'stepper'),
         // TODO: https://shadcn-timeline.vercel.app/
         ShadcnDocsPage('Timeline', 'timeline', ShadcnFeatureTag.workInProgress),
       ],

@@ -175,7 +175,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Padding(
-          padding: EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.only(bottom: 16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
