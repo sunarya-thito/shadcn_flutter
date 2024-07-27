@@ -200,6 +200,12 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
     T newValue = lerpedValue(_value, widget.value, curveProgress);
     return newValue;
   }
+
+  @override
+  bool get isAnimating => _controller.isAnimating;
+
+  @override
+  bool get isForwardOrCompleted => _controller.isForwardOrCompleted;
 }
 
 enum RepeatMode {

@@ -31,9 +31,11 @@ class _SortableExample1State extends State<SortableExample1> {
       },
       onSort: (oldIndex, newIndex) {
         setState(() {
-          final item = _items.removeAt(oldIndex);
-          _items.insert(newIndex, item);
+          _items.move(oldIndex, newIndex);
         });
+      },
+      dividerBuilder: (context, index) {
+        return gap(4);
       },
       children: [
         for (var item in _items)
