@@ -218,7 +218,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Divider', 'divider'),
         ShadcnDocsPage('Resizable', 'resizable'),
         // https://nextjs-shadcn-dnd.vercel.app/ (make it headless)
-        ShadcnDocsPage('Sortable', 'sortable', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Sortable', 'sortable'),
         ShadcnDocsPage('Steps', 'steps'),
         ShadcnDocsPage('Stepper', 'stepper'),
         ShadcnDocsPage('Timeline', 'timeline'),

@@ -62,6 +62,7 @@ export 'src/components/layout/media_query.dart';
 export 'src/components/layout/outlined_container.dart';
 export 'src/components/layout/resizable.dart';
 export 'src/components/layout/scaffold.dart';
+export 'src/components/layout/sortable.dart';
 export 'src/components/layout/stage_container.dart';
 export 'src/components/layout/stepper.dart';
 export 'src/components/layout/steps.dart';

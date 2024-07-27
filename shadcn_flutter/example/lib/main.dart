@@ -35,6 +35,7 @@ import 'package:example/pages/docs/components/select_example.dart';
 import 'package:example/pages/docs/components/sheet_example.dart';
 import 'package:example/pages/docs/components/skeleton_example.dart';
 import 'package:example/pages/docs/components/slider_example.dart';
+import 'package:example/pages/docs/components/sortable_example.dart';
 import 'package:example/pages/docs/components/star_rating_example.dart';
 import 'package:example/pages/docs/components/stepper_example.dart';
 import 'package:example/pages/docs/components/steps_example.dart';
@@ -489,6 +490,13 @@ class MyAppState extends State<MyApp> {
               return TimelineExample();
             },
           ),
+          GoRoute(
+            path: 'sortable',
+            name: 'sortable',
+            builder: (context, state) {
+              return const SortableExample();
+            },
+          )
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();
