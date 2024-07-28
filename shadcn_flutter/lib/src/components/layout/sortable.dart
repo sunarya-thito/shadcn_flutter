@@ -16,6 +16,8 @@ class DropDetails<T> {
   final SortableState container;
 
   DropDetails(this.child, this.index, this.container);
+
+  SortableController get controller => container.widget.controller;
 }
 
 class SortableItem<T> {
@@ -61,7 +63,7 @@ class SortableController<T> extends ValueNotifier<SortableValue<T>> {
     value = SortableValue(items);
   }
 
-  List<T> get children => value.items.map((e) => e.value).toList();
+  List<T> get items => value.items.map((e) => e.value).toList();
 
   void clear() {
     value = SortableValue([]);
@@ -75,7 +77,7 @@ class SortableController<T> extends ValueNotifier<SortableValue<T>> {
 class Sortable<T> extends StatefulWidget {
   final SortableController<T> controller;
   final Axis direction;
-  final bool lockDragMovement;
+  final bool lockDragAxis;
   final DismissMode dismissMode;
   final DragMode dragMode;
   final SortableDividerBuilder? dividerBuilder;
@@ -86,7 +88,7 @@ class Sortable<T> extends StatefulWidget {
     Key? key,
     required this.controller,
     this.direction = Axis.vertical,
-    this.lockDragMovement = false,
+    this.lockDragAxis = false,
     this.dismissMode = DismissMode.cancel,
     this.dragMode = DragMode.insert,
     this.dividerBuilder,
@@ -99,7 +101,7 @@ class Sortable<T> extends StatefulWidget {
 }
 
 class _SortSession {
-  final OverlayEntry overlayEntry;
+  final SortableLayerEntry overlayEntry;
   final int index;
   final Offset handleOffset;
   final SortableState sourceContainer;
@@ -133,7 +135,7 @@ class _SortTransferSession {
   final SortableState sourceContainer;
   final Widget child;
   final ValueNotifier<double> sendingProgress;
-  final OverlayEntry overlayEntry;
+  final SortableLayerEntry overlayEntry;
   final SortableItemPositionSupplier positionSupplier;
   final ValueNotifier<Offset> dragOffset;
   final Offset handleOffset;
@@ -152,13 +154,70 @@ class _SortTransferSession {
 
 const kDefaultMoveDuration = Duration(milliseconds: 300);
 
+class SortableLayer extends StatefulWidget {
+  final Widget child;
+
+  const SortableLayer({Key? key, required this.child}) : super(key: key);
+
+  @override
+  State<SortableLayer> createState() => _SortableLayerState();
+}
+
+class SortableLayerEntry {
+  final WidgetBuilder builder;
+
+  _SortableLayerState? _state;
+
+  SortableLayerEntry(this.builder);
+
+  void remove() {
+    _state?.remove(this);
+  }
+}
+
+class _SortableLayerState extends State<SortableLayer> {
+  final List<SortableLayerEntry> _children = [];
+
+  _SortSession? _sortSession;
+
+  void add(SortableLayerEntry child) {
+    setState(() {
+      _children.add(child);
+      child._state = this;
+    });
+  }
+
+  void remove(SortableLayerEntry child) {
+    setState(() {
+      child._state = null;
+      _children.remove(child);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Data(
+      data: this,
+      child: Stack(
+        clipBehavior: Clip.none,
+        fit: StackFit.passthrough,
+        children: [
+          widget.child,
+          for (var child in _children) child.builder(context),
+        ],
+      ),
+    );
+  }
+}
+
 class SortableState<T> extends State<Sortable<T>>
     with SingleTickerProviderStateMixin {
-  _SortSession? _sortSession;
   final List<_SortTransferSession> _sortTransferSessions = [];
   late Ticker _ticker;
   Duration? _lastTime;
   int? _hoveringChildrenIndex;
+
+  _SortableLayerState? layerState;
 
   @override
   void initState() {
@@ -178,6 +237,24 @@ class SortableState<T> extends State<Sortable<T>>
 
   void _onControllerChanged() {
     setState(() {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var newLayerState = Data.of<_SortableLayerState>(context);
+    if (layerState != newLayerState) {
+      if (layerState?._sortSession?.sourceContainer == this) {
+        var sortSession = layerState?._sortSession;
+        if (sortSession != null) {
+          sortSession.overlayEntry.remove();
+          layerState?._sortSession = null;
+          newLayerState._sortSession = sortSession;
+          newLayerState.add(sortSession.overlayEntry);
+        }
+      }
+      layerState = newLayerState;
+    }
   }
 
   void _checkTick() {
@@ -208,20 +285,21 @@ class SortableState<T> extends State<Sortable<T>>
 
   void _stopDragging(
       int index, bool cancel, SortableItemPositionSupplier supplier) {
-    var session = _sortSession;
+    var layerState = Data.of<_SortableLayerState>(context);
+    var session = layerState._sortSession;
     if (session != null) {
-      _sortSession = null;
+      layerState._sortSession = null;
       session.overlayEntry.remove();
       if (cancel && widget.dismissMode == DismissMode.cancel) {
         final progressNotifier = ValueNotifier<double>(0);
-        final overlayEntry = OverlayEntry(
-          builder: (context) {
+        final overlayEntry = SortableLayerEntry(
+          (context) {
             return AnimatedBuilder(
               animation: progressNotifier,
               builder: (context, _) {
                 final rect = supplier();
                 final curvedProgress = Curves.easeInOut.transform(
-                  progressNotifier.value,
+                  progressNotifier.value.clamp(0, 1),
                 );
                 final tweenedOffset = Offset.lerp(
                   session.dragOffset.value,
@@ -248,7 +326,7 @@ class SortableState<T> extends State<Sortable<T>>
             );
           },
         );
-        Overlay.of(context).insert(overlayEntry);
+        layerState.add(overlayEntry);
         setState(() {
           _sortTransferSessions.add(
             _SortTransferSession(
@@ -269,8 +347,10 @@ class SortableState<T> extends State<Sortable<T>>
     }
   }
 
-  void _dropTarget(_SortSession session, int hoveringIndex,
-      SortableItemPositionSupplier hoveringRect) {
+  void _dropTarget(_SortSession session, int hoveringIndex) {
+    // _sortSession = null;
+    layerState!._sortSession = null;
+
     if (hoveringIndex == -1) {
       hoveringIndex = widget.controller.length;
     }
@@ -285,18 +365,19 @@ class SortableState<T> extends State<Sortable<T>>
     } else {
       widget.controller.sort(session.index, newIndex);
     }
+    session.overlayEntry.remove();
     final progressNotifier = ValueNotifier<double>(0);
-    final overlayEntry = OverlayEntry(
-      builder: (context) {
+    final overlayEntry = SortableLayerEntry(
+      (context) {
         return AnimatedBuilder(
           animation: progressNotifier,
           builder: (context, _) {
             final curvedProgress = Curves.easeInOut.transform(
-              progressNotifier.value,
+              progressNotifier.value.clamp(0, 1),
             );
             var targetKey = widget.controller.value.items[newIndex]._key;
-            var renderBox =
-                targetKey.currentContext!.findRenderObject() as RenderBox;
+            var currentContext = targetKey.currentContext!;
+            var renderBox = currentContext.findRenderObject() as RenderBox;
             var rect = renderBox.localToGlobal(Offset.zero) & renderBox.size;
             final tweenedOffset = Offset.lerp(
               session.dragOffset.value,
@@ -323,7 +404,7 @@ class SortableState<T> extends State<Sortable<T>>
         );
       },
     );
-    Overlay.of(context).insert(overlayEntry);
+    Data.of<_SortableLayerState>(context).add(overlayEntry);
     setState(() {
       _sortTransferSessions.add(
         _SortTransferSession(
@@ -333,7 +414,12 @@ class SortableState<T> extends State<Sortable<T>>
           session.child,
           progressNotifier,
           overlayEntry,
-          hoveringRect,
+          () {
+            var targetKey = widget.controller.value.items[newIndex]._key;
+            var renderBox =
+                targetKey.currentContext!.findRenderObject() as RenderBox;
+            return renderBox.localToGlobal(Offset.zero) & renderBox.size;
+          },
           session.dragOffset,
           session.handleOffset,
         ),
@@ -349,15 +435,15 @@ class SortableState<T> extends State<Sortable<T>>
       Offset handleOffset,
       SortableState sourceContainer,
       SortableItemPositionSupplier supplier) {
-    var session = _sortSession;
+    var session = layerState!._sortSession;
     if (session != null) {
       return;
     }
     final child =
         widget.builder(context, widget.controller.value.items[index].value);
     final dragOffsetNotifier = ValueNotifier<Offset>(dragOffset);
-    OverlayEntry overlayEntry = OverlayEntry(
-      builder: (context) {
+    final overlayEntry = SortableLayerEntry(
+      (context) {
         return AnimatedBuilder(
             animation: dragOffsetNotifier,
             builder: (context, _) {
@@ -379,8 +465,8 @@ class SortableState<T> extends State<Sortable<T>>
             });
       },
     );
-    Overlay.of(context).insert(overlayEntry);
-    _sortSession = _SortSession(
+    Data.of<_SortableLayerState>(context).add(overlayEntry);
+    layerState!._sortSession = _SortSession(
       overlayEntry,
       index,
       handleOffset,
@@ -393,9 +479,9 @@ class SortableState<T> extends State<Sortable<T>>
   }
 
   void _updateDragging(int index, Offset offset) {
-    var session = _sortSession;
+    var session = layerState!._sortSession;
     if (session != null) {
-      if (widget.lockDragMovement) {
+      if (widget.lockDragAxis) {
         final renderObject = context.findRenderObject() as RenderBox;
         Rect containerRect =
             renderObject.localToGlobal(Offset.zero) & renderObject.size;
@@ -403,14 +489,14 @@ class SortableState<T> extends State<Sortable<T>>
           session.dragOffset.value = Offset(
               offset.dx,
               session.dragOffset.value.dy.clamp(
-                session.rect.top,
-                session.rect.bottom - containerRect.height,
+                containerRect.top,
+                containerRect.bottom - containerRect.height,
               ));
         } else {
           session.dragOffset.value = Offset(
               session.dragOffset.value.dx.clamp(
-                session.rect.left,
-                session.rect.right - containerRect.width,
+                containerRect.left,
+                containerRect.right - containerRect.width,
               ),
               offset.dy);
         }
@@ -422,11 +508,11 @@ class SortableState<T> extends State<Sortable<T>>
 
   @override
   void dispose() {
+    widget.controller.removeListener(_onControllerChanged);
     _ticker.dispose();
     for (var session in _sortTransferSessions) {
       session.overlayEntry.remove();
     }
-    _sortSession?.overlayEntry.remove();
     super.dispose();
   }
 
@@ -434,7 +520,7 @@ class SortableState<T> extends State<Sortable<T>>
   Widget build(BuildContext context) {
     List<Widget> children = [];
     for (int i = 0; i < widget.controller.length; i++) {
-      _SortSession? session = _sortSession;
+      _SortSession? session = layerState?._sortSession;
       children.add(
         Builder(builder: (context) {
           return MouseRegion(
@@ -457,7 +543,7 @@ class SortableState<T> extends State<Sortable<T>>
               dragging: session?.index == i,
               reserving:
                   _sortTransferSessions.any((element) => element.index == i),
-              canAccept: session != null,
+              canAccept: layerState?._sortSession != null,
               direction: widget.direction,
               dividerBuilder: widget.dividerBuilder,
               child: widget.builder(
@@ -474,7 +560,7 @@ class SortableState<T> extends State<Sortable<T>>
       for (int i = 0; i < widget.controller.length - 1; i++) {
         Widget divider = widget.dividerBuilder!(context, i);
         dividedChildren.add(children[i]);
-        var session = _sortSession;
+        var session = layerState?._sortSession;
         dividedChildren.add(
           AnimatedSize(
             duration: kDefaultDuration,
@@ -482,11 +568,13 @@ class SortableState<T> extends State<Sortable<T>>
           ),
         );
       }
-      dividedChildren.add(children.last);
+      if (dividedChildren.isNotEmpty) {
+        dividedChildren.add(children.last);
+      }
     } else {
       dividedChildren = children;
     }
-    var session = _sortSession;
+    var session = layerState?._sortSession;
     if (widget.dividerBuilder != null) {
       dividedChildren.add(
         AnimatedSize(
@@ -539,23 +627,27 @@ class SortableState<T> extends State<Sortable<T>>
                   );
                 })),
     );
-    Widget flexWidget = Flex(
-      direction: widget.direction,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: dividedChildren,
-    );
-    if (widget.direction == Axis.horizontal) {
-      flexWidget = IntrinsicHeight(
-        child: flexWidget,
-      );
-    } else {
-      flexWidget = IntrinsicWidth(
-        child: flexWidget,
-      );
-    }
+    // Widget flexWidget = Flex(
+    //   direction: widget.direction,
+    //   crossAxisAlignment: CrossAxisAlignment.stretch,
+    //   children: dividedChildren,
+    // );
+    // if (widget.direction == Axis.horizontal) {
+    //   flexWidget = IntrinsicHeight(
+    //     child: flexWidget,
+    //   );
+    // } else {
+    //   flexWidget = IntrinsicWidth(
+    //     child: flexWidget,
+    //   );
+    // }
     return MetaData(
       metaData: this,
-      child: flexWidget,
+      child: ListView(
+        scrollDirection: widget.direction,
+        shrinkWrap: true,
+        children: dividedChildren,
+      ),
     );
   }
 }
@@ -575,9 +667,29 @@ class SortableItemHandle extends StatefulWidget {
 }
 
 class _SortableItemHandleState extends State<SortableItemHandle> {
+  _SortableItemState? _sortableItemState;
+
+  void _checkHit(Offset position) {
+    HitTestResult result = HitTestResult();
+    WidgetsBinding.instance
+        .hitTestInView(result, position, View.of(context).viewId);
+    for (var entry in result.path) {
+      if (entry.target is RenderMetaData) {
+        dynamic metaData = (entry.target as RenderMetaData).metaData;
+        if (metaData is _SortableItemState) {
+          _sortableItemState?._onExit();
+          _sortableItemState = metaData;
+          _sortableItemState?._onEnter();
+          return;
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final data = Data.maybeOf<SortableItemData>(context);
+    final layerState = Data.of<_SortableLayerState>(context);
     return MouseRegion(
       cursor: SystemMouseCursors.grab,
       child: GestureDetector(
@@ -592,10 +704,12 @@ class _SortableItemHandleState extends State<SortableItemHandle> {
               data.container,
               data.sizeSupplier,
             );
+            _checkHit(details.globalPosition);
           }
         },
         onPanEnd: (details) {
           if (data != null) {
+            _sortableItemState?._onExit();
             HitTestResult result = HitTestResult();
             WidgetsBinding.instance.hitTestInView(
                 result, details.globalPosition, View.of(context).viewId);
@@ -603,12 +717,32 @@ class _SortableItemHandleState extends State<SortableItemHandle> {
               if (entry.target is RenderMetaData) {
                 dynamic metaData = (entry.target as RenderMetaData).metaData;
                 if (metaData is _SortableItemState) {
-                  var session = data.container._sortSession!;
-                  var hoveringRect = metaData._currentRect!;
-                  data.container
-                      ._stopDragging(data.index, false, data.sizeSupplier);
-                  data.container._dropTarget(
-                      session, metaData.widget.index, hoveringRect);
+                  var session = layerState._sortSession!;
+                  var canAccept = metaData.widget.container.widget.canAccept;
+                  if (canAccept != null &&
+                      !canAccept(DropDetails(
+                          data.container.widget.controller[data.index],
+                          metaData.widget.index,
+                          metaData.widget.container))) {
+                    data.container
+                        ._stopDragging(data.index, true, data.sizeSupplier);
+                    return;
+                  }
+                  metaData.widget.container
+                      ._dropTarget(session, metaData.widget.index);
+                  return;
+                } else if (metaData is SortableState) {
+                  var session = layerState._sortSession!;
+                  var canAccept = metaData.widget.canAccept;
+                  if (canAccept != null &&
+                      !canAccept(DropDetails(
+                          data.container.widget.controller[data.index],
+                          -1,
+                          metaData))) {
+                    metaData._stopDragging(data.index, true, data.sizeSupplier);
+                    return;
+                  }
+                  metaData._dropTarget(session, -1);
                   return;
                 }
               }
@@ -619,6 +753,7 @@ class _SortableItemHandleState extends State<SortableItemHandle> {
         onPanUpdate: (details) {
           if (data != null) {
             data.container._updateDragging(data.index, details.globalPosition);
+            _checkHit(details.globalPosition);
           }
         },
         child: widget.child,
@@ -676,9 +811,34 @@ class _SortableItem extends StatefulWidget {
 class _SortableItemState extends State<_SortableItem> {
   final GlobalKey _key = GlobalKey();
   Rect? _hoveringRect;
-  SortableItemPositionSupplier? _currentRect;
+
+  void _onEnter() {
+    if (!mounted) {
+      return;
+    }
+    final layerState = Data.of<_SortableLayerState>(context);
+    if (layerState._sortSession != null) {
+      setState(() {
+        _hoveringRect = layerState._sortSession!.rect;
+      });
+    }
+  }
+
+  void _onExit() {
+    if (!mounted) {
+      return;
+    }
+    if (_hoveringRect == null) {
+      return;
+    }
+    setState(() {
+      _hoveringRect = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final layerState = Data.of<_SortableLayerState>(context);
     Widget childWidget = Builder(builder: (context) {
       return Data(
           data: SortableItemData(
@@ -745,34 +905,7 @@ class _SortableItemState extends State<_SortableItem> {
     return MetaData(
       metaData: this,
       behavior: HitTestBehavior.translucent,
-      child: MouseRegion(
-        hitTestBehavior: HitTestBehavior.translucent,
-        onEnter: (event) {
-          var session = widget.container._sortSession;
-          if (session != null) {
-            setState(() {
-              _hoveringRect = session.rect;
-              final RenderBox renderBox =
-                  context.findRenderObject() as RenderBox;
-              var rect =
-                  renderBox.localToGlobal(Offset.zero) & session.rect.size;
-              _currentRect = () {
-                return rect;
-              };
-            });
-          }
-        },
-        onExit: (event) {
-          if (_hoveringRect == null) {
-            return;
-          }
-          setState(() {
-            _hoveringRect = null;
-            _currentRect = null;
-          });
-        },
-        child: flexWidget,
-      ),
+      child: flexWidget,
     );
   }
 }

@@ -14,6 +14,7 @@ class Clickable extends StatefulWidget {
   final WidgetStateProperty<IconThemeData?>? iconTheme;
   final WidgetStateProperty<EdgeInsetsGeometry?>? margin;
   final VoidCallback? onPressed;
+  final VoidCallback? onDoubleTap;
   final FocusNode? focusNode;
   final HitTestBehavior behavior;
   final bool disableTransition;
@@ -34,6 +35,7 @@ class Clickable extends StatefulWidget {
     this.onFocus,
     this.disableTransition = false,
     this.margin,
+    this.onDoubleTap,
   });
 
   @override
@@ -80,6 +82,7 @@ class _ClickableState extends State<Clickable> {
           child: GestureDetector(
             behavior: widget.behavior,
             onTap: enabled ? _onPressed : null,
+            onDoubleTap: widget.onDoubleTap,
             child: FocusableActionDetector(
               enabled: enabled,
               focusNode: widget.focusNode,

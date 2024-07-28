@@ -49,6 +49,7 @@ import 'package:example/pages/docs/components/timeline_example.dart';
 import 'package:example/pages/docs/components/toast_example.dart';
 import 'package:example/pages/docs/components/toggle_example.dart';
 import 'package:example/pages/docs/components/tooltip_example.dart';
+import 'package:example/pages/docs/components/tree_example.dart';
 import 'package:example/pages/docs/components_page.dart';
 import 'package:example/pages/docs/icons_page.dart';
 import 'package:example/pages/docs/installation_page.dart';
@@ -496,7 +497,14 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) {
               return const SortableExample();
             },
-          )
+          ),
+          GoRoute(
+            path: 'tree',
+            name: 'tree',
+            builder: (context, state) {
+              return const TreeExample();
+            },
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();
