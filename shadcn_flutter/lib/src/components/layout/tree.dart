@@ -1,8 +1,11 @@
+import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 abstract class TreeNode<T> {
   List<TreeNode<T>> get children;
   bool get expanded;
+
+  bool get leaf => children.isEmpty;
 
   TreeNode<T> copyWith({
     List<TreeNode<T>>? children,
@@ -109,15 +112,25 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  static List<TreeNode<K>> replaceItem<K>(
+      List<TreeNode<K>> nodes, K oldItem, TreeNode<K> newItem) {
+    return mapNodes(nodes, (node) {
+      if (node is TreeItem<K> && node.data == oldItem) {
+        return newItem;
+      }
+      return null;
+    });
+  }
+
   static List<TreeNode<K>> expandAll<K>(List<TreeNode<K>> nodes) {
     return mapNodes(nodes, (node) {
-      return node.copyWith(expanded: true);
+      return node.expanded ? null : node.copyWith(expanded: true);
     });
   }
 
   static List<TreeNode<K>> collapseAll<K>(List<TreeNode<K>> nodes) {
     return mapNodes(nodes, (node) {
-      return node.copyWith(expanded: false);
+      return node.expanded ? node.copyWith(expanded: false) : null;
     });
   }
 
@@ -128,10 +141,28 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  static List<TreeNode<K>> expandItem<K>(List<TreeNode<K>> nodes, K target) {
+    return mapNodes(nodes, (node) {
+      if (node is TreeItem<K> && node.data == target && !node.expanded) {
+        return node.copyWith(expanded: true);
+      }
+      return null;
+    });
+  }
+
   static List<TreeNode<K>> collapseNode<K>(
       List<TreeNode<K>> nodes, TreeNode<K> target) {
     return mapNodes(nodes, (node) {
       return node == target ? node.copyWith(expanded: false) : null;
+    });
+  }
+
+  static List<TreeNode<K>> collapseItem<K>(List<TreeNode<K>> nodes, K target) {
+    return mapNodes(nodes, (node) {
+      if (node is TreeItem<K> && node.data == target && node.expanded) {
+        return node.copyWith(expanded: false);
+      }
+      return null;
     });
   }
 
@@ -140,6 +171,7 @@ class TreeView<T> extends StatefulWidget {
   final bool shrinkWrap;
   final ScrollController? controller;
   final IndentGuide indentGuide;
+  final EdgeInsetsGeometry? padding;
 
   const TreeView({
     super.key,
@@ -148,6 +180,7 @@ class TreeView<T> extends StatefulWidget {
     this.shrinkWrap = false,
     this.controller,
     this.indentGuide = IndentGuide.path,
+    this.padding,
   });
 
   @override
@@ -189,6 +222,7 @@ class _TreeViewState<T> extends State<TreeView<T>> {
       );
     }, widget.nodes, true, []);
     return ListView(
+      padding: widget.padding ?? const EdgeInsets.all(8),
       shrinkWrap: widget.shrinkWrap,
       controller: widget.controller,
       children: children,
@@ -200,15 +234,14 @@ abstract class IndentGuide {
   static const none = IndentGuideNone();
   static const line = IndentGuideLine();
   static const path = IndentGuidePath();
-  Widget build(BuildContext context, int depth, int childIndex, int childCount);
+  Widget build(BuildContext context, List<TreeNodeDepth> depth, int index);
 }
 
 class IndentGuideNone implements IndentGuide {
   const IndentGuideNone();
 
   @override
-  Widget build(
-      BuildContext context, int depth, int childIndex, int childCount) {
+  Widget build(BuildContext context, List<TreeNodeDepth> depth, int index) {
     return const SizedBox();
   }
 }
@@ -219,8 +252,10 @@ class IndentGuideLine implements IndentGuide {
   const IndentGuideLine({this.color});
 
   @override
-  Widget build(
-      BuildContext context, int depth, int childIndex, int childCount) {
+  Widget build(BuildContext context, List<TreeNodeDepth> depth, int index) {
+    if (index == 0) {
+      return const SizedBox();
+    }
     return CustomPaint(
       painter: _PathPainter(
         color: color ?? Theme.of(context).colorScheme.border,
@@ -237,16 +272,30 @@ class IndentGuidePath implements IndentGuide {
   const IndentGuidePath({this.color});
 
   @override
-  Widget build(
-      BuildContext context, int depth, int childIndex, int childCount) {
-    final top = childIndex > 0;
-    final bottom = childIndex < childCount - 1;
+  Widget build(BuildContext context, List<TreeNodeDepth> depth, int index) {
+    bool top = true;
+    bool right = true;
+    bool bottom = true;
+
+    final current = depth[index];
+
+    if (index != depth.length - 1) {
+      right = false;
+      if (current.childIndex >= current.childCount - 1) {
+        top = false;
+      }
+    }
+
+    if (current.childIndex >= current.childCount - 1) {
+      bottom = false;
+    }
+
     return CustomPaint(
       painter: _PathPainter(
         color: color ?? Theme.of(context).colorScheme.border,
         top: top,
+        right: right,
         bottom: bottom,
-        right: true,
       ),
     );
   }
@@ -269,20 +318,38 @@ class _PathPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = color
+      ..style = PaintingStyle.stroke
       ..strokeWidth = 1
       ..strokeCap = StrokeCap.round;
     final path = Path();
     final halfWidth = size.width / 2;
     final halfHeight = size.height / 2;
-    if (top) {
+    // to prevent overlapping lines
+    if (top && bottom && right) {
       path.moveTo(halfWidth, 0);
-      path.lineTo(halfWidth, halfHeight);
-    }
-    if (right) {
+      path.lineTo(halfWidth, size.height);
       path.moveTo(halfWidth, halfHeight);
       path.lineTo(size.width, halfHeight);
-    }
-    if (bottom) {
+    } else if (top && bottom) {
+      path.moveTo(halfWidth, 0);
+      path.lineTo(halfWidth, size.height);
+    } else if (top && right) {
+      path.moveTo(halfWidth, 0);
+      path.lineTo(halfWidth, halfHeight);
+      path.moveTo(halfWidth, halfHeight);
+      path.lineTo(size.width, halfHeight);
+    } else if (bottom && right) {
+      path.moveTo(halfWidth, halfHeight);
+      path.lineTo(size.width, halfHeight);
+      path.moveTo(halfWidth, halfHeight);
+      path.lineTo(halfWidth, size.height);
+    } else if (top) {
+      path.moveTo(halfWidth, 0);
+      path.lineTo(halfWidth, halfHeight);
+    } else if (right) {
+      path.moveTo(halfWidth, halfHeight);
+      path.lineTo(size.width, halfHeight);
+    } else if (bottom) {
       path.moveTo(halfWidth, halfHeight);
       path.lineTo(halfWidth, size.height);
     }
@@ -298,48 +365,69 @@ class _PathPainter extends CustomPainter {
   }
 }
 
-class TreeItemView extends StatelessWidget {
+class TreeItemView extends StatefulWidget {
   final Widget child;
   final Widget? leading;
   final Widget? trailing;
-  final VoidCallback? onTap;
-  final VoidCallback? onDoubleTap;
+  final VoidCallback? onPressed;
+  final VoidCallback? onDoublePressed;
   final ValueChanged<bool>? onExpand;
   final bool? expandable;
+  final FocusNode? focusNode;
 
   const TreeItemView({
     super.key,
     required this.child,
     this.leading,
     this.trailing,
-    this.onTap,
-    this.onDoubleTap,
+    this.onPressed,
+    this.onDoublePressed,
     this.onExpand,
     this.expandable,
+    this.focusNode,
   });
+
+  @override
+  State<TreeItemView> createState() => _TreeItemViewState();
+}
+
+class _TreeItemViewState extends State<TreeItemView> {
+  late FocusNode _focusNode;
+  int _tapCount = 0;
+  int _lastTapTime = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = widget.focusNode ?? FocusNode();
+  }
 
   @override
   Widget build(BuildContext context) {
     final data = Data.maybeOf<TreeNodeData>(context);
     assert(data != null, 'TreeItemView must be a descendant of TreeView');
     List<Widget> rowChildren = [];
-    for (final depth in data!.depth) {
+    rowChildren.add(const SizedBox(width: 8));
+    for (int i = 0; i < data!.depth.length; i++) {
+      if (i == 0) {
+        continue; // skip the first depth
+      }
       rowChildren.add(SizedBox(
         width: 16,
         child: data.indentGuide.build(
           context,
-          depth.childIndex,
-          depth.childIndex,
-          depth.childCount,
+          data.depth,
+          i,
         ),
       ));
     }
-    if (expandable ?? data.node.children.isNotEmpty) {
+    List<Widget> subRowChildren = [];
+    if (widget.expandable ?? data.node.children.isNotEmpty) {
       rowChildren.add(
         GestureDetector(
           onTap: () {
-            if (onExpand != null) {
-              onExpand!(!data.node.expanded);
+            if (widget.onExpand != null) {
+              widget.onExpand!(!data.node.expanded);
             }
           },
           child: AnimatedRotation(
@@ -352,42 +440,141 @@ class TreeItemView extends StatelessWidget {
     } else {
       rowChildren.add(const SizedBox(width: 16));
     }
-    if (leading != null) {
-      rowChildren.add(leading!);
-      rowChildren.add(const SizedBox(width: 8));
+    if (widget.leading != null) {
+      subRowChildren.add(widget.leading!);
+      subRowChildren.add(const SizedBox(width: 8));
     }
-    rowChildren.add(Expanded(child: child));
-    if (trailing != null) {
-      rowChildren.add(const SizedBox(width: 8));
-      rowChildren.add(trailing!);
+    subRowChildren.add(Expanded(child: widget.child));
+    if (widget.trailing != null) {
+      subRowChildren.add(const SizedBox(width: 8));
+      subRowChildren.add(widget.trailing!);
     }
-    return AnimatedCrossFade(
-      duration: kDefaultDuration,
-      firstCurve: Curves.easeInOut,
-      secondCurve: Curves.easeInOut,
-      crossFadeState:
-          data.expanded ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-      secondChild: const SizedBox(),
-      firstChild: IntrinsicHeight(
-        child: Clickable(
-          onPressed: onTap,
-          onDoubleTap: onDoubleTap == null && onExpand == null
-              ? null
-              : () {
-                  if (onDoubleTap != null) {
-                    onDoubleTap!();
-                  }
-                  if (onExpand != null) {
-                    onExpand!(!data.node.expanded);
-                  }
-                },
-          enabled: onTap != null || onDoubleTap != null,
+    rowChildren.add(
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: rowChildren,
+            children: subRowChildren,
           ),
         ),
       ),
     );
+    final theme = Theme.of(context);
+    return mergeAnimatedTextStyle(
+      duration: kDefaultDuration,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+      child: AnimatedCrossFade(
+        duration: kDefaultDuration,
+        firstCurve: Curves.easeInOut,
+        secondCurve: Curves.easeInOut,
+        crossFadeState: data.expanded
+            ? CrossFadeState.showFirst
+            : CrossFadeState.showSecond,
+        secondChild: const SizedBox(),
+        firstChild: IntrinsicHeight(
+          child: Clickable(
+            focusNode: _focusNode,
+            focusOutline: false,
+            disableTransition: true,
+            shortcuts: {
+              if (widget.onExpand != null &&
+                  (widget.expandable ?? data.node.children.isNotEmpty))
+                LogicalKeySet(LogicalKeyboardKey.arrowRight):
+                    const ExpandIntent(),
+              if (widget.onExpand != null &&
+                  (widget.expandable ?? data.node.children.isNotEmpty))
+                LogicalKeySet(LogicalKeyboardKey.arrowLeft):
+                    const CollapseIntent(),
+            },
+            actions: {
+              ActivateIntent: CallbackAction(
+                onInvoke: (e) {
+                  if (widget.onExpand != null &&
+                      (widget.expandable ?? data.node.children.isNotEmpty)) {
+                    widget.onExpand!(!data.node.expanded);
+                  }
+                  widget.onPressed?.call();
+                  return null;
+                },
+              ),
+              CollapseIntent: CallbackAction(
+                onInvoke: (e) {
+                  if (widget.onExpand != null &&
+                      (widget.expandable ?? data.node.children.isNotEmpty)) {
+                    widget.onExpand!(false);
+                  }
+                  return null;
+                },
+              ),
+              ExpandIntent: CallbackAction(
+                onInvoke: (e) {
+                  if (widget.onExpand != null &&
+                      (widget.expandable ?? data.node.children.isNotEmpty)) {
+                    widget.onExpand!(true);
+                  }
+                  return null;
+                },
+              ),
+            },
+            decoration: WidgetStateProperty.resolveWith(
+              (states) {
+                if (states.contains(WidgetState.focused)) {
+                  return BoxDecoration(
+                    color: theme.colorScheme.primary.withOpacity(0.1),
+                    borderRadius: theme.borderRadiusMd,
+                  );
+                }
+                return const BoxDecoration();
+              },
+            ),
+            behavior: HitTestBehavior.translucent,
+            mouseCursor: widget.onDoublePressed != null ||
+                    widget.onPressed != null ||
+                    (widget.onExpand != null &&
+                        (widget.expandable ?? data.node.children.isNotEmpty))
+                ? const WidgetStatePropertyAll(SystemMouseCursors.click)
+                : const WidgetStatePropertyAll(SystemMouseCursors.basic),
+            onPressed: () {
+              final now = DateTime.now().millisecondsSinceEpoch;
+              if (now - _lastTapTime < 300) {
+                _tapCount++;
+              } else {
+                _tapCount = 1;
+              }
+              _lastTapTime = now;
+              if (_tapCount >= 2) {
+                if (widget.onDoublePressed != null) {
+                  widget.onDoublePressed!();
+                }
+                if (widget.onExpand != null) {
+                  widget.onExpand!(!data.node.expanded);
+                }
+              } else if (widget.onPressed != null) {
+                widget.onPressed!();
+              }
+              _focusNode.requestFocus();
+            },
+            enabled: widget.onPressed != null ||
+                widget.onDoublePressed != null ||
+                (widget.onExpand != null &&
+                    (widget.expandable ?? data.node.children.isNotEmpty)),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: rowChildren,
+            ),
+          ),
+        ),
+      ).iconSmall(),
+    );
   }
+}
+
+class ExpandIntent extends Intent {
+  const ExpandIntent();
+}
+
+class CollapseIntent extends Intent {
+  const CollapseIntent();
 }
