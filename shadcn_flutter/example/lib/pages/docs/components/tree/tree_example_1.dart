@@ -11,6 +11,7 @@ class _TreeExample1State extends State<TreeExample1> {
   List<TreeNode<String>> treeItems = [
     TreeItem(
       data: 'Apple',
+      expanded: true,
       children: [
         TreeItem(data: 'Red Apple', children: [
           TreeItem(data: 'Red Apple 1'),
@@ -41,29 +42,43 @@ class _TreeExample1State extends State<TreeExample1> {
       data: 'Date',
     ),
   ];
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 300,
-      child: TreeView(
-        shrinkWrap: true,
-        nodes: treeItems,
-        builder: (context, node) {
-          return TreeItemView(
-            onExpand: (expanded) {
-              if (expanded) {
-                setState(() {
-                  treeItems = TreeView.expandNode(treeItems, node);
-                });
-              } else {
-                setState(() {
-                  treeItems = TreeView.collapseNode(treeItems, node);
-                });
-              }
-            },
-            child: Text(node.data),
-          );
-        },
+    return OutlinedContainer(
+      child: SizedBox(
+        height: 300,
+        width: 250,
+        child: TreeView(
+          shrinkWrap: true,
+          nodes: treeItems,
+          builder: (context, node) {
+            return TreeItemView(
+              onPressed: () {},
+              trailing: node.leaf
+                  ? Container(
+                      width: 16,
+                      height: 16,
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(),
+                    )
+                  : null,
+              leading: Icon(Icons.folder),
+              onExpand: (expanded) {
+                if (expanded) {
+                  setState(() {
+                    treeItems = TreeView.expandNode(treeItems, node);
+                  });
+                } else {
+                  setState(() {
+                    treeItems = TreeView.collapseNode(treeItems, node);
+                  });
+                }
+              },
+              child: Text(node.data),
+            );
+          },
+        ),
       ),
     );
   }
