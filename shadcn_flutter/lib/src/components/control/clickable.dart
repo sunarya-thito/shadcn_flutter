@@ -18,6 +18,9 @@ class Clickable extends StatefulWidget {
   final FocusNode? focusNode;
   final HitTestBehavior behavior;
   final bool disableTransition;
+  final Map<LogicalKeySet, Intent>? shortcuts;
+  final Map<Type, Action<Intent>>? actions;
+  final bool focusOutline;
 
   const Clickable({
     super.key,
@@ -36,6 +39,9 @@ class Clickable extends StatefulWidget {
     this.disableTransition = false,
     this.margin,
     this.onDoubleTap,
+    this.shortcuts,
+    this.actions,
+    this.focusOutline = true,
   });
 
   @override
@@ -77,7 +83,8 @@ class _ClickableState extends State<Clickable> {
       builder: (context, _) {
         var enabled = widget.enabled;
         return FocusOutline(
-          focused: _controller.value.contains(WidgetState.focused),
+          focused: widget.focusOutline &&
+              _controller.value.contains(WidgetState.focused),
           borderRadius: BorderRadius.circular(theme.radiusMd),
           child: GestureDetector(
             behavior: widget.behavior,
@@ -97,6 +104,7 @@ class _ClickableState extends State<Clickable> {
                     const DirectionalFocusIntent(TraversalDirection.left),
                 LogicalKeySet(LogicalKeyboardKey.arrowRight):
                     const DirectionalFocusIntent(TraversalDirection.right),
+                ...?widget.shortcuts,
               },
               actions: {
                 ActivateIntent: CallbackAction(
@@ -126,6 +134,7 @@ class _ClickableState extends State<Clickable> {
                     return null;
                   },
                 ),
+                ...?widget.actions,
               },
               onShowHoverHighlight: (value) {
                 _controller.update(WidgetState.hovered, value);
