@@ -233,8 +233,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Pagination', 'pagination'),
         ShadcnDocsPage('Tabs', 'tabs'),
         ShadcnDocsPage('Tab List', 'tab_list'),
-        // TODO https://nyxbui.design/docs/components/file-tree
-        ShadcnDocsPage('Tree', 'tree', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Tree', 'tree'),
       ],
     ),
     ShadcnDocsSection(
