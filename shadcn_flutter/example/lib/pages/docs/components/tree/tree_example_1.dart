@@ -8,6 +8,8 @@ class TreeExample1 extends StatefulWidget {
 }
 
 class _TreeExample1State extends State<TreeExample1> {
+  bool expandIcon = false;
+  bool usePath = true;
   List<TreeNode<String>> treeItems = [
     TreeItem(
       data: 'Apple',
@@ -73,8 +75,10 @@ class _TreeExample1State extends State<TreeExample1> {
             height: 300,
             width: 250,
             child: TreeView(
+              expandIcon: expandIcon,
               shrinkWrap: true,
               nodes: treeItems,
+              branchLine: usePath ? BranchLine.path : BranchLine.line,
               builder: (context, node) {
                 return TreeItemView(
                   onPressed: () {},
@@ -86,7 +90,11 @@ class _TreeExample1State extends State<TreeExample1> {
                           child: CircularProgressIndicator(),
                         )
                       : null,
-                  leading: Icon(Icons.folder),
+                  leading: node.leaf
+                      ? const Icon(BootstrapIcons.fileImage)
+                      : Icon(node.expanded
+                          ? BootstrapIcons.folder2Open
+                          : BootstrapIcons.folder2),
                   onExpand: (expanded) {
                     if (expanded) {
                       setState(() {
@@ -126,7 +134,27 @@ class _TreeExample1State extends State<TreeExample1> {
               child: Text('Collapse All'),
             ),
           ],
-        )
+        ),
+        gap(8),
+        Checkbox(
+          state: expandIcon ? CheckboxState.checked : CheckboxState.unchecked,
+          onChanged: (value) {
+            setState(() {
+              expandIcon = value == CheckboxState.checked;
+            });
+          },
+          trailing: const Text('Expand Icon'),
+        ),
+        gap(8),
+        Checkbox(
+          state: usePath ? CheckboxState.checked : CheckboxState.unchecked,
+          onChanged: (value) {
+            setState(() {
+              usePath = value == CheckboxState.checked;
+            });
+          },
+          trailing: const Text('Use Path Branch Line'),
+        ),
       ],
     );
   }

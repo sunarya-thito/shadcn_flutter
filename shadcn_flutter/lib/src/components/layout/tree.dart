@@ -62,10 +62,12 @@ class TreeRoot<T> extends TreeNode<T> {
 
 class TreeNodeData<T> {
   final TreeNode<T> node;
-  final IndentGuide indentGuide;
+  final BranchLine indentGuide;
   final bool expanded;
   final List<TreeNodeDepth> depth;
-  TreeNodeData(this.depth, this.node, this.indentGuide, this.expanded);
+  final bool expandIcon;
+  TreeNodeData(
+      this.depth, this.node, this.indentGuide, this.expanded, this.expandIcon);
 }
 
 class TreeNodeDepth {
@@ -206,8 +208,9 @@ class TreeView<T> extends StatefulWidget {
   final Widget Function(BuildContext context, TreeItem<T> node) builder;
   final bool shrinkWrap;
   final ScrollController? controller;
-  final IndentGuide indentGuide;
+  final BranchLine branchLine;
   final EdgeInsetsGeometry? padding;
+  final bool expandIcon;
 
   const TreeView({
     super.key,
@@ -215,8 +218,9 @@ class TreeView<T> extends StatefulWidget {
     required this.builder,
     this.shrinkWrap = false,
     this.controller,
-    this.indentGuide = IndentGuide.path,
+    this.branchLine = BranchLine.path,
     this.padding,
+    this.expandIcon = true,
   });
 
   @override
@@ -250,7 +254,8 @@ class _TreeViewState<T> extends State<TreeView<T>> {
       if (node is! TreeItem<T>) return;
       children.add(
         Data<TreeNodeData>(
-          data: TreeNodeData(depth, node, widget.indentGuide, expanded),
+          data: TreeNodeData(
+              depth, node, widget.branchLine, expanded, widget.expandIcon),
           child: Builder(builder: (context) {
             return widget.builder(context, node);
           }),
@@ -266,14 +271,14 @@ class _TreeViewState<T> extends State<TreeView<T>> {
   }
 }
 
-abstract class IndentGuide {
+abstract class BranchLine {
   static const none = IndentGuideNone();
   static const line = IndentGuideLine();
   static const path = IndentGuidePath();
   Widget build(BuildContext context, List<TreeNodeDepth> depth, int index);
 }
 
-class IndentGuideNone implements IndentGuide {
+class IndentGuideNone implements BranchLine {
   const IndentGuideNone();
 
   @override
@@ -282,14 +287,14 @@ class IndentGuideNone implements IndentGuide {
   }
 }
 
-class IndentGuideLine implements IndentGuide {
+class IndentGuideLine implements BranchLine {
   final Color? color;
 
   const IndentGuideLine({this.color});
 
   @override
   Widget build(BuildContext context, List<TreeNodeDepth> depth, int index) {
-    if (index == 0) {
+    if (index <= 0) {
       return const SizedBox();
     }
     return CustomPaint(
@@ -302,7 +307,7 @@ class IndentGuideLine implements IndentGuide {
   }
 }
 
-class IndentGuidePath implements IndentGuide {
+class IndentGuidePath implements BranchLine {
   final Color? color;
 
   const IndentGuidePath({this.color});
@@ -312,17 +317,23 @@ class IndentGuidePath implements IndentGuide {
     bool top = true;
     bool right = true;
     bool bottom = true;
+    bool left = false;
 
-    final current = depth[index];
-
-    if (index != depth.length - 1) {
-      right = false;
-      if (current.childIndex >= current.childCount - 1) {
-        top = false;
+    if (index >= 0) {
+      final current = depth[index];
+      if (index != depth.length - 1) {
+        right = false;
+        if (current.childIndex >= current.childCount - 1) {
+          top = false;
+        }
       }
-    }
 
-    if (current.childIndex >= current.childCount - 1) {
+      if (current.childIndex >= current.childCount - 1) {
+        bottom = false;
+      }
+    } else {
+      left = true;
+      top = false;
       bottom = false;
     }
 
@@ -332,6 +343,7 @@ class IndentGuidePath implements IndentGuide {
         top: top,
         right: right,
         bottom: bottom,
+        left: left,
       ),
     );
   }
@@ -342,12 +354,14 @@ class _PathPainter extends CustomPainter {
   final bool top;
   final bool right;
   final bool bottom;
+  final bool left;
 
   _PathPainter({
     required this.color,
     this.top = false,
     this.right = false,
     this.bottom = false,
+    this.left = false,
   });
 
   @override
@@ -360,34 +374,21 @@ class _PathPainter extends CustomPainter {
     final path = Path();
     final halfWidth = size.width / 2;
     final halfHeight = size.height / 2;
-    // to prevent overlapping lines
-    if (top && bottom && right) {
-      path.moveTo(halfWidth, 0);
-      path.lineTo(halfWidth, size.height);
-      path.moveTo(halfWidth, halfHeight);
-      path.lineTo(size.width, halfHeight);
-    } else if (top && bottom) {
-      path.moveTo(halfWidth, 0);
-      path.lineTo(halfWidth, size.height);
-    } else if (top && right) {
+    if (top) {
       path.moveTo(halfWidth, 0);
       path.lineTo(halfWidth, halfHeight);
+    }
+    if (right) {
       path.moveTo(halfWidth, halfHeight);
       path.lineTo(size.width, halfHeight);
-    } else if (bottom && right) {
-      path.moveTo(halfWidth, halfHeight);
-      path.lineTo(size.width, halfHeight);
+    }
+    if (bottom) {
       path.moveTo(halfWidth, halfHeight);
       path.lineTo(halfWidth, size.height);
-    } else if (top) {
-      path.moveTo(halfWidth, 0);
-      path.lineTo(halfWidth, halfHeight);
-    } else if (right) {
+    }
+    if (left) {
       path.moveTo(halfWidth, halfHeight);
-      path.lineTo(size.width, halfHeight);
-    } else if (bottom) {
-      path.moveTo(halfWidth, halfHeight);
-      path.lineTo(halfWidth, size.height);
+      path.lineTo(0, halfHeight);
     }
     canvas.drawPath(path, paint);
   }
@@ -443,11 +444,12 @@ class _TreeItemViewState extends State<TreeItemView> {
     final data = Data.maybeOf<TreeNodeData>(context);
     assert(data != null, 'TreeItemView must be a descendant of TreeView');
     List<Widget> rowChildren = [];
-    rowChildren.add(const SizedBox(width: 8));
-    for (int i = 0; i < data!.depth.length; i++) {
+    if (data!.expandIcon) rowChildren.add(const SizedBox(width: 8));
+    for (int i = 0; i < data.depth.length; i++) {
       if (i == 0) {
         continue; // skip the first depth
       }
+      if (!data.expandIcon) rowChildren.add(const SizedBox(width: 8));
       rowChildren.add(SizedBox(
         width: 16,
         child: data.indentGuide.build(
@@ -458,23 +460,38 @@ class _TreeItemViewState extends State<TreeItemView> {
       ));
     }
     List<Widget> subRowChildren = [];
-    if (widget.expandable ?? data.node.children.isNotEmpty) {
-      rowChildren.add(
-        GestureDetector(
-          onTap: () {
-            if (widget.onExpand != null) {
-              widget.onExpand!(!data.node.expanded);
-            }
-          },
-          child: AnimatedRotation(
-            duration: kDefaultDuration,
-            turns: data.node.expanded ? 0.25 : 0,
-            child: const Icon(Icons.chevron_right, size: 16),
+    if (data.expandIcon) {
+      if (widget.expandable ?? data.node.children.isNotEmpty) {
+        rowChildren.add(
+          GestureDetector(
+            onTap: () {
+              if (widget.onExpand != null) {
+                widget.onExpand!(!data.node.expanded);
+              }
+            },
+            child: AnimatedRotation(
+              duration: kDefaultDuration,
+              turns: data.node.expanded ? 0.25 : 0,
+              child: const Icon(Icons.chevron_right, size: 16),
+            ),
           ),
-        ),
-      );
-    } else {
-      rowChildren.add(const SizedBox(width: 16));
+        );
+      } else {
+        if (data.depth.length > 1) {
+          rowChildren.add(SizedBox(
+            width: 16,
+            child: data.indentGuide.build(
+              context,
+              data.depth,
+              -1,
+            ),
+          ));
+        } else {
+          rowChildren.add(const SizedBox(
+            width: 16,
+          ));
+        }
+      }
     }
     if (widget.leading != null) {
       subRowChildren.add(widget.leading!);
