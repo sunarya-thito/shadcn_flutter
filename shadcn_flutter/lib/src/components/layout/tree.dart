@@ -43,11 +43,10 @@ class TreeRoot<T> extends TreeNode<T> {
   @override
   final List<TreeNode<T>> children;
   @override
-  final bool expanded;
+  bool get expanded => true;
 
   TreeRoot({
     required this.children,
-    this.expanded = true,
   });
 
   @override
@@ -57,7 +56,6 @@ class TreeRoot<T> extends TreeNode<T> {
   }) {
     return TreeRoot(
       children: children ?? this.children,
-      expanded: expanded ?? this.expanded,
     );
   }
 }
