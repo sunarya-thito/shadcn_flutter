@@ -201,11 +201,11 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
     return newValue;
   }
 
-  @override
-  bool get isAnimating => _controller.isAnimating;
-
-  @override
-  bool get isForwardOrCompleted => _controller.isForwardOrCompleted;
+  // @override
+  // bool get isAnimating => _controller.isAnimating;
+  //
+  // @override
+  // bool get isForwardOrCompleted => _controller.isForwardOrCompleted;
 }
 
 enum RepeatMode {

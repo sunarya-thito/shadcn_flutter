@@ -4,13 +4,13 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef SortableCallback = void Function(int oldIndex, int newIndex);
 typedef SortableDisposal = void Function(int index);
-typedef SortableConsumer<T extends Widget> = void Function(int index, T child);
+typedef SortableConsumer<T> = void Function(int index, T child);
 typedef SortableDividerBuilder = Widget Function(
     BuildContext context, int index);
-typedef SortablePredicate<T extends Widget> = bool Function(
-    DropDetails<T> details);
+typedef SortablePredicate<T> = bool Function(DropDetails<T> details);
+typedef SortableBuilder<T> = Widget Function(BuildContext context, T value);
 
-class DropDetails<T extends Widget> {
+class DropDetails<T> {
   final T child;
   final int index;
   final SortableState container;
@@ -18,30 +18,80 @@ class DropDetails<T extends Widget> {
   DropDetails(this.child, this.index, this.container);
 }
 
-class Sortable<T extends Widget> extends StatefulWidget {
-  final List<T> children;
-  final SortableCallback? onSort;
-  final SortableDisposal? onTaken; // when dragged out of the list
-  final SortableConsumer<T>? onInsert; // when dragged into the list
+class SortableItem<T> {
+  final GlobalKey _key = GlobalKey();
+  final T value;
+
+  SortableItem(this.value);
+}
+
+class SortableValue<T> {
+  final List<SortableItem<T>> items;
+
+  SortableValue(this.items);
+}
+
+class SortableController<T> extends ValueNotifier<SortableValue<T>> {
+  factory SortableController([List<T>? children]) {
+    if (children == null) {
+      return SortableController._([]);
+    }
+    return SortableController._(children.map((e) => SortableItem(e)).toList());
+  }
+
+  SortableController._(List<SortableItem<T>> items)
+      : super(SortableValue(items));
+
+  void insert(int index, T child) {
+    List<SortableItem<T>> items = List.from(value.items);
+    items.insert(index, SortableItem(child));
+    value = SortableValue(items);
+  }
+
+  void remove(int index) {
+    List<SortableItem<T>> items = List.from(value.items);
+    items.removeAt(index);
+    value = SortableValue(items);
+  }
+
+  void sort(int oldIndex, int newIndex) {
+    List<SortableItem<T>> items = List.from(value.items);
+    var item = items.removeAt(oldIndex);
+    items.insert(newIndex, item);
+    value = SortableValue(items);
+  }
+
+  List<T> get children => value.items.map((e) => e.value).toList();
+
+  void clear() {
+    value = SortableValue([]);
+  }
+
+  int get length => value.items.length;
+
+  T operator [](int index) => value.items[index].value;
+}
+
+class Sortable<T> extends StatefulWidget {
+  final SortableController<T> controller;
   final Axis direction;
   final bool lockDragMovement;
   final DismissMode dismissMode;
   final DragMode dragMode;
   final SortableDividerBuilder? dividerBuilder;
   final SortablePredicate<T>? canAccept;
+  final SortableBuilder<T> builder;
 
   const Sortable({
     Key? key,
-    required this.children,
-    this.onSort,
-    this.onTaken,
-    this.onInsert,
+    required this.controller,
     this.direction = Axis.vertical,
     this.lockDragMovement = false,
     this.dismissMode = DismissMode.cancel,
     this.dragMode = DragMode.insert,
     this.dividerBuilder,
     this.canAccept,
+    required this.builder,
   }) : super(key: key);
 
   @override
@@ -102,7 +152,7 @@ class _SortTransferSession {
 
 const kDefaultMoveDuration = Duration(milliseconds: 300);
 
-class SortableState<T extends Widget> extends State<Sortable<T>>
+class SortableState<T> extends State<Sortable<T>>
     with SingleTickerProviderStateMixin {
   _SortSession? _sortSession;
   final List<_SortTransferSession> _sortTransferSessions = [];
@@ -114,6 +164,20 @@ class SortableState<T extends Widget> extends State<Sortable<T>>
   void initState() {
     super.initState();
     _ticker = createTicker(_tick);
+    widget.controller.addListener(_onControllerChanged);
+  }
+
+  @override
+  void didUpdateWidget(covariant Sortable<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      oldWidget.controller.removeListener(_onControllerChanged);
+      widget.controller.addListener(_onControllerChanged);
+    }
+  }
+
+  void _onControllerChanged() {
+    setState(() {});
   }
 
   void _checkTick() {
@@ -205,19 +269,21 @@ class SortableState<T extends Widget> extends State<Sortable<T>>
     }
   }
 
-  void _dropTarget(_SortSession session, int hoveringIndex, Rect hoveringRect) {
+  void _dropTarget(_SortSession session, int hoveringIndex,
+      SortableItemPositionSupplier hoveringRect) {
     if (hoveringIndex == -1) {
-      hoveringIndex = widget.children.length;
+      hoveringIndex = widget.controller.length;
     }
     var newIndex = hoveringIndex;
     if (newIndex > session.index) {
       newIndex -= 1;
     }
     if (session.sourceContainer != this) {
-      session.sourceContainer.widget.onTaken?.call(session.index);
-      widget.onInsert?.call(hoveringIndex, session.child as T);
+      session.sourceContainer.widget.controller.remove(session.index);
+      var value = session.sourceContainer.widget.controller[session.index];
+      widget.controller.insert(hoveringIndex, value);
     } else {
-      widget.onSort?.call(session.index, hoveringIndex);
+      widget.controller.sort(session.index, newIndex);
     }
     final progressNotifier = ValueNotifier<double>(0);
     final overlayEntry = OverlayEntry(
@@ -228,7 +294,10 @@ class SortableState<T extends Widget> extends State<Sortable<T>>
             final curvedProgress = Curves.easeInOut.transform(
               progressNotifier.value,
             );
-            var rect = hoveringRect;
+            var targetKey = widget.controller.value.items[newIndex]._key;
+            var renderBox =
+                targetKey.currentContext!.findRenderObject() as RenderBox;
+            var rect = renderBox.localToGlobal(Offset.zero) & renderBox.size;
             final tweenedOffset = Offset.lerp(
               session.dragOffset.value,
               rect.topLeft,
@@ -264,9 +333,7 @@ class SortableState<T extends Widget> extends State<Sortable<T>>
           session.child,
           progressNotifier,
           overlayEntry,
-          () {
-            return hoveringRect;
-          },
+          hoveringRect,
           session.dragOffset,
           session.handleOffset,
         ),
@@ -286,7 +353,8 @@ class SortableState<T extends Widget> extends State<Sortable<T>>
     if (session != null) {
       return;
     }
-    final child = widget.children[index];
+    final child =
+        widget.builder(context, widget.controller.value.items[index].value);
     final dragOffsetNotifier = ValueNotifier<Offset>(dragOffset);
     OverlayEntry overlayEntry = OverlayEntry(
       builder: (context) {
@@ -355,9 +423,6 @@ class SortableState<T extends Widget> extends State<Sortable<T>>
   @override
   void dispose() {
     _ticker.dispose();
-    // for (var session in _sortSessions) {
-    //   session.overlayEntry.remove();
-    // }
     for (var session in _sortTransferSessions) {
       session.overlayEntry.remove();
     }
@@ -368,7 +433,7 @@ class SortableState<T extends Widget> extends State<Sortable<T>>
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
-    for (int i = 0; i < widget.children.length; i++) {
+    for (int i = 0; i < widget.controller.length; i++) {
       _SortSession? session = _sortSession;
       children.add(
         Builder(builder: (context) {
@@ -386,16 +451,17 @@ class SortableState<T extends Widget> extends State<Sortable<T>>
               }
             },
             child: _SortableItem(
-              key: ValueKey(widget.children[i]),
+              key: widget.controller.value.items[i]._key,
               index: i,
               container: this,
-              child: widget.children[i],
               dragging: session?.index == i,
-              reserving: _sortTransferSessions
-                  .where((element) => element.index == i)
-                  .isNotEmpty,
+              reserving:
+                  _sortTransferSessions.any((element) => element.index == i),
+              canAccept: session != null,
               direction: widget.direction,
               dividerBuilder: widget.dividerBuilder,
+              child: widget.builder(
+                  context, widget.controller.value.items[i].value),
             ),
           );
         }),
@@ -405,7 +471,7 @@ class SortableState<T extends Widget> extends State<Sortable<T>>
     List<Widget> dividedChildren;
     if (widget.dividerBuilder != null) {
       dividedChildren = [];
-      for (int i = 0; i < widget.children.length - 1; i++) {
+      for (int i = 0; i < widget.controller.length - 1; i++) {
         Widget divider = widget.dividerBuilder!(context, i);
         dividedChildren.add(children[i]);
         var session = _sortSession;
@@ -468,9 +534,6 @@ class SortableState<T extends Widget> extends State<Sortable<T>>
                       dividerBuilder: widget.dividerBuilder,
                       child: SizedBox.fromSize(
                         size: session.rect.size,
-                        child: Container(
-                          color: Colors.red,
-                        ),
                       ),
                     ),
                   );
@@ -613,7 +676,7 @@ class _SortableItem extends StatefulWidget {
 class _SortableItemState extends State<_SortableItem> {
   final GlobalKey _key = GlobalKey();
   Rect? _hoveringRect;
-  Rect? _currentRect;
+  SortableItemPositionSupplier? _currentRect;
   @override
   Widget build(BuildContext context) {
     Widget childWidget = Builder(builder: (context) {
@@ -635,11 +698,9 @@ class _SortableItemState extends State<_SortableItem> {
                 : Offstage(
                     offstage: widget.dragging,
                     child: Opacity(
+                      key: _key,
                       opacity: widget.reserving ? 0 : 1,
-                      child: KeyedSubtree(
-                        key: _key,
-                        child: widget.child!,
-                      ),
+                      child: widget.child!,
                     ),
                   ),
           ));
@@ -691,9 +752,13 @@ class _SortableItemState extends State<_SortableItem> {
           if (session != null) {
             setState(() {
               _hoveringRect = session.rect;
-              var renderBox = context.findRenderObject() as RenderBox;
-              _currentRect =
-                  renderBox.localToGlobal(Offset.zero) & _hoveringRect!.size;
+              final RenderBox renderBox =
+                  context.findRenderObject() as RenderBox;
+              var rect =
+                  renderBox.localToGlobal(Offset.zero) & session.rect.size;
+              _currentRect = () {
+                return rect;
+              };
             });
           }
         },
@@ -713,16 +778,3 @@ class _SortableItemState extends State<_SortableItem> {
 }
 
 typedef SortableItemPositionSupplier = Rect Function();
-
-extension SortableExtension<T> on List<T> {
-  void move(int oldIndex, int newIndex) {
-    if (oldIndex == newIndex) {
-      return;
-    }
-    if (newIndex > oldIndex) {
-      newIndex -= 1;
-    }
-    final item = removeAt(oldIndex);
-    insert(newIndex, item);
-  }
-}

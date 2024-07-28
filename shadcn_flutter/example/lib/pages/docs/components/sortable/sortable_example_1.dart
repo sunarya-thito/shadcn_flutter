@@ -8,41 +8,31 @@ class SortableExample1 extends StatefulWidget {
 }
 
 class _SortableExample1State extends State<SortableExample1> {
-  final List<String> _items = [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Elderberry',
-    'Fig',
-  ];
+  late SortableController<String> sortableController;
+
+  @override
+  void initState() {
+    super.initState();
+    sortableController = SortableController<String>([
+      'Apple',
+      'Banana',
+      'Cherry',
+      'Date',
+      'Elderberry',
+      'Fig',
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Sortable<FruitItem>(
-      onTaken: (index) {
-        setState(() {
-          _items.removeAt(index);
-        });
-      },
-      onInsert: (index, child) {
-        setState(() {
-          _items.insert(index, child.fruit);
-        });
-      },
-      onSort: (oldIndex, newIndex) {
-        setState(() {
-          _items.move(oldIndex, newIndex);
-        });
-      },
+    return Sortable(
+      controller: sortableController,
       dividerBuilder: (context, index) {
         return gap(4);
       },
-      children: [
-        for (var item in _items)
-          FruitItem(
-            fruit: item,
-          ),
-      ],
+      builder: (context, child) {
+        return FruitItem(fruit: child);
+      },
     );
   }
 }
