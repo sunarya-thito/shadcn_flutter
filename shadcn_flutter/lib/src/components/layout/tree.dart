@@ -79,6 +79,44 @@ class TreeNodeDepth {
 
 typedef TreeNodeUnaryOperator<K> = TreeNode<K>? Function(TreeNode<K> node);
 
+extension TreeNodeListExtension<K> on List<TreeNode<K>> {
+  List<TreeNode<K>> mapNodes(TreeNodeUnaryOperator<K> operator) {
+    return TreeView.mapNodes(this, operator);
+  }
+
+  List<TreeNode<K>> replaceNode(TreeNode<K> oldNode, TreeNode<K> newNode) {
+    return TreeView.replaceNode(this, oldNode, newNode);
+  }
+
+  List<TreeNode<K>> replaceItem(K oldItem, TreeNode<K> newItem) {
+    return TreeView.replaceItem(this, oldItem, newItem);
+  }
+
+  List<TreeNode<K>> expandAll() {
+    return TreeView.expandAll(this);
+  }
+
+  List<TreeNode<K>> collapseAll() {
+    return TreeView.collapseAll(this);
+  }
+
+  List<TreeNode<K>> expandNode(TreeNode<K> target) {
+    return TreeView.expandNode(this, target);
+  }
+
+  List<TreeNode<K>> expandItem(K target) {
+    return TreeView.expandItem(this, target);
+  }
+
+  List<TreeNode<K>> collapseNode(TreeNode<K> target) {
+    return TreeView.collapseNode(this, target);
+  }
+
+  List<TreeNode<K>> collapseItem(K target) {
+    return TreeView.collapseItem(this, target);
+  }
+}
+
 class TreeView<T> extends StatefulWidget {
   static List<TreeNode<K>>? _mapNodes<K>(
       List<TreeNode<K>> nodes, TreeNodeUnaryOperator<K> operator) {
