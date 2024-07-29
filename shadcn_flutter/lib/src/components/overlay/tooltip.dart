@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:shadcn_flutter/src/components/control/hover.dart';
 
 import '../../../shadcn_flutter.dart';
@@ -103,7 +101,6 @@ class InstantTooltip extends StatefulWidget {
 
 class _InstantTooltipState extends State<InstantTooltip> {
   final PopoverController _controller = PopoverController();
-  late Completer completer;
 
   @override
   void dispose() {
@@ -115,7 +112,6 @@ class _InstantTooltipState extends State<InstantTooltip> {
   Widget build(BuildContext context) {
     return MouseRegion(
       onEnter: (event) {
-        completer = Completer();
         _controller.close(true);
         _controller.show(
           context: context,
@@ -125,15 +121,10 @@ class _InstantTooltipState extends State<InstantTooltip> {
           dismissBackdropFocus: false,
           showDuration: Duration.zero,
           hideDuration: Duration.zero,
-          onShow: () {
-            completer.complete();
-          },
         );
       },
       onExit: (event) {
-        completer.future.then((value) {
-          _controller.close();
-        });
+        _controller.close();
       },
       hitTestBehavior: widget.behavior,
       child: widget.child,

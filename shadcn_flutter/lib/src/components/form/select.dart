@@ -559,7 +559,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                           text,
                           (value) {
                             widget.onChanged?.call(value);
-                            Navigator.of(context).pop(value);
+                            closePopover(context, value);
                           },
                           widget.value,
                           widget.showUnrelatedValues,

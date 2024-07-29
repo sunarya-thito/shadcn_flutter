@@ -5,148 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class PopoverRoute<T> extends PopupRoute<T> {
-  final BuildContext anchorContext;
-  final WidgetBuilder builder;
-  final Offset position;
-  final Alignment alignment;
-  final CapturedThemes themes;
-  final CapturedData data;
-  final Key? key;
-  final bool modal;
-  final Size? anchorSize;
-  final Alignment anchorAlignment;
-  final PopoverConstraint widthConstraint;
-  final PopoverConstraint heightConstraint;
-  final Object? regionGroupId;
-  final Offset? offset;
-  final Alignment? transitionAlignment;
-  final EdgeInsets margin;
-  final bool follow;
-  final bool consumeOutsideTaps;
-  final ValueChanged<PopoverAnchorState>? onTickFollow;
-  final bool allowInvertHorizontal;
-  final bool allowInvertVertical;
-
-  PopoverRoute({
-    required this.anchorContext,
-    required this.builder,
-    required this.position,
-    required this.alignment,
-    required this.themes,
-    required this.anchorAlignment,
-    required this.data,
-    this.modal = false,
-    this.key,
-    this.anchorSize,
-    this.widthConstraint = PopoverConstraint.flexible,
-    this.heightConstraint = PopoverConstraint.flexible,
-    super.settings,
-    this.regionGroupId,
-    this.offset,
-    this.transitionAlignment,
-    this.margin = const EdgeInsets.all(8),
-    this.follow = true,
-    this.consumeOutsideTaps = true,
-    this.onTickFollow,
-    this.allowInvertHorizontal = true,
-    this.allowInvertVertical = true,
-    this.transitionDuration = const Duration(milliseconds: 100),
-    this.reverseTransitionDuration = kDefaultDuration,
-  }) : super(traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop);
-
-  @override
-  Widget buildModalBarrier() {
-    if (modal) return super.buildModalBarrier();
-    if (!consumeOutsideTaps) {
-      return Listener(
-        behavior: HitTestBehavior.translucent,
-        onPointerDown: (event) {
-          if (isCurrent) {
-            Navigator.of(anchorContext).pop();
-          } else {
-            Navigator.of(anchorContext).removeRoute(this);
-          }
-        },
-      );
-    }
-    return const SizedBox();
-  }
-
-  @override
-  Color? get barrierColor => null;
-
-  @override
-  bool get barrierDismissible => true;
-
-  @override
-  String? get barrierLabel => null;
-
-  @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
-    return PopoverAnchor(
-      key: key,
-      anchorContext: anchorContext,
-      position: position,
-      alignment: alignment,
-      themes: themes,
-      builder: builder,
-      animation: animation,
-      anchorSize: anchorSize,
-      anchorAlignment: anchorAlignment,
-      widthConstraint: widthConstraint,
-      heightConstraint: heightConstraint,
-      onTapOutside: () {
-        if (!modal) {
-          if (isCurrent) {
-            Navigator.of(context).pop();
-          } else {
-            Navigator.of(context).removeRoute(this);
-          }
-        }
-      },
-      // route: this,
-      onClose: () {
-        if (isCurrent) {
-          Navigator.of(context).pop();
-        } else {
-          Navigator.of(context).removeRoute(this);
-        }
-      },
-      onImmediateClose: () {
-        Navigator.of(context).removeRoute(this);
-      },
-      onCloseWithResult: (result) {
-        Navigator.of(context).pop(result);
-      },
-      regionGroupId: regionGroupId,
-      offset: offset,
-      transitionAlignment: transitionAlignment,
-      margin: margin,
-      follow: follow,
-      consumeOutsideTaps: consumeOutsideTaps,
-      onTickFollow: onTickFollow,
-      allowInvertHorizontal: allowInvertHorizontal,
-      allowInvertVertical: allowInvertVertical,
-      data: data,
-    );
-  }
-
-  @override
-  final Duration transitionDuration;
-  @override
-  final Duration reverseTransitionDuration;
-
-  @override
-  Animation<double> createAnimation() {
-    return CurvedAnimation(
-        parent: super.createAnimation(),
-        curve: Curves.linear,
-        reverseCurve: const Interval(0, 2 / 3));
-  }
-}
-
 class PopoverAnchor extends StatefulWidget {
   const PopoverAnchor({
     super.key,
@@ -175,7 +33,6 @@ class PopoverAnchor extends StatefulWidget {
     this.onClose,
     this.onImmediateClose,
     this.onCloseWithResult,
-    this.onShow,
   });
 
   final Offset position;
@@ -203,7 +60,6 @@ class PopoverAnchor extends StatefulWidget {
   final bool allowInvertHorizontal;
   final bool allowInvertVertical;
   final ValueChanged<dynamic>? onCloseWithResult;
-  final VoidCallback? onShow;
 
   @override
   State<PopoverAnchor> createState() => PopoverAnchorState();
@@ -259,20 +115,9 @@ class PopoverAnchorState extends State<PopoverAnchor>
     if (_follow) {
       _ticker.start();
     }
-    widget.onShow?.call();
   }
 
   void close([bool immediate = false]) {
-    // var route = widget.route;
-    // if (route != null) {
-    //   if (route.isCurrent && !immediate) {
-    //     Navigator.of(context).pop();
-    //   } else {
-    //     Navigator.of(context).removeRoute(route);
-    //   }
-    // } else {
-    //   Navigator.of(context).pop();
-    // }
     if (!immediate) {
       widget.onClose?.call();
     } else {
@@ -285,7 +130,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           // Navigator.of(context).removeRoute(widget.route!);
-          widget.onImmediateClose?.call();
+          widget.onClose?.call();
         }
       });
     }
@@ -463,7 +308,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
     return Data(
       data: this,
       child: TapRegion(
-        enabled: widget.consumeOutsideTaps,
+        // enabled: widget.consumeOutsideTaps,
         onTapOutside: widget.onTapOutside != null
             ? (event) {
                 widget.onTapOutside?.call();
@@ -513,7 +358,63 @@ void closePopover<T>(BuildContext context, [T? value]) {
       ?.call(value);
 }
 
-Future<T?> showPopover<T>({
+abstract class PopoverFuture<T> implements Future<T> {
+  void remove();
+  void dispose();
+}
+
+class _OverlayPopoverEntry<T> implements PopoverFuture<T> {
+  late OverlayEntry overlayEntry;
+  late OverlayEntry? barrierEntry;
+  final Completer<T> completer = Completer();
+
+  bool _removed = false;
+  bool _disposed = false;
+
+  @override
+  void remove() {
+    if (_removed) return;
+    _removed = true;
+    overlayEntry.remove();
+    barrierEntry?.remove();
+  }
+
+  @override
+  void dispose() {
+    if (_disposed) return;
+    _disposed = true;
+    overlayEntry.dispose();
+    barrierEntry?.dispose();
+  }
+
+  @override
+  Stream<T> asStream() {
+    return completer.future.asStream();
+  }
+
+  @override
+  Future<T> catchError(Function onError, {bool Function(Object error)? test}) {
+    return completer.future.catchError(onError, test: test);
+  }
+
+  @override
+  Future<R> then<R>(FutureOr<R> Function(T value) onValue,
+      {Function? onError}) {
+    return completer.future.then(onValue, onError: onError);
+  }
+
+  @override
+  Future<T> timeout(Duration timeLimit, {FutureOr<T> Function()? onTimeout}) {
+    return completer.future.timeout(timeLimit, onTimeout: onTimeout);
+  }
+
+  @override
+  Future<T> whenComplete(FutureOr<void> Function() action) {
+    return completer.future.whenComplete(action);
+  }
+}
+
+PopoverFuture<T?> showPopover<T>({
   required BuildContext context,
   required Alignment alignment,
   required WidgetBuilder builder,
@@ -538,34 +439,30 @@ Future<T?> showPopover<T>({
   bool dismissBackdropFocus = true,
   Duration? showDuration,
   Duration? dismissDuration,
-  VoidCallback? onShow,
 }) {
   anchorAlignment ??= alignment * -1;
-  if (!dismissBackdropFocus) {
-    final OverlayState overlay =
-        Overlay.of(context, rootOverlay: useRootNavigator);
-    final themes = InheritedTheme.capture(from: context, to: overlay.context);
-    final data = Data.capture(from: context, to: overlay.context);
+  final OverlayState overlay =
+      Overlay.of(context, rootOverlay: useRootNavigator);
+  final themes = InheritedTheme.capture(from: context, to: overlay.context);
+  final data = Data.capture(from: context, to: overlay.context);
 
-    Size? anchorSize;
-    if (position == null) {
-      RenderBox renderBox = context.findRenderObject() as RenderBox;
-      Offset pos = renderBox.localToGlobal(Offset.zero);
-      anchorSize ??= renderBox.size;
-      position = Offset(
-        pos.dx +
-            anchorSize.width / 2 +
-            anchorSize.width / 2 * anchorAlignment.x,
-        pos.dy +
-            anchorSize.height / 2 +
-            anchorSize.height / 2 * anchorAlignment.y,
-      );
-    }
+  Size? anchorSize;
+  if (position == null) {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    Offset pos = renderBox.localToGlobal(Offset.zero);
+    anchorSize ??= renderBox.size;
+    position = Offset(
+      pos.dx + anchorSize.width / 2 + anchorSize.width / 2 * anchorAlignment.x,
+      pos.dy +
+          anchorSize.height / 2 +
+          anchorSize.height / 2 * anchorAlignment.y,
+    );
+  }
 
-    ValueNotifier<bool> isClosed = ValueNotifier(false);
-    Completer<T?> completer = Completer();
-    OverlayEntry barrierEntry;
-    late OverlayEntry overlayEntry;
+  ValueNotifier<bool> isClosed = ValueNotifier(false);
+  OverlayEntry? barrierEntry;
+  late OverlayEntry overlayEntry;
+  if (modal) {
     if (consumeOutsideTaps) {
       barrierEntry = OverlayEntry(
         builder: (context) {
@@ -588,9 +485,14 @@ Future<T?> showPopover<T>({
         },
       );
     }
-    overlayEntry = OverlayEntry(
-      builder: (innerContext) {
-        return RepaintBoundary(
+  }
+  final _OverlayPopoverEntry<T> popoverEntry = _OverlayPopoverEntry();
+  final completer = popoverEntry.completer;
+  overlayEntry = OverlayEntry(
+    builder: (innerContext) {
+      return RepaintBoundary(
+        child: FocusScope(
+          autofocus: dismissBackdropFocus,
           child: AnimatedBuilder(
               animation: isClosed,
               builder: (innerContext, child) {
@@ -606,15 +508,18 @@ Future<T?> showPopover<T>({
                             const Duration(milliseconds: 100)),
                     onEnd: (value) {
                       if (value == 0.0 && isClosed.value) {
-                        overlayEntry.remove();
-                        barrierEntry.remove();
-                        overlayEntry.dispose();
-                        barrierEntry.dispose();
+                        popoverEntry.remove();
+                        popoverEntry.dispose();
                       }
                     },
                     builder: (innerContext, animation) {
                       var popoverAnchor = PopoverAnchor(
                         animation: animation,
+                        onTapOutside: () {
+                          if (!modal) {
+                            isClosed.value = true;
+                          }
+                        },
                         key: key,
                         anchorContext: context,
                         position: position!,
@@ -640,81 +545,67 @@ Future<T?> showPopover<T>({
                           completer.complete();
                         },
                         onImmediateClose: () {
-                          overlayEntry.remove();
-                          barrierEntry.remove();
-                          overlayEntry.dispose();
-                          barrierEntry.dispose();
+                          popoverEntry.remove();
                           completer.complete();
                         },
                         onCloseWithResult: (value) {
                           isClosed.value = true;
                           completer.complete(value);
                         },
-                        onShow: onShow,
                       );
                       return popoverAnchor;
                     });
               }),
-        );
-      },
-    );
+        ),
+      );
+    },
+  );
+  popoverEntry.overlayEntry = overlayEntry;
+  popoverEntry.barrierEntry = barrierEntry;
+  if (barrierEntry != null) {
     overlay.insert(barrierEntry);
-    overlay.insert(overlayEntry);
-    return completer.future;
   }
-  final NavigatorState navigator =
-      Navigator.of(context, rootNavigator: useRootNavigator);
-  final CapturedThemes themes =
-      InheritedTheme.capture(from: context, to: navigator.context);
-  final CapturedData datas = Data.capture(from: context, to: navigator.context);
-  Size? anchorSize;
-  if (position == null) {
-    RenderBox renderBox = context.findRenderObject() as RenderBox;
-    Offset pos = renderBox.localToGlobal(Offset.zero);
-    anchorSize ??= renderBox.size;
-    position = Offset(
-      pos.dx + anchorSize.width / 2 + anchorSize.width / 2 * anchorAlignment.x,
-      pos.dy +
-          anchorSize.height / 2 +
-          anchorSize.height / 2 * anchorAlignment.y,
-    );
+  overlay.insert(overlayEntry);
+  return popoverEntry;
+}
+
+class Popover {
+  final GlobalKey<PopoverAnchorState> key;
+  final PopoverFuture entry;
+
+  Popover._(this.key, this.entry);
+
+  void close([bool immediate = false]) {
+    var currentState = key.currentState;
+    if (currentState != null) {
+      currentState.close(immediate);
+    } else {
+      entry.remove();
+    }
   }
-  return navigator.push(PopoverRoute(
-    anchorContext: context,
-    key: key,
-    builder: builder,
-    position: position,
-    alignment: alignment,
-    themes: themes,
-    modal: modal,
-    settings: routeSettings,
-    anchorSize: anchorSize,
-    anchorAlignment: anchorAlignment,
-    widthConstraint: widthConstraint,
-    heightConstraint: heightConstraint,
-    regionGroupId: regionGroupId,
-    data: datas,
-    offset: offset,
-    transitionAlignment: transitionAlignment,
-    margin: margin,
-    follow: follow,
-    consumeOutsideTaps: consumeOutsideTaps,
-    onTickFollow: onTickFollow,
-    allowInvertHorizontal: allowInvertHorizontal,
-    allowInvertVertical: allowInvertVertical,
-    transitionDuration: showDuration ?? const Duration(milliseconds: 100),
-    reverseTransitionDuration: dismissDuration ?? kDefaultDuration,
-  ));
+
+  void closeLater() {
+    var currentState = key.currentState;
+    if (currentState != null) {
+      currentState.closeLater();
+    } else {
+      entry.remove();
+    }
+  }
+
+  void remove() {
+    entry.remove();
+  }
+
+  PopoverAnchorState? get currentState => key.currentState;
 }
 
 class PopoverController extends ChangeNotifier {
-  final List<GlobalKey<PopoverAnchorState>> _openPopovers = [];
+  final List<Popover> _openPopovers = [];
 
   bool get hasOpenPopover => _openPopovers.isNotEmpty;
 
-  Iterable<PopoverAnchorState> get openPopovers => _openPopovers
-      .map((key) => key.currentState)
-      .whereType<PopoverAnchorState>();
+  Iterable<Popover> get openPopovers => List.unmodifiable(_openPopovers);
 
   Future<T?> show<T>({
     required BuildContext context,
@@ -738,123 +629,121 @@ class PopoverController extends ChangeNotifier {
     bool dismissBackdropFocus = true,
     Duration? showDuration,
     Duration? hideDuration,
-    VoidCallback? onShow,
   }) async {
     if (closeOthers) {
       close();
     }
     key ??= GlobalKey<PopoverAnchorState>();
 
-    T? res = await showPopover(
-        context: context,
-        alignment: alignment,
-        anchorAlignment: anchorAlignment,
-        builder: builder,
-        modal: modal,
-        widthConstraint: widthConstraint,
-        heightConstraint: heightConstraint,
-        key: key,
-        regionGroupId: regionGroupId,
-        offset: offset,
-        transitionAlignment: transitionAlignment,
-        consumeOutsideTaps: consumeOutsideTaps,
-        margin: margin,
-        onTickFollow: onTickFollow,
-        follow: follow,
-        allowInvertHorizontal: allowInvertHorizontal,
-        allowInvertVertical: allowInvertVertical,
-        dismissBackdropFocus: dismissBackdropFocus,
-        showDuration: showDuration,
-        dismissDuration: hideDuration,
-        onShow: () {
-          _openPopovers.add(key!);
-          notifyListeners();
-          onShow?.call();
-        });
+    PopoverFuture<T?> res = showPopover<T>(
+      context: context,
+      alignment: alignment,
+      anchorAlignment: anchorAlignment,
+      builder: builder,
+      modal: modal,
+      widthConstraint: widthConstraint,
+      heightConstraint: heightConstraint,
+      key: key,
+      regionGroupId: regionGroupId,
+      offset: offset,
+      transitionAlignment: transitionAlignment,
+      consumeOutsideTaps: consumeOutsideTaps,
+      margin: margin,
+      onTickFollow: onTickFollow,
+      follow: follow,
+      allowInvertHorizontal: allowInvertHorizontal,
+      allowInvertVertical: allowInvertVertical,
+      dismissBackdropFocus: dismissBackdropFocus,
+      showDuration: showDuration,
+      dismissDuration: hideDuration,
+    );
+    _openPopovers.add(Popover._(key, res));
+    notifyListeners();
+    await res;
     _openPopovers.remove(key);
     notifyListeners();
     return res;
   }
 
   void close([bool immediate = false]) {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
-      key.currentState?.close(immediate);
+    for (Popover key in _openPopovers) {
+      key.close(immediate);
     }
     _openPopovers.clear();
     notifyListeners();
   }
 
   void closeLater() {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
-      key.currentState?.closeLater();
+    for (Popover key in _openPopovers) {
+      key.closeLater();
     }
     _openPopovers.clear();
     notifyListeners();
   }
 
   set anchorContext(BuildContext value) {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+    for (Popover key in _openPopovers) {
       key.currentState?.anchorContext = value;
     }
   }
 
   set alignment(Alignment value) {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+    for (Popover key in _openPopovers) {
       key.currentState?.alignment = value;
     }
   }
 
   set anchorAlignment(Alignment value) {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+    for (Popover key in _openPopovers) {
       key.currentState?.anchorAlignment = value;
     }
   }
 
   set widthConstraint(PopoverConstraint value) {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+    for (Popover key in _openPopovers) {
       key.currentState?.widthConstraint = value;
     }
   }
 
   set heightConstraint(PopoverConstraint value) {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+    for (Popover key in _openPopovers) {
       key.currentState?.heightConstraint = value;
     }
   }
 
   set margin(EdgeInsets value) {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+    for (Popover key in _openPopovers) {
       key.currentState?.margin = value;
     }
   }
 
   set follow(bool value) {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+    for (Popover key in _openPopovers) {
       key.currentState?.follow = value;
     }
   }
 
   set offset(Offset? value) {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+    for (Popover key in _openPopovers) {
       key.currentState?.offset = value;
     }
   }
 
   set allowInvertHorizontal(bool value) {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+    for (Popover key in _openPopovers) {
       key.currentState?.allowInvertHorizontal = value;
     }
   }
 
   set allowInvertVertical(bool value) {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
+    for (Popover key in _openPopovers) {
       key.currentState?.allowInvertVertical = value;
     }
   }
 
   void disposePopovers() {
-    for (GlobalKey<PopoverAnchorState> key in _openPopovers) {
-      key.currentState?.closeLater();
+    for (Popover key in _openPopovers) {
+      key.closeLater();
     }
   }
 

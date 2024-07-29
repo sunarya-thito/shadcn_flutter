@@ -345,11 +345,6 @@ class _MenuButtonState extends State<MenuButton> {
         alignment: Alignment.topLeft,
         anchorAlignment:
             menuBarData != null ? Alignment.bottomLeft : Alignment.topRight,
-        // offset: menuBarData != null
-        //     ? menuBarData.widget.border
-        //         ? const Offset(-4, 8)
-        //         : const Offset(0, 4)
-        //     : const Offset(8, -4 + -1),
         offset: menuGroupData.subMenuOffset,
       );
     }
@@ -412,7 +407,8 @@ class _MenuButtonState extends State<MenuButton> {
                       if (value) {
                         if ((menuBarData == null ||
                                 menuGroupData.hasOpenPopovers) &&
-                            widget.subMenu != null) {
+                            widget.subMenu != null &&
+                            widget.subMenu!.isNotEmpty) {
                           if (!menuData.popoverController.hasOpenPopover) {
                             openSubMenu(context);
                           }
@@ -423,7 +419,8 @@ class _MenuButtonState extends State<MenuButton> {
                     },
                     onFocus: (value) {
                       if (value) {
-                        if (widget.subMenu != null) {
+                        if (widget.subMenu != null &&
+                            widget.subMenu!.isNotEmpty) {
                           if (!menuData.popoverController.hasOpenPopover) {
                             openSubMenu(context);
                           }

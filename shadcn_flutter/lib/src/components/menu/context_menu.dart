@@ -304,7 +304,6 @@ Future<void> _showContextMenu(
                 regionGroupId: key,
                 subMenuOffset: const Offset(8, -4),
                 onDismissed: () {
-                  // Navigator.of(context).pop();
                   closePopover(context);
                 },
                 builder: (context, children) {
