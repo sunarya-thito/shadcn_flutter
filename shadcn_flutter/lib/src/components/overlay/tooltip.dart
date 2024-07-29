@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:shadcn_flutter/src/components/control/hover.dart';
 
 import '../../../shadcn_flutter.dart';
@@ -75,6 +77,66 @@ class _TooltipState extends State<Tooltip> {
           _controller.close();
         }
       },
+    );
+  }
+}
+
+class InstantTooltip extends StatefulWidget {
+  final Widget child;
+  final HitTestBehavior behavior;
+  final WidgetBuilder tooltipBuilder;
+  final Alignment tooltipAlignment;
+  final Alignment? tooltipAnchorAlignment;
+
+  const InstantTooltip({
+    Key? key,
+    required this.child,
+    required this.tooltipBuilder,
+    this.behavior = HitTestBehavior.translucent,
+    this.tooltipAlignment = Alignment.bottomCenter,
+    this.tooltipAnchorAlignment,
+  }) : super(key: key);
+
+  @override
+  State<InstantTooltip> createState() => _InstantTooltipState();
+}
+
+class _InstantTooltipState extends State<InstantTooltip> {
+  final PopoverController _controller = PopoverController();
+  late Completer completer;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (event) {
+        completer = Completer();
+        _controller.close(true);
+        _controller.show(
+          context: context,
+          builder: widget.tooltipBuilder,
+          alignment: widget.tooltipAlignment,
+          anchorAlignment: widget.tooltipAnchorAlignment,
+          dismissBackdropFocus: false,
+          showDuration: Duration.zero,
+          hideDuration: Duration.zero,
+          onShow: () {
+            completer.complete();
+          },
+        );
+      },
+      onExit: (event) {
+        completer.future.then((value) {
+          _controller.close();
+        });
+      },
+      hitTestBehavior: widget.behavior,
+      child: widget.child,
     );
   }
 }

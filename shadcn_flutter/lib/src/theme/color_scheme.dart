@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/painting.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 Color _fromAHSL(double a, double h, double s, double l) {
@@ -66,6 +65,9 @@ class ColorShades implements Color, ColorSwatch {
   final Map<int, Color> _colors;
 
   ColorShades._() : _colors = {};
+
+  @protected
+  const ColorShades.raw(this._colors);
 
   factory ColorShades.sorted(List<Color> colors) {
     assert(colors.length == _shadeValues.length,

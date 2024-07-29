@@ -258,8 +258,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Code Snippet', 'code_snippet'),
         ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.workInProgress),
-        // TODO: https://raw.tremor.so/docs/visualizations/tracker
-        ShadcnDocsPage('Tracker', 'tracker', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Tracker', 'tracker'),
       ],
     ),
     ShadcnDocsSection(

@@ -49,6 +49,7 @@ import 'package:example/pages/docs/components/timeline_example.dart';
 import 'package:example/pages/docs/components/toast_example.dart';
 import 'package:example/pages/docs/components/toggle_example.dart';
 import 'package:example/pages/docs/components/tooltip_example.dart';
+import 'package:example/pages/docs/components/tracker_example.dart';
 import 'package:example/pages/docs/components/tree_example.dart';
 import 'package:example/pages/docs/components_page.dart';
 import 'package:example/pages/docs/icons_page.dart';
@@ -503,6 +504,13 @@ class MyAppState extends State<MyApp> {
             name: 'tree',
             builder: (context, state) {
               return const TreeExample();
+            },
+          ),
+          GoRoute(
+            path: 'tracker',
+            name: 'tracker',
+            builder: (context, state) {
+              return TrackerExample();
             },
           ),
         ]),

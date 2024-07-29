@@ -3,7 +3,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class Colors {
 	static const Color black = Color(0xff000000);
 	static const Color white = Color(0xffffffff);
-	static final ColorShades slate = ColorShades.fromMap({
+	static const ColorShades slate = ColorShades.raw({
 		50: Color(0xfff8fafc),
 		100: Color(0xfff1f5f9),
 		200: Color(0xffe2e8f0),
@@ -16,7 +16,7 @@ class Colors {
 		900: Color(0xff0f172a),
 		950: Color(0xff020617),
 	});
-	static final ColorShades gray = ColorShades.fromMap({
+	static const ColorShades gray = ColorShades.raw({
 		50: Color(0xfff9fafb),
 		100: Color(0xfff3f4f6),
 		200: Color(0xffe5e7eb),
@@ -29,7 +29,7 @@ class Colors {
 		900: Color(0xff111827),
 		950: Color(0xff030712),
 	});
-	static final ColorShades zinc = ColorShades.fromMap({
+	static const ColorShades zinc = ColorShades.raw({
 		50: Color(0xfffafafa),
 		100: Color(0xfff4f4f5),
 		200: Color(0xffe4e4e7),
@@ -42,7 +42,7 @@ class Colors {
 		900: Color(0xff18181b),
 		950: Color(0xff09090b),
 	});
-	static final ColorShades neutral = ColorShades.fromMap({
+	static const ColorShades neutral = ColorShades.raw({
 		50: Color(0xfffafafa),
 		100: Color(0xfff5f5f5),
 		200: Color(0xffe5e5e5),
@@ -55,7 +55,7 @@ class Colors {
 		900: Color(0xff171717),
 		950: Color(0xff0a0a0a),
 	});
-	static final ColorShades stone = ColorShades.fromMap({
+	static const ColorShades stone = ColorShades.raw({
 		50: Color(0xfffafaf9),
 		100: Color(0xfff5f5f4),
 		200: Color(0xffe7e5e4),
@@ -68,7 +68,7 @@ class Colors {
 		900: Color(0xff1c1917),
 		950: Color(0xff0c0a09),
 	});
-	static final ColorShades red = ColorShades.fromMap({
+	static const ColorShades red = ColorShades.raw({
 		50: Color(0xfffef2f2),
 		100: Color(0xfffee2e2),
 		200: Color(0xfffecaca),
@@ -81,7 +81,7 @@ class Colors {
 		900: Color(0xff7f1d1d),
 		950: Color(0xff450a0a),
 	});
-	static final ColorShades orange = ColorShades.fromMap({
+	static const ColorShades orange = ColorShades.raw({
 		50: Color(0xfffff7ed),
 		100: Color(0xffffedd5),
 		200: Color(0xfffed7aa),
@@ -94,7 +94,7 @@ class Colors {
 		900: Color(0xff7c2d12),
 		950: Color(0xff431407),
 	});
-	static final ColorShades amber = ColorShades.fromMap({
+	static const ColorShades amber = ColorShades.raw({
 		50: Color(0xfffffbeb),
 		100: Color(0xfffef3c7),
 		200: Color(0xfffde68a),
@@ -107,7 +107,7 @@ class Colors {
 		900: Color(0xff78350f),
 		950: Color(0xff451a03),
 	});
-	static final ColorShades yellow = ColorShades.fromMap({
+	static const ColorShades yellow = ColorShades.raw({
 		50: Color(0xfffefce8),
 		100: Color(0xfffef9c3),
 		200: Color(0xfffef08a),
@@ -120,7 +120,7 @@ class Colors {
 		900: Color(0xff713f12),
 		950: Color(0xff422006),
 	});
-	static final ColorShades lime = ColorShades.fromMap({
+	static const ColorShades lime = ColorShades.raw({
 		50: Color(0xfff7fee7),
 		100: Color(0xffecfccb),
 		200: Color(0xffd9f99d),
@@ -133,7 +133,7 @@ class Colors {
 		900: Color(0xff365314),
 		950: Color(0xff1a2e05),
 	});
-	static final ColorShades green = ColorShades.fromMap({
+	static const ColorShades green = ColorShades.raw({
 		50: Color(0xfff0fdf4),
 		100: Color(0xffdcfce7),
 		200: Color(0xffbbf7d0),
@@ -146,7 +146,7 @@ class Colors {
 		900: Color(0xff14532d),
 		950: Color(0xff052e16),
 	});
-	static final ColorShades emerald = ColorShades.fromMap({
+	static const ColorShades emerald = ColorShades.raw({
 		50: Color(0xffecfdf5),
 		100: Color(0xffd1fae5),
 		200: Color(0xffa7f3d0),
@@ -159,7 +159,7 @@ class Colors {
 		900: Color(0xff064e3b),
 		950: Color(0xff022c22),
 	});
-	static final ColorShades teal = ColorShades.fromMap({
+	static const ColorShades teal = ColorShades.raw({
 		50: Color(0xfff0fdfa),
 		100: Color(0xffccfbf1),
 		200: Color(0xff99f6e4),
@@ -172,7 +172,7 @@ class Colors {
 		900: Color(0xff134e4a),
 		950: Color(0xff042f2e),
 	});
-	static final ColorShades cyan = ColorShades.fromMap({
+	static const ColorShades cyan = ColorShades.raw({
 		50: Color(0xffecfeff),
 		100: Color(0xffcffafe),
 		200: Color(0xffa5f3fc),
@@ -185,7 +185,7 @@ class Colors {
 		900: Color(0xff164e63),
 		950: Color(0xff083344),
 	});
-	static final ColorShades sky = ColorShades.fromMap({
+	static const ColorShades sky = ColorShades.raw({
 		50: Color(0xfff0f9ff),
 		100: Color(0xffe0f2fe),
 		200: Color(0xffbae6fd),
@@ -198,7 +198,7 @@ class Colors {
 		900: Color(0xff0c4a6e),
 		950: Color(0xff082f49),
 	});
-	static final ColorShades blue = ColorShades.fromMap({
+	static const ColorShades blue = ColorShades.raw({
 		50: Color(0xffeff6ff),
 		100: Color(0xffdbeafe),
 		200: Color(0xffbfdbfe),
@@ -211,7 +211,7 @@ class Colors {
 		900: Color(0xff1e3a8a),
 		950: Color(0xff172554),
 	});
-	static final ColorShades indigo = ColorShades.fromMap({
+	static const ColorShades indigo = ColorShades.raw({
 		50: Color(0xffeef2ff),
 		100: Color(0xffe0e7ff),
 		200: Color(0xffc7d2fe),
@@ -224,7 +224,7 @@ class Colors {
 		900: Color(0xff312e81),
 		950: Color(0xff1e1b4b),
 	});
-	static final ColorShades violet = ColorShades.fromMap({
+	static const ColorShades violet = ColorShades.raw({
 		50: Color(0xfff5f3ff),
 		100: Color(0xffede9fe),
 		200: Color(0xffddd6fe),
@@ -237,7 +237,7 @@ class Colors {
 		900: Color(0xff4c1d95),
 		950: Color(0xff1e1b4b),
 	});
-	static final ColorShades purple = ColorShades.fromMap({
+	static const ColorShades purple = ColorShades.raw({
 		50: Color(0xfffaf5ff),
 		100: Color(0xfff3e8ff),
 		200: Color(0xffe9d5ff),
@@ -250,7 +250,7 @@ class Colors {
 		900: Color(0xff581c87),
 		950: Color(0xff3b0764),
 	});
-	static final ColorShades fuchsia = ColorShades.fromMap({
+	static const ColorShades fuchsia = ColorShades.raw({
 		50: Color(0xfffdf4ff),
 		100: Color(0xfffae8ff),
 		200: Color(0xfff5d0fe),
@@ -263,7 +263,7 @@ class Colors {
 		900: Color(0xff701a75),
 		950: Color(0xff4a044e),
 	});
-	static final ColorShades pink = ColorShades.fromMap({
+	static const ColorShades pink = ColorShades.raw({
 		50: Color(0xfffdf2f8),
 		100: Color(0xfffce7f3),
 		200: Color(0xfffbcfe8),
@@ -276,7 +276,7 @@ class Colors {
 		900: Color(0xff831843),
 		950: Color(0xff500724),
 	});
-	static final ColorShades rose = ColorShades.fromMap({
+	static const ColorShades rose = ColorShades.raw({
 		50: Color(0xfffff1f2),
 		100: Color(0xffffe4e6),
 		200: Color(0xfffecdd3),

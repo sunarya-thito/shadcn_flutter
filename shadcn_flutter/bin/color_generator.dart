@@ -22,8 +22,7 @@ main() {
         int.parse(hex, radix: 16);
         shades[scale] = '0x$hex';
       }
-      result +=
-          "\tstatic final ColorShades ${color.key} = ColorShades.fromMap({\n";
+      result += "\tstatic const ColorShades ${color.key} = ColorShades.raw({\n";
       for (var shade in shades.entries) {
         result += "\t\t${shade.key}: Color(${shade.value}),\n";
       }

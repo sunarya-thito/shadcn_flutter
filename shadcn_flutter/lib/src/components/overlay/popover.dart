@@ -175,6 +175,7 @@ class PopoverAnchor extends StatefulWidget {
     this.onClose,
     this.onImmediateClose,
     this.onCloseWithResult,
+    this.onShow,
   });
 
   final Offset position;
@@ -202,6 +203,7 @@ class PopoverAnchor extends StatefulWidget {
   final bool allowInvertHorizontal;
   final bool allowInvertVertical;
   final ValueChanged<dynamic>? onCloseWithResult;
+  final VoidCallback? onShow;
 
   @override
   State<PopoverAnchor> createState() => PopoverAnchorState();
@@ -257,6 +259,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
     if (_follow) {
       _ticker.start();
     }
+    widget.onShow?.call();
   }
 
   void close([bool immediate = false]) {
@@ -534,7 +537,8 @@ Future<T?> showPopover<T>({
   bool allowInvertVertical = true,
   bool dismissBackdropFocus = true,
   Duration? showDuration,
-  Duration? hideDuration,
+  Duration? dismissDuration,
+  VoidCallback? onShow,
 }) {
   anchorAlignment ??= alignment * -1;
   if (!dismissBackdropFocus) {
@@ -598,7 +602,8 @@ Future<T?> showPopover<T>({
                         : Curves.linear,
                     duration: isClosed.value
                         ? (showDuration ?? kDefaultDuration)
-                        : (hideDuration ?? const Duration(milliseconds: 100)),
+                        : (dismissDuration ??
+                            const Duration(milliseconds: 100)),
                     onEnd: (value) {
                       if (value == 0.0 && isClosed.value) {
                         overlayEntry.remove();
@@ -645,6 +650,7 @@ Future<T?> showPopover<T>({
                           isClosed.value = true;
                           completer.complete(value);
                         },
+                        onShow: onShow,
                       );
                       return popoverAnchor;
                     });
@@ -697,7 +703,7 @@ Future<T?> showPopover<T>({
     allowInvertHorizontal: allowInvertHorizontal,
     allowInvertVertical: allowInvertVertical,
     transitionDuration: showDuration ?? const Duration(milliseconds: 100),
-    reverseTransitionDuration: hideDuration ?? kDefaultDuration,
+    reverseTransitionDuration: dismissDuration ?? kDefaultDuration,
   ));
 }
 
@@ -732,35 +738,39 @@ class PopoverController extends ChangeNotifier {
     bool dismissBackdropFocus = true,
     Duration? showDuration,
     Duration? hideDuration,
+    VoidCallback? onShow,
   }) async {
     if (closeOthers) {
       close();
     }
     key ??= GlobalKey<PopoverAnchorState>();
-    _openPopovers.add(key);
-    notifyListeners();
+
     T? res = await showPopover(
-      context: context,
-      alignment: alignment,
-      anchorAlignment: anchorAlignment,
-      builder: builder,
-      modal: modal,
-      widthConstraint: widthConstraint,
-      heightConstraint: heightConstraint,
-      key: key,
-      regionGroupId: regionGroupId,
-      offset: offset,
-      transitionAlignment: transitionAlignment,
-      consumeOutsideTaps: consumeOutsideTaps,
-      margin: margin,
-      onTickFollow: onTickFollow,
-      follow: follow,
-      allowInvertHorizontal: allowInvertHorizontal,
-      allowInvertVertical: allowInvertVertical,
-      dismissBackdropFocus: dismissBackdropFocus,
-      showDuration: showDuration,
-      hideDuration: hideDuration,
-    );
+        context: context,
+        alignment: alignment,
+        anchorAlignment: anchorAlignment,
+        builder: builder,
+        modal: modal,
+        widthConstraint: widthConstraint,
+        heightConstraint: heightConstraint,
+        key: key,
+        regionGroupId: regionGroupId,
+        offset: offset,
+        transitionAlignment: transitionAlignment,
+        consumeOutsideTaps: consumeOutsideTaps,
+        margin: margin,
+        onTickFollow: onTickFollow,
+        follow: follow,
+        allowInvertHorizontal: allowInvertHorizontal,
+        allowInvertVertical: allowInvertVertical,
+        dismissBackdropFocus: dismissBackdropFocus,
+        showDuration: showDuration,
+        dismissDuration: hideDuration,
+        onShow: () {
+          _openPopovers.add(key!);
+          notifyListeners();
+          onShow?.call();
+        });
     _openPopovers.remove(key);
     notifyListeners();
     return res;

@@ -18,6 +18,7 @@ export 'package:phonecodes/phonecodes.dart' show Countries, Country;
 export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 
 export 'src/components/animation.dart';
+export 'src/components/chart/tracker.dart';
 export 'src/components/control/button.dart';
 export 'src/components/control/clickable.dart';
 export 'src/components/control/command.dart';
