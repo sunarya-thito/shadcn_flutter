@@ -76,6 +76,55 @@ class SelectGroup<T> extends StatelessWidget implements AbstractSelectItem<T> {
 
   @override
   Widget build(BuildContext context) {
+    final searchData = Data.maybeOf<_SelectData>(context);
+    assert(searchData != null, 'SelectGroup must be a child of Select');
+    final text = searchData!.query;
+    Map<AbstractSelectItem<T>, _SearchResult> resultMap = {};
+    for (int i = 0; i < this.children.length; i++) {
+      var item = this.children[i];
+      if (text == null || text.isEmpty) {
+        bool hasSelectedValue = false;
+        for (var val in item.values) {
+          if (val == searchData.value) {
+            hasSelectedValue = true;
+            break;
+          }
+        }
+        resultMap[item] = _SearchResult(0, i, hasSelectedValue);
+      } else {
+        int score = 0;
+        bool hasSelectedValue = false;
+        for (var val in item.values) {
+          score += searchData.searchFilter?.call(val, text) ?? 0;
+          if (val == searchData.value) {
+            hasSelectedValue = true;
+          }
+        }
+        if (score > 0 || searchData.showUnrelatedValues) {
+          resultMap[item] = _SearchResult(score, i, hasSelectedValue);
+        }
+      }
+    }
+    List<Widget> children = [];
+    // sort from largest score to lowest score, if score is same, then sort by index
+    resultMap.entries.toList()
+      ..sort((a, b) {
+        if (searchData.orderSelectedFirst) {
+          if (a.value.hasSelectedValue && !b.value.hasSelectedValue) {
+            return -1;
+          }
+          if (!a.value.hasSelectedValue && b.value.hasSelectedValue) {
+            return 1;
+          }
+        }
+        if (a.value.score == b.value.score) {
+          return a.value.index.compareTo(b.value.index);
+        }
+        return b.value.score.compareTo(a.value.score);
+      })
+      ..forEach((element) {
+        children.add(element.key);
+      });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -570,6 +619,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                           },
                           widget.value,
                           widget.showUnrelatedValues,
+                          widget.orderSelectedFirst,
                         ),
                         child: child,
                       );
@@ -599,7 +649,32 @@ class _SelectData {
   final dynamic value;
   final ValueChanged onChanged;
   final bool showUnrelatedValues;
+  final bool orderSelectedFirst;
 
   _SelectData(this.searchFilter, this.query, this.onChanged, this.value,
-      this.showUnrelatedValues);
+      this.showUnrelatedValues, this.orderSelectedFirst);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is _SelectData &&
+        other.searchFilter == searchFilter &&
+        other.query == query &&
+        other.value == value &&
+        other.onChanged == onChanged &&
+        other.showUnrelatedValues == showUnrelatedValues &&
+        other.orderSelectedFirst == orderSelectedFirst;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      searchFilter,
+      query,
+      value,
+      onChanged,
+      showUnrelatedValues,
+      orderSelectedFirst,
+    );
+  }
 }
