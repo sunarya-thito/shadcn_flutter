@@ -553,7 +553,15 @@ PopoverFuture<T?> showPopover<T>({
                           completer.complete(value);
                         },
                       );
-                      return popoverAnchor;
+                      return Overlay(
+                        initialEntries: [
+                          OverlayEntry(
+                            builder: (context) {
+                              return popoverAnchor;
+                            },
+                          )
+                        ],
+                      );
                     });
               }),
         ),
@@ -633,7 +641,7 @@ class PopoverController extends ChangeNotifier {
     if (closeOthers) {
       close();
     }
-    key ??= GlobalKey<PopoverAnchorState>();
+    key ??= GlobalKey<PopoverAnchorState>(debugLabel: 'PopoverAnchor$hashCode');
 
     PopoverFuture<T?> res = showPopover<T>(
       context: context,

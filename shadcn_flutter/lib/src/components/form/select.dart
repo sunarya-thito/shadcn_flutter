@@ -194,6 +194,7 @@ class Select<T> extends StatefulWidget {
 
 class _SelectState<T> extends State<Select<T>> {
   late FocusNode _focusNode;
+  final PopoverController _popoverController = PopoverController();
 
   @override
   void initState() {
@@ -214,6 +215,12 @@ class _SelectState<T> extends State<Select<T>> {
       return widget.placeholder!;
     }
     return const SizedBox();
+  }
+
+  @override
+  void dispose() {
+    _popoverController.dispose();
+    super.dispose();
   }
 
   @override
@@ -240,7 +247,7 @@ class _SelectState<T> extends State<Select<T>> {
         onPressed: widget.onChanged == null
             ? null
             : () {
-                showPopover(
+                _popoverController.show(
                   context: context,
                   alignment: widget.popoverAlignment,
                   anchorAlignment: widget.popoverAnchorAlignment,
@@ -595,8 +602,4 @@ class _SelectData {
 
   _SelectData(this.searchFilter, this.query, this.onChanged, this.value,
       this.showUnrelatedValues);
-}
-
-abstract class _SelectValueHandler {
-  int computeIndexingScore(String query);
 }
