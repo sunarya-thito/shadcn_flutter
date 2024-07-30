@@ -121,7 +121,7 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
           ],
         ),
       ],
-      child: Dashed(
+      child: DashedContainer(
         borderRadius: BorderRadius.circular(theme.radiusMd),
         width: 2,
         gap: 2,

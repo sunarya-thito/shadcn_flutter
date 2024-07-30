@@ -45,40 +45,6 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
   }
 }
 
-class Dashed extends StatelessWidget {
-  final double width;
-  final double gap;
-  final double thickness;
-  final Color? color;
-  final Widget child;
-  final BorderRadius? borderRadius;
-
-  const Dashed({
-    super.key,
-    this.width = 8,
-    this.gap = 5,
-    this.thickness = 1,
-    this.color,
-    required this.child,
-    this.borderRadius,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return CustomPaint(
-      painter: DashedPainter(
-        width: width,
-        gap: gap,
-        thickness: thickness,
-        color: color ?? theme.colorScheme.border,
-        borderRadius: borderRadius,
-      ),
-      child: child,
-    );
-  }
-}
-
 class DashedLineProperties {
   final double width;
   final double gap;
