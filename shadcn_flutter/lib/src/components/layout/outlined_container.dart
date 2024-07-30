@@ -79,6 +79,33 @@ class Dashed extends StatelessWidget {
   }
 }
 
+class DashedLineProperties {
+  final double width;
+  final double gap;
+  final double thickness;
+  final Color color;
+
+  const DashedLineProperties({
+    required this.width,
+    required this.gap,
+    required this.thickness,
+    required this.color,
+  });
+
+  static DashedLineProperties lerp(
+    DashedLineProperties a,
+    DashedLineProperties b,
+    double t,
+  ) {
+    return DashedLineProperties(
+      width: lerpDouble(a.width, b.width, t)!,
+      gap: lerpDouble(a.gap, b.gap, t)!,
+      thickness: lerpDouble(a.thickness, b.thickness, t)!,
+      color: Color.lerp(a.color, b.color, t)!,
+    );
+  }
+}
+
 class DashedLine extends StatelessWidget {
   final double width;
   final double gap;
@@ -96,13 +123,102 @@ class DashedLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return CustomPaint(
-      painter: DashedLinePainter(
+    return AnimatedValueBuilder(
+        value: DashedLineProperties(
+          width: width,
+          gap: gap,
+          thickness: thickness,
+          color: color ?? theme.colorScheme.border,
+        ),
+        duration: kDefaultDuration,
+        lerp: DashedLineProperties.lerp,
+        builder: (context, value, child) {
+          return CustomPaint(
+            painter: DashedLinePainter(
+              width: value.width,
+              gap: value.gap,
+              thickness: value.thickness,
+              color: value.color,
+            ),
+          );
+        });
+  }
+}
+
+class DashedContainerProperties {
+  final double width;
+  final double gap;
+  final double thickness;
+  final Color color;
+  final BorderRadius borderRadius;
+
+  const DashedContainerProperties({
+    required this.width,
+    required this.gap,
+    required this.thickness,
+    required this.color,
+    required this.borderRadius,
+  });
+
+  static DashedContainerProperties lerp(
+    DashedContainerProperties a,
+    DashedContainerProperties b,
+    double t,
+  ) {
+    return DashedContainerProperties(
+      width: lerpDouble(a.width, b.width, t)!,
+      gap: lerpDouble(a.gap, b.gap, t)!,
+      thickness: lerpDouble(a.thickness, b.thickness, t)!,
+      color: Color.lerp(a.color, b.color, t)!,
+      borderRadius: BorderRadius.lerp(a.borderRadius, b.borderRadius, t)!,
+    );
+  }
+}
+
+class DashedContainer extends StatelessWidget {
+  final double width;
+  final double gap;
+  final double thickness;
+  final Color? color;
+  final Widget child;
+  final BorderRadius? borderRadius;
+
+  const DashedContainer({
+    super.key,
+    this.width = 8,
+    this.gap = 5,
+    this.thickness = 1,
+    this.color,
+    required this.child,
+    this.borderRadius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return AnimatedValueBuilder(
+      value: DashedContainerProperties(
         width: width,
         gap: gap,
         thickness: thickness,
         color: color ?? theme.colorScheme.border,
+        borderRadius: borderRadius ?? theme.borderRadiusLg,
       ),
+      duration: kDefaultDuration,
+      lerp: DashedContainerProperties.lerp,
+      builder: (context, value, child) {
+        return CustomPaint(
+          painter: DashedPainter(
+            width: value.width,
+            gap: value.gap,
+            thickness: value.thickness,
+            color: value.color,
+            borderRadius: value.borderRadius,
+          ),
+          child: child,
+        );
+      },
+      child: child,
     );
   }
 }
@@ -176,7 +292,7 @@ class DashedPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Path path = Path();
-    if (borderRadius != null) {
+    if (borderRadius != null && borderRadius != BorderRadius.zero) {
       path.addRRect(RRect.fromRectAndCorners(
         Rect.fromLTWH(0, 0, size.width, size.height),
         topLeft: borderRadius!.topLeft,

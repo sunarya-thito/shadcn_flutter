@@ -44,6 +44,8 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   url_launcher: ^6.3.0
   intl: ^0.19.0
+  super_drag_and_drop: ^0.8.18
+  file_picker: ^8.0.6
 
 dev_dependencies:
   flutter_test:

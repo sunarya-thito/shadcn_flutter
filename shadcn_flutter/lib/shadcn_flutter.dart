@@ -2,6 +2,8 @@ library shadcn_flutter;
 
 // bundle from https://pub.dev/packages/country_flags
 export 'package:country_flags/country_flags.dart' show CountryFlag;
+// bundle cross_file
+export 'package:cross_file/cross_file.dart' show XFile;
 export 'package:flutter/cupertino.dart'
     show
         cupertinoDesktopTextSelectionControls,
@@ -38,8 +40,10 @@ export 'src/components/form/checkbox.dart';
 export 'src/components/form/chip_input.dart';
 export 'src/components/form/color_picker.dart';
 export 'src/components/form/date_picker.dart';
+export 'src/components/form/file_picker.dart';
 export 'src/components/form/form.dart';
 export 'src/components/form/form_field.dart';
+export 'src/components/form/image.dart';
 export 'src/components/form/input_otp.dart';
 export 'src/components/form/phone_input.dart';
 export 'src/components/form/radio_group.dart';

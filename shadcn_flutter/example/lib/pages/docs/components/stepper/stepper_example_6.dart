@@ -142,7 +142,10 @@ class _StepperExample6State extends State<StepperExample6> {
               },
             ),
             Step(
-              title: Text('Step 2'),
+              title: const StepTitle(
+                title: Text('Step 2'),
+                subtitle: Text('Optional Step'),
+              ),
               contentBuilder: (context) {
                 return StepContainer(
                   child: NumberedContainer(

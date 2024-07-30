@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 
 import '../../../shadcn_flutter.dart';
@@ -21,6 +23,44 @@ class ShadcnLocalizationsDelegate
   bool shouldReload(ShadcnLocalizationsDelegate old) => false;
 }
 
+const _fileByteUnits =
+    SizeUnitLocale(1024, ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']);
+const _fileBitUnits = SizeUnitLocale(
+    1024, ['Bi', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']);
+
+class SizeUnitLocale {
+  final int base;
+  final List<String> units;
+  // separator for digit grouping, e.g. 1,000,000
+  final String separator;
+  const SizeUnitLocale(this.base, this.units, {this.separator = ','});
+
+  String getUnit(int value) {
+    if (value <= 0) return '0 ${units[0]}';
+    var log10 = _log10(value);
+    final digitGroups = (log10 / _log10(base)).floor();
+    final unitIndex = min(digitGroups, units.length - 1);
+    return units[unitIndex];
+  }
+}
+
+double _log10(num x) {
+  return log(x) / ln10;
+}
+
+String formatFileSize(int bytes, SizeUnitLocale unit) {
+  if (bytes <= 0) return '0 ${unit.units[0]}';
+  final base = unit.base;
+  final units = unit.units;
+  int digitGroups = (_log10(bytes) / _log10(base)).floor();
+  // return '${NumberFormat('#,##0.#').format(bytes / pow(base, digitGroups))} ${units[digitGroups]}';
+  // do it without NumberFormat, but format to #,##0.# format
+  final value = bytes / pow(base, digitGroups);
+  final formattedValue =
+      value.toStringAsFixed(value.truncateToDouble() == value ? 0 : 1);
+  return '$formattedValue ${units[digitGroups]}';
+}
+
 abstract class ShadcnLocalizations {
   static ShadcnLocalizations of(BuildContext context) {
     return Localizations.of<ShadcnLocalizations>(
@@ -29,7 +69,7 @@ abstract class ShadcnLocalizations {
   }
 
   const ShadcnLocalizations();
-
+  // String formatFileSize(int bytes);
   String get formNotEmpty;
   String get invalidValue;
   String get invalidEmail;
@@ -149,12 +189,97 @@ abstract class ShadcnLocalizations {
         throw ArgumentError.value(month, 'month');
     }
   }
+
+  Map<String, String> get localizedMimeTypes;
 }
 
 class DefaultShadcnLocalizations extends ShadcnLocalizations {
   static const ShadcnLocalizations instance = DefaultShadcnLocalizations();
 
   const DefaultShadcnLocalizations();
+
+  @override
+  final Map<String, String> localizedMimeTypes = const {
+    'audio/aac': 'AAC Audio',
+    'application/x-abiword': 'AbiWord Document',
+    'image/apng': 'Animated Portable Network Graphics',
+    'application/x-freearc': 'Archive Document',
+    'image/avif': 'AVIF Image',
+    'video/x-msvideo': 'AVI: Audio Video Interleave',
+    'application/vnd.amazon.ebook': 'Amazon Kindle eBook Format',
+    'application/octet-stream': 'Binary Data',
+    'image/bmp': 'Windows OS/2 Bitmap Graphics',
+    'application/x-bzip': 'BZip Archive',
+    'application/x-bzip2': 'BZip2 Archive',
+    'application/x-cdf': 'CD Audio',
+    'application/x-csh': 'C-Shell Script',
+    'text/css': 'Cascading Style Sheets (CSS)',
+    'text/csv': 'Comma-Separated Values (CSV)',
+    'application/msword': 'Microsoft Word',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+        'Microsoft Word (OpenXML)',
+    'application/vnd.ms-fontobject': 'MS Embedded OpenType Fonts',
+    'application/epub+zip': 'Electronic Publication (EPUB)',
+    'application/gzip': 'GZip Compressed Archive',
+    'image/gif': 'Graphics Interchange Format (GIF)',
+    'text/html': 'HyperText Markup Language (HTML)',
+    'image/vnd.microsoft.icon': 'Icon Format',
+    'text/calendar': 'iCalendar Format',
+    'application/java-archive': 'Java Archive (JAR)',
+    'image/jpeg': 'JPEG Images',
+    'text/javascript': 'JavaScript',
+    'application/json': 'JSON Format',
+    'application/ld+json': 'JSON-LD Format',
+    'audio/midi': 'Musical Instrument Digital Interface (MIDI)',
+    'audio/x-midi': 'Musical Instrument Digital Interface (MIDI)',
+    'audio/mpeg': 'MP3 Audio',
+    'video/mp4': 'MP4 Video',
+    'video/mpeg': 'MPEG Video',
+    'application/vnd.apple.installer+xml': 'Apple Installer Package',
+    'application/vnd.oasis.opendocument.presentation':
+        'OpenDocument Presentation Document',
+    'application/vnd.oasis.opendocument.spreadsheet':
+        'OpenDocument Spreadsheet Document',
+    'application/vnd.oasis.opendocument.text': 'OpenDocument Text Document',
+    'audio/ogg': 'Ogg Audio',
+    'video/ogg': 'Ogg Video',
+    'application/ogg': 'Ogg',
+    'font/otf': 'OpenType Font',
+    'image/png': 'Portable Network Graphics',
+    'application/pdf': 'Adobe Portable Document Format (PDF)',
+    'application/x-httpd-php': 'Hypertext Preprocessor (Personal Home Page)',
+    'application/vnd.ms-powerpoint': 'Microsoft PowerPoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+        'Microsoft PowerPoint (OpenXML)',
+    'application/vnd.rar': 'RAR Archive',
+    'application/rtf': 'Rich Text Format (RTF)',
+    'application/x-sh': 'Bourne Shell Script',
+    'image/svg+xml': 'Scalable Vector Graphics (SVG)',
+    'application/x-tar': 'Tape Archive (TAR)',
+    'image/tiff': 'Tagged Image File Format (TIFF)',
+    'video/mp2t': 'MPEG Transport Stream',
+    'font/ttf': 'TrueType Font',
+    'text/plain': 'Text',
+    'application/vnd.visio': 'Microsoft Visio',
+    'audio/wav': 'Waveform Audio Format',
+    'audio/webm': 'WEBM Audio',
+    'video/webm': 'WEBM Video',
+    'image/webp': 'WEBP Image',
+    'font/woff': 'Web Open Font Format (WOFF)',
+    'font/woff2': 'Web Open Font Format (WOFF)',
+    'application/xhtml+xml': 'XHTML',
+    'application/vnd.ms-excel': 'Microsoft Excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+        'Microsoft Excel (OpenXML)',
+    'application/xml': 'XML',
+    'application/vnd.mozilla.xul+xml': 'XUL',
+    'application/zip': 'ZIP Archive',
+    'video/3gpp': '3GPP Audio/Video Container',
+    'audio/3gpp': '3GPP Audio/Video Container',
+    'video/3gpp2': '3GPP2 Audio/Video Container',
+    'audio/3gpp2': '3GPP2 Audio/Video Container',
+    'application/x-7z-compressed': '7-Zip Archive',
+  };
 
   @override
   String get commandSearch => 'Type a command or search...';

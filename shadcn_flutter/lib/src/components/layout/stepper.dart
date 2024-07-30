@@ -326,9 +326,12 @@ class _StepVariantCircleAlternative extends StepVariant {
                     ),
                     gap(4),
                     Center(
-                      child: properties.size.wrapper(
-                        context,
-                        steps[i].title,
+                      child: DefaultTextStyle.merge(
+                        textAlign: TextAlign.center,
+                        child: properties.size.wrapper(
+                          context,
+                          steps[i].title,
+                        ),
                       ),
                     ),
                   ],
@@ -881,7 +884,7 @@ class StepTitle extends StatelessWidget {
     Key? key,
     required this.title,
     this.subtitle,
-    this.crossAxisAlignment = CrossAxisAlignment.start,
+    this.crossAxisAlignment = CrossAxisAlignment.stretch,
     this.onPressed,
   }) : super(key: key);
 
@@ -891,15 +894,17 @@ class StepTitle extends StatelessWidget {
       mouseCursor: WidgetStatePropertyAll(
           onPressed == null ? MouseCursor.defer : SystemMouseCursors.click),
       onPressed: onPressed,
-      child: Column(
-        crossAxisAlignment: crossAxisAlignment,
-        children: [
-          title,
-          if (subtitle != null) ...[
-            gap(2),
-            subtitle!.muted().small(),
+      child: IntrinsicWidth(
+        child: Column(
+          crossAxisAlignment: crossAxisAlignment,
+          children: [
+            title,
+            if (subtitle != null) ...[
+              gap(2),
+              subtitle!.muted().xSmall(),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
