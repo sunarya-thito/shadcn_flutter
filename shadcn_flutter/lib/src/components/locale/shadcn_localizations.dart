@@ -138,6 +138,7 @@ abstract class ShadcnLocalizations {
 
   String get searchPlaceholderCountry;
   String get emptyCountryList;
+  String get toastSnippetCopied;
 
   String getAbbreviatedWeekday(int weekday) {
     switch (weekday) {
@@ -531,4 +532,7 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get timePM => 'PM';
+
+  @override
+  String get toastSnippetCopied => 'Copied to clipboard';
 }

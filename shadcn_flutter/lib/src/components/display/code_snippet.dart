@@ -152,7 +152,23 @@ class _CodeSnippetState extends State<CodeSnippet> {
                 GhostButton(
                   density: ButtonDensity.icon,
                   onPressed: () {
-                    Clipboard.setData(ClipboardData(text: widget.code));
+                    Clipboard.setData(ClipboardData(text: widget.code))
+                        .then((value) {
+                      showToast(
+                        context: context,
+                        showDuration: const Duration(seconds: 2),
+                        builder: (context, overlay) {
+                          final localizations = ShadcnLocalizations.of(context);
+                          return Alert(
+                            leading: const Icon(
+                              Icons.check,
+                              size: 16,
+                            ),
+                            title: Text(localizations.toastSnippetCopied),
+                          );
+                        },
+                      );
+                    });
                   },
                   child: const Icon(
                     Icons.copy,
