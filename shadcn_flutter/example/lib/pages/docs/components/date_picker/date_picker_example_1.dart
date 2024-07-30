@@ -11,14 +11,28 @@ class _DatePickerExample1State extends State<DatePickerExample1> {
   DateTime? _value;
   @override
   Widget build(BuildContext context) {
-    return DatePicker(
-      value: _value,
-      mode: PromptMode.popover,
-      onChanged: (value) {
-        setState(() {
-          _value = value;
-        });
-      },
+    return Column(
+      children: [
+        DatePicker(
+          value: _value,
+          mode: PromptMode.popover,
+          onChanged: (value) {
+            setState(() {
+              _value = value;
+            });
+          },
+        ),
+        gap(16),
+        DatePicker(
+          value: _value,
+          mode: PromptMode.dialog,
+          onChanged: (value) {
+            setState(() {
+              _value = value;
+            });
+          },
+        ),
+      ],
     );
   }
 }

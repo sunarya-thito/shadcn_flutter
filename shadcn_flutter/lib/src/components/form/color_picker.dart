@@ -1,5 +1,85 @@
 import '../../../shadcn_flutter.dart';
 
+String colorToHex(Color color, [bool showAlpha = true]) {
+  if (showAlpha) {
+    return '#${color.value.toRadixString(16)}';
+  } else {
+    return '#${color.value.toRadixString(16).substring(2)}';
+  }
+}
+
+class HSVColorPicker extends StatelessWidget {
+  final HSVColor color;
+  final ValueChanged<HSVColor>? onChanged;
+  final bool showAlpha;
+  final Alignment? popoverAlignment;
+  final Alignment? popoverAnchorAlignment;
+  final EdgeInsets? popoverPadding;
+  final Widget? placeholder;
+  final PromptMode mode;
+
+  const HSVColorPicker({
+    Key? key,
+    required this.color,
+    this.onChanged,
+    this.showAlpha = true,
+    this.popoverAlignment,
+    this.popoverAnchorAlignment,
+    this.popoverPadding,
+    this.placeholder,
+    this.mode = PromptMode.dialog,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = ShadcnLocalizations.of(context);
+    final theme = Theme.of(context);
+    return ObjectFormField(
+      popoverAlignment: popoverAlignment,
+      popoverAnchorAlignment: popoverAnchorAlignment,
+      popoverPadding: popoverPadding,
+      value: color,
+      mode: mode,
+      placeholder: placeholder ?? Text(localizations.placeholderColorPicker),
+      onChanged: (value) {
+        onChanged?.call(value!);
+      },
+      builder: (context, value) {
+        return IntrinsicWidth(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(child: Text(colorToHex(value.toColor(), showAlpha))),
+              gap(8),
+              AspectRatio(
+                aspectRatio: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: value.toColor(),
+                    border: Border.all(
+                      color: theme.colorScheme.border,
+                    ),
+                    borderRadius: theme.borderRadiusSm,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+      editorBuilder: (context, value, onChanged) {
+        return HSVColorPickerSet(
+          color: value ?? const HSVColor.fromAHSV(1, 0, 1, 1),
+          onColorChanged: (value) {
+            onChanged(value);
+          },
+          showAlpha: showAlpha,
+        );
+      },
+    );
+  }
+}
+
 Future<HSVColor> showHSVColorPicker({
   required BuildContext context,
   required HSVColor color,
@@ -14,16 +94,13 @@ Future<HSVColor> showHSVColorPicker({
     modal: false,
     offset: offset,
     builder: (context) {
-      return SizedBox(
-        width: 300,
-        child: _HSVColorPickerPopup(
-          color: color,
-          onColorChanged: (value) {
-            color = value;
-            onColorChanged?.call(value);
-          },
-          showAlpha: showAlpha,
-        ),
+      return _HSVColorPickerPopup(
+        color: color,
+        onColorChanged: (value) {
+          color = value;
+          onColorChanged?.call(value);
+        },
+        showAlpha: showAlpha,
       );
     },
   ).then(
@@ -100,15 +177,17 @@ class _HSVColorPickerPopupState extends State<_HSVColorPickerPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return HSVColorPickerSet(
-      color: color,
-      onColorChanged: (value) {
-        setState(() {
-          color = value;
-          widget.onColorChanged(value);
-        });
-      },
-      showAlpha: widget.showAlpha,
+    return Card(
+      child: HSVColorPickerSet(
+        color: color,
+        onColorChanged: (value) {
+          setState(() {
+            color = value;
+            widget.onColorChanged(value);
+          });
+        },
+        showAlpha: widget.showAlpha,
+      ),
     );
   }
 }
@@ -229,8 +308,8 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      child: Column(
+    return IntrinsicHeight(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -244,7 +323,7 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                 borderRadius: BorderRadius.circular(theme.radiusLg),
               ),
               clipBehavior: Clip.antiAlias,
-              child: HSVColorPicker(
+              child: HSVColorPickerArea(
                 color: color,
                 onColorChanged: (value) {
                   widget.onColorChanged(value);
@@ -255,178 +334,189 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
             ),
           ),
           gap(16),
-          SizedBox(
-            height: 32,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: theme.colorScheme.border,
-                ),
-                borderRadius: BorderRadius.circular(theme.radiusLg),
-              ),
-              child: HSVColorPicker(
-                color: HSVColor.fromAHSV(1, color.hue, 1, 1),
-                radius: Radius.circular(theme.radiusLg),
-                onColorChanged: (value) {
-                  setState(() {
-                    widget.onColorChanged(HSVColor.fromAHSV(
-                        color.alpha, value.hue, color.saturation, color.value));
-                  });
-                },
-                sliderType: HSVColorSliderType.hue,
-                reverse: true,
-              ),
-            ),
-          ),
-          if (widget.showAlpha) gap(16),
-          // alpha
-          if (widget.showAlpha)
-            SizedBox(
-              height: 32,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: theme.colorScheme.border,
-                  ),
-                  borderRadius: BorderRadius.circular(theme.radiusLg),
-                ),
-                child: HSVColorPicker(
-                  color: color,
-                  onColorChanged: (value) {
-                    widget.onColorChanged(value);
-                  },
-                  sliderType: HSVColorSliderType.alpha,
-                  radius: Radius.circular(theme.radiusLg),
-                  reverse: true,
-                ),
-              ),
-            ),
-          gap(16),
-          TextField(
-            controller: _hexController,
-            onEditingComplete: () {
-              var hex = _hexController.text;
-              if (hex.startsWith('#')) {
-                hex = hex.substring(1);
-              }
-              if (hex.length == 6) {
-                widget.onColorChanged(
-                    HSVColor.fromColor(Color(int.parse('FF$hex', radix: 16))));
-              } else if (hex.length == 8) {
-                widget.onColorChanged(
-                    HSVColor.fromColor(Color(int.parse(hex, radix: 16))));
-              } else {
-                widget.onColorChanged(color);
-                if (widget.showAlpha) {
-                  _hexController.text =
-                      '#${color.toColor().value.toRadixString(16)}';
-                } else {
-                  _hexController.text =
-                      '#${color.toColor().value.toRadixString(16).substring(2)}';
-                }
-              }
-            },
-          ),
-          gap(16),
-          Row(
-            children: [
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('Red'),
-                  gap(4),
-                  TextField(
-                    controller: _redController,
-                    onEditingComplete: () {
-                      widget.onColorChanged(HSVColor.fromColor(Color.fromRGBO(
-                        (int.tryParse(_redController.text) ??
-                                color.toColor().red)
-                            .clamp(0, 255),
-                        color.toColor().green,
-                        color.toColor().blue,
-                        color.alpha,
-                      )));
-                    },
-                  ),
-                ],
-              )),
-              gap(16),
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('Green'),
-                  gap(4),
-                  TextField(
-                    controller: _greenController,
-                    onEditingComplete: () {
-                      var cc = color.toColor();
-                      widget.onColorChanged(HSVColor.fromColor(Color.fromRGBO(
-                        cc.red,
-                        (int.tryParse(_greenController.text) ?? cc.green)
-                            .clamp(0, 255),
-                        cc.blue,
-                        color.alpha,
-                      )));
-                    },
-                  ),
-                ],
-              )),
-              gap(16),
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('Blue'),
-                  gap(4),
-                  TextField(
-                    controller: _blueController,
-                    onEditingComplete: () {
-                      var cc = color.toColor();
-                      widget.onColorChanged(HSVColor.fromColor(Color.fromRGBO(
-                        cc.red,
-                        cc.green,
-                        // int.tryParse(_blueController.text) ?? 0,
-                        (int.tryParse(_blueController.text) ?? cc.blue)
-                            .clamp(0, 255),
-                        color.alpha,
-                      )));
-                    },
-                  ),
-                ],
-              )),
-              if (widget.showAlpha) ...[
-                gap(16),
-                Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text('Alpha'),
-                    gap(4),
-                    TextField(
-                      onEditingComplete: () {
-                        widget.onColorChanged(HSVColor.fromAHSV(
-                          ((int.tryParse(_alphaController.text) ??
-                                      color.toColor().alpha) /
-                                  255)
-                              .clamp(0, 1),
-                          color.hue,
-                          color.saturation,
-                          color.value,
-                        ));
-                      },
-                      controller: _alphaController,
+          IntrinsicWidth(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: 32,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: theme.colorScheme.border,
+                      ),
+                      borderRadius: BorderRadius.circular(theme.radiusLg),
                     ),
+                    child: HSVColorPickerArea(
+                      color: HSVColor.fromAHSV(1, color.hue, 1, 1),
+                      radius: Radius.circular(theme.radiusLg),
+                      onColorChanged: (value) {
+                        setState(() {
+                          widget.onColorChanged(HSVColor.fromAHSV(color.alpha,
+                              value.hue, color.saturation, color.value));
+                        });
+                      },
+                      sliderType: HSVColorSliderType.hue,
+                      reverse: true,
+                    ),
+                  ),
+                ),
+                if (widget.showAlpha) gap(16),
+                // alpha
+                if (widget.showAlpha)
+                  SizedBox(
+                    height: 32,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.colorScheme.border,
+                        ),
+                        borderRadius: BorderRadius.circular(theme.radiusLg),
+                      ),
+                      child: HSVColorPickerArea(
+                        color: color,
+                        onColorChanged: (value) {
+                          widget.onColorChanged(value);
+                        },
+                        sliderType: HSVColorSliderType.alpha,
+                        radius: Radius.circular(theme.radiusLg),
+                        reverse: true,
+                      ),
+                    ),
+                  ),
+                gap(16),
+                TextField(
+                  controller: _hexController,
+                  onEditingComplete: () {
+                    var hex = _hexController.text;
+                    if (hex.startsWith('#')) {
+                      hex = hex.substring(1);
+                    }
+                    if (hex.length == 6) {
+                      widget.onColorChanged(HSVColor.fromColor(
+                          Color(int.parse('FF$hex', radix: 16))));
+                    } else if (hex.length == 8) {
+                      widget.onColorChanged(
+                          HSVColor.fromColor(Color(int.parse(hex, radix: 16))));
+                    } else {
+                      widget.onColorChanged(color);
+                      if (widget.showAlpha) {
+                        _hexController.text =
+                            '#${color.toColor().value.toRadixString(16)}';
+                      } else {
+                        _hexController.text =
+                            '#${color.toColor().value.toRadixString(16).substring(2)}';
+                      }
+                    }
+                  },
+                ),
+                gap(16),
+                Row(
+                  children: [
+                    Expanded(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('Red'),
+                        gap(4),
+                        TextField(
+                          controller: _redController,
+                          onEditingComplete: () {
+                            widget.onColorChanged(
+                                HSVColor.fromColor(Color.fromRGBO(
+                              (int.tryParse(_redController.text) ??
+                                      color.toColor().red)
+                                  .clamp(0, 255),
+                              color.toColor().green,
+                              color.toColor().blue,
+                              color.alpha,
+                            )));
+                          },
+                        ),
+                      ],
+                    )),
+                    gap(16),
+                    Expanded(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('Green'),
+                        gap(4),
+                        TextField(
+                          controller: _greenController,
+                          onEditingComplete: () {
+                            var cc = color.toColor();
+                            widget.onColorChanged(
+                                HSVColor.fromColor(Color.fromRGBO(
+                              cc.red,
+                              (int.tryParse(_greenController.text) ?? cc.green)
+                                  .clamp(0, 255),
+                              cc.blue,
+                              color.alpha,
+                            )));
+                          },
+                        ),
+                      ],
+                    )),
+                    gap(16),
+                    Expanded(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('Blue'),
+                        gap(4),
+                        TextField(
+                          controller: _blueController,
+                          onEditingComplete: () {
+                            var cc = color.toColor();
+                            widget.onColorChanged(
+                                HSVColor.fromColor(Color.fromRGBO(
+                              cc.red,
+                              cc.green,
+                              // int.tryParse(_blueController.text) ?? 0,
+                              (int.tryParse(_blueController.text) ?? cc.blue)
+                                  .clamp(0, 255),
+                              color.alpha,
+                            )));
+                          },
+                        ),
+                      ],
+                    )),
+                    if (widget.showAlpha) ...[
+                      gap(16),
+                      Expanded(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text('Alpha'),
+                          gap(4),
+                          TextField(
+                            onEditingComplete: () {
+                              widget.onColorChanged(HSVColor.fromAHSV(
+                                ((int.tryParse(_alphaController.text) ??
+                                            color.toColor().alpha) /
+                                        255)
+                                    .clamp(0, 1),
+                                color.hue,
+                                color.saturation,
+                                color.value,
+                              ));
+                            },
+                            controller: _alphaController,
+                          ),
+                        ],
+                      )),
+                    ],
                   ],
-                )),
+                ),
               ],
-            ],
-          )
+            ),
+          ),
         ],
       ),
     );
@@ -517,7 +607,7 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                 borderRadius: BorderRadius.circular(theme.radiusLg),
               ),
               clipBehavior: Clip.antiAlias,
-              child: HSLColorPicker(
+              child: HSLColorPickerArea(
                 color: color,
                 onColorChanged: (value) {
                   widget.onColorChanged(value);
@@ -537,7 +627,7 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                 ),
                 borderRadius: BorderRadius.circular(theme.radiusLg),
               ),
-              child: HSLColorPicker(
+              child: HSLColorPickerArea(
                 color: HSLColor.fromAHSL(1, color.hue, 1, 0.5),
                 radius: Radius.circular(theme.radiusLg),
                 onColorChanged: (value) {
@@ -563,7 +653,7 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                   ),
                   borderRadius: BorderRadius.circular(theme.radiusLg),
                 ),
-                child: HSLColorPicker(
+                child: HSLColorPickerArea(
                   color: color,
                   onColorChanged: (value) {
                     widget.onColorChanged(value);
@@ -732,7 +822,7 @@ enum HSLColorSliderType {
   alpha;
 }
 
-class HSVColorPicker extends StatefulWidget {
+class HSVColorPickerArea extends StatefulWidget {
   final HSVColor color;
   final ValueChanged<HSVColor>? onColorChanged;
   final ValueChanged<HSVColor>? onColorEnd;
@@ -741,7 +831,7 @@ class HSVColorPicker extends StatefulWidget {
   final Radius radius;
   final EdgeInsets padding;
 
-  const HSVColorPicker({
+  const HSVColorPickerArea({
     Key? key,
     required this.color,
     this.onColorChanged,
@@ -753,10 +843,10 @@ class HSVColorPicker extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<HSVColorPicker> createState() => _HSVColorPickerState();
+  State<HSVColorPickerArea> createState() => _HSVColorPickerAreaState();
 }
 
-class _HSVColorPickerState extends State<HSVColorPicker> {
+class _HSVColorPickerAreaState extends State<HSVColorPickerArea> {
   static const double cursorRadius = 15;
   late double _currentHorizontal;
   late double _currentVertical;
@@ -864,7 +954,7 @@ class _HSVColorPickerState extends State<HSVColorPicker> {
   }
 
   @override
-  void didUpdateWidget(covariant HSVColorPicker oldWidget) {
+  void didUpdateWidget(covariant HSVColorPickerArea oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.color != widget.color) {
       HSVColor hsv = widget.color;
@@ -887,144 +977,142 @@ class _HSVColorPickerState extends State<HSVColorPicker> {
   @override
   Widget build(BuildContext context) {
     double radDiv = isSingleChannel ? 4 : 2;
-    return LayoutBuilder(builder: (context, constraints) {
-      return GestureDetector(
-        onTapDown: (details) {
-          _updateColor(details.localPosition, constraints.biggest);
-          widget.onColorEnd?.call(HSVColor.fromAHSV(
-            _alpha.clamp(0, 1),
-            _hue.clamp(0, 360),
-            _saturation.clamp(0, 1),
-            _value.clamp(0, 1),
-          ));
-        },
-        onPanUpdate: (details) {
-          setState(() {
-            _updateColor(details.localPosition, constraints.biggest);
-          });
-        },
-        onPanEnd: (details) {
-          widget.onColorEnd?.call(HSVColor.fromAHSV(
-            _alpha.clamp(0, 1),
-            _hue.clamp(0, 360),
-            _saturation.clamp(0, 1),
-            _value.clamp(0, 1),
-          ));
-        },
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Positioned.fill(
-              child: RepaintBoundary(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(widget.radius),
-                  child: CustomPaint(
-                    painter: CheckboardPainter(),
-                  ),
+    return GestureDetector(
+      onTapDown: (details) {
+        _updateColor(details.localPosition, context.size!);
+        widget.onColorEnd?.call(HSVColor.fromAHSV(
+          _alpha.clamp(0, 1),
+          _hue.clamp(0, 360),
+          _saturation.clamp(0, 1),
+          _value.clamp(0, 1),
+        ));
+      },
+      onPanUpdate: (details) {
+        setState(() {
+          _updateColor(details.localPosition, context.size!);
+        });
+      },
+      onPanEnd: (details) {
+        widget.onColorEnd?.call(HSVColor.fromAHSV(
+          _alpha.clamp(0, 1),
+          _hue.clamp(0, 360),
+          _saturation.clamp(0, 1),
+          _value.clamp(0, 1),
+        ));
+      },
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned.fill(
+            child: RepaintBoundary(
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(widget.radius),
+                child: CustomPaint(
+                  painter: CheckboardPainter(),
                 ),
               ),
             ),
-            Positioned.fill(
-              child: RepaintBoundary(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(widget.radius),
-                  child: CustomPaint(
-                    painter: HSVColorPickerPainter(
-                      sliderType: widget.sliderType,
-                      color: HSVColor.fromAHSV(
-                        _alpha.clamp(0, 1),
-                        _hue.clamp(0, 360),
-                        _saturation.clamp(0, 1),
-                        _value.clamp(0, 1),
-                      ),
-                      reverse: widget.reverse,
+          ),
+          Positioned.fill(
+            child: RepaintBoundary(
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(widget.radius),
+                child: CustomPaint(
+                  painter: HSVColorPickerPainter(
+                    sliderType: widget.sliderType,
+                    color: HSVColor.fromAHSV(
+                      _alpha.clamp(0, 1),
+                      _hue.clamp(0, 360),
+                      _saturation.clamp(0, 1),
+                      _value.clamp(0, 1),
                     ),
+                    reverse: widget.reverse,
                   ),
                 ),
               ),
             ),
-            Positioned(
-              // left: -(cursorRadius / 2),
-              // top: -(cursorRadius / 2),
-              // bottom: -(cursorRadius / 2),
-              // right: -(cursorRadius / 2),
-              left: -cursorRadius / radDiv,
-              top: -cursorRadius / radDiv,
-              bottom: -cursorRadius / radDiv,
-              right: -cursorRadius / radDiv,
-              child: isSingleChannel
-                  ? (widget.reverse
-                      ? Padding(
-                          padding: EdgeInsets.only(
-                            left: widget.padding.left,
-                            right: widget.padding.right,
-                          ),
-                          child: Align(
-                            alignment: Alignment(
-                                (_currentHorizontal.clamp(0, 1) * 2) - 1,
-                                (_currentVertical.clamp(0, 1) * 2) - 1),
-                            child: Container(
-                              width: cursorRadius,
-                              height: double.infinity,
-                              decoration: BoxDecoration(
-                                color: widget.color.toColor(),
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.all(widget.radius),
+          ),
+          Positioned(
+            // left: -(cursorRadius / 2),
+            // top: -(cursorRadius / 2),
+            // bottom: -(cursorRadius / 2),
+            // right: -(cursorRadius / 2),
+            left: -cursorRadius / radDiv,
+            top: -cursorRadius / radDiv,
+            bottom: -cursorRadius / radDiv,
+            right: -cursorRadius / radDiv,
+            child: isSingleChannel
+                ? (widget.reverse
+                    ? Padding(
+                        padding: EdgeInsets.only(
+                          left: widget.padding.left,
+                          right: widget.padding.right,
+                        ),
+                        child: Align(
+                          alignment: Alignment(
+                              (_currentHorizontal.clamp(0, 1) * 2) - 1,
+                              (_currentVertical.clamp(0, 1) * 2) - 1),
+                          child: Container(
+                            width: cursorRadius,
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                              color: widget.color.toColor(),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
                               ),
+                              borderRadius: BorderRadius.all(widget.radius),
                             ),
                           ),
-                        )
-                      : Padding(
-                          padding: EdgeInsets.only(
-                            top: widget.padding.top,
-                            bottom: widget.padding.bottom,
-                          ),
-                          child: Align(
-                            alignment: Alignment(
-                                (_currentHorizontal.clamp(0, 1) * 2) - 1,
-                                (_currentVertical.clamp(0, 1) * 2) - 1),
-                            child: Container(
-                              height: cursorRadius,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: widget.color.toColor(),
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.all(widget.radius),
+                        ),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.only(
+                          top: widget.padding.top,
+                          bottom: widget.padding.bottom,
+                        ),
+                        child: Align(
+                          alignment: Alignment(
+                              (_currentHorizontal.clamp(0, 1) * 2) - 1,
+                              (_currentVertical.clamp(0, 1) * 2) - 1),
+                          child: Container(
+                            height: cursorRadius,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: widget.color.toColor(),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
                               ),
+                              borderRadius: BorderRadius.all(widget.radius),
                             ),
                           ),
-                        ))
-                  : Padding(
-                      padding: widget.padding,
-                      child: Align(
-                        alignment: Alignment(
-                            (_currentHorizontal.clamp(0, 1) * 2) - 1,
-                            (_currentVertical.clamp(0, 1) * 2) - 1),
-                        child: Container(
-                          width: cursorRadius,
-                          height: cursorRadius,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: widget.color.toColor(),
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 2,
-                            ),
+                        ),
+                      ))
+                : Padding(
+                    padding: widget.padding,
+                    child: Align(
+                      alignment: Alignment(
+                          (_currentHorizontal.clamp(0, 1) * 2) - 1,
+                          (_currentVertical.clamp(0, 1) * 2) - 1),
+                      child: Container(
+                        width: cursorRadius,
+                        height: cursorRadius,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: widget.color.toColor(),
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 2,
                           ),
                         ),
                       ),
                     ),
-            ),
-          ],
-        ),
-      );
-    });
+                  ),
+          ),
+        ],
+      ),
+    );
   }
 
   double get vertical {
@@ -1128,7 +1216,7 @@ class _HSVColorPickerState extends State<HSVColorPicker> {
   }
 }
 
-class HSLColorPicker extends StatefulWidget {
+class HSLColorPickerArea extends StatefulWidget {
   final HSLColor color;
   final ValueChanged<HSLColor>? onColorChanged;
   final ValueChanged<HSLColor>? onColorEnd;
@@ -1137,7 +1225,7 @@ class HSLColorPicker extends StatefulWidget {
   final Radius radius;
   final EdgeInsets padding;
 
-  const HSLColorPicker({
+  const HSLColorPickerArea({
     Key? key,
     required this.color,
     this.onColorChanged,
@@ -1149,10 +1237,10 @@ class HSLColorPicker extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<HSLColorPicker> createState() => _HSLColorPickerState();
+  State<HSLColorPickerArea> createState() => _HSLColorPickerAreaState();
 }
 
-class _HSLColorPickerState extends State<HSLColorPicker> {
+class _HSLColorPickerAreaState extends State<HSLColorPickerArea> {
   static const double cursorRadius = 15;
   late double _currentHorizontal;
   late double _currentVertical;
@@ -1246,7 +1334,7 @@ class _HSLColorPickerState extends State<HSLColorPicker> {
   }
 
   @override
-  void didUpdateWidget(covariant HSLColorPicker oldWidget) {
+  void didUpdateWidget(covariant HSLColorPickerArea oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.color != widget.color) {
       HSLColor hsl = widget.color;

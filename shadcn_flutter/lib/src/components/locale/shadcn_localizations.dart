@@ -132,6 +132,7 @@ abstract class ShadcnLocalizations {
   });
   String get placeholderDatePicker;
   String get placeholderTimePicker;
+  String get placeholderColorPicker;
   String get buttonPrevious;
   String get buttonNext;
 
@@ -463,6 +464,9 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get placeholderDatePicker => 'Select a date';
+
+  @override
+  String get placeholderColorPicker => 'Select a color';
 
   @override
   String get buttonNext => 'Next';

@@ -83,7 +83,6 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>>
 
   @override
   Widget build(BuildContext context) {
-    ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     if (widget.mode == PromptMode.dialog) {
       return OutlineButton(
         trailing: widget.trailing?.iconMuted().iconSmall(),
@@ -94,35 +93,20 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>>
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return Center(
-                      child: AlertDialog(
-                        content: widget.editorBuilder(
-                          context,
-                          value,
-                          (value) {
-                            setState(() {
-                              this.value = value;
-                            });
-                          },
-                        ),
-                        actions: [
-                          SecondaryButton(
-                              child: Text(localizations.buttonCancel),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              }),
-                          PrimaryButton(
-                              child: Text(localizations.buttonSave),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                widget.onChanged!(value);
-                                this.context.reportNewFormValue(value);
-                              }),
-                        ],
-                      ),
+                    return _ObjectFormFieldDialog<T>(
+                      value: value,
+                      editorBuilder: widget.editorBuilder,
                     );
                   },
-                );
+                ).then((value) {
+                  if (value != null) {
+                    setState(() {
+                      this.value = value as T?;
+                    });
+                    widget.onChanged?.call(value as T?);
+                    this.context.reportNewFormValue(value as T?);
+                  }
+                });
               },
         child: value == null
             ? widget.placeholder.muted()
@@ -162,6 +146,62 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>>
       child: value == null
           ? widget.placeholder.muted()
           : widget.builder(context, value as T),
+    );
+  }
+}
+
+class _ObjectFormFieldDialog<T> extends StatefulWidget {
+  final T? value;
+  final Widget Function(
+      BuildContext context, T? value, ValueChanged<T?> onChanged) editorBuilder;
+
+  const _ObjectFormFieldDialog({
+    Key? key,
+    required this.value,
+    required this.editorBuilder,
+  }) : super(key: key);
+
+  @override
+  State<_ObjectFormFieldDialog<T>> createState() =>
+      _ObjectFormFieldDialogState<T>();
+}
+
+class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>> {
+  late T? value;
+
+  @override
+  void initState() {
+    super.initState();
+    value = widget.value;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = ShadcnLocalizations.of(context);
+    return Center(
+      child: AlertDialog(
+        content: widget.editorBuilder(
+          context,
+          value,
+          (value) {
+            setState(() {
+              this.value = value;
+            });
+          },
+        ),
+        actions: [
+          SecondaryButton(
+              child: Text(localizations.buttonCancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+          PrimaryButton(
+              child: Text(localizations.buttonSave),
+              onPressed: () {
+                Navigator.of(context).pop(value);
+              }),
+        ],
+      ),
     );
   }
 }

@@ -11,16 +11,28 @@ class _ColorPickerExample1State extends State<ColorPickerExample1> {
   HSVColor color = HSVColor.fromColor(Colors.blue);
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
-      child: HSVColorPickerSet(
-        color: color,
-        onColorChanged: (value) {
-          setState(() {
-            color = value;
-          });
-        },
-      ),
+    return Column(
+      children: [
+        HSVColorPicker(
+          color: color,
+          mode: PromptMode.popover,
+          onChanged: (value) {
+            setState(() {
+              color = value;
+            });
+          },
+        ),
+        gap(16),
+        HSVColorPicker(
+          color: color,
+          mode: PromptMode.dialog,
+          onChanged: (value) {
+            setState(() {
+              color = value;
+            });
+          },
+        ),
+      ],
     );
   }
 }

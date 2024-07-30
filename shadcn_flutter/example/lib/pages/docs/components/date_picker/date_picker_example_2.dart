@@ -11,14 +11,28 @@ class _DatePickerExample2State extends State<DatePickerExample2> {
   DateTimeRange? _value;
   @override
   Widget build(BuildContext context) {
-    return DateRangePicker(
-      value: _value,
-      mode: PromptMode.popover,
-      onChanged: (value) {
-        setState(() {
-          _value = value;
-        });
-      },
+    return Column(
+      children: [
+        DateRangePicker(
+          value: _value,
+          mode: PromptMode.popover,
+          onChanged: (value) {
+            setState(() {
+              _value = value;
+            });
+          },
+        ),
+        gap(16),
+        DateRangePicker(
+          value: _value,
+          mode: PromptMode.dialog,
+          onChanged: (value) {
+            setState(() {
+              _value = value;
+            });
+          },
+        ),
+      ],
     );
   }
 }

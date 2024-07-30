@@ -24,24 +24,24 @@ class _AlertDialogState extends State<AlertDialog> {
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
-    return IntrinsicHeight(
-      child: IntrinsicWidth(
-        child: Container(
-          // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: themeData.colorScheme.popover,
-            borderRadius: BorderRadius.circular(themeData.radiusXl),
-            border: Border.all(
-              color: themeData.colorScheme.muted,
-              width: 1,
-            ),
+    return IntrinsicWidth(
+      child: Container(
+        // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: themeData.colorScheme.popover,
+          borderRadius: BorderRadius.circular(themeData.radiusXl),
+          border: Border.all(
+            color: themeData.colorScheme.muted,
+            width: 1,
           ),
+        ),
+        child: IntrinsicHeight(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
+              Flexible(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -53,26 +53,19 @@ class _AlertDialogState extends State<AlertDialog> {
                           ),
                           duration: kDefaultDuration,
                           child: widget.leading!),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (widget.title != null || widget.content != null)
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  if (widget.title != null)
-                                    widget.title!.large().semiBold(),
-                                  if (widget.content != null)
-                                    widget.content!.small().muted(),
-                                ],
-                              ).gap(8),
-                            ),
-                        ],
+                    if (widget.title != null || widget.content != null)
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (widget.title != null)
+                              widget.title!.large().semiBold(),
+                            if (widget.content != null)
+                              widget.content!.small().muted(),
+                          ],
+                        ).gap(8),
                       ),
-                    ),
                     if (widget.trailing != null)
                       AnimatedIconTheme(
                           data: IconThemeData(

@@ -1,9 +1,7 @@
-import 'package:flutter/widgets.dart';
+import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class DialogRoute<T> extends RawDialogRoute<T> {
-  /// A dialog route with Material entrance and exit animations,
-  /// modal barrier color, and modal barrier behavior (dialog is dismissible
-  /// with a tap on the barrier).
+  final CapturedData? data;
   DialogRoute({
     required BuildContext context,
     required WidgetBuilder builder,
@@ -15,11 +13,15 @@ class DialogRoute<T> extends RawDialogRoute<T> {
     super.settings,
     super.anchorPoint,
     super.traversalEdgeBehavior,
+    this.data,
   }) : super(
           pageBuilder: (BuildContext buildContext, Animation<double> animation,
               Animation<double> secondaryAnimation) {
             final Widget pageChild = Builder(builder: builder);
             Widget dialog = themes?.wrap(pageChild) ?? pageChild;
+            if (data != null) {
+              dialog = data.wrap(dialog);
+            }
             if (useSafeArea) {
               dialog = SafeArea(child: dialog);
             }
@@ -64,12 +66,14 @@ Future<T?> showDialog<T>({
   Offset? anchorPoint,
   TraversalEdgeBehavior? traversalEdgeBehavior,
 }) {
-  final CapturedThemes themes = InheritedTheme.capture(
-      from: context,
-      to: Navigator.of(
-        context,
-        rootNavigator: useRootNavigator,
-      ).context);
+  var navigatorState = Navigator.of(
+    context,
+    rootNavigator: useRootNavigator,
+  );
+  final CapturedThemes themes =
+      InheritedTheme.capture(from: context, to: navigatorState.context);
+  final CapturedData data =
+      Data.capture(from: context, to: navigatorState.context);
   return Navigator.of(context, rootNavigator: useRootNavigator).push(
     DialogRoute<T>(
       context: context,
@@ -81,6 +85,7 @@ Future<T?> showDialog<T>({
       useSafeArea: useSafeArea,
       settings: routeSettings,
       anchorPoint: anchorPoint,
+      data: data,
       traversalEdgeBehavior:
           traversalEdgeBehavior ?? TraversalEdgeBehavior.closedLoop,
     ),
