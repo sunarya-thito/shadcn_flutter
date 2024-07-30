@@ -361,6 +361,7 @@ void closePopover<T>(BuildContext context, [T? value]) {
 abstract class PopoverFuture<T> implements Future<T> {
   void remove();
   void dispose();
+  bool get isCompleted;
 }
 
 class _OverlayPopoverEntry<T> implements PopoverFuture<T> {
@@ -370,6 +371,9 @@ class _OverlayPopoverEntry<T> implements PopoverFuture<T> {
 
   bool _removed = false;
   bool _disposed = false;
+
+  @override
+  bool get isCompleted => completer.isCompleted;
 
   @override
   void remove() {
@@ -518,6 +522,7 @@ PopoverFuture<T?> showPopover<T>({
                         onTapOutside: () {
                           if (!modal) {
                             isClosed.value = true;
+                            completer.complete();
                           }
                         },
                         key: key,
@@ -609,9 +614,12 @@ class Popover {
 }
 
 class PopoverController extends ChangeNotifier {
+  bool _disposed = false;
   final List<Popover> _openPopovers = [];
 
-  bool get hasOpenPopover => _openPopovers.isNotEmpty;
+  bool get hasOpenPopover =>
+      _openPopovers.isNotEmpty &&
+      _openPopovers.any((element) => !element.entry.isCompleted);
 
   Iterable<Popover> get openPopovers => List.unmodifiable(_openPopovers);
 
@@ -665,11 +673,16 @@ class PopoverController extends ChangeNotifier {
       showDuration: showDuration,
       dismissDuration: hideDuration,
     );
-    _openPopovers.add(Popover._(key, res));
+    _openPopovers.add(Popover._(
+      key,
+      res,
+    ));
     notifyListeners();
     await res;
     _openPopovers.remove(key);
-    notifyListeners();
+    if (!_disposed) {
+      notifyListeners();
+    }
     return res;
   }
 
@@ -757,6 +770,8 @@ class PopoverController extends ChangeNotifier {
 
   @override
   void dispose() {
+    if (_disposed) return;
+    _disposed = true;
     disposePopovers();
     super.dispose();
   }

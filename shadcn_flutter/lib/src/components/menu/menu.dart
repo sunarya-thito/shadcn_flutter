@@ -303,7 +303,9 @@ class _MenuButtonState extends State<MenuButton> {
     }
     if (!listEquals(widget.subMenu, oldWidget.subMenu)) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        _children.value = widget.subMenu ?? [];
+        if (mounted) {
+          _children.value = widget.subMenu ?? [];
+        }
       });
     }
   }
