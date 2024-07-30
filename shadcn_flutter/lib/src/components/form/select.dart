@@ -2,12 +2,28 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/control/hover.dart';
 
 typedef SearchFilter<T> = int Function(T item, String query);
+typedef SearchIndexer = int Function(String query);
+
+class SearchResult {
+  final bool hasSelectedValue;
+  final int score;
+
+  const SearchResult(this.score, this.hasSelectedValue);
+}
+
+class SearchQuery<T> {
+  final String query;
+  final SearchFilter<T>? searchFilter;
+  final T? selectedValue;
+
+  const SearchQuery(this.query, this.searchFilter, this.selectedValue);
+}
 
 class SelectItemButton<T> extends StatelessWidget
     implements AbstractSelectItem<T> {
   final T value;
   final Widget child;
-  final int Function(String query)? computeIndexingScore;
+  final SearchIndexer? computeIndexingScore;
 
   const SelectItemButton({
     Key? key,
@@ -17,8 +33,16 @@ class SelectItemButton<T> extends StatelessWidget
   }) : super(key: key);
 
   @override
-  Iterable<T> get values {
-    return [value];
+  SearchResult search(SearchQuery<T> query) {
+    if (query.query.isEmpty) {
+      return SearchResult(0, query.selectedValue == value);
+    }
+    return SearchResult(
+      computeIndexingScore?.call(query.query) ??
+          query.searchFilter?.call(value, query.query) ??
+          0,
+      query.selectedValue == value,
+    );
   }
 
   @override
@@ -56,10 +80,15 @@ class SelectItemButton<T> extends StatelessWidget
 }
 
 class SelectGroup<T> extends StatelessWidget implements AbstractSelectItem<T> {
+  static int _keepOrderFilter<T>(T item, String query) {
+    return 1;
+  }
+
   final List<Widget>? headers;
   final List<AbstractSelectItem<T>> children;
   final List<Widget>? footers;
   final bool? showUnrelatedValues;
+  final SearchFilter<T>? searchFilter;
 
   const SelectGroup({
     Key? key,
@@ -67,11 +96,45 @@ class SelectGroup<T> extends StatelessWidget implements AbstractSelectItem<T> {
     this.footers,
     this.showUnrelatedValues,
     required this.children,
+    this.searchFilter,
   }) : super(key: key);
 
+  const SelectGroup.fixedOrder({
+    Key? key,
+    this.headers,
+    this.footers,
+    this.showUnrelatedValues,
+    required this.children,
+  })  : searchFilter = _keepOrderFilter,
+        super(key: key);
+
   @override
-  Iterable<T> get values {
-    return children.expand((element) => element.values);
+  SearchResult search(SearchQuery<T> query) {
+    if (searchFilter != null) {
+      query = SearchQuery(query.query, searchFilter, query.selectedValue);
+    }
+    if (query.query.isEmpty) {
+      bool hasSelectedValue = false;
+      if (searchFilter != _keepOrderFilter) {
+        for (var item in children) {
+          if (item.search(query).hasSelectedValue) {
+            hasSelectedValue = true;
+            break;
+          }
+        }
+      }
+      return SearchResult(0, hasSelectedValue);
+    }
+    int score = 0;
+    bool hasSelectedValue = false;
+    for (var item in children) {
+      var result = item.search(query);
+      score += result.score;
+      if (searchFilter != _keepOrderFilter && result.hasSelectedValue) {
+        hasSelectedValue = true;
+      }
+    }
+    return SearchResult(score, hasSelectedValue);
   }
 
   @override
@@ -83,23 +146,14 @@ class SelectGroup<T> extends StatelessWidget implements AbstractSelectItem<T> {
     for (int i = 0; i < this.children.length; i++) {
       var item = this.children[i];
       if (text == null || text.isEmpty) {
-        bool hasSelectedValue = false;
-        for (var val in item.values) {
-          if (val == searchData.value) {
-            hasSelectedValue = true;
-            break;
-          }
-        }
-        resultMap[item] = _SearchResult(0, i, hasSelectedValue);
+        var result = item.search(SearchQuery<T>(
+            text ?? '', searchData.searchFilter, searchData.value));
+        resultMap[item] = _SearchResult(0, i, result.hasSelectedValue);
       } else {
-        int score = 0;
-        bool hasSelectedValue = false;
-        for (var val in item.values) {
-          score += searchData.searchFilter?.call(val, text) ?? 0;
-          if (val == searchData.value) {
-            hasSelectedValue = true;
-          }
-        }
+        var result = item.search(
+            SearchQuery<T>(text, searchData.searchFilter, searchData.value));
+        int score = result.score;
+        bool hasSelectedValue = result.hasSelectedValue;
         if (score > 0 || searchData.showUnrelatedValues) {
           resultMap[item] = _SearchResult(score, i, hasSelectedValue);
         }
@@ -141,7 +195,7 @@ typedef SelectItemBuilder<T> = Widget Function(
     BuildContext context, SelectItemReporter selectItem, T? selectedValue);
 
 abstract class AbstractSelectItem<T> extends Widget {
-  Iterable<T> get values;
+  SearchResult search(SearchQuery<T> query);
 }
 
 class SelectItem<T> extends StatelessWidget implements AbstractSelectItem<T> {
@@ -155,8 +209,14 @@ class SelectItem<T> extends StatelessWidget implements AbstractSelectItem<T> {
   }) : super(key: key);
 
   @override
-  Iterable<T> get values {
-    return [value];
+  SearchResult search(SearchQuery<T> query) {
+    if (query.query.isEmpty) {
+      return SearchResult(0, query.selectedValue == value);
+    }
+    return SearchResult(
+      query.searchFilter?.call(value, query.query) ?? 0,
+      query.selectedValue == value,
+    );
   }
 
   @override
@@ -453,24 +513,15 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                       for (int i = 0; i < widget.children.length; i++) {
                         var item = widget.children[i];
                         if (text.isEmpty) {
-                          bool hasSelectedValue = false;
-                          for (var val in item.values) {
-                            if (val == widget.value) {
-                              hasSelectedValue = true;
-                              break;
-                            }
-                          }
+                          var result = item.search(SearchQuery<T>(
+                              text, widget.searchFilter, widget.value));
                           resultMap[item] =
-                              _SearchResult(0, i, hasSelectedValue);
+                              _SearchResult(0, i, result.hasSelectedValue);
                         } else {
-                          int score = 0;
-                          bool hasSelectedValue = false;
-                          for (var val in item.values) {
-                            score += widget.searchFilter?.call(val, text) ?? 0;
-                            if (val == widget.value) {
-                              hasSelectedValue = true;
-                            }
-                          }
+                          var result = item.search(SearchQuery<T>(
+                              text, widget.searchFilter, widget.value));
+                          int score = result.score;
+                          bool hasSelectedValue = result.hasSelectedValue;
                           if (score > 0 || widget.showUnrelatedValues) {
                             resultMap[item] =
                                 _SearchResult(score, i, hasSelectedValue);
