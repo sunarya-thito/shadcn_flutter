@@ -62,6 +62,16 @@ main() {
   );
 }
 
+Future<String?> getLatestPackageVersion() async {
+  const apiUrl = 'https://pub.dev/api/packages/shadcn_flutter';
+  var response = await http.get(Uri.parse(apiUrl));
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+    return data['latest']['version'];
+  }
+  return null;
+}
+
 int askForChoices(List<String> options, [bool lowercase = true]) {
   while (true) {
     var input = stdin.readLineSync();
@@ -98,8 +108,23 @@ void setupProject({
   print('Setting up project...');
   // exec: flutter pub add shadcn_flutter
   try {
+    var latestVersion = await getLatestPackageVersion();
+    if (latestVersion != null) {
+      print('Installing shadcn_flutter:$latestVersion...');
+    } else {
+      print('Installing shadcn_flutter...');
+      print(
+          'WARNING: Failed to get the latest version of shadcn_flutter. You might want to check the version to make sure you are using the latest version.');
+    }
     var process = await Process.start(
-        'flutter', ['pub', 'add', 'shadcn_flutter'],
+        'flutter',
+        [
+          'pub',
+          'add',
+          latestVersion != null
+              ? 'shadcn_flutter:\'^$latestVersion\''
+              : 'shadcn_flutter'
+        ],
         runInShell: true);
     process.stdout.transform(utf8.decoder).listen((data) {
       print(data);
