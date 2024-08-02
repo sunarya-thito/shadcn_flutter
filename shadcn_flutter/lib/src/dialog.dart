@@ -25,7 +25,10 @@ class DialogRoute<T> extends RawDialogRoute<T> {
             if (useSafeArea) {
               dialog = SafeArea(child: dialog);
             }
-            return dialog;
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: dialog,
+            );
           },
           barrierLabel: barrierLabel ?? 'Dismiss',
           transitionDuration: const Duration(milliseconds: 150),
