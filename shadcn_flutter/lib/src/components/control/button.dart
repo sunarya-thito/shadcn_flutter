@@ -1090,7 +1090,7 @@ IconThemeData _buttonStaticIconTheme(
 class PrimaryButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
-  final bool enabled;
+  final bool? enabled;
   final Widget? leading;
   final Widget? trailing;
   final AlignmentGeometry? alignment;
@@ -1104,7 +1104,7 @@ class PrimaryButton extends StatelessWidget {
     Key? key,
     required this.child,
     this.onPressed,
-    this.enabled = true,
+    this.enabled,
     this.leading,
     this.trailing,
     this.alignment,
@@ -1134,7 +1134,7 @@ class PrimaryButton extends StatelessWidget {
 class SecondaryButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
-  final bool enabled;
+  final bool? enabled;
   final Widget? leading;
   final Widget? trailing;
   final AlignmentGeometry? alignment;
@@ -1148,7 +1148,7 @@ class SecondaryButton extends StatelessWidget {
     Key? key,
     required this.child,
     this.onPressed,
-    this.enabled = true,
+    this.enabled,
     this.leading,
     this.trailing,
     this.alignment,
@@ -1178,7 +1178,7 @@ class SecondaryButton extends StatelessWidget {
 class OutlineButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
-  final bool enabled;
+  final bool? enabled;
   final Widget? leading;
   final Widget? trailing;
   final AlignmentGeometry? alignment;
@@ -1192,7 +1192,7 @@ class OutlineButton extends StatelessWidget {
     Key? key,
     required this.child,
     this.onPressed,
-    this.enabled = true,
+    this.enabled,
     this.leading,
     this.trailing,
     this.alignment,
@@ -1222,7 +1222,7 @@ class OutlineButton extends StatelessWidget {
 class GhostButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
-  final bool enabled;
+  final bool? enabled;
   final Widget? leading;
   final Widget? trailing;
   final AlignmentGeometry? alignment;
@@ -1236,7 +1236,7 @@ class GhostButton extends StatelessWidget {
     Key? key,
     required this.child,
     this.onPressed,
-    this.enabled = true,
+    this.enabled,
     this.leading,
     this.trailing,
     this.alignment,
@@ -1266,7 +1266,7 @@ class GhostButton extends StatelessWidget {
 class LinkButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
-  final bool enabled;
+  final bool? enabled;
   final Widget? leading;
   final Widget? trailing;
   final AlignmentGeometry? alignment;
@@ -1280,7 +1280,7 @@ class LinkButton extends StatelessWidget {
     Key? key,
     required this.child,
     this.onPressed,
-    this.enabled = true,
+    this.enabled,
     this.leading,
     this.trailing,
     this.alignment,
@@ -1310,7 +1310,7 @@ class LinkButton extends StatelessWidget {
 class TextButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
-  final bool enabled;
+  final bool? enabled;
   final Widget? leading;
   final Widget? trailing;
   final AlignmentGeometry? alignment;
@@ -1324,7 +1324,7 @@ class TextButton extends StatelessWidget {
     Key? key,
     required this.child,
     this.onPressed,
-    this.enabled = true,
+    this.enabled,
     this.leading,
     this.trailing,
     this.alignment,
@@ -1354,7 +1354,7 @@ class TextButton extends StatelessWidget {
 class DestructiveButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
-  final bool enabled;
+  final bool? enabled;
   final Widget? leading;
   final Widget? trailing;
   final AlignmentGeometry? alignment;
@@ -1368,7 +1368,7 @@ class DestructiveButton extends StatelessWidget {
     Key? key,
     required this.child,
     this.onPressed,
-    this.enabled = true,
+    this.enabled,
     this.leading,
     this.trailing,
     this.alignment,
@@ -1399,7 +1399,7 @@ class DestructiveButton extends StatelessWidget {
 class TabButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
-  final bool enabled;
+  final bool? enabled;
   final Widget? leading;
   final Widget? trailing;
   final AlignmentGeometry? alignment;
@@ -1413,7 +1413,7 @@ class TabButton extends StatelessWidget {
     Key? key,
     required this.child,
     this.onPressed,
-    this.enabled = true,
+    this.enabled,
     this.leading,
     this.trailing,
     this.alignment,
