@@ -63,7 +63,8 @@ class DrawerWrapper extends StatefulWidget {
   final Size extraSize;
   final Size size;
 
-  const DrawerWrapper({super.key, 
+  const DrawerWrapper({
+    super.key,
     required this.position,
     required this.child,
     this.expands = false,
@@ -185,7 +186,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
               AnimatedBuilder(
                   animation: _extraOffset,
                   builder: (context, child) {
-                    return gap(
+                    return Gap(
                         widget.extraSize.width + _extraOffset.value.max(0));
                   }),
               AnimatedBuilder(
@@ -198,9 +199,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                 },
                 animation: _extraOffset,
               ),
-              gap(16),
+              Gap(16),
               buildDraggableBar(theme),
-              gap(16),
+              Gap(16),
             ],
           ),
         );
@@ -240,9 +241,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              gap(16),
+              Gap(16),
               buildDraggableBar(theme),
-              gap(16),
+              Gap(16),
               AnimatedBuilder(
                 builder: (context, child) {
                   return Transform.scale(
@@ -256,7 +257,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
               AnimatedBuilder(
                   animation: _extraOffset,
                   builder: (context, child) {
-                    return gap(
+                    return Gap(
                         widget.extraSize.width + _extraOffset.value.max(0));
                   }),
             ],
@@ -301,7 +302,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
               AnimatedBuilder(
                   animation: _extraOffset,
                   builder: (context, child) {
-                    return gap(
+                    return Gap(
                         widget.extraSize.height + _extraOffset.value.max(0));
                   }),
               AnimatedBuilder(
@@ -314,9 +315,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                 },
                 animation: _extraOffset,
               ),
-              gap(16),
+              Gap(16),
               buildDraggableBar(theme),
-              gap(16),
+              Gap(16),
             ],
           ),
         );
@@ -356,9 +357,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              gap(16),
+              Gap(16),
               buildDraggableBar(theme),
-              gap(16),
+              Gap(16),
               AnimatedBuilder(
                 builder: (context, child) {
                   return Transform.scale(
@@ -372,7 +373,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
               AnimatedBuilder(
                   animation: _extraOffset,
                   builder: (context, child) {
-                    return gap(
+                    return Gap(
                         widget.extraSize.height + _extraOffset.value.max(0));
                   }),
             ],
@@ -445,7 +446,8 @@ Future<void> closeSheet(BuildContext context) {
 
 class SheetWrapper extends DrawerWrapper {
   const SheetWrapper(
-      {super.key, required super.position,
+      {super.key,
+      required super.position,
       required super.child,
       required super.size,
       super.draggable = false,

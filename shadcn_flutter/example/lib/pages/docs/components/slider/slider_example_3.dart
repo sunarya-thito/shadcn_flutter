@@ -24,7 +24,7 @@ class _SliderExample3State extends State<SliderExample3> {
             });
           },
         ),
-        gap(16),
+        Gap(16),
         Text('Value: ${value.value}'),
       ],
     );

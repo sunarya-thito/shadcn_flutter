@@ -30,7 +30,7 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.title != null) Text(widget.title!).h2(),
-        if (widget.title != null) gap(12),
+        if (widget.title != null) Gap(12),
         TabList(
           index: index,
           children: [
@@ -52,7 +52,7 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
             ),
           ],
         ),
-        gap(12),
+        Gap(12),
         RepaintBoundary(
           child: Offstage(
             offstage: index != 0,

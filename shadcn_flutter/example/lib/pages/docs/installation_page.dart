@@ -18,9 +18,10 @@ class _InstallationPageState extends State<InstallationPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text('Installation').h1(),
-          const Text('Install and configure shadcn_flutter in your project.').lead(),
+          const Text('Install and configure shadcn_flutter in your project.')
+              .lead(),
           const Text('Install using CLI').h2(),
-          gap(32),
+          Gap(32),
           // 1. Activate "shadcn_flutter_cli" package
           // 2. Run "flutter pub global run shadcn_flutter_cli:setup"
           Steps(
@@ -38,7 +39,8 @@ class _InstallationPageState extends State<InstallationPage> {
               StepItem(
                 title: const Text('Run the setup command'),
                 content: [
-                  const Text('Run the setup command to add shadcn_flutter to your project.')
+                  const Text(
+                          'Run the setup command to add shadcn_flutter to your project.')
                       .p(),
                   const CodeSnippet(
                     code: 'flutter pub global run shadcn_flutter_cli:setup',
@@ -49,13 +51,14 @@ class _InstallationPageState extends State<InstallationPage> {
             ],
           ),
           const Text('Install Manually').h2(),
-          gap(32),
+          Gap(32),
           Steps(
             children: [
               StepItem(
                 title: const Text('Creating a new Flutter project'),
                 content: [
-                  const Text('Create a new Flutter project using the following command:')
+                  const Text(
+                          'Create a new Flutter project using the following command:')
                       .p(),
                   const CodeSnippet(
                     code: 'flutter create my_app\ncd my_app',
@@ -66,7 +69,8 @@ class _InstallationPageState extends State<InstallationPage> {
               StepItem(
                 title: const Text('Adding the dependency'),
                 content: [
-                  const Text('Next, add the shadcn_flutter dependency to your project.')
+                  const Text(
+                          'Next, add the shadcn_flutter dependency to your project.')
                       .p(),
                   const CodeSnippet(
                     code: 'flutter pub add shadcn_flutter',
@@ -77,7 +81,8 @@ class _InstallationPageState extends State<InstallationPage> {
               StepItem(
                 title: const Text('Importing the package'),
                 content: [
-                  const Text('Now, you can import the package in your Dart code.')
+                  const Text(
+                          'Now, you can import the package in your Dart code.')
                       .p(),
                   const CodeSnippet(
                     code:

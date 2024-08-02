@@ -113,7 +113,7 @@ class _StepperExample6State extends State<StepperExample6> {
             ),
           ],
         ),
-        gap(16),
+        Gap(16),
         Stepper(
           controller: controller,
           direction: direction,

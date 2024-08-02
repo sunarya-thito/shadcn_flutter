@@ -20,7 +20,7 @@ class DialogExample1 extends StatelessWidget {
                   children: [
                     const Text(
                         'Make changes to your profile here. Click save when you\'re done'),
-                    gap(16),
+                    Gap(16),
                     Form(
                       controller: controller,
                       child: const FormTableLayout(rows: [

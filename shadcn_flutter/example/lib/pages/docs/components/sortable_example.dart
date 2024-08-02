@@ -1,7 +1,5 @@
 import 'package:example/pages/docs/component_page.dart';
 import 'package:example/pages/docs/components/sortable/sortable_example_1.dart';
-import 'package:example/pages/docs/components/sortable/sortable_example_2.dart';
-import 'package:example/pages/docs/components/sortable/sortable_example_3.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
@@ -22,16 +20,16 @@ class SortableExample extends StatelessWidget {
           child: SortableExample1(),
           path: 'lib/pages/docs/components/sortable/sortable_example_1.dart',
         ),
-        WidgetUsageExample(
-          title: 'Multi Container Example',
-          child: SortableExample2(),
-          path: 'lib/pages/docs/components/sortable/sortable_example_2.dart',
-        ),
-        WidgetUsageExample(
-          title: 'Lock Drag Axis Example',
-          child: SortableExample3(),
-          path: 'lib/pages/docs/components/sortable/sortable_example_3.dart',
-        ),
+        // WidgetUsageExample(
+        //   title: 'Multi Container Example',
+        //   child: SortableExample2(),
+        //   path: 'lib/pages/docs/components/sortable/sortable_example_2.dart',
+        // ),
+        // WidgetUsageExample(
+        //   title: 'Lock Drag Axis Example',
+        //   child: SortableExample3(),
+        //   path: 'lib/pages/docs/components/sortable/sortable_example_3.dart',
+        // ),
       ],
     );
   }

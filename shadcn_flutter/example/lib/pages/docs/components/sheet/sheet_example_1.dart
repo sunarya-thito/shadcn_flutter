@@ -57,16 +57,18 @@ class _SheetExample1State extends State<SheetExample1> {
                 ),
               ],
             ),
-            gap(8),
-            const Text('Make changes to your profile here. Click save when you\'re done.')
+            Gap(8),
+            const Text(
+                    'Make changes to your profile here. Click save when you\'re done.')
                 .muted(),
-            gap(16),
+            Gap(16),
             FormTableLayout(
               rows: [
                 FormRow<String>(
                   key: const FormKey(#name),
                   label: const Text('Name'),
-                  validator: const NotEmptyValidator() & const LengthValidator(min: 4),
+                  validator:
+                      const NotEmptyValidator() & const LengthValidator(min: 4),
                   child: const TextField(
                     initialValue: 'Thito Yalasatria Sunarya',
                     placeholder: 'Your fullname',
@@ -75,7 +77,8 @@ class _SheetExample1State extends State<SheetExample1> {
                 FormRow<String>(
                   key: const FormKey(#username),
                   label: const Text('Username'),
-                  validator: const NotEmptyValidator() & const LengthValidator(min: 4),
+                  validator:
+                      const NotEmptyValidator() & const LengthValidator(min: 4),
                   child: const TextField(
                     initialValue: '@sunarya-thito',
                     placeholder: 'Your username',
@@ -83,7 +86,7 @@ class _SheetExample1State extends State<SheetExample1> {
                 ),
               ],
             ),
-            gap(16),
+            Gap(16),
             Align(
               alignment: Alignment.centerRight,
               child: FormErrorBuilder(

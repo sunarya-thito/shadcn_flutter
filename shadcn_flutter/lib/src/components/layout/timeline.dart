@@ -44,7 +44,7 @@ class Timeline extends StatelessWidget {
                 child: data.time.medium().small(),
               ),
             ),
-            gap(16),
+            Gap(16),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -69,7 +69,7 @@ class Timeline extends StatelessWidget {
                   ),
               ],
             ),
-            gap(16),
+            Gap(16),
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -80,7 +80,7 @@ class Timeline extends StatelessWidget {
                       .secondaryForeground()
                       .base()
                       .withPadding(left: 4),
-                  if (data.content != null) gap(8),
+                  if (data.content != null) Gap(8),
                   if (data.content != null)
                     Expanded(child: data.content!.muted().small()),
                 ],

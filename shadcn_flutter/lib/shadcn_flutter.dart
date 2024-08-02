@@ -14,6 +14,8 @@ export 'package:flutter/material.dart'
     hide TextButton;
 export 'package:flutter/widgets.dart'
     hide ErrorWidgetBuilder, Form, FormState, Table, TableRow, TableCell;
+// bundle from gap
+export 'package:gap/gap.dart';
 // bundle from https://pub.dev/packages/phonecodes
 export 'package:phonecodes/phonecodes.dart' show Countries, Country;
 // bundle from skeletonizer https://pub.dev/packages/skeletonizer
@@ -49,6 +51,7 @@ export 'src/components/form/phone_input.dart';
 export 'src/components/form/radio_group.dart';
 export 'src/components/form/select.dart';
 export 'src/components/form/slider.dart';
+export 'src/components/form/sortable.dart';
 export 'src/components/form/star_rating.dart';
 export 'src/components/form/switch.dart';
 export 'src/components/form/text_area.dart';
@@ -67,7 +70,6 @@ export 'src/components/layout/media_query.dart';
 export 'src/components/layout/outlined_container.dart';
 export 'src/components/layout/resizable.dart';
 export 'src/components/layout/scaffold.dart';
-export 'src/components/layout/sortable.dart';
 export 'src/components/layout/stage_container.dart';
 export 'src/components/layout/stepper.dart';
 export 'src/components/layout/steps.dart';

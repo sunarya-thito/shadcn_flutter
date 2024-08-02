@@ -22,7 +22,7 @@ class _SliderExample2State extends State<SliderExample2> {
             });
           },
         ),
-        gap(16),
+        Gap(16),
         Text('Value: ${value.start} - ${value.end}'),
       ],
     );

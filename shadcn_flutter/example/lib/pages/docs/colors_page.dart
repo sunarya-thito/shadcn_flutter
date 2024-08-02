@@ -73,7 +73,7 @@ class _ColorsPageState extends State<ColorsPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Text('Use this code to display this color:'),
-                gap(8),
+                Gap(8),
                 CodeSnippet(
                   code: shade == 500
                       ? 'Colors.${name.toLowerCase()}'
@@ -129,7 +129,7 @@ class _ColorsPageState extends State<ColorsPage> {
                   ),
                 ),
               ),
-              gap(8),
+              Gap(8),
               Text(
                 '${shade == 500 ? '500 (Base)' : shade}',
                 textAlign: TextAlign.center,
@@ -214,7 +214,7 @@ class _ColorsPageState extends State<ColorsPage> {
                   );
                 }),
               ),
-              gap(8),
+              Gap(8),
               Text(
                 '${shade == 500 ? '500 (Base)' : shade}',
                 textAlign: TextAlign.center,
@@ -311,7 +311,7 @@ class _ColorsPageState extends State<ColorsPage> {
                       ),
                     ],
                   ),
-                  gap(8),
+                  Gap(8),
                   buildColorRow(context, color.key, color.value),
                 ],
               ),
@@ -319,7 +319,7 @@ class _ColorsPageState extends State<ColorsPage> {
               top: 32,
             ),
           const Text('Generate Color').h2().anchored(_customColorKey),
-          gap(32),
+          Gap(32),
           TabList(
             index: _tabIndex,
             children: [
@@ -341,7 +341,7 @@ class _ColorsPageState extends State<ColorsPage> {
               ),
             ],
           ),
-          gap(12),
+          Gap(12),
           Offstage(
             offstage: _tabIndex != 0,
             child: Column(
@@ -349,7 +349,7 @@ class _ColorsPageState extends State<ColorsPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildColorTab(context),
-                gap(8),
+                Gap(8),
                 _buildColorOptions(context),
               ],
             ),
@@ -467,7 +467,7 @@ class _ColorsPageState extends State<ColorsPage> {
                 },
               ),
             ),
-            gap(16),
+            Gap(16),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

@@ -79,16 +79,16 @@ class _ComponentsPageState extends State<ComponentsPage> {
             const Text(
                     'Beautifully designed components from Shadcn/UI is now available for Flutter.')
                 .lead(),
-            gap(16),
+            Gap(16),
             const Align(
               alignment: Alignment.centerLeft,
               child: PrimaryBadge(
                 child: Text('Work in Progress'),
               ),
             ),
-            gap(32),
+            Gap(32),
             const Text('Animation').h2().anchored(animationKey),
-            gap(16),
+            Gap(16),
             wrap(children: [
               ComponentCard(
                 name: 'animated_value_builder',
@@ -158,7 +158,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
             ]),
             const Text('Disclosure').h2().anchored(disclosureKey),
-            gap(16),
+            Gap(16),
             wrap(
               children: [
                 const ComponentCard(
@@ -253,7 +253,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ],
             ),
             const Text('Feedback').h2().anchored(feedbackKey),
-            gap(16),
+            Gap(16),
             wrap(children: [
               const ComponentCard(
                 name: 'alert',
@@ -318,7 +318,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         // Note: Avatar and other Image related widget needs its own skeleton
                         trailing: const Icon(Icons.arrow_forward),
                       ).asSkeleton(),
-                      gap(16),
+                      Gap(16),
                       Basic(
                         title: const Text('Skeleton Example 1'),
                         content: const Text(
@@ -329,7 +329,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         // Note: Avatar and other Image related widget needs its own skeleton
                         trailing: const Icon(Icons.arrow_forward),
                       ).asSkeleton(),
-                      gap(16),
+                      Gap(16),
                       Basic(
                         title: const Text('Skeleton Example 1'),
                         content: const Text(
@@ -377,7 +377,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
             ]),
             const Text('Forms').h2().anchored(formsKey),
-            gap(16),
+            Gap(16),
             wrap(children: [
               ComponentCard(
                 name: 'button',
@@ -480,7 +480,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     const Card(
                       child: InputOTPExample2(),
                     ),
-                    gap(24),
+                    Gap(24),
                     Transform.translate(
                       offset: const Offset(-150, 0),
                       child: Card(
@@ -627,7 +627,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
             ]),
             const Text('Layout').h2().anchored(layoutKey),
-            gap(16),
+            Gap(16),
             wrap(children: [
               const ComponentCard(
                 name: 'card',
@@ -682,7 +682,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
             ]),
             const Text('Navigation').h2().anchored(navigationKey),
-            gap(16),
+            Gap(16),
             wrap(children: [
               ComponentCard(
                 title: 'Breadcrumb',
@@ -750,7 +750,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           ),
                         ),
                       ),
-                      gap(4),
+                      Gap(4),
                       Container(
                         width: 192,
                         margin: const EdgeInsets.only(left: 48),
@@ -854,7 +854,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           ),
                         ],
                       ),
-                      gap(8),
+                      Gap(8),
                       OutlinedContainer(
                         borderRadius: theme.radiusMd,
                         child: Padding(
@@ -951,7 +951,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
             ]),
             const Text('Surfaces').h2().anchored(surfacesKey),
-            gap(16),
+            Gap(16),
             wrap(children: [
               ComponentCard(
                   title: 'Dialog',
@@ -964,7 +964,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                       children: [
                         const Text(
                             'Make changes to your profile here. Click save when you\'re done'),
-                        gap(16),
+                        Gap(16),
                         const Form(
                           child: FormTableLayout(rows: [
                             FormRow<String>(
@@ -1003,7 +1003,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Drawer!').large().medium(),
-                      gap(4),
+                      Gap(4),
                       const Text(
                               'This is a drawer that you can use to display content')
                           .muted(),
@@ -1021,7 +1021,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text('@flutter').medium().underline(),
-                        gap(16),
+                        Gap(16),
                         Card(
                           child: Basic(
                             leading: FlutterLogo(),
@@ -1054,7 +1054,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Sheet!').large().medium(),
-                      gap(4),
+                      Gap(4),
                       const Text(
                               'This is a sheet that you can use to display content')
                           .muted(),
@@ -1076,7 +1076,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           child: const Text('Delete'),
                           onPressed: () {},
                         ),
-                        gap(4),
+                        Gap(4),
                         const TooltipContainer(
                           child: Text('Click to delete this item'),
                         ),
@@ -1101,7 +1101,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const DatePickerExample1(),
-                      gap(4),
+                      Gap(4),
                       const CalendarExample2(),
                     ],
                   ),
@@ -1109,7 +1109,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
             ]),
             const Text('Data Display').h2().anchored(dataDisplayKey),
-            gap(16),
+            Gap(16),
             wrap(children: [
               ComponentCard(
                 name: 'avatar',
@@ -1123,7 +1123,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         photoUrl:
                             'https://avatars.githubusercontent.com/u/64018564?v=4',
                       ),
-                      gap(16),
+                      Gap(16),
                       Avatar(
                         initials: Avatar.getInitials('sunarya-thito'),
                       ),
@@ -1143,7 +1143,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               const WIPComponentCard(title: 'Table'),
             ]),
             const Text('Utilities').h2().anchored(utilitiesKey),
-            gap(16),
+            Gap(16),
             wrap(children: [
               ComponentCard(
                 name: 'badge',
@@ -1182,7 +1182,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     const CustomPaint(
                       painter: CursorPainter(),
                     ),
-                    gap(24),
+                    Gap(24),
                     SizedBox(
                       width: 192,
                       child: MenuPopup(children: [
@@ -1251,7 +1251,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                             onPressed: () {},
                             child: const Text('Options'),
                           ),
-                          gap(8),
+                          Gap(8),
                           SizedBox(
                             width: 192,
                             child: MenuPopup(children: [

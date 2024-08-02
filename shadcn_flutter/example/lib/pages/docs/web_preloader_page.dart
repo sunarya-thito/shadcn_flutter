@@ -15,24 +15,28 @@ class WebPreloaderPage extends StatelessWidget {
             const Text('Web Preloader').h1(),
             const Text('Customize how flutter load your web application')
                 .lead(),
-            gap(32),
+            Gap(32),
             Steps(
               children: [
                 StepItem(
                   title: const Text('Creating a web directory'),
                   content: [
-                    const Text('If you don\'t have a web directory, create one.').p(),
+                    const Text(
+                            'If you don\'t have a web directory, create one.')
+                        .p(),
                     const CodeSnippet(
                       code: 'flutter create . --platforms=web',
                       mode: 'shell',
                     ).p(),
-                    const Text('* If you\'re using legacy flutter web, you need to upgrade it using the command above. ')
+                    const Text(
+                            '* If you\'re using legacy flutter web, you need to upgrade it using the command above. ')
                         .thenButton(
                             onPressed: () {
                               openInNewTab(
                                   'https://docs.flutter.dev/platform-integration/web/initialization#upgrade-an-older-project');
                             },
-                            child: const Text('Click here for more information.'))
+                            child:
+                                const Text('Click here for more information.'))
                         .italic()
                         .muted()
                         .withPadding(top: 8),
@@ -41,7 +45,8 @@ class WebPreloaderPage extends StatelessWidget {
                 StepItem(
                   title: const Text('Creating a "flutter_bootstrap.js" file'),
                   content: [
-                    const Text('Next, create a "flutter_bootstrap.js" file in your web directory. Fill it with the following code:')
+                    const Text(
+                            'Next, create a "flutter_bootstrap.js" file in your web directory. Fill it with the following code:')
                         .p(),
                     const CodeSnippetFutureBuilder(
                       path: 'web/flutter_bootstrap.js',
@@ -53,9 +58,11 @@ class WebPreloaderPage extends StatelessWidget {
                 StepItem(
                   title: const Text('Customizing the preloader'),
                   content: [
-                    const Text('You can customize the preloader by modifying the "flutter_bootstrap.js" file.')
+                    const Text(
+                            'You can customize the preloader by modifying the "flutter_bootstrap.js" file.')
                         .p(),
-                    const Text('For example, you can change the background color of the preloader by modifying the following line:')
+                    const Text(
+                            'For example, you can change the background color of the preloader by modifying the following line:')
                         .p(),
                     const CodeSnippet(
                       code: 'const shadcnLoaderConfig = {\n'

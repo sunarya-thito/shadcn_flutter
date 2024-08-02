@@ -283,9 +283,9 @@ class _CommandItemState extends State<CommandItem> {
               child: Row(
                 children: [
                   if (widget.leading != null) widget.leading!,
-                  if (widget.leading != null) gap(8),
+                  if (widget.leading != null) Gap(8),
                   Expanded(child: widget.title),
-                  if (widget.trailing != null) gap(8),
+                  if (widget.trailing != null) Gap(8),
                   if (widget.trailing != null)
                     widget.trailing!.muted().xSmall(),
                 ],

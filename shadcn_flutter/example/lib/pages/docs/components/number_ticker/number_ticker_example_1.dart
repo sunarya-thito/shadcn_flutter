@@ -23,7 +23,7 @@ class _NumberTickerExample1State extends State<NumberTickerExample1> {
             return NumberFormat.compact().format(number);
           },
         ),
-        gap(24),
+        Gap(24),
         TextField(
           initialValue: _number.toString(),
           controller: _controller,

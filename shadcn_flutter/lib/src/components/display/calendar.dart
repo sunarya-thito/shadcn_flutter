@@ -96,7 +96,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                 ),
               ],
             ),
-            gap(16),
+            Gap(16),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -111,7 +111,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                   },
                   selectionMode: CalendarSelectionMode.range,
                 ),
-                gap(16),
+                Gap(16),
                 Calendar(
                   value: _value,
                   view: _view.next,
@@ -161,7 +161,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
               ),
             ],
           ),
-          gap(16),
+          Gap(16),
           Calendar(
             value: _value,
             view: _view,
@@ -717,7 +717,7 @@ class Calendar extends StatelessWidget {
     for (int i = 0; i < days.length; i += 7) {
       // there won't be any array out of bounds error
       // because we made sure that the total days is 42
-      rows.add(gap(8));
+      rows.add(Gap(8));
       rows.add(Row(
         children: days.sublist(i, i + 7),
       ));

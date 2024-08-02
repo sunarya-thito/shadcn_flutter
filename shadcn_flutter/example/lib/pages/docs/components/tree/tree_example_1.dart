@@ -112,7 +112,7 @@ class _TreeExample1State extends State<TreeExample1> {
             ),
           ),
         ),
-        gap(16),
+        Gap(16),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -124,7 +124,7 @@ class _TreeExample1State extends State<TreeExample1> {
               },
               child: Text('Expand All'),
             ),
-            gap(8),
+            Gap(8),
             PrimaryButton(
               onPressed: () {
                 setState(() {
@@ -135,7 +135,7 @@ class _TreeExample1State extends State<TreeExample1> {
             ),
           ],
         ),
-        gap(8),
+        Gap(8),
         Checkbox(
           state: expandIcon ? CheckboxState.checked : CheckboxState.unchecked,
           onChanged: (value) {
@@ -145,7 +145,7 @@ class _TreeExample1State extends State<TreeExample1> {
           },
           trailing: const Text('Expand Icon'),
         ),
-        gap(8),
+        Gap(8),
         Checkbox(
           state: usePath ? CheckboxState.checked : CheckboxState.unchecked,
           onChanged: (value) {

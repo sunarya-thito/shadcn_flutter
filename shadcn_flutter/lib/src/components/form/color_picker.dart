@@ -50,7 +50,7 @@ class HSVColorPicker extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(child: Text(colorToHex(value.toColor(), showAlpha))),
-              gap(8),
+              Gap(8),
               AspectRatio(
                 aspectRatio: 1,
                 child: Container(
@@ -333,7 +333,7 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
               ),
             ),
           ),
-          gap(16),
+          Gap(16),
           IntrinsicWidth(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -362,7 +362,7 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                     ),
                   ),
                 ),
-                if (widget.showAlpha) gap(16),
+                if (widget.showAlpha) Gap(16),
                 // alpha
                 if (widget.showAlpha)
                   SizedBox(
@@ -385,7 +385,7 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                       ),
                     ),
                   ),
-                gap(16),
+                Gap(16),
                 TextField(
                   controller: _hexController,
                   onEditingComplete: () {
@@ -411,7 +411,7 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                     }
                   },
                 ),
-                gap(16),
+                Gap(16),
                 Row(
                   children: [
                     Expanded(
@@ -420,7 +420,7 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Text('Red'),
-                        gap(4),
+                        Gap(4),
                         TextField(
                           controller: _redController,
                           onEditingComplete: () {
@@ -437,14 +437,14 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                         ),
                       ],
                     )),
-                    gap(16),
+                    Gap(16),
                     Expanded(
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Text('Green'),
-                        gap(4),
+                        Gap(4),
                         TextField(
                           controller: _greenController,
                           onEditingComplete: () {
@@ -461,14 +461,14 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                         ),
                       ],
                     )),
-                    gap(16),
+                    Gap(16),
                     Expanded(
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Text('Blue'),
-                        gap(4),
+                        Gap(4),
                         TextField(
                           controller: _blueController,
                           onEditingComplete: () {
@@ -487,14 +487,14 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                       ],
                     )),
                     if (widget.showAlpha) ...[
-                      gap(16),
+                      Gap(16),
                       Expanded(
                           child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Text('Alpha'),
-                          gap(4),
+                          Gap(4),
                           TextField(
                             onEditingComplete: () {
                               widget.onColorChanged(HSVColor.fromAHSV(
@@ -617,7 +617,7 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
               ),
             ),
           ),
-          gap(16),
+          Gap(16),
           SizedBox(
             height: 32,
             child: Container(
@@ -641,7 +641,7 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
               ),
             ),
           ),
-          if (widget.showAlpha) gap(16),
+          if (widget.showAlpha) Gap(16),
           // alpha
           if (widget.showAlpha)
             SizedBox(
@@ -664,7 +664,7 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                 ),
               ),
             ),
-          gap(16),
+          Gap(16),
           TextField(
             controller: _hexController,
             onEditingComplete: () {
@@ -690,7 +690,7 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
               }
             },
           ),
-          gap(16),
+          Gap(16),
           Row(
             children: [
               Expanded(
@@ -699,7 +699,7 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text('Red'),
-                  gap(4),
+                  Gap(4),
                   TextField(
                     controller: _redController,
                     onEditingComplete: () {
@@ -715,14 +715,14 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                   ),
                 ],
               )),
-              gap(16),
+              Gap(16),
               Expanded(
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text('Green'),
-                  gap(4),
+                  Gap(4),
                   TextField(
                     controller: _greenController,
                     onEditingComplete: () {
@@ -738,14 +738,14 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                   ),
                 ],
               )),
-              gap(16),
+              Gap(16),
               Expanded(
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text('Blue'),
-                  gap(4),
+                  Gap(4),
                   TextField(
                     controller: _blueController,
                     onEditingComplete: () {
@@ -763,14 +763,14 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                 ],
               )),
               if (widget.showAlpha) ...[
-                gap(16),
+                Gap(16),
                 Expanded(
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text('Alpha'),
-                    gap(4),
+                    Gap(4),
                     TextField(
                       onEditingComplete: () {
                         widget.onColorChanged(HSLColor.fromAHSL(

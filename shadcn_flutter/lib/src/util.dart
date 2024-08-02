@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gap/gap.dart';
 
 const kDefaultDuration = Duration(milliseconds: 150);
 
@@ -49,13 +48,6 @@ class _WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
   Widget build(BuildContext context) {
     return widget.child;
   }
-}
-
-Widget gap(double gap, {double? crossGap}) {
-  return Gap(
-    gap,
-    crossAxisExtent: crossGap,
-  );
 }
 
 extension Joinable on List<Widget> {

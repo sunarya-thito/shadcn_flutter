@@ -52,7 +52,7 @@ class _IconsPageState extends State<IconsPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Text('Use this code to display this icon:'),
-                gap(8),
+                Gap(8),
                 CodeSnippet(
                   code: 'Icon($className.${entry.key})',
                   mode: 'dart',
@@ -104,22 +104,23 @@ class _IconsPageState extends State<IconsPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           const Text('Icons').h1(),
-                          const Text('Use bundled icons in your application').lead(),
-                          gap(32),
+                          const Text('Use bundled icons in your application')
+                              .lead(),
+                          Gap(32),
                           const Alert(
                             leading: Icon(Icons.info_outline),
                             content: Text(
                                 'Some icons might be visually glitched, this will be fixed in the future.'),
                             title: Text('Heads up!'),
                           ).withAlign(Alignment.centerLeft),
-                          gap(32),
+                          Gap(32),
                           const Text(
                               'Currently there are two icon sets bundled with shadcn_flutter:'),
                           Text('Radix Icons (${kRadixIcons.length} Icons)')
                               .li(),
                           Text('Bootstrap Icons (${kBootstrapIcons.length} Icons)')
                               .li(),
-                          gap(32),
+                          Gap(32),
                           TextField(
                             leading: const Icon(Icons.search),
                             placeholder: 'Search icons',
@@ -173,7 +174,7 @@ class _IconsPageState extends State<IconsPage> {
                     additionalLength,
                 padding: const EdgeInsets.only(bottom: 32),
                 separatorBuilder: (context, index) {
-                  return gap(8);
+                  return Gap(8);
                 },
                 itemBuilder: (context, index) {
                   if (filteredRadixIcons.isNotEmpty) {
@@ -195,7 +196,7 @@ class _IconsPageState extends State<IconsPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               OutlinedContainer(child: Icon(e.value, size: 48)),
-                              gap(24),
+                              Gap(24),
                               Text(e.key),
                             ],
                           ));
@@ -221,7 +222,7 @@ class _IconsPageState extends State<IconsPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               OutlinedContainer(child: Icon(e.value, size: 48)),
-                              gap(24),
+                              Gap(24),
                               Text(e.key),
                             ],
                           ));

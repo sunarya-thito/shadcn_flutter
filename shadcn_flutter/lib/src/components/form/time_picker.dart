@@ -204,7 +204,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
                 ),
               ],
               if (!widget.use24HourFormat) ...[
-                gap(8),
+                Gap(8),
                 IntrinsicWidth(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,

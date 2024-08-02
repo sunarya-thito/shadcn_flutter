@@ -537,7 +537,7 @@ class DocsPageState extends State<DocsPage> {
                                                         Text(page.title),
                                                     ],
                                                   ),
-                                                  gap(16),
+                                                  Gap(16),
                                                   widget.child,
                                                 ],
                                               ),
@@ -583,7 +583,7 @@ class DocsPageState extends State<DocsPage> {
                                                         Text(page.title),
                                                     ],
                                                   ),
-                                                  gap(16),
+                                                  Gap(16),
                                                   Expanded(child: widget.child),
                                                 ],
                                               ),
@@ -676,7 +676,7 @@ class DocsPageState extends State<DocsPage> {
                                             },
                                             child: const Icon(Icons.menu),
                                           ),
-                                          gap(18),
+                                          Gap(18),
                                           Expanded(
                                             child: OutlineButton(
                                               onPressed: () {
@@ -691,7 +691,7 @@ class DocsPageState extends State<DocsPage> {
                                                   .normal(),
                                             ),
                                           ),
-                                          gap(18),
+                                          Gap(18),
                                           GhostButton(
                                             density: ButtonDensity.icon,
                                             onPressed: () {
@@ -742,12 +742,12 @@ class DocsPageState extends State<DocsPage> {
                                           const FlutterLogo(
                                             size: 32,
                                           ),
-                                          gap(18),
+                                          Gap(18),
                                           const Text(
                                             'shadcn_flutter',
                                           ).textLarge().mono(),
                                           const Spacer(),
-                                          gap(18),
+                                          Gap(18),
                                           SizedBox(
                                             width: 320 - 18,
                                             // height: 32,
@@ -764,7 +764,7 @@ class DocsPageState extends State<DocsPage> {
                                                   .normal(),
                                             ),
                                           ),
-                                          gap(18),
+                                          Gap(18),
                                           GhostButton(
                                             density: ButtonDensity.icon,
                                             onPressed: () {
@@ -832,7 +832,7 @@ class DocsPageState extends State<DocsPage> {
                   const FlutterLogo(
                     size: 24,
                   ),
-                  gap(18),
+                  Gap(18),
                   const Text(
                     'shadcn_flutter',
                   ).medium().mono().expanded(),
@@ -846,7 +846,7 @@ class DocsPageState extends State<DocsPage> {
                   ),
                 ],
               ).withPadding(left: 32, right: 32),
-              gap(32),
+              Gap(32),
               Expanded(
                 child: FocusTraversalGroup(
                   child: SingleChildScrollView(

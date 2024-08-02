@@ -86,7 +86,7 @@ class _FormExample2State extends State<FormExample2> {
                 ),
               ],
             ).gap(24),
-            gap(24),
+            Gap(24),
             FormErrorBuilder(
               builder: (context, errors, child) {
                 return PrimaryButton(

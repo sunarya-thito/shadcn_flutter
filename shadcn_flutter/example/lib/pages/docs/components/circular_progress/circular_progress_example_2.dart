@@ -19,7 +19,7 @@ class _CircularProgressExample2State extends State<CircularProgressExample2> {
           value: _progress.clamp(0, 100) / 100,
           size: 48,
         ),
-        gap(48),
+        Gap(48),
         Row(
           children: [
             DestructiveButton(
@@ -30,7 +30,7 @@ class _CircularProgressExample2State extends State<CircularProgressExample2> {
               },
               child: const Text('Reset'),
             ),
-            gap(16),
+            Gap(16),
             PrimaryButton(
               onPressed: () {
                 setState(() {
@@ -39,7 +39,7 @@ class _CircularProgressExample2State extends State<CircularProgressExample2> {
               },
               child: const Text('Decrease by 10'),
             ),
-            gap(16),
+            Gap(16),
             PrimaryButton(
               onPressed: () {
                 setState(() {

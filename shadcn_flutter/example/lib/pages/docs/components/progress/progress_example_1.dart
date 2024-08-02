@@ -19,7 +19,7 @@ class _ProgressExample1State extends State<ProgressExample1> {
           min: 0,
           max: 100,
         ),
-        gap(16),
+        Gap(16),
         Row(
           children: [
             DestructiveButton(
@@ -30,7 +30,7 @@ class _ProgressExample1State extends State<ProgressExample1> {
               },
               child: const Text('Reset'),
             ),
-            gap(16),
+            Gap(16),
             PrimaryButton(
               onPressed: () {
                 setState(() {
@@ -39,7 +39,7 @@ class _ProgressExample1State extends State<ProgressExample1> {
               },
               child: const Text('Decrease by 10'),
             ),
-            gap(16),
+            Gap(16),
             PrimaryButton(
               onPressed: () {
                 setState(() {

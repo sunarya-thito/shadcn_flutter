@@ -18,7 +18,7 @@ class MaterialExample extends StatelessWidget {
           'You can use Material/Cupertino Widgets with shadcn_flutter.',
       displayName: 'Material/Cupertino Widgets',
       children: [
-        gap(24),
+        Gap(24),
         Alert(
           leading: const Icon(Icons.info_outline),
           title: const Text('Note'),

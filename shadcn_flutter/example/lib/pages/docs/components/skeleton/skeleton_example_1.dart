@@ -16,11 +16,11 @@ class SkeletonExample1 extends StatelessWidget {
           ),
           trailing: Icon(Icons.arrow_forward),
         ),
-        gap(24),
+        Gap(24),
         Basic(
           title: const Text('Skeleton Example 1'),
-          content:
-              const Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+          content: const Text(
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
           leading: const Avatar(
             initials: '',
           ).asSkeleton(),

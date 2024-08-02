@@ -26,8 +26,8 @@ class NavigationMenuExample1 extends StatelessWidget {
               ),
               NavigationContent(
                 title: const Text('Typography'),
-                content:
-                    const Text('Styles and usage of typography in this package.'),
+                content: const Text(
+                    'Styles and usage of typography in this package.'),
                 onPressed: () {},
               ),
               Clickable(
@@ -43,10 +43,11 @@ class NavigationMenuExample1 extends StatelessWidget {
                       const FlutterLogo(
                         size: 32,
                       ),
-                      gap(16),
+                      Gap(16),
                       const Text('shadcn_flutter').mono().semiBold().large(),
-                      gap(8),
-                      const Text('Beautifully designed components from Shadcn/UI is now available for Flutter')
+                      Gap(8),
+                      const Text(
+                              'Beautifully designed components from Shadcn/UI is now available for Flutter')
                           .muted(),
                     ],
                   ),

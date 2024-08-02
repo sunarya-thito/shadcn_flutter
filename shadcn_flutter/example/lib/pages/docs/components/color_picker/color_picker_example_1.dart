@@ -22,7 +22,7 @@ class _ColorPickerExample1State extends State<ColorPickerExample1> {
             });
           },
         ),
-        gap(16),
+        Gap(16),
         HSVColorPicker(
           color: color,
           mode: PromptMode.dialog,

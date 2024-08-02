@@ -980,14 +980,14 @@ class FormRow<T> extends StatelessWidget {
                   child: label.textSmall(),
                   duration: kDefaultDuration,
                 ),
-                gap(8),
+                Gap(8),
                 child!,
                 if (hint != null) ...[
-                  gap(8),
+                  Gap(8),
                   hint!.xSmall().muted(),
                 ],
                 if (error is InvalidResult) ...[
-                  gap(8),
+                  Gap(8),
                   mergeAnimatedTextStyle(
                     style: TextStyle(color: theme.colorScheme.destructive),
                     child: Text(error.message).xSmall().medium(),
@@ -1044,17 +1044,17 @@ class FormInline<T> extends StatelessWidget {
                         child: label.textSmall(),
                         duration: kDefaultDuration,
                       ),
-                      gap(8),
+                      Gap(8),
                       Expanded(child: child!),
                     ],
                   ),
                 ),
                 if (hint != null) ...[
-                  gap(8),
+                  Gap(8),
                   hint!.xSmall().muted(),
                 ],
                 if (error is InvalidResult) ...[
-                  gap(8),
+                  Gap(8),
                   mergeAnimatedTextStyle(
                     style: TextStyle(color: theme.colorScheme.destructive),
                     child: Text(error.message).xSmall().medium(),
@@ -1112,11 +1112,11 @@ class FormTableLayout extends StatelessWidget {
                           children: [
                             child!,
                             if (rows[i].hint != null) ...[
-                              gap(8),
+                              Gap(8),
                               rows[i].hint!.xSmall().muted(),
                             ],
                             if (error is InvalidResult) ...[
-                              gap(8),
+                              Gap(8),
                               mergeAnimatedTextStyle(
                                 style: TextStyle(
                                     color: Theme.of(context)

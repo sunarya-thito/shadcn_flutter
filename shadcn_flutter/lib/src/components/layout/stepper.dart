@@ -90,11 +90,11 @@ class _StepVariantCircle extends StepVariant {
           child: Row(
             children: [
               properties[i]?.icon ?? const StepNumber(),
-              gap(8),
+              Gap(8),
               properties.size
                   .wrapper(context, properties[i]?.title ?? const SizedBox()),
               if (i != properties.steps.length - 1) ...[
-                gap(8),
+                Gap(8),
                 Expanded(
                   child: AnimatedBuilder(
                       animation: properties.state,
@@ -110,7 +110,7 @@ class _StepVariantCircle extends StepVariant {
                         );
                       }),
                 ),
-                gap(8),
+                Gap(8),
               ],
             ],
           ),
@@ -166,11 +166,11 @@ class _StepVariantCircle extends StepVariant {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     properties.steps[i].icon ?? const StepNumber(),
-                    gap(8),
+                    Gap(8),
                     properties.size.wrapper(context, properties.steps[i].title),
                   ],
                 ),
-                gap(8),
+                Gap(8),
                 ConstrainedBox(
                   constraints: const BoxConstraints(
                     minHeight: 16,
@@ -298,9 +298,9 @@ class _StepVariantCircleAlternative extends StepVariant {
                                       );
                                     }),
                               ),
-                        gap(4),
+                        Gap(4),
                         steps[i].icon ?? const StepNumber(),
-                        gap(4),
+                        Gap(4),
                         i == steps.length - 1
                             ? const Spacer()
                             : Expanded(
@@ -324,7 +324,7 @@ class _StepVariantCircleAlternative extends StepVariant {
                               ),
                       ],
                     ),
-                    gap(4),
+                    Gap(4),
                     Center(
                       child: DefaultTextStyle.merge(
                         textAlign: TextAlign.center,
@@ -383,11 +383,11 @@ class _StepVariantCircleAlternative extends StepVariant {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     properties.steps[i].icon ?? const StepNumber(),
-                    gap(8),
+                    Gap(8),
                     properties.size.wrapper(context, properties.steps[i].title),
                   ],
                 ),
-                gap(8),
+                Gap(8),
                 ConstrainedBox(
                   constraints: const BoxConstraints(
                     minHeight: 16,
@@ -506,7 +506,7 @@ class _StepVariantLine extends StepVariant {
                                   : theme.colorScheme.border,
                         );
                       }),
-                  gap(8),
+                  Gap(8),
                   properties.size.wrapper(
                     context,
                     steps[i].title,
@@ -573,7 +573,7 @@ class _StepVariantLine extends StepVariant {
                                       : theme.colorScheme.border,
                             );
                           }),
-                      gap(16),
+                      Gap(16),
                       properties.size
                           .wrapper(context, properties.steps[i].title)
                           .withPadding(vertical: 8),
@@ -900,7 +900,7 @@ class StepTitle extends StatelessWidget {
           children: [
             title,
             if (subtitle != null) ...[
-              gap(2),
+              Gap(2),
               subtitle!.muted().xSmall(),
             ],
           ],
@@ -936,7 +936,7 @@ class _StepContainerState extends State<StepContainer> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         widget.child,
-        gap(16),
+        Gap(16),
         Row(
           children: widget.actions,
         ).gap(8),

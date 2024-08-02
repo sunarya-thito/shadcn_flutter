@@ -77,7 +77,7 @@ class CollapsibleTrigger extends StatelessWidget {
     final state = Data.of<CollapsibleStateData>(context);
     return Row(mainAxisSize: MainAxisSize.min, children: [
       Expanded(child: child.small().semiBold()),
-      gap(16),
+      Gap(16),
       GhostButton(
         onPressed: state.handleTap,
         child: Icon(
