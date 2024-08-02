@@ -5,11 +5,10 @@ class AlertExample2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Alert(
+    return const Alert.destructive(
       title: Text('Alert title'),
       content: Text('This is alert content.'),
       trailing: Icon(Icons.dangerous_outlined),
-      destructive: true,
     );
   }
 }

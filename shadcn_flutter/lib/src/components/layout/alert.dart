@@ -16,6 +16,14 @@ class Alert extends StatelessWidget {
       this.destructive = false})
       : super(key: key);
 
+  const Alert.destructive({
+    Key? key,
+    this.leading,
+    this.title,
+    this.content,
+    this.trailing,
+  }) : destructive = true;
+
   @override
   Widget build(BuildContext context) {
     if (destructive) {
