@@ -17,6 +17,7 @@ class HSVColorPicker extends StatelessWidget {
   final EdgeInsets? popoverPadding;
   final Widget? placeholder;
   final PromptMode mode;
+  final Widget? dialogTitle;
 
   const HSVColorPicker({
     Key? key,
@@ -28,6 +29,7 @@ class HSVColorPicker extends StatelessWidget {
     this.popoverPadding,
     this.placeholder,
     this.mode = PromptMode.dialog,
+    this.dialogTitle,
   }) : super(key: key);
 
   @override
@@ -35,6 +37,7 @@ class HSVColorPicker extends StatelessWidget {
     final localizations = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
     return ObjectFormField(
+      dialogTitle: dialogTitle,
       popoverAlignment: popoverAlignment,
       popoverAnchorAlignment: popoverAnchorAlignment,
       popoverPadding: popoverPadding,

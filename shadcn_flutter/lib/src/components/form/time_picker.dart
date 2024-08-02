@@ -11,6 +11,7 @@ class TimePicker extends StatelessWidget {
   final EdgeInsets? popoverPadding;
   final bool? use24HourFormat;
   final bool showSeconds;
+  final Widget? dialogTitle;
 
   const TimePicker({
     Key? key,
@@ -23,6 +24,7 @@ class TimePicker extends StatelessWidget {
     this.popoverPadding,
     this.use24HourFormat,
     this.showSeconds = false,
+    this.dialogTitle,
   }) : super(key: key);
 
   @override
@@ -39,6 +41,7 @@ class TimePicker extends StatelessWidget {
             use24HourFormat: use24HourFormat, showSeconds: showSeconds));
       },
       mode: mode,
+      dialogTitle: dialogTitle,
       trailing: const Icon(Icons.access_time),
       editorBuilder: (context, value, onChanged) {
         return TimePickerDialog(

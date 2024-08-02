@@ -19,6 +19,7 @@ class _NumberTickerExample1State extends State<NumberTickerExample1> {
         NumberTicker(
           initialNumber: 0,
           number: _number,
+          style: const TextStyle(fontSize: 32),
           formatter: (number) {
             return NumberFormat.compact().format(number);
           },

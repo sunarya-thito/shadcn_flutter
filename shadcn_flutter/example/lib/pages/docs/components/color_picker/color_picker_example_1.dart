@@ -26,6 +26,7 @@ class _ColorPickerExample1State extends State<ColorPickerExample1> {
         HSVColorPicker(
           color: color,
           mode: PromptMode.dialog,
+          dialogTitle: const Text('Select Color'),
           onChanged: (value) {
             setState(() {
               color = value;

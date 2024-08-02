@@ -26,6 +26,7 @@ class _DatePickerExample2State extends State<DatePickerExample2> {
         DateRangePicker(
           value: _value,
           mode: PromptMode.dialog,
+          dialogTitle: const Text('Select Date Range'),
           onChanged: (value) {
             setState(() {
               _value = value;

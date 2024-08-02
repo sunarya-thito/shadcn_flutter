@@ -12,6 +12,7 @@ class DatePicker extends StatelessWidget {
   final Alignment? popoverAlignment;
   final Alignment? popoverAnchorAlignment;
   final EdgeInsets? popoverPadding;
+  final Widget? dialogTitle;
 
   const DatePicker({
     Key? key,
@@ -26,12 +27,14 @@ class DatePicker extends StatelessWidget {
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
+    this.dialogTitle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     return ObjectFormField(
+      dialogTitle: dialogTitle,
       popoverAlignment: popoverAlignment,
       popoverAnchorAlignment: popoverAnchorAlignment,
       popoverPadding: popoverPadding,
@@ -104,6 +107,7 @@ class DateRangePicker extends StatelessWidget {
   final Alignment? popoverAlignment;
   final Alignment? popoverAnchorAlignment;
   final EdgeInsets? popoverPadding;
+  final Widget? dialogTitle;
 
   const DateRangePicker({
     Key? key,
@@ -118,6 +122,7 @@ class DateRangePicker extends StatelessWidget {
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
+    this.dialogTitle,
   }) : super(key: key);
 
   @override
@@ -130,6 +135,7 @@ class DateRangePicker extends StatelessWidget {
       value: value,
       mode: mode,
       onChanged: onChanged,
+      dialogTitle: dialogTitle,
       placeholder: placeholder ?? Text(localizations.placeholderDatePicker),
       trailing: const Icon(Icons.calendar_month),
       builder: (context, value) {

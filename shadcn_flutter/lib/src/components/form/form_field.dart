@@ -18,6 +18,7 @@ class ObjectFormField<T> extends StatefulWidget {
   final Alignment? popoverAlignment;
   final Alignment? popoverAnchorAlignment;
   final EdgeInsets? popoverPadding;
+  final Widget? dialogTitle;
 
   const ObjectFormField({
     Key? key,
@@ -32,6 +33,7 @@ class ObjectFormField<T> extends StatefulWidget {
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
+    this.dialogTitle,
   }) : super(key: key);
 
   @override
@@ -94,6 +96,7 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>>
                   context: context,
                   builder: (context) {
                     return _ObjectFormFieldDialog<T>(
+                      dialogTitle: widget.dialogTitle,
                       value: value,
                       editorBuilder: widget.editorBuilder,
                     );
@@ -154,11 +157,13 @@ class _ObjectFormFieldDialog<T> extends StatefulWidget {
   final T? value;
   final Widget Function(
       BuildContext context, T? value, ValueChanged<T?> onChanged) editorBuilder;
+  final Widget? dialogTitle;
 
   const _ObjectFormFieldDialog({
     Key? key,
     required this.value,
     required this.editorBuilder,
+    this.dialogTitle,
   }) : super(key: key);
 
   @override
@@ -180,6 +185,7 @@ class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>> {
     final localizations = ShadcnLocalizations.of(context);
     return Center(
       child: AlertDialog(
+        title: widget.dialogTitle,
         content: widget.editorBuilder(
           context,
           value,
