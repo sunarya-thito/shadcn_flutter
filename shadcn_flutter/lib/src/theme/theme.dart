@@ -5,11 +5,15 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class ThemeData {
   final ColorScheme colorScheme;
   final double radius;
+  final TargetPlatform? _platform;
 
   ThemeData({
     required this.colorScheme,
     required this.radius,
-  });
+    TargetPlatform? platform,
+  }) : _platform = platform;
+
+  TargetPlatform get platform => _platform ?? defaultTargetPlatform;
 
   double get radiusXxl => radius * 24;
   double get radiusXl => radius * 20;
