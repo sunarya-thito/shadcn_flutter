@@ -7,7 +7,7 @@ environment:
   sdk: '>=3.4.3 <4.0.0'
 
 dependencies:
-  http: ^1.2.1
+  http: ^1.2.2
   yaml_edit: ^2.2.1
 
 dev_dependencies:

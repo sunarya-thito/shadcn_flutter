@@ -11,11 +11,11 @@ environment:
   flutter: ">=1.20.0"
 
 dependencies:
-  email_validator: ">=2.1.17"
+  email_validator: 3.0.0
   flutter:
     sdk: flutter
-  gap: ^3.0.1
-  skeletonizer: ^1.4.1+1
+  gap: 3.0.1
+  skeletonizer: 1.4.2
   shadcn_flutter_platform_interface: ^0.0.3
   shadcn_flutter_web: ^0.0.2
   shadcn_flutter_independent: ^0.0.3
@@ -28,7 +28,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
   icon_font_generator: ^4.0.0
   archive: ^3.6.1
 
