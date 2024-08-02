@@ -23,7 +23,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
       onThisPage: {
         'Features': featuresKey,
         'Notes': notesKey,
-        'Frequency Asked Questions': faqKey,
+        'Frequently Asked Questions': faqKey,
         'Links': linksKey,
       },
       child: Column(
@@ -77,7 +77,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
           const Text(
             'This package is not affiliated with Shadcn/UI. This package is a community-driven project.',
           ).p(),
-          const Text('Frequency Asked Questions').h2().anchored(faqKey),
+          const Text('Frequently Asked Questions').h2().anchored(faqKey),
           Accordion(
             items: [
               const AccordionItem(
