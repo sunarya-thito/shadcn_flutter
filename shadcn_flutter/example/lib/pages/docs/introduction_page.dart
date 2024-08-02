@@ -33,6 +33,25 @@ class _IntroductionPageState extends State<IntroductionPage> {
           const Text(
                   'Beautifully designed components from Shadcn/UI is now available for Flutter.')
               .lead(),
+          const Text(
+            'Welcome to shadcn_flutter, a versatile and comprehensive set '
+            'of UI components designed specifically for Flutter desktop and '
+            'web applications. With the growing popularity of Flutter for '
+            'building cross-platform apps, we recognized the need for a '
+            'toolkit that emphasizes the unique design requirements of '
+            'desktop and web interfaces.',
+            textAlign: TextAlign.justify,
+          ).p(),
+          const Text(
+            '\tThis package provides a wide range of customizable '
+            'and responsive components that align with modern desktop and web '
+            'design principles. Whether you'
+            're building a sophisticated business '
+            'application, a sleek dashboard, or a productivity tool, our '
+            'components are designed to help you create professional and '
+            'polished UIs quickly and efficiently.',
+            textAlign: TextAlign.justify,
+          ).p(),
           const Text('Features').h2().anchored(featuresKey),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
