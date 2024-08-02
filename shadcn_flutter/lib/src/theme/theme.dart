@@ -56,10 +56,8 @@ class Theme extends InheritedTheme {
 
   static ThemeData of(BuildContext context) {
     final theme = context.dependOnInheritedWidgetOfExactType<Theme>();
-    if (theme == null) {
-      throw Exception('No Theme found in context');
-    }
-    return theme.data;
+    assert(theme != null, 'No Theme found in context');
+    return theme!.data;
   }
 
   @override
