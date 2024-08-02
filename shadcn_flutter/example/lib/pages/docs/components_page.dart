@@ -7,18 +7,21 @@ import 'package:example/pages/docs/components/calendar/calendar_example_2.dart';
 import 'package:example/pages/docs/components/card/card_example_1.dart';
 import 'package:example/pages/docs/components/carousel/carousel_example_1.dart';
 import 'package:example/pages/docs/components/code_snippet/code_snippet_example_1.dart';
-import 'package:example/pages/docs/components/color_picker/color_picker_example_1.dart';
 import 'package:example/pages/docs/components/command/command_example_1.dart';
 import 'package:example/pages/docs/components/date_picker/date_picker_example_1.dart';
 import 'package:example/pages/docs/components/divider/divider_example_3.dart';
 import 'package:example/pages/docs/components/pagination/pagination_example_1.dart';
 import 'package:example/pages/docs/components/resizable/resizable_example_3.dart';
+import 'package:example/pages/docs/components/stepper/stepper_example_2.dart';
 import 'package:example/pages/docs/components/text_area/text_area_example_3.dart';
+import 'package:example/pages/docs/components/timeline/timeline_example_1.dart';
 import 'package:example/pages/docs/components/toggle/toggle_example_2.dart';
+import 'package:example/pages/docs/components/tree/tree_example_1.dart';
 import 'package:example/pages/docs_page.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -133,6 +136,51 @@ class _ComponentsPageState extends State<ComponentsPage> {
                       ),
                     ],
                   ),
+                ),
+              ),
+              ComponentCard(
+                name: 'number_ticker',
+                title: 'Number Ticker',
+                scale: 1.2,
+                example: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RepeatedAnimationBuilder(
+                      start: 0.0,
+                      end: 1234567.0,
+                      mode: RepeatMode.pingPong,
+                      duration: const Duration(seconds: 5),
+                      builder: (context, value, child) {
+                        return Text(
+                          NumberFormat.compact().format(value),
+                          style: const TextStyle(
+                            fontSize: 64,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
+                    ),
+                    Transform.translate(
+                      offset: const Offset(0, -16),
+                      child: RepeatedAnimationBuilder(
+                        start: 1234567.0,
+                        end: 0.0,
+                        mode: RepeatMode.pingPong,
+                        duration: const Duration(seconds: 5),
+                        builder: (context, value, child) {
+                          return Text(
+                            NumberFormat.compact().format(value),
+                            style: TextStyle(
+                              fontSize: 48,
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.mutedForeground,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
               ComponentCard(
@@ -442,12 +490,67 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   ).gap(4).sized(width: 300),
                 ),
               ),
-              const ComponentCard(
+              ComponentCard(
+                name: 'chip_input',
+                title: 'Chip Input',
+                scale: 1,
+                example: Card(
+                  child: SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: OutlinedContainer(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Chip(
+                                    child: Text('Chip 1'),
+                                    trailing:
+                                        ChipButton(child: Icon(Icons.close)),
+                                  ),
+                                  Chip(
+                                    child: Text('Chip 2'),
+                                    trailing:
+                                        ChipButton(child: Icon(Icons.close)),
+                                  ),
+                                ],
+                              ).gap(4),
+                              Gap(4),
+                              Row(
+                                children: [
+                                  Chip(
+                                    child: Text('Cool Chip'),
+                                    trailing:
+                                        ChipButton(child: Icon(Icons.close)),
+                                  ),
+                                  Gap(4),
+                                  Text('Chip 4'),
+                                  VerticalDivider(
+                                    color: theme.colorScheme.primary,
+                                  ).sized(height: 18),
+                                ],
+                              ).gap(4),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              ComponentCard(
                 name: 'color_picker',
                 title: 'Color Picker',
                 reverse: true,
                 reverseVertical: true,
-                example: ColorPickerExample1(),
+                example: Card(
+                  child: HSVColorPickerSet(
+                      color: Colors.blue.toHSV(), onColorChanged: (value) {}),
+                ),
               ),
               const ComponentCard(
                 name: 'date_picker',
@@ -506,6 +609,16 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     ),
                   ],
                 ),
+              ),
+              ComponentCard(
+                name: 'phone_input',
+                title: 'Phone Input',
+                scale: 1.5,
+                example: Card(
+                  child: PhoneInput(
+                    initialValue: PhoneNumber(Country.indonesia, '81234567890'),
+                  ).withAlign(Alignment.topLeft),
+                ).sized(height: 300),
               ),
               ComponentCard(
                 name: 'radio_group',
@@ -598,6 +711,26 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 ).sized(width: 100),
               ),
               ComponentCard(
+                name: 'star_rating',
+                title: 'Star Rating',
+                scale: 1,
+                example: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    StarRating(
+                      starSize: 64,
+                      value: 3.5,
+                    ),
+                    Gap(16),
+                    StarRating(
+                      starSize: 64,
+                      value: 2.5,
+                    ),
+                  ],
+                ),
+              ),
+              ComponentCard(
                 name: 'switch',
                 title: 'Switch',
                 scale: 2,
@@ -617,6 +750,16 @@ class _ComponentsPageState extends State<ComponentsPage> {
                       Card(child: TextAreaExample3()),
                     ],
                   )),
+              ComponentCard(
+                name: 'time_picker',
+                title: 'Time Picker',
+                scale: 1.2,
+                example: Card(
+                  child: TimePickerDialog(
+                    use24HourFormat: true,
+                  ).withAlign(Alignment.topLeft),
+                ).sized(height: 300),
+              ),
               ComponentCard(
                 name: 'toggle',
                 title: 'Toggle',
@@ -679,6 +822,18 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     ),
                   ]),
                 ),
+              ),
+              ComponentCard(
+                name: 'stepper',
+                title: 'Stepper',
+                scale: 1,
+                example: StepperExample2().sized(width: 400, height: 500),
+              ),
+              ComponentCard(
+                name: 'timeline',
+                title: 'Timeline',
+                scale: 1,
+                example: TimelineExample1().sized(width: 700, height: 800),
               ),
             ]),
             const Text('Navigation').h2().anchored(navigationKey),
@@ -948,6 +1103,12 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     TabButton(child: Text('Settings')),
                   ],
                 ),
+              ),
+              ComponentCard(
+                name: 'tree',
+                title: 'Tree',
+                scale: 1.5,
+                example: TreeExample1(),
               ),
             ]),
             const Text('Surfaces').h2().anchored(surfacesKey),
