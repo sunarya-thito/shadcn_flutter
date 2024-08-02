@@ -182,12 +182,15 @@ void setupProject({
         return;
       }
     }
+    File file = File('web/flutter_bootstrap.js');
     String downloadUrl =
         'https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/example/web/flutter_bootstrap.js';
     try {
       var response = await http.get(Uri.parse(downloadUrl));
       if (response.statusCode == 200) {
-        File file = File('web/flutter_bootstrap.js');
+        if (file.existsSync()) {
+          print('WARNING: Overwriting existing web preloader file.');
+        }
         file.writeAsStringSync(response.body);
       } else {
         print('Failed to download web preloader file.');
