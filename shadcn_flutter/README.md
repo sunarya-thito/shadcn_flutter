@@ -14,7 +14,7 @@ This is a port of the shadcn UI package to flutter.
 
 ### Animation
 [![AnimatedValueBuilder](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/animatedvaluebuilder.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/animated_value_builder)
-[![Number Ticker](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/numberticker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/number_ticker)
+[![Number Ticker](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/number_ticker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/number_ticker)
 [![RepeatedAnimationBuilder](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/repeatedanimationbuilder.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/repeated_animation_builder)
 
 ### Disclosure
@@ -32,20 +32,20 @@ This is a port of the shadcn UI package to flutter.
 ### Forms
 [![Button](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/button.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/button)
 [![Checkbox](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/checkbox.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/checkbox)
-[![Chip Input](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/chipinput.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/chip_input)
+[![Chip Input](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/chip_input.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/chip_input)
 [![Color Picker](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/colorpicker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/color-picker)
 [![Date Picker](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/datepicker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/date_picker)
 [![Form](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/form.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/form)
 [![Input](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/input.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/input)
 [![Input OTP](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/inputotp.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/input_otp)
-[![Phone Input](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/phoneinput.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/phone_input)
+[![Phone Input](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/phone_input.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/phone_input)
 [![Radio Group](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/radiogroup.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/radio_group)
 [![Select](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/select.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/select)
 [![Slider](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/slider.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/slider)
-[![Star Rating](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/starrating.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/star_rating)
+[![Star Rating](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/star_rating.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/star_rating)
 [![Switch](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/switch.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/switch)
 [![Text Area](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/textarea.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/text_area)
-[![Time Picker](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/timepicker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/time_picker)
+[![Time Picker](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/time_picker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/time_picker)
 [![Toggle](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/toggle.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/toggle)
 
 ### Layout
@@ -76,7 +76,7 @@ This is a port of the shadcn UI package to flutter.
 
 ### Data Display
 [![Avatar](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/avatar.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/avatar)
-[![Avatar Group](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/avatargroup.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/avatar_group)
+[![Avatar Group](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/avatar_group.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/avatar_group)
 [![Code Snippet](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/codesnippet.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/code-snippet)
 [![Tracker](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/docs_images/tracker.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/tracker)
 
