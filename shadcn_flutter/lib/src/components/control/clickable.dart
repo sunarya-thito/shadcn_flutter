@@ -25,7 +25,6 @@ class Clickable extends StatefulWidget {
   final bool focusOutline;
   final bool enableFeedback;
   final VoidCallback? onLongPress;
-  // delegate the rest onX from GestureDetector, except for onDoubleTap and pan/drag
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
   final GestureTapCancelCallback? onTapCancel;

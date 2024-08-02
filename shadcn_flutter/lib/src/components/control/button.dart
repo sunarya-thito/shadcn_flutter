@@ -72,6 +72,21 @@ class Button extends StatefulWidget {
   final ValueChanged<bool>? onFocus;
   final bool trailingExpanded;
   final bool? enableFeedback;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
+  final GestureTapDownCallback? onTertiaryTapDown;
+  final GestureTapUpCallback? onTertiaryTapUp;
+  final GestureTapCancelCallback? onTertiaryTapCancel;
+  final GestureLongPressStartCallback? onLongPressStart;
+  final GestureLongPressUpCallback? onLongPressUp;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  final GestureLongPressEndCallback? onLongPressEnd;
+  final GestureLongPressUpCallback? onSecondaryLongPress;
+  final GestureLongPressUpCallback? onTertiaryLongPress;
   const Button({
     Key? key,
     this.leading,
@@ -87,6 +102,21 @@ class Button extends StatefulWidget {
     this.onHover,
     this.trailingExpanded = false,
     this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   }) : super(key: key);
 
   const Button.primary({
@@ -104,6 +134,21 @@ class Button extends StatefulWidget {
     this.onHover,
     this.trailingExpanded = false,
     this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   });
 
   const Button.secondary({
@@ -121,6 +166,21 @@ class Button extends StatefulWidget {
     this.onHover,
     this.trailingExpanded = false,
     this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   });
 
   const Button.outline({
@@ -138,6 +198,21 @@ class Button extends StatefulWidget {
     this.onHover,
     this.trailingExpanded = false,
     this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   });
 
   const Button.ghost({
@@ -155,6 +230,21 @@ class Button extends StatefulWidget {
     this.onHover,
     this.trailingExpanded = false,
     this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   });
 
   const Button.link({
@@ -172,6 +262,21 @@ class Button extends StatefulWidget {
     this.onHover,
     this.trailingExpanded = false,
     this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   });
 
   const Button.text({
@@ -189,6 +294,21 @@ class Button extends StatefulWidget {
     this.onHover,
     this.trailingExpanded = false,
     this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   });
 
   const Button.destructive({
@@ -206,6 +326,21 @@ class Button extends StatefulWidget {
     this.onHover,
     this.trailingExpanded = false,
     this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   });
 
   const Button.fixed({
@@ -223,6 +358,21 @@ class Button extends StatefulWidget {
     this.onHover,
     this.trailingExpanded = false,
     this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   });
 
   @override
@@ -1133,6 +1283,25 @@ class PrimaryButton extends StatelessWidget {
   final ButtonShape shape;
   final FocusNode? focusNode;
   final bool disableTransition;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocus;
+  final bool trailingExpanded;
+  final bool? enableFeedback;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
+  final GestureTapDownCallback? onTertiaryTapDown;
+  final GestureTapUpCallback? onTertiaryTapUp;
+  final GestureTapCancelCallback? onTertiaryTapCancel;
+  final GestureLongPressStartCallback? onLongPressStart;
+  final GestureLongPressUpCallback? onLongPressUp;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  final GestureLongPressEndCallback? onLongPressEnd;
+  final GestureLongPressUpCallback? onSecondaryLongPress;
+  final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const PrimaryButton({
     Key? key,
@@ -1147,6 +1316,25 @@ class PrimaryButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
     this.focusNode,
     this.disableTransition = false,
+    this.onHover,
+    this.onFocus,
+    this.trailingExpanded = false,
+    this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   }) : super(key: key);
 
   @override
@@ -1161,6 +1349,25 @@ class PrimaryButton extends StatelessWidget {
       focusNode: focusNode,
       disableTransition: disableTransition,
       child: child,
+      onHover: onHover,
+      onFocus: onFocus,
+      trailingExpanded: trailingExpanded,
+      enableFeedback: enableFeedback,
+      onTapDown: onTapDown,
+      onTapUp: onTapUp,
+      onTapCancel: onTapCancel,
+      onSecondaryTapDown: onSecondaryTapDown,
+      onSecondaryTapUp: onSecondaryTapUp,
+      onSecondaryTapCancel: onSecondaryTapCancel,
+      onTertiaryTapDown: onTertiaryTapDown,
+      onTertiaryTapUp: onTertiaryTapUp,
+      onTertiaryTapCancel: onTertiaryTapCancel,
+      onLongPressStart: onLongPressStart,
+      onLongPressUp: onLongPressUp,
+      onLongPressMoveUpdate: onLongPressMoveUpdate,
+      onLongPressEnd: onLongPressEnd,
+      onSecondaryLongPress: onSecondaryLongPress,
+      onTertiaryLongPress: onTertiaryLongPress,
     );
   }
 }
@@ -1177,6 +1384,25 @@ class SecondaryButton extends StatelessWidget {
   final ButtonShape shape;
   final FocusNode? focusNode;
   final bool disableTransition;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocus;
+  final bool trailingExpanded;
+  final bool? enableFeedback;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
+  final GestureTapDownCallback? onTertiaryTapDown;
+  final GestureTapUpCallback? onTertiaryTapUp;
+  final GestureTapCancelCallback? onTertiaryTapCancel;
+  final GestureLongPressStartCallback? onLongPressStart;
+  final GestureLongPressUpCallback? onLongPressUp;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  final GestureLongPressEndCallback? onLongPressEnd;
+  final GestureLongPressUpCallback? onSecondaryLongPress;
+  final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const SecondaryButton({
     Key? key,
@@ -1191,6 +1417,25 @@ class SecondaryButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
     this.focusNode,
     this.disableTransition = false,
+    this.onHover,
+    this.onFocus,
+    this.trailingExpanded = false,
+    this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   }) : super(key: key);
 
   @override
@@ -1205,6 +1450,25 @@ class SecondaryButton extends StatelessWidget {
       focusNode: focusNode,
       disableTransition: disableTransition,
       child: child,
+      onHover: onHover,
+      onFocus: onFocus,
+      trailingExpanded: trailingExpanded,
+      enableFeedback: enableFeedback,
+      onTapDown: onTapDown,
+      onTapUp: onTapUp,
+      onTapCancel: onTapCancel,
+      onSecondaryTapDown: onSecondaryTapDown,
+      onSecondaryTapUp: onSecondaryTapUp,
+      onSecondaryTapCancel: onSecondaryTapCancel,
+      onTertiaryTapDown: onTertiaryTapDown,
+      onTertiaryTapUp: onTertiaryTapUp,
+      onTertiaryTapCancel: onTertiaryTapCancel,
+      onLongPressStart: onLongPressStart,
+      onLongPressUp: onLongPressUp,
+      onLongPressMoveUpdate: onLongPressMoveUpdate,
+      onLongPressEnd: onLongPressEnd,
+      onSecondaryLongPress: onSecondaryLongPress,
+      onTertiaryLongPress: onTertiaryLongPress,
     );
   }
 }
@@ -1221,6 +1485,25 @@ class OutlineButton extends StatelessWidget {
   final ButtonShape shape;
   final FocusNode? focusNode;
   final bool disableTransition;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocus;
+  final bool trailingExpanded;
+  final bool? enableFeedback;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
+  final GestureTapDownCallback? onTertiaryTapDown;
+  final GestureTapUpCallback? onTertiaryTapUp;
+  final GestureTapCancelCallback? onTertiaryTapCancel;
+  final GestureLongPressStartCallback? onLongPressStart;
+  final GestureLongPressUpCallback? onLongPressUp;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  final GestureLongPressEndCallback? onLongPressEnd;
+  final GestureLongPressUpCallback? onSecondaryLongPress;
+  final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const OutlineButton({
     Key? key,
@@ -1235,6 +1518,25 @@ class OutlineButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
     this.focusNode,
     this.disableTransition = false,
+    this.onHover,
+    this.onFocus,
+    this.trailingExpanded = false,
+    this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   }) : super(key: key);
 
   @override
@@ -1249,6 +1551,25 @@ class OutlineButton extends StatelessWidget {
       focusNode: focusNode,
       disableTransition: disableTransition,
       child: child,
+      onHover: onHover,
+      onFocus: onFocus,
+      trailingExpanded: trailingExpanded,
+      enableFeedback: enableFeedback,
+      onTapDown: onTapDown,
+      onTapUp: onTapUp,
+      onTapCancel: onTapCancel,
+      onSecondaryTapDown: onSecondaryTapDown,
+      onSecondaryTapUp: onSecondaryTapUp,
+      onSecondaryTapCancel: onSecondaryTapCancel,
+      onTertiaryTapDown: onTertiaryTapDown,
+      onTertiaryTapUp: onTertiaryTapUp,
+      onTertiaryTapCancel: onTertiaryTapCancel,
+      onLongPressStart: onLongPressStart,
+      onLongPressUp: onLongPressUp,
+      onLongPressMoveUpdate: onLongPressMoveUpdate,
+      onLongPressEnd: onLongPressEnd,
+      onSecondaryLongPress: onSecondaryLongPress,
+      onTertiaryLongPress: onTertiaryLongPress,
     );
   }
 }
@@ -1265,6 +1586,25 @@ class GhostButton extends StatelessWidget {
   final ButtonShape shape;
   final FocusNode? focusNode;
   final bool disableTransition;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocus;
+  final bool trailingExpanded;
+  final bool? enableFeedback;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
+  final GestureTapDownCallback? onTertiaryTapDown;
+  final GestureTapUpCallback? onTertiaryTapUp;
+  final GestureTapCancelCallback? onTertiaryTapCancel;
+  final GestureLongPressStartCallback? onLongPressStart;
+  final GestureLongPressUpCallback? onLongPressUp;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  final GestureLongPressEndCallback? onLongPressEnd;
+  final GestureLongPressUpCallback? onSecondaryLongPress;
+  final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const GhostButton({
     Key? key,
@@ -1279,6 +1619,25 @@ class GhostButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
     this.focusNode,
     this.disableTransition = false,
+    this.onHover,
+    this.onFocus,
+    this.trailingExpanded = false,
+    this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   }) : super(key: key);
 
   @override
@@ -1293,6 +1652,25 @@ class GhostButton extends StatelessWidget {
       focusNode: focusNode,
       disableTransition: disableTransition,
       child: child,
+      onHover: onHover,
+      onFocus: onFocus,
+      trailingExpanded: trailingExpanded,
+      enableFeedback: enableFeedback,
+      onTapDown: onTapDown,
+      onTapUp: onTapUp,
+      onTapCancel: onTapCancel,
+      onSecondaryTapDown: onSecondaryTapDown,
+      onSecondaryTapUp: onSecondaryTapUp,
+      onSecondaryTapCancel: onSecondaryTapCancel,
+      onTertiaryTapDown: onTertiaryTapDown,
+      onTertiaryTapUp: onTertiaryTapUp,
+      onTertiaryTapCancel: onTertiaryTapCancel,
+      onLongPressStart: onLongPressStart,
+      onLongPressUp: onLongPressUp,
+      onLongPressMoveUpdate: onLongPressMoveUpdate,
+      onLongPressEnd: onLongPressEnd,
+      onSecondaryLongPress: onSecondaryLongPress,
+      onTertiaryLongPress: onTertiaryLongPress,
     );
   }
 }
@@ -1309,6 +1687,25 @@ class LinkButton extends StatelessWidget {
   final ButtonShape shape;
   final FocusNode? focusNode;
   final bool disableTransition;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocus;
+  final bool trailingExpanded;
+  final bool? enableFeedback;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
+  final GestureTapDownCallback? onTertiaryTapDown;
+  final GestureTapUpCallback? onTertiaryTapUp;
+  final GestureTapCancelCallback? onTertiaryTapCancel;
+  final GestureLongPressStartCallback? onLongPressStart;
+  final GestureLongPressUpCallback? onLongPressUp;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  final GestureLongPressEndCallback? onLongPressEnd;
+  final GestureLongPressUpCallback? onSecondaryLongPress;
+  final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const LinkButton({
     Key? key,
@@ -1323,6 +1720,25 @@ class LinkButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
     this.focusNode,
     this.disableTransition = false,
+    this.onHover,
+    this.onFocus,
+    this.trailingExpanded = false,
+    this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   }) : super(key: key);
 
   @override
@@ -1337,6 +1753,25 @@ class LinkButton extends StatelessWidget {
       focusNode: focusNode,
       disableTransition: disableTransition,
       child: child,
+      onHover: onHover,
+      onFocus: onFocus,
+      trailingExpanded: trailingExpanded,
+      enableFeedback: enableFeedback,
+      onTapDown: onTapDown,
+      onTapUp: onTapUp,
+      onTapCancel: onTapCancel,
+      onSecondaryTapDown: onSecondaryTapDown,
+      onSecondaryTapUp: onSecondaryTapUp,
+      onSecondaryTapCancel: onSecondaryTapCancel,
+      onTertiaryTapDown: onTertiaryTapDown,
+      onTertiaryTapUp: onTertiaryTapUp,
+      onTertiaryTapCancel: onTertiaryTapCancel,
+      onLongPressStart: onLongPressStart,
+      onLongPressUp: onLongPressUp,
+      onLongPressMoveUpdate: onLongPressMoveUpdate,
+      onLongPressEnd: onLongPressEnd,
+      onSecondaryLongPress: onSecondaryLongPress,
+      onTertiaryLongPress: onTertiaryLongPress,
     );
   }
 }
@@ -1353,6 +1788,25 @@ class TextButton extends StatelessWidget {
   final ButtonShape shape;
   final FocusNode? focusNode;
   final bool disableTransition;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocus;
+  final bool trailingExpanded;
+  final bool? enableFeedback;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
+  final GestureTapDownCallback? onTertiaryTapDown;
+  final GestureTapUpCallback? onTertiaryTapUp;
+  final GestureTapCancelCallback? onTertiaryTapCancel;
+  final GestureLongPressStartCallback? onLongPressStart;
+  final GestureLongPressUpCallback? onLongPressUp;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  final GestureLongPressEndCallback? onLongPressEnd;
+  final GestureLongPressUpCallback? onSecondaryLongPress;
+  final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const TextButton({
     Key? key,
@@ -1367,6 +1821,25 @@ class TextButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
     this.focusNode,
     this.disableTransition = false,
+    this.onHover,
+    this.onFocus,
+    this.trailingExpanded = false,
+    this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   }) : super(key: key);
 
   @override
@@ -1397,6 +1870,25 @@ class DestructiveButton extends StatelessWidget {
   final ButtonShape shape;
   final FocusNode? focusNode;
   final bool disableTransition;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocus;
+  final bool trailingExpanded;
+  final bool? enableFeedback;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
+  final GestureTapDownCallback? onTertiaryTapDown;
+  final GestureTapUpCallback? onTertiaryTapUp;
+  final GestureTapCancelCallback? onTertiaryTapCancel;
+  final GestureLongPressStartCallback? onLongPressStart;
+  final GestureLongPressUpCallback? onLongPressUp;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  final GestureLongPressEndCallback? onLongPressEnd;
+  final GestureLongPressUpCallback? onSecondaryLongPress;
+  final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const DestructiveButton({
     Key? key,
@@ -1411,6 +1903,25 @@ class DestructiveButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
     this.focusNode,
     this.disableTransition = false,
+    this.onHover,
+    this.onFocus,
+    this.trailingExpanded = false,
+    this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   }) : super(key: key);
 
   @override
@@ -1426,6 +1937,25 @@ class DestructiveButton extends StatelessWidget {
       focusNode: focusNode,
       disableTransition: disableTransition,
       child: child,
+      onHover: onHover,
+      onFocus: onFocus,
+      trailingExpanded: trailingExpanded,
+      enableFeedback: enableFeedback,
+      onTapDown: onTapDown,
+      onTapUp: onTapUp,
+      onTapCancel: onTapCancel,
+      onSecondaryTapDown: onSecondaryTapDown,
+      onSecondaryTapUp: onSecondaryTapUp,
+      onSecondaryTapCancel: onSecondaryTapCancel,
+      onTertiaryTapDown: onTertiaryTapDown,
+      onTertiaryTapUp: onTertiaryTapUp,
+      onTertiaryTapCancel: onTertiaryTapCancel,
+      onLongPressStart: onLongPressStart,
+      onLongPressUp: onLongPressUp,
+      onLongPressMoveUpdate: onLongPressMoveUpdate,
+      onLongPressEnd: onLongPressEnd,
+      onSecondaryLongPress: onSecondaryLongPress,
+      onTertiaryLongPress: onTertiaryLongPress,
     );
   }
 }
@@ -1442,6 +1972,25 @@ class TabButton extends StatelessWidget {
   final ButtonShape shape;
   final FocusNode? focusNode;
   final bool disableTransition;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocus;
+  final bool trailingExpanded;
+  final bool? enableFeedback;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
+  final GestureTapDownCallback? onTertiaryTapDown;
+  final GestureTapUpCallback? onTertiaryTapUp;
+  final GestureTapCancelCallback? onTertiaryTapCancel;
+  final GestureLongPressStartCallback? onLongPressStart;
+  final GestureLongPressUpCallback? onLongPressUp;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  final GestureLongPressEndCallback? onLongPressEnd;
+  final GestureLongPressUpCallback? onSecondaryLongPress;
+  final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const TabButton({
     Key? key,
@@ -1456,6 +2005,25 @@ class TabButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
     this.focusNode,
     this.disableTransition = false,
+    this.onHover,
+    this.onFocus,
+    this.trailingExpanded = false,
+    this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
   }) : super(key: key);
 
   @override
@@ -1470,6 +2038,25 @@ class TabButton extends StatelessWidget {
       focusNode: focusNode,
       disableTransition: disableTransition,
       child: child,
+      onHover: onHover,
+      onFocus: onFocus,
+      trailingExpanded: trailingExpanded,
+      enableFeedback: enableFeedback,
+      onTapDown: onTapDown,
+      onTapUp: onTapUp,
+      onTapCancel: onTapCancel,
+      onSecondaryTapDown: onSecondaryTapDown,
+      onSecondaryTapUp: onSecondaryTapUp,
+      onSecondaryTapCancel: onSecondaryTapCancel,
+      onTertiaryTapDown: onTertiaryTapDown,
+      onTertiaryTapUp: onTertiaryTapUp,
+      onTertiaryTapCancel: onTertiaryTapCancel,
+      onLongPressStart: onLongPressStart,
+      onLongPressUp: onLongPressUp,
+      onLongPressMoveUpdate: onLongPressMoveUpdate,
+      onLongPressEnd: onLongPressEnd,
+      onSecondaryLongPress: onSecondaryLongPress,
+      onTertiaryLongPress: onTertiaryLongPress,
     );
   }
 }
