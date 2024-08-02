@@ -76,6 +76,7 @@ class DocsPage extends StatefulWidget {
 enum ShadcnFeatureTag {
   newFeature,
   updated,
+  experimental,
   workInProgress;
 
   Widget buildBadge(BuildContext context) {
@@ -106,6 +107,14 @@ enum ShadcnFeatureTag {
           ),
         );
         badgeText = 'WIP';
+        break;
+      case ShadcnFeatureTag.experimental:
+        copy = theme.copyWith(
+          colorScheme: theme.colorScheme.copyWith(
+            primary: Colors.purple,
+          ),
+        );
+        badgeText = 'Experimental';
         break;
     }
     return Theme(
@@ -160,7 +169,8 @@ class DocsPageState extends State<DocsPage> {
       [
         ShadcnDocsPage('Animated Value', 'animated_value_builder'),
         // https://nyxbui.design/docs/components/number-ticker
-        ShadcnDocsPage('Number Ticker', 'number_ticker'),
+        ShadcnDocsPage(
+            'Number Ticker', 'number_ticker', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Repeated Animation', 'repeated_animation_builder'),
       ],
     ),
@@ -187,8 +197,10 @@ class DocsPageState extends State<DocsPage> {
       [
         ShadcnDocsPage('Button', 'button'),
         ShadcnDocsPage('Checkbox', 'checkbox'),
-        ShadcnDocsPage('Chip Input', 'chip_input'),
-        ShadcnDocsPage('Color Picker', 'color_picker'),
+        ShadcnDocsPage(
+            'Chip Input', 'chip_input', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage(
+            'Color Picker', 'color_picker', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Date Picker', 'date_picker'),
         // TODO: https://file-vault-delta.vercel.app/ also https://uploader.sadmn.com/
         ShadcnDocsPage(
@@ -199,14 +211,17 @@ class DocsPageState extends State<DocsPage> {
             'Image Input', 'image_input', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Input', 'input'),
         ShadcnDocsPage('Input OTP', 'input_otp'),
-        ShadcnDocsPage('Phone Input', 'phone_input'),
+        ShadcnDocsPage(
+            'Phone Input', 'phone_input', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Radio Group', 'radio_group'),
         ShadcnDocsPage('Select', 'select'),
         ShadcnDocsPage('Slider', 'slider'),
-        ShadcnDocsPage('Star Rating', 'star_rating'),
+        ShadcnDocsPage(
+            'Star Rating', 'star_rating', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Switch', 'switch'),
         ShadcnDocsPage('Text Area', 'text_area'),
-        ShadcnDocsPage('Time Picker', 'time_picker'),
+        ShadcnDocsPage(
+            'Time Picker', 'time_picker', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Toggle', 'toggle'),
       ],
     ),
@@ -220,8 +235,8 @@ class DocsPageState extends State<DocsPage> {
         // https://nextjs-shadcn-dnd.vercel.app/ (make it headless)
         ShadcnDocsPage('Sortable', 'sortable', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Steps', 'steps'),
-        ShadcnDocsPage('Stepper', 'stepper'),
-        ShadcnDocsPage('Timeline', 'timeline'),
+        ShadcnDocsPage('Stepper', 'stepper', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Timeline', 'timeline', ShadcnFeatureTag.experimental),
       ],
     ),
     ShadcnDocsSection(
@@ -233,7 +248,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Pagination', 'pagination'),
         ShadcnDocsPage('Tabs', 'tabs'),
         ShadcnDocsPage('Tab List', 'tab_list'),
-        ShadcnDocsPage('Tree', 'tree'),
+        ShadcnDocsPage('Tree', 'tree', ShadcnFeatureTag.experimental),
       ],
     ),
     ShadcnDocsSection(
@@ -251,14 +266,15 @@ class DocsPageState extends State<DocsPage> {
       'Data Display',
       [
         ShadcnDocsPage('Avatar', 'avatar'),
-        ShadcnDocsPage('Avatar Group', 'avatar_group'),
+        ShadcnDocsPage(
+            'Avatar Group', 'avatar_group', ShadcnFeatureTag.experimental),
         ShadcnDocsPage(
             'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
         // TODO also make it zoomable like: https://zoom-chart-demo.vercel.app/
         ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Code Snippet', 'code_snippet'),
         ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Tracker', 'tracker'),
+        ShadcnDocsPage('Tracker', 'tracker', ShadcnFeatureTag.experimental),
       ],
     ),
     ShadcnDocsSection(
@@ -483,13 +499,18 @@ class DocsPageState extends State<DocsPage> {
                                                     },
                                                     selected: page.name ==
                                                         widget.name,
-                                                    child: Basic(
-                                                      trailing: page.tag
-                                                          ?.buildBadge(context),
-                                                      trailingAlignment:
-                                                          Alignment.centerLeft,
-                                                      content: Text(page.title),
+                                                    trailing:
+                                                        DefaultTextStyle.merge(
+                                                      style: const TextStyle(
+                                                        decoration:
+                                                            TextDecoration.none,
+                                                      ),
+                                                      child: page.tag
+                                                              ?.buildBadge(
+                                                                  context) ??
+                                                          const SizedBox(),
                                                     ),
+                                                    child: Text(page.title),
                                                   ),
                                               ],
                                             ),

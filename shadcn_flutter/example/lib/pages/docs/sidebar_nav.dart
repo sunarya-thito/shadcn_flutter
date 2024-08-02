@@ -72,9 +72,11 @@ class NavigationButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
   final bool selected;
+  final Widget? trailing;
 
   const NavigationButton({
     Key? key,
+    this.trailing,
     required this.child,
     required this.onPressed,
     required this.selected,
@@ -95,6 +97,8 @@ class NavigationButton extends StatelessWidget {
       child: Button(
         onPressed: onPressed,
         alignment: Alignment.centerLeft,
+        trailing: trailing,
+        trailingExpanded: true,
         style: ButtonVariance.link.copyWith(
           padding: (context, states, value) {
             return const EdgeInsets.symmetric(vertical: 4, horizontal: 8);
