@@ -29,7 +29,7 @@ import 'components/form/form_example_1.dart';
 import 'components/input_otp/input_otp_example_2.dart';
 import 'components/tracker/tracker_example_1.dart';
 
-const kComponentsMode = ComponentsMode.capture;
+const kComponentsMode = ComponentsMode.normal;
 
 class ComponentsPage extends StatefulWidget {
   const ComponentsPage({Key? key}) : super(key: key);
