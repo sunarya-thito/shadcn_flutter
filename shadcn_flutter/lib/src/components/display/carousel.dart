@@ -101,6 +101,7 @@ class Carousel extends StatefulWidget {
   final Duration speed;
   final Curve curve;
   final double gap;
+  final ValueChanged<int>? onIndexChanged;
 
   const Carousel({
     Key? key,
@@ -120,6 +121,7 @@ class Carousel extends StatefulWidget {
     this.gap = 0,
     this.duration,
     this.durationBuilder,
+    this.onIndexChanged,
   })  : assert(sizeFactor > 0, 'sizeFactor must be greater than 0'),
         assert(wrap || itemCount != null,
             'itemCount must be provided if wrap is false'),
@@ -140,6 +142,8 @@ class _CarouselState extends State<Carousel>
 
   double _dragVelocity = 0;
 
+  late int _currentIndex;
+
   Duration? get _currentSlideDuration {
     double currentIndex = _controller.getCurrentIndex(widget.itemCount);
     final int index = currentIndex.floor();
@@ -156,6 +160,7 @@ class _CarouselState extends State<Carousel>
     _ticker = createTicker(_tick);
     _controller = widget.controller ?? CarouselController();
     _controller.addListener(_onControllerChange);
+    _currentIndex = _controller.getCurrentIndex(widget.itemCount).round();
     _dispatchControllerChange();
   }
 
@@ -254,6 +259,11 @@ class _CarouselState extends State<Carousel>
 
   void _dispatchControllerChange() {
     _check();
+    int index = _controller.getCurrentIndex(widget.itemCount).round();
+    if (index != _currentIndex) {
+      _currentIndex = index;
+      widget.onIndexChanged?.call(index);
+    }
   }
 
   @override
