@@ -22,7 +22,8 @@ class PrimaryBadge extends StatelessWidget {
       child: Button(
         leading: leading,
         trailing: trailing,
-        onPressed: onPressed ?? () {},
+        onPressed: onPressed,
+        enabled: true,
         style: style ??
             const ButtonStyle.primary(
               size: ButtonSize.small,
@@ -63,7 +64,8 @@ class SecondaryBadge extends StatelessWidget {
       child: Button(
         leading: leading,
         trailing: trailing,
-        onPressed: onPressed ?? () {},
+        onPressed: onPressed,
+        enabled: true,
         style: style ??
             const ButtonStyle.secondary(
               size: ButtonSize.small,
@@ -104,7 +106,8 @@ class OutlineBadge extends StatelessWidget {
       child: Button(
         leading: leading,
         trailing: trailing,
-        onPressed: onPressed ?? () {},
+        onPressed: onPressed,
+        enabled: true,
         style: style ??
             const ButtonStyle.outline(
               size: ButtonSize.small,
@@ -145,7 +148,8 @@ class DestructiveBadge extends StatelessWidget {
       child: Button(
         leading: leading,
         trailing: trailing,
-        onPressed: onPressed ?? () {},
+        onPressed: onPressed,
+        enabled: true,
         style: style ??
             const ButtonStyle.destructive(
               size: ButtonSize.small,

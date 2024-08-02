@@ -196,23 +196,49 @@ class ChipInputState extends State<ChipInput> {
           animation: _focusNode,
           builder: (context, child) {
             if (widget.chips.isNotEmpty) {
-              return TextFieldTapRegion(
-                child: OutlinedContainer(
-                  borderRadius: theme.radiusMd,
-                  borderColor: _focusNode.hasFocus
-                      ? theme.colorScheme.ring
-                      : theme.colorScheme.border,
-                  child: Wrap(
-                    // runSpacing: 4,
-                    // spacing: 4,
-                    children: [
-                      for (int i = 0; i < widget.chips.length; i++)
-                        _chipBuilder(i),
-                      child!.expanded(),
-                    ],
-                  ),
-                ),
-              );
+              if (_focusNode.hasFocus) {
+                child = Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    child!,
+                    Wrap(
+                      runSpacing: 4,
+                      spacing: 4,
+                      children: [
+                        for (int i = 0; i < widget.chips.length; i++)
+                          _chipBuilder(i),
+                      ],
+                    ).withPadding(
+                      left: 4,
+                      right: 4,
+                      bottom: 4,
+                    ),
+                  ],
+                );
+              } else {
+                child = Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    Visibility(
+                      visible: false,
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainInteractivity: true,
+                      maintainSize: true,
+                      maintainSemantics: true,
+                      child: child!,
+                    ),
+                    Wrap(
+                      runSpacing: 4,
+                      spacing: 4,
+                      children: [
+                        for (int i = 0; i < widget.chips.length; i++)
+                          _chipBuilder(i),
+                      ],
+                    ).withPadding(all: 4),
+                  ],
+                );
+              }
             }
             return TextFieldTapRegion(
               child: OutlinedContainer(

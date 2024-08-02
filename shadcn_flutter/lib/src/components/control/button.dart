@@ -59,7 +59,7 @@ class Button extends StatefulWidget {
     horizontal: 10,
     vertical: 2,
   );
-  final bool enabled;
+  final bool? enabled;
   final bool disableTransition;
   final Widget? leading;
   final Widget? trailing;
@@ -70,6 +70,7 @@ class Button extends StatefulWidget {
   final AbstractButtonStyle style;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
+  final bool trailingExpanded;
   const Button({
     Key? key,
     this.leading,
@@ -79,10 +80,11 @@ class Button extends StatefulWidget {
     this.focusNode,
     this.alignment,
     required this.style,
-    this.enabled = true,
+    this.enabled,
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
+    this.trailingExpanded = false,
   }) : super(key: key);
 
   const Button.primary({
@@ -93,11 +95,12 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.focusNode,
     this.alignment,
-    this.enabled = true,
+    this.enabled,
     this.style = ButtonVariance.primary,
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
+    this.trailingExpanded = false,
   });
 
   const Button.secondary({
@@ -108,11 +111,12 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.focusNode,
     this.alignment,
-    this.enabled = true,
+    this.enabled,
     this.style = ButtonVariance.secondary,
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
+    this.trailingExpanded = false,
   });
 
   const Button.outline({
@@ -123,11 +127,12 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.focusNode,
     this.alignment,
-    this.enabled = true,
+    this.enabled,
     this.style = ButtonVariance.outline,
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
+    this.trailingExpanded = false,
   });
 
   const Button.ghost({
@@ -138,11 +143,12 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.focusNode,
     this.alignment,
-    this.enabled = true,
+    this.enabled,
     this.style = ButtonVariance.ghost,
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
+    this.trailingExpanded = false,
   });
 
   const Button.link({
@@ -153,11 +159,12 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.focusNode,
     this.alignment,
-    this.enabled = true,
+    this.enabled,
     this.style = ButtonVariance.link,
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
+    this.trailingExpanded = false,
   });
 
   const Button.text({
@@ -168,11 +175,12 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.focusNode,
     this.alignment,
-    this.enabled = true,
+    this.enabled,
     this.style = ButtonVariance.text,
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
+    this.trailingExpanded = false,
   });
 
   const Button.destructive({
@@ -183,11 +191,12 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.focusNode,
     this.alignment,
-    this.enabled = true,
+    this.enabled,
     this.style = ButtonVariance.destructive,
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
+    this.trailingExpanded = false,
   });
 
   const Button.fixed({
@@ -198,11 +207,12 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.focusNode,
     this.alignment,
-    this.enabled = true,
+    this.enabled,
     this.style = ButtonVariance.fixed,
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
+    this.trailingExpanded = false,
   });
 
   @override
@@ -213,7 +223,7 @@ class ButtonState<T extends Button> extends State<T> {
   @override
   Widget build(BuildContext context) {
     return Clickable(
-      enabled: widget.enabled && widget.onPressed != null,
+      enabled: widget.enabled ?? widget.onPressed != null,
       disableTransition: widget.disableTransition,
       onHover: widget.onHover,
       onFocus: widget.onFocus,
@@ -238,20 +248,32 @@ class ButtonState<T extends Button> extends State<T> {
       onPressed: widget.onPressed,
       child: IntrinsicWidth(
         child: IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (widget.leading != null) widget.leading!,
-              Expanded(
-                child: Align(
-                  alignment: widget.alignment ?? Alignment.centerLeft,
-                  child: UnderlineInterceptor(child: widget.child),
-                ),
-              ),
-              if (widget.trailing != null) widget.trailing!,
-            ].joinSeparator(const SizedBox(width: 8)),
-          ),
-        ),
+            child: !widget.trailingExpanded
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (widget.leading != null) widget.leading!,
+                      Expanded(
+                        child: Align(
+                          alignment: widget.alignment ?? Alignment.centerLeft,
+                          child: UnderlineInterceptor(child: widget.child),
+                        ),
+                      ),
+                      if (widget.trailing != null) widget.trailing!,
+                    ].joinSeparator(const SizedBox(width: 8)),
+                  )
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (widget.leading != null) widget.leading!,
+                      Align(
+                        alignment: widget.alignment ?? Alignment.centerLeft,
+                        child: UnderlineInterceptor(child: widget.child),
+                      ),
+                      if (widget.trailing != null)
+                        Flexible(child: widget.trailing!),
+                    ].joinSeparator(const SizedBox(width: 8)),
+                  )),
       ),
     );
   }

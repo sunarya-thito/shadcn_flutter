@@ -88,7 +88,7 @@ class _ClickableState extends State<Clickable> {
           borderRadius: BorderRadius.circular(theme.radiusMd),
           child: GestureDetector(
             behavior: widget.behavior,
-            onTap: enabled ? _onPressed : null,
+            onTap: widget.onPressed != null ? _onPressed : null,
             onDoubleTap: widget.onDoubleTap,
             child: FocusableActionDetector(
               enabled: enabled,
