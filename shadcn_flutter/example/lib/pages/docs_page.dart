@@ -131,7 +131,7 @@ class ShadcnDocsPage {
   final String name; // name for go_router
   final ShadcnFeatureTag? tag;
 
-  const ShadcnDocsPage(this.title, this.name, [this.tag]);
+  ShadcnDocsPage(this.title, this.name, [this.tag]);
 }
 
 class ShadcnDocsSection {
@@ -139,7 +139,7 @@ class ShadcnDocsSection {
   final List<ShadcnDocsPage> pages;
   final IconData icon;
 
-  const ShadcnDocsSection(this.title, this.pages, [this.icon = Icons.book]);
+  ShadcnDocsSection(this.title, this.pages, [this.icon = Icons.book]);
 
   List<ShadcnDocsPage> get sortedPages {
     return pages.toList()..sort((a, b) => a.title.compareTo(b.title));
@@ -147,7 +147,7 @@ class ShadcnDocsSection {
 }
 
 class DocsPageState extends State<DocsPage> {
-  static const List<ShadcnDocsSection> sections = [
+  static final List<ShadcnDocsSection> sections = [
     ShadcnDocsSection(
         'Getting Started',
         [
@@ -325,6 +325,12 @@ class DocsPageState extends State<DocsPage> {
             workInProgress++;
           }
         }
+      }
+    }
+    // sort every components category
+    for (var section in sections) {
+      if (componentCategories.contains(section.title)) {
+        section.pages.sort((a, b) => a.title.compareTo(b.title));
       }
     }
     if (kDebugMode) {

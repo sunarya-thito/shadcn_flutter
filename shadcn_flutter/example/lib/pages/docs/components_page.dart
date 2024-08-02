@@ -27,6 +27,9 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import 'components/form/form_example_1.dart';
 import 'components/input_otp/input_otp_example_2.dart';
+import 'components/tracker/tracker_example_1.dart';
+
+const kComponentsMode = ComponentsMode.capture;
 
 class ComponentsPage extends StatefulWidget {
   const ComponentsPage({Key? key}) : super(key: key);
@@ -62,7 +65,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Data(
-      data: ComponentsMode.normal,
+      data: kComponentsMode,
       child: DocsPage(
         name: 'components',
         onThisPage: {
@@ -757,6 +760,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 example: Card(
                   child: TimePickerDialog(
                     use24HourFormat: true,
+                    initialValue: TimeOfDay.now(),
                   ).withAlign(Alignment.topLeft),
                 ).sized(height: 300),
               ),
@@ -1292,6 +1296,30 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   ),
                 ),
               ),
+              ComponentCard(
+                name: 'avatar_group',
+                title: 'Avatar Group',
+                scale: 1.5,
+                center: true,
+                example: AvatarGroup.toLeft(children: [
+                  Avatar(
+                    initials: Avatar.getInitials('sunarya-thito'),
+                    backgroundColor: Colors.red,
+                  ),
+                  Avatar(
+                    initials: Avatar.getInitials('sunarya-thito'),
+                    backgroundColor: Colors.green,
+                  ),
+                  Avatar(
+                    initials: Avatar.getInitials('sunarya-thito'),
+                    backgroundColor: Colors.blue,
+                  ),
+                  Avatar(
+                    initials: Avatar.getInitials('sunarya-thito'),
+                    backgroundColor: Colors.yellow,
+                  ),
+                ]),
+              ),
               const WIPComponentCard(title: 'Data Table'),
               const WIPComponentCard(title: 'Chart'),
               const ComponentCard(
@@ -1302,6 +1330,13 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   reverseVertical: true,
                   example: CodeSnippetExample1()),
               const WIPComponentCard(title: 'Table'),
+              ComponentCard(
+                name: 'tracker',
+                title: 'Tracker',
+                scale: 2,
+                verticalOffset: 48,
+                example: TrackerExample1().sized(width: 500),
+              ),
             ]),
             const Text('Utilities').h2().anchored(utilitiesKey),
             Gap(16),
@@ -1561,6 +1596,7 @@ class _ComponentCardState extends State<ComponentCard> {
     final theme = Theme.of(context);
     final componentsMode = Data.of<ComponentsMode>(context);
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: componentsMode == ComponentsMode.normal
           ? null
           : () {
@@ -1588,9 +1624,11 @@ class _ComponentCardState extends State<ComponentCard> {
             _hovering = value;
           });
         },
-        onPressed: () {
-          context.pushNamed(widget.name);
-        },
+        onPressed: componentsMode == ComponentsMode.normal
+            ? () {
+                context.pushNamed(widget.name);
+              }
+            : null,
         child: RepaintBoundary(
           key: repaintKey,
           child: ExcludeFocus(
