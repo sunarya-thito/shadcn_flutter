@@ -142,7 +142,7 @@ class DashedContainerProperties {
 }
 
 class DashedContainer extends StatelessWidget {
-  final double width;
+  final double strokeWidth;
   final double gap;
   final double thickness;
   final Color? color;
@@ -151,7 +151,7 @@ class DashedContainer extends StatelessWidget {
 
   const DashedContainer({
     super.key,
-    this.width = 8,
+    this.strokeWidth = 8,
     this.gap = 5,
     this.thickness = 1,
     this.color,
@@ -164,7 +164,7 @@ class DashedContainer extends StatelessWidget {
     final theme = Theme.of(context);
     return AnimatedValueBuilder(
       value: DashedContainerProperties(
-        width: width,
+        width: strokeWidth,
         gap: gap,
         thickness: thickness,
         color: color ?? theme.colorScheme.border,
