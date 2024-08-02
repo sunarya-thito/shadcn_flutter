@@ -634,7 +634,7 @@ class DocsPageState extends State<DocsPage> {
                                     MediaQueryVisibility(
                                       minWidth: breakpointWidth2,
                                       child: Container(
-                                        width: padding.right + 200,
+                                        width: padding.right + 180,
                                         alignment: Alignment.topLeft,
                                         child: FocusTraversalGroup(
                                           child: SingleChildScrollView(
