@@ -71,6 +71,7 @@ class Button extends StatefulWidget {
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
   final bool trailingExpanded;
+  final bool? enableFeedback;
   const Button({
     Key? key,
     this.leading,
@@ -85,6 +86,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.enableFeedback,
   }) : super(key: key);
 
   const Button.primary({
@@ -101,6 +103,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.enableFeedback,
   });
 
   const Button.secondary({
@@ -117,6 +120,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.enableFeedback,
   });
 
   const Button.outline({
@@ -133,6 +137,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.enableFeedback,
   });
 
   const Button.ghost({
@@ -149,6 +154,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.enableFeedback,
   });
 
   const Button.link({
@@ -165,6 +171,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.enableFeedback,
   });
 
   const Button.text({
@@ -181,6 +188,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.enableFeedback,
   });
 
   const Button.destructive({
@@ -197,6 +205,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.enableFeedback,
   });
 
   const Button.fixed({
@@ -213,6 +222,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.enableFeedback,
   });
 
   @override
@@ -220,8 +230,23 @@ class Button extends StatefulWidget {
 }
 
 class ButtonState<T extends Button> extends State<T> {
+  bool get _shouldEnableFeedback {
+    final platform = Theme.of(context).platform;
+    switch (platform) {
+      case TargetPlatform.macOS:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+        return false;
+      case TargetPlatform.iOS:
+      case TargetPlatform.android:
+      case TargetPlatform.fuchsia:
+        return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool enableFeedback = widget.enableFeedback ?? _shouldEnableFeedback;
     return Clickable(
       enabled: widget.enabled ?? widget.onPressed != null,
       disableTransition: widget.disableTransition,
@@ -245,6 +270,15 @@ class ButtonState<T extends Button> extends State<T> {
       iconTheme: WidgetStateProperty.resolveWith((states) {
         return widget.style.iconTheme(context, states);
       }),
+      transform: enableFeedback
+          ? WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.pressed)) {
+                // scale down to 95% with alignment at center
+                return Matrix4.identity()..scale(0.95);
+              }
+              return null;
+            })
+          : null,
       onPressed: widget.onPressed,
       child: IntrinsicWidth(
         child: IntrinsicHeight(
