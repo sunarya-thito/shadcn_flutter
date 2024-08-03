@@ -457,159 +457,155 @@ class DocsPageState extends State<DocsPage> {
                     ExpandableAppBar(
                       child: Container(
                         constraints: BoxConstraints(
-                          maxHeight: 200,
-                        ),
+                            // maxHeight: 200,
+                            ),
                         color: theme.colorScheme.background.withOpacity(0.3),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Expanded(
-                              child: MediaQueryVisibility(
-                                minWidth: breakpointWidth,
-                                alternateChild: FocusTraversalGroup(
-                                  child: ClipRect(
-                                    clipBehavior: Clip.hardEdge,
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                          sigmaX: 10, sigmaY: 10),
-                                      child: Container(
-                                        height: 72,
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 32,
-                                          vertical: 8,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            GhostButton(
-                                              density: ButtonDensity.icon,
+                            MediaQueryVisibility(
+                              minWidth: breakpointWidth,
+                              alternateChild: FocusTraversalGroup(
+                                child: ClipRect(
+                                  clipBehavior: Clip.hardEdge,
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                        sigmaX: 10, sigmaY: 10),
+                                    child: Container(
+                                      height: 72,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 32,
+                                        vertical: 8,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          GhostButton(
+                                            density: ButtonDensity.icon,
+                                            onPressed: () {
+                                              _openDrawer(context);
+                                            },
+                                            child: const Icon(Icons.menu),
+                                          ),
+                                          Gap(18),
+                                          Expanded(
+                                            child: OutlineButton(
                                               onPressed: () {
-                                                _openDrawer(context);
+                                                showSearchBar();
                                               },
-                                              child: const Icon(Icons.menu),
+                                              trailing: const Icon(Icons.search)
+                                                  .iconSmall()
+                                                  .iconMuted(),
+                                              child: const Text(
+                                                      'Search documentation...')
+                                                  .muted()
+                                                  .normal(),
                                             ),
-                                            Gap(18),
-                                            Expanded(
-                                              child: OutlineButton(
-                                                onPressed: () {
-                                                  showSearchBar();
-                                                },
-                                                trailing:
-                                                    const Icon(Icons.search)
-                                                        .iconSmall()
-                                                        .iconMuted(),
-                                                child: const Text(
-                                                        'Search documentation...')
-                                                    .muted()
-                                                    .normal(),
-                                              ),
+                                          ),
+                                          Gap(18),
+                                          GhostButton(
+                                            density: ButtonDensity.icon,
+                                            onPressed: () {
+                                              openInNewTab(
+                                                  'https://github.com/sunarya-thito/shadcn_flutter');
+                                            },
+                                            child: FaIcon(
+                                              FontAwesomeIcons.github,
+                                              color: theme.colorScheme
+                                                  .secondaryForeground,
                                             ),
-                                            Gap(18),
-                                            GhostButton(
+                                          ),
+                                          // pub.dev icon
+                                          GhostButton(
                                               density: ButtonDensity.icon,
                                               onPressed: () {
                                                 openInNewTab(
-                                                    'https://github.com/sunarya-thito/shadcn_flutter');
+                                                    'https://pub.dev/packages/shadcn_flutter');
                                               },
-                                              child: FaIcon(
-                                                FontAwesomeIcons.github,
-                                                color: theme.colorScheme
-                                                    .secondaryForeground,
-                                              ),
-                                            ),
-                                            // pub.dev icon
-                                            GhostButton(
-                                                density: ButtonDensity.icon,
-                                                onPressed: () {
-                                                  openInNewTab(
-                                                      'https://pub.dev/packages/shadcn_flutter');
-                                                },
-                                                child: ColorFiltered(
-                                                  // turns into white
-                                                  colorFilter: ColorFilter.mode(
-                                                    theme.colorScheme
-                                                        .secondaryForeground,
-                                                    BlendMode.srcIn,
-                                                  ),
-                                                  child: const FlutterLogo(
-                                                    size: 24,
-                                                  ),
-                                                )),
-                                          ],
-                                        ),
+                                              child: ColorFiltered(
+                                                // turns into white
+                                                colorFilter: ColorFilter.mode(
+                                                  theme.colorScheme
+                                                      .secondaryForeground,
+                                                  BlendMode.srcIn,
+                                                ),
+                                                child: const FlutterLogo(
+                                                  size: 24,
+                                                ),
+                                              )),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
-                                child: FocusTraversalGroup(
-                                  child: ClipRect(
-                                    clipBehavior: Clip.hardEdge,
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                          sigmaX: 10, sigmaY: 10),
-                                      child: Container(
-                                        height: 72,
-                                        padding: padding,
-                                        child: Row(
-                                          children: [
-                                            const FlutterLogo(
-                                              size: 32,
+                              ),
+                              child: FocusTraversalGroup(
+                                child: ClipRect(
+                                  clipBehavior: Clip.hardEdge,
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                        sigmaX: 10, sigmaY: 10),
+                                    child: Container(
+                                      height: 72,
+                                      padding: padding,
+                                      child: Row(
+                                        children: [
+                                          const FlutterLogo(
+                                            size: 32,
+                                          ),
+                                          Gap(18),
+                                          const Text(
+                                            'shadcn_flutter',
+                                          ).textLarge().mono(),
+                                          const Spacer(),
+                                          Gap(18),
+                                          SizedBox(
+                                            width: 320 - 18,
+                                            // height: 32,
+                                            child: OutlineButton(
+                                              onPressed: () {
+                                                showSearchBar();
+                                              },
+                                              trailing: const Icon(Icons.search)
+                                                  .iconSmall()
+                                                  .iconMuted(),
+                                              child: const Text(
+                                                      'Search documentation...')
+                                                  .muted()
+                                                  .normal(),
                                             ),
-                                            Gap(18),
-                                            const Text(
-                                              'shadcn_flutter',
-                                            ).textLarge().mono(),
-                                            const Spacer(),
-                                            Gap(18),
-                                            SizedBox(
-                                              width: 320 - 18,
-                                              // height: 32,
-                                              child: OutlineButton(
-                                                onPressed: () {
-                                                  showSearchBar();
-                                                },
-                                                trailing:
-                                                    const Icon(Icons.search)
-                                                        .iconSmall()
-                                                        .iconMuted(),
-                                                child: const Text(
-                                                        'Search documentation...')
-                                                    .muted()
-                                                    .normal(),
-                                              ),
-                                            ),
-                                            Gap(18),
-                                            GhostButton(
+                                          ),
+                                          Gap(18),
+                                          GhostButton(
+                                            density: ButtonDensity.icon,
+                                            onPressed: () {
+                                              openInNewTab(
+                                                  'https://github.com/sunarya-thito/shadcn_flutter');
+                                            },
+                                            child: FaIcon(
+                                                FontAwesomeIcons.github,
+                                                color: theme.colorScheme
+                                                    .secondaryForeground),
+                                          ),
+                                          // pub.dev icon
+                                          GhostButton(
                                               density: ButtonDensity.icon,
                                               onPressed: () {
                                                 openInNewTab(
-                                                    'https://github.com/sunarya-thito/shadcn_flutter');
+                                                    'https://pub.dev/packages/shadcn_flutter');
                                               },
-                                              child: FaIcon(
-                                                  FontAwesomeIcons.github,
-                                                  color: theme.colorScheme
-                                                      .secondaryForeground),
-                                            ),
-                                            // pub.dev icon
-                                            GhostButton(
-                                                density: ButtonDensity.icon,
-                                                onPressed: () {
-                                                  openInNewTab(
-                                                      'https://pub.dev/packages/shadcn_flutter');
-                                                },
-                                                child: ColorFiltered(
-                                                  // turns into white
-                                                  colorFilter: ColorFilter.mode(
-                                                    theme.colorScheme
-                                                        .secondaryForeground,
-                                                    BlendMode.srcIn,
-                                                  ),
-                                                  child: const FlutterLogo(
-                                                    size: 24,
-                                                  ),
-                                                )),
-                                          ],
-                                        ),
+                                              child: ColorFiltered(
+                                                // turns into white
+                                                colorFilter: ColorFilter.mode(
+                                                  theme.colorScheme
+                                                      .secondaryForeground,
+                                                  BlendMode.srcIn,
+                                                ),
+                                                child: const FlutterLogo(
+                                                  size: 24,
+                                                ),
+                                              )),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -621,175 +617,175 @@ class DocsPageState extends State<DocsPage> {
                         ),
                       ),
                     ),
-                    ExpandableAppBar(
-                      child: Container(
-                        constraints: BoxConstraints(
-                          minHeight: 100,
-                          maxHeight: 150,
-                        ),
-                        // color: theme.colorScheme.background.withOpacity(0.3),
-                        color: Colors.blue,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(
-                              child: MediaQueryVisibility(
-                                minWidth: breakpointWidth,
-                                alternateChild: FocusTraversalGroup(
-                                  child: ClipRect(
-                                    clipBehavior: Clip.hardEdge,
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                          sigmaX: 10, sigmaY: 10),
-                                      child: Container(
-                                        height: 72,
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 32,
-                                          vertical: 8,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            GhostButton(
-                                              density: ButtonDensity.icon,
-                                              onPressed: () {
-                                                _openDrawer(context);
-                                              },
-                                              child: const Icon(Icons.menu),
-                                            ),
-                                            Gap(18),
-                                            Expanded(
-                                              child: OutlineButton(
-                                                onPressed: () {
-                                                  showSearchBar();
-                                                },
-                                                trailing:
-                                                    const Icon(Icons.search)
-                                                        .iconSmall()
-                                                        .iconMuted(),
-                                                child: const Text(
-                                                        'Search documentation...')
-                                                    .muted()
-                                                    .normal(),
-                                              ),
-                                            ),
-                                            Gap(18),
-                                            GhostButton(
-                                              density: ButtonDensity.icon,
-                                              onPressed: () {
-                                                openInNewTab(
-                                                    'https://github.com/sunarya-thito/shadcn_flutter');
-                                              },
-                                              child: FaIcon(
-                                                FontAwesomeIcons.github,
-                                                color: theme.colorScheme
-                                                    .secondaryForeground,
-                                              ),
-                                            ),
-                                            // pub.dev icon
-                                            GhostButton(
-                                                density: ButtonDensity.icon,
-                                                onPressed: () {
-                                                  openInNewTab(
-                                                      'https://pub.dev/packages/shadcn_flutter');
-                                                },
-                                                child: ColorFiltered(
-                                                  // turns into white
-                                                  colorFilter: ColorFilter.mode(
-                                                    theme.colorScheme
-                                                        .secondaryForeground,
-                                                    BlendMode.srcIn,
-                                                  ),
-                                                  child: const FlutterLogo(
-                                                    size: 24,
-                                                  ),
-                                                )),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                child: FocusTraversalGroup(
-                                  child: ClipRect(
-                                    clipBehavior: Clip.hardEdge,
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                          sigmaX: 10, sigmaY: 10),
-                                      child: Container(
-                                        height: 72,
-                                        padding: padding,
-                                        child: Row(
-                                          children: [
-                                            const FlutterLogo(
-                                              size: 32,
-                                            ),
-                                            Gap(18),
-                                            const Text(
-                                              'shadcn_flutter',
-                                            ).textLarge().mono(),
-                                            const Spacer(),
-                                            Gap(18),
-                                            SizedBox(
-                                              width: 320 - 18,
-                                              // height: 32,
-                                              child: OutlineButton(
-                                                onPressed: () {
-                                                  showSearchBar();
-                                                },
-                                                trailing:
-                                                    const Icon(Icons.search)
-                                                        .iconSmall()
-                                                        .iconMuted(),
-                                                child: const Text(
-                                                        'Search documentation...')
-                                                    .muted()
-                                                    .normal(),
-                                              ),
-                                            ),
-                                            Gap(18),
-                                            GhostButton(
-                                              density: ButtonDensity.icon,
-                                              onPressed: () {
-                                                openInNewTab(
-                                                    'https://github.com/sunarya-thito/shadcn_flutter');
-                                              },
-                                              child: FaIcon(
-                                                  FontAwesomeIcons.github,
-                                                  color: theme.colorScheme
-                                                      .secondaryForeground),
-                                            ),
-                                            // pub.dev icon
-                                            GhostButton(
-                                                density: ButtonDensity.icon,
-                                                onPressed: () {
-                                                  openInNewTab(
-                                                      'https://pub.dev/packages/shadcn_flutter');
-                                                },
-                                                child: ColorFiltered(
-                                                  // turns into white
-                                                  colorFilter: ColorFilter.mode(
-                                                    theme.colorScheme
-                                                        .secondaryForeground,
-                                                    BlendMode.srcIn,
-                                                  ),
-                                                  child: const FlutterLogo(
-                                                    size: 24,
-                                                  ),
-                                                )),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Divider(),
-                          ],
-                        ),
-                      ),
-                    ),
+                    // ExpandableAppBar(
+                    //   child: Container(
+                    //     constraints: BoxConstraints(
+                    //       minHeight: 100,
+                    //       maxHeight: 150,
+                    //     ),
+                    //     // color: theme.colorScheme.background.withOpacity(0.3),
+                    //     color: Colors.blue,
+                    //     child: Column(
+                    //       mainAxisSize: MainAxisSize.min,
+                    //       crossAxisAlignment: CrossAxisAlignment.stretch,
+                    //       children: [
+                    //         Expanded(
+                    //           child: MediaQueryVisibility(
+                    //             minWidth: breakpointWidth,
+                    //             alternateChild: FocusTraversalGroup(
+                    //               child: ClipRect(
+                    //                 clipBehavior: Clip.hardEdge,
+                    //                 child: BackdropFilter(
+                    //                   filter: ImageFilter.blur(
+                    //                       sigmaX: 10, sigmaY: 10),
+                    //                   child: Container(
+                    //                     height: 72,
+                    //                     padding: const EdgeInsets.symmetric(
+                    //                       horizontal: 32,
+                    //                       vertical: 8,
+                    //                     ),
+                    //                     child: Row(
+                    //                       children: [
+                    //                         GhostButton(
+                    //                           density: ButtonDensity.icon,
+                    //                           onPressed: () {
+                    //                             _openDrawer(context);
+                    //                           },
+                    //                           child: const Icon(Icons.menu),
+                    //                         ),
+                    //                         Gap(18),
+                    //                         Expanded(
+                    //                           child: OutlineButton(
+                    //                             onPressed: () {
+                    //                               showSearchBar();
+                    //                             },
+                    //                             trailing:
+                    //                                 const Icon(Icons.search)
+                    //                                     .iconSmall()
+                    //                                     .iconMuted(),
+                    //                             child: const Text(
+                    //                                     'Search documentation...')
+                    //                                 .muted()
+                    //                                 .normal(),
+                    //                           ),
+                    //                         ),
+                    //                         Gap(18),
+                    //                         GhostButton(
+                    //                           density: ButtonDensity.icon,
+                    //                           onPressed: () {
+                    //                             openInNewTab(
+                    //                                 'https://github.com/sunarya-thito/shadcn_flutter');
+                    //                           },
+                    //                           child: FaIcon(
+                    //                             FontAwesomeIcons.github,
+                    //                             color: theme.colorScheme
+                    //                                 .secondaryForeground,
+                    //                           ),
+                    //                         ),
+                    //                         // pub.dev icon
+                    //                         GhostButton(
+                    //                             density: ButtonDensity.icon,
+                    //                             onPressed: () {
+                    //                               openInNewTab(
+                    //                                   'https://pub.dev/packages/shadcn_flutter');
+                    //                             },
+                    //                             child: ColorFiltered(
+                    //                               // turns into white
+                    //                               colorFilter: ColorFilter.mode(
+                    //                                 theme.colorScheme
+                    //                                     .secondaryForeground,
+                    //                                 BlendMode.srcIn,
+                    //                               ),
+                    //                               child: const FlutterLogo(
+                    //                                 size: 24,
+                    //                               ),
+                    //                             )),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             child: FocusTraversalGroup(
+                    //               child: ClipRect(
+                    //                 clipBehavior: Clip.hardEdge,
+                    //                 child: BackdropFilter(
+                    //                   filter: ImageFilter.blur(
+                    //                       sigmaX: 10, sigmaY: 10),
+                    //                   child: Container(
+                    //                     height: 72,
+                    //                     padding: padding,
+                    //                     child: Row(
+                    //                       children: [
+                    //                         const FlutterLogo(
+                    //                           size: 32,
+                    //                         ),
+                    //                         Gap(18),
+                    //                         const Text(
+                    //                           'shadcn_flutter',
+                    //                         ).textLarge().mono(),
+                    //                         const Spacer(),
+                    //                         Gap(18),
+                    //                         SizedBox(
+                    //                           width: 320 - 18,
+                    //                           // height: 32,
+                    //                           child: OutlineButton(
+                    //                             onPressed: () {
+                    //                               showSearchBar();
+                    //                             },
+                    //                             trailing:
+                    //                                 const Icon(Icons.search)
+                    //                                     .iconSmall()
+                    //                                     .iconMuted(),
+                    //                             child: const Text(
+                    //                                     'Search documentation...')
+                    //                                 .muted()
+                    //                                 .normal(),
+                    //                           ),
+                    //                         ),
+                    //                         Gap(18),
+                    //                         GhostButton(
+                    //                           density: ButtonDensity.icon,
+                    //                           onPressed: () {
+                    //                             openInNewTab(
+                    //                                 'https://github.com/sunarya-thito/shadcn_flutter');
+                    //                           },
+                    //                           child: FaIcon(
+                    //                               FontAwesomeIcons.github,
+                    //                               color: theme.colorScheme
+                    //                                   .secondaryForeground),
+                    //                         ),
+                    //                         // pub.dev icon
+                    //                         GhostButton(
+                    //                             density: ButtonDensity.icon,
+                    //                             onPressed: () {
+                    //                               openInNewTab(
+                    //                                   'https://pub.dev/packages/shadcn_flutter');
+                    //                             },
+                    //                             child: ColorFiltered(
+                    //                               // turns into white
+                    //                               colorFilter: ColorFilter.mode(
+                    //                                 theme.colorScheme
+                    //                                     .secondaryForeground,
+                    //                                 BlendMode.srcIn,
+                    //                               ),
+                    //                               child: const FlutterLogo(
+                    //                                 size: 24,
+                    //                               ),
+                    //                             )),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //         const Divider(),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                   rightSideBar: hasOnThisPage
                       ? SideBar(

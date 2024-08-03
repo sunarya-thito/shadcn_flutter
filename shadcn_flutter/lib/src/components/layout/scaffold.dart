@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/src/components/debug.dart';
 
 const kLoadingProgressIndeterminate = double.infinity;
 
@@ -316,7 +315,7 @@ class _ExpandableAppBarState extends State<ExpandableAppBar>
       extraSize: _expandValue,
       child: widget.child,
       reverseDirection: !(_barHolder?.isHeader ?? true),
-    ).debugContainer();
+    );
   }
 }
 
