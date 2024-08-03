@@ -182,15 +182,21 @@ class _ClickableState extends State<Clickable> {
             onLongPressEnd: widget.onLongPressEnd,
             onSecondaryLongPress: widget.onSecondaryLongPress,
             onTertiaryLongPress: widget.onTertiaryLongPress,
-            onTapDown: (details) {
-              _controller.update(WidgetState.pressed, true);
-            },
-            onTapUp: (details) {
-              _controller.update(WidgetState.pressed, false);
-            },
-            onTapCancel: () {
-              _controller.update(WidgetState.pressed, false);
-            },
+            onTapDown: widget.onPressed != null
+                ? (details) {
+                    _controller.update(WidgetState.pressed, true);
+                  }
+                : null,
+            onTapUp: widget.onPressed != null
+                ? (details) {
+                    _controller.update(WidgetState.pressed, false);
+                  }
+                : null,
+            onTapCancel: widget.onPressed != null
+                ? () {
+                    _controller.update(WidgetState.pressed, false);
+                  }
+                : null,
             child: FocusableActionDetector(
               enabled: enabled,
               focusNode: widget.focusNode,
