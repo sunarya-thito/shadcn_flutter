@@ -719,3 +719,71 @@ class ShadcnUI extends StatelessWidget {
     );
   }
 }
+
+class _GlobalPointerListener extends c.StatefulWidget {
+  final Widget child;
+
+  const _GlobalPointerListener({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  c.State<_GlobalPointerListener> createState() =>
+      _GlobalPointerListenerState();
+}
+
+class PointerData {
+  final Offset position;
+
+  PointerData({
+    required this.position,
+  });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is PointerData && other.position == position;
+  }
+
+  @override
+  int get hashCode => position.hashCode;
+
+  @override
+  String toString() => 'PointerData(position: $position)';
+}
+
+class _GlobalPointerListenerState extends c.State<_GlobalPointerListener> {
+  final GlobalKey _key = GlobalKey();
+  Offset? _position;
+  @override
+  Widget build(c.BuildContext context) {
+    Widget child = MouseRegion(
+      key: _key,
+      onEnter: (event) {
+        setState(() {
+          _position = event.position;
+        });
+      },
+      onExit: (event) {
+        setState(() {
+          _position = null;
+        });
+      },
+      onHover: (event) {
+        setState(() {
+          _position = event.position;
+        });
+      },
+      child: widget.child,
+    );
+    if (_position != null) {
+      child = Data(
+        data: PointerData(position: _position!),
+        child: child,
+      );
+    }
+    return child;
+  }
+}

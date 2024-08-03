@@ -26,7 +26,7 @@ class DividerProperties {
   }
 }
 
-class Divider extends StatelessWidget {
+class Divider extends StatelessWidget implements PreferredSizeWidget {
   final Color? color;
   final double? height;
   final double? thickness;
@@ -45,6 +45,9 @@ class Divider extends StatelessWidget {
     this.child,
     this.padding = const EdgeInsets.symmetric(horizontal: 8),
   }) : super(key: key);
+
+  @override
+  Size get preferredSize => Size(0, height ?? 1);
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +201,7 @@ class VerticalDividerPainter extends CustomPainter {
   }
 }
 
-class VerticalDivider extends StatelessWidget {
+class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
   final Color? color;
   final double? width;
   final double? thickness;
@@ -217,6 +220,9 @@ class VerticalDivider extends StatelessWidget {
     this.child,
     this.padding = const EdgeInsets.symmetric(vertical: 8),
   }) : super(key: key);
+
+  @override
+  Size get preferredSize => Size(width ?? 1, 0);
 
   @override
   Widget build(BuildContext context) {
