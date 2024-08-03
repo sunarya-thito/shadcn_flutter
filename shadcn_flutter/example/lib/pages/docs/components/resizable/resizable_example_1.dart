@@ -13,8 +13,7 @@ class _ResizableExample1State extends State<ResizableExample1> {
   Widget build(BuildContext context) {
     return const OutlinedContainer(
       clipBehavior: Clip.antiAlias,
-      child: ResizablePanel(
-        direction: Axis.horizontal,
+      child: ResizablePanel.horizontal(
         children: [
           ResizablePane(
             initialSize: 80,

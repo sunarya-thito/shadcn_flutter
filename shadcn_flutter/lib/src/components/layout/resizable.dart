@@ -99,7 +99,6 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
       newSize = 0;
     }
     double delta = newSize - value.size;
-    print('delta: $delta');
     if (delta == 0) {
       return false;
     }
@@ -432,86 +431,92 @@ class _ResizablePaneState extends State<ResizablePane> {
               ? BoxConstraints.tightFor(width: _controller.size)
               : BoxConstraints.tightFor(height: _controller.size);
         }
-        return ConstrainedBox(
-          constraints: size,
-          child: Offstage(
-              offstage: _controller.value.size == 0,
-              // child: widget.child,
-              child: _kDebugResizable
-                  ? Stack(
-                      fit: StackFit.passthrough,
-                      clipBehavior: Clip.none,
-                      children: [
-                        buildDataBoundary(),
-                        Positioned(
-                          bottom: -(_activePane!.index + 1) * 16,
-                          child: AnimatedBuilder(
-                              animation: _controller,
-                              builder: (context, child) {
-                                return Text(
-                                    'Size: ${_controller.value.collapsed ? widget.collapsedSize : _controller.value.size}\nFlex: ${_activePane?._flex}');
-                              }),
-                        ),
-                      ],
-                    )
-                  : buildDataBoundary()),
+        return Data(
+          data: _controller.value,
+          child: ConstrainedBox(
+            constraints: size,
+            child: Offstage(
+                offstage: _controller.value.size == 0,
+                // child: widget.child,
+                child: _kDebugResizable
+                    ? Stack(
+                        fit: StackFit.passthrough,
+                        clipBehavior: Clip.none,
+                        children: [
+                          buildDataBoundary(),
+                          Positioned(
+                            bottom: -(_activePane!.index + 1) * 16,
+                            child: AnimatedBuilder(
+                                animation: _controller,
+                                builder: (context, child) {
+                                  return Text(
+                                      'Size: ${_controller.value.collapsed ? widget.collapsedSize : _controller.value.size}\nFlex: ${_activePane?._flex}');
+                                }),
+                          ),
+                        ],
+                      )
+                    : buildDataBoundary()),
+          ),
         );
       },
     );
   }
 }
+//
+// class _ResizableDivider extends StatefulWidget {
+//   final Widget child;
+//   final int index;
+//   const _ResizableDivider({
+//     Key? key,
+//     required this.child,
+//     required this.index,
+//   }) : super(key: key);
+//
+//   @override
+//   State<_ResizableDivider> createState() => _ResizableDividerState();
+// }
+//
+// class _ResizableDividerState extends State<_ResizableDivider> {
+//   @override
+//   Widget build(BuildContext context) {
+//     final resizablePanelState = Data.maybeOf<_ResizablePanelState>(context);
+//     assert(resizablePanelState != null,
+//         'ResizableDivider must be a child of ResizablePanel');
+//     return GestureDetector(
+//       behavior: HitTestBehavior.translucent,
+//       onPanStart: (details) {
+//         resizablePanelState!._startDragging();
+//       },
+//       onPanUpdate: (details) {
+//         var delta = resizablePanelState!.widget.direction == Axis.horizontal
+//             ? details.delta.dx
+//             : details.delta.dy;
+//         resizablePanelState._dragDivider(widget.index, delta);
+//       },
+//       onPanEnd: (details) {
+//         resizablePanelState!._stopDragging();
+//       },
+//       onPanCancel: () {
+//         resizablePanelState!._stopDragging();
+//       },
+//       child: Data(data: this, child: widget.child),
+//     );
+//   }
+// }
 
-class _ResizableDivider extends StatefulWidget {
-  final Widget child;
-  final int index;
-  const _ResizableDivider({
-    Key? key,
-    required this.child,
-    required this.index,
-  }) : super(key: key);
-
-  @override
-  State<_ResizableDivider> createState() => _ResizableDividerState();
-}
-
-class _ResizableDividerState extends State<_ResizableDivider> {
-  @override
-  Widget build(BuildContext context) {
-    final resizablePanelState = Data.maybeOf<_ResizablePanelState>(context);
-    assert(resizablePanelState != null,
-        'ResizableDivider must be a child of ResizablePanel');
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onPanStart: (details) {
-        resizablePanelState!._startDragging();
-      },
-      onPanUpdate: (details) {
-        var delta = resizablePanelState!.widget.direction == Axis.horizontal
-            ? details.delta.dx
-            : details.delta.dy;
-        resizablePanelState._dragDivider(widget.index, delta);
-      },
-      onPanEnd: (details) {
-        resizablePanelState!._stopDragging();
-      },
-      onPanCancel: () {
-        resizablePanelState!._stopDragging();
-      },
-      child: Data(data: this, child: widget.child),
-    );
-  }
-}
+typedef PreferredSizeWidgetBuilder = PreferredSizeWidget Function(
+    BuildContext context);
 
 class ResizablePanel extends StatefulWidget {
-  static Widget _defaultDividerBuilder(BuildContext context) {
-    final state = Data.maybeOf<_ResizablePanelState>(context);
-    assert(state != null, 'ResizableDivider must be a child of ResizablePanel');
-    if (state!.widget.direction == Axis.horizontal) {
-      return const VerticalDivider();
-    } else {
-      return const Divider();
-    }
-  }
+  // static PreferredSizeWidget _defaultDividerBuilder(BuildContext context) {
+  //   final state = Data.maybeOf<_ResizablePanelState>(context);
+  //   assert(state != null, 'ResizableDivider must be a child of ResizablePanel');
+  //   if (state!.widget.direction == Axis.horizontal) {
+  //     return const VerticalDivider();
+  //   } else {
+  //     return const Divider();
+  //   }
+  // }
 
   static Widget _defaultDraggerBuilder(BuildContext context) {
     // return Container(
@@ -531,17 +536,33 @@ class ResizablePanel extends StatefulWidget {
   }
 
   final List<ResizablePane> children;
-  final WidgetBuilder? dividerBuilder;
+  final PreferredSizeWidget? divider;
   final WidgetBuilder? draggerBuilder;
   final Axis direction;
 
   const ResizablePanel({
     Key? key,
     required this.children,
-    this.direction = Axis.horizontal,
-    this.dividerBuilder = _defaultDividerBuilder,
+    required this.direction,
+    this.divider,
     this.draggerBuilder = _defaultDraggerBuilder,
   }) : super(key: key);
+
+  const ResizablePanel.horizontal({
+    Key? key,
+    required this.children,
+    this.divider = const VerticalDivider(),
+    this.draggerBuilder = _defaultDraggerBuilder,
+  })  : direction = Axis.horizontal,
+        super(key: key);
+
+  const ResizablePanel.vertical({
+    Key? key,
+    required this.children,
+    this.divider = const Divider(),
+    this.draggerBuilder = _defaultDraggerBuilder,
+  })  : direction = Axis.vertical,
+        super(key: key);
 
   @override
   State<ResizablePanel> createState() => _ResizablePanelState();
@@ -555,20 +576,6 @@ class _ActivePane {
   double _sizeBeforeDrag = 0;
   double __proposedSize = 0;
   double? _flex;
-  final GlobalKey _dividerKey = GlobalKey();
-  double? getDividerSize(Axis direction) {
-    final RenderBox? renderBox =
-        _dividerKey.currentContext?.findRenderObject() as RenderBox?;
-    if (renderBox == null) {
-      return null;
-    }
-    if (direction == Axis.horizontal) {
-      return renderBox.size.width;
-    } else {
-      return renderBox.size.height;
-    }
-  }
-
   double get _proposedSize => __proposedSize;
 
   set _proposedSize(double value) {
@@ -1407,18 +1414,8 @@ class _ResizablePanelState extends State<ResizablePanel> {
     for (int i = 0; i < widget.children.length; i++) {
       final child = widget.children[i];
       final pane = _panes[i];
-      if (i > 0) {
-        children.add(
-          _ResizableDivider(
-            key: _panes[i - 1]._dividerKey,
-            index: i,
-            child: Builder(
-              builder: (context) {
-                return widget.dividerBuilder!(context);
-              },
-            ),
-          ),
-        );
+      if (i > 0 && widget.divider != null) {
+        children.add(widget.divider!);
       }
       children.add(
         Data(
@@ -1455,49 +1452,38 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   Widget buildFlexContainer(BuildContext context, double sparedFlexSize,
-      double flexSpace, double flexCount, bool dividerReady) {
+      double flexSpace, double flexCount) {
     // print('flex: $flexSpace $flexCount $sparedFlexSize');
     switch (widget.direction) {
       case Axis.horizontal:
         return Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
-          children: buildFlexChildren(
-              context, sparedFlexSize, flexSpace, flexCount, dividerReady),
+          children:
+              buildFlexChildren(context, sparedFlexSize, flexSpace, flexCount),
         );
       case Axis.vertical:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
-          children: buildFlexChildren(
-              context, sparedFlexSize, flexSpace, flexCount, dividerReady),
+          children:
+              buildFlexChildren(context, sparedFlexSize, flexSpace, flexCount),
         );
     }
   }
 
   List<Widget> buildFlexChildren(BuildContext context, double sparedFlexSize,
-      double flexSpace, double flexCount, bool dividerReady) {
+      double flexSpace, double flexCount) {
     List<Widget> children = [];
     assert(widget.children.length == _panes.length,
         'Children and panes length mismatch');
     for (int i = 0; i < widget.children.length; i++) {
       final child = widget.children[i];
       final pane = _panes[i];
-      if (i > 0) {
+      if (i > 0 && widget.divider != null) {
         children.add(
-          _ResizableDivider(
-            key: _panes[i - 1]._dividerKey,
-            index: i,
-            child: Builder(
-              builder: (context) {
-                return widget.dividerBuilder!(context);
-              },
-            ),
-          ),
+          widget.divider!,
         );
-      }
-      if (!dividerReady) {
-        continue;
       }
       children.add(
         Data(
@@ -1517,6 +1503,13 @@ class _ResizablePanelState extends State<ResizablePanel> {
 
   @override
   Widget build(BuildContext context) {
+    double dividerSize;
+    if (widget.direction == Axis.horizontal) {
+      dividerSize = widget.divider?.preferredSize.width ?? 0;
+    } else {
+      dividerSize = widget.divider?.preferredSize.height ?? 0;
+    }
+    // create dividers
     if (_expands) {
       return Data(
         data: this,
@@ -1524,7 +1517,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
           double nonFlexSpace = 0;
           double flexCount = 0;
           double minSizeFlex = double.infinity;
-          bool dividerReady = true;
           for (int i = 0; i < widget.children.length; i++) {
             final child = widget.children[i];
             if (child.flex == null) {
@@ -1544,11 +1536,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
             if (i >= widget.children.length - 1) {
               continue;
             }
-            var dividerSize = _panes[i].getDividerSize(widget.direction);
-            nonFlexSpace += (dividerSize ?? 0);
-            if (dividerSize == null) {
-              dividerReady = false;
-            }
+            nonFlexSpace += dividerSize;
           }
 
           for (int i = 0; i < widget.children.length; i++) {
@@ -1573,7 +1561,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
           double flexSpace = containerSize - nonFlexSpace;
           double spacePerFlex = flexCount == 0 ? 0 : flexSpace / flexCount;
 
-          List<Widget> dividers = [];
+          List<Widget> draggers = [];
           double offset = 0;
           for (int i = 0; i < widget.children.length - 1; i++) {
             final child = widget.children[i];
@@ -1586,9 +1574,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
                     : (_panes[i]._attachedPane?.viewSize ??
                         child.initialSize ??
                         0));
-            offset += size + (_panes[i].getDividerSize(widget.direction) ?? 0);
-            Widget dragger;
-            if (widget.direction == Axis.horizontal) {
+
+            offset += size + dividerSize;
+            Widget? dragger;
+            bool leftRightCanDrag = widget.children[i].resizable &&
+                widget.children[i + 1].resizable;
+            if (widget.direction == Axis.horizontal && leftRightCanDrag) {
               dragger = Positioned(
                 left: offset,
                 top: 0,
@@ -1617,7 +1608,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
                   ),
                 ),
               );
-            } else {
+            } else if (leftRightCanDrag) {
               dragger = Positioned(
                 top: offset,
                 left: 0,
@@ -1647,15 +1638,16 @@ class _ResizablePanelState extends State<ResizablePanel> {
                 ),
               );
             }
-            dividers.add(dragger);
+            if (dragger != null) {
+              draggers.add(dragger);
+            }
           }
           return Stack(
             fit: StackFit.passthrough,
             clipBehavior: Clip.none,
             children: [
-              buildFlexContainer(
-                  context, spacePerFlex, flexSpace, flexCount, dividerReady),
-              ...dividers,
+              buildFlexContainer(context, spacePerFlex, flexSpace, flexCount),
+              ...draggers,
               if (_kDebugResizable)
                 Positioned(
                   top: -16,
@@ -1674,7 +1666,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
         }),
       );
     }
-    List<Widget> dividers = [];
+
+    List<Widget> draggers = [];
+    var containerChildren = buildContainer(context);
     double offset = 0;
     for (int i = 0; i < widget.children.length - 1; i++) {
       final child = widget.children[i];
@@ -1682,7 +1676,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
           (child.initialCollapsed
               ? (child.collapsedSize ?? 0)
               : (child.initialSize ?? 0));
-      offset += currentSize + (_panes[i].getDividerSize(widget.direction) ?? 0);
+      offset += currentSize + dividerSize;
       Widget dragger;
       if (widget.direction == Axis.horizontal) {
         dragger = Positioned(
@@ -1743,16 +1737,17 @@ class _ResizablePanelState extends State<ResizablePanel> {
           ),
         );
       }
-      dividers.add(dragger);
+      draggers.add(dragger);
     }
+
     return Data(
       data: this,
       child: Stack(
         fit: StackFit.passthrough,
         clipBehavior: Clip.none,
         children: [
-          buildContainer(context),
-          ...dividers,
+          containerChildren,
+          ...draggers,
           if (_kDebugResizable)
             Positioned(
               top: -16,

@@ -13,8 +13,7 @@ class _ResizableExample3State extends State<ResizableExample3> {
   Widget build(BuildContext context) {
     return OutlinedContainer(
       clipBehavior: Clip.antiAlias,
-      child: ResizablePanel(
-        direction: Axis.horizontal,
+      child: ResizablePanel.horizontal(
         draggerBuilder: (context) {
           return const HorizontalResizableDragger();
         },

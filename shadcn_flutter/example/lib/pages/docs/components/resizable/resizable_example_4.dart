@@ -20,8 +20,7 @@ class _ResizableExample4State extends State<ResizableExample4> {
       children: [
         OutlinedContainer(
           clipBehavior: Clip.antiAlias,
-          child: ResizablePanel(
-            direction: Axis.horizontal,
+          child: ResizablePanel.horizontal(
             children: [
               ResizablePane.controlled(
                 controller: controller1,
