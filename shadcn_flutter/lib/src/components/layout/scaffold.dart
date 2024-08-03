@@ -4,34 +4,10 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 const kLoadingProgressIndeterminate = double.infinity;
 
-class SideBar {
-  final Key? key;
-  final Widget child;
-  final double initialSize;
-  final double? collapsedSize;
-  final double? maxSize;
-  final double? minSize;
-  final bool resizable;
-  final bool initialCollapsed;
-
-  const SideBar({
-    this.key,
-    required this.child,
-    required this.initialSize,
-    this.collapsedSize,
-    this.maxSize,
-    this.minSize,
-    this.resizable = false,
-    this.initialCollapsed = false,
-  });
-}
-
 class Scaffold extends StatefulWidget {
   final List<Widget> headers;
   final List<Widget> footers;
   final Widget child;
-  final SideBar? leftSideBar;
-  final SideBar? rightSideBar;
   final double? loadingProgress;
   final VoidCallback? onRefresh;
   final bool
@@ -45,8 +21,6 @@ class Scaffold extends StatefulWidget {
     required this.child,
     this.headers = const [],
     this.footers = const [],
-    this.leftSideBar,
-    this.rightSideBar,
     this.loadingProgress,
     this.onRefresh,
     this.floatingHeader = false,
@@ -115,82 +89,7 @@ class _ScaffoldState extends State<Scaffold> {
               ),
             ),
             Expanded(
-              child: ResizablePanel(
-                direction: Axis.horizontal,
-                children: [
-                  if (widget.leftSideBar != null)
-                    ResizablePane(
-                      key: widget.leftSideBar!.key,
-                      initialSize: widget.leftSideBar!.initialSize,
-                      initialCollapsed: widget.leftSideBar!.initialCollapsed,
-                      collapsedSize: widget.leftSideBar!.collapsedSize,
-                      maxSize: widget.leftSideBar!.maxSize,
-                      minSize: widget.leftSideBar!.minSize,
-                      resizable: widget.leftSideBar!.resizable,
-                      child: widget.leftSideBar!.child,
-                    ),
-                  ResizablePane.flex(
-                    child: NotificationListener<ScrollNotification>(
-                      onNotification: (notification) {
-                        if (notification is ScrollUpdateNotification) {
-                          double? currentScrollDelta = notification.scrollDelta;
-                          if (currentScrollDelta != null) {
-                            double topScrollDelta = currentScrollDelta;
-                            double bottomScrollDelta = currentScrollDelta;
-                            // start from most top header
-                            for (int i = 0; i < _headerHolders.length; i++) {
-                              if (topScrollDelta != 0) {
-                                var attachedBar =
-                                    _headerHolders[i]._attachedBar;
-                                if (attachedBar != null) {
-                                  var consumedScrollDelta = attachedBar
-                                      .consumeScrollDelta(topScrollDelta);
-                                  topScrollDelta -= consumedScrollDelta;
-                                  _headerHolders[i]._consumedDelta +=
-                                      consumedScrollDelta;
-                                }
-                              } else {
-                                break;
-                              }
-                            }
-                            // start from most bottom footer
-                            for (int i = _footerHolders.length - 1;
-                                i >= 0;
-                                i--) {
-                              if (bottomScrollDelta < 0) {
-                                var attachedBar =
-                                    _footerHolders[i]._attachedBar;
-                                if (attachedBar != null) {
-                                  var consumedScrollDelta = attachedBar
-                                      .consumeScrollDelta(bottomScrollDelta);
-                                  bottomScrollDelta -= consumedScrollDelta;
-                                  _footerHolders[i]._consumedDelta +=
-                                      consumedScrollDelta;
-                                }
-                              } else {
-                                break;
-                              }
-                            }
-                          }
-                        }
-                        return true;
-                      },
-                      child: widget.child,
-                    ),
-                  ),
-                  if (widget.rightSideBar != null)
-                    ResizablePane(
-                      key: widget.rightSideBar!.key,
-                      initialSize: widget.rightSideBar!.initialSize,
-                      initialCollapsed: widget.rightSideBar!.initialCollapsed,
-                      collapsedSize: widget.rightSideBar!.collapsedSize,
-                      maxSize: widget.rightSideBar!.maxSize,
-                      minSize: widget.rightSideBar!.minSize,
-                      resizable: widget.rightSideBar!.resizable,
-                      child: widget.rightSideBar!.child,
-                    ),
-                ],
-              ),
+              child: widget.child,
             ),
             Container(
               color: widget.footerBackgroundColor,
@@ -366,9 +265,12 @@ class _ScaffoldRenderFlex extends RenderFlex {
     RenderBox header = firstChild!;
     RenderBox content = (header.parentData as FlexParentData).nextSibling!;
     RenderBox footer = (content.parentData as FlexParentData).nextSibling!;
-    context.paintChild(content, (content.parentData as BoxParentData).offset);
-    context.paintChild(header, (header.parentData as BoxParentData).offset);
-    context.paintChild(footer, (footer.parentData as BoxParentData).offset);
+    context.paintChild(
+        content, (content.parentData as BoxParentData).offset + offset);
+    context.paintChild(
+        header, (header.parentData as BoxParentData).offset + offset);
+    context.paintChild(
+        footer, (footer.parentData as BoxParentData).offset + offset);
   }
 }
 
@@ -421,8 +323,7 @@ class _ExpandableAppBarRenderBox extends RenderBox
   @override
   void paint(PaintingContext context, Offset offset) {
     if (child != null) {
-      context.paintChild(
-          child!, offset + (child!.parentData as BoxParentData).offset);
+      context.paintChild(child!, (child!.parentData as BoxParentData).offset);
     }
   }
 
