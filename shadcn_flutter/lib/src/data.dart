@@ -346,7 +346,12 @@ class Data<T> extends InheritedWidget {
     return oldWidget.data != data;
   }
 
-  Widget? wrap(Widget child) {
+  Widget? wrap(Widget child, BuildContext context) {
+    Data<T>? ancestor = context.dependOnInheritedWidgetOfExactType<Data<T>>();
+    // if it's the same type, we don't need to wrap it
+    if (identical(this, ancestor)) {
+      return null;
+    }
     final data = this.data;
     if (data == null) {
       return Data<T>.boundary(child: child);
@@ -388,43 +393,5 @@ class _CaptureAll extends StatelessWidget {
       result = wrap;
     }
     return result;
-  }
-}
-
-class ComponentTheme<T> extends InheritedTheme {
-  final T data;
-
-  const ComponentTheme({
-    Key? key,
-    required this.data,
-    required Widget child,
-  }) : super(key: key, child: child);
-
-  @override
-  Widget wrap(BuildContext context, Widget child) {
-    return ComponentTheme<T>(
-      data: data,
-      child: child,
-    );
-  }
-
-  static T of<T>(BuildContext context) {
-    final data = maybeOf<T>(context);
-    assert(data != null, 'No Data<$T> found in context');
-    return data!;
-  }
-
-  static T? maybeOf<T>(BuildContext context) {
-    final widget =
-        context.dependOnInheritedWidgetOfExactType<ComponentTheme<T>>();
-    if (widget == null) {
-      return null;
-    }
-    return widget.data;
-  }
-
-  @override
-  bool updateShouldNotify(covariant ComponentTheme<T> oldWidget) {
-    return oldWidget.data != data;
   }
 }

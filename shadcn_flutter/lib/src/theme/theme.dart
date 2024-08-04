@@ -6,12 +6,14 @@ class ThemeData {
   final ColorScheme colorScheme;
   final Typography typography;
   final double radius;
+  final double density;
   final TargetPlatform? _platform;
   final IconThemeProperties iconTheme;
 
   ThemeData({
     required this.colorScheme,
     required this.radius,
+    this.density = 1,
     this.typography = const Typography.geist(),
     this.iconTheme = const IconThemeProperties(),
     TargetPlatform? platform,
@@ -25,6 +27,16 @@ class ThemeData {
   double get radiusMd => radius * 12;
   double get radiusSm => radius * 8;
   double get radiusXs => radius * 4;
+
+  double get paddingXs => density * 2;
+  double get paddingSm => density * 4;
+  double get paddingMd => density * 8;
+  double get paddingLg => density * 12;
+  double get paddingXl => density * 16;
+  double get paddingXxl => density * 24;
+  double get paddingX3l => density * 32;
+  double get paddingX4l => density * 40;
+  double get paddingX5l => density * 48;
 
   BorderRadius get borderRadiusXxl => BorderRadius.circular(radiusXxl);
   BorderRadius get borderRadiusXl => BorderRadius.circular(radiusXl);
@@ -47,12 +59,14 @@ class ThemeData {
     double? radius,
     Typography? typography,
     TargetPlatform? platform,
+    double? density,
   }) {
     return ThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
       radius: radius ?? this.radius,
       typography: typography ?? this.typography,
       platform: platform ?? _platform,
+      density: density ?? this.density,
     );
   }
 }
@@ -106,4 +120,48 @@ class IconThemeProperties {
     this.large = const IconThemeData(size: 24),
     this.xLarge = const IconThemeData(size: 32),
   });
+}
+
+class ComponentTheme<T> extends InheritedTheme {
+  final T data;
+
+  const ComponentTheme({
+    Key? key,
+    required this.data,
+    required Widget child,
+  }) : super(key: key, child: child);
+
+  @override
+  Widget wrap(BuildContext context, Widget child) {
+    ComponentTheme<T>? ancestorTheme =
+        context.findAncestorWidgetOfExactType<ComponentTheme<T>>();
+    // if it's the same type, we don't need to wrap it
+    if (identical(this, ancestorTheme)) {
+      return child;
+    }
+    return ComponentTheme<T>(
+      data: data,
+      child: child,
+    );
+  }
+
+  static T of<T>(BuildContext context) {
+    final data = maybeOf<T>(context);
+    assert(data != null, 'No Data<$T> found in context');
+    return data!;
+  }
+
+  static T? maybeOf<T>(BuildContext context) {
+    final widget =
+        context.dependOnInheritedWidgetOfExactType<ComponentTheme<T>>();
+    if (widget == null) {
+      return null;
+    }
+    return widget.data;
+  }
+
+  @override
+  bool updateShouldNotify(covariant ComponentTheme<T> oldWidget) {
+    return oldWidget.data != data;
+  }
 }
