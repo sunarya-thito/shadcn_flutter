@@ -237,15 +237,6 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Timeline', 'timeline', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Scaffold', 'scaffold', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('App Bar', 'app_bar', ShadcnFeatureTag.workInProgress),
-        // aka Bottom Navigation Bar
-        ShadcnDocsPage('Navigation Bar', 'navigation_bar',
-            ShadcnFeatureTag.workInProgress),
-        // aka Sidebar
-        ShadcnDocsPage('Navigation Rail', 'navigation_rail',
-            ShadcnFeatureTag.workInProgress),
-        // aka Drawer
-        ShadcnDocsPage('Navigation Drawer', 'navigation_drawer',
-            ShadcnFeatureTag.workInProgress),
       ],
     ),
     ShadcnDocsSection(
@@ -258,6 +249,17 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Tabs', 'tabs'),
         ShadcnDocsPage('Tab List', 'tab_list'),
         ShadcnDocsPage('Tree', 'tree', ShadcnFeatureTag.experimental),
+        // aka Bottom Navigation Bar
+        ShadcnDocsPage('Navigation Bar', 'navigation_bar',
+            ShadcnFeatureTag.workInProgress),
+        // aka Sidebar
+        ShadcnDocsPage('Navigation Rail', 'navigation_rail',
+            ShadcnFeatureTag.workInProgress),
+        // aka Drawer
+        ShadcnDocsPage('Navigation Drawer', 'navigation_drawer',
+            ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage(
+            'Dot Indicator', 'dot_indicator', ShadcnFeatureTag.workInProgress),
       ],
     ),
     ShadcnDocsSection(
