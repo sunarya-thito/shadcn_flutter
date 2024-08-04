@@ -520,6 +520,7 @@ PopoverFuture<T?> showPopover<T>({
                       var popoverAnchor = PopoverAnchor(
                         animation: animation,
                         onTapOutside: () {
+                          if (isClosed.value) return;
                           if (!modal) {
                             isClosed.value = true;
                             completer.complete();
@@ -546,6 +547,7 @@ PopoverFuture<T?> showPopover<T>({
                         allowInvertVertical: allowInvertVertical,
                         data: data,
                         onClose: () {
+                          if (isClosed.value) return;
                           isClosed.value = true;
                           completer.complete();
                         },
@@ -554,6 +556,7 @@ PopoverFuture<T?> showPopover<T>({
                           completer.complete();
                         },
                         onCloseWithResult: (value) {
+                          if (isClosed.value) return;
                           isClosed.value = true;
                           completer.complete(value);
                         },
