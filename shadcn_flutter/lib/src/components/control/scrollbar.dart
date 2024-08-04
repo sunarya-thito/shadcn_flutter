@@ -116,7 +116,6 @@ class _ShadcnScrollbarState extends RawScrollbarState<_ShadcnScrollbar> {
 
   @override
   void handleHover(PointerHoverEvent event) {
-    super.handleHover(event);
     // Check if the position of the pointer falls over the painted scrollbar
     if (isPointerOverScrollbar(event.position, event.kind, forHover: true)) {
       // Pointer is hovering over the scrollbar
@@ -131,6 +130,7 @@ class _ShadcnScrollbarState extends RawScrollbarState<_ShadcnScrollbar> {
       });
       _hoverAnimationController.reverse();
     }
+    super.handleHover(event);
   }
 
   @override

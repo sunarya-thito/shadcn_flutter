@@ -245,30 +245,32 @@ class _ShadcnAppState extends State<ShadcnApp> {
 
   Widget _builder(BuildContext context, Widget? child) {
     final ThemeData theme = widget.theme;
-    return ScrollViewInterceptor(
-      child: ShadcnSkeletonizerConfigLayer(
-        theme: theme,
-        child: mergeAnimatedTextStyle(
-          duration: kDefaultDuration,
-          style: TextStyle(
-            color: theme.colorScheme.foreground,
-          ),
-          child: AnimatedIconTheme.merge(
+    return DataMessengerRoot(
+      child: ScrollViewInterceptor(
+        child: ShadcnSkeletonizerConfigLayer(
+          theme: theme,
+          child: mergeAnimatedTextStyle(
             duration: kDefaultDuration,
-            data: IconThemeData(
+            style: TextStyle(
               color: theme.colorScheme.foreground,
             ),
-            child: Theme(
-              data: theme,
-              child: ToastLayer(
-                child: SortableLayer(
-                  child: widget.builder != null
-                      ? Builder(
-                          builder: (BuildContext context) {
-                            return widget.builder!(context, child);
-                          },
-                        )
-                      : child ?? const SizedBox.shrink(),
+            child: AnimatedIconTheme.merge(
+              duration: kDefaultDuration,
+              data: IconThemeData(
+                color: theme.colorScheme.foreground,
+              ),
+              child: Theme(
+                data: theme,
+                child: ToastLayer(
+                  child: SortableLayer(
+                    child: widget.builder != null
+                        ? Builder(
+                            builder: (BuildContext context) {
+                              return widget.builder!(context, child);
+                            },
+                          )
+                        : child ?? const SizedBox.shrink(),
+                  ),
                 ),
               ),
             ),
@@ -407,7 +409,13 @@ class _ShadcnAppState extends State<ShadcnApp> {
           color: m.Colors.transparent,
           child: m.ScaffoldMessenger(
             child: ScrollConfiguration(
-              behavior: widget.scrollBehavior ?? const ShadcnScrollBehavior(),
+              behavior: (widget.scrollBehavior ?? const ShadcnScrollBehavior())
+                  .copyWith(
+                dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.mouse,
+                },
+              ),
               child: HeroControllerScope(
                 controller: _heroController,
                 child: result,

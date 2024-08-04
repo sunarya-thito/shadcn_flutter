@@ -2,19 +2,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-const kLoadingProgressIndeterminate = double.infinity;
-
 class Scaffold extends StatefulWidget {
   final List<Widget> headers;
   final List<Widget> footers;
   final Widget child;
   final double? loadingProgress;
+  final bool loadingProgressIndeterminate;
   final VoidCallback? onRefresh;
   final bool
       floatingHeader; // when header floats, it takes no space in the layout, and positioned on top of the content
   final bool floatingFooter;
   final Color? headerBackgroundColor;
   final Color? footerBackgroundColor;
+  final bool showLoadingSparks;
 
   const Scaffold({
     super.key,
@@ -22,30 +22,36 @@ class Scaffold extends StatefulWidget {
     this.headers = const [],
     this.footers = const [],
     this.loadingProgress,
+    this.loadingProgressIndeterminate = false,
     this.onRefresh,
     this.floatingHeader = false,
     this.floatingFooter = false,
     this.headerBackgroundColor,
     this.footerBackgroundColor,
+    this.showLoadingSparks = false,
   });
 
   @override
-  State<Scaffold> createState() => _ScaffoldState();
+  State<Scaffold> createState() => ScaffoldState();
 }
 
-class _ScaffoldState extends State<Scaffold> {
+class ScaffoldState extends State<Scaffold> {
   late List<BarHolder> _headerHolders;
   late List<BarHolder> _footerHolders;
 
   @override
   void initState() {
     super.initState();
-    _headerHolders =
-        List.generate(widget.headers.length, (index) => BarHolder());
+    _headerHolders = List.generate(
+        widget.headers.length,
+        (index) => BarHolder(
+              scaffold: this,
+            ));
     _footerHolders = List.generate(
         widget.footers.length,
         (index) => BarHolder(
               isHeader: false,
+              scaffold: this,
             ));
   }
 
@@ -53,14 +59,18 @@ class _ScaffoldState extends State<Scaffold> {
   void didUpdateWidget(covariant Scaffold oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(oldWidget.headers, widget.headers)) {
-      _headerHolders =
-          List.generate(widget.headers.length, (index) => BarHolder());
+      _headerHolders = List.generate(
+          widget.headers.length,
+          (index) => BarHolder(
+                scaffold: this,
+              ));
     }
     if (!listEquals(oldWidget.footers, widget.footers)) {
       _footerHolders = List.generate(
           widget.footers.length,
           (index) => BarHolder(
                 isHeader: false,
+                scaffold: this,
               ));
     }
   }
@@ -79,11 +89,69 @@ class _ScaffoldState extends State<Scaffold> {
             Container(
               color: widget.headerBackgroundColor,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  for (int i = 0; i < widget.headers.length; i++)
-                    Data(
-                      data: _headerHolders[i],
-                      child: widget.headers[i],
+                  Column(
+                    verticalDirection: VerticalDirection.up,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (widget.loadingProgress != null ||
+                          widget.loadingProgressIndeterminate)
+                        SizedBox(
+                          // to make it float
+                          height: 0,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            fit: StackFit.passthrough,
+                            children: [
+                              Positioned(
+                                left: 0,
+                                right: 0,
+                                child: LinearProgressIndicator(
+                                  backgroundColor: Colors.transparent,
+                                  value: widget.loadingProgressIndeterminate
+                                      ? null
+                                      : widget.loadingProgress,
+                                  showSparks: false,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          for (int i = 0; i < widget.headers.length; i++)
+                            Data(
+                              data: _headerHolders[i],
+                              child: widget.headers[i],
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  if (widget.loadingProgress != null &&
+                      widget.showLoadingSparks)
+                    SizedBox(
+                      // to make it float
+                      height: 0,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        fit: StackFit.passthrough,
+                        children: [
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            child: LinearProgressIndicator(
+                              backgroundColor: Colors.transparent,
+                              value: widget.loadingProgressIndeterminate
+                                  ? null
+                                  : widget.loadingProgress,
+                              showSparks: true,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                 ],
               ),
@@ -111,11 +179,16 @@ class _ScaffoldState extends State<Scaffold> {
 }
 
 class BarHolder {
+  final ScaffoldState scaffold;
   final bool isHeader;
   BarInstance? _attachedBar;
-  double _consumedDelta = 0;
 
-  BarHolder({this.isHeader = true});
+  BarHolder({this.isHeader = true, required this.scaffold});
+
+  void attachBar(BarInstance bar) {
+    _attachedBar = bar;
+    // scaffold._recomputeScrollDeltaConsumption();
+  }
 }
 
 abstract class BarInstance {
@@ -156,70 +229,8 @@ class _AppBarState extends State<AppBar> {
   }
 }
 
-class ExpandableAppBar extends StatefulWidget {
-  final Widget child;
-  final Widget? collapsedChild;
-  final bool pinned;
-
-  const ExpandableAppBar({
-    super.key,
-    required this.child,
-    this.collapsedChild,
-    this.pinned = false,
-  });
-
-  @override
-  State<ExpandableAppBar> createState() => _ExpandableAppBarState();
-}
-
-class _ExpandableAppBarState extends State<ExpandableAppBar>
-    implements BarInstance {
-  BarHolder? _barHolder;
-  final GlobalKey _key = GlobalKey(); // help to keep child state persistent
-  double _expandValue = 0;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    var newBarHolder = Data.maybeOf<BarHolder>(context);
-    if (newBarHolder != _barHolder) {
-      _barHolder?._attachedBar = null;
-      _barHolder = newBarHolder;
-      _barHolder?._attachedBar = this;
-    }
-  }
-
-  @override
-  double consumeScrollDelta(double delta) {
-    if (widget.pinned) {
-      return 0;
-    }
-    print('consumeScrollDelta: $delta');
-    RenderBox box = _key.currentContext!.findRenderObject() as RenderBox;
-    double minIntrinsicHeight = box.getMinIntrinsicHeight(double.infinity);
-    double maxIntrinsicHeight = box.getMaxIntrinsicHeight(double.infinity);
-    Size size = box.size;
-    double consumedDelta = delta;
-    setState(() {
-      _expandValue += consumedDelta;
-      print('expandValue: $_expandValue');
-    });
-    return consumedDelta;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _ExpandableAppBar(
-      key: _key,
-      extraSize: _expandValue,
-      child: widget.child,
-      reverseDirection: !(_barHolder?.isHeader ?? true),
-    );
-  }
-}
-
 class _ScaffoldFlex extends Flex {
-  _ScaffoldFlex({
+  const _ScaffoldFlex({
     super.direction = Axis.vertical,
     super.crossAxisAlignment = CrossAxisAlignment.center,
     super.children = const <Widget>[],
@@ -271,99 +282,5 @@ class _ScaffoldRenderFlex extends RenderFlex {
         header, (header.parentData as BoxParentData).offset + offset);
     context.paintChild(
         footer, (footer.parentData as BoxParentData).offset + offset);
-  }
-}
-
-class _ExpandableAppBar extends SingleChildRenderObjectWidget {
-  final double extraSize;
-  final bool reverseDirection;
-
-  const _ExpandableAppBar({
-    super.key,
-    this.reverseDirection = false,
-    required this.extraSize,
-    required Widget child,
-  }) : super(child: child);
-
-  @override
-  RenderObject createRenderObject(BuildContext context) {
-    return _ExpandableAppBarRenderBox(
-      extraSize: extraSize,
-      reverseDirection: reverseDirection,
-    );
-  }
-
-  @override
-  void updateRenderObject(
-      BuildContext context, _ExpandableAppBarRenderBox renderObject) {
-    bool needsRelayout = false;
-    if (renderObject.extraSize != extraSize) {
-      renderObject.extraSize = extraSize;
-      needsRelayout = true;
-    }
-    if (renderObject.reverseDirection != reverseDirection) {
-      renderObject.reverseDirection = reverseDirection;
-      needsRelayout = true;
-    }
-    if (needsRelayout) {
-      renderObject.markNeedsLayout();
-    }
-  }
-}
-
-class _ExpandableAppBarRenderBox extends RenderBox
-    with RenderObjectWithChildMixin<RenderBox> {
-  double extraSize;
-  bool reverseDirection;
-  _ExpandableAppBarRenderBox({
-    required this.extraSize,
-    this.reverseDirection = false,
-  });
-
-  @override
-  void paint(PaintingContext context, Offset offset) {
-    if (child != null) {
-      context.paintChild(child!, (child!.parentData as BoxParentData).offset);
-    }
-  }
-
-  @override
-  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
-    if (child != null) {
-      return child!.hitTest(result, position: position);
-    }
-    return false;
-  }
-
-  @override
-  void performLayout() {
-    if (child != null) {
-      // minSize, if null, use intrinsic size
-      Size dryLayoutSize = child!.computeDryLayout(this.constraints);
-      double minSize = child!.getMinIntrinsicHeight(double.infinity);
-      double maxSize = dryLayoutSize.height - extraSize;
-      if (maxSize < minSize) {
-        maxSize = minSize;
-      }
-      BoxConstraints constraints = BoxConstraints(
-        minWidth: this.constraints.minWidth,
-        maxWidth: this.constraints.maxWidth,
-        minHeight: minSize,
-        maxHeight: maxSize,
-      );
-      child!.layout(constraints, parentUsesSize: true);
-      var childSize = child!.size;
-      final BoxParentData childParentData = child!.parentData as BoxParentData;
-      double shiftSize = minSize + extraSize.min(0);
-      print(
-          'minSize: $minSize, maxSize: $maxSize, childSize: $childSize, extraSize: $extraSize, shiftSize: $shiftSize, dryLayoutSize: $dryLayoutSize');
-      if (reverseDirection) {
-      } else {
-        // childParentData.offset = Offset(0, -shiftSize);
-      }
-      size = constraints.constrain(childSize);
-    } else {
-      size = constraints.smallest;
-    }
   }
 }
