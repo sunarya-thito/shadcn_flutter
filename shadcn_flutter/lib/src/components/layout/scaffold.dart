@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:ui';
+
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -36,45 +37,6 @@ class Scaffold extends StatefulWidget {
 }
 
 class ScaffoldState extends State<Scaffold> {
-  late List<BarHolder> _headerHolders;
-  late List<BarHolder> _footerHolders;
-
-  @override
-  void initState() {
-    super.initState();
-    _headerHolders = List.generate(
-        widget.headers.length,
-        (index) => BarHolder(
-              scaffold: this,
-            ));
-    _footerHolders = List.generate(
-        widget.footers.length,
-        (index) => BarHolder(
-              isHeader: false,
-              scaffold: this,
-            ));
-  }
-
-  @override
-  void didUpdateWidget(covariant Scaffold oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (!listEquals(oldWidget.headers, widget.headers)) {
-      _headerHolders = List.generate(
-          widget.headers.length,
-          (index) => BarHolder(
-                scaffold: this,
-              ));
-    }
-    if (!listEquals(oldWidget.footers, widget.footers)) {
-      _footerHolders = List.generate(
-          widget.footers.length,
-          (index) => BarHolder(
-                isHeader: false,
-                scaffold: this,
-              ));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -120,13 +82,7 @@ class ScaffoldState extends State<Scaffold> {
                         ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          for (int i = 0; i < widget.headers.length; i++)
-                            Data(
-                              data: _headerHolders[i],
-                              child: widget.headers[i],
-                            ),
-                        ],
+                        children: widget.headers,
                       ),
                     ],
                   ),
@@ -162,13 +118,7 @@ class ScaffoldState extends State<Scaffold> {
             Container(
               color: widget.footerBackgroundColor,
               child: Column(
-                children: [
-                  for (int i = 0; i < widget.footers.length; i++)
-                    Data(
-                      data: _footerHolders[i],
-                      child: widget.footers[i],
-                    ),
-                ],
+                children: widget.footers,
               ),
             ),
           ],
@@ -178,26 +128,10 @@ class ScaffoldState extends State<Scaffold> {
   }
 }
 
-class BarHolder {
-  final ScaffoldState scaffold;
-  final bool isHeader;
-  BarInstance? _attachedBar;
-
-  BarHolder({this.isHeader = true, required this.scaffold});
-
-  void attachBar(BarInstance bar) {
-    _attachedBar = bar;
-    // scaffold._recomputeScrollDeltaConsumption();
-  }
-}
-
-abstract class BarInstance {
-  double consumeScrollDelta(double delta);
-}
-
 class AppBar extends StatefulWidget {
   final List<Widget> trailing;
   final List<Widget> leading;
+  final Widget? child;
   final Widget? title;
   final Widget? header; // small widget placed on top of title
   final Widget? subtitle; // small widget placed below title
@@ -205,6 +139,10 @@ class AppBar extends StatefulWidget {
       trailingExpanded; // expand the trailing instead of the main content
   final Alignment alignment;
   final Color? backgroundColor;
+  final double leadingGap;
+  final double trailingGap;
+  final EdgeInsetsGeometry? padding;
+  final double? height;
 
   const AppBar({
     super.key,
@@ -213,10 +151,18 @@ class AppBar extends StatefulWidget {
     this.title,
     this.header,
     this.subtitle,
+    this.child,
     this.trailingExpanded = false,
-    this.alignment = Alignment.bottomCenter,
+    this.alignment = Alignment.center,
+    this.padding,
     this.backgroundColor,
-  });
+    this.leadingGap = 8,
+    this.trailingGap = 8,
+    this.height,
+  }) : assert(
+          child == null || title == null,
+          'Cannot provide both child and title',
+        );
 
   @override
   State<AppBar> createState() => _AppBarState();
@@ -225,7 +171,66 @@ class AppBar extends StatefulWidget {
 class _AppBarState extends State<AppBar> {
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError();
+    final theme = Theme.of(context);
+    return FocusTraversalGroup(
+      child: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(
+            color: widget.backgroundColor ??
+                theme.colorScheme.background.withOpacity(0.4),
+            alignment: widget.alignment,
+            height: widget.height,
+            padding: widget.padding ??
+                const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 8,
+                ),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: widget.leading,
+                  ).gap(widget.leadingGap),
+                  const Gap(16),
+                  Flexible(
+                    fit:
+                        widget.trailingExpanded ? FlexFit.loose : FlexFit.tight,
+                    child: widget.child ??
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (widget.header != null)
+                              widget.header!.muted().base(),
+                            if (widget.title != null) widget.title!.large(),
+                            if (widget.subtitle != null)
+                              widget.subtitle!.muted().small(),
+                          ],
+                        ),
+                  ),
+                  const Gap(16),
+                  if (!widget.trailingExpanded)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: widget.trailing,
+                    ).gap(widget.trailingGap)
+                  else
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: widget.trailing,
+                      ).gap(widget.trailingGap),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
