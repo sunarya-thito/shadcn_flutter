@@ -508,15 +508,24 @@ Future<T?> openRawDrawer<T>({
   Color? barrierColor,
   bool barrierDismissible = true,
 }) {
-  final DrawerLayerData? parentLayer =
-      DrawerOverlay.maybeOf(context, useRootDrawerOverlay);
+  DrawerLayerData? parentLayer =
+      DrawerOverlay.maybeFind(context, useRootDrawerOverlay);
+  CapturedThemes? themes;
+  CapturedData? data;
+  if (parentLayer != null) {
+    themes =
+        InheritedTheme.capture(from: context, to: parentLayer.overlay.context);
+    data = Data.capture(from: context, to: parentLayer.overlay.context);
+  } else {
+    parentLayer =
+        DrawerOverlay.maybeFindMessenger(context, useRootDrawerOverlay);
+  }
   assert(parentLayer != null, 'No DrawerOverlay found in the widget tree');
-  final CapturedThemes themes =
-      InheritedTheme.capture(from: context, to: parentLayer!.overlay.context);
   final completer = Completer<T?>();
   final entry = DrawerOverlayEntry(
     builder: builder,
     modal: modal,
+    data: data,
     backdropBuilder: transformBackdrop
         ? (context, child, animation, stackIndex) {
             final theme = Theme.of(context);
@@ -639,7 +648,7 @@ Future<T?> openRawDrawer<T>({
     completer: completer,
     position: position,
   );
-  final overlay = parentLayer.overlay;
+  final overlay = parentLayer!.overlay;
   overlay.addEntry(entry);
   completer.future.whenComplete(() {
     overlay.removeEntry(entry);
@@ -687,8 +696,19 @@ class DrawerOverlay extends StatefulWidget {
   @override
   State<DrawerOverlay> createState() => _DrawerOverlayState();
 
-  static DrawerLayerData? maybeOf(BuildContext context, [bool root = false]) {
-    var data = Data.maybeOf<DrawerLayerData>(context);
+  static DrawerLayerData? maybeFind(BuildContext context, [bool root = false]) {
+    var data = Data.maybeFind<DrawerLayerData>(context);
+    if (root) {
+      while (data?.parent != null) {
+        data = data!.parent;
+      }
+    }
+    return data;
+  }
+
+  static DrawerLayerData? maybeFindMessenger(BuildContext context,
+      [bool root = false]) {
+    var data = Data.maybeFindMessenger<DrawerLayerData>(context);
     if (root) {
       while (data?.parent != null) {
         data = data!.parent;
@@ -735,9 +755,10 @@ class _DrawerOverlayState extends State<DrawerOverlay> {
         backdropBuilder: entry.backdropBuilder,
         stackIndex: index++,
         totalStack: _entries.length,
+        data: entry.data,
       );
     }
-    return Data(
+    return ForwardableData(
       data: DrawerLayerData(this, parentLayer),
       child: child,
     );
@@ -750,7 +771,8 @@ class OverlaidEntry<T> extends StatefulWidget {
   final BackdropBuilder backdropBuilder;
   final BarrierBuilder barrierBuilder;
   final bool modal;
-  final CapturedThemes themes;
+  final CapturedThemes? themes;
+  final CapturedData? data;
   final Completer<T> completer;
   final OverlayPosition position;
   final int stackIndex;
@@ -768,6 +790,7 @@ class OverlaidEntry<T> extends StatefulWidget {
     required this.position,
     required this.stackIndex,
     required this.totalStack,
+    required this.data,
   });
 
   @override
@@ -869,6 +892,30 @@ class _OverlaidEntryState<T> extends State<OverlaidEntry<T>>
               break;
           }
         }
+        Widget childWidget = Align(
+          alignment: alignment,
+          child: AnimatedBuilder(
+            animation: _controlledAnimation,
+            builder: (context, child) {
+              return FractionalTranslation(
+                translation:
+                    startFractionalOffset * (1 - _controlledAnimation.value),
+                child: child,
+              );
+            },
+            child: Transform.translate(
+              offset: additionalOffset / kBackdropScaleDown,
+              child:
+                  widget.builder(context, additionalSize, constraints.biggest),
+            ),
+          ),
+        );
+        if (widget.data != null) {
+          childWidget = widget.data!.wrap(childWidget);
+        }
+        if (widget.themes != null) {
+          childWidget = widget.themes!.wrap(childWidget);
+        }
         return Stack(
           clipBehavior: Clip.none,
           children: [
@@ -876,26 +923,7 @@ class _OverlaidEntryState<T> extends State<OverlaidEntry<T>>
                 _controlledAnimation, widget.stackIndex),
             barrier,
             Positioned.fill(
-              child: widget.themes.wrap(
-                Align(
-                  alignment: alignment,
-                  child: AnimatedBuilder(
-                    animation: _controlledAnimation,
-                    builder: (context, child) {
-                      return FractionalTranslation(
-                        translation: startFractionalOffset *
-                            (1 - _controlledAnimation.value),
-                        child: child,
-                      );
-                    },
-                    child: Transform.translate(
-                      offset: additionalOffset / kBackdropScaleDown,
-                      child: widget.builder(
-                          context, additionalSize, constraints.biggest),
-                    ),
-                  ),
-                ),
-              ),
+              child: childWidget,
             ),
           ],
         );
@@ -916,7 +944,8 @@ class DrawerOverlayEntry<T> {
   final DrawerBuilder builder;
   final bool modal;
   final BarrierBuilder barrierBuilder;
-  final CapturedThemes themes;
+  final CapturedThemes? themes;
+  final CapturedData? data;
   final Completer<T> completer;
   final OverlayPosition position;
 
@@ -928,5 +957,6 @@ class DrawerOverlayEntry<T> {
     required this.themes,
     required this.completer,
     required this.position,
+    required this.data,
   });
 }
