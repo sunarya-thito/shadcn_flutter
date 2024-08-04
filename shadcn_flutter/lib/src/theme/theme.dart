@@ -133,7 +133,7 @@ class ThemeData {
   double get sizeX4l => density * 24;
 
   /// At normal density, the size is 32
-  double get size5l => density * 32;
+  double get sizeX5l => density * 32;
 
   /// At normal density, the size is 40
   double get sizeX6l => density * 40;
