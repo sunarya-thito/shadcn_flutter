@@ -40,7 +40,7 @@ class LinearProgressIndicator extends StatelessWidget {
     this.minHeight,
     this.color,
     this.borderRadius,
-    this.showSparks = true,
+    this.showSparks = false,
   }) : super(key: key);
 
   @override
