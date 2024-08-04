@@ -7,11 +7,13 @@ class ThemeData {
   final Typography typography;
   final double radius;
   final TargetPlatform? _platform;
+  final IconThemeProperties iconTheme;
 
   ThemeData({
     required this.colorScheme,
     required this.radius,
     this.typography = const Typography.geist(),
+    this.iconTheme = const IconThemeProperties(),
     TargetPlatform? platform,
   }) : _platform = platform;
 
@@ -88,4 +90,20 @@ class Theme extends InheritedTheme {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<ThemeData>('data', data));
   }
+}
+
+class IconThemeProperties {
+  final IconThemeData xSmall;
+  final IconThemeData small;
+  final IconThemeData medium;
+  final IconThemeData large;
+  final IconThemeData xLarge;
+
+  const IconThemeProperties({
+    this.xSmall = const IconThemeData(size: 12),
+    this.small = const IconThemeData(size: 16),
+    this.medium = const IconThemeData(size: 20),
+    this.large = const IconThemeData(size: 24),
+    this.xLarge = const IconThemeData(size: 32),
+  });
 }
