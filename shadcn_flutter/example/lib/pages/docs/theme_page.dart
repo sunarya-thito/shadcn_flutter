@@ -46,6 +46,7 @@ String? nameFromColorScheme(ColorScheme scheme) {
 class _ThemePageState extends State<ThemePage> {
   late Map<String, Color> colors;
   late double radius;
+  late double scaling;
   late ColorScheme colorScheme;
   bool customColorScheme = false;
   bool applyDirectly = true;
@@ -53,7 +54,7 @@ class _ThemePageState extends State<ThemePage> {
   final OnThisPage customColorSchemeKey = OnThisPage();
   final OnThisPage premadeColorSchemeKey = OnThisPage();
   final OnThisPage radiusKey = OnThisPage();
-  // final OnThisPage previewKey = OnThisPage();
+  final OnThisPage scalingKey = OnThisPage();
   final OnThisPage codeKey = OnThisPage();
 
   @override
@@ -70,6 +71,7 @@ class _ThemePageState extends State<ThemePage> {
     colors = colorScheme.toColorMap();
     radius = state.radius;
     customColorScheme = nameFromColorScheme(colorScheme) == null;
+    scaling = state.scaling;
   }
 
   @override
@@ -81,7 +83,7 @@ class _ThemePageState extends State<ThemePage> {
         'Custom color scheme': customColorSchemeKey,
         'Premade color scheme': premadeColorSchemeKey,
         'Radius': radiusKey,
-        // 'Preview': previewKey,
+        'Scaling': scalingKey,
         'Code': codeKey,
       },
       child: Column(
@@ -145,6 +147,30 @@ class _ThemePageState extends State<ThemePage> {
             max: 2,
             divisions: 20,
           ).p(),
+          const Text('Scaling').h2().anchored(scalingKey),
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Text(
+                      'Scale entire app without changing the app layout.')),
+            ],
+          ).p(),
+          Slider(
+            value: SliderValue.single(scaling),
+            onChanged: (value) {
+              setState(() {
+                scaling = value.value;
+                if (applyDirectly) {
+                  state.changeScaling(scaling);
+                }
+              });
+            },
+            min: 0.5,
+            max: 2,
+            divisions: 20,
+          ).p(),
+
           const Text('Code').h2().anchored(codeKey),
           const Text('Use the following code to apply the color scheme.').p(),
           CodeSnippet(

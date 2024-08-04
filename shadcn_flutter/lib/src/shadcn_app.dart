@@ -43,6 +43,7 @@ class ShadcnApp extends StatefulWidget {
     this.scrollBehavior,
     this.materialTheme,
     this.cupertinoTheme,
+    this.scaling,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
@@ -77,6 +78,7 @@ class ShadcnApp extends StatefulWidget {
     this.scrollBehavior,
     this.materialTheme,
     this.cupertinoTheme,
+    this.scaling,
   })  : assert(routerDelegate != null || routerConfig != null),
         navigatorObservers = null,
         navigatorKey = null,
@@ -88,6 +90,8 @@ class ShadcnApp extends StatefulWidget {
         initialRoute = null;
 
   final GlobalKey<NavigatorState>? navigatorKey;
+
+  final AdaptiveScaling? scaling;
 
   final Widget? home;
 
@@ -262,7 +266,11 @@ class _ShadcnAppState extends State<ShadcnApp> {
               child: Theme(
                 data: theme,
                 child: AdaptiveScaler(
-                  builder: AdaptiveScaler.defaultScaling,
+                  builder: widget.scaling == null
+                      ? AdaptiveScaler.defaultScaling
+                      : (context) {
+                          return widget.scaling!;
+                        },
                   child: ToastLayer(
                     child: SortableLayer(
                       child: widget.builder != null

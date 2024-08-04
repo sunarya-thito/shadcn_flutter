@@ -91,19 +91,24 @@ void main() async {
     }
   }
   double initialRadius = prefs.getDouble('radius') ?? 0.5;
+  double initialScaling = prefs.getDouble('scaling') ?? 1.0;
   runApp(MyApp(
     initialColorScheme: initialColorScheme ?? colorSchemes['darkZinc']!,
     initialRadius: initialRadius,
+    initialScaling: initialScaling,
   ));
 }
 
 class MyApp extends StatefulWidget {
   final ColorScheme initialColorScheme;
   final double initialRadius;
-  const MyApp(
-      {super.key,
-      required this.initialColorScheme,
-      required this.initialRadius});
+  final double initialScaling;
+  const MyApp({
+    super.key,
+    required this.initialColorScheme,
+    required this.initialRadius,
+    required this.initialScaling,
+  });
 
   @override
   State<MyApp> createState() => MyAppState();
@@ -519,12 +524,14 @@ class MyAppState extends State<MyApp> {
   // double radius = 0.5;
   late ColorScheme colorScheme;
   late double radius;
+  late double scaling;
 
   @override
   void initState() {
     super.initState();
     colorScheme = widget.initialColorScheme;
     radius = widget.initialRadius;
+    scaling = widget.initialScaling;
   }
   // This widget is the root of your application.
 
@@ -553,6 +560,17 @@ class MyAppState extends State<MyApp> {
     });
   }
 
+  void changeScaling(double scaling) {
+    setState(() {
+      this.scaling = scaling;
+      SharedPreferences.getInstance().then(
+        (value) {
+          value.setDouble('scaling', scaling);
+        },
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Data(
@@ -561,6 +579,7 @@ class MyAppState extends State<MyApp> {
         routerConfig: router,
         debugShowCheckedModeBanner: false,
         title: 'shadcn/ui Flutter',
+        scaling: AdaptiveScaling(scaling: scaling),
         theme: ThemeData(
           colorScheme: colorScheme,
           radius: radius,

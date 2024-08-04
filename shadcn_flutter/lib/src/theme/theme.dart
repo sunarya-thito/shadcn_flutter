@@ -6,7 +6,17 @@ class AdaptiveScaling {
   final double densityScaling;
   final TextScaler? textScaling;
 
-  const AdaptiveScaling({
+  factory AdaptiveScaling({
+    double scaling = 1,
+  }) {
+    return AdaptiveScaling.only(
+      radiusScaling: scaling,
+      densityScaling: scaling,
+      textScaling: TextScaler.linear(scaling),
+    );
+  }
+
+  const AdaptiveScaling.only({
     this.radiusScaling = 1,
     this.densityScaling = 1,
     this.textScaling,
@@ -21,12 +31,12 @@ class AdaptiveScaler extends StatelessWidget {
     switch (theme.platform) {
       case TargetPlatform.iOS:
       case TargetPlatform.android:
-        return const AdaptiveScaling(
+        return const AdaptiveScaling.only(
             radiusScaling: 1.25,
             densityScaling: 1.25,
             textScaling: TextScaler.linear(1.25));
       default:
-        return const AdaptiveScaling();
+        return const AdaptiveScaling.only();
     }
   }
 
