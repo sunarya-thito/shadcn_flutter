@@ -6,238 +6,251 @@ extension TextExtension on Widget {
   Widget sans() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontFamily: 'GeistSans'),
+        (context, theme) => theme.typography.sans,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontFamily: 'GeistSans'), child: this);
+        style: (context, theme) => theme.typography.sans, child: this);
   }
 
   Widget mono() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontFamily: 'GeistMono'),
+        (context, theme) => theme.typography.mono,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontFamily: 'GeistMono'), child: this);
+        style: (context, theme) => theme.typography.mono, child: this);
   }
 
   Widget xSmall() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 12),
+        (context, theme) => theme.typography.xSmall,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 12), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.xSmall, child: this);
   }
 
   Widget small() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 14),
+        (context, theme) => theme.typography.small,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 14), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.small, child: this);
   }
 
   Widget base() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 16),
+        (context, theme) => theme.typography.base,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 16), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.base, child: this);
   }
 
   Widget large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 18),
+        (context, theme) => theme.typography.large,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 18), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.large, child: this);
   }
 
   Widget xLarge() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 20),
+        (context, theme) => theme.typography.xLarge,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 20), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.xLarge, child: this);
   }
 
   Widget x2Large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 24),
+        (context, theme) => theme.typography.x2Large,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 24), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.x2Large, child: this);
   }
 
   Widget x3Large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 30),
+        (context, theme) => theme.typography.x3Large,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 30), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.x3Large, child: this);
   }
 
   Widget x4Large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 36),
+        (context, theme) => theme.typography.x4Large,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 36), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.x4Large, child: this);
   }
 
   Widget x5Large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 48),
+        (context, theme) => theme.typography.x5Large,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 48), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.x5Large, child: this);
   }
 
   Widget x6Large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 60),
+        (context, theme) => theme.typography.x6Large,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 60), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.x6Large, child: this);
   }
 
   Widget x7Large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 72),
+        (context, theme) => theme.typography.x7Large,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 72), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.x7Large, child: this);
   }
 
   Widget x8Large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 96),
+        (context, theme) => theme.typography.x8Large,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 96), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.x8Large, child: this);
   }
 
   Widget x9Large() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontSize: 128),
+        (context, theme) => theme.typography.x9Large,
       );
     }
-    return WrappedText(style: const TextStyle(fontSize: 144), child: this);
+    return WrappedText(
+        style: (context, theme) => theme.typography.x9Large, child: this);
   }
 
   Widget thin() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontWeight: FontWeight.w100),
+        (context, theme) => theme.typography.thin,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontWeight: FontWeight.w100), child: this);
+        style: (context, theme) => theme.typography.thin, child: this);
   }
 
   Widget extraLight() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontWeight: FontWeight.w200),
+        (context, theme) => theme.typography.extraLight,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontWeight: FontWeight.w200), child: this);
+        style: (context, theme) => theme.typography.extraLight, child: this);
   }
 
   Widget light() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontWeight: FontWeight.w300),
+        (context, theme) => theme.typography.light,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontWeight: FontWeight.w300), child: this);
+        style: (context, theme) => theme.typography.light, child: this);
   }
 
   Widget normal() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontWeight: FontWeight.normal),
+        (context, theme) => theme.typography.normal,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontWeight: FontWeight.normal), child: this);
+        style: (context, theme) => theme.typography.normal, child: this);
   }
 
   Widget medium() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontWeight: FontWeight.w500),
+        (context, theme) => theme.typography.medium,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontWeight: FontWeight.w500), child: this);
+        style: (context, theme) => theme.typography.medium, child: this);
   }
 
   Widget semiBold() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontWeight: FontWeight.w600),
+        (context, theme) => theme.typography.semiBold,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontWeight: FontWeight.w600), child: this);
+        style: (context, theme) => theme.typography.semiBold, child: this);
   }
 
   Widget bold() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontWeight: FontWeight.bold),
+        (context, theme) => theme.typography.bold,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontWeight: FontWeight.bold), child: this);
+        style: (context, theme) => theme.typography.bold, child: this);
   }
 
   Widget extraBold() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontWeight: FontWeight.w800),
+        (context, theme) => theme.typography.extraBold,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontWeight: FontWeight.w800), child: this);
+        style: (context, theme) => theme.typography.extraBold, child: this);
   }
 
   Widget black() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontWeight: FontWeight.w900),
+        (context, theme) => theme.typography.black,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontWeight: FontWeight.w900), child: this);
+        style: (context, theme) => theme.typography.black, child: this);
   }
 
   Widget italic() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWithStyle(
-        const TextStyle(fontStyle: FontStyle.italic),
+        (context, theme) => theme.typography.italic,
       );
     }
     return WrappedText(
-        style: const TextStyle(fontStyle: FontStyle.italic), child: this);
+        style: (context, theme) => theme.typography.italic, child: this);
   }
 
   Widget underline() {
@@ -293,11 +306,26 @@ extension TextExtension on Widget {
   }
 
   Widget h1() {
-    return x4Large().extraBold();
+    if (this is WrappedText) {
+      return (this as WrappedText).copyWithStyle(
+        (context, theme) => theme.typography.h1,
+      );
+    }
+    return WrappedText(
+        style: (context, theme) => theme.typography.h1, child: this);
   }
 
   Widget h2() {
     return Builder(builder: (context) {
+      Widget child;
+      if (this is WrappedText) {
+        child = (this as WrappedText).copyWithStyle(
+          (context, theme) => theme.typography.h2,
+        );
+      } else {
+        child = WrappedText(
+            style: (context, theme) => theme.typography.h2, child: this);
+      }
       return Container(
         margin: const EdgeInsets.only(top: 40),
         padding: const EdgeInsets.only(bottom: 8),
@@ -309,28 +337,62 @@ extension TextExtension on Widget {
             ),
           ),
         ),
-        child: x3Large().semiBold(),
+        child: child,
       );
     });
   }
 
   Widget h3() {
-    return x2Large().semiBold();
+    if (this is WrappedText) {
+      return (this as WrappedText).copyWithStyle(
+        (context, theme) => theme.typography.h3,
+      );
+    }
+    return WrappedText(
+        style: (context, theme) => theme.typography.h3, child: this);
   }
 
   Widget h4() {
-    return xLarge().semiBold();
+    if (this is WrappedText) {
+      return (this as WrappedText).copyWithStyle(
+        (context, theme) => theme.typography.h4,
+      );
+    }
+    return WrappedText(
+        style: (context, theme) => theme.typography.h4, child: this);
   }
 
   Widget p({bool firstChild = false}) {
-    if (firstChild) {
-      return base().normal();
+    Widget child;
+    if (this is WrappedText) {
+      child = (this as WrappedText).copyWithStyle(
+        (context, theme) => theme.typography.p,
+      );
+    } else {
+      child = WrappedText(
+          style: (context, theme) => theme.typography.p, child: this);
     }
-    return base().normal().withPadding(top: 24);
+    if (firstChild) {
+      return child;
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: child,
+    );
   }
 
   Widget blockQuote() {
     return Builder(builder: (context) {
+      Widget child;
+      if (this is WrappedText) {
+        child = (this as WrappedText).copyWithStyle(
+          (context, theme) => theme.typography.blockQuote,
+        );
+      } else {
+        child = WrappedText(
+            style: (context, theme) => theme.typography.blockQuote,
+            child: this);
+      }
       return Container(
         decoration: BoxDecoration(
           border: Border(
@@ -341,7 +403,8 @@ extension TextExtension on Widget {
           ),
         ),
         padding: const EdgeInsets.only(left: 16),
-        child: base().normal().italic(),
+        // child: base().normal().italic(),
+        child: child,
       );
     });
   }
@@ -379,6 +442,16 @@ extension TextExtension on Widget {
       final double paddingVertical = style.fontSize! * 0.2;
       final double paddingHorizontal = style.fontSize! * 0.3;
       final ThemeData themeData = Theme.of(context);
+      Widget child;
+      if (this is WrappedText) {
+        child = (this as WrappedText).copyWithStyle(
+          (context, theme) => theme.typography.inlineCode,
+        );
+      } else {
+        child = WrappedText(
+            style: (context, theme) => theme.typography.inlineCode,
+            child: this);
+      }
       return Container(
         padding: EdgeInsets.symmetric(
           vertical: paddingVertical,
@@ -388,37 +461,67 @@ extension TextExtension on Widget {
           color: Theme.of(context).colorScheme.muted,
           borderRadius: BorderRadius.circular(themeData.radiusSm),
         ),
-        child: mono().small().semiBold(),
+        child: child,
       );
     });
   }
 
   Widget lead() {
-    return xLarge().muted();
+    if (this is WrappedText) {
+      return (this as WrappedText)
+          .copyWithStyle(
+            (context, theme) => theme.typography.lead,
+          )
+          .muted();
+    }
+    return WrappedText(
+            style: (context, theme) => theme.typography.lead, child: this)
+        .muted();
   }
 
   Widget textLarge() {
-    return large().semiBold();
+    if (this is WrappedText) {
+      return (this as WrappedText).copyWithStyle(
+        (context, theme) => theme.typography.textLarge,
+      );
+    }
+    return WrappedText(
+        style: (context, theme) => theme.typography.textLarge, child: this);
   }
 
   Widget textSmall() {
-    return small().medium();
+    if (this is WrappedText) {
+      return (this as WrappedText).copyWithStyle(
+        (context, theme) => theme.typography.textSmall,
+      );
+    }
+    return WrappedText(
+        style: (context, theme) => theme.typography.textSmall, child: this);
   }
 
   Widget textMuted() {
-    return small().muted();
+    if (this is WrappedText) {
+      return (this as WrappedText)
+          .copyWithStyle(
+            (context, theme) => theme.typography.textMuted,
+          )
+          .muted();
+    }
+    return WrappedText(
+            style: (context, theme) => theme.typography.textMuted, child: this)
+        .muted();
   }
 
   Widget singleLine() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWith(
-        softWrap: false,
-        maxLines: 1,
+        softWrap: (context, theme) => false,
+        maxLines: (context, theme) => 1,
       );
     }
     return WrappedText(
-      softWrap: false,
-      maxLines: 1,
+      softWrap: (context, theme) => false,
+      maxLines: (context, theme) => 1,
       child: this,
     );
   }
@@ -426,11 +529,11 @@ extension TextExtension on Widget {
   Widget ellipsis() {
     if (this is WrappedText) {
       return (this as WrappedText).copyWith(
-        overflow: TextOverflow.ellipsis,
+        overflow: (context, theme) => TextOverflow.ellipsis,
       );
     }
     return WrappedText(
-      overflow: TextOverflow.ellipsis,
+      overflow: (context, theme) => TextOverflow.ellipsis,
       child: this,
     );
   }
@@ -550,14 +653,6 @@ class _TextThenWidget extends StatelessWidget {
           .merge(const TextStyle(fontWeight: FontWeight.bold));
     }
     final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
-    final TextScaler textScaler =
-        switch ((text.textScaler, text.textScaleFactor)) {
-      (final TextScaler textScaler, _) => textScaler,
-      // For unmigrated apps, fall back to textScaleFactor.
-      (null, final double textScaleFactor) =>
-        TextScaler.linear(textScaleFactor),
-      (null, null) => MediaQuery.textScalerOf(context),
-    };
     Widget result = RichText(
       textAlign:
           text.textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
@@ -569,7 +664,7 @@ class _TextThenWidget extends StatelessWidget {
       overflow: text.overflow ??
           effectiveTextStyle?.overflow ??
           defaultTextStyle.overflow,
-      textScaler: textScaler,
+      textScaler: text.textScaler ?? TextScaler.noScaling,
       maxLines: text.maxLines ?? defaultTextStyle.maxLines,
       strutStyle: text.strutStyle,
       textWidthBasis: text.textWidthBasis ?? defaultTextStyle.textWidthBasis,
@@ -630,7 +725,6 @@ class _RichTextThenWidget extends StatelessWidget {
       textHeightBehavior: text.textHeightBehavior,
       maxLines: text.maxLines,
       strutStyle: text.strutStyle,
-      textScaleFactor: text.textScaleFactor,
       selectionColor: text.selectionColor,
       selectionRegistrar: text.selectionRegistrar,
       textScaler: text.textScaler,
@@ -690,15 +784,24 @@ class UnorderedListData {
   const UnorderedListData({this.depth = 0});
 }
 
+typedef WrappedTextDataBuilder<T> = T Function(
+    BuildContext context, ThemeData theme);
+
 class WrappedText extends StatelessWidget {
   final Widget child;
-  final TextStyle? style;
-
-  final TextAlign? textAlign;
-  final bool? softWrap;
-  final TextOverflow? overflow;
-  final int? maxLines;
-  final TextWidthBasis? textWidthBasis;
+  // final TextStyle? style;
+  //
+  // final TextAlign? textAlign;
+  // final bool? softWrap;
+  // final TextOverflow? overflow;
+  // final int? maxLines;
+  // final TextWidthBasis? textWidthBasis;
+  final WrappedTextDataBuilder<TextStyle>? style;
+  final WrappedTextDataBuilder<TextAlign>? textAlign;
+  final WrappedTextDataBuilder<bool>? softWrap;
+  final WrappedTextDataBuilder<TextOverflow>? overflow;
+  final WrappedTextDataBuilder<int>? maxLines;
+  final WrappedTextDataBuilder<TextWidthBasis>? textWidthBasis;
 
   const WrappedText({
     Key? key,
@@ -713,25 +816,52 @@ class WrappedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return mergeAnimatedTextStyle(
       child: child,
       duration: kDefaultDuration,
-      style: style,
-      textAlign: textAlign,
-      softWrap: softWrap,
-      overflow: overflow,
-      maxLines: maxLines,
-      textWidthBasis: textWidthBasis,
+      // style: style,
+      // textAlign: textAlign,
+      // softWrap: softWrap,
+      // overflow: overflow,
+      // maxLines: maxLines,
+      // textWidthBasis: textWidthBasis,
+      style: style?.call(context, theme),
+      textAlign: textAlign?.call(context, theme),
+      softWrap: softWrap?.call(context, theme),
+      overflow: overflow?.call(context, theme),
+      maxLines: maxLines?.call(context, theme),
+      textWidthBasis: textWidthBasis?.call(context, theme),
     );
   }
 
+  // WrappedText copyWith({
+  //   TextStyle? style,
+  //   TextAlign? textAlign,
+  //   bool? softWrap,
+  //   TextOverflow? overflow,
+  //   int? maxLines,
+  //   TextWidthBasis? textWidthBasis,
+  //   Widget? child,
+  // }) {
+  //   return WrappedText(
+  //     style: style ?? this.style,
+  //     textAlign: textAlign ?? this.textAlign,
+  //     softWrap: softWrap ?? this.softWrap,
+  //     overflow: overflow ?? this.overflow,
+  //     maxLines: maxLines ?? this.maxLines,
+  //     textWidthBasis: textWidthBasis ?? this.textWidthBasis,
+  //     child: child ?? this.child,
+  //   );
+  // }
+
   WrappedText copyWith({
-    TextStyle? style,
-    TextAlign? textAlign,
-    bool? softWrap,
-    TextOverflow? overflow,
-    int? maxLines,
-    TextWidthBasis? textWidthBasis,
+    WrappedTextDataBuilder<TextStyle>? style,
+    WrappedTextDataBuilder<TextAlign>? textAlign,
+    WrappedTextDataBuilder<bool>? softWrap,
+    WrappedTextDataBuilder<TextOverflow>? overflow,
+    WrappedTextDataBuilder<int>? maxLines,
+    WrappedTextDataBuilder<TextWidthBasis>? textWidthBasis,
     Widget? child,
   }) {
     return WrappedText(
@@ -745,9 +875,23 @@ class WrappedText extends StatelessWidget {
     );
   }
 
-  WrappedText copyWithStyle(TextStyle style) {
+  // WrappedText copyWithStyle(TextStyle style) {
+  //   return WrappedText(
+  //     style: this.style?.merge(style) ?? style,
+  //     textAlign: textAlign,
+  //     softWrap: softWrap,
+  //     overflow: overflow,
+  //     maxLines: maxLines,
+  //     textWidthBasis: textWidthBasis,
+  //     child: child,
+  //   );
+  // }
+
+  WrappedText copyWithStyle(WrappedTextDataBuilder<TextStyle> style) {
     return WrappedText(
-      style: this.style?.merge(style) ?? style,
+      style: (context, theme) =>
+          this.style?.call(context, theme).merge(style(context, theme)) ??
+          style(context, theme),
       textAlign: textAlign,
       softWrap: softWrap,
       overflow: overflow,

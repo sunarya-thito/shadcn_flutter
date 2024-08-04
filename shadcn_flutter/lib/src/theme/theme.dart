@@ -4,12 +4,14 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ThemeData {
   final ColorScheme colorScheme;
+  final Typography typography;
   final double radius;
   final TargetPlatform? _platform;
 
   ThemeData({
     required this.colorScheme,
     required this.radius,
+    this.typography = const Typography.geist(),
     TargetPlatform? platform,
   }) : _platform = platform;
 
@@ -41,10 +43,14 @@ class ThemeData {
   ThemeData copyWith({
     ColorScheme? colorScheme,
     double? radius,
+    Typography? typography,
+    TargetPlatform? platform,
   }) {
     return ThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
       radius: radius ?? this.radius,
+      typography: typography ?? this.typography,
+      platform: platform ?? _platform,
     );
   }
 }
