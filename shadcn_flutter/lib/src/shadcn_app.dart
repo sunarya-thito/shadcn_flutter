@@ -261,15 +261,18 @@ class _ShadcnAppState extends State<ShadcnApp> {
               ),
               child: Theme(
                 data: theme,
-                child: ToastLayer(
-                  child: SortableLayer(
-                    child: widget.builder != null
-                        ? Builder(
-                            builder: (BuildContext context) {
-                              return widget.builder!(context, child);
-                            },
-                          )
-                        : child ?? const SizedBox.shrink(),
+                child: AdaptiveScaler(
+                  builder: AdaptiveScaler.defaultScaling,
+                  child: ToastLayer(
+                    child: SortableLayer(
+                      child: widget.builder != null
+                          ? Builder(
+                              builder: (BuildContext context) {
+                                return widget.builder!(context, child);
+                              },
+                            )
+                          : child ?? const SizedBox.shrink(),
+                    ),
                   ),
                 ),
               ),

@@ -1,6 +1,65 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+class AdaptiveScaling {
+  final double radiusScaling;
+  final double densityScaling;
+  final TextScaler? textScaling;
+
+  const AdaptiveScaling({
+    this.radiusScaling = 1,
+    this.densityScaling = 1,
+    this.textScaling,
+  });
+}
+
+typedef AdaptiveScalingBuilder = AdaptiveScaling Function(BuildContext context);
+
+class AdaptiveScaler extends StatelessWidget {
+  static AdaptiveScaling defaultScaling(BuildContext context) {
+    final theme = Theme.of(context);
+    switch (theme.platform) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.android:
+        return const AdaptiveScaling(
+            radiusScaling: 1.25,
+            densityScaling: 1.25,
+            textScaling: TextScaler.linear(1.25));
+      default:
+        return const AdaptiveScaling();
+    }
+  }
+
+  final AdaptiveScalingBuilder builder;
+  final Widget child;
+
+  const AdaptiveScaler({
+    Key? key,
+    required this.builder,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final scaling = builder(context);
+    final theme = Theme.of(context);
+    var textScaling = scaling.textScaling;
+    return Theme(
+      data: theme.copyWith(
+        radius: theme.radius * scaling.radiusScaling,
+        density: theme.density * scaling.densityScaling,
+        iconTheme:
+            textScaling == null ? null : theme.iconTheme.scale(textScaling),
+      ),
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          textScaler: textScaling,
+        ),
+        child: child,
+      ),
+    );
+  }
+}
 
 class ThemeData {
   final ColorScheme colorScheme;
@@ -21,22 +80,56 @@ class ThemeData {
 
   TargetPlatform get platform => _platform ?? defaultTargetPlatform;
 
+  /// At normal radius, the scaled radius is 24
   double get radiusXxl => radius * 24;
+
+  /// At normal radius, the scaled radius is 20
   double get radiusXl => radius * 20;
+
+  /// At normal radius, the scaled radius is 16
   double get radiusLg => radius * 16;
+
+  /// At normal radius, the scaled radius is 12
   double get radiusMd => radius * 12;
+
+  /// At normal radius, the scaled radius is 8
   double get radiusSm => radius * 8;
+
+  /// At normal radius, the scaled radius is 4
   double get radiusXs => radius * 4;
 
-  double get paddingXs => density * 2;
-  double get paddingSm => density * 4;
-  double get paddingMd => density * 8;
-  double get paddingLg => density * 12;
-  double get paddingXl => density * 16;
-  double get paddingXxl => density * 24;
-  double get paddingX3l => density * 32;
-  double get paddingX4l => density * 40;
-  double get paddingX5l => density * 48;
+  /// At normal density, the size is 1
+  double get sizeXS => density;
+
+  /// At normal density, the size is 2
+  double get sizeSm => density * 2;
+
+  /// At normal density, the size is 4
+  double get sizeMd => density * 4;
+
+  /// At normal density, the size is 6
+  double get sizeLg => density * 6;
+
+  /// At normal density, the size is 8
+  double get sizeXl => density * 8;
+
+  /// At normal density, the size is 12
+  double get sizeXxl => density * 12;
+
+  /// At normal density, the size is 16
+  double get sizeX3l => density * 16;
+
+  /// At normal density, the size is 24
+  double get sizeX4l => density * 24;
+
+  /// At normal density, the size is 32
+  double get size5l => density * 32;
+
+  /// At normal density, the size is 40
+  double get sizeX6l => density * 40;
+
+  /// At normal density, the size is 48
+  double get sizeX7l => density * 48;
 
   BorderRadius get borderRadiusXxl => BorderRadius.circular(radiusXxl);
   BorderRadius get borderRadiusXl => BorderRadius.circular(radiusXl);
@@ -60,6 +153,7 @@ class ThemeData {
     Typography? typography,
     TargetPlatform? platform,
     double? density,
+    IconThemeProperties? iconTheme,
   }) {
     return ThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -67,6 +161,7 @@ class ThemeData {
       typography: typography ?? this.typography,
       platform: platform ?? _platform,
       density: density ?? this.density,
+      iconTheme: iconTheme ?? this.iconTheme,
     );
   }
 }
@@ -120,6 +215,42 @@ class IconThemeProperties {
     this.large = const IconThemeData(size: 24),
     this.xLarge = const IconThemeData(size: 32),
   });
+
+  IconThemeProperties copyWith({
+    IconThemeData? xSmall,
+    IconThemeData? small,
+    IconThemeData? medium,
+    IconThemeData? large,
+    IconThemeData? xLarge,
+  }) {
+    return IconThemeProperties(
+      xSmall: xSmall ?? this.xSmall,
+      small: small ?? this.small,
+      medium: medium ?? this.medium,
+      large: large ?? this.large,
+      xLarge: xLarge ?? this.xLarge,
+    );
+  }
+
+  IconThemeProperties scale(TextScaler scaler) {
+    return IconThemeProperties(
+      xSmall: xSmall.size == null
+          ? xSmall
+          : xSmall.copyWith(size: scaler.scale(xSmall.size!)),
+      small: small.size == null
+          ? small
+          : small.copyWith(size: scaler.scale(small.size!)),
+      medium: medium.size == null
+          ? medium
+          : medium.copyWith(size: scaler.scale(medium.size!)),
+      large: large.size == null
+          ? large
+          : large.copyWith(size: scaler.scale(large.size!)),
+      xLarge: xLarge.size == null
+          ? xLarge
+          : xLarge.copyWith(size: scaler.scale(xLarge.size!)),
+    );
+  }
 }
 
 class ComponentTheme<T> extends InheritedTheme {

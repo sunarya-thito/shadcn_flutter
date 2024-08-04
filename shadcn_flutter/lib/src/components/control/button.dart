@@ -51,10 +51,12 @@ class _ToggleState extends State<Toggle> {
 }
 
 class Button extends StatefulWidget {
+  @deprecated
   static const EdgeInsets normalPadding = EdgeInsets.symmetric(
     horizontal: 16,
     vertical: 8,
   );
+  @deprecated
   static const EdgeInsets badgePadding = EdgeInsets.symmetric(
     horizontal: 10,
     vertical: 2,
@@ -931,7 +933,11 @@ MouseCursor _buttonMouseCursor(BuildContext context, Set<WidgetState> states) {
 }
 
 EdgeInsets _buttonPadding(BuildContext context, Set<WidgetState> states) {
-  return Button.normalPadding;
+  final theme = Theme.of(context);
+  return EdgeInsets.symmetric(
+    horizontal: theme.sizeX3l,
+    vertical: theme.sizeXl,
+  );
 }
 
 // MENUBUTTON

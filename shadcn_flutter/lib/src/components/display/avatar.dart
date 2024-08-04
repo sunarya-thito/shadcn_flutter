@@ -61,10 +61,9 @@ class Avatar extends StatefulWidget implements AvatarWidget {
 }
 
 class _AvatarState extends State<Avatar> {
-  final GlobalKey _key = GlobalKey();
-
   Widget _build(BuildContext context) {
-    double size = widget.size ?? 40;
+    final theme = Theme.of(context);
+    double size = widget.size ?? theme.sizeX6l;
     double borderRadius =
         widget.borderRadius ?? Theme.of(context).radius * size;
     // use photo if available, use initials if not
@@ -81,7 +80,7 @@ class _AvatarState extends State<Avatar> {
             errorBuilder: (context, error, stackTrace) {
               print('Failed to load image: $error');
               print(stackTrace);
-              return _buildInitials(borderRadius);
+              return _buildInitials(context, borderRadius);
             },
           ),
         ),
@@ -90,11 +89,12 @@ class _AvatarState extends State<Avatar> {
     return SizedBox(
       width: size,
       height: size,
-      child: _buildInitials(borderRadius),
+      child: _buildInitials(context, borderRadius),
     );
   }
 
-  Widget _buildInitials(double borderRadius) {
+  Widget _buildInitials(BuildContext context, double borderRadius) {
+    final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
         color: widget.backgroundColor ?? Theme.of(context).colorScheme.muted,
@@ -103,7 +103,7 @@ class _AvatarState extends State<Avatar> {
       child: FittedBox(
         fit: BoxFit.fill,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(theme.sizeXl),
           child: mergeAnimatedTextStyle(
             duration: kDefaultDuration,
             child: Text(
@@ -124,16 +124,17 @@ class _AvatarState extends State<Avatar> {
     if (widget.badge == null) {
       return _build(context);
     }
-    double size = widget.size ?? 40;
-    double badgeSize = widget.badge!.size ?? 12;
+    final theme = Theme.of(context);
+    double size = widget.size ?? theme.sizeX6l;
+    double badgeSize = widget.badge!.size ?? theme.sizeXxl;
     double offset = size / 2 - badgeSize / 2;
     offset = offset / size;
     return AvatarGroup(
       fractionalOffset: widget.badgeOffset ?? Offset(offset, offset),
-      gap: widget.badgeGap ?? 4,
+      gap: widget.badgeGap ?? theme.sizeMd,
       children: [
         _AvatarWidget(
-          size: widget.badge!.size ?? 12,
+          size: widget.badge!.size ?? theme.sizeXxl,
           borderRadius: widget.badge!.borderRadius,
           child: widget.badge!,
         ),
@@ -162,14 +163,15 @@ class AvatarBadge extends StatelessWidget implements AvatarWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = this.size ?? 12;
+    final theme = Theme.of(context);
+    var size = this.size ?? theme.sizeXxl;
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         color: color ?? Theme.of(context).colorScheme.primary,
-        borderRadius: BorderRadius.circular(
-            borderRadius ?? Theme.of(context).radius * size),
+        borderRadius:
+            BorderRadius.circular(borderRadius ?? theme.radius * size),
       ),
       child: child,
     );
@@ -196,21 +198,21 @@ class _AvatarWidget extends StatelessWidget implements AvatarWidget {
 class AvatarGroup extends StatelessWidget {
   final List<AvatarWidget> children;
   final Offset fractionalOffset;
-  final double gap;
+  final double? gap;
   final Clip? clipBehavior;
 
   const AvatarGroup({
     Key? key,
     required this.fractionalOffset,
     required this.children,
-    this.gap = 4,
+    this.gap,
     this.clipBehavior,
   }) : super(key: key);
 
   factory AvatarGroup.toLeft({
     Key? key,
     required List<AvatarWidget> children,
-    double gap = 4,
+    double? gap,
     double offset = 0.5,
   }) {
     return AvatarGroup(
@@ -224,7 +226,7 @@ class AvatarGroup extends StatelessWidget {
   factory AvatarGroup.toRight({
     Key? key,
     required List<AvatarWidget> children,
-    double gap = 4,
+    double? gap,
     double offset = 0.5,
   }) {
     return AvatarGroup(
@@ -238,7 +240,7 @@ class AvatarGroup extends StatelessWidget {
   factory AvatarGroup.toTop({
     Key? key,
     required List<AvatarWidget> children,
-    double gap = 4,
+    double? gap,
     double offset = 0.5,
   }) {
     return AvatarGroup(
@@ -252,7 +254,7 @@ class AvatarGroup extends StatelessWidget {
   factory AvatarGroup.toBottom({
     Key? key,
     required List<AvatarWidget> children,
-    double gap = 4,
+    double? gap,
     double offset = 0.5,
   }) {
     return AvatarGroup(
@@ -265,6 +267,7 @@ class AvatarGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     List<Positioned> children = [];
     double currentX = 0;
     double currentY = 0;
@@ -274,7 +277,7 @@ class AvatarGroup extends StatelessWidget {
     double currentBorderRadius = 0;
     for (int i = 0; i < this.children.length; i++) {
       AvatarWidget avatar = this.children[i];
-      double size = avatar.size ?? 40;
+      double size = avatar.size ?? theme.sizeX6l;
       if (i == 0) {
         children.add(
           Positioned(
@@ -315,7 +318,7 @@ class AvatarGroup extends StatelessWidget {
                 borderRadius: currentBorderRadius,
                 fractionalOffset: fractionalOffset,
                 previousAvatarSize: currentWidth,
-                gap: gap,
+                gap: gap ?? theme.sizeMd,
               ),
               child: avatar,
             ),
@@ -326,8 +329,7 @@ class AvatarGroup extends StatelessWidget {
         currentY = y;
         currentWidth = size;
         currentHeight = size;
-        currentBorderRadius =
-            avatar.borderRadius ?? Theme.of(context).radius * size;
+        currentBorderRadius = avatar.borderRadius ?? theme.radius * size;
 
         rect = rect.expandToInclude(Rect.fromLTWH(x, y, size, size));
       }

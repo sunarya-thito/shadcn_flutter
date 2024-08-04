@@ -64,7 +64,7 @@ class Tracker extends StatelessWidget {
               ),
             )
         ],
-      ).gap(2),
+      ).gap(theme.sizeSm),
     );
   }
 }

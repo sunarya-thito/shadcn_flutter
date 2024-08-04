@@ -86,11 +86,9 @@ class _CommandState extends State<Command> {
             children: [
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.search,
-                    size: 16,
-                    color: theme.colorScheme.mutedForeground,
-                  ),
+                  ).iconSmall().iconMuted(),
                   Expanded(
                     child: TextField(
                       controller: _controller,
@@ -108,11 +106,10 @@ class _CommandState extends State<Command> {
                       },
                       child: const Icon(
                         Icons.close,
-                        size: 16,
-                      ),
+                      ).iconSmall(),
                     ),
                 ],
-              ).withPadding(horizontal: 12),
+              ).withPadding(horizontal: theme.sizeXxl),
               const Divider(),
               Expanded(
                 child: ValueListenableBuilder(
@@ -132,7 +129,7 @@ class _CommandState extends State<Command> {
                                 duration: kDefaultDuration,
                                 child: const Center(
                                         child: CircularProgressIndicator())
-                                    .withPadding(vertical: 24),
+                                    .withPadding(vertical: theme.sizeX4l),
                               ));
                             } else if (items.isEmpty) {
                               return widget.emptyBuilder?.call(context) ??
@@ -148,7 +145,7 @@ class _CommandState extends State<Command> {
                           }
                           return widget.loadingBuilder?.call(context) ??
                               const Center(child: CircularProgressIndicator())
-                                  .withPadding(vertical: 24);
+                                  .withPadding(vertical: theme.sizeX4l);
                         },
                       );
                     }),
@@ -173,19 +170,20 @@ class CommandCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
         if (title != null)
           title!
-              .withPadding(horizontal: 8, vertical: 6)
+              .withPadding(horizontal: theme.sizeXl, vertical: theme.sizeLg)
               .medium()
               .xSmall()
               .muted(),
         ...children,
       ],
-    ).withPadding(all: 4);
+    ).withPadding(all: theme.sizeMd);
   }
 }
 
@@ -264,11 +262,11 @@ class _CommandItemState extends State<CommandItem> {
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(themeData.radiusSm),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          padding: EdgeInsets.symmetric(
+              horizontal: themeData.sizeXl, vertical: themeData.sizeLg),
           child: AnimatedIconTheme(
             duration: kDefaultDuration,
-            data: IconThemeData(
-              size: 15,
+            data: themeData.iconTheme.small.copyWith(
               color: widget.onTap != null
                   ? themeData.colorScheme.accentForeground
                   : themeData.colorScheme.accentForeground.withOpacity(0.5),
@@ -283,9 +281,9 @@ class _CommandItemState extends State<CommandItem> {
               child: Row(
                 children: [
                   if (widget.leading != null) widget.leading!,
-                  if (widget.leading != null) Gap(8),
+                  if (widget.leading != null) Gap(themeData.sizeXl),
                   Expanded(child: widget.title),
-                  if (widget.trailing != null) Gap(8),
+                  if (widget.trailing != null) Gap(themeData.sizeXl),
                   if (widget.trailing != null)
                     widget.trailing!.muted().xSmall(),
                 ],

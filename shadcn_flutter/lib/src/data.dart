@@ -323,7 +323,6 @@ class Data<T> extends InheritedWidget {
         if (ancestor is InheritedElement && ancestor.widget is Data) {
           final Data dataWidget = ancestor.widget as Data;
           final Type dataType = dataWidget.dataType;
-          // data.add(dataWidget);
           if (!dataTypes.contains(dataType)) {
             dataTypes.add(dataType);
             data.add(dataWidget);
