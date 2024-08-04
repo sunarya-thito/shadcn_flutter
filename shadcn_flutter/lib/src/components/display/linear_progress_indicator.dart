@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -50,21 +51,33 @@ class LinearProgressIndicator extends StatelessWidget {
     Widget childWidget;
     if (value != null) {
       childWidget = AnimatedValueBuilder(
-          value: value,
+          value: _LinearProgressIndicatorProperties(
+            start: 0,
+            end: value!,
+            color: color ?? theme.colorScheme.primary,
+            backgroundColor:
+                backgroundColor ?? theme.colorScheme.primary.withOpacity(0.2),
+            showSparks: showSparks,
+            sparksColor: color ?? theme.colorScheme.primary,
+            sparksRadius: 15,
+            textDirection: directionality,
+          ),
           duration: kDefaultDuration,
+          lerp: _LinearProgressIndicatorProperties.lerp,
           curve: Curves.easeInOut,
           builder: (context, value, child) {
             return CustomPaint(
               painter: _LinearProgressIndicatorPainter(
                 start: 0,
-                end: value ?? 0,
-                color: color ?? theme.colorScheme.primary,
-                backgroundColor: backgroundColor ??
-                    theme.colorScheme.primary.withOpacity(0.2),
-                showSparks: showSparks,
-                sparksColor: color ?? theme.colorScheme.primary,
-                sparksRadius: 15,
-                textDirection: directionality,
+                end: value.end,
+                start2: value.start2,
+                end2: value.end2,
+                color: value.color,
+                backgroundColor: value.backgroundColor,
+                showSparks: value.showSparks,
+                sparksColor: value.sparksColor,
+                sparksRadius: value.sparksRadius,
+                textDirection: value.textDirection,
               ),
             );
           });
@@ -79,21 +92,37 @@ class LinearProgressIndicator extends StatelessWidget {
           double end = _line1Head.transform(value);
           double start2 = _line2Tail.transform(value);
           double end2 = _line2Head.transform(value);
-          return CustomPaint(
-            painter: _LinearProgressIndicatorPainter(
-              start: start,
-              end: end,
-              start2: start2,
-              end2: end2,
-              color: color ?? theme.colorScheme.primary,
-              backgroundColor:
-                  backgroundColor ?? theme.colorScheme.primary.withOpacity(0.2),
-              showSparks: false,
-              sparksColor: Colors.transparent,
-              sparksRadius: 0,
-              textDirection: directionality,
-            ),
-          );
+          return AnimatedValueBuilder(
+              lerp: _LinearProgressIndicatorProperties.lerp,
+              value: _LinearProgressIndicatorProperties(
+                start: start,
+                end: end,
+                start2: start2,
+                end2: end2,
+                color: color ?? theme.colorScheme.primary,
+                backgroundColor: backgroundColor ??
+                    theme.colorScheme.primary.withOpacity(0.2),
+                showSparks: showSparks,
+                sparksColor: color ?? theme.colorScheme.primary,
+                sparksRadius: 15,
+                textDirection: directionality,
+              ),
+              builder: (context, prop, child) {
+                return CustomPaint(
+                  painter: _LinearProgressIndicatorPainter(
+                    start: prop.start,
+                    end: prop.end,
+                    start2: prop.start2,
+                    end2: prop.end2,
+                    color: prop.color,
+                    backgroundColor: prop.backgroundColor,
+                    showSparks: prop.showSparks,
+                    sparksColor: prop.sparksColor,
+                    sparksRadius: prop.sparksRadius,
+                    textDirection: prop.textDirection,
+                  ),
+                );
+              });
         },
       );
     }
@@ -104,6 +133,61 @@ class LinearProgressIndicator extends StatelessWidget {
       ),
     );
   }
+}
+
+class _LinearProgressIndicatorProperties {
+  final double start;
+  final double end;
+  final double? start2;
+  final double? end2;
+  final Color color;
+  final Color backgroundColor;
+  final bool showSparks;
+  final Color sparksColor;
+  final double sparksRadius;
+  final TextDirection textDirection;
+
+  const _LinearProgressIndicatorProperties({
+    required this.start,
+    required this.end,
+    this.start2,
+    this.end2,
+    required this.color,
+    required this.backgroundColor,
+    required this.showSparks,
+    required this.sparksColor,
+    required this.sparksRadius,
+    required this.textDirection,
+  });
+
+  static _LinearProgressIndicatorProperties lerp(
+    _LinearProgressIndicatorProperties a,
+    _LinearProgressIndicatorProperties b,
+    double t,
+  ) {
+    return _LinearProgressIndicatorProperties(
+      start: _lerpDouble(a.start, b.start, t)!,
+      end: _lerpDouble(a.end, b.end, t)!,
+      start2: _lerpDouble(a.start2, b.start2, t),
+      end2: _lerpDouble(a.end2, b.end2, t),
+      color: Color.lerp(a.color, b.color, t)!,
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t)!,
+      showSparks: b.showSparks,
+      sparksColor: Color.lerp(a.sparksColor, b.sparksColor, t)!,
+      sparksRadius: _lerpDouble(a.sparksRadius, b.sparksRadius, t)!,
+      textDirection: b.textDirection,
+    );
+  }
+}
+
+double? _lerpDouble(double? a, double? b, double t) {
+  if (a == null && b == null) {
+    return null;
+  }
+  if (a!.isNaN || b!.isNaN) {
+    return double.nan;
+  }
+  return a + (b - a) * t;
 }
 
 class _LinearProgressIndicatorPainter extends CustomPainter {
