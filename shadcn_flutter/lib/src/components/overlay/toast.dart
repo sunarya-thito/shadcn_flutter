@@ -17,10 +17,16 @@ ToastOverlay showToast({
   VoidCallback? onClosed,
   Duration showDuration = const Duration(seconds: 5),
 }) {
-  final layer = Data.maybeOf<_ToastLayerState>(context);
+  _ToastLayerState? layer = Data.maybeFind<_ToastLayerState>(context);
+  CapturedThemes? themes;
+  CapturedData? data;
+  if (layer != null) {
+    themes = InheritedTheme.capture(from: context, to: layer.context);
+    data = Data.capture(from: context, to: layer.context);
+  } else {
+    layer = Data.maybeFindMessenger<_ToastLayerState>(context);
+  }
   assert(layer != null, 'No ToastLayer found in context');
-  final themes = InheritedTheme.capture(from: context, to: layer!.context);
-  final data = Data.capture(from: context, to: layer.context);
   final entry = ToastEntry(
     builder: builder,
     location: location,
@@ -32,7 +38,7 @@ ToastOverlay showToast({
     onClosed: onClosed,
     showDuration: showDuration,
   );
-  return layer.addEntry(entry);
+  return layer!.addEntry(entry);
 }
 
 enum ToastLocation {
@@ -318,8 +324,8 @@ class ToastEntry {
   final bool dismissible;
   final Curve curve;
   final Duration duration;
-  final CapturedThemes themes;
-  final CapturedData data;
+  final CapturedThemes? themes;
+  final CapturedData? data;
   final VoidCallback? onClosed;
   final Duration? showDuration;
 
@@ -344,8 +350,8 @@ class OverlaidToastEntry extends StatefulWidget {
   final Alignment previousAlignment;
   final Curve curve;
   final Duration duration;
-  final CapturedThemes themes;
-  final CapturedData data;
+  final CapturedThemes? themes;
+  final CapturedData? data;
   final ValueListenable<bool> closing;
   final VoidCallback onClosed;
   final Offset collapsedOffset;
@@ -418,124 +424,122 @@ class _OverlaidToastEntryState extends State<OverlaidToastEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.themes.wrap(
-      widget.data.wrap(
-        MouseRegion(
-          hitTestBehavior: HitTestBehavior.deferToChild,
-          onEnter: (event) {
-            _closingTimer?.cancel();
-          },
-          onExit: (event) {
-            _startClosingTimer();
-          },
-          child: GestureDetector(
-            onHorizontalDragStart: (details) {
-              if (widget.dismissible) {
-                setState(() {
-                  _closingTimer?.cancel();
-                  _dismissing = true;
-                });
-              }
-            },
-            onHorizontalDragUpdate: (details) {
-              if (widget.dismissible) {
-                setState(() {
-                  _dismissOffset += details.primaryDelta! / context.size!.width;
-                });
-              }
-            },
-            onHorizontalDragEnd: (details) {
-              if (widget.dismissible) {
-                setState(() {
-                  _dismissing = false;
-                });
-                // if its < -0.5 or > 0.5 dismiss it
-                if (_dismissOffset < -0.5) {
-                  _closeDismissing = -1.0;
-                } else if (_dismissOffset > 0.5) {
-                  _closeDismissing = 1.0;
-                } else {
-                  _dismissOffset = 0;
-                  _startClosingTimer();
-                }
-              }
-            },
-            child: AnimatedBuilder(
-                animation: widget.closing,
-                builder: (context, child) {
-                  return AnimatedValueBuilder(
-                      value: widget.closing.value ? 0.0 : _dismissOffset,
-                      duration: _dismissing && !widget.closing.value
-                          ? Duration.zero
-                          : kDefaultDuration,
-                      builder: (context, dismissProgress, child) {
-                        return AnimatedValueBuilder(
-                            value: widget.closing.value
-                                ? 0.0
-                                : _closeDismissing ?? 0.0,
-                            duration: kDefaultDuration,
-                            onEnd: (value) {
-                              if (value == -1.0 || value == 1.0) {
-                                widget.onClosed();
-                              }
-                            },
-                            builder: (context, closeDismissingProgress, child) {
-                              return AnimatedValueBuilder(
-                                  value: widget.index.toDouble(),
+    Widget childWidget = MouseRegion(
+      hitTestBehavior: HitTestBehavior.deferToChild,
+      onEnter: (event) {
+        _closingTimer?.cancel();
+      },
+      onExit: (event) {
+        _startClosingTimer();
+      },
+      child: GestureDetector(
+        onHorizontalDragStart: (details) {
+          if (widget.dismissible) {
+            setState(() {
+              _closingTimer?.cancel();
+              _dismissing = true;
+            });
+          }
+        },
+        onHorizontalDragUpdate: (details) {
+          if (widget.dismissible) {
+            setState(() {
+              _dismissOffset += details.primaryDelta! / context.size!.width;
+            });
+          }
+        },
+        onHorizontalDragEnd: (details) {
+          if (widget.dismissible) {
+            setState(() {
+              _dismissing = false;
+            });
+            // if its < -0.5 or > 0.5 dismiss it
+            if (_dismissOffset < -0.5) {
+              _closeDismissing = -1.0;
+            } else if (_dismissOffset > 0.5) {
+              _closeDismissing = 1.0;
+            } else {
+              _dismissOffset = 0;
+              _startClosingTimer();
+            }
+          }
+        },
+        child: AnimatedBuilder(
+            animation: widget.closing,
+            builder: (context, child) {
+              return AnimatedValueBuilder(
+                  value: widget.closing.value ? 0.0 : _dismissOffset,
+                  duration: _dismissing && !widget.closing.value
+                      ? Duration.zero
+                      : kDefaultDuration,
+                  builder: (context, dismissProgress, child) {
+                    return AnimatedValueBuilder(
+                        value: widget.closing.value
+                            ? 0.0
+                            : _closeDismissing ?? 0.0,
+                        duration: kDefaultDuration,
+                        onEnd: (value) {
+                          if (value == -1.0 || value == 1.0) {
+                            widget.onClosed();
+                          }
+                        },
+                        builder: (context, closeDismissingProgress, child) {
+                          return AnimatedValueBuilder(
+                              value: widget.index.toDouble(),
+                              curve: widget.curve,
+                              duration: widget.duration,
+                              builder: (context, indexProgress, child) {
+                                return AnimatedValueBuilder(
+                                  initialValue: widget.index > 0 ? 1.0 : 0.0,
+                                  value: widget.closing.value && !_dismissing
+                                      ? 0.0
+                                      : 1.0,
                                   curve: widget.curve,
                                   duration: widget.duration,
-                                  builder: (context, indexProgress, child) {
+                                  onEnd: (value) {
+                                    if (value == 0.0 && widget.closing.value) {
+                                      widget.onClosed();
+                                    }
+                                  },
+                                  builder: (context, showingProgress, child) {
                                     return AnimatedValueBuilder(
-                                      initialValue:
-                                          widget.index > 0 ? 1.0 : 0.0,
-                                      value:
-                                          widget.closing.value && !_dismissing
-                                              ? 0.0
-                                              : 1.0,
-                                      curve: widget.curve,
-                                      duration: widget.duration,
-                                      onEnd: (value) {
-                                        if (value == 0.0 &&
-                                            widget.closing.value) {
-                                          widget.onClosed();
-                                        }
-                                      },
-                                      builder:
-                                          (context, showingProgress, child) {
-                                        return AnimatedValueBuilder(
-                                            value: widget.visible ? 1.0 : 0.0,
-                                            curve: widget.curve,
-                                            duration: widget.duration,
-                                            builder: (context, visibleProgress,
-                                                child) {
-                                              return AnimatedValueBuilder(
-                                                  value: widget.expanded
-                                                      ? 1.0
-                                                      : 0.0,
-                                                  curve: widget.expandingCurve,
-                                                  duration:
-                                                      widget.expandingDuration,
-                                                  builder: (context,
-                                                      expandProgress, child) {
-                                                    return buildToast(
-                                                        expandProgress,
-                                                        showingProgress,
-                                                        visibleProgress,
-                                                        indexProgress,
-                                                        dismissProgress,
-                                                        closeDismissingProgress);
-                                                  });
-                                            });
-                                      },
-                                    );
-                                  });
-                            });
-                      });
-                }),
-          ),
-        ),
+                                        value: widget.visible ? 1.0 : 0.0,
+                                        curve: widget.curve,
+                                        duration: widget.duration,
+                                        builder:
+                                            (context, visibleProgress, child) {
+                                          return AnimatedValueBuilder(
+                                              value:
+                                                  widget.expanded ? 1.0 : 0.0,
+                                              curve: widget.expandingCurve,
+                                              duration:
+                                                  widget.expandingDuration,
+                                              builder: (context, expandProgress,
+                                                  child) {
+                                                return buildToast(
+                                                    expandProgress,
+                                                    showingProgress,
+                                                    visibleProgress,
+                                                    indexProgress,
+                                                    dismissProgress,
+                                                    closeDismissingProgress);
+                                              });
+                                        });
+                                  },
+                                );
+                              });
+                        });
+                  });
+            }),
       ),
     );
+    if (widget.themes != null) {
+      childWidget = widget.themes!.wrap(childWidget);
+    }
+    if (widget.data != null) {
+      childWidget = widget.data!.wrap(childWidget);
+    }
+    return childWidget;
   }
 
   Widget buildToast(
