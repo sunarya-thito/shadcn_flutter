@@ -293,8 +293,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
         builder: _builder,
         title: widget.title,
         onGenerateTitle: widget.onGenerateTitle,
-        textStyle: TextStyle(
-          fontFamily: 'GeistSans',
+        textStyle: widget.theme.typography.sans.copyWith(
           color: widget.theme.colorScheme.foreground,
         ),
         color: primaryColor,
@@ -331,11 +330,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
       builder: _builder,
       title: widget.title,
       onGenerateTitle: widget.onGenerateTitle,
-      // textStyle: widget.theme.typography.paragraph.copyWith(
-      //   color: widget.theme.colorScheme.foreground,
-      // ),
-      textStyle: TextStyle(
-        fontFamily: 'GeistSans',
+      textStyle: widget.theme.typography.sans.copyWith(
         color: widget.theme.colorScheme.foreground,
       ),
       color: primaryColor,
@@ -708,12 +703,11 @@ class ShadcnUI extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(c.BuildContext context) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return mergeAnimatedTextStyle(
       style: textStyle ??
-          TextStyle(
-            fontFamily: 'GeistSans',
+          theme.typography.sans.copyWith(
             color: theme.colorScheme.foreground,
           ),
       child: AnimatedIconTheme(
