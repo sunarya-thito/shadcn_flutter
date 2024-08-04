@@ -448,161 +448,147 @@ class DocsPageState extends State<DocsPage> {
           child: Builder(builder: (context) {
             return StageContainer(
               builder: (context, padding) {
-                return AnimatedBuilder(
-                  animation: scrollController,
-                  builder: (context, child) {
-                    return Scaffold(
-                      loadingProgress: scrollController.hasClients
-                          ? scrollController.offset /
-                              scrollController.position.maxScrollExtent
-                          : 0,
-                      headers: [
-                        Container(
-                          color: theme.colorScheme.background.withOpacity(0.3),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              MediaQueryVisibility(
-                                minWidth: breakpointWidth,
-                                alternateChild: AppBar(
-                                  height: 72 * theme.scaling,
-                                  leading: [
-                                    GhostButton(
-                                      density: ButtonDensity.icon,
-                                      onPressed: () {
-                                        _openDrawer(context);
-                                      },
-                                      child: const Icon(Icons.menu),
-                                    ),
-                                  ],
-                                  trailing: [
-                                    GhostButton(
-                                      density: ButtonDensity.icon,
-                                      onPressed: () {
-                                        openInNewTab(
-                                            'https://github.com/sunarya-thito/shadcn_flutter');
-                                      },
-                                      child: FaIcon(
-                                        FontAwesomeIcons.github,
-                                        color: theme
-                                            .colorScheme.secondaryForeground,
-                                      ).iconLarge(),
-                                    ),
-                                    // pub.dev icon
-                                    GhostButton(
-                                        density: ButtonDensity.icon,
-                                        onPressed: () {
-                                          openInNewTab(
-                                              'https://pub.dev/packages/shadcn_flutter');
-                                        },
-                                        child: ColorFiltered(
-                                          // turns into white
-                                          colorFilter: ColorFilter.mode(
-                                            theme.colorScheme
-                                                .secondaryForeground,
-                                            BlendMode.srcIn,
-                                          ),
-                                          child: FlutterLogo(
-                                            size: 24 * theme.scaling,
-                                          ),
-                                        )),
-                                  ],
-                                  child: Center(
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      child: OutlineButton(
-                                        onPressed: () {
-                                          showSearchBar();
-                                        },
-                                        trailing: const Icon(Icons.search)
-                                            .iconSmall()
-                                            .iconMutedForeground(),
-                                        child: const Text(
-                                                'Search documentation...')
-                                            .muted()
-                                            .normal(),
-                                      ),
-                                    ),
-                                  ),
+                return Scaffold(
+                  headers: [
+                    Container(
+                      color: theme.colorScheme.background.withOpacity(0.3),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          MediaQueryVisibility(
+                            minWidth: breakpointWidth,
+                            alternateChild: AppBar(
+                              height: 72 * theme.scaling,
+                              leading: [
+                                GhostButton(
+                                  density: ButtonDensity.icon,
+                                  onPressed: () {
+                                    _openDrawer(context);
+                                  },
+                                  child: const Icon(Icons.menu),
                                 ),
-                                child: AppBar(
-                                  padding:
-                                      breakpointWidth2 < mediaQuerySize.width
-                                          ? padding * theme.scaling
-                                          : padding.copyWith(
-                                                right: 32,
-                                              ) *
-                                              theme.scaling,
-                                  height: 72 * theme.scaling,
-                                  title: Basic(
-                                    leading: FlutterLogo(
-                                      size: 32 * theme.scaling,
-                                    ),
-                                    content: const Text(
-                                      'shadcn_flutter',
-                                    ).textLarge().mono(),
-                                  ),
-                                  trailing: [
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: SizedBox(
-                                        width: 320 - 18,
-                                        child: OutlineButton(
-                                          onPressed: () {
-                                            showSearchBar();
-                                          },
-                                          trailing: const Icon(Icons.search)
-                                              .iconSmall()
-                                              .iconMutedForeground(),
-                                          child: const Text(
-                                                  'Search documentation...')
-                                              .muted()
-                                              .normal(),
-                                        ),
+                              ],
+                              trailing: [
+                                GhostButton(
+                                  density: ButtonDensity.icon,
+                                  onPressed: () {
+                                    openInNewTab(
+                                        'https://github.com/sunarya-thito/shadcn_flutter');
+                                  },
+                                  child: FaIcon(
+                                    FontAwesomeIcons.github,
+                                    color:
+                                        theme.colorScheme.secondaryForeground,
+                                  ).iconLarge(),
+                                ),
+                                // pub.dev icon
+                                GhostButton(
+                                    density: ButtonDensity.icon,
+                                    onPressed: () {
+                                      openInNewTab(
+                                          'https://pub.dev/packages/shadcn_flutter');
+                                    },
+                                    child: ColorFiltered(
+                                      // turns into white
+                                      colorFilter: ColorFilter.mode(
+                                        theme.colorScheme.secondaryForeground,
+                                        BlendMode.srcIn,
                                       ),
-                                    ),
-                                    Gap(8 * theme.scaling),
-                                    GhostButton(
-                                      density: ButtonDensity.icon,
-                                      onPressed: () {
-                                        openInNewTab(
-                                            'https://github.com/sunarya-thito/shadcn_flutter');
-                                      },
-                                      child: FaIcon(FontAwesomeIcons.github,
-                                              color: theme.colorScheme
-                                                  .secondaryForeground)
-                                          .iconLarge(),
-                                    ),
-                                    // pub.dev icon
-                                    GhostButton(
-                                        density: ButtonDensity.icon,
-                                        onPressed: () {
-                                          openInNewTab(
-                                              'https://pub.dev/packages/shadcn_flutter');
-                                        },
-                                        child: ColorFiltered(
-                                          // turns into white
-                                          colorFilter: ColorFilter.mode(
-                                            theme.colorScheme
-                                                .secondaryForeground,
-                                            BlendMode.srcIn,
-                                          ),
-                                          child: FlutterLogo(
-                                            size: 24 * theme.scaling,
-                                          ),
-                                        )),
-                                  ],
+                                      child: FlutterLogo(
+                                        size: 24 * theme.scaling,
+                                      ),
+                                    )),
+                              ],
+                              child: Center(
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: OutlineButton(
+                                    onPressed: () {
+                                      showSearchBar();
+                                    },
+                                    trailing: const Icon(Icons.search)
+                                        .iconSmall()
+                                        .iconMutedForeground(),
+                                    child: const Text('Search documentation...')
+                                        .muted()
+                                        .normal(),
+                                  ),
                                 ),
                               ),
-                              const Divider(),
-                            ],
+                            ),
+                            child: AppBar(
+                              padding: breakpointWidth2 < mediaQuerySize.width
+                                  ? padding * theme.scaling
+                                  : padding.copyWith(
+                                        right: 32,
+                                      ) *
+                                      theme.scaling,
+                              height: 72 * theme.scaling,
+                              title: Basic(
+                                leading: FlutterLogo(
+                                  size: 32 * theme.scaling,
+                                ),
+                                content: const Text(
+                                  'shadcn_flutter',
+                                ).textLarge().mono(),
+                              ),
+                              trailing: [
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: SizedBox(
+                                    width: 320 - 18,
+                                    child: OutlineButton(
+                                      onPressed: () {
+                                        showSearchBar();
+                                      },
+                                      trailing: const Icon(Icons.search)
+                                          .iconSmall()
+                                          .iconMutedForeground(),
+                                      child:
+                                          const Text('Search documentation...')
+                                              .muted()
+                                              .normal(),
+                                    ),
+                                  ),
+                                ),
+                                Gap(8 * theme.scaling),
+                                GhostButton(
+                                  density: ButtonDensity.icon,
+                                  onPressed: () {
+                                    openInNewTab(
+                                        'https://github.com/sunarya-thito/shadcn_flutter');
+                                  },
+                                  child: FaIcon(FontAwesomeIcons.github,
+                                          color: theme
+                                              .colorScheme.secondaryForeground)
+                                      .iconLarge(),
+                                ),
+                                // pub.dev icon
+                                GhostButton(
+                                    density: ButtonDensity.icon,
+                                    onPressed: () {
+                                      openInNewTab(
+                                          'https://pub.dev/packages/shadcn_flutter');
+                                    },
+                                    child: ColorFiltered(
+                                      // turns into white
+                                      colorFilter: ColorFilter.mode(
+                                        theme.colorScheme.secondaryForeground,
+                                        BlendMode.srcIn,
+                                      ),
+                                      child: FlutterLogo(
+                                        size: 24 * theme.scaling,
+                                      ),
+                                    )),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                      child: child!,
-                    );
-                  },
+                          const Divider(),
+                        ],
+                      ),
+                    ),
+                  ],
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
