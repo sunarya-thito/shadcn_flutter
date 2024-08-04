@@ -129,8 +129,11 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
         mainAxisSize: MainAxisSize.min,
         children: [
           Select<Country>(
-            padding:
-                const EdgeInsets.only(top: 8, left: 8, bottom: 8, right: 4),
+            padding: EdgeInsets.only(
+                top: theme.scaling * 8,
+                left: theme.scaling * 8,
+                bottom: theme.scaling * 8,
+                right: theme.scaling * 4),
             searchPlaceholder: localization.searchPlaceholderCountry,
             searchFilter: (item, query) {
               query = query.toLowerCase();
@@ -143,7 +146,7 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
             },
             emptyBuilder: (context) {
               return Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(theme.scaling * 16),
                 child: Text(
                   localization.emptyCountryList,
                   textAlign: TextAlign.center,
@@ -173,17 +176,17 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
                     shape: RoundedRectangle(
                       theme.radiusSm,
                     ),
-                    height: 18,
-                    width: 24,
+                    height: theme.scaling * 18,
+                    width: theme.scaling * 18,
                   ),
-                  Gap(8),
+                  Gap(theme.scaling * 8),
                   Text(item.dialCode),
                 ],
               );
             },
-            popupConstraints: const BoxConstraints(
-              maxWidth: 250,
-              maxHeight: 300,
+            popupConstraints: BoxConstraints(
+              maxWidth: 250 * theme.scaling,
+              maxHeight: 300 * theme.scaling,
             ),
             children: [
               for (final country in Country.values)
@@ -192,12 +195,12 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
                   child: Row(
                     children: [
                       CountryFlag.fromCountryCode(country.code,
-                          height: 18,
-                          width: 24,
+                          height: theme.scaling * 18,
+                          width: theme.scaling * 24,
                           shape: RoundedRectangle(theme.radiusSm)),
-                      Gap(8),
+                      Gap(8 * theme.scaling),
                       Expanded(child: Text(country.name)),
-                      Gap(16),
+                      Gap(16 * theme.scaling),
                       Text(country.dialCode).muted(),
                     ],
                   ),
@@ -205,7 +208,7 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
             ],
           ),
           LimitedBox(
-            maxWidth: 200,
+            maxWidth: 200 * theme.scaling,
             child: TextField(
               controller: _controller,
               autofillHints: const [AutofillHints.telephoneNumber],

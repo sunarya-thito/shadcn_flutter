@@ -84,7 +84,7 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
+    final theme = Theme.of(context);
     return Clickable(
       enabled: widget.onChanged != null,
       mouseCursor: const WidgetStatePropertyAll(SystemMouseCursors.click),
@@ -94,44 +94,41 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (widget.leading != null) widget.leading!.small().medium(),
-          const SizedBox(width: 8),
+          SizedBox(width: theme.scaling * 8),
           Container(
-            width: 16,
-            height: 16,
+            width: theme.scaling * 16,
+            height: theme.scaling * 16,
             decoration: BoxDecoration(
               color: widget.state == CheckboxState.checked
-                  ? themeData.colorScheme.primary
+                  ? theme.colorScheme.primary
                   : Colors.transparent,
-              borderRadius: BorderRadius.circular(themeData.radiusSm),
+              borderRadius: BorderRadius.circular(theme.radiusSm),
               border: Border.all(
                 color: _focusing
-                    ? themeData.colorScheme.ring
+                    ? theme.colorScheme.ring
                     : widget.state == CheckboxState.checked
-                        ? themeData.colorScheme.primary
-                        : themeData.colorScheme.mutedForeground,
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.mutedForeground,
                 width: _focusing ? 2 : 1,
               ),
             ),
             child: widget.state == CheckboxState.checked
-                ? Icon(
+                ? const Icon(
                     Icons.check,
-                    color: themeData.colorScheme.primaryForeground,
-                    size: 12,
-                  )
+                  ).iconXSmall().iconPrimaryForeground()
                 : widget.state == CheckboxState.indeterminate
                     ? Container(
-                        width: 8,
-                        height: 8,
-                        margin: const EdgeInsets.all(2),
+                        width: theme.scaling * 8,
+                        height: theme.scaling * 8,
+                        margin: EdgeInsets.all(theme.scaling * 2),
                         decoration: BoxDecoration(
-                          color: themeData.colorScheme.primary,
-                          borderRadius:
-                              BorderRadius.circular(themeData.radiusXs),
+                          color: theme.colorScheme.primary,
+                          borderRadius: BorderRadius.circular(theme.radiusXs),
                         ),
                       )
                     : null,
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: theme.scaling * 8),
           if (widget.trailing != null) widget.trailing!.small().medium(),
         ],
       ),

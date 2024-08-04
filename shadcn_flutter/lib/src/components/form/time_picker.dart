@@ -82,32 +82,33 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
     return value.toString().padLeft(2, '0');
   }
 
-  Widget _buildInput(TextEditingController controller, String label) {
+  Widget _buildInput(
+      BuildContext context, TextEditingController controller, String label) {
+    final theme = Theme.of(context);
     return Stack(
       clipBehavior: Clip.none,
       children: [
         TextField(
           textAlign: TextAlign.center,
           controller: controller,
-          style: const TextStyle(
-            fontSize: 32,
-          ),
+          style: theme.typography.x4Large,
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
             const _TimeFormatter(),
           ],
         ),
         Positioned(
-          bottom: -16 - 4,
+          bottom: (-16 - 4) * theme.scaling,
           child: Text(label).muted(),
         ),
       ],
     );
   }
 
-  Widget _buildSeparator() {
-    return const Text(':', style: TextStyle(fontSize: 48))
-        .withPadding(horizontal: 8);
+  Widget _buildSeparator(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    return const Text(':').x5Large().withPadding(horizontal: 8 * scaling);
   }
 
   void _onChanged() {
@@ -174,40 +175,44 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     final localizations = ShadcnLocalizations.of(context);
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 16),
+          padding: EdgeInsets.only(bottom: 16 * scaling),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
                 child: _buildInput(
+                  context,
                   _hourController,
                   localizations.timeHour,
                 ),
               ),
-              _buildSeparator(),
+              _buildSeparator(context),
               Expanded(
                 child: _buildInput(
+                  context,
                   _minuteController,
                   localizations.timeMinute,
                 ),
               ),
               if (widget.showSeconds) ...[
-                _buildSeparator(),
-                // Expanded(child: TextField()),
+                _buildSeparator(context),
                 Expanded(
                   child: _buildInput(
+                    context,
                     _secondController,
                     localizations.timeSecond,
                   ),
                 ),
               ],
               if (!widget.use24HourFormat) ...[
-                Gap(8),
+                Gap(8 * scaling),
                 IntrinsicWidth(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,

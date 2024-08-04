@@ -11,8 +11,8 @@ class Basic extends StatelessWidget {
   final AlignmentGeometry? titleAlignment;
   final AlignmentGeometry? subtitleAlignment;
   final AlignmentGeometry? contentAlignment;
-  final double contentSpacing;
-  final double titleSpacing;
+  final double? contentSpacing;
+  final double? titleSpacing;
   final MainAxisAlignment mainAxisAlignment;
 
   const Basic({
@@ -27,14 +27,15 @@ class Basic extends StatelessWidget {
     this.titleAlignment,
     this.subtitleAlignment,
     this.contentAlignment,
-    this.contentSpacing = 16,
-    this.titleSpacing = 4,
+    this.contentSpacing, // 16
+    this.titleSpacing, //4
     this.mainAxisAlignment = MainAxisAlignment.center,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Row(
@@ -73,7 +74,7 @@ class Basic extends StatelessWidget {
                           duration: kDefaultDuration,
                           style: TextStyle(
                             fontSize: 12,
-                            color: themeData.colorScheme.mutedForeground,
+                            color: theme.colorScheme.mutedForeground,
                           ),
                           child: Align(
                             alignment: subtitleAlignment ?? Alignment.topLeft,
@@ -100,7 +101,9 @@ class Basic extends StatelessWidget {
                     content != null ||
                     leading != null ||
                     subtitle != null))
-              SizedBox(width: contentSpacing),
+              SizedBox(
+                  width:
+                      contentSpacing != null ? contentSpacing! : 16 * scaling),
             // if (trailing != null) trailing!,
             if (trailing != null)
               Align(

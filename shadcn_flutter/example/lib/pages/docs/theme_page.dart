@@ -167,7 +167,7 @@ class _ThemePageState extends State<ThemePage> {
               });
             },
             min: 0.5,
-            max: 2,
+            max: 1.5,
             divisions: 20,
           ).p(),
 
@@ -196,6 +196,9 @@ class _ThemePageState extends State<ThemePage> {
     }
     buffer += '\n\t\t),';
     buffer += '\n\t\tradius: $radius,';
+    if (scaling != 1) {
+      buffer += '\n\t\tscaling: $scaling,';
+    }
     buffer += '\n\t),';
     buffer += '\n...';
     buffer += '\n)';
@@ -210,6 +213,9 @@ class _ThemePageState extends State<ThemePage> {
     buffer += '\n\ttheme: ThemeData(';
     buffer += '\n\t\tcolorScheme: ColorSchemes.$name(),';
     buffer += '\n\t\tradius: $radius,';
+    if (scaling != 1) {
+      buffer += '\n\t\tscaling: $scaling,';
+    }
     buffer += '\n\t),';
     buffer += '\n...';
     buffer += '\n)';

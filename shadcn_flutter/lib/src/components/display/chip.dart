@@ -12,6 +12,7 @@ class ChipButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Button(
       style: ButtonVariance(
         decoration: (context, states) {
@@ -30,7 +31,7 @@ class ChipButton extends StatelessWidget {
           return const TextStyle();
         },
         iconTheme: (context, states) {
-          return const IconThemeData(size: 12);
+          return theme.iconTheme.xSmall;
         },
         margin: (context, states) {
           return EdgeInsets.zero;
@@ -58,6 +59,7 @@ class Chip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Button(
       style: ButtonVariance.secondary.copyWith(
         mouseCursor: (context, states, value) {
@@ -66,7 +68,8 @@ class Chip extends StatelessWidget {
               : SystemMouseCursors.basic;
         },
         padding: (context, states, value) {
-          return const EdgeInsets.symmetric(horizontal: 8, vertical: 4);
+          return EdgeInsets.symmetric(
+              horizontal: theme.scaling * 8, vertical: theme.scaling * 4);
         },
       ),
       onPressed: onPressed ?? () {},

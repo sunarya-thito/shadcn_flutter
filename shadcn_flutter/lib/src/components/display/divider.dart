@@ -43,7 +43,7 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
     this.indent,
     this.endIndent,
     this.child,
-    this.padding = const EdgeInsets.symmetric(horizontal: 8),
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -81,7 +81,9 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
                     }),
               ),
             ),
-            child!.muted().small().withPadding(padding: padding),
+            child!.muted().small().withPadding(
+                padding: padding ??
+                    EdgeInsets.symmetric(horizontal: theme.scaling * 8)),
             Expanded(
               child: SizedBox(
                 height: height ?? 1,

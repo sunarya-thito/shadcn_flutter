@@ -53,7 +53,7 @@ class HSVColorPicker extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(child: Text(colorToHex(value.toColor(), showAlpha))),
-              Gap(8),
+              Gap(theme.scaling * 8),
               AspectRatio(
                 aspectRatio: 1,
                 child: Container(
@@ -121,6 +121,7 @@ Future<HSLColor> showHSLColorPicker({
   Offset? offset,
   ValueChanged<HSLColor>? onColorChanged,
 }) {
+  final theme = Theme.of(context);
   return showPopover(
     context: context,
     alignment: alignment,
@@ -128,7 +129,7 @@ Future<HSLColor> showHSLColorPicker({
     offset: offset,
     builder: (context) {
       return SizedBox(
-        width: 300,
+        width: 300 * theme.scaling,
         child: _HSLColorPickerPopup(
           color: color,
           onColorChanged: (value) {
@@ -311,6 +312,7 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localizations = ShadcnLocalizations.of(context);
     return IntrinsicHeight(
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -336,14 +338,14 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
               ),
             ),
           ),
-          Gap(16),
+          Gap(theme.scaling * 16),
           IntrinsicWidth(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(
-                  height: 32,
+                  height: theme.scaling * 32,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -365,7 +367,7 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                     ),
                   ),
                 ),
-                if (widget.showAlpha) Gap(16),
+                if (widget.showAlpha) Gap(theme.scaling * 16),
                 // alpha
                 if (widget.showAlpha)
                   SizedBox(
@@ -388,7 +390,7 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                       ),
                     ),
                   ),
-                Gap(16),
+                Gap(theme.scaling * 16),
                 TextField(
                   controller: _hexController,
                   onEditingComplete: () {
@@ -414,7 +416,7 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                     }
                   },
                 ),
-                Gap(16),
+                Gap(theme.scaling * 16),
                 Row(
                   children: [
                     Expanded(
@@ -422,8 +424,8 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('Red'),
-                        Gap(4),
+                        Text(localizations.colorRed),
+                        Gap(theme.scaling * 4),
                         TextField(
                           controller: _redController,
                           onEditingComplete: () {
@@ -440,14 +442,14 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                         ),
                       ],
                     )),
-                    Gap(16),
+                    Gap(theme.scaling * 16),
                     Expanded(
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('Green'),
-                        Gap(4),
+                        Text(localizations.colorGreen),
+                        Gap(theme.scaling * 4),
                         TextField(
                           controller: _greenController,
                           onEditingComplete: () {
@@ -464,14 +466,14 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                         ),
                       ],
                     )),
-                    Gap(16),
+                    Gap(theme.scaling * 16),
                     Expanded(
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('Blue'),
-                        Gap(4),
+                        Text(localizations.colorBlue),
+                        Gap(theme.scaling * 4),
                         TextField(
                           controller: _blueController,
                           onEditingComplete: () {
@@ -490,14 +492,14 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                       ],
                     )),
                     if (widget.showAlpha) ...[
-                      Gap(16),
+                      Gap(theme.scaling * 16),
                       Expanded(
                           child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text('Alpha'),
-                          Gap(4),
+                          Text(localizations.colorAlpha),
+                          Gap(theme.scaling * 4),
                           TextField(
                             onEditingComplete: () {
                               widget.onColorChanged(HSVColor.fromAHSV(
@@ -595,6 +597,7 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localizations = ShadcnLocalizations.of(context);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -620,9 +623,9 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
               ),
             ),
           ),
-          Gap(16),
+          Gap(theme.scaling * 16),
           SizedBox(
-            height: 32,
+            height: theme.scaling * 32,
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(
@@ -644,11 +647,11 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
               ),
             ),
           ),
-          if (widget.showAlpha) Gap(16),
+          if (widget.showAlpha) Gap(theme.scaling * 16),
           // alpha
           if (widget.showAlpha)
             SizedBox(
-              height: 32,
+              height: theme.scaling * 32,
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -667,7 +670,7 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                 ),
               ),
             ),
-          Gap(16),
+          Gap(theme.scaling * 16),
           TextField(
             controller: _hexController,
             onEditingComplete: () {
@@ -693,7 +696,7 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
               }
             },
           ),
-          Gap(16),
+          Gap(theme.scaling * 16),
           Row(
             children: [
               Expanded(
@@ -701,8 +704,8 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Red'),
-                  Gap(4),
+                  Text(localizations.colorRed),
+                  Gap(theme.scaling * 4),
                   TextField(
                     controller: _redController,
                     onEditingComplete: () {
@@ -718,14 +721,14 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                   ),
                 ],
               )),
-              Gap(16),
+              Gap(theme.scaling * 16),
               Expanded(
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Green'),
-                  Gap(4),
+                  Text(localizations.colorGreen),
+                  Gap(theme.scaling * 4),
                   TextField(
                     controller: _greenController,
                     onEditingComplete: () {
@@ -741,14 +744,14 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                   ),
                 ],
               )),
-              Gap(16),
+              Gap(theme.scaling * 16),
               Expanded(
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Blue'),
-                  Gap(4),
+                  Text(localizations.colorBlue),
+                  Gap(theme.scaling * 4),
                   TextField(
                     controller: _blueController,
                     onEditingComplete: () {
@@ -766,14 +769,14 @@ class _HSLColorPickerSetState extends State<HSLColorPickerSet> {
                 ],
               )),
               if (widget.showAlpha) ...[
-                Gap(16),
+                Gap(theme.scaling * 16),
                 Expanded(
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text('Alpha'),
-                    Gap(4),
+                    Text(localizations.colorAlpha),
+                    Gap(theme.scaling * 4),
                     TextField(
                       onEditingComplete: () {
                         widget.onColorChanged(HSLColor.fromAHSL(
@@ -850,7 +853,7 @@ class HSVColorPickerArea extends StatefulWidget {
 }
 
 class _HSVColorPickerAreaState extends State<HSVColorPickerArea> {
-  static const double cursorRadius = 15;
+  // static const double cursorRadius = 15;
   late double _currentHorizontal;
   late double _currentVertical;
   late double _hue;
@@ -979,6 +982,8 @@ class _HSVColorPickerAreaState extends State<HSVColorPickerArea> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    double cursorRadius = theme.scaling * 16;
     double radDiv = isSingleChannel ? 4 : 2;
     return GestureDetector(
       onTapDown: (details) {
@@ -1036,10 +1041,6 @@ class _HSVColorPickerAreaState extends State<HSVColorPickerArea> {
             ),
           ),
           Positioned(
-            // left: -(cursorRadius / 2),
-            // top: -(cursorRadius / 2),
-            // bottom: -(cursorRadius / 2),
-            // right: -(cursorRadius / 2),
             left: -cursorRadius / radDiv,
             top: -cursorRadius / radDiv,
             bottom: -cursorRadius / radDiv,
@@ -1062,7 +1063,7 @@ class _HSVColorPickerAreaState extends State<HSVColorPickerArea> {
                               color: widget.color.toColor(),
                               border: Border.all(
                                 color: Colors.white,
-                                width: 2,
+                                width: theme.scaling * 2,
                               ),
                               borderRadius: BorderRadius.all(widget.radius),
                             ),
@@ -1085,7 +1086,7 @@ class _HSVColorPickerAreaState extends State<HSVColorPickerArea> {
                               color: widget.color.toColor(),
                               border: Border.all(
                                 color: Colors.white,
-                                width: 2,
+                                width: theme.scaling * 2,
                               ),
                               borderRadius: BorderRadius.all(widget.radius),
                             ),
@@ -1106,7 +1107,7 @@ class _HSVColorPickerAreaState extends State<HSVColorPickerArea> {
                           color: widget.color.toColor(),
                           border: Border.all(
                             color: Colors.white,
-                            width: 2,
+                            width: theme.scaling * 2,
                           ),
                         ),
                       ),
@@ -1244,7 +1245,6 @@ class HSLColorPickerArea extends StatefulWidget {
 }
 
 class _HSLColorPickerAreaState extends State<HSLColorPickerArea> {
-  static const double cursorRadius = 15;
   late double _currentHorizontal;
   late double _currentVertical;
   late double _hue;
@@ -1359,6 +1359,8 @@ class _HSLColorPickerAreaState extends State<HSLColorPickerArea> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    double cursorRadius = theme.scaling * 16;
     double radDiv = isSingleChannel ? 4 : 2;
     return LayoutBuilder(builder: (context, constraints) {
       return GestureDetector(
@@ -1439,7 +1441,7 @@ class _HSLColorPickerAreaState extends State<HSLColorPickerArea> {
                                 color: widget.color.toColor(),
                                 border: Border.all(
                                   color: Colors.white,
-                                  width: 2,
+                                  width: theme.scaling * 2,
                                 ),
                                 borderRadius: BorderRadius.all(widget.radius),
                               ),
@@ -1462,7 +1464,7 @@ class _HSLColorPickerAreaState extends State<HSLColorPickerArea> {
                                 color: widget.color.toColor(),
                                 border: Border.all(
                                   color: Colors.white,
-                                  width: 2,
+                                  width: theme.scaling * 2,
                                 ),
                                 borderRadius: BorderRadius.all(widget.radius),
                               ),
@@ -1483,7 +1485,7 @@ class _HSLColorPickerAreaState extends State<HSLColorPickerArea> {
                             color: widget.color.toColor(),
                             border: Border.all(
                               color: Colors.white,
-                              width: 2,
+                              width: theme.scaling * 2,
                             ),
                           ),
                         ),

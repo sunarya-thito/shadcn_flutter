@@ -63,7 +63,7 @@ class Avatar extends StatefulWidget implements AvatarWidget {
 class _AvatarState extends State<Avatar> {
   Widget _build(BuildContext context) {
     final theme = Theme.of(context);
-    double size = widget.size ?? theme.sizeX6l;
+    double size = widget.size ?? theme.scaling * 40;
     double borderRadius =
         widget.borderRadius ?? Theme.of(context).radius * size;
     // use photo if available, use initials if not
@@ -103,7 +103,7 @@ class _AvatarState extends State<Avatar> {
       child: FittedBox(
         fit: BoxFit.fill,
         child: Padding(
-          padding: EdgeInsets.all(theme.sizeXl),
+          padding: EdgeInsets.all(theme.scaling * 8),
           child: mergeAnimatedTextStyle(
             duration: kDefaultDuration,
             child: Text(
@@ -125,16 +125,16 @@ class _AvatarState extends State<Avatar> {
       return _build(context);
     }
     final theme = Theme.of(context);
-    double size = widget.size ?? theme.sizeX6l;
-    double badgeSize = widget.badge!.size ?? theme.sizeXxl;
+    double size = widget.size ?? theme.scaling * 40;
+    double badgeSize = widget.badge!.size ?? theme.scaling * 12;
     double offset = size / 2 - badgeSize / 2;
     offset = offset / size;
     return AvatarGroup(
       fractionalOffset: widget.badgeOffset ?? Offset(offset, offset),
-      gap: widget.badgeGap ?? theme.sizeMd,
+      gap: widget.badgeGap ?? theme.scaling * 4,
       children: [
         _AvatarWidget(
-          size: widget.badge!.size ?? theme.sizeXxl,
+          size: widget.badge!.size ?? theme.scaling * 12,
           borderRadius: widget.badge!.borderRadius,
           child: widget.badge!,
         ),
@@ -164,7 +164,7 @@ class AvatarBadge extends StatelessWidget implements AvatarWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    var size = this.size ?? theme.sizeXxl;
+    var size = this.size ?? theme.scaling * 12;
     return Container(
       width: size,
       height: size,
@@ -277,7 +277,7 @@ class AvatarGroup extends StatelessWidget {
     double currentBorderRadius = 0;
     for (int i = 0; i < this.children.length; i++) {
       AvatarWidget avatar = this.children[i];
-      double size = avatar.size ?? theme.sizeX6l;
+      double size = avatar.size ?? theme.scaling * 40;
       if (i == 0) {
         children.add(
           Positioned(
@@ -318,7 +318,7 @@ class AvatarGroup extends StatelessWidget {
                 borderRadius: currentBorderRadius,
                 fractionalOffset: fractionalOffset,
                 previousAvatarSize: currentWidth,
-                gap: gap ?? theme.sizeMd,
+                gap: gap ?? theme.scaling * 4,
               ),
               child: avatar,
             ),

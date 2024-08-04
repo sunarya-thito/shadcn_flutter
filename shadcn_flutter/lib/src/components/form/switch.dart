@@ -27,6 +27,7 @@ class _SwitchState extends State<Switch> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return GestureDetector(
       onTap: () {
         widget.onChanged?.call(!widget.value);
@@ -56,12 +57,12 @@ class _SwitchState extends State<Switch> {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (widget.leading != null) widget.leading!,
-            if (widget.leading != null) const SizedBox(width: 8),
+            if (widget.leading != null) SizedBox(width: 8 * scaling),
             AnimatedContainer(
               duration: kSwitchDuration,
-              width: 32 + 4,
-              height: 16 + 4,
-              padding: const EdgeInsets.all(2),
+              width: (32 + 4) * scaling,
+              height: (16 + 4) * scaling,
+              padding: EdgeInsets.all(2 * scaling),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(theme.radiusXl),
                 color: widget.onChanged == null
@@ -73,21 +74,21 @@ class _SwitchState extends State<Switch> {
                   color: _focusing
                       ? theme.colorScheme.primary
                       : Colors.transparent,
-                  strokeAlign: 3,
-                  width: 2,
+                  strokeAlign: 3 * scaling,
+                  width: 2 * scaling,
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(2),
+                padding: EdgeInsets.all(2 * scaling),
                 child: Stack(
                   children: [
                     AnimatedPositioned(
                       duration: kSwitchDuration,
                       curve: Curves.easeInOut,
-                      left: widget.value ? 16 : 0,
+                      left: widget.value ? 16 * scaling : 0,
                       child: Container(
-                        width: 16,
-                        height: 16,
+                        width: 16 * scaling,
+                        height: 16 * scaling,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(theme.radiusLg),
                           color: theme.colorScheme.background,
@@ -98,7 +99,7 @@ class _SwitchState extends State<Switch> {
                 ),
               ),
             ),
-            if (widget.trailing != null) const SizedBox(width: 8),
+            if (widget.trailing != null) SizedBox(width: 8 * scaling),
             if (widget.trailing != null) widget.trailing!,
           ],
         ),

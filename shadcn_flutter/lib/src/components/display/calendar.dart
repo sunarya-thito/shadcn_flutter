@@ -66,6 +66,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
   @override
   Widget build(BuildContext context) {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
+    final theme = Theme.of(context);
     if (widget.selectionMode == CalendarSelectionMode.range) {
       return IntrinsicWidth(
         child: Column(
@@ -122,10 +123,10 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                                 .small()
                                 .medium()
                                 .center(),
-                      ).sized(height: 32).center().expanded(),
+                      ).sized(height: theme.scaling * 32).center().expanded(),
                       if (_viewType == CalendarViewType.date)
-                        const SizedBox(
-                          width: 32,
+                        SizedBox(
+                          width: theme.scaling * 32,
                         ),
                       if (_viewType != CalendarViewType.date)
                         OutlineButton(
@@ -154,8 +155,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                   Expanded(
                     child: Row(
                       children: [
-                        const SizedBox(
-                          width: 32,
+                        SizedBox(
+                          width: theme.scaling * 32,
                         ),
                         GhostButton(
                           onPressed: () {
@@ -180,7 +181,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               .small()
                               .medium()
                               .center(),
-                        ).sized(height: 32).center().expanded(),
+                        ).sized(height: theme.scaling * 32).center().expanded(),
                         OutlineButton(
                           density: ButtonDensity.icon,
                           onPressed: () {
@@ -206,7 +207,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                   ),
               ],
             ),
-            const Gap(16),
+            Gap(theme.scaling * 16),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -233,7 +234,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     });
                   },
                 ),
-                if (_viewType == CalendarViewType.date) const Gap(16),
+                if (_viewType == CalendarViewType.date) Gap(theme.scaling * 16),
                 if (_viewType == CalendarViewType.date)
                   buildView(
                     context,
@@ -298,7 +299,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     .small()
                     .medium()
                     .center(),
-              ).sized(height: 32).center().expanded(),
+              ).sized(height: theme.scaling * 32).center().expanded(),
               OutlineButton(
                 density: ButtonDensity.icon,
                 onPressed: () {
@@ -320,7 +321,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
               ),
             ],
           ),
-          Gap(16),
+          Gap(theme.scaling * 16),
           buildView(
             context,
             _yearSelectStart,
@@ -777,6 +778,7 @@ class Calendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     // since the calendar grid starts from sunday
     // theres a lot of stuff that needs to be tweaked
     // since dart DateTime starts from monday
@@ -792,8 +794,8 @@ class Calendar extends StatelessWidget {
       int weekday = ((i - 1) % 7) + 1;
       weekDays.add(
         Container(
-          width: 32,
-          height: 32,
+          width: theme.scaling * 32,
+          height: theme.scaling * 32,
           alignment: Alignment.center,
           child: weekDayBuilder?.call(context, weekday) ??
               Text(localizations.getAbbreviatedWeekday(weekday))
@@ -962,7 +964,7 @@ class Calendar extends StatelessWidget {
     for (int i = 0; i < days.length; i += 7) {
       // there won't be any array out of bounds error
       // because we made sure that the total days is 42
-      rows.add(Gap(8));
+      rows.add(Gap(theme.scaling * 8));
       rows.add(Row(
         children: days.sublist(i, i + 7),
       ));
@@ -990,6 +992,7 @@ class MonthCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     // same as Calendar, but instead of showing date
     // it shows month in a 4x3 grid
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
@@ -1035,13 +1038,13 @@ class MonthCalendar extends StatelessWidget {
           onTap: () {
             onChanged(value.copyWith(month: i));
           },
-          width: 56,
+          width: theme.scaling * 56,
           child: Text(localizations.getAbbreviatedMonth(i)),
         ),
       );
     }
     for (int i = 0; i < months.length; i += 4) {
-      rows.add(const Gap(8));
+      rows.add(Gap(theme.scaling * 8));
       rows.add(Row(
         children: months.sublist(i, i + 4),
       ));
@@ -1071,6 +1074,7 @@ class YearCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     // same as Calendar, but instead of showing date
     // it shows year in a 4x4 grid
     List<Widget> rows = [];
@@ -1113,13 +1117,13 @@ class YearCalendar extends StatelessWidget {
           onTap: () {
             onChanged(i);
           },
-          width: 56,
+          width: theme.scaling * 56,
           child: Text('$i'),
         ),
       );
     }
     for (int i = 0; i < years.length; i += 4) {
-      rows.add(const Gap(8));
+      rows.add(Gap(theme.scaling * 8));
       rows.add(Row(
         children: years.sublist(i, i + 4),
       ));
@@ -1172,8 +1176,8 @@ class CalendarItem extends StatelessWidget {
     switch (type) {
       case CalendarItemType.none:
         return SizedBox(
-          width: width ?? 32,
-          height: height ?? 32,
+          width: width ?? theme.scaling * 32,
+          height: height ?? theme.scaling * 32,
           child: GhostButton(
             density: ButtonDensity.compact,
             alignment: Alignment.center,
@@ -1183,8 +1187,8 @@ class CalendarItem extends StatelessWidget {
         );
       case CalendarItemType.today:
         return SizedBox(
-          width: width ?? 32,
-          height: height ?? 32,
+          width: width ?? theme.scaling * 32,
+          height: height ?? theme.scaling * 32,
           child: SecondaryButton(
             density: ButtonDensity.compact,
             alignment: Alignment.center,
@@ -1194,8 +1198,8 @@ class CalendarItem extends StatelessWidget {
         );
       case CalendarItemType.selected:
         return SizedBox(
-          width: width ?? 32,
-          height: height ?? 32,
+          width: width ?? theme.scaling * 32,
+          height: height ?? theme.scaling * 32,
           child: PrimaryButton(
             density: ButtonDensity.compact,
             alignment: Alignment.center,
@@ -1205,8 +1209,8 @@ class CalendarItem extends StatelessWidget {
         );
       case CalendarItemType.inRange:
         return SizedBox(
-          width: width ?? 32,
-          height: height ?? 32,
+          width: width ?? theme.scaling * 32,
+          height: height ?? theme.scaling * 32,
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
@@ -1235,8 +1239,8 @@ class CalendarItem extends StatelessWidget {
         );
       case CalendarItemType.startRange:
         return SizedBox(
-          width: width ?? 32,
-          height: height ?? 32,
+          width: width ?? theme.scaling * 32,
+          height: height ?? theme.scaling * 32,
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
@@ -1258,8 +1262,8 @@ class CalendarItem extends StatelessWidget {
         );
       case CalendarItemType.endRange:
         return SizedBox(
-          width: width ?? 32,
-          height: height ?? 32,
+          width: width ?? theme.scaling * 32,
+          height: height ?? theme.scaling * 32,
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
@@ -1281,14 +1285,14 @@ class CalendarItem extends StatelessWidget {
         );
       case CalendarItemType.startRangeSelected:
         return SizedBox(
-          width: width ?? 32,
-          height: height ?? 32,
+          width: width ?? theme.scaling * 32,
+          height: height ?? theme.scaling * 32,
           child: Stack(
             fit: StackFit.passthrough,
             children: [
               Container(
-                width: width ?? 32,
-                height: height ?? 32,
+                width: width ?? theme.scaling * 32,
+                height: height ?? theme.scaling * 32,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.secondary,
                   borderRadius: BorderRadius.only(
@@ -1308,14 +1312,14 @@ class CalendarItem extends StatelessWidget {
         );
       case CalendarItemType.endRangeSelected:
         return SizedBox(
-          width: width ?? 32,
-          height: height ?? 32,
+          width: width ?? theme.scaling * 32,
+          height: height ?? theme.scaling * 32,
           child: Stack(
             fit: StackFit.passthrough,
             children: [
               Container(
-                width: width ?? 32,
-                height: height ?? 32,
+                width: width ?? theme.scaling * 32,
+                height: height ?? theme.scaling * 32,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.secondary,
                   borderRadius: BorderRadius.only(
@@ -1335,8 +1339,8 @@ class CalendarItem extends StatelessWidget {
         );
       case CalendarItemType.startRangeSelectedShort:
         return SizedBox(
-          width: width ?? 32,
-          height: height ?? 32,
+          width: width ?? theme.scaling * 32,
+          height: height ?? theme.scaling * 32,
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
@@ -1358,8 +1362,8 @@ class CalendarItem extends StatelessWidget {
         );
       case CalendarItemType.endRangeSelectedShort:
         return SizedBox(
-          width: width ?? 32,
-          height: height ?? 32,
+          width: width ?? theme.scaling * 32,
+          height: height ?? theme.scaling * 32,
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
@@ -1381,8 +1385,8 @@ class CalendarItem extends StatelessWidget {
         );
       case CalendarItemType.inRangeSelectedShort:
         return SizedBox(
-          width: width ?? 32,
-          height: height ?? 32,
+          width: width ?? theme.scaling * 32,
+          height: height ?? theme.scaling * 32,
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,

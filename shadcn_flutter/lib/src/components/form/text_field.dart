@@ -146,20 +146,23 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     TextStyle defaultTextStyle;
     if (widget.style != null) {
       defaultTextStyle = DefaultTextStyle.of(context)
           .style
+          .merge(theme.typography.small)
+          .merge(theme.typography.normal)
           .copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
             color: theme.colorScheme.foreground,
           )
           .merge(widget.style);
     } else {
-      defaultTextStyle = DefaultTextStyle.of(context).style.copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
+      defaultTextStyle = DefaultTextStyle.of(context)
+          .style
+          .merge(theme.typography.small)
+          .merge(theme.typography.normal)
+          .copyWith(
             color: theme.colorScheme.foreground,
           );
     }
@@ -202,11 +205,12 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
         isDense: true,
         fillColor: theme.colorScheme.muted,
         hintText: widget.placeholder,
-        hintStyle: defaultTextStyle.copyWith(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          color: theme.colorScheme.mutedForeground,
-        ),
+        hintStyle: defaultTextStyle
+            .merge(theme.typography.normal)
+            .merge(theme.typography.small)
+            .copyWith(
+              color: theme.colorScheme.mutedForeground,
+            ),
         border: !widget.border
             ? material.InputBorder.none
             : widget.filled
@@ -299,9 +303,9 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                     ),
                   ),
         contentPadding: widget.padding ??
-            const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 4 + 8,
+            EdgeInsets.symmetric(
+              horizontal: 12 * scaling,
+              vertical: (4 + 8) * scaling,
             ),
       ),
       cursorColor: theme.colorScheme.primary,

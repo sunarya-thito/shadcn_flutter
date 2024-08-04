@@ -105,7 +105,7 @@ class _CodeSnippetState extends State<CodeSnippet> {
         color: theme.colorScheme.card,
         border: Border.all(
           color: theme.colorScheme.border,
-          width: 1,
+          width: theme.scaling,
         ),
         borderRadius: BorderRadius.circular(theme.radiusLg),
       ),
@@ -128,11 +128,11 @@ class _CodeSnippetState extends State<CodeSnippet> {
                   child: SingleChildScrollView(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.only(
-                        left: 18,
-                        right: 48,
-                        top: 14,
-                        bottom: 14,
+                      padding: EdgeInsets.only(
+                        left: theme.scaling * 16,
+                        right: theme.scaling * 48,
+                        top: theme.scaling * 16,
+                        bottom: theme.scaling * 16,
                       ),
                       child: data == null
                           ? SelectableText(widget.code).muted().mono().small()
@@ -162,8 +162,7 @@ class _CodeSnippetState extends State<CodeSnippet> {
                           return Alert(
                             leading: const Icon(
                               Icons.check,
-                              size: 16,
-                            ),
+                            ).iconSmall(),
                             title: Text(localizations.toastSnippetCopied),
                           );
                         },
@@ -172,8 +171,7 @@ class _CodeSnippetState extends State<CodeSnippet> {
                   },
                   child: const Icon(
                     Icons.copy,
-                    size: 16,
-                  ),
+                  ).iconSmall(),
                 ),
               ],
             ).gap(4),

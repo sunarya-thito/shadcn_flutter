@@ -91,27 +91,14 @@ class _SliderState extends State<Slider> with FormValueSupplier {
   @override
   void initState() {
     super.initState();
-    // _currentValue = widget.value;
     if (widget.value.isRanged) {
-      // _currentValue = SliderValue.ranged(
-      //     (widget.value.start - widget.min) / (widget.max - widget.min),
-      //     (widget.value.end - widget.min) / (widget.max - widget.min));
       var start = (widget.value.start - widget.min) / (widget.max - widget.min);
       var end = (widget.value.end - widget.min) / (widget.max - widget.min);
-      // if (widget.divisions != null) {
-      //   start = (start * widget.divisions!).round() / widget.divisions!;
-      //   end = (end * widget.divisions!).round() / widget.divisions!;
-      // }
       var newStart = min(start, end);
       var newEnd = max(start, end);
       _currentValue = SliderValue.ranged(newStart, newEnd);
     } else {
-      // _currentValue = SliderValue.single(
-      //     (widget.value.value - widget.min) / (widget.max - widget.min));
       var value = (widget.value.value - widget.min) / (widget.max - widget.min);
-      // if (widget.divisions != null) {
-      //   value = (value * widget.divisions!).round() / widget.divisions!;
-      // }
       _currentValue = SliderValue.single(value);
     }
   }
@@ -160,21 +147,12 @@ class _SliderState extends State<Slider> with FormValueSupplier {
         var start =
             (widget.value.start - widget.min) / (widget.max - widget.min);
         var end = (widget.value.end - widget.min) / (widget.max - widget.min);
-        // if (widget.divisions != null) {
-        //   start = (start * widget.divisions!).round() / widget.divisions!;
-        //   end = (end * widget.divisions!).round() / widget.divisions!;
-        // }
         var newStart = min(start, end);
         var newEnd = max(start, end);
         _currentValue = SliderValue.ranged(newStart, newEnd);
       } else {
-        // _currentValue = SliderValue.single(
-        //     (widget.value.value - widget.min) / (widget.max - widget.min));
         var value =
             (widget.value.value - widget.min) / (widget.max - widget.min);
-        // if (widget.divisions != null) {
-        //   value = (value * widget.divisions!).round() / widget.divisions!;
-        // }
         _currentValue = SliderValue.single(value);
       }
     }
@@ -183,15 +161,16 @@ class _SliderState extends State<Slider> with FormValueSupplier {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return AnimatedContainer(
       duration: kDefaultDuration,
-      constraints: const BoxConstraints(
-        minWidth: 20,
-        minHeight: 16,
-        maxHeight: 16,
+      constraints: BoxConstraints(
+        minWidth: 20 * scaling,
+        minHeight: 16 * scaling,
+        maxHeight: 16 * scaling,
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        padding: EdgeInsets.symmetric(horizontal: 4.0 * scaling),
         child: LayoutBuilder(
           builder: (context, constraints) {
             return GestureDetector(
@@ -501,6 +480,8 @@ class _SliderState extends State<Slider> with FormValueSupplier {
 
   Widget buildHint(
       BuildContext context, BoxConstraints constraints, ThemeData theme) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     var start = widget.hintValue!.start;
     var end = widget.hintValue!.end;
     var newStart = min(start, end);
@@ -520,7 +501,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       child: Center(
         child: AnimatedContainer(
           duration: kDefaultDuration,
-          height: 6,
+          height: 6 * scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.primary.withOpacity(0.2),
             borderRadius: BorderRadius.circular(theme.radiusSm),
@@ -534,6 +515,8 @@ class _SliderState extends State<Slider> with FormValueSupplier {
 
   Widget buildTrackValue(
       BuildContext context, BoxConstraints constraints, ThemeData theme) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     var start = widget.value.start;
     var end = widget.value.end;
     if (widget.divisions != null) {
@@ -565,7 +548,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       child: Center(
         child: AnimatedContainer(
           duration: kDefaultDuration,
-          height: 6,
+          height: 6 * scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.primary,
             borderRadius: BorderRadius.circular(theme.radiusSm),
@@ -577,6 +560,8 @@ class _SliderState extends State<Slider> with FormValueSupplier {
 
   Widget buildTrackBar(
       BuildContext context, BoxConstraints constraints, ThemeData theme) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return Positioned(
       left: 0,
       right: 0,
@@ -585,7 +570,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       child: Center(
         child: AnimatedContainer(
           duration: kDefaultDuration,
-          height: 6,
+          height: 6 * scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.primary.withOpacity(0.2),
             borderRadius: BorderRadius.circular(theme.radiusSm),
@@ -604,6 +589,8 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       ValueChanged<bool> onFocusing,
       VoidCallback onIncrease,
       VoidCallback onDecrease) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     if (widget.divisions != null) {
       value = (value * widget.divisions!).round() / widget.divisions!;
     }
@@ -614,7 +601,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
           ? Duration.zero
           : kDefaultDuration,
       curve: Curves.easeInOut,
-      left: value * constraints.maxWidth - 8,
+      left: value * constraints.maxWidth - 8 * scaling,
       child: FocusableActionDetector(
         onShowFocusHighlight: (showHighlight) {
           onFocusing(showHighlight);
@@ -645,24 +632,20 @@ class _SliderState extends State<Slider> with FormValueSupplier {
         },
         child: AnimatedContainer(
           duration: kDefaultDuration,
-          width: 16,
-          height: 16,
+          width: 16 * scaling,
+          height: 16 * scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.background,
             shape: BoxShape.circle,
-            // border: Border.all(
-            //   color: theme.colorScheme.primary.withOpacity(0.5),
-            //   width: 1,
-            // ),
             border: focusing
                 ? Border.all(
                     color: theme.colorScheme.primary,
-                    width: 2,
+                    width: 2 * scaling,
                     strokeAlign: BorderSide.strokeAlignOutside,
                   )
                 : Border.all(
                     color: theme.colorScheme.primary.withOpacity(0.5),
-                    width: 1,
+                    width: 1 * scaling,
                   ),
           ),
         ),

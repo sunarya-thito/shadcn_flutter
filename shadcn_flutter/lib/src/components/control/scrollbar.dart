@@ -107,10 +107,10 @@ class _ShadcnScrollbarState extends RawScrollbarState<_ShadcnScrollbar> {
       ..color = _theme.colorScheme.border
       ..textDirection = Directionality.of(context)
       // Should this be affected by density?
-      ..thickness = 7.0 * _theme.density
+      ..thickness = 7.0 * _theme.scaling
       ..radius = widget.radius ?? Radius.circular(_theme.radiusSm)
       ..minLength = _kScrollbarMinLength
-      ..padding = MediaQuery.paddingOf(context) + EdgeInsets.all(_theme.sizeXS)
+      ..padding = MediaQuery.paddingOf(context) + EdgeInsets.all(_theme.scaling)
       ..scrollbarOrientation = widget.scrollbarOrientation
       ..ignorePointer = !enableGestures;
   }

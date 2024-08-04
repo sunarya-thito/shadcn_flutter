@@ -3,23 +3,31 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class AdaptiveScaling {
   final double radiusScaling;
-  final double densityScaling;
-  final TextScaler? textScaling;
+  final double sizeScaling;
+  final double textScaling;
 
-  factory AdaptiveScaling({
+  // factory AdaptiveScaling({
+  //   double scaling = 1,
+  // }) {
+  //   return AdaptiveScaling.only(
+  //     radiusScaling: scaling,
+  //     densityScaling: scaling,
+  //     textScaling: scaling,
+  //   );
+  // }
+
+  const AdaptiveScaling({
     double scaling = 1,
-  }) {
-    return AdaptiveScaling.only(
-      radiusScaling: scaling,
-      densityScaling: scaling,
-      textScaling: TextScaler.linear(scaling),
-    );
-  }
+  }) : this.only(
+          radiusScaling: scaling,
+          sizeScaling: scaling,
+          textScaling: scaling,
+        );
 
   const AdaptiveScaling.only({
     this.radiusScaling = 1,
-    this.densityScaling = 1,
-    this.textScaling,
+    this.sizeScaling = 1,
+    this.textScaling = 1,
   });
 }
 
@@ -32,9 +40,7 @@ class AdaptiveScaler extends StatelessWidget {
       case TargetPlatform.iOS:
       case TargetPlatform.android:
         return const AdaptiveScaling.only(
-            radiusScaling: 1.25,
-            densityScaling: 1.25,
-            textScaling: TextScaler.linear(1.25));
+            radiusScaling: 1.25, sizeScaling: 1.25, textScaling: 1.25);
       default:
         return const AdaptiveScaling.only();
     }
@@ -42,31 +48,36 @@ class AdaptiveScaler extends StatelessWidget {
 
   final AdaptiveScalingBuilder builder;
   final Widget child;
+  final ThemeData? theme;
 
   const AdaptiveScaler({
     Key? key,
     required this.builder,
     required this.child,
+    this.theme,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final scaling = builder(context);
-    final theme = Theme.of(context);
+    final theme = this.theme ?? Theme.of(context);
     var textScaling = scaling.textScaling;
     return Theme(
       data: theme.copyWith(
-        radius: theme.radius * scaling.radiusScaling,
-        density: theme.density * scaling.densityScaling,
-        iconTheme:
-            textScaling == null ? null : theme.iconTheme.scale(textScaling),
+        radius: scaling.radiusScaling == 1
+            ? null
+            : theme.radius * scaling.radiusScaling,
+        scaling: scaling.sizeScaling == 1
+            ? null
+            : theme.scaling * scaling.sizeScaling,
+        iconTheme: scaling.textScaling == 1
+            ? null
+            : theme.iconTheme.scale(textScaling),
+        typography: scaling.textScaling == 1
+            ? null
+            : theme.typography.scale(textScaling),
       ),
-      child: MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          textScaler: textScaling,
-        ),
-        child: child,
-      ),
+      child: child,
     );
   }
 }
@@ -75,14 +86,14 @@ class ThemeData {
   final ColorScheme colorScheme;
   final Typography typography;
   final double radius;
-  final double density;
+  final double scaling;
   final TargetPlatform? _platform;
   final IconThemeProperties iconTheme;
 
   ThemeData({
     required this.colorScheme,
     required this.radius,
-    this.density = 1,
+    this.scaling = 1,
     this.typography = const Typography.geist(),
     this.iconTheme = const IconThemeProperties(),
     TargetPlatform? platform,
@@ -108,39 +119,6 @@ class ThemeData {
   /// At normal radius, the scaled radius is 4
   double get radiusXs => radius * 4;
 
-  /// At normal density, the size is 1
-  double get sizeXS => density;
-
-  /// At normal density, the size is 2
-  double get sizeSm => density * 2;
-
-  /// At normal density, the size is 4
-  double get sizeMd => density * 4;
-
-  /// At normal density, the size is 6
-  double get sizeLg => density * 6;
-
-  /// At normal density, the size is 8
-  double get sizeXl => density * 8;
-
-  /// At normal density, the size is 12
-  double get sizeXxl => density * 12;
-
-  /// At normal density, the size is 16
-  double get sizeX3l => density * 16;
-
-  /// At normal density, the size is 24
-  double get sizeX4l => density * 24;
-
-  /// At normal density, the size is 32
-  double get sizeX5l => density * 32;
-
-  /// At normal density, the size is 40
-  double get sizeX6l => density * 40;
-
-  /// At normal density, the size is 48
-  double get sizeX7l => density * 48;
-
   BorderRadius get borderRadiusXxl => BorderRadius.circular(radiusXxl);
   BorderRadius get borderRadiusXl => BorderRadius.circular(radiusXl);
   BorderRadius get borderRadiusLg => BorderRadius.circular(radiusLg);
@@ -162,7 +140,7 @@ class ThemeData {
     double? radius,
     Typography? typography,
     TargetPlatform? platform,
-    double? density,
+    double? scaling,
     IconThemeProperties? iconTheme,
   }) {
     return ThemeData(
@@ -170,7 +148,7 @@ class ThemeData {
       radius: radius ?? this.radius,
       typography: typography ?? this.typography,
       platform: platform ?? _platform,
-      density: density ?? this.density,
+      scaling: scaling ?? this.scaling,
       iconTheme: iconTheme ?? this.iconTheme,
     );
   }
@@ -242,23 +220,23 @@ class IconThemeProperties {
     );
   }
 
-  IconThemeProperties scale(TextScaler scaler) {
+  IconThemeProperties scale(double factor) {
     return IconThemeProperties(
       xSmall: xSmall.size == null
           ? xSmall
-          : xSmall.copyWith(size: scaler.scale(xSmall.size!)),
+          : xSmall.copyWith(size: xSmall.size! * factor),
       small: small.size == null
           ? small
-          : small.copyWith(size: scaler.scale(small.size!)),
+          : small.copyWith(size: small.size! * factor),
       medium: medium.size == null
           ? medium
-          : medium.copyWith(size: scaler.scale(medium.size!)),
+          : medium.copyWith(size: medium.size! * factor),
       large: large.size == null
           ? large
-          : large.copyWith(size: scaler.scale(large.size!)),
+          : large.copyWith(size: large.size! * factor),
       xLarge: xLarge.size == null
           ? xLarge
-          : xLarge.copyWith(size: scaler.scale(xLarge.size!)),
+          : xLarge.copyWith(size: xLarge.size! * factor),
     );
   }
 }

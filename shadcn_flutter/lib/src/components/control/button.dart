@@ -935,8 +935,8 @@ MouseCursor _buttonMouseCursor(BuildContext context, Set<WidgetState> states) {
 EdgeInsets _buttonPadding(BuildContext context, Set<WidgetState> states) {
   final theme = Theme.of(context);
   return EdgeInsets.symmetric(
-    horizontal: theme.sizeX3l,
-    vertical: theme.sizeXl,
+    horizontal: theme.scaling * 16,
+    vertical: theme.scaling * 8,
   );
 }
 

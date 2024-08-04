@@ -23,15 +23,19 @@ class CircularProgressIndicator extends StatelessWidget {
     if (value == null || !animated) {
       return RepaintBoundary(
         child: SizedBox(
-          width: size ?? (iconThemeData.size ?? 24) - 8,
-          height: size ?? (iconThemeData.size ?? 24) - 8,
+          width: size ??
+              (iconThemeData.size ?? theme.scaling * 24) - theme.scaling * 8,
+          height: size ??
+              (iconThemeData.size ?? theme.scaling * 24) - theme.scaling * 8,
           child: mat.CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(
               theme.colorScheme.primary,
             ),
             color: theme.colorScheme.primary,
             backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
-            strokeWidth: (size ?? (iconThemeData.size ?? 24)) / 12,
+            strokeWidth: (size ?? (iconThemeData.size ?? theme.scaling * 24)) /
+                theme.scaling *
+                12,
             value: value,
           ),
         ),
@@ -43,15 +47,22 @@ class CircularProgressIndicator extends StatelessWidget {
         builder: (context, value, child) {
           return RepaintBoundary(
             child: SizedBox(
-              width: size ?? (iconThemeData.size ?? 24) - 8,
-              height: size ?? (iconThemeData.size ?? 24) - 8,
+              width: size ??
+                  (iconThemeData.size ?? theme.scaling * 24) -
+                      theme.scaling * 8,
+              height: size ??
+                  (iconThemeData.size ?? theme.scaling * 24) -
+                      theme.scaling * 8,
               child: mat.CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(
                   theme.colorScheme.primary,
                 ),
                 color: theme.colorScheme.primary,
                 backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
-                strokeWidth: (size ?? (iconThemeData.size ?? 24)) / 12,
+                strokeWidth:
+                    (size ?? (iconThemeData.size ?? theme.scaling * 24)) /
+                        theme.scaling *
+                        12,
                 value: value,
               ),
             ),

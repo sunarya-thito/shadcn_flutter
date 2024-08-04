@@ -47,6 +47,8 @@ class SelectItemButton<T> extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return SelectItem<T>(
       value: value,
       builder: (context, selectItem, selected) {
@@ -54,9 +56,9 @@ class SelectItemButton<T> extends StatelessWidget
           disableTransition: true,
           onPressed: selectItem,
           style: const ButtonStyle.ghost().copyWith(
-            padding: (context, states, value) => const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 8,
+            padding: (context, states, value) => EdgeInsets.symmetric(
+              vertical: 8 * scaling,
+              horizontal: 8 * scaling,
             ),
             mouseCursor: (context, states, value) {
               return SystemMouseCursors.basic;
@@ -65,11 +67,10 @@ class SelectItemButton<T> extends StatelessWidget
           trailing: selected == value
               ? const Icon(
                   Icons.check,
-                  size: 16,
-                )
+                ).iconSmall()
               : selected != null
-                  ? const SizedBox(
-                      width: 16,
+                  ? SizedBox(
+                      width: 16 * scaling,
                     )
                   : null,
           child: child.normal(),

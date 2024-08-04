@@ -22,17 +22,15 @@ class Radio extends StatelessWidget {
       ),
       child: AnimatedContainer(
         duration: kDefaultDuration,
-        width: 16,
-        height: 16,
+        width: 16 * theme.scaling,
+        height: 16 * theme.scaling,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
             color: theme.colorScheme.primary,
           ),
         ),
-        child: value
-            ? Icon(Icons.check, size: 12, color: theme.colorScheme.primary)
-            : null,
+        child: value ? const Icon(Icons.check).xSmall().iconPrimary() : null,
       ),
     );
   }
@@ -88,6 +86,7 @@ class _RadioItemState<T> extends State<RadioItem<T>> with FormValueSupplier {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final groupData = Data.maybeOf<RadioGroupData<T>>(context);
     final group = Data.maybeOf<_RadioGroupState<T>>(context);
     assert(groupData != null,
@@ -121,12 +120,14 @@ class _RadioItemState<T> extends State<RadioItem<T>> with FormValueSupplier {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   if (widget.leading != null) widget.leading!,
-                  if (widget.leading != null) const SizedBox(width: 8),
+                  if (widget.leading != null)
+                    SizedBox(width: 8 * theme.scaling),
                   Radio(
                       value: groupData?.selectedItem == widget.value,
                       focusing:
                           _focusing && groupData?.selectedItem == widget.value),
-                  if (widget.trailing != null) const SizedBox(width: 8),
+                  if (widget.trailing != null)
+                    SizedBox(width: 8 * theme.scaling),
                   if (widget.trailing != null) widget.trailing!,
                 ],
               ),

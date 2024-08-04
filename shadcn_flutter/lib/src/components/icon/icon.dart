@@ -26,17 +26,45 @@ extension IconExtension on Widget {
         data: (context, theme) => theme.iconTheme.xLarge, child: this);
   }
 
-  Widget iconMuted() {
+  Widget iconMutedForeground() {
     return WrappedIcon(
         data: (context, theme) =>
             IconThemeData(color: theme.colorScheme.mutedForeground),
         child: this);
   }
 
-  Widget iconDestructive() {
+  Widget iconDestructiveForeground() {
     return WrappedIcon(
         data: (context, theme) =>
             IconThemeData(color: theme.colorScheme.destructiveForeground),
+        child: this);
+  }
+
+  Widget iconPrimaryForeground() {
+    return WrappedIcon(
+        data: (context, theme) =>
+            IconThemeData(color: theme.colorScheme.primaryForeground),
+        child: this);
+  }
+
+  Widget iconPrimary() {
+    return WrappedIcon(
+        data: (context, theme) =>
+            IconThemeData(color: theme.colorScheme.primary),
+        child: this);
+  }
+
+  Widget iconSecondary() {
+    return WrappedIcon(
+        data: (context, theme) =>
+            IconThemeData(color: theme.colorScheme.secondary),
+        child: this);
+  }
+
+  Widget iconSecondaryForeground() {
+    return WrappedIcon(
+        data: (context, theme) =>
+            IconThemeData(color: theme.colorScheme.secondaryForeground),
         child: this);
   }
 }

@@ -132,6 +132,10 @@ abstract class ShadcnLocalizations {
   String get timeSecond;
   String get timeAM;
   String get timePM;
+  String get colorRed;
+  String get colorGreen;
+  String get colorBlue;
+  String get colorAlpha;
   String formatDateTime(DateTime dateTime,
       {bool showDate = true,
       bool showTime = true,
@@ -618,4 +622,16 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get abbreviatedDecember => 'Dec';
+
+  @override
+  String get colorRed => 'Red';
+
+  @override
+  String get colorGreen => 'Green';
+
+  @override
+  String get colorBlue => 'Blue';
+
+  @override
+  String get colorAlpha => 'Alpha';
 }

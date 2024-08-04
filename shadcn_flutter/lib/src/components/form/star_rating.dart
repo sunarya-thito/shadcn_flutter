@@ -9,13 +9,13 @@ class StarRating extends StatefulWidget {
   final Color? activeColor;
   final Color? backgroundColor;
   final double starPoints;
-  final double starSize;
-  final double starSpacing;
+  final double? starSize;
+  final double? starSpacing;
   final double? starPointRounding;
-  final double starValleyRounding;
-  final double starSquash;
-  final double starInnerRadiusRatio;
-  final double starRotation;
+  final double? starValleyRounding;
+  final double? starSquash;
+  final double? starInnerRadiusRatio;
+  final double? starRotation;
 
   const StarRating({
     Key? key,
@@ -27,13 +27,13 @@ class StarRating extends StatefulWidget {
     this.activeColor,
     this.backgroundColor,
     this.starPoints = 5,
-    this.starSize = 24.0,
-    this.starSpacing = 5.0,
+    this.starSize,
+    this.starSpacing,
     this.starPointRounding,
-    this.starValleyRounding = 0.0,
-    this.starSquash = 0.0,
-    this.starInnerRadiusRatio = 0.4,
-    this.starRotation = 0.0,
+    this.starValleyRounding,
+    this.starSquash,
+    this.starInnerRadiusRatio,
+    this.starRotation,
   }) : super(key: key);
 
   @override
@@ -66,18 +66,24 @@ class _StarRatingState extends State<StarRating> with FormValueSupplier {
 
   Widget _buildStar(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    var starValleyRounding = widget.starValleyRounding ?? 0.0;
+    var starSquash = widget.starSquash ?? 0.0;
+    var starInnerRadiusRatio = widget.starInnerRadiusRatio ?? 0.4;
+    var starRotation = widget.starRotation ?? 0.0;
+    var starSize = widget.starSize ?? 24.0;
     return Container(
-      width: widget.starSize,
-      height: widget.starSize,
+      width: starSize * scaling,
+      height: starSize * scaling,
       decoration: ShapeDecoration(
         color: Colors.white,
         shape: StarBorder(
           points: widget.starPoints,
           pointRounding: widget.starPointRounding ?? (theme.radius / 2),
-          valleyRounding: widget.starValleyRounding,
-          squash: widget.starSquash,
-          innerRadiusRatio: widget.starInnerRadiusRatio,
-          rotation: widget.starRotation,
+          valleyRounding: starValleyRounding * theme.radius,
+          squash: starSquash,
+          innerRadiusRatio: starInnerRadiusRatio * scaling,
+          rotation: starRotation,
         ),
       ),
     );
@@ -89,14 +95,21 @@ class _StarRatingState extends State<StarRating> with FormValueSupplier {
         ((_changingValue ?? widget.value) / widget.step).round() * widget.step;
     double containerWidth = 0;
     double containerHeight = 0;
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    // var starSize = (widget.starSize ?? 24.0) * scaling;
+    // var starSpacing = (widget.starSpacing ?? 5.0) * scaling;
+    var starSize = widget.starSize != null ? widget.starSize! : 24.0 * scaling;
+    var starSpacing =
+        widget.starSpacing != null ? widget.starSpacing! : 5.0 * scaling;
     if (widget.direction == Axis.horizontal) {
-      containerWidth = widget.max * widget.starSize +
-          ((widget.max.ceil() - 1) * widget.starSpacing).max(0);
-      containerHeight = widget.starSize;
+      containerWidth = widget.max * starSize +
+          ((widget.max.ceil() - 1) * starSpacing).max(0);
+      containerHeight = starSize;
     } else {
-      containerWidth = widget.starSize;
-      containerHeight = widget.max * widget.starSize +
-          ((widget.max.ceil() - 1) * widget.starSpacing).max(0);
+      containerWidth = starSize;
+      containerHeight = widget.max * starSize +
+          ((widget.max.ceil() - 1) * starSpacing).max(0);
     }
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -125,8 +138,7 @@ class _StarRatingState extends State<StarRating> with FormValueSupplier {
                     onHover: (event) {
                       if (widget.onChanged == null) return;
                       double progress =
-                          (event.localPosition.dx / widget.starSize)
-                              .clamp(0.0, 1.0);
+                          (event.localPosition.dx / starSize).clamp(0.0, 1.0);
                       setState(() {
                         _changingValue = (i + progress);
                       });
@@ -151,7 +163,7 @@ class _StarRatingState extends State<StarRating> with FormValueSupplier {
                     ),
                   ),
               ],
-            ).gap(widget.starSpacing),
+            ).gap(starSpacing),
           ),
         ),
       ),

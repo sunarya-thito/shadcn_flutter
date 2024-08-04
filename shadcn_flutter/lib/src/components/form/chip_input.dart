@@ -2,15 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-TextRange _range(int start, int end) {
-  if (start <= -1 && end <= -1) {
-    return TextRange.empty;
-  }
-  start = start.max(0);
-  end = end.max(0);
-  return TextRange(start: start, end: end);
-}
-
 class ChipInput extends StatefulWidget {
   final TextEditingController? controller;
   final BoxConstraints popoverConstraints;
@@ -67,6 +58,7 @@ class ChipInputState extends State<ChipInput> {
       _popoverController.close();
     } else if (!_popoverController.hasOpenPopover &&
         _suggestions.value.isNotEmpty) {
+      final theme = Theme.of(context);
       _popoverController.show(
         context: context,
         builder: (context) {
@@ -77,7 +69,7 @@ class ChipInputState extends State<ChipInput> {
         dismissBackdropFocus: false,
         showDuration: Duration.zero,
         hideDuration: Duration.zero,
-        offset: const Offset(0, 4),
+        offset: Offset(0, theme.scaling * 4),
       );
     }
   }
@@ -101,6 +93,7 @@ class ChipInputState extends State<ChipInput> {
   }
 
   Widget buildPopover(BuildContext context) {
+    final theme = Theme.of(context);
     return TextFieldTapRegion(
       child: Data(
         data: this,
@@ -113,7 +106,7 @@ class ChipInputState extends State<ChipInput> {
                 builder: (context, child) {
                   return ListView(
                       shrinkWrap: true,
-                      padding: const EdgeInsets.all(4),
+                      padding: EdgeInsets.all(theme.scaling * 4),
                       children: [
                         for (int i = 0; i < _suggestions.value.length; i++)
                           Toggle(
@@ -202,16 +195,16 @@ class ChipInputState extends State<ChipInput> {
                   children: [
                     child!,
                     Wrap(
-                      runSpacing: 4,
-                      spacing: 4,
+                      runSpacing: theme.scaling * 4,
+                      spacing: theme.scaling * 4,
                       children: [
                         for (int i = 0; i < widget.chips.length; i++)
                           _chipBuilder(i),
                       ],
                     ).withPadding(
-                      left: 4,
-                      right: 4,
-                      bottom: 4,
+                      left: theme.scaling * 4,
+                      right: theme.scaling * 4,
+                      bottom: theme.scaling * 4,
                     ),
                   ],
                 );
@@ -229,13 +222,13 @@ class ChipInputState extends State<ChipInput> {
                       child: child!,
                     ),
                     Wrap(
-                      runSpacing: 4,
-                      spacing: 4,
+                      runSpacing: theme.scaling * 4,
+                      spacing: theme.scaling * 4,
                       children: [
                         for (int i = 0; i < widget.chips.length; i++)
                           _chipBuilder(i),
                       ],
-                    ).withPadding(all: 4),
+                    ).withPadding(all: theme.scaling * 4),
                   ],
                 );
               }

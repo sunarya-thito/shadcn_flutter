@@ -18,6 +18,8 @@ class _AccordionState extends State<Accordion> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return Data(
         data: this,
         child: IntrinsicWidth(
@@ -29,9 +31,9 @@ class _AccordionState extends State<Accordion> {
                     widget.items,
                     AnimatedContainer(
                       duration: kDefaultDuration,
-                      color: Theme.of(context).colorScheme.muted,
-                      height: 1,
-                    )).toList(),
+                      color: theme.colorScheme.muted,
+                      height: 1 * scaling,
+                    )),
                 const Divider(),
               ]),
         ));
@@ -130,6 +132,8 @@ class _AccordionItemState extends State<AccordionItem>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return Data(
       data: this,
       child: GestureDetector(
@@ -139,16 +143,10 @@ class _AccordionItemState extends State<AccordionItem>
             SizeTransition(
               sizeFactor: _easeInAnimation,
               axisAlignment: -1,
-              child: DefaultTextStyle.merge(
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: widget.content,
-                ),
-              ),
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 16 * scaling),
+                child: widget.content,
+              ).small().normal(),
             ),
           ],
         ),
@@ -199,7 +197,8 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
 
   @override
   Widget build(BuildContext context) {
-    var themeData = Theme.of(context);
+    var theme = Theme.of(context);
+    final scaling = theme.scaling;
     return GestureDetector(
       onTap: () {
         _item?._dispatchToggle();
@@ -232,50 +231,42 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
           duration: kDefaultDuration,
           decoration: BoxDecoration(
             border: Border.all(
-              color:
-                  _focusing ? themeData.colorScheme.ring : Colors.transparent,
+              color: _focusing ? theme.colorScheme.ring : Colors.transparent,
               width: 1,
             ),
-            borderRadius: BorderRadius.circular(themeData.radiusXs),
+            borderRadius: BorderRadius.circular(theme.radiusXs),
           ),
-          child: mergeAnimatedTextStyle(
-            duration: kDefaultDuration,
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 14,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Align(
-                          alignment: AlignmentDirectional.centerStart,
-                          child: UnderlineText(
-                              underline: _hovering, child: widget.child))),
-                  const SizedBox(width: 18),
-                  TweenAnimationBuilder(
-                      tween: _expanded
-                          ? Tween(begin: 1.0, end: 0)
-                          : Tween(begin: 0, end: 1.0),
-                      duration: kDefaultDuration,
-                      builder: (context, value, child) {
-                        return Transform.rotate(
-                          angle: value * pi,
-                          child: AnimatedIconTheme(
-                            duration: kDefaultDuration,
-                            data: IconThemeData(
-                              color: themeData.colorScheme.mutedForeground,
-                            ),
-                            child:
-                                const Icon(Icons.keyboard_arrow_up, size: 18),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 16 * scaling),
+            child: Row(
+              children: [
+                Expanded(
+                    child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: UnderlineText(
+                            underline: _hovering, child: widget.child))),
+                SizedBox(width: 18 * scaling),
+                TweenAnimationBuilder(
+                    tween: _expanded
+                        ? Tween(begin: 1.0, end: 0)
+                        : Tween(begin: 0, end: 1.0),
+                    duration: kDefaultDuration,
+                    builder: (context, value, child) {
+                      return Transform.rotate(
+                        angle: value * pi,
+                        child: AnimatedIconTheme(
+                          duration: kDefaultDuration,
+                          data: IconThemeData(
+                            color: theme.colorScheme.mutedForeground,
                           ),
-                        );
-                      }),
-                ],
-              ),
+                          child:
+                              const Icon(Icons.keyboard_arrow_up).iconMedium(),
+                        ),
+                      );
+                    }),
+              ],
             ),
-          ),
+          ).medium().small(),
         ),
       ),
     );

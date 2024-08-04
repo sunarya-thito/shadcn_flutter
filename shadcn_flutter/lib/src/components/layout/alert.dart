@@ -46,12 +46,16 @@ class Alert extends StatelessWidget {
   }
 
   Widget _build(BuildContext context) {
-    var scheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    var scheme = theme.colorScheme;
+
     return OutlinedContainer(
       backgroundColor: scheme.background,
       borderColor: destructive ? scheme.destructive : null,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.symmetric(
+            horizontal: 16 * scaling, vertical: 12 * scaling),
         child: Basic(
           leading: leading,
           title: title,

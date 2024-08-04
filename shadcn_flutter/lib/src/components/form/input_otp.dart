@@ -2,13 +2,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+class _InputOTPSpacing extends StatelessWidget {
+  const _InputOTPSpacing();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SizedBox(width: theme.scaling * 8);
+  }
+}
+
 abstract class InputOTPChild {
   static InputOTPChild get separator =>
       const WidgetInputOTPChild(OTPSeparator());
   static InputOTPChild get space =>
-      const WidgetInputOTPChild(SizedBox(width: 8));
-  static InputOTPChild get empty =>
-      const WidgetInputOTPChild(SizedBox(width: 0));
+      const WidgetInputOTPChild(_InputOTPSpacing());
+  static InputOTPChild get empty => const WidgetInputOTPChild(SizedBox());
   factory InputOTPChild.input({
     CodepointPredicate? predicate,
     CodepointUnaryOperator? transform,
@@ -337,9 +346,10 @@ class WidgetInputOTPChild extends InputOTPChild {
 
   @override
   Widget build(BuildContext context, InputOTPChildData data) {
+    final theme = Theme.of(context);
     return SizedBox(
-      width: 36,
-      height: 36,
+      width: theme.scaling * 32,
+      height: theme.scaling * 32,
       child: Center(
         child: child,
       ),
@@ -355,7 +365,11 @@ class OTPSeparator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('-').bold().withPadding(horizontal: 4).foreground();
+    final theme = Theme.of(context);
+    return const Text('-')
+        .bold()
+        .withPadding(horizontal: theme.scaling * 4)
+        .foreground();
   }
 }
 
@@ -527,6 +541,7 @@ class _InputOTPState extends State<InputOTP> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     List<Widget> children = [];
     int i = 0;
     for (final child in widget.children) {
@@ -566,7 +581,7 @@ class _InputOTPState extends State<InputOTP> {
       }
     }
     return SizedBox(
-      height: 36,
+      height: theme.scaling * 36,
       child: IntrinsicWidth(
         child: Row(
           children: [

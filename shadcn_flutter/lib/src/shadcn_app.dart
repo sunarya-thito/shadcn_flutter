@@ -248,46 +248,49 @@ class _ShadcnAppState extends State<ShadcnApp> {
   }
 
   Widget _builder(BuildContext context, Widget? child) {
-    final ThemeData theme = widget.theme;
-    return DataMessengerRoot(
-      child: ScrollViewInterceptor(
-        child: ShadcnSkeletonizerConfigLayer(
-          theme: theme,
-          child: mergeAnimatedTextStyle(
-            duration: kDefaultDuration,
-            style: TextStyle(
-              color: theme.colorScheme.foreground,
-            ),
-            child: AnimatedIconTheme.merge(
-              duration: kDefaultDuration,
-              data: IconThemeData(
-                color: theme.colorScheme.foreground,
-              ),
-              child: Theme(
-                data: theme,
-                child: AdaptiveScaler(
-                  builder: widget.scaling == null
-                      ? AdaptiveScaler.defaultScaling
-                      : (context) {
-                          return widget.scaling!;
-                        },
-                  child: ToastLayer(
-                    child: SortableLayer(
-                      child: widget.builder != null
-                          ? Builder(
-                              builder: (BuildContext context) {
-                                return widget.builder!(context, child);
-                              },
-                            )
-                          : child ?? const SizedBox.shrink(),
+    return AdaptiveScaler(
+      theme: widget.theme,
+      builder: widget.scaling == null
+          ? AdaptiveScaler.defaultScaling
+          : (context) {
+              return widget.scaling!;
+            },
+      child: Builder(builder: (context) {
+        final ThemeData theme = Theme.of(context);
+        return DataMessengerRoot(
+          child: ScrollViewInterceptor(
+            child: ShadcnSkeletonizerConfigLayer(
+              theme: theme,
+              child: mergeAnimatedTextStyle(
+                duration: kDefaultDuration,
+                style: theme.typography.base.copyWith(
+                  color: theme.colorScheme.foreground,
+                ),
+                child: AnimatedIconTheme.merge(
+                  duration: kDefaultDuration,
+                  data: IconThemeData(
+                    color: theme.colorScheme.foreground,
+                  ),
+                  child: Theme(
+                    data: theme,
+                    child: ToastLayer(
+                      child: SortableLayer(
+                        child: widget.builder != null
+                            ? Builder(
+                                builder: (BuildContext context) {
+                                  return widget.builder!(context, child);
+                                },
+                              )
+                            : child ?? const SizedBox.shrink(),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 

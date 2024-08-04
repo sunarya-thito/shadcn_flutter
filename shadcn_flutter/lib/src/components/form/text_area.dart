@@ -96,6 +96,7 @@ class _TextAreaState extends State<TextArea> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return SizedBox(
         height: _height,
         width: _width,
@@ -133,8 +134,8 @@ class _TextAreaState extends State<TextArea> {
             Positioned(
               bottom: -1,
               right: -1,
-              width: 8 + 8,
-              height: 8 + 8,
+              width: (8 + 8) * scaling,
+              height: (8 + 8) * scaling,
               child: MouseRegion(
                 hitTestBehavior: HitTestBehavior.translucent,
                 cursor: widget.expandableWidth
@@ -163,13 +164,11 @@ class _TextAreaState extends State<TextArea> {
                       });
                     }
                   },
-                  child: SizedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: CustomPaint(
-                        painter: _TextAreaDragHandlePainter(
-                            theme.colorScheme.foreground),
-                      ),
+                  child: Padding(
+                    padding: EdgeInsets.all(4.0 * scaling),
+                    child: CustomPaint(
+                      painter: _TextAreaDragHandlePainter(
+                          theme.colorScheme.foreground),
                     ),
                   ),
                 ),

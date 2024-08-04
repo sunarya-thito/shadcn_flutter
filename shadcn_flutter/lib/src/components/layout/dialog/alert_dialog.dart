@@ -24,16 +24,16 @@ class _AlertDialogState extends State<AlertDialog> {
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
+    var scaling = themeData.scaling;
     return IntrinsicWidth(
       child: Container(
-        // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24 * scaling),
         decoration: BoxDecoration(
           color: themeData.colorScheme.popover,
           borderRadius: BorderRadius.circular(themeData.radiusXl),
           border: Border.all(
             color: themeData.colorScheme.muted,
-            width: 1,
+            width: 1 * scaling,
           ),
         ),
         child: IntrinsicHeight(
@@ -46,13 +46,7 @@ class _AlertDialogState extends State<AlertDialog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (widget.leading != null)
-                      AnimatedIconTheme(
-                          data: IconThemeData(
-                            color: themeData.colorScheme.mutedForeground,
-                            size: 32,
-                          ),
-                          duration: kDefaultDuration,
-                          child: widget.leading!),
+                      widget.leading!.iconXLarge().iconMutedForeground(),
                     if (widget.title != null || widget.content != null)
                       Expanded(
                         child: Column(
@@ -64,18 +58,12 @@ class _AlertDialogState extends State<AlertDialog> {
                             if (widget.content != null)
                               widget.content!.small().muted(),
                           ],
-                        ).gap(8),
+                        ).gap(8 * scaling),
                       ),
                     if (widget.trailing != null)
-                      AnimatedIconTheme(
-                          data: IconThemeData(
-                            color: themeData.colorScheme.mutedForeground,
-                            size: 32,
-                          ),
-                          duration: kDefaultDuration,
-                          child: widget.trailing!),
+                      widget.trailing!.iconXLarge().iconMutedForeground(),
                   ],
-                ).gap(16),
+                ).gap(16 * scaling),
               ),
               if (widget.actions != null && widget.actions!.isNotEmpty)
                 IntrinsicHeight(
@@ -83,12 +71,13 @@ class _AlertDialogState extends State<AlertDialog> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.end,
                     // children: widget.actions!,
-                    children: join(widget.actions!, const SizedBox(width: 8))
-                        .toList(),
+                    children:
+                        join(widget.actions!, SizedBox(width: 8 * scaling))
+                            .toList(),
                   ),
                 ),
             ],
-          ).gap(16),
+          ).gap(16 * scaling),
         ),
       ),
     );

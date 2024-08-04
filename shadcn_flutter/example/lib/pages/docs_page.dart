@@ -381,6 +381,8 @@ class DocsPageState extends State<DocsPage> {
   }
 
   void showSearchBar() {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     showDialog(
       context: context,
       builder: (context) {
@@ -388,8 +390,8 @@ class DocsPageState extends State<DocsPage> {
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: SizedBox(
-              width: 510,
-              height: 349,
+              width: 510 * scaling,
+              height: 349 * scaling,
               child: Command(
                 debounceDuration: Duration.zero,
                 builder: (context, query) async* {
@@ -464,7 +466,7 @@ class DocsPageState extends State<DocsPage> {
                               MediaQueryVisibility(
                                 minWidth: breakpointWidth,
                                 alternateChild: AppBar(
-                                  height: 72,
+                                  height: 72 * theme.scaling,
                                   leading: [
                                     GhostButton(
                                       density: ButtonDensity.icon,
@@ -485,7 +487,7 @@ class DocsPageState extends State<DocsPage> {
                                         FontAwesomeIcons.github,
                                         color: theme
                                             .colorScheme.secondaryForeground,
-                                      ),
+                                      ).iconLarge(),
                                     ),
                                     // pub.dev icon
                                     GhostButton(
@@ -501,13 +503,12 @@ class DocsPageState extends State<DocsPage> {
                                                 .secondaryForeground,
                                             BlendMode.srcIn,
                                           ),
-                                          child: const FlutterLogo(
-                                            size: 24,
+                                          child: FlutterLogo(
+                                            size: 24 * theme.scaling,
                                           ),
                                         )),
                                   ],
                                   child: Center(
-                                    widthFactor: 1,
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: OutlineButton(
@@ -516,7 +517,7 @@ class DocsPageState extends State<DocsPage> {
                                         },
                                         trailing: const Icon(Icons.search)
                                             .iconSmall()
-                                            .iconMuted(),
+                                            .iconMutedForeground(),
                                         child: const Text(
                                                 'Search documentation...')
                                             .muted()
@@ -528,14 +529,15 @@ class DocsPageState extends State<DocsPage> {
                                 child: AppBar(
                                   padding:
                                       breakpointWidth2 < mediaQuerySize.width
-                                          ? padding
+                                          ? padding * theme.scaling
                                           : padding.copyWith(
-                                              right: 32,
-                                            ),
-                                  height: 72,
+                                                right: 32,
+                                              ) *
+                                              theme.scaling,
+                                  height: 72 * theme.scaling,
                                   title: Basic(
-                                    leading: const FlutterLogo(
-                                      size: 32,
+                                    leading: FlutterLogo(
+                                      size: 32 * theme.scaling,
                                     ),
                                     content: const Text(
                                       'shadcn_flutter',
@@ -552,7 +554,7 @@ class DocsPageState extends State<DocsPage> {
                                           },
                                           trailing: const Icon(Icons.search)
                                               .iconSmall()
-                                              .iconMuted(),
+                                              .iconMutedForeground(),
                                           child: const Text(
                                                   'Search documentation...')
                                               .muted()
@@ -560,7 +562,7 @@ class DocsPageState extends State<DocsPage> {
                                         ),
                                       ),
                                     ),
-                                    const Gap(8),
+                                    Gap(8 * theme.scaling),
                                     GhostButton(
                                       density: ButtonDensity.icon,
                                       onPressed: () {
@@ -568,8 +570,9 @@ class DocsPageState extends State<DocsPage> {
                                             'https://github.com/sunarya-thito/shadcn_flutter');
                                       },
                                       child: FaIcon(FontAwesomeIcons.github,
-                                          color: theme
-                                              .colorScheme.secondaryForeground),
+                                              color: theme.colorScheme
+                                                  .secondaryForeground)
+                                          .iconLarge(),
                                     ),
                                     // pub.dev icon
                                     GhostButton(
@@ -585,8 +588,8 @@ class DocsPageState extends State<DocsPage> {
                                                 .secondaryForeground,
                                             BlendMode.srcIn,
                                           ),
-                                          child: const FlutterLogo(
-                                            size: 24,
+                                          child: FlutterLogo(
+                                            size: 24 * theme.scaling,
                                           ),
                                         )),
                                   ],
@@ -611,7 +614,10 @@ class DocsPageState extends State<DocsPage> {
                           child: SingleChildScrollView(
                             key: const PageStorageKey('sidebar'),
                             padding: EdgeInsets.only(
-                                top: 32, left: 24 + padding.left, bottom: 32),
+                                    top: 32,
+                                    left: 24 + padding.left,
+                                    bottom: 32) *
+                                theme.scaling,
                             child: SidebarNav(children: [
                               for (var section in sections)
                                 SidebarSection(
@@ -674,15 +680,17 @@ class DocsPageState extends State<DocsPage> {
                                   clipBehavior: Clip.none,
                                   padding: !hasOnThisPage
                                       ? const EdgeInsets.symmetric(
-                                          horizontal: 40,
-                                          vertical: 32,
-                                        ).copyWith(
-                                          right: padding.right + 32,
-                                        )
+                                            horizontal: 40,
+                                            vertical: 32,
+                                          ).copyWith(
+                                            right: padding.right + 32,
+                                          ) *
+                                          theme.scaling
                                       : const EdgeInsets.symmetric(
-                                          horizontal: 40,
-                                          vertical: 32,
-                                        ).copyWith(right: 24),
+                                            horizontal: 40,
+                                            vertical: 32,
+                                          ).copyWith(right: 24) *
+                                          theme.scaling,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
@@ -702,7 +710,7 @@ class DocsPageState extends State<DocsPage> {
                                           if (page != null) Text(page.title),
                                         ],
                                       ),
-                                      Gap(16),
+                                      Gap(16 * theme.scaling),
                                       widget.child,
                                     ],
                                   ),
@@ -711,19 +719,21 @@ class DocsPageState extends State<DocsPage> {
                                   clipBehavior: Clip.none,
                                   padding: !hasOnThisPage
                                       ? const EdgeInsets.symmetric(
-                                          horizontal: 40,
-                                          vertical: 32,
-                                        ).copyWith(
-                                          right: padding.right + 32,
-                                          bottom: 0,
-                                        )
+                                            horizontal: 40,
+                                            vertical: 32,
+                                          ).copyWith(
+                                            right: padding.right + 32,
+                                            bottom: 0,
+                                          ) *
+                                          theme.scaling
                                       : const EdgeInsets.symmetric(
-                                          horizontal: 40,
-                                          vertical: 32,
-                                        ).copyWith(
-                                          right: 24,
-                                          bottom: 0,
-                                        ),
+                                            horizontal: 40,
+                                            vertical: 32,
+                                          ).copyWith(
+                                            right: 24,
+                                            bottom: 0,
+                                          ) *
+                                          theme.scaling,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
@@ -743,7 +753,7 @@ class DocsPageState extends State<DocsPage> {
                                           if (page != null) Text(page.title),
                                         ],
                                       ),
-                                      Gap(16),
+                                      Gap(16 * theme.scaling),
                                       Expanded(child: widget.child),
                                     ],
                                   ),
@@ -754,16 +764,17 @@ class DocsPageState extends State<DocsPage> {
                         MediaQueryVisibility(
                           minWidth: breakpointWidth2,
                           child: Container(
-                            width: padding.right + 180,
+                            width: (padding.right + 180) * theme.scaling,
                             alignment: Alignment.topLeft,
                             child: FocusTraversalGroup(
                               child: SingleChildScrollView(
                                 padding: const EdgeInsets.only(
-                                  top: 32,
-                                  right: 24,
-                                  bottom: 32,
-                                  left: 24,
-                                ),
+                                      top: 32,
+                                      right: 24,
+                                      bottom: 32,
+                                      left: 24,
+                                    ) *
+                                    theme.scaling,
                                 child: SidebarNav(children: [
                                   SidebarSection(
                                     header: const Text('On This Page'),
@@ -801,22 +812,24 @@ class DocsPageState extends State<DocsPage> {
   }
 
   void _openDrawer(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     openSheet(
       context: context,
       builder: (context) {
         return Container(
-          constraints: const BoxConstraints(maxWidth: 400),
-          padding: const EdgeInsets.only(top: 32),
+          constraints: const BoxConstraints(maxWidth: 400) * scaling,
+          padding: const EdgeInsets.only(top: 32) * scaling,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
                 children: [
-                  const FlutterLogo(
-                    size: 24,
+                  FlutterLogo(
+                    size: 24 * scaling,
                   ),
-                  Gap(18),
+                  Gap(18 * scaling),
                   const Text(
                     'shadcn_flutter',
                   ).medium().mono().expanded(),
@@ -829,13 +842,14 @@ class DocsPageState extends State<DocsPage> {
                     child: const Icon(Icons.close),
                   ),
                 ],
-              ).withPadding(left: 32, right: 32),
-              Gap(32),
+              ).withPadding(left: 32 * scaling, right: 32 * scaling),
+              Gap(32 * scaling),
               Expanded(
                 child: FocusTraversalGroup(
                   child: SingleChildScrollView(
                     padding:
-                        const EdgeInsets.only(left: 32, right: 32, bottom: 48),
+                        const EdgeInsets.only(left: 32, right: 32, bottom: 48) *
+                            scaling,
                     key: const PageStorageKey('sidebar'),
                     child: SidebarNav(children: [
                       for (var section in sections)

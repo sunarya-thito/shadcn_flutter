@@ -87,8 +87,8 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>>
   Widget build(BuildContext context) {
     if (widget.mode == PromptMode.dialog) {
       return OutlineButton(
-        trailing: widget.trailing?.iconMuted().iconSmall(),
-        leading: widget.leading?.iconMuted().iconSmall(),
+        trailing: widget.trailing?.iconMutedForeground().iconSmall(),
+        leading: widget.leading?.iconMutedForeground().iconSmall(),
         onPressed: widget.onChanged == null
             ? null
             : () {
@@ -117,8 +117,8 @@ class _ObjectFormFieldState<T> extends State<ObjectFormField<T>>
       );
     }
     return OutlineButton(
-      trailing: widget.trailing?.iconMuted().iconSmall(),
-      leading: widget.leading?.iconMuted().iconSmall(),
+      trailing: widget.trailing?.iconMutedForeground().iconSmall(),
+      leading: widget.leading?.iconMutedForeground().iconSmall(),
       onPressed: () {
         _popoverController.show(
           context: context,

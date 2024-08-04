@@ -59,7 +59,7 @@ class LinearProgressIndicator extends StatelessWidget {
                 backgroundColor ?? theme.colorScheme.primary.withOpacity(0.2),
             showSparks: showSparks,
             sparksColor: color ?? theme.colorScheme.primary,
-            sparksRadius: 15,
+            sparksRadius: theme.scaling * 16,
             textDirection: directionality,
           ),
           duration: kDefaultDuration,
@@ -104,7 +104,7 @@ class LinearProgressIndicator extends StatelessWidget {
                     theme.colorScheme.primary.withOpacity(0.2),
                 showSparks: showSparks,
                 sparksColor: color ?? theme.colorScheme.primary,
-                sparksRadius: 15,
+                sparksRadius: theme.scaling * 16,
                 textDirection: directionality,
               ),
               builder: (context, prop, child) {
@@ -128,7 +128,7 @@ class LinearProgressIndicator extends StatelessWidget {
     }
     return RepaintBoundary(
       child: SizedBox(
-        height: minHeight ?? 2,
+        height: minHeight ?? theme.scaling * 2,
         child: childWidget,
       ),
     );

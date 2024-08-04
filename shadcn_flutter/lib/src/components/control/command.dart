@@ -88,7 +88,7 @@ class _CommandState extends State<Command> {
                 children: [
                   const Icon(
                     Icons.search,
-                  ).iconSmall().iconMuted(),
+                  ).iconSmall().iconMutedForeground(),
                   Expanded(
                     child: TextField(
                       controller: _controller,
@@ -109,7 +109,7 @@ class _CommandState extends State<Command> {
                       ).iconSmall(),
                     ),
                 ],
-              ).withPadding(horizontal: theme.sizeXxl),
+              ).withPadding(horizontal: theme.scaling * 12),
               const Divider(),
               Expanded(
                 child: ValueListenableBuilder(
@@ -129,7 +129,7 @@ class _CommandState extends State<Command> {
                                 duration: kDefaultDuration,
                                 child: const Center(
                                         child: CircularProgressIndicator())
-                                    .withPadding(vertical: theme.sizeX4l),
+                                    .withPadding(vertical: theme.scaling * 24),
                               ));
                             } else if (items.isEmpty) {
                               return widget.emptyBuilder?.call(context) ??
@@ -145,7 +145,7 @@ class _CommandState extends State<Command> {
                           }
                           return widget.loadingBuilder?.call(context) ??
                               const Center(child: CircularProgressIndicator())
-                                  .withPadding(vertical: theme.sizeX4l);
+                                  .withPadding(vertical: theme.scaling * 24);
                         },
                       );
                     }),
@@ -177,13 +177,14 @@ class CommandCategory extends StatelessWidget {
       children: [
         if (title != null)
           title!
-              .withPadding(horizontal: theme.sizeXl, vertical: theme.sizeLg)
+              .withPadding(
+                  horizontal: theme.scaling * 8, vertical: theme.scaling * 6)
               .medium()
               .xSmall()
               .muted(),
         ...children,
       ],
-    ).withPadding(all: theme.sizeMd);
+    ).withPadding(all: theme.scaling * 4);
   }
 }
 
@@ -263,7 +264,8 @@ class _CommandItemState extends State<CommandItem> {
             borderRadius: BorderRadius.circular(themeData.radiusSm),
           ),
           padding: EdgeInsets.symmetric(
-              horizontal: themeData.sizeXl, vertical: themeData.sizeLg),
+              horizontal: themeData.scaling * 8,
+              vertical: themeData.scaling * 6),
           child: AnimatedIconTheme(
             duration: kDefaultDuration,
             data: themeData.iconTheme.small.copyWith(
@@ -281,9 +283,9 @@ class _CommandItemState extends State<CommandItem> {
               child: Row(
                 children: [
                   if (widget.leading != null) widget.leading!,
-                  if (widget.leading != null) Gap(themeData.sizeXl),
+                  if (widget.leading != null) Gap(themeData.scaling * 8),
                   Expanded(child: widget.title),
-                  if (widget.trailing != null) Gap(themeData.sizeXl),
+                  if (widget.trailing != null) Gap(themeData.scaling * 8),
                   if (widget.trailing != null)
                     widget.trailing!.muted().xSmall(),
                 ],

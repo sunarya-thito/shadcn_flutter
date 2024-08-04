@@ -980,14 +980,14 @@ class FormRow<T> extends StatelessWidget {
                   child: label.textSmall(),
                   duration: kDefaultDuration,
                 ),
-                Gap(8),
+                Gap(theme.scaling * 8),
                 child!,
                 if (hint != null) ...[
-                  Gap(8),
+                  Gap(theme.scaling * 8),
                   hint!.xSmall().muted(),
                 ],
                 if (error is InvalidResult) ...[
-                  Gap(8),
+                  Gap(theme.scaling * 8),
                   mergeAnimatedTextStyle(
                     style: TextStyle(color: theme.colorScheme.destructive),
                     child: Text(error.message).xSmall().medium(),
@@ -1044,7 +1044,7 @@ class FormInline<T> extends StatelessWidget {
                         child: label.textSmall(),
                         duration: kDefaultDuration,
                       ),
-                      Gap(8),
+                      Gap(theme.scaling * 8),
                       Expanded(child: child!),
                     ],
                   ),
