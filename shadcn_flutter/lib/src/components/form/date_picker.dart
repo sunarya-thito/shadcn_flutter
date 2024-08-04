@@ -13,6 +13,7 @@ class DatePicker extends StatelessWidget {
   final Alignment? popoverAnchorAlignment;
   final EdgeInsets? popoverPadding;
   final Widget? dialogTitle;
+  final CalendarViewType? initialViewType;
 
   const DatePicker({
     Key? key,
@@ -28,6 +29,7 @@ class DatePicker extends StatelessWidget {
     this.popoverAnchorAlignment,
     this.popoverPadding,
     this.dialogTitle,
+    this.initialViewType,
   }) : super(key: key);
 
   @override
@@ -49,6 +51,7 @@ class DatePicker extends StatelessWidget {
       editorBuilder: (context, value, onChanged) {
         return DatePickerDialog(
           initialView: initialView ?? CalendarView.now(),
+          initialViewType: initialViewType ?? CalendarViewType.date,
           selectionMode: CalendarSelectionMode.single,
           initialValue: value == null ? null : CalendarValue.single(value),
           onChanged: (value) {
@@ -101,6 +104,7 @@ class DateRangePicker extends StatelessWidget {
   final Widget? placeholder;
   final PromptMode mode;
   final CalendarView? initialView;
+  final CalendarViewType? initialViewType;
   final bool Function(DateTime date)? isDateEnabled;
   final Widget Function(BuildContext context, DateTime date)? dateBuilder;
   final Widget Function(BuildContext context, int weekday)? weekDayBuilder;
@@ -123,6 +127,7 @@ class DateRangePicker extends StatelessWidget {
     this.popoverAnchorAlignment,
     this.popoverPadding,
     this.dialogTitle,
+    this.initialViewType,
   }) : super(key: key);
 
   @override
@@ -144,7 +149,8 @@ class DateRangePicker extends StatelessWidget {
       },
       editorBuilder: (context, value, onChanged) {
         return DatePickerDialog(
-          initialView: initialView ?? CalendarView.now(),
+          initialView: initialView,
+          initialViewType: initialViewType ?? CalendarViewType.date,
           selectionMode: CalendarSelectionMode.range,
           initialValue: value == null
               ? null

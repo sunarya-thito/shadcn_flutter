@@ -1,8 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+enum CalendarViewType {
+  date,
+  month,
+  year,
+}
+
 class DatePickerDialog extends StatefulWidget {
-  final CalendarView initialView;
+  final CalendarViewType initialViewType;
+  final CalendarView? initialView;
   final CalendarSelectionMode selectionMode;
   final CalendarValue? initialValue;
   final ValueChanged<CalendarValue?>? onChanged;
@@ -12,7 +19,8 @@ class DatePickerDialog extends StatefulWidget {
 
   const DatePickerDialog({
     super.key,
-    required this.initialView,
+    required this.initialViewType,
+    this.initialView,
     required this.selectionMode,
     this.initialValue,
     this.onChanged,
@@ -27,13 +35,32 @@ class DatePickerDialog extends StatefulWidget {
 
 class _DatePickerDialogState extends State<DatePickerDialog> {
   late CalendarView _view;
+  late CalendarView _alternateView;
   late CalendarValue? _value;
+  late CalendarViewType _viewType;
+  late int _yearSelectStart;
 
   @override
   void initState() {
     super.initState();
-    _view = widget.initialView;
+    _view =
+        widget.initialView ?? widget.initialValue?.view ?? CalendarView.now();
+    _alternateView = _view.next;
     _value = widget.initialValue;
+    _viewType = widget.initialViewType;
+    // _yearSelectStart = round year every 16 years so that it can fit 4x4 grid
+    _yearSelectStart = (_view.year ~/ 16) * 16;
+  }
+
+  String getHeaderText(ShadcnLocalizations localizations, CalendarView view,
+      CalendarViewType viewType) {
+    if (viewType == CalendarViewType.date) {
+      return '${localizations.getMonth(view.month)} ${view.year}';
+    }
+    if (viewType == CalendarViewType.month) {
+      return '${view.year}';
+    }
+    return localizations.datePickerSelectYear;
   }
 
   @override
@@ -55,74 +82,165 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                         density: ButtonDensity.icon,
                         onPressed: () {
                           setState(() {
-                            _view = _view.previous;
+                            switch (_viewType) {
+                              case CalendarViewType.date:
+                                _view = _view.previous;
+                                _alternateView = _alternateView.previous;
+                                break;
+                              case CalendarViewType.month:
+                                _view = _view.previousYear;
+                                break;
+                              case CalendarViewType.year:
+                                _yearSelectStart -= 16;
+                                break;
+                            }
                           });
                         },
                         child: const Icon(Icons.arrow_back).iconXSmall(),
                       ),
-                      Text('${localizations.getMonth(_view.month)} ${_view.year}')
-                          .small()
-                          .medium()
-                          .center()
-                          .expanded(),
-                      const SizedBox(
-                        width: 32,
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 32,
-                      ),
-                      Text('${localizations.getMonth(_view.next.month)} ${_view.next.year}')
-                          .small()
-                          .medium()
-                          .center()
-                          .expanded(),
-                      OutlineButton(
-                        density: ButtonDensity.icon,
+                      GhostButton(
+                        enabled: _viewType != CalendarViewType.year,
                         onPressed: () {
-                          setState(() {
-                            _view = _view.next;
-                          });
+                          switch (_viewType) {
+                            case CalendarViewType.date:
+                              setState(() {
+                                _viewType = CalendarViewType.month;
+                              });
+                              break;
+                            case CalendarViewType.month:
+                              setState(() {
+                                _viewType = CalendarViewType.year;
+                              });
+                              break;
+                            default:
+                              break;
+                          }
                         },
-                        child: const Icon(Icons.arrow_forward).iconXSmall(),
-                      ),
+                        child:
+                            Text(getHeaderText(localizations, _view, _viewType))
+                                .small()
+                                .medium()
+                                .center(),
+                      ).sized(height: 32).center().expanded(),
+                      if (_viewType == CalendarViewType.date)
+                        const SizedBox(
+                          width: 32,
+                        ),
+                      if (_viewType != CalendarViewType.date)
+                        OutlineButton(
+                          density: ButtonDensity.icon,
+                          onPressed: () {
+                            setState(() {
+                              switch (_viewType) {
+                                case CalendarViewType.date:
+                                  _view = _view.next;
+                                  break;
+                                case CalendarViewType.month:
+                                  _view = _view.nextYear;
+                                  break;
+                                case CalendarViewType.year:
+                                  _yearSelectStart += 16;
+                                  break;
+                              }
+                            });
+                          },
+                          child: const Icon(Icons.arrow_forward).iconXSmall(),
+                        ),
                     ],
                   ),
                 ),
+                if (_viewType == CalendarViewType.date)
+                  Expanded(
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 32,
+                        ),
+                        GhostButton(
+                          onPressed: () {
+                            switch (_viewType) {
+                              case CalendarViewType.date:
+                                setState(() {
+                                  _viewType = CalendarViewType.month;
+                                });
+                                break;
+                              case CalendarViewType.month:
+                                setState(() {
+                                  _viewType = CalendarViewType.year;
+                                });
+                                break;
+                              default:
+                                break;
+                            }
+                          },
+                          child: Text(getHeaderText(
+                                  localizations, _alternateView, _viewType))
+                              .small()
+                              .medium()
+                              .center(),
+                        ).sized(height: 32).center().expanded(),
+                        OutlineButton(
+                          density: ButtonDensity.icon,
+                          onPressed: () {
+                            setState(() {
+                              switch (_viewType) {
+                                case CalendarViewType.date:
+                                  _view = _view.next;
+                                  _alternateView = _alternateView.next;
+                                  break;
+                                case CalendarViewType.month:
+                                  _view = _view.nextYear;
+                                  break;
+                                case CalendarViewType.year:
+                                  _yearSelectStart += 16;
+                                  break;
+                              }
+                            });
+                          },
+                          child: const Icon(Icons.arrow_forward).iconXSmall(),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
-            Gap(16),
+            const Gap(16),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Calendar(
-                  value: _value,
-                  view: _view,
-                  onChanged: (value) {
+                buildView(
+                  context,
+                  _yearSelectStart,
+                  _view,
+                  _viewType,
+                  widget.selectionMode,
+                  (value) {
                     setState(() {
-                      _value = value;
-                      widget.onChanged?.call(value);
+                      _view = value;
+                      _alternateView = value.next;
+                      switch (_viewType) {
+                        case CalendarViewType.date:
+                          break;
+                        case CalendarViewType.month:
+                          _viewType = CalendarViewType.date;
+                          break;
+                        case CalendarViewType.year:
+                          _viewType = CalendarViewType.month;
+                          break;
+                      }
                     });
                   },
-                  selectionMode: CalendarSelectionMode.range,
                 ),
-                Gap(16),
-                Calendar(
-                  value: _value,
-                  view: _view.next,
-                  onChanged: (value) {
-                    setState(() {
-                      _value = value;
-                      widget.onChanged?.call(value);
-                    });
-                  },
-                  selectionMode: CalendarSelectionMode.range,
-                ),
+                if (_viewType == CalendarViewType.date) const Gap(16),
+                if (_viewType == CalendarViewType.date)
+                  buildView(
+                    context,
+                    _yearSelectStart,
+                    _alternateView,
+                    _viewType,
+                    widget.selectionMode,
+                    (value) {},
+                  ),
               ],
             ),
           ],
@@ -140,21 +258,59 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                 density: ButtonDensity.icon,
                 onPressed: () {
                   setState(() {
-                    _view = _view.previous;
+                    switch (_viewType) {
+                      case CalendarViewType.date:
+                        _view = _view.previous;
+                        break;
+                      case CalendarViewType.month:
+                        _view = _view.previousYear;
+                        break;
+                      case CalendarViewType.year:
+                        _yearSelectStart -= 16;
+                        break;
+                    }
                   });
                 },
                 child: const Icon(Icons.arrow_back).iconXSmall(),
               ),
-              Text('${localizations.getMonth(_view.month)} ${_view.year}')
-                  .small()
-                  .medium()
-                  .center()
-                  .expanded(),
+              GhostButton(
+                enabled: _viewType != CalendarViewType.year,
+                onPressed: () {
+                  switch (_viewType) {
+                    case CalendarViewType.date:
+                      setState(() {
+                        _viewType = CalendarViewType.month;
+                      });
+                      break;
+                    case CalendarViewType.month:
+                      setState(() {
+                        _viewType = CalendarViewType.year;
+                      });
+                      break;
+                    default:
+                      break;
+                  }
+                },
+                child: Text(getHeaderText(localizations, _view, _viewType))
+                    .small()
+                    .medium()
+                    .center(),
+              ).sized(height: 32).center().expanded(),
               OutlineButton(
                 density: ButtonDensity.icon,
                 onPressed: () {
                   setState(() {
-                    _view = _view.next;
+                    switch (_viewType) {
+                      case CalendarViewType.date:
+                        _view = _view.next;
+                        break;
+                      case CalendarViewType.month:
+                        _view = _view.nextYear;
+                        break;
+                      case CalendarViewType.year:
+                        _yearSelectStart += 16;
+                        break;
+                    }
                   });
                 },
                 child: const Icon(Icons.arrow_forward).iconXSmall(),
@@ -162,25 +318,75 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
             ],
           ),
           Gap(16),
-          Calendar(
-            value: _value,
-            view: _view,
-            onChanged: (value) {
+          buildView(
+            context,
+            _yearSelectStart,
+            _view,
+            _viewType,
+            widget.selectionMode,
+            (value) {
               setState(() {
-                _value = value;
-                widget.onChanged?.call(value);
+                _view = value;
+                switch (_viewType) {
+                  case CalendarViewType.date:
+                    break;
+                  case CalendarViewType.month:
+                    _viewType = CalendarViewType.date;
+                    break;
+                  case CalendarViewType.year:
+                    _viewType = CalendarViewType.month;
+                    break;
+                }
               });
             },
-            selectionMode: CalendarSelectionMode.single,
           ),
         ],
       ),
     );
   }
+
+  Widget buildView(
+      BuildContext context,
+      int yearSelectStart,
+      CalendarView view,
+      CalendarViewType viewType,
+      CalendarSelectionMode selectionMode,
+      ValueChanged<CalendarView> onViewChanged) {
+    if (viewType == CalendarViewType.year) {
+      return YearCalendar(
+        value: view.year,
+        yearSelectStart: yearSelectStart,
+        calendarValue: _value,
+        onChanged: (value) {
+          setState(() {
+            onViewChanged(view.copyWith(year: value));
+          });
+        },
+      );
+    }
+    if (viewType == CalendarViewType.month) {
+      return MonthCalendar(
+        value: view,
+        onChanged: onViewChanged,
+        calendarValue: _value,
+      );
+    }
+    return Calendar(
+      value: _value,
+      view: view,
+      onChanged: (value) {
+        setState(() {
+          _value = value;
+          widget.onChanged?.call(value);
+        });
+      },
+      selectionMode: selectionMode,
+    );
+  }
 }
 
 abstract class CalendarValue {
-  CalendarValueLookup lookup(DateTime date);
+  CalendarValueLookup lookup(int year, [int? month = 1, int? day = 1]);
   const CalendarValue();
   static SingleCalendarValue single(DateTime date) {
     return SingleCalendarValue(date);
@@ -197,6 +403,18 @@ abstract class CalendarValue {
   SingleCalendarValue toSingle();
   RangeCalendarValue toRange();
   MultiCalendarValue toMulti();
+
+  CalendarView get view;
+}
+
+DateTime _convertNecessarry(DateTime from, int year, [int? month, int? date]) {
+  if (month == null) {
+    return DateTime(from.year);
+  }
+  if (date == null) {
+    return DateTime(from.year, from.month);
+  }
+  return DateTime(from.year, from.month, from.day);
 }
 
 class SingleCalendarValue extends CalendarValue {
@@ -205,12 +423,16 @@ class SingleCalendarValue extends CalendarValue {
   SingleCalendarValue(this.date);
 
   @override
-  CalendarValueLookup lookup(DateTime date) {
-    if (_isSameDay(this.date, date)) {
+  CalendarValueLookup lookup(int year, [int? month, int? day]) {
+    DateTime current = _convertNecessarry(date, year, month, day);
+    if (current.isAtSameMomentAs(DateTime(year, month ?? 1, day ?? 1))) {
       return CalendarValueLookup.selected;
     }
     return CalendarValueLookup.none;
   }
+
+  @override
+  CalendarView get view => date.toCalendarView();
 
   @override
   String toString() {
@@ -252,18 +474,27 @@ class RangeCalendarValue extends CalendarValue {
         end = start.isBefore(end) ? end : start;
 
   @override
-  CalendarValueLookup lookup(DateTime date) {
-    if (_isSameDay(start, date)) {
+  CalendarValueLookup lookup(int year, [int? month, int? day]) {
+    DateTime start = _convertNecessarry(this.start, year, month, day);
+    DateTime end = _convertNecessarry(this.end, year, month, day);
+    DateTime current = DateTime(year, month ?? 1, day ?? 1);
+    if (current.isAtSameMomentAs(start) && current.isAtSameMomentAs(end)) {
+      return CalendarValueLookup.selected;
+    }
+    if (current.isAtSameMomentAs(start)) {
       return CalendarValueLookup.start;
     }
-    if (_isSameDay(end, date)) {
+    if (current.isAtSameMomentAs(end)) {
       return CalendarValueLookup.end;
     }
-    if (_isInRange(date, start, end)) {
+    if (current.isAfter(start) && current.isBefore(end)) {
       return CalendarValueLookup.inRange;
     }
     return CalendarValueLookup.none;
   }
+
+  @override
+  CalendarView get view => start.toCalendarView();
 
   @override
   String toString() {
@@ -311,12 +542,18 @@ class MultiCalendarValue extends CalendarValue {
   MultiCalendarValue(this.dates);
 
   @override
-  CalendarValueLookup lookup(DateTime date) {
-    if (dates.any((d) => _isSameDay(d, date))) {
+  CalendarValueLookup lookup(int year, [int? month, int? day]) {
+    DateTime current = DateTime(year, month ?? 1, day ?? 1);
+    if (dates.any((element) => _convertNecessarry(element, year, month, day)
+        .isAtSameMomentAs(current))) {
       return CalendarValueLookup.selected;
     }
     return CalendarValueLookup.none;
   }
+
+  @override
+  CalendarView get view =>
+      dates.firstOrNull?.toCalendarView() ?? CalendarView.now();
 
   @override
   String toString() {
@@ -383,6 +620,14 @@ class CalendarView {
       return CalendarView(year - 1, 12);
     }
     return CalendarView(year, month - 1);
+  }
+
+  CalendarView get nextYear {
+    return CalendarView(year + 1, month);
+  }
+
+  CalendarView get previousYear {
+    return CalendarView(year - 1, month);
   }
 
   @override
@@ -457,7 +702,7 @@ class Calendar extends StatelessWidget {
     }
     if (selectionMode == CalendarSelectionMode.single) {
       if (calendarValue is SingleCalendarValue &&
-          _isSameDay(date, calendarValue.date)) {
+          date.isAtSameMomentAs(calendarValue.date)) {
         onChanged?.call(null);
         return;
       }
@@ -469,7 +714,7 @@ class Calendar extends StatelessWidget {
         onChanged?.call(CalendarValue.single(date));
         return;
       }
-      final lookup = calendarValue.lookup(date);
+      final lookup = calendarValue.lookup(date.year, date.month, date.day);
       if (lookup == CalendarValueLookup.none) {
         var multi = calendarValue.toMulti();
         (multi).dates.add(date);
@@ -496,7 +741,7 @@ class Calendar extends StatelessWidget {
       }
       if (calendarValue is SingleCalendarValue) {
         DateTime selectedDate = calendarValue.date;
-        if (_isSameDay(date, selectedDate)) {
+        if (date.isAtSameMomentAs(selectedDate)) {
           onChanged?.call(null);
           return;
         }
@@ -514,11 +759,11 @@ class Calendar extends StatelessWidget {
           onChanged?.call(CalendarValue.range(start, date));
           return;
         }
-        if (_isSameDay(date, start)) {
+        if (date.isAtSameMomentAs(start)) {
           onChanged?.call(null);
           return;
         }
-        if (_isSameDay(date, end)) {
+        if (date.isAtSameMomentAs(end)) {
           onChanged?.call(CalendarValue.single(end));
           return;
         }
@@ -568,99 +813,96 @@ class Calendar extends StatelessWidget {
       int previousMonthDay = daysInMonth - (weekDayStart - i);
       var dateTime = DateTime(view.year, view.month - 1, previousMonthDay);
       int indexAtRow = i - 1;
-      _DateItemType type = _DateItemType.none;
+      CalendarItemType type = CalendarItemType.none;
       if (calendarValue != null) {
-        final lookup = calendarValue.lookup(dateTime);
+        final lookup =
+            calendarValue.lookup(dateTime.year, dateTime.month, dateTime.day);
         switch (lookup) {
           case CalendarValueLookup.none:
-            if (now != null && _isSameDay(now!, dateTime)) {
-              type = _DateItemType.today;
+            if (now != null && now!.isAtSameMomentAs(dateTime)) {
+              type = CalendarItemType.today;
             }
             break;
           case CalendarValueLookup.selected:
-            type = _DateItemType.selected;
+            type = CalendarItemType.selected;
             break;
           case CalendarValueLookup.start:
-            type = _DateItemType.startRange;
+            type = CalendarItemType.startRange;
             break;
           case CalendarValueLookup.end:
-            type = _DateItemType.endRange;
+            type = CalendarItemType.endRange;
             break;
           case CalendarValueLookup.inRange:
-            type = _DateItemType.inRange;
+            type = CalendarItemType.inRange;
             break;
         }
       } else {
-        if (now != null && _isSameDay(now!, dateTime)) {
-          type = _DateItemType.today;
+        if (now != null && now!.isAtSameMomentAs(dateTime)) {
+          type = CalendarItemType.today;
         }
       }
-      days.add(Hero(
-        tag: _HeroDateTime(dateTime),
-        child: dateBuilder?.call(
-              context,
-              dateTime,
-            ) ??
-            Opacity(
-              opacity: 0.5,
-              child: _DateItem(
-                key: ValueKey(dateTime),
-                day: previousMonthDay,
-                type: type,
-                indexAtRow: indexAtRow,
-                onTap: () {
-                  _handleTap(dateTime);
-                },
-              ),
+      days.add(dateBuilder?.call(
+            context,
+            dateTime,
+          ) ??
+          Opacity(
+            opacity: 0.5,
+            child: CalendarItem(
+              key: ValueKey(dateTime),
+              type: type,
+              indexAtRow: indexAtRow,
+              rowCount: 7,
+              onTap: () {
+                _handleTap(dateTime);
+              },
+              child: Text('$previousMonthDay'),
             ),
-      ));
+          ));
     }
     // then the days of the month
     for (int i = 1; i <= daysInMonth; i++) {
       DateTime date = DateTime(view.year, view.month, i);
-      _DateItemType type = _DateItemType.none;
+      CalendarItemType type = CalendarItemType.none;
       int indexAtRow = (weekDayStart + i - 2) % 7;
       if (calendarValue != null) {
-        final lookup = calendarValue.lookup(date);
+        final lookup = calendarValue.lookup(date.year, date.month, date.day);
         switch (lookup) {
           case CalendarValueLookup.none:
-            if (now != null && _isSameDay(now!, date)) {
-              type = _DateItemType.today;
+            if (now != null && now!.isAtSameMomentAs(date)) {
+              type = CalendarItemType.today;
             }
             break;
           case CalendarValueLookup.selected:
-            type = _DateItemType.selected;
+            type = CalendarItemType.selected;
             break;
           case CalendarValueLookup.start:
-            type = _DateItemType.startRangeSelected;
+            type = CalendarItemType.startRangeSelected;
             break;
           case CalendarValueLookup.end:
-            type = _DateItemType.endRangeSelected;
+            type = CalendarItemType.endRangeSelected;
             break;
           case CalendarValueLookup.inRange:
-            type = _DateItemType.inRange;
+            type = CalendarItemType.inRange;
             break;
         }
       } else {
-        if (now != null && _isSameDay(now!, date)) {
-          type = _DateItemType.today;
+        if (now != null && now!.isAtSameMomentAs(date)) {
+          type = CalendarItemType.today;
         }
       }
-      days.add(Hero(
-        tag: _HeroDateTime(date),
-        child: dateBuilder?.call(context, date) ??
-            _DateItem(
-              key: ValueKey(date),
-              day: i,
-              type: type,
-              indexAtRow: indexAtRow,
-              onTap: () {
-                if (isDateEnabled?.call(date) ?? true) {
-                  _handleTap(date);
-                }
-              },
-            ),
-      ));
+      days.add(dateBuilder?.call(context, date) ??
+          CalendarItem(
+            key: ValueKey(date),
+            type: type,
+            indexAtRow: indexAtRow,
+            rowCount: 7,
+            onTap: () {
+              if (isDateEnabled?.call(date) ?? true) {
+                _handleTap(date);
+              }
+            },
+            child: Text('$i'),
+          ));
     }
     // actual needed rows
     int neededRows = (days.length / 7).ceil();
@@ -671,47 +913,47 @@ class Calendar extends StatelessWidget {
       int nextMonthDay = i - length + 1;
       var dateTime = DateTime(view.year, view.month + 1, nextMonthDay);
       int indexAtRow = i % 7;
-      _DateItemType type = _DateItemType.none;
+      CalendarItemType type = CalendarItemType.none;
       if (calendarValue != null) {
-        final lookup = calendarValue.lookup(dateTime);
+        final lookup =
+            calendarValue.lookup(dateTime.year, dateTime.month, dateTime.day);
         switch (lookup) {
           case CalendarValueLookup.none:
-            if (now != null && _isSameDay(now!, dateTime)) {
-              type = _DateItemType.today;
+            if (now != null && now!.isAtSameMomentAs(dateTime)) {
+              type = CalendarItemType.today;
             }
             break;
           case CalendarValueLookup.selected:
-            type = _DateItemType.selected;
+            type = CalendarItemType.selected;
             break;
           case CalendarValueLookup.start:
-            type = _DateItemType.startRange;
+            type = CalendarItemType.startRange;
             break;
           case CalendarValueLookup.end:
-            type = _DateItemType.endRange;
+            type = CalendarItemType.endRange;
             break;
           case CalendarValueLookup.inRange:
-            type = _DateItemType.inRange;
+            type = CalendarItemType.inRange;
             break;
         }
       } else {
-        if (now != null && _isSameDay(now!, dateTime)) {
-          type = _DateItemType.today;
+        if (now != null && now!.isAtSameMomentAs(dateTime)) {
+          type = CalendarItemType.today;
         }
       }
-      days.add(Hero(
-          tag: _HeroDateTime(dateTime),
-          child: dateBuilder?.call(context, dateTime) ??
-              Opacity(
-                opacity: 0.5,
-                child: _DateItem(
-                  day: nextMonthDay,
-                  type: type,
-                  indexAtRow: indexAtRow,
-                  onTap: () {
-                    _handleTap(dateTime);
-                  },
-                ),
-              )));
+      days.add(dateBuilder?.call(context, dateTime) ??
+          Opacity(
+            opacity: 0.5,
+            child: CalendarItem(
+              type: type,
+              indexAtRow: indexAtRow,
+              rowCount: 7,
+              onTap: () {
+                _handleTap(dateTime);
+              },
+              child: Text('$nextMonthDay'),
+            ),
+          ));
     }
     // split the days into rows
     for (int i = 0; i < days.length; i += 7) {
@@ -729,33 +971,164 @@ class Calendar extends StatelessWidget {
   }
 }
 
-class _HeroDateTime {
-  final DateTime date;
+class MonthCalendar extends StatelessWidget {
+  final CalendarView value;
+  final ValueChanged<CalendarView> onChanged;
+  final DateTime? now;
+  final CalendarValue? calendarValue;
 
-  _HeroDateTime(this.date);
+  const MonthCalendar({
+    super.key,
+    required this.value,
+    required this.onChanged,
+    this.now,
+    this.calendarValue,
+  });
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is _HeroDateTime && _isSameDay(other.date, date);
+  Widget build(BuildContext context) {
+    // same as Calendar, but instead of showing date
+    // it shows month in a 4x3 grid
+    ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
+    List<Widget> rows = [];
+    List<Widget> months = [];
+    for (int i = 1; i <= 12; i++) {
+      DateTime date = DateTime(value.year, i);
+      CalendarItemType type = CalendarItemType.none;
+      if (calendarValue != null) {
+        final lookup = calendarValue!.lookup(date.year, date.month);
+        switch (lookup) {
+          case CalendarValueLookup.none:
+            if (now != null &&
+                DateTime(now!.year, now!.month).isAtSameMomentAs(date)) {
+              type = CalendarItemType.today;
+            }
+            break;
+          case CalendarValueLookup.selected:
+            type = CalendarItemType.selected;
+            break;
+          case CalendarValueLookup.start:
+            type = CalendarItemType.startRangeSelected;
+            break;
+          case CalendarValueLookup.end:
+            type = CalendarItemType.endRangeSelected;
+            break;
+          case CalendarValueLookup.inRange:
+            type = CalendarItemType.inRange;
+            break;
+        }
+      } else {
+        if (now != null &&
+            DateTime(now!.year, now!.month).isAtSameMomentAs(date)) {
+          type = CalendarItemType.today;
+        }
+      }
+      months.add(
+        CalendarItem(
+          key: ValueKey(date),
+          type: type,
+          indexAtRow: (i - 1) % 4,
+          rowCount: 4,
+          onTap: () {
+            onChanged(value.copyWith(month: i));
+          },
+          width: 56,
+          child: Text(localizations.getAbbreviatedMonth(i)),
+        ),
+      );
+    }
+    for (int i = 0; i < months.length; i += 4) {
+      rows.add(const Gap(8));
+      rows.add(Row(
+        children: months.sublist(i, i + 4),
+      ));
+    }
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: rows,
+    );
   }
+}
+
+class YearCalendar extends StatelessWidget {
+  final int yearSelectStart;
+  final int value;
+  final ValueChanged<int> onChanged;
+  final DateTime? now;
+  final CalendarValue? calendarValue;
+
+  const YearCalendar({
+    super.key,
+    required this.yearSelectStart,
+    required this.value,
+    required this.onChanged,
+    this.now,
+    this.calendarValue,
+  });
 
   @override
-  int get hashCode {
-    return date.year ^ date.month ^ date.day;
+  Widget build(BuildContext context) {
+    // same as Calendar, but instead of showing date
+    // it shows year in a 4x4 grid
+    List<Widget> rows = [];
+    List<Widget> years = [];
+    for (int i = yearSelectStart; i < yearSelectStart + 16; i++) {
+      DateTime date = DateTime(i);
+      CalendarItemType type = CalendarItemType.none;
+      if (calendarValue != null) {
+        final lookup = calendarValue!.lookup(date.year);
+        switch (lookup) {
+          case CalendarValueLookup.none:
+            if (now != null && now!.year == date.year) {
+              type = CalendarItemType.today;
+            }
+            break;
+          case CalendarValueLookup.selected:
+            type = CalendarItemType.selected;
+            break;
+          case CalendarValueLookup.start:
+            type = CalendarItemType.startRangeSelected;
+            break;
+          case CalendarValueLookup.end:
+            type = CalendarItemType.endRangeSelected;
+            break;
+          case CalendarValueLookup.inRange:
+            type = CalendarItemType.inRange;
+            break;
+        }
+      } else {
+        if (now != null && now!.year == date.year) {
+          type = CalendarItemType.today;
+        }
+      }
+      years.add(
+        CalendarItem(
+          key: ValueKey(date),
+          type: type,
+          indexAtRow: (i - yearSelectStart) % 4,
+          rowCount: 4,
+          onTap: () {
+            onChanged(i);
+          },
+          width: 56,
+          child: Text('$i'),
+        ),
+      );
+    }
+    for (int i = 0; i < years.length; i += 4) {
+      rows.add(const Gap(8));
+      rows.add(Row(
+        children: years.sublist(i, i + 4),
+      ));
+    }
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: rows,
+    );
   }
 }
 
-bool _isSameDay(DateTime a, DateTime b) {
-  return a.year == b.year && a.month == b.month && a.day == b.day;
-}
-
-bool _isInRange(DateTime date, DateTime start, DateTime end) {
-  return date.isAfter(start) && date.isBefore(end);
-}
-
-enum _DateItemType {
+enum CalendarItemType {
   none,
   today,
   selected,
@@ -770,67 +1143,67 @@ enum _DateItemType {
   inRangeSelectedShort,
 }
 
-class _DateItem extends StatelessWidget {
-  final int day;
-  final _DateItemType type;
+class CalendarItem extends StatelessWidget {
+  final Widget child;
+  final CalendarItemType type;
   final VoidCallback? onTap;
   final int indexAtRow;
+  final int rowCount;
+  final double? width;
+  final double? height;
 
-  const _DateItem({
+  const CalendarItem({
     super.key,
-    required this.day,
+    required this.child,
     required this.type,
     required this.indexAtRow,
+    required this.rowCount,
     this.onTap,
+    this.width,
+    this.height,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     switch (type) {
-      case _DateItemType.none:
+      case CalendarItemType.none:
         return SizedBox(
-          width: 32,
-          height: 32,
+          width: width ?? 32,
+          height: height ?? 32,
           child: GhostButton(
             density: ButtonDensity.compact,
             alignment: Alignment.center,
             onPressed: onTap,
-            child: Text(
-              '$day',
-            ),
+            child: child,
           ),
         );
-      case _DateItemType.today:
+      case CalendarItemType.today:
         return SizedBox(
-          width: 32,
-          height: 32,
+          width: width ?? 32,
+          height: height ?? 32,
           child: SecondaryButton(
             density: ButtonDensity.compact,
             alignment: Alignment.center,
             onPressed: onTap,
-            child: Text(
-              '$day',
-            ),
+            child: child,
           ),
         );
-      case _DateItemType.selected:
+      case CalendarItemType.selected:
         return SizedBox(
-          width: 32,
-          height: 32,
+          width: width ?? 32,
+          height: height ?? 32,
           child: PrimaryButton(
             density: ButtonDensity.compact,
             alignment: Alignment.center,
             onPressed: onTap,
-            child: Text(
-              '$day',
-            ),
+            child: child,
           ),
         );
-      case _DateItemType.inRange:
+      case CalendarItemType.inRange:
         return SizedBox(
-          width: 32,
-          height: 32,
+          width: width ?? 32,
+          height: height ?? 32,
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
@@ -845,7 +1218,7 @@ class _DateItem extends StatelessWidget {
                           topLeft: Radius.circular(theme.radiusMd),
                           bottomLeft: Radius.circular(theme.radiusMd),
                         )
-                      : indexAtRow == 6
+                      : indexAtRow == rowCount - 1
                           ? BorderRadius.only(
                               topRight: Radius.circular(theme.radiusMd),
                               bottomRight: Radius.circular(theme.radiusMd),
@@ -854,15 +1227,13 @@ class _DateItem extends StatelessWidget {
                 );
               },
             ),
-            child: Text(
-              '$day',
-            ),
+            child: child,
           ),
         );
-      case _DateItemType.startRange:
+      case CalendarItemType.startRange:
         return SizedBox(
-          width: 32,
-          height: 32,
+          width: width ?? 32,
+          height: height ?? 32,
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
@@ -879,23 +1250,16 @@ class _DateItem extends StatelessWidget {
                 );
               },
             ),
-            child: Text(
-              '$day',
-            ),
+            child: child,
           ),
         );
-      case _DateItemType.endRange:
+      case CalendarItemType.endRange:
         return SizedBox(
-          width: 32,
-          height: 32,
+          width: width ?? 32,
+          height: height ?? 32,
           child: Button(
-            // density: ButtonDensity.compact,
             alignment: Alignment.center,
             onPressed: onTap,
-            // borderRadius: BorderRadius.only(
-            //   topRight: Radius.circular(theme.radiusMd),
-            //   bottomRight: Radius.circular(theme.radiusMd),
-            // ),
             style: const ButtonStyle(
               variance: ButtonVariance.secondary,
               density: ButtonDensity.compact,
@@ -909,21 +1273,19 @@ class _DateItem extends StatelessWidget {
                 );
               },
             ),
-            child: Text(
-              '$day',
-            ),
+            child: child,
           ),
         );
-      case _DateItemType.startRangeSelected:
+      case CalendarItemType.startRangeSelected:
         return SizedBox(
-          width: 32,
-          height: 32,
+          width: width ?? 32,
+          height: height ?? 32,
           child: Stack(
             fit: StackFit.passthrough,
             children: [
               Container(
-                width: 32,
-                height: 32,
+                width: width ?? 32,
+                height: height ?? 32,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.secondary,
                   borderRadius: BorderRadius.only(
@@ -936,23 +1298,21 @@ class _DateItem extends StatelessWidget {
                 density: ButtonDensity.compact,
                 alignment: Alignment.center,
                 onPressed: onTap,
-                child: Text(
-                  '$day',
-                ),
+                child: child,
               ),
             ],
           ),
         );
-      case _DateItemType.endRangeSelected:
+      case CalendarItemType.endRangeSelected:
         return SizedBox(
-          width: 32,
-          height: 32,
+          width: width ?? 32,
+          height: height ?? 32,
           child: Stack(
             fit: StackFit.passthrough,
             children: [
               Container(
-                width: 32,
-                height: 32,
+                width: width ?? 32,
+                height: height ?? 32,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.secondary,
                   borderRadius: BorderRadius.only(
@@ -965,17 +1325,15 @@ class _DateItem extends StatelessWidget {
                 density: ButtonDensity.compact,
                 alignment: Alignment.center,
                 onPressed: onTap,
-                child: Text(
-                  '$day',
-                ),
+                child: child,
               ),
             ],
           ),
         );
-      case _DateItemType.startRangeSelectedShort:
+      case CalendarItemType.startRangeSelectedShort:
         return SizedBox(
-          width: 32,
-          height: 32,
+          width: width ?? 32,
+          height: height ?? 32,
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
@@ -992,15 +1350,13 @@ class _DateItem extends StatelessWidget {
                 );
               },
             ),
-            child: Text(
-              '$day',
-            ),
+            child: child,
           ),
         );
-      case _DateItemType.endRangeSelectedShort:
+      case CalendarItemType.endRangeSelectedShort:
         return SizedBox(
-          width: 32,
-          height: 32,
+          width: width ?? 32,
+          height: height ?? 32,
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
@@ -1017,15 +1373,13 @@ class _DateItem extends StatelessWidget {
                 );
               },
             ),
-            child: Text(
-              '$day',
-            ),
+            child: child,
           ),
         );
-      case _DateItemType.inRangeSelectedShort:
+      case CalendarItemType.inRangeSelectedShort:
         return SizedBox(
-          width: 32,
-          height: 32,
+          width: width ?? 32,
+          height: height ?? 32,
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
@@ -1039,9 +1393,7 @@ class _DateItem extends StatelessWidget {
                 );
               },
             ),
-            child: Text(
-              '$day',
-            ),
+            child: child,
           ),
         );
     }
