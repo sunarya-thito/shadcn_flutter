@@ -90,6 +90,7 @@ abstract class ShadcnLocalizations {
 
   String get commandSearch;
   String get commandEmpty;
+  String get datePickerSelectYear;
   String get abbreviatedMonday;
   String get abbreviatedTuesday;
   String get abbreviatedWednesday;
@@ -109,6 +110,18 @@ abstract class ShadcnLocalizations {
   String get monthOctober;
   String get monthNovember;
   String get monthDecember;
+  String get abbreviatedJanuary;
+  String get abbreviatedFebruary;
+  String get abbreviatedMarch;
+  String get abbreviatedApril;
+  String get abbreviatedMay;
+  String get abbreviatedJune;
+  String get abbreviatedJuly;
+  String get abbreviatedAugust;
+  String get abbreviatedSeptember;
+  String get abbreviatedOctober;
+  String get abbreviatedNovember;
+  String get abbreviatedDecember;
   String get buttonCancel;
   String get buttonOk;
   String get buttonClose;
@@ -187,6 +200,37 @@ abstract class ShadcnLocalizations {
         return monthNovember;
       case DateTime.december:
         return monthDecember;
+      default:
+        throw ArgumentError.value(month, 'month');
+    }
+  }
+
+  String getAbbreviatedMonth(int month) {
+    switch (month) {
+      case DateTime.january:
+        return abbreviatedJanuary;
+      case DateTime.february:
+        return abbreviatedFebruary;
+      case DateTime.march:
+        return abbreviatedMarch;
+      case DateTime.april:
+        return abbreviatedApril;
+      case DateTime.may:
+        return abbreviatedMay;
+      case DateTime.june:
+        return abbreviatedJune;
+      case DateTime.july:
+        return abbreviatedJuly;
+      case DateTime.august:
+        return abbreviatedAugust;
+      case DateTime.september:
+        return abbreviatedSeptember;
+      case DateTime.october:
+        return abbreviatedOctober;
+      case DateTime.november:
+        return abbreviatedNovember;
+      case DateTime.december:
+        return abbreviatedDecember;
       default:
         throw ArgumentError.value(month, 'month');
     }
@@ -535,4 +579,43 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get toastSnippetCopied => 'Copied to clipboard';
+
+  @override
+  String get datePickerSelectYear => 'Select a year';
+
+  @override
+  String get abbreviatedJanuary => 'Jan';
+
+  @override
+  String get abbreviatedFebruary => 'Feb';
+
+  @override
+  String get abbreviatedMarch => 'Mar';
+
+  @override
+  String get abbreviatedApril => 'Apr';
+
+  @override
+  String get abbreviatedMay => 'May';
+
+  @override
+  String get abbreviatedJune => 'Jun';
+
+  @override
+  String get abbreviatedJuly => 'Jul';
+
+  @override
+  String get abbreviatedAugust => 'Aug';
+
+  @override
+  String get abbreviatedSeptember => 'Sep';
+
+  @override
+  String get abbreviatedOctober => 'Oct';
+
+  @override
+  String get abbreviatedNovember => 'Nov';
+
+  @override
+  String get abbreviatedDecember => 'Dec';
 }
