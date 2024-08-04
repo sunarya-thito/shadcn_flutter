@@ -118,6 +118,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                         },
                         child:
                             Text(getHeaderText(localizations, _view, _viewType))
+                                .foreground()
                                 .small()
                                 .medium()
                                 .center(),
@@ -175,6 +176,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                           },
                           child: Text(getHeaderText(
                                   localizations, _alternateView, _viewType))
+                              .foreground()
                               .small()
                               .medium()
                               .center(),
@@ -292,6 +294,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                   }
                 },
                 child: Text(getHeaderText(localizations, _view, _viewType))
+                    .foreground()
                     .small()
                     .medium()
                     .center(),
