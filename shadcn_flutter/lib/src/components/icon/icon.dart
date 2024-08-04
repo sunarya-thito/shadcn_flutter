@@ -2,29 +2,42 @@ import '../../../shadcn_flutter.dart';
 
 extension IconExtension on Widget {
   Widget iconXSmall() {
-    return WrappedIcon(data: (context, theme) => theme.iconTheme.xSmall);
+    return WrappedIcon(
+        data: (context, theme) => theme.iconTheme.xSmall, child: this);
   }
 
   Widget iconSmall() {
-    return WrappedIcon(data: (context, theme) => theme.iconTheme.small);
+    return WrappedIcon(
+        data: (context, theme) => theme.iconTheme.small, child: this);
   }
 
   Widget iconMedium() {
-    return WrappedIcon(data: (context, theme) => theme.iconTheme.medium);
+    return WrappedIcon(
+        data: (context, theme) => theme.iconTheme.medium, child: this);
   }
 
   Widget iconLarge() {
-    return WrappedIcon(data: (context, theme) => theme.iconTheme.large);
+    return WrappedIcon(
+        data: (context, theme) => theme.iconTheme.large, child: this);
   }
 
   Widget iconXLarge() {
-    return WrappedIcon(data: (context, theme) => theme.iconTheme.xLarge);
+    return WrappedIcon(
+        data: (context, theme) => theme.iconTheme.xLarge, child: this);
   }
 
   Widget iconMuted() {
     return WrappedIcon(
         data: (context, theme) =>
-            IconThemeData(color: theme.colorScheme.mutedForeground));
+            IconThemeData(color: theme.colorScheme.mutedForeground),
+        child: this);
+  }
+
+  Widget iconDestructive() {
+    return WrappedIcon(
+        data: (context, theme) =>
+            IconThemeData(color: theme.colorScheme.destructiveForeground),
+        child: this);
   }
 }
 
@@ -33,10 +46,12 @@ typedef WrappedIconDataBuilder<T> = T Function(
 
 class WrappedIcon extends StatelessWidget {
   final WrappedIconDataBuilder<IconThemeData> data;
+  final Widget child;
 
   const WrappedIcon({
     Key? key,
     required this.data,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -45,7 +60,7 @@ class WrappedIcon extends StatelessWidget {
     final iconTheme = data(context, theme);
     return AnimatedIconTheme.merge(
       data: iconTheme,
-      child: const Icon(Icons.ac_unit),
+      child: child,
       duration: kDefaultDuration,
     );
   }
@@ -55,6 +70,7 @@ class WrappedIcon extends StatelessWidget {
   }) {
     return WrappedIcon(
       data: data ?? this.data,
+      child: child,
     );
   }
 }
