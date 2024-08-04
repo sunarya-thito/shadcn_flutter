@@ -386,7 +386,7 @@ class _CaptureAll extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget result = child;
     for (final data in data) {
-      var wrap = data.wrap(result);
+      var wrap = data.wrap(result, context);
       if (wrap == null) {
         continue;
       }
