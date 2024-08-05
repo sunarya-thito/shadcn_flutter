@@ -373,12 +373,22 @@ class _ContextMenuState extends State<ContextMenu> {
 
   @override
   Widget build(BuildContext context) {
+    final platform = Theme.of(context).platform;
+    final bool enableLongPress = platform == TargetPlatform.iOS ||
+        platform == TargetPlatform.android ||
+        platform == TargetPlatform.fuchsia;
     return GestureDetector(
       behavior: widget.behavior,
       onSecondaryTapDown: (details) {
         _showContextMenu(
             context, details.globalPosition, _children, widget.direction);
       },
+      onLongPressStart: enableLongPress
+          ? (details) {
+              _showContextMenu(
+                  context, details.globalPosition, _children, widget.direction);
+            }
+          : null,
       child: widget.child,
     );
   }
