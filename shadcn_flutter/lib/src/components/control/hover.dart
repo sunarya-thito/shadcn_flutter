@@ -131,9 +131,6 @@ class _HoverState extends State<Hover> with SingleTickerProviderStateMixin {
   void _onStatusChanged(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
       widget.onHover(true);
-      if (_longPress) {
-        _onExit(false);
-      }
     } else if (status == AnimationStatus.dismissed) {
       widget.onHover(false);
     }
@@ -147,17 +144,27 @@ class _HoverState extends State<Hover> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => _onEnter(),
-      onExit: (_) => _onExit(true),
-      child: TapRegion(
-        onTapOutside: (details) => _onExit(true),
+    final platform = Theme.of(context).platform;
+    bool enableLongPress = platform == TargetPlatform.iOS ||
+        platform == TargetPlatform.android ||
+        platform == TargetPlatform.fuchsia;
+    return TapRegion(
+      onTapOutside: (details) {
+        _onExit(true);
+      },
+      child: MouseRegion(
+        onEnter: (_) => _onEnter(),
+        onExit: (_) {
+          _onExit(true);
+        },
         child: GestureDetector(
           // for mobile platforms, hover is triggered by a long press
-          onLongPress: () {
-            _longPress = true;
-            _onEnter();
-          },
+          onLongPressDown: enableLongPress
+              ? (details) {
+                  _longPress = true;
+                  _onEnter();
+                }
+              : null,
           child: widget.child,
         ),
       ),
