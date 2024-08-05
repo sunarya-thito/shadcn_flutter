@@ -93,22 +93,11 @@ class _StarRatingState extends State<StarRating> with FormValueSupplier {
   Widget build(BuildContext context) {
     double roundedValue =
         ((_changingValue ?? widget.value) / widget.step).round() * widget.step;
-    double containerWidth = 0;
-    double containerHeight = 0;
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     var starSize = widget.starSize != null ? widget.starSize! : 24.0 * scaling;
     var starSpacing =
         widget.starSpacing != null ? widget.starSpacing! : 5.0 * scaling;
-    if (widget.direction == Axis.horizontal) {
-      containerWidth = widget.max * starSize +
-          ((widget.max.ceil() - 1) * starSpacing).max(0);
-      containerHeight = starSize;
-    } else {
-      containerWidth = starSize;
-      containerHeight = widget.max * starSize +
-          ((widget.max.ceil() - 1) * starSpacing).max(0);
-    }
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -123,46 +112,43 @@ class _StarRatingState extends State<StarRating> with FormValueSupplier {
             _changingValue = null;
           });
         },
-        child: SizedBox(
-          width: containerWidth,
-          height: containerHeight,
-          child: ClipRect(
-            child: Flex(
-              direction: widget.direction,
-              children: [
-                for (var i = 0; i < widget.max.ceil(); i++)
-                  MouseRegion(
-                    hitTestBehavior: HitTestBehavior.translucent,
-                    onHover: (event) {
-                      if (widget.onChanged == null) return;
-                      double progress =
-                          (event.localPosition.dx / starSize).clamp(0.0, 1.0);
-                      setState(() {
-                        _changingValue = (i + progress);
-                      });
+        child: ClipRect(
+          child: Flex(
+            direction: widget.direction,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var i = 0; i < widget.max.ceil(); i++)
+                MouseRegion(
+                  hitTestBehavior: HitTestBehavior.translucent,
+                  onHover: (event) {
+                    if (widget.onChanged == null) return;
+                    double progress =
+                        (event.localPosition.dx / starSize).clamp(0.0, 1.0);
+                    setState(() {
+                      _changingValue = (i + progress);
+                    });
+                  },
+                  child: ShaderMask(
+                    shaderCallback: (bounds) {
+                      return LinearGradient(
+                        colors: [
+                          widget.activeColor ??
+                              Theme.of(context).colorScheme.primary,
+                          widget.backgroundColor ??
+                              Theme.of(context).colorScheme.muted,
+                        ],
+                        stops: [
+                          (roundedValue - i).clamp(0.0, 1.0),
+                          (roundedValue - i).clamp(0.0, 1.0),
+                        ],
+                      ).createShader(bounds);
                     },
-                    child: ShaderMask(
-                      shaderCallback: (bounds) {
-                        return LinearGradient(
-                          colors: [
-                            widget.activeColor ??
-                                Theme.of(context).colorScheme.primary,
-                            widget.backgroundColor ??
-                                Theme.of(context).colorScheme.muted,
-                          ],
-                          stops: [
-                            (roundedValue - i).clamp(0.0, 1.0),
-                            (roundedValue - i).clamp(0.0, 1.0),
-                          ],
-                        ).createShader(bounds);
-                      },
-                      blendMode: BlendMode.srcIn,
-                      child: _buildStar(context),
-                    ),
+                    blendMode: BlendMode.srcIn,
+                    child: _buildStar(context),
                   ),
-              ],
-            ).gap(starSpacing),
-          ),
+                ),
+            ],
+          ).gap(starSpacing),
         ),
       ),
     );
