@@ -153,7 +153,7 @@ class _ThemePageState extends State<ThemePage> {
             children: [
               Expanded(
                   child: Text(
-                      'Scale entire app without changing the app layout.')),
+                      'You can customize the scale of shadcn_flutter components by changing the scaling.')),
             ],
           ).p(),
           Slider(
@@ -170,7 +170,12 @@ class _ThemePageState extends State<ThemePage> {
             max: 1.5,
             divisions: 20,
           ).p(),
-
+          Gap(16),
+          Alert(
+            leading: Icon(RadixIcons.infoCircled),
+            content: Text(
+                'This does not scale the entire app. Only shadcn_flutter components are affected.'),
+          ),
           const Text('Code').h2().anchored(codeKey),
           const Text('Use the following code to apply the color scheme.').p(),
           CodeSnippet(
