@@ -20,7 +20,6 @@ class DatePickerDialog extends StatefulWidget {
   final CalendarSelectionMode selectionMode;
   final CalendarValue? initialValue;
   final ValueChanged<CalendarValue?>? onChanged;
-  final bool Function(DateTime date)? isDateEnabled;
   final DateStateBuilder? stateBuilder;
 
   const DatePickerDialog({
@@ -30,7 +29,6 @@ class DatePickerDialog extends StatefulWidget {
     required this.selectionMode,
     this.initialValue,
     this.onChanged,
-    this.isDateEnabled,
     this.stateBuilder,
   });
 
@@ -897,17 +895,16 @@ class Calendar extends StatelessWidget {
           type = CalendarItemType.today;
         }
       }
+      var state = stateBuilder?.call(date) ?? DateState.enabled;
       days.add(CalendarItem(
         key: ValueKey(date),
         type: type,
         indexAtRow: indexAtRow,
         rowCount: 7,
         onTap: () {
-          if (isDateEnabled?.call(date) ?? true) {
-            _handleTap(date);
-          }
+          _handleTap(date);
         },
-        state: stateBuilder?.call(date) ?? DateState.enabled,
+        state: state,
         child: Text('$i'),
       ));
     }

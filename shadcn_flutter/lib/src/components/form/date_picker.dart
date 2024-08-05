@@ -6,7 +6,6 @@ class DatePicker extends StatelessWidget {
   final Widget? placeholder;
   final PromptMode mode;
   final CalendarView? initialView;
-  final bool Function(DateTime date)? isDateEnabled;
   final Alignment? popoverAlignment;
   final Alignment? popoverAnchorAlignment;
   final EdgeInsets? popoverPadding;
@@ -21,7 +20,6 @@ class DatePicker extends StatelessWidget {
     this.placeholder,
     this.mode = PromptMode.dialog,
     this.initialView,
-    this.isDateEnabled,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
@@ -56,7 +54,6 @@ class DatePicker extends StatelessWidget {
             onChanged(
                 value == null ? null : (value as SingleCalendarValue).date);
           },
-          isDateEnabled: isDateEnabled,
           stateBuilder: stateBuilder,
         );
       },
@@ -102,7 +99,6 @@ class DateRangePicker extends StatelessWidget {
   final PromptMode mode;
   final CalendarView? initialView;
   final CalendarViewType? initialViewType;
-  final bool Function(DateTime date)? isDateEnabled;
   final Alignment? popoverAlignment;
   final Alignment? popoverAnchorAlignment;
   final EdgeInsets? popoverPadding;
@@ -116,7 +112,6 @@ class DateRangePicker extends StatelessWidget {
     this.placeholder,
     this.mode = PromptMode.dialog,
     this.initialView,
-    this.isDateEnabled,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
@@ -158,7 +153,6 @@ class DateRangePicker extends StatelessWidget {
               onChanged(DateTimeRange(range.start, range.end));
             }
           },
-          isDateEnabled: isDateEnabled,
           stateBuilder: stateBuilder,
         );
       },

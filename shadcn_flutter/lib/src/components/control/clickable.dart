@@ -125,33 +125,10 @@ class _ClickableState extends State<Clickable> {
   }
 
   void _onPressed() {
+    if (!widget.enabled) return;
     Duration? deltaTap =
         _lastTap == null ? null : DateTime.now().difference(_lastTap!);
     _lastTap = DateTime.now();
-    // if (widget.onPressed != null) {
-    //   // Regardless of the tapCount, onPressed should be called
-    //   // every time the widget is tapped whether it is from
-    //   // mouse, keyboard, or touch.
-    //   // Original implementation from flutter
-    //   // would dismiss the onTap in favor of onDoubleTap,
-    //   // but this would also make a slight delay in the feedback.
-    //   widget.onPressed!();
-    //   if (widget.enableFeedback) {
-    //     feedbackForTap(context);
-    //   }
-    // }
-    // if (widget.onDoubleTap != null) {
-    //   if (deltaTap != null && deltaTap < kDoubleTapMinTime) {
-    //     _tapCount++;
-    //     if (_tapCount == 2) {
-    //       widget.onDoubleTap!();
-    //       _tapCount = 0;
-    //     }
-    //   } else {
-    //     _tapCount = 1;
-    //   }
-    // }
-
     if (deltaTap != null && deltaTap < kDoubleTapMinTime) {
       _tapCount++;
     } else {
