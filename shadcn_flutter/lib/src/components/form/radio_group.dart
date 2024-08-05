@@ -30,7 +30,8 @@ class Radio extends StatelessWidget {
             color: theme.colorScheme.primary,
           ),
         ),
-        child: value ? const Icon(Icons.check).xSmall().iconPrimary() : null,
+        child:
+            value ? const Icon(Icons.check).iconXSmall().iconPrimary() : null,
       ),
     );
   }
