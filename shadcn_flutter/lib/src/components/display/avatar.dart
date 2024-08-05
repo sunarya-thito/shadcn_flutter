@@ -105,8 +105,10 @@ class _AvatarState extends State<Avatar> {
           padding: EdgeInsets.all(theme.scaling * 8),
           child: mergeAnimatedTextStyle(
             duration: kDefaultDuration,
-            child: Text(
-              widget.initials,
+            child: Center(
+              child: Text(
+                widget.initials,
+              ),
             ),
             style: TextStyle(
               color: theme.colorScheme.foreground,
@@ -169,7 +171,8 @@ class AvatarBadge extends StatelessWidget implements AvatarWidget {
       height: size,
       decoration: BoxDecoration(
         color: color ?? Theme.of(context).colorScheme.primary,
-        shape: BoxShape.circle,
+        borderRadius:
+            BorderRadius.circular(borderRadius ?? theme.radius * size),
       ),
       child: child,
     );
@@ -216,8 +219,8 @@ class AvatarGroup extends StatelessWidget {
     return AvatarGroup(
       key: key,
       fractionalOffset: Offset(offset, 0),
-      children: children,
       gap: gap,
+      children: children,
     );
   }
 
@@ -387,17 +390,28 @@ class AvatarGroupClipper extends CustomClipper<Path> {
     Path path = Path();
     path.fillType = PathFillType.evenOdd;
     path.addRect(Rect.fromLTWH(0, 0, size.width, size.height));
-    path.addRRect(
-      RRect.fromRectAndRadius(
+    if (borderRadius > 0) {
+      path.addRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(
+            left - gap,
+            top - gap,
+            prevAvatarSize + gap * 2,
+            prevAvatarSize + gap * 2,
+          ),
+          Radius.circular(borderRadius + gap),
+        ),
+      );
+    } else {
+      path.addRect(
         Rect.fromLTWH(
           left - gap,
           top - gap,
           prevAvatarSize + gap * 2,
           prevAvatarSize + gap * 2,
         ),
-        Radius.circular(borderRadius + gap),
-      ),
-    );
+      );
+    }
     return path;
   }
 
