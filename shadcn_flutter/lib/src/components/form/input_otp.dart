@@ -22,11 +22,15 @@ abstract class InputOTPChild {
     CodepointPredicate? predicate,
     CodepointUnaryOperator? transform,
     bool obscured = false,
+    bool readOnly = false,
+    TextInputType? keyboardType,
   }) =>
       CharacterInputOTPChild(
         predicate: predicate,
         transform: transform,
         obscured: obscured,
+        readOnly: readOnly,
+        keyboardType: keyboardType,
       );
   factory InputOTPChild.character({
     bool allowLowercaseAlphabet = false,
@@ -35,9 +39,18 @@ abstract class InputOTPChild {
     bool obscured = false,
     bool onlyUppercaseAlphabet = false,
     bool onlyLowercaseAlphabet = false,
+    bool readOnly = false,
+    TextInputType? keyboardType,
   }) {
     assert(!(onlyUppercaseAlphabet && onlyLowercaseAlphabet),
         'onlyUppercaseAlphabet and onlyLowercaseAlphabet cannot be true at the same time');
+    keyboardType ??= allowDigit &&
+            !allowLowercaseAlphabet &&
+            !allowUppercaseAlphabet &&
+            !onlyUppercaseAlphabet &&
+            !onlyLowercaseAlphabet
+        ? TextInputType.number
+        : TextInputType.text;
     return CharacterInputOTPChild(
       predicate: (codepoint) {
         if (allowLowercaseAlphabet &&
@@ -62,7 +75,9 @@ abstract class InputOTPChild {
         }
         return codepoint;
       },
+      keyboardType: keyboardType,
       obscured: obscured,
+      readOnly: readOnly,
     );
   }
   const InputOTPChild();
@@ -95,11 +110,15 @@ class CharacterInputOTPChild extends InputOTPChild {
   final CodepointPredicate? predicate;
   final CodepointUnaryOperator? transform;
   final bool obscured;
+  final bool readOnly;
+  final TextInputType? keyboardType;
 
   const CharacterInputOTPChild({
     this.predicate,
     this.transform,
     this.obscured = false,
+    this.readOnly = false,
+    this.keyboardType,
   });
 
   @override
@@ -115,6 +134,8 @@ class CharacterInputOTPChild extends InputOTPChild {
       predicate: predicate,
       transform: transform,
       obscured: obscured,
+      readOnly: readOnly,
+      keyboardType: keyboardType,
     );
   }
 }
@@ -124,6 +145,8 @@ class _OTPCharacterInput extends StatefulWidget {
   final CodepointPredicate? predicate;
   final CodepointUnaryOperator? transform;
   final bool obscured;
+  final bool readOnly;
+  final TextInputType? keyboardType;
 
   const _OTPCharacterInput({
     super.key,
@@ -131,6 +154,8 @@ class _OTPCharacterInput extends StatefulWidget {
     this.predicate,
     this.transform,
     this.obscured = false,
+    this.readOnly = false,
+    this.keyboardType,
   });
 
   @override
@@ -225,6 +250,7 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
   }
 
   final FocusScopeNode _focusScopeNode = FocusScopeNode();
+  final GlobalKey _key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -248,15 +274,9 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
           // backspace
           if (event.logicalKey == LogicalKeyboardKey.backspace) {
             if (_value != null) {
-              // widget.data.focusNode!.requestFocus();
-              // SEE ISSUE: https://github.com/flutter/flutter/issues/95553
               widget.data.changeValue(null);
               _value = null;
               setState(() {});
-              widget.data.focusNode!.unfocus();
-              Future.delayed(const Duration(milliseconds: 5), () {
-                widget.data.focusNode!.requestFocus();
-              });
             } else {
               if (widget.data.previousFocusNode != null) {
                 widget.data.previousFocusNode!.requestFocus();
@@ -322,13 +342,21 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
                 ),
               ),
             Positioned.fill(
-              child: Opacity(
-                opacity: _value == null ? 1 : 0,
-                child: TextField(
-                  border: false,
-                  textAlign: TextAlign.center,
-                  focusNode: widget.data.focusNode,
-                  controller: _controller,
+              key: _key,
+              child: Center(
+                child: Opacity(
+                  opacity: _value == null ? 1 : 0,
+                  child: TextField(
+                    border: false,
+                    isCollapsed: true,
+                    expands: true,
+                    keyboardType: widget.keyboardType,
+                    readOnly: widget.readOnly,
+                    textAlign: TextAlign.center,
+                    focusNode: widget.data.focusNode,
+                    controller: _controller,
+                    padding: EdgeInsets.zero,
+                  ),
                 ),
               ),
             ),
