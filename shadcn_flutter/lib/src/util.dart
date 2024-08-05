@@ -1,13 +1,46 @@
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
-import 'package:gap/gap.dart';
+import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 const kDefaultDuration = Duration(milliseconds: 150);
 
 typedef ContextedCallback = void Function(BuildContext context);
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
+
+class CapturedWrapper extends StatefulWidget {
+  final CapturedThemes? themes;
+  final CapturedData? data;
+  final Widget child;
+
+  const CapturedWrapper({
+    Key? key,
+    this.themes,
+    this.data,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  State<CapturedWrapper> createState() => _CapturedWrapperState();
+}
+
+class _CapturedWrapperState extends State<CapturedWrapper> {
+  final GlobalKey _key = GlobalKey();
+  @override
+  Widget build(BuildContext context) {
+    Widget child = KeyedSubtree(
+      key: _key,
+      child: widget.child,
+    );
+    if (widget.themes != null) {
+      child = widget.themes!.wrap(child);
+    }
+    if (widget.data != null) {
+      child = widget.data!.wrap(child);
+    }
+    return child;
+  }
+}
 
 T tweenValue<T>(T begin, T end, double t) {
   dynamic beginValue = begin;

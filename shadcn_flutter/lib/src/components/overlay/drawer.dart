@@ -657,7 +657,7 @@ Future<T?> openRawDrawer<T>({
 }
 
 class _OverlaidEntryData {
-  final _OverlaidEntryState state;
+  final _DrawerOverlaidEntryState state;
 
   _OverlaidEntryData(this.state);
 }
@@ -743,7 +743,7 @@ class _DrawerOverlayState extends State<DrawerOverlay> {
     );
     int index = 0;
     for (final entry in _entries) {
-      child = OverlaidEntry(
+      child = DrawerOverlaidEntry(
         key: entry.key, // to make the overlay state persistent
         builder: entry.builder,
         backdrop: child,
@@ -765,7 +765,7 @@ class _DrawerOverlayState extends State<DrawerOverlay> {
   }
 }
 
-class OverlaidEntry<T> extends StatefulWidget {
+class DrawerOverlaidEntry<T> extends StatefulWidget {
   final DrawerBuilder builder;
   final Widget backdrop;
   final BackdropBuilder backdropBuilder;
@@ -778,7 +778,7 @@ class OverlaidEntry<T> extends StatefulWidget {
   final int stackIndex;
   final int totalStack;
 
-  const OverlaidEntry({
+  const DrawerOverlaidEntry({
     super.key,
     required this.builder,
     required this.backdrop,
@@ -794,10 +794,10 @@ class OverlaidEntry<T> extends StatefulWidget {
   });
 
   @override
-  State<OverlaidEntry<T>> createState() => _OverlaidEntryState<T>();
+  State<DrawerOverlaidEntry<T>> createState() => _DrawerOverlaidEntryState<T>();
 }
 
-class _OverlaidEntryState<T> extends State<OverlaidEntry<T>>
+class _DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
     with SingleTickerProviderStateMixin {
   late ValueNotifier<double> additionalOffset = ValueNotifier(0);
   late AnimationController _controller;
@@ -847,87 +847,86 @@ class _OverlaidEntryState<T> extends State<OverlaidEntry<T>>
         startFractionalOffset = const Offset(0, 1);
         break;
     }
-    return Data(
-      data: _OverlaidEntryData(this),
-      child: LayoutBuilder(builder: (context, constraints) {
-        Widget barrier = (widget.modal
-                ? widget.barrierBuilder(context, widget.backdrop,
-                    _controlledAnimation, widget.stackIndex)
-                : null) ??
-            Positioned(
-              top: -9999,
-              left: -9999,
-              right: -9999,
-              bottom: -9999,
-              child: GestureDetector(
-                onTap: () {
-                  close();
-                },
-              ),
-            );
-        final extraSize =
-            Data.maybeOf<BackdropTransformData>(context)?.sizeDifference;
-        Size additionalSize;
-        Offset additionalOffset;
-        if (extraSize == null) {
-          additionalSize = Size.zero;
-          additionalOffset = Offset.zero;
-        } else {
-          switch (widget.position) {
-            case OverlayPosition.left:
-              additionalSize = Size(extraSize.width / 2, 0);
-              additionalOffset = Offset(-additionalSize.width, 0);
-              break;
-            case OverlayPosition.right:
-              additionalSize = Size(extraSize.width / 2, 0);
-              additionalOffset = Offset(additionalSize.width, 0);
-              break;
-            case OverlayPosition.top:
-              additionalSize = Size(0, extraSize.height / 2);
-              additionalOffset = Offset(0, -additionalSize.height);
-              break;
-            case OverlayPosition.bottom:
-              additionalSize = Size(0, extraSize.height / 2);
-              additionalOffset = Offset(0, additionalSize.height);
-              break;
-          }
-        }
-        Widget childWidget = Align(
-          alignment: alignment,
-          child: AnimatedBuilder(
-            animation: _controlledAnimation,
-            builder: (context, child) {
-              return FractionalTranslation(
-                translation:
-                    startFractionalOffset * (1 - _controlledAnimation.value),
-                child: child,
+    return CapturedWrapper(
+      themes: widget.themes,
+      data: widget.data,
+      child: Data(
+        data: _OverlaidEntryData(this),
+        child: LayoutBuilder(builder: (context, constraints) {
+          Widget barrier = (widget.modal
+                  ? widget.barrierBuilder(context, widget.backdrop,
+                      _controlledAnimation, widget.stackIndex)
+                  : null) ??
+              Positioned(
+                top: -9999,
+                left: -9999,
+                right: -9999,
+                bottom: -9999,
+                child: GestureDetector(
+                  onTap: () {
+                    close();
+                  },
+                ),
               );
-            },
-            child: Transform.translate(
-              offset: additionalOffset / kBackdropScaleDown,
-              child:
-                  widget.builder(context, additionalSize, constraints.biggest),
-            ),
-          ),
-        );
-        if (widget.data != null) {
-          childWidget = widget.data!.wrap(childWidget);
-        }
-        if (widget.themes != null) {
-          childWidget = widget.themes!.wrap(childWidget);
-        }
-        return Stack(
-          clipBehavior: Clip.none,
-          children: [
-            widget.backdropBuilder(context, widget.backdrop,
-                _controlledAnimation, widget.stackIndex),
-            barrier,
-            Positioned.fill(
-              child: childWidget,
-            ),
-          ],
-        );
-      }),
+          final extraSize =
+              Data.maybeOf<BackdropTransformData>(context)?.sizeDifference;
+          Size additionalSize;
+          Offset additionalOffset;
+          if (extraSize == null) {
+            additionalSize = Size.zero;
+            additionalOffset = Offset.zero;
+          } else {
+            switch (widget.position) {
+              case OverlayPosition.left:
+                additionalSize = Size(extraSize.width / 2, 0);
+                additionalOffset = Offset(-additionalSize.width, 0);
+                break;
+              case OverlayPosition.right:
+                additionalSize = Size(extraSize.width / 2, 0);
+                additionalOffset = Offset(additionalSize.width, 0);
+                break;
+              case OverlayPosition.top:
+                additionalSize = Size(0, extraSize.height / 2);
+                additionalOffset = Offset(0, -additionalSize.height);
+                break;
+              case OverlayPosition.bottom:
+                additionalSize = Size(0, extraSize.height / 2);
+                additionalOffset = Offset(0, additionalSize.height);
+                break;
+            }
+          }
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              IgnorePointer(
+                child: widget.backdropBuilder(context, widget.backdrop,
+                    _controlledAnimation, widget.stackIndex),
+              ),
+              barrier,
+              Positioned.fill(
+                child: Align(
+                  alignment: alignment,
+                  child: AnimatedBuilder(
+                    animation: _controlledAnimation,
+                    builder: (context, child) {
+                      return FractionalTranslation(
+                        translation: startFractionalOffset *
+                            (1 - _controlledAnimation.value),
+                        child: child,
+                      );
+                    },
+                    child: Transform.translate(
+                      offset: additionalOffset / kBackdropScaleDown,
+                      child: widget.builder(
+                          context, additionalSize, constraints.biggest),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }),
+      ),
     );
   }
 }

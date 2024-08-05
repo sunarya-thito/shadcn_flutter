@@ -419,13 +419,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
           color: m.Colors.transparent,
           child: m.ScaffoldMessenger(
             child: ScrollConfiguration(
-              behavior: (widget.scrollBehavior ?? const ShadcnScrollBehavior())
-                  .copyWith(
-                dragDevices: {
-                  PointerDeviceKind.touch,
-                  PointerDeviceKind.mouse,
-                },
-              ),
+              behavior: (widget.scrollBehavior ?? const ShadcnScrollBehavior()),
               child: HeroControllerScope(
                 controller: _heroController,
                 child: result,
