@@ -13,12 +13,13 @@ class TabList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return Container(
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
             color: theme.colorScheme.border,
-            width: 1,
+            width: 1 * scaling,
           ),
         ),
       ),
@@ -34,7 +35,7 @@ class TabList extends StatelessWidget {
                     left: 0,
                     right: 0,
                     child: Container(
-                      height: 2,
+                      height: 2 * scaling,
                       color: theme.colorScheme.primary,
                     ),
                   ),

@@ -2,7 +2,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class Card extends StatelessWidget {
   final Widget child;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   final bool filled;
   final Color? fillColor;
   final double? borderRadius;
@@ -10,7 +10,8 @@ class Card extends StatelessWidget {
   const Card({
     Key? key,
     required this.child,
-    this.padding = const EdgeInsets.all(16),
+    // this.padding = const EdgeInsets.all(16),
+    this.padding,
     this.filled = false,
     this.fillColor,
     this.borderRadius,
@@ -19,6 +20,7 @@ class Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return OutlinedContainer(
       borderRadius: borderRadius,
       backgroundColor: filled
@@ -26,7 +28,7 @@ class Card extends StatelessWidget {
           : theme.colorScheme.card,
       child: AnimatedContainer(
           duration: kDefaultDuration,
-          padding: padding,
+          padding: padding ?? (EdgeInsets.all(16 * scaling)),
           child: mergeAnimatedTextStyle(
             child: child,
             duration: kDefaultDuration,

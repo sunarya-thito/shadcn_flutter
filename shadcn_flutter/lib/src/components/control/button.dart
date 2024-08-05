@@ -398,6 +398,8 @@ class ButtonState<T extends Button> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     bool enableFeedback = widget.enableFeedback ?? _shouldEnableFeedback;
     return Clickable(
       enabled: widget.enabled ?? widget.onPressed != null,
@@ -446,7 +448,7 @@ class ButtonState<T extends Button> extends State<T> {
                         ),
                       ),
                       if (widget.trailing != null) widget.trailing!,
-                    ].joinSeparator(const SizedBox(width: 8)),
+                    ].joinSeparator(SizedBox(width: 8 * scaling)),
                   )
                 : Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -458,7 +460,7 @@ class ButtonState<T extends Button> extends State<T> {
                       ),
                       if (widget.trailing != null)
                         Flexible(child: widget.trailing!),
-                    ].joinSeparator(const SizedBox(width: 8)),
+                    ].joinSeparator(SizedBox(width: 8 * scaling)),
                   )),
       ),
     );
@@ -971,12 +973,20 @@ TextStyle _buttonMenuTextStyle(BuildContext context, Set<WidgetState> states) {
 }
 
 EdgeInsets _buttonMenuPadding(BuildContext context, Set<WidgetState> states) {
-  return const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6);
+  final theme = Theme.of(context);
+  final scaling = theme.scaling;
+  final menuGroupData = Data.maybeOf<MenuGroupData>(context);
+  if (menuGroupData != null && menuGroupData.direction == Axis.horizontal) {
+    return const EdgeInsets.symmetric(horizontal: 18, vertical: 6) * scaling;
+  }
+  return const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6) * scaling;
 }
 
 EdgeInsets _buttonMenubarPadding(
     BuildContext context, Set<WidgetState> states) {
-  return const EdgeInsets.symmetric(horizontal: 12, vertical: 4);
+  final theme = Theme.of(context);
+  final scaling = theme.scaling;
+  return const EdgeInsets.symmetric(horizontal: 12, vertical: 4) * scaling;
 }
 
 IconThemeData _buttonMenuIconTheme(

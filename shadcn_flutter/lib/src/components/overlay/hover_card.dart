@@ -61,28 +61,7 @@ class _HoverCardState extends State<HoverCard> {
         int count = ++_hoverCount;
         Future.delayed(widget.wait, () {
           if (count == _hoverCount && !_controller.hasOpenPopover) {
-            _controller.show(
-              context: context,
-              builder: (context) {
-                return MouseRegion(
-                  onEnter: (_) {
-                    _hoverCount++;
-                  },
-                  onExit: (_) {
-                    int count = ++_hoverCount;
-                    Future.delayed(widget.debounce, () {
-                      if (count == _hoverCount) {
-                        _controller.close();
-                      }
-                    });
-                  },
-                  child: widget.hoverBuilder(context),
-                );
-              },
-              alignment: widget.popoverAlignment,
-              anchorAlignment: widget.anchorAlignment,
-              offset: widget.popoverOffset,
-            );
+            _showPopover(context);
           }
         });
       },
@@ -94,7 +73,38 @@ class _HoverCardState extends State<HoverCard> {
           }
         });
       },
-      child: widget.child,
+      child: GestureDetector(
+        onLongPress: () {
+          // open popover on long press
+          _showPopover(context);
+        },
+        child: widget.child,
+      ),
+    );
+  }
+
+  void _showPopover(BuildContext context) {
+    _controller.show(
+      context: context,
+      builder: (context) {
+        return MouseRegion(
+          onEnter: (_) {
+            _hoverCount++;
+          },
+          onExit: (_) {
+            int count = ++_hoverCount;
+            Future.delayed(widget.debounce, () {
+              if (count == _hoverCount) {
+                _controller.close();
+              }
+            });
+          },
+          child: widget.hoverBuilder(context),
+        );
+      },
+      alignment: widget.popoverAlignment,
+      anchorAlignment: widget.anchorAlignment,
+      offset: widget.popoverOffset,
     );
   }
 }

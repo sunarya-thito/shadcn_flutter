@@ -14,6 +14,7 @@ class HorizontalResizableDragger extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return Center(
       child: Container(
         decoration: BoxDecoration(
@@ -21,11 +22,11 @@ class HorizontalResizableDragger extends StatelessWidget {
           borderRadius: BorderRadius.circular(theme.radiusSm),
         ),
         alignment: Alignment.center,
-        width: 3 * 4,
-        height: 4 * 4,
-        child: const Icon(
+        width: 3 * 4 * scaling,
+        height: 4 * 4 * scaling,
+        child: Icon(
           RadixIcons.dragHandleDots2,
-          size: 4 * 2.5,
+          size: 4 * 2.5 * scaling,
         ),
       ),
     );
@@ -38,6 +39,7 @@ class VerticalResizableDragger extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return Center(
       child: Container(
         decoration: BoxDecoration(
@@ -45,13 +47,13 @@ class VerticalResizableDragger extends StatelessWidget {
           borderRadius: BorderRadius.circular(theme.radiusSm),
         ),
         alignment: Alignment.center,
-        width: 4 * 4,
-        height: 3 * 4,
+        width: 4 * 4 * scaling,
+        height: 3 * 4 * scaling,
         child: Transform.rotate(
           angle: pi / 2,
-          child: const Icon(
+          child: Icon(
             RadixIcons.dragHandleDots2,
-            size: 4 * 2.5,
+            size: 4 * 2.5 * scaling,
           ),
         ),
       ),

@@ -139,8 +139,8 @@ class AppBar extends StatefulWidget {
       trailingExpanded; // expand the trailing instead of the main content
   final Alignment alignment;
   final Color? backgroundColor;
-  final double leadingGap;
-  final double trailingGap;
+  final double? leadingGap;
+  final double? trailingGap;
   final EdgeInsetsGeometry? padding;
   final double? height;
 
@@ -156,8 +156,8 @@ class AppBar extends StatefulWidget {
     this.alignment = Alignment.center,
     this.padding,
     this.backgroundColor,
-    this.leadingGap = 8,
-    this.trailingGap = 8,
+    this.leadingGap,
+    this.trailingGap,
     this.height,
   }) : assert(
           child == null || title == null,
@@ -172,6 +172,7 @@ class _AppBarState extends State<AppBar> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return FocusTraversalGroup(
       child: ClipRect(
         child: BackdropFilter(
@@ -182,10 +183,11 @@ class _AppBarState extends State<AppBar> {
             alignment: widget.alignment,
             height: widget.height,
             padding: widget.padding ??
-                const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 8,
-                ),
+                (const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 8,
+                    ) *
+                    scaling),
             child: IntrinsicHeight(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -193,8 +195,8 @@ class _AppBarState extends State<AppBar> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: widget.leading,
-                  ).gap(widget.leadingGap),
-                  const Gap(16),
+                  ).gap(widget.leadingGap ?? (8 * scaling)),
+                  Gap(16 * scaling),
                   Flexible(
                     fit:
                         widget.trailingExpanded ? FlexFit.loose : FlexFit.tight,
@@ -211,18 +213,18 @@ class _AppBarState extends State<AppBar> {
                           ],
                         ),
                   ),
-                  const Gap(16),
+                  Gap(16 * scaling),
                   if (!widget.trailingExpanded)
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: widget.trailing,
-                    ).gap(widget.trailingGap)
+                    ).gap(widget.trailingGap ?? (8 * scaling))
                   else
                     Expanded(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: widget.trailing,
-                      ).gap(widget.trailingGap),
+                      ).gap(widget.trailingGap ?? (8 * scaling)),
                     ),
                 ],
               ),

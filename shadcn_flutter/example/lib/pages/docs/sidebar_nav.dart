@@ -54,7 +54,8 @@ class SidebarButton extends StatelessWidget {
         alignment: Alignment.centerLeft,
         style: ButtonVariance.text.copyWith(
           padding: (context, states, value) {
-            return const EdgeInsets.symmetric(vertical: 4, horizontal: 8);
+            return const EdgeInsets.symmetric(vertical: 4, horizontal: 8) *
+                data.scaling;
           },
           textStyle: (context, states, value) {
             return value.copyWith(

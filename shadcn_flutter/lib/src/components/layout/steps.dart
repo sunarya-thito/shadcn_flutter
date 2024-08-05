@@ -11,6 +11,7 @@ class Steps extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     List<Widget> mapped = [];
     for (var i = 0; i < children.length; i++) {
       mapped.add(IntrinsicHeight(
@@ -26,21 +27,21 @@ class Steps extends StatelessWidget {
                     color: theme.colorScheme.muted,
                     shape: BoxShape.circle,
                   ),
-                  width: 28,
-                  height: 28,
+                  width: 28 * scaling,
+                  height: 28 * scaling,
                   child: Center(
                     child: Text(
                       (i + 1).toString(),
                     ).mono().bold(),
                   ),
                 ),
-                Gap(4),
+                Gap(4 * scaling),
                 const Expanded(child: VerticalDivider()),
-                Gap(4),
+                Gap(4 * scaling),
               ],
             ),
-            Gap(18),
-            Expanded(child: children[i].withPadding(bottom: 32)),
+            Gap(18 * scaling),
+            Expanded(child: children[i].withPadding(bottom: 32 * scaling)),
           ],
         ),
       ));

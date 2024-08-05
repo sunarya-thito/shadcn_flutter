@@ -84,8 +84,7 @@ class NavigationItemState extends State<NavigationItem> {
                     turns: _menuState!.isActive(this) ? 0.5 : 0,
                     child: const Icon(
                       RadixIcons.chevronDown,
-                      size: 12,
-                    ),
+                    ).iconXSmall(),
                   )
                 : null,
             onHover: (hovered) {
@@ -127,10 +126,12 @@ class NavigationContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return Button(
       style: ButtonVariance.ghost.copyWith(
         padding: (context, states, value) {
-          return const EdgeInsets.all(12);
+          return const EdgeInsets.all(12) * scaling;
         },
       ),
       onPressed: onPressed,
@@ -142,30 +143,34 @@ class NavigationContent extends StatelessWidget {
         leading: leading,
         mainAxisAlignment: MainAxisAlignment.start,
       ),
-    ).constrained(maxWidth: 16 * 16);
+    ).constrained(maxWidth: 16 * 16 * scaling);
   }
 }
 
 class NavigationContentList extends StatelessWidget {
   final List<Widget> children;
   final int crossAxisCount;
-  final double spacing;
-  final double runSpacing;
+  final double? spacing;
+  final double? runSpacing;
   final bool reverse;
 
   const NavigationContentList({
     super.key,
     required this.children,
     this.crossAxisCount = 3,
-    this.spacing = 12,
-    this.runSpacing = 12,
+    this.spacing,
+    this.runSpacing,
     this.reverse = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     List<Widget> columns = [];
     List<Widget> rows = [];
+    var spacing = this.spacing ?? (12 * scaling);
+    var runSpacing = this.runSpacing ?? (12 * scaling);
     for (final child in children) {
       columns.add(Expanded(child: child));
       if (columns.length == crossAxisCount) {
@@ -241,18 +246,20 @@ class NavigationMenuState extends State<NavigationMenu> {
       _popoverController.anchorContext = context;
       return;
     }
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     _popoverController.show(
       context: context,
       alignment: Alignment.topCenter,
       regionGroupId: this,
-      offset: const Offset(0, 4),
+      offset: const Offset(0, 4) * scaling,
       builder: buildPopover,
       modal: false,
-      margin: requestMargin() ?? const EdgeInsets.all(8),
+      margin: requestMargin() ?? (const EdgeInsets.all(8) * scaling),
       allowInvertHorizontal: false,
       allowInvertVertical: false,
       onTickFollow: (value) {
-        value.margin = requestMargin() ?? const EdgeInsets.all(8);
+        value.margin = requestMargin() ?? (const EdgeInsets.all(8) * scaling);
       },
     );
   }
@@ -275,10 +282,12 @@ class NavigationMenuState extends State<NavigationMenu> {
 
   Widget buildContent(int index) {
     NavigationItemState? item = findByWidget(widget.children[index]);
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     if (item != null) {
       return Data<NavigationMenuState>.boundary(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12.0) * scaling,
           child: _contentBuilders[item]!(context),
         ),
       );

@@ -5,7 +5,8 @@ class Menubar extends StatefulWidget {
   final Offset? popoverOffset;
   final bool border;
 
-  const Menubar({super.key, 
+  const Menubar({
+    super.key,
     this.popoverOffset,
     this.border = true,
     required this.children,
@@ -18,27 +19,31 @@ class Menubar extends StatefulWidget {
 class MenubarState extends State<Menubar> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     if (widget.border) {
-      final theme = Theme.of(context);
       return OutlinedContainer(
         borderColor: theme.colorScheme.border,
         backgroundColor: theme.colorScheme.background,
         borderRadius: theme.radiusMd,
-        child: Padding(
-          padding: const EdgeInsets.all(4),
-          child: buildContainer(context),
+        child: AnimatedPadding(
+          duration: kDefaultDuration,
+          padding: const EdgeInsets.all(4) * theme.scaling,
+          child: buildContainer(context, theme),
         ),
       );
     }
-    return buildContainer(context);
+    return buildContainer(context, theme);
   }
 
-  Widget buildContainer(BuildContext context) {
+  Widget buildContainer(BuildContext context, ThemeData theme) {
     return Data(
       data: this,
       child: MenuGroup(
         regionGroupId: this,
-        subMenuOffset: widget.border ? const Offset(-4, 8) : const Offset(0, 4),
+        direction: Axis.vertical,
+        subMenuOffset:
+            (widget.border ? const Offset(-4, 8) : const Offset(0, 4)) *
+                theme.scaling,
         builder: (context, children) {
           return IntrinsicHeight(
             child: Row(

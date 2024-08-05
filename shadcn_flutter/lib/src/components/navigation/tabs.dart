@@ -15,12 +15,13 @@ class Tabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.muted,
         borderRadius: BorderRadius.circular(theme.radiusLg),
       ),
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(4) * scaling,
       child: IntrinsicHeight(
         child: IntrinsicWidth(
           child: Row(
@@ -42,9 +43,10 @@ class Tabs extends StatelessWidget {
                                 50), // slightly faster than kDefaultDuration
                         alignment: Alignment.center,
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 4,
-                        ),
+                              horizontal: 16,
+                              vertical: 4,
+                            ) *
+                            scaling,
                         decoration: BoxDecoration(
                           color:
                               i == index ? theme.colorScheme.background : null,

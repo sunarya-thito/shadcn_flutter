@@ -430,8 +430,8 @@ class TreeItemView extends StatefulWidget {
 
 class _TreeItemViewState extends State<TreeItemView> {
   late FocusNode _focusNode;
-  int _tapCount = 0;
-  int _lastTapTime = 0;
+  // int _tapCount = 0;
+  // int _lastTapTime = 0;
 
   @override
   void initState() {
@@ -441,17 +441,19 @@ class _TreeItemViewState extends State<TreeItemView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     final data = Data.maybeOf<TreeNodeData>(context);
     assert(data != null, 'TreeItemView must be a descendant of TreeView');
     List<Widget> rowChildren = [];
-    if (data!.expandIcon) rowChildren.add(const SizedBox(width: 8));
+    if (data!.expandIcon) rowChildren.add(SizedBox(width: 8 * scaling));
     for (int i = 0; i < data.depth.length; i++) {
       if (i == 0) {
         continue; // skip the first depth
       }
-      if (!data.expandIcon) rowChildren.add(const SizedBox(width: 8));
+      if (!data.expandIcon) rowChildren.add(SizedBox(width: 8 * scaling));
       rowChildren.add(SizedBox(
-        width: 16,
+        width: 16 * scaling,
         child: data.indentGuide.build(
           context,
           data.depth,
@@ -472,14 +474,14 @@ class _TreeItemViewState extends State<TreeItemView> {
             child: AnimatedRotation(
               duration: kDefaultDuration,
               turns: data.node.expanded ? 0.25 : 0,
-              child: const Icon(Icons.chevron_right, size: 16),
+              child: const Icon(Icons.chevron_right).iconSmall(),
             ),
           ),
         );
       } else {
         if (data.depth.length > 1) {
           rowChildren.add(SizedBox(
-            width: 16,
+            width: 16 * scaling,
             child: data.indentGuide.build(
               context,
               data.depth,
@@ -487,25 +489,26 @@ class _TreeItemViewState extends State<TreeItemView> {
             ),
           ));
         } else {
-          rowChildren.add(const SizedBox(
-            width: 16,
+          rowChildren.add(SizedBox(
+            width: 16 * scaling,
           ));
         }
       }
     }
     if (widget.leading != null) {
       subRowChildren.add(widget.leading!);
-      subRowChildren.add(const SizedBox(width: 8));
+      subRowChildren.add(SizedBox(width: 8 * scaling));
     }
     subRowChildren.add(Expanded(child: widget.child));
     if (widget.trailing != null) {
-      subRowChildren.add(const SizedBox(width: 8));
+      subRowChildren.add(SizedBox(width: 8 * scaling));
       subRowChildren.add(widget.trailing!);
     }
     rowChildren.add(
       Expanded(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 8, vertical: 4) * scaling,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: subRowChildren,
@@ -513,7 +516,6 @@ class _TreeItemViewState extends State<TreeItemView> {
         ),
       ),
     );
-    final theme = Theme.of(context);
     return mergeAnimatedTextStyle(
       duration: kDefaultDuration,
       overflow: TextOverflow.ellipsis,
@@ -589,22 +591,18 @@ class _TreeItemViewState extends State<TreeItemView> {
                         (widget.expandable ?? data.node.children.isNotEmpty))
                 ? const WidgetStatePropertyAll(SystemMouseCursors.click)
                 : const WidgetStatePropertyAll(SystemMouseCursors.basic),
-            onPressed: () {
-              final now = DateTime.now().millisecondsSinceEpoch;
-              if (now - _lastTapTime < 300) {
-                _tapCount++;
-              } else {
-                _tapCount = 1;
+            onDoubleTap: () {
+              if (widget.onDoublePressed != null) {
+                widget.onDoublePressed!();
               }
-              _lastTapTime = now;
-              if (_tapCount >= 2) {
-                if (widget.onDoublePressed != null) {
-                  widget.onDoublePressed!();
-                }
-                if (widget.onExpand != null) {
-                  widget.onExpand!(!data.node.expanded);
-                }
-              } else if (widget.onPressed != null) {
+              if (widget.onExpand != null &&
+                  (widget.expandable ?? data.node.children.isNotEmpty)) {
+                widget.onExpand!(!data.node.expanded);
+              }
+              _focusNode.requestFocus();
+            },
+            onPressed: () {
+              if (widget.onPressed != null) {
                 widget.onPressed!();
               }
               _focusNode.requestFocus();

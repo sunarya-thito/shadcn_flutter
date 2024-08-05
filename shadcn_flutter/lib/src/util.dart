@@ -58,9 +58,9 @@ Widget gap(double gap, {double? crossGap}) {
   );
 }
 
-extension Joinable on List<Widget> {
-  List<Widget> joinSeparator(Widget separator) {
-    List<Widget> result = [];
+extension Joinable<T extends Widget> on List<T> {
+  List<T> joinSeparator(T separator) {
+    List<T> result = [];
     for (int i = 0; i < length; i++) {
       if (i > 0) {
         result.add(separator);

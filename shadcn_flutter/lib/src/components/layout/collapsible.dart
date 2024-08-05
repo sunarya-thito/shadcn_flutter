@@ -74,18 +74,19 @@ class CollapsibleTrigger extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     final state = Data.of<CollapsibleStateData>(context);
     return Row(mainAxisSize: MainAxisSize.min, children: [
       Expanded(child: child.small().semiBold()),
-      Gap(16),
+      Gap(16 * scaling),
       GhostButton(
         onPressed: state.handleTap,
         child: Icon(
           state.isExpanded ? Icons.unfold_less : Icons.unfold_more,
-          size: 12,
-        ),
+        ).iconXSmall(),
       ),
-    ]).withPadding(horizontal: 16);
+    ]).withPadding(horizontal: 16 * scaling);
   }
 }
 

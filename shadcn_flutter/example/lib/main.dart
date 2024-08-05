@@ -579,7 +579,7 @@ class MyAppState extends State<MyApp> {
         routerConfig: router,
         debugShowCheckedModeBanner: false,
         title: 'shadcn/ui Flutter',
-        scaling: AdaptiveScaling(scaling: scaling),
+        scaling: AdaptiveScaling(scaling),
         theme: ThemeData(
           colorScheme: colorScheme,
           radius: radius,

@@ -94,7 +94,7 @@ class Carousel extends StatefulWidget {
   final Axis direction;
   final bool wrap;
   final bool pauseOnHover;
-  final Duration? autoplayDuration;
+  final Duration? autoplaySpeed;
   final bool draggable;
   final bool reverse;
   final double sizeFactor;
@@ -102,6 +102,8 @@ class Carousel extends StatefulWidget {
   final Curve curve;
   final double gap;
   final ValueChanged<int>? onIndexChanged;
+  final bool disableOverheadScrolling;
+  final bool disableDraggingVelocity;
 
   const Carousel({
     Key? key,
@@ -112,7 +114,7 @@ class Carousel extends StatefulWidget {
     this.direction = Axis.horizontal,
     this.wrap = true,
     this.pauseOnHover = true,
-    this.autoplayDuration,
+    this.autoplaySpeed,
     this.draggable = true,
     this.reverse = false,
     this.sizeFactor = 1,
@@ -122,6 +124,8 @@ class Carousel extends StatefulWidget {
     this.duration,
     this.durationBuilder,
     this.onIndexChanged,
+    this.disableOverheadScrolling = true,
+    this.disableDraggingVelocity = false,
   })  : assert(sizeFactor > 0, 'sizeFactor must be greater than 0'),
         assert(wrap || itemCount != null,
             'itemCount must be provided if wrap is false'),
@@ -140,6 +144,7 @@ class _CarouselState extends State<Carousel>
   bool hovered = false;
   bool dragging = false;
 
+  late double _lastDragValue;
   double _dragVelocity = 0;
 
   late int _currentIndex;
@@ -148,8 +153,8 @@ class _CarouselState extends State<Carousel>
     double currentIndex = _controller.getCurrentIndex(widget.itemCount);
     final int index = currentIndex.floor();
     Duration? duration = widget.durationBuilder?.call(index) ?? widget.duration;
-    if (duration != null && widget.autoplayDuration != null) {
-      duration += widget.autoplayDuration!;
+    if (duration != null && widget.autoplaySpeed != null) {
+      duration += widget.autoplaySpeed!;
     }
     return duration;
   }
@@ -212,25 +217,39 @@ class _CarouselState extends State<Carousel>
           if (!widget.wrap &&
               widget.itemCount != null &&
               _controller.value >= widget.itemCount! - 1) {
-            _controller.animateTo(0, widget.speed, widget.curve);
+            _controller.animateTo(
+                0, widget.autoplaySpeed ?? widget.speed, widget.curve);
           } else {
-            _controller.animateNext(widget.autoplayDuration!, widget.curve);
+            _controller.animateNext(
+                widget.autoplaySpeed ?? widget.speed, widget.curve);
           }
           _startTime = null;
         }
       }
     }
-    if (_dragVelocity.abs() > 0.0001 && !dragging) {
-      _controller.jumpTo(progressedValue + _dragVelocity);
+    if (_dragVelocity.abs() > 0.01 && !dragging) {
+      var targetValue = progressedValue + _dragVelocity;
+      _controller.jumpTo(targetValue);
       // decrease the drag velocity (consider the delta time)
-      _dragVelocity *= pow(0.3, deltaMillis / 100);
-      if (_dragVelocity.abs() < 0.0001) {
+      _dragVelocity *= pow(0.2, deltaMillis / 100);
+      if (_dragVelocity.abs() < 0.01) {
         _dragVelocity = 0;
         if (widget.snapAlignment != null) {
-          _controller.animateSnap(widget.speed, widget.curve);
+          if (widget.disableOverheadScrolling) {
+            if (_lastDragValue < targetValue) {
+              _controller.animateTo(_lastDragValue.floorToDouble() + 1,
+                  widget.speed, widget.curve);
+            } else {
+              _controller.animateTo(_lastDragValue.floorToDouble() - 1,
+                  widget.speed, widget.curve);
+            }
+          } else {
+            _controller.animateSnap(widget.speed, widget.curve);
+          }
         }
       }
     }
+
     _check();
   }
 
@@ -310,6 +329,7 @@ class _CarouselState extends State<Carousel>
       child: carouselWidget,
       onHorizontalDragStart: (details) {
         dragging = true;
+        _lastDragValue = progressedValue;
         _dragVelocity = 0;
       },
       onHorizontalDragUpdate: (details) {
@@ -323,9 +343,13 @@ class _CarouselState extends State<Carousel>
       },
       onHorizontalDragEnd: (details) {
         dragging = false;
-        _dragVelocity = (-details.primaryVelocity! /
-                ((constraints.maxWidth * widget.sizeFactor) + widget.gap)) /
-            100;
+        if (widget.disableDraggingVelocity) {
+          _dragVelocity = 0;
+        } else {
+          _dragVelocity = -details.primaryVelocity! /
+              ((constraints.maxWidth * widget.sizeFactor) + widget.gap) /
+              100;
+        }
         if (widget.snapAlignment != null) {
           _controller.animateSnap(widget.speed, widget.curve);
         }
@@ -341,6 +365,7 @@ class _CarouselState extends State<Carousel>
       child: carouselWidget,
       onVerticalDragStart: (details) {
         dragging = true;
+        _lastDragValue = progressedValue;
         _dragVelocity = 0;
       },
       onVerticalDragUpdate: (details) {
@@ -354,9 +379,13 @@ class _CarouselState extends State<Carousel>
       },
       onVerticalDragEnd: (details) {
         dragging = false;
-        _dragVelocity = (-details.primaryVelocity! /
-                ((constraints.maxHeight * widget.sizeFactor) + widget.gap)) /
-            100;
+        if (widget.disableDraggingVelocity) {
+          _dragVelocity = 0;
+        } else {
+          _dragVelocity = -details.primaryVelocity! /
+              ((constraints.maxHeight * widget.sizeFactor) + widget.gap) /
+              100;
+        }
         if (widget.snapAlignment != null) {
           _controller.animateSnap(widget.speed, widget.curve);
         }

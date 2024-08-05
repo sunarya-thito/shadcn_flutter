@@ -2,11 +2,13 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 void showDropdown(
     {required BuildContext context, required WidgetBuilder builder}) {
+  final theme = Theme.of(context);
+  final scaling = theme.scaling;
   final GlobalKey key = GlobalKey();
   showPopover(
     context: context,
     alignment: Alignment.topCenter,
-    offset: const Offset(0, 4),
+    offset: const Offset(0, 4) * scaling,
     consumeOutsideTaps: false,
     regionGroupId: key,
     modal: false,
@@ -41,16 +43,18 @@ class DropdownMenu extends StatefulWidget {
 class _DropdownMenuState extends State<DropdownMenu> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ConstrainedBox(
       constraints: const BoxConstraints(
         minWidth: 192,
       ),
       child: MenuGroup(
         regionGroupId: Data.maybeOf<DropdownMenuData>(context)?.key,
-        subMenuOffset: const Offset(8, -4),
+        subMenuOffset: const Offset(8, -4) * theme.scaling,
         onDismissed: () {
           closePopover(context);
         },
+        direction: Axis.vertical,
         builder: (context, children) {
           return MenuPopup(
             children: children,

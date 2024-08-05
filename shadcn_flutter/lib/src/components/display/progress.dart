@@ -53,9 +53,10 @@ class Progress extends StatelessWidget {
 
   Widget buildBar(BuildContext context, double startOffset, double endOffset) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
-        height: 8,
+        height: 8 * scaling,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(theme.radiusMd),
           color: backgroundColor ?? theme.colorScheme.primary.withOpacity(0.2),

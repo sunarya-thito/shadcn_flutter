@@ -528,6 +528,40 @@ class ColorScheme implements ChartColorScheme {
 
   @override
   List<Color> get chartColors => [chart1, chart2, chart3, chart4, chart5];
+
+  static ColorScheme lerp(ColorScheme a, ColorScheme b, double t) {
+    return ColorScheme(
+      brightness: t < 0.5 ? a.brightness : b.brightness,
+      background: Color.lerp(a.background, b.background, t)!,
+      foreground: Color.lerp(a.foreground, b.foreground, t)!,
+      card: Color.lerp(a.card, b.card, t)!,
+      cardForeground: Color.lerp(a.cardForeground, b.cardForeground, t)!,
+      popover: Color.lerp(a.popover, b.popover, t)!,
+      popoverForeground:
+          Color.lerp(a.popoverForeground, b.popoverForeground, t)!,
+      primary: Color.lerp(a.primary, b.primary, t)!,
+      primaryForeground:
+          Color.lerp(a.primaryForeground, b.primaryForeground, t)!,
+      secondary: Color.lerp(a.secondary, b.secondary, t)!,
+      secondaryForeground:
+          Color.lerp(a.secondaryForeground, b.secondaryForeground, t)!,
+      muted: Color.lerp(a.muted, b.muted, t)!,
+      mutedForeground: Color.lerp(a.mutedForeground, b.mutedForeground, t)!,
+      accent: Color.lerp(a.accent, b.accent, t)!,
+      accentForeground: Color.lerp(a.accentForeground, b.accentForeground, t)!,
+      destructive: Color.lerp(a.destructive, b.destructive, t)!,
+      destructiveForeground:
+          Color.lerp(a.destructiveForeground, b.destructiveForeground, t)!,
+      border: Color.lerp(a.border, b.border, t)!,
+      input: Color.lerp(a.input, b.input, t)!,
+      ring: Color.lerp(a.ring, b.ring, t)!,
+      chart1: Color.lerp(a.chart1, b.chart1, t)!,
+      chart2: Color.lerp(a.chart2, b.chart2, t)!,
+      chart3: Color.lerp(a.chart3, b.chart3, t)!,
+      chart4: Color.lerp(a.chart4, b.chart4, t)!,
+      chart5: Color.lerp(a.chart5, b.chart5, t)!,
+    );
+  }
 }
 
 extension _MapColorGetter on Map<String, Color> {

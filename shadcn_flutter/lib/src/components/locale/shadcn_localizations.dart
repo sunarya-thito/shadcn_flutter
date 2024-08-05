@@ -136,6 +136,13 @@ abstract class ShadcnLocalizations {
   String get colorGreen;
   String get colorBlue;
   String get colorAlpha;
+  String get menuCut;
+  String get menuCopy;
+  String get menuPaste;
+  String get menuSelectAll;
+  String get menuUndo;
+  String get menuRedo;
+  String get menuDelete;
   String formatDateTime(DateTime dateTime,
       {bool showDate = true,
       bool showTime = true,
@@ -634,4 +641,25 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get colorAlpha => 'Alpha';
+
+  @override
+  String get menuCut => 'Cut';
+
+  @override
+  String get menuCopy => 'Copy';
+
+  @override
+  String get menuPaste => 'Paste';
+
+  @override
+  String get menuSelectAll => 'Select All';
+
+  @override
+  String get menuUndo => 'Undo';
+
+  @override
+  String get menuRedo => 'Redo';
+
+  @override
+  String get menuDelete => 'Delete';
 }

@@ -27,6 +27,7 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final scaling = theme.scaling;
     return AnimatedContainer(
       duration: kDefaultDuration,
       clipBehavior: widget.clipBehavior,
@@ -34,7 +35,7 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
         color: widget.backgroundColor ?? theme.colorScheme.background,
         border: Border.all(
           color: widget.borderColor ?? theme.colorScheme.muted,
-          width: 1,
+          width: 1 * scaling,
           style: widget.borderStyle ?? BorderStyle.solid,
         ),
         borderRadius:
@@ -73,27 +74,28 @@ class DashedLineProperties {
 }
 
 class DashedLine extends StatelessWidget {
-  final double width;
-  final double gap;
-  final double thickness;
+  final double? width;
+  final double? gap;
+  final double? thickness;
   final Color? color;
 
   const DashedLine({
     super.key,
-    this.width = 8,
-    this.gap = 5,
-    this.thickness = 1,
+    this.width,
+    this.gap,
+    this.thickness,
     this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return AnimatedValueBuilder(
         value: DashedLineProperties(
-          width: width,
-          gap: gap,
-          thickness: thickness,
+          width: width ?? (8 * scaling),
+          gap: gap ?? (5 * scaling),
+          thickness: thickness ?? (1 * scaling),
           color: color ?? theme.colorScheme.border,
         ),
         duration: kDefaultDuration,
@@ -142,18 +144,21 @@ class DashedContainerProperties {
 }
 
 class DashedContainer extends StatelessWidget {
-  final double strokeWidth;
-  final double gap;
-  final double thickness;
+  final double? strokeWidth;
+  final double? gap;
+  final double? thickness;
   final Color? color;
   final Widget child;
   final BorderRadius? borderRadius;
 
   const DashedContainer({
     super.key,
-    this.strokeWidth = 8,
-    this.gap = 5,
-    this.thickness = 1,
+    // this.strokeWidth = 8,
+    // this.gap = 5,
+    // this.thickness = 1,
+    this.strokeWidth,
+    this.gap,
+    this.thickness,
     this.color,
     required this.child,
     this.borderRadius,
@@ -164,9 +169,9 @@ class DashedContainer extends StatelessWidget {
     final theme = Theme.of(context);
     return AnimatedValueBuilder(
       value: DashedContainerProperties(
-        width: strokeWidth,
-        gap: gap,
-        thickness: thickness,
+        width: strokeWidth ?? (8 * theme.scaling),
+        gap: gap ?? (5 * theme.scaling),
+        thickness: thickness ?? (1 * theme.scaling),
         color: color ?? theme.colorScheme.border,
         borderRadius: borderRadius ?? theme.borderRadiusLg,
       ),

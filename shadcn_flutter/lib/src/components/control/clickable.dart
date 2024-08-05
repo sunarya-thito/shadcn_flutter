@@ -128,29 +128,48 @@ class _ClickableState extends State<Clickable> {
     Duration? deltaTap =
         _lastTap == null ? null : DateTime.now().difference(_lastTap!);
     _lastTap = DateTime.now();
-    if (widget.onPressed != null) {
-      // Regardless of the tapCount, onPressed should be called
-      // every time the widget is tapped whether it is from
-      // mouse, keyboard, or touch.
-      // Original implementation from flutter
-      // would dismiss the onTap in favor of onDoubleTap,
-      // but this would also make a slight delay in the feedback.
-      widget.onPressed!();
-      if (widget.enableFeedback) {
-        feedbackForTap(context);
-      }
+    // if (widget.onPressed != null) {
+    //   // Regardless of the tapCount, onPressed should be called
+    //   // every time the widget is tapped whether it is from
+    //   // mouse, keyboard, or touch.
+    //   // Original implementation from flutter
+    //   // would dismiss the onTap in favor of onDoubleTap,
+    //   // but this would also make a slight delay in the feedback.
+    //   widget.onPressed!();
+    //   if (widget.enableFeedback) {
+    //     feedbackForTap(context);
+    //   }
+    // }
+    // if (widget.onDoubleTap != null) {
+    //   if (deltaTap != null && deltaTap < kDoubleTapMinTime) {
+    //     _tapCount++;
+    //     if (_tapCount == 2) {
+    //       widget.onDoubleTap!();
+    //       _tapCount = 0;
+    //     }
+    //   } else {
+    //     _tapCount = 1;
+    //   }
+    // }
+
+    if (deltaTap != null && deltaTap < kDoubleTapMinTime) {
+      _tapCount++;
+    } else {
+      _tapCount = 1;
     }
-    if (widget.onDoubleTap != null) {
-      if (deltaTap != null && deltaTap < kDoubleTapMinTime) {
-        _tapCount++;
-        if (_tapCount == 2) {
-          widget.onDoubleTap!();
-          _tapCount = 0;
+
+    if (_tapCount == 2 && widget.onDoubleTap != null) {
+      widget.onDoubleTap!();
+      _tapCount = 0;
+    } else {
+      if (widget.onPressed != null) {
+        widget.onPressed!();
+        if (widget.enableFeedback) {
+          feedbackForTap(context);
         }
-      } else {
-        _tapCount = 1;
       }
     }
+
     FocusScope.of(context).requestFocus(_focusNode);
   }
 

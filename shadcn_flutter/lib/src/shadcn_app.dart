@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart' as c;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -225,9 +224,10 @@ class _ShadcnAppState extends State<ShadcnApp> {
       },
     );
     Future.delayed(const Duration(milliseconds: 10), _dispatchAppInitialized);
-    if (kIsWeb) {
-      BrowserContextMenu.disableContextMenu();
-    }
+    // if (kIsWeb) {
+    //   BrowserContextMenu.disableContextMenu();
+    // }
+    // Moved to individual TextField component that decides whether to show context menu
   }
 
   @override
@@ -248,15 +248,13 @@ class _ShadcnAppState extends State<ShadcnApp> {
   }
 
   Widget _builder(BuildContext context, Widget? child) {
-    return AdaptiveScaler(
-      theme: widget.theme,
-      builder: widget.scaling == null
-          ? AdaptiveScaler.defaultScaling
-          : (context) {
-              return widget.scaling!;
-            },
+    var theme = widget.theme;
+    var appScaling = widget.scaling ?? AdaptiveScaler.defaultScaling(context);
+    return AnimatedTheme(
+      duration: kDefaultDuration,
+      data: appScaling.scale(theme),
       child: Builder(builder: (context) {
-        final ThemeData theme = Theme.of(context);
+        var theme = Theme.of(context);
         return DataMessengerRoot(
           child: ScrollViewInterceptor(
             child: ShadcnSkeletonizerConfigLayer(
@@ -268,7 +266,10 @@ class _ShadcnAppState extends State<ShadcnApp> {
                 ),
                 child: AnimatedIconTheme.merge(
                   duration: kDefaultDuration,
-                  data: IconThemeData(
+                  // data: IconThemeData(
+                  //   color: theme.colorScheme.foreground,
+                  // ),
+                  data: theme.iconTheme.medium.copyWith(
                     color: theme.colorScheme.foreground,
                   ),
                   child: Theme(

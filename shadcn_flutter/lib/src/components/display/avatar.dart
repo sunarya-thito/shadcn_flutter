@@ -63,9 +63,8 @@ class Avatar extends StatefulWidget implements AvatarWidget {
 class _AvatarState extends State<Avatar> {
   Widget _build(BuildContext context) {
     final theme = Theme.of(context);
-    double size = widget.size ?? theme.scaling * 40;
-    double borderRadius =
-        widget.borderRadius ?? Theme.of(context).radius * size;
+    double size = widget.size ?? (theme.scaling * 40);
+    double borderRadius = widget.borderRadius ?? theme.radiusXxl * size;
     // use photo if available, use initials if not
     // also if photo is failed to load, use initials
     if (widget.photoUrl?.isNotEmpty ?? false) {
@@ -97,7 +96,7 @@ class _AvatarState extends State<Avatar> {
     final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: widget.backgroundColor ?? Theme.of(context).colorScheme.muted,
+        color: widget.backgroundColor ?? theme.colorScheme.muted,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: FittedBox(
@@ -110,7 +109,7 @@ class _AvatarState extends State<Avatar> {
               widget.initials,
             ),
             style: TextStyle(
-              color: Theme.of(context).colorScheme.foreground,
+              color: theme.colorScheme.foreground,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -170,8 +169,7 @@ class AvatarBadge extends StatelessWidget implements AvatarWidget {
       height: size,
       decoration: BoxDecoration(
         color: color ?? Theme.of(context).colorScheme.primary,
-        borderRadius:
-            BorderRadius.circular(borderRadius ?? theme.radius * size),
+        shape: BoxShape.circle,
       ),
       child: child,
     );

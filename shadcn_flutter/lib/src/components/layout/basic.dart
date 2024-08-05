@@ -49,7 +49,7 @@ class Basic extends StatelessWidget {
               ),
             if (leading != null &&
                 (title != null || content != null || subtitle != null))
-              SizedBox(width: contentSpacing),
+              SizedBox(width: contentSpacing ?? (16 * scaling)),
             if (title != null || content != null || subtitle != null)
               Expanded(
                 child: Column(
@@ -57,42 +57,24 @@ class Basic extends StatelessWidget {
                   mainAxisAlignment: mainAxisAlignment,
                   children: [
                     if (title != null)
-                      mergeAnimatedTextStyle(
-                          duration: kDefaultDuration,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
-                          child: Align(
-                            alignment: titleAlignment ?? Alignment.topLeft,
-                            child: title!,
-                          )),
+                      Align(
+                        alignment: titleAlignment ?? Alignment.topLeft,
+                        child: title!,
+                      ).small().medium(),
                     if (title != null && subtitle != null)
-                      const SizedBox(height: 2),
+                      SizedBox(height: 2 * scaling),
                     if (subtitle != null)
-                      mergeAnimatedTextStyle(
-                          duration: kDefaultDuration,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: theme.colorScheme.mutedForeground,
-                          ),
-                          child: Align(
-                            alignment: subtitleAlignment ?? Alignment.topLeft,
-                            child: subtitle!,
-                          )),
+                      Align(
+                        alignment: subtitleAlignment ?? Alignment.topLeft,
+                        child: subtitle!,
+                      ).xSmall().muted(),
                     if ((title != null || subtitle != null) && content != null)
                       SizedBox(height: titleSpacing),
                     if (content != null)
-                      mergeAnimatedTextStyle(
-                          duration: kDefaultDuration,
-                          style: const TextStyle(
-                            fontSize: 14,
-                          ),
-                          // child: content!),
-                          child: Align(
-                            alignment: contentAlignment ?? Alignment.topLeft,
-                            child: content!,
-                          )),
+                      Align(
+                        alignment: contentAlignment ?? Alignment.topLeft,
+                        child: content!,
+                      ).small(),
                   ],
                 ),
               ),
@@ -101,9 +83,7 @@ class Basic extends StatelessWidget {
                     content != null ||
                     leading != null ||
                     subtitle != null))
-              SizedBox(
-                  width:
-                      contentSpacing != null ? contentSpacing! : 16 * scaling),
+              SizedBox(width: contentSpacing ?? (16 * scaling)),
             // if (trailing != null) trailing!,
             if (trailing != null)
               Align(
@@ -129,8 +109,8 @@ class BasicLayout extends StatelessWidget {
   final AlignmentGeometry? titleAlignment;
   final AlignmentGeometry? subtitleAlignment;
   final AlignmentGeometry? contentAlignment;
-  final double contentSpacing;
-  final double titleSpacing;
+  final double? contentSpacing;
+  final double? titleSpacing;
 
   const BasicLayout({
     Key? key,
@@ -144,12 +124,14 @@ class BasicLayout extends StatelessWidget {
     this.titleAlignment,
     this.subtitleAlignment,
     this.contentAlignment,
-    this.contentSpacing = 16,
-    this.titleSpacing = 4,
+    this.contentSpacing,
+    this.titleSpacing,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Row(
@@ -163,7 +145,7 @@ class BasicLayout extends StatelessWidget {
               ),
             if (leading != null &&
                 (title != null || content != null || subtitle != null))
-              SizedBox(width: contentSpacing),
+              SizedBox(width: contentSpacing ?? (16 * scaling)),
             if (title != null || content != null || subtitle != null)
               Expanded(
                 child: Column(
@@ -177,14 +159,14 @@ class BasicLayout extends StatelessWidget {
                         child: title!,
                       ),
                     if (title != null && subtitle != null)
-                      const SizedBox(height: 2),
+                      SizedBox(height: 2 * scaling),
                     if (subtitle != null)
                       Align(
                         alignment: subtitleAlignment ?? Alignment.topLeft,
                         child: subtitle!,
                       ),
                     if ((title != null || subtitle != null) && content != null)
-                      SizedBox(height: titleSpacing),
+                      SizedBox(height: titleSpacing ?? (4 * scaling)),
                     if (content != null)
                       Align(
                         alignment: contentAlignment ?? Alignment.topLeft,
@@ -198,7 +180,7 @@ class BasicLayout extends StatelessWidget {
                     content != null ||
                     leading != null ||
                     subtitle != null))
-              SizedBox(width: contentSpacing),
+              SizedBox(width: contentSpacing ?? (16 * scaling)),
             if (trailing != null)
               Align(
                 alignment: trailingAlignment ?? Alignment.topCenter,

@@ -12,7 +12,8 @@ class Pagination extends StatelessWidget {
   final bool hidePreviousOnFirstPage;
   final bool hideNextOnLastPage;
 
-  const Pagination({super.key, 
+  const Pagination({
+    super.key,
     required this.page,
     required this.totalPages,
     required this.onPageChanged,
@@ -65,6 +66,8 @@ class Pagination extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     return IntrinsicHeight(
       child: Row(
@@ -117,7 +120,7 @@ class Pagination extends StatelessWidget {
               child: Text(localizations.buttonNext),
             ),
         ],
-      ).gap(4),
+      ).gap(4 * scaling),
     );
   }
 }

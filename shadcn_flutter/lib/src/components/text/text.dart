@@ -790,13 +790,6 @@ typedef WrappedTextDataBuilder<T> = T Function(
 
 class WrappedText extends StatelessWidget {
   final Widget child;
-  // final TextStyle? style;
-  //
-  // final TextAlign? textAlign;
-  // final bool? softWrap;
-  // final TextOverflow? overflow;
-  // final int? maxLines;
-  // final TextWidthBasis? textWidthBasis;
   final WrappedTextDataBuilder<TextStyle>? style;
   final WrappedTextDataBuilder<TextAlign>? textAlign;
   final WrappedTextDataBuilder<bool>? softWrap;
@@ -821,12 +814,6 @@ class WrappedText extends StatelessWidget {
     return mergeAnimatedTextStyle(
       child: child,
       duration: kDefaultDuration,
-      // style: style,
-      // textAlign: textAlign,
-      // softWrap: softWrap,
-      // overflow: overflow,
-      // maxLines: maxLines,
-      // textWidthBasis: textWidthBasis,
       style: style?.call(context, theme),
       textAlign: textAlign?.call(context, theme),
       softWrap: softWrap?.call(context, theme),
@@ -835,26 +822,6 @@ class WrappedText extends StatelessWidget {
       textWidthBasis: textWidthBasis?.call(context, theme),
     );
   }
-
-  // WrappedText copyWith({
-  //   TextStyle? style,
-  //   TextAlign? textAlign,
-  //   bool? softWrap,
-  //   TextOverflow? overflow,
-  //   int? maxLines,
-  //   TextWidthBasis? textWidthBasis,
-  //   Widget? child,
-  // }) {
-  //   return WrappedText(
-  //     style: style ?? this.style,
-  //     textAlign: textAlign ?? this.textAlign,
-  //     softWrap: softWrap ?? this.softWrap,
-  //     overflow: overflow ?? this.overflow,
-  //     maxLines: maxLines ?? this.maxLines,
-  //     textWidthBasis: textWidthBasis ?? this.textWidthBasis,
-  //     child: child ?? this.child,
-  //   );
-  // }
 
   WrappedText copyWith({
     WrappedTextDataBuilder<TextStyle>? style,
@@ -875,18 +842,6 @@ class WrappedText extends StatelessWidget {
       child: child ?? this.child,
     );
   }
-
-  // WrappedText copyWithStyle(TextStyle style) {
-  //   return WrappedText(
-  //     style: this.style?.merge(style) ?? style,
-  //     textAlign: textAlign,
-  //     softWrap: softWrap,
-  //     overflow: overflow,
-  //     maxLines: maxLines,
-  //     textWidthBasis: textWidthBasis,
-  //     child: child,
-  //   );
-  // }
 
   WrappedText copyWithStyle(WrappedTextDataBuilder<TextStyle> style) {
     return WrappedText(

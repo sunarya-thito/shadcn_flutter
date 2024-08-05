@@ -117,21 +117,21 @@ class _DrawerWrapperState extends State<DrawerWrapper>
       case OverlayPosition.left:
       case OverlayPosition.right:
         return Container(
-          width: 8,
-          height: 100,
+          width: 8 * theme.scaling,
+          height: 100 * theme.scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.muted,
-            borderRadius: BorderRadius.circular(1000),
+            borderRadius: theme.borderRadiusXxl,
           ),
         );
       case OverlayPosition.top:
       case OverlayPosition.bottom:
         return Container(
-          width: 100,
-          height: 8,
+          width: 100 * theme.scaling,
+          height: 8 * theme.scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.muted,
-            borderRadius: BorderRadius.circular(1000),
+            borderRadius: theme.borderRadiusXxl,
           ),
         );
     }
@@ -199,9 +199,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                 },
                 animation: _extraOffset,
               ),
-              Gap(16),
+              Gap(16 * theme.scaling),
               buildDraggableBar(theme),
-              Gap(16),
+              Gap(16 * theme.scaling),
             ],
           ),
         );
@@ -241,9 +241,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Gap(16),
+              Gap(16 * theme.scaling),
               buildDraggableBar(theme),
-              Gap(16),
+              Gap(16 * theme.scaling),
               AnimatedBuilder(
                 builder: (context, child) {
                   return Transform.scale(
@@ -315,9 +315,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                 },
                 animation: _extraOffset,
               ),
-              Gap(16),
+              Gap(16 * theme.scaling),
               buildDraggableBar(theme),
-              Gap(16),
+              Gap(16 * theme.scaling),
             ],
           ),
         );
@@ -357,9 +357,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Gap(16),
+              Gap(16 * theme.scaling),
               buildDraggableBar(theme),
-              Gap(16),
+              Gap(16 * theme.scaling),
               AnimatedBuilder(
                 builder: (context, child) {
                   return Transform.scale(

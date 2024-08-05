@@ -306,4 +306,45 @@ class Typography {
           : textMuted.copyWith(fontSize: textMuted.fontSize! * factor),
     );
   }
+
+  static Typography lerp(Typography a, Typography b, double t) {
+    return Typography(
+      sans: TextStyle.lerp(a.sans, b.sans, t)!,
+      mono: TextStyle.lerp(a.mono, b.mono, t)!,
+      xSmall: TextStyle.lerp(a.xSmall, b.xSmall, t)!,
+      small: TextStyle.lerp(a.small, b.small, t)!,
+      base: TextStyle.lerp(a.base, b.base, t)!,
+      large: TextStyle.lerp(a.large, b.large, t)!,
+      xLarge: TextStyle.lerp(a.xLarge, b.xLarge, t)!,
+      x2Large: TextStyle.lerp(a.x2Large, b.x2Large, t)!,
+      x3Large: TextStyle.lerp(a.x3Large, b.x3Large, t)!,
+      x4Large: TextStyle.lerp(a.x4Large, b.x4Large, t)!,
+      x5Large: TextStyle.lerp(a.x5Large, b.x5Large, t)!,
+      x6Large: TextStyle.lerp(a.x6Large, b.x6Large, t)!,
+      x7Large: TextStyle.lerp(a.x7Large, b.x7Large, t)!,
+      x8Large: TextStyle.lerp(a.x8Large, b.x8Large, t)!,
+      x9Large: TextStyle.lerp(a.x9Large, b.x9Large, t)!,
+      thin: TextStyle.lerp(a.thin, b.thin, t)!,
+      light: TextStyle.lerp(a.light, b.light, t)!,
+      extraLight: TextStyle.lerp(a.extraLight, b.extraLight, t)!,
+      normal: TextStyle.lerp(a.normal, b.normal, t)!,
+      medium: TextStyle.lerp(a.medium, b.medium, t)!,
+      semiBold: TextStyle.lerp(a.semiBold, b.semiBold, t)!,
+      bold: TextStyle.lerp(a.bold, b.bold, t)!,
+      extraBold: TextStyle.lerp(a.extraBold, b.extraBold, t)!,
+      black: TextStyle.lerp(a.black, b.black, t)!,
+      italic: TextStyle.lerp(a.italic, b.italic, t)!,
+      h1: TextStyle.lerp(a.h1, b.h1, t)!,
+      h2: TextStyle.lerp(a.h2, b.h2, t)!,
+      h3: TextStyle.lerp(a.h3, b.h3, t)!,
+      h4: TextStyle.lerp(a.h4, b.h4, t)!,
+      p: TextStyle.lerp(a.p, b.p, t)!,
+      blockQuote: TextStyle.lerp(a.blockQuote, b.blockQuote, t)!,
+      inlineCode: TextStyle.lerp(a.inlineCode, b.inlineCode, t)!,
+      lead: TextStyle.lerp(a.lead, b.lead, t)!,
+      textLarge: TextStyle.lerp(a.textLarge, b.textLarge, t)!,
+      textSmall: TextStyle.lerp(a.textSmall, b.textSmall, t)!,
+      textMuted: TextStyle.lerp(a.textMuted, b.textMuted, t)!,
+    );
+  }
 }

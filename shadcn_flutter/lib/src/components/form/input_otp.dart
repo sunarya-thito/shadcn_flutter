@@ -211,8 +211,8 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
     }
     if (widget.obscured) {
       return Container(
-        width: 8,
-        height: 8,
+        width: 8 * theme.scaling,
+        height: 8 * theme.scaling,
         decoration: BoxDecoration(
           color: theme.colorScheme.foreground,
           shape: BoxShape.circle,
@@ -275,8 +275,8 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
         return KeyEventResult.ignored;
       },
       child: SizedBox(
-        width: 36,
-        height: 36,
+        width: 36 * theme.scaling,
+        height: 36 * theme.scaling,
         child: Stack(
           children: [
             Positioned.fill(
@@ -369,6 +369,7 @@ class OTPSeparator extends StatelessWidget {
     return const Text('-')
         .bold()
         .withPadding(horizontal: theme.scaling * 4)
+        .base()
         .foreground();
   }
 }

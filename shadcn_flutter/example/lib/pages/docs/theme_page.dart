@@ -196,10 +196,10 @@ class _ThemePageState extends State<ThemePage> {
     }
     buffer += '\n\t\t),';
     buffer += '\n\t\tradius: $radius,';
-    if (scaling != 1) {
-      buffer += '\n\t\tscaling: $scaling,';
-    }
     buffer += '\n\t),';
+    if (scaling != 1) {
+      buffer += '\n\tscaling: const AdaptiveScaling($scaling),';
+    }
     buffer += '\n...';
     buffer += '\n)';
     return buffer;
@@ -213,10 +213,10 @@ class _ThemePageState extends State<ThemePage> {
     buffer += '\n\ttheme: ThemeData(';
     buffer += '\n\t\tcolorScheme: ColorSchemes.$name(),';
     buffer += '\n\t\tradius: $radius,';
-    if (scaling != 1) {
-      buffer += '\n\t\tscaling: $scaling,';
-    }
     buffer += '\n\t),';
+    if (scaling != 1) {
+      buffer += '\n\tscaling: const AdaptiveScaling($scaling),';
+    }
     buffer += '\n...';
     buffer += '\n)';
     return buffer;

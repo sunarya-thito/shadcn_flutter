@@ -71,9 +71,13 @@ class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
 
   @override
   Widget build(BuildContext context) {
+    final menuGroupData = Data.maybeOf<MenuGroupData>(context);
+    assert(
+        menuGroupData != null, 'MenuRadioGroup must be a child of MenuGroup');
     return Data<MenuRadioGroup<T>>(
       data: this,
-      child: Column(
+      child: Flex(
+        direction: menuGroupData!.direction,
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: children,
@@ -102,20 +106,21 @@ class MenuRadio<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     final radioGroup = Data.maybeOf<MenuRadioGroup<T>>(context);
     assert(radioGroup != null, 'MenuRadio must be a child of MenuRadioGroup');
     return Data<MenuRadioGroup<T>>.boundary(
       child: MenuButton(
         leading: radioGroup!.value == value
-            ? const SizedBox(
-                width: 16,
-                height: 16,
-                child: Icon(
+            ? SizedBox(
+                width: 16 * scaling,
+                height: 16 * scaling,
+                child: const Icon(
                   RadixIcons.dotFilled,
-                  size: 6,
-                ),
+                ).iconX4Small(),
               )
-            : const SizedBox(width: 16),
+            : SizedBox(width: 16 * scaling),
         onPressed: (context) {
           radioGroup.onChanged?.call(context, value);
         },
@@ -133,16 +138,31 @@ class MenuDivider extends StatelessWidget implements MenuItem {
   const MenuDivider({super.key});
   @override
   Widget build(BuildContext context) {
+    final menuGroupData = Data.maybeOf<MenuGroupData>(context);
     final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Divider(
-        height: 1,
-        thickness: 1,
-        indent: -4,
-        endIndent: -4,
-        color: theme.colorScheme.border,
-      ),
+    final scaling = theme.scaling;
+    return AnimatedPadding(
+      duration: kDefaultDuration,
+      padding:
+          (menuGroupData == null || menuGroupData.direction == Axis.vertical
+                  ? const EdgeInsets.symmetric(vertical: 4)
+                  : const EdgeInsets.symmetric(horizontal: 4)) *
+              scaling,
+      child: menuGroupData == null || menuGroupData.direction == Axis.vertical
+          ? Divider(
+              height: 1 * scaling,
+              thickness: 1 * scaling,
+              indent: -4 * scaling,
+              endIndent: -4 * scaling,
+              color: theme.colorScheme.border,
+            )
+          : VerticalDivider(
+              width: 1 * scaling,
+              thickness: 1 * scaling,
+              color: theme.colorScheme.border,
+              indent: -4 * scaling,
+              endIndent: -4 * scaling,
+            ),
     );
   }
 
@@ -204,31 +224,32 @@ class MenuLabel extends StatelessWidget implements MenuItem {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
     assert(menuGroupData != null, 'MenuLabel must be a child of MenuGroup');
     return Padding(
-      padding: const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6),
+      padding:
+          const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6) * scaling,
       child: Basic(
-        contentSpacing: 8,
+        contentSpacing: 8 * scaling,
         leading: leading == null && menuGroupData!.hasLeading
-            ? const SizedBox(width: 16)
+            ? SizedBox(width: 16 * scaling)
             : leading == null
                 ? null
                 : SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: IconTheme.merge(
-                      data: const IconThemeData(
-                        size: 16,
-                      ),
-                      child: leading!,
-                    ),
+                    width: 16 * scaling,
+                    height: 16 * scaling,
+                    child: leading!.iconSmall(),
                   ),
         trailing: trailing,
         content: UnderlineInterceptor(child: child.semiBold()),
         trailingAlignment: Alignment.center,
         leadingAlignment: Alignment.center,
-        contentAlignment: Alignment.centerLeft,
+        contentAlignment:
+            menuGroupData == null || menuGroupData.direction == Axis.vertical
+                ? Alignment.centerLeft
+                : Alignment.center,
       ),
     );
   }
@@ -261,17 +282,18 @@ class MenuCheckbox extends StatelessWidget implements MenuItem {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return MenuButton(
       leading: value
-          ? const SizedBox(
-              width: 16,
-              height: 16,
-              child: Icon(
+          ? SizedBox(
+              width: 16 * scaling,
+              height: 16 * scaling,
+              child: const Icon(
                 RadixIcons.check,
-                size: 11,
-              ),
+              ).iconXSmall(),
             )
-          : const SizedBox(width: 16),
+          : SizedBox(width: 16 * scaling),
       onPressed: (context) {
         onChanged?.call(context, !value);
       },
@@ -315,6 +337,7 @@ class _MenuButtonState extends State<MenuButton> {
     final menuBarData = Data.maybeOf<MenubarState>(context);
     final menuData = Data.maybeOf<MenuData>(context);
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
+    assert(menuGroupData != null, 'MenuButton must be a child of MenuGroup');
     void openSubMenu(BuildContext context) {
       menuGroupData!.closeOthers();
       menuData!.popoverController.show(
@@ -323,18 +346,22 @@ class _MenuButtonState extends State<MenuButton> {
         consumeOutsideTaps: false,
         dismissBackdropFocus: false,
         builder: (context) {
+          final theme = Theme.of(context);
+          final scaling = theme.scaling;
           return ConstrainedBox(
             constraints: const BoxConstraints(
-              minWidth: 192, // 12rem
-            ),
+                  minWidth: 192, // 12rem
+                ) *
+                scaling,
             child: AnimatedBuilder(
                 animation: _children,
                 builder: (context, child) {
                   return MenuGroup(
+                      direction: menuGroupData.direction,
                       parent: menuGroupData,
                       onDismissed: menuGroupData.onDismissed,
                       regionGroupId: menuGroupData.regionGroupId,
-                      subMenuOffset: const Offset(8, -4 + -1),
+                      subMenuOffset: const Offset(8, -4 + -1) * scaling,
                       builder: (context, children) {
                         return MenuPopup(
                           children: children,
@@ -351,103 +378,104 @@ class _MenuButtonState extends State<MenuButton> {
       );
     }
 
-    return Data<MenuGroupData>.boundary(
-      child: Data<MenuData>.boundary(
-        child: Data<MenubarState>.boundary(
-          child: TapRegion(
-            groupId: menuGroupData!.root,
-            child: AnimatedBuilder(
-                animation: menuData!.popoverController,
-                builder: (context, child) {
-                  return Button(
-                    style: (menuBarData == null
-                            ? ButtonVariance.menu
-                            : ButtonVariance.menubar)
-                        .copyWith(
-                      decoration: (context, states, value) {
-                        final theme = Theme.of(context);
-                        return (value as BoxDecoration).copyWith(
-                          color: menuData.popoverController.hasOpenPopover
-                              ? theme.colorScheme.accent
-                              : null,
-                          borderRadius: BorderRadius.circular(theme.radiusMd),
-                        );
-                      },
-                    ),
-                    trailing: menuBarData != null
-                        ? widget.trailing
-                        : Row(
-                            children: [
-                              if (widget.trailing != null) widget.trailing!,
-                              if (widget.subMenu != null && menuBarData == null)
-                                const Icon(
-                                  RadixIcons.chevronRight,
-                                  size: 16,
-                                ),
-                            ],
-                          ).gap(8),
-                    leading: widget.leading == null &&
-                            menuGroupData.hasLeading &&
-                            menuBarData == null
-                        ? const SizedBox(width: 16)
-                        : widget.leading == null
-                            ? null
-                            : SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: IconTheme.merge(
-                                  data: const IconThemeData(
-                                    size: 16,
-                                  ),
-                                  child: widget.leading!,
-                                ),
-                              ),
-                    disableTransition: true,
-                    enabled: widget.enabled,
-                    focusNode: _focusNode,
-                    onHover: (value) {
-                      if (value) {
-                        if ((menuBarData == null ||
-                                menuGroupData.hasOpenPopovers) &&
-                            widget.subMenu != null &&
-                            widget.subMenu!.isNotEmpty) {
-                          if (!menuData.popoverController.hasOpenPopover) {
-                            openSubMenu(context);
-                          }
-                        } else {
-                          menuGroupData.closeOthers();
-                        }
-                      }
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+
+    return Data<MenuData>.boundary(
+      child: Data<MenubarState>.boundary(
+        child: TapRegion(
+          groupId: menuGroupData!.root,
+          child: AnimatedBuilder(
+              animation: menuData!.popoverController,
+              builder: (context, child) {
+                return Button(
+                  alignment: menuGroupData.direction == Axis.vertical
+                      ? Alignment.centerLeft
+                      : Alignment.center,
+                  style: (menuBarData == null
+                          ? ButtonVariance.menu
+                          : ButtonVariance.menubar)
+                      .copyWith(
+                    decoration: (context, states, value) {
+                      final theme = Theme.of(context);
+                      return (value as BoxDecoration).copyWith(
+                        color: menuData.popoverController.hasOpenPopover
+                            ? theme.colorScheme.accent
+                            : null,
+                        borderRadius: BorderRadius.circular(theme.radiusMd),
+                      );
                     },
-                    onFocus: (value) {
-                      if (value) {
-                        if (widget.subMenu != null &&
-                            widget.subMenu!.isNotEmpty) {
-                          if (!menuData.popoverController.hasOpenPopover) {
-                            openSubMenu(context);
-                          }
-                        } else {
-                          menuGroupData.closeOthers();
+                  ),
+                  trailing: menuBarData != null
+                      ? widget.trailing
+                      : widget.trailing != null ||
+                              (widget.subMenu != null && menuBarData == null)
+                          ? Row(
+                              children: [
+                                if (widget.trailing != null) widget.trailing!,
+                                if (widget.subMenu != null &&
+                                    menuBarData == null)
+                                  const Icon(
+                                    RadixIcons.chevronRight,
+                                  ).iconSmall(),
+                              ],
+                            ).gap(8 * scaling)
+                          : null,
+                  leading: widget.leading == null &&
+                          menuGroupData.hasLeading &&
+                          menuBarData == null
+                      ? SizedBox(width: 16 * scaling)
+                      : widget.leading == null
+                          ? null
+                          : SizedBox(
+                              width: 16 * scaling,
+                              height: 16 * scaling,
+                              child: widget.leading!.iconSmall(),
+                            ),
+                  disableTransition: true,
+                  enabled: widget.enabled,
+                  focusNode: _focusNode,
+                  onHover: (value) {
+                    if (value) {
+                      if ((menuBarData == null ||
+                              menuGroupData.hasOpenPopovers) &&
+                          widget.subMenu != null &&
+                          widget.subMenu!.isNotEmpty) {
+                        if (!menuData.popoverController.hasOpenPopover) {
+                          openSubMenu(context);
                         }
+                      } else {
+                        menuGroupData.closeOthers();
                       }
-                    },
-                    onPressed: () {
-                      widget.onPressed?.call(context);
+                    }
+                  },
+                  onFocus: (value) {
+                    if (value) {
                       if (widget.subMenu != null &&
                           widget.subMenu!.isNotEmpty) {
                         if (!menuData.popoverController.hasOpenPopover) {
                           openSubMenu(context);
                         }
                       } else {
-                        if (widget.autoClose) {
-                          menuGroupData.closeAll();
-                        }
+                        menuGroupData.closeOthers();
                       }
-                    },
-                    child: widget.child,
-                  );
-                }),
-          ),
+                    }
+                  },
+                  onPressed: () {
+                    widget.onPressed?.call(context);
+                    if (widget.subMenu != null && widget.subMenu!.isNotEmpty) {
+                      if (!menuData.popoverController.hasOpenPopover) {
+                        openSubMenu(context);
+                      }
+                    } else {
+                      if (widget.autoClose) {
+                        menuGroupData.closeAll();
+                      }
+                    }
+                  },
+                  child: widget.child,
+                );
+              }),
         ),
       ),
     );
@@ -461,14 +489,14 @@ class MenuGroupData {
   final Offset? subMenuOffset;
   final VoidCallback? onDismissed;
   final Object? regionGroupId;
+  final Axis direction;
 
   MenuGroupData(this.parent, this.children, this.hasLeading, this.subMenuOffset,
-      this.onDismissed, this.regionGroupId);
+      this.onDismissed, this.regionGroupId, this.direction);
 
   bool get hasOpenPopovers {
     for (final child in children) {
       if (child.popoverController.hasOpenPopover) {
-        const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6);
         return true;
       }
     }
@@ -520,6 +548,11 @@ class MenuGroupData {
         subMenuOffset,
         onDismissed,
       );
+
+  @override
+  String toString() {
+    return 'MenuGroupData{parent: $parent, children: $children, hasLeading: $hasLeading, subMenuOffset: $subMenuOffset, onDismissed: $onDismissed, regionGroupId: $regionGroupId, direction: $direction}';
+  }
 }
 
 class MenuData {
@@ -536,6 +569,7 @@ class MenuGroup extends StatefulWidget {
   final Offset? subMenuOffset;
   final VoidCallback? onDismissed;
   final Object? regionGroupId;
+  final Axis direction;
 
   const MenuGroup({
     super.key,
@@ -545,6 +579,7 @@ class MenuGroup extends StatefulWidget {
     this.subMenuOffset,
     this.onDismissed,
     this.regionGroupId,
+    required this.direction,
   });
 
   @override
@@ -637,6 +672,7 @@ class _MenuGroupState extends State<MenuGroup> {
             widget.subMenuOffset,
             widget.onDismissed,
             widget.regionGroupId,
+            widget.direction,
           ),
           child: widget.builder(context, children),
         ),

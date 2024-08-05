@@ -82,7 +82,7 @@ class _StarRatingState extends State<StarRating> with FormValueSupplier {
           pointRounding: widget.starPointRounding ?? (theme.radius / 2),
           valleyRounding: starValleyRounding * theme.radius,
           squash: starSquash,
-          innerRadiusRatio: starInnerRadiusRatio * scaling,
+          innerRadiusRatio: starInnerRadiusRatio,
           rotation: starRotation,
         ),
       ),
@@ -97,8 +97,6 @@ class _StarRatingState extends State<StarRating> with FormValueSupplier {
     double containerHeight = 0;
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    // var starSize = (widget.starSize ?? 24.0) * scaling;
-    // var starSpacing = (widget.starSpacing ?? 5.0) * scaling;
     var starSize = widget.starSize != null ? widget.starSize! : 24.0 * scaling;
     var starSpacing =
         widget.starSpacing != null ? widget.starSpacing! : 5.0 * scaling;

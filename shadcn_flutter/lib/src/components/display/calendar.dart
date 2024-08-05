@@ -7,6 +7,13 @@ enum CalendarViewType {
   year,
 }
 
+enum DateState {
+  disabled,
+  enabled,
+}
+
+typedef DateStateBuilder = DateState Function(DateTime date);
+
 class DatePickerDialog extends StatefulWidget {
   final CalendarViewType initialViewType;
   final CalendarView? initialView;
@@ -14,8 +21,7 @@ class DatePickerDialog extends StatefulWidget {
   final CalendarValue? initialValue;
   final ValueChanged<CalendarValue?>? onChanged;
   final bool Function(DateTime date)? isDateEnabled;
-  final Widget? Function(BuildContext context, DateTime date)? dateBuilder;
-  final Widget? Function(BuildContext context, int weekday)? weekDayBuilder;
+  final DateStateBuilder? stateBuilder;
 
   const DatePickerDialog({
     super.key,
@@ -25,8 +31,7 @@ class DatePickerDialog extends StatefulWidget {
     this.initialValue,
     this.onChanged,
     this.isDateEnabled,
-    this.dateBuilder,
-    this.weekDayBuilder,
+    this.stateBuilder,
   });
 
   @override
@@ -361,6 +366,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
         value: view.year,
         yearSelectStart: yearSelectStart,
         calendarValue: _value,
+        stateBuilder: widget.stateBuilder,
         onChanged: (value) {
           setState(() {
             onViewChanged(view.copyWith(year: value));
@@ -372,12 +378,14 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
       return MonthCalendar(
         value: view,
         onChanged: onViewChanged,
+        stateBuilder: widget.stateBuilder,
         calendarValue: _value,
       );
     }
     return Calendar(
       value: _value,
       view: view,
+      stateBuilder: widget.stateBuilder,
       onChanged: (value) {
         setState(() {
           _value = value;
@@ -684,8 +692,7 @@ class Calendar extends StatelessWidget {
   final CalendarSelectionMode selectionMode;
   final ValueChanged<CalendarValue?>? onChanged;
   final bool Function(DateTime date)? isDateEnabled;
-  final Widget? Function(BuildContext context, DateTime date)? dateBuilder;
-  final Widget? Function(BuildContext context, int weekday)? weekDayBuilder;
+  final DateStateBuilder? stateBuilder;
 
   const Calendar({
     super.key,
@@ -695,8 +702,7 @@ class Calendar extends StatelessWidget {
     required this.selectionMode,
     this.onChanged,
     this.isDateEnabled,
-    this.dateBuilder,
-    this.weekDayBuilder,
+    this.stateBuilder,
   });
 
   void _handleTap(DateTime date) {
@@ -797,10 +803,9 @@ class Calendar extends StatelessWidget {
           width: theme.scaling * 32,
           height: theme.scaling * 32,
           alignment: Alignment.center,
-          child: weekDayBuilder?.call(context, weekday) ??
-              Text(localizations.getAbbreviatedWeekday(weekday))
-                  .muted()
-                  .xSmall(),
+          child: Text(localizations.getAbbreviatedWeekday(weekday))
+              .muted()
+              .xSmall(),
         ),
       );
     }
@@ -846,23 +851,20 @@ class Calendar extends StatelessWidget {
           type = CalendarItemType.today;
         }
       }
-      days.add(dateBuilder?.call(
-            context,
-            dateTime,
-          ) ??
-          Opacity(
-            opacity: 0.5,
-            child: CalendarItem(
-              key: ValueKey(dateTime),
-              type: type,
-              indexAtRow: indexAtRow,
-              rowCount: 7,
-              onTap: () {
-                _handleTap(dateTime);
-              },
-              child: Text('$previousMonthDay'),
-            ),
-          ));
+      days.add(Opacity(
+        opacity: 0.5,
+        child: CalendarItem(
+          key: ValueKey(dateTime),
+          type: type,
+          indexAtRow: indexAtRow,
+          rowCount: 7,
+          onTap: () {
+            _handleTap(dateTime);
+          },
+          state: stateBuilder?.call(dateTime) ?? DateState.enabled,
+          child: Text('$previousMonthDay'),
+        ),
+      ));
     }
     // then the days of the month
     for (int i = 1; i <= daysInMonth; i++) {
@@ -895,19 +897,19 @@ class Calendar extends StatelessWidget {
           type = CalendarItemType.today;
         }
       }
-      days.add(dateBuilder?.call(context, date) ??
-          CalendarItem(
-            key: ValueKey(date),
-            type: type,
-            indexAtRow: indexAtRow,
-            rowCount: 7,
-            onTap: () {
-              if (isDateEnabled?.call(date) ?? true) {
-                _handleTap(date);
-              }
-            },
-            child: Text('$i'),
-          ));
+      days.add(CalendarItem(
+        key: ValueKey(date),
+        type: type,
+        indexAtRow: indexAtRow,
+        rowCount: 7,
+        onTap: () {
+          if (isDateEnabled?.call(date) ?? true) {
+            _handleTap(date);
+          }
+        },
+        state: stateBuilder?.call(date) ?? DateState.enabled,
+        child: Text('$i'),
+      ));
     }
     // actual needed rows
     int neededRows = (days.length / 7).ceil();
@@ -946,19 +948,19 @@ class Calendar extends StatelessWidget {
           type = CalendarItemType.today;
         }
       }
-      days.add(dateBuilder?.call(context, dateTime) ??
-          Opacity(
-            opacity: 0.5,
-            child: CalendarItem(
-              type: type,
-              indexAtRow: indexAtRow,
-              rowCount: 7,
-              onTap: () {
-                _handleTap(dateTime);
-              },
-              child: Text('$nextMonthDay'),
-            ),
-          ));
+      days.add(Opacity(
+        opacity: 0.5,
+        child: CalendarItem(
+          type: type,
+          indexAtRow: indexAtRow,
+          rowCount: 7,
+          onTap: () {
+            _handleTap(dateTime);
+          },
+          state: stateBuilder?.call(dateTime) ?? DateState.enabled,
+          child: Text('$nextMonthDay'),
+        ),
+      ));
     }
     // split the days into rows
     for (int i = 0; i < days.length; i += 7) {
@@ -981,6 +983,7 @@ class MonthCalendar extends StatelessWidget {
   final ValueChanged<CalendarView> onChanged;
   final DateTime? now;
   final CalendarValue? calendarValue;
+  final DateStateBuilder? stateBuilder;
 
   const MonthCalendar({
     super.key,
@@ -988,6 +991,7 @@ class MonthCalendar extends StatelessWidget {
     required this.onChanged,
     this.now,
     this.calendarValue,
+    this.stateBuilder,
   });
 
   @override
@@ -1039,6 +1043,7 @@ class MonthCalendar extends StatelessWidget {
             onChanged(value.copyWith(month: i));
           },
           width: theme.scaling * 56,
+          state: stateBuilder?.call(date) ?? DateState.enabled,
           child: Text(localizations.getAbbreviatedMonth(i)),
         ),
       );
@@ -1062,6 +1067,7 @@ class YearCalendar extends StatelessWidget {
   final ValueChanged<int> onChanged;
   final DateTime? now;
   final CalendarValue? calendarValue;
+  final DateStateBuilder? stateBuilder;
 
   const YearCalendar({
     super.key,
@@ -1070,6 +1076,7 @@ class YearCalendar extends StatelessWidget {
     required this.onChanged,
     this.now,
     this.calendarValue,
+    this.stateBuilder,
   });
 
   @override
@@ -1118,6 +1125,7 @@ class YearCalendar extends StatelessWidget {
             onChanged(i);
           },
           width: theme.scaling * 56,
+          state: stateBuilder?.call(date) ?? DateState.enabled,
           child: Text('$i'),
         ),
       );
@@ -1158,6 +1166,7 @@ class CalendarItem extends StatelessWidget {
   final int rowCount;
   final double? width;
   final double? height;
+  final DateState state;
 
   const CalendarItem({
     super.key,
@@ -1168,6 +1177,7 @@ class CalendarItem extends StatelessWidget {
     this.onTap,
     this.width,
     this.height,
+    required this.state,
   });
 
   @override
@@ -1181,6 +1191,7 @@ class CalendarItem extends StatelessWidget {
           child: GhostButton(
             density: ButtonDensity.compact,
             alignment: Alignment.center,
+            enabled: state == DateState.enabled,
             onPressed: onTap,
             child: child,
           ),
@@ -1192,6 +1203,7 @@ class CalendarItem extends StatelessWidget {
           child: SecondaryButton(
             density: ButtonDensity.compact,
             alignment: Alignment.center,
+            enabled: state == DateState.enabled,
             onPressed: onTap,
             child: child,
           ),
@@ -1203,6 +1215,7 @@ class CalendarItem extends StatelessWidget {
           child: PrimaryButton(
             density: ButtonDensity.compact,
             alignment: Alignment.center,
+            enabled: state == DateState.enabled,
             onPressed: onTap,
             child: child,
           ),
@@ -1214,6 +1227,7 @@ class CalendarItem extends StatelessWidget {
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
+            enabled: state == DateState.enabled,
             style: const ButtonStyle(
               variance: ButtonVariance.secondary,
               density: ButtonDensity.compact,
@@ -1244,6 +1258,7 @@ class CalendarItem extends StatelessWidget {
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
+            enabled: state == DateState.enabled,
             style: const ButtonStyle(
               variance: ButtonVariance.secondary,
               density: ButtonDensity.compact,
@@ -1267,6 +1282,7 @@ class CalendarItem extends StatelessWidget {
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
+            enabled: state == DateState.enabled,
             style: const ButtonStyle(
               variance: ButtonVariance.secondary,
               density: ButtonDensity.compact,
@@ -1304,6 +1320,7 @@ class CalendarItem extends StatelessWidget {
               PrimaryButton(
                 density: ButtonDensity.compact,
                 alignment: Alignment.center,
+                enabled: state == DateState.enabled,
                 onPressed: onTap,
                 child: child,
               ),
@@ -1331,6 +1348,7 @@ class CalendarItem extends StatelessWidget {
               PrimaryButton(
                 density: ButtonDensity.compact,
                 alignment: Alignment.center,
+                enabled: state == DateState.enabled,
                 onPressed: onTap,
                 child: child,
               ),
@@ -1344,6 +1362,7 @@ class CalendarItem extends StatelessWidget {
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
+            enabled: state == DateState.enabled,
             style: const ButtonStyle(
               variance: ButtonVariance.primary,
               density: ButtonDensity.compact,
@@ -1367,6 +1386,7 @@ class CalendarItem extends StatelessWidget {
           child: Button(
             alignment: Alignment.center,
             onPressed: onTap,
+            enabled: state == DateState.enabled,
             style: const ButtonStyle(
               variance: ButtonVariance.primary,
               density: ButtonDensity.compact,
@@ -1389,6 +1409,7 @@ class CalendarItem extends StatelessWidget {
           height: height ?? theme.scaling * 32,
           child: Button(
             alignment: Alignment.center,
+            enabled: state == DateState.enabled,
             onPressed: onTap,
             style: const ButtonStyle(
               variance: ButtonVariance.primary,

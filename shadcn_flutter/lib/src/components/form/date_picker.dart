@@ -7,13 +7,12 @@ class DatePicker extends StatelessWidget {
   final PromptMode mode;
   final CalendarView? initialView;
   final bool Function(DateTime date)? isDateEnabled;
-  final Widget Function(BuildContext context, DateTime date)? dateBuilder;
-  final Widget Function(BuildContext context, int weekday)? weekDayBuilder;
   final Alignment? popoverAlignment;
   final Alignment? popoverAnchorAlignment;
   final EdgeInsets? popoverPadding;
   final Widget? dialogTitle;
   final CalendarViewType? initialViewType;
+  final DateStateBuilder? stateBuilder;
 
   const DatePicker({
     Key? key,
@@ -23,13 +22,12 @@ class DatePicker extends StatelessWidget {
     this.mode = PromptMode.dialog,
     this.initialView,
     this.isDateEnabled,
-    this.dateBuilder,
-    this.weekDayBuilder,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
     this.dialogTitle,
     this.initialViewType,
+    this.stateBuilder,
   }) : super(key: key);
 
   @override
@@ -59,8 +57,7 @@ class DatePicker extends StatelessWidget {
                 value == null ? null : (value as SingleCalendarValue).date);
           },
           isDateEnabled: isDateEnabled,
-          dateBuilder: dateBuilder,
-          weekDayBuilder: weekDayBuilder,
+          stateBuilder: stateBuilder,
         );
       },
     );
@@ -106,12 +103,11 @@ class DateRangePicker extends StatelessWidget {
   final CalendarView? initialView;
   final CalendarViewType? initialViewType;
   final bool Function(DateTime date)? isDateEnabled;
-  final Widget Function(BuildContext context, DateTime date)? dateBuilder;
-  final Widget Function(BuildContext context, int weekday)? weekDayBuilder;
   final Alignment? popoverAlignment;
   final Alignment? popoverAnchorAlignment;
   final EdgeInsets? popoverPadding;
   final Widget? dialogTitle;
+  final DateStateBuilder? stateBuilder;
 
   const DateRangePicker({
     Key? key,
@@ -121,13 +117,12 @@ class DateRangePicker extends StatelessWidget {
     this.mode = PromptMode.dialog,
     this.initialView,
     this.isDateEnabled,
-    this.dateBuilder,
-    this.weekDayBuilder,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
     this.dialogTitle,
     this.initialViewType,
+    this.stateBuilder,
   }) : super(key: key);
 
   @override
@@ -164,8 +159,7 @@ class DateRangePicker extends StatelessWidget {
             }
           },
           isDateEnabled: isDateEnabled,
-          dateBuilder: dateBuilder,
-          weekDayBuilder: weekDayBuilder,
+          stateBuilder: stateBuilder,
         );
       },
     );

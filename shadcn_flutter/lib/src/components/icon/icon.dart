@@ -1,6 +1,21 @@
 import '../../../shadcn_flutter.dart';
 
 extension IconExtension on Widget {
+  Widget iconX4Small() {
+    return WrappedIcon(
+        data: (context, theme) => theme.iconTheme.x4Small, child: this);
+  }
+
+  Widget iconX3Small() {
+    return WrappedIcon(
+        data: (context, theme) => theme.iconTheme.x3Small, child: this);
+  }
+
+  Widget iconX2Small() {
+    return WrappedIcon(
+        data: (context, theme) => theme.iconTheme.x2Small, child: this);
+  }
+
   Widget iconXSmall() {
     return WrappedIcon(
         data: (context, theme) => theme.iconTheme.xSmall, child: this);
@@ -24,6 +39,21 @@ extension IconExtension on Widget {
   Widget iconXLarge() {
     return WrappedIcon(
         data: (context, theme) => theme.iconTheme.xLarge, child: this);
+  }
+
+  Widget iconX2Large() {
+    return WrappedIcon(
+        data: (context, theme) => theme.iconTheme.x2Large, child: this);
+  }
+
+  Widget iconX3Large() {
+    return WrappedIcon(
+        data: (context, theme) => theme.iconTheme.x3Large, child: this);
+  }
+
+  Widget iconX4Large() {
+    return WrappedIcon(
+        data: (context, theme) => theme.iconTheme.x4Large, child: this);
   }
 
   Widget iconMutedForeground() {
@@ -97,7 +127,11 @@ class WrappedIcon extends StatelessWidget {
     WrappedIconDataBuilder<IconThemeData>? data,
   }) {
     return WrappedIcon(
-      data: data ?? this.data,
+      data: (context, theme) {
+        final current = this.data(context, theme);
+        final next = data?.call(context, theme);
+        return current.merge(next);
+      },
       child: child,
     );
   }

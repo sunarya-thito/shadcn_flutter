@@ -2,24 +2,39 @@ import 'package:flutter/gestures.dart';
 
 import '../../../shadcn_flutter.dart';
 
+class _ArrowSeparator extends StatelessWidget {
+  const _ArrowSeparator({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12 * scaling),
+      child: const Icon(
+        RadixIcons.chevronRight,
+      ).iconXSmall().muted(),
+    );
+  }
+}
+
+class _SlashSeparator extends StatelessWidget {
+  const _SlashSeparator({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4 * scaling),
+      child: Text('/').small().muted(),
+    );
+  }
+}
+
 class Breadcrumb extends StatelessWidget {
-  static final Widget arrowSeparator = Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 12),
-    child: Builder(
-      builder: (context) {
-        final theme = Theme.of(context);
-        return Icon(
-          Icons.arrow_forward_ios,
-          size: 10,
-          color: theme.colorScheme.mutedForeground,
-        );
-      },
-    ),
-  );
-  static const Widget slashSeparator = Padding(
-    padding: EdgeInsets.symmetric(horizontal: 4),
-    child: Text('/'),
-  );
+  static const Widget arrowSeparator = _ArrowSeparator();
+  static const Widget slashSeparator = _SlashSeparator();
   final List<Widget> children;
   final Widget separator;
 

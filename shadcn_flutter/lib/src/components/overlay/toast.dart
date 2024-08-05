@@ -69,18 +69,10 @@ enum ToastLocation {
 
   final Alignment alignment;
   final Alignment childrenAlignment;
-  final double? top;
-  final double? right;
-  final double? bottom;
-  final double? left;
 
   const ToastLocation({
     required this.alignment,
     required this.childrenAlignment,
-    this.top,
-    this.right,
-    this.bottom,
-    this.left,
   });
 }
 
@@ -94,31 +86,31 @@ enum ExpandMode {
 class ToastLayer extends StatefulWidget {
   final Widget child;
   final int maxStackedEntries;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   final ExpandMode expandMode;
-  final Offset collapsedOffset;
+  final Offset? collapsedOffset;
   final double collapsedScale;
   final Curve expandingCurve;
   final Duration expandingDuration;
   final double collapsedOpacity;
   final double entryOpacity;
   final double spacing;
-  final BoxConstraints toastConstraints;
+  final BoxConstraints? toastConstraints;
 
   const ToastLayer({
     super.key,
     required this.child,
     this.maxStackedEntries = 3,
-    this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+    this.padding,
     this.expandMode = ExpandMode.expandOnHover,
-    this.collapsedOffset = const Offset(0, 12),
+    this.collapsedOffset,
     this.collapsedScale = 0.9,
     this.expandingCurve = Curves.easeOutCubic,
     this.expandingDuration = const Duration(milliseconds: 500),
     this.collapsedOpacity = 1,
     this.entryOpacity = 0.0,
     this.spacing = 8,
-    this.toastConstraints = const BoxConstraints.tightFor(width: 320),
+    this.toastConstraints,
   });
 
   @override
@@ -170,6 +162,8 @@ class _ToastLayerState extends State<ToastLayer> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     int reservedEntries = widget.maxStackedEntries;
     List<Widget> children = [
       widget.child,
@@ -184,6 +178,11 @@ class _ToastLayerState extends State<ToastLayer> {
       Alignment entryAlignment = location.childrenAlignment * -1;
       List<Widget> positionedChildren = [];
       int toastIndex = 0;
+      var collapsedOffset =
+          widget.collapsedOffset ?? (const Offset(0, 12) * scaling);
+      var padding = widget.padding ?? (const EdgeInsets.all(24) * scaling);
+      var toastConstraints = widget.toastConstraints ??
+          BoxConstraints.tightFor(width: 320 * scaling);
       for (var i = entries.length - 1; i >= startVisible; i--) {
         var entry = entries[i];
         positionedChildren.insert(
@@ -201,7 +200,7 @@ class _ToastLayerState extends State<ToastLayer> {
             themes: entry.entry.themes,
             data: entry.entry.data,
             closing: entry._isClosing,
-            collapsedOffset: widget.collapsedOffset,
+            collapsedOffset: collapsedOffset,
             collapsedScale: widget.collapsedScale,
             expandingCurve: widget.expandingCurve,
             expandingDuration: widget.expandingDuration,
@@ -212,10 +211,10 @@ class _ToastLayerState extends State<ToastLayer> {
               entry.entry.onClosed?.call();
             },
             entryOffset: Offset(
-              widget.padding.left * entryAlignment.x.clamp(0, 1) +
-                  widget.padding.right * entryAlignment.x.clamp(-1, 0),
-              widget.padding.top * entryAlignment.y.clamp(0, 1) +
-                  widget.padding.bottom * entryAlignment.y.clamp(-1, 0),
+              padding.left * entryAlignment.x.clamp(0, 1) +
+                  padding.right * entryAlignment.x.clamp(-1, 0),
+              padding.top * entryAlignment.y.clamp(0, 1) +
+                  padding.bottom * entryAlignment.y.clamp(-1, 0),
             ),
             entryAlignment: entryAlignment,
             spacing: widget.spacing,
@@ -225,7 +224,7 @@ class _ToastLayerState extends State<ToastLayer> {
               entry.close();
             },
             child: ConstrainedBox(
-              constraints: widget.toastConstraints,
+              constraints: toastConstraints,
               child: entry.entry.builder(context, entry),
             ),
           ),
@@ -240,7 +239,7 @@ class _ToastLayerState extends State<ToastLayer> {
       children.add(
         Positioned.fill(
           child: Padding(
-            padding: widget.padding,
+            padding: padding,
             child: Align(
               alignment: location.alignment,
               child: MouseRegion(
@@ -255,7 +254,7 @@ class _ToastLayerState extends State<ToastLayer> {
                 },
                 onExit: (event) {
                   int currentCount = ++locationEntry.value._hoverCount;
-                  Future.delayed(Duration(milliseconds: 300), () {
+                  Future.delayed(const Duration(milliseconds: 300), () {
                     if (currentCount == locationEntry.value._hoverCount) {
                       setState(() {
                         locationEntry.value._expanding = false;
@@ -264,7 +263,7 @@ class _ToastLayerState extends State<ToastLayer> {
                   });
                 },
                 child: ConstrainedBox(
-                  constraints: widget.toastConstraints,
+                  constraints: toastConstraints,
                   child: Stack(
                     alignment: location.alignment,
                     clipBehavior: Clip.none,

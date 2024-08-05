@@ -34,11 +34,9 @@ class _CarouselExample2State extends State<CarouselExample2> {
                 controller: controller,
                 direction: Axis.vertical,
                 sizeFactor: 0.8,
-                autoplayDuration: const Duration(seconds: 2),
                 itemBuilder: (context, index) {
                   return NumberedContainer(index: index);
                 },
-                duration: const Duration(seconds: 2),
               ),
             ),
           ),

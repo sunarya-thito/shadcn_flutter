@@ -35,10 +35,12 @@ class UnderlineText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     Color? underlineColor;
     TextStyle textStyle = DefaultTextStyle.of(context).style;
     underlineColor = textStyle.decorationColor ?? textStyle.color;
-    underlineColor ??= Theme.of(context).colorScheme.foreground;
+    underlineColor ??= theme.colorScheme.foreground;
     return DefaultTextStyle.merge(
       style: underline
           ? textStyle.copyWith(
@@ -48,13 +50,14 @@ class UnderlineText extends StatelessWidget {
               shadows: [
                   Shadow(
                     color: textStyle.color ?? underlineColor,
-                    offset: const Offset(0, -2),
+                    offset: const Offset(0, -2) * scaling,
                     blurRadius: 0,
                   ),
                 ])
           : textStyle,
       child: Transform.translate(
-        offset: underline && translate ? const Offset(0, 2) : Offset.zero,
+        offset:
+            underline && translate ? const Offset(0, 2) * scaling : Offset.zero,
         child: child,
       ),
     );

@@ -13,25 +13,20 @@ class TooltipContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return AnimatedContainer(
       duration: kDefaultDuration,
-      margin: const EdgeInsets.all(6),
+      margin: const EdgeInsets.all(6) * scaling,
       padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 6,
-      ),
+            horizontal: 12,
+            vertical: 6,
+          ) *
+          scaling,
       decoration: BoxDecoration(
         color: theme.colorScheme.primary,
         borderRadius: BorderRadius.circular(theme.radiusSm),
       ),
-      child: mergeAnimatedTextStyle(
-        child: child,
-        duration: kDefaultDuration,
-        style: TextStyle(
-          fontSize: 12,
-          color: theme.colorScheme.primaryForeground,
-        ),
-      ),
+      child: child.xSmall().primaryForeground(),
     );
   }
 }

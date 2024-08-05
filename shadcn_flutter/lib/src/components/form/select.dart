@@ -246,8 +246,10 @@ class SelectLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8) * scaling,
       child: child.semiBold(),
     );
   }
@@ -260,8 +262,8 @@ class Select<T> extends StatefulWidget {
   final Widget? placeholder; // placeholder when value is null
   final bool filled;
   final FocusNode? focusNode;
-  final BoxConstraints constraints;
-  final BoxConstraints popupConstraints;
+  final BoxConstraints? constraints;
+  final BoxConstraints? popupConstraints;
   final PopoverConstraint popupWidthConstraint;
   final List<AbstractSelectItem<T>> children;
   final T? value;
@@ -282,8 +284,8 @@ class Select<T> extends StatefulWidget {
     this.placeholder,
     this.filled = false,
     this.focusNode,
-    this.constraints = const BoxConstraints(),
-    this.popupConstraints = const BoxConstraints(),
+    this.constraints,
+    this.popupConstraints,
     this.popupWidthConstraint = PopoverConstraint.anchorMinSize,
     this.value,
     this.showUnrelatedValues = false,
@@ -336,8 +338,9 @@ class _SelectState<T> extends State<Select<T>> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return ConstrainedBox(
-      constraints: widget.constraints,
+      constraints: widget.constraints ?? const BoxConstraints(),
       child: Button(
         focusNode: _focusNode,
         style:
@@ -388,15 +391,14 @@ class _SelectState<T> extends State<Select<T>> {
                     )
                   : placeholder,
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8 * scaling),
             AnimatedIconTheme(
               data: IconThemeData(
                 color: theme.colorScheme.foreground,
-                size: 15,
                 opacity: 0.5,
               ),
               duration: kDefaultDuration,
-              child: const Icon(Icons.unfold_more),
+              child: const Icon(Icons.unfold_more).iconSmall(),
             ),
           ],
         ),
@@ -408,7 +410,7 @@ class _SelectState<T> extends State<Select<T>> {
 class SelectPopup<T> extends StatefulWidget {
   final T? value;
   final SearchFilter<T>? searchFilter;
-  final BoxConstraints constraints;
+  final BoxConstraints? constraints;
   final List<AbstractSelectItem<T>> children;
   final bool showUnrelatedValues;
   final ValueChanged<T?>? onChanged;
@@ -420,7 +422,7 @@ class SelectPopup<T> extends StatefulWidget {
     Key? key,
     required this.value,
     this.searchFilter,
-    this.constraints = const BoxConstraints(minWidth: 200),
+    this.constraints,
     this.showUnrelatedValues = false,
     this.onChanged,
     this.searchPlaceholder,
@@ -458,9 +460,14 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      constraints: widget.constraints,
+      margin: const EdgeInsets.symmetric(vertical: 8) * scaling,
+      constraints: widget.constraints ??
+          (const BoxConstraints(
+                minWidth: 200,
+              ) *
+              scaling),
       child: OutlinedContainer(
         clipBehavior: Clip.hardEdge,
         child: Column(
@@ -469,27 +476,27 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
           children: [
             if (widget.searchFilter != null)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12) * scaling,
                 child: Row(
                   children: [
                     AnimatedIconTheme(
                       duration: kDefaultDuration,
                       data: IconThemeData(
                         color: Theme.of(context).colorScheme.foreground,
-                        size: 16,
                         opacity: 0.5,
                       ),
                       child: const Icon(
                         Icons.search,
-                      ),
+                      ).iconSmall(),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8 * scaling),
                     Expanded(
                       child: TextField(
                         controller: _searchController,
                         border: false,
                         placeholder: widget.searchPlaceholder,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding:
+                            const EdgeInsets.symmetric(vertical: 12) * scaling,
                       ),
                     ),
                   ],
@@ -561,10 +568,12 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                           children: [
                             Padding(
                               // to fix visual glitch, add padding
-                              padding: const EdgeInsets.only(top: 1, bottom: 1),
+                              padding:
+                                  const EdgeInsets.only(top: 1, bottom: 1) *
+                                      scaling,
                               child: ListView(
                                 controller: _scrollController,
-                                padding: const EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(4) * scaling,
                                 shrinkWrap: true,
                                 children: children,
                               ),
@@ -599,11 +608,11 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                                       child: Container(
                                         color: theme.colorScheme.background,
                                         padding: const EdgeInsets.symmetric(
-                                            vertical: 4),
+                                                vertical: 4) *
+                                            scaling,
                                         child: const Icon(
                                           RadixIcons.chevronUp,
-                                          size: 8,
-                                        ),
+                                        ).iconX3Small(),
                                       ),
                                     ),
                                   ),
@@ -645,11 +654,11 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                                       child: Container(
                                         color: theme.colorScheme.background,
                                         padding: const EdgeInsets.symmetric(
-                                            vertical: 4),
+                                                vertical: 4) *
+                                            scaling,
                                         child: const Icon(
                                           RadixIcons.chevronDown,
-                                          size: 8,
-                                        ),
+                                        ).iconX3Small(),
                                       ),
                                     ),
                                   ),

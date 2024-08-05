@@ -86,12 +86,15 @@ class _SwitchState extends State<Switch> {
                       duration: kSwitchDuration,
                       curve: Curves.easeInOut,
                       left: widget.value ? 16 * scaling : 0,
-                      child: Container(
-                        width: 16 * scaling,
-                        height: 16 * scaling,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(theme.radiusLg),
-                          color: theme.colorScheme.background,
+                      top: 0,
+                      bottom: 0,
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(theme.radiusLg),
+                            color: theme.colorScheme.background,
+                          ),
                         ),
                       ),
                     ),

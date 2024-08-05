@@ -1073,12 +1073,15 @@ class FormInline<T> extends StatelessWidget {
 
 class FormTableLayout extends StatelessWidget {
   final List<FormRow> rows;
-  final double spacing;
+  final double? spacing;
 
-  const FormTableLayout({super.key, required this.rows, this.spacing = 16});
+  const FormTableLayout({super.key, required this.rows, this.spacing});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    var spacing = this.spacing ?? scaling * 16;
     return mergeAnimatedTextStyle(
       duration: kDefaultDuration,
       style: TextStyle(color: Theme.of(context).colorScheme.foreground),
@@ -1095,11 +1098,11 @@ class FormTableLayout extends StatelessWidget {
                     .label
                     .textSmall()
                     .withAlign(Alignment.centerRight)
-                    .withMargin(right: 16)
-                    .sized(height: 32)
+                    .withMargin(right: 16 * scaling)
+                    .sized(height: 32 * scaling)
                     .withPadding(
                       top: i == 0 ? 0 : spacing,
-                      left: 16,
+                      left: 16 * scaling,
                     ),
                 FormEntry(
                   key: rows[i].key,
@@ -1112,11 +1115,11 @@ class FormTableLayout extends StatelessWidget {
                           children: [
                             child!,
                             if (rows[i].hint != null) ...[
-                              Gap(8),
+                              Gap(8 * scaling),
                               rows[i].hint!.xSmall().muted(),
                             ],
                             if (error is InvalidResult) ...[
-                              Gap(8),
+                              Gap(8 * scaling),
                               mergeAnimatedTextStyle(
                                 style: TextStyle(
                                     color: Theme.of(context)

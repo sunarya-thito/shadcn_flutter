@@ -23,7 +23,7 @@ class PopoverAnchor extends StatefulWidget {
     this.regionGroupId,
     this.offset,
     this.transitionAlignment,
-    this.margin = const EdgeInsets.all(8),
+    this.margin,
     this.follow = true,
     this.consumeOutsideTaps = true,
     this.onTickFollow,
@@ -52,7 +52,7 @@ class PopoverAnchor extends StatefulWidget {
   final Object? regionGroupId;
   final Offset? offset;
   final Alignment? transitionAlignment;
-  final EdgeInsets margin;
+  final EdgeInsets? margin;
   final bool follow;
   final BuildContext anchorContext;
   final bool consumeOutsideTaps;
@@ -81,7 +81,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
   late Alignment _anchorAlignment;
   late PopoverConstraint _widthConstraint;
   late PopoverConstraint _heightConstraint;
-  late EdgeInsets _margin;
+  late EdgeInsets? _margin;
   Size? _anchorSize;
   late bool _follow;
   late bool _allowInvertHorizontal;
@@ -186,7 +186,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
   PopoverConstraint get widthConstraint => _widthConstraint;
   PopoverConstraint get heightConstraint => _heightConstraint;
   Offset? get offset => _offset;
-  EdgeInsets get margin => _margin;
+  EdgeInsets? get margin => _margin;
   bool get follow => _follow;
   BuildContext get anchorContext => _anchorContext;
   bool get allowInvertHorizontal => _allowInvertHorizontal;
@@ -224,7 +224,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
     }
   }
 
-  set margin(EdgeInsets value) {
+  set margin(EdgeInsets? value) {
     if (_margin != value) {
       setState(() {
         _margin = value;
@@ -298,14 +298,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
 
   @override
   Widget build(BuildContext context) {
-    Widget builtChild = widget.builder(context);
-    if (widget.themes != null) {
-      builtChild = widget.themes!.wrap(builtChild);
-    }
-    if (widget.data != null) {
-      builtChild = widget.data!.wrap(builtChild);
-    }
-    return Data(
+    Widget childWidget = Data(
       data: this,
       child: TapRegion(
         // enabled: widget.consumeOutsideTaps,
@@ -324,6 +317,8 @@ class PopoverAnchorState extends State<PopoverAnchor>
           child: AnimatedBuilder(
             animation: widget.animation,
             builder: (context, child) {
+              final theme = Theme.of(context);
+              final scaling = theme.scaling;
               return PopoverLayout(
                 alignment: _alignment,
                 position: _position,
@@ -332,7 +327,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
                 widthConstraint: _widthConstraint,
                 heightConstraint: _heightConstraint,
                 offset: _offset,
-                margin: _margin,
+                margin: _margin ?? (const EdgeInsets.all(8) * scaling),
                 scale: tweenValue(0.9, 1.0, widget.animation.value),
                 scaleAlignment: widget.transitionAlignment ?? _alignment,
                 allowInvertVertical: _allowInvertVertical,
@@ -342,12 +337,19 @@ class PopoverAnchorState extends State<PopoverAnchor>
             },
             child: FadeTransition(
               opacity: widget.animation,
-              child: builtChild,
+              child: widget.builder(context),
             ),
           ),
         ),
       ),
     );
+    if (widget.themes != null) {
+      childWidget = widget.themes!.wrap(childWidget);
+    }
+    if (widget.data != null) {
+      childWidget = widget.data!.wrap(childWidget);
+    }
+    return childWidget;
   }
 }
 
@@ -434,7 +436,7 @@ PopoverFuture<T?> showPopover<T>({
   Object? regionGroupId,
   Offset? offset,
   Alignment? transitionAlignment,
-  EdgeInsets margin = const EdgeInsets.all(8),
+  EdgeInsets? margin,
   bool follow = true,
   bool consumeOutsideTaps = true,
   ValueChanged<PopoverAnchorState>? onTickFollow,
@@ -640,7 +642,7 @@ class PopoverController extends ChangeNotifier {
     Object? regionGroupId,
     Alignment? transitionAlignment,
     bool consumeOutsideTaps = true,
-    EdgeInsets margin = const EdgeInsets.all(8),
+    EdgeInsets? margin,
     ValueChanged<PopoverAnchorState>? onTickFollow,
     bool follow = true,
     bool allowInvertHorizontal = true,
@@ -676,13 +678,14 @@ class PopoverController extends ChangeNotifier {
       showDuration: showDuration,
       dismissDuration: hideDuration,
     );
-    _openPopovers.add(Popover._(
+    var popover = Popover._(
       key,
       res,
-    ));
+    );
+    _openPopovers.add(popover);
     notifyListeners();
     await res;
-    _openPopovers.remove(key);
+    _openPopovers.remove(popover);
     if (!_disposed) {
       notifyListeners();
     }
@@ -803,7 +806,7 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
     required this.heightConstraint,
     this.anchorSize,
     this.offset,
-    this.margin = const EdgeInsets.all(8),
+    required this.margin,
     required Widget child,
     required this.scale,
     required this.scaleAlignment,

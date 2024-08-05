@@ -32,7 +32,7 @@ class _CarouselExample1State extends State<CarouselExample1> {
                 snapAlignment: CarouselAlignment.center,
                 controller: controller,
                 sizeFactor: 0.8,
-                autoplayDuration: const Duration(seconds: 1),
+                autoplaySpeed: const Duration(seconds: 1),
                 itemCount: 5,
                 // wrap: false,
                 itemBuilder: (context, index) {

@@ -16,20 +16,22 @@ class TimelineData {
 
 class Timeline extends StatelessWidget {
   final List<TimelineData> data;
-  final BoxConstraints timeConstraints;
+  final BoxConstraints? timeConstraints;
 
   const Timeline({
     super.key,
     required this.data,
-    this.timeConstraints = const BoxConstraints(
-      minWidth: 120,
-      maxWidth: 120,
-    ),
+    // this.timeConstraints = const BoxConstraints(
+    //   minWidth: 120,
+    //   maxWidth: 120,
+    // ),
+    this.timeConstraints,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
     List<Widget> rows = [];
     for (int i = 0; i < data.length; i++) {
       final data = this.data[i];
@@ -38,20 +40,24 @@ class Timeline extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ConstrainedBox(
-              constraints: timeConstraints,
+              constraints: timeConstraints ??
+                  BoxConstraints(
+                    minWidth: 120 * scaling,
+                    maxWidth: 120 * scaling,
+                  ),
               child: Align(
                 alignment: Alignment.topRight,
                 child: data.time.medium().small(),
               ),
             ),
-            Gap(16),
+            Gap(16 * scaling),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  margin: const EdgeInsets.only(top: 4),
-                  width: 12,
-                  height: 12,
+                  margin: EdgeInsets.only(top: 4 * scaling),
+                  width: 12 * scaling,
+                  height: 12 * scaling,
                   decoration: BoxDecoration(
                     shape: theme.radius == 0
                         ? BoxShape.rectangle
@@ -62,14 +68,14 @@ class Timeline extends StatelessWidget {
                 if (i != this.data.length - 1)
                   Expanded(
                     child: VerticalDivider(
-                      thickness: 2,
+                      thickness: 2 * scaling,
                       color: data.color ?? theme.colorScheme.primary,
-                      endIndent: -4 - 16,
+                      endIndent: (-4 - 16) * scaling,
                     ),
                   ),
               ],
             ),
-            Gap(16),
+            Gap(16 * scaling),
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -79,8 +85,8 @@ class Timeline extends StatelessWidget {
                       .semiBold()
                       .secondaryForeground()
                       .base()
-                      .withPadding(left: 4),
-                  if (data.content != null) Gap(8),
+                      .withPadding(left: 4 * scaling),
+                  if (data.content != null) Gap(8 * scaling),
                   if (data.content != null)
                     Expanded(child: data.content!.muted().small()),
                 ],
@@ -92,6 +98,6 @@ class Timeline extends StatelessWidget {
     }
     return Column(
       children: rows,
-    ).gap(16);
+    ).gap(16 * scaling);
   }
 }
