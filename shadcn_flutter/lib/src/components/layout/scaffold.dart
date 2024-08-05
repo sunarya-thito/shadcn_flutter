@@ -40,6 +40,7 @@ class ScaffoldState extends State<Scaffold> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final viewInsets = MediaQuery.viewInsetsOf(context);
     return DrawerOverlay(
       child: AnimatedContainer(
         duration: kDefaultDuration,
@@ -113,12 +114,18 @@ class ScaffoldState extends State<Scaffold> {
               ),
             ),
             Expanded(
-              child: widget.child,
+              child: Container(
+                padding: viewInsets,
+                child: widget.child,
+              ),
             ),
-            Container(
-              color: widget.footerBackgroundColor,
-              child: Column(
-                children: widget.footers,
+            Offstage(
+              offstage: viewInsets.bottom > 0,
+              child: Container(
+                color: widget.footerBackgroundColor,
+                child: Column(
+                  children: widget.footers,
+                ),
               ),
             ),
           ],
