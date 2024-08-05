@@ -41,6 +41,7 @@ class TextField extends StatefulWidget {
   final EditableTextContextMenuBuilder? contextMenuBuilder;
   final bool useNativeContextMenu;
   final bool? isCollapsed;
+  final TextInputType? keyboardType;
   const TextField({
     Key? key,
     this.controller,
@@ -64,6 +65,7 @@ class TextField extends StatefulWidget {
     this.obscuringCharacter = '•',
     this.initialValue,
     this.borderRadius,
+    this.keyboardType,
     this.textAlign = TextAlign.start,
     this.expands = false,
     this.textAlignVertical = TextAlignVertical.center,
@@ -218,6 +220,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
         inputFormatters: widget.inputFormatters,
         onTapOutside: widget.onTapOutside,
         onChanged: widget.onChanged,
+        keyboardType: widget.keyboardType,
         textAlign: widget.textAlign,
         obscureText: widget.obscureText,
         obscuringCharacter: widget.obscuringCharacter,
