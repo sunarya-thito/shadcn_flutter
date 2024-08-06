@@ -89,7 +89,7 @@ class _IconsPageState extends State<IconsPage> {
               automaticallyImplyLeading: false,
               toolbarHeight: 50,
               collapsedHeight: 50,
-              expandedHeight: 355,
+              expandedHeight: 250,
               surfaceTintColor: theme.colorScheme.background,
               flexibleSpace: Stack(
                 fit: StackFit.passthrough,
@@ -106,21 +106,75 @@ class _IconsPageState extends State<IconsPage> {
                           const Text('Icons').h1(),
                           const Text('Use bundled icons in your application')
                               .lead(),
-                          Gap(32),
-                          const Alert(
-                            leading: Icon(Icons.info_outline),
-                            content: Text(
-                                'Some icons might be visually glitched, this will be fixed in the future.'),
-                            title: Text('Heads up!'),
-                          ).withAlign(Alignment.centerLeft),
-                          Gap(32),
-                          const Text(
-                              'Currently there are two icon sets bundled with shadcn_flutter:'),
-                          Text('Radix Icons (${kRadixIcons.length} Icons)')
-                              .li(),
-                          Text('Bootstrap Icons (${kBootstrapIcons.length} Icons)')
-                              .li(),
-                          Gap(32),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Card(
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('${kRadixIcons.length}')
+                                              .textLarge(),
+                                          const Text('Radix Icons')
+                                              .muted()
+                                              .textSmall(),
+                                        ],
+                                      ),
+                                      Positioned(
+                                        right: -32,
+                                        bottom: -48,
+                                        child: const Icon(
+                                          RadixIcons.iconjarLogo,
+                                          size: 96,
+                                        )
+                                            .iconMutedForeground()
+                                            .withOpacity(0.3),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Card(
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('${kBootstrapIcons.length}')
+                                              .textLarge(),
+                                          const Text('Bootstrap Icons')
+                                              .muted()
+                                              .textSmall(),
+                                        ],
+                                      ),
+                                      Positioned(
+                                        right: -32,
+                                        bottom: -48,
+                                        child: const Icon(
+                                          BootstrapIcons.bootstrap,
+                                          size: 96,
+                                        )
+                                            .iconMutedForeground()
+                                            .withOpacity(0.3),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ).gap(12).p(),
+                          const Gap(32),
                           TextField(
                             leading: const Icon(Icons.search),
                             placeholder: 'Search icons',

@@ -6,6 +6,7 @@ class Card extends StatelessWidget {
   final bool filled;
   final Color? fillColor;
   final double? borderRadius;
+  final Clip clipBehavior;
 
   const Card({
     Key? key,
@@ -15,6 +16,7 @@ class Card extends StatelessWidget {
     this.filled = false,
     this.fillColor,
     this.borderRadius,
+    this.clipBehavior = Clip.none,
   }) : super(key: key);
 
   @override
@@ -22,6 +24,7 @@ class Card extends StatelessWidget {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     return OutlinedContainer(
+      clipBehavior: clipBehavior,
       borderRadius: borderRadius,
       backgroundColor: filled
           ? fillColor ?? theme.colorScheme.border
