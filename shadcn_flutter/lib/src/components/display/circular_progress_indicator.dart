@@ -24,11 +24,9 @@ class CircularProgressIndicator extends StatelessWidget {
       return RepaintBoundary(
         child: SizedBox(
           width: size ??
-              (iconThemeData.size ?? (theme.scaling * 24)) -
-                  (theme.scaling * 8),
+              (iconThemeData.size ?? 24 * theme.scaling) - 8 * theme.scaling,
           height: size ??
-              (iconThemeData.size ?? (theme.scaling * 24)) -
-                  (theme.scaling * 8),
+              (iconThemeData.size ?? 24 * theme.scaling) - 8 * theme.scaling,
           child: mat.CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(
               theme.colorScheme.primary,
@@ -36,8 +34,7 @@ class CircularProgressIndicator extends StatelessWidget {
             color: theme.colorScheme.primary,
             backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
             strokeWidth:
-                (size ?? (iconThemeData.size ?? (theme.scaling * 24))) /
-                    (theme.scaling * 12),
+                (size ?? (iconThemeData.size ?? (theme.scaling * 24))) / 12,
             value: value,
           ),
         ),
@@ -62,8 +59,7 @@ class CircularProgressIndicator extends StatelessWidget {
                 color: theme.colorScheme.primary,
                 backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
                 strokeWidth:
-                    (size ?? (iconThemeData.size ?? (theme.scaling * 24))) /
-                        (theme.scaling * 12),
+                    (size ?? (iconThemeData.size ?? (theme.scaling * 24))) / 12,
                 value: value,
               ),
             ),
