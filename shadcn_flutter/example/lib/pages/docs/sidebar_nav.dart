@@ -63,7 +63,7 @@ class SidebarButton extends StatelessWidget {
             );
           },
         ),
-        child: child,
+        child: child.small(),
       ),
     );
   }
@@ -110,7 +110,7 @@ class NavigationButton extends StatelessWidget {
             );
           },
         ),
-        child: child,
+        child: child.small(),
       ),
     );
   }
