@@ -16,6 +16,8 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     final localizations = ShadcnLocalizations.of(context);
     var undoHistoryController = this.undoHistoryController;
     var contextMenuButtonItems =
@@ -95,7 +97,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
         child: ContextMenuPopup(
           anchorContext: anchorContext,
           position: editableTextState.contextMenuAnchors.primaryAnchor +
-              const Offset(8, -8),
+              const Offset(8, -8) * scaling,
           children: [
             cutButtonWidget,
             copyButtonWidget,
@@ -112,7 +114,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
             return ContextMenuPopup(
               anchorContext: anchorContext,
               position: editableTextState.contextMenuAnchors.primaryAnchor +
-                  const Offset(8, -8),
+                  const Offset(8, -8) * scaling,
               children: [
                 MenuButton(
                   enabled: undoHistoryController.value.canUndo,
@@ -168,6 +170,8 @@ class MobileEditableTextContextMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     final localizations = ShadcnLocalizations.of(context);
     var undoHistoryController = this.undoHistoryController;
     var contextMenuButtonItems =
@@ -233,6 +237,9 @@ class MobileEditableTextContextMenu extends StatelessWidget {
       ));
     }
 
+    var primaryAnchor = (editableTextState.contextMenuAnchors.secondaryAnchor ??
+            editableTextState.contextMenuAnchors.primaryAnchor) +
+        const Offset(-8, 8) * scaling;
     if (undoHistoryController == null) {
       List<List<MenuItem>> categories = [
         if (modificationCategory.isNotEmpty) modificationCategory,
@@ -241,8 +248,8 @@ class MobileEditableTextContextMenu extends StatelessWidget {
       return ShadcnUI(
         child: ContextMenuPopup(
           anchorContext: anchorContext,
-          position: editableTextState.contextMenuAnchors.primaryAnchor +
-              const Offset(8, -8),
+          position: primaryAnchor,
+          direction: Axis.horizontal,
           children: categories
               .expand((element) => [
                     ...element,
@@ -281,11 +288,11 @@ class MobileEditableTextContextMenu extends StatelessWidget {
               if (modificationCategory.isNotEmpty) modificationCategory,
               if (destructiveCategory.isNotEmpty) destructiveCategory,
             ];
+
             return ContextMenuPopup(
               direction: Axis.horizontal,
               anchorContext: anchorContext,
-              position: editableTextState.contextMenuAnchors.primaryAnchor +
-                  const Offset(8, -8),
+              position: primaryAnchor,
               children: categories
                   .expand((element) => [
                         ...element,
@@ -315,11 +322,6 @@ Widget buildEditableTextContextMenu(
     case TargetPlatform.windows:
     case TargetPlatform.linux:
     case TargetPlatform.fuchsia:
-    case TargetPlatform.linux:
-    case TargetPlatform.windows:
-    case TargetPlatform.macOS:
-    case TargetPlatform.iOS:
-    case TargetPlatform.android:
       return DesktopEditableTextContextMenu(
         anchorContext: innerContext,
         editableTextState: editableTextState,
@@ -478,10 +480,8 @@ class ContextMenuPopup extends StatelessWidget {
           follow: false,
           builder: (context) {
             final theme = Theme.of(context);
-            return ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: 192 * theme.scaling,
-              ),
+            return LimitedBox(
+              maxWidth: 192 * theme.scaling,
               child: MenuGroup(
                 direction: direction,
                 builder: (context, children) {
