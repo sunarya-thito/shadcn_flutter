@@ -44,6 +44,7 @@ class _StateManagementPageState extends State<StateManagementPage> {
               .p(),
           const WidgetUsageExample(
             path: 'lib/pages/docs/state/data_example_1.dart',
+            summarize: false,
             child: DataExample1(),
           ).p(),
           const Alert(
@@ -58,8 +59,9 @@ class _StateManagementPageState extends State<StateManagementPage> {
                   'You can set a boundary so that the child cannot access the data.')
               .p(),
           const WidgetUsageExample(
-            child: DataExample4(),
             path: 'lib/pages/docs/state/data_example_4.dart',
+            summarize: false,
+            child: DataExample4(),
           ).p(),
           const Text('Data.maybeOf/Data.of vs Data.maybeFind/Data.find')
               .h3()
@@ -77,8 +79,9 @@ class _StateManagementPageState extends State<StateManagementPage> {
                   ' does not listen to the data and only returns the data.')
               .p(),
           const WidgetUsageExample(
-            child: DataExample5(),
             path: 'lib/pages/docs/state/data_example_5.dart',
+            summarize: false,
+            child: DataExample5(),
           ).p(),
           const Text('Getting Data from the Child').h2(),
           const Text('You can get data from the child using the ')
@@ -91,8 +94,9 @@ class _StateManagementPageState extends State<StateManagementPage> {
                   'Move the data to the parent widget if you need to listen to it.')
               .p(),
           const WidgetUsageExample(
-            child: DataExample2(),
             path: 'lib/pages/docs/state/data_example_2.dart',
+            summarize: false,
+            child: DataExample2(),
           ).p(),
           const Alert(
             leading: Icon(Icons.info_outline),
@@ -105,8 +109,9 @@ class _StateManagementPageState extends State<StateManagementPage> {
                   'You can set a boundary so that child data cannot be obtained from specific parent.')
               .p(),
           const WidgetUsageExample(
-            child: DataExample3(),
             path: 'lib/pages/docs/state/data_example_3.dart',
+            summarize: false,
+            child: DataExample3(),
           ).p(),
           const Text('MultiData Widget').h2(),
           const Text(
@@ -139,14 +144,16 @@ class _StateManagementPageState extends State<StateManagementPage> {
           ).p(),
           const Text('Example').h3().p(),
           const WidgetUsageExample(
-            child: DataExample6(),
             path: 'lib/pages/docs/state/data_example_6.dart',
+            summarize: false,
+            child: DataExample6(),
           ).p(),
           const Text('Passing State as a Controller').h2(),
           const Text('You can pass state as a controller to the children.').p(),
           const WidgetUsageExample(
-            child: DataExample7(),
             path: 'lib/pages/docs/state/data_example_7.dart',
+            summarize: false,
+            child: DataExample7(),
           ).p(),
         ],
       ),
