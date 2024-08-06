@@ -1,15 +1,16 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class DataExample1 extends StatefulWidget {
-  const DataExample1({Key? key}) : super(key: key);
+class DataExample10 extends StatefulWidget {
+  const DataExample10({Key? key}) : super(key: key);
 
   @override
-  State<DataExample1> createState() => DataExample1State();
+  State<DataExample10> createState() => DataExample10State();
 }
 
-class DataExample1State extends State<DataExample1> {
-  int counter = 0;
+class DataExample10State extends State<DataExample10> {
   int rebuildCount = 0;
+  ValueNotifier<int> counter = ValueNotifier(0);
+  ValueNotifier<bool> toggle = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
     rebuildCount++;
@@ -19,25 +20,42 @@ class DataExample1State extends State<DataExample1> {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Current Value: $counter - Rebuild Count: $rebuildCount'),
+            ValueListenableBuilder(
+              valueListenable: counter,
+              builder: (context, value, child) {
+                return Text(
+                    'Current Value: $value - Rebuild Count: $rebuildCount');
+              },
+            ),
+            const Gap(24),
+            ValueListenableBuilder(
+              valueListenable: toggle,
+              builder: (context, value, child) {
+                return Toggle(
+                  value: value,
+                  onChanged: (value) {
+                    toggle.value = value;
+                  },
+                  child: const Text('Toggle'),
+                );
+              },
+            ),
             const Gap(24),
             PrimaryButton(
               onPressed: () {
-                setState(() {
-                  counter++;
-                });
+                counter.value++;
               },
               density: ButtonDensity.icon,
               child: const Icon(Icons.add),
-            )
+            ),
           ],
         ),
         const Gap(24),
-
-        // From here, InnerWidget and MostInnerWidget will be able to access the
-        // "counter" variable without causing unnecessary rebuilds.
-        Data.inherit(
-          data: counter,
+        MultiData(
+          data: [
+            DataNotifier(counter),
+            DataNotifier(toggle),
+          ],
           child: const InnerWidget(
             child: MostInnerWidget(),
           ),
@@ -65,7 +83,12 @@ class _InnerWidgetState extends State<InnerWidget> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('InnerWidget Rebuild Count: $innerRebuildCount'),
+          DataBuilder<int>(
+            builder: (context, data, child) {
+              return Text(
+                  'Data: $data - InnerWidget Rebuild Count: $innerRebuildCount');
+            },
+          ),
           const Gap(12),
           widget.child
         ],
@@ -85,11 +108,14 @@ class _MostInnerWidgetState extends State<MostInnerWidget> {
   int mostInnerRebuildCount = 0;
   @override
   Widget build(BuildContext context) {
-    int parentCounter = Data.of(context);
     mostInnerRebuildCount++;
     return Card(
-      child: Text(
-          'MostInnerWidget Data: $parentCounter - Rebuild Count: $mostInnerRebuildCount'),
+      child: DataBuilder<bool>(
+        builder: (context, data, child) {
+          return Text(
+              'Data: $data - MostInnerWidget Rebuild Count: $mostInnerRebuildCount');
+        },
+      ),
     );
   }
 }

@@ -46,8 +46,8 @@ class DataExample6State extends State<DataExample6> {
         const Gap(24),
         MultiData(
           data: [
-            Data<int>(counter),
-            Data<bool>(toggle),
+            Data(counter),
+            Data(toggle),
           ],
           child: const InnerWidget(
             child: MostInnerWidget(),

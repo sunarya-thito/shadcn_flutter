@@ -1,10 +1,13 @@
 import 'package:example/pages/docs/state/data_example_1.dart';
+import 'package:example/pages/docs/state/data_example_10.dart';
 import 'package:example/pages/docs/state/data_example_2.dart';
 import 'package:example/pages/docs/state/data_example_3.dart';
 import 'package:example/pages/docs/state/data_example_4.dart';
 import 'package:example/pages/docs/state/data_example_5.dart';
 import 'package:example/pages/docs/state/data_example_6.dart';
 import 'package:example/pages/docs/state/data_example_7.dart';
+import 'package:example/pages/docs/state/data_example_8.dart';
+import 'package:example/pages/docs/state/data_example_9.dart';
 import 'package:example/pages/docs_page.dart';
 import 'package:example/pages/widget_usage_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -28,19 +31,16 @@ class _StateManagementPageState extends State<StateManagementPage> {
                   'A comprehensive guide to managing state in shadcn_flutter.')
               .lead(),
           const Text(
-                  'In Flutter, everything is a widget, including where your data is stored. '
-                  'This means that you can use widgets to manage your application state.')
+                  'In Flutter, everything is a widget, including where your data is stored.')
               .p(),
           const Text(
                   'Internally, shadcn_flutter has its own state management system. '
-                  'This system is based on the concept of "Data". '
                   'Although if you are already using a state management system, '
                   'you can continue to use it with shadcn_flutter.')
               .p(),
           const Text('Passing Data to the Children').h2(),
           const Text('You can pass data to children using the Data widget. '
-                  'Any changes that occur in the data will cause the child to rebuild. '
-                  'This is similar to the Provider package in Flutter.')
+                  'Any changes that occur in the data will cause the child to rebuild.')
               .p(),
           const WidgetUsageExample(
             path: 'lib/pages/docs/state/data_example_1.dart',
@@ -118,9 +118,9 @@ class _StateManagementPageState extends State<StateManagementPage> {
                   'The MultiData widget allows you to pass multiple data to the children. Take a look at the following example:')
               .p(),
           const CodeSnippet(
-            code: 'Data<int>(\n'
+            code: 'Data<int>.inherit(\n'
                 '\tdata: counter,\n'
-                '\tchild: Data<String>(\n'
+                '\tchild: Data<String>.inherit(\n'
                 '\t\tdata: name,\n'
                 '\t\tchild: Data<bool>.boundary(\n'
                 '\t\t\tchild: child,\n'
@@ -154,6 +154,32 @@ class _StateManagementPageState extends State<StateManagementPage> {
             path: 'lib/pages/docs/state/data_example_7.dart',
             summarize: false,
             child: DataExample7(),
+          ).p(),
+          const Text('DataBuilder').h2(),
+          const Text(
+                  'You can use the DataBuilder widget to rebuild the widget when the data changes. '
+                  'This also avoids rebuilding the entire widget.')
+              .p(),
+          // example 8
+          const WidgetUsageExample(
+            path: 'lib/pages/docs/state/data_example_8.dart',
+            summarize: false,
+            child: DataExample8(),
+          ).p(),
+          const Text('DataNotifier').h2(),
+          const Text(
+                  'Data notifier allows you to pass value to children from a ValueListenable.')
+              .p(),
+          const WidgetUsageExample(
+            path: 'lib/pages/docs/state/data_example_9.dart',
+            summarize: false,
+            child: DataExample9(),
+          ).p(),
+          const Text('Example with MultiData').h3().p(),
+          const WidgetUsageExample(
+            path: 'lib/pages/docs/state/data_example_9.dart',
+            summarize: false,
+            child: DataExample10(),
           ).p(),
         ],
       ),

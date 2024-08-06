@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -216,27 +217,86 @@ class ForwardableDataState<T> extends State<ForwardableData<T>> {
   }
 }
 
-class DataBuilder<T> extends StatelessWidget {
-  final T data;
-  final WidgetBuilder builder;
+abstract class MultiDataItem {
+  Type get dataType;
+  Widget _wrap(Widget child);
+}
 
-  const DataBuilder({
+class DataNotifier<T> extends StatelessWidget implements MultiDataItem {
+  final ValueListenable<T> notifier;
+  final Widget? _child;
+
+  const DataNotifier(this.notifier) : _child = null;
+
+  const DataNotifier.inherit({
     super.key,
-    required this.data,
-    required this.builder,
-  });
+    required this.notifier,
+    required Widget child,
+  }) : _child = child;
+
+  @override
+  Widget _wrap(Widget child) {
+    return DataNotifier<T>.inherit(
+      notifier: notifier,
+      child: child,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Data<T>.inherit(
-      data: data,
-      child: Builder(builder: builder),
+    return ValueListenableBuilder(
+      valueListenable: notifier,
+      builder: (context, value, child) {
+        return Data<T>.inherit(
+          data: value,
+          child: child!,
+        );
+      },
+      child: _child,
     );
+  }
+
+  @override
+  Type get dataType => T;
+}
+
+typedef DataWidgetBuilder<T> = Widget Function(
+    BuildContext context, T data, Widget? child);
+typedef OptionalDataWidgetBuilder<T> = Widget Function(
+    BuildContext context, T? data, Widget? child);
+
+class DataBuilder<T> extends StatelessWidget {
+  final DataWidgetBuilder<T>? _builder;
+  final OptionalDataWidgetBuilder<T>? _optionalBuilder;
+  final Widget? child;
+
+  const DataBuilder.optionally({
+    super.key,
+    required OptionalDataWidgetBuilder<T> builder,
+    this.child,
+  })  : _builder = null,
+        _optionalBuilder = builder;
+
+  const DataBuilder({
+    super.key,
+    required DataWidgetBuilder<T> builder,
+    this.child,
+  })  : _builder = builder,
+        _optionalBuilder = null;
+
+  @override
+  Widget build(BuildContext context) {
+    final data = Data.maybeOf<T>(context);
+    if (_builder != null) {
+      assert(data != null, 'No Data<$T> found in context');
+      return _builder!(context, data as T, child);
+    }
+    return _optionalBuilder!(context, data, child);
   }
 }
 
 class MultiData extends StatefulWidget {
-  final List<Data> data;
+  final List<MultiDataItem> data;
   final Widget child;
 
   const MultiData({
@@ -267,7 +327,7 @@ class _MultiDataState extends State<MultiData> {
   }
 }
 
-class Data<T> extends StatelessWidget {
+class Data<T> extends StatelessWidget implements MultiDataItem {
   final T? _data;
   final Widget? child;
 
@@ -292,6 +352,7 @@ class Data<T> extends StatelessWidget {
     return _data!;
   }
 
+  @override
   Widget _wrap(Widget child) {
     return _InheritedData<T>._internal(
       key: key,

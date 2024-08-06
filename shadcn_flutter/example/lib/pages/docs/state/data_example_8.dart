@@ -1,13 +1,13 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class DataExample1 extends StatefulWidget {
-  const DataExample1({Key? key}) : super(key: key);
+class DataExample8 extends StatefulWidget {
+  const DataExample8({Key? key}) : super(key: key);
 
   @override
-  State<DataExample1> createState() => DataExample1State();
+  State<DataExample8> createState() => DataExample8State();
 }
 
-class DataExample1State extends State<DataExample1> {
+class DataExample8State extends State<DataExample8> {
   int counter = 0;
   int rebuildCount = 0;
   @override
@@ -33,9 +33,6 @@ class DataExample1State extends State<DataExample1> {
           ],
         ),
         const Gap(24),
-
-        // From here, InnerWidget and MostInnerWidget will be able to access the
-        // "counter" variable without causing unnecessary rebuilds.
         Data.inherit(
           data: counter,
           child: const InnerWidget(
@@ -85,11 +82,14 @@ class _MostInnerWidgetState extends State<MostInnerWidget> {
   int mostInnerRebuildCount = 0;
   @override
   Widget build(BuildContext context) {
-    int parentCounter = Data.of(context);
     mostInnerRebuildCount++;
     return Card(
-      child: Text(
-          'MostInnerWidget Data: $parentCounter - Rebuild Count: $mostInnerRebuildCount'),
+      child: DataBuilder<int>(
+        builder: (context, data, _) {
+          return Text(
+              'MostInnerWidget Data: $data - Rebuild Count: $mostInnerRebuildCount');
+        },
+      ),
     );
   }
 }

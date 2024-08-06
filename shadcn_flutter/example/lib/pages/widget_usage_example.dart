@@ -73,15 +73,10 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
         RepaintBoundary(
           child: Offstage(
             offstage: index != 1,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxHeight: 550,
-              ),
-              child: CodeSnippetFutureBuilder(
-                path: widget.path,
-                mode: 'dart',
-                summarize: widget.summarize,
-              ),
+            child: CodeSnippetFutureBuilder(
+              path: widget.path,
+              mode: 'dart',
+              summarize: widget.summarize,
             ),
           ),
         )

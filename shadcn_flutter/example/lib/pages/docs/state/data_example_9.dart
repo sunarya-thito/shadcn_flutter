@@ -1,15 +1,16 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class DataExample1 extends StatefulWidget {
-  const DataExample1({Key? key}) : super(key: key);
+class DataExample9 extends StatefulWidget {
+  const DataExample9({Key? key}) : super(key: key);
 
   @override
-  State<DataExample1> createState() => DataExample1State();
+  State<DataExample9> createState() => DataExample9State();
 }
 
-class DataExample1State extends State<DataExample1> {
-  int counter = 0;
+class DataExample9State extends State<DataExample9> {
+  final ValueNotifier<int> counter = ValueNotifier(0);
   int rebuildCount = 0;
+
   @override
   Widget build(BuildContext context) {
     rebuildCount++;
@@ -19,13 +20,17 @@ class DataExample1State extends State<DataExample1> {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Current Value: $counter - Rebuild Count: $rebuildCount'),
+            ValueListenableBuilder(
+              valueListenable: counter,
+              builder: (context, value, child) {
+                return Text(
+                    'Current Value: $value - Rebuild Count: $rebuildCount');
+              },
+            ),
             const Gap(24),
             PrimaryButton(
               onPressed: () {
-                setState(() {
-                  counter++;
-                });
+                counter.value++;
               },
               density: ButtonDensity.icon,
               child: const Icon(Icons.add),
@@ -33,11 +38,8 @@ class DataExample1State extends State<DataExample1> {
           ],
         ),
         const Gap(24),
-
-        // From here, InnerWidget and MostInnerWidget will be able to access the
-        // "counter" variable without causing unnecessary rebuilds.
-        Data.inherit(
-          data: counter,
+        DataNotifier.inherit(
+          notifier: counter,
           child: const InnerWidget(
             child: MostInnerWidget(),
           ),
@@ -85,11 +87,14 @@ class _MostInnerWidgetState extends State<MostInnerWidget> {
   int mostInnerRebuildCount = 0;
   @override
   Widget build(BuildContext context) {
-    int parentCounter = Data.of(context);
     mostInnerRebuildCount++;
     return Card(
-      child: Text(
-          'MostInnerWidget Data: $parentCounter - Rebuild Count: $mostInnerRebuildCount'),
+      child: DataBuilder<int>(
+        builder: (context, data, _) {
+          return Text(
+              'MostInnerWidget Data: $data - Rebuild Count: $mostInnerRebuildCount');
+        },
+      ),
     );
   }
 }
