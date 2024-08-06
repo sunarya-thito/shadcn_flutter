@@ -187,6 +187,8 @@ class DocsPageState extends State<DocsPage> {
             ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Skeleton', 'skeleton'),
         ShadcnDocsPage('Toast', 'toast'),
+        // TODO: https://www.radix-ui.com/themes/docs/components/spinner
+        ShadcnDocsPage('Spinner', 'spinner', ShadcnFeatureTag.workInProgress),
       ],
     ),
     ShadcnDocsSection(
@@ -211,6 +213,9 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage(
             'Phone Input', 'phone_input', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Radio Group', 'radio_group'),
+        // TODO: https://www.radix-ui.com/themes/docs/components/radio-cards
+        ShadcnDocsPage(
+            'Radio Card', 'radio_card', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Select', 'select'),
         ShadcnDocsPage('Slider', 'slider'),
         ShadcnDocsPage(
@@ -296,6 +301,9 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Command', 'command'),
         ShadcnDocsPage('Context Menu', 'context_menu'),
         ShadcnDocsPage('Dropdown Menu', 'dropdown_menu'),
+        // TODO https://www.radix-ui.com/themes/docs/components/kbd
+        ShadcnDocsPage('Keyboard Shortcut', 'keyboard_shortcut',
+            ShadcnFeatureTag.workInProgress),
         // TODO: Same progress as image input
         ShadcnDocsPage(
             'Image Tools', 'image_tools', ShadcnFeatureTag.workInProgress),

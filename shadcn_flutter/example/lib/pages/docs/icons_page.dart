@@ -168,6 +168,8 @@ class _IconsPageState extends State<IconsPage> {
               if (filteredBootstrapIcons.isNotEmpty) {
                 additionalLength += 1;
               }
+              filteredBootstrapIcons.sort((a, b) => a.key.compareTo(b.key));
+              filteredRadixIcons.sort((a, b) => a.key.compareTo(b.key));
               return ListView.separated(
                 itemCount: filteredRadixIcons.length +
                     filteredBootstrapIcons.length +
