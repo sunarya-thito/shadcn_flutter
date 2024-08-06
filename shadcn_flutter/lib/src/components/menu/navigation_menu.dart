@@ -405,7 +405,7 @@ class NavigationMenuState extends State<NavigationMenu> {
           });
         },
         child: IntrinsicHeight(
-          child: Data(
+          child: Data.inherit(
             data: this,
             child: Row(
               mainAxisSize: MainAxisSize.min,

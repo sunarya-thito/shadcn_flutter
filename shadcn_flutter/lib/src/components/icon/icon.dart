@@ -128,9 +128,8 @@ class WrappedIcon extends StatelessWidget {
   }) {
     return WrappedIcon(
       data: (context, theme) {
-        final current = this.data(context, theme);
-        final next = data?.call(context, theme);
-        return current.merge(next);
+        return data?.call(context, theme).merge(this.data(context, theme)) ??
+            this.data(context, theme);
       },
       child: child,
     );

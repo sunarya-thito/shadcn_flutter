@@ -253,7 +253,7 @@ class _TreeViewState<T> extends State<TreeView<T>> {
     _walkFlattened((expanded, node, depth) {
       if (node is! TreeItem<T>) return;
       children.add(
-        Data<TreeNodeData>(
+        Data<TreeNodeData>.inherit(
           data: TreeNodeData(
               depth, node, widget.branchLine, expanded, widget.expandIcon),
           child: Builder(builder: (context) {

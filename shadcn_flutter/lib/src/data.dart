@@ -24,10 +24,10 @@ class InheritedDataHolder<T> extends InheritedDataHolderWidget<T> {
   final DataHolder<T> holder;
 
   const InheritedDataHolder({
-    Key? key,
+    super.key,
     required this.holder,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   @override
   bool updateShouldNotify(covariant InheritedDataHolder<T> oldWidget) {
@@ -40,10 +40,10 @@ class InheritedRootDataHolder extends InheritedDataHolderWidget<dynamic> {
   final DataHolder<dynamic> holder;
 
   const InheritedRootDataHolder({
-    Key? key,
+    super.key,
     required this.holder,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   @override
   bool updateShouldNotify(covariant InheritedRootDataHolder oldWidget) {
@@ -55,9 +55,9 @@ class DataMessengerRoot extends StatefulWidget {
   final Widget child;
 
   const DataMessengerRoot({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<DataMessengerRoot> createState() => _DataMessengerRootState();
@@ -65,24 +65,28 @@ class DataMessengerRoot extends StatefulWidget {
 
 class _DataMessengerRootState extends State<DataMessengerRoot>
     implements DataHolder {
-  final Map<Type, LinkedHashSet> _receivers = {};
+  final Map<Type, LinkedHashSet<ForwardableDataState>> _senders = {};
 
   @override
   void register(ForwardableDataState receiver) {
     final type = receiver.dataType;
-    _receivers.putIfAbsent(type, () => LinkedHashSet());
-    _receivers[type]!.add(receiver);
+    _senders.putIfAbsent(type, () => LinkedHashSet());
+    _senders[type]!.add(receiver);
   }
 
   @override
   void unregister(ForwardableDataState receiver) {
     final type = receiver.dataType;
-    _receivers[type]?.remove(receiver);
+    _senders[type]?.remove(receiver);
   }
 
   @override
   dynamic findData(BuildContext context, Type type) {
-    for (final receiver in _receivers[type] ?? []) {
+    LinkedHashSet<ForwardableDataState>? receivers = _senders[type];
+    if (receivers == null) {
+      return null;
+    }
+    for (ForwardableDataState receiver in receivers) {
       var didFindData = false;
       receiver.context.visitAncestorElements((element) {
         if (element == context) {
@@ -111,9 +115,9 @@ class DataMessenger<T> extends StatefulWidget {
   final Widget child;
 
   const DataMessenger({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<DataMessenger<T>> createState() => _DataMessengerState<T>();
@@ -165,10 +169,10 @@ class ForwardableData<T> extends StatefulWidget {
   final Widget child;
 
   const ForwardableData({
-    Key? key,
+    super.key,
     required this.data,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<ForwardableData<T>> createState() => ForwardableDataState<T>();
@@ -203,7 +207,7 @@ class ForwardableDataState<T> extends State<ForwardableData<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return Data<T>(
+    return Data<T>.inherit(
       data: widget.data,
       child: DataMessenger<T>(
         child: widget.child,
@@ -217,34 +221,93 @@ class DataBuilder<T> extends StatelessWidget {
   final WidgetBuilder builder;
 
   const DataBuilder({
-    Key? key,
+    super.key,
     required this.data,
     required this.builder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Data<T>(
+    return Data<T>.inherit(
       data: data,
       child: Builder(builder: builder),
     );
   }
 }
 
-class Data<T> extends InheritedWidget {
-  final T? data;
+class MultiData extends StatefulWidget {
+  final List<Data> data;
+  final Widget child;
 
-  const Data({
-    Key? key,
-    required T this.data,
-    required Widget child,
-  }) : super(key: key, child: child);
+  const MultiData({
+    super.key,
+    required this.data,
+    required this.child,
+  });
+
+  @override
+  State<MultiData> createState() => _MultiDataState();
+}
+
+class _MultiDataState extends State<MultiData> {
+  final GlobalKey _key = GlobalKey();
+  @override
+  Widget build(BuildContext context) {
+    Widget result = KeyedSubtree(
+      key: _key,
+      child: widget.child,
+    );
+    for (final data in widget.data) {
+      // make sure dataType is not dynamic
+      final Type dataType = data.dataType;
+      assert(dataType != dynamic, 'Data must have a type');
+      result = data._wrap(result);
+    }
+    return result;
+  }
+}
+
+class Data<T> extends StatelessWidget {
+  final T? _data;
+  final Widget? child;
+
+  const Data(T data)
+      : _data = data,
+        child = null,
+        super();
+
+  const Data.inherit({
+    super.key,
+    required T data,
+    this.child,
+  }) : _data = data;
 
   const Data.boundary({
-    Key? key,
-    required Widget child,
-  })  : data = null,
-        super(key: key, child: child);
+    super.key,
+    this.child,
+  }) : _data = null;
+
+  T get data {
+    assert(_data != null, 'No Data<$T> found in context');
+    return _data!;
+  }
+
+  Widget _wrap(Widget child) {
+    return _InheritedData<T>._internal(
+      key: key,
+      data: _data,
+      child: child,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    assert(dataType != dynamic, 'Data must have a type');
+    return _InheritedData<T>._internal(
+      data: _data,
+      child: child ?? const SizedBox(),
+    );
+  }
 
   static T of<T>(BuildContext context) {
     final data = maybeOf<T>(context);
@@ -283,7 +346,8 @@ class Data<T> extends InheritedWidget {
   }
 
   static T? maybeOf<T>(BuildContext context) {
-    final widget = context.dependOnInheritedWidgetOfExactType<Data<T>>();
+    final widget =
+        context.dependOnInheritedWidgetOfExactType<_InheritedData<T>>();
     if (widget == null) {
       return null;
     }
@@ -300,7 +364,7 @@ class Data<T> extends InheritedWidget {
     if (from == to) {
       return CapturedData._([]);
     }
-    final data = <Data>[];
+    final data = <_InheritedData>[];
     final Set<Type> dataTypes = <Type>{};
     late bool debugDidFindAncestor;
     assert(() {
@@ -317,8 +381,8 @@ class Data<T> extends InheritedWidget {
           }());
           return false;
         }
-        if (ancestor is InheritedElement && ancestor.widget is Data) {
-          final Data dataWidget = ancestor.widget as Data;
+        if (ancestor is InheritedElement && ancestor.widget is _InheritedData) {
+          final _InheritedData dataWidget = ancestor.widget as _InheritedData;
           final Type dataType = dataWidget.dataType;
           if (!dataTypes.contains(dataType)) {
             dataTypes.add(dataType);
@@ -336,9 +400,21 @@ class Data<T> extends InheritedWidget {
   }
 
   Type get dataType => T;
+}
+
+class _InheritedData<T> extends InheritedWidget {
+  final T? data;
+
+  Type get dataType => T;
+
+  const _InheritedData._internal({
+    super.key,
+    required this.data,
+    required super.child,
+  });
 
   @override
-  bool updateShouldNotify(covariant Data<T> oldWidget) {
+  bool updateShouldNotify(covariant _InheritedData<T> oldWidget) {
     if (data is DistinctData && oldWidget.data is DistinctData) {
       return (data as DistinctData)
           .shouldNotify(oldWidget.data as DistinctData);
@@ -347,7 +423,8 @@ class Data<T> extends InheritedWidget {
   }
 
   Widget? wrap(Widget child, BuildContext context) {
-    Data<T>? ancestor = context.dependOnInheritedWidgetOfExactType<Data<T>>();
+    _InheritedData<T>? ancestor =
+        context.dependOnInheritedWidgetOfExactType<_InheritedData<T>>();
     // if it's the same type, we don't need to wrap it
     if (identical(this, ancestor)) {
       return null;
@@ -356,7 +433,7 @@ class Data<T> extends InheritedWidget {
     if (data == null) {
       return Data<T>.boundary(child: child);
     }
-    return Data<T>(
+    return Data<T>.inherit(
       data: data,
       child: child,
     );
@@ -366,7 +443,7 @@ class Data<T> extends InheritedWidget {
 class CapturedData {
   CapturedData._(this._data);
 
-  final List<Data> _data;
+  final List<_InheritedData> _data;
 
   Widget wrap(Widget child) {
     return _CaptureAll(data: _data, child: child);
@@ -379,7 +456,7 @@ class _CaptureAll extends StatelessWidget {
     required this.child,
   });
 
-  final List<Data> data;
+  final List<_InheritedData> data;
   final Widget child;
 
   @override

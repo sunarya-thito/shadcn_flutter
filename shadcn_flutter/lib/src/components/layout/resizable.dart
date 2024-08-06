@@ -433,7 +433,7 @@ class _ResizablePaneState extends State<ResizablePane> {
               ? BoxConstraints.tightFor(width: _controller.size)
               : BoxConstraints.tightFor(height: _controller.size);
         }
-        return Data(
+        return Data.inherit(
           data: _controller.value,
           child: ConstrainedBox(
             constraints: size,
@@ -1420,7 +1420,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
         children.add(widget.divider!);
       }
       children.add(
-        Data(
+        Data.inherit(
           data: pane,
           child: KeyedSubtree(
             key: _panes[i]._key,
@@ -1488,9 +1488,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
         );
       }
       children.add(
-        Data(
+        Data.inherit(
           data: pane,
-          child: Data(
+          child: Data.inherit(
             data: ResizableContainerData(sparedFlexSize, flexSpace, flexCount),
             child: KeyedSubtree(
               key: _panes[i]._key,
@@ -1513,7 +1513,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     }
     // create dividers
     if (_expands) {
-      return Data(
+      return Data.inherit(
         data: this,
         child: LayoutBuilder(builder: (context, constraints) {
           double nonFlexSpace = 0;
@@ -1742,7 +1742,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       draggers.add(dragger);
     }
 
-    return Data(
+    return Data.inherit(
       data: this,
       child: Stack(
         fit: StackFit.passthrough,

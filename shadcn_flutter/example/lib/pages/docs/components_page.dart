@@ -64,7 +64,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Data(
+    return Data.inherit(
       data: kComponentsMode,
       child: DocsPage(
         name: 'components',

@@ -196,7 +196,7 @@ class _SortableLayerState extends State<SortableLayer> {
 
   @override
   Widget build(BuildContext context) {
-    return Data(
+    return Data.inherit(
       data: this,
       child: Stack(
         clipBehavior: Clip.none,
@@ -840,7 +840,7 @@ class _SortableItemState extends State<_SortableItem> {
   Widget build(BuildContext context) {
     final layerState = Data.of<_SortableLayerState>(context);
     Widget childWidget = Builder(builder: (context) {
-      return Data(
+      return Data.inherit(
           data: SortableItemData(
             widget.index,
             widget.container,

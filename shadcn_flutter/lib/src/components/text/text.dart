@@ -427,7 +427,7 @@ extension TextExtension on Widget {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: Data(
+                child: Data.inherit(
                     data: UnorderedListData(depth: depth + 1), child: this),
               ),
             ],
@@ -589,6 +589,15 @@ extension TextExtension on Widget {
 
   Widget thenText(String text) {
     return then(TextSpan(text: text));
+  }
+
+  Widget thenInlineCode(String text) {
+    return then(
+      WidgetSpan(
+        alignment: PlaceholderAlignment.middle,
+        child: Text(text).inlineCode(),
+      ),
+    );
   }
 
   Widget thenButton({
@@ -846,8 +855,7 @@ class WrappedText extends StatelessWidget {
   WrappedText copyWithStyle(WrappedTextDataBuilder<TextStyle> style) {
     return WrappedText(
       style: (context, theme) =>
-          this.style?.call(context, theme).merge(style(context, theme)) ??
-          style(context, theme),
+          style(context, theme).merge(this.style?.call(context, theme)),
       textAlign: textAlign,
       softWrap: softWrap,
       overflow: overflow,

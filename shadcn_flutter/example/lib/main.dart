@@ -56,6 +56,7 @@ import 'package:example/pages/docs/icons_page.dart';
 import 'package:example/pages/docs/installation_page.dart';
 import 'package:example/pages/docs/introduction_page.dart';
 import 'package:example/pages/docs/layout_page.dart';
+import 'package:example/pages/docs/state_management_page.dart';
 import 'package:example/pages/docs/theme_page.dart';
 import 'package:example/pages/docs/typography_page.dart';
 import 'package:example/pages/docs/web_preloader_page.dart';
@@ -155,6 +156,11 @@ class MyAppState extends State<MyApp> {
       path: '/colors',
       name: 'colors',
       builder: (context, state) => const ColorsPage(),
+    ),
+    GoRoute(
+      path: '/state',
+      name: 'state',
+      builder: (context, state) => const StateManagementPage(),
     ),
     GoRoute(
         path: '/components',
@@ -573,7 +579,7 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Data(
+    return Data.inherit(
       data: this,
       child: ShadcnApp.router(
         routerConfig: router,

@@ -14,7 +14,7 @@ void showDropdown(
     modal: false,
     dismissBackdropFocus: true,
     builder: (context) {
-      return Data(
+      return Data.inherit(
         data: DropdownMenuData(key),
         child: builder(context),
       );

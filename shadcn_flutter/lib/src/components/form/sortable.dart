@@ -179,7 +179,7 @@ class SortableLayerState extends State<SortableLayer> {
         ),
       );
     }
-    return Data(
+    return Data.inherit(
       data: this,
       child: Stack(
         fit: StackFit.passthrough,
@@ -423,7 +423,7 @@ class SortableItemState extends State<_SortableItem> {
         },
       );
     }
-    return Data(
+    return Data.inherit(
       key: _key,
       data: this,
       child: child,

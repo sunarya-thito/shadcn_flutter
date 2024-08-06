@@ -621,7 +621,7 @@ class FormEntryState extends State<FormEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return Data(
+    return Data.inherit(
       data: this,
       child: widget.child,
     );
@@ -737,9 +737,9 @@ class FormState extends State<Form> {
 
   @override
   Widget build(BuildContext context) {
-    return Data(
+    return Data.inherit(
       data: this,
-      child: Data(
+      child: Data.inherit(
         data: _controller,
         child: widget.child,
       ),

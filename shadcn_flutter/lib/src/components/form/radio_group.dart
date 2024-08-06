@@ -186,9 +186,9 @@ class _RadioGroupState<T> extends State<RadioGroup<T>> with FormValueSupplier {
   @override
   Widget build(BuildContext context) {
     return FocusableActionDetector(
-      child: Data(
+      child: Data.inherit(
         data: this,
-        child: Data(
+        child: Data.inherit(
           data: RadioGroupData<T>(widget.value),
           child: FocusTraversalGroup(
             child: widget.child,

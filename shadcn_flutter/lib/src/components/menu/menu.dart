@@ -74,7 +74,7 @@ class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
     assert(
         menuGroupData != null, 'MenuRadioGroup must be a child of MenuGroup');
-    return Data<MenuRadioGroup<T>>(
+    return Data<MenuRadioGroup<T>>.inherit(
       data: this,
       child: Flex(
         direction: menuGroupData!.direction,
@@ -648,7 +648,7 @@ class _MenuGroupState extends State<MenuGroup> {
         hasLeading = true;
       }
       children.add(
-        Data<MenuData>(
+        Data<MenuData>.inherit(
           data: data,
           child: child,
         ),
@@ -664,7 +664,7 @@ class _MenuGroupState extends State<MenuGroup> {
           SingleActivator(LogicalKeyboardKey.arrowRight):
               DirectionalFocusIntent(TraversalDirection.right),
         },
-        child: Data(
+        child: Data.inherit(
           data: MenuGroupData(
             widget.parent,
             _data,

@@ -36,7 +36,7 @@ class MenubarState extends State<Menubar> {
   }
 
   Widget buildContainer(BuildContext context, ThemeData theme) {
-    return Data(
+    return Data.inherit(
       data: this,
       child: MenuGroup(
         regionGroupId: this,

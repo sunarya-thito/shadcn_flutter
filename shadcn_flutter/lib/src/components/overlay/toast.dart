@@ -277,7 +277,7 @@ class _ToastLayerState extends State<ToastLayer> {
         ),
       );
     }
-    return Data(
+    return Data.inherit(
       data: this,
       child: Stack(
         clipBehavior: Clip.none,

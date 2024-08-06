@@ -86,7 +86,7 @@ class _StepVariantCircle extends StepVariant {
     if (properties.direction == Axis.horizontal) {
       List<Widget> children = [];
       for (int i = 0; i < properties.steps.length; i++) {
-        Widget childWidget = Data(
+        Widget childWidget = Data.inherit(
           data: StepNumberData(stepIndex: i),
           child: Row(
             children: [
@@ -157,7 +157,7 @@ class _StepVariantCircle extends StepVariant {
       List<Widget> children = [];
       for (int i = 0; i < properties.steps.length; i++) {
         children.add(
-          Data(
+          Data.inherit(
             data: StepNumberData(stepIndex: i),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -270,7 +270,7 @@ class _StepVariantCircleAlternative extends StepVariant {
       List<Widget> children = [];
       for (int i = 0; i < steps.length; i++) {
         children.add(
-          Data(
+          Data.inherit(
               data: StepNumberData(stepIndex: i),
               child: Expanded(
                 child: Column(
@@ -375,7 +375,7 @@ class _StepVariantCircleAlternative extends StepVariant {
       List<Widget> children = [];
       for (int i = 0; i < properties.steps.length; i++) {
         children.add(
-          Data(
+          Data.inherit(
             data: StepNumberData(stepIndex: i),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -490,7 +490,7 @@ class _StepVariantLine extends StepVariant {
       for (int i = 0; i < steps.length; i++) {
         children.add(
           Expanded(
-            child: Data(
+            child: Data.inherit(
               data: StepNumberData(stepIndex: i),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -553,7 +553,7 @@ class _StepVariantLine extends StepVariant {
       List<Widget> children = [];
       for (int i = 0; i < properties.steps.length; i++) {
         children.add(
-          Data(
+          Data.inherit(
             data: StepNumberData(stepIndex: i),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -739,7 +739,7 @@ class Stepper extends StatelessWidget {
   Widget build(BuildContext context) {
     var stepProperties = StepProperties(
         size: size, steps: steps, state: controller, direction: direction);
-    return Data(
+    return Data.inherit(
       data: stepProperties,
       child: variant.build(context, stepProperties),
     );

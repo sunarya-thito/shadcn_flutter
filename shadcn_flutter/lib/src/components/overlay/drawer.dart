@@ -558,7 +558,7 @@ Future<T?> openRawDrawer<T>({
                                     kBackdropScaleDown,
                           );
                         }
-                        return Data(
+                        return Data.inherit(
                           data: BackdropTransformData(extraSize),
                           child: Transform.scale(
                             scale: scale,
@@ -596,7 +596,7 @@ Future<T?> openRawDrawer<T>({
                                     kBackdropScaleDown,
                           );
                         }
-                        return Data(
+                        return Data.inherit(
                           data: BackdropTransformData(extraSize),
                           child: Transform.scale(
                             scale: scale,
@@ -850,7 +850,7 @@ class _DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
     return CapturedWrapper(
       themes: widget.themes,
       data: widget.data,
-      child: Data(
+      child: Data.inherit(
         data: _OverlaidEntryData(this),
         child: LayoutBuilder(builder: (context, constraints) {
           Widget barrier = (widget.modal

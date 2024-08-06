@@ -155,6 +155,7 @@ class DocsPageState extends State<DocsPage> {
           ShadcnDocsPage('Icons', 'icons'),
           ShadcnDocsPage('Colors', 'colors'),
           ShadcnDocsPage('Material/Cupertino', 'external'),
+          ShadcnDocsPage('State Management', 'state'),
         ]),
         Icons.book),
     // COMPONENTS BEGIN

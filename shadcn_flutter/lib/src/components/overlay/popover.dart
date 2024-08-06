@@ -298,7 +298,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
 
   @override
   Widget build(BuildContext context) {
-    Widget childWidget = Data(
+    Widget childWidget = Data.inherit(
       data: this,
       child: TapRegion(
         // enabled: widget.consumeOutsideTaps,

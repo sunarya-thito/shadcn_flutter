@@ -668,7 +668,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                           ],
                         );
                       }
-                      return Data(
+                      return Data.inherit(
                         data: _SelectData(
                           (item, query) {
                             return widget.searchFilter?.call(item, query) ?? 0;

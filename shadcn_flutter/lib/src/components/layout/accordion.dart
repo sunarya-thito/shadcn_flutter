@@ -20,7 +20,7 @@ class _AccordionState extends State<Accordion> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return Data(
+    return Data.inherit(
         data: this,
         child: IntrinsicWidth(
           child: Column(
@@ -134,7 +134,7 @@ class _AccordionItemState extends State<AccordionItem>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return Data(
+    return Data.inherit(
       data: this,
       child: GestureDetector(
         child: Column(

@@ -47,7 +47,7 @@ class CollapsibleState extends State<Collapsible> {
 
   @override
   Widget build(BuildContext context) {
-    return Data(
+    return Data.inherit(
       data:
           CollapsibleStateData(isExpanded: _isExpanded, handleTap: _handleTap),
       child: IntrinsicWidth(

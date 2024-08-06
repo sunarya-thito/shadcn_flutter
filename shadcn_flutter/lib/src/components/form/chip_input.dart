@@ -40,8 +40,6 @@ class ChipInputState extends State<ChipInput> {
   final ValueNotifier<int> _selectedSuggestions = ValueNotifier(-1);
   final PopoverController _popoverController = PopoverController();
 
-  bool _isChangingText = false;
-
   @override
   void initState() {
     super.initState();
@@ -95,7 +93,7 @@ class ChipInputState extends State<ChipInput> {
   Widget buildPopover(BuildContext context) {
     final theme = Theme.of(context);
     return TextFieldTapRegion(
-      child: Data(
+      child: Data.inherit(
         data: this,
         child: ConstrainedBox(
           constraints: widget.popoverConstraints,

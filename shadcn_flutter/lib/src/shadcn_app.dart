@@ -790,7 +790,7 @@ class _GlobalPointerListenerState extends c.State<_GlobalPointerListener> {
       child: widget.child,
     );
     if (_position != null) {
-      child = Data(
+      child = Data.inherit(
         data: PointerData(position: _position!),
         child: child,
       );
