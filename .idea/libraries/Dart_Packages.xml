@@ -149,13 +149,6 @@
             </list>
           </value>
         </entry>
-        <entry key="file_picker">
-          <value>
-            <list>
-              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-8.0.6/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="fixnum">
           <value>
             <list>
@@ -183,13 +176,6 @@
               <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-2.0.3/lib" />
               <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-3.0.2/lib" />
               <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-4.0.0/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="flutter_plugin_android_lifecycle">
-          <value>
-            <list>
-              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.21/lib" />
             </list>
           </value>
         </entry>
@@ -245,8 +231,8 @@
         <entry key="http">
           <value>
             <list>
-              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.2/lib" />
               <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.1/lib" />
+              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.2/lib" />
             </list>
           </value>
         </entry>
@@ -339,9 +325,9 @@
         <entry key="lints">
           <value>
             <list>
+              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/lints-4.0.0/lib" />
               <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/lints-2.1.1/lib" />
               <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/lints-3.0.0/lib" />
-              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/lints-4.0.0/lib" />
             </list>
           </value>
         </entry>
@@ -831,13 +817,11 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/fake_async-1.3.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/ffi-2.1.2/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/file-7.0.0/lib" />
-      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-8.0.6/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/fixnum-1.1.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_highlight-0.7.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-2.0.3/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-3.0.2/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-4.0.0/lib" />
-      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.21/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/font_awesome_flutter-10.7.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/gap-3.0.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/glob-2.1.2/lib" />
