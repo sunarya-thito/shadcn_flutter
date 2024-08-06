@@ -192,7 +192,7 @@ class _AppBarState extends State<AppBar> {
             padding: widget.padding ??
                 (const EdgeInsets.symmetric(
                       horizontal: 32,
-                      vertical: 8,
+                      vertical: 12,
                     ) *
                     scaling),
             child: IntrinsicHeight(
@@ -220,7 +220,7 @@ class _AppBarState extends State<AppBar> {
                             if (widget.title != null)
                               KeyedSubtree(
                                 key: const ValueKey('title'),
-                                child: widget.title!.large(),
+                                child: widget.title!.large().medium(),
                               ),
                             if (widget.subtitle != null)
                               KeyedSubtree(

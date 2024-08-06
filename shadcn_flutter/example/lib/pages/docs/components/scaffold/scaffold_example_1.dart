@@ -43,6 +43,7 @@ class _ScaffoldExample1State extends State<ScaffoldExample1> {
             ),
           ],
         ),
+        const Divider(),
       ],
       child: Center(
         child: Column(
