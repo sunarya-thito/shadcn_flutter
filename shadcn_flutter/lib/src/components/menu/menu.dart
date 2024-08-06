@@ -118,7 +118,7 @@ class MenuRadio<T> extends StatelessWidget {
                 height: 16 * scaling,
                 child: const Icon(
                   RadixIcons.dotFilled,
-                ).iconX4Small(),
+                ).iconSmall(),
               )
             : SizedBox(width: 16 * scaling),
         onPressed: (context) {
@@ -291,7 +291,7 @@ class MenuCheckbox extends StatelessWidget implements MenuItem {
               height: 16 * scaling,
               child: const Icon(
                 RadixIcons.check,
-              ).iconXSmall(),
+              ).iconSmall(),
             )
           : SizedBox(width: 16 * scaling),
       onPressed: (context) {
