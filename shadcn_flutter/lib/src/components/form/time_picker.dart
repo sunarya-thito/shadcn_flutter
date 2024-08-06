@@ -98,7 +98,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
           ],
         ),
         Positioned(
-          bottom: (-16 - 4) * theme.scaling,
+          bottom: (-16 - 12) * theme.scaling,
           child: Text(label).muted(),
         ),
       ],
@@ -181,7 +181,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Padding(
-          padding: EdgeInsets.only(bottom: 16 * scaling),
+          padding: EdgeInsets.only(bottom: (16 + 12) * scaling),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
