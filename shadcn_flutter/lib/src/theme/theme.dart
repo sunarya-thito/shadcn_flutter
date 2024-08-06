@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class AdaptiveScaling {
+  static const AdaptiveScaling desktop = AdaptiveScaling();
+  static const AdaptiveScaling mobile = AdaptiveScaling(1.25);
   final double radiusScaling;
   final double sizeScaling;
   final double textScaling;
@@ -49,10 +51,9 @@ class AdaptiveScaler extends StatelessWidget {
     switch (theme.platform) {
       case TargetPlatform.iOS:
       case TargetPlatform.android:
-        return const AdaptiveScaling.only(
-            radiusScaling: 1.25, sizeScaling: 1.25, textScaling: 1.25);
+        return AdaptiveScaling.mobile;
       default:
-        return const AdaptiveScaling.only();
+        return AdaptiveScaling.desktop;
     }
   }
 
