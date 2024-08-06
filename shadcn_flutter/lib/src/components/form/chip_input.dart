@@ -249,6 +249,7 @@ class ChipInputState extends State<ChipInput> {
             initialValue: widget.initialText,
             inputFormatters: widget.inputFormatters,
             border: false,
+            maxLines: 1,
             onSubmitted: (text) {
               _focusNode.requestFocus();
               if (text.isNotEmpty) {
