@@ -42,6 +42,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
   late CalendarValue? _value;
   late CalendarViewType _viewType;
   late int _yearSelectStart;
+  bool _alternate = false;
 
   @override
   void initState() {
@@ -105,6 +106,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                       GhostButton(
                         enabled: _viewType != CalendarViewType.year,
                         onPressed: () {
+                          _alternate = false;
                           switch (_viewType) {
                             case CalendarViewType.date:
                               setState(() {
@@ -163,6 +165,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                         ),
                         GhostButton(
                           onPressed: () {
+                            _alternate = true;
                             switch (_viewType) {
                               case CalendarViewType.date:
                                 setState(() {
@@ -222,8 +225,13 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                   widget.selectionMode,
                   (value) {
                     setState(() {
-                      _view = value;
-                      _alternateView = value.next;
+                      if (!_alternate) {
+                        _view = value;
+                        _alternateView = value.next;
+                      } else {
+                        _view = value.previous;
+                        _alternateView = value;
+                      }
                       switch (_viewType) {
                         case CalendarViewType.date:
                           break;
