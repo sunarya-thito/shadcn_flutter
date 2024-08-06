@@ -21,6 +21,7 @@ import 'package:example/pages/docs/components/dropdown_menu_example.dart';
 import 'package:example/pages/docs/components/hover_card_example.dart';
 import 'package:example/pages/docs/components/input_example.dart';
 import 'package:example/pages/docs/components/input_otp_example.dart';
+import 'package:example/pages/docs/components/linear_progress_example.dart';
 import 'package:example/pages/docs/components/material_example.dart';
 import 'package:example/pages/docs/components/menubar_example.dart';
 import 'package:example/pages/docs/components/navigation_menu_example.dart';
@@ -531,7 +532,14 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) {
               return const DotIndicatorExample();
             },
-          )
+          ),
+          GoRoute(
+            path: 'linear_progress',
+            name: 'linear_progress',
+            builder: (context, state) {
+              return const LinearProgressExample();
+            },
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

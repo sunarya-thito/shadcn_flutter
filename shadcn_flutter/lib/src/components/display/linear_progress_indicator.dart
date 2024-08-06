@@ -53,7 +53,7 @@ class LinearProgressIndicator extends StatelessWidget {
       childWidget = AnimatedValueBuilder(
           value: _LinearProgressIndicatorProperties(
             start: 0,
-            end: value!,
+            end: value!.clamp(0, 1),
             color: color ?? theme.colorScheme.primary,
             backgroundColor:
                 backgroundColor ?? theme.colorScheme.primary.withOpacity(0.2),
@@ -93,6 +93,7 @@ class LinearProgressIndicator extends StatelessWidget {
           double start2 = _line2Tail.transform(value);
           double end2 = _line2Head.transform(value);
           return AnimatedValueBuilder(
+              duration: kDefaultDuration,
               lerp: _LinearProgressIndicatorProperties.lerp,
               value: _LinearProgressIndicatorProperties(
                 start: start,
@@ -110,10 +111,11 @@ class LinearProgressIndicator extends StatelessWidget {
               builder: (context, prop, child) {
                 return CustomPaint(
                   painter: _LinearProgressIndicatorPainter(
-                    start: prop.start,
-                    end: prop.end,
-                    start2: prop.start2,
-                    end2: prop.end2,
+                    // do not animate start and end value
+                    start: start,
+                    end: end,
+                    start2: start2,
+                    end2: end2,
                     color: prop.color,
                     backgroundColor: prop.backgroundColor,
                     showSparks: prop.showSparks,
@@ -128,7 +130,7 @@ class LinearProgressIndicator extends StatelessWidget {
     }
     return RepaintBoundary(
       child: SizedBox(
-        height: minHeight ?? theme.scaling * 2,
+        height: minHeight ?? (theme.scaling * 2),
         child: childWidget,
       ),
     );
