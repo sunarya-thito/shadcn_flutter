@@ -3,6 +3,10 @@ import 'dart:collection';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+abstract class DistinctData {
+  bool shouldNotify(covariant DistinctData oldData);
+}
+
 abstract class DataHolder<T> {
   void register(ForwardableDataState<T> receiver);
   void unregister(ForwardableDataState<T> receiver);
@@ -279,13 +283,6 @@ class Data<T> extends InheritedWidget {
   }
 
   static T? maybeOf<T>(BuildContext context) {
-    // InheritedDataHolder? holder =
-    //     context.dependOnInheritedWidgetOfExactType<InheritedDataHolder<T>>();
-    // holder ??= context
-    //     .dependOnInheritedWidgetOfExactType<InheritedDataHolder<dynamic>>();
-    // if (holder != null) {
-    //   return holder.holder.findData(context, T);
-    // }
     final widget = context.dependOnInheritedWidgetOfExactType<Data<T>>();
     if (widget == null) {
       return null;
@@ -342,6 +339,10 @@ class Data<T> extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant Data<T> oldWidget) {
+    if (data is DistinctData && oldWidget.data is DistinctData) {
+      return (data as DistinctData)
+          .shouldNotify(oldWidget.data as DistinctData);
+    }
     return oldWidget.data != data;
   }
 
