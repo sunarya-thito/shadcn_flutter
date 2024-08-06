@@ -177,6 +177,8 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
             color: theme.colorScheme.foreground,
           );
     }
+    var maxLines = widget.maxLines;
+    maxLines ??= widget.obscureText ? 1 : null;
     return Listener(
       onPointerDown: kIsWeb && !widget.useNativeContextMenu
           ? (event) {
@@ -228,7 +230,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
         readOnly: widget.readOnly,
         maxLength: widget.maxLength,
         maxLengthEnforcement: widget.maxLengthEnforcement,
-        maxLines: widget.maxLines,
+        maxLines: maxLines,
         onTap: widget.onTap,
         focusNode: _focusNode,
         onSubmitted: widget.onSubmitted,
