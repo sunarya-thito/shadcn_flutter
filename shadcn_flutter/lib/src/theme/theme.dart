@@ -46,8 +46,12 @@ class AdaptiveScaling {
 }
 
 class AdaptiveScaler extends StatelessWidget {
-  static AdaptiveScaling defaultScaling(BuildContext context) {
+  static AdaptiveScaling defaultScalingOf(BuildContext context) {
     final theme = Theme.of(context);
+    return defaultScaling(theme);
+  }
+
+  static AdaptiveScaling defaultScaling(ThemeData theme) {
     switch (theme.platform) {
       case TargetPlatform.iOS:
       case TargetPlatform.android:

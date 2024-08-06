@@ -249,7 +249,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
 
   Widget _builder(BuildContext context, Widget? child) {
     var theme = widget.theme;
-    var appScaling = widget.scaling ?? AdaptiveScaler.defaultScaling(context);
+    var appScaling = widget.scaling ?? AdaptiveScaler.defaultScaling(theme);
     return AnimatedTheme(
       duration: kDefaultDuration,
       data: appScaling.scale(theme),
@@ -266,9 +266,6 @@ class _ShadcnAppState extends State<ShadcnApp> {
                 ),
                 child: AnimatedIconTheme.merge(
                   duration: kDefaultDuration,
-                  // data: IconThemeData(
-                  //   color: theme.colorScheme.foreground,
-                  // ),
                   data: theme.iconTheme.medium.copyWith(
                     color: theme.colorScheme.foreground,
                   ),

@@ -200,10 +200,10 @@ class _AppBarState extends State<AppBar> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: widget.leading,
                   ).gap(widget.leadingGap ?? (8 * scaling)),
-                  Gap(16 * scaling),
+                  Gap(24 * scaling),
                   Flexible(
                     fit:
                         widget.trailingExpanded ? FlexFit.loose : FlexFit.tight,
@@ -213,10 +213,20 @@ class _AppBarState extends State<AppBar> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             if (widget.header != null)
-                              widget.header!.muted().base(),
-                            if (widget.title != null) widget.title!.large(),
+                              KeyedSubtree(
+                                key: const ValueKey('header'),
+                                child: widget.header!.muted().small(),
+                              ),
+                            if (widget.title != null)
+                              KeyedSubtree(
+                                key: const ValueKey('title'),
+                                child: widget.title!.large(),
+                              ),
                             if (widget.subtitle != null)
-                              widget.subtitle!.muted().small(),
+                              KeyedSubtree(
+                                key: const ValueKey('subtitle'),
+                                child: widget.subtitle!.muted().small(),
+                              ),
                           ],
                         ),
                   ),
