@@ -45,7 +45,7 @@ dependencies:
   url_launcher: ^6.3.0
   intl: ^0.19.0
   super_drag_and_drop: ^0.8.18
-  file_picker: ^8.0.7
+#  file_picker: ^8.0.7
 
 dev_dependencies:
   flutter_test:
