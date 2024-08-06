@@ -183,7 +183,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Alert Dialog', 'alert_dialog'),
         ShadcnDocsPage('Circular Progress', 'circular_progress'),
         ShadcnDocsPage('Progress', 'progress'),
-        ShadcnDocsPage('Linear Progress', 'linear_progress'),
+        ShadcnDocsPage('Linear Progress', 'linear_progress',
+            ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Skeleton', 'skeleton'),
         ShadcnDocsPage('Toast', 'toast'),
       ],
@@ -256,7 +257,8 @@ class DocsPageState extends State<DocsPage> {
         // aka Drawer
         ShadcnDocsPage('Navigation Drawer', 'navigation_drawer',
             ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Dot Indicator', 'dot_indicator'),
+        ShadcnDocsPage(
+            'Dot Indicator', 'dot_indicator', ShadcnFeatureTag.experimental),
       ],
     ),
     ShadcnDocsSection(
