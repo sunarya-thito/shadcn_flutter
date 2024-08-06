@@ -963,11 +963,11 @@ Decoration _buttonMenuDecoration(
 TextStyle _buttonMenuTextStyle(BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
-    return TextStyle(
+    return themeData.typography.small.copyWith(
       color: themeData.colorScheme.accentForeground.withOpacity(0.5),
     );
   }
-  return TextStyle(
+  return themeData.typography.small.copyWith(
     color: themeData.colorScheme.accentForeground,
   );
 }
@@ -1022,10 +1022,9 @@ Decoration _buttonPrimaryDecoration(
 TextStyle _buttonPrimaryTextStyle(
     BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
-  return TextStyle(
-    color: themeData.colorScheme.primaryForeground,
-    fontWeight: FontWeight.w500,
-  );
+  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+        color: themeData.colorScheme.primaryForeground,
+      );
 }
 
 IconThemeData _buttonPrimaryIconTheme(
@@ -1061,12 +1060,11 @@ Decoration _buttonSecondaryDecoration(
 TextStyle _buttonSecondaryTextStyle(
     BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
-  return TextStyle(
-    color: states.contains(WidgetState.disabled)
-        ? themeData.colorScheme.mutedForeground
-        : themeData.colorScheme.secondaryForeground,
-    fontWeight: FontWeight.w500,
-  );
+  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+        color: states.contains(WidgetState.disabled)
+            ? themeData.colorScheme.mutedForeground
+            : themeData.colorScheme.secondaryForeground,
+      );
 }
 
 IconThemeData _buttonSecondaryIconTheme(
@@ -1115,12 +1113,11 @@ Decoration _buttonOutlineDecoration(
 TextStyle _buttonOutlineTextStyle(
     BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
-  return TextStyle(
-    color: states.contains(WidgetState.disabled)
-        ? themeData.colorScheme.mutedForeground
-        : themeData.colorScheme.foreground,
-    fontWeight: FontWeight.w500,
-  );
+  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+        color: states.contains(WidgetState.disabled)
+            ? themeData.colorScheme.mutedForeground
+            : themeData.colorScheme.foreground,
+      );
 }
 
 IconThemeData _buttonOutlineIconTheme(
@@ -1156,12 +1153,11 @@ Decoration _buttonGhostDecoration(
 
 TextStyle _buttonGhostTextStyle(BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
-  return TextStyle(
-    color: states.contains(WidgetState.disabled)
-        ? themeData.colorScheme.mutedForeground
-        : themeData.colorScheme.foreground,
-    fontWeight: FontWeight.w500,
-  );
+  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+        color: states.contains(WidgetState.disabled)
+            ? themeData.colorScheme.mutedForeground
+            : themeData.colorScheme.foreground,
+      );
 }
 
 IconThemeData _buttonGhostIconTheme(
@@ -1184,15 +1180,14 @@ Decoration _buttonLinkDecoration(
 
 TextStyle _buttonLinkTextStyle(BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
-  return TextStyle(
-    color: states.contains(WidgetState.disabled)
-        ? themeData.colorScheme.mutedForeground
-        : themeData.colorScheme.foreground,
-    decoration: states.contains(WidgetState.hovered)
-        ? TextDecoration.underline
-        : TextDecoration.none,
-    fontWeight: FontWeight.w500,
-  );
+  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+        color: states.contains(WidgetState.disabled)
+            ? themeData.colorScheme.mutedForeground
+            : themeData.colorScheme.foreground,
+        decoration: states.contains(WidgetState.hovered)
+            ? TextDecoration.underline
+            : TextDecoration.none,
+      );
 }
 
 IconThemeData _buttonLinkIconTheme(
@@ -1215,12 +1210,11 @@ Decoration _buttonTextDecoration(
 
 TextStyle _buttonTextTextStyle(BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
-  return TextStyle(
-    color: states.contains(WidgetState.hovered)
-        ? themeData.colorScheme.primary
-        : themeData.colorScheme.mutedForeground,
-    fontWeight: FontWeight.w500,
-  );
+  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+        color: states.contains(WidgetState.hovered)
+            ? themeData.colorScheme.primary
+            : themeData.colorScheme.mutedForeground,
+      );
 }
 
 IconThemeData _buttonTextIconTheme(
@@ -1257,12 +1251,11 @@ Decoration _buttonDestructiveDecoration(
 TextStyle _buttonDestructiveTextStyle(
     BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
-  return TextStyle(
-    color: states.contains(WidgetState.disabled)
-        ? themeData.colorScheme.mutedForeground
-        : themeData.colorScheme.destructiveForeground,
-    fontWeight: FontWeight.w500,
-  );
+  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+        color: states.contains(WidgetState.disabled)
+            ? themeData.colorScheme.mutedForeground
+            : themeData.colorScheme.destructiveForeground,
+      );
 }
 
 IconThemeData _buttonDestructiveIconTheme(
@@ -1278,7 +1271,8 @@ IconThemeData _buttonDestructiveIconTheme(
 // STATIC BUTTON
 TextStyle _buttonStaticTextStyle(
     BuildContext context, Set<WidgetState> states) {
-  return const TextStyle();
+  final theme = Theme.of(context);
+  return theme.typography.small;
 }
 
 IconThemeData _buttonStaticIconTheme(
