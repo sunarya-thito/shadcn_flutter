@@ -149,7 +149,9 @@ class _StateManagementPageState extends State<StateManagementPage> {
             child: DataExample6(),
           ).p(),
           const Text('Passing State as a Controller').h2(),
-          const Text('You can pass state as a controller to the children.').p(),
+          const Text(
+                  'You can pass state as a controller to the children. This way you can call method in parent widget from child widgets.')
+              .p(),
           const WidgetUsageExample(
             path: 'lib/pages/docs/state/data_example_7.dart',
             summarize: false,
@@ -177,7 +179,7 @@ class _StateManagementPageState extends State<StateManagementPage> {
           ).p(),
           const Text('Example with MultiData').h3().p(),
           const WidgetUsageExample(
-            path: 'lib/pages/docs/state/data_example_9.dart',
+            path: 'lib/pages/docs/state/data_example_10.dart',
             summarize: false,
             child: DataExample10(),
           ).p(),
