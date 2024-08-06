@@ -15,6 +15,7 @@ import 'package:example/pages/docs/components/context_menu_example.dart';
 import 'package:example/pages/docs/components/date_picker_example.dart';
 import 'package:example/pages/docs/components/dialog_example.dart';
 import 'package:example/pages/docs/components/divider_example.dart';
+import 'package:example/pages/docs/components/dot_indicator_example.dart';
 import 'package:example/pages/docs/components/drawer_example.dart';
 import 'package:example/pages/docs/components/dropdown_menu_example.dart';
 import 'package:example/pages/docs/components/hover_card_example.dart';
@@ -524,6 +525,13 @@ class MyAppState extends State<MyApp> {
               return TrackerExample();
             },
           ),
+          GoRoute(
+            path: 'dot_indicator',
+            name: 'dot_indicator',
+            builder: (context, state) {
+              return const DotIndicatorExample();
+            },
+          )
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();
