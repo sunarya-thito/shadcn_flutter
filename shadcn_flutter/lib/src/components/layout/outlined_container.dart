@@ -28,9 +28,10 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final scaling = theme.scaling;
+    var borderRadius =
+        BorderRadius.circular(widget.borderRadius ?? theme.radiusXl);
     return AnimatedContainer(
       duration: kDefaultDuration,
-      clipBehavior: widget.clipBehavior,
       decoration: BoxDecoration(
         color: widget.backgroundColor ?? theme.colorScheme.background,
         border: Border.all(
@@ -38,10 +39,13 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
           width: 1 * scaling,
           style: widget.borderStyle ?? BorderStyle.solid,
         ),
-        borderRadius:
-            BorderRadius.circular(widget.borderRadius ?? theme.radiusXl),
+        borderRadius: borderRadius,
       ),
-      child: widget.child,
+      child: ClipRRect(
+        clipBehavior: widget.clipBehavior,
+        borderRadius: borderRadius,
+        child: widget.child,
+      ),
     );
   }
 }

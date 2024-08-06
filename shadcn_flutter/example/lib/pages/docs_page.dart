@@ -239,7 +239,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Steps', 'steps'),
         ShadcnDocsPage('Stepper', 'stepper', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Timeline', 'timeline', ShadcnFeatureTag.experimental),
-        ShadcnDocsPage('Scaffold', 'scaffold', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Scaffold', 'scaffold'),
         ShadcnDocsPage('App Bar', 'app_bar', ShadcnFeatureTag.workInProgress),
       ],
     ),

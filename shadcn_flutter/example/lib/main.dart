@@ -33,6 +33,7 @@ import 'package:example/pages/docs/components/progress_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
 import 'package:example/pages/docs/components/repeated_animation_builder_example.dart';
 import 'package:example/pages/docs/components/resizable_example.dart';
+import 'package:example/pages/docs/components/scaffold_example.dart';
 import 'package:example/pages/docs/components/select_example.dart';
 import 'package:example/pages/docs/components/sheet_example.dart';
 import 'package:example/pages/docs/components/skeleton_example.dart';
@@ -538,6 +539,13 @@ class MyAppState extends State<MyApp> {
             name: 'linear_progress',
             builder: (context, state) {
               return const LinearProgressExample();
+            },
+          ),
+          GoRoute(
+            path: 'scaffold',
+            name: 'scaffold',
+            builder: (context, state) {
+              return const ScaffoldExample();
             },
           ),
         ]),

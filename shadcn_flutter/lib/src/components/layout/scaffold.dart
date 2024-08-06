@@ -233,13 +233,13 @@ class _AppBarState extends State<AppBar> {
                   Gap(16 * scaling),
                   if (!widget.trailingExpanded)
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: widget.trailing,
                     ).gap(widget.trailingGap ?? (8 * scaling))
                   else
                     Expanded(
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: widget.trailing,
                       ).gap(widget.trailingGap ?? (8 * scaling)),
                     ),
