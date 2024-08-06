@@ -80,7 +80,7 @@ class _ScrollViewInterceptorState extends State<ScrollViewInterceptor>
         Listener(
           onPointerDown: (event) {
             // check if middle button is pressed
-            if (event.buttons != 4) return;
+            if (event.buttons != 4 || _ticker.isActive) return;
             _event = event;
             _lastOffset = event.position;
             _lastTime = null;
