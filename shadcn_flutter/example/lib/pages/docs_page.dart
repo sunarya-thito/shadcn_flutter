@@ -213,7 +213,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage(
             'Phone Input', 'phone_input', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Radio Group', 'radio_group'),
-        // TODO: https://www.radix-ui.com/themes/docs/components/radio-cards
+        //https://www.radix-ui.com/themes/docs/components/radio-cards
         ShadcnDocsPage(
             'Radio Card', 'radio_card', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Select', 'select'),
@@ -240,7 +240,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Stepper', 'stepper', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Timeline', 'timeline', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Scaffold', 'scaffold', ShadcnFeatureTag.experimental),
-        ShadcnDocsPage('App Bar', 'app_bar', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('App Bar', 'app_bar', ShadcnFeatureTag.experimental),
       ],
     ),
     ShadcnDocsSection(

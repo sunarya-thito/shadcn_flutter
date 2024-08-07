@@ -5,6 +5,7 @@ import 'package:example/pages/docs/components/accordion_example.dart';
 import 'package:example/pages/docs/components/alert_dialog_example.dart';
 import 'package:example/pages/docs/components/alert_example.dart';
 import 'package:example/pages/docs/components/animated_value_builder_example.dart';
+import 'package:example/pages/docs/components/app_bar_example.dart';
 import 'package:example/pages/docs/components/avatar_example.dart';
 import 'package:example/pages/docs/components/avatar_group_example.dart';
 import 'package:example/pages/docs/components/calendar_example.dart';
@@ -554,6 +555,13 @@ class MyAppState extends State<MyApp> {
             name: 'radio_card',
             builder: (context, state) {
               return const RadioCardExample();
+            },
+          ),
+          GoRoute(
+            path: 'app_bar',
+            name: 'app_bar',
+            builder: (context, state) {
+              return const AppBarExample();
             },
           ),
         ]),
