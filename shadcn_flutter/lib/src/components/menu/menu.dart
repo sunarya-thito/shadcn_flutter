@@ -4,43 +4,55 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class MenuShortcut extends StatelessWidget {
   final ShortcutActivator activator;
+  final Widget? combiner;
 
-  const MenuShortcut({super.key, required this.activator});
+  const MenuShortcut({super.key, required this.activator, this.combiner});
 
   @override
   Widget build(BuildContext context) {
+    var activator = this.activator;
+    var combiner = this.combiner ?? const Text(' + ');
+    final displayMapper = Data.maybeOf<KeyboardShortcutDisplayHandle>(context);
+    assert(displayMapper != null, 'Cannot find KeyboardShortcutDisplayMapper');
+    List<LogicalKeyboardKey> keys = [];
     if (activator is CharacterActivator) {
-      final characterActivator = activator as CharacterActivator;
-      String display = characterActivator.character;
-      if (characterActivator.meta) {
-        display = 'Meta + $display';
+      if (activator.meta) {
+        keys.add(LogicalKeyboardKey.meta);
       }
-      if (characterActivator.alt) {
-        display = 'Alt + $display';
+      if (activator.alt) {
+        keys.add(LogicalKeyboardKey.alt);
       }
-      if (characterActivator.control) {
-        display = 'Ctrl + $display';
+      if (activator.control) {
+        keys.add(LogicalKeyboardKey.control);
       }
-      return Text(display).xSmall().muted();
+      keys.add(LogicalKeyboardKey(activator.character.codeUnitAt(0)));
     }
     if (activator is SingleActivator) {
-      final singleActivator = activator as SingleActivator;
-      String display = singleActivator.trigger.keyLabel;
-      if (singleActivator.shift) {
-        display = 'Shift + $display';
+      if (activator.shift) {
+        keys.add(LogicalKeyboardKey.shift);
       }
-      if (singleActivator.meta) {
-        display = 'Meta + $display';
+      if (activator.meta) {
+        keys.add(LogicalKeyboardKey.meta);
       }
-      if (singleActivator.alt) {
-        display = 'Alt + $display';
+      if (activator.alt) {
+        keys.add(LogicalKeyboardKey.alt);
       }
-      if (singleActivator.control) {
-        display = 'Ctrl + $display';
+      if (activator.control) {
+        keys.add(LogicalKeyboardKey.control);
       }
-      return Text(display).xSmall().muted();
+      keys.add(activator.trigger);
     }
-    return Text(activator.toString()).xSmall().muted();
+    List<Widget> children = [];
+    for (int i = 0; i < keys.length; i++) {
+      if (i > 0) {
+        children.add(combiner);
+      }
+      children.add(displayMapper!.buildKeyboardDisplay(context, keys[i]));
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: children,
+    ).xSmall().muted();
   }
 }
 

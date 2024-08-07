@@ -36,6 +36,7 @@ export 'src/components/display/circular_progress_indicator.dart';
 export 'src/components/display/code_snippet.dart';
 export 'src/components/display/divider.dart';
 export 'src/components/display/dot_indicator.dart';
+export 'src/components/display/keyboard_shortcut.dart';
 export 'src/components/display/linear_progress_indicator.dart';
 export 'src/components/display/number_ticker.dart';
 export 'src/components/display/progress.dart';

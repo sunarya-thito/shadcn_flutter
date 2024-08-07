@@ -302,8 +302,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Context Menu', 'context_menu'),
         ShadcnDocsPage('Dropdown Menu', 'dropdown_menu'),
         // TODO https://www.radix-ui.com/themes/docs/components/kbd
-        ShadcnDocsPage('Keyboard Shortcut', 'keyboard_shortcut',
-            ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Keyboard Display', 'keyboard_display',
+            ShadcnFeatureTag.experimental),
         // TODO: Same progress as image input
         ShadcnDocsPage(
             'Image Tools', 'image_tools', ShadcnFeatureTag.workInProgress),

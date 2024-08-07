@@ -2,13 +2,14 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class Card extends StatelessWidget {
   final Widget child;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final bool filled;
   final Color? fillColor;
   final double? borderRadius;
   final Color? borderColor;
   final double? borderWidth;
   final Clip clipBehavior;
+  final List<BoxShadow>? boxShadow;
 
   const Card({
     Key? key,
@@ -20,6 +21,7 @@ class Card extends StatelessWidget {
     this.clipBehavior = Clip.none,
     this.borderColor,
     this.borderWidth,
+    this.boxShadow,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class Card extends StatelessWidget {
       backgroundColor: filled
           ? fillColor ?? theme.colorScheme.border
           : theme.colorScheme.card,
+      boxShadow: boxShadow,
       child: AnimatedContainer(
           duration: kDefaultDuration,
           padding: padding ?? (EdgeInsets.all(16 * scaling)),
