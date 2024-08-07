@@ -546,6 +546,10 @@ class FormKey<T> extends LocalKey {
 
   Type get type => T;
 
+  bool isInstanceOf(dynamic value) {
+    return value is T;
+  }
+
   @override
   bool operator ==(Object other) {
     return other is FormKey && other.key == key;
@@ -877,8 +881,7 @@ extension FormExtension on BuildContext {
       final formEntry = Data.maybeOf<FormEntryState>(this);
       if (formEntry != null) {
         var formKey = formEntry.widget.key;
-        Type type = formKey.type;
-        if (type == value.runtimeType) {
+        if (formKey.isInstanceOf(value)) {
           final oldState = formController.getState(formKey);
           if (oldState != null) {
             if (oldState.value == value) {
