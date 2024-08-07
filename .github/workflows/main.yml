@@ -19,21 +19,21 @@ jobs:
 
       - name: Enable Flutter Web
         run: flutter config --enable-web
-        working-directory: './shadcn_flutter/example'
+        working-directory: './shadcn_flutter/docs'
 
       - name: Download Dependencies
         run: flutter pub get
-        working-directory: './shadcn_flutter/example'
+        working-directory: './shadcn_flutter/docs'
 
       - name: Build
         run: "flutter build web --base-href \"/shadcn_flutter/\" --wasm"
-        working-directory: './shadcn_flutter/example'
+        working-directory: './shadcn_flutter/docs'
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: './shadcn_flutter/example/build/web'
+          publish_dir: './shadcn_flutter/docs/build/web'
           force_orphan: true
           user_name: 'github-ci[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
