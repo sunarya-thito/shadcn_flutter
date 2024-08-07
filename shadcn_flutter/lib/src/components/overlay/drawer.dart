@@ -117,7 +117,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
       case OverlayPosition.left:
       case OverlayPosition.right:
         return Container(
-          width: 8 * theme.scaling,
+          width: 6 * theme.scaling,
           height: 100 * theme.scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.muted,
@@ -128,7 +128,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
       case OverlayPosition.bottom:
         return Container(
           width: 100 * theme.scaling,
-          height: 8 * theme.scaling,
+          height: 6 * theme.scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.muted,
             borderRadius: theme.borderRadiusXxl,
@@ -201,7 +201,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
               ),
               Gap(16 * theme.scaling),
               buildDraggableBar(theme),
-              Gap(16 * theme.scaling),
+              Gap(12 * theme.scaling),
             ],
           ),
         );
@@ -241,7 +241,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Gap(16 * theme.scaling),
+              Gap(12 * theme.scaling),
               buildDraggableBar(theme),
               Gap(16 * theme.scaling),
               AnimatedBuilder(
@@ -317,7 +317,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
               ),
               Gap(16 * theme.scaling),
               buildDraggableBar(theme),
-              Gap(16 * theme.scaling),
+              Gap(12 * theme.scaling),
             ],
           ),
         );
@@ -357,7 +357,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Gap(16 * theme.scaling),
+              Gap(12 * theme.scaling),
               buildDraggableBar(theme),
               Gap(16 * theme.scaling),
               AnimatedBuilder(
@@ -415,11 +415,39 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     }
   }
 
+  BorderRadius getBorderRadius(ThemeData theme, double radius) {
+    switch (widget.position) {
+      case OverlayPosition.left:
+        return BorderRadius.only(
+          topRight: Radius.circular(radius),
+          bottomRight: Radius.circular(radius),
+        );
+      case OverlayPosition.right:
+        return BorderRadius.only(
+          topLeft: Radius.circular(radius),
+          bottomLeft: Radius.circular(radius),
+        );
+      case OverlayPosition.top:
+        return BorderRadius.only(
+          bottomLeft: Radius.circular(radius),
+          bottomRight: Radius.circular(radius),
+        );
+      case OverlayPosition.bottom:
+        return BorderRadius.only(
+          topLeft: Radius.circular(radius),
+          topRight: Radius.circular(radius),
+        );
+    }
+  }
+
   BoxDecoration getDecoration(ThemeData theme) {
+    var border = getBorder(theme);
+    // seems to be fixed radius?
+    var borderRadius = getBorderRadius(theme, 10);
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(10), // seems to be fixed radius?
+      borderRadius: borderRadius,
       color: theme.colorScheme.background,
-      border: getBorder(theme),
+      border: border,
     );
   }
 
@@ -526,6 +554,7 @@ Future<T?> openRawDrawer<T>({
     builder: builder,
     modal: modal,
     data: data,
+    barrierDismissible: barrierDismissible,
     backdropBuilder: transformBackdrop
         ? (context, child, animation, stackIndex) {
             final theme = Theme.of(context);
@@ -657,7 +686,7 @@ Future<T?> openRawDrawer<T>({
 }
 
 class _OverlaidEntryData {
-  final _DrawerOverlaidEntryState state;
+  final DrawerOverlaidEntryState state;
 
   _OverlaidEntryData(this.state);
 }
@@ -758,9 +787,25 @@ class _DrawerOverlayState extends State<DrawerOverlay> {
         data: entry.data,
       );
     }
-    return ForwardableData(
-      data: DrawerLayerData(this, parentLayer),
-      child: child,
+    return PopScope(
+      canPop: _entries.isEmpty,
+      onPopInvoked: (didPop) {
+        if (_entries.isNotEmpty) {
+          var last = _entries.last;
+          if (last.barrierDismissible) {
+            var state = last.key.currentState;
+            if (state != null) {
+              state.close();
+            } else {
+              last.completer.complete();
+            }
+          }
+        }
+      },
+      child: ForwardableData(
+        data: DrawerLayerData(this, parentLayer),
+        child: child,
+      ),
     );
   }
 }
@@ -794,10 +839,10 @@ class DrawerOverlaidEntry<T> extends StatefulWidget {
   });
 
   @override
-  State<DrawerOverlaidEntry<T>> createState() => _DrawerOverlaidEntryState<T>();
+  State<DrawerOverlaidEntry<T>> createState() => DrawerOverlaidEntryState<T>();
 }
 
-class _DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
+class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
     with SingleTickerProviderStateMixin {
   late ValueNotifier<double> additionalOffset = ValueNotifier(0);
   late AnimationController _controller;
@@ -938,7 +983,7 @@ typedef BarrierBuilder = Widget? Function(BuildContext context, Widget child,
     Animation<double> animation, int stackIndex);
 
 class DrawerOverlayEntry<T> {
-  final GlobalKey key = GlobalKey();
+  final GlobalKey<DrawerOverlaidEntryState<T>> key = GlobalKey();
   final BackdropBuilder backdropBuilder;
   final DrawerBuilder builder;
   final bool modal;
@@ -947,6 +992,7 @@ class DrawerOverlayEntry<T> {
   final CapturedData? data;
   final Completer<T> completer;
   final OverlayPosition position;
+  final bool barrierDismissible;
 
   DrawerOverlayEntry({
     required this.builder,
@@ -957,5 +1003,6 @@ class DrawerOverlayEntry<T> {
     required this.completer,
     required this.position,
     required this.data,
+    required this.barrierDismissible,
   });
 }
