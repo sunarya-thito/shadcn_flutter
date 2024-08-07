@@ -386,20 +386,6 @@ class _ShadcnAppState extends State<ShadcnApp> {
   @override
   Widget build(BuildContext context) {
     Widget result = _buildWidgetApp(context);
-    result = Focus(
-      canRequestFocus: false,
-      onKeyEvent: (FocusNode node, KeyEvent event) {
-        if (event is! KeyDownEvent ||
-            event.logicalKey != LogicalKeyboardKey.escape) {
-          return KeyEventResult.ignored;
-        }
-        // return Tooltip.dismissAllToolTips()
-        //     ? KeyEventResult.handled
-        //     : KeyEventResult.ignored;
-        return KeyEventResult.ignored;
-      },
-      child: result,
-    );
     assert(() {
       if (widget.debugShowMaterialGrid) {
         result = GridPaper(
@@ -411,7 +397,6 @@ class _ShadcnAppState extends State<ShadcnApp> {
       }
       return true;
     }());
-
     return m.Theme(
       data: widget.materialTheme ??
           m.ThemeData.from(

@@ -33,6 +33,7 @@ class Checkbox extends StatefulWidget {
 
 class _CheckboxState extends State<Checkbox> with FormValueSupplier {
   final bool _focusing = false;
+  final GlobalKey _checkKey = GlobalKey();
 
   void _changeTo(CheckboxState state) {
     if (widget.onChanged != null) {
@@ -95,7 +96,8 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
         children: [
           if (widget.leading != null) widget.leading!.small().medium(),
           SizedBox(width: theme.scaling * 8),
-          Container(
+          AnimatedContainer(
+            duration: kDefaultDuration,
             width: theme.scaling * 16,
             height: theme.scaling * 16,
             decoration: BoxDecoration(
@@ -109,29 +111,121 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
                     : widget.state == CheckboxState.checked
                         ? theme.colorScheme.primary
                         : theme.colorScheme.mutedForeground,
-                width: _focusing ? 2 : 1,
+                width: (_focusing ? 2 : 1) * theme.scaling,
               ),
             ),
             child: widget.state == CheckboxState.checked
-                ? const Icon(
-                    Icons.check,
-                  ).iconXSmall().iconPrimaryForeground()
-                : widget.state == CheckboxState.indeterminate
-                    ? Container(
-                        width: theme.scaling * 8,
-                        height: theme.scaling * 8,
-                        margin: EdgeInsets.all(theme.scaling * 2),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primary,
-                          borderRadius: BorderRadius.circular(theme.radiusXs),
+                ? AnimatedValueBuilder(
+                    value: 1.0,
+                    initialValue: 0.0,
+                    duration: Duration(milliseconds: 300),
+                    curve: IntervalDuration(
+                      start: Duration(milliseconds: 175),
+                      duration: Duration(milliseconds: 300),
+                    ),
+                    builder: (context, value, child) {
+                      return AnimatedContainer(
+                        key: _checkKey,
+                        duration: const Duration(milliseconds: 100),
+                        padding: const EdgeInsets.all(2.0),
+                        child: CustomPaint(
+                          painter: AnimatedCheckPainter(
+                            progress: value,
+                            color: theme.colorScheme.primaryForeground,
+                            strokeWidth: theme.scaling * 1,
+                          ),
                         ),
-                      )
-                    : null,
+                      );
+                    },
+                  )
+                : Center(
+                    child: AnimatedContainer(
+                      key: _checkKey,
+                      duration: const Duration(milliseconds: 100),
+                      width: widget.state == CheckboxState.indeterminate
+                          ? theme.scaling * 8
+                          : 0,
+                      height: widget.state == CheckboxState.indeterminate
+                          ? theme.scaling * 8
+                          : 0,
+                      padding: EdgeInsets.zero,
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary,
+                        borderRadius: BorderRadius.circular(theme.radiusXs),
+                      ),
+                    ),
+                  ),
           ),
           SizedBox(width: theme.scaling * 8),
           if (widget.trailing != null) widget.trailing!.small().medium(),
         ],
       ),
     );
+  }
+}
+
+class AnimatedCheckPainter extends CustomPainter {
+  final double progress;
+  final Color color;
+  final double strokeWidth;
+
+  AnimatedCheckPainter({
+    required this.progress,
+    required this.color,
+    required this.strokeWidth,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+    final path = Path();
+    Offset firstStrokeStart = Offset(size.width * 0.1, size.height * 0.5);
+    Offset firstStrokeEnd = Offset(size.width * 0.35, size.height * 0.8);
+    Offset secondStrokeStart = firstStrokeEnd;
+    Offset secondStrokeEnd = Offset(size.width * 0.9, size.height * 0.25);
+    double firstStrokeLength =
+        (firstStrokeEnd - firstStrokeStart).distanceSquared;
+    double secondStrokeLength =
+        (secondStrokeEnd - secondStrokeStart).distanceSquared;
+    double totalLength = firstStrokeLength + secondStrokeLength;
+
+    double normalizedFirstStrokeLength = firstStrokeLength / totalLength;
+    double normalizedSecondStrokeLength = secondStrokeLength / totalLength;
+
+    double firstStrokeProgress =
+        progress.clamp(0.0, normalizedFirstStrokeLength) /
+            normalizedFirstStrokeLength;
+    double secondStrokeProgress = (progress - normalizedFirstStrokeLength)
+            .clamp(0.0, normalizedSecondStrokeLength) /
+        normalizedSecondStrokeLength;
+    if (firstStrokeProgress <= 0) {
+      return;
+    }
+    Offset currentPoint =
+        Offset.lerp(firstStrokeStart, firstStrokeEnd, firstStrokeProgress)!;
+    path.moveTo(firstStrokeStart.dx, firstStrokeStart.dy);
+    path.lineTo(currentPoint.dx, currentPoint.dy);
+    if (secondStrokeProgress <= 0) {
+      canvas.drawPath(path, paint);
+      return;
+    }
+    Offset secondPoint = Offset.lerp(
+      secondStrokeStart,
+      secondStrokeEnd,
+      secondStrokeProgress,
+    )!;
+    path.lineTo(secondPoint.dx, secondPoint.dy);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant AnimatedCheckPainter oldDelegate) {
+    return oldDelegate.progress != progress ||
+        oldDelegate.color != color ||
+        oldDelegate.strokeWidth != strokeWidth;
   }
 }

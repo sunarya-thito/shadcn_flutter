@@ -11,6 +11,7 @@ class OutlinedContainer extends StatefulWidget {
   final BorderStyle? borderStyle;
   final double? borderWidth;
   final List<BoxShadow>? boxShadow;
+  final EdgeInsetsGeometry? padding;
   const OutlinedContainer({
     Key? key,
     required this.child,
@@ -21,6 +22,7 @@ class OutlinedContainer extends StatefulWidget {
     this.borderStyle,
     this.borderWidth,
     this.boxShadow,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -46,6 +48,7 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
         borderRadius: borderRadius,
         boxShadow: widget.boxShadow,
       ),
+      padding: widget.padding,
       child: ClipRRect(
         clipBehavior: widget.clipBehavior,
         borderRadius: borderRadius,

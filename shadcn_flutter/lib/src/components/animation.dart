@@ -71,7 +71,7 @@ class _AnimatableValue<T> extends Animatable<T> {
 
   @override
   T transform(double t) {
-    return lerp(start, end, t);
+    return lerp(start, end, curve.transform(t));
   }
 }
 
@@ -306,5 +306,42 @@ class _RepeatedAnimationBuilderState<T>
         return widget.builder(context, value, widget.child);
       },
     );
+  }
+}
+
+class IntervalDuration extends Curve {
+  final Duration? start;
+  final Duration? end;
+  final Duration duration;
+  final Curve? curve;
+
+  const IntervalDuration({
+    this.start,
+    this.end,
+    required this.duration,
+    this.curve,
+  });
+
+  @override
+  double transform(double t) {
+    double progressStartInterval;
+    double progressEndInterval;
+    if (start != null) {
+      progressStartInterval = start!.inMilliseconds / duration.inMilliseconds;
+    } else {
+      progressStartInterval = 0;
+    }
+    if (end != null) {
+      progressEndInterval = end!.inMilliseconds / duration.inMilliseconds;
+    } else {
+      progressEndInterval = 1;
+    }
+    double clampedProgress = ((t - progressStartInterval) /
+            (progressEndInterval - progressStartInterval))
+        .clamp(0, 1);
+    if (curve != null) {
+      return curve!.transform(clampedProgress);
+    }
+    return clampedProgress;
   }
 }

@@ -26,16 +26,12 @@ class _AlertDialogState extends State<AlertDialog> {
     var themeData = Theme.of(context);
     var scaling = themeData.scaling;
     return IntrinsicWidth(
-      child: Container(
+      child: OutlinedContainer(
+        backgroundColor: themeData.colorScheme.popover,
+        borderRadius: themeData.radiusXxl,
+        borderWidth: 1 * scaling,
+        borderColor: themeData.colorScheme.muted,
         padding: EdgeInsets.all(24 * scaling),
-        decoration: BoxDecoration(
-          color: themeData.colorScheme.popover,
-          borderRadius: BorderRadius.circular(themeData.radiusXl),
-          border: Border.all(
-            color: themeData.colorScheme.muted,
-            width: 1 * scaling,
-          ),
-        ),
         child: IntrinsicHeight(
           child: Column(
             mainAxisSize: MainAxisSize.min,
