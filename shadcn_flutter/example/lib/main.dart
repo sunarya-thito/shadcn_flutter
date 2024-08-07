@@ -30,6 +30,7 @@ import 'package:example/pages/docs/components/pagination_example.dart';
 import 'package:example/pages/docs/components/phone_input_example.dart';
 import 'package:example/pages/docs/components/popover_example.dart';
 import 'package:example/pages/docs/components/progress_example.dart';
+import 'package:example/pages/docs/components/radio_card_example.dart';
 import 'package:example/pages/docs/components/radio_group_example.dart';
 import 'package:example/pages/docs/components/repeated_animation_builder_example.dart';
 import 'package:example/pages/docs/components/resizable_example.dart';
@@ -546,6 +547,13 @@ class MyAppState extends State<MyApp> {
             name: 'scaffold',
             builder: (context, state) {
               return const ScaffoldExample();
+            },
+          ),
+          GoRoute(
+            path: 'radio_card',
+            name: 'radio_card',
+            builder: (context, state) {
+              return const RadioCardExample();
             },
           ),
         ]),

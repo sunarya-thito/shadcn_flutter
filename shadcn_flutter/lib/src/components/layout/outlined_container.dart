@@ -9,6 +9,7 @@ class OutlinedContainer extends StatefulWidget {
   final Clip clipBehavior;
   final double? borderRadius;
   final BorderStyle? borderStyle;
+  final double? borderWidth;
   const OutlinedContainer({
     Key? key,
     required this.child,
@@ -17,6 +18,7 @@ class OutlinedContainer extends StatefulWidget {
     this.clipBehavior = Clip.none,
     this.borderRadius,
     this.borderStyle,
+    this.borderWidth,
   }) : super(key: key);
 
   @override
@@ -36,7 +38,7 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
         color: widget.backgroundColor ?? theme.colorScheme.background,
         border: Border.all(
           color: widget.borderColor ?? theme.colorScheme.muted,
-          width: 1 * scaling,
+          width: widget.borderWidth ?? (1 * scaling),
           style: widget.borderStyle ?? BorderStyle.solid,
         ),
         borderRadius: borderRadius,

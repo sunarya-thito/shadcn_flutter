@@ -140,6 +140,97 @@ class _RadioItemState<T> extends State<RadioItem<T>> with FormValueSupplier {
   }
 }
 
+class RadioCard<T> extends StatefulWidget {
+  final Widget child;
+  final T value;
+  final bool enabled;
+  final FocusNode? focusNode;
+
+  const RadioCard({
+    Key? key,
+    required this.child,
+    required this.value,
+    this.enabled = true,
+    this.focusNode,
+  }) : super(key: key);
+
+  @override
+  State<RadioCard<T>> createState() => _RadioCardState<T>();
+}
+
+class _RadioCardState<T> extends State<RadioCard<T>> with FormValueSupplier {
+  late FocusNode _focusNode;
+  bool _focusing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = widget.focusNode ?? FocusNode();
+  }
+
+  @override
+  void didUpdateWidget(covariant RadioCard<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.focusNode != widget.focusNode) {
+      _focusNode.dispose();
+      _focusNode = widget.focusNode ?? FocusNode();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final groupData = Data.maybeOf<RadioGroupData<T>>(context);
+    final group = Data.maybeOf<_RadioGroupState<T>>(context);
+    assert(groupData != null,
+        'RadioCard<$T> must be a descendant of RadioGroup<$T>');
+    return GestureDetector(
+      onTap: widget.enabled
+          ? () {
+              group?._setSelected(widget.value);
+            }
+          : null,
+      child: FocusableActionDetector(
+        focusNode: _focusNode,
+        mouseCursor: widget.enabled
+            ? SystemMouseCursors.click
+            : SystemMouseCursors.basic,
+        onShowFocusHighlight: (value) {
+          if (value && widget.enabled) {
+            group?._setSelected(widget.value);
+          }
+          if (value != _focusing) {
+            setState(() {
+              _focusing = value;
+            });
+          }
+        },
+        child: Data<RadioGroupData<T>>.boundary(
+          child: Data<_RadioCardState<T>>.boundary(
+            child: Card(
+              borderColor: groupData?.selectedItem == widget.value
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.muted,
+              borderWidth: groupData?.selectedItem == widget.value
+                  ? 2 * theme.scaling
+                  : 1 * theme.scaling,
+              borderRadius: theme.radiusMd,
+              child: AnimatedPadding(
+                duration: kDefaultDuration,
+                padding: groupData?.selectedItem == widget.value
+                    ? EdgeInsets.zero
+                    // to compensate for the border width
+                    : EdgeInsets.all(1 * theme.scaling),
+                child: widget.child,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class RadioGroup<T> extends StatefulWidget {
   final Widget child;
   final T? value;

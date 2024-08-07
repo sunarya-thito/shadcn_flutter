@@ -215,7 +215,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Radio Group', 'radio_group'),
         // TODO: https://www.radix-ui.com/themes/docs/components/radio-cards
         ShadcnDocsPage(
-            'Radio Card', 'radio_card', ShadcnFeatureTag.workInProgress),
+            'Radio Card', 'radio_card', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Select', 'select'),
         ShadcnDocsPage('Slider', 'slider'),
         ShadcnDocsPage(

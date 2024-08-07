@@ -6,17 +6,20 @@ class Card extends StatelessWidget {
   final bool filled;
   final Color? fillColor;
   final double? borderRadius;
+  final Color? borderColor;
+  final double? borderWidth;
   final Clip clipBehavior;
 
   const Card({
     Key? key,
     required this.child,
-    // this.padding = const EdgeInsets.all(16),
     this.padding,
     this.filled = false,
     this.fillColor,
     this.borderRadius,
     this.clipBehavior = Clip.none,
+    this.borderColor,
+    this.borderWidth,
   }) : super(key: key);
 
   @override
@@ -26,6 +29,8 @@ class Card extends StatelessWidget {
     return OutlinedContainer(
       clipBehavior: clipBehavior,
       borderRadius: borderRadius,
+      borderWidth: borderWidth,
+      borderColor: borderColor,
       backgroundColor: filled
           ? fillColor ?? theme.colorScheme.border
           : theme.colorScheme.card,
