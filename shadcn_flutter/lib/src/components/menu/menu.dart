@@ -14,34 +14,7 @@ class MenuShortcut extends StatelessWidget {
     var combiner = this.combiner ?? const Text(' + ');
     final displayMapper = Data.maybeOf<KeyboardShortcutDisplayHandle>(context);
     assert(displayMapper != null, 'Cannot find KeyboardShortcutDisplayMapper');
-    List<LogicalKeyboardKey> keys = [];
-    if (activator is CharacterActivator) {
-      if (activator.meta) {
-        keys.add(LogicalKeyboardKey.meta);
-      }
-      if (activator.alt) {
-        keys.add(LogicalKeyboardKey.alt);
-      }
-      if (activator.control) {
-        keys.add(LogicalKeyboardKey.control);
-      }
-      keys.add(LogicalKeyboardKey(activator.character.codeUnitAt(0)));
-    }
-    if (activator is SingleActivator) {
-      if (activator.shift) {
-        keys.add(LogicalKeyboardKey.shift);
-      }
-      if (activator.meta) {
-        keys.add(LogicalKeyboardKey.meta);
-      }
-      if (activator.alt) {
-        keys.add(LogicalKeyboardKey.alt);
-      }
-      if (activator.control) {
-        keys.add(LogicalKeyboardKey.control);
-      }
-      keys.add(activator.trigger);
-    }
+    List<LogicalKeyboardKey> keys = shortcutActivatorToKeySet(activator);
     List<Widget> children = [];
     for (int i = 0; i < keys.length; i++) {
       if (i > 0) {

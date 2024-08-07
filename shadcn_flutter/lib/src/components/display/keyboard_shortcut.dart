@@ -103,38 +103,7 @@ class KeyboardDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    var keys = _keys;
-    if (keys == null) {
-      keys = [];
-      var activator = _activator;
-      if (activator is CharacterActivator) {
-        if (activator.meta) {
-          keys.add(LogicalKeyboardKey.meta);
-        }
-        if (activator.alt) {
-          keys.add(LogicalKeyboardKey.alt);
-        }
-        if (activator.control) {
-          keys.add(LogicalKeyboardKey.control);
-        }
-        keys.add(LogicalKeyboardKey(activator.character.codeUnitAt(0)));
-      }
-      if (activator is SingleActivator) {
-        if (activator.shift) {
-          keys.add(LogicalKeyboardKey.shift);
-        }
-        if (activator.meta) {
-          keys.add(LogicalKeyboardKey.meta);
-        }
-        if (activator.alt) {
-          keys.add(LogicalKeyboardKey.alt);
-        }
-        if (activator.control) {
-          keys.add(LogicalKeyboardKey.control);
-        }
-        keys.add(activator.trigger);
-      }
-    }
+    var keys = _keys ?? shortcutActivatorToKeySet(_activator!);
     return Row(
             mainAxisSize: MainAxisSize.min,
             children: keys
@@ -173,4 +142,42 @@ class KeyboardKeyDisplay extends StatelessWidget {
       child: displayMapper.buildKeyboardDisplay(context, keyboardKey),
     );
   }
+}
+
+List<LogicalKeyboardKey> shortcutActivatorToKeySet(
+    ShortcutActivator activator) {
+  List<LogicalKeyboardKey> keys = [];
+  if (activator is CharacterActivator) {
+    if (activator.control) {
+      keys.add(LogicalKeyboardKey.control);
+    }
+    if (activator.alt) {
+      keys.add(LogicalKeyboardKey.alt);
+    }
+    if (activator.meta) {
+      keys.add(LogicalKeyboardKey.meta);
+    }
+    keys.add(LogicalKeyboardKey(activator.character.codeUnitAt(0)));
+  }
+  if (activator is SingleActivator) {
+    if (activator.control) {
+      keys.add(LogicalKeyboardKey.control);
+    }
+    if (activator.alt) {
+      keys.add(LogicalKeyboardKey.alt);
+    }
+    if (activator.meta) {
+      keys.add(LogicalKeyboardKey.meta);
+    }
+    if (activator.shift) {
+      keys.add(LogicalKeyboardKey.shift);
+    }
+    keys.add(activator.trigger);
+  }
+  if (activator is LogicalKeySet) {
+    for (final trigger in activator.triggers) {
+      keys.add(trigger);
+    }
+  }
+  return keys;
 }
