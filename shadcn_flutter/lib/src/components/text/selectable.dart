@@ -33,6 +33,7 @@ class SelectableText extends StatelessWidget {
     this.textHeightBehavior,
     this.textWidthBasis,
     this.onSelectionChanged,
+    this.useNativeContextMenu = false,
     this.contextMenuBuilder = _defaultContextMenuBuilder,
     this.magnifierConfiguration,
   })  : assert(maxLines == null || maxLines > 0),
@@ -71,6 +72,7 @@ class SelectableText extends StatelessWidget {
     this.textHeightBehavior,
     this.textWidthBasis,
     this.onSelectionChanged,
+    this.useNativeContextMenu = false,
     this.contextMenuBuilder = _defaultContextMenuBuilder,
     this.magnifierConfiguration,
   })  : assert(maxLines == null || maxLines > 0),
@@ -85,6 +87,8 @@ class SelectableText extends StatelessWidget {
 
   final TextSpan? textSpan;
   final FocusNode? focusNode;
+
+  final bool useNativeContextMenu;
 
   final TextStyle? style;
 
@@ -214,7 +218,13 @@ class SelectableText extends StatelessWidget {
         scrollPhysics: scrollPhysics,
         semanticsLabel: semanticsLabel,
         onSelectionChanged: onSelectionChanged,
-        contextMenuBuilder: contextMenuBuilder,
+        contextMenuBuilder: useNativeContextMenu
+            ? (context, editableTextState) {
+                return m.AdaptiveTextSelectionToolbar.editableText(
+                  editableTextState: editableTextState,
+                );
+              }
+            : contextMenuBuilder,
         magnifierConfiguration: magnifierConfiguration,
       );
     } else {
@@ -243,7 +253,13 @@ class SelectableText extends StatelessWidget {
         scrollPhysics: scrollPhysics,
         semanticsLabel: semanticsLabel,
         onSelectionChanged: onSelectionChanged,
-        contextMenuBuilder: contextMenuBuilder,
+        contextMenuBuilder: useNativeContextMenu
+            ? (context, editableTextState) {
+                return m.AdaptiveTextSelectionToolbar.editableText(
+                  editableTextState: editableTextState,
+                );
+              }
+            : contextMenuBuilder,
         magnifierConfiguration: magnifierConfiguration,
       );
     }

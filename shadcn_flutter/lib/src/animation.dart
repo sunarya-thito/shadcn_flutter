@@ -195,3 +195,135 @@ class AnimationQueueController extends ChangeNotifier {
     }
   }
 }
+
+abstract class Keyframe<T> {
+  Duration get duration;
+  T compute(TimelineAnimation<T> timeline, int index, double t);
+}
+
+class AbsoluteKeyframe<T> implements Keyframe<T> {
+  final T from;
+  final T to;
+  @override
+  final Duration duration;
+
+  const AbsoluteKeyframe(
+    this.duration,
+    this.from,
+    this.to,
+  );
+
+  @override
+  T compute(TimelineAnimation<T> timeline, int index, double t) {
+    return timeline.lerp(from, to, t);
+  }
+}
+
+class RelativeKeyframe<T> implements Keyframe<T> {
+  final T target;
+  @override
+  final Duration duration;
+
+  const RelativeKeyframe(
+    this.duration,
+    this.target,
+  );
+
+  @override
+  T compute(TimelineAnimation<T> timeline, int index, double t) {
+    assert(index > 0, 'Relative keyframe must have a previous keyframe');
+    final previous =
+        timeline.keyframes[index - 1].compute(timeline, index - 1, 1.0);
+    return timeline.lerp(previous, target, t);
+  }
+}
+
+class StillKeyframe<T> implements Keyframe<T> {
+  final T? value;
+  @override
+  final Duration duration;
+
+  const StillKeyframe(this.duration, [this.value]);
+
+  @override
+  T compute(TimelineAnimation<T> timeline, int index, double t) {
+    var value = this.value;
+    if (value == null) {
+      assert(
+          index > 0, 'Relative still keyframe must have a previous keyframe');
+      value = timeline.keyframes[index - 1].compute(timeline, index - 1, 1.0);
+    }
+    return value as T;
+  }
+}
+
+class TimelineAnimation<T> extends Animatable<T> {
+  static T defaultLerp<T>(T a, T b, double t) {
+    return ((a as dynamic) + ((b as dynamic) - (a as dynamic)) * t) as T;
+  }
+
+  final PropertyLerp<T> lerp;
+  final Duration totalDuration;
+  final List<Keyframe<T>> keyframes;
+
+  TimelineAnimation._({
+    required this.lerp,
+    required this.totalDuration,
+    required this.keyframes,
+  });
+
+  factory TimelineAnimation({
+    PropertyLerp<T>? lerp,
+    required List<Keyframe<T>> keyframes,
+  }) {
+    lerp ??= defaultLerp;
+    assert(keyframes.isNotEmpty, 'No keyframes found');
+    Duration current = Duration.zero;
+    for (var i = 0; i < keyframes.length; i++) {
+      final keyframe = keyframes[i];
+      assert(keyframe.duration.inMilliseconds > 0, 'Invalid duration');
+      current += keyframe.duration;
+    }
+    return TimelineAnimation._(
+      lerp: lerp,
+      totalDuration: current,
+      keyframes: keyframes,
+    );
+  }
+
+  Duration _computeDuration(double t) {
+    final totalDuration = this.totalDuration;
+    return Duration(milliseconds: (t * totalDuration.inMilliseconds).round());
+  }
+
+  @override
+  T transform(double t) {
+    assert(t >= 0 && t <= 1, 'Invalid time');
+    assert(keyframes.isNotEmpty, 'No keyframes found');
+    var duration = _computeDuration(t);
+    Duration current = Duration.zero;
+    for (var i = 0; i < keyframes.length; i++) {
+      final keyframe = keyframes[i];
+      final start = current;
+      final end = current + keyframe.duration;
+      if (duration <= end) {
+        final relative = (duration - start).inMilliseconds /
+            keyframe.duration.inMilliseconds;
+        return keyframe.compute(this, i, relative);
+      }
+    }
+    // Should never reach here
+    throw AssertionError('Invalid time');
+  }
+}
+
+// void test() {
+//   var timeline = TimelineAnimation<double>(keyframes: const [
+//     StillKeyframe(0.0, Duration(milliseconds: 100)),
+//     AbsoluteKeyframe(4.0, 2.0, Duration(milliseconds: 100)),
+//     RelativeKeyframe(8.0, Duration(milliseconds: 100)),
+//   ]);
+//   AnimationController controller = AnimationController(vsync: null);
+//   var animation = controller.drive(timeline);
+//   print(animation.value);
+// }

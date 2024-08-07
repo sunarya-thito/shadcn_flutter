@@ -12,17 +12,20 @@ class AppBarExample1 extends StatelessWidget {
         title: const Text('This is Title'),
         subtitle: const Text('This is Subtitle'),
         leading: [
-          GhostButton(
+          OutlineButton(
+            density: ButtonDensity.icon,
             onPressed: () {},
             child: const Icon(Icons.arrow_back),
           ),
         ],
         trailing: [
-          GhostButton(
+          OutlineButton(
+            density: ButtonDensity.icon,
             onPressed: () {},
             child: const Icon(Icons.search),
           ),
-          GhostButton(
+          OutlineButton(
+            density: ButtonDensity.icon,
             onPressed: () {},
             child: const Icon(Icons.more_vert),
           ),

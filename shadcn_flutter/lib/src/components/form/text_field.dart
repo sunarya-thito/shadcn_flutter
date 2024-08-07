@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/services.dart';
@@ -75,10 +73,15 @@ class TextField extends StatefulWidget {
     this.onTapOutside,
     this.inputFormatters,
     this.style,
-    this.contextMenuBuilder,
+    this.contextMenuBuilder = _defaultContextMenuBuilder,
     this.useNativeContextMenu = false,
     this.isCollapsed,
   }) : super(key: key);
+
+  static Widget _defaultContextMenuBuilder(
+      BuildContext context, EditableTextState editableTextState) {
+    return buildEditableTextContextMenu(context, editableTextState);
+  }
 
   @override
   State<TextField> createState() => _TextFieldState();
@@ -179,187 +182,157 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
     }
     var maxLines = widget.maxLines;
     maxLines ??= widget.obscureText ? 1 : null;
-    return Listener(
-      onPointerDown: kIsWeb && !widget.useNativeContextMenu
-          ? (event) {
-              // if right click
-              if (event.kind == PointerDeviceKind.mouse && event.buttons == 2) {
-                if (widget.useNativeContextMenu) {
-                  return;
+    return material.TextField(
+      key: _key,
+      contextMenuBuilder: widget.contextMenuBuilder == null
+          ? null
+          : widget.useNativeContextMenu && !kIsWeb
+              ? (context, editableTextState) {
+                  return material.AdaptiveTextSelectionToolbar.editableText(
+                    editableTextState: editableTextState,
+                  );
                 }
-                BrowserContextMenu.disableContextMenu();
-              }
-            }
-          : null,
-      onPointerUp: kIsWeb && !widget.useNativeContextMenu
-          ? (event) {
-              // if right click
-              if (event.kind == PointerDeviceKind.mouse && event.buttons == 2) {
-                if (widget.useNativeContextMenu) {
-                  return;
-                }
-                BrowserContextMenu.enableContextMenu();
-              }
-            }
-          : null,
-      onPointerCancel: kIsWeb && !widget.useNativeContextMenu
-          ? (event) {
-              if (widget.useNativeContextMenu) {
-                return;
-              }
-              BrowserContextMenu.enableContextMenu();
-            }
-          : null,
-      child: material.TextField(
-        key: _key,
-        contextMenuBuilder: (context, editableTextState) {
-          if (widget.contextMenuBuilder != null) {
-            return widget.contextMenuBuilder!(context, editableTextState);
-          }
-          return buildEditableTextContextMenu(
-              context, editableTextState, _undoHistoryController);
-        },
-        inputFormatters: widget.inputFormatters,
-        onTapOutside: widget.onTapOutside,
-        onChanged: widget.onChanged,
-        keyboardType: widget.keyboardType,
-        textAlign: widget.textAlign,
-        obscureText: widget.obscureText,
-        obscuringCharacter: widget.obscuringCharacter,
-        enabled: widget.enabled,
-        readOnly: widget.readOnly,
-        maxLength: widget.maxLength,
-        maxLengthEnforcement: widget.maxLengthEnforcement,
-        maxLines: maxLines,
-        onTap: widget.onTap,
-        focusNode: _focusNode,
-        onSubmitted: widget.onSubmitted,
-        onEditingComplete: widget.onEditingComplete,
-        undoController: _undoHistoryController,
-        autofillHints: widget.autofillHints,
-        minLines: widget.minLines,
-        buildCounter: (context,
-            {required currentLength, required isFocused, required maxLength}) {
-          return null;
-        },
-        controller: _controller,
-        style: defaultTextStyle,
-        expands: widget.expands,
-        textAlignVertical: widget.textAlignVertical,
-        decoration: material.InputDecoration(
-          isCollapsed: widget.isCollapsed,
-          prefixIcon: widget.leading,
-          suffixIcon: widget.trailing,
-          filled: widget.filled,
-          isDense: true,
-          fillColor: theme.colorScheme.muted,
-          hintText: widget.placeholder,
-          hintStyle: defaultTextStyle
-              .merge(theme.typography.normal)
-              .merge(theme.typography.small)
-              .copyWith(
-                color: theme.colorScheme.mutedForeground,
-              ),
-          border: !widget.border
-              ? material.InputBorder.none
-              : widget.filled
-                  ? material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide.none,
-                    )
-                  : material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide(
-                        color: theme.colorScheme.border,
-                      ),
+              : widget.contextMenuBuilder,
+      inputFormatters: widget.inputFormatters,
+      onTapOutside: widget.onTapOutside,
+      onChanged: widget.onChanged,
+      keyboardType: widget.keyboardType,
+      textAlign: widget.textAlign,
+      obscureText: widget.obscureText,
+      obscuringCharacter: widget.obscuringCharacter,
+      enabled: widget.enabled,
+      readOnly: widget.readOnly,
+      maxLength: widget.maxLength,
+      maxLengthEnforcement: widget.maxLengthEnforcement,
+      maxLines: maxLines,
+      onTap: widget.onTap,
+      focusNode: _focusNode,
+      onSubmitted: widget.onSubmitted,
+      onEditingComplete: widget.onEditingComplete,
+      undoController: _undoHistoryController,
+      autofillHints: widget.autofillHints,
+      minLines: widget.minLines,
+      buildCounter: (context,
+          {required currentLength, required isFocused, required maxLength}) {
+        return null;
+      },
+      controller: _controller,
+      style: defaultTextStyle,
+      expands: widget.expands,
+      textAlignVertical: widget.textAlignVertical,
+      decoration: material.InputDecoration(
+        isCollapsed: widget.isCollapsed,
+        prefixIcon: widget.leading,
+        suffixIcon: widget.trailing,
+        filled: widget.filled,
+        isDense: true,
+        fillColor: theme.colorScheme.muted,
+        hintText: widget.placeholder,
+        hintStyle: defaultTextStyle
+            .merge(theme.typography.normal)
+            .merge(theme.typography.small)
+            .copyWith(
+              color: theme.colorScheme.mutedForeground,
+            ),
+        border: !widget.border
+            ? material.InputBorder.none
+            : widget.filled
+                ? material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide.none,
+                  )
+                : material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.border,
                     ),
-          hoverColor: Colors.transparent,
-          focusedBorder: !widget.border
-              ? material.InputBorder.none
-              : widget.filled
-                  ? material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide.none,
-                    )
-                  : material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide(
-                        color: theme.colorScheme.ring,
-                      ),
+                  ),
+        hoverColor: Colors.transparent,
+        focusedBorder: !widget.border
+            ? material.InputBorder.none
+            : widget.filled
+                ? material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide.none,
+                  )
+                : material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.ring,
                     ),
-          enabledBorder: !widget.border
-              ? material.InputBorder.none
-              : widget.filled
-                  ? material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide.none,
-                    )
-                  : material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide(
-                        color: theme.colorScheme.border,
-                      ),
+                  ),
+        enabledBorder: !widget.border
+            ? material.InputBorder.none
+            : widget.filled
+                ? material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide.none,
+                  )
+                : material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.border,
                     ),
-          disabledBorder: !widget.border
-              ? material.InputBorder.none
-              : widget.filled
-                  ? material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide.none,
-                    )
-                  : material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide(
-                        color: theme.colorScheme.border,
-                      ),
+                  ),
+        disabledBorder: !widget.border
+            ? material.InputBorder.none
+            : widget.filled
+                ? material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide.none,
+                  )
+                : material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.border,
                     ),
-          errorBorder: !widget.border
-              ? material.InputBorder.none
-              : widget.filled
-                  ? material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide.none,
-                    )
-                  : material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide(
-                        color: theme.colorScheme.destructive,
-                      ),
+                  ),
+        errorBorder: !widget.border
+            ? material.InputBorder.none
+            : widget.filled
+                ? material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide.none,
+                  )
+                : material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.destructive,
                     ),
-          focusedErrorBorder: !widget.border
-              ? material.InputBorder.none
-              : widget.filled
-                  ? material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide.none,
-                    )
-                  : material.OutlineInputBorder(
-                      borderRadius: widget.borderRadius ??
-                          BorderRadius.circular(theme.radiusMd),
-                      borderSide: BorderSide(
-                        color: theme.colorScheme.destructive,
-                      ),
+                  ),
+        focusedErrorBorder: !widget.border
+            ? material.InputBorder.none
+            : widget.filled
+                ? material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide.none,
+                  )
+                : material.OutlineInputBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(theme.radiusMd),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.destructive,
                     ),
-          contentPadding: widget.padding ??
-              EdgeInsets.symmetric(
-                horizontal: 12 * scaling,
-                vertical: (4 + 8) * scaling,
-              ),
-        ),
-        cursorColor: theme.colorScheme.primary,
-        cursorWidth: 1,
+                  ),
+        contentPadding: widget.padding ??
+            EdgeInsets.symmetric(
+              horizontal: 12 * scaling,
+              vertical: (4 + 8) * scaling,
+            ),
       ),
+      cursorColor: theme.colorScheme.primary,
+      cursorWidth: 1,
     );
   }
 }

@@ -143,6 +143,9 @@ abstract class ShadcnLocalizations {
   String get menuUndo;
   String get menuRedo;
   String get menuDelete;
+  String get menuShare;
+  String get menuSearchWeb;
+  String get menuLiveTextInput;
   String formatDateTime(DateTime dateTime,
       {bool showDate = true,
       bool showTime = true,
@@ -662,4 +665,13 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get menuDelete => 'Delete';
+
+  @override
+  String get menuShare => 'Share';
+
+  @override
+  String get menuSearchWeb => 'Search Web';
+
+  @override
+  String get menuLiveTextInput => 'Live Text Input';
 }

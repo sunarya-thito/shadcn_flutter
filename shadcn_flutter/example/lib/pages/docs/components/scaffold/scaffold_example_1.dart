@@ -24,19 +24,19 @@ class _ScaffoldExample1State extends State<ScaffoldExample1> {
           title: const Text('Counter App'),
           subtitle: const Text('A simple counter app'),
           leading: [
-            GhostButton(
+            OutlineButton(
               onPressed: () {},
               density: ButtonDensity.icon,
               child: const Icon(Icons.menu),
             ),
           ],
           trailing: [
-            GhostButton(
+            OutlineButton(
               onPressed: () {},
               density: ButtonDensity.icon,
               child: const Icon(Icons.search),
             ),
-            GhostButton(
+            OutlineButton(
               onPressed: () {},
               density: ButtonDensity.icon,
               child: const Icon(Icons.add),

@@ -6,6 +6,7 @@ class InputExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const TextField(
+      useNativeContextMenu: true,
       placeholder: 'Enter your name',
     );
   }

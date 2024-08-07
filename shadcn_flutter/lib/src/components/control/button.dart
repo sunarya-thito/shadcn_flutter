@@ -406,6 +406,7 @@ class ButtonState<T extends Button> extends State<T> {
       disableTransition: widget.disableTransition,
       onHover: widget.onHover,
       onFocus: widget.onFocus,
+      enableFeedback: enableFeedback,
       margin: WidgetStateProperty.resolveWith((states) {
         return widget.style.margin(context, states);
       }),

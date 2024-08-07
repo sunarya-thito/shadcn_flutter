@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart' as c;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -43,6 +44,7 @@ class ShadcnApp extends StatefulWidget {
     this.materialTheme,
     this.cupertinoTheme,
     this.scaling,
+    this.disableBrowserContextMenu = true,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
@@ -78,6 +80,7 @@ class ShadcnApp extends StatefulWidget {
     this.materialTheme,
     this.cupertinoTheme,
     this.scaling,
+    this.disableBrowserContextMenu = true,
   })  : assert(routerDelegate != null || routerConfig != null),
         navigatorObservers = null,
         navigatorKey = null,
@@ -143,6 +146,7 @@ class ShadcnApp extends StatefulWidget {
   final bool debugShowMaterialGrid;
   final m.ThemeData? materialTheme;
   final c.CupertinoThemeData? cupertinoTheme;
+  final bool disableBrowserContextMenu;
 
   @override
   State<ShadcnApp> createState() => _ShadcnAppState();
@@ -224,10 +228,27 @@ class _ShadcnAppState extends State<ShadcnApp> {
       },
     );
     Future.delayed(const Duration(milliseconds: 10), _dispatchAppInitialized);
-    // if (kIsWeb) {
-    //   BrowserContextMenu.disableContextMenu();
-    // }
-    // Moved to individual TextField component that decides whether to show context menu
+    if (kIsWeb) {
+      if (widget.disableBrowserContextMenu) {
+        BrowserContextMenu.disableContextMenu();
+      } else {
+        BrowserContextMenu.enableContextMenu();
+      }
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadcnApp oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (kIsWeb &&
+        widget.disableBrowserContextMenu !=
+            oldWidget.disableBrowserContextMenu) {
+      if (widget.disableBrowserContextMenu) {
+        BrowserContextMenu.disableContextMenu();
+      } else {
+        BrowserContextMenu.enableContextMenu();
+      }
+    }
   }
 
   @override
