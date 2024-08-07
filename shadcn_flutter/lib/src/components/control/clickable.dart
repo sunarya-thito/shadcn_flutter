@@ -285,7 +285,7 @@ class _ClickableState extends State<Clickable> {
                               begin: a ?? Matrix4.identity(),
                               end: b ?? Matrix4.identity(),
                             );
-                            return tween.lerp(t);
+                            return tween.transform(t);
                           },
                           builder: (context, value, child) {
                             return Transform(

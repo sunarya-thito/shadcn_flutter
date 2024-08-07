@@ -14,10 +14,12 @@ Future<T?> openDrawer<T>({
   bool expands = false,
   bool draggable = true,
   bool barrierDismissible = true,
+  WidgetBuilder? backdropBuilder,
 }) {
   return openRawDrawer<T>(
     context: context,
     barrierDismissible: barrierDismissible,
+    backdropBuilder: backdropBuilder,
     builder: (context, extraSize, size) {
       return DrawerWrapper(
         position: position,
@@ -535,6 +537,7 @@ Future<T?> openRawDrawer<T>({
   bool modal = true,
   Color? barrierColor,
   bool barrierDismissible = true,
+  WidgetBuilder? backdropBuilder,
 }) {
   DrawerLayerData? parentLayer =
       DrawerOverlay.maybeFind(context, useRootDrawerOverlay);
@@ -667,6 +670,7 @@ Future<T?> openRawDrawer<T>({
                     (stackIndex == 0
                         ? Colors.black.withOpacity(0.8)
                         : Colors.black.withOpacity(0.4)),
+                child: backdropBuilder?.call(context),
               ),
             ),
           ),
@@ -789,7 +793,7 @@ class _DrawerOverlayState extends State<DrawerOverlay> {
     }
     return PopScope(
       canPop: _entries.isEmpty,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (_entries.isNotEmpty) {
           var last = _entries.last;
           if (last.barrierDismissible) {
@@ -797,7 +801,7 @@ class _DrawerOverlayState extends State<DrawerOverlay> {
             if (state != null) {
               state.close();
             } else {
-              last.completer.complete();
+              last.completer.complete(result);
             }
           }
         }

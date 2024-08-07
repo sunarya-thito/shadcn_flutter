@@ -56,11 +56,30 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
   }
 }
 
+class _AnimatableValue<T> extends Animatable<T> {
+  final T start;
+  final T end;
+  final T Function(T a, T b, double t) lerp;
+  final Curve curve;
+
+  _AnimatableValue({
+    required this.start,
+    required this.end,
+    required this.lerp,
+    required this.curve,
+  });
+
+  @override
+  T transform(double t) {
+    return lerp(start, end, t);
+  }
+}
+
 class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
-    with SingleTickerProviderStateMixin
-    implements Animation<T> {
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late T _value;
+  late Animation<T> _animation;
+  // late T _value;
   @override
   void initState() {
     super.initState();
@@ -80,7 +99,15 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
         setState(() {});
       });
     }
-    _value = widget.initialValue ?? widget.value;
+    // _value = widget.initialValue ?? widget.value;
+    _animation = _controller.drive(
+      _AnimatableValue(
+        start: widget.initialValue ?? widget.value,
+        end: widget.value,
+        lerp: lerpedValue,
+        curve: widget.curve,
+      ),
+    );
     if (widget.initialValue != null) {
       _controller.forward();
     }
@@ -106,16 +133,17 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
         oldWidget.duration != widget.duration ||
         oldWidget.curve != widget.curve ||
         oldWidget.durationBuilder != widget.durationBuilder) {
-      T currentValue = _controller.value == 1
-          ? oldWidget.value
-          : lerpedValue(
-              _value,
-              oldWidget.value,
-              oldWidget.curve.transform(_controller.value),
-            );
+      T currentValue = _animation.value;
       _controller.duration = widget.duration ??
           widget.durationBuilder!(currentValue, widget.value);
-      _value = currentValue;
+      _animation = _controller.drive(
+        _AnimatableValue(
+          start: currentValue,
+          end: widget.value,
+          lerp: lerpedValue,
+          curve: widget.curve,
+        ),
+      );
       _controller.forward(
         from: 0,
       );
@@ -137,75 +165,15 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
   @override
   Widget build(BuildContext context) {
     if (widget.animationBuilder != null) {
-      return widget.animationBuilder!(context, this);
+      return widget.animationBuilder!(context, _animation);
     }
     double progress = _controller.value;
-    double curveProgress = widget.curve.transform(progress);
     if (progress == 1) {
       return widget.builder!(context, widget.value, widget.child);
     }
-    T newValue = lerpedValue(_value, widget.value, curveProgress);
+    T newValue = _animation.value;
     return widget.builder!(context, newValue, widget.child);
   }
-
-  @override
-  void addListener(VoidCallback listener) {
-    _controller.addListener(listener);
-  }
-
-  @override
-  void addStatusListener(AnimationStatusListener listener) {
-    _controller.addStatusListener(listener);
-  }
-
-  @override
-  Animation<U> drive<U>(Animatable<U> child) {
-    return _controller.drive(child);
-  }
-
-  @override
-  bool get isCompleted => _controller.isCompleted;
-
-  @override
-  bool get isDismissed => _controller.isDismissed;
-
-  @override
-  void removeListener(VoidCallback listener) {
-    _controller.removeListener(listener);
-  }
-
-  @override
-  void removeStatusListener(AnimationStatusListener listener) {
-    _controller.removeStatusListener(listener);
-  }
-
-  @override
-  AnimationStatus get status => _controller.status;
-
-  @override
-  String toStringDetails() {
-    return 'value: $_value, controller: $_controller';
-  }
-
-  @override
-  T get value {
-    double progress = _controller.value;
-    double curveProgress = widget.curve.transform(progress);
-    if (progress == 0) {
-      return _value;
-    }
-    if (progress == 1) {
-      return widget.value;
-    }
-    T newValue = lerpedValue(_value, widget.value, curveProgress);
-    return newValue;
-  }
-
-  // @override
-  // bool get isAnimating => _controller.isAnimating;
-  //
-  // @override
-  // bool get isForwardOrCompleted => _controller.isForwardOrCompleted;
 }
 
 enum RepeatMode {
