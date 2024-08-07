@@ -520,7 +520,7 @@ class ShadcnRectArcTween extends RectTween {
   }
 
   @override
-  Rect lerper(double t) {
+  Rect lerp(double t) {
     if (_dirty) {
       _initialize();
     }
@@ -530,7 +530,7 @@ class ShadcnRectArcTween extends RectTween {
     if (t == 1.0) {
       return end!;
     }
-    return Rect.fromPoints(_beginArc.lerper(t), _endArc.lerper(t));
+    return Rect.fromPoints(_beginArc.lerp(t), _endArc.lerp(t));
   }
 }
 
@@ -686,7 +686,7 @@ class ShadcnPointArcTween extends Tween<Offset> {
   }
 
   @override
-  Offset lerper(double t) {
+  Offset lerp(double t) {
     if (_dirty) {
       _initialize();
     }
