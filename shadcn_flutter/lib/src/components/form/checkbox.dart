@@ -33,7 +33,6 @@ class Checkbox extends StatefulWidget {
 
 class _CheckboxState extends State<Checkbox> with FormValueSupplier {
   final bool _focusing = false;
-  final GlobalKey _checkKey = GlobalKey();
 
   void _changeTo(CheckboxState state) {
     if (widget.onChanged != null) {
@@ -115,32 +114,35 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
               ),
             ),
             child: widget.state == CheckboxState.checked
-                ? AnimatedValueBuilder(
-                    value: 1.0,
-                    initialValue: 0.0,
-                    duration: Duration(milliseconds: 300),
-                    curve: IntervalDuration(
-                      start: Duration(milliseconds: 175),
-                      duration: Duration(milliseconds: 300),
-                    ),
-                    builder: (context, value, child) {
-                      return AnimatedContainer(
-                        key: _checkKey,
-                        duration: const Duration(milliseconds: 100),
-                        padding: const EdgeInsets.all(2.0),
-                        child: CustomPaint(
-                          painter: AnimatedCheckPainter(
-                            progress: value,
-                            color: theme.colorScheme.primaryForeground,
-                            strokeWidth: theme.scaling * 1,
+                ? Center(
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 100),
+                      child: SizedBox(
+                        width: theme.scaling * 9,
+                        height: theme.scaling * 6.5,
+                        child: AnimatedValueBuilder(
+                          value: 1.0,
+                          initialValue: 0.0,
+                          duration: Duration(milliseconds: 300),
+                          curve: IntervalDuration(
+                            start: Duration(milliseconds: 175),
+                            duration: Duration(milliseconds: 300),
                           ),
+                          builder: (context, value, child) {
+                            return CustomPaint(
+                              painter: AnimatedCheckPainter(
+                                progress: value,
+                                color: theme.colorScheme.primaryForeground,
+                                strokeWidth: theme.scaling * 1,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ),
                   )
                 : Center(
                     child: AnimatedContainer(
-                      key: _checkKey,
                       duration: const Duration(milliseconds: 100),
                       width: widget.state == CheckboxState.indeterminate
                           ? theme.scaling * 8
@@ -183,10 +185,10 @@ class AnimatedCheckPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
     final path = Path();
-    Offset firstStrokeStart = Offset(size.width * 0.1, size.height * 0.5);
-    Offset firstStrokeEnd = Offset(size.width * 0.35, size.height * 0.8);
+    Offset firstStrokeStart = Offset(0, size.height * 0.5);
+    Offset firstStrokeEnd = Offset(size.width * 0.35, size.height);
     Offset secondStrokeStart = firstStrokeEnd;
-    Offset secondStrokeEnd = Offset(size.width * 0.9, size.height * 0.25);
+    Offset secondStrokeEnd = Offset(size.width, 0);
     double firstStrokeLength =
         (firstStrokeEnd - firstStrokeStart).distanceSquared;
     double secondStrokeLength =
