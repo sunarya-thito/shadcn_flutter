@@ -30,8 +30,19 @@ class Radio extends StatelessWidget {
             color: theme.colorScheme.primary,
           ),
         ),
-        child:
-            value ? const Icon(Icons.check).iconXSmall().iconPrimary() : null,
+        child: Center(
+          child: AnimatedContainer(
+            duration: kDefaultDuration,
+            // -6 is the padding of the radio
+            // -2 is the border width of the radio (1 each side)
+            width: value ? (16 - 6 - 2) * theme.scaling : 0,
+            height: value ? (16 - 6 - 2) * theme.scaling : 0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: theme.colorScheme.primary,
+            ),
+          ),
+        ),
       ),
     );
   }
