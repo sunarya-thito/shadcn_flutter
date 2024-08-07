@@ -64,7 +64,7 @@ class _SheetExample1State extends State<SheetExample1> {
             Gap(16),
             FormTableLayout(
               rows: [
-                FormRow<String>(
+                FormField<String>(
                   key: const FormKey(#name),
                   label: const Text('Name'),
                   validator:
@@ -74,7 +74,7 @@ class _SheetExample1State extends State<SheetExample1> {
                     placeholder: 'Your fullname',
                   ),
                 ),
-                FormRow<String>(
+                FormField<String>(
                   key: const FormKey(#username),
                   label: const Text('Username'),
                   validator:

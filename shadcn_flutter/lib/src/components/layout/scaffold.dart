@@ -191,7 +191,7 @@ class _AppBarState extends State<AppBar> {
             height: widget.height,
             padding: widget.padding ??
                 (const EdgeInsets.symmetric(
-                      horizontal: 32,
+                      horizontal: 18,
                       vertical: 12,
                     ) *
                     scaling),
@@ -199,11 +199,11 @@ class _AppBarState extends State<AppBar> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: widget.leading,
-                  ).gap(widget.leadingGap ?? (8 * scaling)),
-                  Gap(24 * scaling),
+                  if (widget.leading.isNotEmpty)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: widget.leading,
+                    ).gap(widget.leadingGap ?? (4 * scaling)),
                   Flexible(
                     fit:
                         widget.trailingExpanded ? FlexFit.loose : FlexFit.tight,
@@ -230,21 +230,21 @@ class _AppBarState extends State<AppBar> {
                           ],
                         ),
                   ),
-                  Gap(16 * scaling),
-                  if (!widget.trailingExpanded)
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: widget.trailing,
-                    ).gap(widget.trailingGap ?? (8 * scaling))
-                  else
-                    Expanded(
-                      child: Row(
+                  if (widget.trailing.isNotEmpty)
+                    if (!widget.trailingExpanded)
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: widget.trailing,
-                      ).gap(widget.trailingGap ?? (8 * scaling)),
-                    ),
+                      ).gap(widget.trailingGap ?? (4 * scaling))
+                    else
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: widget.trailing,
+                        ).gap(widget.trailingGap ?? (4 * scaling)),
+                      ),
                 ],
-              ),
+              ).gap(18 * scaling),
             ),
           ),
         ),

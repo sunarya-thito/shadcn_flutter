@@ -24,28 +24,28 @@ class PopoverExample1 extends StatelessWidget {
                       controller: FormController(),
                       child: const FormTableLayout(
                         rows: [
-                          FormRow<double>(
+                          FormField<double>(
                             key: FormKey(#width),
                             label: Text('Width'),
                             child: TextField(
                               initialValue: '100%',
                             ),
                           ),
-                          FormRow<double>(
+                          FormField<double>(
                             key: FormKey(#maxWidth),
                             label: Text('Max. Width'),
                             child: TextField(
                               initialValue: '300px',
                             ),
                           ),
-                          FormRow<double>(
+                          FormField<double>(
                             key: FormKey(#height),
                             label: Text('Height'),
                             child: TextField(
                               initialValue: '25px',
                             ),
                           ),
-                          FormRow<double>(
+                          FormField<double>(
                             key: FormKey(#maxHeight),
                             label: Text('Max. Height'),
                             child: TextField(

@@ -1132,14 +1132,14 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         Gap(16),
                         const Form(
                           child: FormTableLayout(rows: [
-                            FormRow<String>(
+                            FormField<String>(
                               key: FormKey(#name),
                               label: Text('Name'),
                               child: TextField(
                                 initialValue: 'Thito Yalasatria Sunarya',
                               ),
                             ),
-                            FormRow<String>(
+                            FormField<String>(
                               key: FormKey(#username),
                               label: Text('Username'),
                               child: TextField(

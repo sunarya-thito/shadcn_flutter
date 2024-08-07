@@ -392,7 +392,7 @@ class _ColorsPageState extends State<ColorsPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            FormRow<SliderValue>(
+            FormField<SliderValue>(
               key: FormKey(#hueShift),
               label: Text('Hue Shift'),
               child: Slider(
@@ -407,7 +407,7 @@ class _ColorsPageState extends State<ColorsPage> {
                 },
               ),
             ),
-            FormRow<SliderValue>(
+            FormField<SliderValue>(
               key: FormKey(#saturationStepUp),
               label: Text('Saturation Step Up'),
               child: Slider(
@@ -422,7 +422,7 @@ class _ColorsPageState extends State<ColorsPage> {
                 },
               ),
             ),
-            FormRow<SliderValue>(
+            FormField<SliderValue>(
               key: FormKey(#saturationStepDown),
               label: Text('Saturation Step Down'),
               child: Slider(
@@ -437,7 +437,7 @@ class _ColorsPageState extends State<ColorsPage> {
                 },
               ),
             ),
-            FormRow<SliderValue>(
+            FormField<SliderValue>(
               key: FormKey(#lightnessStepUp),
               label: Text('Lightness Step Up'),
               child: Slider(
@@ -452,7 +452,7 @@ class _ColorsPageState extends State<ColorsPage> {
                 },
               ),
             ),
-            FormRow<SliderValue>(
+            FormField<SliderValue>(
               key: FormKey(#lightnessStepDown),
               label: Text('Lightness Step Down'),
               child: Slider(

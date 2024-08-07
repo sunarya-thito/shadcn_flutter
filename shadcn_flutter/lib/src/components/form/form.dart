@@ -947,13 +947,13 @@ class SubmissionResult {
   const SubmissionResult(this.values, this.errors);
 }
 
-class FormRow<T> extends StatelessWidget {
+class FormField<T> extends StatelessWidget {
   final Widget label;
   final Widget? hint;
   final Widget child;
   final Validator<T>? validator;
 
-  const FormRow({
+  const FormField({
     required FormKey<T> super.key,
     required this.label,
     required this.child,
@@ -1075,7 +1075,7 @@ class FormInline<T> extends StatelessWidget {
 }
 
 class FormTableLayout extends StatelessWidget {
-  final List<FormRow> rows;
+  final List<FormField> rows;
   final double? spacing;
 
   const FormTableLayout({super.key, required this.rows, this.spacing});

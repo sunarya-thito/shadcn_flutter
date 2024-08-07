@@ -44,14 +44,14 @@ class _FormExample2State extends State<FormExample2> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FormRow<String>(
+                FormField<String>(
                   key: _usernameKey,
                   label: const Text('Username'),
                   hint: const Text('This is your public display name'),
                   validator: const LengthValidator(min: 4),
                   child: const TextField(),
                 ),
-                FormRow<String>(
+                FormField<String>(
                   key: _passwordKey,
                   label: const Text('Password'),
                   validator: const LengthValidator(min: 8),
@@ -59,7 +59,7 @@ class _FormExample2State extends State<FormExample2> {
                     obscureText: true,
                   ),
                 ),
-                FormRow<String>(
+                FormField<String>(
                   key: _confirmPasswordKey,
                   label: const Text('Confirm Password'),
                   validator: CompareWith.equal(_passwordKey,
