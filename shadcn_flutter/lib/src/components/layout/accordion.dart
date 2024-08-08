@@ -231,7 +231,9 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
           duration: kDefaultDuration,
           decoration: BoxDecoration(
             border: Border.all(
-              color: _focusing ? theme.colorScheme.ring : Colors.transparent,
+              color: _focusing
+                  ? theme.colorScheme.ring
+                  : theme.colorScheme.ring.withOpacity(0),
               width: 1,
             ),
             borderRadius: BorderRadius.circular(theme.radiusXs),

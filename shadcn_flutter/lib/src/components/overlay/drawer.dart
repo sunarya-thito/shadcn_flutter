@@ -668,8 +668,8 @@ Future<T?> openRawDrawer<T>({
               child: Container(
                 color: barrierColor ??
                     (stackIndex == 0
-                        ? Colors.black.withOpacity(0.8)
-                        : Colors.black.withOpacity(0.4)),
+                        ? Colors.black.scaleAlpha(0.8)
+                        : Colors.black.scaleAlpha(0.4)),
                 child: backdropBuilder?.call(context),
               ),
             ),

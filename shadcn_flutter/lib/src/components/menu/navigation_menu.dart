@@ -72,7 +72,7 @@ class NavigationItemState extends State<NavigationItem> {
                 if (_menuState!.isActive(this)) {
                   return (value as BoxDecoration).copyWith(
                     borderRadius: BorderRadius.circular(theme.radiusMd),
-                    color: theme.colorScheme.muted.withOpacity(0.8),
+                    color: theme.colorScheme.muted.scaleAlpha(0.8),
                   );
                 }
                 return value;

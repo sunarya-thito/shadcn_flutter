@@ -73,7 +73,7 @@ class _SwitchState extends State<Switch> {
                 border: Border.all(
                   color: _focusing
                       ? theme.colorScheme.primary
-                      : Colors.transparent,
+                      : theme.colorScheme.primary.withOpacity(0),
                   strokeAlign: 3 * scaling,
                   width: 2 * scaling,
                 ),

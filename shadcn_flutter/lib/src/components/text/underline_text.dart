@@ -44,7 +44,7 @@ class UnderlineText extends StatelessWidget {
     return DefaultTextStyle.merge(
       style: underline
           ? textStyle.copyWith(
-              color: Colors.transparent,
+              color: (textStyle.color ?? underlineColor).withOpacity(0),
               decorationColor: underlineColor,
               decoration: TextDecoration.underline,
               shadows: [

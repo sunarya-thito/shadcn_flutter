@@ -590,6 +590,10 @@ Widget mergeAnimatedTextStyle({
 }
 
 extension ColorExtension on Color {
+  Color scaleAlpha(double factor) {
+    return withAlpha((alpha * factor).round().clamp(0, 255));
+  }
+
   Color getContrastColor([double luminanceContrast = 1]) {
     // luminance contrast is between 0..1
     assert(luminanceContrast >= 0 && luminanceContrast <= 1,

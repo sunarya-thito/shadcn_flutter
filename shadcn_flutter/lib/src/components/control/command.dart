@@ -260,7 +260,7 @@ class _CommandItemState extends State<CommandItem> {
           decoration: BoxDecoration(
             color: _focusNode.hasFocus
                 ? themeData.colorScheme.accent
-                : Colors.transparent,
+                : themeData.colorScheme.accent.withOpacity(0),
             borderRadius: BorderRadius.circular(themeData.radiusSm),
           ),
           padding: EdgeInsets.symmetric(
@@ -271,13 +271,13 @@ class _CommandItemState extends State<CommandItem> {
             data: themeData.iconTheme.small.copyWith(
               color: widget.onTap != null
                   ? themeData.colorScheme.accentForeground
-                  : themeData.colorScheme.accentForeground.withOpacity(0.5),
+                  : themeData.colorScheme.accentForeground.scaleAlpha(0.5),
             ),
             child: AnimatedDefaultTextStyle(
               style: TextStyle(
                 color: widget.onTap != null
                     ? themeData.colorScheme.accentForeground
-                    : themeData.colorScheme.accentForeground.withOpacity(0.5),
+                    : themeData.colorScheme.accentForeground.scaleAlpha(0.5),
               ),
               duration: kDefaultDuration,
               child: Row(

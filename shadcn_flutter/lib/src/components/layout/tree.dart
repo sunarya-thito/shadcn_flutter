@@ -577,7 +577,7 @@ class _TreeItemViewState extends State<TreeItemView> {
               (states) {
                 if (states.contains(WidgetState.focused)) {
                   return BoxDecoration(
-                    color: theme.colorScheme.primary.withOpacity(0.1),
+                    color: theme.colorScheme.primary.scaleAlpha(0.1),
                     borderRadius: theme.borderRadiusMd,
                   );
                 }

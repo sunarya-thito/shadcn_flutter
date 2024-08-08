@@ -186,7 +186,7 @@ class _AppBarState extends State<AppBar> {
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             color: widget.backgroundColor ??
-                theme.colorScheme.background.withOpacity(0.4),
+                theme.colorScheme.background.scaleAlpha(0.4),
             alignment: widget.alignment,
             height: widget.height,
             padding: widget.padding ??

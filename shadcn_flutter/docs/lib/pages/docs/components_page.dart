@@ -997,7 +997,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                                   borderRadius:
                                       BorderRadius.circular(theme.radiusMd),
                                   color:
-                                      theme.colorScheme.muted.withOpacity(0.8),
+                                      theme.colorScheme.muted.scaleAlpha(0.8),
                                 );
                               },
                             ),
@@ -1030,7 +1030,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                                       borderRadius:
                                           BorderRadius.circular(theme.radiusMd),
                                       color: theme.colorScheme.muted
-                                          .withOpacity(0.8),
+                                          .scaleAlpha(0.8),
                                     );
                                   },
                                 ),

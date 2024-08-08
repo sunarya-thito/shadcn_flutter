@@ -59,7 +59,7 @@ class Progress extends StatelessWidget {
         height: 8 * scaling,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(theme.radiusMd),
-          color: backgroundColor ?? theme.colorScheme.primary.withOpacity(0.2),
+          color: backgroundColor ?? theme.colorScheme.primary.scaleAlpha(0.2),
         ),
         clipBehavior: Clip.antiAlias,
         child: Stack(

@@ -460,7 +460,7 @@ class DocsPageState extends State<DocsPage> {
                 return Scaffold(
                   headers: [
                     Container(
-                      color: theme.colorScheme.background.withOpacity(0.3),
+                      color: theme.colorScheme.background.scaleAlpha(0.3),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -503,7 +503,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
           duration: kDefaultDuration,
           height: 6 * scaling,
           decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withOpacity(0.2),
+            color: theme.colorScheme.primary.scaleAlpha(0.2),
             borderRadius: BorderRadius.circular(theme.radiusSm),
           ),
         ),
@@ -572,7 +572,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
           duration: kDefaultDuration,
           height: 6 * scaling,
           decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withOpacity(0.2),
+            color: theme.colorScheme.primary.scaleAlpha(0.2),
             borderRadius: BorderRadius.circular(theme.radiusSm),
           ),
         ),
@@ -644,7 +644,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
                     strokeAlign: BorderSide.strokeAlignOutside,
                   )
                 : Border.all(
-                    color: theme.colorScheme.primary.withOpacity(0.5),
+                    color: theme.colorScheme.primary.scaleAlpha(0.5),
                     width: 1 * scaling,
                   ),
           ),

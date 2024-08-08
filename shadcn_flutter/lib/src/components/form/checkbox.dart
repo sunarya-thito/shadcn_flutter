@@ -102,7 +102,7 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
             decoration: BoxDecoration(
               color: widget.state == CheckboxState.checked
                   ? theme.colorScheme.primary
-                  : Colors.transparent,
+                  : theme.colorScheme.primary.withOpacity(0),
               borderRadius: BorderRadius.circular(theme.radiusSm),
               border: Border.all(
                 color: _focusing

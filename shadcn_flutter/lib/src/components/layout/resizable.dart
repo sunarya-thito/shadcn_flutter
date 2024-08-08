@@ -522,7 +522,7 @@ class ResizablePanel extends StatefulWidget {
 
   static Widget _defaultDraggerBuilder(BuildContext context) {
     // return Container(
-    //   color: Colors.yellow.withOpacity(0.2),
+    //   color: Colors.yellow.scaleAlpha(0.2),
     // );
     final state = Data.maybeOf<_ResizablePanelState>(context);
     assert(state != null, 'ResizableDivider must be a child of ResizablePanel');

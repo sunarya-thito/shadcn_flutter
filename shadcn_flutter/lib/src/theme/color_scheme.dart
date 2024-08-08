@@ -239,7 +239,7 @@ class ColorShades implements Color, ColorSwatch {
   Color withOpacity(double opacity) {
     Map<int, Color> colors = {};
     for (final key in _shadeValues) {
-      colors[key] = _colors[key]!.withOpacity(opacity);
+      colors[key] = _colors[key]!.scaleAlpha(opacity);
     }
     return ColorShades._direct(colors);
   }

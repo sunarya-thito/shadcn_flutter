@@ -965,7 +965,7 @@ TextStyle _buttonMenuTextStyle(BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return themeData.typography.small.copyWith(
-      color: themeData.colorScheme.accentForeground.withOpacity(0.5),
+      color: themeData.colorScheme.accentForeground.scaleAlpha(0.5),
     );
   }
   return themeData.typography.small.copyWith(
@@ -1010,7 +1010,7 @@ Decoration _buttonPrimaryDecoration(
   }
   if (states.contains(WidgetState.hovered)) {
     return BoxDecoration(
-      color: themeData.colorScheme.primary.withOpacity(0.8),
+      color: themeData.colorScheme.primary.scaleAlpha(0.8),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
     );
   }
@@ -1048,7 +1048,7 @@ Decoration _buttonSecondaryDecoration(
   }
   if (states.contains(WidgetState.hovered)) {
     return BoxDecoration(
-      color: themeData.colorScheme.secondary.withOpacity(0.8),
+      color: themeData.colorScheme.secondary.scaleAlpha(0.8),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
     );
   }
@@ -1083,7 +1083,7 @@ Decoration _buttonOutlineDecoration(
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return BoxDecoration(
-      color: Colors.transparent,
+      color: themeData.colorScheme.muted.withOpacity(0),
       border: Border.all(
         color: themeData.colorScheme.muted,
         width: 1,
@@ -1093,16 +1093,16 @@ Decoration _buttonOutlineDecoration(
   }
   if (states.contains(WidgetState.hovered)) {
     return BoxDecoration(
-      color: themeData.colorScheme.muted.withOpacity(0.8),
+      color: themeData.colorScheme.muted.scaleAlpha(0.8),
       border: Border.all(
-        color: themeData.colorScheme.muted.withOpacity(0.8),
+        color: themeData.colorScheme.muted.scaleAlpha(0.8),
         width: 1,
       ),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
     );
   }
   return BoxDecoration(
-    color: Colors.transparent,
+    color: themeData.colorScheme.muted.withOpacity(0),
     border: Border.all(
       color: themeData.colorScheme.muted,
       width: 1,
@@ -1136,18 +1136,18 @@ Decoration _buttonGhostDecoration(
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return BoxDecoration(
-      color: Colors.transparent,
+      color: themeData.colorScheme.muted.withOpacity(0),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
     );
   }
   if (states.contains(WidgetState.hovered)) {
     return BoxDecoration(
-      color: themeData.colorScheme.muted.withOpacity(0.8),
+      color: themeData.colorScheme.muted.scaleAlpha(0.8),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
     );
   }
   return BoxDecoration(
-    color: Colors.transparent,
+    color: themeData.colorScheme.muted.withOpacity(0),
     borderRadius: BorderRadius.circular(themeData.radiusMd),
   );
 }
@@ -1239,7 +1239,7 @@ Decoration _buttonDestructiveDecoration(
   }
   if (states.contains(WidgetState.hovered)) {
     return BoxDecoration(
-      color: themeData.colorScheme.destructive.withOpacity(0.8),
+      color: themeData.colorScheme.destructive.scaleAlpha(0.8),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
     );
   }

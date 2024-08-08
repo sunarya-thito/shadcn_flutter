@@ -56,7 +56,7 @@ class LinearProgressIndicator extends StatelessWidget {
             end: value!.clamp(0, 1),
             color: color ?? theme.colorScheme.primary,
             backgroundColor:
-                backgroundColor ?? theme.colorScheme.primary.withOpacity(0.2),
+                backgroundColor ?? theme.colorScheme.primary.scaleAlpha(0.2),
             showSparks: showSparks,
             sparksColor: color ?? theme.colorScheme.primary,
             sparksRadius: theme.scaling * 16,
@@ -102,7 +102,7 @@ class LinearProgressIndicator extends StatelessWidget {
                 end2: end2,
                 color: color ?? theme.colorScheme.primary,
                 backgroundColor: backgroundColor ??
-                    theme.colorScheme.primary.withOpacity(0.2),
+                    theme.colorScheme.primary.scaleAlpha(0.2),
                 showSparks: showSparks,
                 sparksColor: color ?? theme.colorScheme.primary,
                 sparksRadius: theme.scaling * 16,

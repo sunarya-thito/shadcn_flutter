@@ -18,7 +18,9 @@ class Radio extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-            color: focusing ? theme.colorScheme.ring : Colors.transparent),
+            color: focusing
+                ? theme.colorScheme.ring
+                : theme.colorScheme.ring.withOpacity(0)),
       ),
       child: AnimatedContainer(
         duration: kDefaultDuration,

@@ -17,8 +17,8 @@ class ShadcnSkeletonizerConfigLayer extends StatelessWidget {
         data: SkeletonizerConfigData(
           effect: PulseEffect(
             duration: const Duration(seconds: 1),
-            from: theme.colorScheme.primary.withOpacity(0.05),
-            to: theme.colorScheme.primary.withOpacity(0.1),
+            from: theme.colorScheme.primary.scaleAlpha(0.05),
+            to: theme.colorScheme.primary.scaleAlpha(0.1),
           ),
           enableSwitchAnimation: true,
         ),

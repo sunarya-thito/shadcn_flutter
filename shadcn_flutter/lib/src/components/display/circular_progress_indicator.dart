@@ -32,7 +32,7 @@ class CircularProgressIndicator extends StatelessWidget {
               theme.colorScheme.primary,
             ),
             color: theme.colorScheme.primary,
-            backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
+            backgroundColor: theme.colorScheme.primary.scaleAlpha(0.2),
             strokeWidth:
                 (size ?? (iconThemeData.size ?? (theme.scaling * 24))) / 12,
             value: value,
@@ -57,7 +57,7 @@ class CircularProgressIndicator extends StatelessWidget {
                   theme.colorScheme.primary,
                 ),
                 color: theme.colorScheme.primary,
-                backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
+                backgroundColor: theme.colorScheme.primary.scaleAlpha(0.2),
                 strokeWidth:
                     (size ?? (iconThemeData.size ?? (theme.scaling * 24))) / 12,
                 value: value,
