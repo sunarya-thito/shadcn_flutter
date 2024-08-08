@@ -698,7 +698,7 @@ class _OverlaidEntryData {
 Future<void> closeDrawer<T>(BuildContext context, [T? result]) {
   final data = Data.maybeOf<_OverlaidEntryData>(context);
   assert(data != null, 'No OverlaidEntryData found in the widget tree');
-  return data!.state.close();
+  return data!.state.close(result);
 }
 
 class DrawerLayerData {
