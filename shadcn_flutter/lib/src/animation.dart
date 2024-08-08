@@ -231,7 +231,10 @@ class RelativeKeyframe<T> implements Keyframe<T> {
 
   @override
   T compute(TimelineAnimation<T> timeline, int index, double t) {
-    assert(index > 0, 'Relative keyframe must have a previous keyframe');
+    if (index <= 0) {
+      // act as still keyframe when there is no previous keyframe
+      return target;
+    }
     final previous =
         timeline.keyframes[index - 1].compute(timeline, index - 1, 1.0);
     return timeline.lerp(previous, target, t);

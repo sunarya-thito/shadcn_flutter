@@ -563,15 +563,7 @@ PopoverFuture<T?> showPopover<T>({
                           completer.complete(value);
                         },
                       );
-                      return Overlay(
-                        initialEntries: [
-                          OverlayEntry(
-                            builder: (context) {
-                              return popoverAnchor;
-                            },
-                          )
-                        ],
-                      );
+                      return popoverAnchor;
                     });
               }),
         ),

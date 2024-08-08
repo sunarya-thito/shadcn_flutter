@@ -792,6 +792,9 @@ class _DrawerOverlayState extends State<DrawerOverlay> {
       );
     }
     return PopScope(
+      // prevent from popping when there is an overlay
+      // instead, the overlay should be closed first
+      // once everything is closed, then this can be popped
       canPop: _entries.isEmpty,
       onPopInvokedWithResult: (didPop, result) {
         if (_entries.isNotEmpty) {
@@ -799,7 +802,7 @@ class _DrawerOverlayState extends State<DrawerOverlay> {
           if (last.barrierDismissible) {
             var state = last.key.currentState;
             if (state != null) {
-              state.close();
+              state.close(result);
             } else {
               last.completer.complete(result);
             }
@@ -868,9 +871,9 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
     super.dispose();
   }
 
-  Future<void> close() {
+  Future<void> close([T? result]) {
     return _controlledAnimation.forward(0, Curves.easeOutCubic).then((value) {
-      widget.completer.complete();
+      widget.completer.complete(result);
     });
   }
 

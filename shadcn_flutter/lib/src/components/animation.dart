@@ -93,13 +93,6 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
         _onEnd();
       }
     });
-    if (widget.animationBuilder == null) {
-      // animationBuilder does not need the widget to be rebuilt
-      _controller.addListener(() {
-        setState(() {});
-      });
-    }
-    // _value = widget.initialValue ?? widget.value;
     _animation = _controller.drive(
       _AnimatableValue(
         start: widget.initialValue ?? widget.value,
@@ -171,8 +164,13 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
     if (progress == 1) {
       return widget.builder!(context, widget.value, widget.child);
     }
-    T newValue = _animation.value;
-    return widget.builder!(context, newValue, widget.child);
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        T newValue = _animation.value;
+        return widget.builder!(context, newValue, widget.child);
+      },
+    );
   }
 }
 
@@ -180,6 +178,9 @@ enum RepeatMode {
   repeat,
   reverse,
   pingPong,
+
+  /// Same as pingPong, but starts reversed
+  pingPongReverse,
 }
 
 class RepeatedAnimationBuilder<T> extends StatefulWidget {
@@ -190,13 +191,15 @@ class RepeatedAnimationBuilder<T> extends StatefulWidget {
   final Curve curve;
   final Curve? reverseCurve;
   final RepeatMode mode;
-  final Widget Function(BuildContext context, T value, Widget? child) builder;
+  final Widget Function(BuildContext context, T value, Widget? child)? builder;
+  final Widget Function(BuildContext context, Animation<T> animation)?
+      animationBuilder;
   final Widget? child;
   final T Function(T a, T b, double t)? lerp;
   final bool play;
 
   const RepeatedAnimationBuilder({
-    Key? key,
+    super.key,
     required this.start,
     required this.end,
     required this.duration,
@@ -208,38 +211,118 @@ class RepeatedAnimationBuilder<T> extends StatefulWidget {
     this.lerp,
     this.play = true,
     this.reverseDuration,
-  }) : super(key: key);
+  }) : animationBuilder = null;
+
+  const RepeatedAnimationBuilder.animation({
+    super.key,
+    required this.start,
+    required this.end,
+    required this.duration,
+    this.curve = Curves.linear,
+    this.reverseCurve,
+    this.mode = RepeatMode.repeat,
+    required this.animationBuilder,
+    this.child,
+    this.lerp,
+    this.play = true,
+    this.reverseDuration,
+  }) : builder = null;
 
   @override
   State<RepeatedAnimationBuilder<T>> createState() =>
       _RepeatedAnimationBuilderState<T>();
 }
 
+class _AnimationStatusDependentCurve extends Curve {
+  final AnimationController controller;
+  final Curve curve;
+  final Curve reverseCurve;
+
+  _AnimationStatusDependentCurve({
+    required this.controller,
+    required this.curve,
+    required this.reverseCurve,
+  });
+
+  @override
+  double transform(double t) {
+    if (controller.status == AnimationStatus.reverse) {
+      return reverseCurve.transform(t);
+    }
+    return curve.transform(t);
+  }
+}
+
 class _RepeatedAnimationBuilderState<T>
     extends State<RepeatedAnimationBuilder<T>>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  late Animation<T> _animation;
+
+  bool _reverse = false;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: widget.duration,
-      reverseDuration: widget.reverseDuration,
     );
-    if (widget.play) {
-      switch (widget.mode) {
-        case RepeatMode.repeat:
-          _controller.repeat(reverse: false);
-          break;
-        case RepeatMode.reverse:
-          _controller.repeat(reverse: false);
-          break;
-        case RepeatMode.pingPong:
-          _controller.repeat(reverse: true);
-          break;
+    if (widget.mode == RepeatMode.reverse ||
+        widget.mode == RepeatMode.pingPongReverse) {
+      _reverse = true;
+      _controller.duration = widget.reverseDuration ?? widget.duration;
+      _controller.reverseDuration = widget.duration;
+      _animation = _controller.drive(
+        _AnimatableValue(
+          start: widget.end,
+          end: widget.start,
+          lerp: lerpedValue,
+          curve: _AnimationStatusDependentCurve(
+            controller: _controller,
+            curve: widget.reverseCurve ?? widget.curve,
+            reverseCurve: widget.curve,
+          ),
+        ),
+      );
+    } else {
+      _controller.duration = widget.duration;
+      _controller.reverseDuration = widget.reverseDuration;
+      _animation = _controller.drive(
+        _AnimatableValue(
+          start: widget.start,
+          end: widget.end,
+          lerp: lerpedValue,
+          curve: _AnimationStatusDependentCurve(
+            controller: _controller,
+            curve: widget.curve,
+            reverseCurve: widget.reverseCurve ?? widget.curve,
+          ),
+        ),
+      );
+    }
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        if (widget.mode == RepeatMode.pingPong ||
+            widget.mode == RepeatMode.pingPongReverse) {
+          _controller.reverse();
+          _reverse = true;
+        } else {
+          _controller.reset();
+          _controller.forward();
+        }
+      } else if (status == AnimationStatus.dismissed) {
+        if (widget.mode == RepeatMode.pingPong ||
+            widget.mode == RepeatMode.pingPongReverse) {
+          _controller.forward();
+          _reverse = false;
+        } else {
+          _controller.reset();
+          _controller.forward();
+        }
       }
+    });
+    if (widget.play) {
+      _controller.forward();
     }
   }
 
@@ -249,21 +332,51 @@ class _RepeatedAnimationBuilderState<T>
     if (oldWidget.start != widget.start ||
         oldWidget.end != widget.end ||
         oldWidget.duration != widget.duration ||
-        oldWidget.reverseDuration != widget.reverseDuration) {
-      _controller.duration = widget.duration;
-      _controller.reverseDuration = widget.reverseDuration;
-      _controller.stop();
+        oldWidget.reverseDuration != widget.reverseDuration ||
+        oldWidget.curve != widget.curve ||
+        oldWidget.reverseCurve != widget.reverseCurve ||
+        oldWidget.mode != widget.mode ||
+        oldWidget.play != widget.play) {
+      if (widget.mode == RepeatMode.reverse ||
+          widget.mode == RepeatMode.pingPongReverse) {
+        _controller.duration = widget.reverseDuration ?? widget.duration;
+        _controller.reverseDuration = widget.duration;
+        _animation = _controller.drive(
+          _AnimatableValue(
+            start: widget.end,
+            end: widget.start,
+            lerp: lerpedValue,
+            // curve: widget.reverseCurve ?? widget.curve,
+            curve: _AnimationStatusDependentCurve(
+              controller: _controller,
+              reverseCurve: widget.curve,
+              curve: widget.reverseCurve ?? widget.curve,
+            ),
+          ),
+        );
+      } else {
+        _controller.duration = widget.duration;
+        _controller.reverseDuration = widget.reverseDuration;
+        _animation = _controller.drive(
+          _AnimatableValue(
+            start: widget.start,
+            end: widget.end,
+            lerp: lerpedValue,
+            // curve: widget.curve,
+            curve: _AnimationStatusDependentCurve(
+              controller: _controller,
+              curve: widget.curve,
+              reverseCurve: widget.reverseCurve ?? widget.curve,
+            ),
+          ),
+        );
+      }
+      _controller.stop(canceled: false);
       if (widget.play) {
-        switch (widget.mode) {
-          case RepeatMode.repeat:
-            _controller.repeat(reverse: false);
-            break;
-          case RepeatMode.reverse:
-            _controller.repeat(reverse: false);
-            break;
-          case RepeatMode.pingPong:
-            _controller.repeat(reverse: true);
-            break;
+        if (_reverse) {
+          _controller.reverse();
+        } else {
+          _controller.forward();
         }
       }
     }
@@ -290,20 +403,14 @@ class _RepeatedAnimationBuilderState<T>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.animationBuilder != null) {
+      return widget.animationBuilder!(context, _animation);
+    }
     return AnimatedBuilder(
-      animation: _controller,
+      animation: _animation,
       builder: (context, child) {
-        double progress = _controller.value;
-        AnimationStatus status = _controller.status;
-        if (widget.mode == RepeatMode.reverse) {
-          progress = 1 - progress;
-        }
-        double curveProgress = status == AnimationStatus.reverse ||
-                widget.mode == RepeatMode.reverse
-            ? (widget.reverseCurve ?? widget.curve).transform(progress)
-            : widget.curve.transform(progress);
-        T value = lerpedValue(widget.start, widget.end, curveProgress);
-        return widget.builder(context, value, widget.child);
+        T value = _animation.value;
+        return widget.builder!(context, value, widget.child);
       },
     );
   }
