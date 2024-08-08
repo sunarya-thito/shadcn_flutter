@@ -38,7 +38,7 @@ class _CounterPageState extends State<CounterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return Container(
       child: Scaffold(
         headers: [
           AppBar(

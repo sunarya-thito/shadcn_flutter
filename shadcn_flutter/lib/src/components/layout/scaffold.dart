@@ -36,6 +36,18 @@ class Scaffold extends StatefulWidget {
   State<Scaffold> createState() => ScaffoldState();
 }
 
+class ScaffoldBarData {
+  final bool isHeader;
+  final int childIndex;
+  final int childrenCount;
+
+  const ScaffoldBarData({
+    this.isHeader = true,
+    required this.childIndex,
+    required this.childrenCount,
+  });
+}
+
 class ScaffoldState extends State<Scaffold> {
   @override
   Widget build(BuildContext context) {
@@ -82,9 +94,17 @@ class ScaffoldState extends State<Scaffold> {
                           ),
                         ),
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: widget.headers,
-                      ),
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            for (var i = 0; i < widget.headers.length; i++)
+                              Data.inherit(
+                                data: ScaffoldBarData(
+                                  childIndex: i,
+                                  childrenCount: widget.headers.length,
+                                ),
+                                child: widget.headers[i],
+                              ),
+                          ]),
                     ],
                   ),
                   if (widget.loadingProgress != null &&
@@ -124,7 +144,17 @@ class ScaffoldState extends State<Scaffold> {
               child: Container(
                 color: widget.footerBackgroundColor,
                 child: Column(
-                  children: widget.footers,
+                  children: [
+                    for (var i = 0; i < widget.footers.length; i++)
+                      Data.inherit(
+                        data: ScaffoldBarData(
+                          isHeader: false,
+                          childIndex: i,
+                          childrenCount: widget.footers.length,
+                        ),
+                        child: widget.footers[i],
+                      ),
+                  ],
                 ),
               ),
             ),
@@ -150,6 +180,7 @@ class AppBar extends StatefulWidget {
   final double? trailingGap;
   final EdgeInsetsGeometry? padding;
   final double? height;
+  final bool useSafeArea;
 
   const AppBar({
     super.key,
@@ -166,6 +197,7 @@ class AppBar extends StatefulWidget {
     this.leadingGap,
     this.trailingGap,
     this.height,
+    this.useSafeArea = true,
   }) : assert(
           child == null || title == null,
           'Cannot provide both child and title',
@@ -180,6 +212,7 @@ class _AppBarState extends State<AppBar> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final barData = Data.maybeOf<ScaffoldBarData>(context);
     return FocusTraversalGroup(
       child: ClipRect(
         child: BackdropFilter(
@@ -195,56 +228,67 @@ class _AppBarState extends State<AppBar> {
                       vertical: 12,
                     ) *
                     scaling),
-            child: IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (widget.leading.isNotEmpty)
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: widget.leading,
-                    ).gap(widget.leadingGap ?? (4 * scaling)),
-                  Flexible(
-                    fit:
-                        widget.trailingExpanded ? FlexFit.loose : FlexFit.tight,
-                    child: widget.child ??
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (widget.header != null)
-                              KeyedSubtree(
-                                key: const ValueKey('header'),
-                                child: widget.header!.muted().small(),
-                              ),
-                            if (widget.title != null)
-                              KeyedSubtree(
-                                key: const ValueKey('title'),
-                                child: widget.title!.large().medium(),
-                              ),
-                            if (widget.subtitle != null)
-                              KeyedSubtree(
-                                key: const ValueKey('subtitle'),
-                                child: widget.subtitle!.muted().small(),
-                              ),
-                          ],
-                        ),
-                  ),
-                  if (widget.trailing.isNotEmpty)
-                    if (!widget.trailingExpanded)
+            child: SafeArea(
+              top: widget.useSafeArea &&
+                  barData?.isHeader == true &&
+                  barData?.childIndex == 0,
+              bottom: widget.useSafeArea,
+              left: widget.useSafeArea,
+              right: widget.useSafeArea &&
+                  barData?.isHeader == false &&
+                  barData?.childIndex == (barData?.childrenCount ?? 0) - 1,
+              child: IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (widget.leading.isNotEmpty)
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: widget.trailing,
-                      ).gap(widget.trailingGap ?? (4 * scaling))
-                    else
-                      Expanded(
-                        child: Row(
+                        children: widget.leading,
+                      ).gap(widget.leadingGap ?? (4 * scaling)),
+                    Flexible(
+                      fit: widget.trailingExpanded
+                          ? FlexFit.loose
+                          : FlexFit.tight,
+                      child: widget.child ??
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (widget.header != null)
+                                KeyedSubtree(
+                                  key: const ValueKey('header'),
+                                  child: widget.header!.muted().small(),
+                                ),
+                              if (widget.title != null)
+                                KeyedSubtree(
+                                  key: const ValueKey('title'),
+                                  child: widget.title!.large().medium(),
+                                ),
+                              if (widget.subtitle != null)
+                                KeyedSubtree(
+                                  key: const ValueKey('subtitle'),
+                                  child: widget.subtitle!.muted().small(),
+                                ),
+                            ],
+                          ),
+                    ),
+                    if (widget.trailing.isNotEmpty)
+                      if (!widget.trailingExpanded)
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: widget.trailing,
-                        ).gap(widget.trailingGap ?? (4 * scaling)),
-                      ),
-                ],
-              ).gap(18 * scaling),
+                        ).gap(widget.trailingGap ?? (4 * scaling))
+                      else
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: widget.trailing,
+                          ).gap(widget.trailingGap ?? (4 * scaling)),
+                        ),
+                  ],
+                ).gap(18 * scaling),
+              ),
             ),
           ),
         ),
