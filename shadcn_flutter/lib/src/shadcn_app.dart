@@ -719,7 +719,7 @@ class ShadcnUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return mergeAnimatedTextStyle(
+    return AnimatedDefaultTextStyle(
       style: textStyle ??
           theme.typography.sans.copyWith(
             color: theme.colorScheme.foreground,
