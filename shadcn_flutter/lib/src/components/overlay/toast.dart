@@ -238,37 +238,39 @@ class _ToastLayerState extends State<ToastLayer> {
       }
       children.add(
         Positioned.fill(
-          child: Padding(
-            padding: padding,
-            child: Align(
-              alignment: location.alignment,
-              child: MouseRegion(
-                hitTestBehavior: HitTestBehavior.deferToChild,
-                onEnter: (event) {
-                  locationEntry.value._hoverCount++;
-                  if (widget.expandMode == ExpandMode.expandOnHover) {
-                    setState(() {
-                      locationEntry.value._expanding = true;
-                    });
-                  }
-                },
-                onExit: (event) {
-                  int currentCount = ++locationEntry.value._hoverCount;
-                  Future.delayed(const Duration(milliseconds: 300), () {
-                    if (currentCount == locationEntry.value._hoverCount) {
+          child: SafeArea(
+            child: Padding(
+              padding: padding,
+              child: Align(
+                alignment: location.alignment,
+                child: MouseRegion(
+                  hitTestBehavior: HitTestBehavior.deferToChild,
+                  onEnter: (event) {
+                    locationEntry.value._hoverCount++;
+                    if (widget.expandMode == ExpandMode.expandOnHover) {
                       setState(() {
-                        locationEntry.value._expanding = false;
+                        locationEntry.value._expanding = true;
                       });
                     }
-                  });
-                },
-                child: ConstrainedBox(
-                  constraints: toastConstraints,
-                  child: Stack(
-                    alignment: location.alignment,
-                    clipBehavior: Clip.none,
-                    fit: StackFit.passthrough,
-                    children: positionedChildren,
+                  },
+                  onExit: (event) {
+                    int currentCount = ++locationEntry.value._hoverCount;
+                    Future.delayed(const Duration(milliseconds: 300), () {
+                      if (currentCount == locationEntry.value._hoverCount) {
+                        setState(() {
+                          locationEntry.value._expanding = false;
+                        });
+                      }
+                    });
+                  },
+                  child: ConstrainedBox(
+                    constraints: toastConstraints,
+                    child: Stack(
+                      alignment: location.alignment,
+                      clipBehavior: Clip.none,
+                      fit: StackFit.passthrough,
+                      children: positionedChildren,
+                    ),
                   ),
                 ),
               ),

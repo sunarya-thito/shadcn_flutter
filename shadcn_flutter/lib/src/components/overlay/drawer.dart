@@ -15,11 +15,18 @@ Future<T?> openDrawer<T>({
   bool draggable = true,
   bool barrierDismissible = true,
   WidgetBuilder? backdropBuilder,
+  bool useSafeArea = true,
+  bool showDragHandle = true,
+  BorderRadius? borderRadius,
+  Size? dragHandleSize,
+  bool transformBackdrop = true,
 }) {
   return openRawDrawer<T>(
     context: context,
     barrierDismissible: barrierDismissible,
     backdropBuilder: backdropBuilder,
+    useSafeArea: useSafeArea,
+    transformBackdrop: transformBackdrop,
     builder: (context, extraSize, size) {
       return DrawerWrapper(
         position: position,
@@ -27,6 +34,8 @@ Future<T?> openDrawer<T>({
         draggable: draggable,
         extraSize: extraSize,
         size: size,
+        showDragHandle: showDragHandle,
+        dragHandleSize: dragHandleSize,
         child: builder(context),
       );
     },
@@ -39,10 +48,11 @@ Future<T?> openSheet<T>({
   required WidgetBuilder builder,
   required OverlayPosition position,
   bool barrierDismissible = true,
+  bool transformBackdrop = false,
 }) {
   return openRawDrawer<T>(
     context: context,
-    transformBackdrop: false,
+    transformBackdrop: transformBackdrop,
     barrierDismissible: barrierDismissible,
     builder: (context, extraSize, size) {
       return SheetWrapper(
@@ -64,6 +74,9 @@ class DrawerWrapper extends StatefulWidget {
   final bool draggable;
   final Size extraSize;
   final Size size;
+  final bool showDragHandle;
+  final BorderRadius? borderRadius;
+  final Size? dragHandleSize;
 
   const DrawerWrapper({
     super.key,
@@ -73,6 +86,9 @@ class DrawerWrapper extends StatefulWidget {
     this.draggable = true,
     this.extraSize = Size.zero,
     required this.size,
+    this.showDragHandle = true,
+    this.borderRadius,
+    this.dragHandleSize,
   });
 
   @override
@@ -119,8 +135,8 @@ class _DrawerWrapperState extends State<DrawerWrapper>
       case OverlayPosition.left:
       case OverlayPosition.right:
         return Container(
-          width: 6 * theme.scaling,
-          height: 100 * theme.scaling,
+          width: widget.dragHandleSize?.width ?? 6 * theme.scaling,
+          height: widget.dragHandleSize?.height ?? 100 * theme.scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.muted,
             borderRadius: theme.borderRadiusXxl,
@@ -129,8 +145,8 @@ class _DrawerWrapperState extends State<DrawerWrapper>
       case OverlayPosition.top:
       case OverlayPosition.bottom:
         return Container(
-          width: 100 * theme.scaling,
-          height: 6 * theme.scaling,
+          width: widget.dragHandleSize?.width ?? 100 * theme.scaling,
+          height: widget.dragHandleSize?.height ?? 6 * theme.scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.muted,
             borderRadius: theme.borderRadiusXxl,
@@ -201,9 +217,11 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                 },
                 animation: _extraOffset,
               ),
-              Gap(16 * theme.scaling),
-              buildDraggableBar(theme),
-              Gap(12 * theme.scaling),
+              if (widget.showDragHandle) ...[
+                Gap(16 * theme.scaling),
+                buildDraggableBar(theme),
+                Gap(12 * theme.scaling),
+              ],
             ],
           ),
         );
@@ -243,9 +261,11 @@ class _DrawerWrapperState extends State<DrawerWrapper>
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Gap(12 * theme.scaling),
-              buildDraggableBar(theme),
-              Gap(16 * theme.scaling),
+              if (widget.showDragHandle) ...[
+                Gap(12 * theme.scaling),
+                buildDraggableBar(theme),
+                Gap(16 * theme.scaling),
+              ],
               AnimatedBuilder(
                 builder: (context, child) {
                   return Transform.scale(
@@ -317,9 +337,11 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                 },
                 animation: _extraOffset,
               ),
-              Gap(16 * theme.scaling),
-              buildDraggableBar(theme),
-              Gap(12 * theme.scaling),
+              if (widget.showDragHandle) ...[
+                Gap(16 * theme.scaling),
+                buildDraggableBar(theme),
+                Gap(12 * theme.scaling),
+              ],
             ],
           ),
         );
@@ -359,9 +381,11 @@ class _DrawerWrapperState extends State<DrawerWrapper>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Gap(12 * theme.scaling),
-              buildDraggableBar(theme),
-              Gap(16 * theme.scaling),
+              if (widget.showDragHandle) ...[
+                Gap(12 * theme.scaling),
+                buildDraggableBar(theme),
+                Gap(16 * theme.scaling),
+              ],
               AnimatedBuilder(
                 builder: (context, child) {
                   return Transform.scale(
@@ -444,8 +468,10 @@ class _DrawerWrapperState extends State<DrawerWrapper>
 
   BoxDecoration getDecoration(ThemeData theme) {
     var border = getBorder(theme);
-    // seems to be fixed radius?
-    var borderRadius = getBorderRadius(theme, 10);
+    // according to the design, the border radius is 10
+    // seems to be a fixed value
+    var borderRadius =
+        widget.borderRadius ?? getBorderRadius(theme, 10 * theme.scaling);
     return BoxDecoration(
       borderRadius: borderRadius,
       color: theme.colorScheme.background,
@@ -538,6 +564,7 @@ Future<T?> openRawDrawer<T>({
   Color? barrierColor,
   bool barrierDismissible = true,
   WidgetBuilder? backdropBuilder,
+  bool useSafeArea = true,
 }) {
   DrawerLayerData? parentLayer =
       DrawerOverlay.maybeFind(context, useRootDrawerOverlay);
@@ -558,6 +585,7 @@ Future<T?> openRawDrawer<T>({
     modal: modal,
     data: data,
     barrierDismissible: barrierDismissible,
+    useSafeArea: useSafeArea,
     backdropBuilder: transformBackdrop
         ? (context, child, animation, stackIndex) {
             final theme = Theme.of(context);
@@ -789,6 +817,7 @@ class _DrawerOverlayState extends State<DrawerOverlay> {
         stackIndex: index++,
         totalStack: _entries.length,
         data: entry.data,
+        useSafeArea: entry.useSafeArea,
       );
     }
     return PopScope(
@@ -829,6 +858,7 @@ class DrawerOverlaidEntry<T> extends StatefulWidget {
   final OverlayPosition position;
   final int stackIndex;
   final int totalStack;
+  final bool useSafeArea;
 
   const DrawerOverlaidEntry({
     super.key,
@@ -843,6 +873,7 @@ class DrawerOverlaidEntry<T> extends StatefulWidget {
     required this.stackIndex,
     required this.totalStack,
     required this.data,
+    required this.useSafeArea,
   });
 
   @override
@@ -881,6 +912,13 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
   Widget build(BuildContext context) {
     Alignment alignment;
     Offset startFractionalOffset;
+    bool padTop = widget.useSafeArea && widget.position != OverlayPosition.top;
+    bool padBottom =
+        widget.useSafeArea && widget.position != OverlayPosition.bottom;
+    bool padLeft =
+        widget.useSafeArea && widget.position != OverlayPosition.left;
+    bool padRight =
+        widget.useSafeArea && widget.position != OverlayPosition.right;
     switch (widget.position) {
       case OverlayPosition.left:
         alignment = Alignment.centerLeft;
@@ -924,6 +962,18 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
               Data.maybeOf<BackdropTransformData>(context)?.sizeDifference;
           Size additionalSize;
           Offset additionalOffset;
+          bool insetTop =
+              widget.useSafeArea && widget.position == OverlayPosition.top;
+          bool insetBottom =
+              widget.useSafeArea && widget.position == OverlayPosition.bottom;
+          bool insetLeft =
+              widget.useSafeArea && widget.position == OverlayPosition.left;
+          bool insetRight =
+              widget.useSafeArea && widget.position == OverlayPosition.right;
+          MediaQueryData mediaQueryData = MediaQuery.of(context);
+          EdgeInsets padding = mediaQueryData.padding;
+          print(
+              'insert: $insetTop, $insetBottom, $insetLeft, $insetRight padding: ${padding.top}, ${padding.bottom}, ${padding.left}, ${padding.right}');
           if (extraSize == null) {
             additionalSize = Size.zero;
             additionalOffset = Offset.zero;
@@ -947,6 +997,32 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
                 break;
             }
           }
+          // bool insetWidth = insetLeft || insetRight;
+          // bool insetHeight = insetTop || insetBottom;
+          // if (insetWidth && insetHeight) {
+          //   additionalSize = Size(additionalSize.width + padding.left,
+          //       additionalSize.height + padding.top);
+          // } else if (insetWidth) {
+          //   additionalSize = Size(additionalSize.width + padding.left, 0);
+          // } else if (insetHeight) {
+          //   additionalSize = Size(0, additionalSize.height + padding.top);
+          // }
+          if (insetTop) {
+            additionalOffset = Offset(
+                additionalSize.width, additionalSize.height + padding.top);
+          }
+          if (insetBottom) {
+            additionalOffset = Offset(
+                additionalSize.width, additionalSize.height + padding.bottom);
+          }
+          if (insetLeft) {
+            additionalOffset = Offset(
+                additionalSize.width + padding.left, additionalSize.height);
+          }
+          if (insetRight) {
+            additionalOffset = Offset(
+                additionalSize.width + padding.right, additionalSize.height);
+          }
           return Stack(
             clipBehavior: Clip.none,
             children: [
@@ -956,21 +1032,39 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
               ),
               barrier,
               Positioned.fill(
-                child: Align(
-                  alignment: alignment,
-                  child: AnimatedBuilder(
-                    animation: _controlledAnimation,
-                    builder: (context, child) {
-                      return FractionalTranslation(
-                        translation: startFractionalOffset *
-                            (1 - _controlledAnimation.value),
-                        child: child,
-                      );
-                    },
-                    child: Transform.translate(
-                      offset: additionalOffset / kBackdropScaleDown,
-                      child: widget.builder(
-                          context, additionalSize, constraints.biggest),
+                child: MediaQuery(
+                  data: widget.useSafeArea
+                      ? mediaQueryData.removePadding(
+                          removeTop: true,
+                          removeBottom: true,
+                          removeLeft: true,
+                          removeRight: true,
+                        )
+                      : mediaQueryData,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: padTop ? padding.top : 0,
+                      bottom: padBottom ? padding.bottom : 0,
+                      left: padLeft ? padding.left : 0,
+                      right: padRight ? padding.right : 0,
+                    ),
+                    child: Align(
+                      alignment: alignment,
+                      child: AnimatedBuilder(
+                        animation: _controlledAnimation,
+                        builder: (context, child) {
+                          return FractionalTranslation(
+                            translation: startFractionalOffset *
+                                (1 - _controlledAnimation.value),
+                            child: child,
+                          );
+                        },
+                        child: Transform.translate(
+                          offset: additionalOffset / kBackdropScaleDown,
+                          child: widget.builder(
+                              context, additionalSize, constraints.biggest),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -1000,6 +1094,7 @@ class DrawerOverlayEntry<T> {
   final Completer<T> completer;
   final OverlayPosition position;
   final bool barrierDismissible;
+  final bool useSafeArea;
 
   DrawerOverlayEntry({
     required this.builder,
@@ -1011,5 +1106,6 @@ class DrawerOverlayEntry<T> {
     required this.position,
     required this.data,
     required this.barrierDismissible,
+    required this.useSafeArea,
   });
 }

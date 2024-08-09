@@ -33,6 +33,7 @@ class LinearProgressIndicator extends StatelessWidget {
   final Color? color;
   final BorderRadius? borderRadius;
   final bool showSparks;
+  final bool disableAnimation;
 
   const LinearProgressIndicator({
     Key? key,
@@ -42,6 +43,7 @@ class LinearProgressIndicator extends StatelessWidget {
     this.color,
     this.borderRadius,
     this.showSparks = false,
+    this.disableAnimation = false,
   }) : super(key: key);
 
   @override
@@ -62,7 +64,7 @@ class LinearProgressIndicator extends StatelessWidget {
             sparksRadius: theme.scaling * 16,
             textDirection: directionality,
           ),
-          duration: kDefaultDuration,
+          duration: disableAnimation ? Duration.zero : kDefaultDuration,
           lerp: _LinearProgressIndicatorProperties.lerp,
           curve: Curves.easeInOut,
           builder: (context, value, child) {
@@ -131,7 +133,10 @@ class LinearProgressIndicator extends StatelessWidget {
     return RepaintBoundary(
       child: SizedBox(
         height: minHeight ?? (theme.scaling * 2),
-        child: childWidget,
+        child: ClipRRect(
+          borderRadius: borderRadius ?? BorderRadius.zero,
+          child: childWidget,
+        ),
       ),
     );
   }

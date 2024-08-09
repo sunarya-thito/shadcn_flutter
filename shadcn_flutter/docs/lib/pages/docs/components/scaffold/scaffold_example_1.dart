@@ -19,6 +19,7 @@ class _ScaffoldExample1State extends State<ScaffoldExample1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      loadingProgressIndeterminate: true,
       headers: [
         AppBar(
           title: const Text('Counter App'),
