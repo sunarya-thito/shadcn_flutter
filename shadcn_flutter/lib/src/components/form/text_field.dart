@@ -45,7 +45,7 @@ class TextField extends StatefulWidget {
     this.controller,
     this.maxLength,
     this.maxLengthEnforcement,
-    this.maxLines,
+    this.maxLines = 1,
     this.minLines,
     this.filled = false,
     this.placeholder,
