@@ -14,10 +14,13 @@ class _ProgressExample1State extends State<ProgressExample1> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Progress(
-          progress: _progress.clamp(0, 100),
-          min: 0,
-          max: 100,
+        SizedBox(
+          width: 200,
+          child: Progress(
+            progress: _progress.clamp(0, 100),
+            min: 0,
+            max: 200,
+          ),
         ),
         Gap(16),
         Row(
@@ -33,18 +36,22 @@ class _ProgressExample1State extends State<ProgressExample1> {
             Gap(16),
             PrimaryButton(
               onPressed: () {
-                setState(() {
-                  _progress -= 10;
-                });
+                if (_progress > 0) {
+                  setState(() {
+                    _progress -= 10;
+                  });
+                }
               },
               child: const Text('Decrease by 10'),
             ),
             Gap(16),
             PrimaryButton(
               onPressed: () {
-                setState(() {
-                  _progress += 10;
-                });
+                if (_progress < 100) {
+                  setState(() {
+                    _progress += 10;
+                  });
+                }
               },
               child: const Text('Increase by 10'),
             ),
