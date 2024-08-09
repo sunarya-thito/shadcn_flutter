@@ -217,7 +217,6 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
                 bottomRight: theme.radiusMdRadius,
               ),
               initialValue: widget.initialValue?.number,
-              expands: true,
             ),
           )
         ],
