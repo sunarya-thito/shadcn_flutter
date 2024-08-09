@@ -89,6 +89,7 @@ class Button extends StatefulWidget {
   final GestureLongPressEndCallback? onLongPressEnd;
   final GestureLongPressUpCallback? onSecondaryLongPress;
   final GestureLongPressUpCallback? onTertiaryLongPress;
+  final bool disableHoverEffect;
   const Button({
     Key? key,
     this.leading,
@@ -103,6 +104,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -135,6 +137,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -167,6 +170,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -199,6 +203,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -231,6 +236,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -263,6 +269,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -295,6 +302,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -327,6 +335,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -359,6 +368,7 @@ class Button extends StatefulWidget {
     this.onFocus,
     this.onHover,
     this.trailingExpanded = false,
+    this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -406,6 +416,7 @@ class ButtonState<T extends Button> extends State<T> {
       disableTransition: widget.disableTransition,
       onHover: widget.onHover,
       onFocus: widget.onFocus,
+      disableHoverEffect: widget.disableHoverEffect,
       enableFeedback: enableFeedback,
       margin: WidgetStateProperty.resolveWith((states) {
         return widget.style.margin(context, states);
