@@ -19,7 +19,7 @@ class _ProgressExample1State extends State<ProgressExample1> {
           child: Progress(
             progress: _progress.clamp(0, 100),
             min: 0,
-            max: 200,
+            max: 100,
           ),
         ),
         Gap(16),
@@ -47,7 +47,7 @@ class _ProgressExample1State extends State<ProgressExample1> {
             Gap(16),
             PrimaryButton(
               onPressed: () {
-                if (_progress < 200) {
+                if (_progress < 100) {
                   setState(() {
                     _progress += 10;
                   });
