@@ -15,7 +15,7 @@ class _ProgressExample1State extends State<ProgressExample1> {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          width: 200,
+          width: 400,
           child: Progress(
             progress: _progress.clamp(0, 100),
             min: 0,
