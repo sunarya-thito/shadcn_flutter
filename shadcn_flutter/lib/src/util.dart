@@ -104,6 +104,12 @@ extension Joinable<T extends Widget> on List<T> {
   }
 }
 
+extension IterableExtension<T> on Iterable<T> {
+  Iterable<T> joinSeparator(T separator) {
+    return map((e) => [separator, e]).expand((element) => element).skip(1);
+  }
+}
+
 extension WidgetExtension on Widget {
   Widget sized({double? width, double? height}) {
     if (this is SizedBox) {

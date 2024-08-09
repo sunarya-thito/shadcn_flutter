@@ -241,6 +241,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Timeline', 'timeline', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Scaffold', 'scaffold', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('App Bar', 'app_bar', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage(
+            'Card Image', 'card_image', ShadcnFeatureTag.workInProgress),
       ],
     ),
     ShadcnDocsSection(
@@ -252,6 +254,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Pagination', 'pagination'),
         ShadcnDocsPage('Tabs', 'tabs'),
         ShadcnDocsPage('Tab List', 'tab_list'),
+        // TODO: like a chrome tab, complete with its view
+        ShadcnDocsPage('Tab Pane', 'tab_pane', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Tree', 'tree', ShadcnFeatureTag.experimental),
         // aka Bottom Navigation Bar
         ShadcnDocsPage('Navigation Bar', 'navigation_bar',
@@ -620,7 +624,7 @@ class DocsPageState extends State<DocsPage> {
                                 header: Text(section.title),
                                 children: [
                                   for (var page in section.pages)
-                                    NavigationButton(
+                                    DocsNavigationButton(
                                       onPressed: () {
                                         if (page.tag ==
                                             ShadcnFeatureTag.workInProgress) {
@@ -849,7 +853,7 @@ class DocsPageState extends State<DocsPage> {
                           header: Text(section.title),
                           children: [
                             for (var page in section.pages)
-                              NavigationButton(
+                              DocsNavigationButton(
                                 onPressed: () {
                                   if (page.tag ==
                                       ShadcnFeatureTag.workInProgress) {
