@@ -69,13 +69,13 @@ class SidebarButton extends StatelessWidget {
   }
 }
 
-class NavigationButton extends StatelessWidget {
+class DocsNavigationButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
   final bool selected;
   final Widget? trailing;
 
-  const NavigationButton({
+  const DocsNavigationButton({
     Key? key,
     this.trailing,
     required this.child,
