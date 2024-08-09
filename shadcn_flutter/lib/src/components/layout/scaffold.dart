@@ -232,9 +232,9 @@ class _AppBarState extends State<AppBar> {
               top: widget.useSafeArea &&
                   barData?.isHeader == true &&
                   barData?.childIndex == 0,
-              bottom: widget.useSafeArea,
+              right: widget.useSafeArea,
               left: widget.useSafeArea,
-              right: widget.useSafeArea &&
+              bottom: widget.useSafeArea &&
                   barData?.isHeader == false &&
                   barData?.childIndex == (barData?.childrenCount ?? 0) - 1,
               child: IntrinsicHeight(
