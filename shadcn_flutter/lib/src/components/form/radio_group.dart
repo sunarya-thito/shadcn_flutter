@@ -174,6 +174,7 @@ class RadioCard<T> extends StatefulWidget {
 class _RadioCardState<T> extends State<RadioCard<T>> with FormValueSupplier {
   late FocusNode _focusNode;
   bool _focusing = false;
+  bool _hovering = false;
 
   @override
   void initState() {
@@ -218,6 +219,13 @@ class _RadioCardState<T> extends State<RadioCard<T>> with FormValueSupplier {
             });
           }
         },
+        onShowHoverHighlight: (value) {
+          if (value != _hovering) {
+            setState(() {
+              _hovering = value;
+            });
+          }
+        },
         child: Data<RadioGroupData<T>>.boundary(
           child: Data<_RadioCardState<T>>.boundary(
             child: Card(
@@ -228,13 +236,23 @@ class _RadioCardState<T> extends State<RadioCard<T>> with FormValueSupplier {
                   ? 2 * theme.scaling
                   : 1 * theme.scaling,
               borderRadius: theme.radiusMd,
-              child: AnimatedPadding(
-                duration: kDefaultDuration,
-                padding: groupData?.selectedItem == widget.value
-                    ? EdgeInsets.zero
-                    // to compensate for the border width
-                    : EdgeInsets.all(1 * theme.scaling),
-                child: widget.child,
+              padding: EdgeInsets.zero,
+              clipBehavior: Clip.antiAlias,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: _hovering
+                      ? theme.colorScheme.muted
+                      : theme.colorScheme.background,
+                ),
+                padding: EdgeInsets.all(16 * theme.scaling),
+                child: AnimatedPadding(
+                  duration: kDefaultDuration,
+                  padding: groupData?.selectedItem == widget.value
+                      ? EdgeInsets.zero
+                      // to compensate for the border width
+                      : EdgeInsets.all(1 * theme.scaling),
+                  child: widget.child,
+                ),
               ),
             ),
           ),
