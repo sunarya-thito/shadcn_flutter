@@ -11,6 +11,7 @@ class Pagination extends StatelessWidget {
   final bool showSkipToLastPage;
   final bool hidePreviousOnFirstPage;
   final bool hideNextOnLastPage;
+  final bool showLabel;
 
   const Pagination({
     super.key,
@@ -22,6 +23,7 @@ class Pagination extends StatelessWidget {
     this.showSkipToLastPage = true,
     this.hidePreviousOnFirstPage = false,
     this.hideNextOnLastPage = false,
+    this.showLabel = true,
   });
 
   bool get hasPrevious => page > 1;
@@ -64,6 +66,34 @@ class Pagination extends StatelessWidget {
   bool get hasMorePreviousPages => firstShownPage > 1;
   bool get hasMoreNextPages => lastShownPage < totalPages;
 
+  Widget _buildPreviousLabel(ShadcnLocalizations localizations) {
+    if (showLabel) {
+      return GhostButton(
+        onPressed: hasPrevious ? () => onPageChanged(page - 1) : null,
+        leading: const Icon(RadixIcons.chevronLeft).iconXSmall(),
+        child: Text(localizations.buttonPrevious),
+      );
+    }
+    return GhostButton(
+      onPressed: hasPrevious ? () => onPageChanged(page - 1) : null,
+      child: const Icon(RadixIcons.chevronLeft).iconXSmall(),
+    );
+  }
+
+  Widget _buildNextLabel(ShadcnLocalizations localizations) {
+    if (showLabel) {
+      return GhostButton(
+        onPressed: hasNext ? () => onPageChanged(page + 1) : null,
+        trailing: const Icon(RadixIcons.chevronRight).iconXSmall(),
+        child: Text(localizations.buttonNext),
+      );
+    }
+    return GhostButton(
+      onPressed: hasNext ? () => onPageChanged(page + 1) : null,
+      child: const Icon(RadixIcons.chevronRight).iconXSmall(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -75,11 +105,7 @@ class Pagination extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (!hidePreviousOnFirstPage || hasPrevious)
-            GhostButton(
-              onPressed: hasPrevious ? () => onPageChanged(page - 1) : null,
-              leading: const Icon(Icons.arrow_back_ios_new).iconXSmall(),
-              child: Text(localizations.buttonPrevious),
-            ),
+            _buildPreviousLabel(localizations),
           if (hasMorePreviousPages) ...[
             if (showSkipToFirstPage && firstShownPage - 1 > 1)
               GhostButton(
@@ -113,12 +139,7 @@ class Pagination extends StatelessWidget {
                 child: Text('$totalPages'),
               ),
           ],
-          if (!hideNextOnLastPage || hasNext)
-            GhostButton(
-              onPressed: hasNext ? () => onPageChanged(page + 1) : null,
-              trailing: const Icon(Icons.arrow_forward_ios).iconXSmall(),
-              child: Text(localizations.buttonNext),
-            ),
+          if (!hideNextOnLastPage || hasNext) _buildNextLabel(localizations),
         ],
       ).gap(4 * scaling),
     );
