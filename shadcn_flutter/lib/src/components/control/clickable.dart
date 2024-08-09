@@ -41,6 +41,7 @@ class Clickable extends StatefulWidget {
   final GestureLongPressUpCallback? onSecondaryLongPress;
   final GestureLongPressUpCallback? onTertiaryLongPress;
   final bool? isSemanticButton;
+  final bool disableHoverEffect;
 
   const Clickable({
     super.key,
@@ -57,6 +58,7 @@ class Clickable extends StatefulWidget {
     this.onHover,
     this.onFocus,
     this.disableTransition = false,
+    this.disableHoverEffect = false,
     this.margin,
     this.onDoubleTap,
     this.shortcuts,
@@ -108,6 +110,9 @@ class _ClickableState extends State<Clickable> {
     _controller.update(WidgetState.disabled, !widget.enabled);
     if (widget.focusNode != oldWidget.focusNode) {
       _focusNode = widget.focusNode ?? FocusNode();
+    }
+    if (widget.disableHoverEffect) {
+      _controller.update(WidgetState.hovered, false);
     }
   }
 
@@ -258,7 +263,8 @@ class _ClickableState extends State<Clickable> {
                   ...?widget.actions,
                 },
                 onShowHoverHighlight: (value) {
-                  _controller.update(WidgetState.hovered, value);
+                  _controller.update(
+                      WidgetState.hovered, value && !widget.disableHoverEffect);
                   widget.onHover?.call(value);
                 },
                 onShowFocusHighlight: (value) {
