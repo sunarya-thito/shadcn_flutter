@@ -37,6 +37,7 @@ Future<T?> openDrawer<T>({
         showDragHandle: showDragHandle,
         dragHandleSize: dragHandleSize,
         padding: padding,
+        borderRadius: borderRadius,
         child: builder(context),
       );
     },
@@ -445,7 +446,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     }
   }
 
-  BorderRadius getBorderRadius(ThemeData theme, double radius) {
+  BorderRadius getBorderRadius(double radius) {
     switch (widget.position) {
       case OverlayPosition.left:
         return BorderRadius.only(
@@ -474,8 +475,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     var border = getBorder(theme);
     // according to the design, the border radius is 10
     // seems to be a fixed value
-    var borderRadius =
-        widget.borderRadius ?? getBorderRadius(theme, 10 * theme.scaling);
+    var borderRadius = widget.borderRadius ?? getBorderRadius(theme.radiusXxl);
     return BoxDecoration(
       borderRadius: borderRadius,
       color: theme.colorScheme.background,

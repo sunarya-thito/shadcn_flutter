@@ -21,7 +21,6 @@ class _DrawerExample1State extends State<DrawerExample1> {
   void open(BuildContext context, int count) {
     openDrawer(
       context: context,
-      // transformBackdrop: false,
       expands: true,
       builder: (context) {
         return Container(
