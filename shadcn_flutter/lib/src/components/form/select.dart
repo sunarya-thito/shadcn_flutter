@@ -278,6 +278,7 @@ class Select<T> extends StatefulWidget {
   final bool orderSelectedFirst;
   final double? surfaceBlur;
   final double? surfaceOpacity;
+  final bool disableHoverEffect;
 
   const Select({
     Key? key,
@@ -292,6 +293,7 @@ class Select<T> extends StatefulWidget {
     this.value,
     this.showUnrelatedValues = false,
     this.orderSelectedFirst = true,
+    this.disableHoverEffect = false,
     this.borderRadius,
     this.searchPlaceholder,
     this.padding,
@@ -346,6 +348,7 @@ class _SelectState<T> extends State<Select<T>> {
     return ConstrainedBox(
       constraints: widget.constraints ?? const BoxConstraints(),
       child: Button(
+        disableHoverEffect: widget.disableHoverEffect,
         focusNode: _focusNode,
         style:
             (widget.filled ? ButtonVariance.secondary : ButtonVariance.outline)
