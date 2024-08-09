@@ -348,8 +348,11 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
                   opacity: _value == null ? 1 : 0,
                   child: TextField(
                     border: false,
+                    useNativeContextMenu: widget.data.useNativeContextMenu,
                     isCollapsed: true,
-                    expands: true,
+                    expands: false,
+                    maxLines: null,
+                    textAlignVertical: TextAlignVertical.top,
                     keyboardType: widget.keyboardType,
                     readOnly: widget.readOnly,
                     textAlign: TextAlign.center,
@@ -412,6 +415,7 @@ class InputOTPChildData {
   final int relativeIndex;
   final int? value;
   final _InputOTPState _state;
+  final bool useNativeContextMenu;
   final GlobalKey<_OTPCharacterInputState>? _key;
 
   InputOTPChildData._(
@@ -425,6 +429,7 @@ class InputOTPChildData {
     this.previousFocusNode,
     this.nextFocusNode,
     this.value,
+    this.useNativeContextMenu = false,
   });
 
   void changeValue(int? value) {
@@ -463,6 +468,7 @@ class InputOTP extends StatefulWidget {
   final OTPCodepointList? initialValue;
   final ValueChanged<OTPCodepointList>? onChanged;
   final ValueChanged<OTPCodepointList>? onSubmitted;
+  final bool useNativeContextMenu;
 
   const InputOTP({
     super.key,
@@ -470,6 +476,7 @@ class InputOTP extends StatefulWidget {
     this.initialValue,
     this.onChanged,
     this.onSubmitted,
+    this.useNativeContextMenu = false,
   });
 
   @override
@@ -606,6 +613,7 @@ class _InputOTPState extends State<InputOTP> {
               nextFocusNode: null,
               value: null,
               groupLength: -1,
+              useNativeContextMenu: widget.useNativeContextMenu,
             )));
       }
     }
