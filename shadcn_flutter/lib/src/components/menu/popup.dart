@@ -1,10 +1,14 @@
 import '../../../shadcn_flutter.dart';
 
 class MenuPopup extends StatelessWidget {
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
   final List<Widget> children;
 
   const MenuPopup({
     super.key,
+    this.surfaceOpacity,
+    this.surfaceBlur,
     required this.children,
   });
 
@@ -23,6 +27,8 @@ class MenuPopup extends StatelessWidget {
       borderRadius: theme.radiusMd,
       backgroundColor: theme.colorScheme.popover,
       borderColor: theme.colorScheme.border,
+      surfaceBlur: surfaceBlur ?? theme.surfaceBlur,
+      surfaceOpacity: surfaceOpacity ?? theme.surfaceOpacity,
       child: Padding(
         padding: const EdgeInsets.all(4) * theme.scaling,
         child: SingleChildScrollView(

@@ -11,7 +11,7 @@ class PopoverExample1 extends StatelessWidget {
           context: context,
           alignment: Alignment.topCenter,
           builder: (context) {
-            return Card(
+            return SurfaceCard(
               child: SizedBox(
                 width: 300,
                 child: Column(

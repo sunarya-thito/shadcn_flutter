@@ -26,6 +26,8 @@ class Command extends StatefulWidget {
   final WidgetBuilder? emptyBuilder;
   final ErrorWidgetBuilder? errorBuilder;
   final WidgetBuilder? loadingBuilder;
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
 
   const Command({
     Key? key,
@@ -34,6 +36,8 @@ class Command extends StatefulWidget {
     this.emptyBuilder,
     this.errorBuilder,
     this.loadingBuilder,
+    this.surfaceOpacity,
+    this.surfaceBlur,
   }) : super(key: key);
 
   @override
@@ -80,6 +84,8 @@ class _CommandState extends State<Command> {
       child: IntrinsicWidth(
         child: OutlinedContainer(
           clipBehavior: Clip.hardEdge,
+          surfaceBlur: widget.surfaceBlur ?? theme.surfaceBlur,
+          surfaceOpacity: widget.surfaceOpacity ?? theme.surfaceOpacity,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,

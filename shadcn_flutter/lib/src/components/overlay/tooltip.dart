@@ -4,9 +4,13 @@ import '../../../shadcn_flutter.dart';
 
 class TooltipContainer extends StatelessWidget {
   final Widget child;
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
 
   const TooltipContainer({
     Key? key,
+    this.surfaceOpacity,
+    this.surfaceBlur,
     required this.child,
   }) : super(key: key);
 
@@ -14,19 +18,39 @@ class TooltipContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return AnimatedContainer(
+    var backgroundColor = theme.colorScheme.primary;
+    // var surfaceOpacity = this.surfaceOpacity ?? theme.surfaceOpacity;
+    // var surfaceBlur = this.surfaceBlur ?? theme.surfaceBlur;
+    // Do not use the default value of theme.surfaceOpacity and theme.surfaceBlur
+    // but still allow the user to set the value
+    var surfaceOpacity = this.surfaceOpacity;
+    var surfaceBlur = this.surfaceBlur;
+    if (surfaceOpacity != null) {
+      backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
+    }
+    Widget animatedContainer = AnimatedContainer(
       duration: kDefaultDuration,
-      margin: const EdgeInsets.all(6) * scaling,
       padding: const EdgeInsets.symmetric(
             horizontal: 12,
             vertical: 6,
           ) *
           scaling,
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(theme.radiusSm),
       ),
       child: child.xSmall().primaryForeground(),
+    );
+    if (surfaceBlur != null && surfaceBlur > 0) {
+      animatedContainer = SurfaceBlur(
+        surfaceBlur: surfaceBlur,
+        borderRadius: BorderRadius.circular(theme.radiusSm),
+        child: animatedContainer,
+      );
+    }
+    return Padding(
+      padding: const EdgeInsets.all(6) * scaling,
+      child: animatedContainer,
     );
   }
 }

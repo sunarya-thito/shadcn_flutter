@@ -49,7 +49,7 @@ Widget _buildShadcnDialogTransitions(
     Widget child) {
   return ScaleTransition(
     scale: CurvedAnimation(
-      parent: animation.drive(Tween<double>(begin: 0.9, end: 1.0)),
+      parent: animation.drive(Tween<double>(begin: 0.7, end: 1.0)),
       curve: Curves.easeOut,
       reverseCurve: Curves.easeIn,
     ),

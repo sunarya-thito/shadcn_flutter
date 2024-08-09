@@ -250,7 +250,7 @@ class SelectLabel extends StatelessWidget {
     final scaling = theme.scaling;
     return Padding(
       padding: const EdgeInsets.all(8) * scaling,
-      child: child.semiBold(),
+      child: child.semiBold().small(),
     );
   }
 }
@@ -276,6 +276,8 @@ class Select<T> extends StatefulWidget {
   final Alignment? popoverAnchorAlignment;
   final WidgetBuilder? emptyBuilder;
   final bool orderSelectedFirst;
+  final double? surfaceBlur;
+  final double? surfaceOpacity;
 
   const Select({
     Key? key,
@@ -296,6 +298,8 @@ class Select<T> extends StatefulWidget {
     this.popoverAlignment = Alignment.topCenter,
     this.popoverAnchorAlignment,
     this.emptyBuilder,
+    this.surfaceBlur,
+    this.surfaceOpacity,
     required this.itemBuilder,
     required this.children,
   }) : super(key: key);
@@ -375,6 +379,8 @@ class _SelectState<T> extends State<Select<T>> {
                       showUnrelatedValues: widget.showUnrelatedValues,
                       onChanged: widget.onChanged,
                       emptyBuilder: widget.emptyBuilder,
+                      surfaceBlur: widget.surfaceBlur,
+                      surfaceOpacity: widget.surfaceOpacity,
                       children: widget.children,
                     );
                   },
@@ -417,6 +423,8 @@ class SelectPopup<T> extends StatefulWidget {
   final String? searchPlaceholder;
   final WidgetBuilder? emptyBuilder;
   final bool orderSelectedFirst;
+  final double? surfaceBlur;
+  final double? surfaceOpacity;
 
   const SelectPopup({
     Key? key,
@@ -428,6 +436,8 @@ class SelectPopup<T> extends StatefulWidget {
     this.searchPlaceholder,
     this.emptyBuilder,
     this.orderSelectedFirst = true,
+    this.surfaceBlur,
+    this.surfaceOpacity,
     required this.children,
   }) : super(key: key);
 
@@ -461,6 +471,8 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
+    final surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8) * scaling,
       constraints: widget.constraints ??
@@ -470,6 +482,8 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
               scaling),
       child: OutlinedContainer(
         clipBehavior: Clip.hardEdge,
+        surfaceBlur: surfaceBlur,
+        surfaceOpacity: surfaceOpacity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,

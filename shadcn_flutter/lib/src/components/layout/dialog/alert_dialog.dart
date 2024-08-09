@@ -6,6 +6,8 @@ class AlertDialog extends StatefulWidget {
   final Widget? title;
   final Widget? content;
   final List<Widget>? actions;
+  final double? surfaceBlur;
+  final double? surfaceOpacity;
 
   const AlertDialog({
     Key? key,
@@ -14,6 +16,8 @@ class AlertDialog extends StatefulWidget {
     this.content,
     this.actions,
     this.trailing,
+    this.surfaceBlur,
+    this.surfaceOpacity,
   }) : super(key: key);
 
   @override
@@ -32,6 +36,8 @@ class _AlertDialogState extends State<AlertDialog> {
         borderWidth: 1 * scaling,
         borderColor: themeData.colorScheme.muted,
         padding: EdgeInsets.all(24 * scaling),
+        surfaceBlur: widget.surfaceBlur ?? themeData.surfaceBlur,
+        surfaceOpacity: widget.surfaceOpacity ?? themeData.surfaceOpacity,
         child: IntrinsicHeight(
           child: Column(
             mainAxisSize: MainAxisSize.min,

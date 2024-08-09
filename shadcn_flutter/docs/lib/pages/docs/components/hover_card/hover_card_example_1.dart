@@ -7,7 +7,7 @@ class HoverCardExample1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return HoverCard(
       hoverBuilder: (context) {
-        return const Card(
+        return const SurfaceCard(
           child: Basic(
             leading: FlutterLogo(),
             title: Text('@flutter'),

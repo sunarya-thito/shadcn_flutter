@@ -207,9 +207,16 @@ class NavigationContentList extends StatelessWidget {
 }
 
 class NavigationMenu extends StatefulWidget {
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
   final List<Widget> children;
 
-  const NavigationMenu({super.key, required this.children});
+  const NavigationMenu({
+    super.key,
+    this.surfaceOpacity,
+    this.surfaceBlur,
+    required this.children,
+  });
 
   @override
   State<NavigationMenu> createState() => NavigationMenuState();
@@ -301,6 +308,8 @@ class NavigationMenuState extends State<NavigationMenu> {
 
   Widget buildPopover(BuildContext context) {
     final theme = Theme.of(context);
+    final surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
+    final surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
     return MouseRegion(
       hitTestBehavior: HitTestBehavior.translucent,
       onEnter: (_) {
@@ -357,6 +366,8 @@ class NavigationMenuState extends State<NavigationMenu> {
                 return OutlinedContainer(
                   clipBehavior: Clip.antiAlias,
                   borderRadius: theme.radiusMd,
+                  surfaceOpacity: surfaceOpacity,
+                  surfaceBlur: surfaceBlur,
                   child: Stack(
                     children: [
                       ...children,

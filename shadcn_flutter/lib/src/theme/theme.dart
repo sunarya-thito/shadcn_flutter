@@ -87,8 +87,8 @@ class ThemeData {
   final double scaling;
   final TargetPlatform? _platform;
   final IconThemeProperties iconTheme;
-  final double surfaceOpacity;
-  final double surfaceBlur;
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
 
   ThemeData({
     required this.colorScheme,
@@ -97,8 +97,8 @@ class ThemeData {
     this.typography = const Typography.geist(),
     this.iconTheme = const IconThemeProperties(),
     TargetPlatform? platform,
-    this.surfaceOpacity = 1,
-    this.surfaceBlur = 0,
+    this.surfaceOpacity,
+    this.surfaceBlur,
   }) : _platform = platform;
 
   TargetPlatform get platform => _platform ?? defaultTargetPlatform;
@@ -144,6 +144,8 @@ class ThemeData {
     TargetPlatform? platform,
     double? scaling,
     IconThemeProperties? iconTheme,
+    double? surfaceOpacity,
+    double? surfaceBlur,
   }) {
     return ThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -152,6 +154,8 @@ class ThemeData {
       platform: platform ?? _platform,
       scaling: scaling ?? this.scaling,
       iconTheme: iconTheme ?? this.iconTheme,
+      surfaceOpacity: surfaceOpacity ?? this.surfaceOpacity,
+      surfaceBlur: surfaceBlur ?? this.surfaceBlur,
     );
   }
 
@@ -167,6 +171,8 @@ class ThemeData {
       platform: t < 0.5 ? a.platform : b.platform,
       scaling: lerpDouble(a.scaling, b.scaling, t)!,
       iconTheme: IconThemeProperties.lerp(a.iconTheme, b.iconTheme, t),
+      surfaceOpacity: lerpDouble(a.surfaceOpacity, b.surfaceOpacity, t),
+      surfaceBlur: lerpDouble(a.surfaceBlur, b.surfaceBlur, t),
     );
   }
 }

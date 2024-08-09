@@ -181,6 +181,8 @@ class AppBar extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
   final double? height;
   final bool useSafeArea;
+  final double? surfaceBlur;
+  final double? surfaceOpacity;
 
   const AppBar({
     super.key,
@@ -197,6 +199,8 @@ class AppBar extends StatefulWidget {
     this.leadingGap,
     this.trailingGap,
     this.height,
+    this.surfaceBlur,
+    this.surfaceOpacity,
     this.useSafeArea = true,
   }) : assert(
           child == null || title == null,
@@ -213,13 +217,19 @@ class _AppBarState extends State<AppBar> {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     final barData = Data.maybeOf<ScaffoldBarData>(context);
+    var surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
+    var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
     return FocusTraversalGroup(
       child: ClipRect(
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
+          filter: ImageFilter.blur(
+            sigmaX: surfaceBlur ?? 0,
+            sigmaY: surfaceBlur ?? 0,
+          ),
+          child: AnimatedContainer(
+            duration: kDefaultDuration,
             color: widget.backgroundColor ??
-                theme.colorScheme.background.scaleAlpha(0.4),
+                theme.colorScheme.background.scaleAlpha(surfaceOpacity ?? 1),
             alignment: widget.alignment,
             height: widget.height,
             padding: widget.padding ??

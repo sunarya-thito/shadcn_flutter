@@ -47,6 +47,8 @@ class _ThemePageState extends State<ThemePage> {
   late Map<String, Color> colors;
   late double radius;
   late double scaling;
+  late double surfaceOpacity;
+  late double surfaceBlur;
   late ColorScheme colorScheme;
   bool customColorScheme = false;
   bool applyDirectly = true;
@@ -55,6 +57,8 @@ class _ThemePageState extends State<ThemePage> {
   final OnThisPage premadeColorSchemeKey = OnThisPage();
   final OnThisPage radiusKey = OnThisPage();
   final OnThisPage scalingKey = OnThisPage();
+  final OnThisPage surfaceOpacityKey = OnThisPage();
+  final OnThisPage surfaceBlurKey = OnThisPage();
   final OnThisPage codeKey = OnThisPage();
 
   @override
@@ -72,6 +76,8 @@ class _ThemePageState extends State<ThemePage> {
     radius = state.radius;
     customColorScheme = nameFromColorScheme(colorScheme) == null;
     scaling = state.scaling;
+    surfaceOpacity = state.surfaceOpacity;
+    surfaceBlur = state.surfaceBlur;
   }
 
   @override
@@ -84,6 +90,8 @@ class _ThemePageState extends State<ThemePage> {
         'Premade color scheme': premadeColorSchemeKey,
         'Radius': radiusKey,
         'Scaling': scalingKey,
+        'Surface opacity': surfaceOpacityKey,
+        'Surface blur': surfaceBlurKey,
         'Code': codeKey,
       },
       child: Column(
@@ -176,6 +184,53 @@ class _ThemePageState extends State<ThemePage> {
             content: Text(
                 'This does not scale the entire app. Only shadcn_flutter components are affected.'),
           ),
+          const Text('Surface opacity').h2().anchored(surfaceOpacityKey),
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Text(
+                      'You can customize the opacity of the surface by changing the surface opacity.')),
+            ],
+          ).p(),
+          Slider(
+            value: SliderValue.single(surfaceOpacity),
+            onChanged: (value) {
+              setState(() {
+                surfaceOpacity = value.value;
+                if (applyDirectly) {
+                  state.changeSurfaceOpacity(surfaceOpacity);
+                }
+              });
+            },
+            min: 0,
+            max: 1,
+            divisions: 20,
+          ).p(),
+          const Text('Surface blur').h2().anchored(surfaceBlurKey),
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Text(
+                      'You can customize the blur of the surface by changing the surface blur.')),
+            ],
+          ).p(),
+          Slider(
+            value: SliderValue.single(surfaceBlur),
+            onChanged: (value) {
+              setState(() {
+                surfaceBlur = value.value;
+                if (applyDirectly) {
+                  state.changeSurfaceBlur(surfaceBlur);
+                }
+              });
+            },
+            min: 0,
+            max: 20,
+            divisions: 20,
+          ).p(),
+
           const Text('Code').h2().anchored(codeKey),
           const Text('Use the following code to apply the color scheme.').p(),
           CodeSnippet(
@@ -205,6 +260,12 @@ class _ThemePageState extends State<ThemePage> {
     if (scaling != 1) {
       buffer += '\n\tscaling: const AdaptiveScaling($scaling),';
     }
+    if (surfaceOpacity != 1) {
+      buffer += '\n\tsurfaceOpacity: $surfaceOpacity,';
+    }
+    if (surfaceBlur != 0) {
+      buffer += '\n\tsurfaceBlur: $surfaceBlur,';
+    }
     buffer += '\n...';
     buffer += '\n)';
     return buffer;
@@ -221,6 +282,12 @@ class _ThemePageState extends State<ThemePage> {
     buffer += '\n\t),';
     if (scaling != 1) {
       buffer += '\n\tscaling: const AdaptiveScaling($scaling),';
+    }
+    if (surfaceOpacity != 1) {
+      buffer += '\n\tsurfaceOpacity: $surfaceOpacity,';
+    }
+    if (surfaceBlur != 0) {
+      buffer += '\n\tsurfaceBlur: $surfaceBlur,';
     }
     buffer += '\n...';
     buffer += '\n)';

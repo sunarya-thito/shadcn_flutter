@@ -8,7 +8,7 @@ class HoverCardExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'hover_card',
       description:
           'For sighted users to preview content available behind a link',

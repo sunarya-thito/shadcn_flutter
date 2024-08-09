@@ -1,7 +1,9 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-void showDropdown(
-    {required BuildContext context, required WidgetBuilder builder}) {
+void showDropdown({
+  required BuildContext context,
+  required WidgetBuilder builder,
+}) {
   final theme = Theme.of(context);
   final scaling = theme.scaling;
   final GlobalKey key = GlobalKey();
@@ -29,10 +31,14 @@ class DropdownMenuData {
 }
 
 class DropdownMenu extends StatefulWidget {
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
   final List<MenuItem> children;
 
   const DropdownMenu({
     Key? key,
+    this.surfaceOpacity,
+    this.surfaceBlur,
     required this.children,
   }) : super(key: key);
 
@@ -57,6 +63,10 @@ class _DropdownMenuState extends State<DropdownMenu> {
         direction: Axis.vertical,
         builder: (context, children) {
           return MenuPopup(
+            // does not need to check for theme.surfaceOpacity and theme.surfaceBlur
+            // MenuPopup already has default values for these properties
+            surfaceOpacity: widget.surfaceOpacity,
+            surfaceBlur: widget.surfaceBlur,
             children: children,
           );
         },

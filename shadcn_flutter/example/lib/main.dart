@@ -1,6 +1,11 @@
+import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent));
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(const MyApp());
 }
 
@@ -52,12 +57,12 @@ class _CounterPageState extends State<CounterPage> {
                     return Container(
                       alignment: Alignment.center,
                       constraints: const BoxConstraints(
-                        maxHeight: 300,
+                        maxWidth: 300,
                       ),
                       child: const Text('Drawer'),
                     );
                   },
-                  position: OverlayPosition.top,
+                  position: OverlayPosition.left,
                 );
               },
               density: ButtonDensity.icon,
@@ -74,7 +79,7 @@ class _CounterPageState extends State<CounterPage> {
                     return Container(
                       alignment: Alignment.center,
                       constraints: const BoxConstraints(
-                        maxHeight: 200,
+                        maxWidth: 200,
                       ),
                       child: const Text('Sheet'),
                     );

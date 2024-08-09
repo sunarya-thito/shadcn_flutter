@@ -99,10 +99,14 @@ void main() async {
   }
   double initialRadius = prefs.getDouble('radius') ?? 0.5;
   double initialScaling = prefs.getDouble('scaling') ?? 1.0;
+  double initialSurfaceOpacity = prefs.getDouble('surfaceOpacity') ?? 1.0;
+  double initialSurfaceBlur = prefs.getDouble('surfaceBlur') ?? 0.0;
   runApp(MyApp(
     initialColorScheme: initialColorScheme ?? colorSchemes['darkZinc']!,
     initialRadius: initialRadius,
     initialScaling: initialScaling,
+    initialSurfaceOpacity: initialSurfaceOpacity,
+    initialSurfaceBlur: initialSurfaceBlur,
   ));
 }
 
@@ -110,11 +114,15 @@ class MyApp extends StatefulWidget {
   final ColorScheme initialColorScheme;
   final double initialRadius;
   final double initialScaling;
+  final double initialSurfaceOpacity;
+  final double initialSurfaceBlur;
   const MyApp({
     super.key,
     required this.initialColorScheme,
     required this.initialRadius,
     required this.initialScaling,
+    required this.initialSurfaceOpacity,
+    required this.initialSurfaceBlur,
   });
 
   @override
@@ -579,6 +587,8 @@ class MyAppState extends State<MyApp> {
   late ColorScheme colorScheme;
   late double radius;
   late double scaling;
+  late double surfaceOpacity;
+  late double surfaceBlur;
 
   @override
   void initState() {
@@ -586,6 +596,8 @@ class MyAppState extends State<MyApp> {
     colorScheme = widget.initialColorScheme;
     radius = widget.initialRadius;
     scaling = widget.initialScaling;
+    surfaceOpacity = widget.initialSurfaceOpacity;
+    surfaceBlur = widget.initialSurfaceBlur;
   }
   // This widget is the root of your application.
 
@@ -625,9 +637,30 @@ class MyAppState extends State<MyApp> {
     });
   }
 
+  void changeSurfaceOpacity(double surfaceOpacity) {
+    setState(() {
+      this.surfaceOpacity = surfaceOpacity;
+      SharedPreferences.getInstance().then(
+        (value) {
+          value.setDouble('surfaceOpacity', surfaceOpacity);
+        },
+      );
+    });
+  }
+
+  void changeSurfaceBlur(double surfaceBlur) {
+    setState(() {
+      this.surfaceBlur = surfaceBlur;
+      SharedPreferences.getInstance().then(
+        (value) {
+          value.setDouble('surfaceBlur', surfaceBlur);
+        },
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     return Data.inherit(
       data: this,
       child: ShadcnApp.router(
@@ -638,6 +671,8 @@ class MyAppState extends State<MyApp> {
         theme: ThemeData(
           colorScheme: colorScheme,
           radius: radius,
+          surfaceBlur: surfaceBlur,
+          surfaceOpacity: surfaceOpacity,
         ),
       ),
     );

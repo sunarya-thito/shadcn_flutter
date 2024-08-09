@@ -20,6 +20,8 @@ Future<T?> openDrawer<T>({
   BorderRadius? borderRadius,
   Size? dragHandleSize,
   bool transformBackdrop = true,
+  double? surfaceOpacity,
+  double? surfaceBlur,
 }) {
   return openRawDrawer<T>(
     context: context,
@@ -38,6 +40,8 @@ Future<T?> openDrawer<T>({
         dragHandleSize: dragHandleSize,
         padding: padding,
         borderRadius: borderRadius,
+        surfaceOpacity: surfaceOpacity,
+        surfaceBlur: surfaceBlur,
         child: builder(context),
       );
     },
@@ -81,6 +85,8 @@ class DrawerWrapper extends StatefulWidget {
   final BorderRadius? borderRadius;
   final Size? dragHandleSize;
   final EdgeInsets padding;
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
 
   const DrawerWrapper({
     super.key,
@@ -94,6 +100,8 @@ class DrawerWrapper extends StatefulWidget {
     this.borderRadius,
     this.dragHandleSize,
     this.padding = EdgeInsets.zero,
+    this.surfaceOpacity,
+    this.surfaceBlur,
   });
 
   @override
@@ -476,9 +484,14 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     // according to the design, the border radius is 10
     // seems to be a fixed value
     var borderRadius = widget.borderRadius ?? getBorderRadius(theme.radiusXxl);
+    var backgroundColor = theme.colorScheme.background;
+    var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
+    if (surfaceOpacity != null) {
+      backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
+    }
     return BoxDecoration(
       borderRadius: borderRadius,
-      color: theme.colorScheme.background,
+      color: backgroundColor,
       border: border,
     );
   }
@@ -488,7 +501,8 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     final data = Data.maybeOf<_OverlaidEntryData>(context);
     final animation = data?.state._controlledAnimation;
     final theme = Theme.of(context);
-    return Container(
+    var surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
+    Widget container = Container(
       width: widget.expands ? expandingWidth : null,
       height: widget.expands ? expandingHeight : null,
       decoration: getDecoration(theme),
@@ -497,6 +511,15 @@ class _DrawerWrapperState extends State<DrawerWrapper>
           ? buildDraggable(context, animation, widget.child, theme)
           : widget.child,
     );
+
+    if (surfaceBlur != null && surfaceBlur > 0) {
+      container = SurfaceBlur(
+        surfaceBlur: surfaceBlur,
+        borderRadius: getBorderRadius(theme.radiusXxl),
+        child: container,
+      );
+    }
+    return container;
   }
 }
 
@@ -515,6 +538,8 @@ class SheetWrapper extends DrawerWrapper {
     super.expands = false,
     super.extraSize = Size.zero,
     super.padding,
+    super.surfaceBlur,
+    super.surfaceOpacity,
   });
 
   @override
@@ -537,9 +562,19 @@ class _SheetWrapperState extends _DrawerWrapperState {
   }
 
   @override
+  BorderRadius getBorderRadius(double radius) {
+    return BorderRadius.zero;
+  }
+
+  @override
   BoxDecoration getDecoration(ThemeData theme) {
+    var backgroundColor = theme.colorScheme.background;
+    var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
+    if (surfaceOpacity != null) {
+      backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
+    }
     return BoxDecoration(
-      color: theme.colorScheme.background,
+      color: backgroundColor,
       border: getBorder(theme),
     );
   }

@@ -307,6 +307,10 @@ class DocsPageState extends State<DocsPage> {
         // TODO: Same progress as image input
         ShadcnDocsPage(
             'Image Tools', 'image_tools', ShadcnFeatureTag.workInProgress),
+        // TODO: Mostly same as refresh indicator, but it does not provide indicator
+        // the indicator itself is provided by scaffold
+        ShadcnDocsPage('Refresh Trigger', 'refresh_trigger',
+            ShadcnFeatureTag.workInProgress),
       ],
     ),
     // COMPONENTS END

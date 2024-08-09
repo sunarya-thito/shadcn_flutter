@@ -2,6 +2,42 @@ import 'dart:ui';
 
 import '../../../shadcn_flutter.dart';
 
+class SurfaceBlur extends StatelessWidget {
+  final Widget child;
+  final double surfaceBlur;
+  final BorderRadius? borderRadius;
+
+  const SurfaceBlur({
+    super.key,
+    required this.child,
+    this.surfaceBlur = 0,
+    this.borderRadius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        Positioned.fill(
+          child: ClipRRect(
+            borderRadius: borderRadius ?? BorderRadius.zero,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: surfaceBlur,
+                sigmaY: surfaceBlur,
+              ),
+              // had to add SizedBox, otherwise it won't blur
+              child: SizedBox(),
+            ),
+          ),
+        ),
+        child,
+      ],
+    );
+  }
+}
+
 class OutlinedContainer extends StatefulWidget {
   final Widget child;
   final Color? backgroundColor;
@@ -12,17 +48,21 @@ class OutlinedContainer extends StatefulWidget {
   final double? borderWidth;
   final List<BoxShadow>? boxShadow;
   final EdgeInsetsGeometry? padding;
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
   const OutlinedContainer({
     Key? key,
     required this.child,
     this.borderColor,
     this.backgroundColor,
-    this.clipBehavior = Clip.none,
+    this.clipBehavior = Clip.antiAlias,
     this.borderRadius,
     this.borderStyle,
     this.borderWidth,
     this.boxShadow,
     this.padding,
+    this.surfaceOpacity,
+    this.surfaceBlur,
   }) : super(key: key);
 
   @override
@@ -30,16 +70,24 @@ class OutlinedContainer extends StatefulWidget {
 }
 
 class _OutlinedContainerState extends State<OutlinedContainer> {
+  final GlobalKey _mainContainerKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final scaling = theme.scaling;
     var borderRadius =
         BorderRadius.circular(widget.borderRadius ?? theme.radiusXl);
-    return AnimatedContainer(
+    var backgroundColor =
+        widget.backgroundColor ?? theme.colorScheme.background;
+    if (widget.surfaceOpacity != null) {
+      backgroundColor = backgroundColor.scaleAlpha(widget.surfaceOpacity!);
+    }
+    Widget childWidget = AnimatedContainer(
+      key: _mainContainerKey,
       duration: kDefaultDuration,
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: widget.backgroundColor ?? theme.colorScheme.background,
+        color: backgroundColor,
         border: Border.all(
           color: widget.borderColor ?? theme.colorScheme.muted,
           width: widget.borderWidth ?? (1 * scaling),
@@ -49,12 +97,16 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
         boxShadow: widget.boxShadow,
       ),
       padding: widget.padding,
-      child: ClipRRect(
-        clipBehavior: widget.clipBehavior,
-        borderRadius: borderRadius,
-        child: widget.child,
-      ),
+      child: widget.child,
     );
+    if (widget.surfaceBlur != null && widget.surfaceBlur! > 0) {
+      childWidget = SurfaceBlur(
+        surfaceBlur: widget.surfaceBlur!,
+        borderRadius: borderRadius,
+        child: childWidget,
+      );
+    }
+    return childWidget;
   }
 }
 
