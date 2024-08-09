@@ -972,8 +972,6 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
               widget.useSafeArea && widget.position == OverlayPosition.right;
           MediaQueryData mediaQueryData = MediaQuery.of(context);
           EdgeInsets padding = mediaQueryData.padding;
-          print(
-              'insert: $insetTop, $insetBottom, $insetLeft, $insetRight padding: ${padding.top}, ${padding.bottom}, ${padding.left}, ${padding.right}');
           if (extraSize == null) {
             additionalSize = Size.zero;
             additionalOffset = Offset.zero;
