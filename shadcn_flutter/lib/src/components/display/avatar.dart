@@ -64,7 +64,7 @@ class _AvatarState extends State<Avatar> {
   Widget _build(BuildContext context) {
     final theme = Theme.of(context);
     double size = widget.size ?? (theme.scaling * 40);
-    double borderRadius = widget.borderRadius ?? theme.radiusXxl * size;
+    double borderRadius = widget.borderRadius ?? theme.radius * size;
     // use photo if available, use initials if not
     // also if photo is failed to load, use initials
     if (widget.photoUrl?.isNotEmpty ?? false) {
