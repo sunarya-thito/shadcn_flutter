@@ -7,7 +7,7 @@ class ToastExample1 extends StatefulWidget {
 
 class _ToastExample1State extends State<ToastExample1> {
   Widget buildToast(BuildContext context, ToastOverlay overlay) {
-    return Card(
+    return SurfaceCard(
       child: Basic(
         title: Text('Event has been created'),
         subtitle: Text('Sunday, July 07, 2024 at 12:00 PM'),
