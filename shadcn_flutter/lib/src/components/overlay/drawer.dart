@@ -5,7 +5,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/animation.dart';
 
 typedef DrawerBuilder = Widget Function(
-    BuildContext context, Size extraSize, Size size);
+    BuildContext context, Size extraSize, Size size, EdgeInsets padding);
 
 Future<T?> openDrawer<T>({
   required BuildContext context,
@@ -27,7 +27,7 @@ Future<T?> openDrawer<T>({
     backdropBuilder: backdropBuilder,
     useSafeArea: useSafeArea,
     transformBackdrop: transformBackdrop,
-    builder: (context, extraSize, size) {
+    builder: (context, extraSize, size, padding) {
       return DrawerWrapper(
         position: position,
         expands: expands,
@@ -36,6 +36,7 @@ Future<T?> openDrawer<T>({
         size: size,
         showDragHandle: showDragHandle,
         dragHandleSize: dragHandleSize,
+        padding: padding,
         child: builder(context),
       );
     },
@@ -54,12 +55,13 @@ Future<T?> openSheet<T>({
     context: context,
     transformBackdrop: transformBackdrop,
     barrierDismissible: barrierDismissible,
-    builder: (context, extraSize, size) {
+    builder: (context, extraSize, size, padding) {
       return SheetWrapper(
         position: position,
         expands: true,
         extraSize: extraSize,
         size: size,
+        padding: padding,
         child: builder(context),
       );
     },
@@ -77,6 +79,7 @@ class DrawerWrapper extends StatefulWidget {
   final bool showDragHandle;
   final BorderRadius? borderRadius;
   final Size? dragHandleSize;
+  final EdgeInsets padding;
 
   const DrawerWrapper({
     super.key,
@@ -89,6 +92,7 @@ class DrawerWrapper extends StatefulWidget {
     this.showDragHandle = true,
     this.borderRadius,
     this.dragHandleSize,
+    this.padding = EdgeInsets.zero,
   });
 
   @override
@@ -488,6 +492,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
       width: widget.expands ? expandingWidth : null,
       height: widget.expands ? expandingHeight : null,
       decoration: getDecoration(theme),
+      padding: widget.padding,
       child: widget.draggable
           ? buildDraggable(context, animation, widget.child, theme)
           : widget.child,
@@ -501,14 +506,16 @@ Future<void> closeSheet(BuildContext context) {
 }
 
 class SheetWrapper extends DrawerWrapper {
-  const SheetWrapper(
-      {super.key,
-      required super.position,
-      required super.child,
-      required super.size,
-      super.draggable = false,
-      super.expands = false,
-      super.extraSize = Size.zero});
+  const SheetWrapper({
+    super.key,
+    required super.position,
+    required super.child,
+    required super.size,
+    super.draggable = false,
+    super.expands = false,
+    super.extraSize = Size.zero,
+    super.padding,
+  });
 
   @override
   State<DrawerWrapper> createState() => _SheetWrapperState();
@@ -995,32 +1002,6 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
                 break;
             }
           }
-          // bool insetWidth = insetLeft || insetRight;
-          // bool insetHeight = insetTop || insetBottom;
-          // if (insetWidth && insetHeight) {
-          //   additionalSize = Size(additionalSize.width + padding.left,
-          //       additionalSize.height + padding.top);
-          // } else if (insetWidth) {
-          //   additionalSize = Size(additionalSize.width + padding.left, 0);
-          // } else if (insetHeight) {
-          //   additionalSize = Size(0, additionalSize.height + padding.top);
-          // }
-          if (insetTop) {
-            additionalOffset = Offset(
-                additionalSize.width, additionalSize.height + padding.top);
-          }
-          if (insetBottom) {
-            additionalOffset = Offset(
-                additionalSize.width, additionalSize.height + padding.bottom);
-          }
-          if (insetLeft) {
-            additionalOffset = Offset(
-                additionalSize.width + padding.left, additionalSize.height);
-          }
-          if (insetRight) {
-            additionalOffset = Offset(
-                additionalSize.width + padding.right, additionalSize.height);
-          }
           return Stack(
             clipBehavior: Clip.none,
             children: [
@@ -1060,7 +1041,16 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
                         child: Transform.translate(
                           offset: additionalOffset / kBackdropScaleDown,
                           child: widget.builder(
-                              context, additionalSize, constraints.biggest),
+                            context,
+                            additionalSize,
+                            constraints.biggest,
+                            EdgeInsets.only(
+                              top: insetTop ? padding.top : 0,
+                              bottom: insetBottom ? padding.bottom : 0,
+                              left: insetLeft ? padding.left : 0,
+                              right: insetRight ? padding.right : 0,
+                            ),
+                          ),
                         ),
                       ),
                     ),

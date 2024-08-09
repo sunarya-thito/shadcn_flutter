@@ -627,6 +627,7 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Data.inherit(
       data: this,
       child: ShadcnApp.router(
