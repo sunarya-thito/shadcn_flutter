@@ -47,7 +47,7 @@ class _ProgressExample1State extends State<ProgressExample1> {
             Gap(16),
             PrimaryButton(
               onPressed: () {
-                if (_progress < 100) {
+                if (_progress < 200) {
                   setState(() {
                     _progress += 10;
                   });
