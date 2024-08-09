@@ -87,6 +87,8 @@ class ThemeData {
   final double scaling;
   final TargetPlatform? _platform;
   final IconThemeProperties iconTheme;
+  final double surfaceOpacity;
+  final double surfaceBlur;
 
   ThemeData({
     required this.colorScheme,
@@ -95,6 +97,8 @@ class ThemeData {
     this.typography = const Typography.geist(),
     this.iconTheme = const IconThemeProperties(),
     TargetPlatform? platform,
+    this.surfaceOpacity = 1,
+    this.surfaceBlur = 0,
   }) : _platform = platform;
 
   TargetPlatform get platform => _platform ?? defaultTargetPlatform;
