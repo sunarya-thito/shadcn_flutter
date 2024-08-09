@@ -85,7 +85,6 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
     Widget childWidget = AnimatedContainer(
       key: _mainContainerKey,
       duration: kDefaultDuration,
-      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border.all(
@@ -97,7 +96,14 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
         boxShadow: widget.boxShadow,
       ),
       padding: widget.padding,
-      child: widget.child,
+      child: ClipRRect(
+        borderRadius: adjustBorderRadius(
+          borderRadius,
+          widget.borderWidth ?? (1 * scaling),
+        ),
+        clipBehavior: widget.clipBehavior,
+        child: widget.child,
+      ),
     );
     if (widget.surfaceBlur != null && widget.surfaceBlur! > 0) {
       childWidget = SurfaceBlur(

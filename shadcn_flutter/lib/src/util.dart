@@ -611,6 +611,15 @@ Color lerpColor(Color a, Color b, double t) {
   );
 }
 
+BorderRadius adjustBorderRadius(BorderRadius radius, double borderWidth) {
+  return BorderRadius.only(
+    topLeft: radius.topLeft - Radius.circular(borderWidth),
+    topRight: radius.topRight - Radius.circular(borderWidth),
+    bottomLeft: radius.bottomLeft - Radius.circular(borderWidth),
+    bottomRight: radius.bottomRight - Radius.circular(borderWidth),
+  );
+}
+
 extension ColorExtension on Color {
   Color scaleAlpha(double factor) {
     return withAlpha((alpha * factor).round().clamp(0, 255));

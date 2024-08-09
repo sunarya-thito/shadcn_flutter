@@ -17,7 +17,6 @@ class ScaffoldExample extends StatelessWidget {
           title: 'Scaffold Example',
           path: 'lib/pages/docs/components/scaffold/scaffold_example_1.dart',
           child: OutlinedContainer(
-            clipBehavior: Clip.antiAlias,
             child: const ScaffoldExample1().sized(
               height: 400,
             ),
