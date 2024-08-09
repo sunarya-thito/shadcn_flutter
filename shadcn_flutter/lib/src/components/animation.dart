@@ -60,24 +60,23 @@ class _AnimatableValue<T> extends Animatable<T> {
   final T start;
   final T end;
   final T Function(T a, T b, double t) lerp;
-  final Curve curve;
 
   _AnimatableValue({
     required this.start,
     required this.end,
     required this.lerp,
-    required this.curve,
   });
 
   @override
   T transform(double t) {
-    return lerp(start, end, curve.transform(t));
+    return lerp(start, end, t);
   }
 }
 
 class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  late CurvedAnimation _curvedAnimation;
   late Animation<T> _animation;
   // late T _value;
   @override
@@ -88,17 +87,20 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
         duration: widget.duration ??
             widget.durationBuilder!(
                 widget.initialValue ?? widget.value, widget.value));
-    _controller.addStatusListener((status) {
+    _curvedAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: widget.curve,
+    );
+    _curvedAnimation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _onEnd();
       }
     });
-    _animation = _controller.drive(
+    _animation = _curvedAnimation.drive(
       _AnimatableValue(
         start: widget.initialValue ?? widget.value,
         end: widget.value,
         lerp: lerpedValue,
-        curve: widget.curve,
       ),
     );
     if (widget.initialValue != null) {
@@ -122,19 +124,25 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
   @override
   void didUpdateWidget(AnimatedValueBuilder<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.value != widget.value ||
-        oldWidget.duration != widget.duration ||
-        oldWidget.curve != widget.curve ||
-        oldWidget.durationBuilder != widget.durationBuilder) {
-      T currentValue = _animation.value;
+    T currentValue = _animation.value;
+    if (widget.duration != oldWidget.duration ||
+        widget.durationBuilder != oldWidget.durationBuilder) {
       _controller.duration = widget.duration ??
           widget.durationBuilder!(currentValue, widget.value);
-      _animation = _controller.drive(
+    }
+    if (widget.curve != oldWidget.curve) {
+      _curvedAnimation.dispose();
+      _curvedAnimation = CurvedAnimation(
+        parent: _controller,
+        curve: widget.curve,
+      );
+    }
+    if (oldWidget.value != widget.value || oldWidget.lerp != widget.lerp) {
+      _animation = _curvedAnimation.drive(
         _AnimatableValue(
           start: currentValue,
           end: widget.value,
           lerp: lerpedValue,
-          curve: widget.curve,
         ),
       );
       _controller.forward(
@@ -159,10 +167,6 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
   Widget build(BuildContext context) {
     if (widget.animationBuilder != null) {
       return widget.animationBuilder!(context, _animation);
-    }
-    double progress = _controller.value;
-    if (progress == 1) {
-      return widget.builder!(context, widget.value, widget.child);
     }
     return AnimatedBuilder(
       animation: _animation,
@@ -233,30 +237,11 @@ class RepeatedAnimationBuilder<T> extends StatefulWidget {
       _RepeatedAnimationBuilderState<T>();
 }
 
-class _AnimationStatusDependentCurve extends Curve {
-  final AnimationController controller;
-  final Curve curve;
-  final Curve reverseCurve;
-
-  _AnimationStatusDependentCurve({
-    required this.controller,
-    required this.curve,
-    required this.reverseCurve,
-  });
-
-  @override
-  double transform(double t) {
-    if (controller.status == AnimationStatus.reverse) {
-      return reverseCurve.transform(t);
-    }
-    return curve.transform(t);
-  }
-}
-
 class _RepeatedAnimationBuilderState<T>
     extends State<RepeatedAnimationBuilder<T>>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  late CurvedAnimation _curvedAnimation;
   late Animation<T> _animation;
 
   bool _reverse = false;
@@ -272,31 +257,31 @@ class _RepeatedAnimationBuilderState<T>
       _reverse = true;
       _controller.duration = widget.reverseDuration ?? widget.duration;
       _controller.reverseDuration = widget.duration;
-      _animation = _controller.drive(
+      _curvedAnimation = CurvedAnimation(
+        parent: _controller,
+        curve: widget.reverseCurve ?? widget.curve,
+        reverseCurve: widget.curve,
+      );
+      _animation = _curvedAnimation.drive(
         _AnimatableValue(
           start: widget.end,
           end: widget.start,
           lerp: lerpedValue,
-          curve: _AnimationStatusDependentCurve(
-            controller: _controller,
-            curve: widget.reverseCurve ?? widget.curve,
-            reverseCurve: widget.curve,
-          ),
         ),
       );
     } else {
       _controller.duration = widget.duration;
       _controller.reverseDuration = widget.reverseDuration;
-      _animation = _controller.drive(
+      _curvedAnimation = CurvedAnimation(
+        parent: _controller,
+        curve: widget.curve,
+        reverseCurve: widget.reverseCurve ?? widget.curve,
+      );
+      _animation = _curvedAnimation.drive(
         _AnimatableValue(
           start: widget.start,
           end: widget.end,
           lerp: lerpedValue,
-          curve: _AnimationStatusDependentCurve(
-            controller: _controller,
-            curve: widget.curve,
-            reverseCurve: widget.reverseCurve ?? widget.curve,
-          ),
         ),
       );
     }
@@ -329,6 +314,7 @@ class _RepeatedAnimationBuilderState<T>
   @override
   void didUpdateWidget(covariant RepeatedAnimationBuilder<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.duration != widget.duration) {}
     if (oldWidget.start != widget.start ||
         oldWidget.end != widget.end ||
         oldWidget.duration != widget.duration ||
@@ -341,49 +327,55 @@ class _RepeatedAnimationBuilderState<T>
           widget.mode == RepeatMode.pingPongReverse) {
         _controller.duration = widget.reverseDuration ?? widget.duration;
         _controller.reverseDuration = widget.duration;
+        _curvedAnimation.dispose();
+        _curvedAnimation = CurvedAnimation(
+          parent: _controller,
+          curve: widget.reverseCurve ?? widget.curve,
+          reverseCurve: widget.curve,
+        );
         _animation = _controller.drive(
           _AnimatableValue(
             start: widget.end,
             end: widget.start,
             lerp: lerpedValue,
             // curve: widget.reverseCurve ?? widget.curve,
-            curve: _AnimationStatusDependentCurve(
-              controller: _controller,
-              reverseCurve: widget.curve,
-              curve: widget.reverseCurve ?? widget.curve,
-            ),
           ),
         );
       } else {
         _controller.duration = widget.duration;
         _controller.reverseDuration = widget.reverseDuration;
+        _curvedAnimation.dispose();
+        _curvedAnimation = CurvedAnimation(
+          parent: _controller,
+          curve: widget.curve,
+          reverseCurve: widget.reverseCurve ?? widget.curve,
+        );
         _animation = _controller.drive(
           _AnimatableValue(
             start: widget.start,
             end: widget.end,
             lerp: lerpedValue,
             // curve: widget.curve,
-            curve: _AnimationStatusDependentCurve(
-              controller: _controller,
-              curve: widget.curve,
-              reverseCurve: widget.reverseCurve ?? widget.curve,
-            ),
           ),
         );
       }
-      _controller.stop(canceled: false);
+    }
+    if (oldWidget.play != widget.play) {
       if (widget.play) {
         if (_reverse) {
           _controller.reverse();
         } else {
           _controller.forward();
         }
+      } else {
+        _controller.stop();
       }
     }
   }
 
   @override
   void dispose() {
+    _curvedAnimation.dispose();
     _controller.dispose();
     super.dispose();
   }

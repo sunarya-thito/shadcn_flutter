@@ -187,7 +187,7 @@ class _ToastLayerState extends State<ToastLayer> {
         var entry = entries[i];
         positionedChildren.insert(
           0,
-          OverlaidToastEntry(
+          ToastEntryLayout(
             key: entry.key,
             entry: entry.entry,
             expanded:
@@ -296,7 +296,7 @@ abstract class ToastOverlay {
 }
 
 class _AttachedToastEntry implements ToastOverlay {
-  final GlobalKey<_OverlaidToastEntryState> key = GlobalKey();
+  final GlobalKey<_ToastEntryLayoutState> key = GlobalKey();
   final ToastEntry entry;
 
   _ToastLayerState? _attached;
@@ -343,7 +343,7 @@ class ToastEntry {
   });
 }
 
-class OverlaidToastEntry extends StatefulWidget {
+class ToastEntryLayout extends StatefulWidget {
   final ToastEntry entry;
   final bool expanded;
   final bool visible;
@@ -369,7 +369,7 @@ class OverlaidToastEntry extends StatefulWidget {
   final int actualIndex;
   final VoidCallback? onClosing;
 
-  const OverlaidToastEntry({
+  const ToastEntryLayout({
     super.key,
     required this.entry,
     required this.expanded,
@@ -398,15 +398,17 @@ class OverlaidToastEntry extends StatefulWidget {
   });
 
   @override
-  State<OverlaidToastEntry> createState() => _OverlaidToastEntryState();
+  State<ToastEntryLayout> createState() => _ToastEntryLayoutState();
 }
 
-class _OverlaidToastEntryState extends State<OverlaidToastEntry> {
+class _ToastEntryLayoutState extends State<ToastEntryLayout> {
   bool _dismissing = false;
   double _dismissOffset = 0;
   late int index;
   double? _closeDismissing;
   Timer? _closingTimer;
+
+  final GlobalKey _key = GlobalKey();
 
   @override
   void initState() {
@@ -426,6 +428,7 @@ class _OverlaidToastEntryState extends State<OverlaidToastEntry> {
   @override
   Widget build(BuildContext context) {
     Widget childWidget = MouseRegion(
+      key: _key,
       hitTestBehavior: HitTestBehavior.deferToChild,
       onEnter: (event) {
         _closingTimer?.cancel();
