@@ -95,9 +95,20 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
         borderRadius: borderRadius,
         boxShadow: widget.boxShadow,
       ),
-      padding: widget.padding,
-      clipBehavior: widget.clipBehavior,
-      child: widget.child,
+      // padding: widget.padding,
+      // clipBehavior: widget.clipBehavior,
+      child: AnimatedContainer(
+        duration: kDefaultDuration,
+        padding: widget.padding,
+        clipBehavior: widget.clipBehavior,
+        decoration: BoxDecoration(
+          borderRadius: adjustBorderRadius(
+            borderRadius,
+            widget.borderWidth ?? (1 * scaling),
+          ),
+        ),
+        child: widget.child,
+      ),
     );
     if (widget.surfaceBlur != null && widget.surfaceBlur! > 0) {
       childWidget = SurfaceBlur(
