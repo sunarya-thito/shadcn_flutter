@@ -4,8 +4,8 @@ import 'dart:math';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/animation.dart';
 
-typedef DrawerBuilder = Widget Function(
-    BuildContext context, Size extraSize, Size size, EdgeInsets padding);
+typedef DrawerBuilder = Widget Function(BuildContext context, Size extraSize,
+    Size size, EdgeInsets padding, int stackIndex);
 
 Future<T?> openDrawer<T>({
   required BuildContext context,
@@ -30,7 +30,7 @@ Future<T?> openDrawer<T>({
     backdropBuilder: backdropBuilder,
     useSafeArea: useSafeArea,
     transformBackdrop: transformBackdrop,
-    builder: (context, extraSize, size, padding) {
+    builder: (context, extraSize, size, padding, stackIndex) {
       return DrawerWrapper(
         position: position,
         expands: expands,
@@ -44,6 +44,7 @@ Future<T?> openDrawer<T>({
         surfaceOpacity: surfaceOpacity,
         surfaceBlur: surfaceBlur,
         barrierColor: barrierColor,
+        stackIndex: stackIndex,
         child: builder(context),
       );
     },
@@ -63,7 +64,7 @@ Future<T?> openSheet<T>({
     context: context,
     transformBackdrop: transformBackdrop,
     barrierDismissible: barrierDismissible,
-    builder: (context, extraSize, size, padding) {
+    builder: (context, extraSize, size, padding, stackIndex) {
       return SheetWrapper(
         position: position,
         expands: true,
@@ -71,6 +72,7 @@ Future<T?> openSheet<T>({
         size: size,
         padding: padding,
         barrierColor: barrierColor,
+        stackIndex: stackIndex,
         child: builder(context),
       );
     },
@@ -92,6 +94,7 @@ class DrawerWrapper extends StatefulWidget {
   final double? surfaceOpacity;
   final double? surfaceBlur;
   final Color? barrierColor;
+  final int stackIndex;
 
   const DrawerWrapper({
     super.key,
@@ -108,6 +111,7 @@ class DrawerWrapper extends StatefulWidget {
     this.surfaceOpacity,
     this.surfaceBlur,
     this.barrierColor,
+    required this.stackIndex,
   });
 
   @override
@@ -493,6 +497,11 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     var backgroundColor = theme.colorScheme.background;
     var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
     if (surfaceOpacity != null) {
+      if (widget.stackIndex == 0) {
+        // the top sheet should have a higher opacity to prevent
+        // visual bleeding from the main content
+        surfaceOpacity = surfaceOpacity * 1.25;
+      }
       backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
     }
     return BoxDecoration(
@@ -528,6 +537,10 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     }
     var barrierColor = widget.barrierColor ?? Colors.black.scaleAlpha(0.8);
     if (animation != null) {
+      if (widget.stackIndex != 0) {
+        // weaken the barrier color for the upper sheets
+        barrierColor = barrierColor.scaleAlpha(0.75);
+      }
       container = ModalContainer(
         borderRadius: borderRadius,
         barrierColor: barrierColor,
@@ -550,6 +563,7 @@ class SheetWrapper extends DrawerWrapper {
     required super.position,
     required super.child,
     required super.size,
+    required super.stackIndex,
     super.draggable = false,
     super.expands = false,
     super.extraSize = Size.zero,
@@ -588,6 +602,11 @@ class _SheetWrapperState extends _DrawerWrapperState {
     var backgroundColor = theme.colorScheme.background;
     var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
     if (surfaceOpacity != null) {
+      if (widget.stackIndex == 0) {
+        // the top sheet should have a higher opacity to prevent
+        // visual bleeding from the main content
+        surfaceOpacity = surfaceOpacity * 1.25;
+      }
       backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
     }
     return BoxDecoration(
@@ -1093,16 +1112,16 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
                         child: Transform.translate(
                           offset: additionalOffset / kBackdropScaleDown,
                           child: widget.builder(
-                            context,
-                            additionalSize,
-                            constraints.biggest,
-                            EdgeInsets.only(
-                              top: insetTop ? padding.top : 0,
-                              bottom: insetBottom ? padding.bottom : 0,
-                              left: insetLeft ? padding.left : 0,
-                              right: insetRight ? padding.right : 0,
-                            ),
-                          ),
+                              context,
+                              additionalSize,
+                              constraints.biggest,
+                              EdgeInsets.only(
+                                top: insetTop ? padding.top : 0,
+                                bottom: insetBottom ? padding.bottom : 0,
+                                left: insetLeft ? padding.left : 0,
+                                right: insetRight ? padding.right : 0,
+                              ),
+                              widget.stackIndex),
                         ),
                       ),
                     ),

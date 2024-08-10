@@ -1162,6 +1162,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 name: 'drawer',
                 scale: 1,
                 example: DrawerWrapper(
+                  stackIndex: 0,
                   position: OverlayPosition.bottom,
                   size: const Size(300, 300),
                   child: Column(
@@ -1214,6 +1215,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 scale: 1,
                 example: SheetWrapper(
                   position: OverlayPosition.right,
+                  stackIndex: 0,
                   size: const Size(300, 300),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
