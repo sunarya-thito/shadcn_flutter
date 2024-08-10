@@ -1,16 +1,44 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// An abstract class that holds values for different Tracker levels.
+///
+/// This class defines the color and name for each [TrackerLevel].
+///
+/// For example [TrackerLevel.fine] holds two values:
+/// - [name] which is set to `"Fine"`
+/// - [color] which is set to `Colors.green`
 abstract class TrackerLevel {
-  static const TrackerLevel fine =
-      const _SimpleTrackerLevel(Colors.green, 'Fine');
+  /// Default values for the fine level.
+  ///
+  /// [color] is set to `Colors.green`
+  /// [name] is set to `"Fine"`
+  static const TrackerLevel fine = _SimpleTrackerLevel(Colors.green, 'Fine');
+
+  /// Default values for the warning level.
+  ///
+  /// [color] is set to `Colors.orange`
+  /// [name] is set to `"Warning"`
   static const TrackerLevel warning =
-      const _SimpleTrackerLevel(Colors.orange, 'Warning');
+      _SimpleTrackerLevel(Colors.orange, 'Warning');
+
+  /// Default values for the critical level.
+  ///
+  /// [color] is set to `Colors.red`
+  /// [name] is set to `"Critical"`
   static const TrackerLevel critical =
-      const _SimpleTrackerLevel(Colors.red, 'Critical');
+      _SimpleTrackerLevel(Colors.red, 'Critical');
+
+  /// Default values for the unknown level.
+  ///
+  /// [color] is set to `Colors.gray`
+  /// [name] is set to `"Unknown"`
   static const TrackerLevel unknown =
-      const _SimpleTrackerLevel(Colors.gray, 'Unknown');
+      _SimpleTrackerLevel(Colors.gray, 'Unknown');
   // enum? no, this will allow custom implementations
+  /// Gets the color for the specified [TrackerLevel].
   Color get color;
+
+  /// Gets the name for the specified [TrackerLevel].
   String get name;
 }
 
@@ -24,19 +52,52 @@ class _SimpleTrackerLevel implements TrackerLevel {
   const _SimpleTrackerLevel(this.color, this.name);
 }
 
+/// A class that holds data for a tracker.
+///
+/// This class holds a [tooltip] and a tracker level [level].
 class TrackerData {
+  /// The tooltip for the tracker.
+  ///
+  /// This field stores the tooltip associated with the tracker.
+  /// The tooltip is displayed when the user hovers over the tracker.
   final Widget tooltip;
+
+  /// The tracker level.
+  ///
+  /// This field stores the tracker level associated with the tracker.
+  /// The tracker level determines the color and name of the tracker.
   final TrackerLevel level;
 
+  /// Creates a new [TrackerData] instance.
+  /// requires two parameters:
+  /// [tooltip] is the tooltip for the tracker.
+  /// [level] is the tracker level.
+  ///
+  /// This constructor initializes a new instance of [TrackerData]
+  /// with the specified tooltip and tracker level.
   const TrackerData({
     required this.tooltip,
     required this.level,
   });
 }
 
+/// A widget that displays a tracker.
+///
+/// This widget displays a row of tracker levels with tooltips.
+/// The row contains a tracker level for each tracker in the [data] list.
 class Tracker extends StatelessWidget {
+  /// The data for the tracker.
+  ///
+  /// This field stores the data associated with the tracker.
+  /// The data includes the tooltip and tracker level for each tracker.
   final List<TrackerData> data;
 
+  /// Creates a new [Tracker] instance.
+  ///
+  /// [data] is the data for the tracker, which is a list of [TrackerData].
+  ///
+  /// This constructor initializes a new instance of [Tracker]
+  /// with the specified data.
   const Tracker({
     Key? key,
     required this.data,
