@@ -183,31 +183,29 @@ class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>> {
   @override
   Widget build(BuildContext context) {
     final localizations = ShadcnLocalizations.of(context);
-    return Center(
-      child: AlertDialog(
-        title: widget.dialogTitle,
-        content: widget.editorBuilder(
-          context,
-          value,
-          (value) {
-            setState(() {
-              this.value = value;
-            });
-          },
-        ),
-        actions: [
-          SecondaryButton(
-              child: Text(localizations.buttonCancel),
-              onPressed: () {
-                Navigator.of(context).pop();
-              }),
-          PrimaryButton(
-              child: Text(localizations.buttonSave),
-              onPressed: () {
-                Navigator.of(context).pop(value);
-              }),
-        ],
+    return AlertDialog(
+      title: widget.dialogTitle,
+      content: widget.editorBuilder(
+        context,
+        value,
+        (value) {
+          setState(() {
+            this.value = value;
+          });
+        },
       ),
+      actions: [
+        SecondaryButton(
+            child: Text(localizations.buttonCancel),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+        PrimaryButton(
+            child: Text(localizations.buttonSave),
+            onPressed: () {
+              Navigator.of(context).pop(value);
+            }),
+      ],
     );
   }
 }

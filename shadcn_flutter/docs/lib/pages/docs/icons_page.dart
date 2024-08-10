@@ -43,31 +43,29 @@ class _IconsPageState extends State<IconsPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return Center(
-          child: AlertDialog(
-            title: Text(
-                capitalizeWords(_separateByCamelCase(entry.key)).join(' ')),
-            leading: Icon(entry.value, size: 48),
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text('Use this code to display this icon:'),
-                Gap(8),
-                CodeSnippet(
-                  code: 'Icon($className.${entry.key})',
-                  mode: 'dart',
-                ),
-              ],
-            ),
-            actions: [
-              PrimaryButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Close'),
+        return AlertDialog(
+          title:
+              Text(capitalizeWords(_separateByCamelCase(entry.key)).join(' ')),
+          leading: Icon(entry.value, size: 48),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text('Use this code to display this icon:'),
+              Gap(8),
+              CodeSnippet(
+                code: 'Icon($className.${entry.key})',
+                mode: 'dart',
               ),
             ],
           ),
+          actions: [
+            PrimaryButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
         );
       },
     );

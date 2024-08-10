@@ -71,31 +71,29 @@ class _SortableExample1State extends State<SortableExample1> {
             showDialog(
               context: context,
               builder: (context) {
-                return Center(
-                  child: AlertDialog(
-                    title: const Text('Add Fruit'),
-                    content: TextField(
-                      controller: fruit,
-                      placeholder: 'Enter fruit name',
-                    ),
-                    actions: [
-                      SecondaryButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Cancel'),
-                      ),
-                      PrimaryButton(
-                        onPressed: () {
-                          setState(() {
-                            items.add(_createItem(fruit.text));
-                          });
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Add'),
-                      ),
-                    ],
+                return AlertDialog(
+                  title: const Text('Add Fruit'),
+                  content: TextField(
+                    controller: fruit,
+                    placeholder: 'Enter fruit name',
                   ),
+                  actions: [
+                    SecondaryButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    PrimaryButton(
+                      onPressed: () {
+                        setState(() {
+                          items.add(_createItem(fruit.text));
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Add'),
+                    ),
+                  ],
                 );
               },
             );

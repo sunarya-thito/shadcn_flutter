@@ -11,26 +11,24 @@ class AlertDialogExample1 extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) {
-            return Center(
-              child: AlertDialog(
-                title: const Text('Alert title'),
-                content: const Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-                actions: [
-                  OutlineButton(
-                    child: const Text('Cancel'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  PrimaryButton(
-                    child: const Text('OK'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
+            return AlertDialog(
+              title: const Text('Alert title'),
+              content: const Text(
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+              actions: [
+                OutlineButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                PrimaryButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
             );
           },
         );

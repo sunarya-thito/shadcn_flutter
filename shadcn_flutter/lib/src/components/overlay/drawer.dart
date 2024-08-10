@@ -22,6 +22,7 @@ Future<T?> openDrawer<T>({
   bool transformBackdrop = true,
   double? surfaceOpacity,
   double? surfaceBlur,
+  Color? barrierColor,
 }) {
   return openRawDrawer<T>(
     context: context,
@@ -42,6 +43,7 @@ Future<T?> openDrawer<T>({
         borderRadius: borderRadius,
         surfaceOpacity: surfaceOpacity,
         surfaceBlur: surfaceBlur,
+        barrierColor: barrierColor,
         child: builder(context),
       );
     },
@@ -55,6 +57,7 @@ Future<T?> openSheet<T>({
   required OverlayPosition position,
   bool barrierDismissible = true,
   bool transformBackdrop = false,
+  Color? barrierColor,
 }) {
   return openRawDrawer<T>(
     context: context,
@@ -67,6 +70,7 @@ Future<T?> openSheet<T>({
         extraSize: extraSize,
         size: size,
         padding: padding,
+        barrierColor: barrierColor,
         child: builder(context),
       );
     },
@@ -87,6 +91,7 @@ class DrawerWrapper extends StatefulWidget {
   final EdgeInsets padding;
   final double? surfaceOpacity;
   final double? surfaceBlur;
+  final Color? barrierColor;
 
   const DrawerWrapper({
     super.key,
@@ -102,6 +107,7 @@ class DrawerWrapper extends StatefulWidget {
     this.padding = EdgeInsets.zero,
     this.surfaceOpacity,
     this.surfaceBlur,
+    this.barrierColor,
   });
 
   @override
@@ -502,6 +508,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     final animation = data?.state._controlledAnimation;
     final theme = Theme.of(context);
     var surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
+    var borderRadius = widget.borderRadius ?? getBorderRadius(theme.radiusXxl);
     Widget container = Container(
       width: widget.expands ? expandingWidth : null,
       height: widget.expands ? expandingHeight : null,
@@ -516,6 +523,15 @@ class _DrawerWrapperState extends State<DrawerWrapper>
       container = SurfaceBlur(
         surfaceBlur: surfaceBlur,
         borderRadius: getBorderRadius(theme.radiusXxl),
+        child: container,
+      );
+    }
+    var barrierColor = widget.barrierColor ?? Colors.black.scaleAlpha(0.8);
+    if (animation != null) {
+      container = ModalContainer(
+        borderRadius: borderRadius,
+        barrierColor: barrierColor,
+        fadeAnimation: animation,
         child: container,
       );
     }
@@ -540,6 +556,7 @@ class SheetWrapper extends DrawerWrapper {
     super.padding,
     super.surfaceBlur,
     super.surfaceOpacity,
+    super.barrierColor,
   });
 
   @override
@@ -736,10 +753,10 @@ Future<T?> openRawDrawer<T>({
               behavior: HitTestBehavior.translucent,
               onTap: barrierDismissible ? () => closeDrawer(context) : null,
               child: Container(
-                color: barrierColor ??
-                    (stackIndex == 0
-                        ? Colors.black.scaleAlpha(0.8)
-                        : Colors.black.scaleAlpha(0.4)),
+                // color: barrierColor ??
+                //     (stackIndex == 0
+                //         ? Colors.black.scaleAlpha(0.8)
+                //         : Colors.black.scaleAlpha(0.4)),
                 child: backdropBuilder?.call(context),
               ),
             ),

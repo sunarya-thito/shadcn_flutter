@@ -77,20 +77,18 @@ class _MaterialExample1State extends State<MaterialExample1> {
                       shadcnui.showDialog(
                         context: context,
                         builder: (context) {
-                          return Center(
-                            child: shadcnui.AlertDialog(
-                              title: const Text('Hello'),
-                              content:
-                                  const Text('This is shadcn_flutter dialog'),
-                              actions: [
-                                shadcnui.PrimaryButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('Close'),
-                                ),
-                              ],
-                            ),
+                          return shadcnui.AlertDialog(
+                            title: const Text('Hello'),
+                            content:
+                                const Text('This is shadcn_flutter dialog'),
+                            actions: [
+                              shadcnui.PrimaryButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Close'),
+                              ),
+                            ],
                           );
                         },
                       );

@@ -403,42 +403,40 @@ class DocsPageState extends State<DocsPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: SizedBox(
-              width: 510 * scaling,
-              height: 349 * scaling,
-              child: Command(
-                debounceDuration: Duration.zero,
-                builder: (context, query) async* {
-                  for (final section in sections) {
-                    final List<Widget> resultItems = [];
-                    for (final page in section.pages) {
-                      if (query == null ||
-                          page.title
-                              .toLowerCase()
-                              .contains(query.toLowerCase())) {
-                        resultItems.add(CommandItem(
-                          title: Text(page.title),
-                          trailing: Icon(section.icon),
-                          onTap: () {
-                            context.goNamed(page.name);
-                          },
-                        ));
-                      }
-                    }
-                    if (resultItems.isNotEmpty) {
-                      yield [
-                        CommandCategory(
-                          title: Text(section.title),
-                          children: resultItems,
-                        ),
-                      ];
+        return SizedBox(
+          width: 510 * scaling,
+          height: 349 * scaling,
+          child: ModalContainer(
+            borderRadius: theme.borderRadiusXxl,
+            child: Command(
+              debounceDuration: Duration.zero,
+              builder: (context, query) async* {
+                for (final section in sections) {
+                  final List<Widget> resultItems = [];
+                  for (final page in section.pages) {
+                    if (query == null ||
+                        page.title
+                            .toLowerCase()
+                            .contains(query.toLowerCase())) {
+                      resultItems.add(CommandItem(
+                        title: Text(page.title),
+                        trailing: Icon(section.icon),
+                        onTap: () {
+                          context.goNamed(page.name);
+                        },
+                      ));
                     }
                   }
-                },
-              ),
+                  if (resultItems.isNotEmpty) {
+                    yield [
+                      CommandCategory(
+                        title: Text(section.title),
+                        children: resultItems,
+                      ),
+                    ];
+                  }
+                }
+              },
             ),
           ),
         );
@@ -631,22 +629,20 @@ class DocsPageState extends State<DocsPage> {
                                           showDialog(
                                             context: context,
                                             builder: (context) {
-                                              return Center(
-                                                child: AlertDialog(
-                                                  title: const Text(
-                                                      'Work in Progress'),
-                                                  content: const Text(
-                                                      'This page is still under development. Please come back later.'),
-                                                  actions: [
-                                                    PrimaryButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        child: const Text(
-                                                            'Close')),
-                                                  ],
-                                                ),
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    'Work in Progress'),
+                                                content: const Text(
+                                                    'This page is still under development. Please come back later.'),
+                                                actions: [
+                                                  PrimaryButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child:
+                                                          const Text('Close')),
+                                                ],
                                               );
                                             },
                                           );
@@ -860,20 +856,17 @@ class DocsPageState extends State<DocsPage> {
                                     showDialog(
                                       context: context,
                                       builder: (context) {
-                                        return Center(
-                                          child: AlertDialog(
-                                            title:
-                                                const Text('Work in Progress'),
-                                            content: const Text(
-                                                'This page is still under development. Please come back later.'),
-                                            actions: [
-                                              PrimaryButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text('Close')),
-                                            ],
-                                          ),
+                                        return AlertDialog(
+                                          title: const Text('Work in Progress'),
+                                          content: const Text(
+                                              'This page is still under development. Please come back later.'),
+                                          actions: [
+                                            PrimaryButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Close')),
+                                          ],
                                         );
                                       },
                                     );

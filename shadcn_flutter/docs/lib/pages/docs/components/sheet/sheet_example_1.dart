@@ -14,19 +14,17 @@ class _SheetExample1State extends State<SheetExample1> {
     showDialog(
       context: context,
       builder: (context) {
-        return Center(
-          child: AlertDialog(
-            title: const Text('Profile updated'),
-            content: Text('Content: ${controller.values}'),
-            actions: [
-              PrimaryButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Close'),
-              ),
-            ],
-          ),
+        return AlertDialog(
+          title: const Text('Profile updated'),
+          content: Text('Content: ${controller.values}'),
+          actions: [
+            PrimaryButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Close'),
+            ),
+          ],
         );
       },
     );

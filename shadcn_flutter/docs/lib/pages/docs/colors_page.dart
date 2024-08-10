@@ -58,39 +58,37 @@ class _ColorsPageState extends State<ColorsPage> {
       context: context,
       builder: (context) {
         final theme = Theme.of(context);
-        return Center(
-          child: AlertDialog(
-            title: Text(name),
-            leading: Container(
-              width: 96,
-              height: 112,
-              decoration: BoxDecoration(
-                color: swatch[shade],
-                borderRadius: theme.borderRadiusMd,
-              ),
+        return AlertDialog(
+          title: Text(name),
+          leading: Container(
+            width: 96,
+            height: 112,
+            decoration: BoxDecoration(
+              color: swatch[shade],
+              borderRadius: theme.borderRadiusMd,
             ),
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text('Use this code to display this color:'),
-                Gap(8),
-                CodeSnippet(
-                  code: shade == 500
-                      ? 'Colors.${name.toLowerCase()}'
-                      : 'Colors.${name.toLowerCase()}[$shade]',
-                  mode: 'dart',
-                ),
-              ],
-            ),
-            actions: [
-              PrimaryButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Close'),
+          ),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text('Use this code to display this color:'),
+              Gap(8),
+              CodeSnippet(
+                code: shade == 500
+                    ? 'Colors.${name.toLowerCase()}'
+                    : 'Colors.${name.toLowerCase()}[$shade]',
+                mode: 'dart',
               ),
             ],
           ),
+          actions: [
+            PrimaryButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
         );
       },
     );
@@ -476,36 +474,33 @@ class _ColorsPageState extends State<ColorsPage> {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        return Center(
-                          child: AlertDialog(
-                            title: const Text('Reset Options'),
-                            content: const Text(
-                                'Are you sure you want to reset the options?'),
-                            actions: [
-                              PrimaryButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _hueShift = _defaultHueShift;
-                                    _saturationStepUp =
-                                        _defaultSaturationStepUp;
-                                    _saturationStepDown =
-                                        _defaultSaturationStepDown;
-                                    _lightnessStepUp = _defaultLightnessStepUp;
-                                    _lightnessStepDown =
-                                        _defaultLightnessStepDown;
-                                  });
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Reset'),
-                              ),
-                              SecondaryButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                            ],
-                          ),
+                        return AlertDialog(
+                          title: const Text('Reset Options'),
+                          content: const Text(
+                              'Are you sure you want to reset the options?'),
+                          actions: [
+                            PrimaryButton(
+                              onPressed: () {
+                                setState(() {
+                                  _hueShift = _defaultHueShift;
+                                  _saturationStepUp = _defaultSaturationStepUp;
+                                  _saturationStepDown =
+                                      _defaultSaturationStepDown;
+                                  _lightnessStepUp = _defaultLightnessStepUp;
+                                  _lightnessStepDown =
+                                      _defaultLightnessStepDown;
+                                });
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Reset'),
+                            ),
+                            SecondaryButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                          ],
                         );
                       },
                     );

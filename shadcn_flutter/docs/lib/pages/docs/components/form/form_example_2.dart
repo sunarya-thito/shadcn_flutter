@@ -22,17 +22,15 @@ class _FormExample2State extends State<FormExample2> {
           showDialog(
             context: context,
             builder: (context) {
-              return Center(
-                child: AlertDialog(
-                  title: const Text('Form Values'),
-                  content: Text(values.toString()),
-                  actions: [
-                    PrimaryButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Close'),
-                    ),
-                  ],
-                ),
+              return AlertDialog(
+                title: const Text('Form Values'),
+                content: Text(values.toString()),
+                actions: [
+                  PrimaryButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Close'),
+                  ),
+                ],
               );
             },
           );
