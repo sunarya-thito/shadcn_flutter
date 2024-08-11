@@ -158,6 +158,23 @@ class MenuDivider extends StatelessWidget implements MenuItem {
   PopoverController? get popoverController => null;
 }
 
+class MenuGap extends StatelessWidget implements MenuItem {
+  final double size;
+
+  const MenuGap(this.size, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Gap(size);
+  }
+
+  @override
+  bool get hasLeading => false;
+
+  @override
+  PopoverController? get popoverController => null;
+}
+
 class MenuButton extends StatefulWidget implements MenuItem {
   final Widget child;
   final List<MenuItem>? subMenu;
