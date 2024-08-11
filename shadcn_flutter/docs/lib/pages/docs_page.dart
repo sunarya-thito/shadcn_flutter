@@ -264,8 +264,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Navigation Rail', 'navigation_rail',
             ShadcnFeatureTag.workInProgress),
         // aka Drawer
-        ShadcnDocsPage('Navigation Drawer', 'navigation_drawer',
-            ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Navigation Sidebar', 'navigation_sidebar'),
         ShadcnDocsPage(
             'Dot Indicator', 'dot_indicator', ShadcnFeatureTag.experimental),
       ],

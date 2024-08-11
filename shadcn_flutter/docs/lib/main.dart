@@ -26,6 +26,7 @@ import 'package:docs/pages/docs/components/keyboard_display_example.dart';
 import 'package:docs/pages/docs/components/linear_progress_example.dart';
 import 'package:docs/pages/docs/components/material_example.dart';
 import 'package:docs/pages/docs/components/menubar_example.dart';
+import 'package:docs/pages/docs/components/navigation_sidebar_example.dart';
 import 'package:docs/pages/docs/components/navigation_menu_example.dart';
 import 'package:docs/pages/docs/components/number_example.dart';
 import 'package:docs/pages/docs/components/pagination_example.dart';
@@ -580,6 +581,13 @@ class MyAppState extends State<MyApp> {
               return const KeyboardDisplayExample();
             },
           ),
+          GoRoute(
+            path: 'navigation_sidebar',
+            name: 'navigation_sidebar',
+            builder: (context, state) {
+              return const NavigationSidebarExample();
+            },
+          )
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();

@@ -17,11 +17,11 @@ class Toggle extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ToggleState createState() => _ToggleState();
+  ToggleState createState() => ToggleState();
 }
 
 // toggle button is just ghost button
-class _ToggleState extends State<Toggle> {
+class ToggleState extends State<Toggle> {
   @override
   Widget build(BuildContext context) {
     return Button(
@@ -31,16 +31,56 @@ class _ToggleState extends State<Toggle> {
                 shape: widget.style.shape,
                 size: widget.style.size,
               )
-            : widget.style.copyWith(
-                textStyle: (context, states, value) {
-                  final theme = Theme.of(context);
-                  return value.copyWith(
-                    color: states.contains(WidgetState.hovered)
-                        ? theme.colorScheme.mutedForeground
-                        : null,
-                  );
-                },
-              ),
+            : widget.style.copyWith(textStyle: (context, states, value) {
+                final theme = Theme.of(context);
+                return value.copyWith(
+                  color: states.contains(WidgetState.hovered)
+                      ? theme.colorScheme.mutedForeground
+                      : null,
+                );
+              }, iconTheme: (context, states, value) {
+                final theme = Theme.of(context);
+                return value.copyWith(
+                  color: states.contains(WidgetState.hovered)
+                      ? theme.colorScheme.mutedForeground
+                      : null,
+                );
+              }),
+        onPressed: () {
+          if (widget.onChanged != null) {
+            widget.onChanged!(!widget.value);
+          }
+        },
+        child: widget.child);
+  }
+}
+
+class SelectedButton extends StatefulWidget {
+  final bool value;
+  final ValueChanged<bool>? onChanged;
+  final Widget child;
+  final ButtonStyle style;
+  final ButtonStyle selectedStyle;
+
+  const SelectedButton({
+    Key? key,
+    required this.value,
+    this.onChanged,
+    required this.child,
+    this.style = const ButtonStyle.ghost(),
+    this.selectedStyle = const ButtonStyle.secondary(),
+  }) : super(key: key);
+
+  @override
+  SelectedButtonState createState() => SelectedButtonState();
+}
+
+// toggle button is just ghost button
+class SelectedButtonState extends State<SelectedButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Button(
+        style: widget.value ? widget.selectedStyle : widget.style,
         onPressed: () {
           if (widget.onChanged != null) {
             widget.onChanged!(!widget.value);
