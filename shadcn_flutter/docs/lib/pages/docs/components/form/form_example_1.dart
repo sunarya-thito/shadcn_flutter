@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class FormExample1 extends StatefulWidget {
@@ -8,9 +10,9 @@ class FormExample1 extends StatefulWidget {
 }
 
 class _FormExample1State extends State<FormExample1> {
-  final _usernameKey = const FormKey<String>(#username);
-  final _passwordKey = const FormKey<String>(#password);
-  final _confirmPasswordKey = const FormKey<String>(#confirmPassword);
+  final _usernameKey = const FormKey<String>('username');
+  final _passwordKey = const FormKey<String>('password');
+  final _confirmPasswordKey = const FormKey<String>('confirmPassword');
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -22,7 +24,11 @@ class _FormExample1State extends State<FormExample1> {
             builder: (context) {
               return AlertDialog(
                 title: const Text('Form Values'),
-                content: Text(values.toString()),
+                content: Text(jsonEncode(values.map(
+                  (key, value) {
+                    return MapEntry(key.key, value);
+                  },
+                ))),
                 actions: [
                   PrimaryButton(
                     onPressed: () => Navigator.of(context).pop(),
