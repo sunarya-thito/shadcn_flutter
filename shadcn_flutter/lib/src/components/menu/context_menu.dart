@@ -124,6 +124,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
       return TextFieldTapRegion(
         child: ShadcnUI(
           child: ContextMenuPopup(
+            anchorSize: Size.zero,
             anchorContext: anchorContext,
             position: editableTextState.contextMenuAnchors.primaryAnchor +
                 const Offset(8, -8) * scaling,
@@ -314,6 +315,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
       return TextFieldTapRegion(
         child: ShadcnUI(
           child: ContextMenuPopup(
+            anchorSize: Size.zero,
             anchorContext: anchorContext,
             position: primaryAnchor,
             direction: Axis.horizontal,
@@ -362,6 +364,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
                 direction: Axis.horizontal,
                 anchorContext: anchorContext,
                 position: primaryAnchor,
+                anchorSize: Size.zero,
                 children: categories
                     .expand((element) => [
                           ...element,
@@ -518,6 +521,8 @@ class ContextMenuPopup extends StatelessWidget {
   final List<MenuItem> children;
   final CapturedThemes? themes;
   final Axis direction;
+  final ValueChanged<PopoverAnchorState>? onTickFollow;
+  final Size? anchorSize;
   const ContextMenuPopup({
     Key? key,
     required this.anchorContext,
@@ -525,6 +530,8 @@ class ContextMenuPopup extends StatelessWidget {
     required this.children,
     this.themes,
     this.direction = Axis.vertical,
+    this.onTickFollow,
+    this.anchorSize,
   }) : super(key: key);
 
   @override
@@ -545,9 +552,11 @@ class ContextMenuPopup extends StatelessWidget {
         return PopoverAnchor(
           anchorContext: anchorContext,
           position: position,
+          anchorSize: anchorSize,
           alignment: Alignment.topLeft,
           themes: themes,
-          follow: false,
+          follow: onTickFollow != null,
+          onTickFollow: onTickFollow,
           builder: (context) {
             final theme = Theme.of(context);
             return LimitedBox(

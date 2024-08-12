@@ -72,8 +72,16 @@ enum PopoverConstraint {
   anchorMaxSize,
 }
 
+typedef OffsetSupplier = Offset Function(PopoverAnchorState state);
+
+abstract class OverlayAnchorHandler {
+  void close([bool immediate = false]);
+  void closeLater();
+}
+
 class PopoverAnchorState extends State<PopoverAnchor>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin
+    implements OverlayAnchorHandler {
   late BuildContext _anchorContext;
   late Offset _position;
   late Offset? _offset;
@@ -117,6 +125,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
     }
   }
 
+  @override
   void close([bool immediate = false]) {
     if (!immediate) {
       widget.onClose?.call();
@@ -125,6 +134,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
     }
   }
 
+  @override
   void closeLater() {
     if (mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -157,6 +167,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
     if (oldWidget.offset != widget.offset) {
       _offset = widget.offset;
     }
+
     if (oldWidget.margin != widget.margin) {
       _margin = widget.margin;
     }
@@ -177,6 +188,9 @@ class PopoverAnchorState extends State<PopoverAnchor>
     if (oldWidget.allowInvertVertical != widget.allowInvertVertical) {
       _allowInvertVertical = widget.allowInvertVertical;
     }
+    if (oldWidget.position != widget.position && !_follow) {
+      _position = widget.position;
+    }
   }
 
   Size? get anchorSize => _anchorSize;
@@ -196,6 +210,14 @@ class PopoverAnchorState extends State<PopoverAnchor>
     if (_alignment != value) {
       setState(() {
         _alignment = value;
+      });
+    }
+  }
+
+  set position(Offset value) {
+    if (_position != value) {
+      setState(() {
+        _position = value;
       });
     }
   }
@@ -288,9 +310,9 @@ class PopoverAnchorState extends State<PopoverAnchor>
       );
       if (_position != newPos) {
         setState(() {
-          widget.onTickFollow?.call(this);
           _anchorSize = size;
           _position = newPos;
+          widget.onTickFollow?.call(this);
         });
       }
     }
