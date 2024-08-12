@@ -963,6 +963,7 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
   late ValueNotifier<double> additionalOffset = ValueNotifier(0);
   late AnimationController _controller;
   late ControlledAnimation _controlledAnimation;
+  final FocusScopeNode _focusScopeNode = FocusScopeNode();
 
   @override
   void initState() {
@@ -972,6 +973,8 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
 
     _controlledAnimation = ControlledAnimation(_controller);
     _controlledAnimation.forward(1, Curves.easeOut);
+    // discard any focus that was previously set
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 
   @override
@@ -1015,122 +1018,125 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
         startFractionalOffset = const Offset(0, 1);
         break;
     }
-    return CapturedWrapper(
-      themes: widget.themes,
-      data: widget.data,
-      child: Data.inherit(
-        data: _OverlaidEntryData(this),
-        child: LayoutBuilder(builder: (context, constraints) {
-          Widget barrier = (widget.modal
-                  ? widget.barrierBuilder(context, widget.backdrop,
-                      _controlledAnimation, widget.stackIndex)
-                  : null) ??
-              Positioned(
-                top: -9999,
-                left: -9999,
-                right: -9999,
-                bottom: -9999,
-                child: GestureDetector(
-                  onTap: () {
-                    close();
-                  },
-                ),
-              );
-          final extraSize =
-              Data.maybeOf<BackdropTransformData>(context)?.sizeDifference;
-          Size additionalSize;
-          Offset additionalOffset;
-          bool insetTop =
-              widget.useSafeArea && widget.position == OverlayPosition.top;
-          bool insetBottom =
-              widget.useSafeArea && widget.position == OverlayPosition.bottom;
-          bool insetLeft =
-              widget.useSafeArea && widget.position == OverlayPosition.left;
-          bool insetRight =
-              widget.useSafeArea && widget.position == OverlayPosition.right;
-          MediaQueryData mediaQueryData = MediaQuery.of(context);
-          EdgeInsets padding = mediaQueryData.padding;
-          if (extraSize == null) {
-            additionalSize = Size.zero;
-            additionalOffset = Offset.zero;
-          } else {
-            switch (widget.position) {
-              case OverlayPosition.left:
-                additionalSize = Size(extraSize.width / 2, 0);
-                additionalOffset = Offset(-additionalSize.width, 0);
-                break;
-              case OverlayPosition.right:
-                additionalSize = Size(extraSize.width / 2, 0);
-                additionalOffset = Offset(additionalSize.width, 0);
-                break;
-              case OverlayPosition.top:
-                additionalSize = Size(0, extraSize.height / 2);
-                additionalOffset = Offset(0, -additionalSize.height);
-                break;
-              case OverlayPosition.bottom:
-                additionalSize = Size(0, extraSize.height / 2);
-                additionalOffset = Offset(0, additionalSize.height);
-                break;
+    return FocusScope(
+      node: _focusScopeNode,
+      child: CapturedWrapper(
+        themes: widget.themes,
+        data: widget.data,
+        child: Data.inherit(
+          data: _OverlaidEntryData(this),
+          child: LayoutBuilder(builder: (context, constraints) {
+            Widget barrier = (widget.modal
+                    ? widget.barrierBuilder(context, widget.backdrop,
+                        _controlledAnimation, widget.stackIndex)
+                    : null) ??
+                Positioned(
+                  top: -9999,
+                  left: -9999,
+                  right: -9999,
+                  bottom: -9999,
+                  child: GestureDetector(
+                    onTap: () {
+                      close();
+                    },
+                  ),
+                );
+            final extraSize =
+                Data.maybeOf<BackdropTransformData>(context)?.sizeDifference;
+            Size additionalSize;
+            Offset additionalOffset;
+            bool insetTop =
+                widget.useSafeArea && widget.position == OverlayPosition.top;
+            bool insetBottom =
+                widget.useSafeArea && widget.position == OverlayPosition.bottom;
+            bool insetLeft =
+                widget.useSafeArea && widget.position == OverlayPosition.left;
+            bool insetRight =
+                widget.useSafeArea && widget.position == OverlayPosition.right;
+            MediaQueryData mediaQueryData = MediaQuery.of(context);
+            EdgeInsets padding = mediaQueryData.padding;
+            if (extraSize == null) {
+              additionalSize = Size.zero;
+              additionalOffset = Offset.zero;
+            } else {
+              switch (widget.position) {
+                case OverlayPosition.left:
+                  additionalSize = Size(extraSize.width / 2, 0);
+                  additionalOffset = Offset(-additionalSize.width, 0);
+                  break;
+                case OverlayPosition.right:
+                  additionalSize = Size(extraSize.width / 2, 0);
+                  additionalOffset = Offset(additionalSize.width, 0);
+                  break;
+                case OverlayPosition.top:
+                  additionalSize = Size(0, extraSize.height / 2);
+                  additionalOffset = Offset(0, -additionalSize.height);
+                  break;
+                case OverlayPosition.bottom:
+                  additionalSize = Size(0, extraSize.height / 2);
+                  additionalOffset = Offset(0, additionalSize.height);
+                  break;
+              }
             }
-          }
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              IgnorePointer(
-                child: widget.backdropBuilder(context, widget.backdrop,
-                    _controlledAnimation, widget.stackIndex),
-              ),
-              barrier,
-              Positioned.fill(
-                child: MediaQuery(
-                  data: widget.useSafeArea
-                      ? mediaQueryData.removePadding(
-                          removeTop: true,
-                          removeBottom: true,
-                          removeLeft: true,
-                          removeRight: true,
-                        )
-                      : mediaQueryData,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: padTop ? padding.top : 0,
-                      bottom: padBottom ? padding.bottom : 0,
-                      left: padLeft ? padding.left : 0,
-                      right: padRight ? padding.right : 0,
-                    ),
-                    child: Align(
-                      alignment: alignment,
-                      child: AnimatedBuilder(
-                        animation: _controlledAnimation,
-                        builder: (context, child) {
-                          return FractionalTranslation(
-                            translation: startFractionalOffset *
-                                (1 - _controlledAnimation.value),
-                            child: child,
-                          );
-                        },
-                        child: Transform.translate(
-                          offset: additionalOffset / kBackdropScaleDown,
-                          child: widget.builder(
-                              context,
-                              additionalSize,
-                              constraints.biggest,
-                              EdgeInsets.only(
-                                top: insetTop ? padding.top : 0,
-                                bottom: insetBottom ? padding.bottom : 0,
-                                left: insetLeft ? padding.left : 0,
-                                right: insetRight ? padding.right : 0,
-                              ),
-                              widget.stackIndex),
+            return Stack(
+              clipBehavior: Clip.none,
+              children: [
+                IgnorePointer(
+                  child: widget.backdropBuilder(context, widget.backdrop,
+                      _controlledAnimation, widget.stackIndex),
+                ),
+                barrier,
+                Positioned.fill(
+                  child: MediaQuery(
+                    data: widget.useSafeArea
+                        ? mediaQueryData.removePadding(
+                            removeTop: true,
+                            removeBottom: true,
+                            removeLeft: true,
+                            removeRight: true,
+                          )
+                        : mediaQueryData,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: padTop ? padding.top : 0,
+                        bottom: padBottom ? padding.bottom : 0,
+                        left: padLeft ? padding.left : 0,
+                        right: padRight ? padding.right : 0,
+                      ),
+                      child: Align(
+                        alignment: alignment,
+                        child: AnimatedBuilder(
+                          animation: _controlledAnimation,
+                          builder: (context, child) {
+                            return FractionalTranslation(
+                              translation: startFractionalOffset *
+                                  (1 - _controlledAnimation.value),
+                              child: child,
+                            );
+                          },
+                          child: Transform.translate(
+                            offset: additionalOffset / kBackdropScaleDown,
+                            child: widget.builder(
+                                context,
+                                additionalSize,
+                                constraints.biggest,
+                                EdgeInsets.only(
+                                  top: insetTop ? padding.top : 0,
+                                  bottom: insetBottom ? padding.bottom : 0,
+                                  left: insetLeft ? padding.left : 0,
+                                  right: insetRight ? padding.right : 0,
+                                ),
+                                widget.stackIndex),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          );
-        }),
+              ],
+            );
+          }),
+        ),
       ),
     );
   }
