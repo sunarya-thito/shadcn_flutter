@@ -536,31 +536,28 @@ class ButtonState<T extends Button> extends State<T> {
   }
 }
 
-enum ButtonSize {
-  normal(1),
-  xSmall(1 / 2),
-  small(3 / 4),
-  large(2),
-  xLarge(3);
-
+class ButtonSize {
   final double scale;
-
   const ButtonSize(this.scale);
+  static const ButtonSize normal = ButtonSize(1);
+  static const ButtonSize xSmall = ButtonSize(1 / 2);
+  static const ButtonSize small = ButtonSize(3 / 4);
+  static const ButtonSize large = ButtonSize(2);
+  static const ButtonSize xLarge = ButtonSize(3);
 }
 
 typedef DensityModifier = EdgeInsets Function(EdgeInsets padding);
 
-enum ButtonDensity {
-  normal(_densityNormal),
-  comfortable(_densityComfortable),
-  icon(_densityIcon),
-  iconComfortable(_densityIconComfortable),
-  dense(_densityDense),
-  compact(_densityCompact);
-
+class ButtonDensity {
   final DensityModifier modifier;
-
   const ButtonDensity(this.modifier);
+  static const ButtonDensity normal = ButtonDensity(_densityNormal);
+  static const ButtonDensity comfortable = ButtonDensity(_densityComfortable);
+  static const ButtonDensity icon = ButtonDensity(_densityIcon);
+  static const ButtonDensity iconComfortable =
+      ButtonDensity(_densityIconComfortable);
+  static const ButtonDensity dense = ButtonDensity(_densityDense);
+  static const ButtonDensity compact = ButtonDensity(_densityCompact);
 }
 
 EdgeInsets _densityNormal(EdgeInsets padding) {
@@ -678,6 +675,12 @@ class ButtonStyle implements AbstractButtonStyle {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.menubar;
+
+  const ButtonStyle.muted({
+    this.size = ButtonSize.normal,
+    this.density = ButtonDensity.normal,
+    this.shape = ButtonShape.rectangle,
+  }) : variance = ButtonVariance.muted;
 
   @override
   ButtonStateProperty<Decoration> get decoration {
@@ -861,6 +864,15 @@ class ButtonVariance implements AbstractButtonStyle {
     padding: _buttonMenubarPadding,
     textStyle: _buttonMenuTextStyle,
     iconTheme: _buttonMenuIconTheme,
+    margin: _buttonZeroMargin,
+  );
+
+  static const ButtonVariance muted = ButtonVariance(
+    decoration: _buttonTextDecoration,
+    mouseCursor: _buttonMouseCursor,
+    padding: _buttonPadding,
+    textStyle: _buttonMutedTextStyle,
+    iconTheme: _buttonMutedIconTheme,
     margin: _buttonZeroMargin,
   );
 
@@ -1236,6 +1248,21 @@ IconThemeData _buttonGhostIconTheme(
     color: states.contains(WidgetState.disabled)
         ? themeData.colorScheme.mutedForeground
         : themeData.colorScheme.foreground,
+  );
+}
+
+TextStyle _buttonMutedTextStyle(BuildContext context, Set<WidgetState> states) {
+  var themeData = Theme.of(context);
+  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+        color: themeData.colorScheme.mutedForeground,
+      );
+}
+
+IconThemeData _buttonMutedIconTheme(
+    BuildContext context, Set<WidgetState> states) {
+  var themeData = Theme.of(context);
+  return IconThemeData(
+    color: themeData.colorScheme.mutedForeground,
   );
 }
 
