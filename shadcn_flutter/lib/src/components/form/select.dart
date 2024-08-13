@@ -347,76 +347,82 @@ class _SelectState<T> extends State<Select<T>> {
     final scaling = theme.scaling;
     return ConstrainedBox(
       constraints: widget.constraints ?? const BoxConstraints(),
-      child: Button(
-        disableHoverEffect: widget.disableHoverEffect,
-        focusNode: _focusNode,
-        style:
-            (widget.filled ? ButtonVariance.secondary : ButtonVariance.outline)
-                .copyWith(
-          decoration: widget.borderRadius != null
-              ? (context, states, decoration) {
-                  return (decoration as BoxDecoration).copyWith(
-                    borderRadius: widget.borderRadius,
-                  );
-                }
-              : null,
-          padding: widget.padding != null
-              ? (context, states, value) => widget.padding!
-              : null,
-        ),
-        onPressed: widget.onChanged == null
-            ? null
-            : () {
-                _popoverController
-                    .show(
-                  context: context,
-                  alignment: widget.popoverAlignment,
-                  anchorAlignment: widget.popoverAnchorAlignment,
-                  widthConstraint: widget.popupWidthConstraint,
-                  builder: (context) {
-                    return SelectPopup<T>(
-                      orderSelectedFirst: widget.orderSelectedFirst,
-                      searchPlaceholder: widget.searchPlaceholder,
-                      searchFilter: widget.searchFilter,
-                      constraints: widget.popupConstraints,
-                      value: widget.value,
-                      showUnrelatedValues: widget.showUnrelatedValues,
-                      onChanged: widget.onChanged,
-                      emptyBuilder: widget.emptyBuilder,
-                      surfaceBlur: widget.surfaceBlur,
-                      surfaceOpacity: widget.surfaceOpacity,
-                      children: widget.children,
+      child: TapRegion(
+        onTapOutside: (event) {
+          _focusNode.unfocus();
+        },
+        child: Button(
+          disableHoverEffect: widget.disableHoverEffect,
+          focusNode: _focusNode,
+          style: (widget.filled
+                  ? ButtonVariance.secondary
+                  : ButtonVariance.outline)
+              .copyWith(
+            decoration: widget.borderRadius != null
+                ? (context, states, decoration) {
+                    return (decoration as BoxDecoration).copyWith(
+                      borderRadius: widget.borderRadius,
                     );
-                  },
-                )
-                    .then(
-                  (value) {
-                    _focusNode.requestFocus();
-                  },
-                );
-              },
-        child: IntrinsicWidth(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: widget.value != null
-                    ? widget.itemBuilder(
-                        context,
-                        widget.value as T,
-                      )
-                    : placeholder,
-              ),
-              SizedBox(width: 8 * scaling),
-              AnimatedIconTheme(
-                data: IconThemeData(
-                  color: theme.colorScheme.foreground,
-                  opacity: 0.5,
+                  }
+                : null,
+            padding: widget.padding != null
+                ? (context, states, value) => widget.padding!
+                : null,
+          ),
+          onPressed: widget.onChanged == null
+              ? null
+              : () {
+                  _popoverController
+                      .show(
+                    context: context,
+                    alignment: widget.popoverAlignment,
+                    anchorAlignment: widget.popoverAnchorAlignment,
+                    widthConstraint: widget.popupWidthConstraint,
+                    builder: (context) {
+                      return SelectPopup<T>(
+                        orderSelectedFirst: widget.orderSelectedFirst,
+                        searchPlaceholder: widget.searchPlaceholder,
+                        searchFilter: widget.searchFilter,
+                        constraints: widget.popupConstraints,
+                        value: widget.value,
+                        showUnrelatedValues: widget.showUnrelatedValues,
+                        onChanged: widget.onChanged,
+                        emptyBuilder: widget.emptyBuilder,
+                        surfaceBlur: widget.surfaceBlur,
+                        surfaceOpacity: widget.surfaceOpacity,
+                        children: widget.children,
+                      );
+                    },
+                  )
+                      .then(
+                    (value) {
+                      _focusNode.requestFocus();
+                    },
+                  );
+                },
+          child: IntrinsicWidth(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: widget.value != null
+                      ? widget.itemBuilder(
+                          context,
+                          widget.value as T,
+                        )
+                      : placeholder,
                 ),
-                duration: kDefaultDuration,
-                child: const Icon(Icons.unfold_more).iconSmall(),
-              ),
-            ],
+                SizedBox(width: 8 * scaling),
+                AnimatedIconTheme(
+                  data: IconThemeData(
+                    color: theme.colorScheme.foreground,
+                    opacity: 0.5,
+                  ),
+                  duration: kDefaultDuration,
+                  child: const Icon(Icons.unfold_more).iconSmall(),
+                ),
+              ],
+            ),
           ),
         ),
       ),
