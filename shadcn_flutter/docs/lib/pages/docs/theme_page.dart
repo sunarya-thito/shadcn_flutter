@@ -314,6 +314,7 @@ class _ThemePageState extends State<ThemePage> {
               });
             },
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   width: 16,
@@ -346,6 +347,7 @@ class _ThemePageState extends State<ThemePage> {
               });
             },
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   width: 16,
