@@ -31,6 +31,7 @@ import 'package:docs/pages/docs/components/navigation_menu_example.dart';
 import 'package:docs/pages/docs/components/navigation_rail_example.dart';
 import 'package:docs/pages/docs/components/navigation_sidebar_example.dart';
 import 'package:docs/pages/docs/components/number_example.dart';
+import 'package:docs/pages/docs/components/overflow_marquee_example.dart';
 import 'package:docs/pages/docs/components/pagination_example.dart';
 import 'package:docs/pages/docs/components/phone_input_example.dart';
 import 'package:docs/pages/docs/components/popover_example.dart';
@@ -602,6 +603,13 @@ class MyAppState extends State<MyApp> {
             name: 'navigation_bar',
             builder: (context, state) {
               return const NavigationBarExample();
+            },
+          ),
+          GoRoute(
+            path: 'overflow_marquee',
+            name: 'overflow_marquee',
+            builder: (context, state) {
+              return const OverflowMarqueeExample();
             },
           ),
         ]),
