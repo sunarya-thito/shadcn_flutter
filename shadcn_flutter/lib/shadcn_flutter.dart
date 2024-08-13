@@ -79,6 +79,7 @@ export 'src/components/layout/dialog/alert_dialog.dart';
 export 'src/components/layout/media_query.dart';
 export 'src/components/layout/navigation_bar.dart';
 export 'src/components/layout/outlined_container.dart';
+export 'src/components/layout/overflow_marquee.dart';
 export 'src/components/layout/resizable.dart';
 export 'src/components/layout/scaffold.dart';
 export 'src/components/layout/stage_container.dart';
