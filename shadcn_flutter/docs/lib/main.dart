@@ -26,8 +26,10 @@ import 'package:docs/pages/docs/components/keyboard_display_example.dart';
 import 'package:docs/pages/docs/components/linear_progress_example.dart';
 import 'package:docs/pages/docs/components/material_example.dart';
 import 'package:docs/pages/docs/components/menubar_example.dart';
-import 'package:docs/pages/docs/components/navigation_sidebar_example.dart';
+import 'package:docs/pages/docs/components/navigation_bar_example.dart';
 import 'package:docs/pages/docs/components/navigation_menu_example.dart';
+import 'package:docs/pages/docs/components/navigation_rail_example.dart';
+import 'package:docs/pages/docs/components/navigation_sidebar_example.dart';
 import 'package:docs/pages/docs/components/number_example.dart';
 import 'package:docs/pages/docs/components/pagination_example.dart';
 import 'package:docs/pages/docs/components/phone_input_example.dart';
@@ -587,7 +589,21 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) {
               return const NavigationSidebarExample();
             },
-          )
+          ),
+          GoRoute(
+            path: 'navigation_rail',
+            name: 'navigation_rail',
+            builder: (context, state) {
+              return const NavigationRailExample();
+            },
+          ),
+          GoRoute(
+            path: 'navigation_bar',
+            name: 'navigation_bar',
+            builder: (context, state) {
+              return const NavigationBarExample();
+            },
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();
