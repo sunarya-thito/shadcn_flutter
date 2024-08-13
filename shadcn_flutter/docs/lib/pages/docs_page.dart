@@ -255,16 +255,17 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Tabs', 'tabs'),
         ShadcnDocsPage('Tab List', 'tab_list'),
         // TODO: like a chrome tab, complete with its view
-        ShadcnDocsPage('Tab Pane', 'tab_pane', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Tab Pane', 'tab_pane', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Tree', 'tree', ShadcnFeatureTag.experimental),
         // aka Bottom Navigation Bar
-        ShadcnDocsPage('Navigation Bar', 'navigation_bar',
-            ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage(
+            'Navigation Bar', 'navigation_bar', ShadcnFeatureTag.experimental),
         // aka Sidebar
         ShadcnDocsPage('Navigation Rail', 'navigation_rail',
-            ShadcnFeatureTag.workInProgress),
+            ShadcnFeatureTag.experimental),
         // aka Drawer
-        ShadcnDocsPage('Navigation Sidebar', 'navigation_sidebar'),
+        ShadcnDocsPage('Navigation Sidebar', 'navigation_sidebar',
+            ShadcnFeatureTag.experimental),
         ShadcnDocsPage(
             'Dot Indicator', 'dot_indicator', ShadcnFeatureTag.experimental),
       ],
@@ -314,6 +315,7 @@ class DocsPageState extends State<DocsPage> {
         // the indicator itself is provided by scaffold
         ShadcnDocsPage('Refresh Trigger', 'refresh_trigger',
             ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('OverflowMarquee', 'overflow_marquee'),
       ],
     ),
     // COMPONENTS END
@@ -472,7 +474,10 @@ class DocsPageState extends State<DocsPage> {
                         MediaQueryVisibility(
                           minWidth: breakpointWidth,
                           alternateChild: AppBar(
-                            height: 72 * theme.scaling,
+                            padding: EdgeInsets.symmetric(
+                              vertical: 12 * theme.scaling,
+                              horizontal: 18 * theme.scaling,
+                            ),
                             leading: [
                               GhostButton(
                                 density: ButtonDensity.icon,
@@ -530,13 +535,16 @@ class DocsPageState extends State<DocsPage> {
                             ),
                           ),
                           child: AppBar(
-                            padding: breakpointWidth2 < mediaQuerySize.width
-                                ? padding * theme.scaling
-                                : padding.copyWith(
-                                      right: 32,
-                                    ) *
-                                    theme.scaling,
-                            height: 72 * theme.scaling,
+                            padding: (breakpointWidth2 < mediaQuerySize.width
+                                    ? padding * theme.scaling
+                                    : padding.copyWith(
+                                          right: 32,
+                                        ) *
+                                        theme.scaling)
+                                .copyWith(
+                              top: 12 * theme.scaling,
+                              bottom: 12 * theme.scaling,
+                            ),
                             title: Basic(
                               leading: FlutterLogo(
                                 size: 32 * theme.scaling,
