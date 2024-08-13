@@ -389,27 +389,29 @@ class _SelectState<T> extends State<Select<T>> {
                   },
                 );
               },
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: widget.value != null
-                  ? widget.itemBuilder(
-                      context,
-                      widget.value as T,
-                    )
-                  : placeholder,
-            ),
-            SizedBox(width: 8 * scaling),
-            AnimatedIconTheme(
-              data: IconThemeData(
-                color: theme.colorScheme.foreground,
-                opacity: 0.5,
+        child: IntrinsicWidth(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: widget.value != null
+                    ? widget.itemBuilder(
+                        context,
+                        widget.value as T,
+                      )
+                    : placeholder,
               ),
-              duration: kDefaultDuration,
-              child: const Icon(Icons.unfold_more).iconSmall(),
-            ),
-          ],
+              SizedBox(width: 8 * scaling),
+              AnimatedIconTheme(
+                data: IconThemeData(
+                  color: theme.colorScheme.foreground,
+                  opacity: 0.5,
+                ),
+                duration: kDefaultDuration,
+                child: const Icon(Icons.unfold_more).iconSmall(),
+              ),
+            ],
+          ),
         ),
       ),
     );
