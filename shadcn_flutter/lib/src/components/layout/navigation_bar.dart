@@ -1,13 +1,22 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+enum NavigationAlignment {
+  start,
+  center,
+  end,
+}
+
+enum NavigationContainerType {
+  rail,
+  bar,
+  sidebar;
+}
+
 class NavigationBar extends StatelessWidget {
   final Color? backgroundColor;
   final bool extended;
-  final int? index;
-  final ValueChanged<int?>? onChanged;
   final List<Widget> children;
-  final AlignmentGeometry alignment;
-  final bool canUnselect;
+  final NavigationAlignment alignment;
   final Axis direction;
   final double? spacing;
   final NavigationLabelType labelType;
@@ -18,10 +27,7 @@ class NavigationBar extends StatelessWidget {
     Key? key,
     this.backgroundColor,
     this.extended = true,
-    this.index,
-    this.onChanged,
-    this.alignment = AlignmentDirectional.center,
-    this.canUnselect = false,
+    this.alignment = NavigationAlignment.center,
     this.direction = Axis.horizontal,
     this.spacing,
     this.labelType = NavigationLabelType.selected,
@@ -30,64 +36,45 @@ class NavigationBar extends StatelessWidget {
     required this.children,
   }) : super(key: key);
 
-  BoxConstraints getDefaultConstraints(BuildContext context, ThemeData theme) {
-    final scaling = theme.scaling;
-    return BoxConstraints(
-      minHeight: 48 * scaling,
-      maxHeight: 48 * scaling,
-    );
-  }
-
-  EdgeInsets _childPadding(EdgeInsets padding, Axis direction) {
-    if (direction == Axis.vertical) {
-      return EdgeInsets.only(left: padding.left, right: padding.right);
-    }
-    return EdgeInsets.only(top: padding.top, bottom: padding.bottom);
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    List<Widget> children = List.of(this.children);
     var parentPadding = padding ??
         (const EdgeInsets.symmetric(vertical: 8, horizontal: 12) * scaling);
     var directionality = Directionality.of(context);
     var resolvedPadding = parentPadding.resolve(directionality);
     return Data.inherit(
       data: NavigationControlData(
+        containerType: NavigationContainerType.bar,
         parentLabelType: labelType,
         parentPadding: resolvedPadding,
         direction: direction,
       ),
-      child: ConstrainedBox(
-        constraints: constraints ?? getDefaultConstraints(context, theme),
-        child: ClipRect(
-          child: CustomScrollView(
-            clipBehavior: Clip.none,
-            shrinkWrap: true,
-            scrollDirection: direction,
-            slivers: [
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: _GapHeader(_startPadding(resolvedPadding, direction)),
-              ),
-              ...children.map(
-                (e) {
-                  return SliverPadding(
-                    padding: _childPadding(resolvedPadding, direction),
-                    sliver: e,
-                  ) as Widget;
-                },
-              ).joinSeparator(
-                SliverGap(spacing ?? 0),
-              ),
-              SliverGap(_endPadding(resolvedPadding, direction)),
-            ],
-          ),
+      child: Container(
+        color: backgroundColor,
+        padding: resolvedPadding,
+        child: _wrapIntrinsic(
+          Flex(
+            direction: direction,
+            mainAxisAlignment: alignment == NavigationAlignment.start
+                ? MainAxisAlignment.start
+                : alignment == NavigationAlignment.center
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: children,
+          ).gap(spacing ?? (8 * scaling)),
         ),
       ),
     );
+  }
+
+  Widget _wrapIntrinsic(Widget child) {
+    if (direction == Axis.horizontal) {
+      return IntrinsicHeight(child: child);
+    }
+    return IntrinsicWidth(child: child);
   }
 }
 
@@ -150,49 +137,92 @@ class NavigationRail extends NavigationBar {
     super.key,
     super.backgroundColor,
     super.extended,
-    super.index,
-    super.onChanged,
-    super.alignment = AlignmentDirectional.topCenter,
-    super.canUnselect,
+    super.alignment = NavigationAlignment.center,
     super.direction = Axis.vertical,
     super.spacing,
     super.labelType = NavigationLabelType.selected,
     super.padding,
     required super.children,
   });
-
-  @override
-  BoxConstraints getDefaultConstraints(BuildContext context, ThemeData theme) {
-    final scaling = theme.scaling;
-    return BoxConstraints(
-      minWidth: 48 * scaling,
-      maxWidth: 48 * scaling,
-    );
-  }
 }
 
-class NavigationSidebar extends NavigationBar {
-  const NavigationSidebar({
-    super.key,
-    super.backgroundColor,
-    super.extended,
-    super.index,
-    super.onChanged,
-    super.alignment = AlignmentDirectional.topCenter,
-    super.canUnselect,
-    super.direction = Axis.vertical,
-    super.spacing,
-    super.labelType = NavigationLabelType.expanded,
-    super.padding,
-    required super.children,
-  });
+class NavigationSidebar extends StatelessWidget {
+  final Color? backgroundColor;
+  final List<Widget> children;
+  final double? spacing;
+  final NavigationLabelType labelType;
+  final EdgeInsetsGeometry? padding;
+  final BoxConstraints? constraints;
 
-  @override
+  const NavigationSidebar({
+    Key? key,
+    this.backgroundColor,
+    this.spacing,
+    this.labelType = NavigationLabelType.expanded,
+    this.padding,
+    this.constraints,
+    required this.children,
+  }) : super(key: key);
+
   BoxConstraints getDefaultConstraints(BuildContext context, ThemeData theme) {
     final scaling = theme.scaling;
     return BoxConstraints(
-      minWidth: 240 * scaling,
-      maxWidth: 240 * scaling,
+      minWidth: 200 * scaling,
+      maxWidth: 200 * scaling,
+    );
+  }
+
+  EdgeInsets _childPadding(EdgeInsets padding, Axis direction) {
+    if (direction == Axis.vertical) {
+      return EdgeInsets.only(left: padding.left, right: padding.right);
+    }
+    return EdgeInsets.only(top: padding.top, bottom: padding.bottom);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    List<Widget> children = List.of(this.children);
+    var parentPadding = padding ??
+        (const EdgeInsets.symmetric(vertical: 8, horizontal: 12) * scaling);
+    var directionality = Directionality.of(context);
+    var resolvedPadding = parentPadding.resolve(directionality);
+    const direction = Axis.vertical;
+    return Data.inherit(
+      data: NavigationControlData(
+        containerType: NavigationContainerType.sidebar,
+        parentLabelType: labelType,
+        parentPadding: resolvedPadding,
+        direction: direction,
+      ),
+      child: ConstrainedBox(
+        constraints: constraints ?? getDefaultConstraints(context, theme),
+        child: ClipRect(
+          child: CustomScrollView(
+            clipBehavior: Clip.none,
+            shrinkWrap: true,
+            scrollDirection: direction,
+            slivers: [
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: _GapHeader(_startPadding(resolvedPadding, direction)),
+              ),
+              ...children.map(
+                (e) {
+                  return SliverPadding(
+                    padding: _childPadding(resolvedPadding, direction),
+                    sliver: e,
+                  ) as Widget;
+                },
+              ).joinSeparator(
+                SliverGap(spacing ?? 0),
+              ),
+              SliverGap(_endPadding(resolvedPadding, direction)),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -205,15 +235,43 @@ enum NavigationLabelType {
 }
 
 class NavigationControlData {
+  final NavigationContainerType containerType;
   final NavigationLabelType parentLabelType;
   final EdgeInsets parentPadding;
   final Axis direction;
 
   NavigationControlData({
+    required this.containerType,
     required this.parentLabelType,
     required this.parentPadding,
     required this.direction,
   });
+}
+
+class NavigationGap extends StatelessWidget {
+  final double gap;
+
+  const NavigationGap(
+    this.gap, {
+    Key? key,
+  }) : super(key: key);
+
+  Widget buildBox(BuildContext context) {
+    return Gap(gap);
+  }
+
+  Widget buildSliver(BuildContext context) {
+    return SliverGap(gap);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final data = Data.maybeOf<NavigationControlData>(context);
+    if (data?.containerType == NavigationContainerType.sidebar) {
+      return buildSliver(context);
+    }
+    return buildBox(context);
+  }
 }
 
 class NavigationDivider extends StatelessWidget {
@@ -233,24 +291,28 @@ class NavigationDivider extends StatelessWidget {
     final data = Data.maybeOf<NavigationControlData>(context);
     final parentPadding = data?.parentPadding ?? EdgeInsets.zero;
     final direction = data?.direction ?? Axis.vertical;
+    Widget child;
     if (direction == Axis.vertical) {
-      return SliverToBoxAdapter(
-        child: Divider(
-          indent: -parentPadding.left,
-          endIndent: -parentPadding.right,
-          thickness: thickness ?? (1 * scaling),
-          color: color ?? theme.colorScheme.muted,
-        ),
+      child = Divider(
+        indent: -parentPadding.left,
+        endIndent: -parentPadding.right,
+        thickness: thickness ?? (1 * scaling),
+        color: color ?? theme.colorScheme.muted,
       );
-    }
-    return SliverToBoxAdapter(
-      child: VerticalDivider(
+    } else {
+      child = VerticalDivider(
         indent: -parentPadding.top,
         endIndent: -parentPadding.bottom,
         thickness: thickness ?? (1 * scaling),
         color: color ?? theme.colorScheme.muted,
-      ),
-    );
+      );
+    }
+    if (data?.containerType == NavigationContainerType.sidebar) {
+      return SliverToBoxAdapter(
+        child: child,
+      );
+    }
+    return child;
   }
 }
 
@@ -278,41 +340,79 @@ class _NavigationButtonState extends State<NavigationButton> {
   @override
   Widget build(BuildContext context) {
     final data = Data.maybeOf<NavigationControlData>(context);
+    if (data?.containerType == NavigationContainerType.sidebar) {
+      return buildSliver(context, data);
+    }
+    return buildBox(context, data);
+  }
+
+  Widget buildSliver(BuildContext context, NavigationControlData? data) {
+    return SliverToBoxAdapter(
+      child: buildBox(context, data),
+    );
+  }
+
+  Widget buildBox(BuildContext context, NavigationControlData? data) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     final labelType = data?.parentLabelType ?? NavigationLabelType.none;
+    final direction = data?.direction ?? Axis.vertical;
     if (labelType == NavigationLabelType.expanded) {
-      return SliverToBoxAdapter(
-        child: SelectedButton(
-          value: widget.selected,
-          onChanged: widget.onChanged,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              widget.child,
-              if (widget.label != null) Gap(widget.spacing ?? (8 * scaling)),
-              if (widget.label != null) widget.label!,
-            ],
-          ),
-        ),
-      );
-    }
-    return SliverToBoxAdapter(
-      child: SelectedButton(
+      return SelectedButton(
         value: widget.selected,
         onChanged: widget.onChanged,
-        child: Column(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             widget.child,
-            if (widget.label != null &&
-                (labelType == NavigationLabelType.all || widget.selected))
-              Gap(widget.spacing ?? (8 * scaling)),
-            if (widget.label != null &&
-                (labelType == NavigationLabelType.all || widget.selected))
-              widget.label!,
+            if (widget.label != null) Gap(widget.spacing ?? (8 * scaling)),
+            if (widget.label != null)
+              Flexible(child: OverflowMarquee(child: widget.label!)),
           ],
         ),
+      );
+    }
+    return SelectedButton(
+      value: widget.selected,
+      onChanged: widget.onChanged,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (direction == Axis.horizontal)
+            widget.child.iconXLarge()
+          else
+            widget.child.large(),
+          Flexible(
+            child: AnimatedSize(
+              alignment: direction == Axis.vertical
+                  ? Alignment.topCenter
+                  : Alignment.center,
+              duration: kDefaultDuration,
+              curve: Curves.easeInOut,
+              child: SizedBox(
+                height: (widget.label != null &&
+                        (labelType == NavigationLabelType.all ||
+                            widget.selected))
+                    ? null
+                    : 0,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Gap(widget.spacing ?? (8 * scaling)),
+                    DefaultTextStyle.merge(
+                      textAlign: TextAlign.center,
+                      child: OverflowMarquee(
+                        child: widget.label!.xSmall(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -330,31 +430,56 @@ class NavigationLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final data = Data.maybeOf<NavigationControlData>(context);
+    if (data?.containerType == NavigationContainerType.sidebar) {
+      return buildSliver(context);
+    }
+    return buildBox(context);
+  }
+
+  Widget buildBox(BuildContext context) {
+    return DefaultTextStyle.merge(
+      textAlign: TextAlign.center,
+      child: child.xSmall(),
+    );
+  }
+
+  Widget buildSliver(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     return SliverPersistentHeader(
       pinned: true,
-      delegate: NavigationLabelDelegate(
+      delegate: _NavigationLabelDelegate(
         maxExtent: 48 * scaling,
         minExtent: 48 * scaling,
-        child: Container(
-          alignment: alignment,
-          padding: EdgeInsets.symmetric(horizontal: 16 * scaling),
-          child: child,
-        ).semiBold().large(),
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            Scrollable.ensureVisible(
+              context,
+              duration: kDefaultDuration,
+              curve: Curves.easeInOut,
+            );
+          },
+          child: Container(
+            alignment: alignment,
+            padding: EdgeInsets.symmetric(horizontal: 16 * scaling),
+            child: OverflowMarquee(child: child),
+          ).semiBold().large(),
+        ),
       ),
     );
   }
 }
 
-class NavigationLabelDelegate extends SliverPersistentHeaderDelegate {
+class _NavigationLabelDelegate extends SliverPersistentHeaderDelegate {
   final Widget child;
   @override
   final double maxExtent;
   @override
   final double minExtent;
 
-  NavigationLabelDelegate({
+  _NavigationLabelDelegate({
     required this.maxExtent,
     required this.minExtent,
     required this.child,
@@ -380,7 +505,7 @@ class NavigationLabelDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  bool shouldRebuild(covariant NavigationLabelDelegate oldDelegate) {
+  bool shouldRebuild(covariant _NavigationLabelDelegate oldDelegate) {
     return oldDelegate.child != child ||
         oldDelegate.maxExtent != maxExtent ||
         oldDelegate.minExtent != minExtent;

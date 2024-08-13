@@ -31,11 +31,11 @@ class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
       child: OutlinedContainer(
         child: NavigationSidebar(
           children: [
-            NavigationLabel(child: Text('Discover')),
+            NavigationLabel(child: Text('Discovery')),
             buildButton(0, 'Listen Now', BootstrapIcons.playCircle),
             buildButton(1, 'Browse', BootstrapIcons.grid),
             buildButton(2, 'Radio', BootstrapIcons.broadcast),
-            SliverGap(24),
+            NavigationGap(24),
             NavigationDivider(),
             NavigationLabel(child: Text('Library')),
             buildButton(3, 'Playlist', BootstrapIcons.musicNoteList),
@@ -43,7 +43,7 @@ class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
             buildButton(5, 'For You', BootstrapIcons.person),
             buildButton(6, 'Artists', BootstrapIcons.mic),
             buildButton(7, 'Albums', BootstrapIcons.record2),
-            SliverGap(24),
+            NavigationGap(24),
             NavigationDivider(),
             NavigationLabel(child: Text('Playlists')),
             buildButton(8, 'Recently Added', BootstrapIcons.musicNoteList),
@@ -51,7 +51,8 @@ class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
             buildButton(10, 'Top Songs', BootstrapIcons.musicNoteList),
             buildButton(11, 'Top Albums', BootstrapIcons.musicNoteList),
             buildButton(12, 'Top Artists', BootstrapIcons.musicNoteList),
-            buildButton(13, 'Logic Discography', BootstrapIcons.musicNoteList),
+            buildButton(13, 'Logic Discography With Some Spice',
+                BootstrapIcons.musicNoteList),
             buildButton(14, 'Bedtime Beats', BootstrapIcons.musicNoteList),
             buildButton(15, 'Feeling Happy', BootstrapIcons.musicNoteList),
             buildButton(16, 'I miss Y2K Pop', BootstrapIcons.musicNoteList),
