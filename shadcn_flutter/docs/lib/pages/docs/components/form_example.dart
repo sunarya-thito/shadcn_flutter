@@ -1,4 +1,5 @@
 import 'package:docs/pages/docs/component_page.dart';
+import 'package:docs/pages/docs/components/form/form_example_3.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
@@ -24,6 +25,11 @@ class FormExample extends StatelessWidget {
           title: 'Form Example (Column Layout)',
           path: 'lib/pages/docs/components/form/form_example_2.dart',
           child: FormExample2(),
+        ),
+        WidgetUsageExample(
+          title: 'Validation Mode Example',
+          path: 'lib/pages/docs/components/form/form_example_3.dart',
+          child: FormExample3(),
         ),
       ],
     );

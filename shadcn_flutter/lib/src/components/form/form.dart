@@ -6,7 +6,8 @@ import '../../../shadcn_flutter.dart';
 
 abstract class Validator<T> {
   const Validator();
-  Future<ValidationResult?> validate(BuildContext context, T? value);
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode lifecycle);
 
   Validator<T> combine(Validator<T> other) {
     return CompositeValidator([this, other]);
@@ -31,6 +32,56 @@ abstract class Validator<T> {
   bool shouldRevalidate(FormKey<dynamic> source) => false;
 }
 
+enum FormValidationMode {
+  initial,
+  changed,
+  submitted,
+}
+
+class ValidationMode<T> extends Validator<T> {
+  final Validator<T> validator;
+  final Set<FormValidationMode> mode;
+
+  const ValidationMode(this.validator,
+      {this.mode = const {
+        FormValidationMode.changed,
+        FormValidationMode.submitted,
+        FormValidationMode.initial
+      }});
+
+  @override
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode lifecycle) async {
+    if (this.mode.contains(lifecycle)) {
+      return await validator.validate(context, value, lifecycle);
+    }
+    return null;
+  }
+}
+
+typedef FuturePredicate<T> = Future<bool> Function(T? value);
+
+class ConditionalValidator<T> extends Validator<T> {
+  final FuturePredicate<T> predicate;
+  final String message;
+
+  const ConditionalValidator(this.predicate, {required this.message});
+
+  @override
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode state) async {
+    if (!await predicate(value)) {
+      return InvalidResult(message);
+    }
+    return null;
+  }
+
+  @override
+  bool shouldRevalidate(FormKey<dynamic> source) {
+    return true;
+  }
+}
+
 class NotValidator<T> extends Validator<T> {
   final Validator<T> validator;
   final String?
@@ -39,9 +90,10 @@ class NotValidator<T> extends Validator<T> {
   const NotValidator(this.validator, {this.message});
 
   @override
-  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode state) async {
     var localizations = Localizations.of(context, ShadcnLocalizations);
-    var result = await validator.validate(context, value);
+    var result = await validator.validate(context, value, state);
     if (result == null) {
       return InvalidResult(message ?? localizations.invalidValue);
     }
@@ -55,10 +107,11 @@ class OrValidator<T> extends Validator<T> {
   const OrValidator(this.validators);
 
   @override
-  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode state) async {
     ValidationResult? result;
     for (var validator in validators) {
-      result = await validator.validate(context, value);
+      result = await validator.validate(context, value, state);
       if (result == null) {
         return null;
       }
@@ -89,7 +142,8 @@ class NonNullValidator<T> extends Validator<T> {
   const NonNullValidator({this.message});
 
   @override
-  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode state) async {
     if (value == null) {
       var localizations = Localizations.of(context, ShadcnLocalizations);
       return InvalidResult(message ?? localizations.formNotEmpty);
@@ -103,7 +157,7 @@ class NotEmptyValidator extends NonNullValidator<String> {
 
   @override
   Future<ValidationResult?> validate(
-      BuildContext context, String? value) async {
+      BuildContext context, String? value, FormValidationMode state) async {
     if (value == null || value.isEmpty) {
       var localizations = Localizations.of(context, ShadcnLocalizations);
       return InvalidResult(message ?? localizations.formNotEmpty);
@@ -122,7 +176,7 @@ class LengthValidator extends Validator<String> {
 
   @override
   Future<ValidationResult?> validate(
-      BuildContext context, String? value) async {
+      BuildContext context, String? value, FormValidationMode state) async {
     if (value == null) {
       return null;
     }
@@ -171,7 +225,8 @@ class CompareWith<T extends Comparable<T>> extends Validator<T> {
   }
 
   @override
-  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode state) async {
     var localizations = Localizations.of(context, ShadcnLocalizations);
     var otherValue = context.getFormValue(key);
     if (otherValue == null) {
@@ -236,7 +291,7 @@ class SafePasswordValidator extends Validator<String> {
 
   @override
   Future<ValidationResult?> validate(
-      BuildContext context, String? value) async {
+      BuildContext context, String? value, FormValidationMode state) async {
     if (value == null) {
       return null;
     }
@@ -269,7 +324,8 @@ class MinValidator<T extends num> extends Validator<T> {
   const MinValidator(this.min, {this.inclusive = true, this.message});
 
   @override
-  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode state) async {
     if (value == null) {
       return null;
     }
@@ -299,7 +355,8 @@ class MaxValidator<T extends num> extends Validator<T> {
   const MaxValidator(this.max, {this.inclusive = true, this.message});
 
   @override
-  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode state) async {
     if (value == null) {
       return null;
     }
@@ -330,7 +387,8 @@ class RangeValidator<T extends num> extends Validator<T> {
       {this.inclusive = true, this.message});
 
   @override
-  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode state) async {
     if (value == null) {
       return null;
     }
@@ -360,7 +418,7 @@ class RegexValidator extends Validator<String> {
 
   @override
   Future<ValidationResult?> validate(
-      BuildContext context, String? value) async {
+      BuildContext context, String? value, FormValidationMode state) async {
     if (value == null) {
       return null;
     }
@@ -381,7 +439,7 @@ class EmailValidator extends Validator<String> {
 
   @override
   Future<ValidationResult?> validate(
-      BuildContext context, String? value) async {
+      BuildContext context, String? value, FormValidationMode state) async {
     if (value == null) {
       return null;
     }
@@ -401,7 +459,7 @@ class URLValidator extends Validator<String> {
 
   @override
   Future<ValidationResult?> validate(
-      BuildContext context, String? value) async {
+      BuildContext context, String? value, FormValidationMode state) async {
     if (value == null) {
       return null;
     }
@@ -445,7 +503,8 @@ class CompareTo<T extends Comparable<T>> extends Validator<T> {
   }
 
   @override
-  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode state) async {
     var localizations = Localizations.of(context, ShadcnLocalizations);
     var compare = _compare(value, this.value);
     switch (type) {
@@ -490,9 +549,10 @@ class CompositeValidator<T> extends Validator<T> {
   const CompositeValidator(this.validators);
 
   @override
-  Future<ValidationResult?> validate(BuildContext context, T? value) async {
+  Future<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode state) async {
     for (var validator in validators) {
-      var result = await validator.validate(context, value);
+      var result = await validator.validate(context, value, state);
       if (result != null) {
         return result;
       }
@@ -564,8 +624,6 @@ class FormKey<T> extends LocalKey {
   }
 }
 
-mixin FormValueInput<T> on State<StatefulWidget> {}
-
 class FormEntry<T> extends StatefulWidget {
   final Widget child;
   final Validator<T>? validator;
@@ -582,6 +640,7 @@ class FormEntry<T> extends StatefulWidget {
 
 class FormEntryState extends State<FormEntry> {
   FormController? _controller;
+  Object? _cachedValue;
   final ValueNotifier<ValidationResult?> _validity = ValueNotifier(null);
 
   ValueListenable<ValidationResult?> get validity => _validity;
@@ -599,6 +658,9 @@ class FormEntryState extends State<FormEntry> {
       oldController?.detach(widget.key);
       newController?.addListener(_onControllerChanged);
       _controller = newController;
+      _onControllerChanged();
+      newController?.attach(
+          context, widget.key, _cachedValue, widget.validator);
     }
   }
 
@@ -610,7 +672,7 @@ class FormEntryState extends State<FormEntry> {
   }
 
   void _onControllerChanged() {
-    var validityFuture = _controller?.getState(widget.key)?.validity;
+    var validityFuture = _controller?.getError(widget.key);
     if (validityFuture == _toWait) {
       return;
     }
@@ -634,14 +696,13 @@ class FormEntryState extends State<FormEntry> {
 
 class FormValueState<T> {
   final T? value;
-  final Future<ValidationResult?>? validity;
   final Validator<T>? validator;
 
-  FormValueState({this.value, this.validity, this.validator});
+  FormValueState({this.value, this.validator});
 
   @override
   String toString() {
-    return 'FormValueState($value, $validity, $validator)';
+    return 'FormValueState($value, $validator)';
   }
 }
 
@@ -661,6 +722,7 @@ class Form extends StatefulWidget {
 
 class FormController extends ChangeNotifier {
   final Map<FormKey, FormValueState> _attachedInputs = {};
+  final Map<FormKey, Future<ValidationResult?>> _validity = {};
 
   Map<FormKey, dynamic> get values {
     return {
@@ -668,23 +730,54 @@ class FormController extends ChangeNotifier {
     };
   }
 
-  Map<FormKey, Future<ValidationResult?>> get errors {
-    return {
-      for (var entry in _attachedInputs.entries)
-        if (entry.value.validity != null) entry.key: entry.value.validity!
-    };
+  Map<FormKey, Future<ValidationResult?>> get validities {
+    return Map.unmodifiable(_validity);
+  }
+
+  Future<ValidationResult?>? getError(FormKey key) {
+    return _validity[key];
   }
 
   FormValueState? getState(FormKey key) {
     return _attachedInputs[key];
   }
 
-  void attach(BuildContext context, FormKey key, FormValueState state) {
-    final oldState = _attachedInputs[key];
-    if (oldState == state) {
-      return;
+  void revalidate(BuildContext context, FormValidationMode state) {
+    bool changed = false;
+    for (var entry in _attachedInputs.entries) {
+      var key = entry.key;
+      var value = entry.value;
+      if (value.validator != null) {
+        var future = value.validator!.validate(context, value.value, state);
+        if (_validity[key] != future) {
+          _validity[key] = future;
+          changed = true;
+        }
+      }
     }
+    if (changed) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        notifyListeners();
+      });
+    }
+  }
+
+  Future<ValidationResult?>? attach(
+      BuildContext context, FormKey key, Object? value, Validator? validator) {
+    final oldState = _attachedInputs[key];
+    var state = FormValueState(value: value, validator: validator);
+    if (oldState == state) {
+      return null;
+    }
+    var lifecycle = oldState == null
+        ? FormValidationMode.initial
+        : FormValidationMode.changed;
     _attachedInputs[key] = state;
+    // validate
+    var future = validator?.validate(context, value, lifecycle);
+    if (future != null) {
+      _validity[key] = future;
+    }
     // check for revalidation
     Map<FormKey, Future<ValidationResult?>> revalidate = {};
     for (var entry in _attachedInputs.entries) {
@@ -694,7 +787,8 @@ class FormController extends ChangeNotifier {
         continue;
       }
       if (value.validator != null && value.validator!.shouldRevalidate(key)) {
-        revalidate[k] = value.validator!.validate(context, value.value);
+        revalidate[k] =
+            value.validator!.validate(context, value.value, lifecycle);
       }
     }
     for (var entry in revalidate.entries) {
@@ -702,19 +796,20 @@ class FormController extends ChangeNotifier {
       var future = entry.value;
       var attachedInput = _attachedInputs[k]!;
       attachedInput = FormValueState(
-          value: attachedInput.value,
-          validity: future,
-          validator: attachedInput.validator);
+          value: attachedInput.value, validator: attachedInput.validator);
       _attachedInputs[k] = attachedInput;
+      _validity[k] = future;
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       notifyListeners();
     });
+    return future;
   }
 
   void detach(FormKey key) {
     if (_attachedInputs.containsKey(key)) {
       _attachedInputs.remove(key);
+      _validity.remove(key);
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         notifyListeners();
       });
@@ -792,14 +887,7 @@ class FormErrorBuilder extends StatelessWidget {
       return AnimatedBuilder(
         animation: formController,
         builder: (context, child) {
-          final errors = <FormKey, Future<ValidationResult?>>{};
-          for (var entry in formController._attachedInputs.entries) {
-            var key = entry.key;
-            var value = entry.value;
-            if (value.validity != null) {
-              errors[key] = value.validity!;
-            }
-          }
+          final errors = formController.validities;
           // future builder
           return FutureBuilder<List<MapEntry<FormKey, ValidationResult?>>>(
             future: Future.wait(errors.entries.map((entry) async {
@@ -861,11 +949,13 @@ extension FormExtension on BuildContext {
       var key = entry.key;
       var value = entry.value;
       values[key] = value.value;
-      if (value.validity != null) {
-        var result = await value.validity!;
-        if (result != null) {
-          errors[key] = result;
-        }
+    }
+    formController.revalidate(this, FormValidationMode.submitted);
+    for (var entry in formController._validity.entries) {
+      var key = entry.key;
+      var value = await entry.value;
+      if (value != null) {
+        errors[key] = value;
       }
     }
     if (errors.isNotEmpty) {
@@ -881,37 +971,16 @@ extension FormExtension on BuildContext {
       final formEntry = Data.maybeOf<FormEntryState>(this);
       if (formEntry != null) {
         var formKey = formEntry.widget.key;
-        if (formKey.isInstanceOf(value)) {
+        if (formKey.isInstanceOf(value) && formEntry._cachedValue != value) {
+          formEntry._cachedValue = value;
           final oldState = formController.getState(formKey);
           if (oldState != null) {
             if (oldState.value == value) {
               return null;
             }
-            final oldFuture = oldState.validity;
-            if (oldFuture != null) {
-              return oldFuture.then((oldValidity) async {
-                var validity =
-                    formEntry.widget.validator?.validate(this, value);
-                formController.attach(
-                    this,
-                    formKey,
-                    FormValueState(
-                        value: value,
-                        validity: validity,
-                        validator: formEntry.widget.validator));
-                return validity;
-              });
-            }
           }
-          var validity = formEntry.widget.validator?.validate(this, value);
-          formController.attach(
-              this,
-              formKey,
-              FormValueState(
-                  value: value,
-                  validity: validity,
-                  validator: formEntry.widget.validator));
-          return validity;
+          return formController.attach(
+              this, formKey, value, formEntry.widget.validator);
         }
       }
     }
@@ -1145,6 +1214,150 @@ class FormTableLayout extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+}
+
+class SubmitButton extends StatefulWidget {
+  final ButtonStyle? style;
+  final Widget child;
+  final Widget? loading;
+  final Widget? error;
+  final Widget? leading;
+  final Widget? trailing;
+  final Widget? loadingLeading;
+  final Widget? loadingTrailing;
+  final Widget? errorLeading;
+  final Widget? errorTrailing;
+  final AlignmentGeometry? alignment;
+  final bool disableHoverEffect;
+  final bool? enabled;
+  final bool? enableFeedback;
+  final bool trailingExpanded;
+  final bool disableTransition;
+  final FocusNode? focusNode;
+
+  const SubmitButton({
+    required this.child,
+    this.style,
+    this.loading,
+    this.error,
+    this.leading,
+    this.trailing,
+    this.alignment,
+    this.loadingLeading,
+    this.loadingTrailing,
+    this.errorLeading,
+    this.errorTrailing,
+    this.disableHoverEffect = false,
+    this.enabled,
+    this.enableFeedback,
+    this.trailingExpanded = false,
+    this.disableTransition = false,
+    this.focusNode,
+  });
+
+  @override
+  widgets.State<SubmitButton> createState() => _SubmitButtonState();
+}
+
+class _SubmitButtonState extends widgets.State<SubmitButton> {
+  Future<bool>? _future;
+  FormController? _controller;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var oldController = _controller;
+    var newController = Data.maybeOf<FormController>(context);
+    if (oldController != newController) {
+      oldController?.removeListener(_onControllerChanged);
+      newController?.addListener(_onControllerChanged);
+      _controller = newController;
+      if (_controller != null) {
+        _onControllerChanged();
+      }
+    }
+  }
+
+  void _onControllerChanged() {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _future = _hasError();
+    });
+  }
+
+  Future<bool> _hasError() async {
+    if (_controller == null) {
+      return false;
+    }
+    for (var entry in _controller!._validity.entries) {
+      var value = await entry.value;
+      if (value != null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @override
+  Widget build(widgets.BuildContext context) {
+    return FutureBuilder(
+      future: _future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Button(
+            child: widget.loading ?? widget.child,
+            leading: widget.loadingLeading ?? widget.leading,
+            trailing: widget.loadingTrailing ?? widget.trailing,
+            alignment: widget.alignment,
+            disableHoverEffect: widget.disableHoverEffect,
+            enabled: false,
+            enableFeedback: false,
+            trailingExpanded: widget.trailingExpanded,
+            disableTransition: widget.disableTransition,
+            focusNode: widget.focusNode,
+            style: widget.style ?? ButtonStyle.primary(),
+          );
+        }
+        if (snapshot.hasData && snapshot.requireData) {
+          return Button(
+            child: widget.error ?? widget.child,
+            leading: widget.errorLeading ?? widget.leading,
+            trailing: widget.errorTrailing ?? widget.trailing,
+            alignment: widget.alignment,
+            disableHoverEffect: widget.disableHoverEffect,
+            enabled: false,
+            enableFeedback: true,
+            trailingExpanded: widget.trailingExpanded,
+            disableTransition: widget.disableTransition,
+            focusNode: widget.focusNode,
+            style: widget.style ?? ButtonStyle.primary(),
+          );
+        }
+        return Button(
+          child: widget.child,
+          trailing: widget.trailing,
+          leading: widget.leading,
+          alignment: widget.alignment,
+          disableHoverEffect: widget.disableHoverEffect,
+          enabled: widget.enabled,
+          enableFeedback: widget.enableFeedback,
+          onPressed: () {
+            setState(() {
+              _future = context.submitForm().then((value) {
+                return value.errors.isNotEmpty;
+              });
+            });
+          },
+          trailingExpanded: widget.trailingExpanded,
+          disableTransition: widget.disableTransition,
+          focusNode: widget.focusNode,
+          style: widget.style ?? ButtonStyle.primary(),
+        );
+      },
     );
   }
 }
