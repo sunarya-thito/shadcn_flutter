@@ -367,7 +367,8 @@ class _SelectState<T> extends State<Select<T>> {
         onPressed: widget.onChanged == null
             ? null
             : () {
-                _popoverController.show(
+                _popoverController
+                    .show(
                   context: context,
                   alignment: widget.popoverAlignment,
                   anchorAlignment: widget.popoverAnchorAlignment,
@@ -386,6 +387,11 @@ class _SelectState<T> extends State<Select<T>> {
                       surfaceOpacity: widget.surfaceOpacity,
                       children: widget.children,
                     );
+                  },
+                )
+                    .then(
+                  (value) {
+                    _focusNode.requestFocus();
                   },
                 );
               },
