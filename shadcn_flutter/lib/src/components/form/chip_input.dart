@@ -2,17 +2,23 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class ChipInput extends StatefulWidget {
+typedef ChipWidgetBuilder<T> = Widget Function(BuildContext context, T chip);
+
+class ChipInput<T> extends StatefulWidget {
   final TextEditingController? controller;
   final BoxConstraints popoverConstraints;
   final UndoHistoryController? undoHistoryController;
   final ValueChanged<String>? onSubmitted;
   final String? initialText;
   final FocusNode? focusNode;
-  final List<Widget> suggestions;
-  final List<Widget> chips;
+  final List<T> suggestions;
+  final List<T> chips;
   final List<TextInputFormatter>? inputFormatters;
   final void Function(int index)? onSuggestionChoosen;
+  final ValueChanged<List<T>>? onChanged;
+  final ChipWidgetBuilder<T> chipBuilder;
+  final ChipWidgetBuilder<T>? suggestionBuilder;
+  final bool useChips;
   const ChipInput({
     Key? key,
     this.controller,
@@ -27,16 +33,20 @@ class ChipInput extends StatefulWidget {
     this.chips = const [],
     this.inputFormatters,
     this.onSuggestionChoosen,
+    this.onChanged,
+    this.useChips = true,
+    this.suggestionBuilder,
+    required this.chipBuilder,
   }) : super(key: key);
 
   @override
-  State<ChipInput> createState() => ChipInputState();
+  State<ChipInput<T>> createState() => ChipInputState();
 }
 
-class ChipInputState extends State<ChipInput> {
+class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
   late FocusNode _focusNode;
   late TextEditingController _controller;
-  late ValueNotifier<List<Widget>> _suggestions;
+  late ValueNotifier<List<T>> _suggestions;
   final ValueNotifier<int> _selectedSuggestions = ValueNotifier(-1);
   final PopoverController _popoverController = PopoverController();
 
@@ -73,11 +83,35 @@ class ChipInputState extends State<ChipInput> {
   }
 
   Widget _chipBuilder(int index) {
-    return widget.chips[index];
+    if (!widget.useChips) {
+      return widget.chipBuilder(context, widget.chips[index]);
+    }
+    return Chip(
+      child: widget.chipBuilder(context, widget.chips[index]),
+      trailing: ChipButton(
+        onPressed: () {
+          List<T> chips = List.of(widget.chips);
+          chips.removeAt(index);
+          widget.onChanged?.call(chips);
+        },
+        child: const Icon(Icons.close),
+      ),
+    );
   }
 
   @override
-  void didUpdateWidget(covariant ChipInput oldWidget) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    reportNewFormValue(
+      widget.chips,
+      (value) {
+        widget.onChanged?.call(value);
+      },
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant ChipInput<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {}
     if (widget.focusNode != oldWidget.focusNode) {
@@ -87,6 +121,14 @@ class ChipInputState extends State<ChipInput> {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         _suggestions.value = widget.suggestions;
       });
+    }
+    if (!listEquals(widget.chips, oldWidget.chips)) {
+      reportNewFormValue(
+        widget.chips,
+        (value) {
+          widget.onChanged?.call(value);
+        },
+      );
     }
   }
 
@@ -107,14 +149,18 @@ class ChipInputState extends State<ChipInput> {
                       padding: EdgeInsets.all(theme.scaling * 4),
                       children: [
                         for (int i = 0; i < _suggestions.value.length; i++)
-                          Toggle(
+                          SelectedButton(
+                            style: ButtonStyle.ghost(),
+                            selectedStyle: ButtonStyle.secondary(),
                             value: i == _selectedSuggestions.value,
                             onChanged: (value) {
                               if (value) {
                                 widget.onSuggestionChoosen?.call(i);
                               }
                             },
-                            child: _suggestions.value[i],
+                            child: widget.suggestionBuilder
+                                    ?.call(context, _suggestions.value[i]) ??
+                                Text(_suggestions.value[i].toString()),
                           ),
                       ]);
                 }),
@@ -222,9 +268,15 @@ class ChipInputState extends State<ChipInput> {
                     Wrap(
                       runSpacing: theme.scaling * 4,
                       spacing: theme.scaling * 4,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         for (int i = 0; i < widget.chips.length; i++)
                           _chipBuilder(i),
+                        if (_controller.text.isNotEmpty) Gap(4),
+                        if (_controller.text.isNotEmpty)
+                          Text(
+                            _controller.text,
+                          ).base(),
                       ],
                     ).withPadding(all: theme.scaling * 4),
                   ],

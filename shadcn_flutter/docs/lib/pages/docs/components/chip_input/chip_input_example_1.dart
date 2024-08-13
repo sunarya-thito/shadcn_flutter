@@ -6,7 +6,7 @@ class ChipInputExample1 extends StatefulWidget {
 }
 
 class _ChipInputExample1State extends State<ChipInputExample1> {
-  final List<String> _chips = [];
+  List<String> _chips = [];
   final List<String> _suggestions = [];
   final TextEditingController _controller = TextEditingController();
   static const List<String> _availableSuggestions = [
@@ -37,7 +37,7 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
 
   @override
   Widget build(BuildContext context) {
-    return ChipInput(
+    return ChipInput<String>(
       controller: _controller,
       onSubmitted: (value) {
         setState(() {
@@ -46,32 +46,22 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
           _controller.clear();
         });
       },
-      suggestions: _suggestions.map(
-        (e) {
-          return Text(e);
-        },
-      ).toList(),
+      suggestions: _suggestions,
       onSuggestionChoosen: (index) {
         setState(() {
           _chips.add(_suggestions[index]);
           _controller.clear();
         });
       },
-      chips: _chips.map(
-        (e) {
-          return Chip(
-            trailing: ChipButton(
-              onPressed: () {
-                setState(() {
-                  _chips.remove(e);
-                });
-              },
-              child: const Icon(Icons.close),
-            ),
-            child: Text(e),
-          );
-        },
-      ).toList(),
+      onChanged: (value) {
+        setState(() {
+          _chips = value;
+        });
+      },
+      chips: _chips,
+      chipBuilder: (context, chip) {
+        return Text(chip);
+      },
     );
   }
 }
