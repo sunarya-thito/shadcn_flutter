@@ -333,7 +333,7 @@ class _RepeatedAnimationBuilderState<T>
           curve: widget.reverseCurve ?? widget.curve,
           reverseCurve: widget.curve,
         );
-        _animation = _controller.drive(
+        _animation = _curvedAnimation.drive(
           _AnimatableValue(
             start: widget.end,
             end: widget.start,
@@ -350,7 +350,7 @@ class _RepeatedAnimationBuilderState<T>
           curve: widget.curve,
           reverseCurve: widget.reverseCurve ?? widget.curve,
         );
-        _animation = _controller.drive(
+        _animation = _curvedAnimation.drive(
           _AnimatableValue(
             start: widget.start,
             end: widget.end,
@@ -421,17 +421,35 @@ class IntervalDuration extends Curve {
     this.curve,
   });
 
+  factory IntervalDuration.delayed({
+    Duration? startDelay,
+    Duration? endDelay,
+    required Duration duration,
+  }) {
+    if (startDelay != null) {
+      duration += startDelay;
+    }
+    if (endDelay != null) {
+      duration += endDelay;
+    }
+    return IntervalDuration(
+      start: startDelay,
+      end: endDelay == null ? null : duration - endDelay,
+      duration: duration,
+    );
+  }
+
   @override
   double transform(double t) {
     double progressStartInterval;
     double progressEndInterval;
     if (start != null) {
-      progressStartInterval = start!.inMilliseconds / duration.inMilliseconds;
+      progressStartInterval = start!.inMicroseconds / duration.inMicroseconds;
     } else {
       progressStartInterval = 0;
     }
     if (end != null) {
-      progressEndInterval = end!.inMilliseconds / duration.inMilliseconds;
+      progressEndInterval = end!.inMicroseconds / duration.inMicroseconds;
     } else {
       progressEndInterval = 1;
     }
