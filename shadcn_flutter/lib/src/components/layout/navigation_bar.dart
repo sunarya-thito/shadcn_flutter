@@ -379,10 +379,7 @@ class _NavigationButtonState extends State<NavigationButton> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (direction == Axis.horizontal)
-            widget.child.iconXLarge()
-          else
-            widget.child.large(),
+          widget.child.iconLarge(),
           Flexible(
             child: AnimatedSize(
               alignment: direction == Axis.vertical
