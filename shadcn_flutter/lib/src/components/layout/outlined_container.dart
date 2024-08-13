@@ -50,6 +50,8 @@ class OutlinedContainer extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
   final double? surfaceOpacity;
   final double? surfaceBlur;
+  final double? width;
+  final double? height;
   const OutlinedContainer({
     Key? key,
     required this.child,
@@ -63,6 +65,8 @@ class OutlinedContainer extends StatefulWidget {
     this.padding,
     this.surfaceOpacity,
     this.surfaceBlur,
+    this.width,
+    this.height,
   }) : super(key: key);
 
   @override
@@ -84,6 +88,8 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
     }
     Widget childWidget = AnimatedContainer(
       key: _mainContainerKey,
+      width: widget.width,
+      height: widget.height,
       duration: kDefaultDuration,
       decoration: BoxDecoration(
         color: backgroundColor,

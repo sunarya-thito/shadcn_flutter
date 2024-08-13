@@ -16,11 +16,7 @@ class NavigationBarExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: SizedBox(
-            width: 500,
-            height: 400,
-            child: OutlinedContainer(child: NavigationBarExample1()),
-          ),
+          child: NavigationBarExample1(),
           path:
               'lib/pages/docs/components/navigation_bar/navigation_bar_example_1.dart',
         ),

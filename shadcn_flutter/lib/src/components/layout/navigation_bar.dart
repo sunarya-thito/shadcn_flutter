@@ -1,6 +1,15 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-enum NavigationAlignment {
+enum NavigationBarAlignment {
+  start,
+  center,
+  end,
+  spaceBetween,
+  spaceAround,
+  spaceEvenly,
+}
+
+enum NavigationRailAlignment {
   start,
   center,
   end,
@@ -16,25 +25,52 @@ class NavigationBar extends StatelessWidget {
   final Color? backgroundColor;
   final bool extended;
   final List<Widget> children;
-  final NavigationAlignment alignment;
+  final NavigationBarAlignment alignment;
   final Axis direction;
   final double? spacing;
   final NavigationLabelType labelType;
   final EdgeInsetsGeometry? padding;
   final BoxConstraints? constraints;
+  final bool expands;
 
   const NavigationBar({
     Key? key,
     this.backgroundColor,
     this.extended = true,
-    this.alignment = NavigationAlignment.center,
+    this.alignment = NavigationBarAlignment.center,
     this.direction = Axis.horizontal,
     this.spacing,
     this.labelType = NavigationLabelType.selected,
     this.padding,
     this.constraints,
+    this.expands = false,
     required this.children,
   }) : super(key: key);
+
+  AlignmentGeometry get _alignment {
+    switch ((alignment, direction)) {
+      case (NavigationBarAlignment.start, Axis.horizontal):
+        return AlignmentDirectional.centerStart;
+      case (NavigationBarAlignment.center, Axis.horizontal):
+        return AlignmentDirectional.topCenter;
+      case (NavigationBarAlignment.end, Axis.horizontal):
+        return AlignmentDirectional.centerEnd;
+      case (NavigationBarAlignment.start, Axis.vertical):
+        return AlignmentDirectional.topCenter;
+      case (NavigationBarAlignment.center, Axis.vertical):
+        return AlignmentDirectional.center;
+      case (NavigationBarAlignment.end, Axis.vertical):
+        return AlignmentDirectional.bottomCenter;
+      case (NavigationBarAlignment.spaceBetween, Axis.horizontal):
+      case (NavigationBarAlignment.spaceAround, Axis.horizontal):
+      case (NavigationBarAlignment.spaceEvenly, Axis.horizontal):
+        return AlignmentDirectional.centerStart;
+      case (NavigationBarAlignment.spaceBetween, Axis.vertical):
+      case (NavigationBarAlignment.spaceAround, Axis.vertical):
+      case (NavigationBarAlignment.spaceEvenly, Axis.vertical):
+        return AlignmentDirectional.topCenter;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +80,41 @@ class NavigationBar extends StatelessWidget {
         (const EdgeInsets.symmetric(vertical: 8, horizontal: 12) * scaling);
     var directionality = Directionality.of(context);
     var resolvedPadding = parentPadding.resolve(directionality);
+    List<Widget> children = [];
+    if (!expands) {
+      children = List.of(this.children);
+    } else {
+      if (alignment == NavigationBarAlignment.spaceEvenly) {
+        children.add(Spacer());
+        for (var i = 0; i < this.children.length; i++) {
+          children.add(Expanded(child: this.children[i]));
+        }
+        children.add(Spacer());
+      } else if (alignment == NavigationBarAlignment.spaceAround) {
+        children.add(Spacer());
+        for (var i = 0; i < this.children.length; i++) {
+          children.add(Expanded(
+            child: this.children[i],
+            flex: 2,
+          ));
+        }
+        children.add(Spacer());
+      } else if (alignment == NavigationBarAlignment.spaceBetween) {
+        for (var i = 0; i < this.children.length; i++) {
+          if (i > 0) {
+            children.add(Spacer());
+          }
+          children.add(Expanded(
+            child: this.children[i],
+            flex: 2,
+          ));
+        }
+      } else {
+        for (var i = 0; i < this.children.length; i++) {
+          children.add(Expanded(child: this.children[i]));
+        }
+      }
+    }
     return Data.inherit(
       data: NavigationControlData(
         containerType: NavigationContainerType.bar,
@@ -51,17 +122,21 @@ class NavigationBar extends StatelessWidget {
         parentPadding: resolvedPadding,
         direction: direction,
       ),
-      child: Container(
+      child: AnimatedContainer(
+        duration: kDefaultDuration,
         color: backgroundColor,
+        alignment: _alignment,
         padding: resolvedPadding,
         child: _wrapIntrinsic(
           Flex(
             direction: direction,
-            mainAxisAlignment: alignment == NavigationAlignment.start
-                ? MainAxisAlignment.start
-                : alignment == NavigationAlignment.center
-                    ? MainAxisAlignment.center
-                    : MainAxisAlignment.end,
+            mainAxisAlignment: alignment == NavigationBarAlignment.spaceBetween
+                ? MainAxisAlignment.spaceBetween
+                : alignment == NavigationBarAlignment.spaceAround
+                    ? MainAxisAlignment.spaceAround
+                    : alignment == NavigationBarAlignment.spaceEvenly
+                        ? MainAxisAlignment.spaceEvenly
+                        : MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: children,
           ).gap(spacing ?? (8 * scaling)),
@@ -131,19 +206,87 @@ class _GapHeader extends SliverPersistentHeaderDelegate {
   }
 }
 
-// basically a copy of the NavigationBar class, but with different direction (vertical)
-class NavigationRail extends NavigationBar {
+class NavigationRail extends StatelessWidget {
+  final Color? backgroundColor;
+  final bool extended;
+  final List<Widget> children;
+  final NavigationRailAlignment alignment;
+  final Axis direction;
+  final double? spacing;
+  final NavigationLabelType labelType;
+  final EdgeInsetsGeometry? padding;
+  final BoxConstraints? constraints;
+
   const NavigationRail({
-    super.key,
-    super.backgroundColor,
-    super.extended,
-    super.alignment = NavigationAlignment.center,
-    super.direction = Axis.vertical,
-    super.spacing,
-    super.labelType = NavigationLabelType.selected,
-    super.padding,
-    required super.children,
-  });
+    Key? key,
+    this.backgroundColor,
+    this.extended = true,
+    this.alignment = NavigationRailAlignment.center,
+    this.direction = Axis.vertical,
+    this.spacing,
+    this.labelType = NavigationLabelType.selected,
+    this.padding,
+    this.constraints,
+    required this.children,
+  }) : super(key: key);
+
+  AlignmentGeometry get _alignment {
+    switch ((alignment, direction)) {
+      case (NavigationRailAlignment.start, Axis.horizontal):
+        return AlignmentDirectional.centerStart;
+      case (NavigationRailAlignment.center, Axis.horizontal):
+        return AlignmentDirectional.topCenter;
+      case (NavigationRailAlignment.end, Axis.horizontal):
+        return AlignmentDirectional.centerEnd;
+      case (NavigationRailAlignment.start, Axis.vertical):
+        return AlignmentDirectional.topCenter;
+      case (NavigationRailAlignment.center, Axis.vertical):
+        return AlignmentDirectional.center;
+      case (NavigationRailAlignment.end, Axis.vertical):
+        return AlignmentDirectional.bottomCenter;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    var parentPadding = padding ??
+        (const EdgeInsets.symmetric(vertical: 8, horizontal: 12) * scaling);
+    var directionality = Directionality.of(context);
+    var resolvedPadding = parentPadding.resolve(directionality);
+    return Data.inherit(
+      data: NavigationControlData(
+        containerType: NavigationContainerType.rail,
+        parentLabelType: labelType,
+        parentPadding: resolvedPadding,
+        direction: direction,
+      ),
+      child: AnimatedContainer(
+        duration: kDefaultDuration,
+        color: backgroundColor,
+        alignment: _alignment,
+        child: SingleChildScrollView(
+          scrollDirection: direction,
+          padding: resolvedPadding,
+          child: _wrapIntrinsic(
+            Flex(
+              direction: direction,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: children,
+            ).gap(spacing ?? (8 * scaling)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _wrapIntrinsic(Widget child) {
+    if (direction == Axis.horizontal) {
+      return IntrinsicHeight(child: child);
+    }
+    return IntrinsicWidth(child: child);
+  }
 }
 
 class NavigationSidebar extends StatelessWidget {
@@ -322,11 +465,17 @@ class NavigationButton extends StatefulWidget {
   final double? spacing;
   final bool selected;
   final ValueChanged<bool> onChanged;
+  final ButtonStyle? style;
+  final ButtonStyle? selectedStyle;
+  final AlignmentGeometry? alignment;
 
   const NavigationButton({
     Key? key,
     this.spacing,
     this.label,
+    this.style,
+    this.selectedStyle,
+    this.alignment,
     required this.onChanged,
     required this.selected,
     required this.child,
@@ -361,13 +510,24 @@ class _NavigationButtonState extends State<NavigationButton> {
       return SelectedButton(
         value: widget.selected,
         onChanged: widget.onChanged,
+        style: widget.style ?? ButtonStyle.ghost(),
+        selectedStyle: widget.selectedStyle ?? ButtonStyle.secondary(),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            widget.child,
+            Align(
+              alignment: widget.alignment ?? AlignmentDirectional.centerStart,
+              child: widget.child,
+            ),
             if (widget.label != null) Gap(widget.spacing ?? (8 * scaling)),
             if (widget.label != null)
-              Flexible(child: OverflowMarquee(child: widget.label!)),
+              Flexible(
+                child: Align(
+                  alignment:
+                      widget.alignment ?? AlignmentDirectional.centerStart,
+                  child: OverflowMarquee(child: widget.label!),
+                ),
+              ),
           ],
         ),
       );
@@ -375,40 +535,50 @@ class _NavigationButtonState extends State<NavigationButton> {
     return SelectedButton(
       value: widget.selected,
       onChanged: widget.onChanged,
+      style: widget.style ??
+          ButtonStyle.ghost(
+            density: ButtonDensity.icon,
+          ),
+      selectedStyle: widget.selectedStyle ??
+          ButtonStyle.secondary(
+            density: ButtonDensity.icon,
+          ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          widget.child.iconLarge(),
-          Flexible(
-            child: AnimatedSize(
-              alignment: direction == Axis.vertical
-                  ? Alignment.topCenter
-                  : Alignment.center,
-              duration: kDefaultDuration,
-              curve: Curves.easeInOut,
-              child: SizedBox(
-                height: (widget.label != null &&
-                        (labelType == NavigationLabelType.all ||
-                            widget.selected))
-                    ? null
-                    : 0,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Gap(widget.spacing ?? (8 * scaling)),
-                    DefaultTextStyle.merge(
-                      textAlign: TextAlign.center,
-                      child: OverflowMarquee(
-                        child: widget.label!.xSmall(),
+          widget.child,
+          if (data?.parentLabelType != NavigationLabelType.none &&
+              widget.label != null)
+            Flexible(
+              child: AnimatedSize(
+                alignment: direction == Axis.vertical
+                    ? Alignment.topCenter
+                    : Alignment.center,
+                duration: kDefaultDuration,
+                curve: Curves.easeInOut,
+                child: SizedBox(
+                  height: (widget.label != null &&
+                          (labelType == NavigationLabelType.all ||
+                              widget.selected))
+                      ? null
+                      : 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Gap(widget.spacing ?? (8 * scaling)),
+                      DefaultTextStyle.merge(
+                        textAlign: TextAlign.center,
+                        child: OverflowMarquee(
+                          child: widget.label!.xSmall(),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
