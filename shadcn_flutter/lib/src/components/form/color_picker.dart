@@ -48,11 +48,12 @@ class HSVColorPicker extends StatelessWidget {
         onChanged?.call(value!);
       },
       builder: (context, value) {
-        return IntrinsicWidth(
+        return IntrinsicHeight(
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(child: Text(colorToHex(value.toColor(), showAlpha))),
+              Flexible(child: Text(colorToHex(value.toColor(), showAlpha))),
               Gap(theme.scaling * 8),
               AspectRatio(
                 aspectRatio: 1,

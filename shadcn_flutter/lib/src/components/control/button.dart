@@ -486,35 +486,51 @@ class ButtonState<T extends Button> extends State<T> {
             })
           : null,
       onPressed: widget.onPressed,
-      child: IntrinsicWidth(
-        child: IntrinsicHeight(
-            child: !widget.trailingExpanded
-                ? Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (widget.leading != null) widget.leading!,
-                      Expanded(
-                        child: Align(
-                          alignment: widget.alignment ?? Alignment.centerLeft,
-                          child: UnderlineInterceptor(child: widget.child),
-                        ),
-                      ),
-                      if (widget.trailing != null) widget.trailing!,
-                    ].joinSeparator(SizedBox(width: 8 * scaling)),
-                  )
-                : Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (widget.leading != null) widget.leading!,
-                      Align(
-                        alignment: widget.alignment ?? Alignment.centerLeft,
-                        child: UnderlineInterceptor(child: widget.child),
-                      ),
-                      if (widget.trailing != null)
-                        Flexible(child: widget.trailing!),
-                    ].joinSeparator(SizedBox(width: 8 * scaling)),
-                  )),
-      ),
+      child: widget.leading == null && widget.trailing == null
+          ? widget.alignment == null
+              ? UnderlineInterceptor(
+                  child: widget.child,
+                )
+              : Align(
+                  alignment: widget.alignment!,
+                  child: UnderlineInterceptor(
+                    child: widget.child,
+                  ),
+                )
+          : IntrinsicWidth(
+              child: IntrinsicHeight(
+                  child: !widget.trailingExpanded
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (widget.leading != null) widget.leading!,
+                            Expanded(
+                              child: Align(
+                                alignment:
+                                    widget.alignment ?? Alignment.centerLeft,
+                                child:
+                                    UnderlineInterceptor(child: widget.child),
+                              ),
+                            ),
+                            if (widget.trailing != null) widget.trailing!,
+                          ].joinSeparator(SizedBox(width: 8 * scaling)),
+                        )
+                      : Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (widget.leading != null) widget.leading!,
+                            Align(
+                              alignment:
+                                  widget.alignment ?? Alignment.centerLeft,
+                              child: UnderlineInterceptor(child: widget.child),
+                            ),
+                            if (widget.trailing != null)
+                              Flexible(child: widget.trailing!),
+                          ].joinSeparator(SizedBox(width: 8 * scaling)),
+                        )),
+            ),
     );
   }
 }
