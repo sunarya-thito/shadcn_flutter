@@ -57,7 +57,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('76 components and growing!').li(),
+              const Text('79 components and growing!').li(),
               const Text(
                       'Supports both Material and Cupertino Widgets with theme being able to adapt to the current shadcn_flutter theme.')
                   .li(),
