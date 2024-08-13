@@ -452,6 +452,7 @@ class ButtonState<T extends Button> extends State<T> {
     final scaling = theme.scaling;
     bool enableFeedback = widget.enableFeedback ?? _shouldEnableFeedback;
     return Clickable(
+      focusNode: widget.focusNode,
       enabled: widget.enabled ?? widget.onPressed != null,
       disableTransition: widget.disableTransition,
       onHover: widget.onHover,
