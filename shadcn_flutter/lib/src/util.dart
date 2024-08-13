@@ -438,7 +438,7 @@ extension FlexExtension on Flex {
       textBaseline: textBaseline,
       children: join(
         children,
-        SizedBox(width: gap),
+        Gap(gap),
       ).toList(growable: false),
     );
   }
