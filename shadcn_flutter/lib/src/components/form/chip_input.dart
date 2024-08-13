@@ -53,16 +53,20 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
   @override
   void initState() {
     super.initState();
-    _suggestions = ValueNotifier(widget.suggestions);
+    _suggestions = ValueNotifier([]);
     _focusNode = widget.focusNode ?? FocusNode();
     _controller = widget.controller ?? TextEditingController();
     _suggestions.addListener(_onSuggestionsChanged);
     _focusNode.addListener(_onSuggestionsChanged);
+    if (widget.suggestions.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _suggestions.value = widget.suggestions;
+      });
+    }
   }
 
   void _onSuggestionsChanged() {
-    if ((_suggestions.value.isEmpty || !_focusNode.hasFocus) &&
-        _popoverController.hasOpenPopover) {
+    if (_suggestions.value.isEmpty || !_focusNode.hasFocus) {
       _popoverController.close();
     } else if (!_popoverController.hasOpenPopover &&
         _suggestions.value.isNotEmpty) {
@@ -117,7 +121,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
     if (widget.focusNode != oldWidget.focusNode) {
       _focusNode = widget.focusNode ?? FocusNode();
     }
-    if (!listEquals(widget.suggestions, oldWidget.suggestions)) {
+    if (!listEquals(widget.suggestions, _suggestions.value)) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         _suggestions.value = widget.suggestions;
       });

@@ -7,7 +7,7 @@ class ChipInputExample1 extends StatefulWidget {
 
 class _ChipInputExample1State extends State<ChipInputExample1> {
   List<String> _chips = [];
-  final List<String> _suggestions = [];
+  List<String> _suggestions = [];
   final TextEditingController _controller = TextEditingController();
   static const List<String> _availableSuggestions = [
     'hello world',
@@ -24,11 +24,12 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
       () {
         setState(() {
           var value = _controller.text;
-          _suggestions.clear();
           if (value.isNotEmpty) {
-            _suggestions.addAll(_availableSuggestions.where((element) {
+            _suggestions = _availableSuggestions.where((element) {
               return element.startsWith(value);
-            }));
+            }).toList();
+          } else {
+            _suggestions = [];
           }
         });
       },
