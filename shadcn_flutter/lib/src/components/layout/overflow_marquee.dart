@@ -23,6 +23,10 @@ class OverflowMarquee extends StatelessWidget {
       child: RepeatedAnimationBuilder(
         start: 0.0,
         end: 1.0,
+        curve: IntervalDuration.delayed(
+          duration: duration,
+          startDelay: delayDuration,
+        ),
         duration: duration + delayDuration * 2,
         mode: RepeatMode.pingPong,
         builder: (context, value, child) {
@@ -187,11 +191,12 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
   bool get alwaysNeedsCompositing => child != null;
 
   double get offsetProgress {
-    var durationInMicros = _duration.inMicroseconds;
-    durationInMicros += _delayDuration.inMicroseconds * 2;
-    double begin = _delayDuration.inMicroseconds / durationInMicros;
-    double end = 1 - begin;
-    return ((_progress - begin) / (end - begin)).clamp(0, 1);
+    // var durationInMicros = _duration.inMicroseconds;
+    // durationInMicros += _delayDuration.inMicroseconds * 2;
+    // double begin = _delayDuration.inMicroseconds / durationInMicros;
+    // double end = 1 - begin;
+    // return ((_progress - begin) / (end - begin)).clamp(0, 1);
+    return _progress;
   }
 
   double? get sizeDiff {
@@ -284,6 +289,10 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
           ..maskRect = offset & size
           ..blendMode = BlendMode.modulate;
         context.pushLayer(layer!, super.paint, offset);
+        assert(() {
+          layer!.debugCreator = debugCreator;
+          return true;
+        }());
       } else {
         layer = null;
         super.paint(context, offset + parentData.offset);
