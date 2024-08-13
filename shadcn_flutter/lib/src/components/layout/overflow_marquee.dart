@@ -1,44 +1,68 @@
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class OverflowMarquee extends StatelessWidget {
+class OverflowMarquee extends StatefulWidget {
   final Widget child;
   final Axis direction;
   final Duration duration;
+  final double step;
   final Duration delayDuration;
   final double fadePortion;
+  final Curve curve;
 
   const OverflowMarquee({
     super.key,
     required this.child,
     this.direction = Axis.horizontal,
-    this.duration = const Duration(seconds: 2),
+    this.duration = const Duration(seconds: 1),
     this.delayDuration = const Duration(milliseconds: 500),
+    this.step = 100, // note: the speed of the marquee depends on this value
+    // speed = (sizeDiff / step) * duration
     this.fadePortion = 25,
+    this.curve = Curves.linear,
   });
+
+  @override
+  State<OverflowMarquee> createState() => _OverflowMarqueeState();
+}
+
+class _OverflowMarqueeState extends State<OverflowMarquee>
+    with SingleTickerProviderStateMixin {
+  late Ticker _ticker;
+  Duration elapsed = Duration.zero;
+
+  @override
+  void initState() {
+    super.initState();
+    _ticker = createTicker((elapsed) {
+      if (mounted) {
+        setState(() {
+          this.elapsed = elapsed;
+        });
+      }
+    });
+    _ticker.start();
+  }
+
+  @override
+  void dispose() {
+    _ticker.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ClipRect(
-      child: RepeatedAnimationBuilder(
-        start: 0.0,
-        end: 1.0,
-        curve: IntervalDuration.delayed(
-          duration: duration,
-          startDelay: delayDuration,
-        ),
-        duration: duration + delayDuration * 2,
-        mode: RepeatMode.pingPong,
-        builder: (context, value, child) {
-          return _OverflowMarqueeLayout(
-            direction: direction,
-            progress: value,
-            fadePortion: fadePortion,
-            duration: duration,
-            delayDuration: delayDuration,
-            child: this.child,
-          );
-        },
+      child: _OverflowMarqueeLayout(
+        direction: widget.direction,
+        fadePortion: widget.fadePortion,
+        duration: widget.duration,
+        delayDuration: widget.delayDuration,
+        child: widget.child,
+        ticker: _ticker,
+        elapsed: elapsed,
+        step: widget.step,
       ),
     );
   }
@@ -46,17 +70,21 @@ class OverflowMarquee extends StatelessWidget {
 
 class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
   final Axis direction;
-  final double progress;
   final double fadePortion;
   final Duration duration;
   final Duration delayDuration;
+  final Ticker ticker;
+  final Duration elapsed;
+  final double step;
 
   _OverflowMarqueeLayout({
     required this.direction,
-    required this.progress,
     this.fadePortion = 25,
     required this.duration,
     required this.delayDuration,
+    required this.ticker,
+    required this.elapsed,
+    required this.step,
     required Widget child,
   }) : super(child: child);
 
@@ -65,10 +93,12 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
     return _RenderOverflowMarqueeLayout(
       null,
       direction: direction,
-      progress: progress,
       fadePortion: fadePortion,
       duration: duration,
       delayDuration: delayDuration,
+      ticker: ticker,
+      step: step,
+      elapsed: elapsed,
     );
   }
 
@@ -76,24 +106,33 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
   void updateRenderObject(
       BuildContext context, _RenderOverflowMarqueeLayout renderObject) {
     bool hasChanged = false;
-    if (renderObject._direction != direction) {
-      renderObject._direction = direction;
+    if (renderObject.direction != direction) {
+      renderObject.direction = direction;
       hasChanged = true;
     }
-    if (renderObject._progress != progress) {
-      renderObject._progress = progress;
+    if (renderObject.fadePortion != fadePortion) {
+      renderObject.fadePortion = fadePortion;
       hasChanged = true;
     }
-    if (renderObject._fadePortion != fadePortion) {
-      renderObject._fadePortion = fadePortion;
+    if (renderObject.duration != duration) {
+      renderObject.duration = duration;
       hasChanged = true;
     }
-    if (renderObject._duration != duration) {
-      renderObject._duration = duration;
+    if (renderObject.delayDuration != delayDuration) {
+      renderObject.delayDuration = delayDuration;
       hasChanged = true;
     }
-    if (renderObject._delayDuration != delayDuration) {
-      renderObject._delayDuration = delayDuration;
+    // most likely this will never change
+    if (renderObject.ticker != ticker) {
+      renderObject.ticker = ticker;
+      hasChanged = true;
+    }
+    if (renderObject.elapsed != elapsed) {
+      renderObject.elapsed = elapsed;
+      hasChanged = true;
+    }
+    if (renderObject.step != step) {
+      renderObject.step = step;
       hasChanged = true;
     }
     if (hasChanged) {
@@ -108,24 +147,24 @@ class _OverflowMarqueeParentData extends ContainerBoxParentData<RenderBox> {
 
 class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     with ContainerRenderObjectMixin<RenderBox, _OverflowMarqueeParentData> {
-  Axis _direction;
-  double _progress;
-  double _fadePortion;
-  Duration _duration;
-  Duration _delayDuration;
+  Axis direction;
+  double fadePortion;
+  Duration duration;
+  Duration delayDuration;
+  Ticker ticker;
+  Duration elapsed;
+  double step;
 
   _RenderOverflowMarqueeLayout(
-    super.child, {
-    required Axis direction,
-    required double progress,
-    required double fadePortion,
-    required Duration duration,
-    required Duration delayDuration,
-  })  : _direction = direction,
-        _progress = progress,
-        _fadePortion = fadePortion,
-        _duration = duration,
-        _delayDuration = delayDuration;
+    RenderBox? child, {
+    required this.direction,
+    required this.fadePortion,
+    required this.duration,
+    required this.delayDuration,
+    required this.ticker,
+    required this.elapsed,
+    required this.step,
+  }) : super(child);
 
   @override
   void setupParentData(RenderBox child) {
@@ -136,7 +175,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
 
   @override
   double computeMaxIntrinsicHeight(double width) {
-    if (_direction == Axis.horizontal) {
+    if (direction == Axis.horizontal) {
       return super.computeMaxIntrinsicHeight(double.infinity);
     }
     return super.computeMaxIntrinsicHeight(width);
@@ -144,7 +183,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
 
   @override
   double computeMaxIntrinsicWidth(double height) {
-    if (_direction == Axis.vertical) {
+    if (direction == Axis.vertical) {
       return super.computeMaxIntrinsicWidth(double.infinity);
     }
     return super.computeMaxIntrinsicWidth(height);
@@ -152,7 +191,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
 
   @override
   double computeMinIntrinsicHeight(double width) {
-    if (_direction == Axis.horizontal) {
+    if (direction == Axis.horizontal) {
       return super.computeMinIntrinsicHeight(double.infinity);
     }
     return super.computeMinIntrinsicHeight(width);
@@ -160,7 +199,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
 
   @override
   double computeMinIntrinsicWidth(double height) {
-    if (_direction == Axis.vertical) {
+    if (direction == Axis.vertical) {
       return super.computeMinIntrinsicWidth(double.infinity);
     }
     return super.computeMinIntrinsicWidth(height);
@@ -168,7 +207,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
 
   @override
   Size computeDryLayout(covariant BoxConstraints constraints) {
-    if (_direction == Axis.horizontal) {
+    if (direction == Axis.horizontal) {
       constraints = constraints.copyWith(
         maxWidth: double.infinity,
       );
@@ -191,12 +230,29 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
   bool get alwaysNeedsCompositing => child != null;
 
   double get offsetProgress {
-    // var durationInMicros = _duration.inMicroseconds;
-    // durationInMicros += _delayDuration.inMicroseconds * 2;
-    // double begin = _delayDuration.inMicroseconds / durationInMicros;
-    // double end = 1 - begin;
-    // return ((_progress - begin) / (end - begin)).clamp(0, 1);
-    return _progress;
+    double durationInMicros =
+        duration.inMicroseconds * ((sizeDiff ?? 0) / step);
+    int delayDurationInMicros = delayDuration.inMicroseconds;
+    double elapsedInMicros = elapsed.inMicroseconds.toDouble();
+    // includes the reverse
+    double overalCycleDuration = delayDurationInMicros +
+        durationInMicros +
+        delayDurationInMicros +
+        durationInMicros;
+    elapsedInMicros = elapsedInMicros % overalCycleDuration;
+    bool reverse = elapsedInMicros > delayDurationInMicros + durationInMicros;
+    double cycleElapsedInMicros =
+        elapsedInMicros % (delayDurationInMicros + durationInMicros);
+    if (cycleElapsedInMicros < delayDurationInMicros) {
+      return reverse ? 1 : 0;
+    } else if (cycleElapsedInMicros <
+        delayDurationInMicros + durationInMicros) {
+      double progress =
+          (cycleElapsedInMicros - delayDurationInMicros) / durationInMicros;
+      return reverse ? 1 - progress : progress;
+    } else {
+      return reverse ? 0 : 1;
+    }
   }
 
   double? get sizeDiff {
@@ -209,7 +265,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     if (child != null) {
       double size = sizeDiff ?? 0;
       double progressedSize = size * offsetProgress;
-      return (progressedSize / _fadePortion).clamp(0, 1);
+      return (progressedSize / fadePortion).clamp(0, 1);
     }
     return 0;
   }
@@ -219,7 +275,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     if (child != null) {
       double size = sizeDiff ?? 0;
       double progressedSize = size * (1 - offsetProgress);
-      return (progressedSize / _fadePortion).clamp(0, 1);
+      return (progressedSize / fadePortion).clamp(0, 1);
     }
     return 0;
   }
@@ -227,7 +283,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
   Shader? _createAlphaShader(
       bool fadeStart, bool fadeEnd, Rect bounds, double fadePortion) {
     double portionSize;
-    if (_direction == Axis.horizontal) {
+    if (direction == Axis.horizontal) {
       portionSize = fadePortion / bounds.width;
     } else {
       portionSize = fadePortion / bounds.height;
@@ -254,7 +310,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     }
     Alignment begin;
     Alignment end;
-    if (_direction == Axis.horizontal) {
+    if (direction == Axis.horizontal) {
       begin = Alignment.centerLeft;
       end = Alignment.centerRight;
     } else {
@@ -307,7 +363,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     var child = this.child;
     if (child != null) {
       var constraints = this.constraints;
-      if (_direction == Axis.horizontal) {
+      if (direction == Axis.horizontal) {
         constraints = constraints.copyWith(
           maxWidth: double.infinity,
         );
@@ -319,8 +375,17 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
       child.layout(constraints, parentUsesSize: true);
       size = this.constraints.constrain(child.size);
       final sizeDiff = child.size.width - size.width;
+      if (sizeDiff > 0) {
+        if (!ticker.isActive) {
+          ticker.start();
+        }
+      } else {
+        if (ticker.isActive) {
+          ticker.stop();
+        }
+      }
       var progress = offsetProgress;
-      final offset = _direction == Axis.horizontal
+      final offset = direction == Axis.horizontal
           ? Offset(-sizeDiff * progress, 0)
           : Offset(0, -sizeDiff * progress);
       final parentData = child.parentData as _OverflowMarqueeParentData;
