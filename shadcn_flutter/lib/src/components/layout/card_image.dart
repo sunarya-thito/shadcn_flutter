@@ -12,6 +12,8 @@ class CardImage extends StatefulWidget {
   final Axis direction;
   final double hoverScale;
   final double normalScale;
+  final Color? backgroundColor;
+  final Color? borderColor;
 
   const CardImage({
     Key? key,
@@ -26,6 +28,8 @@ class CardImage extends StatefulWidget {
     this.direction = Axis.vertical,
     this.hoverScale = 1.05,
     this.normalScale = 1,
+    this.backgroundColor = Colors.transparent,
+    this.borderColor = Colors.transparent,
   }) : super(key: key);
 
   @override
@@ -53,6 +57,9 @@ class _CardImageState extends State<CardImage> {
           children: [
             Flexible(
               child: OutlinedContainer(
+                backgroundColor:
+                    widget.backgroundColor ?? theme.colorScheme.card,
+                borderColor: widget.borderColor ?? theme.colorScheme.border,
                 child: AnimatedBuilder(
                     animation: _statesController,
                     builder: (context, child) {
