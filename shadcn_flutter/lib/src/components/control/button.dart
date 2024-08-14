@@ -59,14 +59,16 @@ class SelectedButton extends StatefulWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
   final Widget child;
-  final ButtonStyle style;
-  final ButtonStyle selectedStyle;
+  final AbstractButtonStyle style;
+  final AbstractButtonStyle selectedStyle;
+  final bool? enabled;
 
   const SelectedButton({
     Key? key,
     required this.value,
     this.onChanged,
     required this.child,
+    this.enabled,
     this.style = const ButtonStyle.ghost(),
     this.selectedStyle = const ButtonStyle.secondary(),
   }) : super(key: key);
@@ -80,6 +82,7 @@ class SelectedButtonState extends State<SelectedButton> {
   @override
   Widget build(BuildContext context) {
     return Button(
+        enabled: widget.enabled,
         style: widget.value ? widget.selectedStyle : widget.style,
         onPressed: () {
           if (widget.onChanged != null) {
@@ -910,6 +913,16 @@ class ButtonVariance implements AbstractButtonStyle {
   });
 }
 
+class ButtonStylePropertyAll<T> {
+  final T value;
+
+  const ButtonStylePropertyAll(this.value);
+
+  T call(BuildContext context, Set<WidgetState> states, T value) {
+    return this.value;
+  }
+}
+
 extension ButtonStyleExtension on AbstractButtonStyle {
   AbstractButtonStyle copyWith({
     ButtonStatePropertyDelegate<Decoration>? decoration,
@@ -1011,7 +1024,10 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
       return _delegate.margin;
     }
     return (context, states) {
-      return _margin!(context, states, _delegate.margin(context, states));
+      var edgeInsetsGeometry =
+          _margin!(context, states, _delegate.margin(context, states));
+      print('new margin $edgeInsetsGeometry');
+      return edgeInsetsGeometry;
     };
   }
 }

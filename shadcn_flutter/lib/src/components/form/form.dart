@@ -1219,7 +1219,7 @@ class FormTableLayout extends StatelessWidget {
 }
 
 class SubmitButton extends StatefulWidget {
-  final ButtonStyle? style;
+  final AbstractButtonStyle? style;
   final Widget child;
   final Widget? loading;
   final Widget? error;

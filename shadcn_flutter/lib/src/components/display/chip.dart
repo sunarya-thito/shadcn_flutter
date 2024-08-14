@@ -48,7 +48,7 @@ class Chip extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final VoidCallback? onPressed;
-  final ButtonStyle? style;
+  final AbstractButtonStyle? style;
 
   const Chip({
     Key? key,

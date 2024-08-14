@@ -180,6 +180,7 @@ class _ClickableState extends State<Clickable> {
           } else {
             borderRadius = theme.borderRadiusMd;
           }
+          var buttonContainer = _buildContainer(context, decoration);
           return FocusOutline(
             focused: widget.focusOutline &&
                 _controller.value.contains(WidgetState.focused),
@@ -317,7 +318,7 @@ class _ClickableState extends State<Clickable> {
                           child: child,
                         );
                       },
-                      child: _buildContainer(context, decoration),
+                      child: buttonContainer,
                     ),
                   ),
                 ),
@@ -330,19 +331,21 @@ class _ClickableState extends State<Clickable> {
   }
 
   Widget _buildContainer(BuildContext context, Decoration? decoration) {
+    var resolvedMargin = widget.margin?.resolve(_controller.value);
+    var resolvedPadding = widget.padding?.resolve(_controller.value);
     if (widget.disableTransition) {
       return Container(
-        margin: widget.margin?.resolve(_controller.value),
+        margin: resolvedMargin,
         decoration: decoration,
-        padding: widget.padding?.resolve(_controller.value),
+        padding: resolvedPadding,
         child: widget.child,
       );
     }
     return AnimatedContainer(
+      margin: resolvedMargin,
       duration: kDefaultDuration,
-      margin: widget.margin?.resolve(_controller.value),
       decoration: decoration,
-      padding: widget.padding?.resolve(_controller.value),
+      padding: resolvedPadding,
       child: widget.child,
     );
   }

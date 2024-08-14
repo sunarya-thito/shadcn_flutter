@@ -5,7 +5,7 @@ class PrimaryBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
-  final ButtonStyle? style;
+  final AbstractButtonStyle? style;
 
   const PrimaryBadge({
     super.key,
@@ -47,7 +47,7 @@ class SecondaryBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
-  final ButtonStyle? style;
+  final AbstractButtonStyle? style;
 
   const SecondaryBadge({
     super.key,
@@ -89,7 +89,7 @@ class OutlineBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
-  final ButtonStyle? style;
+  final AbstractButtonStyle? style;
 
   const OutlineBadge({
     super.key,
@@ -131,7 +131,7 @@ class DestructiveBadge extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? leading;
   final Widget? trailing;
-  final ButtonStyle? style;
+  final AbstractButtonStyle? style;
 
   const DestructiveBadge({
     super.key,

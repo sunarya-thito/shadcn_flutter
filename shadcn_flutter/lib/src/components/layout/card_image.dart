@@ -8,7 +8,7 @@ class CardImage extends StatefulWidget {
   final Widget? leading;
   final VoidCallback? onPressed;
   final bool? enabled;
-  final ButtonStyle? style;
+  final AbstractButtonStyle? style;
   final Axis direction;
   final double hoverScale;
   final double normalScale;
