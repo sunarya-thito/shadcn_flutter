@@ -310,7 +310,7 @@ class Select<T> extends StatefulWidget {
     this.surfaceBlur,
     this.surfaceOpacity,
     this.canUnselect = false,
-    this.autoClosePopover = false,
+    this.autoClosePopover = true,
     required this.itemBuilder,
     required this.children,
   }) : super(key: key);
