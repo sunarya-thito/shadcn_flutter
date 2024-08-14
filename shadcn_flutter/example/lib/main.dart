@@ -35,10 +35,25 @@ class CounterPage extends StatefulWidget {
 class _CounterPageState extends State<CounterPage> {
   int _counter = 0;
 
+  int _selected = 0;
+
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
+  }
+
+  Widget _buildButton(int i, String label, IconData icon) {
+    return NavigationButton(
+      onChanged: (value) {
+        setState(() {
+          _selected = i;
+        });
+      },
+      selected: _selected == i,
+      label: Text(label),
+      child: Icon(icon),
+    );
   }
 
   @override
@@ -92,6 +107,16 @@ class _CounterPageState extends State<CounterPage> {
           ],
         ),
         const Divider(),
+      ],
+      footers: [
+        const Divider(),
+        NavigationBar(
+          children: [
+            _buildButton(0, 'Home', Icons.home),
+            _buildButton(1, 'Explore', Icons.explore),
+            _buildButton(2, 'Library', Icons.library_music),
+          ],
+        ),
       ],
       child: Padding(
         padding: const EdgeInsets.all(32.0),

@@ -159,6 +159,13 @@ class _ClickableState extends State<Clickable> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     var enabled = widget.enabled;
+    Decoration? decoration = widget.decoration?.resolve(_controller.value);
+    BorderRadiusGeometry borderRadius;
+    if (decoration is BoxDecoration) {
+      borderRadius = decoration.borderRadius ?? theme.borderRadiusMd;
+    } else {
+      borderRadius = theme.borderRadiusMd;
+    }
     return Semantics(
       enabled: enabled,
       container: true,
@@ -169,7 +176,7 @@ class _ClickableState extends State<Clickable> {
           return FocusOutline(
             focused: widget.focusOutline &&
                 _controller.value.contains(WidgetState.focused),
-            borderRadius: BorderRadius.circular(theme.radiusMd),
+            borderRadius: borderRadius,
             child: GestureDetector(
               behavior: widget.behavior,
               onTap: widget.onPressed != null ? _onPressed : null,
@@ -303,7 +310,7 @@ class _ClickableState extends State<Clickable> {
                           child: child,
                         );
                       },
-                      child: buildContainer(context),
+                      child: _buildContainer(context, decoration),
                     ),
                   ),
                 ),
@@ -315,11 +322,11 @@ class _ClickableState extends State<Clickable> {
     );
   }
 
-  Widget buildContainer(BuildContext context) {
+  Widget _buildContainer(BuildContext context, Decoration? decoration) {
     if (widget.disableTransition) {
       return Container(
         margin: widget.margin?.resolve(_controller.value),
-        decoration: widget.decoration?.resolve(_controller.value),
+        decoration: decoration,
         padding: widget.padding?.resolve(_controller.value),
         child: widget.child,
       );
@@ -327,7 +334,7 @@ class _ClickableState extends State<Clickable> {
     return AnimatedContainer(
       duration: kDefaultDuration,
       margin: widget.margin?.resolve(_controller.value),
-      decoration: widget.decoration?.resolve(_controller.value),
+      decoration: decoration,
       padding: widget.padding?.resolve(_controller.value),
       child: widget.child,
     );

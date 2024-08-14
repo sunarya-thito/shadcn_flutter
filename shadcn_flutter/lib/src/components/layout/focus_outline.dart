@@ -3,7 +3,7 @@ import '../../../shadcn_flutter.dart';
 class FocusOutline extends StatelessWidget {
   final Widget child;
   final bool focused;
-  final BorderRadius? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
   final double align;
   final double width;
   final double? radius;
@@ -17,12 +17,13 @@ class FocusOutline extends StatelessWidget {
     this.radius,
   }) : super(key: key);
 
-  BorderRadius get adjustedBorderRadius {
+  BorderRadius getAdjustedBorderRadius(TextDirection textDirection) {
     if (this.radius != null) {
       return BorderRadius.circular(this.radius!);
     }
-    var radius = borderRadius;
-    if (radius == null) return BorderRadius.zero;
+    var rawRadius = borderRadius;
+    if (rawRadius == null) return BorderRadius.zero;
+    var radius = rawRadius.resolve(textDirection);
     // since the align adds 3 to the border, we need to add 3 to all of the radii
     return BorderRadius.only(
       topLeft: radius.topLeft + Radius.circular(align),
@@ -35,6 +36,7 @@ class FocusOutline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double align = -this.align;
+    TextDirection textDirection = Directionality.of(context);
     return Stack(
       clipBehavior: Clip.none,
       fit: StackFit.passthrough,
@@ -49,7 +51,7 @@ class FocusOutline extends StatelessWidget {
             child: IgnorePointer(
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: adjustedBorderRadius,
+                  borderRadius: getAdjustedBorderRadius(textDirection),
                   border: Border.all(
                     color: Theme.of(context).colorScheme.ring,
                     width: width,
