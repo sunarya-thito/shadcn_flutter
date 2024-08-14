@@ -82,6 +82,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
               children: [
                 Expanded(
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       OutlineButton(
                         density: ButtonDensity.icon,
@@ -103,36 +104,44 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                         },
                         child: const Icon(Icons.arrow_back).iconXSmall(),
                       ),
-                      GhostButton(
-                        enabled: _viewType != CalendarViewType.year,
-                        onPressed: () {
-                          _alternate = false;
-                          switch (_viewType) {
-                            case CalendarViewType.date:
-                              setState(() {
-                                _viewType = CalendarViewType.month;
-                              });
-                              break;
-                            case CalendarViewType.month:
-                              setState(() {
-                                _viewType = CalendarViewType.year;
-                              });
-                              break;
-                            default:
-                              break;
-                          }
-                        },
-                        child:
-                            Text(getHeaderText(localizations, _view, _viewType))
-                                .foreground()
-                                .small()
-                                .medium()
-                                .center(),
-                      ).sized(height: theme.scaling * 32).center().expanded(),
+                      SizedBox(
+                        width: theme.scaling * 16,
+                      ),
+                      Expanded(
+                        child: GhostButton(
+                          enabled: _viewType != CalendarViewType.year,
+                          onPressed: () {
+                            _alternate = false;
+                            switch (_viewType) {
+                              case CalendarViewType.date:
+                                setState(() {
+                                  _viewType = CalendarViewType.month;
+                                });
+                                break;
+                              case CalendarViewType.month:
+                                setState(() {
+                                  _viewType = CalendarViewType.year;
+                                });
+                                break;
+                              default:
+                                break;
+                            }
+                          },
+                          child: Text(getHeaderText(
+                                  localizations, _view, _viewType))
+                              .foreground()
+                              .small()
+                              .medium()
+                              .center(),
+                        ).sized(height: theme.scaling * 32),
+                      ),
                       if (_viewType == CalendarViewType.date)
                         SizedBox(
                           width: theme.scaling * 32,
                         ),
+                      SizedBox(
+                        width: theme.scaling * 16,
+                      ),
                       if (_viewType != CalendarViewType.date)
                         OutlineButton(
                           density: ButtonDensity.icon,
@@ -159,35 +168,41 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                 if (_viewType == CalendarViewType.date)
                   Expanded(
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(
-                          width: theme.scaling * 32,
+                          width: theme.scaling * (32 + 16),
                         ),
-                        GhostButton(
-                          onPressed: () {
-                            _alternate = true;
-                            switch (_viewType) {
-                              case CalendarViewType.date:
-                                setState(() {
-                                  _viewType = CalendarViewType.month;
-                                });
-                                break;
-                              case CalendarViewType.month:
-                                setState(() {
-                                  _viewType = CalendarViewType.year;
-                                });
-                                break;
-                              default:
-                                break;
-                            }
-                          },
-                          child: Text(getHeaderText(
-                                  localizations, _alternateView, _viewType))
-                              .foreground()
-                              .small()
-                              .medium()
-                              .center(),
-                        ).sized(height: theme.scaling * 32).center().expanded(),
+                        Expanded(
+                          child: GhostButton(
+                            onPressed: () {
+                              _alternate = true;
+                              switch (_viewType) {
+                                case CalendarViewType.date:
+                                  setState(() {
+                                    _viewType = CalendarViewType.month;
+                                  });
+                                  break;
+                                case CalendarViewType.month:
+                                  setState(() {
+                                    _viewType = CalendarViewType.year;
+                                  });
+                                  break;
+                                default:
+                                  break;
+                              }
+                            },
+                            child: Text(getHeaderText(
+                                    localizations, _alternateView, _viewType))
+                                .foreground()
+                                .small()
+                                .medium()
+                                .center(),
+                          ).sized(height: theme.scaling * 32),
+                        ),
+                        SizedBox(
+                          width: theme.scaling * 16,
+                        ),
                         OutlineButton(
                           density: ButtonDensity.icon,
                           onPressed: () {
@@ -287,30 +302,38 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                 },
                 child: const Icon(Icons.arrow_back).iconXSmall(),
               ),
-              GhostButton(
-                enabled: _viewType != CalendarViewType.year,
-                onPressed: () {
-                  switch (_viewType) {
-                    case CalendarViewType.date:
-                      setState(() {
-                        _viewType = CalendarViewType.month;
-                      });
-                      break;
-                    case CalendarViewType.month:
-                      setState(() {
-                        _viewType = CalendarViewType.year;
-                      });
-                      break;
-                    default:
-                      break;
-                  }
-                },
-                child: Text(getHeaderText(localizations, _view, _viewType))
-                    .foreground()
-                    .small()
-                    .medium()
-                    .center(),
-              ).sized(height: theme.scaling * 32).center().expanded(),
+              SizedBox(
+                width: theme.scaling * 16,
+              ),
+              Expanded(
+                child: GhostButton(
+                  enabled: _viewType != CalendarViewType.year,
+                  onPressed: () {
+                    switch (_viewType) {
+                      case CalendarViewType.date:
+                        setState(() {
+                          _viewType = CalendarViewType.month;
+                        });
+                        break;
+                      case CalendarViewType.month:
+                        setState(() {
+                          _viewType = CalendarViewType.year;
+                        });
+                        break;
+                      default:
+                        break;
+                    }
+                  },
+                  child: Text(getHeaderText(localizations, _view, _viewType))
+                      .foreground()
+                      .small()
+                      .medium()
+                      .center(),
+                ).sized(height: theme.scaling * 32),
+              ),
+              SizedBox(
+                width: theme.scaling * 16,
+              ),
               OutlineButton(
                 density: ButtonDensity.icon,
                 onPressed: () {
