@@ -33,6 +33,7 @@ class Checkbox extends StatefulWidget {
 
 class _CheckboxState extends State<Checkbox> with FormValueSupplier {
   final bool _focusing = false;
+  bool _shouldAnimate = false;
 
   void _changeTo(CheckboxState state) {
     if (widget.onChanged != null) {
@@ -79,6 +80,7 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
       reportNewFormValue(widget.state, (value) {
         _changeTo(value);
       });
+      _shouldAnimate = true;
     }
   }
 
@@ -122,7 +124,7 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
                         height: theme.scaling * 6.5,
                         child: AnimatedValueBuilder(
                           value: 1.0,
-                          initialValue: 0.0,
+                          initialValue: _shouldAnimate ? 0.0 : null,
                           duration: Duration(milliseconds: 300),
                           curve: IntervalDuration(
                             start: Duration(milliseconds: 175),
