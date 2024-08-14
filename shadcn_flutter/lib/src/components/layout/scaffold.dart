@@ -49,6 +49,101 @@ class ScaffoldBarData {
 }
 
 class ScaffoldState extends State<Scaffold> {
+  Widget buildHeader(BuildContext context) {
+    return Container(
+      color: widget.headerBackgroundColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Column(
+            verticalDirection: VerticalDirection.up,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (widget.loadingProgress != null ||
+                  widget.loadingProgressIndeterminate)
+                SizedBox(
+                  // to make it float
+                  height: 0,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    fit: StackFit.passthrough,
+                    children: [
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        child: LinearProgressIndicator(
+                          backgroundColor: Colors.transparent,
+                          value: widget.loadingProgressIndeterminate
+                              ? null
+                              : widget.loadingProgress,
+                          showSparks: false,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                for (var i = 0; i < widget.headers.length; i++)
+                  Data.inherit(
+                    data: ScaffoldBarData(
+                      childIndex: i,
+                      childrenCount: widget.headers.length,
+                    ),
+                    child: widget.headers[i],
+                  ),
+              ]),
+            ],
+          ),
+          if (widget.loadingProgress != null && widget.showLoadingSparks)
+            SizedBox(
+              // to make it float
+              height: 0,
+              child: Stack(
+                clipBehavior: Clip.none,
+                fit: StackFit.passthrough,
+                children: [
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    child: LinearProgressIndicator(
+                      backgroundColor: Colors.transparent,
+                      value: widget.loadingProgressIndeterminate
+                          ? null
+                          : widget.loadingProgress,
+                      showSparks: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildFooter(BuildContext context, EdgeInsets viewInsets) {
+    return Offstage(
+      offstage: viewInsets.bottom > 0,
+      child: Container(
+        color: widget.footerBackgroundColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var i = 0; i < widget.footers.length; i++)
+              Data.inherit(
+                data: ScaffoldBarData(
+                  isHeader: false,
+                  childIndex: i,
+                  childrenCount: widget.footers.length,
+                ),
+                child: widget.footers[i],
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -57,108 +152,42 @@ class ScaffoldState extends State<Scaffold> {
       child: AnimatedContainer(
         duration: kDefaultDuration,
         color: theme.colorScheme.background,
-        child: _ScaffoldFlex(
-          direction: Axis.vertical,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Stack(
           children: [
-            Container(
-              color: widget.headerBackgroundColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Column(
-                    verticalDirection: VerticalDirection.up,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (widget.loadingProgress != null ||
-                          widget.loadingProgressIndeterminate)
-                        SizedBox(
-                          // to make it float
-                          height: 0,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            fit: StackFit.passthrough,
-                            children: [
-                              Positioned(
-                                left: 0,
-                                right: 0,
-                                child: LinearProgressIndicator(
-                                  backgroundColor: Colors.transparent,
-                                  value: widget.loadingProgressIndeterminate
-                                      ? null
-                                      : widget.loadingProgress,
-                                  showSparks: false,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            for (var i = 0; i < widget.headers.length; i++)
-                              Data.inherit(
-                                data: ScaffoldBarData(
-                                  childIndex: i,
-                                  childrenCount: widget.headers.length,
-                                ),
-                                child: widget.headers[i],
-                              ),
-                          ]),
-                    ],
+            _ScaffoldFlex(
+              direction: Axis.vertical,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (!widget.floatingHeader)
+                  buildHeader(context)
+                else
+                  const SizedBox(),
+                Expanded(
+                  child: Container(
+                    padding: viewInsets,
+                    child: widget.child,
                   ),
-                  if (widget.loadingProgress != null &&
-                      widget.showLoadingSparks)
-                    SizedBox(
-                      // to make it float
-                      height: 0,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        fit: StackFit.passthrough,
-                        children: [
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            child: LinearProgressIndicator(
-                              backgroundColor: Colors.transparent,
-                              value: widget.loadingProgressIndeterminate
-                                  ? null
-                                  : widget.loadingProgress,
-                              showSparks: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Container(
-                padding: viewInsets,
-                child: widget.child,
-              ),
-            ),
-            Offstage(
-              offstage: viewInsets.bottom > 0,
-              child: Container(
-                color: widget.footerBackgroundColor,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    for (var i = 0; i < widget.footers.length; i++)
-                      Data.inherit(
-                        data: ScaffoldBarData(
-                          isHeader: false,
-                          childIndex: i,
-                          childrenCount: widget.footers.length,
-                        ),
-                        child: widget.footers[i],
-                      ),
-                  ],
                 ),
-              ),
+                if (!widget.floatingFooter)
+                  buildFooter(context, viewInsets)
+                else
+                  const SizedBox(),
+              ],
             ),
+            if (widget.floatingHeader)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: buildHeader(context),
+              ),
+            if (widget.floatingFooter)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: buildFooter(context, viewInsets),
+              ),
           ],
         ),
       ),
