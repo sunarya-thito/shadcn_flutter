@@ -159,13 +159,6 @@ class _ClickableState extends State<Clickable> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     var enabled = widget.enabled;
-    Decoration? decoration = widget.decoration?.resolve(_controller.value);
-    BorderRadiusGeometry borderRadius;
-    if (decoration is BoxDecoration) {
-      borderRadius = decoration.borderRadius ?? theme.borderRadiusMd;
-    } else {
-      borderRadius = theme.borderRadiusMd;
-    }
     return Semantics(
       enabled: enabled,
       container: true,
@@ -173,6 +166,14 @@ class _ClickableState extends State<Clickable> {
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, _) {
+          Decoration? decoration =
+              widget.decoration?.resolve(_controller.value);
+          BorderRadiusGeometry borderRadius;
+          if (decoration is BoxDecoration) {
+            borderRadius = decoration.borderRadius ?? theme.borderRadiusMd;
+          } else {
+            borderRadius = theme.borderRadiusMd;
+          }
           return FocusOutline(
             focused: widget.focusOutline &&
                 _controller.value.contains(WidgetState.focused),
