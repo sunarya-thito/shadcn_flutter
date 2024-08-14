@@ -26,6 +26,7 @@ import 'package:docs/pages/docs/components/keyboard_display_example.dart';
 import 'package:docs/pages/docs/components/linear_progress_example.dart';
 import 'package:docs/pages/docs/components/material_example.dart';
 import 'package:docs/pages/docs/components/menubar_example.dart';
+import 'package:docs/pages/docs/components/multiselect_example.dart';
 import 'package:docs/pages/docs/components/navigation_bar_example.dart';
 import 'package:docs/pages/docs/components/navigation_menu_example.dart';
 import 'package:docs/pages/docs/components/navigation_rail_example.dart';
@@ -610,6 +611,13 @@ class MyAppState extends State<MyApp> {
             name: 'overflow_marquee',
             builder: (context, state) {
               return const OverflowMarqueeExample();
+            },
+          ),
+          GoRoute(
+            path: 'multiselect',
+            name: 'multiselect',
+            builder: (context, state) {
+              return const MultiSelectExample();
             },
           ),
         ]),

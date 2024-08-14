@@ -226,7 +226,7 @@ class DocsPageState extends State<DocsPage> {
             'Time Picker', 'time_picker', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Toggle', 'toggle'),
         ShadcnDocsPage(
-            'Multi Select', 'multi_select', ShadcnFeatureTag.workInProgress),
+            'Multi Select', 'multiselect', ShadcnFeatureTag.experimental),
       ],
     ),
     ShadcnDocsSection(

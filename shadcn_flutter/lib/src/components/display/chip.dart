@@ -48,6 +48,7 @@ class Chip extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final VoidCallback? onPressed;
+  final ButtonStyle? style;
 
   const Chip({
     Key? key,
@@ -55,13 +56,14 @@ class Chip extends StatelessWidget {
     this.leading,
     this.trailing,
     this.onPressed,
+    this.style,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Button(
-      style: ButtonVariance.secondary.copyWith(
+      style: (style ?? ButtonVariance.secondary).copyWith(
         mouseCursor: (context, states, value) {
           return onPressed != null
               ? SystemMouseCursors.click

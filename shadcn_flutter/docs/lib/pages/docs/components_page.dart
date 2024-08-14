@@ -674,7 +674,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           ],
                         ),
                         const SelectPopup(
-                          value: 'Apple',
+                          value: ['Apple'],
                           children: [
                             SelectItemButton(
                               value: 'Apple',
