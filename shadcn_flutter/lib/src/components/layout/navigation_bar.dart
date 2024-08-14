@@ -27,7 +27,6 @@ enum NavigationContainerType {
 
 class NavigationBar extends StatelessWidget {
   final Color? backgroundColor;
-  final bool extended;
   final List<Widget> children;
   final NavigationBarAlignment alignment;
   final Axis direction;
@@ -40,14 +39,13 @@ class NavigationBar extends StatelessWidget {
   const NavigationBar({
     Key? key,
     this.backgroundColor,
-    this.extended = true,
     this.alignment = NavigationBarAlignment.center,
     this.direction = Axis.horizontal,
     this.spacing,
-    this.labelType = NavigationLabelType.selected,
+    this.labelType = NavigationLabelType.none,
     this.padding,
     this.constraints,
-    this.expands = false,
+    this.expands = true,
     required this.children,
   }) : super(key: key);
 
@@ -180,7 +178,6 @@ class _GapHeader extends SliverPersistentHeaderDelegate {
 
 class NavigationRail extends StatelessWidget {
   final Color? backgroundColor;
-  final bool extended;
   final List<Widget> children;
   final NavigationRailAlignment alignment;
   final Axis direction;
@@ -192,7 +189,6 @@ class NavigationRail extends StatelessWidget {
   const NavigationRail({
     Key? key,
     this.backgroundColor,
-    this.extended = true,
     this.alignment = NavigationRailAlignment.center,
     this.direction = Axis.vertical,
     this.spacing,

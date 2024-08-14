@@ -9,9 +9,9 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
   int selected = 0;
 
   NavigationBarAlignment alignment = NavigationBarAlignment.spaceAround;
-  bool expands = false;
+  bool expands = true;
   NavigationLabelType labelType = NavigationLabelType.none;
-  bool customButtonStyle = false;
+  bool customButtonStyle = true;
 
   Widget buildButton(int i, String label, IconData icon) {
     return NavigationButton(
