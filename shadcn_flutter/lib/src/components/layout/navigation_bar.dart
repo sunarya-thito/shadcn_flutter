@@ -1,12 +1,16 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 enum NavigationBarAlignment {
-  start,
-  center,
-  end,
-  spaceBetween,
-  spaceAround,
-  spaceEvenly,
+  start(MainAxisAlignment.start),
+  center(MainAxisAlignment.center),
+  end(MainAxisAlignment.end),
+  spaceBetween(MainAxisAlignment.spaceBetween),
+  spaceAround(MainAxisAlignment.spaceAround),
+  spaceEvenly(MainAxisAlignment.spaceEvenly);
+
+  final MainAxisAlignment mainAxisAlignment;
+
+  const NavigationBarAlignment(this.mainAxisAlignment);
 }
 
 enum NavigationRailAlignment {
@@ -46,31 +50,6 @@ class NavigationBar extends StatelessWidget {
     this.expands = false,
     required this.children,
   }) : super(key: key);
-
-  AlignmentGeometry get _alignment {
-    switch ((alignment, direction)) {
-      case (NavigationBarAlignment.start, Axis.horizontal):
-        return AlignmentDirectional.centerStart;
-      case (NavigationBarAlignment.center, Axis.horizontal):
-        return AlignmentDirectional.topCenter;
-      case (NavigationBarAlignment.end, Axis.horizontal):
-        return AlignmentDirectional.centerEnd;
-      case (NavigationBarAlignment.start, Axis.vertical):
-        return AlignmentDirectional.topCenter;
-      case (NavigationBarAlignment.center, Axis.vertical):
-        return AlignmentDirectional.center;
-      case (NavigationBarAlignment.end, Axis.vertical):
-        return AlignmentDirectional.bottomCenter;
-      case (NavigationBarAlignment.spaceBetween, Axis.horizontal):
-      case (NavigationBarAlignment.spaceAround, Axis.horizontal):
-      case (NavigationBarAlignment.spaceEvenly, Axis.horizontal):
-        return AlignmentDirectional.centerStart;
-      case (NavigationBarAlignment.spaceBetween, Axis.vertical):
-      case (NavigationBarAlignment.spaceAround, Axis.vertical):
-      case (NavigationBarAlignment.spaceEvenly, Axis.vertical):
-        return AlignmentDirectional.topCenter;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,18 +104,11 @@ class NavigationBar extends StatelessWidget {
       child: AnimatedContainer(
         duration: kDefaultDuration,
         color: backgroundColor,
-        alignment: _alignment,
         padding: resolvedPadding,
         child: _wrapIntrinsic(
           Flex(
             direction: direction,
-            mainAxisAlignment: alignment == NavigationBarAlignment.spaceBetween
-                ? MainAxisAlignment.spaceBetween
-                : alignment == NavigationBarAlignment.spaceAround
-                    ? MainAxisAlignment.spaceAround
-                    : alignment == NavigationBarAlignment.spaceEvenly
-                        ? MainAxisAlignment.spaceEvenly
-                        : MainAxisAlignment.center,
+            mainAxisAlignment: alignment.mainAxisAlignment,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: children,
           ).gap(spacing ?? (8 * scaling)),
