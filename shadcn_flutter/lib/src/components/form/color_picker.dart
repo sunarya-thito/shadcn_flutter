@@ -372,7 +372,7 @@ class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
                 // alpha
                 if (widget.showAlpha)
                   SizedBox(
-                    height: 32,
+                    height: 32 * theme.scaling,
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(
