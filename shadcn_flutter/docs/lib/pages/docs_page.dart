@@ -208,7 +208,13 @@ class DocsPageState extends State<DocsPage> {
         // TODO: Image Input (with cropper and rotate tool, upload from file or take photo from camera)
         ShadcnDocsPage(
             'Image Input', 'image_input', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Input', 'input'),
+        ShadcnDocsPage('Text Input', 'input'),
+        // TODO: same as input, except it only accepts number, and can be increased or decreased
+        // using scroll, also has increment and decrement button
+        // in between increment and decrement button, theres
+        // a divider that can be dragged to increase or decrease the value
+        ShadcnDocsPage(
+            'Number Input', 'number_input', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Input OTP', 'input_otp'),
         ShadcnDocsPage(
             'Phone Input', 'phone_input', ShadcnFeatureTag.experimental),
