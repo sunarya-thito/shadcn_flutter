@@ -335,14 +335,14 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
       Shader? shader = _createAlphaShader(
         progress > 0 && sizeDiff != 0,
         progress < 1 && sizeDiff != 0,
-        Offset.zero & size,
+        (Offset.zero & size),
         25,
       );
       if (shader != null) {
         assert(needsCompositing);
         layer!
           ..shader = shader
-          ..maskRect = offset & size
+          ..maskRect = (offset & size).inflate(1)
           ..blendMode = BlendMode.modulate;
         context.pushLayer(layer!, super.paint, offset);
         assert(() {
