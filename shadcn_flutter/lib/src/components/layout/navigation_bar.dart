@@ -92,24 +92,27 @@ class NavigationBar extends StatelessWidget {
         }
       }
     }
-    return Data.inherit(
-      data: NavigationControlData(
-        containerType: NavigationContainerType.bar,
-        parentLabelType: labelType,
-        parentPadding: resolvedPadding,
-        direction: direction,
-      ),
-      child: AnimatedContainer(
-        duration: kDefaultDuration,
-        color: backgroundColor,
-        padding: resolvedPadding,
-        child: _wrapIntrinsic(
-          Flex(
-            direction: direction,
-            mainAxisAlignment: alignment.mainAxisAlignment,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: children,
-          ).gap(spacing ?? (8 * scaling)),
+    return AppBar(
+      padding: EdgeInsets.zero,
+      child: Data.inherit(
+        data: NavigationControlData(
+          containerType: NavigationContainerType.bar,
+          parentLabelType: labelType,
+          parentPadding: resolvedPadding,
+          direction: direction,
+        ),
+        child: AnimatedContainer(
+          duration: kDefaultDuration,
+          color: backgroundColor,
+          padding: resolvedPadding,
+          child: _wrapIntrinsic(
+            Flex(
+              direction: direction,
+              mainAxisAlignment: alignment.mainAxisAlignment,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: children,
+            ).gap(spacing ?? (8 * scaling)),
+          ),
         ),
       ),
     );
