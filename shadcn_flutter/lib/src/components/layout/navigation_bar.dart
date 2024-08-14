@@ -1,12 +1,16 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 enum NavigationBarAlignment {
-  start,
-  center,
-  end,
-  spaceBetween,
-  spaceAround,
-  spaceEvenly,
+  start(MainAxisAlignment.start),
+  center(MainAxisAlignment.center),
+  end(MainAxisAlignment.end),
+  spaceBetween(MainAxisAlignment.spaceBetween),
+  spaceAround(MainAxisAlignment.spaceAround),
+  spaceEvenly(MainAxisAlignment.spaceEvenly);
+
+  final MainAxisAlignment mainAxisAlignment;
+
+  const NavigationBarAlignment(this.mainAxisAlignment);
 }
 
 enum NavigationRailAlignment {
@@ -126,7 +130,7 @@ class _NavigationBarState extends State<NavigationBar>
             Flex(
               direction: widget.direction,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: widget.alignment.mainAxisAlignment,
               children: children,
             ).gap(widget.spacing ?? (8 * scaling)),
           ),
@@ -175,7 +179,6 @@ mixin NavigationContainerMixin {
     }
     return newChildren;
   }
-
 }
 
 class NavigationRail extends StatefulWidget {
@@ -526,6 +529,7 @@ class NavigationButton extends StatefulWidget implements NavigationBarItem {
   final int? index;
   final bool? enabled;
   final NavigationOverflow overflow;
+  final AlignmentGeometry? marginAlignment;
 
   const NavigationButton({
     Key? key,
@@ -539,6 +543,7 @@ class NavigationButton extends StatefulWidget implements NavigationBarItem {
     this.selected,
     this.enabled,
     this.overflow = NavigationOverflow.marquee,
+    this.marginAlignment,
     required this.child,
   }) : super(key: key);
 
@@ -580,9 +585,6 @@ class _NavigationButtonState extends State<NavigationButton> {
     var index = childData?.index ?? widget.index;
     var isSelected = widget.selected ?? index == data?.selectedIndex;
     var parentIndex = childData?.index;
-    // AbstractButtonStyle style = widget.style ?? ButtonStyle.ghost();
-    // AbstractButtonStyle selectedStyle =
-    //     widget.selectedStyle ?? ButtonStyle.secondary();
     AbstractButtonStyle style = widget.style ??
         (labelType != NavigationLabelType.expanded
             ? ButtonStyle.ghost(density: ButtonDensity.icon)
@@ -594,6 +596,7 @@ class _NavigationButtonState extends State<NavigationButton> {
     if (labelType == NavigationLabelType.expanded) {
       return SelectedButton(
         value: isSelected,
+        marginAlignment: widget.marginAlignment,
         enabled: widget.enabled,
         onChanged: parentIndex != null || widget.index != null
             ? (value) {
@@ -635,14 +638,7 @@ class _NavigationButtonState extends State<NavigationButton> {
               data?.onSelected(parentIndex ?? widget.index!);
             }
           : widget.onChanged,
-      // style: widget.style ??
-      //     ButtonStyle.ghost(
-      //       density: ButtonDensity.icon,
-      //     ),
-      // selectedStyle: widget.selectedStyle ??
-      //     ButtonStyle.secondary(
-      //       density: ButtonDensity.icon,
-      //     ),
+      marginAlignment: widget.marginAlignment,
       style: style,
       selectedStyle: selectedStyle,
       child: Column(

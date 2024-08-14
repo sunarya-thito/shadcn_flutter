@@ -43,6 +43,7 @@ class Clickable extends StatefulWidget {
   final bool? isSemanticButton;
   final bool disableHoverEffect;
   final WidgetStatesController? statesController;
+  final AlignmentGeometry? marginAlignment;
 
   const Clickable({
     super.key,
@@ -85,6 +86,7 @@ class Clickable extends StatefulWidget {
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
     this.isSemanticButton = true,
+    this.marginAlignment,
   });
 
   @override
@@ -334,19 +336,34 @@ class _ClickableState extends State<Clickable> {
     var resolvedMargin = widget.margin?.resolve(_controller.value);
     var resolvedPadding = widget.padding?.resolve(_controller.value);
     if (widget.disableTransition) {
-      return Container(
+      Widget container = Container(
         margin: resolvedMargin,
         decoration: decoration,
         padding: resolvedPadding,
         child: widget.child,
       );
+      if (widget.marginAlignment != null) {
+        container = Align(
+          alignment: widget.marginAlignment!,
+          child: container,
+        );
+      }
+      return container;
     }
-    return AnimatedContainer(
+    Widget animatedContainer = AnimatedContainer(
       margin: resolvedMargin,
       duration: kDefaultDuration,
       decoration: decoration,
       padding: resolvedPadding,
       child: widget.child,
     );
+    if (widget.marginAlignment != null) {
+      animatedContainer = AnimatedAlign(
+        duration: kDefaultDuration,
+        alignment: widget.marginAlignment!,
+        child: animatedContainer,
+      );
+    }
+    return animatedContainer;
   }
 }

@@ -62,6 +62,8 @@ class SelectedButton extends StatefulWidget {
   final AbstractButtonStyle style;
   final AbstractButtonStyle selectedStyle;
   final bool? enabled;
+  final AlignmentGeometry? alignment;
+  final AlignmentGeometry? marginAlignment;
 
   const SelectedButton({
     Key? key,
@@ -71,6 +73,8 @@ class SelectedButton extends StatefulWidget {
     this.enabled,
     this.style = const ButtonStyle.ghost(),
     this.selectedStyle = const ButtonStyle.secondary(),
+    this.alignment,
+    this.marginAlignment,
   }) : super(key: key);
 
   @override
@@ -84,6 +88,8 @@ class SelectedButtonState extends State<SelectedButton> {
     return Button(
         enabled: widget.enabled,
         style: widget.value ? widget.selectedStyle : widget.style,
+        alignment: widget.alignment,
+        marginAlignment: widget.marginAlignment,
         onPressed: () {
           if (widget.onChanged != null) {
             widget.onChanged!(!widget.value);
@@ -134,6 +140,7 @@ class Button extends StatefulWidget {
   final GestureLongPressUpCallback? onTertiaryLongPress;
   final bool disableHoverEffect;
   final WidgetStatesController? statesController;
+  final AlignmentGeometry? marginAlignment;
   const Button({
     Key? key,
     this.statesController,
@@ -166,6 +173,7 @@ class Button extends StatefulWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
+    this.marginAlignment,
   }) : super(key: key);
 
   const Button.primary({
@@ -200,6 +208,7 @@ class Button extends StatefulWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
+    this.marginAlignment,
   });
 
   const Button.secondary({
@@ -234,6 +243,7 @@ class Button extends StatefulWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
+    this.marginAlignment,
   });
 
   const Button.outline({
@@ -268,6 +278,7 @@ class Button extends StatefulWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
+    this.marginAlignment,
   });
 
   const Button.ghost({
@@ -302,6 +313,7 @@ class Button extends StatefulWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
+    this.marginAlignment,
   });
 
   const Button.link({
@@ -336,6 +348,7 @@ class Button extends StatefulWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
+    this.marginAlignment,
   });
 
   const Button.text({
@@ -370,6 +383,7 @@ class Button extends StatefulWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
+    this.marginAlignment,
   });
 
   const Button.destructive({
@@ -404,6 +418,7 @@ class Button extends StatefulWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
+    this.marginAlignment,
   });
 
   const Button.fixed({
@@ -438,6 +453,7 @@ class Button extends StatefulWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
+    this.marginAlignment,
   });
 
   @override
@@ -468,6 +484,7 @@ class ButtonState<T extends Button> extends State<T> {
       statesController: widget.statesController,
       focusNode: widget.focusNode,
       enabled: widget.enabled ?? widget.onPressed != null,
+      marginAlignment: widget.marginAlignment,
       disableTransition: widget.disableTransition,
       onHover: widget.onHover,
       onFocus: widget.onFocus,
