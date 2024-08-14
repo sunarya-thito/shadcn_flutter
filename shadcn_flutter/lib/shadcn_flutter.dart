@@ -74,6 +74,7 @@ export 'src/components/layout/alert.dart';
 export 'src/components/layout/basic.dart';
 export 'src/components/layout/breadcrumb.dart';
 export 'src/components/layout/card.dart';
+export 'src/components/layout/card_image.dart';
 export 'src/components/layout/collapsible.dart';
 export 'src/components/layout/dialog/alert_dialog.dart';
 export 'src/components/layout/media_query.dart';

@@ -130,8 +130,10 @@ class Button extends StatefulWidget {
   final GestureLongPressUpCallback? onSecondaryLongPress;
   final GestureLongPressUpCallback? onTertiaryLongPress;
   final bool disableHoverEffect;
+  final WidgetStatesController? statesController;
   const Button({
     Key? key,
+    this.statesController,
     this.leading,
     this.trailing,
     required this.child,
@@ -165,6 +167,7 @@ class Button extends StatefulWidget {
 
   const Button.primary({
     super.key,
+    this.statesController,
     this.leading,
     this.trailing,
     required this.child,
@@ -198,6 +201,7 @@ class Button extends StatefulWidget {
 
   const Button.secondary({
     super.key,
+    this.statesController,
     this.leading,
     this.trailing,
     required this.child,
@@ -231,6 +235,7 @@ class Button extends StatefulWidget {
 
   const Button.outline({
     super.key,
+    this.statesController,
     this.leading,
     this.trailing,
     required this.child,
@@ -264,6 +269,7 @@ class Button extends StatefulWidget {
 
   const Button.ghost({
     super.key,
+    this.statesController,
     this.leading,
     this.trailing,
     required this.child,
@@ -297,6 +303,7 @@ class Button extends StatefulWidget {
 
   const Button.link({
     super.key,
+    this.statesController,
     this.leading,
     this.trailing,
     required this.child,
@@ -330,6 +337,7 @@ class Button extends StatefulWidget {
 
   const Button.text({
     super.key,
+    this.statesController,
     this.leading,
     this.trailing,
     required this.child,
@@ -363,6 +371,7 @@ class Button extends StatefulWidget {
 
   const Button.destructive({
     super.key,
+    this.statesController,
     this.leading,
     this.trailing,
     required this.child,
@@ -396,6 +405,7 @@ class Button extends StatefulWidget {
 
   const Button.fixed({
     super.key,
+    this.statesController,
     this.leading,
     this.trailing,
     required this.child,
@@ -452,6 +462,7 @@ class ButtonState<T extends Button> extends State<T> {
     final scaling = theme.scaling;
     bool enableFeedback = widget.enableFeedback ?? _shouldEnableFeedback;
     return Clickable(
+      statesController: widget.statesController,
       focusNode: widget.focusNode,
       enabled: widget.enabled ?? widget.onPressed != null,
       disableTransition: widget.disableTransition,

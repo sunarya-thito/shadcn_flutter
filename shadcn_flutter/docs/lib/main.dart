@@ -9,6 +9,7 @@ import 'package:docs/pages/docs/components/app_bar_example.dart';
 import 'package:docs/pages/docs/components/avatar_example.dart';
 import 'package:docs/pages/docs/components/avatar_group_example.dart';
 import 'package:docs/pages/docs/components/calendar_example.dart';
+import 'package:docs/pages/docs/components/card_image_example.dart';
 import 'package:docs/pages/docs/components/carousel_example.dart';
 import 'package:docs/pages/docs/components/chip_example.dart';
 import 'package:docs/pages/docs/components/chip_input_example.dart';
@@ -618,6 +619,13 @@ class MyAppState extends State<MyApp> {
             name: 'multiselect',
             builder: (context, state) {
               return const MultiSelectExample();
+            },
+          ),
+          GoRoute(
+            path: 'card_image',
+            name: 'card_image',
+            builder: (context, state) {
+              return const CardImageExample();
             },
           ),
         ]),

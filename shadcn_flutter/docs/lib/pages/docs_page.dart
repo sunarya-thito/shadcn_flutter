@@ -244,7 +244,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Scaffold', 'scaffold', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('App Bar', 'app_bar', ShadcnFeatureTag.experimental),
         ShadcnDocsPage(
-            'Card Image', 'card_image', ShadcnFeatureTag.workInProgress),
+            'Card Image', 'card_image', ShadcnFeatureTag.experimental),
       ],
     ),
     ShadcnDocsSection(

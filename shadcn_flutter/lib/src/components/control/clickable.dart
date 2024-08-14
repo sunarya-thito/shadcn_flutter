@@ -42,10 +42,12 @@ class Clickable extends StatefulWidget {
   final GestureLongPressUpCallback? onTertiaryLongPress;
   final bool? isSemanticButton;
   final bool disableHoverEffect;
+  final WidgetStatesController? statesController;
 
   const Clickable({
     super.key,
     required this.child,
+    this.statesController,
     this.enabled = true,
     this.decoration,
     this.mouseCursor,
@@ -93,7 +95,7 @@ const kDoubleTapMinTime = Duration(milliseconds: 300);
 
 class _ClickableState extends State<Clickable> {
   late FocusNode _focusNode;
-  final WidgetStatesController _controller = WidgetStatesController();
+  late WidgetStatesController _controller;
   DateTime? _lastTap;
   int _tapCount = 0;
 
@@ -101,12 +103,16 @@ class _ClickableState extends State<Clickable> {
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
+    _controller = widget.statesController ?? WidgetStatesController();
     _controller.update(WidgetState.disabled, !widget.enabled);
   }
 
   @override
   void didUpdateWidget(covariant Clickable oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.statesController != oldWidget.statesController) {
+      _controller = widget.statesController ?? WidgetStatesController();
+    }
     _controller.update(WidgetState.disabled, !widget.enabled);
     if (widget.focusNode != oldWidget.focusNode) {
       _focusNode = widget.focusNode ?? FocusNode();
