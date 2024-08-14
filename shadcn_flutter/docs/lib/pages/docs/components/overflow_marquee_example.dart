@@ -11,7 +11,7 @@ class OverflowMarqueeExample extends StatelessWidget {
     return ComponentPage(
       name: 'overflow_marquee',
       description:
-          'A widget that displays a marquee text that overflows its container.',
+          'A widget that marquee its child when it overflows the available space.',
       displayName: 'Overflow Marquee',
       children: [
         WidgetUsageExample(
