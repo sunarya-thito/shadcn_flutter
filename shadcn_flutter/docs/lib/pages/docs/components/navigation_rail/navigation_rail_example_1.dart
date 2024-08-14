@@ -14,7 +14,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
   NavigationLabelType labelType = NavigationLabelType.none;
   bool customButtonStyle = false;
 
-  Widget buildButton(int i, String label, IconData icon) {
+  NavigationButton buildButton(String label, IconData icon) {
     return NavigationButton(
       style: customButtonStyle
           ? const ButtonStyle.muted(density: ButtonDensity.icon)
@@ -22,13 +22,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
       selectedStyle: customButtonStyle
           ? const ButtonStyle.fixed(density: ButtonDensity.icon)
           : null,
-      onChanged: (value) {
-        setState(() {
-          selected = i;
-        });
-      },
       label: Text(label),
-      selected: selected == i,
       child: Icon(icon),
     );
   }
@@ -42,17 +36,25 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
           NavigationRail(
             alignment: alignment,
             labelType: labelType,
+            index: selected,
+            onSelected: (index) {
+              setState(() {
+                selected = index;
+              });
+            },
             children: [
-              buildButton(0, 'Home', BootstrapIcons.house),
-              buildButton(1, 'Explore', BootstrapIcons.compass),
-              buildButton(2, 'Library', BootstrapIcons.musicNoteList),
+              buildButton('Home', BootstrapIcons.house),
+              buildButton('Explore', BootstrapIcons.compass),
+              buildButton('Library', BootstrapIcons.musicNoteList),
               NavigationDivider(),
               NavigationLabel(child: Text('Settings')),
-              buildButton(3, 'Profile', BootstrapIcons.person),
-              buildButton(4, 'App', BootstrapIcons.appIndicator),
+              buildButton('Profile', BootstrapIcons.person),
+              buildButton('App', BootstrapIcons.appIndicator),
               NavigationDivider(),
               NavigationGap(12),
-              FlutterLogo(),
+              NavigationWidget(
+                child: FlutterLogo(),
+              ),
             ],
           ),
           const VerticalDivider(),

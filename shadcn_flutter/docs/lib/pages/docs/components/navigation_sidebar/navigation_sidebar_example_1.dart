@@ -11,14 +11,8 @@ class NavigationSidebarExample1 extends StatefulWidget {
 class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
   int selected = 0;
 
-  Widget buildButton(int i, String label, IconData icon) {
+  NavigationBarItem buildButton(String label, IconData icon) {
     return NavigationButton(
-      onChanged: (value) {
-        setState(() {
-          selected = i;
-        });
-      },
-      selected: selected == i,
       label: Text(label),
       child: Icon(icon),
     );
@@ -30,33 +24,39 @@ class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
       height: 400,
       child: OutlinedContainer(
         child: NavigationSidebar(
+          index: selected,
+          onSelected: (index) {
+            setState(() {
+              selected = index;
+            });
+          },
           children: [
             NavigationLabel(child: Text('Discovery')),
-            buildButton(0, 'Listen Now', BootstrapIcons.playCircle),
-            buildButton(1, 'Browse', BootstrapIcons.grid),
-            buildButton(2, 'Radio', BootstrapIcons.broadcast),
+            buildButton('Listen Now', BootstrapIcons.playCircle),
+            buildButton('Browse', BootstrapIcons.grid),
+            buildButton('Radio', BootstrapIcons.broadcast),
             NavigationGap(24),
             NavigationDivider(),
             NavigationLabel(child: Text('Library')),
-            buildButton(3, 'Playlist', BootstrapIcons.musicNoteList),
-            buildButton(4, 'Songs', BootstrapIcons.musicNote),
-            buildButton(5, 'For You', BootstrapIcons.person),
-            buildButton(6, 'Artists', BootstrapIcons.mic),
-            buildButton(7, 'Albums', BootstrapIcons.record2),
+            buildButton('Playlist', BootstrapIcons.musicNoteList),
+            buildButton('Songs', BootstrapIcons.musicNote),
+            buildButton('For You', BootstrapIcons.person),
+            buildButton('Artists', BootstrapIcons.mic),
+            buildButton('Albums', BootstrapIcons.record2),
             NavigationGap(24),
             NavigationDivider(),
             NavigationLabel(child: Text('Playlists')),
-            buildButton(8, 'Recently Added', BootstrapIcons.musicNoteList),
-            buildButton(9, 'Recently Played', BootstrapIcons.musicNoteList),
-            buildButton(10, 'Top Songs', BootstrapIcons.musicNoteList),
-            buildButton(11, 'Top Albums', BootstrapIcons.musicNoteList),
-            buildButton(12, 'Top Artists', BootstrapIcons.musicNoteList),
-            buildButton(13, 'Logic Discography With Some Spice',
+            buildButton('Recently Added', BootstrapIcons.musicNoteList),
+            buildButton('Recently Played', BootstrapIcons.musicNoteList),
+            buildButton('Top Songs', BootstrapIcons.musicNoteList),
+            buildButton('Top Albums', BootstrapIcons.musicNoteList),
+            buildButton('Top Artists', BootstrapIcons.musicNoteList),
+            buildButton('Logic Discography With Some Spice',
                 BootstrapIcons.musicNoteList),
-            buildButton(14, 'Bedtime Beats', BootstrapIcons.musicNoteList),
-            buildButton(15, 'Feeling Happy', BootstrapIcons.musicNoteList),
-            buildButton(16, 'I miss Y2K Pop', BootstrapIcons.musicNoteList),
-            buildButton(17, 'Runtober', BootstrapIcons.musicNoteList),
+            buildButton('Bedtime Beats', BootstrapIcons.musicNoteList),
+            buildButton('Feeling Happy', BootstrapIcons.musicNoteList),
+            buildButton('I miss Y2K Pop', BootstrapIcons.musicNoteList),
+            buildButton('Runtober', BootstrapIcons.musicNoteList),
           ],
         ),
       ),

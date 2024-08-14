@@ -13,7 +13,7 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
   NavigationLabelType labelType = NavigationLabelType.none;
   bool customButtonStyle = true;
 
-  Widget buildButton(int i, String label, IconData icon) {
+  NavigationButton buildButton(String label, IconData icon) {
     return NavigationButton(
       style: customButtonStyle
           ? const ButtonStyle.muted(density: ButtonDensity.icon)
@@ -21,13 +21,7 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
       selectedStyle: customButtonStyle
           ? const ButtonStyle.fixed(density: ButtonDensity.icon)
           : null,
-      onChanged: (value) {
-        setState(() {
-          selected = i;
-        });
-      },
       label: Text(label),
-      selected: selected == i,
       child: Icon(icon),
     );
   }
@@ -44,12 +38,18 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
             alignment: alignment,
             labelType: labelType,
             expands: expands,
+            onSelected: (index) {
+              setState(() {
+                selected = index;
+              });
+            },
+            index: selected,
             children: [
-              buildButton(0, 'Home', BootstrapIcons.house),
-              buildButton(1, 'Explore', BootstrapIcons.compass),
-              buildButton(2, 'Library', BootstrapIcons.musicNoteList),
-              buildButton(3, 'Profile', BootstrapIcons.person),
-              buildButton(4, 'App', BootstrapIcons.appIndicator),
+              buildButton('Home', BootstrapIcons.house),
+              buildButton('Explore', BootstrapIcons.compass),
+              buildButton('Library', BootstrapIcons.musicNoteList),
+              buildButton('Profile', BootstrapIcons.person),
+              buildButton('App', BootstrapIcons.appIndicator),
             ],
           ),
         ],
