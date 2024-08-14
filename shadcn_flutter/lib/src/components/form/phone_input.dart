@@ -177,7 +177,7 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
                       theme.radiusSm,
                     ),
                     height: theme.scaling * 18,
-                    width: theme.scaling * 18,
+                    width: theme.scaling * 24,
                   ),
                   Gap(theme.scaling * 8),
                   Text(item.dialCode),
