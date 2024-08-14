@@ -144,6 +144,7 @@ class ScaffoldState extends State<Scaffold> {
               child: Container(
                 color: widget.footerBackgroundColor,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     for (var i = 0; i < widget.footers.length; i++)
                       Data.inherit(
