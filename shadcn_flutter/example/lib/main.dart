@@ -43,14 +43,8 @@ class _CounterPageState extends State<CounterPage> {
     });
   }
 
-  Widget _buildButton(int i, String label, IconData icon) {
+  NavigationButton _buildButton(int i, String label, IconData icon) {
     return NavigationButton(
-      onChanged: (value) {
-        setState(() {
-          _selected = i;
-        });
-      },
-      selected: _selected == i,
       label: Text(label),
       child: Icon(icon),
     );
@@ -111,6 +105,12 @@ class _CounterPageState extends State<CounterPage> {
       footers: [
         const Divider(),
         NavigationBar(
+          onSelected: (i) {
+            setState(() {
+              _selected = i;
+            });
+          },
+          index: _selected,
           children: [
             _buildButton(0, 'Home', Icons.home),
             _buildButton(1, 'Explore', Icons.explore),
