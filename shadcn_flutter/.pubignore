@@ -11,3 +11,8 @@
 /example/macos/
 /example/windows/
 /example/linux/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+doc/api/
