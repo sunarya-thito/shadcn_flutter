@@ -43,7 +43,7 @@ class _CounterPageState extends State<CounterPage> {
     });
   }
 
-  NavigationButton _buildButton(int i, String label, IconData icon) {
+  NavigationButton _buildButton(String label, IconData icon) {
     return NavigationButton(
       label: Text(label),
       child: Icon(icon),
@@ -112,9 +112,9 @@ class _CounterPageState extends State<CounterPage> {
           },
           index: _selected,
           children: [
-            _buildButton(0, 'Home', Icons.home),
-            _buildButton(1, 'Explore', Icons.explore),
-            _buildButton(2, 'Library', Icons.library_music),
+            _buildButton('Home', Icons.home),
+            _buildButton('Explore', Icons.explore),
+            _buildButton('Library', Icons.library_music),
           ],
         ),
       ],
