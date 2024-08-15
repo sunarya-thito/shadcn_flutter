@@ -102,3 +102,41 @@ class ImageProperties {
     );
   }
 }
+
+class ImageInput extends StatelessWidget {
+  final List<XFile> images;
+  final ValueChanged<List<XFile>> onChanged;
+  final VoidCallback? onAdd;
+  final bool canDrop;
+
+  const ImageInput({
+    Key? key,
+    required this.images,
+    required this.onChanged,
+    this.onAdd,
+    this.canDrop = true,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    throw UnimplementedError();
+  }
+}
+
+class ImageTools extends StatelessWidget {
+  final Widget image;
+  final ImageProperties properties;
+  final ValueChanged<ImageProperties> onPropertiesChanged;
+
+  const ImageTools({
+    Key? key,
+    required this.image,
+    required this.properties,
+    required this.onPropertiesChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    throw UnimplementedError();
+  }
+}
