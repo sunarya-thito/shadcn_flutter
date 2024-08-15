@@ -95,7 +95,6 @@ class Hover extends StatefulWidget {
 }
 
 class _HoverState extends State<Hover> with SingleTickerProviderStateMixin {
-  bool _longPress = false;
   late AnimationController _controller;
   int? _enterTime;
 
@@ -124,7 +123,6 @@ class _HoverState extends State<Hover> with SingleTickerProviderStateMixin {
           : widget.showDuration;
       _controller.reverse();
     }
-    _longPress = false;
     _enterTime = null;
   }
 
@@ -161,7 +159,6 @@ class _HoverState extends State<Hover> with SingleTickerProviderStateMixin {
           // for mobile platforms, hover is triggered by a long press
           onLongPressDown: enableLongPress
               ? (details) {
-                  _longPress = true;
                   _onEnter();
                 }
               : null,

@@ -5,6 +5,7 @@
 /.idea/
 /.dart_tool/
 /docs_images/
+/docs/
 /example/.idea/
 /example/android/
 /example/ios/

@@ -1,3 +1,49 @@
+## 0.0.18
+* Added Number Ticker component
+* Added Linear Progress component
+* Added Chip Input component
+* Updated Color Picker component
+* Added Multi Select component
+* Added Phone Input component
+* Added Radio Card component
+* Added Star Rating component
+* Added Time Picker component
+* Added App Bar component
+* Added Card Image component
+* Added Scaffold component
+* Added Stepper component
+* Added Timeline component
+* Added Dot Indicator component
+* Added Navigation Bar component
+* Added Navigation Rail component
+* Added Navigation Sidebar component
+* Added Tree component
+* Added Avatar Group component
+* Added Tracker component
+* Added Keyboard Display component
+* Added Overflow Marquee component
+* Fixed animation implementation issue
+* Improved popover system
+* Added scaling option
+* Added surfaceOpacity option
+* Added surfaceBlur option
+* Improved drawer
+* Fixed button visual issue in light mode
+* Fixed input issue on mobile
+* Added option to use native input context menu
+* Added mobile context menu
+* Fixed radix icons visual glitch
+* Added checkbox animation
+* Added year and month selection to date picker
+* Added tooltip trigger for mobile
+* Fixed carousel implementation to match design spec
+* Added data messenger to fix data binding issue
+* Added more style to chip component
+* Improved radio component visual design
+* Added more params to input component
+* Improved select performance
+* Upgraded cross_file dependency
+
 ## 0.0.17
 
 * Fixed chained text widget

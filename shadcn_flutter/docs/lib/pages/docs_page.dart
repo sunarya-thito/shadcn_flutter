@@ -164,8 +164,7 @@ class DocsPageState extends State<DocsPage> {
       [
         ShadcnDocsPage('Animated Value', 'animated_value_builder'),
         // https://nyxbui.design/docs/components/number-ticker
-        ShadcnDocsPage(
-            'Number Ticker', 'number_ticker', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Number Ticker', 'number_ticker'),
         ShadcnDocsPage('Repeated Animation', 'repeated_animation_builder'),
       ],
     ),
@@ -183,8 +182,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Alert Dialog', 'alert_dialog'),
         ShadcnDocsPage('Circular Progress', 'circular_progress'),
         ShadcnDocsPage('Progress', 'progress'),
-        ShadcnDocsPage('Linear Progress', 'linear_progress',
-            ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Linear Progress', 'linear_progress'),
         ShadcnDocsPage('Skeleton', 'skeleton'),
         ShadcnDocsPage('Toast', 'toast'),
         // TODO: https://www.radix-ui.com/themes/docs/components/spinner
@@ -196,10 +194,8 @@ class DocsPageState extends State<DocsPage> {
       [
         ShadcnDocsPage('Button', 'button'),
         ShadcnDocsPage('Checkbox', 'checkbox'),
-        ShadcnDocsPage(
-            'Chip Input', 'chip_input', ShadcnFeatureTag.experimental),
-        ShadcnDocsPage(
-            'Color Picker', 'color_picker', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Chip Input', 'chip_input'),
+        ShadcnDocsPage('Color Picker', 'color_picker'),
         ShadcnDocsPage('Date Picker', 'date_picker'),
         // TODO: https://file-vault-delta.vercel.app/ also https://uploader.sadmn.com/
         ShadcnDocsPage(
@@ -216,23 +212,18 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage(
             'Number Input', 'number_input', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Input OTP', 'input_otp'),
-        ShadcnDocsPage(
-            'Phone Input', 'phone_input', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Phone Input', 'phone_input'),
         ShadcnDocsPage('Radio Group', 'radio_group'),
         //https://www.radix-ui.com/themes/docs/components/radio-cards
-        ShadcnDocsPage(
-            'Radio Card', 'radio_card', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Radio Card', 'radio_card'),
         ShadcnDocsPage('Select', 'select'),
         ShadcnDocsPage('Slider', 'slider'),
-        ShadcnDocsPage(
-            'Star Rating', 'star_rating', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Star Rating', 'star_rating'),
         ShadcnDocsPage('Switch', 'switch'),
         ShadcnDocsPage('Text Area', 'text_area'),
-        ShadcnDocsPage(
-            'Time Picker', 'time_picker', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Time Picker', 'time_picker'),
         ShadcnDocsPage('Toggle', 'toggle'),
-        ShadcnDocsPage(
-            'Multi Select', 'multiselect', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Multi Select', 'multiselect'),
       ],
     ),
     ShadcnDocsSection(
@@ -245,12 +236,11 @@ class DocsPageState extends State<DocsPage> {
         // https://nextjs-shadcn-dnd.vercel.app/ (make it headless)
         ShadcnDocsPage('Sortable', 'sortable', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Steps', 'steps'),
-        ShadcnDocsPage('Stepper', 'stepper', ShadcnFeatureTag.experimental),
-        ShadcnDocsPage('Timeline', 'timeline', ShadcnFeatureTag.experimental),
-        ShadcnDocsPage('Scaffold', 'scaffold', ShadcnFeatureTag.experimental),
-        ShadcnDocsPage('App Bar', 'app_bar', ShadcnFeatureTag.experimental),
-        ShadcnDocsPage(
-            'Card Image', 'card_image', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Stepper', 'stepper'),
+        ShadcnDocsPage('Timeline', 'timeline'),
+        ShadcnDocsPage('Scaffold', 'scaffold'),
+        ShadcnDocsPage('App Bar', 'app_bar'),
+        ShadcnDocsPage('Card Image', 'card_image'),
       ],
     ),
     ShadcnDocsSection(
@@ -264,18 +254,14 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Tab List', 'tab_list'),
         // TODO: like a chrome tab, complete with its view
         ShadcnDocsPage('Tab Pane', 'tab_pane', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Tree', 'tree', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Tree', 'tree'),
         // aka Bottom Navigation Bar
-        ShadcnDocsPage(
-            'Navigation Bar', 'navigation_bar', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Navigation Bar', 'navigation_bar'),
         // aka Sidebar
-        ShadcnDocsPage('Navigation Rail', 'navigation_rail',
-            ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Navigation Rail', 'navigation_rail'),
         // aka Drawer
-        ShadcnDocsPage('Navigation Sidebar', 'navigation_sidebar',
-            ShadcnFeatureTag.experimental),
-        ShadcnDocsPage(
-            'Dot Indicator', 'dot_indicator', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Navigation Sidebar', 'navigation_sidebar'),
+        ShadcnDocsPage('Dot Indicator', 'dot_indicator'),
       ],
     ),
     ShadcnDocsSection(
@@ -293,15 +279,14 @@ class DocsPageState extends State<DocsPage> {
       'Data Display',
       [
         ShadcnDocsPage('Avatar', 'avatar'),
-        ShadcnDocsPage(
-            'Avatar Group', 'avatar_group', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Avatar Group', 'avatar_group'),
         ShadcnDocsPage(
             'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
         // TODO also make it zoomable like: https://zoom-chart-demo.vercel.app/
         ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Code Snippet', 'code_snippet'),
         ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Tracker', 'tracker', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Tracker', 'tracker'),
       ],
     ),
     ShadcnDocsSection(
@@ -314,8 +299,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Context Menu', 'context_menu'),
         ShadcnDocsPage('Dropdown Menu', 'dropdown_menu'),
         // TODO https://www.radix-ui.com/themes/docs/components/kbd
-        ShadcnDocsPage('Keyboard Display', 'keyboard_display',
-            ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Keyboard Display', 'keyboard_display'),
         // TODO: Same progress as image input
         ShadcnDocsPage(
             'Image Tools', 'image_tools', ShadcnFeatureTag.workInProgress),
@@ -323,8 +307,7 @@ class DocsPageState extends State<DocsPage> {
         // the indicator itself is provided by scaffold
         ShadcnDocsPage('Refresh Trigger', 'refresh_trigger',
             ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Overflow Marquee', 'overflow_marquee',
-            ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Overflow Marquee', 'overflow_marquee'),
       ],
     ),
     // COMPONENTS END
