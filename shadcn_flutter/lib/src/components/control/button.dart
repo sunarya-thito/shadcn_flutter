@@ -100,16 +100,6 @@ class SelectedButtonState extends State<SelectedButton> {
 }
 
 class Button extends StatefulWidget {
-  @deprecated
-  static const EdgeInsets normalPadding = EdgeInsets.symmetric(
-    horizontal: 16,
-    vertical: 8,
-  );
-  @deprecated
-  static const EdgeInsets badgePadding = EdgeInsets.symmetric(
-    horizontal: 10,
-    vertical: 2,
-  );
   final bool? enabled;
   final bool disableTransition;
   final Widget? leading;
