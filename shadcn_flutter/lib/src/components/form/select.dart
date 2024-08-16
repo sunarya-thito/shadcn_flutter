@@ -146,51 +146,56 @@ class SelectGroup<T> extends StatelessWidget implements AbstractSelectItem<T> {
   Widget build(BuildContext context) {
     final searchData = Data.maybeOf<SelectData>(context);
     assert(searchData != null, 'SelectGroup must be a child of Select');
-    final text = searchData!.query;
-    Map<AbstractSelectItem<T>, SelectSearchResult> resultMap = {};
-    for (int i = 0; i < this.children.length; i++) {
-      var item = this.children[i];
-      if (text == null || text.isEmpty) {
-        var result = item.search(SearchQuery<T>(
-            text ?? '', searchData.searchFilter, searchData.value as List<T>));
-        resultMap[item] = SelectSearchResult(0, i, result.hasSelectedValue);
-      } else {
-        var result = item.search(SearchQuery<T>(
-            text, searchData.searchFilter, searchData.value as List<T>));
-        int score = result.score;
-        bool hasSelectedValue = result.hasSelectedValue;
-        if (score > 0 || searchData.showUnrelatedValues) {
-          resultMap[item] = SelectSearchResult(score, i, hasSelectedValue);
-        }
-      }
-    }
-    List<Widget> children = [];
-    // sort from largest score to lowest score, if score is same, then sort by index
-    resultMap.entries.toList()
-      ..sort((a, b) {
-        if (searchData.orderSelectedFirst) {
-          if (a.value.hasSelectedValue && !b.value.hasSelectedValue) {
-            return -1;
-          }
-          if (!a.value.hasSelectedValue && b.value.hasSelectedValue) {
-            return 1;
+    return AnimatedBuilder(
+      animation: searchData!.value,
+      builder: (context, child) {
+        final text = searchData.query;
+        Map<AbstractSelectItem<T>, SelectSearchResult> resultMap = {};
+        for (int i = 0; i < this.children.length; i++) {
+          var item = this.children[i];
+          if (text == null || text.isEmpty) {
+            var result = item.search(SearchQuery<T>(text ?? '',
+                searchData.searchFilter, searchData.value.value as List<T>));
+            resultMap[item] = SelectSearchResult(0, i, result.hasSelectedValue);
+          } else {
+            var result = item.search(SearchQuery<T>(text,
+                searchData.searchFilter, searchData.value.value as List<T>));
+            int score = result.score;
+            bool hasSelectedValue = result.hasSelectedValue;
+            if (score > 0 || searchData.showUnrelatedValues) {
+              resultMap[item] = SelectSearchResult(score, i, hasSelectedValue);
+            }
           }
         }
-        if (a.value.score == b.value.score) {
-          return a.value.index.compareTo(b.value.index);
-        }
-        return b.value.score.compareTo(a.value.score);
-      })
-      ..forEach((element) {
-        children.add(element.key);
-      });
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (headers != null) ...headers!,
-        ...children,
-        if (footers != null) ...footers!,
-      ],
+        List<Widget> children = [];
+        // sort from largest score to lowest score, if score is same, then sort by index
+        resultMap.entries.toList()
+          ..sort((a, b) {
+            if (searchData.orderSelectedFirst) {
+              if (a.value.hasSelectedValue && !b.value.hasSelectedValue) {
+                return -1;
+              }
+              if (!a.value.hasSelectedValue && b.value.hasSelectedValue) {
+                return 1;
+              }
+            }
+            if (a.value.score == b.value.score) {
+              return a.value.index.compareTo(b.value.index);
+            }
+            return b.value.score.compareTo(a.value.score);
+          })
+          ..forEach((element) {
+            children.add(element.key);
+          });
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (headers != null) ...headers!,
+            ...children,
+            if (footers != null) ...footers!,
+          ],
+        );
+      },
     );
   }
 }
@@ -230,13 +235,17 @@ class SelectItem<T> extends StatelessWidget implements AbstractSelectItem<T> {
     final searchData = Data.maybeOf<SelectData>(context);
     assert(searchData != null, 'SelectItem must be a child of Select');
     return Data<SelectData>.boundary(
-      child: builder(
-        context,
-        (selected) {
-          searchData.onChanged(value, selected);
-        },
-        searchData!.value as List<T>,
-      ),
+      child: AnimatedBuilder(
+          animation: searchData!.value,
+          builder: (context, child) {
+            return builder(
+              context,
+              (selected) {
+                searchData.onChanged(value, selected);
+              },
+              searchData.value.value as List<T>,
+            );
+          }),
     );
   }
 }
@@ -322,11 +331,14 @@ class Select<T> extends StatefulWidget {
 class SelectState<T> extends State<Select<T>> with FormValueSupplier {
   late FocusNode _focusNode;
   final PopoverController _popoverController = PopoverController();
+  late ValueNotifier<List<T>> _valueNotifier;
 
   @override
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
+    _valueNotifier =
+        ValueNotifier(widget.value == null ? const [] : [widget.value!]);
   }
 
   @override
@@ -349,6 +361,10 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
       _focusNode = widget.focusNode ?? FocusNode();
     }
     if (widget.value != oldWidget.value) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _valueNotifier.value =
+            widget.value == null ? const [] : [widget.value!];
+      });
       reportNewFormValue(
         widget.value,
         (value) {
@@ -417,8 +433,9 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
                         searchPlaceholder: widget.searchPlaceholder,
                         searchFilter: widget.searchFilter,
                         constraints: widget.popupConstraints,
-                        value:
-                            widget.value == null ? const [] : [widget.value!],
+                        // value:
+                        //     widget.value == null ? const [] : [widget.value!],
+                        value: _valueNotifier,
                         showUnrelatedValues: widget.showUnrelatedValues,
                         onChanged: widget.onChanged == null
                             ? null
@@ -476,7 +493,7 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
 typedef SelectValueChanged<T> = void Function(T value, bool selected);
 
 class SelectPopup<T> extends StatefulWidget {
-  final List<T> value;
+  final ValueListenable<List<T>> value;
   final SearchFilter<T>? searchFilter;
   final BoxConstraints? constraints;
   final List<AbstractSelectItem<T>> children;
@@ -592,7 +609,11 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
                     scrollbars: false,
                   ),
                   child: AnimatedBuilder(
-                    animation: _searchController,
+                    // animation: _searchController,
+                    animation: Listenable.merge([
+                      _searchController,
+                      widget.value,
+                    ]),
                     builder: (context, child) {
                       String text = _searchController.text;
                       Map<AbstractSelectItem<T>, SelectSearchResult> resultMap =
@@ -601,12 +622,12 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
                         var item = widget.children[i];
                         if (text.isEmpty) {
                           var result = item.search(SearchQuery<T>(
-                              text, widget.searchFilter, widget.value));
+                              text, widget.searchFilter, widget.value.value));
                           resultMap[item] =
                               SelectSearchResult(0, i, result.hasSelectedValue);
                         } else {
                           var result = item.search(SearchQuery<T>(
-                              text, widget.searchFilter, widget.value));
+                              text, widget.searchFilter, widget.value.value));
                           int score = result.score;
                           bool hasSelectedValue = result.hasSelectedValue;
                           if (score > 0 || widget.showUnrelatedValues) {
@@ -788,7 +809,7 @@ class SelectSearchResult {
 class SelectData {
   final SearchFilter? searchFilter;
   final String? query;
-  final List<Object?> value;
+  final ValueListenable<List<Object?>> value;
   final SelectValueChanged onChanged;
   final bool showUnrelatedValues;
   final bool orderSelectedFirst;
@@ -802,7 +823,7 @@ class SelectData {
     return other is SelectData &&
         other.searchFilter == searchFilter &&
         other.query == query &&
-        listEquals(other.value, value) &&
+        other.value == value &&
         other.onChanged == onChanged &&
         other.showUnrelatedValues == showUnrelatedValues &&
         other.orderSelectedFirst == orderSelectedFirst;
@@ -882,11 +903,13 @@ class MultiSelect<T> extends StatefulWidget {
 class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
   late FocusNode _focusNode;
   final PopoverController _popoverController = PopoverController();
+  late ValueNotifier<List<T>> _valueNotifier;
 
   @override
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
+    _valueNotifier = ValueNotifier(widget.value);
   }
 
   @override
@@ -909,6 +932,9 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
       _focusNode = widget.focusNode ?? FocusNode();
     }
     if (widget.value != oldWidget.value) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _valueNotifier.value = widget.value;
+      });
       reportNewFormValue(
         widget.value,
         (value) {
@@ -976,7 +1002,7 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
                         searchPlaceholder: widget.searchPlaceholder,
                         searchFilter: widget.searchFilter,
                         constraints: widget.popupConstraints,
-                        value: widget.value,
+                        value: _valueNotifier,
                         showUnrelatedValues: widget.showUnrelatedValues,
                         autoClose: widget.autoClosePopover,
                         onChanged: widget.onChanged == null
