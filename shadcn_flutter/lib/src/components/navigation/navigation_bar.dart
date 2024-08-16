@@ -41,6 +41,8 @@ class NavigationBar extends StatefulWidget {
   final bool expands;
   final int? index;
   final ValueChanged<int>? onSelected;
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
 
   const NavigationBar({
     Key? key,
@@ -54,6 +56,8 @@ class NavigationBar extends StatefulWidget {
     this.expands = true,
     this.index,
     this.onSelected,
+    this.surfaceOpacity,
+    this.surfaceBlur,
     required this.children,
   }) : super(key: key);
 
@@ -113,6 +117,8 @@ class _NavigationBarState extends State<NavigationBar>
     }
     return AppBar(
       padding: EdgeInsets.zero,
+      surfaceBlur: widget.surfaceBlur,
+      surfaceOpacity: widget.surfaceOpacity,
       child: Data.inherit(
         data: NavigationControlData(
           containerType: NavigationContainerType.bar,
@@ -192,6 +198,8 @@ class NavigationRail extends StatefulWidget {
   final BoxConstraints? constraints;
   final int? index;
   final ValueChanged<int>? onSelected;
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
 
   const NavigationRail({
     Key? key,
@@ -251,19 +259,24 @@ class _NavigationRailState extends State<NavigationRail>
         selectedIndex: widget.index,
         onSelected: _onSelected,
       ),
-      child: AnimatedContainer(
-        duration: kDefaultDuration,
-        color: widget.backgroundColor,
-        alignment: _alignment,
-        child: SingleChildScrollView(
-          scrollDirection: widget.direction,
-          padding: resolvedPadding,
-          child: _wrapIntrinsic(
-            Flex(
-              direction: widget.direction,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: wrapChildren(context, widget.children),
-            ).gap(widget.spacing ?? (8 * scaling)),
+      child: SurfaceBlur(
+        surfaceBlur: widget.surfaceBlur,
+        child: AnimatedContainer(
+          duration: kDefaultDuration,
+          color: widget.backgroundColor ??
+              (theme.colorScheme.background
+                  .scaleAlpha(widget.surfaceOpacity ?? 1)),
+          alignment: _alignment,
+          child: SingleChildScrollView(
+            scrollDirection: widget.direction,
+            padding: resolvedPadding,
+            child: _wrapIntrinsic(
+              Flex(
+                direction: widget.direction,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: wrapChildren(context, widget.children),
+              ).gap(widget.spacing ?? (8 * scaling)),
+            ),
           ),
         ),
       ),
@@ -287,6 +300,8 @@ class NavigationSidebar extends StatefulWidget {
   final BoxConstraints? constraints;
   final int? index;
   final ValueChanged<int>? onSelected;
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
 
   const NavigationSidebar({
     Key? key,
@@ -297,6 +312,8 @@ class NavigationSidebar extends StatefulWidget {
     this.constraints,
     this.index,
     this.onSelected,
+    this.surfaceOpacity,
+    this.surfaceBlur,
     required this.children,
   }) : super(key: key);
 
@@ -347,25 +364,34 @@ class _NavigationSidebarState extends State<NavigationSidebar>
       child: ConstrainedBox(
         constraints:
             widget.constraints ?? getDefaultConstraints(context, theme),
-        child: ClipRect(
-          child: CustomScrollView(
-            clipBehavior: Clip.none,
-            shrinkWrap: true,
-            scrollDirection: direction,
-            slivers: [
-              SliverGap(_startPadding(resolvedPadding, direction)),
-              ...children.map(
-                (e) {
-                  return SliverPadding(
-                    padding: _childPadding(resolvedPadding, direction),
-                    sliver: e,
-                  ) as Widget;
-                },
-              ).joinSeparator(
-                SliverGap(widget.spacing ?? 0),
+        child: SurfaceBlur(
+          surfaceBlur: widget.surfaceBlur,
+          child: AnimatedContainer(
+            duration: kDefaultDuration,
+            color: widget.backgroundColor ??
+                (theme.colorScheme.background
+                    .scaleAlpha(widget.surfaceOpacity ?? 1)),
+            child: ClipRect(
+              child: CustomScrollView(
+                clipBehavior: Clip.none,
+                shrinkWrap: true,
+                scrollDirection: direction,
+                slivers: [
+                  SliverGap(_startPadding(resolvedPadding, direction)),
+                  ...children.map(
+                    (e) {
+                      return SliverPadding(
+                        padding: _childPadding(resolvedPadding, direction),
+                        sliver: e,
+                      ) as Widget;
+                    },
+                  ).joinSeparator(
+                    SliverGap(widget.spacing ?? 0),
+                  ),
+                  SliverGap(_endPadding(resolvedPadding, direction)),
+                ],
               ),
-              SliverGap(_endPadding(resolvedPadding, direction)),
-            ],
+            ),
           ),
         ),
       ),

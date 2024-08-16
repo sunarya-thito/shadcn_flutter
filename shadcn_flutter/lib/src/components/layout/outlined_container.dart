@@ -2,37 +2,52 @@ import 'dart:ui';
 
 import '../../../shadcn_flutter.dart';
 
-class SurfaceBlur extends StatelessWidget {
+class SurfaceBlur extends StatefulWidget {
   final Widget child;
-  final double surfaceBlur;
+  final double? surfaceBlur;
   final BorderRadius? borderRadius;
 
   const SurfaceBlur({
     super.key,
     required this.child,
-    this.surfaceBlur = 0,
+    this.surfaceBlur,
     this.borderRadius,
   });
 
   @override
+  State<SurfaceBlur> createState() => _SurfaceBlurState();
+}
+
+class _SurfaceBlurState extends State<SurfaceBlur> {
+  final GlobalKey _mainContainerKey = GlobalKey();
+  @override
   Widget build(BuildContext context) {
+    if (widget.surfaceBlur == null || widget.surfaceBlur! <= 0) {
+      return KeyedSubtree(
+        key: _mainContainerKey,
+        child: widget.child,
+      );
+    }
     return Stack(
       fit: StackFit.passthrough,
       children: [
         Positioned.fill(
           child: ClipRRect(
-            borderRadius: borderRadius ?? BorderRadius.zero,
+            borderRadius: widget.borderRadius ?? BorderRadius.zero,
             child: BackdropFilter(
               filter: ImageFilter.blur(
-                sigmaX: surfaceBlur,
-                sigmaY: surfaceBlur,
+                sigmaX: widget.surfaceBlur!,
+                sigmaY: widget.surfaceBlur!,
               ),
               // had to add SizedBox, otherwise it won't blur
               child: SizedBox(),
             ),
           ),
         ),
-        child,
+        KeyedSubtree(
+          key: _mainContainerKey,
+          child: widget.child,
+        ),
       ],
     );
   }
