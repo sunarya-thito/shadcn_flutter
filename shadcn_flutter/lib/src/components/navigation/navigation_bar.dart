@@ -212,6 +212,8 @@ class NavigationRail extends StatefulWidget {
     this.constraints,
     this.index,
     this.onSelected,
+    this.surfaceOpacity,
+    this.surfaceBlur,
     required this.children,
   }) : super(key: key);
 
