@@ -33,18 +33,18 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.8
   shadcn_flutter:
     path: ../
-  go_router: ^13.2.0
-  shared_preferences: ^2.2.2
+  go_router: ^14.2.3
+  shared_preferences: ^2.3.2
   http: ^1.2.1
   widget_visibility_checker: ^1.0.2
   visibility_detector: ^0.4.0+2
   font_awesome_flutter: ^10.7.0
   url_launcher: ^6.3.0
   intl: ^0.19.0
-  super_drag_and_drop: ^0.8.18
+  super_drag_and_drop: ^0.8.19
 #  file_picker: ^8.0.7
 
 dev_dependencies:
