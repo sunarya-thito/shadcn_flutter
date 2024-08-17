@@ -33,6 +33,7 @@ class Avatar extends StatefulWidget implements AvatarWidget {
     return first;
   }
 
+  @Deprecated('Use imageProvider instead')
   final String? photoUrl;
   final String initials;
   final Color? backgroundColor;
@@ -43,6 +44,7 @@ class Avatar extends StatefulWidget implements AvatarWidget {
   final AvatarWidget? badge;
   final Offset? badgeOffset;
   final double? badgeGap;
+  final ImageProvider? imageProvider;
 
   const Avatar({
     Key? key,
@@ -54,7 +56,28 @@ class Avatar extends StatefulWidget implements AvatarWidget {
     this.badge,
     this.badgeOffset,
     this.badgeGap,
+    this.imageProvider,
   }) : super(key: key);
+
+  Avatar.network({
+    Key? key,
+    required this.initials,
+    this.backgroundColor,
+    this.size,
+    this.borderRadius,
+    this.badge,
+    this.badgeOffset,
+    this.badgeGap,
+    int? cacheWidth,
+    int? cacheHeight,
+    required String photoUrl,
+  })  : photoUrl = null,
+        imageProvider = ResizeImage.resizeIfNeeded(
+          cacheWidth,
+          cacheHeight,
+          NetworkImage(photoUrl),
+        ),
+        super(key: key);
 
   @override
   _AvatarState createState() => _AvatarState();
@@ -75,6 +98,24 @@ class _AvatarState extends State<Avatar> {
           borderRadius: BorderRadius.circular(borderRadius),
           child: Image.network(
             widget.photoUrl!,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              print('Failed to load image: $error');
+              print(stackTrace);
+              return _buildInitials(context, borderRadius);
+            },
+          ),
+        ),
+      );
+    }
+    if (widget.imageProvider != null) {
+      return SizedBox(
+        width: size,
+        height: size,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(borderRadius),
+          child: Image(
+            image: widget.imageProvider!,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               print('Failed to load image: $error');
