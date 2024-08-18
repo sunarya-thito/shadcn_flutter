@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:recase/recase.dart';
-
 import 'woff2otf.dart';
 
 main() {
@@ -52,10 +50,55 @@ main() {
 
 String generateIconName(String name) {
   name = name.replaceAll('-', ' ');
-  name = ReCase(name).camelCase;
+  name = generateCammelCaseName(name);
   // check if name starts with a number, then add "icon{number}"
   if (RegExp(r'^[0-9]').hasMatch(name)) {
     name = 'icon$name';
   }
   return name;
+}
+
+final RegExp _upperAlphaRegex = RegExp(r'[A-Z]');
+
+final symbolSet = {' ', '.', '/', '_', '\\', '-'};
+
+List<String> splitIntoWords(String text) {
+  StringBuffer sb = StringBuffer();
+  List<String> words = [];
+  bool isAllCaps = text.toUpperCase() == text;
+
+  for (int i = 0; i < text.length; i++) {
+    String char = text[i];
+    String? nextChar = i + 1 == text.length ? null : text[i + 1];
+
+    if (symbolSet.contains(char)) {
+      continue;
+    }
+
+    sb.write(char);
+
+    bool isEndOfWord = nextChar == null ||
+        (_upperAlphaRegex.hasMatch(nextChar) && !isAllCaps) ||
+        symbolSet.contains(nextChar);
+
+    if (isEndOfWord) {
+      words.add(sb.toString());
+      sb.clear();
+    }
+  }
+
+  return words;
+}
+
+String generateCammelCaseName(String name) {
+  List<String> words = splitIntoWords(name);
+  String result = '';
+  for (int i = 0; i < words.length; i++) {
+    if (i == 0) {
+      result += words[i].toLowerCase();
+    } else {
+      result += words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+    }
+  }
+  return result;
 }

@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:recase/recase.dart';
-
+import 'bootstrap_icon_generator.dart';
 import 'woff2otf.dart';
 
 // Extract these css:
@@ -79,7 +78,7 @@ main() {
 
 String generateIconName(String name) {
   name = name.replaceAll('-', ' ');
-  name = ReCase(name).camelCase;
+  name = generateCammelCaseName(name);
   // check if name starts with a number, then add "icon{number}"
   if (RegExp(r'^[0-9]').hasMatch(name)) {
     name = 'icon$name';
