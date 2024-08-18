@@ -33,8 +33,6 @@ class Avatar extends StatefulWidget implements AvatarWidget {
     return first;
   }
 
-  @Deprecated('Use imageProvider instead')
-  final String? photoUrl;
   final String initials;
   final Color? backgroundColor;
   @override
@@ -44,11 +42,10 @@ class Avatar extends StatefulWidget implements AvatarWidget {
   final AvatarWidget? badge;
   final Offset? badgeOffset;
   final double? badgeGap;
-  final ImageProvider? imageProvider;
+  final ImageProvider? provider;
 
   const Avatar({
     Key? key,
-    this.photoUrl,
     required this.initials,
     this.backgroundColor,
     this.size,
@@ -56,7 +53,7 @@ class Avatar extends StatefulWidget implements AvatarWidget {
     this.badge,
     this.badgeOffset,
     this.badgeGap,
-    this.imageProvider,
+    this.provider,
   }) : super(key: key);
 
   Avatar.network({
@@ -71,8 +68,7 @@ class Avatar extends StatefulWidget implements AvatarWidget {
     int? cacheWidth,
     int? cacheHeight,
     required String photoUrl,
-  })  : photoUrl = null,
-        imageProvider = ResizeImage.resizeIfNeeded(
+  })  : provider = ResizeImage.resizeIfNeeded(
           cacheWidth,
           cacheHeight,
           NetworkImage(photoUrl),
@@ -88,38 +84,16 @@ class _AvatarState extends State<Avatar> {
     final theme = Theme.of(context);
     double size = widget.size ?? (theme.scaling * 40);
     double borderRadius = widget.borderRadius ?? theme.radius * size;
-    // use photo if available, use initials if not
-    // also if photo is failed to load, use initials
-    if (widget.photoUrl?.isNotEmpty ?? false) {
-      return SizedBox(
-        width: size,
-        height: size,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(borderRadius),
-          child: Image.network(
-            widget.photoUrl!,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              print('Failed to load image: $error');
-              print(stackTrace);
-              return _buildInitials(context, borderRadius);
-            },
-          ),
-        ),
-      );
-    }
-    if (widget.imageProvider != null) {
+    if (widget.provider != null) {
       return SizedBox(
         width: size,
         height: size,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(borderRadius),
           child: Image(
-            image: widget.imageProvider!,
+            image: widget.provider!,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
-              print('Failed to load image: $error');
-              print(stackTrace);
               return _buildInitials(context, borderRadius);
             },
           ),

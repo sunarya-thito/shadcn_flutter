@@ -273,6 +273,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Popover', 'popover'),
         ShadcnDocsPage('Sheet', 'sheet'),
         ShadcnDocsPage('Tooltip', 'tooltip'),
+        // TODO: window as in like a window in desktop
+        ShadcnDocsPage('Window', 'window', ShadcnFeatureTag.workInProgress),
       ],
     ),
     ShadcnDocsSection(

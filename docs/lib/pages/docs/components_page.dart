@@ -1287,8 +1287,8 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     children: [
                       Avatar(
                         initials: Avatar.getInitials('sunarya-thito'),
-                        photoUrl:
-                            'https://avatars.githubusercontent.com/u/64018564?v=4',
+                        provider: const NetworkImage(
+                            'https://avatars.githubusercontent.com/u/64018564?v=4'),
                       ),
                       Gap(16),
                       Avatar(

@@ -1,3 +1,6 @@
+## 0.0.20
+* Replaced photoUrl to image provider in Avatar component
+
 ## 0.0.19
 * Fixed test issue
 
