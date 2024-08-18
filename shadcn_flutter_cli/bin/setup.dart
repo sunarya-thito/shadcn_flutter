@@ -1,12 +1,89 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:args/args.dart';
 import 'package:http/http.dart' as http;
 import 'package:yaml_edit/yaml_edit.dart';
 
 import 'font.dart';
 
-main() {
+final _parser = ArgParser()
+  ..addFlag(
+    'install-geist-sans',
+    defaultsTo: false,
+    help: 'Install Geist Sans font.',
+  )
+  ..addFlag(
+    'install-geist-mono',
+    defaultsTo: false,
+    help: 'Install Geist Mono font.',
+  )
+  ..addFlag(
+    'install-radix-icons',
+    defaultsTo: false,
+    help: 'Install Radix Icons.',
+  )
+  ..addFlag(
+    'install-bootstrap-icons',
+    defaultsTo: false,
+    help: 'Install Bootstrap Icons.',
+  )
+  ..addFlag(
+    'install-preloader',
+    defaultsTo: false,
+    help: 'Install Web Preloader.',
+  )
+  ..addFlag(
+    'install-all',
+    defaultsTo: false,
+    help: 'Install all features.',
+  );
+
+void _printHelp([String? message]) {
+  if (message != null) {
+    print(message);
+  }
+  print('Usage: shadcn_flutter [options]');
+  print(_parser.usage);
+}
+
+main(List<String> args) {
+  final ArgResults results;
+  try {
+    results = _parser.parse(args);
+  } on FormatException catch (e) {
+    _printHelp(e.message);
+    return;
+  }
+  if (results['install-all']) {
+    setupProject(
+      installGeistSans: true,
+      installGeistMono: true,
+      installRadixIcons: true,
+      installBootstrapIcons: true,
+      installPreloader: true,
+    );
+    return;
+  }
+  bool argInstallGeistSans = results['install-geist-sans'];
+  bool argInstallGeistMono = results['install-geist-mono'];
+  bool argInstallRadixIcons = results['install-radix-icons'];
+  bool argInstallBootstrapIcons = results['install-bootstrap-icons'];
+  bool argInstallPreloader = results['install-preloader'];
+  if (argInstallGeistSans ||
+      argInstallGeistMono ||
+      argInstallRadixIcons ||
+      argInstallBootstrapIcons ||
+      argInstallPreloader) {
+    setupProject(
+      installGeistSans: argInstallGeistSans,
+      installGeistMono: argInstallGeistMono,
+      installRadixIcons: argInstallRadixIcons,
+      installBootstrapIcons: argInstallBootstrapIcons,
+      installPreloader: argInstallPreloader,
+    );
+    return;
+  }
   print('======================================');
   print('Setup Shadcn Flutter Project');
   print('======================================');
@@ -103,48 +180,50 @@ void setupProject({
   if (!pubspec.existsSync()) {
     print(
         'pubspec.yaml file not found. Please run this script in your project directory.');
-    return;
+    exit(1);
   }
   print('Setting up project...');
-  // exec: flutter pub add shadcn_flutter
+  YamlEditor editor = YamlEditor(pubspec.readAsStringSync());
+  bool hasChanges = false;
   try {
     var latestVersion = await getLatestPackageVersion();
     if (latestVersion != null) {
-      print('Installing shadcn_flutter:$latestVersion...');
+      print('Installing shadcn_flutter:^$latestVersion...');
     } else {
       print('Installing shadcn_flutter...');
       print(
           'WARNING: Failed to get the latest version of shadcn_flutter. You might want to check the version to make sure you are using the latest version.');
     }
-    var process = await Process.start(
-        'flutter',
-        [
-          'pub',
-          'add',
-          latestVersion != null
-              ? 'shadcn_flutter:\'^$latestVersion\''
-              : 'shadcn_flutter'
-        ],
-        runInShell: true);
-    process.stdout.transform(utf8.decoder).listen((data) {
-      print(data);
-    });
-    process.stderr.transform(utf8.decoder).listen((data) {
-      print(data);
-    });
-    int exitCode = await process.exitCode;
-    if (exitCode != 0) {
-      print('Failed to add shadcn_flutter to pubspec.yaml.');
-      return;
+    if (latestVersion != null) {
+      editor.update(['dependencies', 'shadcn_flutter'], '^$latestVersion');
+      hasChanges = true;
+    } else {
+      var process = await Process.start(
+          'flutter',
+          [
+            'pub',
+            'add',
+            'shadcn_flutter',
+          ],
+          runInShell: true);
+      process.stdout.transform(utf8.decoder).listen((data) {
+        print(data);
+      });
+      process.stderr.transform(utf8.decoder).listen((data) {
+        print(data);
+      });
+      int exitCode = await process.exitCode;
+      if (exitCode != 0) {
+        print('Failed to add shadcn_flutter to pubspec.yaml.');
+        exit(1);
+      }
     }
   } catch (e, stackTrace) {
     print('Failed to add shadcn_flutter to pubspec.yaml.');
     print(e);
     print(stackTrace);
-    return;
+    exit(1);
   }
-  YamlEditor editor = YamlEditor(pubspec.readAsStringSync());
-  bool hasChanges = false;
   if (installGeistSans) {
     print('Installing Geist Sans font...');
     hasChanges |= installFont(editor, kGeistSansFont);
@@ -173,18 +252,18 @@ void setupProject({
             runInShell: true);
         if (runSync.exitCode != 0) {
           print('Failed to create web directory.');
-          return;
+          exit(1);
         }
       } catch (e, stackTrace) {
         print('Failed to create web directory.');
         print(e);
         print(stackTrace);
-        return;
+        exit(1);
       }
     }
     File file = File('web/flutter_bootstrap.js');
     String downloadUrl =
-        'https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/shadcn_flutter/example/web/flutter_bootstrap.js';
+        'https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/docs/web/flutter_bootstrap.js';
     try {
       var response = await http.get(Uri.parse(downloadUrl));
       if (response.statusCode == 200) {
@@ -199,9 +278,10 @@ void setupProject({
       print('Failed to download web preloader file.');
       print(e);
       print(stackTrace);
+      exit(1);
     }
   }
-  if (hasChanges || true) {
+  if (hasChanges) {
     pubspec.writeAsStringSync(editor.toString());
     // exec: flutter pub get
     Process start =
@@ -215,7 +295,7 @@ void setupProject({
     int exitCode = await start.exitCode;
     if (exitCode != 0) {
       print('Failed to run "flutter pub get".');
-      return;
+      exit(1);
     }
   }
   print('Project setup completed.');
