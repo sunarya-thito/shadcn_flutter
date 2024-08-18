@@ -205,6 +205,9 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage(
             'Image Input', 'image_input', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Text Input', 'input'),
+        // TODO: same as text input, but has dropdown autocomplete like chip input, the difference is, it does not convert
+        // the value into chips
+        ShadcnDocsPage('Auto Complete', 'auto_complete'),
         // TODO: same as input, except it only accepts number, and can be increased or decreased
         // using scroll, also has increment and decrement button
         // in between increment and decrement button, theres
