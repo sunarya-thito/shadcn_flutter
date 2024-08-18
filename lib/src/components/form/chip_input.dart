@@ -57,12 +57,24 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
     _focusNode = widget.focusNode ?? FocusNode();
     _controller = widget.controller ?? TextEditingController();
     _suggestions.addListener(_onSuggestionsChanged);
-    _focusNode.addListener(_onSuggestionsChanged);
+    _focusNode.addListener(_onFocusChanged);
     if (widget.suggestions.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if (!mounted) {
+          return;
+        }
         _suggestions.value = widget.suggestions;
       });
     }
+  }
+
+  void _onFocusChanged() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      _onSuggestionsChanged();
+    });
   }
 
   void _onSuggestionsChanged() {
@@ -119,7 +131,9 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {}
     if (widget.focusNode != oldWidget.focusNode) {
+      _focusNode.removeListener(_onFocusChanged);
       _focusNode = widget.focusNode ?? FocusNode();
+      _focusNode.addListener(_onFocusChanged);
     }
     if (!listEquals(widget.suggestions, _suggestions.value)) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -276,7 +290,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
                       children: [
                         for (int i = 0; i < widget.chips.length; i++)
                           _chipBuilder(i),
-                        if (_controller.text.isNotEmpty) Gap(4),
+                        if (_controller.text.isNotEmpty) const Gap(4),
                         if (_controller.text.isNotEmpty)
                           Text(
                             _controller.text,
