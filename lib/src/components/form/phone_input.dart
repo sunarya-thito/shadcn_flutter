@@ -1,4 +1,5 @@
 import 'package:country_flags/country_flags.dart';
+import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class PhoneNumber {
@@ -39,6 +40,7 @@ class PhoneInput extends StatefulWidget {
   final bool filterPlusCode;
   final bool filterZeroCode;
   final bool filterCountryCode;
+  final bool onlyNumber;
 
   const PhoneInput({
     super.key,
@@ -49,6 +51,7 @@ class PhoneInput extends StatefulWidget {
     this.filterPlusCode = true,
     this.filterZeroCode = true,
     this.filterCountryCode = true,
+    this.onlyNumber = true,
   });
 
   @override
@@ -212,6 +215,10 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
             child: TextField(
               controller: _controller,
               autofillHints: const [AutofillHints.telephoneNumber],
+              keyboardType: widget.onlyNumber ? TextInputType.phone : null,
+              inputFormatters: [
+                if (widget.onlyNumber) FilteringTextInputFormatter.digitsOnly,
+              ],
               borderRadius: BorderRadius.only(
                 topRight: theme.radiusMdRadius,
                 bottomRight: theme.radiusMdRadius,
