@@ -444,10 +444,10 @@ class _OverlayPopoverEntry<T> implements PopoverFuture<T> {
 
 PopoverFuture<T?> showPopover<T>({
   required BuildContext context,
-  required Alignment alignment,
+  required AlignmentGeometry alignment,
   required WidgetBuilder builder,
   Offset? position,
-  Alignment? anchorAlignment,
+  AlignmentGeometry? anchorAlignment,
   PopoverConstraint widthConstraint = PopoverConstraint.flexible,
   PopoverConstraint heightConstraint = PopoverConstraint.flexible,
   Key? key,
@@ -468,7 +468,10 @@ PopoverFuture<T?> showPopover<T>({
   Duration? showDuration,
   Duration? dismissDuration,
 }) {
+  TextDirection textDirection = Directionality.of(context);
+  Alignment resolvedAlignment = alignment.resolve(textDirection);
   anchorAlignment ??= alignment * -1;
+  Alignment resolvedAnchorAlignment = anchorAlignment.resolve(textDirection);
   final OverlayState overlay =
       Overlay.of(context, rootOverlay: useRootNavigator);
   final themes = InheritedTheme.capture(from: context, to: overlay.context);
@@ -480,10 +483,12 @@ PopoverFuture<T?> showPopover<T>({
     Offset pos = renderBox.localToGlobal(Offset.zero);
     anchorSize ??= renderBox.size;
     position = Offset(
-      pos.dx + anchorSize.width / 2 + anchorSize.width / 2 * anchorAlignment.x,
+      pos.dx +
+          anchorSize.width / 2 +
+          anchorSize.width / 2 * resolvedAnchorAlignment.x,
       pos.dy +
           anchorSize.height / 2 +
-          anchorSize.height / 2 * anchorAlignment.y,
+          anchorSize.height / 2 * resolvedAnchorAlignment.y,
     );
   }
 
@@ -553,11 +558,12 @@ PopoverFuture<T?> showPopover<T>({
                         key: key,
                         anchorContext: context,
                         position: position!,
-                        alignment: alignment,
+                        alignment: resolvedAlignment,
                         themes: themes,
                         builder: builder,
                         anchorSize: anchorSize,
-                        anchorAlignment: anchorAlignment ?? alignment * -1,
+                        // anchorAlignment: anchorAlignment ?? alignment * -1,
+                        anchorAlignment: resolvedAnchorAlignment,
                         widthConstraint: widthConstraint,
                         heightConstraint: heightConstraint,
                         regionGroupId: regionGroupId,
@@ -645,8 +651,8 @@ class PopoverController extends ChangeNotifier {
   Future<T?> show<T>({
     required BuildContext context,
     required WidgetBuilder builder,
-    required Alignment alignment,
-    Alignment? anchorAlignment,
+    required AlignmentGeometry alignment,
+    AlignmentGeometry? anchorAlignment,
     PopoverConstraint widthConstraint = PopoverConstraint.flexible,
     PopoverConstraint heightConstraint = PopoverConstraint.flexible,
     bool modal = false,
