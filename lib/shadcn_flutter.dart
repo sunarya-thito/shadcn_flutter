@@ -48,6 +48,7 @@ export 'src/components/display/linear_progress_indicator.dart';
 export 'src/components/display/number_ticker.dart';
 export 'src/components/display/progress.dart';
 export 'src/components/display/skeleton.dart';
+export 'src/components/form/autocomplete.dart';
 export 'src/components/form/checkbox.dart';
 export 'src/components/form/chip_input.dart';
 export 'src/components/form/color_picker.dart';

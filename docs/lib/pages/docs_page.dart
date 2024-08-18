@@ -208,7 +208,7 @@ class DocsPageState extends State<DocsPage> {
         // TODO: same as text input, but has dropdown autocomplete like chip input, the difference is, it does not convert
         // the value into chips
         ShadcnDocsPage(
-            'Auto Complete', 'auto_complete', ShadcnFeatureTag.workInProgress),
+            'AutoComplete', 'autocomplete', ShadcnFeatureTag.experimental),
         // TODO: same as input, except it only accepts number, and can be increased or decreased
         // using scroll, also has increment and decrement button
         // in between increment and decrement button, theres
