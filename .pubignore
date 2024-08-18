@@ -3,7 +3,6 @@
 /build/
 /test/
 pubspec.lock
-/themes/
 /.idea/
 /.dart_tool/
 /docs_images/
