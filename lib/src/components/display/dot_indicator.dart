@@ -91,7 +91,8 @@ class DotItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: kDefaultDuration,
       width: size,
       height: size,
       decoration: BoxDecoration(
