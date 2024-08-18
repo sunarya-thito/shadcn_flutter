@@ -1,11 +1,14 @@
 /bin/
-/icons/
-/icons_optimized/
+/.github/
+/build/
+/test/
+pubspec.lock
 /themes/
 /.idea/
 /.dart_tool/
 /docs_images/
 /docs/
+/shadcn_flutter_cli/
 /example/.idea/
 /example/android/
 /example/ios/

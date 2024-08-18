@@ -1,8 +1,3 @@
-/shadcn_flutter_test/
-/autosave/
-/.idea/other.xml
-/.idea/inspectionProfiles/Project_Default.xml
-
 # Miscellaneous
 *.class
 *.log
@@ -16,8 +11,10 @@
 migrate_working_dir/
 
 # IntelliJ related
+*.iml
 *.ipr
 *.iws
+.idea/
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -30,11 +27,3 @@ migrate_working_dir/
 **/doc/api/
 .dart_tool/
 build/
-/example/pubspec.lock
-/example/android/
-/example/ios/
-/example/linux/
-/example/macos/
-/example/windows/
-/.flutter-plugins
-/.flutter-plugins-dependencies
