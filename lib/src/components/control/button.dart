@@ -453,16 +453,7 @@ class Button extends StatefulWidget {
 class ButtonState<T extends Button> extends State<T> {
   bool get _shouldEnableFeedback {
     final platform = Theme.of(context).platform;
-    switch (platform) {
-      case TargetPlatform.macOS:
-      case TargetPlatform.linux:
-      case TargetPlatform.windows:
-        return false;
-      case TargetPlatform.iOS:
-      case TargetPlatform.android:
-      case TargetPlatform.fuchsia:
-        return true;
-    }
+    return isMobile(platform);
   }
 
   @override

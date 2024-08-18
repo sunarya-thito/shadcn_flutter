@@ -8,6 +8,20 @@ const kDefaultDuration = Duration(milliseconds: 150);
 typedef ContextedCallback = void Function(BuildContext context);
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 
+bool isMobile(TargetPlatform platform) {
+  switch (platform) {
+    case TargetPlatform.android:
+    case TargetPlatform.iOS:
+    case TargetPlatform.fuchsia:
+      return true;
+    case TargetPlatform.macOS:
+    case TargetPlatform.linux:
+    case TargetPlatform.windows:
+    case TargetPlatform.linux:
+      return false;
+  }
+}
+
 class CapturedWrapper extends StatefulWidget {
   final CapturedThemes? themes;
   final CapturedData? data;
