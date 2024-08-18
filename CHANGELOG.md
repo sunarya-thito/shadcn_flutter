@@ -1,3 +1,6 @@
+## 0.0.19
+* Fixed test issue
+
 ## 0.0.18
 * Added Number Ticker component
 * Added Linear Progress component
