@@ -391,6 +391,7 @@ class _MenuButtonState extends State<MenuButton> {
               animation: menuData!.popoverController,
               builder: (context, child) {
                 return Button(
+                  disableFocusOutline: true,
                   alignment: menuGroupData.direction == Axis.vertical
                       ? Alignment.centerLeft
                       : Alignment.center,
@@ -572,6 +573,7 @@ class MenuGroup extends StatefulWidget {
   final VoidCallback? onDismissed;
   final Object? regionGroupId;
   final Axis direction;
+  final Map<Type, Action> actions;
 
   const MenuGroup({
     super.key,
@@ -581,6 +583,7 @@ class MenuGroup extends StatefulWidget {
     this.subMenuOffset,
     this.onDismissed,
     this.regionGroupId,
+    this.actions = const {},
     required this.direction,
   });
 
@@ -589,6 +592,7 @@ class MenuGroup extends StatefulWidget {
 }
 
 class _MenuGroupState extends State<MenuGroup> {
+  final FocusScopeNode _focusScopeNode = FocusScopeNode();
   late List<MenuData> _data;
 
   @override
@@ -639,6 +643,16 @@ class _MenuGroupState extends State<MenuGroup> {
     super.dispose();
   }
 
+  void closeAll() {
+    MenuGroupData? data = widget.parent;
+    if (data == null) {
+      widget.onDismissed?.call();
+      return;
+    }
+    data.closeOthers();
+    data.closeAll();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
@@ -656,29 +670,94 @@ class _MenuGroupState extends State<MenuGroup> {
         ),
       );
     }
-    return FocusTraversalGroup(
-      child: FocusableActionDetector(
-        shortcuts: const {
-          SingleActivator(LogicalKeyboardKey.arrowUp): PreviousFocusIntent(),
-          SingleActivator(LogicalKeyboardKey.arrowDown): NextFocusIntent(),
-          SingleActivator(LogicalKeyboardKey.arrowLeft):
-              DirectionalFocusIntent(TraversalDirection.left),
-          SingleActivator(LogicalKeyboardKey.arrowRight):
-              DirectionalFocusIntent(TraversalDirection.right),
-        },
-        child: Data.inherit(
-          data: MenuGroupData(
-            widget.parent,
-            _data,
-            hasLeading,
-            widget.subMenuOffset,
-            widget.onDismissed,
-            widget.regionGroupId,
-            widget.direction,
+    return Shortcuts(
+      shortcuts: {
+        if (widget.direction == Axis.vertical)
+          const SingleActivator(LogicalKeyboardKey.arrowUp):
+              const PreviousFocusIntent(),
+        if (widget.direction == Axis.vertical)
+          const SingleActivator(LogicalKeyboardKey.arrowDown):
+              const NextFocusIntent(),
+        if (widget.direction == Axis.vertical)
+          const SingleActivator(LogicalKeyboardKey.arrowLeft):
+              const PreviousSiblingFocusIntent(),
+        if (widget.direction == Axis.vertical)
+          const SingleActivator(LogicalKeyboardKey.arrowRight):
+              const NextSiblingFocusIntent(),
+        if (widget.direction == Axis.horizontal)
+          const SingleActivator(LogicalKeyboardKey.arrowLeft):
+              const PreviousFocusIntent(),
+        if (widget.direction == Axis.horizontal)
+          const SingleActivator(LogicalKeyboardKey.arrowRight):
+              const NextFocusIntent(),
+        if (widget.direction == Axis.horizontal)
+          const SingleActivator(LogicalKeyboardKey.arrowUp):
+              const PreviousSiblingFocusIntent(),
+        if (widget.direction == Axis.horizontal)
+          const SingleActivator(LogicalKeyboardKey.arrowDown):
+              const NextSiblingFocusIntent(),
+        const SingleActivator(LogicalKeyboardKey.escape):
+            const CloseMenuIntent(),
+      },
+      child: Actions(
+        actions: {
+          PreviousFocusIntent: CallbackAction<PreviousFocusIntent>(
+            onInvoke: (intent) {
+              if (widget.direction == Axis.vertical) {
+                _focusScopeNode.focusInDirection(TraversalDirection.up);
+              } else {
+                _focusScopeNode.focusInDirection(TraversalDirection.left);
+              }
+              return;
+            },
           ),
-          child: widget.builder(context, children),
+          NextFocusIntent: CallbackAction<NextFocusIntent>(
+            onInvoke: (intent) {
+              if (widget.direction == Axis.vertical) {
+                _focusScopeNode.focusInDirection(TraversalDirection.down);
+              } else {
+                _focusScopeNode.focusInDirection(TraversalDirection.right);
+              }
+              return;
+            },
+          ),
+          CloseMenuIntent: CallbackAction<CloseMenuIntent>(
+            onInvoke: (intent) {
+              closeAll();
+              return;
+            },
+          ),
+          ...widget.actions,
+        },
+        child: FocusScope(
+          autofocus: true,
+          node: _focusScopeNode,
+          child: Data.inherit(
+            data: MenuGroupData(
+              widget.parent,
+              _data,
+              hasLeading,
+              widget.subMenuOffset,
+              widget.onDismissed,
+              widget.regionGroupId,
+              widget.direction,
+            ),
+            child: widget.builder(context, children),
+          ),
         ),
       ),
     );
   }
+}
+
+class CloseMenuIntent extends Intent {
+  const CloseMenuIntent();
+}
+
+class PreviousSiblingFocusIntent extends Intent {
+  const PreviousSiblingFocusIntent();
+}
+
+class NextSiblingFocusIntent extends Intent {
+  const NextSiblingFocusIntent();
 }

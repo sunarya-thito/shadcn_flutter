@@ -131,6 +131,7 @@ class Button extends StatefulWidget {
   final bool disableHoverEffect;
   final WidgetStatesController? statesController;
   final AlignmentGeometry? marginAlignment;
+  final bool disableFocusOutline;
   const Button({
     Key? key,
     this.statesController,
@@ -164,6 +165,7 @@ class Button extends StatefulWidget {
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
     this.marginAlignment,
+    this.disableFocusOutline = false,
   }) : super(key: key);
 
   const Button.primary({
@@ -199,6 +201,7 @@ class Button extends StatefulWidget {
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
     this.marginAlignment,
+    this.disableFocusOutline = false,
   });
 
   const Button.secondary({
@@ -234,6 +237,7 @@ class Button extends StatefulWidget {
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
     this.marginAlignment,
+    this.disableFocusOutline = false,
   });
 
   const Button.outline({
@@ -269,6 +273,7 @@ class Button extends StatefulWidget {
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
     this.marginAlignment,
+    this.disableFocusOutline = false,
   });
 
   const Button.ghost({
@@ -304,6 +309,7 @@ class Button extends StatefulWidget {
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
     this.marginAlignment,
+    this.disableFocusOutline = false,
   });
 
   const Button.link({
@@ -339,6 +345,7 @@ class Button extends StatefulWidget {
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
     this.marginAlignment,
+    this.disableFocusOutline = false,
   });
 
   const Button.text({
@@ -374,6 +381,7 @@ class Button extends StatefulWidget {
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
     this.marginAlignment,
+    this.disableFocusOutline = false,
   });
 
   const Button.destructive({
@@ -409,6 +417,7 @@ class Button extends StatefulWidget {
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
     this.marginAlignment,
+    this.disableFocusOutline = false,
   });
 
   const Button.fixed({
@@ -444,6 +453,7 @@ class Button extends StatefulWidget {
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
     this.marginAlignment,
+    this.disableFocusOutline = false,
   });
 
   @override
@@ -462,6 +472,7 @@ class ButtonState<T extends Button> extends State<T> {
     final scaling = theme.scaling;
     bool enableFeedback = widget.enableFeedback ?? _shouldEnableFeedback;
     return Clickable(
+      disableFocusOutline: widget.disableFocusOutline,
       statesController: widget.statesController,
       focusNode: widget.focusNode,
       enabled: widget.enabled ?? widget.onPressed != null,

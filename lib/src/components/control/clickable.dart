@@ -44,6 +44,7 @@ class Clickable extends StatefulWidget {
   final bool disableHoverEffect;
   final WidgetStatesController? statesController;
   final AlignmentGeometry? marginAlignment;
+  final bool disableFocusOutline;
 
   const Clickable({
     super.key,
@@ -87,6 +88,7 @@ class Clickable extends StatefulWidget {
     this.onTertiaryLongPress,
     this.isSemanticButton = true,
     this.marginAlignment,
+    this.disableFocusOutline = false,
   });
 
   @override
@@ -179,7 +181,8 @@ class _ClickableState extends State<Clickable> {
           var buttonContainer = _buildContainer(context, decoration);
           return FocusOutline(
             focused: widget.focusOutline &&
-                _controller.value.contains(WidgetState.focused),
+                _controller.value.contains(WidgetState.focused) &&
+                !widget.disableFocusOutline,
             borderRadius: borderRadius,
             child: GestureDetector(
               behavior: widget.behavior,
@@ -253,7 +256,7 @@ class _ClickableState extends State<Clickable> {
                   DirectionalFocusIntent: CallbackAction(
                     onInvoke: (e) {
                       final direction = (e as DirectionalFocusIntent).direction;
-                      final focus = Focus.of(context);
+                      final focus = _focusNode;
                       switch (direction) {
                         case TraversalDirection.up:
                           focus.focusInDirection(TraversalDirection.up);
