@@ -9,35 +9,35 @@ class ButtonExample8 extends StatelessWidget {
       runSpacing: 8,
       spacing: 8,
       children: [
-        PrimaryButton(
+        IconButton.primary(
           onPressed: () {},
           density: ButtonDensity.icon,
-          child: const Icon(Icons.add),
+          icon: const Icon(Icons.add),
         ),
-        SecondaryButton(
+        IconButton.secondary(
           onPressed: () {},
           density: ButtonDensity.icon,
-          child: const Icon(Icons.add),
+          icon: const Icon(Icons.add),
         ),
-        OutlineButton(
+        IconButton.outline(
           onPressed: () {},
           density: ButtonDensity.icon,
-          child: const Icon(Icons.add),
+          icon: const Icon(Icons.add),
         ),
-        GhostButton(
+        IconButton.ghost(
           onPressed: () {},
           density: ButtonDensity.icon,
-          child: const Icon(Icons.add),
+          icon: const Icon(Icons.add),
         ),
-        TextButton(
+        IconButton.text(
           onPressed: () {},
           density: ButtonDensity.icon,
-          child: const Icon(Icons.add),
+          icon: const Icon(Icons.add),
         ),
-        DestructiveButton(
+        IconButton.destructive(
           onPressed: () {},
           density: ButtonDensity.icon,
-          child: const Icon(Icons.add),
+          icon: const Icon(Icons.add),
         ),
       ],
     );

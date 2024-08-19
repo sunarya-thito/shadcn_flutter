@@ -49,6 +49,15 @@ class _AutoCompleteExample1State extends State<AutoCompleteExample1> {
       onChanged: (value) {
         _updateSuggestions(value);
       },
+      trailing: IconButton.text(
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          _controller.clear();
+          setState(() {
+            _currentSuggestions = [];
+          });
+        },
+      ),
       onAcceptSuggestion: (value) {
         _controller.text = _currentSuggestions[value];
         setState(() {

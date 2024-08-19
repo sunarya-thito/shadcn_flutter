@@ -18,6 +18,8 @@ class AutoComplete extends StatefulWidget {
   final AlignmentGeometry? popoverAnchorAlignment;
   final PopoverConstraint? popoverWidthConstraint;
   final BoxConstraints? popoverConstraints;
+  final Widget? leading;
+  final Widget? trailing;
 
   const AutoComplete({
     super.key,
@@ -36,6 +38,8 @@ class AutoComplete extends StatefulWidget {
     this.popoverAnchorAlignment,
     this.popoverWidthConstraint,
     this.popoverConstraints,
+    this.leading,
+    this.trailing,
   });
 
   @override
@@ -228,6 +232,8 @@ class _AutoCompleteState extends State<AutoComplete> {
         },
         child: TextField(
           focusNode: _focusNode,
+          leading: widget.leading,
+          trailing: widget.trailing,
           enabled: widget.enabled,
           border: widget.border,
           onChanged: widget.onChanged,
