@@ -344,3 +344,64 @@ class NextSuggestionIntent extends Intent {
 class PreviousSuggestionIntent extends Intent {
   const PreviousSuggestionIntent();
 }
+
+/*
+ SelectedButton(
+                            style: ButtonStyle.ghost(),
+                            selectedStyle: ButtonStyle.secondary(),
+                            value: i == _selectedSuggestions.value,
+                            onChanged: (value) {
+                              if (value) {
+                                widget.onSuggestionChoosen?.call(i);
+                              }
+                            },
+                            child: widget.suggestionBuilder
+                                    ?.call(context, _suggestions.value[i]) ??
+                                Text(_suggestions.value[i].toString()),
+                          )
+ */
+
+class _ChipSuggestionItem extends StatefulWidget {
+  final Widget suggestion;
+  final bool selected;
+  final VoidCallback onSelected;
+
+  const _ChipSuggestionItem({
+    required this.suggestion,
+    required this.selected,
+    required this.onSelected,
+  });
+
+  @override
+  State<_ChipSuggestionItem> createState() => _ChipSuggestionItemState();
+}
+
+class _ChipSuggestionItemState extends State<_ChipSuggestionItem> {
+  @override
+  void didUpdateWidget(covariant _ChipSuggestionItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selected != widget.selected) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if (!mounted) {
+          return;
+        }
+        if (widget.selected) {
+          Scrollable.ensureVisible(context);
+        }
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SelectedButton(
+      value: widget.selected,
+      onChanged: (value) {
+        if (value) {
+          widget.onSelected();
+        }
+      },
+      child: widget.suggestion,
+    );
+  }
+}

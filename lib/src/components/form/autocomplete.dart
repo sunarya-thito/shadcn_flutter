@@ -42,7 +42,7 @@ class AutoComplete extends StatefulWidget {
   State<AutoComplete> createState() => _AutoCompleteState();
 }
 
-class _AutoCompleteItem extends StatelessWidget {
+class _AutoCompleteItem extends StatefulWidget {
   final String suggestion;
   final bool selected;
   final VoidCallback onSelected;
@@ -54,16 +54,36 @@ class _AutoCompleteItem extends StatelessWidget {
   });
 
   @override
+  State<_AutoCompleteItem> createState() => _AutoCompleteItemState();
+}
+
+class _AutoCompleteItemState extends State<_AutoCompleteItem> {
+  @override
   Widget build(BuildContext context) {
     return SelectedButton(
-      value: selected,
+      value: widget.selected,
       onChanged: (value) {
         if (value) {
-          onSelected();
+          widget.onSelected();
         }
       },
-      child: Text(suggestion),
+      child: Text(widget.suggestion),
     );
+  }
+
+  @override
+  void didUpdateWidget(covariant _AutoCompleteItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selected != widget.selected) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if (!mounted) {
+          return;
+        }
+        if (widget.selected) {
+          Scrollable.ensureVisible(context);
+        }
+      });
+    }
   }
 }
 
