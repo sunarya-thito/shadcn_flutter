@@ -9,7 +9,6 @@ class Scaffold extends StatefulWidget {
   final Widget child;
   final double? loadingProgress;
   final bool loadingProgressIndeterminate;
-  final VoidCallback? onRefresh;
   final bool
       floatingHeader; // when header floats, it takes no space in the layout, and positioned on top of the content
   final bool floatingFooter;
@@ -24,7 +23,6 @@ class Scaffold extends StatefulWidget {
     this.footers = const [],
     this.loadingProgress,
     this.loadingProgressIndeterminate = false,
-    this.onRefresh,
     this.floatingHeader = false,
     this.floatingFooter = false,
     this.headerBackgroundColor,
