@@ -344,12 +344,12 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   child: const CircularProgressIndicator(),
                 ),
               ),
-              const ComponentCard(
+              ComponentCard(
                 title: 'Progress',
                 name: 'progress',
                 example: Progress(
                   progress: 0.75,
-                ),
+                ).sized(width: 200),
                 center: true,
               ),
               ComponentCard(
