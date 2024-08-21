@@ -14,7 +14,7 @@ dependencies:
   email_validator: ^3.0.0
   flutter:
     sdk: flutter
-  gap: ^3.0.1
+#  gap: ^3.0.1
   skeletonizer: ^1.4.2
   syntax_highlight: ^0.4.0
   country_flags: ^3.0.0
@@ -22,6 +22,7 @@ dependencies:
   cross_file: ^0.3.4+2
   image: ^4.2.0
   web: ^1.0.0
+  pixel_snap: ^0.1.5
 
 dev_dependencies:
   flutter_test:

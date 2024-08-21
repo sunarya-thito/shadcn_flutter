@@ -20,11 +20,74 @@ export 'package:flutter/widgets.dart'
         Table,
         TableRow,
         TableCell,
-        FormField;
+        FormField,
+        // hide pixel_snap overriden widgets
+        Column,
+        Row,
+        Text,
+        RichText,
+        Center,
+        FractionallySizedBox,
+        Align,
+        Baseline,
+        ConstrainedBox,
+        DecoratedBox,
+        Container,
+        FittedBox,
+        IntrinsicWidth,
+        LimitedBox,
+        OverflowBox,
+        Padding,
+        SizedBox,
+        SizedOverflowBox,
+        Positioned,
+        PhysicalModel,
+        CustomPaint,
+        Icon,
+        Image,
+        ImageIcon,
+        AnimatedAlign,
+        AnimatedContainer,
+        AnimatedCrossFade,
+        AnimatedPositioned,
+        AnimatedPhysicalModel,
+        AnimatedSize;
 // bundle from gap
-export 'package:gap/gap.dart';
+// export 'package:gap/gap.dart' hide Gap;
 // bundle from https://pub.dev/packages/phonecodes
 export 'package:phonecodes/phonecodes.dart' show Countries, Country;
+export 'package:pixel_snap/widgets.dart'
+    show
+        Column,
+        Row,
+        Text,
+        RichText,
+        Center,
+        FractionallySizedBox,
+        Align,
+        Baseline,
+        ConstrainedBox,
+        DecoratedBox,
+        Container,
+        FittedBox,
+        IntrinsicWidth,
+        LimitedBox,
+        OverflowBox,
+        Padding,
+        SizedBox,
+        SizedOverflowBox,
+        Positioned,
+        PhysicalModel,
+        CustomPaint,
+        Icon,
+        Image,
+        ImageIcon,
+        AnimatedAlign,
+        AnimatedContainer,
+        AnimatedCrossFade,
+        AnimatedPositioned,
+        AnimatedPhysicalModel,
+        AnimatedSize;
 // bundle from skeletonizer https://pub.dev/packages/skeletonizer
 export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 
@@ -81,6 +144,7 @@ export 'src/components/layout/dialog/alert_dialog.dart';
 export 'src/components/layout/media_query.dart';
 export 'src/components/layout/outlined_container.dart';
 export 'src/components/layout/overflow_marquee.dart';
+export 'src/components/layout/pixel_snapped_gap.dart';
 export 'src/components/layout/resizable.dart';
 export 'src/components/layout/scaffold.dart';
 export 'src/components/layout/stage_container.dart';
