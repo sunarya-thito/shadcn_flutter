@@ -6,6 +6,9 @@ class RefreshTriggerExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshTrigger(
+      onRefresh: () async {
+        await Future.delayed(const Duration(seconds: 2));
+      },
       child: SingleChildScrollView(
         child: Container(
             height: 800,

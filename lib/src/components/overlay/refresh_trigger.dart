@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef RefreshIndicatorBuilder = Widget Function(
     BuildContext context, RefreshTriggerStage stage);
+
+typedef FutureVoidCallback = Future<void> Function();
 
 class RefreshTrigger extends StatefulWidget {
   static Widget defaultIndicatorBuilder(
@@ -11,7 +15,7 @@ class RefreshTrigger extends StatefulWidget {
 
   final double minExtent;
   final double? maxExtent;
-  final VoidCallback? onRefresh;
+  final FutureVoidCallback? onRefresh;
   final Widget child;
   final Axis direction;
   final bool reverse;
@@ -20,13 +24,13 @@ class RefreshTrigger extends StatefulWidget {
 
   const RefreshTrigger({
     Key? key,
-    this.minExtent = 100.0,
-    this.maxExtent = 200.0,
+    this.minExtent = 50.0,
+    this.maxExtent = 150.0,
     this.onRefresh,
     this.direction = Axis.vertical,
     this.reverse = false,
     this.indicatorBuilder = defaultIndicatorBuilder,
-    this.curve = Curves.easeInOut,
+    this.curve = Curves.easeOutSine,
     required this.child,
   }) : super(key: key);
 
@@ -42,39 +46,35 @@ class DefaultRefreshIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError();
+    final theme = Theme.of(context);
+    return Center(
+      child: SurfaceCard(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2) *
+            theme.scaling,
+        borderRadius: theme.radiusXl,
+        child: Text(stage.stage.name),
+      ),
+    );
   }
 }
 
 class _RefreshTriggerState extends State<RefreshTrigger>
     with SingleTickerProviderStateMixin {
-  // double _currentExtent = 0.0;
-  late AnimationController _currentExtent;
+  double _currentExtent = 0;
   bool _scrolling = false;
   ScrollableState? _scrollable;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentExtent = AnimationController(
-      vsync: this,
-    );
-  }
+  TriggerStage _stage = TriggerStage.idle;
 
   double _calculateSafeExtent(double extent) {
-    if (widget.maxExtent != null) {
-      return extent.min(widget.maxExtent!);
+    var maxExtent = widget.maxExtent;
+    if (maxExtent != null) {
+      if (extent >= widget.minExtent) {
+        double relativeExtent = extent - widget.minExtent;
+        double diff = maxExtent - relativeExtent;
+        return extent - diff / 2;
+      }
     }
     return extent;
-  }
-
-  Offset get _translate {
-    switch (widget.direction) {
-      case Axis.horizontal:
-        return Offset(_calculateSafeExtent(_currentExtent.value), 0);
-      case Axis.vertical:
-        return Offset(0, _calculateSafeExtent(_currentExtent.value));
-    }
   }
 
   @override
@@ -82,7 +82,8 @@ class _RefreshTriggerState extends State<RefreshTrigger>
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (notification is ScrollStartNotification &&
-            notification.depth == 0) {
+            notification.depth == 0 &&
+            _stage == TriggerStage.idle) {
           var context = notification.context;
           if (context != null) {
             // hold the scroll position
@@ -90,20 +91,42 @@ class _RefreshTriggerState extends State<RefreshTrigger>
                 Scrollable.maybeOf(context, axis: widget.direction);
             if (scrollable != null) {
               setState(() {
-                _currentExtent.value = 0.0;
+                _currentExtent = 0.0;
                 _scrolling = true;
                 _scrollable = scrollable;
+                _stage = TriggerStage.pulling;
               });
             }
           }
-
           return true;
         }
-        if (notification is ScrollEndNotification && notification.depth == 0) {
+        if (notification is ScrollEndNotification &&
+            notification.depth == 0 &&
+            _stage == TriggerStage.pulling) {
           setState(() {
+            double currentExtent = _currentExtent;
             _scrolling = false;
-            _currentExtent.value = 0.0;
+            _currentExtent = 0.0;
             _scrollable = null;
+            if (currentExtent >= widget.minExtent) {
+              _stage = TriggerStage.refreshing;
+              widget.onRefresh?.call().then((_) {
+                if (mounted) {
+                  setState(() {
+                    _stage = TriggerStage.completed;
+                    Timer(Duration(seconds: 1), () {
+                      if (mounted) {
+                        setState(() {
+                          _stage = TriggerStage.idle;
+                        });
+                      }
+                    });
+                  });
+                }
+              });
+            } else {
+              _stage = TriggerStage.idle;
+            }
           });
           return true;
         }
@@ -112,7 +135,7 @@ class _RefreshTriggerState extends State<RefreshTrigger>
             notification.overscroll < 0) {
           if (notification.metrics.axis == widget.direction) {
             setState(() {
-              _currentExtent.value -= notification.overscroll;
+              _currentExtent -= notification.overscroll;
             });
           }
           return true;
@@ -123,7 +146,7 @@ class _RefreshTriggerState extends State<RefreshTrigger>
             _scrollable != null) {
           if (notification.metrics.axis == widget.direction) {
             setState(() {
-              _currentExtent.value = 0.0;
+              _currentExtent = 0.0;
               _scrolling = false;
               _scrollable = null;
             });
@@ -132,31 +155,53 @@ class _RefreshTriggerState extends State<RefreshTrigger>
         }
         return false;
       },
-      child: GestureDetector(
-        onPanStart: (details) {
-          print('onPanStart');
+      child: AnimatedValueBuilder.animation(
+        // value: _currentExtent,
+        value: _stage == TriggerStage.refreshing ||
+                _stage == TriggerStage.completed
+            ? widget.minExtent
+            : _currentExtent,
+        duration: _scrolling ? Duration.zero : kDefaultDuration,
+        curve: Curves.easeInOut,
+        builder: (context, animation) {
+          return Stack(
+            fit: StackFit.passthrough,
+            children: [
+              widget.child,
+              AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) {
+                  return Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: ClipRect(
+                        child: FractionalTranslation(
+                          translation: widget.direction == Axis.vertical
+                              ? const Offset(0, -1)
+                              : const Offset(-1, 0),
+                          child: Transform.translate(
+                            offset: widget.direction == Axis.vertical
+                                ? Offset(
+                                    0, _calculateSafeExtent(animation.value))
+                                : Offset(
+                                    _calculateSafeExtent(animation.value), 0),
+                            child: widget.indicatorBuilder(
+                              context,
+                              RefreshTriggerStage(
+                                _stage,
+                                animation,
+                                widget.direction,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ));
+                },
+              ),
+            ],
+          );
         },
-        onPanUpdate: (details) {
-          print('onPanUpdate');
-        },
-        onPanEnd: (details) {
-          print('onPanEnd');
-        },
-        onPanCancel: () {
-          print('onPanCancel');
-        },
-        child: AnimatedValueBuilder(
-          value: _translate,
-          duration: _scrolling ? Duration.zero : kDefaultDuration,
-          curve: Curves.easeInOut,
-          builder: (context, value, child) {
-            return Transform.translate(
-              offset: value,
-              child: child,
-            );
-          },
-          child: widget.child,
-        ),
       ),
     );
   }
@@ -172,6 +217,7 @@ enum TriggerStage {
 class RefreshTriggerStage {
   final TriggerStage stage;
   final Animation<double> extent;
+  final Axis direction;
 
-  const RefreshTriggerStage(this.stage, this.extent);
+  const RefreshTriggerStage(this.stage, this.extent, this.direction);
 }

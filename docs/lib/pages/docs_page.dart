@@ -192,6 +192,10 @@ class DocsPageState extends State<DocsPage> {
     ShadcnDocsSection(
       'Forms',
       [
+        // TODO: mostly same as file input, except it only accepts audio file
+        // and adds the ability to play the audio
+        ShadcnDocsPage(
+            'Audio Input', 'audio_input', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Button', 'button'),
         ShadcnDocsPage('Checkbox', 'checkbox'),
         ShadcnDocsPage('Chip Input', 'chip_input'),
