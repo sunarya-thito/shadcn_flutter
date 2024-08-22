@@ -5,6 +5,12 @@ import 'package:pixel_snap/src/forked/render_flex.dart' show RenderFlex;
 
 import '../../../shadcn_flutter.dart';
 
+/*
+ * The following code is a fork of the gap package.
+ * The original package can be found at https://pub.dev/packages/gap
+ * The forked code has been modified to support pixel snapping.
+ */
+
 /// A widget that takes a fixed amount of space in the direction of its parent.
 ///
 /// It only works in the following cases:
