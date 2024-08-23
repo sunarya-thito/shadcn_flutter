@@ -3,14 +3,16 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 void showDropdown({
   required BuildContext context,
   required WidgetBuilder builder,
+  Alignment alignment = Alignment.topCenter,
+  Offset offset = Offset.zero,
 }) {
   final theme = Theme.of(context);
   final scaling = theme.scaling;
   final GlobalKey key = GlobalKey();
   showPopover(
     context: context,
-    alignment: Alignment.topCenter,
-    offset: const Offset(0, 4) * scaling,
+    alignment: alignment,
+    offset: (const Offset(0, 4) * scaling) + offset,
     consumeOutsideTaps: false,
     regionGroupId: key,
     modal: false,
