@@ -41,73 +41,126 @@ class RefreshTrigger extends StatefulWidget {
   State<RefreshTrigger> createState() => _RefreshTriggerState();
 }
 
-class DefaultRefreshIndicator extends StatelessWidget {
+class DefaultRefreshIndicator extends StatefulWidget {
   final RefreshTriggerStage stage;
 
   const DefaultRefreshIndicator({Key? key, required this.stage})
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<DefaultRefreshIndicator> createState() =>
+      _DefaultRefreshIndicatorState();
+}
+
+class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
+  Widget buildRefreshingContent(BuildContext context) {
+    final localizations = ShadcnLocalizations.of(context);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(child: Text(localizations.refreshTriggerRefreshing)),
+        const CircularProgressIndicator(),
+      ],
+    ).gap(8);
+  }
+
+  Widget buildCompletedContent(BuildContext context) {
     final theme = Theme.of(context);
     final localizations = ShadcnLocalizations.of(context);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(child: Text(localizations.refreshTriggerComplete)),
+        SizedBox(
+          width: 12.0 * theme.scaling,
+          height: 8.0 * theme.scaling,
+          child: AnimatedValueBuilder(
+              initialValue: 0.0,
+              value: 1.0,
+              duration: const Duration(milliseconds: 300),
+              curve: const Interval(0.5, 1.0),
+              builder: (context, value, _) {
+                return CustomPaint(
+                  painter: AnimatedCheckPainter(
+                    progress: value,
+                    color: theme.colorScheme.foreground,
+                    strokeWidth: 1.5 * theme.scaling,
+                  ),
+                );
+              }),
+        ),
+      ],
+    ).gap(8);
+  }
+
+  Widget buildPullingContent(BuildContext context) {
+    final localizations = ShadcnLocalizations.of(context);
+    return AnimatedBuilder(
+        animation: widget.stage.extent,
+        builder: (context, child) {
+          double angle;
+          if (widget.stage.direction == Axis.vertical) {
+            // 0 -> 1 (0 -> 180)
+            angle = pi * widget.stage.extent.value.clamp(0, 1);
+          } else {
+            // 0 -> 1 (90 -> 270)
+            angle = pi / 2 + pi * widget.stage.extent.value.clamp(0, 1);
+          }
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                  child: Text(widget.stage.extent.value < 1
+                      ? localizations.refreshTriggerPull
+                      : localizations.refreshTriggerRelease)),
+              Transform.rotate(
+                angle: angle,
+                child: const Icon(Icons.arrow_downward),
+              ),
+            ],
+          ).gap(8);
+        });
+  }
+
+  Widget buildIdleContent(BuildContext context) {
+    final localizations = ShadcnLocalizations.of(context);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(child: Text(localizations.refreshTriggerPull)),
+      ],
+    ).gap(8);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget child;
+    switch (widget.stage.stage) {
+      case TriggerStage.refreshing:
+        child = buildRefreshingContent(context);
+        break;
+      case TriggerStage.completed:
+        child = buildCompletedContent(context);
+        break;
+      case TriggerStage.pulling:
+        child = buildPullingContent(context);
+        break;
+      case TriggerStage.idle:
+        child = buildIdleContent(context);
+        break;
+    }
+    final theme = Theme.of(context);
     return Center(
       child: SurfaceCard(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4) *
             theme.scaling,
         borderRadius: theme.radiusXl,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedBuilder(
-              animation: stage.extent,
-              builder: (context, child) {
-                if (stage.stage == TriggerStage.refreshing) {
-                  return Text(localizations.refreshTriggerRefreshing);
-                }
-                if (stage.stage == TriggerStage.completed) {
-                  return Text(localizations.refreshTriggerComplete);
-                }
-                if (stage.extent.value < 1 ||
-                    stage.stage == TriggerStage.idle) {
-                  return Text(localizations.refreshTriggerPull);
-                }
-                return Text(localizations.refreshTriggerRelease);
-              },
-            ),
-            if (stage.stage == TriggerStage.pulling)
-              AnimatedBuilder(
-                animation: stage.extent,
-                builder: (context, child) {
-                  return Transform.rotate(
-                    angle: (stage.extent.value * pi).clamp(0, pi),
-                    child: const Icon(Icons.arrow_downward),
-                  );
-                },
-              ),
-            if (stage.stage == TriggerStage.refreshing)
-              const CircularProgressIndicator(),
-            if (stage.stage == TriggerStage.completed)
-              AnimatedValueBuilder(
-                initialValue: 0.0,
-                value: 1.0,
-                duration: const Duration(milliseconds: 150),
-                builder: (context, value, child) {
-                  return SizedBox(
-                    width: 12.0 * theme.scaling,
-                    height: 8.0 * theme.scaling,
-                    child: CustomPaint(
-                      painter: AnimatedCheckPainter(
-                        progress: value,
-                        color: theme.colorScheme.foreground,
-                        strokeWidth: 1.5 * theme.scaling,
-                      ),
-                    ),
-                  );
-                },
-              ),
-          ],
-        ).gap(8),
+        child: CrossFadedTransition(
+          child: KeyedSubtree(
+            key: ValueKey(widget.stage.stage),
+            child: child,
+          ),
+        ),
       ),
     );
   }
@@ -250,6 +303,14 @@ class _RefreshTriggerState extends State<RefreshTrigger>
               widget.child,
               AnimatedBuilder(
                 animation: animation,
+                child: widget.indicatorBuilder(
+                  context,
+                  RefreshTriggerStage(
+                    _stage,
+                    tween.animate(animation),
+                    widget.direction,
+                  ),
+                ),
                 builder: (context, child) {
                   return Positioned.fill(
                       child: ClipRect(
@@ -264,14 +325,7 @@ class _RefreshTriggerState extends State<RefreshTrigger>
                                       0, _calculateSafeExtent(animation.value))
                                   : Offset(
                                       _calculateSafeExtent(animation.value), 0),
-                              child: widget.indicatorBuilder(
-                                context,
-                                RefreshTriggerStage(
-                                  _stage,
-                                  tween.animate(animation),
-                                  widget.direction,
-                                ),
-                              ),
+                              child: child,
                             ),
                           ),
                         ),

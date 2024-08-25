@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_flutter/src/util.dart';
 
 typedef AnimatedChildBuilder<T> = Widget Function(
     BuildContext context, T value, Widget? child);
@@ -460,5 +461,80 @@ class IntervalDuration extends Curve {
       return curve!.transform(clampedProgress);
     }
     return clampedProgress;
+  }
+}
+
+class CrossFadedTransition extends StatefulWidget {
+  final Widget child;
+  final Duration duration;
+  final AlignmentGeometry alignment;
+
+  const CrossFadedTransition({
+    Key? key,
+    required this.child,
+    this.duration = kDefaultDuration,
+    this.alignment = Alignment.center,
+  }) : super(key: key);
+
+  @override
+  State<CrossFadedTransition> createState() => _CrossFadedTransitionState();
+}
+
+class _CrossFadedTransitionState extends State<CrossFadedTransition> {
+  late Widget newChild;
+
+  @override
+  void initState() {
+    super.initState();
+    newChild = widget.child;
+  }
+
+  @override
+  void didUpdateWidget(covariant CrossFadedTransition oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.child != widget.child &&
+        oldWidget.child.key != widget.child.key) {
+      newChild = widget.child;
+    }
+  }
+
+  Widget _lerpWidget(Widget a, Widget b, double t) {
+    // startOpacity is from 0.0 to 0.5
+    // endOpacity is from 0.5 to 1.0
+    double startOpacity = 1 - (t.clamp(0, 0.5) * 2);
+    double endOpacity = t.clamp(0.5, 1) * 2 - 1;
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        Positioned.fill(
+          child: Opacity(
+              opacity: startOpacity,
+              child: Align(
+                alignment: widget.alignment,
+                child: a,
+              )),
+        ),
+        Opacity(
+          opacity: endOpacity,
+          child: b,
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSize(
+      alignment: widget.alignment,
+      duration: widget.duration,
+      child: AnimatedValueBuilder(
+        value: newChild,
+        lerp: _lerpWidget,
+        duration: widget.duration,
+        builder: (context, value, child) {
+          return value;
+        },
+      ),
+    );
   }
 }

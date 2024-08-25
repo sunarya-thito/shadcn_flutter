@@ -1083,7 +1083,6 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
     return (context, states) {
       var edgeInsetsGeometry =
           _margin!(context, states, _delegate.margin(context, states));
-      print('new margin $edgeInsetsGeometry');
       return edgeInsetsGeometry;
     };
   }
