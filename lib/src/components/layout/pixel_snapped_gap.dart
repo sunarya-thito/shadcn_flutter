@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/rendering.dart' show RenderSliver, SliverGeometry;
-import 'package:pixel_snap/pixel_snap.dart';
-import 'package:pixel_snap/src/forked/render_flex.dart' show RenderFlex;
+import 'package:flutter/rendering.dart'
+    show RenderSliver, SliverGeometry, RenderFlex;
+import 'package:pixel_snap/pixel_snap.dart' as pixel_snap;
+import 'package:pixel_snap/src/forked/render_flex.dart'
+    as pixel_snap_render_flex;
 
 import '../../../shadcn_flutter.dart';
 
@@ -258,7 +260,9 @@ class RenderGap extends RenderBox {
 
   Axis? get _direction {
     final parentNode = parent;
-    if (parentNode is RenderFlex) {
+    if (parentNode is pixel_snap_render_flex.RenderFlex) {
+      return parentNode.direction;
+    } else if (parentNode is RenderFlex) {
       return parentNode.direction;
     } else {
       return fallbackDirection;
@@ -386,7 +390,7 @@ class SliverGap extends LeafRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    final ps = PixelSnap.of(context);
+    final ps = pixel_snap.PixelSnap.of(context);
     return RenderSliverGap(
       mainAxisExtent: mainAxisExtent.pixelSnap(ps),
       color: color,
@@ -395,7 +399,7 @@ class SliverGap extends LeafRenderObjectWidget {
 
   @override
   void updateRenderObject(BuildContext context, RenderSliverGap renderObject) {
-    final ps = PixelSnap.of(context);
+    final ps = pixel_snap.PixelSnap.of(context);
     renderObject
       ..mainAxisExtent = mainAxisExtent.pixelSnap(ps)
       ..color = color;
