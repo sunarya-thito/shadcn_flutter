@@ -163,6 +163,11 @@ abstract class ShadcnLocalizations {
   String get buttonPrevious;
   String get buttonNext;
 
+  String get refreshTriggerPull;
+  String get refreshTriggerRelease;
+  String get refreshTriggerRefreshing;
+  String get refreshTriggerComplete;
+
   String get searchPlaceholderCountry;
   String get emptyCountryList;
   String get toastSnippetCopied;
@@ -674,4 +679,16 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get menuLiveTextInput => 'Live Text Input';
+
+  @override
+  String get refreshTriggerPull => 'Pull to refresh';
+
+  @override
+  String get refreshTriggerRelease => 'Release to refresh';
+
+  @override
+  String get refreshTriggerRefreshing => 'Refreshing...';
+
+  @override
+  String get refreshTriggerComplete => 'Refresh complete';
 }
