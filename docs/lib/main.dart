@@ -88,6 +88,7 @@ import 'pages/docs/components/collapsible_example.dart';
 import 'pages/docs/components/color_picker_example.dart';
 import 'pages/docs/components/command_example.dart';
 import 'pages/docs/components/form_example.dart';
+import 'pages/docs/components/number_input_example.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -634,6 +635,13 @@ class MyAppState extends State<MyApp> {
             name: 'autocomplete',
             builder: (context, state) {
               return const AutoCompleteExample();
+            },
+          ),
+          GoRoute(
+            path: 'number_input',
+            name: 'number_input',
+            builder: (context, state) {
+              return const NumberInputExample();
             },
           )
         ]),

@@ -218,7 +218,7 @@ class DocsPageState extends State<DocsPage> {
         // in between increment and decrement button, theres
         // a divider that can be dragged to increase or decrease the value
         ShadcnDocsPage(
-            'Number Input', 'number_input', ShadcnFeatureTag.workInProgress),
+            'Number Input', 'number_input', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Input OTP', 'input_otp'),
         ShadcnDocsPage('Phone Input', 'phone_input'),
         ShadcnDocsPage('Radio Group', 'radio_group'),
