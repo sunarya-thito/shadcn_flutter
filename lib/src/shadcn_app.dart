@@ -224,6 +224,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
   @override
   void initState() {
     super.initState();
+    _platform.onThemeChanged(widget.theme);
     // _heroController = ShadcnApp.createMaterialHeroController();
     _heroController = HeroController(
       createRectTween: (begin, end) {
@@ -251,6 +252,9 @@ class _ShadcnAppState extends State<ShadcnApp> {
       } else {
         BrowserContextMenu.enableContextMenu();
       }
+    }
+    if (widget.theme != oldWidget.theme) {
+      _platform.onThemeChanged(widget.theme);
     }
   }
 
