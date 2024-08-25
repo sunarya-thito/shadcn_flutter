@@ -101,14 +101,18 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
           double angle;
           if (widget.stage.direction == Axis.vertical) {
             // 0 -> 1 (0 -> 180)
-            angle = pi * widget.stage.extent.value.clamp(0, 1);
+            angle = -pi * widget.stage.extent.value.clamp(0, 1);
           } else {
             // 0 -> 1 (90 -> 270)
-            angle = pi / 2 + pi * widget.stage.extent.value.clamp(0, 1);
+            angle = -pi / 2 + -pi * widget.stage.extent.value.clamp(0, 1);
           }
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Transform.rotate(
+                angle: angle,
+                child: const Icon(Icons.arrow_downward),
+              ),
               Flexible(
                   child: Text(widget.stage.extent.value < 1
                       ? localizations.refreshTriggerPull
@@ -271,7 +275,7 @@ class _RefreshTriggerState extends State<RefreshTrigger>
       });
     } else if (notification is ScrollUpdateNotification && _scrolling) {
       var delta = notification.scrollDelta;
-      if (delta != null && (widget.reverse ? delta < 0 : delta > 0)) {
+      if (delta != null) {
         setState(() {
           _currentExtent -= delta;
         });
