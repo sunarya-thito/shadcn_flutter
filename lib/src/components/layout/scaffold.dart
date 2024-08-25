@@ -150,42 +150,16 @@ class ScaffoldState extends State<Scaffold> {
       child: AnimatedContainer(
         duration: kDefaultDuration,
         color: theme.colorScheme.background,
-        child: Stack(
+        child: _ScaffoldFlex(
+          floatingHeader: widget.floatingHeader,
+          floatingFooter: widget.floatingFooter,
           children: [
-            _ScaffoldFlex(
-              direction: Axis.vertical,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (!widget.floatingHeader)
-                  buildHeader(context)
-                else
-                  const SizedBox(),
-                Expanded(
-                  child: Container(
-                    padding: viewInsets,
-                    child: widget.child,
-                  ),
-                ),
-                if (!widget.floatingFooter)
-                  buildFooter(context, viewInsets)
-                else
-                  const SizedBox(),
-              ],
+            buildHeader(context),
+            Container(
+              padding: viewInsets,
+              child: widget.child,
             ),
-            if (widget.floatingHeader)
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: buildHeader(context),
-              ),
-            if (widget.floatingFooter)
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: buildFooter(context, viewInsets),
-              ),
+            buildFooter(context, viewInsets),
           ],
         ),
       ),
@@ -337,39 +311,70 @@ class _AppBarState extends State<AppBar> {
   }
 }
 
-class _ScaffoldFlex extends Flex {
+class _ScaffoldFlex extends MultiChildRenderObjectWidget {
+  final bool floatingHeader;
+  final bool floatingFooter;
   const _ScaffoldFlex({
-    super.direction = Axis.vertical,
-    super.crossAxisAlignment = CrossAxisAlignment.center,
-    super.children = const <Widget>[],
+    super.children,
+    required this.floatingHeader,
+    required this.floatingFooter,
   });
 
   @override
-  RenderFlex createRenderObject(BuildContext context) {
+  RenderObject createRenderObject(BuildContext context) {
     return _ScaffoldRenderFlex(
-      direction: direction,
-      mainAxisAlignment: mainAxisAlignment,
-      mainAxisSize: mainAxisSize,
-      crossAxisAlignment: crossAxisAlignment,
-      textDirection: textDirection ?? Directionality.of(context),
-      verticalDirection: verticalDirection,
-      textBaseline: textBaseline,
-      clipBehavior: clipBehavior,
+      floatingHeader: floatingHeader,
+      floatingFooter: floatingFooter,
     );
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, _ScaffoldRenderFlex renderObject) {
+    bool needsLayout = false;
+    if (renderObject._floatingHeader != floatingHeader) {
+      renderObject._floatingHeader = floatingHeader;
+      needsLayout = true;
+    }
+    if (renderObject._floatingFooter != floatingFooter) {
+      renderObject._floatingFooter = floatingFooter;
+      needsLayout = true;
+    }
+    if (needsLayout) {
+      renderObject.markNeedsLayout();
+    }
   }
 }
 
-class _ScaffoldRenderFlex extends RenderFlex {
+class _ScaffoldParentData extends ContainerBoxParentData<RenderBox> {}
+
+class _ScaffoldRenderFlex extends RenderBox
+    with
+        ContainerRenderObjectMixin<RenderBox, _ScaffoldParentData>,
+        RenderBoxContainerDefaultsMixin<RenderBox, _ScaffoldParentData> {
   _ScaffoldRenderFlex({
-    super.direction = Axis.vertical,
-    super.mainAxisAlignment = MainAxisAlignment.start,
-    super.mainAxisSize = MainAxisSize.max,
-    super.crossAxisAlignment = CrossAxisAlignment.center,
-    super.textDirection,
-    super.verticalDirection = VerticalDirection.down,
-    super.textBaseline,
-    super.clipBehavior = Clip.none,
-  });
+    required bool floatingHeader,
+    required bool floatingFooter,
+  })  : _floatingHeader = floatingHeader,
+        _floatingFooter = floatingFooter;
+
+  bool _floatingHeader = false;
+  bool _floatingFooter = false;
+
+  ValueNotifier<double> _headerSize = ValueNotifier(0);
+  ValueNotifier<double> _footerSize = ValueNotifier(0);
+
+  @override
+  void setupParentData(covariant RenderObject child) {
+    if (child.parentData is! _ScaffoldParentData) {
+      child.parentData = _ScaffoldParentData();
+    }
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    defaultPaint(context, offset);
+  }
 
   @override
   void defaultPaint(PaintingContext context, Offset offset) {
@@ -382,13 +387,172 @@ class _ScaffoldRenderFlex extends RenderFlex {
     // which means the header will be painted after the content
     // and the footer will be painted after the header
     RenderBox header = firstChild!;
-    RenderBox content = (header.parentData as FlexParentData).nextSibling!;
-    RenderBox footer = (content.parentData as FlexParentData).nextSibling!;
+    RenderBox content = (header.parentData as _ScaffoldParentData).nextSibling!;
+    RenderBox footer = (content.parentData as _ScaffoldParentData).nextSibling!;
     context.paintChild(
         content, (content.parentData as BoxParentData).offset + offset);
     context.paintChild(
         header, (header.parentData as BoxParentData).offset + offset);
     context.paintChild(
         footer, (footer.parentData as BoxParentData).offset + offset);
+  }
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
+    return defaultHitTestChildren(result, position: position);
+  }
+
+  @override
+  void performLayout() {
+    RenderBox header = firstChild!;
+    RenderBox content = (header.parentData as _ScaffoldParentData).nextSibling!;
+    RenderBox footer = (content.parentData as _ScaffoldParentData).nextSibling!;
+    final constraints = this.constraints;
+    header.layout(constraints, parentUsesSize: true);
+    footer.layout(constraints, parentUsesSize: true);
+    BoxConstraints contentConstraints;
+    Offset contentOffset;
+    double footerSize = footer.getMaxIntrinsicHeight(double.infinity);
+    double headerSize = header.getMaxIntrinsicHeight(double.infinity);
+    switch ((_floatingHeader, _floatingFooter)) {
+      case (true, true): // floating header and footer
+        contentConstraints = constraints;
+        contentOffset = Offset.zero;
+        break;
+      case (true, false): // floating header
+        contentConstraints = constraints.deflate(
+          EdgeInsets.only(bottom: footerSize),
+        );
+        contentOffset = Offset.zero;
+        break;
+      case (false, true): // floating footer
+        contentConstraints = constraints.deflate(
+          EdgeInsets.only(top: headerSize),
+        );
+        contentOffset = Offset(0, headerSize);
+        break;
+      case (false, false):
+        contentConstraints = constraints.deflate(
+          EdgeInsets.only(
+            top: headerSize,
+            bottom: footerSize,
+          ),
+        );
+        contentOffset = Offset(0, headerSize);
+        break;
+    }
+    content.layout(contentConstraints, parentUsesSize: true);
+    size = constraints.biggest;
+    (content.parentData as BoxParentData).offset = contentOffset;
+    (footer.parentData as BoxParentData).offset = Offset(
+      0,
+      constraints.biggest.height - footerSize,
+    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _headerSize.value = headerSize;
+      _footerSize.value = footerSize;
+    });
+  }
+}
+
+class ScaffoldHeaderPadding extends SingleChildRenderObjectWidget {
+  const ScaffoldHeaderPadding({super.key, super.child});
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return _RenderScaffoldPadding(
+      paddingType: _ScaffoldPaddingType.header,
+    );
+  }
+}
+
+class ScaffoldFooterPadding extends SingleChildRenderObjectWidget {
+  const ScaffoldFooterPadding({super.key, super.child});
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return _RenderScaffoldPadding(
+      paddingType: _ScaffoldPaddingType.footer,
+    );
+  }
+}
+
+enum _ScaffoldPaddingType {
+  header,
+  footer,
+}
+
+class _RenderScaffoldPadding extends RenderBox
+    with
+        ContainerRenderObjectMixin<RenderBox, _ScaffoldParentData>,
+        RenderBoxContainerDefaultsMixin<RenderBox, _ScaffoldParentData> {
+  _ScaffoldPaddingType _paddingType;
+
+  _RenderScaffoldPadding({
+    _ScaffoldPaddingType paddingType = _ScaffoldPaddingType.header,
+  }) : _paddingType = paddingType;
+
+  _ScaffoldRenderFlex? findParent() {
+    RenderObject? parent = this;
+    while (parent != null) {
+      if (parent is _ScaffoldRenderFlex) {
+        return parent;
+      }
+      parent = parent.parent;
+    }
+    return null;
+  }
+
+  _ScaffoldRenderFlex? currentParent;
+
+  @override
+  void attach(PipelineOwner owner) {
+    super.attach(owner);
+    var scaffoldParent = findParent();
+    currentParent = scaffoldParent;
+    scaffoldParent?._headerSize.addListener(markNeedsLayout);
+    scaffoldParent?._footerSize.addListener(markNeedsLayout);
+  }
+
+  @override
+  void detach() {
+    var scaffoldParent = currentParent;
+    scaffoldParent?._headerSize.removeListener(markNeedsLayout);
+    scaffoldParent?._footerSize.removeListener(markNeedsLayout);
+    super.detach();
+  }
+
+  @override
+  void performLayout() {
+    _ScaffoldRenderFlex? parentData = findParent();
+    assert(parentData != null, 'Must be a child of a Scaffold');
+    BoxConstraints constraints;
+    switch (_paddingType) {
+      case _ScaffoldPaddingType.header:
+        constraints = this.constraints.copyWith(
+              minHeight: parentData!._headerSize.value,
+              maxHeight: parentData._headerSize.value,
+            );
+        break;
+      case _ScaffoldPaddingType.footer:
+        constraints = this.constraints.copyWith(
+              minHeight: parentData!._footerSize.value,
+              maxHeight: parentData._footerSize.value,
+            );
+        break;
+    }
+    final child = firstChild;
+    if (child != null) {
+      child.layout(constraints, parentUsesSize: true);
+      size = constraints.constrain(child.size);
+      (child.parentData as BoxParentData).offset = Offset.zero;
+    } else {
+      size = constraints.biggest;
+    }
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    defaultPaint(context, offset);
   }
 }
