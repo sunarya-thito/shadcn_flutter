@@ -180,13 +180,14 @@ class _RefreshTriggerState extends State<RefreshTrigger>
     if (notification.depth != 0) {
       return false;
     }
-    if (notification is ScrollStartNotification) {
+    if (notification is ScrollStartNotification &&
+        _stage == TriggerStage.idle) {
       setState(() {
         _currentExtent = 0;
         _scrolling = true;
         _stage = TriggerStage.pulling;
       });
-    } else if (notification is ScrollEndNotification) {
+    } else if (notification is ScrollEndNotification && _scrolling) {
       setState(() {
         _scrolling = false;
         if (_currentExtent >= widget.minExtent) {
@@ -215,14 +216,14 @@ class _RefreshTriggerState extends State<RefreshTrigger>
           _currentExtent = 0;
         }
       });
-    } else if (notification is ScrollUpdateNotification) {
+    } else if (notification is ScrollUpdateNotification && _scrolling) {
       var delta = notification.scrollDelta;
       if (delta != null && (widget.reverse ? delta < 0 : delta > 0)) {
         setState(() {
           _currentExtent -= delta;
         });
       }
-    } else if (notification is OverscrollNotification) {
+    } else if (notification is OverscrollNotification && _scrolling) {
       setState(() {
         _currentExtent -= notification.overscroll;
       });
