@@ -16,9 +16,11 @@ class NumberInput extends StatefulWidget {
   final ValueChanged<double>? onChanged;
   final AbstractButtonStyle? buttonStyle;
   final TextStyle? style;
+  final EdgeInsetsGeometry? padding;
 
   const NumberInput({
     Key? key,
+    this.padding,
     this.controller,
     this.initialValue = 0,
     this.step = 1,
@@ -246,7 +248,14 @@ class _NumberInputState extends State<NumberInput> {
   }
 
   Widget buildTextField(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     return TextField(
+      padding: widget.padding ??
+          EdgeInsets.symmetric(
+            horizontal: 10 * scaling,
+            vertical: 10 * scaling,
+          ),
       style: widget.style,
       inputFormatters: [
         if (!widget.allowDecimals) FilteringTextInputFormatter.digitsOnly,
