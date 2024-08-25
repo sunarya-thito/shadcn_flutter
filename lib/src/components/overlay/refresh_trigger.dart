@@ -218,8 +218,8 @@ class _RefreshTriggerState extends State<RefreshTrigger>
       return Positioned(
         top: 0,
         bottom: 0,
-        left: !widget.reverse ? null : 0,
-        right: !widget.reverse ? 0 : null,
+        left: widget.reverse ? null : 0,
+        right: widget.reverse ? 0 : null,
         child: child,
       );
     }
