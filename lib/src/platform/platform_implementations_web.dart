@@ -6,11 +6,15 @@ import '../theme/theme.dart';
 
 class ShadcnFlutterPlatformImplementations {
   void onAppInitialized() {
-    globalContext.callMethod("onAppReady".toJS);
+    if (globalContext.has("onAppReady")) {
+      globalContext.callMethod("onAppReady".toJS);
+    }
   }
 
   void onThemeChanged(ThemeData theme) {
-    globalContext.callMethod(
-        "onThemeChanged".toJS, theme.colorScheme.toMap().toJSBox);
+    if (globalContext.has("onThemeChanged")) {
+      globalContext.callMethod(
+          "onThemeChanged".toJS, theme.colorScheme.toMap().toJSBox);
+    }
   }
 }
