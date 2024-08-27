@@ -157,7 +157,7 @@ class ScaffoldState extends State<Scaffold> {
             buildHeader(context),
             Container(
               padding: viewInsets,
-              child: widget.child,
+              child: ToastLayer(child: widget.child),
             ),
             buildFooter(context, viewInsets),
           ],

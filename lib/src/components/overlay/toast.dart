@@ -17,7 +17,8 @@ ToastOverlay showToast({
   VoidCallback? onClosed,
   Duration showDuration = const Duration(seconds: 5),
 }) {
-  _ToastLayerState? layer = Data.maybeFind<_ToastLayerState>(context);
+  _ToastLayerState? layer = Data.maybeFindMessenger(context);
+  layer ??= Data.maybeOf(context);
   CapturedThemes? themes;
   CapturedData? data;
   if (layer != null) {
