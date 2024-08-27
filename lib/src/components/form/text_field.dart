@@ -40,6 +40,8 @@ class TextField extends StatefulWidget {
   final bool useNativeContextMenu;
   final bool? isCollapsed;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+
   const TextField({
     Key? key,
     this.controller,
@@ -76,6 +78,7 @@ class TextField extends StatefulWidget {
     this.contextMenuBuilder = _defaultContextMenuBuilder,
     this.useNativeContextMenu = false,
     this.isCollapsed,
+    this.textInputAction,
   }) : super(key: key);
 
   static Widget _defaultContextMenuBuilder(
@@ -210,6 +213,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
       onSubmitted: widget.onSubmitted,
       onEditingComplete: widget.onEditingComplete,
       undoController: _undoHistoryController,
+      textInputAction: widget.textInputAction,
       autofillHints: widget.autofillHints,
       minLines: widget.minLines,
       buildCounter: (context,
