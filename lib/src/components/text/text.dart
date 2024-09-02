@@ -539,6 +539,78 @@ extension TextExtension on Widget {
     );
   }
 
+  Widget textCenter() {
+    if (this is WrappedText) {
+      return (this as WrappedText).copyWith(
+        textAlign: (context, theme) => TextAlign.center,
+      );
+    }
+    return WrappedText(
+      textAlign: (context, theme) => TextAlign.center,
+      child: this,
+    );
+  }
+
+  Widget textRight() {
+    if (this is WrappedText) {
+      return (this as WrappedText).copyWith(
+        textAlign: (context, theme) => TextAlign.right,
+      );
+    }
+    return WrappedText(
+      textAlign: (context, theme) => TextAlign.right,
+      child: this,
+    );
+  }
+
+  Widget textLeft() {
+    if (this is WrappedText) {
+      return (this as WrappedText).copyWith(
+        textAlign: (context, theme) => TextAlign.left,
+      );
+    }
+    return WrappedText(
+      textAlign: (context, theme) => TextAlign.left,
+      child: this,
+    );
+  }
+
+  Widget textJustify() {
+    if (this is WrappedText) {
+      return (this as WrappedText).copyWith(
+        textAlign: (context, theme) => TextAlign.justify,
+      );
+    }
+    return WrappedText(
+      textAlign: (context, theme) => TextAlign.justify,
+      child: this,
+    );
+  }
+
+  Widget textStart() {
+    if (this is WrappedText) {
+      return (this as WrappedText).copyWith(
+        textAlign: (context, theme) => TextAlign.start,
+      );
+    }
+    return WrappedText(
+      textAlign: (context, theme) => TextAlign.start,
+      child: this,
+    );
+  }
+
+  Widget textEnd() {
+    if (this is WrappedText) {
+      return (this as WrappedText).copyWith(
+        textAlign: (context, theme) => TextAlign.end,
+      );
+    }
+    return WrappedText(
+      textAlign: (context, theme) => TextAlign.end,
+      child: this,
+    );
+  }
+
   Widget foreground() {
     return Builder(
       builder: (context) {
