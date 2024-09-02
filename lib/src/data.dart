@@ -225,7 +225,7 @@ class DataNotifier<T> extends StatelessWidget implements MultiDataItem {
   final ValueListenable<T> notifier;
   final Widget? _child;
 
-  const DataNotifier(this.notifier) : _child = null;
+  const DataNotifier(this.notifier, {super.key}) : _child = null;
 
   const DataNotifier.inherit({
     super.key,
@@ -330,7 +330,7 @@ class Data<T> extends StatelessWidget implements MultiDataItem {
   final T? _data;
   final Widget? child;
 
-  const Data(T data)
+  const Data(T data, {super.key})
       : _data = data,
         child = null,
         super();
