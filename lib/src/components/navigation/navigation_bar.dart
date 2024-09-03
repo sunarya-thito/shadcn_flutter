@@ -547,6 +547,7 @@ class NavigationDivider extends StatelessWidget implements NavigationBarItem {
 
 class NavigationButton extends StatefulWidget implements NavigationBarItem {
   final Widget child;
+  final Widget? trailing;
   final Widget? label;
   final double? spacing;
   final bool? selected;
@@ -562,6 +563,7 @@ class NavigationButton extends StatefulWidget implements NavigationBarItem {
   const NavigationButton({
     Key? key,
     this.spacing,
+    this.trailing,
     this.label,
     this.style,
     this.selectedStyle,
@@ -653,6 +655,12 @@ class _NavigationButtonState extends State<NavigationButton> {
                   ),
                 ),
               ),
+            if (widget.trailing != null) Gap(widget.spacing ?? (8 * scaling)),
+            if (widget.trailing != null)
+              Align(
+                alignment: widget.alignment ?? AlignmentDirectional.centerStart,
+                child: widget.trailing,
+              ),
           ],
         ),
       );
@@ -705,6 +713,8 @@ class _NavigationButtonState extends State<NavigationButton> {
                 ),
               ),
             ),
+          if (widget.trailing != null) Gap(widget.spacing ?? (8 * scaling)),
+          if (widget.trailing != null) widget.trailing!,
         ],
       ),
     );
