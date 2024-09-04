@@ -157,6 +157,11 @@ class ShadcnScrollBehavior extends ScrollBehavior {
   const ShadcnScrollBehavior();
 
   @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const BouncingScrollPhysics();
+  }
+
+  @override
   Widget buildScrollbar(
       BuildContext context, Widget child, ScrollableDetails details) {
     // When modifying this function, consider modifying the implementation in

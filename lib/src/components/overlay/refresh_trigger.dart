@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef RefreshIndicatorBuilder = Widget Function(
@@ -187,6 +188,7 @@ class RefreshTriggerState extends State<RefreshTrigger>
     with SingleTickerProviderStateMixin {
   double _currentExtent = 0;
   bool _scrolling = false;
+  ScrollDirection _userScrollDirection = ScrollDirection.idle;
   TriggerStage _stage = TriggerStage.idle;
   Future<void>? _currentFuture;
   int _currentFutureCount = 0;
@@ -238,6 +240,9 @@ class RefreshTriggerState extends State<RefreshTrigger>
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification is! ScrollUpdateNotification) {
+      print(notification);
+    }
     if (notification.depth != 0) {
       return false;
     }
@@ -251,14 +256,36 @@ class RefreshTriggerState extends State<RefreshTrigger>
           _currentExtent = 0;
         }
       });
-    } else if (notification is ScrollUpdateNotification &&
-        _stage == TriggerStage.pulling) {
+    } else if (notification is ScrollUpdateNotification) {
       var delta = notification.scrollDelta;
       if (delta != null) {
-        setState(() {
-          _currentExtent -= delta;
-        });
+        if (_stage == TriggerStage.pulling) {
+          bool forward = widget.reverse ? delta > 0 : delta < 0;
+          if ((forward && _userScrollDirection == ScrollDirection.forward) ||
+              (!forward && _userScrollDirection == ScrollDirection.reverse)) {
+            setState(() {
+              _currentExtent -= delta;
+            });
+          } else {
+            if (_currentExtent >= widget.minExtent) {
+              refresh();
+            } else {
+              setState(() {
+                _currentExtent -= delta;
+              });
+            }
+          }
+        } else if (_stage == TriggerStage.idle &&
+            (widget.reverse ? delta > 0 : delta < 0)) {
+          setState(() {
+            _currentExtent = 0;
+            _scrolling = true;
+            _stage = TriggerStage.pulling;
+          });
+        }
       }
+    } else if (notification is UserScrollNotification) {
+      _userScrollDirection = notification.direction;
     } else if (notification is OverscrollNotification) {
       if (_stage == TriggerStage.idle) {
         setState(() {
