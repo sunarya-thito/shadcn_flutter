@@ -245,8 +245,8 @@ class RefreshTriggerState extends State<RefreshTrigger>
     }
     if (notification is ScrollEndNotification && _scrolling) {
       setState(() {
-        _scrolling = false;
         if (_currentExtent >= widget.minExtent) {
+          _scrolling = false;
           refresh();
         } else {
           _stage = TriggerStage.idle;
@@ -264,8 +264,8 @@ class RefreshTriggerState extends State<RefreshTrigger>
               _currentExtent -= delta;
             });
           } else {
-            _scrolling = false;
             if (_currentExtent >= widget.minExtent) {
+              _scrolling = false;
               refresh();
             } else {
               setState(() {
