@@ -22,8 +22,31 @@ class Switch extends StatefulWidget {
   State<Switch> createState() => _SwitchState();
 }
 
-class _SwitchState extends State<Switch> {
+class _SwitchState extends State<Switch> with FormValueSupplier {
   bool _focusing = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    reportNewFormValue(widget.value, (value) {
+      if (widget.onChanged != null) {
+        widget.onChanged!(value);
+      }
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant Switch oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.value != oldWidget.value) {
+      reportNewFormValue(widget.value, (value) {
+        if (widget.onChanged != null) {
+          widget.onChanged!(value);
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
