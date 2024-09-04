@@ -66,7 +66,12 @@ class _ScrollViewInterceptorState extends State<ScrollViewInterceptor>
       try {
         path.target.handleEvent(pointerScrollEvent, path);
       } catch (e, s) {
-        print('Error: $e\n$s');
+        FlutterError.reportError(FlutterErrorDetails(
+          exception: e,
+          stack: s,
+          library: 'shadcn_flutter',
+          context: ErrorDescription('while dispatching a pointer scroll event'),
+        ));
       }
     }
   }
