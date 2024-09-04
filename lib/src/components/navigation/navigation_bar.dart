@@ -155,16 +155,16 @@ class _NavigationBarState extends State<NavigationBar>
 
 double _startPadding(EdgeInsets padding, Axis direction) {
   if (direction == Axis.vertical) {
-    return padding.left;
+    return padding.top;
   }
-  return padding.top;
+  return padding.left;
 }
 
 double _endPadding(EdgeInsets padding, Axis direction) {
   if (direction == Axis.vertical) {
-    return padding.right;
+    return padding.bottom;
   }
-  return padding.bottom;
+  return padding.right;
 }
 
 mixin NavigationContainerMixin {
