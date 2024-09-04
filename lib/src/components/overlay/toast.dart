@@ -135,6 +135,9 @@ class _ToastLayerState extends State<ToastLayer> {
   };
 
   void _triggerEntryClosing() {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       // this will rebuild the toast entries
     });
