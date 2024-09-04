@@ -406,6 +406,7 @@ enum NavigationLabelType {
   selected,
   all,
   expanded,
+  tooltip,
 }
 
 class NavigationChildControlData {
@@ -596,11 +597,41 @@ class _NavigationButtonState extends State<NavigationButton> {
     if (data?.containerType == NavigationContainerType.sidebar) {
       return buildSliver(context, data, childData);
     }
+    final labelType = data?.parentLabelType ?? NavigationLabelType.none;
+    if (labelType == NavigationLabelType.tooltip) {
+      return buildTooltip(context, data, childData);
+    }
     return buildBox(context, data, childData);
+  }
+
+  Widget buildTooltip(BuildContext context, NavigationControlData? data,
+      NavigationChildControlData? childData) {
+    if (widget.label == null) {
+      return buildBox(context, data, childData);
+    }
+    AlignmentGeometry alignment = Alignment.topCenter;
+    AlignmentGeometry anchorAlignment = Alignment.bottomCenter;
+    if (data?.direction == Axis.vertical) {
+      alignment = Alignment.centerLeft;
+      anchorAlignment = Alignment.centerRight;
+    }
+    return Tooltip(
+      waitDuration: Duration.zero,
+      alignment: alignment,
+      anchorAlignment: anchorAlignment,
+      tooltip: TooltipContainer(child: widget.label!),
+      child: buildBox(context, data, childData),
+    );
   }
 
   Widget buildSliver(BuildContext context, NavigationControlData? data,
       NavigationChildControlData? childData) {
+    final labelType = data?.parentLabelType ?? NavigationLabelType.none;
+    if (labelType == NavigationLabelType.tooltip) {
+      return SliverToBoxAdapter(
+        child: buildTooltip(context, data, childData),
+      );
+    }
     return SliverToBoxAdapter(
       child: buildBox(context, data, childData),
     );
@@ -683,6 +714,7 @@ class _NavigationButtonState extends State<NavigationButton> {
         children: [
           widget.child,
           if (data?.parentLabelType != NavigationLabelType.none &&
+              data?.parentLabelType != NavigationLabelType.tooltip &&
               widget.label != null)
             Flexible(
               child: AnimatedSize(
