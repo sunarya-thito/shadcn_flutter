@@ -38,7 +38,7 @@ class RefreshTrigger extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<RefreshTrigger> createState() => _RefreshTriggerState();
+  State<RefreshTrigger> createState() => RefreshTriggerState();
 }
 
 class DefaultRefreshIndicator extends StatefulWidget {
@@ -156,8 +156,10 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
     final theme = Theme.of(context);
     return Center(
       child: SurfaceCard(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4) *
-            theme.scaling,
+        padding: widget.stage.stage == TriggerStage.pulling
+            ? const EdgeInsets.all(4) * theme.scaling
+            : const EdgeInsets.symmetric(horizontal: 12, vertical: 4) *
+                theme.scaling,
         borderRadius: theme.radiusXl,
         child: CrossFadedTransition(
           child: KeyedSubtree(
@@ -181,11 +183,13 @@ class _RefreshTriggerTween extends Animatable<double> {
   }
 }
 
-class _RefreshTriggerState extends State<RefreshTrigger>
+class RefreshTriggerState extends State<RefreshTrigger>
     with SingleTickerProviderStateMixin {
   double _currentExtent = 0;
   bool _scrolling = false;
   TriggerStage _stage = TriggerStage.idle;
+  Future<void>? _currentFuture;
+  int _currentFutureCount = 0;
 
   double _calculateSafeExtent(double extent) {
     if (extent > widget.minExtent) {
@@ -241,26 +245,7 @@ class _RefreshTriggerState extends State<RefreshTrigger>
       setState(() {
         _scrolling = false;
         if (_currentExtent >= widget.minExtent) {
-          _stage = TriggerStage.refreshing;
-          if (widget.onRefresh != null) {
-            widget.onRefresh!().then((_) {
-              if (!mounted) {
-                return;
-              }
-              setState(() {
-                _stage = TriggerStage.completed;
-                Future.delayed(widget.completeDuration, () {
-                  if (!mounted) {
-                    return;
-                  }
-                  setState(() {
-                    _stage = TriggerStage.idle;
-                    _currentExtent = 0;
-                  });
-                });
-              });
-            });
-          }
+          refresh();
         } else {
           _stage = TriggerStage.idle;
           _currentExtent = 0;
@@ -288,6 +273,45 @@ class _RefreshTriggerState extends State<RefreshTrigger>
       }
     }
     return false;
+  }
+
+  Future<void> refresh([FutureVoidCallback? refreshCallback]) async {
+    int count = ++_currentFutureCount;
+    if (_currentFuture != null) {
+      await _currentFuture;
+    }
+    setState(() {
+      _currentFuture = _refresh(refreshCallback);
+    });
+    return _currentFuture!.whenComplete(() {
+      if (!mounted || count != _currentFutureCount) {
+        return;
+      }
+      setState(() {
+        _currentFuture = null;
+        _stage = TriggerStage.completed;
+        // Future.delayed works the same
+        Timer(widget.completeDuration, () {
+          if (!mounted) {
+            return;
+          }
+          setState(() {
+            _stage = TriggerStage.idle;
+            _currentExtent = 0;
+          });
+        });
+      });
+    });
+  }
+
+  Future<void> _refresh([FutureVoidCallback? refresh]) {
+    if (_stage != TriggerStage.refreshing) {
+      setState(() {
+        _stage = TriggerStage.refreshing;
+      });
+    }
+    refresh ??= widget.onRefresh;
+    return refresh?.call() ?? Future.value();
   }
 
   @override
@@ -362,3 +386,5 @@ class RefreshTriggerStage {
 
   const RefreshTriggerStage(this.stage, this.extent, this.direction);
 }
+
+class RefreshTriggerPhysics extends ScrollPhysics {}
