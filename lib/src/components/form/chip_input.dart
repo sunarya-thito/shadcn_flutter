@@ -19,6 +19,7 @@ class ChipInput<T> extends StatefulWidget {
   final ChipWidgetBuilder<T> chipBuilder;
   final ChipWidgetBuilder<T>? suggestionBuilder;
   final bool useChips;
+  final TextInputAction? textInputAction;
   const ChipInput({
     Key? key,
     this.controller,
@@ -36,6 +37,7 @@ class ChipInput<T> extends StatefulWidget {
     this.onChanged,
     this.useChips = true,
     this.suggestionBuilder,
+    this.textInputAction,
     required this.chipBuilder,
   }) : super(key: key);
 
@@ -303,6 +305,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
             }
             return TextFieldTapRegion(
               child: OutlinedContainer(
+                backgroundColor: Colors.transparent,
                 borderRadius: theme.radiusMd,
                 borderColor: _focusNode.hasFocus
                     ? theme.colorScheme.ring
@@ -316,6 +319,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
             focusNode: _focusNode,
             initialValue: widget.initialText,
             inputFormatters: widget.inputFormatters,
+            textInputAction: widget.textInputAction,
             border: false,
             maxLines: 1,
             onSubmitted: (text) {
