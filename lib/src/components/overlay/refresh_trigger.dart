@@ -264,6 +264,7 @@ class RefreshTriggerState extends State<RefreshTrigger>
               _currentExtent -= delta;
             });
           } else {
+            _scrolling = false;
             if (_currentExtent >= widget.minExtent) {
               refresh();
             } else {
