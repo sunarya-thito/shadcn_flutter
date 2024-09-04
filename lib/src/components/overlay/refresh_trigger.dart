@@ -240,9 +240,6 @@ class RefreshTriggerState extends State<RefreshTrigger>
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
-    if (notification is! ScrollUpdateNotification) {
-      print(notification);
-    }
     if (notification.depth != 0) {
       return false;
     }
