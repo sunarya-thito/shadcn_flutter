@@ -58,8 +58,11 @@ class TooltipContainer extends StatelessWidget {
 class Tooltip extends StatefulWidget {
   final Widget child;
   final Widget tooltip;
-  final Alignment alignment;
-  final Alignment anchorAlignment;
+  final AlignmentGeometry alignment;
+  final AlignmentGeometry anchorAlignment;
+  final Duration waitDuration;
+  final Duration showDuration;
+  final Duration minDuration;
 
   const Tooltip({
     Key? key,
@@ -67,6 +70,9 @@ class Tooltip extends StatefulWidget {
     required this.tooltip,
     this.alignment = Alignment.topCenter,
     this.anchorAlignment = Alignment.bottomCenter,
+    this.waitDuration = const Duration(milliseconds: 500),
+    this.showDuration = const Duration(milliseconds: 200),
+    this.minDuration = const Duration(milliseconds: 0),
   }) : super(key: key);
 
   @override
@@ -79,6 +85,9 @@ class _TooltipState extends State<Tooltip> {
   Widget build(BuildContext context) {
     return Hover(
       child: widget.child,
+      waitDuration: widget.waitDuration,
+      minDuration: widget.minDuration,
+      showDuration: widget.showDuration,
       onHover: (hovered) {
         if (hovered) {
           _controller.show(
