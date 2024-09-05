@@ -301,6 +301,7 @@ class RefreshTriggerState extends State<RefreshTrigger>
   }
 
   Future<void> refresh([FutureVoidCallback? refreshCallback]) async {
+    _scrolling = false;
     int count = ++_currentFutureCount;
     if (_currentFuture != null) {
       await _currentFuture;
