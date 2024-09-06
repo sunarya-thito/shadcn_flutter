@@ -1118,7 +1118,7 @@ class _TreeItemViewState extends State<TreeItemView> {
   }
 
   void _onFocusChanged() {
-    if (_data != null) {
+    if (_data != null && _focusNode.hasFocus) {
       _data!.onFocusChanged?.call(FocusChangeReason.focusScope);
     }
   }
