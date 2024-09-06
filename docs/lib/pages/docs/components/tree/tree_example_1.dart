@@ -10,6 +10,7 @@ class TreeExample1 extends StatefulWidget {
 class _TreeExample1State extends State<TreeExample1> {
   bool expandIcon = false;
   bool usePath = true;
+  bool recursiveSelection = false;
   List<TreeNode<String>> treeItems = [
     TreeItem(
       data: 'Apple',
@@ -77,8 +78,17 @@ class _TreeExample1State extends State<TreeExample1> {
             child: TreeView(
               expandIcon: expandIcon,
               shrinkWrap: true,
+              recursiveSelection: recursiveSelection,
               nodes: treeItems,
               branchLine: usePath ? BranchLine.path : BranchLine.line,
+              onSelectionChanged: TreeView.defaultSelectionHandler(
+                treeItems,
+                (value) {
+                  setState(() {
+                    treeItems = value;
+                  });
+                },
+              ),
               builder: (context, node) {
                 return TreeItemView(
                   onPressed: () {},
@@ -95,17 +105,12 @@ class _TreeExample1State extends State<TreeExample1> {
                       : Icon(node.expanded
                           ? BootstrapIcons.folder2Open
                           : BootstrapIcons.folder2),
-                  onExpand: (expanded) {
-                    if (expanded) {
-                      setState(() {
-                        treeItems = treeItems.expandNode(node);
-                      });
-                    } else {
-                      setState(() {
-                        treeItems = treeItems.collapseNode(node);
-                      });
-                    }
-                  },
+                  onExpand: TreeView.defaultItemExpandHandler(treeItems, node,
+                      (value) {
+                    setState(() {
+                      treeItems = value;
+                    });
+                  }),
                   child: Text(node.data),
                 );
               },
@@ -154,6 +159,21 @@ class _TreeExample1State extends State<TreeExample1> {
             });
           },
           trailing: const Text('Use Path Branch Line'),
+        ),
+        Gap(8),
+        Checkbox(
+          state: recursiveSelection
+              ? CheckboxState.checked
+              : CheckboxState.unchecked,
+          onChanged: (value) {
+            setState(() {
+              recursiveSelection = value == CheckboxState.checked;
+              if (recursiveSelection) {
+                treeItems = treeItems.updateRecursiveSelection();
+              }
+            });
+          },
+          trailing: const Text('Recursive Selection'),
         ),
       ],
     );
