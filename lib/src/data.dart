@@ -369,6 +369,39 @@ class Data<T> extends StatelessWidget implements MultiDataItem {
     );
   }
 
+  static List<T> collect<T>(BuildContext context) {
+    final List<T> data = [];
+    context.visitAncestorElements((element) {
+      if (element.widget is Data<T>) {
+        var currentData = (element.widget as Data<T>)._data;
+        if (currentData != null) {
+          data.add(currentData);
+        } else {
+          return false;
+        }
+      }
+      return true;
+    });
+    return data;
+  }
+
+  static void visitAncestors<T>(
+      BuildContext context, bool Function(T data) visitor) {
+    context.visitAncestorElements((element) {
+      if (element.widget is Data<T>) {
+        var currentData = (element.widget as Data<T>)._data;
+        if (currentData != null) {
+          if (!visitor(currentData)) {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+      return true;
+    });
+  }
+
   static T of<T>(BuildContext context) {
     final data = maybeOf<T>(context);
     assert(data != null, 'No Data<$T> found in context');
@@ -401,6 +434,26 @@ class Data<T> extends StatelessWidget implements MultiDataItem {
 
   static T find<T>(BuildContext context) {
     final data = maybeFind<T>(context);
+    assert(data != null, 'No Data<$T> found in context');
+    return data!;
+  }
+
+  static T? maybeFindRoot<T>(BuildContext context) {
+    T? found;
+    context.visitAncestorElements((element) {
+      if (element.widget is Data<T>) {
+        var data = (element.widget as Data<T>)._data;
+        if (data != null) {
+          found = data;
+        }
+      }
+      return true;
+    });
+    return found;
+  }
+
+  static T findRoot<T>(BuildContext context) {
+    final data = maybeFindRoot<T>(context);
     assert(data != null, 'No Data<$T> found in context');
     return data!;
   }
