@@ -31,10 +31,12 @@ class ModalContainer extends StatelessWidget {
     return Stack(
       fit: StackFit.passthrough,
       children: [
-        Positioned.fill(
-          child: paintWidget,
-        ),
         child,
+        Positioned.fill(
+          child: IgnorePointer(
+            child: paintWidget,
+          ),
+        ),
       ],
     );
   }
