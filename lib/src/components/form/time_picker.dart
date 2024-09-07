@@ -85,23 +85,29 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
   Widget _buildInput(
       BuildContext context, TextEditingController controller, String label) {
     final theme = Theme.of(context);
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        TextField(
-          textAlign: TextAlign.center,
-          controller: controller,
-          style: theme.typography.x4Large,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            const _TimeFormatter(),
-          ],
-        ),
-        Positioned(
-          bottom: (-16 - 12) * theme.scaling,
-          child: Text(label).muted(),
-        ),
-      ],
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+          minWidth: 72 * theme.scaling, minHeight: 72 * theme.scaling),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned.fill(
+            child: TextField(
+              textAlign: TextAlign.center,
+              controller: controller,
+              style: theme.typography.x4Large,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                const _TimeFormatter(),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: (-24) * theme.scaling,
+            child: Text(label).muted(),
+          ),
+        ],
+      ),
     );
   }
 
