@@ -43,8 +43,9 @@ class ModalContainer extends StatelessWidget {
 }
 
 class SurfaceBarrierPainter extends CustomPainter {
-  static const bigOffset = Offset(-999999 / 2, -999999 / 2);
-  static const bigScreen = Size(999999, 999999);
+  static const double bigSize = 10000000000000000000000;
+  static const bigScreen = Size(bigSize, bigSize);
+  static const bigOffset = Offset(-bigSize / 2, -bigSize / 2);
 
   final BorderRadius borderRadius;
   final Color barrierColor;
