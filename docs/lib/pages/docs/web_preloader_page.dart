@@ -1,5 +1,6 @@
 import 'package:docs/pages/docs_page.dart';
 import 'package:docs/pages/widget_usage_example.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class WebPreloaderPage extends StatelessWidget {
@@ -15,6 +16,19 @@ class WebPreloaderPage extends StatelessWidget {
             const Text('Web Preloader').h1(),
             const Text('Customize how flutter load your web application')
                 .lead(),
+            Gap(32),
+            Alert(
+              title: const Text('Note'),
+              content: const Text(
+                      'You can use the CLI to create a web preloader for your flutter web application. See ')
+                  .thenButton(
+                      onPressed: () {
+                        context.goNamed('installation');
+                      },
+                      child: Text('Installation page'))
+                  .thenText(' for more information.'),
+              leading: const Icon(Icons.info_outline),
+            ),
             Gap(32),
             Steps(
               children: [
@@ -65,9 +79,9 @@ class WebPreloaderPage extends StatelessWidget {
                             'For example, you can change the background color of the preloader by modifying the following line:')
                         .p(),
                     const CodeSnippet(
-                      code: 'const shadcnLoaderConfig = {\n'
+                      code: 'const shadcn_flutter_config = {\n'
                           '...\n'
-                          '\tbackgroundColor: \'#f00\',\n'
+                          '\tbackground: \'#f00\',\n'
                           '...\n'
                           '};',
                       mode: 'javascript',
