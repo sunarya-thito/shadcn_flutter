@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart' as m;
+import 'package:pixel_snap/material.dart' as m;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class SelectableText extends StatelessWidget {
