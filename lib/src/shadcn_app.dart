@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:flutter/services.dart';
+import 'package:pixel_snap/pixel_snap.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import 'components/control/scrollview.dart';
@@ -16,14 +17,13 @@ class ShadcnApp extends StatefulWidget {
     super.key,
     this.navigatorKey,
     this.home,
-    Map<String, WidgetBuilder> this.routes = const <String, WidgetBuilder>{},
+    this.routes = const {},
     this.initialRoute,
     this.onGenerateRoute,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
     this.onNavigationNotification,
-    List<NavigatorObserver> this.navigatorObservers =
-        const <NavigatorObserver>[],
+    this.navigatorObservers = const [],
     this.builder,
     this.title = '',
     this.onGenerateTitle,
@@ -33,7 +33,7 @@ class ShadcnApp extends StatefulWidget {
     this.localizationsDelegates,
     this.localeListResolutionCallback,
     this.localeResolutionCallback,
-    this.supportedLocales = const <Locale>[Locale('en', 'US')],
+    this.supportedLocales = const [Locale('en', 'US')],
     this.debugShowMaterialGrid = false,
     this.showPerformanceOverlay = false,
     this.showSemanticsDebugger = false,
@@ -46,6 +46,10 @@ class ShadcnApp extends StatefulWidget {
     this.cupertinoTheme,
     this.scaling,
     this.disableBrowserContextMenu = true,
+    this.initialRecentColors = const [],
+    this.maxRecentColors = 10,
+    this.onRecentColorsChanged,
+    this.pixelSnap = true,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
@@ -69,7 +73,7 @@ class ShadcnApp extends StatefulWidget {
     this.localizationsDelegates,
     this.localeListResolutionCallback,
     this.localeResolutionCallback,
-    this.supportedLocales = const <Locale>[Locale('en', 'US')],
+    this.supportedLocales = const [Locale('en', 'US')],
     this.debugShowMaterialGrid = false,
     this.showPerformanceOverlay = false,
     this.showSemanticsDebugger = false,
@@ -82,6 +86,10 @@ class ShadcnApp extends StatefulWidget {
     this.cupertinoTheme,
     this.scaling,
     this.disableBrowserContextMenu = true,
+    this.initialRecentColors = const [],
+    this.maxRecentColors = 10,
+    this.onRecentColorsChanged,
+    this.pixelSnap = true,
   })  : assert(routerDelegate != null || routerConfig != null),
         navigatorObservers = null,
         navigatorKey = null,
@@ -148,6 +156,10 @@ class ShadcnApp extends StatefulWidget {
   final m.ThemeData? materialTheme;
   final c.CupertinoThemeData? cupertinoTheme;
   final bool disableBrowserContextMenu;
+  final List<Color> initialRecentColors;
+  final int maxRecentColors;
+  final ValueChanged<List<Color>>? onRecentColorsChanged;
+  final bool pixelSnap;
 
   @override
   State<ShadcnApp> createState() => _ShadcnAppState();
@@ -236,7 +248,10 @@ class _ShadcnAppState extends State<ShadcnApp> {
         return ShadcnRectArcTween(begin: begin, end: end);
       },
     );
-    Future.delayed(const Duration(milliseconds: 10), _dispatchAppInitialized);
+    // Future.delayed(const Duration(milliseconds: 10), _dispatchAppInitialized);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _dispatchAppInitialized();
+    });
     if (kIsWeb) {
       if (widget.disableBrowserContextMenu) {
         BrowserContextMenu.disableContextMenu();
@@ -283,37 +298,52 @@ class _ShadcnAppState extends State<ShadcnApp> {
   Widget _builder(BuildContext context, Widget? child) {
     var theme = widget.theme;
     var appScaling = widget.scaling ?? AdaptiveScaler.defaultScaling(theme);
-    return AnimatedTheme(
-      duration: kDefaultDuration,
-      data: appScaling.scale(theme),
-      child: Builder(builder: (context) {
-        var theme = Theme.of(context);
-        return DataMessengerRoot(
-          child: ScrollViewInterceptor(
-            child: ShadcnSkeletonizerConfigLayer(
-              theme: theme,
-              child: mergeAnimatedTextStyle(
-                duration: kDefaultDuration,
-                style: theme.typography.base.copyWith(
-                  color: theme.colorScheme.foreground,
-                ),
-                child: AnimatedIconTheme.merge(
+    return PixelSnapOverride(
+      pixelSnapFunction: widget.pixelSnap
+          ? null
+          : (value, devicePixelRatio, mode) {
+              return value;
+            },
+      child: AnimatedTheme(
+        duration: kDefaultDuration,
+        data: appScaling.scale(theme),
+        child: Builder(builder: (context) {
+          var theme = Theme.of(context);
+          return DataMessengerRoot(
+            child: ScrollViewInterceptor(
+              child: ShadcnSkeletonizerConfigLayer(
+                theme: theme,
+                child: mergeAnimatedTextStyle(
                   duration: kDefaultDuration,
-                  data: theme.iconTheme.medium.copyWith(
+                  style: theme.typography.base.copyWith(
                     color: theme.colorScheme.foreground,
                   ),
-                  child: Theme(
-                    data: theme,
-                    child: KeyboardShortcutDisplayMapper(
-                      child: ToastLayer(
-                        child: SortableLayer(
-                          child: widget.builder != null
-                              ? Builder(
-                                  builder: (BuildContext context) {
-                                    return widget.builder!(context, child);
-                                  },
-                                )
-                              : child ?? const SizedBox.shrink(),
+                  child: AnimatedIconTheme.merge(
+                    duration: kDefaultDuration,
+                    data: theme.iconTheme.medium.copyWith(
+                      color: theme.colorScheme.foreground,
+                    ),
+                    child: Theme(
+                      data: theme,
+                      child: RecentColorsScope(
+                        initialRecentColors: widget.initialRecentColors,
+                        maxRecentColors: widget.maxRecentColors,
+                        onRecentColorsChanged: widget.onRecentColorsChanged,
+                        child: ColorPickingLayer(
+                          child: KeyboardShortcutDisplayMapper(
+                            child: ToastLayer(
+                              child: SortableLayer(
+                                child: widget.builder != null
+                                    ? Builder(
+                                        builder: (BuildContext context) {
+                                          return widget.builder!(
+                                              context, child);
+                                        },
+                                      )
+                                    : child ?? const SizedBox.shrink(),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -321,9 +351,9 @@ class _ShadcnAppState extends State<ShadcnApp> {
                 ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 
