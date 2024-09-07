@@ -172,6 +172,9 @@ abstract class ShadcnLocalizations {
   String get emptyCountryList;
   String get toastSnippetCopied;
 
+  String get colorPickerTabColor;
+  String get colorPickerTabRecent;
+
   String getAbbreviatedWeekday(int weekday) {
     switch (weekday) {
       case DateTime.monday:
@@ -691,4 +694,10 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get refreshTriggerComplete => 'Refresh complete';
+
+  @override
+  String get colorPickerTabColor => 'Color';
+
+  @override
+  String get colorPickerTabRecent => 'Recent';
 }
