@@ -384,7 +384,7 @@ class ColorScheme implements ChartColorScheme {
                 .firstOrNull ??
             Brightness.light;
 
-  Map<String, dynamic> toMap() {
+  Map<String, String> toMap() {
     return {
       'background': hexFromColor(background),
       'foreground': hexFromColor(foreground),
