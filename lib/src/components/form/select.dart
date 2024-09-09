@@ -56,6 +56,7 @@ class SelectItemButton<T> extends StatelessWidget
         var isSelected = selected.contains(value);
         return Button(
           disableTransition: true,
+          alignment: Alignment.centerLeft,
           onPressed: () {
             selectItem(!isSelected);
           },
