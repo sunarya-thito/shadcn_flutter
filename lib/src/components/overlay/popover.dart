@@ -641,6 +641,10 @@ class PopoverController extends ChangeNotifier {
       _openPopovers.isNotEmpty &&
       _openPopovers.any((element) => !element.entry.isCompleted);
 
+  bool get hasMountedPopover =>
+      _openPopovers.isNotEmpty &&
+      _openPopovers.any((element) => !element.entry.isAnimationCompleted);
+
   Iterable<Popover> get openPopovers => List.unmodifiable(_openPopovers);
 
   Future<T?> show<T>({
@@ -699,7 +703,7 @@ class PopoverController extends ChangeNotifier {
     );
     _openPopovers.add(popover);
     notifyListeners();
-    await res;
+    await res.future;
     _openPopovers.remove(popover);
     if (!_disposed) {
       notifyListeners();
