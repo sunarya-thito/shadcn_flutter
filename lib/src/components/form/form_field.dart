@@ -131,11 +131,11 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
         );
       },
     ).then((value) {
-      if (mounted && value != _value) {
+      if (mounted && value is _ObjectFormFieldDialogResult<T>) {
         setState(() {
-          this._value = value;
+          this._value = value.value;
         });
-        widget.onChanged?.call(value);
+        widget.onChanged?.call(value.value);
         context.reportNewFormValue(value);
       }
     });
@@ -214,6 +214,12 @@ class _ObjectFormFieldDialog<T> extends StatefulWidget {
       _ObjectFormFieldDialogState<T>();
 }
 
+class _ObjectFormFieldDialogResult<T> {
+  final T? value;
+
+  _ObjectFormFieldDialogResult(this.value);
+}
+
 class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>>
     implements ObjectFormHandler<T> {
   late T? _value;
@@ -276,7 +282,7 @@ class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>>
           PrimaryButton(
               child: Text(localizations.buttonSave),
               onPressed: () {
-                Navigator.of(context).pop(_value);
+                Navigator.of(context).pop(_ObjectFormFieldDialogResult(_value));
               }),
         ],
       ),
