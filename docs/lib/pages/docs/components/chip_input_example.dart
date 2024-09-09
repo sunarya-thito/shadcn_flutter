@@ -9,7 +9,7 @@ class ChipInputExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'chip_input',
       description:
           'A chip input is a text input that allows users to input multiple chips.',
@@ -17,9 +17,9 @@ class ChipInputExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: ChipInputExample1(),
           path:
               'lib/pages/docs/components/chip_input/chip_input_example_1.dart',
+          child: ChipInputExample1(),
         ),
       ],
     );

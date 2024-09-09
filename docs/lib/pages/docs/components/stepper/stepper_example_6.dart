@@ -29,7 +29,6 @@ class _StepperExample6State extends State<StepperExample6> {
   int _currentVariant = 0;
   int _currentStepSize = 0;
   Axis direction = Axis.horizontal;
-  bool _toggleError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +54,7 @@ class _StepperExample6State extends State<StepperExample6> {
                   });
                 }
               },
-              child: Text('Horizontal'),
+              child: const Text('Horizontal'),
             ),
             Toggle(
               value: direction == Axis.vertical,
@@ -70,7 +69,7 @@ class _StepperExample6State extends State<StepperExample6> {
                   });
                 }
               },
-              child: Text('Vertical'),
+              child: const Text('Vertical'),
             ),
             const VerticalDivider().sized(height: 16),
             for (var i = 0; i < _variants.length; i++)
@@ -113,7 +112,7 @@ class _StepperExample6State extends State<StepperExample6> {
             ),
           ],
         ),
-        Gap(16),
+        const Gap(16),
         Stepper(
           controller: controller,
           direction: direction,
@@ -121,23 +120,23 @@ class _StepperExample6State extends State<StepperExample6> {
           variant: _variants[_currentVariant],
           steps: [
             Step(
-              title: Text('Step 1'),
+              title: const Text('Step 1'),
               contentBuilder: (context) {
                 return StepContainer(
-                  child: NumberedContainer(
-                    index: 1,
-                    height: 200,
-                  ),
                   actions: [
-                    SecondaryButton(
+                    const SecondaryButton(
                       child: Text('Prev'),
                     ),
                     PrimaryButton(
-                        child: Text('Next'),
+                        child: const Text('Next'),
                         onPressed: () {
                           controller.nextStep();
                         }),
                   ],
+                  child: const NumberedContainer(
+                    index: 1,
+                    height: 200,
+                  ),
                 );
               },
             ),
@@ -148,47 +147,47 @@ class _StepperExample6State extends State<StepperExample6> {
               ),
               contentBuilder: (context) {
                 return StepContainer(
-                  child: NumberedContainer(
-                    index: 2,
-                    height: 200,
-                  ),
                   actions: [
                     SecondaryButton(
-                      child: Text('Prev'),
+                      child: const Text('Prev'),
                       onPressed: () {
                         controller.previousStep();
                       },
                     ),
                     PrimaryButton(
-                        child: Text('Next'),
+                        child: const Text('Next'),
                         onPressed: () {
                           controller.nextStep();
                         }),
                   ],
+                  child: const NumberedContainer(
+                    index: 2,
+                    height: 200,
+                  ),
                 );
               },
             ),
             Step(
-              title: Text('Step 3'),
+              title: const Text('Step 3'),
               contentBuilder: (context) {
                 return StepContainer(
-                  child: NumberedContainer(
-                    index: 3,
-                    height: 200,
-                  ),
                   actions: [
                     SecondaryButton(
-                      child: Text('Prev'),
+                      child: const Text('Prev'),
                       onPressed: () {
                         controller.previousStep();
                       },
                     ),
                     PrimaryButton(
-                        child: Text('Finish'),
+                        child: const Text('Finish'),
                         onPressed: () {
                           controller.nextStep();
                         }),
                   ],
+                  child: const NumberedContainer(
+                    index: 3,
+                    height: 200,
+                  ),
                 );
               },
             ),

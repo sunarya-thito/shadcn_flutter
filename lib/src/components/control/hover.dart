@@ -11,14 +11,14 @@ class HoverActivity extends StatefulWidget {
   final HitTestBehavior hitTestBehavior;
 
   const HoverActivity({
-    Key? key,
+    super.key,
     required this.child,
     this.onHover,
     this.onExit,
     this.onEnter,
     this.hitTestBehavior = HitTestBehavior.deferToChild,
     this.debounceDuration = const Duration(milliseconds: 100),
-  }) : super(key: key);
+  });
 
   @override
   State<HoverActivity> createState() => _HoverActivityState();
@@ -81,14 +81,14 @@ class Hover extends StatefulWidget {
   final HitTestBehavior hitTestBehavior;
 
   const Hover({
-    Key? key,
+    super.key,
     required this.child,
     required this.onHover,
     this.waitDuration = const Duration(milliseconds: 500),
     this.minDuration = const Duration(milliseconds: 0),
     this.showDuration = const Duration(milliseconds: 200),
     this.hitTestBehavior = HitTestBehavior.deferToChild,
-  }) : super(key: key);
+  });
 
   @override
   _HoverState createState() => _HoverState();

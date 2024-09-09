@@ -59,10 +59,10 @@ class _OverflowMarqueeState extends State<OverflowMarquee>
         fadePortion: widget.fadePortion,
         duration: widget.duration,
         delayDuration: widget.delayDuration,
-        child: widget.child,
         ticker: _ticker,
         elapsed: elapsed,
         step: widget.step,
+        child: widget.child,
       ),
     );
   }
@@ -77,7 +77,7 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
   final Duration elapsed;
   final double step;
 
-  _OverflowMarqueeLayout({
+  const _OverflowMarqueeLayout({
     required this.direction,
     this.fadePortion = 25,
     required this.duration,
@@ -156,7 +156,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
   double step;
 
   _RenderOverflowMarqueeLayout(
-    RenderBox? child, {
+    super.child, {
     required this.direction,
     required this.fadePortion,
     required this.duration,
@@ -164,7 +164,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     required this.ticker,
     required this.elapsed,
     required this.step,
-  }) : super(child);
+  });
 
   @override
   void setupParentData(RenderBox child) {

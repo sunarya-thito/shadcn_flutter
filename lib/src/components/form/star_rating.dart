@@ -18,7 +18,7 @@ class StarRating extends StatefulWidget {
   final double? starRotation;
 
   const StarRating({
-    Key? key,
+    super.key,
     required this.value,
     this.onChanged,
     this.step = 0.5,
@@ -34,7 +34,7 @@ class StarRating extends StatefulWidget {
     this.starSquash,
     this.starInnerRadiusRatio,
     this.starRotation,
-  }) : super(key: key);
+  });
 
   @override
   State<StarRating> createState() => _StarRatingState();

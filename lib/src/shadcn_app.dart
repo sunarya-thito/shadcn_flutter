@@ -753,10 +753,10 @@ class ShadcnUI extends StatelessWidget {
   final Widget child;
 
   const ShadcnUI({
-    Key? key,
+    super.key,
     this.textStyle,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -766,6 +766,7 @@ class ShadcnUI extends StatelessWidget {
           theme.typography.sans.copyWith(
             color: theme.colorScheme.foreground,
           ),
+      duration: kDefaultDuration,
       child: AnimatedIconTheme(
         data: IconThemeData(
           color: theme.colorScheme.foreground,
@@ -773,7 +774,6 @@ class ShadcnUI extends StatelessWidget {
         duration: kDefaultDuration,
         child: child,
       ),
-      duration: kDefaultDuration,
     );
   }
 }
@@ -782,9 +782,8 @@ class _GlobalPointerListener extends c.StatefulWidget {
   final Widget child;
 
   const _GlobalPointerListener({
-    Key? key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   c.State<_GlobalPointerListener> createState() =>

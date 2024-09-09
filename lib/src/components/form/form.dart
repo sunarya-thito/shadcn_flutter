@@ -153,7 +153,7 @@ class NonNullValidator<T> extends Validator<T> {
 }
 
 class NotEmptyValidator extends NonNullValidator<String> {
-  const NotEmptyValidator({String? message}) : super(message: message);
+  const NotEmptyValidator({super.message});
 
   @override
   Future<ValidationResult?> validate(
@@ -1122,11 +1122,11 @@ class FormInline<T> extends StatelessWidget {
                   ),
                 ),
                 if (hint != null) ...[
-                  Gap(8),
+                  const Gap(8),
                   hint!.xSmall().muted(),
                 ],
                 if (error is InvalidResult) ...[
-                  Gap(8),
+                  const Gap(8),
                   mergeAnimatedTextStyle(
                     style: TextStyle(color: theme.colorScheme.destructive),
                     child: Text(error.message).xSmall().medium(),
@@ -1237,7 +1237,7 @@ class SubmitButton extends StatefulWidget {
   final bool disableTransition;
   final FocusNode? focusNode;
 
-  const SubmitButton({
+  const SubmitButton({super.key, 
     required this.child,
     this.style,
     this.loading,
@@ -1309,7 +1309,6 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Button(
-            child: widget.loading ?? widget.child,
             leading: widget.loadingLeading ?? widget.leading,
             trailing: widget.loadingTrailing ?? widget.trailing,
             alignment: widget.alignment,
@@ -1319,12 +1318,12 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
             trailingExpanded: widget.trailingExpanded,
             disableTransition: widget.disableTransition,
             focusNode: widget.focusNode,
-            style: widget.style ?? ButtonStyle.primary(),
+            style: widget.style ?? const ButtonStyle.primary(),
+            child: widget.loading ?? widget.child,
           );
         }
         if (snapshot.hasData && snapshot.requireData) {
           return Button(
-            child: widget.error ?? widget.child,
             leading: widget.errorLeading ?? widget.leading,
             trailing: widget.errorTrailing ?? widget.trailing,
             alignment: widget.alignment,
@@ -1334,11 +1333,11 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
             trailingExpanded: widget.trailingExpanded,
             disableTransition: widget.disableTransition,
             focusNode: widget.focusNode,
-            style: widget.style ?? ButtonStyle.primary(),
+            style: widget.style ?? const ButtonStyle.primary(),
+            child: widget.error ?? widget.child,
           );
         }
         return Button(
-          child: widget.child,
           trailing: widget.trailing,
           leading: widget.leading,
           alignment: widget.alignment,
@@ -1355,7 +1354,8 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
           trailingExpanded: widget.trailingExpanded,
           disableTransition: widget.disableTransition,
           focusNode: widget.focusNode,
-          style: widget.style ?? ButtonStyle.primary(),
+          style: widget.style ?? const ButtonStyle.primary(),
+          child: widget.child,
         );
       },
     );

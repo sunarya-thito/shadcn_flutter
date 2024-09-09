@@ -727,13 +727,13 @@ class Stepper extends StatelessWidget {
   final StepVariant variant;
 
   const Stepper({
-    Key? key,
+    super.key,
     required this.controller,
     required this.steps,
     this.direction = Axis.horizontal,
     this.size = StepSize.medium,
     this.variant = StepVariant.circle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -773,10 +773,10 @@ class StepNumber extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const StepNumber({
-    Key? key,
+    super.key,
     this.icon,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -884,12 +884,12 @@ class StepTitle extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const StepTitle({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.crossAxisAlignment = CrossAxisAlignment.stretch,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -920,10 +920,10 @@ class StepContainer extends StatefulWidget {
   final List<Widget> actions;
 
   const StepContainer({
-    Key? key,
+    super.key,
     required this.child,
     required this.actions,
-  }) : super(key: key);
+  });
 
   @override
   State<StepContainer> createState() => _StepContainerState();

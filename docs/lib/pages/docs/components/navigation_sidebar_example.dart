@@ -5,10 +5,10 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'navigation_sidebar/navigation_sidebar_example_1.dart';
 
 class NavigationSidebarExample extends StatelessWidget {
-  const NavigationSidebarExample({Key? key}) : super(key: key);
+  const NavigationSidebarExample({super.key});
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'navigation_sidebar',
       description:
           'A widget that displays a sidebar with navigation buttons and labels.',
@@ -16,9 +16,9 @@ class NavigationSidebarExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: NavigationSidebarExample1(),
           path:
               'lib/pages/docs/components/navigation_sidebar/navigation_sidebar_example_1.dart',
+          child: NavigationSidebarExample1(),
         ),
       ],
     );

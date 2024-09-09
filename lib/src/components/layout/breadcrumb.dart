@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import '../../../shadcn_flutter.dart';
 
 class _ArrowSeparator extends StatelessWidget {
-  const _ArrowSeparator({Key? key}) : super(key: key);
+  const _ArrowSeparator();
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class _ArrowSeparator extends StatelessWidget {
 }
 
 class _SlashSeparator extends StatelessWidget {
-  const _SlashSeparator({Key? key}) : super(key: key);
+  const _SlashSeparator();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _SlashSeparator extends StatelessWidget {
     final scaling = theme.scaling;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4 * scaling),
-      child: Text('/').small().muted(),
+      child: const Text('/').small().muted(),
     );
   }
 }
@@ -39,10 +39,10 @@ class Breadcrumb extends StatelessWidget {
   final Widget separator;
 
   const Breadcrumb({
-    Key? key,
+    super.key,
     required this.children,
     required this.separator,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

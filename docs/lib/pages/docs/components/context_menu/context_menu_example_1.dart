@@ -125,7 +125,7 @@ class _ContextMenuExample1State extends State<ContextMenuExample1> {
           borderRadius: BorderRadius.circular(theme.radiusMd),
           strokeWidth: 2,
           gap: 2,
-          child: Text('Right click here').center(),
+          child: const Text('Right click here').center(),
         ).constrained(
           maxWidth: 300,
           maxHeight: 200,

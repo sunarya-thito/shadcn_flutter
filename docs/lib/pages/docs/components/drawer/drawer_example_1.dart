@@ -31,7 +31,7 @@ class _DrawerExample1State extends State<DrawerExample1> {
             children: [
               Text(
                   'Drawer ${count + 1} at ${positions[count % positions.length].name}'),
-              Gap(16),
+              const Gap(16),
               PrimaryButton(
                 onPressed: () {
                   open(context, count + 1);

@@ -88,15 +88,15 @@ class _FormExample3State extends State<FormExample3> {
                 ),
               ],
             ),
-            Gap(24),
-            SubmitButton(
-              child: const Text('Register'),
+            const Gap(24),
+            const SubmitButton(
               loadingTrailing: AspectRatio(
                 aspectRatio: 1,
                 child: CircularProgressIndicator(
                   onSurface: true,
                 ),
               ),
+              child: Text('Register'),
             ),
           ],
         ),

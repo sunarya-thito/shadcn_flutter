@@ -41,7 +41,7 @@ import 'typography_page/typography_page_example_8.dart';
 import 'typography_page/typography_page_example_9.dart';
 
 class TypographyPage extends StatefulWidget {
-  const TypographyPage({Key? key}) : super(key: key);
+  const TypographyPage({super.key});
 
   @override
   State<TypographyPage> createState() => _TypographyPageState();

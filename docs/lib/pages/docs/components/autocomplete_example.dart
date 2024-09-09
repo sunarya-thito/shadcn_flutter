@@ -9,7 +9,7 @@ class AutoCompleteExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'autocomplete',
       description: 'A text input with suggestions.',
       displayName: 'AutoComplete',

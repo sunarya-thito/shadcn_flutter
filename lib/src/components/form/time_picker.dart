@@ -14,7 +14,7 @@ class TimePicker extends StatelessWidget {
   final Widget? dialogTitle;
 
   const TimePicker({
-    Key? key,
+    super.key,
     required this.value,
     this.onChanged,
     this.mode = PromptMode.dialog,
@@ -25,7 +25,7 @@ class TimePicker extends StatelessWidget {
     this.use24HourFormat,
     this.showSeconds = false,
     this.dialogTitle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,12 +64,12 @@ class TimePickerDialog extends StatefulWidget {
   final bool showSeconds;
 
   const TimePickerDialog({
-    Key? key,
+    super.key,
     this.initialValue,
     this.onChanged,
     required this.use24HourFormat,
     this.showSeconds = false,
-  }) : super(key: key);
+  });
 
   @override
   State<TimePickerDialog> createState() => _TimePickerDialogState();

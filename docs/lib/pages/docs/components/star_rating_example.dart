@@ -9,16 +9,16 @@ class StarRatingExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'star_rating',
       displayName: 'Star Rating',
       description: 'A component for rating.',
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: StarRatingExample1(),
           path:
               'lib/pages/docs/components/star_rating/star_rating_example_1.dart',
+          child: StarRatingExample1(),
         ),
       ],
     );

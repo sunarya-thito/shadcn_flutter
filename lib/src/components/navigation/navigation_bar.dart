@@ -26,6 +26,8 @@ enum NavigationContainerType {
 }
 
 abstract class NavigationBarItem extends Widget {
+  const NavigationBarItem({super.key});
+
   bool get selectable;
 }
 
@@ -45,7 +47,7 @@ class NavigationBar extends StatefulWidget {
   final double? surfaceBlur;
 
   const NavigationBar({
-    Key? key,
+    super.key,
     this.backgroundColor,
     this.alignment = NavigationBarAlignment.center,
     this.direction = Axis.horizontal,
@@ -59,7 +61,7 @@ class NavigationBar extends StatefulWidget {
     this.surfaceOpacity,
     this.surfaceBlur,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   State<NavigationBar> createState() => _NavigationBarState();
@@ -85,28 +87,28 @@ class _NavigationBarState extends State<NavigationBar>
       children = List.of(rawChildren);
     } else {
       if (widget.alignment == NavigationBarAlignment.spaceEvenly) {
-        children.add(Spacer());
+        children.add(const Spacer());
         for (var i = 0; i < rawChildren.length; i++) {
           children.add(Expanded(child: rawChildren[i]));
         }
-        children.add(Spacer());
+        children.add(const Spacer());
       } else if (widget.alignment == NavigationBarAlignment.spaceAround) {
-        children.add(Spacer());
+        children.add(const Spacer());
         for (var i = 0; i < rawChildren.length; i++) {
           children.add(Expanded(
-            child: rawChildren[i],
             flex: 2,
+            child: rawChildren[i],
           ));
         }
-        children.add(Spacer());
+        children.add(const Spacer());
       } else if (widget.alignment == NavigationBarAlignment.spaceBetween) {
         for (var i = 0; i < rawChildren.length; i++) {
           if (i > 0) {
-            children.add(Spacer());
+            children.add(const Spacer());
           }
           children.add(Expanded(
-            child: rawChildren[i],
             flex: 2,
+            child: rawChildren[i],
           ));
         }
       } else {
@@ -202,7 +204,7 @@ class NavigationRail extends StatefulWidget {
   final double? surfaceBlur;
 
   const NavigationRail({
-    Key? key,
+    super.key,
     this.backgroundColor,
     this.alignment = NavigationRailAlignment.center,
     this.direction = Axis.vertical,
@@ -215,7 +217,7 @@ class NavigationRail extends StatefulWidget {
     this.surfaceOpacity,
     this.surfaceBlur,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   State<NavigationRail> createState() => _NavigationRailState();
@@ -306,7 +308,7 @@ class NavigationSidebar extends StatefulWidget {
   final double? surfaceBlur;
 
   const NavigationSidebar({
-    Key? key,
+    super.key,
     this.backgroundColor,
     this.spacing,
     this.labelType = NavigationLabelType.expanded,
@@ -317,7 +319,7 @@ class NavigationSidebar extends StatefulWidget {
     this.surfaceOpacity,
     this.surfaceBlur,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   State<NavigationSidebar> createState() => _NavigationSidebarState();
@@ -477,8 +479,8 @@ class NavigationGap extends StatelessWidget implements NavigationBarItem {
 
   const NavigationGap(
     this.gap, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   bool get selectable => false;
@@ -506,10 +508,10 @@ class NavigationDivider extends StatelessWidget implements NavigationBarItem {
   final Color? color;
 
   const NavigationDivider({
-    Key? key,
+    super.key,
     this.thickness,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   bool get selectable => false;
@@ -562,7 +564,7 @@ class NavigationButton extends StatefulWidget implements NavigationBarItem {
   final AlignmentGeometry? marginAlignment;
 
   const NavigationButton({
-    Key? key,
+    super.key,
     this.spacing,
     this.trailing,
     this.label,
@@ -576,7 +578,7 @@ class NavigationButton extends StatefulWidget implements NavigationBarItem {
     this.overflow = NavigationOverflow.marquee,
     this.marginAlignment,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   bool get selectable {
@@ -648,12 +650,12 @@ class _NavigationButtonState extends State<NavigationButton> {
     var parentIndex = childData?.index;
     AbstractButtonStyle style = widget.style ??
         (labelType != NavigationLabelType.expanded
-            ? ButtonStyle.ghost(density: ButtonDensity.icon)
-            : ButtonStyle.ghost());
+            ? const ButtonStyle.ghost(density: ButtonDensity.icon)
+            : const ButtonStyle.ghost());
     AbstractButtonStyle selectedStyle = widget.selectedStyle ??
         (labelType != NavigationLabelType.expanded
-            ? ButtonStyle.secondary(density: ButtonDensity.icon)
-            : ButtonStyle.secondary());
+            ? const ButtonStyle.secondary(density: ButtonDensity.icon)
+            : const ButtonStyle.secondary());
     if (labelType == NavigationLabelType.expanded) {
       return SelectedButton(
         value: isSelected,
@@ -771,13 +773,13 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
   final bool pinned;
 
   const NavigationLabel({
-    Key? key,
+    super.key,
     this.alignment = AlignmentDirectional.centerStart,
     this.floating = false,
     this.pinned = false,
     this.overflow = NavigationOverflow.marquee,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   bool get selectable => false;
@@ -836,10 +838,9 @@ class _NavigationChildOverflowHandle extends StatelessWidget {
   final Widget child;
 
   const _NavigationChildOverflowHandle({
-    Key? key,
     required this.overflow,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -948,11 +949,13 @@ class NavigationWidget extends StatelessWidget implements NavigationBarItem {
   final NavigationWidgetBuilder? builder;
 
   const NavigationWidget({
+    super.key,
     this.index,
     required Widget this.child,
   }) : builder = null;
 
   const NavigationWidget.builder({
+    super.key,
     this.index,
     required NavigationWidgetBuilder this.builder,
   }) : child = null;

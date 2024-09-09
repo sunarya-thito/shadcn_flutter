@@ -8,11 +8,11 @@ class TooltipContainer extends StatelessWidget {
   final double? surfaceBlur;
 
   const TooltipContainer({
-    Key? key,
+    super.key,
     this.surfaceOpacity,
     this.surfaceBlur,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class Tooltip extends StatefulWidget {
   final Duration minDuration;
 
   const Tooltip({
-    Key? key,
+    super.key,
     required this.child,
     required this.tooltip,
     this.alignment = Alignment.topCenter,
@@ -73,7 +73,7 @@ class Tooltip extends StatefulWidget {
     this.waitDuration = const Duration(milliseconds: 500),
     this.showDuration = const Duration(milliseconds: 200),
     this.minDuration = const Duration(milliseconds: 0),
-  }) : super(key: key);
+  });
 
   @override
   State<Tooltip> createState() => _TooltipState();
@@ -84,7 +84,6 @@ class _TooltipState extends State<Tooltip> {
   @override
   Widget build(BuildContext context) {
     return Hover(
-      child: widget.child,
       waitDuration: widget.waitDuration,
       minDuration: widget.minDuration,
       showDuration: widget.showDuration,
@@ -103,6 +102,7 @@ class _TooltipState extends State<Tooltip> {
           _controller.close();
         }
       },
+      child: widget.child,
     );
   }
 }
@@ -115,13 +115,13 @@ class InstantTooltip extends StatefulWidget {
   final Alignment? tooltipAnchorAlignment;
 
   const InstantTooltip({
-    Key? key,
+    super.key,
     required this.child,
     required this.tooltipBuilder,
     this.behavior = HitTestBehavior.translucent,
     this.tooltipAlignment = Alignment.bottomCenter,
     this.tooltipAnchorAlignment,
-  }) : super(key: key);
+  });
 
   @override
   State<InstantTooltip> createState() => _InstantTooltipState();

@@ -32,7 +32,7 @@ import 'components/tracker/tracker_example_1.dart';
 const kComponentsMode = ComponentsMode.normal;
 
 class ComponentsPage extends StatefulWidget {
-  const ComponentsPage({Key? key}) : super(key: key);
+  const ComponentsPage({super.key});
 
   @override
   _ComponentsPageState createState() => _ComponentsPageState();
@@ -52,10 +52,11 @@ class _ComponentsPageState extends State<ComponentsPage> {
   Widget _buildToast() {
     return Card(
       child: Basic(
-        title: Text('Event has been created'),
-        subtitle: Text('Sunday, July 07, 2024 at 12:00 PM'),
+        title: const Text('Event has been created'),
+        subtitle: const Text('Sunday, July 07, 2024 at 12:00 PM'),
         trailing: PrimaryButton(
-            child: Text('Undo'), size: ButtonSize.small, onPressed: () {}),
+            size: ButtonSize.small, onPressed: () {},
+            child: const Text('Undo')),
         trailingAlignment: Alignment.center,
       ),
     );
@@ -85,16 +86,16 @@ class _ComponentsPageState extends State<ComponentsPage> {
             const Text(
                     'Beautifully designed components from Shadcn/UI is now available for Flutter.')
                 .lead(),
-            Gap(16),
+            const Gap(16),
             const Align(
               alignment: AlignmentDirectional.centerStart,
               child: PrimaryBadge(
                 child: Text('Work in Progress'),
               ),
             ),
-            Gap(32),
+            const Gap(32),
             const Text('Animation').h2().anchored(animationKey),
-            Gap(16),
+            const Gap(16),
             wrap(children: [
               ComponentCard(
                 name: 'animated_value_builder',
@@ -209,7 +210,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
             ]),
             const Text('Disclosure').h2().anchored(disclosureKey),
-            Gap(16),
+            const Gap(16),
             wrap(
               children: [
                 const ComponentCard(
@@ -304,7 +305,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ],
             ),
             const Text('Feedback').h2().anchored(feedbackKey),
-            Gap(16),
+            const Gap(16),
             wrap(children: [
               const ComponentCard(
                 name: 'alert',
@@ -347,7 +348,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ComponentCard(
                 title: 'Progress',
                 name: 'progress',
-                example: Progress(
+                example: const Progress(
                   progress: 0.75,
                 ).sized(width: 200),
                 center: true,
@@ -369,7 +370,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         // Note: Avatar and other Image related widget needs its own skeleton
                         trailing: const Icon(Icons.arrow_forward),
                       ).asSkeleton(),
-                      Gap(16),
+                      const Gap(16),
                       Basic(
                         title: const Text('Skeleton Example 1'),
                         content: const Text(
@@ -380,7 +381,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         // Note: Avatar and other Image related widget needs its own skeleton
                         trailing: const Icon(Icons.arrow_forward),
                       ).asSkeleton(),
-                      Gap(16),
+                      const Gap(16),
                       Basic(
                         title: const Text('Skeleton Example 1'),
                         content: const Text(
@@ -428,7 +429,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
             ]),
             const Text('Forms').h2().anchored(formsKey),
-            Gap(16),
+            const Gap(16),
             wrap(children: [
               ComponentCard(
                 name: 'button',
@@ -508,30 +509,30 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           alignment: Alignment.topLeft,
                           child: Column(
                             children: [
-                              Row(
+                              const Row(
                                 children: [
                                   Chip(
-                                    child: Text('Chip 1'),
                                     trailing:
                                         ChipButton(child: Icon(Icons.close)),
+                                    child: Text('Chip 1'),
                                   ),
                                   Chip(
-                                    child: Text('Chip 2'),
                                     trailing:
                                         ChipButton(child: Icon(Icons.close)),
+                                    child: Text('Chip 2'),
                                   ),
                                 ],
                               ).gap(4),
-                              Gap(4),
+                              const Gap(4),
                               Row(
                                 children: [
-                                  Chip(
-                                    child: Text('Cool Chip'),
+                                  const Chip(
                                     trailing:
                                         ChipButton(child: Icon(Icons.close)),
+                                    child: Text('Cool Chip'),
                                   ),
-                                  Gap(4),
-                                  Text('Chip 4'),
+                                  const Gap(4),
+                                  const Text('Chip 4'),
                                   VerticalDivider(
                                     color: theme.colorScheme.primary,
                                   ).sized(height: 18),
@@ -586,7 +587,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     const Card(
                       child: InputOTPExample2(),
                     ),
-                    Gap(24),
+                    const Gap(24),
                     Transform.translate(
                       offset: const Offset(-150, 0),
                       child: Card(
@@ -618,7 +619,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 title: 'Phone Input',
                 scale: 1.5,
                 example: Card(
-                  child: PhoneInput(
+                  child: const PhoneInput(
                     initialValue: PhoneNumber(Country.indonesia, '81234567890'),
                   ).withAlign(Alignment.topLeft),
                 ).sized(height: 300),
@@ -713,7 +714,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   onChanged: (value) {},
                 ).sized(width: 100),
               ),
-              ComponentCard(
+              const ComponentCard(
                 name: 'star_rating',
                 title: 'Star Rating',
                 scale: 1,
@@ -774,7 +775,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
             ]),
             const Text('Layout').h2().anchored(layoutKey),
-            Gap(16),
+            const Gap(16),
             wrap(children: [
               const ComponentCard(
                 name: 'card',
@@ -831,17 +832,17 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 name: 'stepper',
                 title: 'Stepper',
                 scale: 1,
-                example: StepperExample2().sized(width: 400, height: 500),
+                example: const StepperExample2().sized(width: 400, height: 500),
               ),
               ComponentCard(
                 name: 'timeline',
                 title: 'Timeline',
                 scale: 1,
-                example: TimelineExample1().sized(width: 700, height: 800),
+                example: const TimelineExample1().sized(width: 700, height: 800),
               ),
             ]),
             const Text('Navigation').h2().anchored(navigationKey),
-            Gap(16),
+            const Gap(16),
             wrap(children: [
               ComponentCard(
                 title: 'Breadcrumb',
@@ -909,7 +910,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           ),
                         ),
                       ),
-                      Gap(4),
+                      const Gap(4),
                       Container(
                         width: 192,
                         margin: const EdgeInsets.only(left: 48),
@@ -1013,7 +1014,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           ),
                         ],
                       ),
-                      Gap(8),
+                      const Gap(8),
                       OutlinedContainer(
                         borderRadius: theme.radiusMd,
                         child: Padding(
@@ -1108,7 +1109,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   ],
                 ),
               ),
-              ComponentCard(
+              const ComponentCard(
                 name: 'tree',
                 title: 'Tree',
                 scale: 1.5,
@@ -1116,7 +1117,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
             ]),
             const Text('Surfaces').h2().anchored(surfacesKey),
-            Gap(16),
+            const Gap(16),
             wrap(children: [
               ComponentCard(
                   title: 'Dialog',
@@ -1129,7 +1130,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                       children: [
                         const Text(
                             'Make changes to your profile here. Click save when you\'re done'),
-                        Gap(16),
+                        const Gap(16),
                         const Form(
                           child: FormTableLayout(rows: [
                             FormField<String>(
@@ -1169,7 +1170,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Drawer!').large().medium(),
-                      Gap(4),
+                      const Gap(4),
                       const Text(
                               'This is a drawer that you can use to display content')
                           .muted(),
@@ -1186,9 +1187,9 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('@flutter').medium().underline(),
-                        Gap(16),
-                        Card(
+                        const Text('@flutter').medium().underline(),
+                        const Gap(16),
+                        const Card(
                           child: Basic(
                             leading: FlutterLogo(),
                             title: Text('@flutter'),
@@ -1221,7 +1222,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Sheet!').large().medium(),
-                      Gap(4),
+                      const Gap(4),
                       const Text(
                               'This is a sheet that you can use to display content')
                           .muted(),
@@ -1243,7 +1244,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           child: const Text('Delete'),
                           onPressed: () {},
                         ),
-                        Gap(4),
+                        const Gap(4),
                         const TooltipContainer(
                           child: Text('Click to delete this item'),
                         ),
@@ -1259,7 +1260,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   ],
                 ),
               ),
-              ComponentCard(
+              const ComponentCard(
                 name: 'popover',
                 title: 'Popover',
                 scale: 1,
@@ -1267,16 +1268,16 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const DatePickerExample1(),
+                      DatePickerExample1(),
                       Gap(4),
-                      const CalendarExample2(),
+                      CalendarExample2(),
                     ],
                   ),
                 ),
               ),
             ]),
             const Text('Data Display').h2().anchored(dataDisplayKey),
-            Gap(16),
+            const Gap(16),
             wrap(children: [
               ComponentCard(
                 name: 'avatar',
@@ -1290,7 +1291,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         provider: const NetworkImage(
                             'https://avatars.githubusercontent.com/u/64018564?v=4'),
                       ),
-                      Gap(16),
+                      const Gap(16),
                       Avatar(
                         initials: Avatar.getInitials('sunarya-thito'),
                       ),
@@ -1337,11 +1338,11 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 title: 'Tracker',
                 scale: 2,
                 verticalOffset: 48,
-                example: TrackerExample1().sized(width: 500),
+                example: const TrackerExample1().sized(width: 500),
               ),
             ]),
             const Text('Utilities').h2().anchored(utilitiesKey),
-            Gap(16),
+            const Gap(16),
             wrap(children: [
               ComponentCard(
                 name: 'badge',
@@ -1380,7 +1381,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                     const CustomPaint(
                       painter: CursorPainter(),
                     ),
-                    Gap(24),
+                    const Gap(24),
                     SizedBox(
                       width: 192,
                       child: MenuPopup(children: [
@@ -1449,7 +1450,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                             onPressed: () {},
                             child: const Text('Options'),
                           ),
-                          Gap(8),
+                          const Gap(8),
                           SizedBox(
                             width: 192,
                             child: MenuPopup(children: [
@@ -1539,9 +1540,9 @@ class WIPComponentCard extends StatelessWidget implements IComponentPage {
   final String title;
 
   const WIPComponentCard({
-    Key? key,
+    super.key,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1571,7 +1572,7 @@ class ComponentCard extends StatefulWidget implements IComponentPage {
   final double verticalOffset;
   final double scale;
   const ComponentCard({
-    Key? key,
+    super.key,
     required this.name,
     required this.title,
     required this.example,
@@ -1582,7 +1583,7 @@ class ComponentCard extends StatefulWidget implements IComponentPage {
     this.horizontalOffset = 30,
     this.verticalOffset = 20,
     this.scale = 0.8,
-  }) : super(key: key);
+  });
 
   @override
   State<ComponentCard> createState() => _ComponentCardState();

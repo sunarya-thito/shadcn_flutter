@@ -23,23 +23,23 @@ class ColorHistoryGrid extends StatelessWidget {
   final Color? selectedColor;
 
   const ColorHistoryGrid({
-    Key? key,
+    super.key,
     required this.storage,
     this.onColorPicked,
     this.spacing,
     this.crossAxisCount = 10,
     this.selectedColor,
-  }) : super(key: key);
+  });
 
   Widget _buildGridTile(BuildContext context, Color? color, ThemeData theme) {
     if (color == null) {
-      return AspectRatio(
+      return const AspectRatio(
         aspectRatio: 1,
         child: Button(
-          style: const ButtonStyle.outline(
+          style: ButtonStyle.outline(
             density: ButtonDensity.compact,
           ),
-          child: const Icon(Icons.close),
+          child: Icon(Icons.close),
         ),
       );
     }
@@ -147,12 +147,12 @@ class RecentColorsScope extends StatefulWidget {
   final Widget child;
 
   const RecentColorsScope({
-    Key? key,
+    super.key,
     this.initialRecentColors = const [],
     this.maxRecentColors = 50,
     this.onRecentColorsChanged,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<RecentColorsScope> createState() => RecentColorsScopeState();
@@ -172,6 +172,7 @@ class RecentColorsScopeState extends State<RecentColorsScope>
     _recentColors = List.from(widget.initialRecentColors);
   }
 
+  @override
   List<Color> get recentColors => List.unmodifiable(_recentColors);
 
   @override
@@ -221,14 +222,14 @@ class ColorPickingLayer extends StatefulWidget {
   final PreviewLabelBuilder? previewLabelBuilder;
 
   const ColorPickingLayer({
-    Key? key,
+    super.key,
     required this.child,
     this.previewAlignment,
     this.showPreview = true,
     this.previewSize,
     this.previewScale = 8,
     this.previewLabelBuilder,
-  }) : super(key: key);
+  });
 
   @override
   State<ColorPickingLayer> createState() => _ColorPickingLayerState();
@@ -643,7 +644,7 @@ class ColorInputSet extends StatefulWidget {
   final ColorHistoryStorage? storage;
 
   const ColorInputSet({
-    Key? key,
+    super.key,
     required this.color,
     this.onChanged,
     this.onColorChangeEnd,
@@ -652,7 +653,7 @@ class ColorInputSet extends StatefulWidget {
     this.onModeChanged,
     this.onPickFromScreen,
     this.storage,
-  }) : super(key: key);
+  });
 
   @override
   State<ColorInputSet> createState() => _ColorInputSetState();
@@ -757,14 +758,14 @@ class ColorPickerSet extends StatefulWidget {
   final ColorPickerMode mode;
 
   const ColorPickerSet({
-    Key? key,
+    super.key,
     required this.color,
     this.onColorChanged,
     this.onColorChangeEnd,
     this.showAlpha = true,
     this.mode = ColorPickerMode.rgb,
     this.onPickFromScreen,
-  }) : super(key: key);
+  });
 
   @override
   State<ColorPickerSet> createState() => _ColorPickerSetState();
@@ -1239,7 +1240,7 @@ class ColorInput extends StatelessWidget {
   final ColorHistoryStorage? storage;
 
   const ColorInput({
-    Key? key,
+    super.key,
     required this.color,
     this.onChanged,
     this.showAlpha = true,
@@ -1253,7 +1254,7 @@ class ColorInput extends StatelessWidget {
     this.allowPickFromScreen = true,
     this.showLabel = false,
     this.storage,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1363,7 +1364,7 @@ class ColorInputPopup extends StatefulWidget {
   final ColorHistoryStorage? storage;
 
   const ColorInputPopup({
-    Key? key,
+    super.key,
     required this.color,
     this.onChanged,
     this.onColorChangeEnd,
@@ -1371,7 +1372,7 @@ class ColorInputPopup extends StatefulWidget {
     this.initialMode = ColorPickerMode.rgb,
     this.onPickFromScreen,
     this.storage,
-  }) : super(key: key);
+  });
 
   @override
   State<ColorInputPopup> createState() => _ColorInputPopupState();
@@ -1576,14 +1577,14 @@ class _ColorPickerDialog extends StatefulWidget {
   final Widget? title;
 
   const _ColorPickerDialog({
-    Key? key,
+    super.key,
     required this.color,
     this.onColorChanged,
     this.showAlpha = true,
     this.initialMode = ColorPickerMode.rgb,
     this.allowPickFromScreen = true,
     this.title,
-  }) : super(key: key);
+  });
 
   @override
   State<_ColorPickerDialog> createState() => _ColorPickerDialogState();
@@ -1654,14 +1655,13 @@ class _ColorPickerPopup extends StatefulWidget {
   final bool allowPickFromScreen;
 
   const _ColorPickerPopup({
-    Key? key,
     required this.color,
     this.onColorChanged,
     this.onColorChangeEnd,
     this.showAlpha = true,
     this.initialMode = ColorPickerMode.rgb,
     this.allowPickFromScreen = true,
-  }) : super(key: key);
+  });
 
   @override
   State<_ColorPickerPopup> createState() => _ColorPickerPopupState();
@@ -1965,7 +1965,7 @@ class HSVColorPickerArea extends StatefulWidget {
   final EdgeInsets padding;
 
   const HSVColorPickerArea({
-    Key? key,
+    super.key,
     required this.color,
     this.onColorChanged,
     this.onColorEnd,
@@ -1973,7 +1973,7 @@ class HSVColorPickerArea extends StatefulWidget {
     this.reverse = false,
     this.radius = const Radius.circular(0),
     this.padding = const EdgeInsets.all(0),
-  }) : super(key: key);
+  });
 
   @override
   State<HSVColorPickerArea> createState() => _HSVColorPickerAreaState();
@@ -2353,7 +2353,7 @@ class HSLColorPickerArea extends StatefulWidget {
   final EdgeInsets padding;
 
   const HSLColorPickerArea({
-    Key? key,
+    super.key,
     required this.color,
     this.onColorChanged,
     this.onColorEnd,
@@ -2361,7 +2361,7 @@ class HSLColorPickerArea extends StatefulWidget {
     this.reverse = false,
     this.radius = const Radius.circular(0),
     this.padding = const EdgeInsets.all(0),
-  }) : super(key: key);
+  });
 
   @override
   State<HSLColorPickerArea> createState() => _HSLColorPickerAreaState();

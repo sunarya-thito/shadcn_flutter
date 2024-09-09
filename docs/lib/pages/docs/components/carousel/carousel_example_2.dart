@@ -24,7 +24,7 @@ class _CarouselExample2State extends State<CarouselExample2> {
                 controller.animatePrevious(const Duration(milliseconds: 500));
               },
               child: const Icon(Icons.arrow_upward)),
-          Gap(24),
+          const Gap(24),
           Expanded(
             child: SizedBox(
               width: 200,
@@ -40,7 +40,7 @@ class _CarouselExample2State extends State<CarouselExample2> {
               ),
             ),
           ),
-          Gap(24),
+          const Gap(24),
           OutlineButton(
               shape: ButtonShape.circle,
               onPressed: () {

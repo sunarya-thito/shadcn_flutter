@@ -16,7 +16,7 @@ class CardImage extends StatefulWidget {
   final Color? borderColor;
 
   const CardImage({
-    Key? key,
+    super.key,
     required this.image,
     this.title,
     this.subtitle,
@@ -30,7 +30,7 @@ class CardImage extends StatefulWidget {
     this.normalScale = 1,
     this.backgroundColor = Colors.transparent,
     this.borderColor = Colors.transparent,
-  }) : super(key: key);
+  });
 
   @override
   State<CardImage> createState() => _CardImageState();
@@ -50,6 +50,13 @@ class _CardImageState extends State<CardImage> {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     return Button(
+      statesController: _statesController,
+      style: widget.style ??
+          const ButtonStyle.fixed(
+            density: ButtonDensity.compact,
+          ),
+      onPressed: widget.onPressed,
+      enabled: widget.enabled,
       child: _wrapIntrinsic(
         Flex(
           direction: widget.direction,
@@ -84,13 +91,6 @@ class _CardImageState extends State<CardImage> {
           ],
         ),
       ),
-      statesController: _statesController,
-      style: widget.style ??
-          ButtonStyle.fixed(
-            density: ButtonDensity.compact,
-          ),
-      onPressed: widget.onPressed,
-      enabled: widget.enabled,
     );
   }
 }

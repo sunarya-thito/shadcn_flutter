@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class AutoCompleteExample1 extends StatefulWidget {
+  const AutoCompleteExample1({super.key});
+
   @override
   State<AutoCompleteExample1> createState() => _AutoCompleteExample1State();
 }

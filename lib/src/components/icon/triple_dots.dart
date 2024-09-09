@@ -9,14 +9,14 @@ class MoreDots extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const MoreDots({
-    Key? key,
+    super.key,
     this.direction = Axis.horizontal,
     this.count = 3,
     this.size,
     this.color,
     this.spacing = 2,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

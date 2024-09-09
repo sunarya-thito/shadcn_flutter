@@ -18,7 +18,7 @@ class _StepperExample4State extends State<StepperExample4> {
       direction: Axis.vertical,
       steps: [
         Step(
-          title: Text('Step 1'),
+          title: const Text('Step 1'),
           icon: StepNumber(
             onPressed: () {
               controller.jumpToStep(0);
@@ -26,25 +26,25 @@ class _StepperExample4State extends State<StepperExample4> {
           ),
           contentBuilder: (context) {
             return StepContainer(
-              child: NumberedContainer(
-                index: 1,
-                height: 200,
-              ),
               actions: [
-                SecondaryButton(
+                const SecondaryButton(
                   child: Text('Prev'),
                 ),
                 PrimaryButton(
-                    child: Text('Next'),
+                    child: const Text('Next'),
                     onPressed: () {
                       controller.nextStep();
                     }),
               ],
+              child: const NumberedContainer(
+                index: 1,
+                height: 200,
+              ),
             );
           },
         ),
         Step(
-          title: Text('Step 2'),
+          title: const Text('Step 2'),
           icon: StepNumber(
             onPressed: () {
               controller.jumpToStep(1);
@@ -52,28 +52,28 @@ class _StepperExample4State extends State<StepperExample4> {
           ),
           contentBuilder: (context) {
             return StepContainer(
-              child: NumberedContainer(
-                index: 2,
-                height: 200,
-              ),
               actions: [
                 SecondaryButton(
-                  child: Text('Prev'),
+                  child: const Text('Prev'),
                   onPressed: () {
                     controller.previousStep();
                   },
                 ),
                 PrimaryButton(
-                    child: Text('Next'),
+                    child: const Text('Next'),
                     onPressed: () {
                       controller.nextStep();
                     }),
               ],
+              child: const NumberedContainer(
+                index: 2,
+                height: 200,
+              ),
             );
           },
         ),
         Step(
-          title: Text('Step 3'),
+          title: const Text('Step 3'),
           icon: StepNumber(
             onPressed: () {
               controller.jumpToStep(2);
@@ -81,23 +81,23 @@ class _StepperExample4State extends State<StepperExample4> {
           ),
           contentBuilder: (context) {
             return StepContainer(
-              child: NumberedContainer(
-                index: 3,
-                height: 200,
-              ),
               actions: [
                 SecondaryButton(
-                  child: Text('Prev'),
+                  child: const Text('Prev'),
                   onPressed: () {
                     controller.previousStep();
                   },
                 ),
                 PrimaryButton(
-                    child: Text('Finish'),
+                    child: const Text('Finish'),
                     onPressed: () {
                       controller.nextStep();
                     }),
               ],
+              child: const NumberedContainer(
+                index: 3,
+                height: 200,
+              ),
             );
           },
         ),

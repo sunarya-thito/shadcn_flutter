@@ -23,13 +23,28 @@ class _StepperExample3State extends State<StepperExample3> {
       direction: Axis.horizontal,
       steps: [
         Step(
-          title: Text('Step 1'),
+          title: const Text('Step 1'),
           contentBuilder: (context) {
-            return StepContainer(
+            return const StepContainer(
+              actions: [
+                SecondaryButton(
+                  child: Text('Prev'),
+                ),
+                PrimaryButton(
+                  child: Text('Next'),
+                ),
+              ],
               child: NumberedContainer(
                 index: 1,
                 height: 200,
               ),
+            );
+          },
+        ),
+        Step(
+          title: const Text('Step 2'),
+          contentBuilder: (context) {
+            return const StepContainer(
               actions: [
                 SecondaryButton(
                   child: Text('Prev'),
@@ -38,36 +53,17 @@ class _StepperExample3State extends State<StepperExample3> {
                   child: Text('Next'),
                 ),
               ],
-            );
-          },
-        ),
-        Step(
-          title: Text('Step 2'),
-          contentBuilder: (context) {
-            return StepContainer(
               child: NumberedContainer(
                 index: 2,
                 height: 200,
               ),
-              actions: [
-                SecondaryButton(
-                  child: Text('Prev'),
-                ),
-                PrimaryButton(
-                  child: Text('Next'),
-                ),
-              ],
             );
           },
         ),
         Step(
-          title: Text('Step 3'),
+          title: const Text('Step 3'),
           contentBuilder: (context) {
-            return StepContainer(
-              child: NumberedContainer(
-                index: 3,
-                height: 200,
-              ),
+            return const StepContainer(
               actions: [
                 SecondaryButton(
                   child: Text('Prev'),
@@ -76,6 +72,10 @@ class _StepperExample3State extends State<StepperExample3> {
                   child: Text('Finish'),
                 ),
               ],
+              child: NumberedContainer(
+                index: 3,
+                height: 200,
+              ),
             );
           },
         ),

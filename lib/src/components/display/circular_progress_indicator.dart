@@ -10,13 +10,13 @@ class CircularProgressIndicator extends StatelessWidget {
   final bool onSurface;
 
   const CircularProgressIndicator({
-    Key? key,
+    super.key,
     this.value,
     this.size,
     this.duration = kDefaultDuration,
     this.animated = true,
     this.onSurface = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

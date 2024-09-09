@@ -17,7 +17,7 @@ class Basic extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const Basic({
-    Key? key,
+    super.key,
     this.leading,
     this.title,
     this.subtitle,
@@ -32,7 +32,7 @@ class Basic extends StatelessWidget {
     this.titleSpacing, //4
     this.mainAxisAlignment = MainAxisAlignment.center,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +119,7 @@ class BasicLayout extends StatelessWidget {
   final double? titleSpacing;
 
   const BasicLayout({
-    Key? key,
+    super.key,
     this.leading,
     this.title,
     this.subtitle,
@@ -132,7 +132,7 @@ class BasicLayout extends StatelessWidget {
     this.contentAlignment,
     this.contentSpacing,
     this.titleSpacing,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

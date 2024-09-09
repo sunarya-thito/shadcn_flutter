@@ -30,7 +30,7 @@ class _ColorPickerExample1State extends State<ColorPickerExample1> {
               storage: ColorHistoryStorage.of(context),
             ),
           ),
-          Gap(16),
+          const Gap(16),
           ColorInput(
             color: color,
             mode: PromptMode.dialog,

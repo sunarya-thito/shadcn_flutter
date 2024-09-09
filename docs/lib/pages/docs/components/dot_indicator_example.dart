@@ -17,9 +17,9 @@ class DotIndicatorExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: DotIndicatorExample1(),
           path:
               'lib/pages/docs/components/dot_indicator/dot_indicator_example_1.dart',
+          child: DotIndicatorExample1(),
         ),
       ],
     );

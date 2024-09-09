@@ -9,16 +9,16 @@ class KeyboardDisplayExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'keyboard_display',
       description: 'A widget that displays a keyboard key.',
       displayName: 'Keyboard Display',
       children: [
         WidgetUsageExample(
           title: 'Example 1',
-          child: KeyboardDisplayExample1(),
           path:
               'lib/pages/docs/components/keyboard_display/keyboard_display_example_1.dart',
+          child: KeyboardDisplayExample1(),
         ),
       ],
     );

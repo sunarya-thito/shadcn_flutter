@@ -40,7 +40,7 @@ class _MaterialExample1State extends State<MaterialExample1> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            shadcnui.Gap(64),
+            const shadcnui.Gap(64),
             shadcnui.ShadcnUI(
                 child: shadcnui.Card(
               child: Column(
@@ -48,7 +48,7 @@ class _MaterialExample1State extends State<MaterialExample1> {
                 children: [
                   const Text(
                       'You can also use shadcn_flutter widgets inside Material widgets'),
-                  shadcnui.Gap(16),
+                  const shadcnui.Gap(16),
                   shadcnui.PrimaryButton(
                     onPressed: () {
                       showDialog(
@@ -71,7 +71,7 @@ class _MaterialExample1State extends State<MaterialExample1> {
                     },
                     child: const Text('Open Material Dialog'),
                   ),
-                  shadcnui.Gap(8),
+                  const shadcnui.Gap(8),
                   shadcnui.SecondaryButton(
                     onPressed: () {
                       shadcnui.showDialog(

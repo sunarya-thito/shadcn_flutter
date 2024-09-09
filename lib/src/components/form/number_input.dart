@@ -19,7 +19,7 @@ class NumberInput extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   const NumberInput({
-    Key? key,
+    super.key,
     this.padding,
     this.controller,
     this.initialValue = 0,
@@ -33,7 +33,7 @@ class NumberInput extends StatefulWidget {
     this.onChanged,
     this.buttonStyle,
     this.style,
-  }) : super(key: key);
+  });
 
   @override
   State<NumberInput> createState() => _NumberInputState();
@@ -285,10 +285,9 @@ class _NumberInputState extends State<NumberInput> {
 }
 
 class _NumberInputFlex extends MultiChildRenderObjectWidget {
-  _NumberInputFlex({
-    Key? key,
-    required List<Widget> children,
-  }) : super(key: key, children: children);
+  const _NumberInputFlex({
+    required super.children,
+  });
 
   @override
   RenderObject createRenderObject(BuildContext context) {

@@ -60,7 +60,7 @@ class Slider extends StatefulWidget {
   final double? decreaseStep;
 
   const Slider({
-    Key? key,
+    super.key,
     required this.value,
     this.onChanged,
     this.onChangeStart,
@@ -71,8 +71,7 @@ class Slider extends StatefulWidget {
     this.hintValue,
     this.increaseStep,
     this.decreaseStep,
-  })  : assert(min <= max),
-        super(key: key);
+  })  : assert(min <= max);
 
   @override
   _SliderState createState() => _SliderState();

@@ -2,7 +2,7 @@ import 'package:docs/pages/docs_page.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ColorsPage extends StatefulWidget {
-  const ColorsPage({Key? key}) : super(key: key);
+  const ColorsPage({super.key});
 
   @override
   _ColorsPageState createState() => _ColorsPageState();
@@ -72,7 +72,7 @@ class _ColorsPageState extends State<ColorsPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text('Use this code to display this color:'),
-              Gap(8),
+              const Gap(8),
               CodeSnippet(
                 code: shade == 500
                     ? 'Colors.${name.toLowerCase()}'
@@ -127,7 +127,7 @@ class _ColorsPageState extends State<ColorsPage> {
                   ),
                 ),
               ),
-              Gap(8),
+              const Gap(8),
               Text(
                 '${shade == 500 ? '500 (Base)' : shade}',
                 textAlign: TextAlign.center,
@@ -212,7 +212,7 @@ class _ColorsPageState extends State<ColorsPage> {
                   );
                 }),
               ),
-              Gap(8),
+              const Gap(8),
               Text(
                 '${shade == 500 ? '500 (Base)' : shade}',
                 textAlign: TextAlign.center,
@@ -305,11 +305,11 @@ class _ColorsPageState extends State<ColorsPage> {
                         },
                         size: ButtonSize.xSmall,
                         density: ButtonDensity.icon,
-                        child: Icon(Icons.edit),
+                        child: const Icon(Icons.edit),
                       ),
                     ],
                   ),
-                  Gap(8),
+                  const Gap(8),
                   buildColorRow(context, color.key, color.value),
                 ],
               ),
@@ -317,12 +317,12 @@ class _ColorsPageState extends State<ColorsPage> {
               top: 32,
             ),
           const Text('Generate Color').h2().anchored(_customColorKey),
-          Gap(32),
+          const Gap(32),
           TabList(
             index: _tabIndex,
             children: [
               TabButton(
-                child: Text('Color'),
+                child: const Text('Color'),
                 onPressed: () {
                   setState(() {
                     _tabIndex = 0;
@@ -330,7 +330,7 @@ class _ColorsPageState extends State<ColorsPage> {
                 },
               ),
               TabButton(
-                child: Text('Code'),
+                child: const Text('Code'),
                 onPressed: () {
                   setState(() {
                     _tabIndex = 1;
@@ -339,7 +339,7 @@ class _ColorsPageState extends State<ColorsPage> {
               ),
             ],
           ),
-          Gap(12),
+          const Gap(12),
           Offstage(
             offstage: _tabIndex != 0,
             child: Column(
@@ -347,7 +347,7 @@ class _ColorsPageState extends State<ColorsPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildColorTab(context),
-                Gap(8),
+                const Gap(8),
                 _buildColorOptions(context),
               ],
             ),
@@ -391,8 +391,8 @@ class _ColorsPageState extends State<ColorsPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             FormField<SliderValue>(
-              key: FormKey(#hueShift),
-              label: Text('Hue Shift'),
+              key: const FormKey(#hueShift),
+              label: const Text('Hue Shift'),
               child: Slider(
                 value: SliderValue.single(_hueShift.toDouble()),
                 min: -360,
@@ -406,8 +406,8 @@ class _ColorsPageState extends State<ColorsPage> {
               ),
             ),
             FormField<SliderValue>(
-              key: FormKey(#saturationStepUp),
-              label: Text('Saturation Step Up'),
+              key: const FormKey(#saturationStepUp),
+              label: const Text('Saturation Step Up'),
               child: Slider(
                 value: SliderValue.single(_saturationStepUp.toDouble()),
                 min: 0,
@@ -421,8 +421,8 @@ class _ColorsPageState extends State<ColorsPage> {
               ),
             ),
             FormField<SliderValue>(
-              key: FormKey(#saturationStepDown),
-              label: Text('Saturation Step Down'),
+              key: const FormKey(#saturationStepDown),
+              label: const Text('Saturation Step Down'),
               child: Slider(
                 value: SliderValue.single(_saturationStepDown.toDouble()),
                 min: 0,
@@ -436,8 +436,8 @@ class _ColorsPageState extends State<ColorsPage> {
               ),
             ),
             FormField<SliderValue>(
-              key: FormKey(#lightnessStepUp),
-              label: Text('Lightness Step Up'),
+              key: const FormKey(#lightnessStepUp),
+              label: const Text('Lightness Step Up'),
               child: Slider(
                 value: SliderValue.single(_lightnessStepUp.toDouble()),
                 min: 0,
@@ -451,8 +451,8 @@ class _ColorsPageState extends State<ColorsPage> {
               ),
             ),
             FormField<SliderValue>(
-              key: FormKey(#lightnessStepDown),
-              label: Text('Lightness Step Down'),
+              key: const FormKey(#lightnessStepDown),
+              label: const Text('Lightness Step Down'),
               child: Slider(
                 value: SliderValue.single(_lightnessStepDown.toDouble()),
                 min: 0,
@@ -465,7 +465,7 @@ class _ColorsPageState extends State<ColorsPage> {
                 },
               ),
             ),
-            Gap(16),
+            const Gap(16),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -506,7 +506,7 @@ class _ColorsPageState extends State<ColorsPage> {
                     );
                   },
                   leading: const Icon(Icons.restore),
-                  child: Text('Reset'),
+                  child: const Text('Reset'),
                 ),
               ],
             )

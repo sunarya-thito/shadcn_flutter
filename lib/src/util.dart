@@ -28,11 +28,11 @@ class CapturedWrapper extends StatefulWidget {
   final Widget child;
 
   const CapturedWrapper({
-    Key? key,
+    super.key,
     this.themes,
     this.data,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<CapturedWrapper> createState() => _CapturedWrapperState();
@@ -75,10 +75,10 @@ class WidgetTreeChangeDetector extends StatefulWidget {
   final void Function() onWidgetTreeChange;
 
   const WidgetTreeChangeDetector({
-    Key? key,
+    super.key,
     required this.child,
     required this.onWidgetTreeChange,
-  }) : super(key: key);
+  });
 
   @override
   _WidgetTreeChangeDetectorState createState() =>
@@ -492,13 +492,13 @@ class AnimatedIconTheme extends ImplicitlyAnimatedWidget {
   final Widget child;
 
   const AnimatedIconTheme({
-    Key? key,
+    super.key,
     required this.data,
     required this.child,
-    Curve curve = Curves.linear,
-    required Duration duration,
-    VoidCallback? onEnd,
-  }) : super(key: key, curve: curve, duration: duration, onEnd: onEnd);
+    super.curve,
+    required super.duration,
+    super.onEnd,
+  });
 
   static Widget merge({
     Key? key,
@@ -569,8 +569,7 @@ extension IntExtension on int {
 }
 
 class IconThemeDataTween extends Tween<IconThemeData> {
-  IconThemeDataTween({IconThemeData? begin, IconThemeData? end})
-      : super(begin: begin, end: end);
+  IconThemeDataTween({super.begin, super.end});
 
   @override
   IconThemeData lerp(double t) => IconThemeData.lerp(begin, end, t);

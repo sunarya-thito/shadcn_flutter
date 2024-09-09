@@ -55,11 +55,11 @@ class _SheetExample1State extends State<SheetExample1> {
                 ),
               ],
             ),
-            Gap(8),
+            const Gap(8),
             const Text(
                     'Make changes to your profile here. Click save when you\'re done.')
                 .muted(),
-            Gap(16),
+            const Gap(16),
             FormTableLayout(
               rows: [
                 FormField<String>(
@@ -84,7 +84,7 @@ class _SheetExample1State extends State<SheetExample1> {
                 ),
               ],
             ),
-            Gap(16),
+            const Gap(16),
             Align(
               alignment: AlignmentDirectional.centerEnd,
               child: FormErrorBuilder(

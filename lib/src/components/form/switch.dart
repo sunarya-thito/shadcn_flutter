@@ -11,12 +11,12 @@ class Switch extends StatefulWidget {
   final Widget? trailing;
 
   const Switch({
-    Key? key,
+    super.key,
     required this.value,
     required this.onChanged,
     this.leading,
     this.trailing,
-  }) : super(key: key);
+  });
 
   @override
   State<Switch> createState() => _SwitchState();

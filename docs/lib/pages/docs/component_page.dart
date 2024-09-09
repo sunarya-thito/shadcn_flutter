@@ -12,13 +12,13 @@ class ComponentPage extends StatefulWidget {
   final List<Widget> children;
   final bool component;
   const ComponentPage({
-    Key? key,
+    super.key,
     required this.name,
     required this.description,
     required this.displayName,
     required this.children,
     this.component = true,
-  }) : super(key: key);
+  });
 
   @override
   State<ComponentPage> createState() => _ComponentPageState();

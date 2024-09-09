@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class AvatarGroupExample1 extends StatefulWidget {
+  const AvatarGroupExample1({super.key});
+
   @override
   State<AvatarGroupExample1> createState() => _AvatarGroupExample1State();
 }

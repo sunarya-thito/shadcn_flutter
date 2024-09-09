@@ -11,7 +11,7 @@ class AlertDialog extends StatefulWidget {
   final Color? barrierColor;
 
   const AlertDialog({
-    Key? key,
+    super.key,
     this.leading,
     this.title,
     this.content,
@@ -20,7 +20,7 @@ class AlertDialog extends StatefulWidget {
     this.surfaceBlur,
     this.surfaceOpacity,
     this.barrierColor,
-  }) : super(key: key);
+  });
 
   @override
   _AlertDialogState createState() => _AlertDialogState();

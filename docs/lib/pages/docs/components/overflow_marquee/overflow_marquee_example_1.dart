@@ -5,7 +5,7 @@ class OverflowMarqueeExample1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       width: 200,
       child: OverflowMarquee(
         child: Text(

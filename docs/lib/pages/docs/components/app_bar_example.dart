@@ -16,8 +16,8 @@ class AppBarExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example 1',
-          child: AppBarExample1(),
           path: 'lib/pages/docs/components/app_bar/app_bar_example_1.dart',
+          child: AppBarExample1(),
         ),
       ],
     );

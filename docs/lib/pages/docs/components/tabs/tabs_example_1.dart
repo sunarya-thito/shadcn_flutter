@@ -28,7 +28,7 @@ class _TabsExample1State extends State<TabsExample1> {
             });
           },
         ),
-        Gap(8),
+        const Gap(8),
         IndexedStack(
           index: index,
           children: const [

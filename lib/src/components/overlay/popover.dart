@@ -817,7 +817,7 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
   final bool allowInvertHorizontal;
   final bool allowInvertVertical;
   const PopoverLayout({
-    Key? key,
+    super.key,
     required this.alignment,
     required this.position,
     required this.anchorAlignment,
@@ -826,13 +826,13 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
     this.anchorSize,
     this.offset,
     required this.margin,
-    required Widget child,
+    required Widget super.child,
     required this.scale,
     required this.scaleAlignment,
     this.filterQuality,
     this.allowInvertHorizontal = true,
     this.allowInvertVertical = true,
-  }) : super(key: key, child: child);
+  });
 
   @override
   RenderObject createRenderObject(BuildContext context) {

@@ -288,7 +288,7 @@ class DataBuilder<T> extends StatelessWidget {
     final data = Data.maybeOf<T>(context);
     if (_builder != null) {
       assert(data != null, 'No Data<$T> found in context');
-      return _builder!(context, data as T, child);
+      return _builder(context, data as T, child);
     }
     return _optionalBuilder!(context, data, child);
   }
@@ -512,6 +512,7 @@ class Data<T> extends StatelessWidget implements MultiDataItem {
     return CapturedData._(data);
   }
 
+  @override
   Type get dataType => T;
 }
 

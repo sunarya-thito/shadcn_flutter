@@ -23,7 +23,7 @@ void debugPostSticker(
           child: Opacity(
             opacity: 0.2,
             child: Container(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: color,
               ),

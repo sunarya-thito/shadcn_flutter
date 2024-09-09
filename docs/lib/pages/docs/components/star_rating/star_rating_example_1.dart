@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class StarRatingExample1 extends StatefulWidget {
+  const StarRatingExample1({super.key});
+
   @override
   State<StarRatingExample1> createState() => _StarRatingExample1State();
 }

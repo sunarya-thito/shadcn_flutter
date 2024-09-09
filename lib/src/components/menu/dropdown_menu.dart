@@ -36,11 +36,11 @@ class DropdownMenu extends StatefulWidget {
   final List<MenuItem> children;
 
   const DropdownMenu({
-    Key? key,
+    super.key,
     this.surfaceOpacity,
     this.surfaceBlur,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   State<DropdownMenu> createState() => _DropdownMenuState();

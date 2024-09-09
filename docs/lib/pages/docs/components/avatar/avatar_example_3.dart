@@ -8,7 +8,7 @@ class AvatarExample3 extends StatelessWidget {
     return Avatar(
       initials: Avatar.getInitials('sunarya-thito'),
       size: 64,
-      badge: AvatarBadge(
+      badge: const AvatarBadge(
         size: 20,
         color: Colors.green,
       ),

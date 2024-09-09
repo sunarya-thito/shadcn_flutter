@@ -8,14 +8,14 @@ class FocusOutline extends StatelessWidget {
   final double width;
   final double? radius;
   const FocusOutline({
-    Key? key,
+    super.key,
     required this.child,
     required this.focused,
     this.borderRadius,
     this.align = 0,
     this.width = 1,
     this.radius,
-  }) : super(key: key);
+  });
 
   BorderRadius getAdjustedBorderRadius(TextDirection textDirection) {
     if (this.radius != null) {

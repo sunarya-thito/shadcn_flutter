@@ -19,13 +19,13 @@ class Checkbox extends StatefulWidget {
   final bool tristate;
 
   const Checkbox({
-    Key? key,
+    super.key,
     required this.state,
     required this.onChanged,
     this.leading,
     this.trailing,
     this.tristate = false,
-  }) : super(key: key);
+  });
 
   @override
   _CheckboxState createState() => _CheckboxState();
@@ -125,8 +125,8 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
                         child: AnimatedValueBuilder(
                           value: 1.0,
                           initialValue: _shouldAnimate ? 0.0 : null,
-                          duration: Duration(milliseconds: 300),
-                          curve: IntervalDuration(
+                          duration: const Duration(milliseconds: 300),
+                          curve: const IntervalDuration(
                             start: Duration(milliseconds: 175),
                             duration: Duration(milliseconds: 300),
                           ),

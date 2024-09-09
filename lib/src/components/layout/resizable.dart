@@ -7,7 +7,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 typedef Predicate<T> = bool Function(T value);
 
 class HorizontalResizableDragger extends StatelessWidget {
-  const HorizontalResizableDragger({Key? key}) : super(key: key);
+  const HorizontalResizableDragger({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class HorizontalResizableDragger extends StatelessWidget {
 }
 
 class VerticalResizableDragger extends StatelessWidget {
-  const VerticalResizableDragger({Key? key}) : super(key: key);
+  const VerticalResizableDragger({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +175,7 @@ class ResizablePane extends StatefulWidget {
   final double? flex;
 
   const ResizablePane({
-    Key? key,
+    super.key,
     this.resizable = true,
     required this.child,
     this.onResize,
@@ -186,11 +186,10 @@ class ResizablePane extends StatefulWidget {
     this.initialCollapsed = false,
   })  : controller = null,
         flex = null,
-        initialSize = initialSize,
-        super(key: key);
+        initialSize = initialSize;
 
   const ResizablePane.flex({
-    Key? key,
+    super.key,
     this.resizable = true,
     required this.child,
     this.onResize,
@@ -200,11 +199,10 @@ class ResizablePane extends StatefulWidget {
     this.initialCollapsed = false,
     this.flex = 1,
   })  : controller = null,
-        initialSize = null,
-        super(key: key);
+        initialSize = null;
 
   const ResizablePane._controlled({
-    Key? key,
+    super.key,
     this.resizable = true,
     required this.child,
     this.onResize,
@@ -215,7 +213,7 @@ class ResizablePane extends StatefulWidget {
     required this.controller,
     this.initialCollapsed = false,
     this.flex,
-  }) : super(key: key);
+  });
 
   factory ResizablePane.controlled({
     Key? key,
@@ -473,28 +471,26 @@ class ResizablePanel extends StatefulWidget {
   final Axis direction;
 
   const ResizablePanel({
-    Key? key,
+    super.key,
     required this.children,
     required this.direction,
     this.divider,
     this.draggerBuilder = _defaultDraggerBuilder,
-  }) : super(key: key);
+  });
 
   const ResizablePanel.horizontal({
-    Key? key,
+    super.key,
     required this.children,
     this.divider = const VerticalDivider(),
     this.draggerBuilder = _defaultDraggerBuilder,
-  })  : direction = Axis.horizontal,
-        super(key: key);
+  })  : direction = Axis.horizontal;
 
   const ResizablePanel.vertical({
-    Key? key,
+    super.key,
     required this.children,
     this.divider = const Divider(),
     this.draggerBuilder = _defaultDraggerBuilder,
-  })  : direction = Axis.vertical,
-        super(key: key);
+  })  : direction = Axis.vertical;
 
   @override
   State<ResizablePanel> createState() => _ResizablePanelState();

@@ -7,12 +7,12 @@ class ModalContainer extends StatelessWidget {
   final Animation<double>? fadeAnimation;
 
   const ModalContainer({
-    Key? key,
+    super.key,
     this.borderRadius = BorderRadius.zero,
     this.barrierColor = const Color.fromRGBO(0, 0, 0, 0.8),
     this.fadeAnimation,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

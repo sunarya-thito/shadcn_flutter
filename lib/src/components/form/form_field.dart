@@ -26,7 +26,7 @@ class ObjectFormField<T> extends StatefulWidget {
       BuildContext context, ObjectFormHandler<T> handler)? dialogActions;
 
   const ObjectFormField({
-    Key? key,
+    super.key,
     required this.value,
     this.onChanged,
     required this.placeholder,
@@ -43,7 +43,7 @@ class ObjectFormField<T> extends StatefulWidget {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
     this.dialogActions,
-  }) : super(key: key);
+  });
 
   @override
   State<ObjectFormField<T>> createState() => ObjectFormFieldState<T>();
@@ -201,13 +201,13 @@ class _ObjectFormFieldDialog<T> extends StatefulWidget {
   final ValueChanged<T?> prompt;
 
   const _ObjectFormFieldDialog({
-    Key? key,
+    super.key,
     required this.value,
     required this.editorBuilder,
     this.dialogTitle,
     this.dialogActions,
     required this.prompt,
-  }) : super(key: key);
+  });
 
   @override
   State<_ObjectFormFieldDialog<T>> createState() =>
@@ -299,13 +299,13 @@ class _ObjectFormFieldPopup<T> extends StatefulWidget {
   final ValueChanged<T?> prompt;
 
   const _ObjectFormFieldPopup({
-    Key? key,
+    super.key,
     required this.value,
     required this.editorBuilder,
     required this.prompt,
     this.popoverPadding,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<_ObjectFormFieldPopup<T>> createState() =>

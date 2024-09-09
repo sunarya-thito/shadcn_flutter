@@ -68,7 +68,7 @@ class _ResizableExample4State extends State<ResizableExample4> {
             ],
           ),
         ),
-        Gap(48),
+        const Gap(48),
         Wrap(
           spacing: 16,
           runSpacing: 16,

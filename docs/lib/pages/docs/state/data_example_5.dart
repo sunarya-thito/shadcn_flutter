@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class DataExample5 extends StatefulWidget {
-  const DataExample5({Key? key}) : super(key: key);
+  const DataExample5({super.key});
 
   @override
   State<DataExample5> createState() => DataExample5State();
@@ -49,7 +49,7 @@ class DataExample5State extends State<DataExample5> {
 class InnerWidget extends StatefulWidget {
   final Widget child;
 
-  const InnerWidget({Key? key, required this.child}) : super(key: key);
+  const InnerWidget({super.key, required this.child});
 
   @override
   State<InnerWidget> createState() => _InnerWidgetState();
@@ -76,7 +76,7 @@ class _InnerWidgetState extends State<InnerWidget> {
 class MostInnerWidget extends StatefulWidget {
   final Widget? child;
 
-  const MostInnerWidget({Key? key, this.child}) : super(key: key);
+  const MostInnerWidget({super.key, this.child});
 
   @override
   State<MostInnerWidget> createState() => _MostInnerWidgetState();

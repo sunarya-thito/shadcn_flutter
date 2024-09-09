@@ -44,7 +44,7 @@ class _TabListExample1State extends State<TabListExample1> {
             ),
           ],
         ),
-        Gap(16),
+        const Gap(16),
         IndexedStack(
           index: index,
           children: const [

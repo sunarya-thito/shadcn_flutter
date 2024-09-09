@@ -32,7 +32,7 @@ class _AnimatedValueBuilderExample1State
             );
           },
         ),
-        Gap(32),
+        const Gap(32),
         PrimaryButton(
           onPressed: () {
             setState(() {

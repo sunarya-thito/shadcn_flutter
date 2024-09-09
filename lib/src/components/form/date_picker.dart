@@ -14,7 +14,7 @@ class DatePicker extends StatelessWidget {
   final DateStateBuilder? stateBuilder;
 
   const DatePicker({
-    Key? key,
+    super.key,
     required this.value,
     this.onChanged,
     this.placeholder,
@@ -26,7 +26,7 @@ class DatePicker extends StatelessWidget {
     this.dialogTitle,
     this.initialViewType,
     this.stateBuilder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +108,7 @@ class DateRangePicker extends StatelessWidget {
   final DateStateBuilder? stateBuilder;
 
   const DateRangePicker({
-    Key? key,
+    super.key,
     required this.value,
     this.onChanged,
     this.placeholder,
@@ -120,7 +120,7 @@ class DateRangePicker extends StatelessWidget {
     this.dialogTitle,
     this.initialViewType,
     this.stateBuilder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

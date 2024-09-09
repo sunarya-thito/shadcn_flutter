@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import '../docs_page.dart';
 
 class InstallationPage extends StatefulWidget {
-  const InstallationPage({Key? key}) : super(key: key);
+  const InstallationPage({super.key});
 
   @override
   _InstallationPageState createState() => _InstallationPageState();
@@ -30,7 +30,7 @@ class _InstallationPageState extends State<InstallationPage> {
           const Text('Install and configure shadcn_flutter in your project.')
               .lead(),
           const Text('Install using CLI').h2().anchored(_cliKey),
-          Gap(32),
+          const Gap(32),
           // 1. Activate "shadcn_flutter_cli" package
           // 2. Run "flutter pub global run shadcn_flutter_cli:setup"
           Steps(
@@ -60,7 +60,7 @@ class _InstallationPageState extends State<InstallationPage> {
             ],
           ),
           const Text('Install Manually').h2().anchored(_manualKey),
-          Gap(32),
+          const Gap(32),
           Steps(
             children: [
               StepItem(
@@ -218,7 +218,7 @@ void main() {
                   child: const Text('this page'))
               .thenText(' for more information.')
               .p(),
-          Gap(16),
+          const Gap(16),
           const Alert(
             destructive: true,
             leading: Icon(Icons.warning),

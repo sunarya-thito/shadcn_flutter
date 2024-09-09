@@ -9,12 +9,12 @@ class WidgetUsageExample extends StatefulWidget {
   final bool summarize;
 
   const WidgetUsageExample({
-    Key? key,
+    super.key,
     this.title,
     required this.child,
     required this.path,
     this.summarize = true,
-  }) : super(key: key);
+  });
 
   @override
   State<WidgetUsageExample> createState() => _WidgetUsageExampleState();
@@ -30,7 +30,7 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.title != null) Text(widget.title!).h2(),
-        if (widget.title != null) Gap(12),
+        if (widget.title != null) const Gap(12),
         TabList(
           index: index,
           children: [
@@ -52,7 +52,7 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
             ),
           ],
         ),
-        Gap(12),
+        const Gap(12),
         RepaintBoundary(
           child: Offstage(
             offstage: index != 0,
@@ -91,11 +91,11 @@ class CodeSnippetFutureBuilder extends StatefulWidget {
   final bool summarize;
 
   const CodeSnippetFutureBuilder({
-    Key? key,
+    super.key,
     required this.path,
     required this.mode,
     this.summarize = true,
-  }) : super(key: key);
+  });
 
   @override
   State<CodeSnippetFutureBuilder> createState() =>

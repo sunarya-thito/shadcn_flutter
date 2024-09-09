@@ -16,7 +16,7 @@ class WebPreloaderPage extends StatelessWidget {
             const Text('Web Preloader').h1(),
             const Text('Customize how flutter load your web application')
                 .lead(),
-            Gap(32),
+            const Gap(32),
             Alert(
               title: const Text('Note'),
               content: const Text(
@@ -25,11 +25,11 @@ class WebPreloaderPage extends StatelessWidget {
                       onPressed: () {
                         context.goNamed('installation');
                       },
-                      child: Text('Installation page'))
+                      child: const Text('Installation page'))
                   .thenText(' for more information.'),
               leading: const Icon(Icons.info_outline),
             ),
-            Gap(32),
+            const Gap(32),
             Steps(
               children: [
                 StepItem(

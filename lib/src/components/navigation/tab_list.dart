@@ -5,10 +5,10 @@ class TabList extends StatelessWidget {
   final int? index;
 
   const TabList({
-    Key? key,
+    super.key,
     required this.children,
     this.index,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

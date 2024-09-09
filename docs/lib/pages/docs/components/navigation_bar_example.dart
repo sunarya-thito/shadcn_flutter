@@ -5,10 +5,10 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import '../component_page.dart';
 
 class NavigationBarExample extends StatelessWidget {
-  const NavigationBarExample({Key? key}) : super(key: key);
+  const NavigationBarExample({super.key});
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'navigation_bar',
       description:
           'A widget that displays a bar with navigation buttons and labels.',
@@ -16,9 +16,9 @@ class NavigationBarExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: NavigationBarExample1(),
           path:
               'lib/pages/docs/components/navigation_bar/navigation_bar_example_1.dart',
+          child: NavigationBarExample1(),
         ),
       ],
     );

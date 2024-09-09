@@ -8,7 +8,7 @@ class ChipExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'chip',
       description:
           'A chip is a small, interactive element that represents an attribute, text, entity, or action.',
@@ -16,8 +16,8 @@ class ChipExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: ChipExample1(),
           path: 'lib/pages/docs/components/chip/chip_example_1.dart',
+          child: ChipExample1(),
         ),
       ],
     );

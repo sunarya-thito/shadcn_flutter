@@ -8,7 +8,7 @@ class TreeExample extends StatelessWidget {
   const TreeExample({super.key});
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'tree',
       description:
           'A tree is a way of displaying a hierarchical list of items.',
@@ -16,8 +16,8 @@ class TreeExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: TreeExample1(),
           path: 'lib/pages/docs/components/tree/tree_example_1.dart',
+          child: TreeExample1(),
         ),
       ],
     );

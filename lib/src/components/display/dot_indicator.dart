@@ -18,7 +18,7 @@ class DotIndicator extends StatelessWidget {
   final DotBuilder? dotBuilder;
 
   const DotIndicator({
-    Key? key,
+    super.key,
     required this.index,
     required this.length,
     this.onChanged,
@@ -26,7 +26,7 @@ class DotIndicator extends StatelessWidget {
     this.direction = Axis.horizontal,
     this.padding,
     this.dotBuilder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -81,13 +81,13 @@ class DotItem extends StatelessWidget {
   final double? borderWidth;
 
   const DotItem({
-    Key? key,
+    super.key,
     this.size,
     this.color,
     this.borderRadius,
     this.borderColor,
     this.borderWidth,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -115,13 +115,13 @@ class ActiveDotItem extends StatelessWidget {
   final double? borderWidth;
 
   const ActiveDotItem({
-    Key? key,
+    super.key,
     this.size,
     this.color,
     this.borderRadius,
     this.borderColor,
     this.borderWidth,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -152,13 +152,13 @@ class InactiveDotItem extends StatelessWidget {
   final double? borderWidth;
 
   const InactiveDotItem({
-    Key? key,
+    super.key,
     this.size,
     this.color,
     this.borderRadius,
     this.borderColor,
     this.borderWidth,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

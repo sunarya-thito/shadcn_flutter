@@ -6,10 +6,10 @@ class ShadcnSkeletonizerConfigLayer extends StatelessWidget {
   final Widget child;
 
   const ShadcnSkeletonizerConfigLayer({
-    Key? key,
+    super.key,
     required this.theme,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

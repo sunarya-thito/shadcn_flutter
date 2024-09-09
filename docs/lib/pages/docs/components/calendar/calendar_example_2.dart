@@ -46,7 +46,7 @@ class _CalendarExample2State extends State<CalendarExample2> {
                 ),
               ],
             ),
-            Gap(16),
+            const Gap(16),
             Calendar(
               value: _value,
               view: _view,

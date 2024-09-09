@@ -7,7 +7,7 @@ import '../../../shadcn_flutter.dart';
 class Accordion extends StatefulWidget {
   final List<Widget> items;
 
-  const Accordion({Key? key, required this.items}) : super(key: key);
+  const Accordion({super.key, required this.items});
 
   @override
   _AccordionState createState() => _AccordionState();
@@ -46,11 +46,10 @@ class AccordionItem extends StatefulWidget {
   final bool expanded;
 
   const AccordionItem(
-      {Key? key,
+      {super.key,
       required this.trigger,
       required this.content,
-      this.expanded = false})
-      : super(key: key);
+      this.expanded = false});
 
   @override
   State<AccordionItem> createState() => _AccordionItemState();
@@ -158,7 +157,7 @@ class _AccordionItemState extends State<AccordionItem>
 class AccordionTrigger extends StatefulWidget {
   final Widget child;
 
-  const AccordionTrigger({Key? key, required this.child}) : super(key: key);
+  const AccordionTrigger({super.key, required this.child});
 
   @override
   State<AccordionTrigger> createState() => _AccordionTriggerState();

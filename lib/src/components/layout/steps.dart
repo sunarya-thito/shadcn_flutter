@@ -4,9 +4,9 @@ class Steps extends StatelessWidget {
   final List<Widget> children;
 
   const Steps({
-    Key? key,
+    super.key,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +62,10 @@ class StepItem extends StatelessWidget {
   final List<Widget> content;
 
   const StepItem({
-    Key? key,
+    super.key,
     required this.title,
     required this.content,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

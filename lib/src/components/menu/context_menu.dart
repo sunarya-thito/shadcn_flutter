@@ -8,11 +8,11 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
   final UndoHistoryController? undoHistoryController;
 
   const DesktopEditableTextContextMenu({
-    Key? key,
+    super.key,
     required this.anchorContext,
     required this.editableTextState,
     this.undoHistoryController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -199,11 +199,11 @@ class MobileEditableTextContextMenu extends StatelessWidget {
   final UndoHistoryController? undoHistoryController;
 
   const MobileEditableTextContextMenu({
-    Key? key,
+    super.key,
     required this.anchorContext,
     required this.editableTextState,
     this.undoHistoryController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -410,12 +410,12 @@ class ContextMenu extends StatefulWidget {
   final Axis direction;
 
   const ContextMenu({
-    Key? key,
+    super.key,
     required this.child,
     required this.items,
     this.behavior = HitTestBehavior.translucent,
     this.direction = Axis.vertical,
-  }) : super(key: key);
+  });
 
   @override
   State<ContextMenu> createState() => _ContextMenuState();
@@ -524,7 +524,7 @@ class ContextMenuPopup extends StatelessWidget {
   final ValueChanged<PopoverAnchorState>? onTickFollow;
   final Size? anchorSize;
   const ContextMenuPopup({
-    Key? key,
+    super.key,
     required this.anchorContext,
     required this.position,
     required this.children,
@@ -532,7 +532,7 @@ class ContextMenuPopup extends StatelessWidget {
     this.direction = Axis.vertical,
     this.onTickFollow,
     this.anchorSize,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -17,7 +17,7 @@ main() {
           hex = hex.substring(1);
         }
         if (hex.length == 6) {
-          hex = 'ff' + hex;
+          hex = 'ff$hex';
         }
         int.parse(hex, radix: 16);
         shades[scale] = '0x$hex';
@@ -35,7 +35,7 @@ main() {
         hex = hex.substring(1);
       }
       if (hex.length == 6) {
-        hex = 'ff' + hex;
+        hex = 'ff$hex';
       }
       int.parse(hex, radix: 16);
       result += "\tstatic const Color ${color.key} = Color(0x$hex);\n";

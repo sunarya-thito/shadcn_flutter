@@ -63,7 +63,7 @@ class _SortableExample1State extends State<SortableExample1> {
           },
           items: items,
         ),
-        Gap(16),
+        const Gap(16),
         PrimaryButton(
           alignment: Alignment.center,
           onPressed: () {
@@ -98,7 +98,7 @@ class _SortableExample1State extends State<SortableExample1> {
               },
             );
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
       ],
     );

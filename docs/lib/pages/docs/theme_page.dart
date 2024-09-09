@@ -4,7 +4,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import '../docs_page.dart';
 
 class ThemePage extends StatefulWidget {
-  const ThemePage({Key? key}) : super(key: key);
+  const ThemePage({super.key});
 
   @override
   State<ThemePage> createState() => _ThemePageState();
@@ -178,8 +178,8 @@ class _ThemePageState extends State<ThemePage> {
             max: 1.5,
             divisions: 20,
           ).p(),
-          Gap(16),
-          Alert(
+          const Gap(16),
+          const Alert(
             leading: Icon(RadixIcons.infoCircled),
             content: Text(
                 'This does not scale the entire app. Only shadcn_flutter components are affected.'),
@@ -329,7 +329,7 @@ class _ThemePageState extends State<ThemePage> {
                     ),
                   ),
                 ),
-                Gap(8),
+                const Gap(8),
                 Text(name),
               ],
             ),
@@ -362,7 +362,7 @@ class _ThemePageState extends State<ThemePage> {
                     ),
                   ),
                 ),
-                Gap(8),
+                const Gap(8),
                 Text(name),
               ],
             ),

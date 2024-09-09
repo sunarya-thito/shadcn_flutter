@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class FilePickerExample1 extends StatefulWidget {
+  const FilePickerExample1({super.key});
+
   @override
   State<FilePickerExample1> createState() => _FilePickerExample1State();
 }

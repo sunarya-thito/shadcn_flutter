@@ -29,12 +29,12 @@ class _CupertinoExample1State extends State<CupertinoExample1> {
               '$_counter',
               style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
             ),
-            shadcnui.Gap(16),
+            const shadcnui.Gap(16),
             CupertinoButton.filled(
               onPressed: () => setState(() => _counter++),
               child: const Icon(CupertinoIcons.add),
             ),
-            shadcnui.Gap(64),
+            const shadcnui.Gap(64),
             shadcnui.ShadcnUI(
                 child: shadcnui.Card(
               child: Column(
@@ -42,7 +42,7 @@ class _CupertinoExample1State extends State<CupertinoExample1> {
                 children: [
                   const Text(
                       'You can also use shadcn_flutter widgets inside Material widgets'),
-                  shadcnui.Gap(16),
+                  const shadcnui.Gap(16),
                   shadcnui.PrimaryButton(
                     onPressed: () {
                       showCupertinoDialog(
@@ -65,7 +65,7 @@ class _CupertinoExample1State extends State<CupertinoExample1> {
                     },
                     child: const Text('Open Cupertino Dialog'),
                   ),
-                  shadcnui.Gap(8),
+                  const shadcnui.Gap(8),
                   shadcnui.SecondaryButton(
                     onPressed: () {
                       shadcnui.showDialog(

@@ -29,8 +29,8 @@ class _SelectExample1State extends State<SelectExample1> {
       },
       value: selectedValue,
       placeholder: const Text('Select a fruit'),
-      children: [
-        const SelectGroup(
+      children: const [
+        SelectGroup(
           headers: [
             SelectLabel(
               child: Text('Apple'),
@@ -47,7 +47,7 @@ class _SelectExample1State extends State<SelectExample1> {
             ),
           ],
         ),
-        const SelectGroup(
+        SelectGroup(
           headers: [
             SelectLabel(
               child: Text('Banana'),
@@ -64,7 +64,7 @@ class _SelectExample1State extends State<SelectExample1> {
             ),
           ],
         ),
-        const SelectGroup(
+        SelectGroup(
           headers: [
             SelectLabel(
               child: Text('Lemon'),
@@ -82,12 +82,12 @@ class _SelectExample1State extends State<SelectExample1> {
           ],
         ),
         SelectGroup(
-          headers: const [
+          headers: [
             SelectLabel(
               child: Text('Tomato'),
             ),
           ],
-          children: const [
+          children: [
             SelectItemButton(
               value: 'Red Tomato',
               child: Text('Red'),

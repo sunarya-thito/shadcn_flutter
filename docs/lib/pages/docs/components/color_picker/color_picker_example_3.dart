@@ -19,9 +19,9 @@ class ColorPickerExample3 extends StatelessWidget {
               },
             );
           },
-          child: Text('Open Color Picker Popover'),
+          child: const Text('Open Color Picker Popover'),
         ),
-        Gap(16),
+        const Gap(16),
         PrimaryButton(
           onPressed: () {
             showColorPickerDialog(
@@ -33,7 +33,7 @@ class ColorPickerExample3 extends StatelessWidget {
               color: ColorDerivative.fromColor(Colors.blue),
             );
           },
-          child: Text('Open Color Picker Dialog'),
+          child: const Text('Open Color Picker Dialog'),
         ),
       ],
     );

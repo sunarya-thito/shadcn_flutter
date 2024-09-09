@@ -16,9 +16,9 @@ class PhoneInputExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: PhoneInputExample1(),
           path:
               'lib/pages/docs/components/phone_input/phone_input_example_1.dart',
+          child: PhoneInputExample1(),
         ),
       ],
     );

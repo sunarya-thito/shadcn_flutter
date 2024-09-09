@@ -24,16 +24,16 @@ class ColorPickerExample extends StatelessWidget {
           child: ColorPickerExample1(),
         ),
         WidgetUsageExample(
-          child: ColorPickerExample2(),
           path:
               'lib/pages/docs/components/color_picker/color_picker_example_2.dart',
           title: 'Screen Color Picker Example',
+          child: ColorPickerExample2(),
         ),
         WidgetUsageExample(
-          child: ColorPickerExample3(),
           path:
               'lib/pages/docs/components/color_picker/color_picker_example_3.dart',
           title: 'Color Picker Trigger Example',
+          child: ColorPickerExample3(),
         ),
       ],
     );

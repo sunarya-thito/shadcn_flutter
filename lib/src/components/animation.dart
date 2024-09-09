@@ -19,7 +19,7 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
   final Widget? child;
 
   const AnimatedValueBuilder({
-    Key? key,
+    super.key,
     this.initialValue,
     required this.value,
     this.duration,
@@ -31,11 +31,10 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
     this.child,
   })  : animationBuilder = null,
         assert(duration != null || durationBuilder != null,
-            'You must provide a duration or a durationBuilder.'),
-        super(key: key);
+            'You must provide a duration or a durationBuilder.');
 
   const AnimatedValueBuilder.animation({
-    Key? key,
+    super.key,
     this.initialValue,
     required this.value,
     this.duration,
@@ -48,8 +47,7 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
         animationBuilder = builder,
         child = null,
         assert(duration != null || durationBuilder != null,
-            'You must provide a duration or a durationBuilder.'),
-        super(key: key);
+            'You must provide a duration or a durationBuilder.');
 
   @override
   State<StatefulWidget> createState() {
@@ -470,11 +468,11 @@ class CrossFadedTransition extends StatefulWidget {
   final AlignmentGeometry alignment;
 
   const CrossFadedTransition({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = kDefaultDuration,
     this.alignment = Alignment.center,
-  }) : super(key: key);
+  });
 
   @override
   State<CrossFadedTransition> createState() => _CrossFadedTransitionState();

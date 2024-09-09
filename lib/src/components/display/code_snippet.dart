@@ -10,12 +10,12 @@ class CodeSnippet extends StatefulWidget {
   final List<Widget> actions;
 
   const CodeSnippet({
-    Key? key,
+    super.key,
     this.constraints,
     this.actions = const [],
     required this.code,
     required this.mode,
-  }) : super(key: key);
+  });
 
   @override
   State<CodeSnippet> createState() => _CodeSnippetState();

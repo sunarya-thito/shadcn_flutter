@@ -7,5 +7,5 @@ abstract class SpinnerElement {
 }
 
 abstract class Spinner extends StatelessWidget {
-  const Spinner({Key? key}) : super(key: key);
+  const Spinner({super.key});
 }

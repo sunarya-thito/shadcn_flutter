@@ -5,10 +5,10 @@ class Radio extends StatelessWidget {
   final bool focusing;
 
   const Radio({
-    Key? key,
+    super.key,
     required this.value,
     this.focusing = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +66,13 @@ class RadioItem<T> extends StatefulWidget {
   final FocusNode? focusNode;
 
   const RadioItem({
-    Key? key,
+    super.key,
     this.leading,
     this.trailing,
     required this.value,
     this.enabled = true,
     this.focusNode,
-  }) : super(key: key);
+  });
 
   @override
   State<RadioItem<T>> createState() => _RadioItemState<T>();
@@ -160,12 +160,12 @@ class RadioCard<T> extends StatefulWidget {
   final FocusNode? focusNode;
 
   const RadioCard({
-    Key? key,
+    super.key,
     required this.child,
     required this.value,
     this.enabled = true,
     this.focusNode,
-  }) : super(key: key);
+  });
 
   @override
   State<RadioCard<T>> createState() => _RadioCardState<T>();
@@ -267,11 +267,11 @@ class RadioGroup<T> extends StatefulWidget {
   final T? value;
   final ValueChanged<T>? onChanged;
   const RadioGroup({
-    Key? key,
+    super.key,
     required this.child,
     this.value,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   _RadioGroupState<T> createState() => _RadioGroupState<T>();

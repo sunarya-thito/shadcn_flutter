@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ToastExample1 extends StatefulWidget {
+  const ToastExample1({super.key});
+
   @override
   State<ToastExample1> createState() => _ToastExample1State();
 }
@@ -9,14 +11,14 @@ class _ToastExample1State extends State<ToastExample1> {
   Widget buildToast(BuildContext context, ToastOverlay overlay) {
     return SurfaceCard(
       child: Basic(
-        title: Text('Event has been created'),
-        subtitle: Text('Sunday, July 07, 2024 at 12:00 PM'),
+        title: const Text('Event has been created'),
+        subtitle: const Text('Sunday, July 07, 2024 at 12:00 PM'),
         trailing: PrimaryButton(
-            child: Text('Undo'),
             size: ButtonSize.small,
             onPressed: () {
               overlay.close();
-            }),
+            },
+            child: const Text('Undo')),
         trailingAlignment: Alignment.center,
       ),
     );
@@ -36,7 +38,7 @@ class _ToastExample1State extends State<ToastExample1> {
               location: ToastLocation.bottomLeft,
             );
           },
-          child: Text('Show Bottom Left Toast'),
+          child: const Text('Show Bottom Left Toast'),
         ),
         PrimaryButton(
           onPressed: () {
@@ -46,7 +48,7 @@ class _ToastExample1State extends State<ToastExample1> {
               location: ToastLocation.bottomRight,
             );
           },
-          child: Text('Show Bottom Right Toast'),
+          child: const Text('Show Bottom Right Toast'),
         ),
         PrimaryButton(
           onPressed: () {
@@ -56,7 +58,7 @@ class _ToastExample1State extends State<ToastExample1> {
               location: ToastLocation.topLeft,
             );
           },
-          child: Text('Show Top Left Toast'),
+          child: const Text('Show Top Left Toast'),
         ),
         PrimaryButton(
           onPressed: () {
@@ -66,7 +68,7 @@ class _ToastExample1State extends State<ToastExample1> {
               location: ToastLocation.topRight,
             );
           },
-          child: Text('Show Top Right Toast'),
+          child: const Text('Show Top Right Toast'),
         ),
         // bottom center
         PrimaryButton(
@@ -77,7 +79,7 @@ class _ToastExample1State extends State<ToastExample1> {
               location: ToastLocation.bottomCenter,
             );
           },
-          child: Text('Show Bottom Center Toast'),
+          child: const Text('Show Bottom Center Toast'),
         ),
         // top center
         PrimaryButton(
@@ -88,7 +90,7 @@ class _ToastExample1State extends State<ToastExample1> {
               location: ToastLocation.topCenter,
             );
           },
-          child: Text('Show Top Center Toast'),
+          child: const Text('Show Top Center Toast'),
         ),
       ],
     );

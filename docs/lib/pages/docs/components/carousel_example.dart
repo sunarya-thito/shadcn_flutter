@@ -37,12 +37,12 @@ class NumberedContainer extends StatelessWidget {
   final double? height;
   final bool fill;
   const NumberedContainer({
-    Key? key,
+    super.key,
     required this.index,
     this.width,
     this.height,
     this.fill = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -5,10 +5,10 @@ class SidebarSection extends StatelessWidget {
   final List<Widget> children;
 
   const SidebarSection({
-    Key? key,
+    super.key,
     required this.header,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class SidebarSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         header.small().semiBold().withPadding(vertical: 4, horizontal: 8),
-        Gap(4),
+        const Gap(4),
         ...children,
       ],
     );
@@ -31,11 +31,11 @@ class SidebarButton extends StatelessWidget {
   final bool selected;
 
   const SidebarButton({
-    Key? key,
+    super.key,
     required this.child,
     required this.onPressed,
     required this.selected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +76,12 @@ class DocsNavigationButton extends StatelessWidget {
   final Widget? trailing;
 
   const DocsNavigationButton({
-    Key? key,
+    super.key,
     this.trailing,
     required this.child,
     required this.onPressed,
     required this.selected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +119,7 @@ class DocsNavigationButton extends StatelessWidget {
 class SidebarNav extends StatelessWidget {
   final List<Widget> children;
 
-  const SidebarNav({Key? key, required this.children}) : super(key: key);
+  const SidebarNav({super.key, required this.children});
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +130,7 @@ class SidebarNav extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
-          children: join(children, Gap(16)).toList(),
+          children: join(children, const Gap(16)).toList(),
         ),
       ),
     );

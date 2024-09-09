@@ -8,16 +8,15 @@ class Alert extends StatelessWidget {
   final bool destructive;
 
   const Alert(
-      {Key? key,
+      {super.key,
       this.leading,
       this.title,
       this.content,
       this.trailing,
-      this.destructive = false})
-      : super(key: key);
+      this.destructive = false});
 
   const Alert.destructive({
-    Key? key,
+    super.key,
     this.leading,
     this.title,
     this.content,

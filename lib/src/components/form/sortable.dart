@@ -6,9 +6,9 @@ class SortableLayer extends StatefulWidget {
   final Widget child;
 
   const SortableLayer({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<SortableLayer> createState() => SortableLayerState();
@@ -222,7 +222,7 @@ abstract class AbstractSortable extends StatefulWidget {
   final bool removeOnDismiss;
 
   const AbstractSortable({
-    Key? key,
+    super.key,
     required this.items,
     this.onReorder,
     this.onAdded,
@@ -240,7 +240,7 @@ abstract class AbstractSortable extends StatefulWidget {
     this.physics,
     this.padding,
     this.removeOnDismiss = false,
-  }) : super(key: key);
+  });
 
   @override
   State<AbstractSortable> createState();
@@ -353,8 +353,8 @@ abstract class AbstractSortableState<T> extends State<AbstractSortable> {
             key: handler.handlerKey,
             handler: handler,
             direction: widget.direction,
-            child: widget.items[index].child,
             activeTransfer: layerState!.findTransferItem(handler.item),
+            child: widget.items[index].child,
           ),
         );
       },
@@ -369,12 +369,12 @@ class _SortableItem extends StatefulWidget {
   final _SortableTransferItem? activeTransfer;
 
   const _SortableItem({
-    Key? key,
+    super.key,
     required this.handler,
     required this.direction,
     required this.child,
     this.activeTransfer,
-  }) : super(key: key);
+  });
 
   @override
   State<_SortableItem> createState() => SortableItemState();
@@ -435,9 +435,9 @@ class SortableHandle extends StatelessWidget {
   final Widget child;
 
   const SortableHandle({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -490,11 +490,11 @@ class _SortableItemHandler {
 }
 
 class DragSortable extends AbstractSortable {
-  const DragSortable({
+  const DragSortable({super.key, 
     required super.items,
-    required void Function(int oldIndex, int newIndex)? onReorder,
-    required void Function(int index)? onRemoved,
-    required void Function(int index, SortableItem item)? onAdded,
+    required super.onReorder,
+    required super.onRemoved,
+    required super.onAdded,
     // super.onSwap, only for Swappable
     super.canAdd,
     super.canReorder,
@@ -507,11 +507,7 @@ class DragSortable extends AbstractSortable {
     super.primary = false,
     super.physics,
     super.padding,
-  }) : super(
-          onReorder: onReorder,
-          onAdded: onAdded,
-          onRemoved: onRemoved,
-        );
+  });
 
   @override
   State<AbstractSortable> createState() {

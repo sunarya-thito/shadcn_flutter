@@ -16,9 +16,9 @@ class HoverCardExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: HoverCardExample1(),
           path:
               'lib/pages/docs/components/hover_card/hover_card_example_1.dart',
+          child: HoverCardExample1(),
         ),
       ],
     );

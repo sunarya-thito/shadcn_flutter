@@ -10,7 +10,7 @@ class NumberTickerExample1 extends StatefulWidget {
 
 class _NumberTickerExample1State extends State<NumberTickerExample1> {
   int _number = 0;
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class _NumberTickerExample1State extends State<NumberTickerExample1> {
             return NumberFormat.compact().format(number);
           },
         ),
-        Gap(24),
+        const Gap(24),
         TextField(
           initialValue: _number.toString(),
           controller: _controller,

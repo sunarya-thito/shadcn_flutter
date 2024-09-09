@@ -35,10 +35,10 @@ class PageItemWidget extends StatelessWidget {
   final Widget child;
 
   const PageItemWidget({
-    Key? key,
+    super.key,
     required this.onThisPage,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +59,13 @@ class DocsPage extends StatefulWidget {
   final List<Widget> navigationItems;
   final bool scrollable;
   const DocsPage({
-    Key? key,
+    super.key,
     required this.name,
     required this.child,
     this.onThisPage = const {},
     this.navigationItems = const [],
     this.scrollable = true,
-  }) : super(key: key);
+  });
 
   @override
   DocsPageState createState() => DocsPageState();

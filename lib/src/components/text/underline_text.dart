@@ -4,9 +4,9 @@ class UnderlineInterceptor extends StatelessWidget {
   final Widget child;
 
   const UnderlineInterceptor({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +27,11 @@ class UnderlineText extends StatelessWidget {
   final bool translate;
 
   const UnderlineText({
-    Key? key,
+    super.key,
     required this.child,
     this.underline = true,
     this.translate = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

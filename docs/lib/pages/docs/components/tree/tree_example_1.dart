@@ -97,7 +97,7 @@ class _TreeExample1State extends State<TreeExample1> {
                           width: 16,
                           height: 16,
                           alignment: Alignment.center,
-                          child: CircularProgressIndicator(),
+                          child: const CircularProgressIndicator(),
                         )
                       : null,
                   leading: node.leaf
@@ -117,7 +117,7 @@ class _TreeExample1State extends State<TreeExample1> {
             ),
           ),
         ),
-        Gap(16),
+        const Gap(16),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -127,20 +127,20 @@ class _TreeExample1State extends State<TreeExample1> {
                   treeItems = treeItems.expandAll();
                 });
               },
-              child: Text('Expand All'),
+              child: const Text('Expand All'),
             ),
-            Gap(8),
+            const Gap(8),
             PrimaryButton(
               onPressed: () {
                 setState(() {
                   treeItems = treeItems.collapseAll();
                 });
               },
-              child: Text('Collapse All'),
+              child: const Text('Collapse All'),
             ),
           ],
         ),
-        Gap(8),
+        const Gap(8),
         Checkbox(
           state: expandIcon ? CheckboxState.checked : CheckboxState.unchecked,
           onChanged: (value) {
@@ -150,7 +150,7 @@ class _TreeExample1State extends State<TreeExample1> {
           },
           trailing: const Text('Expand Icon'),
         ),
-        Gap(8),
+        const Gap(8),
         Checkbox(
           state: usePath ? CheckboxState.checked : CheckboxState.unchecked,
           onChanged: (value) {
@@ -160,7 +160,7 @@ class _TreeExample1State extends State<TreeExample1> {
           },
           trailing: const Text('Use Path Branch Line'),
         ),
-        Gap(8),
+        const Gap(8),
         Checkbox(
           state: recursiveSelection
               ? CheckboxState.checked

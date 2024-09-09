@@ -9,7 +9,7 @@ class AvatarGroupExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'avatar_group',
       description: 'Show a group of avatars.',
       displayName: 'Avatar Group',

@@ -718,10 +718,9 @@ class _TextThenWidget extends StatelessWidget {
   final List<InlineSpan> then;
 
   const _TextThenWidget({
-    Key? key,
     required this.text,
     required this.then,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -790,10 +789,9 @@ class _RichTextThenWidget extends StatelessWidget {
   final List<InlineSpan> then;
 
   const _RichTextThenWidget({
-    Key? key,
     required this.text,
     required this.then,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -879,7 +877,7 @@ class WrappedText extends StatelessWidget {
   final WrappedTextDataBuilder<TextWidthBasis>? textWidthBasis;
 
   const WrappedText({
-    Key? key,
+    super.key,
     required this.child,
     this.style,
     this.textAlign,
@@ -887,7 +885,7 @@ class WrappedText extends StatelessWidget {
     this.overflow,
     this.maxLines,
     this.textWidthBasis,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

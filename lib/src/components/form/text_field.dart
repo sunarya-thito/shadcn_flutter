@@ -43,7 +43,7 @@ class TextField extends StatefulWidget {
   final TextInputAction? textInputAction;
 
   const TextField({
-    Key? key,
+    super.key,
     this.controller,
     this.maxLength,
     this.maxLengthEnforcement,
@@ -79,7 +79,7 @@ class TextField extends StatefulWidget {
     this.useNativeContextMenu = false,
     this.isCollapsed,
     this.textInputAction,
-  }) : super(key: key);
+  });
 
   static Widget _defaultContextMenuBuilder(
       BuildContext context, EditableTextState editableTextState) {

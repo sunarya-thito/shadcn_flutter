@@ -5,10 +5,10 @@ class ChipButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const ChipButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +51,13 @@ class Chip extends StatelessWidget {
   final AbstractButtonStyle? style;
 
   const Chip({
-    Key? key,
+    super.key,
     required this.child,
     this.leading,
     this.trailing,
     this.onPressed,
     this.style,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

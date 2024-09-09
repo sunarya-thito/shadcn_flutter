@@ -26,7 +26,7 @@ class RefreshTrigger extends StatefulWidget {
   final Duration completeDuration;
 
   const RefreshTrigger({
-    Key? key,
+    super.key,
     this.minExtent = 75.0,
     this.maxExtent = 150.0,
     this.onRefresh,
@@ -36,7 +36,7 @@ class RefreshTrigger extends StatefulWidget {
     this.curve = Curves.easeOutSine,
     this.completeDuration = const Duration(milliseconds: 500),
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<RefreshTrigger> createState() => RefreshTriggerState();
@@ -45,8 +45,7 @@ class RefreshTrigger extends StatefulWidget {
 class DefaultRefreshIndicator extends StatefulWidget {
   final RefreshTriggerStage stage;
 
-  const DefaultRefreshIndicator({Key? key, required this.stage})
-      : super(key: key);
+  const DefaultRefreshIndicator({super.key, required this.stage});
 
   @override
   State<DefaultRefreshIndicator> createState() =>

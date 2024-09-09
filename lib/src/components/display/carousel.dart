@@ -106,7 +106,7 @@ class Carousel extends StatefulWidget {
   final bool disableDraggingVelocity;
 
   const Carousel({
-    Key? key,
+    super.key,
     required this.itemBuilder,
     this.itemCount,
     this.controller,
@@ -128,8 +128,7 @@ class Carousel extends StatefulWidget {
     this.disableDraggingVelocity = false,
   })  : assert(sizeFactor > 0, 'sizeFactor must be greater than 0'),
         assert(wrap || itemCount != null,
-            'itemCount must be provided if wrap is false'),
-        super(key: key);
+            'itemCount must be provided if wrap is false');
 
   @override
   State<Carousel> createState() => _CarouselState();

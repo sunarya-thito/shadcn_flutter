@@ -27,11 +27,11 @@ class SelectItemButton<T> extends StatelessWidget
   final SearchIndexer? computeIndexingScore;
 
   const SelectItemButton({
-    Key? key,
+    super.key,
     this.computeIndexingScore,
     required this.value,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   SearchResult search(SearchQuery<T> query) {
@@ -97,22 +97,21 @@ class SelectGroup<T> extends StatelessWidget implements AbstractSelectItem<T> {
   final SearchFilter<T>? searchFilter;
 
   const SelectGroup({
-    Key? key,
+    super.key,
     this.headers,
     this.footers,
     this.showUnrelatedValues,
     required this.children,
     this.searchFilter,
-  }) : super(key: key);
+  });
 
   const SelectGroup.fixedOrder({
-    Key? key,
+    super.key,
     this.headers,
     this.footers,
     this.showUnrelatedValues,
     required this.children,
-  })  : searchFilter = _keepOrderFilter,
-        super(key: key);
+  })  : searchFilter = _keepOrderFilter;
 
   @override
   SearchResult search(SearchQuery<T> query) {
@@ -206,6 +205,8 @@ typedef SelectItemBuilder<T> = Widget Function(
     BuildContext context, SelectItemReporter selectItem, List<T> selectedValue);
 
 abstract class AbstractSelectItem<T> extends Widget {
+  const AbstractSelectItem({super.key});
+
   SearchResult search(SearchQuery<T> query);
 }
 
@@ -214,10 +215,10 @@ class SelectItem<T> extends StatelessWidget implements AbstractSelectItem<T> {
   final T value;
 
   const SelectItem({
-    Key? key,
+    super.key,
     required this.value,
     required this.builder,
-  }) : super(key: key);
+  });
 
   @override
   SearchResult search(SearchQuery<T> query) {
@@ -255,9 +256,9 @@ class SelectLabel extends StatelessWidget {
   final Widget child;
 
   const SelectLabel({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -298,7 +299,7 @@ class Select<T> extends StatefulWidget {
   final bool autoClosePopover;
 
   const Select({
-    Key? key,
+    super.key,
     this.onChanged,
     this.searchFilter,
     this.placeholder,
@@ -323,7 +324,7 @@ class Select<T> extends StatefulWidget {
     this.autoClosePopover = true,
     required this.itemBuilder,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   SelectState<T> createState() => SelectState<T>();
@@ -339,7 +340,7 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
     _valueNotifier =
-        ValueNotifier(widget.value == null ? const [] : [widget.value!]);
+        ValueNotifier(widget.value == null ? const [] : [widget.value as T]);
   }
 
   @override
@@ -364,7 +365,7 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
     if (widget.value != oldWidget.value) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         _valueNotifier.value =
-            widget.value == null ? const [] : [widget.value!];
+            widget.value == null ? const [] : [widget.value as T];
       });
       reportNewFormValue(
         widget.value,
@@ -508,7 +509,7 @@ class SelectPopup<T> extends StatefulWidget {
   final bool autoClose;
 
   const SelectPopup({
-    Key? key,
+    super.key,
     required this.value,
     this.searchFilter,
     this.constraints,
@@ -521,7 +522,7 @@ class SelectPopup<T> extends StatefulWidget {
     this.surfaceOpacity,
     this.autoClose = true,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   SelectPopupState<T> createState() => SelectPopupState<T>();
@@ -871,7 +872,7 @@ class MultiSelect<T> extends StatefulWidget {
   final bool autoClosePopover;
 
   const MultiSelect({
-    Key? key,
+    super.key,
     this.onChanged,
     this.searchFilter,
     this.placeholder,
@@ -895,7 +896,7 @@ class MultiSelect<T> extends StatefulWidget {
     this.autoClosePopover = false,
     required this.itemBuilder,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   State<MultiSelect<T>> createState() => MultiSelectState<T>();
@@ -1045,11 +1046,8 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
                           children: [
                             for (var value in widget.value)
                               Chip(
-                                style: ButtonStyle.primary(),
+                                style: const ButtonStyle.primary(),
                                 trailing: ChipButton(
-                                  child: const Icon(
-                                    Icons.close,
-                                  ).iconSmall(),
                                   onPressed: widget.onChanged == null
                                       ? null
                                       : () {
@@ -1060,6 +1058,9 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
                                             widget.onChanged!(newValue);
                                           }
                                         },
+                                  child: const Icon(
+                                    Icons.close,
+                                  ).iconSmall(),
                                 ),
                                 child: widget.itemBuilder(
                                   context,

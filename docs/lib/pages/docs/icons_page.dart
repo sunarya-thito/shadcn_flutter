@@ -5,7 +5,7 @@ import '../../bootstrap_icons.dart';
 import '../docs_page.dart';
 
 class IconsPage extends StatefulWidget {
-  const IconsPage({Key? key}) : super(key: key);
+  const IconsPage({super.key});
 
   @override
   _IconsPageState createState() => _IconsPageState();
@@ -51,7 +51,7 @@ class _IconsPageState extends State<IconsPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text('Use this code to display this icon:'),
-              Gap(8),
+              const Gap(8),
               CodeSnippet(
                 code: 'Icon($className.${entry.key})',
                 mode: 'dart',
@@ -228,7 +228,7 @@ class _IconsPageState extends State<IconsPage> {
                     additionalLength,
                 padding: const EdgeInsets.only(bottom: 32),
                 separatorBuilder: (context, index) {
-                  return Gap(8);
+                  return const Gap(8);
                 },
                 itemBuilder: (context, index) {
                   if (filteredRadixIcons.isNotEmpty) {
@@ -250,7 +250,7 @@ class _IconsPageState extends State<IconsPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               OutlinedContainer(child: Icon(e.value, size: 48)),
-                              Gap(24),
+                              const Gap(24),
                               Text(e.key),
                             ],
                           ));
@@ -276,7 +276,7 @@ class _IconsPageState extends State<IconsPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               OutlinedContainer(child: Icon(e.value, size: 48)),
-                              Gap(24),
+                              const Gap(24),
                               Text(e.key),
                             ],
                           ));

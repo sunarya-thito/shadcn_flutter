@@ -19,7 +19,7 @@ class ColorPickerExample2 extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('Color: ${colorToHex(result)}'),
-                  Gap(16),
+                  const Gap(16),
                   Container(
                     width: 24,
                     height: 24,
@@ -34,7 +34,7 @@ class ColorPickerExample2 extends StatelessWidget {
           );
         }
       },
-      child: Text('Pick Color'),
+      child: const Text('Pick Color'),
     );
   }
 }

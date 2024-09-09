@@ -44,10 +44,10 @@ class KeyboardShortcutDisplayMapper extends StatefulWidget {
   final Widget child;
 
   const KeyboardShortcutDisplayMapper({
-    Key? key,
+    super.key,
     this.builder = _defaultBuilder,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<KeyboardShortcutDisplayMapper> createState() =>
@@ -118,10 +118,10 @@ class KeyboardKeyDisplay extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const KeyboardKeyDisplay({
-    Key? key,
+    super.key,
     required this.keyboardKey,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

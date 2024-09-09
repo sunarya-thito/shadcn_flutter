@@ -36,7 +36,7 @@ class LinearProgressIndicator extends StatelessWidget {
   final bool disableAnimation;
 
   const LinearProgressIndicator({
-    Key? key,
+    super.key,
     this.value,
     this.backgroundColor,
     this.minHeight,
@@ -44,7 +44,7 @@ class LinearProgressIndicator extends StatelessWidget {
     this.borderRadius,
     this.showSparks = false,
     this.disableAnimation = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

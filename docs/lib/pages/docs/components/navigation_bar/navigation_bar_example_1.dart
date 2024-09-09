@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class NavigationBarExample1 extends StatefulWidget {
+  const NavigationBarExample1({super.key});
+
   @override
   State<NavigationBarExample1> createState() => _NavigationBarExample1State();
 }
@@ -55,7 +57,7 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
         ],
         child: Container(
           color: Colors.primaries[Colors.primaries.length - selected - 1],
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           child: Card(
             child: Wrap(
               alignment: WrapAlignment.center,
@@ -118,7 +120,7 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
                       expands = value == CheckboxState.checked;
                     });
                   },
-                  trailing: Text('Expands'),
+                  trailing: const Text('Expands'),
                 ),
                 Checkbox(
                   state: customButtonStyle
@@ -129,7 +131,7 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
                       customButtonStyle = value == CheckboxState.checked;
                     });
                   },
-                  trailing: Text('Custom Button Style'),
+                  trailing: const Text('Custom Button Style'),
                 ),
               ],
             ),

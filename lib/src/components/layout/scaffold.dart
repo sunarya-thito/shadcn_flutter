@@ -361,8 +361,8 @@ class _ScaffoldRenderFlex extends RenderBox
   bool _floatingHeader = false;
   bool _floatingFooter = false;
 
-  ValueNotifier<double> _headerSize = ValueNotifier(0);
-  ValueNotifier<double> _footerSize = ValueNotifier(0);
+  final ValueNotifier<double> _headerSize = ValueNotifier(0);
+  final ValueNotifier<double> _footerSize = ValueNotifier(0);
 
   @override
   void setupParentData(covariant RenderObject child) {
@@ -486,7 +486,7 @@ class _RenderScaffoldPadding extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, _ScaffoldParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, _ScaffoldParentData> {
-  _ScaffoldPaddingType _paddingType;
+  final _ScaffoldPaddingType _paddingType;
 
   _RenderScaffoldPadding({
     _ScaffoldPaddingType paddingType = _ScaffoldPaddingType.header,

@@ -92,11 +92,11 @@ class StageContainer extends StatelessWidget {
   final EdgeInsets padding;
 
   const StageContainer({
-    Key? key,
+    super.key,
     this.breakpoint = StageBreakpoint.defaultBreakpoints,
     required this.builder,
     this.padding = const EdgeInsets.symmetric(horizontal: 72),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

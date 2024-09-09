@@ -9,12 +9,12 @@ class Toggle extends StatefulWidget {
   final ButtonStyle style;
 
   const Toggle({
-    Key? key,
+    super.key,
     required this.value,
     this.onChanged,
     required this.child,
     this.style = const ButtonStyle.ghost(),
-  }) : super(key: key);
+  });
 
   @override
   ToggleState createState() => ToggleState();
@@ -66,7 +66,7 @@ class SelectedButton extends StatefulWidget {
   final AlignmentGeometry? marginAlignment;
 
   const SelectedButton({
-    Key? key,
+    super.key,
     required this.value,
     this.onChanged,
     required this.child,
@@ -75,7 +75,7 @@ class SelectedButton extends StatefulWidget {
     this.selectedStyle = const ButtonStyle.secondary(),
     this.alignment,
     this.marginAlignment,
-  }) : super(key: key);
+  });
 
   @override
   SelectedButtonState createState() => SelectedButtonState();
@@ -133,7 +133,7 @@ class Button extends StatefulWidget {
   final AlignmentGeometry? marginAlignment;
   final bool disableFocusOutline;
   const Button({
-    Key? key,
+    super.key,
     this.statesController,
     this.leading,
     this.trailing,
@@ -166,7 +166,7 @@ class Button extends StatefulWidget {
     this.onTertiaryLongPress,
     this.marginAlignment,
     this.disableFocusOutline = false,
-  }) : super(key: key);
+  });
 
   const Button.primary({
     super.key,
@@ -1500,7 +1500,7 @@ class PrimaryButton extends StatelessWidget {
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const PrimaryButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.enabled,
@@ -1531,7 +1531,7 @@ class PrimaryButton extends StatelessWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1544,7 +1544,6 @@ class PrimaryButton extends StatelessWidget {
       style: ButtonStyle.primary(size: size, density: density, shape: shape),
       focusNode: focusNode,
       disableTransition: disableTransition,
-      child: child,
       onHover: onHover,
       onFocus: onFocus,
       trailingExpanded: trailingExpanded,
@@ -1564,6 +1563,7 @@ class PrimaryButton extends StatelessWidget {
       onLongPressEnd: onLongPressEnd,
       onSecondaryLongPress: onSecondaryLongPress,
       onTertiaryLongPress: onTertiaryLongPress,
+      child: child,
     );
   }
 }
@@ -1601,7 +1601,7 @@ class SecondaryButton extends StatelessWidget {
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const SecondaryButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.enabled,
@@ -1632,7 +1632,7 @@ class SecondaryButton extends StatelessWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1645,7 +1645,6 @@ class SecondaryButton extends StatelessWidget {
       style: ButtonStyle.secondary(size: size, density: density, shape: shape),
       focusNode: focusNode,
       disableTransition: disableTransition,
-      child: child,
       onHover: onHover,
       onFocus: onFocus,
       trailingExpanded: trailingExpanded,
@@ -1665,6 +1664,7 @@ class SecondaryButton extends StatelessWidget {
       onLongPressEnd: onLongPressEnd,
       onSecondaryLongPress: onSecondaryLongPress,
       onTertiaryLongPress: onTertiaryLongPress,
+      child: child,
     );
   }
 }
@@ -1702,7 +1702,7 @@ class OutlineButton extends StatelessWidget {
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const OutlineButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.enabled,
@@ -1733,7 +1733,7 @@ class OutlineButton extends StatelessWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1746,7 +1746,6 @@ class OutlineButton extends StatelessWidget {
       style: ButtonStyle.outline(size: size, density: density, shape: shape),
       focusNode: focusNode,
       disableTransition: disableTransition,
-      child: child,
       onHover: onHover,
       onFocus: onFocus,
       trailingExpanded: trailingExpanded,
@@ -1766,6 +1765,7 @@ class OutlineButton extends StatelessWidget {
       onLongPressEnd: onLongPressEnd,
       onSecondaryLongPress: onSecondaryLongPress,
       onTertiaryLongPress: onTertiaryLongPress,
+      child: child,
     );
   }
 }
@@ -1803,7 +1803,7 @@ class GhostButton extends StatelessWidget {
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const GhostButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.enabled,
@@ -1834,7 +1834,7 @@ class GhostButton extends StatelessWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1847,7 +1847,6 @@ class GhostButton extends StatelessWidget {
       style: ButtonStyle.ghost(size: size, density: density, shape: shape),
       focusNode: focusNode,
       disableTransition: disableTransition,
-      child: child,
       onHover: onHover,
       onFocus: onFocus,
       trailingExpanded: trailingExpanded,
@@ -1867,6 +1866,7 @@ class GhostButton extends StatelessWidget {
       onLongPressEnd: onLongPressEnd,
       onSecondaryLongPress: onSecondaryLongPress,
       onTertiaryLongPress: onTertiaryLongPress,
+      child: child,
     );
   }
 }
@@ -1904,7 +1904,7 @@ class LinkButton extends StatelessWidget {
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const LinkButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.enabled,
@@ -1935,7 +1935,7 @@ class LinkButton extends StatelessWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1948,7 +1948,6 @@ class LinkButton extends StatelessWidget {
       style: ButtonStyle.link(size: size, density: density, shape: shape),
       focusNode: focusNode,
       disableTransition: disableTransition,
-      child: child,
       onHover: onHover,
       onFocus: onFocus,
       trailingExpanded: trailingExpanded,
@@ -1968,6 +1967,7 @@ class LinkButton extends StatelessWidget {
       onLongPressEnd: onLongPressEnd,
       onSecondaryLongPress: onSecondaryLongPress,
       onTertiaryLongPress: onTertiaryLongPress,
+      child: child,
     );
   }
 }
@@ -2005,7 +2005,7 @@ class TextButton extends StatelessWidget {
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const TextButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.enabled,
@@ -2036,7 +2036,7 @@ class TextButton extends StatelessWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -2087,7 +2087,7 @@ class DestructiveButton extends StatelessWidget {
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const DestructiveButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.enabled,
@@ -2118,7 +2118,7 @@ class DestructiveButton extends StatelessWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -2132,7 +2132,6 @@ class DestructiveButton extends StatelessWidget {
           ButtonStyle.destructive(size: size, density: density, shape: shape),
       focusNode: focusNode,
       disableTransition: disableTransition,
-      child: child,
       onHover: onHover,
       onFocus: onFocus,
       trailingExpanded: trailingExpanded,
@@ -2152,6 +2151,7 @@ class DestructiveButton extends StatelessWidget {
       onLongPressEnd: onLongPressEnd,
       onSecondaryLongPress: onSecondaryLongPress,
       onTertiaryLongPress: onTertiaryLongPress,
+      child: child,
     );
   }
 }
@@ -2189,7 +2189,7 @@ class TabButton extends StatelessWidget {
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
   const TabButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.enabled,
@@ -2220,7 +2220,7 @@ class TabButton extends StatelessWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -2233,7 +2233,6 @@ class TabButton extends StatelessWidget {
       style: ButtonStyle.fixed(size: size, density: density, shape: shape),
       focusNode: focusNode,
       disableTransition: disableTransition,
-      child: child,
       onHover: onHover,
       onFocus: onFocus,
       trailingExpanded: trailingExpanded,
@@ -2253,6 +2252,7 @@ class TabButton extends StatelessWidget {
       onLongPressEnd: onLongPressEnd,
       onSecondaryLongPress: onSecondaryLongPress,
       onTertiaryLongPress: onTertiaryLongPress,
+      child: child,
     );
   }
 }

@@ -17,8 +17,8 @@ class SortableExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: SortableExample1(),
           path: 'lib/pages/docs/components/sortable/sortable_example_1.dart',
+          child: SortableExample1(),
         ),
         // WidgetUsageExample(
         //   title: 'Multi Container Example',

@@ -36,7 +36,7 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
   final EdgeInsets? padding;
 
   const Divider({
-    Key? key,
+    super.key,
     this.color,
     this.height,
     this.thickness,
@@ -44,7 +44,7 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
     this.endIndent,
     this.child,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Size get preferredSize => Size(0, height ?? 1);
@@ -213,7 +213,7 @@ class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
   final EdgeInsets? padding;
 
   const VerticalDivider({
-    Key? key,
+    super.key,
     this.color,
     this.width,
     this.thickness,
@@ -221,7 +221,7 @@ class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
     this.endIndent,
     this.child,
     this.padding = const EdgeInsets.symmetric(vertical: 8),
-  }) : super(key: key);
+  });
 
   @override
   Size get preferredSize => Size(width ?? 1, 0);

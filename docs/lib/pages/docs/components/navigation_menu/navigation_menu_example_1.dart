@@ -43,9 +43,9 @@ class NavigationMenuExample1 extends StatelessWidget {
                       const FlutterLogo(
                         size: 32,
                       ),
-                      Gap(16),
+                      const Gap(16),
                       const Text('shadcn_flutter').mono().semiBold().large(),
-                      Gap(8),
+                      const Gap(8),
                       const Text(
                               'Beautifully designed components from Shadcn/UI is now available for Flutter')
                           .muted(),

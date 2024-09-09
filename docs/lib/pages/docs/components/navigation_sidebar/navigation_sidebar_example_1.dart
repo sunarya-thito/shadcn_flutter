@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class NavigationSidebarExample1 extends StatefulWidget {
-  const NavigationSidebarExample1({Key? key}) : super(key: key);
+  const NavigationSidebarExample1({super.key});
 
   @override
   State<NavigationSidebarExample1> createState() =>
@@ -31,21 +31,21 @@ class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
             });
           },
           children: [
-            NavigationLabel(child: Text('Discovery')),
+            const NavigationLabel(child: Text('Discovery')),
             buildButton('Listen Now', BootstrapIcons.playCircle),
             buildButton('Browse', BootstrapIcons.grid),
             buildButton('Radio', BootstrapIcons.broadcast),
-            NavigationGap(24),
-            NavigationDivider(),
-            NavigationLabel(child: Text('Library')),
+            const NavigationGap(24),
+            const NavigationDivider(),
+            const NavigationLabel(child: Text('Library')),
             buildButton('Playlist', BootstrapIcons.musicNoteList),
             buildButton('Songs', BootstrapIcons.musicNote),
             buildButton('For You', BootstrapIcons.person),
             buildButton('Artists', BootstrapIcons.mic),
             buildButton('Albums', BootstrapIcons.record2),
-            NavigationGap(24),
-            NavigationDivider(),
-            NavigationLabel(child: Text('Playlists')),
+            const NavigationGap(24),
+            const NavigationDivider(),
+            const NavigationLabel(child: Text('Playlists')),
             buildButton('Recently Added', BootstrapIcons.musicNoteList),
             buildButton('Recently Played', BootstrapIcons.musicNoteList),
             buildButton('Top Songs', BootstrapIcons.musicNoteList),

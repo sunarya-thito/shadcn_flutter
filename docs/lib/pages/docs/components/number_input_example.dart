@@ -16,9 +16,9 @@ class NumberInputExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: NumberInputExample1(),
           path:
               'lib/pages/docs/components/number_input/number_input_example_1.dart',
+          child: NumberInputExample1(),
         ),
       ],
     );

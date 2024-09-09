@@ -11,7 +11,7 @@ class HoverCard extends StatefulWidget {
   final HitTestBehavior behavior;
   final PopoverController? controller;
   const HoverCard({
-    Key? key,
+    super.key,
     required this.child,
     required this.hoverBuilder,
     this.debounce = const Duration(milliseconds: 500),
@@ -21,7 +21,7 @@ class HoverCard extends StatefulWidget {
     this.popoverOffset = const Offset(0, 8),
     this.behavior = HitTestBehavior.deferToChild,
     this.controller,
-  }) : super(key: key);
+  });
 
   @override
   State<HoverCard> createState() => _HoverCardState();

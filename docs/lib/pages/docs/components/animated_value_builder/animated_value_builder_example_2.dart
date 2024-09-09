@@ -35,7 +35,7 @@ class _AnimatedValueBuilderExample2State
             );
           },
         ),
-        Gap(32),
+        const Gap(32),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -47,7 +47,7 @@ class _AnimatedValueBuilderExample2State
               },
               child: const Text('Change Color'),
             ),
-            Gap(24),
+            const Gap(24),
             PrimaryButton(
               onPressed: () {
                 setState(() {

@@ -30,7 +30,7 @@ class Command extends StatefulWidget {
   final double? surfaceBlur;
 
   const Command({
-    Key? key,
+    super.key,
     required this.builder,
     this.debounceDuration = const Duration(milliseconds: 500),
     this.emptyBuilder,
@@ -38,7 +38,7 @@ class Command extends StatefulWidget {
     this.loadingBuilder,
     this.surfaceOpacity,
     this.surfaceBlur,
-  }) : super(key: key);
+  });
 
   @override
   State<Command> createState() => _CommandState();
@@ -169,10 +169,10 @@ class CommandCategory extends StatelessWidget {
   final Widget? title;
 
   const CommandCategory({
-    Key? key,
+    super.key,
     required this.children,
     this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -201,12 +201,12 @@ class CommandItem extends StatefulWidget {
   final VoidCallback? onTap;
 
   const CommandItem({
-    Key? key,
+    super.key,
     this.leading,
     required this.title,
     this.trailing,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   State<CommandItem> createState() => _CommandItemState();

@@ -99,9 +99,9 @@ class Tracker extends StatelessWidget {
   /// This constructor initializes a new instance of [Tracker]
   /// with the specified data.
   const Tracker({
-    Key? key,
+    super.key,
     required this.data,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

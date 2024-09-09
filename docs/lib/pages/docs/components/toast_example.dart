@@ -8,7 +8,7 @@ class ToastExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'toast',
       description:
           'A toast is a non-modal, unobtrusive window element used to display brief, auto-expiring information to the user.',

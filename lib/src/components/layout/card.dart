@@ -14,7 +14,7 @@ class Card extends StatelessWidget {
   final double? surfaceBlur;
 
   const Card({
-    Key? key,
+    super.key,
     required this.child,
     this.padding,
     this.filled = false,
@@ -26,7 +26,7 @@ class Card extends StatelessWidget {
     this.boxShadow,
     this.surfaceOpacity,
     this.surfaceBlur,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class SurfaceCard extends StatelessWidget {
   final double? surfaceBlur;
 
   const SurfaceCard({
-    Key? key,
+    super.key,
     required this.child,
     this.padding,
     this.filled = false,
@@ -81,7 +81,7 @@ class SurfaceCard extends StatelessWidget {
     this.boxShadow,
     this.surfaceOpacity,
     this.surfaceBlur,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ChipExample1 extends StatelessWidget {
+  const ChipExample1({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -10,41 +12,41 @@ class ChipExample1 extends StatelessWidget {
         Chip(
           trailing: ChipButton(
             onPressed: () {},
-            child: Icon(Icons.close),
+            child: const Icon(Icons.close),
           ),
-          child: Text('Apple'),
+          child: const Text('Apple'),
         ),
         Chip(
           style: const ButtonStyle.primary(),
           trailing: ChipButton(
             onPressed: () {},
-            child: Icon(Icons.close),
+            child: const Icon(Icons.close),
           ),
-          child: Text('Banana'),
+          child: const Text('Banana'),
         ),
         Chip(
           style: const ButtonStyle.outline(),
           trailing: ChipButton(
             onPressed: () {},
-            child: Icon(Icons.close),
+            child: const Icon(Icons.close),
           ),
-          child: Text('Cherry'),
+          child: const Text('Cherry'),
         ),
         Chip(
           style: const ButtonStyle.ghost(),
           trailing: ChipButton(
             onPressed: () {},
-            child: Icon(Icons.close),
+            child: const Icon(Icons.close),
           ),
-          child: Text('Durian'),
+          child: const Text('Durian'),
         ),
         Chip(
           style: const ButtonStyle.destructive(),
           trailing: ChipButton(
             onPressed: () {},
-            child: Icon(Icons.close),
+            child: const Icon(Icons.close),
           ),
-          child: Text('Elderberry'),
+          child: const Text('Elderberry'),
         ),
       ],
     );

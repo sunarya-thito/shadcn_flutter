@@ -40,7 +40,7 @@ class _RadioGroupExample1State extends State<RadioGroupExample1> {
             ],
           ),
         ),
-        Gap(16),
+        const Gap(16),
         Text('Selected: $selectedValue'),
       ],
     );

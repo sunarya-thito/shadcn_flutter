@@ -1,6 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ChipInputExample1 extends StatefulWidget {
+  const ChipInputExample1({super.key});
+
   @override
   State<ChipInputExample1> createState() => _ChipInputExample1State();
 }

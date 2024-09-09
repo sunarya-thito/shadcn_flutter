@@ -1,6 +1,8 @@
 import '../../../shadcn_flutter.dart';
 
 abstract class AvatarWidget extends Widget {
+  const AvatarWidget({super.key});
+
   double? get size;
   double? get borderRadius;
 }
@@ -45,7 +47,7 @@ class Avatar extends StatefulWidget implements AvatarWidget {
   final ImageProvider? provider;
 
   const Avatar({
-    Key? key,
+    super.key,
     required this.initials,
     this.backgroundColor,
     this.size,
@@ -54,10 +56,10 @@ class Avatar extends StatefulWidget implements AvatarWidget {
     this.badgeOffset,
     this.badgeGap,
     this.provider,
-  }) : super(key: key);
+  });
 
   Avatar.network({
-    Key? key,
+    super.key,
     required this.initials,
     this.backgroundColor,
     this.size,
@@ -72,8 +74,7 @@ class Avatar extends StatefulWidget implements AvatarWidget {
           cacheWidth,
           cacheHeight,
           NetworkImage(photoUrl),
-        ),
-        super(key: key);
+        );
 
   @override
   _AvatarState createState() => _AvatarState();
@@ -165,12 +166,14 @@ class _AvatarState extends State<Avatar> {
 }
 
 class AvatarBadge extends StatelessWidget implements AvatarWidget {
+  @override
   final double? size;
+  @override
   final double? borderRadius;
   final Widget? child;
   final Color? color;
 
-  AvatarBadge({
+  const AvatarBadge({super.key, 
     this.child,
     this.size,
     this.borderRadius,
@@ -195,11 +198,13 @@ class AvatarBadge extends StatelessWidget implements AvatarWidget {
 }
 
 class _AvatarWidget extends StatelessWidget implements AvatarWidget {
+  @override
   final double? size;
+  @override
   final double? borderRadius;
   final Widget child;
 
-  _AvatarWidget({
+  const _AvatarWidget({
     required this.child,
     this.size,
     this.borderRadius,
@@ -218,12 +223,12 @@ class AvatarGroup extends StatelessWidget {
   final Clip? clipBehavior;
 
   const AvatarGroup({
-    Key? key,
+    super.key,
     required this.fractionalOffset,
     required this.children,
     this.gap,
     this.clipBehavior,
-  }) : super(key: key);
+  });
 
   factory AvatarGroup.toLeft({
     Key? key,
@@ -248,8 +253,8 @@ class AvatarGroup extends StatelessWidget {
     return AvatarGroup(
       key: key,
       fractionalOffset: Offset(-offset, 0),
-      children: children,
       gap: gap,
+      children: children,
     );
   }
 
@@ -262,8 +267,8 @@ class AvatarGroup extends StatelessWidget {
     return AvatarGroup(
       key: key,
       fractionalOffset: Offset(0, offset),
-      children: children,
       gap: gap,
+      children: children,
     );
   }
 
@@ -276,8 +281,8 @@ class AvatarGroup extends StatelessWidget {
     return AvatarGroup(
       key: key,
       fractionalOffset: Offset(0, -offset),
-      children: children,
       gap: gap,
+      children: children,
     );
   }
 

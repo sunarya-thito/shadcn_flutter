@@ -5,9 +5,9 @@ class NumberInputExample1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       width: 100,
-      child: const NumberInput(
+      child: NumberInput(
         style: TextStyle(fontSize: 12),
       ),
     );

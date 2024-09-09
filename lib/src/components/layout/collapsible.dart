@@ -8,11 +8,11 @@ class Collapsible extends StatefulWidget {
   // if onExpansionChanged is null, the CollapsibleState will handle the expansion state
 
   const Collapsible({
-    Key? key,
+    super.key,
     required this.children,
     this.isExpanded,
     this.onExpansionChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<Collapsible> createState() => CollapsibleState();
@@ -70,7 +70,7 @@ class CollapsibleStateData {
 class CollapsibleTrigger extends StatelessWidget {
   final Widget child;
 
-  const CollapsibleTrigger({Key? key, required this.child}) : super(key: key);
+  const CollapsibleTrigger({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -95,8 +95,7 @@ class CollapsibleContent extends StatelessWidget {
   final Widget child;
 
   const CollapsibleContent(
-      {Key? key, this.collapsible = true, required this.child})
-      : super(key: key);
+      {super.key, this.collapsible = true, required this.child});
 
   @override
   Widget build(BuildContext context) {

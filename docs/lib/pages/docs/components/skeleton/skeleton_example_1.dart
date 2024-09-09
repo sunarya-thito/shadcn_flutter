@@ -16,7 +16,7 @@ class SkeletonExample1 extends StatelessWidget {
           ),
           trailing: Icon(Icons.arrow_forward),
         ),
-        Gap(24),
+        const Gap(24),
         Basic(
           title: const Text('Skeleton Example 1'),
           content: const Text(

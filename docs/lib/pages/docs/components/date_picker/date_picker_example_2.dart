@@ -22,7 +22,7 @@ class _DatePickerExample2State extends State<DatePickerExample2> {
             });
           },
         ),
-        Gap(16),
+        const Gap(16),
         DateRangePicker(
           value: _value,
           mode: PromptMode.dialog,

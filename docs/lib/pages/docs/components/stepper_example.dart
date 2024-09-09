@@ -9,9 +9,11 @@ import 'package:docs/pages/widget_usage_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class StepperExample extends StatelessWidget {
+  const StepperExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'stepper',
       description: 'A stepper is a fundamental part of material design '
           'guidelines. Steppers convey progress through numbered steps.',
@@ -19,33 +21,33 @@ class StepperExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Vertical Example',
-          child: StepperExample1(),
           path: 'lib/pages/docs/components/stepper/stepper_example_1.dart',
+          child: StepperExample1(),
         ),
         WidgetUsageExample(
           title: 'Horizontal Example',
-          child: StepperExample2(),
           path: 'lib/pages/docs/components/stepper/stepper_example_2.dart',
+          child: StepperExample2(),
         ),
         WidgetUsageExample(
           title: 'Failed Step Example',
-          child: StepperExample3(),
           path: 'lib/pages/docs/components/stepper/stepper_example_3.dart',
+          child: StepperExample3(),
         ),
         WidgetUsageExample(
           title: 'Clickable Step Example',
-          child: StepperExample4(),
           path: 'lib/pages/docs/components/stepper/stepper_example_4.dart',
+          child: StepperExample4(),
         ),
         WidgetUsageExample(
           title: 'Custom Icon Example',
-          child: StepperExample5(),
           path: 'lib/pages/docs/components/stepper/stepper_example_5.dart',
+          child: StepperExample5(),
         ),
         WidgetUsageExample(
           title: 'Variants Example',
-          child: StepperExample6(),
           path: 'lib/pages/docs/components/stepper/stepper_example_6.dart',
+          child: StepperExample6(),
         ),
       ],
     );

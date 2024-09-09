@@ -460,7 +460,7 @@ class MyAppState extends State<MyApp> {
               path: 'number_ticker',
               name: 'number_ticker',
               builder: (context, state) {
-                return NumberTickerExample();
+                return const NumberTickerExample();
               }),
           GoRoute(
             path: 'phone_input',
@@ -508,14 +508,14 @@ class MyAppState extends State<MyApp> {
             path: 'stepper',
             name: 'stepper',
             builder: (context, state) {
-              return StepperExample();
+              return const StepperExample();
             },
           ),
           GoRoute(
             path: 'timeline',
             name: 'timeline',
             builder: (context, state) {
-              return TimelineExample();
+              return const TimelineExample();
             },
           ),
           GoRoute(
@@ -536,7 +536,7 @@ class MyAppState extends State<MyApp> {
             path: 'tracker',
             name: 'tracker',
             builder: (context, state) {
-              return TrackerExample();
+              return const TrackerExample();
             },
           ),
           GoRoute(

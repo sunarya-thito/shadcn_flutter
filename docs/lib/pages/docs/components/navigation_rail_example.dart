@@ -9,7 +9,7 @@ class NavigationRailExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'navigation_rail',
       description:
           'A widget that displays a rail with navigation buttons and labels.',
@@ -17,13 +17,13 @@ class NavigationRailExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
+          path:
+              'lib/pages/docs/components/navigation_rail/navigation_rail_example_1.dart',
           child: SizedBox(
             width: 500,
             height: 400,
             child: OutlinedContainer(child: NavigationRailExample1()),
           ),
-          path:
-              'lib/pages/docs/components/navigation_rail/navigation_rail_example_1.dart',
         ),
       ],
     );

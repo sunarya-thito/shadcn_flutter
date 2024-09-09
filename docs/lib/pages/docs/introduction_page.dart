@@ -4,7 +4,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class IntroductionPage extends StatefulWidget {
-  const IntroductionPage({Key? key}) : super(key: key);
+  const IntroductionPage({super.key});
 
   @override
   _IntroductionPageState createState() => _IntroductionPageState();
@@ -105,11 +105,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
                     child: const Text('See this page!')),
               ),
               AccordionItem(
-                trigger: AccordionTrigger(
+                trigger: const AccordionTrigger(
                   child: Text(
                       'Can I configure which style i would like to use? (Default/New York)'),
                 ),
-                content: Text(
+                content: const Text(
                         'Unfortunately you can\'t. This package only supports New York style. '
                         'But if you wish to have default style of Shadcn/UI, i would recommend ')
                     .thenButton(
@@ -117,13 +117,13 @@ class _IntroductionPageState extends State<IntroductionPage> {
                           launchUrlString(
                               'https://github.com/nank1ro/flutter-shadcn-ui');
                         },
-                        child: Text('this package'))
+                        child: const Text('this package'))
                     .thenText(' by ')
                     .thenButton(
                         onPressed: () {
                           launchUrlString('https://x.com/nank1ro');
                         },
-                        child: Text('@nank1ro'))
+                        child: const Text('@nank1ro'))
                     .thenText('.'),
               ),
             ],

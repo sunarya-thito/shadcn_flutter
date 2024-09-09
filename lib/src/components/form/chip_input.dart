@@ -21,7 +21,7 @@ class ChipInput<T> extends StatefulWidget {
   final bool useChips;
   final TextInputAction? textInputAction;
   const ChipInput({
-    Key? key,
+    super.key,
     this.controller,
     this.popoverConstraints = const BoxConstraints(
       maxHeight: 300,
@@ -39,7 +39,7 @@ class ChipInput<T> extends StatefulWidget {
     this.suggestionBuilder,
     this.textInputAction,
     required this.chipBuilder,
-  }) : super(key: key);
+  });
 
   @override
   State<ChipInput<T>> createState() => ChipInputState();
@@ -105,7 +105,6 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
       return widget.chipBuilder(context, widget.chips[index]);
     }
     return Chip(
-      child: widget.chipBuilder(context, widget.chips[index]),
       trailing: ChipButton(
         onPressed: () {
           List<T> chips = List.of(widget.chips);
@@ -114,6 +113,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
         },
         child: const Icon(Icons.close),
       ),
+      child: widget.chipBuilder(context, widget.chips[index]),
     );
   }
 
@@ -170,8 +170,8 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
                       children: [
                         for (int i = 0; i < _suggestions.value.length; i++)
                           SelectedButton(
-                            style: ButtonStyle.ghost(),
-                            selectedStyle: ButtonStyle.secondary(),
+                            style: const ButtonStyle.ghost(),
+                            selectedStyle: const ButtonStyle.secondary(),
                             value: i == _selectedSuggestions.value,
                             onChanged: (value) {
                               if (value) {

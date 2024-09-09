@@ -40,7 +40,7 @@ class _SurfaceBlurState extends State<SurfaceBlur> {
                 sigmaY: widget.surfaceBlur!,
               ),
               // had to add SizedBox, otherwise it won't blur
-              child: SizedBox(),
+              child: const SizedBox(),
             ),
           ),
         ),
@@ -68,7 +68,7 @@ class OutlinedContainer extends StatefulWidget {
   final double? width;
   final double? height;
   const OutlinedContainer({
-    Key? key,
+    super.key,
     required this.child,
     this.borderColor,
     this.backgroundColor,
@@ -82,7 +82,7 @@ class OutlinedContainer extends StatefulWidget {
     this.surfaceBlur,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   State<OutlinedContainer> createState() => _OutlinedContainerState();

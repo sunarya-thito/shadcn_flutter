@@ -20,12 +20,12 @@ class _RefreshTriggerExample1State extends State<RefreshTriggerExample1> {
       child: SingleChildScrollView(
         child: Container(
           height: 800,
-          padding: EdgeInsets.only(top: 32),
+          padding: const EdgeInsets.only(top: 32),
           alignment: Alignment.topCenter,
           child: Column(
             children: [
-              Text('Pull Me'),
-              Gap(16),
+              const Text('Pull Me'),
+              const Gap(16),
               PrimaryButton(
                 onPressed: () {
                   _refreshTriggerKey.currentState!.refresh();

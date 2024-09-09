@@ -65,10 +65,10 @@ class AdaptiveScaler extends StatelessWidget {
   final Widget child;
 
   const AdaptiveScaler({
-    Key? key,
+    super.key,
     required this.scaling,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -181,10 +181,10 @@ class Theme extends InheritedTheme {
   final ThemeData data;
 
   const Theme({
-    Key? key,
+    super.key,
     required this.data,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   static ThemeData of(BuildContext context) {
     final theme = context.dependOnInheritedWidgetOfExactType<Theme>();
@@ -213,8 +213,7 @@ class Theme extends InheritedTheme {
 }
 
 class ThemeDataTween extends Tween<ThemeData> {
-  ThemeDataTween({required ThemeData begin, required ThemeData? end})
-      : super(begin: begin, end: end);
+  ThemeDataTween({required ThemeData super.begin, required super.end});
 
   @override
   ThemeData lerp(double t) {
@@ -229,13 +228,13 @@ class AnimatedTheme extends ImplicitlyAnimatedWidget {
   final ThemeData data;
   final Widget child;
 
-  AnimatedTheme({
-    Key? key,
+  const AnimatedTheme({
+    super.key,
     required this.data,
-    required Duration duration,
-    Curve curve = Curves.linear,
+    required super.duration,
+    super.curve,
     required this.child,
-  }) : super(key: key, duration: duration, curve: curve);
+  });
 
   @override
   _AnimatedThemeState createState() => _AnimatedThemeState();
@@ -378,10 +377,10 @@ class ComponentTheme<T> extends InheritedTheme {
   final T data;
 
   const ComponentTheme({
-    Key? key,
+    super.key,
     required this.data,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   @override
   Widget wrap(BuildContext context, Widget child) {

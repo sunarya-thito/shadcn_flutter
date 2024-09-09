@@ -13,7 +13,7 @@ import 'package:docs/pages/widget_usage_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class StateManagementPage extends StatefulWidget {
-  const StateManagementPage({Key? key}) : super(key: key);
+  const StateManagementPage({super.key});
   @override
   State<StateManagementPage> createState() => _StateManagementPageState();
 }

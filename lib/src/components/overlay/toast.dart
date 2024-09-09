@@ -308,7 +308,7 @@ class _AttachedToastEntry implements ToastOverlay {
   @override
   bool get isShowing => _attached != null;
 
-  ValueNotifier<bool> _isClosing = ValueNotifier(false);
+  final ValueNotifier<bool> _isClosing = ValueNotifier(false);
 
   _AttachedToastEntry(this.entry, this._attached);
 

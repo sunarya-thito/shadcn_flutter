@@ -8,7 +8,7 @@ class TimePickerExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'time_picker',
       description:
           'Time picker is a component that allows users to pick a time.',
@@ -16,9 +16,9 @@ class TimePickerExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: TimePickerExample1(),
           path:
               'lib/pages/docs/components/time_picker/time_picker_example_1.dart',
+          child: TimePickerExample1(),
         ),
       ],
     );

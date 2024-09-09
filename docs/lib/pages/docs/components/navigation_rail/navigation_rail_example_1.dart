@@ -46,13 +46,13 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
               buildButton('Home', BootstrapIcons.house),
               buildButton('Explore', BootstrapIcons.compass),
               buildButton('Library', BootstrapIcons.musicNoteList),
-              NavigationDivider(),
-              NavigationLabel(child: Text('Settings')),
+              const NavigationDivider(),
+              const NavigationLabel(child: Text('Settings')),
               buildButton('Profile', BootstrapIcons.person),
               buildButton('App', BootstrapIcons.appIndicator),
-              NavigationDivider(),
-              NavigationGap(12),
-              NavigationWidget(
+              const NavigationDivider(),
+              const NavigationGap(12),
+              const NavigationWidget(
                 child: FlutterLogo(),
               ),
             ],
@@ -61,7 +61,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
           Expanded(
             child: Container(
               color: Colors.primaries[Colors.primaries.length - selected - 1],
-              padding: EdgeInsets.all(24),
+              padding: const EdgeInsets.all(24),
               child: Card(
                 child: Wrap(
                   alignment: WrapAlignment.center,
@@ -127,7 +127,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                           customButtonStyle = value == CheckboxState.checked;
                         });
                       },
-                      trailing: Text('Custom Button Style'),
+                      trailing: const Text('Custom Button Style'),
                     ),
                   ],
                 ),

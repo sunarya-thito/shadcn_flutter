@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class DotIndicatorExample1 extends StatefulWidget {
-  const DotIndicatorExample1({Key? key}) : super(key: key);
+  const DotIndicatorExample1({super.key});
 
   @override
   State<DotIndicatorExample1> createState() => _DotIndicatorExample1State();
