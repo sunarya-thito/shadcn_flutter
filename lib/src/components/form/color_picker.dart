@@ -1305,6 +1305,9 @@ class ColorInput extends StatelessWidget {
                 await handler.close();
                 if (!context.mounted) return;
                 final result = await pickColorFromScreen(context);
+                if (result != null) {
+                  storage?.addHistory(result);
+                }
                 handler.prompt(
                     result != null ? ColorDerivative.fromColor(result) : null);
               },
@@ -1326,6 +1329,7 @@ class ColorInput extends StatelessWidget {
                   if (!context.mounted) return;
                   final result = await pickColorFromScreen(context);
                   if (result != null) {
+                    storage?.addHistory(result);
                     handler.value = ColorDerivative.fromColor(result);
                   }
                   handler.prompt();
