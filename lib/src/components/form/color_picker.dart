@@ -691,31 +691,43 @@ class _ColorInputSetState extends State<ColorInputSet> {
   }
 
   Widget _buildContent(BuildContext context, ThemeData theme) {
-    switch (_tabIndex) {
-      case 0:
-        return _buildColorTab(context, ColorPickerMode.rgb);
-      case 1:
-        return _buildColorTab(context, ColorPickerMode.hsl);
-      case 2:
-        return _buildColorTab(context, ColorPickerMode.hsv);
-      case 3:
-      default:
-        if (widget.storage == null) {
-          return const SizedBox();
-        }
-        return ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 320) * theme.scaling,
-          child: ColorHistoryGrid(
-            selectedColor: widget.color.toColor(),
-            storage: widget.storage!,
-            onColorPicked: (value) {
-              var derivative = ColorDerivative.fromColor(value);
-              widget.onChanged?.call(derivative);
-              widget.onColorChangeEnd?.call(derivative);
-            },
-          ),
-        );
+    // switch (_tabIndex) {
+    //   case 0:
+    //     return _buildColorTab(context, ColorPickerMode.rgb);
+    //   case 1:
+    //     return _buildColorTab(context, ColorPickerMode.hsl);
+    //   case 2:
+    //     return _buildColorTab(context, ColorPickerMode.hsv);
+    //   case 3:
+    //   default:
+    //
+    // }
+    // USE INDEXED STACK INSTEAD
+    return IndexedStack(
+      index: _tabIndex,
+      sizing: StackFit.passthrough,
+      children: [
+        _buildColorTab(context, ColorPickerMode.rgb),
+        _buildColorTab(context, ColorPickerMode.hsl),
+        _buildColorTab(context, ColorPickerMode.hsv),
+        if (widget.storage != null) _buildRecentTab(context),
+      ],
+    );
+  }
+
+  Widget _buildRecentTab(BuildContext context) {
+    if (widget.storage == null) {
+      return const SizedBox();
     }
+    return ColorHistoryGrid(
+      selectedColor: widget.color.toColor(),
+      storage: widget.storage!,
+      onColorPicked: (value) {
+        var derivative = ColorDerivative.fromColor(value);
+        widget.onChanged?.call(derivative);
+        widget.onColorChangeEnd?.call(derivative);
+      },
+    );
   }
 
   Widget _buildColorTab(BuildContext context, ColorPickerMode mode) {
