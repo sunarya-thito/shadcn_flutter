@@ -66,6 +66,7 @@ class _AutoCompleteItemState extends State<_AutoCompleteItem> {
   Widget build(BuildContext context) {
     return SelectedButton(
       value: widget.selected,
+      alignment: AlignmentDirectional.centerStart,
       onChanged: (value) {
         if (value) {
           widget.onSelected();

@@ -308,11 +308,11 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
       colors.addAll([Colors.white]);
       stops.addAll([1.0]);
     }
-    Alignment begin;
-    Alignment end;
+    AlignmentGeometry begin;
+    AlignmentGeometry end;
     if (direction == Axis.horizontal) {
-      begin = Alignment.centerLeft;
-      end = Alignment.centerRight;
+      begin = AlignmentDirectional.centerStart;
+      end = AlignmentDirectional.centerEnd;
     } else {
       begin = Alignment.topCenter;
       end = Alignment.bottomCenter;

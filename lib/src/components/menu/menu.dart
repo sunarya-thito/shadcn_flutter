@@ -250,7 +250,7 @@ class MenuLabel extends StatelessWidget implements MenuItem {
         leadingAlignment: Alignment.center,
         contentAlignment:
             menuGroupData == null || menuGroupData.direction == Axis.vertical
-                ? Alignment.centerLeft
+                ? AlignmentDirectional.centerStart
                 : Alignment.center,
       ),
     );
@@ -393,7 +393,7 @@ class _MenuButtonState extends State<MenuButton> {
                 return Button(
                   disableFocusOutline: true,
                   alignment: menuGroupData.direction == Axis.vertical
-                      ? Alignment.centerLeft
+                      ? AlignmentDirectional.centerStart
                       : Alignment.center,
                   style: (menuBarData == null
                           ? ButtonVariance.menu

@@ -531,8 +531,8 @@ class ButtonState<T extends Button> extends State<T> {
                             if (widget.leading != null) widget.leading!,
                             Expanded(
                               child: Align(
-                                alignment:
-                                    widget.alignment ?? Alignment.centerLeft,
+                                alignment: widget.alignment ??
+                                    AlignmentDirectional.centerStart,
                                 child:
                                     UnderlineInterceptor(child: widget.child),
                               ),
@@ -546,8 +546,8 @@ class ButtonState<T extends Button> extends State<T> {
                           children: [
                             if (widget.leading != null) widget.leading!,
                             Align(
-                              alignment:
-                                  widget.alignment ?? Alignment.centerLeft,
+                              alignment: widget.alignment ??
+                                  AlignmentDirectional.centerStart,
                               child: UnderlineInterceptor(child: widget.child),
                             ),
                             if (widget.trailing != null)
@@ -1036,7 +1036,7 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
       return _delegate.iconTheme;
     }
     return (context, states) {
-      return _iconTheme!(context, states, _delegate.iconTheme(context, states));
+      return _iconTheme(context, states, _delegate.iconTheme(context, states));
     };
   }
 
@@ -1046,7 +1046,7 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
       return _delegate.textStyle;
     }
     return (context, states) {
-      return _textStyle!(context, states, _delegate.textStyle(context, states));
+      return _textStyle(context, states, _delegate.textStyle(context, states));
     };
   }
 
@@ -1056,7 +1056,7 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
       return _delegate.padding;
     }
     return (context, states) {
-      return _padding!(context, states, _delegate.padding(context, states));
+      return _padding(context, states, _delegate.padding(context, states));
     };
   }
 
@@ -1066,7 +1066,7 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
       return _delegate.mouseCursor;
     }
     return (context, states) {
-      return _mouseCursor!(
+      return _mouseCursor(
           context, states, _delegate.mouseCursor(context, states));
     };
   }
@@ -1077,7 +1077,7 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
       return _delegate.decoration;
     }
     return (context, states) {
-      return _decoration!(
+      return _decoration(
           context, states, _delegate.decoration(context, states));
     };
   }
@@ -1089,7 +1089,7 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
     }
     return (context, states) {
       var edgeInsetsGeometry =
-          _margin!(context, states, _delegate.margin(context, states));
+          _margin(context, states, _delegate.margin(context, states));
       return edgeInsetsGeometry;
     };
   }

@@ -1169,7 +1169,7 @@ class FormTableLayout extends StatelessWidget {
                 rows[i]
                     .label
                     .textSmall()
-                    .withAlign(Alignment.centerRight)
+                    .withAlign(AlignmentDirectional.centerEnd)
                     .withMargin(right: 16 * scaling)
                     .sized(height: 32 * scaling)
                     .withPadding(

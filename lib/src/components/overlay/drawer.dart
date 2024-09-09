@@ -235,7 +235,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                   return Transform.scale(
                       scaleX:
                           1 + _extraOffset.value / getSize(context).width / 4,
-                      alignment: Alignment.centerRight,
+                      alignment: AlignmentDirectional.centerEnd,
                       child: widget.child);
                 },
                 animation: _extraOffset,
@@ -294,7 +294,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                   return Transform.scale(
                       scaleX:
                           1 + _extraOffset.value / getSize(context).width / 4,
-                      alignment: Alignment.centerLeft,
+                      alignment: AlignmentDirectional.centerStart,
                       child: widget.child);
                 },
                 animation: _extraOffset,
@@ -991,7 +991,7 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
 
   @override
   Widget build(BuildContext context) {
-    Alignment alignment;
+    AlignmentGeometry alignment;
     Offset startFractionalOffset;
     bool padTop = widget.useSafeArea && widget.position != OverlayPosition.top;
     bool padBottom =
@@ -1002,11 +1002,11 @@ class DrawerOverlaidEntryState<T> extends State<DrawerOverlaidEntry<T>>
         widget.useSafeArea && widget.position != OverlayPosition.right;
     switch (widget.position) {
       case OverlayPosition.left:
-        alignment = Alignment.centerLeft;
+        alignment = AlignmentDirectional.centerStart;
         startFractionalOffset = const Offset(-1, 0);
         break;
       case OverlayPosition.right:
-        alignment = Alignment.centerRight;
+        alignment = AlignmentDirectional.centerEnd;
         startFractionalOffset = const Offset(1, 0);
         break;
       case OverlayPosition.top:

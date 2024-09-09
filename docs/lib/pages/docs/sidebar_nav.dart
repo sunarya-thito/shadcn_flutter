@@ -51,7 +51,7 @@ class SidebarButton extends StatelessWidget {
       data: data,
       child: Button(
         onPressed: onPressed,
-        alignment: Alignment.centerLeft,
+        alignment: AlignmentDirectional.centerStart,
         style: ButtonVariance.text.copyWith(
           padding: (context, states, value) {
             return const EdgeInsets.symmetric(vertical: 4, horizontal: 8) *
@@ -97,7 +97,7 @@ class DocsNavigationButton extends StatelessWidget {
       data: data,
       child: Button(
         onPressed: onPressed,
-        alignment: Alignment.centerLeft,
+        alignment: AlignmentDirectional.centerStart,
         trailing: trailing,
         trailingExpanded: true,
         style: ButtonVariance.link.copyWith(

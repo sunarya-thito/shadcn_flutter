@@ -87,7 +87,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 .lead(),
             Gap(16),
             const Align(
-              alignment: Alignment.centerLeft,
+              alignment: AlignmentDirectional.centerStart,
               child: PrimaryBadge(
                 child: Text('Work in Progress'),
               ),

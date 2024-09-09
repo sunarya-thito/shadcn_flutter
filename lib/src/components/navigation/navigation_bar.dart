@@ -612,8 +612,8 @@ class _NavigationButtonState extends State<NavigationButton> {
     AlignmentGeometry alignment = Alignment.topCenter;
     AlignmentGeometry anchorAlignment = Alignment.bottomCenter;
     if (data?.direction == Axis.vertical) {
-      alignment = Alignment.centerLeft;
-      anchorAlignment = Alignment.centerRight;
+      alignment = AlignmentDirectional.centerStart;
+      anchorAlignment = AlignmentDirectional.centerEnd;
     }
     return Tooltip(
       waitDuration: Duration.zero,

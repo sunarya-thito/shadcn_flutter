@@ -557,7 +557,7 @@ class DocsPageState extends State<DocsPage> {
                             ),
                             trailing: [
                               Align(
-                                alignment: Alignment.centerRight,
+                                alignment: AlignmentDirectional.centerEnd,
                                 child: SizedBox(
                                   width: 320 - 18,
                                   child: OutlineButton(
@@ -886,7 +886,8 @@ class DocsPageState extends State<DocsPage> {
                                 selected: page.name == widget.name,
                                 child: Basic(
                                   trailing: page.tag?.buildBadge(context),
-                                  trailingAlignment: Alignment.centerLeft,
+                                  trailingAlignment:
+                                      AlignmentDirectional.centerStart,
                                   content: Text(page.title),
                                 ),
                               ),

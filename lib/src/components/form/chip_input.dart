@@ -274,7 +274,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
                 );
               } else {
                 child = Stack(
-                  alignment: Alignment.centerLeft,
+                  alignment: AlignmentDirectional.centerStart,
                   children: [
                     Visibility(
                       visible: false,

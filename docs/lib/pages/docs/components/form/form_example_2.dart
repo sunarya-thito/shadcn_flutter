@@ -72,7 +72,7 @@ class _FormExample2State extends State<FormExample2> {
                   validator: const CompareTo.equal(CheckboxState.checked,
                       message: 'You must agree to the terms and conditions'),
                   child: Align(
-                    alignment: Alignment.centerRight,
+                    alignment: AlignmentDirectional.centerEnd,
                     child: Checkbox(
                         state: state,
                         onChanged: (value) {
