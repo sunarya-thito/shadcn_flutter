@@ -136,6 +136,10 @@ abstract class ShadcnLocalizations {
   String get colorGreen;
   String get colorBlue;
   String get colorAlpha;
+  String get colorHue;
+  String get colorSaturation;
+  String get colorValue;
+  String get colorLightness;
   String get menuCut;
   String get menuCopy;
   String get menuPaste;
@@ -172,8 +176,21 @@ abstract class ShadcnLocalizations {
   String get emptyCountryList;
   String get toastSnippetCopied;
 
-  String get colorPickerTabColor;
   String get colorPickerTabRecent;
+  String get colorPickerTabRGB;
+  String get colorPickerTabHSV;
+  String get colorPickerTabHSL;
+
+  String getColorPickerMode(ColorPickerMode mode) {
+    switch (mode) {
+      case ColorPickerMode.rgb:
+        return colorPickerTabRGB;
+      case ColorPickerMode.hsv:
+        return colorPickerTabHSV;
+      case ColorPickerMode.hsl:
+        return colorPickerTabHSL;
+    }
+  }
 
   String getAbbreviatedWeekday(int weekday) {
     switch (weekday) {
@@ -696,8 +713,26 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
   String get refreshTriggerComplete => 'Refresh complete';
 
   @override
-  String get colorPickerTabColor => 'Color';
+  String get colorPickerTabRecent => 'Recent';
 
   @override
-  String get colorPickerTabRecent => 'Recent';
+  String get colorPickerTabRGB => 'RGB';
+
+  @override
+  String get colorPickerTabHSV => 'HSV';
+
+  @override
+  String get colorPickerTabHSL => 'HSL';
+
+  @override
+  String get colorHue => 'Hue';
+
+  @override
+  String get colorSaturation => 'Sat';
+
+  @override
+  String get colorValue => 'Val';
+
+  @override
+  String get colorLightness => 'Lum';
 }

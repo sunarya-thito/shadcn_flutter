@@ -551,8 +551,11 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 reverse: true,
                 reverseVertical: true,
                 example: Card(
-                  child: HSVColorPickerSet(
-                      color: Colors.blue.toHSV(), onColorChanged: (value) {}),
+                  // child: HSVColorPickerSet(
+                  //     color: Colors.blue.toHSV(), onColorChanged: (value) {}),
+                  // TODO: replace this with a legit component
+                  child: ColorPickerSet(
+                      color: ColorDerivative.fromColor(Colors.blue)),
                 ),
               ),
               const ComponentCard(

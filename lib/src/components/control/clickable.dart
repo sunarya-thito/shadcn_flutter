@@ -334,6 +334,7 @@ class _ClickableState extends State<Clickable> {
     var resolvedPadding = widget.padding?.resolve(_controller.value);
     if (widget.disableTransition) {
       Widget container = Container(
+        clipBehavior: Clip.antiAlias,
         margin: resolvedMargin,
         decoration: decoration,
         padding: resolvedPadding,
@@ -348,6 +349,7 @@ class _ClickableState extends State<Clickable> {
       return container;
     }
     Widget animatedContainer = AnimatedContainer(
+      clipBehavior: decoration == null ? Clip.none : Clip.antiAlias,
       margin: resolvedMargin,
       duration: kDefaultDuration,
       decoration: decoration,

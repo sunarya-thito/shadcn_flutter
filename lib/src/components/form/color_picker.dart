@@ -1,3 +1,10 @@
+import 'dart:async';
+import 'dart:ui' as ui;
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+
 import '../../../shadcn_flutter.dart';
 
 String colorToHex(Color color, [bool showAlpha = true]) {
@@ -8,18 +15,1218 @@ String colorToHex(Color color, [bool showAlpha = true]) {
   }
 }
 
-class HSVColorPicker extends StatelessWidget {
-  final HSVColor color;
-  final ValueChanged<HSVColor>? onChanged;
+class ColorHistoryGrid extends StatelessWidget {
+  final ColorHistoryStorage storage;
+  final ValueChanged<Color>? onColorPicked;
+  final double? spacing;
+  final int crossAxisCount;
+  final Color? selectedColor;
+
+  const ColorHistoryGrid({
+    Key? key,
+    required this.storage,
+    this.onColorPicked,
+    this.spacing,
+    this.crossAxisCount = 10,
+    this.selectedColor,
+  }) : super(key: key);
+
+  Widget _buildGridTile(BuildContext context, Color? color, ThemeData theme) {
+    if (color == null) {
+      return AspectRatio(
+        aspectRatio: 1,
+        child: Button(
+          style: const ButtonStyle.outline(
+            density: ButtonDensity.compact,
+          ),
+          child: const Icon(Icons.close),
+        ),
+      );
+    }
+    return Container(
+      decoration: selectedColor != null && color == selectedColor
+          ? BoxDecoration(
+              border: Border.all(
+                  color: theme.colorScheme.primary, width: 2 * theme.scaling),
+              borderRadius: BorderRadius.circular(theme.radiusMd),
+            )
+          : null,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Button(
+          style: const ButtonStyle.outline(
+            density: ButtonDensity.compact,
+          ),
+          onPressed: () {
+            onColorPicked?.call(color);
+          },
+          child: Container(
+            color: color,
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    double spacing = this.spacing ?? (4 * theme.scaling);
+    return ListenableBuilder(
+        listenable: storage,
+        builder: (context, child) {
+          List<Widget> rows = [];
+          for (int i = 0; i < storage.capacity; i += crossAxisCount) {
+            List<Widget> tiles = [];
+            for (int j = 0; j < crossAxisCount; j++) {
+              final index = i + j;
+              final color = index < storage.recentColors.length
+                  ? storage.recentColors[index]
+                  : null;
+              if (index >= storage.capacity) {
+                tiles.add(
+                  const Expanded(
+                    child: SizedBox(),
+                  ),
+                );
+              } else {
+                tiles.add(
+                  Expanded(
+                    child: _buildGridTile(context, color, theme),
+                  ),
+                );
+              }
+              if (j < crossAxisCount - 1) {
+                tiles.add(Gap(spacing));
+              }
+            }
+            rows.add(IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: tiles,
+              ),
+            ));
+            if (i < storage.capacity - crossAxisCount) {
+              rows.add(Gap(spacing));
+            }
+          }
+          return IntrinsicWidth(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: rows,
+            ),
+          );
+        }).constrained(
+      minHeight: 100,
+    );
+  }
+}
+
+enum ColorPickerMode {
+  rgb,
+  hsl,
+  hsv,
+}
+
+abstract class ColorHistoryStorage implements Listenable {
+  void addHistory(Color color);
+  void setHistory(List<Color> colors);
+  void clear();
+  int get capacity;
+  List<Color> get recentColors;
+  static ColorHistoryStorage of(BuildContext context) {
+    return Data.of<ColorHistoryStorage>(context);
+  }
+}
+
+class RecentColorsScope extends StatefulWidget {
+  final List<Color> initialRecentColors;
+  final int maxRecentColors;
+  final ValueChanged<List<Color>>? onRecentColorsChanged;
+  final Widget child;
+
+  const RecentColorsScope({
+    Key? key,
+    this.initialRecentColors = const [],
+    this.maxRecentColors = 50,
+    this.onRecentColorsChanged,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  State<RecentColorsScope> createState() => RecentColorsScopeState();
+}
+
+class RecentColorsScopeState extends State<RecentColorsScope>
+    with ChangeNotifier
+    implements ColorHistoryStorage {
+  late List<Color> _recentColors;
+
+  @override
+  int get capacity => widget.maxRecentColors;
+
+  @override
+  void initState() {
+    super.initState();
+    _recentColors = List.from(widget.initialRecentColors);
+  }
+
+  List<Color> get recentColors => List.unmodifiable(_recentColors);
+
+  @override
+  void addHistory(Color color) {
+    if (_recentColors.contains(color)) {
+      _recentColors.remove(color);
+    }
+    _recentColors.insert(0, color);
+    if (_recentColors.length > widget.maxRecentColors) {
+      _recentColors.removeLast();
+    }
+    widget.onRecentColorsChanged?.call(recentColors);
+    notifyListeners();
+  }
+
+  @override
+  void clear() {
+    _recentColors.clear();
+    widget.onRecentColorsChanged?.call(recentColors);
+  }
+
+  @override
+  void setHistory(List<Color> colors) {
+    _recentColors = colors;
+    widget.onRecentColorsChanged?.call(recentColors);
+    notifyListeners();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Data<ColorHistoryStorage>.inherit(
+      data: this,
+      child: widget.child,
+    );
+  }
+}
+
+typedef PreviewLabelBuilder = Widget Function(
+    BuildContext context, Color color);
+
+class ColorPickingLayer extends StatefulWidget {
+  final Widget child;
+  final AlignmentGeometry? previewAlignment;
+  final bool showPreview;
+  final Size? previewSize;
+  final double previewScale;
+  final PreviewLabelBuilder? previewLabelBuilder;
+
+  const ColorPickingLayer({
+    Key? key,
+    required this.child,
+    this.previewAlignment,
+    this.showPreview = true,
+    this.previewSize,
+    this.previewScale = 8,
+    this.previewLabelBuilder,
+  }) : super(key: key);
+
+  @override
+  State<ColorPickingLayer> createState() => _ColorPickingLayerState();
+}
+
+class _ScreenshotResult {
+  final List<Color> colors;
+  final Size size;
+  final ImageProvider? image;
+
+  _ScreenshotResult(this.colors, this.size, this.image);
+
+  Color operator [](Offset position) {
+    int index =
+        (position.dy.floor() * size.width + position.dx.floor()).toInt();
+    return colors[index];
+  }
+}
+
+class _ScreenshotImage extends ImageProvider<_ScreenshotImage> {
+  _ScreenshotImage(this.bytes, this.width, this.height, this.format);
+
+  final Uint8List bytes;
+  final int width;
+  final int height;
+  final ui.PixelFormat format;
+
+  @override
+  Future<_ScreenshotImage> obtainKey(ImageConfiguration configuration) {
+    return SynchronousFuture<_ScreenshotImage>(this);
+  }
+
+  @override
+  ImageStreamCompleter loadImage(
+      _ScreenshotImage key, ImageDecoderCallback decode) {
+    Completer<ui.Image> completer = Completer<ui.Image>();
+    ui.decodeImageFromPixels(bytes, width, height, format, completer.complete);
+    return OneFrameImageStreamCompleter(
+        completer.future.then((ui.Image image) => ImageInfo(image: image)));
+  }
+}
+
+class _ColorPickingCompleter {
+  final Completer<Color?> completer;
+  final Set<ColorHistoryStorage> recentColorsScope;
+
+  _ColorPickingCompleter(this.completer, this.recentColorsScope);
+}
+
+class _ColorPickingLayerState extends State<ColorPickingLayer>
+    implements ColorPickingLayerScope {
+  final GlobalKey _repaintKey = GlobalKey();
+  _ScreenshotResult? _currentPicking;
+  ColorPickingResult? _preview;
+  Offset? _currentPosition;
+  _ColorPickingCompleter? _session;
+
+  Widget _buildPreviewLabel(BuildContext context, Color color) {
+    if (widget.previewLabelBuilder != null) {
+      return widget.previewLabelBuilder!(context, color);
+    }
+    return Text(colorToHex(color, false)).small().muted();
+  }
+
+  @override
+  Future<Color?> promptPickColor([ColorHistoryStorage? historyStorage]) async {
+    if (!mounted) {
+      return Future.value(null);
+    }
+    if (_session != null) {
+      if (historyStorage != null &&
+          _session!.recentColorsScope.add(historyStorage)) {
+        return _session!.completer.future.then((value) {
+          if (value != null) {
+            historyStorage.addHistory(value);
+          }
+          return value;
+        });
+      }
+      return _session!.completer.future;
+    }
+    final completer = Completer<Color?>();
+    final screenshot = await _screenshotWidget();
+    setState(() {
+      _session = _ColorPickingCompleter(
+        completer,
+        historyStorage != null ? {historyStorage} : {},
+      );
+      _currentPicking = screenshot;
+    });
+    final result = await completer.future;
+    if (historyStorage != null && result != null) {
+      historyStorage.addHistory(result);
+    }
+    return result;
+  }
+
+  Future<_ScreenshotResult?> _screenshotWidget() async {
+    final currentContext = _repaintKey.currentContext;
+    if (currentContext == null) return null;
+    final boundary = currentContext.findRenderObject() as RenderRepaintBoundary;
+    final image = await boundary.toImage(pixelRatio: 1);
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
+    if (byteData == null) return null;
+    final colors = <Color>[];
+    for (int i = 0; i < byteData.lengthInBytes; i += 4) {
+      final r = byteData.getUint8(i);
+      final g = byteData.getUint8(i + 1);
+      final b = byteData.getUint8(i + 2);
+      final a = byteData.getUint8(i + 3);
+      colors.add(Color.fromARGB(a, r, g, b));
+    }
+    final img = _ScreenshotImage(byteData.buffer.asUint8List(), image.width,
+        image.height, ui.PixelFormat.rgba8888);
+    return _ScreenshotResult(
+        colors, Size(image.width.toDouble(), image.height.toDouble()), img);
+  }
+
+  ColorPickingResult? _getPreview(Offset globalPosition, Size size) {
+    final image = _currentPicking;
+    if (image == null) return null;
+    final colors = <Color>[];
+    for (int y = -size.height ~/ 2; y < size.height ~/ 2; y++) {
+      for (int x = -size.width ~/ 2; x < size.width ~/ 2; x++) {
+        final localPosition =
+            globalPosition.translate(x.toDouble(), y.toDouble());
+        if (localPosition.dx < 0 ||
+            localPosition.dy < 0 ||
+            localPosition.dx >= image.size.width ||
+            localPosition.dy >= image.size.height) {
+          colors.add(Colors.transparent);
+        } else {
+          colors.add(image[localPosition]);
+        }
+      }
+    }
+    final globalIndex = globalPosition.dy.floor() * image.size.width.floor() +
+        globalPosition.dx.floor();
+    final pickedColor = image.colors[globalIndex];
+    return ColorPickingResult(colors, size, pickedColor);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final previewSize =
+        widget.previewSize ?? const Size(100, 100) * theme.scaling;
+    return Data<ColorPickingLayerScope>.inherit(
+      data: this,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTapDown: _preview != null && _session != null
+            ? (details) async {
+                _session!.completer.complete(_preview!.pickedColor);
+                if (mounted) {
+                  setState(() {
+                    _session = null;
+                    _preview = null;
+                    _currentPicking = null;
+                    _currentPosition = null;
+                  });
+                }
+              }
+            : null,
+        child: MouseRegion(
+          hitTestBehavior: HitTestBehavior.translucent,
+          onHover: _session != null
+              ? (details) {
+                  setState(() {
+                    _preview = _getPreview(
+                      details.localPosition,
+                      previewSize / widget.previewScale,
+                    );
+                    _currentPosition = details.localPosition;
+                  });
+                }
+              : null,
+          child: IgnorePointer(
+            ignoring: _session != null,
+            child: Stack(
+              fit: StackFit.passthrough,
+              children: [
+                RepaintBoundary(
+                  key: _repaintKey,
+                  child: widget.child,
+                ),
+                if (_currentPicking != null)
+                  Positioned.fill(
+                      child: Image(
+                    image: _currentPicking!.image!,
+                    fit: BoxFit.fill,
+                  )),
+                if (widget.showPreview &&
+                    _preview != null &&
+                    widget.previewAlignment != null)
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Padding(
+                      padding: EdgeInsets.all(theme.scaling * 32),
+                      child: Align(
+                        alignment: widget.previewAlignment!,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          alignment: Alignment.bottomCenter,
+                          fit: StackFit.passthrough,
+                          children: [
+                            SizedBox(
+                              width: previewSize.width,
+                              height: previewSize.height,
+                              child: CustomPaint(
+                                painter: _ColorPreviewPainter(
+                                  _preview!.colors,
+                                  _preview!.size,
+                                  theme.colorScheme.border,
+                                  1 * theme.scaling,
+                                  theme.colorScheme.primary,
+                                  2 * theme.scaling,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: -18 * theme.scaling,
+                              child: _buildPreviewLabel(
+                                context,
+                                _preview!.pickedColor,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                if (widget.showPreview &&
+                    _preview != null &&
+                    widget.previewAlignment == null)
+                  Positioned(
+                    top: _currentPosition!.dy,
+                    left: _currentPosition!.dx,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.bottomCenter,
+                      fit: StackFit.passthrough,
+                      children: [
+                        SizedBox(
+                          width: previewSize.width,
+                          height: previewSize.height,
+                          child: CustomPaint(
+                            painter: _ColorPreviewPainter(
+                              _preview!.colors,
+                              _preview!.size,
+                              theme.colorScheme.border,
+                              1 * theme.scaling,
+                              theme.colorScheme.primary,
+                              2 * theme.scaling,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: -18 * theme.scaling,
+                          child: _buildPreviewLabel(
+                            context,
+                            _preview!.pickedColor,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Future<Color?> pickColorFromScreen(BuildContext context,
+    [ColorHistoryStorage? storage]) {
+  final scope = ColorPickingLayerScope.find(context);
+  return scope.promptPickColor(storage);
+}
+
+class _ColorPreviewPainter extends CustomPainter {
+  final List<Color> colors;
+  final Size size;
+  final Color borderColor;
+  final double borderWidth;
+  final Color selectedBorderColor;
+  final double selectedBorderWidth;
+
+  _ColorPreviewPainter(
+    this.colors,
+    this.size,
+    this.borderColor,
+    this.borderWidth,
+    this.selectedBorderColor,
+    this.selectedBorderWidth,
+  );
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // clip it to circle
+    final clipPath = Path()
+      ..addOval(Rect.fromLTWH(
+          0, 0, size.width.floorToDouble(), size.height.floorToDouble()));
+    canvas.clipPath(clipPath);
+    final paint = Paint();
+    final cellSize = Size(size.width.floor() / this.size.width.floor(),
+        size.height.floor() / this.size.height.floor());
+    for (int y = 0; y < this.size.height.floor(); y++) {
+      for (int x = 0; x < this.size.width.floor(); x++) {
+        final color = colors[y * this.size.width.floor() + x];
+        paint.color = color;
+        paint.style = PaintingStyle.fill;
+        canvas.drawRect(
+          Rect.fromLTWH(
+              (x * cellSize.width).floorToDouble(),
+              (y * cellSize.height).floorToDouble(),
+              cellSize.width.floorToDouble(),
+              cellSize.height.floorToDouble()),
+          paint,
+        );
+        paint.color = borderColor;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = borderWidth;
+        // draw a border
+        canvas.drawRect(
+          Rect.fromLTWH(
+                  (x * cellSize.width).floorToDouble(),
+                  (y * cellSize.height).floorToDouble(),
+                  cellSize.width.floorToDouble(),
+                  cellSize.height.floorToDouble())
+              .inflate(paint.strokeWidth / 2),
+          paint,
+        );
+      }
+    }
+    // draw a rect for the selected color at center
+    paint.color = selectedBorderColor;
+    paint.style = PaintingStyle.stroke;
+    paint.strokeWidth = selectedBorderWidth;
+    final centerX = size.width ~/ 2;
+    final centerY = size.height ~/ 2;
+    final cellX = centerX ~/ cellSize.width;
+    final cellY = centerY ~/ cellSize.height;
+    canvas.drawRect(
+      Rect.fromLTWH(
+        (cellX * cellSize.width).floorToDouble(),
+        (cellY * cellSize.height).floorToDouble(),
+        cellSize.width.floorToDouble(),
+        cellSize.height.floorToDouble(),
+      ),
+      paint,
+    );
+    // add circle border, and make sure it is not clipped
+    paint.color = borderColor;
+    paint.style = PaintingStyle.stroke;
+    paint.strokeWidth = borderWidth;
+    canvas.drawOval(
+        Rect.fromLTWH(
+            0, 0, size.width.floorToDouble(), size.height.floorToDouble()),
+        paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _ColorPreviewPainter oldDelegate) {
+    return !listEquals(oldDelegate.colors, colors) ||
+        oldDelegate.size != size ||
+        oldDelegate.borderColor != borderColor ||
+        oldDelegate.borderWidth != borderWidth ||
+        oldDelegate.selectedBorderColor != selectedBorderColor ||
+        oldDelegate.selectedBorderWidth != selectedBorderWidth;
+  }
+}
+
+abstract class ColorPickingLayerScope {
+  Future<Color?> promptPickColor([ColorHistoryStorage? historyStorage]);
+  static ColorPickingLayerScope findRoot(BuildContext context) {
+    return Data.findRoot<ColorPickingLayerScope>(context);
+  }
+
+  static ColorPickingLayerScope find(BuildContext context) {
+    return Data.find<ColorPickingLayerScope>(context);
+  }
+}
+
+class ColorPickingResult {
+  final Size size;
+  final List<Color> colors;
+  final Color pickedColor;
+
+  const ColorPickingResult(this.colors, this.size, this.pickedColor);
+
+  Color operator [](Offset position) {
+    int index =
+        (position.dy.floor() * size.width + position.dx.floor()).toInt();
+    return colors[index];
+  }
+}
+
+class ColorInputSet extends StatefulWidget {
+  final ColorDerivative color;
+  final ValueChanged<ColorDerivative>? onChanged;
+  final ValueChanged<ColorDerivative>? onColorChangeEnd;
+  final bool showAlpha;
+  final ColorPickerMode mode;
+  final ValueChanged<ColorPickerMode>? onModeChanged;
+  final VoidCallback? onPickFromScreen;
+  final ColorHistoryStorage? storage;
+
+  const ColorInputSet({
+    Key? key,
+    required this.color,
+    this.onChanged,
+    this.onColorChangeEnd,
+    this.showAlpha = true,
+    this.mode = ColorPickerMode.rgb,
+    this.onModeChanged,
+    this.onPickFromScreen,
+    this.storage,
+  }) : super(key: key);
+
+  @override
+  State<ColorInputSet> createState() => _ColorInputSetState();
+}
+
+class _ColorInputSetState extends State<ColorInputSet> {
+  int _tabIndex = 0;
+  @override
+  Widget build(BuildContext context) {
+    final localizations = ShadcnLocalizations.of(context);
+    final theme = Theme.of(context);
+    return IntrinsicWidth(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Tabs(
+              index: _tabIndex,
+              onChanged: (value) {
+                setState(() {
+                  _tabIndex = value;
+                });
+              },
+              tabs: [
+                Text(localizations.colorPickerTabRGB),
+                Text(localizations.colorPickerTabHSL),
+                Text(localizations.colorPickerTabHSV),
+                if (widget.storage != null)
+                  Text(localizations.colorPickerTabRecent),
+              ]),
+          Gap(theme.scaling * 16),
+          _buildContent(context, theme),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, ThemeData theme) {
+    switch (_tabIndex) {
+      case 0:
+        return _buildColorTab(context, ColorPickerMode.rgb);
+      case 1:
+        return _buildColorTab(context, ColorPickerMode.hsl);
+      case 2:
+        return _buildColorTab(context, ColorPickerMode.hsv);
+      case 3:
+      default:
+        if (widget.storage == null) {
+          return const SizedBox();
+        }
+        return ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 320) * theme.scaling,
+          child: ColorHistoryGrid(
+            selectedColor: widget.color.toColor(),
+            storage: widget.storage!,
+            onColorPicked: (value) {
+              var derivative = ColorDerivative.fromColor(value);
+              widget.onChanged?.call(derivative);
+              widget.onColorChangeEnd?.call(derivative);
+            },
+          ),
+        );
+    }
+  }
+
+  Widget _buildColorTab(BuildContext context, ColorPickerMode mode) {
+    return ColorPickerSet(
+      key: ValueKey(mode),
+      color: widget.color,
+      mode: mode,
+      onColorChanged: widget.onChanged,
+      onColorChangeEnd: (value) {
+        widget.onColorChangeEnd?.call(value);
+        if (widget.storage != null) {
+          widget.storage!.addHistory(value.toColor());
+        }
+      },
+      showAlpha: widget.showAlpha,
+      onPickFromScreen: widget.onPickFromScreen,
+    );
+  }
+}
+
+class ColorPickerSet extends StatefulWidget {
+  final ColorDerivative color;
+  final ValueChanged<ColorDerivative>? onColorChanged;
+  final ValueChanged<ColorDerivative>? onColorChangeEnd;
+  final bool showAlpha;
+  final VoidCallback? onPickFromScreen;
+  final ColorPickerMode mode;
+
+  const ColorPickerSet({
+    Key? key,
+    required this.color,
+    this.onColorChanged,
+    this.onColorChangeEnd,
+    this.showAlpha = true,
+    this.mode = ColorPickerMode.rgb,
+    this.onPickFromScreen,
+  }) : super(key: key);
+
+  @override
+  State<ColorPickerSet> createState() => _ColorPickerSetState();
+}
+
+class _ColorPickerSetState extends State<ColorPickerSet> {
+  ColorDerivative get color => widget.color;
+  final TextEditingController _hexController = TextEditingController();
+  // Red or Hue
+  final TextEditingController _aController = TextEditingController();
+  // Green or Saturation
+  final TextEditingController _bController = TextEditingController();
+  // Blue or Value or Lightness
+  final TextEditingController _cController = TextEditingController();
+  final TextEditingController _alphaController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    ColorDerivative color = widget.color;
+    var rgbColor = color.toColor();
+    if (widget.showAlpha) {
+      _hexController.text = '#${rgbColor.value.toRadixString(16)}';
+    } else {
+      _hexController.text = '#${rgbColor.value.toRadixString(16).substring(2)}';
+    }
+    switch (widget.mode) {
+      case ColorPickerMode.rgb:
+        _aController.text = rgbColor.red.toString();
+        _bController.text = rgbColor.green.toString();
+        _cController.text = rgbColor.blue.toString();
+        _alphaController.text = (color.opacity * 255).toInt().toString();
+        break;
+      case ColorPickerMode.hsl:
+        final hsl = color.toHSLColor();
+        _aController.text = hsl.hue.toInt().toString();
+        _bController.text = (hsl.saturation * 100).toInt().toString();
+        _cController.text = (hsl.lightness * 100).toInt().toString();
+        _alphaController.text = (color.opacity * 100).toInt().toString();
+        break;
+      case ColorPickerMode.hsv:
+        final hsv = color.toHSVColor();
+        _aController.text = hsv.hue.toInt().toString();
+        _bController.text = (hsv.saturation * 100).toInt().toString();
+        _cController.text = (hsv.value * 100).toInt().toString();
+        _alphaController.text = (color.opacity * 100).toInt().toString();
+        break;
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant ColorPickerSet oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.color != widget.color || oldWidget.mode != widget.mode) {
+      ColorDerivative color = widget.color;
+      var rgbColor = color.toColor();
+      if (widget.showAlpha) {
+        _hexController.text = '#${rgbColor.value.toRadixString(16)}';
+      } else {
+        _hexController.text =
+            '#${rgbColor.value.toRadixString(16).substring(2)}';
+      }
+      switch (widget.mode) {
+        case ColorPickerMode.rgb:
+          _aController.text = rgbColor.red.toString();
+          _bController.text = rgbColor.green.toString();
+          _cController.text = rgbColor.blue.toString();
+          _alphaController.text = (color.opacity * 255).toInt().toString();
+          break;
+        case ColorPickerMode.hsl:
+          final hsl = color.toHSLColor();
+          _aController.text = hsl.hue.toInt().toString();
+          _bController.text = (hsl.saturation * 100).toInt().toString();
+          _cController.text = (hsl.lightness * 100).toInt().toString();
+          _alphaController.text = (color.opacity * 100).toInt().toString();
+          break;
+        case ColorPickerMode.hsv:
+          final hsv = color.toHSVColor();
+          _aController.text = hsv.hue.toInt().toString();
+          _bController.text = (hsv.saturation * 100).toInt().toString();
+          _cController.text = (hsv.value * 100).toInt().toString();
+          _alphaController.text = (color.opacity * 100).toInt().toString();
+          break;
+      }
+    }
+  }
+
+  void _onColorChange() {
+    String a = _aController.text;
+    String b = _bController.text;
+    String c = _cController.text;
+    String alpha = _alphaController.text;
+    if (a.isEmpty || b.isEmpty || c.isEmpty) {
+      return;
+    }
+    if (widget.showAlpha && alpha.isEmpty) {
+      return;
+    }
+    double aValue = double.tryParse(a) ?? 0;
+    double bValue = double.tryParse(b) ?? 0;
+    double cValue = double.tryParse(c) ?? 0;
+    double alphaValue = double.tryParse(alpha) ?? 0;
+    switch (widget.mode) {
+      case ColorPickerMode.rgb:
+        widget.onColorChanged?.call(widget.color.changeToColor(Color.fromARGB(
+          alphaValue.round().clamp(0, 255),
+          aValue.round().clamp(0, 255),
+          bValue.round().clamp(0, 255),
+          cValue.round().clamp(0, 255),
+        )));
+        break;
+      case ColorPickerMode.hsl:
+        widget.onColorChanged?.call(widget.color.changeToHSL(
+          HSLColor.fromAHSL(
+            (alphaValue / 100).clamp(0, 1),
+            aValue.roundToDouble().clamp(0, 360),
+            (bValue / 100).clamp(0, 1),
+            (cValue / 100).clamp(0, 1),
+          ),
+        ));
+        break;
+      case ColorPickerMode.hsv:
+        widget.onColorChanged?.call(widget.color.changeToHSV(
+          HSVColor.fromAHSV(
+            (alphaValue / 100).clamp(0, 1),
+            aValue.roundToDouble().clamp(0, 360),
+            (bValue / 100).clamp(0, 1),
+            (cValue / 100).clamp(0, 1),
+          ),
+        ));
+        break;
+    }
+  }
+
+  Widget _wrapTextField({required Widget child}) {
+    final theme = Theme.of(context);
+    return SizedBox(
+      width: 54 * theme.scaling,
+      child: child,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final localizations = ShadcnLocalizations.of(context);
+    String aLabel;
+    String bLabel;
+    String cLabel;
+    switch (widget.mode) {
+      case ColorPickerMode.rgb:
+        aLabel = localizations.colorRed;
+        bLabel = localizations.colorGreen;
+        cLabel = localizations.colorBlue;
+        break;
+      case ColorPickerMode.hsl:
+        aLabel = localizations.colorHue;
+        bLabel = localizations.colorSaturation;
+        cLabel = localizations.colorLightness;
+        break;
+      case ColorPickerMode.hsv:
+        aLabel = localizations.colorHue;
+        bLabel = localizations.colorSaturation;
+        cLabel = localizations.colorValue;
+        break;
+    }
+    return IntrinsicHeight(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          IntrinsicWidth(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.colorScheme.border,
+                        ),
+                        borderRadius: BorderRadius.circular(theme.radiusLg),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: widget.mode == ColorPickerMode.hsl
+                          ? HSLColorPickerArea(
+                              color: color.toHSLColor(),
+                              sliderType: HSLColorSliderType.satLum,
+                              reverse: true,
+                              onColorChanged: (value) {
+                                widget.onColorChanged?.call(widget.color
+                                    .changeToHSLSaturation(value.saturation)
+                                    .changeToHSLLightness(value.lightness));
+                              },
+                              onColorEnd: (value) {
+                                widget.onColorChangeEnd?.call(widget.color
+                                    .changeToHSLSaturation(value.saturation)
+                                    .changeToHSLLightness(value.lightness));
+                              },
+                            )
+                          : HSVColorPickerArea(
+                              color: color.toHSVColor(),
+                              onColorChanged: (value) {
+                                widget.onColorChanged?.call(widget.color
+                                    .changeToHSVValue(value.value)
+                                    .changeToHSVSaturation(value.saturation));
+                              },
+                              sliderType: HSVColorSliderType.satVal,
+                              reverse: true,
+                              onColorEnd: (value) {
+                                widget.onColorChangeEnd?.call(
+                                  widget.color
+                                      .changeToHSVValue(value.value)
+                                      .changeToHSVSaturation(value.saturation),
+                                );
+                              },
+                            ),
+                    ),
+                  ),
+                ),
+                if (widget.onPickFromScreen != null) Gap(theme.scaling * 16),
+                if (widget.onPickFromScreen != null)
+                  IconButton.outline(
+                    onPressed: widget.onPickFromScreen,
+                    icon: const Icon(BootstrapIcons.eyedropper),
+                  ),
+              ],
+            ),
+          ),
+          Gap(theme.scaling * 16),
+          IntrinsicWidth(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: theme.scaling * 32,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: theme.colorScheme.border,
+                      ),
+                      borderRadius: BorderRadius.circular(theme.radiusLg),
+                    ),
+                    child: widget.mode == ColorPickerMode.hsl
+                        ? HSLColorPickerArea(
+                            color: HSLColor.fromAHSL(
+                              color.opacity,
+                              color.hslHue,
+                              1,
+                              0.5,
+                            ),
+                            onColorEnd: (value) {
+                              widget.onColorChangeEnd?.call(
+                                  widget.color.changeToHSLHue(value.hue));
+                            },
+                            sliderType: HSLColorSliderType.hue,
+                            radius: Radius.circular(theme.radiusLg),
+                            reverse: true,
+                            onColorChanged: (value) {
+                              widget.onColorChanged?.call(
+                                  widget.color.changeToHSLHue(value.hue));
+                            },
+                          )
+                        : HSVColorPickerArea(
+                            color: HSVColor.fromAHSV(
+                              color.opacity,
+                              color.hsvHue,
+                              1,
+                              1,
+                            ),
+                            radius: Radius.circular(theme.radiusLg),
+                            onColorChanged: (value) {
+                              widget.onColorChanged?.call(
+                                  widget.color.changeToHSVHue(value.hue));
+                            },
+                            sliderType: HSVColorSliderType.hue,
+                            reverse: true,
+                            onColorEnd: (value) {
+                              widget.onColorChangeEnd?.call(
+                                  widget.color.changeToHSVHue(value.hue));
+                            },
+                          ),
+                  ),
+                ),
+                if (widget.showAlpha) Gap(theme.scaling * 16),
+                // alpha
+                if (widget.showAlpha)
+                  SizedBox(
+                    height: 32 * theme.scaling,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.colorScheme.border,
+                        ),
+                        borderRadius: BorderRadius.circular(theme.radiusLg),
+                      ),
+                      child: widget.mode == ColorPickerMode.hsl
+                          ? HSLColorPickerArea(
+                              color: HSLColor.fromAHSL(
+                                color.opacity,
+                                color.hslHue,
+                                1,
+                                0.5,
+                              ),
+                              sliderType: HSLColorSliderType.alpha,
+                              reverse: true,
+                              radius: Radius.circular(theme.radiusLg),
+                              onColorChanged: (value) {
+                                widget.onColorChanged?.call(
+                                    widget.color.changeToAlpha(value.alpha));
+                              },
+                              onColorEnd: (value) {
+                                widget.onColorChangeEnd?.call(
+                                    widget.color.changeToAlpha(value.alpha));
+                              },
+                            )
+                          : HSVColorPickerArea(
+                              color: HSVColor.fromAHSV(
+                                color.opacity,
+                                color.hsvHue,
+                                1,
+                                1,
+                              ),
+                              onColorChanged: (value) {
+                                widget.onColorChanged?.call(
+                                    widget.color.changeToAlpha(value.alpha));
+                              },
+                              sliderType: HSVColorSliderType.alpha,
+                              radius: Radius.circular(theme.radiusLg),
+                              reverse: true,
+                              onColorEnd: (value) {
+                                widget.onColorChangeEnd?.call(
+                                  widget.color.changeToAlpha(value.alpha),
+                                );
+                              },
+                            ),
+                    ),
+                  ),
+                Gap(theme.scaling * 16),
+                TextField(
+                  controller: _hexController,
+                  onEditingComplete: () {
+                    var hex = _hexController.text;
+                    if (hex.startsWith('#')) {
+                      hex = hex.substring(1);
+                    }
+                    Color color;
+                    if (hex.length == 6) {
+                      color = Color(int.parse('FF$hex', radix: 16));
+                    } else if (hex.length == 8) {
+                      color = Color(int.parse(hex, radix: 16));
+                    } else {
+                      color = widget.color.toColor();
+                      if (widget.showAlpha) {
+                        _hexController.text =
+                            '#${color.value.toRadixString(16)}';
+                      } else {
+                        _hexController.text =
+                            '#${color.value.toRadixString(16).substring(2)}';
+                      }
+                    }
+                    widget.onColorChanged
+                        ?.call(ColorDerivative.fromColor(color));
+                  },
+                ),
+                Gap(theme.scaling * 16),
+                SizedBox(
+                  child: Row(
+                    children: [
+                      _wrapTextField(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(aLabel).muted().small(),
+                            Gap(theme.scaling * 4),
+                            TextField(
+                              controller: _aController,
+                              onEditingComplete: _onColorChange,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              keyboardType: TextInputType.number,
+                            ),
+                          ],
+                        ),
+                      ),
+                      _wrapTextField(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(bLabel).muted().small(),
+                            Gap(theme.scaling * 4),
+                            TextField(
+                              controller: _bController,
+                              onEditingComplete: _onColorChange,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              keyboardType: TextInputType.number,
+                            ),
+                          ],
+                        ),
+                      ),
+                      _wrapTextField(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(cLabel).muted().small(),
+                            Gap(theme.scaling * 4),
+                            TextField(
+                              controller: _cController,
+                              onEditingComplete: _onColorChange,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              keyboardType: TextInputType.number,
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (widget.showAlpha)
+                        _wrapTextField(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(localizations.colorAlpha).muted().small(),
+                              Gap(theme.scaling * 4),
+                              TextField(
+                                onEditingComplete: _onColorChange,
+                                controller: _alphaController,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                ],
+                                keyboardType: TextInputType.number,
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ).gap(theme.scaling * 16),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ColorInput extends StatelessWidget {
+  final ColorDerivative color;
+  final ValueChanged<ColorDerivative>? onChanged;
   final bool showAlpha;
   final Alignment? popoverAlignment;
   final Alignment? popoverAnchorAlignment;
   final EdgeInsets? popoverPadding;
   final Widget? placeholder;
   final PromptMode mode;
+  final ColorPickerMode pickerMode;
   final Widget? dialogTitle;
+  final bool allowPickFromScreen;
+  final bool showLabel;
+  final ColorHistoryStorage? storage;
 
-  const HSVColorPicker({
+  const ColorInput({
     Key? key,
     required this.color,
     this.onChanged,
@@ -29,7 +1236,11 @@ class HSVColorPicker extends StatelessWidget {
     this.popoverPadding,
     this.placeholder,
     this.mode = PromptMode.dialog,
+    this.pickerMode = ColorPickerMode.rgb,
     this.dialogTitle,
+    this.allowPickFromScreen = true,
+    this.showLabel = false,
+    this.storage,
   }) : super(key: key);
 
   @override
@@ -45,9 +1256,23 @@ class HSVColorPicker extends StatelessWidget {
       mode: mode,
       placeholder: placeholder ?? Text(localizations.placeholderColorPicker),
       onChanged: (value) {
-        onChanged?.call(value!);
+        if (value != null) {
+          onChanged?.call(value);
+        }
       },
+      density: !showLabel ? ButtonDensity.iconDense : ButtonDensity.normal,
       builder: (context, value) {
+        if (!showLabel) {
+          return Container(
+            decoration: BoxDecoration(
+              color: value.toColor(),
+              border: Border.all(
+                color: theme.colorScheme.border,
+              ),
+              borderRadius: theme.borderRadiusSm,
+            ),
+          );
+        }
         return IntrinsicHeight(
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -71,379 +1296,95 @@ class HSVColorPicker extends StatelessWidget {
           ),
         );
       },
-      editorBuilder: (context, value, onChanged) {
-        return HSVColorPickerSet(
-          color: value ?? const HSVColor.fromAHSV(1, 0, 1, 1),
-          onColorChanged: (value) {
-            onChanged(value);
+      dialogActions: (innerContext, handler) {
+        return [
+          if (allowPickFromScreen)
+            IconButton.outline(
+              icon: const Icon(BootstrapIcons.eyedropper),
+              onPressed: () async {
+                await handler.close();
+                if (!context.mounted) return;
+                final result = await pickColorFromScreen(context);
+                handler.prompt(
+                    result != null ? ColorDerivative.fromColor(result) : null);
+              },
+            ),
+        ];
+      },
+      editorBuilder: (innerContext, handler) {
+        return ColorInputPopup(
+          color: handler.value ?? color,
+          onChanged: (value) {
+            handler.value = value;
           },
+          storage: storage,
           showAlpha: showAlpha,
+          initialMode: pickerMode,
+          onPickFromScreen: allowPickFromScreen && mode == PromptMode.popover
+              ? () async {
+                  await handler.close();
+                  if (!context.mounted) return;
+                  final result = await pickColorFromScreen(context);
+                  if (result != null) {
+                    handler.value = ColorDerivative.fromColor(result);
+                  }
+                  handler.prompt();
+                }
+              : null,
         );
       },
     );
   }
 }
 
-Future<HSVColor> showHSVColorPicker({
-  required BuildContext context,
-  required HSVColor color,
-  Alignment alignment = Alignment.topCenter,
-  bool showAlpha = true,
-  Offset? offset,
-  ValueChanged<HSVColor>? onColorChanged,
-}) {
-  return showPopover(
-    context: context,
-    alignment: alignment,
-    modal: false,
-    offset: offset,
-    builder: (context) {
-      return _HSVColorPickerPopup(
-        color: color,
-        onColorChanged: (value) {
-          color = value;
-          onColorChanged?.call(value);
-        },
-        showAlpha: showAlpha,
-      );
-    },
-  ).then(
-    (value) {
-      return color;
-    },
-  );
-}
-
-class _HSVColorPickerPopup extends StatefulWidget {
-  final HSVColor color;
-  final ValueChanged<HSVColor> onColorChanged;
+class ColorInputPopup extends StatefulWidget {
+  final ColorDerivative color;
+  final ValueChanged<ColorDerivative>? onChanged;
+  final ValueChanged<ColorDerivative>? onColorChangeEnd;
   final bool showAlpha;
+  final ColorPickerMode initialMode;
+  final VoidCallback? onPickFromScreen;
+  final ColorHistoryStorage? storage;
 
-  const _HSVColorPickerPopup({
+  const ColorInputPopup({
     Key? key,
     required this.color,
-    required this.onColorChanged,
+    this.onChanged,
+    this.onColorChangeEnd,
     this.showAlpha = true,
+    this.initialMode = ColorPickerMode.rgb,
+    this.onPickFromScreen,
+    this.storage,
   }) : super(key: key);
 
   @override
-  State<_HSVColorPickerPopup> createState() => _HSVColorPickerPopupState();
+  State<ColorInputPopup> createState() => _ColorInputPopupState();
 }
 
-class _HSVColorPickerPopupState extends State<_HSVColorPickerPopup> {
-  late HSVColor color;
-  @override
-  void initState() {
-    super.initState();
-    color = widget.color;
-  }
-
-  @override
-  void didUpdateWidget(covariant _HSVColorPickerPopup oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.color != widget.color) {
-      color = widget.color;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: HSVColorPickerSet(
-        color: color,
-        onColorChanged: (value) {
-          setState(() {
-            color = value;
-            widget.onColorChanged(value);
-          });
-        },
-        showAlpha: widget.showAlpha,
-      ),
-    );
-  }
-}
-
-class HSVColorPickerSet extends StatefulWidget {
-  final HSVColor color;
-  final ValueChanged<HSVColor> onColorChanged;
-  final bool showAlpha;
-
-  const HSVColorPickerSet({
-    Key? key,
-    required this.color,
-    required this.onColorChanged,
-    this.showAlpha = true,
-  }) : super(key: key);
-
-  @override
-  State<HSVColorPickerSet> createState() => _HSVColorPickerSetState();
-}
-
-class _HSVColorPickerSetState extends State<HSVColorPickerSet> {
-  HSVColor get color => widget.color;
-  final TextEditingController _hexController = TextEditingController();
-  final TextEditingController _redController = TextEditingController();
-  final TextEditingController _greenController = TextEditingController();
-  final TextEditingController _blueController = TextEditingController();
-  final TextEditingController _alphaController = TextEditingController();
+class _ColorInputPopupState extends State<ColorInputPopup> {
+  late ColorPickerMode _mode;
 
   @override
   void initState() {
     super.initState();
-    if (widget.showAlpha) {
-      _hexController.text = '#${color.toColor().value.toRadixString(16)}';
-      Color c = color.toColor();
-      _redController.text = c.red.toString();
-      _greenController.text = c.green.toString();
-      _blueController.text = c.blue.toString();
-      _alphaController.text = c.alpha.toString();
-    } else {
-      _hexController.text =
-          '#${color.toColor().value.toRadixString(16).substring(2)}';
-      Color c = color.toColor();
-      _redController.text = c.red.toString();
-      _greenController.text = c.green.toString();
-      _blueController.text = c.blue.toString();
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant HSVColorPickerSet oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.color != widget.color) {
-      if (widget.showAlpha) {
-        _hexController.text = '#${color.toColor().value.toRadixString(16)}';
-        Color c = color.toColor();
-        _redController.text = c.red.toString();
-        _greenController.text = c.green.toString();
-        _blueController.text = c.blue.toString();
-        _alphaController.text = c.alpha.toString();
-      } else {
-        _hexController.text =
-            '#${color.toColor().value.toRadixString(16).substring(2)}';
-        Color c = color.toColor();
-        _redController.text = c.red.toString();
-        _greenController.text = c.green.toString();
-        _blueController.text = c.blue.toString();
-      }
-    }
+    _mode = widget.initialMode;
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final localizations = ShadcnLocalizations.of(context);
-    return IntrinsicHeight(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: theme.colorScheme.border,
-                ),
-                borderRadius: BorderRadius.circular(theme.radiusLg),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: HSVColorPickerArea(
-                color: color,
-                onColorChanged: (value) {
-                  widget.onColorChanged(value);
-                },
-                sliderType: HSVColorSliderType.satVal,
-                reverse: true,
-              ),
-            ),
-          ),
-          Gap(theme.scaling * 16),
-          IntrinsicWidth(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  height: theme.scaling * 32,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: theme.colorScheme.border,
-                      ),
-                      borderRadius: BorderRadius.circular(theme.radiusLg),
-                    ),
-                    child: HSVColorPickerArea(
-                      color: HSVColor.fromAHSV(1, color.hue, 1, 1),
-                      radius: Radius.circular(theme.radiusLg),
-                      onColorChanged: (value) {
-                        setState(() {
-                          widget.onColorChanged(HSVColor.fromAHSV(color.alpha,
-                              value.hue, color.saturation, color.value));
-                        });
-                      },
-                      sliderType: HSVColorSliderType.hue,
-                      reverse: true,
-                    ),
-                  ),
-                ),
-                if (widget.showAlpha) Gap(theme.scaling * 16),
-                // alpha
-                if (widget.showAlpha)
-                  SizedBox(
-                    height: 32 * theme.scaling,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: theme.colorScheme.border,
-                        ),
-                        borderRadius: BorderRadius.circular(theme.radiusLg),
-                      ),
-                      child: HSVColorPickerArea(
-                        color: color,
-                        onColorChanged: (value) {
-                          widget.onColorChanged(value);
-                        },
-                        sliderType: HSVColorSliderType.alpha,
-                        radius: Radius.circular(theme.radiusLg),
-                        reverse: true,
-                      ),
-                    ),
-                  ),
-                Gap(theme.scaling * 16),
-                TextField(
-                  controller: _hexController,
-                  onEditingComplete: () {
-                    var hex = _hexController.text;
-                    if (hex.startsWith('#')) {
-                      hex = hex.substring(1);
-                    }
-                    if (hex.length == 6) {
-                      widget.onColorChanged(HSVColor.fromColor(
-                          Color(int.parse('FF$hex', radix: 16))));
-                    } else if (hex.length == 8) {
-                      widget.onColorChanged(
-                          HSVColor.fromColor(Color(int.parse(hex, radix: 16))));
-                    } else {
-                      widget.onColorChanged(color);
-                      if (widget.showAlpha) {
-                        _hexController.text =
-                            '#${color.toColor().value.toRadixString(16)}';
-                      } else {
-                        _hexController.text =
-                            '#${color.toColor().value.toRadixString(16).substring(2)}';
-                      }
-                    }
-                  },
-                ),
-                Gap(theme.scaling * 16),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(localizations.colorRed),
-                        Gap(theme.scaling * 4),
-                        TextField(
-                          controller: _redController,
-                          onEditingComplete: () {
-                            widget.onColorChanged(
-                                HSVColor.fromColor(Color.fromRGBO(
-                              (int.tryParse(_redController.text) ??
-                                      color.toColor().red)
-                                  .clamp(0, 255),
-                              color.toColor().green,
-                              color.toColor().blue,
-                              color.alpha,
-                            )));
-                          },
-                        ),
-                      ],
-                    )),
-                    Gap(theme.scaling * 16),
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(localizations.colorGreen),
-                        Gap(theme.scaling * 4),
-                        TextField(
-                          controller: _greenController,
-                          onEditingComplete: () {
-                            var cc = color.toColor();
-                            widget.onColorChanged(
-                                HSVColor.fromColor(Color.fromRGBO(
-                              cc.red,
-                              (int.tryParse(_greenController.text) ?? cc.green)
-                                  .clamp(0, 255),
-                              cc.blue,
-                              color.alpha,
-                            )));
-                          },
-                        ),
-                      ],
-                    )),
-                    Gap(theme.scaling * 16),
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(localizations.colorBlue),
-                        Gap(theme.scaling * 4),
-                        TextField(
-                          controller: _blueController,
-                          onEditingComplete: () {
-                            var cc = color.toColor();
-                            widget.onColorChanged(
-                                HSVColor.fromColor(Color.fromRGBO(
-                              cc.red,
-                              cc.green,
-                              // int.tryParse(_blueController.text) ?? 0,
-                              (int.tryParse(_blueController.text) ?? cc.blue)
-                                  .clamp(0, 255),
-                              color.alpha,
-                            )));
-                          },
-                        ),
-                      ],
-                    )),
-                    if (widget.showAlpha) ...[
-                      Gap(theme.scaling * 16),
-                      Expanded(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(localizations.colorAlpha),
-                          Gap(theme.scaling * 4),
-                          TextField(
-                            onEditingComplete: () {
-                              widget.onColorChanged(HSVColor.fromAHSV(
-                                ((int.tryParse(_alphaController.text) ??
-                                            color.toColor().alpha) /
-                                        255)
-                                    .clamp(0, 1),
-                                color.hue,
-                                color.saturation,
-                                color.value,
-                              ));
-                            },
-                            controller: _alphaController,
-                          ),
-                        ],
-                      )),
-                    ],
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return ColorInputSet(
+      color: widget.color,
+      onChanged: widget.onChanged,
+      showAlpha: widget.showAlpha,
+      mode: _mode,
+      onModeChanged: (mode) {
+        setState(() {
+          _mode = mode;
+        });
+      },
+      onPickFromScreen: widget.onPickFromScreen,
+      onColorChangeEnd: widget.onColorChangeEnd,
+      storage: widget.storage,
     );
   }
 }
@@ -474,6 +1415,530 @@ enum HSLColorSliderType {
   alpha;
 }
 
+Future<ColorDerivative> showColorPickerDialog({
+  required BuildContext context,
+  required ColorDerivative color,
+  ValueChanged<ColorDerivative>? onColorChanged,
+  Widget? title,
+  ColorPickerMode initialMode = ColorPickerMode.rgb,
+  bool showAlpha = true,
+  bool allowPickFromScreen = true,
+  ColorHistoryStorage? historyStorage,
+}) async {
+  final GlobalKey<_ColorPickerDialogState> key = GlobalKey();
+  while (true) {
+    if (!context.mounted) {
+      return color;
+    }
+    final result = await showDialog<_ColorPickerDialogResult>(
+      context: context,
+      builder: (context) {
+        return _ColorPickerDialog(
+          key: key,
+          color: color,
+          onColorChanged: (color) {
+            onColorChanged?.call(color);
+            if (historyStorage != null) {
+              historyStorage.addHistory(color.toColor());
+            }
+          },
+          showAlpha: showAlpha,
+          initialMode: initialMode,
+          allowPickFromScreen: allowPickFromScreen,
+          title: title,
+        );
+      },
+    );
+    if (result == null) {
+      return color;
+    }
+    if (result.pickedFromScreen) {
+      if (key.currentState != null) {
+        final modalRoute = ModalRoute.of(key.currentContext!);
+        if (modalRoute != null) {
+          await modalRoute.completed;
+        }
+      }
+      if (!context.mounted) {
+        return color;
+      }
+      final picked = await pickColorFromScreen(context);
+      if (picked != null) {
+        color = color.changeToColor(picked);
+      }
+      continue;
+    }
+    if (result.color != null) {
+      return result.color!;
+    }
+    return color;
+  }
+}
+
+Future<ColorDerivative> showColorPicker({
+  required BuildContext context,
+  AlignmentGeometry alignment = AlignmentDirectional.topStart,
+  AlignmentGeometry anchorAlignment = AlignmentDirectional.bottomStart,
+  bool follow = true,
+  Offset? offset,
+  PopoverConstraint widthConstraint = PopoverConstraint.flexible,
+  PopoverConstraint heightConstraint = PopoverConstraint.flexible,
+  required ColorDerivative color,
+  ValueChanged<ColorDerivative>? onColorChanged,
+  bool showAlpha = true,
+  ColorPickerMode initialMode = ColorPickerMode.rgb,
+  bool allowPickFromScreen = true,
+  ValueChanged<ColorDerivative>? onColorChangeEnd,
+  ColorHistoryStorage? historyStorage,
+}) async {
+  while (true) {
+    if (!context.mounted) {
+      return color;
+    }
+    final completer = showPopover(
+      context: context,
+      alignment: alignment,
+      follow: true,
+      offset: offset,
+      anchorAlignment: anchorAlignment,
+      widthConstraint: widthConstraint,
+      heightConstraint: heightConstraint,
+      builder: (innerContext) {
+        return _ColorPickerPopup(
+          color: color,
+          onColorChanged: onColorChanged,
+          onColorChangeEnd: (value) {
+            onColorChangeEnd?.call(value);
+            if (historyStorage != null) {
+              historyStorage.addHistory(value.toColor());
+            }
+          },
+          showAlpha: showAlpha,
+          initialMode: initialMode,
+          allowPickFromScreen: allowPickFromScreen,
+        );
+      },
+    );
+    final result = await completer.future;
+    if (result == null) {
+      return color;
+    }
+    if (result.pickedFromScreen) {
+      await completer.animationFuture;
+      if (!context.mounted) {
+        return color;
+      }
+      final picked = await pickColorFromScreen(context);
+      if (picked != null) {
+        color = color.changeToColor(picked);
+        onColorChanged?.call(color);
+      }
+      continue;
+    }
+    if (result.color != null) {
+      return result.color!;
+    }
+  }
+}
+
+class _ColorPickerDialogResult {
+  final ColorDerivative? color;
+  final bool pickedFromScreen;
+
+  const _ColorPickerDialogResult({
+    this.color,
+    this.pickedFromScreen = false,
+  });
+}
+
+class _ColorPickerDialog extends StatefulWidget {
+  final ColorDerivative color;
+  final ValueChanged<ColorDerivative>? onColorChanged;
+  final bool showAlpha;
+  final ColorPickerMode initialMode;
+  final bool allowPickFromScreen;
+  final Widget? title;
+
+  const _ColorPickerDialog({
+    Key? key,
+    required this.color,
+    this.onColorChanged,
+    this.showAlpha = true,
+    this.initialMode = ColorPickerMode.rgb,
+    this.allowPickFromScreen = true,
+    this.title,
+  }) : super(key: key);
+
+  @override
+  State<_ColorPickerDialog> createState() => _ColorPickerDialogState();
+}
+
+class _ColorPickerDialogState extends State<_ColorPickerDialog> {
+  late ColorPickerMode _mode;
+  late ColorDerivative _color;
+
+  @override
+  void initState() {
+    super.initState();
+    _mode = widget.initialMode;
+    _color = widget.color;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = ShadcnLocalizations.of(context);
+    return AlertDialog(
+      title: widget.title,
+      content: ColorInputPopup(
+        color: _color,
+        onChanged: (value) {
+          setState(() {
+            _color = value;
+          });
+        },
+        showAlpha: widget.showAlpha,
+        initialMode: _mode,
+      ),
+      actions: [
+        if (widget.allowPickFromScreen)
+          IconButton.outline(
+            onPressed: () {
+              Navigator.of(context).pop(const _ColorPickerDialogResult(
+                pickedFromScreen: true,
+              ));
+            },
+            icon: const Icon(BootstrapIcons.eyedropper),
+          ),
+        SecondaryButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(localizations.buttonCancel),
+        ),
+        PrimaryButton(
+          onPressed: () {
+            widget.onColorChanged?.call(_color);
+            Navigator.of(context).pop(_ColorPickerDialogResult(
+              color: _color,
+            ));
+          },
+          child: Text(localizations.buttonOk, textAlign: TextAlign.center),
+        ),
+      ],
+    );
+  }
+}
+
+class _ColorPickerPopup extends StatefulWidget {
+  final ColorDerivative color;
+  final ValueChanged<ColorDerivative>? onColorChanged;
+  final ValueChanged<ColorDerivative>? onColorChangeEnd;
+  final bool showAlpha;
+  final ColorPickerMode initialMode;
+  final bool allowPickFromScreen;
+
+  const _ColorPickerPopup({
+    Key? key,
+    required this.color,
+    this.onColorChanged,
+    this.onColorChangeEnd,
+    this.showAlpha = true,
+    this.initialMode = ColorPickerMode.rgb,
+    this.allowPickFromScreen = true,
+  }) : super(key: key);
+
+  @override
+  State<_ColorPickerPopup> createState() => _ColorPickerPopupState();
+}
+
+class _ColorPickerPopupState extends State<_ColorPickerPopup> {
+  late ColorPickerMode _mode;
+  late ColorDerivative _color;
+
+  @override
+  void initState() {
+    super.initState();
+    _mode = widget.initialMode;
+    _color = widget.color;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SurfaceCard(
+      child: ColorInputPopup(
+        color: _color,
+        onChanged: (value) {
+          setState(() {
+            _color = value;
+          });
+          widget.onColorChanged?.call(value);
+        },
+        showAlpha: widget.showAlpha,
+        initialMode: _mode,
+        onColorChangeEnd: widget.onColorChangeEnd,
+        onPickFromScreen: widget.allowPickFromScreen
+            ? () {
+                closePopover(
+                    context,
+                    const _ColorPickerDialogResult(
+                      pickedFromScreen: true,
+                    ));
+              }
+            : null,
+      ),
+    );
+  }
+}
+
+abstract base class ColorDerivative {
+  static ColorDerivative fromColor(Color color) {
+    return _HSVColor(HSVColor.fromColor(color));
+  }
+
+  static ColorDerivative fromHSV(HSVColor color) {
+    return _HSVColor(color);
+  }
+
+  static ColorDerivative fromHSL(HSLColor color) {
+    return _HSLColor(color);
+  }
+
+  const ColorDerivative();
+  Color toColor();
+  HSVColor toHSVColor();
+  HSLColor toHSLColor();
+  double get opacity;
+  double get hslHue;
+  double get hslSat;
+  double get hslVal;
+  double get hsvHue;
+  double get hsvSat;
+  double get hsvVal;
+  int get red;
+  int get green;
+  int get blue;
+  ColorDerivative transform(ColorDerivative old);
+  ColorDerivative changeToAlpha(double alpha);
+  ColorDerivative changeToColor(Color color) {
+    ColorDerivative newColor = ColorDerivative.fromColor(color);
+    return newColor.transform(this);
+  }
+
+  ColorDerivative changeToHSV(HSVColor color) {
+    ColorDerivative newColor = ColorDerivative.fromHSV(color);
+    return newColor.transform(this);
+  }
+
+  ColorDerivative changeToHSL(HSLColor color) {
+    ColorDerivative newColor = ColorDerivative.fromHSL(color);
+    return newColor.transform(this);
+  }
+
+  ColorDerivative changeToColorRed(double red) {
+    return changeToColor(toColor().withRed(red.toInt()));
+  }
+
+  ColorDerivative changeToColorGreen(double green) {
+    return changeToColor(toColor().withGreen(green.toInt()));
+  }
+
+  ColorDerivative changeToColorBlue(double blue) {
+    return changeToColor(toColor().withBlue(blue.toInt()));
+  }
+
+  ColorDerivative changeToColorAlpha(double alpha) {
+    return changeToColor(toColor().withAlpha(alpha.toInt()));
+  }
+
+  ColorDerivative changeToHSVHue(double hue) {
+    return changeToHSV(toHSVColor().withHue(hue));
+  }
+
+  ColorDerivative changeToHSVSaturation(double saturation) {
+    return changeToHSV(toHSVColor().withSaturation(saturation));
+  }
+
+  ColorDerivative changeToHSVValue(double value) {
+    return changeToHSV(toHSVColor().withValue(value));
+  }
+
+  ColorDerivative changeToHSVAlpha(double alpha) {
+    return changeToHSV(toHSVColor().withAlpha(alpha));
+  }
+
+  ColorDerivative changeToHSLHue(double hue) {
+    return changeToHSL(toHSLColor().withHue(hue));
+  }
+
+  ColorDerivative changeToHSLSaturation(double saturation) {
+    return changeToHSL(toHSLColor().withSaturation(saturation));
+  }
+
+  ColorDerivative changeToHSLLightness(double lightness) {
+    return changeToHSL(toHSLColor().withLightness(lightness));
+  }
+}
+
+final class _HSVColor extends ColorDerivative {
+  final HSVColor color;
+  const _HSVColor(this.color);
+
+  @override
+  Color toColor() {
+    return color.toColor();
+  }
+
+  @override
+  HSVColor toHSVColor() {
+    return color;
+  }
+
+  @override
+  HSLColor toHSLColor() {
+    return color.toHSL();
+  }
+
+  @override
+  double get opacity => color.alpha;
+
+  @override
+  ColorDerivative changeToAlpha(double alpha) {
+    return _HSVColor(color.withAlpha(alpha));
+  }
+
+  @override
+  ColorDerivative transform(ColorDerivative old) {
+    if (old is _HSVColor) {
+      return _HSVColor(color);
+    } else if (old is _HSLColor) {
+      return _HSLColor(color.toHSL());
+    } else {
+      throw FlutterError('Invalid color type');
+    }
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    if (other is _HSLColor) {
+      return color == other.toHSVColor();
+    }
+
+    return other is _HSVColor && other.color == color;
+  }
+
+  @override
+  int get hashCode => toColor().hashCode;
+
+  @override
+  double get hslHue => color.toHSL().hue;
+
+  @override
+  double get hslSat => color.toHSL().saturation;
+
+  @override
+  double get hslVal => color.toHSL().lightness;
+
+  @override
+  double get hsvHue => color.hue;
+
+  @override
+  double get hsvSat => color.saturation;
+
+  @override
+  double get hsvVal => color.value;
+
+  @override
+  int get red => color.toColor().red;
+
+  @override
+  int get green => color.toColor().green;
+
+  @override
+  int get blue => color.toColor().blue;
+}
+
+final class _HSLColor extends ColorDerivative {
+  final HSLColor color;
+  const _HSLColor(this.color);
+
+  @override
+  Color toColor() {
+    return color.toColor();
+  }
+
+  @override
+  HSVColor toHSVColor() {
+    return color.toHSV();
+  }
+
+  @override
+  HSLColor toHSLColor() {
+    return color;
+  }
+
+  @override
+  double get opacity => color.alpha;
+
+  @override
+  ColorDerivative changeToAlpha(double alpha) {
+    return _HSLColor(color.withAlpha(alpha));
+  }
+
+  @override
+  ColorDerivative transform(ColorDerivative old) {
+    if (old is _HSVColor) {
+      return _HSVColor(color.toHSV());
+    } else if (old is _HSLColor) {
+      return _HSLColor(color);
+    } else {
+      throw FlutterError('Invalid color type');
+    }
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    if (other is _HSVColor) {
+      return color == other.toHSLColor();
+    }
+
+    return other is _HSLColor && other.color == color;
+  }
+
+  @override
+  int get hashCode => toColor().hashCode;
+
+  @override
+  double get hslHue => color.hue;
+
+  @override
+  double get hslSat => color.saturation;
+
+  @override
+  double get hslVal => color.lightness;
+
+  @override
+  double get hsvHue => color.toHSV().hue;
+
+  @override
+  double get hsvSat => color.toHSV().saturation;
+
+  @override
+  double get hsvVal => color.toHSV().value;
+
+  @override
+  int get red => color.toColor().red;
+
+  @override
+  int get green => color.toColor().green;
+
+  @override
+  int get blue => color.toColor().blue;
+}
+
 class HSVColorPickerArea extends StatefulWidget {
   final HSVColor color;
   final ValueChanged<HSVColor>? onColorChanged;
@@ -499,7 +1964,6 @@ class HSVColorPickerArea extends StatefulWidget {
 }
 
 class _HSVColorPickerAreaState extends State<HSVColorPickerArea> {
-  // static const double cursorRadius = 15;
   late double _currentHorizontal;
   late double _currentVertical;
   late double _hue;
@@ -520,9 +1984,6 @@ class _HSVColorPickerAreaState extends State<HSVColorPickerArea> {
   }
 
   void _updateColor(Offset localPosition, Size size) {
-    // _currentHorizontal = (localPosition.dx / size.width).clamp(0, 1);
-    // _currentVertical = (localPosition.dy / size.height).clamp(0, 1);
-    // must consider padding
     _currentHorizontal = ((localPosition.dx - widget.padding.left) /
             (size.width - widget.padding.horizontal))
         .clamp(0, 1);
@@ -1008,140 +2469,138 @@ class _HSLColorPickerAreaState extends State<HSLColorPickerArea> {
     final theme = Theme.of(context);
     double cursorRadius = theme.scaling * 16;
     double radDiv = isSingleChannel ? 4 : 2;
-    return LayoutBuilder(builder: (context, constraints) {
-      return GestureDetector(
-        onTapDown: (details) {
-          _updateColor(details.localPosition, constraints.biggest);
-          widget.onColorEnd?.call(HSLColor.fromAHSL(
-            _alpha.clamp(0, 1),
-            _hue.clamp(0, 360),
-            _saturation.clamp(0, 1),
-            _lightness.clamp(0, 1),
-          ));
-        },
-        onPanUpdate: (details) {
-          setState(() {
-            _updateColor(details.localPosition, constraints.biggest);
-          });
-        },
-        onPanEnd: (details) {
-          widget.onColorEnd?.call(HSLColor.fromAHSL(
-            _alpha.clamp(0, 1),
-            _hue.clamp(0, 360),
-            _saturation.clamp(0, 1),
-            _lightness.clamp(0, 1),
-          ));
-        },
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Positioned.fill(
-              child: RepaintBoundary(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(widget.radius),
-                  child: CustomPaint(
-                    painter: CheckboardPainter(),
-                  ),
+    return GestureDetector(
+      onTapDown: (details) {
+        _updateColor(details.localPosition, context.size!);
+        widget.onColorEnd?.call(HSLColor.fromAHSL(
+          _alpha.clamp(0, 1),
+          _hue.clamp(0, 360),
+          _saturation.clamp(0, 1),
+          _lightness.clamp(0, 1),
+        ));
+      },
+      onPanUpdate: (details) {
+        setState(() {
+          _updateColor(details.localPosition, context.size!);
+        });
+      },
+      onPanEnd: (details) {
+        widget.onColorEnd?.call(HSLColor.fromAHSL(
+          _alpha.clamp(0, 1),
+          _hue.clamp(0, 360),
+          _saturation.clamp(0, 1),
+          _lightness.clamp(0, 1),
+        ));
+      },
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned.fill(
+            child: RepaintBoundary(
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(widget.radius),
+                child: CustomPaint(
+                  painter: CheckboardPainter(),
                 ),
               ),
             ),
-            Positioned.fill(
-              child: RepaintBoundary(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(widget.radius),
-                  child: CustomPaint(
-                    painter: HSLColorPickerPainter(
-                      sliderType: widget.sliderType,
-                      color: HSLColor.fromAHSL(
-                        _alpha.clamp(0, 1),
-                        _hue.clamp(0, 360),
-                        _saturation.clamp(0, 1),
-                        _lightness.clamp(0, 1),
-                      ),
-                      reverse: widget.reverse,
+          ),
+          Positioned.fill(
+            child: RepaintBoundary(
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(widget.radius),
+                child: CustomPaint(
+                  painter: HSLColorPickerPainter(
+                    sliderType: widget.sliderType,
+                    color: HSLColor.fromAHSL(
+                      _alpha.clamp(0, 1),
+                      _hue.clamp(0, 360),
+                      _saturation.clamp(0, 1),
+                      _lightness.clamp(0, 1),
                     ),
+                    reverse: widget.reverse,
                   ),
                 ),
               ),
             ),
-            Positioned(
-              left: -cursorRadius / radDiv,
-              top: -cursorRadius / radDiv,
-              bottom: -cursorRadius / radDiv,
-              right: -cursorRadius / radDiv,
-              child: isSingleChannel
-                  ? (widget.reverse
-                      ? Padding(
-                          padding: EdgeInsets.only(
-                            left: widget.padding.left,
-                            right: widget.padding.right,
-                          ),
-                          child: Align(
-                            alignment: Alignment(
-                                (_currentHorizontal.clamp(0, 1) * 2) - 1,
-                                (_currentVertical.clamp(0, 1) * 2) - 1),
-                            child: Container(
-                              width: cursorRadius,
-                              height: double.infinity,
-                              decoration: BoxDecoration(
-                                color: widget.color.toColor(),
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: theme.scaling * 2,
-                                ),
-                                borderRadius: BorderRadius.all(widget.radius),
+          ),
+          Positioned(
+            left: -cursorRadius / radDiv,
+            top: -cursorRadius / radDiv,
+            bottom: -cursorRadius / radDiv,
+            right: -cursorRadius / radDiv,
+            child: isSingleChannel
+                ? (widget.reverse
+                    ? Padding(
+                        padding: EdgeInsets.only(
+                          left: widget.padding.left,
+                          right: widget.padding.right,
+                        ),
+                        child: Align(
+                          alignment: Alignment(
+                              (_currentHorizontal.clamp(0, 1) * 2) - 1,
+                              (_currentVertical.clamp(0, 1) * 2) - 1),
+                          child: Container(
+                            width: cursorRadius,
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                              color: widget.color.toColor(),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: theme.scaling * 2,
                               ),
+                              borderRadius: BorderRadius.all(widget.radius),
                             ),
                           ),
-                        )
-                      : Padding(
-                          padding: EdgeInsets.only(
-                            top: widget.padding.top,
-                            bottom: widget.padding.bottom,
-                          ),
-                          child: Align(
-                            alignment: Alignment(
-                                (_currentHorizontal.clamp(0, 1) * 2) - 1,
-                                (_currentVertical.clamp(0, 1) * 2) - 1),
-                            child: Container(
-                              height: cursorRadius,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: widget.color.toColor(),
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: theme.scaling * 2,
-                                ),
-                                borderRadius: BorderRadius.all(widget.radius),
+                        ),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.only(
+                          top: widget.padding.top,
+                          bottom: widget.padding.bottom,
+                        ),
+                        child: Align(
+                          alignment: Alignment(
+                              (_currentHorizontal.clamp(0, 1) * 2) - 1,
+                              (_currentVertical.clamp(0, 1) * 2) - 1),
+                          child: Container(
+                            height: cursorRadius,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: widget.color.toColor(),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: theme.scaling * 2,
                               ),
+                              borderRadius: BorderRadius.all(widget.radius),
                             ),
                           ),
-                        ))
-                  : Padding(
-                      padding: widget.padding,
-                      child: Align(
-                        alignment: Alignment(
-                            (_currentHorizontal.clamp(0, 1) * 2) - 1,
-                            (_currentVertical.clamp(0, 1) * 2) - 1),
-                        child: Container(
-                          width: cursorRadius,
-                          height: cursorRadius,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: widget.color.toColor(),
-                            border: Border.all(
-                              color: Colors.white,
-                              width: theme.scaling * 2,
-                            ),
+                        ),
+                      ))
+                : Padding(
+                    padding: widget.padding,
+                    child: Align(
+                      alignment: Alignment(
+                          (_currentHorizontal.clamp(0, 1) * 2) - 1,
+                          (_currentVertical.clamp(0, 1) * 2) - 1),
+                      child: Container(
+                        width: cursorRadius,
+                        height: cursorRadius,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: widget.color.toColor(),
+                          border: Border.all(
+                            color: Colors.white,
+                            width: theme.scaling * 2,
                           ),
                         ),
                       ),
                     ),
-            ),
-          ],
-        ),
-      );
-    });
+                  ),
+          ),
+        ],
+      ),
+    );
   }
 
   double get vertical {

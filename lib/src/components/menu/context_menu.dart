@@ -512,7 +512,7 @@ Future<void> _showContextMenu(
             );
           });
     },
-  );
+  ).future;
 }
 
 class ContextMenuPopup extends StatelessWidget {

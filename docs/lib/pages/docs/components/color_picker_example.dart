@@ -1,3 +1,5 @@
+import 'package:docs/pages/docs/components/color_picker/color_picker_example_2.dart';
+import 'package:docs/pages/docs/components/color_picker/color_picker_example_3.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
@@ -16,10 +18,22 @@ class ColorPickerExample extends StatelessWidget {
       displayName: 'Color Picker',
       children: [
         WidgetUsageExample(
-          title: 'Color Picker Example',
+          title: 'Color Input Example',
           path:
               'lib/pages/docs/components/color_picker/color_picker_example_1.dart',
           child: ColorPickerExample1(),
+        ),
+        WidgetUsageExample(
+          child: ColorPickerExample2(),
+          path:
+              'lib/pages/docs/components/color_picker/color_picker_example_2.dart',
+          title: 'Screen Color Picker Example',
+        ),
+        WidgetUsageExample(
+          child: ColorPickerExample3(),
+          path:
+              'lib/pages/docs/components/color_picker/color_picker_example_3.dart',
+          title: 'Color Picker Trigger Example',
         ),
       ],
     );

@@ -87,7 +87,7 @@ class ShadcnApp extends StatefulWidget {
     this.scaling,
     this.disableBrowserContextMenu = true,
     this.initialRecentColors = const [],
-    this.maxRecentColors = 10,
+    this.maxRecentColors = 50,
     this.onRecentColorsChanged,
     this.pixelSnap = true,
   })  : assert(routerDelegate != null || routerConfig != null),

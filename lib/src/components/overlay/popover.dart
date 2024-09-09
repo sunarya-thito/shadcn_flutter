@@ -46,7 +46,7 @@ class PopoverAnchor extends StatefulWidget {
   final PopoverConstraint widthConstraint;
   final PopoverConstraint heightConstraint;
   // final PopoverRoute? route;
-  final VoidCallback? onClose;
+  final FutureVoidCallback? onClose;
   final VoidCallback? onImmediateClose;
   final VoidCallback? onTapOutside;
   final Object? regionGroupId;
@@ -59,11 +59,13 @@ class PopoverAnchor extends StatefulWidget {
   final ValueChanged<PopoverAnchorState>? onTickFollow;
   final bool allowInvertHorizontal;
   final bool allowInvertVertical;
-  final ValueChanged<dynamic>? onCloseWithResult;
+  final PopoverFutureVoidCallback<Object?>? onCloseWithResult;
 
   @override
   State<PopoverAnchor> createState() => PopoverAnchorState();
 }
+
+typedef PopoverFutureVoidCallback<T> = Future<T> Function(T value);
 
 enum PopoverConstraint {
   flexible,
@@ -75,7 +77,7 @@ enum PopoverConstraint {
 typedef OffsetSupplier = Offset Function(PopoverAnchorState state);
 
 abstract class OverlayAnchorHandler {
-  void close([bool immediate = false]);
+  Future<void> close([bool immediate = false]);
   void closeLater();
 }
 
@@ -126,12 +128,13 @@ class PopoverAnchorState extends State<PopoverAnchor>
   }
 
   @override
-  void close([bool immediate = false]) {
+  Future<void> close([bool immediate = false]) {
     if (!immediate) {
-      widget.onClose?.call();
+      return widget.onClose?.call() ?? Future.value();
     } else {
       widget.onImmediateClose?.call();
     }
+    return Future.value();
   }
 
   @override
@@ -139,7 +142,6 @@ class PopoverAnchorState extends State<PopoverAnchor>
     if (mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
-          // Navigator.of(context).removeRoute(widget.route!);
           widget.onClose?.call();
         }
       });
@@ -375,23 +377,28 @@ class PopoverAnchorState extends State<PopoverAnchor>
   }
 }
 
-void closePopover<T>(BuildContext context, [T? value]) {
-  Data.maybeOf<PopoverAnchorState>(context)
-      ?.widget
-      .onCloseWithResult
-      ?.call(value);
+Future<void> closePopover<T>(BuildContext context, [T? value]) {
+  return Data.maybeOf<PopoverAnchorState>(context)
+          ?.widget
+          .onCloseWithResult
+          ?.call(value) ??
+      Future.value();
 }
 
-abstract class PopoverFuture<T> implements Future<T> {
+abstract class PopoverCompleter<T> {
   void remove();
   void dispose();
   bool get isCompleted;
+  bool get isAnimationCompleted;
+  Future<T> get future;
+  Future<void> get animationFuture;
 }
 
-class _OverlayPopoverEntry<T> implements PopoverFuture<T> {
+class _OverlayPopoverEntry<T> implements PopoverCompleter<T> {
   late OverlayEntry overlayEntry;
   late OverlayEntry? barrierEntry;
   final Completer<T> completer = Completer();
+  final Completer<T> animationCompleter = Completer<T>();
 
   bool _removed = false;
   bool _disposed = false;
@@ -416,33 +423,16 @@ class _OverlayPopoverEntry<T> implements PopoverFuture<T> {
   }
 
   @override
-  Stream<T> asStream() {
-    return completer.future.asStream();
-  }
+  Future<T> get future => completer.future;
 
   @override
-  Future<T> catchError(Function onError, {bool Function(Object error)? test}) {
-    return completer.future.catchError(onError, test: test);
-  }
+  Future<T> get animationFuture => animationCompleter.future;
 
   @override
-  Future<R> then<R>(FutureOr<R> Function(T value) onValue,
-      {Function? onError}) {
-    return completer.future.then(onValue, onError: onError);
-  }
-
-  @override
-  Future<T> timeout(Duration timeLimit, {FutureOr<T> Function()? onTimeout}) {
-    return completer.future.timeout(timeLimit, onTimeout: onTimeout);
-  }
-
-  @override
-  Future<T> whenComplete(FutureOr<void> Function() action) {
-    return completer.future.whenComplete(action);
-  }
+  bool get isAnimationCompleted => animationCompleter.isCompleted;
 }
 
-PopoverFuture<T?> showPopover<T>({
+PopoverCompleter<T?> showPopover<T>({
   required BuildContext context,
   required AlignmentGeometry alignment,
   required WidgetBuilder builder,
@@ -521,6 +511,7 @@ PopoverFuture<T?> showPopover<T>({
   }
   final _OverlayPopoverEntry<T> popoverEntry = _OverlayPopoverEntry();
   final completer = popoverEntry.completer;
+  final animationCompleter = popoverEntry.animationCompleter;
   overlayEntry = OverlayEntry(
     builder: (innerContext) {
       return RepaintBoundary(
@@ -543,6 +534,7 @@ PopoverFuture<T?> showPopover<T>({
                       if (value == 0.0 && isClosed.value) {
                         popoverEntry.remove();
                         popoverEntry.dispose();
+                        animationCompleter.complete();
                       }
                     },
                     builder: (innerContext, animation) {
@@ -577,18 +569,20 @@ PopoverFuture<T?> showPopover<T>({
                         allowInvertVertical: allowInvertVertical,
                         data: data,
                         onClose: () {
-                          if (isClosed.value) return;
+                          if (isClosed.value) return Future.value();
                           isClosed.value = true;
                           completer.complete();
+                          return animationCompleter.future;
                         },
                         onImmediateClose: () {
                           popoverEntry.remove();
                           completer.complete();
                         },
                         onCloseWithResult: (value) {
-                          if (isClosed.value) return;
+                          if (isClosed.value) return Future.value();
                           isClosed.value = true;
-                          completer.complete(value);
+                          completer.complete(value as T);
+                          return animationCompleter.future;
                         },
                       );
                       return popoverAnchor;
@@ -609,17 +603,18 @@ PopoverFuture<T?> showPopover<T>({
 
 class Popover {
   final GlobalKey<PopoverAnchorState> key;
-  final PopoverFuture entry;
+  final PopoverCompleter entry;
 
   Popover._(this.key, this.entry);
 
-  void close([bool immediate = false]) {
+  Future<void> close([bool immediate = false]) {
     var currentState = key.currentState;
     if (currentState != null) {
-      currentState.close(immediate);
+      return currentState.close(immediate);
     } else {
       entry.remove();
     }
+    return Future.value();
   }
 
   void closeLater() {
@@ -676,7 +671,7 @@ class PopoverController extends ChangeNotifier {
     }
     key ??= GlobalKey<PopoverAnchorState>(debugLabel: 'PopoverAnchor$hashCode');
 
-    PopoverFuture<T?> res = showPopover<T>(
+    PopoverCompleter<T?> res = showPopover<T>(
       context: context,
       alignment: alignment,
       anchorAlignment: anchorAlignment,
@@ -709,7 +704,7 @@ class PopoverController extends ChangeNotifier {
     if (!_disposed) {
       notifyListeners();
     }
-    return res;
+    return res.future;
   }
 
   void close([bool immediate = false]) {

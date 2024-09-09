@@ -511,16 +511,16 @@ class ButtonState<T extends Button> extends State<T> {
           : null,
       onPressed: widget.onPressed,
       child: widget.leading == null && widget.trailing == null
-          ? widget.alignment == null
-              ? UnderlineInterceptor(
-                  child: widget.child,
-                )
-              : Align(
-                  alignment: widget.alignment!,
+          ? IntrinsicWidth(
+              child: IntrinsicHeight(
+                child: Align(
+                  alignment: widget.alignment ?? Alignment.center,
                   child: UnderlineInterceptor(
                     child: widget.child,
                   ),
-                )
+                ),
+              ),
+            )
           : IntrinsicWidth(
               child: IntrinsicHeight(
                   child: !widget.trailingExpanded
@@ -579,6 +579,7 @@ class ButtonDensity {
   static const ButtonDensity icon = ButtonDensity(_densityIcon);
   static const ButtonDensity iconComfortable =
       ButtonDensity(_densityIconComfortable);
+  static const ButtonDensity iconDense = ButtonDensity(_densityIconDense);
   static const ButtonDensity dense = ButtonDensity(_densityDense);
   static const ButtonDensity compact = ButtonDensity(_densityCompact);
 }
@@ -603,6 +604,12 @@ EdgeInsets _densityIcon(EdgeInsets padding) {
 EdgeInsets _densityIconComfortable(EdgeInsets padding) {
   return EdgeInsets.all(
       max(padding.top, max(padding.bottom, max(padding.left, padding.right))));
+}
+
+EdgeInsets _densityIconDense(EdgeInsets padding) {
+  return EdgeInsets.all(
+      min(padding.top, min(padding.bottom, min(padding.left, padding.right))) *
+          0.5);
 }
 
 EdgeInsets _densityComfortable(EdgeInsets padding) {

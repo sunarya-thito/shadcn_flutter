@@ -43,10 +43,12 @@ class TimePicker extends StatelessWidget {
       mode: mode,
       dialogTitle: dialogTitle,
       trailing: const Icon(Icons.access_time),
-      editorBuilder: (context, value, onChanged) {
+      editorBuilder: (context, handler) {
         return TimePickerDialog(
-          initialValue: value,
-          onChanged: onChanged,
+          initialValue: handler.value,
+          onChanged: (value) {
+            handler.value = value;
+          },
           use24HourFormat: use24HourFormat,
           showSeconds: showSeconds,
         );

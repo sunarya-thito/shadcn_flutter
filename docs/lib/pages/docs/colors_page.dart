@@ -161,15 +161,15 @@ class _ColorsPageState extends State<ColorsPage> {
                     mouseCursor:
                         const WidgetStatePropertyAll(SystemMouseCursors.click),
                     onPressed: () {
-                      showHSVColorPicker(
+                      showColorPicker(
                         context: context,
-                        color: HSVColor.fromColor(swatch[shade]),
+                        color: ColorDerivative.fromColor(swatch[shade]),
                         offset: const Offset(0, 8),
                         showAlpha: false,
                         onColorChanged: (value) {
                           setState(() {
                             _customColor = ColorShades.shiftHSL(
-                              value.toHSL(),
+                              value.toHSLColor(),
                               base: shade,
                               500,
                             );

@@ -44,15 +44,17 @@ class DatePicker extends StatelessWidget {
         return Text(localizations.formatDateTime(value, showTime: false));
       },
       mode: mode,
-      editorBuilder: (context, value, onChanged) {
+      editorBuilder: (context, handler) {
         return DatePickerDialog(
           initialView: initialView ?? CalendarView.now(),
           initialViewType: initialViewType ?? CalendarViewType.date,
           selectionMode: CalendarSelectionMode.single,
-          initialValue: value == null ? null : CalendarValue.single(value),
+          initialValue: handler.value == null
+              ? null
+              : CalendarValue.single(handler.value!),
           onChanged: (value) {
-            onChanged(
-                value == null ? null : (value as SingleCalendarValue).date);
+            handler.value =
+                value == null ? null : (value as SingleCalendarValue).date;
           },
           stateBuilder: stateBuilder,
         );
@@ -137,7 +139,8 @@ class DateRangePicker extends StatelessWidget {
         return Text(
             '${localizations.formatDateTime(value.start, showTime: false)} - ${localizations.formatDateTime(value.end, showTime: false)}');
       },
-      editorBuilder: (context, value, onChanged) {
+      editorBuilder: (context, handler) {
+        DateTimeRange? value = handler.value;
         return DatePickerDialog(
           initialView: initialView,
           initialViewType: initialViewType ?? CalendarViewType.date,
@@ -147,10 +150,10 @@ class DateRangePicker extends StatelessWidget {
               : CalendarValue.range(value.start, value.end),
           onChanged: (value) {
             if (value == null) {
-              onChanged(null);
+              handler.value = null;
             } else {
               final range = value.toRange();
-              onChanged(DateTimeRange(range.start, range.end));
+              handler.value = DateTimeRange(range.start, range.end);
             }
           },
           stateBuilder: stateBuilder,

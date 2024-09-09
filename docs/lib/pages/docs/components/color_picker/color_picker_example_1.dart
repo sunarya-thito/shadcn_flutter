@@ -8,32 +8,43 @@ class ColorPickerExample1 extends StatefulWidget {
 }
 
 class _ColorPickerExample1State extends State<ColorPickerExample1> {
-  HSVColor color = HSVColor.fromColor(Colors.blue);
+  ColorDerivative color = ColorDerivative.fromColor(Colors.blue);
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        HSVColorPicker(
-          color: color,
-          mode: PromptMode.popover,
-          onChanged: (value) {
-            setState(() {
-              color = value;
-            });
-          },
-        ),
-        Gap(16),
-        HSVColorPicker(
-          color: color,
-          mode: PromptMode.dialog,
-          dialogTitle: const Text('Select Color'),
-          onChanged: (value) {
-            setState(() {
-              color = value;
-            });
-          },
-        ),
-      ],
+    return SizedBox(
+      width: 200,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 32,
+            height: 32,
+            child: ColorInput(
+              color: color,
+              mode: PromptMode.popover,
+              onChanged: (value) {
+                setState(() {
+                  color = value;
+                });
+              },
+              storage: ColorHistoryStorage.of(context),
+            ),
+          ),
+          Gap(16),
+          ColorInput(
+            color: color,
+            mode: PromptMode.dialog,
+            dialogTitle: const Text('Select Color'),
+            onChanged: (value) {
+              setState(() {
+                color = value;
+              });
+            },
+            showLabel: true,
+            storage: ColorHistoryStorage.of(context),
+          ),
+        ],
+      ),
     );
   }
 }

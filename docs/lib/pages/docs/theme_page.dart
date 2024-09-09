@@ -379,9 +379,9 @@ class _ThemePageState extends State<ThemePage> {
       child: Builder(builder: (context) {
         return GestureDetector(
           onTap: () {
-            showHSVColorPicker(
+            showColorPicker(
               context: context,
-              color: HSVColor.fromColor(colors[name]!),
+              color: ColorDerivative.fromColor(colors[name]!),
               offset: const Offset(0, 8),
               onColorChanged: (value) {
                 setState(() {
