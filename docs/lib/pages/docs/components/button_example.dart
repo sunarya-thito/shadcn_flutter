@@ -7,6 +7,7 @@ import 'button/button_example_10.dart';
 import 'button/button_example_11.dart';
 import 'button/button_example_12.dart';
 import 'button/button_example_13.dart';
+import 'button/button_example_14.dart';
 import 'button/button_example_2.dart';
 import 'button/button_example_3.dart';
 import 'button/button_example_4.dart';
@@ -91,6 +92,11 @@ class ButtonExample extends StatelessWidget {
           title: 'Button Shape Example',
           path: 'lib/pages/docs/components/button/button_example_13.dart',
           child: ButtonExample13(),
+        ),
+        WidgetUsageExample(
+          title: 'Button Group Example',
+          path: 'lib/pages/docs/components/button/button_example_14.dart',
+          child: ButtonExample14(),
         ),
       ],
     );

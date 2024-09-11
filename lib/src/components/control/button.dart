@@ -471,6 +471,18 @@ class ButtonState<T extends Button> extends State<T> {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     bool enableFeedback = widget.enableFeedback ?? _shouldEnableFeedback;
+    var style = widget.style;
+    var overrideData = Data.maybeOf<ButtonStyleOverrideData>(context);
+    if (overrideData != null) {
+      style = style.overrideWith(
+        decoration: overrideData.decoration,
+        mouseCursor: overrideData.mouseCursor,
+        padding: overrideData.padding,
+        textStyle: overrideData.textStyle,
+        iconTheme: overrideData.iconTheme,
+        margin: overrideData.margin,
+      );
+    }
     return Clickable(
       disableFocusOutline: widget.disableFocusOutline,
       statesController: widget.statesController,
@@ -483,22 +495,22 @@ class ButtonState<T extends Button> extends State<T> {
       disableHoverEffect: widget.disableHoverEffect,
       enableFeedback: enableFeedback,
       margin: WidgetStateProperty.resolveWith((states) {
-        return widget.style.margin(context, states);
+        return style.margin(context, states);
       }),
       decoration: WidgetStateProperty.resolveWith((states) {
-        return widget.style.decoration(context, states);
+        return style.decoration(context, states);
       }),
       mouseCursor: WidgetStateProperty.resolveWith((states) {
-        return widget.style.mouseCursor(context, states);
+        return style.mouseCursor(context, states);
       }),
       padding: WidgetStateProperty.resolveWith((states) {
-        return widget.style.padding(context, states);
+        return style.padding(context, states);
       }),
       textStyle: WidgetStateProperty.resolveWith((states) {
-        return widget.style.textStyle(context, states);
+        return style.textStyle(context, states);
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
-        return widget.style.iconTheme(context, states);
+        return style.iconTheme(context, states);
       }),
       transform: enableFeedback
           ? WidgetStateProperty.resolveWith((states) {
@@ -996,7 +1008,38 @@ extension ButtonStyleExtension on AbstractButtonStyle {
     ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
     ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
   }) {
+    if (this is _CopyWithButtonStyle) {
+      var copy = this as _CopyWithButtonStyle;
+      return _CopyWithButtonStyle(
+        copy._delegate,
+        decoration ?? copy._decoration,
+        mouseCursor ?? copy._mouseCursor,
+        padding ?? copy._padding,
+        textStyle ?? copy._textStyle,
+        iconTheme ?? copy._iconTheme,
+        margin ?? copy._margin,
+      );
+    }
     return _CopyWithButtonStyle(
+      this,
+      decoration,
+      mouseCursor,
+      padding,
+      textStyle,
+      iconTheme,
+      margin,
+    );
+  }
+
+  AbstractButtonStyle overrideWith({
+    ButtonStatePropertyDelegate<Decoration>? decoration,
+    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
+    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
+    ButtonStatePropertyDelegate<TextStyle>? textStyle,
+    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
+    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+  }) {
+    return _OverrideWithButtonStyle(
       this,
       decoration,
       mouseCursor,
@@ -1091,6 +1134,88 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
       var edgeInsetsGeometry =
           _margin(context, states, _delegate.margin(context, states));
       return edgeInsetsGeometry;
+    };
+  }
+}
+
+class _OverrideWithButtonStyle implements AbstractButtonStyle {
+  final AbstractButtonStyle _delegate;
+  final ButtonStatePropertyDelegate<Decoration>? _decoration;
+  final ButtonStatePropertyDelegate<MouseCursor>? _mouseCursor;
+  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? _padding;
+  final ButtonStatePropertyDelegate<TextStyle>? _textStyle;
+  final ButtonStatePropertyDelegate<IconThemeData>? _iconTheme;
+  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? _margin;
+
+  const _OverrideWithButtonStyle(
+    this._delegate,
+    this._decoration,
+    this._mouseCursor,
+    this._padding,
+    this._textStyle,
+    this._iconTheme,
+    this._margin,
+  );
+
+  @override
+  ButtonStateProperty<IconThemeData> get iconTheme {
+    return (context, states) {
+      if (_iconTheme == null) {
+        return _delegate.iconTheme(context, states);
+      }
+      return _iconTheme(context, states, _delegate.iconTheme(context, states));
+    };
+  }
+
+  @override
+  ButtonStateProperty<TextStyle> get textStyle {
+    return (context, states) {
+      if (_textStyle == null) {
+        return _delegate.textStyle(context, states);
+      }
+      return _textStyle(context, states, _delegate.textStyle(context, states));
+    };
+  }
+
+  @override
+  ButtonStateProperty<EdgeInsetsGeometry> get padding {
+    return (context, states) {
+      if (_padding == null) {
+        return _delegate.padding(context, states);
+      }
+      return _padding(context, states, _delegate.padding(context, states));
+    };
+  }
+
+  @override
+  ButtonStateProperty<MouseCursor> get mouseCursor {
+    return (context, states) {
+      if (_mouseCursor == null) {
+        return _delegate.mouseCursor(context, states);
+      }
+      return _mouseCursor(
+          context, states, _delegate.mouseCursor(context, states));
+    };
+  }
+
+  @override
+  ButtonStateProperty<Decoration> get decoration {
+    return (context, states) {
+      if (_decoration == null) {
+        return _delegate.decoration(context, states);
+      }
+      return _decoration(
+          context, states, _delegate.decoration(context, states));
+    };
+  }
+
+  @override
+  ButtonStateProperty<EdgeInsetsGeometry> get margin {
+    return (context, states) {
+      if (_margin == null) {
+        return _delegate.margin(context, states);
+      }
+      return _margin(context, states, _delegate.margin(context, states));
     };
   }
 }
@@ -2607,5 +2732,219 @@ class IconButton extends StatelessWidget {
       onTertiaryLongPress: onTertiaryLongPress,
       child: icon,
     );
+  }
+}
+
+class ButtonStyleOverride extends StatelessWidget {
+  final bool inherit;
+  final ButtonStatePropertyDelegate<Decoration>? decoration;
+  final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
+  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
+  final ButtonStatePropertyDelegate<TextStyle>? textStyle;
+  final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
+  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
+  final Widget child;
+
+  const ButtonStyleOverride({
+    super.key,
+    this.decoration,
+    this.mouseCursor,
+    this.padding,
+    this.textStyle,
+    this.iconTheme,
+    this.margin,
+    required this.child,
+  }) : inherit = false;
+
+  const ButtonStyleOverride.inherit({
+    super.key,
+    this.decoration,
+    this.mouseCursor,
+    this.padding,
+    this.textStyle,
+    this.iconTheme,
+    this.margin,
+    required this.child,
+  }) : inherit = true;
+
+  @override
+  Widget build(BuildContext context) {
+    var decoration = this.decoration;
+    var mouseCursor = this.mouseCursor;
+    var padding = this.padding;
+    var textStyle = this.textStyle;
+    var iconTheme = this.iconTheme;
+    var margin = this.margin;
+    if (inherit) {
+      var data = Data.maybeOf<ButtonStyleOverrideData>(context);
+      if (data != null) {
+        decoration = (context, state, value) {
+          return data.decoration?.call(context, state,
+                  decoration?.call(context, state, value) ?? value) ??
+              decoration?.call(context, state, value) ??
+              value;
+        };
+        mouseCursor = (context, state, value) {
+          return data.mouseCursor?.call(context, state,
+                  mouseCursor?.call(context, state, value) ?? value) ??
+              mouseCursor?.call(context, state, value) ??
+              value;
+        };
+        padding = (context, state, value) {
+          return data.padding?.call(context, state,
+                  padding?.call(context, state, value) ?? value) ??
+              padding?.call(context, state, value) ??
+              value;
+        };
+        textStyle = (context, state, value) {
+          return data.textStyle?.call(context, state,
+                  textStyle?.call(context, state, value) ?? value) ??
+              textStyle?.call(context, state, value) ??
+              value;
+        };
+        iconTheme = (context, state, value) {
+          return data.iconTheme?.call(context, state,
+                  iconTheme?.call(context, state, value) ?? value) ??
+              iconTheme?.call(context, state, value) ??
+              value;
+        };
+        margin = (context, state, value) {
+          return data.margin?.call(context, state,
+                  margin?.call(context, state, value) ?? value) ??
+              margin?.call(context, state, value) ??
+              value;
+        };
+      }
+    }
+    return Data.inherit(
+      data: ButtonStyleOverrideData(
+        decoration: decoration,
+        mouseCursor: mouseCursor,
+        padding: padding,
+        textStyle: textStyle,
+        iconTheme: iconTheme,
+        margin: margin,
+      ),
+      child: child,
+    );
+  }
+}
+
+class ButtonStyleOverrideData {
+  final ButtonStatePropertyDelegate<Decoration>? decoration;
+  final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
+  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
+  final ButtonStatePropertyDelegate<TextStyle>? textStyle;
+  final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
+  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
+
+  const ButtonStyleOverrideData({
+    this.decoration,
+    this.mouseCursor,
+    this.padding,
+    this.textStyle,
+    this.iconTheme,
+    this.margin,
+  });
+}
+
+class ButtonGroup extends StatelessWidget {
+  final Axis direction;
+  final List<Widget> children;
+
+  const ButtonGroup({
+    super.key,
+    this.direction = Axis.horizontal,
+    required this.children,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> children = this.children;
+    if (children.length > 1) {
+      for (int i = 0; i < children.length; i++) {
+        children[i] = ButtonStyleOverride(
+          decoration: (context, states, value) {
+            if (value is BoxDecoration) {
+              BorderRadius resolvedBorderRadius;
+              BorderRadiusGeometry? borderRadius = value.borderRadius;
+              if (borderRadius is BorderRadius) {
+                resolvedBorderRadius = borderRadius;
+              } else if (borderRadius == null) {
+                resolvedBorderRadius = BorderRadius.zero;
+              } else {
+                resolvedBorderRadius =
+                    borderRadius.resolve(Directionality.of(context));
+              }
+              if (direction == Axis.horizontal) {
+                if (i == 0) {
+                  return value.copyWith(
+                    borderRadius: resolvedBorderRadius.copyWith(
+                      topRight: Radius.zero,
+                      bottomRight: Radius.zero,
+                    ),
+                  );
+                } else if (i == children.length - 1) {
+                  return value.copyWith(
+                    borderRadius: resolvedBorderRadius.copyWith(
+                      topLeft: Radius.zero,
+                      bottomLeft: Radius.zero,
+                    ),
+                  );
+                } else {
+                  return value.copyWith(
+                    borderRadius: resolvedBorderRadius.copyWith(
+                      topLeft: Radius.zero,
+                      topRight: Radius.zero,
+                      bottomLeft: Radius.zero,
+                      bottomRight: Radius.zero,
+                    ),
+                  );
+                }
+              } else {
+                if (i == 0) {
+                  return value.copyWith(
+                    borderRadius: resolvedBorderRadius.copyWith(
+                      bottomLeft: Radius.zero,
+                      bottomRight: Radius.zero,
+                    ),
+                  );
+                } else if (i == children.length - 1) {
+                  return value.copyWith(
+                    borderRadius: resolvedBorderRadius.copyWith(
+                      topLeft: Radius.zero,
+                      topRight: Radius.zero,
+                    ),
+                  );
+                } else {
+                  return value.copyWith(
+                    borderRadius: resolvedBorderRadius.copyWith(
+                      topLeft: Radius.zero,
+                      topRight: Radius.zero,
+                      bottomLeft: Radius.zero,
+                      bottomRight: Radius.zero,
+                    ),
+                  );
+                }
+              }
+            }
+            return value;
+          },
+          child: children[i],
+        );
+      }
+    }
+    Widget flex = Flex(
+      mainAxisSize: MainAxisSize.min,
+      direction: direction,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: children,
+    );
+    if (direction == Axis.horizontal) {
+      flex = IntrinsicHeight(child: flex);
+    } else {
+      flex = IntrinsicWidth(child: flex);
+    }
+    return flex;
   }
 }
