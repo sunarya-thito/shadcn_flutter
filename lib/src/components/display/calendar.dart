@@ -260,7 +260,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     });
                   },
                 ),
-                if (_viewType == CalendarViewType.date) Gap(theme.scaling * 16),
+                if (_viewType == CalendarViewType.date) const Spacer(),
                 if (_viewType == CalendarViewType.date)
                   buildView(
                     context,
@@ -839,6 +839,7 @@ class Calendar extends StatelessWidget {
       );
     }
     rows.add(Row(
+      mainAxisSize: MainAxisSize.min,
       children: weekDays,
     ));
     // Days
@@ -996,6 +997,7 @@ class Calendar extends StatelessWidget {
       // because we made sure that the total days is 42
       rows.add(Gap(theme.scaling * 8));
       rows.add(Row(
+        mainAxisSize: MainAxisSize.min,
         children: days.sublist(i, i + 7),
       ));
     }
