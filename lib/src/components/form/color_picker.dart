@@ -692,28 +692,17 @@ class _ColorInputSetState extends State<ColorInputSet> {
   }
 
   Widget _buildContent(BuildContext context, ThemeData theme) {
-    // switch (_tabIndex) {
-    //   case 0:
-    //     return _buildColorTab(context, ColorPickerMode.rgb);
-    //   case 1:
-    //     return _buildColorTab(context, ColorPickerMode.hsl);
-    //   case 2:
-    //     return _buildColorTab(context, ColorPickerMode.hsv);
-    //   case 3:
-    //   default:
-    //
-    // }
-    // USE INDEXED STACK INSTEAD
-    return IndexedStack(
-      index: _tabIndex,
-      sizing: StackFit.passthrough,
-      children: [
-        _buildColorTab(context, ColorPickerMode.rgb),
-        _buildColorTab(context, ColorPickerMode.hsl),
-        _buildColorTab(context, ColorPickerMode.hsv),
-        if (widget.storage != null) _buildRecentTab(context),
-      ],
-    );
+    switch (_tabIndex) {
+      case 0:
+        return _buildColorTab(context, ColorPickerMode.rgb);
+      case 1:
+        return _buildColorTab(context, ColorPickerMode.hsl);
+      case 2:
+        return _buildColorTab(context, ColorPickerMode.hsv);
+      case 3:
+      default:
+        return _buildRecentTab(context);
+    }
   }
 
   Widget _buildRecentTab(BuildContext context) {
