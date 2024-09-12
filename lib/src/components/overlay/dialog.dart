@@ -6,14 +6,12 @@ class ModalContainer extends StatelessWidget {
   final BorderRadiusGeometry borderRadius;
   final Color barrierColor;
   final Animation<double>? fadeAnimation;
-  final double? borderWidth;
 
   const ModalContainer({
     super.key,
     this.borderRadius = BorderRadius.zero,
     this.barrierColor = const Color.fromRGBO(0, 0, 0, 0.8),
     this.fadeAnimation,
-    this.borderWidth,
     required this.child,
   });
 
@@ -23,10 +21,7 @@ class ModalContainer extends StatelessWidget {
     var snap = PixelSnap.of(context);
     Widget paintWidget = CustomPaint(
       painter: SurfaceBarrierPainter(
-        borderRadius: borderWidth == null
-            ? resolvedBorderRadius
-            : subtractByBorder(resolvedBorderRadius, borderWidth!)
-                .pixelSnap(snap),
+        borderRadius: resolvedBorderRadius.pixelSnap(snap),
         barrierColor: barrierColor,
       ),
     );
