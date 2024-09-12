@@ -42,7 +42,7 @@ class Avatar extends StatefulWidget implements AvatarWidget {
   @override
   final double? borderRadius;
   final AvatarWidget? badge;
-  final Offset? badgeOffset;
+  final AlignmentGeometry? badgeAlignment;
   final double? badgeGap;
   final ImageProvider? provider;
 
@@ -53,7 +53,7 @@ class Avatar extends StatefulWidget implements AvatarWidget {
     this.size,
     this.borderRadius,
     this.badge,
-    this.badgeOffset,
+    this.badgeAlignment,
     this.badgeGap,
     this.provider,
   });
@@ -65,12 +65,12 @@ class Avatar extends StatefulWidget implements AvatarWidget {
     this.size,
     this.borderRadius,
     this.badge,
-    this.badgeOffset,
+    this.badgeAlignment,
     this.badgeGap,
     int? cacheWidth,
     int? cacheHeight,
     required String photoUrl,
-  })  : provider = ResizeImage.resizeIfNeeded(
+  }) : provider = ResizeImage.resizeIfNeeded(
           cacheWidth,
           cacheHeight,
           NetworkImage(photoUrl),
@@ -147,7 +147,7 @@ class _AvatarState extends State<Avatar> {
     double offset = size / 2 - badgeSize / 2;
     offset = offset / size;
     return AvatarGroup(
-      fractionalOffset: widget.badgeOffset ?? Offset(offset, offset),
+      alignment: widget.badgeAlignment ?? AlignmentDirectional(offset, offset),
       gap: widget.badgeGap ?? theme.scaling * 4,
       children: [
         _AvatarWidget(
@@ -173,7 +173,8 @@ class AvatarBadge extends StatelessWidget implements AvatarWidget {
   final Widget? child;
   final Color? color;
 
-  const AvatarBadge({super.key, 
+  const AvatarBadge({
+    super.key,
     this.child,
     this.size,
     this.borderRadius,
@@ -218,13 +219,13 @@ class _AvatarWidget extends StatelessWidget implements AvatarWidget {
 
 class AvatarGroup extends StatelessWidget {
   final List<AvatarWidget> children;
-  final Offset fractionalOffset;
+  final AlignmentGeometry alignment;
   final double? gap;
   final Clip? clipBehavior;
 
   const AvatarGroup({
     super.key,
-    required this.fractionalOffset,
+    required this.alignment,
     required this.children,
     this.gap,
     this.clipBehavior,
@@ -238,7 +239,7 @@ class AvatarGroup extends StatelessWidget {
   }) {
     return AvatarGroup(
       key: key,
-      fractionalOffset: Offset(offset, 0),
+      alignment: Alignment(offset, 0),
       gap: gap,
       children: children,
     );
@@ -252,7 +253,35 @@ class AvatarGroup extends StatelessWidget {
   }) {
     return AvatarGroup(
       key: key,
-      fractionalOffset: Offset(-offset, 0),
+      alignment: Alignment(-offset, 0),
+      gap: gap,
+      children: children,
+    );
+  }
+
+  factory AvatarGroup.toStart({
+    Key? key,
+    required List<AvatarWidget> children,
+    double? gap,
+    double offset = 0.5,
+  }) {
+    return AvatarGroup(
+      key: key,
+      alignment: AlignmentDirectional(offset, 0),
+      gap: gap,
+      children: children,
+    );
+  }
+
+  factory AvatarGroup.toEnd({
+    Key? key,
+    required List<AvatarWidget> children,
+    double? gap,
+    double offset = 0.5,
+  }) {
+    return AvatarGroup(
+      key: key,
+      alignment: AlignmentDirectional(-offset, 0),
       gap: gap,
       children: children,
     );
@@ -266,7 +295,7 @@ class AvatarGroup extends StatelessWidget {
   }) {
     return AvatarGroup(
       key: key,
-      fractionalOffset: Offset(0, offset),
+      alignment: Alignment(0, offset),
       gap: gap,
       children: children,
     );
@@ -280,7 +309,7 @@ class AvatarGroup extends StatelessWidget {
   }) {
     return AvatarGroup(
       key: key,
-      fractionalOffset: Offset(0, -offset),
+      alignment: Alignment(0, -offset),
       gap: gap,
       children: children,
     );
@@ -296,6 +325,7 @@ class AvatarGroup extends StatelessWidget {
     double currentHeight = 0;
     Rect rect = Rect.zero;
     double currentBorderRadius = 0;
+    Alignment resolved = alignment.optionallyResolve(context);
     for (int i = 0; i < this.children.length; i++) {
       AvatarWidget avatar = this.children[i];
       double size = avatar.size ?? theme.scaling * 40;
@@ -318,10 +348,10 @@ class AvatarGroup extends StatelessWidget {
         double widthDiff = currentWidth - width;
         double heightDiff = currentHeight - height;
 
-        var offsetWidth = -currentWidth * fractionalOffset.dx;
-        var offsetHeight = -currentHeight * fractionalOffset.dy;
-        var offsetWidthDiff = widthDiff * fractionalOffset.dx;
-        var offsetHeightDiff = heightDiff * fractionalOffset.dy;
+        var offsetWidth = -currentWidth * resolved.x;
+        var offsetHeight = -currentHeight * resolved.y;
+        var offsetWidthDiff = widthDiff * resolved.x;
+        var offsetHeightDiff = heightDiff * resolved.y;
         double x = (widthDiff / 2) + offsetWidth + currentX + offsetWidthDiff;
         double y =
             (heightDiff / 2) + offsetHeight + currentY + offsetHeightDiff;
@@ -337,7 +367,7 @@ class AvatarGroup extends StatelessWidget {
             child: ClipPath(
               clipper: AvatarGroupClipper(
                 borderRadius: currentBorderRadius,
-                fractionalOffset: fractionalOffset,
+                alignment: resolved,
                 previousAvatarSize: currentWidth,
                 gap: gap ?? theme.scaling * 4,
               ),
@@ -379,13 +409,13 @@ class AvatarGroup extends StatelessWidget {
 
 class AvatarGroupClipper extends CustomClipper<Path> {
   final double borderRadius;
-  final Offset fractionalOffset;
+  final Alignment alignment;
   final double previousAvatarSize;
   final double gap;
 
   const AvatarGroupClipper({
     required this.borderRadius,
-    required this.fractionalOffset,
+    required this.alignment,
     required this.previousAvatarSize,
     required this.gap,
   });
@@ -404,8 +434,8 @@ class AvatarGroupClipper extends CustomClipper<Path> {
     double left = (widthDiff / 2);
     double top = (heightDiff / 2);
 
-    left += size.width * fractionalOffset.dx;
-    top += size.height * fractionalOffset.dy;
+    left += size.width * alignment.x;
+    top += size.height * alignment.y;
 
     Path path = Path();
     path.fillType = PathFillType.evenOdd;
@@ -438,7 +468,7 @@ class AvatarGroupClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(covariant AvatarGroupClipper oldClipper) {
     return oldClipper.borderRadius != borderRadius ||
-        oldClipper.fractionalOffset != fractionalOffset ||
+        oldClipper.alignment != alignment ||
         oldClipper.previousAvatarSize != previousAvatarSize ||
         oldClipper.gap != gap;
   }
