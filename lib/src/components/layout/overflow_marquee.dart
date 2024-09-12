@@ -53,6 +53,7 @@ class _OverflowMarqueeState extends State<OverflowMarquee>
 
   @override
   Widget build(BuildContext context) {
+    final textDirection = Directionality.of(context);
     return ClipRect(
       child: _OverflowMarqueeLayout(
         direction: widget.direction,
@@ -62,6 +63,7 @@ class _OverflowMarqueeState extends State<OverflowMarquee>
         ticker: _ticker,
         elapsed: elapsed,
         step: widget.step,
+        textDirection: textDirection,
         child: widget.child,
       ),
     );
@@ -76,6 +78,7 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
   final Ticker ticker;
   final Duration elapsed;
   final double step;
+  final TextDirection textDirection;
 
   const _OverflowMarqueeLayout({
     required this.direction,
@@ -85,6 +88,7 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
     required this.ticker,
     required this.elapsed,
     required this.step,
+    required this.textDirection,
     required Widget child,
   }) : super(child: child);
 
@@ -99,6 +103,7 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
       ticker: ticker,
       step: step,
       elapsed: elapsed,
+      textDirection: textDirection,
     );
   }
 
@@ -135,6 +140,10 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
       renderObject.step = step;
       hasChanged = true;
     }
+    if (renderObject.textDirection != textDirection) {
+      renderObject.textDirection = textDirection;
+      hasChanged = true;
+    }
     if (hasChanged) {
       renderObject.markNeedsLayout();
     }
@@ -154,6 +163,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
   Ticker ticker;
   Duration elapsed;
   double step;
+  TextDirection textDirection;
 
   _RenderOverflowMarqueeLayout(
     super.child, {
@@ -164,6 +174,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     required this.ticker,
     required this.elapsed,
     required this.step,
+    required this.textDirection,
   });
 
   @override
@@ -311,8 +322,8 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     AlignmentGeometry begin;
     AlignmentGeometry end;
     if (direction == Axis.horizontal) {
-      begin = AlignmentDirectional.centerStart;
-      end = AlignmentDirectional.centerEnd;
+      begin = AlignmentDirectional.centerStart.resolve(textDirection);
+      end = AlignmentDirectional.centerEnd.resolve(textDirection);
     } else {
       begin = Alignment.topCenter;
       end = Alignment.bottomCenter;
