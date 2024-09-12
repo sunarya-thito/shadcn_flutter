@@ -441,10 +441,9 @@ PopoverCompleter<T?> showPopover<T>({
   PopoverConstraint widthConstraint = PopoverConstraint.flexible,
   PopoverConstraint heightConstraint = PopoverConstraint.flexible,
   Key? key,
-  bool useRootNavigator = true,
+  bool rootOverlay = true,
   bool modal = true,
   Clip clipBehavior = Clip.none,
-  RouteSettings? routeSettings,
   Object? regionGroupId,
   Offset? offset,
   Alignment? transitionAlignment,
@@ -462,8 +461,7 @@ PopoverCompleter<T?> showPopover<T>({
   Alignment resolvedAlignment = alignment.resolve(textDirection);
   anchorAlignment ??= alignment * -1;
   Alignment resolvedAnchorAlignment = anchorAlignment.resolve(textDirection);
-  final OverlayState overlay =
-      Overlay.of(context, rootOverlay: useRootNavigator);
+  final OverlayState overlay = Overlay.of(context, rootOverlay: rootOverlay);
   final themes = InheritedTheme.capture(from: context, to: overlay.context);
   final data = Data.capture(from: context, to: overlay.context);
 
