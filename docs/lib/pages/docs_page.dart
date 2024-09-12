@@ -410,7 +410,7 @@ class DocsPageState extends State<DocsPage> {
           width: 510 * scaling,
           height: 349 * scaling,
           child: ModalContainer(
-            borderRadius: theme.borderRadiusXxl,
+            borderRadius: subtractByBorder(theme.borderRadiusXxl, 1 * scaling),
             child: Command(
               debounceDuration: Duration.zero,
               builder: (context, query) async* {

@@ -1,24 +1,32 @@
+import 'package:pixel_snap/pixel_snap.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ModalContainer extends StatelessWidget {
   final Widget child;
-  final BorderRadius borderRadius;
+  final BorderRadiusGeometry borderRadius;
   final Color barrierColor;
   final Animation<double>? fadeAnimation;
+  final double? borderWidth;
 
   const ModalContainer({
     super.key,
     this.borderRadius = BorderRadius.zero,
     this.barrierColor = const Color.fromRGBO(0, 0, 0, 0.8),
     this.fadeAnimation,
+    this.borderWidth,
     required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
+    var resolvedBorderRadius = borderRadius.resolve(Directionality.of(context));
+    var snap = PixelSnap.of(context);
     Widget paintWidget = CustomPaint(
       painter: SurfaceBarrierPainter(
-        borderRadius: borderRadius,
+        borderRadius: borderWidth == null
+            ? resolvedBorderRadius
+            : subtractByBorder(resolvedBorderRadius, borderWidth!)
+                .pixelSnap(snap),
         barrierColor: barrierColor,
       ),
     );

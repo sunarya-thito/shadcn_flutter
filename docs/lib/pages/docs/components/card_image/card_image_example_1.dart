@@ -8,7 +8,7 @@ class CardImageExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
-      behavior: const ScrollBehavior().copyWith(
+      behavior: ScrollConfiguration.of(context).copyWith(
         dragDevices: {
           PointerDeviceKind.touch,
           PointerDeviceKind.mouse,

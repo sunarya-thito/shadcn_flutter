@@ -17,6 +17,32 @@ extension AlignmentExtension on AlignmentGeometry {
   }
 }
 
+extension BorderRadiusExtension on BorderRadiusGeometry {
+  BorderRadiusGeometry optionallyResolve(BuildContext context) {
+    if (this is BorderRadius) {
+      return this as BorderRadius;
+    }
+    return resolve(Directionality.of(context));
+  }
+}
+
+BorderRadius subtractByBorder(BorderRadius radius, double borderWidth) {
+  return BorderRadius.only(
+    topLeft: _subtractSafe(radius.topLeft, Radius.circular(borderWidth)),
+    topRight: _subtractSafe(radius.topRight, Radius.circular(borderWidth)),
+    bottomLeft: _subtractSafe(radius.bottomLeft, Radius.circular(borderWidth)),
+    bottomRight:
+        _subtractSafe(radius.bottomRight, Radius.circular(borderWidth)),
+  );
+}
+
+Radius _subtractSafe(Radius a, Radius b) {
+  return Radius.elliptical(
+    max(0, a.x - b.x),
+    max(0, a.y - b.y),
+  );
+}
+
 bool isMobile(TargetPlatform platform) {
   switch (platform) {
     case TargetPlatform.android:
@@ -636,15 +662,6 @@ Color lerpColor(Color a, Color b, double t) {
     _lerpColorInt(a.red, b.red, t),
     _lerpColorInt(a.green, b.green, t),
     _lerpColorInt(a.blue, b.blue, t),
-  );
-}
-
-BorderRadius adjustBorderRadius(BorderRadius radius, double borderWidth) {
-  return BorderRadius.only(
-    topLeft: radius.topLeft - Radius.circular(borderWidth),
-    topRight: radius.topRight - Radius.circular(borderWidth),
-    bottomLeft: radius.bottomLeft - Radius.circular(borderWidth),
-    bottomRight: radius.bottomRight - Radius.circular(borderWidth),
   );
 }
 

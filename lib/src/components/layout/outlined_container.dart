@@ -123,7 +123,7 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
         padding: widget.padding,
         clipBehavior: widget.clipBehavior,
         decoration: BoxDecoration(
-          borderRadius: adjustBorderRadius(
+          borderRadius: subtractByBorder(
             borderRadius,
             widget.borderWidth ?? (1 * scaling),
           ),
@@ -134,7 +134,10 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
     if (widget.surfaceBlur != null && widget.surfaceBlur! > 0) {
       childWidget = SurfaceBlur(
         surfaceBlur: widget.surfaceBlur!,
-        borderRadius: borderRadius,
+        borderRadius: subtractByBorder(
+          borderRadius,
+          widget.borderWidth ?? (1 * scaling),
+        ),
         child: childWidget,
       );
     }
