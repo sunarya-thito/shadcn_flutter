@@ -23,6 +23,9 @@ dependencies:
   image: ^4.2.0
   web: ^1.0.0
   pixel_snap: ^0.1.5
+  file_picker: ^8.1.2
+  desktop_drop: ^0.4.4
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:
