@@ -8,6 +8,15 @@ const kDefaultDuration = Duration(milliseconds: 150);
 typedef ContextedCallback = void Function(BuildContext context);
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 
+extension AlignmentExtension on AlignmentGeometry {
+  Alignment optionallyResolve(BuildContext context) {
+    if (this is Alignment) {
+      return this as Alignment;
+    }
+    return resolve(Directionality.of(context));
+  }
+}
+
 bool isMobile(TargetPlatform platform) {
   switch (platform) {
     case TargetPlatform.android:
