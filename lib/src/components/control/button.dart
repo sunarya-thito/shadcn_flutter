@@ -1583,7 +1583,9 @@ IconThemeData _buttonDestructiveIconTheme(
 TextStyle _buttonStaticTextStyle(
     BuildContext context, Set<WidgetState> states) {
   final theme = Theme.of(context);
-  return theme.typography.small;
+  return theme.typography.small.merge(theme.typography.medium).copyWith(
+        color: theme.colorScheme.foreground,
+      );
 }
 
 IconThemeData _buttonStaticIconTheme(
