@@ -349,9 +349,7 @@ class _ScaffoldFlex extends MultiChildRenderObjectWidget {
 class _ScaffoldParentData extends ContainerBoxParentData<RenderBox> {}
 
 class _ScaffoldRenderFlex extends RenderBox
-    with
-        ContainerRenderObjectMixin<RenderBox, _ScaffoldParentData>,
-        RenderBoxContainerDefaultsMixin<RenderBox, _ScaffoldParentData> {
+    with ContainerRenderObjectMixin<RenderBox, _ScaffoldParentData> {
   _ScaffoldRenderFlex({
     required bool floatingHeader,
     required bool floatingFooter,
@@ -397,9 +395,31 @@ class _ScaffoldRenderFlex extends RenderBox
         footer, (footer.parentData as BoxParentData).offset + offset);
   }
 
+  bool _hitTestBox(BoxHitTestResult result, RenderBox child, Offset position) {
+    final BoxParentData parentData = child.parentData as BoxParentData;
+    final bool isHit =
+        child.hitTest(result, position: position - parentData.offset);
+    if (isHit) {
+      result.add(BoxHitTestEntry(child, position));
+    }
+    return isHit;
+  }
+
   @override
   bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
-    return defaultHitTestChildren(result, position: position);
+    RenderBox header = firstChild!;
+    RenderBox content = (header.parentData as _ScaffoldParentData).nextSibling!;
+    RenderBox footer = (content.parentData as _ScaffoldParentData).nextSibling!;
+    if (_hitTestBox(result, content, position)) {
+      return true;
+    }
+    if (_hitTestBox(result, header, position)) {
+      return true;
+    }
+    if (_hitTestBox(result, footer, position)) {
+      return true;
+    }
+    return false;
   }
 
   @override
