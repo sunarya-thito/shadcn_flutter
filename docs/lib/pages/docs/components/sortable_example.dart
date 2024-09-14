@@ -1,8 +1,5 @@
 import 'package:docs/pages/docs/component_page.dart';
-import 'package:docs/pages/docs/components/sortable/sortable_example_1.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-
-import '../../widget_usage_example.dart';
 
 class SortableExample extends StatelessWidget {
   const SortableExample({super.key});
@@ -15,11 +12,6 @@ class SortableExample extends StatelessWidget {
           'a way that allows the user to change the order of the items.',
       displayName: 'Sortable',
       children: [
-        WidgetUsageExample(
-          title: 'Example',
-          path: 'lib/pages/docs/components/sortable/sortable_example_1.dart',
-          child: SortableExample1(),
-        ),
         // WidgetUsageExample(
         //   title: 'Multi Container Example',
         //   child: SortableExample2(),
