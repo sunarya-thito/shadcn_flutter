@@ -332,16 +332,13 @@ class _ShadcnAppState extends State<ShadcnApp> {
                         child: ColorPickingLayer(
                           child: KeyboardShortcutDisplayMapper(
                             child: ToastLayer(
-                              child: SortableLayer(
-                                child: widget.builder != null
-                                    ? Builder(
-                                        builder: (BuildContext context) {
-                                          return widget.builder!(
-                                              context, child);
-                                        },
-                                      )
-                                    : child ?? const SizedBox.shrink(),
-                              ),
+                              child: widget.builder != null
+                                  ? Builder(
+                                      builder: (BuildContext context) {
+                                        return widget.builder!(context, child);
+                                      },
+                                    )
+                                  : child ?? const SizedBox.shrink(),
                             ),
                           ),
                         ),
