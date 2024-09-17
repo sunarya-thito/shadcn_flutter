@@ -22,9 +22,26 @@ class Toggle extends StatefulWidget {
 
 // toggle button is just ghost button
 class ToggleState extends State<Toggle> {
+  final WidgetStatesController statesController = WidgetStatesController();
+
+  @override
+  void initState() {
+    super.initState();
+    statesController.update(WidgetState.selected, widget.value);
+  }
+
+  @override
+  void didUpdateWidget(Toggle oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value) {
+      statesController.update(WidgetState.selected, widget.value);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Button(
+        statesController: statesController,
         style: widget.value
             ? ButtonStyle.secondary(
                 density: widget.style.density,
@@ -83,9 +100,32 @@ class SelectedButton extends StatefulWidget {
 
 // toggle button is just ghost button
 class SelectedButtonState extends State<SelectedButton> {
+  final WidgetStatesController statesController = WidgetStatesController();
+
+  @override
+  void initState() {
+    super.initState();
+    statesController.update(WidgetState.selected, widget.value);
+  }
+
+  @override
+  void didUpdateWidget(SelectedButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value) {
+      statesController.update(WidgetState.selected, widget.value);
+    }
+  }
+
+  @override
+  void dispose() {
+    statesController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Button(
+        statesController: statesController,
         enabled: widget.enabled,
         style: widget.value ? widget.selectedStyle : widget.style,
         alignment: widget.alignment,
