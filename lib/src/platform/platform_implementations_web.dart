@@ -1,4 +1,3 @@
-// must be a relative import
 import 'dart:js_interop';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -7,6 +6,13 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 extension type _Window(JSObject _) implements JSObject {
   // dispatchEvent method
   external void dispatchEvent(JSObject event);
+
+  external _GlobalThis get globalThis;
+}
+
+@JS()
+extension type _GlobalThis(JSObject _) implements JSObject {
+  external JSObject? get ShadcnApp;
 }
 
 @JS("Event")
@@ -29,12 +35,22 @@ extension type _ShadcnAppTheme._(JSObject _) implements JSObject {
 }
 
 class ShadcnFlutterPlatformImplementations {
+  bool get _isPreloaderAvailable {
+    return _window.globalThis.ShadcnApp != null;
+  }
+
   void onAppInitialized() {
+    if (!_isPreloaderAvailable) {
+      return;
+    }
     final event = _Event("shadcn_flutter_app_ready");
     _window.dispatchEvent(event);
   }
 
   void onThemeChanged(ThemeData theme) {
+    if (!_isPreloaderAvailable) {
+      return;
+    }
     final shadcnAppTheme = _ShadcnAppTheme(
       _colorToCssRgba(theme.colorScheme.background),
       _colorToCssRgba(theme.colorScheme.foreground),
