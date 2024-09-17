@@ -16,6 +16,7 @@ abstract class StatedWidget extends StatelessWidget {
   const factory StatedWidget({
     Key? key,
     required Widget child,
+    List<WidgetState> order,
     Widget? disabled,
     Widget? selected,
     Widget? pressed,
