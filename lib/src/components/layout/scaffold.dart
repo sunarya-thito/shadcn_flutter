@@ -371,11 +371,6 @@ class _ScaffoldRenderFlex extends RenderBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    defaultPaint(context, offset);
-  }
-
-  @override
-  void defaultPaint(PaintingContext context, Offset offset) {
     // There is gonna be only 3 children
     // 1. header
     // 2. content
@@ -396,12 +391,15 @@ class _ScaffoldRenderFlex extends RenderBox
   }
 
   bool _hitTestBox(BoxHitTestResult result, RenderBox child, Offset position) {
-    final BoxParentData parentData = child.parentData as BoxParentData;
-    final bool isHit =
-        child.hitTest(result, position: position - parentData.offset);
-    if (isHit) {
-      result.add(BoxHitTestEntry(child, position));
-    }
+    final BoxParentData childParentData = child.parentData as BoxParentData;
+    final bool isHit = result.addWithPaintOffset(
+      offset: childParentData.offset,
+      position: position,
+      hitTest: (BoxHitTestResult result, Offset transformed) {
+        assert(transformed == position - childParentData.offset);
+        return child.hitTest(result, position: transformed);
+      },
+    );
     return isHit;
   }
 
@@ -410,13 +408,13 @@ class _ScaffoldRenderFlex extends RenderBox
     RenderBox header = firstChild!;
     RenderBox content = (header.parentData as _ScaffoldParentData).nextSibling!;
     RenderBox footer = (content.parentData as _ScaffoldParentData).nextSibling!;
-    if (_hitTestBox(result, content, position)) {
-      return true;
-    }
     if (_hitTestBox(result, header, position)) {
       return true;
     }
     if (_hitTestBox(result, footer, position)) {
+      return true;
+    }
+    if (_hitTestBox(result, content, position)) {
       return true;
     }
     return false;
