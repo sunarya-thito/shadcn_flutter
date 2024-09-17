@@ -3,6 +3,91 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
+abstract class StatedWidget extends StatelessWidget {
+  const StatedWidget._({super.key});
+  const factory StatedWidget({
+    Key? key,
+    required Map<Object, Widget> states,
+    Widget? child,
+  }) = _MapStatedWidget;
+  const factory StatedWidget.builder({
+    Key? key,
+    required Widget Function(BuildContext context, Set<WidgetState> states)
+        builder,
+  }) = _BuilderStatedWidget;
+}
+
+class _MapStatedWidget extends StatedWidget {
+  static final Map<String, WidgetState> _mappedNames =
+      WidgetState.values.asNameMap();
+  final Map<Object, Widget> states;
+  final Widget? child;
+
+  const _MapStatedWidget({
+    super.key,
+    required this.states,
+    this.child,
+  }) : super._();
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetStatesController? statesController = Data.maybeOf(context);
+    if (statesController == null) {
+      return child ?? const SizedBox();
+    }
+    return ListenableBuilder(
+      listenable: statesController,
+      builder: (context, child) {
+        for (var entry in states.entries) {
+          final keys = entry.key;
+          if (keys is Iterable<WidgetState>) {
+            if (statesController.value.containsAll(keys)) {
+              return entry.value;
+            }
+          } else if (keys is WidgetState) {
+            if (statesController.value.contains(keys)) {
+              return entry.value;
+            }
+          } else if (keys is String) {
+            final state = _mappedNames[keys];
+            if (state != null && statesController.value.contains(state)) {
+              return entry.value;
+            }
+          } else {
+            assert(false,
+                'Invalid key type in states map (${keys.runtimeType}) expected WidgetState, Iterable<WidgetState>, or String');
+          }
+        }
+        return child ?? const SizedBox();
+      },
+      child: child,
+    );
+  }
+}
+
+class _BuilderStatedWidget extends StatedWidget {
+  final Widget Function(BuildContext context, Set<WidgetState> states) builder;
+
+  const _BuilderStatedWidget({
+    super.key,
+    required this.builder,
+  }) : super._();
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetStatesController? statesController = Data.maybeOf(context);
+    if (statesController == null) {
+      return const SizedBox();
+    }
+    return ListenableBuilder(
+      listenable: statesController,
+      builder: (context, child) {
+        return builder(context, statesController.value);
+      },
+    );
+  }
+}
+
 class Clickable extends StatefulWidget {
   final Widget child;
   final bool enabled;
@@ -167,164 +252,168 @@ class _ClickableState extends State<Clickable> {
       enabled: enabled,
       container: true,
       button: widget.isSemanticButton,
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, _) {
-          Decoration? decoration =
-              widget.decoration?.resolve(_controller.value);
-          BorderRadiusGeometry borderRadius;
-          if (decoration is BoxDecoration) {
-            borderRadius = decoration.borderRadius ?? theme.borderRadiusMd;
-          } else {
-            borderRadius = theme.borderRadiusMd;
-          }
-          var buttonContainer = _buildContainer(context, decoration);
-          return FocusOutline(
-            focused: widget.focusOutline &&
-                _controller.value.contains(WidgetState.focused) &&
-                !widget.disableFocusOutline,
-            borderRadius: borderRadius,
-            child: GestureDetector(
-              behavior: widget.behavior,
-              onTap: widget.onPressed != null ? _onPressed : null,
-              onLongPress: widget.onLongPress,
-              // onDoubleTap: widget.onDoubleTap, HANDLED CUSTOMLY
-              onSecondaryTapDown: widget.onSecondaryTapDown,
-              onSecondaryTapUp: widget.onSecondaryTapUp,
-              onSecondaryTapCancel: widget.onSecondaryTapCancel,
-              onTertiaryTapDown: widget.onTertiaryTapDown,
-              onTertiaryTapUp: widget.onTertiaryTapUp,
-              onTertiaryTapCancel: widget.onTertiaryTapCancel,
-              onLongPressStart: widget.onLongPressStart,
-              onLongPressUp: widget.onLongPressUp,
-              onLongPressMoveUpdate: widget.onLongPressMoveUpdate,
-              onLongPressEnd: widget.onLongPressEnd,
-              onSecondaryLongPress: widget.onSecondaryLongPress,
-              onTertiaryLongPress: widget.onTertiaryLongPress,
-              onTapDown: widget.onPressed != null
-                  ? (details) {
-                      if (widget.enableFeedback) {
-                        // also dispatch hover
-                        _controller.update(WidgetState.hovered, true);
+      child: Data<WidgetStatesController>.inherit(
+        data: _controller,
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, _) {
+            Decoration? decoration =
+                widget.decoration?.resolve(_controller.value);
+            BorderRadiusGeometry borderRadius;
+            if (decoration is BoxDecoration) {
+              borderRadius = decoration.borderRadius ?? theme.borderRadiusMd;
+            } else {
+              borderRadius = theme.borderRadiusMd;
+            }
+            var buttonContainer = _buildContainer(context, decoration);
+            return FocusOutline(
+              focused: widget.focusOutline &&
+                  _controller.value.contains(WidgetState.focused) &&
+                  !widget.disableFocusOutline,
+              borderRadius: borderRadius,
+              child: GestureDetector(
+                behavior: widget.behavior,
+                onTap: widget.onPressed != null ? _onPressed : null,
+                onLongPress: widget.onLongPress,
+                // onDoubleTap: widget.onDoubleTap, HANDLED CUSTOMLY
+                onSecondaryTapDown: widget.onSecondaryTapDown,
+                onSecondaryTapUp: widget.onSecondaryTapUp,
+                onSecondaryTapCancel: widget.onSecondaryTapCancel,
+                onTertiaryTapDown: widget.onTertiaryTapDown,
+                onTertiaryTapUp: widget.onTertiaryTapUp,
+                onTertiaryTapCancel: widget.onTertiaryTapCancel,
+                onLongPressStart: widget.onLongPressStart,
+                onLongPressUp: widget.onLongPressUp,
+                onLongPressMoveUpdate: widget.onLongPressMoveUpdate,
+                onLongPressEnd: widget.onLongPressEnd,
+                onSecondaryLongPress: widget.onSecondaryLongPress,
+                onTertiaryLongPress: widget.onTertiaryLongPress,
+                onTapDown: widget.onPressed != null
+                    ? (details) {
+                        if (widget.enableFeedback) {
+                          // also dispatch hover
+                          _controller.update(WidgetState.hovered, true);
+                        }
+                        _controller.update(WidgetState.pressed, true);
                       }
-                      _controller.update(WidgetState.pressed, true);
-                    }
-                  : null,
-              onTapUp: widget.onPressed != null
-                  ? (details) {
-                      if (widget.enableFeedback) {
-                        // also dispatch hover
-                        _controller.update(WidgetState.hovered, false);
+                    : null,
+                onTapUp: widget.onPressed != null
+                    ? (details) {
+                        if (widget.enableFeedback) {
+                          // also dispatch hover
+                          _controller.update(WidgetState.hovered, false);
+                        }
+                        _controller.update(WidgetState.pressed, false);
                       }
-                      _controller.update(WidgetState.pressed, false);
-                    }
-                  : null,
-              onTapCancel: widget.onPressed != null
-                  ? () {
-                      if (widget.enableFeedback) {
-                        // also dispatch hover
-                        _controller.update(WidgetState.hovered, false);
+                    : null,
+                onTapCancel: widget.onPressed != null
+                    ? () {
+                        if (widget.enableFeedback) {
+                          // also dispatch hover
+                          _controller.update(WidgetState.hovered, false);
+                        }
+                        _controller.update(WidgetState.pressed, false);
                       }
-                      _controller.update(WidgetState.pressed, false);
-                    }
-                  : null,
-              child: FocusableActionDetector(
-                enabled: enabled,
-                focusNode: _focusNode,
-                shortcuts: {
-                  LogicalKeySet(LogicalKeyboardKey.enter):
-                      const ActivateIntent(),
-                  LogicalKeySet(LogicalKeyboardKey.space):
-                      const ActivateIntent(),
-                  LogicalKeySet(LogicalKeyboardKey.arrowUp):
-                      const DirectionalFocusIntent(TraversalDirection.up),
-                  LogicalKeySet(LogicalKeyboardKey.arrowDown):
-                      const DirectionalFocusIntent(TraversalDirection.down),
-                  LogicalKeySet(LogicalKeyboardKey.arrowLeft):
-                      const DirectionalFocusIntent(TraversalDirection.left),
-                  LogicalKeySet(LogicalKeyboardKey.arrowRight):
-                      const DirectionalFocusIntent(TraversalDirection.right),
-                  ...?widget.shortcuts,
-                },
-                actions: {
-                  ActivateIntent: CallbackAction(
-                    onInvoke: (e) {
-                      _onPressed();
-                      return null;
-                    },
-                  ),
-                  DirectionalFocusIntent: CallbackAction(
-                    onInvoke: (e) {
-                      final direction = (e as DirectionalFocusIntent).direction;
-                      final focus = _focusNode;
-                      switch (direction) {
-                        case TraversalDirection.up:
-                          focus.focusInDirection(TraversalDirection.up);
-                          break;
-                        case TraversalDirection.down:
-                          focus.focusInDirection(TraversalDirection.down);
-                          break;
-                        case TraversalDirection.left:
-                          focus.focusInDirection(TraversalDirection.left);
-                          break;
-                        case TraversalDirection.right:
-                          focus.focusInDirection(TraversalDirection.right);
-                          break;
-                      }
-                      return null;
-                    },
-                  ),
-                  ...?widget.actions,
-                },
-                onShowHoverHighlight: (value) {
-                  _controller.update(
-                      WidgetState.hovered, value && !widget.disableHoverEffect);
-                  widget.onHover?.call(value);
-                },
-                onShowFocusHighlight: (value) {
-                  _controller.update(WidgetState.focused, value);
-                  widget.onFocus?.call(value);
-                },
-                mouseCursor: widget.mouseCursor?.resolve(_controller.value) ??
-                    MouseCursor.defer,
-                child: mergeAnimatedTextStyle(
-                  duration: kDefaultDuration,
-                  style: widget.textStyle?.resolve(_controller.value),
-                  child: AnimatedIconTheme.merge(
-                    duration: kDefaultDuration,
-                    data: widget.iconTheme?.resolve(_controller.value) ??
-                        const IconThemeData(),
-                    child: AnimatedBuilder(
-                      animation: _controller,
-                      builder: (context, child) {
-                        return AnimatedValueBuilder(
-                          value: widget.transform?.resolve(_controller.value),
-                          duration: const Duration(milliseconds: 50),
-                          lerp: (a, b, t) {
-                            Matrix4Tween tween = Matrix4Tween(
-                              begin: a ?? Matrix4.identity(),
-                              end: b ?? Matrix4.identity(),
-                            );
-                            return tween.transform(t);
-                          },
-                          builder: (context, value, child) {
-                            return Transform(
-                              alignment: Alignment.center,
-                              transform: value ?? Matrix4.identity(),
-                              child: child,
-                            );
-                          },
-                          child: child,
-                        );
+                    : null,
+                child: FocusableActionDetector(
+                  enabled: enabled,
+                  focusNode: _focusNode,
+                  shortcuts: {
+                    LogicalKeySet(LogicalKeyboardKey.enter):
+                        const ActivateIntent(),
+                    LogicalKeySet(LogicalKeyboardKey.space):
+                        const ActivateIntent(),
+                    LogicalKeySet(LogicalKeyboardKey.arrowUp):
+                        const DirectionalFocusIntent(TraversalDirection.up),
+                    LogicalKeySet(LogicalKeyboardKey.arrowDown):
+                        const DirectionalFocusIntent(TraversalDirection.down),
+                    LogicalKeySet(LogicalKeyboardKey.arrowLeft):
+                        const DirectionalFocusIntent(TraversalDirection.left),
+                    LogicalKeySet(LogicalKeyboardKey.arrowRight):
+                        const DirectionalFocusIntent(TraversalDirection.right),
+                    ...?widget.shortcuts,
+                  },
+                  actions: {
+                    ActivateIntent: CallbackAction(
+                      onInvoke: (e) {
+                        _onPressed();
+                        return null;
                       },
-                      child: buttonContainer,
+                    ),
+                    DirectionalFocusIntent: CallbackAction(
+                      onInvoke: (e) {
+                        final direction =
+                            (e as DirectionalFocusIntent).direction;
+                        final focus = _focusNode;
+                        switch (direction) {
+                          case TraversalDirection.up:
+                            focus.focusInDirection(TraversalDirection.up);
+                            break;
+                          case TraversalDirection.down:
+                            focus.focusInDirection(TraversalDirection.down);
+                            break;
+                          case TraversalDirection.left:
+                            focus.focusInDirection(TraversalDirection.left);
+                            break;
+                          case TraversalDirection.right:
+                            focus.focusInDirection(TraversalDirection.right);
+                            break;
+                        }
+                        return null;
+                      },
+                    ),
+                    ...?widget.actions,
+                  },
+                  onShowHoverHighlight: (value) {
+                    _controller.update(WidgetState.hovered,
+                        value && !widget.disableHoverEffect);
+                    widget.onHover?.call(value);
+                  },
+                  onShowFocusHighlight: (value) {
+                    _controller.update(WidgetState.focused, value);
+                    widget.onFocus?.call(value);
+                  },
+                  mouseCursor: widget.mouseCursor?.resolve(_controller.value) ??
+                      MouseCursor.defer,
+                  child: mergeAnimatedTextStyle(
+                    duration: kDefaultDuration,
+                    style: widget.textStyle?.resolve(_controller.value),
+                    child: AnimatedIconTheme.merge(
+                      duration: kDefaultDuration,
+                      data: widget.iconTheme?.resolve(_controller.value) ??
+                          const IconThemeData(),
+                      child: AnimatedBuilder(
+                        animation: _controller,
+                        builder: (context, child) {
+                          return AnimatedValueBuilder(
+                            value: widget.transform?.resolve(_controller.value),
+                            duration: const Duration(milliseconds: 50),
+                            lerp: (a, b, t) {
+                              Matrix4Tween tween = Matrix4Tween(
+                                begin: a ?? Matrix4.identity(),
+                                end: b ?? Matrix4.identity(),
+                              );
+                              return tween.transform(t);
+                            },
+                            builder: (context, value, child) {
+                              return Transform(
+                                alignment: Alignment.center,
+                                transform: value ?? Matrix4.identity(),
+                                child: child,
+                              );
+                            },
+                            child: child,
+                          );
+                        },
+                        child: buttonContainer,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
