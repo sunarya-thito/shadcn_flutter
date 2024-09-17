@@ -6,8 +6,9 @@ class ButtonExample15 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PrimaryButton(
-      leading: const StatedWidget(
+      leading: const StatedWidget.map(
         states: {
+          'disabled': Icon(Icons.close),
           {WidgetState.hovered, WidgetState.focused}:
               Icon(Icons.add_a_photo_rounded),
           WidgetState.hovered: Icon(Icons.add_a_photo),
@@ -16,10 +17,9 @@ class ButtonExample15 extends StatelessWidget {
       ),
       onPressed: () {},
       child: const StatedWidget(
-        states: {
-          'focused': Text('Focused'),
-          WidgetState.hovered: Text('Hovered'),
-        },
+        focused: Text('Focused'),
+        hovered: Text('Hovered'),
+        pressed: Text('Pressed'),
         child: Text('Normal'),
       ),
     );

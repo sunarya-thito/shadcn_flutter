@@ -4,8 +4,26 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 abstract class StatedWidget extends StatelessWidget {
+  static const List<WidgetState> defaultStateOrder = [
+    WidgetState.disabled,
+    WidgetState.error,
+    WidgetState.selected,
+    WidgetState.pressed,
+    WidgetState.hovered,
+    WidgetState.focused,
+  ];
   const StatedWidget._({super.key});
   const factory StatedWidget({
+    Key? key,
+    required Widget child,
+    Widget? disabled,
+    Widget? selected,
+    Widget? pressed,
+    Widget? hovered,
+    Widget? focused,
+    Widget? error,
+  }) = _ParamStatedWidget;
+  const factory StatedWidget.map({
     Key? key,
     required Map<Object, Widget> states,
     Widget? child,
@@ -15,6 +33,72 @@ abstract class StatedWidget extends StatelessWidget {
     required Widget Function(BuildContext context, Set<WidgetState> states)
         builder,
   }) = _BuilderStatedWidget;
+}
+
+class _ParamStatedWidget extends StatedWidget {
+  final List<WidgetState> order;
+  final Widget? child;
+  final Widget? disabled;
+  final Widget? selected;
+  final Widget? pressed;
+  final Widget? hovered;
+  final Widget? focused;
+  final Widget? error;
+
+  const _ParamStatedWidget({
+    super.key,
+    this.order = StatedWidget.defaultStateOrder,
+    this.child,
+    this.disabled,
+    this.selected,
+    this.pressed,
+    this.hovered,
+    this.focused,
+    this.error,
+  }) : super._();
+
+  Widget? _checkByOrder(Set<WidgetState> states, int index) {
+    if (index >= order.length) {
+      return child;
+    }
+    final state = order[index];
+    if (states.contains(state)) {
+      switch (state) {
+        case WidgetState.disabled:
+          return disabled;
+        case WidgetState.pressed:
+          return pressed;
+        case WidgetState.hovered:
+          return hovered;
+        case WidgetState.focused:
+          return focused;
+        case WidgetState.selected:
+          return selected;
+        case WidgetState.error:
+          return error;
+        default:
+          return child;
+      }
+    }
+    return _checkByOrder(states, index + 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetStatesController? statesController = Data.maybeOf(context);
+    if (statesController == null) {
+      return child ?? const SizedBox();
+    }
+    return ListenableBuilder(
+      listenable: statesController,
+      builder: (context, child) {
+        final states = statesController.value;
+        final child = _checkByOrder(states, 0);
+        return child ?? const SizedBox();
+      },
+      child: child,
+    );
+  }
 }
 
 class _MapStatedWidget extends StatedWidget {
