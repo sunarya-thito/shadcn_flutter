@@ -618,7 +618,9 @@ class _NavigationButtonState extends State<NavigationButton> {
       anchorAlignment = AlignmentDirectional.centerEnd;
     }
     return Tooltip(
-      waitDuration: Duration.zero,
+      waitDuration: !isMobile(Theme.of(context).platform)
+          ? Duration.zero
+          : const Duration(milliseconds: 500),
       alignment: alignment,
       anchorAlignment: anchorAlignment,
       tooltip: TooltipContainer(child: widget.label!),
