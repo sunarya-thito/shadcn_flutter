@@ -162,6 +162,16 @@ class _HoverState extends State<Hover> with SingleTickerProviderStateMixin {
                   _onEnter();
                 }
               : null,
+          onLongPressCancel: enableLongPress
+              ? () {
+                  _onExit(true);
+                }
+              : null,
+          onLongPressUp: enableLongPress
+              ? () {
+                  _onExit(true);
+                }
+              : null,
           child: widget.child,
         ),
       ),
