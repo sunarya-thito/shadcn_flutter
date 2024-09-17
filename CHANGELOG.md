@@ -1,5 +1,17 @@
 ## 0.0.20
 * Replaced photoUrl to image provider in Avatar component
+* Added ButtonGroup component
+* Added StatedWidget component
+* Added AutoComplete component
+* Reworked the web preloader
+* Added Number Input component
+* Added Refresh Trigger component
+* Fixed the issue with static button text style
+* Fixed scaffold hitbox order issue
+* Exposed textInputAction property for Text Input component
+* Reworked the Color Picker component
+* Added screen color picker
+* Added toast layer to scaffold
 
 ## 0.0.19
 * Fixed test issue
