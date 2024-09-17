@@ -134,6 +134,9 @@ Add the following fonts to your `pubspec.yaml` file.
     - family: RadixIcons
       fonts:
         - asset: "packages/shadcn_flutter/icons/RadixIcons.otf"
+    - family: BootstrapIcons
+      fonts:
+        - asset: "packages/shadcn_flutter/icons/BootstrapIcons.otf"
     - family: "GeistSans"
       fonts:
         - asset: "packages/shadcn_flutter/fonts/Geist-Black.otf"
