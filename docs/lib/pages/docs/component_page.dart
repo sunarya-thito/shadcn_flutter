@@ -105,8 +105,8 @@ class _ComponentPageState extends State<ComponentPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(widget.displayName).h1(),
-          Text(widget.description).lead(),
+          SelectableText(widget.displayName).h1(),
+          SelectableText(widget.description).lead(),
           ...remappedChildren,
         ],
       ),

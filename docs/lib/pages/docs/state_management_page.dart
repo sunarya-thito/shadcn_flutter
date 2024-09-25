@@ -26,20 +26,21 @@ class _StateManagementPageState extends State<StateManagementPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text('State Management').h1(),
-          const Text(
+          const SelectableText('State Management').h1(),
+          const SelectableText(
                   'A comprehensive guide to managing state in shadcn_flutter.')
               .lead(),
-          const Text(
+          const SelectableText(
                   'In Flutter, everything is a widget, including where your data is stored.')
               .p(),
-          const Text(
+          const SelectableText(
                   'Internally, shadcn_flutter has its own state management system. '
                   'Although if you are already using a state management system, '
                   'you can continue to use it with shadcn_flutter.')
               .p(),
-          const Text('Passing Data to the Children').h2(),
-          const Text('You can pass data to children using the Data widget. '
+          const SelectableText('Passing Data to the Children').h2(),
+          const SelectableText(
+                  'You can pass data to children using the Data widget. '
                   'Any changes that occur in the data will cause the child to rebuild.')
               .p(),
           const WidgetUsageExample(
@@ -49,13 +50,14 @@ class _StateManagementPageState extends State<StateManagementPage> {
           ).p(),
           const Alert(
             leading: Icon(Icons.info_outline),
-            title: Text('Did you notice the difference in the rebuild count?'),
-            content: Text(
+            title: SelectableText(
+                'Did you notice the difference in the rebuild count?'),
+            content: SelectableText(
                 'The MostInnerWidget rebuilds when the data changes while the InnerWidget does not. '
                 'This is because the InnerWidget is not listening to the data.'),
           ).p(),
-          const Text('Setting Data Boundary').h3().p(),
-          const Text(
+          const SelectableText('Setting Data Boundary').h3().p(),
+          const SelectableText(
                   'You can set a boundary so that the child cannot access the data.')
               .p(),
           const WidgetUsageExample(
@@ -63,10 +65,11 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample4(),
           ).p(),
-          const Text('Data.maybeOf/Data.of vs Data.maybeFind/Data.find')
+          const SelectableText(
+                  'Data.maybeOf/Data.of vs Data.maybeFind/Data.find')
               .h3()
               .p(),
-          const Text('')
+          const SelectableText('')
               .thenInlineCode('Data.maybeOf(context)')
               .thenText(' and ')
               .thenInlineCode('Data.of(context)')
@@ -83,13 +86,13 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample5(),
           ).p(),
-          const Text('Getting Data from the Child').h2(),
-          const Text('You can get data from the child using the ')
+          const SelectableText('Getting Data from the Child').h2(),
+          const SelectableText('You can get data from the child using the ')
               .thenInlineCode('Data.maybeFindMessenger(context)')
               .thenText(
                   ' method. This method does not listen to any changes that occur in the data. ')
               .p(),
-          const Text(
+          const SelectableText(
                   'Listening to child data might cause infinite rebuild loops. '
                   'Move the data to the parent widget if you need to listen to it.')
               .p(),
@@ -100,12 +103,12 @@ class _StateManagementPageState extends State<StateManagementPage> {
           ).p(),
           const Alert(
             leading: Icon(Icons.info_outline),
-            title: Text('Did you notice the root data?'),
-            content: Text(
+            title: SelectableText('Did you notice the root data?'),
+            content: SelectableText(
                 'It uses the data from the left most inner data, because parent can only take data from the first attached child.'),
           ).p(),
-          const Text('Setting DataMessenger Boundary').h3().p(),
-          const Text(
+          const SelectableText('Setting DataMessenger Boundary').h3().p(),
+          const SelectableText(
                   'You can set a boundary so that child data cannot be obtained from specific parent.')
               .p(),
           const WidgetUsageExample(
@@ -113,8 +116,8 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample3(),
           ).p(),
-          const Text('MultiData Widget').h2(),
-          const Text(
+          const SelectableText('MultiData Widget').h2(),
+          const SelectableText(
                   'The MultiData widget allows you to pass multiple data to the children. Take a look at the following example:')
               .p(),
           const CodeSnippet(
@@ -129,7 +132,8 @@ class _StateManagementPageState extends State<StateManagementPage> {
                 ')',
             mode: 'dart',
           ).p(),
-          const Text('You can avoid nesting by using the MultiData widget.')
+          const SelectableText(
+                  'You can avoid nesting by using the MultiData widget.')
               .p(),
           const CodeSnippet(
             code: 'MultiData(\n'
@@ -142,14 +146,14 @@ class _StateManagementPageState extends State<StateManagementPage> {
                 ')',
             mode: 'dart',
           ).p(),
-          const Text('Example').h3().p(),
+          const SelectableText('Example').h3().p(),
           const WidgetUsageExample(
             path: 'lib/pages/docs/state/data_example_6.dart',
             summarize: false,
             child: DataExample6(),
           ).p(),
-          const Text('Passing State as a Controller').h2(),
-          const Text(
+          const SelectableText('Passing State as a Controller').h2(),
+          const SelectableText(
                   'You can pass state as a controller to the children. This way you can call method in parent widget from child widgets.')
               .p(),
           const WidgetUsageExample(
@@ -157,8 +161,8 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample7(),
           ).p(),
-          const Text('DataBuilder').h2(),
-          const Text(
+          const SelectableText('DataBuilder').h2(),
+          const SelectableText(
                   'You can use the DataBuilder widget to rebuild the widget when the data changes. '
                   'This also avoids rebuilding the entire widget.')
               .p(),
@@ -168,8 +172,8 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample8(),
           ).p(),
-          const Text('DataNotifier').h2(),
-          const Text(
+          const SelectableText('DataNotifier').h2(),
+          const SelectableText(
                   'Data notifier allows you to pass value to children from a ValueListenable.')
               .p(),
           const WidgetUsageExample(
@@ -177,7 +181,7 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample9(),
           ).p(),
-          const Text('Example with MultiData').h3().p(),
+          const SelectableText('Example with MultiData').h3().p(),
           const WidgetUsageExample(
             path: 'lib/pages/docs/state/data_example_10.dart',
             summarize: false,
