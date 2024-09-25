@@ -76,7 +76,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                           (BuildContext context, NavigationRailAlignment item) {
                         return Text(item.name);
                       },
-                      popupConstraints: const BoxConstraints(maxWidth: 200),
+                      popupWidthConstraint: PopoverConstraint.anchorFixedSize,
                       onChanged: (value) {
                         if (value != null) {
                           setState(() {
