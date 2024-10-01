@@ -7,8 +7,10 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 // This helps to simulate middle hold scroll on web and desktop platforms
 class ScrollViewInterceptor extends StatefulWidget {
   final Widget child;
+  final bool enabled;
 
-  const ScrollViewInterceptor({super.key, required this.child});
+  const ScrollViewInterceptor(
+      {super.key, required this.child, this.enabled = true});
 
   @override
   State<ScrollViewInterceptor> createState() => _ScrollViewInterceptorState();
@@ -16,6 +18,18 @@ class ScrollViewInterceptor extends StatefulWidget {
 
 const double kScrollDragSpeed = 0.02;
 const double kMaxScrollSpeed = 10;
+
+class DesktopPointerScrollEvent extends PointerScrollEvent {
+  const DesktopPointerScrollEvent({
+    required super.position,
+    required super.device,
+    required super.embedderId,
+    required super.kind,
+    required super.timeStamp,
+    required super.viewId,
+    required super.scrollDelta,
+  });
+}
 
 class _ScrollViewInterceptorState extends State<ScrollViewInterceptor>
     with SingleTickerProviderStateMixin {
@@ -53,7 +67,7 @@ class _ScrollViewInterceptorState extends State<ScrollViewInterceptor>
     var instance = GestureBinding.instance;
     HitTestResult result = HitTestResult();
     instance.hitTestInView(result, _event!.position, _event!.viewId);
-    var pointerScrollEvent = PointerScrollEvent(
+    var pointerScrollEvent = DesktopPointerScrollEvent(
       position: _event!.position,
       device: _event!.device,
       embedderId: _event!.embedderId,
@@ -78,6 +92,7 @@ class _ScrollViewInterceptorState extends State<ScrollViewInterceptor>
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.enabled) return widget.child;
     return Stack(
       clipBehavior: Clip.none,
       fit: StackFit.passthrough,

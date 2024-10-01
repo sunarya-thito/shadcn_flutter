@@ -50,6 +50,7 @@ class ShadcnApp extends StatefulWidget {
     this.maxRecentColors = 10,
     this.onRecentColorsChanged,
     this.pixelSnap = true,
+    this.enableScrollInterception = true,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
@@ -90,6 +91,7 @@ class ShadcnApp extends StatefulWidget {
     this.maxRecentColors = 50,
     this.onRecentColorsChanged,
     this.pixelSnap = true,
+    this.enableScrollInterception = true,
   })  : assert(routerDelegate != null || routerConfig != null),
         navigatorObservers = null,
         navigatorKey = null,
@@ -160,6 +162,7 @@ class ShadcnApp extends StatefulWidget {
   final int maxRecentColors;
   final ValueChanged<List<Color>>? onRecentColorsChanged;
   final bool pixelSnap;
+  final bool enableScrollInterception;
 
   @override
   State<ShadcnApp> createState() => _ShadcnAppState();
@@ -309,6 +312,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
         maxRecentColors: widget.maxRecentColors,
         onRecentColorsChanged: widget.onRecentColorsChanged,
         builder: widget.builder,
+        enableScrollInterception: widget.enableScrollInterception,
         child: child,
       ),
     );
@@ -444,6 +448,7 @@ class ShadcnLayer extends StatelessWidget {
   final int maxRecentColors;
   final ValueChanged<List<Color>>? onRecentColorsChanged;
   final Widget Function(BuildContext context, Widget? child)? builder;
+  final bool enableScrollInterception;
 
   const ShadcnLayer({
     super.key,
@@ -454,6 +459,7 @@ class ShadcnLayer extends StatelessWidget {
     this.maxRecentColors = 50,
     this.onRecentColorsChanged,
     this.builder,
+    this.enableScrollInterception = true,
   });
 
   @override
@@ -466,6 +472,7 @@ class ShadcnLayer extends StatelessWidget {
         var theme = Theme.of(context);
         return DataMessengerRoot(
           child: ScrollViewInterceptor(
+            enabled: enableScrollInterception,
             child: ShadcnSkeletonizerConfigLayer(
               theme: theme,
               child: mergeAnimatedTextStyle(
