@@ -55,7 +55,8 @@ class _ComponentsPageState extends State<ComponentsPage> {
         title: const Text('Event has been created'),
         subtitle: const Text('Sunday, July 07, 2024 at 12:00 PM'),
         trailing: PrimaryButton(
-            size: ButtonSize.small, onPressed: () {},
+            size: ButtonSize.small,
+            onPressed: () {},
             child: const Text('Undo')),
         trailingAlignment: Alignment.center,
       ),
@@ -676,7 +677,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         ),
                         SelectPopup(
                           value: ValueNotifier(['Apple']),
-                          children: const [
+                          children: ValueNotifier(const [
                             SelectItemButton(
                               value: 'Apple',
                               child: Text('Apple'),
@@ -697,7 +698,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                               value: 'Cucumber',
                               child: Text('Cucumber'),
                             ),
-                          ],
+                          ]),
                         ),
                       ],
                     ),
@@ -838,7 +839,8 @@ class _ComponentsPageState extends State<ComponentsPage> {
                 name: 'timeline',
                 title: 'Timeline',
                 scale: 1,
-                example: const TimelineExample1().sized(width: 700, height: 800),
+                example:
+                    const TimelineExample1().sized(width: 700, height: 800),
               ),
             ]),
             const Text('Navigation').h2().anchored(navigationKey),
