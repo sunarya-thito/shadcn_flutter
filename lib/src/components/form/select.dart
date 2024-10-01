@@ -111,7 +111,7 @@ class SelectGroup<T> extends StatelessWidget implements AbstractSelectItem<T> {
     this.footers,
     this.showUnrelatedValues,
     required this.children,
-  })  : searchFilter = _keepOrderFilter;
+  }) : searchFilter = _keepOrderFilter;
 
   @override
   SearchResult search(SearchQuery<T> query) {
@@ -334,6 +334,7 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
   late FocusNode _focusNode;
   final PopoverController _popoverController = PopoverController();
   late ValueNotifier<List<T>> _valueNotifier;
+  late ValueNotifier<List<AbstractSelectItem<T>>> _childrenNotifier;
 
   @override
   void initState() {
@@ -341,6 +342,7 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
     _focusNode = widget.focusNode ?? FocusNode();
     _valueNotifier =
         ValueNotifier(widget.value == null ? const [] : [widget.value as T]);
+    _childrenNotifier = ValueNotifier(widget.children);
   }
 
   @override
@@ -375,6 +377,11 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
           }
         },
       );
+    }
+    if (!listEquals(widget.children, oldWidget.children)) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _childrenNotifier.value = widget.children;
+      });
     }
   }
 
@@ -435,8 +442,6 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
                         searchPlaceholder: widget.searchPlaceholder,
                         searchFilter: widget.searchFilter,
                         constraints: widget.popupConstraints,
-                        // value:
-                        //     widget.value == null ? const [] : [widget.value!],
                         value: _valueNotifier,
                         showUnrelatedValues: widget.showUnrelatedValues,
                         onChanged: widget.onChanged == null
@@ -452,7 +457,7 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
                         emptyBuilder: widget.emptyBuilder,
                         surfaceBlur: widget.surfaceBlur,
                         surfaceOpacity: widget.surfaceOpacity,
-                        children: widget.children,
+                        children: _childrenNotifier,
                       );
                     },
                   )
@@ -498,7 +503,7 @@ class SelectPopup<T> extends StatefulWidget {
   final ValueListenable<List<T>> value;
   final SearchFilter<T>? searchFilter;
   final BoxConstraints? constraints;
-  final List<AbstractSelectItem<T>> children;
+  final ValueListenable<List<AbstractSelectItem<T>>> children;
   final bool showUnrelatedValues;
   final SelectValueChanged<T>? onChanged;
   final String? searchPlaceholder;
@@ -610,18 +615,18 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
                   behavior: ScrollConfiguration.of(context).copyWith(
                     scrollbars: false,
                   ),
-                  child: AnimatedBuilder(
-                    // animation: _searchController,
-                    animation: Listenable.merge([
+                  child: ListenableBuilder(
+                    listenable: Listenable.merge([
                       _searchController,
                       widget.value,
+                      widget.children,
                     ]),
                     builder: (context, child) {
                       String text = _searchController.text;
                       Map<AbstractSelectItem<T>, SelectSearchResult> resultMap =
                           {};
-                      for (int i = 0; i < widget.children.length; i++) {
-                        var item = widget.children[i];
+                      for (int i = 0; i < widget.children.value.length; i++) {
+                        var item = widget.children.value[i];
                         if (text.isEmpty) {
                           var result = item.search(SearchQuery<T>(
                               text, widget.searchFilter, widget.value.value));
@@ -906,12 +911,14 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
   late FocusNode _focusNode;
   final PopoverController _popoverController = PopoverController();
   late ValueNotifier<List<T>> _valueNotifier;
+  late ValueNotifier<List<AbstractSelectItem<T>>> _childrenNotifier;
 
   @override
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
     _valueNotifier = ValueNotifier(widget.value);
+    _childrenNotifier = ValueNotifier(widget.children);
   }
 
   @override
@@ -933,7 +940,7 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
     if (widget.focusNode != oldWidget.focusNode) {
       _focusNode = widget.focusNode ?? FocusNode();
     }
-    if (widget.value != oldWidget.value) {
+    if (!listEquals(widget.value, oldWidget.value)) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         _valueNotifier.value = widget.value;
       });
@@ -945,6 +952,11 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
           }
         },
       );
+    }
+    if (!listEquals(widget.children, oldWidget.children)) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _childrenNotifier.value = widget.children;
+      });
     }
   }
 
@@ -1023,7 +1035,7 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
                         emptyBuilder: widget.emptyBuilder,
                         surfaceBlur: widget.surfaceBlur,
                         surfaceOpacity: widget.surfaceOpacity,
-                        children: widget.children,
+                        children: _childrenNotifier,
                       );
                     },
                   )
