@@ -91,7 +91,7 @@ class ShadcnApp extends StatefulWidget {
     this.maxRecentColors = 50,
     this.onRecentColorsChanged,
     this.pixelSnap = true,
-    this.enableScrollInterception = true,
+    this.enableScrollInterception = false,
   })  : assert(routerDelegate != null || routerConfig != null),
         navigatorObservers = null,
         navigatorKey = null,
@@ -459,7 +459,7 @@ class ShadcnLayer extends StatelessWidget {
     this.maxRecentColors = 50,
     this.onRecentColorsChanged,
     this.builder,
-    this.enableScrollInterception = true,
+    this.enableScrollInterception = false,
   });
 
   @override
