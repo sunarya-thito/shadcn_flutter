@@ -296,60 +296,20 @@ class _ShadcnAppState extends State<ShadcnApp> {
   }
 
   Widget _builder(BuildContext context, Widget? child) {
-    var theme = widget.theme;
-    var appScaling = widget.scaling ?? AdaptiveScaler.defaultScaling(theme);
     return PixelSnapOverride(
       pixelSnapFunction: widget.pixelSnap
           ? null
           : (value, devicePixelRatio, mode) {
               return value;
             },
-      child: AnimatedTheme(
-        duration: kDefaultDuration,
-        data: appScaling.scale(theme),
-        child: Builder(builder: (context) {
-          var theme = Theme.of(context);
-          return DataMessengerRoot(
-            child: ScrollViewInterceptor(
-              child: ShadcnSkeletonizerConfigLayer(
-                theme: theme,
-                child: mergeAnimatedTextStyle(
-                  duration: kDefaultDuration,
-                  style: theme.typography.base.copyWith(
-                    color: theme.colorScheme.foreground,
-                  ),
-                  child: AnimatedIconTheme.merge(
-                    duration: kDefaultDuration,
-                    data: theme.iconTheme.medium.copyWith(
-                      color: theme.colorScheme.foreground,
-                    ),
-                    child: Theme(
-                      data: theme,
-                      child: RecentColorsScope(
-                        initialRecentColors: widget.initialRecentColors,
-                        maxRecentColors: widget.maxRecentColors,
-                        onRecentColorsChanged: widget.onRecentColorsChanged,
-                        child: ColorPickingLayer(
-                          child: KeyboardShortcutDisplayMapper(
-                            child: ToastLayer(
-                              child: widget.builder != null
-                                  ? Builder(
-                                      builder: (BuildContext context) {
-                                        return widget.builder!(context, child);
-                                      },
-                                    )
-                                  : child ?? const SizedBox.shrink(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        }),
+      child: ShadcnLayer(
+        theme: widget.theme,
+        scaling: widget.scaling,
+        initialRecentColors: widget.initialRecentColors,
+        maxRecentColors: widget.maxRecentColors,
+        onRecentColorsChanged: widget.onRecentColorsChanged,
+        builder: widget.builder,
+        child: child,
       ),
     );
   }
@@ -472,6 +432,79 @@ class _ShadcnAppState extends State<ShadcnApp> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ShadcnLayer extends StatelessWidget {
+  final Widget? child;
+  final ThemeData theme;
+  final AdaptiveScaling? scaling;
+  final List<Color> initialRecentColors;
+  final int maxRecentColors;
+  final ValueChanged<List<Color>>? onRecentColorsChanged;
+  final Widget Function(BuildContext context, Widget? child)? builder;
+
+  const ShadcnLayer({
+    super.key,
+    required this.theme,
+    this.scaling,
+    this.child,
+    this.initialRecentColors = const [],
+    this.maxRecentColors = 50,
+    this.onRecentColorsChanged,
+    this.builder,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var appScaling = scaling ?? AdaptiveScaler.defaultScaling(theme);
+    return AnimatedTheme(
+      duration: kDefaultDuration,
+      data: appScaling.scale(theme),
+      child: Builder(builder: (context) {
+        var theme = Theme.of(context);
+        return DataMessengerRoot(
+          child: ScrollViewInterceptor(
+            child: ShadcnSkeletonizerConfigLayer(
+              theme: theme,
+              child: mergeAnimatedTextStyle(
+                duration: kDefaultDuration,
+                style: theme.typography.base.copyWith(
+                  color: theme.colorScheme.foreground,
+                ),
+                child: AnimatedIconTheme.merge(
+                  duration: kDefaultDuration,
+                  data: theme.iconTheme.medium.copyWith(
+                    color: theme.colorScheme.foreground,
+                  ),
+                  child: Theme(
+                    data: theme,
+                    child: RecentColorsScope(
+                      initialRecentColors: initialRecentColors,
+                      maxRecentColors: maxRecentColors,
+                      onRecentColorsChanged: onRecentColorsChanged,
+                      child: ColorPickingLayer(
+                        child: KeyboardShortcutDisplayMapper(
+                          child: ToastLayer(
+                            child: builder != null
+                                ? Builder(
+                                    builder: (BuildContext context) {
+                                      return builder!(context, child);
+                                    },
+                                  )
+                                : child ?? const SizedBox.shrink(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }),
     );
   }
 }
