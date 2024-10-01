@@ -97,6 +97,7 @@ export 'src/components/control/button.dart';
 export 'src/components/control/clickable.dart';
 export 'src/components/control/command.dart';
 export 'src/components/control/scrollbar.dart';
+export 'src/components/control/scrollview.dart';
 export 'src/components/display/avatar.dart';
 export 'src/components/display/badge.dart';
 export 'src/components/display/calendar.dart';
