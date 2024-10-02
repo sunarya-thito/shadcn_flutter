@@ -158,10 +158,19 @@ class RecentColorsScope extends StatefulWidget {
   State<RecentColorsScope> createState() => RecentColorsScopeState();
 }
 
+class _ColorListNotifier extends ChangeNotifier {
+  List<Color> _recentColors;
+
+  _ColorListNotifier(this._recentColors);
+
+  void _notify() {
+    notifyListeners();
+  }
+}
+
 class RecentColorsScopeState extends State<RecentColorsScope>
-    with ChangeNotifier
     implements ColorHistoryStorage {
-  late List<Color> _recentColors;
+  late _ColorListNotifier _recentColors;
 
   @override
   int get capacity => widget.maxRecentColors;
@@ -169,36 +178,45 @@ class RecentColorsScopeState extends State<RecentColorsScope>
   @override
   void initState() {
     super.initState();
-    _recentColors = List.from(widget.initialRecentColors);
+    _recentColors = _ColorListNotifier(List.from(widget.initialRecentColors));
   }
 
   @override
-  List<Color> get recentColors => List.unmodifiable(_recentColors);
+  List<Color> get recentColors =>
+      List.unmodifiable(_recentColors._recentColors);
 
   @override
   void addHistory(Color color) {
-    if (_recentColors.contains(color)) {
-      _recentColors.remove(color);
+    var recentColors = _recentColors._recentColors;
+    if (recentColors.contains(color)) {
+      recentColors.remove(color);
     }
-    _recentColors.insert(0, color);
-    if (_recentColors.length > widget.maxRecentColors) {
-      _recentColors.removeLast();
+    recentColors.insert(0, color);
+    if (recentColors.length > widget.maxRecentColors) {
+      recentColors.removeLast();
     }
     widget.onRecentColorsChanged?.call(recentColors);
-    notifyListeners();
+    _recentColors._notify();
+  }
+
+  @override
+  void dispose() {
+    (this as State).dispose();
+    super.dispose();
   }
 
   @override
   void clear() {
-    _recentColors.clear();
+    _recentColors._recentColors.clear();
     widget.onRecentColorsChanged?.call(recentColors);
+    _recentColors._notify();
   }
 
   @override
   void setHistory(List<Color> colors) {
-    _recentColors = colors;
+    _recentColors._recentColors = colors;
     widget.onRecentColorsChanged?.call(recentColors);
-    notifyListeners();
+    _recentColors._notify();
   }
 
   @override
@@ -207,6 +225,16 @@ class RecentColorsScopeState extends State<RecentColorsScope>
       data: this,
       child: widget.child,
     );
+  }
+
+  @override
+  void addListener(VoidCallback listener) {
+    _recentColors.addListener(listener);
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    _recentColors.removeListener(listener);
   }
 }
 
