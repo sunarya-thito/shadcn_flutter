@@ -98,7 +98,7 @@ class _SwitchState extends State<Switch> with FormValueSupplier {
                       ? theme.colorScheme.primary
                       : theme.colorScheme.primary.withOpacity(0),
                   strokeAlign: 3 * scaling,
-                  width: 2 * scaling,
+                  width: 1.6 * scaling,
                 ),
               ),
               child: Padding(
