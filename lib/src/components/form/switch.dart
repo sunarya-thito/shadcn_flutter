@@ -97,32 +97,29 @@ class _SwitchState extends State<Switch> with FormValueSupplier {
                   color: _focusing
                       ? theme.colorScheme.primary
                       : theme.colorScheme.primary.withOpacity(0),
-                  strokeAlign: 3 * scaling,
-                  width: 1.6 * scaling,
+                  strokeAlign: scaling,
+                  width: 2 * scaling,
                 ),
               ),
-              child: Padding(
-                padding: EdgeInsets.all(2 * scaling),
-                child: Stack(
-                  children: [
-                    AnimatedPositioned(
-                      duration: kSwitchDuration,
-                      curve: Curves.easeInOut,
-                      left: widget.value ? 16 * scaling : 0,
-                      top: 0,
-                      bottom: 0,
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(theme.radiusLg),
-                            color: theme.colorScheme.background,
-                          ),
+              child: Stack(
+                children: [
+                  AnimatedPositioned(
+                    duration: kSwitchDuration,
+                    curve: Curves.easeInOut,
+                    left: widget.value ? 16 * scaling : 0,
+                    top: 0,
+                    bottom: 0,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(theme.radiusLg),
+                          color: theme.colorScheme.background,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             if (widget.trailing != null) SizedBox(width: 8 * scaling),
