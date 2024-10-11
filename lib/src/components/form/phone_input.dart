@@ -41,6 +41,7 @@ class PhoneInput extends StatefulWidget {
   final bool filterZeroCode;
   final bool filterCountryCode;
   final bool onlyNumber;
+  final List<Country>? countries;
 
   const PhoneInput({
     super.key,
@@ -52,6 +53,7 @@ class PhoneInput extends StatefulWidget {
     this.filterZeroCode = true,
     this.filterCountryCode = true,
     this.onlyNumber = true,
+    this.countries,
   });
 
   @override
@@ -192,7 +194,7 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
               maxHeight: 300 * theme.scaling,
             ),
             children: [
-              for (final country in Country.values)
+              for (final country in widget.countries ?? Country.values)
                 SelectItemButton(
                   value: country,
                   child: Row(
