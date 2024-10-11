@@ -41,6 +41,7 @@ class TextField extends StatefulWidget {
   final bool? isCollapsed;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
+  final Clip clipBehavior;
 
   const TextField({
     super.key,
@@ -79,6 +80,7 @@ class TextField extends StatefulWidget {
     this.useNativeContextMenu = false,
     this.isCollapsed,
     this.textInputAction,
+    this.clipBehavior = Clip.hardEdge,
   });
 
   static Widget _defaultContextMenuBuilder(
@@ -196,6 +198,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                   );
                 }
               : widget.contextMenuBuilder,
+      clipBehavior: widget.clipBehavior,
       inputFormatters: widget.inputFormatters,
       onTapOutside: widget.onTapOutside,
       onChanged: widget.onChanged,
