@@ -279,7 +279,7 @@ class _NumberInputState extends State<NumberInput> {
       border: !widget.showButtons,
       enabled: widget.enabled ?? true,
       initialValue: _valueAsString,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.numberWithOptions(decimal: widget.allowDecimals),
       textAlignVertical: TextAlignVertical.center,
     );
   }
