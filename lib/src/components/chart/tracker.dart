@@ -81,6 +81,30 @@ class TrackerData {
   });
 }
 
+class TrackerTheme {
+  final double? radius;
+  final double? gap;
+  final double? itemHeight;
+
+  const TrackerTheme({
+    this.radius,
+    this.gap,
+    this.itemHeight,
+  });
+
+  TrackerTheme copyWith({
+    double? radius,
+    double? gap,
+    double? itemHeight,
+  }) {
+    return TrackerTheme(
+      radius: radius ?? this.radius,
+      gap: gap ?? this.gap,
+      itemHeight: itemHeight ?? this.itemHeight,
+    );
+  }
+}
+
 /// A widget that displays a tracker.
 ///
 /// This widget displays a row of tracker levels with tooltips.
@@ -106,8 +130,10 @@ class Tracker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final trackerTheme = Data.maybeOf<TrackerTheme>(context);
     return ClipRRect(
-      borderRadius: BorderRadius.circular(theme.radiusMd),
+      borderRadius:
+          BorderRadius.circular(trackerTheme?.radius ?? theme.radiusMd),
       child: Row(
         children: [
           for (final data in this.data)
@@ -119,13 +145,13 @@ class Tracker extends StatelessWidget {
                   );
                 },
                 child: Container(
-                  height: 32,
+                  height: trackerTheme?.itemHeight ?? 32,
                   color: data.level.color,
                 ),
               ),
             )
         ],
-      ).gap(theme.scaling * 2),
+      ).gap(trackerTheme?.gap ?? theme.scaling * 2),
     );
   }
 }
