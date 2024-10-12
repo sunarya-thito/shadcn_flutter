@@ -130,7 +130,7 @@ class Tracker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final trackerTheme = Data.maybeOf<TrackerTheme>(context);
+    final trackerTheme = ComponentTheme.maybeOf<TrackerTheme>(context);
     return ClipRRect(
       borderRadius:
           BorderRadius.circular(trackerTheme?.radius ?? theme.radiusMd),
