@@ -631,6 +631,10 @@ extension TextExtension on Widget {
       final text = this as RichText;
       return _RichTextThenWidget(text: text, then: [span]);
     }
+    if (this is SelectableText) {
+      final text = this as SelectableText;
+      return _SelectableTextThenWidget(text: text, then: [span]);
+    }
     if (this is Text) {
       final text = this as Text;
       return _TextThenWidget(text: text, then: [span]);
@@ -645,6 +649,13 @@ extension TextExtension on Widget {
     if (this is _TextThenWidget) {
       final text = this as _TextThenWidget;
       return _TextThenWidget(
+        text: text.text,
+        then: [...text.then, span],
+      );
+    }
+    if (this is _SelectableTextThenWidget) {
+      final text = this as _SelectableTextThenWidget;
+      return _SelectableTextThenWidget(
         text: text.text,
         then: [...text.then, span],
       );
@@ -814,6 +825,59 @@ class _RichTextThenWidget extends StatelessWidget {
           ...then,
         ],
       ),
+    );
+  }
+}
+
+class _SelectableTextThenWidget extends StatelessWidget {
+  final SelectableText text;
+  final List<InlineSpan> then;
+
+  const _SelectableTextThenWidget({
+    required this.text,
+    required this.then,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String? stringData = text.data;
+    TextSpan? textData = text.textSpan;
+    return SelectableText.rich(
+      TextSpan(
+        text: stringData,
+        children: [
+          if (textData != null) textData,
+          ...then,
+        ],
+      ),
+      style: text.style,
+      useNativeContextMenu: text.useNativeContextMenu,
+      contextMenuBuilder: text.contextMenuBuilder,
+      minLines: text.minLines,
+      semanticsLabel: text.semanticsLabel,
+      textScaler: text.textScaler,
+      magnifierConfiguration: text.magnifierConfiguration,
+      selectionHeightStyle: text.selectionHeightStyle,
+      selectionWidthStyle: text.selectionWidthStyle,
+      textAlign: text.textAlign,
+      textDirection: text.textDirection,
+      textWidthBasis: text.textWidthBasis,
+      textHeightBehavior: text.textHeightBehavior,
+      maxLines: text.maxLines,
+      strutStyle: text.strutStyle,
+      selectionControls: text.selectionControls,
+      onTap: text.onTap,
+      scrollPhysics: text.scrollPhysics,
+      showCursor: text.showCursor,
+      cursorWidth: text.cursorWidth,
+      cursorHeight: text.cursorHeight,
+      cursorRadius: text.cursorRadius,
+      cursorColor: text.cursorColor,
+      dragStartBehavior: text.dragStartBehavior,
+      enableInteractiveSelection: text.enableInteractiveSelection,
+      autofocus: text.autofocus,
+      focusNode: text.focusNode,
+      onSelectionChanged: text.onSelectionChanged,
     );
   }
 }
