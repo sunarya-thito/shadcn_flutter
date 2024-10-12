@@ -732,6 +732,7 @@ class MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'shadcn/ui Flutter',
         scaling: AdaptiveScaling(scaling),
+        enableScrollInterception: true,
         theme: ThemeData(
           colorScheme: colorScheme,
           radius: radius,
