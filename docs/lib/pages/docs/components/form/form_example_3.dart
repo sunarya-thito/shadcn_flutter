@@ -89,7 +89,10 @@ class _FormExample3State extends State<FormExample3> {
                   validator: ValidationMode(
                     CompareWith.equal(_passwordKey,
                         message: 'Passwords do not match'),
-                    mode: {FormValidationMode.changed},
+                    mode: {
+                      FormValidationMode.changed,
+                      FormValidationMode.submitted
+                    },
                   ),
                   child: const TextField(
                     obscureText: true,
