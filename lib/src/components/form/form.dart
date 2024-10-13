@@ -57,6 +57,16 @@ class ValidationMode<T> extends Validator<T> {
     }
     return null;
   }
+
+  @override
+  operator ==(Object other) {
+    return other is ValidationMode &&
+        other.validator == validator &&
+        other.mode == mode;
+  }
+
+  @override
+  int get hashCode => Object.hash(validator, mode);
 }
 
 typedef FuturePredicate<T> = Future<bool> Function(T? value);
@@ -80,6 +90,16 @@ class ConditionalValidator<T> extends Validator<T> {
   bool shouldRevalidate(FormKey<dynamic> source) {
     return true;
   }
+
+  @override
+  operator ==(Object other) {
+    return other is ConditionalValidator &&
+        other.predicate == predicate &&
+        other.message == message;
+  }
+
+  @override
+  int get hashCode => Object.hash(predicate, message);
 }
 
 class NotValidator<T> extends Validator<T> {
@@ -99,6 +119,16 @@ class NotValidator<T> extends Validator<T> {
     }
     return null;
   }
+
+  @override
+  operator ==(Object other) {
+    return other is NotValidator &&
+        other.validator == validator &&
+        other.message == message;
+  }
+
+  @override
+  int get hashCode => Object.hash(validator, message);
 }
 
 class OrValidator<T> extends Validator<T> {
@@ -133,6 +163,14 @@ class OrValidator<T> extends Validator<T> {
     }
     return false;
   }
+
+  @override
+  operator ==(Object other) {
+    return other is OrValidator && listEquals(other.validators, validators);
+  }
+
+  @override
+  int get hashCode => validators.hashCode;
 }
 
 class NonNullValidator<T> extends Validator<T> {
@@ -150,6 +188,14 @@ class NonNullValidator<T> extends Validator<T> {
     }
     return null;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is NonNullValidator && other.message == message;
+  }
+
+  @override
+  int get hashCode => message.hashCode;
 }
 
 class NotEmptyValidator extends NonNullValidator<String> {
@@ -164,6 +210,14 @@ class NotEmptyValidator extends NonNullValidator<String> {
     }
     return null;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is NotEmptyValidator && other.message == message;
+  }
+
+  @override
+  int get hashCode => message.hashCode;
 }
 
 class LengthValidator extends Validator<String> {
@@ -191,6 +245,17 @@ class LengthValidator extends Validator<String> {
     }
     return null;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is LengthValidator &&
+        other.min == min &&
+        other.max == max &&
+        other.message == message;
+  }
+
+  @override
+  int get hashCode => Object.hash(min, max, message);
 }
 
 enum CompareType { greater, greaterOrEqual, less, lessOrEqual, equal }
@@ -272,6 +337,17 @@ class CompareWith<T extends Comparable<T>> extends Validator<T> {
   bool shouldRevalidate(FormKey<dynamic> source) {
     return source == key;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CompareWith &&
+        other.key == key &&
+        other.type == type &&
+        other.message == message;
+  }
+
+  @override
+  int get hashCode => Object.hash(key, type, message);
 }
 
 class SafePasswordValidator extends Validator<String> {
@@ -313,6 +389,20 @@ class SafePasswordValidator extends Validator<String> {
     }
     return null;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SafePasswordValidator &&
+        other.requireDigit == requireDigit &&
+        other.requireLowercase == requireLowercase &&
+        other.requireUppercase == requireUppercase &&
+        other.requireSpecialChar == requireSpecialChar &&
+        other.message == message;
+  }
+
+  @override
+  int get hashCode => Object.hash(requireDigit, requireLowercase,
+      requireUppercase, requireSpecialChar, message);
 }
 
 class MinValidator<T extends num> extends Validator<T> {
@@ -344,6 +434,17 @@ class MinValidator<T extends num> extends Validator<T> {
     }
     return null;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is MinValidator &&
+        other.min == min &&
+        other.inclusive == inclusive &&
+        other.message == message;
+  }
+
+  @override
+  int get hashCode => Object.hash(min, inclusive, message);
 }
 
 class MaxValidator<T extends num> extends Validator<T> {
@@ -374,6 +475,17 @@ class MaxValidator<T extends num> extends Validator<T> {
     }
     return null;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is MaxValidator &&
+        other.max == max &&
+        other.inclusive == inclusive &&
+        other.message == message;
+  }
+
+  @override
+  int get hashCode => Object.hash(max, inclusive, message);
 }
 
 class RangeValidator<T extends num> extends Validator<T> {
@@ -407,6 +519,15 @@ class RangeValidator<T extends num> extends Validator<T> {
     }
     return null;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RangeValidator &&
+        other.min == min &&
+        other.max == max &&
+        other.inclusive == inclusive &&
+        other.message == message;
+  }
 }
 
 class RegexValidator extends Validator<String> {
@@ -428,6 +549,16 @@ class RegexValidator extends Validator<String> {
     }
     return null;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RegexValidator &&
+        other.pattern == pattern &&
+        other.message == message;
+  }
+
+  @override
+  int get hashCode => Object.hash(pattern, message);
 }
 
 // email validator using email_validator package
@@ -449,6 +580,14 @@ class EmailValidator extends Validator<String> {
     }
     return null;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is EmailValidator && other.message == message;
+  }
+
+  @override
+  int get hashCode => message.hashCode;
 }
 
 class URLValidator extends Validator<String> {
@@ -471,6 +610,14 @@ class URLValidator extends Validator<String> {
     }
     return null;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is URLValidator && other.message == message;
+  }
+
+  @override
+  int get hashCode => message.hashCode;
 }
 
 class CompareTo<T extends Comparable<T>> extends Validator<T> {
@@ -541,6 +688,17 @@ class CompareTo<T extends Comparable<T>> extends Validator<T> {
     }
     return null;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CompareTo &&
+        other.value == value &&
+        other.type == type &&
+        other.message == message;
+  }
+
+  @override
+  int get hashCode => Object.hash(value, type, message);
 }
 
 class CompositeValidator<T> extends Validator<T> {
@@ -574,6 +732,15 @@ class CompositeValidator<T> extends Validator<T> {
     }
     return false;
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CompositeValidator &&
+        listEquals(other.validators, validators);
+  }
+
+  @override
+  int get hashCode => validators.hashCode;
 }
 
 abstract class ValidationResult {
@@ -659,8 +826,10 @@ class FormEntryState extends State<FormEntry> {
       newController?.addListener(_onControllerChanged);
       _controller = newController;
       _onControllerChanged();
-      newController?.attach(
-          context, widget.key, _cachedValue, widget.validator);
+      if (_cachedValue != null) {
+        newController?.attach(
+            context, widget.key, _cachedValue, widget.validator);
+      }
     }
   }
 
@@ -704,6 +873,16 @@ class FormValueState<T> {
   String toString() {
     return 'FormValueState($value, $validator)';
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is FormValueState &&
+        other.value == value &&
+        other.validator == validator;
+  }
+
+  @override
+  int get hashCode => Object.hash(value, validator);
 }
 
 typedef FormSubmitCallback = void Function(
@@ -1237,7 +1416,8 @@ class SubmitButton extends StatefulWidget {
   final bool disableTransition;
   final FocusNode? focusNode;
 
-  const SubmitButton({super.key, 
+  const SubmitButton({
+    super.key,
     required this.child,
     this.style,
     this.loading,
