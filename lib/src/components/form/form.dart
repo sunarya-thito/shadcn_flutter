@@ -1444,6 +1444,7 @@ class SubmitButton extends StatefulWidget {
 class _SubmitButtonState extends widgets.State<SubmitButton> {
   Future<bool>? _future;
   FormController? _controller;
+  bool _isSubmitting = false;
 
   @override
   void didChangeDependencies() {
@@ -1489,8 +1490,8 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Button(
-            leading: widget.loadingLeading ?? widget.leading,
-            trailing: widget.loadingTrailing ?? widget.trailing,
+            leading: _isSubmitting ? widget.loadingLeading ?? widget.leading : widget.leading,
+            trailing: _isSubmitting ? widget.loadingTrailing ?? widget.trailing : widget.trailing,
             alignment: widget.alignment,
             disableHoverEffect: widget.disableHoverEffect,
             enabled: false,
@@ -1499,7 +1500,7 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
             disableTransition: widget.disableTransition,
             focusNode: widget.focusNode,
             style: widget.style ?? const ButtonStyle.primary(),
-            child: widget.loading ?? widget.child,
+            child: _isSubmitting ? widget.loading ?? widget.child : widget.child,
           );
         }
         if (snapshot.hasData && snapshot.requireData) {
@@ -1526,7 +1527,9 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
           enableFeedback: widget.enableFeedback,
           onPressed: () {
             setState(() {
+              _isSubmitting = true;
               _future = context.submitForm().then((value) {
+                _isSubmitting = false;
                 return value.errors.isNotEmpty;
               });
             });
