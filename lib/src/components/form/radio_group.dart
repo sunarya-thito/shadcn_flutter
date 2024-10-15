@@ -295,12 +295,9 @@ class RadioGroupData<T> {
 class _RadioGroupState<T> extends State<RadioGroup<T>> with FormValueSupplier {
   void _setSelected(T value) {
     if (widget.value != value) {
+      widget.onChanged?.call(value);
       reportNewFormValue(value, (value) {
         widget.onChanged?.call(value);
-      }).then((success) {
-        if (success) {
-          widget.onChanged?.call(value);
-        }
       });
     }
   }
