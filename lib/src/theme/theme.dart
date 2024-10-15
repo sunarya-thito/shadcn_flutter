@@ -416,3 +416,9 @@ class ComponentTheme<T> extends InheritedTheme {
     return oldWidget.data != data;
   }
 }
+
+enum ThemeMode {
+  system,
+  light,
+  dark,
+}

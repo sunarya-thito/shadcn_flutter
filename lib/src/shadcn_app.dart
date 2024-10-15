@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:pixel_snap/pixel_snap.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-import 'components/control/scrollview.dart';
 import 'platform_interface.dart'
     if (dart.library.js_interop) 'platform/platform_implementations_web.dart';
 
@@ -51,6 +50,8 @@ class ShadcnApp extends StatefulWidget {
     this.onRecentColorsChanged,
     this.pixelSnap = true,
     this.enableScrollInterception = true,
+    this.darkTheme,
+    this.themeMode = ThemeMode.system,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
@@ -92,6 +93,8 @@ class ShadcnApp extends StatefulWidget {
     this.onRecentColorsChanged,
     this.pixelSnap = true,
     this.enableScrollInterception = false,
+    this.darkTheme,
+    this.themeMode = ThemeMode.system,
   })  : assert(routerDelegate != null || routerConfig != null),
         navigatorObservers = null,
         navigatorKey = null,
@@ -140,6 +143,8 @@ class ShadcnApp extends StatefulWidget {
   final GenerateAppTitle? onGenerateTitle;
 
   final ThemeData theme;
+  final ThemeData? darkTheme;
+  final ThemeMode themeMode;
   final Color? color;
   final Locale? locale;
 
@@ -313,6 +318,8 @@ class _ShadcnAppState extends State<ShadcnApp> {
         onRecentColorsChanged: widget.onRecentColorsChanged,
         builder: widget.builder,
         enableScrollInterception: widget.enableScrollInterception,
+        darkTheme: widget.darkTheme,
+        themeMode: widget.themeMode,
         child: child,
       ),
     );
@@ -443,6 +450,8 @@ class _ShadcnAppState extends State<ShadcnApp> {
 class ShadcnLayer extends StatelessWidget {
   final Widget? child;
   final ThemeData theme;
+  final ThemeData? darkTheme;
+  final ThemeMode themeMode;
   final AdaptiveScaling? scaling;
   final List<Color> initialRecentColors;
   final int maxRecentColors;
@@ -460,14 +469,20 @@ class ShadcnLayer extends StatelessWidget {
     this.onRecentColorsChanged,
     this.builder,
     this.enableScrollInterception = false,
+    this.darkTheme,
+    this.themeMode = ThemeMode.system,
   });
 
   @override
   Widget build(BuildContext context) {
     var appScaling = scaling ?? AdaptiveScaler.defaultScaling(theme);
+    var platformBrightness = MediaQuery.platformBrightnessOf(context);
     return AnimatedTheme(
       duration: kDefaultDuration,
-      data: appScaling.scale(theme),
+      // data: appScaling.scale(theme),
+      data: platformBrightness == Brightness.dark
+          ? appScaling.scale(darkTheme ?? theme)
+          : appScaling.scale(theme),
       child: Builder(builder: (context) {
         var theme = Theme.of(context);
         return DataMessengerRoot(
@@ -485,23 +500,20 @@ class ShadcnLayer extends StatelessWidget {
                   data: theme.iconTheme.medium.copyWith(
                     color: theme.colorScheme.foreground,
                   ),
-                  child: Theme(
-                    data: theme,
-                    child: RecentColorsScope(
-                      initialRecentColors: initialRecentColors,
-                      maxRecentColors: maxRecentColors,
-                      onRecentColorsChanged: onRecentColorsChanged,
-                      child: ColorPickingLayer(
-                        child: KeyboardShortcutDisplayMapper(
-                          child: ToastLayer(
-                            child: builder != null
-                                ? Builder(
-                                    builder: (BuildContext context) {
-                                      return builder!(context, child);
-                                    },
-                                  )
-                                : child ?? const SizedBox.shrink(),
-                          ),
+                  child: RecentColorsScope(
+                    initialRecentColors: initialRecentColors,
+                    maxRecentColors: maxRecentColors,
+                    onRecentColorsChanged: onRecentColorsChanged,
+                    child: ColorPickingLayer(
+                      child: KeyboardShortcutDisplayMapper(
+                        child: ToastLayer(
+                          child: builder != null
+                              ? Builder(
+                                  builder: (BuildContext context) {
+                                    return builder!(context, child);
+                                  },
+                                )
+                              : child ?? const SizedBox.shrink(),
                         ),
                       ),
                     ),
