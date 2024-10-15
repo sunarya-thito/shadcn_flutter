@@ -1651,68 +1651,6 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
 
   @override
   Widget build(widgets.BuildContext context) {
-    // return FutureBuilder(
-    //   future: _future is Future<bool>
-    //       ? _future as Future<bool>
-    //       : SynchronousFuture(_future as bool),
-    //   builder: (context, snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return Button(
-    //         leading: widget.loadingLeading ?? widget.leading,
-    //         trailing: widget.loadingTrailing ?? widget.trailing,
-    //         alignment: widget.alignment,
-    //         disableHoverEffect: widget.disableHoverEffect,
-    //         enabled: false,
-    //         enableFeedback: false,
-    //         trailingExpanded: widget.trailingExpanded,
-    //         disableTransition: widget.disableTransition,
-    //         focusNode: widget.focusNode,
-    //         style: widget.style ?? const ButtonStyle.primary(),
-    //         child: widget.loading ?? widget.child,
-    //       );
-    //     }
-    //     if (snapshot.hasData && snapshot.requireData) {
-    //       return Button(
-    //         leading: widget.errorLeading ?? widget.leading,
-    //         trailing: widget.errorTrailing ?? widget.trailing,
-    //         alignment: widget.alignment,
-    //         disableHoverEffect: widget.disableHoverEffect,
-    //         enabled: false,
-    //         enableFeedback: true,
-    //         trailingExpanded: widget.trailingExpanded,
-    //         disableTransition: widget.disableTransition,
-    //         focusNode: widget.focusNode,
-    //         style: widget.style ?? const ButtonStyle.primary(),
-    //         child: widget.error ?? widget.child,
-    //       );
-    //     }
-    //     return Button(
-    //       trailing: widget.trailing,
-    //       leading: widget.leading,
-    //       alignment: widget.alignment,
-    //       disableHoverEffect: widget.disableHoverEffect,
-    //       enabled: widget.enabled,
-    //       enableFeedback: widget.enableFeedback,
-    //       onPressed: () {
-    //         setState(() {
-    //           var submissionResult = context.submitForm();
-    //           if (submissionResult is Future<SubmissionResult>) {
-    //             _future = submissionResult.then((value) {
-    //               return value.errors.isNotEmpty;
-    //             });
-    //           } else {
-    //             _future = submissionResult.errors.isNotEmpty;
-    //           }
-    //         });
-    //       },
-    //       trailingExpanded: widget.trailingExpanded,
-    //       disableTransition: widget.disableTransition,
-    //       focusNode: widget.focusNode,
-    //       style: widget.style ?? const ButtonStyle.primary(),
-    //       child: widget.child,
-    //     );
-    //   },
-    // );
     var hasError = _future;
     if (hasError is Future) {
       // loading
