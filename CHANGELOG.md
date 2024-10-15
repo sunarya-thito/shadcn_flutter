@@ -1,3 +1,14 @@
+## 0.0.21
+* Fixed issue with Form Validation Mode lifecycle
+* Fixed text extension for SelectableText
+* Replace switch focus border with FocusOutline
+* Added tracker theme
+* Added countries parameter to PhoneInput
+* Added clipBehavior param to TextField
+* Fix RecentColorsScope state disposal
+* Scroll Interception is no longer enabled by default
+* Added ShadcnLayer widget to wrap shadcn flutter components without ShadcnApp widget
+
 ## 0.0.20
 * Replaced photoUrl to image provider in Avatar component
 * Added ButtonGroup component
