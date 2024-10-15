@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,29 @@ const kDefaultDuration = Duration(milliseconds: 150);
 
 typedef ContextedCallback = void Function(BuildContext context);
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
+
+extension FutureOrExtension<T> on FutureOr<T> {
+  FutureOr<R> map<R>(R Function(T value) transform) {
+    if (this is Future<T>) {
+      return (this as Future<T>).then(transform);
+    }
+    return transform(this as T);
+  }
+
+  FutureOr<R> flatMap<R>(FutureOr<R> Function(T value) transform) {
+    if (this is Future<T>) {
+      return (this as Future<T>).then(transform);
+    }
+    return transform(this as T);
+  }
+
+  FutureOr<R> then<R>(FutureOr<R> Function(T value) transform) {
+    if (this is Future<T>) {
+      return (this as Future<T>).then(transform);
+    }
+    return transform(this as T);
+  }
+}
 
 extension AlignmentExtension on AlignmentGeometry {
   Alignment optionallyResolve(BuildContext context) {
