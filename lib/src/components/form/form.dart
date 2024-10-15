@@ -1616,7 +1616,6 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
     }
     setState(() {
       _future = _hasError();
-      print('${count++}: has error $_future');
     });
   }
 
