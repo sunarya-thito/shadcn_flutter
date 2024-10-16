@@ -154,16 +154,17 @@ class _NumberInputState extends State<NumberInput> {
                         },
                       ),
                       enabled: widget.enabled ??
-                          (widget.min == null || _lastValidValue > widget.min!),
+                          (widget.max == null || _lastValidValue < widget.max!),
                       onPressed: () {
-                        if (widget.min == null ||
-                            _lastValidValue > widget.min!) {
+                        if (widget.max == null ||
+                            _lastValidValue < widget.max!) {
                           double oldValue = _value.toDouble();
                           _lastValidValue = oldValue + widget.step;
                           _controller.text = widget.allowDecimals
                               ? _lastValidValue.toString()
                               : _lastValidValue.toInt().toString();
                           widget.onChanged?.call(_lastValidValue);
+                          setState(() {});
                         }
                       },
                       child: const FittedBox(
@@ -186,16 +187,17 @@ class _NumberInputState extends State<NumberInput> {
                         },
                       ),
                       enabled: widget.enabled ??
-                          (widget.max == null || _lastValidValue < widget.max!),
+                          (widget.min == null || _lastValidValue > widget.min!),
                       onPressed: () {
-                        if (widget.max == null ||
-                            _lastValidValue < widget.max!) {
+                        if (widget.min == null ||
+                            _lastValidValue > widget.min!) {
                           double oldValue = _value.toDouble();
                           _lastValidValue = oldValue - widget.step;
                           _controller.text = widget.allowDecimals
                               ? _lastValidValue.toString()
                               : _lastValidValue.toInt().toString();
                           widget.onChanged?.call(_lastValidValue);
+                          setState(() {});
                         }
                       },
                       child: const FittedBox(
