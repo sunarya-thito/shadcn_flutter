@@ -852,3 +852,28 @@ class TimeOfDay {
     return 'TimeOfDay{hour: $hour, minute: $minute, second: $second}';
   }
 }
+
+extension ValueNotifierExtension<T> on ValueNotifier<T> {
+  ValueListenable<T> get readOnlyView {
+    return ReadOnlyValueNotifierView(this);
+  }
+}
+
+class ReadOnlyValueNotifierView<T> extends ValueListenable<T> {
+  final ValueListenable<T> _notifier;
+
+  const ReadOnlyValueNotifierView(this._notifier);
+
+  @override
+  T get value => _notifier.value;
+
+  @override
+  void addListener(VoidCallback listener) {
+    _notifier.addListener(listener);
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    _notifier.removeListener(listener);
+  }
+}
