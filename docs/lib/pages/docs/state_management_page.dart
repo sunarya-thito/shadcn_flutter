@@ -1,5 +1,10 @@
 import 'package:docs/pages/docs/state/data_example_1.dart';
 import 'package:docs/pages/docs/state/data_example_10.dart';
+import 'package:docs/pages/docs/state/data_example_11.dart';
+import 'package:docs/pages/docs/state/data_example_12.dart';
+import 'package:docs/pages/docs/state/data_example_13.dart';
+import 'package:docs/pages/docs/state/data_example_14.dart';
+import 'package:docs/pages/docs/state/data_example_15.dart';
 import 'package:docs/pages/docs/state/data_example_2.dart';
 import 'package:docs/pages/docs/state/data_example_3.dart';
 import 'package:docs/pages/docs/state/data_example_4.dart';
@@ -19,10 +24,33 @@ class StateManagementPage extends StatefulWidget {
 }
 
 class _StateManagementPageState extends State<StateManagementPage> {
+  final keyPassingDataToChildren = OnThisPage();
+  final keyGettingDataFromTheChild = OnThisPage();
+  final keyMultiDataWidget = OnThisPage();
+  final keyPassingStateAsAController = OnThisPage();
+  final keyDataBuilder = OnThisPage();
+  final keyDataNotifier = OnThisPage();
+  final keyModel = OnThisPage();
+  final keyModelNotifier = OnThisPage();
+  final keyModelListenable = OnThisPage();
+  final keyModelBuilder = OnThisPage();
+
   @override
   Widget build(BuildContext context) {
     return DocsPage(
       name: 'state',
+      onThisPage: {
+        'Passing Data to the Children': keyPassingDataToChildren,
+        'Getting Data from the Child': keyGettingDataFromTheChild,
+        'MultiData Widget': keyMultiDataWidget,
+        'Passing State as a Controller': keyPassingStateAsAController,
+        'DataBuilder': keyDataBuilder,
+        'DataNotifier': keyDataNotifier,
+        'Passing Variable to Children': keyModel,
+        'ModelNotifier': keyModelNotifier,
+        'ModelListenable': keyModelListenable,
+        'ModelBuilder': keyModelBuilder,
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -38,7 +66,9 @@ class _StateManagementPageState extends State<StateManagementPage> {
                   'Although if you are already using a state management system, '
                   'you can continue to use it with shadcn_flutter.')
               .p(),
-          const SelectableText('Passing Data to the Children').h2(),
+          const SelectableText('Passing Data to the Children')
+              .h2()
+              .anchored(keyPassingDataToChildren),
           const SelectableText(
                   'You can pass data to children using the Data widget. '
                   'Any changes that occur in the data will cause the child to rebuild.')
@@ -86,7 +116,25 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample5(),
           ).p(),
-          const SelectableText('Getting Data from the Child').h2(),
+          // Data.find and Data.maybeFind are great to use inside onPressed, onLongPressed, etc where the method is called once
+          // whereas Data.of and Data.maybeOf are great to use inside build method where the widget needs to rebuild when the data changes
+          const SelectableText('')
+              .thenInlineCode('Data.find(context)')
+              .thenText(' and ')
+              .thenInlineCode('Data.maybeFind(context)')
+              .thenText(
+                  ' are great to use inside onPressed, onLongPressed, etc where the method is called once. ')
+              .p(),
+          const SelectableText('')
+              .thenInlineCode('Data.of(context)')
+              .thenText(' and ')
+              .thenInlineCode('Data.maybeOf(context)')
+              .thenText(
+                  ' are great to use inside build method where the widget needs to rebuild when the data changes.')
+              .p(),
+          const SelectableText('Getting Data from the Child')
+              .h2()
+              .anchored(keyGettingDataFromTheChild),
           const SelectableText('You can get data from the child using the ')
               .thenInlineCode('Data.maybeFindMessenger(context)')
               .thenText(
@@ -116,7 +164,9 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample3(),
           ).p(),
-          const SelectableText('MultiData Widget').h2(),
+          const SelectableText('MultiData Widget')
+              .h2()
+              .anchored(keyMultiDataWidget),
           const SelectableText(
                   'The MultiData widget allows you to pass multiple data to the children. Take a look at the following example:')
               .p(),
@@ -152,7 +202,9 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample6(),
           ).p(),
-          const SelectableText('Passing State as a Controller').h2(),
+          const SelectableText('Passing State as a Controller')
+              .h2()
+              .anchored(keyPassingStateAsAController),
           const SelectableText(
                   'You can pass state as a controller to the children. This way you can call method in parent widget from child widgets.')
               .p(),
@@ -161,7 +213,7 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample7(),
           ).p(),
-          const SelectableText('DataBuilder').h2(),
+          const SelectableText('DataBuilder').h2().anchored(keyDataBuilder),
           const SelectableText(
                   'You can use the DataBuilder widget to rebuild the widget when the data changes. '
                   'This also avoids rebuilding the entire widget.')
@@ -172,7 +224,7 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample8(),
           ).p(),
-          const SelectableText('DataNotifier').h2(),
+          const SelectableText('DataNotifier').h2().anchored(keyDataNotifier),
           const SelectableText(
                   'Data notifier allows you to pass value to children from a ValueListenable.')
               .p(),
@@ -186,6 +238,56 @@ class _StateManagementPageState extends State<StateManagementPage> {
             path: 'lib/pages/docs/state/data_example_10.dart',
             summarize: false,
             child: DataExample10(),
+          ).p(),
+          const SelectableText('Passing Variable to Children')
+              .h2()
+              .anchored(keyModel),
+          const SelectableText(
+                  'To pass a variable to children, you can use the Model widget. It is similar to Data widget, but it is type-strict and also labeled.')
+              .p(),
+          // data_example_11
+          const WidgetUsageExample(
+            path: 'lib/pages/docs/state/data_example_11.dart',
+            summarize: false,
+            child: DataExample11(),
+          ).p(),
+          const SelectableText('Change Variable from Children').h3().p(),
+          const SelectableText(
+                  'There are 2 ways to change model value from children:')
+              .p(),
+          const WidgetUsageExample(
+            path: 'lib/pages/docs/state/data_example_12.dart',
+            summarize: false,
+            child: DataExample12(),
+          ).p(),
+          const SelectableText('ModelNotifier').h2().anchored(keyModelNotifier),
+          const SelectableText(
+                  'ModelNotifier allows you to pass value to children from a ValueNotifier. It prevents the need to use setState on the parent widget.')
+              .p(),
+          const WidgetUsageExample(
+            path: 'lib/pages/docs/state/data_example_13.dart',
+            summarize: false,
+            child: DataExample13(),
+          ).p(),
+          const SelectableText('ModelListenable')
+              .h2()
+              .anchored(keyModelListenable),
+          const SelectableText(
+                  'ModelListenable is a read-only ModelNotifier. Children can only listen to the value. Attempting to change the value will throw an error.')
+              .p(),
+          const WidgetUsageExample(
+            path: 'lib/pages/docs/state/data_example_14.dart',
+            summarize: false,
+            child: DataExample14(),
+          ).p(),
+          const SelectableText('ModelBuilder').h2().anchored(keyModelBuilder),
+          const SelectableText(
+                  'ModelBuilder listens and rebuilds the widget when the value changes. It is similar to DataBuilder, but it is type-strict and also labeled.')
+              .p(),
+          const WidgetUsageExample(
+            path: 'lib/pages/docs/state/data_example_15.dart',
+            summarize: false,
+            child: DataExample15(),
           ).p(),
         ],
       ),

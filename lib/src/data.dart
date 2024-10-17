@@ -560,12 +560,12 @@ class CapturedData {
   final List<_InheritedData> _data;
 
   Widget wrap(Widget child) {
-    return _CaptureAll(data: _data, child: child);
+    return _CaptureAllData(data: _data, child: child);
   }
 }
 
-class _CaptureAll extends StatelessWidget {
-  const _CaptureAll({
+class _CaptureAllData extends StatelessWidget {
+  const _CaptureAllData({
     required this.data,
     required this.child,
   });
@@ -584,5 +584,478 @@ class _CaptureAll extends StatelessWidget {
       result = wrap;
     }
     return result;
+  }
+}
+
+mixin ModelProperty<T> {
+  Symbol get dataKey;
+  T get value;
+  set value(T data);
+
+  ModelKey<T> get modelKey => ModelKey<T>(dataKey);
+
+  Type get dataType => T;
+
+  Model<T> get normalized;
+
+  bool get isReadOnly;
+}
+
+class Model<T> extends StatelessWidget with ModelProperty<T> {
+  @override
+  final Symbol dataKey;
+  @override
+  final T value;
+  final Widget? child;
+  final ValueChanged<T>? onChanged;
+
+  const Model(this.dataKey, this.value, {this.onChanged}) : child = null;
+
+  const Model.inherit(this.dataKey, this.value,
+      {super.key, this.onChanged, required this.child});
+
+  @override
+  set value(T data) {
+    assert(onChanged != null, 'Model<$T>($dataKey) is read-only');
+    onChanged?.call(data);
+  }
+
+  @override
+  bool get isReadOnly => onChanged == null;
+
+  static T? maybeOf<T>(BuildContext context, Symbol key) {
+    return MultiModel.maybeOf(context, key);
+  }
+
+  static T of<T>(BuildContext context, Symbol key) {
+    return MultiModel.of(context, key);
+  }
+
+  static T? maybeFind<T>(BuildContext context, Symbol key) {
+    return MultiModel.maybeFind(context, key);
+  }
+
+  static T find<T>(BuildContext context, Symbol key) {
+    return MultiModel.find(context, key);
+  }
+
+  static void change<T>(BuildContext context, Symbol key, T data) {
+    MultiModel.change(context, key, data);
+  }
+
+  static ModelProperty<T>? maybeFindProperty<T>(
+      BuildContext context, Symbol key) {
+    return MultiModel.maybeFindProperty(context, key);
+  }
+
+  static ModelProperty<T> findProperty<T>(BuildContext context, Symbol key) {
+    return MultiModel.findProperty(context, key);
+  }
+
+  static void maybeChange<T>(BuildContext context, Symbol key, T data) {
+    MultiModel.maybeChange(context, key, data);
+  }
+
+  static ModelProperty<T> ofProperty<T>(BuildContext context, Symbol key) {
+    return MultiModel.ofProperty(context, key);
+  }
+
+  static ModelProperty<T>? maybeOfProperty<T>(
+      BuildContext context, Symbol key) {
+    return MultiModel.maybeOfProperty(context, key);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiModel(
+      data: [this],
+      child: child ?? const SizedBox(),
+    );
+  }
+
+  @override
+  Model<T> get normalized => this;
+
+  @override
+  String toStringShort() {
+    return 'Model<$T>($dataKey: $value)';
+  }
+}
+
+class ModelNotifier<T> extends StatelessWidget
+    with ModelProperty<T>
+    implements Listenable {
+  @override
+  final Symbol dataKey;
+  final ValueNotifier<T> notifier;
+  final Widget? child;
+
+  const ModelNotifier(this.dataKey, this.notifier) : child = null;
+
+  const ModelNotifier.inherit(this.dataKey, this.notifier,
+      {super.key, required this.child});
+
+  @override
+  T get value => notifier.value;
+
+  @override
+  set value(T data) {
+    notifier.value = data;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: notifier,
+      builder: (context, value, child) {
+        return Model.inherit(dataKey, value, onChanged: (value) {
+          notifier.value = value;
+        }, child: child);
+      },
+      child: child,
+    );
+  }
+
+  void _handleDataChanged(T data) {
+    this.value = data;
+  }
+
+  @override
+  Model<T> get normalized =>
+      Model(dataKey, value, onChanged: _handleDataChanged);
+
+  @override
+  String toStringShort() {
+    return 'ModelNotifier<$T>($dataKey: $notifier)';
+  }
+
+  @override
+  bool get isReadOnly => false;
+
+  @override
+  void addListener(VoidCallback listener) {
+    notifier.addListener(listener);
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    notifier.removeListener(listener);
+  }
+}
+
+class ModelListenable<T> extends StatelessWidget
+    with ModelProperty<T>
+    implements Listenable {
+  @override
+  final Symbol dataKey;
+  final ValueListenable<T> listenable;
+  final Widget? child;
+
+  const ModelListenable(this.dataKey, this.listenable) : child = null;
+
+  const ModelListenable.inherit(this.dataKey, this.listenable,
+      {super.key, required this.child});
+
+  @override
+  T get value => listenable.value;
+
+  @override
+  set value(T data) {
+    assert(false, 'ModelListenable<$T>($dataKey) is read-only');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: listenable,
+      builder: (context, value, child) {
+        return Model.inherit(dataKey, value, child: child);
+      },
+      child: child,
+    );
+  }
+
+  @override
+  Model<T> get normalized => Model(dataKey, value);
+
+  @override
+  String toStringShort() {
+    return 'ModelListenable<$T>($dataKey: $listenable)';
+  }
+
+  @override
+  bool get isReadOnly => true;
+
+  @override
+  void addListener(VoidCallback listener) {
+    listenable.addListener(listener);
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    listenable.removeListener(listener);
+  }
+}
+
+class ModelKey<T> {
+  final Symbol key;
+
+  const ModelKey(this.key);
+
+  T? maybeOf(BuildContext context) {
+    return MultiModel.maybeOf<T>(context, key);
+  }
+
+  T of(BuildContext context) {
+    return MultiModel.of<T>(context, key);
+  }
+
+  T? maybeFind(BuildContext context) {
+    return MultiModel.maybeFind<T>(context, key);
+  }
+
+  T find(BuildContext context) {
+    return MultiModel.find<T>(context, key);
+  }
+
+  void maybeChange(BuildContext context, T data) {
+    MultiModel.maybeChange(context, key, data);
+  }
+
+  void change(BuildContext context, T data) {
+    MultiModel.change(context, key, data);
+  }
+
+  ModelProperty<T>? maybeFindProperty(BuildContext context) {
+    return MultiModel.maybeFindProperty<T>(context, key);
+  }
+
+  ModelProperty<T> findProperty(BuildContext context) {
+    return MultiModel.findProperty<T>(context, key);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ModelKey && other.key == key && other.dataType == T;
+  }
+
+  @override
+  int get hashCode => key.hashCode;
+
+  @override
+  String toString() => 'ModelKey<$T>($key)';
+
+  Type get dataType => T;
+}
+
+class MultiModel extends StatelessWidget {
+  final List<ModelProperty> data;
+  final Widget child;
+
+  const MultiModel({required this.data, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    Listenable mergedListenable = Listenable.merge(
+      data.whereType<Listenable>(),
+    );
+    return ListenableBuilder(
+      listenable: mergedListenable,
+      builder: (context, child) {
+        return _InheritedModel(
+          data.map((e) => e.normalized).toList(),
+          child: this.child,
+        );
+      },
+    );
+  }
+
+  static T? maybeOf<T>(BuildContext context, Symbol key) {
+    return maybeOfProperty<T>(context, key)?.value;
+  }
+
+  static T of<T>(BuildContext context, Symbol key) {
+    return ofProperty<T>(context, key).value;
+  }
+
+  static T? maybeFind<T>(BuildContext context, Symbol key) {
+    return maybeOfProperty<T>(context, key)?.value;
+  }
+
+  static T find<T>(BuildContext context, Symbol key) {
+    return findProperty<T>(context, key).value;
+  }
+
+  static void change<T>(BuildContext context, Symbol key, T data) {
+    final widget = context.findAncestorWidgetOfExactType<_InheritedModel>();
+    assert(widget != null, 'No Model<$T>($key) found in context');
+    for (final model in widget!.data) {
+      if (model.dataKey == key) {
+        model.value = data;
+        return;
+      }
+    }
+    assert(false, 'No Model<$T>($key) found in context');
+  }
+
+  static void maybeChange<T>(BuildContext context, Symbol key, T data) {
+    final widget = context.findAncestorWidgetOfExactType<_InheritedModel>();
+    if (widget == null) {
+      return;
+    }
+    for (final model in widget.data) {
+      if (model.dataKey == key) {
+        model.value = data;
+        return;
+      }
+    }
+  }
+
+  static ModelProperty<T>? maybeFindProperty<T>(
+      BuildContext context, Symbol key) {
+    final widget = context.findAncestorWidgetOfExactType<_InheritedModel>();
+    if (widget == null) {
+      return null;
+    }
+    for (final model in widget.data) {
+      if (model.dataKey == key && model.dataType == T) {
+        return model as ModelProperty<T>;
+      }
+    }
+    return null;
+  }
+
+  static ModelProperty<T> findProperty<T>(BuildContext context, Symbol key) {
+    final model = maybeFindProperty<T>(context, key);
+    assert(model != null, 'No Model<$T>($key) found in context');
+    return model!;
+  }
+
+  static ModelProperty<T>? maybeOfProperty<T>(
+      BuildContext context, Symbol key) {
+    var model = InheritedModel.inheritFrom<_InheritedModel>(context,
+        aspect: ModelKey<T>(key));
+    if (model == null) {
+      return null;
+    }
+    for (final model in model.data) {
+      if (model.dataKey == key && model.dataType == T) {
+        return model as ModelProperty<T>;
+      }
+    }
+    return null;
+  }
+
+  static ModelProperty<T> ofProperty<T>(BuildContext context, Symbol key) {
+    final model = maybeOfProperty<T>(context, key);
+    assert(model != null, 'No Model<$T>($key) found in context');
+    return model!;
+  }
+}
+
+class _InheritedModel extends InheritedModel<ModelKey> {
+  final Iterable<Model> data;
+
+  const _InheritedModel(this.data, {required super.child});
+
+  @override
+  bool updateShouldNotify(covariant _InheritedModel oldWidget) {
+    for (final model in data) {
+      bool found = false;
+      for (final oldModel in oldWidget.data) {
+        if (model.modelKey == oldModel.modelKey) {
+          found = true;
+
+          if (model.value != oldModel.value) {
+            // the existing model has changed
+            return true;
+          }
+        }
+      }
+      if (!found) {
+        // a new model has been added
+        return true;
+      }
+    }
+    for (final oldModel in oldWidget.data) {
+      bool found = false;
+      for (final model in data) {
+        if (model.modelKey == oldModel.modelKey) {
+          found = true;
+        }
+      }
+      if (!found) {
+        // a model has been removed
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @override
+  bool isSupportedAspect(Object aspect) {
+    if (aspect is ModelKey) {
+      return data.any((model) =>
+          model.dataKey == aspect.key && model.dataType == aspect.dataType);
+    }
+    return false;
+  }
+
+  @override
+  bool updateShouldNotifyDependent(
+      covariant _InheritedModel oldWidget, Set<ModelKey> dependencies) {
+    for (final model in data) {
+      bool found = false;
+      for (final oldModel in oldWidget.data) {
+        if (model.modelKey == oldModel.modelKey) {
+          found = true;
+          if (model.value != oldModel.value) {
+            // the existing model has changed
+            return dependencies.contains(model.modelKey);
+          }
+        }
+      }
+      if (!found) {
+        // a new model has been added
+        return dependencies.contains(model.modelKey);
+      }
+    }
+    for (final oldModel in oldWidget.data) {
+      bool found = false;
+      for (final model in data) {
+        if (model.modelKey == oldModel.modelKey) {
+          found = true;
+        }
+      }
+      if (!found) {
+        // a model has been removed
+        return dependencies.contains(oldModel.modelKey);
+      }
+    }
+    return false;
+  }
+}
+
+typedef ModelWidgetBuilder<T> = Widget Function(
+    BuildContext context, ModelProperty<T> model, Widget? child);
+
+class ModelBuilder<T> extends StatelessWidget {
+  final Symbol dataKey;
+  final ModelWidgetBuilder<T> builder;
+  final Widget? child;
+
+  const ModelBuilder(
+    this.dataKey, {
+    super.key,
+    required this.builder,
+    this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final model = MultiModel.maybeOfProperty<T>(context, dataKey);
+    assert(model != null, 'No Model<$T>($dataKey) found in context');
+    return builder(context, model!, child);
   }
 }
