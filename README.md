@@ -8,7 +8,7 @@ A set of widgets and utilities for building applications in flutter.
 Optimized for web applications.
 This is a port of the shadcn UI package to flutter.
 
-[Documentation](https://sunarya-thito.github.io/shadcn_flutter/) - [Pub.dev](https://pub.dev/packages/shadcn_flutter)
+[Documentation](https://sunarya-thito.github.io/shadcn_flutter/) - [Pub.dev](https://pub.dev/packages/shadcn_flutter) - [Discord](https://discord.gg/ZzfBPQG4sV)
 
 ## Widgets
 
