@@ -61,6 +61,10 @@ class ColorSchemes {
 		);
 	}
 
+	static ColorScheme zinc(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightZinc() : darkZinc();
+	}
+
 	static ColorScheme lightSlate() {
 		return ColorScheme(
 			brightness: Brightness.light,
@@ -119,6 +123,10 @@ class ColorSchemes {
 			chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
 			chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
 		);
+	}
+
+	static ColorScheme slate(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightSlate() : darkSlate();
 	}
 
 	static ColorScheme lightStone() {
@@ -181,6 +189,10 @@ class ColorSchemes {
 		);
 	}
 
+	static ColorScheme stone(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightStone() : darkStone();
+	}
+
 	static ColorScheme lightGray() {
 		return ColorScheme(
 			brightness: Brightness.light,
@@ -239,6 +251,10 @@ class ColorSchemes {
 			chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
 			chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
 		);
+	}
+
+	static ColorScheme gray(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightGray() : darkGray();
 	}
 
 	static ColorScheme lightNeutral() {
@@ -301,6 +317,10 @@ class ColorSchemes {
 		);
 	}
 
+	static ColorScheme neutral(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightNeutral() : darkNeutral();
+	}
+
 	static ColorScheme lightRed() {
 		return ColorScheme(
 			brightness: Brightness.light,
@@ -359,6 +379,10 @@ class ColorSchemes {
 			chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
 			chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
 		);
+	}
+
+	static ColorScheme red(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightRed() : darkRed();
 	}
 
 	static ColorScheme lightRose() {
@@ -421,6 +445,10 @@ class ColorSchemes {
 		);
 	}
 
+	static ColorScheme rose(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightRose() : darkRose();
+	}
+
 	static ColorScheme lightOrange() {
 		return ColorScheme(
 			brightness: Brightness.light,
@@ -479,6 +507,10 @@ class ColorSchemes {
 			chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
 			chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
 		);
+	}
+
+	static ColorScheme orange(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightOrange() : darkOrange();
 	}
 
 	static ColorScheme lightGreen() {
@@ -541,6 +573,10 @@ class ColorSchemes {
 		);
 	}
 
+	static ColorScheme green(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightGreen() : darkGreen();
+	}
+
 	static ColorScheme lightBlue() {
 		return ColorScheme(
 			brightness: Brightness.light,
@@ -599,6 +635,10 @@ class ColorSchemes {
 			chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
 			chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
 		);
+	}
+
+	static ColorScheme blue(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightBlue() : darkBlue();
 	}
 
 	static ColorScheme lightYellow() {
@@ -661,6 +701,10 @@ class ColorSchemes {
 		);
 	}
 
+	static ColorScheme yellow(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightYellow() : darkYellow();
+	}
+
 	static ColorScheme lightViolet() {
 		return ColorScheme(
 			brightness: Brightness.light,
@@ -719,6 +763,10 @@ class ColorSchemes {
 			chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
 			chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
 		);
+	}
+
+	static ColorScheme violet(ThemeMode mode) {
+		return mode == ThemeMode.light ? lightViolet() : darkViolet();
 	}
 
 }

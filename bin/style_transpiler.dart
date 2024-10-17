@@ -129,6 +129,18 @@ String printTheme(String name, Map config) {
   // print('');
   result += '\t\t);\n';
   result += '\t}\n';
+
+  // create a method to return the color scheme based on ThemeMode
+  // as such:
+  // static ColorScheme zinc(ThemeMode mode) {
+  //   return mode == ThemeMode.light ? lightZinc() : darkZinc();
+  // }
+
+  result += '\n';
+  result += '\tstatic ColorScheme ${name.toLowerCase()}(ThemeMode mode) {\n';
+  result +=
+      '\t\treturn mode == ThemeMode.light ? light$name() : dark$name();\n';
+  result += '\t}\n';
   return result;
 }
 
