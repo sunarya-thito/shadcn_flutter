@@ -133,6 +133,7 @@ export 'src/components/form/switch.dart';
 export 'src/components/form/text_area.dart';
 export 'src/components/form/text_field.dart';
 export 'src/components/form/time_picker.dart';
+export 'src/components/form/validated.dart';
 export 'src/components/icon/icon.dart';
 export 'src/components/icon/triple_dots.dart';
 export 'src/components/layout/accordion.dart';
