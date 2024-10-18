@@ -200,6 +200,12 @@ class RecentColorsScopeState extends State<RecentColorsScope>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _recentColors.dispose();
+  }
+
+  @override
   void clear() {
     _recentColors._recentColors.clear();
     widget.onRecentColorsChanged?.call(recentColors);
