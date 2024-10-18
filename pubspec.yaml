@@ -14,7 +14,6 @@ dependencies:
   email_validator: ^3.0.0
   flutter:
     sdk: flutter
-#  gap: ^3.0.1
   skeletonizer: ^1.4.2
   syntax_highlight: ^0.4.0
   country_flags: ^3.0.0
@@ -27,6 +26,8 @@ dependencies:
   audioplayers: ^6.1.0
 
 dev_dependencies:
+  shadcn_flutter_test:
+    path: './shadcn_flutter_test'
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
