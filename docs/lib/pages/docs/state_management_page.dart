@@ -251,14 +251,16 @@ class _StateManagementPageState extends State<StateManagementPage> {
                   'field values.')
               .p(),
           const CodeSnippetFutureBuilder(
-                  path: 'lib/pages/docs/state/data_example_16.dart')
-              .p(),
+            path: 'lib/pages/docs/state/data_example_16.dart',
+            summarize: false,
+          ).p(),
           const SelectableText('2. Use DistinctData').h4().p(),
           const SelectableText(
                   'DistinctData is a mixin that allows you to notify children when specific fields change.')
               .p(),
           const CodeSnippetFutureBuilder(
             path: 'lib/pages/docs/state/data_example_17.dart',
+            summarize: false,
           ).p(),
           const SelectableText('3. Passing Mutable Object to Children')
               .h4()
