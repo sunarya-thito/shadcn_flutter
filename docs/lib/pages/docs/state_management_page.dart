@@ -239,18 +239,47 @@ class _StateManagementPageState extends State<StateManagementPage> {
             summarize: false,
             child: DataExample10(),
           ).p(),
+          const SelectableText('Passing Object as Data').h3().p(),
+          const SelectableText(
+                  'There are several things you need to consider when passing an object as data:')
+              .p(),
+          const SelectableText('1. Override == and hashCode').h4().p(),
+          const SelectableText(
+                  'Children will be notified when the old object is not equal to the new object. '
+                  'If you do not override == and hashCode, the object will always be considered '
+                  'different every time the object is instantiated even if the object has the same '
+                  'field values.')
+              .p(),
+          const CodeSnippetFutureBuilder(
+                  path: 'lib/pages/docs/state/data_example_16.dart')
+              .p(),
+          const SelectableText('2. Use DistinctData').h4().p(),
+          const SelectableText(
+                  'DistinctData is a mixin that allows you to notify children when specific fields change.')
+              .p(),
+          const CodeSnippetFutureBuilder(
+            path: 'lib/pages/docs/state/data_example_17.dart',
+          ).p(),
+          const SelectableText('3. Passing Mutable Object to Children')
+              .h4()
+              .p(),
+          const SelectableText(
+                  'It is recommended to pass an immutable object to the children. Mutable '
+                  'object (e.g. List, Map, Set, Widget State) will not notify the children when the object is mutated'
+                  'because the object reference does not change.')
+              .p(),
           const SelectableText('Passing Variable to Children')
               .h2()
               .anchored(keyModel),
           const SelectableText(
                   'To pass a variable to children, you can use the Model widget. It is similar to Data widget, but it is type-strict and also labeled.')
               .p(),
-          // data_example_11
           const WidgetUsageExample(
             path: 'lib/pages/docs/state/data_example_11.dart',
             summarize: false,
             child: DataExample11(),
           ).p(),
+
           const SelectableText('Change Variable from Children').h3().p(),
           const SelectableText(
                   'There are 2 ways to change model value from children:')

@@ -93,7 +93,7 @@ class CodeSnippetFutureBuilder extends StatefulWidget {
   const CodeSnippetFutureBuilder({
     super.key,
     required this.path,
-    required this.mode,
+    this.mode = 'dart',
     this.summarize = true,
   });
 
