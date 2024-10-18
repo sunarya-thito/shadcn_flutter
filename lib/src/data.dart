@@ -1,9 +1,10 @@
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-abstract class DistinctData {
+mixin DistinctData {
   bool shouldNotify(covariant DistinctData oldData);
 }
 
@@ -682,6 +683,46 @@ class Model<T> extends StatelessWidget with ModelProperty<T> {
   }
 }
 
+class ModelBoundary<T> extends StatelessWidget implements Model<T> {
+  @override
+  final Symbol dataKey;
+  @override
+  final Widget? child;
+
+  const ModelBoundary(this.dataKey, {super.key, this.child});
+
+  @override
+  T get value {
+    assert(false, 'No Model<$T>($dataKey) found in context');
+    throw Exception('ModelBoundary<$T>($dataKey)');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Model<T>.inherit(dataKey, value, child: child!);
+  }
+
+  @override
+  Type get dataType => T;
+
+  @override
+  bool get isReadOnly => true;
+
+  @override
+  ModelKey<T> get modelKey => ModelKey<T>(dataKey);
+
+  @override
+  Model<T> get normalized => this;
+
+  @override
+  final ValueChanged<T>? onChanged = null;
+
+  @override
+  set value(T data) {
+    assert(false, 'No Model<$T>($dataKey) found in context');
+  }
+}
+
 class ModelNotifier<T> extends StatelessWidget
     with ModelProperty<T>
     implements Listenable {
@@ -920,6 +961,9 @@ class MultiModel extends StatelessWidget {
     }
     for (final model in widget.data) {
       if (model.dataKey == key && model.dataType == T) {
+        if (model is ModelBoundary<T>) {
+          return null;
+        }
         return model as ModelProperty<T>;
       }
     }
@@ -941,6 +985,9 @@ class MultiModel extends StatelessWidget {
     }
     for (final model in model.data) {
       if (model.dataKey == key && model.dataType == T) {
+        if (model is ModelBoundary<T>) {
+          return null;
+        }
         return model as ModelProperty<T>;
       }
     }
@@ -1058,4 +1105,974 @@ class ModelBuilder<T> extends StatelessWidget {
     assert(model != null, 'No Model<$T>($dataKey) found in context');
     return builder(context, model!, child);
   }
+}
+
+class SetChangeDetails<T> {
+  final Iterable<T> added;
+  final Iterable<T> removed;
+
+  const SetChangeDetails(this.added, this.removed);
+}
+
+class ListChangeDetails<T> {
+  final Iterable<T> added;
+  final Iterable<T> removed;
+  final int index;
+
+  const ListChangeDetails(this.added, this.removed, this.index);
+}
+
+abstract class ChangeListener {
+  void dispatch(Object? event);
+}
+
+class _SetChangeListener<T> extends ChangeListener {
+  final SetChangeListener<T> listener;
+
+  _SetChangeListener(this.listener);
+
+  @override
+  void dispatch(Object? event) {
+    listener(event as SetChangeDetails<T>);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is _SetChangeListener<T> && other.listener == listener;
+  }
+
+  @override
+  int get hashCode => listener.hashCode;
+}
+
+class _ListChangeListener<T> extends ChangeListener {
+  final ListChangeListener<T> listener;
+
+  _ListChangeListener(this.listener);
+
+  @override
+  void dispatch(Object? event) {
+    listener(event as ListChangeDetails<T>);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is _ListChangeListener<T> && other.listener == listener;
+  }
+
+  @override
+  int get hashCode => listener.hashCode;
+}
+
+class _MapChangeListener<K, V> extends ChangeListener {
+  final MapChangeListener<K, V> listener;
+
+  _MapChangeListener(this.listener);
+
+  @override
+  void dispatch(Object? event) {
+    listener(event as MapChangeDetails<K, V>);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is _MapChangeListener<K, V> && other.listener == listener;
+  }
+
+  @override
+  int get hashCode => listener.hashCode;
+}
+
+class _VoidChangeListener extends ChangeListener {
+  final VoidCallback listener;
+
+  _VoidChangeListener(this.listener);
+
+  @override
+  void dispatch(Object? event) {
+    listener();
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is _VoidChangeListener && other.listener == listener;
+  }
+
+  @override
+  int get hashCode => listener.hashCode;
+}
+
+class MapChangeDetails<K, V> {
+  final Iterable<MapEntry<K, V>> added;
+  final Iterable<MapEntry<K, V>> removed;
+
+  const MapChangeDetails(this.added, this.removed);
+}
+
+typedef SetChangeListener<T> = void Function(SetChangeDetails<T> details);
+typedef ListChangeListener<T> = void Function(ListChangeDetails<T> details);
+typedef MapChangeListener<K, V> = void Function(MapChangeDetails<K, V> details);
+
+abstract class SetListenable<T> extends ValueListenable<Set<T>> {
+  Set<T> get value;
+  void addChangeListener(SetChangeListener<T> listener);
+  void removeChangeListener(SetChangeListener<T> listener);
+}
+
+abstract class ListListenable<T> extends ValueListenable<List<T>> {
+  List<T> get value;
+  void addChangeListener(ListChangeListener<T> listener);
+  void removeChangeListener(ListChangeListener<T> listener);
+}
+
+abstract class MapListenable<K, V> extends ValueListenable<Map<K, V>> {
+  Map<K, V> get value;
+  void addChangeListener(MapChangeListener<K, V> listener);
+  void removeChangeListener(MapChangeListener<K, V> listener);
+}
+
+mixin NotifierHelper {
+  int _count = 0;
+  static final List<ChangeListener?> _emptyListeners =
+      List<ChangeListener?>.filled(0, null);
+
+  List<ChangeListener?> _listeners = _emptyListeners;
+  int _notificationCallStackDepth = 0;
+  int _reentrantlyRemovedListeners = 0;
+  bool _debugDisposed = false;
+
+  bool _creationDispatched = false;
+
+  static bool debugAssertNotDisposed(NotifierHelper notifier) {
+    assert(() {
+      if (notifier._debugDisposed) {
+        throw FlutterError(
+          'A ${notifier.runtimeType} was used after being disposed.\n'
+          'Once you have called dispose() on a ${notifier.runtimeType}, it '
+          'can no longer be used.',
+        );
+      }
+      return true;
+    }());
+    return true;
+  }
+
+  @protected
+  bool get hasListeners {
+    return _count > 0;
+  }
+
+  @protected
+  static void maybeDispatchObjectCreation(NotifierHelper object) {
+    // Tree shaker does not include this method and the class MemoryAllocations
+    // if kFlutterMemoryAllocationsEnabled is false.
+    if (kFlutterMemoryAllocationsEnabled && !object._creationDispatched) {
+      FlutterMemoryAllocations.instance.dispatchObjectCreated(
+        library: _shadcnDataLibrary,
+        className: '$NotifierHelper',
+        object: object,
+      );
+      object._creationDispatched = true;
+    }
+  }
+
+  void defaultAddListener(ChangeListener listener) {
+    assert(debugAssertNotDisposed(this));
+
+    if (kFlutterMemoryAllocationsEnabled) {
+      maybeDispatchObjectCreation(this);
+    }
+
+    if (_count == _listeners.length) {
+      if (_count == 0) {
+        _listeners = List<ChangeListener?>.filled(1, listener);
+      } else {
+        final List<ChangeListener?> newListeners =
+            List<ChangeListener?>.filled(_count * 2, null);
+        for (int i = 0; i < _count; i++) {
+          newListeners[i] = _listeners[i];
+        }
+        _listeners = newListeners;
+      }
+    }
+    _listeners[_count++] = listener;
+  }
+
+  void _removeAt(int index) {
+    // The list holding the listeners is not growable for performances reasons.
+    // We still want to shrink this list if a lot of listeners have been added
+    // and then removed outside a notifyListeners iteration.
+    // We do this only when the real number of listeners is half the length
+    // of our list.
+    _count -= 1;
+    if (_count * 2 <= _listeners.length) {
+      final List<ChangeListener?> newListeners =
+          List<ChangeListener?>.filled(_count, null);
+
+      // Listeners before the index are at the same place.
+      for (int i = 0; i < index; i++) {
+        newListeners[i] = _listeners[i];
+      }
+
+      // Listeners after the index move towards the start of the list.
+      for (int i = index; i < _count; i++) {
+        newListeners[i] = _listeners[i + 1];
+      }
+
+      _listeners = newListeners;
+    } else {
+      // When there are more listeners than half the length of the list, we only
+      // shift our listeners, so that we avoid to reallocate memory for the
+      // whole list.
+      for (int i = index; i < _count; i++) {
+        _listeners[i] = _listeners[i + 1];
+      }
+      _listeners[_count] = null;
+    }
+  }
+
+  void defaultRemoveListener(ChangeListener listener) {
+    // This method is allowed to be called on disposed instances for usability
+    // reasons. Due to how our frame scheduling logic between render objects and
+    // overlays, it is common that the owner of this instance would be disposed a
+    // frame earlier than the listeners. Allowing calls to this method after it
+    // is disposed makes it easier for listeners to properly clean up.
+    for (int i = 0; i < _count; i++) {
+      final ChangeListener? listenerAtIndex = _listeners[i];
+      if (listenerAtIndex == listener) {
+        if (_notificationCallStackDepth > 0) {
+          // We don't resize the list during notifyListeners iterations
+          // but we set to null, the listeners we want to remove. We will
+          // effectively resize the list at the end of all notifyListeners
+          // iterations.
+          _listeners[i] = null;
+          _reentrantlyRemovedListeners++;
+        } else {
+          // When we are outside the notifyListeners iterations we can
+          // effectively shrink the list.
+          _removeAt(i);
+        }
+        break;
+      }
+    }
+  }
+
+  @mustCallSuper
+  void dispose() {
+    assert(debugAssertNotDisposed(this));
+    assert(
+      _notificationCallStackDepth == 0,
+      'The "dispose()" method on $this was called during the call to '
+      '"notifyListeners()". This is likely to cause errors since it modifies '
+      'the list of listeners while the list is being used.',
+    );
+    assert(() {
+      _debugDisposed = true;
+      return true;
+    }());
+    if (kFlutterMemoryAllocationsEnabled && _creationDispatched) {
+      FlutterMemoryAllocations.instance.dispatchObjectDisposed(object: this);
+    }
+    _listeners = _emptyListeners;
+    _count = 0;
+  }
+
+  @protected
+  @visibleForTesting
+  @pragma('vm:notify-debugger-on-exception')
+  void defaultNotifyListeners(Object? event) {
+    assert(debugAssertNotDisposed(this));
+    if (_count == 0) {
+      return;
+    }
+
+    // To make sure that listeners removed during this iteration are not called,
+    // we set them to null, but we don't shrink the list right away.
+    // By doing this, we can continue to iterate on our list until it reaches
+    // the last listener added before the call to this method.
+
+    // To allow potential listeners to recursively call notifyListener, we track
+    // the number of times this method is called in _notificationCallStackDepth.
+    // Once every recursive iteration is finished (i.e. when _notificationCallStackDepth == 0),
+    // we can safely shrink our list so that it will only contain not null
+    // listeners.
+
+    _notificationCallStackDepth++;
+
+    final int end = _count;
+    for (int i = 0; i < end; i++) {
+      try {
+        final ChangeListener? listener = _listeners[i];
+        if (listener != null) {
+          listener.dispatch(event);
+        }
+      } catch (exception, stack) {
+        FlutterError.reportError(FlutterErrorDetails(
+          exception: exception,
+          stack: stack,
+          library: 'foundation library',
+          context: ErrorDescription(
+              'while dispatching notifications for $runtimeType'),
+          informationCollector: () => <DiagnosticsNode>[
+            DiagnosticsProperty<NotifierHelper>(
+              'The $runtimeType sending notification was',
+              this,
+              style: DiagnosticsTreeStyle.errorProperty,
+            ),
+          ],
+        ));
+      }
+    }
+
+    _notificationCallStackDepth--;
+
+    if (_notificationCallStackDepth == 0 && _reentrantlyRemovedListeners > 0) {
+      // We really remove the listeners when all notifications are done.
+      final int newLength = _count - _reentrantlyRemovedListeners;
+      if (newLength * 2 <= _listeners.length) {
+        // As in _removeAt, we only shrink the list when the real number of
+        // listeners is half the length of our list.
+        final List<ChangeListener?> newListeners =
+            List<ChangeListener?>.filled(newLength, null);
+
+        int newIndex = 0;
+        for (int i = 0; i < _count; i++) {
+          final listener = _listeners[i];
+          if (listener != null) {
+            newListeners[newIndex++] = listener;
+          }
+        }
+
+        _listeners = newListeners;
+      } else {
+        // Otherwise we put all the null references at the end.
+        for (int i = 0; i < newLength; i += 1) {
+          if (_listeners[i] == null) {
+            // We swap this item with the next not null item.
+            int swapIndex = i + 1;
+            while (_listeners[swapIndex] == null) {
+              swapIndex += 1;
+            }
+            _listeners[i] = _listeners[swapIndex];
+            _listeners[swapIndex] = null;
+          }
+        }
+      }
+
+      _reentrantlyRemovedListeners = 0;
+      _count = newLength;
+    }
+  }
+}
+
+const String _shadcnDataLibrary = 'package:shadcn_flutter/shadcn_flutter.dart';
+
+class SetNotifier<T> extends SetListenable<T>
+    with NotifierHelper, Iterable<T>
+    implements Set<T> {
+  final Set<T> _set;
+
+  SetNotifier([Set<T> set = const {}]) : _set = Set<T>.from(set);
+
+  Set<T> get value => UnmodifiableSetView<T>(_set);
+
+  Set<T> _helperToSet(Iterable<T> iterable) {
+    return iterable is Set<T> ? iterable : iterable.toSet();
+  }
+
+  @override
+  Set<R> cast<R>() {
+    return _set.cast<R>();
+  }
+
+  @override
+  void addAll(Iterable<T> values) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    final Set<T> added = _helperToSet(values).difference(_set);
+    if (added.isNotEmpty) {
+      _set.addAll(added);
+      notifyListeners(SetChangeDetails<T>(added, const []));
+    }
+  }
+
+  @override
+  void clear() {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    if (_set.isNotEmpty) {
+      final Set<T> removed = Set<T>.from(_set);
+      _set.clear();
+      notifyListeners(SetChangeDetails<T>(const [], removed));
+    }
+  }
+
+  @override
+  void addChangeListener(SetChangeListener<T> listener) {
+    defaultAddListener(_SetChangeListener<T>(listener));
+  }
+
+  @override
+  void removeChangeListener(SetChangeListener<T> listener) {
+    defaultRemoveListener(_SetChangeListener<T>(listener));
+  }
+
+  @override
+  void addListener(VoidCallback listener) {
+    defaultAddListener(_VoidChangeListener(listener));
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    defaultRemoveListener(_VoidChangeListener(listener));
+  }
+
+  @protected
+  @visibleForTesting
+  @pragma('vm:notify-debugger-on-exception')
+  void notifyListeners(SetChangeDetails<T> details) {
+    super.defaultNotifyListeners(details);
+  }
+
+  @override
+  Iterator<T> get iterator => _set.iterator;
+
+  @override
+  int get length => _set.length;
+
+  @override
+  bool containsAll(Iterable<Object?> other) {
+    return _set.containsAll(other);
+  }
+
+  @override
+  Set<T> difference(Set<Object?> other) {
+    return _set.difference(other);
+  }
+
+  @override
+  Set<T> intersection(Set<Object?> other) {
+    return _set.intersection(other);
+  }
+
+  @override
+  T? lookup(Object? object) {
+    return _set.lookup(object);
+  }
+
+  @override
+  void removeWhere(bool Function(T element) test) {
+    final Set<T> removed = _set.where(test).toSet();
+    _set.removeAll(removed);
+    notifyListeners(SetChangeDetails<T>(const [], removed));
+  }
+
+  @override
+  void retainAll(Iterable<Object?> elements) {
+    final Set<T> removed =
+        _set.where((element) => !elements.contains(element)).toSet();
+    _set.retainAll(elements);
+    notifyListeners(SetChangeDetails<T>(const [], removed));
+  }
+
+  @override
+  void retainWhere(bool Function(T element) test) {
+    final Set<T> removed = _set.where((element) => !test(element)).toSet();
+    _set.retainWhere(test);
+    notifyListeners(SetChangeDetails<T>(const [], removed));
+  }
+
+  @override
+  Set<T> union(Set<T> other) {
+    return _set.union(other);
+  }
+
+  @override
+  bool add(T value) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    if (_set.add(value)) {
+      notifyListeners(SetChangeDetails<T>([value], const []));
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  bool remove(Object? value) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    if (_set.remove(value)) {
+      notifyListeners(SetChangeDetails<T>(const [], [value as T]));
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  void removeAll(Iterable<Object?> elements) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    List<T> removed = [];
+    for (final element in elements) {
+      if (_set.remove(element)) {
+        removed.add(element as T);
+      }
+    }
+    if (removed.isNotEmpty) {
+      notifyListeners(SetChangeDetails<T>(const [], removed));
+    }
+  }
+}
+
+class ListNotifier<T> extends ListListenable<T>
+    with NotifierHelper, Iterable<T>
+    implements List<T> {
+  final List<T> _list;
+
+  ListNotifier([List<T> list = const []]) : _list = List<T>.from(list);
+
+  List<T> get value => UnmodifiableListView<T>(_list);
+
+  @protected
+  void notifyListeners(ListChangeDetails<T> details) {
+    super.defaultNotifyListeners(details);
+  }
+
+  @override
+  void addListener(VoidCallback listener) {
+    defaultAddListener(_VoidChangeListener(listener));
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    defaultRemoveListener(_VoidChangeListener(listener));
+  }
+
+  @override
+  List<R> cast<R>() {
+    return _list.cast<R>();
+  }
+
+  @override
+  void add(T value) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    _list.add(value);
+    notifyListeners(ListChangeDetails<T>([value], const [], _list.length - 1));
+  }
+
+  @override
+  void addAll(Iterable<T> values) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    final int index = _list.length;
+    _list.addAll(values);
+    notifyListeners(ListChangeDetails<T>(values.toList(), const [], index));
+  }
+
+  @override
+  void insert(int index, T value) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    _list.insert(index, value);
+    notifyListeners(ListChangeDetails<T>([value], const [], index));
+  }
+
+  @override
+  void insertAll(int index, Iterable<T> values) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    _list.insertAll(index, values);
+    notifyListeners(ListChangeDetails<T>(values.toList(), const [], index));
+  }
+
+  @override
+  void removeRange(int start, int end) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    final List<T> removed = _list.sublist(start, end);
+    _list.removeRange(start, end);
+    notifyListeners(ListChangeDetails<T>(const [], removed, start));
+  }
+
+  @override
+  void removeWhere(bool Function(T element) test) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    final List<T> removed = _list.where(test).toList();
+    for (final value in removed) {
+      _list.remove(value);
+    }
+    notifyListeners(ListChangeDetails<T>(const [], removed, 0));
+  }
+
+  @override
+  void retainWhere(bool Function(T element) test) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    final List<T> removed = _list.where((element) => !test(element)).toList();
+    for (final value in removed) {
+      _list.remove(value);
+    }
+    notifyListeners(ListChangeDetails<T>(const [], removed, 0));
+  }
+
+  @override
+  void clear() {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    if (_list.isNotEmpty) {
+      final List<T> removed = List<T>.from(_list);
+      _list.clear();
+      notifyListeners(ListChangeDetails<T>(const [], removed, 0));
+    }
+  }
+
+  @override
+  void sort([int Function(T a, T b)? compare]) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    _list.sort(compare);
+    notifyListeners(
+        ListChangeDetails<T>(List<T>.from(_list), List<T>.from(_list), 0));
+  }
+
+  @override
+  void shuffle([Random? random]) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    _list.shuffle(random);
+    notifyListeners(
+        ListChangeDetails<T>(List<T>.from(_list), List<T>.from(_list), 0));
+  }
+
+  @override
+  void fillRange(int start, int end, [T? fillValue]) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    final List<T> removed = _list.sublist(start, end);
+    _list.fillRange(start, end, fillValue);
+    notifyListeners(ListChangeDetails<T>(List<T>.from(_list), removed, start));
+  }
+
+  @override
+  void setAll(int index, Iterable<T> values) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    final List<T> removed = _list.sublist(index, index + values.length);
+    _list.setAll(index, values);
+    notifyListeners(ListChangeDetails<T>(List<T>.from(_list), removed, index));
+  }
+
+  @override
+  void setRange(int start, int end, Iterable<T> newContents,
+      [int skipCount = 0]) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    final List<T> removed = _list.sublist(start, end);
+    _list.setRange(start, end, newContents, skipCount);
+    notifyListeners(ListChangeDetails<T>(List<T>.from(_list), removed, start));
+  }
+
+  @override
+  void replaceRange(int start, int end, Iterable<T> newContents) {
+    assert(NotifierHelper.debugAssertNotDisposed(this));
+    final List<T> removed = _list.sublist(start, end);
+    _list.replaceRange(start, end, newContents);
+    notifyListeners(ListChangeDetails<T>(List<T>.from(_list), removed, start));
+  }
+
+  T operator [](int index) => _list[index];
+
+  void operator []=(int index, T value) {
+    final T removed = _list[index];
+    _list[index] = value;
+    notifyListeners(ListChangeDetails<T>([value], [removed], index));
+  }
+
+  @override
+  void addChangeListener(ListChangeListener<T> listener) {
+    defaultAddListener(_ListChangeListener<T>(listener));
+  }
+
+  @override
+  void removeChangeListener(ListChangeListener<T> listener) {
+    defaultRemoveListener(_ListChangeListener<T>(listener));
+  }
+
+  @override
+  Iterator<T> get iterator => _list.iterator;
+
+  @override
+  int get length => _list.length;
+
+  @override
+  List<T> operator +(List<T> other) {
+    return _list + other;
+  }
+
+  @override
+  Map<int, T> asMap() {
+    return _list.asMap();
+  }
+
+  @override
+  set first(T value) {
+    final T removed = _list.first;
+    _list.first = value;
+    notifyListeners(ListChangeDetails<T>([value], [removed], 0));
+  }
+
+  @override
+  Iterable<T> getRange(int start, int end) {
+    return _list.getRange(start, end);
+  }
+
+  @override
+  int indexOf(T element, [int start = 0]) {
+    return _list.indexOf(element, start);
+  }
+
+  @override
+  int indexWhere(bool Function(T element) test, [int start = 0]) {
+    return _list.indexWhere(test, start);
+  }
+
+  @override
+  set last(T value) {
+    final T removed = _list.last;
+    _list.last = value;
+    notifyListeners(ListChangeDetails<T>([value], [removed], _list.length - 1));
+  }
+
+  @override
+  int lastIndexOf(T element, [int? start]) {
+    return _list.lastIndexOf(element, start);
+  }
+
+  @override
+  int lastIndexWhere(bool Function(T element) test, [int? start]) {
+    return _list.lastIndexWhere(test, start);
+  }
+
+  @override
+  set length(int newLength) {
+    final List<T> removed = _list.sublist(newLength);
+    _list.length = newLength;
+    notifyListeners(ListChangeDetails<T>(const [], removed, newLength));
+  }
+
+  @override
+  Iterable<T> get reversed => _list.reversed;
+
+  @override
+  List<T> sublist(int start, [int? end]) {
+    return _list.sublist(start, end);
+  }
+
+  @override
+  bool remove(Object? value) {
+    final int index = _list.indexOf(value as T);
+    if (index == -1) {
+      return false;
+    }
+    _list.removeAt(index);
+    notifyListeners(ListChangeDetails<T>(const [], [value], index));
+    return true;
+  }
+
+  @override
+  T removeAt(int index) {
+    final T removed = _list.removeAt(index);
+    notifyListeners(ListChangeDetails<T>(const [], [removed], index));
+    return removed;
+  }
+
+  @override
+  T removeLast() {
+    final T removed = _list.removeLast();
+    notifyListeners(ListChangeDetails<T>(const [], [removed], _list.length));
+    return removed;
+  }
+}
+
+class MapNotifier<K, V> extends MapListenable<K, V>
+    with NotifierHelper
+    implements Map<K, V> {
+  final Map<K, V> _map;
+
+  MapNotifier([Map<K, V> map = const {}]) : _map = Map<K, V>.from(map);
+
+  Map<K, V> get value => UnmodifiableMapView<K, V>(_map);
+
+  @protected
+  void notifyListeners(MapChangeDetails<K, V> details) {
+    super.defaultNotifyListeners(details);
+  }
+
+  @override
+  void addListener(VoidCallback listener) {
+    defaultAddListener(_VoidChangeListener(listener));
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    defaultRemoveListener(_VoidChangeListener(listener));
+  }
+
+  @override
+  V? operator [](Object? key) {
+    return _map[key];
+  }
+
+  @override
+  void operator []=(K key, V value) {
+    bool containsKey = _map.containsKey(key);
+    V? removed = containsKey ? _map[key] : null;
+    _map[key] = value;
+    notifyListeners(MapChangeDetails<K, V>([MapEntry(key, value)],
+        [if (containsKey) MapEntry(key, removed as V)]));
+  }
+
+  @override
+  void addAll(Map<K, V> other) {
+    final List<MapEntry<K, V>> added = [];
+    final List<MapEntry<K, V>> removed = [];
+    for (final entry in other.entries) {
+      if (_map.containsKey(entry.key)) {
+        removed.add(MapEntry(entry.key, _map[entry.key] as V));
+      }
+      added.add(entry);
+    }
+    _map.addAll(other);
+    notifyListeners(MapChangeDetails<K, V>(added, removed));
+  }
+
+  @override
+  void addEntries(Iterable<MapEntry<K, V>> newEntries) {
+    final List<MapEntry<K, V>> added = [];
+    final List<MapEntry<K, V>> removed = [];
+    for (final entry in newEntries) {
+      if (_map.containsKey(entry.key)) {
+        removed.add(MapEntry(entry.key, _map[entry.key] as V));
+      }
+      added.add(entry);
+    }
+    _map.addEntries(newEntries);
+    notifyListeners(MapChangeDetails<K, V>(added, removed));
+  }
+
+  @override
+  void addChangeListener(MapChangeListener<K, V> listener) {
+    defaultAddListener(_MapChangeListener<K, V>(listener));
+  }
+
+  @override
+  Map<RK, RV> cast<RK, RV>() {
+    return _map.cast<RK, RV>();
+  }
+
+  @override
+  void clear() {
+    final List<MapEntry<K, V>> removed = _map.entries.toList();
+    _map.clear();
+    notifyListeners(MapChangeDetails<K, V>(const [], removed));
+  }
+
+  @override
+  bool containsKey(Object? key) {
+    return _map.containsKey(key);
+  }
+
+  @override
+  bool containsValue(Object? value) {
+    return _map.containsValue(value);
+  }
+
+  @override
+  Iterable<MapEntry<K, V>> get entries => _map.entries;
+
+  @override
+  void forEach(void Function(K key, V value) action) {
+    _map.forEach(action);
+  }
+
+  @override
+  bool get isEmpty => _map.isEmpty;
+
+  @override
+  bool get isNotEmpty => _map.isNotEmpty;
+
+  @override
+  Iterable<K> get keys => _map.keys;
+
+  @override
+  int get length => _map.length;
+
+  @override
+  Map<K2, V2> map<K2, V2>(MapEntry<K2, V2> Function(K key, V value) convert) {
+    return _map.map(convert);
+  }
+
+  @override
+  V putIfAbsent(K key, V Function() ifAbsent) {
+    final bool containsKey = _map.containsKey(key);
+    V? removed = containsKey ? _map[key] : null;
+    V value = _map.putIfAbsent(key, ifAbsent);
+    if (containsKey) {
+      notifyListeners(MapChangeDetails<K, V>(
+          [MapEntry(key, value)], [MapEntry(key, removed as V)]));
+    } else {
+      notifyListeners(MapChangeDetails<K, V>([MapEntry(key, value)], []));
+    }
+    return value;
+  }
+
+  @override
+  V? remove(Object? key) {
+    if (!_map.containsKey(key)) {
+      return null;
+    }
+    V removed = _map.remove(key) as V;
+    notifyListeners(MapChangeDetails<K, V>([], [MapEntry(key as K, removed)]));
+    return removed;
+  }
+
+  @override
+  void removeChangeListener(MapChangeListener<K, V> listener) {
+    defaultRemoveListener(_MapChangeListener<K, V>(listener));
+  }
+
+  @override
+  void removeWhere(bool Function(K key, V value) test) {
+    final List<MapEntry<K, V>> removed = [];
+    for (final entry in _map.entries) {
+      if (test(entry.key, entry.value)) {
+        removed.add(entry);
+      }
+    }
+    for (final entry in removed) {
+      _map.remove(entry.key);
+    }
+    notifyListeners(MapChangeDetails<K, V>([], removed));
+  }
+
+  @override
+  V update(K key, V Function(V value) update, {V Function()? ifAbsent}) {
+    final bool containsKey = _map.containsKey(key);
+    V? removed = containsKey ? _map[key] : null;
+    V value = _map.update(key, update, ifAbsent: ifAbsent);
+    if (containsKey) {
+      notifyListeners(MapChangeDetails<K, V>(
+          [MapEntry(key, value)], [MapEntry(key, removed as V)]));
+    } else {
+      notifyListeners(MapChangeDetails<K, V>([MapEntry(key, value)], []));
+    }
+    return value;
+  }
+
+  @override
+  void updateAll(V Function(K key, V value) update) {
+    final List<MapEntry<K, V>> added = [];
+    final List<MapEntry<K, V>> removed = [];
+    for (final entry in _map.entries) {
+      V newValue = update(entry.key, entry.value);
+      if (_map.containsKey(entry.key)) {
+        removed.add(MapEntry(entry.key, _map[entry.key] as V));
+      }
+      added.add(MapEntry(entry.key, newValue));
+    }
+    _map.updateAll(update);
+    notifyListeners(MapChangeDetails<K, V>(added, removed));
+  }
+
+  @override
+  Iterable<V> get values => _map.values;
 }
