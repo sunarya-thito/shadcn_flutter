@@ -796,7 +796,8 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
   }
 
   Widget buildBox(BuildContext context) {
-    return DefaultTextStyle.merge(
+    return mergeAnimatedTextStyle(
+      duration: kDefaultDuration,
       textAlign: TextAlign.center,
       child: child.xSmall(),
     );
@@ -820,7 +821,8 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
               curve: Curves.easeInOut,
             );
           },
-          child: Container(
+          child: AnimatedContainer(
+            duration: kDefaultDuration,
             alignment: alignment,
             padding: EdgeInsets.symmetric(horizontal: 16 * scaling),
             // child: OverflowMarquee(child: child),
