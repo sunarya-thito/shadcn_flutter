@@ -267,8 +267,8 @@ class _StateManagementPageState extends State<StateManagementPage> {
               .p(),
           const SelectableText(
                   'It is recommended to pass an immutable object to the children. Mutable '
-                  'object (e.g. List, Map, Set, Widget State) will not notify the children when the object is mutated'
-                  'because the object reference does not change.')
+                  'object (e.g. List, Map, Set, Widget State) will not notify the children when the object is mutated '
+                  'because the object reference does not change. ')
               .p(),
           const SelectableText('Passing Variable to Children')
               .h2()

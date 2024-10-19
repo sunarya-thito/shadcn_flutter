@@ -166,6 +166,7 @@ class DocsPageState extends State<DocsPage> {
         // https://nyxbui.design/docs/components/number-ticker
         ShadcnDocsPage('Number Ticker', 'number_ticker'),
         ShadcnDocsPage('Repeated Animation', 'repeated_animation_builder'),
+        ShadcnDocsPage('Timeline Animation', 'timeline_animation'),
       ],
     ),
     ShadcnDocsSection(

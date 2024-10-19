@@ -58,6 +58,7 @@ import 'package:docs/pages/docs/components/tab_list_example.dart';
 import 'package:docs/pages/docs/components/tabs_example.dart';
 import 'package:docs/pages/docs/components/text_area_example.dart';
 import 'package:docs/pages/docs/components/time_picker_example.dart';
+import 'package:docs/pages/docs/components/timeline_animation.dart';
 import 'package:docs/pages/docs/components/timeline_example.dart';
 import 'package:docs/pages/docs/components/toast_example.dart';
 import 'package:docs/pages/docs/components/toggle_example.dart';
@@ -643,7 +644,14 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) {
               return const NumberInputExample();
             },
-          )
+          ),
+          GoRoute(
+            path: 'timeline_animation',
+            name: 'timeline_animation',
+            builder: (context, state) {
+              return const TimelineAnimationExample();
+            },
+          ),
         ]),
   ]);
   // ColorScheme colorScheme = ColorSchemes.darkZync();
