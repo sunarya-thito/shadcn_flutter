@@ -31,6 +31,72 @@ main() {
   String result = '';
   result += 'import \'../../shadcn_flutter.dart\';\n';
   result += 'import \'dart:ui\';\n';
+  result += 'void _assertNotThemeModeSystem(ThemeMode mode, String label) {\n';
+  // throw FlutterError with hint to use
+  /*
+  ShadcnApp(
+    theme: ThemeData(colorScheme: ColorSchemes.zinc(ThemeMode.light)),
+    darkTheme: ThemeData(colorScheme: ColorSchemes.zinc(ThemeMode.dark)),
+    themeMode: ThemeMode.system, // optional, default is ThemeMode.system
+    )
+    or
+    ShadcnApp(
+    theme: ThemeData(colorScheme: ColorSchemes.lightZinc()),
+    darkTheme: ThemeData(colorScheme: ColorSchemes.darkZinc()),
+    )
+    instead of
+    ShadcnApp(
+    theme: ThemeData(colorScheme: ColorSchemes.zinc(ThemeMode.system)),
+    ),
+   */
+  // ThemeMode? mode;
+  // String? label;
+  // final List<DiagnosticsNode> diagnosticList = [];
+  // if (mode == ThemeMode.system) {
+  //   diagnosticList.add(ErrorSummary(
+  //       'ColorSchemes.${label.toLowerCase()}(ThemeMode mode) can only be used with ThemeMode.light or ThemeMode.dark.'));
+  //   diagnosticList.add(ErrorDescription(
+  //       'This method is only intended as a helper method to get either ColorSchemes.light$label() or ColorSchemes.dark$label().'));
+  //   diagnosticList.add(ErrorHint(
+  //     'To use system theme mode, do this ShadcnApp(theme: ThemeData(colorScheme: ColorSchemes.${label.toLowerCase()}(ThemeMode.light)), darkTheme: ThemeData(colorScheme: ColorSchemes.${label.toLowerCase()}(ThemeMode.dark)), themeMode: ThemeMode.system,) instead of ShadcnApp(theme: ThemeData(colorScheme: ColorSchemes.${label.toLowerCase()}(ThemeMode.system)),).',
+  //   ));
+  // }
+  // throw FlutterError.fromParts(diagnosticList);
+  result += '  if (mode == ThemeMode.system) {\n';
+  result += '    final List<DiagnosticsNode> diagnosticList = [];\n';
+  result +=
+      '    diagnosticList.add(ErrorSummary(\'ColorSchemes.\${label.toLowerCase()}(ThemeMode mode) can only be used with ThemeMode.light or ThemeMode.dark.\'));\n';
+  result +=
+      '    diagnosticList.add(ErrorDescription(\'This method is only intended as a helper method to get either ColorSchemes.light\$label() or ColorSchemes.dark\$label().\'));\n';
+  // result +=
+  //     '    diagnosticList.add(ErrorHint(\'To use system theme mode, do this ShadcnApp(theme: ThemeData(colorScheme: ColorSchemes.\${label.toLowerCase()}(ThemeMode.light)), darkTheme: ThemeData(colorScheme: ColorSchemes.\${label.toLowerCase()}(ThemeMode.dark)), themeMode: ThemeMode.system,) instead of ShadcnApp(theme: ThemeData(colorScheme: ColorSchemes.\${label.toLowerCase()}(ThemeMode.system)),).\'));\n';
+  // try to use \n in the string so the code example is more readable
+  result +=
+      '    diagnosticList.add(ErrorHint(\'To use system theme mode, do this:\\n\'\n';
+  result += '      \'ShadcnApp(\\n\'\n';
+  result +=
+      '      \'  theme: ThemeData(colorScheme: ColorSchemes.\${label.toLowerCase()}(ThemeMode.light)),\\n\'\n';
+  result +=
+      '      \'  darkTheme: ThemeData(colorScheme: ColorSchemes.\${label.toLowerCase()}(ThemeMode.dark)),\\n\'\n';
+  result +=
+      '      \'  themeMode: ThemeMode.system, // optional, default is ThemeMode.system\\n\'\n';
+  result += '      \')\\n\'\n';
+  result += '      \'or:\\n\'\n';
+  result += '      \'ShadcnApp(\\n\'\n';
+  result +=
+      '      \'  theme: ThemeData(colorScheme: ColorSchemes.light\$label()),\\n\'\n';
+  result +=
+      '      \'  darkTheme: ThemeData(colorScheme: ColorScheme.dark\$label()),\\n\'\n';
+  result += '      \')\\n\'\n';
+  result += '      \'instead of:\\n\'\n';
+  result += '      \'ShadcnApp(\\n\'\n';
+  result +=
+      '      \'  theme: ThemeData(colorScheme: ColorSchemes.\${label.toLowerCase()}(ThemeMode.system)),\\n\'\n';
+  result += '      \')\'));\n';
+
+  result += '    throw FlutterError.fromParts(diagnosticList);\n';
+  result += '  }\n';
+  result += '}\n';
   result += 'class ColorSchemes {\n';
 
   for (var theme in themes) {
@@ -138,6 +204,11 @@ String printTheme(String name, Map config) {
 
   result += '\n';
   result += '\tstatic ColorScheme ${name.toLowerCase()}(ThemeMode mode) {\n';
+  result += '\t\tassert(() {\n';
+  result +=
+      '\t\t\t_assertNotThemeModeSystem(mode, \'$name\');\n'; // assert not system
+  result += '\t\t\treturn true;\n';
+  result += '\t\t}());\n';
   result +=
       '\t\treturn mode == ThemeMode.light ? light$name() : dark$name();\n';
   result += '\t}\n';

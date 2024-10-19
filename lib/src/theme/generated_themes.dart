@@ -1,5 +1,28 @@
 import '../../shadcn_flutter.dart';
 import 'dart:ui';
+void _assertNotThemeModeSystem(ThemeMode mode, String label) {
+  if (mode == ThemeMode.system) {
+    final List<DiagnosticsNode> diagnosticList = [];
+    diagnosticList.add(ErrorSummary('ColorSchemes.${label.toLowerCase()}(ThemeMode mode) can only be used with ThemeMode.light or ThemeMode.dark.'));
+    diagnosticList.add(ErrorDescription('This method is only intended as a helper method to get either ColorSchemes.light$label() or ColorSchemes.dark$label().'));
+    diagnosticList.add(ErrorHint('To use system theme mode, do this:\n'
+      'ShadcnApp(\n'
+      '  theme: ThemeData(colorScheme: ColorSchemes.${label.toLowerCase()}(ThemeMode.light)),\n'
+      '  darkTheme: ThemeData(colorScheme: ColorSchemes.${label.toLowerCase()}(ThemeMode.dark)),\n'
+      '  themeMode: ThemeMode.system, // optional, default is ThemeMode.system\n'
+      ')\n'
+      'or:\n'
+      'ShadcnApp(\n'
+      '  theme: ThemeData(colorScheme: ColorSchemes.light$label()),\n'
+      '  darkTheme: ThemeData(colorScheme: ColorScheme.dark$label()),\n'
+      ')\n'
+      'instead of:\n'
+      'ShadcnApp(\n'
+      '  theme: ThemeData(colorScheme: ColorSchemes.${label.toLowerCase()}(ThemeMode.system)),\n'
+      ')'));
+    throw FlutterError.fromParts(diagnosticList);
+  }
+}
 class ColorSchemes {
 	static ColorScheme lightZinc() {
 		return ColorScheme(
@@ -62,6 +85,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme zinc(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Zinc');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightZinc() : darkZinc();
 	}
 
@@ -126,6 +153,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme slate(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Slate');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightSlate() : darkSlate();
 	}
 
@@ -190,6 +221,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme stone(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Stone');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightStone() : darkStone();
 	}
 
@@ -254,6 +289,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme gray(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Gray');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightGray() : darkGray();
 	}
 
@@ -318,6 +357,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme neutral(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Neutral');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightNeutral() : darkNeutral();
 	}
 
@@ -382,6 +425,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme red(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Red');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightRed() : darkRed();
 	}
 
@@ -446,6 +493,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme rose(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Rose');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightRose() : darkRose();
 	}
 
@@ -510,6 +561,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme orange(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Orange');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightOrange() : darkOrange();
 	}
 
@@ -574,6 +629,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme green(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Green');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightGreen() : darkGreen();
 	}
 
@@ -638,6 +697,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme blue(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Blue');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightBlue() : darkBlue();
 	}
 
@@ -702,6 +765,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme yellow(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Yellow');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightYellow() : darkYellow();
 	}
 
@@ -766,6 +833,10 @@ class ColorSchemes {
 	}
 
 	static ColorScheme violet(ThemeMode mode) {
+		assert(() {
+			_assertNotThemeModeSystem(mode, 'Violet');
+			return true;
+		}());
 		return mode == ThemeMode.light ? lightViolet() : darkViolet();
 	}
 
