@@ -676,6 +676,9 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           ],
                         ),
                         SelectPopup(
+                          margin: const EdgeInsets.symmetric(vertical: 8) *
+                              theme.scaling,
+                          borderRadius: theme.borderRadiusXl,
                           value: ValueNotifier(['Apple']),
                           children: ValueNotifier(const [
                             SelectItemButton(
@@ -871,7 +874,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                       OutlinedContainer(
                         borderColor: theme.colorScheme.border,
                         backgroundColor: theme.colorScheme.background,
-                        borderRadius: theme.radiusMd,
+                        borderRadius: theme.borderRadiusMd,
                         child: Padding(
                           padding: const EdgeInsets.all(4),
                           child: IntrinsicHeight(
@@ -1018,7 +1021,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                       ),
                       const Gap(8),
                       OutlinedContainer(
-                        borderRadius: theme.radiusMd,
+                        borderRadius: theme.borderRadiusMd,
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: NavigationContentList(

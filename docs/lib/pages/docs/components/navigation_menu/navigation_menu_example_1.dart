@@ -34,7 +34,7 @@ class NavigationMenuExample1 extends StatelessWidget {
                 mouseCursor:
                     const WidgetStatePropertyAll(SystemMouseCursors.click),
                 child: Card(
-                  borderRadius: theme.radiusMd,
+                  borderRadius: theme.borderRadiusMd,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,

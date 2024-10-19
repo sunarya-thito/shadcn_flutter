@@ -5,11 +5,16 @@ class PopoverExample1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return PrimaryButton(
       onPressed: () {
         showPopover(
           context: context,
           alignment: Alignment.topCenter,
+          overlayBarrier: OverlayBarrier(
+            borderRadius: theme.borderRadiusLg,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+          ),
           builder: (context) {
             return SurfaceCard(
               child: SizedBox(
