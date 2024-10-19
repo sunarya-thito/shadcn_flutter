@@ -160,7 +160,7 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
             ? const EdgeInsets.all(4) * theme.scaling
             : const EdgeInsets.symmetric(horizontal: 12, vertical: 4) *
                 theme.scaling,
-        borderRadius: theme.radiusXl,
+        borderRadius: theme.borderRadiusXl,
         child: CrossFadedTransition(
           child: KeyedSubtree(
             key: ValueKey(widget.stage.stage),

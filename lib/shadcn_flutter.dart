@@ -91,6 +91,7 @@ export 'package:pixel_snap/widgets.dart'
 // bundle from skeletonizer https://pub.dev/packages/skeletonizer
 export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 
+export 'src/animation.dart';
 export 'src/components/animation.dart';
 export 'src/components/chart/tracker.dart';
 export 'src/components/control/button.dart';
@@ -169,6 +170,7 @@ export 'src/components/navigation/tabs.dart';
 export 'src/components/overlay/dialog.dart';
 export 'src/components/overlay/drawer.dart';
 export 'src/components/overlay/hover_card.dart';
+export 'src/components/overlay/overlay.dart';
 export 'src/components/overlay/popover.dart';
 export 'src/components/overlay/refresh_trigger.dart';
 export 'src/components/overlay/toast.dart';

@@ -1569,8 +1569,8 @@ Future<ColorDerivative> showColorPicker({
       }
       continue;
     }
-    if (result.color != null) {
-      return result.color!;
+    if (result.barrierColor != null) {
+      return result.barrierColor!;
     }
   }
 }

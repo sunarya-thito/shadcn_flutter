@@ -48,6 +48,9 @@ void showDropdown({
     regionGroupId: key,
     modal: false,
     dismissBackdropFocus: true,
+    overlayBarrier: OverlayBarrier(
+      borderRadius: BorderRadius.circular(theme.radiusMd),
+    ),
     builder: (context) {
       return Data.inherit(
         data: DropdownMenuData(key),

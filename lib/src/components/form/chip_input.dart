@@ -306,7 +306,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
             return TextFieldTapRegion(
               child: OutlinedContainer(
                 backgroundColor: Colors.transparent,
-                borderRadius: theme.radiusMd,
+                borderRadius: theme.borderRadiusMd,
                 borderColor: _focusNode.hasFocus
                     ? theme.colorScheme.ring
                     : theme.colorScheme.border,

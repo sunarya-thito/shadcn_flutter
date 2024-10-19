@@ -235,7 +235,7 @@ class _RadioCardState<T> extends State<RadioCard<T>> with FormValueSupplier {
               borderWidth: groupData?.selectedItem == widget.value
                   ? 2 * theme.scaling
                   : 1 * theme.scaling,
-              borderRadius: theme.radiusMd,
+              borderRadius: theme.borderRadiusMd,
               padding: EdgeInsets.zero,
               clipBehavior: Clip.antiAlias,
               child: Container(

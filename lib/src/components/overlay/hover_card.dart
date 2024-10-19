@@ -10,6 +10,7 @@ class HoverCard extends StatefulWidget {
   final Offset popoverOffset;
   final HitTestBehavior behavior;
   final PopoverController? controller;
+  final OverlayHandler? handler;
   const HoverCard({
     super.key,
     required this.child,
@@ -21,6 +22,7 @@ class HoverCard extends StatefulWidget {
     this.popoverOffset = const Offset(0, 8),
     this.behavior = HitTestBehavior.deferToChild,
     this.controller,
+    this.handler,
   });
 
   @override
@@ -60,7 +62,9 @@ class _HoverCardState extends State<HoverCard> {
       onEnter: (_) {
         int count = ++_hoverCount;
         Future.delayed(widget.wait, () {
-          if (count == _hoverCount && !_controller.hasOpenPopover) {
+          if (count == _hoverCount &&
+              !_controller.hasOpenPopover &&
+              context.mounted) {
             _showPopover(context);
           }
         });
@@ -84,6 +88,12 @@ class _HoverCardState extends State<HoverCard> {
   }
 
   void _showPopover(BuildContext context) {
+    OverlayHandler? handler = widget.handler;
+    if (handler == null) {
+      final overlayManager = OverlayManager.of(context);
+      handler =
+          OverlayManagerAsTooltipOverlayHandler(overlayManager: overlayManager);
+    }
     _controller.show(
       context: context,
       builder: (context) {
@@ -105,6 +115,7 @@ class _HoverCardState extends State<HoverCard> {
       alignment: widget.popoverAlignment,
       anchorAlignment: widget.anchorAlignment,
       offset: widget.popoverOffset,
+      handler: handler,
     );
   }
 }

@@ -365,7 +365,7 @@ class NavigationMenuState extends State<NavigationMenu> {
                 }
                 return OutlinedContainer(
                   clipBehavior: Clip.antiAlias,
-                  borderRadius: theme.radiusMd,
+                  borderRadius: theme.borderRadiusMd,
                   surfaceOpacity: surfaceOpacity,
                   surfaceBlur: surfaceBlur,
                   child: Stack(

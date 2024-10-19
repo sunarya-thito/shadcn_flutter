@@ -4,25 +4,35 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class ModalContainer extends StatelessWidget {
   final Widget child;
   final BorderRadiusGeometry borderRadius;
+  final EdgeInsetsGeometry padding;
   final Color barrierColor;
   final Animation<double>? fadeAnimation;
+  final bool modal;
 
   const ModalContainer({
     super.key,
+    this.modal = true,
     this.borderRadius = BorderRadius.zero,
     this.barrierColor = const Color.fromRGBO(0, 0, 0, 0.8),
+    this.padding = EdgeInsets.zero,
     this.fadeAnimation,
     required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
-    var resolvedBorderRadius = borderRadius.resolve(Directionality.of(context));
+    if (!modal) {
+      return child;
+    }
+    var textDirection = Directionality.of(context);
+    var resolvedBorderRadius = borderRadius.resolve(textDirection);
+    var resolvedPadding = padding.resolve(textDirection);
     var snap = PixelSnap.of(context);
     Widget paintWidget = CustomPaint(
       painter: SurfaceBarrierPainter(
         borderRadius: resolvedBorderRadius.pixelSnap(snap),
         barrierColor: barrierColor,
+        padding: resolvedPadding.pixelSnap(snap),
       ),
     );
     if (fadeAnimation != null) {
@@ -52,11 +62,22 @@ class SurfaceBarrierPainter extends CustomPainter {
 
   final BorderRadius borderRadius;
   final Color barrierColor;
+  final EdgeInsets padding;
 
   SurfaceBarrierPainter({
     required this.borderRadius,
     required this.barrierColor,
+    this.padding = EdgeInsets.zero,
   });
+
+  Rect _padRect(Rect rect) {
+    return Rect.fromLTRB(
+      rect.left + padding.left,
+      rect.top + padding.top,
+      rect.right - padding.right,
+      rect.bottom - padding.bottom,
+    );
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -64,10 +85,12 @@ class SurfaceBarrierPainter extends CustomPainter {
       ..color = barrierColor
       ..blendMode = BlendMode.srcOver
       ..style = PaintingStyle.fill;
+    var rect = (Offset.zero & size);
+    rect = _padRect(rect);
     Path path = Path()
       ..addRect(bigOffset & bigScreen)
       ..addRRect(RRect.fromRectAndCorners(
-        (Offset.zero & size),
+        rect,
         topLeft: borderRadius.topLeft,
         topRight: borderRadius.topRight,
         bottomLeft: borderRadius.bottomLeft,
@@ -179,31 +202,153 @@ Future<T?> showDialog<T>({
       InheritedTheme.capture(from: context, to: navigatorState.context);
   final CapturedData data =
       Data.capture(from: context, to: navigatorState.context);
-  return Navigator.of(context, rootNavigator: useRootNavigator).push(
-    DialogRoute<T>(
+  var dialogRoute = DialogRoute<T>(
+    context: context,
+    builder: builder,
+    themes: themes,
+    barrierDismissible: barrierDismissible,
+    barrierColor: barrierColor ?? const Color.fromRGBO(0, 0, 0, 0),
+    barrierLabel: barrierLabel,
+    useSafeArea: useSafeArea,
+    settings: routeSettings,
+    anchorPoint: anchorPoint,
+    data: data,
+    traversalEdgeBehavior:
+        traversalEdgeBehavior ?? TraversalEdgeBehavior.closedLoop,
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return _buildShadcnDialogTransitions(
+        context,
+        BorderRadius.zero,
+        alignment ?? Alignment.center,
+        animation,
+        secondaryAnimation,
+        child,
+      );
+    },
+    alignment: alignment ?? Alignment.center,
+  );
+  return navigatorState.push(
+    dialogRoute,
+  );
+}
+
+class DialogOverlayHandler extends OverlayHandler {
+  const DialogOverlayHandler();
+  @override
+  OverlayCompleter<T> show<T>({
+    required BuildContext context,
+    required AlignmentGeometry alignment,
+    required WidgetBuilder builder,
+    Offset? position,
+    AlignmentGeometry? anchorAlignment,
+    PopoverConstraint widthConstraint = PopoverConstraint.flexible,
+    PopoverConstraint heightConstraint = PopoverConstraint.flexible,
+    Key? key,
+    bool rootOverlay = true,
+    bool modal = true,
+    Clip clipBehavior = Clip.none,
+    Object? regionGroupId,
+    Offset? offset,
+    Alignment? transitionAlignment,
+    EdgeInsets? margin,
+    bool follow = true,
+    bool consumeOutsideTaps = true,
+    ValueChanged<PopoverAnchorState>? onTickFollow,
+    bool allowInvertHorizontal = true,
+    bool allowInvertVertical = true,
+    bool dismissBackdropFocus = true,
+    Duration? showDuration,
+    Duration? dismissDuration,
+    OverlayBarrier? overlayBarrier,
+  }) {
+    var navigatorState = Navigator.of(
+      context,
+      rootNavigator: rootOverlay,
+    );
+    final CapturedThemes themes =
+        InheritedTheme.capture(from: context, to: navigatorState.context);
+    final CapturedData data =
+        Data.capture(from: context, to: navigatorState.context);
+    var dialogRoute = DialogRoute<T>(
       context: context,
-      builder: builder,
+      builder: (context) {
+        if (overlayBarrier != null) {
+          return Data.inherit(
+            data: this,
+            child: ModalContainer(
+              modal: overlayBarrier.modal,
+              borderRadius: overlayBarrier.borderRadius,
+              padding: overlayBarrier.padding,
+              barrierColor: overlayBarrier.barrierColor ??
+                  const Color.fromRGBO(0, 0, 0, 0.8),
+              child: builder(context),
+            ),
+          );
+        }
+        return Data.inherit(
+          data: this,
+          child: builder(context),
+        );
+      },
       themes: themes,
-      barrierDismissible: barrierDismissible,
-      barrierColor: barrierColor ?? const Color.fromRGBO(0, 0, 0, 0),
-      barrierLabel: barrierLabel,
-      useSafeArea: useSafeArea,
-      settings: routeSettings,
-      anchorPoint: anchorPoint,
+      barrierDismissible: true,
+      barrierColor: overlayBarrier == null
+          ? const Color.fromRGBO(0, 0, 0, 0.8)
+          : Colors.transparent,
+      barrierLabel: 'Dismiss',
+      useSafeArea: true,
       data: data,
-      traversalEdgeBehavior:
-          traversalEdgeBehavior ?? TraversalEdgeBehavior.closedLoop,
+      traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop,
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         return _buildShadcnDialogTransitions(
           context,
           BorderRadius.zero,
-          alignment ?? Alignment.center,
+          Alignment.center,
           animation,
           secondaryAnimation,
           child,
         );
       },
-      alignment: alignment ?? Alignment.center,
-    ),
-  );
+      alignment: Alignment.center,
+    );
+    navigatorState.push(
+      dialogRoute,
+    );
+    return DialogOverlayCompleter(dialogRoute);
+  }
+}
+
+class DialogOverlayCompleter<T> extends OverlayCompleter<T> {
+  final DialogRoute<T> route;
+
+  DialogOverlayCompleter(this.route);
+
+  @override
+  Future<void> get animationFuture => route.completed;
+
+  @override
+  void dispose() {
+    route.dispose();
+  }
+
+  @override
+  Future<T> get future => route.popped.then((value) {
+        assert(value is T, 'Dialog route was closed without returning a value');
+        return value as T;
+      });
+
+  @override
+  bool get isAnimationCompleted => route.animation?.isCompleted ?? true;
+
+  @override
+  bool get isCompleted => route.animation?.isCompleted ?? true;
+
+  @override
+  void remove() {
+    if (route.isCurrent) {
+      route.navigator?.pop();
+    } else {
+      route.navigator?.removeRoute(route);
+    }
+  }
 }

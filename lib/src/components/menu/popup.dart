@@ -24,7 +24,7 @@ class MenuPopup extends StatelessWidget {
     final data = Data.maybeOf<MenuGroupData>(context);
     final theme = Theme.of(context);
     return OutlinedContainer(
-      borderRadius: theme.radiusMd,
+      borderRadius: theme.borderRadiusMd,
       backgroundColor: theme.colorScheme.popover,
       borderColor: theme.colorScheme.border,
       surfaceBlur: surfaceBlur ?? theme.surfaceBlur,

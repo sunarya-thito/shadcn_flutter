@@ -142,11 +142,17 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
   }
 
   void _showPopover([T? value]) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     value ??= _value;
     _popoverController.show(
       context: context,
       alignment: widget.popoverAlignment ?? Alignment.topLeft,
       anchorAlignment: widget.popoverAnchorAlignment ?? Alignment.bottomLeft,
+      overlayBarrier: OverlayBarrier(
+        padding: const EdgeInsets.symmetric(vertical: 8) * scaling,
+        borderRadius: BorderRadius.circular(theme.radiusLg),
+      ),
       builder: (context) {
         return _ObjectFormFieldPopup<T>(
           value: value,

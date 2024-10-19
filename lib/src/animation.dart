@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-typedef PropertyLerp<T> = T Function(T a, T b, double t);
+typedef PropertyLerp<T> = T? Function(T? a, T? b, double t);
 
 class ControlledAnimation extends Animation<double> {
   final AnimationController _controller;
@@ -54,9 +54,46 @@ class ControlledAnimation extends Animation<double> {
 }
 
 class Transformers {
-  static PropertyLerp<double> typeDouble = (a, b, t) => a + (b - a) * t;
-  static PropertyLerp<int> typeInt = (a, b, t) => (a + (b - a) * t).round();
-  static PropertyLerp<Color> typeColor = (a, b, t) => Color.lerp(a, b, t)!;
+  static double? typeDouble(double? a, double? b, double t) {
+    if (a == null || b == null) {
+      return null;
+    }
+    return a + (b - a) * t;
+  }
+
+  static int? typeInt(int? a, int? b, double t) {
+    if (a == null || b == null) {
+      return null;
+    }
+    return (a + (b - a) * t).round();
+  }
+
+  static Color? typeColor(Color? a, Color? b, double t) {
+    if (a == null || b == null) {
+      return null;
+    }
+    return Color.lerp(a, b, t);
+  }
+
+  static Offset? typeOffset(Offset? a, Offset? b, double t) {
+    if (a == null || b == null) {
+      return null;
+    }
+    return Offset(
+      typeDouble(a.dx, b.dx, t)!,
+      typeDouble(a.dy, b.dy, t)!,
+    );
+  }
+
+  static Size? typeSize(Size? a, Size? b, double t) {
+    if (a == null || b == null) {
+      return null;
+    }
+    return Size(
+      typeDouble(a.width, b.width, t)!,
+      typeDouble(a.height, b.height, t)!,
+    );
+  }
 }
 
 mixin AnimatedMixin on TickerProviderStateMixin {
@@ -113,7 +150,7 @@ class AnimatedProperty<T> {
 
   T get value {
     if (_hasTarget) {
-      return _lerp(_value, _target, _controller.value);
+      return _lerp(_value!, _target!, _controller.value)!;
     }
     return _value;
   }
@@ -215,7 +252,7 @@ class AbsoluteKeyframe<T> implements Keyframe<T> {
 
   @override
   T compute(TimelineAnimation<T> timeline, int index, double t) {
-    return timeline.lerp(from, to, t);
+    return timeline.lerp(from!, to!, t)!;
   }
 }
 
@@ -237,7 +274,7 @@ class RelativeKeyframe<T> implements Keyframe<T> {
     }
     final previous =
         timeline.keyframes[index - 1].compute(timeline, index - 1, 1.0);
-    return timeline.lerp(previous, target, t);
+    return timeline.lerp(previous!, target!, t)!;
   }
 }
 
@@ -296,37 +333,41 @@ class TimelineAnimation<T> extends Animatable<T> {
 
   Duration _computeDuration(double t) {
     final totalDuration = this.totalDuration;
-    return Duration(milliseconds: (t * totalDuration.inMilliseconds).round());
+    return Duration(milliseconds: (t * totalDuration.inMilliseconds).floor());
   }
 
   @override
   T transform(double t) {
-    assert(t >= 0 && t <= 1, 'Invalid time');
+    assert(t >= 0 && t <= 1, 'Invalid time $t');
     assert(keyframes.isNotEmpty, 'No keyframes found');
     var duration = _computeDuration(t);
-    Duration current = Duration.zero;
+    var current = Duration.zero;
     for (var i = 0; i < keyframes.length; i++) {
       final keyframe = keyframes[i];
-      final start = current;
-      final end = current + keyframe.duration;
-      if (duration <= end) {
-        final relative = (duration - start).inMilliseconds /
+      final next = current + keyframe.duration;
+      if (duration < next) {
+        final localT = (duration - current).inMilliseconds /
             keyframe.duration.inMilliseconds;
-        return keyframe.compute(this, i, relative);
+        return keyframe.compute(this, i, localT);
       }
+      current = next;
     }
-    // Should never reach here
-    throw AssertionError('Invalid time');
+    return keyframes.last.compute(this, keyframes.length - 1, 1.0);
   }
 }
 
-// void test() {
-//   var timeline = TimelineAnimation<double>(keyframes: const [
-//     StillKeyframe(0.0, Duration(milliseconds: 100)),
-//     AbsoluteKeyframe(4.0, 2.0, Duration(milliseconds: 100)),
-//     RelativeKeyframe(8.0, Duration(milliseconds: 100)),
-//   ]);
-//   AnimationController controller = AnimationController(vsync: null);
-//   var animation = controller.drive(timeline);
-//   print(animation.value);
-// }
+Duration maxDuration(Duration a, Duration b) {
+  return a > b ? a : b;
+}
+
+Duration minDuration(Duration a, Duration b) {
+  return a < b ? a : b;
+}
+
+Duration timelineMaxDuration(Iterable<TimelineAnimation> timelines) {
+  Duration max = Duration.zero;
+  for (final timeline in timelines) {
+    max = maxDuration(max, timeline.totalDuration);
+  }
+  return max;
+}

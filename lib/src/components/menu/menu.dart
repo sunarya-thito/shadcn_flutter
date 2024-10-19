@@ -340,6 +340,9 @@ class _MenuButtonState extends State<MenuButton> {
     final menuData = Data.maybeOf<MenuData>(context);
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
     assert(menuGroupData != null, 'MenuButton must be a child of MenuGroup');
+    final dialogOverlayHandler = Data.maybeOf<DialogOverlayHandler>(context);
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
     void openSubMenu(BuildContext context) {
       menuGroupData!.closeOthers();
       menuData!.popoverController.show(
@@ -347,6 +350,9 @@ class _MenuButtonState extends State<MenuButton> {
         regionGroupId: menuGroupData.regionGroupId,
         consumeOutsideTaps: false,
         dismissBackdropFocus: false,
+        overlayBarrier: OverlayBarrier(
+          borderRadius: BorderRadius.circular(theme.radiusMd),
+        ),
         builder: (context) {
           final theme = Theme.of(context);
           final scaling = theme.scaling;
@@ -379,9 +385,6 @@ class _MenuButtonState extends State<MenuButton> {
         offset: menuGroupData.subMenuOffset,
       );
     }
-
-    final theme = Theme.of(context);
-    final scaling = theme.scaling;
 
     return Data<MenuData>.boundary(
       child: Data<MenubarState>.boundary(
@@ -444,7 +447,8 @@ class _MenuButtonState extends State<MenuButton> {
                               menuGroupData.hasOpenPopovers) &&
                           widget.subMenu != null &&
                           widget.subMenu!.isNotEmpty) {
-                        if (!menuData.popoverController.hasOpenPopover) {
+                        if (!menuData.popoverController.hasOpenPopover &&
+                            dialogOverlayHandler == null) {
                           openSubMenu(context);
                         }
                       } else {
@@ -456,7 +460,8 @@ class _MenuButtonState extends State<MenuButton> {
                     if (value) {
                       if (widget.subMenu != null &&
                           widget.subMenu!.isNotEmpty) {
-                        if (!menuData.popoverController.hasOpenPopover) {
+                        if (!menuData.popoverController.hasOpenPopover &&
+                            dialogOverlayHandler == null) {
                           openSubMenu(context);
                         }
                       } else {

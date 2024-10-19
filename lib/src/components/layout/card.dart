@@ -5,7 +5,7 @@ class Card extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final bool filled;
   final Color? fillColor;
-  final double? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
   final Color? borderColor;
   final double? borderWidth;
   final Clip clipBehavior;
@@ -60,7 +60,7 @@ class SurfaceCard extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final bool filled;
   final Color? fillColor;
-  final double? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
   final Color? borderColor;
   final double? borderWidth;
   final Clip clipBehavior;

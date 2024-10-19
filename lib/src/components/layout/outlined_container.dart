@@ -58,7 +58,7 @@ class OutlinedContainer extends StatefulWidget {
   final Color? backgroundColor;
   final Color? borderColor;
   final Clip clipBehavior;
-  final double? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
   final BorderStyle? borderStyle;
   final double? borderWidth;
   final List<BoxShadow>? boxShadow;
@@ -95,7 +95,8 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
     final ThemeData theme = Theme.of(context);
     final scaling = theme.scaling;
     var borderRadius =
-        BorderRadius.circular(widget.borderRadius ?? theme.radiusXl);
+        widget.borderRadius?.resolve(Directionality.of(context)) ??
+            BorderRadius.circular(theme.radiusXl);
     var backgroundColor =
         widget.backgroundColor ?? theme.colorScheme.background;
     if (widget.surfaceOpacity != null) {

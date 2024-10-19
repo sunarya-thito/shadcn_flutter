@@ -52,6 +52,8 @@ class ShadcnApp extends StatefulWidget {
     this.enableScrollInterception = true,
     this.darkTheme,
     this.themeMode = ThemeMode.system,
+    this.popoverHandler,
+    this.tooltipHandler,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
@@ -95,6 +97,8 @@ class ShadcnApp extends StatefulWidget {
     this.enableScrollInterception = false,
     this.darkTheme,
     this.themeMode = ThemeMode.system,
+    this.popoverHandler,
+    this.tooltipHandler,
   })  : assert(routerDelegate != null || routerConfig != null),
         navigatorObservers = null,
         navigatorKey = null,
@@ -168,6 +172,8 @@ class ShadcnApp extends StatefulWidget {
   final ValueChanged<List<Color>>? onRecentColorsChanged;
   final bool pixelSnap;
   final bool enableScrollInterception;
+  final OverlayHandler? popoverHandler;
+  final OverlayHandler? tooltipHandler;
 
   @override
   State<ShadcnApp> createState() => _ShadcnAppState();
@@ -319,6 +325,8 @@ class _ShadcnAppState extends State<ShadcnApp> {
         builder: widget.builder,
         enableScrollInterception: widget.enableScrollInterception,
         darkTheme: widget.darkTheme,
+        popoverHandler: widget.popoverHandler,
+        tooltipHandler: widget.tooltipHandler,
         themeMode: widget.themeMode,
         child: child,
       ),
@@ -458,6 +466,8 @@ class ShadcnLayer extends StatelessWidget {
   final ValueChanged<List<Color>>? onRecentColorsChanged;
   final Widget Function(BuildContext context, Widget? child)? builder;
   final bool enableScrollInterception;
+  final OverlayHandler? popoverHandler;
+  final OverlayHandler? tooltipHandler;
 
   const ShadcnLayer({
     super.key,
@@ -471,49 +481,62 @@ class ShadcnLayer extends StatelessWidget {
     this.enableScrollInterception = false,
     this.darkTheme,
     this.themeMode = ThemeMode.system,
+    this.popoverHandler,
+    this.tooltipHandler,
   });
 
   @override
   Widget build(BuildContext context) {
     var appScaling = scaling ?? AdaptiveScaler.defaultScaling(theme);
     var platformBrightness = MediaQuery.platformBrightnessOf(context);
-    return AnimatedTheme(
-      duration: kDefaultDuration,
-      // data: appScaling.scale(theme),
-      data: platformBrightness == Brightness.dark
-          ? appScaling.scale(darkTheme ?? theme)
-          : appScaling.scale(theme),
-      child: Builder(builder: (context) {
-        var theme = Theme.of(context);
-        return DataMessengerRoot(
-          child: ScrollViewInterceptor(
-            enabled: enableScrollInterception,
-            child: ShadcnSkeletonizerConfigLayer(
-              theme: theme,
-              child: mergeAnimatedTextStyle(
-                duration: kDefaultDuration,
-                style: theme.typography.base.copyWith(
-                  color: theme.colorScheme.foreground,
-                ),
-                child: AnimatedIconTheme.merge(
+    var smallScreenLikeMobile = MediaQuery.sizeOf(context).shortestSide < 600;
+    final scaledTheme = platformBrightness == Brightness.dark
+        ? appScaling.scale(darkTheme ?? theme)
+        : appScaling.scale(theme);
+    return OverlayManagerLayer(
+      popoverHandler: popoverHandler ??
+          (smallScreenLikeMobile
+              ? const DialogOverlayHandler()
+              : const PopoverOverlayHandler()),
+      tooltipHandler: tooltipHandler ??
+          (smallScreenLikeMobile
+              ? const FixedTooltipOverlayHandler()
+              : const PopoverOverlayHandler()),
+      child: AnimatedTheme(
+        duration: kDefaultDuration,
+        data: scaledTheme,
+        child: Builder(builder: (context) {
+          var theme = Theme.of(context);
+          return DataMessengerRoot(
+            child: ScrollViewInterceptor(
+              enabled: enableScrollInterception,
+              child: ShadcnSkeletonizerConfigLayer(
+                theme: theme,
+                child: mergeAnimatedTextStyle(
                   duration: kDefaultDuration,
-                  data: theme.iconTheme.medium.copyWith(
+                  style: theme.typography.base.copyWith(
                     color: theme.colorScheme.foreground,
                   ),
-                  child: RecentColorsScope(
-                    initialRecentColors: initialRecentColors,
-                    maxRecentColors: maxRecentColors,
-                    onRecentColorsChanged: onRecentColorsChanged,
-                    child: ColorPickingLayer(
-                      child: KeyboardShortcutDisplayMapper(
-                        child: ToastLayer(
-                          child: builder != null
-                              ? Builder(
-                                  builder: (BuildContext context) {
-                                    return builder!(context, child);
-                                  },
-                                )
-                              : child ?? const SizedBox.shrink(),
+                  child: AnimatedIconTheme.merge(
+                    duration: kDefaultDuration,
+                    data: theme.iconTheme.medium.copyWith(
+                      color: theme.colorScheme.foreground,
+                    ),
+                    child: RecentColorsScope(
+                      initialRecentColors: initialRecentColors,
+                      maxRecentColors: maxRecentColors,
+                      onRecentColorsChanged: onRecentColorsChanged,
+                      child: ColorPickingLayer(
+                        child: KeyboardShortcutDisplayMapper(
+                          child: ToastLayer(
+                            child: builder != null
+                                ? Builder(
+                                    builder: (BuildContext context) {
+                                      return builder!(context, child);
+                                    },
+                                  )
+                                : child ?? const SizedBox.shrink(),
+                          ),
                         ),
                       ),
                     ),
@@ -521,9 +544,9 @@ class ShadcnLayer extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

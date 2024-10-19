@@ -8,6 +8,11 @@ mixin DistinctData {
   bool shouldNotify(covariant DistinctData oldData);
 }
 
+mixin AlwaysUpdateData implements DistinctData {
+  @override
+  bool shouldNotify(covariant DistinctData oldData) => true;
+}
+
 abstract class DataHolder<T> {
   void register(ForwardableDataState<T> receiver);
   void unregister(ForwardableDataState<T> receiver);

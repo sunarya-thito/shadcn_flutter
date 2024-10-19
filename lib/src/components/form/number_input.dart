@@ -63,7 +63,7 @@ class _NumberInputState extends State<NumberInput> {
     if (widget.showButtons) {
       final theme = Theme.of(context);
       return OutlinedContainer(
-        borderRadius: theme.radiusMd,
+        borderRadius: theme.borderRadiusMd,
         child: _NumberInputFlex(
           children: [
             buildTextField(context),
@@ -281,7 +281,8 @@ class _NumberInputState extends State<NumberInput> {
       border: !widget.showButtons,
       enabled: widget.enabled ?? true,
       initialValue: _valueAsString,
-      keyboardType: TextInputType.numberWithOptions(decimal: widget.allowDecimals),
+      keyboardType:
+          TextInputType.numberWithOptions(decimal: widget.allowDecimals),
       textAlignVertical: TextAlignVertical.center,
     );
   }

@@ -37,7 +37,7 @@ class _AlertDialogState extends State<AlertDialog> {
         barrierColor: widget.barrierColor ?? Colors.black.withOpacity(0.8),
         child: OutlinedContainer(
           backgroundColor: themeData.colorScheme.popover,
-          borderRadius: themeData.radiusXxl,
+          borderRadius: themeData.borderRadiusXxl,
           borderWidth: 1 * scaling,
           borderColor: themeData.colorScheme.muted,
           padding: EdgeInsets.all(24 * scaling),

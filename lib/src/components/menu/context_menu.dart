@@ -476,6 +476,7 @@ Future<void> _showContextMenu(
   Axis direction,
 ) async {
   final key = GlobalKey<PopoverAnchorState>();
+  final theme = Theme.of(context);
   return showPopover(
     key: key,
     context: context,
@@ -487,6 +488,9 @@ Future<void> _showContextMenu(
     follow: false,
     consumeOutsideTaps: false,
     dismissBackdropFocus: false,
+    overlayBarrier: OverlayBarrier(
+      borderRadius: BorderRadius.circular(theme.radiusMd),
+    ),
     builder: (context) {
       return AnimatedBuilder(
           animation: children,

@@ -435,8 +435,16 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
                     alignment: widget.popoverAlignment,
                     anchorAlignment: widget.popoverAnchorAlignment,
                     widthConstraint: widget.popupWidthConstraint,
+                    overlayBarrier: OverlayBarrier(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 8) * scaling,
+                      borderRadius: BorderRadius.circular(theme.radiusLg),
+                    ),
                     builder: (context) {
                       return SelectPopup<T>(
+                        borderRadius: BorderRadius.circular(theme.radiusLg),
+                        margin:
+                            const EdgeInsets.symmetric(vertical: 8) * scaling,
                         autoClose: widget.autoClosePopover,
                         orderSelectedFirst: widget.orderSelectedFirst,
                         searchPlaceholder: widget.searchPlaceholder,
@@ -512,6 +520,8 @@ class SelectPopup<T> extends StatefulWidget {
   final double? surfaceBlur;
   final double? surfaceOpacity;
   final bool autoClose;
+  final EdgeInsetsGeometry margin;
+  final BorderRadiusGeometry borderRadius;
 
   const SelectPopup({
     super.key,
@@ -526,6 +536,8 @@ class SelectPopup<T> extends StatefulWidget {
     this.surfaceBlur,
     this.surfaceOpacity,
     this.autoClose = true,
+    required this.margin,
+    required this.borderRadius,
     required this.children,
   });
 
@@ -562,7 +574,7 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
     final surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
     final surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8) * scaling,
+      margin: widget.margin,
       constraints: widget.constraints ??
           (const BoxConstraints(
                 minWidth: 200,
@@ -572,6 +584,7 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
         clipBehavior: Clip.hardEdge,
         surfaceBlur: surfaceBlur,
         surfaceOpacity: surfaceOpacity,
+        borderRadius: widget.borderRadius,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
@@ -1010,8 +1023,16 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
                     alignment: widget.popoverAlignment,
                     anchorAlignment: widget.popoverAnchorAlignment,
                     widthConstraint: widget.popupWidthConstraint,
+                    overlayBarrier: OverlayBarrier(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 8) * scaling,
+                      borderRadius: BorderRadius.circular(theme.radiusLg),
+                    ),
                     builder: (context) {
                       return SelectPopup<T>(
+                        borderRadius: BorderRadius.circular(theme.radiusLg),
+                        margin:
+                            const EdgeInsets.symmetric(vertical: 8) * scaling,
                         orderSelectedFirst: widget.orderSelectedFirst,
                         searchPlaceholder: widget.searchPlaceholder,
                         searchFilter: widget.searchFilter,

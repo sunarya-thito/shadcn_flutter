@@ -24,7 +24,7 @@ class MenubarState extends State<Menubar> {
       return OutlinedContainer(
         borderColor: theme.colorScheme.border,
         backgroundColor: theme.colorScheme.background,
-        borderRadius: theme.radiusMd,
+        borderRadius: theme.borderRadiusMd,
         child: AnimatedPadding(
           duration: kDefaultDuration,
           padding: const EdgeInsets.all(4) * theme.scaling,
