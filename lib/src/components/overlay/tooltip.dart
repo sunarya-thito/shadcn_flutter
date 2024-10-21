@@ -43,7 +43,7 @@ class TooltipContainer extends StatelessWidget {
           width: 1,
         ),
       ),
-      child: child.normal().foreground(),
+      child: child.small(),
     );
     if (surfaceBlur != null && surfaceBlur > 0) {
       animatedContainer = SurfaceBlur(
