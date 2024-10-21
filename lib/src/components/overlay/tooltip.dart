@@ -32,7 +32,7 @@ class TooltipContainer extends StatelessWidget {
       duration: kDefaultDuration,
       padding: const EdgeInsets.symmetric(
             horizontal: 12,
-            vertical: 10,
+            vertical: 8,
           ) *
           scaling,
       decoration: BoxDecoration(
