@@ -31,8 +31,8 @@ class TooltipContainer extends StatelessWidget {
     Widget animatedContainer = AnimatedContainer(
       duration: kDefaultDuration,
       padding: const EdgeInsets.symmetric(
-            horizontal: 14,
-            vertical: 8,
+            horizontal: 12,
+            vertical: 6,
           ) *
           scaling,
       decoration: BoxDecoration(
