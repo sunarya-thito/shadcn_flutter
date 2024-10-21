@@ -18,7 +18,7 @@ class TooltipContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    var backgroundColor = theme.colorScheme.primary;
+    var backgroundColor = theme.colorScheme.muted.withOpacity(0);
     // var surfaceOpacity = this.surfaceOpacity ?? theme.surfaceOpacity;
     // var surfaceBlur = this.surfaceBlur ?? theme.surfaceBlur;
     // Do not use the default value of theme.surfaceOpacity and theme.surfaceBlur
@@ -32,14 +32,18 @@ class TooltipContainer extends StatelessWidget {
       duration: kDefaultDuration,
       padding: const EdgeInsets.symmetric(
             horizontal: 12,
-            vertical: 6,
+            vertical: 8,
           ) *
           scaling,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(theme.radiusSm),
+        borderRadius: BorderRadius.circular(theme.radiusMd),
+        border: Border.all(
+          color: theme.colorScheme.muted,
+          width: 1,
+        ),
       ),
-      child: child.xSmall().primaryForeground(),
+      child: child.small(),
     );
     if (surfaceBlur != null && surfaceBlur > 0) {
       animatedContainer = SurfaceBlur(

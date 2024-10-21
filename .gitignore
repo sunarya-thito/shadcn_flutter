@@ -38,3 +38,8 @@ build/
 /example/windows/
 /.flutter-plugins
 /.flutter-plugins-dependencies
+
+# FVM Version Cache
+.fvm/
+shadcn_flutter_test/.flutter-plugins
+shadcn_flutter_test/.flutter-plugins-dependencies
