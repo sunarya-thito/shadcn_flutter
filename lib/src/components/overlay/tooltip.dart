@@ -37,7 +37,7 @@ class TooltipContainer extends StatelessWidget {
           scaling,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(theme.radiusSm),
+        borderRadius: BorderRadius.circular(theme.radiusMd),
         border: Border.all(
           color: theme.colorScheme.muted,
           width: 1,
