@@ -27,8 +27,6 @@ dependencies:
   data_widget: ^0.0.2
 
 dev_dependencies:
-  shadcn_flutter_test:
-    path: './shadcn_flutter_test'
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
