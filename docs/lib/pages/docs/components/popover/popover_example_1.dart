@@ -11,9 +11,11 @@ class PopoverExample1 extends StatelessWidget {
         showPopover(
           context: context,
           alignment: Alignment.topCenter,
+          offset: const Offset(0, 8),
+          // Unless you have full opacity surface,
+          // you should explicitly set the overlay barrier.
           overlayBarrier: OverlayBarrier(
             borderRadius: theme.borderRadiusLg,
-            padding: const EdgeInsets.symmetric(vertical: 8),
           ),
           builder: (context) {
             return SurfaceCard(
@@ -64,7 +66,7 @@ class PopoverExample1 extends StatelessWidget {
                   ],
                 ),
               ),
-            ).withPadding(vertical: 8);
+            );
           },
         );
       },
