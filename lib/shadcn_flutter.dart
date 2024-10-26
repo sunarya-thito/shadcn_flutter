@@ -4,6 +4,11 @@ library shadcn_flutter;
 export 'package:country_flags/country_flags.dart' show CountryFlag;
 // bundle cross_file
 export 'package:cross_file/cross_file.dart' show XFile;
+// bundle from gap
+// export 'package:gap/gap.dart' hide Gap;
+// bundle from data_widget
+export 'package:data_widget/data_widget.dart';
+export 'package:data_widget/extension.dart';
 export 'package:flutter/cupertino.dart'
     show
         cupertinoDesktopTextSelectionControls,
@@ -52,8 +57,6 @@ export 'package:flutter/widgets.dart'
         AnimatedPositioned,
         AnimatedPhysicalModel,
         AnimatedSize;
-// bundle from gap
-// export 'package:gap/gap.dart' hide Gap;
 // bundle from https://pub.dev/packages/phonecodes
 export 'package:phonecodes/phonecodes.dart' show Countries, Country;
 export 'package:pixel_snap/widgets.dart'
@@ -178,7 +181,6 @@ export 'src/components/overlay/tooltip.dart';
 export 'src/components/text/selectable.dart';
 export 'src/components/text/text.dart';
 export 'src/components/text/underline_text.dart';
-export 'src/data.dart';
 export 'src/icons/bootstrap_icons.dart';
 export 'src/icons/radix_icons.dart';
 export 'src/shadcn_app.dart';
