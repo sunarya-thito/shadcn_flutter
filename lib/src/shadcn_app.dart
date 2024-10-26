@@ -490,13 +490,14 @@ class ShadcnLayer extends StatelessWidget {
     var appScaling = scaling ?? AdaptiveScaler.defaultScaling(theme);
     var platformBrightness = MediaQuery.platformBrightnessOf(context);
     var smallScreenLikeMobile = MediaQuery.sizeOf(context).shortestSide < 600;
-    final scaledTheme = platformBrightness == Brightness.dark
-        ? appScaling.scale(darkTheme ?? theme)
-        : appScaling.scale(theme);
+    final scaledTheme =
+        platformBrightness == Brightness.dark || themeMode == ThemeMode.dark
+            ? appScaling.scale(darkTheme ?? theme)
+            : appScaling.scale(theme);
     return OverlayManagerLayer(
       popoverHandler: popoverHandler ??
           (smallScreenLikeMobile
-              ? const DialogOverlayHandler()
+              ? const SheetOverlayHandler()
               : const PopoverOverlayHandler()),
       tooltipHandler: tooltipHandler ??
           (smallScreenLikeMobile

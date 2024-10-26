@@ -11,7 +11,7 @@ abstract class OverlayCompleter<T> {
 
 abstract class OverlayHandler {
   const OverlayHandler();
-  OverlayCompleter<T> show<T>({
+  OverlayCompleter<T?> show<T>({
     required BuildContext context,
     required AlignmentGeometry alignment,
     required WidgetBuilder builder,
@@ -61,7 +61,7 @@ abstract class OverlayManager implements OverlayHandler {
   }
 
   @override
-  OverlayCompleter<T> show<T>({
+  OverlayCompleter<T?> show<T>({
     required BuildContext context,
     required WidgetBuilder builder,
     AlignmentGeometry alignment = Alignment.center,
@@ -88,7 +88,7 @@ abstract class OverlayManager implements OverlayHandler {
     OverlayBarrier? overlayBarrier,
   });
 
-  OverlayCompleter<T> showTooltip<T>({
+  OverlayCompleter<T?> showTooltip<T>({
     required BuildContext context,
     required WidgetBuilder builder,
     AlignmentGeometry alignment = Alignment.center,
@@ -143,7 +143,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
   }
 
   @override
-  OverlayCompleter<T> show<T>({
+  OverlayCompleter<T?> show<T>({
     required BuildContext context,
     required WidgetBuilder builder,
     AlignmentGeometry alignment = Alignment.center,
@@ -198,7 +198,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
   }
 
   @override
-  OverlayCompleter<T> showTooltip<T>({
+  OverlayCompleter<T?> showTooltip<T>({
     required BuildContext context,
     required WidgetBuilder builder,
     AlignmentGeometry alignment = Alignment.center,

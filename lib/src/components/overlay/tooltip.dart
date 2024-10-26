@@ -179,7 +179,7 @@ class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
   });
 
   @override
-  OverlayCompleter<T> show<T>({
+  OverlayCompleter<T?> show<T>({
     required BuildContext context,
     required AlignmentGeometry alignment,
     required WidgetBuilder builder,
