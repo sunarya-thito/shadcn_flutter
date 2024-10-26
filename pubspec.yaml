@@ -24,6 +24,7 @@ dependencies:
   pixel_snap: ^0.1.5
   file_picker: ^8.1.2
   audioplayers: ^6.1.0
+  data_widget: ^0.0.2
 
 dev_dependencies:
   shadcn_flutter_test:
