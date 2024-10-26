@@ -1697,7 +1697,7 @@ class _ColorPickerPopupState extends State<_ColorPickerPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return SurfaceCard(
+    return OverlayAdaptiveSurfaceCard(
       child: ColorInputPopup(
         color: _color,
         onChanged: (value) {

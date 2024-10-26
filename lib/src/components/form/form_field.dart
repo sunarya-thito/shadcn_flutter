@@ -356,15 +356,22 @@ class _ObjectFormFieldPopupState<T> extends State<_ObjectFormFieldPopup<T>>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    var isSheetOverlay = Data.maybeOf<SheetOverlayHandler>(context) != null;
     return Data<ObjectFormHandler<T>>.inherit(
       data: this,
       child: Padding(
         padding: widget.popoverPadding ??
             (const EdgeInsets.symmetric(vertical: 8) * theme.scaling),
-        child: SurfaceCard(
-          child: widget.editorBuilder(
-            context,
-            this,
+        child: OverlayAdaptiveSurfaceCard(
+          child: Padding(
+            padding: isSheetOverlay
+                ? EdgeInsets.symmetric(
+                    horizontal: 16 * theme.scaling, vertical: 8 * theme.scaling)
+                : EdgeInsets.zero,
+            child: widget.editorBuilder(
+              context,
+              this,
+            ),
           ),
         ),
       ),

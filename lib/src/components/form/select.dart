@@ -271,10 +271,13 @@ class SelectLabel extends StatelessWidget {
   }
 }
 
+typedef SelectSearch = void Function(String query);
+
 class Select<T> extends StatefulWidget {
   final ValueChanged<T?>? onChanged; // if null, then it's a disabled combobox
   final SearchFilter<T>?
       searchFilter; // if its not null, then it's a searchable combobox
+  final SelectSearch? onSearch;
   final Widget? placeholder; // placeholder when value is null
   final bool filled;
   final FocusNode? focusNode;
@@ -322,6 +325,7 @@ class Select<T> extends StatefulWidget {
     this.surfaceOpacity,
     this.canUnselect = false,
     this.autoClosePopover = true,
+    this.onSearch,
     required this.itemBuilder,
     required this.children,
   });
@@ -445,6 +449,7 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
                         borderRadius: BorderRadius.circular(theme.radiusLg),
                         margin:
                             const EdgeInsets.symmetric(vertical: 8) * scaling,
+                        onSearch: widget.onSearch,
                         autoClose: widget.autoClosePopover,
                         orderSelectedFirst: widget.orderSelectedFirst,
                         searchPlaceholder: widget.searchPlaceholder,
@@ -522,6 +527,7 @@ class SelectPopup<T> extends StatefulWidget {
   final bool autoClose;
   final EdgeInsetsGeometry margin;
   final BorderRadiusGeometry borderRadius;
+  final SelectSearch? onSearch;
 
   const SelectPopup({
     super.key,
@@ -536,6 +542,7 @@ class SelectPopup<T> extends StatefulWidget {
     this.surfaceBlur,
     this.surfaceOpacity,
     this.autoClose = true,
+    this.onSearch,
     required this.margin,
     required this.borderRadius,
     required this.children,
@@ -573,18 +580,20 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
     final scaling = theme.scaling;
     final surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
     final surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
+    var isSheetOverlay = Data.maybeOf<SheetOverlayHandler>(context) != null;
     return Container(
-      margin: widget.margin,
+      margin: isSheetOverlay ? null : widget.margin,
       constraints: widget.constraints ??
           (const BoxConstraints(
                 minWidth: 200,
               ) *
               scaling),
-      child: OutlinedContainer(
+      child: OverlayAdaptiveSurfaceCard(
         clipBehavior: Clip.hardEdge,
         surfaceBlur: surfaceBlur,
         surfaceOpacity: surfaceOpacity,
         borderRadius: widget.borderRadius,
+        padding: EdgeInsets.zero,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
@@ -610,6 +619,9 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
                         controller: _searchController,
                         border: false,
                         placeholder: widget.searchPlaceholder,
+                        onChanged: (value) {
+                          widget.onSearch?.call(value);
+                        },
                         padding:
                             const EdgeInsets.symmetric(vertical: 12) * scaling,
                       ),
@@ -888,6 +900,7 @@ class MultiSelect<T> extends StatefulWidget {
   final double? surfaceOpacity;
   final bool disableHoverEffect;
   final bool autoClosePopover;
+  final SelectSearch? onSearch;
 
   const MultiSelect({
     super.key,
@@ -912,6 +925,7 @@ class MultiSelect<T> extends StatefulWidget {
     this.surfaceBlur,
     this.surfaceOpacity,
     this.autoClosePopover = false,
+    this.onSearch,
     required this.itemBuilder,
     required this.children,
   });
@@ -1035,6 +1049,7 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
                             const EdgeInsets.symmetric(vertical: 8) * scaling,
                         orderSelectedFirst: widget.orderSelectedFirst,
                         searchPlaceholder: widget.searchPlaceholder,
+                        onSearch: widget.onSearch,
                         searchFilter: widget.searchFilter,
                         constraints: widget.popupConstraints,
                         value: _valueNotifier,
