@@ -42,6 +42,7 @@ class TextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final Clip clipBehavior;
+  final bool autofocus;
 
   const TextField({
     super.key,
@@ -81,6 +82,7 @@ class TextField extends StatefulWidget {
     this.isCollapsed,
     this.textInputAction,
     this.clipBehavior = Clip.hardEdge,
+    this.autofocus = false,
   });
 
   static Widget _defaultContextMenuBuilder(
@@ -205,6 +207,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
       keyboardType: widget.keyboardType,
       textAlign: widget.textAlign,
       obscureText: widget.obscureText,
+      autofocus: widget.autofocus,
       obscuringCharacter: widget.obscuringCharacter,
       enabled: widget.enabled,
       readOnly: widget.readOnly,

@@ -20,6 +20,7 @@ class CommandEmpty extends StatelessWidget {
 }
 
 class Command extends StatefulWidget {
+  final bool autofocus;
   final CommandBuilder builder;
   final Duration
       debounceDuration; // debounce is used to prevent too many requests
@@ -32,6 +33,7 @@ class Command extends StatefulWidget {
   const Command({
     super.key,
     required this.builder,
+    this.autofocus = true,
     this.debounceDuration = const Duration(milliseconds: 500),
     this.emptyBuilder,
     this.errorBuilder,
@@ -97,6 +99,7 @@ class _CommandState extends State<Command> {
                   ).iconSmall().iconMutedForeground(),
                   Expanded(
                     child: TextField(
+                      autofocus: true,
                       controller: _controller,
                       border: false,
                       // focusNode: _textFieldFocus,
