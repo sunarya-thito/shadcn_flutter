@@ -19,6 +19,7 @@ class PopoverOverlayHandler extends OverlayHandler {
     Key? key,
     bool rootOverlay = true,
     bool modal = true,
+    bool barrierDismissable = true,
     ui.Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     ui.Offset? offset,
@@ -66,6 +67,7 @@ class PopoverOverlayHandler extends OverlayHandler {
           builder: (context) {
             return GestureDetector(
               onTap: () {
+                if (!barrierDismissable) return;
                 isClosed.value = true;
               },
             );
@@ -77,6 +79,7 @@ class PopoverOverlayHandler extends OverlayHandler {
             return Listener(
               behavior: HitTestBehavior.translucent,
               onPointerDown: (event) {
+                if (!barrierDismissable) return;
                 isClosed.value = true;
               },
             );
@@ -549,7 +552,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
 }
 
 Future<void> closePopover<T>(BuildContext context, [T? value]) {
-  return Data.maybeOf<PopoverAnchorState>(context)
+  return Data.maybeFind<PopoverAnchorState>(context)
           ?.widget
           .onCloseWithResult
           ?.call(value) ??
@@ -610,6 +613,7 @@ OverlayCompleter<T?> showPopover<T>({
   Key? key,
   bool rootOverlay = true,
   bool modal = true,
+  bool barrierDismissable = true,
   Clip clipBehavior = Clip.none,
   Object? regionGroupId,
   Offset? offset,
@@ -638,6 +642,7 @@ OverlayCompleter<T?> showPopover<T>({
     key: key,
     rootOverlay: rootOverlay,
     modal: modal,
+    barrierDismissable: barrierDismissable,
     clipBehavior: clipBehavior,
     regionGroupId: regionGroupId,
     offset: offset,

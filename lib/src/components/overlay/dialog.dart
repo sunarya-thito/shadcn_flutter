@@ -246,6 +246,7 @@ class DialogOverlayHandler extends OverlayHandler {
     Key? key,
     bool rootOverlay = true,
     bool modal = true,
+    bool barrierDismissable = true,
     Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     Offset? offset,
@@ -276,7 +277,7 @@ class DialogOverlayHandler extends OverlayHandler {
           return Data.inherit(
             data: this,
             child: ModalContainer(
-              modal: overlayBarrier.modal,
+              modal: modal,
               borderRadius: overlayBarrier.borderRadius,
               padding: overlayBarrier.padding,
               barrierColor: overlayBarrier.barrierColor ??
@@ -291,7 +292,7 @@ class DialogOverlayHandler extends OverlayHandler {
         );
       },
       themes: themes,
-      barrierDismissible: true,
+      barrierDismissible: barrierDismissable,
       barrierColor: overlayBarrier == null
           ? const Color.fromRGBO(0, 0, 0, 0.8)
           : Colors.transparent,

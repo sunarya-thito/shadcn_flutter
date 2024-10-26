@@ -95,6 +95,8 @@ class DrawerWrapper extends StatefulWidget {
   final double? surfaceBlur;
   final Color? barrierColor;
   final int stackIndex;
+  final double? gapBeforeDragger;
+  final double? gapAfterDragger;
 
   const DrawerWrapper({
     super.key,
@@ -111,6 +113,8 @@ class DrawerWrapper extends StatefulWidget {
     this.surfaceOpacity,
     this.surfaceBlur,
     this.barrierColor,
+    this.gapBeforeDragger,
+    this.gapAfterDragger,
     required this.stackIndex,
   });
 
@@ -241,9 +245,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                 animation: _extraOffset,
               ),
               if (widget.showDragHandle) ...[
-                Gap(16 * theme.scaling),
+                Gap(widget.gapAfterDragger ?? 16 * theme.scaling),
                 buildDraggableBar(theme),
-                Gap(12 * theme.scaling),
+                Gap(widget.gapBeforeDragger ?? 12 * theme.scaling),
               ],
             ],
           ),
@@ -285,9 +289,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
             mainAxisSize: MainAxisSize.min,
             children: [
               if (widget.showDragHandle) ...[
-                Gap(12 * theme.scaling),
+                Gap(widget.gapBeforeDragger ?? 12 * theme.scaling),
                 buildDraggableBar(theme),
-                Gap(16 * theme.scaling),
+                Gap(widget.gapAfterDragger ?? 16 * theme.scaling),
               ],
               AnimatedBuilder(
                 builder: (context, child) {
@@ -361,9 +365,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                 animation: _extraOffset,
               ),
               if (widget.showDragHandle) ...[
-                Gap(16 * theme.scaling),
+                Gap(widget.gapAfterDragger ?? 16 * theme.scaling),
                 buildDraggableBar(theme),
-                Gap(12 * theme.scaling),
+                Gap(widget.gapBeforeDragger ?? 12 * theme.scaling),
               ],
             ],
           ),
@@ -405,9 +409,9 @@ class _DrawerWrapperState extends State<DrawerWrapper>
             mainAxisSize: MainAxisSize.min,
             children: [
               if (widget.showDragHandle) ...[
-                Gap(12 * theme.scaling),
+                Gap(widget.gapBeforeDragger ?? 12 * theme.scaling),
                 buildDraggableBar(theme),
-                Gap(16 * theme.scaling),
+                Gap(widget.gapAfterDragger ?? 16 * theme.scaling),
               ],
               AnimatedBuilder(
                 builder: (context, child) {
@@ -585,6 +589,8 @@ class SheetWrapper extends DrawerWrapper {
     super.surfaceBlur,
     super.surfaceOpacity,
     super.barrierColor,
+    super.gapBeforeDragger,
+    super.gapAfterDragger,
   });
 
   @override
@@ -1315,6 +1321,7 @@ class SheetOverlayHandler extends OverlayHandler {
     Key? key,
     bool rootOverlay = true,
     bool modal = true,
+    bool barrierDismissable = true,
     Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     Offset? offset,
@@ -1333,17 +1340,19 @@ class SheetOverlayHandler extends OverlayHandler {
     return openRawDrawer<T>(
       context: context,
       transformBackdrop: false,
-      barrierDismissible: !modal,
       useSafeArea: false,
+      barrierDismissible: barrierDismissable,
       builder: (context, extraSize, size, padding, stackIndex) {
         return Data.inherit(
           data: this,
           child: Builder(builder: (context) {
             return SheetWrapper(
               position: this.position,
+              gapAfterDragger: 0,
               expands: true,
               extraSize: extraSize,
               size: size,
+              draggable: barrierDismissable,
               padding: padding,
               barrierColor: barrierColor,
               stackIndex: stackIndex,

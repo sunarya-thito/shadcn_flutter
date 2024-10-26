@@ -22,6 +22,7 @@ abstract class OverlayHandler {
     Key? key,
     bool rootOverlay = true,
     bool modal = true,
+    bool barrierDismissable = true,
     Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     Offset? offset,
@@ -40,13 +41,11 @@ abstract class OverlayHandler {
 }
 
 class OverlayBarrier {
-  final bool modal;
   final EdgeInsetsGeometry padding;
   final BorderRadiusGeometry borderRadius;
   final Color? barrierColor;
 
   const OverlayBarrier({
-    this.modal = true,
     this.padding = EdgeInsets.zero,
     this.borderRadius = BorderRadius.zero,
     this.barrierColor,
@@ -72,6 +71,7 @@ abstract class OverlayManager implements OverlayHandler {
     Key? key,
     bool rootOverlay = true,
     bool modal = true,
+    bool barrierDismissable = true,
     Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     Offset? offset,
@@ -99,6 +99,7 @@ abstract class OverlayManager implements OverlayHandler {
     Key? key,
     bool rootOverlay = true,
     bool modal = true,
+    bool barrierDismissable = true,
     Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     Offset? offset,
@@ -154,6 +155,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     Key? key,
     bool rootOverlay = true,
     bool modal = true,
+    bool barrierDismissable = true,
     Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     Offset? offset,
@@ -180,6 +182,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       key: key,
       rootOverlay: rootOverlay,
       modal: modal,
+      barrierDismissable: barrierDismissable,
       clipBehavior: clipBehavior,
       regionGroupId: regionGroupId,
       offset: offset,
@@ -209,6 +212,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     Key? key,
     bool rootOverlay = true,
     bool modal = true,
+    bool barrierDismissable = true,
     Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     Offset? offset,
@@ -235,6 +239,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       key: key,
       rootOverlay: rootOverlay,
       modal: modal,
+      barrierDismissable: barrierDismissable,
       clipBehavior: clipBehavior,
       regionGroupId: regionGroupId,
       offset: offset,
