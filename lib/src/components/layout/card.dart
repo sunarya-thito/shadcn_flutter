@@ -101,3 +101,53 @@ class SurfaceCard extends StatelessWidget {
     );
   }
 }
+
+class OverlayAdaptiveSurfaceCard extends StatelessWidget {
+  final Widget child;
+  final EdgeInsetsGeometry? padding;
+  final bool filled;
+  final Color? fillColor;
+  final BorderRadiusGeometry? borderRadius;
+  final Color? borderColor;
+  final double? borderWidth;
+  final Clip clipBehavior;
+  final List<BoxShadow>? boxShadow;
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
+
+  const OverlayAdaptiveSurfaceCard({
+    super.key,
+    required this.child,
+    this.padding,
+    this.filled = false,
+    this.fillColor,
+    this.borderRadius,
+    this.clipBehavior = Clip.none,
+    this.borderColor,
+    this.borderWidth,
+    this.boxShadow,
+    this.surfaceOpacity,
+    this.surfaceBlur,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var isSheetOverlay = Data.maybeOf<SheetOverlayHandler>(context) != null;
+    if (isSheetOverlay) {
+      return child;
+    }
+    return SurfaceCard(
+      clipBehavior: clipBehavior,
+      borderRadius: borderRadius,
+      borderWidth: borderWidth,
+      borderColor: borderColor,
+      filled: filled,
+      fillColor: fillColor,
+      boxShadow: boxShadow,
+      padding: padding,
+      surfaceOpacity: surfaceOpacity,
+      surfaceBlur: surfaceBlur,
+      child: child,
+    );
+  }
+}
