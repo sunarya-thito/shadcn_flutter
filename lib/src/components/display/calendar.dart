@@ -18,6 +18,7 @@ class DatePickerDialog extends StatefulWidget {
   final CalendarViewType initialViewType;
   final CalendarView? initialView;
   final CalendarSelectionMode selectionMode;
+  final CalendarSelectionMode? viewMode;
   final CalendarValue? initialValue;
   final ValueChanged<CalendarValue?>? onChanged;
   final DateStateBuilder? stateBuilder;
@@ -27,6 +28,7 @@ class DatePickerDialog extends StatefulWidget {
     required this.initialViewType,
     this.initialView,
     required this.selectionMode,
+    this.viewMode,
     this.initialValue,
     this.onChanged,
     this.stateBuilder,
@@ -71,6 +73,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
   Widget build(BuildContext context) {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
+    final viewMode = widget.viewMode ?? widget.selectionMode;
     if (widget.selectionMode == CalendarSelectionMode.range) {
       return IntrinsicWidth(
         child: Column(
@@ -135,14 +138,16 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               .center(),
                         ).sized(height: theme.scaling * 32),
                       ),
-                      if (_viewType == CalendarViewType.date)
+                      if (_viewType == CalendarViewType.date &&
+                          viewMode == CalendarSelectionMode.range)
                         SizedBox(
                           width: theme.scaling * 32,
                         ),
                       SizedBox(
                         width: theme.scaling * 16,
                       ),
-                      if (_viewType != CalendarViewType.date)
+                      if (_viewType != CalendarViewType.date ||
+                          viewMode != CalendarSelectionMode.range)
                         OutlineButton(
                           density: ButtonDensity.icon,
                           onPressed: () {
@@ -165,7 +170,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     ],
                   ),
                 ),
-                if (_viewType == CalendarViewType.date)
+                if (_viewType == CalendarViewType.date &&
+                    viewMode == CalendarSelectionMode.range)
                   Expanded(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -231,6 +237,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
             Gap(theme.scaling * 16),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: viewMode == CalendarSelectionMode.range
+                  ? MainAxisAlignment.spaceAround
+                  : MainAxisAlignment.center,
               children: [
                 buildView(
                   context,
@@ -260,8 +269,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     });
                   },
                 ),
-                if (_viewType == CalendarViewType.date) const Spacer(),
-                if (_viewType == CalendarViewType.date)
+                if (_viewType == CalendarViewType.date &&
+                    viewMode == CalendarSelectionMode.range)
                   buildView(
                     context,
                     _yearSelectStart,

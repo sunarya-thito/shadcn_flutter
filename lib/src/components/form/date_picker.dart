@@ -141,23 +141,28 @@ class DateRangePicker extends StatelessWidget {
       },
       editorBuilder: (context, handler) {
         DateTimeRange? value = handler.value;
-        return DatePickerDialog(
-          initialView: initialView,
-          initialViewType: initialViewType ?? CalendarViewType.date,
-          selectionMode: CalendarSelectionMode.range,
-          initialValue: value == null
-              ? null
-              : CalendarValue.range(value.start, value.end),
-          onChanged: (value) {
-            if (value == null) {
-              handler.value = null;
-            } else {
-              final range = value.toRange();
-              handler.value = DateTimeRange(range.start, range.end);
-            }
-          },
-          stateBuilder: stateBuilder,
-        );
+        return LayoutBuilder(builder: (context, constraints) {
+          return DatePickerDialog(
+            initialView: initialView,
+            initialViewType: initialViewType ?? CalendarViewType.date,
+            selectionMode: CalendarSelectionMode.range,
+            viewMode: constraints.biggest.width < 500
+                ? CalendarSelectionMode.single
+                : CalendarSelectionMode.range,
+            initialValue: value == null
+                ? null
+                : CalendarValue.range(value.start, value.end),
+            onChanged: (value) {
+              if (value == null) {
+                handler.value = null;
+              } else {
+                final range = value.toRange();
+                handler.value = DateTimeRange(range.start, range.end);
+              }
+            },
+            stateBuilder: stateBuilder,
+          );
+        });
       },
     );
   }
