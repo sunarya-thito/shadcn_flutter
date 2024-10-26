@@ -132,6 +132,7 @@ class _AutoCompleteState extends State<AutoComplete> {
       _selectedIndex.value = -1;
       _popoverController.show(
         context: context,
+        handler: const PopoverOverlayHandler(),
         builder: (context) {
           final theme = Theme.of(context);
           return ConstrainedBox(

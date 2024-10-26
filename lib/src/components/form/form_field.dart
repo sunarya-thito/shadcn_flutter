@@ -153,6 +153,7 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
         padding: const EdgeInsets.symmetric(vertical: 8) * scaling,
         borderRadius: BorderRadius.circular(theme.radiusLg),
       ),
+      offset: Offset(0, 8 * scaling),
       builder: (context) {
         return _ObjectFormFieldPopup<T>(
           value: value,
@@ -350,29 +351,25 @@ class _ObjectFormFieldPopupState<T> extends State<_ObjectFormFieldPopup<T>>
 
   @override
   Future<void> close() {
+    var isSheetOverlay = Data.maybeFind<SheetOverlayHandler>(context) != null;
+    if (isSheetOverlay) {
+      return closeDrawer(context);
+    }
     return closePopover(context);
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    var isSheetOverlay = Data.maybeOf<SheetOverlayHandler>(context) != null;
     return Data<ObjectFormHandler<T>>.inherit(
       data: this,
-      child: Padding(
+      child: SurfaceCard(
         padding: widget.popoverPadding ??
-            (const EdgeInsets.symmetric(vertical: 8) * theme.scaling),
-        child: OverlayAdaptiveSurfaceCard(
-          child: Padding(
-            padding: isSheetOverlay
-                ? EdgeInsets.symmetric(
-                    horizontal: 16 * theme.scaling, vertical: 8 * theme.scaling)
-                : EdgeInsets.zero,
-            child: widget.editorBuilder(
-              context,
-              this,
-            ),
-          ),
+            (const EdgeInsets.symmetric(vertical: 16, horizontal: 16) *
+                theme.scaling),
+        child: widget.editorBuilder(
+          context,
+          this,
         ),
       ),
     );

@@ -693,40 +693,42 @@ class _ColorInputSetState extends State<ColorInputSet> {
   Widget build(BuildContext context) {
     final localizations = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
-    return IntrinsicWidth(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Tabs(
-              index: _tabIndex,
-              onChanged: (value) {
-                setState(() {
-                  _tabIndex = value;
-                });
-              },
-              tabs: [
-                Text(localizations.colorPickerTabRGB),
-                Text(localizations.colorPickerTabHSL),
-                Text(localizations.colorPickerTabHSV),
-                if (widget.storage != null)
-                  Text(localizations.colorPickerTabRecent),
-              ]),
-          Gap(theme.scaling * 16),
-          _buildContent(context, theme),
-        ],
-      ),
-    );
+    return LayoutBuilder(builder: (context, constraints) {
+      return IntrinsicWidth(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Tabs(
+                index: _tabIndex,
+                onChanged: (value) {
+                  setState(() {
+                    _tabIndex = value;
+                  });
+                },
+                tabs: [
+                  Text(localizations.colorPickerTabRGB),
+                  Text(localizations.colorPickerTabHSL),
+                  Text(localizations.colorPickerTabHSV),
+                  if (widget.storage != null)
+                    Text(localizations.colorPickerTabRecent),
+                ]),
+            Gap(theme.scaling * 16),
+            _buildContent(context, theme, constraints.maxWidth),
+          ],
+        ),
+      );
+    });
   }
 
-  Widget _buildContent(BuildContext context, ThemeData theme) {
+  Widget _buildContent(BuildContext context, ThemeData theme, double width) {
     switch (_tabIndex) {
       case 0:
-        return _buildColorTab(context, ColorPickerMode.rgb);
+        return _buildColorTab(context, ColorPickerMode.rgb, width);
       case 1:
-        return _buildColorTab(context, ColorPickerMode.hsl);
+        return _buildColorTab(context, ColorPickerMode.hsl, width);
       case 2:
-        return _buildColorTab(context, ColorPickerMode.hsv);
+        return _buildColorTab(context, ColorPickerMode.hsv, width);
       case 3:
       default:
         return _buildRecentTab(context);
@@ -748,7 +750,24 @@ class _ColorInputSetState extends State<ColorInputSet> {
     );
   }
 
-  Widget _buildColorTab(BuildContext context, ColorPickerMode mode) {
+  Widget _buildColorTab(
+      BuildContext context, ColorPickerMode mode, double width) {
+    if (width < 500) {
+      return MiniColorPickerSet(
+        key: ValueKey(mode),
+        color: widget.color,
+        mode: mode,
+        onColorChanged: widget.onChanged,
+        onColorChangeEnd: (value) {
+          widget.onColorChangeEnd?.call(value);
+          if (widget.storage != null) {
+            widget.storage!.addHistory(value.toColor());
+          }
+        },
+        showAlpha: widget.showAlpha,
+        onPickFromScreen: widget.onPickFromScreen,
+      );
+    }
     return ColorPickerSet(
       key: ValueKey(mode),
       color: widget.color,
@@ -1241,6 +1260,201 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
   }
 }
 
+class MiniColorPickerSet extends StatefulWidget {
+  final ColorDerivative color;
+  final ValueChanged<ColorDerivative>? onColorChanged;
+  final ValueChanged<ColorDerivative>? onColorChangeEnd;
+  final bool showAlpha;
+  final VoidCallback? onPickFromScreen;
+  final ColorPickerMode mode;
+
+  const MiniColorPickerSet({
+    super.key,
+    required this.color,
+    this.onColorChanged,
+    this.onColorChangeEnd,
+    this.showAlpha = true,
+    this.mode = ColorPickerMode.rgb,
+    this.onPickFromScreen,
+  });
+
+  @override
+  State<MiniColorPickerSet> createState() => _MiniColorPickerSetState();
+}
+
+class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
+  ColorDerivative get color => widget.color;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return IntrinsicWidth(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: theme.colorScheme.border,
+                ),
+                borderRadius: BorderRadius.circular(theme.radiusLg),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: widget.mode == ColorPickerMode.hsl
+                  ? HSLColorPickerArea(
+                      color: color.toHSLColor(),
+                      sliderType: HSLColorSliderType.satLum,
+                      reverse: true,
+                      onColorChanged: (value) {
+                        widget.onColorChanged?.call(widget.color
+                            .changeToHSLSaturation(value.saturation)
+                            .changeToHSLLightness(value.lightness));
+                      },
+                      onColorEnd: (value) {
+                        widget.onColorChangeEnd?.call(widget.color
+                            .changeToHSLSaturation(value.saturation)
+                            .changeToHSLLightness(value.lightness));
+                      },
+                    )
+                  : HSVColorPickerArea(
+                      color: color.toHSVColor(),
+                      onColorChanged: (value) {
+                        widget.onColorChanged?.call(widget.color
+                            .changeToHSVValue(value.value)
+                            .changeToHSVSaturation(value.saturation));
+                      },
+                      sliderType: HSVColorSliderType.satVal,
+                      reverse: true,
+                      onColorEnd: (value) {
+                        widget.onColorChangeEnd?.call(
+                          widget.color
+                              .changeToHSVValue(value.value)
+                              .changeToHSVSaturation(value.saturation),
+                        );
+                      },
+                    ),
+            ),
+          ),
+          Gap(theme.scaling * 16),
+          SizedBox(
+            height: theme.scaling * 32,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: theme.colorScheme.border,
+                ),
+                borderRadius: BorderRadius.circular(theme.radiusLg),
+              ),
+              child: widget.mode == ColorPickerMode.hsl
+                  ? HSLColorPickerArea(
+                      color: HSLColor.fromAHSL(
+                        color.opacity,
+                        color.hslHue,
+                        1,
+                        0.5,
+                      ),
+                      onColorEnd: (value) {
+                        widget.onColorChangeEnd
+                            ?.call(widget.color.changeToHSLHue(value.hue));
+                      },
+                      sliderType: HSLColorSliderType.hue,
+                      radius: Radius.circular(theme.radiusLg),
+                      reverse: true,
+                      onColorChanged: (value) {
+                        widget.onColorChanged
+                            ?.call(widget.color.changeToHSLHue(value.hue));
+                      },
+                    )
+                  : HSVColorPickerArea(
+                      color: HSVColor.fromAHSV(
+                        color.opacity,
+                        color.hsvHue,
+                        1,
+                        1,
+                      ),
+                      radius: Radius.circular(theme.radiusLg),
+                      onColorChanged: (value) {
+                        widget.onColorChanged
+                            ?.call(widget.color.changeToHSVHue(value.hue));
+                      },
+                      sliderType: HSVColorSliderType.hue,
+                      reverse: true,
+                      onColorEnd: (value) {
+                        widget.onColorChangeEnd
+                            ?.call(widget.color.changeToHSVHue(value.hue));
+                      },
+                    ),
+            ),
+          ),
+          if (widget.showAlpha) Gap(theme.scaling * 16),
+          // alpha
+          if (widget.showAlpha)
+            SizedBox(
+              height: 32 * theme.scaling,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: theme.colorScheme.border,
+                  ),
+                  borderRadius: BorderRadius.circular(theme.radiusLg),
+                ),
+                child: widget.mode == ColorPickerMode.hsl
+                    ? HSLColorPickerArea(
+                        color: HSLColor.fromAHSL(
+                          color.opacity,
+                          color.hslHue,
+                          1,
+                          0.5,
+                        ),
+                        sliderType: HSLColorSliderType.alpha,
+                        reverse: true,
+                        radius: Radius.circular(theme.radiusLg),
+                        onColorChanged: (value) {
+                          widget.onColorChanged
+                              ?.call(widget.color.changeToAlpha(value.alpha));
+                        },
+                        onColorEnd: (value) {
+                          widget.onColorChangeEnd
+                              ?.call(widget.color.changeToAlpha(value.alpha));
+                        },
+                      )
+                    : HSVColorPickerArea(
+                        color: HSVColor.fromAHSV(
+                          color.opacity,
+                          color.hsvHue,
+                          1,
+                          1,
+                        ),
+                        onColorChanged: (value) {
+                          widget.onColorChanged
+                              ?.call(widget.color.changeToAlpha(value.alpha));
+                        },
+                        sliderType: HSVColorSliderType.alpha,
+                        radius: Radius.circular(theme.radiusLg),
+                        reverse: true,
+                        onColorEnd: (value) {
+                          widget.onColorChangeEnd?.call(
+                            widget.color.changeToAlpha(value.alpha),
+                          );
+                        },
+                      ),
+              ),
+            ),
+          if (widget.onPickFromScreen != null) Gap(theme.scaling * 16),
+          if (widget.onPickFromScreen != null)
+            IconButton.outline(
+              onPressed: widget.onPickFromScreen,
+              icon: const Icon(BootstrapIcons.eyedropper),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 class ColorInput extends StatelessWidget {
   final ColorDerivative color;
   final ValueChanged<ColorDerivative>? onChanged;
@@ -1697,7 +1911,7 @@ class _ColorPickerPopupState extends State<_ColorPickerPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return OverlayAdaptiveSurfaceCard(
+    return SurfaceCard(
       child: ColorInputPopup(
         color: _color,
         onChanged: (value) {

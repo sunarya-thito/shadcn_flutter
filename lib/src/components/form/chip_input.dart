@@ -87,6 +87,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
       final theme = Theme.of(context);
       _popoverController.show(
         context: context,
+        handler: const PopoverOverlayHandler(),
         builder: (context) {
           return buildPopover(context);
         },
@@ -173,6 +174,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
                             style: const ButtonStyle.ghost(),
                             selectedStyle: const ButtonStyle.secondary(),
                             value: i == _selectedSuggestions.value,
+                            alignment: AlignmentDirectional.centerStart,
                             onChanged: (value) {
                               if (value) {
                                 widget.onSuggestionChoosen?.call(i);
@@ -327,6 +329,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
               if (text.isNotEmpty) {
                 widget.onSubmitted?.call(text);
               }
+              _onFocusChanged();
             },
             controller: _controller,
             undoController: widget.undoHistoryController,
