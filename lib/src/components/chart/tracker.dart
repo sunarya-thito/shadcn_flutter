@@ -103,6 +103,27 @@ class TrackerTheme {
       itemHeight: itemHeight ?? this.itemHeight,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is TrackerTheme &&
+        other.radius == radius &&
+        other.gap == gap &&
+        other.itemHeight == itemHeight;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        radius,
+        gap,
+        itemHeight,
+      );
+
+  @override
+  String toString() =>
+      'TrackerTheme(radius: $radius, gap: $gap, itemHeight: $itemHeight)';
 }
 
 /// A widget that displays a tracker.
