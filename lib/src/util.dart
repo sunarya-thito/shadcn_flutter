@@ -34,9 +34,14 @@ extension FutureOrExtension<T> on FutureOr<T> {
 
 extension AlignmentExtension on AlignmentGeometry {
   Alignment optionallyResolve(BuildContext context) {
+    // Why?
+    // Because this checks first if the alignment is already an Alignment
+    // before resolving the alignment based on the directionality of the context.
     if (this is Alignment) {
       return this as Alignment;
     }
+    // The code belows also ignores if the alignment is already resolved,
+    // but the code below fetches the directionality of the context.
     return resolve(Directionality.of(context));
   }
 }
@@ -45,6 +50,15 @@ extension BorderRadiusExtension on BorderRadiusGeometry {
   BorderRadiusGeometry optionallyResolve(BuildContext context) {
     if (this is BorderRadius) {
       return this as BorderRadius;
+    }
+    return resolve(Directionality.of(context));
+  }
+}
+
+extension EdgeInsetsExtension on EdgeInsetsGeometry {
+  EdgeInsets optionallyResolve(BuildContext context) {
+    if (this is EdgeInsets) {
+      return this as EdgeInsets;
     }
     return resolve(Directionality.of(context));
   }
@@ -76,7 +90,6 @@ bool isMobile(TargetPlatform platform) {
     case TargetPlatform.macOS:
     case TargetPlatform.linux:
     case TargetPlatform.windows:
-    case TargetPlatform.linux:
       return false;
   }
 }
@@ -649,6 +662,20 @@ Widget mergeAnimatedTextStyle({
 }) {
   return Builder(
     builder: (BuildContext context) {
+      bool shadcnFlutterSmoothAnimation =
+          Model.of(context, #shadcn_flutter_smooth_animation);
+      if (!shadcnFlutterSmoothAnimation) {
+        return DefaultTextStyle.merge(
+          key: key,
+          style: style,
+          textAlign: textAlign,
+          softWrap: softWrap,
+          overflow: overflow,
+          maxLines: maxLines,
+          textWidthBasis: textWidthBasis,
+          child: child,
+        );
+      }
       final defaultTextStyle = DefaultTextStyle.of(context);
       return AnimatedDefaultTextStyle(
         key: key,
