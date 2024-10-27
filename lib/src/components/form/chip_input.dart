@@ -20,6 +20,11 @@ class ChipInput<T> extends StatefulWidget {
   final ChipWidgetBuilder<T>? suggestionBuilder;
   final bool useChips;
   final TextInputAction? textInputAction;
+  final String? hintText;
+  final Widget Function(BuildContext, T)? suggestionLeadingBuilder;
+  final Widget Function(BuildContext, T)? suggestionTrailingBuilder;
+  final Widget? inputTrailingWidget;
+
   const ChipInput({
     super.key,
     this.controller,
@@ -38,6 +43,10 @@ class ChipInput<T> extends StatefulWidget {
     this.useChips = true,
     this.suggestionBuilder,
     this.textInputAction,
+    this.hintText,
+    this.suggestionLeadingBuilder,
+    this.suggestionTrailingBuilder,
+    this.inputTrailingWidget,
     required this.chipBuilder,
   });
 
@@ -87,7 +96,6 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
       final theme = Theme.of(context);
       _popoverController.show(
         context: context,
-        handler: const PopoverOverlayHandler(),
         builder: (context) {
           return buildPopover(context);
         },
@@ -162,30 +170,58 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
           constraints: widget.popoverConstraints,
           child: OutlinedContainer(
             child: AnimatedBuilder(
-                animation:
-                    Listenable.merge([_suggestions, _selectedSuggestions]),
-                builder: (context, child) {
-                  return ListView(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.all(theme.scaling * 4),
-                      children: [
-                        for (int i = 0; i < _suggestions.value.length; i++)
-                          SelectedButton(
-                            style: const ButtonStyle.ghost(),
-                            selectedStyle: const ButtonStyle.secondary(),
-                            value: i == _selectedSuggestions.value,
-                            alignment: AlignmentDirectional.centerStart,
-                            onChanged: (value) {
-                              if (value) {
-                                widget.onSuggestionChoosen?.call(i);
-                              }
-                            },
-                            child: widget.suggestionBuilder
-                                    ?.call(context, _suggestions.value[i]) ??
-                                Text(_suggestions.value[i].toString()),
-                          ),
-                      ]);
-                }),
+              animation: Listenable.merge([_suggestions, _selectedSuggestions]),
+              builder: (context, child) {
+                return ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(theme.scaling * 4),
+                  children: [
+                    for (int i = 0; i < _suggestions.value.length; i++)
+                      SelectedButton(
+                        style: const ButtonStyle.menubar(),
+                        selectedStyle: const ButtonStyle.secondary(
+                            density: ButtonDensity.dense),
+                        value: i == _selectedSuggestions.value,
+                        onChanged: (value) {
+                          if (value) {
+                            widget.onSuggestionChoosen?.call(i);
+                            _controller.clear();
+                            _selectedSuggestions.value = -1;
+                            _popoverController.close();
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            if (widget.suggestionLeadingBuilder != null) ...[
+                              widget.suggestionLeadingBuilder!(
+                                  context, _suggestions.value[i]),
+                              SizedBox(
+                                  width:
+                                      theme.scaling * 10), // Add spacing here
+                            ],
+                            Expanded(
+                              child: widget.suggestionBuilder
+                                      ?.call(context, _suggestions.value[i]) ??
+                                  Text(_suggestions.value[i].toString())
+                                      .normal()
+                                      .small(),
+                            ),
+                            if (widget.suggestionTrailingBuilder != null) ...[
+                              SizedBox(
+                                  width:
+                                      theme.scaling * 10), // Add spacing here
+                              widget.suggestionTrailingBuilder!
+                                      (context, _suggestions.value[i])
+                                  .normal()
+                                  .small(),
+                            ],
+                          ],
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -199,6 +235,20 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
   }
 
   final GlobalKey _textFieldKey = GlobalKey();
+
+  void _handleSubmitted(String text) {
+    if (_selectedSuggestions.value >= 0 &&
+        _selectedSuggestions.value < _suggestions.value.length) {
+      // A suggestion is selected, use it
+      widget.onSuggestionChoosen?.call(_selectedSuggestions.value);
+    } else if (text.isNotEmpty) {
+      // No suggestion selected, use the entered text
+      widget.onSubmitted?.call(text);
+    }
+    _focusNode.requestFocus();
+    _controller.clear();
+    _selectedSuggestions.value = -1;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -222,6 +272,8 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
               var index = _selectedSuggestions.value;
               if (index >= 0 && index < _suggestions.value.length) {
                 widget.onSuggestionChoosen?.call(index);
+                _controller.clear();
+                _selectedSuggestions.value = -1;
               } else if (_suggestions.value.isNotEmpty) {
                 _selectedSuggestions.value = 0;
               }
@@ -312,7 +364,18 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
                 borderColor: _focusNode.hasFocus
                     ? theme.colorScheme.ring
                     : theme.colorScheme.border,
-                child: child!,
+                child: Row(
+                  children: [
+                    Expanded(child: child!),
+                    if (widget.inputTrailingWidget != null) ...[
+                      const VerticalDivider(
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+                      widget.inputTrailingWidget!,
+                    ]
+                  ],
+                ),
               ),
             );
           },
@@ -324,13 +387,8 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
             textInputAction: widget.textInputAction,
             border: false,
             maxLines: 1,
-            onSubmitted: (text) {
-              _focusNode.requestFocus();
-              if (text.isNotEmpty) {
-                widget.onSubmitted?.call(text);
-              }
-              _onFocusChanged();
-            },
+            placeholder: widget.hintText,
+            onSubmitted: _handleSubmitted,
             controller: _controller,
             undoController: widget.undoHistoryController,
           ),
@@ -370,11 +428,15 @@ class PreviousSuggestionIntent extends Intent {
 
 class _ChipSuggestionItem extends StatefulWidget {
   final Widget suggestion;
+  final Widget? leading;
+  final Widget? trailing;
   final bool selected;
   final VoidCallback onSelected;
 
   const _ChipSuggestionItem({
     required this.suggestion,
+    this.leading,
+    this.trailing,
     required this.selected,
     required this.onSelected,
   });
@@ -408,7 +470,13 @@ class _ChipSuggestionItemState extends State<_ChipSuggestionItem> {
           widget.onSelected();
         }
       },
-      child: widget.suggestion,
+      child: Row(
+        children: [
+          if (widget.leading != null) widget.leading!,
+          Expanded(child: widget.suggestion),
+          if (widget.trailing != null) widget.trailing!,
+        ],
+      ),
     );
   }
 }
