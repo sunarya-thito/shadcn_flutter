@@ -205,6 +205,7 @@ class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    VoidCallback? onDismissed,
   }) {
     return overlayManager.showTooltip(
       context: context,
@@ -265,6 +266,7 @@ class FixedTooltipOverlayHandler extends OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    VoidCallback? onDismissed,
   }) {
     TextDirection textDirection = Directionality.of(context);
     Alignment resolvedAlignment = alignment.resolve(textDirection);

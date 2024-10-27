@@ -23,6 +23,7 @@ void showDropdown({
   bool dismissBackdropFocus = true,
   Duration? showDuration,
   Duration? dismissDuration,
+  VoidCallback? onDismissed,
 }) {
   final theme = Theme.of(context);
   final scaling = theme.scaling;
@@ -45,10 +46,11 @@ void showDropdown({
     heightConstraint: heightConstraint,
     position: position,
     anchorAlignment: anchorAlignment,
-    consumeOutsideTaps: false,
+    consumeOutsideTaps: consumeOutsideTaps,
     regionGroupId: key,
     modal: modal,
-    dismissBackdropFocus: true,
+    dismissBackdropFocus: dismissBackdropFocus,
+    onDismissed: onDismissed,
     overlayBarrier: OverlayBarrier(
       borderRadius: BorderRadius.circular(theme.radiusMd),
     ),

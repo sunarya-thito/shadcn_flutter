@@ -1396,6 +1396,7 @@ class SheetOverlayHandler extends OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    VoidCallback? onDismissed,
   }) {
     return openRawDrawer<T>(
       context: context,

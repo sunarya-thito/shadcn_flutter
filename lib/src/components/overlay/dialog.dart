@@ -322,6 +322,7 @@ class DialogOverlayHandler extends OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    VoidCallback? onDismissed,
   }) {
     var navigatorState = Navigator.of(
       context,

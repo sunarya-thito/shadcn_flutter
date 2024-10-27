@@ -34,6 +34,7 @@ class PopoverOverlayHandler extends OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    VoidCallback? onDismissed,
   }) {
     TextDirection textDirection = Directionality.of(context);
     Alignment resolvedAlignment = alignment.resolve(textDirection);
@@ -110,6 +111,7 @@ class PopoverOverlayHandler extends OverlayHandler {
                               const Duration(milliseconds: 100)),
                       onEnd: (value) {
                         if (value == 0.0 && isClosed.value) {
+                          onDismissed?.call();
                           popoverEntry.remove();
                           popoverEntry.dispose();
                           animationCompleter.complete();
@@ -632,35 +634,36 @@ OverlayCompleter<T?> showPopover<T>({
   Duration? dismissDuration,
   OverlayBarrier? overlayBarrier,
   OverlayHandler? handler,
+  VoidCallback? onDismissed,
 }) {
   handler ??= OverlayManager.of(context);
   return handler.show<T>(
-    context: context,
-    alignment: alignment,
-    builder: builder,
-    position: position,
-    anchorAlignment: anchorAlignment,
-    widthConstraint: widthConstraint,
-    heightConstraint: heightConstraint,
-    key: key,
-    rootOverlay: rootOverlay,
-    modal: modal,
-    barrierDismissable: barrierDismissable,
-    clipBehavior: clipBehavior,
-    regionGroupId: regionGroupId,
-    offset: offset,
-    transitionAlignment: transitionAlignment,
-    margin: margin,
-    follow: follow,
-    consumeOutsideTaps: consumeOutsideTaps,
-    onTickFollow: onTickFollow,
-    allowInvertHorizontal: allowInvertHorizontal,
-    allowInvertVertical: allowInvertVertical,
-    dismissBackdropFocus: dismissBackdropFocus,
-    showDuration: showDuration,
-    dismissDuration: dismissDuration,
-    overlayBarrier: overlayBarrier,
-  );
+      context: context,
+      alignment: alignment,
+      builder: builder,
+      position: position,
+      anchorAlignment: anchorAlignment,
+      widthConstraint: widthConstraint,
+      heightConstraint: heightConstraint,
+      key: key,
+      rootOverlay: rootOverlay,
+      modal: modal,
+      barrierDismissable: barrierDismissable,
+      clipBehavior: clipBehavior,
+      regionGroupId: regionGroupId,
+      offset: offset,
+      transitionAlignment: transitionAlignment,
+      margin: margin,
+      follow: follow,
+      consumeOutsideTaps: consumeOutsideTaps,
+      onTickFollow: onTickFollow,
+      allowInvertHorizontal: allowInvertHorizontal,
+      allowInvertVertical: allowInvertVertical,
+      dismissBackdropFocus: dismissBackdropFocus,
+      showDuration: showDuration,
+      dismissDuration: dismissDuration,
+      overlayBarrier: overlayBarrier,
+      onDismissed: onDismissed);
 }
 
 class Popover {
