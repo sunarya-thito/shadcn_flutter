@@ -326,7 +326,7 @@ extension TextExtension on Widget {
         child = WrappedText(
             style: (context, theme) => theme.typography.h2, child: this);
       }
-      return AnimatedContainer(
+      return ShadcnAnimatedContainer(
         duration: kDefaultDuration,
         margin: const EdgeInsets.only(top: 40),
         padding: const EdgeInsets.only(bottom: 8),

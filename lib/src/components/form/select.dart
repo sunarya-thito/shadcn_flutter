@@ -580,7 +580,7 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
     final scaling = theme.scaling;
     final surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
     final surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
-    var isSheetOverlay = Data.maybeOf<SheetOverlayHandler>(context) != null;
+    var isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
     return SizedBox(
       width: isSheetOverlay ? double.infinity : null,
       child: Container(
@@ -812,7 +812,7 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
                             (value, selected) {
                               widget.onChanged?.call(value, selected);
                               if (widget.autoClose) {
-                                closePopover(context, value);
+                                closeOverlay(context, value);
                               }
                             },
                             widget.value,

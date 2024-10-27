@@ -351,11 +351,7 @@ class _ObjectFormFieldPopupState<T> extends State<_ObjectFormFieldPopup<T>>
 
   @override
   Future<void> close() {
-    var isSheetOverlay = Data.maybeFind<SheetOverlayHandler>(context) != null;
-    if (isSheetOverlay) {
-      return closeDrawer(context);
-    }
-    return closePopover(context);
+    return closeOverlay(context);
   }
 
   @override

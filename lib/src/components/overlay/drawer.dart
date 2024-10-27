@@ -721,6 +721,57 @@ class BackdropTransformData {
   BackdropTransformData(this.sizeDifference);
 }
 
+class _DrawerOverlayWrapper extends StatefulWidget {
+  final Widget child;
+  final Completer completer;
+  const _DrawerOverlayWrapper({
+    super.key,
+    required this.child,
+    required this.completer,
+  });
+
+  @override
+  State<_DrawerOverlayWrapper> createState() => _DrawerOverlayWrapperState();
+}
+
+class _DrawerOverlayWrapperState extends State<_DrawerOverlayWrapper>
+    with OverlayHandlerStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    return Data<OverlayHandlerStateMixin>.inherit(
+      data: this,
+      child: widget.child,
+    );
+  }
+
+  @override
+  Future<void> close([bool immediate = false]) {
+    if (immediate) {
+      widget.completer.complete();
+      return widget.completer.future;
+    }
+    return closeDrawer(context);
+  }
+
+  @override
+  void closeLater() {
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if (mounted) {
+          closeDrawer(context);
+        } else {
+          widget.completer.complete();
+        }
+      });
+    }
+  }
+
+  @override
+  Future<void> closeWithResult<X>([X? value]) {
+    return closeDrawer(context, value);
+  }
+}
+
 DrawerOverlayCompleter<T?> openRawDrawer<T>({
   Key? key,
   required BuildContext context,
@@ -749,7 +800,12 @@ DrawerOverlayCompleter<T?> openRawDrawer<T>({
   assert(parentLayer != null, 'No DrawerOverlay found in the widget tree');
   final completer = Completer<T?>();
   final entry = DrawerOverlayEntry(
-    builder: builder,
+    builder: (context, extraSize, size, padding, stackIndex) {
+      return _DrawerOverlayWrapper(
+        completer: completer,
+        child: builder(context, extraSize, size, padding, stackIndex),
+      );
+    },
     modal: modal,
     data: data,
     barrierDismissible: barrierDismissible,
@@ -1290,6 +1346,10 @@ class DrawerOverlayCompleter<T> extends OverlayCompleter<T> {
 }
 
 class SheetOverlayHandler extends OverlayHandler {
+  static bool isSheetOverlay(BuildContext context) {
+    return Model.maybeOf<bool>(context, #shadcn_flutter_sheet_overlay) == true;
+  }
+
   final OverlayPosition position;
   final Color? barrierColor;
 
@@ -1343,12 +1403,15 @@ class SheetOverlayHandler extends OverlayHandler {
       useSafeArea: false,
       barrierDismissible: barrierDismissable,
       builder: (context, extraSize, size, padding, stackIndex) {
-        return Data.inherit(
-          data: this,
+        final theme = Theme.of(context);
+        return MultiModel(
+          data: const [
+            Model(#shadcn_flutter_sheet_overlay, true),
+          ],
           child: Builder(builder: (context) {
             return SheetWrapper(
               position: this.position,
-              gapAfterDragger: 0,
+              gapAfterDragger: 8 * theme.scaling,
               expands: true,
               extraSize: extraSize,
               size: size,

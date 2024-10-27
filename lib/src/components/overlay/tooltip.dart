@@ -28,7 +28,7 @@ class TooltipContainer extends StatelessWidget {
     if (surfaceOpacity != null) {
       backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
     }
-    Widget animatedContainer = AnimatedContainer(
+    Widget animatedContainer = ShadcnAnimatedContainer(
       duration: kDefaultDuration,
       padding: const EdgeInsets.symmetric(
             horizontal: 12,

@@ -475,48 +475,58 @@ Future<void> _showContextMenu(
   ValueListenable<List<MenuItem>> children,
   Axis direction,
 ) async {
-  final key = GlobalKey<PopoverAnchorState>();
+  final key = GlobalKey<OverlayHandlerStateMixin>();
   final theme = Theme.of(context);
-  return showPopover(
-    key: key,
-    context: context,
-    position: position + const Offset(8, 0),
-    alignment: Alignment.topLeft,
-    anchorAlignment: Alignment.topRight,
-    regionGroupId: key,
-    modal: false,
-    follow: false,
-    consumeOutsideTaps: false,
-    dismissBackdropFocus: false,
-    overlayBarrier: OverlayBarrier(
-      borderRadius: BorderRadius.circular(theme.radiusMd),
-    ),
-    builder: (context) {
-      return AnimatedBuilder(
-          animation: children,
-          builder: (context, child) {
-            return ConstrainedBox(
-              constraints: const BoxConstraints(
-                minWidth: 192,
-              ),
-              child: MenuGroup(
-                direction: direction,
-                regionGroupId: key,
-                subMenuOffset: const Offset(8, -4),
-                onDismissed: () {
-                  closePopover(context);
-                },
-                builder: (context, children) {
-                  return MenuPopup(
-                    children: children,
-                  );
-                },
-                children: children.value,
-              ),
-            );
-          });
-    },
-  ).future;
+  final overlayManager = OverlayManager.of(context);
+  return overlayManager
+      .showMenu(
+        key: key,
+        context: context,
+        position: position + const Offset(8, 0),
+        alignment: Alignment.topLeft,
+        anchorAlignment: Alignment.topRight,
+        regionGroupId: key,
+        modal: true,
+        follow: false,
+        consumeOutsideTaps: false,
+        dismissBackdropFocus: false,
+        overlayBarrier: OverlayBarrier(
+          borderRadius: BorderRadius.circular(theme.radiusMd),
+          barrierColor: const Color(0xB2000000),
+        ),
+        builder: (context) {
+          return AnimatedBuilder(
+              animation: children,
+              builder: (context, child) {
+                bool isSheetOverlay =
+                    SheetOverlayHandler.isSheetOverlay(context);
+                return ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    minWidth: 192,
+                  ),
+                  child: MenuGroup(
+                    itemPadding: isSheetOverlay
+                        ? const EdgeInsets.symmetric(horizontal: 8) *
+                            theme.scaling
+                        : EdgeInsets.zero,
+                    direction: direction,
+                    regionGroupId: key,
+                    subMenuOffset: const Offset(8, -4),
+                    onDismissed: () {
+                      closeOverlay(context);
+                    },
+                    builder: (context, children) {
+                      return MenuPopup(
+                        children: children,
+                      );
+                    },
+                    children: children.value,
+                  ),
+                );
+              });
+        },
+      )
+      .future;
 }
 
 class ContextMenuPopup extends StatelessWidget {
@@ -553,6 +563,7 @@ class ContextMenuPopup extends StatelessWidget {
         }
       },
       builder: (context, animation) {
+        final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
         return PopoverAnchor(
           anchorContext: anchorContext,
           position: position,
@@ -567,6 +578,9 @@ class ContextMenuPopup extends StatelessWidget {
               maxWidth: 192 * theme.scaling,
               child: MenuGroup(
                 direction: direction,
+                itemPadding: isSheetOverlay
+                    ? const EdgeInsets.symmetric(horizontal: 8) * theme.scaling
+                    : EdgeInsets.zero,
                 builder: (context, children) {
                   return MenuPopup(
                     children: children,

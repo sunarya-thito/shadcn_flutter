@@ -232,7 +232,68 @@ Future<T?> showDialog<T>({
   );
 }
 
+class _DialogOverlayWrapper<T> extends StatefulWidget {
+  final DialogRoute<T> route;
+  final Widget child;
+
+  const _DialogOverlayWrapper({
+    super.key,
+    required this.route,
+    required this.child,
+  });
+
+  @override
+  State<_DialogOverlayWrapper<T>> createState() =>
+      _DialogOverlayWrapperState<T>();
+}
+
+class _DialogOverlayWrapperState<T> extends State<_DialogOverlayWrapper<T>>
+    with OverlayHandlerStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    return Data<OverlayHandlerStateMixin>.inherit(
+      data: this,
+      child: widget.child,
+    );
+  }
+
+  @override
+  Future<void> close([bool immediate = false]) {
+    if (immediate || !widget.route.isCurrent) {
+      widget.route.navigator?.removeRoute(widget.route);
+    } else {
+      widget.route.navigator?.pop();
+    }
+    return widget.route.completed;
+  }
+
+  @override
+  void closeLater() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (widget.route.isCurrent) {
+        widget.route.navigator?.pop();
+      } else {
+        widget.route.navigator?.removeRoute(widget.route);
+      }
+    });
+  }
+
+  @override
+  Future<void> closeWithResult<X>([X? value]) {
+    if (widget.route.isCurrent) {
+      widget.route.navigator?.pop(value);
+    } else {
+      widget.route.navigator?.removeRoute(widget.route);
+    }
+    return widget.route.completed;
+  }
+}
+
 class DialogOverlayHandler extends OverlayHandler {
+  static bool isDialogOverlay(BuildContext context) {
+    return Model.maybeOf<bool>(context, #shadcn_flutter_dialog_overlay) == true;
+  }
+
   const DialogOverlayHandler();
   @override
   OverlayCompleter<T> show<T>({
@@ -273,22 +334,30 @@ class DialogOverlayHandler extends OverlayHandler {
     var dialogRoute = DialogRoute<T>(
       context: context,
       builder: (context) {
+        var child = _DialogOverlayWrapper(
+          route: ModalRoute.of(context) as DialogRoute<T>,
+          child: builder(context),
+        );
         if (overlayBarrier != null) {
-          return Data.inherit(
-            data: this,
+          return MultiModel(
+            data: const [
+              Model(#shadcn_flutter_dialog_overlay, true),
+            ],
             child: ModalContainer(
               modal: modal,
               borderRadius: overlayBarrier.borderRadius,
               padding: overlayBarrier.padding,
               barrierColor: overlayBarrier.barrierColor ??
                   const Color.fromRGBO(0, 0, 0, 0.8),
-              child: builder(context),
+              child: child,
             ),
           );
         }
-        return Data.inherit(
-          data: this,
-          child: builder(context),
+        return MultiModel(
+          data: const [
+            Model(#shadcn_flutter_dialog_overlay, true),
+          ],
+          child: child,
         );
       },
       themes: themes,

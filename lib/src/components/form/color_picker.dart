@@ -1925,7 +1925,7 @@ class _ColorPickerPopupState extends State<_ColorPickerPopup> {
         onColorChangeEnd: widget.onColorChangeEnd,
         onPickFromScreen: widget.allowPickFromScreen
             ? () {
-                closePopover(
+                closeOverlay(
                     context,
                     const _ColorPickerDialogResult(
                       pickedFromScreen: true,

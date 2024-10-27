@@ -41,6 +41,7 @@ class MenubarState extends State<Menubar> {
       child: MenuGroup(
         regionGroupId: this,
         direction: Axis.vertical,
+        itemPadding: EdgeInsets.zero,
         subMenuOffset:
             (widget.border ? const Offset(-4, 8) : const Offset(0, 4)) *
                 theme.scaling,

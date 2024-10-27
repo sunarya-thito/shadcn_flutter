@@ -231,11 +231,12 @@ class MenuLabel extends StatelessWidget implements MenuItem {
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
     assert(menuGroupData != null, 'MenuLabel must be a child of MenuGroup');
     return Padding(
-      padding:
-          const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6) * scaling,
+      padding: const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6) *
+              scaling +
+          menuGroupData!.itemPadding,
       child: Basic(
         contentSpacing: 8 * scaling,
-        leading: leading == null && menuGroupData!.hasLeading
+        leading: leading == null && menuGroupData.hasLeading
             ? SizedBox(width: 16 * scaling)
             : leading == null
                 ? null
@@ -248,10 +249,9 @@ class MenuLabel extends StatelessWidget implements MenuItem {
         content: UnderlineInterceptor(child: child.semiBold()),
         trailingAlignment: Alignment.center,
         leadingAlignment: Alignment.center,
-        contentAlignment:
-            menuGroupData == null || menuGroupData.direction == Axis.vertical
-                ? AlignmentDirectional.centerStart
-                : Alignment.center,
+        contentAlignment: menuGroupData.direction == Axis.vertical
+            ? AlignmentDirectional.centerStart
+            : Alignment.center,
       ),
     );
   }
@@ -340,22 +340,33 @@ class _MenuButtonState extends State<MenuButton> {
     final menuData = Data.maybeOf<MenuData>(context);
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
     assert(menuGroupData != null, 'MenuButton must be a child of MenuGroup');
-    final dialogOverlayHandler = Data.maybeOf<DialogOverlayHandler>(context);
+    // final dialogOverlayHandler = Data.maybeOf<DialogOverlayHandler>(context);
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
+    final isDialogOverlay = DialogOverlayHandler.isDialogOverlay(context);
+    final isIndependentOverlay = isSheetOverlay || isDialogOverlay;
     void openSubMenu(BuildContext context) {
       menuGroupData!.closeOthers();
+      final overlayManager = OverlayManager.of(context);
       menuData!.popoverController.show(
         context: context,
         regionGroupId: menuGroupData.regionGroupId,
         consumeOutsideTaps: false,
         dismissBackdropFocus: false,
+        modal: true,
+        handler: MenuOverlayHandler(overlayManager),
         overlayBarrier: OverlayBarrier(
           borderRadius: BorderRadius.circular(theme.radiusMd),
         ),
         builder: (context) {
           final theme = Theme.of(context);
           final scaling = theme.scaling;
+          var itemPadding = menuGroupData.itemPadding;
+          final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
+          if (isSheetOverlay) {
+            itemPadding = const EdgeInsets.symmetric(horizontal: 8) * scaling;
+          }
           return ConstrainedBox(
             constraints: const BoxConstraints(
                   minWidth: 192, // 12rem
@@ -370,6 +381,7 @@ class _MenuButtonState extends State<MenuButton> {
                       onDismissed: menuGroupData.onDismissed,
                       regionGroupId: menuGroupData.regionGroupId,
                       subMenuOffset: const Offset(8, -4 + -1) * scaling,
+                      itemPadding: itemPadding,
                       builder: (context, children) {
                         return MenuPopup(
                           children: children,
@@ -402,6 +414,10 @@ class _MenuButtonState extends State<MenuButton> {
                           ? ButtonVariance.menu
                           : ButtonVariance.menubar)
                       .copyWith(
+                    padding: (context, states, value) {
+                      return value.optionallyResolve(context) +
+                          menuGroupData.itemPadding;
+                    },
                     decoration: (context, states, value) {
                       final theme = Theme.of(context);
                       return (value as BoxDecoration).copyWith(
@@ -448,7 +464,7 @@ class _MenuButtonState extends State<MenuButton> {
                           widget.subMenu != null &&
                           widget.subMenu!.isNotEmpty) {
                         if (!menuData.popoverController.hasOpenPopover &&
-                            dialogOverlayHandler == null) {
+                            !isIndependentOverlay) {
                           openSubMenu(context);
                         }
                       } else {
@@ -461,7 +477,7 @@ class _MenuButtonState extends State<MenuButton> {
                       if (widget.subMenu != null &&
                           widget.subMenu!.isNotEmpty) {
                         if (!menuData.popoverController.hasOpenPopover &&
-                            dialogOverlayHandler == null) {
+                            !isIndependentOverlay) {
                           openSubMenu(context);
                         }
                       } else {
@@ -498,9 +514,10 @@ class MenuGroupData {
   final VoidCallback? onDismissed;
   final Object? regionGroupId;
   final Axis direction;
+  final EdgeInsets itemPadding;
 
   MenuGroupData(this.parent, this.children, this.hasLeading, this.subMenuOffset,
-      this.onDismissed, this.regionGroupId, this.direction);
+      this.onDismissed, this.regionGroupId, this.direction, this.itemPadding);
 
   bool get hasOpenPopovers {
     for (final child in children) {
@@ -579,6 +596,7 @@ class MenuGroup extends StatefulWidget {
   final Object? regionGroupId;
   final Axis direction;
   final Map<Type, Action> actions;
+  final EdgeInsets itemPadding;
 
   const MenuGroup({
     super.key,
@@ -590,6 +608,7 @@ class MenuGroup extends StatefulWidget {
     this.regionGroupId,
     this.actions = const {},
     required this.direction,
+    required this.itemPadding,
   });
 
   @override
@@ -746,6 +765,7 @@ class _MenuGroupState extends State<MenuGroup> {
               widget.onDismissed,
               widget.regionGroupId,
               widget.direction,
+              widget.itemPadding,
             ),
             child: widget.builder(context, children),
           ),
@@ -765,4 +785,66 @@ class PreviousSiblingFocusIntent extends Intent {
 
 class NextSiblingFocusIntent extends Intent {
   const NextSiblingFocusIntent();
+}
+
+class MenuOverlayHandler extends OverlayHandler {
+  final OverlayManager manager;
+
+  const MenuOverlayHandler(this.manager);
+
+  @override
+  OverlayCompleter<T?> show<T>(
+      {required BuildContext context,
+      required AlignmentGeometry alignment,
+      required WidgetBuilder builder,
+      Offset? position,
+      AlignmentGeometry? anchorAlignment,
+      PopoverConstraint widthConstraint = PopoverConstraint.flexible,
+      PopoverConstraint heightConstraint = PopoverConstraint.flexible,
+      Key? key,
+      bool rootOverlay = true,
+      bool modal = true,
+      bool barrierDismissable = true,
+      Clip clipBehavior = Clip.none,
+      Object? regionGroupId,
+      Offset? offset,
+      Alignment? transitionAlignment,
+      EdgeInsets? margin,
+      bool follow = true,
+      bool consumeOutsideTaps = true,
+      ValueChanged<PopoverAnchorState>? onTickFollow,
+      bool allowInvertHorizontal = true,
+      bool allowInvertVertical = true,
+      bool dismissBackdropFocus = true,
+      Duration? showDuration,
+      Duration? dismissDuration,
+      OverlayBarrier? overlayBarrier}) {
+    return manager.showMenu(
+      context: context,
+      alignment: alignment,
+      builder: builder,
+      position: position,
+      anchorAlignment: anchorAlignment,
+      widthConstraint: widthConstraint,
+      heightConstraint: heightConstraint,
+      key: key,
+      rootOverlay: rootOverlay,
+      modal: modal,
+      barrierDismissable: barrierDismissable,
+      clipBehavior: clipBehavior,
+      regionGroupId: regionGroupId,
+      offset: offset,
+      transitionAlignment: transitionAlignment,
+      margin: margin,
+      follow: follow,
+      consumeOutsideTaps: consumeOutsideTaps,
+      onTickFollow: onTickFollow,
+      allowInvertHorizontal: allowInvertHorizontal,
+      allowInvertVertical: allowInvertVertical,
+      dismissBackdropFocus: dismissBackdropFocus,
+      showDuration: showDuration,
+      dismissDuration: dismissDuration,
+      overlayBarrier: overlayBarrier,
+    );
+  }
 }

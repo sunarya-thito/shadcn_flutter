@@ -86,8 +86,9 @@ class SurfaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    var isSheetOverlay = Data.maybeOf<SheetOverlayHandler>(context) != null;
+    var isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
     final scaling = theme.scaling;
+    var padding = this.padding;
     if (isSheetOverlay) {
       return Padding(
         padding: padding ?? (EdgeInsets.all(16 * scaling)),

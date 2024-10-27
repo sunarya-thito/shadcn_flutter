@@ -54,6 +54,8 @@ class ShadcnApp extends StatefulWidget {
     this.themeMode = ThemeMode.system,
     this.popoverHandler,
     this.tooltipHandler,
+    this.menuHandler,
+    this.enableThemeAnimation = true,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
@@ -99,6 +101,8 @@ class ShadcnApp extends StatefulWidget {
     this.themeMode = ThemeMode.system,
     this.popoverHandler,
     this.tooltipHandler,
+    this.menuHandler,
+    this.enableThemeAnimation = true,
   })  : assert(routerDelegate != null || routerConfig != null),
         navigatorObservers = null,
         navigatorKey = null,
@@ -174,6 +178,8 @@ class ShadcnApp extends StatefulWidget {
   final bool enableScrollInterception;
   final OverlayHandler? popoverHandler;
   final OverlayHandler? tooltipHandler;
+  final OverlayHandler? menuHandler;
+  final bool enableThemeAnimation;
 
   @override
   State<ShadcnApp> createState() => _ShadcnAppState();
@@ -327,7 +333,9 @@ class _ShadcnAppState extends State<ShadcnApp> {
         darkTheme: widget.darkTheme,
         popoverHandler: widget.popoverHandler,
         tooltipHandler: widget.tooltipHandler,
+        menuHandler: widget.menuHandler,
         themeMode: widget.themeMode,
+        enableThemeAnimation: widget.enableThemeAnimation,
         child: child,
       ),
     );
@@ -468,6 +476,8 @@ class ShadcnLayer extends StatelessWidget {
   final bool enableScrollInterception;
   final OverlayHandler? popoverHandler;
   final OverlayHandler? tooltipHandler;
+  final OverlayHandler? menuHandler;
+  final bool enableThemeAnimation;
 
   const ShadcnLayer({
     super.key,
@@ -483,61 +493,72 @@ class ShadcnLayer extends StatelessWidget {
     this.themeMode = ThemeMode.system,
     this.popoverHandler,
     this.tooltipHandler,
+    this.menuHandler,
+    this.enableThemeAnimation = true,
   });
 
   @override
   Widget build(BuildContext context) {
     var appScaling = scaling ?? AdaptiveScaler.defaultScaling(theme);
     var platformBrightness = MediaQuery.platformBrightnessOf(context);
-    var smallScreenLikeMobile = MediaQuery.sizeOf(context).shortestSide < 600;
+    var mobileMode = isMobile(theme.platform);
     final scaledTheme = themeMode == ThemeMode.dark ||
             (themeMode == ThemeMode.system &&
                 platformBrightness == Brightness.dark)
         ? appScaling.scale(darkTheme ?? theme)
         : appScaling.scale(theme);
-    return OverlayManagerLayer(
-      popoverHandler: popoverHandler ??
-          (smallScreenLikeMobile
-              ? const SheetOverlayHandler()
-              : const PopoverOverlayHandler()),
-      tooltipHandler: tooltipHandler ??
-          (smallScreenLikeMobile
-              ? const FixedTooltipOverlayHandler()
-              : const PopoverOverlayHandler()),
-      child: AnimatedTheme(
-        duration: kDefaultDuration,
-        data: scaledTheme,
-        child: Builder(builder: (context) {
-          var theme = Theme.of(context);
-          return DataMessengerRoot(
-            child: ScrollViewInterceptor(
-              enabled: enableScrollInterception,
-              child: ShadcnSkeletonizerConfigLayer(
-                theme: theme,
-                child: mergeAnimatedTextStyle(
-                  duration: kDefaultDuration,
-                  style: theme.typography.base.copyWith(
-                    color: theme.colorScheme.foreground,
-                  ),
-                  child: AnimatedIconTheme.merge(
+    return MultiModel(
+      data: [
+        Model(#shadcn_flutter_smooth_animation, enableThemeAnimation),
+      ],
+      child: OverlayManagerLayer(
+        menuHandler: menuHandler ??
+            (mobileMode
+                ? const SheetOverlayHandler()
+                : const PopoverOverlayHandler()),
+        popoverHandler: popoverHandler ??
+            (mobileMode
+                ? const SheetOverlayHandler()
+                : const PopoverOverlayHandler()),
+        tooltipHandler: tooltipHandler ??
+            (mobileMode
+                ? const FixedTooltipOverlayHandler()
+                : const PopoverOverlayHandler()),
+        child: ShadcnAnimatedTheme(
+          duration: kDefaultDuration,
+          data: scaledTheme,
+          child: Builder(builder: (context) {
+            var theme = Theme.of(context);
+            return DataMessengerRoot(
+              child: ScrollViewInterceptor(
+                enabled: enableScrollInterception,
+                child: ShadcnSkeletonizerConfigLayer(
+                  theme: theme,
+                  child: mergeAnimatedTextStyle(
                     duration: kDefaultDuration,
-                    data: theme.iconTheme.medium.copyWith(
+                    style: theme.typography.base.copyWith(
                       color: theme.colorScheme.foreground,
                     ),
-                    child: RecentColorsScope(
-                      initialRecentColors: initialRecentColors,
-                      maxRecentColors: maxRecentColors,
-                      onRecentColorsChanged: onRecentColorsChanged,
-                      child: ColorPickingLayer(
-                        child: KeyboardShortcutDisplayMapper(
-                          child: ToastLayer(
-                            child: builder != null
-                                ? Builder(
-                                    builder: (BuildContext context) {
-                                      return builder!(context, child);
-                                    },
-                                  )
-                                : child ?? const SizedBox.shrink(),
+                    child: AnimatedIconTheme.merge(
+                      duration: kDefaultDuration,
+                      data: theme.iconTheme.medium.copyWith(
+                        color: theme.colorScheme.foreground,
+                      ),
+                      child: RecentColorsScope(
+                        initialRecentColors: initialRecentColors,
+                        maxRecentColors: maxRecentColors,
+                        onRecentColorsChanged: onRecentColorsChanged,
+                        child: ColorPickingLayer(
+                          child: KeyboardShortcutDisplayMapper(
+                            child: ToastLayer(
+                              child: builder != null
+                                  ? Builder(
+                                      builder: (BuildContext context) {
+                                        return builder!(context, child);
+                                      },
+                                    )
+                                  : child ?? const SizedBox.shrink(),
+                            ),
                           ),
                         ),
                       ),
@@ -545,10 +566,129 @@ class ShadcnLayer extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
+    );
+  }
+}
+
+class ShadcnAnimatedContainer extends StatelessWidget {
+  final Widget? child;
+  final AlignmentGeometry? alignment;
+  final EdgeInsetsGeometry? padding;
+  final Decoration? decoration;
+  final Decoration? foregroundDecoration;
+  final BoxConstraints? constraints;
+  final EdgeInsetsGeometry? margin;
+  final Matrix4? transform;
+  final AlignmentGeometry? transformAlignment;
+  final Clip clipBehavior;
+  final Duration duration;
+  final Curve curve;
+  final VoidCallback? onEnd;
+  ShadcnAnimatedContainer({
+    super.key,
+    this.alignment,
+    this.padding,
+    Color? color,
+    Decoration? decoration,
+    this.foregroundDecoration,
+    double? width,
+    double? height,
+    BoxConstraints? constraints,
+    this.margin,
+    this.transform,
+    this.transformAlignment,
+    this.child,
+    this.clipBehavior = Clip.none,
+    this.curve = Curves.linear,
+    required this.duration,
+    this.onEnd,
+  })  : assert(margin == null || margin.isNonNegative),
+        assert(padding == null || padding.isNonNegative),
+        assert(decoration == null || decoration.debugAssertIsValid()),
+        assert(constraints == null || constraints.debugAssertIsValid()),
+        assert(
+          color == null || decoration == null,
+          'Cannot provide both a color and a decoration\n'
+          'The color argument is just a shorthand for "decoration: BoxDecoration(color: color)".',
+        ),
+        decoration =
+            decoration ?? (color != null ? BoxDecoration(color: color) : null),
+        constraints = (width != null || height != null)
+            ? constraints?.tighten(width: width, height: height) ??
+                BoxConstraints.tightFor(width: width, height: height)
+            : constraints;
+
+  @override
+  Widget build(BuildContext context) {
+    bool shadcnFlutterSmoothAnimation =
+        Model.of(context, #shadcn_flutter_smooth_animation);
+    if (!shadcnFlutterSmoothAnimation) {
+      return Container(
+        alignment: alignment,
+        padding: padding,
+        decoration: decoration,
+        foregroundDecoration: foregroundDecoration,
+        constraints: constraints,
+        margin: margin,
+        transform: transform,
+        transformAlignment: transformAlignment,
+        clipBehavior: clipBehavior,
+        child: child,
+      );
+    }
+    return AnimatedContainer(
+      alignment: alignment,
+      padding: padding,
+      decoration: decoration,
+      foregroundDecoration: foregroundDecoration,
+      constraints: constraints,
+      margin: margin,
+      transform: transform,
+      transformAlignment: transformAlignment,
+      clipBehavior: clipBehavior,
+      duration: duration,
+      curve: curve,
+      onEnd: onEnd,
+      child: child,
+    );
+  }
+}
+
+class ShadcnAnimatedTheme extends StatelessWidget {
+  final Widget child;
+  final ThemeData data;
+  final Duration duration;
+  final Curve curve;
+  final VoidCallback? onEnd;
+
+  const ShadcnAnimatedTheme({
+    super.key,
+    required this.data,
+    required this.duration,
+    this.curve = Curves.linear,
+    this.onEnd,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    bool shadcnFlutterSmoothAnimation =
+        Model.of(context, #shadcn_flutter_smooth_animation);
+    if (!shadcnFlutterSmoothAnimation) {
+      return Theme(
+        data: data,
+        child: child,
+      );
+    }
+    return AnimatedTheme(
+      data: data,
+      duration: duration,
+      curve: curve,
+      child: child,
     );
   }
 }
