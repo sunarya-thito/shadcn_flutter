@@ -398,7 +398,7 @@ class ComponentTheme<T> extends InheritedTheme {
 
   static T of<T>(BuildContext context) {
     final data = maybeOf<T>(context);
-    assert(data != null, 'No Data<$T> found in context');
+    assert(data != null, 'No ComponentTheme<$T> found in context');
     return data!;
   }
 
