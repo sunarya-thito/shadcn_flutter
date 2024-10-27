@@ -71,7 +71,7 @@ class Slider extends StatefulWidget {
     this.hintValue,
     this.increaseStep,
     this.decreaseStep,
-  })  : assert(min <= max);
+  }) : assert(min <= max);
 
   @override
   _SliderState createState() => _SliderState();
@@ -161,7 +161,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return AnimatedContainer(
+    return ShadcnAnimatedContainer(
       duration: kDefaultDuration,
       constraints: BoxConstraints(
         minWidth: 20 * scaling,
@@ -498,7 +498,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       top: 0,
       bottom: 0,
       child: Center(
-        child: AnimatedContainer(
+        child: ShadcnAnimatedContainer(
           duration: kDefaultDuration,
           height: 6 * scaling,
           decoration: BoxDecoration(
@@ -545,7 +545,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       top: 0,
       bottom: 0,
       child: Center(
-        child: AnimatedContainer(
+        child: ShadcnAnimatedContainer(
           duration: kDefaultDuration,
           height: 6 * scaling,
           decoration: BoxDecoration(
@@ -567,7 +567,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       top: 0,
       bottom: 0,
       child: Center(
-        child: AnimatedContainer(
+        child: ShadcnAnimatedContainer(
           duration: kDefaultDuration,
           height: 6 * scaling,
           decoration: BoxDecoration(
@@ -629,7 +629,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
             },
           ),
         },
-        child: AnimatedContainer(
+        child: ShadcnAnimatedContainer(
           duration: kDefaultDuration,
           width: 16 * scaling,
           height: 16 * scaling,

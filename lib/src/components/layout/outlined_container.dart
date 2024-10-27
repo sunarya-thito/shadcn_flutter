@@ -102,7 +102,7 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
     if (widget.surfaceOpacity != null) {
       backgroundColor = backgroundColor.scaleAlpha(widget.surfaceOpacity!);
     }
-    Widget childWidget = AnimatedContainer(
+    Widget childWidget = ShadcnAnimatedContainer(
       key: _mainContainerKey,
       width: widget.width,
       height: widget.height,
@@ -119,7 +119,7 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
       ),
       // padding: widget.padding,
       // clipBehavior: widget.clipBehavior,
-      child: AnimatedContainer(
+      child: ShadcnAnimatedContainer(
         duration: kDefaultDuration,
         padding: widget.padding,
         clipBehavior: widget.clipBehavior,

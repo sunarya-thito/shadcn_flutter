@@ -147,7 +147,7 @@ class ScaffoldState extends State<Scaffold> {
     final theme = Theme.of(context);
     final viewInsets = MediaQuery.viewInsetsOf(context);
     return DrawerOverlay(
-      child: AnimatedContainer(
+      child: ShadcnAnimatedContainer(
         duration: kDefaultDuration,
         color: theme.colorScheme.background,
         child: _ScaffoldFlex(
@@ -228,7 +228,7 @@ class _AppBarState extends State<AppBar> {
             sigmaX: surfaceBlur ?? 0,
             sigmaY: surfaceBlur ?? 0,
           ),
-          child: AnimatedContainer(
+          child: ShadcnAnimatedContainer(
             duration: kDefaultDuration,
             color: widget.backgroundColor ??
                 theme.colorScheme.background.scaleAlpha(surfaceOpacity ?? 1),

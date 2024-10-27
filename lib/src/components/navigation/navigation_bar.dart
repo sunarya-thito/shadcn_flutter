@@ -130,7 +130,7 @@ class _NavigationBarState extends State<NavigationBar>
           selectedIndex: widget.index,
           onSelected: _onSelected,
         ),
-        child: AnimatedContainer(
+        child: ShadcnAnimatedContainer(
           duration: kDefaultDuration,
           color: widget.backgroundColor,
           padding: resolvedPadding,
@@ -265,7 +265,7 @@ class _NavigationRailState extends State<NavigationRail>
       ),
       child: SurfaceBlur(
         surfaceBlur: widget.surfaceBlur,
-        child: AnimatedContainer(
+        child: ShadcnAnimatedContainer(
           duration: kDefaultDuration,
           color: widget.backgroundColor ??
               (theme.colorScheme.background
@@ -370,7 +370,7 @@ class _NavigationSidebarState extends State<NavigationSidebar>
             widget.constraints ?? getDefaultConstraints(context, theme),
         child: SurfaceBlur(
           surfaceBlur: widget.surfaceBlur,
-          child: AnimatedContainer(
+          child: ShadcnAnimatedContainer(
             duration: kDefaultDuration,
             color: widget.backgroundColor ??
                 (theme.colorScheme.background
@@ -821,7 +821,7 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
               curve: Curves.easeInOut,
             );
           },
-          child: AnimatedContainer(
+          child: ShadcnAnimatedContainer(
             duration: kDefaultDuration,
             alignment: alignment,
             padding: EdgeInsets.symmetric(horizontal: 16 * scaling),

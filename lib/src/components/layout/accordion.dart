@@ -29,7 +29,7 @@ class _AccordionState extends State<Accordion> {
               children: [
                 ...join(
                     widget.items,
-                    AnimatedContainer(
+                    ShadcnAnimatedContainer(
                       duration: kDefaultDuration,
                       color: theme.colorScheme.muted,
                       height: 1 * scaling,
@@ -226,7 +226,7 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
             _hovering = value;
           });
         },
-        child: AnimatedContainer(
+        child: ShadcnAnimatedContainer(
           duration: kDefaultDuration,
           decoration: BoxDecoration(
             border: Border.all(
