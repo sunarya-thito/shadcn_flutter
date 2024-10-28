@@ -852,7 +852,7 @@ class FormEntry<T> extends StatefulWidget {
   final Validator<T>? validator;
 
   const FormEntry(
-      {required FormKey<T> super.key, required this.child, this.validator});
+      {required FormKey super.key, required this.child, this.validator});
 
   @override
   FormKey get key => super.key as FormKey;
@@ -1349,12 +1349,14 @@ class FormField<T> extends StatelessWidget {
   final Widget label;
   final Widget? hint;
   final Widget child;
+  final Widget? secondaryChild;
   final Validator<T>? validator;
 
   const FormField({
     required FormKey<T> super.key,
     required this.label,
     required this.child,
+    this.secondaryChild,
     this.validator,
     this.hint,
   });
@@ -1374,12 +1376,18 @@ class FormField<T> extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                mergeAnimatedTextStyle(
-                  style: error != null
-                      ? TextStyle(color: theme.colorScheme.destructive)
-                      : null,
-                  child: label.textSmall(),
-                  duration: kDefaultDuration,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    mergeAnimatedTextStyle(
+                      style: error != null
+                          ? TextStyle(color: theme.colorScheme.destructive)
+                          : null,
+                      child: label.textSmall(),
+                      duration: kDefaultDuration,
+                    ),
+                    secondaryChild ?? const SizedBox.shrink(),
+                  ],
                 ),
                 Gap(theme.scaling * 8),
                 child!,
