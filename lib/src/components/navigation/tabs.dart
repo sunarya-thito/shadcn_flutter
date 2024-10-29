@@ -4,7 +4,7 @@ class Tabs extends StatelessWidget {
   final int index;
   final ValueChanged<int> onChanged;
   final List<Widget> tabs;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   const Tabs({
     super.key,
