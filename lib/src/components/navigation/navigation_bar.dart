@@ -767,7 +767,7 @@ enum NavigationOverflow {
 class NavigationLabel extends StatelessWidget implements NavigationBarItem {
   final Widget child;
   final AlignmentGeometry alignment;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final NavigationOverflow overflow;
 
   // these options are ignored in NavigationBar and NavigationRail
