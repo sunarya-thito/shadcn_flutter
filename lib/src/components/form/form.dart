@@ -852,7 +852,7 @@ class FormEntry<T> extends StatefulWidget {
   final Validator<T>? validator;
 
   const FormEntry(
-      {required FormKey super.key, required this.child, this.validator});
+      {required FormKey<T> super.key, required this.child, this.validator});
 
   @override
   FormKey get key => super.key as FormKey;
@@ -1349,14 +1349,22 @@ class FormField<T> extends StatelessWidget {
   final Widget label;
   final Widget? hint;
   final Widget child;
-  final Widget? secondaryChild;
+  final Widget? leadingLabel;
+  final Widget? trailingLabel;
+  final MainAxisAlignment? labelAxisAlignment;
+  final Gap? leadingGap;
+  final EdgeInsetsGeometry? padding;
   final Validator<T>? validator;
 
   const FormField({
     required FormKey<T> super.key,
     required this.label,
     required this.child,
-    this.secondaryChild,
+    this.leadingLabel,
+    this.trailingLabel,
+    this.labelAxisAlignment = MainAxisAlignment.spaceBetween,
+    this.leadingGap = const Gap(5),
+    this.padding = EdgeInsets.zero,
     this.validator,
     this.hint,
   });
@@ -1376,18 +1384,28 @@ class FormField<T> extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    mergeAnimatedTextStyle(
-                      style: error != null
-                          ? TextStyle(color: theme.colorScheme.destructive)
-                          : null,
-                      child: label.textSmall(),
-                      duration: kDefaultDuration,
-                    ),
-                    secondaryChild ?? const SizedBox.shrink(),
-                  ],
+                Padding(
+                  padding: padding!,
+                  child: Row(
+                    mainAxisAlignment: labelAxisAlignment!,
+                    children: [
+                      Row(
+                        children: [
+                          if (leadingLabel != null) leadingLabel!,
+                          leadingGap!,
+                          mergeAnimatedTextStyle(
+                            style: error != null
+                                ? TextStyle(
+                                    color: theme.colorScheme.destructive)
+                                : null,
+                            child: label.textSmall(),
+                            duration: kDefaultDuration,
+                          ),
+                        ],
+                      ),
+                      if (trailingLabel != null) trailingLabel!,
+                    ],
+                  ),
                 ),
                 Gap(theme.scaling * 8),
                 child!,
