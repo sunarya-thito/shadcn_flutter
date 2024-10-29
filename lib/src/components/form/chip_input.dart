@@ -96,6 +96,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
       final theme = Theme.of(context);
       _popoverController.show(
         context: context,
+        handler: const PopoverOverlayHandler(),
         builder: (context) {
           return buildPopover(context);
         },
