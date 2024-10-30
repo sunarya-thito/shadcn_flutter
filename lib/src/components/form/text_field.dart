@@ -26,7 +26,7 @@ class TextField extends StatefulWidget {
   final MaxLengthEnforcement? maxLengthEnforcement;
   final int? maxLines;
   final int? minLines;
-  final BorderRadius? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
   final TextAlign textAlign;
   final bool expands;
   final TextAlignVertical? textAlignVertical;
@@ -248,13 +248,11 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
             ? material.InputBorder.none
             : widget.filled
                 ? material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide.none,
                   )
                 : material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide(
                       color: theme.colorScheme.border,
                     ),
@@ -264,13 +262,11 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
             ? material.InputBorder.none
             : widget.filled
                 ? material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide.none,
                   )
                 : material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide(
                       color: theme.colorScheme.ring,
                     ),
@@ -279,13 +275,11 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
             ? material.InputBorder.none
             : widget.filled
                 ? material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide.none,
                   )
                 : material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide(
                       color: theme.colorScheme.border,
                     ),
@@ -294,13 +288,11 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
             ? material.InputBorder.none
             : widget.filled
                 ? material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide.none,
                   )
                 : material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide(
                       color: theme.colorScheme.border,
                     ),
@@ -309,13 +301,11 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
             ? material.InputBorder.none
             : widget.filled
                 ? material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide.none,
                   )
                 : material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide(
                       color: theme.colorScheme.destructive,
                     ),
@@ -324,13 +314,11 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
             ? material.InputBorder.none
             : widget.filled
                 ? material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide.none,
                   )
                 : material.OutlineInputBorder(
-                    borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(theme.radiusMd),
+          borderRadius: optionallyResolveBorderRadius(context, widget.borderRadius) ?? BorderRadius.circular(theme.radiusMd),
                     borderSide: BorderSide(
                       color: theme.colorScheme.destructive,
                     ),
