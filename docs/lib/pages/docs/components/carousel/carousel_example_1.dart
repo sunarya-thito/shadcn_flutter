@@ -29,7 +29,7 @@ class _CarouselExample1State extends State<CarouselExample1> {
               height: 200,
               child: Carousel(
                 // frameTransform: Carousel.fadingTransform,
-                transition: const CarouselLayout.sliding(gap: 24),
+                transition: const CarouselTransition.sliding(gap: 24),
                 controller: controller,
                 sizeConstraint: const CarouselFixedConstraint(200),
                 autoplaySpeed: const Duration(seconds: 2),
