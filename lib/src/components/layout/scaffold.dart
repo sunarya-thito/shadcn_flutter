@@ -176,7 +176,7 @@ class AppBar extends StatefulWidget {
   final Widget? subtitle; // small widget placed below title
   final bool
       trailingExpanded; // expand the trailing instead of the main content
-  final Alignment alignment;
+  final AlignmentGeometry alignment;
   final Color? backgroundColor;
   final double? leadingGap;
   final double? trailingGap;

@@ -116,8 +116,8 @@ class InstantTooltip extends StatefulWidget {
   final Widget child;
   final HitTestBehavior behavior;
   final WidgetBuilder tooltipBuilder;
-  final Alignment tooltipAlignment;
-  final Alignment? tooltipAnchorAlignment;
+  final AlignmentGeometry tooltipAlignment;
+  final AlignmentGeometry? tooltipAnchorAlignment;
 
   const InstantTooltip({
     super.key,
@@ -194,8 +194,8 @@ class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
     Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     Offset? offset,
-    Alignment? transitionAlignment,
-    EdgeInsets? margin,
+    AlignmentGeometry? transitionAlignment,
+    EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
     ValueChanged<PopoverAnchorState>? onTickFollow,
@@ -254,8 +254,8 @@ class FixedTooltipOverlayHandler extends OverlayHandler {
     Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     Offset? offset,
-    Alignment? transitionAlignment,
-    EdgeInsets? margin,
+    AlignmentGeometry? transitionAlignment,
+    EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
     ValueChanged<PopoverAnchorState>? onTickFollow,

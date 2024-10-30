@@ -9,7 +9,7 @@ class AlertDialog extends StatefulWidget {
   final double? surfaceBlur;
   final double? surfaceOpacity;
   final Color? barrierColor;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   const AlertDialog({
     super.key,

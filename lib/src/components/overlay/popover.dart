@@ -23,8 +23,8 @@ class PopoverOverlayHandler extends OverlayHandler {
     ui.Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     ui.Offset? offset,
-    Alignment? transitionAlignment,
-    EdgeInsets? margin,
+    AlignmentGeometry? transitionAlignment,
+    EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
     ValueChanged<PopoverAnchorState>? onTickFollow,
@@ -210,8 +210,8 @@ class PopoverAnchor extends StatefulWidget {
   });
 
   final Offset? position;
-  final Alignment alignment;
-  final Alignment anchorAlignment;
+  final AlignmentGeometry alignment;
+  final AlignmentGeometry anchorAlignment;
   final CapturedThemes? themes;
   final CapturedData? data;
   final WidgetBuilder builder;
@@ -225,8 +225,8 @@ class PopoverAnchor extends StatefulWidget {
   final VoidCallback? onTapOutside;
   final Object? regionGroupId;
   final Offset? offset;
-  final Alignment? transitionAlignment;
-  final EdgeInsets? margin;
+  final AlignmentGeometry? transitionAlignment;
+  final EdgeInsetsGeometry? margin;
   final bool follow;
   final BuildContext anchorContext;
   final bool consumeOutsideTaps;
@@ -253,11 +253,11 @@ class PopoverAnchorState extends State<PopoverAnchor>
   late BuildContext _anchorContext;
   late Offset? _position;
   late Offset? _offset;
-  late Alignment _alignment;
-  late Alignment _anchorAlignment;
+  late AlignmentGeometry _alignment;
+  late AlignmentGeometry _anchorAlignment;
   late PopoverConstraint _widthConstraint;
   late PopoverConstraint _heightConstraint;
-  late EdgeInsets? _margin;
+  late EdgeInsetsGeometry? _margin;
   Size? _anchorSize;
   late bool _follow;
   late bool _allowInvertHorizontal;
@@ -363,19 +363,19 @@ class PopoverAnchorState extends State<PopoverAnchor>
   }
 
   Size? get anchorSize => _anchorSize;
-  Alignment get anchorAlignment => _anchorAlignment;
+  AlignmentGeometry get anchorAlignment => _anchorAlignment;
   Offset? get position => _position;
-  Alignment get alignment => _alignment;
+  AlignmentGeometry get alignment => _alignment;
   PopoverConstraint get widthConstraint => _widthConstraint;
   PopoverConstraint get heightConstraint => _heightConstraint;
   Offset? get offset => _offset;
-  EdgeInsets? get margin => _margin;
+  EdgeInsetsGeometry? get margin => _margin;
   bool get follow => _follow;
   BuildContext get anchorContext => _anchorContext;
   bool get allowInvertHorizontal => _allowInvertHorizontal;
   bool get allowInvertVertical => _allowInvertVertical;
   @override
-  set alignment(Alignment value) {
+  set alignment(AlignmentGeometry value) {
     if (_alignment != value) {
       setState(() {
         _alignment = value;
@@ -392,7 +392,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
   }
 
   @override
-  set anchorAlignment(Alignment value) {
+  set anchorAlignment(AlignmentGeometry value) {
     if (_anchorAlignment != value) {
       setState(() {
         _anchorAlignment = value;
@@ -419,7 +419,7 @@ class PopoverAnchorState extends State<PopoverAnchor>
   }
 
   @override
-  set margin(EdgeInsets? value) {
+  set margin(EdgeInsetsGeometry? value) {
     if (_margin != value) {
       setState(() {
         _margin = value;
@@ -481,9 +481,10 @@ class PopoverAnchorState extends State<PopoverAnchor>
     if (renderBox != null) {
       Offset pos = renderBox.localToGlobal(Offset.zero);
       Size size = renderBox.size;
+      var anchorAlignment = _anchorAlignment.optionallyResolve(context);
       Offset newPos = Offset(
-        pos.dx + size.width / 2 + size.width / 2 * _anchorAlignment.x,
-        pos.dy + size.height / 2 + size.height / 2 * _anchorAlignment.y,
+        pos.dx + size.width / 2 + size.width / 2 * anchorAlignment.x,
+        pos.dy + size.height / 2 + size.height / 2 * anchorAlignment.y,
       );
       if (_position != newPos) {
         setState(() {
@@ -519,16 +520,18 @@ class PopoverAnchorState extends State<PopoverAnchor>
               final theme = Theme.of(context);
               final scaling = theme.scaling;
               return PopoverLayout(
-                alignment: _alignment,
+                alignment: _alignment.optionallyResolve(context),
                 position: _position,
                 anchorSize: _anchorSize,
-                anchorAlignment: _anchorAlignment,
+                anchorAlignment: _anchorAlignment.optionallyResolve(context),
                 widthConstraint: _widthConstraint,
                 heightConstraint: _heightConstraint,
                 offset: _offset,
-                margin: _margin ?? (const EdgeInsets.all(8) * scaling),
+                margin: _margin?.optionallyResolve(context) ??
+                    (const EdgeInsets.all(8) * scaling),
                 scale: tweenValue(0.9, 1.0, widget.animation.value),
-                scaleAlignment: widget.transitionAlignment ?? _alignment,
+                scaleAlignment: (widget.transitionAlignment ?? _alignment)
+                    .optionallyResolve(context),
                 allowInvertVertical: _allowInvertVertical,
                 allowInvertHorizontal: _allowInvertHorizontal,
                 child: child!,
@@ -620,8 +623,8 @@ OverlayCompleter<T?> showPopover<T>({
   Clip clipBehavior = Clip.none,
   Object? regionGroupId,
   Offset? offset,
-  Alignment? transitionAlignment,
-  EdgeInsets? margin,
+  AlignmentGeometry? transitionAlignment,
+  EdgeInsetsGeometry? margin,
   bool follow = true,
   bool consumeOutsideTaps = true,
   ValueChanged<PopoverAnchorState>? onTickFollow,
@@ -721,9 +724,9 @@ class PopoverController extends ChangeNotifier {
     Offset? offset,
     GlobalKey<OverlayHandlerStateMixin>? key,
     Object? regionGroupId,
-    Alignment? transitionAlignment,
+    AlignmentGeometry? transitionAlignment,
     bool consumeOutsideTaps = true,
-    EdgeInsets? margin,
+    EdgeInsetsGeometry? margin,
     ValueChanged<PopoverAnchorState>? onTickFollow,
     bool follow = true,
     bool allowInvertHorizontal = true,
@@ -800,13 +803,13 @@ class PopoverController extends ChangeNotifier {
     }
   }
 
-  set alignment(Alignment value) {
+  set alignment(AlignmentGeometry value) {
     for (Popover key in _openPopovers) {
       key.currentState?.alignment = value;
     }
   }
 
-  set anchorAlignment(Alignment value) {
+  set anchorAlignment(AlignmentGeometry value) {
     for (Popover key in _openPopovers) {
       key.currentState?.anchorAlignment = value;
     }

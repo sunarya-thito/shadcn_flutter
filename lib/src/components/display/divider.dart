@@ -33,7 +33,7 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
   final double? indent;
   final double? endIndent;
   final Widget? child;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   const Divider({
     super.key,
@@ -210,7 +210,7 @@ class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
   final double? indent;
   final double? endIndent;
   final Widget? child;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   const VerticalDivider({
     super.key,

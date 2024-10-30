@@ -6,9 +6,9 @@ class TimePicker extends StatelessWidget {
   final ValueChanged<TimeOfDay?>? onChanged;
   final PromptMode mode;
   final Widget? placeholder;
-  final Alignment? popoverAlignment;
-  final Alignment? popoverAnchorAlignment;
-  final EdgeInsets? popoverPadding;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
   final bool? use24HourFormat;
   final bool showSeconds;
   final Widget? dialogTitle;

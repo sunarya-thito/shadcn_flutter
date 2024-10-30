@@ -5,8 +5,8 @@ class HoverCard extends StatefulWidget {
   final Duration debounce;
   final Duration wait;
   final WidgetBuilder hoverBuilder;
-  final Alignment popoverAlignment;
-  final Alignment? anchorAlignment;
+  final AlignmentGeometry popoverAlignment;
+  final AlignmentGeometry? anchorAlignment;
   final Offset popoverOffset;
   final HitTestBehavior behavior;
   final PopoverController? controller;

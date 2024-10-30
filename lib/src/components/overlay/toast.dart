@@ -68,8 +68,8 @@ enum ToastLocation {
     alignment: Alignment.bottomRight,
   );
 
-  final Alignment alignment;
-  final Alignment childrenAlignment;
+  final AlignmentGeometry alignment;
+  final AlignmentGeometry childrenAlignment;
 
   const ToastLocation({
     required this.alignment,
@@ -87,7 +87,7 @@ enum ExpandMode {
 class ToastLayer extends StatefulWidget {
   final Widget child;
   final int maxStackedEntries;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final ExpandMode expandMode;
   final Offset? collapsedOffset;
   final double collapsedScale;
@@ -179,12 +179,14 @@ class _ToastLayerState extends State<ToastLayer> {
       int startVisible =
           (entries.length - (widget.maxStackedEntries + reservedEntries)).max(
               0); // reserve some invisible toast as for the ghost entry depending animation speed
-      Alignment entryAlignment = location.childrenAlignment * -1;
+      Alignment entryAlignment =
+          location.childrenAlignment.optionallyResolve(context) * -1;
       List<Widget> positionedChildren = [];
       int toastIndex = 0;
       var collapsedOffset =
           widget.collapsedOffset ?? (const Offset(0, 12) * scaling);
-      var padding = widget.padding ?? (const EdgeInsets.all(24) * scaling);
+      var padding = widget.padding?.optionallyResolve(context) ??
+          (const EdgeInsets.all(24) * scaling);
       var toastConstraints = widget.toastConstraints ??
           BoxConstraints.tightFor(width: 320 * scaling);
       for (var i = entries.length - 1; i >= startVisible; i--) {
@@ -352,7 +354,7 @@ class ToastEntryLayout extends StatefulWidget {
   final bool expanded;
   final bool visible;
   final bool dismissible;
-  final Alignment previousAlignment;
+  final AlignmentGeometry previousAlignment;
   final Curve curve;
   final Duration duration;
   final CapturedThemes? themes;
@@ -367,7 +369,7 @@ class ToastEntryLayout extends StatefulWidget {
   final double entryOpacity;
   final Widget child;
   final Offset entryOffset;
-  final Alignment entryAlignment;
+  final AlignmentGeometry entryAlignment;
   final double spacing;
   final int index;
   final int actualIndex;
@@ -561,24 +563,26 @@ class _ToastEntryLayoutState extends State<ToastEntryLayout> {
     var offset = widget.entryOffset * (1.0 - showingProgress);
 
     // when its behind another toast, shift it up based on index
+    var previousAlignment = widget.previousAlignment.optionallyResolve(context);
     offset += Offset(
-          (widget.collapsedOffset.dx * widget.previousAlignment.x) *
+          (widget.collapsedOffset.dx * previousAlignment.x) *
               nonCollapsingProgress,
-          (widget.collapsedOffset.dy * widget.previousAlignment.y) *
+          (widget.collapsedOffset.dy * previousAlignment.y) *
               nonCollapsingProgress,
         ) *
         indexProgress;
 
     // and then add the spacing when its in expanded mode
     offset += Offset(
-          (widget.spacing * widget.previousAlignment.x) * expandProgress,
-          (widget.spacing * widget.previousAlignment.y) * expandProgress,
+          (widget.spacing * previousAlignment.x) * expandProgress,
+          (widget.spacing * previousAlignment.y) * expandProgress,
         ) *
         indexProgress;
 
+    var entryAlignment = widget.entryAlignment.optionallyResolve(context);
     var fractionalOffset = Offset(
-      widget.entryAlignment.x * (1.0 - showingProgress),
-      widget.entryAlignment.y * (1.0 - showingProgress),
+      entryAlignment.x * (1.0 - showingProgress),
+      entryAlignment.y * (1.0 - showingProgress),
     );
 
     fractionalOffset += Offset(
@@ -588,8 +592,8 @@ class _ToastEntryLayoutState extends State<ToastEntryLayout> {
 
     // when its behind another toast AND is expanded, shift it up based on index and the size of self
     fractionalOffset += Offset(
-          expandProgress * widget.previousAlignment.x,
-          expandProgress * widget.previousAlignment.y,
+          expandProgress * previousAlignment.x,
+          expandProgress * previousAlignment.y,
         ) *
         indexProgress;
 
@@ -609,7 +613,7 @@ class _ToastEntryLayoutState extends State<ToastEntryLayout> {
         1.0 * pow(widget.collapsedScale, indexProgress * (1 - expandProgress));
 
     return Align(
-      alignment: widget.entryAlignment,
+      alignment: entryAlignment,
       child: Transform.translate(
         offset: offset,
         child: FractionalTranslation(

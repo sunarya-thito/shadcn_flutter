@@ -725,7 +725,6 @@ class _DrawerOverlayWrapper extends StatefulWidget {
   final Widget child;
   final Completer completer;
   const _DrawerOverlayWrapper({
-    super.key,
     required this.child,
     required this.completer,
   });
@@ -1385,8 +1384,8 @@ class SheetOverlayHandler extends OverlayHandler {
     Clip clipBehavior = Clip.none,
     Object? regionGroupId,
     Offset? offset,
-    Alignment? transitionAlignment,
-    EdgeInsets? margin,
+    AlignmentGeometry? transitionAlignment,
+    EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
     ValueChanged<PopoverAnchorState>? onTickFollow,
