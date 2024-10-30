@@ -21,21 +21,29 @@ class _AccordionState extends State<Accordion> {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     final accTheme = ComponentTheme.maybeOf<AccordionTheme>(context);
+    final accTheme = ComponentTheme.maybeOf<AccordionTheme>(context) ??
+        const AccordionTheme();
     return Data.inherit(
         data: this,
         child: IntrinsicWidth(
-          child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ...join(
-                    widget.items,
-                    Container(
-                      color: theme.colorScheme.muted,
-                      height: 1 * scaling,
-                    )),
-                const Divider(),
-              ]),
+          child: ComponentTheme(
+            data: accTheme,
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ...join(widget.items.map((item) {
+                    return item is AccordionItem
+                        ? item._applyTheme(accTheme)
+                        : item;
+                  }),
+                      Container(
+                        color: theme.colorScheme.muted,
+                        height: 1 * scaling,
+                      )),
+                  const Divider(),
+                ]),
+          ),
         ));
   }
 }
@@ -178,6 +186,75 @@ class AccordionTheme {
   }
 }
 
+/// Theme data for [AccordionItem].
+class AccordionTheme {
+  /// Duration of the collapse/expand animation.
+  final Duration duration;
+
+  /// Curve of the animation (played when expanding).
+  final Curve curve;
+
+  /// Reverse curve of the animation (played when collapsing).
+  final Curve reverseCurve;
+
+  /// The gap between the trigger and the content (or other triggers if collapsed).
+  ///
+  /// The padding is applied to the top and bottom of the trigger.
+  final double padding;
+
+  /// The gap between the trigger text and the icon.
+  final double iconGap;
+
+  /// Theme data for [AccordionItem].
+  const AccordionTheme({
+    this.duration = const Duration(milliseconds: 200),
+    this.curve = Curves.easeIn,
+    this.reverseCurve = Curves.easeOut,
+    this.padding = 16,
+    this.iconGap = 18,
+  });
+
+  /// Creates a copy of this theme and replaces the given properties.
+  AccordionTheme copyWith({
+    Duration? duration,
+    Curve? curve,
+    Curve? reverseCurve,
+    double? padding,
+    double? iconGap,
+  }) {
+    return AccordionTheme(
+      duration: duration ?? this.duration,
+      curve: curve ?? this.curve,
+      reverseCurve: reverseCurve ?? this.reverseCurve,
+      padding: padding ?? this.padding,
+      iconGap: iconGap ?? this.iconGap,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is AccordionTheme &&
+      duration == other.duration &&
+      curve == other.curve &&
+      reverseCurve == other.reverseCurve &&
+      padding == other.padding &&
+      iconGap == other.iconGap;
+
+  @override
+  int get hashCode => Object.hash(
+        duration,
+        curve,
+        reverseCurve,
+        padding,
+        iconGap,
+      );
+
+  @override
+  String toString() {
+    return 'AccordionTheme(duration: $duration, curve: $curve, reverseCurve: $reverseCurve, padding: $padding, iconGap: $iconGap)';
+  }
+}
+
 class AccordionItem extends StatefulWidget {
   final Widget trigger;
   final Widget content;
@@ -189,9 +266,36 @@ class AccordionItem extends StatefulWidget {
     required this.content,
     this.expanded = false,
   });
+  final AccordionTheme theme;
+
+  const AccordionItem({
+    super.key,
+    required this.trigger,
+    required this.content,
+    this.expanded = false,
+  }) : theme = const AccordionTheme();
+
+  const AccordionItem._({
+    super.key,
+    required this.trigger,
+    required this.content,
+    required this.expanded,
+    required this.theme,
+  });
 
   @override
   State<AccordionItem> createState() => _AccordionItemState();
+
+  /// Creates a copy of this item and replaces the theme.
+  AccordionItem _applyTheme(AccordionTheme theme) {
+    return AccordionItem._(
+      key: key,
+      trigger: trigger,
+      content: content,
+      expanded: expanded,
+      theme: theme,
+    );
+  }
 }
 
 class _AccordionItemState extends State<AccordionItem>
@@ -207,6 +311,23 @@ class _AccordionItemState extends State<AccordionItem>
   void initState() {
     super.initState();
     _expanded.value = widget.expanded;
+    _controller = AnimationController(
+      vsync: this,
+      duration: widget.theme.duration,
+      value: _expanded.value ? 1 : 0,
+    );
+    _easeInAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: widget.theme.curve,
+      reverseCurve: widget.theme.reverseCurve,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    accordion?._expanded.removeListener(_onExpandedChanged);
+    super.dispose();
   }
 
   @override
@@ -283,13 +404,15 @@ class _AccordionItemState extends State<AccordionItem>
       child: GestureDetector(
         child: Column(
           children: [
-            widget.trigger,
             SizeTransition(
               sizeFactor: _easeInAnimation!,
               axisAlignment: -1,
               child: Padding(
                 padding: EdgeInsets.only(
                   bottom: _theme?.padding ?? 16 * scaling,
+                ),
+                padding: EdgeInsets.only(
+                  bottom: widget.theme.padding * scaling,
                 ),
                 child: widget.content,
               ).small().normal(),
@@ -345,6 +468,8 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     final accTheme = ComponentTheme.maybeOf<AccordionItemTheme>(context);
+    final accTheme = ComponentTheme.maybeOf<AccordionTheme>(context) ??
+        const AccordionTheme();
     final scaling = theme.scaling;
     return GestureDetector(
       onTap: () {
@@ -388,26 +513,29 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
             padding: EdgeInsets.symmetric(
               vertical: accTheme?.padding ?? 16 * scaling,
             ),
+            padding: EdgeInsets.symmetric(vertical: accTheme.padding * scaling),
             child: Row(
               children: [
                 Expanded(
-                    child: Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: DefaultTextStyle.merge(
-                    style: TextStyle(
-                      decoration: _hovering
-                          ? TextDecoration.underline
-                          : TextDecoration.none,
+                  child: Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: DefaultTextStyle.merge(
+                      style: TextStyle(
+                        decoration: _hovering
+                            ? TextDecoration.underline
+                            : TextDecoration.none,
+                      ),
+                      child: widget.child,
                     ),
-                    child: widget.child,
                   ),
-                )),
-                SizedBox(width: 18 * scaling),
+                ),
+                SizedBox(width: accTheme.iconGap * scaling),
                 TweenAnimationBuilder(
                     tween: _expanded
                         ? Tween(begin: 1.0, end: 0)
                         : Tween(begin: 0, end: 1.0),
                     duration: accTheme?.duration ?? kDefaultDuration,
+                    duration: accTheme.duration,
                     builder: (context, value, child) {
                       return Transform.rotate(
                         angle: value * pi,
