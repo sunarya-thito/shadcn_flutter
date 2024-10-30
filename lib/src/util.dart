@@ -9,6 +9,17 @@ const kDefaultDuration = Duration(milliseconds: 150);
 typedef ContextedCallback = void Function(BuildContext context);
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 
+BorderRadius? optionallyResolveBorderRadius(
+    BuildContext context, BorderRadiusGeometry? radius) {
+  if (radius == null) {
+    return null;
+  }
+  if (radius is BorderRadius) {
+    return radius;
+  }
+  return radius.resolve(Directionality.of(context));
+}
+
 T styleValue<T>({T? widgetValue, T? themeValue, T? defaultValue}) {
   T? value = widgetValue ?? themeValue ?? defaultValue;
   assert(value is! T, 'No value provided');
@@ -53,7 +64,7 @@ extension AlignmentExtension on AlignmentGeometry {
 }
 
 extension BorderRadiusExtension on BorderRadiusGeometry {
-  BorderRadiusGeometry optionallyResolve(BuildContext context) {
+  BorderRadius optionallyResolve(BuildContext context) {
     if (this is BorderRadius) {
       return this as BorderRadius;
     }
@@ -390,7 +401,7 @@ extension WidgetExtension on Widget {
   }
 
   Widget clipRRect(
-      {BorderRadius borderRadius = BorderRadius.zero,
+      {BorderRadiusGeometry borderRadius = BorderRadius.zero,
       Clip clipBehavior = Clip.antiAlias}) {
     return ClipRRect(
       borderRadius: borderRadius,
