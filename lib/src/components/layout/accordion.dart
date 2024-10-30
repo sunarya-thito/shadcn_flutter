@@ -39,7 +39,7 @@ class _AccordionState extends State<Accordion> {
                       ShadcnAnimatedContainer(
                         duration: kDefaultDuration,
                         color: theme.colorScheme.muted,
-                        height: 1 * scaling,
+                        height: accTheme.dividerHeight * scaling,
                       )),
                   const Divider(),
                 ]),
@@ -48,7 +48,9 @@ class _AccordionState extends State<Accordion> {
   }
 }
 
-/// Theme data for [AccordionItem].
+/// {@template accordion_theme}
+/// Styling options for [AccordionItem], [AccordionTrigger] and [Accordion].
+/// {@endtemplate}
 class AccordionTheme {
   /// Duration of the collapse/expand animation.
   final Duration duration;
@@ -67,22 +69,29 @@ class AccordionTheme {
   /// The gap between the trigger text and the icon.
   final double iconGap;
 
-  /// Theme data for [AccordionItem].
+  /// The height of the divider between each item.
+  final double dividerHeight;
+
+  /// {@macro accordion_theme}
   const AccordionTheme({
     this.duration = const Duration(milliseconds: 200),
     this.curve = Curves.easeIn,
     this.reverseCurve = Curves.easeOut,
     this.padding = 16,
     this.iconGap = 18,
+    this.dividerHeight = 1,
   });
 
   /// Creates a copy of this theme and replaces the given properties.
+  ///
+  /// {@macro accordion_theme}
   AccordionTheme copyWith({
     Duration? duration,
     Curve? curve,
     Curve? reverseCurve,
     double? padding,
     double? iconGap,
+    double? dividerHeight,
   }) {
     return AccordionTheme(
       duration: duration ?? this.duration,
@@ -90,6 +99,7 @@ class AccordionTheme {
       reverseCurve: reverseCurve ?? this.reverseCurve,
       padding: padding ?? this.padding,
       iconGap: iconGap ?? this.iconGap,
+      dividerHeight: dividerHeight ?? this.dividerHeight,
     );
   }
 
@@ -100,7 +110,8 @@ class AccordionTheme {
       curve == other.curve &&
       reverseCurve == other.reverseCurve &&
       padding == other.padding &&
-      iconGap == other.iconGap;
+      iconGap == other.iconGap &&
+      dividerHeight == other.dividerHeight;
 
   @override
   int get hashCode => Object.hash(
@@ -109,11 +120,12 @@ class AccordionTheme {
         reverseCurve,
         padding,
         iconGap,
+        dividerHeight,
       );
 
   @override
   String toString() {
-    return 'AccordionTheme(duration: $duration, curve: $curve, reverseCurve: $reverseCurve, padding: $padding, iconGap: $iconGap)';
+    return 'AccordionTheme(duration: $duration, curve: $curve, reverseCurve: $reverseCurve, padding: $padding, iconGap: $iconGap, dividerHeight: $dividerHeight)';
   }
 }
 
