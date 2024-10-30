@@ -39,7 +39,7 @@ class _AccordionState extends State<Accordion> {
                   }),
                       Container(
                         color: theme.colorScheme.muted,
-                        height: 1 * scaling,
+                        height: accTheme.dividerHeight * scaling,
                       )),
                   const Divider(),
                 ]),
@@ -48,145 +48,9 @@ class _AccordionState extends State<Accordion> {
   }
 }
 
-/// {@template accordion_item_theme}
-/// Styling options for [AccordionItem].
+/// {@template accordion_theme}
+/// Styling options for [AccordionItem], [AccordionTrigger] and [Accordion].
 /// {@endtemplate}
-class AccordionItemTheme {
-  /// Duration of the collapse/expand animation.
-  final Duration? duration;
-
-  /// Curve of the animation (played when expanding).
-  final Curve? curve;
-
-  /// Reverse curve of the animation (played when collapsing).
-  final Curve? reverseCurve;
-
-  /// The gap between the trigger and the content (or other triggers if collapsed).
-  ///
-  /// Applied to the top and bottom of the trigger and bottom of the content.
-  final double? padding;
-
-  /// The gap between the trigger text and the icon.
-  final double? iconGap;
-
-  /// The icon to display at the end of the trigger.
-  ///
-  /// This icon is rotated 180 degrees when the item is expanded.
-  final IconData? arrowIcon;
-
-  /// The color of the arrow icon.
-  final Color? arrowIconColor;
-
-  /// {@macro accordion_item_theme}
-  const AccordionItemTheme({
-    this.duration,
-    this.curve,
-    this.reverseCurve,
-    this.padding,
-    this.iconGap,
-    this.arrowIcon,
-    this.arrowIconColor,
-  });
-
-  /// Creates a copy of this theme and replaces the given properties.
-  ///
-  /// {@macro accordion_item_theme}
-  AccordionItemTheme copyWith({
-    Duration? duration,
-    Curve? curve,
-    Curve? reverseCurve,
-    double? padding,
-    double? iconGap,
-    IconData? arrowIcon,
-    Color? arrowIconColor,
-  }) {
-    return AccordionItemTheme(
-      duration: duration ?? this.duration,
-      curve: curve ?? this.curve,
-      reverseCurve: reverseCurve ?? this.reverseCurve,
-      padding: padding ?? this.padding,
-      iconGap: iconGap ?? this.iconGap,
-      arrowIcon: arrowIcon ?? this.arrowIcon,
-      arrowIconColor: arrowIconColor ?? this.arrowIconColor,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      other is AccordionItemTheme &&
-      duration == other.duration &&
-      curve == other.curve &&
-      reverseCurve == other.reverseCurve &&
-      padding == other.padding &&
-      iconGap == other.iconGap &&
-      arrowIcon == other.arrowIcon &&
-      arrowIconColor == other.arrowIconColor;
-
-  @override
-  int get hashCode => Object.hash(
-        duration,
-        curve,
-        reverseCurve,
-        padding,
-        iconGap,
-        arrowIcon,
-        arrowIconColor,
-      );
-
-  @override
-  String toString() {
-    return 'AccordionItemTheme(duration: $duration, curve: $curve, reverseCurve: $reverseCurve, padding: $padding, iconGap: $iconGap, arrowIcon: $arrowIcon, arrowIconColor: $arrowIconColor)';
-  }
-}
-
-/// {@template accordion_main_theme}
-/// Styling options for [Accordion].
-/// {@endtemplate}
-class AccordionTheme {
-  /// The height of the divider between each item.
-  final double? dividerHeight;
-
-  /// The color of the divider between each item.
-  final Color? dividerColor;
-
-  /// {@macro accordion_main_theme}
-  const AccordionTheme({
-    this.dividerHeight,
-    this.dividerColor,
-  });
-
-  /// Creates a copy of this theme and replaces the given properties.
-  ///
-  /// {@macro accordion_main_theme}
-  AccordionTheme copyWith({
-    double? dividerHeight,
-    Color? dividerColor,
-  }) {
-    return AccordionTheme(
-      dividerHeight: dividerHeight ?? this.dividerHeight,
-      dividerColor: dividerColor ?? this.dividerColor,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      other is AccordionTheme &&
-      dividerHeight == other.dividerHeight &&
-      dividerColor == other.dividerColor;
-
-  @override
-  int get hashCode => Object.hash(
-        dividerHeight,
-        dividerColor,
-      );
-
-  @override
-  String toString() {
-    return 'AccordionMainTheme(dividerHeight: $dividerHeight, dividerColor: $dividerColor)';
-  }
-}
-
-/// Theme data for [AccordionItem].
 class AccordionTheme {
   /// Duration of the collapse/expand animation.
   final Duration duration;
@@ -205,22 +69,29 @@ class AccordionTheme {
   /// The gap between the trigger text and the icon.
   final double iconGap;
 
-  /// Theme data for [AccordionItem].
+  /// The height of the divider between each item.
+  final double dividerHeight;
+
+  /// {@macro accordion_theme}
   const AccordionTheme({
     this.duration = const Duration(milliseconds: 200),
     this.curve = Curves.easeIn,
     this.reverseCurve = Curves.easeOut,
     this.padding = 16,
     this.iconGap = 18,
+    this.dividerHeight = 1,
   });
 
   /// Creates a copy of this theme and replaces the given properties.
+  ///
+  /// {@macro accordion_theme}
   AccordionTheme copyWith({
     Duration? duration,
     Curve? curve,
     Curve? reverseCurve,
     double? padding,
     double? iconGap,
+    double? dividerHeight,
   }) {
     return AccordionTheme(
       duration: duration ?? this.duration,
@@ -228,6 +99,7 @@ class AccordionTheme {
       reverseCurve: reverseCurve ?? this.reverseCurve,
       padding: padding ?? this.padding,
       iconGap: iconGap ?? this.iconGap,
+      dividerHeight: dividerHeight ?? this.dividerHeight,
     );
   }
 
@@ -238,7 +110,8 @@ class AccordionTheme {
       curve == other.curve &&
       reverseCurve == other.reverseCurve &&
       padding == other.padding &&
-      iconGap == other.iconGap;
+      iconGap == other.iconGap &&
+      dividerHeight == other.dividerHeight;
 
   @override
   int get hashCode => Object.hash(
@@ -247,11 +120,12 @@ class AccordionTheme {
         reverseCurve,
         padding,
         iconGap,
+        dividerHeight,
       );
 
   @override
   String toString() {
-    return 'AccordionTheme(duration: $duration, curve: $curve, reverseCurve: $reverseCurve, padding: $padding, iconGap: $iconGap)';
+    return 'AccordionTheme(duration: $duration, curve: $curve, reverseCurve: $reverseCurve, padding: $padding, iconGap: $iconGap, dividerHeight: $dividerHeight)';
   }
 }
 
