@@ -9,6 +9,12 @@ const kDefaultDuration = Duration(milliseconds: 150);
 typedef ContextedCallback = void Function(BuildContext context);
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 
+T styleValue<T>({T? widgetValue, T? themeValue, T? defaultValue}) {
+  T? value = widgetValue ?? themeValue ?? defaultValue;
+  assert(value is! T, 'No value provided');
+  return value as T;
+}
+
 extension FutureOrExtension<T> on FutureOr<T> {
   FutureOr<R> map<R>(R Function(T value) transform) {
     if (this is Future<T>) {
