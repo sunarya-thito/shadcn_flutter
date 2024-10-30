@@ -291,8 +291,8 @@ class Select<T> extends StatefulWidget {
   final BorderRadiusGeometry? borderRadius;
   final String? searchPlaceholder;
   final EdgeInsetsGeometry? padding;
-  final Alignment popoverAlignment;
-  final Alignment? popoverAnchorAlignment;
+  final AlignmentGeometry popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
   final WidgetBuilder? emptyBuilder;
   final bool orderSelectedFirst;
   final double? surfaceBlur;
@@ -896,8 +896,8 @@ class MultiSelect<T> extends StatefulWidget {
   final BorderRadiusGeometry? borderRadius;
   final String? searchPlaceholder;
   final EdgeInsetsGeometry? padding;
-  final Alignment popoverAlignment;
-  final Alignment? popoverAnchorAlignment;
+  final AlignmentGeometry popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
   final WidgetBuilder? emptyBuilder;
   final bool orderSelectedFirst;
   final double? surfaceBlur;

@@ -1459,9 +1459,9 @@ class ColorInput extends StatelessWidget {
   final ColorDerivative color;
   final ValueChanged<ColorDerivative>? onChanged;
   final bool showAlpha;
-  final Alignment? popoverAlignment;
-  final Alignment? popoverAnchorAlignment;
-  final EdgeInsets? popoverPadding;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
   final Widget? placeholder;
   final PromptMode mode;
   final ColorPickerMode pickerMode;

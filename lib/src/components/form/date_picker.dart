@@ -6,9 +6,9 @@ class DatePicker extends StatelessWidget {
   final Widget? placeholder;
   final PromptMode mode;
   final CalendarView? initialView;
-  final Alignment? popoverAlignment;
-  final Alignment? popoverAnchorAlignment;
-  final EdgeInsets? popoverPadding;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
   final Widget? dialogTitle;
   final CalendarViewType? initialViewType;
   final DateStateBuilder? stateBuilder;
@@ -101,9 +101,9 @@ class DateRangePicker extends StatelessWidget {
   final PromptMode mode;
   final CalendarView? initialView;
   final CalendarViewType? initialViewType;
-  final Alignment? popoverAlignment;
-  final Alignment? popoverAnchorAlignment;
-  final EdgeInsets? popoverPadding;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
   final Widget? dialogTitle;
   final DateStateBuilder? stateBuilder;
 
