@@ -21,7 +21,7 @@ class _CarouselExample3State extends State<CarouselExample3> {
           SizedBox(
             height: 200,
             child: Carousel(
-              transition: const CarouselLayout.fading(),
+              transition: const CarouselTransition.fading(),
               controller: controller,
               draggable: false,
               autoplaySpeed: const Duration(seconds: 1),

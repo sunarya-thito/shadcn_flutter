@@ -29,7 +29,7 @@ class _CarouselExample2State extends State<CarouselExample2> {
             child: SizedBox(
               width: 200,
               child: Carousel(
-                transition: const CarouselLayout.sliding(gap: 24),
+                transition: const CarouselTransition.sliding(gap: 24),
                 alignment: CarouselAlignment.center,
                 controller: controller,
                 direction: Axis.vertical,

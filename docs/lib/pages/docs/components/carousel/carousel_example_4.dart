@@ -17,7 +17,7 @@ class _CarouselExample4State extends State<CarouselExample4> {
       width: 800,
       height: 200,
       child: Carousel(
-        transition: const CarouselLayout.sliding(gap: 24),
+        transition: const CarouselTransition.sliding(gap: 24),
         controller: controller,
         draggable: false,
         autoplaySpeed: const Duration(seconds: 2),
