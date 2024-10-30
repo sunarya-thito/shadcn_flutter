@@ -767,7 +767,7 @@ enum NavigationOverflow {
 class NavigationLabel extends StatelessWidget implements NavigationBarItem {
   final Widget child;
   final AlignmentGeometry alignment;
-
+  final EdgeInsetsGeometry? padding;
   final NavigationOverflow overflow;
 
   // these options are ignored in NavigationBar and NavigationRail
@@ -780,6 +780,7 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
     this.floating = false,
     this.pinned = false,
     this.overflow = NavigationOverflow.marquee,
+    this.padding,
     required this.child,
   });
 
@@ -824,7 +825,7 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
           child: ShadcnAnimatedContainer(
             duration: kDefaultDuration,
             alignment: alignment,
-            padding: EdgeInsets.symmetric(horizontal: 16 * scaling),
+            padding: padding ?? EdgeInsets.symmetric(horizontal: 16 * scaling),
             // child: OverflowMarquee(child: child),
             child: _NavigationChildOverflowHandle(
               overflow: overflow,
