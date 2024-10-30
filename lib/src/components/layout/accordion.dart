@@ -41,10 +41,10 @@ class _AccordionState extends State<Accordion> {
   }
 }
 
-/// {@template accordion_theme}
-/// Styling options for [AccordionItem], [AccordionTrigger] and [Accordion].
+/// {@template accordion_item_theme}
+/// Styling options for [AccordionItem].
 /// {@endtemplate}
-class AccordionTheme {
+class AccordionItemTheme {
   /// Duration of the collapse/expand animation.
   final Duration? duration;
 
@@ -56,17 +56,11 @@ class AccordionTheme {
 
   /// The gap between the trigger and the content (or other triggers if collapsed).
   ///
-  /// The padding is applied to the top and bottom of the trigger.
+  /// Applied to the top and bottom of the trigger and bottom of the content.
   final double? padding;
 
   /// The gap between the trigger text and the icon.
   final double? iconGap;
-
-  /// The height of the divider between each item.
-  final double? dividerHeight;
-
-  /// The color of the divider between each item.
-  final Color? dividerColor;
 
   /// The icon to display at the end of the trigger.
   ///
@@ -76,41 +70,35 @@ class AccordionTheme {
   /// The color of the arrow icon.
   final Color? arrowIconColor;
 
-  /// {@macro accordion_theme}
-  const AccordionTheme({
+  /// {@macro accordion_item_theme}
+  const AccordionItemTheme({
     this.duration,
     this.curve,
     this.reverseCurve,
     this.padding,
     this.iconGap,
-    this.dividerHeight,
-    this.dividerColor,
     this.arrowIcon,
     this.arrowIconColor,
   });
 
   /// Creates a copy of this theme and replaces the given properties.
   ///
-  /// {@macro accordion_theme}
-  AccordionTheme copyWith({
+  /// {@macro accordion_item_theme}
+  AccordionItemTheme copyWith({
     Duration? duration,
     Curve? curve,
     Curve? reverseCurve,
     double? padding,
     double? iconGap,
-    double? dividerHeight,
-    Color? dividerColor,
     IconData? arrowIcon,
     Color? arrowIconColor,
   }) {
-    return AccordionTheme(
+    return AccordionItemTheme(
       duration: duration ?? this.duration,
       curve: curve ?? this.curve,
       reverseCurve: reverseCurve ?? this.reverseCurve,
       padding: padding ?? this.padding,
       iconGap: iconGap ?? this.iconGap,
-      dividerHeight: dividerHeight ?? this.dividerHeight,
-      dividerColor: dividerColor ?? this.dividerColor,
       arrowIcon: arrowIcon ?? this.arrowIcon,
       arrowIconColor: arrowIconColor ?? this.arrowIconColor,
     );
@@ -118,14 +106,12 @@ class AccordionTheme {
 
   @override
   bool operator ==(Object other) =>
-      other is AccordionTheme &&
+      other is AccordionItemTheme &&
       duration == other.duration &&
       curve == other.curve &&
       reverseCurve == other.reverseCurve &&
       padding == other.padding &&
       iconGap == other.iconGap &&
-      dividerHeight == other.dividerHeight &&
-      dividerColor == other.dividerColor &&
       arrowIcon == other.arrowIcon &&
       arrowIconColor == other.arrowIconColor;
 
@@ -136,15 +122,60 @@ class AccordionTheme {
         reverseCurve,
         padding,
         iconGap,
-        dividerHeight,
-        dividerColor,
         arrowIcon,
         arrowIconColor,
       );
 
   @override
   String toString() {
-    return 'AccordionTheme(duration: $duration, curve: $curve, reverseCurve: $reverseCurve, padding: $padding, iconGap: $iconGap, dividerHeight: $dividerHeight, dividerColor: $dividerColor, arrowIcon: $arrowIcon, arrorIconColor: $arrowIconColor)';
+    return 'AccordionItemTheme(duration: $duration, curve: $curve, reverseCurve: $reverseCurve, padding: $padding, iconGap: $iconGap, arrowIcon: $arrowIcon, arrowIconColor: $arrowIconColor)';
+  }
+}
+
+/// {@template accordion_main_theme}
+/// Styling options for [Accordion].
+/// {@endtemplate}
+class AccordionTheme {
+  /// The height of the divider between each item.
+  final double? dividerHeight;
+
+  /// The color of the divider between each item.
+  final Color? dividerColor;
+
+  /// {@macro accordion_main_theme}
+  const AccordionTheme({
+    this.dividerHeight,
+    this.dividerColor,
+  });
+
+  /// Creates a copy of this theme and replaces the given properties.
+  ///
+  /// {@macro accordion_main_theme}
+  AccordionTheme copyWith({
+    double? dividerHeight,
+    Color? dividerColor,
+  }) {
+    return AccordionTheme(
+      dividerHeight: dividerHeight ?? this.dividerHeight,
+      dividerColor: dividerColor ?? this.dividerColor,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is AccordionTheme &&
+      dividerHeight == other.dividerHeight &&
+      dividerColor == other.dividerColor;
+
+  @override
+  int get hashCode => Object.hash(
+        dividerHeight,
+        dividerColor,
+      );
+
+  @override
+  String toString() {
+    return 'AccordionMainTheme(dividerHeight: $dividerHeight, dividerColor: $dividerColor)';
   }
 }
 
@@ -189,7 +220,7 @@ class _AccordionItemState extends State<AccordionItem>
 
     _initialized = true;
 
-    final theme = ComponentTheme.maybeOf<AccordionTheme>(context);
+    final theme = ComponentTheme.maybeOf<AccordionItemTheme>(context);
 
     _expanded.value = widget.expanded;
     _controller = AnimationController(
@@ -244,7 +275,7 @@ class _AccordionItemState extends State<AccordionItem>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    final accTheme = ComponentTheme.maybeOf<AccordionTheme>(context);
+    final accTheme = ComponentTheme.maybeOf<AccordionItemTheme>(context);
 
     return Data.inherit(
       data: this,
@@ -312,7 +343,7 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    final accTheme = ComponentTheme.maybeOf<AccordionTheme>(context);
+    final accTheme = ComponentTheme.maybeOf<AccordionItemTheme>(context);
     final scaling = theme.scaling;
     return GestureDetector(
       onTap: () {
