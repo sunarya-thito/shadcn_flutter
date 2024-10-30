@@ -6,6 +6,8 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class NumberInput extends StatefulWidget {
   final TextEditingController? controller;
   final double initialValue;
+  final Widget? leading;
+  final Widget? trailing;
   final double? min;
   final double? max;
   final bool allowDecimals;
@@ -23,6 +25,8 @@ class NumberInput extends StatefulWidget {
     this.padding,
     this.controller,
     this.initialValue = 0,
+    this.leading,
+    this.trailing,
     this.step = 1,
     this.min,
     this.max,
@@ -253,6 +257,13 @@ class _NumberInputState extends State<NumberInput> {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     return TextField(
+      leading: widget.leading,
+      trailing: widget.trailing == null
+          ? null
+          : Padding(
+              padding: EdgeInsets.only(
+                  right: widget.showButtons == false ? 0 : 24 * scaling),
+              child: widget.trailing),
       padding: widget.padding ??
           EdgeInsets.symmetric(
             horizontal: 10 * scaling,
