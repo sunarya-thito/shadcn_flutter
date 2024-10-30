@@ -20,10 +20,9 @@ BorderRadius? optionallyResolveBorderRadius(
   return radius.resolve(Directionality.of(context));
 }
 
-T styleValue<T>({T? widgetValue, T? themeValue, T? defaultValue}) {
-  T? value = widgetValue ?? themeValue ?? defaultValue;
-  assert(value is! T, 'No value provided');
-  return value as T;
+/// A style helper function that returns the value from the widget, theme, or default value.
+T styleValue<T>({T? widgetValue, T? themeValue, required T defaultValue}) {
+  return widgetValue ?? themeValue ?? defaultValue;
 }
 
 extension FutureOrExtension<T> on FutureOr<T> {
