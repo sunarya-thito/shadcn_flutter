@@ -1352,7 +1352,7 @@ class FormField<T> extends StatelessWidget {
   final Widget? leadingLabel;
   final Widget? trailingLabel;
   final MainAxisAlignment? labelAxisAlignment;
-  final Gap? leadingGap;
+  final double? leadingGap;
   final EdgeInsetsGeometry? padding;
   final Validator<T>? validator;
 
@@ -1363,7 +1363,7 @@ class FormField<T> extends StatelessWidget {
     this.leadingLabel,
     this.trailingLabel,
     this.labelAxisAlignment = MainAxisAlignment.spaceBetween,
-    this.leadingGap = const Gap(5),
+    this.leadingGap = 5,
     this.padding = EdgeInsets.zero,
     this.validator,
     this.hint,
@@ -1389,19 +1389,16 @@ class FormField<T> extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: labelAxisAlignment!,
                     children: [
-                      Row(
-                        children: [
-                          if (leadingLabel != null) leadingLabel!,
-                          leadingGap!,
-                          mergeAnimatedTextStyle(
-                            style: error != null
-                                ? TextStyle(
-                                    color: theme.colorScheme.destructive)
-                                : null,
-                            child: label.textSmall(),
-                            duration: kDefaultDuration,
-                          ),
-                        ],
+                      if (leadingLabel != null) leadingLabel!,
+                      Gap(leadingGap!),
+                      Expanded(
+                        child: mergeAnimatedTextStyle(
+                          style: error != null
+                              ? TextStyle(color: theme.colorScheme.destructive)
+                              : null,
+                          child: label.textSmall(),
+                          duration: kDefaultDuration,
+                        ),
                       ),
                       if (trailingLabel != null) trailingLabel!,
                     ],
