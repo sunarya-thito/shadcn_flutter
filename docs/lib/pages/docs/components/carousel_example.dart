@@ -4,6 +4,8 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import '../../widget_usage_example.dart';
 import '../component_page.dart';
 import 'carousel/carousel_example_2.dart';
+import 'carousel/carousel_example_3.dart';
+import 'carousel/carousel_example_4.dart';
 
 class CarouselExample extends StatelessWidget {
   const CarouselExample({super.key});
@@ -25,6 +27,16 @@ class CarouselExample extends StatelessWidget {
           title: 'Vertical Carousel Example',
           path: 'lib/pages/docs/components/carousel/carousel_example_2.dart',
           child: CarouselExample2(),
+        ),
+        WidgetUsageExample(
+          title: 'Fading Carousel Example',
+          path: 'lib/pages/docs/components/carousel/carousel_example_3.dart',
+          child: CarouselExample3(),
+        ),
+        WidgetUsageExample(
+          title: 'Continuous Sliding Carousel Example',
+          path: 'lib/pages/docs/components/carousel/carousel_example_4.dart',
+          child: CarouselExample4(),
         ),
       ],
     );

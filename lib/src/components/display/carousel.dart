@@ -2,23 +2,283 @@ import 'dart:math';
 
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/src/animation.dart';
 
+/// Size constraint for the carousel.
+abstract class CarouselSizeConstraint {
+  /// Creates a carousel size constraint.
+  const CarouselSizeConstraint();
+
+  /// Creates a fixed carousel size constraint.
+  const factory CarouselSizeConstraint.fixed(double size) =
+      CarouselFixedConstraint;
+
+  /// Creates a fractional carousel size constraint.
+  const factory CarouselSizeConstraint.fractional(double fraction) =
+      CarouselFractionalConstraint;
+}
+
+/// A fixed carousel size constraint.
+class CarouselFixedConstraint extends CarouselSizeConstraint {
+  /// The size of the constraint.
+  final double size;
+
+  /// Creates a fixed carousel size constraint.
+  const CarouselFixedConstraint(this.size)
+      : assert(size > 0, 'size must be greater than 0');
+}
+
+/// A fractional carousel size constraint.
+class CarouselFractionalConstraint extends CarouselSizeConstraint {
+  /// The fraction of the constraint.
+  final double fraction;
+
+  /// Creates a fractional carousel size constraint.
+  const CarouselFractionalConstraint(this.fraction)
+      : assert(fraction > 0, 'fraction must be greater than 0');
+}
+
+/// A carousel layout.
+abstract class CarouselTransition {
+  /// Creates a carousel layout.
+  const CarouselTransition();
+
+  /// Creates a sliding carousel layout.
+  const factory CarouselTransition.sliding({double gap}) =
+      SlidingCarouselTransition;
+
+  /// Creates a fading carousel layout.
+  const factory CarouselTransition.fading() = FadingCarouselTransition;
+
+  /// Layouts the carousel items.
+  /// * [context] is the build context.
+  /// * [progress] is the progress of the carousel.
+  /// * [constraints] is the constraints of the carousel.
+  /// * [alignment] is the alignment of the carousel.
+  /// * [direction] is the direction of the carousel.
+  /// * [sizeConstraint] is the size constraint of the carousel.
+  /// * [progressedIndex] is the progressed index of the carousel.
+  /// * [itemCount] is the item count of the carousel.
+  /// * [itemBuilder] is the item builder of the carousel.
+  /// * [wrap] is whether the carousel should wrap.
+  /// * [reverse] is whether the carousel should reverse.
+  List<Widget> layout(
+    BuildContext context, {
+    required double progress,
+    required BoxConstraints constraints,
+    required CarouselAlignment alignment,
+    required Axis direction,
+    required CarouselSizeConstraint sizeConstraint,
+    required double progressedIndex,
+    required int? itemCount,
+    required CarouselItemBuilder itemBuilder,
+    required bool wrap,
+    required bool reverse,
+  });
+}
+
+/// A sliding carousel transition.
+class SlidingCarouselTransition extends CarouselTransition {
+  /// The gap between the carousel items.
+  final double gap;
+
+  /// Creates a sliding carousel transition.
+  const SlidingCarouselTransition({
+    this.gap = 0,
+  });
+
+  @override
+  List<Widget> layout(
+    BuildContext context, {
+    required double progress,
+    required BoxConstraints constraints,
+    required CarouselAlignment alignment,
+    required Axis direction,
+    required CarouselSizeConstraint sizeConstraint,
+    required double progressedIndex,
+    required int? itemCount,
+    required CarouselItemBuilder itemBuilder,
+    required bool wrap,
+    required bool reverse,
+  }) {
+    int additionalPreviousItems = 1;
+    int additionalNextItems = 1;
+    double originalSize = direction == Axis.horizontal
+        ? constraints.maxWidth
+        : constraints.maxHeight;
+    double size;
+    if (sizeConstraint is CarouselFixedConstraint) {
+      size = sizeConstraint.size;
+    } else if (sizeConstraint is CarouselFractionalConstraint) {
+      size = originalSize * sizeConstraint.fraction;
+    } else {
+      size = originalSize;
+    }
+    double snapOffsetAlignment = (originalSize - size) * alignment.alignment;
+    double gapBeforeItem = snapOffsetAlignment;
+    double gapAfterItem = originalSize - size - gapBeforeItem;
+    additionalPreviousItems += max(0, (gapBeforeItem / size).ceil());
+    additionalNextItems += max(0, (gapAfterItem / size).ceil());
+    List<_PlacedCarouselItem> items = [];
+    // curving the index
+    int start = progressedIndex.floor() - additionalPreviousItems;
+    int end = progressedIndex.floor() + additionalNextItems;
+    if (!wrap && itemCount != null) {
+      start = start.clamp(0, itemCount - 1);
+      end = end.clamp(0, itemCount - 1);
+    }
+    double currentIndex = progressedIndex + (gap / size) * progressedIndex;
+    for (int i = start; i <= end; i++) {
+      double index;
+      if (itemCount != null) {
+        index = wrapDouble(i.toDouble(), 0.0, itemCount.toDouble());
+      } else {
+        index = i.toDouble();
+      }
+      var itemIndex = reverse ? (-index).toInt() : index.toInt();
+      final item = itemBuilder(context, itemIndex);
+      double position = i.toDouble();
+      // offset the gap
+      items.add(_PlacedCarouselItem._(
+        relativeIndex: i,
+        child: item,
+        position: position,
+      ));
+    }
+    if (direction == Axis.horizontal) {
+      return [
+        for (var item in items)
+          Positioned(
+              left: snapOffsetAlignment +
+                  (item.position - currentIndex) * size +
+                  (gap * item.relativeIndex),
+              width: size,
+              height: constraints.maxHeight,
+              child: item.child),
+      ];
+    } else {
+      return [
+        for (var item in items)
+          Positioned(
+              top: snapOffsetAlignment +
+                  (item.position - currentIndex) * size +
+                  (gap * item.relativeIndex),
+              width: constraints.maxWidth,
+              height: size,
+              child: item.child),
+      ];
+    }
+  }
+}
+
+/// A fading carousel transition.
+class FadingCarouselTransition extends CarouselTransition {
+  /// Creates a fading carousel transition.
+  const FadingCarouselTransition();
+
+  @override
+  List<Widget> layout(
+    BuildContext context, {
+    required double progress,
+    required BoxConstraints constraints,
+    required CarouselAlignment alignment,
+    required Axis direction,
+    required CarouselSizeConstraint sizeConstraint,
+    required double progressedIndex,
+    required int? itemCount,
+    required CarouselItemBuilder itemBuilder,
+    required bool wrap,
+    required bool reverse,
+  }) {
+    double originalSize = direction == Axis.horizontal
+        ? constraints.maxWidth
+        : constraints.maxHeight;
+    double size;
+    if (sizeConstraint is CarouselFixedConstraint) {
+      size = sizeConstraint.size;
+    } else if (sizeConstraint is CarouselFractionalConstraint) {
+      size = originalSize * sizeConstraint.fraction;
+    } else {
+      size = originalSize;
+    }
+    double snapOffsetAlignment = (originalSize - size) * alignment.alignment;
+    List<_PlacedCarouselItem> items = [];
+    // curving the index
+    int start = progressedIndex.floor() - 1;
+    int end = progressedIndex.floor() + 1;
+    if (!wrap && itemCount != null) {
+      start = start.clamp(0, itemCount - 1);
+      end = end.clamp(0, itemCount - 1);
+    }
+    for (int i = start; i <= end; i++) {
+      double index;
+      if (itemCount != null) {
+        index = wrapDouble(i.toDouble(), 0.0, itemCount.toDouble());
+      } else {
+        index = i.toDouble();
+      }
+      var itemIndex = reverse ? (-index).toInt() : index.toInt();
+      final item = itemBuilder(context, itemIndex);
+      double position = i.toDouble();
+      // offset the gap
+      items.add(_PlacedCarouselItem._(
+        relativeIndex: i,
+        child: item,
+        position: position,
+      ));
+    }
+    if (direction == Axis.horizontal) {
+      return [
+        for (var item in items)
+          Positioned(
+              left: snapOffsetAlignment,
+              width: size,
+              height: constraints.maxHeight,
+              child: Opacity(
+                opacity: (1 - (progress - item.position).abs()).clamp(0.0, 1.0),
+                child: item.child,
+              )),
+      ];
+    } else {
+      return [
+        for (var item in items)
+          Positioned(
+              top: snapOffsetAlignment,
+              width: constraints.maxWidth,
+              height: size,
+              child: Opacity(
+                opacity: (1 - (progress - item.position).abs()).clamp(0.0, 1.0),
+                child: item.child,
+              )),
+      ];
+    }
+  }
+}
+
+/// Builds a carousel item.
+/// The [index] is the index of the item.
+typedef CarouselItemBuilder = Widget Function(BuildContext context, int index);
+
+/// A controller for the carousel.
 class CarouselController extends Listenable {
   final AnimationQueueController _controller = AnimationQueueController();
 
+  /// Whether the carousel should animate.
   bool get shouldAnimate => _controller.shouldTick;
 
+  /// The current value of the controller.
   double get value => _controller.value;
 
+  /// Jumps to the next item.
   void next() {
     _controller.value = (_controller.value + 1).roundToDouble();
   }
 
+  /// Jumps to the previous item.
   void previous() {
     _controller.value = (_controller.value - 1).roundToDouble();
   }
 
+  /// Animates to the next item.
   void animateNext(Duration duration, [Curve curve = Curves.easeInOut]) {
     _controller.push(
         AnimationRequest(
@@ -26,6 +286,7 @@ class CarouselController extends Listenable {
         false);
   }
 
+  /// Animates to the previous item.
   void animatePrevious(Duration duration, [Curve curve = Curves.easeInOut]) {
     _controller.push(
         AnimationRequest(
@@ -33,24 +294,29 @@ class CarouselController extends Listenable {
         false);
   }
 
+  /// Snaps the current value to the nearest integer.
   void snap() {
     _controller.value = _controller.value.roundToDouble();
   }
 
+  /// Animates the current value to the nearest integer.
   void animateSnap(Duration duration, [Curve curve = Curves.easeInOut]) {
     _controller.push(
         AnimationRequest(_controller.value.roundToDouble(), duration, curve));
   }
 
+  /// Jumps to the specified value.
   void jumpTo(double value) {
     _controller.value = value;
   }
 
+  /// Animates to the specified value.
   void animateTo(double value, Duration duration,
       [Curve curve = Curves.linear]) {
     _controller.push(AnimationRequest(value, duration, curve), false);
   }
 
+  /// Animates to the specified value.
   double getCurrentIndex(int? itemCount) {
     if (itemCount == null) {
       return _controller.value;
@@ -59,6 +325,7 @@ class CarouselController extends Listenable {
     }
   }
 
+  /// Animates to the specified value.
   void tick(Duration delta) {
     _controller.tick(delta);
   }
@@ -73,61 +340,120 @@ class CarouselController extends Listenable {
     _controller.removeListener(listener);
   }
 
+  /// Disposes the controller.
   void dispose() {
     _controller.dispose();
   }
 }
 
+/// CarouselAlignment is used to align the carousel items.
 enum CarouselAlignment {
-  start,
-  center,
-  end,
+  /// Aligns the carousel items to the start.
+  start(0),
+
+  /// Aligns the carousel items to the center.
+  center(0.5),
+
+  /// Aligns the carousel items to the end.
+  end(1);
+
+  /// The alignment value.
+  final double alignment;
+
+  const CarouselAlignment(this.alignment);
 }
 
+/// A carousel widget.
+/// The carousel widget is used to display a list of items in a carousel view.
 class Carousel extends StatefulWidget {
+  /// The carousel transition.
+  final CarouselTransition transition;
+
+  /// The item builder.
   final Widget Function(BuildContext context, int index) itemBuilder;
+
+  /// The duration of the carousel.
   final Duration? duration;
+
+  /// The duration builder of the carousel.
   final Duration? Function(int index)? durationBuilder;
+
+  /// The item count of the carousel.
   final int? itemCount;
+
+  /// The carousel controller.
   final CarouselController? controller;
-  final CarouselAlignment? snapAlignment;
+
+  /// The carousel alignment.
+  final CarouselAlignment alignment;
+
+  /// The carousel direction.
   final Axis direction;
+
+  /// Whether the carousel should wrap.
   final bool wrap;
+
+  /// Whether the carousel should pause on hover.
   final bool pauseOnHover;
+
+  /// Whether the carousel should wait the item duration on start.
+  final bool waitOnStart;
+
+  /// The autoplay speed of the carousel.
   final Duration? autoplaySpeed;
+
+  /// Whether the carousel should autoplay in reverse.
+  final bool autoplayReverse;
+
+  /// Whether the carousel is draggable.
   final bool draggable;
+
+  /// Whether the carousel is reverse in layout direction.
   final bool reverse;
-  final double sizeFactor;
+
+  /// The size constraint of the carousel.
+  final CarouselSizeConstraint sizeConstraint;
+
+  /// The speed of the carousel.
   final Duration speed;
+
+  /// The curve of the carousel.
   final Curve curve;
-  final double gap;
+
+  /// The index change callback.
   final ValueChanged<int>? onIndexChanged;
+
+  /// Whether to disable overhead scrolling.
   final bool disableOverheadScrolling;
+
+  /// Whether to disable dragging velocity.
   final bool disableDraggingVelocity;
 
+  /// Creates a carousel.
   const Carousel({
     super.key,
     required this.itemBuilder,
     this.itemCount,
     this.controller,
-    this.snapAlignment,
+    this.alignment = CarouselAlignment.center,
     this.direction = Axis.horizontal,
     this.wrap = true,
     this.pauseOnHover = true,
     this.autoplaySpeed,
+    this.waitOnStart = false,
     this.draggable = true,
     this.reverse = false,
-    this.sizeFactor = 1,
+    this.autoplayReverse = false,
+    this.sizeConstraint = const CarouselFractionalConstraint(1),
     this.speed = const Duration(milliseconds: 200),
     this.curve = Curves.easeInOut,
-    this.gap = 0,
     this.duration,
     this.durationBuilder,
     this.onIndexChanged,
     this.disableOverheadScrolling = true,
     this.disableDraggingVelocity = false,
-  })  : assert(sizeFactor > 0, 'sizeFactor must be greater than 0'),
-        assert(wrap || itemCount != null,
+    required this.transition,
+  }) : assert(wrap || itemCount != null,
             'itemCount must be provided if wrap is false');
 
   @override
@@ -137,7 +463,6 @@ class Carousel extends StatefulWidget {
 class _CarouselState extends State<Carousel>
     with SingleTickerProviderStateMixin {
   late CarouselController _controller;
-  // Duration? _currentSlideDuration;
   Duration? _startTime;
   late Ticker _ticker;
   bool hovered = false;
@@ -207,23 +532,36 @@ class _CarouselState extends State<Carousel>
     int deltaMillis = delta.inMilliseconds;
     // animate the index progress
     _controller.tick(delta);
+    bool shouldAutoPlay = false;
     if (_currentSlideDuration != null) {
       if (_startTime == null) {
         _startTime = elapsed;
+        shouldAutoPlay = !widget.waitOnStart;
       } else {
         Duration elapsedDuration = elapsed - _startTime!;
         if (elapsedDuration >= _currentSlideDuration!) {
-          if (!widget.wrap &&
-              widget.itemCount != null &&
-              _controller.value >= widget.itemCount! - 1) {
-            _controller.animateTo(
-                0, widget.autoplaySpeed ?? widget.speed, widget.curve);
-          } else {
-            _controller.animateNext(
-                widget.autoplaySpeed ?? widget.speed, widget.curve);
-          }
+          shouldAutoPlay = true;
           _startTime = null;
         }
+      }
+    }
+    if (shouldAutoPlay) {
+      if (!widget.wrap &&
+          widget.itemCount != null &&
+          _controller.value >= widget.itemCount! - 1) {
+        _controller.animateTo(
+            0, widget.autoplaySpeed ?? widget.speed, widget.curve);
+      } else if (!widget.wrap &&
+          widget.itemCount != null &&
+          _controller.value <= 0) {
+        _controller.animateTo(widget.itemCount! - 1,
+            widget.autoplaySpeed ?? widget.speed, widget.curve);
+      } else if (widget.autoplayReverse) {
+        _controller.animatePrevious(
+            widget.autoplaySpeed ?? widget.speed, widget.curve);
+      } else {
+        _controller.animateNext(
+            widget.autoplaySpeed ?? widget.speed, widget.curve);
       }
     }
     if (_dragVelocity.abs() > 0.01 && !dragging) {
@@ -233,18 +571,16 @@ class _CarouselState extends State<Carousel>
       _dragVelocity *= pow(0.2, deltaMillis / 100);
       if (_dragVelocity.abs() < 0.01) {
         _dragVelocity = 0;
-        if (widget.snapAlignment != null) {
-          if (widget.disableOverheadScrolling) {
-            if (_lastDragValue < targetValue) {
-              _controller.animateTo(_lastDragValue.floorToDouble() + 1,
-                  widget.speed, widget.curve);
-            } else {
-              _controller.animateTo(_lastDragValue.floorToDouble() - 1,
-                  widget.speed, widget.curve);
-            }
+        if (widget.disableOverheadScrolling) {
+          if (_lastDragValue < targetValue) {
+            _controller.animateTo(
+                _lastDragValue.floorToDouble() + 1, widget.speed, widget.curve);
           } else {
-            _controller.animateSnap(widget.speed, widget.curve);
+            _controller.animateTo(
+                _lastDragValue.floorToDouble() - 1, widget.speed, widget.curve);
           }
+        } else {
+          _controller.animateSnap(widget.speed, widget.curve);
         }
       }
     }
@@ -323,6 +659,15 @@ class _CarouselState extends State<Carousel>
 
   Widget buildHorizontalDragger(
       BuildContext context, Widget carouselWidget, BoxConstraints constraints) {
+    double size;
+    if (widget.sizeConstraint is CarouselFixedConstraint) {
+      size = (widget.sizeConstraint as CarouselFixedConstraint).size;
+    } else if (widget.sizeConstraint is CarouselFractionalConstraint) {
+      size = constraints.maxHeight *
+          (widget.sizeConstraint as CarouselFractionalConstraint).fraction;
+    } else {
+      size = constraints.maxHeight;
+    }
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       child: carouselWidget,
@@ -334,8 +679,7 @@ class _CarouselState extends State<Carousel>
       onHorizontalDragUpdate: (details) {
         if (widget.draggable) {
           setState(() {
-            var increment = -details.primaryDelta! /
-                ((constraints.maxWidth * widget.sizeFactor) + widget.gap);
+            var increment = -details.primaryDelta! / size;
             _controller.jumpTo(progressedValue + increment);
           });
         }
@@ -345,13 +689,9 @@ class _CarouselState extends State<Carousel>
         if (widget.disableDraggingVelocity) {
           _dragVelocity = 0;
         } else {
-          _dragVelocity = -details.primaryVelocity! /
-              ((constraints.maxWidth * widget.sizeFactor) + widget.gap) /
-              100;
+          _dragVelocity = -details.primaryVelocity! / size / 100.0;
         }
-        if (widget.snapAlignment != null) {
-          _controller.animateSnap(widget.speed, widget.curve);
-        }
+        _controller.animateSnap(widget.speed, widget.curve);
         _check();
       },
     );
@@ -359,6 +699,15 @@ class _CarouselState extends State<Carousel>
 
   Widget buildVerticalDragger(
       BuildContext context, Widget carouselWidget, BoxConstraints constraints) {
+    double size;
+    if (widget.sizeConstraint is CarouselFixedConstraint) {
+      size = (widget.sizeConstraint as CarouselFixedConstraint).size;
+    } else if (widget.sizeConstraint is CarouselFractionalConstraint) {
+      size = constraints.maxWidth *
+          (widget.sizeConstraint as CarouselFractionalConstraint).fraction;
+    } else {
+      size = constraints.maxWidth;
+    }
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       child: carouselWidget,
@@ -370,8 +719,7 @@ class _CarouselState extends State<Carousel>
       onVerticalDragUpdate: (details) {
         if (widget.draggable) {
           setState(() {
-            var increment = -details.primaryDelta! /
-                ((constraints.maxHeight * widget.sizeFactor) + widget.gap);
+            var increment = -details.primaryDelta! / size;
             _controller.jumpTo(progressedValue + increment);
           });
         }
@@ -381,13 +729,9 @@ class _CarouselState extends State<Carousel>
         if (widget.disableDraggingVelocity) {
           _dragVelocity = 0;
         } else {
-          _dragVelocity = -details.primaryVelocity! /
-              ((constraints.maxHeight * widget.sizeFactor) + widget.gap) /
-              100;
+          _dragVelocity = -details.primaryVelocity! / size / 100.0;
         }
-        if (widget.snapAlignment != null) {
-          _controller.animateSnap(widget.speed, widget.curve);
-        }
+        _controller.animateSnap(widget.speed, widget.curve);
         _check();
       },
     );
@@ -402,97 +746,76 @@ class _CarouselState extends State<Carousel>
   }
 
   Widget buildCarousel(BuildContext context, BoxConstraints constraints) {
-    // count how many items can be displayed
-    int additionalPreviousItems = 1;
-    int additionalNextItems = 1;
-    double originalSize = widget.direction == Axis.horizontal
-        ? constraints.maxWidth
-        : constraints.maxHeight;
-    double size = originalSize * widget.sizeFactor;
-    double snapOffsetAlignment = 0;
-    if (widget.snapAlignment != null) {
-      switch (widget.snapAlignment!) {
-        case CarouselAlignment.start:
-          snapOffsetAlignment = 0;
-          break;
-        case CarouselAlignment.center:
-          snapOffsetAlignment = (originalSize - size) / 2;
-          break;
-        case CarouselAlignment.end:
-          snapOffsetAlignment = originalSize - size;
-          break;
-      }
-    }
-    double gapBeforeItem = snapOffsetAlignment;
-    double gapAfterItem = originalSize - size - gapBeforeItem;
-    additionalPreviousItems += max(0, (gapBeforeItem / size).ceil());
-    additionalNextItems += max(0, (gapAfterItem / size).ceil());
-    List<PlacedCarouselItem> items = [];
-    double progressedIndex = progressedValue;
-    // curving the index
-    int start = progressedIndex.floor() - additionalPreviousItems;
-    int end = progressedIndex.floor() + additionalNextItems;
-    if (!widget.wrap && widget.itemCount != null) {
-      start = start.clamp(0, widget.itemCount! - 1);
-      end = end.clamp(0, widget.itemCount! - 1);
-    }
-    double currentIndex =
-        progressedIndex + (widget.gap / size) * progressedIndex;
-    for (int i = start; i <= end; i++) {
-      double index;
-      if (widget.itemCount != null) {
-        index = wrapDouble(i.toDouble(), 0.0, widget.itemCount!.toDouble());
-      } else {
-        index = i.toDouble();
-      }
-      var itemIndex = widget.reverse ? (-index).toInt() : index.toInt();
-      final item = widget.itemBuilder(context, itemIndex);
-      double position = i.toDouble();
-      // offset the gap
-      items.add(PlacedCarouselItem(
-        relativeIndex: i,
-        child: item,
-        position: position,
-      ));
-    }
-    if (widget.direction == Axis.horizontal) {
-      return Stack(
-        children: [
-          for (var item in items)
-            Positioned(
-                left: snapOffsetAlignment +
-                    (item.position - currentIndex) * size +
-                    (widget.gap * item.relativeIndex),
-                width: constraints.maxWidth * widget.sizeFactor,
-                height: constraints.maxHeight,
-                child: item.child),
-        ],
-      );
-    } else {
-      return Stack(
-        children: [
-          for (var item in items)
-            Positioned(
-                top: snapOffsetAlignment +
-                    (item.position - currentIndex) * size +
-                    (widget.gap * item.relativeIndex),
-                width: constraints.maxWidth,
-                height: constraints.maxHeight * widget.sizeFactor,
-                child: item.child),
-        ],
-      );
-    }
+    return Stack(
+      children: widget.transition.layout(
+        context,
+        progress: progressedValue,
+        constraints: constraints,
+        alignment: widget.alignment,
+        direction: widget.direction,
+        sizeConstraint: widget.sizeConstraint,
+        progressedIndex: progressedValue,
+        wrap: widget.wrap,
+        itemCount: widget.itemCount,
+        itemBuilder: widget.itemBuilder,
+        reverse: widget.reverse,
+      ),
+    );
   }
 }
 
-class PlacedCarouselItem {
+class _PlacedCarouselItem {
   final int relativeIndex;
   final Widget child;
   final double position;
 
-  const PlacedCarouselItem({
+  const _PlacedCarouselItem._({
     required this.relativeIndex,
     required this.child,
     required this.position,
   });
+}
+
+/// A dot indicator for the carousel.
+class CarouselDotIndicator extends StatelessWidget {
+  /// The item count of the carousel.
+  final int itemCount;
+
+  /// The carousel controller.
+  final CarouselController controller;
+
+  /// The speed of the value change.
+  final Duration speed;
+
+  /// The curve of the value change.
+  final Curve curve;
+
+  /// Creates a dot indicator for the carousel.
+  const CarouselDotIndicator({
+    super.key,
+    required this.itemCount,
+    required this.controller,
+    this.speed = const Duration(milliseconds: 200),
+    this.curve = Curves.easeInOut,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, child) {
+        int value = controller.value.round() % itemCount;
+        if (value < 0) {
+          value += itemCount;
+        }
+        return DotIndicator(
+          index: value,
+          length: itemCount,
+          onChanged: (value) {
+            controller.animateTo(value.toDouble(), speed, curve);
+          },
+        );
+      },
+    );
+  }
 }
