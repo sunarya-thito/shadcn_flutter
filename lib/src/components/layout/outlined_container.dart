@@ -5,7 +5,7 @@ import '../../../shadcn_flutter.dart';
 class SurfaceBlur extends StatefulWidget {
   final Widget child;
   final double? surfaceBlur;
-  final BorderRadius? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
 
   const SurfaceBlur({
     super.key,
@@ -218,7 +218,7 @@ class DashedContainerProperties {
   final double gap;
   final double thickness;
   final Color color;
-  final BorderRadius borderRadius;
+  final BorderRadiusGeometry borderRadius;
 
   const DashedContainerProperties({
     required this.width,
@@ -229,6 +229,7 @@ class DashedContainerProperties {
   });
 
   static DashedContainerProperties lerp(
+    BuildContext context,
     DashedContainerProperties a,
     DashedContainerProperties b,
     double t,
@@ -238,7 +239,8 @@ class DashedContainerProperties {
       gap: lerpDouble(a.gap, b.gap, t)!,
       thickness: lerpDouble(a.thickness, b.thickness, t)!,
       color: Color.lerp(a.color, b.color, t)!,
-      borderRadius: BorderRadius.lerp(a.borderRadius, b.borderRadius, t)!,
+      borderRadius: BorderRadius.lerp(a.borderRadius.optionallyResolve(context),
+          b.borderRadius.optionallyResolve(context), t)!,
     );
   }
 }
@@ -249,13 +251,10 @@ class DashedContainer extends StatelessWidget {
   final double? thickness;
   final Color? color;
   final Widget child;
-  final BorderRadius? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
 
   const DashedContainer({
     super.key,
-    // this.strokeWidth = 8,
-    // this.gap = 5,
-    // this.thickness = 1,
     this.strokeWidth,
     this.gap,
     this.thickness,
@@ -276,7 +275,9 @@ class DashedContainer extends StatelessWidget {
         borderRadius: borderRadius ?? theme.borderRadiusLg,
       ),
       duration: kDefaultDuration,
-      lerp: DashedContainerProperties.lerp,
+      lerp: (a, b, t) {
+        return DashedContainerProperties.lerp(context, a, b, t);
+      },
       builder: (context, value, child) {
         return CustomPaint(
           painter: DashedPainter(
@@ -284,7 +285,7 @@ class DashedContainer extends StatelessWidget {
             gap: value.gap,
             thickness: value.thickness,
             color: value.color,
-            borderRadius: value.borderRadius,
+            borderRadius: value.borderRadius.optionallyResolve(context),
           ),
           child: child,
         );

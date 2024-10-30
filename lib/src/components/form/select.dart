@@ -288,7 +288,7 @@ class Select<T> extends StatefulWidget {
   final T? value;
   final Widget Function(BuildContext context, T item) itemBuilder;
   final bool showUnrelatedValues;
-  final BorderRadius? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
   final String? searchPlaceholder;
   final EdgeInsetsGeometry? padding;
   final Alignment popoverAlignment;
@@ -893,7 +893,7 @@ class MultiSelect<T> extends StatefulWidget {
   final List<T> value;
   final Widget Function(BuildContext context, T item) itemBuilder;
   final bool showUnrelatedValues;
-  final BorderRadius? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
   final String? searchPlaceholder;
   final EdgeInsetsGeometry? padding;
   final Alignment popoverAlignment;

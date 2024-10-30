@@ -20,7 +20,7 @@ class TextArea extends StatefulWidget {
   final String? initialValue;
   final int? maxLength;
   final MaxLengthEnforcement? maxLengthEnforcement;
-  final BorderRadius? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
   final TextAlign textAlign;
   final bool expandableHeight;
   final bool expandableWidth;

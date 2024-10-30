@@ -16,7 +16,7 @@ Future<T?> openDrawer<T>({
   WidgetBuilder? backdropBuilder,
   bool useSafeArea = true,
   bool showDragHandle = true,
-  BorderRadius? borderRadius,
+  BorderRadiusGeometry? borderRadius,
   Size? dragHandleSize,
   bool transformBackdrop = true,
   double? surfaceOpacity,
@@ -88,7 +88,7 @@ class DrawerWrapper extends StatefulWidget {
   final Size extraSize;
   final Size size;
   final bool showDragHandle;
-  final BorderRadius? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
   final Size? dragHandleSize;
   final EdgeInsets padding;
   final double? surfaceOpacity;
@@ -468,7 +468,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     }
   }
 
-  BorderRadius getBorderRadius(double radius) {
+  BorderRadiusGeometry getBorderRadius(double radius) {
     switch (widget.position) {
       case OverlayPosition.left:
         return BorderRadius.only(
@@ -683,7 +683,7 @@ class _SheetWrapperState extends _DrawerWrapperState {
   }
 
   @override
-  BorderRadius getBorderRadius(double radius) {
+  BorderRadiusGeometry getBorderRadius(double radius) {
     return BorderRadius.zero;
   }
 
