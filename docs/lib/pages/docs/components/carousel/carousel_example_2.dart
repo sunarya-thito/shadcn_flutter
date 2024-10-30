@@ -29,11 +29,11 @@ class _CarouselExample2State extends State<CarouselExample2> {
             child: SizedBox(
               width: 200,
               child: Carousel(
-                gap: 24,
-                snapAlignment: CarouselAlignment.center,
+                transition: const CarouselLayout.sliding(gap: 24),
+                alignment: CarouselAlignment.center,
                 controller: controller,
                 direction: Axis.vertical,
-                sizeFactor: 0.8,
+                sizeConstraint: const CarouselFixedConstraint(200),
                 itemBuilder: (context, index) {
                   return NumberedContainer(index: index);
                 },
