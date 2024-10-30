@@ -852,7 +852,9 @@ class ButtonStyle implements AbstractButtonStyle {
       return variance.padding;
     }
     return (context, states) {
-      return density.modifier(variance.padding(context, states) * size.scale);
+      return density.modifier(
+          variance.padding(context, states).optionallyResolve(context) *
+              size.scale);
     };
   }
 
@@ -890,7 +892,7 @@ class ButtonStyle implements AbstractButtonStyle {
   @override
   ButtonStateProperty<EdgeInsetsGeometry> get margin {
     return (context, states) {
-      return EdgeInsets.zero;
+      return variance.margin(context, states);
     };
   }
 }
@@ -1011,13 +1013,13 @@ class ButtonVariance implements AbstractButtonStyle {
   @override
   final ButtonStateProperty<MouseCursor> mouseCursor;
   @override
-  final ButtonStateProperty<EdgeInsets> padding;
+  final ButtonStateProperty<EdgeInsetsGeometry> padding;
   @override
   final ButtonStateProperty<TextStyle> textStyle;
   @override
   final ButtonStateProperty<IconThemeData> iconTheme;
   @override
-  final ButtonStateProperty<EdgeInsets> margin;
+  final ButtonStateProperty<EdgeInsetsGeometry> margin;
 
   const ButtonVariance({
     required this.decoration,
