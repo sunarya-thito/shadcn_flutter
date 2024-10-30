@@ -20,30 +20,23 @@ class _AccordionState extends State<Accordion> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    final accTheme = ComponentTheme.maybeOf<AccordionTheme>(context) ??
-        const AccordionTheme();
+    final accTheme = ComponentTheme.maybeOf<AccordionTheme>(context);
     return Data.inherit(
         data: this,
         child: IntrinsicWidth(
-          child: ComponentTheme(
-            data: accTheme,
-            child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ...join(widget.items.map((item) {
-                    return item is AccordionItem
-                        ? item._applyTheme(accTheme)
-                        : item;
-                  }),
-                      ShadcnAnimatedContainer(
-                        duration: kDefaultDuration,
-                        color: theme.colorScheme.muted,
-                        height: accTheme.dividerHeight * scaling,
-                      )),
-                  const Divider(),
-                ]),
-          ),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ...join(
+                    widget.items,
+                    ShadcnAnimatedContainer(
+                      duration: kDefaultDuration,
+                      color: accTheme?.dividerColor ?? theme.colorScheme.muted,
+                      height: accTheme?.dividerHeight ?? 1 * scaling,
+                    )),
+                const Divider(),
+              ]),
         ));
   }
 }
@@ -53,33 +46,47 @@ class _AccordionState extends State<Accordion> {
 /// {@endtemplate}
 class AccordionTheme {
   /// Duration of the collapse/expand animation.
-  final Duration duration;
+  final Duration? duration;
 
   /// Curve of the animation (played when expanding).
-  final Curve curve;
+  final Curve? curve;
 
   /// Reverse curve of the animation (played when collapsing).
-  final Curve reverseCurve;
+  final Curve? reverseCurve;
 
   /// The gap between the trigger and the content (or other triggers if collapsed).
   ///
   /// The padding is applied to the top and bottom of the trigger.
-  final double padding;
+  final double? padding;
 
   /// The gap between the trigger text and the icon.
-  final double iconGap;
+  final double? iconGap;
 
   /// The height of the divider between each item.
-  final double dividerHeight;
+  final double? dividerHeight;
+
+  /// The color of the divider between each item.
+  final Color? dividerColor;
+
+  /// The icon to display at the end of the trigger.
+  ///
+  /// This icon is rotated 180 degrees when the item is expanded.
+  final IconData? arrowIcon;
+
+  /// The color of the arrow icon.
+  final Color? arrowIconColor;
 
   /// {@macro accordion_theme}
   const AccordionTheme({
-    this.duration = const Duration(milliseconds: 200),
-    this.curve = Curves.easeIn,
-    this.reverseCurve = Curves.easeOut,
-    this.padding = 16,
-    this.iconGap = 18,
-    this.dividerHeight = 1,
+    this.duration,
+    this.curve,
+    this.reverseCurve,
+    this.padding,
+    this.iconGap,
+    this.dividerHeight,
+    this.dividerColor,
+    this.arrowIcon,
+    this.arrowIconColor,
   });
 
   /// Creates a copy of this theme and replaces the given properties.
@@ -92,6 +99,9 @@ class AccordionTheme {
     double? padding,
     double? iconGap,
     double? dividerHeight,
+    Color? dividerColor,
+    IconData? arrowIcon,
+    Color? arrowIconColor,
   }) {
     return AccordionTheme(
       duration: duration ?? this.duration,
@@ -100,6 +110,9 @@ class AccordionTheme {
       padding: padding ?? this.padding,
       iconGap: iconGap ?? this.iconGap,
       dividerHeight: dividerHeight ?? this.dividerHeight,
+      dividerColor: dividerColor ?? this.dividerColor,
+      arrowIcon: arrowIcon ?? this.arrowIcon,
+      arrowIconColor: arrowIconColor ?? this.arrowIconColor,
     );
   }
 
@@ -111,7 +124,10 @@ class AccordionTheme {
       reverseCurve == other.reverseCurve &&
       padding == other.padding &&
       iconGap == other.iconGap &&
-      dividerHeight == other.dividerHeight;
+      dividerHeight == other.dividerHeight &&
+      dividerColor == other.dividerColor &&
+      arrowIcon == other.arrowIcon &&
+      arrowIconColor == other.arrowIconColor;
 
   @override
   int get hashCode => Object.hash(
@@ -121,11 +137,14 @@ class AccordionTheme {
         padding,
         iconGap,
         dividerHeight,
+        dividerColor,
+        arrowIcon,
+        arrowIconColor,
       );
 
   @override
   String toString() {
-    return 'AccordionTheme(duration: $duration, curve: $curve, reverseCurve: $reverseCurve, padding: $padding, iconGap: $iconGap, dividerHeight: $dividerHeight)';
+    return 'AccordionTheme(duration: $duration, curve: $curve, reverseCurve: $reverseCurve, padding: $padding, iconGap: $iconGap, dividerHeight: $dividerHeight, dividerColor: $dividerColor, arrowIcon: $arrowIcon, arrorIconColor: $arrowIconColor)';
   }
 }
 
@@ -133,36 +152,16 @@ class AccordionItem extends StatefulWidget {
   final Widget trigger;
   final Widget content;
   final bool expanded;
-  final AccordionTheme theme;
 
   const AccordionItem({
     super.key,
     required this.trigger,
     required this.content,
     this.expanded = false,
-  }) : theme = const AccordionTheme();
-
-  const AccordionItem._({
-    super.key,
-    required this.trigger,
-    required this.content,
-    required this.expanded,
-    required this.theme,
   });
 
   @override
   State<AccordionItem> createState() => _AccordionItemState();
-
-  /// Creates a copy of this item and replaces the theme.
-  AccordionItem _applyTheme(AccordionTheme theme) {
-    return AccordionItem._(
-      key: key,
-      trigger: trigger,
-      content: content,
-      expanded: expanded,
-      theme: theme,
-    );
-  }
 }
 
 class _AccordionItemState extends State<AccordionItem>
@@ -173,20 +172,35 @@ class _AccordionItemState extends State<AccordionItem>
   late AnimationController _controller;
   late CurvedAnimation _easeInAnimation;
 
+  bool _initialized = false;
+
   @override
-  void initState() {
-    super.initState();
-    // _expanded = widget.expanded;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _AccordionState newAccordion = Data.of<_AccordionState>(context);
+    if (newAccordion != accordion) {
+      accordion?._expanded.removeListener(_onExpandedChanged);
+      newAccordion._expanded.addListener(_onExpandedChanged);
+      accordion = newAccordion;
+    }
+
+    if (_initialized) return;
+
+    _initialized = true;
+
+    final theme = ComponentTheme.maybeOf<AccordionTheme>(context);
+
     _expanded.value = widget.expanded;
     _controller = AnimationController(
       vsync: this,
-      duration: widget.theme.duration,
+      duration: theme?.duration ?? const Duration(milliseconds: 200),
       value: _expanded.value ? 1 : 0,
     );
     _easeInAnimation = CurvedAnimation(
       parent: _controller,
-      curve: widget.theme.curve,
-      reverseCurve: widget.theme.reverseCurve,
+      curve: theme?.curve ?? Curves.easeIn,
+      reverseCurve: theme?.reverseCurve ?? Curves.easeOut,
     );
   }
 
@@ -195,17 +209,6 @@ class _AccordionItemState extends State<AccordionItem>
     _controller.dispose();
     accordion?._expanded.removeListener(_onExpandedChanged);
     super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _AccordionState newAccordion = Data.of<_AccordionState>(context);
-    if (newAccordion != accordion) {
-      accordion?._expanded.removeListener(_onExpandedChanged);
-      newAccordion._expanded.addListener(_onExpandedChanged);
-      accordion = newAccordion;
-    }
   }
 
   void _onExpandedChanged() {
@@ -221,13 +224,11 @@ class _AccordionItemState extends State<AccordionItem>
 
   void _expand() {
     _controller.forward();
-    // _expanded = true;
     _expanded.value = true;
   }
 
   void _collapse() {
     _controller.reverse();
-    // _expanded = false;
     _expanded.value = false;
   }
 
@@ -243,17 +244,20 @@ class _AccordionItemState extends State<AccordionItem>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final accTheme = ComponentTheme.maybeOf<AccordionTheme>(context);
+
     return Data.inherit(
       data: this,
       child: GestureDetector(
         child: Column(
           children: [
+            widget.trigger,
             SizeTransition(
               sizeFactor: _easeInAnimation,
               axisAlignment: -1,
               child: Padding(
                 padding: EdgeInsets.only(
-                  bottom: widget.theme.padding * scaling,
+                  bottom: accTheme?.padding ?? 16 * scaling,
                 ),
                 child: widget.content,
               ).small().normal(),
@@ -308,8 +312,7 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    final accTheme = ComponentTheme.maybeOf<AccordionTheme>(context) ??
-        const AccordionTheme();
+    final accTheme = ComponentTheme.maybeOf<AccordionTheme>(context);
     final scaling = theme.scaling;
     return GestureDetector(
       onTap: () {
@@ -340,7 +343,7 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
           });
         },
         child: ShadcnAnimatedContainer(
-          duration: kDefaultDuration,
+          duration: accTheme?.duration ?? kDefaultDuration,
           decoration: BoxDecoration(
             border: Border.all(
               color: _focusing
@@ -351,7 +354,9 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
             borderRadius: BorderRadius.circular(theme.radiusXs),
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: accTheme.padding * scaling),
+            padding: EdgeInsets.symmetric(
+              vertical: accTheme?.padding ?? 16 * scaling,
+            ),
             child: Row(
               children: [
                 Expanded(
@@ -361,22 +366,24 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
                         underline: _hovering, child: widget.child),
                   ),
                 ),
-                SizedBox(width: accTheme.iconGap * scaling),
+                SizedBox(width: accTheme?.iconGap ?? 18 * scaling),
                 TweenAnimationBuilder(
                     tween: _expanded
                         ? Tween(begin: 1.0, end: 0)
                         : Tween(begin: 0, end: 1.0),
-                    duration: accTheme.duration,
+                    duration: accTheme?.duration ?? kDefaultDuration,
                     builder: (context, value, child) {
                       return Transform.rotate(
                         angle: value * pi,
                         child: AnimatedIconTheme(
-                          duration: accTheme.duration,
+                          duration: accTheme?.duration ?? kDefaultDuration,
                           data: IconThemeData(
-                            color: theme.colorScheme.mutedForeground,
+                            color: accTheme?.arrowIconColor ??
+                                theme.colorScheme.mutedForeground,
                           ),
-                          child:
-                              const Icon(Icons.keyboard_arrow_up).iconMedium(),
+                          child: Icon(accTheme?.arrowIcon ??
+                                  Icons.keyboard_arrow_up)
+                              .iconMedium(),
                         ),
                       );
                     }),
