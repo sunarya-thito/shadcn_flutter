@@ -81,11 +81,13 @@ class SelectedButton extends StatefulWidget {
   final bool? enabled;
   final AlignmentGeometry? alignment;
   final AlignmentGeometry? marginAlignment;
+  final void Function(bool)? onHover;
 
   const SelectedButton({
     super.key,
     required this.value,
     this.onChanged,
+    this.onHover,
     required this.child,
     this.enabled,
     this.style = const ButtonStyle.ghost(),
@@ -130,6 +132,7 @@ class SelectedButtonState extends State<SelectedButton> {
         style: widget.value ? widget.selectedStyle : widget.style,
         alignment: widget.alignment,
         marginAlignment: widget.marginAlignment,
+        onHover: widget.onHover,
         onPressed: () {
           if (widget.onChanged != null) {
             widget.onChanged!(!widget.value);
@@ -722,6 +725,12 @@ class ButtonStyle implements AbstractButtonStyle {
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.ghost;
 
+  const ButtonStyle.ghostBar({
+    this.size = ButtonSize.normal,
+    this.density = ButtonDensity.normal,
+    this.shape = ButtonShape.rectangle,
+  }) : variance = ButtonVariance.ghostBar;
+
   const ButtonStyle.link({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
@@ -942,6 +951,14 @@ class ButtonVariance implements AbstractButtonStyle {
   );
   static const ButtonVariance ghost = ButtonVariance(
     decoration: _buttonGhostDecoration,
+    mouseCursor: _buttonMouseCursor,
+    padding: _buttonPadding,
+    textStyle: _buttonGhostTextStyle,
+    iconTheme: _buttonGhostIconTheme,
+    margin: _buttonZeroMargin,
+  );
+  static const ButtonVariance ghostBar = ButtonVariance(
+    decoration: _buttonGhostDecorationBar,
     mouseCursor: _buttonMouseCursor,
     padding: _buttonPadding,
     textStyle: _buttonGhostTextStyle,
@@ -1485,6 +1502,33 @@ Decoration _buttonGhostDecoration(
   }
   return BoxDecoration(
     color: themeData.colorScheme.muted.withOpacity(0),
+    borderRadius: BorderRadius.circular(themeData.radiusMd),
+  );
+}
+
+Decoration _buttonGhostDecorationBar(
+    BuildContext context, Set<WidgetState> states) {
+  var themeData = Theme.of(context);
+  if (states.contains(WidgetState.disabled)) {
+    return BoxDecoration(
+      color: themeData.colorScheme.muted.withOpacity(0),
+      borderRadius: BorderRadius.circular(themeData.radiusMd),
+    );
+  }
+  if (states.contains(WidgetState.hovered)) {
+    return BoxDecoration(
+      color: themeData.colorScheme.muted.getContrastColor(0.2),
+      borderRadius: BorderRadius.circular(themeData.radiusMd),
+    );
+  }
+  if (states.contains(WidgetState.selected)) {
+    return BoxDecoration(
+      color: themeData.colorScheme.muted.getContrastColor(0.2),
+      borderRadius: BorderRadius.circular(themeData.radiusMd),
+    );
+  }
+  return BoxDecoration(
+    color: themeData.colorScheme.muted,
     borderRadius: BorderRadius.circular(themeData.radiusMd),
   );
 }
