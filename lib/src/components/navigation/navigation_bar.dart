@@ -652,12 +652,12 @@ class _NavigationButtonState extends State<NavigationButton> {
     var parentIndex = childData?.index;
     AbstractButtonStyle style = widget.style ??
         (labelType != NavigationLabelType.expanded
-            ? const ButtonStyle.ghost(density: ButtonDensity.icon)
-            : const ButtonStyle.ghost());
+            ? const ButtonStyle.menubar(density: ButtonDensity.normal)
+            : const ButtonStyle.menubar(density: ButtonDensity.normal));
     AbstractButtonStyle selectedStyle = widget.selectedStyle ??
         (labelType != NavigationLabelType.expanded
-            ? const ButtonStyle.secondary(density: ButtonDensity.icon)
-            : const ButtonStyle.secondary());
+            ? const ButtonStyle.secondary(density: ButtonDensity.dense)
+            : const ButtonStyle.secondary(density: ButtonDensity.dense));
     if (labelType == NavigationLabelType.expanded) {
       return SelectedButton(
         value: isSelected,
