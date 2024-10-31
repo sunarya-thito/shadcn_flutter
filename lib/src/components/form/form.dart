@@ -1349,12 +1349,22 @@ class FormField<T> extends StatelessWidget {
   final Widget label;
   final Widget? hint;
   final Widget child;
+  final Widget? leadingLabel;
+  final Widget? trailingLabel;
+  final MainAxisAlignment? labelAxisAlignment;
+  final double? leadingGap;
+  final EdgeInsetsGeometry? padding;
   final Validator<T>? validator;
 
   const FormField({
     required FormKey<T> super.key,
     required this.label,
     required this.child,
+    this.leadingLabel,
+    this.trailingLabel,
+    this.labelAxisAlignment = MainAxisAlignment.spaceBetween,
+    this.leadingGap = 5,
+    this.padding = EdgeInsets.zero,
     this.validator,
     this.hint,
   });
@@ -1374,12 +1384,25 @@ class FormField<T> extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                mergeAnimatedTextStyle(
-                  style: error != null
-                      ? TextStyle(color: theme.colorScheme.destructive)
-                      : null,
-                  child: label.textSmall(),
-                  duration: kDefaultDuration,
+                Padding(
+                  padding: padding!,
+                  child: Row(
+                    mainAxisAlignment: labelAxisAlignment!,
+                    children: [
+                      if (leadingLabel != null) leadingLabel!,
+                      Gap(leadingGap!),
+                      Expanded(
+                        child: mergeAnimatedTextStyle(
+                          style: error != null
+                              ? TextStyle(color: theme.colorScheme.destructive)
+                              : null,
+                          child: label.textSmall(),
+                          duration: kDefaultDuration,
+                        ),
+                      ),
+                      if (trailingLabel != null) trailingLabel!,
+                    ],
+                  ),
                 ),
                 Gap(theme.scaling * 8),
                 child!,
