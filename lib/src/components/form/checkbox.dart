@@ -93,10 +93,11 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
       onPressed: widget.onChanged != null ? _tap : null,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
         children: [
           if (widget.leading != null) widget.leading!.small().medium(),
-          SizedBox(width: theme.scaling * 8),
+          // SizedBox(width: theme.scaling * 8),
           AnimatedContainer(
             duration: kDefaultDuration,
             width: theme.scaling * 16,
@@ -160,7 +161,7 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
                     ),
                   ),
           ),
-          SizedBox(width: theme.scaling * 8),
+          // SizedBox(width: theme.scaling * 8),
           if (widget.trailing != null) widget.trailing!.small().medium(),
         ],
       ),
