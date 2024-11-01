@@ -19,6 +19,47 @@ class CommandEmpty extends StatelessWidget {
   }
 }
 
+Future<T?> showCommandDialog<T>({
+  required BuildContext context,
+  required CommandBuilder builder,
+  BoxConstraints? constraints,
+  bool autofocus = true,
+  Duration debounceDuration = const Duration(milliseconds: 500),
+  WidgetBuilder? emptyBuilder,
+  ErrorWidgetBuilder? errorBuilder,
+  WidgetBuilder? loadingBuilder,
+  double? surfaceOpacity,
+  double? surfaceBlur,
+}) {
+  return showDialog<T>(
+    context: context,
+    builder: (context) {
+      final theme = Theme.of(context);
+      final scaling = theme.scaling;
+      surfaceOpacity ??= theme.surfaceOpacity;
+      surfaceBlur ??= theme.surfaceBlur;
+      return ConstrainedBox(
+        constraints: constraints ??
+            const BoxConstraints.tightFor(width: 510, height: 349) * scaling,
+        child: ModalContainer(
+          borderRadius: subtractByBorder(theme.borderRadiusXxl, 1 * scaling),
+          surfaceClip: ModalContainer.shouldClipSurface(surfaceOpacity),
+          child: Command(
+            autofocus: autofocus,
+            builder: builder,
+            debounceDuration: debounceDuration,
+            emptyBuilder: emptyBuilder,
+            errorBuilder: errorBuilder,
+            loadingBuilder: loadingBuilder,
+            surfaceOpacity: surfaceOpacity,
+            surfaceBlur: surfaceBlur,
+          ),
+        ),
+      );
+    },
+  );
+}
+
 class Command extends StatefulWidget {
   final bool autofocus;
   final CommandBuilder builder;
@@ -29,6 +70,7 @@ class Command extends StatefulWidget {
   final WidgetBuilder? loadingBuilder;
   final double? surfaceOpacity;
   final double? surfaceBlur;
+  final Widget? searchPlaceholder;
 
   const Command({
     super.key,
@@ -40,6 +82,7 @@ class Command extends StatefulWidget {
     this.loadingBuilder,
     this.surfaceOpacity,
     this.surfaceBlur,
+    this.searchPlaceholder,
   });
 
   @override
@@ -103,8 +146,8 @@ class _CommandState extends State<Command> {
                       controller: _controller,
                       border: false,
                       // focusNode: _textFieldFocus,
-                      placeholder:
-                          ShadcnLocalizations.of(context).commandSearch,
+                      placeholder: widget.searchPlaceholder ??
+                          Text(ShadcnLocalizations.of(context).commandSearch),
                     ),
                   ),
                   if (canPop)
@@ -131,11 +174,10 @@ class _CommandState extends State<Command> {
                             List<Widget> items = List.of(snapshot.data!);
                             if (snapshot.connectionState ==
                                 ConnectionState.active) {
-                              items.add(AnimatedIconTheme(
+                              items.add(IconTheme.merge(
                                 data: IconThemeData(
                                   color: theme.colorScheme.mutedForeground,
                                 ),
-                                duration: kDefaultDuration,
                                 child: const Center(
                                         child: CircularProgressIndicator())
                                     .withPadding(vertical: theme.scaling * 24),
@@ -275,20 +317,18 @@ class _CommandItemState extends State<CommandItem> {
           padding: EdgeInsets.symmetric(
               horizontal: themeData.scaling * 8,
               vertical: themeData.scaling * 6),
-          child: AnimatedIconTheme(
-            duration: kDefaultDuration,
+          child: IconTheme(
             data: themeData.iconTheme.small.copyWith(
               color: widget.onTap != null
                   ? themeData.colorScheme.accentForeground
                   : themeData.colorScheme.accentForeground.scaleAlpha(0.5),
             ),
-            child: AnimatedDefaultTextStyle(
+            child: DefaultTextStyle(
               style: TextStyle(
                 color: widget.onTap != null
                     ? themeData.colorScheme.accentForeground
                     : themeData.colorScheme.accentForeground.scaleAlpha(0.5),
               ),
-              duration: kDefaultDuration,
               child: Row(
                 children: [
                   if (widget.leading != null) widget.leading!,

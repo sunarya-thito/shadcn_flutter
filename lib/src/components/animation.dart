@@ -70,6 +70,25 @@ class _AnimatableValue<T> extends Animatable<T> {
   T transform(double t) {
     return lerp(start, end, t);
   }
+
+  @override
+  String toString() {
+    return 'AnimatableValue($start, $end)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is _AnimatableValue &&
+        other.start == start &&
+        other.end == end &&
+        other.lerp == lerp;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(start, end, lerp);
+  }
 }
 
 class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
@@ -77,7 +96,6 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
   late AnimationController _controller;
   late CurvedAnimation _curvedAnimation;
   late Animation<T> _animation;
-  // late T _value;
   @override
   void initState() {
     super.initState();
@@ -169,11 +187,14 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
     }
     return AnimatedBuilder(
       animation: _animation,
-      builder: (context, child) {
-        T newValue = _animation.value;
-        return widget.builder!(context, newValue, widget.child);
-      },
+      builder: _builder,
+      child: widget.child,
     );
+  }
+
+  Widget _builder(BuildContext context, Widget? child) {
+    T newValue = _animation.value;
+    return widget.builder!(context, newValue, child);
   }
 }
 
@@ -529,10 +550,12 @@ class _CrossFadedTransitionState extends State<CrossFadedTransition> {
         value: newChild,
         lerp: _lerpWidget,
         duration: widget.duration,
-        builder: (context, value, child) {
-          return value;
-        },
+        builder: _builder,
       ),
     );
+  }
+
+  Widget _builder(BuildContext context, Widget value, Widget? child) {
+    return value;
   }
 }

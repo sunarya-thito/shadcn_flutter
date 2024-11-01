@@ -36,6 +36,8 @@ class _AlertDialogState extends State<AlertDialog> {
     return ModalContainer(
       borderRadius: themeData.borderRadiusXxl,
       barrierColor: widget.barrierColor ?? Colors.black.withOpacity(0.8),
+      surfaceClip: ModalContainer.shouldClipSurface(
+          widget.surfaceOpacity ?? themeData.surfaceOpacity),
       child: OutlinedContainer(
         backgroundColor: themeData.colorScheme.popover,
         borderRadius: themeData.borderRadiusXxl,

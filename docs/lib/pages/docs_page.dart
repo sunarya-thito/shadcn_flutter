@@ -402,48 +402,32 @@ class DocsPageState extends State<DocsPage> {
   }
 
   void showSearchBar() {
-    final theme = Theme.of(context);
-    final scaling = theme.scaling;
-    showDialog(
+    showCommandDialog(
       context: context,
-      builder: (context) {
-        return SizedBox(
-          width: 510 * scaling,
-          height: 349 * scaling,
-          child: ModalContainer(
-            borderRadius: subtractByBorder(theme.borderRadiusXxl, 1 * scaling),
-            child: Command(
-              debounceDuration: Duration.zero,
-              builder: (context, query) async* {
-                for (final section in sections) {
-                  final List<Widget> resultItems = [];
-                  for (final page in section.pages) {
-                    if (query == null ||
-                        page.title
-                            .toLowerCase()
-                            .contains(query.toLowerCase())) {
-                      resultItems.add(CommandItem(
-                        title: Text(page.title),
-                        trailing: Icon(section.icon),
-                        onTap: () {
-                          context.goNamed(page.name);
-                        },
-                      ));
-                    }
-                  }
-                  if (resultItems.isNotEmpty) {
-                    yield [
-                      CommandCategory(
-                        title: Text(section.title),
-                        children: resultItems,
-                      ),
-                    ];
-                  }
-                }
-              },
-            ),
-          ),
-        );
+      builder: (context, query) async* {
+        for (final section in sections) {
+          final List<Widget> resultItems = [];
+          for (final page in section.pages) {
+            if (query == null ||
+                page.title.toLowerCase().contains(query.toLowerCase())) {
+              resultItems.add(CommandItem(
+                title: Text(page.title),
+                trailing: Icon(section.icon),
+                onTap: () {
+                  context.goNamed(page.name);
+                },
+              ));
+            }
+          }
+          if (resultItems.isNotEmpty) {
+            yield [
+              CommandCategory(
+                title: Text(section.title),
+                children: resultItems,
+              ),
+            ];
+          }
+        }
       },
     );
   }
@@ -459,7 +443,6 @@ class DocsPageState extends State<DocsPage> {
     final theme = Theme.of(context);
 
     var hasOnThisPage = onThisPage.isNotEmpty;
-    var mediaQuerySize = MediaQuery.sizeOf(context);
     return ClipRect(
       child: PageStorage(
         bucket: docsBucket,
@@ -537,73 +520,23 @@ class DocsPageState extends State<DocsPage> {
                               ),
                             ),
                           ),
-                          child: AppBar(
-                            padding: (breakpointWidth2 < mediaQuerySize.width
-                                    ? padding * theme.scaling
-                                    : padding.copyWith(
-                                          right: 32,
-                                        ) *
-                                        theme.scaling)
-                                .copyWith(
-                              top: 12 * theme.scaling,
-                              bottom: 12 * theme.scaling,
-                            ),
-                            title: Basic(
-                              leading: FlutterLogo(
-                                size: 32 * theme.scaling,
-                              ),
-                              content: const Text(
-                                'shadcn_flutter',
-                              ).textLarge().mono(),
-                            ),
-                            trailing: [
-                              Align(
-                                alignment: AlignmentDirectional.centerEnd,
-                                child: SizedBox(
-                                  width: 320 - 18,
-                                  child: OutlineButton(
-                                    onPressed: () {
-                                      showSearchBar();
-                                    },
-                                    trailing: const Icon(Icons.search)
-                                        .iconSmall()
-                                        .iconMutedForeground(),
-                                    child: const Text('Search documentation...')
-                                        .muted()
-                                        .normal(),
-                                  ),
-                                ),
-                              ),
-                              Gap(8 * theme.scaling),
-                              GhostButton(
-                                density: ButtonDensity.icon,
-                                onPressed: () {
-                                  openInNewTab(
-                                      'https://github.com/sunarya-thito/shadcn_flutter');
-                                },
-                                child: FaIcon(FontAwesomeIcons.github,
-                                        color: theme
-                                            .colorScheme.secondaryForeground)
-                                    .iconLarge(),
-                              ),
-                              // pub.dev icon
-                              GhostButton(
-                                  density: ButtonDensity.icon,
-                                  onPressed: () {
-                                    openInNewTab(
-                                        'https://pub.dev/packages/shadcn_flutter');
-                                  },
-                                  child: ColorFiltered(
-                                    // turns into white
-                                    colorFilter: ColorFilter.mode(
-                                      theme.colorScheme.secondaryForeground,
-                                      BlendMode.srcIn,
-                                    ),
-                                    child: FlutterLogo(
-                                      size: 24 * theme.scaling,
-                                    ),
-                                  )),
-                            ],
+                          child: MediaQueryVisibility(
+                            minWidth: breakpointWidth2,
+                            alternateChild: _buildAppBar(
+                                padding.copyWith(
+                                      top: 12,
+                                      bottom: 12,
+                                      right: 32,
+                                    ) *
+                                    theme.scaling,
+                                theme),
+                            child: _buildAppBar(
+                                padding.copyWith(
+                                      top: 12,
+                                      bottom: 12,
+                                    ) *
+                                    theme.scaling,
+                                theme),
                           ),
                         ),
                         const Divider(),
@@ -626,53 +559,8 @@ class DocsPageState extends State<DocsPage> {
                                   left: 24 + padding.left,
                                   bottom: 32) *
                               theme.scaling,
-                          child: SidebarNav(children: [
-                            for (var section in sections)
-                              SidebarSection(
-                                header: Text(section.title),
-                                children: [
-                                  for (var page in section.pages)
-                                    DocsNavigationButton(
-                                      onPressed: () {
-                                        if (page.tag ==
-                                            ShadcnFeatureTag.workInProgress) {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: const Text(
-                                                    'Work in Progress'),
-                                                content: const Text(
-                                                    'This page is still under development. Please come back later.'),
-                                                actions: [
-                                                  PrimaryButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child:
-                                                          const Text('Close')),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                          return;
-                                        }
-                                        context.goNamed(page.name);
-                                      },
-                                      selected: page.name == widget.name,
-                                      trailing: DefaultTextStyle.merge(
-                                        style: const TextStyle(
-                                          decoration: TextDecoration.none,
-                                        ),
-                                        child: page.tag?.buildBadge(context) ??
-                                            const SizedBox(),
-                                      ),
-                                      child: Text(page.title),
-                                    ),
-                                ],
-                              ),
-                          ]),
+                          child: _DocsSidebar(
+                              sections: sections, pageName: widget.name),
                         ),
                       ),
                     ),
@@ -767,40 +655,10 @@ class DocsPageState extends State<DocsPage> {
                     if (hasOnThisPage)
                       MediaQueryVisibility(
                         minWidth: breakpointWidth2,
-                        child: Container(
-                          width: (padding.right + 180) * theme.scaling,
-                          alignment: Alignment.topLeft,
-                          child: FocusTraversalGroup(
-                            child: SingleChildScrollView(
-                              padding: const EdgeInsets.only(
-                                    top: 32,
-                                    right: 24,
-                                    bottom: 32,
-                                    left: 24,
-                                  ) *
-                                  theme.scaling,
-                              child: SidebarNav(children: [
-                                SidebarSection(
-                                  header: const Text('On This Page'),
-                                  children: [
-                                    for (var key in onThisPage.keys)
-                                      SidebarButton(
-                                        onPressed: () {
-                                          Scrollable.ensureVisible(
-                                              onThisPage[key]!.currentContext!,
-                                              duration: kDefaultDuration,
-                                              alignmentPolicy:
-                                                  ScrollPositionAlignmentPolicy
-                                                      .explicit);
-                                        },
-                                        selected: isVisible(onThisPage[key]!),
-                                        child: Text(key),
-                                      ),
-                                  ],
-                                ),
-                              ]),
-                            ),
-                          ),
+                        child: _DocsSecondarySidebar(
+                          onThisPage: onThisPage,
+                          isVisible: isVisible,
+                          padding: padding,
                         ),
                       ),
                   ],
@@ -810,6 +668,72 @@ class DocsPageState extends State<DocsPage> {
           );
         }),
       ),
+    );
+  }
+
+  AppBar _buildAppBar(EdgeInsets padding, ThemeData theme) {
+    return AppBar(
+      // padding: (breakpointWidth2 < mediaQuerySize.width
+      //         ? padding * theme.scaling
+      //         : padding.copyWith(
+      //               right: 32,
+      //             ) *
+      //             theme.scaling)
+      //     .copyWith(
+      //   top: 12 * theme.scaling,
+      //   bottom: 12 * theme.scaling,
+      // ),
+      padding: padding,
+      title: Basic(
+        leading: FlutterLogo(
+          size: 32 * theme.scaling,
+        ),
+        content: const Text(
+          'shadcn_flutter',
+        ).textLarge().mono(),
+      ),
+      trailing: [
+        Align(
+          alignment: AlignmentDirectional.centerEnd,
+          child: SizedBox(
+            width: 320 - 18,
+            child: OutlineButton(
+              onPressed: () {
+                showSearchBar();
+              },
+              trailing:
+                  const Icon(Icons.search).iconSmall().iconMutedForeground(),
+              child: const Text('Search documentation...').muted().normal(),
+            ),
+          ),
+        ),
+        Gap(8 * theme.scaling),
+        GhostButton(
+          density: ButtonDensity.icon,
+          onPressed: () {
+            openInNewTab('https://github.com/sunarya-thito/shadcn_flutter');
+          },
+          child: FaIcon(FontAwesomeIcons.github,
+                  color: theme.colorScheme.secondaryForeground)
+              .iconLarge(),
+        ),
+        // pub.dev icon
+        GhostButton(
+            density: ButtonDensity.icon,
+            onPressed: () {
+              openInNewTab('https://pub.dev/packages/shadcn_flutter');
+            },
+            child: ColorFiltered(
+              // turns into white
+              colorFilter: ColorFilter.mode(
+                theme.colorScheme.secondaryForeground,
+                BlendMode.srcIn,
+              ),
+              child: FlutterLogo(
+                size: 24 * theme.scaling,
+              ),
+            )),
+      ],
     );
   }
 
@@ -904,5 +828,192 @@ class DocsPageState extends State<DocsPage> {
       },
       position: OverlayPosition.left,
     );
+  }
+}
+
+class _DocsSidebar extends StatefulWidget {
+  const _DocsSidebar({
+    super.key,
+    required this.sections,
+    required this.pageName,
+  });
+
+  final List<ShadcnDocsSection> sections;
+  final String pageName;
+
+  @override
+  State<_DocsSidebar> createState() => _DocsSidebarState();
+}
+
+class _DocsSidebarState extends State<_DocsSidebar> {
+  late List<Widget> children;
+
+  @override
+  void initState() {
+    super.initState();
+    children = [
+      for (var section in widget.sections)
+        _DocsSidebarSection(section: section, pageName: widget.pageName),
+    ];
+    // do we need didUpdateWidget? nope
+    // we don't update the children anyway
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SidebarNav(children: children);
+  }
+}
+
+class _DocsSecondarySidebar extends StatefulWidget {
+  final Map<String, OnThisPage> onThisPage;
+  final bool Function(OnThisPage) isVisible;
+  final EdgeInsets padding;
+
+  const _DocsSecondarySidebar({
+    super.key,
+    required this.onThisPage,
+    required this.isVisible,
+    required this.padding,
+  });
+
+  @override
+  State<_DocsSecondarySidebar> createState() => _DocsSecondarySidebarState();
+}
+
+class _DocsSecondarySidebarState extends State<_DocsSecondarySidebar> {
+  final List<Widget> _sideChildren = [];
+  @override
+  void initState() {
+    super.initState();
+    var side = <Widget>[];
+    for (var key in widget.onThisPage.keys) {
+      side.add(SidebarButton(
+        onPressed: () {
+          Scrollable.ensureVisible(widget.onThisPage[key]!.currentContext!,
+              duration: kDefaultDuration,
+              alignmentPolicy: ScrollPositionAlignmentPolicy.explicit);
+        },
+        selected: widget.isVisible(widget.onThisPage[key]!),
+        child: Text(key),
+      ));
+    }
+    _sideChildren.add(SidebarSection(
+      header: const Text('On This Page'),
+      children: side,
+    ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      width: (widget.padding.right + 180) * theme.scaling,
+      alignment: Alignment.topLeft,
+      child: FocusTraversalGroup(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.only(
+                top: 32,
+                right: 24,
+                bottom: 32,
+                left: 24,
+              ) *
+              theme.scaling,
+          child: SidebarNav(children: _sideChildren),
+        ),
+      ),
+    );
+  }
+}
+
+class _DocsSidebarSection extends StatefulWidget {
+  const _DocsSidebarSection({
+    super.key,
+    required this.section,
+    required this.pageName,
+  });
+
+  final ShadcnDocsSection section;
+  final String pageName;
+
+  @override
+  State<_DocsSidebarSection> createState() => _DocsSidebarSectionState();
+}
+
+class _DocsSidebarSectionState extends State<_DocsSidebarSection> {
+  late List<Widget> pages;
+
+  @override
+  void initState() {
+    super.initState();
+    pages = [
+      for (var page in widget.section.pages)
+        _DocsSidebarButton(page: page, pageName: widget.pageName),
+    ];
+    // do we need didUpdateWidget? nope
+    // we don't update the pages anyway
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SidebarSection(
+      header: Text(widget.section.title),
+      children: pages,
+    );
+  }
+}
+
+class _DocsSidebarButton extends StatefulWidget {
+  const _DocsSidebarButton({
+    super.key,
+    required this.page,
+    required this.pageName,
+  });
+
+  final ShadcnDocsPage page;
+  final String pageName;
+
+  @override
+  State<_DocsSidebarButton> createState() => _DocsSidebarButtonState();
+}
+
+class _DocsSidebarButtonState extends State<_DocsSidebarButton> {
+  @override
+  Widget build(BuildContext context) {
+    return DocsNavigationButton(
+      onPressed: _onPressed,
+      selected: widget.page.name == widget.pageName,
+      trailing: DefaultTextStyle.merge(
+        style: const TextStyle(
+          decoration: TextDecoration.none,
+        ),
+        child: widget.page.tag?.buildBadge(context) ?? const SizedBox(),
+      ),
+      child: Text(widget.page.title),
+    );
+  }
+
+  void _onPressed() {
+    if (widget.page.tag == ShadcnFeatureTag.workInProgress) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Work in Progress'),
+            content: const Text(
+                'This page is still under development. Please come back later.'),
+            actions: [
+              PrimaryButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Close')),
+            ],
+          );
+        },
+      );
+      return;
+    }
+    context.goNamed(widget.page.name);
   }
 }

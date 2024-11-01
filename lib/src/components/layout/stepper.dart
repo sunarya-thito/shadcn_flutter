@@ -792,16 +792,14 @@ class StepNumber extends StatelessWidget {
         builder: (context, child) {
           return properties.size.wrapper(
             context,
-            mergeAnimatedTextStyle(
-              duration: kDefaultDuration,
+            DefaultTextStyle.merge(
               style: TextStyle(
                 color: properties.state.value.stepStates[stepIndex] ==
                         StepState.failed
                     ? theme.colorScheme.destructive
                     : theme.colorScheme.primary,
               ).merge(theme.typography.medium),
-              child: AnimatedIconTheme.merge(
-                duration: kDefaultDuration,
+              child: IconTheme.merge(
                 data: IconThemeData(
                   color: properties.state.value.stepStates[stepIndex] ==
                           StepState.failed

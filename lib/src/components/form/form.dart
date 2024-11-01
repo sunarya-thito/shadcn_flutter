@@ -83,7 +83,7 @@ class ConditionalValidator<T> extends Validator<T> {
 
   @override
   FutureOr<ValidationResult?> validate(
-      BuildContext context, T? value, FormValidationMode state) {
+      BuildContext context, T? value, FormValidationMode lifecycle) {
     var result = predicate(value);
     if (result is Future<bool>) {
       return result.then((value) {
@@ -113,6 +113,35 @@ class ConditionalValidator<T> extends Validator<T> {
 
   @override
   int get hashCode => Object.hash(predicate, message);
+}
+
+typedef ValidatorBuilderFunction<T> = FutureOr<ValidationResult?> Function(
+    T? value);
+
+class ValidatorBuilder<T> extends Validator<T> {
+  final ValidatorBuilderFunction<T> builder;
+  final List<FormKey> dependencies;
+
+  const ValidatorBuilder(this.builder, {this.dependencies = const []});
+
+  @override
+  FutureOr<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode lifecycle) {
+    return builder(value);
+  }
+
+  @override
+  bool shouldRevalidate(FormKey<dynamic> source) {
+    return dependencies.contains(source);
+  }
+
+  @override
+  operator ==(Object other) {
+    return other is ValidatorBuilder && other.builder == builder;
+  }
+
+  @override
+  int get hashCode => builder.hashCode;
 }
 
 class NotValidator<T> extends Validator<T> {
@@ -1353,6 +1382,7 @@ class FormField<T> extends StatelessWidget {
   final Widget? trailingLabel;
   final MainAxisAlignment? labelAxisAlignment;
   final double? leadingGap;
+  final double? trailingGap;
   final EdgeInsetsGeometry? padding;
   final Validator<T>? validator;
 
@@ -1362,8 +1392,9 @@ class FormField<T> extends StatelessWidget {
     required this.child,
     this.leadingLabel,
     this.trailingLabel,
-    this.labelAxisAlignment = MainAxisAlignment.spaceBetween,
-    this.leadingGap = 5,
+    this.labelAxisAlignment = MainAxisAlignment.start,
+    this.leadingGap,
+    this.trailingGap,
     this.padding = EdgeInsets.zero,
     this.validator,
     this.hint,
@@ -1380,46 +1411,46 @@ class FormField<T> extends StatelessWidget {
       validator: validator,
       child: FormEntryErrorBuilder(
         builder: (context, error, child) {
-          return IntrinsicWidth(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: padding!,
-                  child: Row(
-                    mainAxisAlignment: labelAxisAlignment!,
-                    children: [
-                      if (leadingLabel != null) leadingLabel!,
-                      Gap(leadingGap!),
-                      Expanded(
-                        child: mergeAnimatedTextStyle(
-                          style: error != null
-                              ? TextStyle(color: theme.colorScheme.destructive)
-                              : null,
-                          child: label.textSmall(),
-                          duration: kDefaultDuration,
-                        ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: padding!,
+                child: Row(
+                  mainAxisAlignment: labelAxisAlignment!,
+                  children: [
+                    if (leadingLabel != null) leadingLabel!.textSmall().muted(),
+                    if (leadingLabel != null)
+                      Gap(leadingGap ?? theme.scaling * 8),
+                    Expanded(
+                      child: DefaultTextStyle.merge(
+                        style: error != null
+                            ? TextStyle(color: theme.colorScheme.destructive)
+                            : null,
+                        child: label.textSmall(),
                       ),
-                      if (trailingLabel != null) trailingLabel!,
-                    ],
-                  ),
+                    ),
+                    if (trailingLabel != null)
+                      Gap(trailingGap ?? theme.scaling * 8),
+                    if (trailingLabel != null)
+                      trailingLabel!.textSmall().muted(),
+                  ],
                 ),
+              ),
+              Gap(theme.scaling * 8),
+              child!,
+              if (hint != null) ...[
                 Gap(theme.scaling * 8),
-                child!,
-                if (hint != null) ...[
-                  Gap(theme.scaling * 8),
-                  hint!.xSmall().muted(),
-                ],
-                if (error is InvalidResult) ...[
-                  Gap(theme.scaling * 8),
-                  mergeAnimatedTextStyle(
-                    style: TextStyle(color: theme.colorScheme.destructive),
-                    child: Text(error.message).xSmall().medium(),
-                    duration: kDefaultDuration,
-                  ),
-                ],
+                hint!.xSmall().muted(),
               ],
-            ),
+              if (error is InvalidResult) ...[
+                Gap(theme.scaling * 8),
+                DefaultTextStyle.merge(
+                  style: TextStyle(color: theme.colorScheme.destructive),
+                  child: Text(error.message).xSmall().medium(),
+                ),
+              ],
+            ],
           );
         },
         child: child,
@@ -1461,12 +1492,11 @@ class FormInline<T> extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      mergeAnimatedTextStyle(
+                      DefaultTextStyle.merge(
                         style: error != null
                             ? TextStyle(color: theme.colorScheme.destructive)
                             : null,
                         child: label.textSmall(),
-                        duration: kDefaultDuration,
                       ),
                       Gap(theme.scaling * 8),
                       Expanded(child: child!),
@@ -1479,10 +1509,9 @@ class FormInline<T> extends StatelessWidget {
                 ],
                 if (error is InvalidResult) ...[
                   const Gap(8),
-                  mergeAnimatedTextStyle(
+                  DefaultTextStyle.merge(
                     style: TextStyle(color: theme.colorScheme.destructive),
                     child: Text(error.message).xSmall().medium(),
-                    duration: kDefaultDuration,
                   ),
                 ],
               ],
@@ -1506,8 +1535,7 @@ class FormTableLayout extends StatelessWidget {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     var spacing = this.spacing ?? scaling * 16;
-    return mergeAnimatedTextStyle(
-      duration: kDefaultDuration,
+    return DefaultTextStyle.merge(
       style: TextStyle(color: Theme.of(context).colorScheme.foreground),
       child: widgets.Table(
         columnWidths: const {
@@ -1544,13 +1572,12 @@ class FormTableLayout extends StatelessWidget {
                             ],
                             if (error is InvalidResult) ...[
                               Gap(8 * scaling),
-                              mergeAnimatedTextStyle(
+                              DefaultTextStyle.merge(
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .destructive),
                                 child: Text(error.message).xSmall().medium(),
-                                duration: kDefaultDuration,
                               ),
                             ],
                           ],
@@ -1585,7 +1612,6 @@ class SubmitButton extends StatefulWidget {
   final bool disableHoverEffect;
   final bool? enabled;
   final bool? enableFeedback;
-  final bool trailingExpanded;
   final bool disableTransition;
   final FocusNode? focusNode;
 
@@ -1605,7 +1631,6 @@ class SubmitButton extends StatefulWidget {
     this.disableHoverEffect = false,
     this.enabled,
     this.enableFeedback,
-    this.trailingExpanded = false,
     this.disableTransition = false,
     this.focusNode,
   });
@@ -1684,7 +1709,6 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
         disableHoverEffect: widget.disableHoverEffect,
         enabled: false,
         enableFeedback: false,
-        trailingExpanded: widget.trailingExpanded,
         disableTransition: widget.disableTransition,
         focusNode: widget.focusNode,
         style: widget.style ?? const ButtonStyle.primary(),
@@ -1699,7 +1723,6 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
         disableHoverEffect: widget.disableHoverEffect,
         enabled: false,
         enableFeedback: true,
-        trailingExpanded: widget.trailingExpanded,
         disableTransition: widget.disableTransition,
         focusNode: widget.focusNode,
         style: widget.style ?? const ButtonStyle.primary(),
@@ -1725,7 +1748,6 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
           }
         });
       },
-      trailingExpanded: widget.trailingExpanded,
       disableTransition: widget.disableTransition,
       focusNode: widget.focusNode,
       style: widget.style ?? const ButtonStyle.primary(),

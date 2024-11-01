@@ -8,7 +8,6 @@ import 'package:docs/pages/docs/components/card/card_example_1.dart';
 import 'package:docs/pages/docs/components/carousel/carousel_example_1.dart';
 import 'package:docs/pages/docs/components/code_snippet/code_snippet_example_1.dart';
 import 'package:docs/pages/docs/components/command/command_example_1.dart';
-import 'package:docs/pages/docs/components/date_picker/date_picker_example_1.dart';
 import 'package:docs/pages/docs/components/divider/divider_example_3.dart';
 import 'package:docs/pages/docs/components/pagination/pagination_example_1.dart';
 import 'package:docs/pages/docs/components/resizable/resizable_example_3.dart';
@@ -570,7 +569,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
               ),
               ComponentCard(
                 name: 'input',
-                title: 'Input',
+                title: 'Text Input',
                 scale: 2,
                 example: Card(
                   child: const TextField(
@@ -1128,33 +1127,36 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   title: 'Dialog',
                   name: 'dialog',
                   example: AlertDialog(
+                    barrierColor: Colors.transparent,
                     title: const Text('Edit profile'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                            'Make changes to your profile here. Click save when you\'re done'),
-                        const Gap(16),
-                        const Form(
-                          child: FormTableLayout(rows: [
-                            FormField<String>(
-                              key: FormKey(#name),
-                              label: Text('Name'),
-                              child: TextField(
-                                initialValue: 'Thito Yalasatria Sunarya',
+                    content: IntrinsicWidth(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Text(
+                              'Make changes to your profile here. Click save when you\'re done'),
+                          const Gap(16),
+                          const Form(
+                            child: FormTableLayout(rows: [
+                              FormField<String>(
+                                key: FormKey(#name),
+                                label: Text('Name'),
+                                child: TextField(
+                                  initialValue: 'Thito Yalasatria Sunarya',
+                                ),
                               ),
-                            ),
-                            FormField<String>(
-                              key: FormKey(#username),
-                              label: Text('Username'),
-                              child: TextField(
-                                initialValue: '@sunaryathito',
+                              FormField<String>(
+                                key: FormKey(#username),
+                                label: Text('Username'),
+                                child: TextField(
+                                  initialValue: '@sunaryathito',
+                                ),
                               ),
-                            ),
-                          ]),
-                        ).withPadding(vertical: 16),
-                      ],
+                            ]),
+                          ).withPadding(vertical: 16),
+                        ],
+                      ),
                     ),
                     actions: [
                       PrimaryButton(
@@ -1265,7 +1267,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   ],
                 ),
               ),
-              const ComponentCard(
+              ComponentCard(
                 name: 'popover',
                 title: 'Popover',
                 scale: 1,
@@ -1273,9 +1275,19 @@ class _ComponentsPageState extends State<ComponentsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      DatePickerExample1(),
-                      Gap(4),
-                      CalendarExample2(),
+                      DatePicker(
+                        value: DateTime.now(),
+                        mode: PromptMode.popover,
+                        stateBuilder: (date) {
+                          if (date.isAfter(DateTime.now())) {
+                            return DateState.disabled;
+                          }
+                          return DateState.enabled;
+                        },
+                        onChanged: (value) {},
+                      ),
+                      const Gap(4),
+                      const CalendarExample2(),
                     ],
                   ),
                 ),

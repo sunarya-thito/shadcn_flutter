@@ -243,9 +243,16 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
               children: [
                 Expanded(
                     child: Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: UnderlineText(
-                            underline: _hovering, child: widget.child))),
+                  alignment: AlignmentDirectional.centerStart,
+                  child: DefaultTextStyle.merge(
+                    style: TextStyle(
+                      decoration: _hovering
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
+                    ),
+                    child: widget.child,
+                  ),
+                )),
                 SizedBox(width: 18 * scaling),
                 TweenAnimationBuilder(
                     tween: _expanded
@@ -255,8 +262,7 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
                     builder: (context, value, child) {
                       return Transform.rotate(
                         angle: value * pi,
-                        child: AnimatedIconTheme(
-                          duration: kDefaultDuration,
+                        child: IconTheme(
                           data: IconThemeData(
                             color: theme.colorScheme.mutedForeground,
                           ),

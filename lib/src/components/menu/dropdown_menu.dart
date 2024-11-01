@@ -1,6 +1,6 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-void showDropdown({
+OverlayCompleter<T?> showDropdown<T>({
   required BuildContext context,
   required WidgetBuilder builder,
   Offset? position,
@@ -28,7 +28,7 @@ void showDropdown({
   final scaling = theme.scaling;
   final GlobalKey key = GlobalKey();
   final overlayManager = OverlayManager.of(context);
-  overlayManager.showMenu(
+  return overlayManager.showMenu<T>(
     context: context,
     alignment: Alignment.topCenter,
     offset: offset ?? (const Offset(0, 4) * scaling),

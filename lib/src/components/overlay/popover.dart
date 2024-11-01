@@ -719,7 +719,7 @@ class PopoverController extends ChangeNotifier {
     AlignmentGeometry? anchorAlignment,
     PopoverConstraint widthConstraint = PopoverConstraint.flexible,
     PopoverConstraint heightConstraint = PopoverConstraint.flexible,
-    bool modal = false,
+    bool modal = true,
     bool closeOthers = true,
     Offset? offset,
     GlobalKey<OverlayHandlerStateMixin>? key,

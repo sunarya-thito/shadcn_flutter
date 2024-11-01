@@ -533,6 +533,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     final animation = data?.state._controlledAnimation;
     final theme = Theme.of(context);
     var surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
+    var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
     var borderRadius = widget.borderRadius ?? getBorderRadius(theme.radiusXxl);
     Widget container = Container(
       width: widget.expands ? expandingWidth : null,
@@ -559,6 +560,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
         barrierColor = barrierColor.scaleAlpha(0.75);
       }
       container = ModalContainer(
+        surfaceClip: ModalContainer.shouldClipSurface(surfaceOpacity),
         borderRadius: borderRadius,
         barrierColor: barrierColor,
         fadeAnimation: animation,

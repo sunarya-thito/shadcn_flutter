@@ -150,9 +150,9 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
       alignment: widget.popoverAlignment ?? Alignment.topLeft,
       anchorAlignment: widget.popoverAnchorAlignment ?? Alignment.bottomLeft,
       overlayBarrier: OverlayBarrier(
-        padding: const EdgeInsets.symmetric(vertical: 8) * scaling,
         borderRadius: BorderRadius.circular(theme.radiusLg),
       ),
+      modal: true,
       offset: Offset(0, 8 * scaling),
       builder: (context) {
         return _ObjectFormFieldPopup<T>(

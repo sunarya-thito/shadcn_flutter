@@ -154,7 +154,7 @@ class Button extends StatefulWidget {
   final AbstractButtonStyle style;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -189,7 +189,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -225,7 +224,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -261,7 +259,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -297,7 +294,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -333,7 +329,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -369,7 +364,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -405,7 +399,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -441,7 +434,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -477,7 +469,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -509,23 +500,59 @@ class ButtonState<T extends Button> extends State<T> {
     return isMobile(platform);
   }
 
+  AbstractButtonStyle? _style;
+  ButtonStyleOverrideData? _overrideData;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var style = widget.style;
+    var overrideData = Data.maybeOf<ButtonStyleOverrideData>(context);
+    if (overrideData != _overrideData) {
+      _overrideData = overrideData;
+      if (overrideData != null) {
+        style = style.copyWith(
+          decoration: overrideData.decoration,
+          mouseCursor: overrideData.mouseCursor,
+          padding: overrideData.padding,
+          textStyle: overrideData.textStyle,
+          iconTheme: overrideData.iconTheme,
+          margin: overrideData.margin,
+        );
+      }
+    }
+    _style = style;
+  }
+
+  EdgeInsetsGeometry _resolveMargin(Set<WidgetState> states) {
+    return _style!.margin(context, states);
+  }
+
+  Decoration _resolveDecoration(Set<WidgetState> states) {
+    return _style!.decoration(context, states);
+  }
+
+  MouseCursor _resolveMouseCursor(Set<WidgetState> states) {
+    return _style!.mouseCursor(context, states);
+  }
+
+  EdgeInsetsGeometry _resolvePadding(Set<WidgetState> states) {
+    return _style!.padding(context, states);
+  }
+
+  TextStyle _resolveTextStyle(Set<WidgetState> states) {
+    return _style!.textStyle(context, states);
+  }
+
+  IconThemeData _resolveIconTheme(Set<WidgetState> states) {
+    return _style!.iconTheme(context, states);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     bool enableFeedback = widget.enableFeedback ?? _shouldEnableFeedback;
-    var style = widget.style;
-    var overrideData = Data.maybeOf<ButtonStyleOverrideData>(context);
-    if (overrideData != null) {
-      style = style.overrideWith(
-        decoration: overrideData.decoration,
-        mouseCursor: overrideData.mouseCursor,
-        padding: overrideData.padding,
-        textStyle: overrideData.textStyle,
-        iconTheme: overrideData.iconTheme,
-        margin: overrideData.margin,
-      );
-    }
     return Clickable(
       disableFocusOutline: widget.disableFocusOutline,
       statesController: widget.statesController,
@@ -537,24 +564,31 @@ class ButtonState<T extends Button> extends State<T> {
       onFocus: widget.onFocus,
       disableHoverEffect: widget.disableHoverEffect,
       enableFeedback: enableFeedback,
-      margin: WidgetStateProperty.resolveWith((states) {
-        return style.margin(context, states);
-      }),
-      decoration: WidgetStateProperty.resolveWith((states) {
-        return style.decoration(context, states);
-      }),
-      mouseCursor: WidgetStateProperty.resolveWith((states) {
-        return style.mouseCursor(context, states);
-      }),
-      padding: WidgetStateProperty.resolveWith((states) {
-        return style.padding(context, states);
-      }),
-      textStyle: WidgetStateProperty.resolveWith((states) {
-        return style.textStyle(context, states);
-      }),
-      iconTheme: WidgetStateProperty.resolveWith((states) {
-        return style.iconTheme(context, states);
-      }),
+      // margin: WidgetStateProperty.resolveWith((states) {
+      //   return style.margin(context, states);
+      // }),
+      // decoration: WidgetStateProperty.resolveWith((states) {
+      //   return style.decoration(context, states);
+      // }),
+      // mouseCursor: WidgetStateProperty.resolveWith((states) {
+      //   return style.mouseCursor(context, states);
+      // }),
+      // padding: WidgetStateProperty.resolveWith((states) {
+      //   return style.padding(context, states);
+      // }),
+      // textStyle: WidgetStateProperty.resolveWith((states) {
+      //   return style.textStyle(context, states);
+      // }),
+      // iconTheme: WidgetStateProperty.resolveWith((states) {
+      //   return style.iconTheme(context, states);
+      // }),
+      margin: WidgetStateProperty.resolveWith(_resolveMargin),
+      decoration: WidgetStateProperty.resolveWith(_resolveDecoration),
+      mouseCursor: WidgetStateProperty.resolveWith(_resolveMouseCursor),
+      padding: WidgetStateProperty.resolveWith(_resolvePadding),
+      textStyle: WidgetStateProperty.resolveWith(_resolveTextStyle),
+      iconTheme: WidgetStateProperty.resolveWith(_resolveIconTheme),
+
       transform: enableFeedback
           ? WidgetStateProperty.resolveWith((states) {
               if (states.contains(WidgetState.pressed)) {
@@ -566,49 +600,34 @@ class ButtonState<T extends Button> extends State<T> {
           : null,
       onPressed: widget.onPressed,
       child: widget.leading == null && widget.trailing == null
-          ? IntrinsicWidth(
-              child: IntrinsicHeight(
-                child: Align(
-                  alignment: widget.alignment ?? Alignment.center,
-                  child: UnderlineInterceptor(
-                    child: widget.child,
-                  ),
-                ),
-              ),
+          ? Align(
+              heightFactor: 1,
+              widthFactor: 1,
+              alignment: widget.alignment ?? Alignment.center,
+              child: widget.child,
             )
           : IntrinsicWidth(
               child: IntrinsicHeight(
-                  child: !widget.trailingExpanded
-                      ? Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            if (widget.leading != null) widget.leading!,
-                            Expanded(
-                              child: Align(
-                                alignment: widget.alignment ??
-                                    AlignmentDirectional.centerStart,
-                                child:
-                                    UnderlineInterceptor(child: widget.child),
-                              ),
-                            ),
-                            if (widget.trailing != null) widget.trailing!,
-                          ].joinSeparator(SizedBox(width: 8 * scaling)),
-                        )
-                      : Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            if (widget.leading != null) widget.leading!,
-                            Align(
-                              alignment: widget.alignment ??
-                                  AlignmentDirectional.centerStart,
-                              child: UnderlineInterceptor(child: widget.child),
-                            ),
-                            if (widget.trailing != null)
-                              Flexible(child: widget.trailing!),
-                          ].joinSeparator(SizedBox(width: 8 * scaling)),
-                        )),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (widget.leading != null) widget.leading!,
+                    if (widget.leading != null) Gap(8 * scaling),
+                    Expanded(
+                      child: Align(
+                        widthFactor: 1,
+                        heightFactor: 1,
+                        alignment: widget.alignment ??
+                            AlignmentDirectional.centerStart,
+                        child: widget.child,
+                      ),
+                    ),
+                    if (widget.trailing != null) Gap(8 * scaling),
+                    if (widget.trailing != null) widget.trailing!,
+                  ],
+                ),
+              ),
             ),
     );
   }
@@ -1046,6 +1065,30 @@ class ButtonVariance implements AbstractButtonStyle {
     required this.iconTheme,
     required this.margin,
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ButtonVariance &&
+        other.decoration == decoration &&
+        other.mouseCursor == mouseCursor &&
+        other.padding == padding &&
+        other.textStyle == textStyle &&
+        other.iconTheme == iconTheme &&
+        other.margin == margin;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+        decoration, mouseCursor, padding, textStyle, iconTheme, margin);
+  }
+
+  @override
+  String toString() {
+    return 'ButtonVariance(decoration: $decoration, mouseCursor: $mouseCursor, padding: $padding, textStyle: $textStyle, iconTheme: $iconTheme, margin: $margin)';
+  }
 }
 
 class ButtonStylePropertyAll<T> {
@@ -1056,6 +1099,21 @@ class ButtonStylePropertyAll<T> {
   T call(BuildContext context, Set<WidgetState> states, T value) {
     return this.value;
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ButtonStylePropertyAll<T> && other.value == value;
+  }
+
+  @override
+  int get hashCode {
+    return value.hashCode;
+  }
+
+  @override
+  String toString() => 'ButtonStylePropertyAll(value: $value)';
 }
 
 extension ButtonStyleExtension on AbstractButtonStyle {
@@ -1067,6 +1125,14 @@ extension ButtonStyleExtension on AbstractButtonStyle {
     ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
     ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
   }) {
+    if (decoration == null &&
+        mouseCursor == null &&
+        padding == null &&
+        textStyle == null &&
+        iconTheme == null &&
+        margin == null) {
+      return this;
+    }
     if (this is _CopyWithButtonStyle) {
       var copy = this as _CopyWithButtonStyle;
       return _CopyWithButtonStyle(
@@ -1080,25 +1146,6 @@ extension ButtonStyleExtension on AbstractButtonStyle {
       );
     }
     return _CopyWithButtonStyle(
-      this,
-      decoration,
-      mouseCursor,
-      padding,
-      textStyle,
-      iconTheme,
-      margin,
-    );
-  }
-
-  AbstractButtonStyle overrideWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
-  }) {
-    return _OverrideWithButtonStyle(
       this,
       decoration,
       mouseCursor,
@@ -1137,9 +1184,11 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
     if (_iconTheme == null) {
       return _delegate.iconTheme;
     }
-    return (context, states) {
-      return _iconTheme(context, states, _delegate.iconTheme(context, states));
-    };
+    return _buildIconTheme;
+  }
+
+  IconThemeData _buildIconTheme(BuildContext context, Set<WidgetState> states) {
+    return _iconTheme!(context, states, _delegate.iconTheme(context, states));
   }
 
   @override
@@ -1147,9 +1196,11 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
     if (_textStyle == null) {
       return _delegate.textStyle;
     }
-    return (context, states) {
-      return _textStyle(context, states, _delegate.textStyle(context, states));
-    };
+    return _buildTextStyle;
+  }
+
+  TextStyle _buildTextStyle(BuildContext context, Set<WidgetState> states) {
+    return _textStyle!(context, states, _delegate.textStyle(context, states));
   }
 
   @override
@@ -1157,9 +1208,12 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
     if (_padding == null) {
       return _delegate.padding;
     }
-    return (context, states) {
-      return _padding(context, states, _delegate.padding(context, states));
-    };
+    return _buildPadding;
+  }
+
+  EdgeInsetsGeometry _buildPadding(
+      BuildContext context, Set<WidgetState> states) {
+    return _padding!(context, states, _delegate.padding(context, states));
   }
 
   @override
@@ -1167,10 +1221,12 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
     if (_mouseCursor == null) {
       return _delegate.mouseCursor;
     }
-    return (context, states) {
-      return _mouseCursor(
-          context, states, _delegate.mouseCursor(context, states));
-    };
+    return _buildMouseCursor;
+  }
+
+  MouseCursor _buildMouseCursor(BuildContext context, Set<WidgetState> states) {
+    return _mouseCursor!(
+        context, states, _delegate.mouseCursor(context, states));
   }
 
   @override
@@ -1178,10 +1234,11 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
     if (_decoration == null) {
       return _delegate.decoration;
     }
-    return (context, states) {
-      return _decoration(
-          context, states, _delegate.decoration(context, states));
-    };
+    return _buildDecoration;
+  }
+
+  Decoration _buildDecoration(BuildContext context, Set<WidgetState> states) {
+    return _decoration!(context, states, _delegate.decoration(context, states));
   }
 
   @override
@@ -1189,93 +1246,37 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
     if (_margin == null) {
       return _delegate.margin;
     }
-    return (context, states) {
-      var edgeInsetsGeometry =
-          _margin(context, states, _delegate.margin(context, states));
-      return edgeInsetsGeometry;
-    };
+    return _buildMargin;
   }
-}
 
-class _OverrideWithButtonStyle implements AbstractButtonStyle {
-  final AbstractButtonStyle _delegate;
-  final ButtonStatePropertyDelegate<Decoration>? _decoration;
-  final ButtonStatePropertyDelegate<MouseCursor>? _mouseCursor;
-  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? _padding;
-  final ButtonStatePropertyDelegate<TextStyle>? _textStyle;
-  final ButtonStatePropertyDelegate<IconThemeData>? _iconTheme;
-  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? _margin;
-
-  const _OverrideWithButtonStyle(
-    this._delegate,
-    this._decoration,
-    this._mouseCursor,
-    this._padding,
-    this._textStyle,
-    this._iconTheme,
-    this._margin,
-  );
-
-  @override
-  ButtonStateProperty<IconThemeData> get iconTheme {
-    return (context, states) {
-      if (_iconTheme == null) {
-        return _delegate.iconTheme(context, states);
-      }
-      return _iconTheme(context, states, _delegate.iconTheme(context, states));
-    };
+  EdgeInsetsGeometry _buildMargin(
+      BuildContext context, Set<WidgetState> states) {
+    return _margin!(context, states, _delegate.margin(context, states));
   }
 
   @override
-  ButtonStateProperty<TextStyle> get textStyle {
-    return (context, states) {
-      if (_textStyle == null) {
-        return _delegate.textStyle(context, states);
-      }
-      return _textStyle(context, states, _delegate.textStyle(context, states));
-    };
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is _CopyWithButtonStyle &&
+        other._delegate == _delegate &&
+        other._decoration == _decoration &&
+        other._mouseCursor == _mouseCursor &&
+        other._padding == _padding &&
+        other._textStyle == _textStyle &&
+        other._iconTheme == _iconTheme &&
+        other._margin == _margin;
   }
 
   @override
-  ButtonStateProperty<EdgeInsetsGeometry> get padding {
-    return (context, states) {
-      if (_padding == null) {
-        return _delegate.padding(context, states);
-      }
-      return _padding(context, states, _delegate.padding(context, states));
-    };
+  int get hashCode {
+    return Object.hash(_delegate, _decoration, _mouseCursor, _padding,
+        _textStyle, _iconTheme, _margin);
   }
 
   @override
-  ButtonStateProperty<MouseCursor> get mouseCursor {
-    return (context, states) {
-      if (_mouseCursor == null) {
-        return _delegate.mouseCursor(context, states);
-      }
-      return _mouseCursor(
-          context, states, _delegate.mouseCursor(context, states));
-    };
-  }
-
-  @override
-  ButtonStateProperty<Decoration> get decoration {
-    return (context, states) {
-      if (_decoration == null) {
-        return _delegate.decoration(context, states);
-      }
-      return _decoration(
-          context, states, _delegate.decoration(context, states));
-    };
-  }
-
-  @override
-  ButtonStateProperty<EdgeInsetsGeometry> get margin {
-    return (context, states) {
-      if (_margin == null) {
-        return _delegate.margin(context, states);
-      }
-      return _margin(context, states, _delegate.margin(context, states));
-    };
+  String toString() {
+    return '_CopyWithButtonStyle(_delegate: $_delegate, _decoration: $_decoration, _mouseCursor: $_mouseCursor, _padding: $_padding, _textStyle: $_textStyle, _iconTheme: $_iconTheme, _margin: $_margin)';
   }
 }
 
@@ -1694,7 +1695,6 @@ class PrimaryButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -1727,7 +1727,6 @@ class PrimaryButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -1759,7 +1758,6 @@ class PrimaryButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -1795,7 +1793,7 @@ class SecondaryButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -1828,7 +1826,6 @@ class SecondaryButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -1860,7 +1857,6 @@ class SecondaryButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -1896,7 +1892,7 @@ class OutlineButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -1929,7 +1925,6 @@ class OutlineButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -1961,7 +1956,6 @@ class OutlineButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -1997,7 +1991,7 @@ class GhostButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -2030,7 +2024,6 @@ class GhostButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2062,7 +2055,6 @@ class GhostButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -2098,7 +2090,7 @@ class LinkButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -2131,7 +2123,6 @@ class LinkButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2163,7 +2154,6 @@ class LinkButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -2199,7 +2189,6 @@ class TextButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -2232,7 +2221,6 @@ class TextButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2281,7 +2269,7 @@ class DestructiveButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -2314,7 +2302,6 @@ class DestructiveButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2347,7 +2334,6 @@ class DestructiveButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -2383,7 +2369,7 @@ class TabButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -2416,7 +2402,6 @@ class TabButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2448,7 +2433,6 @@ class TabButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -2484,7 +2468,6 @@ class IconButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -2519,7 +2502,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2551,7 +2533,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2586,7 +2567,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2621,7 +2601,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2656,7 +2635,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2691,7 +2669,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2726,7 +2703,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2761,7 +2737,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2801,7 +2776,6 @@ class IconButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,

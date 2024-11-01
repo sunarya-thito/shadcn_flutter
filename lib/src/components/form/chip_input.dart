@@ -20,7 +20,7 @@ class ChipInput<T> extends StatefulWidget {
   final ChipWidgetBuilder<T>? suggestionBuilder;
   final bool useChips;
   final TextInputAction? textInputAction;
-  final String? hintText;
+  final Widget? placeholder;
   final Widget Function(BuildContext, T)? suggestionLeadingBuilder;
   final Widget Function(BuildContext, T)? suggestionTrailingBuilder;
   final Widget? inputTrailingWidget;
@@ -43,7 +43,7 @@ class ChipInput<T> extends StatefulWidget {
     this.useChips = true,
     this.suggestionBuilder,
     this.textInputAction,
-    this.hintText,
+    this.placeholder,
     this.suggestionLeadingBuilder,
     this.suggestionTrailingBuilder,
     this.inputTrailingWidget,
@@ -179,9 +179,8 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
                   children: [
                     for (int i = 0; i < _suggestions.value.length; i++)
                       SelectedButton(
-                        style: const ButtonStyle.menubar(),
-                        selectedStyle: const ButtonStyle.secondary(
-                            density: ButtonDensity.dense),
+                        style: const ButtonStyle.ghost(),
+                        selectedStyle: const ButtonStyle.secondary(),
                         value: i == _selectedSuggestions.value,
                         onChanged: (value) {
                           if (value) {
@@ -321,8 +320,8 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
                           _chipBuilder(i),
                       ],
                     ).withPadding(
-                      left: theme.scaling * 4,
-                      right: theme.scaling * 4,
+                      left: theme.scaling * 6,
+                      right: theme.scaling * 6,
                       bottom: theme.scaling * 4,
                     ),
                   ],
@@ -353,7 +352,9 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
                             _controller.text,
                           ).base(),
                       ],
-                    ).withPadding(all: theme.scaling * 4),
+                    ).withPadding(
+                        horizontal: theme.scaling * 6,
+                        vertical: theme.scaling * 4),
                   ],
                 );
               }
@@ -388,7 +389,7 @@ class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier {
             textInputAction: widget.textInputAction,
             border: false,
             maxLines: 1,
-            placeholder: widget.hintText,
+            placeholder: widget.placeholder,
             onSubmitted: _handleSubmitted,
             controller: _controller,
             undoController: widget.undoHistoryController,
@@ -410,22 +411,6 @@ class NextSuggestionIntent extends Intent {
 class PreviousSuggestionIntent extends Intent {
   const PreviousSuggestionIntent();
 }
-
-/*
- SelectedButton(
-                            style: ButtonStyle.ghost(),
-                            selectedStyle: ButtonStyle.secondary(),
-                            value: i == _selectedSuggestions.value,
-                            onChanged: (value) {
-                              if (value) {
-                                widget.onSuggestionChoosen?.call(i);
-                              }
-                            },
-                            child: widget.suggestionBuilder
-                                    ?.call(context, _suggestions.value[i]) ??
-                                Text(_suggestions.value[i].toString()),
-                          )
- */
 
 class _ChipSuggestionItem extends StatefulWidget {
   final Widget suggestion;
