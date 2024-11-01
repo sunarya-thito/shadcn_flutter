@@ -262,8 +262,7 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
                     builder: (context, value, child) {
                       return Transform.rotate(
                         angle: value * pi,
-                        child: AnimatedIconTheme(
-                          duration: kDefaultDuration,
+                        child: IconTheme(
                           data: IconThemeData(
                             color: theme.colorScheme.mutedForeground,
                           ),
