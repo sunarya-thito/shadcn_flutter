@@ -534,8 +534,7 @@ class ShadcnLayer extends StatelessWidget {
                 enabled: enableScrollInterception,
                 child: ShadcnSkeletonizerConfigLayer(
                   theme: theme,
-                  child: mergeAnimatedTextStyle(
-                    duration: kDefaultDuration,
+                  child: DefaultTextStyle.merge(
                     style: theme.typography.base.copyWith(
                       color: theme.colorScheme.foreground,
                     ),
