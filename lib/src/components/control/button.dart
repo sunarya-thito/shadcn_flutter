@@ -521,6 +521,26 @@ class ButtonState<T extends Button> extends State<T> {
     _style = style;
   }
 
+  @override
+  void didUpdateWidget(T oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.style != oldWidget.style) {
+      var style = widget.style;
+      var overrideData = _overrideData;
+      if (overrideData != null) {
+        style = style.copyWith(
+          decoration: overrideData.decoration,
+          mouseCursor: overrideData.mouseCursor,
+          padding: overrideData.padding,
+          textStyle: overrideData.textStyle,
+          iconTheme: overrideData.iconTheme,
+          margin: overrideData.margin,
+        );
+      }
+      _style = style;
+    }
+  }
+
   EdgeInsetsGeometry _resolveMargin(Set<WidgetState> states) {
     return _style!.margin(context, states);
   }
@@ -561,31 +581,12 @@ class ButtonState<T extends Button> extends State<T> {
       onFocus: widget.onFocus,
       disableHoverEffect: widget.disableHoverEffect,
       enableFeedback: enableFeedback,
-      // margin: WidgetStateProperty.resolveWith((states) {
-      //   return style.margin(context, states);
-      // }),
-      // decoration: WidgetStateProperty.resolveWith((states) {
-      //   return style.decoration(context, states);
-      // }),
-      // mouseCursor: WidgetStateProperty.resolveWith((states) {
-      //   return style.mouseCursor(context, states);
-      // }),
-      // padding: WidgetStateProperty.resolveWith((states) {
-      //   return style.padding(context, states);
-      // }),
-      // textStyle: WidgetStateProperty.resolveWith((states) {
-      //   return style.textStyle(context, states);
-      // }),
-      // iconTheme: WidgetStateProperty.resolveWith((states) {
-      //   return style.iconTheme(context, states);
-      // }),
       margin: WidgetStateProperty.resolveWith(_resolveMargin),
       decoration: WidgetStateProperty.resolveWith(_resolveDecoration),
       mouseCursor: WidgetStateProperty.resolveWith(_resolveMouseCursor),
       padding: WidgetStateProperty.resolveWith(_resolvePadding),
       textStyle: WidgetStateProperty.resolveWith(_resolveTextStyle),
       iconTheme: WidgetStateProperty.resolveWith(_resolveIconTheme),
-
       transform: enableFeedback
           ? WidgetStateProperty.resolveWith((states) {
               if (states.contains(WidgetState.pressed)) {
@@ -834,30 +835,32 @@ class ButtonStyle implements AbstractButtonStyle {
   @override
   ButtonStateProperty<Decoration> get decoration {
     if (shape == ButtonShape.circle) {
-      return (context, states) {
-        var decoration = variance.decoration(context, states);
-        if (decoration is BoxDecoration) {
-          return BoxDecoration(
-            color: decoration.color,
-            image: decoration.image,
-            border: decoration.border,
-            borderRadius: null,
-            boxShadow: decoration.boxShadow,
-            gradient: decoration.gradient,
-            shape: BoxShape.circle,
-            backgroundBlendMode: decoration.backgroundBlendMode,
-          );
-        } else if (decoration is ShapeDecoration) {
-          return decoration.copyWith(
-            shape: shape == ButtonShape.circle ? const CircleBorder() : null,
-          );
-        } else {
-          throw Exception(
-              'Unsupported decoration type ${decoration.runtimeType}');
-        }
-      };
+      return _resolveCircleDecoration;
     }
     return variance.decoration;
+  }
+
+  Decoration _resolveCircleDecoration(
+      BuildContext context, Set<WidgetState> states) {
+    var decoration = variance.decoration(context, states);
+    if (decoration is BoxDecoration) {
+      return BoxDecoration(
+        color: decoration.color,
+        image: decoration.image,
+        border: decoration.border,
+        borderRadius: null,
+        boxShadow: decoration.boxShadow,
+        gradient: decoration.gradient,
+        shape: BoxShape.circle,
+        backgroundBlendMode: decoration.backgroundBlendMode,
+      );
+    } else if (decoration is ShapeDecoration) {
+      return decoration.copyWith(
+        shape: shape == ButtonShape.circle ? const CircleBorder() : null,
+      );
+    } else {
+      throw Exception('Unsupported decoration type ${decoration.runtimeType}');
+    }
   }
 
   @override
@@ -870,11 +873,14 @@ class ButtonStyle implements AbstractButtonStyle {
     if (size == ButtonSize.normal && density == ButtonDensity.normal) {
       return variance.padding;
     }
-    return (context, states) {
-      return density.modifier(
-          variance.padding(context, states).optionallyResolve(context) *
-              size.scale);
-    };
+    return _resolvePadding;
+  }
+
+  EdgeInsetsGeometry _resolvePadding(
+      BuildContext context, Set<WidgetState> states) {
+    return density.modifier(
+        variance.padding(context, states).optionallyResolve(context) *
+            size.scale);
   }
 
   @override
@@ -882,16 +888,18 @@ class ButtonStyle implements AbstractButtonStyle {
     if (size == ButtonSize.normal) {
       return variance.textStyle;
     }
-    return (context, states) {
-      var fontSize = variance.textStyle(context, states).fontSize;
-      if (fontSize == null) {
-        final textStyle = DefaultTextStyle.of(context).style;
-        fontSize = textStyle.fontSize ?? 14;
-      }
-      return variance.textStyle(context, states).copyWith(
-            fontSize: fontSize * size.scale,
-          );
-    };
+    return _resolveTextStyle;
+  }
+
+  TextStyle _resolveTextStyle(BuildContext context, Set<WidgetState> states) {
+    var fontSize = variance.textStyle(context, states).fontSize;
+    if (fontSize == null) {
+      final textStyle = DefaultTextStyle.of(context).style;
+      fontSize = textStyle.fontSize ?? 14;
+    }
+    return variance.textStyle(context, states).copyWith(
+          fontSize: fontSize * size.scale,
+        );
   }
 
   @override
@@ -899,20 +907,21 @@ class ButtonStyle implements AbstractButtonStyle {
     if (size == ButtonSize.normal) {
       return variance.iconTheme;
     }
-    return (context, states) {
-      var iconSize = variance.iconTheme(context, states).size;
-      iconSize ??= IconTheme.of(context).size ?? 24;
-      return variance.iconTheme(context, states).copyWith(
-            size: iconSize * size.scale,
-          );
-    };
+    return _resolveIconTheme;
+  }
+
+  IconThemeData _resolveIconTheme(
+      BuildContext context, Set<WidgetState> states) {
+    var iconSize = variance.iconTheme(context, states).size;
+    iconSize ??= IconTheme.of(context).size ?? 24;
+    return variance.iconTheme(context, states).copyWith(
+          size: iconSize * size.scale,
+        );
   }
 
   @override
   ButtonStateProperty<EdgeInsetsGeometry> get margin {
-    return (context, states) {
-      return variance.margin(context, states);
-    };
+    return variance.margin;
   }
 }
 
