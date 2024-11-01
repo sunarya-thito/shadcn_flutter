@@ -69,7 +69,7 @@ class _SheetExample1State extends State<SheetExample1> {
                       const NotEmptyValidator() & const LengthValidator(min: 4),
                   child: const TextField(
                     initialValue: 'Thito Yalasatria Sunarya',
-                    placeholder: 'Your fullname',
+                    placeholder: Text('Your fullname'),
                   ),
                 ),
                 FormField<String>(
@@ -79,7 +79,7 @@ class _SheetExample1State extends State<SheetExample1> {
                       const NotEmptyValidator() & const LengthValidator(min: 4),
                   child: const TextField(
                     initialValue: '@sunarya-thito',
-                    placeholder: 'Your username',
+                    placeholder: Text('Your username'),
                   ),
                 ),
               ],
