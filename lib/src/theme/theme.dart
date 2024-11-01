@@ -101,6 +101,7 @@ class ThemeData {
     this.surfaceBlur,
   }) : _platform = platform;
 
+  /// The current platform.
   TargetPlatform get platform => _platform ?? defaultTargetPlatform;
 
   /// At normal radius, the scaled radius is 24
@@ -174,6 +175,38 @@ class ThemeData {
       surfaceOpacity: lerpDouble(a.surfaceOpacity, b.surfaceOpacity, t),
       surfaceBlur: lerpDouble(a.surfaceBlur, b.surfaceBlur, t),
     );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ThemeData &&
+        other.colorScheme == colorScheme &&
+        other.typography == typography &&
+        other.radius == radius &&
+        other.scaling == scaling &&
+        other.iconTheme == iconTheme &&
+        other.surfaceOpacity == surfaceOpacity &&
+        other.surfaceBlur == surfaceBlur;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      colorScheme,
+      typography,
+      radius,
+      scaling,
+      iconTheme,
+      surfaceOpacity,
+      surfaceBlur,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ThemeData(colorScheme: $colorScheme, typography: $typography, radius: $radius, scaling: $scaling, iconTheme: $iconTheme, surfaceOpacity: $surfaceOpacity, surfaceBlur: $surfaceBlur)';
   }
 }
 
@@ -370,6 +403,46 @@ class IconThemeProperties {
       x3Large: IconThemeData.lerp(a.x3Large, b.x3Large, t),
       x4Large: IconThemeData.lerp(a.x4Large, b.x4Large, t),
     );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is IconThemeProperties &&
+        other.x4Small == x4Small &&
+        other.x3Small == x3Small &&
+        other.x2Small == x2Small &&
+        other.xSmall == xSmall &&
+        other.small == small &&
+        other.medium == medium &&
+        other.large == large &&
+        other.xLarge == xLarge &&
+        other.x2Large == x2Large &&
+        other.x3Large == x3Large &&
+        other.x4Large == x4Large;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      x4Small,
+      x3Small,
+      x2Small,
+      xSmall,
+      small,
+      medium,
+      large,
+      xLarge,
+      x2Large,
+      x3Large,
+      x4Large,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'IconThemeProperties(x4Small: $x4Small, x3Small: $x3Small, x2Small: $x2Small, xSmall: $xSmall, small: $small, medium: $medium, large: $large, xLarge: $xLarge, x2Large: $x2Large, x3Large: $x3Large, x4Large: $x4Large)';
   }
 }
 
