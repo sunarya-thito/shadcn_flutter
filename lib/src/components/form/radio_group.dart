@@ -238,12 +238,11 @@ class _RadioCardState<T> extends State<RadioCard<T>> with FormValueSupplier {
               borderRadius: theme.borderRadiusMd,
               padding: EdgeInsets.zero,
               clipBehavior: Clip.antiAlias,
+              duration: kDefaultDuration,
+              fillColor: _hovering
+                  ? theme.colorScheme.muted
+                  : theme.colorScheme.background,
               child: Container(
-                decoration: BoxDecoration(
-                  color: _hovering
-                      ? theme.colorScheme.muted
-                      : theme.colorScheme.background,
-                ),
                 padding: EdgeInsets.all(16 * theme.scaling),
                 child: AnimatedPadding(
                   duration: kDefaultDuration,

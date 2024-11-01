@@ -130,8 +130,7 @@ class _NavigationBarState extends State<NavigationBar>
           selectedIndex: widget.index,
           onSelected: _onSelected,
         ),
-        child: ShadcnAnimatedContainer(
-          duration: kDefaultDuration,
+        child: Container(
           color: widget.backgroundColor,
           padding: resolvedPadding,
           child: _wrapIntrinsic(
@@ -265,8 +264,7 @@ class _NavigationRailState extends State<NavigationRail>
       ),
       child: SurfaceBlur(
         surfaceBlur: widget.surfaceBlur,
-        child: ShadcnAnimatedContainer(
-          duration: kDefaultDuration,
+        child: Container(
           color: widget.backgroundColor ??
               (theme.colorScheme.background
                   .scaleAlpha(widget.surfaceOpacity ?? 1)),
@@ -370,11 +368,8 @@ class _NavigationSidebarState extends State<NavigationSidebar>
             widget.constraints ?? getDefaultConstraints(context, theme),
         child: SurfaceBlur(
           surfaceBlur: widget.surfaceBlur,
-          child: ShadcnAnimatedContainer(
-            duration: kDefaultDuration,
-            color: widget.backgroundColor ??
-                (theme.colorScheme.background
-                    .scaleAlpha(widget.surfaceOpacity ?? 1)),
+          child: Container(
+            color: widget.backgroundColor,
             child: ClipRect(
               child: CustomScrollView(
                 clipBehavior: Clip.none,
@@ -821,8 +816,7 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
               curve: Curves.easeInOut,
             );
           },
-          child: ShadcnAnimatedContainer(
-            duration: kDefaultDuration,
+          child: Container(
             alignment: alignment,
             padding: padding ?? EdgeInsets.symmetric(horizontal: 16 * scaling),
             // child: OverflowMarquee(child: child),

@@ -147,8 +147,7 @@ class ScaffoldState extends State<Scaffold> {
     final theme = Theme.of(context);
     final viewInsets = MediaQuery.viewInsetsOf(context);
     return DrawerOverlay(
-      child: ShadcnAnimatedContainer(
-        duration: kDefaultDuration,
+      child: Container(
         color: theme.colorScheme.background,
         child: _ScaffoldFlex(
           floatingHeader: widget.floatingHeader,

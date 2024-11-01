@@ -67,6 +67,7 @@ class OutlinedContainer extends StatefulWidget {
   final double? surfaceBlur;
   final double? width;
   final double? height;
+  final Duration? duration;
   const OutlinedContainer({
     super.key,
     required this.child,
@@ -82,6 +83,7 @@ class OutlinedContainer extends StatefulWidget {
     this.surfaceBlur,
     this.width,
     this.height,
+    this.duration,
   });
 
   @override
@@ -102,11 +104,11 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
     if (widget.surfaceOpacity != null) {
       backgroundColor = backgroundColor.scaleAlpha(widget.surfaceOpacity!);
     }
-    Widget childWidget = ShadcnAnimatedContainer(
+    Widget childWidget = AnimatedContainer(
+      duration: widget.duration ?? Duration.zero,
       key: _mainContainerKey,
       width: widget.width,
       height: widget.height,
-      duration: kDefaultDuration,
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border.all(
@@ -117,10 +119,8 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
         borderRadius: borderRadius,
         boxShadow: widget.boxShadow,
       ),
-      // padding: widget.padding,
-      // clipBehavior: widget.clipBehavior,
-      child: ShadcnAnimatedContainer(
-        duration: kDefaultDuration,
+      child: AnimatedContainer(
+        duration: widget.duration ?? Duration.zero,
         padding: widget.padding,
         clipBehavior: widget.clipBehavior,
         decoration: BoxDecoration(

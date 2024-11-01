@@ -161,7 +161,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return ShadcnAnimatedContainer(
+    return AnimatedContainer(
       duration: kDefaultDuration,
       constraints: BoxConstraints(
         minWidth: 20 * scaling,
@@ -498,8 +498,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       top: 0,
       bottom: 0,
       child: Center(
-        child: ShadcnAnimatedContainer(
-          duration: kDefaultDuration,
+        child: Container(
           height: 6 * scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.primary.scaleAlpha(0.2),
@@ -545,8 +544,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       top: 0,
       bottom: 0,
       child: Center(
-        child: ShadcnAnimatedContainer(
-          duration: kDefaultDuration,
+        child: Container(
           height: 6 * scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.primary,
@@ -567,8 +565,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       top: 0,
       bottom: 0,
       child: Center(
-        child: ShadcnAnimatedContainer(
-          duration: kDefaultDuration,
+        child: Container(
           height: 6 * scaling,
           decoration: BoxDecoration(
             color: theme.colorScheme.primary.scaleAlpha(0.2),
@@ -629,8 +626,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
             },
           ),
         },
-        child: ShadcnAnimatedContainer(
-          duration: kDefaultDuration,
+        child: Container(
           width: 16 * scaling,
           height: 16 * scaling,
           decoration: BoxDecoration(

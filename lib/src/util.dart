@@ -566,7 +566,9 @@ class _SeparatedFlexState extends State<SeparatedFlex> {
 
 extension FlexExtension on Flex {
   Widget gap(double gap) {
-    return separator(SizedBox(width: gap));
+    return separator(direction == Axis.vertical
+        ? SizedBox(height: gap)
+        : SizedBox(width: gap));
   }
 
   Widget separator(Widget separator) {
