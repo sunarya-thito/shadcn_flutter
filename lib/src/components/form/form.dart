@@ -83,7 +83,7 @@ class ConditionalValidator<T> extends Validator<T> {
 
   @override
   FutureOr<ValidationResult?> validate(
-      BuildContext context, T? value, FormValidationMode state) {
+      BuildContext context, T? value, FormValidationMode lifecycle) {
     var result = predicate(value);
     if (result is Future<bool>) {
       return result.then((value) {
@@ -113,6 +113,35 @@ class ConditionalValidator<T> extends Validator<T> {
 
   @override
   int get hashCode => Object.hash(predicate, message);
+}
+
+typedef ValidatorBuilderFunction<T> = FutureOr<ValidationResult?> Function(
+    T? value);
+
+class ValidatorBuilder<T> extends Validator<T> {
+  final ValidatorBuilderFunction<T> builder;
+  final List<FormKey> dependencies;
+
+  const ValidatorBuilder(this.builder, {this.dependencies = const []});
+
+  @override
+  FutureOr<ValidationResult?> validate(
+      BuildContext context, T? value, FormValidationMode lifecycle) {
+    return builder(value);
+  }
+
+  @override
+  bool shouldRevalidate(FormKey<dynamic> source) {
+    return dependencies.contains(source);
+  }
+
+  @override
+  operator ==(Object other) {
+    return other is ValidatorBuilder && other.builder == builder;
+  }
+
+  @override
+  int get hashCode => builder.hashCode;
 }
 
 class NotValidator<T> extends Validator<T> {
@@ -1394,12 +1423,11 @@ class FormField<T> extends StatelessWidget {
                     if (leadingLabel != null)
                       Gap(leadingGap ?? theme.scaling * 8),
                     Expanded(
-                      child: mergeAnimatedTextStyle(
+                      child: DefaultTextStyle.merge(
                         style: error != null
                             ? TextStyle(color: theme.colorScheme.destructive)
                             : null,
                         child: label.textSmall(),
-                        duration: kDefaultDuration,
                       ),
                     ),
                     if (trailingLabel != null)
@@ -1417,10 +1445,9 @@ class FormField<T> extends StatelessWidget {
               ],
               if (error is InvalidResult) ...[
                 Gap(theme.scaling * 8),
-                mergeAnimatedTextStyle(
+                DefaultTextStyle.merge(
                   style: TextStyle(color: theme.colorScheme.destructive),
                   child: Text(error.message).xSmall().medium(),
-                  duration: kDefaultDuration,
                 ),
               ],
             ],
@@ -1465,12 +1492,11 @@ class FormInline<T> extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      mergeAnimatedTextStyle(
+                      DefaultTextStyle.merge(
                         style: error != null
                             ? TextStyle(color: theme.colorScheme.destructive)
                             : null,
                         child: label.textSmall(),
-                        duration: kDefaultDuration,
                       ),
                       Gap(theme.scaling * 8),
                       Expanded(child: child!),
@@ -1483,10 +1509,9 @@ class FormInline<T> extends StatelessWidget {
                 ],
                 if (error is InvalidResult) ...[
                   const Gap(8),
-                  mergeAnimatedTextStyle(
+                  DefaultTextStyle.merge(
                     style: TextStyle(color: theme.colorScheme.destructive),
                     child: Text(error.message).xSmall().medium(),
-                    duration: kDefaultDuration,
                   ),
                 ],
               ],
@@ -1510,8 +1535,7 @@ class FormTableLayout extends StatelessWidget {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     var spacing = this.spacing ?? scaling * 16;
-    return mergeAnimatedTextStyle(
-      duration: kDefaultDuration,
+    return DefaultTextStyle.merge(
       style: TextStyle(color: Theme.of(context).colorScheme.foreground),
       child: widgets.Table(
         columnWidths: const {
@@ -1548,13 +1572,12 @@ class FormTableLayout extends StatelessWidget {
                             ],
                             if (error is InvalidResult) ...[
                               Gap(8 * scaling),
-                              mergeAnimatedTextStyle(
+                              DefaultTextStyle.merge(
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .destructive),
                                 child: Text(error.message).xSmall().medium(),
-                                duration: kDefaultDuration,
                               ),
                             ],
                           ],
