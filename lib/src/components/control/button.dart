@@ -569,6 +569,8 @@ class ButtonState<T extends Button> extends State<T> {
                 if (widget.leading != null) widget.leading!,
                 Flexible(
                   child: Align(
+                    widthFactor: 1,
+                    heightFactor: 1,
                     alignment:
                         widget.alignment ?? AlignmentDirectional.centerStart,
                     child: UnderlineInterceptor(child: widget.child),
