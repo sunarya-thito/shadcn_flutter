@@ -15,7 +15,7 @@ class SidebarSection extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         header.small().semiBold().withPadding(vertical: 4, horizontal: 8),
         const Gap(4),
@@ -130,13 +130,11 @@ class SidebarNav extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: const BoxConstraints(minWidth: 200),
-      child: IntrinsicWidth(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: join(children, const Gap(16)).toList(),
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: join(children, const Gap(16)).toList(),
       ),
     );
   }
