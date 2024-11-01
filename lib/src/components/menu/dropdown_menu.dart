@@ -16,7 +16,7 @@ OverlayCompleter<T?> showDropdown<T>({
   AlignmentGeometry? transitionAlignment,
   EdgeInsetsGeometry? margin,
   bool follow = true,
-  bool consumeOutsideTaps = true,
+  bool consumeOutsideTaps = false,
   ValueChanged<PopoverAnchorState>? onTickFollow,
   bool allowInvertHorizontal = true,
   bool allowInvertVertical = true,
