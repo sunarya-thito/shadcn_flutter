@@ -68,7 +68,9 @@ class PopoverExample1 extends StatelessWidget {
               ),
             );
           },
-        );
+        ).future.then((_) {
+          print('Popover closed');
+        });
       },
       child: const Text('Open popover'),
     );
