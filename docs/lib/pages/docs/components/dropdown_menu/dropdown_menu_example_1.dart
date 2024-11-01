@@ -65,7 +65,9 @@ class DropdownMenuExample1 extends StatelessWidget {
               ],
             );
           },
-        );
+        ).future.then((_) {
+          print('Closed');
+        });
       },
       child: const Text('Open'),
     );

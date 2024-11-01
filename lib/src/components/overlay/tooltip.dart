@@ -90,6 +90,7 @@ class _TooltipState extends State<Tooltip> {
         if (hovered) {
           _controller.show(
             context: context,
+            modal: false,
             builder: (context) {
               return widget.tooltip;
             },
@@ -148,6 +149,7 @@ class _InstantTooltipState extends State<InstantTooltip> {
         _controller.close(true);
         _controller.show(
           context: context,
+          modal: false,
           builder: widget.tooltipBuilder,
           alignment: widget.tooltipAlignment,
           anchorAlignment: widget.tooltipAnchorAlignment,
