@@ -113,10 +113,7 @@ class DocsNavigationButton extends StatelessWidget {
           children: [
             child.small(),
             if (trailing != null) const Gap(8),
-            if (trailing != null)
-              RevertUnderlineInterceptor(
-                child: trailing!,
-              ),
+            if (trailing != null) trailing!,
           ],
         ),
       ),
