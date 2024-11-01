@@ -95,6 +95,7 @@ export 'package:pixel_snap/widgets.dart'
 export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 
 export 'src/animation.dart';
+export 'src/collection.dart';
 export 'src/components/animation.dart';
 export 'src/components/chart/tracker.dart';
 export 'src/components/control/button.dart';
