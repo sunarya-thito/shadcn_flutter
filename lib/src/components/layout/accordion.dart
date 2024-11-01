@@ -244,8 +244,7 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
                 Expanded(
                     child: Align(
                   alignment: AlignmentDirectional.centerStart,
-                  child: mergeAnimatedTextStyle(
-                    duration: kDefaultDuration,
+                  child: DefaultTextStyle.merge(
                     style: TextStyle(
                       decoration: _hovering
                           ? TextDecoration.underline

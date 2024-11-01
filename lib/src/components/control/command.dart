@@ -36,11 +36,15 @@ Future<T?> showCommandDialog<T>({
     builder: (context) {
       final theme = Theme.of(context);
       final scaling = theme.scaling;
+      surfaceOpacity ??= theme.surfaceOpacity;
+      surfaceBlur ??= theme.surfaceBlur;
       return ConstrainedBox(
         constraints: constraints ??
             const BoxConstraints.tightFor(width: 510, height: 349) * scaling,
         child: ModalContainer(
           borderRadius: subtractByBorder(theme.borderRadiusXxl, 1 * scaling),
+          surfaceClip:
+              ModalContainer.shouldClipSurface(surfaceOpacity, surfaceBlur),
           child: Command(
             autofocus: autofocus,
             builder: builder,

@@ -460,8 +460,7 @@ class _ClickableState extends State<Clickable> {
                   },
                   mouseCursor: widget.mouseCursor?.resolve(_controller.value) ??
                       MouseCursor.defer,
-                  child: mergeAnimatedTextStyle(
-                    duration: kDefaultDuration,
+                  child: DefaultTextStyle.merge(
                     style: widget.textStyle?.resolve(_controller.value),
                     child: AnimatedIconTheme.merge(
                       duration: kDefaultDuration,
