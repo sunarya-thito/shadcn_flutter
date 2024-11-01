@@ -98,8 +98,7 @@ class DocsNavigationButton extends StatelessWidget {
       child: Button(
         onPressed: onPressed,
         alignment: AlignmentDirectional.centerStart,
-        trailing: trailing,
-        trailingExpanded: true,
+        // trailing: trailing,
         style: ButtonVariance.link.copyWith(
           padding: (context, states, value) {
             return const EdgeInsets.symmetric(vertical: 4, horizontal: 8);
@@ -110,7 +109,16 @@ class DocsNavigationButton extends StatelessWidget {
             );
           },
         ),
-        child: child.small(),
+        child: Row(
+          children: [
+            child.small(),
+            if (trailing != null) const Gap(8),
+            if (trailing != null)
+              RevertUnderlineInterceptor(
+                child: trailing!,
+              ),
+          ],
+        ),
       ),
     );
   }
