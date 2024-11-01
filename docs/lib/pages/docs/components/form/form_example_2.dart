@@ -52,6 +52,11 @@ class _FormExample2State extends State<FormExample2> {
                 FormField<String>(
                   key: _passwordKey,
                   label: const Text('Password'),
+                  trailingLabel: Button(
+                    style: const ButtonStyle.link(density: ButtonDensity.dense),
+                    child: const Text('Forgot Password?'),
+                    onPressed: () {},
+                  ),
                   validator: const LengthValidator(min: 8),
                   child: const TextField(
                     obscureText: true,
