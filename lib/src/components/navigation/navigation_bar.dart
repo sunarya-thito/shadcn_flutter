@@ -797,8 +797,7 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
   }
 
   Widget buildBox(BuildContext context) {
-    return mergeAnimatedTextStyle(
-      duration: kDefaultDuration,
+    return DefaultTextStyle.merge(
       textAlign: TextAlign.center,
       child: child.xSmall(),
     );

@@ -272,9 +272,8 @@ extension TextExtension on Widget {
     return Builder(
       builder: (context) {
         final themeData = Theme.of(context);
-        return mergeAnimatedTextStyle(
+        return DefaultTextStyle.merge(
           child: this,
-          duration: kDefaultDuration,
           style: TextStyle(
             color: themeData.colorScheme.mutedForeground,
           ),
@@ -287,9 +286,8 @@ extension TextExtension on Widget {
     return Builder(
       builder: (context) {
         final themeData = Theme.of(context);
-        return mergeAnimatedTextStyle(
+        return DefaultTextStyle.merge(
           child: this,
-          duration: kDefaultDuration,
           style: TextStyle(
             color: themeData.colorScheme.primaryForeground,
           ),
@@ -302,9 +300,8 @@ extension TextExtension on Widget {
     return Builder(
       builder: (context) {
         final themeData = Theme.of(context);
-        return mergeAnimatedTextStyle(
+        return DefaultTextStyle.merge(
           child: this,
-          duration: kDefaultDuration,
           style: TextStyle(
             color: themeData.colorScheme.secondaryForeground,
           ),
@@ -623,9 +620,8 @@ extension TextExtension on Widget {
     return Builder(
       builder: (context) {
         final themeData = Theme.of(context);
-        return mergeAnimatedTextStyle(
+        return DefaultTextStyle.merge(
           child: this,
-          duration: kDefaultDuration,
           style: TextStyle(
             color: themeData.colorScheme.foreground,
           ),
@@ -708,15 +704,17 @@ extension TextExtension on Widget {
             child: Builder(
               builder: (context) {
                 final buttonTextStyle = DefaultTextStyle.of(context);
-                return defaultTextStyle.wrap(
-                  context,
-                  mergeAnimatedTextStyle(
-                    child: child,
-                    style: TextStyle(
-                      decoration: buttonTextStyle.style.decoration,
-                    ),
-                    duration: kDefaultDuration,
+                return DefaultTextStyle(
+                  style: defaultTextStyle.style.copyWith(
+                    decoration: buttonTextStyle.style.decoration,
                   ),
+                  overflow: defaultTextStyle.overflow,
+                  maxLines: defaultTextStyle.maxLines,
+                  softWrap: defaultTextStyle.softWrap,
+                  textAlign: defaultTextStyle.textAlign,
+                  textHeightBehavior: defaultTextStyle.textHeightBehavior,
+                  textWidthBasis: defaultTextStyle.textWidthBasis,
+                  child: child,
                 );
               },
             ),
@@ -957,9 +955,8 @@ class WrappedText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return mergeAnimatedTextStyle(
+    return DefaultTextStyle.merge(
       child: child,
-      duration: kDefaultDuration,
       style: style?.call(context, theme),
       textAlign: textAlign?.call(context, theme),
       softWrap: softWrap?.call(context, theme),

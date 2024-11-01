@@ -44,9 +44,8 @@ class Card extends StatelessWidget {
       padding: padding ?? (EdgeInsets.all(16 * scaling)),
       surfaceOpacity: surfaceOpacity,
       surfaceBlur: surfaceBlur,
-      child: mergeAnimatedTextStyle(
+      child: DefaultTextStyle.merge(
         child: child,
-        duration: kDefaultDuration,
         style: TextStyle(
           color: theme.colorScheme.cardForeground,
         ),

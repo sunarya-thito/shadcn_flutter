@@ -119,8 +119,7 @@ class _AvatarState extends State<Avatar> {
         fit: BoxFit.fill,
         child: Padding(
           padding: EdgeInsets.all(theme.scaling * 8),
-          child: mergeAnimatedTextStyle(
-            duration: kDefaultDuration,
+          child: DefaultTextStyle.merge(
             child: Center(
               child: Text(
                 widget.initials,
@@ -449,7 +448,7 @@ class AvatarGroupClipper extends CustomClipper<Path> {
             prevAvatarSize + gap * 2,
             prevAvatarSize + gap * 2,
           ),
-          Radius.circular(borderRadius + gap),
+          Radius.circular(borderRadius + gap * 2),
         ),
       );
     } else {

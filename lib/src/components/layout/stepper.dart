@@ -792,8 +792,7 @@ class StepNumber extends StatelessWidget {
         builder: (context, child) {
           return properties.size.wrapper(
             context,
-            mergeAnimatedTextStyle(
-              duration: kDefaultDuration,
+            DefaultTextStyle.merge(
               style: TextStyle(
                 color: properties.state.value.stepStates[stepIndex] ==
                         StepState.failed
