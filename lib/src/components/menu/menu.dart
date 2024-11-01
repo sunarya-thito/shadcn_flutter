@@ -246,7 +246,7 @@ class MenuLabel extends StatelessWidget implements MenuItem {
                     child: leading!.iconSmall(),
                   ),
         trailing: trailing,
-        content: UnderlineInterceptor(child: child.semiBold()),
+        content: child.semiBold(),
         trailingAlignment: Alignment.center,
         leadingAlignment: Alignment.center,
         contentAlignment: menuGroupData.direction == Axis.vertical

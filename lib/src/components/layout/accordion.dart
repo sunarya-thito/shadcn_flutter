@@ -393,13 +393,19 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
             child: Row(
               children: [
                 Expanded(
-                  child: Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: UnderlineText(
-                        underline: _hovering, child: widget.child),
+                    child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: mergeAnimatedTextStyle(
+                    duration: kDefaultDuration,
+                    style: TextStyle(
+                      decoration: _hovering
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
+                    ),
+                    child: widget.child,
                   ),
-                ),
-                SizedBox(width: accTheme?.iconGap ?? 18 * scaling),
+                )),
+                SizedBox(width: 18 * scaling),
                 TweenAnimationBuilder(
                     tween: _expanded
                         ? Tween(begin: 1.0, end: 0)
