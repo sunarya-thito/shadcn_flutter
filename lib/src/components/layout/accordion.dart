@@ -200,10 +200,15 @@ class _AccordionItemState extends State<AccordionItem>
   _AccordionState? accordion;
   final ValueNotifier<bool> _expanded = ValueNotifier(false);
 
-  late AnimationController _controller;
-  late CurvedAnimation _easeInAnimation;
+  AnimationController? _controller;
+  CurvedAnimation? _easeInAnimation;
+  AccordionItemTheme? _theme;
 
-  bool _initialized = false;
+  @override
+  void initState() {
+    super.initState();
+    _expanded.value = widget.expanded;
+  }
 
   @override
   void didChangeDependencies() {
@@ -216,28 +221,26 @@ class _AccordionItemState extends State<AccordionItem>
       accordion = newAccordion;
     }
 
-    if (_initialized) return;
-
-    _initialized = true;
-
-    final theme = ComponentTheme.maybeOf<AccordionItemTheme>(context);
-
-    _expanded.value = widget.expanded;
-    _controller = AnimationController(
-      vsync: this,
-      duration: theme?.duration ?? const Duration(milliseconds: 200),
-      value: _expanded.value ? 1 : 0,
-    );
-    _easeInAnimation = CurvedAnimation(
-      parent: _controller,
-      curve: theme?.curve ?? Curves.easeIn,
-      reverseCurve: theme?.reverseCurve ?? Curves.easeOut,
-    );
+    final newTheme = ComponentTheme.maybeOf<AccordionItemTheme>(context);
+    if (newTheme != _theme) {
+      _controller!.dispose();
+      _theme = newTheme;
+      _controller = AnimationController(
+        vsync: this,
+        duration: _theme?.duration ?? const Duration(milliseconds: 200),
+        value: _expanded.value ? 1 : 0,
+      );
+      _easeInAnimation = CurvedAnimation(
+        parent: _controller!,
+        curve: _theme?.curve ?? Curves.easeIn,
+        reverseCurve: _theme?.reverseCurve ?? Curves.easeOut,
+      );
+    }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     accordion?._expanded.removeListener(_onExpandedChanged);
     super.dispose();
   }
@@ -254,12 +257,12 @@ class _AccordionItemState extends State<AccordionItem>
   }
 
   void _expand() {
-    _controller.forward();
+    _controller!.forward();
     _expanded.value = true;
   }
 
   void _collapse() {
-    _controller.reverse();
+    _controller!.reverse();
     _expanded.value = false;
   }
 
@@ -275,7 +278,6 @@ class _AccordionItemState extends State<AccordionItem>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    final accTheme = ComponentTheme.maybeOf<AccordionItemTheme>(context);
 
     return Data.inherit(
       data: this,
@@ -284,11 +286,11 @@ class _AccordionItemState extends State<AccordionItem>
           children: [
             widget.trigger,
             SizeTransition(
-              sizeFactor: _easeInAnimation,
+              sizeFactor: _easeInAnimation!,
               axisAlignment: -1,
               child: Padding(
                 padding: EdgeInsets.only(
-                  bottom: accTheme?.padding ?? 16 * scaling,
+                  bottom: _theme?.padding ?? 16 * scaling,
                 ),
                 child: widget.content,
               ).small().normal(),
