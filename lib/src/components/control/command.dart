@@ -174,11 +174,10 @@ class _CommandState extends State<Command> {
                             List<Widget> items = List.of(snapshot.data!);
                             if (snapshot.connectionState ==
                                 ConnectionState.active) {
-                              items.add(AnimatedIconTheme(
+                              items.add(IconTheme.merge(
                                 data: IconThemeData(
                                   color: theme.colorScheme.mutedForeground,
                                 ),
-                                duration: kDefaultDuration,
                                 child: const Center(
                                         child: CircularProgressIndicator())
                                     .withPadding(vertical: theme.scaling * 24),
@@ -318,20 +317,18 @@ class _CommandItemState extends State<CommandItem> {
           padding: EdgeInsets.symmetric(
               horizontal: themeData.scaling * 8,
               vertical: themeData.scaling * 6),
-          child: AnimatedIconTheme(
-            duration: kDefaultDuration,
+          child: IconTheme(
             data: themeData.iconTheme.small.copyWith(
               color: widget.onTap != null
                   ? themeData.colorScheme.accentForeground
                   : themeData.colorScheme.accentForeground.scaleAlpha(0.5),
             ),
-            child: AnimatedDefaultTextStyle(
+            child: DefaultTextStyle(
               style: TextStyle(
                 color: widget.onTap != null
                     ? themeData.colorScheme.accentForeground
                     : themeData.colorScheme.accentForeground.scaleAlpha(0.5),
               ),
-              duration: kDefaultDuration,
               child: Row(
                 children: [
                   if (widget.leading != null) widget.leading!,
