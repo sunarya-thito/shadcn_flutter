@@ -31,8 +31,7 @@ class Alert extends StatelessWidget {
         style: TextStyle(
           color: destructive2,
         ),
-        child: AnimatedIconTheme.merge(
-          duration: kDefaultDuration,
+        child: IconTheme.merge(
           data: IconThemeData(
             color: destructive2,
           ),
