@@ -151,7 +151,7 @@ class Button extends StatefulWidget {
   final AbstractButtonStyle style;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -186,7 +186,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -222,7 +221,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -258,7 +256,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -294,7 +291,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -330,7 +326,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -366,7 +361,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -402,7 +396,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -438,7 +431,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -474,7 +466,6 @@ class Button extends StatefulWidget {
     this.disableTransition = false,
     this.onFocus,
     this.onHover,
-    this.trailingExpanded = false,
     this.disableHoverEffect = false,
     this.enableFeedback,
     this.onTapDown,
@@ -563,49 +554,28 @@ class ButtonState<T extends Button> extends State<T> {
           : null,
       onPressed: widget.onPressed,
       child: widget.leading == null && widget.trailing == null
-          ? IntrinsicWidth(
-              child: IntrinsicHeight(
-                child: Align(
-                  alignment: widget.alignment ?? Alignment.center,
-                  child: UnderlineInterceptor(
-                    child: widget.child,
-                  ),
-                ),
+          ? Align(
+              heightFactor: 1,
+              widthFactor: 1,
+              alignment: widget.alignment ?? Alignment.center,
+              child: UnderlineInterceptor(
+                child: widget.child,
               ),
             )
-          : IntrinsicWidth(
-              child: IntrinsicHeight(
-                  child: !widget.trailingExpanded
-                      ? Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            if (widget.leading != null) widget.leading!,
-                            Expanded(
-                              child: Align(
-                                alignment: widget.alignment ??
-                                    AlignmentDirectional.centerStart,
-                                child:
-                                    UnderlineInterceptor(child: widget.child),
-                              ),
-                            ),
-                            if (widget.trailing != null) widget.trailing!,
-                          ].joinSeparator(SizedBox(width: 8 * scaling)),
-                        )
-                      : Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            if (widget.leading != null) widget.leading!,
-                            Align(
-                              alignment: widget.alignment ??
-                                  AlignmentDirectional.centerStart,
-                              child: UnderlineInterceptor(child: widget.child),
-                            ),
-                            if (widget.trailing != null)
-                              Flexible(child: widget.trailing!),
-                          ].joinSeparator(SizedBox(width: 8 * scaling)),
-                        )),
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (widget.leading != null) widget.leading!,
+                Flexible(
+                  child: Align(
+                    alignment:
+                        widget.alignment ?? AlignmentDirectional.centerStart,
+                    child: UnderlineInterceptor(child: widget.child),
+                  ),
+                ),
+                if (widget.trailing != null) widget.trailing!,
+              ].joinSeparator(SizedBox(width: 8 * scaling)),
             ),
     );
   }
@@ -1650,7 +1620,6 @@ class PrimaryButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -1683,7 +1652,6 @@ class PrimaryButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -1715,7 +1683,6 @@ class PrimaryButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -1751,7 +1718,7 @@ class SecondaryButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -1784,7 +1751,6 @@ class SecondaryButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -1816,7 +1782,6 @@ class SecondaryButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -1852,7 +1817,7 @@ class OutlineButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -1885,7 +1850,6 @@ class OutlineButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -1917,7 +1881,6 @@ class OutlineButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -1953,7 +1916,7 @@ class GhostButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -1986,7 +1949,6 @@ class GhostButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2018,7 +1980,6 @@ class GhostButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -2054,7 +2015,7 @@ class LinkButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -2087,7 +2048,6 @@ class LinkButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2119,7 +2079,6 @@ class LinkButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -2155,7 +2114,6 @@ class TextButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -2188,7 +2146,6 @@ class TextButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2237,7 +2194,7 @@ class DestructiveButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -2270,7 +2227,6 @@ class DestructiveButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2303,7 +2259,6 @@ class DestructiveButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -2339,7 +2294,7 @@ class TabButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
+
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -2372,7 +2327,6 @@ class TabButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2404,7 +2358,6 @@ class TabButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
@@ -2440,7 +2393,6 @@ class IconButton extends StatelessWidget {
   final bool disableTransition;
   final ValueChanged<bool>? onHover;
   final ValueChanged<bool>? onFocus;
-  final bool trailingExpanded;
   final bool? enableFeedback;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -2475,7 +2427,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2507,7 +2458,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2542,7 +2492,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2577,7 +2526,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2612,7 +2560,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2647,7 +2594,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2682,7 +2628,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2717,7 +2662,6 @@ class IconButton extends StatelessWidget {
     this.disableTransition = false,
     this.onHover,
     this.onFocus,
-    this.trailingExpanded = false,
     this.enableFeedback,
     this.onTapDown,
     this.onTapUp,
@@ -2757,7 +2701,6 @@ class IconButton extends StatelessWidget {
       disableTransition: disableTransition,
       onHover: onHover,
       onFocus: onFocus,
-      trailingExpanded: trailingExpanded,
       enableFeedback: enableFeedback,
       onTapDown: onTapDown,
       onTapUp: onTapUp,
