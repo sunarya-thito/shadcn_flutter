@@ -31,8 +31,8 @@ class _AccordionState extends State<Accordion> {
                 ...join(
                     widget.items,
                     Container(
-                      color: accTheme?.dividerColor ?? theme.colorScheme.muted,
-                      height: accTheme?.dividerHeight ?? 1 * scaling,
+                      color: theme.colorScheme.muted,
+                      height: 1 * scaling,
                     )),
                 const Divider(),
               ]),
