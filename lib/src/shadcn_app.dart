@@ -538,8 +538,7 @@ class ShadcnLayer extends StatelessWidget {
                     style: theme.typography.base.copyWith(
                       color: theme.colorScheme.foreground,
                     ),
-                    child: AnimatedIconTheme.merge(
-                      duration: kDefaultDuration,
+                    child: IconTheme.merge(
                       data: theme.iconTheme.medium.copyWith(
                         color: theme.colorScheme.foreground,
                       ),
@@ -980,11 +979,10 @@ class ShadcnUI extends StatelessWidget {
             color: theme.colorScheme.foreground,
           ),
       duration: kDefaultDuration,
-      child: AnimatedIconTheme(
+      child: IconTheme(
         data: IconThemeData(
           color: theme.colorScheme.foreground,
         ),
-        duration: kDefaultDuration,
         child: child,
       ),
     );
