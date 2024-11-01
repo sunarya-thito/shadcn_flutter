@@ -1,5 +1,4 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -66,12 +65,16 @@ class _NumberInputState extends State<NumberInput> {
   Widget build(BuildContext context) {
     if (widget.showButtons) {
       final theme = Theme.of(context);
-      return OutlinedContainer(
-        borderRadius: theme.borderRadiusMd,
-        child: _NumberInputFlex(
+      return IntrinsicHeight(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            buildTextField(context),
-            buildButton(context),
+            Flexible(child: buildTextField(context)),
+            SizedBox(
+              height: 32 * theme.scaling,
+              child: buildButton(context, theme),
+            ),
           ],
         ),
       );
@@ -90,7 +93,7 @@ class _NumberInputState extends State<NumberInput> {
         );
   }
 
-  Widget buildButton(BuildContext context) {
+  Widget buildButton(BuildContext context, ThemeData theme) {
     return GestureDetector(
       onPanUpdate: (details) {
         if (details.delta.dy > 0) {
@@ -137,21 +140,23 @@ class _NumberInputState extends State<NumberInput> {
             }
           }
         },
-        child: IntrinsicWidth(
-          child: Stack(
-            fit: StackFit.passthrough,
-            children: [
-              Column(
+        child: Stack(
+          fit: StackFit.passthrough,
+          children: [
+            IntrinsicWidth(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
+                  Flexible(
                     child: Button(
                       style: _buttonStyle.copyWith(
                         decoration: (context, states, value) {
                           if (value is BoxDecoration) {
                             return value.copyWith(
-                              borderRadius: BorderRadius.zero,
+                              borderRadius: BorderRadiusDirectional.only(
+                                topEnd: Radius.circular(theme.radiusSm),
+                              ),
                             );
                           }
                           return value;
@@ -179,13 +184,15 @@ class _NumberInputState extends State<NumberInput> {
                       ),
                     ),
                   ),
-                  Expanded(
+                  Flexible(
                     child: Button(
                       style: _buttonStyle.copyWith(
                         decoration: (context, states, value) {
                           if (value is BoxDecoration) {
                             return value.copyWith(
-                                borderRadius: BorderRadius.zero);
+                                borderRadius: BorderRadiusDirectional.only(
+                              bottomEnd: Radius.circular(theme.radiusSm),
+                            ));
                           }
                           return value;
                         },
@@ -214,18 +221,18 @@ class _NumberInputState extends State<NumberInput> {
                   ),
                 ],
               ),
-              const Positioned.fill(
-                child: Center(
-                    child: MouseRegion(
-                        cursor: SystemMouseCursors.resizeUpDown,
-                        hitTestBehavior: HitTestBehavior.translucent,
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 8,
-                        ))),
-              )
-            ],
-          ),
+            ),
+            const Positioned.fill(
+              child: Center(
+                  child: MouseRegion(
+                      cursor: SystemMouseCursors.resizeUpDown,
+                      hitTestBehavior: HitTestBehavior.translucent,
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 8,
+                      ))),
+            )
+          ],
         ),
       ),
     );
@@ -256,106 +263,58 @@ class _NumberInputState extends State<NumberInput> {
   Widget buildTextField(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return TextField(
-      leading: widget.leading,
-      trailing: widget.trailing == null
-          ? null
-          : Padding(
-              padding: EdgeInsets.only(
-                  right: widget.showButtons == false ? 0 : 24 * scaling),
-              child: widget.trailing),
-      padding: widget.padding ??
-          EdgeInsets.symmetric(
-            horizontal: 10 * scaling,
-            vertical: 10 * scaling,
-          ),
-      style: widget.style,
-      inputFormatters: [
-        if (!widget.allowDecimals) FilteringTextInputFormatter.digitsOnly,
-        if (widget.allowDecimals)
-          FilteringTextInputFormatter.allow(
-            RegExp(r'^-?[0-9]+\.?[0-9]*$'),
-          ),
-      ],
-      controller: _controller,
-      onEditingComplete: () {
-        double value = double.tryParse(_controller.text) ?? _lastValidValue;
-        if (widget.min != null && value < widget.min!) {
-          value = widget.min!;
-        } else if (widget.max != null && value > widget.max!) {
-          value = widget.max!;
-        }
-        _lastValidValue = value;
-        _controller.text = _valueAsString;
-        widget.onChanged?.call(_lastValidValue);
-      },
-      border: !widget.showButtons,
-      enabled: widget.enabled ?? true,
-      initialValue: _valueAsString,
-      keyboardType:
-          TextInputType.numberWithOptions(decimal: widget.allowDecimals),
-      textAlignVertical: TextAlignVertical.center,
-    );
-  }
-}
-
-class _NumberInputFlex extends MultiChildRenderObjectWidget {
-  const _NumberInputFlex({
-    required super.children,
-  });
-
-  @override
-  RenderObject createRenderObject(BuildContext context) {
-    return _RenderNumberInputFlex();
-  }
-
-  @override
-  void updateRenderObject(
-      BuildContext context, _RenderNumberInputFlex renderObject) {}
-}
-
-class _NumberInputFlexParentData extends ContainerBoxParentData<RenderBox> {}
-
-// A row basically, first child is TextField, second child is a column of buttons
-// the second child follows the height of the first child
-class _RenderNumberInputFlex extends RenderBox
-    with
-        ContainerRenderObjectMixin<RenderBox, _NumberInputFlexParentData>,
-        RenderBoxContainerDefaultsMixin<RenderBox, _NumberInputFlexParentData> {
-  @override
-  void setupParentData(RenderBox child) {
-    if (child.parentData is! _NumberInputFlexParentData) {
-      child.parentData = _NumberInputFlexParentData();
-    }
-  }
-
-  @override
-  void paint(PaintingContext context, Offset offset) {
-    defaultPaint(context, offset);
-  }
-
-  @override
-  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
-    return defaultHitTestChildren(result, position: position);
-  }
-
-  @override
-  void performLayout() {
-    RenderBox textField = firstChild!;
-    RenderBox buttons = lastChild!;
-    textField.layout(constraints, parentUsesSize: true);
-    buttons.layout(
-        BoxConstraints(
-          minWidth: 0,
-          maxWidth: constraints.maxWidth,
-          minHeight: 0,
-          maxHeight: textField.size.height,
-        ),
-        parentUsesSize: true);
-    size = Size(constraints.maxWidth, textField.size.height);
-    (buttons.parentData as _NumberInputFlexParentData).offset = Offset(
-      constraints.maxWidth - buttons.size.width,
-      0,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minWidth: 50 * scaling,
+      ),
+      child: TextField(
+        expands: true,
+        minLines: null,
+        maxLines: null,
+        leading: widget.leading,
+        trailing: widget.trailing == null
+            ? null
+            : Padding(
+                padding: EdgeInsets.only(
+                    right: widget.showButtons == false ? 0 : 24 * scaling),
+                child: widget.trailing),
+        padding: widget.padding ??
+            EdgeInsets.symmetric(
+              horizontal: 10 * scaling,
+              vertical: 10 * scaling,
+            ),
+        style: widget.style,
+        inputFormatters: [
+          if (!widget.allowDecimals) FilteringTextInputFormatter.digitsOnly,
+          if (widget.allowDecimals)
+            FilteringTextInputFormatter.allow(
+              RegExp(r'^-?[0-9]+\.?[0-9]*$'),
+            ),
+        ],
+        controller: _controller,
+        onEditingComplete: () {
+          double value = double.tryParse(_controller.text) ?? _lastValidValue;
+          if (widget.min != null && value < widget.min!) {
+            value = widget.min!;
+          } else if (widget.max != null && value > widget.max!) {
+            value = widget.max!;
+          }
+          _lastValidValue = value;
+          _controller.text = _valueAsString;
+          widget.onChanged?.call(_lastValidValue);
+        },
+        borderRadius: widget.showButtons
+            ? BorderRadiusDirectional.only(
+                topStart: Radius.circular(4 * scaling),
+                bottomStart: Radius.circular(4 * scaling),
+              )
+            : BorderRadius.circular(4 * scaling),
+        enabled: widget.enabled ?? true,
+        initialValue: _valueAsString,
+        keyboardType:
+            TextInputType.numberWithOptions(decimal: widget.allowDecimals),
+        textAlignVertical: TextAlignVertical.center,
+      ),
     );
   }
 }
