@@ -228,8 +228,7 @@ class _AppBarState extends State<AppBar> {
             sigmaX: surfaceBlur ?? 0,
             sigmaY: surfaceBlur ?? 0,
           ),
-          child: ShadcnAnimatedContainer(
-            duration: kDefaultDuration,
+          child: Container(
             color: widget.backgroundColor ??
                 theme.colorScheme.background.scaleAlpha(surfaceOpacity ?? 1),
             alignment: widget.alignment,
