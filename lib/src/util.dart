@@ -663,53 +663,6 @@ class IconThemeDataTween extends Tween<IconThemeData> {
   IconThemeData lerp(double t) => IconThemeData.lerp(begin, end, t);
 }
 
-Widget mergeAnimatedTextStyle({
-  Key? key,
-  TextStyle? style,
-  required Widget child,
-  Curve curve = Curves.linear,
-  required Duration duration,
-  VoidCallback? onEnd,
-  TextAlign? textAlign,
-  bool? softWrap,
-  TextOverflow? overflow,
-  int? maxLines,
-  TextWidthBasis? textWidthBasis,
-}) {
-  return Builder(
-    builder: (BuildContext context) {
-      bool shadcnFlutterSmoothAnimation =
-          Model.of(context, #shadcn_flutter_smooth_animation);
-      if (!shadcnFlutterSmoothAnimation) {
-        return DefaultTextStyle.merge(
-          key: key,
-          style: style,
-          textAlign: textAlign,
-          softWrap: softWrap,
-          overflow: overflow,
-          maxLines: maxLines,
-          textWidthBasis: textWidthBasis,
-          child: child,
-        );
-      }
-      final defaultTextStyle = DefaultTextStyle.of(context);
-      return AnimatedDefaultTextStyle(
-        key: key,
-        style: defaultTextStyle.style.merge(style),
-        textAlign: textAlign ?? defaultTextStyle.textAlign,
-        softWrap: softWrap ?? defaultTextStyle.softWrap,
-        overflow: overflow ?? defaultTextStyle.overflow,
-        maxLines: maxLines ?? defaultTextStyle.maxLines,
-        textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
-        curve: curve,
-        duration: duration,
-        onEnd: onEnd,
-        child: child,
-      );
-    },
-  );
-}
-
 int _lerpColorInt(int a, int b, double t) {
   return (a + (b - a) * t).round().clamp(0, 255);
 }
