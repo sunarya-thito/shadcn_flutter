@@ -5,12 +5,16 @@ class LayoutPageExample5 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        Text('Item 1'),
-        Text('Item 2'),
-        Text('Item 3'),
-      ],
-    ).separator(const Divider());
+    return IntrinsicWidth(
+      child: const Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('Item 1'),
+          Text('Item 2'),
+          Text('Item 3'),
+        ],
+      ).separator(const Divider()),
+    );
   }
 }
