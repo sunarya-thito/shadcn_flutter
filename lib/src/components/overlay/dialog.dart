@@ -2,11 +2,11 @@ import 'package:pixel_snap/pixel_snap.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ModalContainer extends StatelessWidget {
-  static bool shouldClipSurface(double? surfaceOpacity, double? surfaceBlur) {
-    if (surfaceOpacity == null || surfaceBlur == null) {
+  static bool shouldClipSurface(double? surfaceOpacity) {
+    if (surfaceOpacity == null) {
       return true;
     }
-    return surfaceOpacity < 1 || surfaceBlur > 0;
+    return surfaceOpacity < 1;
   }
 
   final Widget child;
@@ -33,27 +33,13 @@ class ModalContainer extends StatelessWidget {
     if (!modal) {
       return child;
     }
-    if (!surfaceClip) {
-      return Stack(
-        fit: StackFit.passthrough,
-        children: [
-          child,
-          Positioned.fill(
-            child: IgnorePointer(
-              child: Container(
-                color: barrierColor,
-              ),
-            ),
-          ),
-        ],
-      );
-    }
     var textDirection = Directionality.of(context);
     var resolvedBorderRadius = borderRadius.resolve(textDirection);
     var resolvedPadding = padding.resolve(textDirection);
     var snap = PixelSnap.of(context);
     Widget paintWidget = CustomPaint(
       painter: SurfaceBarrierPainter(
+        clip: surfaceClip,
         borderRadius: resolvedBorderRadius.pixelSnap(snap),
         barrierColor: barrierColor,
         padding: resolvedPadding.pixelSnap(snap),
@@ -65,16 +51,25 @@ class ModalContainer extends StatelessWidget {
         child: paintWidget,
       );
     }
-    return Stack(
-      fit: StackFit.passthrough,
-      children: [
-        child,
-        Positioned.fill(
-          child: IgnorePointer(
-            child: paintWidget,
-          ),
-        ),
-      ],
+    return RepaintBoundary(
+      child: Stack(
+        fit: StackFit.passthrough,
+        children: [
+          if (!surfaceClip)
+            Positioned.fill(
+              child: IgnorePointer(
+                child: paintWidget,
+              ),
+            ),
+          child,
+          if (surfaceClip)
+            Positioned.fill(
+              child: IgnorePointer(
+                child: paintWidget,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
@@ -84,11 +79,13 @@ class SurfaceBarrierPainter extends CustomPainter {
   static const bigScreen = Size(bigSize, bigSize);
   static const bigOffset = Offset(-bigSize / 2, -bigSize / 2);
 
+  final bool clip;
   final BorderRadius borderRadius;
   final Color barrierColor;
   final EdgeInsets padding;
 
   SurfaceBarrierPainter({
+    required this.clip,
     required this.borderRadius,
     required this.barrierColor,
     this.padding = EdgeInsets.zero,
@@ -109,19 +106,21 @@ class SurfaceBarrierPainter extends CustomPainter {
       ..color = barrierColor
       ..blendMode = BlendMode.srcOver
       ..style = PaintingStyle.fill;
-    var rect = (Offset.zero & size);
-    rect = _padRect(rect);
-    Path path = Path()
-      ..addRect(bigOffset & bigScreen)
-      ..addRRect(RRect.fromRectAndCorners(
-        rect,
-        topLeft: borderRadius.topLeft,
-        topRight: borderRadius.topRight,
-        bottomLeft: borderRadius.bottomLeft,
-        bottomRight: borderRadius.bottomRight,
-      ));
-    path.fillType = PathFillType.evenOdd;
-    canvas.clipPath(path);
+    if (clip) {
+      var rect = (Offset.zero & size);
+      rect = _padRect(rect);
+      Path path = Path()
+        ..addRect(bigOffset & bigScreen)
+        ..addRRect(RRect.fromRectAndCorners(
+          rect,
+          topLeft: borderRadius.topLeft,
+          topRight: borderRadius.topRight,
+          bottomLeft: borderRadius.bottomLeft,
+          bottomRight: borderRadius.bottomRight,
+        ));
+      path.fillType = PathFillType.evenOdd;
+      canvas.clipPath(path);
+    }
     canvas.drawRect(
       bigOffset & bigScreen,
       paint,
@@ -131,7 +130,9 @@ class SurfaceBarrierPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant SurfaceBarrierPainter oldDelegate) {
     return oldDelegate.borderRadius != borderRadius ||
-        oldDelegate.barrierColor != barrierColor;
+        oldDelegate.barrierColor != barrierColor ||
+        oldDelegate.padding != padding ||
+        oldDelegate.clip != clip;
   }
 }
 
@@ -359,7 +360,6 @@ class DialogOverlayHandler extends OverlayHandler {
       context: context,
       builder: (context) {
         final theme = Theme.of(context);
-        final surfaceBlur = theme.surfaceBlur;
         final surfaceOpacity = theme.surfaceOpacity;
         var child = _DialogOverlayWrapper(
           route: ModalRoute.of(context) as DialogRoute<T>,
@@ -372,8 +372,7 @@ class DialogOverlayHandler extends OverlayHandler {
             ],
             child: ModalContainer(
               modal: modal,
-              surfaceClip:
-                  ModalContainer.shouldClipSurface(surfaceOpacity, surfaceBlur),
+              surfaceClip: ModalContainer.shouldClipSurface(surfaceOpacity),
               borderRadius: overlayBarrier.borderRadius,
               padding: overlayBarrier.padding,
               barrierColor: overlayBarrier.barrierColor ??

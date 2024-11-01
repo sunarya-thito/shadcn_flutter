@@ -43,8 +43,7 @@ Future<T?> showCommandDialog<T>({
             const BoxConstraints.tightFor(width: 510, height: 349) * scaling,
         child: ModalContainer(
           borderRadius: subtractByBorder(theme.borderRadiusXxl, 1 * scaling),
-          surfaceClip:
-              ModalContainer.shouldClipSurface(surfaceOpacity, surfaceBlur),
+          surfaceClip: ModalContainer.shouldClipSurface(surfaceOpacity),
           child: Command(
             autofocus: autofocus,
             builder: builder,
