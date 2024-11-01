@@ -21,6 +21,30 @@ class UnderlineInterceptor extends StatelessWidget {
   }
 }
 
+class RevertUnderlineInterceptor extends StatelessWidget {
+  final Widget child;
+
+  const RevertUnderlineInterceptor({
+    super.key,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var def = DefaultTextStyle.of(context);
+    if (def.style.decoration == TextDecoration.underline) {
+      return DefaultTextStyle.merge(
+        style: def.style.copyWith(decoration: TextDecoration.none, shadows: []),
+        child: Transform.translate(
+          offset: const Offset(0, -2) * Theme.of(context).scaling,
+          child: child,
+        ),
+      );
+    }
+    return child;
+  }
+}
+
 class UnderlineText extends StatelessWidget {
   final Widget child;
   final bool underline;
