@@ -45,10 +45,10 @@ OverlayCompleter<T?> showDropdown<T>({
     heightConstraint: heightConstraint,
     position: position,
     anchorAlignment: anchorAlignment,
-    consumeOutsideTaps: false,
+    consumeOutsideTaps: consumeOutsideTaps,
     regionGroupId: key,
     modal: modal,
-    dismissBackdropFocus: true,
+    dismissBackdropFocus: dismissBackdropFocus,
     overlayBarrier: OverlayBarrier(
       borderRadius: BorderRadius.circular(theme.radiusMd),
     ),
