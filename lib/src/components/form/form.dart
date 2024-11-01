@@ -1585,7 +1585,6 @@ class SubmitButton extends StatefulWidget {
   final bool disableHoverEffect;
   final bool? enabled;
   final bool? enableFeedback;
-  final bool trailingExpanded;
   final bool disableTransition;
   final FocusNode? focusNode;
 
@@ -1605,7 +1604,6 @@ class SubmitButton extends StatefulWidget {
     this.disableHoverEffect = false,
     this.enabled,
     this.enableFeedback,
-    this.trailingExpanded = false,
     this.disableTransition = false,
     this.focusNode,
   });
@@ -1684,7 +1682,6 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
         disableHoverEffect: widget.disableHoverEffect,
         enabled: false,
         enableFeedback: false,
-        trailingExpanded: widget.trailingExpanded,
         disableTransition: widget.disableTransition,
         focusNode: widget.focusNode,
         style: widget.style ?? const ButtonStyle.primary(),
@@ -1699,7 +1696,6 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
         disableHoverEffect: widget.disableHoverEffect,
         enabled: false,
         enableFeedback: true,
-        trailingExpanded: widget.trailingExpanded,
         disableTransition: widget.disableTransition,
         focusNode: widget.focusNode,
         style: widget.style ?? const ButtonStyle.primary(),
@@ -1725,7 +1721,6 @@ class _SubmitButtonState extends widgets.State<SubmitButton> {
           }
         });
       },
-      trailingExpanded: widget.trailingExpanded,
       disableTransition: widget.disableTransition,
       focusNode: widget.focusNode,
       style: widget.style ?? const ButtonStyle.primary(),
