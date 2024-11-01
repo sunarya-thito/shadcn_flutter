@@ -558,9 +558,7 @@ class ButtonState<T extends Button> extends State<T> {
               heightFactor: 1,
               widthFactor: 1,
               alignment: widget.alignment ?? Alignment.center,
-              child: UnderlineInterceptor(
-                child: widget.child,
-              ),
+              child: widget.child,
             )
           : IntrinsicWidth(
               child: IntrinsicHeight(
@@ -576,7 +574,7 @@ class ButtonState<T extends Button> extends State<T> {
                         heightFactor: 1,
                         alignment: widget.alignment ??
                             AlignmentDirectional.centerStart,
-                        child: UnderlineInterceptor(child: widget.child),
+                        child: widget.child,
                       ),
                     ),
                     if (widget.trailing != null) Gap(8 * scaling),
