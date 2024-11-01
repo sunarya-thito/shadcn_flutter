@@ -493,12 +493,11 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
                       : placeholder,
                 ),
                 SizedBox(width: 8 * scaling),
-                AnimatedIconTheme(
+                IconTheme.merge(
                   data: IconThemeData(
                     color: theme.colorScheme.foreground,
                     opacity: 0.5,
                   ),
-                  duration: kDefaultDuration,
                   child: const Icon(Icons.unfold_more).iconSmall(),
                 ),
               ],
@@ -605,8 +604,7 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
                   padding: const EdgeInsets.symmetric(horizontal: 12) * scaling,
                   child: Row(
                     children: [
-                      AnimatedIconTheme(
-                        duration: kDefaultDuration,
+                      IconTheme.merge(
                         data: IconThemeData(
                           color: Theme.of(context).colorScheme.foreground,
                           opacity: 0.5,
@@ -1124,12 +1122,11 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
                       : placeholder,
                 ),
                 SizedBox(width: 8 * scaling),
-                AnimatedIconTheme(
+                IconTheme(
                   data: IconThemeData(
                     color: theme.colorScheme.foreground,
                     opacity: 0.5,
                   ),
-                  duration: kDefaultDuration,
                   child: const Icon(Icons.unfold_more).iconSmall(),
                 ),
               ],
