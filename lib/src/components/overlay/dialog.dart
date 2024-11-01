@@ -2,16 +2,25 @@ import 'package:pixel_snap/pixel_snap.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ModalContainer extends StatelessWidget {
+  static bool shouldClipSurface(double? surfaceOpacity, double? surfaceBlur) {
+    if (surfaceOpacity == null || surfaceBlur == null) {
+      return true;
+    }
+    return surfaceOpacity < 1 || surfaceBlur > 0;
+  }
+
   final Widget child;
   final BorderRadiusGeometry borderRadius;
   final EdgeInsetsGeometry padding;
   final Color barrierColor;
   final Animation<double>? fadeAnimation;
   final bool modal;
+  final bool surfaceClip;
 
   const ModalContainer({
     super.key,
     this.modal = true,
+    this.surfaceClip = true,
     this.borderRadius = BorderRadius.zero,
     this.barrierColor = const Color.fromRGBO(0, 0, 0, 0.8),
     this.padding = EdgeInsets.zero,
@@ -23,6 +32,21 @@ class ModalContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!modal) {
       return child;
+    }
+    if (!surfaceClip) {
+      return Stack(
+        fit: StackFit.passthrough,
+        children: [
+          child,
+          Positioned.fill(
+            child: IgnorePointer(
+              child: Container(
+                color: barrierColor,
+              ),
+            ),
+          ),
+        ],
+      );
     }
     var textDirection = Directionality.of(context);
     var resolvedBorderRadius = borderRadius.resolve(textDirection);
@@ -334,6 +358,9 @@ class DialogOverlayHandler extends OverlayHandler {
     var dialogRoute = DialogRoute<T>(
       context: context,
       builder: (context) {
+        final theme = Theme.of(context);
+        final surfaceBlur = theme.surfaceBlur;
+        final surfaceOpacity = theme.surfaceOpacity;
         var child = _DialogOverlayWrapper(
           route: ModalRoute.of(context) as DialogRoute<T>,
           child: builder(context),
@@ -345,6 +372,8 @@ class DialogOverlayHandler extends OverlayHandler {
             ],
             child: ModalContainer(
               modal: modal,
+              surfaceClip:
+                  ModalContainer.shouldClipSurface(surfaceOpacity, surfaceBlur),
               borderRadius: overlayBarrier.borderRadius,
               padding: overlayBarrier.padding,
               barrierColor: overlayBarrier.barrierColor ??
