@@ -402,7 +402,7 @@ class DocsPageState extends State<DocsPage> {
   }
 
   void showSearchBar() {
-    showCommand(
+    showCommandDialog(
       context: context,
       builder: (context, query) async* {
         for (final section in sections) {
