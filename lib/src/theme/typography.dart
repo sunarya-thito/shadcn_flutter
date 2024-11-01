@@ -347,4 +347,89 @@ class Typography {
       textMuted: TextStyle.lerp(a.textMuted, b.textMuted, t)!,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Typography &&
+          sans == other.sans &&
+          mono == other.mono &&
+          xSmall == other.xSmall &&
+          small == other.small &&
+          base == other.base &&
+          large == other.large &&
+          xLarge == other.xLarge &&
+          x2Large == other.x2Large &&
+          x3Large == other.x3Large &&
+          x4Large == other.x4Large &&
+          x5Large == other.x5Large &&
+          x6Large == other.x6Large &&
+          x7Large == other.x7Large &&
+          x8Large == other.x8Large &&
+          x9Large == other.x9Large &&
+          thin == other.thin &&
+          light == other.light &&
+          extraLight == other.extraLight &&
+          normal == other.normal &&
+          medium == other.medium &&
+          semiBold == other.semiBold &&
+          bold == other.bold &&
+          extraBold == other.extraBold &&
+          black == other.black &&
+          italic == other.italic &&
+          h1 == other.h1 &&
+          h2 == other.h2 &&
+          h3 == other.h3 &&
+          h4 == other.h4 &&
+          p == other.p &&
+          blockQuote == other.blockQuote &&
+          inlineCode == other.inlineCode &&
+          lead == other.lead &&
+          textLarge == other.textLarge &&
+          textSmall == other.textSmall &&
+          textMuted == other.textMuted;
+
+  @override
+  int get hashCode =>
+      sans.hashCode ^
+      mono.hashCode ^
+      xSmall.hashCode ^
+      small.hashCode ^
+      base.hashCode ^
+      large.hashCode ^
+      xLarge.hashCode ^
+      x2Large.hashCode ^
+      x3Large.hashCode ^
+      x4Large.hashCode ^
+      x5Large.hashCode ^
+      x6Large.hashCode ^
+      x7Large.hashCode ^
+      x8Large.hashCode ^
+      x9Large.hashCode ^
+      thin.hashCode ^
+      light.hashCode ^
+      extraLight.hashCode ^
+      normal.hashCode ^
+      medium.hashCode ^
+      semiBold.hashCode ^
+      bold.hashCode ^
+      extraBold.hashCode ^
+      black.hashCode ^
+      italic.hashCode ^
+      h1.hashCode ^
+      h2.hashCode ^
+      h3.hashCode ^
+      h4.hashCode ^
+      p.hashCode ^
+      blockQuote.hashCode ^
+      inlineCode.hashCode ^
+      lead.hashCode ^
+      textLarge.hashCode ^
+      textSmall.hashCode ^
+      textMuted.hashCode;
+
+  @override
+  String toString() {
+    return 'Typography(sans: $sans, mono: $mono, xSmall: $xSmall, small: $small, base: $base, large: $large, xLarge: $xLarge, x2Large: $x2Large, x3Large: $x3Large, x4Large: $x4Large, x5Large: $x5Large, x6Large: $x6Large, x7Large: $x7Large, x8Large: $x8Large, x9Large: $x9Large, thin: $thin, light: $light, extraLight: $extraLight, normal: $normal, medium: $medium, semiBold: $semiBold, bold: $bold, extraBold: $extraBold, black: $black, italic: $italic, h1: $h1, h2: $h2, h3: $h3, h4: $h4, p: $p, blockQuote: $blockQuote, inlineCode: $inlineCode, lead: $lead, textLarge: $textLarge, textSmall: $textSmall, textMuted: $textMuted)';
+  }
 }

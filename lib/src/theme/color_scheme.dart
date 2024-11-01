@@ -562,6 +562,70 @@ class ColorScheme implements ChartColorScheme {
       chart5: Color.lerp(a.chart5, b.chart5, t)!,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ColorScheme &&
+          runtimeType == other.runtimeType &&
+          brightness == other.brightness &&
+          background == other.background &&
+          foreground == other.foreground &&
+          card == other.card &&
+          cardForeground == other.cardForeground &&
+          popover == other.popover &&
+          popoverForeground == other.popoverForeground &&
+          primary == other.primary &&
+          primaryForeground == other.primaryForeground &&
+          secondary == other.secondary &&
+          secondaryForeground == other.secondaryForeground &&
+          muted == other.muted &&
+          mutedForeground == other.mutedForeground &&
+          accent == other.accent &&
+          accentForeground == other.accentForeground &&
+          destructive == other.destructive &&
+          destructiveForeground == other.destructiveForeground &&
+          border == other.border &&
+          input == other.input &&
+          ring == other.ring &&
+          chart1 == other.chart1 &&
+          chart2 == other.chart2 &&
+          chart3 == other.chart3 &&
+          chart4 == other.chart4 &&
+          chart5 == other.chart5;
+
+  @override
+  int get hashCode =>
+      brightness.hashCode ^
+      background.hashCode ^
+      foreground.hashCode ^
+      card.hashCode ^
+      cardForeground.hashCode ^
+      popover.hashCode ^
+      popoverForeground.hashCode ^
+      primary.hashCode ^
+      primaryForeground.hashCode ^
+      secondary.hashCode ^
+      secondaryForeground.hashCode ^
+      muted.hashCode ^
+      mutedForeground.hashCode ^
+      accent.hashCode ^
+      accentForeground.hashCode ^
+      destructive.hashCode ^
+      destructiveForeground.hashCode ^
+      border.hashCode ^
+      input.hashCode ^
+      ring.hashCode ^
+      chart1.hashCode ^
+      chart2.hashCode ^
+      chart3.hashCode ^
+      chart4.hashCode ^
+      chart5.hashCode;
+
+  @override
+  String toString() {
+    return 'ColorScheme{brightness: $brightness, background: $background, foreground: $foreground, card: $card, cardForeground: $cardForeground, popover: $popover, popoverForeground: $popoverForeground, primary: $primary, primaryForeground: $primaryForeground, secondary: $secondary, secondaryForeground: $secondaryForeground, muted: $muted, mutedForeground: $mutedForeground, accent: $accent, accentForeground: $accentForeground, destructive: $destructive, destructiveForeground: $destructiveForeground, border: $border, input: $input, ring: $ring, chart1: $chart1, chart2: $chart2, chart3: $chart3, chart4: $chart4, chart5: $chart5}';
+  }
 }
 
 extension _MapColorGetter on Map<String, Color> {
