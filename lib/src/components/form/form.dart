@@ -1353,6 +1353,7 @@ class FormField<T> extends StatelessWidget {
   final Widget? trailingLabel;
   final MainAxisAlignment? labelAxisAlignment;
   final double? leadingGap;
+  final double? trailingGap;
   final EdgeInsetsGeometry? padding;
   final Validator<T>? validator;
 
@@ -1362,8 +1363,9 @@ class FormField<T> extends StatelessWidget {
     required this.child,
     this.leadingLabel,
     this.trailingLabel,
-    this.labelAxisAlignment = MainAxisAlignment.spaceBetween,
-    this.leadingGap = 5,
+    this.labelAxisAlignment = MainAxisAlignment.start,
+    this.leadingGap,
+    this.trailingGap,
     this.padding = EdgeInsets.zero,
     this.validator,
     this.hint,
@@ -1380,46 +1382,48 @@ class FormField<T> extends StatelessWidget {
       validator: validator,
       child: FormEntryErrorBuilder(
         builder: (context, error, child) {
-          return IntrinsicWidth(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: padding!,
-                  child: Row(
-                    mainAxisAlignment: labelAxisAlignment!,
-                    children: [
-                      if (leadingLabel != null) leadingLabel!,
-                      Gap(leadingGap!),
-                      Expanded(
-                        child: mergeAnimatedTextStyle(
-                          style: error != null
-                              ? TextStyle(color: theme.colorScheme.destructive)
-                              : null,
-                          child: label.textSmall(),
-                          duration: kDefaultDuration,
-                        ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: padding!,
+                child: Row(
+                  mainAxisAlignment: labelAxisAlignment!,
+                  children: [
+                    if (leadingLabel != null) leadingLabel!.textSmall().muted(),
+                    if (leadingLabel != null)
+                      Gap(leadingGap ?? theme.scaling * 8),
+                    Expanded(
+                      child: mergeAnimatedTextStyle(
+                        style: error != null
+                            ? TextStyle(color: theme.colorScheme.destructive)
+                            : null,
+                        child: label.textSmall(),
+                        duration: kDefaultDuration,
                       ),
-                      if (trailingLabel != null) trailingLabel!,
-                    ],
-                  ),
+                    ),
+                    if (trailingLabel != null)
+                      Gap(trailingGap ?? theme.scaling * 8),
+                    if (trailingLabel != null)
+                      trailingLabel!.textSmall().muted(),
+                  ],
                 ),
+              ),
+              Gap(theme.scaling * 8),
+              child!,
+              if (hint != null) ...[
                 Gap(theme.scaling * 8),
-                child!,
-                if (hint != null) ...[
-                  Gap(theme.scaling * 8),
-                  hint!.xSmall().muted(),
-                ],
-                if (error is InvalidResult) ...[
-                  Gap(theme.scaling * 8),
-                  mergeAnimatedTextStyle(
-                    style: TextStyle(color: theme.colorScheme.destructive),
-                    child: Text(error.message).xSmall().medium(),
-                    duration: kDefaultDuration,
-                  ),
-                ],
+                hint!.xSmall().muted(),
               ],
-            ),
+              if (error is InvalidResult) ...[
+                Gap(theme.scaling * 8),
+                mergeAnimatedTextStyle(
+                  style: TextStyle(color: theme.colorScheme.destructive),
+                  child: Text(error.message).xSmall().medium(),
+                  duration: kDefaultDuration,
+                ),
+              ],
+            ],
           );
         },
         child: child,
