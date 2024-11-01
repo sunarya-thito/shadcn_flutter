@@ -11,7 +11,7 @@ class AutoComplete extends StatefulWidget {
   final bool enabled;
   final bool readOnly;
   final List<TextInputFormatter> inputFormatters;
-  final String? placeholder;
+  final Widget? placeholder;
   final ValueChanged<int>? onAcceptSuggestion;
   final FocusNode? focusNode;
   final AlignmentGeometry? popoverAlignment;
@@ -20,6 +20,32 @@ class AutoComplete extends StatefulWidget {
   final BoxConstraints? popoverConstraints;
   final Widget? leading;
   final Widget? trailing;
+  final EdgeInsetsGeometry? padding;
+  final ValueChanged<String>? onSubmitted;
+  final VoidCallback? onEditingComplete;
+  final VoidCallback? onTap;
+  final bool obscureText;
+  final String obscuringCharacter;
+  final int? maxLength;
+  final MaxLengthEnforcement? maxLengthEnforcement;
+  final int? maxLines;
+  final int? minLines;
+  final BorderRadiusGeometry? borderRadius;
+  final TextAlign textAlign;
+  final bool expands;
+  final TextAlignVertical? textAlignVertical;
+  final UndoHistoryController? undoController;
+  final Iterable<String>? autofillHints;
+  final void Function(PointerDownEvent event)? onTapOutside;
+  final TextStyle? style;
+  final EditableTextContextMenuBuilder? contextMenuBuilder;
+  final bool useNativeContextMenu;
+  final bool? isCollapsed;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final Clip clipBehavior;
+  final bool autofocus;
+  final bool filled;
 
   const AutoComplete({
     super.key,
@@ -40,6 +66,32 @@ class AutoComplete extends StatefulWidget {
     this.popoverConstraints,
     this.leading,
     this.trailing,
+    this.padding,
+    this.onSubmitted,
+    this.onEditingComplete,
+    this.onTap,
+    this.obscureText = false,
+    this.obscuringCharacter = '•',
+    this.maxLength,
+    this.maxLengthEnforcement,
+    this.maxLines,
+    this.minLines,
+    this.borderRadius,
+    this.textAlign = TextAlign.start,
+    this.expands = false,
+    this.textAlignVertical,
+    this.undoController,
+    this.autofillHints,
+    this.onTapOutside,
+    this.style,
+    this.contextMenuBuilder,
+    this.useNativeContextMenu = false,
+    this.isCollapsed,
+    this.keyboardType,
+    this.textInputAction,
+    this.clipBehavior = Clip.hardEdge,
+    this.autofocus = false,
+    this.filled = false,
   });
 
   @override
@@ -244,6 +296,32 @@ class _AutoCompleteState extends State<AutoComplete> {
           inputFormatters: widget.inputFormatters,
           placeholder: widget.placeholder,
           initialValue: widget.initialValue,
+          onSubmitted: widget.onSubmitted,
+          onEditingComplete: widget.onEditingComplete,
+          onTap: widget.onTap,
+          obscureText: widget.obscureText,
+          obscuringCharacter: widget.obscuringCharacter,
+          maxLength: widget.maxLength,
+          maxLengthEnforcement: widget.maxLengthEnforcement,
+          maxLines: widget.maxLines,
+          minLines: widget.minLines,
+          borderRadius: widget.borderRadius,
+          textAlign: widget.textAlign,
+          textAlignVertical: widget.textAlignVertical,
+          undoController: widget.undoController,
+          autofillHints: widget.autofillHints,
+          onTapOutside: widget.onTapOutside,
+          style: widget.style,
+          contextMenuBuilder: widget.contextMenuBuilder,
+          useNativeContextMenu: widget.useNativeContextMenu,
+          keyboardType: widget.keyboardType,
+          textInputAction: widget.textInputAction,
+          clipBehavior: widget.clipBehavior,
+          autofocus: widget.autofocus,
+          isCollapsed: widget.isCollapsed,
+          padding: widget.padding,
+          filled: widget.filled,
+          expands: widget.expands,
         ),
       ),
     );
