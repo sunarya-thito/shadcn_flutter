@@ -1,10 +1,24 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
 
 class SliderValue {
+  static SliderValue? lerp(SliderValue? a, SliderValue? b, double t) {
+    if (a == null || b == null) return null;
+    if (a.isRanged && b.isRanged) {
+      return SliderValue.ranged(
+        lerpDouble(a.start, b.start, t)!,
+        lerpDouble(a.end, b.end, t)!,
+      );
+    } else if (!a.isRanged && !b.isRanged) {
+      return SliderValue.single(lerpDouble(a.value, b.value, t)!);
+    }
+    return null;
+  }
+
   final double?
       _start; // if start is null, it means its not ranged slider, its a single value slider
   // if its a single value slider, then the trackbar is clickable and the thumb can be dragged
@@ -13,7 +27,7 @@ class SliderValue {
   const SliderValue.single(double value)
       : _start = null,
         _end = value;
-  const SliderValue.ranged(this._start, this._end);
+  const SliderValue.ranged(double this._start, this._end);
 
   bool get isRanged => _start != null;
 
@@ -161,8 +175,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return AnimatedContainer(
-      duration: kDefaultDuration,
+    return Container(
       constraints: BoxConstraints(
         minWidth: 20 * scaling,
         minHeight: 16 * scaling,
@@ -481,32 +494,38 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       BuildContext context, BoxConstraints constraints, ThemeData theme) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    var start = widget.hintValue!.start;
-    var end = widget.hintValue!.end;
-    var newStart = min(start, end);
-    var newEnd = max(start, end);
-    var left = (newStart - widget.min) /
-        (widget.max - widget.min) *
-        constraints.maxWidth;
-    var right = (1 - (newEnd - widget.min) / (widget.max - widget.min)) *
-        constraints.maxWidth;
-    return AnimatedPositioned(
-      duration: _dragging ? Duration.zero : kDefaultDuration,
-      curve: Curves.easeInOut,
-      left: !_isRanged ? 0 : left,
-      right: right,
-      top: 0,
-      bottom: 0,
-      child: Center(
-        child: Container(
-          height: 6 * scaling,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary.scaleAlpha(0.2),
-            borderRadius: BorderRadius.circular(theme.radiusSm),
-          ),
-        ),
-      ),
-    );
+
+    return AnimatedValueBuilder(
+        value: widget.hintValue,
+        duration: _dragging ? Duration.zero : kDefaultDuration,
+        curve: Curves.easeInOut,
+        lerp: SliderValue.lerp,
+        builder: (context, hintValue, _) {
+          var start = hintValue!.start;
+          var end = hintValue.end;
+          var newStart = min(start, end);
+          var newEnd = max(start, end);
+          var left = (newStart - widget.min) /
+              (widget.max - widget.min) *
+              constraints.maxWidth;
+          var right = (1 - (newEnd - widget.min) / (widget.max - widget.min)) *
+              constraints.maxWidth;
+          return Positioned(
+            left: !_isRanged ? 0 : left,
+            right: right,
+            top: 0,
+            bottom: 0,
+            child: Center(
+              child: Container(
+                height: 6 * scaling,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.scaleAlpha(0.2),
+                  borderRadius: BorderRadius.circular(theme.radiusSm),
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   bool get _isRanged => widget.value.isRanged;
@@ -515,8 +534,9 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       BuildContext context, BoxConstraints constraints, ThemeData theme) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    var start = widget.value.start;
-    var end = widget.value.end;
+    var value = widget.value;
+    var start = value.start;
+    var end = value.end;
     if (widget.divisions != null) {
       var normalizedStart = (start - widget.min) / (widget.max - widget.min);
       var normalizedEnd = (end - widget.min) / (widget.max - widget.min);
@@ -529,30 +549,38 @@ class _SliderState extends State<Slider> with FormValueSupplier {
     }
     var newStart = min(start, end);
     var newEnd = max(start, end);
-    var left = (newStart - widget.min) /
-        (widget.max - widget.min) *
-        constraints.maxWidth;
-    var right = (1 - (newEnd - widget.min) / (widget.max - widget.min)) *
-        constraints.maxWidth;
-    return AnimatedPositioned(
-      duration: _dragging && widget.divisions == null
-          ? Duration.zero
-          : kDefaultDuration,
-      curve: Curves.easeInOut,
-      left: !_isRanged ? 0 : left,
-      right: right,
-      top: 0,
-      bottom: 0,
-      child: Center(
-        child: Container(
-          height: 6 * scaling,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(theme.radiusSm),
-          ),
-        ),
-      ),
-    );
+
+    return AnimatedValueBuilder(
+        value: Offset(newStart, newEnd),
+        duration: _dragging && widget.divisions == null
+            ? Duration.zero
+            : kDefaultDuration,
+        curve: Curves.easeInOut,
+        lerp: Offset.lerp,
+        builder: (context, value, _) {
+          var newStart = value!.dx;
+          var newEnd = value.dy;
+          var left = (newStart - widget.min) /
+              (widget.max - widget.min) *
+              constraints.maxWidth;
+          var right = (1 - (newEnd - widget.min) / (widget.max - widget.min)) *
+              constraints.maxWidth;
+          return Positioned(
+            left: !_isRanged ? 0 : left,
+            right: right,
+            top: 0,
+            bottom: 0,
+            child: Center(
+              child: Container(
+                height: 6 * scaling,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
+                  borderRadius: BorderRadius.circular(theme.radiusSm),
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Widget buildTrackBar(
@@ -590,62 +618,65 @@ class _SliderState extends State<Slider> with FormValueSupplier {
     if (widget.divisions != null) {
       value = (value * widget.divisions!).round() / widget.divisions!;
     }
-    // print(
-    // '$hashCode value: ${value * constraints.maxWidth - 8} from ${value} and ${constraints.maxWidth}');
-    return AnimatedPositioned(
-      duration: _dragging && widget.divisions == null
-          ? Duration.zero
-          : kDefaultDuration,
-      curve: Curves.easeInOut,
-      left: value * constraints.maxWidth - 8 * scaling,
-      child: FocusableActionDetector(
-        onShowFocusHighlight: (showHighlight) {
-          onFocusing(showHighlight);
-        },
-        shortcuts: {
-          LogicalKeySet(LogicalKeyboardKey.arrowLeft):
-              const DecreaseSliderValue(),
-          LogicalKeySet(LogicalKeyboardKey.arrowRight):
-              const IncreaseSliderValue(),
-          LogicalKeySet(LogicalKeyboardKey.arrowUp):
-              const IncreaseSliderValue(),
-          LogicalKeySet(LogicalKeyboardKey.arrowDown):
-              const DecreaseSliderValue(),
-        },
-        actions: {
-          IncreaseSliderValue: CallbackAction(
-            onInvoke: (e) {
-              onIncrease();
-              return true;
-            },
-          ),
-          DecreaseSliderValue: CallbackAction(
-            onInvoke: (e) {
-              onDecrease();
-              return true;
-            },
-          ),
-        },
-        child: Container(
-          width: 16 * scaling,
-          height: 16 * scaling,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.background,
-            shape: BoxShape.circle,
-            border: focusing
-                ? Border.all(
-                    color: theme.colorScheme.primary,
-                    width: 2 * scaling,
-                    strokeAlign: BorderSide.strokeAlignOutside,
-                  )
-                : Border.all(
-                    color: theme.colorScheme.primary.scaleAlpha(0.5),
-                    width: 1 * scaling,
-                  ),
-          ),
-        ),
-      ),
-    );
+    return AnimatedValueBuilder(
+        duration: _dragging && widget.divisions == null
+            ? Duration.zero
+            : kDefaultDuration,
+        curve: Curves.easeInOut,
+        lerp: lerpDouble,
+        value: value,
+        builder: (context, value, _) {
+          return Positioned(
+            left: value! * constraints.maxWidth - 8 * scaling,
+            child: FocusableActionDetector(
+              onShowFocusHighlight: (showHighlight) {
+                onFocusing(showHighlight);
+              },
+              shortcuts: {
+                LogicalKeySet(LogicalKeyboardKey.arrowLeft):
+                    const DecreaseSliderValue(),
+                LogicalKeySet(LogicalKeyboardKey.arrowRight):
+                    const IncreaseSliderValue(),
+                LogicalKeySet(LogicalKeyboardKey.arrowUp):
+                    const IncreaseSliderValue(),
+                LogicalKeySet(LogicalKeyboardKey.arrowDown):
+                    const DecreaseSliderValue(),
+              },
+              actions: {
+                IncreaseSliderValue: CallbackAction(
+                  onInvoke: (e) {
+                    onIncrease();
+                    return true;
+                  },
+                ),
+                DecreaseSliderValue: CallbackAction(
+                  onInvoke: (e) {
+                    onDecrease();
+                    return true;
+                  },
+                ),
+              },
+              child: Container(
+                width: 16 * scaling,
+                height: 16 * scaling,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.background,
+                  shape: BoxShape.circle,
+                  border: focusing
+                      ? Border.all(
+                          color: theme.colorScheme.primary,
+                          width: 2 * scaling,
+                          strokeAlign: BorderSide.strokeAlignOutside,
+                        )
+                      : Border.all(
+                          color: theme.colorScheme.primary.scaleAlpha(0.5),
+                          width: 1 * scaling,
+                        ),
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Widget buildRangedSlider(
