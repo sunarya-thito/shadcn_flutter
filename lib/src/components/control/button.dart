@@ -562,22 +562,28 @@ class ButtonState<T extends Button> extends State<T> {
                 child: widget.child,
               ),
             )
-          : Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                if (widget.leading != null) widget.leading!,
-                Flexible(
-                  child: Align(
-                    widthFactor: 1,
-                    heightFactor: 1,
-                    alignment:
-                        widget.alignment ?? AlignmentDirectional.centerStart,
-                    child: UnderlineInterceptor(child: widget.child),
-                  ),
+          : IntrinsicWidth(
+              child: IntrinsicHeight(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (widget.leading != null) widget.leading!,
+                    if (widget.leading != null) Gap(8 * scaling),
+                    Expanded(
+                      child: Align(
+                        widthFactor: 1,
+                        heightFactor: 1,
+                        alignment: widget.alignment ??
+                            AlignmentDirectional.centerStart,
+                        child: UnderlineInterceptor(child: widget.child),
+                      ),
+                    ),
+                    if (widget.trailing != null) Gap(8 * scaling),
+                    if (widget.trailing != null) widget.trailing!,
+                  ],
                 ),
-                if (widget.trailing != null) widget.trailing!,
-              ].joinSeparator(SizedBox(width: 8 * scaling)),
+              ),
             ),
     );
   }
