@@ -30,8 +30,7 @@ class _AccordionState extends State<Accordion> {
               children: [
                 ...join(
                     widget.items,
-                    ShadcnAnimatedContainer(
-                      duration: kDefaultDuration,
+                    Container(
                       color: accTheme?.dividerColor ?? theme.colorScheme.muted,
                       height: accTheme?.dividerHeight ?? 1 * scaling,
                     )),
@@ -375,8 +374,7 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
             _hovering = value;
           });
         },
-        child: ShadcnAnimatedContainer(
-          duration: accTheme?.duration ?? kDefaultDuration,
+        child: Container(
           decoration: BoxDecoration(
             border: Border.all(
               color: _focusing
@@ -413,8 +411,7 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
                     builder: (context, value, child) {
                       return Transform.rotate(
                         angle: value * pi,
-                        child: AnimatedIconTheme(
-                          duration: accTheme?.duration ?? kDefaultDuration,
+                        child: IconTheme(
                           data: IconThemeData(
                             color: accTheme?.arrowIconColor ??
                                 theme.colorScheme.mutedForeground,
