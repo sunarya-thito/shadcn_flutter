@@ -799,8 +799,7 @@ class StepNumber extends StatelessWidget {
                     ? theme.colorScheme.destructive
                     : theme.colorScheme.primary,
               ).merge(theme.typography.medium),
-              child: AnimatedIconTheme.merge(
-                duration: kDefaultDuration,
+              child: IconTheme.merge(
                 data: IconThemeData(
                   color: properties.state.value.stepStates[stepIndex] ==
                           StepState.failed
