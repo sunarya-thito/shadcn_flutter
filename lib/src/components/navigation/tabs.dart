@@ -39,7 +39,7 @@ class Tabs extends StatelessWidget {
                     child: MouseRegion(
                       hitTestBehavior: HitTestBehavior.translucent,
                       cursor: SystemMouseCursors.click,
-                      child: ShadcnAnimatedContainer(
+                      child: AnimatedContainer(
                         duration: const Duration(
                             milliseconds:
                                 50), // slightly faster than kDefaultDuration

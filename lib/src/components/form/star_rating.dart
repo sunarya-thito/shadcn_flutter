@@ -72,8 +72,7 @@ class _StarRatingState extends State<StarRating> with FormValueSupplier {
     var starInnerRadiusRatio = widget.starInnerRadiusRatio ?? 0.4;
     var starRotation = widget.starRotation ?? 0.0;
     var starSize = widget.starSize ?? 24.0;
-    return ShadcnAnimatedContainer(
-      duration: kDefaultDuration,
+    return Container(
       width: starSize * scaling,
       height: starSize * scaling,
       decoration: ShapeDecoration(
