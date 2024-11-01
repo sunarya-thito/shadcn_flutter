@@ -57,7 +57,9 @@ class PopoverOverlayHandler extends OverlayHandler {
             anchorSize.height / 2 * resolvedAnchorAlignment.y,
       );
     }
-
+    final OverlayPopoverEntry<T> popoverEntry = OverlayPopoverEntry();
+    final completer = popoverEntry.completer;
+    final animationCompleter = popoverEntry.animationCompleter;
     ValueNotifier<bool> isClosed = ValueNotifier(false);
     OverlayEntry? barrierEntry;
     late OverlayEntry overlayEntry;
@@ -67,8 +69,9 @@ class PopoverOverlayHandler extends OverlayHandler {
           builder: (context) {
             return GestureDetector(
               onTap: () {
-                if (!barrierDismissable) return;
+                if (!barrierDismissable || isClosed.value) return;
                 isClosed.value = true;
+                completer.complete();
               },
             );
           },
@@ -79,17 +82,16 @@ class PopoverOverlayHandler extends OverlayHandler {
             return Listener(
               behavior: HitTestBehavior.translucent,
               onPointerDown: (event) {
-                if (!barrierDismissable) return;
+                if (!barrierDismissable || isClosed.value) return;
                 isClosed.value = true;
+                completer.complete();
               },
             );
           },
         );
       }
     }
-    final OverlayPopoverEntry<T> popoverEntry = OverlayPopoverEntry();
-    final completer = popoverEntry.completer;
-    final animationCompleter = popoverEntry.animationCompleter;
+
     overlayEntry = OverlayEntry(
       builder: (innerContext) {
         return RepaintBoundary(
