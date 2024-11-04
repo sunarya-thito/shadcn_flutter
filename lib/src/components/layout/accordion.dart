@@ -176,6 +176,21 @@ class _AccordionItemState extends State<AccordionItem>
   void initState() {
     super.initState();
     _expanded.value = widget.expanded;
+    _updateAnimations();
+  }
+
+  void _updateAnimations() {
+    _controller?.dispose();
+    _controller = AnimationController(
+      vsync: this,
+      duration: _theme?.duration ?? const Duration(milliseconds: 200),
+      value: _expanded.value ? 1 : 0,
+    );
+    _easeInAnimation = CurvedAnimation(
+      parent: _controller!,
+      curve: _theme?.curve ?? Curves.easeIn,
+      reverseCurve: _theme?.reverseCurve ?? Curves.easeOut,
+    );
   }
 
   @override
@@ -193,17 +208,7 @@ class _AccordionItemState extends State<AccordionItem>
 
     if (_theme != theme) {
       _theme = theme;
-      _controller?.dispose();
-      _controller = AnimationController(
-        vsync: this,
-        duration: theme?.duration ?? const Duration(milliseconds: 200),
-        value: _expanded.value ? 1 : 0,
-      );
-      _easeInAnimation = CurvedAnimation(
-        parent: _controller!,
-        curve: theme?.curve ?? Curves.easeIn,
-        reverseCurve: theme?.reverseCurve ?? Curves.easeOut,
-      );
+      _updateAnimations();
     }
   }
 
