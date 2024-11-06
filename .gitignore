@@ -38,3 +38,5 @@ build/
 /example/windows/
 /.flutter-plugins
 /.flutter-plugins-dependencies
+
+.idea/
