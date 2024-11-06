@@ -40,3 +40,5 @@ build/
 /.flutter-plugins-dependencies
 
 .idea/
+
+docs/pubspec.lock
