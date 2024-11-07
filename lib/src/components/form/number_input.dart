@@ -18,6 +18,7 @@ class NumberInput extends StatefulWidget {
   final AbstractButtonStyle? buttonStyle;
   final TextStyle? style;
   final EdgeInsetsGeometry? padding;
+  final VoidCallback? onEditingComplete;
 
   const NumberInput({
     super.key,
@@ -36,6 +37,7 @@ class NumberInput extends StatefulWidget {
     this.onChanged,
     this.buttonStyle,
     this.style,
+    this.onEditingComplete,
   });
 
   @override
@@ -302,6 +304,7 @@ class _NumberInputState extends State<NumberInput> {
           _lastValidValue = value;
           _controller.text = _valueAsString;
           widget.onChanged?.call(_lastValidValue);
+          widget.onEditingComplete?.call();
         },
         borderRadius: widget.showButtons
             ? BorderRadiusDirectional.only(
