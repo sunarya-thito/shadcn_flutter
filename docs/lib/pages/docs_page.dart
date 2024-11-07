@@ -478,7 +478,7 @@ class DocsPageState extends State<DocsPage> {
                                 density: ButtonDensity.icon,
                                 onPressed: () {
                                   openInNewTab(
-                                      'https://github.com/sunarya-thito/shadcn_flutter');
+                                      'https://github.com/ArcaneArts/arcane_shadcn');
                                 },
                                 child: FaIcon(
                                   FontAwesomeIcons.github,
@@ -490,7 +490,7 @@ class DocsPageState extends State<DocsPage> {
                                   density: ButtonDensity.icon,
                                   onPressed: () {
                                     openInNewTab(
-                                        'https://pub.dev/packages/shadcn_flutter');
+                                        'https://pub.dev/packages/arcane_shadcn');
                                   },
                                   child: ColorFiltered(
                                     // turns into white
@@ -689,7 +689,7 @@ class DocsPageState extends State<DocsPage> {
           size: 32 * theme.scaling,
         ),
         content: const Text(
-          'shadcn_flutter',
+          'arcane_shadcn',
         ).textLarge().mono(),
       ),
       trailing: [
@@ -711,7 +711,7 @@ class DocsPageState extends State<DocsPage> {
         GhostButton(
           density: ButtonDensity.icon,
           onPressed: () {
-            openInNewTab('https://github.com/sunarya-thito/shadcn_flutter');
+            openInNewTab('https://github.com/ArcaneArts/arcane');
           },
           child: FaIcon(FontAwesomeIcons.github,
                   color: theme.colorScheme.secondaryForeground)
@@ -721,7 +721,7 @@ class DocsPageState extends State<DocsPage> {
         GhostButton(
             density: ButtonDensity.icon,
             onPressed: () {
-              openInNewTab('https://pub.dev/packages/shadcn_flutter');
+              openInNewTab('https://pub.dev/packages/arcane');
             },
             child: ColorFiltered(
               // turns into white
@@ -757,7 +757,7 @@ class DocsPageState extends State<DocsPage> {
                   ),
                   Gap(18 * scaling),
                   const Text(
-                    'shadcn_flutter',
+                    'arcane',
                   ).medium().mono().expanded(),
                   TextButton(
                     density: ButtonDensity.icon,
