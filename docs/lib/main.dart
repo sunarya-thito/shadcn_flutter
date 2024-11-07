@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:docs/custom.dart';
 import 'package:docs/pages/docs/colors_page.dart';
 import 'package:docs/pages/docs/components/accordion_example.dart';
 import 'package:docs/pages/docs/components/alert_dialog_example.dart';
@@ -192,6 +193,7 @@ class MyAppState extends State<MyApp> {
           return const ComponentsPage();
         },
         routes: [
+          ...customRoutes,
           GoRoute(
             path: 'accordion',
             builder: (context, state) => const AccordionExample(),
