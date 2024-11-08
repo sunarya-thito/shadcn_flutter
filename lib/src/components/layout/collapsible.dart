@@ -1,12 +1,19 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Styling options for [Collapsible], [CollapsibleTrigger].
+class CollapsibleTheme {}
+
+/// https://sunarya-thito.github.io/shadcn_flutter/#/components/collapsible
 class Collapsible extends StatefulWidget {
   final List<Widget> children;
+
+  /// Initial expansion state of this widget (if null, defaults to false).
   final bool? isExpanded;
+
+  /// If overridden, the parent widget is responsible for managing the expansion state.
   final ValueChanged<bool>? onExpansionChanged;
 
-  // if onExpansionChanged is null, the CollapsibleState will handle the expansion state
-
+  /// https://sunarya-thito.github.io/shadcn_flutter/#/components/collapsible
   const Collapsible({
     super.key,
     required this.children,
@@ -51,10 +58,11 @@ class CollapsibleState extends State<Collapsible> {
       data:
           CollapsibleStateData(isExpanded: _isExpanded, handleTap: _handleTap),
       child: IntrinsicWidth(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: widget.children,
-      )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: widget.children,
+        ),
+      ),
     );
   }
 }
@@ -63,8 +71,10 @@ class CollapsibleStateData {
   final VoidCallback handleTap;
   final bool isExpanded;
 
-  const CollapsibleStateData(
-      {required this.isExpanded, required this.handleTap});
+  const CollapsibleStateData({
+    required this.isExpanded,
+    required this.handleTap,
+  });
 }
 
 class CollapsibleTrigger extends StatelessWidget {
