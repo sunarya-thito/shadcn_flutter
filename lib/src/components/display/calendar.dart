@@ -1222,6 +1222,14 @@ class CalendarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    var type = this.type;
+    if ((indexAtRow == 0 || indexAtRow == rowCount - 1) &&
+        (type == CalendarItemType.startRangeSelected ||
+            type == CalendarItemType.endRangeSelected ||
+            type == CalendarItemType.startRangeSelectedShort ||
+            type == CalendarItemType.endRangeSelectedShort)) {
+      type = CalendarItemType.selected;
+    }
     switch (type) {
       case CalendarItemType.none:
         return SizedBox(
