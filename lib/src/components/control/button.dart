@@ -487,6 +487,41 @@ class Button extends StatefulWidget {
     this.disableFocusOutline = false,
   });
 
+  const Button.card({
+    super.key,
+    this.statesController,
+    this.leading,
+    this.trailing,
+    required this.child,
+    this.onPressed,
+    this.focusNode,
+    this.alignment,
+    this.enabled,
+    this.style = ButtonVariance.card,
+    this.disableTransition = false,
+    this.onFocus,
+    this.onHover,
+    this.disableHoverEffect = false,
+    this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
+    this.marginAlignment,
+    this.disableFocusOutline = false,
+  });
+
   @override
   ButtonState createState() => ButtonState();
 }
@@ -832,6 +867,12 @@ class ButtonStyle implements AbstractButtonStyle {
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.fixed;
 
+  const ButtonStyle.card({
+    this.size = ButtonSize.normal,
+    this.density = ButtonDensity.normal,
+    this.shape = ButtonShape.rectangle,
+  }) : variance = ButtonVariance.card;
+
   @override
   ButtonStateProperty<Decoration> get decoration {
     if (shape == ButtonShape.circle) {
@@ -1000,6 +1041,7 @@ class ButtonVariance implements AbstractButtonStyle {
     iconTheme: _buttonDestructiveIconTheme,
     margin: _buttonZeroMargin,
   );
+
   static const ButtonVariance fixed = ButtonVariance(
     decoration: _buttonTextDecoration,
     mouseCursor: _buttonMouseCursor,
@@ -1033,6 +1075,15 @@ class ButtonVariance implements AbstractButtonStyle {
     padding: _buttonPadding,
     textStyle: _buttonMutedTextStyle,
     iconTheme: _buttonMutedIconTheme,
+    margin: _buttonZeroMargin,
+  );
+
+  static const ButtonVariance card = ButtonVariance(
+    decoration: _buttonCardDecoration,
+    mouseCursor: _buttonMouseCursor,
+    padding: _buttonCardPadding,
+    textStyle: _buttonCardTextStyle,
+    iconTheme: _buttonCardIconTheme,
     margin: _buttonZeroMargin,
   );
 
@@ -1288,6 +1339,61 @@ EdgeInsets _buttonPadding(BuildContext context, Set<WidgetState> states) {
     horizontal: theme.scaling * 16,
     vertical: theme.scaling * 8,
   );
+}
+
+// CARD
+TextStyle _buttonCardTextStyle(BuildContext context, Set<WidgetState> states) {
+  var themeData = Theme.of(context);
+  return themeData.typography.small.copyWith(
+    color: themeData.colorScheme.cardForeground,
+  );
+}
+
+IconThemeData _buttonCardIconTheme(
+    BuildContext context, Set<WidgetState> states) {
+  var themeData = Theme.of(context);
+  return IconThemeData(
+    color: themeData.colorScheme.cardForeground,
+  );
+}
+
+Decoration _buttonCardDecoration(
+    BuildContext context, Set<WidgetState> states) {
+  var themeData = Theme.of(context);
+  if (states.contains(WidgetState.disabled)) {
+    return BoxDecoration(
+      color: themeData.colorScheme.muted,
+      borderRadius: BorderRadius.circular(themeData.radiusXl),
+      border: Border.all(
+        color: themeData.colorScheme.border,
+        width: 1,
+      ),
+    );
+  }
+  if (states.contains(WidgetState.hovered) ||
+      states.contains(WidgetState.selected)) {
+    return BoxDecoration(
+      color: themeData.colorScheme.border,
+      borderRadius: BorderRadius.circular(themeData.radiusXl),
+      border: Border.all(
+        color: themeData.colorScheme.border,
+        width: 1,
+      ),
+    );
+  }
+  return BoxDecoration(
+    color: themeData.colorScheme.card,
+    borderRadius: BorderRadius.circular(themeData.radiusXl),
+    border: Border.all(
+      color: themeData.colorScheme.border,
+      width: 1,
+    ),
+  );
+}
+
+EdgeInsets _buttonCardPadding(BuildContext context, Set<WidgetState> states) {
+  final theme = Theme.of(context);
+  return const EdgeInsets.all(16) * theme.scaling;
 }
 
 // MENUBUTTON
@@ -2394,6 +2500,105 @@ class TabButton extends StatelessWidget {
       trailing: trailing,
       alignment: alignment,
       style: ButtonStyle.fixed(size: size, density: density, shape: shape),
+      focusNode: focusNode,
+      disableTransition: disableTransition,
+      onHover: onHover,
+      onFocus: onFocus,
+      enableFeedback: enableFeedback,
+      onTapDown: onTapDown,
+      onTapUp: onTapUp,
+      onTapCancel: onTapCancel,
+      onSecondaryTapDown: onSecondaryTapDown,
+      onSecondaryTapUp: onSecondaryTapUp,
+      onSecondaryTapCancel: onSecondaryTapCancel,
+      onTertiaryTapDown: onTertiaryTapDown,
+      onTertiaryTapUp: onTertiaryTapUp,
+      onTertiaryTapCancel: onTertiaryTapCancel,
+      onLongPressStart: onLongPressStart,
+      onLongPressUp: onLongPressUp,
+      onLongPressMoveUpdate: onLongPressMoveUpdate,
+      onLongPressEnd: onLongPressEnd,
+      onSecondaryLongPress: onSecondaryLongPress,
+      onTertiaryLongPress: onTertiaryLongPress,
+      child: child,
+    );
+  }
+}
+
+class CardButton extends StatelessWidget {
+  final Widget child;
+  final VoidCallback? onPressed;
+  final bool? enabled;
+  final Widget? leading;
+  final Widget? trailing;
+  final AlignmentGeometry? alignment;
+  final ButtonSize size;
+  final ButtonDensity density;
+  final ButtonShape shape;
+  final FocusNode? focusNode;
+  final bool disableTransition;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocus;
+
+  final bool? enableFeedback;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
+  final GestureTapDownCallback? onTertiaryTapDown;
+  final GestureTapUpCallback? onTertiaryTapUp;
+  final GestureTapCancelCallback? onTertiaryTapCancel;
+  final GestureLongPressStartCallback? onLongPressStart;
+  final GestureLongPressUpCallback? onLongPressUp;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  final GestureLongPressEndCallback? onLongPressEnd;
+  final GestureLongPressUpCallback? onSecondaryLongPress;
+  final GestureLongPressUpCallback? onTertiaryLongPress;
+
+  const CardButton({
+    super.key,
+    required this.child,
+    this.onPressed,
+    this.enabled,
+    this.leading,
+    this.trailing,
+    this.alignment,
+    this.size = ButtonSize.normal,
+    this.density = ButtonDensity.normal,
+    this.shape = ButtonShape.rectangle,
+    this.focusNode,
+    this.disableTransition = false,
+    this.onHover,
+    this.onFocus,
+    this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Button(
+      onPressed: onPressed,
+      enabled: enabled,
+      leading: leading,
+      trailing: trailing,
+      alignment: alignment,
+      style: ButtonStyle.card(size: size, density: density, shape: shape),
       focusNode: focusNode,
       disableTransition: disableTransition,
       onHover: onHover,
