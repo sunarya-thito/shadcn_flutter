@@ -453,22 +453,22 @@ class _ContextMenuState extends State<ContextMenu> {
     final bool enableLongPress = platform == TargetPlatform.iOS ||
         platform == TargetPlatform.android ||
         platform == TargetPlatform.fuchsia;
-    return widget.enabled
-        ? GestureDetector(
-            behavior: widget.behavior,
-            onSecondaryTapDown: (details) {
+    return GestureDetector(
+      behavior: widget.behavior,
+      onSecondaryTapDown: !widget.enabled
+          ? null
+          : (details) {
               _showContextMenu(
                   context, details.globalPosition, _children, widget.direction);
             },
-            onLongPressStart: enableLongPress
-                ? (details) {
-                    _showContextMenu(context, details.globalPosition, _children,
-                        widget.direction);
-                  }
-                : null,
-            child: widget.child,
-          )
-        : widget.child;
+      onLongPressStart: enableLongPress && widget.enabled
+          ? (details) {
+              _showContextMenu(
+                  context, details.globalPosition, _children, widget.direction);
+            }
+          : null,
+      child: widget.child,
+    );
   }
 }
 
