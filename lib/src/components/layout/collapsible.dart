@@ -39,6 +39,7 @@ class CollapsibleTheme {
     IconData? iconCollapsed,
     CrossAxisAlignment? crossAxisAlignment,
     MainAxisAlignment? mainAxisAlignment,
+    double? iconGap,
   }) {
     return CollapsibleTheme(
       padding: padding ?? this.padding,
@@ -46,6 +47,7 @@ class CollapsibleTheme {
       iconCollapsed: iconCollapsed ?? this.iconCollapsed,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
+      iconGap: iconGap ?? this.iconGap,
     );
   }
 
