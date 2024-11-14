@@ -70,7 +70,7 @@ class Command extends StatefulWidget {
   final WidgetBuilder? loadingBuilder;
   final double? surfaceOpacity;
   final double? surfaceBlur;
-  final Widget? searchPlaceholder;
+  final String? searchPlaceholder;
 
   const Command({
     super.key,
@@ -147,7 +147,7 @@ class _CommandState extends State<Command> {
                       border: false,
                       // focusNode: _textFieldFocus,
                       placeholder: widget.searchPlaceholder ??
-                          Text(ShadcnLocalizations.of(context).commandSearch),
+                          ShadcnLocalizations.of(context).commandSearch,
                     ),
                   ),
                   if (canPop)

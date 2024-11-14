@@ -11,7 +11,7 @@ class AutoComplete extends StatefulWidget {
   final bool enabled;
   final bool readOnly;
   final List<TextInputFormatter> inputFormatters;
-  final Widget? placeholder;
+  final String? placeholder;
   final ValueChanged<int>? onAcceptSuggestion;
   final FocusNode? focusNode;
   final AlignmentGeometry? popoverAlignment;
