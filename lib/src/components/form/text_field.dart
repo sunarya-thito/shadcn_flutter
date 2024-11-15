@@ -363,36 +363,6 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
           cursorColor: theme.colorScheme.primary,
           cursorWidth: 1,
         ),
-        // if (widget.placeholder != null)
-        //   Positioned.fill(
-        //     child: ListenableBuilder(
-        //       listenable: _controller,
-        //       builder: (context, child) {
-        //         return IgnorePointer(
-        //           child: Visibility(
-        //             visible: _controller.text.isEmpty,
-        //             child: Container(
-        //               padding: widget.padding ??
-        //                   EdgeInsets.symmetric(
-        //                     horizontal: 12 * scaling,
-        //                     vertical: (8 + 1) * scaling,
-        //                   ),
-        //               alignment: widget.placeholderAlignment,
-        //               child: DefaultTextStyle(
-        //                 style: defaultTextStyle
-        //                     .merge(theme.typography.normal)
-        //                     .merge(theme.typography.small)
-        //                     .copyWith(
-        //                       color: theme.colorScheme.mutedForeground,
-        //                     ),
-        //                 child: widget.placeholder!,
-        //               ),
-        //             ),
-        //           ),
-        //         );
-        //       },
-        //     ),
-        //   )
       ],
     );
   }
