@@ -408,14 +408,15 @@ class ContextMenu extends StatefulWidget {
   final List<MenuItem> items;
   final HitTestBehavior behavior;
   final Axis direction;
+  final bool enabled;
 
-  const ContextMenu({
-    super.key,
-    required this.child,
-    required this.items,
-    this.behavior = HitTestBehavior.translucent,
-    this.direction = Axis.vertical,
-  });
+  const ContextMenu(
+      {super.key,
+      required this.child,
+      required this.items,
+      this.behavior = HitTestBehavior.translucent,
+      this.direction = Axis.vertical,
+      this.enabled = true});
 
   @override
   State<ContextMenu> createState() => _ContextMenuState();
@@ -454,11 +455,13 @@ class _ContextMenuState extends State<ContextMenu> {
         platform == TargetPlatform.fuchsia;
     return GestureDetector(
       behavior: widget.behavior,
-      onSecondaryTapDown: (details) {
-        _showContextMenu(
-            context, details.globalPosition, _children, widget.direction);
-      },
-      onLongPressStart: enableLongPress
+      onSecondaryTapDown: !widget.enabled
+          ? null
+          : (details) {
+              _showContextMenu(
+                  context, details.globalPosition, _children, widget.direction);
+            },
+      onLongPressStart: enableLongPress && widget.enabled
           ? (details) {
               _showContextMenu(
                   context, details.globalPosition, _children, widget.direction);
