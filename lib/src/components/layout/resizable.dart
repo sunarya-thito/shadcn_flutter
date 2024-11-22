@@ -1,12 +1,11 @@
-// WIP
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-typedef Predicate<T> = bool Function(T value);
-
+/// A Horizontal dragger that can be used as a divider between resizable panes.
 class HorizontalResizableDragger extends StatelessWidget {
+  /// Creates a [HorizontalResizableDragger].
   const HorizontalResizableDragger({super.key});
 
   @override
@@ -31,7 +30,9 @@ class HorizontalResizableDragger extends StatelessWidget {
   }
 }
 
+/// A Vertical dragger that can be used as a divider between resizable panes.
 class VerticalResizableDragger extends StatelessWidget {
+  /// Creates a [VerticalResizableDragger].
   const VerticalResizableDragger({super.key});
 
   @override
@@ -59,13 +60,19 @@ class VerticalResizableDragger extends StatelessWidget {
   }
 }
 
+/// A resizable pane value.
 class ResizablePaneValue {
+  /// The size of the pane.
   final double size;
+
+  /// Whether the pane is collapsed.
   final bool collapsed;
 
+  /// Creates a [ResizablePaneValue].
   const ResizablePaneValue(this.size, this.collapsed);
 }
 
+/// A sibling of a resizable panel.
 enum PanelSibling {
   before(-1),
   after(1),
@@ -76,9 +83,11 @@ enum PanelSibling {
   const PanelSibling(this.direction);
 }
 
+/// A controller for a resizable pane.
 class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
   _ResizablePaneState? _attachedState;
 
+  /// Creates a [ResizablePaneController].
   ResizablePaneController(double size, {bool collapsed = false})
       : super(ResizablePaneValue(size, collapsed));
 
@@ -90,6 +99,8 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
     _attachedState = null;
   }
 
+  /// Tries to set the size of the pane.
+  /// Returns `true` if the size was set, `false` otherwise.
   bool trySetSize(double newSize,
       [PanelSibling direction = PanelSibling.both]) {
     if (value.size == newSize) {
@@ -105,6 +116,8 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
     return tryExpandSize(delta, direction);
   }
 
+  /// Tries to expand the size of the pane.
+  /// Returns `true` if the size was expanded, `false` otherwise.
   bool tryExpandSize(double size,
       [PanelSibling direction = PanelSibling.both]) {
     if (size == 0) {
@@ -117,6 +130,8 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
         ._attemptExpand(activePane.index, direction.direction, size);
   }
 
+  /// Tries to collapse the pane.
+  /// Returns `true` if the pane was collapsed, `false` otherwise.
   bool tryCollapse([PanelSibling direction = PanelSibling.both]) {
     if (value.collapsed) {
       return false;
@@ -128,6 +143,8 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
         ._attemptCollapse(activePane.index, direction.direction);
   }
 
+  /// Tries to expand the pane.
+  /// Returns `true` if the pane was expanded, `false` otherwise.
   bool tryExpand([PanelSibling direction = PanelSibling.both]) {
     if (!value.collapsed) {
       return false;
@@ -139,6 +156,7 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
         ._attemptExpandCollapsed(activePane.index, direction.direction);
   }
 
+  /// Sets the size of the pane.
   set size(double newValue) {
     assert(newValue.isFinite, 'Size must be finite');
     if (newValue < 0) {
@@ -150,8 +168,10 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
     super.value = ResizablePaneValue(newValue, value.collapsed);
   }
 
+  /// The size of the pane.
   double get size => value.size;
 
+  /// Sets whether the pane is collapsed.
   set collapsed(bool newValue) {
     if (value.collapsed == newValue) {
       return;
@@ -159,35 +179,57 @@ class ResizablePaneController extends ValueNotifier<ResizablePaneValue> {
     super.value = ResizablePaneValue(value.size, newValue);
   }
 
+  /// Whether the pane is collapsed.
   bool get collapsed => value.collapsed;
 }
 
+/// A pane that can be resized within a resizable panel.
 class ResizablePane extends StatefulWidget {
+  /// The child of the pane.
   final Widget child;
+
+  /// Whether the pane is resizable.
   final bool resizable;
+
+  /// A callback that is called when the size of the pane changes.
   final ValueChanged<double>? onResize;
+
+  /// The initial size of the pane.
   final double? initialSize;
+
+  /// Whether the pane is initially collapsed.
   final bool initialCollapsed;
+
+  /// The minimum size of the pane.
   final double? minSize;
+
+  /// The maximum size of the pane.
   final double? maxSize;
+
+  /// The size of the pane when it is collapsed.
   final double? collapsedSize;
+
+  /// The controller of the pane.
   final ResizablePaneController? controller;
+
+  /// The flex of the pane.
   final double? flex;
 
+  /// Creates a [ResizablePane].
   const ResizablePane({
     super.key,
     this.resizable = true,
     required this.child,
     this.onResize,
-    required double initialSize,
+    required double this.initialSize,
     this.minSize,
     this.maxSize,
     this.collapsedSize,
     this.initialCollapsed = false,
   })  : controller = null,
-        flex = null,
-        initialSize = initialSize;
+        flex = null;
 
+  /// Creates a [ResizablePane] with a flex factor.
   const ResizablePane.flex({
     super.key,
     this.resizable = true,
@@ -215,6 +257,7 @@ class ResizablePane extends StatefulWidget {
     this.flex,
   });
 
+  /// Creates a [ResizablePane] with a controller.
   factory ResizablePane.controlled({
     Key? key,
     bool resizable = true,
@@ -245,11 +288,18 @@ class ResizablePane extends StatefulWidget {
   State<ResizablePane> createState() => _ResizablePaneState();
 }
 
+/// A resizable panel that contains resizable panes.
 class ResizableContainerData {
+  /// The size of the spared flex space.
   final double sparedFlexSpaceSize;
+
+  /// The size of the flex space.
   final double flexSpace;
+
+  /// The count of the flex space.
   final double flexCount;
 
+  /// Creates a [ResizableContainerData].
   const ResizableContainerData(
       this.sparedFlexSpaceSize, this.flexSpace, this.flexCount);
 }
@@ -312,20 +362,19 @@ class _ResizablePaneState extends State<ResizablePane> {
     if (__controller == null) {
       _sparedFlexSize = containerData?.sparedFlexSpaceSize;
       if (widget.flex != null) {
+        double newSize = (containerData!.sparedFlexSpaceSize *
+                (_activePane!._flex ?? widget.flex!))
+            .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity);
         if (widget.controller == null) {
           __controller = ResizablePaneController(
-            (containerData!.sparedFlexSpaceSize *
-                    (_activePane!._flex ?? widget.flex!))
-                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
+            newSize,
             collapsed: widget.initialCollapsed,
           );
           __controller!._attachState(this);
         } else {
           __controller = widget.controller;
           __controller!.value = ResizablePaneValue(
-            (containerData!.sparedFlexSpaceSize *
-                    (_activePane!._flex ?? widget.flex!))
-                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
+            newSize,
             widget.initialCollapsed,
           );
           __controller!._attachState(this);
@@ -444,14 +493,13 @@ class _ResizablePaneState extends State<ResizablePane> {
   }
 }
 
+/// A preferred size widget builder.
 typedef PreferredSizeWidgetBuilder = PreferredSizeWidget Function(
     BuildContext context);
 
+/// A resizable panel that contains resizable panes.
 class ResizablePanel extends StatefulWidget {
   static Widget _defaultDraggerBuilder(BuildContext context) {
-    // return Container(
-    //   color: Colors.yellow.scaleAlpha(0.2),
-    // );
     final state = Data.maybeOf<_ResizablePanelState>(context);
     assert(state != null, 'ResizableDivider must be a child of ResizablePanel');
     if (state!.widget.direction == Axis.horizontal) {
@@ -465,11 +513,19 @@ class ResizablePanel extends StatefulWidget {
     }
   }
 
+  /// The children of the panel.
   final List<ResizablePane> children;
+
+  /// The divider of the panel.
   final PreferredSizeWidget? divider;
+
+  /// The dragger builder of the panel.
   final WidgetBuilder? draggerBuilder;
+
+  /// The direction of the panel.
   final Axis direction;
 
+  /// Creates a [ResizablePanel].
   const ResizablePanel({
     super.key,
     required this.children,
@@ -478,19 +534,21 @@ class ResizablePanel extends StatefulWidget {
     this.draggerBuilder = _defaultDraggerBuilder,
   });
 
+  /// Creates a horizontal [ResizablePanel].
   const ResizablePanel.horizontal({
     super.key,
     required this.children,
     this.divider = const VerticalDivider(),
     this.draggerBuilder = _defaultDraggerBuilder,
-  })  : direction = Axis.horizontal;
+  }) : direction = Axis.horizontal;
 
+  /// Creates a vertical [ResizablePanel].
   const ResizablePanel.vertical({
     super.key,
     required this.children,
     this.divider = const Divider(),
     this.draggerBuilder = _defaultDraggerBuilder,
-  })  : direction = Axis.vertical;
+  }) : direction = Axis.vertical;
 
   @override
   State<ResizablePanel> createState() => _ResizablePanelState();
@@ -547,12 +605,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
     _panes = List.generate(widget.children.length,
         (index) => _ActivePane(index: index, containerState: this));
     _checkExpands();
-    // Trigger 2nd build to recompute divider size
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (mounted) {
-        setState(() {});
-      }
-    });
   }
 
   void _checkExpands() {
@@ -692,19 +744,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
 
       var borrowSize =
           _borrowSize(index + direction, maxOverflow, until, direction);
-      // if (borrowSize != null) {
-      //   pane._proposedSize = maxSize;
-      //   return _BorrowInfo(borrowSize.givenSize + given, borrowSize.from);
-      // }
-      // return null;
       pane._proposedSize = maxSize;
       return _BorrowInfo(borrowSize.givenSize + given, borrowSize.from);
     }
 
     pane._proposedSize = newSize;
-    // return delta;
     return _BorrowInfo(delta, index);
-    // return delta;
   }
 
   bool _attemptExpand(int index, int direction, double delta) {
@@ -974,8 +1019,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
 
     double payOffLeft = _payOffLoanSize(index - 1, delta, -1);
     double payOffRight = _payOffLoanSize(index, -delta, 1);
-    // _panes[index]._proposedSize -= payOffRight;
-    // _panes[index - 1]._proposedSize -= payOffLeft;
 
     double payingBackLeft =
         _borrowSize(index - 1, -payOffLeft, 0, -1).givenSize;
@@ -1239,7 +1282,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
 
   Widget buildFlexContainer(BuildContext context, double sparedFlexSize,
       double flexSpace, double flexCount) {
-    // print('flex: $flexSpace $flexCount $sparedFlexSize');
     switch (widget.direction) {
       case Axis.horizontal:
         return Row(
@@ -1300,7 +1342,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
       return Data.inherit(
         data: this,
         child: LayoutBuilder(builder: (context, constraints) {
-          double nonFlexSpace = 0;
+          double nonFlexSpace = dividerSize * (widget.children.length - 1);
           double flexCount = 0;
           double minSizeFlex = double.infinity;
           for (int i = 0; i < widget.children.length; i++) {
@@ -1322,7 +1364,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
             if (i >= widget.children.length - 1) {
               continue;
             }
-            nonFlexSpace += dividerSize;
           }
 
           for (int i = 0; i < widget.children.length; i++) {

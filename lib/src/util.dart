@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+typedef Predicate<T> = bool Function(T value);
+
 const kDefaultDuration = Duration(milliseconds: 150);
 
 typedef ContextedCallback = void Function(BuildContext context);
