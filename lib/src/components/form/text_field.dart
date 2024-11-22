@@ -84,7 +84,7 @@ class TextField extends StatefulWidget {
     this.textInputAction,
     this.clipBehavior = Clip.hardEdge,
     this.autofocus = false,
-    this.placeholderAlignment = AlignmentDirectional.topStart,
+    this.placeholderAlignment = AlignmentDirectional.centerStart,
   });
 
   static Widget _defaultContextMenuBuilder(
