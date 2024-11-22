@@ -1,3 +1,16 @@
+## 0.0.22
+* Added Collapsible Theme
+* Added CardButton component
+* Added leading and trailing to form title
+* Added Progress Theme
+* Added Tracker Theme
+* Added separate overlay handler for mobile and desktop devices
+* Separated data widgets to another package
+* Fix dispose on RecentColorsScope notifier
+* Added ThemeMode
+* Fixed Form Validation microtask delay issue
+* Form Validators now return a FutureOr
+
 ## 0.0.21
 * Fixed issue with Form Validation Mode lifecycle
 * Fixed text extension for SelectableText
