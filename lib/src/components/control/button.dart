@@ -81,6 +81,28 @@ class SelectedButton extends StatefulWidget {
   final bool? enabled;
   final AlignmentGeometry? alignment;
   final AlignmentGeometry? marginAlignment;
+  final bool disableTransition;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocus;
+  final bool? enableFeedback;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
+  final GestureTapDownCallback? onTertiaryTapDown;
+  final GestureTapUpCallback? onTertiaryTapUp;
+  final GestureTapCancelCallback? onTertiaryTapCancel;
+  final GestureLongPressStartCallback? onLongPressStart;
+  final GestureLongPressUpCallback? onLongPressUp;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  final GestureLongPressEndCallback? onLongPressEnd;
+  final GestureLongPressUpCallback? onSecondaryLongPress;
+  final GestureLongPressUpCallback? onTertiaryLongPress;
+  final bool disableHoverEffect;
+  final WidgetStatesController? statesController;
+  final VoidCallback? onPressed;
 
   const SelectedButton({
     super.key,
@@ -92,6 +114,28 @@ class SelectedButton extends StatefulWidget {
     this.selectedStyle = const ButtonStyle.secondary(),
     this.alignment,
     this.marginAlignment,
+    this.disableTransition = false,
+    this.onHover,
+    this.onFocus,
+    this.enableFeedback,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onTertiaryTapDown,
+    this.onTertiaryTapUp,
+    this.onTertiaryTapCancel,
+    this.onLongPressStart,
+    this.onLongPressUp,
+    this.onLongPressMoveUpdate,
+    this.onLongPressEnd,
+    this.onSecondaryLongPress,
+    this.onTertiaryLongPress,
+    this.disableHoverEffect = false,
+    this.statesController,
+    this.onPressed,
   });
 
   @override
@@ -100,26 +144,24 @@ class SelectedButton extends StatefulWidget {
 
 // toggle button is just ghost button
 class SelectedButtonState extends State<SelectedButton> {
-  final WidgetStatesController statesController = WidgetStatesController();
-
+  late WidgetStatesController statesController;
   @override
   void initState() {
     super.initState();
+    statesController = widget.statesController ?? WidgetStatesController();
     statesController.update(WidgetState.selected, widget.value);
   }
 
   @override
   void didUpdateWidget(SelectedButton oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.statesController != widget.statesController) {
+      statesController = widget.statesController ?? WidgetStatesController();
+      statesController.update(WidgetState.selected, widget.value);
+    }
     if (oldWidget.value != widget.value) {
       statesController.update(WidgetState.selected, widget.value);
     }
-  }
-
-  @override
-  void dispose() {
-    statesController.dispose();
-    super.dispose();
   }
 
   @override
@@ -130,9 +172,32 @@ class SelectedButtonState extends State<SelectedButton> {
         style: widget.value ? widget.selectedStyle : widget.style,
         alignment: widget.alignment,
         marginAlignment: widget.marginAlignment,
+        disableTransition: widget.disableTransition,
+        onHover: widget.onHover,
+        onFocus: widget.onFocus,
+        enableFeedback: widget.enableFeedback,
+        onTapDown: widget.onTapDown,
+        onTapUp: widget.onTapUp,
+        onTapCancel: widget.onTapCancel,
+        onSecondaryTapDown: widget.onSecondaryTapDown,
+        onSecondaryTapUp: widget.onSecondaryTapUp,
+        onSecondaryTapCancel: widget.onSecondaryTapCancel,
+        onTertiaryTapDown: widget.onTertiaryTapDown,
+        onTertiaryTapUp: widget.onTertiaryTapUp,
+        onTertiaryTapCancel: widget.onTertiaryTapCancel,
+        onLongPressStart: widget.onLongPressStart,
+        onLongPressUp: widget.onLongPressUp,
+        onLongPressMoveUpdate: widget.onLongPressMoveUpdate,
+        onLongPressEnd: widget.onLongPressEnd,
+        onSecondaryLongPress: widget.onSecondaryLongPress,
+        onTertiaryLongPress: widget.onTertiaryLongPress,
+        disableHoverEffect: widget.disableHoverEffect,
         onPressed: () {
           if (widget.onChanged != null) {
             widget.onChanged!(!widget.value);
+          }
+          if (widget.onPressed != null) {
+            widget.onPressed!();
           }
         },
         child: widget.child);
