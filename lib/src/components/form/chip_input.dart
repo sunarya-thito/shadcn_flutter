@@ -20,7 +20,7 @@ class ChipInput<T> extends StatefulWidget {
   final ChipWidgetBuilder<T>? suggestionBuilder;
   final bool useChips;
   final TextInputAction? textInputAction;
-  final Widget? placeholder;
+  final String? placeholder;
   final Widget Function(BuildContext, T)? suggestionLeadingBuilder;
   final Widget Function(BuildContext, T)? suggestionTrailingBuilder;
   final Widget? inputTrailingWidget;

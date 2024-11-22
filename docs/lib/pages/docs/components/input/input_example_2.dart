@@ -7,7 +7,7 @@ class InputExample2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const TextField(
       initialValue: 'Hello World!',
-      placeholder: Text('Enter your message'),
+      placeholder: 'Enter your message',
     );
   }
 }

@@ -16,11 +16,11 @@ class CardExample1 extends StatelessWidget {
           const SizedBox(height: 24),
           const Text('Name').semiBold().small(),
           const SizedBox(height: 4),
-          const TextField(placeholder: Text('Name of your project')),
+          const TextField(placeholder: 'Name of your project'),
           const SizedBox(height: 16),
           const Text('Description').semiBold().small(),
           const SizedBox(height: 4),
-          const TextField(placeholder: Text('Description of your project')),
+          const TextField(placeholder: 'Description of your project'),
           const SizedBox(height: 24),
           Row(
             children: [
