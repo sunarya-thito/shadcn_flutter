@@ -289,7 +289,7 @@ class Select<T> extends StatefulWidget {
   final Widget Function(BuildContext context, T item) itemBuilder;
   final bool showUnrelatedValues;
   final BorderRadiusGeometry? borderRadius;
-  final Widget? searchPlaceholder;
+  final String? searchPlaceholder;
   final EdgeInsetsGeometry? padding;
   final AlignmentGeometry popoverAlignment;
   final AlignmentGeometry? popoverAnchorAlignment;
@@ -518,7 +518,7 @@ class SelectPopup<T> extends StatefulWidget {
   final ValueListenable<List<AbstractSelectItem<T>>> children;
   final bool showUnrelatedValues;
   final SelectValueChanged<T>? onChanged;
-  final Widget? searchPlaceholder;
+  final String? searchPlaceholder;
   final WidgetBuilder? emptyBuilder;
   final bool orderSelectedFirst;
   final double? surfaceBlur;
@@ -892,7 +892,7 @@ class MultiSelect<T> extends StatefulWidget {
   final Widget Function(BuildContext context, T item) itemBuilder;
   final bool showUnrelatedValues;
   final BorderRadiusGeometry? borderRadius;
-  final Widget? searchPlaceholder;
+  final String? searchPlaceholder;
   final EdgeInsetsGeometry? padding;
   final AlignmentGeometry popoverAlignment;
   final AlignmentGeometry? popoverAnchorAlignment;

@@ -175,7 +175,7 @@ class _IconsPageState extends State<IconsPage> {
                           const Gap(32),
                           TextField(
                             leading: const Icon(Icons.search),
-                            placeholder: const Text('Search icons'),
+                            placeholder: 'Search icons',
                             controller: _controller,
                           ),
                         ],
