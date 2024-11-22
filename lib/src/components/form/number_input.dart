@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class NumberInput extends StatefulWidget {
+  static final _decimalFormatter = FilteringTextInputFormatter.allow(
+    RegExp(r'^-?[0-9]+\.?[0-9]*$'),
+  );
   final TextEditingController? controller;
   final double initialValue;
   final Widget? leading;
@@ -288,13 +291,10 @@ class _NumberInputState extends State<NumberInput> {
         style: widget.style,
         inputFormatters: [
           if (!widget.allowDecimals) FilteringTextInputFormatter.digitsOnly,
-          if (widget.allowDecimals)
-            FilteringTextInputFormatter.allow(
-              RegExp(r'^-?[0-9]+\.?[0-9]*$'),
-            ),
+          if (widget.allowDecimals) NumberInput._decimalFormatter,
         ],
         controller: _controller,
-        onEditingComplete: () {
+        onChanged: (_) {
           double value = double.tryParse(_controller.text) ?? _lastValidValue;
           if (widget.min != null && value < widget.min!) {
             value = widget.min!;
@@ -302,8 +302,21 @@ class _NumberInputState extends State<NumberInput> {
             value = widget.max!;
           }
           _lastValidValue = value;
-          _controller.text = _valueAsString;
           widget.onChanged?.call(_lastValidValue);
+        },
+        onEditingComplete: () {
+          double value = double.tryParse(_controller.text) ?? _lastValidValue;
+          if (widget.min != null && value < widget.min!) {
+            value = widget.min!;
+          } else if (widget.max != null && value > widget.max!) {
+            value = widget.max!;
+          }
+          bool needsUpdate = value != _lastValidValue;
+          _lastValidValue = value;
+          _controller.text = _valueAsString;
+          if (needsUpdate) {
+            widget.onChanged?.call(_lastValidValue);
+          }
           widget.onEditingComplete?.call();
         },
         borderRadius: widget.showButtons
