@@ -1107,8 +1107,8 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                               color: HSLColor.fromAHSL(
                                 color.opacity,
                                 color.hslHue,
-                                1,
-                                0.5,
+                                color.hslSat,
+                                color.hslVal,
                               ),
                               sliderType: HSLColorSliderType.alpha,
                               reverse: true,
@@ -1126,8 +1126,8 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                               color: HSVColor.fromAHSV(
                                 color.opacity,
                                 color.hsvHue,
-                                1,
-                                1,
+                                color.hsvSat,
+                                color.hsvVal,
                               ),
                               onColorChanged: (value) {
                                 widget.onColorChanged?.call(
