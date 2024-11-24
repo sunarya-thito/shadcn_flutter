@@ -204,28 +204,31 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
               : SystemMouseCursors.basic,
           child: GestureDetector(
             onTap: widget.enabled ? () => _focusNode.requestFocus() : null,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: optionallyResolveBorderRadius(
-                        context, widget.borderRadius) ??
-                    BorderRadius.circular(theme.radiusMd),
-                color: widget.filled ? theme.colorScheme.muted : null,
-                border: widget.border
-                    ? Border.all(
-                        color: _statesController.value
-                                    .contains(WidgetState.focused) &&
-                                widget.enabled
-                            ? theme.colorScheme.ring
-                            : theme.colorScheme.border,
-                      )
-                    : null,
+            child: TextFieldTapRegion(
+              enabled: widget.enabled,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: optionallyResolveBorderRadius(
+                          context, widget.borderRadius) ??
+                      BorderRadius.circular(theme.radiusMd),
+                  color: widget.filled ? theme.colorScheme.muted : null,
+                  border: widget.border
+                      ? Border.all(
+                          color: _statesController.value
+                                      .contains(WidgetState.focused) &&
+                                  widget.enabled
+                              ? theme.colorScheme.ring
+                              : theme.colorScheme.border,
+                        )
+                      : null,
+                ),
+                padding: widget.padding ??
+                    EdgeInsets.symmetric(
+                      horizontal: 12 * scaling,
+                      vertical: 8 * scaling,
+                    ),
+                child: child,
               ),
-              padding: widget.padding ??
-                  EdgeInsets.symmetric(
-                    horizontal: 12 * scaling,
-                    vertical: 8 * scaling,
-                  ),
-              child: child,
             ),
           ),
         );
