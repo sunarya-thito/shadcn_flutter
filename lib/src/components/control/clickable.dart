@@ -3,6 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
+extension WidgetStateExtension on Set<WidgetState> {
+  bool get disabled => contains(WidgetState.disabled);
+  bool get error => contains(WidgetState.error);
+  bool get selected => contains(WidgetState.selected);
+  bool get pressed => contains(WidgetState.pressed);
+  bool get hovered => contains(WidgetState.hovered);
+  bool get focused => contains(WidgetState.focused);
+}
+
 abstract class StatedWidget extends StatelessWidget {
   static const List<WidgetState> defaultStateOrder = [
     WidgetState.disabled,
