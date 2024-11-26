@@ -296,7 +296,7 @@ class DocsPageState extends State<DocsPage> {
         // TODO also make it zoomable like: https://zoom-chart-demo.vercel.app/
         ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Code Snippet', 'code_snippet'),
-        ShadcnDocsPage('Table', 'table'),
+        ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.newFeature),
         ShadcnDocsPage('Tracker', 'tracker'),
       ],
     ),
