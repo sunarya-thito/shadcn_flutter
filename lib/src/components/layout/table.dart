@@ -201,10 +201,10 @@ class ResizableTableController extends ChangeNotifier {
     return true;
   }
 
-  bool resizeColumnBorder(
+  double resizeColumnBorder(
       int previousColumn, int nextColumn, double deltaWidth) {
     if (previousColumn < 0 || nextColumn < 0 || deltaWidth == 0) {
-      return false;
+      return 0;
     }
     // make sure that both previous and next column have width enough to resize
     var previousWidth = _columnWidths?[previousColumn] ?? _defaultColumnWidth;
@@ -236,7 +236,7 @@ class ResizableTableController extends ChangeNotifier {
     _columnWidths![previousColumn] = newPreviousWidth;
     _columnWidths![nextColumn] = newNextWidth;
     notifyListeners();
-    return true;
+    return delta;
   }
 
   double _absClosestTo(double a, double b, double target) {
@@ -245,9 +245,9 @@ class ResizableTableController extends ChangeNotifier {
     return absA < absB ? a : b;
   }
 
-  bool resizeRowBorder(int previousRow, int nextRow, double deltaHeight) {
+  double resizeRowBorder(int previousRow, int nextRow, double deltaHeight) {
     if (previousRow < 0 || nextRow < 0 || deltaHeight == 0) {
-      return false;
+      return 0;
     }
     // make sure that both previous and next row have height enough to resize
     var previousHeight = _rowHeights?[previousRow] ?? _defaultRowHeight;
@@ -277,7 +277,7 @@ class ResizableTableController extends ChangeNotifier {
     _rowHeights![previousRow] = newPreviousHeight;
     _rowHeights![nextRow] = newNextHeight;
     notifyListeners();
-    return true;
+    return delta;
   }
 
   bool resizeRow(int row, double height) {
@@ -576,7 +576,6 @@ class _CellResizerState extends State<_CellResizer> {
             right: 0,
             height: thickness,
             child: MouseRegion(
-              opaque: false,
               cursor: SystemMouseCursors.resizeRow,
               hitTestBehavior: HitTestBehavior.translucent,
               onEnter: (event) {
@@ -622,7 +621,6 @@ class _CellResizerState extends State<_CellResizer> {
             right: 0,
             height: thickness,
             child: MouseRegion(
-              opaque: false,
               cursor: SystemMouseCursors.resizeRow,
               hitTestBehavior: HitTestBehavior.translucent,
               onEnter: (event) {
@@ -666,7 +664,6 @@ class _CellResizerState extends State<_CellResizer> {
             bottom: 0,
             width: thickness,
             child: MouseRegion(
-              opaque: false,
               cursor: SystemMouseCursors.resizeColumn,
               hitTestBehavior: HitTestBehavior.translucent,
               onEnter: (event) {
@@ -712,7 +709,6 @@ class _CellResizerState extends State<_CellResizer> {
             bottom: 0,
             width: thickness,
             child: MouseRegion(
-              opaque: false,
               cursor: SystemMouseCursors.resizeColumn,
               hitTestBehavior: HitTestBehavior.translucent,
               onEnter: (event) {
