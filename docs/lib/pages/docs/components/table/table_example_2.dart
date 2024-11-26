@@ -12,9 +12,13 @@ class _TableExample2State extends State<TableExample2> {
     final theme = Theme.of(context);
     return TableCell(
       theme: TableCellTheme(
-          border: WidgetStatePropertyAll(Border.all(
-        color: theme.colorScheme.border,
-      ))),
+        border: WidgetStatePropertyAll(
+          Border.all(
+            color: theme.colorScheme.border,
+            strokeAlign: BorderSide.strokeAlignCenter,
+          ),
+        ),
+      ),
       child: Container(
         padding: const EdgeInsets.all(8),
         alignment: alignRight ? Alignment.topRight : null,
