@@ -14,6 +14,7 @@ class Scaffold extends StatefulWidget {
   final bool floatingFooter;
   final Color? headerBackgroundColor;
   final Color? footerBackgroundColor;
+  final Color? backgroundColor;
   final bool showLoadingSparks;
 
   const Scaffold({
@@ -25,6 +26,7 @@ class Scaffold extends StatefulWidget {
     this.loadingProgressIndeterminate = false,
     this.floatingHeader = false,
     this.floatingFooter = false,
+    this.backgroundColor,
     this.headerBackgroundColor,
     this.footerBackgroundColor,
     this.showLoadingSparks = false,
@@ -148,7 +150,7 @@ class ScaffoldState extends State<Scaffold> {
     final viewInsets = MediaQuery.viewInsetsOf(context);
     return DrawerOverlay(
       child: Container(
-        color: theme.colorScheme.background,
+        color: widget.backgroundColor ?? theme.colorScheme.background,
         child: _ScaffoldFlex(
           floatingHeader: widget.floatingHeader,
           floatingFooter: widget.floatingFooter,
