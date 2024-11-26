@@ -212,9 +212,6 @@ class ResizablePane extends StatefulWidget {
   /// The controller of the pane.
   final ResizablePaneController? controller;
 
-  /// The flex of the pane.
-  final double? flex;
-
   /// Creates a [ResizablePane].
   const ResizablePane({
     super.key,
@@ -226,22 +223,7 @@ class ResizablePane extends StatefulWidget {
     this.maxSize,
     this.collapsedSize,
     this.initialCollapsed = false,
-  })  : controller = null,
-        flex = null;
-
-  /// Creates a [ResizablePane] with a flex factor.
-  const ResizablePane.flex({
-    super.key,
-    this.resizable = true,
-    required this.child,
-    this.onResize,
-    this.minSize,
-    this.maxSize,
-    this.collapsedSize,
-    this.initialCollapsed = false,
-    this.flex = 1,
-  })  : controller = null,
-        initialSize = null;
+  }) : controller = null;
 
   const ResizablePane._controlled({
     super.key,
@@ -254,7 +236,6 @@ class ResizablePane extends StatefulWidget {
     required this.initialSize,
     required this.controller,
     this.initialCollapsed = false,
-    this.flex,
   });
 
   /// Creates a [ResizablePane] with a controller.
@@ -279,7 +260,6 @@ class ResizablePane extends StatefulWidget {
       maxSize: maxSize,
       collapsedSize: collapsedSize,
       controller: controller,
-      flex: flex,
       child: child,
     );
   }
@@ -288,26 +268,9 @@ class ResizablePane extends StatefulWidget {
   State<ResizablePane> createState() => _ResizablePaneState();
 }
 
-/// A resizable panel that contains resizable panes.
-class ResizableContainerData {
-  /// The size of the spared flex space.
-  final double sparedFlexSpaceSize;
-
-  /// The size of the flex space.
-  final double flexSpace;
-
-  /// The count of the flex space.
-  final double flexCount;
-
-  /// Creates a [ResizableContainerData].
-  const ResizableContainerData(
-      this.sparedFlexSpaceSize, this.flexSpace, this.flexCount);
-}
-
 class _ResizablePaneState extends State<ResizablePane> {
   ResizablePaneController? __controller;
   _ActivePane? _activePane;
-  double? _sparedFlexSize;
 
   ResizablePaneController get _controller {
     assert(__controller != null, 'ResizablePane is not properly initialized');
@@ -346,9 +309,6 @@ class _ResizablePaneState extends State<ResizablePane> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    var containerData = Data.maybeOf<ResizableContainerData>(context);
-    assert(widget.flex == null || containerData != null,
-        'ResizablePane must be a child of ResizableContainer');
     var newActivePane = Data.maybeOf<_ActivePane>(context);
     assert(
         newActivePane != null, 'ResizablePane must be a child of ActivePane');
@@ -360,41 +320,12 @@ class _ResizablePaneState extends State<ResizablePane> {
     }
 
     if (__controller == null) {
-      _sparedFlexSize = containerData?.sparedFlexSpaceSize;
-      if (widget.flex != null) {
-        double newSize = (containerData!.sparedFlexSpaceSize *
-                (_activePane!._flex ?? widget.flex!))
-            .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity);
-        if (widget.controller == null) {
-          __controller = ResizablePaneController(
-            newSize,
+      __controller = widget.controller ??
+          ResizablePaneController(
+            widget.initialSize!,
             collapsed: widget.initialCollapsed,
           );
-          __controller!._attachState(this);
-        } else {
-          __controller = widget.controller;
-          __controller!.value = ResizablePaneValue(
-            newSize,
-            widget.initialCollapsed,
-          );
-          __controller!._attachState(this);
-        }
-      } else {
-        __controller = widget.controller ??
-            ResizablePaneController(
-              widget.initialSize!,
-              collapsed: widget.initialCollapsed,
-            );
-        __controller!._attachState(this);
-      }
-    } else {
-      _sparedFlexSize = containerData?.sparedFlexSpaceSize;
-      if (widget.flex != null) {
-        double newSize =
-            (_sparedFlexSize! * (_activePane!._flex ?? widget.flex!))
-                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity);
-        _controller.size = newSize;
-      }
+      __controller!._attachState(this);
     }
   }
 
@@ -403,38 +334,12 @@ class _ResizablePaneState extends State<ResizablePane> {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
       __controller?._detachState(this);
-      if (widget.flex != null) {
-        if (widget.controller == null) {
-          __controller = ResizablePaneController(
-            (_sparedFlexSize! * widget.flex!)
-                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
+      __controller = widget.controller ??
+          ResizablePaneController(
+            widget.initialSize!,
             collapsed: widget.initialCollapsed,
           );
-        } else {
-          __controller = widget.controller;
-          __controller!.value = ResizablePaneValue(
-            (_sparedFlexSize! * widget.flex!)
-                .clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity),
-            widget.initialCollapsed,
-          );
-          __controller!._attachState(this);
-        }
-      } else {
-        __controller = widget.controller ??
-            ResizablePaneController(
-              widget.initialSize!,
-              collapsed: widget.initialCollapsed,
-            );
-        __controller!._attachState(this);
-      }
-    } else if (widget.flex != oldWidget.flex) {
-      double oldFlexedSize = _sparedFlexSize! * oldWidget.flex!;
-      double newFlexedSize = _sparedFlexSize! * widget.flex!;
-      double diff = newFlexedSize - oldFlexedSize;
-      double newSize = _controller.value.size + diff;
-      newSize =
-          newSize.clamp(widget.minSize ?? 0, widget.maxSize ?? double.infinity);
-      _controller.size = newSize;
+      __controller!._attachState(this);
     }
   }
 
@@ -561,7 +466,6 @@ class _ActivePane {
   _ResizablePaneState? _attachedPane;
   double _sizeBeforeDrag = 0;
   double __proposedSize = 0;
-  double? _flex;
   double get _proposedSize => __proposedSize;
 
   set _proposedSize(double value) {
@@ -597,18 +501,12 @@ class _BorrowInfo {
 
 class _ResizablePanelState extends State<ResizablePanel> {
   late List<_ActivePane> _panes;
-  late bool _expands;
 
   @override
   void initState() {
     super.initState();
     _panes = List.generate(widget.children.length,
         (index) => _ActivePane(index: index, containerState: this));
-    _checkExpands();
-  }
-
-  void _checkExpands() {
-    _expands = widget.children.any((pane) => pane.flex != null);
   }
 
   bool _isDragging = true;
@@ -970,7 +868,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
         }
         attachedPane._changeSize(pane._proposedSize);
       }
-      _recomputeFlex();
     });
   }
 
@@ -1199,40 +1096,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
     return _panes[index];
   }
 
-  void _recomputeFlex() {
-    double? minSize;
-    for (int i = 0; i < widget.children.length; i++) {
-      final pane = getAt(i);
-      if (pane != null && widget.children[i].flex != null) {
-        var viewSize2 = pane._attachedPane!.viewSize;
-        if (viewSize2 == 0) {
-          continue;
-        }
-        if (minSize == null) {
-          minSize = viewSize2;
-        } else {
-          minSize = min(minSize, viewSize2);
-        }
-      }
-    }
-    if (minSize != null) {
-      for (int i = 0; i < widget.children.length; i++) {
-        final pane = getAt(i);
-        if (pane != null && widget.children[i].flex != null) {
-          pane._flex =
-              minSize == 0 ? 0 : pane._attachedPane!.viewSize / minSize;
-        }
-      }
-    }
-  }
-
   @override
   void didUpdateWidget(ResizablePanel oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(oldWidget.children, widget.children)) {
       _panes = List.generate(widget.children.length,
           (index) => _ActivePane(index: index, containerState: this));
-      _checkExpands();
     }
   }
 
@@ -1316,12 +1185,9 @@ class _ResizablePanelState extends State<ResizablePanel> {
       children.add(
         Data.inherit(
           data: pane,
-          child: Data.inherit(
-            data: ResizableContainerData(sparedFlexSize, flexSpace, flexCount),
-            child: KeyedSubtree(
-              key: _panes[i]._key,
-              child: child,
-            ),
+          child: KeyedSubtree(
+            key: _panes[i]._key,
+            child: child,
           ),
         ),
       );
@@ -1337,150 +1203,6 @@ class _ResizablePanelState extends State<ResizablePanel> {
     } else {
       dividerSize = widget.divider?.preferredSize.height ?? 0;
     }
-    // create dividers
-    if (_expands) {
-      return Data.inherit(
-        data: this,
-        child: LayoutBuilder(builder: (context, constraints) {
-          double nonFlexSpace = dividerSize * (widget.children.length - 1);
-          double flexCount = 0;
-          double minSizeFlex = double.infinity;
-          for (int i = 0; i < widget.children.length; i++) {
-            final child = widget.children[i];
-            if (child.flex == null) {
-              assert(
-                  child.initialSize != null, 'Initial size must not be null');
-              nonFlexSpace += _panes[i]._attachedPane?.viewSize ??
-                  (child.initialCollapsed
-                      ? (child.collapsedSize ?? 0)
-                      : (child.initialSize ?? 0));
-            } else {
-              double currentSize = _panes[i]._attachedPane?.viewSize ??
-                  (child.initialCollapsed
-                      ? (child.collapsedSize ?? 0)
-                      : (child.initialSize ?? 0));
-              minSizeFlex = min(minSizeFlex, currentSize);
-            }
-            if (i >= widget.children.length - 1) {
-              continue;
-            }
-          }
-
-          for (int i = 0; i < widget.children.length; i++) {
-            final child = widget.children[i];
-            if (child.flex != null) {
-              final attachedPane = _panes[i]._attachedPane;
-              if (minSizeFlex == double.infinity ||
-                  attachedPane == null ||
-                  minSizeFlex == 0) {
-                flexCount += _panes[i]._flex ?? child.flex!;
-              } else {
-                flexCount += attachedPane.viewSize / minSizeFlex;
-              }
-            }
-          }
-          if (flexCount.isNaN || flexCount.isInfinite) {
-            flexCount = 0;
-          }
-          double containerSize = widget.direction == Axis.horizontal
-              ? constraints.maxWidth
-              : constraints.maxHeight;
-          double flexSpace = containerSize - nonFlexSpace;
-          double spacePerFlex = flexCount == 0 ? 0 : flexSpace / flexCount;
-
-          List<Widget> draggers = [];
-          double offset = 0;
-          for (int i = 0; i < widget.children.length - 1; i++) {
-            final child = widget.children[i];
-            double size = (_panes[i]._attachedPane?.collapsed ??
-                    child.initialCollapsed)
-                ? (child.collapsedSize ?? 0)
-                : (child.flex != null
-                    ? ((_panes[i]._flex ?? child.flex)! * spacePerFlex).clamp(
-                        child.minSize ?? 0, child.maxSize ?? double.infinity)
-                    : (_panes[i]._attachedPane?.viewSize ??
-                        child.initialSize ??
-                        0));
-
-            offset += size + dividerSize;
-            Widget? dragger;
-            bool leftRightCanDrag = widget.children[i].resizable &&
-                widget.children[i + 1].resizable;
-            if (widget.direction == Axis.horizontal && leftRightCanDrag) {
-              dragger = Positioned(
-                left: offset,
-                top: 0,
-                bottom: 0,
-                child: FractionalTranslation(
-                  translation: const Offset(-0.5, 0),
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.resizeLeftRight,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onPanStart: (details) {
-                        _startDragging();
-                      },
-                      onPanUpdate: (details) {
-                        _dragDivider(i + 1, details.delta.dx);
-                      },
-                      onPanEnd: (details) {
-                        _stopDragging();
-                      },
-                      child: Builder(
-                        builder: (context) {
-                          return widget.draggerBuilder!(context);
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            } else if (leftRightCanDrag) {
-              dragger = Positioned(
-                top: offset,
-                left: 0,
-                right: 0,
-                child: FractionalTranslation(
-                  translation: const Offset(0, -0.5),
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.resizeUpDown,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onPanStart: (details) {
-                        _startDragging();
-                      },
-                      onPanUpdate: (details) {
-                        _dragDivider(i + 1, details.delta.dy);
-                      },
-                      onPanEnd: (details) {
-                        _stopDragging();
-                      },
-                      child: Builder(
-                        builder: (context) {
-                          return widget.draggerBuilder!(context);
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }
-            if (dragger != null) {
-              draggers.add(dragger);
-            }
-          }
-          return Stack(
-            fit: StackFit.passthrough,
-            clipBehavior: Clip.none,
-            children: [
-              buildFlexContainer(context, spacePerFlex, flexSpace, flexCount),
-              ...draggers,
-            ],
-          );
-        }),
-      );
-    }
-
     List<Widget> draggers = [];
     var containerChildren = buildContainer(context);
     double offset = 0;
