@@ -456,7 +456,7 @@ class _CellResizer extends StatefulWidget {
 class _CellResizerState extends State<_CellResizer> {
   @override
   Widget build(BuildContext context) {
-    double thickness = widget.theme?.resizerThickness ?? 6;
+    double thickness = widget.theme?.resizerThickness ?? 4;
     final flattenedData = Data.of<_FlattenedTableCell>(context);
     final row = flattenedData.row;
     final column = flattenedData.column;
