@@ -41,17 +41,19 @@ class _ResizableExample6State extends State<ResizableExample6> {
                   minSize: 40,
                   initialSize: 120,
                   child: LayoutBuilder(builder: (context, constraints) {
+                    var maxWidth =
+                        constraints.maxWidth - 1; // -1 is the divider
                     return ResizablePanel.horizontal(
                       children: [
                         ResizablePane(
-                          initialSize: constraints.maxWidth / 2,
+                          initialSize: maxWidth / 2,
                           child: NumberedContainer(
                             index: 2,
                             fill: false,
                           ),
                         ),
                         ResizablePane(
-                          initialSize: constraints.maxWidth / 2,
+                          initialSize: maxWidth / 2,
                           child: NumberedContainer(
                             index: 3,
                             fill: false,
