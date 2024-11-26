@@ -804,7 +804,8 @@ class TableCell {
       flattenedData.columnSpan,
       flattenedData.rowSpan,
     );
-    var theme = this.theme ?? flattenedData.tableCellThemeBuilder(context);
+    var theme = this.theme;
+    var defaultTheme = flattenedData.tableCellThemeBuilder(context);
     return MouseRegion(
       onEnter: (event) {
         if (flattenedData.enabled) {
@@ -833,11 +834,14 @@ class TableCell {
           };
           return Container(
             decoration: BoxDecoration(
-              border: theme.border?.resolve(resolvedStates),
-              color: theme.backgroundColor?.resolve(resolvedStates),
+              border: theme?.border?.resolve(resolvedStates) ??
+                  defaultTheme.border?.resolve(resolvedStates),
+              color: theme?.backgroundColor?.resolve(resolvedStates) ??
+                  defaultTheme.backgroundColor?.resolve(resolvedStates),
             ),
             child: DefaultTextStyle.merge(
-              style: theme.textStyle?.resolve(resolvedStates),
+              style: theme?.textStyle?.resolve(resolvedStates) ??
+                  defaultTheme.textStyle?.resolve(resolvedStates),
               child: child!,
             ),
           );
