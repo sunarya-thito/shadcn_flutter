@@ -30,6 +30,8 @@ class _TableExample2State extends State<TableExample2> {
   final ResizableTableController controller = ResizableTableController(
     defaultColumnWidth: 150,
     defaultRowHeight: 40,
+    defaultHeightConstraint: const ConstrainedTableSize(min: 40),
+    defaultWidthConstraint: const ConstrainedTableSize(min: 80),
   );
 
   @override

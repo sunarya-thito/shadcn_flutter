@@ -160,21 +160,38 @@ class ResizableTableController extends ChangeNotifier {
   Map<int, double>? _rowHeights;
   final double _defaultColumnWidth;
   final double _defaultRowHeight;
+  final ConstrainedTableSize? _defaultWidthConstraint;
+  final ConstrainedTableSize? _defaultHeightConstraint;
+  final Map<int, ConstrainedTableSize>? _widthConstraints;
+  final Map<int, ConstrainedTableSize>? _heightConstraints;
 
   ResizableTableController({
     Map<int, double>? columnWidths,
     required double defaultColumnWidth,
     Map<int, double>? rowHeights,
     required double defaultRowHeight,
+    ConstrainedTableSize? defaultWidthConstraint,
+    ConstrainedTableSize? defaultHeightConstraint,
+    Map<int, ConstrainedTableSize>? widthConstraints,
+    Map<int, ConstrainedTableSize>? heightConstraints,
   })  : _columnWidths = columnWidths,
         _rowHeights = rowHeights,
         _defaultColumnWidth = defaultColumnWidth,
-        _defaultRowHeight = defaultRowHeight;
+        _defaultRowHeight = defaultRowHeight,
+        _widthConstraints = widthConstraints,
+        _heightConstraints = heightConstraints,
+        _defaultWidthConstraint = defaultWidthConstraint,
+        _defaultHeightConstraint = defaultHeightConstraint;
 
   bool resizeColumn(int column, double width) {
     if (column < 0 || width < 0) {
       return false;
     }
+    width = width.clamp(
+        _widthConstraints?[column]?.min ?? _defaultWidthConstraint?.min ?? 0,
+        _widthConstraints?[column]?.max ??
+            _defaultWidthConstraint?.max ??
+            double.infinity);
     if (_columnWidths != null && _columnWidths![column] == width) {
       return false;
     }
@@ -184,10 +201,94 @@ class ResizableTableController extends ChangeNotifier {
     return true;
   }
 
+  bool resizeColumnBorder(
+      int previousColumn, int nextColumn, double deltaWidth) {
+    if (previousColumn < 0 || nextColumn < 0 || deltaWidth == 0) {
+      return false;
+    }
+    // make sure that both previous and next column have width enough to resize
+    var previousWidth = _columnWidths?[previousColumn] ?? _defaultColumnWidth;
+    double newPreviousWidth = previousWidth + deltaWidth;
+    var nextWidth = _columnWidths?[nextColumn] ?? _defaultColumnWidth;
+    double newNextWidth = nextWidth - deltaWidth;
+    double clampedPreviousWidth = newPreviousWidth.clamp(
+        _widthConstraints?[previousColumn]?.min ??
+            _defaultWidthConstraint?.min ??
+            0,
+        _widthConstraints?[previousColumn]?.max ??
+            _defaultWidthConstraint?.max ??
+            double.infinity);
+    double clampedNextWidth = newNextWidth.clamp(
+        _widthConstraints?[nextColumn]?.min ??
+            _defaultWidthConstraint?.min ??
+            0,
+        _widthConstraints?[nextColumn]?.max ??
+            _defaultWidthConstraint?.max ??
+            double.infinity);
+    double previousDelta = clampedPreviousWidth - previousWidth;
+    double nextDelta = clampedNextWidth - nextWidth;
+    // find the delta that can be applied to both columns
+    double delta = _absClosestTo(previousDelta, -nextDelta, 0);
+
+    newPreviousWidth = previousWidth + delta;
+    newNextWidth = nextWidth - delta;
+    _columnWidths ??= {};
+    _columnWidths![previousColumn] = newPreviousWidth;
+    _columnWidths![nextColumn] = newNextWidth;
+    notifyListeners();
+    return true;
+  }
+
+  double _absClosestTo(double a, double b, double target) {
+    double absA = (a - target).abs();
+    double absB = (b - target).abs();
+    return absA < absB ? a : b;
+  }
+
+  bool resizeRowBorder(int previousRow, int nextRow, double deltaHeight) {
+    if (previousRow < 0 || nextRow < 0 || deltaHeight == 0) {
+      return false;
+    }
+    // make sure that both previous and next row have height enough to resize
+    var previousHeight = _rowHeights?[previousRow] ?? _defaultRowHeight;
+    double newPreviousHeight = previousHeight + deltaHeight;
+    var nextHeight = _rowHeights?[nextRow] ?? _defaultRowHeight;
+    double newNextHeight = nextHeight - deltaHeight;
+    double clampedPreviousHeight = newPreviousHeight.clamp(
+        _heightConstraints?[previousRow]?.min ??
+            _defaultHeightConstraint?.min ??
+            0,
+        _heightConstraints?[previousRow]?.max ??
+            _defaultHeightConstraint?.max ??
+            double.infinity);
+    double clampedNextHeight = newNextHeight.clamp(
+        _heightConstraints?[nextRow]?.min ?? _defaultHeightConstraint?.min ?? 0,
+        _heightConstraints?[nextRow]?.max ??
+            _defaultHeightConstraint?.max ??
+            double.infinity);
+    double previousDelta = clampedPreviousHeight - previousHeight;
+    double nextDelta = clampedNextHeight - nextHeight;
+    // find the delta that can be applied to both rows
+    double delta = _absClosestTo(previousDelta, -nextDelta, 0);
+
+    newPreviousHeight = previousHeight + delta;
+    newNextHeight = nextHeight - delta;
+    _rowHeights ??= {};
+    _rowHeights![previousRow] = newPreviousHeight;
+    _rowHeights![nextRow] = newNextHeight;
+    notifyListeners();
+    return true;
+  }
+
   bool resizeRow(int row, double height) {
     if (row < 0 || height < 0) {
       return false;
     }
+    height = height.clamp(
+        _heightConstraints?[row]?.min ?? _defaultHeightConstraint?.min ?? 0,
+        _heightConstraints?[row]?.max ??
+            _defaultHeightConstraint?.max ??
+            double.infinity);
     if (_rowHeights != null && _rowHeights![row] == height) {
       return false;
     }
@@ -487,18 +588,14 @@ class _CellResizerState extends State<_CellResizer> {
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onVerticalDragUpdate: (details) {
-                  var previousRowHeight = widget.controller.getRowHeight(row);
-                  if (previousRowHeight - details.primaryDelta! < 0 &&
-                      heightMode == TableCellResizeMode.reallocate) {
-                    return;
-                  }
-                  bool result = widget.controller.resizeRow(
-                      row - 1,
-                      widget.controller.getRowHeight(row - 1) +
-                          details.primaryDelta!);
-                  if (result && heightMode == TableCellResizeMode.reallocate) {
+                  if (heightMode == TableCellResizeMode.reallocate) {
+                    widget.controller
+                        .resizeRowBorder(row - 1, row, details.primaryDelta!);
+                  } else {
                     widget.controller.resizeRow(
-                        row, previousRowHeight - details.primaryDelta!);
+                        row - 1,
+                        widget.controller.getRowHeight(row - 1) +
+                            details.primaryDelta!);
                   }
                 },
                 child: ValueListenableBuilder<_HoveredLine?>(
@@ -537,19 +634,14 @@ class _CellResizerState extends State<_CellResizer> {
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onVerticalDragUpdate: (details) {
-                  var nextRowHeight =
-                      widget.controller.getRowHeight(row + rowSpan);
-                  if (nextRowHeight - details.primaryDelta! < 0 &&
-                      heightMode == TableCellResizeMode.reallocate) {
-                    return;
-                  }
-                  bool result = widget.controller.resizeRow(
-                      row + rowSpan - 1,
-                      widget.controller.getRowHeight(row + rowSpan - 1) +
-                          details.primaryDelta!);
-                  if (result && heightMode == TableCellResizeMode.reallocate) {
+                  if (heightMode == TableCellResizeMode.reallocate) {
+                    widget.controller.resizeRowBorder(row + rowSpan - 1,
+                        row + rowSpan, details.primaryDelta!);
+                  } else {
                     widget.controller.resizeRow(
-                        row + rowSpan, nextRowHeight - details.primaryDelta!);
+                        row + rowSpan - 1,
+                        widget.controller.getRowHeight(row + rowSpan - 1) +
+                            details.primaryDelta!);
                   }
                 },
                 child: ValueListenableBuilder<_HoveredLine?>(
@@ -586,19 +678,14 @@ class _CellResizerState extends State<_CellResizer> {
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onHorizontalDragUpdate: (details) {
-                  var previousColumnWidth =
-                      widget.controller.getColumnWidth(column);
-                  if (previousColumnWidth - details.primaryDelta! < 0 &&
-                      widthMode == TableCellResizeMode.reallocate) {
-                    return;
-                  }
-                  bool result = widget.controller.resizeColumn(
-                      column - 1,
-                      widget.controller.getColumnWidth(column - 1) +
-                          details.primaryDelta!);
-                  if (result && widthMode == TableCellResizeMode.reallocate) {
+                  if (widthMode == TableCellResizeMode.reallocate) {
+                    widget.controller.resizeColumnBorder(
+                        column - 1, column, details.primaryDelta!);
+                  } else {
                     widget.controller.resizeColumn(
-                        column, previousColumnWidth - details.primaryDelta!);
+                        column - 1,
+                        widget.controller.getColumnWidth(column - 1) +
+                            details.primaryDelta!);
                   }
                 },
                 child: ValueListenableBuilder<_HoveredLine?>(
@@ -637,20 +724,17 @@ class _CellResizerState extends State<_CellResizer> {
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onHorizontalDragUpdate: (details) {
-                  var nextColumnWidth =
-                      widget.controller.getColumnWidth(column + columnSpan);
-                  if (nextColumnWidth - details.primaryDelta! < 0 &&
-                      widthMode == TableCellResizeMode.reallocate) {
-                    return;
-                  }
-                  bool result = widget.controller.resizeColumn(
-                      column + columnSpan - 1,
-                      widget.controller
-                              .getColumnWidth(column + columnSpan - 1) +
-                          details.primaryDelta!);
-                  if (result && widthMode == TableCellResizeMode.reallocate) {
-                    widget.controller.resizeColumn(column + columnSpan,
-                        nextColumnWidth - details.primaryDelta!);
+                  if (widthMode == TableCellResizeMode.reallocate) {
+                    widget.controller.resizeColumnBorder(
+                        column + columnSpan - 1,
+                        column + columnSpan,
+                        details.primaryDelta!);
+                  } else {
+                    widget.controller.resizeColumn(
+                        column + columnSpan - 1,
+                        widget.controller
+                                .getColumnWidth(column + columnSpan - 1) +
+                            details.primaryDelta!);
                   }
                 },
                 child: ValueListenableBuilder<_HoveredLine?>(
