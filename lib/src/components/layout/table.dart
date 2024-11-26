@@ -566,6 +566,7 @@ class _CellResizerState extends State<_CellResizer> {
     final tableData = Data.of<_ResizableTableData>(context);
     final widthMode = tableData.cellWidthResizeMode;
     final heightMode = tableData.cellHeightResizeMode;
+    final theme = Theme.of(context);
     return Stack(
       children: [
         // top
@@ -603,7 +604,8 @@ class _CellResizerState extends State<_CellResizer> {
                     return Container(
                       color: hover?.index == row - 1 &&
                               hover?.direction == Axis.horizontal
-                          ? widget.theme?.resizerColor ?? Colors.blue
+                          ? widget.theme?.resizerColor ??
+                              theme.colorScheme.primary
                           : null,
                     );
                   },
@@ -648,7 +650,8 @@ class _CellResizerState extends State<_CellResizer> {
                     return Container(
                       color: hover?.index == row + rowSpan - 1 &&
                               hover?.direction == Axis.horizontal
-                          ? widget.theme?.resizerColor ?? Colors.blue
+                          ? widget.theme?.resizerColor ??
+                              theme.colorScheme.primary
                           : null,
                     );
                   },
@@ -691,7 +694,8 @@ class _CellResizerState extends State<_CellResizer> {
                     return Container(
                       color: hover?.index == column - 1 &&
                               hover?.direction == Axis.vertical
-                          ? widget.theme?.resizerColor ?? Colors.blue
+                          ? widget.theme?.resizerColor ??
+                              theme.colorScheme.primary
                           : null,
                     );
                   },
@@ -739,7 +743,8 @@ class _CellResizerState extends State<_CellResizer> {
                     return Container(
                       color: hover?.index == column + columnSpan - 1 &&
                               hover?.direction == Axis.vertical
-                          ? widget.theme?.resizerColor ?? Colors.blue
+                          ? widget.theme?.resizerColor ??
+                              theme.colorScheme.primary
                           : null,
                     );
                   },
@@ -1381,7 +1386,6 @@ class RenderTableLayout extends RenderBox
   bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
     // reverse hit test traversal so that the first child is hit tested last
     // important for column and row spans
-
     RenderBox? child = firstChild;
     while (child != null) {
       final parentData = child.parentData as TableParentData;
