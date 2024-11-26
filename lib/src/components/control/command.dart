@@ -152,7 +152,7 @@ class _CommandState extends State<Command> {
                   ),
                   if (canPop)
                     GhostButton(
-                      density: ButtonDensity.compact,
+                      density: ButtonDensity.iconDense,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
