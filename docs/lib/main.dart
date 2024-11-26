@@ -55,6 +55,7 @@ import 'package:docs/pages/docs/components/stepper_example.dart';
 import 'package:docs/pages/docs/components/steps_example.dart';
 import 'package:docs/pages/docs/components/switch_example.dart';
 import 'package:docs/pages/docs/components/tab_list_example.dart';
+import 'package:docs/pages/docs/components/table_example.dart';
 import 'package:docs/pages/docs/components/tabs_example.dart';
 import 'package:docs/pages/docs/components/text_area_example.dart';
 import 'package:docs/pages/docs/components/time_picker_example.dart';
@@ -651,6 +652,11 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) {
               return const TimelineAnimationExample();
             },
+          ),
+          GoRoute(
+            path: 'table',
+            builder: (context, state) => const TableExample(),
+            name: 'table',
           ),
         ]),
   ]);
