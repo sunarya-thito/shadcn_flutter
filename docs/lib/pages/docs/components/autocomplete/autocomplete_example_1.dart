@@ -53,6 +53,7 @@ class _AutoCompleteExample1State extends State<AutoCompleteExample1> {
       },
       trailing: IconButton.text(
         icon: const Icon(Icons.clear),
+        density: ButtonDensity.compact,
         onPressed: () {
           _controller.clear();
           setState(() {
