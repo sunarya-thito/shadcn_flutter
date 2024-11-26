@@ -9,7 +9,12 @@ class TableExample2 extends StatefulWidget {
 
 class _TableExample2State extends State<TableExample2> {
   TableCell buildCell(String text, [bool alignRight = false]) {
+    final theme = Theme.of(context);
     return TableCell(
+      theme: TableCellTheme(
+          border: WidgetStatePropertyAll(Border.all(
+        color: theme.colorScheme.border,
+      ))),
       child: Container(
         padding: const EdgeInsets.all(8),
         alignment: alignRight ? Alignment.topRight : null,
