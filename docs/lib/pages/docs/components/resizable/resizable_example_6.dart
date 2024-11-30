@@ -11,11 +11,11 @@ class ResizableExample6 extends StatefulWidget {
 class _ResizableExample6State extends State<ResizableExample6> {
   @override
   Widget build(BuildContext context) {
-    return OutlinedContainer(
+    return const OutlinedContainer(
       clipBehavior: Clip.antiAlias,
       child: ResizablePanel.horizontal(
         children: [
-          const ResizablePane(
+          ResizablePane(
             initialSize: 100,
             minSize: 40,
             child: NumberedContainer(
@@ -29,7 +29,7 @@ class _ResizableExample6State extends State<ResizableExample6> {
             initialSize: 300,
             child: ResizablePanel.vertical(
               children: [
-                const ResizablePane(
+                ResizablePane(
                   initialSize: 80,
                   minSize: 40,
                   child: NumberedContainer(
@@ -40,37 +40,37 @@ class _ResizableExample6State extends State<ResizableExample6> {
                 ResizablePane(
                   minSize: 40,
                   initialSize: 120,
-                  child: LayoutBuilder(builder: (context, constraints) {
-                    var maxWidth =
-                        constraints.maxWidth - 1; // -1 is the divider
-                    return ResizablePanel.horizontal(
-                      children: [
-                        ResizablePane(
-                          initialSize: maxWidth / 2,
-                          child: NumberedContainer(
-                            index: 2,
-                            fill: false,
-                          ),
+                  child: ResizablePanel.horizontal(
+                    children: [
+                      ResizablePane.flex(
+                        child: NumberedContainer(
+                          index: 2,
+                          fill: false,
                         ),
-                        ResizablePane(
-                          initialSize: maxWidth / 2,
-                          child: NumberedContainer(
-                            index: 3,
-                            fill: false,
-                          ),
+                      ),
+                      ResizablePane.flex(
+                        child: NumberedContainer(
+                          index: 3,
+                          fill: false,
                         ),
-                      ],
-                    );
-                  }),
+                      ),
+                      ResizablePane.flex(
+                        child: NumberedContainer(
+                          index: 4,
+                          fill: false,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-          const ResizablePane(
+          ResizablePane(
             initialSize: 100,
             minSize: 40,
             child: NumberedContainer(
-              index: 4,
+              index: 5,
               height: 200,
               fill: false,
             ),

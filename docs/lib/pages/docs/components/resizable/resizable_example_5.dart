@@ -8,7 +8,10 @@ class ResizableExample5 extends StatefulWidget {
 }
 
 class _ResizableExample5State extends State<ResizableExample5> {
-  final ResizablePaneController controller = ResizablePaneController(120);
+  final ResizablePaneController controller =
+      AbsoluteResizablePaneController(120);
+  final ResizablePaneController controller2 =
+      AbsoluteResizablePaneController(120);
   @override
   Widget build(BuildContext context) {
     return OutlinedContainer(
@@ -46,6 +49,31 @@ class _ResizableExample5State extends State<ResizableExample5> {
               alignment: Alignment.center,
               height: 200,
               child: const Text('Resizable'),
+            ),
+          ),
+          ResizablePane.controlled(
+            minSize: 100,
+            collapsedSize: 40,
+            controller: controller2,
+            child: AnimatedBuilder(
+              animation: controller2,
+              builder: (context, child) {
+                if (controller2.collapsed) {
+                  return Container(
+                    alignment: Alignment.center,
+                    height: 200,
+                    child: const RotatedBox(
+                      quarterTurns: -1,
+                      child: Text('Collapsed'),
+                    ),
+                  );
+                }
+                return Container(
+                  alignment: Alignment.center,
+                  height: 200,
+                  child: const Text('Expanded'),
+                );
+              },
             ),
           ),
         ],
