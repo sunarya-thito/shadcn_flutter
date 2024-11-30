@@ -109,6 +109,62 @@ class _TableExample2State extends State<TableExample2> {
             buildCell('\$300.00', true),
           ],
         ),
+        TableRow(
+          cells: [
+            buildCell('INV001'),
+            buildCell('Paid'),
+            buildCell('Credit Card'),
+            buildCell('\$250.00', true),
+          ],
+        ),
+        TableRow(
+          cells: [
+            buildCell('INV002'),
+            buildCell('Pending'),
+            buildCell('PayPal'),
+            buildCell('\$150.00', true),
+          ],
+        ),
+        TableRow(
+          cells: [
+            buildCell('INV003'),
+            buildCell('Unpaid'),
+            buildCell('Bank Transfer'),
+            buildCell('\$350.00', true),
+          ],
+        ),
+        TableRow(
+          cells: [
+            buildCell('INV004'),
+            buildCell('Paid'),
+            buildCell('Credit Card'),
+            buildCell('\$450.00', true),
+          ],
+        ),
+        TableRow(
+          cells: [
+            buildCell('INV005'),
+            buildCell('Paid'),
+            buildCell('PayPal'),
+            buildCell('\$550.00', true),
+          ],
+        ),
+        TableRow(
+          cells: [
+            buildCell('INV006'),
+            buildCell('Pending'),
+            buildCell('Bank Transfer'),
+            buildCell('\$200.00', true),
+          ],
+        ),
+        TableRow(
+          cells: [
+            buildCell('INV007'),
+            buildCell('Unpaid'),
+            buildCell('Credit Card'),
+            buildCell('\$300.00', true),
+          ],
+        ),
         TableFooter(
           cells: [
             TableCell(
