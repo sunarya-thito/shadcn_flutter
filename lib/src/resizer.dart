@@ -25,7 +25,7 @@
 // }
 
 class ResizableItem {
-  double value;
+  double _value;
   final double min;
   final double max;
   final bool collapsed;
@@ -35,18 +35,22 @@ class ResizableItem {
   bool? _newCollapsed;
 
   ResizableItem({
-    required this.value,
+    required double value,
     this.min = 0,
     this.max = double.infinity,
     this.collapsed = false,
     this.collapsedSize,
     this.resizable = true,
-  });
+  }) : _value = value;
 
   bool get newCollapsed => _newCollapsed ?? collapsed;
 
   double get newValue {
-    return _newValue ?? value;
+    return _newValue ?? _value;
+  }
+
+  double get value {
+    return _value;
   }
 
   @override
@@ -438,7 +442,7 @@ class Resizer {
             }
             previousItem._newCollapsed = true;
             previousItem._newValue = previousItem.collapsedSize ?? 0;
-            previousItem.value = previousItem._newValue!;
+            previousItem._value = previousItem._newValue!;
             _couldNotBorrow = 0;
           }
         }
@@ -462,7 +466,7 @@ class Resizer {
             }
             nextItem._newCollapsed = true;
             nextItem._newValue = nextItem.collapsedSize ?? 0;
-            nextItem.value = nextItem._newValue!;
+            nextItem._value = nextItem._newValue!;
             _couldNotBorrow = 0;
           }
         }
@@ -489,7 +493,7 @@ class Resizer {
             }
             item._newCollapsed = false;
             item._newValue = minSize;
-            item.value = minSize;
+            item._value = minSize;
             _couldNotBorrow = 0;
           }
           break;
@@ -513,7 +517,7 @@ class Resizer {
             }
             item._newCollapsed = false;
             item._newValue = minSize;
-            item.value = minSize;
+            item._value = minSize;
             _couldNotBorrow = 0;
           }
           break;
