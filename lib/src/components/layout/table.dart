@@ -349,6 +349,9 @@ class ResizableTable extends StatefulWidget {
   final Clip clipBehavior;
   final TableCellResizeMode cellWidthResizeMode;
   final TableCellResizeMode cellHeightResizeMode;
+  final FrozenTableData? frozenColumn;
+  final double? horizontalOffset;
+  final double? verticalOffset;
 
   const ResizableTable({
     required this.rows,
@@ -357,6 +360,9 @@ class ResizableTable extends StatefulWidget {
     this.clipBehavior = Clip.hardEdge,
     this.cellWidthResizeMode = TableCellResizeMode.reallocate,
     this.cellHeightResizeMode = TableCellResizeMode.expand,
+    this.frozenColumn,
+    this.horizontalOffset,
+    this.verticalOffset,
   });
 
   @override
@@ -520,6 +526,10 @@ class _ResizableTableState extends State<ResizableTable> {
             builder: (context, child) {
               return RawTableLayout(
                 clipBehavior: widget.clipBehavior,
+                horizontalOffset: widget.horizontalOffset,
+                verticalOffset: widget.verticalOffset,
+                frozenColumn: widget.frozenColumn?.testColumn,
+                frozenRow: widget.frozenColumn?.testRow,
                 width: (index) {
                   return _width(index);
                 },
@@ -594,10 +604,7 @@ class _CellResizer extends StatefulWidget {
 
 class _CellResizerState extends State<_CellResizer> {
   Resizer? _resizer;
-  // double? _delta;
   bool? _resizeRow;
-  int? _hoverRow;
-  int? _hoverColumn;
 
   void _onDragStartRow(DragStartDetails details) {
     List<ResizableItem> items = [];
@@ -610,7 +617,7 @@ class _CellResizerState extends State<_CellResizer> {
     }
     _resizer = Resizer(items);
     _resizeRow = true;
-    widget.onDrag(true, _hoverRow!, Axis.horizontal);
+    widget.onDrag(true, -1, Axis.horizontal);
   }
 
   void _onDragStartColumn(DragStartDetails details) {
@@ -624,7 +631,7 @@ class _CellResizerState extends State<_CellResizer> {
     }
     _resizer = Resizer(items);
     _resizeRow = false;
-    widget.onDrag(true, _hoverColumn!, Axis.vertical);
+    widget.onDrag(true, -1, Axis.vertical);
   }
 
   void _onDragUpdate(int start, int end, DragUpdateDetails details) {
@@ -648,17 +655,19 @@ class _CellResizerState extends State<_CellResizer> {
   }
 
   void _onDragCancel() {
+    if (_resizer == null) {
+      return;
+    }
     widget.onDrag(false, -1, Axis.horizontal);
     _resizer!.reset();
     for (int i = 0; i <= widget.maxRow; i++) {
-      if (_resizeRow!) {
+      if (_resizeRow == true) {
         widget.controller.resizeRow(i, _resizer!.items[i].value);
       } else {
         widget.controller.resizeColumn(i, _resizer!.items[i].value);
       }
     }
     _resizer = null;
-    // _delta = null;
     _resizeRow = null;
   }
 
@@ -688,11 +697,9 @@ class _CellResizerState extends State<_CellResizer> {
               hitTestBehavior: HitTestBehavior.translucent,
               onEnter: (event) {
                 widget.onHover(true, row - 1, Axis.horizontal);
-                _hoverRow = row - 1;
               },
               onExit: (event) {
                 widget.onHover(false, row - 1, Axis.horizontal);
-                _hoverRow = null;
               },
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
@@ -749,11 +756,9 @@ class _CellResizerState extends State<_CellResizer> {
               hitTestBehavior: HitTestBehavior.translucent,
               onEnter: (event) {
                 widget.onHover(true, row + rowSpan - 1, Axis.horizontal);
-                _hoverRow = row + rowSpan - 1;
               },
               onExit: (event) {
                 widget.onHover(false, row + rowSpan - 1, Axis.horizontal);
-                _hoverRow = null;
               },
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
@@ -807,11 +812,9 @@ class _CellResizerState extends State<_CellResizer> {
               hitTestBehavior: HitTestBehavior.translucent,
               onEnter: (event) {
                 widget.onHover(true, column - 1, Axis.vertical);
-                _hoverColumn = column - 1;
               },
               onExit: (event) {
                 widget.onHover(false, column - 1, Axis.vertical);
-                _hoverColumn = null;
               },
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
@@ -867,11 +870,9 @@ class _CellResizerState extends State<_CellResizer> {
               hitTestBehavior: HitTestBehavior.translucent,
               onEnter: (event) {
                 widget.onHover(true, column + columnSpan - 1, Axis.vertical);
-                _hoverColumn = column + columnSpan - 1;
               },
               onExit: (event) {
                 widget.onHover(false, column + columnSpan - 1, Axis.vertical);
-                _hoverColumn = null;
               },
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
@@ -1031,6 +1032,7 @@ class TableCell {
   final Widget child;
   final bool columnHover;
   final bool rowHover;
+  final Color? backgroundColor;
   final TableCellTheme? theme;
   final bool enabled;
 
@@ -1038,6 +1040,7 @@ class TableCell {
     this.columnSpan = 1,
     this.rowSpan = 1,
     required this.child,
+    this.backgroundColor,
     this.columnHover = false,
     this.rowHover = true,
     this.theme,
@@ -1054,56 +1057,61 @@ class TableCell {
     );
     var theme = this.theme;
     var defaultTheme = flattenedData.tableCellThemeBuilder(context);
-    return MouseRegion(
-      onEnter: (event) {
-        if (flattenedData.enabled) {
-          flattenedData.hoveredCellNotifier.value = currentCell;
-        }
-      },
-      onExit: (event) {
-        if (flattenedData.enabled) {
-          if (flattenedData.hoveredCellNotifier.value == currentCell) {
-            flattenedData.hoveredCellNotifier.value = null;
+    final appTheme = Theme.of(context);
+    return ColoredBox(
+      color: backgroundColor ?? appTheme.colorScheme.background,
+      child: MouseRegion(
+        onEnter: (event) {
+          if (flattenedData.enabled) {
+            flattenedData.hoveredCellNotifier.value = currentCell;
           }
-        }
-      },
-      child: ListenableBuilder(
-        // valueListenable: flattenedData.hoveredCellNotifier,
-        listenable: Listenable.merge([
-          flattenedData.hoveredCellNotifier,
-          flattenedData.dragNotifier,
-        ]),
-        builder: (context, child) {
-          var hoveredCell = flattenedData.hoveredCellNotifier.value;
-          var drag = flattenedData.dragNotifier?.value;
-          if (drag != null) {
-            hoveredCell = null;
-          }
-          var resolvedStates = {
-            if (hoveredCell != null &&
-                ((columnHover &&
-                        hoveredCell.intersects(currentCell, Axis.vertical)) ||
-                    (rowHover &&
-                        hoveredCell.intersects(currentCell, Axis.horizontal))))
-              WidgetState.hovered,
-            if (flattenedData.selected) WidgetState.selected,
-            if (!flattenedData.enabled) WidgetState.disabled,
-          };
-          return Container(
-            decoration: BoxDecoration(
-              border: theme?.border?.resolve(resolvedStates) ??
-                  defaultTheme.border?.resolve(resolvedStates),
-              color: theme?.backgroundColor?.resolve(resolvedStates) ??
-                  defaultTheme.backgroundColor?.resolve(resolvedStates),
-            ),
-            child: DefaultTextStyle.merge(
-              style: theme?.textStyle?.resolve(resolvedStates) ??
-                  defaultTheme.textStyle?.resolve(resolvedStates),
-              child: child!,
-            ),
-          );
         },
-        child: child,
+        onExit: (event) {
+          if (flattenedData.enabled) {
+            if (flattenedData.hoveredCellNotifier.value == currentCell) {
+              flattenedData.hoveredCellNotifier.value = null;
+            }
+          }
+        },
+        child: ListenableBuilder(
+          // valueListenable: flattenedData.hoveredCellNotifier,
+          listenable: Listenable.merge([
+            flattenedData.hoveredCellNotifier,
+            flattenedData.dragNotifier,
+          ]),
+          builder: (context, child) {
+            var hoveredCell = flattenedData.hoveredCellNotifier.value;
+            var drag = flattenedData.dragNotifier?.value;
+            if (drag != null) {
+              hoveredCell = null;
+            }
+            var resolvedStates = {
+              if (hoveredCell != null &&
+                  ((columnHover &&
+                          hoveredCell.intersects(currentCell, Axis.vertical)) ||
+                      (rowHover &&
+                          hoveredCell.intersects(
+                              currentCell, Axis.horizontal))))
+                WidgetState.hovered,
+              if (flattenedData.selected) WidgetState.selected,
+              if (!flattenedData.enabled) WidgetState.disabled,
+            };
+            return Container(
+              decoration: BoxDecoration(
+                border: theme?.border?.resolve(resolvedStates) ??
+                    defaultTheme.border?.resolve(resolvedStates),
+                color: theme?.backgroundColor?.resolve(resolvedStates) ??
+                    defaultTheme.backgroundColor?.resolve(resolvedStates),
+              ),
+              child: DefaultTextStyle.merge(
+                style: theme?.textStyle?.resolve(resolvedStates) ??
+                    defaultTheme.textStyle?.resolve(resolvedStates),
+                child: child!,
+              ),
+            );
+          },
+          child: child,
+        ),
       ),
     );
   }
@@ -1344,6 +1352,9 @@ class Table extends StatefulWidget {
   final Map<int, TableSize>? rowHeights;
   final Clip clipBehavior;
   final TableTheme? theme;
+  final FrozenTableData? frozenCells;
+  final double? horizontalOffset;
+  final double? verticalOffset;
   const Table({
     required this.rows,
     this.defaultColumnWidth = const FlexTableSize(),
@@ -1352,6 +1363,9 @@ class Table extends StatefulWidget {
     this.rowHeights,
     this.clipBehavior = Clip.hardEdge,
     this.theme,
+    this.frozenCells,
+    this.horizontalOffset,
+    this.verticalOffset,
   });
 
   @override
@@ -1412,6 +1426,10 @@ class _TableState extends State<Table> {
       ),
       child: RawTableLayout(
         clipBehavior: widget.clipBehavior,
+        frozenColumn: widget.frozenCells?.testColumn,
+        frozenRow: widget.frozenCells?.testRow,
+        horizontalOffset: widget.horizontalOffset,
+        verticalOffset: widget.verticalOffset,
         width: (index) {
           if (widget.columnWidths != null) {
             return widget.columnWidths![index] ?? widget.defaultColumnWidth;
@@ -1443,12 +1461,51 @@ class _TableState extends State<Table> {
   }
 }
 
+class TableRef {
+  final int index;
+  final int span;
+
+  const TableRef(this.index, [this.span = 1]);
+
+  bool test(int index, int span) {
+    return this.index <= index && this.index + this.span > index;
+  }
+}
+
+class FrozenTableData {
+  final Iterable<TableRef> frozenRows;
+  final Iterable<TableRef> frozenColumns;
+
+  const FrozenTableData(
+      {this.frozenRows = const [], this.frozenColumns = const []});
+
+  bool testRow(int index, int span) {
+    for (final ref in frozenRows) {
+      if (ref.test(index, span)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool testColumn(int index, int span) {
+    for (final ref in frozenColumns) {
+      if (ref.test(index, span)) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
 class TableParentData extends ContainerBoxParentData<RenderBox> {
   int? column;
   int? row;
   int? columnSpan;
   int? rowSpan;
   bool computeSize = true;
+  bool frozenRow = false;
+  bool frozenColumn = false;
 }
 
 class RawCell extends ParentDataWidget<TableParentData> {
@@ -1521,6 +1578,8 @@ class IntrinsicTableSize extends TableSize {
   const IntrinsicTableSize();
 }
 
+typedef CellPredicate = bool Function(int index, int span);
+
 class RawTableLayout extends MultiChildRenderObjectWidget {
   const RawTableLayout({
     super.key,
@@ -1528,22 +1587,30 @@ class RawTableLayout extends MultiChildRenderObjectWidget {
     required this.width,
     required this.height,
     required this.clipBehavior,
-    this.scrollOffset = Offset.zero,
     this.frozenColumn,
     this.frozenRow,
+    this.verticalOffset,
+    this.horizontalOffset,
   });
 
   final TableSizeSupplier width;
   final TableSizeSupplier height;
   final Clip clipBehavior;
-  final Offset scrollOffset;
-  final Predicate<int>? frozenColumn;
-  final Predicate<int>? frozenRow;
+  final CellPredicate? frozenColumn;
+  final CellPredicate? frozenRow;
+  final double? verticalOffset;
+  final double? horizontalOffset;
 
   @override
   RenderTableLayout createRenderObject(BuildContext context) {
     return RenderTableLayout(
-        width: width, height: height, clipBehavior: clipBehavior);
+        width: width,
+        height: height,
+        clipBehavior: clipBehavior,
+        frozenCell: frozenColumn,
+        frozenRow: frozenRow,
+        verticalOffset: verticalOffset,
+        horizontalOffset: horizontalOffset);
   }
 
   @override
@@ -1562,6 +1629,22 @@ class RawTableLayout extends MultiChildRenderObjectWidget {
       renderObject._clipBehavior = clipBehavior;
       needsRelayout = true;
     }
+    if (renderObject._frozenColumn != frozenColumn) {
+      renderObject._frozenColumn = frozenColumn;
+      needsRelayout = true;
+    }
+    if (renderObject._frozenRow != frozenRow) {
+      renderObject._frozenRow = frozenRow;
+      needsRelayout = true;
+    }
+    if (renderObject._verticalOffset != verticalOffset) {
+      renderObject._verticalOffset = verticalOffset;
+      needsRelayout = true;
+    }
+    if (renderObject._horizontalOffset != horizontalOffset) {
+      renderObject._horizontalOffset = horizontalOffset;
+      needsRelayout = true;
+    }
     if (needsRelayout) {
       renderObject.markNeedsLayout();
     }
@@ -1577,6 +1660,10 @@ class RenderTableLayout extends RenderBox
   TableSizeSupplier _width;
   TableSizeSupplier _height;
   Clip _clipBehavior;
+  CellPredicate? _frozenColumn;
+  CellPredicate? _frozenRow;
+  double? _verticalOffset;
+  double? _horizontalOffset;
 
   TableLayoutResult? _layoutResult;
 
@@ -1584,10 +1671,18 @@ class RenderTableLayout extends RenderBox
       {List<RenderBox>? children,
       required TableSizeSupplier width,
       required TableSizeSupplier height,
-      required Clip clipBehavior})
+      required Clip clipBehavior,
+      CellPredicate? frozenCell,
+      CellPredicate? frozenRow,
+      double? verticalOffset,
+      double? horizontalOffset})
       : _clipBehavior = clipBehavior,
         _width = width,
-        _height = height {
+        _height = height,
+        _frozenColumn = frozenCell,
+        _frozenRow = frozenRow,
+        _verticalOffset = verticalOffset,
+        _horizontalOffset = horizontalOffset {
     addAll(children);
   }
 
@@ -1647,7 +1742,9 @@ class RenderTableLayout extends RenderBox
           RenderBox? child = lastChild;
           while (child != null) {
             final parentData = child.parentData as TableParentData;
-            if (parentData.computeSize) {
+            if (parentData.computeSize &&
+                !parentData.frozenRow &&
+                !parentData.frozenColumn) {
               context.paintChild(child, offset + parentData.offset);
             }
             child = childBefore(child);
@@ -1663,12 +1760,38 @@ class RenderTableLayout extends RenderBox
         }
         child = childBefore(child);
       }
+      context.pushClipRect(
+        needsCompositing,
+        offset,
+        Offset.zero & size,
+        (context, offset) {
+          RenderBox? child = lastChild;
+          while (child != null) {
+            final parentData = child.parentData as TableParentData;
+            if (parentData.frozenRow || parentData.frozenColumn) {
+              context.paintChild(child, offset + parentData.offset);
+            }
+            child = childBefore(child);
+          }
+        },
+        clipBehavior: _clipBehavior,
+      );
       return;
     }
     RenderBox? child = lastChild;
     while (child != null) {
       final parentData = child.parentData as TableParentData;
-      context.paintChild(child, offset + parentData.offset);
+      if (!parentData.frozenRow && !parentData.frozenColumn) {
+        context.paintChild(child, offset + parentData.offset);
+      }
+      child = childBefore(child);
+    }
+    child = lastChild;
+    while (child != null) {
+      final parentData = child.parentData as TableParentData;
+      if (parentData.frozenRow || parentData.frozenColumn) {
+        context.paintChild(child, offset + parentData.offset);
+      }
       child = childBefore(child);
     }
   }
@@ -1676,6 +1799,9 @@ class RenderTableLayout extends RenderBox
   @override
   void performLayout() {
     final result = computeTableSize(constraints);
+
+    Map<int, double> frozenRows = {};
+    Map<int, double> frozenColumns = {};
 
     RenderBox? child = firstChild;
     while (child != null) {
@@ -1687,6 +1813,8 @@ class RenderTableLayout extends RenderBox
         double height = 0;
         int columnSpan = parentData.columnSpan ?? 1;
         int rowSpan = parentData.rowSpan ?? 1;
+        bool frozenRow = _frozenRow?.call(row, rowSpan) ?? false;
+        bool frozenColumn = _frozenColumn?.call(column, columnSpan) ?? false;
         for (int i = 0;
             i < columnSpan && column + i < result.columnWidths.length;
             i++) {
@@ -1699,7 +1827,49 @@ class RenderTableLayout extends RenderBox
         }
         child.layout(BoxConstraints.tightFor(width: width, height: height));
         final offset = result.getOffset(column, row);
-        parentData.offset = offset;
+        double offsetX = offset.dx;
+        double offsetY = offset.dy;
+        if (frozenRow) {
+          double verticalOffset = _verticalOffset ?? 0;
+          double offsetInViewport = offsetY - verticalOffset;
+          // make sure its visible on the viewport
+          double minViewport = 0;
+          double maxViewport = constraints.minHeight;
+          for (int i = 0; i < row; i++) {
+            var rowHeight = frozenRows[i] ?? 0;
+            minViewport += rowHeight;
+          }
+          double verticalAdjustment = 0;
+          if (offsetInViewport < minViewport) {
+            verticalAdjustment = -offsetInViewport + minViewport;
+          } else if (offsetInViewport + height > maxViewport) {
+            verticalAdjustment = maxViewport - offsetInViewport - height;
+          }
+          frozenRows[row] = max(frozenRows[row] ?? 0, height);
+          offsetY += verticalAdjustment;
+        }
+        if (frozenColumn) {
+          double horizontalOffset = _horizontalOffset ?? 0;
+          double offsetInViewport = offsetX - horizontalOffset;
+          // make sure its visible on the viewport
+          double minViewport = 0;
+          double maxViewport = constraints.minWidth;
+          for (int i = 0; i < column; i++) {
+            var columnWidth = frozenColumns[i] ?? 0;
+            minViewport += columnWidth;
+          }
+          double horizontalAdjustment = 0;
+          if (offsetInViewport < minViewport) {
+            horizontalAdjustment = -offsetInViewport + minViewport;
+          } else if (offsetInViewport + width > maxViewport) {
+            horizontalAdjustment = maxViewport - offsetInViewport - width;
+          }
+          frozenColumns[column] = max(frozenColumns[column] ?? 0, width);
+          offsetX += horizontalAdjustment;
+        }
+        parentData.frozenRow = frozenRow;
+        parentData.frozenColumn = frozenColumn;
+        parentData.offset = Offset(offsetX, offsetY);
         child = childAfter(child);
       }
     }
