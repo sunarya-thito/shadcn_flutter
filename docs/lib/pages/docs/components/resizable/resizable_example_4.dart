@@ -102,13 +102,13 @@ class _ResizableExample4State extends State<ResizableExample4> {
             ),
             PrimaryButton(
               onPressed: () {
-                controller1.tryExpandSize(20);
+                controller2.tryExpandSize(20);
               },
               child: const Text('Expand Panel 1'),
             ),
             PrimaryButton(
               onPressed: () {
-                controller1.tryExpandSize(-20);
+                controller2.tryExpandSize(-20);
               },
               child: const Text('Shrink Panel 1'),
             ),
