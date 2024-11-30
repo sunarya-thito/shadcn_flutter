@@ -168,6 +168,7 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
             ),
             popoverAlignment: Alignment.topLeft,
             popoverAnchorAlignment: Alignment.bottomLeft,
+            popupWidthConstraint: PopoverConstraint.flexible,
             onChanged: (value) {
               if (value != null) {
                 setState(() {
