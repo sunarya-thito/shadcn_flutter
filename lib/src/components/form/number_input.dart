@@ -68,105 +68,81 @@ class _NumberInputState extends State<NumberInput> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.showButtons) {
-      final theme = Theme.of(context);
-      return IntrinsicHeight(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Flexible(child: buildTextField(context)),
-            SizedBox(
-              height: 32 * theme.scaling,
-              child: buildButton(context, theme),
-            ),
-          ],
-        ),
-      );
-    }
-    return buildTextField(context);
-  }
-
-  EdgeInsets _paddingModifier(EdgeInsets value) {
-    return value * 0.2;
+    final theme = Theme.of(context);
+    return OutlinedContainer(
+      borderRadius: theme.borderRadiusMd,
+      child: buildTextField(context, theme),
+    );
   }
 
   AbstractButtonStyle get _buttonStyle {
     return widget.buttonStyle ??
-        ButtonStyle.secondary(
-          density: ButtonDensity(_paddingModifier),
+        const ButtonStyle.text(
+          density: ButtonDensity.compact,
+          size: ButtonSize.small,
         );
   }
 
   Widget buildButton(BuildContext context, ThemeData theme) {
-    return GestureDetector(
-      onPanUpdate: (details) {
-        if (details.delta.dy > 0) {
-          if (widget.max == null || _lastValidValue < widget.max!) {
-            double oldValue = _value.toDouble();
-            _lastValidValue = oldValue - widget.step;
-            _controller.text = widget.allowDecimals
-                ? _lastValidValue.toString()
-                : _lastValidValue.toInt().toString();
-            widget.onChanged?.call(_lastValidValue);
-          }
-        } else if (details.delta.dy < 0) {
-          if (widget.min == null || _lastValidValue > widget.min!) {
-            double oldValue = _value.toDouble();
-            _lastValidValue = oldValue + widget.step;
-            _controller.text = widget.allowDecimals
-                ? _lastValidValue.toString()
-                : _lastValidValue.toInt().toString();
-            widget.onChanged?.call(_lastValidValue);
-          }
-        }
-      },
-      child: Listener(
-        onPointerSignal: (event) {
-          if (event is PointerScrollEvent) {
-            if (event.scrollDelta.dy > 0) {
-              if (widget.max == null || _lastValidValue < widget.max!) {
-                double oldValue = _value.toDouble();
-                _lastValidValue = oldValue - widget.step;
-                _controller.text = widget.allowDecimals
-                    ? _lastValidValue.toString()
-                    : _lastValidValue.toInt().toString();
-                widget.onChanged?.call(_lastValidValue);
-              }
-            } else {
-              if (widget.min == null || _lastValidValue > widget.min!) {
-                double oldValue = _value.toDouble();
-                _lastValidValue = oldValue + widget.step;
-                _controller.text = widget.allowDecimals
-                    ? _lastValidValue.toString()
-                    : _lastValidValue.toInt().toString();
-                widget.onChanged?.call(_lastValidValue);
-              }
+    return Container(
+      width: 24 * theme.scaling,
+      height: 32 * theme.scaling,
+      child: GestureDetector(
+        onPanUpdate: (details) {
+          if (details.delta.dy > 0) {
+            if (widget.max == null || _lastValidValue < widget.max!) {
+              double oldValue = _value.toDouble();
+              _lastValidValue = oldValue - widget.step;
+              _controller.text = widget.allowDecimals
+                  ? _lastValidValue.toString()
+                  : _lastValidValue.toInt().toString();
+              widget.onChanged?.call(_lastValidValue);
+            }
+          } else if (details.delta.dy < 0) {
+            if (widget.min == null || _lastValidValue > widget.min!) {
+              double oldValue = _value.toDouble();
+              _lastValidValue = oldValue + widget.step;
+              _controller.text = widget.allowDecimals
+                  ? _lastValidValue.toString()
+                  : _lastValidValue.toInt().toString();
+              widget.onChanged?.call(_lastValidValue);
             }
           }
         },
-        child: Stack(
-          fit: StackFit.passthrough,
-          children: [
-            IntrinsicWidth(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Listener(
+          onPointerSignal: (event) {
+            if (event is PointerScrollEvent) {
+              if (event.scrollDelta.dy > 0) {
+                if (widget.max == null || _lastValidValue < widget.max!) {
+                  double oldValue = _value.toDouble();
+                  _lastValidValue = oldValue - widget.step;
+                  _controller.text = widget.allowDecimals
+                      ? _lastValidValue.toString()
+                      : _lastValidValue.toInt().toString();
+                  widget.onChanged?.call(_lastValidValue);
+                }
+              } else {
+                if (widget.min == null || _lastValidValue > widget.min!) {
+                  double oldValue = _value.toDouble();
+                  _lastValidValue = oldValue + widget.step;
+                  _controller.text = widget.allowDecimals
+                      ? _lastValidValue.toString()
+                      : _lastValidValue.toInt().toString();
+                  widget.onChanged?.call(_lastValidValue);
+                }
+              }
+            }
+          },
+          child: Stack(
+            fit: StackFit.passthrough,
+            children: [
+              Column(
                 mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Flexible(
                     child: Button(
-                      style: _buttonStyle.copyWith(
-                        decoration: (context, states, value) {
-                          if (value is BoxDecoration) {
-                            return value.copyWith(
-                              borderRadius: BorderRadiusDirectional.only(
-                                topEnd: Radius.circular(theme.radiusSm),
-                              ),
-                            );
-                          }
-                          return value;
-                        },
-                      ),
+                      style: _buttonStyle,
                       enabled: widget.enabled ??
                           (widget.max == null || _lastValidValue < widget.max!),
                       onPressed: () {
@@ -181,27 +157,14 @@ class _NumberInputState extends State<NumberInput> {
                           setState(() {});
                         }
                       },
-                      child: const FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Icon(
-                          Icons.arrow_drop_up,
-                        ),
+                      child: const Icon(
+                        Icons.arrow_drop_up,
                       ),
                     ),
                   ),
                   Flexible(
                     child: Button(
-                      style: _buttonStyle.copyWith(
-                        decoration: (context, states, value) {
-                          if (value is BoxDecoration) {
-                            return value.copyWith(
-                                borderRadius: BorderRadiusDirectional.only(
-                              bottomEnd: Radius.circular(theme.radiusSm),
-                            ));
-                          }
-                          return value;
-                        },
-                      ),
+                      style: _buttonStyle,
                       enabled: widget.enabled ??
                           (widget.min == null || _lastValidValue > widget.min!),
                       onPressed: () {
@@ -216,28 +179,25 @@ class _NumberInputState extends State<NumberInput> {
                           setState(() {});
                         }
                       },
-                      child: const FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Icon(
-                          Icons.arrow_drop_down,
-                        ),
+                      child: const Icon(
+                        Icons.arrow_drop_down,
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-            const Positioned.fill(
-              child: Center(
-                  child: MouseRegion(
-                      cursor: SystemMouseCursors.resizeUpDown,
-                      hitTestBehavior: HitTestBehavior.translucent,
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 8,
-                      ))),
-            )
-          ],
+              const Positioned.fill(
+                child: Center(
+                    child: MouseRegion(
+                        cursor: SystemMouseCursors.resizeUpDown,
+                        hitTestBehavior: HitTestBehavior.translucent,
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 8,
+                        ))),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -265,28 +225,26 @@ class _NumberInputState extends State<NumberInput> {
     }
   }
 
-  Widget buildTextField(BuildContext context) {
-    final theme = Theme.of(context);
+  Widget buildTextField(BuildContext context, ThemeData theme) {
     final scaling = theme.scaling;
     return ConstrainedBox(
       constraints: BoxConstraints(
         minWidth: 50 * scaling,
       ),
       child: TextField(
-        expands: true,
-        minLines: null,
-        maxLines: null,
+        border: false,
+        minLines: 1,
+        maxLines: 1,
         leading: widget.leading,
-        trailing: widget.trailing == null
-            ? null
-            : Padding(
-                padding: EdgeInsets.only(
-                    right: widget.showButtons == false ? 0 : 24 * scaling),
-                child: widget.trailing),
+        trailing: Row(
+          children: [
+            if (widget.trailing != null) widget.trailing!,
+            if (widget.showButtons) buildButton(context, theme),
+          ],
+        ),
         padding: widget.padding ??
-            EdgeInsets.symmetric(
-              horizontal: 10 * scaling,
-              vertical: 10 * scaling,
+            EdgeInsetsDirectional.only(
+              start: 10 * scaling,
             ),
         style: widget.style,
         inputFormatters: [

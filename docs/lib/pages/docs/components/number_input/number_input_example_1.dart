@@ -1,15 +1,32 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class NumberInputExample1 extends StatelessWidget {
+class NumberInputExample1 extends StatefulWidget {
   const NumberInputExample1({super.key});
 
   @override
+  State<NumberInputExample1> createState() => _NumberInputExample1State();
+}
+
+class _NumberInputExample1State extends State<NumberInputExample1> {
+  double value = 0;
+  @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      width: 100,
-      child: NumberInput(
-        style: TextStyle(fontSize: 12),
-      ),
+    return Column(
+      children: [
+        SizedBox(
+          width: 100,
+          child: NumberInput(
+            initialValue: value,
+            onChanged: (value) {
+              setState(() {
+                this.value = value;
+              });
+            },
+          ),
+        ),
+        gap(8),
+        Text('Value: $value'),
+      ],
     );
   }
 }
