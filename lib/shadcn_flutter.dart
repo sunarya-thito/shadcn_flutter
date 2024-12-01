@@ -155,6 +155,7 @@ export 'src/components/layout/pixel_snapped_gap.dart';
 export 'src/components/layout/resizable.dart';
 export 'src/components/layout/scaffold.dart';
 export 'src/components/layout/scrollable_client.dart';
+export 'src/components/layout/sortable.dart';
 export 'src/components/layout/stage_container.dart';
 export 'src/components/layout/stepper.dart';
 export 'src/components/layout/steps.dart';

@@ -220,7 +220,6 @@ class Resizer {
         reset();
         return false;
       }
-
       item._newValue = (item.newValue + delta).clamp(minSize, maxSize);
       // check
       return true;
