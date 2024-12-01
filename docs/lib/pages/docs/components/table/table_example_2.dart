@@ -59,9 +59,11 @@ class _TableExample2State extends State<TableExample2> {
                   frozenColumn: const FrozenTableData(
                     frozenRows: [
                       TableRef(0),
+                      TableRef(3),
                     ],
                     frozenColumns: [
                       TableRef(0),
+                      TableRef(2),
                     ],
                   ),
                   rows: [
