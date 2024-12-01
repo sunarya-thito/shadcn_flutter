@@ -1755,7 +1755,9 @@ class RenderTableLayout extends RenderBox
       RenderBox? child = lastChild;
       while (child != null) {
         final parentData = child.parentData as TableParentData;
-        if (!parentData.computeSize) {
+        if (!parentData.computeSize &&
+            !parentData.frozenRow &&
+            !parentData.frozenColumn) {
           context.paintChild(child, offset + parentData.offset);
         }
         child = childBefore(child);
@@ -1768,7 +1770,7 @@ class RenderTableLayout extends RenderBox
           RenderBox? child = lastChild;
           while (child != null) {
             final parentData = child.parentData as TableParentData;
-            if (parentData.frozenRow || parentData.frozenColumn) {
+            if (parentData.frozenColumn) {
               context.paintChild(child, offset + parentData.offset);
             }
             child = childBefore(child);
@@ -1776,6 +1778,38 @@ class RenderTableLayout extends RenderBox
         },
         clipBehavior: _clipBehavior,
       );
+      context.pushClipRect(
+        needsCompositing,
+        offset,
+        Offset.zero & size,
+        (context, offset) {
+          RenderBox? child = lastChild;
+          while (child != null) {
+            final parentData = child.parentData as TableParentData;
+            if (parentData.frozenRow) {
+              context.paintChild(child, offset + parentData.offset);
+            }
+            child = childBefore(child);
+          }
+        },
+        clipBehavior: _clipBehavior,
+      );
+      child = lastChild;
+      while (child != null) {
+        final parentData = child.parentData as TableParentData;
+        if (!parentData.computeSize && (parentData.frozenColumn)) {
+          context.paintChild(child, offset + parentData.offset);
+        }
+        child = childBefore(child);
+      }
+      child = lastChild;
+      while (child != null) {
+        final parentData = child.parentData as TableParentData;
+        if (!parentData.computeSize && (parentData.frozenRow)) {
+          context.paintChild(child, offset + parentData.offset);
+        }
+        child = childBefore(child);
+      }
       return;
     }
     RenderBox? child = lastChild;
@@ -1789,7 +1823,15 @@ class RenderTableLayout extends RenderBox
     child = lastChild;
     while (child != null) {
       final parentData = child.parentData as TableParentData;
-      if (parentData.frozenRow || parentData.frozenColumn) {
+      if (parentData.frozenColumn) {
+        context.paintChild(child, offset + parentData.offset);
+      }
+      child = childBefore(child);
+    }
+    child = lastChild;
+    while (child != null) {
+      final parentData = child.parentData as TableParentData;
+      if (parentData.frozenRow) {
         context.paintChild(child, offset + parentData.offset);
       }
       child = childBefore(child);
