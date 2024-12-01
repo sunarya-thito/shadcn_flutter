@@ -35,7 +35,6 @@ class _SortableExample1State extends State<SortableExample1> {
     return SizedBox(
       height: 500,
       child: SortableLayer(
-        lock: true,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
