@@ -4,8 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-typedef ScrollableBuilder = Widget Function(BuildContext context,
-    double horizontalOffset, double verticalOffset, Widget? child);
+typedef ScrollableBuilder = Widget Function(
+    BuildContext context, Offset offset, Size viewportSize, Widget? child);
 
 class ScrollableClient extends StatelessWidget {
   final bool? primary;
@@ -60,7 +60,10 @@ class ScrollableClient extends StatelessWidget {
                 var horizontalPixels = horizontalOffset.pixels;
                 var verticalPixels = verticalOffset.pixels;
                 return builder(
-                    context, horizontalPixels, verticalPixels, child);
+                    context,
+                    Offset(horizontalPixels, verticalPixels),
+                    (vicinity as _ScrollableClientChildVicinity).viewportSize,
+                    child);
               },
               child: child,
             );
@@ -190,7 +193,11 @@ class RenderScrollableClientViewport extends RenderTwoDimensionalViewport {
     double horizontalPixels = horizontalOffset.pixels;
     double verticalPixels = verticalOffset.pixels;
     final Size viewportDimension = this.viewportDimension;
-    const ChildVicinity vicinity = ChildVicinity(xIndex: 0, yIndex: 0);
+    final ChildVicinity vicinity = _ScrollableClientChildVicinity(
+      viewportSize: viewportDimension,
+      xIndex: 0,
+      yIndex: 0,
+    );
     final RenderBox child = buildOrObtainChildFor(vicinity)!;
     child.layout(
         BoxConstraints(
@@ -201,6 +208,10 @@ class RenderScrollableClientViewport extends RenderTwoDimensionalViewport {
     if (!overscroll) {
       horizontalPixels = max(0.0, horizontalPixels);
       verticalPixels = max(0.0, verticalPixels);
+      double maxHorizontalPixels = child.size.width - viewportDimension.width;
+      double maxVerticalPixels = child.size.height - viewportDimension.height;
+      horizontalPixels = min(horizontalPixels, maxHorizontalPixels);
+      verticalPixels = min(verticalPixels, maxVerticalPixels);
     }
     parentDataOf(child).layoutOffset =
         Offset(-horizontalPixels, -verticalPixels);
@@ -215,4 +226,14 @@ class RenderScrollableClientViewport extends RenderTwoDimensionalViewport {
     horizontalOffset.applyViewportDimension(viewportDimension.width);
     verticalOffset.applyViewportDimension(viewportDimension.height);
   }
+}
+
+class _ScrollableClientChildVicinity extends ChildVicinity {
+  final Size viewportSize;
+
+  const _ScrollableClientChildVicinity({
+    required this.viewportSize,
+    required super.xIndex,
+    required super.yIndex,
+  });
 }

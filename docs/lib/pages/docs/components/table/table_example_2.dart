@@ -51,11 +51,12 @@ class _TableExample2State extends State<TableExample2> {
         child: OutlinedContainer(
           child: ScrollableClient(
               diagonalDragBehavior: DiagonalDragBehavior.free,
-              builder: (context, horizontalOffset, verticalOffset, child) {
+              builder: (context, offset, viewportSize, child) {
                 return ResizableTable(
                   controller: controller,
-                  horizontalOffset: horizontalOffset,
-                  verticalOffset: verticalOffset,
+                  horizontalOffset: offset.dx,
+                  verticalOffset: offset.dy,
+                  viewportSize: viewportSize,
                   frozenColumn: const FrozenTableData(
                     frozenRows: [
                       TableRef(0),
