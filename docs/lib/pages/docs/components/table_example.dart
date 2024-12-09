@@ -1,5 +1,6 @@
 import 'package:docs/pages/docs/components/table/table_example_1.dart';
 import 'package:docs/pages/docs/components/table/table_example_2.dart';
+import 'package:docs/pages/docs/components/table/table_example_3.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
@@ -24,6 +25,11 @@ class TableExample extends StatelessWidget {
           title: 'Resizable Example',
           path: 'lib/pages/docs/components/table/table_example_2.dart',
           child: TableExample2(),
+        ),
+        WidgetUsageExample(
+          title: 'Scrollable Example',
+          path: 'lib/pages/docs/components/table/table_example_3.dart',
+          child: TableExample3(),
         ),
       ],
     );
