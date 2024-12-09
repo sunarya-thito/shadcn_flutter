@@ -81,7 +81,7 @@ class TextField extends StatefulWidget {
     this.onTapOutside,
     this.inputFormatters,
     this.style,
-    this.contextMenuBuilder = _defaultContextMenuBuilder,
+    this.contextMenuBuilder = defaultContextMenuBuilder,
     this.useNativeContextMenu = false,
     this.isCollapsed,
     this.textInputAction,
@@ -93,7 +93,7 @@ class TextField extends StatefulWidget {
     this.statesController,
   });
 
-  static Widget _defaultContextMenuBuilder(
+  static Widget defaultContextMenuBuilder(
       BuildContext context, EditableTextState editableTextState) {
     return buildEditableTextContextMenu(context, editableTextState);
   }
