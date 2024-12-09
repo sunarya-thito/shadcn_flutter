@@ -349,7 +349,7 @@ class ResizableTable extends StatefulWidget {
   final Clip clipBehavior;
   final TableCellResizeMode cellWidthResizeMode;
   final TableCellResizeMode cellHeightResizeMode;
-  final FrozenTableData? frozenColumn;
+  final FrozenTableData? frozenCells;
   final double? horizontalOffset;
   final double? verticalOffset;
   final Size? viewportSize;
@@ -361,7 +361,7 @@ class ResizableTable extends StatefulWidget {
     this.clipBehavior = Clip.hardEdge,
     this.cellWidthResizeMode = TableCellResizeMode.reallocate,
     this.cellHeightResizeMode = TableCellResizeMode.expand,
-    this.frozenColumn,
+    this.frozenCells,
     this.horizontalOffset,
     this.verticalOffset,
     this.viewportSize,
@@ -490,8 +490,8 @@ class _ResizableTableState extends State<ResizableTable> {
                   clipBehavior: widget.clipBehavior,
                   horizontalOffset: widget.horizontalOffset,
                   verticalOffset: widget.verticalOffset,
-                  frozenColumn: widget.frozenColumn?.testColumn,
-                  frozenRow: widget.frozenColumn?.testRow,
+                  frozenColumn: widget.frozenCells?.testColumn,
+                  frozenRow: widget.frozenCells?.testRow,
                   viewportSize: widget.viewportSize,
                   width: (index) {
                     return _width(index);
