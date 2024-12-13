@@ -68,18 +68,20 @@ class _ColorsPageState extends State<ColorsPage> {
               borderRadius: theme.borderRadiusMd,
             ),
           ),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text('Use this code to display this color:'),
-              const Gap(8),
-              CodeSnippet(
-                code: shade == 500
-                    ? 'Colors.${name.toLowerCase()}'
-                    : 'Colors.${name.toLowerCase()}[$shade]',
-                mode: 'dart',
-              ),
-            ],
+          content: IntrinsicWidth(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text('Use this code to display this color:'),
+                const Gap(8),
+                CodeSnippet(
+                  code: shade == 500
+                      ? 'Colors.${name.toLowerCase()}'
+                      : 'Colors.${name.toLowerCase()}[$shade]',
+                  mode: 'dart',
+                ),
+              ],
+            ),
           ),
           actions: [
             PrimaryButton(
