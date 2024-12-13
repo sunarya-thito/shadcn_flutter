@@ -16,20 +16,21 @@ dependencies:
     sdk: flutter
   skeletonizer: ^1.4.2
   syntax_highlight: ^0.4.0
-  country_flags: ^3.0.0
+  country_flags: ^3.1.0
   phonecodes: ^0.0.3
   cross_file: ^0.3.4+2
-  image: ^4.2.0
-  web: ^1.0.0
+  image: ^4.4.0
+  web: ^1.1.0
   pixel_snap: ^0.1.5
-  file_picker: ^8.1.2
+  file_picker: ^8.1.5
   audioplayers: ^6.1.0
   data_widget: ^0.0.2
 
+  archive: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   icon_font_generator: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
