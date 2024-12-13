@@ -169,11 +169,32 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Timeline Animation', 'timeline_animation'),
       ],
     ),
+    ShadcnDocsSection('Control', [
+      ShadcnDocsPage('Button', 'button'),
+      ShadcnDocsPage(
+          'Audio Control', 'audio_control', ShadcnFeatureTag.workInProgress),
+      ShadcnDocsPage(
+          'Video Control', 'video_control', ShadcnFeatureTag.workInProgress),
+    ]),
     ShadcnDocsSection(
       'Disclosure',
       [
         ShadcnDocsPage('Accordion', 'accordion'),
         ShadcnDocsPage('Collapsible', 'collapsible'),
+      ],
+    ),
+    ShadcnDocsSection(
+      'Display',
+      [
+        ShadcnDocsPage('Avatar', 'avatar'),
+        ShadcnDocsPage('Avatar Group', 'avatar_group'),
+        ShadcnDocsPage(
+            'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
+        // TODO also make it zoomable like: https://zoom-chart-demo.vercel.app/
+        ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Code Snippet', 'code_snippet'),
+        ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Tracker', 'tracker'),
       ],
     ),
     ShadcnDocsSection(
@@ -191,13 +212,15 @@ class DocsPageState extends State<DocsPage> {
       ],
     ),
     ShadcnDocsSection(
-      'Forms',
+      'Form',
       [
-        // TODO: mostly same as file input, except it only accepts audio file
+        // mostly same as file input, except it only accepts audio file
         // and adds the ability to play the audio
-        ShadcnDocsPage(
-            'Audio Input', 'audio_input', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Button', 'button'),
+        // ShadcnDocsPage(
+        //     'Audio Input', 'audio_input', ShadcnFeatureTag.workInProgress),
+        // update: NVM, merge the component with file input
+        // ShadcnDocsPage('Button', 'button'),
+        // moved to control
         ShadcnDocsPage('Checkbox', 'checkbox'),
         ShadcnDocsPage('Chip Input', 'chip_input'),
         ShadcnDocsPage('Color Picker', 'color_picker'),
@@ -266,15 +289,16 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Tree', 'tree'),
         // aka Bottom Navigation Bar
         ShadcnDocsPage('Navigation Bar', 'navigation_bar'),
-        // aka Sidebar
         ShadcnDocsPage('Navigation Rail', 'navigation_rail'),
+        ShadcnDocsPage('Expandable Sidebar', 'expandable_sidebar',
+            ShadcnFeatureTag.workInProgress),
         // aka Drawer
         ShadcnDocsPage('Navigation Sidebar', 'navigation_sidebar'),
         ShadcnDocsPage('Dot Indicator', 'dot_indicator'),
       ],
     ),
     ShadcnDocsSection(
-      'Surfaces',
+      'Overlay',
       [
         ShadcnDocsPage('Dialog', 'dialog'),
         ShadcnDocsPage('Drawer', 'drawer'),
@@ -286,22 +310,9 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Window', 'window', ShadcnFeatureTag.workInProgress),
       ],
     ),
+
     ShadcnDocsSection(
-      'Data Display',
-      [
-        ShadcnDocsPage('Avatar', 'avatar'),
-        ShadcnDocsPage('Avatar Group', 'avatar_group'),
-        ShadcnDocsPage(
-            'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
-        // TODO also make it zoomable like: https://zoom-chart-demo.vercel.app/
-        ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
-        ShadcnDocsPage('Code Snippet', 'code_snippet'),
-        ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.experimental),
-        ShadcnDocsPage('Tracker', 'tracker'),
-      ],
-    ),
-    ShadcnDocsSection(
-      'Utilities',
+      'Utility',
       [
         ShadcnDocsPage('Badge', 'badge'),
         ShadcnDocsPage('Chip', 'chip'),
@@ -328,12 +339,13 @@ class DocsPageState extends State<DocsPage> {
     'Animation',
     'Disclosure',
     'Feedback',
-    'Forms',
+    'Control',
+    'Form',
     'Layout',
     'Navigation',
-    'Surfaces',
-    'Data Display',
-    'Utilities',
+    'Overlay',
+    'Display',
+    'Utility',
   ];
   bool toggle = false;
   List<OnThisPage> currentlyVisible = [];
