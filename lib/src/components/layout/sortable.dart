@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class SortableData<T> {
@@ -200,7 +201,8 @@ class _DroppingTarget<T> {
   String toString() => '_DroppingTarget($source, $location)';
 }
 
-class _SortableState<T> extends State<Sortable<T>> {
+class _SortableState<T> extends State<Sortable<T>>
+    with AutomaticKeepAliveClientMixin {
   final ValueNotifier<_SortableDraggingSession<T>?> topCandidate =
       ValueNotifier(null);
   final ValueNotifier<_SortableDraggingSession<T>?> leftCandidate =
@@ -253,6 +255,15 @@ class _SortableState<T> extends State<Sortable<T>> {
 
   bool _dragging = false;
   _SortableDraggingSession<T>? _session;
+
+  _ScrollableSortableLayerState? _scrollableLayer;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scrollableLayer = Data.maybeOf<_ScrollableSortableLayerState>(context);
+  }
+
   void _onDragStart(DragStartDetails details) {
     _SortableLayerState? layer = Data.maybeFind<_SortableLayerState>(context);
     assert(layer != null, 'Sortable must be a descendant of SortableLayer');
@@ -292,6 +303,7 @@ class _SortableState<T> extends State<Sortable<T>> {
     setState(() {
       _dragging = true;
     });
+    _scrollableLayer?._startDrag(this, details.globalPosition);
   }
 
   ValueNotifier<_SortableDraggingSession<T>?> _getByLocation(
@@ -400,6 +412,7 @@ class _SortableState<T> extends State<Sortable<T>> {
 
   void _onDragUpdate(DragUpdateDetails details) {
     _handleDrag(details.delta);
+    _scrollableLayer?._updateDrag(this, details.globalPosition);
   }
 
   void _onDragEnd(DragEndDetails details) {
@@ -442,6 +455,7 @@ class _SortableState<T> extends State<Sortable<T>> {
     setState(() {
       _dragging = false;
     });
+    _scrollableLayer?._endDrag(this);
   }
 
   void _onDragCancel() {
@@ -457,6 +471,7 @@ class _SortableState<T> extends State<Sortable<T>> {
       _dragging = false;
     });
     widget.onDragCancel?.call();
+    _scrollableLayer?._endDrag(this);
   }
 
   @override
@@ -488,7 +503,20 @@ class _SortableState<T> extends State<Sortable<T>> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    if (_dragging) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _scrollableLayer?._endDrag(this);
+        _session!.layer.removeDraggingSession(_session!);
+        _currentTarget.value = null;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     final layer = Data.of<_SortableLayerState>(context);
     return MetaData(
       behavior: HitTestBehavior.translucent,
@@ -572,7 +600,10 @@ class _SortableState<T> extends State<Sortable<T>> {
                                           ));
                                   },
                                 )
-                            : widget.child,
+                            : IgnorePointer(
+                                ignoring: hasCandidate,
+                                child: widget.child,
+                              ),
                       ),
                       AbsorbPointer(
                         child: _buildAnimatedSize(
@@ -629,6 +660,9 @@ class _SortableState<T> extends State<Sortable<T>> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => _dragging;
 }
 
 class SortableLayer extends StatefulWidget {
@@ -697,6 +731,103 @@ class _SortableLayerState extends State<SortableLayer> {
             ),
         ],
       ),
+    );
+  }
+}
+
+class ScrollableSortableLayer extends StatefulWidget {
+  final Widget child;
+  final ScrollController controller;
+  final double scrollThreshold;
+  final bool overscroll;
+
+  const ScrollableSortableLayer({
+    super.key,
+    required this.child,
+    required this.controller,
+    this.scrollThreshold = 50,
+    this.overscroll = false,
+  });
+
+  @override
+  State<ScrollableSortableLayer> createState() =>
+      _ScrollableSortableLayerState();
+}
+
+class _ScrollableSortableLayerState extends State<ScrollableSortableLayer>
+    with SingleTickerProviderStateMixin {
+  late Ticker ticker;
+
+  @override
+  void initState() {
+    super.initState();
+    ticker = createTicker(_scroll);
+  }
+
+  _SortableState? _attached;
+  Offset? _globalPosition;
+  Duration? _lastElapsed;
+  void _scroll(Duration elapsed) {
+    var position = _globalPosition;
+    if (position != null && _lastElapsed != null) {
+      var renderBox = context.findRenderObject() as RenderBox;
+      position = renderBox.globalToLocal(position);
+      int delta = elapsed.inMicroseconds - _lastElapsed!.inMicroseconds;
+      double scrollDelta = 0;
+      var pos = widget.controller.position.axisDirection == AxisDirection.down
+          ? position.dy
+          : position.dx;
+      var size = widget.controller.position.axisDirection == AxisDirection.down
+          ? renderBox.size.height
+          : renderBox.size.width;
+      if (pos < widget.scrollThreshold) {
+        scrollDelta = -delta / 10000;
+      } else if (pos > size - widget.scrollThreshold) {
+        scrollDelta = delta / 10000;
+      }
+      var newPosition = widget.controller.offset + scrollDelta;
+      // newPosition =
+      //     newPosition.clamp(0, widget.controller.position.maxScrollExtent);
+      widget.controller.jumpTo(newPosition);
+      _attached?._handleDrag(Offset.zero);
+    }
+    _lastElapsed = elapsed;
+  }
+
+  void _startDrag(_SortableState state, Offset globalPosition) {
+    if (_attached != null && _attached!.context.mounted) {
+      return;
+    }
+    _attached = state;
+    _globalPosition = globalPosition;
+    if (!ticker.isActive) {
+      ticker.start();
+    }
+  }
+
+  void _updateDrag(_SortableState state, Offset globalPosition) {
+    if (state != _attached) {
+      return;
+    }
+    _globalPosition = globalPosition;
+  }
+
+  void _endDrag(_SortableState state) {
+    if (state != _attached) {
+      return;
+    }
+    if (ticker.isActive) {
+      ticker.stop();
+    }
+    _globalPosition = null;
+    _attached = null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Data.inherit(
+      data: this,
+      child: widget.child,
     );
   }
 }
