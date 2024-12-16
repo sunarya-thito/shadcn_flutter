@@ -262,6 +262,44 @@ class ColorShades implements Color, ColorSwatch {
     assert(color != null, 'ColorShades: Missing color for $index');
     return color!;
   }
+
+  @override
+  double get a => _primary.a;
+
+  @override
+  double get b => _primary.b;
+
+  @override
+  ColorSpace get colorSpace => _primary.colorSpace;
+
+  @override
+  double get g => _primary.g;
+
+  @override
+  Iterable get keys => _colors.keys;
+
+  @override
+  double get r => _primary.r;
+
+  @override
+  Color withValues(
+      {double? alpha,
+      double? red,
+      double? green,
+      double? blue,
+      ColorSpace? colorSpace}) {
+    Map<int, Color> colors = {};
+    for (final key in _shadeValues) {
+      colors[key] = _colors[key]!.withValues(
+        alpha: alpha,
+        red: red,
+        green: green,
+        blue: blue,
+        colorSpace: colorSpace,
+      );
+    }
+    return ColorShades._direct(colors);
+  }
 }
 
 String hexFromColor(Color color) {
