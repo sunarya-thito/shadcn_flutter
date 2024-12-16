@@ -217,6 +217,9 @@
       <excludeFolder url="file://$MODULE_DIR$/docs/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/docs/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/docs/build" />
+      <excludeFolder url="file://$MODULE_DIR$/test_widget/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/test_widget/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/test_widget/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
