@@ -1,3 +1,12 @@
+## 0.0.23
+* Support for 3.27.0
+* Added Sortable component
+* Added Table component
+* Fixed resizing issues with Resizable component
+* Changed default popupWidthConstraint to anchorFixSize
+* Fixed text field leading and trailing issue
+* Alpha sat and val now follow the wheel value on color picker
+
 ## 0.0.22
 * Added Collapsible Theme
 * Added CardButton component
