@@ -19,3 +19,5 @@ pubspec.lock
 *.iws
 .DS_Store
 doc/api/
+/test_widget/
+/shadcn_flutter_test/

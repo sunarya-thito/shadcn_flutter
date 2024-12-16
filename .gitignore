@@ -1,4 +1,3 @@
-/shadcn_flutter_test/
 /autosave/
 /.idea/other.xml
 /.idea/inspectionProfiles/Project_Default.xml
@@ -38,3 +37,4 @@ build/
 /example/windows/
 /.flutter-plugins
 /.flutter-plugins-dependencies
+/test_widget
