@@ -1,10 +1,12 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class Tabs extends StatelessWidget {
+class Tabs extends StatefulWidget {
   final int index;
   final ValueChanged<int> onChanged;
   final List<Widget> tabs;
   final EdgeInsetsGeometry? padding;
+  final Color? hoverColor;
+  final double? marginBetweenItems;
 
   const Tabs({
     super.key,
@@ -12,7 +14,16 @@ class Tabs extends StatelessWidget {
     required this.onChanged,
     required this.tabs,
     this.padding,
+    this.hoverColor,
+    this.marginBetweenItems,
   });
+
+  @override
+  State<Tabs> createState() => _TabsState();
+}
+
+class _TabsState extends State<Tabs> {
+  int? hoveredIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -29,37 +40,43 @@ class Tabs extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              for (var i = 0; i < tabs.length; i++)
+              for (var i = 0; i < widget.tabs.length; i++)
                 Expanded(
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      onChanged(i);
+                      widget.onChanged(i);
                     },
                     child: MouseRegion(
                       hitTestBehavior: HitTestBehavior.translucent,
                       cursor: SystemMouseCursors.click,
+                      onEnter: (_) => setState(() => hoveredIndex = i),
+                      onExit: (_) => setState(() => hoveredIndex = null),
                       child: AnimatedContainer(
-                        duration: const Duration(
-                            milliseconds:
-                                50), // slightly faster than kDefaultDuration
+                        margin: EdgeInsets.only(
+                            right: widget.marginBetweenItems ?? 1),
+                        duration: const Duration(milliseconds: 50),
                         alignment: Alignment.center,
-                        padding: padding ??
+                        padding: widget.padding ??
                             const EdgeInsets.symmetric(
                                   horizontal: 16,
                                   vertical: 4,
                                 ) *
                                 scaling,
                         decoration: BoxDecoration(
-                          color:
-                              i == index ? theme.colorScheme.background : null,
+                          color: i == widget.index
+                              ? theme.colorScheme.background
+                              : hoveredIndex == i
+                                  ? widget.hoverColor ??
+                                      theme.colorScheme.primaryForeground
+                                  : null,
                           borderRadius: BorderRadius.circular(
                             theme.radiusMd,
                           ),
                         ),
-                        child: (i == index
-                                ? tabs[i].foreground()
-                                : tabs[i].muted())
+                        child: (i == widget.index
+                                ? widget.tabs[i].foreground()
+                                : widget.tabs[i].muted())
                             .small()
                             .medium(),
                       ),
