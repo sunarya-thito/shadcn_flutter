@@ -1,3 +1,6 @@
+## 0.0.24
+* Remove pixel_snap
+
 ## 0.0.23
 * Support for 3.27.0
 * Added Sortable component

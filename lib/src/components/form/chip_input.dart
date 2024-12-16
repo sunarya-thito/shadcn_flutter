@@ -412,57 +412,57 @@ class PreviousSuggestionIntent extends Intent {
   const PreviousSuggestionIntent();
 }
 
-class _ChipSuggestionItem extends StatefulWidget {
-  final Widget suggestion;
-  final Widget? leading;
-  final Widget? trailing;
-  final bool selected;
-  final VoidCallback onSelected;
-
-  const _ChipSuggestionItem({
-    required this.suggestion,
-    this.leading,
-    this.trailing,
-    required this.selected,
-    required this.onSelected,
-  });
-
-  @override
-  State<_ChipSuggestionItem> createState() => _ChipSuggestionItemState();
-}
-
-class _ChipSuggestionItemState extends State<_ChipSuggestionItem> {
-  @override
-  void didUpdateWidget(covariant _ChipSuggestionItem oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.selected != widget.selected) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        if (!mounted) {
-          return;
-        }
-        if (widget.selected) {
-          Scrollable.ensureVisible(context);
-        }
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SelectedButton(
-      value: widget.selected,
-      onChanged: (value) {
-        if (value) {
-          widget.onSelected();
-        }
-      },
-      child: Row(
-        children: [
-          if (widget.leading != null) widget.leading!,
-          Expanded(child: widget.suggestion),
-          if (widget.trailing != null) widget.trailing!,
-        ],
-      ),
-    );
-  }
-}
+// class _ChipSuggestionItem extends StatefulWidget {
+//   final Widget suggestion;
+//   final Widget? leading;
+//   final Widget? trailing;
+//   final bool selected;
+//   final VoidCallback onSelected;
+//
+//   const _ChipSuggestionItem({
+//     required this.suggestion,
+//     this.leading,
+//     this.trailing,
+//     required this.selected,
+//     required this.onSelected,
+//   });
+//
+//   @override
+//   State<_ChipSuggestionItem> createState() => _ChipSuggestionItemState();
+// }
+//
+// class _ChipSuggestionItemState extends State<_ChipSuggestionItem> {
+//   @override
+//   void didUpdateWidget(covariant _ChipSuggestionItem oldWidget) {
+//     super.didUpdateWidget(oldWidget);
+//     if (oldWidget.selected != widget.selected) {
+//       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+//         if (!mounted) {
+//           return;
+//         }
+//         if (widget.selected) {
+//           Scrollable.ensureVisible(context);
+//         }
+//       });
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SelectedButton(
+//       value: widget.selected,
+//       onChanged: (value) {
+//         if (value) {
+//           widget.onSelected();
+//         }
+//       },
+//       child: Row(
+//         children: [
+//           if (widget.leading != null) widget.leading!,
+//           Expanded(child: widget.suggestion),
+//           if (widget.trailing != null) widget.trailing!,
+//         ],
+//       ),
+//     );
+//   }
+// }

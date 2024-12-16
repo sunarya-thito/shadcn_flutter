@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:flutter/services.dart';
-import 'package:pixel_snap/pixel_snap.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import 'platform_interface.dart'
@@ -316,28 +315,21 @@ class _ShadcnAppState extends State<ShadcnApp> {
   }
 
   Widget _builder(BuildContext context, Widget? child) {
-    return PixelSnapOverride(
-      pixelSnapFunction: widget.pixelSnap
-          ? null
-          : (value, devicePixelRatio, mode) {
-              return value;
-            },
-      child: ShadcnLayer(
-        theme: widget.theme,
-        scaling: widget.scaling,
-        initialRecentColors: widget.initialRecentColors,
-        maxRecentColors: widget.maxRecentColors,
-        onRecentColorsChanged: widget.onRecentColorsChanged,
-        builder: widget.builder,
-        enableScrollInterception: widget.enableScrollInterception,
-        darkTheme: widget.darkTheme,
-        popoverHandler: widget.popoverHandler,
-        tooltipHandler: widget.tooltipHandler,
-        menuHandler: widget.menuHandler,
-        themeMode: widget.themeMode,
-        enableThemeAnimation: widget.enableThemeAnimation,
-        child: child,
-      ),
+    return ShadcnLayer(
+      theme: widget.theme,
+      scaling: widget.scaling,
+      initialRecentColors: widget.initialRecentColors,
+      maxRecentColors: widget.maxRecentColors,
+      onRecentColorsChanged: widget.onRecentColorsChanged,
+      builder: widget.builder,
+      enableScrollInterception: widget.enableScrollInterception,
+      darkTheme: widget.darkTheme,
+      popoverHandler: widget.popoverHandler,
+      tooltipHandler: widget.tooltipHandler,
+      menuHandler: widget.menuHandler,
+      themeMode: widget.themeMode,
+      enableThemeAnimation: widget.enableThemeAnimation,
+      child: child,
     );
   }
 
