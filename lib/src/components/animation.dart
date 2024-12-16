@@ -484,15 +484,62 @@ class IntervalDuration extends Curve {
 }
 
 class CrossFadedTransition extends StatefulWidget {
+  static Widget lerpOpacity(Widget a, Widget b, double t,
+      {AlignmentGeometry alignment = Alignment.center}) {
+    if (t == 0) {
+      return a;
+    } else if (t == 1) {
+      return b;
+    }
+    double startOpacity = 1 - (t.clamp(0, 0.5) * 2);
+    double endOpacity = t.clamp(0.5, 1) * 2 - 1;
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        Positioned.fill(
+          child: Opacity(
+              opacity: startOpacity,
+              child: Align(
+                alignment: alignment,
+                child: a,
+              )),
+        ),
+        Opacity(
+          opacity: endOpacity,
+          child: b,
+        ),
+      ],
+    );
+  }
+
+  static Widget lerpStep(Widget a, Widget b, double t,
+      {AlignmentGeometry alignment = Alignment.center}) {
+    if (t == 0) {
+      return a;
+    } else if (t == 1) {
+      return b;
+    }
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        a,
+        b,
+      ],
+    );
+  }
+
   final Widget child;
   final Duration duration;
   final AlignmentGeometry alignment;
+  final Widget Function(Widget a, Widget b, double t,
+      {AlignmentGeometry alignment}) lerp;
 
   const CrossFadedTransition({
     super.key,
     required this.child,
     this.duration = kDefaultDuration,
     this.alignment = Alignment.center,
+    this.lerp = lerpOpacity,
   });
 
   @override
@@ -518,27 +565,7 @@ class _CrossFadedTransitionState extends State<CrossFadedTransition> {
   }
 
   Widget _lerpWidget(Widget a, Widget b, double t) {
-    // startOpacity is from 0.0 to 0.5
-    // endOpacity is from 0.5 to 1.0
-    double startOpacity = 1 - (t.clamp(0, 0.5) * 2);
-    double endOpacity = t.clamp(0.5, 1) * 2 - 1;
-    return Stack(
-      fit: StackFit.passthrough,
-      children: [
-        Positioned.fill(
-          child: Opacity(
-              opacity: startOpacity,
-              child: Align(
-                alignment: widget.alignment,
-                child: a,
-              )),
-        ),
-        Opacity(
-          opacity: endOpacity,
-          child: b,
-        ),
-      ],
-    );
+    return widget.lerp(a, b, t, alignment: widget.alignment);
   }
 
   @override
