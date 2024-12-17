@@ -1,6 +1,6 @@
 name: shadcn_flutter
 description: "Beautifully designed components from Shadcn/UI is now available for Flutter"
-version: 0.0.23
+version: 0.0.24
 homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 documentation: "https://sunarya-thito.github.io/shadcn_flutter/"
 repository: "https://github.com/sunarya-thito/shadcn_flutter"
@@ -8,7 +8,7 @@ issue_tracker: "https://github.com/sunarya-thito/shadcn_flutter/issues"
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
-  flutter: ">=3.24.0"
+  flutter: ">=3.27.0"
 
 dependencies:
   email_validator: ^3.0.0
@@ -21,10 +21,8 @@ dependencies:
   cross_file: ^0.3.4+2
   image: ^4.2.0
   web: ^1.0.0
-  pixel_snap: ^0.1.5
-  file_picker: ^8.1.2
-  audioplayers: ^6.1.0
   data_widget: ^0.0.2
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:
