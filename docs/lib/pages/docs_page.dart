@@ -230,8 +230,9 @@ class DocsPageState extends State<DocsPage> {
             'File Picker', 'file_picker', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Form', 'form'),
         // TODO: Image Input (with cropper and rotate tool, upload from file or take photo from camera)
-        ShadcnDocsPage(
-            'Image Input', 'image_input', ShadcnFeatureTag.workInProgress),
+        // ShadcnDocsPage(
+            // 'Image Input', 'image_input', ShadcnFeatureTag.workInProgress),
+        // replaced with File Input
         ShadcnDocsPage('Text Input', 'input'),
         // TODO: same as text input, but has dropdown autocomplete like chip input, the difference is, it does not convert
         // the value into chips
