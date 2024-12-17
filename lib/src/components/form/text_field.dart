@@ -229,7 +229,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                 padding: widget.padding ??
                     EdgeInsets.symmetric(
                       horizontal: 12 * scaling,
-                      vertical: 8 * scaling,
+                      vertical: 6 * scaling,
                     ),
                 child: child,
               ),
