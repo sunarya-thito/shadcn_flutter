@@ -181,6 +181,11 @@ abstract class ShadcnLocalizations {
   String get colorPickerTabHSV;
   String get colorPickerTabHSL;
 
+  String dataTableSelectedRows(int count, int total);
+  String get dataTableNext;
+  String get dataTablePrevious;
+  String get dataTableColumns;
+
   String getColorPickerMode(ColorPickerMode mode) {
     switch (mode) {
       case ColorPickerMode.rgb:
@@ -735,4 +740,18 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get colorLightness => 'Lum';
+
+  @override
+  String get dataTableColumns => 'Columns';
+
+  @override
+  String get dataTableNext => 'Next';
+
+  @override
+  String get dataTablePrevious => 'Previous';
+
+  @override
+  String dataTableSelectedRows(int count, int total) {
+    return '$count of $total row(s) selected.';
+  }
 }

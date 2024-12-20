@@ -324,7 +324,9 @@ class _SortableState<T> extends State<Sortable<T>>
     Offset minOffset = _session!.minOffset;
     Offset maxOffset = _session!.maxOffset;
     if (_session != null) {
-      Size size = _session!.layer.context.size!;
+      RenderBox sessionRenderBox =
+          _session!.layer.context.findRenderObject() as RenderBox;
+      Size size = sessionRenderBox.size;
       if (_session!.lock) {
         double minX = -minOffset.dx;
         double maxX = size.width - maxOffset.dx;
@@ -668,9 +670,11 @@ class _SortableState<T> extends State<Sortable<T>>
 class SortableLayer extends StatefulWidget {
   final Widget child;
   final bool lock;
+  final Clip? clipBehavior;
   const SortableLayer({
     super.key,
     this.lock = false,
+    this.clipBehavior,
     required this.child,
   });
 
@@ -692,6 +696,9 @@ class _SortableLayerState extends State<SortableLayer> {
   }
 
   void removeDraggingSession(_SortableDraggingSession session) {
+    if (!mounted) {
+      return;
+    }
     if (_sessions.value.contains(session)) {
       setState(() {
         _sessions.mutate((value) {
@@ -707,7 +714,8 @@ class _SortableLayerState extends State<SortableLayer> {
       data: this,
       child: Stack(
         fit: StackFit.passthrough,
-        clipBehavior: widget.lock ? Clip.hardEdge : Clip.none,
+        clipBehavior:
+            widget.clipBehavior ?? (widget.lock ? Clip.hardEdge : Clip.none),
         children: [
           widget.child,
           for (final session in _sessions.value)
@@ -762,6 +770,12 @@ class _ScrollableSortableLayerState extends State<ScrollableSortableLayer>
   void initState() {
     super.initState();
     ticker = createTicker(_scroll);
+  }
+
+  @override
+  void dispose() {
+    ticker.dispose();
+    super.dispose();
   }
 
   _SortableState? _attached;

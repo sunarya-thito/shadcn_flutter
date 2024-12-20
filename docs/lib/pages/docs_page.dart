@@ -188,10 +188,10 @@ class DocsPageState extends State<DocsPage> {
       [
         ShadcnDocsPage('Avatar', 'avatar'),
         ShadcnDocsPage('Avatar Group', 'avatar_group'),
-        ShadcnDocsPage(
-            'Data Table', 'data_table', ShadcnFeatureTag.workInProgress),
+        // ShadcnDocsPage(
+        // 'Data Table', 'data_table', ShadcnFeatureTag.experimental),
         // TODO also make it zoomable like: https://zoom-chart-demo.vercel.app/
-        ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
+        // ShadcnDocsPage('Chart', 'chart', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Code Snippet', 'code_snippet'),
         ShadcnDocsPage('Table', 'table', ShadcnFeatureTag.newFeature),
         ShadcnDocsPage('Tracker', 'tracker'),
@@ -231,7 +231,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Form', 'form'),
         // TODO: Image Input (with cropper and rotate tool, upload from file or take photo from camera)
         // ShadcnDocsPage(
-            // 'Image Input', 'image_input', ShadcnFeatureTag.workInProgress),
+        // 'Image Input', 'image_input', ShadcnFeatureTag.workInProgress),
         // replaced with File Input
         ShadcnDocsPage('Text Input', 'input'),
         // TODO: same as text input, but has dropdown autocomplete like chip input, the difference is, it does not convert
@@ -284,7 +284,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Tabs', 'tabs'),
         ShadcnDocsPage('Tab List', 'tab_list'),
         // TODO: like a chrome tab, complete with its view
-        ShadcnDocsPage('Tab Pane', 'tab_pane', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Tab Pane', 'tab_pane', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Tree', 'tree'),
         // aka Bottom Navigation Bar
         ShadcnDocsPage('Navigation Bar', 'navigation_bar'),

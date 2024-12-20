@@ -13,6 +13,7 @@ typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 typedef SearchPredicate<T> = double Function(T value, String query);
 
 enum SortDirection {
+  none,
   ascending,
   descending,
 }

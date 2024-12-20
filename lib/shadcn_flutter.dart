@@ -171,6 +171,7 @@ export 'src/components/menu/popup.dart';
 export 'src/components/navigation/navigation_bar.dart';
 export 'src/components/navigation/pagination.dart';
 export 'src/components/navigation/tab_list.dart';
+export 'src/components/navigation/tab_pane.dart';
 export 'src/components/navigation/tabs.dart';
 export 'src/components/overlay/dialog.dart';
 export 'src/components/overlay/drawer.dart';
