@@ -530,6 +530,7 @@ class _SortableState<T> extends State<Sortable<T>>
   }
 
   final GlobalKey _key = GlobalKey();
+  final GlobalKey _gestureKey = GlobalKey();
 
   Widget _buildAnimatedSize({
     AlignmentGeometry alignment = Alignment.center,
@@ -566,156 +567,245 @@ class _SortableState<T> extends State<Sortable<T>>
     return MetaData(
       behavior: HitTestBehavior.translucent,
       metaData: this,
-      child: ListenableBuilder(
-        listenable: layer._sessions,
-        builder: (context, child) {
-          bool hasCandidate = layer._sessions.value.isNotEmpty;
-          Widget container = GestureDetector(
-            key: _key,
-            behavior: widget.behavior,
-            onPanStart: widget.enabled ? _onDragStart : null,
-            onPanUpdate: widget.enabled ? _onDragUpdate : null,
-            onPanEnd: widget.enabled ? _onDragEnd : null,
-            onPanCancel: widget.enabled ? _onDragCancel : null,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                AbsorbPointer(
-                  child: _buildAnimatedSize(
-                    duration: kDefaultDuration,
-                    alignment: Alignment.centerRight,
-                    hasCandidate: hasCandidate,
-                    child: ListenableBuilder(
-                      listenable: leftCandidate,
-                      builder: (context, child) {
-                        if (leftCandidate.value != null) {
-                          return SizedBox.fromSize(
-                            size: leftCandidate.value!.size,
-                            child: leftCandidate.value!.placeholder,
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
+      // must define the generic type to avoid type inference _SortableState<T>
+      child: Data<_SortableState>.inherit(
+        data: this,
+        child: ListenableBuilder(
+          listenable: layer._sessions,
+          builder: (context, child) {
+            bool hasCandidate = layer._sessions.value.isNotEmpty;
+            Widget container = GestureDetector(
+              key: _gestureKey,
+              behavior: widget.behavior,
+              onPanStart: widget.enabled ? _onDragStart : null,
+              onPanUpdate: widget.enabled ? _onDragUpdate : null,
+              onPanEnd: widget.enabled ? _onDragEnd : null,
+              onPanCancel: widget.enabled ? _onDragCancel : null,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AbsorbPointer(
+                    child: _buildAnimatedSize(
+                      duration: kDefaultDuration,
+                      alignment: Alignment.centerRight,
+                      hasCandidate: hasCandidate,
+                      child: ListenableBuilder(
+                        listenable: leftCandidate,
+                        builder: (context, child) {
+                          if (leftCandidate.value != null) {
+                            return SizedBox.fromSize(
+                              size: leftCandidate.value!.size,
+                              child: leftCandidate.value!.placeholder,
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
                     ),
                   ),
-                ),
-                Flexible(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AbsorbPointer(
-                        child: _buildAnimatedSize(
-                          duration: kDefaultDuration,
-                          alignment: Alignment.bottomCenter,
-                          hasCandidate: hasCandidate,
-                          child: ListenableBuilder(
-                            listenable: topCandidate,
-                            builder: (context, child) {
-                              if (topCandidate.value != null) {
-                                return SizedBox.fromSize(
-                                  size: topCandidate.value!.size,
-                                  child: topCandidate.value!.placeholder,
-                                );
-                              }
-                              return const SizedBox.shrink();
-                            },
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        child: _dragging
-                            ? widget.fallback ??
-                                ListenableBuilder(
-                                  listenable: _hasDraggedOff,
-                                  builder: (context, child) {
-                                    return (_hasDraggedOff.value
-                                        ? const AbsorbPointer()
-                                        : AbsorbPointer(
-                                            child: Visibility(
-                                              maintainSize: true,
-                                              maintainAnimation: true,
-                                              maintainState: true,
-                                              visible: false,
-                                              child: widget.child,
-                                            ),
-                                          ));
-                                  },
-                                )
-                            : ListenableBuilder(
-                                listenable: _hasClaimedDrop,
-                                builder: (context, child) {
-                                  return IgnorePointer(
-                                    ignoring:
-                                        hasCandidate || _hasClaimedDrop.value,
-                                    child: Visibility(
-                                      maintainSize: true,
-                                      maintainAnimation: true,
-                                      maintainState: true,
-                                      visible: !_hasClaimedDrop.value,
-                                      child: widget.child,
-                                    ),
+                  Flexible(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AbsorbPointer(
+                          child: _buildAnimatedSize(
+                            duration: kDefaultDuration,
+                            alignment: Alignment.bottomCenter,
+                            hasCandidate: hasCandidate,
+                            child: ListenableBuilder(
+                              listenable: topCandidate,
+                              builder: (context, child) {
+                                if (topCandidate.value != null) {
+                                  return SizedBox.fromSize(
+                                    size: topCandidate.value!.size,
+                                    child: topCandidate.value!.placeholder,
                                   );
-                                },
-                              ),
-                      ),
-                      AbsorbPointer(
-                        child: _buildAnimatedSize(
-                          duration: kDefaultDuration,
-                          alignment: Alignment.topCenter,
-                          hasCandidate: hasCandidate,
-                          child: ListenableBuilder(
-                            listenable: bottomCandidate,
-                            builder: (context, child) {
-                              if (bottomCandidate.value != null) {
-                                return SizedBox.fromSize(
-                                  size: bottomCandidate.value!.size,
-                                  child: bottomCandidate.value!.placeholder,
-                                );
-                              }
-                              return const SizedBox.shrink();
-                            },
+                                }
+                                return const SizedBox.shrink();
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                AbsorbPointer(
-                  child: _buildAnimatedSize(
-                    duration: kDefaultDuration,
-                    alignment: Alignment.centerLeft,
-                    hasCandidate: hasCandidate,
-                    child: ListenableBuilder(
-                      listenable: rightCandidate,
-                      builder: (context, child) {
-                        if (rightCandidate.value != null) {
-                          return SizedBox.fromSize(
-                            size: rightCandidate.value!.size,
-                            child: rightCandidate.value!.placeholder,
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
+                        Flexible(
+                          child: _dragging
+                              ? widget.fallback ??
+                                  ListenableBuilder(
+                                    listenable: _hasDraggedOff,
+                                    builder: (context, child) {
+                                      return (_hasDraggedOff.value
+                                          ? AbsorbPointer(
+                                              child: Visibility(
+                                                visible: false,
+                                                maintainState: true,
+                                                child: KeyedSubtree(
+                                                  key: _key,
+                                                  child: widget.child,
+                                                ),
+                                              ),
+                                            )
+                                          : AbsorbPointer(
+                                              child: Visibility(
+                                                maintainSize: true,
+                                                maintainAnimation: true,
+                                                maintainState: true,
+                                                visible: false,
+                                                child: KeyedSubtree(
+                                                  key: _key,
+                                                  child: widget.child,
+                                                ),
+                                              ),
+                                            ));
+                                    },
+                                  )
+                              : ListenableBuilder(
+                                  listenable: _hasClaimedDrop,
+                                  builder: (context, child) {
+                                    return IgnorePointer(
+                                      ignoring:
+                                          hasCandidate || _hasClaimedDrop.value,
+                                      child: Visibility(
+                                        maintainSize: true,
+                                        maintainAnimation: true,
+                                        maintainState: true,
+                                        visible: !_hasClaimedDrop.value,
+                                        child: KeyedSubtree(
+                                          key: _key,
+                                          child: widget.child,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                        ),
+                        AbsorbPointer(
+                          child: _buildAnimatedSize(
+                            duration: kDefaultDuration,
+                            alignment: Alignment.topCenter,
+                            hasCandidate: hasCandidate,
+                            child: ListenableBuilder(
+                              listenable: bottomCandidate,
+                              builder: (context, child) {
+                                if (bottomCandidate.value != null) {
+                                  return SizedBox.fromSize(
+                                    size: bottomCandidate.value!.size,
+                                    child: bottomCandidate.value!.placeholder,
+                                  );
+                                }
+                                return const SizedBox.shrink();
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-          if (!hasCandidate) {
-            return container;
-          }
-          return AnimatedSize(
-            duration: kDefaultDuration,
-            child: container,
-          );
-        },
+                  AbsorbPointer(
+                    child: _buildAnimatedSize(
+                      duration: kDefaultDuration,
+                      alignment: Alignment.centerLeft,
+                      hasCandidate: hasCandidate,
+                      child: ListenableBuilder(
+                        listenable: rightCandidate,
+                        builder: (context, child) {
+                          if (rightCandidate.value != null) {
+                            return SizedBox.fromSize(
+                              size: rightCandidate.value!.size,
+                              child: rightCandidate.value!.placeholder,
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+            if (!hasCandidate) {
+              return container;
+            }
+            return AnimatedSize(
+              duration: kDefaultDuration,
+              child: container,
+            );
+          },
+        ),
       ),
     );
   }
 
   @override
   bool get wantKeepAlive => _dragging;
+}
+
+class SortableDragHandle extends StatefulWidget {
+  final Widget child;
+  final bool enabled;
+  final HitTestBehavior? behavior;
+  final MouseCursor? cursor;
+
+  const SortableDragHandle(
+      {super.key,
+      required this.child,
+      this.enabled = true,
+      this.behavior,
+      this.cursor});
+
+  @override
+  State<SortableDragHandle> createState() => _SortableDragHandleState();
+}
+
+class _SortableDragHandleState extends State<SortableDragHandle>
+    with AutomaticKeepAliveClientMixin {
+  _SortableState? _state;
+
+  bool _dragging = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _state = Data.maybeOf<_SortableState>(context);
+  }
+
+  @override
+  bool get wantKeepAlive {
+    return _dragging;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return MouseRegion(
+      cursor: widget.enabled
+          ? (widget.cursor ?? SystemMouseCursors.grab)
+          : MouseCursor.defer,
+      hitTestBehavior: widget.behavior,
+      child: GestureDetector(
+        behavior: widget.behavior,
+        onPanStart: widget.enabled && _state != null
+            ? (details) {
+                _dragging = true;
+                _state!._onDragStart(details);
+              }
+            : null,
+        onPanUpdate:
+            widget.enabled && _state != null ? _state!._onDragUpdate : null,
+        onPanEnd: widget.enabled && _state != null
+            ? (details) {
+                _state!._onDragEnd(details);
+                _dragging = false;
+              }
+            : null,
+        onPanCancel: widget.enabled && _state != null
+            ? () {
+                _state!._onDragCancel();
+                _dragging = false;
+              }
+            : null,
+        child: widget.child,
+      ),
+    );
+  }
 }
 
 @immutable
@@ -897,30 +987,37 @@ class _SortableLayerState extends State<SortableLayer>
             listenable: _sessions,
             builder: (context, child) {
               return Positioned.fill(
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    for (final session in _sessions.value)
-                      ListenableBuilder(
-                        listenable: session.offset,
-                        builder: (context, child) {
-                          return Positioned(
-                            left: session.offset.value.dx,
-                            top: session.offset.value.dy,
-                            child: IgnorePointer(
-                              child: Transform(
-                                transform: session.transform,
-                                child: SizedBox.fromSize(
-                                  key: session.key,
-                                  size: session.size,
-                                  child: session.ghost,
+                child: MouseRegion(
+                  opaque: false,
+                  hitTestBehavior: HitTestBehavior.translucent,
+                  cursor: _sessions.value.isNotEmpty
+                      ? SystemMouseCursors.grabbing
+                      : MouseCursor.defer,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      for (final session in _sessions.value)
+                        ListenableBuilder(
+                          listenable: session.offset,
+                          builder: (context, child) {
+                            return Positioned(
+                              left: session.offset.value.dx,
+                              top: session.offset.value.dy,
+                              child: IgnorePointer(
+                                child: Transform(
+                                  transform: session.transform,
+                                  child: SizedBox.fromSize(
+                                    key: session.key,
+                                    size: session.size,
+                                    child: session.ghost,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                  ],
+                            );
+                          },
+                        ),
+                    ],
+                  ),
                 ),
               );
             },
