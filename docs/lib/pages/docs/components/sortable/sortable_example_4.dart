@@ -8,26 +8,47 @@ class SortableExample4 extends StatefulWidget {
 }
 
 class _SortableExample4State extends State<SortableExample4> {
-  List<String> names = [
-    'James',
-    'John',
-    'Robert',
-    'Michael',
-    'William',
-    'David',
-    'Richard',
-    'Joseph',
-    'Thomas',
-    'Charles',
-    'Daniel',
-    'Matthew',
-    'Anthony',
-    'Donald',
-    'Mark',
-    'Paul',
-    'Steven',
-    'Andrew',
-    'Kenneth',
+  // List<String> names = [
+  //   'James',
+  //   'John',
+  //   'Robert',
+  //   'Michael',
+  //   'William',
+  //   'David',
+  //   'Richard',
+  //   'Joseph',
+  //   'Thomas',
+  //   'Charles',
+  //   'Daniel',
+  //   'Matthew',
+  //   'Anthony',
+  //   'Donald',
+  //   'Mark',
+  //   'Paul',
+  //   'Steven',
+  //   'Andrew',
+  //   'Kenneth',
+  // ];
+  List<SortableData<String>> names = [
+    const SortableData('James'),
+    const SortableData('John'),
+    const SortableData('Robert'),
+    const SortableData('Michael'),
+    const SortableData('William'),
+    const SortableData('David'),
+    const SortableData('Richard'),
+    const SortableData('Joseph'),
+    const SortableData('Thomas'),
+    const SortableData('Charles'),
+    const SortableData('Daniel'),
+    const SortableData('Matthew'),
+    const SortableData('Anthony'),
+    const SortableData('Donald'),
+    const SortableData('Mark'),
+    const SortableData('Paul'),
+    const SortableData('Steven'),
+    const SortableData('Andrew'),
+    const SortableData('Kenneth'),
   ];
 
   final ScrollController controller = ScrollController();
@@ -49,32 +70,22 @@ class _SortableExample4State extends State<SortableExample4> {
             child: ListView.builder(
               controller: controller,
               itemBuilder: (context, i) {
-                return Sortable<int>(
+                return Sortable<String>(
                   key: ValueKey(i),
-                  data: i,
+                  data: names[i],
                   onAcceptTop: (value) {
                     setState(() {
-                      bool isBefore = i < value.data;
-                      if (isBefore) {
-                        names.insert(i, names.removeAt(value.data));
-                      } else {
-                        names.insert(i - 1, names.removeAt(value.data));
-                      }
+                      names.swapItem(value, i);
                     });
                   },
                   onAcceptBottom: (value) {
                     setState(() {
-                      bool isBefore = i > value.data;
-                      if (isBefore) {
-                        names.insert(i, names.removeAt(value.data));
-                      } else {
-                        names.insert(i + 1, names.removeAt(value.data));
-                      }
+                      names.swapItem(value, i + 1);
                     });
                   },
                   child: OutlinedContainer(
                     padding: const EdgeInsets.all(12),
-                    child: Center(child: Text(names[i])),
+                    child: Center(child: Text(names[i].data)),
                   ),
                 );
               },

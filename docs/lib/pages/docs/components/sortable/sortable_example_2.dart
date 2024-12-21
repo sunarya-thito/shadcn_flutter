@@ -8,12 +8,12 @@ class SortableExample2 extends StatefulWidget {
 }
 
 class _SortableExample2State extends State<SortableExample2> {
-  List<String> names = [
-    'James',
-    'John',
-    'Robert',
-    'Michael',
-    'William',
+  List<SortableData<String>> names = [
+    const SortableData('James'),
+    const SortableData('John'),
+    const SortableData('Robert'),
+    const SortableData('Michael'),
+    const SortableData('William'),
   ];
 
   @override
@@ -30,32 +30,22 @@ class _SortableExample2State extends State<SortableExample2> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             for (int i = 0; i < names.length; i++)
-              Sortable<int>(
+              Sortable<String>(
                 key: ValueKey(i),
-                data: i,
+                data: names[i],
                 onAcceptTop: (value) {
                   setState(() {
-                    bool isBefore = i < value.data;
-                    if (isBefore) {
-                      names.insert(i, names.removeAt(value.data));
-                    } else {
-                      names.insert(i - 1, names.removeAt(value.data));
-                    }
+                    names.swapItem(value, i);
                   });
                 },
                 onAcceptBottom: (value) {
                   setState(() {
-                    bool isBefore = i > value.data;
-                    if (isBefore) {
-                      names.insert(i, names.removeAt(value.data));
-                    } else {
-                      names.insert(i + 1, names.removeAt(value.data));
-                    }
+                    names.swapItem(value, i + 1);
                   });
                 },
                 child: OutlinedContainer(
                   padding: const EdgeInsets.all(12),
-                  child: Center(child: Text(names[i])),
+                  child: Center(child: Text(names[i].data)),
                 ),
               ),
           ],

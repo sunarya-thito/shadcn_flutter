@@ -1,21 +1,10 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-
-class SortableData<T> {
-  final T data;
-  final Matrix4 transform;
-  final Size size;
-
-  SortableData({
-    required this.data,
-    required this.transform,
-    required this.size,
-  });
-}
 
 class Sortable<T> extends StatefulWidget {
   final Predicate<SortableData<T>>? canAcceptTop;
@@ -30,7 +19,7 @@ class Sortable<T> extends StatefulWidget {
   final VoidCallback? onDragEnd;
   final VoidCallback? onDragCancel;
   final Widget child;
-  final T data;
+  final SortableData<T> data;
   final Widget? placeholder;
   final Widget? ghost;
   final Widget? fallback;
@@ -65,11 +54,12 @@ class Sortable<T> extends StatefulWidget {
 }
 
 class _SortableDraggingSession<T> {
+  final GlobalKey key = GlobalKey();
   final Matrix4 transform;
   final Size size;
   final Widget ghost;
   final Widget placeholder;
-  final T data;
+  final SortableData<T> data;
   final ValueNotifier<Offset> offset;
   final _SortableLayerState layer;
   final RenderBox layerRenderBox;
@@ -153,16 +143,10 @@ class SortableDropFallback<T> extends StatefulWidget {
 class _SortableDropFallbackState<T> extends State<SortableDropFallback<T>> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.passthrough,
-      clipBehavior: Clip.none,
-      children: [
-        MetaData(
-          behavior: HitTestBehavior.translucent,
-          metaData: this,
-        ),
-        widget.child,
-      ],
+    return MetaData(
+      behavior: HitTestBehavior.translucent,
+      metaData: this,
+      child: widget.child,
     );
   }
 }
@@ -201,6 +185,24 @@ class _DroppingTarget<T> {
   String toString() => '_DroppingTarget($source, $location)';
 }
 
+class _DropTransform {
+  final Matrix4 from;
+  final Matrix4 to;
+  final Widget child;
+  final _SortableState state;
+
+  Duration? start;
+
+  final ValueNotifier<double> progress = ValueNotifier(0);
+
+  _DropTransform({
+    required this.from,
+    required this.to,
+    required this.child,
+    required this.state,
+  });
+}
+
 class _SortableState<T> extends State<Sortable<T>>
     with AutomaticKeepAliveClientMixin {
   final ValueNotifier<_SortableDraggingSession<T>?> topCandidate =
@@ -215,6 +217,8 @@ class _SortableState<T> extends State<Sortable<T>>
   final ValueNotifier<_DroppingTarget<T>?> _currentTarget = ValueNotifier(null);
   final ValueNotifier<_SortableDropFallbackState<T>?> _currentFallback =
       ValueNotifier(null);
+  final ValueNotifier<bool> _hasClaimedDrop = ValueNotifier(false);
+  final ValueNotifier<bool> _hasDraggedOff = ValueNotifier(false);
 
   (_SortableState<T>, Offset)? _findState(
       _SortableLayerState target, Offset globalPosition) {
@@ -254,6 +258,7 @@ class _SortableState<T> extends State<Sortable<T>>
   }
 
   bool _dragging = false;
+  bool _claimUnchanged = false;
   _SortableDraggingSession<T>? _session;
 
   _ScrollableSortableLayerState? _scrollableLayer;
@@ -265,6 +270,10 @@ class _SortableState<T> extends State<Sortable<T>>
   }
 
   void _onDragStart(DragStartDetails details) {
+    if (_hasClaimedDrop.value) {
+      return;
+    }
+    _hasDraggedOff.value = false;
     _SortableLayerState? layer = Data.maybeFind<_SortableLayerState>(context);
     assert(layer != null, 'Sortable must be a descendant of SortableLayer');
     RenderBox renderBox = context.findRenderObject() as RenderBox;
@@ -276,6 +285,8 @@ class _SortableState<T> extends State<Sortable<T>>
       transform,
       Offset(size.width, size.height),
     );
+    final ghost = widget.ghost ?? widget.child;
+    final candidateFallback = widget.candidateFallback;
     _session = _SortableDraggingSession(
       layer: layer,
       layerRenderBox: layerRenderBox,
@@ -286,9 +297,9 @@ class _SortableState<T> extends State<Sortable<T>>
         listenable: _currentTarget,
         builder: (context, child) {
           if (_currentTarget.value != null) {
-            return widget.candidateFallback ?? widget.ghost ?? widget.child;
+            return candidateFallback ?? widget.child;
           }
-          return widget.ghost ?? widget.child;
+          return ghost;
         },
       ),
       placeholder: widget.placeholder ?? widget.child,
@@ -360,6 +371,7 @@ class _SortableState<T> extends State<Sortable<T>>
           _currentTarget.value = null;
         }
       } else {
+        _hasDraggedOff.value = true;
         _currentFallback.value = null;
         if (_currentTarget.value != null) {
           _currentTarget.value!.dispose(_session!);
@@ -413,6 +425,9 @@ class _SortableState<T> extends State<Sortable<T>>
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
+    if (_hasClaimedDrop.value) {
+      return;
+    }
     _handleDrag(details.delta);
     _scrollableLayer?._updateDrag(this, details.globalPosition);
   }
@@ -425,33 +440,30 @@ class _SortableState<T> extends State<Sortable<T>>
         var target = _currentTarget.value!.source;
         var location = _currentTarget.value!.location;
         var predicate = target._getPredicate(location);
-        var sortData = SortableData(
-          data: _session!.data,
-          transform: _session!.transform,
-          size: _session!.size,
-        );
+        var sortData = _session!.data;
         if (predicate == null || predicate(sortData)) {
           var callback = target._getCallback(location);
           if (callback != null) {
             callback(sortData);
           }
         }
+        _session!.layer.removeDraggingSession(_session!);
         _currentTarget.value = null;
       } else {
         var target = _currentFallback.value;
         if (target != null) {
-          var sortData = SortableData(
-            data: _session!.data,
-            transform: _session!.transform,
-            size: _session!.size,
-          );
+          var sortData = _session!.data;
           if (target.widget.canAccept == null ||
               target.widget.canAccept!(sortData)) {
             target.widget.onAccept?.call(sortData);
           }
         }
+        _session!.layer.removeDraggingSession(_session!);
+        if (target == null) {
+          _session!.layer._claimDrop(this, _session!.data, true);
+        }
       }
-      _session!.layer.removeDraggingSession(_session!);
+      _claimUnchanged = true;
       _session = null;
     }
     setState(() {
@@ -467,6 +479,7 @@ class _SortableState<T> extends State<Sortable<T>>
         _currentTarget.value = null;
       }
       _session!.layer.removeDraggingSession(_session!);
+      _session!.layer._claimDrop(this, _session!.data, true);
       _session = null;
     }
     setState(() {
@@ -477,11 +490,41 @@ class _SortableState<T> extends State<Sortable<T>>
   }
 
   @override
+  void initState() {
+    super.initState();
+    final layer = Data.maybeFind<_SortableLayerState>(context);
+    if (layer != null) {
+      var data = widget.data;
+      if (layer._canClaimDrop(this, data)) {
+        _hasClaimedDrop.value = true;
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          if (mounted) {
+            layer._claimDrop(this, data);
+          }
+        });
+      }
+    }
+  }
+
+  @override
   void didUpdateWidget(covariant Sortable<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.enabled != oldWidget.enabled) {
       if (!widget.enabled && _dragging) {
         _onDragCancel();
+      }
+    }
+    if (widget.data != oldWidget.data || _claimUnchanged) {
+      _claimUnchanged = false;
+      final layer = Data.maybeFind<_SortableLayerState>(context);
+      if (layer != null && layer._canClaimDrop(this, widget.data)) {
+        _hasClaimedDrop.value = true;
+        final data = widget.data;
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          if (mounted) {
+            layer._claimDrop(this, data);
+          }
+        });
       }
     }
   }
@@ -583,13 +626,9 @@ class _SortableState<T> extends State<Sortable<T>>
                         child: _dragging
                             ? widget.fallback ??
                                 ListenableBuilder(
-                                  listenable: Listenable.merge([
-                                    _currentTarget,
-                                    _currentFallback,
-                                  ]),
+                                  listenable: _hasDraggedOff,
                                   builder: (context, child) {
-                                    return (_currentTarget.value != null ||
-                                            _currentFallback.value != null
+                                    return (_hasDraggedOff.value
                                         ? const AbsorbPointer()
                                         : AbsorbPointer(
                                             child: Visibility(
@@ -602,9 +641,21 @@ class _SortableState<T> extends State<Sortable<T>>
                                           ));
                                   },
                                 )
-                            : IgnorePointer(
-                                ignoring: hasCandidate,
-                                child: widget.child,
+                            : ListenableBuilder(
+                                listenable: _hasClaimedDrop,
+                                builder: (context, child) {
+                                  return IgnorePointer(
+                                    ignoring:
+                                        hasCandidate || _hasClaimedDrop.value,
+                                    child: Visibility(
+                                      maintainSize: true,
+                                      maintainAnimation: true,
+                                      maintainState: true,
+                                      visible: !_hasClaimedDrop.value,
+                                      child: widget.child,
+                                    ),
+                                  );
+                                },
                               ),
                       ),
                       AbsorbPointer(
@@ -667,14 +718,36 @@ class _SortableState<T> extends State<Sortable<T>>
   bool get wantKeepAlive => _dragging;
 }
 
+@immutable
+class SortableData<T> {
+  final T data;
+
+  const SortableData(this.data);
+
+  @override
+  @nonVirtual
+  bool operator ==(Object other) => super == other;
+
+  @override
+  @nonVirtual
+  int get hashCode => super.hashCode;
+
+  @override
+  String toString() => 'SortableData($data)';
+}
+
 class SortableLayer extends StatefulWidget {
   final Widget child;
   final bool lock;
   final Clip? clipBehavior;
+  final Duration? dropDuration;
+  final Curve? dropCurve;
   const SortableLayer({
     super.key,
     this.lock = false,
     this.clipBehavior,
+    this.dropDuration,
+    this.dropCurve,
     required this.child,
   });
 
@@ -682,17 +755,106 @@ class SortableLayer extends StatefulWidget {
   State<SortableLayer> createState() => _SortableLayerState();
 }
 
-class _SortableLayerState extends State<SortableLayer> {
+class _PendingDropTransform {
+  final Matrix4 from;
+  final Widget child;
+  final SortableData data;
+
+  _PendingDropTransform({
+    required this.from,
+    required this.child,
+    required this.data,
+  });
+}
+
+class _SortableLayerState extends State<SortableLayer>
+    with SingleTickerProviderStateMixin {
   final MutableNotifier<List<_SortableDraggingSession>> _sessions =
       MutableNotifier([]);
-  void pushDraggingSession(_SortableDraggingSession session) {
-    setState(() {
-      _sessions.mutate(
-        (value) {
-          value.add(session);
-        },
+  final MutableNotifier<List<_DropTransform>> _activeDrops =
+      MutableNotifier([]);
+
+  // _PendingDropTransform? _pendingDrop;
+  final ValueNotifier<_PendingDropTransform?> _pendingDrop =
+      ValueNotifier(null);
+
+  late Ticker _ticker;
+
+  @override
+  void initState() {
+    super.initState();
+    _ticker = createTicker(_tick);
+  }
+
+  bool _canClaimDrop(_SortableState item, Object? data) {
+    return _pendingDrop.value != null && data == _pendingDrop.value!.data;
+  }
+
+  _DropTransform? _claimDrop(_SortableState item, SortableData data,
+      [bool force = false]) {
+    if (_pendingDrop.value != null &&
+        (force || data == _pendingDrop.value!.data)) {
+      RenderBox layerRenderBox = context.findRenderObject() as RenderBox;
+      RenderBox itemRenderBox = item.context.findRenderObject() as RenderBox;
+      var dropTransform = _DropTransform(
+        from: _pendingDrop.value!.from,
+        to: itemRenderBox.getTransformTo(layerRenderBox),
+        child: _pendingDrop.value!.child,
+        state: item,
       );
-    });
+      _activeDrops.mutate((value) {
+        value.add(dropTransform);
+      });
+      item._hasClaimedDrop.value = true;
+      _pendingDrop.value = null;
+      if (!_ticker.isActive) {
+        _ticker.start();
+      }
+      return dropTransform;
+    }
+    return null;
+  }
+
+  void _tick(Duration elapsed) {
+    for (final drop in _activeDrops.value) {
+      drop.start ??= elapsed;
+      double progress = ((elapsed - drop.start!).inMilliseconds /
+              (widget.dropDuration ?? kDefaultDuration).inMilliseconds)
+          .clamp(0, 1);
+      progress = (widget.dropCurve ?? Curves.easeInOut).transform(progress);
+      if (progress >= 1) {
+        drop.state._hasClaimedDrop.value = false;
+        _activeDrops.mutate((value) {
+          value.remove(drop);
+        });
+      } else {
+        drop.progress.value = progress;
+      }
+    }
+    if (_activeDrops.value.isEmpty) {
+      _ticker.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    _ticker.dispose();
+    super.dispose();
+  }
+
+  Matrix4 _tweenMatrix(Matrix4 from, Matrix4 to, double progress) {
+    return Matrix4Tween(
+      begin: from,
+      end: to,
+    ).transform(progress);
+  }
+
+  void pushDraggingSession(_SortableDraggingSession session) {
+    _sessions.mutate(
+      (value) {
+        value.add(session);
+      },
+    );
   }
 
   void removeDraggingSession(_SortableDraggingSession session) {
@@ -700,11 +862,24 @@ class _SortableLayerState extends State<SortableLayer> {
       return;
     }
     if (_sessions.value.contains(session)) {
-      setState(() {
-        _sessions.mutate((value) {
-          value.remove(session);
-        });
+      _sessions.mutate((value) {
+        value.remove(session);
       });
+      if (widget.dropDuration != Duration.zero) {
+        RenderBox? ghostRenderBox =
+            session.key.currentContext?.findRenderObject() as RenderBox?;
+        if (ghostRenderBox != null) {
+          RenderBox layerRenderBox = context.findRenderObject() as RenderBox;
+          _pendingDrop.value = _PendingDropTransform(
+            from: ghostRenderBox.getTransformTo(layerRenderBox),
+            child: SizedBox.fromSize(
+              size: session.size,
+              child: session.ghost,
+            ),
+            data: session.data,
+          );
+        }
+      }
     }
   }
 
@@ -718,25 +893,81 @@ class _SortableLayerState extends State<SortableLayer> {
             widget.clipBehavior ?? (widget.lock ? Clip.hardEdge : Clip.none),
         children: [
           widget.child,
-          for (final session in _sessions.value)
-            ListenableBuilder(
-              listenable: session.offset,
-              builder: (context, child) {
-                return Positioned(
-                  left: session.offset.value.dx,
-                  top: session.offset.value.dy,
-                  child: IgnorePointer(
-                    child: Transform(
-                      transform: session.transform,
-                      child: SizedBox.fromSize(
-                        size: session.size,
-                        child: session.ghost,
+          ListenableBuilder(
+            listenable: _sessions,
+            builder: (context, child) {
+              return Positioned.fill(
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    for (final session in _sessions.value)
+                      ListenableBuilder(
+                        listenable: session.offset,
+                        builder: (context, child) {
+                          return Positioned(
+                            left: session.offset.value.dx,
+                            top: session.offset.value.dy,
+                            child: IgnorePointer(
+                              child: Transform(
+                                transform: session.transform,
+                                child: SizedBox.fromSize(
+                                  key: session.key,
+                                  size: session.size,
+                                  child: session.ghost,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
+                  ],
+                ),
+              );
+            },
+          ),
+          ListenableBuilder(
+            listenable: _activeDrops,
+            builder: (context, child) {
+              return Positioned.fill(
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    for (final drop in _activeDrops.value)
+                      ListenableBuilder(
+                        listenable: drop.progress,
+                        builder: (context, child) {
+                          return IgnorePointer(
+                            child: Transform(
+                              transform: _tweenMatrix(
+                                drop.from,
+                                drop.to,
+                                drop.progress.value,
+                              ),
+                              child: drop.child,
+                            ),
+                          );
+                        },
+                      ),
+                    child!,
+                  ],
+                ),
+              );
+            },
+            child: ListenableBuilder(
+              listenable: _pendingDrop,
+              builder: (context, child) {
+                if (_pendingDrop.value != null) {
+                  return IgnorePointer(
+                    child: Transform(
+                      transform: _pendingDrop.value!.from,
+                      child: _pendingDrop.value!.child,
                     ),
-                  ),
-                );
+                  );
+                }
+                return const SizedBox();
               },
             ),
+          ),
         ],
       ),
     );
@@ -800,8 +1031,6 @@ class _ScrollableSortableLayerState extends State<ScrollableSortableLayer>
         scrollDelta = delta / 10000;
       }
       var newPosition = widget.controller.offset + scrollDelta;
-      // newPosition =
-      //     newPosition.clamp(0, widget.controller.position.maxScrollExtent);
       widget.controller.jumpTo(newPosition);
       _attached?._handleDrag(Offset.zero);
     }

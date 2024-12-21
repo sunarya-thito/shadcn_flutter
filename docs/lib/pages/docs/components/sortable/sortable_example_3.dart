@@ -8,12 +8,12 @@ class SortableExample3 extends StatefulWidget {
 }
 
 class _SortableExample3State extends State<SortableExample3> {
-  List<String> names = [
-    'James',
-    'John',
-    'Robert',
-    'Michael',
-    'William',
+  List<SortableData<String>> names = [
+    const SortableData('James'),
+    const SortableData('John'),
+    const SortableData('Robert'),
+    const SortableData('Michael'),
+    const SortableData('William'),
   ];
 
   @override
@@ -33,33 +33,23 @@ class _SortableExample3State extends State<SortableExample3> {
             mainAxisSize: MainAxisSize.min,
             children: [
               for (int i = 0; i < names.length; i++)
-                Sortable<int>(
+                Sortable<String>(
                   key: ValueKey(i),
-                  data: i,
+                  data: names[i],
                   onAcceptLeft: (value) {
                     setState(() {
-                      bool isBefore = i < value.data;
-                      if (isBefore) {
-                        names.insert(i, names.removeAt(value.data));
-                      } else {
-                        names.insert(i - 1, names.removeAt(value.data));
-                      }
+                      names.swapItem(value, i);
                     });
                   },
                   onAcceptRight: (value) {
                     setState(() {
-                      bool isBefore = i > value.data;
-                      if (isBefore) {
-                        names.insert(i, names.removeAt(value.data));
-                      } else {
-                        names.insert(i + 1, names.removeAt(value.data));
-                      }
+                      names.swapItem(value, i + 1);
                     });
                   },
                   child: OutlinedContainer(
                     width: 100,
                     padding: const EdgeInsets.all(12),
-                    child: Center(child: Text(names[i])),
+                    child: Center(child: Text(names[i].data)),
                   ),
                 ),
             ],

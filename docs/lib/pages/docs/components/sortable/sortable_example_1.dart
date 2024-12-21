@@ -7,28 +7,26 @@ class SortableExample1 extends StatefulWidget {
   State<SortableExample1> createState() => _SortableExample1State();
 }
 
-class _IndexData {
-  final int index;
-  final List<String> names;
-
-  _IndexData(this.index, this.names);
-}
-
 class _SortableExample1State extends State<SortableExample1> {
-  List<String> names = [
-    'James',
-    'John',
-    'Robert',
-    'Michael',
-    'William',
+  List<SortableData<String>> invited = [
+    const SortableData('James'),
+    const SortableData('John'),
+    const SortableData('Robert'),
+    const SortableData('Michael'),
+    const SortableData('William'),
   ];
-  List<String> names2 = [
-    'David',
-    'Richard',
-    'Joseph',
-    'Thomas',
-    'Charles',
+  List<SortableData<String>> reserved = [
+    const SortableData('David'),
+    const SortableData('Richard'),
+    const SortableData('Joseph'),
+    const SortableData('Thomas'),
+    const SortableData('Charles'),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,56 +38,34 @@ class _SortableExample1State extends State<SortableExample1> {
           children: [
             Expanded(
               child: Card(
-                child: SortableDropFallback<_IndexData>(
+                child: SortableDropFallback<String>(
                   onAccept: (value) {
                     setState(() {
-                      names.add(value.data.names.removeAt(value.data.index));
+                      swapItemInLists(
+                          [invited, reserved], value, invited, invited.length);
                     });
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      for (int i = 0; i < names.length; i++)
-                        Sortable<_IndexData>(
-                          key: ValueKey(i),
-                          data: _IndexData(i, names),
+                      for (int i = 0; i < invited.length; i++)
+                        Sortable<String>(
+                          data: invited[i],
                           onAcceptTop: (value) {
                             setState(() {
-                              bool isBefore = i < value.data.index ||
-                                  value.data.names != names;
-                              if (isBefore) {
-                                names.insert(
-                                    i,
-                                    value.data.names
-                                        .removeAt(value.data.index));
-                              } else {
-                                names.insert(
-                                    i - 1,
-                                    value.data.names
-                                        .removeAt(value.data.index));
-                              }
+                              swapItemInLists(
+                                  [invited, reserved], value, invited, i);
                             });
                           },
                           onAcceptBottom: (value) {
                             setState(() {
-                              bool isBefore = i > value.data.index &&
-                                  value.data.names == names;
-                              if (isBefore) {
-                                names.insert(
-                                    i,
-                                    value.data.names
-                                        .removeAt(value.data.index));
-                              } else {
-                                names.insert(
-                                    i + 1,
-                                    value.data.names
-                                        .removeAt(value.data.index));
-                              }
+                              swapItemInLists(
+                                  [invited, reserved], value, invited, i + 1);
                             });
                           },
                           child: OutlinedContainer(
                             padding: const EdgeInsets.all(12),
-                            child: Center(child: Text(names[i])),
+                            child: Center(child: Text(invited[i].data)),
                           ),
                         ),
                     ],
@@ -100,56 +76,34 @@ class _SortableExample1State extends State<SortableExample1> {
             gap(12),
             Expanded(
               child: Card(
-                child: SortableDropFallback<_IndexData>(
+                child: SortableDropFallback<String>(
                   onAccept: (value) {
                     setState(() {
-                      names2.add(value.data.names.removeAt(value.data.index));
+                      swapItemInLists([invited, reserved], value, reserved,
+                          reserved.length);
                     });
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      for (int i = 0; i < names2.length; i++)
-                        Sortable<_IndexData>(
-                          key: ValueKey(i),
-                          data: _IndexData(i, names2),
+                      for (int i = 0; i < reserved.length; i++)
+                        Sortable<String>(
+                          data: reserved[i],
                           onAcceptTop: (value) {
                             setState(() {
-                              bool isBefore = i < value.data.index ||
-                                  value.data.names != names2;
-                              if (isBefore) {
-                                names2.insert(
-                                    i,
-                                    value.data.names
-                                        .removeAt(value.data.index));
-                              } else {
-                                names2.insert(
-                                    i - 1,
-                                    value.data.names
-                                        .removeAt(value.data.index));
-                              }
+                              swapItemInLists(
+                                  [invited, reserved], value, reserved, i);
                             });
                           },
                           onAcceptBottom: (value) {
                             setState(() {
-                              bool isBefore = i > value.data.index &&
-                                  value.data.names == names2;
-                              if (isBefore) {
-                                names2.insert(
-                                    i,
-                                    value.data.names
-                                        .removeAt(value.data.index));
-                              } else {
-                                names2.insert(
-                                    i + 1,
-                                    value.data.names
-                                        .removeAt(value.data.index));
-                              }
+                              swapItemInLists(
+                                  [invited, reserved], value, reserved, i + 1);
                             });
                           },
                           child: OutlinedContainer(
                             padding: const EdgeInsets.all(12),
-                            child: Center(child: Text(names2[i])),
+                            child: Center(child: Text(reserved[i].data)),
                           ),
                         ),
                     ],

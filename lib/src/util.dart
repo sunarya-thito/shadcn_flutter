@@ -18,6 +18,70 @@ enum SortDirection {
   descending,
 }
 
+extension ListExtension<T> on List<T> {
+  int? indexOfOrNull(T obj, [int start = 0]) {
+    int index = indexOf(obj, start);
+    return index == -1 ? null : index;
+  }
+
+  int? lastIndexOfOrNull(T obj, [int? start]) {
+    int index = lastIndexOf(obj, start);
+    return index == -1 ? null : index;
+  }
+
+  int? indexWhereOrNull(Predicate<T> test, [int start = 0]) {
+    int index = indexWhere(test, start);
+    return index == -1 ? null : index;
+  }
+
+  int? lastIndexWhereOrNull(Predicate<T> test, [int? start]) {
+    int index = lastIndexWhere(test, start);
+    return index == -1 ? null : index;
+  }
+
+  bool swapItem(T element, int targetIndex) {
+    int currentIndex = indexOf(element);
+    if (currentIndex == -1) {
+      insert(targetIndex, element);
+      return true;
+    }
+    if (currentIndex == targetIndex) {
+      return true;
+    }
+    if (targetIndex >= length) {
+      remove(element);
+      add(element);
+      return true;
+    }
+    removeAt(currentIndex);
+    if (currentIndex < targetIndex) {
+      insert(targetIndex - 1, element);
+    } else {
+      insert(targetIndex, element);
+    }
+    return true;
+  }
+
+  bool swapItemWhere(Predicate<T> test, int targetIndex) {
+    int currentIndex = indexWhere(test);
+    if (currentIndex == -1) {
+      return false;
+    }
+    T element = this[currentIndex];
+    return swapItem(element, targetIndex);
+  }
+}
+
+void swapItemInLists<T>(
+    List<List<T>> lists, T element, List<T> targetList, int targetIndex) {
+  for (var list in lists) {
+    if (list != targetList) {
+      list.remove(element);
+    }
+  }
+  targetList.swapItem(element, targetIndex);
+}
+
 BorderRadius? optionallyResolveBorderRadius(
     BuildContext context, BorderRadiusGeometry? radius) {
   if (radius == null) {

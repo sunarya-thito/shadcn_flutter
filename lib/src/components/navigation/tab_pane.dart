@@ -1,13 +1,16 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/display/fade_scroll.dart';
 
-class TabItem extends StatelessWidget {
+class TabItem extends StatelessWidget implements SortableData<TabItem> {
   final Widget title;
   final Widget? leading;
   final Widget? trailing;
   final BoxConstraints? constraints;
 
-  const TabItem({
+  @override
+  TabItem get data => this;
+
+  TabItem({
     super.key,
     required this.title,
     this.leading,
@@ -178,10 +181,12 @@ class TabPaneState extends State<TabPane> {
                       child: SortableLayer(
                         clipBehavior: Clip.none,
                         lock: true,
-                        child: SortableDropFallback<int>(
+                        child: SortableDropFallback<Object>(
                           onAccept: (value) {
                             List<TabItem> tabs = List.of(widget.tabs);
-                            tabs.add(tabs.removeAt(value.data));
+                            tabs.swapItemWhere((val) {
+                              return value == val.data;
+                            }, tabs.length + 1);
                             widget.onSort?.call(tabs);
                           },
                           child: ScrollableSortableLayer(
@@ -199,50 +204,33 @@ class TabPaneState extends State<TabPane> {
                                   onTap: () {
                                     widget.onFocused(index);
                                   },
-                                  child: Sortable<int>(
-                                    data: index,
+                                  child: Sortable<TabItem>(
+                                    data: widget.tabs[index],
                                     enabled: widget.onSort != null,
                                     onDragStart: () {
                                       widget.onFocused(index);
                                     },
                                     onAcceptLeft: (value) {
-                                      bool isBefore = index < value.data;
                                       List<TabItem> tabs = List.of(widget.tabs);
-                                      if (isBefore) {
-                                        tabs.insert(
-                                            index, tabs.removeAt(value.data));
-                                      } else {
-                                        tabs.insert(index - 1,
-                                            tabs.removeAt(value.data));
-                                      }
+                                      tabs.swapItem(value.data, index);
                                       widget.onSort?.call(tabs);
-                                      if (widget.focused == value.data) {
-                                        if (isBefore) {
-                                          widget.onFocused(index);
-                                        } else {
-                                          widget.onFocused(index + 1);
-                                        }
-                                      }
                                     },
                                     onAcceptRight: (value) {
-                                      bool isAfter = index > value.data;
                                       List<TabItem> tabs = List.of(widget.tabs);
-                                      if (isAfter) {
-                                        tabs.insert(
-                                            index, tabs.removeAt(value.data));
-                                      } else {
-                                        tabs.insert(index + 1,
-                                            tabs.removeAt(value.data));
-                                      }
+                                      tabs.swapItem(value.data, index + 1);
                                       widget.onSort?.call(tabs);
-                                      if (widget.focused == value.data) {
-                                        if (isAfter) {
-                                          widget.onFocused(index);
-                                        } else {
-                                          widget.onFocused(index + 1);
-                                        }
-                                      }
                                     },
+                                    ghost: Data.inherit(
+                                      data: TabPaneData(
+                                        currentIndex: index,
+                                        focusedIndex: index,
+                                        borderRadius: borderRadius,
+                                        backgroundColor: widget.backgroundColor,
+                                        border: widget.border,
+                                        state: this,
+                                      ),
+                                      child: widget.tabs[index],
+                                    ),
                                     child: Data.inherit(
                                       data: TabPaneData(
                                         currentIndex: index,
