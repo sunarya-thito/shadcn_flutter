@@ -33,7 +33,8 @@ class _SortableExample5State extends State<SortableExample5> {
               Sortable<String>(
                 key: ValueKey(i),
                 data: names[i],
-                // sortable must be disabled to allow the drag handle to work
+                // we only want user to drag the item from the handle,
+                // so we disable the drag on the item itself
                 enabled: false,
                 onAcceptTop: (value) {
                   setState(() {
