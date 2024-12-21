@@ -181,12 +181,10 @@ class TabPaneState extends State<TabPane> {
                       child: SortableLayer(
                         clipBehavior: Clip.none,
                         lock: true,
-                        child: SortableDropFallback<Object>(
+                        child: SortableDropFallback<TabItem>(
                           onAccept: (value) {
                             List<TabItem> tabs = List.of(widget.tabs);
-                            tabs.swapItemWhere((val) {
-                              return value == val.data;
-                            }, tabs.length + 1);
+                            tabs.swapItem(value.data, tabs.length);
                             widget.onSort?.call(tabs);
                           },
                           child: ScrollableSortableLayer(
