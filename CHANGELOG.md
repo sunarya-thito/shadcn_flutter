@@ -1,6 +1,10 @@
 ## 0.0.24
 * Remove pixel_snap
 * Fixed flutter dependency version constraint
+* Added Sortable drop animation
+* Added SortableDragHandle component
+* Added Tab Pane component
+* Fixed flutter dependency version constraint
 
 ## 0.0.23
 * Support for 3.27.0
