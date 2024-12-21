@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:ui';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -48,7 +49,7 @@ class ChartColorScheme {
 
 class ColorShades implements Color, ColorSwatch {
   static const int _step = 100;
-  static const List<int> _shadeValues = [
+  static const List<int> shadeValues = [
     50,
     100,
     200,
@@ -61,7 +62,6 @@ class ColorShades implements Color, ColorSwatch {
     900,
     950
   ];
-  static List<int> get shadeValues => List.unmodifiable(_shadeValues);
   final Map<int, Color> _colors;
 
   ColorShades._() : _colors = {};
@@ -70,11 +70,11 @@ class ColorShades implements Color, ColorSwatch {
   const ColorShades.raw(this._colors);
 
   factory ColorShades.sorted(List<Color> colors) {
-    assert(colors.length == _shadeValues.length,
+    assert(colors.length == shadeValues.length,
         'ColorShades.sorted: Invalid number of colors');
     final slate = ColorShades._();
-    for (int i = 0; i < _shadeValues.length; i++) {
-      slate._colors[_shadeValues[i]] = colors[i];
+    for (int i = 0; i < shadeValues.length; i++) {
+      slate._colors[shadeValues[i]] = colors[i];
     }
     return slate;
   }
@@ -86,7 +86,7 @@ class ColorShades implements Color, ColorSwatch {
       int saturationStepUp = 0,
       int lightnessStepDown = 8,
       int lightnessStepUp = 9}) {
-    assert(_shadeValues.contains(base),
+    assert(shadeValues.contains(base),
         'ColorShades.fromAccent: Invalid base value');
     final hsl = HSLColor.fromColor(accent);
     return ColorShades.fromAccentHSL(hsl,
@@ -104,10 +104,10 @@ class ColorShades implements Color, ColorSwatch {
       int saturationStepUp = 0,
       int lightnessStepDown = 8,
       int lightnessStepUp = 9}) {
-    assert(_shadeValues.contains(base),
+    assert(shadeValues.contains(base),
         'ColorShades.fromAccent: Invalid base value');
     final slate = ColorShades._();
-    for (final key in _shadeValues) {
+    for (final key in shadeValues) {
       double delta = (key - base) / _step;
       double hueDelta = delta * (hueShift / 10);
       double saturationDelta =
@@ -133,7 +133,7 @@ class ColorShades implements Color, ColorSwatch {
     int lightnessStepUp = 9,
     int lightnessStepDown = 8,
   }) {
-    assert(_shadeValues.contains(base),
+    assert(shadeValues.contains(base),
         'ColorShades.fromAccent: Invalid base value');
     double delta = (targetBase - base) / _step;
     double hueDelta = delta * (hueShift / 10);
@@ -150,7 +150,7 @@ class ColorShades implements Color, ColorSwatch {
 
   factory ColorShades.fromMap(Map<int, Color> colors) {
     final slate = ColorShades._();
-    for (final key in _shadeValues) {
+    for (final key in shadeValues) {
       assert(colors.containsKey(key),
           'ColorShades.fromMap: Missing value for $key');
       slate._colors[key] = colors[key]!;
@@ -205,7 +205,7 @@ class ColorShades implements Color, ColorSwatch {
   @override
   ColorShades withAlpha(int a) {
     Map<int, Color> colors = {};
-    for (final key in _shadeValues) {
+    for (final key in shadeValues) {
       colors[key] = _colors[key]!.withAlpha(a);
     }
     return ColorShades._direct(colors);
@@ -216,7 +216,7 @@ class ColorShades implements Color, ColorSwatch {
     Map<int, Color> colors = {};
     // calculate the difference between the current blue value and the new value
     int delta = b - blue;
-    for (final key in _shadeValues) {
+    for (final key in shadeValues) {
       int safe = (_colors[key]!.blue + delta).clamp(0, 255);
       colors[key] = _colors[key]!.withBlue(safe);
     }
@@ -228,7 +228,7 @@ class ColorShades implements Color, ColorSwatch {
     Map<int, Color> colors = {};
     // calculate the difference between the current green value and the new value
     int delta = g - green;
-    for (final key in _shadeValues) {
+    for (final key in shadeValues) {
       int safe = (_colors[key]!.green + delta).clamp(0, 255);
       colors[key] = _colors[key]!.withGreen(safe);
     }
@@ -238,7 +238,7 @@ class ColorShades implements Color, ColorSwatch {
   @override
   Color withOpacity(double opacity) {
     Map<int, Color> colors = {};
-    for (final key in _shadeValues) {
+    for (final key in shadeValues) {
       colors[key] = _colors[key]!.scaleAlpha(opacity);
     }
     return ColorShades._direct(colors);
@@ -249,7 +249,7 @@ class ColorShades implements Color, ColorSwatch {
     Map<int, Color> colors = {};
     // calculate the difference between the current red value and the new value
     int delta = r - red;
-    for (final key in _shadeValues) {
+    for (final key in shadeValues) {
       int safe = (_colors[key]!.red + delta).clamp(0, 255);
       colors[key] = _colors[key]!.withRed(safe);
     }
@@ -289,7 +289,7 @@ class ColorShades implements Color, ColorSwatch {
       double? blue,
       ColorSpace? colorSpace}) {
     Map<int, Color> colors = {};
-    for (final key in _shadeValues) {
+    for (final key in shadeValues) {
       colors[key] = _colors[key]!.withValues(
         alpha: alpha,
         red: red,

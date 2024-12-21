@@ -109,12 +109,3 @@ class _ScaleGradient extends GradientTransform {
   }
 }
 
-Rect _inflateRect(Rect rect,
-    {double? left, double? top, double? right, double? bottom}) {
-  return Rect.fromLTRB(
-    rect.left - (left ?? 0),
-    rect.top - (top ?? 0),
-    rect.right + (right ?? 0),
-    rect.bottom + (bottom ?? 0),
-  );
-}

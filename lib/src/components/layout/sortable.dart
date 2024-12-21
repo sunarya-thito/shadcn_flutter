@@ -906,6 +906,7 @@ class _SortableLayerState extends State<SortableLayer>
   }
 
   void _tick(Duration elapsed) {
+    List<_DropTransform> toRemove = [];
     for (final drop in _activeDrops.value) {
       drop.start ??= elapsed;
       double progress = ((elapsed - drop.start!).inMilliseconds /
@@ -914,13 +915,14 @@ class _SortableLayerState extends State<SortableLayer>
       progress = (widget.dropCurve ?? Curves.easeInOut).transform(progress);
       if (progress >= 1) {
         drop.state._hasClaimedDrop.value = false;
-        _activeDrops.mutate((value) {
-          value.remove(drop);
-        });
+        toRemove.add(drop);
       } else {
         drop.progress.value = progress;
       }
     }
+    _activeDrops.mutate((value) {
+      value.removeWhere((element) => toRemove.contains(element));
+    });
     if (_activeDrops.value.isEmpty) {
       _ticker.stop();
     }

@@ -107,7 +107,7 @@ class _ColorsPageState extends State<ColorsPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               AspectRatio(
-                aspectRatio: 0.82508734942,
+                aspectRatio: 16 / 19,
                 child: Clickable(
                   enabled: clickable,
                   mouseCursor:
@@ -149,15 +149,16 @@ class _ColorsPageState extends State<ColorsPage> {
       BuildContext context, String name, ColorShades swatch) {
     final theme = Theme.of(context);
     List<Widget> children = [];
-    for (int i = 0; i < ColorShades.shadeValues.length; i++) {
-      final shade = ColorShades.shadeValues[i];
+    var shadeValues = ColorShades.shadeValues;
+    for (int i = 0; i < shadeValues.length; i++) {
+      final shade = shadeValues[i];
       children.add(
         Expanded(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               AspectRatio(
-                aspectRatio: 0.82508734942,
+                aspectRatio: 16 / 19,
                 child: Builder(builder: (context) {
                   return Clickable(
                     mouseCursor:
@@ -196,7 +197,7 @@ class _ColorsPageState extends State<ColorsPage> {
                         borderRadius: theme.borderRadiusMd,
                         border: shade == 500
                             ? Border.all(
-                                width: 3,
+                                width: 30,
                                 color: theme.colorScheme.foreground,
                                 strokeAlign: BorderSide.strokeAlignOutside)
                             : null,
