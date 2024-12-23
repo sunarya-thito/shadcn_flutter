@@ -300,6 +300,19 @@ class ColorShades implements Color, ColorSwatch {
     }
     return ColorShades._direct(colors);
   }
+
+  /// A 32 bit value representing this color.
+  ///
+  /// The bits are assigned as follows:
+  ///
+  /// * Bits 24-31 are the alpha value.
+  /// * Bits 16-23 are the red value.
+  /// * Bits 8-15 are the green value.
+  /// * Bits 0-7 are the blue value.
+  @override
+  int toARGB32() {
+    return value;
+  }
 }
 
 String hexFromColor(Color color) {
