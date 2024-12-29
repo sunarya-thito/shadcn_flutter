@@ -427,34 +427,6 @@ class _ScaffoldRenderFlex extends RenderBox
     return false;
   }
 
-  _BodyBoxConstraints? _constraints;
-
-  @override
-  _BodyBoxConstraints get constraints {
-    _constraints ??= _BodyBoxConstraints(
-      maxHeight: super.constraints.maxHeight,
-      maxWidth: super.constraints.maxWidth,
-      minHeight: super.constraints.minHeight,
-      minWidth: super.constraints.minWidth,
-      footersHeight: _headerSize.value,
-      headersHeight: _footerSize.value,
-    );
-
-    if (_constraints!.minHeight != super.constraints.minHeight ||
-        _constraints!.maxHeight != super.constraints.maxHeight ||
-        _constraints!.minWidth != super.constraints.minWidth ||
-        _constraints!.maxWidth != super.constraints.maxWidth) {
-      _constraints = _constraints!.copyWith(
-        minHeight: super.constraints.minHeight,
-        maxHeight: super.constraints.maxHeight,
-        minWidth: super.constraints.minWidth,
-        maxWidth: super.constraints.maxWidth,
-      );
-    }
-
-    return _constraints!;
-  }
-
   @override
   void performLayout() {
     RenderBox header = firstChild!;
@@ -494,7 +466,16 @@ class _ScaffoldRenderFlex extends RenderBox
         contentOffset = Offset(0, headerSize);
         break;
     }
-    content.layout(contentConstraints, parentUsesSize: true);
+
+    final bodyConstraints = _BodyBoxConstraints(
+      minWidth: contentConstraints.minWidth,
+      maxWidth: contentConstraints.maxWidth,
+      minHeight: contentConstraints.minHeight,
+      maxHeight: contentConstraints.maxHeight,
+      footersHeight: footerSize,
+      headersHeight: headerSize,
+    );
+    content.layout(bodyConstraints, parentUsesSize: true);
     size = constraints.biggest;
     (content.parentData as BoxParentData).offset = contentOffset;
     (footer.parentData as BoxParentData).offset = Offset(
