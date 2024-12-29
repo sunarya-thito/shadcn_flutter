@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:math' as math;
 
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -158,7 +159,13 @@ class ScaffoldState extends State<Scaffold> {
             buildHeader(context),
             Container(
               padding: viewInsets,
-              child: ToastLayer(child: widget.child),
+              child: ToastLayer(
+                child: _BodyBuilder(
+                  floatingFooter: widget.floatingFooter,
+                  floatingHeader: widget.floatingHeader,
+                  child: widget.child,
+                ),
+              ),
             ),
             buildFooter(context, viewInsets),
           ],
@@ -420,6 +427,34 @@ class _ScaffoldRenderFlex extends RenderBox
     return false;
   }
 
+  _BodyBoxConstraints? _constraints;
+
+  @override
+  _BodyBoxConstraints get constraints {
+    _constraints ??= _BodyBoxConstraints(
+      maxHeight: super.constraints.maxHeight,
+      maxWidth: super.constraints.maxWidth,
+      minHeight: super.constraints.minHeight,
+      minWidth: super.constraints.minWidth,
+      footersHeight: _headerSize.value,
+      headersHeight: _footerSize.value,
+    );
+
+    if (_constraints!.minHeight != super.constraints.minHeight ||
+        _constraints!.maxHeight != super.constraints.maxHeight ||
+        _constraints!.minWidth != super.constraints.minWidth ||
+        _constraints!.maxWidth != super.constraints.maxWidth) {
+      _constraints = _constraints!.copyWith(
+        minHeight: super.constraints.minHeight,
+        maxHeight: super.constraints.maxHeight,
+        minWidth: super.constraints.minWidth,
+        maxWidth: super.constraints.maxWidth,
+      );
+    }
+
+    return _constraints!;
+  }
+
   @override
   void performLayout() {
     RenderBox header = firstChild!;
@@ -572,5 +607,119 @@ class _RenderScaffoldPadding extends RenderBox
   @override
   void paint(PaintingContext context, Offset offset) {
     defaultPaint(context, offset);
+  }
+}
+
+class _BodyBoxConstraints extends BoxConstraints {
+  const _BodyBoxConstraints({
+    super.maxWidth,
+    super.maxHeight,
+    super.minWidth,
+    super.minHeight,
+    required this.footersHeight,
+    required this.headersHeight,
+  })  : assert(footersHeight >= 0),
+        assert(headersHeight >= 0);
+
+  final double footersHeight;
+  final double headersHeight;
+
+  @override
+  _BodyBoxConstraints copyWith({
+    double? minWidth,
+    double? maxWidth,
+    double? minHeight,
+    double? maxHeight,
+    double? footersHeight,
+    double? headersHeight,
+  }) {
+    return _BodyBoxConstraints(
+      minWidth: minWidth ?? this.minWidth,
+      maxWidth: maxWidth ?? this.maxWidth,
+      minHeight: minHeight ?? this.minHeight,
+      maxHeight: maxHeight ?? this.maxHeight,
+      footersHeight: footersHeight ?? this.footersHeight,
+      headersHeight: headersHeight ?? this.headersHeight,
+    );
+  }
+
+  @override
+  _BodyBoxConstraints deflate(EdgeInsetsGeometry edges) {
+    final c = super.deflate(edges);
+
+    return _BodyBoxConstraints(
+      minWidth: c.minWidth,
+      maxWidth: c.maxWidth,
+      minHeight: c.minHeight,
+      maxHeight: c.maxHeight,
+      footersHeight: footersHeight,
+      headersHeight: headersHeight,
+    );
+  }
+
+  // RenderObject.layout() will only short-circuit its call to its performLayout
+  // method if the new layout constraints are not == to the current constraints.
+  // If the height of the bottom widgets has changed, even though the constraints'
+  // min and max values have not, we still want performLayout to happen.
+  @override
+  bool operator ==(Object other) {
+    if (super != other) {
+      return false;
+    }
+    return other is _BodyBoxConstraints &&
+        other.footersHeight == footersHeight &&
+        other.headersHeight == headersHeight;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        super.hashCode,
+        footersHeight,
+        headersHeight,
+      );
+}
+
+class _BodyBuilder extends StatelessWidget {
+  const _BodyBuilder({
+    required this.floatingFooter,
+    required this.floatingHeader,
+    required this.child,
+  });
+
+  final Widget child;
+  final bool floatingFooter;
+  final bool floatingHeader;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!floatingFooter && !floatingHeader) {
+      return child;
+    }
+
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final _BodyBoxConstraints bodyConstraints =
+            constraints as _BodyBoxConstraints;
+        final MediaQueryData metrics = MediaQuery.of(context);
+
+        final double bottom = floatingFooter
+            ? math.max(metrics.padding.bottom, bodyConstraints.footersHeight)
+            : metrics.padding.bottom;
+
+        final double top = floatingHeader
+            ? math.max(metrics.padding.top, bodyConstraints.headersHeight)
+            : metrics.padding.top;
+
+        return MediaQuery(
+          data: metrics.copyWith(
+            padding: metrics.padding.copyWith(
+              top: top,
+              bottom: bottom,
+            ),
+          ),
+          child: child,
+        );
+      },
+    );
   }
 }
