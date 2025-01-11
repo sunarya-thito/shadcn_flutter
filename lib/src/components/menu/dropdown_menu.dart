@@ -7,7 +7,6 @@ OverlayCompleter<T?> showDropdown<T>({
   AlignmentGeometry? anchorAlignment,
   PopoverConstraint widthConstraint = PopoverConstraint.flexible,
   PopoverConstraint heightConstraint = PopoverConstraint.flexible,
-  Key? key,
   bool rootOverlay = true,
   bool modal = true,
   Clip clipBehavior = Clip.none,
@@ -26,7 +25,6 @@ OverlayCompleter<T?> showDropdown<T>({
 }) {
   final theme = Theme.of(context);
   final scaling = theme.scaling;
-  final GlobalKey key = GlobalKey();
   final overlayManager = OverlayManager.of(context);
   return overlayManager.showMenu<T>(
     context: context,
@@ -46,7 +44,6 @@ OverlayCompleter<T?> showDropdown<T>({
     position: position,
     anchorAlignment: anchorAlignment,
     consumeOutsideTaps: consumeOutsideTaps,
-    regionGroupId: key,
     modal: modal,
     dismissBackdropFocus: dismissBackdropFocus,
     overlayBarrier: OverlayBarrier(
@@ -54,7 +51,7 @@ OverlayCompleter<T?> showDropdown<T>({
     ),
     builder: (context) {
       return Data.inherit(
-        data: DropdownMenuData(key),
+        data: DropdownMenuData(),
         child: builder(context),
       );
     },
@@ -62,9 +59,7 @@ OverlayCompleter<T?> showDropdown<T>({
 }
 
 class DropdownMenuData {
-  final GlobalKey key;
-
-  DropdownMenuData(this.key);
+  DropdownMenuData();
 }
 
 class DropdownMenu extends StatefulWidget {
@@ -73,7 +68,6 @@ class DropdownMenu extends StatefulWidget {
   final List<MenuItem> children;
 
   const DropdownMenu({
-    super.key,
     this.surfaceOpacity,
     this.surfaceBlur,
     required this.children,
@@ -93,7 +87,6 @@ class _DropdownMenuState extends State<DropdownMenu> {
         minWidth: 192,
       ),
       child: MenuGroup(
-        regionGroupId: Data.maybeOf<DropdownMenuData>(context)?.key,
         subMenuOffset: const Offset(8, -4) * theme.scaling,
         itemPadding: isSheetOverlay
             ? const EdgeInsets.symmetric(horizontal: 8) * theme.scaling
