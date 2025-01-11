@@ -53,6 +53,7 @@ class _CounterPageState extends State<CounterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingFooter: true,
       headers: [
         AppBar(
           title: const Text('Counter App'),
@@ -105,6 +106,7 @@ class _CounterPageState extends State<CounterPage> {
       footers: [
         const Divider(),
         NavigationBar(
+          surfaceOpacity: 0,
           onSelected: (i) {
             setState(() {
               _selected = i;
@@ -118,26 +120,26 @@ class _CounterPageState extends State<CounterPage> {
           ],
         ),
       ],
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(32.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-                textAlign: TextAlign.center,
-              ).p(),
-              Text(
-                '$_counter',
-              ).h1(),
-              PrimaryButton(
-                onPressed: _incrementCounter,
-                density: ButtonDensity.icon,
-                child: const Icon(Icons.add),
-              ).p(),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+              textAlign: TextAlign.center,
+            ).p(),
+            Text(
+              '$_counter',
+            ).h1(),
+            PrimaryButton(
+              onPressed: _incrementCounter,
+              density: ButtonDensity.icon,
+              child: const Icon(Icons.add),
+            ).p(),
+            for (int i = 0; i < 20; i++) Text('Item $i').p(),
+            const SafeArea(child: SizedBox()),
+          ],
         ),
       ),
     );
