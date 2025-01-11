@@ -623,7 +623,9 @@ class _CarouselState extends State<Carousel>
   @override
   void dispose() {
     _controller.removeListener(_onControllerChange);
-    _controller.dispose();
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
     _ticker.dispose();
     super.dispose();
   }
