@@ -67,6 +67,7 @@ import 'package:docs/pages/docs/components/toggle_example.dart';
 import 'package:docs/pages/docs/components/tooltip_example.dart';
 import 'package:docs/pages/docs/components/tracker_example.dart';
 import 'package:docs/pages/docs/components/tree_example.dart';
+import 'package:docs/pages/docs/components/window_example.dart';
 import 'package:docs/pages/docs/components_page.dart';
 import 'package:docs/pages/docs/icons_page.dart';
 import 'package:docs/pages/docs/installation_page.dart';
@@ -663,6 +664,11 @@ class MyAppState extends State<MyApp> {
             path: 'tab_pane',
             builder: (context, state) => const TabPaneExample(),
             name: 'tab_pane',
+          ),
+          GoRoute(
+            path: 'window',
+            builder: (context, state) => const WindowExample(),
+            name: 'window',
           )
         ]),
   ]);

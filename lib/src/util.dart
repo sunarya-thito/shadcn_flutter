@@ -72,6 +72,10 @@ extension ListExtension<T> on List<T> {
   }
 }
 
+double unlerpDouble(double value, double min, double max) {
+  return (value - min) / (max - min);
+}
+
 void swapItemInLists<T>(
     List<List<T>> lists, T element, List<T> targetList, int targetIndex) {
   for (var list in lists) {

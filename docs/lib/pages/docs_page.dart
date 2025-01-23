@@ -306,7 +306,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Sheet', 'sheet'),
         ShadcnDocsPage('Tooltip', 'tooltip'),
         // TODO: window as in like a window in desktop
-        ShadcnDocsPage('Window', 'window', ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Window', 'window', ShadcnFeatureTag.experimental),
       ],
     ),
 

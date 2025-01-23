@@ -161,6 +161,7 @@ export 'src/components/layout/steps.dart';
 export 'src/components/layout/table.dart';
 export 'src/components/layout/timeline.dart';
 export 'src/components/layout/tree.dart';
+export 'src/components/layout/window.dart';
 export 'src/components/locale/shadcn_localizations.dart';
 export 'src/components/menu/context_menu.dart';
 export 'src/components/menu/dropdown_menu.dart';
