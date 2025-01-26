@@ -14,11 +14,14 @@ class NavigationMenuExample extends StatelessWidget {
           'Navigation menu is a component that provides a list of navigation items.',
       displayName: 'Navigation Menu',
       children: [
-        WidgetUsageExample(
-          title: 'Example',
-          path:
-              'lib/pages/docs/components/navigation_menu/navigation_menu_example_1.dart',
-          child: NavigationMenuExample1(),
+        SizedBox(
+          height: 300,
+          child: WidgetUsageExample(
+            title: 'Example',
+            path:
+                'lib/pages/docs/components/navigation_menu/navigation_menu_example_1.dart',
+            child: NavigationMenuExample1(),
+          ),
         ),
       ],
     );
