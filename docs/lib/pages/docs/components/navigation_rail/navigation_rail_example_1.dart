@@ -12,7 +12,9 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
 
   NavigationRailAlignment alignment = NavigationRailAlignment.start;
   NavigationLabelType labelType = NavigationLabelType.none;
+  NavigationLabelPosition labelPosition = NavigationLabelPosition.bottom;
   bool customButtonStyle = false;
+  bool expanded = true;
 
   NavigationButton buildButton(String label, IconData icon) {
     return NavigationButton(
@@ -37,6 +39,8 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
             alignment: alignment,
             labelType: labelType,
             index: selected,
+            labelPosition: labelPosition,
+            expanded: expanded,
             onSelected: (index) {
               setState(() {
                 selected = index;
@@ -109,12 +113,31 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                       },
                       children: [
                         for (var value in NavigationLabelType.values)
-                          // expanded is used for the navigation sidebar
-                          if (value != NavigationLabelType.expanded)
-                            SelectItemButton(
-                              value: value,
-                              child: Text(value.name),
-                            ),
+                          SelectItemButton(
+                            value: value,
+                            child: Text(value.name),
+                          ),
+                      ],
+                    ),
+                    Select<NavigationLabelPosition>(
+                      value: labelPosition,
+                      itemBuilder:
+                          (BuildContext context, NavigationLabelPosition item) {
+                        return Text(item.name);
+                      },
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            labelPosition = value;
+                          });
+                        }
+                      },
+                      children: [
+                        for (var value in NavigationLabelPosition.values)
+                          SelectItemButton(
+                            value: value,
+                            child: Text(value.name),
+                          ),
                       ],
                     ),
                     Checkbox(
@@ -127,6 +150,17 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                         });
                       },
                       trailing: const Text('Custom Button Style'),
+                    ),
+                    Checkbox(
+                      state: expanded
+                          ? CheckboxState.checked
+                          : CheckboxState.unchecked,
+                      onChanged: (value) {
+                        setState(() {
+                          expanded = value == CheckboxState.checked;
+                        });
+                      },
+                      trailing: const Text('Expanded'),
                     ),
                   ],
                 ),

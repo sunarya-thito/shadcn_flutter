@@ -14,6 +14,7 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
   bool expands = true;
   NavigationLabelType labelType = NavigationLabelType.none;
   bool customButtonStyle = true;
+  bool expanded = true;
 
   NavigationButton buildButton(String label, IconData icon) {
     return NavigationButton(
@@ -39,6 +40,7 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
           NavigationBar(
             alignment: alignment,
             labelType: labelType,
+            expanded: expanded,
             expands: expands,
             onSelected: (index) {
               setState(() {
@@ -104,12 +106,10 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
                   },
                   children: [
                     for (var value in NavigationLabelType.values)
-                      // expanded is used for the navigation sidebar
-                      if (value != NavigationLabelType.expanded)
-                        SelectItemButton(
-                          value: value,
-                          child: Text(value.name),
-                        ),
+                      SelectItemButton(
+                        value: value,
+                        child: Text(value.name),
+                      ),
                   ],
                 ),
                 Checkbox(
@@ -132,6 +132,17 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
                     });
                   },
                   trailing: const Text('Custom Button Style'),
+                ),
+                Checkbox(
+                  state: expanded
+                      ? CheckboxState.checked
+                      : CheckboxState.unchecked,
+                  onChanged: (value) {
+                    setState(() {
+                      expanded = value == CheckboxState.checked;
+                    });
+                  },
+                  trailing: const Text('Expanded'),
                 ),
               ],
             ),

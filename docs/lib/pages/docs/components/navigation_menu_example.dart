@@ -15,7 +15,7 @@ class NavigationMenuExample extends StatelessWidget {
       displayName: 'Navigation Menu',
       children: [
         SizedBox(
-          height: 300,
+          height: 600,
           child: WidgetUsageExample(
             title: 'Example',
             path:

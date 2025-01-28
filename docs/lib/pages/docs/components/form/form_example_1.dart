@@ -10,9 +10,9 @@ class FormExample1 extends StatefulWidget {
 }
 
 class _FormExample1State extends State<FormExample1> {
-  final _usernameKey = const FormKey<String>('username');
-  final _passwordKey = const FormKey<String>('password');
-  final _confirmPasswordKey = const FormKey<String>('confirmPassword');
+  final _usernameKey = const TextFieldKey('username');
+  final _passwordKey = const TextFieldKey('password');
+  final _confirmPasswordKey = const TextFieldKey('confirmPassword');
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -45,7 +45,7 @@ class _FormExample1State extends State<FormExample1> {
           children: [
             FormTableLayout(
               rows: [
-                FormField<String>(
+                FormField(
                   key: _usernameKey,
                   label: const Text('Username'),
                   hint: const Text('This is your public display name'),
@@ -54,7 +54,7 @@ class _FormExample1State extends State<FormExample1> {
                     initialValue: 'sunarya-thito',
                   ),
                 ),
-                FormField<String>(
+                FormField(
                   key: _passwordKey,
                   label: const Text('Password'),
                   validator: const LengthValidator(min: 8),
@@ -62,7 +62,7 @@ class _FormExample1State extends State<FormExample1> {
                     obscureText: true,
                   ),
                 ),
-                FormField<String>(
+                FormField(
                   key: _confirmPasswordKey,
                   label: const Text('Confirm Password'),
                   validator: CompareWith.equal(_passwordKey,

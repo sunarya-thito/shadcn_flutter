@@ -8,10 +8,10 @@ class FormExample2 extends StatefulWidget {
 }
 
 class _FormExample2State extends State<FormExample2> {
-  final _usernameKey = const FormKey<String>(#username);
-  final _passwordKey = const FormKey<String>(#password);
-  final _confirmPasswordKey = const FormKey<String>(#confirmPassword);
-  final _agreeKey = const FormKey<CheckboxState>(#agree);
+  final _usernameKey = const TextFieldKey(#username);
+  final _passwordKey = const TextFieldKey(#password);
+  final _confirmPasswordKey = const TextFieldKey(#confirmPassword);
+  final _agreeKey = const CheckboxKey(#agree);
   CheckboxState state = CheckboxState.unchecked;
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class _FormExample2State extends State<FormExample2> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FormField<String>(
+                FormField(
                   key: _usernameKey,
                   label: const Text('Username'),
                   hint: const Text('This is your public display name'),
@@ -53,7 +53,7 @@ class _FormExample2State extends State<FormExample2> {
                   },
                   child: const TextField(),
                 ),
-                FormField<String>(
+                FormField(
                   key: _passwordKey,
                   label: const Text('Password'),
                   validator: const LengthValidator(min: 8),
@@ -65,7 +65,7 @@ class _FormExample2State extends State<FormExample2> {
                     obscureText: true,
                   ),
                 ),
-                FormField<String>(
+                FormField(
                   key: _confirmPasswordKey,
                   label: const Text('Confirm Password'),
                   validator: CompareWith.equal(_passwordKey,
@@ -78,7 +78,7 @@ class _FormExample2State extends State<FormExample2> {
                     obscureText: true,
                   ),
                 ),
-                FormInline<CheckboxState>(
+                FormInline(
                   key: _agreeKey,
                   label: const Text('I agree to the terms and conditions'),
                   validator: const CompareTo.equal(CheckboxState.checked,
