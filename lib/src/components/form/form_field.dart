@@ -65,49 +65,32 @@ abstract class ObjectFormHandler<T> {
 }
 
 class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
-    with FormValueSupplier {
-  late T? _value;
+    with FormValueSupplier<T, ObjectFormField<T>> {
   final PopoverController _popoverController = PopoverController();
 
   @override
   void initState() {
     super.initState();
-    _value = widget.value;
+    formValue = widget.value;
+  }
+
+  T? get value => formValue;
+
+  set value(T? value) {
+    widget.onChanged?.call(value);
+    formValue = value;
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    reportNewFormValue(
-      _value,
-      (value) {
-        if (widget.onChanged != null) {
-          widget.onChanged!(value);
-        }
-      },
-    );
-  }
-
-  T get value => _value as T;
-
-  set value(T? value) {
-    setState(() {
-      this._value = value;
-    });
+  void didReplaceFormValue(T value) {
     widget.onChanged?.call(value);
-    context.reportNewFormValue(value);
   }
 
   @override
   void didUpdateWidget(covariant ObjectFormField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
-      _value = widget.value;
-      reportNewFormValue(_value, (value) {
-        if (widget.onChanged != null) {
-          widget.onChanged!(value);
-        }
-      });
+      formValue = widget.value;
     }
   }
 
@@ -118,7 +101,7 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
   }
 
   void _showDialog([T? value]) {
-    value ??= _value;
+    value ??= formValue;
     showDialog(
       context: context,
       builder: (context) {
@@ -132,11 +115,7 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
       },
     ).then((value) {
       if (mounted && value is _ObjectFormFieldDialogResult<T>) {
-        setState(() {
-          this._value = value.value;
-        });
-        widget.onChanged?.call(value.value);
-        context.reportNewFormValue(value);
+        this.value = value.value;
       }
     });
   }
@@ -144,7 +123,7 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
   void _showPopover([T? value]) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    value ??= _value;
+    value ??= formValue;
     _popoverController.show(
       context: context,
       alignment: widget.popoverAlignment ?? Alignment.topLeft,
@@ -161,12 +140,8 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
           popoverPadding: widget.popoverPadding,
           prompt: prompt,
           onChanged: (value) {
-            if (value != _value && mounted) {
-              setState(() {
-                this._value = value;
-              });
-              widget.onChanged?.call(value);
-              this.context.reportNewFormValue(value);
+            if (mounted) {
+              this.value = value;
             }
           },
         );
@@ -191,9 +166,9 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
       density: widget.density,
       shape: widget.shape,
       onPressed: widget.onChanged == null ? null : prompt,
-      child: _value == null
+      child: this.value == null
           ? widget.placeholder.muted()
-          : widget.builder(context, _value as T),
+          : widget.builder(context, this.value as T),
     );
   }
 }

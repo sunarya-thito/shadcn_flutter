@@ -78,7 +78,7 @@ class RadioItem<T> extends StatefulWidget {
   State<RadioItem<T>> createState() => _RadioItemState<T>();
 }
 
-class _RadioItemState<T> extends State<RadioItem<T>> with FormValueSupplier {
+class _RadioItemState<T> extends State<RadioItem<T>> {
   late FocusNode _focusNode;
 
   bool _focusing = false;
@@ -171,7 +171,7 @@ class RadioCard<T> extends StatefulWidget {
   State<RadioCard<T>> createState() => _RadioCardState<T>();
 }
 
-class _RadioCardState<T> extends State<RadioCard<T>> with FormValueSupplier {
+class _RadioCardState<T> extends State<RadioCard<T>> {
   late FocusNode _focusNode;
   bool _focusing = false;
   bool _hovering = false;
@@ -291,14 +291,31 @@ class RadioGroupData<T> {
   int get hashCode => selectedItem.hashCode;
 }
 
-class _RadioGroupState<T> extends State<RadioGroup<T>> with FormValueSupplier {
+class _RadioGroupState<T> extends State<RadioGroup<T>>
+    with FormValueSupplier<T, RadioGroup<T>> {
   void _setSelected(T value) {
     if (widget.value != value) {
       widget.onChanged?.call(value);
-      reportNewFormValue(value, (value) {
-        widget.onChanged?.call(value);
-      });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    formValue = widget.value;
+  }
+
+  @override
+  void didUpdateWidget(covariant RadioGroup<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value) {
+      formValue = widget.value;
+    }
+  }
+
+  @override
+  void didReplaceFormValue(T value) {
+    widget.onChanged?.call(value);
   }
 
   @override

@@ -483,7 +483,8 @@ class InputOTP extends StatefulWidget {
   State<InputOTP> createState() => _InputOTPState();
 }
 
-class _InputOTPState extends State<InputOTP> {
+class _InputOTPState extends State<InputOTP>
+    with FormValueSupplier<OTPCodepointList, InputOTP> {
   final List<_InputOTPChild> _children = [];
 
   OTPCodepointList get value {
@@ -531,6 +532,7 @@ class _InputOTPState extends State<InputOTP> {
     for (int i = index - relativeIndex; i < index; i++) {
       _children[i].groupLength = relativeIndex;
     }
+    formValue = value;
   }
 
   int? getInitialValue(int index) {
@@ -572,6 +574,7 @@ class _InputOTPState extends State<InputOTP> {
       for (int i = index - relativeIndex; i < index; i++) {
         _children[i].groupLength = relativeIndex;
       }
+      formValue = value;
     }
   }
 
@@ -627,5 +630,10 @@ class _InputOTPState extends State<InputOTP> {
         ),
       ),
     );
+  }
+
+  @override
+  void didReplaceFormValue(OTPCodepointList value) {
+    widget.onChanged?.call(value);
   }
 }

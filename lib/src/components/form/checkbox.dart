@@ -31,9 +31,16 @@ class Checkbox extends StatefulWidget {
   _CheckboxState createState() => _CheckboxState();
 }
 
-class _CheckboxState extends State<Checkbox> with FormValueSupplier {
+class _CheckboxState extends State<Checkbox>
+    with FormValueSupplier<CheckboxState, Checkbox> {
   final bool _focusing = false;
   bool _shouldAnimate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    formValue = widget.state;
+  }
 
   void _changeTo(CheckboxState state) {
     if (widget.onChanged != null) {
@@ -64,22 +71,15 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    reportNewFormValue(widget.state, (value) {
-      if (widget.onChanged != null) {
-        widget.onChanged!(value);
-      }
-    });
+  void didReplaceFormValue(CheckboxState value) {
+    _changeTo(value);
   }
 
   @override
   void didUpdateWidget(covariant Checkbox oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.state != oldWidget.state) {
-      reportNewFormValue(widget.state, (value) {
-        _changeTo(value);
-      });
+      formValue = widget.state;
       _shouldAnimate = true;
     }
   }

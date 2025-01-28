@@ -47,7 +47,8 @@ class NumberInput extends StatefulWidget {
   State<NumberInput> createState() => _NumberInputState();
 }
 
-class _NumberInputState extends State<NumberInput> {
+class _NumberInputState extends State<NumberInput>
+    with FormValueSupplier<num, NumberInput> {
   late TextEditingController _controller;
   late double _lastValidValue;
 
@@ -56,14 +57,35 @@ class _NumberInputState extends State<NumberInput> {
     super.initState();
     _lastValidValue = widget.initialValue;
     _controller = widget.controller ?? TextEditingController();
+    _controller.addListener(_onTextChanged);
+    formValue = _lastValidValue;
+  }
+
+  void _onTextChanged() {
+    num value = _value;
+    formValue = value;
+  }
+
+  @override
+  void didReplaceFormValue(num value) {
+    _lastValidValue = value.toDouble();
+    _controller.text = valueToString(value);
   }
 
   @override
   void didUpdateWidget(covariant NumberInput oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
+      _controller.removeListener(_onTextChanged);
       _controller = widget.controller ?? TextEditingController();
+      _controller.addListener(_onTextChanged);
     }
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onTextChanged);
+    super.dispose();
   }
 
   @override
@@ -203,7 +225,7 @@ class _NumberInputState extends State<NumberInput> {
     );
   }
 
-  String get _valueAsString {
+  String valueToString(num value) {
     if (widget.allowDecimals) {
       double value = double.tryParse(_controller.text) ?? _lastValidValue;
       if (widget.decimalPlaces != null) {
@@ -216,6 +238,8 @@ class _NumberInputState extends State<NumberInput> {
       return value.toString();
     }
   }
+
+  String get _valueAsString => valueToString(_value);
 
   num get _value {
     if (widget.allowDecimals) {

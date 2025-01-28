@@ -917,6 +917,26 @@ class FormKey<T> extends LocalKey {
   }
 }
 
+typedef AutoCompleteKey = FormKey<String>;
+typedef CheckboxKey = FormKey<CheckboxState>;
+typedef ChipInputKey<T> = FormKey<List<T>>;
+typedef ColorPickerKey = FormKey<Color>;
+typedef DatePickerKey = FormKey<DateTime>;
+typedef InputOTPKey = FormKey<List<int?>>;
+typedef MultiSelectKey<T> = FormKey<List<T>>;
+typedef NumberInputKey = FormKey<num>;
+typedef PhoneInputKey = FormKey<PhoneNumber>;
+typedef RadioCardKey = FormKey<int>;
+typedef RadioGroupKey = FormKey<int>;
+typedef SelectKey<T> = FormKey<T>;
+typedef SliderKey = FormKey<SliderValue>;
+typedef StarRatingKey = FormKey<double>;
+typedef SwitchKey = FormKey<bool>;
+typedef TextAreaKey = FormKey<String>;
+typedef TextFieldKey = FormKey<String>;
+typedef TimePickerKey = FormKey<TimeOfDay>;
+typedef ToggleKey = FormKey<bool>;
+
 class FormEntry<T> extends StatefulWidget {
   final Widget child;
   final Validator<T>? validator;
@@ -990,6 +1010,17 @@ class FormEntryState extends State<FormEntry> {
       data: this,
       child: widget.child,
     );
+  }
+
+  FutureOr<ValidationResult?> reportNewFormValue(Object? value) {
+    if (!widget.key.isInstanceOf(value)) {
+      return null;
+    }
+    if (_cachedValue == value) {
+      return null;
+    }
+    _cachedValue = value;
+    return _controller?.attach(context, widget.key, value, widget.validator);
   }
 }
 
@@ -1359,58 +1390,61 @@ extension FormExtension on BuildContext {
     }
     return _chainedSubmitForm(values, errors, iterator);
   }
-
-  FutureOr<ValidationResult?>? reportNewFormValue<T>(T value) {
-    final formController = Data.maybeOf<FormController>(this);
-    if (formController != null) {
-      final formEntry = Data.maybeOf<FormEntryState>(this);
-      if (formEntry != null) {
-        var formKey = formEntry.widget.key;
-        if (formKey.isInstanceOf(value) && formEntry._cachedValue != value) {
-          formEntry._cachedValue = value;
-          final oldState = formController.getState(formKey);
-          if (oldState != null) {
-            if (oldState.value == value) {
-              return null;
-            }
-          }
-          return formController.attach(
-              this, formKey, value, formEntry.widget.validator);
-        }
-      }
-    }
-    return null;
-  }
 }
 
-mixin FormValueSupplier<X extends StatefulWidget> on State<X> {
+mixin FormValueSupplier<T, X extends StatefulWidget> on State<X> {
+  T? _cachedValue;
   int _futureCounter = 0;
-  FutureOr<bool> reportNewFormValue<T>(T value, ValueChanged<T> onReplace) {
+  FormEntryState? _entryState;
+
+  T? get formValue => _cachedValue;
+  set formValue(T? value) {
+    if (_cachedValue == value) {
+      return;
+    }
+    _cachedValue = value;
+    _reportNewFormValue(value);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var newState = Data.maybeOf<FormEntryState>(context);
+    if (newState != _entryState) {
+      _entryState = newState;
+      _reportNewFormValue(_cachedValue);
+    }
+  }
+
+  @protected
+  void didReplaceFormValue(T value);
+
+  void _reportNewFormValue(T? value) {
+    var state = _entryState;
+    if (state == null) {
+      return;
+    }
     final currentCounter = ++_futureCounter;
-    var result = context.reportNewFormValue(value);
-    if (result is Future<ValidationResult?>) {
-      return result.then((value) {
+    var validationResult = state.reportNewFormValue(value);
+    if (validationResult is Future<ValidationResult?>) {
+      validationResult.then((value) {
         if (_futureCounter == currentCounter) {
           if (value is ReplaceResult<T>) {
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
               if (context.mounted) {
-                onReplace(value.value);
+                didReplaceFormValue(value.value);
               }
             });
-            return false;
           }
         }
-        return true;
       });
-    } else if (result is ReplaceResult<T>) {
+    } else if (validationResult is ReplaceResult<T>) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         if (context.mounted) {
-          onReplace(result.value);
+          didReplaceFormValue(validationResult.value);
         }
       });
-      return Future.value(false);
     }
-    return Future.value(true);
   }
 }
 
@@ -1419,6 +1453,18 @@ class SubmissionResult {
   final Map<FormKey, ValidationResult> errors;
 
   const SubmissionResult(this.values, this.errors);
+
+  @override
+  String toString() {
+    return 'SubmissionResult($values, $errors)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SubmissionResult &&
+        mapEquals(other.values, values) &&
+        mapEquals(other.errors, errors);
+  }
 }
 
 class FormField<T> extends StatelessWidget {

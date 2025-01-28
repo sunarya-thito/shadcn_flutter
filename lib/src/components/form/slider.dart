@@ -91,7 +91,8 @@ class Slider extends StatefulWidget {
   _SliderState createState() => _SliderState();
 }
 
-class _SliderState extends State<Slider> with FormValueSupplier {
+class _SliderState extends State<Slider>
+    with FormValueSupplier<SliderValue, Slider> {
   late SliderValue
       _currentValue; // used for the thumb position (not the trackbar)
   // trackbar position uses the widget.value
@@ -114,17 +115,7 @@ class _SliderState extends State<Slider> with FormValueSupplier {
       var value = (widget.value.value - widget.min) / (widget.max - widget.min);
       _currentValue = SliderValue.single(value);
     }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    reportNewFormValue(widget.value, (newValue) {
-      if (newValue != widget.value) {
-        widget.onChanged?.call(newValue);
-        widget.onChangeEnd?.call(newValue);
-      }
-    });
+    formValue = _currentValue;
   }
 
   void _dispatchValueChangeStart(SliderValue value) {
@@ -168,7 +159,14 @@ class _SliderState extends State<Slider> with FormValueSupplier {
             (widget.value.value - widget.min) / (widget.max - widget.min);
         _currentValue = SliderValue.single(value);
       }
+      formValue = _currentValue;
     }
+  }
+
+  @override
+  void didReplaceFormValue(SliderValue value) {
+    widget.onChanged?.call(value);
+    widget.onChangeEnd?.call(value);
   }
 
   @override

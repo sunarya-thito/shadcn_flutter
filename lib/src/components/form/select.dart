@@ -334,7 +334,8 @@ class Select<T> extends StatefulWidget {
   SelectState<T> createState() => SelectState<T>();
 }
 
-class SelectState<T> extends State<Select<T>> with FormValueSupplier {
+class SelectState<T> extends State<Select<T>>
+    with FormValueSupplier<T, Select<T>> {
   late FocusNode _focusNode;
   final PopoverController _popoverController = PopoverController();
   late ValueNotifier<List<T>> _valueNotifier;
@@ -350,19 +351,6 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    reportNewFormValue(
-      widget.value,
-      (value) {
-        if (widget.onChanged != null) {
-          widget.onChanged!(value);
-        }
-      },
-    );
-  }
-
-  @override
   void didUpdateWidget(Select<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
@@ -372,15 +360,8 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         _valueNotifier.value =
             widget.value == null ? const [] : [widget.value as T];
+        formValue = widget.value;
       });
-      reportNewFormValue(
-        widget.value,
-        (value) {
-          if (widget.onChanged != null) {
-            widget.onChanged!(value);
-          }
-        },
-      );
     }
     if (!listEquals(widget.children, oldWidget.children)) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -394,6 +375,11 @@ class SelectState<T> extends State<Select<T>> with FormValueSupplier {
       return widget.placeholder!;
     }
     return const SizedBox();
+  }
+
+  @override
+  void didReplaceFormValue(T value) {
+    widget.onChanged?.call(value);
   }
 
   @override
@@ -941,7 +927,8 @@ class MultiSelect<T> extends StatefulWidget {
   State<MultiSelect<T>> createState() => MultiSelectState<T>();
 }
 
-class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
+class MultiSelectState<T> extends State<MultiSelect<T>>
+    with FormValueSupplier<List<T>, MultiSelect<T>> {
   late FocusNode _focusNode;
   final PopoverController _popoverController = PopoverController();
   late ValueNotifier<List<T>> _valueNotifier;
@@ -953,19 +940,7 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
     _focusNode = widget.focusNode ?? FocusNode();
     _valueNotifier = ValueNotifier(widget.value);
     _childrenNotifier = ValueNotifier(widget.children);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    reportNewFormValue(
-      widget.value,
-      (value) {
-        if (widget.onChanged != null) {
-          widget.onChanged!(value);
-        }
-      },
-    );
+    formValue = widget.value;
   }
 
   @override
@@ -978,20 +953,18 @@ class MultiSelectState<T> extends State<MultiSelect<T>> with FormValueSupplier {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         _valueNotifier.value = widget.value;
       });
-      reportNewFormValue(
-        widget.value,
-        (value) {
-          if (widget.onChanged != null) {
-            widget.onChanged!(value);
-          }
-        },
-      );
+      formValue = widget.value;
     }
     if (!listEquals(widget.children, oldWidget.children)) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         _childrenNotifier.value = widget.children;
       });
     }
+  }
+
+  @override
+  void didReplaceFormValue(List<T> value) {
+    widget.onChanged?.call(value);
   }
 
   Widget get placeholder {

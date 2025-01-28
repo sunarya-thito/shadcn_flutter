@@ -40,28 +40,27 @@ class StarRating extends StatefulWidget {
   State<StarRating> createState() => _StarRatingState();
 }
 
-class _StarRatingState extends State<StarRating> with FormValueSupplier {
+class _StarRatingState extends State<StarRating>
+    with FormValueSupplier<double, StarRating> {
   double? _changingValue;
+
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    reportNewFormValue(widget.value, (value) {
-      if (widget.onChanged != null) {
-        widget.onChanged!(value);
-      }
-    });
+  void initState() {
+    super.initState();
+    formValue = widget.value;
   }
 
   @override
   void didUpdateWidget(covariant StarRating oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.value != oldWidget.value) {
-      reportNewFormValue(widget.value, (value) {
-        if (widget.onChanged != null) {
-          widget.onChanged!(value);
-        }
-      });
+      formValue = widget.value;
     }
+  }
+
+  @override
+  void didReplaceFormValue(double value) {
+    widget.onChanged?.call(value);
   }
 
   Widget _buildStar(BuildContext context) {

@@ -62,7 +62,8 @@ class PhoneInput extends StatefulWidget {
   State<PhoneInput> createState() => _PhoneInputState();
 }
 
-class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
+class _PhoneInputState extends State<PhoneInput>
+    with FormValueSupplier<PhoneNumber, PhoneInput> {
   late Country _country;
   late TextEditingController _controller;
 
@@ -73,21 +74,8 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
         widget.initialValue?.country ??
         Country.unitedStates;
     _controller = widget.controller ?? TextEditingController();
+    formValue = value;
     _controller.addListener(_dispatchChanged);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    reportNewFormValue(
-      value,
-      (value) {
-        _country = value.country;
-        _controller.text = value.number;
-        _dispatchChanged();
-        setState(() {});
-      },
-    );
   }
 
   @override
@@ -102,12 +90,7 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
 
   void _dispatchChanged() {
     widget.onChanged?.call(value);
-    reportNewFormValue(value, (value) {
-      _country = value.country;
-      _controller.text = value.number;
-      _dispatchChanged();
-      setState(() {});
-    });
+    formValue = value;
   }
 
   PhoneNumber get value {
@@ -235,5 +218,10 @@ class _PhoneInputState extends State<PhoneInput> with FormValueSupplier {
         ],
       ),
     );
+  }
+
+  @override
+  void didReplaceFormValue(PhoneNumber value) {
+    _controller.text = value.toString();
   }
 }
