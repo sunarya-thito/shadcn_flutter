@@ -338,9 +338,10 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    var child = this.child;
     if (child != null) {
       layer ??= ShaderMaskLayer();
-      final parentData = child!.parentData as _OverflowMarqueeParentData;
+      final parentData = child.parentData as _OverflowMarqueeParentData;
       final sizeDiff = parentData.sizeDiff ?? 0;
       var progress = offsetProgress;
       Shader? shader = _createAlphaShader(
@@ -366,6 +367,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
       }
     } else {
       layer = null;
+      super.paint(context, offset);
     }
   }
 

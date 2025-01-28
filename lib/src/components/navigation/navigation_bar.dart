@@ -1,4 +1,5 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/src/components/layout/hidden.dart';
 
 enum NavigationBarAlignment {
   start(MainAxisAlignment.start),
@@ -38,6 +39,8 @@ class NavigationBar extends StatefulWidget {
   final Axis direction;
   final double? spacing;
   final NavigationLabelType labelType;
+  final NavigationLabelPosition labelPosition;
+  final NavigationLabelSize labelSize;
   final EdgeInsetsGeometry? padding;
   final BoxConstraints? constraints;
   final bool expands;
@@ -45,6 +48,9 @@ class NavigationBar extends StatefulWidget {
   final ValueChanged<int>? onSelected;
   final double? surfaceOpacity;
   final double? surfaceBlur;
+  final bool expanded;
+  final bool keepCrossAxisSize;
+  final bool keepMainAxisSize;
 
   const NavigationBar({
     super.key,
@@ -53,6 +59,8 @@ class NavigationBar extends StatefulWidget {
     this.direction = Axis.horizontal,
     this.spacing,
     this.labelType = NavigationLabelType.none,
+    this.labelPosition = NavigationLabelPosition.bottom,
+    this.labelSize = NavigationLabelSize.small,
     this.padding,
     this.constraints,
     this.expands = true,
@@ -60,6 +68,9 @@ class NavigationBar extends StatefulWidget {
     this.onSelected,
     this.surfaceOpacity,
     this.surfaceBlur,
+    this.expanded = true,
+    this.keepCrossAxisSize = false,
+    this.keepMainAxisSize = false,
     required this.children,
   });
 
@@ -125,21 +136,33 @@ class _NavigationBarState extends State<NavigationBar>
         data: NavigationControlData(
           containerType: NavigationContainerType.bar,
           parentLabelType: widget.labelType,
+          parentLabelSize: widget.labelSize,
           parentPadding: resolvedPadding,
           direction: widget.direction,
           selectedIndex: widget.index,
           onSelected: _onSelected,
+          parentLabelPosition: widget.labelPosition,
+          expanded: widget.expanded,
+          childCount: children.length,
+          spacing: widget.spacing ?? (8 * scaling),
+          keepCrossAxisSize: widget.keepCrossAxisSize,
+          keepMainAxisSize: widget.keepMainAxisSize,
         ),
         child: Container(
           color: widget.backgroundColor,
           padding: resolvedPadding,
+          // child: Flex(
+          //   direction: widget.direction,
+          //   mainAxisAlignment: widget.alignment.mainAxisAlignment,
+          //   children: children,
+          // ),
           child: _wrapIntrinsic(
             Flex(
               direction: widget.direction,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: widget.alignment.mainAxisAlignment,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: children,
-            ).gap(widget.spacing ?? (8 * scaling)),
+            ),
           ),
         ),
       ),
@@ -178,10 +201,19 @@ mixin NavigationContainerMixin {
         newChildren[i] = Data.inherit(
           data: NavigationChildControlData(
             index: index,
+            actualIndex: i,
           ),
           child: children[i],
         );
         index++;
+      } else {
+        newChildren[i] = Data.inherit(
+          data: NavigationChildControlData(
+            index: null,
+            actualIndex: i,
+          ),
+          child: children[i],
+        );
       }
     }
     return newChildren;
@@ -195,12 +227,17 @@ class NavigationRail extends StatefulWidget {
   final Axis direction;
   final double? spacing;
   final NavigationLabelType labelType;
+  final NavigationLabelPosition labelPosition;
+  final NavigationLabelSize labelSize;
   final EdgeInsetsGeometry? padding;
   final BoxConstraints? constraints;
   final int? index;
   final ValueChanged<int>? onSelected;
   final double? surfaceOpacity;
   final double? surfaceBlur;
+  final bool expanded;
+  final bool keepMainAxisSize;
+  final bool keepCrossAxisSize;
 
   const NavigationRail({
     super.key,
@@ -209,12 +246,17 @@ class NavigationRail extends StatefulWidget {
     this.direction = Axis.vertical,
     this.spacing,
     this.labelType = NavigationLabelType.selected,
+    this.labelPosition = NavigationLabelPosition.bottom,
+    this.labelSize = NavigationLabelSize.small,
     this.padding,
     this.constraints,
     this.index,
     this.onSelected,
     this.surfaceOpacity,
     this.surfaceBlur,
+    this.expanded = true,
+    this.keepMainAxisSize = false,
+    this.keepCrossAxisSize = false,
     required this.children,
   });
 
@@ -257,10 +299,17 @@ class _NavigationRailState extends State<NavigationRail>
       data: NavigationControlData(
         containerType: NavigationContainerType.rail,
         parentLabelType: widget.labelType,
+        parentLabelPosition: widget.labelPosition,
+        parentLabelSize: widget.labelSize,
         parentPadding: resolvedPadding,
         direction: widget.direction,
         selectedIndex: widget.index,
         onSelected: _onSelected,
+        expanded: widget.expanded,
+        childCount: widget.children.length,
+        spacing: widget.spacing ?? (8 * scaling),
+        keepCrossAxisSize: widget.keepCrossAxisSize,
+        keepMainAxisSize: widget.keepMainAxisSize,
       ),
       child: SurfaceBlur(
         surfaceBlur: widget.surfaceBlur,
@@ -277,7 +326,7 @@ class _NavigationRailState extends State<NavigationRail>
                 direction: widget.direction,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: wrapChildren(context, widget.children),
-              ).gap(widget.spacing ?? (8 * scaling)),
+              ),
             ),
           ),
         ),
@@ -298,24 +347,34 @@ class NavigationSidebar extends StatefulWidget {
   final List<NavigationBarItem> children;
   final double? spacing;
   final NavigationLabelType labelType;
+  final NavigationLabelPosition labelPosition;
+  final NavigationLabelSize labelSize;
   final EdgeInsetsGeometry? padding;
   final BoxConstraints? constraints;
   final int? index;
   final ValueChanged<int>? onSelected;
   final double? surfaceOpacity;
   final double? surfaceBlur;
+  final bool expanded;
+  final bool keepCrossAxisSize;
+  final bool keepMainAxisSize;
 
   const NavigationSidebar({
     super.key,
     this.backgroundColor,
     this.spacing,
     this.labelType = NavigationLabelType.expanded,
+    this.labelPosition = NavigationLabelPosition.end,
+    this.labelSize = NavigationLabelSize.large,
     this.padding,
     this.constraints,
     this.index,
     this.onSelected,
     this.surfaceOpacity,
     this.surfaceBlur,
+    this.expanded = true,
+    this.keepCrossAxisSize = false,
+    this.keepMainAxisSize = false,
     required this.children,
   });
 
@@ -358,10 +417,17 @@ class _NavigationSidebarState extends State<NavigationSidebar>
       data: NavigationControlData(
         containerType: NavigationContainerType.sidebar,
         parentLabelType: widget.labelType,
+        parentLabelPosition: widget.labelPosition,
+        parentLabelSize: widget.labelSize,
         parentPadding: resolvedPadding,
         direction: direction,
         onSelected: _onSelected,
         selectedIndex: widget.index,
+        expanded: widget.expanded,
+        childCount: children.length,
+        spacing: widget.spacing ?? 0,
+        keepCrossAxisSize: widget.keepCrossAxisSize,
+        keepMainAxisSize: widget.keepMainAxisSize,
       ),
       child: ConstrainedBox(
         constraints:
@@ -402,45 +468,82 @@ enum NavigationLabelType {
   none,
   selected,
   all,
-  expanded,
   tooltip,
+  expanded,
+}
+
+enum NavigationLabelPosition {
+  start,
+  end,
+  top,
+  bottom,
+}
+
+enum NavigationLabelSize {
+  small,
+  large,
 }
 
 class NavigationChildControlData {
   final int? index;
+  final int actualIndex;
 
   NavigationChildControlData({
     this.index,
+    required this.actualIndex,
   });
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is NavigationChildControlData && other.index == index;
+    return other is NavigationChildControlData &&
+        other.index == index &&
+        other.actualIndex == actualIndex;
   }
 
   @override
   int get hashCode {
-    return index.hashCode;
+    return Object.hash(index, actualIndex);
   }
 }
 
 class NavigationControlData {
   final NavigationContainerType containerType;
   final NavigationLabelType parentLabelType;
+  final NavigationLabelPosition parentLabelPosition;
+  final NavigationLabelSize parentLabelSize;
   final EdgeInsets parentPadding;
   final Axis direction;
   final int? selectedIndex;
+  final int childCount;
   final ValueChanged<int> onSelected;
+  final bool expanded;
+  final double spacing;
+  final bool keepCrossAxisSize;
+  final bool keepMainAxisSize;
+
+  Axis get labelDirection {
+    return parentLabelPosition == NavigationLabelPosition.start ||
+            parentLabelPosition == NavigationLabelPosition.end
+        ? Axis.horizontal
+        : Axis.vertical;
+  }
 
   NavigationControlData({
     required this.containerType,
     required this.parentLabelType,
+    required this.parentLabelPosition,
+    required this.parentLabelSize,
     required this.parentPadding,
     required this.direction,
     required this.selectedIndex,
     required this.onSelected,
+    required this.expanded,
+    required this.childCount,
+    required this.spacing,
+    required this.keepCrossAxisSize,
+    required this.keepMainAxisSize,
   });
 
   @override
@@ -453,7 +556,14 @@ class NavigationControlData {
         other.parentPadding == parentPadding &&
         other.direction == direction &&
         other.selectedIndex == selectedIndex &&
-        other.onSelected == onSelected;
+        other.onSelected == onSelected &&
+        other.parentLabelPosition == parentLabelPosition &&
+        other.parentLabelSize == parentLabelSize &&
+        other.expanded == expanded &&
+        other.childCount == childCount &&
+        other.spacing == spacing &&
+        other.keepCrossAxisSize == keepCrossAxisSize &&
+        other.keepMainAxisSize == keepMainAxisSize;
   }
 
   @override
@@ -465,6 +575,13 @@ class NavigationControlData {
       direction,
       selectedIndex,
       onSelected,
+      parentLabelPosition,
+      parentLabelSize,
+      expanded,
+      childCount,
+      spacing,
+      keepCrossAxisSize,
+      keepMainAxisSize,
     );
   }
 }
@@ -534,9 +651,17 @@ class NavigationDivider extends StatelessWidget implements NavigationBarItem {
         color: color ?? theme.colorScheme.muted,
       );
     }
+    child = NavigationPadding(
+      child: child,
+    );
     if (data?.containerType == NavigationContainerType.sidebar) {
       return SliverToBoxAdapter(
-        child: child,
+        child: Padding(
+          padding: direction == Axis.vertical
+              ? EdgeInsets.symmetric(vertical: 8 * scaling)
+              : EdgeInsets.symmetric(horizontal: 8 * scaling),
+          child: child,
+        ),
       );
     }
     return child;
@@ -545,7 +670,6 @@ class NavigationDivider extends StatelessWidget implements NavigationBarItem {
 
 class NavigationButton extends StatefulWidget implements NavigationBarItem {
   final Widget child;
-  final Widget? trailing;
   final Widget? label;
   final double? spacing;
   final bool? selected;
@@ -561,7 +685,6 @@ class NavigationButton extends StatefulWidget implements NavigationBarItem {
   const NavigationButton({
     super.key,
     this.spacing,
-    this.trailing,
     this.label,
     this.style,
     this.selectedStyle,
@@ -645,18 +768,35 @@ class _NavigationButtonState extends State<NavigationButton> {
     var index = childData?.index ?? widget.index;
     var isSelected = widget.selected ?? index == data?.selectedIndex;
     var parentIndex = childData?.index;
+    bool showLabel = labelType == NavigationLabelType.all ||
+        (labelType == NavigationLabelType.selected && isSelected) ||
+        (labelType == NavigationLabelType.expanded && data?.expanded == true);
     AbstractButtonStyle style = widget.style ??
-        (labelType != NavigationLabelType.expanded
+        (data?.containerType != NavigationContainerType.sidebar
             ? const ButtonStyle.ghost(density: ButtonDensity.icon)
             : const ButtonStyle.ghost());
     AbstractButtonStyle selectedStyle = widget.selectedStyle ??
-        (labelType != NavigationLabelType.expanded
+        (data?.containerType != NavigationContainerType.sidebar
             ? const ButtonStyle.secondary(density: ButtonDensity.icon)
             : const ButtonStyle.secondary());
-    if (labelType == NavigationLabelType.expanded) {
-      return SelectedButton(
+
+    Widget? label = widget.label == null
+        ? const SizedBox()
+        : DefaultTextStyle.merge(
+            textAlign: TextAlign.center,
+            child: _NavigationChildOverflowHandle(
+              overflow: widget.overflow,
+              child: data?.parentLabelSize == NavigationLabelSize.small
+                  ? widget.label!.xSmall()
+                  : widget.label!,
+            ),
+          );
+    var canShowLabel = (labelType == NavigationLabelType.expanded ||
+        labelType == NavigationLabelType.all ||
+        labelType == NavigationLabelType.selected);
+    return NavigationPadding(
+      child: SelectedButton(
         value: isSelected,
-        marginAlignment: widget.marginAlignment,
         enabled: widget.enabled,
         onChanged: parentIndex != null || widget.index != null
             ? (value) {
@@ -664,91 +804,133 @@ class _NavigationButtonState extends State<NavigationButton> {
                 data?.onSelected(parentIndex ?? widget.index!);
               }
             : widget.onChanged,
+        marginAlignment: widget.marginAlignment,
         style: style,
         selectedStyle: selectedStyle,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Align(
-              alignment: widget.alignment ?? AlignmentDirectional.centerStart,
-              child: widget.child,
-            ),
-            if (widget.label != null) Gap(widget.spacing ?? (8 * scaling)),
-            if (widget.label != null)
-              Flexible(
-                child: Align(
-                  alignment:
-                      widget.alignment ?? AlignmentDirectional.centerStart,
-                  child: _NavigationChildOverflowHandle(
-                    overflow: widget.overflow,
-                    child: widget.label!,
-                  ),
-                ),
-              ),
-            if (widget.trailing != null) Gap(widget.spacing ?? (8 * scaling)),
-            if (widget.trailing != null)
-              Align(
-                alignment: widget.alignment ?? AlignmentDirectional.centerStart,
-                child: widget.trailing,
-              ),
-          ],
+        alignment: widget.alignment ??
+            (data?.containerType == NavigationContainerType.sidebar &&
+                    data?.labelDirection == Axis.horizontal
+                ? (data?.parentLabelPosition == NavigationLabelPosition.start
+                    ? AlignmentDirectional.centerEnd
+                    : AlignmentDirectional.centerStart)
+                : null),
+        child: _NavigationLabeled(
+          label: label,
+          showLabel: showLabel,
+          labelType: labelType,
+          direction: direction,
+          keepMainAxisSize: (data?.keepMainAxisSize ?? false) && canShowLabel,
+          keepCrossAxisSize: (data?.keepCrossAxisSize ?? false) && canShowLabel,
+          position: data?.parentLabelPosition ?? NavigationLabelPosition.bottom,
+          spacing: widget.spacing ?? (8 * scaling),
+          child: widget.child,
         ),
-      );
-    }
-    return SelectedButton(
-      value: isSelected,
-      enabled: widget.enabled,
-      onChanged: parentIndex != null || widget.index != null
-          ? (value) {
-              widget.onChanged?.call(value);
-              data?.onSelected(parentIndex ?? widget.index!);
-            }
-          : widget.onChanged,
-      marginAlignment: widget.marginAlignment,
-      style: style,
-      selectedStyle: selectedStyle,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          widget.child,
-          if (data?.parentLabelType != NavigationLabelType.none &&
-              data?.parentLabelType != NavigationLabelType.tooltip &&
-              widget.label != null)
-            Flexible(
-              child: AnimatedSize(
-                alignment: direction == Axis.vertical
-                    ? Alignment.topCenter
-                    : Alignment.center,
-                duration: kDefaultDuration,
-                curve: Curves.easeInOut,
-                child: SizedBox(
-                  height: (widget.label != null &&
-                          (labelType == NavigationLabelType.all || isSelected))
-                      ? null
-                      : 0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Gap(widget.spacing ?? (8 * scaling)),
-                      DefaultTextStyle.merge(
-                        textAlign: TextAlign.center,
-                        child: _NavigationChildOverflowHandle(
-                          overflow: widget.overflow,
-                          child: widget.label!.xSmall(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          if (widget.trailing != null) Gap(widget.spacing ?? (8 * scaling)),
-          if (widget.trailing != null) widget.trailing!,
-        ],
       ),
     );
+  }
+}
+
+class _NavigationLabeled extends StatelessWidget {
+  final Widget child;
+  final Widget label;
+  final NavigationLabelPosition position;
+  final double spacing;
+  final bool showLabel;
+  final NavigationLabelType labelType;
+  final Axis direction;
+  final bool keepCrossAxisSize;
+  final bool keepMainAxisSize;
+
+  const _NavigationLabeled({
+    required this.child,
+    required this.label,
+    required this.spacing,
+    required this.position,
+    required this.showLabel,
+    required this.labelType,
+    required this.direction,
+    required this.keepCrossAxisSize,
+    required this.keepMainAxisSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var direction = position == NavigationLabelPosition.top ||
+            position == NavigationLabelPosition.bottom
+        ? Axis.vertical
+        : Axis.horizontal;
+    var animatedSize = Hidden(
+      hidden: !showLabel,
+      direction: direction,
+      reverse: position == NavigationLabelPosition.start ||
+          position == NavigationLabelPosition.top,
+      keepCrossAxisSize:
+          (this.direction != direction ? keepCrossAxisSize : keepMainAxisSize),
+      keepMainAxisSize:
+          (this.direction != direction ? keepMainAxisSize : keepCrossAxisSize),
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: position == NavigationLabelPosition.bottom ? spacing : 0,
+          bottom: position == NavigationLabelPosition.top ? spacing : 0,
+          left: position == NavigationLabelPosition.end ? spacing : 0,
+          right: position == NavigationLabelPosition.start ? spacing : 0,
+        ),
+        child: label,
+      ),
+    );
+    return IntrinsicHeight(
+      child: IntrinsicWidth(
+        child: Flex(
+          direction: direction,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (position == NavigationLabelPosition.start ||
+                position == NavigationLabelPosition.top)
+              Flexible(child: animatedSize),
+            child,
+            if (position == NavigationLabelPosition.end ||
+                position == NavigationLabelPosition.bottom)
+              Flexible(child: animatedSize),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NavigationPadding extends StatelessWidget {
+  final Widget child;
+
+  const NavigationPadding({
+    super.key,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final parentData = Data.maybeOf<NavigationControlData>(context);
+    final childData = Data.maybeOf<NavigationChildControlData>(context);
+    if (parentData != null && childData != null) {
+      final direction = parentData.direction;
+      final gap = parentData.spacing / 2;
+      final index = childData.index;
+      final count = parentData.childCount;
+      final isFirst = index == 0;
+      final isLast = index == count - 1;
+      return Padding(
+        padding: direction == Axis.vertical
+            ? EdgeInsets.only(
+                top: isFirst ? 0 : gap,
+                bottom: isLast ? 0 : gap,
+              )
+            : EdgeInsets.only(
+                left: isFirst ? 0 : gap,
+                right: isLast ? 0 : gap,
+              ),
+        child: child,
+      );
+    }
+    return child;
   }
 }
 
@@ -774,7 +956,7 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
     this.alignment = AlignmentDirectional.centerStart,
     this.floating = false,
     this.pinned = false,
-    this.overflow = NavigationOverflow.marquee,
+    this.overflow = NavigationOverflow.clip,
     this.padding,
     required this.child,
   });
@@ -786,48 +968,71 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
   Widget build(BuildContext context) {
     final data = Data.maybeOf<NavigationControlData>(context);
     if (data?.containerType == NavigationContainerType.sidebar) {
-      return buildSliver(context);
+      return buildSliver(context, data);
     }
-    return buildBox(context);
+    return buildBox(context, data);
   }
 
-  Widget buildBox(BuildContext context) {
-    return DefaultTextStyle.merge(
-      textAlign: TextAlign.center,
-      child: child.xSmall(),
-    );
-  }
-
-  Widget buildSliver(BuildContext context) {
-    final theme = Theme.of(context);
-    final scaling = theme.scaling;
-    return SliverPersistentHeader(
-      pinned: pinned,
-      floating: floating,
-      delegate: _NavigationLabelDelegate(
-        maxExtent: 48 * scaling,
-        minExtent: 48 * scaling,
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            Scrollable.ensureVisible(
-              context,
-              duration: kDefaultDuration,
-              curve: Curves.easeInOut,
-            );
-          },
-          child: Container(
-            alignment: alignment,
-            padding: padding ?? EdgeInsets.symmetric(horizontal: 16 * scaling),
-            // child: OverflowMarquee(child: child),
-            child: _NavigationChildOverflowHandle(
-              overflow: overflow,
-              child: child,
-            ),
-          ).semiBold().large(),
+  Widget buildChild(BuildContext context, NavigationControlData? data) {
+    bool expanded = data?.expanded ?? true;
+    return Hidden(
+      hidden: !expanded,
+      direction: data?.direction ?? Axis.vertical,
+      child: NavigationPadding(
+        child: DefaultTextStyle.merge(
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          child: _NavigationChildOverflowHandle(
+            overflow: overflow,
+            child: child,
+          ),
         ),
       ),
     );
+  }
+
+  Widget buildBox(BuildContext context, NavigationControlData? data) {
+    return DefaultTextStyle.merge(
+      textAlign: TextAlign.center,
+      child: buildChild(context, data).xSmall(),
+    );
+  }
+
+  Widget buildSliver(BuildContext context, NavigationControlData? data) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    return AnimatedValueBuilder(
+        duration: kDefaultDuration,
+        curve: Curves.easeInOut,
+        value: (data?.expanded ?? true) ? 1.0 : 0.0,
+        child: buildChild(context, data),
+        builder: (context, value, child) {
+          return SliverPersistentHeader(
+            pinned: pinned,
+            floating: floating,
+            delegate: _NavigationLabelDelegate(
+              maxExtent: 48 * scaling * value,
+              minExtent: 48 * scaling * value,
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  Scrollable.ensureVisible(
+                    context,
+                    duration: kDefaultDuration,
+                    curve: Curves.easeInOut,
+                  );
+                },
+                child: Container(
+                  alignment: alignment,
+                  padding:
+                      padding ?? EdgeInsets.symmetric(horizontal: 16 * scaling),
+                  // child: OverflowMarquee(child: child),
+                  child: child,
+                ).semiBold().large(),
+              ),
+            ),
+          );
+        });
   }
 }
 
