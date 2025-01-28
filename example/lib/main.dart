@@ -43,8 +43,8 @@ class _CounterPageState extends State<CounterPage> {
     });
   }
 
-  NavigationButton _buildButton(String label, IconData icon) {
-    return NavigationButton(
+  NavigationItem _buildButton(String label, IconData icon) {
+    return NavigationItem(
       label: Text(label),
       child: Icon(icon),
     );
