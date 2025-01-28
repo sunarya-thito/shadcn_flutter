@@ -1,18 +1,18 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class NavigationItem extends StatefulWidget {
+class NavigationMenuItem extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget? content;
   final Widget child;
 
-  const NavigationItem(
+  const NavigationMenuItem(
       {super.key, this.onPressed, this.content, required this.child});
 
   @override
-  State<NavigationItem> createState() => NavigationItemState();
+  State<NavigationMenuItem> createState() => NavigationMenuItemState();
 }
 
-class NavigationItemState extends State<NavigationItem> {
+class NavigationMenuItemState extends State<NavigationMenuItem> {
   NavigationMenuState? _menuState;
 
   @override
@@ -35,7 +35,7 @@ class NavigationItemState extends State<NavigationItem> {
   }
 
   @override
-  void didUpdateWidget(covariant NavigationItem oldWidget) {
+  void didUpdateWidget(covariant NavigationMenuItem oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.content != oldWidget.content) {
       if (widget.content != null) {
@@ -108,14 +108,14 @@ class NavigationItemState extends State<NavigationItem> {
   }
 }
 
-class NavigationContent extends StatelessWidget {
+class NavigationMenuContent extends StatelessWidget {
   final Widget title;
   final Widget? content;
   final Widget? leading;
   final Widget? trailing;
   final VoidCallback? onPressed;
 
-  const NavigationContent({
+  const NavigationMenuContent({
     super.key,
     required this.title,
     this.content,
@@ -147,14 +147,14 @@ class NavigationContent extends StatelessWidget {
   }
 }
 
-class NavigationContentList extends StatelessWidget {
+class NavigationMenuContentList extends StatelessWidget {
   final List<Widget> children;
   final int crossAxisCount;
   final double? spacing;
   final double? runSpacing;
   final bool reverse;
 
-  const NavigationContentList({
+  const NavigationMenuContentList({
     super.key,
     required this.children,
     this.crossAxisCount = 3,
@@ -228,15 +228,16 @@ class NavigationMenuState extends State<NavigationMenu> {
   // final ValueNotifier<bool> _visible = ValueNotifier(false);
   final PopoverController _popoverController = PopoverController();
   final ValueNotifier<int> _activeIndex = ValueNotifier(0);
-  final Map<NavigationItemState, WidgetBuilder> _contentBuilders = {};
+  final Map<NavigationMenuItemState, WidgetBuilder> _contentBuilders = {};
 
   int _hoverCount = 0;
 
-  void _attachContentBuilder(NavigationItemState key, WidgetBuilder builder) {
+  void _attachContentBuilder(
+      NavigationMenuItemState key, WidgetBuilder builder) {
     _contentBuilders[key] = builder;
   }
 
-  bool isActive(NavigationItemState item) {
+  bool isActive(NavigationMenuItemState item) {
     return _popoverController.hasOpenPopover &&
         widget.children[_activeIndex.value] == item.widget;
   }
@@ -271,7 +272,7 @@ class NavigationMenuState extends State<NavigationMenu> {
     );
   }
 
-  void _activate(NavigationItemState item) {
+  void _activate(NavigationMenuItemState item) {
     if (item.widget.content == null) {
       close();
       return;
@@ -281,14 +282,14 @@ class NavigationMenuState extends State<NavigationMenu> {
     _show(item.context);
   }
 
-  NavigationItemState? findByWidget(Widget widget) {
+  NavigationMenuItemState? findByWidget(Widget widget) {
     return _contentBuilders.keys
         .where((key) => key.widget == widget)
         .firstOrNull;
   }
 
   Widget buildContent(int index) {
-    NavigationItemState? item = findByWidget(widget.children[index]);
+    NavigationMenuItemState? item = findByWidget(widget.children[index]);
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     if (item != null) {
