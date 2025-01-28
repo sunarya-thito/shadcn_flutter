@@ -1012,7 +1012,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                             ),
                             child: const Text('Getting Started'),
                           ),
-                          const NavigationItem(
+                          const NavigationMenuItem(
                             content: SizedBox(),
                             child: Text('Components'),
                           ),
@@ -1023,7 +1023,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
                         borderRadius: theme.borderRadiusMd,
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
-                          child: NavigationContentList(
+                          child: NavigationMenuContentList(
                             children: [
                               Button(
                                 style: ButtonVariance.ghost.copyWith(

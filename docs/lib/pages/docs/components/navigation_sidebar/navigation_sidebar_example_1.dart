@@ -12,7 +12,7 @@ class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
   int selected = 0;
 
   NavigationBarItem buildButton(String label, IconData icon) {
-    return NavigationButton(
+    return NavigationItem(
       label: Text(label),
       child: Icon(icon),
     );

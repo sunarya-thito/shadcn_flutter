@@ -16,8 +16,8 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
   bool customButtonStyle = true;
   bool expanded = true;
 
-  NavigationButton buildButton(String label, IconData icon) {
-    return NavigationButton(
+  NavigationItem buildButton(String label, IconData icon) {
+    return NavigationItem(
       style: customButtonStyle
           ? const ButtonStyle.muted(density: ButtonDensity.icon)
           : null,

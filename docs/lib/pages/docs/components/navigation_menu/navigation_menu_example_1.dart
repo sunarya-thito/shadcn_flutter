@@ -8,23 +8,23 @@ class NavigationMenuExample1 extends StatelessWidget {
     final theme = Theme.of(context);
     return NavigationMenu(
       children: [
-        NavigationItem(
-          content: NavigationContentList(
+        NavigationMenuItem(
+          content: NavigationMenuContentList(
             reverse: true,
             children: [
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Introduction'),
                 content: const Text(
                     'Component library for Flutter based on Shadcn/UI design.'),
                 onPressed: () {},
               ),
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Installation'),
                 content: const Text(
                     'How to install this package in your Flutter project.'),
                 onPressed: () {},
               ),
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Typography'),
                 content: const Text(
                     'Styles and usage of typography in this package.'),
@@ -57,35 +57,35 @@ class NavigationMenuExample1 extends StatelessWidget {
           ),
           child: const Text('Getting started'),
         ),
-        NavigationItem(
-          content: NavigationContentList(
+        NavigationMenuItem(
+          content: NavigationMenuContentList(
             children: [
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Accordion'),
                 content: const Text('Accordion component for Flutter.'),
                 onPressed: () {},
               ),
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Alert'),
                 content: const Text('Alert component for Flutter.'),
                 onPressed: () {},
               ),
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Alert Dialog'),
                 content: const Text('Alert Dialog component for Flutter.'),
                 onPressed: () {},
               ),
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Animation'),
                 content: const Text('Animation component for Flutter.'),
                 onPressed: () {},
               ),
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Avatar'),
                 content: const Text('Avatar component for Flutter.'),
                 onPressed: () {},
               ),
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Badge'),
                 content: const Text('Badge component for Flutter.'),
                 onPressed: () {},
@@ -94,22 +94,22 @@ class NavigationMenuExample1 extends StatelessWidget {
           ),
           child: const Text('Components'),
         ),
-        NavigationItem(
-          content: NavigationContentList(
+        NavigationMenuItem(
+          content: NavigationMenuContentList(
             crossAxisCount: 2,
             children: [
               // latest news
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Latest news'),
                 content: const Text('Stay updated with the latest news.'),
                 onPressed: () {},
               ),
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Change log'),
                 content: const Text('View the change log of this package.'),
                 onPressed: () {},
               ),
-              NavigationContent(
+              NavigationMenuContent(
                 title: const Text('Contributors'),
                 content: const Text('List of contributors to this package.'),
                 onPressed: () {},
@@ -118,7 +118,7 @@ class NavigationMenuExample1 extends StatelessWidget {
           ),
           child: const Text('Blog'),
         ),
-        NavigationItem(
+        NavigationMenuItem(
           onPressed: () {},
           child: const Text('Documentation'),
         ),
