@@ -18,6 +18,26 @@ enum SortDirection {
   descending,
 }
 
+class SafeLerp<T> {
+  final T? Function(T? a, T? b, double t) nullableLerp;
+
+  const SafeLerp(this.nullableLerp);
+
+  T lerp(T a, T b, double t) {
+    T? result = nullableLerp(a, b, t);
+    assert(result != null, 'Unsafe lerp');
+    return result!;
+  }
+}
+
+extension SafeLerpExtension<T> on T? Function(T? a, T? b, double t) {
+  T nonNull(T a, T b, double t) {
+    T? result = this(a, b, t);
+    assert(result != null);
+    return result!;
+  }
+}
+
 extension ListExtension<T> on List<T> {
   int? indexOfOrNull(T obj, [int start = 0]) {
     int index = indexOf(obj, start);

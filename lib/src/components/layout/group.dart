@@ -61,7 +61,8 @@ class RenderGroup extends RenderBox
       double childWidth = 0;
       double childHeight = 0;
       if (top != null && bottom != null) {
-        childHeight = bottom - top;
+        offsetY = top;
+        childHeight = constraints.maxHeight - (top + bottom);
       } else {
         // either top or bottom is null
         if (top != null) {
@@ -76,7 +77,8 @@ class RenderGroup extends RenderBox
         }
       }
       if (left != null && right != null) {
-        childWidth = right - left;
+        offsetX = left;
+        childWidth = constraints.maxWidth - (left + right);
       } else {
         // either left or right is null
         if (left != null) {
@@ -91,7 +93,14 @@ class RenderGroup extends RenderBox
         }
       }
       child.layout(
-          BoxConstraints.tightFor(width: childWidth, height: childHeight));
+          BoxConstraints.tightFor(width: childWidth, height: childHeight),
+          parentUsesSize: true);
+      if (top == null && bottom != null) {
+        offsetY -= child.size.height;
+      }
+      if (left == null && right != null) {
+        offsetX -= child.size.width;
+      }
       childParentData.offset = Offset(offsetX, offsetY);
       child = childParentData.nextSibling;
     }
@@ -117,8 +126,17 @@ class RenderGroup extends RenderBox
   bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
     var child = lastChild;
     while (child != null) {
-      final childParentData = child.parentData as GroupParentData;
-      if (child.hitTest(result, position: position - childParentData.offset)) {
+      // The x, y parameters have the top left of the node's box as the origin.
+      final childParentData = child.parentData! as GroupParentData;
+      final bool isHit = result.addWithPaintOffset(
+        offset: childParentData.offset,
+        position: position,
+        hitTest: (BoxHitTestResult result, Offset transformed) {
+          assert(transformed == position - childParentData.offset);
+          return child!.hitTest(result, position: transformed);
+        },
+      );
+      if (isHit) {
         return true;
       }
       child = childParentData.previousSibling;
@@ -139,6 +157,26 @@ class GroupPositioned extends ParentDataWidget<GroupParentData> {
     required Widget child,
   }) : super(key: key, child: child);
 
+  const GroupPositioned.fill({
+    Key? key,
+    this.top = 0,
+    this.left = 0,
+    this.right = 0,
+    this.bottom = 0,
+    this.width,
+    this.height,
+    required Widget child,
+  }) : super(key: key, child: child);
+  GroupPositioned.fromRect({
+    super.key,
+    required Rect rect,
+    required super.child,
+  })  : left = rect.left,
+        top = rect.top,
+        width = rect.width,
+        height = rect.height,
+        right = null,
+        bottom = null;
   final double? top;
   final double? left;
   final double? right;

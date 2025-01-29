@@ -5,14 +5,16 @@ typedef AnimatedChildBuilder<T> = Widget Function(
     BuildContext context, T value, Widget? child);
 typedef AnimationBuilder<T> = Widget Function(
     BuildContext context, Animation<T> animation);
+typedef AnimatedChildValueBuilder<T> = Widget Function(
+    BuildContext context, T oldValue, T newValue, double t, Widget? child);
 
 class AnimatedValueBuilder<T> extends StatefulWidget {
   final T? initialValue;
   final T value;
-  final Duration? duration;
-  final Duration Function(T a, T b)? durationBuilder;
+  final Duration duration;
   final AnimatedChildBuilder<T>? builder;
   final AnimationBuilder<T>? animationBuilder;
+  final AnimatedChildValueBuilder<T>? rawBuilder;
   final void Function(T value)? onEnd;
   final Curve curve;
   final T Function(T a, T b, double t)? lerp;
@@ -22,23 +24,20 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
     super.key,
     this.initialValue,
     required this.value,
-    this.duration,
-    this.durationBuilder,
+    required this.duration,
     required AnimatedChildBuilder<T> this.builder,
     this.onEnd,
     this.curve = Curves.linear,
     this.lerp,
     this.child,
   })  : animationBuilder = null,
-        assert(duration != null || durationBuilder != null,
-            'You must provide a duration or a durationBuilder.');
+        rawBuilder = null;
 
   const AnimatedValueBuilder.animation({
     super.key,
     this.initialValue,
     required this.value,
-    this.duration,
-    this.durationBuilder,
+    required this.duration,
     required AnimationBuilder<T> builder,
     this.onEnd,
     this.curve = Curves.linear,
@@ -46,8 +45,21 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
   })  : builder = null,
         animationBuilder = builder,
         child = null,
-        assert(duration != null || durationBuilder != null,
-            'You must provide a duration or a durationBuilder.');
+        rawBuilder = null;
+
+  const AnimatedValueBuilder.raw({
+    super.key,
+    this.initialValue,
+    required this.value,
+    required this.duration,
+    required AnimatedChildValueBuilder<T> builder,
+    this.onEnd,
+    this.curve = Curves.linear,
+    this.child,
+    this.lerp,
+  })  : animationBuilder = null,
+        rawBuilder = builder,
+        builder = null;
 
   @override
   State<StatefulWidget> createState() {
@@ -96,14 +108,12 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
   late AnimationController _controller;
   late CurvedAnimation _curvedAnimation;
   late Animation<T> _animation;
+  late T _currentValue;
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-        vsync: this,
-        duration: widget.duration ??
-            widget.durationBuilder!(
-                widget.initialValue ?? widget.value, widget.value));
+    _currentValue = widget.initialValue ?? widget.value;
+    _controller = AnimationController(vsync: this, duration: widget.duration);
     _curvedAnimation = CurvedAnimation(
       parent: _controller,
       curve: widget.curve,
@@ -142,10 +152,9 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
   void didUpdateWidget(AnimatedValueBuilder<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     T currentValue = _animation.value;
-    if (widget.duration != oldWidget.duration ||
-        widget.durationBuilder != oldWidget.durationBuilder) {
-      _controller.duration = widget.duration ??
-          widget.durationBuilder!(currentValue, widget.value);
+    _currentValue = currentValue;
+    if (widget.duration != oldWidget.duration) {
+      _controller.duration = widget.duration;
     }
     if (widget.curve != oldWidget.curve) {
       _curvedAnimation.dispose();
@@ -193,6 +202,10 @@ class AnimatedValueBuilderState<T> extends State<AnimatedValueBuilder<T>>
   }
 
   Widget _builder(BuildContext context, Widget? child) {
+    if (widget.rawBuilder != null) {
+      return widget.rawBuilder!(
+          context, _currentValue, widget.value, _curvedAnimation.value, child);
+    }
     T newValue = _animation.value;
     return widget.builder!(context, newValue, child);
   }

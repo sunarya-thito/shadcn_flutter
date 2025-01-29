@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/group.dart';
+import 'package:shadcn_flutter/src/components/patch.dart';
 
 class WindowSnapStrategy {
   final Rect relativeBounds;
@@ -29,7 +30,7 @@ class WindowState {
 
   const WindowState({
     required this.bounds,
-    this.maximized = null,
+    this.maximized,
     this.minimized = false,
     this.alwaysOnTop = false,
     this.closable = true,
@@ -440,6 +441,170 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
         listenable: controller,
         builder: (context, child) {
           var resizeThickness = 8;
+
+          Widget windowClient = Card(
+            clipBehavior: Clip.antiAlias,
+            padding: EdgeInsets.zero,
+            borderRadius: state.maximized != null
+                ? BorderRadius.zero
+                : theme.borderRadiusMd,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (widget.title != null || widget.actions != null)
+                  ClickDetector(
+                    onClick: maximizable
+                        ? (details) {
+                            if (details.clickCount >= 2) {
+                              if (maximized == null) {
+                                maximized = const Rect.fromLTWH(0, 0, 1, 1);
+                              } else {
+                                maximized = null;
+                              }
+                            }
+                          }
+                        : null,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onPanStart: (details) {
+                        var localPosition = details.localPosition;
+                        var bounds = this.bounds;
+                        var max = maximized;
+                        var size = _viewport?.size;
+                        if (max != null && size != null) {
+                          bounds = Rect.fromLTWH(
+                              max.left * size.width,
+                              max.top * size.height,
+                              max.width * size.width,
+                              max.height * size.height);
+                        }
+                        var alignX = lerpDouble(
+                            -1, 1, (localPosition.dx / bounds.width))!;
+                        var alignY = lerpDouble(
+                            -1, 1, (localPosition.dy / bounds.height))!;
+                        _dragAlignment = Alignment(
+                          alignX,
+                          alignY,
+                        );
+                        if (_entry != null) {
+                          _viewport?.navigator._state._startDraggingWindow(
+                            _entry!,
+                            details.globalPosition,
+                          );
+                        }
+                        if (state.maximized != null) {
+                          maximized = null;
+                          RenderBox? layerRenderBox = _viewport
+                              ?.navigator._state.context
+                              .findRenderObject() as RenderBox?;
+                          if (layerRenderBox != null) {
+                            Offset layerLocal = layerRenderBox
+                                .globalToLocal(details.globalPosition);
+                            Size titleSize = Size(
+                              this.bounds.width,
+                              32 * theme.scaling,
+                            );
+                            this.bounds = Rect.fromLTWH(
+                              layerLocal.dx - titleSize.width / 2,
+                              layerLocal.dy - titleSize.height / 2,
+                              this.bounds.width,
+                              this.bounds.height,
+                            );
+                          }
+                        }
+                      },
+                      onPanUpdate: (details) {
+                        bounds = bounds.translate(
+                          details.delta.dx,
+                          details.delta.dy,
+                        );
+                        if (_entry != null) {
+                          _viewport?.navigator._state._updateDraggingWindow(
+                            _entry!,
+                            details.globalPosition,
+                          );
+                        }
+                      },
+                      onPanEnd: (details) {
+                        if (_entry != null) {
+                          _viewport?.navigator._state._stopDraggingWindow(
+                            _entry!,
+                          );
+                        }
+                        _dragAlignment = null;
+                      },
+                      onPanCancel: () {
+                        if (_entry != null) {
+                          _viewport?.navigator._state._stopDraggingWindow(
+                            _entry!,
+                          );
+                        }
+                        _dragAlignment = null;
+                      },
+                      child: Container(
+                        height: 32 * theme.scaling,
+                        padding: EdgeInsets.all(
+                          2 * theme.scaling,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8 * theme.scaling,
+                                ),
+                                child: (_viewport?.focused ?? true)
+                                    ? (widget.title ?? const SizedBox())
+                                    : (widget.title ?? const SizedBox())
+                                        .muted(),
+                              ),
+                            ),
+                            if (widget.actions != null) widget.actions!,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                if (widget.content != null)
+                  Expanded(
+                    child: widget.content!,
+                  ),
+              ],
+            ),
+          );
+          // add transition
+          windowClient = AnimatedValueBuilder(
+              initialValue: 0.0,
+              value: (_viewport?.closed ?? false) ? 0.0 : 1.0,
+              duration: kDefaultDuration,
+              onEnd: (value) {
+                if (_viewport?.closed ?? false) {
+                  _viewport?.navigator.removeWindow(_entry!);
+                }
+              },
+              builder: (context, value, child) {
+                return Transform.scale(
+                  scale: (_viewport?.closed ?? false)
+                      ? lerpDouble(0.8, 1.0, value)!
+                      : lerpDouble(0.9, 1.0, value)!,
+                  child: Opacity(
+                    opacity: value,
+                    child: child,
+                  ),
+                );
+              },
+              child: windowClient);
+          windowClient = AnimatedScale(
+            scale: (_viewport?.minify ?? false) ? 0.65 : 1.0,
+            duration: kDefaultDuration,
+            alignment: _dragAlignment ?? Alignment.center,
+            curve: Curves.easeInOut,
+            child: windowClient,
+          );
+          windowClient = IgnorePointer(
+            ignoring: _viewport?.ignorePointer ?? false,
+            child: windowClient,
+          );
           Widget windowContainer = Listener(
             behavior: HitTestBehavior.translucent,
             onPointerDown: (event) {
@@ -447,116 +612,15 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
                 _viewport?.navigator.focusWindow(_entry!);
               }
             },
-            child: Stack(
-              fit: StackFit.passthrough,
+            child: GroupWidget(
               children: [
-                Card(
-                  clipBehavior: Clip.antiAlias,
-                  padding: EdgeInsets.zero,
-                  borderRadius: state.maximized != null
-                      ? BorderRadius.zero
-                      : theme.borderRadiusMd,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (widget.title != null || widget.actions != null)
-                        GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onPanStart: (details) {
-                            _dragAlignment = Alignment(
-                              lerpDouble(-1, 1,
-                                  (details.localPosition.dx / bounds.width))!,
-                              lerpDouble(-1, 1,
-                                  (details.localPosition.dy / bounds.height))!,
-                            );
-                            if (_entry != null) {
-                              _viewport?.navigator._state._startDraggingWindow(
-                                _entry!,
-                                details.globalPosition,
-                              );
-                            }
-                            if (state.maximized != null) {
-                              maximized = null;
-                              RenderBox? layerRenderBox = _viewport
-                                  ?.navigator._state.context
-                                  .findRenderObject() as RenderBox?;
-                              if (layerRenderBox != null) {
-                                Offset layerLocal = layerRenderBox
-                                    .globalToLocal(details.globalPosition);
-                                Size titleSize = Size(
-                                  bounds.width,
-                                  32 * theme.scaling,
-                                );
-                                bounds = Rect.fromLTWH(
-                                  layerLocal.dx - titleSize.width / 2,
-                                  layerLocal.dy - titleSize.height / 2,
-                                  bounds.width,
-                                  bounds.height,
-                                );
-                              }
-                            }
-                          },
-                          onPanUpdate: (details) {
-                            bounds = bounds.translate(
-                              details.delta.dx,
-                              details.delta.dy,
-                            );
-                            if (_entry != null) {
-                              _viewport?.navigator._state._updateDraggingWindow(
-                                _entry!,
-                                details.globalPosition,
-                              );
-                            }
-                          },
-                          onPanEnd: (details) {
-                            if (_entry != null) {
-                              _viewport?.navigator._state._stopDraggingWindow(
-                                _entry!,
-                              );
-                            }
-                            _dragAlignment = null;
-                          },
-                          onPanCancel: () {
-                            if (_entry != null) {
-                              _viewport?.navigator._state._stopDraggingWindow(
-                                _entry!,
-                              );
-                            }
-                            _dragAlignment = null;
-                          },
-                          child: Container(
-                            height: 32 * theme.scaling,
-                            padding: EdgeInsets.all(
-                              2 * theme.scaling,
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8 * theme.scaling,
-                                    ),
-                                    child: (_viewport?.focused ?? true)
-                                        ? (widget.title ?? const SizedBox())
-                                        : (widget.title ?? const SizedBox())
-                                            .muted(),
-                                  ),
-                                ),
-                                if (widget.actions != null) widget.actions!,
-                              ],
-                            ),
-                          ),
-                        ),
-                      if (widget.content != null)
-                        Expanded(
-                          child: widget.content!,
-                        ),
-                    ],
-                  ),
-                ),
-                if (resizable && maximized == null) ...[
+                windowClient,
+                // Resize regions
+                if (resizable &&
+                    maximized == null &&
+                    _dragAlignment == null) ...[
                   // top left
-                  Positioned(
+                  GroupPositioned(
                     top: 0,
                     left: 0,
                     width: resizeThickness * theme.scaling,
@@ -574,7 +638,7 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
                     ),
                   ),
                   // top right
-                  Positioned(
+                  GroupPositioned(
                     top: 0,
                     right: 0,
                     width: resizeThickness * theme.scaling,
@@ -592,7 +656,7 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
                     ),
                   ),
                   // bottom left
-                  Positioned(
+                  GroupPositioned(
                     bottom: 0,
                     left: 0,
                     width: resizeThickness * theme.scaling,
@@ -610,7 +674,7 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
                     ),
                   ),
                   // bottom right
-                  Positioned(
+                  GroupPositioned(
                     bottom: 0,
                     right: 0,
                     width: resizeThickness * theme.scaling,
@@ -628,7 +692,7 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
                     ),
                   ),
                   // top
-                  Positioned(
+                  GroupPositioned(
                     top: 0,
                     left: resizeThickness * theme.scaling,
                     right: resizeThickness * theme.scaling,
@@ -646,7 +710,7 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
                     ),
                   ),
                   // bottom
-                  Positioned(
+                  GroupPositioned(
                     bottom: 0,
                     left: resizeThickness * theme.scaling,
                     right: resizeThickness * theme.scaling,
@@ -664,7 +728,7 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
                     ),
                   ),
                   // left
-                  Positioned(
+                  GroupPositioned(
                     top: resizeThickness * theme.scaling,
                     left: 0,
                     bottom: resizeThickness * theme.scaling,
@@ -682,7 +746,7 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
                     ),
                   ),
                   // right
-                  Positioned(
+                  GroupPositioned(
                     top: resizeThickness * theme.scaling,
                     right: 0,
                     bottom: resizeThickness * theme.scaling,
@@ -703,69 +767,33 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
               ],
             ),
           );
-
-          // add transition
-          windowContainer = AnimatedValueBuilder(
-              initialValue: 0.0,
-              value: (_viewport?.closed ?? false) ? 0.0 : 1.0,
-              duration: kDefaultDuration,
-              onEnd: (value) {
-                if (_viewport?.closed ?? false) {
-                  _viewport?.navigator.removeWindow(_entry!);
-                }
-              },
-              builder: (context, value, child) {
-                return Transform.scale(
-                  scale: (_viewport?.closed ?? false)
-                      ? lerpDouble(0.8, 1.0, value)!
-                      : lerpDouble(0.9, 1.0, value)!,
-                  child: Opacity(
-                    opacity: value,
-                    child: child,
-                  ),
-                );
-              },
-              child: windowContainer);
-
-          windowContainer = AnimatedScale(
-            scale: (_viewport?.minify ?? false) ? 0.65 : 1.0,
+          return AnimatedValueBuilder.raw(
+            value: maximized,
             duration: kDefaultDuration,
-            alignment: _dragAlignment ?? Alignment.center,
             curve: Curves.easeInOut,
             child: windowContainer,
-          );
-
-          return Positioned.fromRect(
-            rect: state.bounds,
-            child: IgnorePointer(
-              ignoring: _viewport?.ignorePointer ?? false,
-              child: GroupWidget(
-                children: [
-                  AnimatedValueBuilder(
-                    value: maximized != null ? 1.0 : 0.0,
-                    duration: kDefaultDuration,
-                    curve: Curves.easeInOut,
-                    builder: (context, value, child) {
-                      var max = maximized ?? Rect.fromLTWH(0, 0, 1, 1);
-                      var width = state.bounds.width;
-                      var height = state.bounds.height;
-                      return GroupPositioned(
-                        left: lerpDouble(
-                            max.left * width, -state.bounds.left, value),
-                        top: lerpDouble(
-                            max.top * height, -state.bounds.top, value),
-                        width: lerpDouble(max.width * width,
-                            _viewport?.size.width ?? 0, value),
-                        height: lerpDouble(max.height * height,
-                            _viewport?.size.height ?? 0, value),
-                        child: child!,
-                      );
-                    },
-                    child: windowContainer,
-                  ),
-                ],
-              ),
-            ),
+            lerp: Rect.lerp,
+            builder: (context, oldValue, newValue, t, child) {
+              var rect = bounds;
+              if (newValue != null) {
+                var size = _viewport?.size ?? Size.zero;
+                var value = Rect.fromLTWH(
+                    newValue.left * size.width,
+                    newValue.top * size.height,
+                    newValue.width * size.width,
+                    newValue.height * size.height);
+                rect = Rect.lerp(bounds, value, t)!;
+              } else if (oldValue != null) {
+                var size = _viewport?.size ?? Size.zero;
+                var value = Rect.fromLTWH(
+                    oldValue.left * size.width,
+                    oldValue.top * size.height,
+                    oldValue.width * size.width,
+                    oldValue.height * size.height);
+                rect = Rect.lerp(value, bounds, t)!;
+              }
+              return GroupPositioned.fromRect(rect: rect, child: child!);
+            },
           );
         },
       ),
@@ -1042,6 +1070,390 @@ class _DraggingWindow {
   _DraggingWindow(this.window, this.cursorPosition);
 }
 
+class _WindowLayerGroup extends StatelessWidget {
+  final BoxConstraints constraints;
+  final List<Window> windows;
+  final _WindowNavigatorState handle;
+  final bool alwaysOnTop;
+
+  const _WindowLayerGroup(
+      {required this.constraints,
+      required this.windows,
+      required this.handle,
+      required this.alwaysOnTop});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final _createPaneSnapStrategy = handle._createPaneSnapStrategy;
+    return GroupWidget(
+      children: [
+        for (int i = windows.length - 1; i >= 0; i--)
+          if (windows[i] != handle._draggingWindow.value?.window)
+            windows[i]._build(
+                size: constraints.biggest,
+                navigator: handle,
+                focused: i == 0,
+                alwaysOnTop: false,
+                ignorePointer: false,
+                minifyDragging: handle._snappingStrategy.value != null &&
+                    handle._snappingStrategy.value!.shouldMinifyWindow &&
+                    handle._draggingWindow.value != null &&
+                    handle._draggingWindow.value!.window == windows[i]),
+        if (handle._snappingStrategy.value != null &&
+            handle._draggingWindow.value != null &&
+            handle._draggingWindow.value!.window.alwaysOnTop == alwaysOnTop)
+          GroupPositioned.fromRect(
+            rect: Rect.fromLTWH(
+              handle._snappingStrategy.value!.relativeBounds.left *
+                  constraints.biggest.width,
+              handle._snappingStrategy.value!.relativeBounds.top *
+                  constraints.biggest.height,
+              handle._snappingStrategy.value!.relativeBounds.width *
+                  constraints.biggest.width,
+              handle._snappingStrategy.value!.relativeBounds.height *
+                  constraints.biggest.height,
+            ),
+            child: _BlurContainer(
+              key: ValueKey(handle._snappingStrategy.value),
+            ),
+          ),
+        ListenableBuilder(
+            listenable: handle._hoveringTopSnapper,
+            builder: (context, _) {
+              return GroupPositioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: MouseRegion(
+                    onEnter: (_) {
+                      handle._hoveringTopSnapper.value = true;
+                    },
+                    onExit: (_) {
+                      handle._hoveringTopSnapper.value = false;
+                      handle._snappingStrategy.value = null;
+                    },
+                    hitTestBehavior: HitTestBehavior.translucent,
+                    child: AnimatedValueBuilder(
+                      value: handle._draggingWindow.value == null ||
+                              handle._draggingWindow.value!.window
+                                      .alwaysOnTop !=
+                                  alwaysOnTop
+                          ? -1.0
+                          : handle._hoveringTopSnapper.value
+                              ? 0.0
+                              : -0.85,
+                      duration: handle._hoveringTopSnapper.value
+                          ? const Duration(milliseconds: 300)
+                          : kDefaultDuration,
+                      curve: Curves.easeInOut,
+                      builder: (context, value, child) {
+                        return Transform.translate(
+                          offset: Offset(0,
+                              unlerpDouble(value, -1.0, 0.0).clamp(0, 1) * 24),
+                          child: FractionalTranslation(
+                              translation: Offset(0, value),
+                              child: OutlinedContainer(
+                                height: 100,
+                                padding:
+                                    const EdgeInsets.all(8) * theme.scaling,
+                                child: Opacity(
+                                  opacity: unlerpDouble(value, -0.85, 0.0)
+                                      .clamp(0, 1),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    mainAxisSize: MainAxisSize.min,
+                                    spacing: 8 * theme.scaling,
+                                    children: [
+                                      // 0.5 | 0.5
+                                      AspectRatio(
+                                        aspectRatio: constraints.biggest.width /
+                                            constraints.biggest.height,
+                                        child: LayoutBuilder(
+                                            builder: (context, constraints) {
+                                          final size = constraints.biggest;
+                                          return GroupWidget(
+                                            children: [
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0, 0, 0.5, 1),
+                                                ),
+                                                topRight: true,
+                                                bottomRight: true,
+                                              ),
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0.5, 0, 0.5, 1),
+                                                ),
+                                                topLeft: true,
+                                                bottomLeft: true,
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                      ),
+                                      // 0.7 | 0.3
+                                      AspectRatio(
+                                        aspectRatio: constraints.biggest.width /
+                                            constraints.biggest.height,
+                                        child: LayoutBuilder(
+                                            builder: (context, constraints) {
+                                          final size = constraints.biggest;
+                                          return GroupWidget(
+                                            children: [
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0, 0, 0.7, 1),
+                                                ),
+                                                topRight: true,
+                                                bottomRight: true,
+                                              ),
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0.7, 0, 0.3, 1),
+                                                ),
+                                                topLeft: true,
+                                                bottomLeft: true,
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                      ),
+                                      // (0.5, 1) | (0.5, 0.5)
+                                      //          | (0.5, 0.5)
+                                      AspectRatio(
+                                        aspectRatio: constraints.biggest.width /
+                                            constraints.biggest.height,
+                                        child: LayoutBuilder(
+                                            builder: (context, constraints) {
+                                          final size = constraints.biggest;
+                                          return GroupWidget(
+                                            children: [
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0, 0.0, 0.5, 1.0),
+                                                ),
+                                                topRight: true,
+                                                bottomRight: true,
+                                              ),
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0.5, 0, 0.5, 0.5),
+                                                ),
+                                                bottomLeft: true,
+                                                bottomRight: true,
+                                                topLeft: true,
+                                              ),
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0.5, 0.5, 0.5, 0.5),
+                                                ),
+                                                topLeft: true,
+                                                topRight: true,
+                                                bottomLeft: true,
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                      ),
+                                      // (0.5, 0.5) | (0.5, 0.5)
+                                      // (0.5, 0.5) | (0.5, 0.5)
+                                      AspectRatio(
+                                        aspectRatio: constraints.biggest.width /
+                                            constraints.biggest.height,
+                                        child: LayoutBuilder(
+                                            builder: (context, constraints) {
+                                          final size = constraints.biggest;
+                                          return GroupWidget(
+                                            children: [
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0, 0, 0.5, 0.5),
+                                                ),
+                                                bottomRight: true,
+                                                topRight: true,
+                                                bottomLeft: true,
+                                              ),
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0.5, 0, 0.5, 0.5),
+                                                ),
+                                                bottomLeft: true,
+                                                topLeft: true,
+                                                bottomRight: true,
+                                              ),
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0, 0.5, 0.5, 0.5),
+                                                ),
+                                                topLeft: true,
+                                                topRight: true,
+                                                bottomRight: true,
+                                              ),
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0.5, 0.5, 0.5, 0.5),
+                                                ),
+                                                topLeft: true,
+                                                topRight: true,
+                                                bottomLeft: true,
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                      ),
+                                      // 1/3 | 1/3 | 1/3
+                                      AspectRatio(
+                                        aspectRatio: constraints.biggest.width /
+                                            constraints.biggest.height,
+                                        child: LayoutBuilder(
+                                            builder: (context, constraints) {
+                                          final size = constraints.biggest;
+                                          return GroupWidget(
+                                            children: [
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0, 0, 1 / 3, 1),
+                                                ),
+                                                topRight: true,
+                                                bottomRight: true,
+                                              ),
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      1 / 3, 0, 1 / 3, 1),
+                                                ),
+                                                allLeft: true,
+                                                allRight: true,
+                                              ),
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      2 / 3, 0, 1 / 3, 1),
+                                                ),
+                                                topLeft: true,
+                                                bottomLeft: true,
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                      ),
+                                      // 2/7 | 3/7 | 2/7
+                                      AspectRatio(
+                                        aspectRatio: constraints.biggest.width /
+                                            constraints.biggest.height,
+                                        child: LayoutBuilder(
+                                            builder: (context, constraints) {
+                                          final size = constraints.biggest;
+                                          return GroupWidget(
+                                            children: [
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      0, 0, 2 / 7, 1),
+                                                ),
+                                                topRight: true,
+                                                bottomRight: true,
+                                              ),
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      2 / 7, 0, 3 / 7, 1),
+                                                ),
+                                                allLeft: true,
+                                                allRight: true,
+                                              ),
+                                              _createPaneSnapStrategy(
+                                                size,
+                                                theme,
+                                                const WindowSnapStrategy(
+                                                  relativeBounds: Rect.fromLTWH(
+                                                      5 / 7, 0, 2 / 7, 1),
+                                                ),
+                                                topLeft: true,
+                                                bottomLeft: true,
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              );
+            }),
+        if (handle._draggingWindow.value != null &&
+            handle._draggingWindow.value!.window.alwaysOnTop == alwaysOnTop)
+          handle._draggingWindow.value!.window._build(
+            size: constraints.biggest,
+            navigator: handle,
+            focused: true,
+            alwaysOnTop: handle._draggingWindow.value!.window.alwaysOnTop ??
+                handle._draggingWindow.value!.window.controller?.value
+                    .alwaysOnTop ??
+                false,
+            minifyDragging: handle._snappingStrategy.value != null &&
+                handle._snappingStrategy.value!.shouldMinifyWindow,
+            ignorePointer: true,
+          ),
+      ],
+    );
+  }
+}
+
 class _WindowNavigatorState extends State<WindowNavigator>
     with WindowNavigatorHandle {
   late List<Window> _windows;
@@ -1123,12 +1535,8 @@ class _WindowNavigatorState extends State<WindowNavigator>
             _snappingStrategy,
           ]),
           builder: (context, child) {
-            var snapStrategy = _snappingStrategy.value;
-            var draggingWindow = _draggingWindow.value;
             return ClipRect(
-              child: Stack(
-                fit: StackFit.passthrough,
-                clipBehavior: Clip.none,
+              child: GroupWidget(
                 children: [
                   Listener(
                     behavior: HitTestBehavior.translucent,
@@ -1141,73 +1549,19 @@ class _WindowNavigatorState extends State<WindowNavigator>
                     },
                     child: widget.child,
                   ),
-                  Positioned.fill(
-                    child: Stack(
-                      children: [
-                        for (int i = _windows.length - 1; i >= 0; i--)
-                          if (_windows[i] != _draggingWindow.value?.window)
-                            _windows[i]._build(
-                                size: constraints.biggest,
-                                navigator: this,
-                                focused: i == 0,
-                                alwaysOnTop: false,
-                                ignorePointer: false,
-                                minifyDragging:
-                                    _snappingStrategy.value != null &&
-                                        _snappingStrategy
-                                            .value!.shouldMinifyWindow &&
-                                        _draggingWindow.value != null &&
-                                        _draggingWindow.value!.window ==
-                                            _windows[i]),
-                      ],
-                    ),
+                  _WindowLayerGroup(
+                    constraints: constraints,
+                    windows: _windows,
+                    handle: this,
+                    alwaysOnTop: false,
                   ),
-                  Positioned.fill(
-                    child: Stack(
-                      children: [
-                        for (int i = _topWindows.length - 1; i >= 0; i--)
-                          if (_topWindows[i] != _draggingWindow.value?.window)
-                            _topWindows[i]._build(
-                                size: constraints.biggest,
-                                navigator: this,
-                                focused: i == 0,
-                                alwaysOnTop: true,
-                                ignorePointer: false,
-                                minifyDragging:
-                                    _snappingStrategy.value != null &&
-                                        _snappingStrategy
-                                            .value!.shouldMinifyWindow &&
-                                        _draggingWindow.value != null &&
-                                        _draggingWindow.value!.window ==
-                                            _topWindows[i]),
-                      ],
-                    ),
+                  _WindowLayerGroup(
+                    constraints: constraints,
+                    windows: _topWindows,
+                    handle: this,
+                    alwaysOnTop: true,
                   ),
-                  ListenableBuilder(
-                    listenable: _draggingWindow,
-                    builder: (context, child) {
-                      var draggingWindow = _draggingWindow.value;
-                      if (snapStrategy == null || draggingWindow == null) {
-                        return const SizedBox();
-                      }
-                      return Positioned.fromRect(
-                        rect: Rect.fromLTWH(
-                          snapStrategy.relativeBounds.left *
-                              constraints.biggest.width,
-                          snapStrategy.relativeBounds.top *
-                              constraints.biggest.height,
-                          snapStrategy.relativeBounds.width *
-                              constraints.biggest.width,
-                          snapStrategy.relativeBounds.height *
-                              constraints.biggest.height,
-                        ),
-                        child: _BlurContainer(
-                          key: ValueKey(snapStrategy),
-                        ),
-                      );
-                    },
-                  ),
-                  Positioned(
+                  GroupPositioned(
                       top: 0,
                       left: 0,
                       right: 0,
@@ -1216,8 +1570,8 @@ class _WindowNavigatorState extends State<WindowNavigator>
                         relativeBounds: Rect.fromLTWH(0, 0, 1, 1),
                         shouldMinifyWindow: false,
                       ))),
-                  Positioned(
-                      top: 0,
+                  GroupPositioned(
+                      top: 32 * theme.scaling,
                       bottom: 0,
                       left: 0,
                       width: 32 * theme.scaling,
@@ -1225,8 +1579,8 @@ class _WindowNavigatorState extends State<WindowNavigator>
                         relativeBounds: Rect.fromLTWH(0, 0, 0.5, 1),
                         shouldMinifyWindow: false,
                       ))),
-                  Positioned(
-                      top: 0,
+                  GroupPositioned(
+                      top: 32 * theme.scaling,
                       bottom: 0,
                       right: 0,
                       width: 32 * theme.scaling,
@@ -1234,416 +1588,6 @@ class _WindowNavigatorState extends State<WindowNavigator>
                         relativeBounds: Rect.fromLTWH(0.5, 0, 0.5, 1),
                         shouldMinifyWindow: false,
                       ))),
-                  ListenableBuilder(
-                      listenable: _hoveringTopSnapper,
-                      builder: (context, _) {
-                        return Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: MouseRegion(
-                              onEnter: (_) {
-                                _hoveringTopSnapper.value = true;
-                              },
-                              onExit: (_) {
-                                _hoveringTopSnapper.value = false;
-                                _snappingStrategy.value = null;
-                              },
-                              hitTestBehavior: HitTestBehavior.translucent,
-                              child: AnimatedValueBuilder(
-                                value: _draggingWindow.value == null
-                                    ? -1.0
-                                    : _hoveringTopSnapper.value
-                                        ? 0.0
-                                        : -0.85,
-                                duration: _hoveringTopSnapper.value
-                                    ? const Duration(milliseconds: 300)
-                                    : kDefaultDuration,
-                                curve: Curves.easeInOut,
-                                builder: (context, value, child) {
-                                  return Transform.translate(
-                                    offset: Offset(
-                                        0,
-                                        unlerpDouble(value, -1.0, 0.0)
-                                                .clamp(0, 1) *
-                                            24),
-                                    child: FractionalTranslation(
-                                        translation: Offset(0, value),
-                                        child: OutlinedContainer(
-                                          height: 100,
-                                          padding: const EdgeInsets.all(8) *
-                                              theme.scaling,
-                                          child: Opacity(
-                                            opacity:
-                                                unlerpDouble(value, -0.85, 0.0)
-                                                    .clamp(0, 1),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.stretch,
-                                              mainAxisSize: MainAxisSize.min,
-                                              spacing: 8 * theme.scaling,
-                                              children: [
-                                                // 0.5 | 0.5
-                                                AspectRatio(
-                                                  aspectRatio: constraints
-                                                          .biggest.width /
-                                                      constraints
-                                                          .biggest.height,
-                                                  child: LayoutBuilder(builder:
-                                                      (context, constraints) {
-                                                    final size =
-                                                        constraints.biggest;
-                                                    return Stack(
-                                                      children: [
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(0,
-                                                                    0, 0.5, 1),
-                                                          ),
-                                                          topRight: true,
-                                                          bottomRight: true,
-                                                        ),
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    0.5,
-                                                                    0,
-                                                                    0.5,
-                                                                    1),
-                                                          ),
-                                                          topLeft: true,
-                                                          bottomLeft: true,
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }),
-                                                ),
-                                                // 0.7 | 0.3
-                                                AspectRatio(
-                                                  aspectRatio: constraints
-                                                          .biggest.width /
-                                                      constraints
-                                                          .biggest.height,
-                                                  child: LayoutBuilder(builder:
-                                                      (context, constraints) {
-                                                    final size =
-                                                        constraints.biggest;
-                                                    return Stack(
-                                                      children: [
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(0,
-                                                                    0, 0.7, 1),
-                                                          ),
-                                                          topRight: true,
-                                                          bottomRight: true,
-                                                        ),
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    0.7,
-                                                                    0,
-                                                                    0.3,
-                                                                    1),
-                                                          ),
-                                                          topLeft: true,
-                                                          bottomLeft: true,
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }),
-                                                ),
-                                                // (0.5, 1) | (0.5, 0.5)
-                                                //          | (0.5, 0.5)
-                                                AspectRatio(
-                                                  aspectRatio: constraints
-                                                          .biggest.width /
-                                                      constraints
-                                                          .biggest.height,
-                                                  child: LayoutBuilder(builder:
-                                                      (context, constraints) {
-                                                    final size =
-                                                        constraints.biggest;
-                                                    return Stack(
-                                                      children: [
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    0,
-                                                                    0.0,
-                                                                    0.5,
-                                                                    1.0),
-                                                          ),
-                                                          topRight: true,
-                                                          bottomRight: true,
-                                                        ),
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    0.5,
-                                                                    0,
-                                                                    0.5,
-                                                                    0.5),
-                                                          ),
-                                                          bottomLeft: true,
-                                                          bottomRight: true,
-                                                          topLeft: true,
-                                                        ),
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    0.5,
-                                                                    0.5,
-                                                                    0.5,
-                                                                    0.5),
-                                                          ),
-                                                          topLeft: true,
-                                                          topRight: true,
-                                                          bottomLeft: true,
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }),
-                                                ),
-                                                // (0.5, 0.5) | (0.5, 0.5)
-                                                // (0.5, 0.5) | (0.5, 0.5)
-                                                AspectRatio(
-                                                  aspectRatio: constraints
-                                                          .biggest.width /
-                                                      constraints
-                                                          .biggest.height,
-                                                  child: LayoutBuilder(builder:
-                                                      (context, constraints) {
-                                                    final size =
-                                                        constraints.biggest;
-                                                    return Stack(
-                                                      children: [
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    0,
-                                                                    0,
-                                                                    0.5,
-                                                                    0.5),
-                                                          ),
-                                                          bottomRight: true,
-                                                          topRight: true,
-                                                          bottomLeft: true,
-                                                        ),
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    0.5,
-                                                                    0,
-                                                                    0.5,
-                                                                    0.5),
-                                                          ),
-                                                          bottomLeft: true,
-                                                          topLeft: true,
-                                                          bottomRight: true,
-                                                        ),
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    0,
-                                                                    0.5,
-                                                                    0.5,
-                                                                    0.5),
-                                                          ),
-                                                          topLeft: true,
-                                                          topRight: true,
-                                                          bottomRight: true,
-                                                        ),
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    0.5,
-                                                                    0.5,
-                                                                    0.5,
-                                                                    0.5),
-                                                          ),
-                                                          topLeft: true,
-                                                          topRight: true,
-                                                          bottomLeft: true,
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }),
-                                                ),
-                                                // 1/3 | 1/3 | 1/3
-                                                AspectRatio(
-                                                  aspectRatio: constraints
-                                                          .biggest.width /
-                                                      constraints
-                                                          .biggest.height,
-                                                  child: LayoutBuilder(builder:
-                                                      (context, constraints) {
-                                                    final size =
-                                                        constraints.biggest;
-                                                    return Stack(
-                                                      children: [
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    0,
-                                                                    0,
-                                                                    1 / 3,
-                                                                    1),
-                                                          ),
-                                                          topRight: true,
-                                                          bottomRight: true,
-                                                        ),
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    1 / 3,
-                                                                    0,
-                                                                    1 / 3,
-                                                                    1),
-                                                          ),
-                                                          allLeft: true,
-                                                          allRight: true,
-                                                        ),
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    2 / 3,
-                                                                    0,
-                                                                    1 / 3,
-                                                                    1),
-                                                          ),
-                                                          topLeft: true,
-                                                          bottomLeft: true,
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }),
-                                                ),
-                                                // 2/7 | 3/7 | 2/7
-                                                AspectRatio(
-                                                  aspectRatio: constraints
-                                                          .biggest.width /
-                                                      constraints
-                                                          .biggest.height,
-                                                  child: LayoutBuilder(builder:
-                                                      (context, constraints) {
-                                                    final size =
-                                                        constraints.biggest;
-                                                    return Stack(
-                                                      children: [
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    0,
-                                                                    0,
-                                                                    2 / 7,
-                                                                    1),
-                                                          ),
-                                                          topRight: true,
-                                                          bottomRight: true,
-                                                        ),
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    2 / 7,
-                                                                    0,
-                                                                    3 / 7,
-                                                                    1),
-                                                          ),
-                                                          allLeft: true,
-                                                          allRight: true,
-                                                        ),
-                                                        _createPaneSnapStrategy(
-                                                          size,
-                                                          theme,
-                                                          WindowSnapStrategy(
-                                                            relativeBounds:
-                                                                Rect.fromLTWH(
-                                                                    5 / 7,
-                                                                    0,
-                                                                    2 / 7,
-                                                                    1),
-                                                          ),
-                                                          topLeft: true,
-                                                          bottomLeft: true,
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        )),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        );
-                      }),
-                  if (draggingWindow != null)
-                    draggingWindow.window._build(
-                      size: constraints.biggest,
-                      navigator: this,
-                      focused: true,
-                      alwaysOnTop: draggingWindow.window.alwaysOnTop ??
-                          draggingWindow.window.controller?.value.alwaysOnTop ??
-                          false,
-                      minifyDragging: snapStrategy != null &&
-                          snapStrategy.shouldMinifyWindow,
-                      ignorePointer: true,
-                    )
                 ],
               ),
             );
@@ -1655,6 +1599,9 @@ class _WindowNavigatorState extends State<WindowNavigator>
     return MouseRegion(
       opaque: false,
       hitTestBehavior: HitTestBehavior.translucent,
+      onHover: (event) {
+        _snappingStrategy.value = snapStrategy;
+      },
       onEnter: (event) {
         _snappingStrategy.value = snapStrategy;
       },
@@ -1732,7 +1679,7 @@ class _WindowNavigatorState extends State<WindowNavigator>
         width -= gap;
       }
     }
-    return Positioned.fromRect(
+    return GroupPositioned.fromRect(
       rect: Rect.fromLTWH(
         left,
         top,
@@ -1835,6 +1782,12 @@ class _SnapHoverState extends State<_SnapHover> {
           widget.hovering(true);
         });
       },
+      onHover: (_) {
+        setState(() {
+          _hovering = true;
+          widget.hovering(true);
+        });
+      },
       onExit: (_) {
         setState(() {
           _hovering = false;
@@ -1912,7 +1865,7 @@ class WindowActions extends StatelessWidget {
       children: [
         if (handle?.minimizable ?? true)
           IconButton.ghost(
-            icon: Icon(Icons.minimize),
+            icon: const Icon(Icons.minimize),
             size: ButtonSize.small,
             onPressed: () {
               handle?.minimized = !handle.minimized;
@@ -1920,7 +1873,7 @@ class WindowActions extends StatelessWidget {
           ),
         if (handle?.maximizable ?? true)
           IconButton.ghost(
-            icon: Icon(Icons.crop_square),
+            icon: const Icon(Icons.crop_square),
             size: ButtonSize.small,
             onPressed: () {
               if (handle != null) {
@@ -1936,7 +1889,7 @@ class WindowActions extends StatelessWidget {
           ),
         if (handle?.closable ?? true)
           IconButton.ghost(
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
             size: ButtonSize.small,
             onPressed: () {
               handle?.close();

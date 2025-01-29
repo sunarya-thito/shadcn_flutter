@@ -556,15 +556,7 @@ class ContextMenuPopup extends StatelessWidget {
     return AnimatedValueBuilder.animation(
       value: 1.0,
       initialValue: 0.0,
-      durationBuilder: (a, b) {
-        if (a < b) {
-          // forward duration
-          return const Duration(milliseconds: 100);
-        } else {
-          // reverse duration
-          return kDefaultDuration;
-        }
-      },
+      duration: const Duration(milliseconds: 100),
       builder: (context, animation) {
         final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
         return PopoverAnchor(
