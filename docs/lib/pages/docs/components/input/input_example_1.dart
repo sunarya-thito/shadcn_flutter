@@ -6,7 +6,6 @@ class InputExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const TextField(
-      enabled: false,
       placeholder: Text('Enter your name'),
     );
   }
