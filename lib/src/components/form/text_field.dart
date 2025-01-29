@@ -221,7 +221,7 @@ class _TextFieldState extends State<TextField>
                 padding: widget.padding ??
                     EdgeInsets.symmetric(
                       horizontal: 12 * scaling,
-                      vertical: 8 * scaling,
+                      vertical: 6 * scaling,
                     ),
                 child: child,
               ),
