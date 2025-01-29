@@ -81,7 +81,7 @@ class TextField extends StatefulWidget {
     this.onTapOutside,
     this.inputFormatters,
     this.style,
-    this.contextMenuBuilder = defaultContextMenuBuilder,
+    this.contextMenuBuilder,
     this.useNativeContextMenu = false,
     this.isCollapsed,
     this.textInputAction,
