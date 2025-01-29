@@ -8,7 +8,7 @@ class ExpandableSidebarExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'expandable_sidebar',
       description: 'A Navigation Rail that can be expanded or collapsed',
       displayName: 'Expandable Sidebar',
@@ -16,7 +16,8 @@ class ExpandableSidebarExample extends StatelessWidget {
         WidgetUsageExample(
           title: 'Example',
           child: ExpandableSidebarExample1(),
-          path: '',
+          path:
+              'lib/pages/docs/components/expandable_sidebar/expandable_sidebar_example_1.dart',
         ),
       ],
     );
