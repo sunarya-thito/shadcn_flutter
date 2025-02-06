@@ -263,9 +263,13 @@ class _ToastLayerState extends State<ToastLayer> {
                     int currentCount = ++locationEntry.value._hoverCount;
                     Future.delayed(const Duration(milliseconds: 300), () {
                       if (currentCount == locationEntry.value._hoverCount) {
-                        setState(() {
+                        if (mounted) {
+                          setState(() {
+                            locationEntry.value._expanding = false;
+                          });
+                        } else {
                           locationEntry.value._expanding = false;
-                        });
+                        }
                       }
                     });
                   },
