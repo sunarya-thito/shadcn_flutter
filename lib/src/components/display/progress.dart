@@ -85,7 +85,7 @@ class Progress extends StatelessWidget {
     this.disableAnimation = false,
     this.color,
     this.backgroundColor,
-  }) : assert(progress != null && progress >= min && progress <= max,
+  }) : assert(progress == null || progress >= min && progress <= max,
             'Progress must be between min and max');
 
   /// The normalized value of the progress.
