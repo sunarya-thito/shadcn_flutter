@@ -143,10 +143,17 @@ class SortableDropFallback<T> extends StatefulWidget {
 class _SortableDropFallbackState<T> extends State<SortableDropFallback<T>> {
   @override
   Widget build(BuildContext context) {
-    return MetaData(
-      behavior: HitTestBehavior.translucent,
-      metaData: this,
-      child: widget.child,
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        Positioned.fill(
+          child: MetaData(
+            behavior: HitTestBehavior.translucent,
+            metaData: this,
+          ),
+        ),
+        widget.child,
+      ],
     );
   }
 }
@@ -366,7 +373,7 @@ class _SortableState<T> extends State<Sortable<T>>
         _SortableDropFallbackState<T>? fallback =
             _findFallbackState(_session!.layer, globalPosition);
         _currentFallback.value = fallback;
-        if (_currentTarget.value != null) {
+        if (_currentTarget.value != null && fallback == null) {
           _currentTarget.value!.dispose(_session!);
           _currentTarget.value = null;
         }
@@ -449,7 +456,7 @@ class _SortableState<T> extends State<Sortable<T>>
         }
         _session!.layer.removeDraggingSession(_session!);
         _currentTarget.value = null;
-      } else {
+      } else if (_hasDraggedOff.value) {
         var target = _currentFallback.value;
         if (target != null) {
           var sortData = _session!.data;
@@ -462,6 +469,11 @@ class _SortableState<T> extends State<Sortable<T>>
         if (target == null) {
           _session!.layer._claimDrop(this, _session!.data, true);
         }
+      } else {
+        // basically the same as drag cancel, because the drag has not been
+        // dragged off of itself
+        _session!.layer.removeDraggingSession(_session!);
+        _session!.layer._claimDrop(this, _session!.data, true);
       }
       _claimUnchanged = true;
       _session = null;
@@ -977,97 +989,101 @@ class _SortableLayerState extends State<SortableLayer>
 
   @override
   Widget build(BuildContext context) {
-    return Data.inherit(
-      data: this,
-      child: Stack(
-        fit: StackFit.passthrough,
-        clipBehavior:
-            widget.clipBehavior ?? (widget.lock ? Clip.hardEdge : Clip.none),
-        children: [
-          widget.child,
-          ListenableBuilder(
-            listenable: _sessions,
-            builder: (context, child) {
-              return Positioned.fill(
-                child: MouseRegion(
-                  opaque: false,
-                  hitTestBehavior: HitTestBehavior.translucent,
-                  cursor: _sessions.value.isNotEmpty
-                      ? SystemMouseCursors.grabbing
-                      : MouseCursor.defer,
+    return MetaData(
+      metaData: this,
+      behavior: HitTestBehavior.translucent,
+      child: Data.inherit(
+        data: this,
+        child: Stack(
+          fit: StackFit.passthrough,
+          clipBehavior:
+              widget.clipBehavior ?? (widget.lock ? Clip.hardEdge : Clip.none),
+          children: [
+            widget.child,
+            ListenableBuilder(
+              listenable: _sessions,
+              builder: (context, child) {
+                return Positioned.fill(
+                  child: MouseRegion(
+                    opaque: false,
+                    hitTestBehavior: HitTestBehavior.translucent,
+                    cursor: _sessions.value.isNotEmpty
+                        ? SystemMouseCursors.grabbing
+                        : MouseCursor.defer,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        for (final session in _sessions.value)
+                          ListenableBuilder(
+                            listenable: session.offset,
+                            builder: (context, child) {
+                              return Positioned(
+                                left: session.offset.value.dx,
+                                top: session.offset.value.dy,
+                                child: IgnorePointer(
+                                  child: Transform(
+                                    transform: session.transform,
+                                    child: SizedBox.fromSize(
+                                      key: session.key,
+                                      size: session.size,
+                                      child: session.ghost,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+            ListenableBuilder(
+              listenable: _activeDrops,
+              builder: (context, child) {
+                return Positioned.fill(
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      for (final session in _sessions.value)
+                      for (final drop in _activeDrops.value)
                         ListenableBuilder(
-                          listenable: session.offset,
+                          listenable: drop.progress,
                           builder: (context, child) {
-                            return Positioned(
-                              left: session.offset.value.dx,
-                              top: session.offset.value.dy,
-                              child: IgnorePointer(
-                                child: Transform(
-                                  transform: session.transform,
-                                  child: SizedBox.fromSize(
-                                    key: session.key,
-                                    size: session.size,
-                                    child: session.ghost,
-                                  ),
+                            return IgnorePointer(
+                              child: Transform(
+                                transform: _tweenMatrix(
+                                  drop.from,
+                                  drop.to,
+                                  drop.progress.value,
                                 ),
+                                child: drop.child,
                               ),
                             );
                           },
                         ),
+                      child!,
                     ],
                   ),
-                ),
-              );
-            },
-          ),
-          ListenableBuilder(
-            listenable: _activeDrops,
-            builder: (context, child) {
-              return Positioned.fill(
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    for (final drop in _activeDrops.value)
-                      ListenableBuilder(
-                        listenable: drop.progress,
-                        builder: (context, child) {
-                          return IgnorePointer(
-                            child: Transform(
-                              transform: _tweenMatrix(
-                                drop.from,
-                                drop.to,
-                                drop.progress.value,
-                              ),
-                              child: drop.child,
-                            ),
-                          );
-                        },
-                      ),
-                    child!,
-                  ],
-                ),
-              );
-            },
-            child: ListenableBuilder(
-              listenable: _pendingDrop,
-              builder: (context, child) {
-                if (_pendingDrop.value != null) {
-                  return IgnorePointer(
-                    child: Transform(
-                      transform: _pendingDrop.value!.from,
-                      child: _pendingDrop.value!.child,
-                    ),
-                  );
-                }
-                return const SizedBox();
+                );
               },
+              child: ListenableBuilder(
+                listenable: _pendingDrop,
+                builder: (context, child) {
+                  if (_pendingDrop.value != null) {
+                    return IgnorePointer(
+                      child: Transform(
+                        transform: _pendingDrop.value!.from,
+                        child: _pendingDrop.value!.child,
+                      ),
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -1129,8 +1145,9 @@ class _ScrollableSortableLayerState extends State<ScrollableSortableLayer>
       } else if (pos > size - widget.scrollThreshold) {
         scrollDelta = delta / 10000;
       }
-      var newPosition = widget.controller.offset + scrollDelta;
-      widget.controller.jumpTo(newPosition);
+      for (var pos in widget.controller.positions) {
+        pos.pointerScroll(scrollDelta);
+      }
       _attached?._handleDrag(Offset.zero);
     }
     _lastElapsed = elapsed;
