@@ -63,6 +63,12 @@ class PopoverExample1 extends StatelessWidget {
                         spacing: 8,
                       ),
                     ).withPadding(vertical: 16),
+                    PrimaryButton(
+                      onPressed: () {
+                        closeOverlay(context);
+                      },
+                      child: Text('Submit'),
+                    ),
                   ],
                 ),
               ),
