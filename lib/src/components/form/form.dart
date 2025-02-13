@@ -1284,6 +1284,7 @@ class FormErrorBuilder extends StatelessWidget {
     if (formController != null) {
       return AnimatedBuilder(
         animation: formController,
+        child: child,
         builder: (context, child) {
           final errors = formController.validities;
           // future builder
