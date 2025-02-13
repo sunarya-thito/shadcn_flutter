@@ -8,27 +8,6 @@ class SortableExample4 extends StatefulWidget {
 }
 
 class _SortableExample4State extends State<SortableExample4> {
-  // List<String> names = [
-  //   'James',
-  //   'John',
-  //   'Robert',
-  //   'Michael',
-  //   'William',
-  //   'David',
-  //   'Richard',
-  //   'Joseph',
-  //   'Thomas',
-  //   'Charles',
-  //   'Daniel',
-  //   'Matthew',
-  //   'Anthony',
-  //   'Donald',
-  //   'Mark',
-  //   'Paul',
-  //   'Steven',
-  //   'Andrew',
-  //   'Kenneth',
-  // ];
   List<SortableData<String>> names = [
     const SortableData('James'),
     const SortableData('John'),
