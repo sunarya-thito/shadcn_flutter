@@ -33,23 +33,14 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
         if (widget.title != null) const Gap(12),
         TabList(
           index: index,
+          onChanged: (value) {
+            setState(() {
+              index = value;
+            });
+          },
           children: [
-            TabButton(
-              onPressed: () {
-                setState(() {
-                  index = 0;
-                });
-              },
-              child: const Text('Preview').semiBold().textSmall(),
-            ),
-            TabButton(
-              onPressed: () {
-                setState(() {
-                  index = 1;
-                });
-              },
-              child: const Text('Code').semiBold().textSmall(),
-            ),
+            TabItem(child: const Text('Preview').semiBold().textSmall()),
+            TabItem(child: const Text('Code').semiBold().textSmall()),
           ],
         ),
         const Gap(12),

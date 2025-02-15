@@ -90,7 +90,7 @@ enum _SortableDropLocation {
   bottom,
 }
 
-_SortableDropLocation? getPosition(Offset position, Size size,
+_SortableDropLocation? _getPosition(Offset position, Size size,
     {bool acceptTop = false,
     bool acceptLeft = false,
     bool acceptRight = false,
@@ -385,7 +385,7 @@ class _SortableState<T> extends State<Sortable<T>>
         }
         var targetRenderBox = target.$1.context.findRenderObject() as RenderBox;
         var size = targetRenderBox.size;
-        _SortableDropLocation? location = getPosition(
+        _SortableDropLocation? location = _getPosition(
           target.$2,
           size,
           acceptTop: widget.onAcceptTop != null,
@@ -563,6 +563,7 @@ class _SortableState<T> extends State<Sortable<T>>
   @override
   void dispose() {
     super.dispose();
+    print('disposing: $_dragging ${widget.data}');
     if (_dragging) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         _scrollableLayer?._endDrag(this);

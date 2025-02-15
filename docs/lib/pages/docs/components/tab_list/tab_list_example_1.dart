@@ -17,30 +17,20 @@ class _TabListExample1State extends State<TabListExample1> {
       children: [
         TabList(
           index: index,
-          children: [
-            TabButton(
-              child: const Text('Tab 1'),
-              onPressed: () {
-                setState(() {
-                  index = 0;
-                });
-              },
+          onChanged: (value) {
+            setState(() {
+              index = value;
+            });
+          },
+          children: const [
+            TabItem(
+              child: Text('Tab 1'),
             ),
-            TabButton(
-              child: const Text('Tab 2'),
-              onPressed: () {
-                setState(() {
-                  index = 1;
-                });
-              },
+            TabItem(
+              child: Text('Tab 2'),
             ),
-            TabButton(
-              child: const Text('Tab 3'),
-              onPressed: () {
-                setState(() {
-                  index = 2;
-                });
-              },
+            TabItem(
+              child: Text('Tab 3'),
             ),
           ],
         ),

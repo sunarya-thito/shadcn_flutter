@@ -13,14 +13,13 @@ class _TabsExample1State extends State<TabsExample1> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Tabs(
           index: index,
-          tabs: const [
-            Text('Tab 1'),
-            Text('Tab 2'),
-            Text('Tab 3'),
+          children: const [
+            TabItem(child: Text('Tab 1')),
+            TabItem(child: Text('Tab 2')),
+            TabItem(child: Text('Tab 3')),
           ],
           onChanged: (int value) {
             setState(() {

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:docs/pages/docs/colors_page.dart';
 import 'package:docs/pages/docs/components/accordion_example.dart';
@@ -95,6 +96,8 @@ import 'pages/docs/components/command_example.dart';
 import 'pages/docs/components/form_example.dart';
 import 'pages/docs/components/number_input_example.dart';
 
+const kEnablePersistentPath = false;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GoRouter.optionURLReflectsImperativeAPIs = true;
@@ -114,12 +117,14 @@ void main() async {
   double initialScaling = prefs.getDouble('scaling') ?? 1.0;
   double initialSurfaceOpacity = prefs.getDouble('surfaceOpacity') ?? 1.0;
   double initialSurfaceBlur = prefs.getDouble('surfaceBlur') ?? 0.0;
+  String initialPath = prefs.getString('initialPath') ?? '/';
   runApp(MyApp(
     initialColorScheme: initialColorScheme ?? colorSchemes['darkGreen']!,
     initialRadius: initialRadius,
     initialScaling: initialScaling,
     initialSurfaceOpacity: initialSurfaceOpacity,
     initialSurfaceBlur: initialSurfaceBlur,
+    initialPath: kEnablePersistentPath ? initialPath : '/',
   ));
 }
 
@@ -129,6 +134,7 @@ class MyApp extends StatefulWidget {
   final double initialScaling;
   final double initialSurfaceOpacity;
   final double initialSurfaceBlur;
+  final String initialPath;
   const MyApp({
     super.key,
     required this.initialColorScheme,
@@ -136,14 +142,28 @@ class MyApp extends StatefulWidget {
     required this.initialScaling,
     required this.initialSurfaceOpacity,
     required this.initialSurfaceBlur,
+    required this.initialPath,
   });
 
   @override
   State<MyApp> createState() => MyAppState();
 }
 
+class _DesktopNavigatorObserver extends NavigatorObserver {
+  final ValueChanged<String> onRouteChanged;
+
+  _DesktopNavigatorObserver({this.onRouteChanged = print});
+
+  @override
+  void didChangeTop(Route topRoute, Route? previousTopRoute) {
+    var settings = topRoute.settings as NoTransitionPage;
+    var key = settings.key as ValueKey<String>;
+    onRouteChanged(key.value);
+  }
+}
+
 class MyAppState extends State<MyApp> {
-  final GoRouter router = GoRouter(routes: [
+  final List<GoRoute> routes = [
     GoRoute(
       path: '/',
       builder: (context, state) => const IntroductionPage(),
@@ -677,14 +697,13 @@ class MyAppState extends State<MyApp> {
             name: 'expandable_sidebar',
           )
         ]),
-  ]);
-  // ColorScheme colorScheme = ColorSchemes.darkZync();
-  // double radius = 0.5;
+  ];
   late ColorScheme colorScheme;
   late double radius;
   late double scaling;
   late double surfaceOpacity;
   late double surfaceBlur;
+  late GoRouter router;
 
   @override
   void initState() {
@@ -694,6 +713,20 @@ class MyAppState extends State<MyApp> {
     scaling = widget.initialScaling;
     surfaceOpacity = widget.initialSurfaceOpacity;
     surfaceBlur = widget.initialSurfaceBlur;
+    router = GoRouter(
+        routes: routes,
+        initialLocation: widget.initialPath,
+        observers: [
+          if ((Platform.isMacOS || Platform.isWindows || Platform.isLinux) &&
+              kEnablePersistentPath)
+            _DesktopNavigatorObserver(
+              onRouteChanged: (path) {
+                SharedPreferences.getInstance().then((prefs) {
+                  prefs.setString('initialPath', path);
+                });
+              },
+            ),
+        ]);
   }
   // This widget is the root of your application.
 

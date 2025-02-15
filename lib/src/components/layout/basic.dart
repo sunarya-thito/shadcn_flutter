@@ -117,6 +117,7 @@ class BasicLayout extends StatelessWidget {
   final AlignmentGeometry? contentAlignment;
   final double? contentSpacing;
   final double? titleSpacing;
+  final BoxConstraints? constraints;
 
   const BasicLayout({
     super.key,
@@ -132,6 +133,79 @@ class BasicLayout extends StatelessWidget {
     this.contentAlignment,
     this.contentSpacing,
     this.titleSpacing,
+    this.constraints,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (leading != null)
+          Align(
+            alignment: leadingAlignment ?? Alignment.topCenter,
+            child: leading!,
+          ),
+        if (leading != null &&
+            (title != null || content != null || subtitle != null))
+          SizedBox(width: contentSpacing ?? (16 * scaling)),
+        if (title != null || content != null || subtitle != null)
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (title != null)
+                  Align(
+                    alignment: titleAlignment ?? Alignment.topLeft,
+                    child: title!,
+                  ),
+                if (title != null && subtitle != null)
+                  SizedBox(height: 2 * scaling),
+                if (subtitle != null)
+                  Align(
+                    alignment: subtitleAlignment ?? Alignment.topLeft,
+                    child: subtitle!,
+                  ),
+                if ((title != null || subtitle != null) && content != null)
+                  SizedBox(height: titleSpacing ?? (4 * scaling)),
+                if (content != null)
+                  Align(
+                    alignment: contentAlignment ?? Alignment.topLeft,
+                    child: content!,
+                  ),
+              ],
+            ),
+          ),
+        if (trailing != null &&
+            (title != null ||
+                content != null ||
+                leading != null ||
+                subtitle != null))
+          SizedBox(width: contentSpacing ?? (16 * scaling)),
+        if (trailing != null)
+          Align(
+            alignment: trailingAlignment ?? Alignment.topCenter,
+            child: trailing!,
+          ),
+      ],
+    );
+  }
+}
+
+class Label extends StatelessWidget {
+  final Widget? leading;
+  final Widget child;
+  final Widget? trailing;
+
+  const Label({
+    super.key,
+    this.leading,
+    required this.child,
+    this.trailing,
   });
 
   @override
@@ -139,61 +213,17 @@ class BasicLayout extends StatelessWidget {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     return IntrinsicWidth(
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (leading != null)
-              Align(
-                alignment: leadingAlignment ?? Alignment.topCenter,
-                child: leading!,
-              ),
-            if (leading != null &&
-                (title != null || content != null || subtitle != null))
-              SizedBox(width: contentSpacing ?? (16 * scaling)),
-            if (title != null || content != null || subtitle != null)
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (title != null)
-                      Align(
-                        alignment: titleAlignment ?? Alignment.topLeft,
-                        child: title!,
-                      ),
-                    if (title != null && subtitle != null)
-                      SizedBox(height: 2 * scaling),
-                    if (subtitle != null)
-                      Align(
-                        alignment: subtitleAlignment ?? Alignment.topLeft,
-                        child: subtitle!,
-                      ),
-                    if ((title != null || subtitle != null) && content != null)
-                      SizedBox(height: titleSpacing ?? (4 * scaling)),
-                    if (content != null)
-                      Align(
-                        alignment: contentAlignment ?? Alignment.topLeft,
-                        child: content!,
-                      ),
-                  ],
-                ),
-              ),
-            if (trailing != null &&
-                (title != null ||
-                    content != null ||
-                    leading != null ||
-                    subtitle != null))
-              SizedBox(width: contentSpacing ?? (16 * scaling)),
-            if (trailing != null)
-              Align(
-                alignment: trailingAlignment ?? Alignment.topCenter,
-                child: trailing!,
-              ),
-          ],
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (leading != null) leading!,
+          if (leading != null) SizedBox(width: 8 * scaling),
+          Expanded(child: child),
+          if (trailing != null) SizedBox(width: 8 * scaling),
+          if (trailing != null) trailing!,
+        ],
       ),
     );
   }

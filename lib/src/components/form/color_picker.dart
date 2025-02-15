@@ -706,12 +706,25 @@ class _ColorInputSetState extends State<ColorInputSet> {
                     _tabIndex = value;
                   });
                 },
-                tabs: [
-                  Text(localizations.colorPickerTabRGB),
-                  Text(localizations.colorPickerTabHSL),
-                  Text(localizations.colorPickerTabHSV),
+                children: [
+                  // Text(localizations.colorPickerTabRGB),
+                  // Text(localizations.colorPickerTabHSL),
+                  // Text(localizations.colorPickerTabHSV),
+                  // if (widget.storage != null)
+                  //   Text(localizations.colorPickerTabRecent),
+                  TabItem(
+                    child: Text(localizations.colorPickerTabRGB),
+                  ),
+                  TabItem(
+                    child: Text(localizations.colorPickerTabHSL),
+                  ),
+                  TabItem(
+                    child: Text(localizations.colorPickerTabHSV),
+                  ),
                   if (widget.storage != null)
-                    Text(localizations.colorPickerTabRecent),
+                    TabItem(
+                      child: Text(localizations.colorPickerTabRecent),
+                    ),
                 ]),
             Gap(theme.scaling * 16),
             _buildContent(context, theme, constraints.maxWidth),
