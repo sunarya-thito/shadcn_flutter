@@ -79,6 +79,7 @@ import 'package:docs/pages/docs/state_management_page.dart';
 import 'package:docs/pages/docs/theme_page.dart';
 import 'package:docs/pages/docs/typography_page.dart';
 import 'package:docs/pages/docs/web_preloader_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -717,7 +718,8 @@ class MyAppState extends State<MyApp> {
         routes: routes,
         initialLocation: widget.initialPath,
         observers: [
-          if ((Platform.isMacOS || Platform.isWindows || Platform.isLinux) &&
+          if (!kIsWeb &&
+              (Platform.isMacOS || Platform.isWindows || Platform.isLinux) &&
               kEnablePersistentPath)
             _DesktopNavigatorObserver(
               onRouteChanged: (path) {
