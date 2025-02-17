@@ -440,11 +440,11 @@ class InputOTPChildData {
 class _InputOTPChild {
   int? value;
   final FocusNode focusNode;
-  final InputOTPChild child;
   final int groupIndex;
   final int relativeIndex;
+  final InputOTPChild child;
   int groupLength = 0;
-  final GlobalKey<_OTPCharacterInputState> key = GlobalKey();
+  final GlobalKey<_OTPCharacterInputState> key;
 
   _InputOTPChild({
     required this.focusNode,
@@ -452,7 +452,16 @@ class _InputOTPChild {
     this.value,
     required this.groupIndex,
     required this.relativeIndex,
-  });
+  }) : key = GlobalKey<_OTPCharacterInputState>();
+
+  _InputOTPChild.withNewChild(_InputOTPChild old, InputOTPChild newChild)
+      : focusNode = old.focusNode,
+        value = old.value,
+        groupIndex = old.groupIndex,
+        relativeIndex = old.relativeIndex,
+        child = newChild,
+        groupLength = old.groupLength,
+        key = old.key;
 }
 
 typedef OTPCodepointList = List<int?>;
@@ -552,14 +561,20 @@ class _InputOTPState extends State<InputOTP>
       int relativeIndex = 0;
       for (final child in widget.children) {
         if (child.hasValue) {
-          int? value = getInitialValue(index);
-          _children.add(_InputOTPChild(
-            focusNode: FocusNode(),
-            child: child,
-            value: value,
-            groupIndex: groupIndex,
-            relativeIndex: relativeIndex,
-          ));
+          if (index < _children.length) {
+            _children[index] = _InputOTPChild.withNewChild(
+              _children[index],
+              child,
+            );
+          } else {
+            _children.add(_InputOTPChild(
+              focusNode: FocusNode(),
+              child: child,
+              value: getInitialValue(index),
+              groupIndex: groupIndex,
+              relativeIndex: relativeIndex,
+            ));
+          }
           index++;
           relativeIndex++;
         } else {

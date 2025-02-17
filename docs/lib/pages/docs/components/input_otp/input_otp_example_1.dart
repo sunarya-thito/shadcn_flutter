@@ -9,6 +9,7 @@ class InputOTPExample1 extends StatefulWidget {
 
 class _InputOTPExample1State extends State<InputOTPExample1> {
   String value = '';
+  String? submittedValue;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,6 +19,11 @@ class _InputOTPExample1State extends State<InputOTPExample1> {
           onChanged: (value) {
             setState(() {
               this.value = value.otpToString();
+            });
+          },
+          onSubmitted: (value) {
+            setState(() {
+              submittedValue = value.otpToString();
             });
           },
           children: [
@@ -32,6 +38,7 @@ class _InputOTPExample1State extends State<InputOTPExample1> {
         ),
         gap(16),
         Text('Value: $value'),
+        Text('Submitted Value: $submittedValue'),
       ],
     );
   }
