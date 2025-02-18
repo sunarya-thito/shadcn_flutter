@@ -658,7 +658,6 @@ class _Resizer extends StatefulWidget {
   final _ResizablePanelState panelState;
 
   const _Resizer({
-    super.key,
     required this.direction,
     required this.index,
     required this.thickness,
@@ -747,7 +746,6 @@ class _ResizableLayoutChild
   final double? flex;
 
   const _ResizableLayoutChild({
-    super.key,
     this.index,
     this.isDragger,
     this.isDivider,
@@ -804,7 +802,6 @@ class _ResizableLayout extends MultiChildRenderObjectWidget {
   final _ResizableLayoutCallback onLayout;
 
   const _ResizableLayout({
-    super.key,
     required this.direction,
     required super.children,
     required this.onLayout,

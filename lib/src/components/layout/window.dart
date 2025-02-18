@@ -322,10 +322,6 @@ mixin WindowHandle on State<WindowWidget> {
   set minimizable(bool value);
   set enableSnapping(bool value);
   WindowController get controller;
-
-  _WindowWidgetState get _state {
-    return this as _WindowWidgetState;
-  }
 }
 
 class _WindowWidgetState extends State<WindowWidget> with WindowHandle {

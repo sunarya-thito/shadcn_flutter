@@ -59,14 +59,6 @@ class ResizableItem {
   }
 }
 
-double _closerToZero(double a, double b) {
-  if (a.abs() < b.abs()) {
-    return a;
-  } else {
-    return b;
-  }
-}
-
 class _BorrowInfo {
   final double givenSize;
   final int from;

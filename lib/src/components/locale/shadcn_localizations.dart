@@ -35,6 +35,9 @@ class SizeUnitLocale {
   final String separator;
   const SizeUnitLocale(this.base, this.units, {this.separator = ','});
 
+  static const SizeUnitLocale fileBytes = _fileByteUnits;
+  static const SizeUnitLocale fileBits = _fileBitUnits;
+
   String getUnit(int value) {
     if (value <= 0) return '0 ${units[0]}';
     var log10 = _log10(value);

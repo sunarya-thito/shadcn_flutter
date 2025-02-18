@@ -1095,6 +1095,7 @@ class TableCell {
                 hoverNotifier: resizedState._hoverNotifier,
                 dragNotifier: resizedState._dragNotifier,
                 maxRow: resizedState._maxRow,
+                theme: resizedState.widget.theme,
                 maxColumn: resizedState._maxColumn),
           )
       ],
