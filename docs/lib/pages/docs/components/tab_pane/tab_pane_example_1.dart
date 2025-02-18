@@ -7,11 +7,11 @@ class TabPaneExample1 extends StatefulWidget {
   State<TabPaneExample1> createState() => _TabPaneExample1State();
 }
 
-class TabData {
+class MyTab {
   final String title;
   final int count;
   final String content;
-  TabData(this.title, this.count, this.content);
+  MyTab(this.title, this.count, this.content);
 
   @override
   String toString() {
@@ -20,7 +20,7 @@ class TabData {
 }
 
 class _TabPaneExample1State extends State<TabPaneExample1> {
-  late List<TabData> tabs;
+  late List<TabPaneData<MyTab>> tabs;
   int focused = 0;
 
   @override
@@ -28,13 +28,12 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
     super.didChangeDependencies();
     tabs = [
       for (int i = 0; i < 3; i++)
-        TabData('Tab ${i + 1}', i + 1, 'Content ${i + 1}')
+        TabPaneData(MyTab('Tab ${i + 1}', i + 1, 'Content ${i + 1}')),
     ];
   }
 
-  KeyedTabItem<TabData> _buildTabItem(TabData data) {
-    return KeyedTabItem(
-      key: data,
+  TabItem _buildTabItem(MyTab data) {
+    return TabItem(
       child: ConstrainedBox(
         constraints: BoxConstraints(minWidth: 150),
         child: Label(
@@ -68,8 +67,12 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
 
   @override
   Widget build(BuildContext context) {
-    return TabPane<TabData>(
-      children: tabs.map((e) => _buildTabItem(e)).toList(),
+    return TabPane<MyTab>(
+      // children: tabs.map((e) => _buildTabItem(e)).toList(),
+      items: tabs,
+      itemBuilder: (context, item, index) {
+        return _buildTabItem(item.data);
+      },
       focused: focused,
       onFocused: (value) {
         setState(() {
@@ -97,12 +100,12 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
           onPressed: () {
             setState(() {
               int max = tabs.fold<int>(0, (previousValue, element) {
-                return element.count > previousValue
-                    ? element.count
+                return element.data.count > previousValue
+                    ? element.data.count
                     : previousValue;
               });
-              tabs.add(
-                  TabData('Tab ${max + 1}', max + 1, 'Content ${max + 1}'));
+              tabs.add(TabPaneData(
+                  MyTab('Tab ${max + 1}', max + 1, 'Content ${max + 1}')));
             });
           },
         )

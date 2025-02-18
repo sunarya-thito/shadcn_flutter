@@ -16,6 +16,7 @@ class TabPaneExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Tab Pane Example',
+          summarize: false,
           child: TabPaneExample1(),
           path: 'lib/pages/docs/components/tab_pane/tab_pane_example_1.dart',
         ),
