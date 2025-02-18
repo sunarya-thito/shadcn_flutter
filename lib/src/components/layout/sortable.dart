@@ -26,6 +26,7 @@ class Sortable<T> extends StatefulWidget {
   final Widget? candidateFallback;
   final bool enabled;
   final HitTestBehavior behavior;
+  final VoidCallback? onDropFailed;
   const Sortable({
     super.key,
     this.enabled = true,
@@ -46,6 +47,7 @@ class Sortable<T> extends StatefulWidget {
     this.onDragEnd,
     this.onDragCancel,
     this.behavior = HitTestBehavior.deferToChild,
+    this.onDropFailed,
     required this.child,
   });
 
@@ -67,6 +69,7 @@ class _SortableDraggingSession<T> {
   final Offset maxOffset;
   final bool lock;
   final _SortableState<T> target;
+
   _SortableDraggingSession({
     required this.target,
     required this.layer,
@@ -193,6 +196,7 @@ class _DroppingTarget<T> {
 }
 
 class _DropTransform {
+  final _SortableLayerState layer;
   final Matrix4 from;
   final Matrix4 to;
   final Widget child;
@@ -203,6 +207,7 @@ class _DropTransform {
   final ValueNotifier<double> progress = ValueNotifier(0);
 
   _DropTransform({
+    required this.layer,
     required this.from,
     required this.to,
     required this.child,
@@ -473,6 +478,7 @@ class _SortableState<T> extends State<Sortable<T>>
         // basically the same as drag cancel, because the drag has not been
         // dragged off of itself
         _session!.layer.removeDraggingSession(_session!);
+        widget.onDropFailed?.call();
         _session!.layer._claimDrop(this, _session!.data, true);
       }
       _claimUnchanged = true;
@@ -563,7 +569,6 @@ class _SortableState<T> extends State<Sortable<T>>
   @override
   void dispose() {
     super.dispose();
-    print('disposing: $_dragging ${widget.data}');
     if (_dragging) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         _scrollableLayer?._endDrag(this);
@@ -856,6 +861,16 @@ class SortableLayer extends StatefulWidget {
 
   @override
   State<SortableLayer> createState() => _SortableLayerState();
+
+  static void ensureAndDismissDrop(BuildContext context, Object data) {
+    final layer = Data.of<_SortableLayerState>(context);
+    layer.ensureAndDismissDrop(data);
+  }
+
+  static void dismissDrop(BuildContext context) {
+    final layer = Data.of<_SortableLayerState>(context);
+    layer.dismissDrop();
+  }
 }
 
 class _PendingDropTransform {
@@ -877,7 +892,6 @@ class _SortableLayerState extends State<SortableLayer>
   final MutableNotifier<List<_DropTransform>> _activeDrops =
       MutableNotifier([]);
 
-  // _PendingDropTransform? _pendingDrop;
   final ValueNotifier<_PendingDropTransform?> _pendingDrop =
       ValueNotifier(null);
 
@@ -887,6 +901,16 @@ class _SortableLayerState extends State<SortableLayer>
   void initState() {
     super.initState();
     _ticker = createTicker(_tick);
+  }
+
+  void ensureAndDismissDrop(Object data) {
+    if (_pendingDrop.value != null && data == _pendingDrop.value!.data) {
+      _pendingDrop.value = null;
+    }
+  }
+
+  void dismissDrop() {
+    _pendingDrop.value = null;
   }
 
   bool _canClaimDrop(_SortableState item, Object? data) {
@@ -900,6 +924,7 @@ class _SortableLayerState extends State<SortableLayer>
       RenderBox layerRenderBox = context.findRenderObject() as RenderBox;
       RenderBox itemRenderBox = item.context.findRenderObject() as RenderBox;
       var dropTransform = _DropTransform(
+        layer: this,
         from: _pendingDrop.value!.from,
         to: itemRenderBox.getTransformTo(layerRenderBox),
         child: _pendingDrop.value!.child,
@@ -926,7 +951,7 @@ class _SortableLayerState extends State<SortableLayer>
               (widget.dropDuration ?? kDefaultDuration).inMilliseconds)
           .clamp(0, 1);
       progress = (widget.dropCurve ?? Curves.easeInOut).transform(progress);
-      if (progress >= 1) {
+      if (progress >= 1 || !drop.state.mounted) {
         drop.state._hasClaimedDrop.value = false;
         toRemove.add(drop);
       } else {
