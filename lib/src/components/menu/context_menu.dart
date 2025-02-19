@@ -436,7 +436,7 @@ class _ContextMenuState extends State<ContextMenu> {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget.items, oldWidget.items)) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        _children.value = widget.items;
+        if(mounted) _children.value = widget.items;
       });
     }
   }
