@@ -491,10 +491,12 @@ class _InputOTPState extends State<InputOTP> {
   }
 
   void _changeValue(int index, int? value) {
+    _children[index].value = value;
+    var val = this.value;
     if (widget.onChanged != null) {
-      _children[index].value = value;
-      var val = this.value;
       widget.onChanged!(val);
+    }
+    if (widget.onSubmitted != null) {
       if (val.every((e) => e != null)) {
         widget.onSubmitted?.call(val);
       }
