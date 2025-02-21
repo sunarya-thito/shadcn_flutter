@@ -9,9 +9,7 @@ abstract class AvatarWidget extends Widget {
 
 class Avatar extends StatefulWidget implements AvatarWidget {
   static String getInitials(String name) {
-    // replace all non-alphabetic characters
-    name = name.replaceAll(RegExp(r'[^a-zA-Z\s]'), '');
-    final List<String> parts = name.split(' ');
+    final List<String> parts = name.split(r'\s+');
     if (parts.isEmpty) {
       // get the first 2 characters (title cased)
       String first = name.substring(0, 1).toUpperCase();
