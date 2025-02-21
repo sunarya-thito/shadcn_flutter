@@ -35,7 +35,7 @@ class _AlertDialogState extends State<AlertDialog> {
     var scaling = themeData.scaling;
     return ModalContainer(
       borderRadius: themeData.borderRadiusXxl,
-      barrierColor: widget.barrierColor ?? Colors.black.withOpacity(0.8),
+      barrierColor: widget.barrierColor ?? Colors.black.withValues(alpha: 0.8),
       surfaceClip: ModalContainer.shouldClipSurface(
           widget.surfaceOpacity ?? themeData.surfaceOpacity),
       child: OutlinedContainer(

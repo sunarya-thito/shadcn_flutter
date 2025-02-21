@@ -311,7 +311,7 @@ class _CommandItemState extends State<CommandItem> {
           decoration: BoxDecoration(
             color: _focusNode.hasFocus
                 ? themeData.colorScheme.accent
-                : themeData.colorScheme.accent.withOpacity(0),
+                : themeData.colorScheme.accent.withValues(alpha: 0),
             borderRadius: BorderRadius.circular(themeData.radiusSm),
           ),
           padding: EdgeInsets.symmetric(

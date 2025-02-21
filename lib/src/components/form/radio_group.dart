@@ -20,7 +20,7 @@ class Radio extends StatelessWidget {
         border: Border.all(
             color: focusing
                 ? theme.colorScheme.ring
-                : theme.colorScheme.ring.withOpacity(0)),
+                : theme.colorScheme.ring.withValues(alpha: 0)),
       ),
       child: AnimatedContainer(
         duration: kDefaultDuration,

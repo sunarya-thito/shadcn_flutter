@@ -303,7 +303,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     List<double> stops = [];
     if (fadeStart) {
       double start = fadeStartProgress;
-      Color startColor = Colors.white.withOpacity(1 - start);
+      Color startColor = Colors.white.withValues(alpha: 1 - start);
       colors.addAll([startColor, Colors.white]);
       stops.addAll([0.0, portionSize]);
     } else {
@@ -312,7 +312,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     }
     if (fadeEnd) {
       double end = fadeEndProgress;
-      Color endColor = Colors.white.withOpacity(1 - end);
+      Color endColor = Colors.white.withValues(alpha: 1 - end);
       colors.addAll([Colors.white, endColor]);
       stops.addAll([1.0 - portionSize, 1.0]);
     } else {

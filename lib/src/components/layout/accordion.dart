@@ -354,7 +354,7 @@ class _AccordionTriggerState extends State<AccordionTrigger> {
             border: Border.all(
               color: _focusing
                   ? theme.colorScheme.ring
-                  : theme.colorScheme.ring.withOpacity(0),
+                  : theme.colorScheme.ring.withValues(alpha: 0),
               width: 1,
             ),
             borderRadius: BorderRadius.circular(theme.radiusXs),

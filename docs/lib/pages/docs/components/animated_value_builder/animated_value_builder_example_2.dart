@@ -24,7 +24,7 @@ class _AnimatedValueBuilderExample2State
         AnimatedValueBuilder(
           key: ValueKey(rebuildCount),
           value: colors[index],
-          initialValue: colors[index].withOpacity(0),
+          initialValue: colors[index].withValues(alpha: 0),
           duration: const Duration(seconds: 1),
           lerp: Color.lerp,
           builder: (context, value, child) {

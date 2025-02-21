@@ -1152,7 +1152,7 @@ class TableRow {
       backgroundColor: WidgetStateProperty.resolveWith(
         (states) {
           return states.contains(WidgetState.hovered)
-              ? theme.colorScheme.muted.withOpacity(0.5)
+              ? theme.colorScheme.muted.withValues(alpha: 0.5)
               : null;
         },
       ),
@@ -1199,7 +1199,7 @@ class TableFooter extends TableRow {
         (states) {
           return states.contains(WidgetState.hovered)
               ? theme.colorScheme.muted
-              : theme.colorScheme.muted.withOpacity(0.5);
+              : theme.colorScheme.muted.withValues(alpha: 0.5);
         },
       ),
       textStyle: WidgetStateProperty.resolveWith(
@@ -1240,7 +1240,7 @@ class TableHeader extends TableRow {
         (states) {
           return states.contains(WidgetState.hovered)
               ? theme.colorScheme.muted
-              : theme.colorScheme.muted.withOpacity(0.5);
+              : theme.colorScheme.muted.withValues(alpha: 0.5);
         },
       ),
       textStyle: WidgetStateProperty.resolveWith(

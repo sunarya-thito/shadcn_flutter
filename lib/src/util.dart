@@ -707,31 +707,11 @@ class IconThemeDataTween extends Tween<IconThemeData> {
   IconThemeData lerp(double t) => IconThemeData.lerp(begin, end, t);
 }
 
-int _lerpColorInt(int a, int b, double t) {
-  return (a + (b - a) * t).round().clamp(0, 255);
-}
-
-/// Linearly interpolate between two colors.
-/// Also handles the case when one of the colors is transparent,
-/// where `Color.lerp` fails to handle.
-Color lerpColor(Color a, Color b, double t) {
-  if (a.alpha == 0) {
-    a = b.withAlpha(0);
-  } else if (b.alpha == 0) {
-    b = a.withAlpha(0);
-  }
-  // lerp color manually
-  return Color.fromARGB(
-    _lerpColorInt(a.alpha, b.alpha, t),
-    _lerpColorInt(a.red, b.red, t),
-    _lerpColorInt(a.green, b.green, t),
-    _lerpColorInt(a.blue, b.blue, t),
-  );
-}
-
 extension ColorExtension on Color {
   Color scaleAlpha(double factor) {
-    return withAlpha((alpha * factor).round().clamp(0, 255));
+    return withValues(
+      alpha: a * factor,
+    );
   }
 
   Color getContrastColor([double luminanceContrast = 1]) {
