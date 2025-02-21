@@ -74,6 +74,27 @@ class ValidationMode<T> extends Validator<T> {
 
 typedef FuturePredicate<T> = FutureOr<bool> Function(T? value);
 
+/// This widget prevents form components from submitting its value to the form controller
+class IgnoreForm<T> extends StatelessWidget {
+  final bool ignoring;
+  final Widget child;
+
+  const IgnoreForm({this.ignoring = true, required this.child});
+
+  @override
+  widgets.Widget build(widgets.BuildContext context) {
+    return MultiData(
+      data: ignoring
+          ? const [
+              Data<FormEntryState>.boundary(),
+              Data<FormController>.boundary(),
+            ]
+          : const [],
+      child: child,
+    );
+  }
+}
+
 class ConditionalValidator<T> extends Validator<T> {
   final FuturePredicate<T> predicate;
   final String message;
