@@ -3145,6 +3145,36 @@ class ButtonStyleOverrideData {
     this.iconTheme,
     this.margin,
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is ButtonStyleOverrideData &&
+        other.decoration == decoration &&
+        other.mouseCursor == mouseCursor &&
+        other.padding == padding &&
+        other.textStyle == textStyle &&
+        other.iconTheme == iconTheme &&
+        other.margin == margin;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      decoration,
+      mouseCursor,
+      padding,
+      textStyle,
+      iconTheme,
+      margin,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ButtonStyleOverrideData(decoration: $decoration, mouseCursor: $mouseCursor, padding: $padding, textStyle: $textStyle, iconTheme: $iconTheme, margin: $margin)';
+  }
 }
 
 class ButtonGroup extends StatelessWidget {
