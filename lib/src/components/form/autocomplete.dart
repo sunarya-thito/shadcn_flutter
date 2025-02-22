@@ -39,13 +39,11 @@ class AutoComplete extends StatefulWidget {
   final void Function(PointerDownEvent event)? onTapOutside;
   final TextStyle? style;
   final EditableTextContextMenuBuilder? contextMenuBuilder;
-  final bool useNativeContextMenu;
-  final bool? isCollapsed;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final Clip clipBehavior;
   final bool autofocus;
-  final bool filled;
+  final BoxDecoration? decoration;
 
   const AutoComplete({
     super.key,
@@ -85,13 +83,11 @@ class AutoComplete extends StatefulWidget {
     this.onTapOutside,
     this.style,
     this.contextMenuBuilder,
-    this.useNativeContextMenu = false,
-    this.isCollapsed,
     this.keyboardType,
     this.textInputAction,
     this.clipBehavior = Clip.hardEdge,
     this.autofocus = false,
-    this.filled = false,
+    this.decoration,
   });
 
   @override
@@ -289,7 +285,7 @@ class _AutoCompleteState extends State<AutoComplete> {
           leading: widget.leading,
           trailing: widget.trailing,
           enabled: widget.enabled,
-          border: widget.border,
+          decoration: widget.decoration,
           onChanged: widget.onChanged,
           readOnly: widget.readOnly,
           controller: widget.controller,
@@ -305,7 +301,6 @@ class _AutoCompleteState extends State<AutoComplete> {
           maxLengthEnforcement: widget.maxLengthEnforcement,
           maxLines: widget.maxLines,
           minLines: widget.minLines,
-          borderRadius: widget.borderRadius,
           textAlign: widget.textAlign,
           textAlignVertical: widget.textAlignVertical,
           undoController: widget.undoController,
@@ -313,15 +308,13 @@ class _AutoCompleteState extends State<AutoComplete> {
           onTapOutside: widget.onTapOutside,
           style: widget.style,
           contextMenuBuilder: widget.contextMenuBuilder,
-          useNativeContextMenu: widget.useNativeContextMenu,
           keyboardType: widget.keyboardType,
           textInputAction: widget.textInputAction,
           clipBehavior: widget.clipBehavior,
           autofocus: widget.autofocus,
-          isCollapsed: widget.isCollapsed,
           padding: widget.padding,
-          filled: widget.filled,
           expands: widget.expands,
+          border: widget.border,
         ),
       ),
     );
