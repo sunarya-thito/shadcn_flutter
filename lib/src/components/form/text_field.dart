@@ -19,10 +19,9 @@ export 'package:flutter/services.dart'
         TextInputAction,
         TextInputType;
 
-class _CupertinoTextFieldSelectionGestureDetectorBuilder
+class _TextFieldSelectionGestureDetectorBuilder
     extends TextSelectionGestureDetectorBuilder {
-  _CupertinoTextFieldSelectionGestureDetectorBuilder(
-      {required _TextFieldState state})
+  _TextFieldSelectionGestureDetectorBuilder({required _TextFieldState state})
       : _state = state,
         super(delegate: state);
 
@@ -113,7 +112,7 @@ class TextField extends StatefulWidget {
     this.onTap,
     this.scrollController,
     this.scrollPhysics,
-    this.autofillHints = const <String>[],
+    this.autofillHints = const [],
     this.contentInsertionConfiguration,
     this.clipBehavior = Clip.hardEdge,
     this.restorationId,
@@ -503,7 +502,7 @@ class _TextFieldState extends State<TextField>
 
   bool _showSelectionHandles = false;
 
-  late _CupertinoTextFieldSelectionGestureDetectorBuilder
+  late _TextFieldSelectionGestureDetectorBuilder
       _selectionGestureDetectorBuilder;
 
   // API for TextSelectionGestureDetectorBuilderDelegate.
@@ -522,7 +521,7 @@ class _TextFieldState extends State<TextField>
   void initState() {
     super.initState();
     _selectionGestureDetectorBuilder =
-        _CupertinoTextFieldSelectionGestureDetectorBuilder(
+        _TextFieldSelectionGestureDetectorBuilder(
       state: this,
     );
     if (widget.controller == null) {
@@ -533,6 +532,7 @@ class _TextFieldState extends State<TextField>
     _effectiveFocusNode.canRequestFocus = widget.enabled;
     _effectiveFocusNode.addListener(_handleFocusChanged);
     _statesController = widget.statesController ?? WidgetStatesController();
+    formValue = widget.controller?.text ?? widget.initialValue ?? '';
   }
 
   @override
