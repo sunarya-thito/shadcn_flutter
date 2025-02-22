@@ -1086,8 +1086,8 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                             color: HSVColor.fromAHSV(
                               color.opacity,
                               color.hsvHue,
-                              1,
-                              1,
+                              color.hsvSat,
+                              color.hsvVal,
                             ),
                             radius: Radius.circular(theme.radiusLg),
                             onColorChanged: (value) {
@@ -1385,8 +1385,8 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
                       color: HSVColor.fromAHSV(
                         color.opacity,
                         color.hsvHue,
-                        1,
-                        1,
+                        color.hsvSat,
+                        color.hsvVal,
                       ),
                       radius: Radius.circular(theme.radiusLg),
                       onColorChanged: (value) {
@@ -1438,8 +1438,8 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
                         color: HSVColor.fromAHSV(
                           color.opacity,
                           color.hsvHue,
-                          1,
-                          1,
+                          color.hsvSat,
+                          color.hsvVal,
                         ),
                         onColorChanged: (value) {
                           widget.onColorChanged
