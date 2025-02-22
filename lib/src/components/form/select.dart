@@ -729,7 +729,7 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
                                           );
                                         },
                                         child: Container(
-                                          color: theme.colorScheme.background,
+                                          color: theme.colorScheme.card,
                                           padding: const EdgeInsets.symmetric(
                                                   vertical: 4) *
                                               scaling,
@@ -775,7 +775,7 @@ class SelectPopupState<T> extends State<SelectPopup<T>> {
                                           );
                                         },
                                         child: Container(
-                                          color: theme.colorScheme.background,
+                                          color: theme.colorScheme.card,
                                           padding: const EdgeInsets.symmetric(
                                                   vertical: 4) *
                                               scaling,
