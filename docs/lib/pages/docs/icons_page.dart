@@ -47,16 +47,18 @@ class _IconsPageState extends State<IconsPage> {
           title:
               Text(capitalizeWords(_separateByCamelCase(entry.key)).join(' ')),
           leading: Icon(entry.value, size: 48),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text('Use this code to display this icon:'),
-              const Gap(8),
-              CodeSnippet(
-                code: 'Icon($className.${entry.key})',
-                mode: 'dart',
-              ),
-            ],
+          content: IntrinsicWidth(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text('Use this code to display this icon:'),
+                const Gap(8),
+                CodeSnippet(
+                  code: 'Icon($className.${entry.key})',
+                  mode: 'dart',
+                ),
+              ],
+            ),
           ),
           actions: [
             PrimaryButton(
