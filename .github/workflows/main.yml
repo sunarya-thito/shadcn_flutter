@@ -21,19 +21,43 @@ jobs:
         run: flutter config --enable-web
         working-directory: './docs'
 
-      - name: Download Dependencies
+      - name: Install Release Version
+        run: flutter pub add shadcn_flutter
+        working-directory: './docs'
+
+      - name: Download Dependencies Release Version
         run: flutter pub get
         working-directory: './docs'
 
-      - name: Build
+      - name: Build Release Version
         run: "flutter build web --wasm --base-href \"/shadcn_flutter/\""
         working-directory: './docs'
+
+      - name: Copy to web build directory
+        run: cp -r ./docs/build/web ./docs/public
+        working-directory: './'
+
+      - name: Install Experimental Version
+        run: "flutter pub add '{shadcn_flutter: {\"git\": \"https://github.com/sunarya-thito/shadcn_flutter.git\"}}'"
+        working-directory: './docs'
+
+      - name: Download Dependencies Experimental Version
+        run: flutter pub get
+        working-directory: './docs'
+
+      - name: Build Experimental Version
+        run: "flutter build web --wasm --base-href \"/shadcn_flutter/experimental\""
+        working-directory: './docs'
+
+      - name: Copy to web build directory
+        run: cp -r ./docs/build/web ./docs/public/experimental
+        working-directory: './'
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: './docs/build/web'
+          publish_dir: './docs/public'
           force_orphan: true
           user_name: 'github-ci[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
