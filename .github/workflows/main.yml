@@ -46,7 +46,7 @@ jobs:
         working-directory: './docs'
 
       - name: Build Experimental Version
-        run: "flutter build web --wasm --base-href \"/shadcn_flutter/experimental\""
+        run: "flutter build web --wasm --base-href \"/shadcn_flutter/experimental/\""
         working-directory: './docs'
 
       - name: Copy to web build directory
