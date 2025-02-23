@@ -38,7 +38,7 @@ jobs:
         working-directory: './'
 
       - name: Install Experimental Version
-        run: "flutter pub add '{shadcn_flutter: {\"git\": \"https://github.com/sunarya-thito/shadcn_flutter.git\"}}'"
+        run: "flutter pub add 'shadcn_flutter:{\"git\":\"https://github.com/sunarya-thito/shadcn_flutter.git\"}'"
         working-directory: './docs'
 
       - name: Download Dependencies Experimental Version
