@@ -872,3 +872,84 @@ class TimeOfDay {
     return 'TimeOfDay{hour: $hour, minute: $minute, second: $second}';
   }
 }
+
+(bool enabled, Object? invokeResult) invokeActionOnFocusedWidget(
+    Intent intent) {
+  final context = primaryFocus?.context;
+  if (context != null) {
+    Action<Intent>? action = Actions.maybeFind<Intent>(context, intent: intent);
+    if (action != null) {
+      final (bool enabled, Object? invokeResult) =
+          Actions.of(context).invokeActionIfEnabled(action, intent);
+      return (enabled, invokeResult);
+    }
+  }
+  return (false, null);
+}
+
+extension TextEditingControllerExtension on TextEditingController {
+  String? get currentWord {
+    final value = this.value;
+    final text = value.text;
+    final selection = value.selection;
+    if (text.isEmpty) {
+      return null;
+    }
+    if (selection.isCollapsed) {
+      return getWordAtCaret(text, selection.baseOffset).$2;
+    }
+    return null;
+  }
+}
+
+typedef WordInfo = (int start, String word);
+typedef ReplacementInfo = (int start, String newText);
+
+WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
+  if (caret < 0 || caret > text.length) {
+    throw RangeError('Caret position is out of bounds.');
+  }
+
+  // Find the start of the word
+  int start = caret;
+  while (start > 0 && !separator.contains(text[start - 1])) {
+    start--;
+  }
+
+  // Find the end of the word
+  int end = caret;
+  while (end < text.length && !separator.contains(text[end])) {
+    end++;
+  }
+
+  // Return the start index and the word at the caret position
+  String word = text.substring(start, end);
+  return (start, word);
+}
+
+ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
+    [String separator = ' ']) {
+  if (caret < 0 || caret > text.length) {
+    throw RangeError('Caret position is out of bounds.');
+  }
+
+  // Get the start and end of the word
+  int start = caret;
+  while (start > 0 && !separator.contains(text[start - 1])) {
+    start--;
+  }
+
+  int end = caret;
+  while (end < text.length && !separator.contains(text[end])) {
+    end++;
+  }
+
+  // Replace the word with the replacement
+  String newText = text.replaceRange(start, end, replacement);
+  return (start, newText);
+}
+
+void clearActiveTextInput() {
+  TextFieldClearIntent intent = const TextFieldClearIntent();
+  invokeActionOnFocusedWidget(intent);
+}
