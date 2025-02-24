@@ -24,6 +24,7 @@ jobs:
       - name: Install Release Version
         run: flutter pub add shadcn_flutter
         working-directory: './docs'
+        continue-on-error: true
 
       - name: Download Dependencies Release Version
         run: flutter pub get
@@ -31,38 +32,46 @@ jobs:
 
       - name: Build Release Version
         run: "flutter build web --wasm --base-href \"/shadcn_flutter/\""
+        continue-on-error: true
         working-directory: './docs'
 
       - name: Copy to web build directory
         run: cp -r ./docs/build/web ./docs/public
+        continue-on-error: true
         working-directory: './'
 
       - name: Install Experimental Version
         run: "flutter pub add 'shadcn_flutter:{\"git\":\"https://github.com/sunarya-thito/shadcn_flutter.git\"}'"
+        continue-on-error: true
         working-directory: './docs'
 
       - name: Download Dependencies Experimental Version
         run: flutter pub get
         working-directory: './docs'
+        continue-on-error: true
 
       - name: Build Experimental Version
         run: "flutter build web --wasm --base-href \"/shadcn_flutter/experimental/\""
         working-directory: './docs'
+        continue-on-error: true
 
       - name: Copy to web build directory
         run: cp -r ./docs/build/web ./docs/public/experimental
         working-directory: './'
+        continue-on-error: true
 
       - name: Copy release version config file # from ./docs/config/docs-release.json to ./docs/public/assets/docs.json
         run: cp ./docs/config/docs-release.json ./docs/public/assets/docs.json
         working-directory: './'
+        continue-on-error: true
 
       - name: Copy experimental version config file # from ./docs/config/docs-experimental.json to ./docs/public/experimental/assets/docs.json
         run: cp ./docs/config/docs-experimental.json ./docs/public/experimental/assets/docs.json
         working-directory: './'
+        continue-on-error: true
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: './docs/public'
@@ -70,3 +79,4 @@ jobs:
           user_name: 'github-ci[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: 'Publish to gh-pages'
+          keep_files: true
