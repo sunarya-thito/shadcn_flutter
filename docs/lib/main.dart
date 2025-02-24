@@ -123,11 +123,11 @@ void main() async {
   _docs = jsonDecode(await rootBundle.loadString('docs.json'));
   print('Running app with flavor: $flavor');
   Uri checkVersionUri =
-      Uri.parse('https://pub.dev/packages/shadcn_flutter.json');
+      Uri.parse('https://pub.dev/api/packages/shadcn_flutter');
   var response = await get(checkVersionUri);
   if (response.statusCode == 200) {
     var packageInfo = jsonDecode(response.body) as Map<String, dynamic>;
-    _packageLatestVersion = packageInfo['versions'][0];
+    _packageLatestVersion = packageInfo['latest']['version'];
   }
   GoRouter.optionURLReflectsImperativeAPIs = true;
   final prefs = await SharedPreferences.getInstance();
