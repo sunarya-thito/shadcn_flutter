@@ -64,6 +64,8 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   uses-material-design: true
+  assets:
+    - docs.json
   fonts:
     - family: RadixIcons
       fonts:

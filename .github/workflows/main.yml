@@ -53,6 +53,14 @@ jobs:
         run: cp -r ./docs/build/web ./docs/public/experimental
         working-directory: './'
 
+      - name: Copy release version config file # from ./docs/config/docs-release.json to ./docs/public/assets/docs.json
+        run: cp ./docs/config/docs-release.json ./docs/public/assets/docs.json
+        working-directory: './'
+
+      - name: Copy experimental version config file # from ./docs/config/docs-experimental.json to ./docs/public/experimental/assets/docs.json
+        run: cp ./docs/config/docs-experimental.json ./docs/public/experimental/assets/docs.json
+        working-directory: './'
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
