@@ -123,7 +123,6 @@ void main() async {
   _docs = jsonDecode(await rootBundle.loadString('docs.json'));
   String pubspecYml = await rootBundle.loadString('pubspec.lock');
   var dep = loadYaml(pubspecYml)['packages']['shadcn_flutter']['version'];
-  print(dep);
   if (dep is String) {
     _packageLatestVersion = dep;
   }
