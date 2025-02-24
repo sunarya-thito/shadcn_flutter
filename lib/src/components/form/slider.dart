@@ -5,6 +5,72 @@ import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
 
+class SliderController extends ValueNotifier<SliderValue>
+    with ComponentController<SliderValue> {
+  SliderController(super.value);
+}
+
+class ControlledSlider extends StatelessWidget
+    with ControlledComponent<SliderValue> {
+  @override
+  final SliderValue initialValue;
+  @override
+  final ValueChanged<SliderValue>? onChanged;
+  @override
+  final SliderController? controller;
+  @override
+  final bool enabled;
+
+  final ValueChanged<SliderValue>? onChangeStart;
+  final ValueChanged<SliderValue>? onChangeEnd;
+  final double min;
+  final double max;
+  final int? divisions;
+  final SliderValue? hintValue;
+  final double? increaseStep;
+  final double? decreaseStep;
+
+  const ControlledSlider({
+    super.key,
+    this.controller,
+    this.initialValue = const SliderValue.single(0),
+    this.onChanged,
+    this.onChangeStart,
+    this.onChangeEnd,
+    this.min = 0,
+    this.max = 1,
+    this.divisions,
+    this.hintValue,
+    this.increaseStep,
+    this.decreaseStep,
+    this.enabled = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder(
+      controller: controller,
+      initialValue: initialValue,
+      onChanged: onChanged,
+      builder: (context, data) {
+        return Slider(
+          value: data.value,
+          onChanged: data.onChanged,
+          onChangeStart: onChangeStart,
+          onChangeEnd: onChangeEnd,
+          min: min,
+          max: max,
+          divisions: divisions,
+          hintValue: hintValue,
+          increaseStep: increaseStep,
+          decreaseStep: decreaseStep,
+          enabled: data.enabled,
+        );
+      },
+    );
+  }
+}
+
 class SliderValue {
   static SliderValue? lerp(SliderValue? a, SliderValue? b, double t) {
     if (a == null || b == null) return null;
@@ -72,6 +138,7 @@ class Slider extends StatefulWidget {
   final SliderValue? hintValue;
   final double? increaseStep;
   final double? decreaseStep;
+  final bool? enabled;
 
   const Slider({
     super.key,
@@ -85,6 +152,7 @@ class Slider extends StatefulWidget {
     this.hintValue,
     this.increaseStep,
     this.decreaseStep,
+    this.enabled = true,
   }) : assert(min <= max);
 
   @override
@@ -101,6 +169,8 @@ class _SliderState extends State<Slider>
 
   bool _focusing = false;
   bool _focusingEnd = false;
+
+  bool get enabled => widget.enabled ?? widget.onChanged != null;
 
   @override
   void initState() {
@@ -119,6 +189,7 @@ class _SliderState extends State<Slider>
   }
 
   void _dispatchValueChangeStart(SliderValue value) {
+    if (!enabled) return;
     if (widget.divisions != null) {
       value = value.roundToDivisions(widget.divisions!);
     }
@@ -126,6 +197,7 @@ class _SliderState extends State<Slider>
   }
 
   void _dispatchValueChange(SliderValue value) {
+    if (!enabled) return;
     if (widget.divisions != null) {
       value = value.roundToDivisions(widget.divisions!);
     }
@@ -135,6 +207,7 @@ class _SliderState extends State<Slider>
   }
 
   void _dispatchValueChangeEnd(SliderValue value) {
+    if (!enabled) return;
     if (widget.divisions != null) {
       value = value.roundToDivisions(widget.divisions!);
     }
@@ -184,232 +257,253 @@ class _SliderState extends State<Slider>
         child: LayoutBuilder(
           builder: (context, constraints) {
             return GestureDetector(
-              onTapDown: widget.value.isRanged
-                  ? (details) {
-                      // _moveStart to true if the tap is closer to the start thumb
-                      double offset = details.localPosition.dx;
-                      double newValue = offset / constraints.maxWidth;
-                      double start = _currentValue.start;
-                      double end = _currentValue.end;
-                      if (widget.divisions != null) {
-                        start = (start * widget.divisions!).round() /
-                            widget.divisions!;
-                        end = (end * widget.divisions!).round() /
-                            widget.divisions!;
-                      }
-                      _moveStart =
-                          (start - newValue).abs() < (end - newValue).abs();
-                      // find the closest thumb and move it to the tap position
-                      if (_moveStart) {
-                        if (widget.divisions != null) {
-                          double deltaValue = newValue - start;
-                          if (deltaValue >= 0 &&
-                              deltaValue < 0.5 / widget.divisions!) {
-                            newValue += 0.5 / widget.divisions!;
-                          } else if (deltaValue < 0 &&
-                              deltaValue > -0.5 / widget.divisions!) {
-                            newValue -= 0.5 / widget.divisions!;
-                          }
-                        }
-                        SliderValue newSliderValue =
-                            SliderValue.ranged(newValue, widget.value.end);
-                        _dispatchValueChangeStart(newSliderValue);
-                        _dispatchValueChange(newSliderValue);
-                        _dispatchValueChangeEnd(newSliderValue);
-                        setState(() {
-                          _currentValue = SliderValue.ranged(newValue, end);
-                        });
-                      } else {
-                        if (widget.divisions != null) {
-                          double deltaValue = newValue - end;
-                          if (deltaValue >= 0 &&
-                              deltaValue < 0.5 / widget.divisions!) {
-                            newValue += 0.5 / widget.divisions!;
-                          } else if (deltaValue < 0 &&
-                              deltaValue > -0.5 / widget.divisions!) {
-                            newValue -= 0.5 / widget.divisions!;
-                          }
-                        }
-                        SliderValue newSliderValue =
-                            SliderValue.ranged(widget.value.start, newValue);
-                        _dispatchValueChangeStart(newSliderValue);
-                        _dispatchValueChange(newSliderValue);
-                        _dispatchValueChangeEnd(newSliderValue);
-                        setState(() {
-                          _currentValue = SliderValue.ranged(start, newValue);
-                        });
-                      }
-                    }
-                  : (details) {
-                      double offset = details.localPosition.dx;
-                      double newValue = offset / constraints.maxWidth;
-                      newValue = newValue.clamp(0, 1);
-                      if (widget.divisions != null) {
-                        double deltaValue = newValue - _currentValue.value;
-                        if (deltaValue >= 0 &&
-                            deltaValue < 0.5 / widget.divisions!) {
-                          newValue += 0.5 / widget.divisions!;
-                        } else if (deltaValue < 0 &&
-                            deltaValue > -0.5 / widget.divisions!) {
-                          newValue -= 0.5 / widget.divisions!;
-                        }
-                        newValue = (newValue * widget.divisions!).round() /
-                            widget.divisions!;
-                      }
-                      SliderValue newSliderValue = SliderValue.single(
-                          newValue * (widget.max - widget.min) + widget.min);
-                      _dispatchValueChangeStart(newSliderValue);
-                      _dispatchValueChange(newSliderValue);
-                      _dispatchValueChangeEnd(newSliderValue);
-                      setState(() {
-                        _currentValue = SliderValue.single(newValue);
-                      });
-                    },
-              onHorizontalDragStart: (details) {
-                _dragging = true;
-                if (_currentValue.isRanged) {
-                  // change _moveStart to true if the tap is closer to the start thumb
-                  double offset = details.localPosition.dx;
-                  double newValue = offset / constraints.maxWidth;
-                  double start = _currentValue.start;
-                  double end = _currentValue.end;
-                  if (widget.divisions != null) {
-                    start =
-                        (start * widget.divisions!).round() / widget.divisions!;
-                    end = (end * widget.divisions!).round() / widget.divisions!;
-                  }
-                  _moveStart =
-                      (start - newValue).abs() < (end - newValue).abs();
-                  var startValue =
-                      start * (widget.max - widget.min) + widget.min;
-                  var endValue = end * (widget.max - widget.min) + widget.min;
-                  var newStartValue = min(startValue, endValue);
-                  var newEndValue = max(startValue, endValue);
-                  SliderValue newSliderValue =
-                      SliderValue.ranged(newStartValue, newEndValue);
-                  _dispatchValueChangeStart(newSliderValue);
-                } else {
-                  double value = _currentValue.value;
-                  if (widget.divisions != null) {
-                    value =
-                        (value * widget.divisions!).round() / widget.divisions!;
-                  }
-                  SliderValue newSliderValue = SliderValue.single(
-                      value * (widget.max - widget.min) + widget.min);
-                  _dispatchValueChangeStart(newSliderValue);
-                }
-              },
-              onHorizontalDragUpdate: widget.value.isRanged
-                  ? (details) {
-                      // drag the closest thumb to the drag position
-                      // but use delta to calculate the new value
-                      double delta =
-                          details.primaryDelta! / constraints.maxWidth;
-                      if (_moveStart) {
-                        var newStart = _currentValue.start + delta;
-                        var newEnd = _currentValue.end;
-                        newStart = newStart.clamp(0, 1);
-                        newEnd = newEnd.clamp(0, 1);
-                        var newInternalSliderValue =
-                            SliderValue.ranged(newStart, newEnd);
-                        if (newInternalSliderValue == _currentValue) {
-                          return;
-                        }
-                        var sliderStart = newStart;
-                        var sliderEnd = newEnd;
-                        if (widget.divisions != null) {
-                          sliderStart =
-                              (sliderStart * widget.divisions!).round() /
-                                  widget.divisions!;
-                          sliderEnd = (sliderEnd * widget.divisions!).round() /
-                              widget.divisions!;
-                        }
-                        var startSliderValue =
-                            sliderStart * (widget.max - widget.min) +
-                                widget.min;
-                        var endSliderValue =
-                            sliderEnd * (widget.max - widget.min) + widget.min;
-                        var newSliderValue = SliderValue.ranged(
-                            min(startSliderValue, endSliderValue),
-                            max(startSliderValue, endSliderValue));
-                        _dispatchValueChange(newSliderValue);
-                        setState(() {
-                          _currentValue = SliderValue.ranged(newStart, newEnd);
-                        });
-                      } else {
-                        var newStart = _currentValue.start;
-                        var newEnd = _currentValue.end + delta;
-                        newStart = newStart.clamp(0, 1);
-                        newEnd = newEnd.clamp(0, 1);
-                        var newInternalSliderValue =
-                            SliderValue.ranged(newStart, newEnd);
-                        if (newInternalSliderValue == _currentValue) {
-                          return;
-                        }
-                        var sliderStart = newStart;
-                        var sliderEnd = newEnd;
-                        if (widget.divisions != null) {
-                          sliderStart =
-                              (sliderStart * widget.divisions!).round() /
-                                  widget.divisions!;
-                          sliderEnd = (sliderEnd * widget.divisions!).round() /
-                              widget.divisions!;
-                        }
-                        var startSliderValue =
-                            sliderStart * (widget.max - widget.min) +
-                                widget.min;
-                        var endSliderValue =
-                            sliderEnd * (widget.max - widget.min) + widget.min;
-                        var newSliderValue = SliderValue.ranged(
-                            min(startSliderValue, endSliderValue),
-                            max(startSliderValue, endSliderValue));
-                        _dispatchValueChange(newSliderValue);
-                        setState(() {
-                          _currentValue = SliderValue.ranged(newStart, newEnd);
-                        });
-                      }
-                    }
-                  : (details) {
-                      double delta =
-                          details.primaryDelta! / constraints.maxWidth;
-                      double newValue = _currentValue.value + delta;
-                      newValue = newValue.clamp(0, 1);
-                      var sliderValue = newValue;
-                      if (widget.divisions != null) {
-                        sliderValue =
-                            (sliderValue * widget.divisions!).round() /
+              onTapDown: !enabled
+                  ? null
+                  : widget.value.isRanged
+                      ? (details) {
+                          // _moveStart to true if the tap is closer to the start thumb
+                          double offset = details.localPosition.dx;
+                          double newValue = offset / constraints.maxWidth;
+                          double start = _currentValue.start;
+                          double end = _currentValue.end;
+                          if (widget.divisions != null) {
+                            start = (start * widget.divisions!).round() /
                                 widget.divisions!;
+                            end = (end * widget.divisions!).round() /
+                                widget.divisions!;
+                          }
+                          _moveStart =
+                              (start - newValue).abs() < (end - newValue).abs();
+                          // find the closest thumb and move it to the tap position
+                          if (_moveStart) {
+                            if (widget.divisions != null) {
+                              double deltaValue = newValue - start;
+                              if (deltaValue >= 0 &&
+                                  deltaValue < 0.5 / widget.divisions!) {
+                                newValue += 0.5 / widget.divisions!;
+                              } else if (deltaValue < 0 &&
+                                  deltaValue > -0.5 / widget.divisions!) {
+                                newValue -= 0.5 / widget.divisions!;
+                              }
+                            }
+                            SliderValue newSliderValue =
+                                SliderValue.ranged(newValue, widget.value.end);
+                            _dispatchValueChangeStart(newSliderValue);
+                            _dispatchValueChange(newSliderValue);
+                            _dispatchValueChangeEnd(newSliderValue);
+                            setState(() {
+                              _currentValue = SliderValue.ranged(newValue, end);
+                            });
+                          } else {
+                            if (widget.divisions != null) {
+                              double deltaValue = newValue - end;
+                              if (deltaValue >= 0 &&
+                                  deltaValue < 0.5 / widget.divisions!) {
+                                newValue += 0.5 / widget.divisions!;
+                              } else if (deltaValue < 0 &&
+                                  deltaValue > -0.5 / widget.divisions!) {
+                                newValue -= 0.5 / widget.divisions!;
+                              }
+                            }
+                            SliderValue newSliderValue = SliderValue.ranged(
+                                widget.value.start, newValue);
+                            _dispatchValueChangeStart(newSliderValue);
+                            _dispatchValueChange(newSliderValue);
+                            _dispatchValueChangeEnd(newSliderValue);
+                            setState(() {
+                              _currentValue =
+                                  SliderValue.ranged(start, newValue);
+                            });
+                          }
+                        }
+                      : (details) {
+                          double offset = details.localPosition.dx;
+                          double newValue = offset / constraints.maxWidth;
+                          newValue = newValue.clamp(0, 1);
+                          if (widget.divisions != null) {
+                            double deltaValue = newValue - _currentValue.value;
+                            if (deltaValue >= 0 &&
+                                deltaValue < 0.5 / widget.divisions!) {
+                              newValue += 0.5 / widget.divisions!;
+                            } else if (deltaValue < 0 &&
+                                deltaValue > -0.5 / widget.divisions!) {
+                              newValue -= 0.5 / widget.divisions!;
+                            }
+                            newValue = (newValue * widget.divisions!).round() /
+                                widget.divisions!;
+                          }
+                          SliderValue newSliderValue = SliderValue.single(
+                              newValue * (widget.max - widget.min) +
+                                  widget.min);
+                          _dispatchValueChangeStart(newSliderValue);
+                          _dispatchValueChange(newSliderValue);
+                          _dispatchValueChangeEnd(newSliderValue);
+                          setState(() {
+                            _currentValue = SliderValue.single(newValue);
+                          });
+                        },
+              onHorizontalDragStart: !enabled
+                  ? null
+                  : (details) {
+                      _dragging = true;
+                      if (_currentValue.isRanged) {
+                        // change _moveStart to true if the tap is closer to the start thumb
+                        double offset = details.localPosition.dx;
+                        double newValue = offset / constraints.maxWidth;
+                        double start = _currentValue.start;
+                        double end = _currentValue.end;
+                        if (widget.divisions != null) {
+                          start = (start * widget.divisions!).round() /
+                              widget.divisions!;
+                          end = (end * widget.divisions!).round() /
+                              widget.divisions!;
+                        }
+                        _moveStart =
+                            (start - newValue).abs() < (end - newValue).abs();
+                        var startValue =
+                            start * (widget.max - widget.min) + widget.min;
+                        var endValue =
+                            end * (widget.max - widget.min) + widget.min;
+                        var newStartValue = min(startValue, endValue);
+                        var newEndValue = max(startValue, endValue);
+                        SliderValue newSliderValue =
+                            SliderValue.ranged(newStartValue, newEndValue);
+                        _dispatchValueChangeStart(newSliderValue);
+                      } else {
+                        double value = _currentValue.value;
+                        if (widget.divisions != null) {
+                          value = (value * widget.divisions!).round() /
+                              widget.divisions!;
+                        }
+                        SliderValue newSliderValue = SliderValue.single(
+                            value * (widget.max - widget.min) + widget.min);
+                        _dispatchValueChangeStart(newSliderValue);
                       }
-                      var newSliderValue = SliderValue.single(
-                          sliderValue * (widget.max - widget.min) + widget.min);
-                      _dispatchValueChange(newSliderValue);
-                      setState(() {
-                        _currentValue = SliderValue.single(newValue);
-                      });
                     },
-              onHorizontalDragEnd: (details) {
-                _dragging = false;
-                if (_currentValue.isRanged) {
-                  var start = _currentValue.start;
-                  var end = _currentValue.end;
-                  var newStart = min(start, end);
-                  var newEnd = max(start, end);
-                  _dispatchValueChangeEnd(SliderValue.ranged(
-                      (newStart * (widget.max - widget.min) + widget.min),
-                      (newEnd * (widget.max - widget.min) + widget.min)));
-                } else {
-                  _dispatchValueChangeEnd(SliderValue.single(
-                      (_currentValue.value * (widget.max - widget.min) +
-                          widget.min)));
-                }
-                setState(() {});
-              },
+              onHorizontalDragUpdate: !enabled
+                  ? null
+                  : widget.value.isRanged
+                      ? (details) {
+                          // drag the closest thumb to the drag position
+                          // but use delta to calculate the new value
+                          double delta =
+                              details.primaryDelta! / constraints.maxWidth;
+                          if (_moveStart) {
+                            var newStart = _currentValue.start + delta;
+                            var newEnd = _currentValue.end;
+                            newStart = newStart.clamp(0, 1);
+                            newEnd = newEnd.clamp(0, 1);
+                            var newInternalSliderValue =
+                                SliderValue.ranged(newStart, newEnd);
+                            if (newInternalSliderValue == _currentValue) {
+                              return;
+                            }
+                            var sliderStart = newStart;
+                            var sliderEnd = newEnd;
+                            if (widget.divisions != null) {
+                              sliderStart =
+                                  (sliderStart * widget.divisions!).round() /
+                                      widget.divisions!;
+                              sliderEnd =
+                                  (sliderEnd * widget.divisions!).round() /
+                                      widget.divisions!;
+                            }
+                            var startSliderValue =
+                                sliderStart * (widget.max - widget.min) +
+                                    widget.min;
+                            var endSliderValue =
+                                sliderEnd * (widget.max - widget.min) +
+                                    widget.min;
+                            var newSliderValue = SliderValue.ranged(
+                                min(startSliderValue, endSliderValue),
+                                max(startSliderValue, endSliderValue));
+                            _dispatchValueChange(newSliderValue);
+                            setState(() {
+                              _currentValue =
+                                  SliderValue.ranged(newStart, newEnd);
+                            });
+                          } else {
+                            var newStart = _currentValue.start;
+                            var newEnd = _currentValue.end + delta;
+                            newStart = newStart.clamp(0, 1);
+                            newEnd = newEnd.clamp(0, 1);
+                            var newInternalSliderValue =
+                                SliderValue.ranged(newStart, newEnd);
+                            if (newInternalSliderValue == _currentValue) {
+                              return;
+                            }
+                            var sliderStart = newStart;
+                            var sliderEnd = newEnd;
+                            if (widget.divisions != null) {
+                              sliderStart =
+                                  (sliderStart * widget.divisions!).round() /
+                                      widget.divisions!;
+                              sliderEnd =
+                                  (sliderEnd * widget.divisions!).round() /
+                                      widget.divisions!;
+                            }
+                            var startSliderValue =
+                                sliderStart * (widget.max - widget.min) +
+                                    widget.min;
+                            var endSliderValue =
+                                sliderEnd * (widget.max - widget.min) +
+                                    widget.min;
+                            var newSliderValue = SliderValue.ranged(
+                                min(startSliderValue, endSliderValue),
+                                max(startSliderValue, endSliderValue));
+                            _dispatchValueChange(newSliderValue);
+                            setState(() {
+                              _currentValue =
+                                  SliderValue.ranged(newStart, newEnd);
+                            });
+                          }
+                        }
+                      : (details) {
+                          double delta =
+                              details.primaryDelta! / constraints.maxWidth;
+                          double newValue = _currentValue.value + delta;
+                          newValue = newValue.clamp(0, 1);
+                          var sliderValue = newValue;
+                          if (widget.divisions != null) {
+                            sliderValue =
+                                (sliderValue * widget.divisions!).round() /
+                                    widget.divisions!;
+                          }
+                          var newSliderValue = SliderValue.single(
+                              sliderValue * (widget.max - widget.min) +
+                                  widget.min);
+                          _dispatchValueChange(newSliderValue);
+                          setState(() {
+                            _currentValue = SliderValue.single(newValue);
+                          });
+                        },
+              onHorizontalDragEnd: !enabled
+                  ? null
+                  : (details) {
+                      _dragging = false;
+                      if (_currentValue.isRanged) {
+                        var start = _currentValue.start;
+                        var end = _currentValue.end;
+                        var newStart = min(start, end);
+                        var newEnd = max(start, end);
+                        _dispatchValueChangeEnd(SliderValue.ranged(
+                            (newStart * (widget.max - widget.min) + widget.min),
+                            (newEnd * (widget.max - widget.min) + widget.min)));
+                      } else {
+                        _dispatchValueChangeEnd(SliderValue.single(
+                            (_currentValue.value * (widget.max - widget.min) +
+                                widget.min)));
+                      }
+                      setState(() {});
+                    },
               child: MouseRegion(
-                  cursor: (widget.onChanged != null ||
-                          widget.onChangeStart != null ||
-                          widget.onChangeEnd != null)
-                      ? SystemMouseCursors.click
-                      : SystemMouseCursors.basic,
+                  cursor: !enabled
+                      ? SystemMouseCursors.forbidden
+                      : (widget.onChanged != null ||
+                              widget.onChangeStart != null ||
+                              widget.onChangeEnd != null)
+                          ? SystemMouseCursors.click
+                          : SystemMouseCursors.basic,
                   child: widget.value.isRanged
                       ? buildRangedSlider(context, constraints, theme)
                       : buildSingleSlider(context, constraints, theme)),
@@ -572,7 +666,9 @@ class _SliderState extends State<Slider>
               child: Container(
                 height: 6 * scaling,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
+                  color: enabled
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.mutedForeground,
                   borderRadius: BorderRadius.circular(theme.radiusSm),
                 ),
               ),
@@ -594,7 +690,9 @@ class _SliderState extends State<Slider>
         child: Container(
           height: 6 * scaling,
           decoration: BoxDecoration(
-            color: theme.colorScheme.primary.scaleAlpha(0.2),
+            color: enabled
+                ? theme.colorScheme.primary.scaleAlpha(0.2)
+                : theme.colorScheme.muted,
             borderRadius: BorderRadius.circular(theme.radiusSm),
           ),
         ),
@@ -627,6 +725,7 @@ class _SliderState extends State<Slider>
           return Positioned(
             left: value! * constraints.maxWidth - 8 * scaling,
             child: FocusableActionDetector(
+              enabled: enabled,
               onShowFocusHighlight: (showHighlight) {
                 onFocusing(showHighlight);
               },
@@ -662,12 +761,16 @@ class _SliderState extends State<Slider>
                   shape: BoxShape.circle,
                   border: focusing
                       ? Border.all(
-                          color: theme.colorScheme.primary,
+                          color: enabled
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.mutedForeground,
                           width: 2 * scaling,
                           strokeAlign: BorderSide.strokeAlignOutside,
                         )
                       : Border.all(
-                          color: theme.colorScheme.primary.scaleAlpha(0.5),
+                          color: enabled
+                              ? theme.colorScheme.primary.scaleAlpha(0.5)
+                              : theme.colorScheme.mutedForeground,
                           width: 1 * scaling,
                         ),
                 ),

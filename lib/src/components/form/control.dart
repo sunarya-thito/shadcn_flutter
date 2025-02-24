@@ -1,0 +1,100 @@
+import '../../../shadcn_flutter.dart';
+
+mixin ComponentController<T> implements ValueNotifier<T> {}
+
+mixin ControlledComponent<T> on Widget {
+  ComponentController<T>? get controller;
+  T? get initialValue;
+  ValueChanged<T>? get onChanged;
+  bool get enabled;
+}
+
+class ControlledComponentData<T> {
+  final T value;
+  final ValueChanged<T> onChanged;
+  final bool enabled;
+
+  const ControlledComponentData({
+    required this.value,
+    required this.onChanged,
+    required this.enabled,
+  });
+}
+
+class ControlledComponentBuilder<T> extends StatefulWidget
+    with ControlledComponent<T> {
+  @override
+  final T? initialValue;
+  @override
+  final ValueChanged<T>? onChanged;
+  @override
+  final bool enabled;
+  @override
+  final ComponentController<T>? controller;
+  final Widget Function(BuildContext context, ControlledComponentData<T> data)
+      builder;
+
+  const ControlledComponentBuilder({
+    Key? key,
+    required this.builder,
+    this.initialValue,
+    this.onChanged,
+    this.controller,
+    this.enabled = true,
+  }) : super(key: key);
+
+  @override
+  _ControlledComponentBuilderState<T> createState() =>
+      _ControlledComponentBuilderState<T>();
+}
+
+class _ControlledComponentBuilderState<T>
+    extends State<ControlledComponentBuilder<T>> {
+  late T _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.controller?.value ?? widget.initialValue as T;
+    widget.controller?.addListener(_onControllerChanged);
+  }
+
+  void _onControllerChanged() {
+    setState(() {
+      _value = widget.controller!.value;
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant ControlledComponentBuilder<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller?.removeListener(_onControllerChanged);
+      widget.controller?.addListener(_onControllerChanged);
+    }
+  }
+
+  void _onChanged(T value) {
+    widget.onChanged?.call(value);
+    final controller = widget.controller;
+    if (controller != null) {
+      controller.value = value;
+    } else {
+      setState(() {
+        _value = value;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.builder(
+      context,
+      ControlledComponentData(
+        value: _value,
+        onChanged: _onChanged,
+        enabled: widget.enabled,
+      ),
+    );
+  }
+}

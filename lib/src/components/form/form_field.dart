@@ -24,6 +24,7 @@ class ObjectFormField<T> extends StatefulWidget {
   final ButtonShape shape;
   final List<Widget> Function(
       BuildContext context, ObjectFormHandler<T> handler)? dialogActions;
+  final bool? enabled;
 
   const ObjectFormField({
     super.key,
@@ -43,6 +44,7 @@ class ObjectFormField<T> extends StatefulWidget {
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
     this.dialogActions,
+    this.enabled,
   });
 
   @override
@@ -93,6 +95,8 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
       formValue = widget.value;
     }
   }
+
+  bool get enabled => widget.enabled ?? widget.onChanged != null;
 
   @override
   void dispose() {
@@ -166,6 +170,7 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
       density: widget.density,
       shape: widget.shape,
       onPressed: widget.onChanged == null ? null : prompt,
+      enabled: enabled,
       child: this.value == null
           ? widget.placeholder.muted()
           : widget.builder(context, this.value as T),

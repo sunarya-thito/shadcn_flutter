@@ -107,16 +107,23 @@ class WidgetStatesProvider extends StatelessWidget {
   final WidgetStatesController? controller;
   final Set<WidgetState>? states;
   final Widget child;
+  final bool inherit;
 
   const WidgetStatesProvider({
     Key? key,
-    required this.controller,
+    this.controller,
     required this.child,
     this.states = const {},
+    this.inherit = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Set<WidgetState>? parentStates;
+    if (inherit) {
+      WidgetStatesData? parentData = Data.maybeOf<WidgetStatesData>(context);
+      parentStates = parentData?.states;
+    }
     return ListenableBuilder(
       listenable: Listenable.merge([
         if (controller != null) controller!,
@@ -125,6 +132,9 @@ class WidgetStatesProvider extends StatelessWidget {
         Set<WidgetState> currentStates = states ?? {};
         if (controller != null) {
           currentStates = currentStates.union(controller!.value);
+        }
+        if (parentStates != null) {
+          currentStates = currentStates.union(parentStates);
         }
         return Data<WidgetStatesData>.inherit(
           data: WidgetStatesData(currentStates),

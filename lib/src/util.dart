@@ -309,7 +309,20 @@ extension IterableExtension<T> on Iterable<T> {
   }
 }
 
+typedef NeverWidgetBuilder = Widget Function(
+    [dynamic,
+    dynamic,
+    dynamic,
+    dynamic,
+    dynamic,
+    dynamic,
+    dynamic,
+    dynamic,
+    dynamic,
+    dynamic]);
+
 extension WidgetExtension on Widget {
+  NeverWidgetBuilder get asBuilder => ([a, b, c, d, e, f, g, h, i, j]) => this;
   Widget sized({double? width, double? height}) {
     if (this is SizedBox) {
       return SizedBox(
@@ -329,26 +342,34 @@ extension WidgetExtension on Widget {
       {double? minWidth,
       double? maxWidth,
       double? minHeight,
-      double? maxHeight}) {
+      double? maxHeight,
+      double? width,
+      double? height}) {
     if (this is ConstrainedBox) {
       return ConstrainedBox(
         constraints: BoxConstraints(
-          minWidth: minWidth ?? (this as ConstrainedBox).constraints.minWidth,
-          maxWidth: maxWidth ?? (this as ConstrainedBox).constraints.maxWidth,
-          minHeight:
-              minHeight ?? (this as ConstrainedBox).constraints.minHeight,
-          maxHeight:
-              maxHeight ?? (this as ConstrainedBox).constraints.maxHeight,
+          minWidth: width ??
+              minWidth ??
+              (this as ConstrainedBox).constraints.minWidth,
+          maxWidth: width ??
+              maxWidth ??
+              (this as ConstrainedBox).constraints.maxWidth,
+          minHeight: height ??
+              minHeight ??
+              (this as ConstrainedBox).constraints.minHeight,
+          maxHeight: height ??
+              maxHeight ??
+              (this as ConstrainedBox).constraints.maxHeight,
         ),
         child: (this as ConstrainedBox).child,
       );
     }
     return ConstrainedBox(
       constraints: BoxConstraints(
-        minWidth: minWidth ?? 0,
-        maxWidth: maxWidth ?? double.infinity,
-        minHeight: minHeight ?? 0,
-        maxHeight: maxHeight ?? double.infinity,
+        minWidth: width ?? minWidth ?? 0,
+        maxWidth: width ?? maxWidth ?? double.infinity,
+        minHeight: height ?? minHeight ?? 0,
+        maxHeight: height ?? maxHeight ?? double.infinity,
       ),
       child: this,
     );
@@ -952,4 +973,47 @@ ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
 void clearActiveTextInput() {
   TextFieldClearIntent intent = const TextFieldClearIntent();
   invokeActionOnFocusedWidget(intent);
+}
+
+mixin CachedValue {
+  bool shouldRebuild(covariant CachedValue oldValue);
+}
+
+class CachedValueWidget<T> extends StatefulWidget {
+  final T value;
+  final Widget Function(BuildContext context, T value) builder;
+
+  const CachedValueWidget({
+    super.key,
+    required this.value,
+    required this.builder,
+  });
+
+  @override
+  State<StatefulWidget> createState() => _CachedValueWidgetState<T>();
+}
+
+class _CachedValueWidgetState<T> extends State<CachedValueWidget<T>> {
+  Widget? _cachedWidget;
+
+  @override
+  void didUpdateWidget(covariant CachedValueWidget<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (T is CachedValue) {
+      if ((widget.value as CachedValue)
+          .shouldRebuild(oldWidget.value as CachedValue)) {
+        _cachedWidget = null;
+      }
+    } else {
+      if (widget.value != oldWidget.value) {
+        _cachedWidget = null;
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _cachedWidget ??= widget.builder(context, widget.value);
+    return _cachedWidget!;
+  }
 }

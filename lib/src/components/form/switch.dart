@@ -5,11 +5,64 @@ import '../../../shadcn_flutter.dart';
 
 const kSwitchDuration = Duration(milliseconds: 100);
 
+class SwitchController extends ValueNotifier<bool>
+    with ComponentController<bool> {
+  SwitchController([super.value = false]);
+
+  void toggle() {
+    value = !value;
+  }
+}
+
+class ControlledSwitch extends StatelessWidget with ControlledComponent<bool> {
+  @override
+  final bool initialValue;
+  @override
+  final ValueChanged<bool>? onChanged;
+  @override
+  final bool enabled;
+  @override
+  final SwitchController? controller;
+
+  final Widget? leading;
+  final Widget? trailing;
+
+  const ControlledSwitch({
+    super.key,
+    this.controller,
+    this.initialValue = false,
+    this.onChanged,
+    this.enabled = true,
+    this.leading,
+    this.trailing,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder(
+      controller: controller,
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      builder: (context, data) {
+        return Switch(
+          value: data.value,
+          onChanged: data.onChanged,
+          enabled: data.enabled,
+          leading: leading,
+          trailing: trailing,
+        );
+      },
+    );
+  }
+}
+
 class Switch extends StatefulWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
   final Widget? leading;
   final Widget? trailing;
+  final bool? enabled;
 
   const Switch({
     super.key,
@@ -17,6 +70,7 @@ class Switch extends StatefulWidget {
     required this.onChanged,
     this.leading,
     this.trailing,
+    this.enabled = true,
   });
 
   @override
@@ -31,6 +85,8 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
     super.initState();
     formValue = widget.value;
   }
+
+  bool get _enabled => widget.enabled ?? widget.onChanged != null;
 
   @override
   void didUpdateWidget(covariant Switch oldWidget) {
@@ -55,11 +111,13 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
       align: 3 * scaling,
       width: 2 * scaling,
       child: GestureDetector(
-        onTap: () {
-          widget.onChanged?.call(!widget.value);
-        },
+        onTap: _enabled
+            ? () {
+                widget.onChanged?.call(!widget.value);
+              }
+            : null,
         child: FocusableActionDetector(
-          enabled: widget.onChanged != null,
+          enabled: _enabled,
           onShowFocusHighlight: (value) {
             setState(() {
               _focusing = value;
@@ -77,7 +135,9 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
             SingleActivator(LogicalKeyboardKey.enter): ActivateIntent(),
             SingleActivator(LogicalKeyboardKey.space): ActivateIntent(),
           },
-          mouseCursor: SystemMouseCursors.click,
+          mouseCursor: _enabled
+              ? SystemMouseCursors.click
+              : SystemMouseCursors.forbidden,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -91,7 +151,7 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
                 padding: EdgeInsets.all(2 * scaling),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(theme.radiusXl),
-                  color: widget.onChanged == null
+                  color: !_enabled
                       ? theme.colorScheme.muted
                       : widget.value
                           ? theme.colorScheme.primary

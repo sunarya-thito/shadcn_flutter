@@ -106,18 +106,18 @@ class _RadioItemState<T> extends State<RadioItem<T>> {
     assert(groupData != null,
         'RadioItem<$T> must be a descendant of RadioGroup<$T>');
     return GestureDetector(
-      onTap: widget.enabled
+      onTap: widget.enabled && groupData?.enabled == true
           ? () {
               group?._setSelected(widget.value);
             }
           : null,
       child: FocusableActionDetector(
         focusNode: _focusNode,
-        mouseCursor: widget.enabled
+        mouseCursor: widget.enabled && groupData?.enabled == true
             ? SystemMouseCursors.click
-            : SystemMouseCursors.basic,
+            : SystemMouseCursors.forbidden,
         onShowFocusHighlight: (value) {
-          if (value && widget.enabled) {
+          if (value && widget.enabled && groupData?.enabled == true) {
             group?._setSelected(widget.value);
           }
           if (value != _focusing) {
@@ -199,18 +199,18 @@ class _RadioCardState<T> extends State<RadioCard<T>> {
     assert(groupData != null,
         'RadioCard<$T> must be a descendant of RadioGroup<$T>');
     return GestureDetector(
-      onTap: widget.enabled
+      onTap: widget.enabled && groupData?.enabled == true
           ? () {
               group?._setSelected(widget.value);
             }
           : null,
       child: FocusableActionDetector(
         focusNode: _focusNode,
-        mouseCursor: widget.enabled
+        mouseCursor: widget.enabled && groupData?.enabled == true
             ? SystemMouseCursors.click
-            : SystemMouseCursors.basic,
+            : SystemMouseCursors.forbidden,
         onShowFocusHighlight: (value) {
-          if (value && widget.enabled) {
+          if (value && widget.enabled && groupData?.enabled == true) {
             group?._setSelected(widget.value);
           }
           if (value != _focusing) {
@@ -261,15 +261,62 @@ class _RadioCardState<T> extends State<RadioCard<T>> {
   }
 }
 
+class RadioGroupController<T> extends ValueNotifier<T?>
+    with ComponentController<T?> {
+  RadioGroupController([super.value]);
+}
+
+class ControlledRadioGroup<T> extends StatelessWidget
+    with ControlledComponent<T?> {
+  @override
+  final T? initialValue;
+  @override
+  final ValueChanged<T?>? onChanged;
+  @override
+  final bool enabled;
+  @override
+  final RadioGroupController<T?>? controller;
+
+  final Widget child;
+
+  const ControlledRadioGroup({
+    super.key,
+    this.controller,
+    this.initialValue,
+    this.onChanged,
+    this.enabled = true,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder(
+      controller: controller,
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      builder: (context, data) {
+        return RadioGroup(
+          value: data.value,
+          onChanged: data.onChanged,
+          child: child,
+        );
+      },
+    );
+  }
+}
+
 class RadioGroup<T> extends StatefulWidget {
   final Widget child;
   final T? value;
   final ValueChanged<T>? onChanged;
+  final bool? enabled;
   const RadioGroup({
     super.key,
     required this.child,
     this.value,
     this.onChanged,
+    this.enabled,
   });
 
   @override
@@ -278,22 +325,27 @@ class RadioGroup<T> extends StatefulWidget {
 
 class RadioGroupData<T> {
   final T? selectedItem;
+  final bool enabled;
 
-  RadioGroupData(this.selectedItem);
+  RadioGroupData(this.selectedItem, this.enabled);
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is RadioGroupData<T> && other.selectedItem == selectedItem;
+    return other is RadioGroupData<T> &&
+        other.selectedItem == selectedItem &&
+        other.enabled == enabled;
   }
 
   @override
-  int get hashCode => selectedItem.hashCode;
+  int get hashCode => Object.hash(selectedItem, enabled);
 }
 
 class _RadioGroupState<T> extends State<RadioGroup<T>>
     with FormValueSupplier<T, RadioGroup<T>> {
+  bool get enabled => widget.enabled ?? widget.onChanged != null;
   void _setSelected(T value) {
+    if (!enabled) return;
     if (widget.value != value) {
       widget.onChanged?.call(value);
     }
@@ -324,7 +376,7 @@ class _RadioGroupState<T> extends State<RadioGroup<T>>
       child: Data.inherit(
         data: this,
         child: Data.inherit(
-          data: RadioGroupData<T>(widget.value),
+          data: RadioGroupData<T>(widget.value, enabled),
           child: FocusTraversalGroup(
             child: widget.child,
           ),

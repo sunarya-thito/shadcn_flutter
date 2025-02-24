@@ -7,6 +7,84 @@ import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
 
+class ColorInputController extends ValueNotifier<ColorDerivative>
+    with ComponentController<ColorDerivative> {
+  ColorInputController(super.value);
+}
+
+class ControlledColorInput extends StatelessWidget
+    with ControlledComponent<ColorDerivative> {
+  @override
+  final ColorDerivative? initialValue;
+
+  @override
+  final ValueChanged<ColorDerivative>? onChanged;
+
+  @override
+  final bool enabled;
+
+  @override
+  final ColorInputController? controller;
+
+  final bool showAlpha;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
+  final Widget? placeholder;
+  final PromptMode mode;
+  final ColorPickerMode pickerMode;
+  final Widget? dialogTitle;
+  final bool allowPickFromScreen;
+  final bool showLabel;
+  final ColorHistoryStorage? storage;
+
+  const ControlledColorInput({
+    Key? key,
+    this.initialValue,
+    this.onChanged,
+    this.controller,
+    this.enabled = true,
+    this.showAlpha = true,
+    this.popoverAlignment,
+    this.popoverAnchorAlignment,
+    this.popoverPadding,
+    this.placeholder,
+    this.mode = PromptMode.dialog,
+    this.pickerMode = ColorPickerMode.rgb,
+    this.dialogTitle,
+    this.allowPickFromScreen = true,
+    this.showLabel = true,
+    this.storage,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder<ColorDerivative>(
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      controller: controller,
+      builder: (context, data) {
+        return ColorInput(
+          color: data.value,
+          onChanged: data.onChanged,
+          showAlpha: showAlpha,
+          popoverAlignment: popoverAlignment,
+          popoverAnchorAlignment: popoverAnchorAlignment,
+          popoverPadding: popoverPadding,
+          placeholder: placeholder,
+          mode: mode,
+          pickerMode: pickerMode,
+          dialogTitle: dialogTitle,
+          allowPickFromScreen: allowPickFromScreen,
+          showLabel: showLabel,
+          storage: storage,
+        );
+      },
+    );
+  }
+}
+
 String colorToHex(Color color, [bool showAlpha = true]) {
   if (showAlpha) {
     return '#${color.value.toRadixString(16)}';
@@ -1482,7 +1560,7 @@ class ColorInput extends StatelessWidget {
   final bool allowPickFromScreen;
   final bool showLabel;
   final ColorHistoryStorage? storage;
-
+  final bool? enabled;
   const ColorInput({
     super.key,
     required this.color,
@@ -1498,6 +1576,7 @@ class ColorInput extends StatelessWidget {
     this.allowPickFromScreen = true,
     this.showLabel = false,
     this.storage,
+    this.enabled,
   });
 
   @override
@@ -1505,6 +1584,7 @@ class ColorInput extends StatelessWidget {
     final localizations = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
     return ObjectFormField(
+      enabled: enabled,
       dialogTitle: dialogTitle,
       popoverAlignment: popoverAlignment,
       popoverAnchorAlignment: popoverAnchorAlignment,

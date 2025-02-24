@@ -1,218 +1,302 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/control/hover.dart';
 
-typedef SearchFilter<T> = int Function(T item, String query);
-typedef SearchIndexer = int Function(String query);
-
-class SearchResult {
-  final bool hasSelectedValue;
-  final int score;
-
-  const SearchResult(this.score, this.hasSelectedValue);
+class SelectController<T> extends ValueNotifier<T?>
+    with ComponentController<T?> {
+  SelectController([super.value]);
 }
 
-class SearchQuery<T> {
-  final String query;
-  final SearchFilter<T>? searchFilter;
-  final List<T> selectedValue;
+class ControlledSelect<T> extends StatelessWidget
+    with ControlledComponent<T?>, SelectBase<T> {
+  @override
+  final T? initialValue;
+  @override
+  final ValueChanged<T?>? onChanged;
+  @override
+  final bool enabled;
+  @override
+  final SelectController<T>? controller;
 
-  const SearchQuery(this.query, this.searchFilter, this.selectedValue);
+  @override
+  final Widget? placeholder;
+  @override
+  final bool filled;
+  @override
+  final FocusNode? focusNode;
+  @override
+  final BoxConstraints? constraints;
+  @override
+  final BoxConstraints? popupConstraints;
+  @override
+  final PopoverConstraint popupWidthConstraint;
+  @override
+  final BorderRadiusGeometry? borderRadius;
+  @override
+  final EdgeInsetsGeometry? padding;
+  @override
+  final AlignmentGeometry popoverAlignment;
+  @override
+  final AlignmentGeometry? popoverAnchorAlignment;
+  @override
+  final bool disableHoverEffect;
+  @override
+  final bool canUnselect;
+  @override
+  final bool autoClosePopover;
+  @override
+  final SelectPopupBuilder popup;
+  @override
+  final SelectValueBuilder<T> itemBuilder;
+  @override
+  final SelectValueSelectionHandler<T>? valueSelectionHandler;
+  @override
+  final SelectValueSelectionPredicate<T>? valueSelectionPredicate;
+
+  const ControlledSelect({
+    super.key,
+    this.controller,
+    this.onChanged,
+    this.enabled = true,
+    this.initialValue,
+    this.placeholder,
+    this.filled = false,
+    this.focusNode,
+    this.constraints,
+    this.popupConstraints,
+    this.popupWidthConstraint = PopoverConstraint.anchorFixedSize,
+    this.borderRadius,
+    this.padding,
+    this.popoverAlignment = Alignment.topCenter,
+    this.popoverAnchorAlignment,
+    this.disableHoverEffect = false,
+    this.canUnselect = false,
+    this.autoClosePopover = true,
+    required this.popup,
+    required this.itemBuilder,
+    this.valueSelectionHandler,
+    this.valueSelectionPredicate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder<T?>(
+      builder: (context, data) {
+        return Select<T>(
+          onChanged: data.onChanged,
+          placeholder: placeholder,
+          filled: filled,
+          focusNode: focusNode,
+          constraints: constraints,
+          popupConstraints: popupConstraints,
+          popupWidthConstraint: popupWidthConstraint,
+          value: data.value,
+          borderRadius: borderRadius,
+          padding: padding,
+          popoverAlignment: popoverAlignment,
+          popoverAnchorAlignment: popoverAnchorAlignment,
+          disableHoverEffect: disableHoverEffect,
+          canUnselect: canUnselect,
+          autoClosePopover: autoClosePopover,
+          enabled: data.enabled,
+          itemBuilder: itemBuilder,
+          valueSelectionHandler: valueSelectionHandler,
+          valueSelectionPredicate: valueSelectionPredicate,
+          popup: popup,
+        );
+      },
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      controller: controller,
+    );
+  }
 }
 
-class SelectItemButton<T> extends StatelessWidget
-    implements AbstractSelectItem<T> {
+class MultiSelectController<T> extends SelectController<Iterable<T>> {
+  MultiSelectController([super.value]);
+}
+
+class ControlledMultiSelect<T> extends StatelessWidget
+    with ControlledComponent<Iterable<T>?>, SelectBase<Iterable<T>> {
+  @override
+  final Iterable<T>? initialValue;
+  @override
+  final ValueChanged<Iterable<T>?>? onChanged;
+  @override
+  final bool enabled;
+  @override
+  final MultiSelectController<T>? controller;
+
+  @override
+  final Widget? placeholder;
+  @override
+  final bool filled;
+  @override
+  final FocusNode? focusNode;
+  @override
+  final BoxConstraints? constraints;
+  @override
+  final BoxConstraints? popupConstraints;
+  @override
+  final PopoverConstraint popupWidthConstraint;
+  @override
+  final BorderRadiusGeometry? borderRadius;
+  @override
+  final EdgeInsetsGeometry? padding;
+  @override
+  final AlignmentGeometry popoverAlignment;
+  @override
+  final AlignmentGeometry? popoverAnchorAlignment;
+  @override
+  final bool disableHoverEffect;
+  @override
+  final bool canUnselect;
+  @override
+  final bool autoClosePopover;
+  @override
+  final SelectPopupBuilder popup;
+  @override
+  SelectValueBuilder<Iterable<T>> get itemBuilder => (context, value) {
+        return MultiSelect._buildItem(multiItemBuilder, context, value);
+      };
+  @override
+  final SelectValueSelectionHandler<Iterable<T>>? valueSelectionHandler;
+  @override
+  final SelectValueSelectionPredicate<Iterable<T>>? valueSelectionPredicate;
+  final SelectValueBuilder<T> multiItemBuilder;
+
+  const ControlledMultiSelect({
+    super.key,
+    this.controller,
+    this.onChanged,
+    this.enabled = true,
+    this.initialValue,
+    this.placeholder,
+    this.filled = false,
+    this.focusNode,
+    this.constraints,
+    this.popupConstraints,
+    this.popupWidthConstraint = PopoverConstraint.anchorFixedSize,
+    this.borderRadius,
+    this.padding,
+    this.popoverAlignment = Alignment.topCenter,
+    this.popoverAnchorAlignment,
+    this.disableHoverEffect = false,
+    this.canUnselect = true,
+    this.autoClosePopover = false,
+    required this.popup,
+    required SelectValueBuilder<T> itemBuilder,
+    this.valueSelectionHandler,
+    this.valueSelectionPredicate,
+  }) : multiItemBuilder = itemBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledSelect<Iterable<T>>(
+      controller: controller,
+      onChanged: onChanged,
+      enabled: enabled,
+      initialValue: initialValue,
+      placeholder: placeholder,
+      filled: filled,
+      focusNode: focusNode,
+      constraints: constraints,
+      popupConstraints: popupConstraints,
+      popupWidthConstraint: popupWidthConstraint,
+      borderRadius: borderRadius,
+      padding: padding,
+      popoverAlignment: popoverAlignment,
+      popoverAnchorAlignment: popoverAnchorAlignment,
+      disableHoverEffect: disableHoverEffect,
+      canUnselect: canUnselect,
+      autoClosePopover: autoClosePopover,
+      popup: popup,
+      itemBuilder: itemBuilder,
+      valueSelectionHandler:
+          valueSelectionHandler ?? _defaultMultiSelectValueSelectionHandler,
+      valueSelectionPredicate:
+          valueSelectionPredicate ?? _defaultMultiSelectValueSelectionPredicate,
+    );
+  }
+}
+
+class SelectItemButton<T> extends StatelessWidget {
   final T value;
   final Widget child;
-  final SearchIndexer? computeIndexingScore;
 
   const SelectItemButton({
     super.key,
-    this.computeIndexingScore,
     required this.value,
     required this.child,
   });
 
   @override
-  SearchResult search(SearchQuery<T> query) {
-    if (query.query.isEmpty) {
-      return SearchResult(0, query.selectedValue.contains(value));
-    }
-    return SearchResult(
-      computeIndexingScore?.call(query.query) ??
-          query.searchFilter?.call(value, query.query) ??
-          0,
-      query.selectedValue.contains(value),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return SelectItem<T>(
-      value: value,
-      builder: (context, selectItem, selected) {
-        var isSelected = selected.contains(value);
-        return Button(
-          disableTransition: true,
-          alignment: AlignmentDirectional.centerStart,
-          onPressed: () {
-            selectItem(!isSelected);
-          },
-          style: const ButtonStyle.ghost().copyWith(
-            padding: (context, states, value) => EdgeInsets.symmetric(
-              vertical: 8 * scaling,
-              horizontal: 8 * scaling,
-            ),
-            mouseCursor: (context, states, value) {
-              return SystemMouseCursors.basic;
-            },
-          ),
-          trailing: isSelected
-              ? const Icon(
-                  Icons.check,
-                ).iconSmall()
-              : selected.isNotEmpty
-                  ? SizedBox(
-                      width: 16 * scaling,
-                    )
-                  : null,
-          child: child.normal(),
-        );
+    final data = Data.maybeOf<SelectData>(context);
+    bool isSelected = data?.isSelected(value) ?? false;
+    bool hasSelection = data?.hasSelection ?? false;
+    return Button(
+      disableTransition: true,
+      alignment: AlignmentDirectional.centerStart,
+      onPressed: () {
+        data?.onChanged(value, !isSelected);
       },
+      style: const ButtonStyle.ghost().copyWith(
+        padding: (context, states, value) => EdgeInsets.symmetric(
+          vertical: 8 * scaling,
+          horizontal: 8 * scaling,
+        ),
+        mouseCursor: (context, states, value) {
+          return SystemMouseCursors.basic;
+        },
+      ),
+      trailing: isSelected
+          ? const Icon(
+              Icons.check,
+            ).iconSmall()
+          : hasSelection
+              ? SizedBox(
+                  width: 16 * scaling,
+                )
+              : null,
+      child: child.normal(),
     );
   }
 }
 
-class SelectGroup<T> extends StatelessWidget implements AbstractSelectItem<T> {
-  static int _keepOrderFilter<T>(T item, String query) {
-    return 1;
-  }
-
+class SelectGroup extends StatelessWidget {
   final List<Widget>? headers;
-  final List<AbstractSelectItem<T>> children;
+  final List<Widget> children;
   final List<Widget>? footers;
-  final bool? showUnrelatedValues;
-  final SearchFilter<T>? searchFilter;
 
   const SelectGroup({
     super.key,
     this.headers,
     this.footers,
-    this.showUnrelatedValues,
     required this.children,
-    this.searchFilter,
   });
-
-  const SelectGroup.fixedOrder({
-    super.key,
-    this.headers,
-    this.footers,
-    this.showUnrelatedValues,
-    required this.children,
-  }) : searchFilter = _keepOrderFilter;
-
-  @override
-  SearchResult search(SearchQuery<T> query) {
-    if (searchFilter != null) {
-      query = SearchQuery(query.query, searchFilter, query.selectedValue);
-    }
-    if (query.query.isEmpty) {
-      bool hasSelectedValue = false;
-      if (searchFilter != _keepOrderFilter) {
-        for (var item in children) {
-          if (item.search(query).hasSelectedValue) {
-            hasSelectedValue = true;
-            break;
-          }
-        }
-      }
-      return SearchResult(0, hasSelectedValue);
-    }
-    int score = 0;
-    bool hasSelectedValue = false;
-    for (var item in children) {
-      var result = item.search(query);
-      score += result.score;
-      if (searchFilter != _keepOrderFilter && result.hasSelectedValue) {
-        hasSelectedValue = true;
-      }
-    }
-    return SearchResult(score, hasSelectedValue);
-  }
 
   @override
   Widget build(BuildContext context) {
-    final searchData = Data.maybeOf<SelectData>(context);
-    assert(searchData != null, 'SelectGroup must be a child of Select');
-    return AnimatedBuilder(
-      animation: searchData!.value,
-      builder: (context, child) {
-        final text = searchData.query;
-        Map<AbstractSelectItem<T>, SelectSearchResult> resultMap = {};
-        for (int i = 0; i < this.children.length; i++) {
-          var item = this.children[i];
-          if (text == null || text.isEmpty) {
-            var result = item.search(SearchQuery<T>(text ?? '',
-                searchData.searchFilter, searchData.value.value as List<T>));
-            resultMap[item] = SelectSearchResult(0, i, result.hasSelectedValue);
-          } else {
-            var result = item.search(SearchQuery<T>(text,
-                searchData.searchFilter, searchData.value.value as List<T>));
-            int score = result.score;
-            bool hasSelectedValue = result.hasSelectedValue;
-            if (score > 0 || searchData.showUnrelatedValues) {
-              resultMap[item] = SelectSearchResult(score, i, hasSelectedValue);
-            }
-          }
-        }
-        List<Widget> children = [];
-        // sort from largest score to lowest score, if score is same, then sort by index
-        resultMap.entries.toList()
-          ..sort((a, b) {
-            if (searchData.orderSelectedFirst) {
-              if (a.value.hasSelectedValue && !b.value.hasSelectedValue) {
-                return -1;
-              }
-              if (!a.value.hasSelectedValue && b.value.hasSelectedValue) {
-                return 1;
-              }
-            }
-            if (a.value.score == b.value.score) {
-              return a.value.index.compareTo(b.value.index);
-            }
-            return b.value.score.compareTo(a.value.score);
-          })
-          ..forEach((element) {
-            children.add(element.key);
-          });
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (headers != null) ...headers!,
-            ...children,
-            if (footers != null) ...footers!,
-          ],
-        );
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (headers != null) ...headers!,
+        ...children,
+        if (footers != null) ...footers!,
+      ],
     );
   }
 }
 
-typedef SelectItemReporter = void Function(bool selected);
-typedef SelectItemBuilder<T> = Widget Function(
-    BuildContext context, SelectItemReporter selectItem, List<T> selectedValue);
-
-abstract class AbstractSelectItem<T> extends Widget {
-  const AbstractSelectItem({super.key});
-
-  SearchResult search(SearchQuery<T> query);
-}
-
-class SelectItem<T> extends StatelessWidget implements AbstractSelectItem<T> {
-  final SelectItemBuilder<T> builder;
-  final T value;
+class SelectItem extends StatelessWidget {
+  final WidgetBuilder builder;
+  final Object? value;
 
   const SelectItem({
     super.key,
@@ -221,33 +305,14 @@ class SelectItem<T> extends StatelessWidget implements AbstractSelectItem<T> {
   });
 
   @override
-  SearchResult search(SearchQuery<T> query) {
-    bool hasSelectedValue = query.selectedValue.contains(value);
-    if (query.query.isEmpty) {
-      return SearchResult(0, hasSelectedValue);
-    }
-    return SearchResult(
-      query.searchFilter?.call(value, query.query) ?? 0,
-      hasSelectedValue,
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final searchData = Data.maybeOf<SelectData>(context);
-    assert(searchData != null, 'SelectItem must be a child of Select');
-    return Data<SelectData>.boundary(
-      child: AnimatedBuilder(
-          animation: searchData!.value,
-          builder: (context, child) {
-            return builder(
-              context,
-              (selected) {
-                searchData.onChanged(value, selected);
-              },
-              searchData.value.value as List<T>,
-            );
-          }),
+    final data = Data.maybeOf<SelectData>(context);
+    final selected = data?.isSelected(value) ?? false;
+    return WidgetStatesProvider(
+      states: {
+        if (selected) WidgetState.selected,
+      },
+      child: Builder(builder: builder),
     );
   }
 }
@@ -271,40 +336,118 @@ class SelectLabel extends StatelessWidget {
   }
 }
 
-typedef SelectSearch = void Function(String query);
+typedef SelectPopupBuilder = Widget Function(BuildContext context);
+typedef SelectValueBuilder<T> = Widget Function(BuildContext context, T value);
+typedef SelectValueSelectionHandler<T> = T? Function(
+    T? oldValue, Object? value, bool selected);
+typedef SelectValueSelectionPredicate<T> = bool Function(
+    T? value, Object? test);
 
-class Select<T> extends StatefulWidget {
+T? _defaultSingleSelectValueSelectionHandler<T>(
+    T? oldValue, Object? value, bool selected) {
+  if (value is! T?) {
+    return null;
+  }
+  return selected ? value : null;
+}
+
+bool _defaultSingleSelectValueSelectionPredicate<T>(T? value, Object? test) {
+  return value == test;
+}
+
+Iterable<T>? _defaultMultiSelectValueSelectionHandler<T>(
+    Iterable<T>? oldValue, Object? newValue, bool selected) {
+  if (newValue == null) {
+    return null;
+  }
+  Iterable<T> wrappedNewValue = [newValue as T];
+  if (oldValue == null) {
+    return selected ? wrappedNewValue : null;
+  }
+  if (selected) {
+    return oldValue.followedBy(wrappedNewValue);
+  } else {
+    var newIterable = oldValue.where((element) => element != newValue);
+    return newIterable.isEmpty ? null : newIterable;
+  }
+}
+
+bool _defaultMultiSelectValueSelectionPredicate<T>(
+    Iterable<T>? value, Object? test) {
+  if (value == null) {
+    return test == null;
+  }
+  if (test == null) {
+    return false;
+  }
+  return value.contains(test);
+}
+
+mixin SelectBase<T> {
+  ValueChanged<T?>? get onChanged;
+  Widget? get placeholder;
+  bool get filled;
+  FocusNode? get focusNode;
+  BoxConstraints? get constraints;
+  BoxConstraints? get popupConstraints;
+  PopoverConstraint get popupWidthConstraint;
+  BorderRadiusGeometry? get borderRadius;
+  EdgeInsetsGeometry? get padding;
+  AlignmentGeometry get popoverAlignment;
+  AlignmentGeometry? get popoverAnchorAlignment;
+  bool get disableHoverEffect;
+  bool get canUnselect;
+  bool? get autoClosePopover;
+  SelectPopupBuilder get popup;
+  SelectValueBuilder<T> get itemBuilder;
+  SelectValueSelectionHandler<T>? get valueSelectionHandler;
+  SelectValueSelectionPredicate<T>? get valueSelectionPredicate;
+}
+
+class Select<T> extends StatefulWidget with SelectBase<T> {
+  static const kDefaultSelectMaxHeight = 240.0;
+  @override
   final ValueChanged<T?>? onChanged; // if null, then it's a disabled combobox
-  final SearchFilter<T>?
-      searchFilter; // if its not null, then it's a searchable combobox
-  final SelectSearch? onSearch;
+  @override
   final Widget? placeholder; // placeholder when value is null
+  @override
   final bool filled;
+  @override
   final FocusNode? focusNode;
+  @override
   final BoxConstraints? constraints;
+  @override
   final BoxConstraints? popupConstraints;
+  @override
   final PopoverConstraint popupWidthConstraint;
-  final List<AbstractSelectItem<T>> children;
   final T? value;
-  final Widget Function(BuildContext context, T item) itemBuilder;
-  final bool showUnrelatedValues;
+  @override
   final BorderRadiusGeometry? borderRadius;
-  final Widget? searchPlaceholder;
+  @override
   final EdgeInsetsGeometry? padding;
+  @override
   final AlignmentGeometry popoverAlignment;
+  @override
   final AlignmentGeometry? popoverAnchorAlignment;
-  final WidgetBuilder? emptyBuilder;
-  final bool orderSelectedFirst;
-  final double? surfaceBlur;
-  final double? surfaceOpacity;
+  @override
   final bool disableHoverEffect;
+  @override
   final bool canUnselect;
-  final bool autoClosePopover;
+  @override
+  final bool? autoClosePopover;
+  final bool? enabled;
+  @override
+  final SelectPopupBuilder popup;
+  @override
+  final SelectValueBuilder<T> itemBuilder;
+  @override
+  final SelectValueSelectionHandler<T>? valueSelectionHandler;
+  @override
+  final SelectValueSelectionPredicate<T>? valueSelectionPredicate;
 
   const Select({
     super.key,
     this.onChanged,
-    this.searchFilter,
     this.placeholder,
     this.filled = false,
     this.focusNode,
@@ -312,22 +455,18 @@ class Select<T> extends StatefulWidget {
     this.popupConstraints,
     this.popupWidthConstraint = PopoverConstraint.anchorFixedSize,
     this.value,
-    this.showUnrelatedValues = false,
-    this.orderSelectedFirst = true,
     this.disableHoverEffect = false,
     this.borderRadius,
-    this.searchPlaceholder,
     this.padding,
     this.popoverAlignment = Alignment.topCenter,
     this.popoverAnchorAlignment,
-    this.emptyBuilder,
-    this.surfaceBlur,
-    this.surfaceOpacity,
     this.canUnselect = false,
-    this.autoClosePopover = true,
-    this.onSearch,
+    this.autoClosePopover,
+    this.enabled,
+    this.valueSelectionHandler,
+    this.valueSelectionPredicate,
+    required this.popup,
     required this.itemBuilder,
-    required this.children,
   });
 
   @override
@@ -338,16 +477,13 @@ class SelectState<T> extends State<Select<T>>
     with FormValueSupplier<T, Select<T>> {
   late FocusNode _focusNode;
   final PopoverController _popoverController = PopoverController();
-  late ValueNotifier<List<T>> _valueNotifier;
-  late ValueNotifier<List<AbstractSelectItem<T>>> _childrenNotifier;
+  late ValueNotifier<T?> _valueNotifier;
 
   @override
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
-    _valueNotifier =
-        ValueNotifier(widget.value == null ? const [] : [widget.value as T]);
-    _childrenNotifier = ValueNotifier(widget.children);
+    _valueNotifier = ValueNotifier(widget.value);
   }
 
   @override
@@ -358,19 +494,26 @@ class SelectState<T> extends State<Select<T>>
     }
     if (widget.value != oldWidget.value) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        _valueNotifier.value =
-            widget.value == null ? const [] : [widget.value as T];
-        formValue = widget.value;
+        _valueNotifier.value = widget.value;
+      });
+      formValue = widget.value;
+    } else if (widget.valueSelectionPredicate !=
+        oldWidget.valueSelectionPredicate) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _valueNotifier.value = widget.value;
       });
     }
-    if (!listEquals(widget.children, oldWidget.children)) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        _childrenNotifier.value = widget.children;
-      });
+    if (widget.enabled != oldWidget.enabled ||
+        widget.onChanged != oldWidget.onChanged) {
+      bool enabled = widget.enabled ?? widget.onChanged != null;
+      if (!enabled) {
+        _focusNode.unfocus();
+        _popoverController.close();
+      }
     }
   }
 
-  Widget get placeholder {
+  Widget get _placeholder {
     if (widget.placeholder != null) {
       return widget.placeholder!;
     }
@@ -400,88 +543,120 @@ class SelectState<T> extends State<Select<T>>
     return widget.padding!;
   }
 
+  bool _onChanged(Object? value, bool selected) {
+    if (!selected && !widget.canUnselect) {
+      return false;
+    }
+    var selectionHandler = widget.valueSelectionHandler ??
+        _defaultSingleSelectValueSelectionHandler;
+    widget.onChanged?.call(selectionHandler(widget.value, value, selected));
+    return true;
+  }
+
+  bool _isSelected(Object? value) {
+    final selectionPredicate = widget.valueSelectionPredicate ??
+        _defaultSingleSelectValueSelectionPredicate;
+    return selectionPredicate(widget.value, value);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return ConstrainedBox(
-      constraints: widget.constraints ?? const BoxConstraints(),
-      child: TapRegion(
-        onTapOutside: (event) {
-          _focusNode.unfocus();
-        },
-        child: Button(
-          disableHoverEffect: widget.disableHoverEffect,
-          focusNode: _focusNode,
-          style: (widget.filled
-                  ? ButtonVariance.secondary
-                  : ButtonVariance.outline)
-              .copyWith(
-            decoration:
-                widget.borderRadius != null ? _overrideBorderRadius : null,
-            padding: widget.padding != null ? _overridePadding : null,
-          ),
-          onPressed: widget.onChanged == null
-              ? null
-              : () {
-                  _popoverController
-                      .show(
-                    context: context,
-                    alignment: widget.popoverAlignment,
-                    anchorAlignment: widget.popoverAnchorAlignment,
-                    widthConstraint: widget.popupWidthConstraint,
-                    overlayBarrier: OverlayBarrier(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 8) * scaling,
-                      borderRadius: BorderRadius.circular(theme.radiusLg),
-                    ),
-                    builder: (context) {
-                      return SelectPopup<T>(
-                        borderRadius: BorderRadius.circular(theme.radiusLg),
-                        margin:
+    var enabled = widget.enabled ?? widget.onChanged != null;
+    return IntrinsicWidth(
+      child: ConstrainedBox(
+        constraints: widget.constraints ?? const BoxConstraints(),
+        child: TapRegion(
+          onTapOutside: (event) {
+            _focusNode.unfocus();
+          },
+          child: Button(
+            enabled: enabled,
+            disableHoverEffect: widget.disableHoverEffect,
+            focusNode: _focusNode,
+            style: (widget.filled
+                    ? ButtonVariance.secondary
+                    : ButtonVariance.outline)
+                .copyWith(
+              decoration:
+                  widget.borderRadius != null ? _overrideBorderRadius : null,
+              padding: widget.padding != null ? _overridePadding : null,
+            ),
+            onPressed: widget.onChanged == null
+                ? null
+                : () {
+                    // to prevent entire ListView from rebuilding
+                    // while the Data<SelectData> is being updated
+                    GlobalKey popupKey = GlobalKey();
+                    _popoverController
+                        .show(
+                      context: context,
+                      offset: Offset(0, 8 * scaling),
+                      alignment: widget.popoverAlignment,
+                      anchorAlignment: widget.popoverAnchorAlignment,
+                      widthConstraint: widget.popupWidthConstraint,
+                      overlayBarrier: OverlayBarrier(
+                        padding:
                             const EdgeInsets.symmetric(vertical: 8) * scaling,
-                        onSearch: widget.onSearch,
-                        autoClose: widget.autoClosePopover,
-                        orderSelectedFirst: widget.orderSelectedFirst,
-                        searchPlaceholder: widget.searchPlaceholder,
-                        searchFilter: widget.searchFilter,
-                        constraints: widget.popupConstraints,
-                        value: _valueNotifier,
-                        showUnrelatedValues: widget.showUnrelatedValues,
-                        onChanged: widget.onChanged == null
-                            ? null
-                            : (value, selected) {
-                                if (selected && widget.value != value) {
-                                  widget.onChanged!(value);
-                                } else if (widget.canUnselect &&
-                                    widget.value == value) {
-                                  widget.onChanged!(null);
-                                }
-                              },
-                        emptyBuilder: widget.emptyBuilder,
-                        surfaceBlur: widget.surfaceBlur,
-                        surfaceOpacity: widget.surfaceOpacity,
-                        children: _childrenNotifier,
-                      );
-                    },
-                  )
-                      .then(
-                    (value) {
-                      _focusNode.requestFocus();
-                    },
-                  );
-                },
-          child: IntrinsicWidth(
+                        borderRadius: BorderRadius.circular(theme.radiusLg),
+                      ),
+                      builder: (context) {
+                        return ConstrainedBox(
+                          constraints: widget.popupConstraints ??
+                              BoxConstraints(
+                                maxHeight:
+                                    Select.kDefaultSelectMaxHeight * scaling,
+                              ),
+                          child: ListenableBuilder(
+                              listenable: _valueNotifier,
+                              builder: (context, _) {
+                                return Data.inherit(
+                                  key: ValueKey(widget.value),
+                                  data: SelectData(
+                                    enabled: enabled,
+                                    autoClose: widget.autoClosePopover,
+                                    isSelected: _isSelected,
+                                    onChanged: _onChanged,
+                                    hasSelection: widget.value != null,
+                                  ),
+                                  child: Builder(
+                                      key: popupKey,
+                                      builder: (context) {
+                                        return widget.popup(context);
+                                      }),
+                                );
+                              }),
+                        );
+                      },
+                    )
+                        .then(
+                      (value) {
+                        _focusNode.requestFocus();
+                      },
+                    );
+                  },
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  child: widget.value != null
-                      ? widget.itemBuilder(
-                          context,
-                          widget.value as T,
-                        )
-                      : placeholder,
+                Data.inherit(
+                  data: SelectData(
+                    enabled: enabled,
+                    autoClose: widget.autoClosePopover,
+                    isSelected: _isSelected,
+                    onChanged: _onChanged,
+                    hasSelection: widget.value != null,
+                  ),
+                  child: Expanded(
+                    child: widget.value != null
+                        ? Builder(builder: (context) {
+                            return widget.itemBuilder(
+                              context,
+                              widget.value as T,
+                            );
+                          })
+                        : _placeholder,
+                  ),
                 ),
                 SizedBox(width: 8 * scaling),
                 IconTheme.merge(
@@ -500,405 +675,53 @@ class SelectState<T> extends State<Select<T>>
   }
 }
 
-typedef SelectValueChanged<T> = void Function(T value, bool selected);
-
-class SelectPopup<T> extends StatefulWidget {
-  final ValueListenable<List<T>> value;
-  final SearchFilter<T>? searchFilter;
-  final BoxConstraints? constraints;
-  final ValueListenable<List<AbstractSelectItem<T>>> children;
-  final bool showUnrelatedValues;
-  final SelectValueChanged<T>? onChanged;
-  final Widget? searchPlaceholder;
-  final WidgetBuilder? emptyBuilder;
-  final bool orderSelectedFirst;
-  final double? surfaceBlur;
-  final double? surfaceOpacity;
-  final bool autoClose;
-  final EdgeInsetsGeometry margin;
-  final BorderRadiusGeometry borderRadius;
-  final SelectSearch? onSearch;
-
-  const SelectPopup({
-    super.key,
-    required this.value,
-    this.searchFilter,
-    this.constraints,
-    this.showUnrelatedValues = false,
-    this.onChanged,
-    this.searchPlaceholder,
-    this.emptyBuilder,
-    this.orderSelectedFirst = true,
-    this.surfaceBlur,
-    this.surfaceOpacity,
-    this.autoClose = true,
-    this.onSearch,
-    required this.margin,
-    required this.borderRadius,
-    required this.children,
-  });
-
+class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   @override
-  SelectPopupState<T> createState() => SelectPopupState<T>();
-}
-
-class SelectPopupState<T> extends State<SelectPopup<T>> {
-  final TextEditingController _searchController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    // this is required due to late scroll controller attachment
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (mounted) {
-        setState(() {});
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scaling = theme.scaling;
-    final surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
-    final surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
-    var isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
-    return SizedBox(
-      width: isSheetOverlay ? double.infinity : null,
-      child: Container(
-        margin: isSheetOverlay ? null : widget.margin,
-        constraints: widget.constraints ??
-            (const BoxConstraints(
-                  minWidth: 200,
-                ) *
-                scaling),
-        child: SurfaceCard(
-          clipBehavior: Clip.hardEdge,
-          surfaceBlur: surfaceBlur,
-          surfaceOpacity: surfaceOpacity,
-          borderRadius: widget.borderRadius,
-          padding: EdgeInsets.zero,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (widget.searchFilter != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12) * scaling,
-                  child: Row(
-                    children: [
-                      IconTheme.merge(
-                        data: IconThemeData(
-                          color: Theme.of(context).colorScheme.foreground,
-                          opacity: 0.5,
-                        ),
-                        child: const Icon(
-                          Icons.search,
-                        ).iconSmall(),
-                      ),
-                      SizedBox(width: 8 * scaling),
-                      Expanded(
-                        child: TextField(
-                          controller: _searchController,
-                          border: false,
-                          placeholder: widget.searchPlaceholder,
-                          onChanged: (value) {
-                            widget.onSearch?.call(value);
-                          },
-                          padding: const EdgeInsets.symmetric(vertical: 12) *
-                              scaling,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              if (widget.searchFilter != null) const Divider(),
-              Flexible(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(theme.radiusXl),
-                    bottomRight: Radius.circular(theme.radiusXl),
-                  ),
-                  child: ScrollConfiguration(
-                    behavior: ScrollConfiguration.of(context).copyWith(
-                      scrollbars: false,
-                    ),
-                    child: ListenableBuilder(
-                      listenable: Listenable.merge([
-                        _searchController,
-                        widget.value,
-                        widget.children,
-                      ]),
-                      builder: (context, child) {
-                        String text = _searchController.text;
-                        Map<AbstractSelectItem<T>, SelectSearchResult>
-                            resultMap = {};
-                        for (int i = 0; i < widget.children.value.length; i++) {
-                          var item = widget.children.value[i];
-                          if (text.isEmpty) {
-                            var result = item.search(SearchQuery<T>(
-                                text, widget.searchFilter, widget.value.value));
-                            resultMap[item] = SelectSearchResult(
-                                0, i, result.hasSelectedValue);
-                          } else {
-                            var result = item.search(SearchQuery<T>(
-                                text, widget.searchFilter, widget.value.value));
-                            int score = result.score;
-                            bool hasSelectedValue = result.hasSelectedValue;
-                            if (score > 0 || widget.showUnrelatedValues) {
-                              resultMap[item] = SelectSearchResult(
-                                  score, i, hasSelectedValue);
-                            }
-                          }
-                        }
-                        List<Widget> children = [];
-                        // sort from largest score to lowest score, if score is same, then sort by index
-                        resultMap.entries.toList()
-                          ..sort((a, b) {
-                            if (widget.orderSelectedFirst) {
-                              if (a.value.hasSelectedValue &&
-                                  !b.value.hasSelectedValue) {
-                                return -1;
-                              }
-                              if (!a.value.hasSelectedValue &&
-                                  b.value.hasSelectedValue) {
-                                return 1;
-                              }
-                            }
-                            if (a.value.score == b.value.score) {
-                              return a.value.index.compareTo(b.value.index);
-                            }
-                            return b.value.score.compareTo(a.value.score);
-                          })
-                          ..forEach((element) {
-                            children.add(element.key);
-                          });
-                        Widget child;
-                        if (children.isEmpty) {
-                          child = widget.emptyBuilder?.call(context) ??
-                              const SizedBox();
-                        } else {
-                          child = Stack(
-                            fit: StackFit.passthrough,
-                            children: [
-                              Padding(
-                                // to fix visual glitch, add padding
-                                padding:
-                                    const EdgeInsets.only(top: 1, bottom: 1) *
-                                        scaling,
-                                child: ListView(
-                                  controller: _scrollController,
-                                  padding: const EdgeInsets.all(4) * scaling,
-                                  shrinkWrap: true,
-                                  children: children,
-                                ),
-                              ),
-                              AnimatedBuilder(
-                                animation: _scrollController,
-                                builder: (context, child) {
-                                  return Visibility(
-                                    visible: _scrollController.offset > 0,
-                                    child: Positioned(
-                                      top: 0,
-                                      left: 0,
-                                      right: 0,
-                                      child: HoverActivity(
-                                        hitTestBehavior:
-                                            HitTestBehavior.translucent,
-                                        debounceDuration:
-                                            const Duration(milliseconds: 16),
-                                        onHover: () {
-                                          // decrease scroll offset
-                                          var value =
-                                              _scrollController.offset - 8;
-                                          value = value.clamp(
-                                            0.0,
-                                            _scrollController
-                                                .position.maxScrollExtent,
-                                          );
-                                          _scrollController.jumpTo(
-                                            value,
-                                          );
-                                        },
-                                        child: Container(
-                                          color: theme.colorScheme.card,
-                                          padding: const EdgeInsets.symmetric(
-                                                  vertical: 4) *
-                                              scaling,
-                                          child: const Icon(
-                                            RadixIcons.chevronUp,
-                                          ).iconX3Small(),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              AnimatedBuilder(
-                                animation: _scrollController,
-                                builder: (context, child) {
-                                  return Visibility(
-                                    visible: _scrollController.hasClients &&
-                                        _scrollController
-                                            .position.hasContentDimensions &&
-                                        _scrollController.offset <
-                                            _scrollController
-                                                .position.maxScrollExtent,
-                                    child: Positioned(
-                                      bottom: 0,
-                                      left: 0,
-                                      right: 0,
-                                      child: HoverActivity(
-                                        hitTestBehavior:
-                                            HitTestBehavior.translucent,
-                                        debounceDuration:
-                                            const Duration(milliseconds: 16),
-                                        onHover: () {
-                                          // increase scroll offset
-                                          var value =
-                                              _scrollController.offset + 8;
-                                          value = value.clamp(
-                                            0.0,
-                                            _scrollController
-                                                .position.maxScrollExtent,
-                                          );
-                                          _scrollController.jumpTo(
-                                            value,
-                                          );
-                                        },
-                                        child: Container(
-                                          color: theme.colorScheme.card,
-                                          padding: const EdgeInsets.symmetric(
-                                                  vertical: 4) *
-                                              scaling,
-                                          child: const Icon(
-                                            RadixIcons.chevronDown,
-                                          ).iconX3Small(),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          );
-                        }
-                        return Data.inherit(
-                          data: SelectData(
-                            (item, query) {
-                              return widget.searchFilter?.call(item, query) ??
-                                  0;
-                            },
-                            text,
-                            (value, selected) {
-                              widget.onChanged?.call(value, selected);
-                              if (widget.autoClose) {
-                                closeOverlay(context, value);
-                              }
-                            },
-                            widget.value,
-                            widget.showUnrelatedValues,
-                            widget.orderSelectedFirst,
-                          ),
-                          child: child,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SelectSearchResult {
-  final int score;
-  final int index;
-  final bool hasSelectedValue;
-
-  SelectSearchResult(this.score, this.index, this.hasSelectedValue);
-}
-
-class SelectData {
-  final SearchFilter? searchFilter;
-  final String? query;
-  final ValueListenable<List<Object?>> value;
-  final SelectValueChanged onChanged;
-  final bool showUnrelatedValues;
-  final bool orderSelectedFirst;
-
-  SelectData(this.searchFilter, this.query, this.onChanged, this.value,
-      this.showUnrelatedValues, this.orderSelectedFirst);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is SelectData &&
-        other.searchFilter == searchFilter &&
-        other.query == query &&
-        other.value == value &&
-        other.onChanged == onChanged &&
-        other.showUnrelatedValues == showUnrelatedValues &&
-        other.orderSelectedFirst == orderSelectedFirst;
-  }
-
-  @override
-  int get hashCode {
-    return Object.hash(
-      searchFilter,
-      query,
-      value,
-      onChanged,
-      showUnrelatedValues,
-      orderSelectedFirst,
-    );
-  }
-}
-
-class MultiSelect<T> extends StatefulWidget {
-  final ValueChanged<List<T>>?
+  final ValueChanged<Iterable<T>?>?
       onChanged; // if null, then it's a disabled combobox
-  final SearchFilter<T>?
-      searchFilter; // if its not null, then it's a searchable combobox
+  @override
   final Widget? placeholder; // placeholder when value is null
+  @override
   final bool filled;
+  @override
   final FocusNode? focusNode;
+  @override
   final BoxConstraints? constraints;
+  @override
   final BoxConstraints? popupConstraints;
+  @override
   final PopoverConstraint popupWidthConstraint;
-  final List<AbstractSelectItem<T>> children;
-  final List<T> value;
-  final Widget Function(BuildContext context, T item) itemBuilder;
-  final bool showUnrelatedValues;
+  final Iterable<T>? value;
+  @override
   final BorderRadiusGeometry? borderRadius;
-  final Widget? searchPlaceholder;
+  @override
   final EdgeInsetsGeometry? padding;
+  @override
   final AlignmentGeometry popoverAlignment;
+  @override
   final AlignmentGeometry? popoverAnchorAlignment;
-  final WidgetBuilder? emptyBuilder;
-  final bool orderSelectedFirst;
-  final double? surfaceBlur;
-  final double? surfaceOpacity;
+  @override
   final bool disableHoverEffect;
-  final bool autoClosePopover;
-  final SelectSearch? onSearch;
+  @override
+  final bool canUnselect;
+  @override
+  final bool? autoClosePopover;
+  final bool? enabled;
+  @override
+  final SelectPopupBuilder popup;
+  @override
+  SelectValueBuilder<Iterable<T>> get itemBuilder => (context, value) {
+        return _buildItem(multiItemBuilder, context, value);
+      };
+  @override
+  final SelectValueSelectionHandler<Iterable<T>>? valueSelectionHandler;
+  @override
+  final SelectValueSelectionPredicate<Iterable<T>>? valueSelectionPredicate;
+  final SelectValueBuilder<T> multiItemBuilder;
 
   const MultiSelect({
     super.key,
     this.onChanged,
-    this.searchFilter,
     this.placeholder,
     this.filled = false,
     this.focusNode,
@@ -906,212 +729,540 @@ class MultiSelect<T> extends StatefulWidget {
     this.popupConstraints,
     this.popupWidthConstraint = PopoverConstraint.anchorFixedSize,
     required this.value,
-    this.showUnrelatedValues = false,
-    this.orderSelectedFirst = true,
     this.disableHoverEffect = false,
     this.borderRadius,
-    this.searchPlaceholder,
     this.padding,
     this.popoverAlignment = Alignment.topCenter,
     this.popoverAnchorAlignment,
-    this.emptyBuilder,
-    this.surfaceBlur,
-    this.surfaceOpacity,
+    this.canUnselect = true,
     this.autoClosePopover = false,
-    this.onSearch,
-    required this.itemBuilder,
-    required this.children,
+    this.enabled,
+    this.valueSelectionHandler,
+    this.valueSelectionPredicate,
+    required this.popup,
+    required SelectValueBuilder<T> itemBuilder,
+  }) : multiItemBuilder = itemBuilder;
+
+  static Widget _buildItem<T>(SelectValueBuilder<T> multiItemBuilder,
+      BuildContext context, Iterable<T> value) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    final data = Data.maybeOf<SelectData>(context);
+    return Wrap(
+      spacing: 4 * scaling,
+      runSpacing: 4 * scaling,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        for (var value in value)
+          Chip(
+            style: const ButtonStyle.primary(),
+            trailing: ChipButton(
+              onPressed: data?.enabled == false
+                  ? null
+                  : () {
+                      data?.onChanged(value, false);
+                    },
+              child: const Icon(
+                Icons.close,
+              ).iconSmall(),
+            ),
+            child: multiItemBuilder(
+              context,
+              value,
+            ),
+          ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Select<Iterable<T>>(
+      popup: popup,
+      itemBuilder: itemBuilder,
+      onChanged: onChanged,
+      placeholder: placeholder,
+      filled: filled,
+      focusNode: focusNode,
+      constraints: constraints,
+      popupConstraints: popupConstraints,
+      popupWidthConstraint: popupWidthConstraint,
+      value: value,
+      borderRadius: borderRadius,
+      padding: padding,
+      popoverAlignment: popoverAlignment,
+      popoverAnchorAlignment: popoverAnchorAlignment,
+      disableHoverEffect: disableHoverEffect,
+      canUnselect: canUnselect,
+      autoClosePopover: autoClosePopover ?? true,
+      enabled: enabled,
+      valueSelectionHandler:
+          valueSelectionHandler ?? _defaultMultiSelectValueSelectionHandler,
+      valueSelectionPredicate:
+          valueSelectionPredicate ?? _defaultMultiSelectValueSelectionPredicate,
+    );
+  }
+}
+
+typedef SelectValueChanged<T> = bool Function(T value, bool selected);
+
+class SelectData {
+  final bool? autoClose;
+  final Predicate<Object?> isSelected;
+  final SelectValueChanged<Object?> onChanged;
+  final bool hasSelection;
+  final bool enabled;
+
+  const SelectData({
+    required this.autoClose,
+    required this.isSelected,
+    required this.onChanged,
+    required this.hasSelection,
+    required this.enabled,
   });
 
   @override
-  State<MultiSelect<T>> createState() => MultiSelectState<T>();
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! SelectData) return false;
+    return other.isSelected == isSelected &&
+        other.onChanged == onChanged &&
+        other.hasSelection == hasSelection &&
+        other.autoClose == autoClose;
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(isSelected, onChanged, autoClose, hasSelection);
 }
 
-class MultiSelectState<T> extends State<MultiSelect<T>>
-    with FormValueSupplier<List<T>, MultiSelect<T>> {
-  late FocusNode _focusNode;
-  final PopoverController _popoverController = PopoverController();
-  late ValueNotifier<List<T>> _valueNotifier;
-  late ValueNotifier<List<AbstractSelectItem<T>>> _childrenNotifier;
+typedef SelectItemsBuilder<T> = FutureOr<SelectItemDelegate> Function(
+    BuildContext context, String? searchQuery);
+
+class SelectPopup<T> extends StatefulWidget {
+  final SelectItemsBuilder<T>? builder;
+  final FutureOr<SelectItemDelegate>? items;
+  final TextEditingController? searchController;
+  final Widget? searchPlaceholder;
+  final WidgetBuilder? emptyBuilder;
+  final WidgetBuilder? loadingBuilder;
+  final ErrorWidgetBuilder? errorBuilder;
+  final double? surfaceBlur;
+  final double? surfaceOpacity;
+  final bool? autoClose;
+  final bool? canUnselect;
+  final bool enableSearch;
+  final ScrollController? scrollController;
+  final bool shrinkWrap;
+
+  const SelectPopup.builder({
+    super.key,
+    required this.builder,
+    this.searchController,
+    this.searchPlaceholder,
+    this.emptyBuilder,
+    this.loadingBuilder,
+    this.surfaceBlur,
+    this.surfaceOpacity,
+    this.autoClose,
+    this.canUnselect,
+    this.enableSearch = true,
+    this.errorBuilder,
+    this.scrollController,
+  })  : items = null,
+        shrinkWrap = false;
+
+  const SelectPopup({
+    super.key,
+    this.items,
+    this.searchController,
+    this.searchPlaceholder,
+    this.emptyBuilder,
+    this.loadingBuilder,
+    this.errorBuilder,
+    this.surfaceBlur,
+    this.surfaceOpacity,
+    this.autoClose = true,
+    this.canUnselect,
+    this.scrollController,
+    this.shrinkWrap = true,
+  })  : builder = null,
+        enableSearch = false;
+
+  /// A method used to implement SelectPopupBuilder
+  SelectPopup<T> call(BuildContext context) {
+    return this;
+  }
+
+  @override
+  State<SelectPopup<T>> createState() => _SelectPopupState<T>();
+}
+
+class _SelectPopupState<T> extends State<SelectPopup<T>> {
+  late TextEditingController _searchController;
+  late ScrollController _scrollController;
+  SelectData? _selectData;
 
   @override
   void initState() {
     super.initState();
-    _focusNode = widget.focusNode ?? FocusNode();
-    _valueNotifier = ValueNotifier(widget.value);
-    _childrenNotifier = ValueNotifier(widget.children);
-    formValue = widget.value;
+    _searchController = widget.searchController ?? TextEditingController();
+    _scrollController = widget.scrollController ?? ScrollController();
   }
 
   @override
-  void didUpdateWidget(MultiSelect<T> oldWidget) {
+  void didUpdateWidget(covariant SelectPopup<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.focusNode != oldWidget.focusNode) {
-      _focusNode = widget.focusNode ?? FocusNode();
+    if (widget.searchController != oldWidget.searchController) {
+      _searchController = widget.searchController ?? TextEditingController();
     }
-    if (!listEquals(widget.value, oldWidget.value)) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        _valueNotifier.value = widget.value;
-      });
-      formValue = widget.value;
-    }
-    if (!listEquals(widget.children, oldWidget.children)) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        _childrenNotifier.value = widget.children;
-      });
+    if (widget.scrollController != oldWidget.scrollController) {
+      _scrollController = widget.scrollController ?? ScrollController();
     }
   }
 
   @override
-  void didReplaceFormValue(List<T> value) {
-    widget.onChanged?.call(value);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _selectData = Data.maybeOf<SelectData>(context);
   }
 
-  Widget get placeholder {
-    if (widget.placeholder != null) {
-      return widget.placeholder!;
+  bool isSelected(T value) {
+    return _selectData?.isSelected(value) ?? false;
+  }
+
+  void selectItem(T value, bool selected) {
+    _selectData?.onChanged(value, selected);
+    if (widget.autoClose ?? _selectData?.autoClose == true) {
+      closeOverlay(context, value);
     }
-    return const SizedBox();
-  }
-
-  @override
-  void dispose() {
-    _popoverController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return ConstrainedBox(
-      constraints: widget.constraints ?? const BoxConstraints(),
-      child: TapRegion(
-        onTapOutside: (event) {
-          _focusNode.unfocus();
-        },
-        child: Button(
-          disableHoverEffect: widget.disableHoverEffect,
-          focusNode: _focusNode,
-          style: (widget.filled
-                  ? ButtonVariance.secondary
-                  : ButtonVariance.outline)
-              .copyWith(
-            decoration: widget.borderRadius != null
-                ? (context, states, decoration) {
-                    return (decoration as BoxDecoration).copyWith(
-                      borderRadius: widget.borderRadius,
-                    );
-                  }
-                : null,
-            padding: widget.padding != null
-                ? (context, states, value) => widget.padding!
-                : null,
-          ),
-          onPressed: widget.onChanged == null
-              ? null
-              : () {
-                  _popoverController
-                      .show(
-                    context: context,
-                    alignment: widget.popoverAlignment,
-                    anchorAlignment: widget.popoverAnchorAlignment,
-                    widthConstraint: widget.popupWidthConstraint,
-                    overlayBarrier: OverlayBarrier(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 8) * scaling,
-                      borderRadius: BorderRadius.circular(theme.radiusLg),
-                    ),
-                    builder: (context) {
-                      return SelectPopup<T>(
-                        borderRadius: BorderRadius.circular(theme.radiusLg),
-                        margin:
-                            const EdgeInsets.symmetric(vertical: 8) * scaling,
-                        orderSelectedFirst: widget.orderSelectedFirst,
-                        searchPlaceholder: widget.searchPlaceholder,
-                        onSearch: widget.onSearch,
-                        searchFilter: widget.searchFilter,
-                        constraints: widget.popupConstraints,
-                        value: _valueNotifier,
-                        showUnrelatedValues: widget.showUnrelatedValues,
-                        autoClose: widget.autoClosePopover,
-                        onChanged: widget.onChanged == null
-                            ? null
-                            : (value, selected) {
-                                if (value != null) {
-                                  List<T> newValue = List.from(widget.value);
-                                  if (selected) {
-                                    newValue.add(value);
-                                  } else {
-                                    newValue.remove(value);
-                                  }
-                                  widget.onChanged!(newValue);
-                                }
-                              },
-                        emptyBuilder: widget.emptyBuilder,
-                        surfaceBlur: widget.surfaceBlur,
-                        surfaceOpacity: widget.surfaceOpacity,
-                        children: _childrenNotifier,
-                      );
-                    },
-                  )
-                      .then(
-                    (value) {
-                      _focusNode.requestFocus();
-                    },
-                  );
-                },
-          child: IntrinsicWidth(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                  child: widget.value.isNotEmpty
-                      ? Wrap(
-                          spacing: 4 * scaling,
-                          runSpacing: 4 * scaling,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            for (var value in widget.value)
-                              Chip(
-                                style: const ButtonStyle.primary(),
-                                trailing: ChipButton(
-                                  onPressed: widget.onChanged == null
-                                      ? null
-                                      : () {
-                                          if (widget.onChanged != null) {
-                                            List<T> newValue =
-                                                List.from(widget.value);
-                                            newValue.remove(value);
-                                            widget.onChanged!(newValue);
-                                          }
-                                        },
-                                  child: const Icon(
-                                    Icons.close,
-                                  ).iconSmall(),
-                                ),
-                                child: widget.itemBuilder(
-                                  context,
-                                  value,
-                                ),
-                              ),
-                          ],
-                        )
-                      : placeholder,
-                ),
-                SizedBox(width: 8 * scaling),
-                IconTheme(
-                  data: IconThemeData(
-                    color: theme.colorScheme.foreground,
-                    opacity: 0.5,
-                  ),
-                  child: const Icon(Icons.unfold_more).iconSmall(),
-                ),
-              ],
+    return SurfaceCard(
+      clipBehavior: Clip.hardEdge,
+      surfaceBlur: widget.surfaceBlur,
+      surfaceOpacity: widget.surfaceOpacity,
+      padding: EdgeInsets.zero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (widget.enableSearch)
+            TextField(
+              controller: _searchController,
+              border: false,
+              leading: const Icon(
+                Icons.search,
+              ).iconSmall().iconMutedForeground(),
+              placeholder: widget.searchPlaceholder,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 12, horizontal: 12) *
+                      scaling,
             ),
+          Flexible(
+            child: ListenableBuilder(
+                listenable: _searchController,
+                builder: (context, _) {
+                  return CachedValueWidget(
+                      value: _searchController.text.isEmpty
+                          ? null
+                          : _searchController.text,
+                      builder: (context, searchQuery) {
+                        return FutureOrBuilder<SelectItemDelegate>(
+                            future: widget.builder != null
+                                ? widget.builder!.call(context, searchQuery)
+                                : widget.items != null
+                                    ? widget.items!
+                                    : SelectItemDelegate.empty,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                Widget? loadingBuilder =
+                                    widget.loadingBuilder?.call(context);
+                                if (loadingBuilder != null) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      if (widget.enableSearch) const Divider(),
+                                      Flexible(
+                                        child: loadingBuilder,
+                                      ),
+                                    ],
+                                  );
+                                }
+                                return const SizedBox();
+                              }
+                              if (snapshot.hasError) {
+                                Widget? errorBuilder =
+                                    widget.errorBuilder?.call(
+                                  context,
+                                  snapshot.error!,
+                                  snapshot.stackTrace,
+                                );
+                                if (errorBuilder != null) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      if (widget.enableSearch) const Divider(),
+                                      Flexible(
+                                        child: errorBuilder,
+                                      ),
+                                    ],
+                                  );
+                                }
+                                return const SizedBox();
+                              }
+                              if (snapshot.hasData &&
+                                  snapshot.data?.estimatedChildCount != 0) {
+                                var data = snapshot.requireData;
+                                return CachedValueWidget(
+                                  value: data,
+                                  builder: (context, data) {
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        if (widget.enableSearch)
+                                          const Divider(),
+                                        Flexible(
+                                          child: Stack(
+                                            fit: StackFit.passthrough,
+                                            children: [
+                                              ListView.builder(
+                                                controller: _scrollController,
+                                                padding:
+                                                    const EdgeInsets.all(4) *
+                                                        scaling,
+                                                itemBuilder: data.build,
+                                                shrinkWrap: widget.shrinkWrap,
+                                                itemCount:
+                                                    data.estimatedChildCount,
+                                              ),
+                                              ListenableBuilder(
+                                                listenable: _scrollController,
+                                                builder: (context, child) {
+                                                  return Visibility(
+                                                    visible: _scrollController
+                                                            .offset >
+                                                        0,
+                                                    child: Positioned(
+                                                      top: 0,
+                                                      left: 0,
+                                                      right: 0,
+                                                      child: HoverActivity(
+                                                        hitTestBehavior:
+                                                            HitTestBehavior
+                                                                .translucent,
+                                                        debounceDuration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    16),
+                                                        onHover: () {
+                                                          // decrease scroll offset
+                                                          var value =
+                                                              _scrollController
+                                                                      .offset -
+                                                                  8;
+                                                          value = value.clamp(
+                                                            0.0,
+                                                            _scrollController
+                                                                .position
+                                                                .maxScrollExtent,
+                                                          );
+                                                          _scrollController
+                                                              .jumpTo(
+                                                            value,
+                                                          );
+                                                        },
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          4) *
+                                                                  scaling,
+                                                          child: const Icon(
+                                                            RadixIcons
+                                                                .chevronUp,
+                                                          ).iconX3Small(),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                              ListenableBuilder(
+                                                listenable: _scrollController,
+                                                builder: (context, child) {
+                                                  return Visibility(
+                                                    visible: !_scrollController
+                                                            .hasClients ||
+                                                        !_scrollController
+                                                            .position
+                                                            .hasContentDimensions ||
+                                                        _scrollController
+                                                                .offset <
+                                                            _scrollController
+                                                                .position
+                                                                .maxScrollExtent,
+                                                    child: Positioned(
+                                                      bottom: 0,
+                                                      left: 0,
+                                                      right: 0,
+                                                      child: HoverActivity(
+                                                        hitTestBehavior:
+                                                            HitTestBehavior
+                                                                .translucent,
+                                                        debounceDuration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    16),
+                                                        onHover: () {
+                                                          // increase scroll offset
+                                                          var value =
+                                                              _scrollController
+                                                                      .offset +
+                                                                  8;
+                                                          value = value.clamp(
+                                                            0.0,
+                                                            _scrollController
+                                                                .position
+                                                                .maxScrollExtent,
+                                                          );
+                                                          _scrollController
+                                                              .jumpTo(
+                                                            value,
+                                                          );
+                                                        },
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          4) *
+                                                                  scaling,
+                                                          child: const Icon(
+                                                            RadixIcons
+                                                                .chevronDown,
+                                                          ).iconX3Small(),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                              Widget? emptyBuilder = widget.emptyBuilder?.call(
+                                context,
+                              );
+                              if (emptyBuilder != null) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    if (widget.enableSearch) const Divider(),
+                                    Flexible(
+                                      child: emptyBuilder,
+                                    ),
+                                  ],
+                                );
+                              }
+                              return const SizedBox();
+                            });
+                      });
+                }),
           ),
-        ),
+        ],
       ),
     );
+  }
+}
+
+abstract class SelectItemDelegate with CachedValue {
+  static const empty = EmptySelectItem();
+  const SelectItemDelegate();
+  Widget? build(BuildContext context, int index);
+  int? get estimatedChildCount => null;
+  @override
+  bool shouldRebuild(covariant SelectItemDelegate oldDelegate);
+}
+
+class EmptySelectItem extends SelectItemDelegate {
+  const EmptySelectItem();
+
+  @override
+  Widget? build(BuildContext context, int index) => null;
+
+  @override
+  int get estimatedChildCount => 0;
+
+  @override
+  bool shouldRebuild(covariant EmptySelectItem oldDelegate) {
+    return false;
+  }
+}
+
+typedef SelectItemWidgetBuilder = Widget Function(
+    BuildContext context, int index);
+
+class SelectItemBuilder extends SelectItemDelegate {
+  final SelectItemWidgetBuilder builder;
+  final int? childCount;
+
+  const SelectItemBuilder({
+    required this.builder,
+    this.childCount,
+  });
+
+  @override
+  Widget build(BuildContext context, int index) {
+    return builder(context, index);
+  }
+
+  @override
+  int? get estimatedChildCount => childCount;
+
+  @override
+  bool shouldRebuild(covariant SelectItemBuilder oldDelegate) {
+    return oldDelegate.builder != builder &&
+        oldDelegate.childCount != childCount;
+  }
+}
+
+class SelectItemList extends SelectItemDelegate {
+  final List<Widget> children;
+
+  const SelectItemList({
+    required this.children,
+  });
+
+  @override
+  Widget build(BuildContext context, int index) {
+    return children[index];
+  }
+
+  @override
+  int get estimatedChildCount => children.length;
+
+  @override
+  bool shouldRebuild(covariant SelectItemList oldDelegate) {
+    return !listEquals(oldDelegate.children, children);
   }
 }

@@ -86,7 +86,7 @@ class IgnoreForm<T> extends StatelessWidget {
     return MultiData(
       data: ignoring
           ? const [
-              Data<FormEntryState>.boundary(),
+              Data<FormFieldHandle>.boundary(),
               Data<FormController>.boundary(),
             ]
           : const [],
@@ -972,12 +972,18 @@ class FormEntry<T> extends StatefulWidget {
   State<FormEntry> createState() => FormEntryState();
 }
 
-class FormEntryState extends State<FormEntry> {
+mixin FormFieldHandle {
+  FutureOr<ValidationResult?> reportNewFormValue(Object? value);
+  ValueListenable<ValidationResult?>? get validity;
+}
+
+class FormEntryState extends State<FormEntry> with FormFieldHandle {
   FormController? _controller;
   Object? _cachedValue;
   final ValueNotifier<ValidationResult?> _validity = ValueNotifier(null);
 
-  ValueListenable<ValidationResult?> get validity => _validity;
+  @override
+  ValueListenable<ValidationResult?>? get validity => _validity;
 
   int _toWaitCounter = 0;
   FutureOr<ValidationResult?>? _toWait;
@@ -1027,12 +1033,13 @@ class FormEntryState extends State<FormEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return Data.inherit(
+    return Data<FormFieldHandle>.inherit(
       data: this,
       child: widget.child,
     );
   }
 
+  @override
   FutureOr<ValidationResult?> reportNewFormValue(Object? value) {
     if (!widget.key.isInstanceOf(value)) {
       return null;
@@ -1043,6 +1050,73 @@ class FormEntryState extends State<FormEntry> {
     _cachedValue = value;
     return _controller?.attach(context, widget.key, value, widget.validator);
   }
+}
+
+class FormEntryInterceptor<T> extends StatefulWidget {
+  final Widget child;
+  final ValueChanged<T>? onValueReported;
+
+  const FormEntryInterceptor(
+      {super.key, required this.child, this.onValueReported});
+
+  @override
+  State<FormEntryInterceptor<T>> createState() =>
+      _FormEntryInterceptorState<T>();
+}
+
+class _FormEntryInterceptorState<T> extends State<FormEntryInterceptor<T>> {
+  FormFieldHandle? _handle;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _handle = Data.maybeOf<FormFieldHandle>(context);
+  }
+
+  void _onValueReported(Object? value) {
+    var callback = widget.onValueReported;
+    if (callback != null && value is T) {
+      callback(value);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Data<FormFieldHandle>.inherit(
+      data: _FormEntryHandleInterceptor(_handle, _onValueReported),
+      child: widget.child,
+    );
+  }
+}
+
+class _FormEntryHandleInterceptor with FormFieldHandle {
+  final FormFieldHandle? handle;
+  final void Function(Object? value) onValueReported;
+
+  const _FormEntryHandleInterceptor(this.handle, this.onValueReported);
+
+  @override
+  FutureOr<ValidationResult?> reportNewFormValue(Object? value) {
+    return handle?.reportNewFormValue(value);
+  }
+
+  @override
+  ValueListenable<ValidationResult?>? get validity => handle?.validity;
+
+  @override
+  String toString() {
+    return '_FormEntryHandleInterceptor($handle, $onValueReported)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is _FormEntryHandleInterceptor &&
+        other.handle == handle &&
+        other.onValueReported == onValueReported;
+  }
+
+  @override
+  int get hashCode => Object.hash(handle, onValueReported);
 }
 
 class FormValueState<T> {
@@ -1271,18 +1345,21 @@ class FormEntryErrorBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formController = Data.maybeOf<FormEntryState>(context);
+    final formController = Data.maybeOf<FormFieldHandle>(context);
     if (formController != null) {
-      return ValueListenableBuilder<ValidationResult?>(
-        valueListenable: formController._validity,
-        child: child,
-        builder: (context, validity, child) {
-          if (modes != null && !modes!.contains(validity?.state)) {
-            return builder(context, null, child);
-          }
-          return builder(context, validity, child);
-        },
-      );
+      var validityListenable = formController.validity;
+      return ListenableBuilder(
+          listenable: Listenable.merge([
+            if (validityListenable != null) validityListenable,
+          ]),
+          builder: (context, child) {
+            var validity = validityListenable?.value;
+            if (modes != null && !modes!.contains(validity?.state)) {
+              return builder(context, null, child);
+            }
+            return builder(context, validity, child);
+          },
+          child: child);
     }
     return builder(context, null, child);
   }
@@ -1417,7 +1494,7 @@ extension FormExtension on BuildContext {
 mixin FormValueSupplier<T, X extends StatefulWidget> on State<X> {
   T? _cachedValue;
   int _futureCounter = 0;
-  FormEntryState? _entryState;
+  FormFieldHandle? _entryState;
 
   T? get formValue => _cachedValue;
   set formValue(T? value) {
@@ -1431,7 +1508,7 @@ mixin FormValueSupplier<T, X extends StatefulWidget> on State<X> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    var newState = Data.maybeOf<FormEntryState>(context);
+    var newState = Data.maybeOf<FormFieldHandle>(context);
     if (newState != _entryState) {
       _entryState = newState;
       _reportNewFormValue(_cachedValue);

@@ -4,6 +4,26 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef ChipWidgetBuilder<T> = Widget Function(BuildContext context, T chip);
 
+class ChipInputController<T> extends ValueNotifier<List<T>>
+    with ComponentController<List<T>> {
+  ChipInputController([super.value = const []]);
+}
+
+// class ControlledChipInput<T> extends StatelessWidget
+//     with ControlledComponent<List<T>> {
+//   @override
+//   final List<T>? initialValue;
+//   @override
+//   final ValueChanged<List<T>>? onChanged;
+//   @override
+//   final bool enabled;
+//   @override
+//   final ChipInputController<T>? controller;
+//   final TextEditingController? textEditingController;
+//   final BoxConstraints popoverConstraints;
+//   final UndoHistoryController? undoHistoryController;
+// }
+
 class ChipInput<T> extends StatefulWidget {
   final TextEditingController? controller;
   final BoxConstraints popoverConstraints;
@@ -24,6 +44,7 @@ class ChipInput<T> extends StatefulWidget {
   final Widget Function(BuildContext, T)? suggestionLeadingBuilder;
   final Widget Function(BuildContext, T)? suggestionTrailingBuilder;
   final Widget? inputTrailingWidget;
+  final bool enabled;
 
   const ChipInput({
     super.key,
@@ -48,6 +69,7 @@ class ChipInput<T> extends StatefulWidget {
     this.suggestionTrailingBuilder,
     this.inputTrailingWidget,
     required this.chipBuilder,
+    this.enabled = true,
   });
 
   @override
@@ -374,6 +396,7 @@ class ChipInputState<T> extends State<ChipInput<T>>
             inputFormatters: widget.inputFormatters,
             textInputAction: widget.textInputAction,
             border: false,
+            enabled: widget.enabled,
             maxLines: 1,
             placeholder: widget.placeholder,
             onSubmitted: _handleSubmitted,

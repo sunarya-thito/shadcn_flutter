@@ -1,3 +1,5 @@
+// This file contains mostly patches from another package/sdk
+// due to changes that need to be made but cannot be done normally
 import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:flutter/cupertino.dart'
@@ -8,6 +10,7 @@ import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart' as widgets;
 
 import '../../../shadcn_flutter.dart';
 
@@ -18,6 +21,52 @@ export 'package:flutter/services.dart'
         TextCapitalization,
         TextInputAction,
         TextInputType;
+
+// patched from flutter:widgets.dart to implement ComponentController<TextEditingValue>
+class TextEditingController extends widgets.TextEditingController
+    with ComponentController<TextEditingValue> {
+  TextEditingController({String? text}) : super(text: text);
+  TextEditingController.fromValue(TextEditingValue value)
+      : super.fromValue(value);
+}
+
+class RestorableTextEditingController
+    extends RestorableChangeNotifier<TextEditingController> {
+  /// Creates a [RestorableTextEditingController].
+  ///
+  /// This constructor treats a null `text` argument as if it were the empty
+  /// string.
+  factory RestorableTextEditingController({String? text}) =>
+      RestorableTextEditingController.fromValue(
+        text == null ? TextEditingValue.empty : TextEditingValue(text: text),
+      );
+
+  /// Creates a [RestorableTextEditingController] from an initial
+  /// [TextEditingValue].
+  ///
+  /// This constructor treats a null `value` argument as if it were
+  /// [TextEditingValue.empty].
+  RestorableTextEditingController.fromValue(TextEditingValue value)
+      : _initialValue = value;
+
+  final TextEditingValue _initialValue;
+
+  @override
+  TextEditingController createDefaultValue() {
+    return TextEditingController.fromValue(_initialValue);
+  }
+
+  @override
+  TextEditingController fromPrimitives(Object? data) {
+    return TextEditingController(text: data! as String);
+  }
+
+  @override
+  Object toPrimitives() {
+    return value.text;
+  }
+}
+// end of patch
 
 class _TextFieldSelectionGestureDetectorBuilder
     extends TextSelectionGestureDetectorBuilder {
@@ -53,7 +102,83 @@ class _TextFieldSelectionGestureDetectorBuilder
   }
 }
 
-class TextField extends StatefulWidget {
+/// Mixin widget used to avoid human error (e.g. missing properties) when
+/// implementing a [TextField], [ChipInput], [TextArea], etc.
+mixin TextInput on Widget {
+  Object get groupId;
+  TextEditingController? get controller;
+  FocusNode? get focusNode;
+  BoxDecoration? get decoration;
+  EdgeInsetsGeometry? get padding;
+  Widget? get placeholder;
+  Widget? get leading;
+  Widget? get trailing;
+  CrossAxisAlignment get crossAxisAlignment;
+  String? get clearButtonSemanticLabel;
+  TextInputType get keyboardType;
+  TextInputAction? get textInputAction;
+  TextCapitalization get textCapitalization;
+  TextStyle? get style;
+  StrutStyle? get strutStyle;
+  TextAlign get textAlign;
+  TextAlignVertical? get textAlignVertical;
+  TextDirection? get textDirection;
+  bool get readOnly;
+  bool? get showCursor;
+  bool get autofocus;
+  String get obscuringCharacter;
+  bool get obscureText;
+  bool get autocorrect;
+  SmartDashesType get smartDashesType;
+  SmartQuotesType get smartQuotesType;
+  bool get enableSuggestions;
+  int? get maxLines;
+  int? get minLines;
+  bool get expands;
+  int? get maxLength;
+  MaxLengthEnforcement? get maxLengthEnforcement;
+  ValueChanged<String>? get onChanged;
+  VoidCallback? get onEditingComplete;
+  ValueChanged<String>? get onSubmitted;
+  TapRegionCallback? get onTapOutside;
+  TapRegionCallback? get onTapUpOutside;
+  List<TextInputFormatter>? get inputFormatters;
+  bool get enabled;
+  double get cursorWidth;
+  double? get cursorHeight;
+  Radius get cursorRadius;
+  bool get cursorOpacityAnimates;
+  Color? get cursorColor;
+  ui.BoxHeightStyle get selectionHeightStyle;
+  ui.BoxWidthStyle get selectionWidthStyle;
+  Brightness? get keyboardAppearance;
+  EdgeInsets get scrollPadding;
+  bool get enableInteractiveSelection;
+  TextSelectionControls? get selectionControls;
+  DragStartBehavior get dragStartBehavior;
+  ScrollController? get scrollController;
+  ScrollPhysics? get scrollPhysics;
+  bool get selectionEnabled;
+  GestureTapCallback? get onTap;
+  Iterable<String>? get autofillHints;
+  Clip get clipBehavior;
+  String? get restorationId;
+  bool get stylusHandwritingEnabled;
+  bool get enableIMEPersonalizedLearning;
+  ContentInsertionConfiguration? get contentInsertionConfiguration;
+  EditableTextContextMenuBuilder? get contextMenuBuilder;
+  String? get initialValue;
+  String? get hintText;
+  bool get border;
+  BorderRadiusGeometry? get borderRadius;
+  bool get filled;
+  WidgetStatesController? get statesController;
+  TextMagnifierConfiguration? get magnifierConfiguration;
+  SpellCheckConfiguration? get spellCheckConfiguration;
+  UndoHistoryController? get undoController;
+}
+
+class TextField extends StatefulWidget with TextInput {
   const TextField({
     super.key,
     this.groupId = EditableText,
@@ -157,141 +282,209 @@ class TextField extends StatefulWidget {
         enableInteractiveSelection =
             enableInteractiveSelection ?? (!readOnly || !obscureText);
 
+  @override
   final Object groupId;
 
+  @override
   final TextEditingController? controller;
 
+  @override
   final FocusNode? focusNode;
 
+  @override
   final BoxDecoration? decoration;
 
+  @override
   final EdgeInsetsGeometry? padding;
 
+  @override
   final Widget? placeholder;
 
+  @override
   final Widget? leading;
 
+  @override
   final Widget? trailing;
 
+  @override
   final CrossAxisAlignment crossAxisAlignment;
 
+  @override
   final String? clearButtonSemanticLabel;
 
+  @override
   final TextInputType keyboardType;
 
+  @override
   final TextInputAction? textInputAction;
 
+  @override
   final TextCapitalization textCapitalization;
 
+  @override
   final TextStyle? style;
 
+  @override
   final StrutStyle? strutStyle;
 
+  @override
   final TextAlign textAlign;
 
+  @override
   final TextAlignVertical? textAlignVertical;
 
+  @override
   final TextDirection? textDirection;
 
+  @override
   final bool readOnly;
 
+  @override
   final bool? showCursor;
 
+  @override
   final bool autofocus;
 
+  @override
   final String obscuringCharacter;
 
+  @override
   final bool obscureText;
 
+  @override
   final bool autocorrect;
 
+  @override
   final SmartDashesType smartDashesType;
 
+  @override
   final SmartQuotesType smartQuotesType;
 
+  @override
   final bool enableSuggestions;
 
+  @override
   final int? maxLines;
 
+  @override
   final int? minLines;
 
+  @override
   final bool expands;
 
+  @override
   final int? maxLength;
 
+  @override
   final MaxLengthEnforcement? maxLengthEnforcement;
 
+  @override
   final ValueChanged<String>? onChanged;
 
+  @override
   final VoidCallback? onEditingComplete;
 
+  @override
   final ValueChanged<String>? onSubmitted;
 
+  @override
   final TapRegionCallback? onTapOutside;
 
+  @override
   final TapRegionCallback? onTapUpOutside;
 
+  @override
   final List<TextInputFormatter>? inputFormatters;
 
+  @override
   final bool enabled;
 
+  @override
   final double cursorWidth;
 
+  @override
   final double? cursorHeight;
 
+  @override
   final Radius cursorRadius;
 
+  @override
   final bool cursorOpacityAnimates;
 
+  @override
   final Color? cursorColor;
 
+  @override
   final ui.BoxHeightStyle selectionHeightStyle;
 
+  @override
   final ui.BoxWidthStyle selectionWidthStyle;
 
+  @override
   final Brightness? keyboardAppearance;
 
+  @override
   final EdgeInsets scrollPadding;
 
+  @override
   final bool enableInteractiveSelection;
 
+  @override
   final TextSelectionControls? selectionControls;
 
+  @override
   final DragStartBehavior dragStartBehavior;
 
+  @override
   final ScrollController? scrollController;
 
+  @override
   final ScrollPhysics? scrollPhysics;
 
+  @override
   bool get selectionEnabled => enableInteractiveSelection;
 
+  @override
   final GestureTapCallback? onTap;
 
+  @override
   final Iterable<String>? autofillHints;
 
+  @override
   final Clip clipBehavior;
 
+  @override
   final String? restorationId;
 
+  @override
   final bool stylusHandwritingEnabled;
 
+  @override
   final bool enableIMEPersonalizedLearning;
 
+  @override
   final ContentInsertionConfiguration? contentInsertionConfiguration;
 
+  @override
   final EditableTextContextMenuBuilder? contextMenuBuilder;
 
+  @override
   final String? initialValue;
 
+  @override
   final String?
       hintText; // used for autofill hints (use placeholder for decoration)
 
+  @override
   final bool border;
 
+  @override
   final BorderRadiusGeometry? borderRadius;
 
+  @override
   final bool filled;
 
+  @override
   final WidgetStatesController? statesController;
 
   static Widget _defaultContextMenuBuilder(
@@ -301,8 +494,10 @@ class TextField extends StatefulWidget {
     return buildEditableTextContextMenu(context, editableTextState);
   }
 
+  @override
   final TextMagnifierConfiguration? magnifierConfiguration;
 
+  @override
   final SpellCheckConfiguration? spellCheckConfiguration;
 
   @visibleForTesting
@@ -314,6 +509,7 @@ class TextField extends StatefulWidget {
         editableTextState: editableTextState);
   }
 
+  @override
   final UndoHistoryController? undoController;
 
   @override
@@ -798,6 +994,58 @@ class _TextFieldState extends State<TextField>
     _statesController.update(WidgetState.hovered, false);
   }
 
+  Widget _wrapActions({required Widget child}) {
+    return Actions(
+      actions: {
+        TextFieldClearIntent: CallbackAction(
+          onInvoke: (_) {
+            _effectiveController.clear();
+            return;
+          },
+        ),
+        TextFieldAppendTextIntent: CallbackAction<TextFieldAppendTextIntent>(
+          onInvoke: (intent) {
+            final newText = _effectiveController.text + intent.text;
+            _effectiveController.value = TextEditingValue(
+              text: newText,
+              selection: TextSelection.collapsed(offset: newText.length),
+            );
+            return;
+          },
+        ),
+        TextFieldReplaceCurrentWordIntent:
+            CallbackAction<TextFieldReplaceCurrentWordIntent>(
+          onInvoke: (intent) {
+            final replacement = intent.text;
+            final value = _effectiveController.value;
+            final text = value.text;
+            final selection = value.selection;
+            if (selection.isCollapsed) {
+              int start = selection.start;
+              final newText = replaceWordAtCaret(text, start, replacement);
+              _effectiveController.value = TextEditingValue(
+                text: newText.$2,
+                selection: TextSelection.collapsed(
+                  offset: newText.$1 + replacement.length,
+                ),
+              );
+            }
+            return;
+          },
+        ),
+        TextFieldSetTextIntent: CallbackAction<TextFieldSetTextIntent>(
+          onInvoke: (intent) {
+            _effectiveController.value = TextEditingValue(
+                text: intent.text,
+                selection: TextSelection.collapsed(offset: intent.text.length));
+            return;
+          },
+        ),
+      },
+      child: child,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
@@ -908,6 +1156,7 @@ class _TextFieldState extends State<TextField>
           keyboardType: widget.keyboardType,
           textInputAction: widget.textInputAction,
           textCapitalization: widget.textCapitalization,
+          autofillHints: widget.autofillHints,
           style: defaultTextStyle,
           strutStyle: widget.strutStyle,
           textAlign: widget.textAlign,
@@ -968,76 +1217,79 @@ class _TextFieldState extends State<TextField>
       data: theme.iconTheme.small.copyWith(
         color: theme.colorScheme.mutedForeground,
       ),
-      child: MouseRegion(
-        onEnter: _onEnter,
-        onExit: _onExit,
-        child: WidgetStatesProvider(
-          controller: _statesController,
-          states: {
-            if (!enabled) WidgetState.disabled,
-          },
-          child: Semantics(
-            enabled: enabled,
-            onTap: !enabled || widget.readOnly
-                ? null
-                : () {
-                    if (!controller.selection.isValid) {
-                      controller.selection = TextSelection.collapsed(
-                          offset: controller.text.length);
-                    }
-                    _requestKeyboard();
-                  },
-            onDidGainAccessibilityFocus: handleDidGainAccessibilityFocus,
-            onDidLoseAccessibilityFocus: handleDidLoseAccessibilityFocus,
-            onFocus: enabled
-                ? () {
-                    assert(
-                      _effectiveFocusNode.canRequestFocus,
-                      'Received SemanticsAction.focus from the engine. However, the FocusNode '
-                      'of this text field cannot gain focus. This likely indicates a bug. '
-                      'If this text field cannot be focused (e.g. because it is not '
-                      'enabled), then its corresponding semantics node must be configured '
-                      'such that the assistive technology cannot request focus on it.',
-                    );
-
-                    if (_effectiveFocusNode.canRequestFocus &&
-                        !_effectiveFocusNode.hasFocus) {
-                      _effectiveFocusNode.requestFocus();
-                    } else if (!widget.readOnly) {
-                      // If the platform requested focus, that means that previously the
-                      // platform believed that the text field did not have focus (even
-                      // though Flutter's widget system believed otherwise). This likely
-                      // means that the on-screen keyboard is hidden, or more generally,
-                      // there is no current editing session in this field. To correct
-                      // that, keyboard must be requested.
-                      //
-                      // A concrete scenario where this can happen is when the user
-                      // dismisses the keyboard on the web. The editing session is
-                      // closed by the engine, but the text field widget stays focused
-                      // in the framework.
+      child: _wrapActions(
+        child: MouseRegion(
+          onEnter: _onEnter,
+          onExit: _onExit,
+          child: WidgetStatesProvider(
+            controller: _statesController,
+            states: {
+              if (!enabled) WidgetState.disabled,
+            },
+            child: Semantics(
+              enabled: enabled,
+              onTap: !enabled || widget.readOnly
+                  ? null
+                  : () {
+                      if (!controller.selection.isValid) {
+                        controller.selection = TextSelection.collapsed(
+                            offset: controller.text.length);
+                      }
                       _requestKeyboard();
+                    },
+              onDidGainAccessibilityFocus: handleDidGainAccessibilityFocus,
+              onDidLoseAccessibilityFocus: handleDidLoseAccessibilityFocus,
+              onFocus: enabled
+                  ? () {
+                      assert(
+                        _effectiveFocusNode.canRequestFocus,
+                        'Received SemanticsAction.focus from the engine. However, the FocusNode '
+                        'of this text field cannot gain focus. This likely indicates a bug. '
+                        'If this text field cannot be focused (e.g. because it is not '
+                        'enabled), then its corresponding semantics node must be configured '
+                        'such that the assistive technology cannot request focus on it.',
+                      );
+
+                      if (_effectiveFocusNode.canRequestFocus &&
+                          !_effectiveFocusNode.hasFocus) {
+                        _effectiveFocusNode.requestFocus();
+                      } else if (!widget.readOnly) {
+                        // If the platform requested focus, that means that previously the
+                        // platform believed that the text field did not have focus (even
+                        // though Flutter's widget system believed otherwise). This likely
+                        // means that the on-screen keyboard is hidden, or more generally,
+                        // there is no current editing session in this field. To correct
+                        // that, keyboard must be requested.
+                        //
+                        // A concrete scenario where this can happen is when the user
+                        // dismisses the keyboard on the web. The editing session is
+                        // closed by the engine, but the text field widget stays focused
+                        // in the framework.
+                        _requestKeyboard();
+                      }
                     }
-                  }
-                : null,
-            child: TextFieldTapRegion(
-              child: IgnorePointer(
-                ignoring: !enabled,
-                child: Container(
-                  decoration: effectiveDecoration,
-                  child: _selectionGestureDetectorBuilder.buildGestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    child: Align(
-                      alignment: Alignment(-1.0, _textAlignVertical.y),
-                      widthFactor: 1.0,
-                      heightFactor: 1.0,
-                      child: Padding(
-                        padding: widget.padding ??
-                            EdgeInsets.symmetric(
-                              horizontal: 12 * scaling,
-                              vertical: 8 * scaling,
-                            ),
-                        child: _addTextDependentAttachments(
-                            editable, defaultTextStyle, theme),
+                  : null,
+              child: TextFieldTapRegion(
+                child: IgnorePointer(
+                  ignoring: !enabled,
+                  child: Container(
+                    decoration: effectiveDecoration,
+                    child:
+                        _selectionGestureDetectorBuilder.buildGestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      child: Align(
+                        alignment: Alignment(-1.0, _textAlignVertical.y),
+                        widthFactor: 1.0,
+                        heightFactor: 1.0,
+                        child: Padding(
+                          padding: widget.padding ??
+                              EdgeInsets.symmetric(
+                                horizontal: 12 * scaling,
+                                vertical: 8 * scaling,
+                              ),
+                          child: _addTextDependentAttachments(
+                              editable, defaultTextStyle, theme),
+                        ),
                       ),
                     ),
                   ),
@@ -1055,4 +1307,26 @@ class _TextFieldState extends State<TextField>
     _effectiveController.text = value;
     widget.onChanged?.call(value);
   }
+}
+
+class TextFieldAppendTextIntent extends Intent {
+  const TextFieldAppendTextIntent({required this.text});
+
+  final String text;
+}
+
+class TextFieldClearIntent extends Intent {
+  const TextFieldClearIntent();
+}
+
+class TextFieldReplaceCurrentWordIntent extends Intent {
+  const TextFieldReplaceCurrentWordIntent({required this.text});
+
+  final String text;
+}
+
+class TextFieldSetTextIntent extends Intent {
+  const TextFieldSetTextIntent({required this.text});
+
+  final String text;
 }

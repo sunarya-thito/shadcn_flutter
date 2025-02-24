@@ -1,5 +1,75 @@
 import '../../../shadcn_flutter.dart';
 
+class DatePickerController extends ValueNotifier<DateTime?>
+    with ComponentController<DateTime?> {
+  DatePickerController(super.value);
+}
+
+class ControlledDatePicker extends StatelessWidget
+    with ControlledComponent<DateTime?> {
+  @override
+  final DateTime? initialValue;
+  @override
+  final ValueChanged<DateTime?>? onChanged;
+  @override
+  final bool enabled;
+  @override
+  final DatePickerController? controller;
+
+  final Widget? placeholder;
+  final PromptMode mode;
+  final CalendarView? initialView;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
+  final Widget? dialogTitle;
+  final CalendarViewType? initialViewType;
+  final DateStateBuilder? stateBuilder;
+
+  const ControlledDatePicker({
+    super.key,
+    this.controller,
+    this.initialValue,
+    this.onChanged,
+    this.enabled = true,
+    this.placeholder,
+    this.mode = PromptMode.dialog,
+    this.initialView,
+    this.popoverAlignment,
+    this.popoverAnchorAlignment,
+    this.popoverPadding,
+    this.dialogTitle,
+    this.initialViewType,
+    this.stateBuilder,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder(
+      controller: controller,
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      builder: (context, data) {
+        return DatePicker(
+          enabled: data.enabled,
+          value: data.value,
+          onChanged: data.onChanged,
+          placeholder: placeholder,
+          mode: mode,
+          initialView: initialView,
+          popoverAlignment: popoverAlignment,
+          popoverAnchorAlignment: popoverAnchorAlignment,
+          popoverPadding: popoverPadding,
+          dialogTitle: dialogTitle,
+          initialViewType: initialViewType,
+          stateBuilder: stateBuilder,
+        );
+      },
+    );
+  }
+}
+
 class DatePicker extends StatelessWidget {
   final DateTime? value;
   final ValueChanged<DateTime?>? onChanged;
@@ -12,6 +82,7 @@ class DatePicker extends StatelessWidget {
   final Widget? dialogTitle;
   final CalendarViewType? initialViewType;
   final DateStateBuilder? stateBuilder;
+  final bool? enabled;
 
   const DatePicker({
     super.key,
@@ -26,6 +97,7 @@ class DatePicker extends StatelessWidget {
     this.dialogTitle,
     this.initialViewType,
     this.stateBuilder,
+    this.enabled,
   });
 
   @override
@@ -33,6 +105,7 @@ class DatePicker extends StatelessWidget {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     return ObjectFormField(
       dialogTitle: dialogTitle,
+      enabled: enabled,
       popoverAlignment: popoverAlignment,
       popoverAnchorAlignment: popoverAnchorAlignment,
       popoverPadding: popoverPadding,

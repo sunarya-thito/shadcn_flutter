@@ -44,7 +44,9 @@ Future<T?> openDrawer<T>({
         surfaceBlur: surfaceBlur,
         barrierColor: barrierColor,
         stackIndex: stackIndex,
-        child: builder(context),
+        child: Builder(builder: (context) {
+          return builder(context);
+        }),
       );
     },
     position: position,
@@ -73,7 +75,9 @@ Future<T?> openSheet<T>({
         padding: padding,
         barrierColor: barrierColor,
         stackIndex: stackIndex,
-        child: builder(context),
+        child: Builder(builder: (context) {
+          return builder(context);
+        }),
       );
     },
     position: position,
@@ -1409,20 +1413,20 @@ class SheetOverlayHandler extends OverlayHandler {
           data: const [
             Model(#shadcn_flutter_sheet_overlay, true),
           ],
-          child: Builder(builder: (context) {
-            return SheetWrapper(
-              position: this.position,
-              gapAfterDragger: 8 * theme.scaling,
-              expands: true,
-              extraSize: extraSize,
-              size: size,
-              draggable: barrierDismissable,
-              padding: padding,
-              barrierColor: barrierColor,
-              stackIndex: stackIndex,
-              child: builder(context),
-            );
-          }),
+          child: SheetWrapper(
+            position: this.position,
+            gapAfterDragger: 8 * theme.scaling,
+            expands: true,
+            extraSize: extraSize,
+            size: size,
+            draggable: barrierDismissable,
+            padding: padding,
+            barrierColor: barrierColor,
+            stackIndex: stackIndex,
+            child: Builder(builder: (context) {
+              return builder(context);
+            }),
+          ),
         );
       },
       position: this.position,

@@ -1,6 +1,73 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+class TimePickerController extends ValueNotifier<TimeOfDay?>
+    with ComponentController<TimeOfDay?> {
+  TimePickerController([super.value]);
+}
+
+class ControlledTimePicker extends StatelessWidget
+    with ControlledComponent<TimeOfDay?> {
+  @override
+  final TimeOfDay? initialValue;
+  @override
+  final ValueChanged<TimeOfDay?>? onChanged;
+  @override
+  final bool enabled;
+  @override
+  final TimePickerController? controller;
+
+  final PromptMode mode;
+  final Widget? placeholder;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
+  final bool? use24HourFormat;
+  final bool showSeconds;
+  final Widget? dialogTitle;
+
+  const ControlledTimePicker({
+    super.key,
+    this.controller,
+    this.initialValue,
+    this.onChanged,
+    this.enabled = true,
+    this.mode = PromptMode.dialog,
+    this.placeholder,
+    this.popoverAlignment,
+    this.popoverAnchorAlignment,
+    this.popoverPadding,
+    this.use24HourFormat,
+    this.showSeconds = false,
+    this.dialogTitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder(
+      controller: controller,
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      builder: (context, data) {
+        return TimePicker(
+          value: data.value,
+          onChanged: data.onChanged,
+          mode: mode,
+          placeholder: placeholder,
+          popoverAlignment: popoverAlignment,
+          popoverAnchorAlignment: popoverAnchorAlignment,
+          popoverPadding: popoverPadding,
+          use24HourFormat: use24HourFormat,
+          showSeconds: showSeconds,
+          dialogTitle: dialogTitle,
+          enabled: data.enabled,
+        );
+      },
+    );
+  }
+}
+
 class TimePicker extends StatelessWidget {
   final TimeOfDay? value;
   final ValueChanged<TimeOfDay?>? onChanged;
@@ -12,6 +79,7 @@ class TimePicker extends StatelessWidget {
   final bool? use24HourFormat;
   final bool showSeconds;
   final Widget? dialogTitle;
+  final bool? enabled;
 
   const TimePicker({
     super.key,
@@ -25,6 +93,7 @@ class TimePicker extends StatelessWidget {
     this.use24HourFormat,
     this.showSeconds = false,
     this.dialogTitle,
+    this.enabled,
   });
 
   @override
@@ -40,6 +109,7 @@ class TimePicker extends StatelessWidget {
         return Text(localizations.formatTimeOfDay(value,
             use24HourFormat: use24HourFormat, showSeconds: showSeconds));
       },
+      enabled: enabled,
       mode: mode,
       dialogTitle: dialogTitle,
       trailing: const Icon(Icons.access_time),

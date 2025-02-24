@@ -1,5 +1,86 @@
 import '../../../shadcn_flutter.dart';
 
+class CheckboxController extends ValueNotifier<CheckboxState>
+    with ComponentController<CheckboxState> {
+  CheckboxController(CheckboxState value) : super(value);
+
+  void check() {
+    value = CheckboxState.checked;
+  }
+
+  void uncheck() {
+    value = CheckboxState.unchecked;
+  }
+
+  void indeterminate() {
+    value = CheckboxState.indeterminate;
+  }
+
+  void toggle() {
+    value = value == CheckboxState.checked
+        ? CheckboxState.unchecked
+        : CheckboxState.checked;
+  }
+
+  void toggleTristate() {
+    value = value == CheckboxState.checked
+        ? CheckboxState.unchecked
+        : value == CheckboxState.unchecked
+            ? CheckboxState.indeterminate
+            : CheckboxState.checked;
+  }
+
+  bool get isChecked => value == CheckboxState.checked;
+  bool get isUnchecked => value == CheckboxState.unchecked;
+  bool get isIndeterminate => value == CheckboxState.indeterminate;
+}
+
+class ControlledCheckbox extends StatelessWidget
+    with ControlledComponent<CheckboxState> {
+  @override
+  final CheckboxController? controller;
+  @override
+  final CheckboxState? initialValue;
+  @override
+  final ValueChanged<CheckboxState>? onChanged;
+  @override
+  final bool enabled;
+  final Widget? leading;
+  final Widget? trailing;
+  final bool tristate;
+
+  const ControlledCheckbox({
+    super.key,
+    this.controller,
+    this.initialValue,
+    this.onChanged,
+    this.enabled = true,
+    this.leading,
+    this.trailing,
+    this.tristate = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder<CheckboxState>(
+      controller: controller,
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      builder: (context, data) {
+        return Checkbox(
+          state: data.value,
+          onChanged: data.onChanged,
+          leading: leading,
+          trailing: trailing,
+          enabled: data.enabled,
+          tristate: tristate,
+        );
+      },
+    );
+  }
+}
+
 enum CheckboxState implements Comparable<CheckboxState> {
   checked,
   unchecked,
@@ -17,6 +98,7 @@ class Checkbox extends StatefulWidget {
   final Widget? leading;
   final Widget? trailing;
   final bool tristate;
+  final bool? enabled;
 
   const Checkbox({
     super.key,
@@ -25,6 +107,7 @@ class Checkbox extends StatefulWidget {
     this.leading,
     this.trailing,
     this.tristate = false,
+    this.enabled,
   });
 
   @override
@@ -84,13 +167,18 @@ class _CheckboxState extends State<Checkbox>
     }
   }
 
+  bool get enabled => widget.enabled ?? widget.onChanged != null;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Clickable(
       enabled: widget.onChanged != null,
-      mouseCursor: const WidgetStatePropertyAll(SystemMouseCursors.click),
-      onPressed: widget.onChanged != null ? _tap : null,
+      mouseCursor: enabled
+          ? const WidgetStatePropertyAll(SystemMouseCursors.click)
+          : const WidgetStatePropertyAll(SystemMouseCursors.forbidden),
+      onPressed: enabled ? _tap : null,
+      enableFeedback: enabled,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -107,11 +195,13 @@ class _CheckboxState extends State<Checkbox>
                   : theme.colorScheme.primary.withValues(alpha: 0),
               borderRadius: BorderRadius.circular(theme.radiusSm),
               border: Border.all(
-                color: _focusing
-                    ? theme.colorScheme.ring
-                    : widget.state == CheckboxState.checked
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.mutedForeground,
+                color: !enabled
+                    ? theme.colorScheme.muted
+                    : _focusing
+                        ? theme.colorScheme.ring
+                        : widget.state == CheckboxState.checked
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.mutedForeground,
                 width: (_focusing ? 2 : 1) * theme.scaling,
               ),
             ),

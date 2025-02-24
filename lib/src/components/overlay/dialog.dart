@@ -361,7 +361,9 @@ class DialogOverlayHandler extends OverlayHandler {
         final surfaceOpacity = theme.surfaceOpacity;
         var child = _DialogOverlayWrapper(
           route: ModalRoute.of(context) as DialogRoute<T>,
-          child: builder(context),
+          child: Builder(builder: (context) {
+            return builder(context);
+          }),
         );
         if (overlayBarrier != null) {
           return MultiModel(

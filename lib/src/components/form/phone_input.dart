@@ -109,6 +109,12 @@ class _PhoneInputState extends State<PhoneInput>
     return PhoneNumber(_country, text);
   }
 
+  bool _filterCountryCode(Country country, String text) {
+    return country.name.toLowerCase().contains(text) ||
+        country.dialCode.contains(text) ||
+        country.code.toLowerCase().contains(text);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -124,26 +130,26 @@ class _PhoneInputState extends State<PhoneInput>
                 left: theme.scaling * 8,
                 bottom: theme.scaling * 8,
                 right: theme.scaling * 4),
-            searchPlaceholder: widget.searchPlaceholder ??
-                Text(localization.searchPlaceholderCountry),
-            searchFilter: (item, query) {
-              query = query.toLowerCase();
-              var searchScore = item.name.toLowerCase().contains(query) ||
-                      item.dialCode.contains(query) ||
-                      item.code.toLowerCase().contains(query)
-                  ? 1
-                  : 0;
-              return searchScore;
-            },
-            emptyBuilder: (context) {
-              return Container(
-                padding: EdgeInsets.all(theme.scaling * 16),
-                child: Text(
-                  localization.emptyCountryList,
-                  textAlign: TextAlign.center,
-                ).small().muted(),
-              );
-            },
+            // searchPlaceholder: widget.searchPlaceholder ??
+            //     Text(localization.searchPlaceholderCountry),
+            // searchFilter: (item, query) {
+            //   query = query.toLowerCase();
+            //   var searchScore = item.name.toLowerCase().contains(query) ||
+            //           item.dialCode.contains(query) ||
+            //           item.code.toLowerCase().contains(query)
+            //       ? 1
+            //       : 0;
+            //   return searchScore;
+            // },
+            // emptyBuilder: (context) {
+            //   return Container(
+            //     padding: EdgeInsets.all(theme.scaling * 16),
+            //     child: Text(
+            //       localization.emptyCountryList,
+            //       textAlign: TextAlign.center,
+            //     ).small().muted(),
+            //   );
+            // },
             value: _country,
             borderRadius: BorderRadius.only(
               topLeft: theme.radiusMdRadius,
@@ -180,24 +186,30 @@ class _PhoneInputState extends State<PhoneInput>
               maxWidth: 250 * theme.scaling,
               maxHeight: 300 * theme.scaling,
             ),
-            children: [
-              for (final country in widget.countries ?? Country.values)
-                SelectItemButton(
-                  value: country,
-                  child: Row(
-                    children: [
-                      CountryFlag.fromCountryCode(country.code,
-                          height: theme.scaling * 18,
-                          width: theme.scaling * 24,
-                          shape: RoundedRectangle(theme.radiusSm)),
-                      Gap(8 * theme.scaling),
-                      Expanded(child: Text(country.name)),
-                      Gap(16 * theme.scaling),
-                      Text(country.dialCode).muted(),
-                    ],
-                  ),
-                ),
-            ],
+            popup: SelectPopup.builder(
+              builder: (context, searchQuery) {
+                return SelectItemList(children: [
+                  for (final country in widget.countries ?? Country.values)
+                    if (searchQuery == null ||
+                        _filterCountryCode(country, searchQuery))
+                      SelectItemButton(
+                        value: country,
+                        child: Row(
+                          children: [
+                            CountryFlag.fromCountryCode(country.code,
+                                height: theme.scaling * 18,
+                                width: theme.scaling * 24,
+                                shape: RoundedRectangle(theme.radiusSm)),
+                            Gap(8 * theme.scaling),
+                            Expanded(child: Text(country.name)),
+                            Gap(16 * theme.scaling),
+                            Text(country.dialCode).muted(),
+                          ],
+                        ),
+                      ),
+                ]);
+              },
+            ).asBuilder,
           ),
           LimitedBox(
             maxWidth: 200 * theme.scaling,

@@ -23,7 +23,9 @@ export 'package:flutter/widgets.dart'
         Table,
         TableRow,
         TableCell,
-        FormField;
+        FormField,
+        TextEditingController,
+        RestorableTextEditingController;
 // bundle from gap
 export 'package:gap/gap.dart';
 // hide pixel_snap overriden widgets
@@ -97,6 +99,7 @@ export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 export 'src/animation.dart';
 export 'src/collection.dart';
 export 'src/components/animation.dart';
+export 'src/components/async.dart';
 export 'src/components/chart/tracker.dart';
 export 'src/components/control/button.dart';
 export 'src/components/control/clickable.dart';
@@ -121,9 +124,12 @@ export 'src/components/form/autocomplete.dart';
 export 'src/components/form/checkbox.dart';
 export 'src/components/form/chip_input.dart';
 export 'src/components/form/color_picker.dart';
+export 'src/components/form/control.dart';
 export 'src/components/form/date_picker.dart';
 export 'src/components/form/form.dart';
 export 'src/components/form/form_field.dart';
+export 'src/components/form/formatted_input.dart';
+export 'src/components/form/formatter.dart';
 export 'src/components/form/image.dart';
 export 'src/components/form/input_otp.dart';
 export 'src/components/form/number_input.dart';

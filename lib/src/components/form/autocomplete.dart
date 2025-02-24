@@ -4,90 +4,21 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class AutoComplete extends StatefulWidget {
   final List<String> suggestions;
-  final ValueChanged<String> onChanged;
-  final String? initialValue;
-  final TextEditingController? controller;
-  final bool border;
-  final bool enabled;
-  final bool readOnly;
-  final List<TextInputFormatter> inputFormatters;
-  final Widget? placeholder;
-  final ValueChanged<int>? onAcceptSuggestion;
-  final FocusNode? focusNode;
-  final AlignmentGeometry? popoverAlignment;
-  final AlignmentGeometry? popoverAnchorAlignment;
-  final PopoverConstraint? popoverWidthConstraint;
+  final Widget child;
   final BoxConstraints? popoverConstraints;
-  final Widget? leading;
-  final Widget? trailing;
-  final EdgeInsetsGeometry? padding;
-  final ValueChanged<String>? onSubmitted;
-  final VoidCallback? onEditingComplete;
-  final VoidCallback? onTap;
-  final bool obscureText;
-  final String obscuringCharacter;
-  final int? maxLength;
-  final MaxLengthEnforcement? maxLengthEnforcement;
-  final int? maxLines;
-  final int? minLines;
-  final BorderRadiusGeometry? borderRadius;
-  final TextAlign textAlign;
-  final bool expands;
-  final TextAlignVertical? textAlignVertical;
-  final UndoHistoryController? undoController;
-  final Iterable<String>? autofillHints;
-  final void Function(PointerDownEvent event)? onTapOutside;
-  final TextStyle? style;
-  final EditableTextContextMenuBuilder? contextMenuBuilder;
-  final TextInputType? keyboardType;
-  final TextInputAction? textInputAction;
-  final Clip clipBehavior;
-  final bool autofocus;
-  final BoxDecoration? decoration;
-
+  final PopoverConstraint? popoverWidthConstraint;
+  final AlignmentDirectional? popoverAnchorAlignment;
+  final AlignmentDirectional? popoverAlignment;
+  final AutoCompleteMode mode;
   const AutoComplete({
     super.key,
     required this.suggestions,
-    required this.onChanged,
-    this.initialValue,
-    this.controller,
-    this.border = true,
-    this.enabled = true,
-    this.readOnly = false,
-    this.inputFormatters = const [],
-    this.placeholder,
-    this.onAcceptSuggestion,
-    this.focusNode,
-    this.popoverAlignment,
-    this.popoverAnchorAlignment,
-    this.popoverWidthConstraint,
+    required this.child,
     this.popoverConstraints,
-    this.leading,
-    this.trailing,
-    this.padding,
-    this.onSubmitted,
-    this.onEditingComplete,
-    this.onTap,
-    this.obscureText = false,
-    this.obscuringCharacter = '•',
-    this.maxLength,
-    this.maxLengthEnforcement,
-    this.maxLines,
-    this.minLines,
-    this.borderRadius,
-    this.textAlign = TextAlign.start,
-    this.expands = false,
-    this.textAlignVertical,
-    this.undoController,
-    this.autofillHints,
-    this.onTapOutside,
-    this.style,
-    this.contextMenuBuilder,
-    this.keyboardType,
-    this.textInputAction,
-    this.clipBehavior = Clip.hardEdge,
-    this.autofocus = false,
-    this.decoration,
+    this.popoverWidthConstraint,
+    this.popoverAnchorAlignment,
+    this.popoverAlignment,
+    this.mode = AutoCompleteMode.replaceWord,
   });
 
   @override
@@ -144,13 +75,11 @@ class _AutoCompleteState extends State<AutoComplete> {
   final ValueNotifier<List<String>> _suggestions = ValueNotifier([]);
   final ValueNotifier<int> _selectedIndex = ValueNotifier(-1);
   final PopoverController _popoverController = PopoverController();
-  late FocusNode _focusNode;
+  bool _isFocused = false;
 
   @override
   void initState() {
     super.initState();
-    _focusNode = widget.focusNode ?? FocusNode();
-    _focusNode.addListener(_onFocusChanged);
     _suggestions.addListener(_onSuggestionsChanged);
     if (widget.suggestions.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -158,22 +87,14 @@ class _AutoCompleteState extends State<AutoComplete> {
           return;
         }
         _suggestions.value = widget.suggestions;
+        _selectedIndex.value = widget.suggestions.isEmpty ? -1 : 0;
       });
     }
   }
 
-  void _onFocusChanged() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
-        return;
-      }
-      _onSuggestionsChanged();
-    });
-  }
-
   void _onSuggestionsChanged() {
     if ((_suggestions.value.isEmpty && _popoverController.hasOpenPopover) ||
-        !_focusNode.hasFocus) {
+        !_isFocused) {
       _popoverController.close();
     } else if (!_popoverController.hasOpenPopover &&
         _suggestions.value.isNotEmpty) {
@@ -183,30 +104,33 @@ class _AutoCompleteState extends State<AutoComplete> {
         handler: const PopoverOverlayHandler(),
         builder: (context) {
           final theme = Theme.of(context);
-          return ConstrainedBox(
-            constraints: widget.popoverConstraints ??
-                BoxConstraints(
-                  maxHeight: 300 * theme.scaling,
-                ),
-            child: SurfaceCard(
-              padding: const EdgeInsets.all(4) * theme.scaling,
-              child: AnimatedBuilder(
-                  animation: Listenable.merge([_suggestions, _selectedIndex]),
-                  builder: (context, child) {
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _suggestions.value.length,
-                        itemBuilder: (context, index) {
-                          final suggestion = _suggestions.value[index];
-                          return _AutoCompleteItem(
-                            suggestion: suggestion,
-                            selected: index == _selectedIndex.value,
-                            onSelected: () {
-                              _acceptSuggestion(index);
-                            },
-                          );
-                        });
-                  }),
+          return TextFieldTapRegion(
+            child: ConstrainedBox(
+              constraints: widget.popoverConstraints ??
+                  BoxConstraints(
+                    maxHeight: 300 * theme.scaling,
+                  ),
+              child: SurfaceCard(
+                padding: const EdgeInsets.all(4) * theme.scaling,
+                child: AnimatedBuilder(
+                    animation: Listenable.merge([_suggestions, _selectedIndex]),
+                    builder: (context, child) {
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: _suggestions.value.length,
+                          itemBuilder: (context, index) {
+                            final suggestion = _suggestions.value[index];
+                            return _AutoCompleteItem(
+                              suggestion: suggestion,
+                              selected: index == _selectedIndex.value,
+                              onSelected: () {
+                                _selectedIndex.value = index;
+                                _handleProceed();
+                              },
+                            );
+                          });
+                    }),
+              ),
             ),
           );
         },
@@ -219,6 +143,34 @@ class _AutoCompleteState extends State<AutoComplete> {
     }
   }
 
+  void _handleProceed() {
+    final selectedIndex = _selectedIndex.value;
+    if (selectedIndex == -1) {
+      return;
+    }
+    _popoverController.close();
+    switch (widget.mode) {
+      case AutoCompleteMode.append:
+        final suggestion = _suggestions.value[selectedIndex];
+        TextFieldAppendTextIntent intent =
+            TextFieldAppendTextIntent(text: suggestion);
+        invokeActionOnFocusedWidget(intent);
+        break;
+      case AutoCompleteMode.replaceWord:
+        final suggestion = _suggestions.value[selectedIndex];
+        TextFieldReplaceCurrentWordIntent intent =
+            TextFieldReplaceCurrentWordIntent(text: suggestion);
+        invokeActionOnFocusedWidget(intent);
+        break;
+      case AutoCompleteMode.replaceAll:
+        final suggestion = _suggestions.value[selectedIndex];
+        TextFieldSetTextIntent intent =
+            TextFieldSetTextIntent(text: suggestion);
+        invokeActionOnFocusedWidget(intent);
+        break;
+    }
+  }
+
   @override
   void didUpdateWidget(covariant AutoComplete oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -228,97 +180,68 @@ class _AutoCompleteState extends State<AutoComplete> {
           return;
         }
         _suggestions.value = widget.suggestions;
+        _selectedIndex.value = widget.suggestions.isEmpty ? -1 : 0;
       });
-    }
-    if (widget.focusNode != oldWidget.focusNode) {
-      _focusNode.removeListener(_onFocusChanged);
-      _focusNode = widget.focusNode ?? FocusNode();
-      _focusNode.addListener(_onFocusChanged);
     }
   }
 
-  void _acceptSuggestion(int index) {
-    if (index < 0 || index >= _suggestions.value.length) {
-      return;
+  void _onFocusChanged(bool focused) {
+    _isFocused = focused;
+    if (!focused) {
+      _popoverController.close();
     }
-    widget.onAcceptSuggestion?.call(index);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Shortcuts(
-      shortcuts: {
-        LogicalKeySet(LogicalKeyboardKey.arrowDown):
-            const _MoveSelectionIntent(1),
-        LogicalKeySet(LogicalKeyboardKey.arrowUp):
-            const _MoveSelectionIntent(-1),
-        LogicalKeySet(LogicalKeyboardKey.enter): const _AcceptSelectionIntent(),
-      },
-      child: Actions(
-        actions: {
-          _MoveSelectionIntent: CallbackAction<_MoveSelectionIntent>(
-            onInvoke: (intent) {
-              final direction = intent.direction;
-              final selectedIndex = _selectedIndex.value;
-              final suggestions = _suggestions.value;
-              if (suggestions.isEmpty) {
-                return;
-              }
-              final newSelectedIndex =
-                  (selectedIndex + direction) % suggestions.length;
-              _selectedIndex.value = newSelectedIndex < 0
-                  ? suggestions.length - 1
-                  : newSelectedIndex;
-              return;
+    return ListenableBuilder(
+        listenable: _selectedIndex,
+        builder: (context, child) {
+          return FocusableActionDetector(
+            onFocusChange: _onFocusChanged,
+            shortcuts: {
+              LogicalKeySet(LogicalKeyboardKey.arrowDown):
+                  const _MoveSelectionIntent(1),
+              LogicalKeySet(LogicalKeyboardKey.arrowUp):
+                  const _MoveSelectionIntent(-1),
+              if (widget.suggestions.isNotEmpty && _selectedIndex.value != -1)
+                LogicalKeySet(LogicalKeyboardKey.tab):
+                    const _AcceptSelectionIntent(),
             },
-          ),
-          _AcceptSelectionIntent: CallbackAction<_AcceptSelectionIntent>(
-            onInvoke: (intent) {
-              final selectedIndex = _selectedIndex.value;
-              _acceptSuggestion(selectedIndex);
-              return;
+            actions: {
+              _MoveSelectionIntent: CallbackAction<_MoveSelectionIntent>(
+                onInvoke: (intent) {
+                  final direction = intent.direction;
+                  final selectedIndex = _selectedIndex.value;
+                  final suggestions = _suggestions.value;
+                  if (suggestions.isEmpty) {
+                    return;
+                  }
+                  final newSelectedIndex =
+                      (selectedIndex + direction) % suggestions.length;
+                  _selectedIndex.value = newSelectedIndex < 0
+                      ? suggestions.length - 1
+                      : newSelectedIndex;
+                  return;
+                },
+              ),
+              _AcceptSelectionIntent: CallbackAction<_AcceptSelectionIntent>(
+                onInvoke: (intent) {
+                  _handleProceed();
+                  return;
+                },
+              ),
             },
-          ),
-        },
-        child: TextField(
-          focusNode: _focusNode,
-          leading: widget.leading,
-          trailing: widget.trailing,
-          enabled: widget.enabled,
-          decoration: widget.decoration,
-          onChanged: widget.onChanged,
-          readOnly: widget.readOnly,
-          controller: widget.controller,
-          inputFormatters: widget.inputFormatters,
-          placeholder: widget.placeholder,
-          initialValue: widget.initialValue,
-          onSubmitted: widget.onSubmitted,
-          onEditingComplete: widget.onEditingComplete,
-          onTap: widget.onTap,
-          obscureText: widget.obscureText,
-          obscuringCharacter: widget.obscuringCharacter,
-          maxLength: widget.maxLength,
-          maxLengthEnforcement: widget.maxLengthEnforcement,
-          maxLines: widget.maxLines,
-          minLines: widget.minLines,
-          textAlign: widget.textAlign,
-          textAlignVertical: widget.textAlignVertical,
-          undoController: widget.undoController,
-          autofillHints: widget.autofillHints,
-          onTapOutside: widget.onTapOutside,
-          style: widget.style,
-          contextMenuBuilder: widget.contextMenuBuilder,
-          keyboardType: widget.keyboardType,
-          textInputAction: widget.textInputAction,
-          clipBehavior: widget.clipBehavior,
-          autofocus: widget.autofocus,
-          padding: widget.padding,
-          expands: widget.expands,
-          border: widget.border,
-        ),
-      ),
-    );
+            child: widget.child,
+          );
+        });
   }
+}
+
+enum AutoCompleteMode {
+  append,
+  replaceWord,
+  replaceAll,
 }
 
 class _MoveSelectionIntent extends Intent {

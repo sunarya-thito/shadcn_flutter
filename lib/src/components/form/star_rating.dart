@@ -1,4 +1,87 @@
+import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+class StarRatingController extends ValueNotifier<double>
+    with ComponentController<double> {
+  StarRatingController([super.value = 0.0]);
+}
+
+class ControlledStarRating extends StatelessWidget
+    with ControlledComponent<double> {
+  @override
+  final double initialValue;
+  @override
+  final ValueChanged<double>? onChanged;
+  @override
+  final bool enabled;
+  @override
+  final StarRatingController? controller;
+
+  final double step;
+  final Axis direction;
+  final double max;
+  final Color? activeColor;
+  final Color? backgroundColor;
+  final double starPoints;
+  final double? starSize;
+  final double? starSpacing;
+  final double? starPointRounding;
+  final double? starValleyRounding;
+  final double? starSquash;
+  final double? starInnerRadiusRatio;
+  final double? starRotation;
+
+  const ControlledStarRating({
+    super.key,
+    this.controller,
+    this.initialValue = 0.0,
+    this.onChanged,
+    this.enabled = true,
+    this.step = 0.5,
+    this.direction = Axis.horizontal,
+    this.max = 5.0,
+    this.activeColor,
+    this.backgroundColor,
+    this.starPoints = 5,
+    this.starSize,
+    this.starSpacing,
+    this.starPointRounding,
+    this.starValleyRounding,
+    this.starSquash,
+    this.starInnerRadiusRatio,
+    this.starRotation,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder(
+      controller: controller,
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      builder: (context, data) {
+        return StarRating(
+          value: data.value,
+          onChanged: data.onChanged,
+          enabled: data.enabled,
+          step: step,
+          direction: direction,
+          max: max,
+          activeColor: activeColor,
+          backgroundColor: backgroundColor,
+          starPoints: starPoints,
+          starSize: starSize,
+          starSpacing: starSpacing,
+          starPointRounding: starPointRounding,
+          starValleyRounding: starValleyRounding,
+          starSquash: starSquash,
+          starInnerRadiusRatio: starInnerRadiusRatio,
+          starRotation: starRotation,
+        );
+      },
+    );
+  }
+}
 
 class StarRating extends StatefulWidget {
   final double value;
@@ -16,6 +99,7 @@ class StarRating extends StatefulWidget {
   final double? starSquash;
   final double? starInnerRadiusRatio;
   final double? starRotation;
+  final bool? enabled;
 
   const StarRating({
     super.key,
@@ -34,6 +118,7 @@ class StarRating extends StatefulWidget {
     this.starSquash,
     this.starInnerRadiusRatio,
     this.starRotation,
+    this.enabled,
   });
 
   @override
@@ -43,6 +128,7 @@ class StarRating extends StatefulWidget {
 class _StarRatingState extends State<StarRating>
     with FormValueSupplier<double, StarRating> {
   double? _changingValue;
+  bool _focused = false;
 
   @override
   void initState() {
@@ -63,7 +149,7 @@ class _StarRatingState extends State<StarRating>
     widget.onChanged?.call(value);
   }
 
-  Widget _buildStar(BuildContext context) {
+  Widget _buildStar(BuildContext context, [bool focusBorder = false]) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     var starValleyRounding = widget.starValleyRounding ?? 0.0;
@@ -75,7 +161,7 @@ class _StarRatingState extends State<StarRating>
       width: starSize * scaling,
       height: starSize * scaling,
       decoration: ShapeDecoration(
-        color: Colors.white,
+        color: !focusBorder ? Colors.white : null,
         shape: StarBorder(
           points: widget.starPoints,
           pointRounding: widget.starPointRounding ?? (theme.radius / 2),
@@ -83,10 +169,18 @@ class _StarRatingState extends State<StarRating>
           squash: starSquash,
           innerRadiusRatio: starInnerRadiusRatio,
           rotation: starRotation,
+          side: focusBorder && _focused
+              ? BorderSide(
+                  color: theme.colorScheme.ring,
+                  width: 2.0 * scaling,
+                  strokeAlign: BorderSide.strokeAlignOutside)
+              : BorderSide.none,
         ),
       ),
     );
   }
+
+  bool get _enabled => widget.enabled ?? widget.onChanged != null;
 
   @override
   Widget build(BuildContext context) {
@@ -102,61 +196,122 @@ class _StarRatingState extends State<StarRating>
             widget.starSize != null ? widget.starSize! : 24.0 * scaling;
         var starSpacing =
             widget.starSpacing != null ? widget.starSpacing! : 5.0 * scaling;
-        return GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            if (widget.onChanged != null && roundedValue != widget.value) {
-              widget.onChanged!(roundedValue);
-            }
+        return FocusableActionDetector(
+          enabled: _enabled,
+          mouseCursor: _enabled
+              ? SystemMouseCursors.click
+              : SystemMouseCursors.forbidden,
+          onShowFocusHighlight: (showFocus) {
+            setState(() {
+              _focused = showFocus;
+            });
           },
-          child: MouseRegion(
-            cursor: SystemMouseCursors.click,
-            onExit: (event) {
+          onShowHoverHighlight: (showHover) {
+            if (!showHover) {
               setState(() {
                 _changingValue = null;
               });
-            },
-            child: ClipRect(
-              child: Flex(
-                direction: widget.direction,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  for (var i = 0; i < widget.max.ceil(); i++)
-                    MouseRegion(
-                      hitTestBehavior: HitTestBehavior.translucent,
-                      onHover: (event) {
-                        if (widget.onChanged == null) return;
-                        double progress =
-                            (event.localPosition.dx / starSize).clamp(0.0, 1.0);
-                        setState(() {
-                          _changingValue = (i + progress);
-                        });
-                      },
-                      child: ShaderMask(
-                        shaderCallback: (bounds) {
-                          return LinearGradient(
-                            colors: [
-                              widget.activeColor ??
-                                  Theme.of(context).colorScheme.primary,
-                              widget.backgroundColor ??
-                                  Theme.of(context).colorScheme.muted,
-                            ],
-                            stops: [
-                              (roundedValue - i).clamp(0.0, 1.0),
-                              (roundedValue - i).clamp(0.0, 1.0),
-                            ],
-                          ).createShader(bounds);
-                        },
-                        blendMode: BlendMode.srcIn,
-                        child: _buildStar(context),
-                      ),
-                    ),
-                ],
-              ).gap(starSpacing),
+            }
+          },
+          shortcuts: {
+            LogicalKeySet(LogicalKeyboardKey.arrowRight):
+                IncreaseStarIntent(widget.step),
+            LogicalKeySet(LogicalKeyboardKey.arrowLeft):
+                DecreaseStarIntent(widget.step),
+          },
+          actions: {
+            IncreaseStarIntent: CallbackAction<IncreaseStarIntent>(
+              onInvoke: (intent) {
+                if (widget.onChanged != null) {
+                  widget.onChanged!(
+                      (roundedValue + intent.step).clamp(0.0, widget.max));
+                }
+                return;
+              },
             ),
+            DecreaseStarIntent: CallbackAction<DecreaseStarIntent>(
+              onInvoke: (intent) {
+                if (widget.onChanged != null) {
+                  widget.onChanged!(
+                      (roundedValue - intent.step).clamp(0.0, widget.max));
+                }
+                return;
+              },
+            ),
+          },
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              if (widget.onChanged != null && roundedValue != widget.value) {
+                widget.onChanged!(roundedValue);
+              }
+            },
+            child: Flex(
+              direction: widget.direction,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (var i = 0; i < widget.max.ceil(); i++)
+                  MouseRegion(
+                    hitTestBehavior: HitTestBehavior.translucent,
+                    onHover: (event) {
+                      if (!_enabled) return;
+                      if (widget.onChanged == null) return;
+                      double progress =
+                          (event.localPosition.dx / starSize).clamp(0.0, 1.0);
+                      setState(() {
+                        _changingValue = (i + progress);
+                      });
+                    },
+                    child: Stack(
+                      fit: StackFit.passthrough,
+                      children: [
+                        ShaderMask(
+                          shaderCallback: (bounds) {
+                            return LinearGradient(
+                              colors: [
+                                widget.activeColor ??
+                                    (_enabled
+                                        ? theme.colorScheme.primary
+                                        : theme.colorScheme.mutedForeground),
+                                widget.backgroundColor ??
+                                    theme.colorScheme.muted,
+                              ],
+                              stops: [
+                                (roundedValue - i).clamp(0.0, 1.0),
+                                (roundedValue - i).clamp(0.0, 1.0),
+                              ],
+                              begin: widget.direction == Axis.horizontal
+                                  ? Alignment.centerLeft
+                                  : Alignment.bottomCenter,
+                              end: widget.direction == Axis.horizontal
+                                  ? Alignment.centerRight
+                                  : Alignment.topCenter,
+                            ).createShader(bounds);
+                          },
+                          blendMode: BlendMode.srcIn,
+                          child: _buildStar(context),
+                        ),
+                        _buildStar(context, true),
+                      ],
+                    ),
+                  ),
+              ],
+            ).gap(starSpacing),
           ),
         );
       },
     );
   }
+}
+
+class IncreaseStarIntent extends Intent {
+  final double step;
+
+  const IncreaseStarIntent(this.step);
+}
+
+class DecreaseStarIntent extends Intent {
+  final double step;
+
+  const DecreaseStarIntent(this.step);
 }

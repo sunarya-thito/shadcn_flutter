@@ -541,7 +541,9 @@ class PopoverAnchorState extends State<PopoverAnchor>
             },
             child: FadeTransition(
               opacity: widget.animation,
-              child: widget.builder(context),
+              child: Builder(builder: (context) {
+                return widget.builder(context);
+              }),
             ),
           ),
         ),
