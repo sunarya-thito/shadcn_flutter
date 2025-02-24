@@ -227,6 +227,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage(
             'File Picker', 'file_picker', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Form', 'form'),
+        ShadcnDocsPage('Formatted Input', 'formatted_input',
+            ShadcnFeatureTag.experimental),
         // TODO: Image Input (with cropper and rotate tool, upload from file or take photo from camera)
         // ShadcnDocsPage(
         // 'Image Input', 'image_input', ShadcnFeatureTag.workInProgress),
@@ -437,6 +439,44 @@ class DocsPageState extends State<DocsPage> {
           }
         }
       },
+    );
+  }
+
+  Widget buildFlavorTag() {
+    String text = 'UKNOWN';
+    Color color = Colors.green;
+    switch (flavor) {
+      case 'local':
+        text = 'Local';
+        color = Colors.red;
+        break;
+      case 'experimental':
+        text = 'Experimental';
+        color = Colors.orange;
+        break;
+      case 'release':
+        text = 'Release';
+        color = Colors.green;
+        break;
+    }
+    return PrimaryBadge(
+      style: const ButtonStyle.primary(
+        density: ButtonDensity.dense,
+        size: ButtonSize.small,
+      ).copyWith(
+        decoration: (context, states, value) {
+          return (value as BoxDecoration).copyWith(
+            color: color,
+          );
+        },
+        textStyle: (context, states, value) {
+          return value.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          );
+        },
+      ),
+      child: Text(text),
     );
   }
 
@@ -696,9 +736,17 @@ class DocsPageState extends State<DocsPage> {
         leading: FlutterLogo(
           size: 32 * theme.scaling,
         ),
-        content: const Text(
-          'shadcn_flutter',
-        ).textLarge().mono(),
+        content: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'shadcn_flutter',
+            ).textLarge().mono(),
+            Gap(16 * theme.scaling),
+            buildFlavorTag(),
+          ],
+        ),
       ),
       trailing: [
         Align(
@@ -759,6 +807,7 @@ class DocsPageState extends State<DocsPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   FlutterLogo(
                     size: 24 * scaling,
@@ -766,7 +815,10 @@ class DocsPageState extends State<DocsPage> {
                   Gap(18 * scaling),
                   const Text(
                     'shadcn_flutter',
-                  ).medium().mono().expanded(),
+                  ).medium().mono(),
+                  Gap(12 * scaling),
+                  buildFlavorTag(),
+                  const Spacer(),
                   TextButton(
                     density: ButtonDensity.icon,
                     size: ButtonSize.small,

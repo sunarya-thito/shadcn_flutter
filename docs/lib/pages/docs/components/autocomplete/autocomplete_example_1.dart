@@ -29,7 +29,8 @@ class _AutoCompleteExample1State extends State<AutoCompleteExample1> {
   final TextEditingController _controller = TextEditingController();
 
   void _updateSuggestions(String value) {
-    if (value.isEmpty) {
+    String? currentWord = _controller.currentWord;
+    if (currentWord == null || currentWord.isEmpty) {
       setState(() {
         _currentSuggestions = [];
       });
@@ -37,8 +38,8 @@ class _AutoCompleteExample1State extends State<AutoCompleteExample1> {
     }
     setState(() {
       _currentSuggestions = suggestions
-          .where(
-              (element) => element.toLowerCase().contains(value.toLowerCase()))
+          .where((element) =>
+              element.toLowerCase().contains(currentWord.toLowerCase()))
           .toList();
     });
   }
@@ -46,27 +47,16 @@ class _AutoCompleteExample1State extends State<AutoCompleteExample1> {
   @override
   Widget build(BuildContext context) {
     return AutoComplete(
-      controller: _controller,
       suggestions: _currentSuggestions,
-      onChanged: (value) {
-        _updateSuggestions(value);
-      },
-      trailing: IconButton.text(
-        icon: const Icon(Icons.clear),
-        density: ButtonDensity.compact,
-        onPressed: () {
-          _controller.clear();
-          setState(() {
-            _currentSuggestions = [];
-          });
-        },
+      child: TextField(
+        controller: _controller,
+        onChanged: _updateSuggestions,
+        trailing: const IconButton.text(
+          density: ButtonDensity.compact,
+          icon: Icon(Icons.clear),
+          onPressed: clearActiveTextInput,
+        ),
       ),
-      onAcceptSuggestion: (value) {
-        _controller.text = _currentSuggestions[value];
-        setState(() {
-          _currentSuggestions = [];
-        });
-      },
     );
   }
 }

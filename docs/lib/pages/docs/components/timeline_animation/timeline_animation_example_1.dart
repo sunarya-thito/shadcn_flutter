@@ -81,9 +81,9 @@ class _TimelineAnimationExample1State extends State<TimelineAnimationExample1>
       animation: controller,
       builder: (context, child) {
         return Transform.translate(
-          offset: offsetTimeline.transform(controller.value),
+          offset: offsetTimeline.transformWithController(controller),
           child: Transform.rotate(
-            angle: rotationTimeline.transform(controller.value),
+            angle: rotationTimeline.transformWithController(controller),
             child: Container(
               width: 50,
               height: 50,

@@ -23,6 +23,7 @@ import 'package:docs/pages/docs/components/dot_indicator_example.dart';
 import 'package:docs/pages/docs/components/drawer_example.dart';
 import 'package:docs/pages/docs/components/dropdown_menu_example.dart';
 import 'package:docs/pages/docs/components/expandable_sidebar_example.dart';
+import 'package:docs/pages/docs/components/formatted_input_example.dart';
 import 'package:docs/pages/docs/components/hover_card_example.dart';
 import 'package:docs/pages/docs/components/input_example.dart';
 import 'package:docs/pages/docs/components/input_otp_example.dart';
@@ -80,6 +81,7 @@ import 'package:docs/pages/docs/theme_page.dart';
 import 'package:docs/pages/docs/typography_page.dart';
 import 'package:docs/pages/docs/web_preloader_page.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -99,8 +101,18 @@ import 'pages/docs/components/number_input_example.dart';
 
 const kEnablePersistentPath = false;
 
+Map<String, Object?>? _docs;
+
+String get flavor {
+  String? flavor = _docs?['flavor'] as String?;
+  assert(flavor != null, 'Flavor not found in docs.json');
+  return flavor!;
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  _docs = jsonDecode(await rootBundle.loadString('docs.json'));
+  print('Running app with flavor: $flavor');
   GoRouter.optionURLReflectsImperativeAPIs = true;
   final prefs = await SharedPreferences.getInstance();
   var colorScheme = prefs.getString('colorScheme');
@@ -696,7 +708,13 @@ class MyAppState extends State<MyApp> {
             path: 'expandable_sidebar',
             builder: (context, state) => const ExpandableSidebarExample(),
             name: 'expandable_sidebar',
-          )
+          ),
+          GoRoute(
+              path: 'formatted_input',
+              builder: (context, state) {
+                return const FormattedInputExample();
+              },
+              name: 'formatted_input'),
         ]),
   ];
   late ColorScheme colorScheme;

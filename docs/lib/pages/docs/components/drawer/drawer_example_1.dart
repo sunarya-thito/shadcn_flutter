@@ -26,19 +26,29 @@ class _DrawerExample1State extends State<DrawerExample1> {
         return Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.all(48),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                  'Drawer ${count + 1} at ${positions[count % positions.length].name}'),
-              const Gap(16),
-              PrimaryButton(
-                onPressed: () {
-                  open(context, count + 1);
-                },
-                child: const Text('Open Another Drawer'),
-              ),
-            ],
+          child: IntrinsicWidth(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                    'Drawer ${count + 1} at ${positions[count % positions.length].name}'),
+                const Gap(16),
+                PrimaryButton(
+                  onPressed: () {
+                    open(context, count + 1);
+                  },
+                  child: const Text('Open Another Drawer'),
+                ),
+                const Gap(8),
+                SecondaryButton(
+                  onPressed: () {
+                    closeOverlay(context);
+                  },
+                  child: const Text('Close Drawer'),
+                ),
+              ],
+            ),
           ),
         );
       },

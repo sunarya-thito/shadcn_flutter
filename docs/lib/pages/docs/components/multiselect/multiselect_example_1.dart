@@ -8,28 +8,15 @@ class MultiSelectExample1 extends StatefulWidget {
 }
 
 class _MultiSelectExample1State extends State<MultiSelectExample1> {
-  List<String> selectedValues = [];
+  Iterable<String>? selectedValues;
   @override
   Widget build(BuildContext context) {
     return MultiSelect<String>(
       itemBuilder: (context, item) {
         return Text(item);
       },
-      searchFilter: (item, query) {
-        return item.toLowerCase().contains(query.toLowerCase()) ? 1 : 0;
-      },
-      popupConstraints: const BoxConstraints(
-        maxHeight: 300,
-        maxWidth: 200,
-      ),
-      onChanged: (value) {
-        setState(() {
-          selectedValues = value;
-        });
-      },
-      value: selectedValues,
-      placeholder: const Text('Select a fruit'),
-      children: const [
+      popup: SelectPopup(
+          items: SelectItemList(children: [
         SelectGroup(
           headers: [
             SelectLabel(
@@ -106,7 +93,17 @@ class _MultiSelectExample1State extends State<MultiSelectExample1> {
             ),
           ],
         ),
-      ],
+      ])),
+      onChanged: (value) {
+        setState(() {
+          selectedValues = value;
+        });
+      },
+      constraints: BoxConstraints(
+        minWidth: 200,
+      ),
+      value: selectedValues,
+      placeholder: const Text('Select a fruit'),
     );
   }
 }

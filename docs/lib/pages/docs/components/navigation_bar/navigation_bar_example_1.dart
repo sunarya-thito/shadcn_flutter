@@ -82,13 +82,14 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
                       });
                     }
                   },
-                  children: [
+                  popup: SelectPopup(
+                      items: SelectItemList(children: [
                     for (var value in NavigationBarAlignment.values)
                       SelectItemButton(
                         value: value,
                         child: Text(value.name),
                       ),
-                  ],
+                  ])),
                 ),
                 Select<NavigationLabelType>(
                   value: labelType,
@@ -96,7 +97,7 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
                       (BuildContext context, NavigationLabelType item) {
                     return Text(item.name);
                   },
-                  popupConstraints: const BoxConstraints(maxWidth: 200),
+                  popupWidthConstraint: PopoverConstraint.anchorFixedSize,
                   onChanged: (value) {
                     if (value != null) {
                       setState(() {
@@ -104,13 +105,14 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
                       });
                     }
                   },
-                  children: [
+                  popup: SelectPopup(
+                      items: SelectItemList(children: [
                     for (var value in NavigationLabelType.values)
                       SelectItemButton(
                         value: value,
                         child: Text(value.name),
                       ),
-                  ],
+                  ])),
                 ),
                 Checkbox(
                   state:

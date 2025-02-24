@@ -668,39 +668,37 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           },
                           placeholder: const Text('Select a fruit'),
                           value: 'Apple',
-                          onChanged: (value) {},
-                          children: const [
-                            SelectItemButton(
-                                value: 'Apple', child: Text('Apple')),
-                          ],
+                          enabled: true,
+                          constraints: BoxConstraints.tightFor(width: 300),
+                          popup: const SelectPopup(),
                         ),
-                        SelectPopup(
-                          margin: const EdgeInsets.symmetric(vertical: 8) *
-                              theme.scaling,
-                          borderRadius: theme.borderRadiusXl,
-                          value: ValueNotifier(['Apple']),
-                          children: ValueNotifier(const [
-                            SelectItemButton(
-                              value: 'Apple',
-                              child: Text('Apple'),
-                            ),
-                            SelectItemButton(
-                              value: 'Banana',
-                              child: Text('Banana'),
-                            ),
-                            SelectItemButton(
-                              value: 'Lemon',
-                              child: Text('Lemon'),
-                            ),
-                            SelectItemButton(
-                              value: 'Tomato',
-                              child: Text('Tomato'),
-                            ),
-                            SelectItemButton(
-                              value: 'Cucumber',
-                              child: Text('Cucumber'),
-                            ),
-                          ]),
+                        Gap(8 * theme.scaling),
+                        SizedBox(
+                          width: 300,
+                          child: SelectPopup(
+                            items: SelectItemList(children: const [
+                              SelectItemButton(
+                                value: 'Apple',
+                                child: Text('Apple'),
+                              ),
+                              SelectItemButton(
+                                value: 'Banana',
+                                child: Text('Banana'),
+                              ),
+                              SelectItemButton(
+                                value: 'Lemon',
+                                child: Text('Lemon'),
+                              ),
+                              SelectItemButton(
+                                value: 'Tomato',
+                                child: Text('Tomato'),
+                              ),
+                              SelectItemButton(
+                                value: 'Cucumber',
+                                child: Text('Cucumber'),
+                              ),
+                            ]),
+                          ),
                         ),
                       ],
                     ),

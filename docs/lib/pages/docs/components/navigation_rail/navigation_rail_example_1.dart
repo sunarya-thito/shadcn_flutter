@@ -88,13 +88,14 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                           });
                         }
                       },
-                      children: [
+                      popup: SelectPopup(
+                          items: SelectItemList(children: [
                         for (var value in NavigationRailAlignment.values)
                           SelectItemButton(
                             value: value,
                             child: Text(value.name),
                           ),
-                      ],
+                      ])),
                     ),
                     Select<NavigationLabelType>(
                       value: labelType,
@@ -111,13 +112,17 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                           });
                         }
                       },
-                      children: [
-                        for (var value in NavigationLabelType.values)
-                          SelectItemButton(
-                            value: value,
-                            child: Text(value.name),
-                          ),
-                      ],
+                      popup: SelectPopup(
+                        items: SelectItemList(
+                          children: [
+                            for (var value in NavigationLabelType.values)
+                              SelectItemButton(
+                                value: value,
+                                child: Text(value.name),
+                              ),
+                          ],
+                        ),
+                      ),
                     ),
                     Select<NavigationLabelPosition>(
                       value: labelPosition,
@@ -132,13 +137,17 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                           });
                         }
                       },
-                      children: [
-                        for (var value in NavigationLabelPosition.values)
-                          SelectItemButton(
-                            value: value,
-                            child: Text(value.name),
-                          ),
-                      ],
+                      popup: SelectPopup(
+                        items: SelectItemList(
+                          children: [
+                            for (var value in NavigationLabelPosition.values)
+                              SelectItemButton(
+                                value: value,
+                                child: Text(value.name),
+                              ),
+                          ],
+                        ),
+                      ),
                     ),
                     Checkbox(
                       state: customButtonStyle
