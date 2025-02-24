@@ -2,17 +2,71 @@ import 'dart:math';
 
 import '../../../shadcn_flutter.dart';
 
+class ToggleController extends ValueNotifier<bool>
+    with ComponentController<bool> {
+  ToggleController([super.value = false]);
+
+  void toggle() {
+    value = !value;
+  }
+}
+
+class ControlledToggle extends StatelessWidget with ControlledComponent<bool> {
+  @override
+  final bool? initialValue;
+  @override
+  final ValueChanged<bool>? onChanged;
+  @override
+  final bool enabled;
+  @override
+  final ToggleController? controller;
+
+  final Widget child;
+  final ButtonStyle style;
+
+  const ControlledToggle({
+    super.key,
+    this.controller,
+    this.initialValue,
+    this.onChanged,
+    this.enabled = true,
+    required this.child,
+    this.style = const ButtonStyle.ghost(),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder(
+      controller: controller,
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      builder: (context, data) {
+        return Toggle(
+          value: data.value,
+          onChanged: data.onChanged,
+          enabled: data.enabled,
+          style: style,
+          child: child,
+        );
+      },
+    );
+  }
+}
+
 class Toggle extends StatefulWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
   final Widget child;
   final ButtonStyle style;
+  final bool? enabled;
 
   const Toggle({
     super.key,
     required this.value,
     this.onChanged,
     required this.child,
+    this.enabled,
     this.style = const ButtonStyle.ghost(),
   });
 
@@ -21,13 +75,14 @@ class Toggle extends StatefulWidget {
 }
 
 // toggle button is just ghost button
-class ToggleState extends State<Toggle> {
+class ToggleState extends State<Toggle> with FormValueSupplier<bool, Toggle> {
   final WidgetStatesController statesController = WidgetStatesController();
 
   @override
   void initState() {
     super.initState();
     statesController.update(WidgetState.selected, widget.value);
+    formValue = widget.value;
   }
 
   @override
@@ -35,6 +90,14 @@ class ToggleState extends State<Toggle> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
       statesController.update(WidgetState.selected, widget.value);
+      formValue = widget.value;
+    }
+  }
+
+  @override
+  void didReplaceFormValue(bool value) {
+    if (widget.onChanged != null) {
+      widget.onChanged!(value);
     }
   }
 
@@ -42,6 +105,7 @@ class ToggleState extends State<Toggle> {
   Widget build(BuildContext context) {
     return Button(
         statesController: statesController,
+        enabled: widget.enabled,
         style: widget.value
             ? ButtonStyle.secondary(
                 density: widget.style.density,
@@ -63,11 +127,11 @@ class ToggleState extends State<Toggle> {
                       : null,
                 );
               }),
-        onPressed: () {
-          if (widget.onChanged != null) {
-            widget.onChanged!(!widget.value);
-          }
-        },
+        onPressed: widget.onChanged != null
+            ? () {
+                widget.onChanged!(!widget.value);
+              }
+            : null,
         child: widget.child);
   }
 }
