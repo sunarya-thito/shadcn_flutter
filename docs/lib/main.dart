@@ -83,6 +83,7 @@ import 'package:docs/pages/docs/web_preloader_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -102,6 +103,9 @@ import 'pages/docs/components/number_input_example.dart';
 const kEnablePersistentPath = false;
 
 Map<String, Object?>? _docs;
+String? _packageLatestVersion;
+
+String? get packageLatestVersion => _packageLatestVersion;
 
 String get flavor {
   String? flavor = _docs?['flavor'] as String?;
@@ -109,10 +113,22 @@ String get flavor {
   return flavor!;
 }
 
+String getReleaseTagName() {
+  var latestVersion = packageLatestVersion;
+  return latestVersion == null ? 'Release' : 'Release ($latestVersion)';
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _docs = jsonDecode(await rootBundle.loadString('docs.json'));
   print('Running app with flavor: $flavor');
+  Uri checkVersionUri =
+      Uri.parse('https://pub.dev/packages/shadcn_flutter.json');
+  var response = await get(checkVersionUri);
+  if (response.statusCode == 200) {
+    var packageInfo = jsonDecode(response.body) as Map<String, dynamic>;
+    _packageLatestVersion = packageInfo['versions'][0];
+  }
   GoRouter.optionURLReflectsImperativeAPIs = true;
   final prefs = await SharedPreferences.getInstance();
   var colorScheme = prefs.getString('colorScheme');

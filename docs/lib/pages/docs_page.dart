@@ -455,29 +455,55 @@ class DocsPageState extends State<DocsPage> {
         color = Colors.orange;
         break;
       case 'release':
-        text = 'Release';
+        text = getReleaseTagName();
         color = Colors.green;
         break;
     }
-    return PrimaryBadge(
-      style: const ButtonStyle.primary(
-        density: ButtonDensity.dense,
-        size: ButtonSize.small,
-      ).copyWith(
-        decoration: (context, states, value) {
-          return (value as BoxDecoration).copyWith(
-            color: color,
+    return Builder(builder: (context) {
+      return PrimaryBadge(
+        onPressed: () {
+          showDropdown(
+            context: context,
+            offset: Offset(0, 8) * Theme.of(context).scaling,
+            builder: (context) {
+              return DropdownMenu(
+                children: [
+                  MenuButton(
+                    child: Text(getReleaseTagName()),
+                    onPressed: (context) {
+                      launchUrlString('https://sunarya-thito.github.io/shadcn_flutter/');
+                    },
+                  ),
+                  MenuButton(
+                    child: Text('Experimental'),
+                    onPressed: (context) {
+                      launchUrlString('https://sunarya-thito.github.io/shadcn_flutter/experimental/')
+                    },
+                  ),
+                ],
+              );
+            },
           );
         },
-        textStyle: (context, states, value) {
-          return value.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-          );
-        },
-      ),
-      child: Text(text),
-    );
+        style: const ButtonStyle.primary(
+          density: ButtonDensity.dense,
+          size: ButtonSize.small,
+        ).copyWith(
+          decoration: (context, states, value) {
+            return (value as BoxDecoration).copyWith(
+              color: color,
+            );
+          },
+          textStyle: (context, states, value) {
+            return value.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+            );
+          },
+        ),
+        child: Text(text),
+      );
+    });
   }
 
   @override
