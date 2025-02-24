@@ -1,6 +1,7 @@
 /autosave/
 /.idea/other.xml
 /.idea/inspectionProfiles/Project_Default.xml
+/.idea/libraries/
 
 # Miscellaneous
 *.class
