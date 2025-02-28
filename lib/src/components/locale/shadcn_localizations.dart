@@ -64,6 +64,40 @@ String formatFileSize(int bytes, SizeUnitLocale unit) {
   return '$formattedValue ${units[digitGroups]}';
 }
 
+int _getYear(DateTime dateTime) => dateTime.year;
+int _getMonth(DateTime dateTime) => dateTime.month;
+int _getDay(DateTime dateTime) => dateTime.day;
+
+(int? min, int? max) _computeYearValueRange(Map<DatePart, int> values) {
+  return (null, null);
+}
+
+(int? min, int? max) _computeMonthValueRange(Map<DatePart, int> values) {
+  return (1, 12);
+}
+
+(int? min, int? max) _computeDayValueRange(Map<DatePart, int> values) {
+  final year = values[DatePart.year];
+  final month = values[DatePart.month];
+  if (year == null || month == null) return (1, 31);
+  final daysInMonth = DateTime(year, month + 1, 0).day;
+  return (1, daysInMonth);
+}
+
+enum DatePart {
+  year(_getYear, _computeYearValueRange, length: 4),
+  month(_getMonth, _computeMonthValueRange),
+  day(_getDay, _computeDayValueRange),
+  ;
+
+  final int Function(DateTime dateTime) getter;
+  final int length;
+  final (int? min, int? max) Function(Map<DatePart, int> values)
+      computeValueRange;
+
+  const DatePart(this.getter, this.computeValueRange, {this.length = 2});
+}
+
 abstract class ShadcnLocalizations {
   static ShadcnLocalizations of(BuildContext context) {
     return Localizations.of<ShadcnLocalizations>(
@@ -90,6 +124,9 @@ abstract class ShadcnLocalizations {
   String get formPasswordLowercase;
   String get formPasswordUppercase;
   String get formPasswordSpecial;
+
+  List<DatePart> get datePartsOrder;
+  String datePartPlaceholder(DatePart part);
 
   String get commandSearch;
   String get commandEmpty;
@@ -555,6 +592,18 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
   }
 
   @override
+  String datePartPlaceholder(DatePart part) {
+    switch (part) {
+      case DatePart.year:
+        return 'YYYY';
+      case DatePart.month:
+        return 'MM';
+      case DatePart.day:
+        return 'DD';
+    }
+  }
+
+  @override
   String get placeholderDatePicker => 'Select a date';
 
   @override
@@ -757,4 +806,12 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
   String dataTableSelectedRows(int count, int total) {
     return '$count of $total row(s) selected.';
   }
+
+  @override
+  List<DatePart> get datePartsOrder => const [
+        // MM/DD/YYYY
+        DatePart.month,
+        DatePart.day,
+        DatePart.year,
+      ];
 }
