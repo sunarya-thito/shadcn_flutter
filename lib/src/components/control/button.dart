@@ -1113,6 +1113,70 @@ extension ShapeDecorationExtension on ShapeDecoration {
   }
 }
 
+extension DecorationExtension on Decoration {
+  BoxDecoration copyWithIfBoxDecoration({
+    Color? color,
+    DecorationImage? image,
+    BoxBorder? border,
+    BorderRadiusGeometry? borderRadius,
+    List<BoxShadow>? boxShadow,
+    Gradient? gradient,
+    BoxShape? shape,
+    BlendMode? backgroundBlendMode,
+  }) {
+    if (this is BoxDecoration) {
+      var boxDecoration = this as BoxDecoration;
+      return BoxDecoration(
+        color: color ?? boxDecoration.color,
+        image: image ?? boxDecoration.image,
+        border: border ?? boxDecoration.border,
+        borderRadius: borderRadius ?? boxDecoration.borderRadius,
+        boxShadow: boxShadow ?? boxDecoration.boxShadow,
+        gradient: gradient ?? boxDecoration.gradient,
+        shape: shape ?? boxDecoration.shape,
+        backgroundBlendMode:
+            backgroundBlendMode ?? boxDecoration.backgroundBlendMode,
+      );
+    }
+    return BoxDecoration(
+      color: color,
+      image: image,
+      border: border,
+      borderRadius: borderRadius,
+      boxShadow: boxShadow,
+      gradient: gradient,
+      shape: shape ?? BoxShape.rectangle,
+      backgroundBlendMode: backgroundBlendMode,
+    );
+  }
+
+  ShapeDecoration copyWithIfShapeDecoration({
+    ShapeBorder? shape,
+    Color? color,
+    Gradient? gradient,
+    List<BoxShadow>? shadows,
+    DecorationImage? image,
+  }) {
+    if (this is ShapeDecoration) {
+      var shapeDecoration = this as ShapeDecoration;
+      return ShapeDecoration(
+        color: color ?? shapeDecoration.color,
+        image: image ?? shapeDecoration.image,
+        shape: shape ?? shapeDecoration.shape,
+        gradient: gradient ?? shapeDecoration.gradient,
+        shadows: shadows ?? shapeDecoration.shadows,
+      );
+    }
+    return ShapeDecoration(
+      color: color,
+      image: image,
+      shape: shape ?? const RoundedRectangleBorder(),
+      gradient: gradient,
+      shadows: shadows,
+    );
+  }
+}
+
 class ButtonVariance implements AbstractButtonStyle {
   static const ButtonVariance primary = ButtonVariance(
     decoration: _buttonPrimaryDecoration,
