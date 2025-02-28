@@ -90,6 +90,13 @@ extension ListExtension<T> on List<T> {
     T element = this[currentIndex];
     return swapItem(element, targetIndex);
   }
+
+  T? optGet(int index) {
+    if (index < 0 || index >= length) {
+      return null;
+    }
+    return this[index];
+  }
 }
 
 double unlerpDouble(double value, double min, double max) {
