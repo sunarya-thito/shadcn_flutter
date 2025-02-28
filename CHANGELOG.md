@@ -1,3 +1,28 @@
+## 0.0.26
+* Added ControlledComponent and ComponentController
+* Added DateInput component
+* Added FormattedInput component
+* Fixed Calendar component
+* Added ControlledCheckbox component
+* Added ControlledChips component
+* Added ControlledChipInput component
+* Added ControlledDatePicker component
+* Added ControlledRadioGroup component
+* Added ControlledSelect component
+* Added ControlledSlider component
+* Added ControlledStarRating component
+* Added ControlledSwitch component
+* Added ControlledTimePicker component
+* Added ControlledToggle component
+* Select and MultiSelect rework
+* Added IgnoreForm component
+* Remove non-alphanumeric filter on Avatar getInitials
+* TextField no longer wraps material TextField
+* Removed deprecated withOpacity usage
+* Added WidgetStateProvider component
+* Fix ContextMenu state issue
+* Fix select hover scroll color
+
 ## 0.0.25
 * Tabs, TabList, and TabPane are now based on the new TabContainer
 * Fixed InputOTP onSubmit issue
