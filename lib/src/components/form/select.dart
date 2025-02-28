@@ -461,7 +461,7 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
     this.popoverAlignment = Alignment.topCenter,
     this.popoverAnchorAlignment,
     this.canUnselect = false,
-    this.autoClosePopover,
+    this.autoClosePopover = true,
     this.enabled,
     this.valueSelectionHandler,
     this.valueSelectionPredicate,
@@ -908,6 +908,11 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
     super.initState();
     _searchController = widget.searchController ?? TextEditingController();
     _scrollController = widget.scrollController ?? ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      // because the controller did not get notified when a scroll position is attached
+      if (!mounted) return;
+      setState(() {});
+    });
   }
 
   @override
@@ -1104,11 +1109,11 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                                                 listenable: _scrollController,
                                                 builder: (context, child) {
                                                   return Visibility(
-                                                    visible: !_scrollController
-                                                            .hasClients ||
-                                                        !_scrollController
+                                                    visible: _scrollController
+                                                            .hasClients &&
+                                                        _scrollController
                                                             .position
-                                                            .hasContentDimensions ||
+                                                            .hasContentDimensions &&
                                                         _scrollController
                                                                 .offset <
                                                             _scrollController
