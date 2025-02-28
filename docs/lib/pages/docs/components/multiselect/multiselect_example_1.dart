@@ -17,81 +17,17 @@ class _MultiSelectExample1State extends State<MultiSelectExample1> {
       },
       popup: SelectPopup(
           items: SelectItemList(children: [
-        SelectGroup(
-          headers: [
-            SelectLabel(
-              child: Text('Apple'),
-            ),
-          ],
-          children: [
-            SelectItemButton(
-              value: 'Red Apple',
-              child: Text('Red Apple'),
-            ),
-            SelectItemButton(
-              value: 'Green Apple',
-              child: Text('Green Apple'),
-            ),
-          ],
+        SelectItemButton(
+          value: 'Apple',
+          child: Text('Apple'),
         ),
-        SelectGroup(
-          headers: [
-            SelectLabel(
-              child: Text('Banana'),
-            ),
-          ],
-          children: [
-            SelectItemButton(
-              value: 'Yellow Banana',
-              child: Text('Yellow Banana'),
-            ),
-            SelectItemButton(
-              value: 'Brown Banana',
-              child: Text('Brown Banana'),
-            ),
-          ],
+        SelectItemButton(
+          value: 'Banana',
+          child: Text('Banana'),
         ),
-        SelectGroup(
-          headers: [
-            SelectLabel(
-              child: Text('Lemon'),
-            ),
-          ],
-          children: [
-            SelectItemButton(
-              value: 'Yellow Lemon',
-              child: Text('Yellow Lemon'),
-            ),
-            SelectItemButton(
-              value: 'Green Lemon',
-              child: Text('Green Lemon'),
-            ),
-          ],
-        ),
-        SelectGroup(
-          headers: [
-            SelectLabel(
-              child: Text('Tomato'),
-            ),
-          ],
-          children: [
-            SelectItemButton(
-              value: 'Red Tomato',
-              child: Text('Red'),
-            ),
-            SelectItemButton(
-              value: 'Green Tomato',
-              child: Text('Green'),
-            ),
-            SelectItemButton(
-              value: 'Yellow Tomato',
-              child: Text('Yellow'),
-            ),
-            SelectItemButton(
-              value: 'Brown Tomato',
-              child: Text('Brown'),
-            ),
-          ],
+        SelectItemButton(
+          value: 'Cherry',
+          child: Text('Cherry'),
         ),
       ])),
       onChanged: (value) {

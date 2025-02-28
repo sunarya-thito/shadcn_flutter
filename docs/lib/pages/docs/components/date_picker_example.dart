@@ -4,6 +4,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
 import '../component_page.dart';
+import 'date_picker/date_picker_example_3.dart';
 
 class DatePickerExample extends StatelessWidget {
   const DatePickerExample({super.key});
@@ -26,6 +27,12 @@ class DatePickerExample extends StatelessWidget {
           path:
               'lib/pages/docs/components/date_picker/date_picker_example_2.dart',
           child: DatePickerExample2(),
+        ),
+        WidgetUsageExample(
+          title: 'Date Input Example',
+          path:
+              'lib/pages/docs/components/date_picker/date_picker_example_3.dart',
+          child: DatePickerExample3(),
         ),
       ],
     );
