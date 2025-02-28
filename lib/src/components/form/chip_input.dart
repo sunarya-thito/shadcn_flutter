@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart' hide TextInput;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef ChipWidgetBuilder<T> = Widget Function(BuildContext context, T chip);
@@ -9,20 +9,97 @@ class ChipInputController<T> extends ValueNotifier<List<T>>
   ChipInputController([super.value = const []]);
 }
 
-// class ControlledChipInput<T> extends StatelessWidget
-//     with ControlledComponent<List<T>> {
-//   @override
-//   final List<T>? initialValue;
-//   @override
-//   final ValueChanged<List<T>>? onChanged;
-//   @override
-//   final bool enabled;
-//   @override
-//   final ChipInputController<T>? controller;
-//   final TextEditingController? textEditingController;
-//   final BoxConstraints popoverConstraints;
-//   final UndoHistoryController? undoHistoryController;
-// }
+class ControlledChipInput<T> extends StatelessWidget
+    with ControlledComponent<List<T>> {
+  @override
+  final List<T> initialValue;
+  @override
+  final ValueChanged<List<T>>? onChanged;
+  @override
+  final ChipInputController<T>? controller;
+  @override
+  final bool enabled;
+  final TextEditingController? textEditingController;
+  final BoxConstraints popoverConstraints;
+  final UndoHistoryController? undoHistoryController;
+  final ValueChanged<String>? onSubmitted;
+  final String? initialText;
+  final FocusNode? focusNode;
+  final List<T> suggestions;
+  final List<T> chips;
+  final List<TextInputFormatter>? inputFormatters;
+  final void Function(int index)? onSuggestionChoosen;
+  final ChipWidgetBuilder<T> chipBuilder;
+  final ChipWidgetBuilder<T>? suggestionBuilder;
+  final bool useChips;
+  final TextInputAction? textInputAction;
+  final Widget? placeholder;
+  final Widget Function(BuildContext, T)? suggestionLeadingBuilder;
+  final Widget Function(BuildContext, T)? suggestionTrailingBuilder;
+  final Widget? inputTrailingWidget;
+
+  const ControlledChipInput({
+    super.key,
+    this.controller,
+    this.initialValue = const [],
+    this.onChanged,
+    this.enabled = true,
+    this.textEditingController,
+    this.popoverConstraints = const BoxConstraints(
+      maxHeight: 300,
+    ),
+    this.undoHistoryController,
+    this.onSubmitted,
+    this.initialText,
+    this.focusNode,
+    this.suggestions = const [],
+    this.chips = const [],
+    this.inputFormatters,
+    this.onSuggestionChoosen,
+    required this.chipBuilder,
+    this.suggestionBuilder,
+    this.useChips = true,
+    this.textInputAction,
+    this.placeholder,
+    this.suggestionLeadingBuilder,
+    this.suggestionTrailingBuilder,
+    this.inputTrailingWidget,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder(
+      controller: controller,
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      builder: (context, data) {
+        return ChipInput(
+          controller: textEditingController,
+          popoverConstraints: popoverConstraints,
+          undoHistoryController: undoHistoryController,
+          onSubmitted: onSubmitted,
+          initialText: initialText,
+          focusNode: focusNode,
+          suggestions: suggestions,
+          chips: data.value,
+          inputFormatters: inputFormatters,
+          onSuggestionChoosen: onSuggestionChoosen,
+          onChanged: data.onChanged,
+          useChips: useChips,
+          chipBuilder: chipBuilder,
+          suggestionBuilder: suggestionBuilder,
+          textInputAction: textInputAction,
+          placeholder: placeholder,
+          suggestionLeadingBuilder: suggestionLeadingBuilder,
+          suggestionTrailingBuilder: suggestionTrailingBuilder,
+          inputTrailingWidget: inputTrailingWidget,
+          enabled: data.enabled,
+        );
+      },
+    );
+  }
+}
 
 class ChipInput<T> extends StatefulWidget {
   final TextEditingController? controller;

@@ -15,7 +15,7 @@ class ColorInputController extends ValueNotifier<ColorDerivative>
 class ControlledColorInput extends StatelessWidget
     with ControlledComponent<ColorDerivative> {
   @override
-  final ColorDerivative? initialValue;
+  final ColorDerivative initialValue;
 
   @override
   final ValueChanged<ColorDerivative>? onChanged;
@@ -39,8 +39,9 @@ class ControlledColorInput extends StatelessWidget
   final ColorHistoryStorage? storage;
 
   const ControlledColorInput({
-    Key? key,
-    this.initialValue,
+    super.key,
+    this.initialValue =
+        const ColorDerivative.fromHSV(HSVColor.fromAHSV(0, 0, 0, 0)),
     this.onChanged,
     this.controller,
     this.enabled = true,
@@ -55,7 +56,7 @@ class ControlledColorInput extends StatelessWidget
     this.allowPickFromScreen = true,
     this.showLabel = true,
     this.storage,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -2036,13 +2037,8 @@ abstract base class ColorDerivative {
     return _HSVColor(HSVColor.fromColor(color));
   }
 
-  static ColorDerivative fromHSV(HSVColor color) {
-    return _HSVColor(color);
-  }
-
-  static ColorDerivative fromHSL(HSLColor color) {
-    return _HSLColor(color);
-  }
+  const factory ColorDerivative.fromHSV(HSVColor color) = _HSVColor;
+  const factory ColorDerivative.fromHSL(HSLColor color) = _HSLColor;
 
   const ColorDerivative();
   Color toColor();

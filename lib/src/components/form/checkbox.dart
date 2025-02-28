@@ -40,7 +40,7 @@ class ControlledCheckbox extends StatelessWidget
   @override
   final CheckboxController? controller;
   @override
-  final CheckboxState? initialValue;
+  final CheckboxState initialValue;
   @override
   final ValueChanged<CheckboxState>? onChanged;
   @override
@@ -52,7 +52,7 @@ class ControlledCheckbox extends StatelessWidget
   const ControlledCheckbox({
     super.key,
     this.controller,
-    this.initialValue,
+    this.initialValue = CheckboxState.unchecked,
     this.onChanged,
     this.enabled = true,
     this.leading,

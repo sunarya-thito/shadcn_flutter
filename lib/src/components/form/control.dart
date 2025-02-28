@@ -35,13 +35,14 @@ class ControlledComponentBuilder<T> extends StatefulWidget
       builder;
 
   const ControlledComponentBuilder({
-    Key? key,
+    super.key,
     required this.builder,
     this.initialValue,
     this.onChanged,
     this.controller,
     this.enabled = true,
-  }) : super(key: key);
+  }) : assert(controller == null && initialValue is T,
+            'Either controller or initialValue must be provided');
 
   @override
   _ControlledComponentBuilderState<T> createState() =>
@@ -55,7 +56,8 @@ class _ControlledComponentBuilderState<T>
   @override
   void initState() {
     super.initState();
-    _value = widget.controller?.value ?? widget.initialValue as T;
+    T? value = widget.controller?.value ?? widget.initialValue;
+    value = value as T;
     widget.controller?.addListener(_onControllerChanged);
   }
 
