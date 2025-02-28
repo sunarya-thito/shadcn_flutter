@@ -913,6 +913,7 @@ class _TextFieldState extends State<TextField>
                         .copyWith(
                           color: theme.colorScheme.mutedForeground,
                         ),
+                    textAlign: widget.textAlign,
                     maxLines: widget.maxLines,
                     child: widget.placeholder!,
                   ),
