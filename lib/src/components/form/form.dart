@@ -27,6 +27,10 @@ abstract class Validator<T> {
     return NotValidator(this);
   }
 
+  Validator<T> operator -() {
+    return NotValidator(this);
+  }
+
   Validator<T> operator +(Validator<T> other) {
     return combine(other);
   }
@@ -1148,7 +1152,6 @@ class Form extends StatefulWidget {
   final FormController? controller;
   final Widget child;
   final FormSubmitCallback? onSubmit;
-
   const Form({super.key, required this.child, this.onSubmit, this.controller});
 
   @override
@@ -1299,6 +1302,9 @@ class FormController extends ChangeNotifier {
       _attachedInputs.remove(key);
       _validity.remove(key);
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if (_disposed) {
+          return;
+        }
         notifyListeners();
       });
     }
