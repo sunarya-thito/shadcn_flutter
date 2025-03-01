@@ -41,7 +41,7 @@ class ControlledComponentBuilder<T> extends StatefulWidget
     this.onChanged,
     this.controller,
     this.enabled = true,
-  }) : assert(controller == null && initialValue is T,
+  }) : assert(controller != null || initialValue is T,
             'Either controller or initialValue must be provided');
 
   @override
@@ -57,7 +57,8 @@ class _ControlledComponentBuilderState<T>
   void initState() {
     super.initState();
     T? value = widget.controller?.value ?? widget.initialValue;
-    value = value as T;
+    assert(value != null, 'Either controller or initialValue must be provided');
+    _value = value as T;
     widget.controller?.addListener(_onControllerChanged);
   }
 
