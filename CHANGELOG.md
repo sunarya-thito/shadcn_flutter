@@ -1,3 +1,6 @@
+## 0.0.27
+* Fix ControlledComponent initial state issue
+
 ## 0.0.26
 * Added ControlledComponent and ComponentController
 * Added DateInput component
