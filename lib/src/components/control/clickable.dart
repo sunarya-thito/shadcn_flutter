@@ -108,17 +108,31 @@ class WidgetStatesProvider extends StatelessWidget {
   final Set<WidgetState>? states;
   final Widget child;
   final bool inherit;
+  final bool boundary;
 
   const WidgetStatesProvider({
-    Key? key,
+    super.key,
     this.controller,
     required this.child,
     this.states = const {},
     this.inherit = true,
-  }) : super(key: key);
+  }) : boundary = false;
+
+  const WidgetStatesProvider.boundary({
+    super.key,
+    required this.child,
+  })  : boundary = true,
+        controller = null,
+        states = null,
+        inherit = false;
 
   @override
   Widget build(BuildContext context) {
+    if (boundary) {
+      return Data<WidgetStatesData>.boundary(
+        child: child,
+      );
+    }
     Set<WidgetState>? parentStates;
     if (inherit) {
       WidgetStatesData? parentData = Data.maybeOf<WidgetStatesData>(context);
