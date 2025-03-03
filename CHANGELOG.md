@@ -1,3 +1,8 @@
+## 0.0.28
+* Added no virtualization mode on Select and MultiSelect Popup
+* Added intrinsic PopupConstraint
+* Fixed autoClosePopup on Select and MultiSelect
+
 ## 0.0.27
 * Fix ControlledComponent initial state issue
 
