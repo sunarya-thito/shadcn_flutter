@@ -237,14 +237,14 @@ class SelectItemButton<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    final data = Data.maybeOf<SelectData>(context);
+    final data = Data.maybeOf<SelectPopupHandle>(context);
     bool isSelected = data?.isSelected(value) ?? false;
     bool hasSelection = data?.hasSelection ?? false;
     return Button(
       disableTransition: true,
       alignment: AlignmentDirectional.centerStart,
       onPressed: () {
-        data?.onChanged(value, !isSelected);
+        data?.selectItem(value, !isSelected);
       },
       style: const ButtonStyle.ghost().copyWith(
         padding: (context, states, value) => EdgeInsets.symmetric(
@@ -636,37 +636,39 @@ class SelectState<T> extends State<Select<T>>
                       },
                     );
                   },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Data.inherit(
-                  data: SelectData(
-                    enabled: enabled,
-                    autoClose: widget.autoClosePopover,
-                    isSelected: _isSelected,
-                    onChanged: _onChanged,
-                    hasSelection: widget.value != null,
+            child: WidgetStatesProvider.boundary(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Data.inherit(
+                    data: SelectData(
+                      enabled: enabled,
+                      autoClose: widget.autoClosePopover,
+                      isSelected: _isSelected,
+                      onChanged: _onChanged,
+                      hasSelection: widget.value != null,
+                    ),
+                    child: Expanded(
+                      child: widget.value != null
+                          ? Builder(builder: (context) {
+                              return widget.itemBuilder(
+                                context,
+                                widget.value as T,
+                              );
+                            })
+                          : _placeholder,
+                    ),
                   ),
-                  child: Expanded(
-                    child: widget.value != null
-                        ? Builder(builder: (context) {
-                            return widget.itemBuilder(
-                              context,
-                              widget.value as T,
-                            );
-                          })
-                        : _placeholder,
+                  SizedBox(width: 8 * scaling),
+                  IconTheme.merge(
+                    data: IconThemeData(
+                      color: theme.colorScheme.foreground,
+                      opacity: 0.5,
+                    ),
+                    child: const Icon(Icons.unfold_more).iconSmall(),
                   ),
-                ),
-                SizedBox(width: 8 * scaling),
-                IconTheme.merge(
-                  data: IconThemeData(
-                    color: theme.colorScheme.foreground,
-                    opacity: 0.5,
-                  ),
-                  child: const Icon(Icons.unfold_more).iconSmall(),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -828,12 +830,13 @@ class SelectData {
     return other.isSelected == isSelected &&
         other.onChanged == onChanged &&
         other.hasSelection == hasSelection &&
-        other.autoClose == autoClose;
+        other.autoClose == autoClose &&
+        other.enabled == enabled;
   }
 
   @override
   int get hashCode =>
-      Object.hash(isSelected, onChanged, autoClose, hasSelection);
+      Object.hash(isSelected, onChanged, autoClose, hasSelection, enabled);
 }
 
 typedef SelectItemsBuilder<T> = FutureOr<SelectItemDelegate> Function(
@@ -841,7 +844,7 @@ typedef SelectItemsBuilder<T> = FutureOr<SelectItemDelegate> Function(
 
 class SelectPopup<T> extends StatefulWidget {
   final SelectItemsBuilder<T>? builder;
-  final FutureOr<SelectItemDelegate>? items;
+  final FutureOr<SelectItemDelegate?>? items;
   final TextEditingController? searchController;
   final Widget? searchPlaceholder;
   final WidgetBuilder? emptyBuilder;
@@ -854,6 +857,7 @@ class SelectPopup<T> extends StatefulWidget {
   final bool enableSearch;
   final ScrollController? scrollController;
   final bool shrinkWrap;
+  final bool disableVirtualization;
 
   const SelectPopup.builder({
     super.key,
@@ -870,7 +874,8 @@ class SelectPopup<T> extends StatefulWidget {
     this.errorBuilder,
     this.scrollController,
   })  : items = null,
-        shrinkWrap = false;
+        shrinkWrap = false,
+        disableVirtualization = false;
 
   const SelectPopup({
     super.key,
@@ -887,7 +892,26 @@ class SelectPopup<T> extends StatefulWidget {
     this.scrollController,
     this.shrinkWrap = true,
   })  : builder = null,
-        enableSearch = false;
+        enableSearch = false,
+        disableVirtualization = false;
+
+  const SelectPopup.noVirtualization({
+    super.key,
+    FutureOr<SelectItemList?>? this.items,
+    this.searchController,
+    this.searchPlaceholder,
+    this.emptyBuilder,
+    this.loadingBuilder,
+    this.errorBuilder,
+    this.surfaceBlur,
+    this.surfaceOpacity,
+    this.autoClose = true,
+    this.canUnselect,
+    this.scrollController,
+  })  : builder = null,
+        enableSearch = false,
+        disableVirtualization = true,
+        shrinkWrap = false;
 
   /// A method used to implement SelectPopupBuilder
   SelectPopup<T> call(BuildContext context) {
@@ -898,7 +922,17 @@ class SelectPopup<T> extends StatefulWidget {
   State<SelectPopup<T>> createState() => _SelectPopupState<T>();
 }
 
-class _SelectPopupState<T> extends State<SelectPopup<T>> {
+mixin SelectPopupHandle {
+  bool isSelected(Object? value);
+  void selectItem(Object? value, bool selected);
+  bool get hasSelection;
+  static SelectPopupHandle of(BuildContext context) {
+    return Data.of<SelectPopupHandle>(context);
+  }
+}
+
+class _SelectPopupState<T> extends State<SelectPopup<T>>
+    with SelectPopupHandle {
   late TextEditingController _searchController;
   late ScrollController _scrollController;
   SelectData? _selectData;
@@ -932,11 +966,16 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
     _selectData = Data.maybeOf<SelectData>(context);
   }
 
-  bool isSelected(T value) {
+  @override
+  bool get hasSelection => _selectData?.hasSelection ?? false;
+
+  @override
+  bool isSelected(Object? value) {
     return _selectData?.isSelected(value) ?? false;
   }
 
-  void selectItem(T value, bool selected) {
+  @override
+  void selectItem(Object? value, bool selected) {
     _selectData?.onChanged(value, selected);
     if (widget.autoClose ?? _selectData?.autoClose == true) {
       closeOverlay(context, value);
@@ -947,90 +986,50 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return SurfaceCard(
-      clipBehavior: Clip.hardEdge,
-      surfaceBlur: widget.surfaceBlur,
-      surfaceOpacity: widget.surfaceOpacity,
-      padding: EdgeInsets.zero,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (widget.enableSearch)
-            TextField(
-              controller: _searchController,
-              border: false,
-              leading: const Icon(
-                Icons.search,
-              ).iconSmall().iconMutedForeground(),
-              placeholder: widget.searchPlaceholder,
-              padding:
-                  const EdgeInsets.symmetric(vertical: 12, horizontal: 12) *
-                      scaling,
-            ),
-          Flexible(
-            child: ListenableBuilder(
-                listenable: _searchController,
-                builder: (context, _) {
-                  return CachedValueWidget(
-                      value: _searchController.text.isEmpty
-                          ? null
-                          : _searchController.text,
-                      builder: (context, searchQuery) {
-                        return FutureOrBuilder<SelectItemDelegate>(
-                            future: widget.builder != null
-                                ? widget.builder!.call(context, searchQuery)
-                                : widget.items != null
-                                    ? widget.items!
-                                    : SelectItemDelegate.empty,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                Widget? loadingBuilder =
-                                    widget.loadingBuilder?.call(context);
-                                if (loadingBuilder != null) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      if (widget.enableSearch) const Divider(),
-                                      Flexible(
-                                        child: loadingBuilder,
-                                      ),
-                                    ],
-                                  );
-                                }
-                                return const SizedBox();
-                              }
-                              if (snapshot.hasError) {
-                                Widget? errorBuilder =
-                                    widget.errorBuilder?.call(
-                                  context,
-                                  snapshot.error!,
-                                  snapshot.stackTrace,
-                                );
-                                if (errorBuilder != null) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      if (widget.enableSearch) const Divider(),
-                                      Flexible(
-                                        child: errorBuilder,
-                                      ),
-                                    ],
-                                  );
-                                }
-                                return const SizedBox();
-                              }
-                              if (snapshot.hasData &&
-                                  snapshot.data?.estimatedChildCount != 0) {
-                                var data = snapshot.requireData;
-                                return CachedValueWidget(
-                                  value: data,
-                                  builder: (context, data) {
+    return Data<SelectPopupHandle>.inherit(
+      data: this,
+      child: SurfaceCard(
+        clipBehavior: Clip.hardEdge,
+        surfaceBlur: widget.surfaceBlur,
+        surfaceOpacity: widget.surfaceOpacity,
+        padding: EdgeInsets.zero,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.enableSearch)
+              TextField(
+                controller: _searchController,
+                border: false,
+                leading: const Icon(
+                  Icons.search,
+                ).iconSmall().iconMutedForeground(),
+                placeholder: widget.searchPlaceholder,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12) *
+                        scaling,
+              ),
+            Flexible(
+              child: ListenableBuilder(
+                  listenable: _searchController,
+                  builder: (context, _) {
+                    return CachedValueWidget(
+                        value: _searchController.text.isEmpty
+                            ? null
+                            : _searchController.text,
+                        builder: (context, searchQuery) {
+                          return FutureOrBuilder<SelectItemDelegate?>(
+                              future: widget.builder != null
+                                  ? widget.builder!.call(context, searchQuery)
+                                  : widget.items != null
+                                      ? widget.items!
+                                      : SelectItemDelegate.empty,
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  Widget? loadingBuilder =
+                                      widget.loadingBuilder?.call(context);
+                                  if (loadingBuilder != null) {
                                     return Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment:
@@ -1039,162 +1038,239 @@ class _SelectPopupState<T> extends State<SelectPopup<T>> {
                                         if (widget.enableSearch)
                                           const Divider(),
                                         Flexible(
-                                          child: Stack(
-                                            fit: StackFit.passthrough,
-                                            children: [
-                                              ListView.builder(
-                                                controller: _scrollController,
-                                                padding:
-                                                    const EdgeInsets.all(4) *
-                                                        scaling,
-                                                itemBuilder: data.build,
-                                                shrinkWrap: widget.shrinkWrap,
-                                                itemCount:
-                                                    data.estimatedChildCount,
-                                              ),
-                                              ListenableBuilder(
-                                                listenable: _scrollController,
-                                                builder: (context, child) {
-                                                  return Visibility(
-                                                    visible: _scrollController
-                                                            .offset >
-                                                        0,
-                                                    child: Positioned(
-                                                      top: 0,
-                                                      left: 0,
-                                                      right: 0,
-                                                      child: HoverActivity(
-                                                        hitTestBehavior:
-                                                            HitTestBehavior
-                                                                .translucent,
-                                                        debounceDuration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    16),
-                                                        onHover: () {
-                                                          // decrease scroll offset
-                                                          var value =
-                                                              _scrollController
-                                                                      .offset -
-                                                                  8;
-                                                          value = value.clamp(
-                                                            0.0,
-                                                            _scrollController
-                                                                .position
-                                                                .maxScrollExtent,
-                                                          );
-                                                          _scrollController
-                                                              .jumpTo(
-                                                            value,
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                      vertical:
-                                                                          4) *
-                                                                  scaling,
-                                                          child: const Icon(
-                                                            RadixIcons
-                                                                .chevronUp,
-                                                          ).iconX3Small(),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                              ListenableBuilder(
-                                                listenable: _scrollController,
-                                                builder: (context, child) {
-                                                  return Visibility(
-                                                    visible: _scrollController
-                                                            .hasClients &&
-                                                        _scrollController
-                                                            .position
-                                                            .hasContentDimensions &&
-                                                        _scrollController
-                                                                .offset <
-                                                            _scrollController
-                                                                .position
-                                                                .maxScrollExtent,
-                                                    child: Positioned(
-                                                      bottom: 0,
-                                                      left: 0,
-                                                      right: 0,
-                                                      child: HoverActivity(
-                                                        hitTestBehavior:
-                                                            HitTestBehavior
-                                                                .translucent,
-                                                        debounceDuration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    16),
-                                                        onHover: () {
-                                                          // increase scroll offset
-                                                          var value =
-                                                              _scrollController
-                                                                      .offset +
-                                                                  8;
-                                                          value = value.clamp(
-                                                            0.0,
-                                                            _scrollController
-                                                                .position
-                                                                .maxScrollExtent,
-                                                          );
-                                                          _scrollController
-                                                              .jumpTo(
-                                                            value,
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                      vertical:
-                                                                          4) *
-                                                                  scaling,
-                                                          child: const Icon(
-                                                            RadixIcons
-                                                                .chevronDown,
-                                                          ).iconX3Small(),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ],
-                                          ),
+                                          child: loadingBuilder,
                                         ),
                                       ],
                                     );
-                                  },
+                                  }
+                                  return const SizedBox();
+                                }
+                                if (snapshot.hasError) {
+                                  Widget? errorBuilder =
+                                      widget.errorBuilder?.call(
+                                    context,
+                                    snapshot.error!,
+                                    snapshot.stackTrace,
+                                  );
+                                  if (errorBuilder != null) {
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        if (widget.enableSearch)
+                                          const Divider(),
+                                        Flexible(
+                                          child: errorBuilder,
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                  return const SizedBox();
+                                }
+                                if (snapshot.hasData &&
+                                    snapshot.data?.estimatedChildCount != 0) {
+                                  var data = snapshot.data!;
+                                  return CachedValueWidget(
+                                    value: data,
+                                    builder: (context, data) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          if (widget.enableSearch)
+                                            const Divider(),
+                                          Flexible(
+                                            child: Stack(
+                                              fit: StackFit.passthrough,
+                                              children: [
+                                                if (widget
+                                                    .disableVirtualization)
+                                                  SingleChildScrollView(
+                                                    controller:
+                                                        _scrollController,
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                                4) *
+                                                            scaling,
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .stretch,
+                                                      children: [
+                                                        for (var i = 0;
+                                                            i <
+                                                                (data as SelectItemList)
+                                                                    .children
+                                                                    .length;
+                                                            i++)
+                                                          data.build(
+                                                              context, i),
+                                                      ],
+                                                    ),
+                                                  )
+                                                else
+                                                  ListView.builder(
+                                                    controller:
+                                                        _scrollController,
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                                4) *
+                                                            scaling,
+                                                    itemBuilder: data.build,
+                                                    shrinkWrap:
+                                                        widget.shrinkWrap,
+                                                    itemCount: data
+                                                        .estimatedChildCount,
+                                                  ),
+                                                ListenableBuilder(
+                                                  listenable: _scrollController,
+                                                  builder: (context, child) {
+                                                    return Visibility(
+                                                      visible: _scrollController
+                                                              .offset >
+                                                          0,
+                                                      child: Positioned(
+                                                        top: 0,
+                                                        left: 0,
+                                                        right: 0,
+                                                        child: HoverActivity(
+                                                          hitTestBehavior:
+                                                              HitTestBehavior
+                                                                  .translucent,
+                                                          debounceDuration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      16),
+                                                          onHover: () {
+                                                            // decrease scroll offset
+                                                            var value =
+                                                                _scrollController
+                                                                        .offset -
+                                                                    8;
+                                                            value = value.clamp(
+                                                              0.0,
+                                                              _scrollController
+                                                                  .position
+                                                                  .maxScrollExtent,
+                                                            );
+                                                            _scrollController
+                                                                .jumpTo(
+                                                              value,
+                                                            );
+                                                          },
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                        vertical:
+                                                                            4) *
+                                                                    scaling,
+                                                            child: const Icon(
+                                                              RadixIcons
+                                                                  .chevronUp,
+                                                            ).iconX3Small(),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                                ListenableBuilder(
+                                                  listenable: _scrollController,
+                                                  builder: (context, child) {
+                                                    return Visibility(
+                                                      visible: _scrollController
+                                                              .hasClients &&
+                                                          _scrollController
+                                                              .position
+                                                              .hasContentDimensions &&
+                                                          _scrollController
+                                                                  .offset <
+                                                              _scrollController
+                                                                  .position
+                                                                  .maxScrollExtent,
+                                                      child: Positioned(
+                                                        bottom: 0,
+                                                        left: 0,
+                                                        right: 0,
+                                                        child: HoverActivity(
+                                                          hitTestBehavior:
+                                                              HitTestBehavior
+                                                                  .translucent,
+                                                          debounceDuration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      16),
+                                                          onHover: () {
+                                                            // increase scroll offset
+                                                            var value =
+                                                                _scrollController
+                                                                        .offset +
+                                                                    8;
+                                                            value = value.clamp(
+                                                              0.0,
+                                                              _scrollController
+                                                                  .position
+                                                                  .maxScrollExtent,
+                                                            );
+                                                            _scrollController
+                                                                .jumpTo(
+                                                              value,
+                                                            );
+                                                          },
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                        vertical:
+                                                                            4) *
+                                                                    scaling,
+                                                            child: const Icon(
+                                                              RadixIcons
+                                                                  .chevronDown,
+                                                            ).iconX3Small(),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                                Widget? emptyBuilder =
+                                    widget.emptyBuilder?.call(
+                                  context,
                                 );
-                              }
-                              Widget? emptyBuilder = widget.emptyBuilder?.call(
-                                context,
-                              );
-                              if (emptyBuilder != null) {
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    if (widget.enableSearch) const Divider(),
-                                    Flexible(
-                                      child: emptyBuilder,
-                                    ),
-                                  ],
-                                );
-                              }
-                              return const SizedBox();
-                            });
-                      });
-                }),
-          ),
-        ],
+                                if (emptyBuilder != null) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      if (widget.enableSearch) const Divider(),
+                                      Flexible(
+                                        child: emptyBuilder,
+                                      ),
+                                    ],
+                                  );
+                                }
+                                return const SizedBox();
+                              });
+                        });
+                  }),
+            ),
+          ],
+        ),
       ),
     );
   }
