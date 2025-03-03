@@ -1,0 +1,149 @@
+{
+    "fileTypes": [
+        "sql",
+        "ddl",
+        "dml"
+    ],
+    "foldingStartMarker": "(?i)^\\s*(begin|if|loop)\\b",
+    "foldingStopMarker": "(?i)^\\s*(end)\\b",
+    "keyEquivalent": "^~S",
+    "name": "PL\/pgSQL (Postgres)",
+    "patterns": [
+        {
+            "begin": "\/\\*",
+            "end": "\\*\/",
+            "name": "comment.block.postgres"
+        },
+        {
+            "match": "--.*$",
+            "name": "comment.line.double-dash.postgres"
+        },
+        {
+            "captures": {
+                "1": {
+                    "name": "keyword.other.postgres"
+                },
+                "2": {
+                    "name": "keyword.other.postgres"
+                }
+            },
+            "match": "(?i)^\\s*(create)(\\s+or\\s+replace)?\\s+",
+            "name": "meta.create.postgres"
+        },
+        {
+            "captures": {
+                "1": {
+                    "name": "keyword.other.postgres"
+                },
+                "2": {
+                    "name": "keyword.other.postgres"
+                },
+                "3": {
+                    "name": "entity.name.type.postgres"
+                }
+            },
+            "match": "(?i)\\b(package)(\\s+body)?\\s+(\\S+)",
+            "name": "meta.package.postgres"
+        },
+        {
+            "captures": {
+                "1": {
+                    "name": "keyword.other.postgres"
+                },
+                "2": {
+                    "name": "entity.name.type.postgres"
+                }
+            },
+            "match": "(?i)\\b(type)\\s+\"([^\"]+)\"",
+            "name": "meta.type.postgres"
+        },
+        {
+            "captures": {
+                "1": {
+                    "name": "keyword.other.postgres"
+                },
+                "2": {
+                    "name": "entity.name.function.postgres"
+                }
+            },
+            "match": "(?i)\\s*(function|procedure)\\s+([-a-z0-9_.]+)",
+            "name": "meta.procedure.postgres"
+        },
+        {
+            "match": "[!<>:]?=|<>|<|>|\\+|(?<!\\.)\\*|-|(?<!^)\/|@@|\\|\\|",
+            "name": "keyword.operator.postgres"
+        },
+        {
+            "match": "(?i)\\b(true|false|null|found)\\b",
+            "name": "constant.language.postgres"
+        },
+        {
+            "match": "\\b\\d+(\\.\\d+)?\\b",
+            "name": "constant.numeric.postgres"
+        },
+        {
+            "match": "(?i)\\b(if|elsif|else|end\\s+if|loop|end\\s+loop|for|foreach|array|case|end\\s+case|continue|return|goto|alias)\\b",
+            "name": "keyword.control.postgres"
+        },
+        {
+            "match": "(?i)\\b(or|and|not|like)\\b",
+            "name": "keyword.operator.postgres"
+        },
+        {
+            "match": "(?i)\\b(sysdate|%(isopen|found|notfound|rowcount)|commit|rollback|sqlerrm|substr|cast|decode|length|lower|upper|coalesce)\\b",
+            "name": "support.function.postgres"
+        },
+        {
+            "match": "(?i)\\b(avg|count|sum|max|min|nvl|trim|to_date|to_char|lpad|ltrim|rpad|rtrim|trunc|to_number|regexp_split_to_array|regexp_replace)\\b",
+            "name": "support.function.builtin.postgres"
+        },
+        {
+            "match": "(?i)\\b(sql|sqlcode)\\b",
+            "name": "variable.language.postgres"
+        },
+        {
+            "match": "(?i)\\b(p(i|o|io)_[-a-z0-9_]+)\\b",
+            "name": "variable.parameter.postgres"
+        },
+        {
+            "match": "(?i)\\b(l_[-a-z0-9_]+)\\b",
+            "name": "variable.other.postgres"
+        },
+        {
+            "match": "(?i)\\b(immutable|volatile|stable|serial|primary|key|references|comment|column|schema|authorization|get|diagnostics|returning|drop|all|raise|notice|warning|exception|external|security|definer|language|grant|execute|on|to|function|procedure|returns|end|then|deterministic|exception|when|others|subtype|constant|range|binary_integer|declare|begin|in|out|is|as|exit|open|fetch|into|close|type|rowtype|default|\\.(extend|count|first|last|next|nextval|currval)|cost|alter|owner)\\b",
+            "name": "keyword.other.postgres"
+        },
+        {
+            "match": "(?i)\\b(select|perform|from|where|order\\s+by|group\\s+by|asc|desc|update|set|insert|into|values|delete|from|distinct|union|having|limit|table|of|prepare|(inner|left|outer) join)\\b",
+            "name": "keyword.other.sql.postgres"
+        },
+        {
+            "match": "[$][0-9]+",
+            "name": "storage.type.postgres"
+        },
+        {
+            "match": "(?i)\\b(dbms_lock|dbms_output)\\b",
+            "name": "support.class.postgres"
+        },
+        {
+            "match": "(?i)\\b(put_line)\\b",
+            "name": "support.function.postgres"
+        },
+        {
+            "begin": "'",
+            "end": "'",
+            "name": "string.quoted.single.postgres"
+        },
+        {
+            "begin": "\"",
+            "end": "\"",
+            "name": "string.quoted.double.postgres"
+        },
+        {
+            "match": "(?i)\\b(number|integer|bigint|varchar2|varchar|boolean|date|setof|record|query|numeric|void|character varying|text|([-a-z0-9_.]+%(row)?type))\\b",
+            "name": "storage.type.postgres"
+        }
+    ],
+    "scopeName": "source.plpgsql.postgres",
+    "uuid": "28DCE4DD-F5E1-4ED3-8847-64DA6B1F9163"
+}
