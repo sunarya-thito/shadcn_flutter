@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/rendering.dart';
@@ -245,6 +246,7 @@ typedef PopoverFutureVoidCallback<T> = Future<T> Function(T value);
 
 enum PopoverConstraint {
   flexible,
+  intrinsic,
   anchorFixedSize,
   anchorMinSize,
   anchorMaxSize,
@@ -1150,6 +1152,11 @@ class PopoverLayoutRender extends RenderShiftedBox {
     } else if (_widthConstraint == PopoverConstraint.anchorMaxSize) {
       assert(_anchorSize != null, 'anchorSize must not be null');
       maxWidth = _anchorSize!.width;
+    } else if (_widthConstraint == PopoverConstraint.intrinsic) {
+      double intrinsicWidth = child!.getMaxIntrinsicWidth(double.infinity);
+      if (intrinsicWidth.isFinite) {
+        maxWidth = max(minWidth, intrinsicWidth);
+      }
     }
     if (_heightConstraint == PopoverConstraint.anchorFixedSize) {
       assert(_anchorSize != null, 'anchorSize must not be null');
@@ -1161,6 +1168,11 @@ class PopoverLayoutRender extends RenderShiftedBox {
     } else if (_heightConstraint == PopoverConstraint.anchorMaxSize) {
       assert(_anchorSize != null, 'anchorSize must not be null');
       maxHeight = _anchorSize!.height;
+    } else if (_heightConstraint == PopoverConstraint.intrinsic) {
+      double intrinsicHeight = child!.getMaxIntrinsicHeight(double.infinity);
+      if (intrinsicHeight.isFinite) {
+        maxHeight = max(minHeight, intrinsicHeight);
+      }
     }
     return BoxConstraints(
       minWidth: minWidth,
