@@ -982,11 +982,11 @@ class _NavigationLabeled extends StatelessWidget {
       keepMainAxisSize:
           (this.direction != direction ? keepMainAxisSize : keepCrossAxisSize),
       child: Padding(
-        padding: EdgeInsets.only(
+        padding: EdgeInsetsDirectional.only(
           top: position == NavigationLabelPosition.bottom ? spacing : 0,
           bottom: position == NavigationLabelPosition.top ? spacing : 0,
-          left: position == NavigationLabelPosition.end ? spacing : 0,
-          right: position == NavigationLabelPosition.start ? spacing : 0,
+          start: position == NavigationLabelPosition.end ? spacing : 0,
+          end: position == NavigationLabelPosition.start ? spacing : 0,
         ),
         child: label,
       ),
