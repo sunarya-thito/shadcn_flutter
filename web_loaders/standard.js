@@ -73,6 +73,8 @@ class ShadcnAppConfig {
         if (this.loaderColor == null) {
             this.loaderColor = localStorage.getItem('shadcn_flutter.primary') || '#3c83f6';
         }
+
+        this.transitionDuration = transitionDuration || 0;
     }
 }
 
