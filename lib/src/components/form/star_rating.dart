@@ -246,57 +246,102 @@ class _StarRatingState extends State<StarRating>
                 widget.onChanged!(roundedValue);
               }
             },
-            child: Flex(
-              direction: widget.direction,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (var i = 0; i < widget.max.ceil(); i++)
-                  MouseRegion(
-                    hitTestBehavior: HitTestBehavior.translucent,
-                    onHover: (event) {
-                      if (!_enabled) return;
-                      if (widget.onChanged == null) return;
-                      double progress =
-                          (event.localPosition.dx / starSize).clamp(0.0, 1.0);
-                      setState(() {
-                        _changingValue = (i + progress);
-                      });
-                    },
-                    child: Stack(
-                      fit: StackFit.passthrough,
-                      children: [
-                        ShaderMask(
-                          shaderCallback: (bounds) {
-                            return LinearGradient(
-                              colors: [
-                                widget.activeColor ??
-                                    (_enabled
-                                        ? theme.colorScheme.primary
-                                        : theme.colorScheme.mutedForeground),
-                                widget.backgroundColor ??
-                                    theme.colorScheme.muted,
-                              ],
-                              stops: [
-                                (roundedValue - i).clamp(0.0, 1.0),
-                                (roundedValue - i).clamp(0.0, 1.0),
-                              ],
-                              begin: widget.direction == Axis.horizontal
-                                  ? Alignment.centerLeft
-                                  : Alignment.bottomCenter,
-                              end: widget.direction == Axis.horizontal
-                                  ? Alignment.centerRight
-                                  : Alignment.topCenter,
-                            ).createShader(bounds);
-                          },
-                          blendMode: BlendMode.srcIn,
-                          child: _buildStar(context),
-                        ),
-                        _buildStar(context, true),
-                      ],
+            child: GestureDetector(
+              onTapDown: (details) {
+                if (!_enabled) return;
+                if (widget.onChanged == null) return;
+                double totalStarSize =
+                    starSize + (starSpacing * (widget.max.ceil() - 1));
+                double progress =
+                    (details.localPosition.dx / totalStarSize).clamp(0.0, 1.0);
+                double newValue =
+                    (progress * widget.max).clamp(0.0, widget.max);
+                widget.onChanged!(newValue);
+              },
+              onPanUpdate: (details) {
+                if (!_enabled) return;
+                if (widget.onChanged == null) return;
+                int totalStars = widget.max.ceil();
+                double totalStarSize =
+                    starSize * totalStars + (starSpacing * (totalStars - 1));
+                double progress =
+                    (details.localPosition.dx / totalStarSize).clamp(0.0, 1.0);
+                double newValue =
+                    (progress * widget.max).clamp(0.0, widget.max);
+                setState(() {
+                  _changingValue = newValue;
+                });
+              },
+              onPanEnd: (details) {
+                if (!_enabled) return;
+                if (widget.onChanged == null) return;
+                widget.onChanged!(_changingValue ?? roundedValue);
+                setState(() {
+                  _changingValue = null;
+                });
+              },
+              onPanCancel: () {
+                if (!_enabled) return;
+                if (widget.onChanged == null) return;
+                widget.onChanged!(_changingValue ?? roundedValue);
+                setState(() {
+                  _changingValue = null;
+                });
+              },
+              child: Flex(
+                direction: widget.direction,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (var i = 0; i < widget.max.ceil(); i++)
+                    MouseRegion(
+                      hitTestBehavior: HitTestBehavior.translucent,
+                      onHover: (event) {
+                        if (!_enabled) return;
+                        if (widget.onChanged == null) return;
+                        double progress =
+                            (event.localPosition.dx / starSize).clamp(0.0, 1.0);
+                        double newValue =
+                            (progress * widget.max).clamp(0.0, widget.max);
+                        setState(() {
+                          _changingValue = newValue;
+                        });
+                      },
+                      child: Stack(
+                        fit: StackFit.passthrough,
+                        children: [
+                          ShaderMask(
+                            shaderCallback: (bounds) {
+                              return LinearGradient(
+                                colors: [
+                                  widget.activeColor ??
+                                      (_enabled
+                                          ? theme.colorScheme.primary
+                                          : theme.colorScheme.mutedForeground),
+                                  widget.backgroundColor ??
+                                      theme.colorScheme.muted,
+                                ],
+                                stops: [
+                                  (roundedValue - i).clamp(0.0, 1.0),
+                                  (roundedValue - i).clamp(0.0, 1.0),
+                                ],
+                                begin: widget.direction == Axis.horizontal
+                                    ? Alignment.centerLeft
+                                    : Alignment.bottomCenter,
+                                end: widget.direction == Axis.horizontal
+                                    ? Alignment.centerRight
+                                    : Alignment.topCenter,
+                              ).createShader(bounds);
+                            },
+                            blendMode: BlendMode.srcIn,
+                            child: _buildStar(context),
+                          ),
+                          _buildStar(context, true),
+                        ],
+                      ),
                     ),
-                  ),
-              ],
-            ).gap(starSpacing),
+                ],
+              ).gap(starSpacing),
+            ),
           ),
         );
       },
