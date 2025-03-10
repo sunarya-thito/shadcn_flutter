@@ -232,4 +232,6 @@ globalThis.ShadcnAppThemeChangedEvent = ShadcnAppThemeChangedEvent;
 globalThis.ShadcnAppTheme = ShadcnAppTheme;
 
 const shadcn_flutter = new ShadcnApp(new ShadcnAppConfig(shadcn_flutter_config));
-shadcn_flutter.loadApp();
+document.addEventListener('DOMContentLoaded', () => {
+    shadcn_flutter.loadApp();
+});
