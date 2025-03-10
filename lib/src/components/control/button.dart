@@ -1729,11 +1729,11 @@ Decoration _buttonOutlineDecoration(
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return BoxDecoration(
-      color: themeData.colorScheme.muted.withValues(
+      color: themeData.colorScheme.border.withValues(
         alpha: 0,
       ),
       border: Border.all(
-        color: themeData.colorScheme.muted,
+        color: themeData.colorScheme.border,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
