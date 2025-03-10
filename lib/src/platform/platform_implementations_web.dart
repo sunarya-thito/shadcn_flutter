@@ -8,6 +8,7 @@ extension type _Window(JSObject _) implements JSObject {
   external void dispatchEvent(JSObject event);
 
   external _GlobalThis get globalThis;
+  external set shadcnAppLoaded(bool value);
 }
 
 @JS()
@@ -43,6 +44,7 @@ class ShadcnFlutterPlatformImplementations {
     if (!_isPreloaderAvailable) {
       return;
     }
+    _window.shadcnAppLoaded = true;
     final event = _Event("shadcn_flutter_app_ready");
     _window.dispatchEvent(event);
   }
@@ -62,5 +64,5 @@ class ShadcnFlutterPlatformImplementations {
 }
 
 String _colorToCssRgba(Color color) {
-  return 'rgba(${color.red}, ${color.green}, ${color.blue}, ${color.opacity})';
+  return 'rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})';
 }

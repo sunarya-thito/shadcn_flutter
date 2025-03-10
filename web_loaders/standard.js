@@ -14,7 +14,8 @@ const loaderWidget = `
     <div id="words" style="font-size: 16px; opacity: 0.6; font-weight: 300; text-align: right; margin-top: 4px">
     ${words[Math.floor(Math.random() * words.length)]}
     </div>
-</div>`
+</div>
+`;
 
 const shadcn_flutter_config = {
     loaderWidget: loaderWidget,
@@ -26,6 +27,7 @@ const shadcn_flutter_config = {
     fontWeight: '400',
     mainAxisAlignment: 'end',
     crossAxisAlignment: 'end',
+    transitionDuration: 500,
     externalScripts: [
         {
             src: 'https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/400.min.css',
@@ -37,9 +39,6 @@ const shadcn_flutter_config = {
         },
     ]
 };
-
-{{flutter_js}}
-{{flutter_build_config}}
 
 class ShadcnAppConfig {
     background;
@@ -106,20 +105,14 @@ class ShadcnApp {
         window.addEventListener('shadcn_flutter_app_ready', this.onAppReady);
         window.addEventListener('shadcn_flutter_theme_changed', this.onThemeChanged);
         this.#initializeDocument();
-        let externalScriptIndex = 0;
-        this.#loadExternalScripts(externalScriptIndex, () => {
-            _flutter.loader.load({
-                onEntrypointLoaded: async function(engineInitializer) {
-                    const appRunner = await engineInitializer.initializeEngine();
-                    await appRunner.runApp();
-                }
-            });
-        });
+        this.#loadExternalScripts(0);
     }
 
     #loadExternalScripts(index, onDone) {
         if (index >= this.config.externalScripts.length) {
-            onDone();
+            if (onDone) {
+                onDone();
+            }
             return;
         }
         this.#loadScriptDynamically(this.config.externalScripts[index], () => {
@@ -177,7 +170,7 @@ class ShadcnApp {
             font-size: ${this.config.fontSize};
             font-weight: ${this.config.fontWeight};
             text-align: center;
-            transition: opacity 0.5s;
+            transition: opacity ${this.config.transitionDuration}ms;
             opacity: 1;
             pointer-events: initial;
         `;
@@ -216,6 +209,10 @@ class ShadcnApp {
         const loaderDiv = document.querySelector('div');
         loaderDiv.style.opacity = 0;
         loaderDiv.style.pointerEvents = 'none';
+
+        setTimeout(() => {
+            loaderDiv.remove();
+        }, this.config.transitionDuration + 50);
     }
 
     onThemeChanged(event) {
