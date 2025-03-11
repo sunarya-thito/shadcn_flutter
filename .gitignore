@@ -2,6 +2,7 @@
 /.idea/other.xml
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/libraries/
+.idea/
 
 # Miscellaneous
 *.class
