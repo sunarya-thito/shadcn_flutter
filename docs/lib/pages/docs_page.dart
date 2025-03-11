@@ -304,6 +304,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Hover Card', 'hover_card'),
         ShadcnDocsPage('Popover', 'popover'),
         ShadcnDocsPage('Sheet', 'sheet'),
+        ShadcnDocsPage('Swiper', 'swiper', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Tooltip', 'tooltip'),
         // TODO: window as in like a window in desktop
         ShadcnDocsPage('Window', 'window', ShadcnFeatureTag.experimental),

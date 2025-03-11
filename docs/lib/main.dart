@@ -56,6 +56,7 @@ import 'package:docs/pages/docs/components/sortable_example.dart';
 import 'package:docs/pages/docs/components/star_rating_example.dart';
 import 'package:docs/pages/docs/components/stepper_example.dart';
 import 'package:docs/pages/docs/components/steps_example.dart';
+import 'package:docs/pages/docs/components/swiper_example.dart';
 import 'package:docs/pages/docs/components/switch_example.dart';
 import 'package:docs/pages/docs/components/tab_list_example.dart';
 import 'package:docs/pages/docs/components/tab_pane_example.dart';
@@ -729,6 +730,13 @@ class MyAppState extends State<MyApp> {
                 return const FormattedInputExample();
               },
               name: 'formatted_input'),
+          GoRoute(
+            path: 'swiper',
+            name: 'swiper',
+            builder: (context, state) {
+              return SwiperExample();
+            },
+          )
         ]),
   ];
   late ColorScheme colorScheme;

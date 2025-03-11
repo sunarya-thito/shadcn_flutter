@@ -6,7 +6,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 typedef DrawerBuilder = Widget Function(BuildContext context, Size extraSize,
     Size size, EdgeInsets padding, int stackIndex);
 
-Future<T?> openDrawer<T>({
+DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
   required BuildContext context,
   required WidgetBuilder builder,
   required OverlayPosition position,
@@ -22,6 +22,8 @@ Future<T?> openDrawer<T>({
   double? surfaceOpacity,
   double? surfaceBlur,
   Color? barrierColor,
+  AnimationController? animationController,
+  bool autoOpen = true,
 }) {
   return openRawDrawer<T>(
     context: context,
@@ -29,6 +31,8 @@ Future<T?> openDrawer<T>({
     backdropBuilder: backdropBuilder,
     useSafeArea: useSafeArea,
     transformBackdrop: transformBackdrop,
+    animationController: animationController,
+    autoOpen: autoOpen,
     builder: (context, extraSize, size, padding, stackIndex) {
       return DrawerWrapper(
         position: position,
@@ -50,26 +54,34 @@ Future<T?> openDrawer<T>({
       );
     },
     position: position,
-  ).future;
+  );
 }
 
-Future<T?> openSheet<T>({
+DrawerOverlayCompleter<T?> openSheetOverlay<T>({
   required BuildContext context,
   required WidgetBuilder builder,
   required OverlayPosition position,
   bool barrierDismissible = true,
   bool transformBackdrop = false,
+  WidgetBuilder? backdropBuilder,
   Color? barrierColor,
+  bool draggable = false,
+  AnimationController? animationController,
+  bool autoOpen = false,
 }) {
   return openRawDrawer<T>(
     context: context,
     transformBackdrop: transformBackdrop,
     barrierDismissible: barrierDismissible,
     useSafeArea: false, // handled by the sheet itself
+    animationController: animationController,
+    backdropBuilder: backdropBuilder,
+    autoOpen: autoOpen,
     builder: (context, extraSize, size, padding, stackIndex) {
       return SheetWrapper(
         position: position,
         expands: true,
+        draggable: draggable,
         extraSize: extraSize,
         size: size,
         padding: padding,
@@ -81,6 +93,68 @@ Future<T?> openSheet<T>({
       );
     },
     position: position,
+  );
+}
+
+Future<T?> openDrawer<T>({
+  required BuildContext context,
+  required WidgetBuilder builder,
+  required OverlayPosition position,
+  bool expands = false,
+  bool draggable = true,
+  bool barrierDismissible = true,
+  WidgetBuilder? backdropBuilder,
+  bool useSafeArea = true,
+  bool showDragHandle = true,
+  BorderRadiusGeometry? borderRadius,
+  Size? dragHandleSize,
+  bool transformBackdrop = true,
+  double? surfaceOpacity,
+  double? surfaceBlur,
+  Color? barrierColor,
+  AnimationController? animationController,
+}) {
+  return openDrawerOverlay<T>(
+    context: context,
+    builder: builder,
+    position: position,
+    expands: expands,
+    draggable: draggable,
+    barrierDismissible: barrierDismissible,
+    backdropBuilder: backdropBuilder,
+    useSafeArea: useSafeArea,
+    showDragHandle: showDragHandle,
+    borderRadius: borderRadius,
+    dragHandleSize: dragHandleSize,
+    transformBackdrop: transformBackdrop,
+    surfaceOpacity: surfaceOpacity,
+    surfaceBlur: surfaceBlur,
+    barrierColor: barrierColor,
+    animationController: animationController,
+  ).future;
+}
+
+Future<T?> openSheet<T>({
+  required BuildContext context,
+  required WidgetBuilder builder,
+  required OverlayPosition position,
+  bool barrierDismissible = true,
+  bool transformBackdrop = false,
+  Color? barrierColor,
+  bool draggable = false,
+  AnimationController? animationController,
+  WidgetBuilder? backdropBuilder,
+}) {
+  return openSheetOverlay<T>(
+    context: context,
+    builder: builder,
+    position: position,
+    barrierDismissible: barrierDismissible,
+    transformBackdrop: transformBackdrop,
+    barrierColor: barrierColor,
+    draggable: draggable,
+    animationController: animationController,
+    backdropBuilder: backdropBuilder,
   ).future;
 }
 
@@ -101,6 +175,7 @@ class DrawerWrapper extends StatefulWidget {
   final int stackIndex;
   final double? gapBeforeDragger;
   final double? gapAfterDragger;
+  final AnimationController? animationController;
 
   const DrawerWrapper({
     super.key,
@@ -120,6 +195,7 @@ class DrawerWrapper extends StatefulWidget {
     this.gapBeforeDragger,
     this.gapAfterDragger,
     required this.stackIndex,
+    this.animationController,
   });
 
   @override
@@ -131,18 +207,33 @@ class _DrawerWrapperState extends State<DrawerWrapper>
   late AnimationController _controller;
   late ControlledAnimation _extraOffset;
 
+  OverlayPosition get resolvedPosition {
+    if (widget.position == OverlayPosition.start) {
+      return Directionality.of(context) == TextDirection.ltr
+          ? OverlayPosition.left
+          : OverlayPosition.right;
+    }
+    if (widget.position == OverlayPosition.end) {
+      return Directionality.of(context) == TextDirection.ltr
+          ? OverlayPosition.right
+          : OverlayPosition.left;
+    }
+    return widget.position;
+  }
+
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 350),
-    );
+    _controller = widget.animationController ??
+        AnimationController(
+          vsync: this,
+          duration: const Duration(milliseconds: 350),
+        );
     _extraOffset = ControlledAnimation(_controller);
   }
 
   double? get expandingHeight {
-    switch (widget.position) {
+    switch (resolvedPosition) {
       case OverlayPosition.left:
       case OverlayPosition.right:
         return double.infinity;
@@ -152,7 +243,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
   }
 
   double? get expandingWidth {
-    switch (widget.position) {
+    switch (resolvedPosition) {
       case OverlayPosition.top:
       case OverlayPosition.bottom:
         return double.infinity;
@@ -162,7 +253,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
   }
 
   Widget buildDraggableBar(ThemeData theme) {
-    switch (widget.position) {
+    switch (resolvedPosition) {
       case OverlayPosition.left:
       case OverlayPosition.right:
         return Container(
@@ -183,6 +274,8 @@ class _DrawerWrapperState extends State<DrawerWrapper>
             borderRadius: theme.borderRadiusXxl,
           ),
         );
+      default:
+        throw UnimplementedError('Unknown position');
     }
   }
 
@@ -195,7 +288,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
 
   Widget buildDraggable(BuildContext context, ControlledAnimation? controlled,
       Widget child, ThemeData theme) {
-    switch (widget.position) {
+    switch (resolvedPosition) {
       case OverlayPosition.left:
         return GestureDetector(
           behavior: HitTestBehavior.translucent,
@@ -436,11 +529,36 @@ class _DrawerWrapperState extends State<DrawerWrapper>
             ],
           ),
         );
+      default:
+        throw UnimplementedError('Unknown position');
     }
   }
 
+  @override
+  void didUpdateWidget(covariant DrawerWrapper oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.animationController != oldWidget.animationController) {
+      if (oldWidget.animationController == null) {
+        _controller.dispose();
+      }
+      _controller = widget.animationController ??
+          AnimationController(
+            vsync: this,
+            duration: const Duration(milliseconds: 350),
+          );
+    }
+  }
+
+  @override
+  void dispose() {
+    if (widget.animationController == null) {
+      _controller.dispose();
+    }
+    super.dispose();
+  }
+
   Border getBorder(ThemeData theme) {
-    switch (widget.position) {
+    switch (resolvedPosition) {
       case OverlayPosition.left:
         // top, right, bottom
         return Border(
@@ -469,11 +587,13 @@ class _DrawerWrapperState extends State<DrawerWrapper>
           right: BorderSide(color: theme.colorScheme.border),
           top: BorderSide(color: theme.colorScheme.border),
         );
+      default:
+        throw UnimplementedError('Unknown position');
     }
   }
 
   BorderRadiusGeometry getBorderRadius(double radius) {
-    switch (widget.position) {
+    switch (resolvedPosition) {
       case OverlayPosition.left:
         return BorderRadius.only(
           topRight: Radius.circular(radius),
@@ -494,6 +614,8 @@ class _DrawerWrapperState extends State<DrawerWrapper>
           topLeft: Radius.circular(radius),
           topRight: Radius.circular(radius),
         );
+      default:
+        throw UnimplementedError('Unknown position');
     }
   }
 
@@ -504,7 +626,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     var borderRadius = widget.borderRadius ?? getBorderRadius(theme.radiusXxl);
     var backgroundColor = theme.colorScheme.background;
     var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
-    if (surfaceOpacity != null) {
+    if (surfaceOpacity != null && surfaceOpacity < 1) {
       if (widget.stackIndex == 0) {
         // the top sheet should have a higher opacity to prevent
         // visual bleeding from the main content
@@ -606,7 +728,7 @@ class SheetWrapper extends DrawerWrapper {
 class _SheetWrapperState extends _DrawerWrapperState {
   @override
   Border getBorder(ThemeData theme) {
-    switch (widget.position) {
+    switch (resolvedPosition) {
       case OverlayPosition.left:
         return Border(right: BorderSide(color: theme.colorScheme.border));
       case OverlayPosition.right:
@@ -615,6 +737,8 @@ class _SheetWrapperState extends _DrawerWrapperState {
         return Border(bottom: BorderSide(color: theme.colorScheme.border));
       case OverlayPosition.bottom:
         return Border(top: BorderSide(color: theme.colorScheme.border));
+      default:
+        throw UnimplementedError('Unknown position');
     }
   }
 
@@ -625,7 +749,7 @@ class _SheetWrapperState extends _DrawerWrapperState {
     double marginBottom = 0;
     double marginLeft = 0;
     double marginRight = 0;
-    switch (widget.position) {
+    switch (resolvedPosition) {
       case OverlayPosition.left:
         marginRight = mediaPadding.right;
         break;
@@ -638,6 +762,8 @@ class _SheetWrapperState extends _DrawerWrapperState {
       case OverlayPosition.bottom:
         marginTop = mediaPadding.top;
         break;
+      default:
+        throw UnimplementedError('Unknown position');
     }
     return super.buildMargin(context) +
         EdgeInsets.only(
@@ -655,7 +781,7 @@ class _SheetWrapperState extends _DrawerWrapperState {
     double paddingBottom = 0;
     double paddingLeft = 0;
     double paddingRight = 0;
-    switch (widget.position) {
+    switch (resolvedPosition) {
       case OverlayPosition.left:
         paddingTop = mediaPadding.top;
         paddingBottom = mediaPadding.bottom;
@@ -676,6 +802,8 @@ class _SheetWrapperState extends _DrawerWrapperState {
         paddingRight = mediaPadding.right;
         paddingBottom = mediaPadding.bottom;
         break;
+      default:
+        throw UnimplementedError('Unknown position');
     }
     return Padding(
       padding: EdgeInsets.only(
@@ -697,7 +825,7 @@ class _SheetWrapperState extends _DrawerWrapperState {
   BoxDecoration getDecoration(ThemeData theme) {
     var backgroundColor = theme.colorScheme.background;
     var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
-    if (surfaceOpacity != null) {
+    if (surfaceOpacity != null && surfaceOpacity < 1) {
       if (widget.stackIndex == 0) {
         // the top sheet should have a higher opacity to prevent
         // visual bleeding from the main content
@@ -717,6 +845,8 @@ enum OverlayPosition {
   right,
   top,
   bottom,
+  start,
+  end,
 }
 
 const kBackdropScaleDown = 0.95;
@@ -789,6 +919,8 @@ DrawerOverlayCompleter<T?> openRawDrawer<T>({
   bool barrierDismissible = true,
   WidgetBuilder? backdropBuilder,
   bool useSafeArea = true,
+  AnimationController? animationController,
+  bool autoOpen = true,
 }) {
   DrawerLayerData? parentLayer =
       DrawerOverlay.maybeFind(context, useRootDrawerOverlay);
@@ -805,6 +937,8 @@ DrawerOverlayCompleter<T?> openRawDrawer<T>({
   assert(parentLayer != null, 'No DrawerOverlay found in the widget tree');
   final completer = Completer<T?>();
   final entry = DrawerOverlayEntry(
+    animationController: animationController,
+    autoOpen: autoOpen,
     builder: (context, extraSize, size, padding, stackIndex) {
       return _DrawerOverlayWrapper(
         completer: completer,
@@ -955,10 +1089,14 @@ Future<void> closeDrawer<T>(BuildContext context, [T? result]) {
 }
 
 class DrawerLayerData {
-  final _DrawerOverlayState overlay;
+  final DrawerOverlayState overlay;
   final DrawerLayerData? parent;
 
   const DrawerLayerData(this.overlay, this.parent);
+
+  Size? computeSize() {
+    return overlay.computeSize();
+  }
 
   @override
   bool operator ==(Object other) {
@@ -980,7 +1118,7 @@ class DrawerOverlay extends StatefulWidget {
   const DrawerOverlay({super.key, required this.child});
 
   @override
-  State<DrawerOverlay> createState() => _DrawerOverlayState();
+  State<DrawerOverlay> createState() => DrawerOverlayState();
 
   static DrawerLayerData? maybeFind(BuildContext context, [bool root = false]) {
     var data = Data.maybeFind<DrawerLayerData>(context);
@@ -1004,7 +1142,7 @@ class DrawerOverlay extends StatefulWidget {
   }
 }
 
-class _DrawerOverlayState extends State<DrawerOverlay> {
+class DrawerOverlayState extends State<DrawerOverlay> {
   final List<DrawerOverlayEntry> _entries = [];
   final GlobalKey backdropKey = GlobalKey();
 
@@ -1012,6 +1150,12 @@ class _DrawerOverlayState extends State<DrawerOverlay> {
     setState(() {
       _entries.add(entry);
     });
+  }
+
+  Size computeSize() {
+    Size? size = context.size;
+    assert(size != null, 'DrawerOverlay is not ready');
+    return size!;
   }
 
   void removeEntry(DrawerOverlayEntry entry) {
@@ -1039,10 +1183,12 @@ class _DrawerOverlayState extends State<DrawerOverlay> {
         completer: entry.completer,
         position: entry.position,
         backdropBuilder: entry.backdropBuilder,
+        animationController: entry.animationController,
         stackIndex: index++,
         totalStack: _entries.length,
         data: entry.data,
         useSafeArea: entry.useSafeArea,
+        autoOpen: entry.autoOpen,
       );
     }
     return PopScope(
@@ -1084,6 +1230,8 @@ class DrawerEntryWidget<T> extends StatefulWidget {
   final int stackIndex;
   final int totalStack;
   final bool useSafeArea;
+  final AnimationController? animationController;
+  final bool autoOpen;
 
   const DrawerEntryWidget({
     super.key,
@@ -1099,6 +1247,8 @@ class DrawerEntryWidget<T> extends StatefulWidget {
     required this.totalStack,
     required this.data,
     required this.useSafeArea,
+    required this.animationController,
+    required this.autoOpen,
   });
 
   @override
@@ -1115,19 +1265,39 @@ class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 350));
+    _controller = widget.animationController ??
+        AnimationController(
+            vsync: this, duration: const Duration(milliseconds: 350));
 
     _controlledAnimation = ControlledAnimation(_controller);
-    _controlledAnimation.forward(1, Curves.easeOut);
+    if (widget.animationController == null && widget.autoOpen) {
+      _controlledAnimation.forward(1, Curves.easeOut);
+    }
     // discard any focus that was previously set
     FocusManager.instance.primaryFocus?.unfocus();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (widget.animationController == null) {
+      _controller.dispose();
+    }
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant DrawerEntryWidget<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.animationController != oldWidget.animationController) {
+      if (oldWidget.animationController == null) {
+        _controller.dispose();
+      }
+      _controller = widget.animationController ??
+          AnimationController(
+            vsync: this,
+            duration: const Duration(milliseconds: 350),
+          );
+    }
   }
 
   Future<void> close([T? result]) {
@@ -1164,6 +1334,8 @@ class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
         alignment = Alignment.bottomCenter;
         startFractionalOffset = const Offset(0, 1);
         break;
+      default:
+        throw UnimplementedError('Unknown position');
     }
     return FocusScope(
       node: _focusScopeNode,
@@ -1223,6 +1395,8 @@ class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
                   additionalSize = Size(0, extraSize.height / 2);
                   additionalOffset = Offset(0, additionalSize.height);
                   break;
+                default:
+                  throw UnimplementedError('Unknown position');
               }
             }
             return Stack(
@@ -1307,6 +1481,8 @@ class DrawerOverlayEntry<T> {
   final OverlayPosition position;
   final bool barrierDismissible;
   final bool useSafeArea;
+  final AnimationController? animationController;
+  final bool autoOpen;
 
   DrawerOverlayEntry({
     required this.builder,
@@ -1319,6 +1495,8 @@ class DrawerOverlayEntry<T> {
     required this.data,
     required this.barrierDismissible,
     required this.useSafeArea,
+    required this.animationController,
+    required this.autoOpen,
   });
 }
 
@@ -1334,6 +1512,9 @@ class DrawerOverlayCompleter<T> extends OverlayCompleter<T> {
   void dispose() {
     _entry.completer.complete();
   }
+
+  AnimationController? get animationController =>
+      _entry.animationController ?? _entry.key.currentState?._controller;
 
   @override
   Future<T> get future => _entry.completer.future;

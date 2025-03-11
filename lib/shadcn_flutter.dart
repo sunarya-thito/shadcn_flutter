@@ -23,9 +23,7 @@ export 'package:flutter/widgets.dart'
         Table,
         TableRow,
         TableCell,
-        FormField,
-        TextEditingController,
-        RestorableTextEditingController;
+        FormField;
 // bundle from gap
 export 'package:gap/gap.dart';
 // hide pixel_snap overriden widgets
@@ -187,6 +185,7 @@ export 'src/components/overlay/hover_card.dart';
 export 'src/components/overlay/overlay.dart';
 export 'src/components/overlay/popover.dart';
 export 'src/components/overlay/refresh_trigger.dart';
+export 'src/components/overlay/swiper.dart';
 export 'src/components/overlay/toast.dart';
 export 'src/components/overlay/tooltip.dart';
 export 'src/components/text/selectable.dart';
