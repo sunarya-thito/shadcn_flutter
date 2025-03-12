@@ -67,7 +67,7 @@ DrawerOverlayCompleter<T?> openSheetOverlay<T>({
   Color? barrierColor,
   bool draggable = false,
   AnimationController? animationController,
-  bool autoOpen = false,
+  bool autoOpen = true,
 }) {
   return openRawDrawer<T>(
     context: context,
