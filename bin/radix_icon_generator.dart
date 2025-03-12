@@ -3,16 +3,6 @@ import 'dart:io';
 import 'bootstrap_icon_generator.dart';
 import 'woff2otf.dart';
 
-// Extract these css:
-//.icon-align-vertical-centers:before {
-//   content: "\e13e";
-// }
-//
-// .icon-align-top:before {
-//   content: "\e13f";
-// }
-// to get the icon name, and icon codepoint
-
 const kUnsafeName = [
   'switch',
 ];
@@ -26,7 +16,7 @@ main() {
   File targetClass = File('lib/src/icons/radix_icons.dart');
   File targetOtf = File('lib/icons/RadixIcons.otf');
 
-  File targetDocsClass = File('example/lib/radix_icons.dart');
+  File targetDocsClass = File('docs/lib/radix_icons.dart');
 
   String cssContent = cssFile.readAsStringSync();
 
@@ -59,7 +49,7 @@ main() {
   builder += '  RadixIcons._();\n\n';
   for (String key in generalizedIcons.keys) {
     builder +=
-        '  static const IconData $key = IconData(${generalizedIcons[key]}, fontFamily: \'$fontFamily\');\n';
+        '  static const IconData $key = IconData(${generalizedIcons[key]}, fontFamily: \'$fontFamily\', fontPackage: \'shadcn_flutter\');\n';
   }
   builder += '}\n';
   targetClass.writeAsStringSync(builder);
@@ -74,14 +64,4 @@ main() {
   }
   iconDocsClass += '};';
   targetDocsClass.writeAsStringSync(iconDocsClass);
-}
-
-String generateIconName(String name) {
-  name = name.replaceAll('-', ' ');
-  name = generateCammelCaseName(name);
-  // check if name starts with a number, then add "icon{number}"
-  if (RegExp(r'^[0-9]').hasMatch(name)) {
-    name = 'icon$name';
-  }
-  return name;
 }

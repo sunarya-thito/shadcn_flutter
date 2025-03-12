@@ -14,6 +14,10 @@ class TooltipContainer extends StatelessWidget {
     required this.child,
   });
 
+  Widget call(BuildContext context) {
+    return this;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -56,7 +60,7 @@ class TooltipContainer extends StatelessWidget {
 
 class Tooltip extends StatefulWidget {
   final Widget child;
-  final Widget tooltip;
+  final WidgetBuilder tooltip;
   final AlignmentGeometry alignment;
   final AlignmentGeometry anchorAlignment;
   final Duration waitDuration;
@@ -92,7 +96,7 @@ class _TooltipState extends State<Tooltip> {
             context: context,
             modal: false,
             builder: (context) {
-              return widget.tooltip;
+              return widget.tooltip(context);
             },
             alignment: widget.alignment,
             anchorAlignment: widget.anchorAlignment,

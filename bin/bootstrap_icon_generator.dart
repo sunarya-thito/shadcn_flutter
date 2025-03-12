@@ -12,7 +12,7 @@ main() {
   File targetClass = File('lib/src/icons/bootstrap_icons.dart');
   File targetOtf = File('lib/icons/BootstrapIcons.otf');
 
-  File targetDocsClass = File('example/lib/bootstrap_icons.dart');
+  File targetDocsClass = File('docs/lib/bootstrap_icons.dart');
 
   String jsonContent = jsonFile.readAsStringSync();
 
@@ -31,7 +31,7 @@ main() {
   builder += '  BootstrapIcons._();\n\n';
   for (String key in generalizedIcons.keys) {
     builder +=
-        '  static const IconData $key = IconData(${generalizedIcons[key]}, fontFamily: \'$fontFamily\');\n';
+        '  static const IconData $key = IconData(${generalizedIcons[key]}, fontFamily: \'$fontFamily\', fontPackage: \'shadcn_flutter\');\n';
   }
   builder += '}\n';
   targetClass.writeAsStringSync(builder);
