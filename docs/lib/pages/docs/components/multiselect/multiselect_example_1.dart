@@ -13,7 +13,7 @@ class _MultiSelectExample1State extends State<MultiSelectExample1> {
   Widget build(BuildContext context) {
     return MultiSelect<String>(
       itemBuilder: (context, item) {
-        return Text(item);
+        return MultiSelectChip(value: item, child: Text(item));
       },
       popup: SelectPopup(
           items: SelectItemList(children: [
