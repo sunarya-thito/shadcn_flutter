@@ -11,7 +11,7 @@ class ShadcnLocalizationsDelegate
   const ShadcnLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) => locale.languageCode == 'en';
+  bool isSupported(Locale locale) => true;
 
   @override
   Future<ShadcnLocalizations> load(Locale locale) {
