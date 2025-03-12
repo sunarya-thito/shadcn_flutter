@@ -1373,7 +1373,8 @@ class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
             bool insetRight =
                 widget.useSafeArea && widget.position == OverlayPosition.right;
             MediaQueryData mediaQueryData = MediaQuery.of(context);
-            EdgeInsets padding = mediaQueryData.padding;
+            EdgeInsets padding =
+                mediaQueryData.padding + mediaQueryData.viewInsets;
             if (extraSize == null) {
               additionalSize = Size.zero;
               additionalOffset = Offset.zero;
@@ -1586,7 +1587,7 @@ class SheetOverlayHandler extends OverlayHandler {
     return openRawDrawer<T>(
       context: context,
       transformBackdrop: false,
-      useSafeArea: false,
+      useSafeArea: true,
       barrierDismissible: barrierDismissable,
       builder: (context, extraSize, size, padding, stackIndex) {
         final theme = Theme.of(context);
