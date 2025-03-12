@@ -1,7 +1,6 @@
 import 'package:docs/pages/docs_page.dart';
-import 'package:docs/pages/widget_usage_example.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class WebPreloaderPage extends StatelessWidget {
   const WebPreloaderPage({super.key});
@@ -16,19 +15,6 @@ class WebPreloaderPage extends StatelessWidget {
             const Text('Web Preloader').h1(),
             const Text('Customize how flutter load your web application')
                 .lead(),
-            const Gap(32),
-            Alert(
-              title: const Text('Note'),
-              content: const Text(
-                      'You can use the CLI to create a web preloader for your flutter web application. See ')
-                  .thenButton(
-                      onPressed: () {
-                        context.goNamed('installation');
-                      },
-                      child: const Text('Installation page'))
-                  .thenText(' for more information.'),
-              leading: const Icon(Icons.info_outline),
-            ),
             const Gap(32),
             Steps(
               children: [
@@ -57,33 +43,46 @@ class WebPreloaderPage extends StatelessWidget {
                   ],
                 ),
                 StepItem(
-                  title: const Text('Creating a "flutter_bootstrap.js" file'),
+                  title: const Text('Adding a script'),
                   content: [
                     const Text(
-                            'Next, create a "flutter_bootstrap.js" file in your web directory. Fill it with the following code:')
+                            'Next, select and copy one of these pre-made preloaders:')
                         .p(),
-                    const CodeSnippetFutureBuilder(
-                      path: 'web/flutter_bootstrap.js',
-                      mode: 'javascript',
-                      summarize: false,
-                    ).sized(height: 300).p(),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Standard Preloader'),
+                          Gap(8),
+                          CodeSnippet(
+                            code:
+                                '<script src="https://cdn.jsdelivr.net/gh/sunarya-thito/shadcn_flutter@latest/web_loaders/standard.js"></script>',
+                            mode: 'javascript',
+                          ),
+                        ]).li().p(),
                   ],
                 ),
                 StepItem(
-                  title: const Text('Customizing the preloader'),
+                  title: const Text('Paste the script'),
                   content: [
-                    const Text(
-                            'You can customize the preloader by modifying the "flutter_bootstrap.js" file.')
+                    const Text('Open your ')
+                        .thenInlineCode('index.html')
+                        .thenText(' file and paste the script inside the ')
+                        .thenInlineCode('<head>')
+                        .thenText(' tag.')
                         .p(),
-                    const Text(
-                            'For example, you can change the background color of the preloader by modifying the following line:')
-                        .p(),
+                    const Text('For example:').p(),
                     const CodeSnippet(
-                      code: 'const shadcn_flutter_config = {\n'
-                          '...\n'
-                          '\tbackground: \'#f00\',\n'
-                          '...\n'
-                          '};',
+                      code: '''
+<!DOCTYPE html>
+<html>
+  <head>
+    ...
+    <script src="https://cdn.jsdelivr.net/gh/sunarya-thito/shadcn_flutter@latest/web_loaders/standard.js"></script>
+    ...
+  </head>
+  ...
+</html>
+                      ''',
                       mode: 'javascript',
                     ).p(),
                   ],
@@ -99,6 +98,21 @@ class WebPreloaderPage extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
+            Gap(32),
+            Alert(
+              title: const Text('Contributing'),
+              leading: const Icon(Icons.info_outlined),
+              content: Text(
+                      'If you have a preloader that you want to share, please create a pull request under the ')
+                  .thenButton(
+                      onPressed: () {
+                        launchUrlString(
+                            'https://github.com/sunarya-thito/shadcn_flutter/tree/master/web_loaders');
+                      },
+                      child: Text('web_loaders'))
+                  .thenText(' directory.')
+                  .p(),
             ),
           ],
         ));

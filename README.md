@@ -127,58 +127,8 @@ void main() {
   );
 }
 ```
-#### 5. Add the fonts
-Add the following fonts to your `pubspec.yaml` file.
-```yaml
-  fonts:
-    - family: RadixIcons
-      fonts:
-        - asset: "packages/shadcn_flutter/icons/RadixIcons.otf"
-    - family: BootstrapIcons
-      fonts:
-        - asset: "packages/shadcn_flutter/icons/BootstrapIcons.otf"
-    - family: "GeistSans"
-      fonts:
-        - asset: "packages/shadcn_flutter/fonts/Geist-Black.otf"
-          weight: 800
-        - asset: "packages/shadcn_flutter/fonts/Geist-Bold.otf"
-          weight: 700
-        - asset: "packages/shadcn_flutter/fonts/Geist-Light.otf"
-          weight: 300
-        - asset: "packages/shadcn_flutter/fonts/Geist-Medium.otf"
-          weight: 500
-        - asset: "packages/shadcn_flutter/fonts/Geist-SemiBold.otf"
-          weight: 600
-        - asset: "packages/shadcn_flutter/fonts/Geist-Thin.otf"
-          weight: 100
-        - asset: "packages/shadcn_flutter/fonts/Geist-UltraBlack.otf"
-          weight: 900
-        - asset: "packages/shadcn_flutter/fonts/Geist-UltraLight.otf"
-          weight: 200
-        - asset: "packages/shadcn_flutter/fonts/Geist-Regular.otf"
-          weight: 400
-    - family: "GeistMono"
-      fonts:
-        - asset: "packages/shadcn_flutter/fonts/GeistMono-Black.otf"
-          weight: 800
-        - asset: "packages/shadcn_flutter/fonts/GeistMono-Bold.otf"
-          weight: 700
-        - asset: "packages/shadcn_flutter/fonts/GeistMono-Light.otf"
-          weight: 300
-        - asset: "packages/shadcn_flutter/fonts/GeistMono-Medium.otf"
-          weight: 500
-        - asset: "packages/shadcn_flutter/fonts/GeistMono-Regular.otf"
-          weight: 400
-        - asset: "packages/shadcn_flutter/fonts/GeistMono-SemiBold.otf"
-          weight: 600
-        - asset: "packages/shadcn_flutter/fonts/GeistMono-Thin.otf"
-          weight: 100
-        - asset: "packages/shadcn_flutter/fonts/GeistMono-UltraBlack.otf"
-          weight: 900
-        - asset: "packages/shadcn_flutter/fonts/GeistMono-UltraLight.otf"
-          weight: 200
-```
-#### 6. Run the app
+
+#### 5. Run the app
 ```bash
 flutter run
 ```
