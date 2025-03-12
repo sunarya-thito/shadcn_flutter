@@ -1369,18 +1369,6 @@ extension ButtonStyleExtension on AbstractButtonStyle {
         margin == null) {
       return this;
     }
-    if (this is _CopyWithButtonStyle) {
-      var copy = this as _CopyWithButtonStyle;
-      return _CopyWithButtonStyle(
-        copy._delegate,
-        decoration ?? copy._decoration,
-        mouseCursor ?? copy._mouseCursor,
-        padding ?? copy._padding,
-        textStyle ?? copy._textStyle,
-        iconTheme ?? copy._iconTheme,
-        margin ?? copy._margin,
-      );
-    }
     return _CopyWithButtonStyle(
       this,
       decoration,
@@ -1389,6 +1377,104 @@ extension ButtonStyleExtension on AbstractButtonStyle {
       textStyle,
       iconTheme,
       margin,
+    );
+  }
+
+  AbstractButtonStyle withBackgroundColor({Color? color, Color? hoverColor, Color? focusColor, Color? disabledColor}) {
+    return copyWith(
+      decoration: (context, states, decoration) {
+        if (decoration is BoxDecoration) {
+          return decoration.copyWith(
+            color: states.disabled ?
+              disabledColor ?? decoration.color :
+                states.hovered ?
+                  hoverColor ?? decoration.color :
+                  states.focused ?
+                    focusColor ?? decoration.color :
+                    color,
+          );
+        }
+        return decoration;
+      },
+    );
+  }
+
+  AbstractButtonStyle withForegroundColor({Color? color, Color? hoverColor, Color? focusColor, Color? disabledColor}) {
+    return copyWith(
+      textStyle: (context, states, textStyle) {
+        return textStyle.copyWith(
+          color: states.disabled ?
+            disabledColor ?? textStyle.color :
+              states.hovered ?
+                hoverColor ?? textStyle.color :
+                states.focused ?
+                  focusColor ?? textStyle.color :
+                  color,
+        );
+      },
+      iconTheme: (context, states, iconTheme) {
+        return iconTheme.copyWith(
+          color: states.disabled ?
+            disabledColor ?? iconTheme.color :
+              states.hovered ?
+                hoverColor ?? iconTheme.color :
+                states.focused ?
+                  focusColor ?? iconTheme.color :
+                  color,
+        );
+      },
+    );
+  }
+
+  AbstractButtonStyle withBorder( {Border? border,Border? hoverBorder, Border? focusBorder, Border? disabledBorder}) {
+    return copyWith(
+      decoration: (context, states, decoration) {
+        if (decoration is BoxDecoration) {
+          return decoration.copyWith(
+            border: states.disabled ?
+              disabledBorder ?? decoration.border :
+                states.hovered ?
+                  hoverBorder ?? decoration.border :
+                  states.focused ?
+                    focusBorder ?? decoration.border :
+                    border,
+          );
+        }
+        return decoration;
+      },
+    );
+  }
+
+  AbstractButtonStyle withBorderRadius({BorderRadiusGeometry? borderRadius, BorderRadiusGeometry? hoverBorderRadius, BorderRadiusGeometry? focusBorderRadius, BorderRadiusGeometry? disabledBorderRadius}) {
+    return copyWith(
+      decoration: (context, states, decoration) {
+        if (decoration is BoxDecoration) {
+          return decoration.copyWith(
+            borderRadius: states.disabled ?
+              disabledBorderRadius ?? decoration.borderRadius :
+                states.hovered ?
+                  hoverBorderRadius ?? decoration.borderRadius :
+                  states.focused ?
+                    focusBorderRadius ?? decoration.borderRadius :
+                    borderRadius,
+          );
+        }
+        return decoration;
+      },
+    );
+  }
+
+  AbstractButtonStyle withPadding({EdgeInsetsGeometry? padding, EdgeInsetsGeometry? hoverPadding, EdgeInsetsGeometry? focusPadding, EdgeInsetsGeometry? disabledPadding}) {
+    return copyWith(
+      padding: (context, states, padding) {
+        return states.disabled ?
+          disabledPadding ?? padding :
+            states.hovered ?
+              hoverPadding ?? padding :
+              states.focused ?
+                focusPadding ?? padding :
+                padding;
+      },
     );
   }
 }
