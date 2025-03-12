@@ -1,3 +1,17 @@
+## 0.0.29
+* Properly bundled Geist and Geist Mono fonts
+* Properly bundled Radix and Bootstrap Icons
+* Added Lucide Icons
+* Added style to SelectItemButton
+* Added MultiSelectChip component
+* MultiSelect now uses MultiSelectChip as the itemBuilder
+* Added more extension methods to AbstractButtonStyle
+* Added Swiper component
+* TextEditingController no longer implements ComponentController
+* NavigationLabeled now uses directional padding
+* Fixed StarRatings on mobile devices
+* Fixed SheetOverlayHandler safe area issue
+
 ## 0.0.28
 * Added no virtualization mode on Select and MultiSelect Popup
 * Added intrinsic PopupConstraint
