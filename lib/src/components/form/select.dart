@@ -226,11 +226,13 @@ class ControlledMultiSelect<T> extends StatelessWidget
 class SelectItemButton<T> extends StatelessWidget {
   final T value;
   final Widget child;
+  final AbstractButtonStyle style;
 
   const SelectItemButton({
     super.key,
     required this.value,
     required this.child,
+    this.style = const ButtonStyle.ghost(),
   });
 
   @override
@@ -246,7 +248,7 @@ class SelectItemButton<T> extends StatelessWidget {
       onPressed: () {
         data?.selectItem(value, !isSelected);
       },
-      style: const ButtonStyle.ghost().copyWith(
+      style: style.copyWith(
         padding: (context, states, value) => EdgeInsets.symmetric(
           vertical: 8 * scaling,
           horizontal: 8 * scaling,

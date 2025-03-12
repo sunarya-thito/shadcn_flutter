@@ -87,6 +87,9 @@ class _MultiSelectExample3State extends State<MultiSelectExample3> {
                   for (final value in entry.value)
                     SelectItemButton(
                       value: value,
+                      style: const ButtonStyle.ghost().withBackgroundColor(
+                        hoverColor: _getColorByChip(value).withLuminance(0.3),
+                      ),
                       child: Text(value),
                     ),
                 ],
