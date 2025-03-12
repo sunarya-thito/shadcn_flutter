@@ -10,6 +10,7 @@ import 'button/button_example_13.dart';
 import 'button/button_example_14.dart';
 import 'button/button_example_15.dart';
 import 'button/button_example_16.dart';
+import 'button/button_example_17.dart';
 import 'button/button_example_2.dart';
 import 'button/button_example_3.dart';
 import 'button/button_example_4.dart';
@@ -110,6 +111,11 @@ class ButtonExample extends StatelessWidget {
           path: 'lib/pages/docs/components/button/button_example_16.dart',
           child: ButtonExample16(),
         ),
+        WidgetUsageExample(
+          title: 'Custom Button Example',
+          path: 'lib/pages/docs/components/button/button_example_17.dart',
+          child: ButtonExample17(),
+        )
       ],
     );
   }
