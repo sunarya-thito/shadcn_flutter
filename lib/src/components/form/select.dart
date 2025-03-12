@@ -677,6 +677,36 @@ class SelectState<T> extends State<Select<T>>
   }
 }
 
+class MultiSelectChip extends StatelessWidget {
+  final Object? value;
+  final Widget child;
+  final AbstractButtonStyle style;
+
+  const MultiSelectChip({
+    super.key,
+    this.style = const ButtonStyle.primary(),
+    required this.value,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final data = Data.maybeOf<SelectData>(context);
+    return Chip(
+      style: style,
+      trailing: data?.enabled == false ? null : ChipButton(
+        onPressed: () {
+          data?.onChanged(value, false);
+        },
+        child: const Icon(
+          Icons.close,
+        ).iconSmall(),
+      ),
+      child: child,
+    );
+  }
+}
+
 class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   @override
   final ValueChanged<Iterable<T>?>?
@@ -749,30 +779,13 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
       BuildContext context, Iterable<T> value) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    final data = Data.maybeOf<SelectData>(context);
     return Wrap(
       spacing: 4 * scaling,
       runSpacing: 4 * scaling,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         for (var value in value)
-          Chip(
-            style: const ButtonStyle.primary(),
-            trailing: ChipButton(
-              onPressed: data?.enabled == false
-                  ? null
-                  : () {
-                      data?.onChanged(value, false);
-                    },
-              child: const Icon(
-                Icons.close,
-              ).iconSmall(),
-            ),
-            child: multiItemBuilder(
-              context,
-              value,
-            ),
-          ),
+          multiItemBuilder(context, value),
       ],
     );
   }
