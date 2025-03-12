@@ -52,7 +52,7 @@ class ShadcnAppConfig {
     loaderColor;
     externalScripts;
 
-    constructor({ background, foreground, fontFamily, fontSize, fontWeight, mainAxisAlignment, crossAxisAlignment, loaderWidget, loaderColor, externalScripts }) {
+    constructor({ background, foreground, fontFamily, fontSize, fontWeight, mainAxisAlignment, crossAxisAlignment, loaderWidget, loaderColor, externalScripts, transitionDuration }) {
         this.background = background;
         this.foreground = foreground;
         this.fontFamily = fontFamily;
