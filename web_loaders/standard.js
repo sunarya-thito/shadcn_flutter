@@ -51,6 +51,7 @@ class ShadcnAppConfig {
     loaderWidget;
     loaderColor;
     externalScripts;
+    transitionDuration;
 
     constructor({ background, foreground, fontFamily, fontSize, fontWeight, mainAxisAlignment, crossAxisAlignment, loaderWidget, loaderColor, externalScripts, transitionDuration }) {
         this.background = background;
@@ -104,10 +105,13 @@ class ShadcnApp {
     }
 
     loadApp() {
-        window.addEventListener('shadcn_flutter_app_ready', this.onAppReady);
-        window.addEventListener('shadcn_flutter_theme_changed', this.onThemeChanged);
         this.#initializeDocument();
         this.#loadExternalScripts(0);
+        window.addEventListener('shadcn_flutter_app_ready', this.onAppReady);
+        window.addEventListener('shadcn_flutter_theme_changed', this.onThemeChanged);
+        if (globalThis.shadcnAppLoaded) {
+            this.onAppReady();
+        }
     }
 
     #loadExternalScripts(index, onDone) {
