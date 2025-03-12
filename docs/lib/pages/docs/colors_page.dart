@@ -197,7 +197,7 @@ class _ColorsPageState extends State<ColorsPage> {
                         borderRadius: theme.borderRadiusMd,
                         border: shade == 500
                             ? Border.all(
-                                width: 30,
+                                width: 3,
                                 color: theme.colorScheme.foreground,
                                 strokeAlign: BorderSide.strokeAlignOutside)
                             : null,
