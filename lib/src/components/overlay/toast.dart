@@ -576,6 +576,15 @@ class _ToastEntryLayoutState extends State<ToastEntryLayout> {
         ) *
         indexProgress;
 
+    final theme = Theme.of(context);
+
+    Offset expandingShift = Offset(
+      previousAlignment.x * (16 * theme.scaling) * expandProgress,
+      previousAlignment.y * (16 * theme.scaling) * expandProgress,
+    );
+
+    offset += expandingShift;
+
     // and then add the spacing when its in expanded mode
     offset += Offset(
           (widget.spacing * previousAlignment.x) * expandProgress,
