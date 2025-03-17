@@ -1,3 +1,28 @@
+## 0.0.30
+* Fixed Sheet autoOpen issue
+* Fixed incorrect MultiSelectKey FormKey type
+* Fixed Focus issue on closing dialog
+* Fixed Focus issue on closing popover
+* Default locale now accepts all language as a fallback
+* Fix scaffold MediaQuery padding
+* Added DateInput component
+* Added TimeInput component
+* Added DurationInput component
+* Improved sonner/toast component hover animation
+* Added PrimaryButtonTheme
+* Added SecondaryButtonTheme
+* Added OutlineButtonTheme
+* Added GhostButtonTheme
+* Added DestructiveButtonTheme
+* Added LinkButtonTheme
+* Added MutedButtonTheme
+* Added CardButtonTheme
+* Added TextButtonTheme
+* Added MenuButtonTheme
+* Added MenubarButtonTheme
+* Added FixedButtonTheme
+* FormattedInput now properly transfer focus when done editing one of the part
+
 ## 0.0.29
 * Properly bundled Geist and Geist Mono fonts
 * Properly bundled Radix and Bootstrap Icons
