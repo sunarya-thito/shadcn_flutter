@@ -162,7 +162,7 @@ class _CodeSnippetState extends State<CodeSnippet> {
                                 ShadcnLocalizations.of(context);
                             return Alert(
                               leading: const Icon(
-                                Icons.check,
+                                LucideIcons.copyCheck,
                               ).iconSmall(),
                               title: Text(localizations.toastSnippetCopied),
                             );
@@ -171,9 +171,7 @@ class _CodeSnippetState extends State<CodeSnippet> {
                       }
                     });
                   },
-                  child: const Icon(
-                    Icons.copy,
-                  ).iconSmall(),
+                  child: const Icon(LucideIcons.copy).iconSmall(),
                 ),
               ],
             ).gap(4),

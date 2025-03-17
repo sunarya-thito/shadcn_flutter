@@ -2,6 +2,11 @@ import '../../../shadcn_flutter.dart';
 
 mixin ComponentController<T> implements ValueNotifier<T> {}
 
+class ComponentValueController<T> extends ValueNotifier<T>
+    implements ComponentController<T> {
+  ComponentValueController(T value) : super(value);
+}
+
 mixin ControlledComponent<T> on Widget {
   ComponentController<T>? get controller;
   T? get initialValue;
@@ -21,7 +26,7 @@ class ControlledComponentData<T> {
   });
 }
 
-class ControlledComponentBuilder<T> extends StatefulWidget
+class ControlledComponentAdapter<T> extends StatefulWidget
     with ControlledComponent<T> {
   @override
   final T? initialValue;
@@ -34,7 +39,7 @@ class ControlledComponentBuilder<T> extends StatefulWidget
   final Widget Function(BuildContext context, ControlledComponentData<T> data)
       builder;
 
-  const ControlledComponentBuilder({
+  const ControlledComponentAdapter({
     super.key,
     required this.builder,
     this.initialValue,
@@ -45,12 +50,12 @@ class ControlledComponentBuilder<T> extends StatefulWidget
             'Either controller or initialValue must be provided');
 
   @override
-  _ControlledComponentBuilderState<T> createState() =>
-      _ControlledComponentBuilderState<T>();
+  _ControlledComponentAdapterState<T> createState() =>
+      _ControlledComponentAdapterState<T>();
 }
 
-class _ControlledComponentBuilderState<T>
-    extends State<ControlledComponentBuilder<T>> {
+class _ControlledComponentAdapterState<T>
+    extends State<ControlledComponentAdapter<T>> {
   late T _value;
 
   @override
@@ -69,7 +74,7 @@ class _ControlledComponentBuilderState<T>
   }
 
   @override
-  void didUpdateWidget(covariant ControlledComponentBuilder<T> oldWidget) {
+  void didUpdateWidget(covariant ControlledComponentAdapter<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.controller != widget.controller) {
       oldWidget.controller?.removeListener(_onControllerChanged);

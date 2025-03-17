@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -44,7 +45,7 @@ class ControlledTimePicker extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return ControlledComponentBuilder(
+    return ControlledComponentAdapter(
       controller: controller,
       initialValue: initialValue,
       onChanged: onChanged,
@@ -365,5 +366,280 @@ class _TimeFormatter extends TextInputFormatter {
         extentOffset: extentOffset2.clamp(0, 2),
       ),
     );
+  }
+}
+
+class DurationPickerController extends ValueNotifier<Duration?>
+    with ComponentController<Duration?> {
+  DurationPickerController(super.value);
+}
+
+enum DurationPart {
+  day,
+  hour,
+  minute,
+  second,
+}
+
+enum TimePart {
+  hour,
+  minute,
+  second,
+}
+
+class DurationPicker extends StatelessWidget {
+  final Duration? value;
+  final ValueChanged<Duration?>? onChanged;
+  final PromptMode mode;
+  final Widget? placeholder;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
+  final Widget? dialogTitle;
+  final bool? enabled;
+
+  const DurationPicker({
+    super.key,
+    required this.value,
+    this.onChanged,
+    this.mode = PromptMode.dialog,
+    this.placeholder,
+    this.popoverAlignment,
+    this.popoverAnchorAlignment,
+    this.popoverPadding,
+    this.dialogTitle,
+    this.enabled,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
+    return ObjectFormField(
+      value: value,
+      placeholder: placeholder ?? Text(localizations.placeholderDurationPicker),
+      onChanged: onChanged,
+      builder: (context, value) {
+        return Text(localizations.formatDuration(value));
+      },
+      enabled: enabled,
+      mode: mode,
+      dialogTitle: dialogTitle,
+      trailing: const Icon(Icons.access_time),
+      editorBuilder: (context, handler) {
+        return DurationPickerDialog(
+          initialValue: handler.value,
+          onChanged: (value) {
+            handler.value = value;
+          },
+        );
+      },
+    );
+  }
+}
+
+class DurationPickerDialog extends StatefulWidget {
+  final Duration? initialValue;
+  final ValueChanged<Duration?>? onChanged;
+
+  const DurationPickerDialog({
+    super.key,
+    this.initialValue,
+    this.onChanged,
+  });
+
+  @override
+  State<DurationPickerDialog> createState() => _DurationPickerDialogState();
+}
+
+class _DurationPickerDialogState extends State<DurationPickerDialog> {
+  late TextEditingController _dayController;
+  late TextEditingController _hourController;
+  late TextEditingController _minuteController;
+  late TextEditingController _secondController;
+
+  String _formatDigits(int value) {
+    return value.toString().padLeft(2, '0');
+  }
+
+  Widget _buildInput(
+      BuildContext context, TextEditingController controller, String label) {
+    final theme = Theme.of(context);
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+          minWidth: 72 * theme.scaling, minHeight: 72 * theme.scaling),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned.fill(
+            child: TextField(
+              textAlign: TextAlign.center,
+              controller: controller,
+              style: theme.typography.x4Large,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                const _TimeFormatter(),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: (-24) * theme.scaling,
+            child: Text(label).muted(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSeparator(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    return const Text(':').x5Large().withPadding(horizontal: 8 * scaling);
+  }
+
+  void _onChanged() {
+    int day = int.tryParse(_dayController.text) ?? 0;
+    int hour = int.tryParse(_hourController.text) ?? 0;
+    int minute = int.tryParse(_minuteController.text) ?? 0;
+    int second = int.tryParse(_secondController.text) ?? 0;
+    day = day.clamp(0, 999);
+    hour = hour.clamp(0, 23);
+    minute = minute.clamp(0, 59);
+    second = second.clamp(0, 59);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.onChanged?.call(Duration(
+        days: day,
+        hours: hour,
+        minutes: minute,
+        seconds: second,
+      ));
+    });
+  }
+
+  @override
+  void dispose() {
+    _dayController.dispose();
+    _hourController.dispose();
+    _minuteController.dispose();
+    _secondController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    int initialDay = widget.initialValue?.inDays ?? 0;
+    int initialHour = widget.initialValue?.inHours ?? 0;
+    int initialMinute = widget.initialValue?.inMinutes ?? 0;
+    int initialSecond = widget.initialValue?.inSeconds ?? 0;
+    _dayController = TextEditingController(
+      text: _formatDigits(initialDay),
+    );
+    _hourController = TextEditingController(
+      text: _formatDigits(initialHour % Duration.hoursPerDay),
+    );
+    _minuteController = TextEditingController(
+      text: _formatDigits(initialMinute % Duration.minutesPerHour),
+    );
+    _secondController = TextEditingController(
+      text: _formatDigits(initialSecond % Duration.secondsPerMinute),
+    );
+    _dayController.addListener(_onChanged);
+    _hourController.addListener(_onChanged);
+    _minuteController.addListener(_onChanged);
+    _secondController.addListener(_onChanged);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    final localizations = ShadcnLocalizations.of(context);
+    return IntrinsicWidth(
+      child: IntrinsicHeight(
+        child: Padding(
+          padding: EdgeInsets.only(bottom: (16 + 12) * scaling),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: _buildInput(
+                  context,
+                  _dayController,
+                  localizations.durationDay,
+                ),
+              ),
+              _buildSeparator(context),
+              Expanded(
+                child: _buildInput(
+                  context,
+                  _hourController,
+                  localizations.durationHour,
+                ),
+              ),
+              _buildSeparator(context),
+              Expanded(
+                child: _buildInput(
+                  context,
+                  _minuteController,
+                  localizations.durationMinute,
+                ),
+              ),
+              _buildSeparator(context),
+              Expanded(
+                child: _buildInput(
+                  context,
+                  _secondController,
+                  localizations.durationSecond,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TimeRange {
+  final TimeOfDay start;
+  final TimeOfDay end;
+
+  const TimeRange({
+    required this.start,
+    required this.end,
+  });
+
+  TimeRange copyWith({
+    TimeOfDay? start,
+    TimeOfDay? end,
+  }) {
+    return TimeRange(
+      start: start ?? this.start,
+      end: end ?? this.end,
+    );
+  }
+
+  TimeRange merge(TimeRange other) {
+    return TimeRange(
+      start: other.start ?? start,
+      end: other.end ?? end,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TimeRange &&
+          runtimeType == other.runtimeType &&
+          start == other.start &&
+          end == other.end;
+
+  @override
+  int get hashCode => start.hashCode ^ end.hashCode;
+
+  @override
+  String toString() {
+    return 'TimeRange{start: $start, end: $end}';
   }
 }

@@ -4,6 +4,10 @@ import 'dart:math';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef Predicate<T> = bool Function(T value);
+typedef Supplier<T> = T Function();
+typedef Consumer<T> = void Function(T value);
+typedef UnaryOperator<T> = T Function(T value);
+typedef BinaryOperator<T> = T Function(T a, T b);
 
 const kDefaultDuration = Duration(milliseconds: 150);
 
@@ -11,6 +15,9 @@ typedef ContextedCallback = void Function(BuildContext context);
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 
 typedef SearchPredicate<T> = double Function(T value, String query);
+
+double degToRad(double deg) => deg * (pi / 180);
+double radToDeg(double rad) => rad * (180 / pi);
 
 enum SortDirection {
   none,
@@ -313,6 +320,10 @@ extension Joinable<T extends Widget> on List<T> {
 extension IterableExtension<T> on Iterable<T> {
   Iterable<T> joinSeparator(T separator) {
     return map((e) => [separator, e]).expand((element) => element).skip(1);
+  }
+
+  Iterable<T> buildSeparator(Supplier<T> separator) {
+    return map((e) => [separator(), e]).expand((element) => element).skip(1);
   }
 }
 
@@ -1022,5 +1033,106 @@ class _CachedValueWidgetState<T> extends State<CachedValueWidget<T>> {
   Widget build(BuildContext context) {
     _cachedWidget ??= widget.builder(context, widget.value);
     return _cachedWidget!;
+  }
+}
+
+typedef Convert<F, T> = T Function(F value);
+
+class BiDirectionalConvert<A, B> {
+  final Convert<A, B> aToB;
+  final Convert<B, A> bToA;
+
+  const BiDirectionalConvert(this.aToB, this.bToA);
+
+  B convertA(A value) => aToB(value);
+
+  A convertB(B value) => bToA(value);
+
+  @override
+  String toString() {
+    return 'BiDirectionalConvert($aToB, $bToA)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is BiDirectionalConvert<A, B> &&
+        other.aToB == aToB &&
+        other.bToA == bToA;
+  }
+}
+
+class ConvertedController<F, T> extends ChangeNotifier
+    implements ComponentController<T> {
+  final ValueNotifier<F> _other;
+  final BiDirectionalConvert<F, T> _convert;
+
+  T _value;
+  bool _isUpdating = false;
+
+  ConvertedController(
+      ValueNotifier<F> other, BiDirectionalConvert<F, T> convert)
+      : _other = other,
+        _convert = convert,
+        _value = convert.convertA(other.value) {
+    _other.addListener(_onOtherValueChanged);
+  }
+
+  void _onOtherValueChanged() {
+    if (_isUpdating) {
+      return;
+    }
+    _isUpdating = true;
+    try {
+      _value = _convert.convertA(_other.value);
+      notifyListeners();
+    } finally {
+      _isUpdating = false;
+    }
+  }
+
+  void _onValueChanged() {
+    if (_isUpdating) {
+      return;
+    }
+    _isUpdating = true;
+    try {
+      _other.value = _convert.convertB(_value);
+    } finally {
+      _isUpdating = false;
+    }
+  }
+
+  @override
+  T get value => _value;
+
+  @override
+  set value(T newValue) {
+    if (newValue == _value) {
+      return;
+    }
+    _value = newValue;
+    notifyListeners();
+    _onValueChanged();
+  }
+
+  @override
+  void dispose() {
+    _other.removeListener(_onOtherValueChanged);
+    super.dispose();
+  }
+}
+
+extension TextEditingValueExtension on TextEditingValue {
+  TextEditingValue replaceText(String newText) {
+    var selection = this.selection;
+    selection = selection.copyWith(
+      baseOffset: selection.baseOffset.clamp(0, newText.length),
+      extentOffset: selection.extentOffset.clamp(0, newText.length),
+    );
+    return TextEditingValue(
+      text: newText,
+      selection: selection,
+    );
   }
 }

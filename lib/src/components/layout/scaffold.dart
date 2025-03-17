@@ -148,6 +148,7 @@ class ScaffoldState extends State<Scaffold> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final viewInsets = MediaQuery.viewInsetsOf(context);
+    final currentMediaQuery = MediaQuery.of(context);
     return DrawerOverlay(
       child: Container(
         color: widget.backgroundColor ?? theme.colorScheme.background,
@@ -186,6 +187,20 @@ class ScaffoldState extends State<Scaffold> {
       ),
     );
   }
+}
+
+class ScaffoldPaddingStorage {
+  double top;
+  double left;
+  double right;
+  double bottom;
+
+  ScaffoldPaddingStorage({
+    required this.top,
+    required this.left,
+    required this.right,
+    required this.bottom,
+  });
 }
 
 class ScaffoldBoxConstraints extends BoxConstraints {

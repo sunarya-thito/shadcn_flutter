@@ -290,7 +290,7 @@ class ControlledRadioGroup<T> extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return ControlledComponentBuilder(
+    return ControlledComponentAdapter(
       controller: controller,
       initialValue: initialValue,
       onChanged: onChanged,

@@ -33,13 +33,14 @@ class _AlertDialogState extends State<AlertDialog> {
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
     var scaling = themeData.scaling;
-    return ModalContainer(
+    return ModalBackdrop(
       borderRadius: themeData.borderRadiusXxl,
       barrierColor: widget.barrierColor ?? Colors.black.withValues(alpha: 0.8),
-      surfaceClip: ModalContainer.shouldClipSurface(
+      surfaceClip: ModalBackdrop.shouldClipSurface(
           widget.surfaceOpacity ?? themeData.surfaceOpacity),
-      child: OutlinedContainer(
-        backgroundColor: themeData.colorScheme.popover,
+      child: ModalContainer(
+        fillColor: themeData.colorScheme.popover,
+        filled: true,
         borderRadius: themeData.borderRadiusXxl,
         borderWidth: 1 * scaling,
         borderColor: themeData.colorScheme.muted,

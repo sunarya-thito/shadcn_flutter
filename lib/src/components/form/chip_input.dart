@@ -68,7 +68,7 @@ class ControlledChipInput<T> extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return ControlledComponentBuilder(
+    return ControlledComponentAdapter(
       controller: controller,
       initialValue: initialValue,
       onChanged: onChanged,
@@ -222,7 +222,7 @@ class ChipInputState<T> extends State<ChipInput<T>>
           chips.removeAt(index);
           widget.onChanged?.call(chips);
         },
-        child: const Icon(Icons.close),
+        child: const Icon(LucideIcons.x),
       ),
       child: widget.chipBuilder(context, widget.chips[index]),
     );

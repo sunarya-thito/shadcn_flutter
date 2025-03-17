@@ -736,7 +736,7 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) {
               return SwiperExample();
             },
-          )
+          ),
         ]),
   ];
   late ColorScheme colorScheme;

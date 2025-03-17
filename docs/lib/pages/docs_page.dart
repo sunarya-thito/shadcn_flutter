@@ -644,46 +644,56 @@ class DocsPageState extends State<DocsPage> {
                     Expanded(
                       child: FocusTraversalGroup(
                         child: widget.scrollable
-                            ? SingleChildScrollView(
-                                controller: scrollController,
-                                clipBehavior: Clip.none,
-                                padding: !hasOnThisPage
-                                    ? const EdgeInsets.symmetric(
-                                          horizontal: 40,
-                                          vertical: 32,
-                                        ).copyWith(
-                                          right: padding.right + 32,
-                                        ) *
-                                        theme.scaling
-                                    : const EdgeInsets.symmetric(
-                                          horizontal: 40,
-                                          vertical: 32,
-                                        ).copyWith(right: 24) *
-                                        theme.scaling,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Breadcrumb(
-                                      separator: Breadcrumb.arrowSeparator,
+                            ? Builder(builder: (context) {
+                                var mq = MediaQuery.of(context);
+                                return SingleChildScrollView(
+                                  controller: scrollController,
+                                  clipBehavior: Clip.none,
+                                  padding: !hasOnThisPage
+                                      ? const EdgeInsets.symmetric(
+                                                horizontal: 40,
+                                                vertical: 32,
+                                              ).copyWith(
+                                                right: padding.right + 32,
+                                              ) *
+                                              theme.scaling +
+                                          mq.padding
+                                      : const EdgeInsets.symmetric(
+                                                horizontal: 40,
+                                                vertical: 32,
+                                              ).copyWith(right: 24) *
+                                              theme.scaling +
+                                          mq.padding,
+                                  child: MediaQuery(
+                                    data: mq.copyWith(
+                                      padding: EdgeInsets.zero,
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
                                       children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            context.goNamed('introduction');
-                                          },
-                                          density: ButtonDensity.compact,
-                                          child: const Text('Docs'),
+                                        Breadcrumb(
+                                          separator: Breadcrumb.arrowSeparator,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {
+                                                context.goNamed('introduction');
+                                              },
+                                              density: ButtonDensity.compact,
+                                              child: const Text('Docs'),
+                                            ),
+                                            ...widget.navigationItems,
+                                            if (page != null) Text(page.title),
+                                          ],
                                         ),
-                                        ...widget.navigationItems,
-                                        if (page != null) Text(page.title),
+                                        Gap(16 * theme.scaling),
+                                        widget.child,
                                       ],
                                     ),
-                                    Gap(16 * theme.scaling),
-                                    widget.child,
-                                  ],
-                                ),
-                              )
+                                  ),
+                                );
+                              })
                             : Container(
                                 clipBehavior: Clip.none,
                                 padding: !hasOnThisPage

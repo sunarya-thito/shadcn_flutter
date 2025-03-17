@@ -105,7 +105,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                             }
                           });
                         },
-                        child: const Icon(Icons.arrow_back).iconXSmall(),
+                        child: const Icon(LucideIcons.arrowLeft).iconXSmall(),
                       ),
                       SizedBox(
                         width: theme.scaling * 16,
@@ -165,7 +165,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               }
                             });
                           },
-                          child: const Icon(Icons.arrow_forward).iconXSmall(),
+                          child:
+                              const Icon(LucideIcons.arrowRight).iconXSmall(),
                         ),
                     ],
                   ),
@@ -227,7 +228,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               }
                             });
                           },
-                          child: const Icon(Icons.arrow_forward).iconXSmall(),
+                          child:
+                              const Icon(LucideIcons.arrowRight).iconXSmall(),
                         ),
                       ],
                     ),
@@ -309,7 +311,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     }
                   });
                 },
-                child: const Icon(Icons.arrow_back).iconXSmall(),
+                child: const Icon(LucideIcons.arrowLeft).iconXSmall(),
               ),
               SizedBox(
                 width: theme.scaling * 16,
@@ -360,7 +362,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     }
                   });
                 },
-                child: const Icon(Icons.arrow_forward).iconXSmall(),
+                child: const Icon(LucideIcons.arrowRight).iconXSmall(),
               ),
             ],
           ),

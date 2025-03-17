@@ -28,7 +28,7 @@ class MenuPopup extends StatelessWidget {
     final theme = Theme.of(context);
     final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
     final isDialogOverlay = DialogOverlayHandler.isDialogOverlay(context);
-    return SurfaceCard(
+    return ModalContainer(
       borderRadius: theme.borderRadiusMd,
       filled: true,
       fillColor: theme.colorScheme.popover,

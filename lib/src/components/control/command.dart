@@ -41,9 +41,9 @@ Future<T?> showCommandDialog<T>({
       return ConstrainedBox(
         constraints: constraints ??
             const BoxConstraints.tightFor(width: 510, height: 349) * scaling,
-        child: ModalContainer(
+        child: ModalBackdrop(
           borderRadius: subtractByBorder(theme.borderRadiusXxl, 1 * scaling),
-          surfaceClip: ModalContainer.shouldClipSurface(surfaceOpacity),
+          surfaceClip: ModalBackdrop.shouldClipSurface(surfaceOpacity),
           child: Command(
             autofocus: autofocus,
             builder: builder,
@@ -138,7 +138,7 @@ class _CommandState extends State<Command> {
               Row(
                 children: [
                   const Icon(
-                    Icons.search,
+                    LucideIcons.search,
                   ).iconSmall().iconMutedForeground(),
                   Expanded(
                     child: TextField(
@@ -157,7 +157,7 @@ class _CommandState extends State<Command> {
                         Navigator.of(context).pop();
                       },
                       child: const Icon(
-                        Icons.close,
+                        LucideIcons.x,
                       ).iconSmall(),
                     ),
                 ],

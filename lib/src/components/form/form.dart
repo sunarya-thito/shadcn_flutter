@@ -947,8 +947,12 @@ typedef CheckboxKey = FormKey<CheckboxState>;
 typedef ChipInputKey<T> = FormKey<List<T>>;
 typedef ColorPickerKey = FormKey<Color>;
 typedef DatePickerKey = FormKey<DateTime>;
+typedef DateInputKey = FormKey<DateTime>;
+typedef DurationPickerKey = FormKey<Duration>;
+typedef DurationInputKey = FormKey<Duration>;
+typedef InputKey = FormKey<String>;
 typedef InputOTPKey = FormKey<List<int?>>;
-typedef MultiSelectKey<T> = FormKey<List<T>>;
+typedef MultiSelectKey<T> = FormKey<Iterable<T>>;
 typedef NumberInputKey = FormKey<num>;
 typedef PhoneInputKey = FormKey<PhoneNumber>;
 typedef RadioCardKey = FormKey<int>;
@@ -960,6 +964,7 @@ typedef SwitchKey = FormKey<bool>;
 typedef TextAreaKey = FormKey<String>;
 typedef TextFieldKey = FormKey<String>;
 typedef TimePickerKey = FormKey<TimeOfDay>;
+typedef TimeInputKey = FormKey<TimeOfDay>;
 typedef ToggleKey = FormKey<bool>;
 
 class FormEntry<T> extends StatefulWidget {
@@ -978,6 +983,7 @@ class FormEntry<T> extends StatefulWidget {
 
 mixin FormFieldHandle {
   FutureOr<ValidationResult?> reportNewFormValue(Object? value);
+  FutureOr<ValidationResult?> revalidate();
   ValueListenable<ValidationResult?>? get validity;
 }
 
@@ -1045,7 +1051,17 @@ class FormEntryState extends State<FormEntry> with FormFieldHandle {
 
   @override
   FutureOr<ValidationResult?> reportNewFormValue(Object? value) {
-    if (!widget.key.isInstanceOf(value)) {
+    bool isSameType = widget.key.isInstanceOf(value);
+    assert(isSameType, () {
+      throw FlutterError.fromParts([
+        ErrorSummary('Invalid value type'),
+        ErrorDescription(
+            'Expecting ${widget.key.type} but received ${value.runtimeType}'),
+        ErrorHint('Make sure the value type matches the key type'),
+        ErrorHint('Key: FormKey<${widget.key.type}>'),
+      ]);
+    });
+    if (!isSameType) {
       return null;
     }
     if (_cachedValue == value) {
@@ -1053,6 +1069,12 @@ class FormEntryState extends State<FormEntry> with FormFieldHandle {
     }
     _cachedValue = value;
     return _controller?.attach(context, widget.key, value, widget.validator);
+  }
+
+  @override
+  FutureOr<ValidationResult?> revalidate() {
+    return _controller?.attach(
+        context, widget.key, _cachedValue, widget.validator, true);
   }
 }
 
@@ -1102,6 +1124,11 @@ class _FormEntryHandleInterceptor with FormFieldHandle {
   @override
   FutureOr<ValidationResult?> reportNewFormValue(Object? value) {
     return handle?.reportNewFormValue(value);
+  }
+
+  @override
+  FutureOr<ValidationResult?> revalidate() {
+    return handle?.revalidate();
   }
 
   @override
@@ -1225,10 +1252,11 @@ class FormController extends ChangeNotifier {
   }
 
   FutureOr<ValidationResult?> attach(
-      BuildContext context, FormKey key, Object? value, Validator? validator) {
+      BuildContext context, FormKey key, Object? value, Validator? validator,
+      [bool forceRevalidate = false]) {
     final oldState = _attachedInputs[key];
     var state = FormValueState(value: value, validator: validator);
-    if (oldState == state) {
+    if (oldState == state && !forceRevalidate) {
       return null;
     }
     var lifecycle = oldState == null
@@ -1426,6 +1454,40 @@ class FormErrorBuilder extends StatelessWidget {
               return builder(context, {}, child);
             },
           );
+        },
+      );
+    }
+    return builder(context, {}, child);
+  }
+}
+
+typedef FormPendingWidgetBuilder = Widget Function(BuildContext context,
+    Map<FormKey, Future<ValidationResult?>> errors, Widget? child);
+
+class FormPendingBuilder extends StatelessWidget {
+  final Widget? child;
+  final FormPendingWidgetBuilder builder;
+
+  const FormPendingBuilder({super.key, required this.builder, this.child});
+
+  @override
+  Widget build(widgets.BuildContext context) {
+    final controller = Data.maybeOf<FormController>(context);
+    if (controller != null) {
+      return AnimatedBuilder(
+        animation: controller,
+        child: child,
+        builder: (context, child) {
+          final errors = controller.validities;
+          final pending = <FormKey, Future<ValidationResult?>>{};
+          for (var entry in errors.entries) {
+            var key = entry.key;
+            var value = entry.value;
+            if (value is Future<ValidationResult?>) {
+              pending[key] = value;
+            }
+          }
+          return builder(context, pending, child);
         },
       );
     }

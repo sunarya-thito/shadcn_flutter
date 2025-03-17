@@ -812,13 +812,15 @@ class MenuOverlayHandler extends OverlayHandler {
       EdgeInsetsGeometry? margin,
       bool follow = true,
       bool consumeOutsideTaps = true,
-      ValueChanged<PopoverAnchorState>? onTickFollow,
+      ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
       bool allowInvertHorizontal = true,
       bool allowInvertVertical = true,
       bool dismissBackdropFocus = true,
       Duration? showDuration,
       Duration? dismissDuration,
-      OverlayBarrier? overlayBarrier}) {
+      OverlayBarrier? overlayBarrier,
+        LayerLink? layerLink,
+      }) {
     return manager.showMenu(
       context: context,
       alignment: alignment,
@@ -845,6 +847,7 @@ class MenuOverlayHandler extends OverlayHandler {
       showDuration: showDuration,
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
+      layerLink: layerLink,
     );
   }
 }

@@ -452,8 +452,9 @@ class _ClickableState extends State<Clickable> {
                   _controller.update(WidgetState.hovered, true);
                 }
                 _controller.update(WidgetState.pressed, true);
+                widget.onTapDown?.call(details);
               }
-            : null,
+            : widget.onTapDown,
         onTapUp: widget.onPressed != null
             ? (details) {
                 if (widget.enableFeedback) {
@@ -461,8 +462,9 @@ class _ClickableState extends State<Clickable> {
                   _controller.update(WidgetState.hovered, false);
                 }
                 _controller.update(WidgetState.pressed, false);
+                widget.onTapUp?.call(details);
               }
-            : null,
+            : widget.onTapUp,
         onTapCancel: widget.onPressed != null
             ? () {
                 if (widget.enableFeedback) {
@@ -470,8 +472,9 @@ class _ClickableState extends State<Clickable> {
                   _controller.update(WidgetState.hovered, false);
                 }
                 _controller.update(WidgetState.pressed, false);
+                widget.onTapCancel?.call();
               }
-            : null,
+            : widget.onTapCancel,
         child: FocusableActionDetector(
           enabled: enabled,
           focusNode: _focusNode,

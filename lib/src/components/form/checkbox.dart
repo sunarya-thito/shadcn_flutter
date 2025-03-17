@@ -62,7 +62,7 @@ class ControlledCheckbox extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return ControlledComponentBuilder<CheckboxState>(
+    return ControlledComponentAdapter<CheckboxState>(
       controller: controller,
       initialValue: initialValue,
       onChanged: onChanged,

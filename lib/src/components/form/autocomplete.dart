@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+typedef AutoCompleteCompleter = String Function(String suggestion);
+
 class AutoComplete extends StatefulWidget {
   final List<String> suggestions;
   final Widget child;
@@ -10,6 +12,7 @@ class AutoComplete extends StatefulWidget {
   final AlignmentDirectional? popoverAnchorAlignment;
   final AlignmentDirectional? popoverAlignment;
   final AutoCompleteMode mode;
+  final AutoCompleteCompleter completer;
   const AutoComplete({
     super.key,
     required this.suggestions,
@@ -19,10 +22,15 @@ class AutoComplete extends StatefulWidget {
     this.popoverAnchorAlignment,
     this.popoverAlignment,
     this.mode = AutoCompleteMode.replaceWord,
+    this.completer = _defaultCompleter,
   });
 
   @override
   State<AutoComplete> createState() => _AutoCompleteState();
+
+  static String _defaultCompleter(String suggestion) {
+    return suggestion;
+  }
 }
 
 class _AutoCompleteItem extends StatefulWidget {
@@ -149,21 +157,22 @@ class _AutoCompleteState extends State<AutoComplete> {
       return;
     }
     _popoverController.close();
+    var suggestion = _suggestions.value[selectedIndex];
+    suggestion = widget.completer(
+      suggestion,
+    );
     switch (widget.mode) {
       case AutoCompleteMode.append:
-        final suggestion = _suggestions.value[selectedIndex];
         TextFieldAppendTextIntent intent =
             TextFieldAppendTextIntent(text: suggestion);
         invokeActionOnFocusedWidget(intent);
         break;
       case AutoCompleteMode.replaceWord:
-        final suggestion = _suggestions.value[selectedIndex];
         TextFieldReplaceCurrentWordIntent intent =
             TextFieldReplaceCurrentWordIntent(text: suggestion);
         invokeActionOnFocusedWidget(intent);
         break;
       case AutoCompleteMode.replaceAll:
-        final suggestion = _suggestions.value[selectedIndex];
         TextFieldSetTextIntent intent =
             TextFieldSetTextIntent(text: suggestion);
         invokeActionOnFocusedWidget(intent);

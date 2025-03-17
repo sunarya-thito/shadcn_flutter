@@ -17,7 +17,7 @@ OverlayCompleter<T?> showDropdown<T>({
   EdgeInsetsGeometry? margin,
   bool follow = true,
   bool consumeOutsideTaps = false,
-  ValueChanged<PopoverAnchorState>? onTickFollow,
+  ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
   bool allowInvertHorizontal = true,
   bool allowInvertVertical = true,
   bool dismissBackdropFocus = true,

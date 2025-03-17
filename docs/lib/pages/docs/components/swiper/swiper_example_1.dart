@@ -44,7 +44,19 @@ class _SwiperExample1State extends State<SwiperExample1> {
               Gap(24),
               PrimaryButton(
                 onPressed: () {
-                  closeDrawer(context);
+                  openDrawer(context: context, builder: (context) {
+                    return ListView.separated(
+                      itemCount: 1000,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: Text('Item $index'),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const Gap(8);
+                      },
+                    );
+                  }, position: OverlayPosition.bottom);
                 },
                 child: const Text('Close'),
               ),

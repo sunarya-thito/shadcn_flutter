@@ -538,7 +538,7 @@ class ContextMenuPopup extends StatelessWidget {
   final List<MenuItem> children;
   final CapturedThemes? themes;
   final Axis direction;
-  final ValueChanged<PopoverAnchorState>? onTickFollow;
+  final ValueChanged<PopoverOverlayWidgetState>? onTickFollow;
   final Size? anchorSize;
   const ContextMenuPopup({
     super.key,
@@ -559,7 +559,7 @@ class ContextMenuPopup extends StatelessWidget {
       duration: const Duration(milliseconds: 100),
       builder: (context, animation) {
         final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
-        return PopoverAnchor(
+        return PopoverOverlayWidget(
           anchorContext: anchorContext,
           position: position,
           anchorSize: anchorSize,

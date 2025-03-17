@@ -126,7 +126,20 @@ abstract class ShadcnLocalizations {
   String get formPasswordSpecial;
 
   List<DatePart> get datePartsOrder;
-  String datePartPlaceholder(DatePart part);
+  String get dateYearAbbreviation;
+  String get dateMonthAbbreviation;
+  String get dateDayAbbreviation;
+
+  String getDatePartAbbreviation(DatePart part) {
+    switch (part) {
+      case DatePart.year:
+        return dateYearAbbreviation;
+      case DatePart.month:
+        return dateMonthAbbreviation;
+      case DatePart.day:
+        return dateDayAbbreviation;
+    }
+  }
 
   String get commandSearch;
   String get commandEmpty;
@@ -320,6 +333,45 @@ abstract class ShadcnLocalizations {
     }
   }
 
+  String get timeDaysAbbreviation;
+  String get timeHoursAbbreviation;
+  String get timeMinutesAbbreviation;
+  String get timeSecondsAbbreviation;
+  String get placeholderDurationPicker;
+  String formatDuration(Duration duration,
+      {bool showDays = true,
+      bool showHours = true,
+      bool showMinutes = true,
+      bool showSeconds = true});
+  String get durationDay;
+  String get durationHour;
+  String get durationMinute;
+  String get durationSecond;
+
+  String getDurationPartAbbreviation(DurationPart part) {
+    switch (part) {
+      case DurationPart.day:
+        return timeDaysAbbreviation;
+      case DurationPart.hour:
+        return timeHoursAbbreviation;
+      case DurationPart.minute:
+        return timeMinutesAbbreviation;
+      case DurationPart.second:
+        return timeSecondsAbbreviation;
+    }
+  }
+
+  String getTimePartAbbreviation(TimePart part) {
+    switch (part) {
+      case TimePart.hour:
+        return timeHoursAbbreviation;
+      case TimePart.minute:
+        return timeMinutesAbbreviation;
+      case TimePart.second:
+        return timeSecondsAbbreviation;
+    }
+  }
+
   Map<String, String> get localizedMimeTypes;
 }
 
@@ -410,6 +462,18 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
     'audio/3gpp2': '3GPP2 Audio/Video Container',
     'application/x-7z-compressed': '7-Zip Archive',
   };
+
+  @override
+  String get timeDaysAbbreviation => 'DD';
+
+  @override
+  String get timeHoursAbbreviation => 'HH';
+
+  @override
+  String get timeMinutesAbbreviation => 'MM';
+
+  @override
+  String get timeSecondsAbbreviation => 'SS';
 
   @override
   String get commandSearch => 'Type a command or search...';
@@ -592,16 +656,13 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
   }
 
   @override
-  String datePartPlaceholder(DatePart part) {
-    switch (part) {
-      case DatePart.year:
-        return 'YYYY';
-      case DatePart.month:
-        return 'MM';
-      case DatePart.day:
-        return 'DD';
-    }
-  }
+  String get dateYearAbbreviation => 'YYYY';
+
+  @override
+  String get dateMonthAbbreviation => 'MM';
+
+  @override
+  String get dateDayAbbreviation => 'DD';
 
   @override
   String get placeholderDatePicker => 'Select a date';
@@ -814,4 +875,45 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
         DatePart.day,
         DatePart.year,
       ];
+
+  @override
+  String get durationDay => 'Day';
+
+  @override
+  String get durationHour => 'Hour';
+
+  @override
+  String get durationMinute => 'Minute';
+
+  @override
+  String get durationSecond => 'Second';
+
+  @override
+  String formatDuration(Duration duration,
+      {bool showDays = true,
+      bool showHours = true,
+      bool showMinutes = true,
+      bool showSeconds = true}) {
+    final days = duration.inDays;
+    final hours = duration.inHours % Duration.hoursPerDay;
+    final minutes = duration.inMinutes % Duration.minutesPerHour;
+    final seconds = duration.inSeconds % Duration.secondsPerMinute;
+    final parts = <String>[];
+    if (showDays && days > 0) {
+      parts.add('${days}d');
+    }
+    if (showHours && hours > 0) {
+      parts.add('${hours}h');
+    }
+    if (showMinutes && minutes > 0) {
+      parts.add('${minutes}m');
+    }
+    if (showSeconds && seconds > 0) {
+      parts.add('${seconds}s');
+    }
+    return parts.join(' ');
+  }
+
+  @override
+  String get placeholderDurationPicker => 'Select a duration';
 }

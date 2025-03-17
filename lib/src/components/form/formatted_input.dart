@@ -76,7 +76,7 @@ class _StaticPartWidget extends StatefulWidget {
 class _StaticPartWidgetState extends State<_StaticPartWidget> {
   @override
   Widget build(BuildContext context) {
-    return Text(widget.text).muted().base();
+    return Text(widget.text).muted().base().center();
   }
 }
 
@@ -226,20 +226,16 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
       return;
     }
     _updating = true;
-    if (widget.data.controller != null) {
-      var value = widget.data.controller!.value;
-      if (value != null) {
-        var part = value.parts[widget.data.partIndex];
-        if (part.value != null) {
-          _controller.text = part.value!;
-        } else {
-          _controller.text = '';
-        }
-      } else {
-        _controller.text = '';
+    try {
+      if (widget.data.controller != null) {
+        var value = widget.data.controller!.value;
+        var part = value.values.elementAt(widget.data.partIndex);
+        String newText = part.value ?? '';
+        _controller.value = _controller.value.replaceText(newText);
       }
+    } finally {
+      _updating = false;
     }
-    _updating = false;
   }
 
   @override
@@ -274,28 +270,82 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
 
   FormattedInputData get data => widget.data;
 
+  void _onChanged(String value) {
+    int length = value.length;
+    if (length >= widget.length) {
+      _nextFocus();
+    }
+  }
+
+  KeyEventResult _onKeyEvent(FocusNode node, KeyEvent event) {
+    if (event is KeyDownEvent) {
+      if (event.logicalKey == LogicalKeyboardKey.backspace) {
+        if (_controller.selection.isCollapsed &&
+            _controller.selection.baseOffset == 0) {
+          _previousFocus();
+          return KeyEventResult.handled;
+        }
+      }
+      if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+        if (_controller.selection.isCollapsed &&
+            _controller.selection.baseOffset == 0) {
+          _previousFocus();
+          return KeyEventResult.handled;
+        }
+      }
+      if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+        if (_controller.selection.isCollapsed &&
+            _controller.selection.baseOffset == _controller.text.length) {
+          _nextFocus();
+          return KeyEventResult.handled;
+        }
+      }
+    }
+    return KeyEventResult.ignored;
+  }
+
+  void _nextFocus() {
+    int nextIndex = data.partIndex + 1;
+    if (nextIndex < data.focusNodes.length) {
+      FocusNode nextNode = data.focusNodes[nextIndex];
+      nextNode.requestFocus();
+    }
+  }
+
+  void _previousFocus() {
+    int nextIndex = data.partIndex - 1;
+    if (nextIndex >= 0) {
+      FocusNode nextNode = data.focusNodes[nextIndex];
+      nextNode.requestFocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return FormEntry(
-      key: FormKey(data.partIndex),
-      child: SizedBox(
-        width: widget.width,
-        child: TextField(
-          controller: _controller,
-          maxLength: widget.length,
-          style:
-              DefaultTextStyle.of(context).style.merge(theme.typography.mono),
-          border: false,
-          textAlign: TextAlign.center,
-          initialValue: data.initialValue,
-          maxLines: 1,
-          obscureText: widget.obscureText,
-          inputFormatters: widget.inputFormatters,
-          placeholder: widget.placeholder,
-          padding: EdgeInsets.symmetric(
-            horizontal: 6 * theme.scaling,
-            vertical: 8 * theme.scaling,
+    return Focus(
+      onKeyEvent: _onKeyEvent,
+      child: FormEntry(
+        key: FormKey(data.partIndex),
+        child: SizedBox(
+          width: widget.width,
+          child: TextField(
+            focusNode: data.focusNode,
+            controller: _controller,
+            maxLength: widget.length,
+            onChanged: _onChanged,
+            style:
+                DefaultTextStyle.of(context).style.merge(theme.typography.mono),
+            border: false,
+            textAlign: TextAlign.center,
+            initialValue: data.initialValue,
+            maxLines: 1,
+            obscureText: widget.obscureText,
+            inputFormatters: widget.inputFormatters,
+            placeholder: widget.placeholder,
+            padding: EdgeInsets.symmetric(
+              horizontal: 6 * theme.scaling,
+            ),
           ),
         ),
       ),
@@ -307,7 +357,7 @@ class FormattedValuePart {
   final InputPart part;
   final String? value;
 
-  const FormattedValuePart(this.part, this.value);
+  const FormattedValuePart(this.part, [this.value]);
 
   FormattedValuePart withValue(String value) {
     return FormattedValuePart(part, value);
@@ -333,7 +383,7 @@ class FormattedValuePart {
 class FormattedValue {
   final List<FormattedValuePart> parts;
 
-  const FormattedValue(this.parts);
+  const FormattedValue([this.parts = const []]);
 
   Iterable<FormattedValuePart> get values =>
       parts.where((part) => part.part.canHaveValue);
@@ -364,17 +414,17 @@ class FormattedValue {
   int get hashCode => parts.hashCode;
 }
 
-class FormattedInputController extends ValueNotifier<FormattedValue?>
-    with ComponentController<FormattedValue?> {
-  FormattedInputController([super.value]);
+class FormattedInputController extends ValueNotifier<FormattedValue>
+    with ComponentController<FormattedValue> {
+  FormattedInputController([super.value = const FormattedValue()]);
 }
 
 class FormattedInput extends StatefulWidget
-    with ControlledComponent<FormattedValue?> {
+    with ControlledComponent<FormattedValue> {
   @override
   final FormattedValue? initialValue;
   @override
-  final ValueChanged<FormattedValue?>? onChanged;
+  final ValueChanged<FormattedValue>? onChanged;
   @override
   final bool enabled;
   @override
@@ -402,12 +452,42 @@ class _FormattedInputState extends State<FormattedInput> {
   final FormController _controller = FormController();
   bool _hasFocus = false;
   FormattedValue? _value;
+  late List<FocusNode> _focusNodes;
 
   @override
   void initState() {
     super.initState();
     _value = widget.initialValue ?? widget.controller?.value;
     _controller.addListener(_notifyChanged);
+    int partIndex = 0;
+    if (_value != null) {
+      for (var part in _value!.parts) {
+        if (part.part.canHaveValue) {
+          partIndex++;
+        }
+      }
+    }
+    _focusNodes = _allocateFocusNodes(partIndex);
+  }
+
+  List<FocusNode> _allocateFocusNodes(int newLength,
+      [List<FocusNode>? oldNodes]) {
+    if (oldNodes == null) {
+      return List.generate(newLength, (index) => FocusNode());
+    }
+    if (newLength == oldNodes.length) {
+      return oldNodes;
+    }
+    if (newLength < oldNodes.length) {
+      for (var i = newLength; i < oldNodes.length; i++) {
+        oldNodes[i].dispose();
+      }
+      return oldNodes.sublist(0, newLength);
+    }
+    return [
+      ...oldNodes,
+      ...List.generate(newLength - oldNodes.length, (index) => FocusNode()),
+    ];
   }
 
   Widget _buildPart(int index, InputPart part) {
@@ -416,6 +496,8 @@ class _FormattedInputState extends State<FormattedInput> {
       initialValue: index < 0 ? null : (_value?[index]?.value ?? ''),
       enabled: widget.enabled,
       controller: widget.controller,
+      focusNode: index < 0 ? null : _focusNodes[index],
+      focusNodes: _focusNodes,
     );
     return part.build(context, formattedInputData);
   }
@@ -426,32 +508,41 @@ class _FormattedInputState extends State<FormattedInput> {
       return;
     }
     _updating = true;
-    List<FormattedValuePart> parts = [];
-    var values = _controller.values;
-    var value = _value;
-    if (value != null) {
-      int partIndex = 0;
-      for (var i = 0; i < value.parts.length; i++) {
-        var part = value.parts[i];
-        if (part.part.canHaveValue) {
-          FormKey key = FormKey(partIndex);
-          var val = values[key];
-          parts.add(part.withValue(val ?? ''));
-          partIndex++;
-        } else {
-          parts.add(part);
+    try {
+      List<FormattedValuePart> parts = [];
+      var values = _controller.values;
+      var value = _value;
+      if (value != null) {
+        int partIndex = 0;
+        for (var i = 0; i < value.parts.length; i++) {
+          var part = value.parts[i];
+          if (part.part.canHaveValue) {
+            FormKey key = FormKey(partIndex);
+            var val = values[key];
+            parts.add(part.withValue(val ?? ''));
+            partIndex++;
+          } else {
+            parts.add(part);
+          }
         }
+        _focusNodes = _allocateFocusNodes(partIndex, _focusNodes);
+      } else {
+        _focusNodes = _allocateFocusNodes(0, _focusNodes);
       }
+      if (widget.onChanged != null) {
+        widget.onChanged!(FormattedValue(parts));
+      }
+    } finally {
+      _updating = false;
     }
-    if (widget.onChanged != null) {
-      widget.onChanged!(FormattedValue(parts));
-    }
-    _updating = false;
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    for (var node in _focusNodes) {
+      node.dispose();
+    }
     super.dispose();
   }
 
@@ -470,7 +561,9 @@ class _FormattedInputState extends State<FormattedInput> {
         }
       }
     }
-    return IntrinsicWidth(
+    return SizedBox(
+      height: kTextFieldHeight *
+          theme.scaling, // 32 (textfield height) + 2 (border)
       child: TextFieldTapRegion(
         child: Focus(
           onFocusChange: (hasFocus) {
@@ -489,13 +582,16 @@ class _FormattedInputState extends State<FormattedInput> {
               controller: _controller,
               child: FocusTraversalGroup(
                 policy: WidgetOrderTraversalPolicy(),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (widget.leading != null) widget.leading!,
-                    ...children,
-                    if (widget.trailing != null) widget.trailing!,
-                  ],
+                child: IntrinsicHeight(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (widget.leading != null) widget.leading!,
+                      ...children,
+                      if (widget.trailing != null) widget.trailing!,
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -511,11 +607,15 @@ class FormattedInputData {
   final String? initialValue;
   final bool enabled;
   final FormattedInputController? controller;
+  final FocusNode? focusNode;
+  final List<FocusNode> focusNodes;
   FormattedInputData({
     required this.partIndex,
     required this.initialValue,
     required this.enabled,
     required this.controller,
+    required this.focusNode,
+    required this.focusNodes,
   });
 
   @override
@@ -525,9 +625,243 @@ class FormattedInputData {
         partIndex == other.partIndex &&
         initialValue == other.initialValue &&
         enabled == other.enabled &&
-        controller == other.controller;
+        controller == other.controller &&
+        focusNode == other.focusNode &&
+        focusNodes == other.focusNodes;
   }
 
   @override
-  int get hashCode => Object.hash(partIndex, initialValue, enabled, controller);
+  int get hashCode => Object.hash(
+      partIndex, initialValue, enabled, controller, focusNode, focusNodes);
+}
+
+typedef FormattedInputPopupBuilder<T> = Widget Function(
+    BuildContext context, ComponentController<T?> controller);
+
+class FormattedObjectInput<T> extends StatefulWidget
+    with ControlledComponent<T?> {
+  @override
+  final T? initialValue;
+  @override
+  final ValueChanged<T?>? onChanged;
+  final ValueChanged<List<String>>? onPartsChanged;
+  final FormattedInputPopupBuilder<T>? popupBuilder;
+  @override
+  final bool enabled;
+  @override
+  final ComponentController<T?>? controller;
+  final BiDirectionalConvert<T?, List<String?>> converter;
+  final List<InputPart> parts;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final Offset? popoverOffset;
+  final Widget? popoverIcon;
+
+  const FormattedObjectInput({
+    super.key,
+    this.initialValue,
+    this.onChanged,
+    this.popupBuilder,
+    this.enabled = true,
+    this.controller,
+    required this.converter,
+    required this.parts,
+    this.popoverAlignment,
+    this.popoverAnchorAlignment,
+    this.popoverOffset,
+    this.popoverIcon,
+    this.onPartsChanged,
+  });
+
+  @override
+  State<FormattedObjectInput<T>> createState() =>
+      _FormattedObjectInputState<T>();
+}
+
+class _FormattedObjectController<T> extends ValueNotifier<T?>
+    with ComponentController<T?> {
+  _FormattedObjectController([super.value]);
+}
+
+class _FormattedObjectInputState<T> extends State<FormattedObjectInput<T>> {
+  late FormattedInputController _formattedController;
+  late ComponentController<T?> _controller;
+
+  final _popoverController = PopoverController();
+
+  bool _updating = false; // to prevent circular updates
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? _FormattedObjectController<T>();
+    List<String?> values = widget.converter
+        .convertA(widget.initialValue ?? widget.controller?.value);
+    List<FormattedValuePart> valueParts = [];
+    int partIndex = 0;
+    for (var i = 0; i < widget.parts.length; i++) {
+      var part = widget.parts[i];
+      if (part.canHaveValue) {
+        var value = values[partIndex];
+        if (value != null) {
+          valueParts.add(part.withValue(value));
+        } else {
+          valueParts.add(FormattedValuePart(part));
+        }
+        partIndex++;
+      } else {
+        valueParts.add(FormattedValuePart(part));
+      }
+    }
+    _formattedController = FormattedInputController(
+      FormattedValue(valueParts),
+    );
+    _formattedController.addListener(_onFormattedControllerUpdate);
+    _controller.addListener(_onControllerUpdate);
+  }
+
+  @override
+  void didUpdateWidget(covariant FormattedObjectInput<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!listEquals(widget.parts, oldWidget.parts)) {
+      List<String?> values = widget.converter.convertA(_controller.value);
+      List<FormattedValuePart> valueParts = [];
+      List<FormattedValuePart> oldValues =
+          _formattedController.value.values.toList();
+      int partIndex = 0;
+      for (var i = 0; i < widget.parts.length; i++) {
+        var part = widget.parts[i];
+        if (part.canHaveValue) {
+          var value = values[partIndex];
+          if (value != null) {
+            valueParts.add(part.withValue(value));
+          } else {
+            var oldValue =
+                partIndex < oldValues.length ? oldValues[partIndex] : null;
+            if (oldValue != null) {
+              valueParts.add(oldValue);
+            } else {
+              valueParts.add(FormattedValuePart(part));
+            }
+          }
+          partIndex++;
+        } else {
+          valueParts.add(FormattedValuePart(part));
+        }
+      }
+      _updating = true;
+      try {
+        _formattedController.value = FormattedValue(valueParts);
+      } finally {
+        _updating = false;
+      }
+    }
+  }
+
+  void _onFormattedControllerUpdate() {
+    if (_updating) return;
+    _updating = true;
+    try {
+      var value = _formattedController.value;
+      T? newValue = widget.converter.convertB(value.values.map((part) {
+        return part.value ?? '';
+      }).toList());
+      _controller.value = newValue;
+      widget.onChanged?.call(newValue);
+    } finally {
+      _updating = false;
+    }
+  }
+
+  void _onControllerUpdate() {
+    if (_updating) return;
+    _updating = true;
+    try {
+      List<String?> values = widget.converter.convertA(_controller.value);
+      List<FormattedValuePart> valueParts = [];
+      int partIndex = 0;
+      List<FormattedValuePart> oldValues =
+          _formattedController.value.values.toList();
+      for (var i = 0; i < widget.parts.length; i++) {
+        var part = widget.parts[i];
+        if (part.canHaveValue) {
+          var value = values[partIndex];
+          if (value != null) {
+            valueParts.add(part.withValue(value));
+          } else {
+            var oldValue =
+                partIndex < oldValues.length ? oldValues[partIndex] : null;
+            if (oldValue != null) {
+              valueParts.add(oldValue);
+            } else {
+              valueParts.add(FormattedValuePart(part));
+            }
+          }
+          partIndex++;
+        } else {
+          valueParts.add(FormattedValuePart(part));
+        }
+      }
+      _formattedController.value = FormattedValue(valueParts);
+      widget.onChanged?.call(_controller.value);
+    } finally {
+      _updating = false;
+    }
+  }
+
+  void _openPopover() {
+    var popupBuilder = widget.popupBuilder;
+    if (popupBuilder == null) {
+      return;
+    }
+    final theme = Theme.of(context);
+    _popoverController.show(
+        context: context,
+        alignment: widget.popoverAlignment ?? AlignmentDirectional.topStart,
+        anchorAlignment:
+            widget.popoverAnchorAlignment ?? AlignmentDirectional.bottomStart,
+        offset: widget.popoverOffset ?? (const Offset(0, 4) * theme.scaling),
+        builder: (context) {
+          return popupBuilder(context, _controller);
+        });
+  }
+
+  @override
+  void dispose() {
+    _formattedController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var popoverIcon = widget.popoverIcon;
+    return FormattedInput(
+        controller: _formattedController,
+        onChanged: (value) {
+          List<String> values = value.values.map((part) {
+            return part.value ?? '';
+          }).toList();
+          widget.onPartsChanged?.call(values);
+          T? newValue = widget.converter.convertB(values);
+          _controller.value = newValue;
+        },
+        trailing: popoverIcon == null
+            ? null
+            : ListenableBuilder(
+                listenable: _popoverController,
+                builder: (context, child) {
+                  return WidgetStatesProvider(
+                    states: {
+                      if (_popoverController.hasOpenPopover)
+                        WidgetState.hovered,
+                    },
+                    child: child!,
+                  );
+                },
+                child: IconButton.text(
+                  icon: popoverIcon,
+                  density: ButtonDensity.compact,
+                  onPressed: _openPopover,
+                )));
+  }
 }

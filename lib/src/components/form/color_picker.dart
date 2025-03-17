@@ -60,7 +60,7 @@ class ControlledColorInput extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return ControlledComponentBuilder<ColorDerivative>(
+    return ControlledComponentAdapter<ColorDerivative>(
       initialValue: initialValue,
       onChanged: onChanged,
       enabled: enabled,
@@ -118,7 +118,7 @@ class ColorHistoryGrid extends StatelessWidget {
           style: ButtonStyle.outline(
             density: ButtonDensity.compact,
           ),
-          child: Icon(Icons.close),
+          child: Icon(LucideIcons.x),
         ),
       );
     }
@@ -1121,7 +1121,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                 if (widget.onPickFromScreen != null)
                   IconButton.outline(
                     onPressed: widget.onPickFromScreen,
-                    icon: const Icon(BootstrapIcons.eyedropper),
+                    icon: const Icon(LucideIcons.pipette),
                   ),
               ],
             ),
@@ -1539,7 +1539,7 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
           if (widget.onPickFromScreen != null)
             IconButton.outline(
               onPressed: widget.onPickFromScreen,
-              icon: const Icon(BootstrapIcons.eyedropper),
+              icon: const Icon(LucideIcons.pipette),
             ),
         ],
       ),
@@ -1638,7 +1638,7 @@ class ColorInput extends StatelessWidget {
         return [
           if (allowPickFromScreen)
             IconButton.outline(
-              icon: Icon(BootstrapIcons.eyedropper, size: 16 * theme.scaling),
+              icon: Icon(LucideIcons.pipette, size: 16 * theme.scaling),
               onPressed: () async {
                 await handler.close();
                 if (!context.mounted) return;
@@ -1950,7 +1950,7 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
                 pickedFromScreen: true,
               ));
             },
-            icon: Icon(BootstrapIcons.eyedropper, size: 16 * theme.scaling),
+            icon: Icon(LucideIcons.pipette, size: 16 * theme.scaling),
           ),
         SecondaryButton(
           onPressed: () {
@@ -2006,7 +2006,7 @@ class _ColorPickerPopupState extends State<_ColorPickerPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return SurfaceCard(
+    return ModalContainer(
       child: ColorInputPopup(
         color: _color,
         onChanged: (value) {

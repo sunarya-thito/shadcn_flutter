@@ -200,3 +200,5 @@ export 'src/theme/generated_themes.dart';
 export 'src/theme/theme.dart';
 export 'src/theme/typography.dart';
 export 'src/util.dart';
+export 'src/components/form/input.dart';
+export 'src/components/form/object_input.dart';
