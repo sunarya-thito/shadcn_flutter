@@ -24,7 +24,6 @@ class _DrawerExample1State extends State<DrawerExample1> {
       expands: true,
       builder: (context) {
         return Container(
-          alignment: Alignment.center,
           padding: const EdgeInsets.all(48),
           child: IntrinsicWidth(
             child: Column(
