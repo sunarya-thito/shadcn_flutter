@@ -41,18 +41,16 @@ class FileIconProvider extends StatelessWidget {
   final Widget child;
 
   const FileIconProvider.builder({
-    Key? key,
+    super.key,
     FileIconBuilder this.builder = _buildFileIcon,
     required this.child,
-  })  : icons = null,
-        super(key: key);
+  })  : icons = null;
 
   const FileIconProvider({
-    Key? key,
+    super.key,
     required this.icons,
     required this.child,
-  })  : builder = null,
-        super(key: key);
+  })  : builder = null;
 
   @override
   Widget build(BuildContext context) {

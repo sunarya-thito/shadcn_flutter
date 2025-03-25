@@ -11,11 +11,11 @@ class FutureOrBuilder<T> extends StatelessWidget {
   final T? initialValue;
 
   const FutureOrBuilder({
-    Key? key,
+    super.key,
     required this.future,
     required this.builder,
     this.initialValue,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

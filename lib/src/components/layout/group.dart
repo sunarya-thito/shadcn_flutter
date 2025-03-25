@@ -2,10 +2,10 @@ import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class GroupWidget extends MultiChildRenderObjectWidget {
-  GroupWidget({
-    Key? key,
-    List<Widget> children = const <Widget>[],
-  }) : super(key: key, children: children);
+  const GroupWidget({
+    super.key,
+    super.children,
+  });
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -147,26 +147,26 @@ class RenderGroup extends RenderBox
 
 class GroupPositioned extends ParentDataWidget<GroupParentData> {
   const GroupPositioned({
-    Key? key,
+    super.key,
     this.top,
     this.left,
     this.right,
     this.bottom,
     this.width,
     this.height,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   const GroupPositioned.fill({
-    Key? key,
+    super.key,
     this.top = 0,
     this.left = 0,
     this.right = 0,
     this.bottom = 0,
     this.width,
     this.height,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
   GroupPositioned.fromRect({
     super.key,
     required Rect rect,

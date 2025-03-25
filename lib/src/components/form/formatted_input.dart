@@ -27,6 +27,7 @@ abstract class InputPart implements FormattedValuePart {
   @override
   InputPart get part => this;
 
+  @override
   FormattedValuePart withValue(String value) {
     return FormattedValuePart(this, value);
   }

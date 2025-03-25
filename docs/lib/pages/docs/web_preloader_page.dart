@@ -48,7 +48,7 @@ class WebPreloaderPage extends StatelessWidget {
                     const Text(
                             'Next, select and copy one of these pre-made preloaders:')
                         .p(),
-                    Column(
+                    const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Standard Preloader'),
@@ -99,18 +99,18 @@ class WebPreloaderPage extends StatelessWidget {
                 ),
               ],
             ),
-            Gap(32),
+            const Gap(32),
             Alert(
               title: const Text('Contributing'),
               leading: const Icon(Icons.info_outlined),
-              content: Text(
+              content: const Text(
                       'If you have a preloader that you want to share, please create a pull request under the ')
                   .thenButton(
                       onPressed: () {
                         launchUrlString(
                             'https://github.com/sunarya-thito/shadcn_flutter/tree/master/web_loaders');
                       },
-                      child: Text('web_loaders'))
+                      child: const Text('web_loaders'))
                   .thenText(' directory.')
                   .p(),
             ),

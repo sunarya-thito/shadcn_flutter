@@ -104,11 +104,11 @@ class _TableExample1State extends State<TableExample1> {
                 padding: const EdgeInsets.all(8),
                 child: Row(
                   children: [
-                    Text('Total'),
+                    const Text('Total'),
                     Expanded(
                       child: Align(
                         alignment: Alignment.centerRight,
-                        child: Text('\$2,300.00').semiBold(),
+                        child: const Text('\$2,300.00').semiBold(),
                       ),
                     ),
                   ],

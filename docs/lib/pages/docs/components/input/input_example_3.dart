@@ -8,7 +8,7 @@ class InputExample3 extends StatelessWidget {
     return Column(
       children: [
         TextField(
-          placeholder: Text('Enter your name'),
+          placeholder: const Text('Enter your name'),
           features: [
             const InputFeature.clear(),
             InputFeature.hint(
@@ -17,8 +17,8 @@ class InputExample3 extends StatelessWidget {
                     child: Text('This is for your username'));
               },
             ),
-            InputFeature.copy(),
-            InputFeature.paste(),
+            const InputFeature.copy(),
+            const InputFeature.paste(),
           ],
         ),
         const Gap(24),

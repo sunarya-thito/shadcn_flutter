@@ -43,6 +43,7 @@ mixin KeyedTabChild<T> on TabChild {
 
 class TabChildWidget extends StatelessWidget with TabChild {
   final Widget child;
+  @override
   final bool indexed;
 
   const TabChildWidget({

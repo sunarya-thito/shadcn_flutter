@@ -8,7 +8,7 @@ class TabPaneExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'tab_pane',
       description:
           'A chrome-like tab pane that allows you to switch between different tabs.',
@@ -17,8 +17,8 @@ class TabPaneExample extends StatelessWidget {
         WidgetUsageExample(
           title: 'Tab Pane Example',
           summarize: false,
-          child: TabPaneExample1(),
           path: 'lib/pages/docs/components/tab_pane/tab_pane_example_1.dart',
+          child: TabPaneExample1(),
         ),
       ],
     );

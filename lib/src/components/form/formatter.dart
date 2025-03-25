@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/services.dart';
 
-import '../../../shadcn_flutter.dart';
 
 TextSelection contraintToNewText(
     TextEditingValue oldValue, TextEditingValue newValue) {

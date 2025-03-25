@@ -4,7 +4,7 @@ mixin ComponentController<T> implements ValueNotifier<T> {}
 
 class ComponentValueController<T> extends ValueNotifier<T>
     implements ComponentController<T> {
-  ComponentValueController(T value) : super(value);
+  ComponentValueController(super.value);
 }
 
 mixin ControlledComponent<T> on Widget {

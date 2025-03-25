@@ -10,7 +10,7 @@ class FadeScroll extends StatelessWidget {
   final List<Color> gradient;
 
   const FadeScroll({
-    Key? key,
+    super.key,
     required this.startOffset,
     required this.endOffset,
     required this.child,
@@ -18,7 +18,7 @@ class FadeScroll extends StatelessWidget {
     required this.gradient,
     this.startCrossOffset = 0,
     this.endCrossOffset = 0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

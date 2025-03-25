@@ -238,6 +238,7 @@ class ScaffoldBoxConstraints extends BoxConstraints {
     );
   }
 
+  @override
   ScaffoldBoxConstraints copyWith({
     double? headerHeight,
     double? footerHeight,

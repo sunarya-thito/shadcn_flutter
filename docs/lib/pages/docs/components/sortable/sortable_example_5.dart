@@ -50,7 +50,7 @@ class _SortableExample5State extends State<SortableExample5> {
                   padding: const EdgeInsets.all(12),
                   child: Row(
                     children: [
-                      SortableDragHandle(child: const Icon(Icons.drag_handle)),
+                      const SortableDragHandle(child: Icon(Icons.drag_handle)),
                       const SizedBox(width: 8),
                       Expanded(child: Text(names[i].data)),
                     ],

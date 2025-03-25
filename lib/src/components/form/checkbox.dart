@@ -2,7 +2,7 @@ import '../../../shadcn_flutter.dart';
 
 class CheckboxController extends ValueNotifier<CheckboxState>
     with ComponentController<CheckboxState> {
-  CheckboxController(CheckboxState value) : super(value);
+  CheckboxController(super.value);
 
   void check() {
     value = CheckboxState.checked;

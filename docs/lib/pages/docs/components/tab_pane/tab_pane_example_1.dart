@@ -35,7 +35,7 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
   TabItem _buildTabItem(MyTab data) {
     return TabItem(
       child: ConstrainedBox(
-        constraints: BoxConstraints(minWidth: 150),
+        constraints: const BoxConstraints(minWidth: 150),
         child: Label(
           leading: OutlinedContainer(
             backgroundColor: Colors.white,
@@ -45,14 +45,14 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
             child: Center(
               child: Text(
                 data.count.toString(),
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ).xSmall().bold(),
             ),
           ),
           trailing: IconButton.ghost(
             shape: ButtonShape.circle,
             size: ButtonSize.xSmall,
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
             onPressed: () {
               setState(() {
                 tabs.remove(data);
@@ -86,7 +86,7 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
       },
       leading: [
         IconButton.secondary(
-          icon: Icon(Icons.arrow_drop_down),
+          icon: const Icon(Icons.arrow_drop_down),
           size: ButtonSize.small,
           density: ButtonDensity.iconDense,
           onPressed: () {},
@@ -94,7 +94,7 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
       ],
       trailing: [
         IconButton.ghost(
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           size: ButtonSize.small,
           density: ButtonDensity.iconDense,
           onPressed: () {
@@ -110,11 +110,11 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
           },
         )
       ],
-      child: Container(
+      child: SizedBox(
+        height: 400,
         child: Center(
           child: Text('Tab ${focused + 1}').xLarge().bold(),
         ),
-        height: 400,
       ),
     );
   }

@@ -40,10 +40,10 @@ class _ItemPickerExample3State extends State<ItemPickerExample3> {
           builder: (context, item) {
             return ItemPickerOption(
               value: item,
-              selectedStyle: ButtonStyle.primary(
+              selectedStyle: const ButtonStyle.primary(
                 shape: ButtonShape.circle,
               ),
-              style: ButtonStyle.ghost(
+              style: const ButtonStyle.ghost(
                 shape: ButtonShape.circle,
               ),
               label: Text(item.name),
@@ -73,7 +73,7 @@ class _ItemPickerExample3State extends State<ItemPickerExample3> {
               showToast(
                 context: context,
                 builder: (context, overlay) {
-                  return SurfaceCard(
+                  return const SurfaceCard(
                     child: Text('You picked nothing!'),
                   );
                 },

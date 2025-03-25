@@ -15,9 +15,9 @@ class ExpandableSidebarExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example',
-          child: ExpandableSidebarExample1(),
           path:
               'lib/pages/docs/components/expandable_sidebar/expandable_sidebar_example_1.dart',
+          child: ExpandableSidebarExample1(),
         ),
       ],
     );

@@ -5,9 +5,11 @@ import '../../widget_usage_example.dart';
 import '../component_page.dart';
 
 class SwiperExample extends StatelessWidget {
+  const SwiperExample({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ComponentPage(
+    return const ComponentPage(
       name: 'swiper',
       description: 'Enable swiping gestures to open a drawer or a sheet.',
       displayName: 'Swiper',

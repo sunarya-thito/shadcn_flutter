@@ -60,7 +60,7 @@ class _HiddenLayout extends SingleChildRenderObjectWidget {
   final bool keepCrossAxisSize;
   final bool keepMainAxisSize;
 
-  _HiddenLayout({
+  const _HiddenLayout({
     required this.textDirection,
     required this.direction,
     required this.reverse,

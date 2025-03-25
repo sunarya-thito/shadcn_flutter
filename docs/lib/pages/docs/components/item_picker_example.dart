@@ -8,6 +8,8 @@ import 'package:docs/pages/widget_usage_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class ItemPickerExample extends StatelessWidget {
+  const ItemPickerExample({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const ComponentPage(

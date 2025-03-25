@@ -103,7 +103,7 @@ class _MultiSelectExample3State extends State<MultiSelectExample3> {
           selectedValues = value;
         });
       },
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         minWidth: 200,
       ),
       value: selectedValues,

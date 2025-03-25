@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 import '../../../shadcn_flutter.dart';
 
 abstract class TextModifier extends Widget {
+  const TextModifier({super.key});
+
   Widget call({
     Color? color,
     Color? backgroundColor,

@@ -240,7 +240,7 @@ class WindowWidget extends StatefulWidget {
   final BoxConstraints? constraints;
 
   const WindowWidget({
-    Key? key,
+    super.key,
     this.title,
     this.actions,
     this.content,
@@ -251,14 +251,13 @@ class WindowWidget extends StatefulWidget {
     bool this.minimizable = true,
     bool this.enableSnapping = true,
     required Rect this.bounds,
-    Rect? this.maximized,
+    this.maximized,
     bool this.minimized = false,
     BoxConstraints this.constraints = kDefaultWindowConstraints,
-  })  : controller = null,
-        super(key: key);
+  })  : controller = null;
 
   const WindowWidget.controlled({
-    Key? key,
+    super.key,
     this.title,
     this.actions,
     this.content,
@@ -272,11 +271,10 @@ class WindowWidget extends StatefulWidget {
         maximizable = null,
         minimizable = null,
         enableSnapping = null,
-        constraints = null,
-        super(key: key);
+        constraints = null;
 
   const WindowWidget._raw({
-    Key? key,
+    super.key,
     this.title,
     this.actions,
     this.content,
@@ -291,7 +289,7 @@ class WindowWidget extends StatefulWidget {
     this.maximized,
     this.minimized,
     this.constraints,
-  }) : super(key: key);
+  });
 
   @override
   State<WindowWidget> createState() => _WindowWidgetState();
@@ -767,7 +765,6 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
             value: maximized,
             duration: kDefaultDuration,
             curve: Curves.easeInOut,
-            child: windowContainer,
             lerp: Rect.lerp,
             builder: (context, oldValue, newValue, t, child) {
               var rect = bounds;
@@ -790,6 +787,7 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
               }
               return GroupPositioned.fromRect(rect: rect, child: child!);
             },
+            child: windowContainer,
           );
         },
       ),
@@ -920,10 +918,10 @@ class WindowNavigator extends StatefulWidget {
   final Widget? child;
 
   const WindowNavigator({
-    Key? key,
+    super.key,
     required this.initialWindows,
     this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<WindowNavigator> createState() => _WindowNavigatorState();
@@ -1754,13 +1752,12 @@ class _SnapHover extends StatefulWidget {
   final ValueChanged<bool> hovering;
 
   const _SnapHover({
-    Key? key,
     this.topLeft = false,
     this.topRight = false,
     this.bottomLeft = false,
     this.bottomRight = false,
     required this.hovering,
-  }) : super(key: key);
+  });
 
   @override
   State<_SnapHover> createState() => _SnapHoverState();
@@ -1851,7 +1848,7 @@ class WindowViewport {
 }
 
 class WindowActions extends StatelessWidget {
-  const WindowActions({Key? key}) : super(key: key);
+  const WindowActions({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -1897,7 +1894,7 @@ class WindowActions extends StatelessWidget {
 }
 
 class _BlurContainer extends StatelessWidget {
-  const _BlurContainer({Key? key}) : super(key: key);
+  const _BlurContainer({super.key});
 
   @override
   Widget build(BuildContext context) {

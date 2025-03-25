@@ -61,7 +61,7 @@ class RawSortableList<T> extends StatelessWidget {
   final SortableWidgetBuilder<T> builder;
   final ValueChanged<ListChanges<T>>? onChanged;
   final bool enabled;
-  const RawSortableList({
+  const RawSortableList({super.key, 
     required this.delegate,
     required this.builder,
     this.onChanged,
@@ -81,12 +81,13 @@ class RawSortableParentData extends ContainerBoxParentData<RenderBox> {
 class RawSortableItemPositioned
     extends ParentDataWidget<RawSortableParentData> {
   final Offset offset;
+  @override
   final Widget child;
   const RawSortableItemPositioned({
-    Key? key,
+    super.key,
     required this.offset,
     required this.child,
-  }) : super(key: key, child: child);
+  }) : super(child: child);
 
   @override
   void applyParentData(RenderObject renderObject) {
@@ -107,10 +108,10 @@ class RawSortableItemPositioned
 /// RawSortableStack prevents the stacking children from going outside the bounds of this widget.
 /// It will clamp the position of the children to the bounds of this widget.
 class RawSortableStack extends MultiChildRenderObjectWidget {
-  RawSortableStack({
-    Key? key,
-    required List<Widget> children,
-  }) : super(key: key, children: children);
+  const RawSortableStack({
+    super.key,
+    required super.children,
+  });
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -199,6 +200,7 @@ class SortableChildListDelegate<T> extends SortableListDelegate<T> {
 }
 
 class SortableChildBuilderDelegate<T> extends SortableListDelegate<T> {
+  @override
   final int? itemCount;
   final SortableItemBuilder<T> builder;
   const SortableChildBuilderDelegate({this.itemCount, required this.builder});

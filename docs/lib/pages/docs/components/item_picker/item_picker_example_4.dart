@@ -67,7 +67,7 @@ class _ItemPickerExample4State extends State<ItemPickerExample4> {
               showToast(
                 context: context,
                 builder: (context, overlay) {
-                  return SurfaceCard(
+                  return const SurfaceCard(
                     child: Text('You picked nothing!'),
                   );
                 },

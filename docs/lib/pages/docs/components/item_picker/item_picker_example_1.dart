@@ -34,7 +34,7 @@ class ItemPickerExample1 extends StatelessWidget {
               showToast(
                 context: context,
                 builder: (context, overlay) {
-                  return SurfaceCard(
+                  return const SurfaceCard(
                     child: Text('You picked nothing!'),
                   );
                 },

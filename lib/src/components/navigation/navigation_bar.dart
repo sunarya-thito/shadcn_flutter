@@ -689,7 +689,7 @@ class NavigationItem extends AbstractNavigationButton {
   final bool? selected;
   final ValueChanged<bool>? onChanged;
   final int? index;
-  const NavigationItem({
+  const NavigationItem({super.key, 
     this.selectedStyle,
     this.selected,
     this.onChanged,
@@ -791,7 +791,7 @@ class _NavigationItemState
 
 class NavigationButton extends AbstractNavigationButton {
   final VoidCallback? onPressed;
-  const NavigationButton({
+  const NavigationButton({super.key, 
     this.onPressed,
     super.label,
     super.spacing,
@@ -932,7 +932,7 @@ abstract class _AbstractNavigationButtonState<
           : const Duration(milliseconds: 500),
       alignment: alignment,
       anchorAlignment: anchorAlignment,
-      tooltip: TooltipContainer(child: widget.label!),
+      tooltip: TooltipContainer(child: widget.label!).call,
       child: buildBox(context, data, childData),
     );
   }

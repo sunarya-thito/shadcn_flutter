@@ -21,8 +21,8 @@ class _SwiperExample1State extends State<SwiperExample1> {
           });
         }
       },
-      style: ButtonStyle.outline(),
-      selectedStyle: ButtonStyle.primary(),
+      style: const ButtonStyle.outline(),
+      selectedStyle: const ButtonStyle.primary(),
       child: Text(label),
     );
   }
@@ -40,8 +40,8 @@ class _SwiperExample1State extends State<SwiperExample1> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Hello!'),
-              Gap(24),
+              const Text('Hello!'),
+              const Gap(24),
               PrimaryButton(
                 onPressed: () {
                   openDrawer(context: context, builder: (context) {
@@ -73,15 +73,15 @@ class _SwiperExample1State extends State<SwiperExample1> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Swipe me!'),
-                Gap(24),
+                const Text('Swipe me!'),
+                const Gap(24),
                 ButtonGroup(children: [
                   _buildSelectPosition(OverlayPosition.left, 'Left'),
                   _buildSelectPosition(OverlayPosition.right, 'Right'),
                   _buildSelectPosition(OverlayPosition.top, 'Top'),
                   _buildSelectPosition(OverlayPosition.bottom, 'Bottom'),
                 ]),
-                Gap(24),
+                const Gap(24),
                 ButtonGroup(children: [
                   Toggle(
                     value: _typeDrawer,

@@ -16,8 +16,8 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
     return NavigationItem(
       label: Text(text),
       alignment: Alignment.centerLeft,
+      selectedStyle: const ButtonStyle.primaryIcon(),
       child: Icon(icon),
-      selectedStyle: ButtonStyle.primaryIcon(),
     );
   }
 
@@ -52,30 +52,30 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
             },
             children: [
               NavigationButton(
-                child: Icon(Icons.menu),
                 alignment: Alignment.centerLeft,
-                label: Text('Menu'),
+                label: const Text('Menu'),
                 onPressed: () {
                   setState(() {
                     expanded = !expanded;
                   });
                 },
+                child: const Icon(Icons.menu),
               ),
-              NavigationDivider(),
+              const NavigationDivider(),
               buildLabel('You'),
               buildButton('Home', Icons.home_filled),
               buildButton('Trending', Icons.trending_up),
               buildButton('Subscription', Icons.subscriptions),
-              NavigationDivider(),
+              const NavigationDivider(),
               buildLabel('History'),
               buildButton('History', Icons.history),
               buildButton('Watch Later', Icons.access_time_rounded),
-              NavigationDivider(),
+              const NavigationDivider(),
               buildLabel('Movie'),
               buildButton('Action', Icons.movie_creation_outlined),
               buildButton('Horror', Icons.movie_creation_outlined),
               buildButton('Thriller', Icons.movie_creation_outlined),
-              NavigationDivider(),
+              const NavigationDivider(),
               buildLabel('Short Films'),
               buildButton('Action', Icons.movie_creation_outlined),
               buildButton('Horror', Icons.movie_creation_outlined),

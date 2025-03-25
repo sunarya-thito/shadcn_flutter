@@ -354,7 +354,7 @@ class ResizableTable extends StatefulWidget {
   final double? verticalOffset;
   final Size? viewportSize;
 
-  const ResizableTable({
+  const ResizableTable({super.key, 
     required this.rows,
     required this.controller,
     this.theme,
@@ -1347,7 +1347,7 @@ class Table extends StatefulWidget {
   final double? horizontalOffset;
   final double? verticalOffset;
   final Size? viewportSize;
-  const Table({
+  const Table({super.key, 
     required this.rows,
     this.defaultColumnWidth = const FlexTableSize(),
     this.defaultRowHeight = const IntrinsicTableSize(),
@@ -1510,14 +1510,14 @@ class RawCell extends ParentDataWidget<TableParentData> {
   final bool computeSize;
 
   const RawCell({
-    Key? key,
+    super.key,
     required this.column,
     required this.row,
     this.columnSpan,
     this.rowSpan,
     this.computeSize = true,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   @override
   void applyParentData(RenderObject renderObject) {

@@ -72,7 +72,7 @@ class _SelectExample2State extends State<SelectExample2> {
           selectedValue = value;
         });
       },
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         minWidth: 200,
       ),
       value: selectedValue,

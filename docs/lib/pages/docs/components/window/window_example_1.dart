@@ -19,21 +19,21 @@ class _WindowExample1State extends State<WindowExample1> {
           height: 600, // for example purpose
           child: WindowNavigator(
             key: navigatorKey,
-            child: const Center(
-              child: Text('Desktop'),
-            ),
             initialWindows: [
               Window(
-                bounds: Rect.fromLTWH(0, 0, 200, 200),
-                title: Text('Window 1'),
+                bounds: const Rect.fromLTWH(0, 0, 200, 200),
+                title: const Text('Window 1'),
                 content: const RebuildCounter(),
               ),
               Window(
-                bounds: Rect.fromLTWH(200, 0, 200, 200),
-                title: Text('Window 2'),
+                bounds: const Rect.fromLTWH(200, 0, 200, 200),
+                title: const Text('Window 2'),
                 content: const RebuildCounter(),
               ),
             ],
+            child: const Center(
+              child: Text('Desktop'),
+            ),
           ),
         ),
         PrimaryButton(
@@ -41,7 +41,7 @@ class _WindowExample1State extends State<WindowExample1> {
           onPressed: () {
             navigatorKey.currentState?.pushWindow(
               Window(
-                bounds: Rect.fromLTWH(0, 0, 200, 200),
+                bounds: const Rect.fromLTWH(0, 0, 200, 200),
                 title: Text(
                     'Window ${navigatorKey.currentState!.windows.length + 1}'),
                 content: const RebuildCounter(),

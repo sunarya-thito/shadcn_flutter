@@ -669,14 +669,14 @@ class _ComponentsPageState extends State<ComponentsPage> {
                           placeholder: const Text('Select a fruit'),
                           value: 'Apple',
                           enabled: true,
-                          constraints: BoxConstraints.tightFor(width: 300),
+                          constraints: const BoxConstraints.tightFor(width: 300),
                           popup: const SelectPopup(),
                         ),
                         Gap(8 * theme.scaling),
-                        SizedBox(
+                        const SizedBox(
                           width: 300,
                           child: SelectPopup(
-                            items: SelectItemList(children: const [
+                            items: SelectItemList(children: [
                               SelectItemButton(
                                 value: 'Apple',
                                 child: Text('Apple'),

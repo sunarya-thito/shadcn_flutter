@@ -143,7 +143,7 @@ class ScrollableClient extends StatelessWidget {
 
 class ScrollableClientViewport extends TwoDimensionalViewport {
   final bool overscroll;
-  ScrollableClientViewport({
+  const ScrollableClientViewport({
     super.key,
     required super.verticalOffset,
     required super.verticalAxisDirection,

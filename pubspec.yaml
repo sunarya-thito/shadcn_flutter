@@ -24,6 +24,7 @@ dependencies:
   data_widget: ^0.0.2
   gap: ^3.0.1
 
+  archive: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

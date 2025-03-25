@@ -362,6 +362,7 @@ class TimelineAnimation<T> extends Animatable<T> {
     return TimelineAnimatable(duration, this);
   }
 
+  @override
   T transform(double t) {
     assert(t >= 0 && t <= 1, 'Invalid time $t');
     assert(keyframes.isNotEmpty, 'No keyframes found');

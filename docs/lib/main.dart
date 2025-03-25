@@ -735,14 +735,14 @@ class MyAppState extends State<MyApp> {
             path: 'swiper',
             name: 'swiper',
             builder: (context, state) {
-              return SwiperExample();
+              return const SwiperExample();
             },
           ),
           GoRoute(
             path: 'item_picker',
             name: 'item_picker',
             builder: (context, state) {
-              return ItemPickerExample();
+              return const ItemPickerExample();
             },
           )
         ]),

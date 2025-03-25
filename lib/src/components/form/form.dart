@@ -83,7 +83,7 @@ class IgnoreForm<T> extends StatelessWidget {
   final bool ignoring;
   final Widget child;
 
-  const IgnoreForm({this.ignoring = true, required this.child});
+  const IgnoreForm({super.key, this.ignoring = true, required this.child});
 
   @override
   widgets.Widget build(widgets.BuildContext context) {

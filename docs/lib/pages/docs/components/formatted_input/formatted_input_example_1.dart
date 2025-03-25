@@ -14,13 +14,13 @@ class FormattedInputExample1 extends StatelessWidget {
         print(parts.join('/'));
       },
       initialValue: FormattedValue([
-        InputPart.editable(length: 2, width: 40, placeholder: Text('MM'))
+        const InputPart.editable(length: 2, width: 40, placeholder: Text('MM'))
             .withValue('01'),
-        InputPart.static('/'),
-        InputPart.editable(length: 2, width: 40, placeholder: Text('DD'))
+        const InputPart.static('/'),
+        const InputPart.editable(length: 2, width: 40, placeholder: Text('DD'))
             .withValue('02'),
-        InputPart.static('/'),
-        InputPart.editable(length: 4, width: 60, placeholder: Text('YYYY'))
+        const InputPart.static('/'),
+        const InputPart.editable(length: 4, width: 60, placeholder: Text('YYYY'))
             .withValue('2021'),
       ]),
     );
