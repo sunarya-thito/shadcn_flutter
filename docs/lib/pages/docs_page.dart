@@ -255,6 +255,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Time Picker', 'time_picker'),
         ShadcnDocsPage('Toggle', 'toggle'),
         ShadcnDocsPage('Multi Select', 'multiselect'),
+        ShadcnDocsPage(
+            'Item Picker', 'item_picker', ShadcnFeatureTag.experimental),
       ],
     ),
     ShadcnDocsSection(
@@ -284,13 +286,12 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Tabs', 'tabs'),
         ShadcnDocsPage('Tab List', 'tab_list'),
         // TODO: like a chrome tab, complete with its view
-        ShadcnDocsPage('Tab Pane', 'tab_pane', ShadcnFeatureTag.newFeature),
+        ShadcnDocsPage('Tab Pane', 'tab_pane'),
         ShadcnDocsPage('Tree', 'tree'),
         // aka Bottom Navigation Bar
         ShadcnDocsPage('Navigation Bar', 'navigation_bar'),
         ShadcnDocsPage('Navigation Rail', 'navigation_rail'),
-        ShadcnDocsPage('Expandable Sidebar', 'expandable_sidebar',
-            ShadcnFeatureTag.newFeature),
+        ShadcnDocsPage('Expandable Sidebar', 'expandable_sidebar'),
         // aka Drawer
         ShadcnDocsPage('Navigation Sidebar', 'navigation_sidebar'),
         ShadcnDocsPage('Dot Indicator', 'dot_indicator'),
@@ -304,7 +305,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Hover Card', 'hover_card'),
         ShadcnDocsPage('Popover', 'popover'),
         ShadcnDocsPage('Sheet', 'sheet'),
-        ShadcnDocsPage('Swiper', 'swiper', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Swiper', 'swiper', ShadcnFeatureTag.newFeature),
         ShadcnDocsPage('Tooltip', 'tooltip'),
         // TODO: window as in like a window in desktop
         ShadcnDocsPage('Window', 'window', ShadcnFeatureTag.experimental),

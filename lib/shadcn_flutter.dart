@@ -202,3 +202,4 @@ export 'src/theme/typography.dart';
 export 'src/util.dart';
 export 'src/components/form/input.dart';
 export 'src/components/form/object_input.dart';
+export 'src/components/form/item_picker.dart';

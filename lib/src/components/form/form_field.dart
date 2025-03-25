@@ -25,6 +25,7 @@ class ObjectFormField<T> extends StatefulWidget {
   final List<Widget> Function(
       BuildContext context, ObjectFormHandler<T> handler)? dialogActions;
   final bool? enabled;
+  final bool decorate;
 
   const ObjectFormField({
     super.key,
@@ -45,6 +46,7 @@ class ObjectFormField<T> extends StatefulWidget {
     this.shape = ButtonShape.rectangle,
     this.dialogActions,
     this.enabled,
+    this.decorate = true,
   });
 
   @override
@@ -115,10 +117,11 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
           editorBuilder: widget.editorBuilder,
           dialogActions: widget.dialogActions,
           prompt: prompt,
+          decorate: widget.decorate,
         );
       },
     ).then((value) {
-      if (mounted && value is _ObjectFormFieldDialogResult<T>) {
+      if (mounted && value is ObjectFormFieldDialogResult<T>) {
         this.value = value.value;
       }
     });
@@ -143,6 +146,7 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
           editorBuilder: widget.editorBuilder,
           popoverPadding: widget.popoverPadding,
           prompt: prompt,
+          decorate: widget.decorate,
           onChanged: (value) {
             if (mounted) {
               this.value = value;
@@ -186,6 +190,7 @@ class _ObjectFormFieldDialog<T> extends StatefulWidget {
   final List<Widget> Function(
       BuildContext context, ObjectFormHandler<T> handler)? dialogActions;
   final ValueChanged<T?> prompt;
+  final bool decorate;
 
   const _ObjectFormFieldDialog({
     super.key,
@@ -194,6 +199,7 @@ class _ObjectFormFieldDialog<T> extends StatefulWidget {
     this.dialogTitle,
     this.dialogActions,
     required this.prompt,
+    this.decorate = true,
   });
 
   @override
@@ -201,10 +207,10 @@ class _ObjectFormFieldDialog<T> extends StatefulWidget {
       _ObjectFormFieldDialogState<T>();
 }
 
-class _ObjectFormFieldDialogResult<T> {
+class ObjectFormFieldDialogResult<T> {
   final T? value;
 
-  _ObjectFormFieldDialogResult(this.value);
+  ObjectFormFieldDialogResult(this.value);
 }
 
 class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>>
@@ -245,6 +251,9 @@ class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>>
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.decorate) {
+      return widget.editorBuilder(context, this);
+    }
     final localizations = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
     return Data<ObjectFormHandler<T>>.inherit(
@@ -269,7 +278,7 @@ class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>>
           PrimaryButton(
               child: Text(localizations.buttonSave),
               onPressed: () {
-                Navigator.of(context).pop(_ObjectFormFieldDialogResult(_value));
+                Navigator.of(context).pop(ObjectFormFieldDialogResult(_value));
               }),
         ],
       ),
@@ -284,6 +293,7 @@ class _ObjectFormFieldPopup<T> extends StatefulWidget {
   final EdgeInsetsGeometry? popoverPadding;
   final ValueChanged<T?>? onChanged;
   final ValueChanged<T?> prompt;
+  final bool decorate;
 
   const _ObjectFormFieldPopup({
     super.key,
@@ -292,6 +302,7 @@ class _ObjectFormFieldPopup<T> extends StatefulWidget {
     required this.prompt,
     this.popoverPadding,
     this.onChanged,
+    this.decorate = true,
   });
 
   @override
@@ -336,6 +347,9 @@ class _ObjectFormFieldPopupState<T> extends State<_ObjectFormFieldPopup<T>>
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.decorate) {
+      return widget.editorBuilder(context, this);
+    }
     final theme = Theme.of(context);
     return Data<ObjectFormHandler<T>>.inherit(
       data: this,
