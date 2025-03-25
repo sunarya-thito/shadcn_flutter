@@ -848,8 +848,6 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    ShadcnLocalizations localizations =
-        Localizations.of(context, ShadcnLocalizations);
     return CalendarGrid(
       data: _gridData,
       itemBuilder: (item) {
