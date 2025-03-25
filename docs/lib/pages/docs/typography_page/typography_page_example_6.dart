@@ -5,6 +5,6 @@ class TypographyPageExample6 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Blockquote').blockQuote();
+    return const Text('Blockquote').blockQuote;
   }
 }

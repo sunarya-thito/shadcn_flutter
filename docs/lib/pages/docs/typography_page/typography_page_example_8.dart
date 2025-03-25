@@ -5,6 +5,6 @@ class TypographyPageExample8 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('flutter pub add shadcn_flutter').inlineCode();
+    return const Text('flutter pub add shadcn_flutter').inlineCode;
   }
 }
