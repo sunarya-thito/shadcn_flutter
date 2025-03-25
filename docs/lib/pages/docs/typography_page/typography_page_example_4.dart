@@ -5,6 +5,6 @@ class TypographyPageExample4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Headline 4').h4();
+    return const Text('Headline 4').h4;
   }
 }

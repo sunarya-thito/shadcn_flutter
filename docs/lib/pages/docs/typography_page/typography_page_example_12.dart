@@ -5,6 +5,6 @@ class TypographyPageExample12 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Muted text').muted();
+    return const Text('Muted text').muted;
   }
 }

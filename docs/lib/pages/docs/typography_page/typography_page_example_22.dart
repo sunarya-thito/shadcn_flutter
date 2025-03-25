@@ -5,6 +5,6 @@ class TypographyPageExample22 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Lorem ipsum dolor sit amet').x4Large();
+    return const Text('Lorem ipsum dolor sit amet').x4Large;
   }
 }

@@ -5,6 +5,6 @@ class TypographyPageExample11 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Small text').textSmall();
+    return const Text('Small text').textSmall;
   }
 }
