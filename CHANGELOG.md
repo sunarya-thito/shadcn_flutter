@@ -1,3 +1,10 @@
+## 0.0.31
+* Added ItemPicker component
+* Fixed TimePicker text field vertical align
+* Fixed incorrect popover signature
+* Added repaint boundary to Scaffold and NavigationBar
+* Improved Text extension
+
 ## 0.0.30
 * Fixed Sheet autoOpen issue
 * Fixed incorrect MultiSelectKey FormKey type
