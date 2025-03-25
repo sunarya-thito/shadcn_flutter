@@ -396,7 +396,6 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
   bool get allowInvertVertical => _allowInvertVertical;
   LayerLink? get layerLink => _layerLink;
 
-  @override
   set layerLink(LayerLink? value) {
     if (_layerLink != value) {
       setState(() {

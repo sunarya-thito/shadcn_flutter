@@ -244,8 +244,8 @@ class ResizablePane extends StatefulWidget {
   })  : controller = null,
         initialSize = null;
 
-  const ResizablePane.controlled({super.key, 
-    Key? key,
+  const ResizablePane.controlled({
+    super.key,
     required ResizablePaneController this.controller,
     this.minSize,
     this.maxSize,

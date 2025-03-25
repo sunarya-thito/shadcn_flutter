@@ -620,13 +620,6 @@ class TimeRange {
     );
   }
 
-  TimeRange merge(TimeRange other) {
-    return TimeRange(
-      start: other.start ?? start,
-      end: other.end ?? end,
-    );
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

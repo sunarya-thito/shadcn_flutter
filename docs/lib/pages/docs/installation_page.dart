@@ -11,7 +11,6 @@ class InstallationPage extends StatefulWidget {
 }
 
 class _InstallationPageState extends State<InstallationPage> {
-  final OnThisPage _cliKey = OnThisPage();
   final OnThisPage _manualKey = OnThisPage();
   final OnThisPage _experimentalKey = OnThisPage();
   @override

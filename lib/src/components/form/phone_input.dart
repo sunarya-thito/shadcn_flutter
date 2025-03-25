@@ -118,7 +118,6 @@ class _PhoneInputState extends State<PhoneInput>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final localization = ShadcnLocalizations.of(context);
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
