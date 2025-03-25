@@ -167,6 +167,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
           Positioned.fill(
             child: TextField(
               textAlign: TextAlign.center,
+              textAlignVertical: TextAlignVertical.center,
               controller: controller,
               style: theme.typography.x4Large,
               inputFormatters: [
