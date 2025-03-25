@@ -85,6 +85,11 @@ class _NavigationBarState extends State<NavigationBar>
   }
 
   @override
+  void didUpdateWidget(covariant NavigationBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
@@ -132,36 +137,38 @@ class _NavigationBarState extends State<NavigationBar>
       padding: EdgeInsets.zero,
       surfaceBlur: widget.surfaceBlur,
       surfaceOpacity: widget.surfaceOpacity,
-      child: Data.inherit(
-        data: NavigationControlData(
-          containerType: NavigationContainerType.bar,
-          parentLabelType: widget.labelType,
-          parentLabelSize: widget.labelSize,
-          parentPadding: resolvedPadding,
-          direction: widget.direction,
-          selectedIndex: widget.index,
-          onSelected: _onSelected,
-          parentLabelPosition: widget.labelPosition,
-          expanded: widget.expanded,
-          childCount: children.length,
-          spacing: widget.spacing ?? (8 * scaling),
-          keepCrossAxisSize: widget.keepCrossAxisSize,
-          keepMainAxisSize: widget.keepMainAxisSize,
-        ),
-        child: Container(
-          color: widget.backgroundColor,
-          padding: resolvedPadding,
-          // child: Flex(
-          //   direction: widget.direction,
-          //   mainAxisAlignment: widget.alignment.mainAxisAlignment,
-          //   children: children,
-          // ),
-          child: _wrapIntrinsic(
-            Flex(
-              direction: widget.direction,
-              mainAxisAlignment: widget.alignment.mainAxisAlignment,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: children,
+      child: RepaintBoundary(
+        child: Data.inherit(
+          data: NavigationControlData(
+            containerType: NavigationContainerType.bar,
+            parentLabelType: widget.labelType,
+            parentLabelSize: widget.labelSize,
+            parentPadding: resolvedPadding,
+            direction: widget.direction,
+            selectedIndex: widget.index,
+            onSelected: _onSelected,
+            parentLabelPosition: widget.labelPosition,
+            expanded: widget.expanded,
+            childCount: children.length,
+            spacing: widget.spacing ?? (8 * scaling),
+            keepCrossAxisSize: widget.keepCrossAxisSize,
+            keepMainAxisSize: widget.keepMainAxisSize,
+          ),
+          child: Container(
+            color: widget.backgroundColor,
+            padding: resolvedPadding,
+            // child: Flex(
+            //   direction: widget.direction,
+            //   mainAxisAlignment: widget.alignment.mainAxisAlignment,
+            //   children: children,
+            // ),
+            child: _wrapIntrinsic(
+              Flex(
+                direction: widget.direction,
+                mainAxisAlignment: widget.alignment.mainAxisAlignment,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: children,
+              ),
             ),
           ),
         ),
@@ -295,37 +302,39 @@ class _NavigationRailState extends State<NavigationRail>
         (const EdgeInsets.symmetric(vertical: 8, horizontal: 12) * scaling);
     var directionality = Directionality.of(context);
     var resolvedPadding = parentPadding.resolve(directionality);
-    return Data.inherit(
-      data: NavigationControlData(
-        containerType: NavigationContainerType.rail,
-        parentLabelType: widget.labelType,
-        parentLabelPosition: widget.labelPosition,
-        parentLabelSize: widget.labelSize,
-        parentPadding: resolvedPadding,
-        direction: widget.direction,
-        selectedIndex: widget.index,
-        onSelected: _onSelected,
-        expanded: widget.expanded,
-        childCount: widget.children.length,
-        spacing: widget.spacing ?? (8 * scaling),
-        keepCrossAxisSize: widget.keepCrossAxisSize,
-        keepMainAxisSize: widget.keepMainAxisSize,
-      ),
-      child: SurfaceBlur(
-        surfaceBlur: widget.surfaceBlur,
-        child: Container(
-          color: widget.backgroundColor ??
-              (theme.colorScheme.background
-                  .scaleAlpha(widget.surfaceOpacity ?? 1)),
-          alignment: _alignment,
-          child: SingleChildScrollView(
-            scrollDirection: widget.direction,
-            padding: resolvedPadding,
-            child: _wrapIntrinsic(
-              Flex(
-                direction: widget.direction,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: wrapChildren(context, widget.children),
+    return RepaintBoundary(
+      child: Data.inherit(
+        data: NavigationControlData(
+          containerType: NavigationContainerType.rail,
+          parentLabelType: widget.labelType,
+          parentLabelPosition: widget.labelPosition,
+          parentLabelSize: widget.labelSize,
+          parentPadding: resolvedPadding,
+          direction: widget.direction,
+          selectedIndex: widget.index,
+          onSelected: _onSelected,
+          expanded: widget.expanded,
+          childCount: widget.children.length,
+          spacing: widget.spacing ?? (8 * scaling),
+          keepCrossAxisSize: widget.keepCrossAxisSize,
+          keepMainAxisSize: widget.keepMainAxisSize,
+        ),
+        child: SurfaceBlur(
+          surfaceBlur: widget.surfaceBlur,
+          child: Container(
+            color: widget.backgroundColor ??
+                (theme.colorScheme.background
+                    .scaleAlpha(widget.surfaceOpacity ?? 1)),
+            alignment: _alignment,
+            child: SingleChildScrollView(
+              scrollDirection: widget.direction,
+              padding: resolvedPadding,
+              child: _wrapIntrinsic(
+                Flex(
+                  direction: widget.direction,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: wrapChildren(context, widget.children),
+                ),
               ),
             ),
           ),
@@ -437,24 +446,26 @@ class _NavigationSidebarState extends State<NavigationSidebar>
           child: Container(
             color: widget.backgroundColor,
             child: ClipRect(
-              child: CustomScrollView(
-                clipBehavior: Clip.none,
-                shrinkWrap: true,
-                scrollDirection: direction,
-                slivers: [
-                  SliverGap(_startPadding(resolvedPadding, direction)),
-                  ...children.map(
-                    (e) {
-                      return SliverPadding(
-                        padding: _childPadding(resolvedPadding, direction),
-                        sliver: e,
-                      ) as Widget;
-                    },
-                  ).joinSeparator(
-                    SliverGap(widget.spacing ?? 0),
-                  ),
-                  SliverGap(_endPadding(resolvedPadding, direction)),
-                ],
+              child: RepaintBoundary(
+                child: CustomScrollView(
+                  clipBehavior: Clip.none,
+                  shrinkWrap: true,
+                  scrollDirection: direction,
+                  slivers: [
+                    SliverGap(_startPadding(resolvedPadding, direction)),
+                    ...children.map(
+                      (e) {
+                        return SliverPadding(
+                          padding: _childPadding(resolvedPadding, direction),
+                          sliver: e,
+                        ) as Widget;
+                      },
+                    ).joinSeparator(
+                      SliverGap(widget.spacing ?? 0),
+                    ),
+                    SliverGap(_endPadding(resolvedPadding, direction)),
+                  ],
+                ),
               ),
             ),
           ),
@@ -901,7 +912,7 @@ abstract class _AbstractNavigationButtonState<
     if (labelType == NavigationLabelType.tooltip) {
       return buildTooltip(context, data, childData);
     }
-    return buildBox(context, data, childData);
+    return _buildBox(context, data, childData);
   }
 
   Widget buildTooltip(BuildContext context, NavigationControlData? data,
@@ -935,8 +946,18 @@ abstract class _AbstractNavigationButtonState<
       );
     }
     return SliverToBoxAdapter(
-      child: buildBox(context, data, childData),
+      child: _buildBox(context, data, childData),
     );
+  }
+
+  Widget _buildBox(BuildContext context, NavigationControlData? data,
+      NavigationChildControlData? childData) {
+    if (childData == null) {
+      return buildBox(context, data, null);
+    } else {
+      return RepaintBoundary.wrap(
+          buildBox(context, data, childData), childData.actualIndex);
+    }
   }
 
   Widget buildBox(BuildContext context, NavigationControlData? data,
