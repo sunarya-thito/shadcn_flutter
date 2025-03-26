@@ -2,10 +2,10 @@
 ![Pub Likes](https://img.shields.io/pub/likes/shadcn_flutter)
 ![Pub Points](https://img.shields.io/pub/points/shadcn_flutter)
 ![Pub Version](https://img.shields.io/pub/v/shadcn_flutter)
+![GitHub Sponsors](https://img.shields.io/github/sponsors/sunarya-thito)
 ![GitHub Repo stars](https://img.shields.io/github/stars/sunarya-thito/shadcn_flutter)
 
 A set of widgets and utilities for building applications in flutter.
-Optimized for web applications.
 This is a port of the shadcn UI package to flutter.
 
 [Documentation](https://sunarya-thito.github.io/shadcn_flutter/) - [pub.dev](https://pub.dev/packages/shadcn_flutter) - [Discord](https://discord.gg/ZzfBPQG4sV)
@@ -132,3 +132,13 @@ void main() {
 ```bash
 flutter run
 ```
+
+## Contributing
+The project is funded by the community. If you find this project helpful, consider supporting its development by:
+
+- Starring the [GitHub repository](https://github.com/sunarya-thito/shadcn_flutter).
+- Contributing code, documentation, or bug reports.
+- Sponsoring the project via [GitHub Sponsors](https://github.com/sponsors/sunarya-thito).
+- Sharing the project with others who might find it useful.
+
+Your support helps ensure the continued development and maintenance of this project. Thank you!
