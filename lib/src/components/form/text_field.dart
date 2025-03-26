@@ -12,6 +12,7 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:shadcn_flutter/src/components/layout/hidden.dart';
 
 import '../../../shadcn_flutter.dart';
 
@@ -25,28 +26,221 @@ export 'package:flutter/services.dart'
 
 const kTextFieldHeight = 34;
 
+abstract class InputFeatureVisibility {
+  const factory InputFeatureVisibility.and(
+    Iterable<InputFeatureVisibility> features,
+  ) = _LogicAndInputFeatureVisibility;
+  const factory InputFeatureVisibility.or(
+    Iterable<InputFeatureVisibility> features,
+  ) = _LogicOrInputFeatureVisibility;
+  const factory InputFeatureVisibility.not(InputFeatureVisibility feature) =
+      _NegateInputFeatureVisibility;
+  static const InputFeatureVisibility textNotEmpty =
+      _TextNotEmptyInputFeatureVisibility();
+  static const InputFeatureVisibility textEmpty =
+      _TextEmptyInputFeatureVisibility();
+  static const InputFeatureVisibility focused =
+      _FocusedInputFeatureVisibility();
+  static const InputFeatureVisibility hovered =
+      _HoveredInputFeatureVisibility();
+  static const InputFeatureVisibility never =
+      _NeverVisibleInputFeatureVisibility();
+  static const InputFeatureVisibility always =
+      _AlwaysVisibleInputFeatureVisibility();
+  static const InputFeatureVisibility hasSelection =
+      _HasSelectionInputFeatureVisibility();
+  const InputFeatureVisibility();
+  Iterable<Listenable> getDependencies(TextFieldState state);
+  bool canShow(TextFieldState state);
+
+  InputFeatureVisibility and(InputFeatureVisibility other) =>
+      InputFeatureVisibility.and([this, other]);
+  InputFeatureVisibility operator &(InputFeatureVisibility other) => and(other);
+  InputFeatureVisibility or(InputFeatureVisibility other) =>
+      InputFeatureVisibility.or([this, other]);
+  InputFeatureVisibility operator |(InputFeatureVisibility other) => or(other);
+  InputFeatureVisibility operator ~() => InputFeatureVisibility.not(this);
+}
+
+class _LogicAndInputFeatureVisibility extends InputFeatureVisibility {
+  final Iterable<InputFeatureVisibility> features;
+  const _LogicAndInputFeatureVisibility(this.features);
+  @override
+  Iterable<Listenable> getDependencies(TextFieldState state) sync* {
+    for (final feature in features) {
+      yield* feature.getDependencies(state);
+    }
+  }
+
+  @override
+  bool canShow(TextFieldState state) {
+    return features.every((feature) => feature.canShow(state));
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is _LogicAndInputFeatureVisibility &&
+      other.features.length == features.length &&
+      other.features.every((otherFeature) => features.contains(otherFeature));
+
+  @override
+  int get hashCode => features.hashCode;
+}
+
+class _LogicOrInputFeatureVisibility extends InputFeatureVisibility {
+  final Iterable<InputFeatureVisibility> features;
+  const _LogicOrInputFeatureVisibility(this.features);
+  @override
+  Iterable<Listenable> getDependencies(TextFieldState state) sync* {
+    for (final feature in features) {
+      yield* feature.getDependencies(state);
+    }
+  }
+
+  @override
+  bool canShow(TextFieldState state) {
+    return features.any((feature) => feature.canShow(state));
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is _LogicOrInputFeatureVisibility &&
+      other.features.length == features.length &&
+      other.features.every((otherFeature) => features.contains(otherFeature));
+
+  @override
+  int get hashCode => features.hashCode;
+}
+
+class _NegateInputFeatureVisibility extends InputFeatureVisibility {
+  final InputFeatureVisibility feature;
+  const _NegateInputFeatureVisibility(this.feature);
+  @override
+  Iterable<Listenable> getDependencies(TextFieldState state) =>
+      feature.getDependencies(state);
+
+  @override
+  bool canShow(TextFieldState state) => !feature.canShow(state);
+
+  @override
+  bool operator ==(Object other) =>
+      other is _NegateInputFeatureVisibility && other.feature == feature;
+
+  @override
+  int get hashCode => feature.hashCode;
+}
+
+class _TextNotEmptyInputFeatureVisibility extends InputFeatureVisibility {
+  const _TextNotEmptyInputFeatureVisibility();
+  @override
+  Iterable<Listenable> getDependencies(TextFieldState state) sync* {
+    yield state._effectiveText;
+  }
+
+  @override
+  bool canShow(TextFieldState state) {
+    return state._effectiveText.value.isNotEmpty;
+  }
+}
+
+class _TextEmptyInputFeatureVisibility extends InputFeatureVisibility {
+  const _TextEmptyInputFeatureVisibility();
+  @override
+  Iterable<Listenable> getDependencies(TextFieldState state) sync* {
+    yield state._effectiveText;
+  }
+
+  @override
+  bool canShow(TextFieldState state) {
+    return state._effectiveText.value.isEmpty;
+  }
+}
+
+class _HasSelectionInputFeatureVisibility extends InputFeatureVisibility {
+  const _HasSelectionInputFeatureVisibility();
+  @override
+  Iterable<Listenable> getDependencies(TextFieldState state) sync* {
+    yield state._effectiveSelection;
+  }
+
+  @override
+  bool canShow(TextFieldState state) {
+    var selection = state._effectiveSelection.value;
+    return selection.isValid && selection.start != selection.end;
+  }
+}
+
+class _FocusedInputFeatureVisibility extends InputFeatureVisibility {
+  const _FocusedInputFeatureVisibility();
+  @override
+  Iterable<Listenable> getDependencies(TextFieldState state) sync* {
+    yield state._effectiveFocusNode;
+  }
+
+  @override
+  bool canShow(TextFieldState state) {
+    return state._effectiveFocusNode.hasFocus;
+  }
+}
+
+class _HoveredInputFeatureVisibility extends InputFeatureVisibility {
+  const _HoveredInputFeatureVisibility();
+  @override
+  Iterable<Listenable> getDependencies(TextFieldState state) sync* {
+    yield state._statesController;
+  }
+
+  @override
+  bool canShow(TextFieldState state) {
+    return state._statesController.value.hovered;
+  }
+}
+
+class _NeverVisibleInputFeatureVisibility extends InputFeatureVisibility {
+  const _NeverVisibleInputFeatureVisibility();
+  @override
+  Iterable<Listenable> getDependencies(TextFieldState state) sync* {}
+
+  @override
+  bool canShow(TextFieldState state) => false;
+}
+
+class _AlwaysVisibleInputFeatureVisibility extends InputFeatureVisibility {
+  const _AlwaysVisibleInputFeatureVisibility();
+  @override
+  Iterable<Listenable> getDependencies(TextFieldState state) sync* {}
+
+  @override
+  bool canShow(TextFieldState state) => true;
+}
+
 abstract class InputFeature {
   const factory InputFeature.hint({
+    InputFeatureVisibility visibility,
     required WidgetBuilder popupBuilder,
     Widget? icon,
     InputFeaturePosition position,
     bool enableShortcuts,
   }) = InputHintFeature;
   const factory InputFeature.passwordToggle({
+    InputFeatureVisibility visibility,
     PasswordPeekMode mode,
     InputFeaturePosition position,
     Widget? icon,
     Widget? iconShow,
   }) = InputPasswordToggleFeature;
   const factory InputFeature.clear({
+    InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
   }) = InputClearFeature;
   const factory InputFeature.revalidate({
+    InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
   }) = InputRevalidateFeature;
   const factory InputFeature.autoComplete({
+    InputFeatureVisibility visibility,
     required SuggestionBuilder querySuggestions,
     required Widget child,
     BoxConstraints? popoverConstraints,
@@ -56,21 +250,32 @@ abstract class InputFeature {
     AutoCompleteMode mode,
   }) = InputAutoCompleteFeature;
   const factory InputFeature.spinner({
+    InputFeatureVisibility visibility,
     double step,
     bool enableGesture,
     double? invalidValue,
   }) = InputSpinnerFeature;
   const factory InputFeature.copy({
+    InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
   }) = InputCopyFeature;
   const factory InputFeature.paste({
+    InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
   }) = InputPasteFeature;
-  const factory InputFeature.leading(Widget child) = InputLeadingFeature;
-  const factory InputFeature.trailing(Widget child) = InputTrailingFeature;
-  const InputFeature();
+  const factory InputFeature.leading(
+    Widget child, {
+    InputFeatureVisibility visibility,
+  }) = InputLeadingFeature;
+  const factory InputFeature.trailing(
+    Widget child, {
+    InputFeatureVisibility visibility,
+  }) = InputTrailingFeature;
+
+  final InputFeatureVisibility visibility;
+  const InputFeature({this.visibility = InputFeatureVisibility.always});
   InputFeatureState createState();
 
   static bool canUpdate(InputFeature oldFeature, InputFeature newFeature) {
@@ -85,6 +290,12 @@ abstract class InputFeatureState<T extends InputFeature> {
     assert(
         _attached != null && _attached!.feature is T, 'Feature not attached');
     return _attached!.feature as T;
+  }
+
+  TickerProvider get tickerProvider {
+    var inputState = _inputState;
+    assert(inputState != null, 'Feature not attached');
+    return inputState!;
   }
 
   BuildContext get context {
@@ -107,9 +318,87 @@ abstract class InputFeatureState<T extends InputFeature> {
     return inputState!.effectiveController;
   }
 
-  void initState() {}
-  void dispose() {}
-  void didFeatureUpdate(InputFeature oldFeature) {}
+  // used to control whether the feature should be mounted or not
+  // with AnimationController, we are able to determine when to
+  // not mount the widget
+  late AnimationController _visibilityController;
+
+  Iterable<Widget> _internalBuildLeading() sync* {
+    if (_visibilityController.value == 0) {
+      return;
+    }
+    for (final widget in buildLeading()) {
+      yield Hidden(
+        hidden: _visibilityController.value < 1,
+        duration: kDefaultDuration,
+        child: widget,
+      );
+    }
+  }
+
+  Iterable<Widget> _internalBuildTrailing() sync* {
+    if (_visibilityController.value == 0) {
+      return;
+    }
+    for (final widget in buildTrailing()) {
+      yield Hidden(
+        hidden: _visibilityController.value < 1,
+        duration: kDefaultDuration,
+        child: widget,
+      );
+    }
+  }
+
+  void initState() {
+    _visibilityController = AnimationController(
+      vsync: tickerProvider,
+      duration: kDefaultDuration,
+    );
+    _visibilityController.value =
+        feature.visibility.canShow(_inputState!) ? 1 : 0;
+    _visibilityController.addListener(_updateAnimation);
+    for (var dependency in feature.visibility.getDependencies(_inputState!)) {
+      dependency.addListener(_updateVisibility);
+    }
+  }
+
+  void didChangeDependencies() {}
+
+  void _updateAnimation() {
+    setState(() {});
+  }
+
+  void _updateVisibility() {
+    bool canShow = feature.visibility.canShow(_inputState!);
+    if (canShow && _visibilityController.value == 1) return;
+    if (!canShow && _visibilityController.value == 0) return;
+    if (canShow) {
+      _visibilityController.forward();
+    } else {
+      _visibilityController.reverse();
+    }
+  }
+
+  void dispose() {
+    _visibilityController.dispose();
+    for (var dependency in feature.visibility.getDependencies(_inputState!)) {
+      dependency.removeListener(_updateVisibility);
+    }
+  }
+
+  void didFeatureUpdate(InputFeature oldFeature) {
+    if (oldFeature.visibility != feature.visibility) {
+      for (var oldDependency
+          in oldFeature.visibility.getDependencies(_inputState!)) {
+        oldDependency.removeListener(_updateVisibility);
+      }
+      for (var newDependency
+          in feature.visibility.getDependencies(_inputState!)) {
+        newDependency.addListener(_updateVisibility);
+      }
+    }
+  }
+
   void onTextChanged(String text) {}
   void onSelectionChanged(TextSelection selection) {}
   Iterable<Widget> buildLeading() sync* {}
@@ -901,8 +1190,12 @@ class TextFieldState extends State<TextField>
     with
         RestorationMixin,
         AutomaticKeepAliveClientMixin<TextField>,
-        FormValueSupplier<String, TextField>
+        FormValueSupplier<String, TextField>,
+        TickerProviderStateMixin
     implements TextSelectionGestureDetectorBuilderDelegate, AutofillClient {
+  final ValueNotifier<String> _effectiveText = ValueNotifier('');
+  final ValueNotifier<TextSelection> _effectiveSelection =
+      ValueNotifier(const TextSelection.collapsed(offset: -1));
   final GlobalKey _clearGlobalKey = GlobalKey();
 
   final List<_AttachedInputFeature> _attachedFeatures = [];
@@ -968,6 +1261,14 @@ class TextFieldState extends State<TextField>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    for (final attached in _attachedFeatures) {
+      attached.state.didChangeDependencies();
+    }
+  }
+
+  @override
   void didUpdateWidget(TextField oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller == null && oldWidget.controller != null) {
@@ -976,6 +1277,14 @@ class TextFieldState extends State<TextField>
       unregisterFromRestoration(_controller!);
       _controller!.dispose();
       _controller = null;
+    }
+
+    if (widget.controller != oldWidget.controller) {
+      oldWidget.controller?.removeListener(_handleControllerChanged);
+      widget.controller?.addListener(_handleControllerChanged);
+      if (widget.controller != null) {
+        _handleControllerChanged();
+      }
     }
 
     if (widget.focusNode != oldWidget.focusNode) {
@@ -993,6 +1302,7 @@ class TextFieldState extends State<TextField>
         newState._attached = _AttachedInputFeature(newFeature, newState);
         newState._inputState = this;
         newState.initState();
+        newState.didChangeDependencies();
         _attachedFeatures.add(newState._attached!);
         continue;
       }
@@ -1011,6 +1321,7 @@ class TextFieldState extends State<TextField>
         newState._attached = _AttachedInputFeature(newFeature, newState);
         newState._inputState = this;
         newState.initState();
+        newState.didChangeDependencies();
         _attachedFeatures[i] = newState._attached!;
       } else {
         oldState._attached!.feature = newFeature;
@@ -1030,6 +1341,12 @@ class TextFieldState extends State<TextField>
     assert(_controller != null);
     registerForRestoration(_controller!, 'controller');
     _controller!.value.addListener(updateKeepAlive);
+    _controller!.value.addListener(_handleControllerChanged);
+  }
+
+  void _handleControllerChanged() {
+    _effectiveText.value = effectiveController.text;
+    _effectiveSelection.value = effectiveController.selection;
   }
 
   void _createLocalController([TextEditingValue? value]) {
@@ -1037,6 +1354,10 @@ class TextFieldState extends State<TextField>
     _controller = value == null
         ? RestorableTextEditingController()
         : RestorableTextEditingController.fromValue(value);
+    if (value != null) {
+      _effectiveText.value = value.text;
+      _effectiveSelection.value = value.selection;
+    }
     if (!restorePending) {
       _registerController();
     }
@@ -1099,6 +1420,7 @@ class TextFieldState extends State<TextField>
 
   void _handleSelectionChanged(
       TextSelection selection, SelectionChangedCause? cause) {
+    _effectiveSelection.value = selection;
     final bool willShowSelectionHandles = _shouldShowSelectionHandles(cause);
     if (willShowSelectionHandles != _showSelectionHandles) {
       setState(() {
@@ -1207,10 +1529,10 @@ class TextFieldState extends State<TextField>
           leadingChildren.add(leadingWidget);
         }
         for (final attached in _attachedFeatures) {
-          leadingChildren.addAll(attached.state.buildLeading());
+          leadingChildren.addAll(attached.state._internalBuildLeading());
         }
         for (final attached in _attachedFeatures) {
-          trailingChildren.addAll(attached.state.buildTrailing());
+          trailingChildren.addAll(attached.state._internalBuildTrailing());
         }
         if (trailingWidget != null) {
           trailingChildren.add(trailingWidget);
@@ -1298,6 +1620,7 @@ class TextFieldState extends State<TextField>
       widget.onChanged!(value);
     }
     formValue = value;
+    _effectiveText.value = value;
 
     for (final attached in _attachedFeatures) {
       attached.state.onTextChanged(value);
@@ -1650,7 +1973,12 @@ class TextFieldState extends State<TextField>
     for (final attached in _attachedFeatures) {
       textField = attached.state.wrap(textField);
     }
-    return textField;
+    return WidgetStatesProvider(
+      states: {
+        if (_effectiveFocusNode.hasFocus) WidgetState.hovered,
+      },
+      child: textField,
+    );
   }
 
   @override

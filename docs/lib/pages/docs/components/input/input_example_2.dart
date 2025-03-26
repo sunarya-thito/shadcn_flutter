@@ -16,14 +16,18 @@ class _InputExample2State extends State<InputExample2> {
         features: [
           InputFeature.leading(StatedWidget.builder(
             builder: (context, states) {
-              if (states.focused) {
+              if (states.hovered) {
                 return const Icon(Icons.search);
               } else {
                 return const Icon(Icons.search).iconMutedForeground();
               }
             },
-          )),
-          const InputFeature.clear(),
+          ), visibility: InputFeatureVisibility.textEmpty),
+          InputFeature.clear(
+            visibility: (InputFeatureVisibility.textNotEmpty &
+                    InputFeatureVisibility.focused) |
+                InputFeatureVisibility.hovered,
+          ),
         ]);
   }
 }
