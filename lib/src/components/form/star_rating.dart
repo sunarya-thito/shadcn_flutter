@@ -239,14 +239,24 @@ class _StarRatingState extends State<StarRating>
               },
             ),
           },
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              if (widget.onChanged != null && roundedValue != widget.value) {
-                widget.onChanged!(roundedValue);
-              }
+          child: MouseRegion(
+            onHover: (event) {
+              if (!_enabled) return;
+              if (widget.onChanged == null) return;
+              double size = context.size!.width;
+              double progress = (event.localPosition.dx / size).clamp(0.0, 1.0);
+              double newValue = (progress * widget.max).clamp(0.0, widget.max);
+              setState(() {
+                _changingValue = newValue;
+              });
             },
             child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                if (widget.onChanged != null && roundedValue != widget.value) {
+                  widget.onChanged!(roundedValue);
+                }
+              },
               onTapDown: (details) {
                 if (!_enabled) return;
                 if (widget.onChanged == null) return;
@@ -293,51 +303,37 @@ class _StarRatingState extends State<StarRating>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   for (var i = 0; i < widget.max.ceil(); i++)
-                    MouseRegion(
-                      hitTestBehavior: HitTestBehavior.translucent,
-                      onHover: (event) {
-                        if (!_enabled) return;
-                        if (widget.onChanged == null) return;
-                        double progress =
-                            (event.localPosition.dx / starSize).clamp(0.0, 1.0);
-                        double newValue =
-                            (progress * widget.max).clamp(0.0, widget.max);
-                        setState(() {
-                          _changingValue = newValue;
-                        });
-                      },
-                      child: Stack(
-                        fit: StackFit.passthrough,
-                        children: [
-                          ShaderMask(
-                            shaderCallback: (bounds) {
-                              return LinearGradient(
-                                colors: [
-                                  widget.activeColor ??
-                                      (_enabled
-                                          ? theme.colorScheme.primary
-                                          : theme.colorScheme.mutedForeground),
-                                  widget.backgroundColor ??
-                                      theme.colorScheme.muted,
-                                ],
-                                stops: [
-                                  (roundedValue - i).clamp(0.0, 1.0),
-                                  (roundedValue - i).clamp(0.0, 1.0),
-                                ],
-                                begin: widget.direction == Axis.horizontal
-                                    ? Alignment.centerLeft
-                                    : Alignment.bottomCenter,
-                                end: widget.direction == Axis.horizontal
-                                    ? Alignment.centerRight
-                                    : Alignment.topCenter,
-                              ).createShader(bounds);
-                            },
-                            blendMode: BlendMode.srcIn,
-                            child: _buildStar(context),
-                          ),
-                          _buildStar(context, true),
-                        ],
-                      ),
+                    Stack(
+                      fit: StackFit.passthrough,
+                      children: [
+                        ShaderMask(
+                          shaderCallback: (bounds) {
+                            return LinearGradient(
+                              colors: [
+                                widget.activeColor ??
+                                    (_enabled
+                                        ? theme.colorScheme.primary
+                                        : theme.colorScheme.mutedForeground),
+                                widget.backgroundColor ??
+                                    theme.colorScheme.muted,
+                              ],
+                              stops: [
+                                (roundedValue - i).clamp(0.0, 1.0),
+                                (roundedValue - i).clamp(0.0, 1.0),
+                              ],
+                              begin: widget.direction == Axis.horizontal
+                                  ? Alignment.centerLeft
+                                  : Alignment.bottomCenter,
+                              end: widget.direction == Axis.horizontal
+                                  ? Alignment.centerRight
+                                  : Alignment.topCenter,
+                            ).createShader(bounds);
+                          },
+                          blendMode: BlendMode.srcIn,
+                          child: _buildStar(context),
+                        ),
+                        _buildStar(context, true),
+                      ],
                     ),
                 ],
               ).gap(starSpacing),
