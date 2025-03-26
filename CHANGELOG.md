@@ -1,3 +1,8 @@
+## 0.0.32
+* Fixed StarRating component
+* Added InputFeatureVisibility
+* Fixed Password Toggle Input Feature
+
 ## 0.0.31
 * Added ItemPicker component
 * Fixed TimePicker text field vertical align
