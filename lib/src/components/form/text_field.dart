@@ -1478,11 +1478,21 @@ class TextFieldState extends State<TextField>
     return _hasDecoration ? TextAlignVertical.center : TextAlignVertical.top;
   }
 
+  @override
+  TextField get widget {
+    TextField widget = super.widget;
+    for (final attached in _attachedFeatures) {
+      widget = attached.state.interceptInput(widget);
+    }
+    return widget;
+  }
+
   Widget _addTextDependentAttachments(
     Widget editableText,
     TextStyle textStyle,
     ThemeData theme,
   ) {
+    var widget = this.widget;
     // If there are no surrounding widgets, just return the core editable text
     // part.
     if (!_hasDecoration) {
@@ -1598,6 +1608,7 @@ class TextFieldState extends State<TextField>
 
   @override
   TextInputConfiguration get textInputConfiguration {
+    var widget = this.widget;
     final List<String>? autofillHints =
         widget.autofillHints?.toList(growable: false);
     final AutofillConfiguration autofillConfiguration = autofillHints != null
@@ -1616,6 +1627,7 @@ class TextFieldState extends State<TextField>
   // AutofillClient implementation end.
 
   void _onChanged(String value) {
+    var widget = this.widget;
     if (widget.onChanged != null) {
       widget.onChanged!(value);
     }
@@ -1724,6 +1736,7 @@ class TextFieldState extends State<TextField>
 
   @override
   Widget build(BuildContext context) {
+    var widget = this.widget;
     super.build(context); // See AutomaticKeepAliveClientMixin.
     final ThemeData theme = Theme.of(context);
     assert(debugCheckHasDirectionality(context));
