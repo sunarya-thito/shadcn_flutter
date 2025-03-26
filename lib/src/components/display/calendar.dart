@@ -173,6 +173,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                 ),
                 if (_viewType == CalendarViewType.date &&
                     viewMode == CalendarSelectionMode.range)
+                  Gap(theme.scaling * 16),
+                if (_viewType == CalendarViewType.date &&
+                    viewMode == CalendarSelectionMode.range)
                   Expanded(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -271,6 +274,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     });
                   },
                 ),
+                if (_viewType == CalendarViewType.date &&
+                    viewMode == CalendarSelectionMode.range)
+                  Gap(theme.scaling * 16),
                 if (_viewType == CalendarViewType.date &&
                     viewMode == CalendarSelectionMode.range)
                   buildView(
