@@ -1,3 +1,9 @@
+## 0.0.33
+* Added showValuePredicate parameter to Select, MultiSelect, ControlledSelect, and ControlledMultiSelect
+* Fixed AutoComplete suggestion item button 
+* Added AcceptSuggestionIntent and NavigateSuggestionIntent to AutoComplete
+* Added resizeToAvoidBottomInset to Scaffold
+
 ## 0.0.32
 * Fixed StarRating component
 * Added InputFeatureVisibility
