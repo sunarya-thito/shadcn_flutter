@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:expressions/expressions.dart';
 import 'package:flutter/services.dart';
 
 TextSelection contraintToNewText(TextEditingValue newValue, String newText) {
@@ -24,6 +25,10 @@ class TextInputFormatters {
       {double? min, double? max, int? decimalDigits}) {
     return _DoubleOnlyFormatter(
         min: min, max: max, decimalDigits: decimalDigits);
+  }
+
+  static TextInputFormatter mathExpression({Map<String, dynamic>? context}) {
+    return _MathExpressionFormatter(context: context);
   }
 
   const TextInputFormatters._();
@@ -79,17 +84,34 @@ class _IntegerOnlyFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    int? value = int.tryParse(newValue.text);
+    String newText = newValue.text;
+    if (newText.isEmpty) {
+      return newValue;
+    }
+    bool negate = newText.startsWith('-');
+    if (negate) {
+      newText = newText.substring(1);
+    }
+    int? value = int.tryParse(newText);
     if (value == null) {
+      if (negate) {
+        return const TextEditingValue(
+          text: '-',
+          selection: TextSelection.collapsed(offset: 1),
+        );
+      }
       return oldValue;
     }
-    if (min != null && value < min!) {
+    if (min != null && value <= min!) {
       value = min!;
     }
-    if (max != null && value > max!) {
+    if (max != null && value >= max!) {
       value = max!;
     }
-    var newText = value.toString();
+    newText = value.toString();
+    if (negate) {
+      newText = '-$newText';
+    }
     return TextEditingValue(
       text: newText,
       selection: contraintToNewText(newValue, newText),
@@ -162,6 +184,42 @@ class _DoubleOnlyFormatter extends TextInputFormatter {
     return TextEditingValue(
       text: newText,
       selection: contraintToNewText(newValue, newText),
+    );
+  }
+}
+
+class _MathExpressionFormatter extends TextInputFormatter {
+  final Map<String, dynamic>? context;
+  const _MathExpressionFormatter({this.context});
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    String newText = newValue.text;
+    Object? result;
+    try {
+      Expression expression = Expression.parse(newText);
+      ExpressionEvaluator evaluator = const ExpressionEvaluator();
+      result = evaluator.eval(expression, context ?? {});
+      if (result is! num) {
+        result = '';
+      }
+    } catch (e) {
+      result = '';
+    }
+    String resultText = result.toString();
+    if (resultText.contains('.')) {
+      while (resultText.endsWith('0')) {
+        resultText = resultText.substring(0, resultText.length - 1);
+      }
+      if (resultText.endsWith('.')) {
+        resultText = resultText.substring(0, resultText.length - 1);
+      }
+    }
+    return TextEditingValue(
+      text: resultText,
+      selection: contraintToNewText(newValue, resultText),
     );
   }
 }

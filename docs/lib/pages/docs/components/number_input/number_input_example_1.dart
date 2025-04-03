@@ -23,14 +23,17 @@ class _NumberInputExample1State extends State<NumberInputExample1> {
                 this.value = double.tryParse(value) ?? 0;
               });
             },
-            features: [
+            features: const [
               InputFeature.spinner(),
             ],
-            inputFormatters: [
-              TextInputFormatters.digitsOnly(
-                min: -100,
-                max: 100,
-              ),
+            // inputFormatters: [
+            //   // TextInputFormatters.digitsOnly(
+            //   //   min: -100,
+            //   //   max: 100,
+            //   // ),
+            // ],
+            submitFormatters: [
+              TextInputFormatters.mathExpression(),
             ],
           ),
         ),

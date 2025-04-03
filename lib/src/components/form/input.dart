@@ -411,12 +411,25 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
       var value = double.tryParse(text);
       if (value == null) {
         if (feature.invalidValue != null) {
-          return feature.invalidValue.toString();
+          return _newText(feature.invalidValue!);
         }
         return text;
       }
-      return (value + feature.step).toString();
+      return _newText(value + feature.step);
     });
+  }
+
+  String _newText(double value) {
+    String newText = value.toString();
+    if (newText.contains('.')) {
+      while (newText.endsWith('0')) {
+        newText = newText.substring(0, newText.length - 1);
+      }
+      if (newText.endsWith('.')) {
+        newText = newText.substring(0, newText.length - 1);
+      }
+    }
+    return newText;
   }
 
   void _decrease() {
@@ -424,25 +437,25 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
       var value = double.tryParse(text);
       if (value == null) {
         if (feature.invalidValue != null) {
-          return feature.invalidValue.toString();
+          return _newText(feature.invalidValue!);
         }
         return text;
       }
-      return (value - feature.step).toString();
+      return _newText(value - feature.step);
     });
   }
 
   Widget _wrapGesture(Widget child) {
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
-        if (details.primaryDelta! > 0) {
+        if (details.primaryDelta! < 0) {
           _increase();
         } else {
           _decrease();
         }
       },
       onVerticalDragUpdate: (details) {
-        if (details.primaryDelta! > 0) {
+        if (details.primaryDelta! < 0) {
           _increase();
         } else {
           _decrease();
@@ -453,23 +466,40 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
   }
 
   Widget _buildButtons() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton.text(
-          icon: const Icon(LucideIcons.chevronUp),
-          onPressed: _increase,
-          density: ButtonDensity.compact,
-          size: ButtonSize.xSmall,
-        ),
-        IconButton.text(
-          icon: const Icon(LucideIcons.chevronDown),
-          onPressed: _decrease,
-          density: ButtonDensity.compact,
-          size: ButtonSize.xSmall,
-        ),
-      ],
-    );
+    return Builder(builder: (context) {
+      final theme = Theme.of(context);
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          IconButton.text(
+            icon: Transform.translate(
+              offset: Offset(0, -1 * theme.scaling),
+              child: Transform.scale(
+                alignment: Alignment.center,
+                scale: 1.5,
+                child: const Icon(LucideIcons.chevronUp),
+              ),
+            ),
+            onPressed: _increase,
+            density: ButtonDensity.compact,
+            size: ButtonSize.xSmall,
+          ),
+          IconButton.text(
+            icon: Transform.translate(
+              offset: Offset(0, 1 * theme.scaling),
+              child: Transform.scale(
+                alignment: Alignment.center,
+                scale: 1.5,
+                child: const Icon(LucideIcons.chevronDown),
+              ),
+            ),
+            onPressed: _decrease,
+            density: ButtonDensity.compact,
+            size: ButtonSize.xSmall,
+          ),
+        ],
+      );
+    });
   }
 
   @override
