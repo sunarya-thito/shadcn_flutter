@@ -210,15 +210,16 @@ class _AutoCompleteState extends State<AutoComplete> {
             onFocusChange: _onFocusChanged,
             shortcuts: {
               LogicalKeySet(LogicalKeyboardKey.arrowDown):
-                  const _MoveSelectionIntent(1),
+                  const NavigateSuggestionIntent(1),
               LogicalKeySet(LogicalKeyboardKey.arrowUp):
-                  const _MoveSelectionIntent(-1),
+                  const NavigateSuggestionIntent(-1),
               if (widget.suggestions.isNotEmpty && _selectedIndex.value != -1)
                 LogicalKeySet(LogicalKeyboardKey.tab):
-                    const _AcceptSelectionIntent(),
+                    const AcceptSuggestionIntent(),
             },
             actions: {
-              _MoveSelectionIntent: CallbackAction<_MoveSelectionIntent>(
+              NavigateSuggestionIntent:
+                  CallbackAction<NavigateSuggestionIntent>(
                 onInvoke: (intent) {
                   final direction = intent.direction;
                   final selectedIndex = _selectedIndex.value;
@@ -234,7 +235,7 @@ class _AutoCompleteState extends State<AutoComplete> {
                   return;
                 },
               ),
-              _AcceptSelectionIntent: CallbackAction<_AcceptSelectionIntent>(
+              AcceptSuggestionIntent: CallbackAction<AcceptSuggestionIntent>(
                 onInvoke: (intent) {
                   _handleProceed();
                   return;
@@ -253,12 +254,12 @@ enum AutoCompleteMode {
   replaceAll,
 }
 
-class _MoveSelectionIntent extends Intent {
+class NavigateSuggestionIntent extends Intent {
   final int direction;
 
-  const _MoveSelectionIntent(this.direction);
+  const NavigateSuggestionIntent(this.direction);
 }
 
-class _AcceptSelectionIntent extends Intent {
-  const _AcceptSelectionIntent();
+class AcceptSuggestionIntent extends Intent {
+  const AcceptSuggestionIntent();
 }
