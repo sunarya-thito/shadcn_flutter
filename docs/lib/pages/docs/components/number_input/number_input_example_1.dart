@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class NumberInputExample1 extends StatefulWidget {
@@ -15,13 +16,22 @@ class _NumberInputExample1State extends State<NumberInputExample1> {
       children: [
         SizedBox(
           width: 100,
-          child: NumberInput(
-            initialValue: value,
+          child: TextField(
+            initialValue: value.toString(),
             onChanged: (value) {
               setState(() {
-                this.value = value;
+                this.value = double.tryParse(value) ?? 0;
               });
             },
+            features: [
+              InputFeature.spinner(),
+            ],
+            inputFormatters: [
+              TextInputFormatters.digitsOnly(
+                min: -100,
+                max: 100,
+              ),
+            ],
           ),
         ),
         gap(8),
