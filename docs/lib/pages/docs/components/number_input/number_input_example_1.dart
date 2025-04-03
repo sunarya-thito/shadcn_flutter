@@ -26,12 +26,6 @@ class _NumberInputExample1State extends State<NumberInputExample1> {
             features: const [
               InputFeature.spinner(),
             ],
-            // inputFormatters: [
-            //   // TextInputFormatters.digitsOnly(
-            //   //   min: -100,
-            //   //   max: 100,
-            //   // ),
-            // ],
             submitFormatters: [
               TextInputFormatters.mathExpression(),
             ],
