@@ -55,9 +55,7 @@ class _AutoCompleteItemState extends State<_AutoCompleteItem> {
       value: widget.selected,
       alignment: AlignmentDirectional.centerStart,
       onChanged: (value) {
-        if (value) {
-          widget.onSelected();
-        }
+        widget.onSelected();
       },
       child: Text(widget.suggestion),
     );
@@ -153,7 +151,7 @@ class _AutoCompleteState extends State<AutoComplete> {
 
   void _handleProceed() {
     final selectedIndex = _selectedIndex.value;
-    if (selectedIndex == -1) {
+    if (selectedIndex < 0 || selectedIndex >= _suggestions.value.length) {
       return;
     }
     _popoverController.close();
