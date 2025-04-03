@@ -403,6 +403,7 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
     var newText = replacer(text);
     if (newText != text) {
       controller.text = newText;
+      input.onChanged?.call(newText);
     }
   }
 
