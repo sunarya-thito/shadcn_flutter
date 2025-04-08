@@ -448,15 +448,8 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
 
   Widget _wrapGesture(Widget child) {
     return GestureDetector(
-      onHorizontalDragUpdate: (details) {
-        if (details.primaryDelta! < 0) {
-          _increase();
-        } else {
-          _decrease();
-        }
-      },
       onVerticalDragUpdate: (details) {
-        if (details.primaryDelta! < 0) {
+        if (details.delta.dy < 0) {
           _increase();
         } else {
           _decrease();
