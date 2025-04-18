@@ -204,7 +204,7 @@ class RadioCardTheme {
   final Color? selectedBorderColor;
 
   /// Theme data for the [RadioCard] widget.
-  RadioCardTheme({
+  const RadioCardTheme({
     this.enabledCursor,
     this.disabledCursor,
     this.hoverColor,
@@ -273,18 +273,18 @@ class RadioCardTheme {
   }
 
   @override
-  int get hashCode {
-    return enabledCursor.hashCode ^
-        disabledCursor.hashCode ^
-        hoverColor.hashCode ^
-        color.hashCode ^
-        borderWidth.hashCode ^
-        selectedBorderWidth.hashCode ^
-        borderRadius.hashCode ^
-        padding.hashCode ^
-        borderColor.hashCode ^
-        selectedBorderColor.hashCode;
-  }
+  int get hashCode => Object.hash(
+        enabledCursor,
+        disabledCursor,
+        hoverColor,
+        color,
+        borderWidth,
+        selectedBorderWidth,
+        borderRadius,
+        padding,
+        borderColor,
+        selectedBorderColor,
+      );
 }
 
 class _RadioCardState<T> extends State<RadioCard<T>> {
