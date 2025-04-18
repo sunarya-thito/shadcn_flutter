@@ -63,7 +63,7 @@ class PhoneInputTheme {
   final Shape? flagShape;
 
   /// Theme data for [PhoneInput].
-  PhoneInputTheme({
+  const PhoneInputTheme({
     this.padding,
     this.borderRadius,
     this.popupConstraints,
@@ -118,17 +118,17 @@ class PhoneInputTheme {
   }
 
   @override
-  int get hashCode {
-    return padding.hashCode ^
-        borderRadius.hashCode ^
-        popupConstraints.hashCode ^
-        maxWidth.hashCode ^
-        flagHeight.hashCode ^
-        flagWidth.hashCode ^
-        flagGap.hashCode ^
-        countryGap.hashCode ^
-        flagShape.hashCode;
-  }
+  int get hashCode => Object.hash(
+        padding,
+        borderRadius,
+        popupConstraints,
+        maxWidth,
+        flagHeight,
+        flagWidth,
+        flagGap,
+        countryGap,
+        flagShape,
+      );
 
   @override
   String toString() {
