@@ -171,6 +171,122 @@ class RadioCard<T> extends StatefulWidget {
   State<RadioCard<T>> createState() => _RadioCardState<T>();
 }
 
+/// Theme data for the [RadioCard] widget.
+class RadioCardTheme {
+  /// The cursor to use when the radio card is enabled.
+  final MouseCursor? enabledCursor;
+
+  /// The cursor to use when the radio card is disabled.
+  final MouseCursor? disabledCursor;
+
+  /// The color to use when the radio card is hovered over.
+  final Color? hoverColor;
+
+  /// The default color to use.
+  final Color? color;
+
+  /// The width of the border of the radio card.
+  final double? borderWidth;
+
+  /// The width of the border of the radio card when selected.
+  final double? selectedBorderWidth;
+
+  /// The radius of the border of the radio card.
+  final BorderRadiusGeometry? borderRadius;
+
+  /// The padding of the radio card.
+  final EdgeInsetsGeometry? padding;
+
+  /// The color of the border.
+  final Color? borderColor;
+
+  /// The color of the border when selected.
+  final Color? selectedBorderColor;
+
+  /// Theme data for the [RadioCard] widget.
+  const RadioCardTheme({
+    this.enabledCursor,
+    this.disabledCursor,
+    this.hoverColor,
+    this.color,
+    this.borderWidth,
+    this.selectedBorderWidth,
+    this.borderRadius,
+    this.padding,
+    this.borderColor,
+    this.selectedBorderColor,
+  });
+
+  @override
+  String toString() {
+    return 'RadioCardTheme(enabledCursor: $enabledCursor, disabledCursor: $disabledCursor, hoverColor: $hoverColor, color: $color, borderWidth: $borderWidth, selectedBorderWidth: $selectedBorderWidth, borderRadius: $borderRadius, padding: $padding, borderColor: $borderColor, selectedBorderColor: $selectedBorderColor)';
+  }
+
+  /// Creates a copy of this [RadioCardTheme] but with the given fields replaced with the new values.
+  RadioCardTheme copyWith({
+    ValueGetter<MouseCursor?>? enabledCursor,
+    ValueGetter<MouseCursor?>? disabledCursor,
+    ValueGetter<Color?>? hoverColor,
+    ValueGetter<Color?>? color,
+    ValueGetter<double?>? borderWidth,
+    ValueGetter<double?>? selectedBorderWidth,
+    ValueGetter<BorderRadiusGeometry?>? borderRadius,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+    ValueGetter<Color?>? borderColor,
+    ValueGetter<Color?>? selectedBorderColor,
+  }) {
+    return RadioCardTheme(
+      enabledCursor:
+          enabledCursor != null ? enabledCursor() : this.enabledCursor,
+      disabledCursor:
+          disabledCursor != null ? disabledCursor() : this.disabledCursor,
+      hoverColor: hoverColor != null ? hoverColor() : this.hoverColor,
+      color: color != null ? color() : this.color,
+      borderWidth: borderWidth != null ? borderWidth() : this.borderWidth,
+      selectedBorderWidth: selectedBorderWidth != null
+          ? selectedBorderWidth()
+          : this.selectedBorderWidth,
+      borderRadius: borderRadius != null ? borderRadius() : this.borderRadius,
+      padding: padding != null ? padding() : this.padding,
+      borderColor: borderColor != null ? borderColor() : this.borderColor,
+      selectedBorderColor: selectedBorderColor != null
+          ? selectedBorderColor()
+          : this.selectedBorderColor,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is RadioCardTheme &&
+        other.enabledCursor == enabledCursor &&
+        other.disabledCursor == disabledCursor &&
+        other.hoverColor == hoverColor &&
+        other.color == color &&
+        other.borderWidth == borderWidth &&
+        other.selectedBorderWidth == selectedBorderWidth &&
+        other.borderRadius == borderRadius &&
+        other.padding == padding &&
+        other.borderColor == borderColor &&
+        other.selectedBorderColor == selectedBorderColor;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        enabledCursor,
+        disabledCursor,
+        hoverColor,
+        color,
+        borderWidth,
+        selectedBorderWidth,
+        borderRadius,
+        padding,
+        borderColor,
+        selectedBorderColor,
+      );
+}
+
 class _RadioCardState<T> extends State<RadioCard<T>> {
   late FocusNode _focusNode;
   bool _focusing = false;
@@ -194,6 +310,7 @@ class _RadioCardState<T> extends State<RadioCard<T>> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final componentTheme = ComponentTheme.maybeOf<RadioCardTheme>(context);
     final groupData = Data.maybeOf<RadioGroupData<T>>(context);
     final group = Data.maybeOf<_RadioGroupState<T>>(context);
     assert(groupData != null,
@@ -207,8 +324,12 @@ class _RadioCardState<T> extends State<RadioCard<T>> {
       child: FocusableActionDetector(
         focusNode: _focusNode,
         mouseCursor: widget.enabled && groupData?.enabled == true
-            ? SystemMouseCursors.click
-            : SystemMouseCursors.forbidden,
+            ? styleValue(
+                defaultValue: SystemMouseCursors.click,
+                themeValue: componentTheme?.enabledCursor)
+            : styleValue(
+                defaultValue: SystemMouseCursors.forbidden,
+                themeValue: componentTheme?.disabledCursor),
         onShowFocusHighlight: (value) {
           if (value && widget.enabled && groupData?.enabled == true) {
             group?._setSelected(widget.value);
@@ -230,26 +351,63 @@ class _RadioCardState<T> extends State<RadioCard<T>> {
           child: Data<_RadioCardState<T>>.boundary(
             child: Card(
               borderColor: groupData?.selectedItem == widget.value
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.muted,
+                  ? styleValue(
+                      defaultValue: theme.colorScheme.primary,
+                      themeValue: componentTheme?.selectedBorderColor,
+                    )
+                  : styleValue(
+                      defaultValue: theme.colorScheme.muted,
+                      themeValue: componentTheme?.borderColor,
+                    ),
               borderWidth: groupData?.selectedItem == widget.value
-                  ? 2 * theme.scaling
-                  : 1 * theme.scaling,
-              borderRadius: theme.borderRadiusMd,
+                  ? styleValue(
+                      defaultValue: 2 * theme.scaling,
+                      themeValue: componentTheme?.selectedBorderWidth,
+                    )
+                  : styleValue(
+                      defaultValue: 1 * theme.scaling,
+                      themeValue: componentTheme?.borderWidth,
+                    ),
+              borderRadius: styleValue(
+                  defaultValue: theme.borderRadiusMd,
+                  themeValue: componentTheme?.borderRadius),
               padding: EdgeInsets.zero,
               clipBehavior: Clip.antiAlias,
               duration: kDefaultDuration,
               fillColor: _hovering
-                  ? theme.colorScheme.muted
-                  : theme.colorScheme.background,
+                  ? styleValue(
+                      defaultValue: theme.colorScheme.muted,
+                      themeValue: componentTheme?.hoverColor,
+                    )
+                  : styleValue(
+                      defaultValue: theme.colorScheme.background,
+                      themeValue: componentTheme?.color,
+                    ),
               child: Container(
-                padding: EdgeInsets.all(16 * theme.scaling),
+                padding: styleValue(
+                  defaultValue: EdgeInsets.all(16 * theme.scaling),
+                  themeValue: componentTheme?.padding,
+                ),
                 child: AnimatedPadding(
                   duration: kDefaultDuration,
                   padding: groupData?.selectedItem == widget.value
-                      ? EdgeInsets.zero
+                      ? styleValue(
+                          defaultValue: EdgeInsets.zero,
+                          themeValue: componentTheme?.borderWidth != null
+                              ? EdgeInsets.all(componentTheme!.borderWidth!)
+                              : null,
+                        )
                       // to compensate for the border width
-                      : EdgeInsets.all(1 * theme.scaling),
+                      : styleValue(
+                          defaultValue: EdgeInsets.all(1 * theme.scaling),
+                          themeValue: componentTheme?.borderWidth != null &&
+                                  componentTheme?.selectedBorderWidth != null
+                              ? EdgeInsets.all(
+                                  componentTheme!.borderWidth! -
+                                      componentTheme.selectedBorderWidth!,
+                                )
+                              : null,
+                        ),
                   child: widget.child,
                 ),
               ),
