@@ -33,6 +33,7 @@ class _ItemPickerExample5State extends State<ItemPickerExample5> {
     return ItemPicker<NamedColor>(
       items: ItemList(colors),
       mode: PromptMode.popover,
+      title: const Text('Pick a color'),
       builder: (context, item) {
         return ItemPickerOption(
           value: item,

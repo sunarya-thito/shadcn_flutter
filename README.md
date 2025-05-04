@@ -133,6 +133,10 @@ void main() {
 flutter run
 ```
 
+## Development Status
+- Android/iOS: Experimental
+- Windows/Linux/MacOS: Stable
+
 ## Contributing
 The project is funded by the community. If you find this project helpful, consider supporting its development by:
 

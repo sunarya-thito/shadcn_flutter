@@ -9,6 +9,7 @@ class ItemPickerExample1 extends StatelessWidget {
       onPressed: () {
         showItemPicker<int>(
           context,
+          title: Text('Pick an item'),
           items: ItemBuilder(
             itemCount: 1000,
             itemBuilder: (index) {
