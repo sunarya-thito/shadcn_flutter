@@ -1368,10 +1368,9 @@ class CalendarGridData {
 
   factory CalendarGridData({required int month, required int year}) {
     DateTime firstDayOfMonth = DateTime(year, month, 1);
-    int firstWeekday = firstDayOfMonth.weekday;
-    int daysInMonth = DateTime(year, month + 1, 0).day;
+    int daysInMonth = DateTime(year, month == 12 ? 1 : month + 1, 0).day;
 
-    int prevMonthDays = firstWeekday - 1;
+    int prevMonthDays = firstDayOfMonth.weekday;
     DateTime prevMonthLastDay =
         firstDayOfMonth.subtract(Duration(days: prevMonthDays));
 
@@ -1379,14 +1378,16 @@ class CalendarGridData {
 
     int itemCount = 0;
 
-    for (int i = 0; i < prevMonthDays; i++) {
-      int currentItemIndex = itemCount++;
-      items.add(CalendarGridItem(
-        prevMonthLastDay.add(Duration(days: i)),
-        currentItemIndex % 7,
-        true,
-        currentItemIndex ~/ 7,
-      ));
+    if (prevMonthDays < 7) {
+      for (int i = 0; i < prevMonthDays; i++) {
+        int currentItemIndex = itemCount++;
+        items.add(CalendarGridItem(
+          prevMonthLastDay.add(Duration(days: i)),
+          currentItemIndex % 7,
+          true,
+          currentItemIndex ~/ 7,
+        ));
+      }
     }
 
     for (int i = 0; i < daysInMonth; i++) {
@@ -1403,14 +1404,16 @@ class CalendarGridData {
     int remainingDays = (7 - (items.length % 7)) % 7;
     DateTime nextMonthFirstDay = DateTime(year, month + 1, 1);
 
-    for (int i = 0; i < remainingDays; i++) {
-      int currentItemIndex = itemCount++;
-      items.add(CalendarGridItem(
-        nextMonthFirstDay.add(Duration(days: i)),
-        currentItemIndex % 7,
-        true,
-        currentItemIndex ~/ 7,
-      ));
+    if (remainingDays < 7) {
+      for (int i = 0; i < remainingDays; i++) {
+        int currentItemIndex = itemCount++;
+        items.add(CalendarGridItem(
+          nextMonthFirstDay.add(Duration(days: i)),
+          currentItemIndex % 7,
+          true,
+          currentItemIndex ~/ 7,
+        ));
+      }
     }
 
     return CalendarGridData._(month, year, items);
@@ -1441,7 +1444,12 @@ class CalendarGridItem {
   CalendarGridItem(
       this.date, this.indexInRow, this.fromAnotherMonth, this.rowIndex);
 
-  bool get isToday => date.isAtSameMomentAs(DateTime.now());
+  bool get isToday {
+    DateTime now = DateTime.now();
+    return date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day;
+  }
 
   @override
   bool operator ==(Object other) {
