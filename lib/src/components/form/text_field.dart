@@ -1253,11 +1253,14 @@ class TextFieldState extends State<TextField>
       _createLocalController(widget.initialValue != null
           ? TextEditingValue(text: widget.initialValue!)
           : null);
+    } else {
+      widget.controller!.addListener(_handleControllerChanged);
     }
     _effectiveFocusNode.canRequestFocus = widget.enabled;
     _effectiveFocusNode.addListener(_handleFocusChanged);
     _statesController = widget.statesController ?? WidgetStatesController();
-    formValue = widget.controller?.text ?? widget.initialValue ?? '';
+    String effectiveText = widget.controller?.text ?? widget.initialValue ?? '';
+    formValue = effectiveText.isEmpty ? null : effectiveText;
     for (final feature in widget.features) {
       final state = feature.createState();
       state._attached = _AttachedInputFeature(feature, state);
@@ -1354,6 +1357,8 @@ class TextFieldState extends State<TextField>
   void _handleControllerChanged() {
     _effectiveText.value = effectiveController.text;
     _effectiveSelection.value = effectiveController.selection;
+    formValue =
+        effectiveController.text.isEmpty ? null : effectiveController.text;
   }
 
   void _createLocalController([TextEditingValue? value]) {
@@ -1655,7 +1660,7 @@ class TextFieldState extends State<TextField>
     if (widget.onChanged != null) {
       widget.onChanged!(value);
     }
-    formValue = value;
+    formValue = value.isEmpty ? null : value;
     _effectiveText.value = value;
 
     for (final attached in _attachedFeatures) {

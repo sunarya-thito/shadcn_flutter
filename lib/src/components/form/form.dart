@@ -326,6 +326,13 @@ class LengthValidator extends Validator<String> {
   FutureOr<ValidationResult?> validate(
       BuildContext context, String? value, FormValidationMode state) {
     if (value == null) {
+      if (min != null) {
+        return InvalidResult(
+            message ??
+                Localizations.of(context, ShadcnLocalizations)
+                    .formLengthLessThan(min!),
+            state: state);
+      }
       return null;
     }
     ShadcnLocalizations localizations =
@@ -982,7 +989,7 @@ class FormEntry<T> extends StatefulWidget {
 }
 
 mixin FormFieldHandle {
-  FutureOr<ValidationResult?> reportNewFormValue(Object? value);
+  FutureOr<ValidationResult?> reportNewFormValue<T>(T? value);
   FutureOr<ValidationResult?> revalidate();
   ValueListenable<ValidationResult?>? get validity;
 }
@@ -1050,19 +1057,11 @@ class FormEntryState extends State<FormEntry> with FormFieldHandle {
   }
 
   @override
-  FutureOr<ValidationResult?> reportNewFormValue(Object? value) {
-    bool isSameType = widget.key.isInstanceOf(value);
-    assert(isSameType, () {
-      throw FlutterError.fromParts([
-        ErrorSummary('Invalid value type'),
-        ErrorDescription(
-            'Expecting ${widget.key.type} but received ${value.runtimeType}'),
-        ErrorHint('Make sure the value type matches the key type'),
-        ErrorHint('Key: FormKey<${widget.key.type}>'),
-      ]);
-    });
+  FutureOr<ValidationResult?> reportNewFormValue<T>(T? value) {
+    bool isSameType = widget.key.type == T;
     if (!isSameType) {
-      return null;
+      var parentLookup = Data.maybeFind<FormFieldHandle>(context);
+      return parentLookup?.reportNewFormValue<T>(value);
     }
     if (_cachedValue == value) {
       return null;
@@ -1122,8 +1121,8 @@ class _FormEntryHandleInterceptor with FormFieldHandle {
   const _FormEntryHandleInterceptor(this.handle, this.onValueReported);
 
   @override
-  FutureOr<ValidationResult?> reportNewFormValue(Object? value) {
-    return handle?.reportNewFormValue(value);
+  FutureOr<ValidationResult?> reportNewFormValue<T>(T? value) {
+    return handle?.reportNewFormValue<T>(value);
   }
 
   @override
@@ -1592,7 +1591,7 @@ mixin FormValueSupplier<T, X extends StatefulWidget> on State<X> {
       return;
     }
     final currentCounter = ++_futureCounter;
-    var validationResult = state.reportNewFormValue(value);
+    var validationResult = state.reportNewFormValue<T>(value);
     if (validationResult is Future<ValidationResult?>) {
       validationResult.then((value) {
         if (_futureCounter == currentCounter) {
