@@ -227,8 +227,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage(
             'File Picker', 'file_picker', ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Form', 'form'),
-        ShadcnDocsPage('Formatted Input', 'formatted_input',
-            ShadcnFeatureTag.experimental),
+        ShadcnDocsPage(
+            'Formatted Input', 'formatted_input', ShadcnFeatureTag.newFeature),
         // TODO: Image Input (with cropper and rotate tool, upload from file or take photo from camera)
         // ShadcnDocsPage(
         // 'Image Input', 'image_input', ShadcnFeatureTag.workInProgress),
@@ -256,7 +256,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Toggle', 'toggle'),
         ShadcnDocsPage('Multi Select', 'multiselect'),
         ShadcnDocsPage(
-            'Item Picker', 'item_picker', ShadcnFeatureTag.experimental),
+            'Item Picker', 'item_picker', ShadcnFeatureTag.newFeature),
       ],
     ),
     ShadcnDocsSection(
