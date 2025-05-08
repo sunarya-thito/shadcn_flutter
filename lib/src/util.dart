@@ -4,8 +4,6 @@ import 'dart:math';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef Predicate<T> = bool Function(T value);
-typedef Supplier<T> = T Function();
-typedef Consumer<T> = void Function(T value);
 typedef UnaryOperator<T> = T Function(T value);
 typedef BinaryOperator<T> = T Function(T a, T b);
 
@@ -322,7 +320,7 @@ extension IterableExtension<T> on Iterable<T> {
     return map((e) => [separator, e]).expand((element) => element).skip(1);
   }
 
-  Iterable<T> buildSeparator(Supplier<T> separator) {
+  Iterable<T> buildSeparator(ValueGetter<T> separator) {
     return map((e) => [separator(), e]).expand((element) => element).skip(1);
   }
 }
