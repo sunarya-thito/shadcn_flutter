@@ -25,7 +25,9 @@ class InputExample3 extends StatelessWidget {
         const TextField(
           placeholder: Text('Enter your password'),
           features: [
-            InputFeature.clear(),
+            InputFeature.clear(
+              visibility: InputFeatureVisibility.textNotEmpty,
+            ),
             InputFeature.passwordToggle(mode: PasswordPeekMode.hold),
           ],
         ),
