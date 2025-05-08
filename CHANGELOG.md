@@ -1,3 +1,10 @@
+## 0.0.36
+* Added native (adaptive) context menu builder for TextField
+* Added material context menu builder for TextField
+* Added cupertino context menu builder for TextField
+* Added parameter to skip input feature focus traversal
+* Fixed issue with validities casting in form widget
+
 ## 0.0.35
 * Fix InputSpinner gesture
 * Added RadioCardThemeData (by @mcquenji)
