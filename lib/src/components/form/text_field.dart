@@ -16,6 +16,9 @@ import 'package:shadcn_flutter/src/components/layout/hidden.dart';
 
 import '../../../shadcn_flutter.dart';
 
+import 'package:flutter/material.dart' as material;
+import 'package:flutter/cupertino.dart' as cupertino;
+
 export 'package:flutter/services.dart'
     show
         SmartDashesType,
@@ -524,9 +527,76 @@ mixin TextInput on Widget {
   UndoHistoryController? get undoController;
   List<InputFeature> get features;
   List<TextInputFormatter>? get submitFormatters;
+  bool get skipInputFeatureFocusTraversal;
 }
 
 class TextField extends StatefulWidget with TextInput {
+  static EditableTextContextMenuBuilder nativeContextMenuBuilder() {
+    return (context, editableTextState) {
+      return material.AdaptiveTextSelectionToolbar.editableText(
+          editableTextState: editableTextState);
+    };
+  }
+
+  static EditableTextContextMenuBuilder cupertinoContextMenuBuilder() {
+    return (context, editableTextState) {
+      return cupertino.CupertinoAdaptiveTextSelectionToolbar.editableText(
+          editableTextState: editableTextState);
+    };
+  }
+
+  static EditableTextContextMenuBuilder materialContextMenuBuilder() {
+    return (context, editableTextState) {
+      final anchors = editableTextState.contextMenuAnchors;
+      return material.TextSelectionToolbar(
+        anchorAbove: anchors.primaryAnchor,
+        anchorBelow: anchors.secondaryAnchor == null
+            ? anchors.primaryAnchor
+            : anchors.secondaryAnchor!,
+        children: _getMaterialButtons(
+            context, editableTextState.contextMenuButtonItems),
+      );
+    };
+  }
+
+  static List<Widget> _getMaterialButtons(
+    BuildContext context,
+    List<ContextMenuButtonItem> buttonItems,
+  ) {
+    final List<Widget> buttons = <Widget>[];
+    for (int i = 0; i < buttonItems.length; i++) {
+      final ContextMenuButtonItem buttonItem = buttonItems[i];
+      buttons.add(
+        material.TextSelectionToolbarTextButton(
+          padding: material.TextSelectionToolbarTextButton.getPadding(
+              i, buttonItems.length),
+          onPressed: buttonItem.onPressed,
+          alignment: AlignmentDirectional.centerStart,
+          child: Text(_getMaterialButtonLabel(context, buttonItem)),
+        ),
+      );
+    }
+    return buttons;
+  }
+
+  static String _getMaterialButtonLabel(
+      BuildContext context, ContextMenuButtonItem buttonItem) {
+    final localizations = material.MaterialLocalizations.of(context);
+    return switch (buttonItem.type) {
+      ContextMenuButtonType.cut => localizations.cutButtonLabel,
+      ContextMenuButtonType.copy => localizations.copyButtonLabel,
+      ContextMenuButtonType.paste => localizations.pasteButtonLabel,
+      ContextMenuButtonType.selectAll => localizations.selectAllButtonLabel,
+      ContextMenuButtonType.delete =>
+        localizations.deleteButtonTooltip.toUpperCase(),
+      ContextMenuButtonType.lookUp => localizations.lookUpButtonLabel,
+      ContextMenuButtonType.searchWeb => localizations.searchWebButtonLabel,
+      ContextMenuButtonType.share => localizations.shareButtonLabel,
+      ContextMenuButtonType.liveTextInput => localizations.scanTextButtonLabel,
+      ContextMenuButtonType.custom => '',
+    };
+  }
+
   const TextField({
     super.key,
     this.groupId = EditableText,
@@ -602,6 +672,7 @@ class TextField extends StatefulWidget with TextInput {
     this.statesController,
     this.features = const [],
     this.submitFormatters = const [],
+    this.skipInputFeatureFocusTraversal = true,
   })  : assert(obscuringCharacter.length == 1),
         smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
@@ -631,6 +702,9 @@ class TextField extends StatefulWidget with TextInput {
             (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
         enableInteractiveSelection =
             enableInteractiveSelection ?? (!readOnly || !obscureText);
+
+  @override
+  final bool skipInputFeatureFocusTraversal;
 
   @override
   final List<InputFeature> features;
@@ -1102,6 +1176,7 @@ class TextField extends StatefulWidget with TextInput {
     SpellCheckConfiguration? spellCheckConfiguration,
     List<InputFeature>? features,
     List<TextInputFormatter>? submitFormatters,
+    bool? skipInputFeatureFocusTraversal,
   }) {
     return TextField(
       key: key ?? this.key,
@@ -1183,6 +1258,8 @@ class TextField extends StatefulWidget with TextInput {
           spellCheckConfiguration ?? this.spellCheckConfiguration,
       features: features ?? this.features,
       submitFormatters: submitFormatters ?? this.submitFormatters,
+      skipInputFeatureFocusTraversal:
+          skipInputFeatureFocusTraversal ?? this.skipInputFeatureFocusTraversal,
     );
   }
 }
@@ -1568,10 +1645,20 @@ class TextFieldState extends State<TextField>
           leadingChildren.add(leadingWidget);
         }
         for (final attached in _attachedFeatures) {
-          leadingChildren.addAll(attached.state._internalBuildLeading());
+          leadingChildren.addAll(attached.state._internalBuildLeading().map(
+                (e) => Focus(
+                  skipTraversal: widget.skipInputFeatureFocusTraversal,
+                  child: e,
+                ),
+              ));
         }
         for (final attached in _attachedFeatures) {
-          trailingChildren.addAll(attached.state._internalBuildTrailing());
+          trailingChildren.addAll(attached.state._internalBuildTrailing().map(
+                (e) => Focus(
+                  skipTraversal: widget.skipInputFeatureFocusTraversal,
+                  child: e,
+                ),
+              ));
         }
         if (trailingWidget != null) {
           trailingChildren.add(trailingWidget);
