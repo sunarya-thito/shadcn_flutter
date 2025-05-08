@@ -412,11 +412,11 @@ class _ResizablePanelData {
   Axis get direction => state.widget.direction;
 
   void attach(ResizablePaneController controller) {
-    state.attachController(index, controller);
+    state.attachController(controller);
   }
 
   void detach(ResizablePaneController controller) {
-    state.detachController(index, controller);
+    state.detachController(controller);
   }
 
   @override
@@ -504,21 +504,29 @@ class _ResizableItem extends ResizableItem {
 }
 
 class _ResizablePanelState extends State<ResizablePanel> {
-  late List<ResizablePaneController?> _controllers;
+  final List<ResizablePaneController> _controllers = [];
 
   late double _panelSize;
 
-  @override
-  void initState() {
-    super.initState();
-    _controllers = List.filled(widget.children.length, null);
-  }
-
   List<ResizableItem> computeDraggers() {
     List<ResizableItem> draggers = [];
-    for (final controller in _controllers) {
-      assert(controller != null, 'ResizablePaneController is not attached');
-      double computedSize = controller!.computeSize(
+    List<ResizablePaneController> controllers = _controllers;
+    controllers.sort(
+      (a, b) {
+        var stateA = a._paneState;
+        var stateB = b._paneState;
+        if (stateA == null || stateB == null) {
+          return 0;
+        }
+        var widgetA = stateA.widget;
+        var widgetB = stateB.widget;
+        var indexWidgetA = widget.children.indexOf(widgetA);
+        var indexWidgetB = widget.children.indexOf(widgetB);
+        return indexWidgetA.compareTo(indexWidgetB);
+      },
+    );
+    for (final controller in controllers) {
+      double computedSize = controller.computeSize(
         _panelSize,
         minSize:
             controller.collapsed ? null : controller._paneState!.widget.minSize,
@@ -552,29 +560,12 @@ class _ResizablePanelState extends State<ResizablePanel> {
     }
   }
 
-  @override
-  void didUpdateWidget(covariant ResizablePanel oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.children.length != widget.children.length) {
-      var newControllers = List.generate(widget.children.length, (index) {
-        if (index < _controllers.length) {
-          return _controllers[index];
-        }
-        return null;
-      });
-      _controllers = newControllers;
-    }
+  void attachController(ResizablePaneController controller) {
+    _controllers.add(controller);
   }
 
-  void attachController(int index, ResizablePaneController controller) {
-    assert(_controllers[index] == null, 'Controller already attached');
-    _controllers[index] = controller;
-  }
-
-  void detachController(int index, ResizablePaneController controller) {
-    if (_controllers[index] == controller) {
-      _controllers[index] = null;
-    }
+  void detachController(ResizablePaneController controller) {
+    _controllers.remove(controller);
   }
 
   @override
@@ -605,6 +596,7 @@ class _ResizablePanelState extends State<ResizablePanel> {
     List<Widget> children = [];
     for (var i = 0; i < widget.children.length; i++) {
       children.add(Data<_ResizablePanelData>.inherit(
+        key: widget.children[i].key,
         data: _ResizablePanelData(this, i),
         child: widget.children[i],
       ));
