@@ -1249,7 +1249,9 @@ class FormController extends ChangeNotifier {
   }
 
   Map<FormKey, FutureOr<ValidationResult?>> get validities {
-    return Map.unmodifiable(_validity);
+    return Map.unmodifiable(_validity.map((key, value) {
+      return MapEntry(key, value.result);
+    }));
   }
 
   Map<FormKey, ValidationResult> get errors {
