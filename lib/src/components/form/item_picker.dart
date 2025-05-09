@@ -48,6 +48,9 @@ class ItemPicker<T> extends StatelessWidget {
                   layout: layout,
                   title: title,
                   constraints: constraints,
+                  onChanged: (value) {
+                    closeOverlay(context, value);
+                  },
                 ),
               ),
             );
@@ -61,6 +64,9 @@ class ItemPicker<T> extends StatelessWidget {
                 layout: layout,
                 title: title,
                 constraints: constraints,
+                onChanged: (value) {
+                  closeOverlay(context, value);
+                },
               ),
             );
           }
@@ -197,6 +203,9 @@ Future<T?> showItemPicker<T>(
           layout: layout,
           title: title,
           constraints: constraints,
+          onChanged: (value) {
+            closeOverlay(context, value);
+          },
         ),
       );
     },
@@ -210,6 +219,7 @@ class _InternalItemPicker<T> extends StatelessWidget {
   final ItemPickerLayout layout;
   final Widget? title;
   final BoxConstraints? constraints;
+  final ValueChanged<T?> onChanged;
   const _InternalItemPicker({
     super.key,
     required this.items,
@@ -218,6 +228,7 @@ class _InternalItemPicker<T> extends StatelessWidget {
     required this.layout,
     this.title,
     this.constraints,
+    required this.onChanged,
   });
   @override
   Widget build(BuildContext context) {
@@ -253,9 +264,7 @@ class _InternalItemPicker<T> extends StatelessWidget {
               builder: builder,
               layout: layout,
               value: initialValue,
-              onChanged: (value) {
-                Navigator.of(context).pop(value);
-              },
+              onChanged: onChanged,
             ),
           ),
         )
@@ -289,6 +298,9 @@ Future<T?> showItemPickerDialog<T>(
             layout: layout,
             title: title,
             constraints: constraints,
+            onChanged: (value) {
+              closeOverlay(context, value);
+            },
           ),
         ),
       );
