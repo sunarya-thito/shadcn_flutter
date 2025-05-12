@@ -967,6 +967,14 @@ class FormKey<T> extends LocalKey {
     return value is T;
   }
 
+  T? getValue(FormMapValues values) {
+    return values.getValue(this);
+  }
+
+  T? operator [](FormMapValues values) {
+    return values.getValue(this);
+  }
+
   @override
   bool operator ==(Object other) {
     return other is FormKey && other.key == key;
@@ -1210,8 +1218,22 @@ class FormValueState<T> {
   int get hashCode => Object.hash(value, validator);
 }
 
+typedef FormMapValues = Map<FormKey, dynamic>;
+
 typedef FormSubmitCallback = void Function(
-    BuildContext context, Map<FormKey, dynamic> values);
+    BuildContext context, FormMapValues values);
+
+extension FormMapValuesExtension on FormMapValues {
+  T? getValue<T>(FormKey<T> key) {
+    Object? value = this[key];
+    if (value == null) {
+      return null;
+    }
+    assert(key.isInstanceOf(value),
+        'The value for key $key is not of type ${key.type}');
+    return value as T?;
+  }
+}
 
 class Form extends StatefulWidget {
   final FormController? controller;

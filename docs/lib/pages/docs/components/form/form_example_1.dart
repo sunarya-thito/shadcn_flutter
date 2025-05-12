@@ -19,16 +19,29 @@ class _FormExample1State extends State<FormExample1> {
       width: 480,
       child: Form(
         onSubmit: (context, values) {
+          // Get the values individually
+          String? username = _usernameKey[values];
+          String? password = _passwordKey[values];
+          String? confirmPassword = _confirmPasswordKey[values];
+          // or just encode the whole map to JSON directly
+          String json = jsonEncode(values.map((key, value) {
+            return MapEntry(key.key, value);
+          }));
           showDialog(
             context: context,
             builder: (context) {
               return AlertDialog(
                 title: const Text('Form Values'),
-                content: Text(jsonEncode(values.map(
-                  (key, value) {
-                    return MapEntry(key.key, value);
-                  },
-                ))),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Username: $username'),
+                    Text('Password: $password'),
+                    Text('Confirm Password: $confirmPassword'),
+                    Text('JSON: $json'),
+                  ],
+                ),
                 actions: [
                   PrimaryButton(
                     onPressed: () => Navigator.of(context).pop(),
