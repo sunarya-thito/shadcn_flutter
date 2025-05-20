@@ -177,7 +177,8 @@ class _PhoneInputState extends State<PhoneInput>
     _country = widget.initialCountry ??
         widget.initialValue?.country ??
         Country.unitedStates;
-    _controller = widget.controller ?? TextEditingController();
+    _controller = widget.controller ??
+        TextEditingController(text: widget.initialValue?.number);
     formValue = value;
     _controller.addListener(_dispatchChanged);
   }
