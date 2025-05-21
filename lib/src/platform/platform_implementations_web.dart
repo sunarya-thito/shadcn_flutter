@@ -64,5 +64,5 @@ class ShadcnFlutterPlatformImplementations {
 }
 
 String _colorToCssRgba(Color color) {
-  return 'rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})';
+  return 'rgba(${color.r * 255}, ${color.g * 255}, ${color.b * 255}, ${color.a})';
 }

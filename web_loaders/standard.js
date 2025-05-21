@@ -41,8 +41,8 @@ const shadcn_flutter_config = {
 };
 
 class ShadcnAppConfig {
-    background;
-    foreground;
+    backgroundColor;
+    foregroundColor;
     fontFamily;
     fontSize;
     fontWeight;
@@ -53,9 +53,9 @@ class ShadcnAppConfig {
     externalScripts;
     transitionDuration;
 
-    constructor({ background, foreground, fontFamily, fontSize, fontWeight, mainAxisAlignment, crossAxisAlignment, loaderWidget, loaderColor, externalScripts, transitionDuration }) {
-        this.background = background;
-        this.foreground = foreground;
+    constructor({ backgroundColor, foregroundColor, fontFamily, fontSize, fontWeight, mainAxisAlignment, crossAxisAlignment, loaderWidget, loaderColor, externalScripts, transitionDuration }) {
+        this.backgroundColor = backgroundColor;
+        this.foregroundColor = foregroundColor;
         this.fontFamily = fontFamily;
         this.fontSize = fontSize;
         this.fontWeight = fontWeight;
@@ -65,11 +65,11 @@ class ShadcnAppConfig {
         this.loaderColor = loaderColor;
         this.externalScripts = externalScripts;
 
-        if (this.background == null) {
-            this.background = localStorage.getItem('shadcn_flutter.background') || '#09090b';
+        if (this.backgroundColor == null) {
+            this.backgroundColor = localStorage.getItem('shadcn_flutter.background') || '#09090b';
         }
-        if (this.foreground == null) {
-            this.foreground = localStorage.getItem('shadcn_flutter.foreground') || '#ffffff';
+        if (this.foregroundColor == null) {
+            this.foregroundColor = localStorage.getItem('shadcn_flutter.foreground') || '#ffffff';
         }
         if (this.loaderColor == null) {
             this.loaderColor = localStorage.getItem('shadcn_flutter.primary') || '#3c83f6';
@@ -107,8 +107,8 @@ class ShadcnApp {
     loadApp() {
         this.#initializeDocument();
         this.#loadExternalScripts(0);
-        window.addEventListener('shadcn_flutter_app_ready', this.onAppReady);
-        window.addEventListener('shadcn_flutter_theme_changed', this.onThemeChanged);
+        window.addEventListener('shadcn_flutter_app_ready', () => this.onAppReady());
+        window.addEventListener('shadcn_flutter_theme_changed', (event) => this.onThemeChanged(event));
         if (globalThis.shadcnAppLoaded) {
             this.onAppReady();
         }
@@ -126,9 +126,17 @@ class ShadcnApp {
         });
     }
 
-    #createStyleSheet(css) {
+    #createStyleSheet(css, id) {
+        if (id) {
+            const existingStyle = document.getElementById(id);
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+        }
         const style = document.createElement('style');
-        style.type = 'text/css';
+        if (id) {
+            style.id = id;
+        }
         style.appendChild(document.createTextNode(css));
         document.head.appendChild(style);
     }
@@ -169,8 +177,8 @@ class ShadcnApp {
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: ${this.config.background};
-            color: ${this.config.foreground};
+            background-color: ${this.config.backgroundColor};
+            color: ${this.config.foregroundColor};
             z-index: 9998;
             font-family: ${this.config.fontFamily};
             font-size: ${this.config.fontSize};
@@ -208,11 +216,14 @@ class ShadcnApp {
         loaderBarDiv.className = 'loader';
         loaderDiv.appendChild(loaderBarDiv);
 
-        this.#createStyleSheet(loaderBarCss);
+        this.#createStyleSheet(loaderBarCss, 'web-preloader-style');
     }
 
     onAppReady() {
         const loaderDiv = document.querySelector('div');
+        if (!loaderDiv) {
+            return;
+        }
         loaderDiv.style.opacity = 0;
         loaderDiv.style.pointerEvents = 'none';
 
