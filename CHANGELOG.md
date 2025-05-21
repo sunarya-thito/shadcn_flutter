@@ -1,3 +1,13 @@
+## 0.0.37
+* Fixed web preloader issues
+* Fix PhoneInput initialValue not being passed
+* Added showTopSnapBar to WindowNavigator
+* Fix item picker issue with popover
+* Refactor IterableExtension to use ValueGetter instead of Supplier for buildSeparator method
+* Fixed issue with ResizablePane state management
+* Added a way to get form values individually with type-safe casting
+* Upgraded to Flutter 3.32.0
+
 ## 0.0.36
 * Added native (adaptive) context menu builder for TextField
 * Added material context menu builder for TextField
