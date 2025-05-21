@@ -107,8 +107,8 @@ class ShadcnApp {
     loadApp() {
         this.#initializeDocument();
         this.#loadExternalScripts(0);
-        window.addEventListener('shadcn_flutter_app_ready', this.onAppReady);
-        window.addEventListener('shadcn_flutter_theme_changed', this.onThemeChanged);
+        window.addEventListener('shadcn_flutter_app_ready', () => this.onAppReady());
+        window.addEventListener('shadcn_flutter_theme_changed', (event) => this.onThemeChanged(event));
         if (globalThis.shadcnAppLoaded) {
             this.onAppReady();
         }
@@ -213,6 +213,9 @@ class ShadcnApp {
 
     onAppReady() {
         const loaderDiv = document.querySelector('div');
+        if (!loaderDiv) {
+            return;
+        }
         loaderDiv.style.opacity = 0;
         loaderDiv.style.pointerEvents = 'none';
 
