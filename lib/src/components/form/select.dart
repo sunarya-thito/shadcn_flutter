@@ -243,7 +243,7 @@ class SelectItemButton<T> extends StatelessWidget {
     super.key,
     required this.value,
     required this.child,
-    this.enabled = true,
+    this.enabled,
     this.style = const ButtonStyle.ghost(),
   });
 
