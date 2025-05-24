@@ -238,14 +238,13 @@ class SelectItemButton<T> extends StatelessWidget {
   final Widget child;
   final AbstractButtonStyle style;
   final bool? enabled;
-  final Widget? disabledTooltip;
 
   const SelectItemButton({
     super.key,
     required this.value,
     required this.child,
     this.enabled,
-    this.style = const ButtonStyle.ghost(), this.disabledTooltip,
+    this.style = const ButtonStyle.ghost(),
   });
 
   @override
@@ -255,7 +254,7 @@ class SelectItemButton<T> extends StatelessWidget {
     final data = Data.maybeOf<SelectPopupHandle>(context);
     bool isSelected = data?.isSelected(value) ?? false;
     bool hasSelection = data?.hasSelection ?? false;
-    return Tooltip(child: Button(
+    return Button(
       enabled: enabled,
       disableTransition: true,
       alignment: AlignmentDirectional.centerStart,
@@ -281,13 +280,7 @@ class SelectItemButton<T> extends StatelessWidget {
                 )
               : null,
       child: child.normal(),
-    ), tooltip: (context){
-      if(enabled == false && disabledTooltip != null ){
-        return Card(child: disabledTooltip!);
-      }else{
-        return const SizedBox.shrink();
-      }
-    });
+    );
   }
 }
 
