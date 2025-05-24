@@ -237,7 +237,7 @@ class SelectItemButton<T> extends StatelessWidget {
   final T value;
   final Widget child;
   final AbstractButtonStyle style;
-  final bool enabled;
+  final bool? enabled;
 
   const SelectItemButton({
     super.key,
