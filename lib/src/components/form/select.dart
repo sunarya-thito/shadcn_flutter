@@ -162,6 +162,7 @@ class ControlledMultiSelect<T> extends StatelessWidget
   final bool autoClosePopover;
   @override
   final SelectPopupBuilder popup;
+
   @override
   SelectValueBuilder<Iterable<T>> get itemBuilder => (context, value) {
         return MultiSelect._buildItem(multiItemBuilder, context, value);
@@ -259,8 +260,8 @@ class SelectItemButton<T> extends StatelessWidget {
       disableTransition: true,
       alignment: AlignmentDirectional.centerStart,
       onPressed: () {
-              data?.selectItem(value, !isSelected);
-            },
+        data?.selectItem(value, !isSelected);
+      },
       style: style.copyWith(
         padding: (context, states, value) => EdgeInsets.symmetric(
           vertical: 8 * scaling,
@@ -400,24 +401,99 @@ bool _defaultMultiSelectValueSelectionPredicate<T>(
 
 mixin SelectBase<T> {
   ValueChanged<T?>? get onChanged;
+
   Widget? get placeholder;
+
   bool get filled;
+
   FocusNode? get focusNode;
+
   BoxConstraints? get constraints;
+
   BoxConstraints? get popupConstraints;
+
   PopoverConstraint get popupWidthConstraint;
+
   BorderRadiusGeometry? get borderRadius;
+
   EdgeInsetsGeometry? get padding;
+
   AlignmentGeometry get popoverAlignment;
+
   AlignmentGeometry? get popoverAnchorAlignment;
+
   bool get disableHoverEffect;
+
   bool get canUnselect;
+
   bool? get autoClosePopover;
+
   SelectPopupBuilder get popup;
+
   SelectValueBuilder<T> get itemBuilder;
+
   SelectValueSelectionHandler<T>? get valueSelectionHandler;
+
   SelectValueSelectionPredicate<T>? get valueSelectionPredicate;
+
   Predicate<T>? get showValuePredicate;
+}
+
+/// SelectTheme
+class SelectTheme {
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final BorderRadiusGeometry? borderRadius;
+  final EdgeInsetsGeometry? padding;
+  final TextStyle? textStyle;
+  final Color? dropdownColor;
+
+  const SelectTheme({
+    this.backgroundColor,
+    this.borderColor,
+    this.borderRadius,
+    this.padding,
+    this.textStyle,
+    this.dropdownColor,
+  });
+
+  SelectTheme copyWith({
+    ValueGetter<Color?>? backgroundColor,
+    ValueGetter<Color?>? borderColor,
+    ValueGetter<BorderRadiusGeometry?>? borderRadius,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+  }) {
+    return SelectTheme(
+      backgroundColor:
+          backgroundColor != null ? backgroundColor() : this.backgroundColor,
+      borderColor: borderColor != null ? borderColor() : this.borderColor,
+      borderRadius: borderRadius != null ? borderRadius() : this.borderRadius,
+      padding: padding != null ? padding() : this.padding,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is SelectTheme &&
+            other.backgroundColor == backgroundColor &&
+            other.borderColor == borderColor &&
+            other.borderRadius == borderRadius &&
+            other.padding == padding;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    backgroundColor,
+    borderColor,
+    borderRadius,
+    padding,
+  );
+
+  @override
+  String toString() {
+    return 'SelectTheme(backgroundColor: $backgroundColor, borderColor: $borderColor, borderRadius: $borderRadius, padding: $padding)';
+  }
 }
 
 class Select<T> extends StatefulWidget with SelectBase<T> {
@@ -551,18 +627,6 @@ class SelectState<T> extends State<Select<T>>
     super.dispose();
   }
 
-  BoxDecoration _overrideBorderRadius(
-      BuildContext context, Set<WidgetState> states, Decoration value) {
-    return (value as BoxDecoration).copyWith(
-      borderRadius: widget.borderRadius,
-    );
-  }
-
-  EdgeInsetsGeometry _overridePadding(
-      BuildContext context, Set<WidgetState> states, EdgeInsetsGeometry value) {
-    return widget.padding!;
-  }
-
   bool _onChanged(Object? value, bool selected) {
     if (!selected && !widget.canUnselect) {
       return false;
@@ -583,7 +647,11 @@ class SelectState<T> extends State<Select<T>>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final selectTheme = ComponentTheme.maybeOf<SelectTheme>(context);
     final scaling = theme.scaling;
+    final buttonStyle = (widget.filled
+        ? ButtonVariance.secondary
+        : ButtonVariance.outline);
     var enabled = widget.enabled ?? widget.onChanged != null;
     return IntrinsicWidth(
       child: ConstrainedBox(
@@ -596,13 +664,46 @@ class SelectState<T> extends State<Select<T>>
             enabled: enabled,
             disableHoverEffect: widget.disableHoverEffect,
             focusNode: _focusNode,
-            style: (widget.filled
-                    ? ButtonVariance.secondary
-                    : ButtonVariance.outline)
-                .copyWith(
-              decoration:
-                  widget.borderRadius != null ? _overrideBorderRadius : null,
-              padding: widget.padding != null ? _overridePadding : null,
+            style: buttonStyle.copyWith(
+              decoration: (
+                BuildContext context,
+                Set<WidgetState> states,
+                Decoration value,
+              ) {
+                return (value as BoxDecoration).copyWith(
+                    color: styleValue(
+                      themeValue: selectTheme?.backgroundColor,
+                      defaultValue: theme.colorScheme.border.withValues(
+                        alpha: 0,
+                      ),
+                    ),
+                    borderRadius: styleValue(
+                      themeValue: selectTheme?.borderRadius,
+                      widgetValue: widget.borderRadius,
+                      defaultValue: null,
+                    ),
+                    border: Border.all(
+                      color: styleValue(
+                        themeValue: selectTheme?.borderColor,
+                        defaultValue: theme.colorScheme.border,
+                      ),
+                    ),
+                );
+              },
+              padding: (
+                BuildContext context,
+                Set<WidgetState> states,
+                EdgeInsetsGeometry value,
+              ) {
+                return styleValue(
+                  themeValue: selectTheme?.padding,
+                  widgetValue: widget.padding,
+                  defaultValue: EdgeInsets.symmetric(
+                    horizontal: theme.scaling * 16,
+                    vertical: theme.scaling * 8,
+                  ),
+                );
+              },
             ),
             onPressed: widget.onChanged == null
                 ? null
@@ -767,6 +868,7 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final bool? enabled;
   @override
   final SelectPopupBuilder popup;
+
   @override
   SelectValueBuilder<Iterable<T>> get itemBuilder => (context, value) {
         return _buildItem(multiItemBuilder, context, value);
@@ -968,8 +1070,11 @@ class SelectPopup<T> extends StatefulWidget {
 
 mixin SelectPopupHandle {
   bool isSelected(Object? value);
+
   void selectItem(Object? value, bool selected);
+
   bool get hasSelection;
+
   static SelectPopupHandle of(BuildContext context) {
     return Data.of<SelectPopupHandle>(context);
   }
@@ -1326,9 +1431,13 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
 
 abstract class SelectItemDelegate with CachedValue {
   static const empty = EmptySelectItem();
+
   const SelectItemDelegate();
+
   Widget? build(BuildContext context, int index);
+
   int? get estimatedChildCount => null;
+
   @override
   bool shouldRebuild(covariant SelectItemDelegate oldDelegate);
 }
