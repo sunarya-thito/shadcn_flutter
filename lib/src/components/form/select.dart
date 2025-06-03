@@ -692,8 +692,8 @@ class SelectState<T> extends State<Select<T>>
                   themeValue: selectTheme?.padding,
                   widgetValue: widget.padding,
                   defaultValue: EdgeInsets.symmetric(
-                    horizontal: theme.scaling * 16,
-                    vertical: theme.scaling * 8,
+                    horizontal: scaling * 16,
+                    vertical: scaling * 8,
                   ),
                 );
               },
