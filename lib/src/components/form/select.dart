@@ -649,9 +649,6 @@ class SelectState<T> extends State<Select<T>>
     final theme = Theme.of(context);
     final selectTheme = ComponentTheme.maybeOf<SelectTheme>(context);
     final scaling = theme.scaling;
-    final buttonStyle = (widget.filled
-        ? ButtonVariance.secondary
-        : ButtonVariance.outline);
     var enabled = widget.enabled ?? widget.onChanged != null;
     return IntrinsicWidth(
       child: ConstrainedBox(
@@ -664,7 +661,9 @@ class SelectState<T> extends State<Select<T>>
             enabled: enabled,
             disableHoverEffect: widget.disableHoverEffect,
             focusNode: _focusNode,
-            style: buttonStyle.copyWith(
+            style: (widget.filled
+                ? ButtonVariance.secondary
+                : ButtonVariance.outline).copyWith(
               decoration: (
                 BuildContext context,
                 Set<WidgetState> states,
