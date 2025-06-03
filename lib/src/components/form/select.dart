@@ -445,16 +445,12 @@ class SelectTheme {
   final Color? borderColor;
   final BorderRadiusGeometry? borderRadius;
   final EdgeInsetsGeometry? padding;
-  final TextStyle? textStyle;
-  final Color? dropdownColor;
 
   const SelectTheme({
     this.backgroundColor,
     this.borderColor,
     this.borderRadius,
     this.padding,
-    this.textStyle,
-    this.dropdownColor,
   });
 
   SelectTheme copyWith({
@@ -661,9 +657,7 @@ class SelectState<T> extends State<Select<T>>
             enabled: enabled,
             disableHoverEffect: widget.disableHoverEffect,
             focusNode: _focusNode,
-            style: (widget.filled
-                ? ButtonVariance.secondary
-                : ButtonVariance.outline).copyWith(
+            style: ButtonVariance.outline.copyWith(
               decoration: (
                 BuildContext context,
                 Set<WidgetState> states,
@@ -673,8 +667,8 @@ class SelectState<T> extends State<Select<T>>
                     color: styleValue(
                       themeValue: selectTheme?.backgroundColor,
                       defaultValue: theme.colorScheme.border.withValues(
-                        alpha: 0,
-                      ),
+                          alpha: 0,
+                        ),
                     ),
                     borderRadius: styleValue(
                       themeValue: selectTheme?.borderRadius,
