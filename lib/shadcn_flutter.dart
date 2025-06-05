@@ -13,8 +13,7 @@ export 'package:flutter/cupertino.dart'
         cupertinoDesktopTextSelectionHandleControls;
 // export Icons from material
 export 'package:flutter/material.dart'
-    show Icons, MaterialPageRoute, MaterialPage, SliverAppBar, FlutterLogo
-    hide TextButton;
+    show Icons, MaterialPageRoute, MaterialPage, SliverAppBar, FlutterLogo;
 export 'package:flutter/widgets.dart'
     hide
         ErrorWidgetBuilder,
@@ -203,3 +202,5 @@ export 'src/util.dart';
 export 'src/components/form/input.dart';
 export 'src/components/form/object_input.dart';
 export 'src/components/form/item_picker.dart';
+export 'src/components/form/multiple_choice.dart';
+export 'src/components/wrapper.dart';
