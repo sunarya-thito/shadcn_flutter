@@ -40,7 +40,7 @@ class AlertDialog extends StatefulWidget {
       ),
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.7,
+          maxWidth: MediaQuery.of(context).size.width * 0.5,
         ),
         child: ModalContainer(
           fillColor: themeData.colorScheme.popover,

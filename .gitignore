@@ -19,6 +19,11 @@ migrate_working_dir/
 # IntelliJ related
 *.ipr
 *.iws
+# IDEs
+.idea/
+.vscode/
+*.iml
+
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -40,6 +45,26 @@ build/
 /.flutter-plugins
 /.flutter-plugins-dependencies
 /test_widget
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+*.hotreload.json
 
 # FVM Version Cache
 .fvm/
+/.fvmrc
