@@ -8,13 +8,13 @@ issue_tracker: "https://github.com/sunarya-thito/shadcn_flutter/issues"
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
-  flutter: ">=3.29.3"
+  flutter: ">=3.32.0"
 
 dependencies:
   email_validator: ^3.0.0
   flutter:
     sdk: flutter
-  skeletonizer: ^1.4.3
+  skeletonizer: ^2.0.0-pre
   syntax_highlight: ^0.4.0
   country_flags: ^3.0.0
   phonecodes: ^0.0.3

@@ -39,6 +39,11 @@ build/
 /example/pubspec.lock
 /example/android/
 /example/ios/
+/docs/ios/
+/docs/macos/
+/docs/windows/
+/docs/linux/
+/docs/pubspec.lock
 /example/linux/
 /example/macos/
 /example/windows/
@@ -65,6 +70,8 @@ build/
 .svn/
 *.hotreload.json
 
+
 # FVM Version Cache
 .fvm/
 /.fvmrc
+./vscode
