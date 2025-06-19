@@ -26,7 +26,9 @@ class AlertDialog extends StatefulWidget {
 
   @override
   _AlertDialogState createState() => _AlertDialogState();
-}class _AlertDialogState extends State<AlertDialog> {
+}
+
+class _AlertDialogState extends State<AlertDialog> {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
@@ -40,7 +42,7 @@ class AlertDialog extends StatefulWidget {
       ),
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.7,
+          maxHeight: MediaQuery.of(context).size.height * 0.85,
         ),
         child: ModalContainer(
           fillColor: themeData.colorScheme.popover,
@@ -49,12 +51,14 @@ class AlertDialog extends StatefulWidget {
           borderWidth: 1 * scaling,
           borderColor: themeData.colorScheme.muted,
           padding: widget.padding ?? EdgeInsets.all(24 * scaling),
-          surfaceBlur: widget.surfaceBlur ?? themeData.surfaceOpacity,
+          surfaceBlur: widget.surfaceBlur ?? themeData.surfaceBlur,
           surfaceOpacity: widget.surfaceOpacity ?? themeData.surfaceOpacity,
+          // 1. The main layout is a Column.
+          // It will expand to the height of the ModalContainer.
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // HEADER
+              // 2. The HEADER is a non-flexible child. It will always be visible at the top.
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -64,7 +68,6 @@ class AlertDialog extends StatefulWidget {
                       child: widget.leading!.iconXLarge().iconMutedForeground(),
                     ),
                   if (widget.title != null)
-                    // Flexible is still needed for text wrapping in case the title is long
                     Flexible(
                       child: widget.title!.large().semiBold(),
                     ),
@@ -75,13 +78,22 @@ class AlertDialog extends StatefulWidget {
                     ),
                 ],
               ),
-              if (widget.content != null) SizedBox(height: 16 * scaling),
-              // CONTENT (Scrollable area)
+
               if (widget.content != null)
-                widget.content!,
+                SizedBox(height: 16 * scaling),
+
+              // 3. The CONTENT is wrapped in Expanded.
+              // This makes it take up all the remaining space between the header and footer.
+              // If the content is a scrollable widget (like ListView), it will now scroll correctly.
+              if (widget.content != null)
+                Expanded(
+                  child: widget.content!,
+                ),
+
               if (widget.actions != null && widget.actions!.isNotEmpty)
                 SizedBox(height: 24 * scaling),
-              // FOOTER
+
+              // 4. The ACTIONS are a non-flexible child. They will always be visible at the bottom.
               if (widget.actions != null && widget.actions!.isNotEmpty)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
