@@ -58,6 +58,7 @@ class _AlertDialogState extends State<AlertDialog> {
           surfaceOpacity: widget.surfaceOpacity ?? themeData.surfaceOpacity,
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // HEADER
               Row(
