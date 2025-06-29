@@ -1000,6 +1000,8 @@ typedef DurationInputKey = FormKey<Duration>;
 typedef InputKey = FormKey<String>;
 typedef InputOTPKey = FormKey<List<int?>>;
 typedef MultiSelectKey<T> = FormKey<Iterable<T>>;
+typedef MultipleAnswerKey<T> = FormKey<Iterable<T>>;
+typedef MultipleChoiceKey<T> = FormKey<T>;
 typedef NumberInputKey = FormKey<num>;
 typedef PhoneInputKey = FormKey<PhoneNumber>;
 typedef RadioCardKey = FormKey<int>;
@@ -1107,6 +1109,7 @@ class FormEntryState extends State<FormEntry> with FormFieldHandle {
     bool isSameType = widget.key.type == T;
     if (!isSameType) {
       var parentLookup = Data.maybeFind<FormFieldHandle>(context);
+      assert(parentLookup != this, 'FormEntry cannot be its own parent');
       return parentLookup?.reportNewFormValue<T>(value);
     }
     var cachedValue = _cachedValue;
@@ -1169,6 +1172,7 @@ class _FormEntryHandleInterceptor with FormFieldHandle {
 
   @override
   FutureOr<ValidationResult?> reportNewFormValue<T>(T? value) {
+    onValueReported(value);
     return handle?.reportNewFormValue<T>(value);
   }
 
