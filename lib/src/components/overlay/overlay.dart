@@ -32,6 +32,9 @@ abstract class OverlayCompleter<T> {
 }
 
 abstract class OverlayHandler {
+  static const OverlayHandler popover = PopoverOverlayHandler();
+  static const OverlayHandler sheet = SheetOverlayHandler();
+  static const OverlayHandler dialog = DialogOverlayHandler();
   const OverlayHandler();
   OverlayCompleter<T?> show<T>({
     required BuildContext context,
