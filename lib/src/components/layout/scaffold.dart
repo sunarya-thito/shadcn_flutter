@@ -152,8 +152,7 @@ class ScaffoldState extends State<Scaffold> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildContent(BuildContext context) {
     final theme = Theme.of(context);
     final viewInsets = MediaQuery.viewInsetsOf(context);
     return DrawerOverlay(
@@ -205,6 +204,17 @@ class ScaffoldState extends State<Scaffold> {
           ],
         ),
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Overlay(
+      initialEntries: [
+        OverlayEntry(
+          builder: _buildContent,
+        ),
+      ],
     );
   }
 }
