@@ -237,11 +237,13 @@ class SelectItemButton<T> extends StatelessWidget {
   final T value;
   final Widget child;
   final AbstractButtonStyle style;
+  final bool? enabled;
 
   const SelectItemButton({
     super.key,
     required this.value,
     required this.child,
+    this.enabled,
     this.style = const ButtonStyle.ghost(),
   });
 
@@ -253,11 +255,12 @@ class SelectItemButton<T> extends StatelessWidget {
     bool isSelected = data?.isSelected(value) ?? false;
     bool hasSelection = data?.hasSelection ?? false;
     return Button(
+      enabled: enabled,
       disableTransition: true,
       alignment: AlignmentDirectional.centerStart,
       onPressed: () {
-        data?.selectItem(value, !isSelected);
-      },
+              data?.selectItem(value, !isSelected);
+            },
       style: style.copyWith(
         padding: (context, states, value) => EdgeInsets.symmetric(
           vertical: 8 * scaling,
