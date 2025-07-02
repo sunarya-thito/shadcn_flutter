@@ -26,6 +26,7 @@ class ShadcnApp extends StatefulWidget {
     this.title = '',
     this.onGenerateTitle,
     this.color,
+    this.background,
     required this.theme,
     this.locale,
     this.localizationsDelegates,
@@ -73,6 +74,7 @@ class ShadcnApp extends StatefulWidget {
     this.onGenerateTitle,
     this.onNavigationNotification,
     this.color,
+    this.background,
     required this.theme,
     this.locale,
     this.localizationsDelegates,
@@ -153,6 +155,7 @@ class ShadcnApp extends StatefulWidget {
   final ThemeData? darkTheme;
   final ThemeMode themeMode;
   final Color? color;
+  final Color? background;
   final Locale? locale;
 
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
@@ -439,7 +442,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
                   widget.theme.colorScheme.primaryForeground,
             ),
         child: m.Material(
-          color: m.Colors.transparent,
+          color: widget.background ?? m.Colors.transparent,
           child: m.ScaffoldMessenger(
             child: ScrollConfiguration(
               behavior: (widget.scrollBehavior ?? const ShadcnScrollBehavior()),
