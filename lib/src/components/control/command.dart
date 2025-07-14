@@ -186,12 +186,16 @@ class _CommandState extends State<Command> {
                               return widget.emptyBuilder?.call(context) ??
                                   const CommandEmpty();
                             }
-                            return ListView.separated(
-                              separatorBuilder: (context, index) =>
-                                  const Divider(),
-                              shrinkWrap: true,
-                              itemCount: items.length,
-                              itemBuilder: (context, index) => items[index],
+                            return MediaQuery.removePadding(
+                              context: context,
+                              removeTop: true,
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    const Divider(),
+                                shrinkWrap: true,
+                                itemCount: items.length,
+                                itemBuilder: (context, index) => items[index],
+                              ),
                             );
                           }
                           return widget.loadingBuilder?.call(context) ??
