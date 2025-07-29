@@ -8,21 +8,11 @@ export 'package:cross_file/cross_file.dart' show XFile;
 export 'package:data_widget/data_widget.dart';
 export 'package:data_widget/extension.dart';
 export 'package:flutter/cupertino.dart'
-    show
-        cupertinoDesktopTextSelectionControls,
-        cupertinoDesktopTextSelectionHandleControls;
+    show cupertinoDesktopTextSelectionControls, cupertinoDesktopTextSelectionHandleControls;
 // export Icons from material
-export 'package:flutter/material.dart'
-    show Icons, MaterialPageRoute, MaterialPage, SliverAppBar, FlutterLogo;
+export 'package:flutter/material.dart' show Icons, MaterialPageRoute, MaterialPage, SliverAppBar, FlutterLogo;
 export 'package:flutter/widgets.dart'
-    hide
-        ErrorWidgetBuilder,
-        Form,
-        FormState,
-        Table,
-        TableRow,
-        TableCell,
-        FormField;
+    hide ErrorWidgetBuilder, Form, FormState, Table, TableRow, TableCell, FormField, RadioGroup;
 // bundle from gap
 export 'package:gap/gap.dart';
 // hide pixel_snap overriden widgets
