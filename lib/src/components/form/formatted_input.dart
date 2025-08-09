@@ -327,7 +327,7 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
     return Focus(
       onKeyEvent: _onKeyEvent,
       child: FormEntry(
-        key: FormKey(data.partIndex),
+        key: TextFieldKey(data.partIndex),
         child: SizedBox(
           width: widget.width,
           child: TextField(

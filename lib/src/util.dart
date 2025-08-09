@@ -23,6 +23,20 @@ enum SortDirection {
   descending,
 }
 
+typedef OnContextInvokeCallback<T extends Intent> = Object? Function(T intent,
+    [BuildContext? context]);
+
+class CallbackContextAction<T extends Intent> extends ContextAction<T> {
+  final OnContextInvokeCallback onInvoke;
+
+  CallbackContextAction({required this.onInvoke});
+
+  @override
+  Object? invoke(T intent, [BuildContext? context]) {
+    return onInvoke(intent, context);
+  }
+}
+
 class SafeLerp<T> {
   final T? Function(T? a, T? b, double t) nullableLerp;
 

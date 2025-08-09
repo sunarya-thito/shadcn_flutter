@@ -27,27 +27,25 @@ class InputHintFeature extends InputFeature {
 
 class _InputHintFeatureState extends InputFeatureState<InputHintFeature> {
   final _popoverController = PopoverController();
-  void _showPopup() {
+  void _showPopup(BuildContext context) {
     _popoverController.show(
       context: context,
       builder: feature.popupBuilder,
-      alignment: feature.position == InputFeaturePosition.trailing
-          ? AlignmentDirectional.topEnd
-          : AlignmentDirectional.topStart,
-      anchorAlignment: feature.position == InputFeaturePosition.trailing
-          ? AlignmentDirectional.bottomEnd
-          : AlignmentDirectional.bottomStart,
+      alignment: AlignmentDirectional.topCenter,
+      anchorAlignment: AlignmentDirectional.bottomCenter,
     );
   }
 
   @override
   Iterable<Widget> buildTrailing() sync* {
     if (feature.position == InputFeaturePosition.trailing) {
-      yield IconButton.text(
-        icon: feature.icon ?? const Icon(LucideIcons.info),
-        onPressed: _showPopup,
-        density: ButtonDensity.compact,
-      );
+      yield Builder(builder: (context) {
+        return IconButton.text(
+          icon: feature.icon ?? const Icon(LucideIcons.info),
+          onPressed: () => _showPopup(context),
+          density: ButtonDensity.compact,
+        );
+      });
     }
   }
 
@@ -56,7 +54,7 @@ class _InputHintFeatureState extends InputFeatureState<InputHintFeature> {
     if (feature.position == InputFeaturePosition.leading) {
       yield IconButton.text(
         icon: feature.icon ?? const Icon(LucideIcons.info),
-        onPressed: _showPopup,
+        onPressed: () => _showPopup(context),
         density: ButtonDensity.compact,
       );
     }
@@ -77,9 +75,16 @@ class _InputHintFeatureState extends InputFeatureState<InputHintFeature> {
     if (feature.enableShortcuts) {
       yield MapEntry(
         InputShowHintIntent,
-        CallbackAction<InputShowHintIntent>(
-          onInvoke: (intent) {
-            _showPopup();
+        CallbackContextAction<InputShowHintIntent>(
+          onInvoke: (intent, [context]) {
+            if (context == null) {
+              throw FlutterError(
+                'CallbackContextAction was invoked without a valid BuildContext. '
+                'This likely indicates a problem in the action system. '
+                'Context must not be null when invoking InputShowHintIntent.'
+              );
+            }
+            _showPopup(context);
             return true;
           },
         ),
