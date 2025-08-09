@@ -101,10 +101,10 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
           double angle;
           if (widget.stage.direction == Axis.vertical) {
             // 0 -> 1 (0 -> 180)
-            angle = -pi * widget.stage.extent.value.clamp(0, 1);
+            angle = -pi * widget.stage.extentValue.clamp(0, 1);
           } else {
             // 0 -> 1 (90 -> 270)
-            angle = -pi / 2 + -pi * widget.stage.extent.value.clamp(0, 1);
+            angle = -pi / 2 + -pi * widget.stage.extentValue.clamp(0, 1);
           }
           return Row(
             mainAxisSize: MainAxisSize.min,
@@ -114,7 +114,7 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
                 child: const Icon(Icons.arrow_downward),
               ),
               Flexible(
-                  child: Text(widget.stage.extent.value < 1
+                  child: Text(widget.stage.extentValue < 1
                       ? localizations.refreshTriggerPull
                       : localizations.refreshTriggerRelease)),
               Transform.rotate(
@@ -193,6 +193,9 @@ class RefreshTriggerState extends State<RefreshTrigger>
   int _currentFutureCount = 0;
 
   double _calculateSafeExtent(double extent) {
+    if (widget.reverse) {
+      extent = -extent;
+    }
     if (extent > widget.minExtent) {
       double relativeExtent = extent - widget.minExtent;
       double? maxExtent = widget.maxExtent;
@@ -244,7 +247,9 @@ class RefreshTriggerState extends State<RefreshTrigger>
     }
     if (notification is ScrollEndNotification && _scrolling) {
       setState(() {
-        if (_currentExtent >= widget.minExtent) {
+        double normalizedExtent =
+            widget.reverse ? -_currentExtent : _currentExtent;
+        if (normalizedExtent >= widget.minExtent) {
           _scrolling = false;
           refresh();
         } else {
@@ -256,16 +261,17 @@ class RefreshTriggerState extends State<RefreshTrigger>
       final delta = notification.scrollDelta;
       if (delta != null) {
         final axisDirection = notification.metrics.axisDirection;
-        final normalizedDelta =
-            (axisDirection == AxisDirection.down || axisDirection == AxisDirection.right)
-                ? -delta
-                : delta;
+        final normalizedDelta = (axisDirection == AxisDirection.down ||
+                axisDirection == AxisDirection.right)
+            ? -delta
+            : delta;
         if (_stage == TriggerStage.pulling) {
           final forward = normalizedDelta > 0;
           if ((forward && _userScrollDirection == ScrollDirection.forward) ||
               (!forward && _userScrollDirection == ScrollDirection.reverse)) {
             setState(() {
-              _currentExtent += normalizedDelta;
+              _currentExtent +=
+                  widget.reverse ? -normalizedDelta : normalizedDelta;
             });
           } else {
             if (_currentExtent >= widget.minExtent) {
@@ -273,13 +279,16 @@ class RefreshTriggerState extends State<RefreshTrigger>
               refresh();
             } else {
               setState(() {
-                _currentExtent += normalizedDelta;
+                _currentExtent +=
+                    widget.reverse ? -normalizedDelta : normalizedDelta;
               });
             }
           }
         } else if (_stage == TriggerStage.idle &&
-            notification.metrics.extentBefore == 0 &&
-            normalizedDelta > 0) {
+            (widget.reverse
+                ? notification.metrics.extentAfter == 0
+                : notification.metrics.extentBefore == 0) &&
+            (widget.reverse ? -normalizedDelta : normalizedDelta) > 0) {
           setState(() {
             _currentExtent = 0;
             _scrolling = true;
@@ -291,10 +300,10 @@ class RefreshTriggerState extends State<RefreshTrigger>
       _userScrollDirection = notification.direction;
     } else if (notification is OverscrollNotification) {
       final axisDirection = notification.metrics.axisDirection;
-      final overscroll =
-          (axisDirection == AxisDirection.down || axisDirection == AxisDirection.right)
-              ? -notification.overscroll
-              : notification.overscroll;
+      final overscroll = (axisDirection == AxisDirection.down ||
+              axisDirection == AxisDirection.right)
+          ? -notification.overscroll
+          : notification.overscroll;
       if (overscroll > 0) {
         if (_stage == TriggerStage.idle) {
           setState(() {
@@ -377,6 +386,7 @@ class RefreshTriggerState extends State<RefreshTrigger>
                     _stage,
                     tween.animate(animation),
                     widget.direction,
+                    widget.reverse,
                   ),
                 ),
                 builder: (context, child) {
@@ -421,8 +431,12 @@ class RefreshTriggerStage {
   final TriggerStage stage;
   final Animation<double> extent;
   final Axis direction;
+  final bool reverse;
 
-  const RefreshTriggerStage(this.stage, this.extent, this.direction);
+  const RefreshTriggerStage(
+      this.stage, this.extent, this.direction, this.reverse);
+
+  double get extentValue => extent.value;
 }
 
 class RefreshTriggerPhysics extends ScrollPhysics {}
