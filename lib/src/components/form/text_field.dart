@@ -304,7 +304,14 @@ abstract class InputFeatureState<T extends InputFeature> {
   BuildContext get context {
     var inputState = _inputState;
     assert(inputState != null, 'Feature not attached');
-    return inputState!.editableTextKey.currentContext!;
+    final context = inputState!.editableTextKey.currentContext;
+    if (context == null) {
+      throw FlutterError(
+        'InputFeatureState.context was accessed but editableTextKey.currentContext is null.\n'
+        'This usually means the widget is not mounted. Ensure the widget is mounted before accessing context.'
+      );
+    }
+    return context;
   }
 
   TextField get input {
