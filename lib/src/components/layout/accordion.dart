@@ -10,10 +10,10 @@ class Accordion extends StatefulWidget {
   const Accordion({super.key, required this.items});
 
   @override
-  _AccordionState createState() => _AccordionState();
+  AccordionState createState() => AccordionState();
 }
 
-class _AccordionState extends State<Accordion> {
+class AccordionState extends State<Accordion> {
   final ValueNotifier<_AccordionItemState?> _expanded = ValueNotifier(null);
 
   @override
@@ -165,29 +165,29 @@ class AccordionItem extends StatefulWidget {
 
 class _AccordionItemState extends State<AccordionItem>
     with SingleTickerProviderStateMixin {
-  _AccordionState? accordion;
+  AccordionState? accordion;
   final ValueNotifier<bool> _expanded = ValueNotifier(false);
 
-  AnimationController? _controller;
-  CurvedAnimation? _easeInAnimation;
+  late AnimationController _controller;
+  late CurvedAnimation _easeInAnimation;
   AccordionTheme? _theme;
 
   @override
   void initState() {
     super.initState();
     _expanded.value = widget.expanded;
+    _controller = AnimationController(
+      vsync: this,
+    );
     _updateAnimations();
   }
 
   void _updateAnimations() {
-    _controller?.dispose();
-    _controller = AnimationController(
-      vsync: this,
-      duration: _theme?.duration ?? const Duration(milliseconds: 200),
-      value: _expanded.value ? 1 : 0,
-    );
+    _controller.duration =
+        _theme?.duration ?? const Duration(milliseconds: 200);
+    _controller.value = _expanded.value ? 1 : 0;
     _easeInAnimation = CurvedAnimation(
-      parent: _controller!,
+      parent: _controller,
       curve: _theme?.curve ?? Curves.easeIn,
       reverseCurve: _theme?.reverseCurve ?? Curves.easeOut,
     );
@@ -197,7 +197,7 @@ class _AccordionItemState extends State<AccordionItem>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _AccordionState newAccordion = Data.of<_AccordionState>(context);
+    AccordionState newAccordion = Data.of<AccordionState>(context);
     if (newAccordion != accordion) {
       accordion?._expanded.removeListener(_onExpandedChanged);
       newAccordion._expanded.addListener(_onExpandedChanged);
@@ -214,7 +214,7 @@ class _AccordionItemState extends State<AccordionItem>
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _controller.dispose();
     accordion?._expanded.removeListener(_onExpandedChanged);
     super.dispose();
   }
@@ -231,12 +231,12 @@ class _AccordionItemState extends State<AccordionItem>
   }
 
   void _expand() {
-    _controller?.forward();
+    _controller.forward();
     _expanded.value = true;
   }
 
   void _collapse() {
-    _controller?.reverse();
+    _controller.reverse();
     _expanded.value = false;
   }
 
