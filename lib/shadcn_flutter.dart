@@ -22,7 +22,8 @@ export 'package:flutter/widgets.dart'
         Table,
         TableRow,
         TableCell,
-        FormField;
+        FormField,
+        RadioGroup;
 // bundle from gap
 export 'package:gap/gap.dart';
 // hide pixel_snap overriden widgets
