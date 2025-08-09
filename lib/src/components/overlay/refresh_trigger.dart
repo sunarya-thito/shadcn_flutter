@@ -253,14 +253,19 @@ class RefreshTriggerState extends State<RefreshTrigger>
         }
       });
     } else if (notification is ScrollUpdateNotification) {
-      var delta = notification.scrollDelta;
+      final delta = notification.scrollDelta;
       if (delta != null) {
+        final axisDirection = notification.metrics.axisDirection;
+        final normalizedDelta =
+            (axisDirection == AxisDirection.down || axisDirection == AxisDirection.right)
+                ? -delta
+                : delta;
         if (_stage == TriggerStage.pulling) {
-          bool forward = widget.reverse ? delta > 0 : delta < 0;
+          final forward = normalizedDelta > 0;
           if ((forward && _userScrollDirection == ScrollDirection.forward) ||
               (!forward && _userScrollDirection == ScrollDirection.reverse)) {
             setState(() {
-              _currentExtent -= delta;
+              _currentExtent += normalizedDelta;
             });
           } else {
             if (_currentExtent >= widget.minExtent) {
@@ -268,12 +273,13 @@ class RefreshTriggerState extends State<RefreshTrigger>
               refresh();
             } else {
               setState(() {
-                _currentExtent -= delta;
+                _currentExtent += normalizedDelta;
               });
             }
           }
         } else if (_stage == TriggerStage.idle &&
-            (widget.reverse ? delta > 0 : delta < 0)) {
+            notification.metrics.extentBefore == 0 &&
+            normalizedDelta > 0) {
           setState(() {
             _currentExtent = 0;
             _scrolling = true;
@@ -284,16 +290,23 @@ class RefreshTriggerState extends State<RefreshTrigger>
     } else if (notification is UserScrollNotification) {
       _userScrollDirection = notification.direction;
     } else if (notification is OverscrollNotification) {
-      if (_stage == TriggerStage.idle) {
-        setState(() {
-          _currentExtent = 0;
-          _scrolling = true;
-          _stage = TriggerStage.pulling;
-        });
-      } else {
-        setState(() {
-          _currentExtent -= notification.overscroll;
-        });
+      final axisDirection = notification.metrics.axisDirection;
+      final overscroll =
+          (axisDirection == AxisDirection.down || axisDirection == AxisDirection.right)
+              ? -notification.overscroll
+              : notification.overscroll;
+      if (overscroll > 0) {
+        if (_stage == TriggerStage.idle) {
+          setState(() {
+            _currentExtent = 0;
+            _scrolling = true;
+            _stage = TriggerStage.pulling;
+          });
+        } else {
+          setState(() {
+            _currentExtent += overscroll;
+          });
+        }
       }
     }
     return false;
