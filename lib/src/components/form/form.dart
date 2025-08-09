@@ -1066,7 +1066,7 @@ class FormEntryState extends State<FormEntry> with FormFieldHandle {
       _onControllerChanged();
       if (_cachedValue != null) {
         newController?.attach(
-            context, widget.key, _cachedValue, widget.validator);
+            context, widget.key, _cachedValue?.value, widget.validator);
       }
     }
   }
