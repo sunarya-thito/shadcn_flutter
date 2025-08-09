@@ -77,7 +77,14 @@ class _InputHintFeatureState extends InputFeatureState<InputHintFeature> {
         InputShowHintIntent,
         CallbackContextAction<InputShowHintIntent>(
           onInvoke: (intent, [context]) {
-            _showPopup(context ?? this.context);
+            if (context == null) {
+              throw FlutterError(
+                'CallbackContextAction was invoked without a valid BuildContext. '
+                'This likely indicates a problem in the action system. '
+                'Context must not be null when invoking InputShowHintIntent.'
+              );
+            }
+            _showPopup(context);
             return true;
           },
         ),
