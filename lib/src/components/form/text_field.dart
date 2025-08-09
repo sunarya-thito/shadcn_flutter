@@ -304,7 +304,7 @@ abstract class InputFeatureState<T extends InputFeature> {
   BuildContext get context {
     var inputState = _inputState;
     assert(inputState != null, 'Feature not attached');
-    return inputState!.context;
+    return inputState!.editableTextKey.currentContext!;
   }
 
   TextField get input {
