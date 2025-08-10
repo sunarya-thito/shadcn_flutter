@@ -9,28 +9,21 @@ import 'package:docs/pages/docs/components/animated_value_builder/animated_value
 import 'package:docs/pages/docs/components/avatar/avatar_tile.dart';
 import 'package:docs/pages/docs/components/avatar_group/avatar_group_tile.dart';
 import 'package:docs/pages/docs/components/badge/badge_tile.dart';
-import 'package:docs/pages/docs/components/breadcrumb/breadcrumb_example_1.dart';
 import 'package:docs/pages/docs/components/breadcrumb/breadcrumb_tile.dart';
 import 'package:docs/pages/docs/components/button/button_tile.dart';
-import 'package:docs/pages/docs/components/calendar/calendar_example_2.dart';
 import 'package:docs/pages/docs/components/calendar/calendar_tile.dart';
-import 'package:docs/pages/docs/components/card/card_example_1.dart';
 import 'package:docs/pages/docs/components/card/card_tile.dart';
-import 'package:docs/pages/docs/components/carousel/carousel_example_1.dart';
 import 'package:docs/pages/docs/components/carousel/carousel_tile.dart';
 import 'package:docs/pages/docs/components/checkbox/checkbox_tile.dart';
 import 'package:docs/pages/docs/components/chip_input/chip_input_tile.dart';
 import 'package:docs/pages/docs/components/circular_progress/circular_progress_tile.dart';
-import 'package:docs/pages/docs/components/code_snippet/code_snippet_example_1.dart';
 import 'package:docs/pages/docs/components/code_snippet/code_snippet_tile.dart';
 import 'package:docs/pages/docs/components/collapsible/collapsible_tile.dart';
 import 'package:docs/pages/docs/components/color_picker/color_picker_tile.dart';
-import 'package:docs/pages/docs/components/command/command_example_1.dart';
 import 'package:docs/pages/docs/components/command/command_tile.dart';
 import 'package:docs/pages/docs/components/context_menu/context_menu_tile.dart';
 import 'package:docs/pages/docs/components/date_picker/date_picker_tile.dart';
 import 'package:docs/pages/docs/components/dialog/dialog_tile.dart';
-import 'package:docs/pages/docs/components/divider/divider_example_3.dart';
 import 'package:docs/pages/docs/components/divider/divider_tile.dart';
 import 'package:docs/pages/docs/components/drawer/drawer_tile.dart';
 import 'package:docs/pages/docs/components/dropdown_menu/dropdown_menu_tile.dart';
@@ -41,49 +34,37 @@ import 'package:docs/pages/docs/components/input_otp/input_otp_tile.dart';
 import 'package:docs/pages/docs/components/menubar/menubar_tile.dart';
 import 'package:docs/pages/docs/components/navigation_menu/navigation_menu_tile.dart';
 import 'package:docs/pages/docs/components/number_ticker/number_ticker_tile.dart';
-import 'package:docs/pages/docs/components/pagination/pagination_example_1.dart';
 import 'package:docs/pages/docs/components/pagination/pagination_tile.dart';
 import 'package:docs/pages/docs/components/phone_input/phone_input_tile.dart';
 import 'package:docs/pages/docs/components/popover/popover_tile.dart';
 import 'package:docs/pages/docs/components/progress/progress_tile.dart';
 import 'package:docs/pages/docs/components/radio_group/radio_group_tile.dart';
 import 'package:docs/pages/docs/components/repeated_animation_builder/repeated_animation_builder_tile.dart';
-import 'package:docs/pages/docs/components/resizable/resizable_example_3.dart';
 import 'package:docs/pages/docs/components/resizable/resizable_tile.dart';
 import 'package:docs/pages/docs/components/select/select_tile.dart';
 import 'package:docs/pages/docs/components/sheet/sheet_tile.dart';
 import 'package:docs/pages/docs/components/skeleton/skeleton_tile.dart';
 import 'package:docs/pages/docs/components/slider/slider_tile.dart';
 import 'package:docs/pages/docs/components/star_rating/star_rating_tile.dart';
-import 'package:docs/pages/docs/components/stepper/stepper_example_2.dart';
 import 'package:docs/pages/docs/components/stepper/stepper_tile.dart';
 import 'package:docs/pages/docs/components/steps/steps_tile.dart';
 import 'package:docs/pages/docs/components/switch/switch_tile.dart';
 import 'package:docs/pages/docs/components/tab_list/tab_list_tile.dart';
 import 'package:docs/pages/docs/components/tabs/tabs_tile.dart';
-import 'package:docs/pages/docs/components/text_area/text_area_example_3.dart';
 import 'package:docs/pages/docs/components/text_area/text_area_tile.dart';
 import 'package:docs/pages/docs/components/time_picker/time_picker_tile.dart';
-import 'package:docs/pages/docs/components/timeline/timeline_example_1.dart';
 import 'package:docs/pages/docs/components/timeline/timeline_tile.dart';
 import 'package:docs/pages/docs/components/toast/toast_tile.dart';
-import 'package:docs/pages/docs/components/toggle/toggle_example_2.dart';
 import 'package:docs/pages/docs/components/toggle/toggle_tile.dart';
 import 'package:docs/pages/docs/components/tooltip/tooltip_tile.dart';
 import 'package:docs/pages/docs/components/tracker/tracker_tile.dart';
-import 'package:docs/pages/docs/components/tree/tree_example_1.dart';
 import 'package:docs/pages/docs/components/tree/tree_tile.dart';
 import 'package:docs/pages/docs_page.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-
-import 'components/form/form_example_1.dart';
-import 'components/input_otp/input_otp_example_2.dart';
-import 'components/tracker/tracker_example_1.dart';
 
 // Missing component tiles
 import 'components/app_bar/app_bar_tile.dart';
@@ -132,23 +113,8 @@ class _ComponentsPageState extends State<ComponentsPage> {
   final OnThisPage dataDisplayKey = OnThisPage();
   final OnThisPage utilitiesKey = OnThisPage();
 
-  Widget _buildToast() {
-    return Card(
-      child: Basic(
-        title: const Text('Event has been created'),
-        subtitle: const Text('Sunday, July 07, 2024 at 12:00 PM'),
-        trailing: PrimaryButton(
-            size: ButtonSize.small,
-            onPressed: () {},
-            child: const Text('Undo')),
-        trailingAlignment: Alignment.center,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Data.inherit(
       data: kComponentsMode,
       child: DocsPage(

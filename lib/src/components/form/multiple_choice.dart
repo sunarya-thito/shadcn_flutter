@@ -12,7 +12,8 @@ class MultipleChoiceTheme {
   /// non-null parameters.
   MultipleChoiceTheme copyWith({ValueGetter<bool?>? allowUnselect}) {
     return MultipleChoiceTheme(
-      allowUnselect: allowUnselect == null ? this.allowUnselect : allowUnselect(),
+      allowUnselect:
+          allowUnselect == null ? this.allowUnselect : allowUnselect(),
     );
   }
 
@@ -224,7 +225,7 @@ class MultipleAnswer<T> extends StatefulWidget {
   final Iterable<T>? value;
   final ValueChanged<Iterable<T>?>? onChanged;
   final bool? enabled;
-  final bool allowUnselect;
+  final bool? allowUnselect;
 
   const MultipleAnswer({
     super.key,

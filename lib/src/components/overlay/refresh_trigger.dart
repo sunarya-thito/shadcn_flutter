@@ -4,30 +4,63 @@ import 'dart:math';
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+typedef RefreshIndicatorBuilder = Widget Function(
+    BuildContext context, RefreshTriggerStage stage);
+
+typedef FutureVoidCallback = Future<void> Function();
+
+/// Theme configuration for [RefreshTrigger].
+///
+/// Example usage:
+/// ```dart
+/// ComponentTheme(
+///   data: RefreshTriggerTheme(
+///     minExtent: 100.0,
+///     maxExtent: 200.0,
+///     curve: Curves.easeInOut,
+///     completeDuration: Duration(milliseconds: 800),
+///   ),
+///   child: RefreshTrigger(
+///     onRefresh: () async {
+///       // Refresh logic here
+///     },
+///     child: ListView(
+///       children: [
+///         // List items
+///       ],
+///     ),
+///   ),
+/// )
+/// ```
 class RefreshTriggerTheme {
+  /// Minimum pull extent required to trigger refresh.
   final double? minExtent;
+
+  /// Maximum pull extent allowed.
   final double? maxExtent;
-  final Axis? direction;
-  final bool? reverse;
+
+  /// Builder for the refresh indicator.
   final RefreshIndicatorBuilder? indicatorBuilder;
+
+  /// Animation curve for the refresh trigger.
   final Curve? curve;
+
+  /// Duration for the completion animation.
   final Duration? completeDuration;
 
+  /// Creates a [RefreshTriggerTheme].
   const RefreshTriggerTheme({
     this.minExtent,
     this.maxExtent,
-    this.direction,
-    this.reverse,
     this.indicatorBuilder,
     this.curve,
     this.completeDuration,
   });
 
+  /// Creates a copy of this theme but with the given fields replaced.
   RefreshTriggerTheme copyWith({
     ValueGetter<double?>? minExtent,
     ValueGetter<double?>? maxExtent,
-    ValueGetter<Axis?>? direction,
-    ValueGetter<bool?>? reverse,
     ValueGetter<RefreshIndicatorBuilder?>? indicatorBuilder,
     ValueGetter<Curve?>? curve,
     ValueGetter<Duration?>? completeDuration,
@@ -35,25 +68,20 @@ class RefreshTriggerTheme {
     return RefreshTriggerTheme(
       minExtent: minExtent == null ? this.minExtent : minExtent(),
       maxExtent: maxExtent == null ? this.maxExtent : maxExtent(),
-      direction: direction == null ? this.direction : direction(),
-      reverse: reverse == null ? this.reverse : reverse(),
-      indicatorBuilder: indicatorBuilder == null
-          ? this.indicatorBuilder
-          : indicatorBuilder(),
+      indicatorBuilder:
+          indicatorBuilder == null ? this.indicatorBuilder : indicatorBuilder(),
       curve: curve == null ? this.curve : curve(),
-      completeDuration: completeDuration == null
-          ? this.completeDuration
-          : completeDuration(),
+      completeDuration:
+          completeDuration == null ? this.completeDuration : completeDuration(),
     );
   }
 
   @override
   bool operator ==(Object other) {
+    if (identical(this, other)) return true;
     return other is RefreshTriggerTheme &&
         other.minExtent == minExtent &&
         other.maxExtent == maxExtent &&
-        other.direction == direction &&
-        other.reverse == reverse &&
         other.indicatorBuilder == indicatorBuilder &&
         other.curve == curve &&
         other.completeDuration == completeDuration;
@@ -61,49 +89,62 @@ class RefreshTriggerTheme {
 
   @override
   int get hashCode => Object.hash(
-    minExtent,
-    maxExtent,
-    direction,
-    reverse,
-    indicatorBuilder,
-    curve,
-    completeDuration,
-  );
+      minExtent, maxExtent, indicatorBuilder, curve, completeDuration);
+
+  @override
+  String toString() {
+    return 'RefreshTriggerTheme('
+        'minExtent: $minExtent, '
+        'maxExtent: $maxExtent, '
+        'indicatorBuilder: $indicatorBuilder, '
+        'curve: $curve, '
+        'completeDuration: $completeDuration)';
+  }
 }
 
-typedef RefreshIndicatorBuilder =
-    Widget Function(BuildContext context, RefreshTriggerStage stage);
-
-typedef FutureVoidCallback = Future<void> Function();
-
+/// A widget that provides pull-to-refresh functionality.
+///
+/// The [RefreshTrigger] wraps a scrollable widget and provides pull-to-refresh
+/// functionality. When the user pulls the content beyond the [minExtent],
+/// the [onRefresh] callback is triggered.
+///
+/// You can customize the appearance and behavior using [RefreshTriggerTheme]:
+/// ```dart
+/// ComponentTheme(
+///   data: RefreshTriggerTheme(
+///     minExtent: 100.0,
+///     maxExtent: 200.0,
+///     curve: Curves.bounceOut,
+///   ),
+///   child: RefreshTrigger(...),
+/// )
+/// ```
 class RefreshTrigger extends StatefulWidget {
   static Widget defaultIndicatorBuilder(
-    BuildContext context,
-    RefreshTriggerStage stage,
-  ) {
+      BuildContext context, RefreshTriggerStage stage) {
     return DefaultRefreshIndicator(stage: stage);
   }
 
-  final double minExtent;
+  final double? minExtent;
   final double? maxExtent;
   final FutureVoidCallback? onRefresh;
   final Widget child;
   final Axis direction;
   final bool reverse;
-  final RefreshIndicatorBuilder indicatorBuilder;
-  final Curve curve;
-  final Duration completeDuration;
+  final RefreshIndicatorBuilder? indicatorBuilder;
+  final Curve? curve;
+  final Duration? completeDuration;
 
   const RefreshTrigger({
     super.key,
-    this.minExtent = 75.0,
-    this.maxExtent = 150.0,
+    this.minExtent,
+    this.maxExtent,
     this.onRefresh,
     this.direction = Axis.vertical,
     this.reverse = false,
-    this.indicatorBuilder = defaultIndicatorBuilder,
-    this.curve = Curves.easeOutSine,
-    this.completeDuration = const Duration(milliseconds: 500),
+    this.indicatorBuilder,
+    this.curve,
+    this.completeDuration,
     required this.child,
   });
 
@@ -144,20 +185,19 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
           width: 12.0 * theme.scaling,
           height: 8.0 * theme.scaling,
           child: AnimatedValueBuilder(
-            initialValue: 0.0,
-            value: 1.0,
-            duration: const Duration(milliseconds: 300),
-            curve: const Interval(0.5, 1.0),
-            builder: (context, value, _) {
-              return CustomPaint(
-                painter: AnimatedCheckPainter(
-                  progress: value,
-                  color: theme.colorScheme.foreground,
-                  strokeWidth: 1.5 * theme.scaling,
-                ),
-              );
-            },
-          ),
+              initialValue: 0.0,
+              value: 1.0,
+              duration: const Duration(milliseconds: 300),
+              curve: const Interval(0.5, 1.0),
+              builder: (context, value, _) {
+                return CustomPaint(
+                  painter: AnimatedCheckPainter(
+                    progress: value,
+                    color: theme.colorScheme.foreground,
+                    strokeWidth: 1.5 * theme.scaling,
+                  ),
+                );
+              }),
         ),
       ],
     ).gap(8);
@@ -166,45 +206,43 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
   Widget buildPullingContent(BuildContext context) {
     final localizations = ShadcnLocalizations.of(context);
     return AnimatedBuilder(
-      animation: widget.stage.extent,
-      builder: (context, child) {
-        double angle;
-        if (widget.stage.direction == Axis.vertical) {
-          // 0 -> 1 (0 -> 180)
-          angle = -pi * widget.stage.extentValue.clamp(0, 1);
-        } else {
-          // 0 -> 1 (90 -> 270)
-          angle = -pi / 2 + -pi * widget.stage.extentValue.clamp(0, 1);
-        }
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Transform.rotate(
-              angle: angle,
-              child: const Icon(Icons.arrow_downward),
-            ),
-            Flexible(
-              child: Text(
-                widget.stage.extentValue < 1
-                    ? localizations.refreshTriggerPull
-                    : localizations.refreshTriggerRelease,
+        animation: widget.stage.extent,
+        builder: (context, child) {
+          double angle;
+          if (widget.stage.direction == Axis.vertical) {
+            // 0 -> 1 (0 -> 180)
+            angle = -pi * widget.stage.extentValue.clamp(0, 1);
+          } else {
+            // 0 -> 1 (90 -> 270)
+            angle = -pi / 2 + -pi * widget.stage.extentValue.clamp(0, 1);
+          }
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Transform.rotate(
+                angle: angle,
+                child: const Icon(Icons.arrow_downward),
               ),
-            ),
-            Transform.rotate(
-              angle: angle,
-              child: const Icon(Icons.arrow_downward),
-            ),
-          ],
-        ).gap(8);
-      },
-    );
+              Flexible(
+                  child: Text(widget.stage.extentValue < 1
+                      ? localizations.refreshTriggerPull
+                      : localizations.refreshTriggerRelease)),
+              Transform.rotate(
+                angle: angle,
+                child: const Icon(Icons.arrow_downward),
+              ),
+            ],
+          ).gap(8);
+        });
   }
 
   Widget buildIdleContent(BuildContext context) {
     final localizations = ShadcnLocalizations.of(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: [Flexible(child: Text(localizations.refreshTriggerPull))],
+      children: [
+        Flexible(child: Text(localizations.refreshTriggerPull)),
+      ],
     ).gap(8);
   }
 
@@ -231,10 +269,13 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
         padding: widget.stage.stage == TriggerStage.pulling
             ? const EdgeInsets.all(4) * theme.scaling
             : const EdgeInsets.symmetric(horizontal: 12, vertical: 4) *
-                  theme.scaling,
+                theme.scaling,
         borderRadius: theme.borderRadiusXl,
         child: CrossFadedTransition(
-          child: KeyedSubtree(key: ValueKey(widget.stage.stage), child: child),
+          child: KeyedSubtree(
+            key: ValueKey(widget.stage.stage),
+            child: child,
+          ),
         ),
       ),
     );
@@ -261,63 +302,53 @@ class RefreshTriggerState extends State<RefreshTrigger>
   Future<void>? _currentFuture;
   int _currentFutureCount = 0;
 
-  RefreshTriggerTheme? _theme;
+  // Computed theme values
+  late double _minExtent;
+  late double _maxExtent;
+  late RefreshIndicatorBuilder _indicatorBuilder;
+  late Curve _curve;
+  late Duration _completeDuration;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _theme = ComponentTheme.maybeOf<RefreshTriggerTheme>(context);
+    _updateThemeValues();
   }
 
-  double get _minExtent => styleValue(
-    widgetValue: widget.minExtent,
-    themeValue: _theme?.minExtent,
-    defaultValue: 75.0,
-  );
+  @override
+  void didUpdateWidget(RefreshTrigger oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _updateThemeValues();
+  }
 
-  double? get _maxExtent =>
-      styleValue(widgetValue: widget.maxExtent, themeValue: _theme?.maxExtent);
+  void _updateThemeValues() {
+    final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<RefreshTriggerTheme>(context);
 
-  Axis get _direction => styleValue(
-    widgetValue: widget.direction,
-    themeValue: _theme?.direction,
-    defaultValue: Axis.vertical,
-  );
-
-  bool get _reverse => styleValue(
-    widgetValue: widget.reverse,
-    themeValue: _theme?.reverse,
-    defaultValue: false,
-  );
-
-  RefreshIndicatorBuilder get _indicatorBuilder => styleValue(
-    widgetValue: widget.indicatorBuilder,
-    themeValue: _theme?.indicatorBuilder,
-    defaultValue: RefreshTrigger.defaultIndicatorBuilder,
-  );
-
-  Curve get _curve => styleValue(
-    widgetValue: widget.curve,
-    themeValue: _theme?.curve,
-    defaultValue: Curves.easeOutSine,
-  );
-
-  Duration get _completeDuration => styleValue(
-    widgetValue: widget.completeDuration,
-    themeValue: _theme?.completeDuration,
-    defaultValue: const Duration(milliseconds: 500),
-  );
+    _minExtent = styleValue(
+        widgetValue: widget.minExtent,
+        themeValue: compTheme?.minExtent,
+        defaultValue: 75.0 * theme.scaling);
+    _maxExtent = styleValue(
+        widgetValue: widget.maxExtent,
+        themeValue: compTheme?.maxExtent,
+        defaultValue: 150.0 * theme.scaling);
+    _indicatorBuilder = widget.indicatorBuilder ??
+        compTheme?.indicatorBuilder ??
+        RefreshTrigger.defaultIndicatorBuilder;
+    _curve = widget.curve ?? compTheme?.curve ?? Curves.easeOutSine;
+    _completeDuration = widget.completeDuration ??
+        compTheme?.completeDuration ??
+        const Duration(milliseconds: 500);
+  }
 
   double _calculateSafeExtent(double extent) {
-    if (_reverse) {
+    if (widget.reverse) {
       extent = -extent;
     }
     if (extent > _minExtent) {
       double relativeExtent = extent - _minExtent;
-      double? maxExtent = _maxExtent;
-      if (maxExtent == null) {
-        return _minExtent;
-      }
+      double maxExtent = _maxExtent;
       double diff = (maxExtent - _minExtent) - relativeExtent;
       double diffNormalized = diff / (maxExtent - _minExtent);
       return maxExtent - _decelerateCurve(diffNormalized.clamp(0, 1)) * diff;
@@ -330,10 +361,10 @@ class RefreshTriggerState extends State<RefreshTrigger>
   }
 
   Widget _wrapPositioned(Widget child) {
-    if (_direction == Axis.vertical) {
+    if (widget.direction == Axis.vertical) {
       return Positioned(
-        top: !_reverse ? 0 : null,
-        bottom: !_reverse ? null : 0,
+        top: !widget.reverse ? 0 : null,
+        bottom: !widget.reverse ? null : 0,
         left: 0,
         right: 0,
         child: child,
@@ -342,18 +373,18 @@ class RefreshTriggerState extends State<RefreshTrigger>
       return Positioned(
         top: 0,
         bottom: 0,
-        left: _reverse ? null : 0,
-        right: _reverse ? 0 : null,
+        left: widget.reverse ? null : 0,
+        right: widget.reverse ? 0 : null,
         child: child,
       );
     }
   }
 
   Offset get _offset {
-    if (_direction == Axis.vertical) {
-      return Offset(0, _reverse ? 1 : -1);
+    if (widget.direction == Axis.vertical) {
+      return Offset(0, widget.reverse ? 1 : -1);
     } else {
-      return Offset(_reverse ? 1 : -1, 0);
+      return Offset(widget.reverse ? 1 : -1, 0);
     }
   }
 
@@ -363,7 +394,8 @@ class RefreshTriggerState extends State<RefreshTrigger>
     }
     if (notification is ScrollEndNotification && _scrolling) {
       setState(() {
-        double normalizedExtent = _reverse ? -_currentExtent : _currentExtent;
+        double normalizedExtent =
+            widget.reverse ? -_currentExtent : _currentExtent;
         if (normalizedExtent >= _minExtent) {
           _scrolling = false;
           refresh();
@@ -376,8 +408,7 @@ class RefreshTriggerState extends State<RefreshTrigger>
       final delta = notification.scrollDelta;
       if (delta != null) {
         final axisDirection = notification.metrics.axisDirection;
-        final normalizedDelta =
-            (axisDirection == AxisDirection.down ||
+        final normalizedDelta = (axisDirection == AxisDirection.down ||
                 axisDirection == AxisDirection.right)
             ? -delta
             : delta;
@@ -386,7 +417,8 @@ class RefreshTriggerState extends State<RefreshTrigger>
           if ((forward && _userScrollDirection == ScrollDirection.forward) ||
               (!forward && _userScrollDirection == ScrollDirection.reverse)) {
             setState(() {
-              _currentExtent += _reverse ? -normalizedDelta : normalizedDelta;
+              _currentExtent +=
+                  widget.reverse ? -normalizedDelta : normalizedDelta;
             });
           } else {
             if (_currentExtent >= _minExtent) {
@@ -394,15 +426,16 @@ class RefreshTriggerState extends State<RefreshTrigger>
               refresh();
             } else {
               setState(() {
-                _currentExtent += _reverse ? -normalizedDelta : normalizedDelta;
+                _currentExtent +=
+                    widget.reverse ? -normalizedDelta : normalizedDelta;
               });
             }
           }
         } else if (_stage == TriggerStage.idle &&
-            (_reverse
+            (widget.reverse
                 ? notification.metrics.extentAfter == 0
                 : notification.metrics.extentBefore == 0) &&
-            (_reverse ? -normalizedDelta : normalizedDelta) > 0) {
+            (widget.reverse ? -normalizedDelta : normalizedDelta) > 0) {
           setState(() {
             _currentExtent = 0;
             _scrolling = true;
@@ -414,8 +447,7 @@ class RefreshTriggerState extends State<RefreshTrigger>
       _userScrollDirection = notification.direction;
     } else if (notification is OverscrollNotification) {
       final axisDirection = notification.metrics.axisDirection;
-      final overscroll =
-          (axisDirection == AxisDirection.down ||
+      final overscroll = (axisDirection == AxisDirection.down ||
               axisDirection == AxisDirection.right)
           ? -notification.overscroll
           : notification.overscroll;
@@ -482,13 +514,12 @@ class RefreshTriggerState extends State<RefreshTrigger>
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
       child: AnimatedValueBuilder.animation(
-        value:
-            _stage == TriggerStage.refreshing ||
+        value: _stage == TriggerStage.refreshing ||
                 _stage == TriggerStage.completed
             ? _minExtent
             : _currentExtent,
         duration: _scrolling ? Duration.zero : kDefaultDuration,
-        curve: Curves.easeInOut,
+        curve: _curve,
         builder: (context, animation) {
           return Stack(
             fit: StackFit.passthrough,
@@ -501,36 +532,31 @@ class RefreshTriggerState extends State<RefreshTrigger>
                   RefreshTriggerStage(
                     _stage,
                     tween.animate(animation),
-                    _direction,
-                    _reverse,
+                    widget.direction,
+                    widget.reverse,
                   ),
                 ),
                 builder: (context, child) {
                   return Positioned.fill(
-                    child: ClipRect(
-                      child: Stack(
-                        children: [
-                          _wrapPositioned(
-                            FractionalTranslation(
-                              translation: _offset,
-                              child: Transform.translate(
-                                offset: _direction == Axis.vertical
-                                    ? Offset(
-                                        0,
-                                        _calculateSafeExtent(animation.value),
-                                      )
-                                    : Offset(
-                                        _calculateSafeExtent(animation.value),
-                                        0,
-                                      ),
-                                child: child,
-                              ),
+                      child: ClipRect(
+                    child: Stack(
+                      children: [
+                        _wrapPositioned(
+                          FractionalTranslation(
+                            translation: _offset,
+                            child: Transform.translate(
+                              offset: widget.direction == Axis.vertical
+                                  ? Offset(
+                                      0, _calculateSafeExtent(animation.value))
+                                  : Offset(
+                                      _calculateSafeExtent(animation.value), 0),
+                              child: child,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  );
+                  ));
                 },
               ),
             ],
@@ -541,7 +567,12 @@ class RefreshTriggerState extends State<RefreshTrigger>
   }
 }
 
-enum TriggerStage { idle, pulling, refreshing, completed }
+enum TriggerStage {
+  idle,
+  pulling,
+  refreshing,
+  completed,
+}
 
 class RefreshTriggerStage {
   final TriggerStage stage;
@@ -550,11 +581,7 @@ class RefreshTriggerStage {
   final bool reverse;
 
   const RefreshTriggerStage(
-    this.stage,
-    this.extent,
-    this.direction,
-    this.reverse,
-  );
+      this.stage, this.extent, this.direction, this.reverse);
 
   double get extentValue => extent.value;
 }

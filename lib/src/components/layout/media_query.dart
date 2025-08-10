@@ -55,9 +55,13 @@ class MediaQueryVisibility extends StatelessWidget {
         ComponentTheme.maybeOf<MediaQueryVisibilityTheme>(context);
     final size = mediaQuery.size.width;
     final minWidth = styleValue(
-        widgetValue: this.minWidth, themeValue: compTheme?.minWidth);
+        widgetValue: this.minWidth,
+        themeValue: compTheme?.minWidth,
+        defaultValue: null);
     final maxWidth = styleValue(
-        widgetValue: this.maxWidth, themeValue: compTheme?.maxWidth);
+        widgetValue: this.maxWidth,
+        themeValue: compTheme?.maxWidth,
+        defaultValue: null);
     if (minWidth != null && size < minWidth) {
       return SizedBox(
         child: alternateChild,

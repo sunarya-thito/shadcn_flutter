@@ -65,14 +65,13 @@ class Radio extends StatelessWidget {
         widgetValue: this.borderColor,
         themeValue: compTheme?.borderColor,
         defaultValue: theme.colorScheme.ring);
-    final innerSize = value ? (size - (6 + 2) * theme.scaling) : 0;
+    final innerSize = value ? (size - (6 + 2) * theme.scaling) : 0.0;
     return AnimatedContainer(
       duration: kDefaultDuration,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-            color:
-                focusing ? borderColor : borderColor.withValues(alpha: 0)),
+            color: focusing ? borderColor : borderColor.withValues(alpha: 0)),
       ),
       child: AnimatedContainer(
         duration: kDefaultDuration,

@@ -113,9 +113,7 @@ class Chip extends StatelessWidget {
               : SystemMouseCursors.basic;
         },
         padding: (context, states, value) {
-          final widgetPadding = style?.padding?.call(context, states);
           return styleValue(
-            widgetValue: widgetPadding,
             themeValue: compTheme?.padding,
             defaultValue: EdgeInsets.symmetric(
               horizontal: theme.scaling * 8,

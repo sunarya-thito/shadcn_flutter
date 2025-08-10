@@ -25,8 +25,7 @@ class TextAreaTheme {
       filled: filled == null ? this.filled : filled(),
       border: border == null ? this.border : border(),
       padding: padding == null ? this.padding : padding(),
-      borderRadius:
-          borderRadius == null ? this.borderRadius : borderRadius(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
     );
   }
 
@@ -173,11 +172,14 @@ class _TextAreaState extends State<TextArea> {
         widgetValue: widget.border,
         themeValue: compTheme?.border,
         defaultValue: true);
-    final padding = styleValue<EdgeInsetsGeometry>(
-        widgetValue: widget.padding, themeValue: compTheme?.padding);
-    final borderRadius = styleValue<BorderRadiusGeometry>(
+    final padding = styleValue<EdgeInsetsGeometry?>(
+        widgetValue: widget.padding,
+        themeValue: compTheme?.padding,
+        defaultValue: null);
+    final borderRadius = styleValue<BorderRadiusGeometry?>(
         widgetValue: widget.borderRadius,
-        themeValue: compTheme?.borderRadius);
+        themeValue: compTheme?.borderRadius,
+        defaultValue: null);
     return SizedBox(
         height: _height,
         width: _width,

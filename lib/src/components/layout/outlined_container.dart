@@ -82,18 +82,16 @@ class OutlinedContainerTheme {
     ValueGetter<double?>? surfaceBlur,
   }) {
     return OutlinedContainerTheme(
-      backgroundColor: backgroundColor == null
-          ? this.backgroundColor
-          : backgroundColor(),
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
       borderColor: borderColor == null ? this.borderColor : borderColor(),
       borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
       borderStyle: borderStyle == null ? this.borderStyle : borderStyle(),
       borderWidth: borderWidth == null ? this.borderWidth : borderWidth(),
       boxShadow: boxShadow == null ? this.boxShadow : boxShadow(),
       padding: padding == null ? this.padding : padding(),
-      surfaceOpacity: surfaceOpacity == null
-          ? this.surfaceOpacity
-          : surfaceOpacity(),
+      surfaceOpacity:
+          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
       surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
     );
   }
@@ -115,16 +113,16 @@ class OutlinedContainerTheme {
 
   @override
   int get hashCode => Object.hash(
-    backgroundColor,
-    borderColor,
-    borderRadius,
-    borderStyle,
-    borderWidth,
-    boxShadow,
-    padding,
-    surfaceOpacity,
-    surfaceBlur,
-  );
+        backgroundColor,
+        borderColor,
+        borderRadius,
+        borderStyle,
+        borderWidth,
+        boxShadow,
+        padding,
+        surfaceOpacity,
+        surfaceBlur,
+      );
 }
 
 class OutlinedContainer extends StatefulWidget {
@@ -184,6 +182,7 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
     final double? surfaceOpacity = styleValue(
       themeValue: compTheme?.surfaceOpacity,
       widgetValue: widget.surfaceOpacity,
+      defaultValue: null,
     );
     if (surfaceOpacity != null) {
       backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
@@ -206,14 +205,17 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
     final boxShadow = styleValue<List<BoxShadow>>(
       themeValue: compTheme?.boxShadow,
       widgetValue: widget.boxShadow,
+      defaultValue: [],
     );
     final padding = styleValue<EdgeInsetsGeometry>(
       themeValue: compTheme?.padding,
       widgetValue: widget.padding,
+      defaultValue: EdgeInsets.zero,
     );
-    final surfaceBlur = styleValue<double>(
+    final surfaceBlur = styleValue<double?>(
       themeValue: compTheme?.surfaceBlur,
       widgetValue: widget.surfaceBlur,
+      defaultValue: null,
     );
     Widget childWidget = AnimatedContainer(
       duration: widget.duration ?? Duration.zero,

@@ -23,9 +23,7 @@ class SpinnerTheme {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is SpinnerTheme &&
-        other.color == color &&
-        other.size == size;
+    return other is SpinnerTheme && other.color == color && other.size == size;
   }
 
   @override
@@ -46,7 +44,8 @@ abstract class Spinner extends StatelessWidget {
   /// Resolve spinner color considering theme overrides.
   Color? resolveColor(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<SpinnerTheme>(context);
-    return styleValue(widgetValue: color, themeValue: compTheme?.color);
+    return styleValue(
+        widgetValue: color, themeValue: compTheme?.color, defaultValue: null);
   }
 
   /// Resolve spinner size considering theme overrides and a default value.

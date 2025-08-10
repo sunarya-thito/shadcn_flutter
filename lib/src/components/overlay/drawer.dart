@@ -32,10 +32,8 @@ class DrawerTheme {
     return DrawerTheme(
       surfaceOpacity:
           surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
-      surfaceBlur:
-          surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
-      barrierColor:
-          barrierColor == null ? this.barrierColor : barrierColor(),
+      surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
+      barrierColor: barrierColor == null ? this.barrierColor : barrierColor(),
       showDragHandle:
           showDragHandle == null ? this.showDragHandle : showDragHandle(),
       dragHandleSize:
@@ -53,8 +51,8 @@ class DrawerTheme {
       other.dragHandleSize == dragHandleSize;
 
   @override
-  int get hashCode =>
-      Object.hash(surfaceOpacity, surfaceBlur, barrierColor, showDragHandle, dragHandleSize);
+  int get hashCode => Object.hash(surfaceOpacity, surfaceBlur, barrierColor,
+      showDragHandle, dragHandleSize);
 
   @override
   String toString() =>
@@ -105,7 +103,7 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
         draggable: draggable,
         extraSize: extraSize,
         size: size,
-        showDragHandle: showDragHandle,
+        showDragHandle: showDragHandle ?? true,
         dragHandleSize: dragHandleSize,
         padding: padding,
         borderRadius: borderRadius,

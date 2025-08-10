@@ -879,8 +879,9 @@ class _SliderState extends State<Slider>
                             : (compTheme?.disabledValueColor ??
                                 theme.colorScheme.mutedForeground)),
                     width: focusing ? 2 * scaling : 1 * scaling,
-                    strokeAlign:
-                        focusing ? BorderSide.strokeAlignOutside : null,
+                    strokeAlign: focusing
+                        ? BorderSide.strokeAlignOutside
+                        : BorderSide.strokeAlignInside,
                   ),
                 ),
               ),

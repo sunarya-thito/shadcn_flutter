@@ -102,10 +102,12 @@ class FocusOutline extends StatelessWidget {
     final double? radius = styleValue(
       themeValue: compTheme?.radius,
       widgetValue: this.radius,
+      defaultValue: null,
     );
     final BorderRadiusGeometry? borderRadius = styleValue(
       themeValue: compTheme?.borderRadius,
       widgetValue: this.borderRadius,
+      defaultValue: null,
     );
     final Color color = styleValue(
       defaultValue: Theme.of(context).colorScheme.ring,

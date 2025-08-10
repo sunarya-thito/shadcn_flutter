@@ -126,7 +126,7 @@ class _OverflowMarqueeState extends State<OverflowMarquee>
     final fadePortion = styleValue(
         widgetValue: widget.fadePortion,
         themeValue: compTheme?.fadePortion,
-        defaultValue: 25);
+        defaultValue: 25.0);
     final duration = styleValue(
         widgetValue: widget.duration,
         themeValue: compTheme?.duration,
@@ -138,9 +138,8 @@ class _OverflowMarqueeState extends State<OverflowMarquee>
     final step = styleValue(
         widgetValue: widget.step,
         themeValue: compTheme?.step,
-        defaultValue: 100);
-    final curve =
-        widget.curve ?? compTheme?.curve ?? Curves.linear;
+        defaultValue: 100.0);
+    final curve = widget.curve ?? compTheme?.curve ?? Curves.linear;
     return ClipRect(
       child: _OverflowMarqueeLayout(
         direction: direction,

@@ -72,9 +72,15 @@ class ColorInputTheme {
   }
 
   @override
-  int get hashCode => Object.hash(showAlpha, popoverAlignment,
-      popoverAnchorAlignment, popoverPadding, mode, pickerMode,
-      allowPickFromScreen, showLabel);
+  int get hashCode => Object.hash(
+      showAlpha,
+      popoverAlignment,
+      popoverAnchorAlignment,
+      popoverPadding,
+      mode,
+      pickerMode,
+      allowPickFromScreen,
+      showLabel);
 }
 
 class ColorInputController extends ValueNotifier<ColorDerivative>
@@ -848,33 +854,36 @@ class _ColorInputSetState extends State<ColorInputSet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Tabs(
-                index: _tabIndex,
-                onChanged: (value) {
-                  setState(() {
-                    _tabIndex = value;
-                  });
-                },
-                children: [
-                  // Text(localizations.colorPickerTabRGB),
-                  // Text(localizations.colorPickerTabHSL),
-                  // Text(localizations.colorPickerTabHSV),
-                  // if (widget.storage != null)
-                  //   Text(localizations.colorPickerTabRecent),
-                  TabItem(
-                    child: Text(localizations.colorPickerTabRGB),
-                  ),
-                  TabItem(
-                    child: Text(localizations.colorPickerTabHSL),
-                  ),
-                  TabItem(
-                    child: Text(localizations.colorPickerTabHSV),
-                  ),
-                  if (widget.storage != null)
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Tabs(
+                  index: _tabIndex,
+                  onChanged: (value) {
+                    setState(() {
+                      _tabIndex = value;
+                    });
+                  },
+                  children: [
+                    // Text(localizations.colorPickerTabRGB),
+                    // Text(localizations.colorPickerTabHSL),
+                    // Text(localizations.colorPickerTabHSV),
+                    // if (widget.storage != null)
+                    //   Text(localizations.colorPickerTabRecent),
                     TabItem(
-                      child: Text(localizations.colorPickerTabRecent),
+                      child: Text(localizations.colorPickerTabRGB),
                     ),
-                ]),
+                    TabItem(
+                      child: Text(localizations.colorPickerTabHSL),
+                    ),
+                    TabItem(
+                      child: Text(localizations.colorPickerTabHSV),
+                    ),
+                    if (widget.storage != null)
+                      TabItem(
+                        child: Text(localizations.colorPickerTabRecent),
+                      ),
+                  ]),
+            ),
             Gap(theme.scaling * 16),
             _buildContent(context, theme, constraints.maxWidth),
           ],
@@ -951,7 +960,7 @@ class ColorPickerSet extends StatefulWidget {
   final ColorDerivative color;
   final ValueChanged<ColorDerivative>? onColorChanged;
   final ValueChanged<ColorDerivative>? onColorChangeEnd;
-  final bool showAlpha;
+  final bool? showAlpha;
   final VoidCallback? onPickFromScreen;
   final ColorPickerMode mode;
 
@@ -960,7 +969,7 @@ class ColorPickerSet extends StatefulWidget {
     required this.color,
     this.onColorChanged,
     this.onColorChangeEnd,
-    this.showAlpha = true,
+    this.showAlpha,
     this.mode = ColorPickerMode.rgb,
     this.onPickFromScreen,
   });
@@ -985,7 +994,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
     super.initState();
     ColorDerivative color = widget.color;
     var rgbColor = color.toColor();
-    if (widget.showAlpha) {
+    if (widget.showAlpha ?? true) {
       _hexController.text = '#${rgbColor.value.toRadixString(16)}';
     } else {
       _hexController.text = '#${rgbColor.value.toRadixString(16).substring(2)}';
@@ -1020,7 +1029,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
     if (oldWidget.color != widget.color || oldWidget.mode != widget.mode) {
       ColorDerivative color = widget.color;
       var rgbColor = color.toColor();
-      if (widget.showAlpha) {
+      if (widget.showAlpha ?? true) {
         _hexController.text = '#${rgbColor.value.toRadixString(16)}';
       } else {
         _hexController.text =
@@ -1059,7 +1068,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
     if (a.isEmpty || b.isEmpty || c.isEmpty) {
       return;
     }
-    if (widget.showAlpha && alpha.isEmpty) {
+    if ((widget.showAlpha ?? true) && alpha.isEmpty) {
       return;
     }
     double aValue = double.tryParse(a) ?? 0;
@@ -1252,9 +1261,9 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                           ),
                   ),
                 ),
-                if (widget.showAlpha) Gap(theme.scaling * 16),
+                if (widget.showAlpha ?? true) Gap(theme.scaling * 16),
                 // alpha
-                if (widget.showAlpha)
+                if (widget.showAlpha ?? true)
                   SizedBox(
                     height: 32 * theme.scaling,
                     child: Container(
@@ -1321,7 +1330,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                       color = Color(int.parse(hex, radix: 16));
                     } else {
                       color = widget.color.toColor();
-                      if (widget.showAlpha) {
+                      if (widget.showAlpha ?? true) {
                         _hexController.text =
                             '#${color.value.toRadixString(16)}';
                       } else {
@@ -1391,7 +1400,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                           ],
                         ),
                       ),
-                      if (widget.showAlpha)
+                      if (widget.showAlpha ?? true)
                         _wrapTextField(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1426,7 +1435,7 @@ class MiniColorPickerSet extends StatefulWidget {
   final ColorDerivative color;
   final ValueChanged<ColorDerivative>? onColorChanged;
   final ValueChanged<ColorDerivative>? onColorChangeEnd;
-  final bool showAlpha;
+  final bool? showAlpha;
   final VoidCallback? onPickFromScreen;
   final ColorPickerMode mode;
 
@@ -1435,7 +1444,7 @@ class MiniColorPickerSet extends StatefulWidget {
     required this.color,
     this.onColorChanged,
     this.onColorChangeEnd,
-    this.showAlpha = true,
+    this.showAlpha,
     this.mode = ColorPickerMode.rgb,
     this.onPickFromScreen,
   });
@@ -1551,9 +1560,9 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
                     ),
             ),
           ),
-          if (widget.showAlpha) Gap(theme.scaling * 16),
+          if (widget.showAlpha ?? true) Gap(theme.scaling * 16),
           // alpha
-          if (widget.showAlpha)
+          if (widget.showAlpha ?? true)
             SizedBox(
               height: 32 * theme.scaling,
               child: Container(
@@ -1620,7 +1629,7 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
 class ColorInput extends StatelessWidget {
   final ColorDerivative color;
   final ValueChanged<ColorDerivative>? onChanged;
-  final bool showAlpha;
+  final bool? showAlpha;
   final AlignmentGeometry? popoverAlignment;
   final AlignmentGeometry? popoverAnchorAlignment;
   final EdgeInsetsGeometry? popoverPadding;
@@ -1656,32 +1665,35 @@ class ColorInput extends StatelessWidget {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<ColorInputTheme>(context);
     final showAlpha = styleValue<bool>(
-        widgetValue: widget.showAlpha,
+        widgetValue: this.showAlpha,
         themeValue: compTheme?.showAlpha,
         defaultValue: true);
     final popoverAlignment = styleValue<AlignmentGeometry>(
-        widgetValue: widget.popoverAlignment,
-        themeValue: compTheme?.popoverAlignment);
+        widgetValue: this.popoverAlignment,
+        themeValue: compTheme?.popoverAlignment,
+        defaultValue: AlignmentDirectional.topStart);
     final popoverAnchorAlignment = styleValue<AlignmentGeometry>(
-        widgetValue: widget.popoverAnchorAlignment,
-        themeValue: compTheme?.popoverAnchorAlignment);
+        widgetValue: this.popoverAnchorAlignment,
+        themeValue: compTheme?.popoverAnchorAlignment,
+        defaultValue: AlignmentDirectional.bottomStart);
     final popoverPadding = styleValue<EdgeInsetsGeometry>(
-        widgetValue: widget.popoverPadding,
-        themeValue: compTheme?.popoverPadding);
+        widgetValue: this.popoverPadding,
+        themeValue: compTheme?.popoverPadding,
+        defaultValue: EdgeInsets.all(theme.scaling * 16));
     final mode = styleValue(
-        widgetValue: widget.mode,
+        widgetValue: this.mode,
         themeValue: compTheme?.mode,
         defaultValue: PromptMode.dialog);
     final pickerMode = styleValue(
-        widgetValue: widget.pickerMode,
+        widgetValue: this.pickerMode,
         themeValue: compTheme?.pickerMode,
         defaultValue: ColorPickerMode.rgb);
     final allowPickFromScreen = styleValue<bool>(
-        widgetValue: widget.allowPickFromScreen,
+        widgetValue: this.allowPickFromScreen,
         themeValue: compTheme?.allowPickFromScreen,
         defaultValue: true);
     final showLabel = styleValue<bool>(
-        widgetValue: widget.showLabel,
+        widgetValue: this.showLabel,
         themeValue: compTheme?.showLabel,
         defaultValue: false);
     return ObjectFormField(

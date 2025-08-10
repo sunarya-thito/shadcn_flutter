@@ -28,9 +28,8 @@ class HoverCardTheme {
     return HoverCardTheme(
       debounce: debounce == null ? this.debounce : debounce(),
       wait: wait == null ? this.wait : wait(),
-      popoverAlignment: popoverAlignment == null
-          ? this.popoverAlignment
-          : popoverAlignment(),
+      popoverAlignment:
+          popoverAlignment == null ? this.popoverAlignment : popoverAlignment(),
       anchorAlignment:
           anchorAlignment == null ? this.anchorAlignment : anchorAlignment(),
       popoverOffset:
@@ -134,7 +133,8 @@ class _HoverCardState extends State<HoverCard> {
         defaultValue: Alignment.topCenter);
     final anchorAlignment = styleValue(
         widgetValue: widget.anchorAlignment,
-        themeValue: compTheme?.anchorAlignment);
+        themeValue: compTheme?.anchorAlignment,
+        defaultValue: Alignment.bottomCenter);
     final popoverOffset = styleValue(
         widgetValue: widget.popoverOffset,
         themeValue: compTheme?.popoverOffset,
@@ -144,7 +144,7 @@ class _HoverCardState extends State<HoverCard> {
         themeValue: compTheme?.behavior,
         defaultValue: HitTestBehavior.deferToChild);
     return MouseRegion(
-      behavior: behavior,
+      hitTestBehavior: behavior,
       onEnter: (_) {
         int count = ++_hoverCount;
         Future.delayed(wait, () {

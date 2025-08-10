@@ -22,11 +22,9 @@ class TabPaneTheme {
     ValueGetter<double?>? barHeight,
   }) {
     return TabPaneTheme(
-      borderRadius:
-          borderRadius == null ? this.borderRadius : borderRadius(),
-      backgroundColor: backgroundColor == null
-          ? this.backgroundColor
-          : backgroundColor(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
       border: border == null ? this.border : border(),
       barHeight: barHeight == null ? this.barHeight : barHeight(),
     );
@@ -67,7 +65,8 @@ class TabPane<T> extends StatefulWidget {
   final BorderSide? border;
   final Widget child;
   final double? barHeight;
-  const TabPane({super.key, 
+  const TabPane({
+    super.key,
     // required this.children,
     required this.items,
     required this.itemBuilder,
@@ -169,7 +168,6 @@ class TabPaneState<T> extends State<TabPane<T>> {
             child: OutlinedContainer(
               borderRadius: resolvedBorderRadius,
               backgroundColor: backgroundColor,
-              border: border,
               child: widget.child,
             ),
           ),
@@ -200,8 +198,7 @@ class TabPaneState<T> extends State<TabPane<T>> {
                     endCrossOffset: border?.width ?? 1,
                     controller: _scrollController,
                     child: ClipRect(
-                      clipper:
-                          _ClipRectWithAdjustment(border?.width ?? 1),
+                      clipper: _ClipRectWithAdjustment(border?.width ?? 1),
                       child: SortableLayer(
                         clipBehavior: Clip.none,
                         lock: true,

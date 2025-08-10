@@ -65,8 +65,8 @@ class ResizableDraggerTheme {
   }
 
   @override
-  int get hashCode => Object.hash(
-      color, borderRadius, width, height, iconSize, iconColor);
+  int get hashCode =>
+      Object.hash(color, borderRadius, width, height, iconSize, iconColor);
 }
 
 /// A Horizontal dragger that can be used as a divider between resizable panes.
@@ -100,12 +100,12 @@ class HorizontalResizableDragger extends StatelessWidget {
         themeValue: compTheme?.iconSize,
         defaultValue: 4 * 2.5 * scaling);
     final iconColor =
-        styleValue(widgetValue: null, themeValue: compTheme?.iconColor);
+        styleValue(themeValue: compTheme?.iconColor, defaultValue: null);
     return Center(
       child: Container(
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(borderRadius),
+          borderRadius: BorderRadius.circular(borderRadius ?? 0),
         ),
         alignment: Alignment.center,
         width: width,
@@ -151,12 +151,12 @@ class VerticalResizableDragger extends StatelessWidget {
         themeValue: compTheme?.iconSize,
         defaultValue: 4 * 2.5 * scaling);
     final iconColor =
-        styleValue(widgetValue: null, themeValue: compTheme?.iconColor);
+        styleValue(themeValue: compTheme?.iconColor, defaultValue: null);
     return Center(
       child: Container(
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(borderRadius),
+          borderRadius: BorderRadius.circular(borderRadius ?? 0),
         ),
         alignment: Alignment.center,
         width: width,

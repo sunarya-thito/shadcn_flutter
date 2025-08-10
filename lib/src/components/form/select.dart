@@ -36,12 +36,10 @@ class SelectTheme {
     ValueGetter<bool?>? autoClosePopover,
   }) {
     return SelectTheme(
-      popupConstraints: popupConstraints == null
-          ? this.popupConstraints
-          : popupConstraints(),
-      popoverAlignment: popoverAlignment == null
-          ? this.popoverAlignment
-          : popoverAlignment(),
+      popupConstraints:
+          popupConstraints == null ? this.popupConstraints : popupConstraints(),
+      popoverAlignment:
+          popoverAlignment == null ? this.popoverAlignment : popoverAlignment(),
       popoverAnchorAlignment: popoverAnchorAlignment == null
           ? this.popoverAnchorAlignment
           : popoverAnchorAlignment(),
@@ -51,9 +49,8 @@ class SelectTheme {
           ? this.disableHoverEffect
           : disableHoverEffect(),
       canUnselect: canUnselect == null ? this.canUnselect : canUnselect(),
-      autoClosePopover: autoClosePopover == null
-          ? this.autoClosePopover
-          : autoClosePopover(),
+      autoClosePopover:
+          autoClosePopover == null ? this.autoClosePopover : autoClosePopover(),
     );
   }
 
@@ -72,15 +69,15 @@ class SelectTheme {
 
   @override
   int get hashCode => Object.hash(
-    popupConstraints,
-    popoverAlignment,
-    popoverAnchorAlignment,
-    borderRadius,
-    padding,
-    disableHoverEffect,
-    canUnselect,
-    autoClosePopover,
-  );
+        popupConstraints,
+        popoverAlignment,
+        popoverAnchorAlignment,
+        borderRadius,
+        padding,
+        disableHoverEffect,
+        canUnselect,
+        autoClosePopover,
+      );
 }
 
 class SelectController<T> extends ValueNotifier<T?>
@@ -243,8 +240,8 @@ class ControlledMultiSelect<T> extends StatelessWidget
   final SelectPopupBuilder popup;
   @override
   SelectValueBuilder<Iterable<T>> get itemBuilder => (context, value) {
-    return MultiSelect._buildItem(multiItemBuilder, context, value);
-  };
+        return MultiSelect._buildItem(multiItemBuilder, context, value);
+      };
   @override
   final SelectValueSelectionHandler<Iterable<T>>? valueSelectionHandler;
   @override
@@ -352,8 +349,8 @@ class SelectItemButton<T> extends StatelessWidget {
       trailing: isSelected
           ? const Icon(LucideIcons.check).iconSmall()
           : hasSelection
-          ? SizedBox(width: 16 * scaling)
-          : null,
+              ? SizedBox(width: 16 * scaling)
+              : null,
       child: child.normal(),
     );
   }
@@ -419,10 +416,10 @@ class SelectLabel extends StatelessWidget {
 
 typedef SelectPopupBuilder = Widget Function(BuildContext context);
 typedef SelectValueBuilder<T> = Widget Function(BuildContext context, T value);
-typedef SelectValueSelectionHandler<T> =
-    T? Function(T? oldValue, Object? value, bool selected);
-typedef SelectValueSelectionPredicate<T> =
-    bool Function(T? value, Object? test);
+typedef SelectValueSelectionHandler<T> = T? Function(
+    T? oldValue, Object? value, bool selected);
+typedef SelectValueSelectionPredicate<T> = bool Function(
+    T? value, Object? test);
 
 T? _defaultSingleSelectValueSelectionHandler<T>(
   T? oldValue,
@@ -581,46 +578,52 @@ class SelectState<T> extends State<Select<T>>
   }
 
   BoxConstraints? get _popupConstraints => styleValue(
-    widgetValue: widget.popupConstraints,
-    themeValue: _theme?.popupConstraints,
-  );
+        widgetValue: widget.popupConstraints,
+        themeValue: _theme?.popupConstraints,
+        defaultValue: null,
+      );
 
   AlignmentGeometry get _popoverAlignment => styleValue(
-    widgetValue: widget.popoverAlignment,
-    themeValue: _theme?.popoverAlignment,
-    defaultValue: Alignment.topCenter,
-  );
+        widgetValue: widget.popoverAlignment,
+        themeValue: _theme?.popoverAlignment,
+        defaultValue: Alignment.topCenter,
+      );
 
   AlignmentGeometry? get _popoverAnchorAlignment => styleValue(
-    widgetValue: widget.popoverAnchorAlignment,
-    themeValue: _theme?.popoverAnchorAlignment,
-  );
+        widgetValue: widget.popoverAnchorAlignment,
+        themeValue: _theme?.popoverAnchorAlignment,
+        defaultValue: null,
+      );
 
   BorderRadiusGeometry? get _borderRadius => styleValue(
-    widgetValue: widget.borderRadius,
-    themeValue: _theme?.borderRadius,
-  );
+        widgetValue: widget.borderRadius,
+        themeValue: _theme?.borderRadius,
+        defaultValue: null,
+      );
 
-  EdgeInsetsGeometry? get _padding =>
-      styleValue(widgetValue: widget.padding, themeValue: _theme?.padding);
+  EdgeInsetsGeometry? get _padding => styleValue(
+        widgetValue: widget.padding,
+        themeValue: _theme?.padding,
+        defaultValue: null,
+      );
 
   bool get _disableHoverEffect => styleValue(
-    widgetValue: widget.disableHoverEffect,
-    themeValue: _theme?.disableHoverEffect,
-    defaultValue: false,
-  );
+        widgetValue: widget.disableHoverEffect,
+        themeValue: _theme?.disableHoverEffect,
+        defaultValue: false,
+      );
 
   bool get _canUnselect => styleValue(
-    widgetValue: widget.canUnselect,
-    themeValue: _theme?.canUnselect,
-    defaultValue: false,
-  );
+        widgetValue: widget.canUnselect,
+        themeValue: _theme?.canUnselect,
+        defaultValue: false,
+      );
 
   bool get _autoClosePopover => styleValue(
-    widgetValue: widget.autoClosePopover,
-    themeValue: _theme?.autoClosePopover,
-    defaultValue: true,
-  );
+        widgetValue: widget.autoClosePopover,
+        themeValue: _theme?.autoClosePopover,
+        defaultValue: true,
+      );
 
   @override
   void initState() {
@@ -695,8 +698,7 @@ class SelectState<T> extends State<Select<T>>
     if (!selected && !_canUnselect) {
       return false;
     }
-    var selectionHandler =
-        widget.valueSelectionHandler ??
+    var selectionHandler = widget.valueSelectionHandler ??
         _defaultSingleSelectValueSelectionHandler;
     var newValue = selectionHandler(widget.value, value, selected);
     widget.onChanged?.call(newValue);
@@ -704,8 +706,7 @@ class SelectState<T> extends State<Select<T>>
   }
 
   bool _isSelected(Object? value) {
-    final selectionPredicate =
-        widget.valueSelectionPredicate ??
+    final selectionPredicate = widget.valueSelectionPredicate ??
         _defaultSingleSelectValueSelectionPredicate;
     return selectionPredicate(widget.value, value);
   }
@@ -726,16 +727,13 @@ class SelectState<T> extends State<Select<T>>
             enabled: enabled,
             disableHoverEffect: _disableHoverEffect,
             focusNode: _focusNode,
-            style:
-                (widget.filled
-                        ? ButtonVariance.secondary
-                        : ButtonVariance.outline)
-                    .copyWith(
-                      decoration: _borderRadius != null
-                          ? _overrideBorderRadius
-                          : null,
-                      padding: _padding != null ? _overridePadding : null,
-                    ),
+            style: (widget.filled
+                    ? ButtonVariance.secondary
+                    : ButtonVariance.outline)
+                .copyWith(
+              decoration: _borderRadius != null ? _overrideBorderRadius : null,
+              padding: _padding != null ? _overridePadding : null,
+            ),
             onPressed: widget.onChanged == null
                 ? null
                 : () {
@@ -744,53 +742,50 @@ class SelectState<T> extends State<Select<T>>
                     GlobalKey popupKey = GlobalKey();
                     _popoverController
                         .show(
-                          context: context,
-                          offset: Offset(0, 8 * scaling),
-                          alignment: _popoverAlignment,
-                          anchorAlignment: _popoverAnchorAlignment,
-                          widthConstraint: widget.popupWidthConstraint,
-                          overlayBarrier: OverlayBarrier(
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 8) *
-                                scaling,
-                            borderRadius: BorderRadius.circular(theme.radiusLg),
-                          ),
-                          builder: (context) {
-                            return ConstrainedBox(
-                              constraints:
-                                  _popupConstraints ??
-                                  BoxConstraints(
-                                    maxHeight:
-                                        Select.kDefaultSelectMaxHeight *
-                                        scaling,
-                                  ),
-                              child: ListenableBuilder(
-                                listenable: _valueNotifier,
-                                builder: (context, _) {
-                                  return Data.inherit(
-                                    key: ValueKey(widget.value),
-                                    data: SelectData(
-                                      enabled: enabled,
-                                      autoClose: _autoClosePopover,
-                                      isSelected: _isSelected,
-                                      onChanged: _onChanged,
-                                      hasSelection: widget.value != null,
-                                    ),
-                                    child: Builder(
-                                      key: popupKey,
-                                      builder: (context) {
-                                        return widget.popup(context);
-                                      },
-                                    ),
-                                  );
-                                },
+                      context: context,
+                      offset: Offset(0, 8 * scaling),
+                      alignment: _popoverAlignment,
+                      anchorAlignment: _popoverAnchorAlignment,
+                      widthConstraint: widget.popupWidthConstraint,
+                      overlayBarrier: OverlayBarrier(
+                        padding:
+                            const EdgeInsets.symmetric(vertical: 8) * scaling,
+                        borderRadius: BorderRadius.circular(theme.radiusLg),
+                      ),
+                      builder: (context) {
+                        return ConstrainedBox(
+                          constraints: _popupConstraints ??
+                              BoxConstraints(
+                                maxHeight:
+                                    Select.kDefaultSelectMaxHeight * scaling,
                               ),
-                            );
-                          },
-                        )
+                          child: ListenableBuilder(
+                            listenable: _valueNotifier,
+                            builder: (context, _) {
+                              return Data.inherit(
+                                key: ValueKey(widget.value),
+                                data: SelectData(
+                                  enabled: enabled,
+                                  autoClose: _autoClosePopover,
+                                  isSelected: _isSelected,
+                                  onChanged: _onChanged,
+                                  hasSelection: widget.value != null,
+                                ),
+                                child: Builder(
+                                  key: popupKey,
+                                  builder: (context) {
+                                    return widget.popup(context);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    )
                         .then((value) {
-                          _focusNode.requestFocus();
-                        });
+                      _focusNode.requestFocus();
+                    });
                   },
             child: WidgetStatesProvider.boundary(
               child: Row(
@@ -805,8 +800,7 @@ class SelectState<T> extends State<Select<T>>
                       hasSelection: widget.value != null,
                     ),
                     child: Expanded(
-                      child:
-                          widget.value != null &&
+                      child: widget.value != null &&
                               (widget.showValuePredicate?.call(
                                     widget.value as T,
                                   ) ??
@@ -872,7 +866,8 @@ class MultiSelectChip extends StatelessWidget {
 
 class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   @override
-  final ValueChanged<Iterable<T>?>? onChanged; // if null, then it's a disabled combobox
+  final ValueChanged<Iterable<T>?>?
+      onChanged; // if null, then it's a disabled combobox
   @override
   final Widget? placeholder; // placeholder when value is null
   @override
@@ -905,8 +900,8 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final SelectPopupBuilder popup;
   @override
   SelectValueBuilder<Iterable<T>> get itemBuilder => (context, value) {
-    return _buildItem(multiItemBuilder, context, value);
-  };
+        return _buildItem(multiItemBuilder, context, value);
+      };
   @override
   final SelectValueSelectionHandler<Iterable<T>>? valueSelectionHandler;
   @override
@@ -1020,11 +1015,10 @@ class SelectData {
       Object.hash(isSelected, onChanged, autoClose, hasSelection, enabled);
 }
 
-typedef SelectItemsBuilder<T> =
-    FutureOr<SelectItemDelegate> Function(
-      BuildContext context,
-      String? searchQuery,
-    );
+typedef SelectItemsBuilder<T> = FutureOr<SelectItemDelegate> Function(
+  BuildContext context,
+  String? searchQuery,
+);
 
 class SelectPopup<T> extends StatefulWidget {
   final SelectItemsBuilder<T>? builder;
@@ -1057,9 +1051,9 @@ class SelectPopup<T> extends StatefulWidget {
     this.enableSearch = true,
     this.errorBuilder,
     this.scrollController,
-  }) : items = null,
-       shrinkWrap = false,
-       disableVirtualization = false;
+  })  : items = null,
+        shrinkWrap = false,
+        disableVirtualization = false;
 
   const SelectPopup({
     super.key,
@@ -1075,9 +1069,9 @@ class SelectPopup<T> extends StatefulWidget {
     this.canUnselect,
     this.scrollController,
     this.shrinkWrap = true,
-  }) : builder = null,
-       enableSearch = false,
-       disableVirtualization = false;
+  })  : builder = null,
+        enableSearch = false,
+        disableVirtualization = false;
 
   const SelectPopup.noVirtualization({
     super.key,
@@ -1092,10 +1086,10 @@ class SelectPopup<T> extends StatefulWidget {
     this.autoClose,
     this.canUnselect,
     this.scrollController,
-  }) : builder = null,
-       enableSearch = false,
-       disableVirtualization = true,
-       shrinkWrap = false;
+  })  : builder = null,
+        enableSearch = false,
+        disableVirtualization = true,
+        shrinkWrap = false;
 
   /// A method used to implement SelectPopupBuilder
   SelectPopup<T> call(BuildContext context) {
@@ -1195,7 +1189,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                 placeholder: widget.searchPlaceholder,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12) *
-                    scaling,
+                        scaling,
               ),
             Flexible(
               child: ListenableBuilder(
@@ -1210,13 +1204,13 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                         future: widget.builder != null
                             ? widget.builder!.call(context, searchQuery)
                             : widget.items != null
-                            ? widget.items!
-                            : SelectItemDelegate.empty,
+                                ? widget.items!
+                                : SelectItemDelegate.empty,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            Widget? loadingBuilder = widget.loadingBuilder
-                                ?.call(context);
+                            Widget? loadingBuilder =
+                                widget.loadingBuilder?.call(context);
                             if (loadingBuilder != null) {
                               return Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -1266,22 +1260,19 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                                           if (widget.disableVirtualization)
                                             SingleChildScrollView(
                                               controller: _scrollController,
-                                              padding:
-                                                  const EdgeInsets.all(4) *
+                                              padding: const EdgeInsets.all(4) *
                                                   scaling,
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.stretch,
                                                 children: [
-                                                  for (
-                                                    var i = 0;
-                                                    i <
-                                                        (data as SelectItemList)
-                                                            .children
-                                                            .length;
-                                                    i++
-                                                  )
+                                                  for (var i = 0;
+                                                      i <
+                                                          (data as SelectItemList)
+                                                              .children
+                                                              .length;
+                                                      i++)
                                                     data.build(context, i),
                                                 ],
                                               ),
@@ -1289,8 +1280,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                                           else
                                             ListView.builder(
                                               controller: _scrollController,
-                                              padding:
-                                                  const EdgeInsets.all(4) *
+                                              padding: const EdgeInsets.all(4) *
                                                   scaling,
                                               itemBuilder: data.build,
                                               shrinkWrap: widget.shrinkWrap,
@@ -1303,7 +1293,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                                               return Visibility(
                                                 visible:
                                                     _scrollController.offset >
-                                                    0,
+                                                        0,
                                                 child: Positioned(
                                                   top: 0,
                                                   left: 0,
@@ -1314,14 +1304,14 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                                                             .translucent,
                                                     debounceDuration:
                                                         const Duration(
-                                                          milliseconds: 16,
-                                                        ),
+                                                      milliseconds: 16,
+                                                    ),
                                                     onHover: () {
                                                       // decrease scroll offset
                                                       var value =
                                                           _scrollController
-                                                              .offset -
-                                                          8;
+                                                                  .offset -
+                                                              8;
                                                       value = value.clamp(
                                                         0.0,
                                                         _scrollController
@@ -1333,8 +1323,8 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                                                       );
                                                     },
                                                     child: Container(
-                                                      padding:
-                                                          const EdgeInsets.symmetric(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
                                                             vertical: 4,
                                                           ) *
                                                           scaling,
@@ -1351,11 +1341,9 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                                             listenable: _scrollController,
                                             builder: (context, child) {
                                               return Visibility(
-                                                visible:
-                                                    _scrollController
+                                                visible: _scrollController
                                                         .hasClients &&
-                                                    _scrollController
-                                                        .position
+                                                    _scrollController.position
                                                         .hasContentDimensions &&
                                                     _scrollController.offset <
                                                         _scrollController
@@ -1371,14 +1359,14 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                                                             .translucent,
                                                     debounceDuration:
                                                         const Duration(
-                                                          milliseconds: 16,
-                                                        ),
+                                                      milliseconds: 16,
+                                                    ),
                                                     onHover: () {
                                                       // increase scroll offset
                                                       var value =
                                                           _scrollController
-                                                              .offset +
-                                                          8;
+                                                                  .offset +
+                                                              8;
                                                       value = value.clamp(
                                                         0.0,
                                                         _scrollController
@@ -1390,8 +1378,8 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                                                       );
                                                     },
                                                     child: Container(
-                                                      padding:
-                                                          const EdgeInsets.symmetric(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
                                                             vertical: 4,
                                                           ) *
                                                           scaling,
@@ -1464,8 +1452,8 @@ class EmptySelectItem extends SelectItemDelegate {
   }
 }
 
-typedef SelectItemWidgetBuilder =
-    Widget Function(BuildContext context, int index);
+typedef SelectItemWidgetBuilder = Widget Function(
+    BuildContext context, int index);
 
 class SelectItemBuilder extends SelectItemDelegate {
   final SelectItemWidgetBuilder builder;

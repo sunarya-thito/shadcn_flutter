@@ -37,9 +37,8 @@ class AutoCompleteTheme {
       popoverAnchorAlignment: popoverAnchorAlignment == null
           ? this.popoverAnchorAlignment
           : popoverAnchorAlignment(),
-      popoverAlignment: popoverAlignment == null
-          ? this.popoverAlignment
-          : popoverAlignment(),
+      popoverAlignment:
+          popoverAlignment == null ? this.popoverAlignment : popoverAlignment(),
       mode: mode == null ? this.mode : mode(),
     );
   }
@@ -169,6 +168,7 @@ class _AutoCompleteState extends State<AutoComplete> {
       _popoverController.close();
     } else if (!_popoverController.hasOpenPopover &&
         _suggestions.value.isNotEmpty) {
+      final compTheme = ComponentTheme.maybeOf<AutoCompleteTheme>(context);
       _selectedIndex.value = -1;
       _popoverController.show(
         context: context,

@@ -60,14 +60,6 @@ class TextFieldTheme {
   int get hashCode => Object.hash(border, borderRadius, filled, padding);
 }
 
-export 'package:flutter/services.dart'
-    show
-        SmartDashesType,
-        SmartQuotesType,
-        TextCapitalization,
-        TextInputAction,
-        TextInputType;
-
 const kTextFieldHeight = 34;
 
 abstract class InputFeatureVisibility {
@@ -348,9 +340,8 @@ abstract class InputFeatureState<T extends InputFeature> {
     final context = inputState!.editableTextKey.currentContext;
     if (context == null) {
       throw FlutterError(
-        'InputFeatureState.context was accessed but editableTextKey.currentContext is null.\n'
-        'This usually means the widget is not mounted. Ensure the widget is mounted before accessing context.'
-      );
+          'InputFeatureState.context was accessed but editableTextKey.currentContext is null.\n'
+          'This usually means the widget is not mounted. Ensure the widget is mounted before accessing context.');
     }
     return context;
   }

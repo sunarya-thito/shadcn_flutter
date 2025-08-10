@@ -30,18 +30,15 @@ class DatePickerTheme {
     return DatePickerTheme(
       mode: mode == null ? this.mode : mode(),
       initialView: initialView == null ? this.initialView : initialView(),
-      initialViewType: initialViewType == null
-          ? this.initialViewType
-          : initialViewType(),
-      popoverAlignment: popoverAlignment == null
-          ? this.popoverAlignment
-          : popoverAlignment(),
+      initialViewType:
+          initialViewType == null ? this.initialViewType : initialViewType(),
+      popoverAlignment:
+          popoverAlignment == null ? this.popoverAlignment : popoverAlignment(),
       popoverAnchorAlignment: popoverAnchorAlignment == null
           ? this.popoverAnchorAlignment
           : popoverAnchorAlignment(),
-      popoverPadding: popoverPadding == null
-          ? this.popoverPadding
-          : popoverPadding(),
+      popoverPadding:
+          popoverPadding == null ? this.popoverPadding : popoverPadding(),
     );
   }
 
@@ -58,13 +55,13 @@ class DatePickerTheme {
 
   @override
   int get hashCode => Object.hash(
-    mode,
-    initialView,
-    initialViewType,
-    popoverAlignment,
-    popoverAnchorAlignment,
-    popoverPadding,
-  );
+        mode,
+        initialView,
+        initialViewType,
+        popoverAlignment,
+        popoverAnchorAlignment,
+        popoverPadding,
+      );
 }
 
 class DatePickerController extends ValueNotifier<DateTime?>
@@ -189,6 +186,7 @@ class DatePicker extends StatelessWidget {
     final resolvedPadding = styleValue(
       widgetValue: popoverPadding,
       themeValue: compTheme?.popoverPadding,
+      defaultValue: null,
     );
     final resolvedInitialView = styleValue(
       widgetValue: initialView,
@@ -223,9 +221,8 @@ class DatePicker extends StatelessWidget {
               ? null
               : CalendarValue.single(handler.value!),
           onChanged: (value) {
-            handler.value = value == null
-                ? null
-                : (value as SingleCalendarValue).date;
+            handler.value =
+                value == null ? null : (value as SingleCalendarValue).date;
           },
           stateBuilder: stateBuilder,
         );

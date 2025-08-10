@@ -98,7 +98,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<CalendarTheme>(context);
     final arrowColor =
-        styleValue(themeValue: compTheme?.arrowIconColor);
+        styleValue(themeValue: compTheme?.arrowIconColor, defaultValue: null);
     final viewMode = widget.viewMode ?? widget.selectionMode;
     if (widget.selectionMode == CalendarSelectionMode.range) {
       return IntrinsicWidth(
@@ -131,9 +131,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                             }
                           });
                         },
-                        child:
-                            Icon(LucideIcons.arrowLeft, color: arrowColor)
-                                .iconXSmall(),
+                        child: Icon(LucideIcons.arrowLeft, color: arrowColor)
+                            .iconXSmall(),
                       ),
                       SizedBox(
                         width: theme.scaling * 16,

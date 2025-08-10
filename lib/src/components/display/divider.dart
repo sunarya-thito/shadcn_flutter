@@ -127,7 +127,7 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
     final thickness = styleValue(
       widgetValue: this.thickness,
       themeValue: compTheme?.thickness,
-      defaultValue: 1,
+      defaultValue: 1.0,
     );
     final height = styleValue(
       widgetValue: this.height,
@@ -137,12 +137,12 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
     final indent = styleValue(
       widgetValue: this.indent,
       themeValue: compTheme?.indent,
-      defaultValue: 0,
+      defaultValue: 0.0,
     );
     final endIndent = styleValue(
       widgetValue: this.endIndent,
       themeValue: compTheme?.endIndent,
-      defaultValue: 0,
+      defaultValue: 0.0,
     );
     final padding = styleValue(
       widgetValue: this.padding,
@@ -180,10 +180,7 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
                       }),
                 ),
               ),
-              child!
-                  .muted()
-                  .small()
-                  .withPadding(padding: padding),
+              child!.muted().small().withPadding(padding: padding),
               Expanded(
                 child: SizedBox(
                   height: height,
