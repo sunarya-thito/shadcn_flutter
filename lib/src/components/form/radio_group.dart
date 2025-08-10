@@ -1,47 +1,97 @@
 import '../../../shadcn_flutter.dart';
 
+/// Theme data for [Radio].
+class RadioTheme {
+  final Color? activeColor;
+  final Color? borderColor;
+  final double? size;
+
+  const RadioTheme({this.activeColor, this.borderColor, this.size});
+
+  RadioTheme copyWith({
+    ValueGetter<Color?>? activeColor,
+    ValueGetter<Color?>? borderColor,
+    ValueGetter<double?>? size,
+  }) {
+    return RadioTheme(
+      activeColor: activeColor == null ? this.activeColor : activeColor(),
+      borderColor: borderColor == null ? this.borderColor : borderColor(),
+      size: size == null ? this.size : size(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is RadioTheme &&
+        other.activeColor == activeColor &&
+        other.borderColor == borderColor &&
+        other.size == size;
+  }
+
+  @override
+  int get hashCode => Object.hash(activeColor, borderColor, size);
+}
+
 class Radio extends StatelessWidget {
   final bool value;
   final bool focusing;
+  final double? size;
+  final Color? activeColor;
+  final Color? borderColor;
 
   const Radio({
     super.key,
     required this.value,
     this.focusing = false,
+    this.size,
+    this.activeColor,
+    this.borderColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<RadioTheme>(context);
+    final size = styleValue<double>(
+        widgetValue: this.size,
+        themeValue: compTheme?.size,
+        defaultValue: 16 * theme.scaling);
+    final activeColor = styleValue<Color>(
+        widgetValue: this.activeColor,
+        themeValue: compTheme?.activeColor,
+        defaultValue: theme.colorScheme.primary);
+    final borderColor = styleValue<Color>(
+        widgetValue: this.borderColor,
+        themeValue: compTheme?.borderColor,
+        defaultValue: theme.colorScheme.ring);
+    final innerSize = value ? (size - (6 + 2) * theme.scaling) : 0;
     return AnimatedContainer(
       duration: kDefaultDuration,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-            color: focusing
-                ? theme.colorScheme.ring
-                : theme.colorScheme.ring.withValues(alpha: 0)),
+            color:
+                focusing ? borderColor : borderColor.withValues(alpha: 0)),
       ),
       child: AnimatedContainer(
         duration: kDefaultDuration,
-        width: 16 * theme.scaling,
-        height: 16 * theme.scaling,
+        width: size,
+        height: size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: theme.colorScheme.primary,
+            color: activeColor,
           ),
         ),
         child: Center(
           child: AnimatedContainer(
             duration: kDefaultDuration,
-            // -6 is the padding of the radio
-            // -2 is the border width of the radio (1 each side)
-            width: value ? (16 - 6 - 2) * theme.scaling : 0,
-            height: value ? (16 - 6 - 2) * theme.scaling : 0,
+            width: innerSize,
+            height: innerSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: theme.colorScheme.primary,
+              color: activeColor,
             ),
           ),
         ),

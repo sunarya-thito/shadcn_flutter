@@ -7,6 +7,76 @@ import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
 
+/// Theme data for [ColorInput].
+class ColorInputTheme {
+  final bool? showAlpha;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
+  final PromptMode? mode;
+  final ColorPickerMode? pickerMode;
+  final bool? allowPickFromScreen;
+  final bool? showLabel;
+
+  const ColorInputTheme({
+    this.showAlpha,
+    this.popoverAlignment,
+    this.popoverAnchorAlignment,
+    this.popoverPadding,
+    this.mode,
+    this.pickerMode,
+    this.allowPickFromScreen,
+    this.showLabel,
+  });
+
+  ColorInputTheme copyWith({
+    ValueGetter<bool?>? showAlpha,
+    ValueGetter<AlignmentGeometry?>? popoverAlignment,
+    ValueGetter<AlignmentGeometry?>? popoverAnchorAlignment,
+    ValueGetter<EdgeInsetsGeometry?>? popoverPadding,
+    ValueGetter<PromptMode?>? mode,
+    ValueGetter<ColorPickerMode?>? pickerMode,
+    ValueGetter<bool?>? allowPickFromScreen,
+    ValueGetter<bool?>? showLabel,
+  }) {
+    return ColorInputTheme(
+      showAlpha: showAlpha == null ? this.showAlpha : showAlpha(),
+      popoverAlignment:
+          popoverAlignment == null ? this.popoverAlignment : popoverAlignment(),
+      popoverAnchorAlignment: popoverAnchorAlignment == null
+          ? this.popoverAnchorAlignment
+          : popoverAnchorAlignment(),
+      popoverPadding:
+          popoverPadding == null ? this.popoverPadding : popoverPadding(),
+      mode: mode == null ? this.mode : mode(),
+      pickerMode: pickerMode == null ? this.pickerMode : pickerMode(),
+      allowPickFromScreen: allowPickFromScreen == null
+          ? this.allowPickFromScreen
+          : allowPickFromScreen(),
+      showLabel: showLabel == null ? this.showLabel : showLabel(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ColorInputTheme &&
+        other.showAlpha == showAlpha &&
+        other.popoverAlignment == popoverAlignment &&
+        other.popoverAnchorAlignment == popoverAnchorAlignment &&
+        other.popoverPadding == popoverPadding &&
+        other.mode == mode &&
+        other.pickerMode == pickerMode &&
+        other.allowPickFromScreen == allowPickFromScreen &&
+        other.showLabel == showLabel;
+  }
+
+  @override
+  int get hashCode => Object.hash(showAlpha, popoverAlignment,
+      popoverAnchorAlignment, popoverPadding, mode, pickerMode,
+      allowPickFromScreen, showLabel);
+}
+
 class ColorInputController extends ValueNotifier<ColorDerivative>
     with ComponentController<ColorDerivative> {
   ColorInputController(super.value);
@@ -26,16 +96,16 @@ class ControlledColorInput extends StatelessWidget
   @override
   final ColorInputController? controller;
 
-  final bool showAlpha;
+  final bool? showAlpha;
   final AlignmentGeometry? popoverAlignment;
   final AlignmentGeometry? popoverAnchorAlignment;
   final EdgeInsetsGeometry? popoverPadding;
   final Widget? placeholder;
-  final PromptMode mode;
-  final ColorPickerMode pickerMode;
+  final PromptMode? mode;
+  final ColorPickerMode? pickerMode;
   final Widget? dialogTitle;
-  final bool allowPickFromScreen;
-  final bool showLabel;
+  final bool? allowPickFromScreen;
+  final bool? showLabel;
   final ColorHistoryStorage? storage;
 
   const ControlledColorInput({
@@ -45,16 +115,16 @@ class ControlledColorInput extends StatelessWidget
     this.onChanged,
     this.controller,
     this.enabled = true,
-    this.showAlpha = true,
+    this.showAlpha,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
     this.placeholder,
-    this.mode = PromptMode.dialog,
-    this.pickerMode = ColorPickerMode.rgb,
+    this.mode,
+    this.pickerMode,
     this.dialogTitle,
-    this.allowPickFromScreen = true,
-    this.showLabel = true,
+    this.allowPickFromScreen,
+    this.showLabel,
     this.storage,
   });
 
@@ -744,7 +814,7 @@ class ColorInputSet extends StatefulWidget {
   final ColorDerivative color;
   final ValueChanged<ColorDerivative>? onChanged;
   final ValueChanged<ColorDerivative>? onColorChangeEnd;
-  final bool showAlpha;
+  final bool? showAlpha;
   final ColorPickerMode mode;
   final ValueChanged<ColorPickerMode>? onModeChanged;
   final VoidCallback? onPickFromScreen;
@@ -1555,27 +1625,27 @@ class ColorInput extends StatelessWidget {
   final AlignmentGeometry? popoverAnchorAlignment;
   final EdgeInsetsGeometry? popoverPadding;
   final Widget? placeholder;
-  final PromptMode mode;
-  final ColorPickerMode pickerMode;
+  final PromptMode? mode;
+  final ColorPickerMode? pickerMode;
   final Widget? dialogTitle;
-  final bool allowPickFromScreen;
-  final bool showLabel;
+  final bool? allowPickFromScreen;
+  final bool? showLabel;
   final ColorHistoryStorage? storage;
   final bool? enabled;
   const ColorInput({
     super.key,
     required this.color,
     this.onChanged,
-    this.showAlpha = true,
+    this.showAlpha,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
     this.placeholder,
-    this.mode = PromptMode.dialog,
-    this.pickerMode = ColorPickerMode.rgb,
+    this.mode,
+    this.pickerMode,
     this.dialogTitle,
-    this.allowPickFromScreen = true,
-    this.showLabel = false,
+    this.allowPickFromScreen,
+    this.showLabel,
     this.storage,
     this.enabled,
   });
@@ -1584,6 +1654,36 @@ class ColorInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<ColorInputTheme>(context);
+    final showAlpha = styleValue<bool>(
+        widgetValue: widget.showAlpha,
+        themeValue: compTheme?.showAlpha,
+        defaultValue: true);
+    final popoverAlignment = styleValue<AlignmentGeometry>(
+        widgetValue: widget.popoverAlignment,
+        themeValue: compTheme?.popoverAlignment);
+    final popoverAnchorAlignment = styleValue<AlignmentGeometry>(
+        widgetValue: widget.popoverAnchorAlignment,
+        themeValue: compTheme?.popoverAnchorAlignment);
+    final popoverPadding = styleValue<EdgeInsetsGeometry>(
+        widgetValue: widget.popoverPadding,
+        themeValue: compTheme?.popoverPadding);
+    final mode = styleValue(
+        widgetValue: widget.mode,
+        themeValue: compTheme?.mode,
+        defaultValue: PromptMode.dialog);
+    final pickerMode = styleValue(
+        widgetValue: widget.pickerMode,
+        themeValue: compTheme?.pickerMode,
+        defaultValue: ColorPickerMode.rgb);
+    final allowPickFromScreen = styleValue<bool>(
+        widgetValue: widget.allowPickFromScreen,
+        themeValue: compTheme?.allowPickFromScreen,
+        defaultValue: true);
+    final showLabel = styleValue<bool>(
+        widgetValue: widget.showLabel,
+        themeValue: compTheme?.showLabel,
+        defaultValue: false);
     return ObjectFormField(
       enabled: enabled,
       dialogTitle: dialogTitle,

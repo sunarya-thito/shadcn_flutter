@@ -2,6 +2,71 @@ import 'package:flutter/foundation.dart';
 
 import '../../../shadcn_flutter.dart';
 
+class DatePickerTheme {
+  final PromptMode? mode;
+  final CalendarView? initialView;
+  final CalendarViewType? initialViewType;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
+
+  const DatePickerTheme({
+    this.mode,
+    this.initialView,
+    this.initialViewType,
+    this.popoverAlignment,
+    this.popoverAnchorAlignment,
+    this.popoverPadding,
+  });
+
+  DatePickerTheme copyWith({
+    ValueGetter<PromptMode?>? mode,
+    ValueGetter<CalendarView?>? initialView,
+    ValueGetter<CalendarViewType?>? initialViewType,
+    ValueGetter<AlignmentGeometry?>? popoverAlignment,
+    ValueGetter<AlignmentGeometry?>? popoverAnchorAlignment,
+    ValueGetter<EdgeInsetsGeometry?>? popoverPadding,
+  }) {
+    return DatePickerTheme(
+      mode: mode == null ? this.mode : mode(),
+      initialView: initialView == null ? this.initialView : initialView(),
+      initialViewType: initialViewType == null
+          ? this.initialViewType
+          : initialViewType(),
+      popoverAlignment: popoverAlignment == null
+          ? this.popoverAlignment
+          : popoverAlignment(),
+      popoverAnchorAlignment: popoverAnchorAlignment == null
+          ? this.popoverAnchorAlignment
+          : popoverAnchorAlignment(),
+      popoverPadding: popoverPadding == null
+          ? this.popoverPadding
+          : popoverPadding(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DatePickerTheme &&
+        other.mode == mode &&
+        other.initialView == initialView &&
+        other.initialViewType == initialViewType &&
+        other.popoverAlignment == popoverAlignment &&
+        other.popoverAnchorAlignment == popoverAnchorAlignment &&
+        other.popoverPadding == popoverPadding;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    mode,
+    initialView,
+    initialViewType,
+    popoverAlignment,
+    popoverAnchorAlignment,
+    popoverPadding,
+  );
+}
+
 class DatePickerController extends ValueNotifier<DateTime?>
     with ComponentController<DateTime?> {
   DatePickerController(super.value);
@@ -19,7 +84,7 @@ class ControlledDatePicker extends StatelessWidget
   final DatePickerController? controller;
 
   final Widget? placeholder;
-  final PromptMode mode;
+  final PromptMode? mode;
   final CalendarView? initialView;
   final AlignmentGeometry? popoverAlignment;
   final AlignmentGeometry? popoverAnchorAlignment;
@@ -35,7 +100,7 @@ class ControlledDatePicker extends StatelessWidget
     this.onChanged,
     this.enabled = true,
     this.placeholder,
-    this.mode = PromptMode.dialog,
+    this.mode,
     this.initialView,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
@@ -76,7 +141,7 @@ class DatePicker extends StatelessWidget {
   final DateTime? value;
   final ValueChanged<DateTime?>? onChanged;
   final Widget? placeholder;
-  final PromptMode mode;
+  final PromptMode? mode;
   final CalendarView? initialView;
   final AlignmentGeometry? popoverAlignment;
   final AlignmentGeometry? popoverAnchorAlignment;
@@ -91,7 +156,7 @@ class DatePicker extends StatelessWidget {
     required this.value,
     this.onChanged,
     this.placeholder,
-    this.mode = PromptMode.dialog,
+    this.mode,
     this.initialView,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
@@ -105,12 +170,42 @@ class DatePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
+    final compTheme = ComponentTheme.maybeOf<DatePickerTheme>(context);
+    final resolvedMode = styleValue(
+      widgetValue: mode,
+      themeValue: compTheme?.mode,
+      defaultValue: PromptMode.dialog,
+    );
+    final resolvedAlignment = styleValue(
+      widgetValue: popoverAlignment,
+      themeValue: compTheme?.popoverAlignment,
+      defaultValue: Alignment.topLeft,
+    );
+    final resolvedAnchorAlignment = styleValue(
+      widgetValue: popoverAnchorAlignment,
+      themeValue: compTheme?.popoverAnchorAlignment,
+      defaultValue: Alignment.bottomLeft,
+    );
+    final resolvedPadding = styleValue(
+      widgetValue: popoverPadding,
+      themeValue: compTheme?.popoverPadding,
+    );
+    final resolvedInitialView = styleValue(
+      widgetValue: initialView,
+      themeValue: compTheme?.initialView,
+      defaultValue: CalendarView.now(),
+    );
+    final resolvedInitialViewType = styleValue(
+      widgetValue: initialViewType,
+      themeValue: compTheme?.initialViewType,
+      defaultValue: CalendarViewType.date,
+    );
     return ObjectFormField(
       dialogTitle: dialogTitle,
       enabled: enabled,
-      popoverAlignment: popoverAlignment,
-      popoverAnchorAlignment: popoverAnchorAlignment,
-      popoverPadding: popoverPadding,
+      popoverAlignment: resolvedAlignment,
+      popoverAnchorAlignment: resolvedAnchorAlignment,
+      popoverPadding: resolvedPadding,
       value: value,
       onChanged: onChanged,
       placeholder: placeholder ?? Text(localizations.placeholderDatePicker),
@@ -118,18 +213,19 @@ class DatePicker extends StatelessWidget {
       builder: (context, value) {
         return Text(localizations.formatDateTime(value, showTime: false));
       },
-      mode: mode,
+      mode: resolvedMode,
       editorBuilder: (context, handler) {
         return DatePickerDialog(
-          initialView: initialView ?? CalendarView.now(),
-          initialViewType: initialViewType ?? CalendarViewType.date,
+          initialView: resolvedInitialView,
+          initialViewType: resolvedInitialViewType,
           selectionMode: CalendarSelectionMode.single,
           initialValue: handler.value == null
               ? null
               : CalendarValue.single(handler.value!),
           onChanged: (value) {
-            handler.value =
-                value == null ? null : (value as SingleCalendarValue).date;
+            handler.value = value == null
+                ? null
+                : (value as SingleCalendarValue).date;
           },
           stateBuilder: stateBuilder,
         );
@@ -212,32 +308,35 @@ class DateRangePicker extends StatelessWidget {
       trailing: const Icon(LucideIcons.calendarRange),
       builder: (context, value) {
         return Text(
-            '${localizations.formatDateTime(value.start, showTime: false)} - ${localizations.formatDateTime(value.end, showTime: false)}');
+          '${localizations.formatDateTime(value.start, showTime: false)} - ${localizations.formatDateTime(value.end, showTime: false)}',
+        );
       },
       editorBuilder: (context, handler) {
         DateTimeRange? value = handler.value;
-        return LayoutBuilder(builder: (context, constraints) {
-          return DatePickerDialog(
-            initialView: initialView,
-            initialViewType: initialViewType ?? CalendarViewType.date,
-            selectionMode: CalendarSelectionMode.range,
-            viewMode: constraints.biggest.width < 500
-                ? CalendarSelectionMode.single
-                : CalendarSelectionMode.range,
-            initialValue: value == null
-                ? null
-                : CalendarValue.range(value.start, value.end),
-            onChanged: (value) {
-              if (value == null) {
-                handler.value = null;
-              } else {
-                final range = value.toRange();
-                handler.value = DateTimeRange(range.start, range.end);
-              }
-            },
-            stateBuilder: stateBuilder,
-          );
-        });
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return DatePickerDialog(
+              initialView: initialView,
+              initialViewType: initialViewType ?? CalendarViewType.date,
+              selectionMode: CalendarSelectionMode.range,
+              viewMode: constraints.biggest.width < 500
+                  ? CalendarSelectionMode.single
+                  : CalendarSelectionMode.range,
+              initialValue: value == null
+                  ? null
+                  : CalendarValue.range(value.start, value.end),
+              onChanged: (value) {
+                if (value == null) {
+                  handler.value = null;
+                } else {
+                  final range = value.toRange();
+                  handler.value = DateTimeRange(range.start, range.end);
+                }
+              },
+              stateBuilder: stateBuilder,
+            );
+          },
+        );
       },
     );
   }

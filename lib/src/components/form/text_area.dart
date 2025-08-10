@@ -1,11 +1,54 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Theme data for [TextArea].
+class TextAreaTheme {
+  final bool? filled;
+  final bool? border;
+  final EdgeInsetsGeometry? padding;
+  final BorderRadiusGeometry? borderRadius;
+
+  const TextAreaTheme({
+    this.filled,
+    this.border,
+    this.padding,
+    this.borderRadius,
+  });
+
+  TextAreaTheme copyWith({
+    ValueGetter<bool?>? filled,
+    ValueGetter<bool?>? border,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+    ValueGetter<BorderRadiusGeometry?>? borderRadius,
+  }) {
+    return TextAreaTheme(
+      filled: filled == null ? this.filled : filled(),
+      border: border == null ? this.border : border(),
+      padding: padding == null ? this.padding : padding(),
+      borderRadius:
+          borderRadius == null ? this.borderRadius : borderRadius(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is TextAreaTheme &&
+        other.filled == filled &&
+        other.border == border &&
+        other.padding == padding &&
+        other.borderRadius == borderRadius;
+  }
+
+  @override
+  int get hashCode => Object.hash(filled, border, padding, borderRadius);
+}
+
 class TextArea extends StatefulWidget {
   final TextEditingController? controller;
-  final bool filled;
+  final bool? filled;
   final Widget? placeholder;
-  final bool border;
+  final bool? border;
   final Widget? leading;
   final Widget? trailing;
   final EdgeInsetsGeometry? padding;
@@ -54,9 +97,9 @@ class TextArea extends StatefulWidget {
     this.onHeightChanged,
     this.onWidthChanged,
     this.controller,
-    this.filled = false,
+    this.filled,
     this.placeholder,
-    this.border = true,
+    this.border,
     this.leading,
     this.trailing,
     this.padding,
@@ -121,6 +164,20 @@ class _TextAreaState extends State<TextArea> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<TextAreaTheme>(context);
+    final filled = styleValue<bool>(
+        widgetValue: widget.filled,
+        themeValue: compTheme?.filled,
+        defaultValue: false);
+    final border = styleValue<bool>(
+        widgetValue: widget.border,
+        themeValue: compTheme?.border,
+        defaultValue: true);
+    final padding = styleValue<EdgeInsetsGeometry>(
+        widgetValue: widget.padding, themeValue: compTheme?.padding);
+    final borderRadius = styleValue<BorderRadiusGeometry>(
+        widgetValue: widget.borderRadius,
+        themeValue: compTheme?.borderRadius);
     return SizedBox(
         height: _height,
         width: _width,
@@ -145,13 +202,13 @@ class _TextAreaState extends State<TextArea> {
                 maxLines: null,
                 minLines: null,
                 textAlign: widget.textAlign,
-                border: widget.border,
-                filled: widget.filled,
+                border: border,
+                filled: filled,
                 placeholder: widget.placeholder,
                 leading: widget.leading,
                 trailing: widget.trailing,
-                padding: widget.padding,
-                borderRadius: widget.borderRadius,
+                padding: padding,
+                borderRadius: borderRadius,
                 textAlignVertical: widget.textAlignVertical,
                 undoController: widget.undoController,
                 onChanged: widget.onChanged,

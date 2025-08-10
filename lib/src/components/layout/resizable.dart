@@ -5,6 +5,70 @@ import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/resizer.dart';
 
+/// Theme for [HorizontalResizableDragger] and [VerticalResizableDragger].
+class ResizableDraggerTheme {
+  /// Background color of the dragger.
+  final Color? color;
+
+  /// Border radius of the dragger.
+  final double? borderRadius;
+
+  /// Width of the dragger.
+  final double? width;
+
+  /// Height of the dragger.
+  final double? height;
+
+  /// Icon size inside the dragger.
+  final double? iconSize;
+
+  /// Icon color inside the dragger.
+  final Color? iconColor;
+
+  const ResizableDraggerTheme({
+    this.color,
+    this.borderRadius,
+    this.width,
+    this.height,
+    this.iconSize,
+    this.iconColor,
+  });
+
+  ResizableDraggerTheme copyWith({
+    ValueGetter<Color?>? color,
+    ValueGetter<double?>? borderRadius,
+    ValueGetter<double?>? width,
+    ValueGetter<double?>? height,
+    ValueGetter<double?>? iconSize,
+    ValueGetter<Color?>? iconColor,
+  }) {
+    return ResizableDraggerTheme(
+      color: color == null ? this.color : color(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
+      width: width == null ? this.width : width(),
+      height: height == null ? this.height : height(),
+      iconSize: iconSize == null ? this.iconSize : iconSize(),
+      iconColor: iconColor == null ? this.iconColor : iconColor(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ResizableDraggerTheme &&
+        other.color == color &&
+        other.borderRadius == borderRadius &&
+        other.width == width &&
+        other.height == height &&
+        other.iconSize == iconSize &&
+        other.iconColor == iconColor;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      color, borderRadius, width, height, iconSize, iconColor);
+}
+
 /// A Horizontal dragger that can be used as a divider between resizable panes.
 class HorizontalResizableDragger extends StatelessWidget {
   /// Creates a [HorizontalResizableDragger].
@@ -14,18 +78,42 @@ class HorizontalResizableDragger extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<ResizableDraggerTheme>(context);
+    final color = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.color,
+        defaultValue: theme.colorScheme.border);
+    final borderRadius = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.borderRadius,
+        defaultValue: theme.radiusSm);
+    final width = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.width,
+        defaultValue: 3 * 4 * scaling);
+    final height = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.height,
+        defaultValue: 4 * 4 * scaling);
+    final iconSize = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.iconSize,
+        defaultValue: 4 * 2.5 * scaling);
+    final iconColor =
+        styleValue(widgetValue: null, themeValue: compTheme?.iconColor);
     return Center(
       child: Container(
         decoration: BoxDecoration(
-          color: theme.colorScheme.border,
-          borderRadius: BorderRadius.circular(theme.radiusSm),
+          color: color,
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
         alignment: Alignment.center,
-        width: 3 * 4 * scaling,
-        height: 4 * 4 * scaling,
+        width: width,
+        height: height,
         child: Icon(
           RadixIcons.dragHandleDots2,
-          size: 4 * 2.5 * scaling,
+          size: iconSize,
+          color: iconColor,
         ),
       ),
     );
@@ -41,20 +129,44 @@ class VerticalResizableDragger extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<ResizableDraggerTheme>(context);
+    final color = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.color,
+        defaultValue: theme.colorScheme.border);
+    final borderRadius = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.borderRadius,
+        defaultValue: theme.radiusSm);
+    final width = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.width,
+        defaultValue: 4 * 4 * scaling);
+    final height = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.height,
+        defaultValue: 3 * 4 * scaling);
+    final iconSize = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.iconSize,
+        defaultValue: 4 * 2.5 * scaling);
+    final iconColor =
+        styleValue(widgetValue: null, themeValue: compTheme?.iconColor);
     return Center(
       child: Container(
         decoration: BoxDecoration(
-          color: theme.colorScheme.border,
-          borderRadius: BorderRadius.circular(theme.radiusSm),
+          color: color,
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
         alignment: Alignment.center,
-        width: 4 * 4 * scaling,
-        height: 3 * 4 * scaling,
+        width: width,
+        height: height,
         child: Transform.rotate(
           angle: pi / 2,
           child: Icon(
             RadixIcons.dragHandleDots2,
-            size: 4 * 2.5 * scaling,
+            size: iconSize,
+            color: iconColor,
           ),
         ),
       ),

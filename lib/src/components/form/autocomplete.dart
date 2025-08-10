@@ -4,6 +4,62 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef AutoCompleteCompleter = String Function(String suggestion);
 
+/// Theme data for [AutoComplete].
+class AutoCompleteTheme {
+  final BoxConstraints? popoverConstraints;
+  final PopoverConstraint? popoverWidthConstraint;
+  final AlignmentDirectional? popoverAnchorAlignment;
+  final AlignmentDirectional? popoverAlignment;
+  final AutoCompleteMode? mode;
+
+  const AutoCompleteTheme({
+    this.popoverConstraints,
+    this.popoverWidthConstraint,
+    this.popoverAnchorAlignment,
+    this.popoverAlignment,
+    this.mode,
+  });
+
+  AutoCompleteTheme copyWith({
+    ValueGetter<BoxConstraints?>? popoverConstraints,
+    ValueGetter<PopoverConstraint?>? popoverWidthConstraint,
+    ValueGetter<AlignmentDirectional?>? popoverAnchorAlignment,
+    ValueGetter<AlignmentDirectional?>? popoverAlignment,
+    ValueGetter<AutoCompleteMode?>? mode,
+  }) {
+    return AutoCompleteTheme(
+      popoverConstraints: popoverConstraints == null
+          ? this.popoverConstraints
+          : popoverConstraints(),
+      popoverWidthConstraint: popoverWidthConstraint == null
+          ? this.popoverWidthConstraint
+          : popoverWidthConstraint(),
+      popoverAnchorAlignment: popoverAnchorAlignment == null
+          ? this.popoverAnchorAlignment
+          : popoverAnchorAlignment(),
+      popoverAlignment: popoverAlignment == null
+          ? this.popoverAlignment
+          : popoverAlignment(),
+      mode: mode == null ? this.mode : mode(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is AutoCompleteTheme &&
+        other.popoverConstraints == popoverConstraints &&
+        other.popoverWidthConstraint == popoverWidthConstraint &&
+        other.popoverAnchorAlignment == popoverAnchorAlignment &&
+        other.popoverAlignment == popoverAlignment &&
+        other.mode == mode;
+  }
+
+  @override
+  int get hashCode => Object.hash(popoverConstraints, popoverWidthConstraint,
+      popoverAnchorAlignment, popoverAlignment, mode);
+}
+
 class AutoComplete extends StatefulWidget {
   final List<String> suggestions;
   final Widget child;
@@ -11,7 +67,7 @@ class AutoComplete extends StatefulWidget {
   final PopoverConstraint? popoverWidthConstraint;
   final AlignmentDirectional? popoverAnchorAlignment;
   final AlignmentDirectional? popoverAlignment;
-  final AutoCompleteMode mode;
+  final AutoCompleteMode? mode;
   final AutoCompleteCompleter completer;
   const AutoComplete({
     super.key,
@@ -21,7 +77,7 @@ class AutoComplete extends StatefulWidget {
     this.popoverWidthConstraint,
     this.popoverAnchorAlignment,
     this.popoverAlignment,
-    this.mode = AutoCompleteMode.replaceWord,
+    this.mode,
     this.completer = _defaultCompleter,
   });
 
@@ -83,6 +139,15 @@ class _AutoCompleteState extends State<AutoComplete> {
   final PopoverController _popoverController = PopoverController();
   bool _isFocused = false;
 
+  AutoCompleteMode get _mode {
+    final compTheme = ComponentTheme.maybeOf<AutoCompleteTheme>(context);
+    return styleValue(
+      widgetValue: widget.mode,
+      themeValue: compTheme?.mode,
+      defaultValue: AutoCompleteMode.replaceWord,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -110,12 +175,17 @@ class _AutoCompleteState extends State<AutoComplete> {
         handler: const PopoverOverlayHandler(),
         builder: (context) {
           final theme = Theme.of(context);
+          final compTheme = ComponentTheme.maybeOf<AutoCompleteTheme>(context);
+          final popoverConstraints = styleValue<BoxConstraints>(
+            widgetValue: widget.popoverConstraints,
+            themeValue: compTheme?.popoverConstraints,
+            defaultValue: BoxConstraints(
+              maxHeight: 300 * theme.scaling,
+            ),
+          );
           return TextFieldTapRegion(
             child: ConstrainedBox(
-              constraints: widget.popoverConstraints ??
-                  BoxConstraints(
-                    maxHeight: 300 * theme.scaling,
-                  ),
+              constraints: popoverConstraints,
               child: SurfaceCard(
                 padding: const EdgeInsets.all(4) * theme.scaling,
                 child: AnimatedBuilder(
@@ -140,11 +210,18 @@ class _AutoCompleteState extends State<AutoComplete> {
             ),
           );
         },
-        widthConstraint:
-            widget.popoverWidthConstraint ?? PopoverConstraint.anchorFixedSize,
-        anchorAlignment:
-            widget.popoverAnchorAlignment ?? AlignmentDirectional.bottomStart,
-        alignment: widget.popoverAlignment ?? AlignmentDirectional.topStart,
+        widthConstraint: styleValue(
+            widgetValue: widget.popoverWidthConstraint,
+            themeValue: compTheme?.popoverWidthConstraint,
+            defaultValue: PopoverConstraint.anchorFixedSize),
+        anchorAlignment: styleValue(
+            widgetValue: widget.popoverAnchorAlignment,
+            themeValue: compTheme?.popoverAnchorAlignment,
+            defaultValue: AlignmentDirectional.bottomStart),
+        alignment: styleValue(
+            widgetValue: widget.popoverAlignment,
+            themeValue: compTheme?.popoverAlignment,
+            defaultValue: AlignmentDirectional.topStart),
       );
     }
   }
@@ -159,7 +236,7 @@ class _AutoCompleteState extends State<AutoComplete> {
     suggestion = widget.completer(
       suggestion,
     );
-    switch (widget.mode) {
+    switch (_mode) {
       case AutoCompleteMode.append:
         TextFieldAppendTextIntent intent =
             TextFieldAppendTextIntent(text: suggestion);
