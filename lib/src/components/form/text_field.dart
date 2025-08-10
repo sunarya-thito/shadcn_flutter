@@ -19,6 +19,47 @@ import '../../../shadcn_flutter.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/cupertino.dart' as cupertino;
 
+class TextFieldTheme {
+  final bool? border;
+  final BorderRadiusGeometry? borderRadius;
+  final bool? filled;
+  final EdgeInsetsGeometry? padding;
+
+  const TextFieldTheme({
+    this.border,
+    this.borderRadius,
+    this.filled,
+    this.padding,
+  });
+
+  TextFieldTheme copyWith({
+    ValueGetter<bool?>? border,
+    ValueGetter<BorderRadiusGeometry?>? borderRadius,
+    ValueGetter<bool?>? filled,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+  }) {
+    return TextFieldTheme(
+      border: border == null ? this.border : border(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
+      filled: filled == null ? this.filled : filled(),
+      padding: padding == null ? this.padding : padding(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is TextFieldTheme &&
+        other.border == border &&
+        other.borderRadius == borderRadius &&
+        other.filled == filled &&
+        other.padding == padding;
+  }
+
+  @override
+  int get hashCode => Object.hash(border, borderRadius, filled, padding);
+}
+
 export 'package:flutter/services.dart'
     show
         SmartDashesType,
@@ -1862,6 +1903,7 @@ class TextFieldState extends State<TextField>
     var widget = this.widget;
     super.build(context); // See AutomaticKeepAliveClientMixin.
     final ThemeData theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<TextFieldTheme>(context);
     assert(debugCheckHasDirectionality(context));
     final TextEditingController controller = effectiveController;
 
@@ -1927,11 +1969,15 @@ class TextFieldState extends State<TextField>
     // Use the default disabled color only if the box decoration was not set.
     final BoxDecoration effectiveDecoration = widget.decoration ??
         BoxDecoration(
-          borderRadius:
-              optionallyResolveBorderRadius(context, widget.borderRadius) ??
-                  BorderRadius.circular(theme.radiusMd),
-          color: widget.filled ? theme.colorScheme.muted : null,
-          border: widget.border
+          borderRadius: optionallyResolveBorderRadius(
+                context,
+                widget.borderRadius ?? compTheme?.borderRadius,
+              ) ??
+              BorderRadius.circular(theme.radiusMd),
+          color: (widget.filled ?? compTheme?.filled ?? false)
+              ? theme.colorScheme.muted
+              : null,
+          border: (widget.border ?? compTheme?.border ?? true)
               ? Border.all(
                   color: _effectiveFocusNode.hasFocus && widget.enabled
                       ? theme.colorScheme.ring
@@ -2095,6 +2141,7 @@ class TextFieldState extends State<TextField>
                       heightFactor: 1.0,
                       child: Padding(
                         padding: widget.padding ??
+                            compTheme?.padding ??
                             EdgeInsets.symmetric(
                               horizontal: 12 * scaling,
                               vertical: 8 * scaling,

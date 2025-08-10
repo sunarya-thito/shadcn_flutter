@@ -2,6 +2,75 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+class TimePickerTheme {
+  final PromptMode? mode;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
+  final bool? use24HourFormat;
+  final bool? showSeconds;
+  final Widget? dialogTitle;
+
+  const TimePickerTheme({
+    this.mode,
+    this.popoverAlignment,
+    this.popoverAnchorAlignment,
+    this.popoverPadding,
+    this.use24HourFormat,
+    this.showSeconds,
+    this.dialogTitle,
+  });
+
+  TimePickerTheme copyWith({
+    ValueGetter<PromptMode?>? mode,
+    ValueGetter<AlignmentGeometry?>? popoverAlignment,
+    ValueGetter<AlignmentGeometry?>? popoverAnchorAlignment,
+    ValueGetter<EdgeInsetsGeometry?>? popoverPadding,
+    ValueGetter<bool?>? use24HourFormat,
+    ValueGetter<bool?>? showSeconds,
+    ValueGetter<Widget?>? dialogTitle,
+  }) {
+    return TimePickerTheme(
+      mode: mode == null ? this.mode : mode(),
+      popoverAlignment:
+          popoverAlignment == null ? this.popoverAlignment : popoverAlignment(),
+      popoverAnchorAlignment: popoverAnchorAlignment == null
+          ? this.popoverAnchorAlignment
+          : popoverAnchorAlignment(),
+      popoverPadding:
+          popoverPadding == null ? this.popoverPadding : popoverPadding(),
+      use24HourFormat:
+          use24HourFormat == null ? this.use24HourFormat : use24HourFormat(),
+      showSeconds: showSeconds == null ? this.showSeconds : showSeconds(),
+      dialogTitle: dialogTitle == null ? this.dialogTitle : dialogTitle(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is TimePickerTheme &&
+        other.mode == mode &&
+        other.popoverAlignment == popoverAlignment &&
+        other.popoverAnchorAlignment == popoverAnchorAlignment &&
+        other.popoverPadding == popoverPadding &&
+        other.use24HourFormat == use24HourFormat &&
+        other.showSeconds == showSeconds &&
+        other.dialogTitle == dialogTitle;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        mode,
+        popoverAlignment,
+        popoverAnchorAlignment,
+        popoverPadding,
+        use24HourFormat,
+        showSeconds,
+        dialogTitle,
+      );
+}
+
 class TimePickerController extends ValueNotifier<TimeOfDay?>
     with ComponentController<TimeOfDay?> {
   TimePickerController([super.value]);
@@ -100,19 +169,28 @@ class TimePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
-    bool use24HourFormat =
-        this.use24HourFormat ?? MediaQuery.of(context).alwaysUse24HourFormat;
+    final compTheme = ComponentTheme.maybeOf<TimePickerTheme>(context);
+    bool use24HourFormat = this.use24HourFormat ??
+        compTheme?.use24HourFormat ??
+        MediaQuery.of(context).alwaysUse24HourFormat;
+    final bool showSeconds =
+        compTheme?.showSeconds ?? this.showSeconds;
     return ObjectFormField(
       value: value,
-      placeholder: placeholder ?? Text(localizations.placeholderTimePicker),
+      placeholder: placeholder ??
+          Text(localizations.placeholderTimePicker),
       onChanged: onChanged,
       builder: (context, value) {
         return Text(localizations.formatTimeOfDay(value,
             use24HourFormat: use24HourFormat, showSeconds: showSeconds));
       },
       enabled: enabled,
-      mode: mode,
-      dialogTitle: dialogTitle,
+      mode: compTheme?.mode ?? mode,
+      dialogTitle: dialogTitle ?? compTheme?.dialogTitle,
+      popoverAlignment: popoverAlignment ?? compTheme?.popoverAlignment,
+      popoverAnchorAlignment:
+          popoverAnchorAlignment ?? compTheme?.popoverAnchorAlignment,
+      popoverPadding: popoverPadding ?? compTheme?.popoverPadding,
       trailing: const Icon(Icons.access_time),
       editorBuilder: (context, handler) {
         return TimePickerDialog(

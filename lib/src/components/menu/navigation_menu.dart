@@ -1,5 +1,57 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Theme for [NavigationMenu].
+class NavigationMenuTheme {
+  /// Opacity of the popover surface.
+  final double? surfaceOpacity;
+
+  /// Blur amount of the popover surface.
+  final double? surfaceBlur;
+
+  /// Margin applied to the popover.
+  final EdgeInsetsGeometry? margin;
+
+  /// Offset for the popover relative to the trigger.
+  final Offset? offset;
+
+  /// Creates a [NavigationMenuTheme].
+  const NavigationMenuTheme({
+    this.surfaceOpacity,
+    this.surfaceBlur,
+    this.margin,
+    this.offset,
+  });
+
+  /// Returns a copy of this theme with the given fields replaced.
+  NavigationMenuTheme copyWith({
+    ValueGetter<double?>? surfaceOpacity,
+    ValueGetter<double?>? surfaceBlur,
+    ValueGetter<EdgeInsetsGeometry?>? margin,
+    ValueGetter<Offset?>? offset,
+  }) {
+    return NavigationMenuTheme(
+      surfaceOpacity:
+          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
+      margin: margin == null ? this.margin : margin(),
+      offset: offset == null ? this.offset : offset(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is NavigationMenuTheme &&
+        other.surfaceOpacity == surfaceOpacity &&
+        other.surfaceBlur == surfaceBlur &&
+        other.margin == margin &&
+        other.offset == offset;
+  }
+
+  @override
+  int get hashCode => Object.hash(surfaceOpacity, surfaceBlur, margin, offset);
+}
+
 class NavigationMenuItem extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget? content;
@@ -256,18 +308,21 @@ class NavigationMenuState extends State<NavigationMenu> {
     }
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<NavigationMenuTheme>(context);
     _popoverController.show(
       context: context,
       alignment: Alignment.topCenter,
       regionGroupId: this,
-      offset: const Offset(0, 4) * scaling,
+      offset: compTheme?.offset ?? const Offset(0, 4) * scaling,
       builder: buildPopover,
       modal: false,
-      margin: requestMargin() ?? (const EdgeInsets.all(8) * scaling),
+      margin:
+          requestMargin() ?? compTheme?.margin ?? (const EdgeInsets.all(8) * scaling),
       allowInvertHorizontal: false,
       allowInvertVertical: false,
       onTickFollow: (value) {
-        value.margin = requestMargin() ?? (const EdgeInsets.all(8) * scaling);
+        value.margin =
+            requestMargin() ?? compTheme?.margin ?? (const EdgeInsets.all(8) * scaling);
       },
     );
   }
@@ -309,8 +364,12 @@ class NavigationMenuState extends State<NavigationMenu> {
 
   Widget buildPopover(BuildContext context) {
     final theme = Theme.of(context);
-    final surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
-    final surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
+    final compTheme = ComponentTheme.maybeOf<NavigationMenuTheme>(context);
+    final surfaceOpacity = widget.surfaceOpacity ??
+        compTheme?.surfaceOpacity ??
+        theme.surfaceOpacity;
+    final surfaceBlur =
+        widget.surfaceBlur ?? compTheme?.surfaceBlur ?? theme.surfaceBlur;
     return MouseRegion(
       hitTestBehavior: HitTestBehavior.translucent,
       onEnter: (_) {

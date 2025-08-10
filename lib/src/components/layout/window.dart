@@ -6,6 +6,38 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/group.dart';
 import 'package:shadcn_flutter/src/components/patch.dart';
 
+class WindowTheme {
+  final double? titleBarHeight;
+  final double? resizeThickness;
+
+  const WindowTheme({this.titleBarHeight, this.resizeThickness});
+
+  WindowTheme copyWith({
+    ValueGetter<double?>? titleBarHeight,
+    ValueGetter<double?>? resizeThickness,
+  }) {
+    return WindowTheme(
+      titleBarHeight:
+          titleBarHeight == null ? this.titleBarHeight : titleBarHeight(),
+      resizeThickness:
+          resizeThickness == null ? this.resizeThickness : resizeThickness(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is WindowTheme &&
+      other.titleBarHeight == titleBarHeight &&
+      other.resizeThickness == resizeThickness;
+
+  @override
+  int get hashCode => Object.hash(titleBarHeight, resizeThickness);
+
+  @override
+  String toString() =>
+      'WindowTheme(titleBarHeight: $titleBarHeight, resizeThickness: $resizeThickness)';
+}
+
 class WindowSnapStrategy {
   final Rect relativeBounds;
   final bool shouldMinifyWindow;
@@ -240,12 +272,16 @@ class WindowWidget extends StatefulWidget {
   final bool? minimized;
   final bool? enableSnapping;
   final BoxConstraints? constraints;
+  final double? titleBarHeight;
+  final double? resizeThickness;
 
   const WindowWidget({
     super.key,
     this.title,
     this.actions,
     this.content,
+    this.titleBarHeight,
+    this.resizeThickness,
     bool this.resizable = true,
     bool this.draggable = true,
     bool this.closable = true,
@@ -264,6 +300,8 @@ class WindowWidget extends StatefulWidget {
     this.actions,
     this.content,
     required WindowController this.controller,
+    this.titleBarHeight,
+    this.resizeThickness,
   })  : bounds = null,
         maximized = null,
         minimized = null,
@@ -291,6 +329,8 @@ class WindowWidget extends StatefulWidget {
     this.maximized,
     this.minimized,
     this.constraints,
+    this.titleBarHeight,
+    this.resizeThickness,
   });
 
   @override
@@ -436,7 +476,12 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
       child: ListenableBuilder(
         listenable: controller,
         builder: (context, child) {
-          var resizeThickness = 8;
+          final compTheme = ComponentTheme.maybeOf<WindowTheme>(context);
+          var resizeThickness =
+              widget.resizeThickness ?? compTheme?.resizeThickness ?? 8;
+          final titleBarHeight =
+              (widget.titleBarHeight ?? compTheme?.titleBarHeight ?? 32) *
+                  theme.scaling;
 
           Widget windowClient = Card(
             clipBehavior: Clip.antiAlias,
@@ -496,10 +541,8 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
                           if (layerRenderBox != null) {
                             Offset layerLocal = layerRenderBox
                                 .globalToLocal(details.globalPosition);
-                            Size titleSize = Size(
-                              this.bounds.width,
-                              32 * theme.scaling,
-                            );
+                            Size titleSize =
+                                Size(this.bounds.width, titleBarHeight);
                             this.bounds = Rect.fromLTWH(
                               layerLocal.dx - titleSize.width / 2,
                               layerLocal.dy - titleSize.height / 2,
@@ -538,7 +581,7 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
                         _dragAlignment = null;
                       },
                       child: Container(
-                        height: 32 * theme.scaling,
+                        height: titleBarHeight,
                         padding: EdgeInsets.all(
                           2 * theme.scaling,
                         ),
@@ -1554,6 +1597,9 @@ class _WindowNavigatorState extends State<WindowNavigator>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<WindowTheme>(context);
+    final titleBarHeight =
+        (compTheme?.titleBarHeight ?? 32) * theme.scaling;
     return LayoutBuilder(builder: (context, constraints) {
       return ListenableBuilder(
           listenable: Listenable.merge([
@@ -1593,25 +1639,25 @@ class _WindowNavigatorState extends State<WindowNavigator>
                       top: 0,
                       left: 0,
                       right: 0,
-                      height: 32 * theme.scaling,
+                      height: titleBarHeight,
                       child: _createBorderSnapStrategy(const WindowSnapStrategy(
                         relativeBounds: Rect.fromLTWH(0, 0, 1, 1),
                         shouldMinifyWindow: false,
                       ))),
                   GroupPositioned(
-                      top: 32 * theme.scaling,
+                      top: titleBarHeight,
                       bottom: 0,
                       left: 0,
-                      width: 32 * theme.scaling,
+                      width: titleBarHeight,
                       child: _createBorderSnapStrategy(const WindowSnapStrategy(
                         relativeBounds: Rect.fromLTWH(0, 0, 0.5, 1),
                         shouldMinifyWindow: false,
                       ))),
                   GroupPositioned(
-                      top: 32 * theme.scaling,
+                      top: titleBarHeight,
                       bottom: 0,
                       right: 0,
-                      width: 32 * theme.scaling,
+                      width: titleBarHeight,
                       child: _createBorderSnapStrategy(const WindowSnapStrategy(
                         relativeBounds: Rect.fromLTWH(0.5, 0, 0.5, 1),
                         shouldMinifyWindow: false,

@@ -2,6 +2,58 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+class TreeTheme {
+  final BranchLine? branchLine;
+  final EdgeInsetsGeometry? padding;
+  final bool? expandIcon;
+  final bool? allowMultiSelect;
+  final bool? recursiveSelection;
+
+  const TreeTheme({
+    this.branchLine,
+    this.padding,
+    this.expandIcon,
+    this.allowMultiSelect,
+    this.recursiveSelection,
+  });
+
+  TreeTheme copyWith({
+    ValueGetter<BranchLine?>? branchLine,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+    ValueGetter<bool?>? expandIcon,
+    ValueGetter<bool?>? allowMultiSelect,
+    ValueGetter<bool?>? recursiveSelection,
+  }) {
+    return TreeTheme(
+      branchLine: branchLine == null ? this.branchLine : branchLine(),
+      padding: padding == null ? this.padding : padding(),
+      expandIcon: expandIcon == null ? this.expandIcon : expandIcon(),
+      allowMultiSelect:
+          allowMultiSelect == null ? this.allowMultiSelect : allowMultiSelect(),
+      recursiveSelection: recursiveSelection == null
+          ? this.recursiveSelection
+          : recursiveSelection(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is TreeTheme &&
+      other.branchLine == branchLine &&
+      other.padding == padding &&
+      other.expandIcon == expandIcon &&
+      other.allowMultiSelect == allowMultiSelect &&
+      other.recursiveSelection == recursiveSelection;
+
+  @override
+  int get hashCode => Object.hash(
+      branchLine, padding, expandIcon, allowMultiSelect, recursiveSelection);
+
+  @override
+  String toString() =>
+      'TreeTheme(branchLine: $branchLine, padding: $padding, expandIcon: $expandIcon, allowMultiSelect: $allowMultiSelect, recursiveSelection: $recursiveSelection)';
+}
+
 abstract class TreeNode<T> {
   List<TreeNode<T>> get children;
   bool get expanded;
@@ -621,13 +673,13 @@ class TreeView<T> extends StatefulWidget {
   final Widget Function(BuildContext context, TreeItem<T> node) builder;
   final bool shrinkWrap;
   final ScrollController? controller;
-  final BranchLine branchLine;
+  final BranchLine? branchLine;
   final EdgeInsetsGeometry? padding;
-  final bool expandIcon;
-  final bool allowMultiSelect;
+  final bool? expandIcon;
+  final bool? allowMultiSelect;
   final FocusScopeNode? focusNode;
   final TreeNodeSelectionChanged<T>? onSelectionChanged;
-  final bool recursiveSelection;
+  final bool? recursiveSelection;
 
   const TreeView({
     super.key,
@@ -635,13 +687,13 @@ class TreeView<T> extends StatefulWidget {
     required this.builder,
     this.shrinkWrap = false,
     this.controller,
-    this.branchLine = BranchLine.path,
+    this.branchLine,
     this.padding,
-    this.expandIcon = true,
-    this.allowMultiSelect = true,
+    this.expandIcon,
+    this.allowMultiSelect,
     this.focusNode,
     this.onSelectionChanged,
-    this.recursiveSelection = true,
+    this.recursiveSelection,
   });
 
   @override
@@ -693,7 +745,7 @@ class _TreeViewState<T> extends State<TreeView<T>> {
   }
 
   void _onChangeSelectionRange(
-      List<TreeNodeData<T>> children, int start, int end) {
+      List<TreeNodeData<T>> children, int start, int end, bool recursive) {
     if (start > end) {
       final temp = start;
       start = end;
@@ -701,7 +753,7 @@ class _TreeViewState<T> extends State<TreeView<T>> {
     }
     final selectedItems = <TreeNode<T>>[];
     for (int i = start; i <= end; i++) {
-      if (widget.recursiveSelection) {
+      if (recursive) {
         _walkNodes((node) {
           selectedItems.add(node);
         }, [children[i].node]);
@@ -714,6 +766,15 @@ class _TreeViewState<T> extends State<TreeView<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final compTheme = ComponentTheme.maybeOf<TreeTheme>(context);
+    final branchLine =
+        widget.branchLine ?? compTheme?.branchLine ?? BranchLine.path;
+    final expandIcon = widget.expandIcon ?? compTheme?.expandIcon ?? true;
+    final allowMultiSelect =
+        widget.allowMultiSelect ?? compTheme?.allowMultiSelect ?? true;
+    final recursiveSelection =
+        widget.recursiveSelection ?? compTheme?.recursiveSelection ?? true;
+    final padding = widget.padding ?? compTheme?.padding;
     List<TreeNodeData<T>> children = [];
     int index = 0;
     _walkFlattened((expanded, node, depth) {
@@ -722,9 +783,9 @@ class _TreeViewState<T> extends State<TreeView<T>> {
       children.add(TreeNodeData(
         depth,
         node,
-        widget.branchLine,
+        branchLine,
         expanded,
-        widget.expandIcon,
+        expandIcon,
         (reason) {
           if (reason == FocusChangeReason.focusScope) {
             _startFocusedIndex = currentIndex;
@@ -735,10 +796,10 @@ class _TreeViewState<T> extends State<TreeView<T>> {
           if (_rangeMultiSelect && _startFocusedIndex != null) {
             var start = _startFocusedIndex!;
             var end = _currentFocusedIndex!;
-            _onChangeSelectionRange(children, start, end);
+            _onChangeSelectionRange(children, start, end, recursiveSelection);
           } else {
             _startFocusedIndex = currentIndex;
-            if (widget.recursiveSelection) {
+            if (recursiveSelection) {
               final selectedItems = <TreeNode<T>>[];
               _walkNodes((node) {
                 selectedItems.add(node);
@@ -793,7 +854,7 @@ class _TreeViewState<T> extends State<TreeView<T>> {
     }
     return Shortcuts(
       shortcuts: {
-        if (widget.allowMultiSelect) ...{
+        if (allowMultiSelect) ...{
           // range select
           LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.arrowUp):
               const DirectionalSelectTreeNodeIntent(false),
@@ -829,7 +890,7 @@ class _TreeViewState<T> extends State<TreeView<T>> {
             onInvoke: (e) {
               if (_currentFocusedIndex != null) {
                 final selectedNode = children[_currentFocusedIndex!];
-                if (widget.recursiveSelection) {
+                if (recursiveSelection) {
                   final selectedItems = <TreeNode<T>>[];
                   _walkNodes((node) {
                     selectedItems.add(node);
@@ -879,7 +940,7 @@ class _TreeViewState<T> extends State<TreeView<T>> {
                 }
               }
               _onChangeSelectionRange(
-                  children, _startFocusedIndex!, _currentFocusedIndex!);
+                  children, _startFocusedIndex!, _currentFocusedIndex!, recursiveSelection);
               return null;
             },
           ),
@@ -887,7 +948,7 @@ class _TreeViewState<T> extends State<TreeView<T>> {
         child: FocusScope(
           node: widget.focusNode,
           onKeyEvent: (node, event) {
-            if (!widget.allowMultiSelect) return KeyEventResult.ignored;
+            if (!allowMultiSelect) return KeyEventResult.ignored;
             if (event is KeyDownEvent) {
               if (event.logicalKey == LogicalKeyboardKey.shift ||
                   event.logicalKey == LogicalKeyboardKey.shiftLeft ||
@@ -912,7 +973,7 @@ class _TreeViewState<T> extends State<TreeView<T>> {
             return KeyEventResult.ignored;
           },
           child: ListView(
-            padding: widget.padding ?? const EdgeInsets.all(8),
+            padding: padding ?? const EdgeInsets.all(8),
             shrinkWrap: widget.shrinkWrap,
             controller: widget.controller,
             children: children

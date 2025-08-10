@@ -5,10 +5,10 @@ class ItemPicker<T> extends StatelessWidget {
   final ItemPickerBuilder<T> builder;
   final T? value;
   final ValueChanged<T?>? onChanged;
-  final ItemPickerLayout layout;
+  final ItemPickerLayout? layout;
   final Widget? placeholder;
   final Widget? title;
-  final PromptMode mode;
+  final PromptMode? mode;
   final BoxConstraints? constraints;
   const ItemPicker({
     super.key,
@@ -16,15 +16,18 @@ class ItemPicker<T> extends StatelessWidget {
     required this.builder,
     this.value,
     this.onChanged,
-    this.layout = ItemPickerLayout.grid,
+    this.layout,
     this.placeholder,
     this.title,
-    this.mode = PromptMode.dialog,
+    this.mode,
     this.constraints,
   });
 
   @override
   Widget build(BuildContext context) {
+    final layout = this.layout ?? ItemPickerLayout.grid;
+    final mode = this.mode ?? PromptMode.dialog;
+    final constraints = this.constraints;
     return ObjectFormField(
         value: value,
         placeholder: placeholder ?? const SizedBox.shrink(),

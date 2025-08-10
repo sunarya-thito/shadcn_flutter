@@ -12,8 +12,6 @@ The following components still need `ComponentTheme` implementation.
 - [x] code_snippet
 - [x] divider
 - [x] dot_indicator
-- [x] fade_scroll
-- [x] keyboard_shortcut
 - [x] linear_progress_indicator
 - [x] number_ticker
 - [x] progress
@@ -25,87 +23,62 @@ The following components still need `ComponentTheme` implementation.
 - [x] checkbox
 - [x] chip_input
 - [x] color_picker
-- [ ] control
 - [x] date_picker
-- [ ] file_input
-- [ ] file_picker
-- [ ] form
-- [ ] form_field
-- [ ] formatted_input
-- [ ] formatter
-- [ ] image
-- [ ] input
-- [ ] input_otp
-- [ ] item_picker
-- [ ] multiple_choice
-- [ ] number_input
-- [ ] object_input
-- [ ] phone_input
+- [x] formatted_input
+- [x] input_otp
+- [x] multiple_choice
+- [x] number_input
 - [x] radio_group
 - [x] select
-- [ ] slider
-- [ ] sortable
+- [x] slider
 - [x] star_rating
 - [x] switch
 - [x] text_area
-- [ ] text_field
-- [ ] time_picker
-- [ ] validated
+- [x] text_field
+- [x] time_picker
 
 ## layout
-- [ ] accordion
+- [x] accordion
 - [x] alert
-- [x] basic
 - [x] breadcrumb
 - [x] card
 - [x] card_image
-- [ ] collapsible
+- [x] collapsible
 - [x] dialog/alert_dialog
-- [x] focus_outline
-- [ ] group
-- [x] hidden
-- [x] media_query
 - [x] outlined_container
 - [x] overflow_marquee
-- [x] resizable
-- [ ] scaffold
-- [ ] scrollable_client
-- [ ] sortable
-- [x] stage_container
-- [ ] stepper
-- [ ] steps
-- [ ] table
-- [ ] timeline
-- [ ] tree
-- [ ] window
+- [x] scaffold
+- [x] stepper
+- [x] steps
+- [x] table
+- [x] timeline
+- [x] tree
+- [x] window
 
 ## menu
-- [ ] context_menu
-- [ ] dropdown_menu
-- [ ] menu
-- [ ] menubar
-- [ ] navigation_menu
+- [x] context_menu
+- [x] dropdown_menu
+- [x] menu
+- [x] menubar
+- [x] navigation_menu
 - [x] popup
 
 ## navigation
 - [x] navigation_bar
 - [x] pagination
-- [ ] tabs/tab_container
+- [x] tabs/tab_container
 - [x] tabs/tab_list
-- [ ] tabs/tab_pane
+- [x] tabs/tab_pane
 - [x] tabs/tabs
 
 ## overlay
 - [x] dialog
-- [ ] drawer
+- [x] drawer
 - [x] hover_card
-- [ ] overlay
-- [ ] popover
 - [x] refresh_trigger
-- [ ] swiper
-- [ ] toast
+- [x] swiper
+- [x] toast
 - [x] tooltip
 
 ## text
-- [ ] selectable
-- [ ] text
+- [x] selectable
