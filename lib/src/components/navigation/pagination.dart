@@ -1,5 +1,45 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// A theme for [Pagination].
+class PaginationTheme {
+  /// The spacing between pagination controls.
+  final double? gap;
+
+  /// Whether to show the previous/next labels.
+  final bool? showLabel;
+
+  /// Creates a [PaginationTheme].
+  const PaginationTheme({
+    this.gap,
+    this.showLabel,
+  });
+
+  /// Returns a copy of this theme with the given fields replaced.
+  PaginationTheme copyWith({
+    ValueGetter<double?>? gap,
+    ValueGetter<bool?>? showLabel,
+  }) {
+    return PaginationTheme(
+      gap: gap == null ? this.gap : gap(),
+      showLabel: showLabel == null ? this.showLabel : showLabel(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is PaginationTheme &&
+        other.gap == gap &&
+        other.showLabel == showLabel;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        gap,
+        showLabel,
+      );
+}
+
 class Pagination extends StatelessWidget {
   final int page;
   final int totalPages;
@@ -11,7 +51,8 @@ class Pagination extends StatelessWidget {
   final bool showSkipToLastPage;
   final bool hidePreviousOnFirstPage;
   final bool hideNextOnLastPage;
-  final bool showLabel;
+  final bool? showLabel;
+  final double? gap;
 
   const Pagination({
     super.key,
@@ -23,7 +64,8 @@ class Pagination extends StatelessWidget {
     this.showSkipToLastPage = true,
     this.hidePreviousOnFirstPage = false,
     this.hideNextOnLastPage = false,
-    this.showLabel = true,
+    this.showLabel,
+    this.gap,
   });
 
   bool get hasPrevious => page > 1;
@@ -66,7 +108,8 @@ class Pagination extends StatelessWidget {
   bool get hasMorePreviousPages => firstShownPage > 1;
   bool get hasMoreNextPages => lastShownPage < totalPages;
 
-  Widget _buildPreviousLabel(ShadcnLocalizations localizations) {
+  Widget _buildPreviousLabel(
+      ShadcnLocalizations localizations, bool showLabel) {
     if (showLabel) {
       return GhostButton(
         onPressed: hasPrevious ? () => onPageChanged(page - 1) : null,
@@ -80,7 +123,8 @@ class Pagination extends StatelessWidget {
     );
   }
 
-  Widget _buildNextLabel(ShadcnLocalizations localizations) {
+  Widget _buildNextLabel(
+      ShadcnLocalizations localizations, bool showLabel) {
     if (showLabel) {
       return GhostButton(
         onPressed: hasNext ? () => onPageChanged(page + 1) : null,
@@ -98,6 +142,15 @@ class Pagination extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<PaginationTheme>(context);
+    final gap = styleValue(
+        widgetValue: this.gap,
+        themeValue: compTheme?.gap,
+        defaultValue: 4 * scaling);
+    final showLabel = styleValue(
+        widgetValue: this.showLabel,
+        themeValue: compTheme?.showLabel,
+        defaultValue: true);
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     return IntrinsicHeight(
       child: Row(
@@ -105,7 +158,7 @@ class Pagination extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (!hidePreviousOnFirstPage || hasPrevious)
-            _buildPreviousLabel(localizations),
+            _buildPreviousLabel(localizations, showLabel),
           if (hasMorePreviousPages) ...[
             if (showSkipToFirstPage && firstShownPage - 1 > 1)
               GhostButton(
@@ -139,9 +192,10 @@ class Pagination extends StatelessWidget {
                 child: Text('$totalPages'),
               ),
           ],
-          if (!hideNextOnLastPage || hasNext) _buildNextLabel(localizations),
+          if (!hideNextOnLastPage || hasNext)
+            _buildNextLabel(localizations, showLabel),
         ],
-      ).gap(4 * scaling),
+      ).gap(gap),
     );
   }
 }

@@ -1,5 +1,70 @@
 import '../../../shadcn_flutter.dart';
 
+/// A theme for [Checkbox].
+class CheckboxTheme {
+  /// The color of the checkbox when checked.
+  final Color? activeColor;
+
+  /// The color of the checkbox border when unchecked.
+  final Color? borderColor;
+
+  /// The size of the checkbox square.
+  final double? size;
+
+  /// The gap between the checkbox and its leading/trailing widgets.
+  final double? gap;
+
+  /// The border radius of the checkbox.
+  final BorderRadiusGeometry? borderRadius;
+
+  /// Creates a [CheckboxTheme].
+  const CheckboxTheme({
+    this.activeColor,
+    this.borderColor,
+    this.size,
+    this.gap,
+    this.borderRadius,
+  });
+
+  /// Returns a copy of this theme with the given fields replaced.
+  CheckboxTheme copyWith({
+    ValueGetter<Color?>? activeColor,
+    ValueGetter<Color?>? borderColor,
+    ValueGetter<double?>? size,
+    ValueGetter<double?>? gap,
+    ValueGetter<BorderRadiusGeometry?>? borderRadius,
+  }) {
+    return CheckboxTheme(
+      activeColor: activeColor == null ? this.activeColor : activeColor(),
+      borderColor: borderColor == null ? this.borderColor : borderColor(),
+      size: size == null ? this.size : size(),
+      gap: gap == null ? this.gap : gap(),
+      borderRadius:
+          borderRadius == null ? this.borderRadius : borderRadius(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is CheckboxTheme &&
+        other.activeColor == activeColor &&
+        other.borderColor == borderColor &&
+        other.size == size &&
+        other.gap == gap &&
+        other.borderRadius == borderRadius;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        activeColor,
+        borderColor,
+        size,
+        gap,
+        borderRadius,
+      );
+}
+
 class CheckboxController extends ValueNotifier<CheckboxState>
     with ComponentController<CheckboxState> {
   CheckboxController(super.value);
@@ -48,6 +113,11 @@ class ControlledCheckbox extends StatelessWidget
   final Widget? leading;
   final Widget? trailing;
   final bool tristate;
+  final double? size;
+  final double? gap;
+  final Color? activeColor;
+  final Color? borderColor;
+  final BorderRadiusGeometry? borderRadius;
 
   const ControlledCheckbox({
     super.key,
@@ -58,6 +128,11 @@ class ControlledCheckbox extends StatelessWidget
     this.leading,
     this.trailing,
     this.tristate = false,
+    this.size,
+    this.gap,
+    this.activeColor,
+    this.borderColor,
+    this.borderRadius,
   });
 
   @override
@@ -75,6 +150,11 @@ class ControlledCheckbox extends StatelessWidget
           trailing: trailing,
           enabled: data.enabled,
           tristate: tristate,
+          size: size,
+          gap: gap,
+          activeColor: activeColor,
+          borderColor: borderColor,
+          borderRadius: borderRadius,
         );
       },
     );
@@ -99,6 +179,11 @@ class Checkbox extends StatefulWidget {
   final Widget? trailing;
   final bool tristate;
   final bool? enabled;
+  final double? size;
+  final double? gap;
+  final Color? activeColor;
+  final Color? borderColor;
+  final BorderRadiusGeometry? borderRadius;
 
   const Checkbox({
     super.key,
@@ -108,6 +193,11 @@ class Checkbox extends StatefulWidget {
     this.trailing,
     this.tristate = false,
     this.enabled,
+    this.size,
+    this.gap,
+    this.activeColor,
+    this.borderColor,
+    this.borderRadius,
   });
 
   @override
@@ -172,6 +262,28 @@ class _CheckboxState extends State<Checkbox>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<CheckboxTheme>(context);
+    final size = styleValue(
+        widgetValue: widget.size,
+        themeValue: compTheme?.size,
+        defaultValue: 16 * scaling);
+    final gap = styleValue(
+        widgetValue: widget.gap,
+        themeValue: compTheme?.gap,
+        defaultValue: 8 * scaling);
+    final activeColor = styleValue(
+        widgetValue: widget.activeColor,
+        themeValue: compTheme?.activeColor,
+        defaultValue: theme.colorScheme.primary);
+    final borderColor = styleValue(
+        widgetValue: widget.borderColor,
+        themeValue: compTheme?.borderColor,
+        defaultValue: theme.colorScheme.mutedForeground);
+    final borderRadius = styleValue<BorderRadiusGeometry>(
+        widgetValue: widget.borderRadius,
+        themeValue: compTheme?.borderRadius,
+        defaultValue: BorderRadius.circular(theme.radiusSm));
     return Clickable(
       enabled: widget.onChanged != null,
       mouseCursor: enabled
@@ -184,25 +296,26 @@ class _CheckboxState extends State<Checkbox>
         mainAxisSize: MainAxisSize.min,
         children: [
           if (widget.leading != null) widget.leading!.small().medium(),
-          SizedBox(width: theme.scaling * 8),
+          SizedBox(width: gap),
           AnimatedContainer(
             duration: kDefaultDuration,
-            width: theme.scaling * 16,
-            height: theme.scaling * 16,
+            width: size,
+            height: size,
             decoration: BoxDecoration(
               color: widget.state == CheckboxState.checked
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.primary.withValues(alpha: 0),
-              borderRadius: BorderRadius.circular(theme.radiusSm),
+                  ? activeColor
+                  : activeColor.withValues(alpha: 0),
+              borderRadius: optionallyResolveBorderRadius(context, borderRadius) ??
+                  BorderRadius.circular(theme.radiusSm),
               border: Border.all(
                 color: !enabled
                     ? theme.colorScheme.muted
                     : _focusing
                         ? theme.colorScheme.ring
                         : widget.state == CheckboxState.checked
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.mutedForeground,
-                width: (_focusing ? 2 : 1) * theme.scaling,
+                            ? activeColor
+                            : borderColor,
+                width: (_focusing ? 2 : 1) * scaling,
               ),
             ),
             child: widget.state == CheckboxState.checked
@@ -210,8 +323,8 @@ class _CheckboxState extends State<Checkbox>
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 100),
                       child: SizedBox(
-                        width: theme.scaling * 9,
-                        height: theme.scaling * 6.5,
+                        width: scaling * 9,
+                        height: scaling * 6.5,
                         child: AnimatedValueBuilder(
                           value: 1.0,
                           initialValue: _shouldAnimate ? 0.0 : null,
@@ -225,7 +338,7 @@ class _CheckboxState extends State<Checkbox>
                               painter: AnimatedCheckPainter(
                                 progress: value,
                                 color: theme.colorScheme.primaryForeground,
-                                strokeWidth: theme.scaling * 1,
+                                strokeWidth: scaling * 1,
                               ),
                             );
                           },
@@ -237,20 +350,21 @@ class _CheckboxState extends State<Checkbox>
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 100),
                       width: widget.state == CheckboxState.indeterminate
-                          ? theme.scaling * 8
+                          ? scaling * 8
                           : 0,
                       height: widget.state == CheckboxState.indeterminate
-                          ? theme.scaling * 8
+                          ? scaling * 8
                           : 0,
                       padding: EdgeInsets.zero,
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary,
-                        borderRadius: BorderRadius.circular(theme.radiusXs),
+                        color: activeColor,
+                        borderRadius:
+                            BorderRadius.circular(theme.radiusXs),
                       ),
                     ),
                   ),
           ),
-          SizedBox(width: theme.scaling * 8),
+          SizedBox(width: gap),
           if (widget.trailing != null) widget.trailing!.small().medium(),
         ],
       ),
