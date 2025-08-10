@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef Predicate<T> = bool Function(T value);
@@ -883,14 +884,14 @@ class TimeOfDay {
   TimeOfDay.now() : this.fromDateTime(DateTime.now());
 
   TimeOfDay copyWith({
-    int? hour,
-    int? minute,
-    int? second,
+    ValueGetter<int>? hour,
+    ValueGetter<int>? minute,
+    ValueGetter<int>? second,
   }) {
     return TimeOfDay(
-      hour: hour ?? this.hour,
-      minute: minute ?? this.minute,
-      second: second ?? this.second,
+      hour: hour == null ? this.hour : hour(),
+      minute: minute == null ? this.minute : minute(),
+      second: second == null ? this.second : second(),
     );
   }
 

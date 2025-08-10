@@ -415,7 +415,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
         stateBuilder: widget.stateBuilder,
         onChanged: (value) {
           setState(() {
-            onViewChanged(view.copyWith(year: value));
+            onViewChanged(view.copyWith(year: () => value));
           });
         },
       );
@@ -704,12 +704,12 @@ class CalendarView {
   int get hashCode => year.hashCode ^ month.hashCode;
 
   CalendarView copyWith({
-    int? year,
-    int? month,
+    ValueGetter<int>? year,
+    ValueGetter<int>? month,
   }) {
     return CalendarView(
-      year ?? this.year,
-      month ?? this.month,
+      year == null ? this.year : year(),
+      month == null ? this.month : month(),
     );
   }
 }
@@ -965,7 +965,7 @@ class MonthCalendar extends StatelessWidget {
           indexAtRow: (i - 1) % 4,
           rowCount: 4,
           onTap: () {
-            onChanged(value.copyWith(month: i));
+            onChanged(value.copyWith(month: () => i));
           },
           width: theme.scaling * 56,
           state: stateBuilder?.call(date) ?? DateState.enabled,

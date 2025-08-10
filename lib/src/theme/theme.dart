@@ -25,10 +25,12 @@ class AdaptiveScaling {
 
   ThemeData scale(ThemeData theme) {
     return theme.copyWith(
-      radius: radiusScaling == 1 ? null : theme.radius * radiusScaling,
-      scaling: sizeScaling == 1 ? null : theme.scaling * sizeScaling,
-      typography: textScaling == 1 ? null : theme.typography.scale(textScaling),
-      iconTheme: textScaling == 1 ? null : theme.iconTheme.scale(textScaling),
+      radius: radiusScaling == 1 ? null : () => theme.radius * radiusScaling,
+      scaling: sizeScaling == 1 ? null : () => theme.scaling * sizeScaling,
+      typography:
+          textScaling == 1 ? null : () => theme.typography.scale(textScaling),
+      iconTheme:
+          textScaling == 1 ? null : () => theme.iconTheme.scale(textScaling),
     );
   }
 
@@ -139,24 +141,25 @@ class ThemeData {
   Brightness get brightness => colorScheme.brightness;
 
   ThemeData copyWith({
-    ColorScheme? colorScheme,
-    double? radius,
-    Typography? typography,
-    TargetPlatform? platform,
-    double? scaling,
-    IconThemeProperties? iconTheme,
-    double? surfaceOpacity,
-    double? surfaceBlur,
+    ValueGetter<ColorScheme>? colorScheme,
+    ValueGetter<double>? radius,
+    ValueGetter<Typography>? typography,
+    ValueGetter<TargetPlatform>? platform,
+    ValueGetter<double>? scaling,
+    ValueGetter<IconThemeProperties>? iconTheme,
+    ValueGetter<double>? surfaceOpacity,
+    ValueGetter<double>? surfaceBlur,
   }) {
     return ThemeData(
-      colorScheme: colorScheme ?? this.colorScheme,
-      radius: radius ?? this.radius,
-      typography: typography ?? this.typography,
-      platform: platform ?? _platform,
-      scaling: scaling ?? this.scaling,
-      iconTheme: iconTheme ?? this.iconTheme,
-      surfaceOpacity: surfaceOpacity ?? this.surfaceOpacity,
-      surfaceBlur: surfaceBlur ?? this.surfaceBlur,
+      colorScheme: colorScheme == null ? this.colorScheme : colorScheme(),
+      radius: radius == null ? this.radius : radius(),
+      typography: typography == null ? this.typography : typography(),
+      platform: platform == null ? _platform : platform(),
+      scaling: scaling == null ? this.scaling : scaling(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      surfaceOpacity:
+          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
     );
   }
 
@@ -320,30 +323,30 @@ class IconThemeProperties {
   });
 
   IconThemeProperties copyWith({
-    IconThemeData? x4Small,
-    IconThemeData? x3Small,
-    IconThemeData? x2Small,
-    IconThemeData? xSmall,
-    IconThemeData? small,
-    IconThemeData? medium,
-    IconThemeData? large,
-    IconThemeData? xLarge,
-    IconThemeData? x2Large,
-    IconThemeData? x3Large,
-    IconThemeData? x4Large,
+    ValueGetter<IconThemeData>? x4Small,
+    ValueGetter<IconThemeData>? x3Small,
+    ValueGetter<IconThemeData>? x2Small,
+    ValueGetter<IconThemeData>? xSmall,
+    ValueGetter<IconThemeData>? small,
+    ValueGetter<IconThemeData>? medium,
+    ValueGetter<IconThemeData>? large,
+    ValueGetter<IconThemeData>? xLarge,
+    ValueGetter<IconThemeData>? x2Large,
+    ValueGetter<IconThemeData>? x3Large,
+    ValueGetter<IconThemeData>? x4Large,
   }) {
     return IconThemeProperties(
-      x4Small: x4Small ?? this.x4Small,
-      x3Small: x3Small ?? this.x3Small,
-      x2Small: x2Small ?? this.x2Small,
-      xSmall: xSmall ?? this.xSmall,
-      small: small ?? this.small,
-      medium: medium ?? this.medium,
-      large: large ?? this.large,
-      xLarge: xLarge ?? this.xLarge,
-      x2Large: x2Large ?? this.x2Large,
-      x3Large: x3Large ?? this.x3Large,
-      x4Large: x4Large ?? this.x4Large,
+      x4Small: x4Small == null ? this.x4Small : x4Small(),
+      x3Small: x3Small == null ? this.x3Small : x3Small(),
+      x2Small: x2Small == null ? this.x2Small : x2Small(),
+      xSmall: xSmall == null ? this.xSmall : xSmall(),
+      small: small == null ? this.small : small(),
+      medium: medium == null ? this.medium : medium(),
+      large: large == null ? this.large : large(),
+      xLarge: xLarge == null ? this.xLarge : xLarge(),
+      x2Large: x2Large == null ? this.x2Large : x2Large(),
+      x3Large: x3Large == null ? this.x3Large : x3Large(),
+      x4Large: x4Large == null ? this.x4Large : x4Large(),
     );
   }
 

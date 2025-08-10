@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
@@ -92,26 +93,28 @@ class AccordionTheme {
   ///
   /// {@macro accordion_theme}
   AccordionTheme copyWith({
-    Duration? duration,
-    Curve? curve,
-    Curve? reverseCurve,
-    double? padding,
-    double? iconGap,
-    double? dividerHeight,
-    Color? dividerColor,
-    IconData? arrowIcon,
-    Color? arrowIconColor,
+    ValueGetter<Duration?>? duration,
+    ValueGetter<Curve?>? curve,
+    ValueGetter<Curve?>? reverseCurve,
+    ValueGetter<double?>? padding,
+    ValueGetter<double?>? iconGap,
+    ValueGetter<double?>? dividerHeight,
+    ValueGetter<Color?>? dividerColor,
+    ValueGetter<IconData?>? arrowIcon,
+    ValueGetter<Color?>? arrowIconColor,
   }) {
     return AccordionTheme(
-      duration: duration ?? this.duration,
-      curve: curve ?? this.curve,
-      reverseCurve: reverseCurve ?? this.reverseCurve,
-      padding: padding ?? this.padding,
-      iconGap: iconGap ?? this.iconGap,
-      dividerHeight: dividerHeight ?? this.dividerHeight,
-      dividerColor: dividerColor ?? this.dividerColor,
-      arrowIcon: arrowIcon ?? this.arrowIcon,
-      arrowIconColor: arrowIconColor ?? this.arrowIconColor,
+      duration: duration == null ? this.duration : duration(),
+      curve: curve == null ? this.curve : curve(),
+      reverseCurve: reverseCurve == null ? this.reverseCurve : reverseCurve(),
+      padding: padding == null ? this.padding : padding(),
+      iconGap: iconGap == null ? this.iconGap : iconGap(),
+      dividerHeight:
+          dividerHeight == null ? this.dividerHeight : dividerHeight(),
+      dividerColor: dividerColor == null ? this.dividerColor : dividerColor(),
+      arrowIcon: arrowIcon == null ? this.arrowIcon : arrowIcon(),
+      arrowIconColor:
+          arrowIconColor == null ? this.arrowIconColor : arrowIconColor(),
     );
   }
 

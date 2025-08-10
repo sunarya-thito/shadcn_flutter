@@ -84,32 +84,32 @@ enum ShadcnFeatureTag {
     switch (this) {
       case ShadcnFeatureTag.newFeature:
         copy = theme.copyWith(
-          colorScheme: theme.colorScheme.copyWith(
-            primary: Colors.green,
+          colorScheme: () => theme.colorScheme.copyWith(
+            primary: () => Colors.green,
           ),
         );
         badgeText = 'New';
         break;
       case ShadcnFeatureTag.updated:
         copy = theme.copyWith(
-          colorScheme: theme.colorScheme.copyWith(
-            primary: Colors.blue,
+          colorScheme: () => theme.colorScheme.copyWith(
+            primary: () => Colors.blue,
           ),
         );
         badgeText = 'Updated';
         break;
       case ShadcnFeatureTag.workInProgress:
         copy = theme.copyWith(
-          colorScheme: theme.colorScheme.copyWith(
-            primary: Colors.orange,
+          colorScheme: () => theme.colorScheme.copyWith(
+            primary: () => Colors.orange,
           ),
         );
         badgeText = 'WIP';
         break;
       case ShadcnFeatureTag.experimental:
         copy = theme.copyWith(
-          colorScheme: theme.colorScheme.copyWith(
-            primary: Colors.purple,
+          colorScheme: () => theme.colorScheme.copyWith(
+            primary: () => Colors.purple,
           ),
         );
         badgeText = 'Experimental';

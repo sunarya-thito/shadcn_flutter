@@ -89,16 +89,17 @@ class ImageProperties {
       'ImageProperties(cropRect: $cropRect, rotation: $rotation, flipHorizontal: $flipHorizontal, flipVertical: $flipVertical)';
 
   ImageProperties copyWith({
-    Rect? cropRect,
-    double? rotation,
-    bool? flipHorizontal,
-    bool? flipVertical,
+    ValueGetter<Rect>? cropRect,
+    ValueGetter<double>? rotation,
+    ValueGetter<bool>? flipHorizontal,
+    ValueGetter<bool>? flipVertical,
   }) {
     return ImageProperties(
-      cropRect: cropRect ?? this.cropRect,
-      rotation: rotation ?? this.rotation,
-      flipHorizontal: flipHorizontal ?? this.flipHorizontal,
-      flipVertical: flipVertical ?? this.flipVertical,
+      cropRect: cropRect == null ? this.cropRect : cropRect(),
+      rotation: rotation == null ? this.rotation : rotation(),
+      flipHorizontal:
+          flipHorizontal == null ? this.flipHorizontal : flipHorizontal(),
+      flipVertical: flipVertical == null ? this.flipVertical : flipVertical(),
     );
   }
 }

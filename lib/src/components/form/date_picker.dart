@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 
 import '../../../shadcn_flutter.dart';
 
@@ -158,12 +159,12 @@ class DateTimeRange {
   }
 
   DateTimeRange copyWith({
-    DateTime? start,
-    DateTime? end,
+    ValueGetter<DateTime>? start,
+    ValueGetter<DateTime>? end,
   }) {
     return DateTimeRange(
-      start ?? this.start,
-      end ?? this.end,
+      start == null ? this.start : start(),
+      end == null ? this.end : end(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 Color _fromAHSL(double a, double h, double s, double l) {
@@ -518,54 +519,69 @@ class ColorScheme implements ChartColorScheme {
         );
 
   ColorScheme copyWith({
-    Brightness? brightness,
-    Color? background,
-    Color? foreground,
-    Color? card,
-    Color? cardForeground,
-    Color? popover,
-    Color? popoverForeground,
-    Color? primary,
-    Color? primaryForeground,
-    Color? secondary,
-    Color? secondaryForeground,
-    Color? muted,
-    Color? mutedForeground,
-    Color? accent,
-    Color? accentForeground,
-    Color? destructive,
-    Color? destructiveForeground,
-    Color? border,
-    Color? input,
-    Color? ring,
+    ValueGetter<Brightness>? brightness,
+    ValueGetter<Color>? background,
+    ValueGetter<Color>? foreground,
+    ValueGetter<Color>? card,
+    ValueGetter<Color>? cardForeground,
+    ValueGetter<Color>? popover,
+    ValueGetter<Color>? popoverForeground,
+    ValueGetter<Color>? primary,
+    ValueGetter<Color>? primaryForeground,
+    ValueGetter<Color>? secondary,
+    ValueGetter<Color>? secondaryForeground,
+    ValueGetter<Color>? muted,
+    ValueGetter<Color>? mutedForeground,
+    ValueGetter<Color>? accent,
+    ValueGetter<Color>? accentForeground,
+    ValueGetter<Color>? destructive,
+    ValueGetter<Color>? destructiveForeground,
+    ValueGetter<Color>? border,
+    ValueGetter<Color>? input,
+    ValueGetter<Color>? ring,
+    ValueGetter<Color>? chart1,
+    ValueGetter<Color>? chart2,
+    ValueGetter<Color>? chart3,
+    ValueGetter<Color>? chart4,
+    ValueGetter<Color>? chart5,
   }) {
     return ColorScheme(
-      brightness: brightness ?? this.brightness,
-      background: background ?? this.background,
-      foreground: foreground ?? this.foreground,
-      card: card ?? this.card,
-      cardForeground: cardForeground ?? this.cardForeground,
-      popover: popover ?? this.popover,
-      popoverForeground: popoverForeground ?? this.popoverForeground,
-      primary: primary ?? this.primary,
-      primaryForeground: primaryForeground ?? this.primaryForeground,
-      secondary: secondary ?? this.secondary,
-      secondaryForeground: secondaryForeground ?? this.secondaryForeground,
-      muted: muted ?? this.muted,
-      mutedForeground: mutedForeground ?? this.mutedForeground,
-      accent: accent ?? this.accent,
-      accentForeground: accentForeground ?? this.accentForeground,
-      destructive: destructive ?? this.destructive,
-      destructiveForeground:
-          destructiveForeground ?? this.destructiveForeground,
-      border: border ?? this.border,
-      input: input ?? this.input,
-      ring: ring ?? this.ring,
-      chart1: chart1,
-      chart2: chart2,
-      chart3: chart3,
-      chart4: chart4,
-      chart5: chart5,
+      brightness: brightness == null ? this.brightness : brightness(),
+      background: background == null ? this.background : background(),
+      foreground: foreground == null ? this.foreground : foreground(),
+      card: card == null ? this.card : card(),
+      cardForeground:
+          cardForeground == null ? this.cardForeground : cardForeground(),
+      popover: popover == null ? this.popover : popover(),
+      popoverForeground: popoverForeground == null
+          ? this.popoverForeground
+          : popoverForeground(),
+      primary: primary == null ? this.primary : primary(),
+      primaryForeground: primaryForeground == null
+          ? this.primaryForeground
+          : primaryForeground(),
+      secondary: secondary == null ? this.secondary : secondary(),
+      secondaryForeground: secondaryForeground == null
+          ? this.secondaryForeground
+          : secondaryForeground(),
+      muted: muted == null ? this.muted : muted(),
+      mutedForeground:
+          mutedForeground == null ? this.mutedForeground : mutedForeground(),
+      accent: accent == null ? this.accent : accent(),
+      accentForeground:
+          accentForeground == null ? this.accentForeground : accentForeground(),
+      destructive: destructive == null ? this.destructive : destructive(),
+      destructiveForeground: destructiveForeground == null
+          ? this.destructiveForeground
+          : destructiveForeground(),
+      border: border == null ? this.border : border(),
+      input: input == null ? this.input : input(),
+      ring: ring == null ? this.ring : ring(),
+      chart1: chart1 == null ? this.chart1 : chart1(),
+      chart2: chart2 == null ? this.chart2 : chart2(),
+      chart3: chart3 == null ? this.chart3 : chart3(),
+      chart4: chart4 == null ? this.chart4 : chart4(),
+      chart5: chart5 == null ? this.chart5 : chart5(),
     );
   }
 

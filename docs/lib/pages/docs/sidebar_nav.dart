@@ -42,8 +42,8 @@ class SidebarButton extends StatelessWidget {
     var data = Theme.of(context);
     if (selected) {
       data = data.copyWith(
-        colorScheme: data.colorScheme.copyWith(
-          mutedForeground: data.colorScheme.secondaryForeground,
+        colorScheme: () => data.colorScheme.copyWith(
+          mutedForeground: () => data.colorScheme.secondaryForeground,
         ),
       );
     }
@@ -105,8 +105,8 @@ class _DocsNavigationButtonState extends State<DocsNavigationButton> {
     var data = Theme.of(context);
     if (!widget.selected) {
       data = data.copyWith(
-        colorScheme: data.colorScheme.copyWith(
-          foreground: data.colorScheme.mutedForeground,
+        colorScheme: () => data.colorScheme.copyWith(
+          foreground: () => data.colorScheme.mutedForeground,
         ),
       );
     }

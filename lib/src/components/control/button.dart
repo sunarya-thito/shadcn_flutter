@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import '../../../shadcn_flutter.dart';
 
 class ToggleController extends ValueNotifier<bool>
@@ -1306,20 +1307,20 @@ class PrimaryButtonTheme extends ButtonTheme {
       super.margin});
 
   PrimaryButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return PrimaryButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }
@@ -1334,20 +1335,20 @@ class SecondaryButtonTheme extends ButtonTheme {
       super.margin});
 
   SecondaryButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return SecondaryButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }
@@ -1362,20 +1363,20 @@ class OutlineButtonTheme extends ButtonTheme {
       super.margin});
 
   OutlineButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return OutlineButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }
@@ -1390,20 +1391,20 @@ class GhostButtonTheme extends ButtonTheme {
       super.margin});
 
   GhostButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return GhostButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }
@@ -1418,20 +1419,20 @@ class LinkButtonTheme extends ButtonTheme {
       super.margin});
 
   LinkButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return LinkButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }
@@ -1446,20 +1447,20 @@ class TextButtonTheme extends ButtonTheme {
       super.margin});
 
   TextButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return TextButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }
@@ -1474,20 +1475,20 @@ class DestructiveButtonTheme extends ButtonTheme {
       super.margin});
 
   DestructiveButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return DestructiveButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }
@@ -1502,20 +1503,20 @@ class FixedButtonTheme extends ButtonTheme {
       super.margin});
 
   FixedButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return FixedButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }
@@ -1530,20 +1531,20 @@ class MenuButtonTheme extends ButtonTheme {
       super.margin});
 
   MenuButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return MenuButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }
@@ -1558,20 +1559,20 @@ class MenubarButtonTheme extends ButtonTheme {
       super.margin});
 
   MenubarButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return MenubarButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }
@@ -1586,20 +1587,20 @@ class MutedButtonTheme extends ButtonTheme {
       super.margin});
 
   MutedButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return MutedButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }
@@ -1614,20 +1615,20 @@ class CardButtonTheme extends ButtonTheme {
       super.margin});
 
   CardButtonTheme copyWith({
-    ButtonStatePropertyDelegate<Decoration>? decoration,
-    ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding,
-    ButtonStatePropertyDelegate<TextStyle>? textStyle,
-    ButtonStatePropertyDelegate<IconThemeData>? iconTheme,
-    ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin,
+    ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
+    ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding,
+    ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle,
+    ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme,
+    ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin,
   }) {
     return CardButtonTheme(
-      decoration: decoration ?? this.decoration,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      padding: padding ?? this.padding,
-      textStyle: textStyle ?? this.textStyle,
-      iconTheme: iconTheme ?? this.iconTheme,
-      margin: margin ?? this.margin,
+      decoration: decoration == null ? this.decoration : decoration(),
+      mouseCursor: mouseCursor == null ? this.mouseCursor : mouseCursor(),
+      padding: padding == null ? this.padding : padding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
+      margin: margin == null ? this.margin : margin(),
     );
   }
 }

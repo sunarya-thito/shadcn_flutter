@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../../shadcn_flutter.dart';
@@ -774,24 +775,25 @@ class WrappedText extends StatelessWidget implements TextModifier {
   }
 
   WrappedText copyWith({
-    WrappedTextDataBuilder<TextStyle>? style,
-    WrappedTextDataBuilder<TextAlign>? textAlign,
-    WrappedTextDataBuilder<bool>? softWrap,
-    WrappedTextDataBuilder<TextOverflow>? overflow,
-    WrappedTextDataBuilder<int>? maxLines,
-    WrappedTextDataBuilder<TextWidthBasis>? textWidthBasis,
-    WidgetTextWrapper? wrapper,
-    Widget? child,
+    ValueGetter<WrappedTextDataBuilder<TextStyle>?>? style,
+    ValueGetter<WrappedTextDataBuilder<TextAlign>?>? textAlign,
+    ValueGetter<WrappedTextDataBuilder<bool>?>? softWrap,
+    ValueGetter<WrappedTextDataBuilder<TextOverflow>?>? overflow,
+    ValueGetter<WrappedTextDataBuilder<int>?>? maxLines,
+    ValueGetter<WrappedTextDataBuilder<TextWidthBasis>?>? textWidthBasis,
+    ValueGetter<WidgetTextWrapper?>? wrapper,
+    ValueGetter<Widget>? child,
   }) {
     return WrappedText(
-      wrapper: wrapper ?? this.wrapper,
-      style: style ?? this.style,
-      textAlign: textAlign ?? this.textAlign,
-      softWrap: softWrap ?? this.softWrap,
-      overflow: overflow ?? this.overflow,
-      maxLines: maxLines ?? this.maxLines,
-      textWidthBasis: textWidthBasis ?? this.textWidthBasis,
-      child: child ?? this.child,
+      wrapper: wrapper == null ? this.wrapper : wrapper(),
+      style: style == null ? this.style : style(),
+      textAlign: textAlign == null ? this.textAlign : textAlign(),
+      softWrap: softWrap == null ? this.softWrap : softWrap(),
+      overflow: overflow == null ? this.overflow : overflow(),
+      maxLines: maxLines == null ? this.maxLines : maxLines(),
+      textWidthBasis:
+          textWidthBasis == null ? this.textWidthBasis : textWidthBasis(),
+      child: child == null ? this.child : child(),
     );
   }
 
