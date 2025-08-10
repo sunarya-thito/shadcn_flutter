@@ -1,16 +1,84 @@
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/src/components/control/hover.dart';
 
 import '../../../shadcn_flutter.dart';
+
+/// Theme configuration for [TooltipContainer].
+class TooltipTheme {
+  /// Opacity applied to the tooltip surface color.
+  final double? surfaceOpacity;
+
+  /// Blur amount for the tooltip surface.
+  final double? surfaceBlur;
+
+  /// Padding around the tooltip content.
+  final EdgeInsetsGeometry? padding;
+
+  /// Background color of the tooltip.
+  final Color? backgroundColor;
+
+  /// Border radius of the tooltip container.
+  final BorderRadiusGeometry? borderRadius;
+
+  /// Creates a [TooltipTheme].
+  const TooltipTheme({
+    this.surfaceOpacity,
+    this.surfaceBlur,
+    this.padding,
+    this.backgroundColor,
+    this.borderRadius,
+  });
+
+  /// Creates a copy of this theme but with the given fields replaced.
+  TooltipTheme copyWith({
+    ValueGetter<double?>? surfaceOpacity,
+    ValueGetter<double?>? surfaceBlur,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+    ValueGetter<Color?>? backgroundColor,
+    ValueGetter<BorderRadiusGeometry?>? borderRadius,
+  }) {
+    return TooltipTheme(
+      surfaceOpacity:
+          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
+      padding: padding == null ? this.padding : padding(),
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is TooltipTheme &&
+        other.surfaceOpacity == surfaceOpacity &&
+        other.surfaceBlur == surfaceBlur &&
+        other.padding == padding &&
+        other.backgroundColor == backgroundColor &&
+        other.borderRadius == borderRadius;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      surfaceOpacity, surfaceBlur, padding, backgroundColor, borderRadius);
+}
 
 class TooltipContainer extends StatelessWidget {
   final Widget child;
   final double? surfaceOpacity;
   final double? surfaceBlur;
+  final EdgeInsetsGeometry? padding;
+  final Color? backgroundColor;
+  final BorderRadiusGeometry? borderRadius;
 
   const TooltipContainer({
     super.key,
     this.surfaceOpacity,
     this.surfaceBlur,
+    this.padding,
+    this.backgroundColor,
+    this.borderRadius,
     required this.child,
   });
 
@@ -22,32 +90,39 @@ class TooltipContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    var backgroundColor = theme.colorScheme.primary;
-    // var surfaceOpacity = this.surfaceOpacity ?? theme.surfaceOpacity;
-    // var surfaceBlur = this.surfaceBlur ?? theme.surfaceBlur;
-    // Do not use the default value of theme.surfaceOpacity and theme.surfaceBlur
-    // but still allow the user to set the value
-    var surfaceOpacity = this.surfaceOpacity;
-    var surfaceBlur = this.surfaceBlur;
+    final compTheme = ComponentTheme.maybeOf<TooltipTheme>(context);
+    Color backgroundColor = styleValue(
+        widgetValue: this.backgroundColor,
+        themeValue: compTheme?.backgroundColor,
+        defaultValue: theme.colorScheme.primary);
+    var surfaceOpacity = this.surfaceOpacity ?? compTheme?.surfaceOpacity;
+    var surfaceBlur = this.surfaceBlur ?? compTheme?.surfaceBlur;
     if (surfaceOpacity != null) {
       backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
     }
+    final padding = styleValue(
+            widgetValue: this.padding,
+            themeValue: compTheme?.padding,
+            defaultValue:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 6))
+        .resolve(Directionality.of(context)) *
+        scaling;
+    final borderRadius = styleValue(
+        widgetValue: this.borderRadius,
+        themeValue: compTheme?.borderRadius,
+        defaultValue: BorderRadius.circular(theme.radiusSm));
     Widget animatedContainer = Container(
-      padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 6,
-          ) *
-          scaling,
+      padding: padding,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(theme.radiusSm),
+        borderRadius: borderRadius,
       ),
       child: child.xSmall().primaryForeground(),
     );
     if (surfaceBlur != null && surfaceBlur > 0) {
       animatedContainer = SurfaceBlur(
         surfaceBlur: surfaceBlur,
-        borderRadius: BorderRadius.circular(theme.radiusSm),
+        borderRadius: borderRadius,
         child: animatedContainer,
       );
     }

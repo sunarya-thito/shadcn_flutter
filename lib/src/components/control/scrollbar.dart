@@ -2,9 +2,54 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 
 import '../../../shadcn_flutter.dart';
+
+/// Theme configuration for [Scrollbar].
+class ScrollbarTheme {
+  /// Color of the scrollbar thumb.
+  final Color? color;
+
+  /// Thickness of the scrollbar thumb.
+  final double? thickness;
+
+  /// Radius of the scrollbar thumb.
+  final Radius? radius;
+
+  /// Creates a [ScrollbarTheme].
+  const ScrollbarTheme({
+    this.color,
+    this.thickness,
+    this.radius,
+  });
+
+  /// Creates a copy of this theme with the given values replaced.
+  ScrollbarTheme copyWith({
+    ValueGetter<Color?>? color,
+    ValueGetter<double?>? thickness,
+    ValueGetter<Radius?>? radius,
+  }) {
+    return ScrollbarTheme(
+      color: color == null ? this.color : color(),
+      thickness: thickness == null ? this.thickness : thickness(),
+      radius: radius == null ? this.radius : radius(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ScrollbarTheme &&
+        other.color == color &&
+        other.thickness == thickness &&
+        other.radius == radius;
+  }
+
+  @override
+  int get hashCode => Object.hash(color, thickness, radius);
+}
 
 const double _kScrollbarMinLength = 48.0;
 const Duration _kScrollbarFadeDuration = Duration(milliseconds: 300);
@@ -19,6 +64,7 @@ class Scrollbar extends StatelessWidget {
     this.trackVisibility,
     this.thickness,
     this.radius,
+    this.color,
     this.notificationPredicate,
     this.interactive,
     this.scrollbarOrientation,
@@ -31,6 +77,7 @@ class Scrollbar extends StatelessWidget {
   final double? thickness;
 
   final Radius? radius;
+  final Color? color;
 
   final bool? interactive;
   final ScrollNotificationPredicate? notificationPredicate;
@@ -44,6 +91,7 @@ class Scrollbar extends StatelessWidget {
       trackVisibility: trackVisibility,
       thickness: thickness,
       radius: radius,
+      color: color,
       notificationPredicate: notificationPredicate,
       interactive: interactive,
       scrollbarOrientation: scrollbarOrientation,
@@ -60,6 +108,7 @@ class _ShadcnScrollbar extends RawScrollbar {
     super.trackVisibility,
     super.thickness,
     super.radius,
+    this.color,
     ScrollNotificationPredicate? notificationPredicate,
     super.interactive,
     super.scrollbarOrientation,
@@ -70,6 +119,8 @@ class _ShadcnScrollbar extends RawScrollbar {
           notificationPredicate:
               notificationPredicate ?? defaultScrollNotificationPredicate,
         );
+
+  final Color? color;
 
   @override
   _ShadcnScrollbarState createState() => _ShadcnScrollbarState();
@@ -103,14 +154,25 @@ class _ShadcnScrollbarState extends RawScrollbarState<_ShadcnScrollbar> {
 
   @override
   void updateScrollbarPainter() {
+    final compTheme = ComponentTheme.maybeOf<ScrollbarTheme>(context);
     scrollbarPainter
-      ..color = _theme.colorScheme.border
+      ..color = styleValue(
+          widgetValue: widget.color,
+          themeValue: compTheme?.color,
+          defaultValue: _theme.colorScheme.border)
       ..textDirection = Directionality.of(context)
       // Should this be affected by density?
-      ..thickness = 7.0 * _theme.scaling
-      ..radius = widget.radius ?? Radius.circular(_theme.radiusSm)
+      ..thickness = styleValue(
+          widgetValue: widget.thickness,
+          themeValue: compTheme?.thickness,
+          defaultValue: 7.0 * _theme.scaling)
+      ..radius = styleValue(
+          widgetValue: widget.radius,
+          themeValue: compTheme?.radius,
+          defaultValue: Radius.circular(_theme.radiusSm))
       ..minLength = _kScrollbarMinLength
-      ..padding = MediaQuery.paddingOf(context) + EdgeInsets.all(_theme.scaling)
+      ..padding =
+          MediaQuery.paddingOf(context) + EdgeInsets.all(_theme.scaling)
       ..scrollbarOrientation = widget.scrollbarOrientation
       ..ignorePointer = !enableGestures;
   }

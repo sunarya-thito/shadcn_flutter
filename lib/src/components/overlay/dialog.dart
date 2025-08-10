@@ -1,5 +1,58 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+class ModalBackdropTheme {
+  final BorderRadiusGeometry? borderRadius;
+  final EdgeInsetsGeometry? padding;
+  final Color? barrierColor;
+  final bool? modal;
+  final bool? surfaceClip;
+
+  const ModalBackdropTheme({
+    this.borderRadius,
+    this.padding,
+    this.barrierColor,
+    this.modal,
+    this.surfaceClip,
+  });
+
+  ModalBackdropTheme copyWith({
+    ValueGetter<BorderRadiusGeometry?>? borderRadius,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+    ValueGetter<Color?>? barrierColor,
+    ValueGetter<bool?>? modal,
+    ValueGetter<bool?>? surfaceClip,
+  }) {
+    return ModalBackdropTheme(
+      borderRadius:
+          borderRadius == null ? this.borderRadius : borderRadius(),
+      padding: padding == null ? this.padding : padding(),
+      barrierColor:
+          barrierColor == null ? this.barrierColor : barrierColor(),
+      modal: modal == null ? this.modal : modal(),
+      surfaceClip: surfaceClip == null ? this.surfaceClip : surfaceClip(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ModalBackdropTheme &&
+        other.borderRadius == borderRadius &&
+        other.padding == padding &&
+        other.barrierColor == barrierColor &&
+        other.modal == modal &&
+        other.surfaceClip == surfaceClip;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        borderRadius,
+        padding,
+        barrierColor,
+        modal,
+        surfaceClip,
+      );
+}
+
 class ModalBackdrop extends StatelessWidget {
   static bool shouldClipSurface(double? surfaceOpacity) {
     if (surfaceOpacity == null) {
@@ -9,26 +62,47 @@ class ModalBackdrop extends StatelessWidget {
   }
 
   final Widget child;
-  final BorderRadiusGeometry borderRadius;
-  final EdgeInsetsGeometry padding;
-  final Color barrierColor;
+  final BorderRadiusGeometry? borderRadius;
+  final EdgeInsetsGeometry? padding;
+  final Color? barrierColor;
   final Animation<double>? fadeAnimation;
-  final bool modal;
-  final bool surfaceClip;
+  final bool? modal;
+  final bool? surfaceClip;
 
   const ModalBackdrop({
     super.key,
-    this.modal = true,
-    this.surfaceClip = true,
-    this.borderRadius = BorderRadius.zero,
-    this.barrierColor = const Color.fromRGBO(0, 0, 0, 0.8),
-    this.padding = EdgeInsets.zero,
+    this.modal,
+    this.surfaceClip,
+    this.borderRadius,
+    this.barrierColor,
+    this.padding,
     this.fadeAnimation,
     required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
+    final compTheme = ComponentTheme.maybeOf<ModalBackdropTheme>(context);
+    final modal = styleValue(
+        widgetValue: this.modal,
+        themeValue: compTheme?.modal,
+        defaultValue: true);
+    final surfaceClip = styleValue(
+        widgetValue: this.surfaceClip,
+        themeValue: compTheme?.surfaceClip,
+        defaultValue: true);
+    final borderRadius = styleValue(
+        widgetValue: this.borderRadius,
+        themeValue: compTheme?.borderRadius,
+        defaultValue: BorderRadius.zero);
+    final padding = styleValue(
+        widgetValue: this.padding,
+        themeValue: compTheme?.padding,
+        defaultValue: EdgeInsets.zero);
+    final barrierColor = styleValue(
+        widgetValue: this.barrierColor,
+        themeValue: compTheme?.barrierColor,
+        defaultValue: const Color.fromRGBO(0, 0, 0, 0.8));
     if (!modal) {
       return child;
     }

@@ -1,5 +1,46 @@
 import '../../../shadcn_flutter.dart';
 
+/// Theme for [Alert].
+class AlertTheme {
+  /// The padding around the alert content.
+  final EdgeInsetsGeometry? padding;
+
+  /// The background color of the alert.
+  final Color? backgroundColor;
+
+  /// The border color of the alert.
+  final Color? borderColor;
+
+  /// Creates an [AlertTheme].
+  const AlertTheme({this.padding, this.backgroundColor, this.borderColor});
+
+  /// Creates a copy of this theme with the given values replaced.
+  AlertTheme copyWith({
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+    ValueGetter<Color?>? backgroundColor,
+    ValueGetter<Color?>? borderColor,
+  }) {
+    return AlertTheme(
+      padding: padding == null ? this.padding : padding(),
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      borderColor: borderColor == null ? this.borderColor : borderColor(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is AlertTheme &&
+        other.padding == padding &&
+        other.backgroundColor == backgroundColor &&
+        other.borderColor == borderColor;
+  }
+
+  @override
+  int get hashCode => Object.hash(padding, backgroundColor, borderColor);
+}
+
 class Alert extends StatelessWidget {
   final Widget? leading;
   final Widget? title;
@@ -44,15 +85,29 @@ class Alert extends StatelessWidget {
 
   Widget _build(BuildContext context) {
     final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<AlertTheme>(context);
     final scaling = theme.scaling;
     var scheme = theme.colorScheme;
+    final padding = styleValue(
+      themeValue: compTheme?.padding,
+      defaultValue:
+          EdgeInsets.symmetric(horizontal: 16 * scaling, vertical: 12 * scaling),
+    );
+    final backgroundColor = styleValue(
+      themeValue: compTheme?.backgroundColor,
+      defaultValue: scheme.background,
+    );
+    final borderColor = styleValue(
+      widgetValue: destructive ? scheme.destructive : null,
+      themeValue: compTheme?.borderColor,
+      defaultValue: destructive ? scheme.destructive : null,
+    );
 
     return OutlinedContainer(
-      backgroundColor: scheme.background,
-      borderColor: destructive ? scheme.destructive : null,
+      backgroundColor: backgroundColor,
+      borderColor: borderColor,
       child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: 16 * scaling, vertical: 12 * scaling),
+        padding: padding,
         child: Basic(
           leading: leading,
           title: title,

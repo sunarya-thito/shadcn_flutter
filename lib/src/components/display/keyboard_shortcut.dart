@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -5,6 +6,50 @@ typedef KeyboardShortcutDisplayBuilder = Widget Function(
   BuildContext context,
   LogicalKeyboardKey key,
 );
+
+/// Theme for keyboard shortcut displays.
+class KeyboardShortcutTheme {
+  /// Spacing between keys.
+  final double? spacing;
+
+  /// Padding inside each key display.
+  final EdgeInsetsGeometry? keyPadding;
+
+  /// Shadow applied to key displays.
+  final List<BoxShadow>? keyShadow;
+
+  /// Creates a [KeyboardShortcutTheme].
+  const KeyboardShortcutTheme({
+    this.spacing,
+    this.keyPadding,
+    this.keyShadow,
+  });
+
+  /// Creates a copy with the given values replaced.
+  KeyboardShortcutTheme copyWith({
+    ValueGetter<double?>? spacing,
+    ValueGetter<EdgeInsetsGeometry?>? keyPadding,
+    ValueGetter<List<BoxShadow>?>? keyShadow,
+  }) {
+    return KeyboardShortcutTheme(
+      spacing: spacing == null ? this.spacing : spacing(),
+      keyPadding: keyPadding == null ? this.keyPadding : keyPadding(),
+      keyShadow: keyShadow == null ? this.keyShadow : keyShadow(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is KeyboardShortcutTheme &&
+        other.spacing == spacing &&
+        other.keyPadding == keyPadding &&
+        listEquals(other.keyShadow, keyShadow);
+  }
+
+  @override
+  int get hashCode => Object.hash(spacing, keyPadding, keyShadow);
+}
 
 class KeyboardShortcutDisplayHandle {
   final KeyboardShortcutDisplayBuilder _builder;
@@ -103,42 +148,61 @@ class KeyboardDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<KeyboardShortcutTheme>(context);
     var keys = _keys ?? shortcutActivatorToKeySet(_activator!);
+    final spacing = styleValue(
+        widgetValue: this.spacing,
+        themeValue: compTheme?.spacing,
+        defaultValue: 2 * theme.scaling);
     return Row(
             mainAxisSize: MainAxisSize.min,
             children: keys
                 .map((key) => KeyboardKeyDisplay(keyboardKey: key))
                 .toList())
-        .gap(spacing ?? (2 * theme.scaling));
+        .gap(spacing);
   }
 }
 
 class KeyboardKeyDisplay extends StatelessWidget {
   final LogicalKeyboardKey keyboardKey;
   final EdgeInsetsGeometry? padding;
+  final List<BoxShadow>? boxShadow;
 
   const KeyboardKeyDisplay({
     super.key,
     required this.keyboardKey,
     this.padding,
+    this.boxShadow,
   });
 
   @override
   Widget build(BuildContext context) {
     final displayMapper = Data.of<KeyboardShortcutDisplayHandle>(context);
     final theme = Theme.of(context);
+    final directionality = Directionality.of(context);
+    final compTheme = ComponentTheme.maybeOf<KeyboardShortcutTheme>(context);
+    final padding = styleValue(
+            widgetValue: this.padding,
+            themeValue: compTheme?.keyPadding,
+            defaultValue:
+                const EdgeInsets.symmetric(horizontal: 6, vertical: 4))
+        .resolve(directionality) *
+        theme.scaling;
+    final defaultShadow = [
+      BoxShadow(
+        color: theme.colorScheme.border,
+        blurRadius: 0,
+        blurStyle: BlurStyle.solid,
+        offset: const Offset(0, -2) * theme.scaling,
+      ),
+    ];
+    final boxShadow = styleValue(
+        widgetValue: this.boxShadow,
+        themeValue: compTheme?.keyShadow,
+        defaultValue: defaultShadow);
     return Card(
-      padding: padding ??
-          (const EdgeInsets.symmetric(horizontal: 6, vertical: 4) *
-              theme.scaling),
-      boxShadow: [
-        BoxShadow(
-          color: theme.colorScheme.border,
-          blurRadius: 0,
-          blurStyle: BlurStyle.solid,
-          offset: const Offset(0, -2) * theme.scaling,
-        ),
-      ],
+      padding: padding,
+      boxShadow: boxShadow,
       child: displayMapper.buildKeyboardDisplay(context, keyboardKey),
     );
   }
