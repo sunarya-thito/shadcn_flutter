@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// {@template collapsible_theme}
@@ -34,20 +35,25 @@ class CollapsibleTheme {
 
   /// Creates a copy of this [CollapsibleTheme] with the given fields replaced.
   CollapsibleTheme copyWith({
-    double? padding,
-    IconData? iconExpanded,
-    IconData? iconCollapsed,
-    CrossAxisAlignment? crossAxisAlignment,
-    MainAxisAlignment? mainAxisAlignment,
-    double? iconGap,
+    ValueGetter<double?>? padding,
+    ValueGetter<IconData?>? iconExpanded,
+    ValueGetter<IconData?>? iconCollapsed,
+    ValueGetter<CrossAxisAlignment?>? crossAxisAlignment,
+    ValueGetter<MainAxisAlignment?>? mainAxisAlignment,
+    ValueGetter<double?>? iconGap,
   }) {
     return CollapsibleTheme(
-      padding: padding ?? this.padding,
-      iconExpanded: iconExpanded ?? this.iconExpanded,
-      iconCollapsed: iconCollapsed ?? this.iconCollapsed,
-      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
-      mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
-      iconGap: iconGap ?? this.iconGap,
+      padding: padding == null ? this.padding : padding(),
+      iconExpanded: iconExpanded == null ? this.iconExpanded : iconExpanded(),
+      iconCollapsed:
+          iconCollapsed == null ? this.iconCollapsed : iconCollapsed(),
+      crossAxisAlignment: crossAxisAlignment == null
+          ? this.crossAxisAlignment
+          : crossAxisAlignment(),
+      mainAxisAlignment: mainAxisAlignment == null
+          ? this.mainAxisAlignment
+          : mainAxisAlignment(),
+      iconGap: iconGap == null ? this.iconGap : iconGap(),
     );
   }
 

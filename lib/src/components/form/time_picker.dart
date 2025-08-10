@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -611,12 +612,12 @@ class TimeRange {
   });
 
   TimeRange copyWith({
-    TimeOfDay? start,
-    TimeOfDay? end,
+    ValueGetter<TimeOfDay>? start,
+    ValueGetter<TimeOfDay>? end,
   }) {
     return TimeRange(
-      start: start ?? this.start,
-      end: end ?? this.end,
+      start: start == null ? this.start : start(),
+      end: end == null ? this.end : end(),
     );
   }
 

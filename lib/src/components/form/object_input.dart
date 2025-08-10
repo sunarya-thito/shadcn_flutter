@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -73,14 +74,14 @@ class NullableDate {
   int get hashCode => Object.hash(year, month, day);
 
   NullableDate copyWith({
-    int? year,
-    int? month,
-    int? day,
+    ValueGetter<int?>? year,
+    ValueGetter<int?>? month,
+    ValueGetter<int?>? day,
   }) {
     return NullableDate(
-      year: year ?? this.year,
-      month: month ?? this.month,
-      day: day ?? this.day,
+      year: year == null ? this.year : year(),
+      month: month == null ? this.month : month(),
+      day: day == null ? this.day : day(),
     );
   }
 
@@ -299,14 +300,14 @@ class NullableTimeOfDay {
   int get hashCode => Object.hash(hour, minute, second);
 
   NullableTimeOfDay copyWith({
-    int? hour,
-    int? minute,
-    int? second,
+    ValueGetter<int?>? hour,
+    ValueGetter<int?>? minute,
+    ValueGetter<int?>? second,
   }) {
     return NullableTimeOfDay(
-      hour: hour ?? this.hour,
-      minute: minute ?? this.minute,
-      second: second ?? this.second,
+      hour: hour == null ? this.hour : hour(),
+      minute: minute == null ? this.minute : minute(),
+      second: second == null ? this.second : second(),
     );
   }
 

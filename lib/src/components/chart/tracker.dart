@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// An abstract class that holds values for different Tracker levels.
@@ -93,14 +94,14 @@ class TrackerTheme {
   });
 
   TrackerTheme copyWith({
-    double? radius,
-    double? gap,
-    double? itemHeight,
+    ValueGetter<double?>? radius,
+    ValueGetter<double?>? gap,
+    ValueGetter<double?>? itemHeight,
   }) {
     return TrackerTheme(
-      radius: radius ?? this.radius,
-      gap: gap ?? this.gap,
-      itemHeight: itemHeight ?? this.itemHeight,
+      radius: radius == null ? this.radius : radius(),
+      gap: gap == null ? this.gap : gap(),
+      itemHeight: itemHeight == null ? this.itemHeight : itemHeight(),
     );
   }
 

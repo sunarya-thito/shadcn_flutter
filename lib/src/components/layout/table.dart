@@ -35,14 +35,15 @@ class TableTheme {
   }
 
   TableTheme copyWith({
-    Border? border,
-    Color? backgroundColor,
-    TableCellTheme? cellTheme,
+    ValueGetter<Border?>? border,
+    ValueGetter<Color?>? backgroundColor,
+    ValueGetter<TableCellTheme?>? cellTheme,
   }) {
     return TableTheme(
-      border: border ?? this.border,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      cellTheme: cellTheme ?? this.cellTheme,
+      border: border == null ? this.border : border(),
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      cellTheme: cellTheme == null ? this.cellTheme : cellTheme(),
     );
   }
 }
@@ -84,14 +85,15 @@ class TableCellTheme {
   }
 
   TableCellTheme copyWith({
-    WidgetStateProperty<Border>? border,
-    WidgetStateProperty<Color>? backgroundColor,
-    WidgetStateProperty<TextStyle>? textStyle,
+    ValueGetter<WidgetStateProperty<Border>?>? border,
+    ValueGetter<WidgetStateProperty<Color>?>? backgroundColor,
+    ValueGetter<WidgetStateProperty<TextStyle>?>? textStyle,
   }) {
     return TableCellTheme(
-      border: border ?? this.border,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      textStyle: textStyle ?? this.textStyle,
+      border: border == null ? this.border : border(),
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
     );
   }
 }
@@ -123,14 +125,15 @@ class ResizableTableTheme {
   }
 
   ResizableTableTheme copyWith({
-    TableTheme? tableTheme,
-    double? resizerThickness,
-    Color? resizerColor,
+    ValueGetter<TableTheme?>? tableTheme,
+    ValueGetter<double?>? resizerThickness,
+    ValueGetter<Color?>? resizerColor,
   }) {
     return ResizableTableTheme(
-      tableTheme: tableTheme ?? this.tableTheme,
-      resizerThickness: resizerThickness ?? this.resizerThickness,
-      resizerColor: resizerColor ?? this.resizerColor,
+      tableTheme: tableTheme == null ? this.tableTheme : tableTheme(),
+      resizerThickness:
+          resizerThickness == null ? this.resizerThickness : resizerThickness(),
+      resizerColor: resizerColor == null ? this.resizerColor : resizerColor(),
     );
   }
 }
@@ -354,7 +357,8 @@ class ResizableTable extends StatefulWidget {
   final double? verticalOffset;
   final Size? viewportSize;
 
-  const ResizableTable({super.key, 
+  const ResizableTable({
+    super.key,
     required this.rows,
     required this.controller,
     this.theme,
@@ -1347,7 +1351,8 @@ class Table extends StatefulWidget {
   final double? horizontalOffset;
   final double? verticalOffset;
   final Size? viewportSize;
-  const Table({super.key, 
+  const Table({
+    super.key,
     required this.rows,
     this.defaultColumnWidth = const FlexTableSize(),
     this.defaultRowHeight = const IntrinsicTableSize(),

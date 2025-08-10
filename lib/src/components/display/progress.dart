@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// A theme for [Progress].
@@ -24,16 +25,17 @@ class ProgressTheme {
 
   /// Creates a copy of this theme but with the given fields replaced with the new values.
   ProgressTheme copyWith({
-    Color? color,
-    Color? backgroundColor,
-    BorderRadiusGeometry? borderRadius,
-    double? minHeight,
+    ValueGetter<Color?>? color,
+    ValueGetter<Color?>? backgroundColor,
+    ValueGetter<BorderRadiusGeometry?>? borderRadius,
+    ValueGetter<double?>? minHeight,
   }) {
     return ProgressTheme(
-      color: color ?? this.color,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      borderRadius: borderRadius ?? this.borderRadius,
-      minHeight: minHeight ?? this.minHeight,
+      color: color == null ? this.color : color(),
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
+      minHeight: minHeight == null ? this.minHeight : minHeight(),
     );
   }
 

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
@@ -10,10 +11,10 @@ class Accordion extends StatefulWidget {
   const Accordion({super.key, required this.items});
 
   @override
-  _AccordionState createState() => _AccordionState();
+  AccordionState createState() => AccordionState();
 }
 
-class _AccordionState extends State<Accordion> {
+class AccordionState extends State<Accordion> {
   final ValueNotifier<_AccordionItemState?> _expanded = ValueNotifier(null);
 
   @override
@@ -92,26 +93,28 @@ class AccordionTheme {
   ///
   /// {@macro accordion_theme}
   AccordionTheme copyWith({
-    Duration? duration,
-    Curve? curve,
-    Curve? reverseCurve,
-    double? padding,
-    double? iconGap,
-    double? dividerHeight,
-    Color? dividerColor,
-    IconData? arrowIcon,
-    Color? arrowIconColor,
+    ValueGetter<Duration?>? duration,
+    ValueGetter<Curve?>? curve,
+    ValueGetter<Curve?>? reverseCurve,
+    ValueGetter<double?>? padding,
+    ValueGetter<double?>? iconGap,
+    ValueGetter<double?>? dividerHeight,
+    ValueGetter<Color?>? dividerColor,
+    ValueGetter<IconData?>? arrowIcon,
+    ValueGetter<Color?>? arrowIconColor,
   }) {
     return AccordionTheme(
-      duration: duration ?? this.duration,
-      curve: curve ?? this.curve,
-      reverseCurve: reverseCurve ?? this.reverseCurve,
-      padding: padding ?? this.padding,
-      iconGap: iconGap ?? this.iconGap,
-      dividerHeight: dividerHeight ?? this.dividerHeight,
-      dividerColor: dividerColor ?? this.dividerColor,
-      arrowIcon: arrowIcon ?? this.arrowIcon,
-      arrowIconColor: arrowIconColor ?? this.arrowIconColor,
+      duration: duration == null ? this.duration : duration(),
+      curve: curve == null ? this.curve : curve(),
+      reverseCurve: reverseCurve == null ? this.reverseCurve : reverseCurve(),
+      padding: padding == null ? this.padding : padding(),
+      iconGap: iconGap == null ? this.iconGap : iconGap(),
+      dividerHeight:
+          dividerHeight == null ? this.dividerHeight : dividerHeight(),
+      dividerColor: dividerColor == null ? this.dividerColor : dividerColor(),
+      arrowIcon: arrowIcon == null ? this.arrowIcon : arrowIcon(),
+      arrowIconColor:
+          arrowIconColor == null ? this.arrowIconColor : arrowIconColor(),
     );
   }
 
@@ -165,29 +168,29 @@ class AccordionItem extends StatefulWidget {
 
 class _AccordionItemState extends State<AccordionItem>
     with SingleTickerProviderStateMixin {
-  _AccordionState? accordion;
+  AccordionState? accordion;
   final ValueNotifier<bool> _expanded = ValueNotifier(false);
 
-  AnimationController? _controller;
-  CurvedAnimation? _easeInAnimation;
+  late AnimationController _controller;
+  late CurvedAnimation _easeInAnimation;
   AccordionTheme? _theme;
 
   @override
   void initState() {
     super.initState();
     _expanded.value = widget.expanded;
+    _controller = AnimationController(
+      vsync: this,
+    );
     _updateAnimations();
   }
 
   void _updateAnimations() {
-    _controller?.dispose();
-    _controller = AnimationController(
-      vsync: this,
-      duration: _theme?.duration ?? const Duration(milliseconds: 200),
-      value: _expanded.value ? 1 : 0,
-    );
+    _controller.duration =
+        _theme?.duration ?? const Duration(milliseconds: 200);
+    _controller.value = _expanded.value ? 1 : 0;
     _easeInAnimation = CurvedAnimation(
-      parent: _controller!,
+      parent: _controller,
       curve: _theme?.curve ?? Curves.easeIn,
       reverseCurve: _theme?.reverseCurve ?? Curves.easeOut,
     );
@@ -197,7 +200,7 @@ class _AccordionItemState extends State<AccordionItem>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _AccordionState newAccordion = Data.of<_AccordionState>(context);
+    AccordionState newAccordion = Data.of<AccordionState>(context);
     if (newAccordion != accordion) {
       accordion?._expanded.removeListener(_onExpandedChanged);
       newAccordion._expanded.addListener(_onExpandedChanged);
@@ -214,7 +217,7 @@ class _AccordionItemState extends State<AccordionItem>
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _controller.dispose();
     accordion?._expanded.removeListener(_onExpandedChanged);
     super.dispose();
   }
@@ -231,12 +234,12 @@ class _AccordionItemState extends State<AccordionItem>
   }
 
   void _expand() {
-    _controller?.forward();
+    _controller.forward();
     _expanded.value = true;
   }
 
   void _collapse() {
-    _controller?.reverse();
+    _controller.reverse();
     _expanded.value = false;
   }
 
