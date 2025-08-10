@@ -1,3 +1,13 @@
+## 0.0.38
+* Added component tiles for various UI elements (major documentation improvement)
+* Fixed missing callback invocation (#277)
+* Fixed formatted input form key type (#292)
+* Updated RefreshTrigger to support reverse scrolling behavior (#270)
+* Fixed controller attachment to use cached value directly
+* Refactored internal state classes for clarity and improved animation controller handling
+* Updated dependencies and refactored InputHintFeature for improved context handling
+* Updated funding link
+
 ## 0.0.37
 * Fixed web preloader issues
 * Fix PhoneInput initialValue not being passed
