@@ -6,7 +6,7 @@ The following components still need `ComponentTheme` implementation.
 - [x] avatar
 - [x] badge
 - [x] calendar
- - [x] carousel
+- [x] carousel
 - [x] chip
 - [x] circular_progress_indicator
 - [x] code_snippet
@@ -21,12 +21,12 @@ The following components still need `ComponentTheme` implementation.
 - [x] spinner
 
 ## form
- - [x] autocomplete
+- [x] autocomplete
 - [x] checkbox
- - [x] chip_input
- - [x] color_picker
+- [x] chip_input
+- [x] color_picker
 - [ ] control
- - [x] date_picker
+- [x] date_picker
 - [ ] file_input
 - [ ] file_picker
 - [ ] form
@@ -41,13 +41,13 @@ The following components still need `ComponentTheme` implementation.
 - [ ] number_input
 - [ ] object_input
 - [ ] phone_input
- - [x] radio_group
- - [x] select
+- [x] radio_group
+- [x] select
 - [ ] slider
 - [ ] sortable
 - [x] star_rating
 - [x] switch
- - [x] text_area
+- [x] text_area
 - [ ] text_field
 - [ ] time_picker
 - [ ] validated
@@ -88,7 +88,7 @@ The following components still need `ComponentTheme` implementation.
 - [x] popup
 
 ## navigation
- - [x] navigation_bar
+- [x] navigation_bar
 - [x] pagination
 - [ ] tabs/tab_container
 - [x] tabs/tab_list
@@ -101,7 +101,7 @@ The following components still need `ComponentTheme` implementation.
 - [x] hover_card
 - [ ] overlay
 - [ ] popover
- - [x] refresh_trigger
+- [x] refresh_trigger
 - [ ] swiper
 - [ ] toast
 - [x] tooltip
