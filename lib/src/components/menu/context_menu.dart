@@ -2,6 +2,41 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Theme for [ContextMenuPopup] and context menu widgets.
+class ContextMenuTheme {
+  /// Surface opacity for the popup container.
+  final double? surfaceOpacity;
+
+  /// Surface blur for the popup container.
+  final double? surfaceBlur;
+
+  /// Creates a [ContextMenuTheme].
+  const ContextMenuTheme({this.surfaceOpacity, this.surfaceBlur});
+
+  /// Returns a copy of this theme with the given fields replaced.
+  ContextMenuTheme copyWith({
+    ValueGetter<double?>? surfaceOpacity,
+    ValueGetter<double?>? surfaceBlur,
+  }) {
+    return ContextMenuTheme(
+      surfaceOpacity:
+          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ContextMenuTheme &&
+        other.surfaceOpacity == surfaceOpacity &&
+        other.surfaceBlur == surfaceBlur;
+  }
+
+  @override
+  int get hashCode => Object.hash(surfaceOpacity, surfaceBlur);
+}
+
 class DesktopEditableTextContextMenu extends StatelessWidget {
   final BuildContext anchorContext;
   final EditableTextState editableTextState;
@@ -519,7 +554,11 @@ Future<void> _showContextMenu(
                       closeOverlay(context);
                     },
                     builder: (context, children) {
+                      final compTheme =
+                          ComponentTheme.maybeOf<ContextMenuTheme>(context);
                       return MenuPopup(
+                        surfaceOpacity: compTheme?.surfaceOpacity,
+                        surfaceBlur: compTheme?.surfaceBlur,
                         children: children,
                       );
                     },
@@ -577,7 +616,11 @@ class ContextMenuPopup extends StatelessWidget {
                     ? const EdgeInsets.symmetric(horizontal: 8) * theme.scaling
                     : EdgeInsets.zero,
                 builder: (context, children) {
+                  final compTheme =
+                      ComponentTheme.maybeOf<ContextMenuTheme>(context);
                   return MenuPopup(
+                    surfaceOpacity: compTheme?.surfaceOpacity,
+                    surfaceBlur: compTheme?.surfaceBlur,
                     children: children,
                   );
                 },

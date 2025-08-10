@@ -2,13 +2,42 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+class InputOTPTheme {
+  final double? spacing;
+  final double? height;
+
+  const InputOTPTheme({this.spacing, this.height});
+
+  InputOTPTheme copyWith({
+    ValueGetter<double?>? spacing,
+    ValueGetter<double?>? height,
+  }) {
+    return InputOTPTheme(
+      spacing: spacing == null ? this.spacing : spacing(),
+      height: height == null ? this.height : height(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is InputOTPTheme &&
+        other.spacing == spacing &&
+        other.height == height;
+  }
+
+  @override
+  int get hashCode => Object.hash(spacing, height);
+}
+
 class _InputOTPSpacing extends StatelessWidget {
   const _InputOTPSpacing();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return SizedBox(width: theme.scaling * 8);
+    final compTheme = ComponentTheme.maybeOf<InputOTPTheme>(context);
+    return SizedBox(width: compTheme?.spacing ?? theme.scaling * 8);
   }
 }
 
@@ -630,8 +659,9 @@ class _InputOTPState extends State<InputOTP>
             )));
       }
     }
+    final compTheme = ComponentTheme.maybeOf<InputOTPTheme>(context);
     return SizedBox(
-      height: theme.scaling * 36,
+      height: compTheme?.height ?? theme.scaling * 36,
       child: IntrinsicWidth(
         child: Row(
           children: [

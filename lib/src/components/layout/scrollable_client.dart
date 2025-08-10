@@ -4,6 +4,68 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Theme data for [ScrollableClient].
+class ScrollableClientTheme {
+  final DiagonalDragBehavior? diagonalDragBehavior;
+  final DragStartBehavior? dragStartBehavior;
+  final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
+  final Clip? clipBehavior;
+  final HitTestBehavior? hitTestBehavior;
+  final bool? overscroll;
+
+  const ScrollableClientTheme({
+    this.diagonalDragBehavior,
+    this.dragStartBehavior,
+    this.keyboardDismissBehavior,
+    this.clipBehavior,
+    this.hitTestBehavior,
+    this.overscroll,
+  });
+
+  ScrollableClientTheme copyWith({
+    ValueGetter<DiagonalDragBehavior?>? diagonalDragBehavior,
+    ValueGetter<DragStartBehavior?>? dragStartBehavior,
+    ValueGetter<ScrollViewKeyboardDismissBehavior?>? keyboardDismissBehavior,
+    ValueGetter<Clip?>? clipBehavior,
+    ValueGetter<HitTestBehavior?>? hitTestBehavior,
+    ValueGetter<bool?>? overscroll,
+  }) {
+    return ScrollableClientTheme(
+      diagonalDragBehavior: diagonalDragBehavior == null
+          ? this.diagonalDragBehavior
+          : diagonalDragBehavior(),
+      dragStartBehavior:
+          dragStartBehavior == null ? this.dragStartBehavior : dragStartBehavior(),
+      keyboardDismissBehavior: keyboardDismissBehavior == null
+          ? this.keyboardDismissBehavior
+          : keyboardDismissBehavior(),
+      clipBehavior:
+          clipBehavior == null ? this.clipBehavior : clipBehavior(),
+      hitTestBehavior:
+          hitTestBehavior == null ? this.hitTestBehavior : hitTestBehavior(),
+      overscroll: overscroll == null ? this.overscroll : overscroll(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is ScrollableClientTheme &&
+      other.diagonalDragBehavior == diagonalDragBehavior &&
+      other.dragStartBehavior == dragStartBehavior &&
+      other.keyboardDismissBehavior == keyboardDismissBehavior &&
+      other.clipBehavior == clipBehavior &&
+      other.hitTestBehavior == hitTestBehavior &&
+      other.overscroll == overscroll;
+
+  @override
+  int get hashCode => Object.hash(diagonalDragBehavior, dragStartBehavior,
+      keyboardDismissBehavior, clipBehavior, hitTestBehavior, overscroll);
+
+  @override
+  String toString() =>
+      'ScrollableClientTheme(diagonalDragBehavior: $diagonalDragBehavior, dragStartBehavior: $dragStartBehavior, keyboardDismissBehavior: $keyboardDismissBehavior, clipBehavior: $clipBehavior, hitTestBehavior: $hitTestBehavior, overscroll: $overscroll)';
+}
+
 typedef ScrollableBuilder = Widget Function(
     BuildContext context, Offset offset, Size viewportSize, Widget? child);
 
@@ -14,12 +76,12 @@ class ScrollableClient extends StatelessWidget {
   final ScrollableDetails horizontalDetails;
   final ScrollableBuilder builder;
   final Widget? child;
-  final DiagonalDragBehavior diagonalDragBehavior;
-  final DragStartBehavior dragStartBehavior;
-  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-  final Clip clipBehavior;
-  final HitTestBehavior hitTestBehavior;
-  final bool overscroll;
+  final DiagonalDragBehavior? diagonalDragBehavior;
+  final DragStartBehavior? dragStartBehavior;
+  final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
+  final Clip? clipBehavior;
+  final HitTestBehavior? hitTestBehavior;
+  final bool? overscroll;
 
   const ScrollableClient({
     super.key,
@@ -29,18 +91,20 @@ class ScrollableClient extends StatelessWidget {
     this.horizontalDetails = const ScrollableDetails.horizontal(),
     required this.builder,
     this.child,
-    this.diagonalDragBehavior = DiagonalDragBehavior.none,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-    this.clipBehavior = Clip.hardEdge,
-    this.hitTestBehavior = HitTestBehavior.opaque,
-    this.overscroll = false,
+    this.diagonalDragBehavior,
+    this.dragStartBehavior,
+    this.keyboardDismissBehavior,
+    this.clipBehavior,
+    this.hitTestBehavior,
+    this.overscroll,
   });
 
   Widget _buildViewport(
     BuildContext context,
     ViewportOffset verticalOffset,
     ViewportOffset horizontalOffset,
+    bool overscroll,
+    Clip clipBehavior,
   ) {
     return ScrollableClientViewport(
         overscroll: overscroll,
@@ -79,6 +143,21 @@ class ScrollableClient extends StatelessWidget {
     assert(axisDirectionToAxis(horizontalDetails.direction) == Axis.horizontal,
         'TwoDimensionalScrollView.horizontalDetails are not Axis.horizontal.');
 
+    final compTheme = ComponentTheme.maybeOf<ScrollableClientTheme>(context);
+    final diag = diagonalDragBehavior ??
+        compTheme?.diagonalDragBehavior ??
+        DiagonalDragBehavior.none;
+    final dragStart =
+        dragStartBehavior ?? compTheme?.dragStartBehavior ?? DragStartBehavior.start;
+    final keyboardDismiss = keyboardDismissBehavior ??
+        compTheme?.keyboardDismissBehavior ??
+        ScrollViewKeyboardDismissBehavior.manual;
+    final clip = clipBehavior ?? compTheme?.clipBehavior ?? Clip.hardEdge;
+    final hitTest =
+        hitTestBehavior ?? compTheme?.hitTestBehavior ?? HitTestBehavior.opaque;
+    final bool overscroll =
+        this.overscroll ?? compTheme?.overscroll ?? false;
+
     ScrollableDetails mainAxisDetails = switch (mainAxis) {
       Axis.vertical => verticalDetails,
       Axis.horizontal => horizontalDetails,
@@ -112,10 +191,11 @@ class ScrollableClient extends StatelessWidget {
         Axis.vertical => mainAxisDetails,
         Axis.horizontal => verticalDetails,
       },
-      diagonalDragBehavior: diagonalDragBehavior,
-      viewportBuilder: _buildViewport,
-      dragStartBehavior: dragStartBehavior,
-      hitTestBehavior: hitTestBehavior,
+      diagonalDragBehavior: diag,
+      viewportBuilder: (context, vOffset, hOffset) =>
+          _buildViewport(context, vOffset, hOffset, overscroll, clip),
+      dragStartBehavior: dragStart,
+      hitTestBehavior: hitTest,
     );
 
     final Widget scrollableResult = effectivePrimary
@@ -123,7 +203,7 @@ class ScrollableClient extends StatelessWidget {
         ? PrimaryScrollController.none(child: scrollable)
         : scrollable;
 
-    if (keyboardDismissBehavior == ScrollViewKeyboardDismissBehavior.onDrag) {
+    if (keyboardDismiss == ScrollViewKeyboardDismissBehavior.onDrag) {
       return NotificationListener<ScrollUpdateNotification>(
         child: scrollableResult,
         onNotification: (ScrollUpdateNotification notification) {

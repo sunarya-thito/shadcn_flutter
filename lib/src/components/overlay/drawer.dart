@@ -6,6 +6,61 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 typedef DrawerBuilder = Widget Function(BuildContext context, Size extraSize,
     Size size, EdgeInsets padding, int stackIndex);
 
+/// Theme data for drawer and sheet overlays.
+class DrawerTheme {
+  final double? surfaceOpacity;
+  final double? surfaceBlur;
+  final Color? barrierColor;
+  final bool? showDragHandle;
+  final Size? dragHandleSize;
+
+  const DrawerTheme({
+    this.surfaceOpacity,
+    this.surfaceBlur,
+    this.barrierColor,
+    this.showDragHandle,
+    this.dragHandleSize,
+  });
+
+  DrawerTheme copyWith({
+    ValueGetter<double?>? surfaceOpacity,
+    ValueGetter<double?>? surfaceBlur,
+    ValueGetter<Color?>? barrierColor,
+    ValueGetter<bool?>? showDragHandle,
+    ValueGetter<Size?>? dragHandleSize,
+  }) {
+    return DrawerTheme(
+      surfaceOpacity:
+          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceBlur:
+          surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
+      barrierColor:
+          barrierColor == null ? this.barrierColor : barrierColor(),
+      showDragHandle:
+          showDragHandle == null ? this.showDragHandle : showDragHandle(),
+      dragHandleSize:
+          dragHandleSize == null ? this.dragHandleSize : dragHandleSize(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is DrawerTheme &&
+      other.surfaceOpacity == surfaceOpacity &&
+      other.surfaceBlur == surfaceBlur &&
+      other.barrierColor == barrierColor &&
+      other.showDragHandle == showDragHandle &&
+      other.dragHandleSize == dragHandleSize;
+
+  @override
+  int get hashCode =>
+      Object.hash(surfaceOpacity, surfaceBlur, barrierColor, showDragHandle, dragHandleSize);
+
+  @override
+  String toString() =>
+      'DrawerTheme(surfaceOpacity: $surfaceOpacity, surfaceBlur: $surfaceBlur, barrierColor: $barrierColor, showDragHandle: $showDragHandle, dragHandleSize: $dragHandleSize)';
+}
+
 DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
   required BuildContext context,
   required WidgetBuilder builder,
@@ -15,7 +70,7 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
   bool barrierDismissible = true,
   WidgetBuilder? backdropBuilder,
   bool useSafeArea = true,
-  bool showDragHandle = true,
+  bool? showDragHandle,
   BorderRadiusGeometry? borderRadius,
   Size? dragHandleSize,
   bool transformBackdrop = true,
@@ -27,6 +82,12 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
   BoxConstraints? constraints,
   AlignmentGeometry? alignment,
 }) {
+  final theme = ComponentTheme.maybeOf<DrawerTheme>(context);
+  showDragHandle ??= theme?.showDragHandle ?? true;
+  surfaceOpacity ??= theme?.surfaceOpacity;
+  surfaceBlur ??= theme?.surfaceBlur;
+  barrierColor ??= theme?.barrierColor;
+  dragHandleSize ??= theme?.dragHandleSize;
   return openRawDrawer<T>(
     context: context,
     barrierDismissible: barrierDismissible,
@@ -75,6 +136,8 @@ DrawerOverlayCompleter<T?> openSheetOverlay<T>({
   BoxConstraints? constraints,
   AlignmentGeometry? alignment,
 }) {
+  final theme = ComponentTheme.maybeOf<DrawerTheme>(context);
+  barrierColor ??= theme?.barrierColor;
   return openRawDrawer<T>(
     context: context,
     transformBackdrop: transformBackdrop,
@@ -113,7 +176,7 @@ Future<T?> openDrawer<T>({
   bool barrierDismissible = true,
   WidgetBuilder? backdropBuilder,
   bool useSafeArea = true,
-  bool showDragHandle = true,
+  bool? showDragHandle,
   BorderRadiusGeometry? borderRadius,
   Size? dragHandleSize,
   bool transformBackdrop = true,

@@ -4,6 +4,79 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// {@template selectable_text_theme}
+/// Theme data for [SelectableText] to customize cursor and selection behavior.
+/// {@endtemplate}
+class SelectableTextTheme {
+  final double? cursorWidth;
+  final double? cursorHeight;
+  final Radius? cursorRadius;
+  final Color? cursorColor;
+  final ui.BoxHeightStyle? selectionHeightStyle;
+  final ui.BoxWidthStyle? selectionWidthStyle;
+  final bool? enableInteractiveSelection;
+
+  /// {@macro selectable_text_theme}
+  const SelectableTextTheme({
+    this.cursorWidth,
+    this.cursorHeight,
+    this.cursorRadius,
+    this.cursorColor,
+    this.selectionHeightStyle,
+    this.selectionWidthStyle,
+    this.enableInteractiveSelection,
+  });
+
+  SelectableTextTheme copyWith({
+    ValueGetter<double?>? cursorWidth,
+    ValueGetter<double?>? cursorHeight,
+    ValueGetter<Radius?>? cursorRadius,
+    ValueGetter<Color?>? cursorColor,
+    ValueGetter<ui.BoxHeightStyle?>? selectionHeightStyle,
+    ValueGetter<ui.BoxWidthStyle?>? selectionWidthStyle,
+    ValueGetter<bool?>? enableInteractiveSelection,
+  }) {
+    return SelectableTextTheme(
+      cursorWidth: cursorWidth == null ? this.cursorWidth : cursorWidth(),
+      cursorHeight: cursorHeight == null ? this.cursorHeight : cursorHeight(),
+      cursorRadius: cursorRadius == null ? this.cursorRadius : cursorRadius(),
+      cursorColor: cursorColor == null ? this.cursorColor : cursorColor(),
+      selectionHeightStyle: selectionHeightStyle == null
+          ? this.selectionHeightStyle
+          : selectionHeightStyle(),
+      selectionWidthStyle: selectionWidthStyle == null
+          ? this.selectionWidthStyle
+          : selectionWidthStyle(),
+      enableInteractiveSelection: enableInteractiveSelection == null
+          ? this.enableInteractiveSelection
+          : enableInteractiveSelection(),
+    );
+  }
+
+  @override
+  int get hashCode => Object.hash(cursorWidth, cursorHeight, cursorRadius,
+      cursorColor, selectionHeightStyle, selectionWidthStyle,
+      enableInteractiveSelection);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is SelectableTextTheme &&
+        other.cursorWidth == cursorWidth &&
+        other.cursorHeight == cursorHeight &&
+        other.cursorRadius == cursorRadius &&
+        other.cursorColor == cursorColor &&
+        other.selectionHeightStyle == selectionHeightStyle &&
+        other.selectionWidthStyle == selectionWidthStyle &&
+        other.enableInteractiveSelection == enableInteractiveSelection;
+  }
+
+  @override
+  String toString() {
+    return 'SelectableTextTheme(cursorWidth: $cursorWidth, cursorHeight: $cursorHeight, cursorRadius: $cursorRadius, cursorColor: $cursorColor, selectionHeightStyle: $selectionHeightStyle, selectionWidthStyle: $selectionWidthStyle, enableInteractiveSelection: $enableInteractiveSelection)';
+  }
+}
+
 class SelectableText extends StatelessWidget {
   const SelectableText(
     String this.data, {
@@ -192,6 +265,18 @@ class SelectableText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final compTheme = ComponentTheme.maybeOf<SelectableTextTheme>(context);
+    final cursorWidth = compTheme?.cursorWidth ?? this.cursorWidth;
+    final cursorHeight = compTheme?.cursorHeight ?? this.cursorHeight;
+    final cursorRadius = compTheme?.cursorRadius ?? this.cursorRadius;
+    final cursorColor = compTheme?.cursorColor ?? this.cursorColor;
+    final selectionHeightStyle =
+        compTheme?.selectionHeightStyle ?? this.selectionHeightStyle;
+    final selectionWidthStyle =
+        compTheme?.selectionWidthStyle ?? this.selectionWidthStyle;
+    final enableSelection =
+        compTheme?.enableInteractiveSelection ?? enableInteractiveSelection;
+
     if (data == null) {
       return m.SelectableText.rich(
         textSpan!,
@@ -212,7 +297,7 @@ class SelectableText extends StatelessWidget {
         cursorColor: cursorColor,
         selectionHeightStyle: selectionHeightStyle,
         selectionWidthStyle: selectionWidthStyle,
-        enableInteractiveSelection: enableInteractiveSelection,
+        enableInteractiveSelection: enableSelection,
         selectionControls: selectionControls,
         onTap: onTap,
         scrollPhysics: scrollPhysics,
@@ -247,7 +332,7 @@ class SelectableText extends StatelessWidget {
         cursorColor: cursorColor,
         selectionHeightStyle: selectionHeightStyle,
         selectionWidthStyle: selectionWidthStyle,
-        enableInteractiveSelection: enableInteractiveSelection,
+        enableInteractiveSelection: enableSelection,
         selectionControls: selectionControls,
         onTap: onTap,
         scrollPhysics: scrollPhysics,

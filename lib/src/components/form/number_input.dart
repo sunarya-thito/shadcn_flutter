@@ -2,6 +2,34 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+class NumberInputTheme {
+  final AbstractButtonStyle? buttonStyle;
+  final EdgeInsetsGeometry? padding;
+
+  const NumberInputTheme({this.buttonStyle, this.padding});
+
+  NumberInputTheme copyWith({
+    ValueGetter<AbstractButtonStyle?>? buttonStyle,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+  }) {
+    return NumberInputTheme(
+      buttonStyle: buttonStyle == null ? this.buttonStyle : buttonStyle(),
+      padding: padding == null ? this.padding : padding(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is NumberInputTheme &&
+        other.buttonStyle == buttonStyle &&
+        other.padding == padding;
+  }
+
+  @override
+  int get hashCode => Object.hash(buttonStyle, padding);
+}
+
 @Deprecated('Use TextField with InputFeature.spinner() instead.')
 class NumberInput extends StatefulWidget {
   static final _decimalFormatter = FilteringTextInputFormatter.allow(
@@ -99,7 +127,9 @@ class _NumberInputState extends State<NumberInput>
   }
 
   AbstractButtonStyle get _buttonStyle {
+    final compTheme = ComponentTheme.maybeOf<NumberInputTheme>(context);
     return widget.buttonStyle ??
+        compTheme?.buttonStyle ??
         const ButtonStyle.text(
           density: ButtonDensity.compact,
           size: ButtonSize.small,
@@ -252,6 +282,7 @@ class _NumberInputState extends State<NumberInput>
 
   Widget buildTextField(BuildContext context, ThemeData theme) {
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<NumberInputTheme>(context);
     return ConstrainedBox(
       constraints: BoxConstraints(
         minWidth: 50 * scaling,
@@ -268,6 +299,7 @@ class _NumberInputState extends State<NumberInput>
           ],
         ),
         padding: widget.padding ??
+            compTheme?.padding ??
             EdgeInsetsDirectional.only(
               start: 10 * scaling,
             ),

@@ -4,6 +4,74 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Theme data for [Scaffold].
+class ScaffoldTheme {
+  /// Background color of the scaffold body.
+  final Color? backgroundColor;
+
+  /// Background color of the header section.
+  final Color? headerBackgroundColor;
+
+  /// Background color of the footer section.
+  final Color? footerBackgroundColor;
+
+  /// Whether to show loading sparks by default.
+  final bool? showLoadingSparks;
+
+  /// Whether the scaffold should resize for the onscreen keyboard.
+  final bool? resizeToAvoidBottomInset;
+
+  const ScaffoldTheme({
+    this.backgroundColor,
+    this.headerBackgroundColor,
+    this.footerBackgroundColor,
+    this.showLoadingSparks,
+    this.resizeToAvoidBottomInset,
+  });
+
+  ScaffoldTheme copyWith({
+    ValueGetter<Color?>? backgroundColor,
+    ValueGetter<Color?>? headerBackgroundColor,
+    ValueGetter<Color?>? footerBackgroundColor,
+    ValueGetter<bool?>? showLoadingSparks,
+    ValueGetter<bool?>? resizeToAvoidBottomInset,
+  }) {
+    return ScaffoldTheme(
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      headerBackgroundColor: headerBackgroundColor == null
+          ? this.headerBackgroundColor
+          : headerBackgroundColor(),
+      footerBackgroundColor: footerBackgroundColor == null
+          ? this.footerBackgroundColor
+          : footerBackgroundColor(),
+      showLoadingSparks: showLoadingSparks == null
+          ? this.showLoadingSparks
+          : showLoadingSparks(),
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset == null
+          ? this.resizeToAvoidBottomInset
+          : resizeToAvoidBottomInset(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is ScaffoldTheme &&
+      other.backgroundColor == backgroundColor &&
+      other.headerBackgroundColor == headerBackgroundColor &&
+      other.footerBackgroundColor == footerBackgroundColor &&
+      other.showLoadingSparks == showLoadingSparks &&
+      other.resizeToAvoidBottomInset == resizeToAvoidBottomInset;
+
+  @override
+  int get hashCode => Object.hash(backgroundColor, headerBackgroundColor,
+      footerBackgroundColor, showLoadingSparks, resizeToAvoidBottomInset);
+
+  @override
+  String toString() =>
+      'ScaffoldTheme(background: $backgroundColor, header: $headerBackgroundColor, footer: $footerBackgroundColor, showLoadingSparks: $showLoadingSparks, resizeToAvoidBottomInset: $resizeToAvoidBottomInset)';
+}
+
 class Scaffold extends StatefulWidget {
   final List<Widget> headers;
   final List<Widget> footers;
@@ -16,7 +84,7 @@ class Scaffold extends StatefulWidget {
   final Color? headerBackgroundColor;
   final Color? footerBackgroundColor;
   final Color? backgroundColor;
-  final bool showLoadingSparks;
+  final bool? showLoadingSparks;
   final bool? resizeToAvoidBottomInset;
 
   const Scaffold({
@@ -31,7 +99,7 @@ class Scaffold extends StatefulWidget {
     this.backgroundColor,
     this.headerBackgroundColor,
     this.footerBackgroundColor,
-    this.showLoadingSparks = false,
+    this.showLoadingSparks,
     this.resizeToAvoidBottomInset,
   });
 
@@ -53,9 +121,10 @@ class ScaffoldBarData {
 
 class ScaffoldState extends State<Scaffold> {
   Widget buildHeader(BuildContext context) {
+    final compTheme = ComponentTheme.maybeOf<ScaffoldTheme>(context);
     return RepaintBoundary(
       child: Container(
-        color: widget.headerBackgroundColor,
+        color: widget.headerBackgroundColor ?? compTheme?.headerBackgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -100,7 +169,10 @@ class ScaffoldState extends State<Scaffold> {
                     ]),
               ],
             ),
-            if (widget.loadingProgress != null && widget.showLoadingSparks)
+            if (widget.loadingProgress != null &&
+                (widget.showLoadingSparks ??
+                    compTheme?.showLoadingSparks ??
+                    false))
               SizedBox(
                 // to make it float
                 height: 0,
@@ -129,11 +201,12 @@ class ScaffoldState extends State<Scaffold> {
   }
 
   Widget buildFooter(BuildContext context, EdgeInsets viewInsets) {
+    final compTheme = ComponentTheme.maybeOf<ScaffoldTheme>(context);
     return Offstage(
       offstage: viewInsets.bottom > 0,
       child: RepaintBoundary(
         child: Container(
-          color: widget.footerBackgroundColor,
+          color: widget.footerBackgroundColor ?? compTheme?.footerBackgroundColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -155,17 +228,22 @@ class ScaffoldState extends State<Scaffold> {
 
   Widget _buildContent(BuildContext context) {
     final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<ScaffoldTheme>(context);
     final viewInsets = MediaQuery.viewInsetsOf(context);
     return DrawerOverlay(
       child: Container(
-        color: widget.backgroundColor ?? theme.colorScheme.background,
+        color: widget.backgroundColor ??
+            compTheme?.backgroundColor ??
+            theme.colorScheme.background,
         child: _ScaffoldFlex(
           floatingHeader: widget.floatingHeader,
           floatingFooter: widget.floatingFooter,
           children: [
             buildHeader(context),
             LayoutBuilder(builder: (context, constraints) {
-              Widget child = (widget.resizeToAvoidBottomInset ?? true)
+              Widget child = (widget.resizeToAvoidBottomInset ??
+                      compTheme?.resizeToAvoidBottomInset ??
+                      true)
                   ? Container(
                       padding: EdgeInsets.only(
                         bottom: viewInsets.bottom,
