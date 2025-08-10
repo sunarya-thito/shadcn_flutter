@@ -52,8 +52,8 @@ The following components still need `ComponentTheme` implementation.
 - [x] steps
 - [x] table
 - [x] timeline
-- [ ] tree
-- [ ] window
+- [x] tree
+- [x] window
 
 ## menu
 - [x] context_menu
