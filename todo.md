@@ -105,7 +105,3 @@ The following components still need `ComponentTheme` implementation.
 - [ ] swiper
 - [ ] toast
 - [x] tooltip
-
-## text
-- [ ] selectable
-- [ ] text
