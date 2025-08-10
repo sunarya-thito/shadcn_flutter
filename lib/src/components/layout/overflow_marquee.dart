@@ -2,25 +2,89 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Theme configuration for [OverflowMarquee].
+class OverflowMarqueeTheme {
+  /// Scrolling direction of the marquee.
+  final Axis? direction;
+
+  /// Duration of one full scroll cycle.
+  final Duration? duration;
+
+  /// Delay before scrolling starts again.
+  final Duration? delayDuration;
+
+  /// Step size used to compute scroll speed.
+  final double? step;
+
+  /// Portion of the child to fade at the edges.
+  final double? fadePortion;
+
+  /// Animation curve of the scroll.
+  final Curve? curve;
+
+  const OverflowMarqueeTheme({
+    this.direction,
+    this.duration,
+    this.delayDuration,
+    this.step,
+    this.fadePortion,
+    this.curve,
+  });
+
+  OverflowMarqueeTheme copyWith({
+    ValueGetter<Axis?>? direction,
+    ValueGetter<Duration?>? duration,
+    ValueGetter<Duration?>? delayDuration,
+    ValueGetter<double?>? step,
+    ValueGetter<double?>? fadePortion,
+    ValueGetter<Curve?>? curve,
+  }) {
+    return OverflowMarqueeTheme(
+      direction: direction == null ? this.direction : direction(),
+      duration: duration == null ? this.duration : duration(),
+      delayDuration:
+          delayDuration == null ? this.delayDuration : delayDuration(),
+      step: step == null ? this.step : step(),
+      fadePortion: fadePortion == null ? this.fadePortion : fadePortion(),
+      curve: curve == null ? this.curve : curve(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is OverflowMarqueeTheme &&
+        other.direction == direction &&
+        other.duration == duration &&
+        other.delayDuration == delayDuration &&
+        other.step == step &&
+        other.fadePortion == fadePortion &&
+        other.curve == curve;
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(direction, duration, delayDuration, step, fadePortion, curve);
+}
+
 class OverflowMarquee extends StatefulWidget {
   final Widget child;
-  final Axis direction;
-  final Duration duration;
-  final double step;
-  final Duration delayDuration;
-  final double fadePortion;
-  final Curve curve;
+  final Axis? direction;
+  final Duration? duration;
+  final double? step;
+  final Duration? delayDuration;
+  final double? fadePortion;
+  final Curve? curve;
 
   const OverflowMarquee({
     super.key,
     required this.child,
-    this.direction = Axis.horizontal,
-    this.duration = const Duration(seconds: 1),
-    this.delayDuration = const Duration(milliseconds: 500),
-    this.step = 100, // note: the speed of the marquee depends on this value
-    // speed = (sizeDiff / step) * duration
-    this.fadePortion = 25,
-    this.curve = Curves.linear,
+    this.direction,
+    this.duration,
+    this.delayDuration,
+    this.step,
+    this.fadePortion,
+    this.curve,
   });
 
   @override
@@ -54,15 +118,38 @@ class _OverflowMarqueeState extends State<OverflowMarquee>
   @override
   Widget build(BuildContext context) {
     final textDirection = Directionality.of(context);
+    final compTheme = ComponentTheme.maybeOf<OverflowMarqueeTheme>(context);
+    final direction = styleValue(
+        widgetValue: widget.direction,
+        themeValue: compTheme?.direction,
+        defaultValue: Axis.horizontal);
+    final fadePortion = styleValue(
+        widgetValue: widget.fadePortion,
+        themeValue: compTheme?.fadePortion,
+        defaultValue: 25);
+    final duration = styleValue(
+        widgetValue: widget.duration,
+        themeValue: compTheme?.duration,
+        defaultValue: const Duration(seconds: 1));
+    final delayDuration = styleValue(
+        widgetValue: widget.delayDuration,
+        themeValue: compTheme?.delayDuration,
+        defaultValue: const Duration(milliseconds: 500));
+    final step = styleValue(
+        widgetValue: widget.step,
+        themeValue: compTheme?.step,
+        defaultValue: 100);
+    final curve =
+        widget.curve ?? compTheme?.curve ?? Curves.linear;
     return ClipRect(
       child: _OverflowMarqueeLayout(
-        direction: widget.direction,
-        fadePortion: widget.fadePortion,
-        duration: widget.duration,
-        delayDuration: widget.delayDuration,
+        direction: direction,
+        fadePortion: fadePortion,
+        duration: duration,
+        delayDuration: delayDuration,
         ticker: _ticker,
         elapsed: elapsed,
-        step: widget.step,
+        step: step,
         textDirection: textDirection,
         child: widget.child,
       ),

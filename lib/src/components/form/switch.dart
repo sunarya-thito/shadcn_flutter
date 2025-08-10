@@ -5,6 +5,72 @@ import '../../../shadcn_flutter.dart';
 
 const kSwitchDuration = Duration(milliseconds: 100);
 
+/// A theme for [Switch] widgets.
+class SwitchTheme {
+  /// The color of the track when the switch is on.
+  final Color? activeColor;
+
+  /// The color of the track when the switch is off.
+  final Color? inactiveColor;
+
+  /// The color of the thumb.
+  final Color? thumbColor;
+
+  /// The gap between the switch and its leading/trailing widgets.
+  final double? gap;
+
+  /// The border radius of the track.
+  final BorderRadiusGeometry? borderRadius;
+
+  /// Creates a [SwitchTheme].
+  const SwitchTheme({
+    this.activeColor,
+    this.inactiveColor,
+    this.thumbColor,
+    this.gap,
+    this.borderRadius,
+  });
+
+  /// Returns a copy of this theme with the given fields replaced.
+  SwitchTheme copyWith({
+    ValueGetter<Color?>? activeColor,
+    ValueGetter<Color?>? inactiveColor,
+    ValueGetter<Color?>? thumbColor,
+    ValueGetter<double?>? gap,
+    ValueGetter<BorderRadiusGeometry?>? borderRadius,
+  }) {
+    return SwitchTheme(
+      activeColor: activeColor == null ? this.activeColor : activeColor(),
+      inactiveColor:
+          inactiveColor == null ? this.inactiveColor : inactiveColor(),
+      thumbColor: thumbColor == null ? this.thumbColor : thumbColor(),
+      gap: gap == null ? this.gap : gap(),
+      borderRadius:
+          borderRadius == null ? this.borderRadius : borderRadius(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is SwitchTheme &&
+        other.activeColor == activeColor &&
+        other.inactiveColor == inactiveColor &&
+        other.thumbColor == thumbColor &&
+        other.gap == gap &&
+        other.borderRadius == borderRadius;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        activeColor,
+        inactiveColor,
+        thumbColor,
+        gap,
+        borderRadius,
+      );
+}
+
 class SwitchController extends ValueNotifier<bool>
     with ComponentController<bool> {
   SwitchController([super.value = false]);
@@ -26,6 +92,11 @@ class ControlledSwitch extends StatelessWidget with ControlledComponent<bool> {
 
   final Widget? leading;
   final Widget? trailing;
+  final double? gap;
+  final Color? activeColor;
+  final Color? inactiveColor;
+  final Color? thumbColor;
+  final BorderRadiusGeometry? borderRadius;
 
   const ControlledSwitch({
     super.key,
@@ -35,6 +106,11 @@ class ControlledSwitch extends StatelessWidget with ControlledComponent<bool> {
     this.enabled = true,
     this.leading,
     this.trailing,
+    this.gap,
+    this.activeColor,
+    this.inactiveColor,
+    this.thumbColor,
+    this.borderRadius,
   });
 
   @override
@@ -51,6 +127,11 @@ class ControlledSwitch extends StatelessWidget with ControlledComponent<bool> {
           enabled: data.enabled,
           leading: leading,
           trailing: trailing,
+          gap: gap,
+          activeColor: activeColor,
+          inactiveColor: inactiveColor,
+          thumbColor: thumbColor,
+          borderRadius: borderRadius,
         );
       },
     );
@@ -63,6 +144,11 @@ class Switch extends StatefulWidget {
   final Widget? leading;
   final Widget? trailing;
   final bool? enabled;
+  final double? gap;
+  final Color? activeColor;
+  final Color? inactiveColor;
+  final Color? thumbColor;
+  final BorderRadiusGeometry? borderRadius;
 
   const Switch({
     super.key,
@@ -71,6 +157,11 @@ class Switch extends StatefulWidget {
     this.leading,
     this.trailing,
     this.enabled = true,
+    this.gap,
+    this.activeColor,
+    this.inactiveColor,
+    this.thumbColor,
+    this.borderRadius,
   });
 
   @override
@@ -105,9 +196,32 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<SwitchTheme>(context);
+    final gap = styleValue(
+        widgetValue: widget.gap,
+        themeValue: compTheme?.gap,
+        defaultValue: 8 * scaling);
+    final activeColor = styleValue(
+        widgetValue: widget.activeColor,
+        themeValue: compTheme?.activeColor,
+        defaultValue: theme.colorScheme.primary);
+    final inactiveColor = styleValue(
+        widgetValue: widget.inactiveColor,
+        themeValue: compTheme?.inactiveColor,
+        defaultValue: theme.colorScheme.border);
+    final thumbColor = styleValue(
+        widgetValue: widget.thumbColor,
+        themeValue: compTheme?.thumbColor,
+        defaultValue: theme.colorScheme.background);
+    final borderRadius = styleValue<BorderRadiusGeometry>(
+        widgetValue: widget.borderRadius,
+        themeValue: compTheme?.borderRadius,
+        defaultValue: BorderRadius.circular(theme.radiusXl));
     return FocusOutline(
       focused: _focusing,
-      borderRadius: BorderRadius.circular(theme.radiusXl),
+      borderRadius:
+          optionallyResolveBorderRadius(context, borderRadius) ??
+              BorderRadius.circular(theme.radiusXl),
       align: 3 * scaling,
       width: 2 * scaling,
       child: GestureDetector(
@@ -138,24 +252,26 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
           mouseCursor: _enabled
               ? SystemMouseCursors.click
               : SystemMouseCursors.forbidden,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
               if (widget.leading != null) widget.leading!,
-              if (widget.leading != null) SizedBox(width: 8 * scaling),
+              if (widget.leading != null) SizedBox(width: gap),
               AnimatedContainer(
                 duration: kSwitchDuration,
                 width: (32 + 4) * scaling,
                 height: (16 + 4) * scaling,
                 padding: EdgeInsets.all(2 * scaling),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(theme.radiusXl),
+                  borderRadius:
+                      optionallyResolveBorderRadius(context, borderRadius) ??
+                          BorderRadius.circular(theme.radiusXl),
                   color: !_enabled
                       ? theme.colorScheme.muted
                       : widget.value
-                          ? theme.colorScheme.primary
-                          : theme.colorScheme.border,
+                          ? activeColor
+                          : inactiveColor,
                 ),
                 child: Stack(
                   children: [
@@ -170,7 +286,7 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(theme.radiusLg),
-                            color: theme.colorScheme.background,
+                            color: thumbColor,
                           ),
                         ),
                       ),
@@ -178,7 +294,7 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
                   ],
                 ),
               ),
-              if (widget.trailing != null) SizedBox(width: 8 * scaling),
+              if (widget.trailing != null) SizedBox(width: gap),
               if (widget.trailing != null) widget.trailing!,
             ],
           ),

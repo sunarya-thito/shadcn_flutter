@@ -1,6 +1,29 @@
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Theme configuration for calendar widgets.
+class CalendarTheme {
+  /// Color of navigation arrow icons.
+  final Color? arrowIconColor;
+
+  const CalendarTheme({this.arrowIconColor});
+
+  CalendarTheme copyWith({ValueGetter<Color?>? arrowIconColor}) {
+    return CalendarTheme(
+        arrowIconColor:
+            arrowIconColor == null ? this.arrowIconColor : arrowIconColor());
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is CalendarTheme && other.arrowIconColor == arrowIconColor;
+  }
+
+  @override
+  int get hashCode => arrowIconColor.hashCode;
+}
+
 enum CalendarViewType {
   date,
   month,
@@ -73,6 +96,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
   Widget build(BuildContext context) {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<CalendarTheme>(context);
+    final arrowColor =
+        styleValue(themeValue: compTheme?.arrowIconColor);
     final viewMode = widget.viewMode ?? widget.selectionMode;
     if (widget.selectionMode == CalendarSelectionMode.range) {
       return IntrinsicWidth(
@@ -105,7 +131,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                             }
                           });
                         },
-                        child: const Icon(LucideIcons.arrowLeft).iconXSmall(),
+                        child:
+                            Icon(LucideIcons.arrowLeft, color: arrowColor)
+                                .iconXSmall(),
                       ),
                       SizedBox(
                         width: theme.scaling * 16,
@@ -165,8 +193,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               }
                             });
                           },
-                          child:
-                              const Icon(LucideIcons.arrowRight).iconXSmall(),
+                          child: Icon(LucideIcons.arrowRight, color: arrowColor)
+                              .iconXSmall(),
                         ),
                     ],
                   ),
@@ -231,8 +259,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               }
                             });
                           },
-                          child:
-                              const Icon(LucideIcons.arrowRight).iconXSmall(),
+                          child: Icon(LucideIcons.arrowRight, color: arrowColor)
+                              .iconXSmall(),
                         ),
                       ],
                     ),
@@ -317,7 +345,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     }
                   });
                 },
-                child: const Icon(LucideIcons.arrowLeft).iconXSmall(),
+                child:
+                    Icon(LucideIcons.arrowLeft, color: arrowColor).iconXSmall(),
               ),
               SizedBox(
                 width: theme.scaling * 16,
@@ -368,7 +397,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     }
                   });
                 },
-                child: const Icon(LucideIcons.arrowRight).iconXSmall(),
+                child: Icon(LucideIcons.arrowRight, color: arrowColor)
+                    .iconXSmall(),
               ),
             ],
           ),

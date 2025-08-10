@@ -3,6 +3,71 @@ import 'package:syntax_highlight/syntax_highlight.dart';
 
 import '../../../shadcn_flutter.dart';
 
+/// Theme for [CodeSnippet].
+class CodeSnippetTheme {
+  /// Background color of the snippet container.
+  final Color? backgroundColor;
+
+  /// Border color of the snippet container.
+  final Color? borderColor;
+
+  /// Border width of the snippet container.
+  final double? borderWidth;
+
+  /// Border radius of the snippet container.
+  final BorderRadiusGeometry? borderRadius;
+
+  /// Padding for the code content.
+  final EdgeInsetsGeometry? padding;
+
+  /// Creates a [CodeSnippetTheme].
+  const CodeSnippetTheme({
+    this.backgroundColor,
+    this.borderColor,
+    this.borderWidth,
+    this.borderRadius,
+    this.padding,
+  });
+
+  /// Creates a copy of this theme with the given values replaced.
+  CodeSnippetTheme copyWith({
+    ValueGetter<Color?>? backgroundColor,
+    ValueGetter<Color?>? borderColor,
+    ValueGetter<double?>? borderWidth,
+    ValueGetter<BorderRadiusGeometry?>? borderRadius,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+  }) {
+    return CodeSnippetTheme(
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      borderColor: borderColor == null ? this.borderColor : borderColor(),
+      borderWidth: borderWidth == null ? this.borderWidth : borderWidth(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
+      padding: padding == null ? this.padding : padding(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is CodeSnippetTheme &&
+        other.backgroundColor == backgroundColor &&
+        other.borderColor == borderColor &&
+        other.borderWidth == borderWidth &&
+        other.borderRadius == borderRadius &&
+        other.padding == padding;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        backgroundColor,
+        borderColor,
+        borderWidth,
+        borderRadius,
+        padding,
+      );
+}
+
 class CodeSnippet extends StatefulWidget {
   final BoxConstraints? constraints;
   final String code;
@@ -99,14 +164,41 @@ class _CodeSnippetState extends State<CodeSnippet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<CodeSnippetTheme>(context);
+    final backgroundColor = styleValue(
+      themeValue: compTheme?.backgroundColor,
+      defaultValue: theme.colorScheme.card,
+    );
+    final borderColor = styleValue(
+      themeValue: compTheme?.borderColor,
+      defaultValue: theme.colorScheme.border,
+    );
+    final borderWidth = styleValue(
+      themeValue: compTheme?.borderWidth,
+      defaultValue: theme.scaling,
+    );
+    final borderRadius = styleValue(
+      themeValue: compTheme?.borderRadius,
+      defaultValue: BorderRadius.circular(theme.radiusLg),
+    );
+    final padding = styleValue(
+      themeValue: compTheme?.padding,
+      defaultValue: EdgeInsets.only(
+        left: theme.scaling * 16,
+        right: theme.scaling * 48,
+        top: theme.scaling * 16,
+        bottom: theme.scaling * 16,
+      ),
+    );
+
     return Container(
       decoration: BoxDecoration(
-        color: theme.colorScheme.card,
+        color: backgroundColor,
         border: Border.all(
-          color: theme.colorScheme.border,
-          width: theme.scaling,
+          color: borderColor,
+          width: borderWidth,
         ),
-        borderRadius: BorderRadius.circular(theme.radiusLg),
+        borderRadius: borderRadius,
       ),
       child: Stack(
         fit: StackFit.passthrough,
@@ -127,12 +219,7 @@ class _CodeSnippetState extends State<CodeSnippet> {
                   child: SingleChildScrollView(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.only(
-                        left: theme.scaling * 16,
-                        right: theme.scaling * 48,
-                        top: theme.scaling * 16,
-                        bottom: theme.scaling * 16,
-                      ),
+                      padding: padding,
                       child: data == null
                           ? SelectableText(widget.code).muted().mono().small()
                           : SelectableText.rich(

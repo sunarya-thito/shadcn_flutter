@@ -4,6 +4,40 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 typedef ChipWidgetBuilder<T> = Widget Function(BuildContext context, T chip);
 
+/// Theme data for [ChipInput].
+class ChipInputTheme {
+  final BoxConstraints? popoverConstraints;
+  final bool? useChips;
+
+  const ChipInputTheme({
+    this.popoverConstraints,
+    this.useChips,
+  });
+
+  ChipInputTheme copyWith({
+    ValueGetter<BoxConstraints?>? popoverConstraints,
+    ValueGetter<bool?>? useChips,
+  }) {
+    return ChipInputTheme(
+      popoverConstraints: popoverConstraints == null
+          ? this.popoverConstraints
+          : popoverConstraints(),
+      useChips: useChips == null ? this.useChips : useChips(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ChipInputTheme &&
+        other.popoverConstraints == popoverConstraints &&
+        other.useChips == useChips;
+  }
+
+  @override
+  int get hashCode => Object.hash(popoverConstraints, useChips);
+}
+
 class ChipInputController<T> extends ValueNotifier<List<T>>
     with ComponentController<List<T>> {
   ChipInputController([super.value = const []]);
@@ -20,7 +54,7 @@ class ControlledChipInput<T> extends StatelessWidget
   @override
   final bool enabled;
   final TextEditingController? textEditingController;
-  final BoxConstraints popoverConstraints;
+  final BoxConstraints? popoverConstraints;
   final UndoHistoryController? undoHistoryController;
   final ValueChanged<String>? onSubmitted;
   final String? initialText;
@@ -31,7 +65,7 @@ class ControlledChipInput<T> extends StatelessWidget
   final void Function(int index)? onSuggestionChoosen;
   final ChipWidgetBuilder<T> chipBuilder;
   final ChipWidgetBuilder<T>? suggestionBuilder;
-  final bool useChips;
+  final bool? useChips;
   final TextInputAction? textInputAction;
   final Widget? placeholder;
   final Widget Function(BuildContext, T)? suggestionLeadingBuilder;
@@ -45,9 +79,7 @@ class ControlledChipInput<T> extends StatelessWidget
     this.onChanged,
     this.enabled = true,
     this.textEditingController,
-    this.popoverConstraints = const BoxConstraints(
-      maxHeight: 300,
-    ),
+    this.popoverConstraints,
     this.undoHistoryController,
     this.onSubmitted,
     this.initialText,
@@ -58,7 +90,7 @@ class ControlledChipInput<T> extends StatelessWidget
     this.onSuggestionChoosen,
     required this.chipBuilder,
     this.suggestionBuilder,
-    this.useChips = true,
+    this.useChips,
     this.textInputAction,
     this.placeholder,
     this.suggestionLeadingBuilder,
@@ -103,7 +135,7 @@ class ControlledChipInput<T> extends StatelessWidget
 
 class ChipInput<T> extends StatefulWidget {
   final TextEditingController? controller;
-  final BoxConstraints popoverConstraints;
+  final BoxConstraints? popoverConstraints;
   final UndoHistoryController? undoHistoryController;
   final ValueChanged<String>? onSubmitted;
   final String? initialText;
@@ -115,7 +147,7 @@ class ChipInput<T> extends StatefulWidget {
   final ValueChanged<List<T>>? onChanged;
   final ChipWidgetBuilder<T> chipBuilder;
   final ChipWidgetBuilder<T>? suggestionBuilder;
-  final bool useChips;
+  final bool? useChips;
   final TextInputAction? textInputAction;
   final Widget? placeholder;
   final Widget Function(BuildContext, T)? suggestionLeadingBuilder;
@@ -126,9 +158,7 @@ class ChipInput<T> extends StatefulWidget {
   const ChipInput({
     super.key,
     this.controller,
-    this.popoverConstraints = const BoxConstraints(
-      maxHeight: 300,
-    ),
+    this.popoverConstraints,
     this.undoHistoryController,
     this.initialText,
     this.onSubmitted,
@@ -138,7 +168,7 @@ class ChipInput<T> extends StatefulWidget {
     this.inputFormatters,
     this.onSuggestionChoosen,
     this.onChanged,
-    this.useChips = true,
+    this.useChips,
     this.suggestionBuilder,
     this.textInputAction,
     this.placeholder,
@@ -160,6 +190,25 @@ class ChipInputState<T> extends State<ChipInput<T>>
   late ValueNotifier<List<T>> _suggestions;
   final ValueNotifier<int> _selectedSuggestions = ValueNotifier(-1);
   final PopoverController _popoverController = PopoverController();
+
+  BoxConstraints get _popoverConstraints {
+    final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<ChipInputTheme>(context);
+    return styleValue<BoxConstraints>(
+      widgetValue: widget.popoverConstraints,
+      themeValue: compTheme?.popoverConstraints,
+      defaultValue: BoxConstraints(maxHeight: 300 * theme.scaling),
+    );
+  }
+
+  bool get _useChips {
+    final compTheme = ComponentTheme.maybeOf<ChipInputTheme>(context);
+    return styleValue<bool>(
+      widgetValue: widget.useChips,
+      themeValue: compTheme?.useChips,
+      defaultValue: true,
+    );
+  }
 
   @override
   void initState() {
@@ -194,7 +243,6 @@ class ChipInputState<T> extends State<ChipInput<T>>
       _popoverController.close();
     } else if (!_popoverController.hasOpenPopover &&
         _suggestions.value.isNotEmpty) {
-      final theme = Theme.of(context);
       _popoverController.show(
         context: context,
         handler: const PopoverOverlayHandler(),
@@ -206,13 +254,13 @@ class ChipInputState<T> extends State<ChipInput<T>>
         dismissBackdropFocus: false,
         showDuration: Duration.zero,
         hideDuration: Duration.zero,
-        offset: Offset(0, theme.scaling * 4),
+        offset: Offset(0, Theme.of(context).scaling * 4),
       );
     }
   }
 
   Widget _chipBuilder(int index) {
-    if (!widget.useChips) {
+    if (!_useChips) {
       return widget.chipBuilder(context, widget.chips[index]);
     }
     return Chip(
@@ -253,7 +301,7 @@ class ChipInputState<T> extends State<ChipInput<T>>
       child: Data.inherit(
         data: this,
         child: ConstrainedBox(
-          constraints: widget.popoverConstraints,
+          constraints: _popoverConstraints,
           child: OutlinedContainer(
             child: AnimatedBuilder(
               animation: Listenable.merge([_suggestions, _selectedSuggestions]),

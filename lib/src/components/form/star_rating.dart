@@ -1,6 +1,63 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// A theme for [StarRating].
+class StarRatingTheme {
+  /// The color of the filled portion of the stars.
+  final Color? activeColor;
+
+  /// The color of the unfilled portion of the stars.
+  final Color? backgroundColor;
+
+  /// The size of each star.
+  final double? starSize;
+
+  /// The spacing between stars.
+  final double? starSpacing;
+
+  /// Creates a [StarRatingTheme].
+  const StarRatingTheme({
+    this.activeColor,
+    this.backgroundColor,
+    this.starSize,
+    this.starSpacing,
+  });
+
+  /// Returns a copy of this theme with the given fields replaced.
+  StarRatingTheme copyWith({
+    ValueGetter<Color?>? activeColor,
+    ValueGetter<Color?>? backgroundColor,
+    ValueGetter<double?>? starSize,
+    ValueGetter<double?>? starSpacing,
+  }) {
+    return StarRatingTheme(
+      activeColor: activeColor == null ? this.activeColor : activeColor(),
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      starSize: starSize == null ? this.starSize : starSize(),
+      starSpacing: starSpacing == null ? this.starSpacing : starSpacing(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is StarRatingTheme &&
+        other.activeColor == activeColor &&
+        other.backgroundColor == backgroundColor &&
+        other.starSize == starSize &&
+        other.starSpacing == starSpacing;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        activeColor,
+        backgroundColor,
+        starSize,
+        starSpacing,
+      );
+}
+
 class StarRatingController extends ValueNotifier<double>
     with ComponentController<double> {
   StarRatingController([super.value = 0.0]);
@@ -152,14 +209,19 @@ class _StarRatingState extends State<StarRating>
   Widget _buildStar(BuildContext context, [bool focusBorder = false]) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<StarRatingTheme>(context);
     var starValleyRounding = widget.starValleyRounding ?? 0.0;
     var starSquash = widget.starSquash ?? 0.0;
     var starInnerRadiusRatio = widget.starInnerRadiusRatio ?? 0.4;
     var starRotation = widget.starRotation ?? 0.0;
-    var starSize = widget.starSize ?? 24.0;
+    var starSize = styleValue(
+        widgetValue: widget.starSize,
+        themeValue: compTheme?.starSize,
+        defaultValue: 24.0) *
+        scaling;
     return Container(
-      width: starSize * scaling,
-      height: starSize * scaling,
+      width: starSize,
+      height: starSize,
       decoration: ShapeDecoration(
         color: !focusBorder ? Colors.white : null,
         shape: StarBorder(
@@ -192,10 +254,25 @@ class _StarRatingState extends State<StarRating>
       builder: (context, roundedValue, child) {
         final theme = Theme.of(context);
         final scaling = theme.scaling;
-        var starSize =
-            widget.starSize != null ? widget.starSize! : 24.0 * scaling;
-        var starSpacing =
-            widget.starSpacing != null ? widget.starSpacing! : 5.0 * scaling;
+        final compTheme = ComponentTheme.maybeOf<StarRatingTheme>(context);
+        var starSize = styleValue(
+            widgetValue: widget.starSize,
+            themeValue: compTheme?.starSize,
+            defaultValue: 24.0 * scaling);
+        var starSpacing = styleValue(
+            widgetValue: widget.starSpacing,
+            themeValue: compTheme?.starSpacing,
+            defaultValue: 5.0 * scaling);
+        var activeColor = styleValue(
+            widgetValue: widget.activeColor,
+            themeValue: compTheme?.activeColor,
+            defaultValue: _enabled
+                ? theme.colorScheme.primary
+                : theme.colorScheme.mutedForeground);
+        var backgroundColor = styleValue(
+            widgetValue: widget.backgroundColor,
+            themeValue: compTheme?.backgroundColor,
+            defaultValue: theme.colorScheme.muted);
         return FocusableActionDetector(
           enabled: _enabled,
           mouseCursor: _enabled
@@ -310,12 +387,8 @@ class _StarRatingState extends State<StarRating>
                           shaderCallback: (bounds) {
                             return LinearGradient(
                               colors: [
-                                widget.activeColor ??
-                                    (_enabled
-                                        ? theme.colorScheme.primary
-                                        : theme.colorScheme.mutedForeground),
-                                widget.backgroundColor ??
-                                    theme.colorScheme.muted,
+                                activeColor,
+                                backgroundColor,
                               ],
                               stops: [
                                 (roundedValue - i).clamp(0.0, 1.0),

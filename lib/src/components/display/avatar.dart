@@ -1,5 +1,80 @@
 import '../../../shadcn_flutter.dart';
 
+/// A theme for [Avatar].
+class AvatarTheme {
+  /// The default size of the avatar.
+  final double? size;
+
+  /// The border radius of the avatar.
+  final double? borderRadius;
+
+  /// The background color of the avatar.
+  final Color? backgroundColor;
+
+  /// The alignment of the badge relative to the avatar.
+  final AlignmentGeometry? badgeAlignment;
+
+  /// The gap between the avatar and the badge.
+  final double? badgeGap;
+
+  /// The text style of the initials.
+  final TextStyle? textStyle;
+
+  /// Creates a new [AvatarTheme].
+  const AvatarTheme({
+    this.size,
+    this.borderRadius,
+    this.backgroundColor,
+    this.badgeAlignment,
+    this.badgeGap,
+    this.textStyle,
+  });
+
+  /// Creates a copy of this theme but with the given fields replaced with the new values.
+  AvatarTheme copyWith({
+    ValueGetter<double?>? size,
+    ValueGetter<double?>? borderRadius,
+    ValueGetter<Color?>? backgroundColor,
+    ValueGetter<AlignmentGeometry?>? badgeAlignment,
+    ValueGetter<double?>? badgeGap,
+    ValueGetter<TextStyle?>? textStyle,
+  }) {
+    return AvatarTheme(
+      size: size == null ? this.size : size(),
+      borderRadius:
+          borderRadius == null ? this.borderRadius : borderRadius(),
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      badgeAlignment:
+          badgeAlignment == null ? this.badgeAlignment : badgeAlignment(),
+      badgeGap: badgeGap == null ? this.badgeGap : badgeGap(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is AvatarTheme &&
+        other.size == size &&
+        other.borderRadius == borderRadius &&
+        other.backgroundColor == backgroundColor &&
+        other.badgeAlignment == badgeAlignment &&
+        other.badgeGap == badgeGap &&
+        other.textStyle == textStyle;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        size,
+        borderRadius,
+        backgroundColor,
+        badgeAlignment,
+        badgeGap,
+        textStyle,
+      );
+}
+
 abstract class AvatarWidget extends Widget {
   const AvatarWidget({super.key});
 
@@ -81,8 +156,15 @@ class Avatar extends StatefulWidget implements AvatarWidget {
 class _AvatarState extends State<Avatar> {
   Widget _build(BuildContext context) {
     final theme = Theme.of(context);
-    double size = widget.size ?? (theme.scaling * 40);
-    double borderRadius = widget.borderRadius ?? theme.radius * size;
+    final compTheme = ComponentTheme.maybeOf<AvatarTheme>(context);
+    double size = styleValue(
+        widgetValue: widget.size,
+        themeValue: compTheme?.size,
+        defaultValue: theme.scaling * 40);
+    double borderRadius = styleValue(
+        widgetValue: widget.borderRadius,
+        themeValue: compTheme?.borderRadius,
+        defaultValue: theme.radius * size);
     if (widget.provider != null) {
       return SizedBox(
         width: size,
@@ -108,9 +190,13 @@ class _AvatarState extends State<Avatar> {
 
   Widget _buildInitials(BuildContext context, double borderRadius) {
     final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<AvatarTheme>(context);
     return Container(
       decoration: BoxDecoration(
-        color: widget.backgroundColor ?? theme.colorScheme.muted,
+        color: styleValue(
+            widgetValue: widget.backgroundColor,
+            themeValue: compTheme?.backgroundColor,
+            defaultValue: theme.colorScheme.muted),
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: FittedBox(
@@ -123,9 +209,12 @@ class _AvatarState extends State<Avatar> {
                 widget.initials,
               ),
             ),
-            style: TextStyle(
-              color: theme.colorScheme.foreground,
-              fontWeight: FontWeight.bold,
+            style: styleValue(
+              themeValue: compTheme?.textStyle,
+              defaultValue: TextStyle(
+                color: theme.colorScheme.foreground,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
@@ -139,13 +228,29 @@ class _AvatarState extends State<Avatar> {
       return _build(context);
     }
     final theme = Theme.of(context);
-    double size = widget.size ?? theme.scaling * 40;
+    final compTheme = ComponentTheme.maybeOf<AvatarTheme>(context);
+    double size = styleValue(
+        widgetValue: widget.size,
+        themeValue: compTheme?.size,
+        defaultValue: theme.scaling * 40);
+    double borderRadius = styleValue(
+        widgetValue: widget.borderRadius,
+        themeValue: compTheme?.borderRadius,
+        defaultValue: theme.radius * size);
     double badgeSize = widget.badge!.size ?? theme.scaling * 12;
     double offset = size / 2 - badgeSize / 2;
     offset = offset / size;
+    final alignment = styleValue(
+        widgetValue: widget.badgeAlignment,
+        themeValue: compTheme?.badgeAlignment,
+        defaultValue: AlignmentDirectional(offset, offset));
+    final gap = styleValue(
+        widgetValue: widget.badgeGap,
+        themeValue: compTheme?.badgeGap,
+        defaultValue: theme.scaling * 4);
     return AvatarGroup(
-      alignment: widget.badgeAlignment ?? AlignmentDirectional(offset, offset),
-      gap: widget.badgeGap ?? theme.scaling * 4,
+      alignment: alignment,
+      gap: gap,
       children: [
         _AvatarWidget(
           size: widget.badge!.size ?? theme.scaling * 12,
@@ -153,8 +258,8 @@ class _AvatarState extends State<Avatar> {
           child: widget.badge!,
         ),
         _AvatarWidget(
-          size: widget.size,
-          borderRadius: widget.borderRadius,
+          size: size,
+          borderRadius: borderRadius,
           child: _build(context),
         ),
       ],

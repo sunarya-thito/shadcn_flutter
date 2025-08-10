@@ -1,27 +1,86 @@
+import 'package:flutter/foundation.dart';
+
 import '../../../shadcn_flutter.dart';
 
+/// Theme configuration for [FadeScroll].
+class FadeScrollTheme {
+  /// The distance from the start before fading begins.
+  final double? startOffset;
+
+  /// The distance from the end before fading begins.
+  final double? endOffset;
+
+  /// The gradient colors used for the fade.
+  final List<Color>? gradient;
+
+  /// Creates a [FadeScrollTheme].
+  const FadeScrollTheme({
+    this.startOffset,
+    this.endOffset,
+    this.gradient,
+  });
+
+  /// Creates a copy of this theme but with the given fields replaced.
+  FadeScrollTheme copyWith({
+    ValueGetter<double?>? startOffset,
+    ValueGetter<double?>? endOffset,
+    ValueGetter<List<Color>?>? gradient,
+  }) {
+    return FadeScrollTheme(
+      startOffset: startOffset == null ? this.startOffset : startOffset(),
+      endOffset: endOffset == null ? this.endOffset : endOffset(),
+      gradient: gradient == null ? this.gradient : gradient(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is FadeScrollTheme &&
+        other.startOffset == startOffset &&
+        other.endOffset == endOffset &&
+        listEquals(other.gradient, gradient);
+  }
+
+  @override
+  int get hashCode => Object.hash(startOffset, endOffset, gradient);
+}
+
 class FadeScroll extends StatelessWidget {
-  final double startOffset;
-  final double endOffset;
+  final double? startOffset;
+  final double? endOffset;
   final double startCrossOffset;
   final double endCrossOffset;
   final Widget child;
   final ScrollController controller;
-  final List<Color> gradient;
+  final List<Color>? gradient;
 
   const FadeScroll({
     super.key,
-    required this.startOffset,
-    required this.endOffset,
+    this.startOffset,
+    this.endOffset,
     required this.child,
     required this.controller,
-    required this.gradient,
+    this.gradient,
     this.startCrossOffset = 0,
     this.endCrossOffset = 0,
   });
 
   @override
   Widget build(BuildContext context) {
+    final compTheme = ComponentTheme.maybeOf<FadeScrollTheme>(context);
+    final startOffset = styleValue(
+        widgetValue: this.startOffset,
+        themeValue: compTheme?.startOffset,
+        defaultValue: 0.0);
+    final endOffset = styleValue(
+        widgetValue: this.endOffset,
+        themeValue: compTheme?.endOffset,
+        defaultValue: 0.0);
+    final gradient = styleValue(
+        widgetValue: this.gradient,
+        themeValue: compTheme?.gradient,
+        defaultValue: const [Colors.white, Colors.transparent]);
     return ListenableBuilder(
       listenable: controller,
       child: child,
