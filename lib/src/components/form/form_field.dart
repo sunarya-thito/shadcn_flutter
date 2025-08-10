@@ -19,9 +19,9 @@ class ObjectFormField<T> extends StatefulWidget {
   final AlignmentGeometry? popoverAnchorAlignment;
   final EdgeInsetsGeometry? popoverPadding;
   final Widget? dialogTitle;
-  final ButtonSize size;
-  final ButtonDensity density;
-  final ButtonShape shape;
+  final ButtonSize? size;
+  final ButtonDensity? density;
+  final ButtonShape? shape;
   final List<Widget> Function(
       BuildContext context, ObjectFormHandler<T> handler)? dialogActions;
   final bool? enabled;
@@ -41,9 +41,9 @@ class ObjectFormField<T> extends StatefulWidget {
     this.popoverAnchorAlignment,
     this.popoverPadding,
     this.dialogTitle,
-    this.size = ButtonSize.normal,
-    this.density = ButtonDensity.normal,
-    this.shape = ButtonShape.rectangle,
+    this.size,
+    this.density,
+    this.shape,
     this.dialogActions,
     this.enabled,
     this.decorate = true,
@@ -167,12 +167,15 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
 
   @override
   Widget build(BuildContext context) {
+    final size = widget.size ?? ButtonSize.normal;
+    final density = widget.density ?? ButtonDensity.normal;
+    final shape = widget.shape ?? ButtonShape.rectangle;
     return OutlineButton(
       trailing: widget.trailing?.iconMutedForeground().iconSmall(),
       leading: widget.leading?.iconMutedForeground().iconSmall(),
-      size: widget.size,
-      density: widget.density,
-      shape: widget.shape,
+      size: size,
+      density: density,
+      shape: shape,
       onPressed: widget.onChanged == null ? null : prompt,
       enabled: enabled,
       child: this.value == null

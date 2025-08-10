@@ -2,6 +2,51 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// {@template menu_theme}
+/// Styling options for menu widgets such as [MenuGroup] and [MenuButton].
+/// {@endtemplate}
+class MenuTheme {
+  /// Default padding applied to each menu item.
+  final EdgeInsets? itemPadding;
+
+  /// Offset applied when showing a submenu.
+  final Offset? subMenuOffset;
+
+  /// {@macro menu_theme}
+  const MenuTheme({
+    this.itemPadding,
+    this.subMenuOffset,
+  });
+
+  /// Creates a copy of this theme but with the given fields replaced.
+  MenuTheme copyWith({
+    ValueGetter<EdgeInsets?>? itemPadding,
+    ValueGetter<Offset?>? subMenuOffset,
+  }) {
+    return MenuTheme(
+      itemPadding: itemPadding == null ? this.itemPadding : itemPadding(),
+      subMenuOffset:
+          subMenuOffset == null ? this.subMenuOffset : subMenuOffset(),
+    );
+  }
+
+  @override
+  int get hashCode => Object.hash(itemPadding, subMenuOffset);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is MenuTheme &&
+        other.itemPadding == itemPadding &&
+        other.subMenuOffset == subMenuOffset;
+  }
+
+  @override
+  String toString() {
+    return 'MenuTheme(itemPadding: $itemPadding, subMenuOffset: $subMenuOffset)';
+  }
+}
+
 class MenuShortcut extends StatelessWidget {
   final ShortcutActivator activator;
   final Widget? combiner;
@@ -340,9 +385,9 @@ class _MenuButtonState extends State<MenuButton> {
     final menuData = Data.maybeOf<MenuData>(context);
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
     assert(menuGroupData != null, 'MenuButton must be a child of MenuGroup');
-    // final dialogOverlayHandler = Data.maybeOf<DialogOverlayHandler>(context);
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<MenuTheme>(context);
     final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
     final isDialogOverlay = DialogOverlayHandler.isDialogOverlay(context);
     final isIndependentOverlay = isSheetOverlay || isDialogOverlay;
@@ -380,7 +425,8 @@ class _MenuButtonState extends State<MenuButton> {
                       parent: menuGroupData,
                       onDismissed: menuGroupData.onDismissed,
                       regionGroupId: menuGroupData.regionGroupId,
-                      subMenuOffset: const Offset(8, -4 + -1) * scaling,
+                      subMenuOffset: compTheme?.subMenuOffset ??
+                          const Offset(8, -4 + -1) * scaling,
                       itemPadding: itemPadding,
                       builder: (context, children) {
                         return MenuPopup(
@@ -394,7 +440,7 @@ class _MenuButtonState extends State<MenuButton> {
         alignment: Alignment.topLeft,
         anchorAlignment:
             menuBarData != null ? Alignment.bottomLeft : Alignment.topRight,
-        offset: menuGroupData.subMenuOffset,
+        offset: menuGroupData.subMenuOffset ?? compTheme?.subMenuOffset,
       );
     }
 
@@ -596,7 +642,7 @@ class MenuGroup extends StatefulWidget {
   final Object? regionGroupId;
   final Axis direction;
   final Map<Type, Action> actions;
-  final EdgeInsets itemPadding;
+  final EdgeInsets? itemPadding;
 
   const MenuGroup({
     super.key,
@@ -608,7 +654,7 @@ class MenuGroup extends StatefulWidget {
     this.regionGroupId,
     this.actions = const {},
     required this.direction,
-    required this.itemPadding,
+    this.itemPadding,
   });
 
   @override
@@ -679,6 +725,10 @@ class _MenuGroupState extends State<MenuGroup> {
 
   @override
   Widget build(BuildContext context) {
+    final compTheme = ComponentTheme.maybeOf<MenuTheme>(context);
+    final itemPadding =
+        widget.itemPadding ?? compTheme?.itemPadding ?? EdgeInsets.zero;
+    final subMenuOffset = widget.subMenuOffset ?? compTheme?.subMenuOffset;
     List<Widget> children = [];
     bool hasLeading = false;
     for (int i = 0; i < widget.children.length; i++) {
@@ -761,11 +811,11 @@ class _MenuGroupState extends State<MenuGroup> {
               widget.parent,
               _data,
               hasLeading,
-              widget.subMenuOffset,
+              subMenuOffset,
               widget.onDismissed,
               widget.regionGroupId,
               widget.direction,
-              widget.itemPadding,
+              itemPadding,
             ),
             child: widget.builder(context, children),
           ),

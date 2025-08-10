@@ -1,6 +1,37 @@
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+class StepperTheme {
+  final Axis? direction;
+  final StepSize? size;
+  final StepVariant? variant;
+
+  const StepperTheme({this.direction, this.size, this.variant});
+
+  StepperTheme copyWith({
+    ValueGetter<Axis?>? direction,
+    ValueGetter<StepSize?>? size,
+    ValueGetter<StepVariant?>? variant,
+  }) {
+    return StepperTheme(
+      direction: direction == null ? this.direction : direction(),
+      size: size == null ? this.size : size(),
+      variant: variant == null ? this.variant : variant(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is StepperTheme &&
+        other.direction == direction &&
+        other.size == size &&
+        other.variant == variant;
+  }
+
+  @override
+  int get hashCode => Object.hash(direction, size, variant);
+}
 enum StepState {
   failed,
 }
@@ -722,26 +753,30 @@ class StepperController extends ValueNotifier<StepperValue> {
 class Stepper extends StatelessWidget {
   final StepperController controller;
   final List<Step> steps;
-  final Axis direction;
-  final StepSize size;
-  final StepVariant variant;
+  final Axis? direction;
+  final StepSize? size;
+  final StepVariant? variant;
 
   const Stepper({
     super.key,
     required this.controller,
     required this.steps,
-    this.direction = Axis.horizontal,
-    this.size = StepSize.medium,
-    this.variant = StepVariant.circle,
+    this.direction,
+    this.size,
+    this.variant,
   });
 
   @override
   Widget build(BuildContext context) {
-    var stepProperties = StepProperties(
-        size: size, steps: steps, state: controller, direction: direction);
+    final compTheme = ComponentTheme.maybeOf<StepperTheme>(context);
+    final dir = direction ?? compTheme?.direction ?? Axis.horizontal;
+    final sz = size ?? compTheme?.size ?? StepSize.medium;
+    final varnt = variant ?? compTheme?.variant ?? StepVariant.circle;
+    var stepProperties =
+        StepProperties(size: sz, steps: steps, state: controller, direction: dir);
     return Data.inherit(
       data: stepProperties,
-      child: variant.build(context, stepProperties),
+      child: varnt.build(context, stepProperties),
     );
   }
 }

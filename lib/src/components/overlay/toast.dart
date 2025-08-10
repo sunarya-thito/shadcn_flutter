@@ -4,6 +4,114 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// {@template toast_theme}
+/// Theme data for [ToastLayer] providing default layout values.
+/// {@endtemplate}
+class ToastTheme {
+  final int? maxStackedEntries;
+  final EdgeInsetsGeometry? padding;
+  final ExpandMode? expandMode;
+  final Offset? collapsedOffset;
+  final double? collapsedScale;
+  final Curve? expandingCurve;
+  final Duration? expandingDuration;
+  final double? collapsedOpacity;
+  final double? entryOpacity;
+  final double? spacing;
+  final BoxConstraints? toastConstraints;
+
+  /// {@macro toast_theme}
+  const ToastTheme({
+    this.maxStackedEntries,
+    this.padding,
+    this.expandMode,
+    this.collapsedOffset,
+    this.collapsedScale,
+    this.expandingCurve,
+    this.expandingDuration,
+    this.collapsedOpacity,
+    this.entryOpacity,
+    this.spacing,
+    this.toastConstraints,
+  });
+
+  ToastTheme copyWith({
+    ValueGetter<int?>? maxStackedEntries,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+    ValueGetter<ExpandMode?>? expandMode,
+    ValueGetter<Offset?>? collapsedOffset,
+    ValueGetter<double?>? collapsedScale,
+    ValueGetter<Curve?>? expandingCurve,
+    ValueGetter<Duration?>? expandingDuration,
+    ValueGetter<double?>? collapsedOpacity,
+    ValueGetter<double?>? entryOpacity,
+    ValueGetter<double?>? spacing,
+    ValueGetter<BoxConstraints?>? toastConstraints,
+  }) {
+    return ToastTheme(
+      maxStackedEntries: maxStackedEntries == null
+          ? this.maxStackedEntries
+          : maxStackedEntries(),
+      padding: padding == null ? this.padding : padding(),
+      expandMode: expandMode == null ? this.expandMode : expandMode(),
+      collapsedOffset:
+          collapsedOffset == null ? this.collapsedOffset : collapsedOffset(),
+      collapsedScale:
+          collapsedScale == null ? this.collapsedScale : collapsedScale(),
+      expandingCurve:
+          expandingCurve == null ? this.expandingCurve : expandingCurve(),
+      expandingDuration: expandingDuration == null
+          ? this.expandingDuration
+          : expandingDuration(),
+      collapsedOpacity: collapsedOpacity == null
+          ? this.collapsedOpacity
+          : collapsedOpacity(),
+      entryOpacity:
+          entryOpacity == null ? this.entryOpacity : entryOpacity(),
+      spacing: spacing == null ? this.spacing : spacing(),
+      toastConstraints: toastConstraints == null
+          ? this.toastConstraints
+          : toastConstraints(),
+    );
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        maxStackedEntries,
+        padding,
+        expandMode,
+        collapsedOffset,
+        collapsedScale,
+        expandingCurve,
+        expandingDuration,
+        collapsedOpacity,
+        entryOpacity,
+        spacing,
+        toastConstraints,
+      );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ToastTheme &&
+        other.maxStackedEntries == maxStackedEntries &&
+        other.padding == padding &&
+        other.expandMode == expandMode &&
+        other.collapsedOffset == collapsedOffset &&
+        other.collapsedScale == collapsedScale &&
+        other.expandingCurve == expandingCurve &&
+        other.expandingDuration == expandingDuration &&
+        other.collapsedOpacity == collapsedOpacity &&
+        other.entryOpacity == entryOpacity &&
+        other.spacing == spacing &&
+        other.toastConstraints == toastConstraints;
+  }
+
+  @override
+  String toString() {
+    return 'ToastTheme(maxStackedEntries: $maxStackedEntries, padding: $padding, expandMode: $expandMode, collapsedOffset: $collapsedOffset, collapsedScale: $collapsedScale, expandingCurve: $expandingCurve, expandingDuration: $expandingDuration, collapsedOpacity: $collapsedOpacity, entryOpacity: $entryOpacity, spacing: $spacing, toastConstraints: $toastConstraints)';
+  }
+}
 typedef ToastBuilder = Widget Function(
     BuildContext context, ToastOverlay overlay);
 
@@ -167,7 +275,32 @@ class _ToastLayerState extends State<ToastLayer> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    int reservedEntries = widget.maxStackedEntries;
+    final compTheme = ComponentTheme.maybeOf<ToastTheme>(context);
+    final maxStackedEntries =
+        compTheme?.maxStackedEntries ?? widget.maxStackedEntries;
+    final expandMode = compTheme?.expandMode ?? widget.expandMode;
+    final collapsedOffset =
+        (compTheme?.collapsedOffset ?? widget.collapsedOffset ??
+                const Offset(0, 12)) *
+            scaling;
+    final padding = (compTheme?.padding?.optionallyResolve(context) ??
+            widget.padding?.optionallyResolve(context) ??
+            const EdgeInsets.all(24)) *
+        scaling;
+    final toastConstraints = compTheme?.toastConstraints ??
+        widget.toastConstraints ??
+        BoxConstraints.tightFor(width: 320 * scaling);
+    final collapsedScale =
+        compTheme?.collapsedScale ?? widget.collapsedScale;
+    final expandingCurve =
+        compTheme?.expandingCurve ?? widget.expandingCurve;
+    final expandingDuration =
+        compTheme?.expandingDuration ?? widget.expandingDuration;
+    final collapsedOpacity =
+        compTheme?.collapsedOpacity ?? widget.collapsedOpacity;
+    final entryOpacity = compTheme?.entryOpacity ?? widget.entryOpacity;
+    final spacing = compTheme?.spacing ?? widget.spacing;
+    int reservedEntries = maxStackedEntries;
     List<Widget> children = [
       widget.child,
     ];
@@ -176,18 +309,11 @@ class _ToastLayerState extends State<ToastLayer> {
       var entries = locationEntry.value.entries;
       var expanding = locationEntry.value._expanding;
       int startVisible =
-          (entries.length - (widget.maxStackedEntries + reservedEntries)).max(
-              0); // reserve some invisible toast as for the ghost entry depending animation speed
+          (entries.length - (maxStackedEntries + reservedEntries)).max(0);
       Alignment entryAlignment =
           location.childrenAlignment.optionallyResolve(context) * -1;
       List<Widget> positionedChildren = [];
       int toastIndex = 0;
-      var collapsedOffset =
-          widget.collapsedOffset ?? (const Offset(0, 12) * scaling);
-      var padding = widget.padding?.optionallyResolve(context) ??
-          (const EdgeInsets.all(24) * scaling);
-      var toastConstraints = widget.toastConstraints ??
-          BoxConstraints.tightFor(width: 320 * scaling);
       for (var i = entries.length - 1; i >= startVisible; i--) {
         var entry = entries[i];
         positionedChildren.insert(
@@ -195,9 +321,8 @@ class _ToastLayerState extends State<ToastLayer> {
           ToastEntryLayout(
             key: entry.key,
             entry: entry.entry,
-            expanded:
-                expanding || widget.expandMode == ExpandMode.alwaysExpanded,
-            visible: toastIndex < widget.maxStackedEntries,
+            expanded: expanding || expandMode == ExpandMode.alwaysExpanded,
+            visible: toastIndex < maxStackedEntries,
             dismissible: entry.entry.dismissible,
             previousAlignment: location.childrenAlignment,
             curve: entry.entry.curve,
@@ -206,11 +331,11 @@ class _ToastLayerState extends State<ToastLayer> {
             data: entry.entry.data,
             closing: entry._isClosing,
             collapsedOffset: collapsedOffset,
-            collapsedScale: widget.collapsedScale,
-            expandingCurve: widget.expandingCurve,
-            expandingDuration: widget.expandingDuration,
-            collapsedOpacity: widget.collapsedOpacity,
-            entryOpacity: widget.entryOpacity,
+            collapsedScale: collapsedScale,
+            expandingCurve: expandingCurve,
+            expandingDuration: expandingDuration,
+            collapsedOpacity: collapsedOpacity,
+            entryOpacity: entryOpacity,
             onClosed: () {
               removeEntry(entry.entry);
               entry.entry.onClosed?.call();
@@ -222,7 +347,7 @@ class _ToastLayerState extends State<ToastLayer> {
                   padding.bottom * entryAlignment.y.clamp(-1, 0),
             ),
             entryAlignment: entryAlignment,
-            spacing: widget.spacing,
+            spacing: spacing,
             index: toastIndex,
             actualIndex: entries.length - i - 1,
             onClosing: () {
@@ -252,7 +377,7 @@ class _ToastLayerState extends State<ToastLayer> {
                   hitTestBehavior: HitTestBehavior.deferToChild,
                   onEnter: (event) {
                     locationEntry.value._hoverCount++;
-                    if (widget.expandMode == ExpandMode.expandOnHover) {
+                    if (expandMode == ExpandMode.expandOnHover) {
                       setState(() {
                         locationEntry.value._expanding = true;
                       });
