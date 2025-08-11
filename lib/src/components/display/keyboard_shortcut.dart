@@ -80,6 +80,16 @@ class KeyboardShortcutDisplayMapper extends StatefulWidget {
       case LogicalKeyboardKey.metaLeft:
       case LogicalKeyboardKey.metaRight:
         return const Text('⌘');
+      case LogicalKeyboardKey.enter:
+        return const Text('↵');
+      case LogicalKeyboardKey.arrowLeft:
+        return const Text('←');
+      case LogicalKeyboardKey.arrowRight:
+        return const Text('→');
+      case LogicalKeyboardKey.arrowUp:
+        return const Text('↑');
+      case LogicalKeyboardKey.arrowDown:
+        return const Text('↓');
       default:
         return Text(key.keyLabel);
     }
@@ -182,27 +192,17 @@ class KeyboardKeyDisplay extends StatelessWidget {
     final directionality = Directionality.of(context);
     final compTheme = ComponentTheme.maybeOf<KeyboardShortcutTheme>(context);
     final padding = styleValue(
-            widgetValue: this.padding,
-            themeValue: compTheme?.keyPadding,
-            defaultValue:
-                const EdgeInsets.symmetric(horizontal: 6, vertical: 4))
-        .resolve(directionality) *
+                widgetValue: this.padding,
+                themeValue: compTheme?.keyPadding,
+                defaultValue:
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 4))
+            .resolve(directionality) *
         theme.scaling;
-    final defaultShadow = [
-      BoxShadow(
-        color: theme.colorScheme.border,
-        blurRadius: 0,
-        blurStyle: BlurStyle.solid,
-        offset: const Offset(0, -2) * theme.scaling,
-      ),
-    ];
-    final boxShadow = styleValue(
-        widgetValue: this.boxShadow,
-        themeValue: compTheme?.keyShadow,
-        defaultValue: defaultShadow);
     return Card(
       padding: padding,
-      boxShadow: boxShadow,
+      borderRadius: theme.borderRadiusMd,
+      fillColor: theme.colorScheme.background.scaleAlpha(0.7),
+      filled: true,
       child: displayMapper.buildKeyboardDisplay(context, keyboardKey),
     );
   }

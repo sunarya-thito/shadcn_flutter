@@ -2117,82 +2117,85 @@ class TextFieldState extends State<TextField>
       ),
     );
 
-    Widget textField = FocusOutline(
-      focused: _effectiveFocusNode.hasFocus,
-      borderRadius: effectiveDecoration.borderRadius,
-      child: IconTheme.merge(
-        data: theme.iconTheme.small.copyWith(
-          color: theme.colorScheme.mutedForeground,
-        ),
-        child: _wrapActions(
-          child: MouseRegion(
-            onEnter: _onEnter,
-            onExit: _onExit,
-            opaque: false,
-            child: Semantics(
-              enabled: enabled,
-              onTap: !enabled || widget.readOnly
-                  ? null
-                  : () {
-                      if (!controller.selection.isValid) {
-                        controller.selection = TextSelection.collapsed(
-                            offset: controller.text.length);
-                      }
-                      _requestKeyboard();
-                    },
-              onDidGainAccessibilityFocus: handleDidGainAccessibilityFocus,
-              onDidLoseAccessibilityFocus: handleDidLoseAccessibilityFocus,
-              onFocus: enabled
-                  ? () {
-                      assert(
-                        _effectiveFocusNode.canRequestFocus,
-                        'Received SemanticsAction.focus from the engine. However, the FocusNode '
-                        'of this text field cannot gain focus. This likely indicates a bug. '
-                        'If this text field cannot be focused (e.g. because it is not '
-                        'enabled), then its corresponding semantics node must be configured '
-                        'such that the assistive technology cannot request focus on it.',
-                      );
-
-                      if (_effectiveFocusNode.canRequestFocus &&
-                          !_effectiveFocusNode.hasFocus) {
-                        _effectiveFocusNode.requestFocus();
-                      } else if (!widget.readOnly) {
-                        // If the platform requested focus, that means that previously the
-                        // platform believed that the text field did not have focus (even
-                        // though Flutter's widget system believed otherwise). This likely
-                        // means that the on-screen keyboard is hidden, or more generally,
-                        // there is no current editing session in this field. To correct
-                        // that, keyboard must be requested.
-                        //
-                        // A concrete scenario where this can happen is when the user
-                        // dismisses the keyboard on the web. The editing session is
-                        // closed by the engine, but the text field widget stays focused
-                        // in the framework.
+    Widget textField = MouseRegion(
+      cursor: enabled ? SystemMouseCursors.text : SystemMouseCursors.forbidden,
+      child: FocusOutline(
+        focused: _effectiveFocusNode.hasFocus,
+        borderRadius: effectiveDecoration.borderRadius,
+        child: IconTheme.merge(
+          data: theme.iconTheme.small.copyWith(
+            color: theme.colorScheme.mutedForeground,
+          ),
+          child: _wrapActions(
+            child: MouseRegion(
+              onEnter: _onEnter,
+              onExit: _onExit,
+              opaque: false,
+              child: Semantics(
+                enabled: enabled,
+                onTap: !enabled || widget.readOnly
+                    ? null
+                    : () {
+                        if (!controller.selection.isValid) {
+                          controller.selection = TextSelection.collapsed(
+                              offset: controller.text.length);
+                        }
                         _requestKeyboard();
+                      },
+                onDidGainAccessibilityFocus: handleDidGainAccessibilityFocus,
+                onDidLoseAccessibilityFocus: handleDidLoseAccessibilityFocus,
+                onFocus: enabled
+                    ? () {
+                        assert(
+                          _effectiveFocusNode.canRequestFocus,
+                          'Received SemanticsAction.focus from the engine. However, the FocusNode '
+                          'of this text field cannot gain focus. This likely indicates a bug. '
+                          'If this text field cannot be focused (e.g. because it is not '
+                          'enabled), then its corresponding semantics node must be configured '
+                          'such that the assistive technology cannot request focus on it.',
+                        );
+
+                        if (_effectiveFocusNode.canRequestFocus &&
+                            !_effectiveFocusNode.hasFocus) {
+                          _effectiveFocusNode.requestFocus();
+                        } else if (!widget.readOnly) {
+                          // If the platform requested focus, that means that previously the
+                          // platform believed that the text field did not have focus (even
+                          // though Flutter's widget system believed otherwise). This likely
+                          // means that the on-screen keyboard is hidden, or more generally,
+                          // there is no current editing session in this field. To correct
+                          // that, keyboard must be requested.
+                          //
+                          // A concrete scenario where this can happen is when the user
+                          // dismisses the keyboard on the web. The editing session is
+                          // closed by the engine, but the text field widget stays focused
+                          // in the framework.
+                          _requestKeyboard();
+                        }
                       }
-                    }
-                  : null,
-              child: TextFieldTapRegion(
-                child: IgnorePointer(
-                  ignoring: !enabled,
-                  child: Container(
-                    decoration: effectiveDecoration,
-                    child:
-                        _selectionGestureDetectorBuilder.buildGestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      child: Align(
-                        alignment: Alignment(-1.0, _textAlignVertical.y),
-                        widthFactor: 1.0,
-                        heightFactor: 1.0,
-                        child: Padding(
-                          padding: widget.padding ??
-                              compTheme?.padding ??
-                              EdgeInsets.symmetric(
-                                horizontal: 12 * scaling,
-                                vertical: 8 * scaling,
-                              ),
-                          child: _addTextDependentAttachments(
-                              editable, defaultTextStyle, theme),
+                    : null,
+                child: TextFieldTapRegion(
+                  child: IgnorePointer(
+                    ignoring: !enabled,
+                    child: Container(
+                      decoration: effectiveDecoration,
+                      child:
+                          _selectionGestureDetectorBuilder.buildGestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        child: Align(
+                          alignment: Alignment(-1.0, _textAlignVertical.y),
+                          widthFactor: 1.0,
+                          heightFactor: 1.0,
+                          child: Padding(
+                            padding: widget.padding ??
+                                compTheme?.padding ??
+                                EdgeInsets.symmetric(
+                                  horizontal: 12 * scaling,
+                                  vertical: 8 * scaling,
+                                ),
+                            child: _addTextDependentAttachments(
+                                editable, defaultTextStyle, theme),
+                          ),
                         ),
                       ),
                     ),

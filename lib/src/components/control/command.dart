@@ -90,13 +90,105 @@ class Command extends StatefulWidget {
   State<Command> createState() => _CommandState();
 }
 
+class _Query {
+  final Stream<List<Widget>> stream;
+  final String? query;
+
+  _Query({required this.stream, this.query});
+}
+
 class _CommandState extends State<Command> {
   final TextEditingController _controller = TextEditingController();
-  final ValueNotifier<String?> query = ValueNotifier<String?>(null);
+  late _Query _currentRequest;
 
   int requestCount = 0;
+  final List<_CommandItemState> _attached = [];
+  _CommandItemState? _currentItem;
+  bool _disposed = false;
+
+  bool _attach(_CommandItemState item) {
+    _attached.add(item);
+    _currentItem ??= item;
+    return _currentItem == item;
+  }
+
+  void _detach(_CommandItemState item) {
+    if (_disposed) return;
+    _attached.remove(item);
+    if (_currentItem == item) {
+      _currentItem = null;
+    }
+  }
+
+  void _next() {
+    if (!context.mounted) return;
+    if (_currentItem != null) {
+      RenderBox currentBox =
+          _currentItem!.context.findRenderObject() as RenderBox;
+      RenderBox parentBox = context.findRenderObject() as RenderBox;
+      Offset currentOffset =
+          currentBox.localToGlobal(Offset.zero, ancestor: parentBox);
+      (_CommandItemState, double)? nearestNextItem;
+      for (var item in _attached) {
+        if (item == _currentItem) continue;
+        RenderBox box = item.context.findRenderObject() as RenderBox;
+        Offset offset = box.localToGlobal(Offset.zero, ancestor: parentBox);
+        double distance = offset.dy - currentOffset.dy;
+        if (distance < 0) continue;
+        if (nearestNextItem == null || distance < nearestNextItem.$2) {
+          nearestNextItem = (item, distance);
+        }
+      }
+      if (nearestNextItem != null) {
+        _setCurrentItem(nearestNextItem.$1, true);
+      }
+    }
+  }
+
+  void _previous() {
+    if (!context.mounted) return;
+    if (_currentItem != null) {
+      RenderBox currentBox =
+          _currentItem!.context.findRenderObject() as RenderBox;
+      RenderBox parentBox = context.findRenderObject() as RenderBox;
+      Offset currentOffset =
+          currentBox.localToGlobal(Offset.zero, ancestor: parentBox);
+      (_CommandItemState, double)? nearestPrevItem;
+      for (var item in _attached) {
+        if (item == _currentItem) continue;
+        RenderBox box = item.context.findRenderObject() as RenderBox;
+        Offset offset = box.localToGlobal(Offset.zero, ancestor: parentBox);
+        double distance = currentOffset.dy - offset.dy;
+        if (distance < 0) continue;
+        if (nearestPrevItem == null || distance < nearestPrevItem.$2) {
+          nearestPrevItem = (item, distance);
+        }
+      }
+      if (nearestPrevItem != null) {
+        _setCurrentItem(nearestPrevItem.$1, false);
+      }
+    }
+  }
+
+  void _setCurrentItem(_CommandItemState item, bool? forward) {
+    final currentItem = _currentItem;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      currentItem?.focus(false);
+      item.focus(true);
+      Scrollable.ensureVisible(
+        item.context,
+        alignmentPolicy: forward == null
+            ? ScrollPositionAlignmentPolicy.explicit
+            : forward
+                ? ScrollPositionAlignmentPolicy.keepVisibleAtEnd
+                : ScrollPositionAlignmentPolicy.keepVisibleAtStart,
+      );
+    });
+    _currentItem = item;
+  }
 
   Stream<List<Widget>> _request(BuildContext context, String? query) async* {
+    _currentItem = null;
     int currentRequest = ++requestCount;
     yield [];
     await Future.delayed(widget.debounceDuration);
@@ -113,97 +205,172 @@ class _CommandState extends State<Command> {
   @override
   void initState() {
     super.initState();
+    _currentRequest = _Query(stream: _request(context, null));
     _controller.addListener(() {
       String? newQuery = _controller.text;
       if (newQuery.isEmpty) newQuery = null;
-      if (newQuery != query.value) {
-        query.value = newQuery;
+      if (newQuery != _currentRequest.query) {
+        setState(() {
+          _currentRequest =
+              _Query(stream: _request(context, newQuery), query: newQuery);
+        });
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     bool canPop = Navigator.of(context).canPop();
-    return FocusScope(
-      child: IntrinsicWidth(
-        child: OutlinedContainer(
-          clipBehavior: Clip.hardEdge,
-          surfaceBlur: widget.surfaceBlur ?? theme.surfaceBlur,
-          surfaceOpacity: widget.surfaceOpacity ?? theme.surfaceOpacity,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ComponentTheme(
-                data: const FocusOutlineTheme(
-                  border: Border.fromBorderSide(BorderSide.none),
-                ),
-                child: TextField(
-                  autofocus: true,
-                  border: const Border.fromBorderSide(BorderSide.none),
-                  borderRadius: BorderRadius.zero,
-                  controller: _controller,
-                  placeholder: widget.searchPlaceholder ??
-                      Text(ShadcnLocalizations.of(context).commandSearch),
-                  features: [
-                    InputFeature.leading(const Icon(LucideIcons.search)
-                        .iconSmall()
-                        .iconMutedForeground()),
-                    if (canPop)
-                      InputFeature.trailing(GhostButton(
-                        density: ButtonDensity.iconDense,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Icon(
-                          LucideIcons.x,
-                        ).iconSmall(),
-                      ))
-                  ],
-                ),
-              ),
-              const Divider(),
-              Expanded(
-                child: ValueListenableBuilder(
-                    valueListenable: query,
-                    builder: (context, value, child) {
-                      return StreamBuilder(
-                        stream: _request(context, value),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            List<Widget> items = List.of(snapshot.data!);
-                            if (snapshot.connectionState ==
-                                ConnectionState.active) {
-                              items.add(IconTheme.merge(
-                                data: IconThemeData(
-                                  color: theme.colorScheme.mutedForeground,
-                                ),
-                                child: const Center(
-                                        child: CircularProgressIndicator())
-                                    .withPadding(vertical: theme.scaling * 24),
-                              ));
-                            } else if (items.isEmpty) {
-                              return widget.emptyBuilder?.call(context) ??
-                                  const CommandEmpty();
-                            }
-                            return ListView.separated(
-                              separatorBuilder: (context, index) =>
-                                  const Divider(),
-                              shrinkWrap: true,
-                              itemCount: items.length,
-                              itemBuilder: (context, index) => items[index],
-                            );
+    final localization = ShadcnLocalizations.of(context);
+    return Data.inherit(
+      data: this,
+      child: Actions(
+        actions: {
+          NextItemIntent: CallbackAction<NextItemIntent>(
+            onInvoke: (intent) {
+              _next();
+              return null;
+            },
+          ),
+          PreviousItemIntent: CallbackAction<PreviousItemIntent>(
+            onInvoke: (intent) {
+              _previous();
+              return null;
+            },
+          ),
+          ActivateIntent: CallbackAction<ActivateIntent>(
+            onInvoke: (intent) {
+              _currentItem?.select();
+              return null;
+            },
+          ),
+        },
+        child: Shortcuts(
+          shortcuts: {
+            LogicalKeySet(LogicalKeyboardKey.arrowUp):
+                const PreviousItemIntent(),
+            LogicalKeySet(LogicalKeyboardKey.arrowDown): const NextItemIntent(),
+            LogicalKeySet(LogicalKeyboardKey.enter): const ActivateIntent(),
+          },
+          child: IntrinsicWidth(
+            child: OutlinedContainer(
+              clipBehavior: Clip.hardEdge,
+              surfaceBlur: widget.surfaceBlur ?? theme.surfaceBlur,
+              surfaceOpacity: widget.surfaceOpacity ?? theme.surfaceOpacity,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ComponentTheme(
+                    data: const FocusOutlineTheme(
+                      border: Border.fromBorderSide(BorderSide.none),
+                    ),
+                    child: TextField(
+                      autofocus: widget.autofocus,
+                      border: const Border.fromBorderSide(BorderSide.none),
+                      borderRadius: BorderRadius.zero,
+                      controller: _controller,
+                      placeholder: widget.searchPlaceholder ??
+                          Text(ShadcnLocalizations.of(context).commandSearch),
+                      features: [
+                        InputFeature.leading(const Icon(LucideIcons.search)
+                            .iconSmall()
+                            .iconMutedForeground()),
+                        if (canPop)
+                          InputFeature.trailing(GhostButton(
+                            density: ButtonDensity.iconDense,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Icon(
+                              LucideIcons.x,
+                            ).iconSmall(),
+                          ))
+                      ],
+                    ),
+                  ),
+                  const Divider(),
+                  Expanded(
+                    child: StreamBuilder(
+                      stream: _currentRequest.stream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<Widget> items = List.of(snapshot.data!);
+                          if (snapshot.connectionState ==
+                              ConnectionState.active) {
+                            items.add(IconTheme.merge(
+                              data: IconThemeData(
+                                color: theme.colorScheme.mutedForeground,
+                              ),
+                              child: const Center(
+                                      child: CircularProgressIndicator())
+                                  .withPadding(vertical: theme.scaling * 24),
+                            ));
+                          } else if (items.isEmpty) {
+                            return widget.emptyBuilder?.call(context) ??
+                                const CommandEmpty();
                           }
-                          return widget.loadingBuilder?.call(context) ??
-                              const Center(child: CircularProgressIndicator())
-                                  .withPadding(vertical: theme.scaling * 24);
-                        },
-                      );
-                    }),
+                          return ListView.separated(
+                            separatorBuilder: (context, index) =>
+                                const Divider(),
+                            padding: EdgeInsets.symmetric(
+                              vertical: theme.scaling * 2,
+                            ),
+                            shrinkWrap: true,
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              return items[index];
+                            },
+                          );
+                        }
+                        return widget.loadingBuilder?.call(context) ??
+                            const Center(child: CircularProgressIndicator())
+                                .withPadding(vertical: theme.scaling * 24);
+                      },
+                    ),
+                  ),
+                  const Divider(),
+                  Container(
+                    color: theme.colorScheme.card,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: theme.scaling * 12,
+                      vertical: theme.scaling * 6,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        spacing: theme.scaling * 8,
+                        children: [
+                          const KeyboardDisplay.fromActivator(
+                                  activator: SingleActivator(
+                                      LogicalKeyboardKey.arrowUp))
+                              .xSmall,
+                          Text(localization.commandMoveUp).muted.small,
+                          const VerticalDivider(),
+                          const KeyboardDisplay.fromActivator(
+                                  activator: SingleActivator(
+                                      LogicalKeyboardKey.arrowDown))
+                              .xSmall,
+                          Text(localization.commandMoveDown).muted.small,
+                          const VerticalDivider(),
+                          const KeyboardDisplay.fromActivator(
+                                  activator:
+                                      SingleActivator(LogicalKeyboardKey.enter))
+                              .xSmall,
+                          Text(localization.commandActivate).muted.small,
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -260,88 +427,85 @@ class CommandItem extends StatefulWidget {
 }
 
 class _CommandItemState extends State<CommandItem> {
-  final FocusNode _focusNode = FocusNode();
+  bool _hasFocus = false;
+  _CommandState? _state;
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() {
-      setState(() {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var newState = Data.maybeOf<_CommandState>(context);
+    if (_state != newState) {
+      _state?._detach(this);
+      _state = newState;
+      _hasFocus = _state?._attach(this) ?? false;
+    }
+  }
+
+  void focus(bool focus) {
+    setState(() {
+      _hasFocus = focus;
     });
+  }
+
+  void select() {
+    widget.onTap?.call();
+  }
+
+  @override
+  void dispose() {
+    _state?._detach(this);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: FocusableActionDetector(
-        autofocus: true,
-        enabled: widget.onTap != null,
-        mouseCursor: SystemMouseCursors.click,
-        focusNode: _focusNode,
-        onShowHoverHighlight: (value) {
-          if (value && widget.onTap != null) {
-            if (!_focusNode.hasFocus) {
-              _focusNode.requestFocus();
-            }
+    return Clickable(
+      onPressed: widget.onTap,
+      onHover: (hovered) {
+        setState(() {
+          if (hovered) {
+            _state?._currentItem?.focus(false);
+            _state?._currentItem = this;
+            _hasFocus = true;
           }
-        },
-        actions: {
-          ActivateIntent: CallbackAction(
-            onInvoke: (e) {
-              if (widget.onTap != null) {
-                widget.onTap!();
-                return true;
-              }
-              return false;
-            },
+        });
+      },
+      child: AnimatedContainer(
+        duration: kDefaultDuration,
+        decoration: BoxDecoration(
+          color: _hasFocus
+              ? themeData.colorScheme.accent
+              : themeData.colorScheme.accent.withValues(alpha: 0),
+          borderRadius: BorderRadius.circular(themeData.radiusSm),
+        ),
+        padding: EdgeInsets.symmetric(
+            horizontal: themeData.scaling * 8, vertical: themeData.scaling * 6),
+        child: IconTheme(
+          data: themeData.iconTheme.small.copyWith(
+            color: widget.onTap != null
+                ? themeData.colorScheme.accentForeground
+                : themeData.colorScheme.accentForeground.scaleAlpha(0.5),
           ),
-        },
-        shortcuts: {
-          LogicalKeySet(LogicalKeyboardKey.enter): const ActivateIntent(),
-          LogicalKeySet(LogicalKeyboardKey.arrowUp):
-              const DirectionalFocusIntent(TraversalDirection.up),
-          LogicalKeySet(LogicalKeyboardKey.arrowDown):
-              const DirectionalFocusIntent(TraversalDirection.down),
-          LogicalKeySet(LogicalKeyboardKey.arrowLeft):
-              const DirectionalFocusIntent(TraversalDirection.left),
-          LogicalKeySet(LogicalKeyboardKey.arrowRight):
-              const DirectionalFocusIntent(TraversalDirection.right),
-        },
-        child: AnimatedContainer(
-          duration: kDefaultDuration,
-          decoration: BoxDecoration(
-            color: _focusNode.hasFocus
-                ? themeData.colorScheme.accent
-                : themeData.colorScheme.accent.withValues(alpha: 0),
-            borderRadius: BorderRadius.circular(themeData.radiusSm),
-          ),
-          padding: EdgeInsets.symmetric(
-              horizontal: themeData.scaling * 8,
-              vertical: themeData.scaling * 6),
-          child: IconTheme(
-            data: themeData.iconTheme.small.copyWith(
+          child: DefaultTextStyle(
+            style: TextStyle(
               color: widget.onTap != null
                   ? themeData.colorScheme.accentForeground
                   : themeData.colorScheme.accentForeground.scaleAlpha(0.5),
             ),
-            child: DefaultTextStyle(
-              style: TextStyle(
-                color: widget.onTap != null
-                    ? themeData.colorScheme.accentForeground
-                    : themeData.colorScheme.accentForeground.scaleAlpha(0.5),
-              ),
-              child: Row(
-                children: [
-                  if (widget.leading != null) widget.leading!,
-                  if (widget.leading != null) Gap(themeData.scaling * 8),
-                  Expanded(child: widget.title),
-                  if (widget.trailing != null) Gap(themeData.scaling * 8),
-                  if (widget.trailing != null)
-                    widget.trailing!.muted().xSmall(),
-                ],
-              ).small(),
-            ),
+            child: Row(
+              children: [
+                if (widget.leading != null) widget.leading!,
+                if (widget.leading != null) Gap(themeData.scaling * 8),
+                Expanded(child: widget.title),
+                if (widget.trailing != null) Gap(themeData.scaling * 8),
+                if (widget.trailing != null) widget.trailing!.muted().xSmall(),
+              ],
+            ).small(),
           ),
         ),
       ),

@@ -23,11 +23,9 @@ class ModalBackdropTheme {
     ValueGetter<bool?>? surfaceClip,
   }) {
     return ModalBackdropTheme(
-      borderRadius:
-          borderRadius == null ? this.borderRadius : borderRadius(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
       padding: padding == null ? this.padding : padding(),
-      barrierColor:
-          barrierColor == null ? this.barrierColor : barrierColor(),
+      barrierColor: barrierColor == null ? this.barrierColor : barrierColor(),
       modal: modal == null ? this.modal : modal(),
       surfaceClip: surfaceClip == null ? this.surfaceClip : surfaceClip(),
     );
@@ -333,7 +331,6 @@ Widget _buildShadcnDialogTransitions(
     ),
   );
   return FocusScope(
-    canRequestFocus: animation.value == 1, // Only focus when fully visible
     child: fullScreen
         ? MultiModel(
             data: const [

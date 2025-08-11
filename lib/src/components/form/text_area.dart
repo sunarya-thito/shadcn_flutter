@@ -185,6 +185,7 @@ class _TextAreaState extends State<TextArea> {
         width: _width,
         child: Stack(
           fit: StackFit.passthrough,
+          clipBehavior: Clip.none,
           children: [
             Positioned.fill(
               child: TextField(

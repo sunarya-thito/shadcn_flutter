@@ -296,7 +296,7 @@ class _ThemePageState extends State<ThemePage> {
     String buffer = 'ShadcnApp(';
     buffer += '\n...';
     buffer += '\n\ttheme: ThemeData(';
-    buffer += '\n\t\tcolorScheme: ColorSchemes.$name(),';
+    buffer += '\n\t\tcolorScheme: ColorSchemes.$name,';
     buffer += '\n\t\tradius: $radius,';
     buffer += '\n\t),';
     if (scaling != 1) {

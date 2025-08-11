@@ -234,6 +234,10 @@ abstract class ShadcnLocalizations {
   String get colorPickerTabHSV;
   String get colorPickerTabHSL;
 
+  String get commandMoveUp;
+  String get commandMoveDown;
+  String get commandActivate;
+
   String dataTableSelectedRows(int count, int total);
   String get dataTableNext;
   String get dataTablePrevious;
@@ -462,6 +466,15 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
     'audio/3gpp2': '3GPP2 Audio/Video Container',
     'application/x-7z-compressed': '7-Zip Archive',
   };
+
+  @override
+  String get commandMoveUp => 'Move Up';
+
+  @override
+  String get commandMoveDown => 'Move Down';
+
+  @override
+  String get commandActivate => 'Select';
 
   @override
   String get timeDaysAbbreviation => 'DD';

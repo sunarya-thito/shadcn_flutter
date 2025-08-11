@@ -30,6 +30,7 @@ class DialogExample1 extends StatelessWidget {
                           label: Text('Name'),
                           child: TextField(
                             initialValue: 'Thito Yalasatria Sunarya',
+                            autofocus: true,
                           ),
                         ),
                         FormField<String>(
