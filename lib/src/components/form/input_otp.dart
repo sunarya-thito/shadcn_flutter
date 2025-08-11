@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 class InputOTPTheme {
   final double? spacing;
@@ -329,37 +330,32 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
         child: Stack(
           children: [
             Positioned.fill(
-              child: AnimatedBuilder(
-                animation: widget.data.focusNode!,
+              child: ListenableBuilder(
+                listenable: widget.data.focusNode!,
                 builder: (context, child) {
-                  if (widget.data.focusNode!.hasFocus) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: theme.colorScheme.ring,
-                            strokeAlign: BorderSide.strokeAlignOutside),
-                        borderRadius: getBorderRadiusByRelativeIndex(
-                          theme,
-                          widget.data.relativeIndex,
-                          widget.data.groupLength,
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: theme.colorScheme.border,
-                            strokeAlign: BorderSide.strokeAlignOutside),
-                        borderRadius: getBorderRadiusByRelativeIndex(
-                          theme,
-                          widget.data.relativeIndex,
-                          widget.data.groupLength,
-                        ),
-                      ),
-                    );
-                  }
+                  return FocusOutline(
+                    focused: widget.data.focusNode!.hasFocus,
+                    borderRadius: getBorderRadiusByRelativeIndex(
+                      theme,
+                      widget.data.relativeIndex,
+                      widget.data.groupLength,
+                    ),
+                    child: child!,
+                  );
                 },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.input.scaleAlpha(0.3),
+                    border: Border.all(
+                      color: theme.colorScheme.border,
+                    ),
+                    borderRadius: getBorderRadiusByRelativeIndex(
+                      theme,
+                      widget.data.relativeIndex,
+                      widget.data.groupLength,
+                    ),
+                  ),
+                ),
               ),
             ),
             if (_value != null)
@@ -372,14 +368,18 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
               ),
             Positioned.fill(
               key: _key,
-              child: Center(
-                child: Opacity(
-                  opacity: _value == null ? 1 : 0,
+              child: Opacity(
+                opacity: _value == null ? 1 : 0,
+                child: ComponentTheme(
+                  data: const FocusOutlineTheme(
+                    border: Border.fromBorderSide(BorderSide.none),
+                  ),
                   child: TextField(
                     border: const Border.fromBorderSide(BorderSide.none),
+                    decoration: const BoxDecoration(),
                     expands: false,
                     maxLines: null,
-                    textAlignVertical: TextAlignVertical.top,
+                    textAlignVertical: TextAlignVertical.center,
                     keyboardType: widget.keyboardType,
                     readOnly: widget.readOnly,
                     textAlign: TextAlign.center,

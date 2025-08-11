@@ -43,6 +43,7 @@ class FocusOutline extends StatelessWidget {
   final BorderRadiusGeometry? borderRadius;
   final double? align;
   final Border? border;
+  final BoxShape? shape;
   const FocusOutline({
     super.key,
     required this.child,
@@ -50,6 +51,7 @@ class FocusOutline extends StatelessWidget {
     this.borderRadius,
     this.align,
     this.border,
+    this.shape,
   });
 
   BorderRadius _getAdjustedBorderRadius(
@@ -100,11 +102,14 @@ class FocusOutline extends StatelessWidget {
                 child: IgnorePointer(
                   child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: _getAdjustedBorderRadius(
-                          textDirection,
-                          align,
-                          borderRadius,
-                        ),
+                        borderRadius: shape != BoxShape.circle
+                            ? _getAdjustedBorderRadius(
+                                textDirection,
+                                align,
+                                borderRadius,
+                              )
+                            : null,
+                        shape: shape ?? BoxShape.rectangle,
                         border: styleValue(
                           defaultValue: Border.all(
                             color: Theme.of(context)

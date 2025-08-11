@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 class FormattedInputTheme {
   final double? height;
@@ -358,22 +359,29 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
         key: TextFieldKey(data.partIndex),
         child: SizedBox(
           width: widget.width,
-          child: TextField(
-            focusNode: data.focusNode,
-            controller: _controller,
-            maxLength: widget.length,
-            onChanged: _onChanged,
-            style:
-                DefaultTextStyle.of(context).style.merge(theme.typography.mono),
-            border: const Border.fromBorderSide(BorderSide.none),
-            textAlign: TextAlign.center,
-            initialValue: data.initialValue,
-            maxLines: 1,
-            obscureText: widget.obscureText,
-            inputFormatters: widget.inputFormatters,
-            placeholder: widget.placeholder,
-            padding: EdgeInsets.symmetric(
-              horizontal: 6 * theme.scaling,
+          child: ComponentTheme(
+            data: const FocusOutlineTheme(
+              border: Border.fromBorderSide(BorderSide.none),
+            ),
+            child: TextField(
+              focusNode: data.focusNode,
+              controller: _controller,
+              maxLength: widget.length,
+              onChanged: _onChanged,
+              decoration: const BoxDecoration(),
+              style: DefaultTextStyle.of(context)
+                  .style
+                  .merge(theme.typography.mono),
+              border: const Border.fromBorderSide(BorderSide.none),
+              textAlign: TextAlign.center,
+              initialValue: data.initialValue,
+              maxLines: 1,
+              obscureText: widget.obscureText,
+              inputFormatters: widget.inputFormatters,
+              placeholder: widget.placeholder,
+              padding: EdgeInsets.symmetric(
+                horizontal: 6 * theme.scaling,
+              ),
             ),
           ),
         ),
@@ -600,27 +608,31 @@ class _FormattedInputState extends State<FormattedInput> {
               _hasFocus = hasFocus;
             });
           },
-          child: OutlinedContainer(
+          child: FocusOutline(
+            focused: _hasFocus,
             borderRadius: theme.borderRadiusMd,
-            borderColor:
-                _hasFocus ? theme.colorScheme.ring : theme.colorScheme.border,
-            padding: compTheme?.padding ??
-                EdgeInsets.symmetric(
-                  horizontal: 6 * theme.scaling,
-                ),
-            child: Form(
-              controller: _controller,
-              child: FocusTraversalGroup(
-                policy: WidgetOrderTraversalPolicy(),
-                child: IntrinsicHeight(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (widget.leading != null) widget.leading!,
-                      ...children,
-                      if (widget.trailing != null) widget.trailing!,
-                    ],
+            child: OutlinedContainer(
+              borderRadius: theme.borderRadiusMd,
+              borderColor: theme.colorScheme.border,
+              backgroundColor: theme.colorScheme.input.scaleAlpha(0.3),
+              padding: compTheme?.padding ??
+                  EdgeInsets.symmetric(
+                    horizontal: 6 * theme.scaling,
+                  ),
+              child: Form(
+                controller: _controller,
+                child: FocusTraversalGroup(
+                  policy: WidgetOrderTraversalPolicy(),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        if (widget.leading != null) widget.leading!,
+                        ...children,
+                        if (widget.trailing != null) widget.trailing!,
+                      ],
+                    ),
                   ),
                 ),
               ),

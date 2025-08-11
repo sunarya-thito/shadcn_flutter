@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 typedef CommandBuilder = Stream<List<Widget>> Function(
     BuildContext context, String? query);
@@ -135,28 +136,33 @@ class _CommandState extends State<Command> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextField(
-                autofocus: true,
-                border: const Border.fromBorderSide(BorderSide.none),
-                borderRadius: BorderRadius.zero,
-                controller: _controller,
-                placeholder: widget.searchPlaceholder ??
-                    Text(ShadcnLocalizations.of(context).commandSearch),
-                features: [
-                  InputFeature.leading(const Icon(LucideIcons.search)
-                      .iconSmall()
-                      .iconMutedForeground()),
-                  if (canPop)
-                    InputFeature.trailing(GhostButton(
-                      density: ButtonDensity.iconDense,
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Icon(
-                        LucideIcons.x,
-                      ).iconSmall(),
-                    ))
-                ],
+              ComponentTheme(
+                data: const FocusOutlineTheme(
+                  border: Border.fromBorderSide(BorderSide.none),
+                ),
+                child: TextField(
+                  autofocus: true,
+                  border: const Border.fromBorderSide(BorderSide.none),
+                  borderRadius: BorderRadius.zero,
+                  controller: _controller,
+                  placeholder: widget.searchPlaceholder ??
+                      Text(ShadcnLocalizations.of(context).commandSearch),
+                  features: [
+                    InputFeature.leading(const Icon(LucideIcons.search)
+                        .iconSmall()
+                        .iconMutedForeground()),
+                    if (canPop)
+                      InputFeature.trailing(GhostButton(
+                        density: ButtonDensity.iconDense,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Icon(
+                          LucideIcons.x,
+                        ).iconSmall(),
+                      ))
+                  ],
+                ),
               ),
               const Divider(),
               Expanded(
