@@ -90,22 +90,16 @@ class Alert extends StatelessWidget {
     var scheme = theme.colorScheme;
     final padding = styleValue(
       themeValue: compTheme?.padding,
-      defaultValue:
-          EdgeInsets.symmetric(horizontal: 16 * scaling, vertical: 12 * scaling),
+      defaultValue: EdgeInsets.symmetric(
+          horizontal: 16 * scaling, vertical: 12 * scaling),
     );
     final backgroundColor = styleValue(
       themeValue: compTheme?.backgroundColor,
-      defaultValue: scheme.background,
-    );
-    final borderColor = styleValue(
-      widgetValue: destructive ? scheme.destructive : null,
-      themeValue: compTheme?.borderColor,
-      defaultValue: destructive ? scheme.destructive : null,
+      defaultValue: scheme.card,
     );
 
     return OutlinedContainer(
       backgroundColor: backgroundColor,
-      borderColor: borderColor,
       child: Container(
         padding: padding,
         child: Basic(

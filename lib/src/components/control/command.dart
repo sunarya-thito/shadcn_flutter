@@ -135,23 +135,19 @@ class _CommandState extends State<Command> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                children: [
-                  const Icon(
-                    LucideIcons.search,
-                  ).iconSmall().iconMutedForeground(),
-                  Expanded(
-                    child: TextField(
-                      autofocus: true,
-                      controller: _controller,
-                      border: false,
-                      // focusNode: _textFieldFocus,
-                      placeholder: widget.searchPlaceholder ??
-                          Text(ShadcnLocalizations.of(context).commandSearch),
-                    ),
-                  ),
+              TextField(
+                autofocus: true,
+                border: const Border.fromBorderSide(BorderSide.none),
+                borderRadius: BorderRadius.zero,
+                controller: _controller,
+                placeholder: widget.searchPlaceholder ??
+                    Text(ShadcnLocalizations.of(context).commandSearch),
+                features: [
+                  InputFeature.leading(const Icon(LucideIcons.search)
+                      .iconSmall()
+                      .iconMutedForeground()),
                   if (canPop)
-                    GhostButton(
+                    InputFeature.trailing(GhostButton(
                       density: ButtonDensity.iconDense,
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -159,9 +155,9 @@ class _CommandState extends State<Command> {
                       child: const Icon(
                         LucideIcons.x,
                       ).iconSmall(),
-                    ),
+                    ))
                 ],
-              ).withPadding(horizontal: theme.scaling * 12),
+              ),
               const Divider(),
               Expanded(
                 child: ValueListenableBuilder(

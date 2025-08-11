@@ -1,32 +1,24 @@
 import '../../../shadcn_flutter.dart';
 
 class FocusOutlineTheme {
-  final Color? color;
-  final double? width;
   final double? align;
-  final double? radius;
   final BorderRadiusGeometry? borderRadius;
+  final Border? border;
 
   const FocusOutlineTheme({
-    this.color,
-    this.width,
     this.align,
-    this.radius,
+    this.border,
     this.borderRadius,
   });
 
   FocusOutlineTheme copyWith({
-    ValueGetter<Color?>? color,
-    ValueGetter<double?>? width,
+    ValueGetter<Border?>? border,
     ValueGetter<double?>? align,
-    ValueGetter<double?>? radius,
     ValueGetter<BorderRadiusGeometry?>? borderRadius,
   }) {
     return FocusOutlineTheme(
-      color: color == null ? this.color : color(),
-      width: width == null ? this.width : width(),
       align: align == null ? this.align : align(),
-      radius: radius == null ? this.radius : radius(),
+      border: border == null ? this.border : border(),
       borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
     );
   }
@@ -36,45 +28,35 @@ class FocusOutlineTheme {
     if (identical(this, other)) return true;
 
     return other is FocusOutlineTheme &&
-        other.color == color &&
-        other.width == width &&
         other.align == align &&
-        other.radius == radius &&
+        other.border == border &&
         other.borderRadius == borderRadius;
   }
 
   @override
-  int get hashCode => Object.hash(color, width, align, radius, borderRadius);
+  int get hashCode => Object.hash(border, align, borderRadius);
 }
 
 class FocusOutline extends StatelessWidget {
   final Widget child;
   final bool focused;
   final BorderRadiusGeometry? borderRadius;
-  final double align;
-  final double width;
-  final double? radius;
-  final Color? color;
+  final double? align;
+  final Border? border;
   const FocusOutline({
     super.key,
     required this.child,
     required this.focused,
     this.borderRadius,
-    this.align = 0,
-    this.width = 1,
-    this.radius,
-    this.color,
+    this.align,
+    this.border,
   });
 
   BorderRadius _getAdjustedBorderRadius(
     TextDirection textDirection,
     double align,
-    double? radius,
     BorderRadiusGeometry? borderRadius,
   ) {
-    if (radius != null) {
-      return BorderRadius.circular(radius);
-    }
     var rawRadius = borderRadius;
     if (rawRadius == null) return BorderRadius.zero;
     var resolved = rawRadius.resolve(textDirection);
@@ -90,29 +72,14 @@ class FocusOutline extends StatelessWidget {
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<FocusOutlineTheme>(context);
     final double align = styleValue(
-      defaultValue: 0.0,
+      defaultValue: 3.0,
       themeValue: compTheme?.align,
       widgetValue: this.align,
-    );
-    final double width = styleValue(
-      defaultValue: 1.0,
-      themeValue: compTheme?.width,
-      widgetValue: this.width,
-    );
-    final double? radius = styleValue(
-      themeValue: compTheme?.radius,
-      widgetValue: this.radius,
-      defaultValue: null,
     );
     final BorderRadiusGeometry? borderRadius = styleValue(
       themeValue: compTheme?.borderRadius,
       widgetValue: this.borderRadius,
       defaultValue: null,
-    );
-    final Color color = styleValue(
-      defaultValue: Theme.of(context).colorScheme.ring,
-      themeValue: compTheme?.color,
-      widgetValue: this.color,
     );
     final double offset = -align;
     TextDirection textDirection = Directionality.of(context);
@@ -121,26 +88,38 @@ class FocusOutline extends StatelessWidget {
       fit: StackFit.passthrough,
       children: [
         child,
-        if (focused)
-          Positioned(
-            top: offset,
-            right: offset,
-            bottom: offset,
-            left: offset,
-            child: IgnorePointer(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: _getAdjustedBorderRadius(
-                    textDirection,
-                    align,
-                    radius,
-                    borderRadius,
+        AnimatedValueBuilder(
+            value: focused ? 1.0 : 0.0,
+            duration: kDefaultDuration,
+            builder: (context, value, child) {
+              return Positioned(
+                top: offset * value,
+                right: offset * value,
+                bottom: offset * value,
+                left: offset * value,
+                child: IgnorePointer(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: _getAdjustedBorderRadius(
+                          textDirection,
+                          align,
+                          borderRadius,
+                        ),
+                        border: styleValue(
+                          defaultValue: Border.all(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .ring
+                                .scaleAlpha(0.5),
+                            width: 3.0,
+                          ),
+                          themeValue: compTheme?.border,
+                          widgetValue: border,
+                        ).scale(value)),
                   ),
-                  border: Border.all(color: color, width: width),
                 ),
-              ),
-            ),
-          ),
+              );
+            }),
       ],
     );
   }

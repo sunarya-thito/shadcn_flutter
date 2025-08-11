@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'My App',
       home: const CounterPage(),
       theme: ThemeData(
-        colorScheme: ColorSchemes.darkZinc(),
+        colorScheme: LegacyColorSchemes.darkZinc(),
         radius: 0.7,
       ),
     );

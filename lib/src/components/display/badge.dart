@@ -32,13 +32,11 @@ class BadgeTheme {
   }) {
     return BadgeTheme(
       primaryStyle: primaryStyle == null ? this.primaryStyle : primaryStyle(),
-      secondaryStyle: secondaryStyle == null
-          ? this.secondaryStyle
-          : secondaryStyle(),
+      secondaryStyle:
+          secondaryStyle == null ? this.secondaryStyle : secondaryStyle(),
       outlineStyle: outlineStyle == null ? this.outlineStyle : outlineStyle(),
-      destructiveStyle: destructiveStyle == null
-          ? this.destructiveStyle
-          : destructiveStyle(),
+      destructiveStyle:
+          destructiveStyle == null ? this.destructiveStyle : destructiveStyle(),
     );
   }
 
@@ -76,8 +74,7 @@ class PrimaryBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<BadgeTheme>(context);
-    final baseStyle =
-        style ??
+    final baseStyle = style ??
         compTheme?.primaryStyle ??
         const ButtonStyle.primary(
           size: ButtonSize.small,
@@ -120,8 +117,7 @@ class SecondaryBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<BadgeTheme>(context);
-    final baseStyle =
-        style ??
+    final baseStyle = style ??
         compTheme?.secondaryStyle ??
         const ButtonStyle.secondary(
           size: ButtonSize.small,
@@ -164,8 +160,7 @@ class OutlineBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<BadgeTheme>(context);
-    final baseStyle =
-        style ??
+    final baseStyle = style ??
         compTheme?.outlineStyle ??
         const ButtonStyle.outline(
           size: ButtonSize.small,
@@ -208,8 +203,7 @@ class DestructiveBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<BadgeTheme>(context);
-    final baseStyle =
-        style ??
+    final baseStyle = style ??
         compTheme?.destructiveStyle ??
         const ButtonStyle.destructive(
           size: ButtonSize.small,

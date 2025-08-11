@@ -365,7 +365,7 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
             onChanged: _onChanged,
             style:
                 DefaultTextStyle.of(context).style.merge(theme.typography.mono),
-            border: false,
+            border: const Border.fromBorderSide(BorderSide.none),
             textAlign: TextAlign.center,
             initialValue: data.initialValue,
             maxLines: 1,
@@ -592,8 +592,7 @@ class _FormattedInputState extends State<FormattedInput> {
     }
     final compTheme = ComponentTheme.maybeOf<FormattedInputTheme>(context);
     return SizedBox(
-      height:
-          (compTheme?.height ?? kTextFieldHeight) * theme.scaling, // 32 + 2
+      height: (compTheme?.height ?? kTextFieldHeight) * theme.scaling, // 32 + 2
       child: TextFieldTapRegion(
         child: Focus(
           onFocusChange: (hasFocus) {

@@ -288,7 +288,7 @@ class _NumberInputState extends State<NumberInput>
         minWidth: 50 * scaling,
       ),
       child: TextField(
-        border: false,
+        border: const Border.fromBorderSide(BorderSide.none),
         minLines: 1,
         maxLines: 1,
         leading: widget.leading,

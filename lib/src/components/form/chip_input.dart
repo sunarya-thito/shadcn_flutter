@@ -520,7 +520,7 @@ class ChipInputState<T> extends State<ChipInput<T>>
             initialValue: widget.initialText,
             inputFormatters: widget.inputFormatters,
             textInputAction: widget.textInputAction,
-            border: false,
+            border: const Border.fromBorderSide(BorderSide.none),
             enabled: widget.enabled,
             maxLines: 1,
             placeholder: widget.placeholder,

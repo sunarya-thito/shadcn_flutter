@@ -4,7 +4,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// Theme data for [TextArea].
 class TextAreaTheme {
   final bool? filled;
-  final bool? border;
+  final Border? border;
   final EdgeInsetsGeometry? padding;
   final BorderRadiusGeometry? borderRadius;
 
@@ -17,7 +17,7 @@ class TextAreaTheme {
 
   TextAreaTheme copyWith({
     ValueGetter<bool?>? filled,
-    ValueGetter<bool?>? border,
+    ValueGetter<Border?>? border,
     ValueGetter<EdgeInsetsGeometry?>? padding,
     ValueGetter<BorderRadiusGeometry?>? borderRadius,
   }) {
@@ -47,7 +47,7 @@ class TextArea extends StatefulWidget {
   final TextEditingController? controller;
   final bool? filled;
   final Widget? placeholder;
-  final bool? border;
+  final Border? border;
   final Widget? leading;
   final Widget? trailing;
   final EdgeInsetsGeometry? padding;
@@ -168,10 +168,10 @@ class _TextAreaState extends State<TextArea> {
         widgetValue: widget.filled,
         themeValue: compTheme?.filled,
         defaultValue: false);
-    final border = styleValue<bool>(
+    final border = styleValue<Border?>(
         widgetValue: widget.border,
         themeValue: compTheme?.border,
-        defaultValue: true);
+        defaultValue: null);
     final padding = styleValue<EdgeInsetsGeometry?>(
         widgetValue: widget.padding,
         themeValue: compTheme?.padding,

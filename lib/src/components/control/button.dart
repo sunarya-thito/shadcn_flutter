@@ -2339,18 +2339,18 @@ Decoration _buttonOutlineDecoration(
   }
   if (states.contains(WidgetState.hovered)) {
     return BoxDecoration(
-      color: themeData.colorScheme.muted.scaleAlpha(0.8),
+      color: themeData.colorScheme.input.scaleAlpha(0.5),
       border: Border.all(
-        color: themeData.colorScheme.muted.scaleAlpha(0.8),
+        color: themeData.colorScheme.input,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
     );
   }
   return BoxDecoration(
-    color: themeData.colorScheme.muted.withValues(alpha: 0),
+    color: themeData.colorScheme.input.scaleAlpha(0.3),
     border: Border.all(
-      color: themeData.colorScheme.muted,
+      color: themeData.colorScheme.input,
       width: 1,
     ),
     borderRadius: BorderRadius.circular(themeData.radiusMd),
@@ -2505,7 +2505,7 @@ Decoration _buttonDestructiveDecoration(
     );
   }
   return BoxDecoration(
-    color: themeData.colorScheme.destructive,
+    color: themeData.colorScheme.destructive.scaleAlpha(0.5),
     borderRadius: BorderRadius.circular(themeData.radiusMd),
   );
 }
@@ -2516,7 +2516,8 @@ TextStyle _buttonDestructiveTextStyle(
   return themeData.typography.small.merge(themeData.typography.medium).copyWith(
         color: states.contains(WidgetState.disabled)
             ? themeData.colorScheme.mutedForeground
-            : themeData.colorScheme.destructiveForeground,
+            : Colors
+                .white, // yeah ik, its straight up white regardless light or dark mode
       );
 }
 

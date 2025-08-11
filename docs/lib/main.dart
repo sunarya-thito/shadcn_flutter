@@ -148,7 +148,7 @@ void main() async {
   double initialSurfaceBlur = prefs.getDouble('surfaceBlur') ?? 0.0;
   String initialPath = prefs.getString('initialPath') ?? '/';
   runApp(MyApp(
-    initialColorScheme: initialColorScheme ?? colorSchemes['darkGreen']!,
+    initialColorScheme: initialColorScheme ?? colorSchemes['darkDefaultColor']!,
     initialRadius: initialRadius,
     initialScaling: initialScaling,
     initialSurfaceOpacity: initialSurfaceOpacity,

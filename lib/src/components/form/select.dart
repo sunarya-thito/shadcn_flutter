@@ -1178,7 +1178,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
             if (widget.enableSearch)
               TextField(
                 controller: _searchController,
-                border: false,
+                border: const Border.fromBorderSide(BorderSide.none),
                 features: [
                   InputFeature.leading(
                     const Icon(

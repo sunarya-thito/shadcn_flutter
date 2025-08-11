@@ -376,7 +376,7 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
                 child: Opacity(
                   opacity: _value == null ? 1 : 0,
                   child: TextField(
-                    border: false,
+                    border: const Border.fromBorderSide(BorderSide.none),
                     expands: false,
                     maxLines: null,
                     textAlignVertical: TextAlignVertical.top,

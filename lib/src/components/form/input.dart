@@ -79,10 +79,9 @@ class _InputHintFeatureState extends InputFeatureState<InputHintFeature> {
           onInvoke: (intent, [context]) {
             if (context == null) {
               throw FlutterError(
-                'CallbackContextAction was invoked without a valid BuildContext. '
-                'This likely indicates a problem in the action system. '
-                'Context must not be null when invoking InputShowHintIntent.'
-              );
+                  'CallbackContextAction was invoked without a valid BuildContext. '
+                  'This likely indicates a problem in the action system. '
+                  'Context must not be null when invoking InputShowHintIntent.');
             }
             _showPopup(context);
             return true;
@@ -182,7 +181,7 @@ class _InputPasswordToggleFeatureState
   @override
   TextField interceptInput(TextField input) {
     return input.copyWith(
-      obscureText: _obscureText,
+      obscureText: () => _obscureText ?? false,
     );
   }
 }

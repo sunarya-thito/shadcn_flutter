@@ -10,31 +10,50 @@ class ThemePage extends StatefulWidget {
   State<ThemePage> createState() => _ThemePageState();
 }
 
+// final Map<String, ColorScheme> legacyColorSchemes = {
+//   'lightBlue': LegacyColorSchemes.lightBlue(),
+//   'darkBlue': LegacyColorSchemes.darkBlue(),
+//   'lightGray': LegacyColorSchemes.lightGray(),
+//   'darkGray': LegacyColorSchemes.darkGray(),
+//   'lightGreen': LegacyColorSchemes.lightGreen(),
+//   'darkGreen': LegacyColorSchemes.darkGreen(),
+//   'lightNeutral': LegacyColorSchemes.lightNeutral(),
+//   'darkNeutral': LegacyColorSchemes.darkNeutral(),
+//   'lightOrange': LegacyColorSchemes.lightOrange(),
+//   'darkOrange': LegacyColorSchemes.darkOrange(),
+//   'lightRed': LegacyColorSchemes.lightRed(),
+//   'darkRed': LegacyColorSchemes.darkRed(),
+//   'lightRose': LegacyColorSchemes.lightRose(),
+//   'darkRose': LegacyColorSchemes.darkRose(),
+//   'lightSlate': LegacyColorSchemes.lightSlate(),
+//   'darkSlate': LegacyColorSchemes.darkSlate(),
+//   'lightStone': LegacyColorSchemes.lightStone(),
+//   'darkStone': LegacyColorSchemes.darkStone(),
+//   'lightViolet': LegacyColorSchemes.lightViolet(),
+//   'darkViolet': LegacyColorSchemes.darkViolet(),
+//   'lightYellow': LegacyColorSchemes.lightYellow(),
+//   'darkYellow': LegacyColorSchemes.darkYellow(),
+//   'lightZinc': LegacyColorSchemes.lightZinc(),
+//   'darkZinc': LegacyColorSchemes.darkZinc(),
+// };
+
 final Map<String, ColorScheme> colorSchemes = {
-  'lightBlue': ColorSchemes.lightBlue(),
-  'darkBlue': ColorSchemes.darkBlue(),
-  'lightGray': ColorSchemes.lightGray(),
-  'darkGray': ColorSchemes.darkGray(),
-  'lightGreen': ColorSchemes.lightGreen(),
-  'darkGreen': ColorSchemes.darkGreen(),
-  'lightNeutral': ColorSchemes.lightNeutral(),
-  'darkNeutral': ColorSchemes.darkNeutral(),
-  'lightOrange': ColorSchemes.lightOrange(),
-  'darkOrange': ColorSchemes.darkOrange(),
-  'lightRed': ColorSchemes.lightRed(),
-  'darkRed': ColorSchemes.darkRed(),
-  'lightRose': ColorSchemes.lightRose(),
-  'darkRose': ColorSchemes.darkRose(),
-  'lightSlate': ColorSchemes.lightSlate(),
-  'darkSlate': ColorSchemes.darkSlate(),
-  'lightStone': ColorSchemes.lightStone(),
-  'darkStone': ColorSchemes.darkStone(),
-  'lightViolet': ColorSchemes.lightViolet(),
-  'darkViolet': ColorSchemes.darkViolet(),
-  'lightYellow': ColorSchemes.lightYellow(),
-  'darkYellow': ColorSchemes.darkYellow(),
-  'lightZinc': ColorSchemes.lightZinc(),
-  'darkZinc': ColorSchemes.darkZinc(),
+  'lightDefaultColor': ColorSchemes.lightDefaultColor,
+  'darkDefaultColor': ColorSchemes.darkDefaultColor,
+  'lightBlue': ColorSchemes.lightBlue,
+  'darkBlue': ColorSchemes.darkBlue,
+  'lightGreen': ColorSchemes.lightGreen,
+  'darkGreen': ColorSchemes.darkGreen,
+  'lightOrange': ColorSchemes.lightOrange,
+  'darkOrange': ColorSchemes.darkOrange,
+  'lightRed': ColorSchemes.lightRed,
+  'darkRed': ColorSchemes.darkRed,
+  'lightRose': ColorSchemes.lightRose,
+  'darkRose': ColorSchemes.darkRose,
+  'lightViolet': ColorSchemes.lightViolet,
+  'darkViolet': ColorSchemes.darkViolet,
+  'lightYellow': ColorSchemes.lightYellow,
+  'darkYellow': ColorSchemes.darkYellow,
 };
 
 String? nameFromColorScheme(ColorScheme scheme) {
@@ -64,7 +83,7 @@ class _ThemePageState extends State<ThemePage> {
   @override
   void initState() {
     super.initState();
-    colors = ColorSchemes.darkZinc().toColorMap();
+    colors = LegacyColorSchemes.darkZinc().toColorMap();
   }
 
   @override
