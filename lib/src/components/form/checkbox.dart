@@ -39,8 +39,7 @@ class CheckboxTheme {
       borderColor: borderColor == null ? this.borderColor : borderColor(),
       size: size == null ? this.size : size(),
       gap: gap == null ? this.gap : gap(),
-      borderRadius:
-          borderRadius == null ? this.borderRadius : borderRadius(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
     );
   }
 
@@ -279,7 +278,7 @@ class _CheckboxState extends State<Checkbox>
     final borderColor = styleValue(
         widgetValue: widget.borderColor,
         themeValue: compTheme?.borderColor,
-        defaultValue: theme.colorScheme.mutedForeground);
+        defaultValue: theme.colorScheme.border);
     final borderRadius = styleValue<BorderRadiusGeometry>(
         widgetValue: widget.borderRadius,
         themeValue: compTheme?.borderRadius,
@@ -304,17 +303,16 @@ class _CheckboxState extends State<Checkbox>
             decoration: BoxDecoration(
               color: widget.state == CheckboxState.checked
                   ? activeColor
-                  : activeColor.withValues(alpha: 0),
-              borderRadius: optionallyResolveBorderRadius(context, borderRadius) ??
-                  BorderRadius.circular(theme.radiusSm),
+                  : theme.colorScheme.input.scaleAlpha(0.3),
+              borderRadius:
+                  optionallyResolveBorderRadius(context, borderRadius) ??
+                      BorderRadius.circular(theme.radiusSm),
               border: Border.all(
                 color: !enabled
                     ? theme.colorScheme.muted
-                    : _focusing
-                        ? theme.colorScheme.ring
-                        : widget.state == CheckboxState.checked
-                            ? activeColor
-                            : borderColor,
+                    : widget.state == CheckboxState.checked
+                        ? activeColor
+                        : borderColor,
                 width: (_focusing ? 2 : 1) * scaling,
               ),
             ),
@@ -358,8 +356,7 @@ class _CheckboxState extends State<Checkbox>
                       padding: EdgeInsets.zero,
                       decoration: BoxDecoration(
                         color: activeColor,
-                        borderRadius:
-                            BorderRadius.circular(theme.radiusXs),
+                        borderRadius: BorderRadius.circular(theme.radiusXs),
                       ),
                     ),
                   ),
