@@ -32,6 +32,7 @@ class StepperTheme {
   @override
   int get hashCode => Object.hash(direction, size, variant);
 }
+
 enum StepState {
   failed,
 }
@@ -772,8 +773,8 @@ class Stepper extends StatelessWidget {
     final dir = direction ?? compTheme?.direction ?? Axis.horizontal;
     final sz = size ?? compTheme?.size ?? StepSize.medium;
     final varnt = variant ?? compTheme?.variant ?? StepVariant.circle;
-    var stepProperties =
-        StepProperties(size: sz, steps: steps, state: controller, direction: dir);
+    var stepProperties = StepProperties(
+        size: sz, steps: steps, state: controller, direction: dir);
     return Data.inherit(
       data: stepProperties,
       child: varnt.build(context, stepProperties),
@@ -890,9 +891,9 @@ class StepNumber extends StatelessWidget {
                     child: Center(
                       child: properties.state.value.stepStates[stepIndex] ==
                               StepState.failed
-                          ? Icon(
+                          ? const Icon(
                               Icons.close,
-                              color: theme.colorScheme.destructiveForeground,
+                              color: Colors.white,
                             )
                           : properties.state.value.currentStep > stepIndex
                               ? Icon(

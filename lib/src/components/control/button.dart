@@ -2527,7 +2527,7 @@ IconThemeData _buttonDestructiveIconTheme(
   return IconThemeData(
     color: states.contains(WidgetState.disabled)
         ? themeData.colorScheme.mutedForeground
-        : themeData.colorScheme.destructiveForeground,
+        : Colors.white,
   );
 }
 
