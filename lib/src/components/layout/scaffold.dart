@@ -206,7 +206,8 @@ class ScaffoldState extends State<Scaffold> {
       offstage: viewInsets.bottom > 0,
       child: RepaintBoundary(
         child: Container(
-          color: widget.footerBackgroundColor ?? compTheme?.footerBackgroundColor,
+          color:
+              widget.footerBackgroundColor ?? compTheme?.footerBackgroundColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -452,7 +453,7 @@ class _AppBarState extends State<AppBar> {
           ),
           child: Container(
             color: widget.backgroundColor ??
-                theme.colorScheme.background.scaleAlpha(surfaceOpacity ?? 1),
+                theme.colorScheme.card.scaleAlpha(surfaceOpacity ?? 1),
             alignment: widget.alignment,
             padding: widget.padding ??
                 (const EdgeInsets.symmetric(
