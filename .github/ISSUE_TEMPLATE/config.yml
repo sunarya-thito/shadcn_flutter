@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+- name: 📖 Documentation
+  url: https://sunarya-thito.github.io/shadcn_flutter/
+  about: Check out the official documentation for guides and examples
+- name: 💬 Discussions
+  url: https://github.com/sunarya-thito/shadcn_flutter/discussions
+  about: Ask questions and discuss ideas with the community
+- name: 🎨 shadcn/ui Official
+  url: https://ui.shadcn.com/
+  about: Visit the original shadcn/ui documentation for design references

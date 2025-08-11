@@ -1,0 +1,144 @@
+name: 📚 Documentation Issue
+description: Report issues with documentation or suggest improvements
+title: "[Docs]: "
+labels: [ "documentation", "needs triage" ]
+assignees: []
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thanks for helping improve our documentation! Please provide as much detail as possible.
+
+- type: dropdown
+  id: doc-type
+  attributes:
+    label: Documentation Type
+    description: What type of documentation issue is this?
+    options:
+    - Missing Documentation
+    - Incorrect Information
+    - Unclear Instructions
+    - Outdated Content
+    - Broken Links
+    - Code Examples
+    - API Documentation
+    - Getting Started Guide
+    - Component Usage
+    - Migration Guide
+    - Other
+  validations:
+    required: true
+
+- type: input
+  id: doc-location
+  attributes:
+    label: Documentation Location
+    description: Where is the documentation issue located?
+    placeholder: e.g., README.md, specific component docs, website URL, etc.
+  validations:
+    required: true
+
+- type: textarea
+  id: issue-description
+  attributes:
+    label: Issue Description
+    description: A clear and concise description of the documentation issue
+    placeholder: Describe what's wrong or missing...
+  validations:
+    required: true
+
+- type: textarea
+  id: current-content
+  attributes:
+    label: Current Content
+    description: If applicable, paste the current documentation content that needs improvement
+    render: markdown
+    placeholder: Current documentation content...
+
+- type: textarea
+  id: suggested-improvement
+  attributes:
+    label: Suggested Improvement
+    description: How would you improve this documentation?
+    placeholder: Suggest what should be changed or added...
+  validations:
+    required: true
+
+- type: dropdown
+  id: component
+  attributes:
+    label: Related Component
+    description: If this is component-specific documentation, which component?
+    options:
+    - General Documentation
+    - Alert
+    - AlertDialog
+    - Avatar
+    - Badge
+    - Breadcrumb
+    - Button
+    - Calendar
+    - Card
+    - Carousel
+    - Checkbox
+    - Command
+    - ContextMenu
+    - DataTable
+    - DatePicker
+    - Dialog
+    - Drawer
+    - DropdownMenu
+    - Form
+    - HoverCard
+    - Input
+    - InputOTP
+    - Label
+    - Menubar
+    - NavigationMenu
+    - Pagination
+    - Popover
+    - Progress
+    - RadioGroup
+    - ScrollArea
+    - Select
+    - Separator
+    - Sheet
+    - Skeleton
+    - Slider
+    - Switch
+    - Table
+    - Tabs
+    - Textarea
+    - TimePicker
+    - Toast
+    - Toggle
+    - Tooltip
+    - Theming
+    - Installation
+    - Migration
+    - Other
+
+- type: textarea
+  id: target-audience
+  attributes:
+    label: Target Audience
+    description: Who would benefit from this documentation improvement?
+    placeholder: e.g., beginners, advanced users, specific use cases...
+
+- type: textarea
+  id: additional-context
+  attributes:
+    label: Additional Context
+    description: Any other context about the documentation issue
+    placeholder: Screenshots, related issues, external references, etc.
+
+- type: checkboxes
+  id: checklist
+  attributes:
+    label: Checklist
+    description: Please confirm the following
+    options:
+    - label: I have searched existing issues to avoid duplicates
+      required: true
+    - label: I have provided specific suggestions for improvement
+      required: true

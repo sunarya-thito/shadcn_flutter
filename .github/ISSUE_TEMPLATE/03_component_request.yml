@@ -1,0 +1,117 @@
+name: 🧩 Component Request
+description: Request a new shadcn/ui component to be added to shadcn_flutter
+title: "[Component]: "
+labels: [ "component request", "enhancement", "needs triage" ]
+assignees: []
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thanks for requesting a new component! This template is specifically for requesting shadcn/ui components that aren't yet available in shadcn_flutter.
+
+- type: input
+  id: component-name
+  attributes:
+    label: Component Name
+    description: What is the name of the shadcn/ui component you'd like to see added?
+    placeholder: e.g., Accordion, Combobox, DataTable
+  validations:
+    required: true
+
+- type: input
+  id: shadcn-link
+  attributes:
+    label: shadcn/ui Documentation Link
+    description: Link to the official shadcn/ui documentation for this component
+    placeholder: https://ui.shadcn.com/docs/components/...
+  validations:
+    required: true
+
+- type: textarea
+  id: component-description
+  attributes:
+    label: Component Description
+    description: Brief description of what this component does and its main features
+    placeholder: Describe the component's functionality and key features...
+  validations:
+    required: true
+
+- type: dropdown
+  id: priority
+  attributes:
+    label: Priority
+    description: How important is this component for your project?
+    options:
+    - Low - Nice to have
+    - Medium - Would be helpful
+    - High - Important for my use case
+    - Critical - Blocking my project
+  validations:
+    required: true
+
+- type: textarea
+  id: use-cases
+  attributes:
+    label: Use Cases
+    description: Describe how you plan to use this component in your application
+    placeholder: |
+      1. Use case 1: ...
+      2. Use case 2: ...
+      3. Use case 3: ...
+  validations:
+    required: true
+
+- type: textarea
+  id: flutter-equivalent
+  attributes:
+    label: Flutter Equivalent
+    description: Are there any existing Flutter widgets that are similar? How would this component differ?
+    placeholder: e.g., Similar to DropdownButton but with...
+
+- type: dropdown
+  id: complexity
+  attributes:
+    label: Estimated Complexity
+    description: Based on the shadcn/ui implementation, how complex do you think this component is?
+    options:
+    - Simple - Basic widget with minimal logic
+    - Medium - Moderate complexity with some state management
+    - Complex - Advanced features, animations, or intricate logic
+    - Very Complex - Highly sophisticated component with many features
+    - Not Sure
+
+- type: textarea
+  id: design-considerations
+  attributes:
+    label: Design Considerations
+    description: Any specific design patterns, accessibility concerns, or Flutter-specific considerations for this component?
+    placeholder: Consider theming, platform differences, accessibility requirements, etc.
+
+- type: textarea
+  id: dependencies
+  attributes:
+    label: Potential Dependencies
+    description: Does this component rely on other components or external packages?
+    placeholder: List any components or packages this might depend on...
+
+- type: checkboxes
+  id: willing-to-help
+  attributes:
+    label: Contribution
+    options:
+    - label: I'm willing to help implement this component
+    - label: I can help with testing once implemented
+    - label: I can provide design feedback during development
+
+- type: checkboxes
+  id: checklist
+  attributes:
+    label: Checklist
+    description: Please confirm the following
+    options:
+    - label: I have checked that this component doesn't already exist in shadcn_flutter
+      required: true
+    - label: I have provided a link to the official shadcn/ui documentation
+      required: true
+    - label: This component exists in the official shadcn/ui library
+      required: true

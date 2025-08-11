@@ -1,0 +1,117 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for shadcn_flutter
+title: "[Feature]: "
+labels: [ "enhancement", "needs triage" ]
+assignees: []
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thanks for taking the time to suggest a new feature! Please provide as much detail as possible.
+
+- type: textarea
+  id: feature-description
+  attributes:
+    label: Feature Description
+    description: A clear and concise description of the feature you'd like to see added.
+    placeholder: Describe the feature...
+  validations:
+    required: true
+
+- type: textarea
+  id: problem-statement
+  attributes:
+    label: Problem Statement
+    description: What problem does this feature solve? Is your feature request related to a problem?
+    placeholder: I'm always frustrated when...
+  validations:
+    required: true
+
+- type: textarea
+  id: proposed-solution
+  attributes:
+    label: Proposed Solution
+    description: A clear and concise description of what you want to happen.
+    placeholder: Describe your solution...
+  validations:
+    required: true
+
+- type: dropdown
+  id: feature-type
+  attributes:
+    label: Feature Type
+    description: What type of feature is this?
+    options:
+    - New Component
+    - Component Enhancement
+    - Theming/Styling
+    - Accessibility
+    - Performance
+    - Developer Experience
+    - Documentation
+    - API Improvement
+    - Other
+  validations:
+    required: true
+
+- type: textarea
+  id: use-cases
+  attributes:
+    label: Use Cases
+    description: Describe specific use cases where this feature would be beneficial
+    placeholder: |
+      1. Use case 1: ...
+      2. Use case 2: ...
+      3. Use case 3: ...
+  validations:
+    required: true
+
+- type: textarea
+  id: alternatives
+  attributes:
+    label: Alternatives Considered
+    description: A clear and concise description of any alternative solutions or features you've considered.
+    placeholder: What alternatives have you considered?
+
+- type: dropdown
+  id: priority
+  attributes:
+    label: Priority
+    description: How important is this feature to you?
+    options:
+    - Low - Nice to have
+    - Medium - Would be helpful
+    - High - Important for my use case
+    - Critical - Blocking my project
+  validations:
+    required: true
+
+- type: textarea
+  id: implementation-ideas
+  attributes:
+    label: Implementation Ideas
+    description: If you have ideas about how this could be implemented, please share them
+    placeholder: Any thoughts on implementation approach...
+
+- type: textarea
+  id: related-examples
+  attributes:
+    label: Related Examples
+    description: Links to similar implementations in other libraries or frameworks
+    placeholder: |
+      - shadcn/ui: https://ui.shadcn.com/docs/components/...
+      - Material Design: https://m3.material.io/components/...
+      - Other: ...
+
+- type: checkboxes
+  id: checklist
+  attributes:
+    label: Checklist
+    description: Please confirm the following
+    options:
+    - label: I have searched existing issues and this feature hasn't been requested
+      required: true
+    - label: I have provided clear use cases for this feature
+      required: true
+    - label: I understand this feature may take time to implement
+      required: true

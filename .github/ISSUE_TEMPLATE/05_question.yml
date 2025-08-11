@@ -1,0 +1,113 @@
+name: ❓ Question / Support
+description: Ask a question or get help with using shadcn_flutter
+title: "[Question]: "
+labels: [ "question", "support" ]
+assignees: []
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thanks for reaching out! Please provide as much detail as possible so we can help you effectively.
+
+      **Note:** For bugs, please use the Bug Report template instead.
+
+- type: textarea
+  id: question
+  attributes:
+    label: Question
+    description: What would you like to know or what are you trying to achieve?
+    placeholder: Describe your question or what you're trying to accomplish...
+  validations:
+    required: true
+
+- type: dropdown
+  id: question-category
+  attributes:
+    label: Question Category
+    description: What category does your question fall into?
+    options:
+    - Component Usage
+    - Theming/Styling
+    - Integration with other packages
+    - Performance
+    - Best Practices
+    - Migration from other UI libraries
+    - Platform-specific questions
+    - State Management
+    - Animation/Transitions
+    - Accessibility
+    - Build/Deployment
+    - Other
+  validations:
+    required: true
+
+- type: textarea
+  id: attempted-solutions
+  attributes:
+    label: What have you tried?
+    description: Describe what you've already attempted or researched
+    placeholder: |
+      - Checked the documentation
+      - Searched existing issues
+      - Tried approach X but got result Y
+      - etc.
+
+- type: textarea
+  id: code-context
+  attributes:
+    label: Code Context
+    description: If relevant, please provide code that demonstrates what you're working with
+    render: dart
+    placeholder: |
+      import 'package:flutter/material.dart';
+      import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+      // Your code here
+
+- type: input
+  id: flutter-version
+  attributes:
+    label: Flutter Version
+    description: What version of Flutter are you using?
+    placeholder: "flutter --version"
+
+- type: input
+  id: shadcn-version
+  attributes:
+    label: shadcn_flutter Version
+    description: What version of shadcn_flutter are you using?
+    placeholder: "Check pubspec.yaml"
+
+- type: dropdown
+  id: platform
+  attributes:
+    label: Platform
+    description: Which platform(s) are you targeting?
+    multiple: true
+    options:
+    - Android
+    - iOS
+    - Web
+    - Windows
+    - macOS
+    - Linux
+
+- type: textarea
+  id: additional-context
+  attributes:
+    label: Additional Context
+    description: Any other information that might be helpful
+    placeholder: Screenshots, error messages, related documentation, etc.
+
+- type: checkboxes
+  id: checklist
+  attributes:
+    label: Checklist
+    description: Please confirm the following
+    options:
+    - label: I have searched existing issues and discussions
+      required: true
+    - label: I have checked the documentation
+      required: true
+    - label: This is a question/support request and not a bug report
+      required: true
