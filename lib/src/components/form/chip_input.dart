@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' hide TextInput;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 typedef ChipWidgetBuilder<T> = Widget Function(BuildContext context, T chip);
 
@@ -386,147 +387,161 @@ class ChipInputState<T> extends State<ChipInput<T>>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return GestureDetector(
-      onTap: () {
-        _focusNode.requestFocus();
+    return ListenableBuilder(
+      listenable: _focusNode,
+      builder: (context, child) {
+        return FocusOutline(
+          focused: _focusNode.hasFocus,
+          borderRadius: theme.borderRadiusMd,
+          child: child!,
+        );
       },
-      child: FocusableActionDetector(
-        mouseCursor: SystemMouseCursors.text,
-        shortcuts: {
-          LogicalKeySet(LogicalKeyboardKey.tab): const SelectSuggestionIntent(),
-          LogicalKeySet(LogicalKeyboardKey.arrowDown):
-              const NextSuggestionIntent(),
-          LogicalKeySet(LogicalKeyboardKey.arrowUp):
-              const PreviousSuggestionIntent(),
+      child: GestureDetector(
+        onTap: () {
+          _focusNode.requestFocus();
         },
-        actions: {
-          SelectSuggestionIntent: CallbackAction(
-            onInvoke: (intent) {
-              var index = _selectedSuggestions.value;
-              if (index >= 0 && index < _suggestions.value.length) {
-                widget.onSuggestionChoosen?.call(index);
-                _controller.clear();
-                _selectedSuggestions.value = -1;
-              } else if (_suggestions.value.isNotEmpty) {
-                _selectedSuggestions.value = 0;
-              }
-              return null;
-            },
-          ),
-          NextSuggestionIntent: CallbackAction(
-            onInvoke: (intent) {
-              var index = _selectedSuggestions.value;
-              if (index < _suggestions.value.length - 1) {
-                _selectedSuggestions.value = index + 1;
-              } else if (_suggestions.value.isNotEmpty) {
-                _selectedSuggestions.value = 0;
-              }
-              return null;
-            },
-          ),
-          PreviousSuggestionIntent: CallbackAction(
-            onInvoke: (intent) {
-              var index = _selectedSuggestions.value;
-              if (index > 0) {
-                _selectedSuggestions.value = index - 1;
-              } else if (_suggestions.value.isNotEmpty) {
-                _selectedSuggestions.value = _suggestions.value.length - 1;
-              }
-              return null;
-            },
-          ),
-        },
-        child: AnimatedBuilder(
-          animation: _focusNode,
-          builder: (context, child) {
-            if (widget.chips.isNotEmpty) {
-              if (_focusNode.hasFocus) {
-                child = Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    child!,
-                    Wrap(
-                      runSpacing: theme.scaling * 4,
-                      spacing: theme.scaling * 4,
-                      children: [
-                        for (int i = 0; i < widget.chips.length; i++)
-                          _chipBuilder(i),
-                      ],
-                    ).withPadding(
-                      left: theme.scaling * 6,
-                      right: theme.scaling * 6,
-                      bottom: theme.scaling * 4,
-                    ),
-                  ],
-                );
-              } else {
-                child = Stack(
-                  alignment: AlignmentDirectional.centerStart,
-                  children: [
-                    Visibility(
-                      visible: false,
-                      maintainState: true,
-                      maintainAnimation: true,
-                      maintainInteractivity: true,
-                      maintainSize: true,
-                      maintainSemantics: true,
-                      child: child!,
-                    ),
-                    Wrap(
-                      runSpacing: theme.scaling * 4,
-                      spacing: theme.scaling * 4,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        for (int i = 0; i < widget.chips.length; i++)
-                          _chipBuilder(i),
-                        if (_controller.text.isNotEmpty) const Gap(4),
-                        if (_controller.text.isNotEmpty)
-                          Text(
-                            _controller.text,
-                          ).base(),
-                      ],
-                    ).withPadding(
-                        horizontal: theme.scaling * 6,
-                        vertical: theme.scaling * 4),
-                  ],
-                );
-              }
-            }
-            return TextFieldTapRegion(
-              child: OutlinedContainer(
-                backgroundColor: Colors.transparent,
-                borderRadius: theme.borderRadiusMd,
-                borderColor: _focusNode.hasFocus
-                    ? theme.colorScheme.ring
-                    : theme.colorScheme.border,
-                child: Row(
-                  children: [
-                    Expanded(child: child!),
-                    if (widget.inputTrailingWidget != null) ...[
-                      const VerticalDivider(
-                        indent: 10,
-                        endIndent: 10,
-                      ),
-                      widget.inputTrailingWidget!,
-                    ]
-                  ],
-                ),
-              ),
-            );
+        child: FocusableActionDetector(
+          mouseCursor: SystemMouseCursors.text,
+          shortcuts: {
+            LogicalKeySet(LogicalKeyboardKey.tab):
+                const SelectSuggestionIntent(),
+            LogicalKeySet(LogicalKeyboardKey.arrowDown):
+                const NextSuggestionIntent(),
+            LogicalKeySet(LogicalKeyboardKey.arrowUp):
+                const PreviousSuggestionIntent(),
           },
-          child: TextField(
-            key: _textFieldKey,
-            focusNode: _focusNode,
-            initialValue: widget.initialText,
-            inputFormatters: widget.inputFormatters,
-            textInputAction: widget.textInputAction,
-            border: const Border.fromBorderSide(BorderSide.none),
-            enabled: widget.enabled,
-            maxLines: 1,
-            placeholder: widget.placeholder,
-            onSubmitted: _handleSubmitted,
-            controller: _controller,
-            undoController: widget.undoHistoryController,
+          actions: {
+            SelectSuggestionIntent: CallbackAction(
+              onInvoke: (intent) {
+                var index = _selectedSuggestions.value;
+                if (index >= 0 && index < _suggestions.value.length) {
+                  widget.onSuggestionChoosen?.call(index);
+                  _controller.clear();
+                  _selectedSuggestions.value = -1;
+                } else if (_suggestions.value.isNotEmpty) {
+                  _selectedSuggestions.value = 0;
+                }
+                return null;
+              },
+            ),
+            NextSuggestionIntent: CallbackAction(
+              onInvoke: (intent) {
+                var index = _selectedSuggestions.value;
+                if (index < _suggestions.value.length - 1) {
+                  _selectedSuggestions.value = index + 1;
+                } else if (_suggestions.value.isNotEmpty) {
+                  _selectedSuggestions.value = 0;
+                }
+                return null;
+              },
+            ),
+            PreviousSuggestionIntent: CallbackAction(
+              onInvoke: (intent) {
+                var index = _selectedSuggestions.value;
+                if (index > 0) {
+                  _selectedSuggestions.value = index - 1;
+                } else if (_suggestions.value.isNotEmpty) {
+                  _selectedSuggestions.value = _suggestions.value.length - 1;
+                }
+                return null;
+              },
+            ),
+          },
+          child: AnimatedBuilder(
+            animation: _focusNode,
+            builder: (context, child) {
+              if (widget.chips.isNotEmpty) {
+                if (_focusNode.hasFocus) {
+                  child = Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      child!,
+                      Wrap(
+                        runSpacing: theme.scaling * 4,
+                        spacing: theme.scaling * 4,
+                        children: [
+                          for (int i = 0; i < widget.chips.length; i++)
+                            _chipBuilder(i),
+                        ],
+                      ).withPadding(
+                        left: theme.scaling * 6,
+                        right: theme.scaling * 6,
+                        bottom: theme.scaling * 4,
+                      ),
+                    ],
+                  );
+                } else {
+                  child = Stack(
+                    alignment: AlignmentDirectional.centerStart,
+                    children: [
+                      Visibility(
+                        visible: false,
+                        maintainState: true,
+                        maintainAnimation: true,
+                        maintainInteractivity: true,
+                        maintainSize: true,
+                        maintainSemantics: true,
+                        child: child!,
+                      ),
+                      Wrap(
+                        runSpacing: theme.scaling * 4,
+                        spacing: theme.scaling * 4,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          for (int i = 0; i < widget.chips.length; i++)
+                            _chipBuilder(i),
+                          if (_controller.text.isNotEmpty) const Gap(4),
+                          if (_controller.text.isNotEmpty)
+                            Text(
+                              _controller.text,
+                            ).base(),
+                        ],
+                      ).withPadding(
+                          horizontal: theme.scaling * 6,
+                          vertical: theme.scaling * 4),
+                    ],
+                  );
+                }
+              }
+              return TextFieldTapRegion(
+                child: OutlinedContainer(
+                  backgroundColor: theme.colorScheme.input.scaleAlpha(0.3),
+                  borderRadius: theme.borderRadiusMd,
+                  borderColor: theme.colorScheme.border,
+                  child: Row(
+                    children: [
+                      Expanded(child: child!),
+                      if (widget.inputTrailingWidget != null) ...[
+                        const VerticalDivider(
+                          indent: 10,
+                          endIndent: 10,
+                        ),
+                        widget.inputTrailingWidget!,
+                      ]
+                    ],
+                  ),
+                ),
+              );
+            },
+            child: ComponentTheme(
+              data: const FocusOutlineTheme(
+                  border: Border.fromBorderSide(BorderSide.none)),
+              child: TextField(
+                key: _textFieldKey,
+                focusNode: _focusNode,
+                initialValue: widget.initialText,
+                inputFormatters: widget.inputFormatters,
+                textInputAction: widget.textInputAction,
+                border: const Border.fromBorderSide(BorderSide.none),
+                decoration: const BoxDecoration(),
+                enabled: widget.enabled,
+                maxLines: 1,
+                placeholder: widget.placeholder,
+                onSubmitted: _handleSubmitted,
+                controller: _controller,
+                undoController: widget.undoHistoryController,
+              ),
+            ),
           ),
         ),
       ),
