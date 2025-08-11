@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/control/hover.dart';
+import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 class SelectTheme {
   final BoxConstraints? popupConstraints;
@@ -1176,20 +1177,26 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
           mainAxisSize: MainAxisSize.min,
           children: [
             if (widget.enableSearch)
-              TextField(
-                controller: _searchController,
-                border: const Border.fromBorderSide(BorderSide.none),
-                features: [
-                  InputFeature.leading(
-                    const Icon(
-                      LucideIcons.search,
-                    ).iconSmall().iconMutedForeground(),
-                  ),
-                ],
-                placeholder: widget.searchPlaceholder,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12) *
-                        scaling,
+              ComponentTheme(
+                data: const FocusOutlineTheme(
+                  border: Border.fromBorderSide(BorderSide.none),
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  border: const Border.fromBorderSide(BorderSide.none),
+                  borderRadius: BorderRadius.zero,
+                  features: [
+                    InputFeature.leading(
+                      const Icon(
+                        LucideIcons.search,
+                      ).iconSmall().iconMutedForeground(),
+                    ),
+                  ],
+                  placeholder: widget.searchPlaceholder,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 12) *
+                          scaling,
+                ),
               ),
             Flexible(
               child: ListenableBuilder(
