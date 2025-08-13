@@ -9,14 +9,14 @@ class DrawerExample1 extends StatefulWidget {
 
 class _DrawerExample1State extends State<DrawerExample1> {
   List<OverlayPosition> positions = [
-    OverlayPosition.left,
-    OverlayPosition.left,
+    OverlayPosition.end,
+    OverlayPosition.end,
     OverlayPosition.bottom,
     OverlayPosition.bottom,
     OverlayPosition.top,
     OverlayPosition.top,
-    OverlayPosition.right,
-    OverlayPosition.right,
+    OverlayPosition.start,
+    OverlayPosition.start,
   ];
   void open(BuildContext context, int count) {
     openDrawer(

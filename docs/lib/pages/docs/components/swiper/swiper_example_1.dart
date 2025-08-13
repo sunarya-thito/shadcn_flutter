@@ -8,7 +8,7 @@ class SwiperExample1 extends StatefulWidget {
 }
 
 class _SwiperExample1State extends State<SwiperExample1> {
-  OverlayPosition _position = OverlayPosition.left;
+  OverlayPosition _position = OverlayPosition.end;
   bool _typeDrawer = true;
 
   Widget _buildSelectPosition(OverlayPosition position, String label) {
@@ -44,19 +44,22 @@ class _SwiperExample1State extends State<SwiperExample1> {
               const Gap(24),
               PrimaryButton(
                 onPressed: () {
-                  openDrawer(context: context, builder: (context) {
-                    return ListView.separated(
-                      itemCount: 1000,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: Text('Item $index'),
+                  openDrawer(
+                      context: context,
+                      builder: (context) {
+                        return ListView.separated(
+                          itemCount: 1000,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: Text('Item $index'),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const Gap(8);
+                          },
                         );
                       },
-                      separatorBuilder: (context, index) {
-                        return const Gap(8);
-                      },
-                    );
-                  }, position: OverlayPosition.bottom);
+                      position: OverlayPosition.bottom);
                 },
                 child: const Text('Close'),
               ),

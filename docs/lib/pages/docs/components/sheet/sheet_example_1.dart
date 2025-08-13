@@ -125,7 +125,7 @@ class _SheetExample1State extends State<SheetExample1> {
           builder: (context) {
             return buildSheet(context);
           },
-          position: OverlayPosition.right,
+          position: OverlayPosition.end,
         );
       },
       child: const Text('Open Sheet'),
