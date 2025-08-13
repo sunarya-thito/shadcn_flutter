@@ -1130,8 +1130,10 @@ class TreeItemView extends StatefulWidget {
   final VoidCallback? onPressed;
   final VoidCallback? onDoublePressed;
   final ValueChanged<bool>? onExpand;
+  final ValueChanged<bool>? onHover;
   final bool? expandable;
   final FocusNode? focusNode;
+  final int? branchLineWidth;
 
   const TreeItemView({
     super.key,
@@ -1141,8 +1143,10 @@ class TreeItemView extends StatefulWidget {
     this.onPressed,
     this.onDoublePressed,
     this.onExpand,
+    this.onHover,
     this.expandable,
     this.focusNode,
+    this.branchLineWidth = 16,
   });
 
   @override
@@ -1238,7 +1242,7 @@ class _TreeItemViewState extends State<TreeItemView> {
       } else {
         if (data.depth.length > 1) {
           rowChildren.add(SizedBox(
-            width: 16 * scaling,
+            width: widget.branchLineWidth! * scaling,
             child: data.indentGuide.build(
               context,
               data.depth,
@@ -1292,6 +1296,7 @@ class _TreeItemViewState extends State<TreeItemView> {
               focusOutline: !(_data?.node.selected ?? false),
               disableTransition: true,
               statesController: _statesController,
+              onHover: widget.onHover,
               shortcuts: {
                 if (widget.onExpand != null &&
                     (widget.expandable ?? data.node.children.isNotEmpty))
@@ -1350,6 +1355,12 @@ class _TreeItemViewState extends State<TreeItemView> {
                         data.selectionPosition,
                         theme.radiusMd,
                       ),
+                    );
+                  }
+                  if (states.contains(WidgetState.hovered)) {
+                    return BoxDecoration(
+                      color: theme.colorScheme.primary.scaleAlpha(0.03),
+                      borderRadius: BorderRadius.circular(theme.radiusMd),
                     );
                   }
                   return const BoxDecoration();
