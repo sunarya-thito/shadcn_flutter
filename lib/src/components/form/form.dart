@@ -213,34 +213,18 @@ class OrValidator<T> extends Validator<T> {
   const OrValidator(this.validators);
 
   @override
-  FutureOr<ValidationResult?> validate(
-      BuildContext context, T? value, FormValidationMode state) {
-    return _chainedValidation(context, value, state, 0);
-  }
-
-  FutureOr<ValidationResult?> _chainedValidation(
-      BuildContext context, T? value, FormValidationMode state, int index) {
-    if (index >= validators.length) {
-      return null;
+  FutureOr<ValidationResult?> validate(BuildContext context, T? value, FormValidationMode state) {
+    FutureOr<ValidationResult?>? resultToReturn;
+    for (final validator in validators) {
+      final result = validator.validate(context, value, state);
+      if (result == null) {
+        return null;
+      } else if (resultToReturn == null) {
+        // Return first failed validation
+        resultToReturn = result;
+      }
     }
-    var validator = validators[index];
-    var result = validator.validate(context, value, state);
-    if (result is Future<ValidationResult?>) {
-      return result.then((nextValue) {
-        if (nextValue == null) {
-          // means one of the validators passed and we don't need to check the rest
-          return null;
-        }
-        if (!context.mounted) {
-          return null;
-        }
-        return _chainedValidation(context, value, state, index + 1);
-      });
-    } else if (result == null) {
-      // means one of the validators passed and we don't need to check the rest
-      return null;
-    }
-    return _chainedValidation(context, value, state, index + 1);
+    return resultToReturn;
   }
 
   @override
