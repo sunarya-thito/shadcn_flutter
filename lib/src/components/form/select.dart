@@ -332,38 +332,46 @@ class SelectItemButton<T> extends StatelessWidget {
     final data = Data.maybeOf<SelectPopupHandle>(context);
     bool isSelected = data?.isSelected(value) ?? false;
     bool hasSelection = data?.hasSelection ?? false;
-    return SubFocus(onSelected: () {
-      data?.selectItem(value, !isSelected);
-    }, builder: (context, subFocusState) {
-      return WidgetStatesProvider(
-        states: {
-          if (subFocusState.isFocused) WidgetState.hovered,
-        },
-        child: Button(
-          enabled: enabled,
-          disableTransition: true,
-          alignment: AlignmentDirectional.centerStart,
-          onPressed: () {
+    return Actions(
+      actions: {
+        ActivateIntent: CallbackAction<ActivateIntent>(
+          onInvoke: (intent) {
             data?.selectItem(value, !isSelected);
+            return null;
           },
-          style: style.copyWith(
-            padding: (context, states, value) => EdgeInsets.symmetric(
-              vertical: 8 * scaling,
-              horizontal: 8 * scaling,
-            ),
-            mouseCursor: (context, states, value) {
-              return SystemMouseCursors.basic;
-            },
-          ),
-          trailing: isSelected
-              ? const Icon(LucideIcons.check).iconSmall()
-              : hasSelection
-                  ? SizedBox(width: 16 * scaling)
-                  : null,
-          child: child.normal(),
         ),
-      );
-    });
+      },
+      child: SubFocus(builder: (context, subFocusState) {
+        return WidgetStatesProvider(
+          states: {
+            if (subFocusState.isFocused) WidgetState.hovered,
+          },
+          child: Button(
+            enabled: enabled,
+            disableTransition: true,
+            alignment: AlignmentDirectional.centerStart,
+            onPressed: () {
+              data?.selectItem(value, !isSelected);
+            },
+            style: style.copyWith(
+              padding: (context, states, value) => EdgeInsets.symmetric(
+                vertical: 8 * scaling,
+                horizontal: 8 * scaling,
+              ),
+              mouseCursor: (context, states, value) {
+                return SystemMouseCursors.basic;
+              },
+            ),
+            trailing: isSelected
+                ? const Icon(LucideIcons.check).iconSmall()
+                : hasSelection
+                    ? SizedBox(width: 16 * scaling)
+                    : null,
+            child: child.normal(),
+          ),
+        );
+      }),
+    );
   }
 }
 
@@ -1186,7 +1194,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
           ),
           PreviousItemIntent: CallbackAction<PreviousItemIntent>(
             onInvoke: (intent) {
-              subFocusScope.nextFocus(SubFocusDirection.up);
+              subFocusScope.nextFocus(TraversalDirection.up);
               return null;
             },
           ),
@@ -1198,7 +1206,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
           ),
           ActivateIntent: CallbackAction<ActivateIntent>(
             onInvoke: (intent) {
-              subFocusScope.dispatchFocusedCallback();
+              subFocusScope.invokeActionOnFocused(intent);
               return null;
             },
           ),

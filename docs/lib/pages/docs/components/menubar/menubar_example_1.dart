@@ -65,6 +65,17 @@ class _MenubarExample1State extends State<MenubarExample1> {
               ),
               child: Text('Print'),
             ),
+            MenuButton(
+              subMenu: [
+                MenuButton(
+                  child: Text('Save and Exit'),
+                ),
+                MenuButton(
+                  child: Text('Discard and Exit'),
+                ),
+              ],
+              child: Text('Exit'),
+            ),
           ],
           child: Text('File'),
         ),

@@ -1149,3 +1149,17 @@ extension TextEditingValueExtension on TextEditingValue {
     );
   }
 }
+
+typedef OnContextedCallback<T extends Intent> = Object? Function(T intent,
+    [BuildContext? context]);
+
+class ContextCallbackAction<T extends Intent> extends ContextAction<T> {
+  final OnContextedCallback<T> onInvoke;
+
+  ContextCallbackAction({required this.onInvoke});
+
+  @override
+  Object? invoke(T intent, [BuildContext? context]) {
+    return onInvoke(intent, context);
+  }
+}

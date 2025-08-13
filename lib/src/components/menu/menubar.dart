@@ -100,7 +100,8 @@ class MenubarState extends State<Menubar> {
     final backgroundColor =
         compTheme?.backgroundColor ?? theme.colorScheme.background;
     final borderRadius = compTheme?.borderRadius ?? theme.borderRadiusMd;
-    final padding = compTheme?.padding ?? const EdgeInsets.all(4) * theme.scaling;
+    final padding =
+        compTheme?.padding ?? const EdgeInsets.all(4) * theme.scaling;
 
     if (border) {
       return OutlinedContainer(
@@ -115,12 +116,12 @@ class MenubarState extends State<Menubar> {
         ),
       );
     }
-    return buildContainer(
-        context, theme, compTheme?.subMenuOffset ?? widget.popoverOffset, border);
+    return buildContainer(context, theme,
+        compTheme?.subMenuOffset ?? widget.popoverOffset, border);
   }
 
-  Widget buildContainer(
-      BuildContext context, ThemeData theme, Offset? subMenuOffset, bool border) {
+  Widget buildContainer(BuildContext context, ThemeData theme,
+      Offset? subMenuOffset, bool border) {
     final scaling = theme.scaling;
     final offset = subMenuOffset ??
         ((border ? const Offset(-4, 8) : const Offset(0, 4)) * scaling);
@@ -131,6 +132,7 @@ class MenubarState extends State<Menubar> {
         direction: Axis.vertical,
         itemPadding: EdgeInsets.zero,
         subMenuOffset: offset,
+        autofocus: false,
         builder: (context, children) {
           return IntrinsicHeight(
             child: Row(

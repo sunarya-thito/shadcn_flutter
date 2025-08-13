@@ -498,9 +498,9 @@ class _ClickableState extends State<Clickable> {
                 return null;
               },
             ),
-            DirectionalFocusIntent: CallbackAction(
+            DirectionalFocusIntent: CallbackAction<DirectionalFocusIntent>(
               onInvoke: (e) {
-                final direction = (e as DirectionalFocusIntent).direction;
+                final direction = e.direction;
                 final focus = _focusNode;
                 switch (direction) {
                   case TraversalDirection.up:
