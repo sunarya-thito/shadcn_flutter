@@ -207,3 +207,4 @@ export 'src/components/form/item_picker.dart';
 export 'src/components/form/multiple_choice.dart';
 export 'src/components/wrapper.dart';
 export 'src/components/navigation/subfocus.dart';
+export 'src/components/navigation/switcher.dart';

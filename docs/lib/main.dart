@@ -59,6 +59,7 @@ import 'package:docs/pages/docs/components/stepper_example.dart';
 import 'package:docs/pages/docs/components/steps_example.dart';
 import 'package:docs/pages/docs/components/swiper_example.dart';
 import 'package:docs/pages/docs/components/switch_example.dart';
+import 'package:docs/pages/docs/components/switcher_example.dart';
 import 'package:docs/pages/docs/components/tab_list_example.dart';
 import 'package:docs/pages/docs/components/tab_pane_example.dart';
 import 'package:docs/pages/docs/components/table_example.dart';
@@ -744,7 +745,13 @@ class MyAppState extends State<MyApp> {
             builder: (context, state) {
               return const ItemPickerExample();
             },
-          )
+          ),
+          GoRoute(
+              path: 'switcher',
+              name: 'switcher',
+              builder: (context, state) {
+                return const SwitcherExample();
+              }),
         ]),
   ];
   late ColorScheme colorScheme;
