@@ -297,7 +297,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Navigation Sidebar', 'navigation_sidebar'),
         ShadcnDocsPage('Dot Indicator', 'dot_indicator'),
         //
-        ShadcnDocsPage('Switcher', 'switcher'),
+        ShadcnDocsPage('Switcher', 'switcher', ShadcnFeatureTag.experimental),
       ],
     ),
     ShadcnDocsSection(
