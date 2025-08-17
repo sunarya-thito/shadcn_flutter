@@ -1496,8 +1496,11 @@ class FormState extends State<Form> {
   @override
   Widget build(BuildContext context) {
     return Data.inherit(
-      data: _controller,
-      child: widget.child,
+      data: this,
+      child: Data.inherit(
+        data: _controller,
+        child: widget.child,
+      ),
     );
   }
 }
@@ -1606,7 +1609,7 @@ class FormPendingBuilder extends StatelessWidget {
 
 extension FormExtension on BuildContext {
   T? getFormValue<T>(FormKey<T> key) {
-    final formController = Data.maybeOf<FormController>(this);
+    final formController = Data.maybeFind<FormController>(this);
     if (formController != null) {
       final state = formController.getState(key);
       if (state != null) {
@@ -1617,9 +1620,9 @@ extension FormExtension on BuildContext {
   }
 
   FutureOr<SubmissionResult> submitForm() {
-    final formState = Data.maybeOf<FormState>(this);
+    final formState = Data.maybeFind<FormState>(this);
     assert(formState != null, 'Form not found');
-    final formController = Data.maybeOf<FormController>(this);
+    final formController = Data.maybeFind<FormController>(this);
     assert(formController != null, 'Form not found');
     final values = <FormKey, Object?>{};
     for (var entry in formController!._attachedInputs.entries) {
