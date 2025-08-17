@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class Switcher extends StatefulWidget {
@@ -18,60 +17,12 @@ class Switcher extends StatefulWidget {
     required this.direction,
     required this.children,
     this.onIndexChanged,
-    this.duration = kDefaultDuration,
+    this.duration = const Duration(milliseconds: 300),
     this.curve = Curves.easeInOut,
   });
 
   @override
   State<Switcher> createState() => _SwitcherState();
-}
-
-class _SwitcherQueue {
-  final Widget oldWidget;
-  final AxisDirection direction;
-  final Duration duration;
-  final Curve curve;
-  double progress = 0;
-  final bool absolute;
-
-  _SwitcherQueue({
-    required this.oldWidget,
-    required this.direction,
-    required this.duration,
-    required this.curve,
-    required this.absolute,
-  });
-
-  Offset get directionalOffset {
-    switch (direction) {
-      case AxisDirection.up:
-        return const Offset(0, -1);
-      case AxisDirection.down:
-        return const Offset(0, 1);
-      case AxisDirection.left:
-        return const Offset(-1, 0);
-      case AxisDirection.right:
-        return const Offset(1, 0);
-    }
-  }
-
-  // Widget _buildTransition(BuildContext context, Widget newChild) {
-  //   final progress = this.progress.clamp(0.0, 1.0);
-  //   return _SwitcherTransition(
-  //       progress: progress,
-  //       direction: direction,
-  //       absolute: absolute,
-  //       children: [
-  //         Opacity(
-  //           opacity: 1 - progress,
-  //           child: oldWidget,
-  //         ),
-  //         Opacity(
-  //           opacity: progress,
-  //           child: newChild,
-  //         ),
-  //       ]);
-  // }
 }
 
 class _SwitcherState extends State<Switcher> {
@@ -90,17 +41,6 @@ class _SwitcherState extends State<Switcher> {
     if (oldWidget.index != widget.index) {
       _index = widget.index.toDouble();
       _dragging = false; // cancels out dragging
-    }
-  }
-
-  Offset _filterDragOffset(Offset delta) {
-    switch (widget.direction) {
-      case AxisDirection.up:
-      case AxisDirection.down:
-        return Offset(0, delta.dy);
-      case AxisDirection.left:
-      case AxisDirection.right:
-        return Offset(delta.dx, 0);
     }
   }
 
@@ -178,12 +118,14 @@ class _SwitcherState extends State<Switcher> {
               1 - relativeProgress == 0
                   ? const SizedBox.shrink()
                   : Opacity(
+                      key: ValueKey(sourceChild),
                       opacity: 1 - relativeProgress,
                       child: widget.children[sourceChild],
                     ),
               relativeProgress == 0
                   ? const SizedBox.shrink()
                   : Opacity(
+                      key: ValueKey(targetChild),
                       opacity: relativeProgress,
                       child: widget.children[targetChild],
                     ),

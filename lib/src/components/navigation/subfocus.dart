@@ -116,8 +116,6 @@ class _SubFocusScopeState extends State<SubFocusScope> with SubFocusScopeState {
       final RenderBox? currentBox = _currentState!.findRenderObject();
       final RenderBox? parentBox = findRenderObject();
       if (currentBox == null || parentBox == null) {
-        print(
-            'currentBox: ${currentBox == null} parentBox: ${parentBox == null}');
         return false;
       }
       final Offset currentOffset =
@@ -164,11 +162,9 @@ class _SubFocusScopeState extends State<SubFocusScope> with SubFocusScopeState {
         }
       }
       if (nearestNextItem != null) {
-        print('Found next');
         _setCurrentItem(nearestNextItem.$1, forward);
         return true;
       }
-      print('Could not find next');
     } else if (!widget.autofocus) {
       findFirstFocus();
       return true;
@@ -186,10 +182,8 @@ class _SubFocusScopeState extends State<SubFocusScope> with SubFocusScopeState {
       }
     }
     if (mostItem != null) {
-      print('mostItem');
       _setCurrentItem(mostItem.$1, null);
     } else {
-      print('useNonMostItem');
       // find very first focus based on top left or top right (based on directionality)
       (SubFocusState, double)? nearestItem;
       final direction = Directionality.of(context);
@@ -211,7 +205,6 @@ class _SubFocusScopeState extends State<SubFocusScope> with SubFocusScopeState {
       if (nearestItem != null) {
         _setCurrentItem(nearestItem.$1, null);
       }
-      print('nearestItem: $nearestItem');
     }
   }
 
@@ -359,7 +352,6 @@ class _SubFocusState extends State<SubFocus> with SubFocusState {
   @override
   void markFocused(bool focus) {
     if (!mounted || !_active) {
-      print('SubFocusState is not mounted ($mounted) or active ($_active)');
       return;
     }
     setState(() {
@@ -367,7 +359,6 @@ class _SubFocusState extends State<SubFocus> with SubFocusState {
         _focusCount++;
       }
       _focused = focus;
-      print('markFocused: $focus on $_scope for $this');
     });
   }
 

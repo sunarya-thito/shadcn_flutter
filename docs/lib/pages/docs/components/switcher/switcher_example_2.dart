@@ -9,22 +9,25 @@ class SwitcherExample2 extends StatefulWidget {
 
 class _SwitcherExample2State extends State<SwitcherExample2> {
   bool _isRegister = false;
+  final _registerController = FormController();
+  final _loginController = FormController();
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Switcher(
-        index: _isRegister ? 1 : 0,
-        onIndexChanged: (index) {
-          setState(() {
-            _isRegister = index == 1;
-          });
-        },
-        direction: AxisDirection.left,
-        children: [
-          Container(
-            key: const Key('login'),
-            width: 350,
-            padding: EdgeInsets.all(16),
+    return Switcher(
+      index: _isRegister ? 1 : 0,
+      onIndexChanged: (index) {
+        setState(() {
+          _isRegister = index == 1;
+        });
+      },
+      direction: AxisDirection.left,
+      children: [
+        Container(
+          key: const Key('login'),
+          width: 350,
+          padding: EdgeInsets.all(16),
+          child: Form(
+            controller: _loginController,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               spacing: 16,
@@ -37,7 +40,13 @@ class _SwitcherExample2State extends State<SwitcherExample2> {
                     FormValidationMode.changed,
                     FormValidationMode.submitted,
                   },
-                  child: TextField(),
+                  child: TextField(
+                    initialValue:
+                        _loginController.getValue(TextFieldKey(#email)),
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    enableSuggestions: false,
+                  ),
                 ),
                 FormField(
                   key: TextFieldKey(#password),
@@ -62,10 +71,13 @@ class _SwitcherExample2State extends State<SwitcherExample2> {
               ],
             ),
           ),
-          Container(
-            key: Key('register-form'),
-            width: 350,
-            padding: EdgeInsets.all(16),
+        ),
+        Container(
+          key: Key('register-form'),
+          width: 350,
+          padding: EdgeInsets.all(16),
+          child: Form(
+            controller: _registerController,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               spacing: 16,
@@ -78,7 +90,13 @@ class _SwitcherExample2State extends State<SwitcherExample2> {
                     FormValidationMode.changed,
                     FormValidationMode.submitted,
                   },
-                  child: TextField(),
+                  child: TextField(
+                    initialValue:
+                        _registerController.getValue(TextFieldKey(#email)),
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    enableSuggestions: false,
+                  ),
                 ),
                 FormField(
                   key: TextFieldKey(#password),
@@ -116,8 +134,8 @@ class _SwitcherExample2State extends State<SwitcherExample2> {
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
