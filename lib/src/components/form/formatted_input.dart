@@ -556,7 +556,7 @@ class _FormattedInputState extends State<FormattedInput> {
           if (part.part.canHaveValue) {
             FormKey key = FormKey(partIndex);
             var val = values[key];
-            parts.add(part.withValue(val ?? ''));
+            parts.add(part.withValue(val as String? ?? ''));
             partIndex++;
           } else {
             parts.add(part);

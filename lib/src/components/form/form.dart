@@ -1032,6 +1032,8 @@ class FormEntry<T> extends StatefulWidget {
 }
 
 mixin FormFieldHandle {
+  bool get mounted;
+  FormKey get formKey;
   FutureOr<ValidationResult?> reportNewFormValue<T>(T? value);
   FutureOr<ValidationResult?> revalidate();
   ValueListenable<ValidationResult?>? get validity;
@@ -1049,6 +1051,9 @@ class FormEntryState extends State<FormEntry> with FormFieldHandle {
   final ValueNotifier<ValidationResult?> _validity = ValueNotifier(null);
 
   @override
+  FormKey get formKey => widget.key;
+
+  @override
   ValueListenable<ValidationResult?>? get validity => _validity;
 
   int _toWaitCounter = 0;
@@ -1061,13 +1066,13 @@ class FormEntryState extends State<FormEntry> with FormFieldHandle {
     var newController = Data.maybeOf<FormController>(context);
     if (oldController != newController) {
       oldController?.removeListener(_onControllerChanged);
-      oldController?.detach(widget.key);
-      newController?.addListener(_onControllerChanged);
+      oldController?.detach(this);
       _controller = newController;
       _onControllerChanged();
+      newController?.addListener(_onControllerChanged);
       if (_cachedValue != null) {
         newController?.attach(
-            context, widget.key, _cachedValue?.value, widget.validator);
+            context, this, _cachedValue?.value, widget.validator);
       }
     }
   }
@@ -1075,7 +1080,7 @@ class FormEntryState extends State<FormEntry> with FormFieldHandle {
   @override
   void dispose() {
     _controller?.removeListener(_onControllerChanged);
-    _controller?.detach(widget.key);
+    _controller?.detach(this);
     super.dispose();
   }
 
@@ -1115,16 +1120,16 @@ class FormEntryState extends State<FormEntry> with FormFieldHandle {
     }
     var cachedValue = _cachedValue;
     if (cachedValue != null && cachedValue.value == value) {
-      return null;
+      return _validity.value;
     }
     _cachedValue = _FormEntryCachedValue(value);
-    return _controller?.attach(context, widget.key, value, widget.validator);
+    return _controller?.attach(context, this, value, widget.validator);
   }
 
   @override
   FutureOr<ValidationResult?> revalidate() {
     return _controller?.attach(
-        context, widget.key, _cachedValue, widget.validator, true);
+        context, this, _cachedValue, widget.validator, true);
   }
 }
 
@@ -1170,6 +1175,12 @@ class _FormEntryHandleInterceptor with FormFieldHandle {
   final void Function(Object? value) onValueReported;
 
   const _FormEntryHandleInterceptor(this.handle, this.onValueReported);
+
+  @override
+  FormKey get formKey => handle!.formKey;
+
+  @override
+  bool get mounted => handle!.mounted;
 
   @override
   FutureOr<ValidationResult?> reportNewFormValue<T>(T? value) {
@@ -1241,6 +1252,14 @@ extension FormMapValuesExtension on FormMapValues {
 }
 
 class Form extends StatefulWidget {
+  static FormController? maybeOf(BuildContext context) {
+    return Data.maybeOf<FormController>(context);
+  }
+
+  static FormController of(BuildContext context) {
+    return Data.of<FormController>(context);
+  }
+
   final FormController? controller;
   final Widget child;
   final FormSubmitCallback? onSubmit;
@@ -1258,14 +1277,15 @@ class _ValidatorResultStash {
 }
 
 class FormController extends ChangeNotifier {
-  final Map<FormKey, FormValueState> _attachedInputs = {};
-  final Map<FormKey, _ValidatorResultStash> _validity = {};
+  final Map<FormFieldHandle, FormValueState> _attachedInputs = {};
+  final Map<FormFieldHandle, _ValidatorResultStash> _validity = {};
 
   bool _disposed = false;
 
-  Map<FormKey, dynamic> get values {
+  Map<FormKey, Object?> get values {
     return {
-      for (var entry in _attachedInputs.entries) entry.key: entry.value.value
+      for (var entry in _attachedInputs.entries)
+        if (entry.key.mounted) entry.key.formKey: entry.value.value
     };
   }
 
@@ -1276,33 +1296,44 @@ class FormController extends ChangeNotifier {
   }
 
   Map<FormKey, FutureOr<ValidationResult?>> get validities {
-    return Map.unmodifiable(_validity.map((key, value) {
-      return MapEntry(key, value.result);
-    }));
+    return {
+      for (var entry in _validity.entries)
+        if (entry.key.mounted) entry.key.formKey: entry.value.result
+    };
   }
 
   Map<FormKey, ValidationResult> get errors {
     final errors = <FormKey, ValidationResult>{};
     for (var entry in _validity.entries) {
+      if (!entry.key.mounted) {
+        continue;
+      }
       var result = entry.value.result;
       if (result is Future<ValidationResult?>) {
-        errors[entry.key] =
-            WaitingResult.attached(state: entry.value.state, key: entry.key);
+        errors[entry.key.formKey] = WaitingResult.attached(
+            state: entry.value.state, key: entry.key.formKey);
       } else if (result != null) {
-        errors[entry.key] = result;
+        errors[entry.key.formKey] = result;
       }
     }
     return errors;
   }
 
   FutureOr<ValidationResult?>? getError(FormKey key) {
-    return _validity[key]?.result;
+    return _validity.entries
+        .where((element) => element.key.formKey == key)
+        .firstOrNull
+        ?.value
+        .result;
   }
 
   ValidationResult? getSyncError(FormKey key) {
-    var result = _validity[key]?.result;
+    var entry = _validity.entries
+        .where((element) => element.key.formKey == key)
+        .firstOrNull;
+    var result = entry?.value.result;
     if (result is Future<ValidationResult?>) {
-      return WaitingResult.attached(state: _validity[key]!.state, key: key);
+      return WaitingResult.attached(state: entry!.value.state, key: key);
     }
     return result;
   }
@@ -1324,7 +1355,7 @@ class FormController extends ChangeNotifier {
             future.then((value) {
               if (_validity[key]?.result == future) {
                 _validity[key] =
-                    _ValidatorResultStash(value?.attach(key), state);
+                    _ValidatorResultStash(value?.attach(key.formKey), state);
                 WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                   if (_disposed) {
                     return;
@@ -1350,13 +1381,13 @@ class FormController extends ChangeNotifier {
     }
   }
 
-  FutureOr<ValidationResult?> attach(
-      BuildContext context, FormKey key, Object? value, Validator? validator,
+  FutureOr<ValidationResult?> attach(BuildContext context, FormFieldHandle key,
+      Object? value, Validator? validator,
       [bool forceRevalidate = false]) {
     final oldState = _attachedInputs[key];
     var state = FormValueState(value: value, validator: validator);
     if (oldState == state && !forceRevalidate) {
-      return null;
+      return _validity[key]?.result;
     }
     var lifecycle = oldState == null
         ? FormValidationMode.initial
@@ -1369,7 +1400,8 @@ class FormController extends ChangeNotifier {
       future.then((value) {
         // resolve the future and store synchronous value
         if (_validity[key]?.result == future) {
-          _validity[key] = _ValidatorResultStash(value?.attach(key), lifecycle);
+          _validity[key] =
+              _ValidatorResultStash(value?.attach(key.formKey), lifecycle);
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
             if (_disposed) {
               return;
@@ -1382,14 +1414,15 @@ class FormController extends ChangeNotifier {
       _validity[key] = _ValidatorResultStash(future, lifecycle);
     }
     // check for revalidation
-    Map<FormKey, FutureOr<ValidationResult?>> revalidate = {};
+    Map<FormFieldHandle, FutureOr<ValidationResult?>> revalidate = {};
     for (var entry in _attachedInputs.entries) {
       var k = entry.key;
       var value = entry.value;
       if (key == k) {
         continue;
       }
-      if (value.validator != null && value.validator!.shouldRevalidate(key)) {
+      if (value.validator != null &&
+          value.validator!.shouldRevalidate(key.formKey)) {
         var revalidateResult =
             value.validator!.validate(context, value.value, lifecycle);
         revalidate[k] = revalidateResult;
@@ -1406,7 +1439,8 @@ class FormController extends ChangeNotifier {
         _validity[k] = _ValidatorResultStash(future, lifecycle);
         future.then((value) {
           if (_validity[k]?.result == future) {
-            _validity[k] = _ValidatorResultStash(value?.attach(k), lifecycle);
+            _validity[k] =
+                _ValidatorResultStash(value?.attach(k.formKey), lifecycle);
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
               if (_disposed) {
                 return;
@@ -1425,10 +1459,10 @@ class FormController extends ChangeNotifier {
       }
       notifyListeners();
     });
-    return null;
+    return _validity[key]?.result;
   }
 
-  void detach(FormKey key) {
+  void detach(FormFieldHandle key) {
     if (_attachedInputs.containsKey(key)) {
       _attachedInputs.remove(key);
       _validity.remove(key);
@@ -1462,11 +1496,8 @@ class FormState extends State<Form> {
   @override
   Widget build(BuildContext context) {
     return Data.inherit(
-      data: this,
-      child: Data.inherit(
-        data: _controller,
-        child: widget.child,
-      ),
+      data: _controller,
+      child: widget.child,
     );
   }
 }
@@ -1528,17 +1559,14 @@ class FormErrorBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formController = Data.maybeOf<FormController>(context);
-    if (formController != null) {
-      return ListenableBuilder(
-        listenable: formController,
-        child: child,
-        builder: (context, child) {
-          return builder(context, formController.errors, child);
-        },
-      );
-    }
-    return builder(context, {}, child);
+    final formController = Data.of<FormController>(context);
+    return ListenableBuilder(
+      listenable: formController,
+      child: child,
+      builder: (context, child) {
+        return builder(context, formController.errors, child);
+      },
+    );
   }
 }
 
@@ -1597,7 +1625,7 @@ extension FormExtension on BuildContext {
     for (var entry in formController!._attachedInputs.entries) {
       var key = entry.key;
       var value = entry.value;
-      values[key] = value.value;
+      values[key.formKey] = value.value;
     }
     formController.revalidate(this, FormValidationMode.submitted);
     var errors = <FormKey, ValidationResult>{};
@@ -1622,7 +1650,7 @@ extension FormExtension on BuildContext {
   FutureOr<SubmissionResult> _chainedSubmitForm(
       Map<FormKey, Object?> values,
       Map<FormKey, ValidationResult> errors,
-      Iterator<MapEntry<FormKey, _ValidatorResultStash>> iterator) {
+      Iterator<MapEntry<FormFieldHandle, _ValidatorResultStash>> iterator) {
     if (!iterator.moveNext()) {
       return SubmissionResult(values, errors);
     }
@@ -1631,7 +1659,7 @@ extension FormExtension on BuildContext {
     if (value is Future<ValidationResult?>) {
       return value.then((value) {
         if (value != null) {
-          errors[entry.key] = value;
+          errors[entry.key.formKey] = value;
         }
         return _chainedSubmitForm(values, errors, iterator);
       });
@@ -1641,16 +1669,16 @@ extension FormExtension on BuildContext {
 }
 
 mixin FormValueSupplier<T, X extends StatefulWidget> on State<X> {
-  T? _cachedValue;
+  _FormEntryCachedValue? _cachedValue;
   int _futureCounter = 0;
   FormFieldHandle? _entryState;
 
-  T? get formValue => _cachedValue;
+  T? get formValue => _cachedValue?.value as T?;
   set formValue(T? value) {
-    if (_cachedValue == value) {
+    if (_cachedValue != null && _cachedValue!.value == value) {
       return;
     }
-    _cachedValue = value;
+    _cachedValue = _FormEntryCachedValue(value);
     _reportNewFormValue(value);
   }
 
@@ -1660,7 +1688,7 @@ mixin FormValueSupplier<T, X extends StatefulWidget> on State<X> {
     var newState = Data.maybeOf<FormFieldHandle>(context);
     if (newState != _entryState) {
       _entryState = newState;
-      _reportNewFormValue(_cachedValue);
+      _reportNewFormValue(_cachedValue?.value as T?);
     }
   }
 

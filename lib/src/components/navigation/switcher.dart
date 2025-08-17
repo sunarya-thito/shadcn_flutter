@@ -4,21 +4,20 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-typedef SwitcherResponse = Widget? Function(
-    BuildContext context, AxisDirection direction);
-
 class Switcher extends StatefulWidget {
+  final int index;
+  final ValueChanged<int>? onIndexChanged;
   final AxisDirection direction;
-  final Widget child;
-  final SwitcherResponse? onDrag;
+  final List<Widget> children;
   final Duration duration;
   final Curve curve;
 
   const Switcher({
     super.key,
+    this.index = 0,
     required this.direction,
-    required this.child,
-    this.onDrag,
+    required this.children,
+    this.onIndexChanged,
     this.duration = kDefaultDuration,
     this.curve = Curves.easeInOut,
   });
@@ -56,86 +55,41 @@ class _SwitcherQueue {
     }
   }
 
-  Widget _buildTransition(BuildContext context, Widget newChild) {
-    final progress = this.progress.clamp(0.0, 1.0);
-    return _SwitcherTransition(
-        progress: progress,
-        direction: direction,
-        absolute: absolute,
-        children: [
-          Opacity(
-            opacity: 1 - progress,
-            child: oldWidget,
-          ),
-          Opacity(
-            opacity: progress,
-            child: newChild,
-          ),
-        ]);
-  }
+  // Widget _buildTransition(BuildContext context, Widget newChild) {
+  //   final progress = this.progress.clamp(0.0, 1.0);
+  //   return _SwitcherTransition(
+  //       progress: progress,
+  //       direction: direction,
+  //       absolute: absolute,
+  //       children: [
+  //         Opacity(
+  //           opacity: 1 - progress,
+  //           child: oldWidget,
+  //         ),
+  //         Opacity(
+  //           opacity: progress,
+  //           child: newChild,
+  //         ),
+  //       ]);
+  // }
 }
 
-class _SwitcherState extends State<Switcher>
-    with SingleTickerProviderStateMixin {
-  late Ticker _ticker;
-  Duration? _last;
-  final List<_SwitcherQueue> _queue = [];
-  _SwitcherQueue? _dragged;
+class _SwitcherState extends State<Switcher> {
+  late double _index;
+  bool _dragging = false;
 
   @override
   void initState() {
     super.initState();
-    _ticker = createTicker(_tick);
-  }
-
-  void _startTicker() {
-    if (_ticker.isActive) {
-      return;
-    }
-    _last = null;
-    _ticker.start();
-  }
-
-  void _tick(Duration elapsed) {
-    final delta = _last == null ? Duration.zero : elapsed - _last!;
-    if (_queue.isNotEmpty) {
-      final last = _queue.last;
-      setState(() {
-        last.progress += delta.inMilliseconds / last.duration.inMilliseconds;
-      });
-      if (last.progress >= 1) {
-        _queue.removeLast();
-      }
-    } else {
-      _ticker.stop();
-    }
-    _last = elapsed;
+    _index = widget.index.toDouble();
   }
 
   @override
   void didUpdateWidget(covariant Switcher oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.child != widget.child ||
-        oldWidget.child.key != widget.child.key) {
-      _queue.insert(
-          0,
-          _SwitcherQueue(
-            oldWidget: oldWidget.child,
-            direction: widget.direction,
-            duration: widget.duration,
-            curve: widget.curve,
-            absolute: false,
-          ));
-      _startTicker();
-    }
-  }
-
-  void _visitQueue(void Function(_SwitcherQueue item) visitor) {
-    for (final queue in _queue) {
-      visitor(queue);
-    }
-    if (_dragged != null) {
-      visitor(_dragged!);
+    if (oldWidget.index != widget.index) {
+      _index = widget.index.toDouble();
+      _dragging = false; // cancels out dragging
     }
   }
 
@@ -150,36 +104,54 @@ class _SwitcherState extends State<Switcher>
     }
   }
 
-  AxisDirection _fromDelta(Offset delta) {
-    if (delta.dy.abs() > delta.dx.abs()) {
-      return delta.dy < 0 ? AxisDirection.up : AxisDirection.down;
-    } else {
-      return delta.dx < 0 ? AxisDirection.left : AxisDirection.right;
-    }
-  }
-
   Widget buildDraggable(BuildContext context, Widget child) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
+      onPanStart: (details) {
+        _dragging = true;
+      },
       onPanUpdate: (details) {
-        if (_dragged == null) {
-          final direction = _fromDelta(details.delta);
-          final newChild = widget.onDrag?.call(context, direction);
-          if (newChild == null) {
-            return;
+        if (_dragging) {
+          final currentSize = context.size!;
+          double delta;
+          switch (widget.direction) {
+            case AxisDirection.up:
+              delta = -details.delta.dy / currentSize.height;
+              break;
+            case AxisDirection.down:
+              delta = details.delta.dy / currentSize.height;
+              break;
+            case AxisDirection.left:
+              delta = -details.delta.dx / currentSize.width;
+              break;
+            case AxisDirection.right:
+              delta = details.delta.dx / currentSize.width;
+              break;
           }
-          _dragged = _SwitcherQueue(
-            oldWidget: newChild,
-            direction: direction,
-            duration: widget.duration,
-            curve: widget.curve,
-            absolute: true,
-          );
-          return;
+          setState(() {
+            _index += delta;
+            _index = _index.clamp(0, widget.children.length - 1).toDouble();
+          });
         }
-        final delta = _filterDragOffset(details.delta);
+      },
+      onPanEnd: (details) {
         setState(() {
-          _dragged!.progress += delta.distance;
+          _dragging = false;
+          // Snap to the nearest index
+          _index = _index.roundToDouble();
+          if (widget.onIndexChanged != null) {
+            widget.onIndexChanged!(_index.toInt());
+          }
+        });
+      },
+      onPanCancel: () {
+        setState(() {
+          _dragging = false;
+          // Snap to the nearest index
+          _index = _index.roundToDouble();
+          if (widget.onIndexChanged != null) {
+            widget.onIndexChanged!(_index.toInt());
+          }
         });
       },
       child: child,
@@ -188,14 +160,38 @@ class _SwitcherState extends State<Switcher>
 
   @override
   Widget build(BuildContext context) {
-    Widget currentChild = widget.child;
-    _visitQueue((item) {
-      currentChild = item._buildTransition(context, currentChild);
-    });
-    if (widget.onDrag != null) {
-      currentChild = buildDraggable(context, currentChild);
-    }
-    return currentChild;
+    return buildDraggable(
+      context,
+      AnimatedValueBuilder(
+        value: _index,
+        duration: _dragging ? Duration.zero : widget.duration,
+        curve: widget.curve,
+        builder: (context, value, child) {
+          final sourceChild = value.floor();
+          final targetChild = value.ceil();
+          final relativeProgress = value - sourceChild;
+          return _SwitcherTransition(
+            progress: relativeProgress,
+            direction: widget.direction,
+            absolute: false,
+            children: [
+              1 - relativeProgress == 0
+                  ? const SizedBox.shrink()
+                  : Opacity(
+                      opacity: 1 - relativeProgress,
+                      child: widget.children[sourceChild],
+                    ),
+              relativeProgress == 0
+                  ? const SizedBox.shrink()
+                  : Opacity(
+                      opacity: relativeProgress,
+                      child: widget.children[targetChild],
+                    ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -274,7 +270,6 @@ class _RenderSwitcherTransition extends RenderBox
     final lerpedSize = Size.lerp(oldSize, newSize, progress)!;
 
     if (absolute) {
-      // 🎯 Centering logic is now applied to the absolute transition.
       switch (direction) {
         case AxisDirection.down:
         case AxisDirection.up:
@@ -317,7 +312,6 @@ class _RenderSwitcherTransition extends RenderBox
           break;
       }
     } else {
-      // 🎯 Centering logic applied to the relative transition.
       switch (direction) {
         case AxisDirection.down:
         case AxisDirection.up:

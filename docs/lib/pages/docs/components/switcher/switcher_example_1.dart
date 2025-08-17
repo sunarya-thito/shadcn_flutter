@@ -20,15 +20,16 @@ class _SwitcherExample1State extends State<SwitcherExample1> {
     Size(300, 200),
   ];
   int directionIndex = 0;
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
-    final size = sizes[directionIndex % sizes.length];
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         PrimaryButton(
-            child: const Text('Switch'),
+            child: Text(
+                'Switch Direction (${directions[directionIndex % directions.length]})'),
             onPressed: () {
               setState(() {
                 directionIndex++;
@@ -36,28 +37,30 @@ class _SwitcherExample1State extends State<SwitcherExample1> {
             }),
         gap(8),
         PrimaryButton(
-            child: const Text('Restart'),
+            child: const Text('Next Item'),
             onPressed: () {
               setState(() {
-                directionIndex = 0;
+                index++;
               });
             }),
         gap(24),
         ClipRect(
           child: Switcher(
+            index: index,
             direction: directions[directionIndex % directions.length],
-            onDrag: (context, direction) {
-              return NumberedContainer(
-                index: directionIndex,
-                width: size.width,
-                height: size.height,
-              );
+            onIndexChanged: (index) {
+              setState(() {
+                this.index = index;
+              });
             },
-            child: NumberedContainer(
-              index: directionIndex,
-              width: size.width,
-              height: size.height,
-            ),
+            children: [
+              for (int i = 0; i < 100; i++)
+                NumberedContainer(
+                  index: i,
+                  width: sizes[i % sizes.length].width,
+                  height: sizes[i % sizes.length].height,
+                )
+            ],
           ),
         ),
       ],
