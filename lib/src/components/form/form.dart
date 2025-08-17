@@ -1279,11 +1279,13 @@ class _ValidatorResultStash {
 class FormController extends ChangeNotifier {
   final Map<FormFieldHandle, FormValueState> _attachedInputs = {};
   final Map<FormFieldHandle, _ValidatorResultStash> _validity = {};
+  final Map<FormKey, Object?> _detachedValues = {};
 
   bool _disposed = false;
 
   Map<FormKey, Object?> get values {
     return {
+      ..._detachedValues,
       for (var entry in _attachedInputs.entries)
         if (entry.key.mounted) entry.key.formKey: entry.value.value
     };
@@ -1339,7 +1341,10 @@ class FormController extends ChangeNotifier {
   }
 
   FormValueState? getState(FormKey key) {
-    return _attachedInputs[key];
+    return _attachedInputs.entries
+        .where((element) => element.key.formKey == key)
+        .firstOrNull
+        ?.value;
   }
 
   void revalidate(BuildContext context, FormValidationMode state) {
@@ -1384,6 +1389,7 @@ class FormController extends ChangeNotifier {
   FutureOr<ValidationResult?> attach(BuildContext context, FormFieldHandle key,
       Object? value, Validator? validator,
       [bool forceRevalidate = false]) {
+    _detachedValues.remove(key.formKey);
     final oldState = _attachedInputs[key];
     var state = FormValueState(value: value, validator: validator);
     if (oldState == state && !forceRevalidate) {
@@ -1464,8 +1470,11 @@ class FormController extends ChangeNotifier {
 
   void detach(FormFieldHandle key) {
     if (_attachedInputs.containsKey(key)) {
-      _attachedInputs.remove(key);
+      final oldValue = _attachedInputs.remove(key);
       _validity.remove(key);
+      if (oldValue != null) {
+        _detachedValues[key.formKey] = oldValue.value;
+      }
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         if (_disposed) {
           return;
