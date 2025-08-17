@@ -14,7 +14,7 @@ jobs:
 
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '3.32.0'
+        flutter-version: '3.35.1'
         channel: 'stable'
 
     - name: Enable Flutter Web
@@ -23,18 +23,15 @@ jobs:
 
     - name: Build Release Version
       run: "flutter build web --wasm --base-href \"/shadcn_flutter/\""
-      continue-on-error: true
       working-directory: './docs'
 
     - name: Copy to web build directory
       run: cp -r ./docs/build/web ./docs/public
-      continue-on-error: true
       working-directory: './'
 
     - name: Copy release version config file # from ./docs/config/docs-release.json to ./docs/public/assets/docs.json
       run: cp -r ./docs/config/docs-dev.json ./docs/public/assets/docs.json
       working-directory: './'
-      continue-on-error: true
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
