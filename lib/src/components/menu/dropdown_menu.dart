@@ -14,6 +14,7 @@ OverlayCompleter<T?> showDropdown<T>({
   Object? regionGroupId,
   Offset? offset,
   AlignmentGeometry? transitionAlignment,
+  AlignmentGeometry? alignment,
   EdgeInsetsGeometry? margin,
   bool follow = true,
   bool consumeOutsideTaps = false,
@@ -30,7 +31,7 @@ OverlayCompleter<T?> showDropdown<T>({
   final overlayManager = OverlayManager.of(context);
   return overlayManager.showMenu<T>(
     context: context,
-    alignment: Alignment.topCenter,
+    alignment: alignment ?? Alignment.topCenter,
     offset: offset ?? (const Offset(0, 4) * scaling),
     follow: follow,
     clipBehavior: clipBehavior,
@@ -142,8 +143,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
           return MenuPopup(
             // does not need to check for theme.surfaceOpacity and theme.surfaceBlur
             // MenuPopup already has default values for these properties
-            surfaceOpacity:
-                widget.surfaceOpacity ?? compTheme?.surfaceOpacity,
+            surfaceOpacity: widget.surfaceOpacity ?? compTheme?.surfaceOpacity,
             surfaceBlur: widget.surfaceBlur ?? compTheme?.surfaceBlur,
             children: children,
           );
