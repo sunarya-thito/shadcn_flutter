@@ -3916,7 +3916,7 @@ class ButtonGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = this.children;
+    List<Widget> children = List.of(this.children);
     if (children.length > 1) {
       for (int i = 0; i < children.length; i++) {
         children[i] = ButtonStyleOverride(
@@ -3986,7 +3986,7 @@ class ButtonGroup extends StatelessWidget {
             }
             return value;
           },
-          child: children[i],
+          child: this.children[i],
         );
       }
     }
