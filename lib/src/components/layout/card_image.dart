@@ -158,8 +158,8 @@ class _CardImageState extends State<CardImage> {
           children: [
             Flexible(
               child: OutlinedContainer(
-                backgroundColor: backgroundColor ?? theme.colorScheme.card,
-                borderColor: borderColor ?? theme.colorScheme.border,
+                backgroundColor: backgroundColor,
+                borderColor: borderColor,
                 child: AnimatedBuilder(
                     animation: _statesController,
                     builder: (context, child) {

@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/group.dart';
 import 'package:shadcn_flutter/src/components/patch.dart';
@@ -1598,8 +1597,7 @@ class _WindowNavigatorState extends State<WindowNavigator>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<WindowTheme>(context);
-    final titleBarHeight =
-        (compTheme?.titleBarHeight ?? 32) * theme.scaling;
+    final titleBarHeight = (compTheme?.titleBarHeight ?? 32) * theme.scaling;
     return LayoutBuilder(builder: (context, constraints) {
       return ListenableBuilder(
           listenable: Listenable.merge([
