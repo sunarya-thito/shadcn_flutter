@@ -24,6 +24,7 @@ void _assertNotThemeModeSystem(ThemeMode mode, String label) {
   }
 }
 class ColorSchemes {
+  ColorSchemes._();
 	static const ColorScheme lightBlue = 
 		ColorScheme(
 			brightness: Brightness.light,

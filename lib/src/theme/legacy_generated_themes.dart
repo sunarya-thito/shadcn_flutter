@@ -28,6 +28,7 @@ void _assertNotThemeModeSystem(ThemeMode mode, String label) {
 }
 
 class LegacyColorSchemes {
+  const LegacyColorSchemes._();
   static ColorScheme lightZinc() {
     return ColorScheme(
       brightness: Brightness.light,
