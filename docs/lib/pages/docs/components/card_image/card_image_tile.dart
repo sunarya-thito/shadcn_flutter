@@ -27,7 +27,7 @@ class CardImageTile extends StatelessWidget implements IComponentPage {
                 height: 160,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.muted,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ),

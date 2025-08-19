@@ -857,8 +857,9 @@ class _ResizerState extends State<_Resizer> {
   }
 
   ResizablePaneController? _getControllerAtIndex(int paneIndex) {
-    if (paneIndex < 0 || paneIndex >= widget.panelState.widget.children.length)
+    if (paneIndex < 0 || paneIndex >= widget.panelState.widget.children.length) {
       return null;
+    }
 
     // Find controller by matching the widget at the given index
     final targetWidget = widget.panelState.widget.children[paneIndex];

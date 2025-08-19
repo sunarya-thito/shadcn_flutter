@@ -44,7 +44,7 @@ class NavigationRailTile extends StatelessWidget implements IComponentPage {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(Icons.search),
+                child: const Icon(Icons.search),
               ),
               const Gap(16),
               Container(
@@ -53,7 +53,7 @@ class NavigationRailTile extends StatelessWidget implements IComponentPage {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(Icons.favorite),
+                child: const Icon(Icons.favorite),
               ),
               const Gap(16),
               Container(
@@ -62,7 +62,7 @@ class NavigationRailTile extends StatelessWidget implements IComponentPage {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(Icons.settings),
+                child: const Icon(Icons.settings),
               ),
               const Spacer(),
               Container(
@@ -71,7 +71,7 @@ class NavigationRailTile extends StatelessWidget implements IComponentPage {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Icon(Icons.person),
+                child: const Icon(Icons.person),
               ),
               const Gap(16),
             ],

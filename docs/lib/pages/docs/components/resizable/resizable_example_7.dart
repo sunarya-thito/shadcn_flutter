@@ -44,7 +44,7 @@ class _ResizableExample7State extends State<ResizableExample7> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           TextButton(
-                            child: Text('Insert Before'),
+                            child: const Text('Insert Before'),
                             onPressed: () {
                               setState(() {
                                 _items.insert(i, _generateColor());
@@ -52,7 +52,7 @@ class _ResizableExample7State extends State<ResizableExample7> {
                             },
                           ),
                           TextButton(
-                            child: Text('Remove'),
+                            child: const Text('Remove'),
                             onPressed: () {
                               setState(() {
                                 _items.removeAt(i);
@@ -60,7 +60,7 @@ class _ResizableExample7State extends State<ResizableExample7> {
                             },
                           ),
                           TextButton(
-                            child: Text('Insert After'),
+                            child: const Text('Insert After'),
                             onPressed: () {
                               setState(() {
                                 _items.insert(i + 1, _generateColor());
@@ -75,7 +75,7 @@ class _ResizableExample7State extends State<ResizableExample7> {
             ],
           ),
           PrimaryButton(
-            child: Text('Add'),
+            child: const Text('Add'),
             onPressed: () {
               setState(() {
                 _items.add(_generateColor());

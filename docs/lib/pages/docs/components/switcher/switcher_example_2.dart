@@ -25,7 +25,7 @@ class _SwitcherExample2State extends State<SwitcherExample2> {
         Container(
           key: const Key('login'),
           width: 350,
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Form(
             controller: _loginController,
             child: Column(
@@ -33,22 +33,22 @@ class _SwitcherExample2State extends State<SwitcherExample2> {
               spacing: 16,
               children: [
                 FormField(
-                  key: TextFieldKey(#email),
-                  label: Text('Email'),
-                  validator: EmailValidator() & NotEmptyValidator(),
-                  showErrors: {
+                  key: const TextFieldKey(#email),
+                  label: const Text('Email'),
+                  validator: const EmailValidator() & const NotEmptyValidator(),
+                  showErrors: const {
                     FormValidationMode.changed,
                     FormValidationMode.submitted,
                   },
                   child: TextField(
                     initialValue:
-                        _loginController.getValue(TextFieldKey(#email)),
+                        _loginController.getValue(const TextFieldKey(#email)),
                     keyboardType: TextInputType.emailAddress,
                     autocorrect: false,
                     enableSuggestions: false,
                   ),
                 ),
-                FormField(
+                const FormField(
                   key: TextFieldKey(#password),
                   label: Text('Password'),
                   validator: NotEmptyValidator(),
@@ -58,24 +58,24 @@ class _SwitcherExample2State extends State<SwitcherExample2> {
                   },
                   child: TextField(obscureText: true),
                 ),
-                SubmitButton(
+                const SubmitButton(
                   child: Text('Login'),
                 ),
-                Text('Don\'t have an account? ').thenButton(
+                const Text('Don\'t have an account? ').thenButton(
                     onPressed: () {
                       setState(() {
                         _isRegister = true;
                       });
                     },
-                    child: Text('Sign Up!')),
+                    child: const Text('Sign Up!')),
               ],
             ),
           ),
         ),
         Container(
-          key: Key('register-form'),
+          key: const Key('register-form'),
           width: 350,
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Form(
             controller: _registerController,
             child: Column(
@@ -83,22 +83,22 @@ class _SwitcherExample2State extends State<SwitcherExample2> {
               spacing: 16,
               children: [
                 FormField(
-                  key: TextFieldKey(#email),
-                  label: Text('Email'),
-                  validator: EmailValidator() & NotEmptyValidator(),
-                  showErrors: {
+                  key: const TextFieldKey(#email),
+                  label: const Text('Email'),
+                  validator: const EmailValidator() & const NotEmptyValidator(),
+                  showErrors: const {
                     FormValidationMode.changed,
                     FormValidationMode.submitted,
                   },
                   child: TextField(
                     initialValue:
-                        _registerController.getValue(TextFieldKey(#email)),
+                        _registerController.getValue(const TextFieldKey(#email)),
                     keyboardType: TextInputType.emailAddress,
                     autocorrect: false,
                     enableSuggestions: false,
                   ),
                 ),
-                FormField(
+                const FormField(
                   key: TextFieldKey(#password),
                   label: Text('Password'),
                   validator: LengthValidator(
@@ -110,7 +110,7 @@ class _SwitcherExample2State extends State<SwitcherExample2> {
                   },
                   child: TextField(obscureText: true),
                 ),
-                FormField(
+                const FormField(
                   key: TextFieldKey(#confirmPassword),
                   label: Text('Confirm Password'),
                   validator: CompareWith.equal(TextFieldKey(#password),
@@ -121,16 +121,16 @@ class _SwitcherExample2State extends State<SwitcherExample2> {
                   },
                   child: TextField(obscureText: true),
                 ),
-                SubmitButton(
+                const SubmitButton(
                   child: Text('Register'),
                 ),
-                Text('Already have an account? ').thenButton(
+                const Text('Already have an account? ').thenButton(
                     onPressed: () {
                       setState(() {
                         _isRegister = false;
                       });
                     },
-                    child: Text('Login!')),
+                    child: const Text('Login!')),
               ],
             ),
           ),

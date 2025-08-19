@@ -18,10 +18,10 @@ class NumberInputTile extends StatelessWidget implements IComponentPage {
           children: [
             const Text('Enter a number:').bold(),
             const Gap(16),
-            TextField(
+            const TextField(
               initialValue: '42',
               keyboardType: TextInputType.number,
-              placeholder: const Text('Enter number'),
+              placeholder: Text('Enter number'),
             ).sized(width: 200),
           ],
         ).withPadding(all: 16),

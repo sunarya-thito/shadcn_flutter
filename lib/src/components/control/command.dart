@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
-import 'package:shadcn_flutter/src/components/navigation/subfocus.dart';
 
 typedef CommandBuilder = Stream<List<Widget>> Function(
     BuildContext context, String? query);

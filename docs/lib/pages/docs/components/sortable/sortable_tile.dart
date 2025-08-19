@@ -18,42 +18,42 @@ class SortableTile extends StatelessWidget implements IComponentPage {
           children: [
             const Text('Sortable List:').bold(),
             const Gap(16),
-            Column(
+            const Column(
               children: [
                 Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Icon(Icons.drag_handle),
-                        const Gap(8),
-                        const Text('Item 1'),
+                        Gap(8),
+                        Text('Item 1'),
                       ],
                     ),
                   ),
                 ),
-                const Gap(8),
+                Gap(8),
                 Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Icon(Icons.drag_handle),
-                        const Gap(8),
-                        const Text('Item 2'),
+                        Gap(8),
+                        Text('Item 2'),
                       ],
                     ),
                   ),
                 ),
-                const Gap(8),
+                Gap(8),
                 Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Icon(Icons.drag_handle),
-                        const Gap(8),
-                        const Text('Item 3'),
+                        Gap(8),
+                        Text('Item 3'),
                       ],
                     ),
                   ),

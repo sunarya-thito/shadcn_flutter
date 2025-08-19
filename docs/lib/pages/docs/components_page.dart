@@ -61,7 +61,6 @@ import 'package:docs/pages/docs/components/tracker/tracker_tile.dart';
 import 'package:docs/pages/docs/components/tree/tree_tile.dart';
 import 'package:docs/pages/docs_page.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -147,16 +146,16 @@ class _ComponentsPageState extends State<ComponentsPage> {
             const Text('Animation').h2().anchored(animationKey),
             const Gap(16),
             wrap(children: [
-              AnimatedValueBuilderTile(),
-              NumberTickerTile(),
-              RepeatedAnimationBuilderTile(),
+              const AnimatedValueBuilderTile(),
+              const NumberTickerTile(),
+              const RepeatedAnimationBuilderTile(),
             ]),
             const Text('Disclosure').h2().anchored(disclosureKey),
             const Gap(16),
             wrap(
               children: [
-                AccordionTile(),
-                CollapsibleTile(),
+                const AccordionTile(),
+                const CollapsibleTile(),
               ],
             ),
             const Text('Feedback').h2().anchored(feedbackKey),

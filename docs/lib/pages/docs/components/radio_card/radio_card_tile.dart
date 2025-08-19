@@ -18,42 +18,42 @@ class RadioCardTile extends StatelessWidget implements IComponentPage {
           children: [
             const Text('Select an option:').bold(),
             const Gap(16),
-            Column(
+            const Column(
               children: [
                 Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Radio(value: true),
-                        const Gap(8),
-                        const Text('Option 1'),
+                        Gap(8),
+                        Text('Option 1'),
                       ],
                     ),
                   ),
                 ),
-                const Gap(8),
+                Gap(8),
                 Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Radio(value: false),
-                        const Gap(8),
-                        const Text('Option 2'),
+                        Gap(8),
+                        Text('Option 2'),
                       ],
                     ),
                   ),
                 ),
-                const Gap(8),
+                Gap(8),
                 Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Radio(value: false),
-                        const Gap(8),
-                        const Text('Option 3'),
+                        Gap(8),
+                        Text('Option 3'),
                       ],
                     ),
                   ),

@@ -16,9 +16,9 @@ class AutocompleteTile extends StatelessWidget implements IComponentPage {
       example: Card(
         child: Column(
           children: [
-            TextField(
-              placeholder: const Text('Search fruits...'),
-              trailing: const Icon(LucideIcons.search),
+            const TextField(
+              placeholder: Text('Search fruits...'),
+              trailing: Icon(LucideIcons.search),
             ),
             const Gap(8),
             OutlinedContainer(

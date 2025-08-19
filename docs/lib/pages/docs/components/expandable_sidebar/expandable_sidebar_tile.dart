@@ -29,45 +29,45 @@ class ExpandableSidebarTile extends StatelessWidget implements IComponentPage {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                    Icon(Icons.menu),
+                    const Icon(Icons.menu),
                     const Gap(12),
                     const Text('Menu').bold(),
                     const Spacer(),
-                    Icon(Icons.chevron_left),
+                    const Icon(Icons.chevron_left),
                   ],
                 ),
               ),
-              Divider(),
+              const Divider(),
               Expanded(
                 child: ListView(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(12),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.home),
-                          const Gap(12),
-                          const Text('Home'),
+                          Gap(12),
+                          Text('Home'),
                         ],
                       ),
                     ),
                     Container(
                       padding: const EdgeInsets.all(12),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.settings),
-                          const Gap(12),
-                          const Text('Settings'),
+                          Gap(12),
+                          Text('Settings'),
                         ],
                       ),
                     ),
                     Container(
                       padding: const EdgeInsets.all(12),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.person),
-                          const Gap(12),
-                          const Text('Profile'),
+                          Gap(12),
+                          Text('Profile'),
                         ],
                       ),
                     ),

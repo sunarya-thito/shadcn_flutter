@@ -45,10 +45,10 @@ class OverflowMarqueeTile extends StatelessWidget implements IComponentPage {
                         ),
                       ),
                       // Simulate scrolling effect with positioned text
-                      Positioned(
+                      const Positioned(
                         left: -100,
                         top: 12,
-                        child: const Text(
+                        child: Text(
                           'This is a very long text that will scroll...',
                           style: TextStyle(fontSize: 12),
                         ),

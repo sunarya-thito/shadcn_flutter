@@ -28,7 +28,7 @@ class TableTile extends StatelessWidget implements IComponentPage {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.muted,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ),
@@ -46,8 +46,8 @@ class TableTile extends StatelessWidget implements IComponentPage {
                 padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
-                    Expanded(flex: 2, child: const Text('John Doe')),
-                    Expanded(flex: 2, child: const Text('Developer')),
+                    const Expanded(flex: 2, child: Text('John Doe')),
+                    const Expanded(flex: 2, child: Text('Developer')),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -64,13 +64,13 @@ class TableTile extends StatelessWidget implements IComponentPage {
                   ],
                 ),
               ),
-              Divider(height: 1),
+              const Divider(height: 1),
               Container(
                 padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
-                    Expanded(flex: 2, child: const Text('Jane Smith')),
-                    Expanded(flex: 2, child: const Text('Designer')),
+                    const Expanded(flex: 2, child: Text('Jane Smith')),
+                    const Expanded(flex: 2, child: Text('Designer')),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -87,13 +87,13 @@ class TableTile extends StatelessWidget implements IComponentPage {
                   ],
                 ),
               ),
-              Divider(height: 1),
+              const Divider(height: 1),
               Container(
                 padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
-                    Expanded(flex: 2, child: const Text('Bob Johnson')),
-                    Expanded(flex: 2, child: const Text('Manager')),
+                    const Expanded(flex: 2, child: Text('Bob Johnson')),
+                    const Expanded(flex: 2, child: Text('Manager')),
                     Expanded(
                       flex: 1,
                       child: Container(

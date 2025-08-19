@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// An abstract class that holds values for different Tracker levels.

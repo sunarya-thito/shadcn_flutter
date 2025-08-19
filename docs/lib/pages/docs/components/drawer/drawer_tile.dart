@@ -1,5 +1,4 @@
 import 'package:docs/pages/docs/components_page.dart';
-import 'package:flutter/material.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class DrawerTile extends StatelessWidget implements IComponentPage {

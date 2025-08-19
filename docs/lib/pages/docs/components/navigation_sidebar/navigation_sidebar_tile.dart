@@ -29,13 +29,13 @@ class NavigationSidebarTile extends StatelessWidget implements IComponentPage {
                 padding: const EdgeInsets.all(16),
                 child: Row(
                   children: [
-                    Icon(Icons.menu),
+                    const Icon(Icons.menu),
                     const Gap(12),
                     const Text('Navigation').bold(),
                   ],
                 ),
               ),
-              Divider(),
+              const Divider(),
               Expanded(
                 child: ListView(
                   padding: const EdgeInsets.all(8),
@@ -65,33 +65,33 @@ class NavigationSidebarTile extends StatelessWidget implements IComponentPage {
                     const Gap(4),
                     Container(
                       padding: const EdgeInsets.all(12),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.search),
-                          const Gap(12),
-                          const Text('Search'),
+                          Gap(12),
+                          Text('Search'),
                         ],
                       ),
                     ),
                     const Gap(4),
                     Container(
                       padding: const EdgeInsets.all(12),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.favorite),
-                          const Gap(12),
-                          const Text('Favorites'),
+                          Gap(12),
+                          Text('Favorites'),
                         ],
                       ),
                     ),
                     const Gap(4),
                     Container(
                       padding: const EdgeInsets.all(12),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.settings),
-                          const Gap(12),
-                          const Text('Settings'),
+                          Gap(12),
+                          Text('Settings'),
                         ],
                       ),
                     ),

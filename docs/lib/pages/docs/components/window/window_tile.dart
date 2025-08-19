@@ -30,7 +30,7 @@ class WindowTile extends StatelessWidget implements IComponentPage {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.muted,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ),
@@ -41,7 +41,7 @@ class WindowTile extends StatelessWidget implements IComponentPage {
                     Container(
                       width: 12,
                       height: 12,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.red,
                         shape: BoxShape.circle,
                       ),
@@ -50,7 +50,7 @@ class WindowTile extends StatelessWidget implements IComponentPage {
                     Container(
                       width: 12,
                       height: 12,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.yellow,
                         shape: BoxShape.circle,
                       ),
@@ -59,7 +59,7 @@ class WindowTile extends StatelessWidget implements IComponentPage {
                     Container(
                       width: 12,
                       height: 12,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.green,
                         shape: BoxShape.circle,
                       ),
@@ -67,11 +67,11 @@ class WindowTile extends StatelessWidget implements IComponentPage {
                     const Gap(16),
                     const Text('Window Title').medium(),
                     const Spacer(),
-                    Icon(Icons.minimize, size: 16),
+                    const Icon(Icons.minimize, size: 16),
                     const Gap(8),
-                    Icon(Icons.crop_square, size: 16),
+                    const Icon(Icons.crop_square, size: 16),
                     const Gap(8),
-                    Icon(Icons.close, size: 16),
+                    const Icon(Icons.close, size: 16),
                   ],
                 ),
               ),

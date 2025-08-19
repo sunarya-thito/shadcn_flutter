@@ -9,7 +9,7 @@ class ChipInputTile extends StatelessWidget implements IComponentPage {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentCard(
+    return const ComponentCard(
       name: 'chip_input',
       title: 'Chip Input',
       scale: 1,
@@ -19,7 +19,7 @@ class ChipInputTile extends StatelessWidget implements IComponentPage {
           height: 300,
           child: OutlinedContainer(
             child: Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: EdgeInsets.all(4.0),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Column(

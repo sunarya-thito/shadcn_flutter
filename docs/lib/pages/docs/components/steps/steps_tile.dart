@@ -1,5 +1,4 @@
 import 'package:docs/pages/docs/components_page.dart';
-import 'package:flutter/material.dart' hide Card;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class StepsTile extends StatelessWidget implements IComponentPage {
@@ -10,12 +9,12 @@ class StepsTile extends StatelessWidget implements IComponentPage {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentCard(
+    return const ComponentCard(
       name: 'steps',
       title: 'Steps',
       example: Card(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        child: const Steps(children: [
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: Steps(children: [
           StepItem(
             title: Text('Create a project'),
             content: [

@@ -30,7 +30,7 @@ class TabPaneTile extends StatelessWidget implements IComponentPage {
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.muted,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ),
@@ -56,7 +56,7 @@ class TabPaneTile extends StatelessWidget implements IComponentPage {
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),
-                      child: Text(
+                      child: const Text(
                         'Tab 2',
                         style: TextStyle(fontSize: 14),
                       ),
@@ -65,7 +65,7 @@ class TabPaneTile extends StatelessWidget implements IComponentPage {
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),
-                      child: Text(
+                      child: const Text(
                         'Tab 3',
                         style: TextStyle(fontSize: 14),
                       ),

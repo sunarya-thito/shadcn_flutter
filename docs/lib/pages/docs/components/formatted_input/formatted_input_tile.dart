@@ -14,20 +14,20 @@ class FormattedInputTile extends StatelessWidget implements IComponentPage {
       title: 'Formatted Input',
       scale: 1.2,
       example: Card(
-        child: Column(
+        child: const Column(
           children: [
             TextField(
-              placeholder: const Text('(123) 456-7890'),
+              placeholder: Text('(123) 456-7890'),
               initialValue: '1234567890',
             ),
-            const Gap(16),
+            Gap(16),
             TextField(
-              placeholder: const Text('1234 5678 9012 3456'),
+              placeholder: Text('1234 5678 9012 3456'),
               initialValue: '1234567890123456',
             ),
-            const Gap(16),
+            Gap(16),
             TextField(
-              placeholder: const Text('MM/DD/YYYY'),
+              placeholder: Text('MM/DD/YYYY'),
               initialValue: '12/25/2024',
             ),
           ],

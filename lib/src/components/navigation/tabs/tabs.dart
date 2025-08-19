@@ -127,7 +127,7 @@ class Tabs extends StatelessWidget {
             color: backgroundColor,
             borderRadius: borderRadius is BorderRadius
                 ? borderRadius
-                : borderRadius?.resolve(Directionality.of(context)),
+                : borderRadius.resolve(Directionality.of(context)),
           ),
           padding: containerPadding,
           child: IntrinsicHeight(

@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
@@ -263,7 +262,7 @@ class _AccordionItemState extends State<AccordionItem>
           children: [
             widget.trigger,
             SizeTransition(
-              sizeFactor: _easeInAnimation!,
+              sizeFactor: _easeInAnimation,
               axisAlignment: -1,
               child: Padding(
                 padding: EdgeInsets.only(

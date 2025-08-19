@@ -39,33 +39,33 @@ class NavigationBarTile extends StatelessWidget implements IComponentPage {
                   ),
                 ],
               ),
-              Column(
+              const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.search),
-                  const Gap(4),
+                  Gap(4),
                   Text(
                     'Search',
                     style: TextStyle(fontSize: 12),
                   ),
                 ],
               ),
-              Column(
+              const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.favorite),
-                  const Gap(4),
+                  Gap(4),
                   Text(
                     'Favorites',
                     style: TextStyle(fontSize: 12),
                   ),
                 ],
               ),
-              Column(
+              const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.person),
-                  const Gap(4),
+                  Gap(4),
                   Text(
                     'Profile',
                     style: TextStyle(fontSize: 12),

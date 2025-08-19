@@ -1599,7 +1599,7 @@ class TextFieldState extends State<TextField>
       return false;
     }
 
-    if (cause == SelectionChangedCause.scribble) {
+    if (cause == SelectionChangedCause.stylusHandwriting) {
       return true;
     }
 
