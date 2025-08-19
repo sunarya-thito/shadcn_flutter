@@ -1,3 +1,20 @@
+## 0.0.39
+* Added SubFocus component
+* Fixed ButtonStyleOverride being discarded after Button dependency update
+* Fixed ButtonGroup modifiying immutable list
+* Added alignment parameter to showDropdown
+* Added Switcher component
+* Upgraded to 3.35.1
+* FormController no longer discard detached FormValue for restoration purposes
+* Added SubFocus component
+* Enhanced keyboard shortcut accessibility Select, MultiSelect, Command, Menubar, Dropdown, etc using SubFocus component
+* Fixed directionality on Drawer and Sheet
+* Fixed auto focus issue with components inside dialog
+* Implemented New York v4 style based on original shadcn/ui design spec
+* Old New York color schemes has been renamed to LegacyColorSchemes
+* Added private constructor to LegacyColorSchemes and ColorSchemes
+* Implemented bunch of ComponentTheme for a lot of components
+
 ## 0.0.38
 * Added component tiles for various UI elements (major documentation improvement)
 * Fixed missing callback invocation (#277)
