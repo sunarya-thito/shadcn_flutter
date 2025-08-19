@@ -666,14 +666,19 @@ class ButtonState<T extends Button> extends State<T> {
   ButtonStyleOverrideData? _overrideData;
 
   @override
+  void initState() {
+    super.initState();
+    _style = widget.style;
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    var style = widget.style;
     var overrideData = Data.maybeOf<ButtonStyleOverrideData>(context);
     if (overrideData != _overrideData) {
       _overrideData = overrideData;
       if (overrideData != null) {
-        style = style.copyWith(
+        _style = widget.style.copyWith(
           decoration: overrideData.decoration,
           mouseCursor: overrideData.mouseCursor,
           padding: overrideData.padding,
@@ -681,19 +686,19 @@ class ButtonState<T extends Button> extends State<T> {
           iconTheme: overrideData.iconTheme,
           margin: overrideData.margin,
         );
+      } else {
+        _style = widget.style;
       }
     }
-    _style = style;
   }
 
   @override
   void didUpdateWidget(T oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.style != oldWidget.style) {
-      var style = widget.style;
       var overrideData = _overrideData;
       if (overrideData != null) {
-        style = style.copyWith(
+        _style = widget.style.copyWith(
           decoration: overrideData.decoration,
           mouseCursor: overrideData.mouseCursor,
           padding: overrideData.padding,
@@ -701,8 +706,9 @@ class ButtonState<T extends Button> extends State<T> {
           iconTheme: overrideData.iconTheme,
           margin: overrideData.margin,
         );
+      } else {
+        _style = widget.style;
       }
-      _style = style;
     }
   }
 
@@ -3916,7 +3922,7 @@ class ButtonGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = List.of(this.children);
+    List<Widget> children = List.from(this.children);
     if (children.length > 1) {
       for (int i = 0; i < children.length; i++) {
         children[i] = ButtonStyleOverride(
@@ -3986,7 +3992,7 @@ class ButtonGroup extends StatelessWidget {
             }
             return value;
           },
-          child: this.children[i],
+          child: children[i],
         );
       }
     }
