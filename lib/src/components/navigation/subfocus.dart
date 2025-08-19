@@ -8,7 +8,7 @@ typedef SubFocusScopeBuilder = Widget Function(
 class SubFocusScope extends StatefulWidget {
   final SubFocusScopeBuilder? builder;
   final bool autofocus;
-  const SubFocusScope({super.key, this.builder, this.autofocus = true});
+  const SubFocusScope({super.key, this.builder, this.autofocus = false});
 
   @override
   State<SubFocusScope> createState() => _SubFocusScopeState();
