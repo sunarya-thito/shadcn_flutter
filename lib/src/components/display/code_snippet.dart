@@ -191,79 +191,82 @@ class _CodeSnippetState extends State<CodeSnippet> {
       ),
     );
 
-    return Container(
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        border: Border.all(
-          color: borderColor,
-          width: borderWidth,
-        ),
-        borderRadius: borderRadius,
-      ),
-      child: Stack(
-        fit: StackFit.passthrough,
-        children: [
-          FutureBuilder(
-              future: _highlighter,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(16),
-                    child: const CircularProgressIndicator(),
-                  );
-                }
-                var data = snapshot.data;
-                return Container(
-                  constraints: widget.constraints,
-                  child: SingleChildScrollView(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      padding: padding,
-                      child: data == null
-                          ? SelectableText(widget.code).muted().mono().small()
-                          : SelectableText.rich(
-                              data.highlight(widget.code),
-                            ).mono().small(),
-                    ),
-                  ),
-                );
-              }),
-          Positioned(
-            right: 8,
-            top: 8,
-            child: Row(
-              children: [
-                ...widget.actions,
-                GhostButton(
-                  density: ButtonDensity.icon,
-                  onPressed: () {
-                    Clipboard.setData(ClipboardData(text: widget.code))
-                        .then((value) {
-                      if (context.mounted) {
-                        showToast(
-                          context: context,
-                          showDuration: const Duration(seconds: 2),
-                          builder: (context, overlay) {
-                            final localizations =
-                                ShadcnLocalizations.of(context);
-                            return Alert(
-                              leading: const Icon(
-                                LucideIcons.copyCheck,
-                              ).iconSmall(),
-                              title: Text(localizations.toastSnippetCopied),
-                            );
-                          },
-                        );
-                      }
-                    });
-                  },
-                  child: const Icon(LucideIcons.copy).iconSmall(),
-                ),
-              ],
-            ).gap(4),
+    return Semantics(
+      value: widget.code,
+      child: Container(
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          border: Border.all(
+            color: borderColor,
+            width: borderWidth,
           ),
-        ],
+          borderRadius: borderRadius,
+        ),
+        child: Stack(
+          fit: StackFit.passthrough,
+          children: [
+            FutureBuilder(
+                future: _highlighter,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(16),
+                      child: const CircularProgressIndicator(),
+                    );
+                  }
+                  var data = snapshot.data;
+                  return Container(
+                    constraints: widget.constraints,
+                    child: SingleChildScrollView(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        padding: padding,
+                        child: data == null
+                            ? SelectableText(widget.code).muted().mono().small()
+                            : SelectableText.rich(
+                                data.highlight(widget.code),
+                              ).mono().small(),
+                      ),
+                    ),
+                  );
+                }),
+            Positioned(
+              right: 8,
+              top: 8,
+              child: Row(
+                children: [
+                  ...widget.actions,
+                  GhostButton(
+                    density: ButtonDensity.icon,
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: widget.code))
+                          .then((value) {
+                        if (context.mounted) {
+                          showToast(
+                            context: context,
+                            showDuration: const Duration(seconds: 2),
+                            builder: (context, overlay) {
+                              final localizations =
+                                  ShadcnLocalizations.of(context);
+                              return Alert(
+                                leading: const Icon(
+                                  LucideIcons.copyCheck,
+                                ).iconSmall(),
+                                title: Text(localizations.toastSnippetCopied),
+                              );
+                            },
+                          );
+                        }
+                      });
+                    },
+                    child: const Icon(LucideIcons.copy).iconSmall(),
+                  ),
+                ],
+              ).gap(4),
+            ),
+          ],
+        ),
       ),
     );
   }
