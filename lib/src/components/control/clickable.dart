@@ -393,19 +393,14 @@ class _ClickableState extends State<Clickable> {
   @override
   Widget build(BuildContext context) {
     var enabled = widget.enabled;
-    return Semantics(
-      enabled: enabled,
-      container: true,
-      button: widget.isSemanticButton,
-      child: WidgetStatesProvider(
-        controller: _controller,
-        states: {
-          if (!enabled) WidgetState.disabled,
-        },
-        child: ListenableBuilder(
-          listenable: _controller,
-          builder: _builder,
-        ),
+    return WidgetStatesProvider(
+      controller: _controller,
+      states: {
+        if (!enabled) WidgetState.disabled,
+      },
+      child: ListenableBuilder(
+        listenable: _controller,
+        builder: _builder,
       ),
     );
   }
