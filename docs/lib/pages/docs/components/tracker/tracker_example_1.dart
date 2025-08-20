@@ -1,7 +1,13 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class TrackerExample1 extends StatelessWidget {
+class TrackerExample1 extends StatefulWidget {
   const TrackerExample1({super.key});
+
+  @override
+  State<TrackerExample1> createState() => _TrackerExample1State();
+}
+
+class _TrackerExample1State extends State<TrackerExample1> {
   @override
   Widget build(BuildContext context) {
     List<TrackerData> data = [];
