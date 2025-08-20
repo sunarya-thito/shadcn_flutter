@@ -84,6 +84,7 @@ import 'package:docs/pages/docs/theme_page.dart';
 import 'package:docs/pages/docs/typography_page.dart';
 import 'package:docs/pages/docs/web_preloader_page.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -123,6 +124,9 @@ String getReleaseTagName() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (kIsWeb) {
+    SemanticsBinding.instance.ensureSemantics();
+  }
   _docs = jsonDecode(await rootBundle.loadString('docs.json'));
   String pubspecYml = await rootBundle.loadString('pubspec.lock');
   var dep = loadYaml(pubspecYml)['packages']['shadcn_flutter']['version'];

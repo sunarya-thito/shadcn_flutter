@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -21,8 +22,6 @@ class WidgetUsageExample extends StatefulWidget {
 }
 
 class _WidgetUsageExampleState extends State<WidgetUsageExample> {
-  int index = 0;
-  final GlobalKey _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,45 +30,23 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
       children: [
         if (widget.title != null) Text(widget.title!).h2(),
         if (widget.title != null) const Gap(12),
-        TabList(
-          index: index,
-          onChanged: (value) {
-            setState(() {
-              index = value;
-            });
-          },
-          children: [
-            TabItem(child: const Text('Preview').semiBold().textSmall()),
-            TabItem(child: const Text('Code').semiBold().textSmall()),
-          ],
-        ),
         const Gap(12),
-        RepaintBoundary(
-          child: Offstage(
-            offstage: index != 0,
-            child: OutlinedContainer(
-              key: _key,
-              child: ClipRect(
-                child: Container(
-                  padding: const EdgeInsets.all(40),
-                  constraints: const BoxConstraints(minHeight: 350),
-                  child: Center(
-                    child: widget.child,
-                  ),
-                ),
+        OutlinedContainer(
+          child: ClipRect(
+            child: Container(
+              padding: const EdgeInsets.all(40),
+              constraints: const BoxConstraints(minHeight: 350),
+              child: Center(
+                child: widget.child,
               ),
             ),
           ),
         ),
-        RepaintBoundary(
-          child: Offstage(
-            offstage: index != 1,
-            child: CodeSnippetFutureBuilder(
-              path: widget.path,
-              mode: 'dart',
-              summarize: widget.summarize,
-            ),
-          ),
+        gap(12),
+        CodeSnippetFutureBuilder(
+          path: widget.path,
+          mode: 'dart',
+          summarize: widget.summarize,
         )
       ],
     );
@@ -178,19 +155,24 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
             code: snapshot.data!,
             mode: widget.mode,
             actions: [
-              GhostButton(
-                density: ButtonDensity.icon,
-                onPressed: () {
-                  // open in new tab
-                  //https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/lib/pages/docs/layout_page/layout_page_example_1.dart
-                  String url =
-                      'https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/${widget.path}';
-                  // html.window.open(url, 'blank');
-                  launchUrlString(url);
-                },
-                child: const Icon(
-                  Icons.open_in_new,
-                  size: 16,
+              Semantics(
+                linkUrl: Uri.tryParse(
+                    'https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/${widget.path}'),
+                link: true,
+                child: GhostButton(
+                  density: ButtonDensity.icon,
+                  onPressed: () {
+                    // open in new tab
+                    //https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/lib/pages/docs/layout_page/layout_page_example_1.dart
+                    String url =
+                        'https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/${widget.path}';
+                    // html.window.open(url, 'blank');
+                    if (!kIsWeb) launchUrlString(url);
+                  },
+                  child: const Icon(
+                    Icons.open_in_new,
+                    size: 16,
+                  ),
                 ),
               )
             ],
