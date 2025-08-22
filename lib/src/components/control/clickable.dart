@@ -271,7 +271,6 @@ class Clickable extends StatefulWidget {
   final GestureLongPressEndCallback? onLongPressEnd;
   final GestureLongPressUpCallback? onSecondaryLongPress;
   final GestureLongPressUpCallback? onTertiaryLongPress;
-  final bool? isSemanticButton;
   final bool disableHoverEffect;
   final WidgetStatesController? statesController;
   final AlignmentGeometry? marginAlignment;
@@ -317,7 +316,6 @@ class Clickable extends StatefulWidget {
     this.onLongPressEnd,
     this.onSecondaryLongPress,
     this.onTertiaryLongPress,
-    this.isSemanticButton = true,
     this.marginAlignment,
     this.disableFocusOutline = false,
   });

@@ -1,3 +1,8 @@
+## 0.0.40
+* Added Semantics to CodeSnippet
+* Clickable no longer handles Semantics
+* Bumped flutter version requirement to 3.35.1
+
 ## 0.0.39
 * Added SubFocus component
 * Fixed ButtonStyleOverride being discarded after Button dependency update

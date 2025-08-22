@@ -1,6 +1,6 @@
 name: shadcn_flutter
 description: "Beautifully designed components from Shadcn/UI is now available for Flutter"
-version: 0.0.39
+version: 0.0.40
 homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 documentation: "https://sunarya-thito.github.io/shadcn_flutter/"
 repository: "https://github.com/sunarya-thito/shadcn_flutter"
@@ -8,7 +8,7 @@ issue_tracker: "https://github.com/sunarya-thito/shadcn_flutter/issues"
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
-  flutter: ">=3.32.0"
+  flutter: ">=3.35.1"
 
 dependencies:
   email_validator: ^3.0.0
