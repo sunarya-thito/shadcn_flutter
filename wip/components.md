@@ -116,25 +116,25 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 
 - [x] Dialog
 - [x] Drawer
-- [ ] Hover Card
+- [x] Hover Card
 - [x] Popover
-- [ ] Sheet
-- [ ] Swiper *(New Feature)*
+- [x] Sheet
+- [x] Swiper *(New Feature)*
 - [x] Tooltip
 - [ ] Window *(Experimental)*
 
 ## 🔧 Utility Components
 
 - [x] Badge
-- [ ] Button Group
+- [x] Button Group
 - [ ] Calendar
 - [ ] CardButton
 - [x] Chip
 - [x] Command
 - [ ] ComponentController
-- [ ] Context Menu
+- [x] Context Menu
 - [ ] ControlledComponent
-- [ ] Dropdown Menu
+- [x] Dropdown Menu
 - [ ] IgnoreForm
 - [ ] Image Tools *(Work in Progress)*
 - [ ] Keyboard Display
