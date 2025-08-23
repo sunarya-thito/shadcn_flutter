@@ -2,11 +2,54 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Theme configuration for [TreeView] appearance and behavior.
+///
+/// TreeTheme defines the visual styling and behavioral options for tree view
+/// components including branch lines, padding, expand icons, and selection modes.
+/// All properties are optional and fall back to theme defaults when not specified.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<TreeTheme>(
+///   data: TreeTheme(
+///     branchLine: BranchLine.path,
+///     padding: EdgeInsets.all(12),
+///     expandIcon: true,
+///     allowMultiSelect: true,
+///     recursiveSelection: true,
+///   ),
+///   child: TreeView(...),
+/// )
+/// ```
 class TreeTheme {
+  /// The branch line style for connecting tree nodes.
+  ///
+  /// Type: `BranchLine?`. If null, uses BranchLine.path. Controls how visual
+  /// connections are drawn between parent and child nodes in the tree hierarchy.
   final BranchLine? branchLine;
+  
+  /// Padding around the entire tree view content.
+  ///
+  /// Type: `EdgeInsetsGeometry?`. If null, uses 8 pixels on all sides.
+  /// This padding is applied to the scroll view containing all tree items.
   final EdgeInsetsGeometry? padding;
+  
+  /// Whether to show expand/collapse icons for nodes with children.
+  ///
+  /// Type: `bool?`. If null, defaults to true. When false, nodes cannot be
+  /// visually expanded or collapsed, though the data structure remains hierarchical.
   final bool? expandIcon;
+  
+  /// Whether multiple nodes can be selected simultaneously.
+  ///
+  /// Type: `bool?`. If null, defaults to true. When false, selecting a node
+  /// automatically deselects all other nodes, enforcing single selection mode.
   final bool? allowMultiSelect;
+  
+  /// Whether selecting a parent node also selects its children.
+  ///
+  /// Type: `bool?`. If null, defaults to true. When true, selection operations
+  /// recursively affect all descendant nodes.
   final bool? recursiveSelection;
 
   const TreeTheme({
@@ -54,30 +97,182 @@ class TreeTheme {
       'TreeTheme(branchLine: $branchLine, padding: $padding, expandIcon: $expandIcon, allowMultiSelect: $allowMultiSelect, recursiveSelection: $recursiveSelection)';
 }
 
+/// Abstract base class representing a node in a tree structure.
+///
+/// TreeNode defines the interface for all nodes in the tree hierarchy, providing
+/// access to children, expansion state, and selection state. It supports immutable
+/// updates through copy methods that return new instances with modified state.
+///
+/// The generic type parameter [T] represents the data type stored in tree items.
+/// TreeNode is implemented by [TreeItem] for data-bearing nodes and [TreeRoot]
+/// for the invisible root container.
+///
+/// Key operations include state updates for expansion and selection, child
+/// manipulation, and leaf node detection. All state changes return new instances
+/// to maintain immutability.
+///
+/// Example:
+/// ```dart
+/// TreeNode<String> node = TreeItem(
+///   data: 'parent',
+///   children: [TreeItem(data: 'child1'), TreeItem(data: 'child2')],
+/// );
+/// 
+/// // Expand the node
+/// TreeNode<String> expanded = node.updateState(expanded: true);
+/// 
+/// // Check if it's a leaf
+/// bool isLeaf = node.leaf; // false, has children
+/// ```
 abstract class TreeNode<T> {
+  /// List of child nodes belonging to this node.
+  ///
+  /// Returns: `List<TreeNode<T>>`. An empty list indicates a leaf node with no children.
+  /// The list defines the hierarchical structure beneath this node.
   List<TreeNode<T>> get children;
+  
+  /// Whether this node is currently expanded to show its children.
+  ///
+  /// Returns: `bool`. True when the node is expanded and children are visible,
+  /// false when collapsed. Root nodes are always considered expanded.
   bool get expanded;
+  
+  /// Whether this node is currently selected.
+  ///
+  /// Returns: `bool`. True when the node is part of the current selection,
+  /// false otherwise. Selection affects visual appearance and behavior.
   bool get selected;
 
+  /// Whether this node is a leaf (has no children).
+  ///
+  /// Returns: `bool`. True when [children] is empty, false when the node has child nodes.
+  /// Convenient property for determining if a node can be expanded.
   bool get leaf => children.isEmpty;
 
+  /// Creates a new instance with updated expansion and/or selection state.
+  ///
+  /// Returns a new TreeNode instance with the specified state changes while
+  /// preserving all other properties. This maintains immutability of tree structures.
+  ///
+  /// Parameters:
+  /// - [expanded] (bool?, optional): New expansion state, or null to keep current
+  /// - [selected] (bool?, optional): New selection state, or null to keep current
+  ///
+  /// Returns: A new `TreeNode<T>` instance with updated state
+  ///
+  /// Example:
+  /// ```dart
+  /// TreeNode<String> expandedNode = node.updateState(expanded: true);
+  /// TreeNode<String> selectedNode = node.updateState(selected: true);
+  /// TreeNode<String> both = node.updateState(expanded: true, selected: true);
+  /// ```
   TreeNode<T> updateState({
     bool? expanded,
     bool? selected,
   });
 
+  /// Creates a new instance with updated children list.
+  ///
+  /// Returns a new TreeNode instance with the specified children while preserving
+  /// all other properties including state. Used for structural modifications.
+  ///
+  /// Parameters:
+  /// - [children] (List<TreeNode<T>>): New list of child nodes
+  ///
+  /// Returns: A new `TreeNode<T>` instance with updated children
+  ///
+  /// Example:
+  /// ```dart
+  /// List<TreeNode<String>> newChildren = [TreeItem(data: 'new_child')];
+  /// TreeNode<String> updated = node.updateChildren(newChildren);
+  /// ```
   TreeNode<T> updateChildren(List<TreeNode<T>> children);
 }
 
+/// A concrete tree node implementation that holds data and state.
+///
+/// TreeItem represents a data-bearing node in the tree structure with support
+/// for hierarchical organization, expansion/collapse state, and selection state.
+/// It implements the immutable pattern where state changes return new instances.
+///
+/// Each TreeItem contains user data of type [T], a list of child nodes, and
+/// boolean flags for expansion and selection state. The class provides equality
+/// comparison based on all properties and implements proper hash codes.
+///
+/// TreeItem supports deep hierarchies through its children list, which can
+/// contain other TreeItem instances or TreeRoot containers. The expansion state
+/// controls visibility of children in tree views.
+///
+/// Example:
+/// ```dart
+/// // Create a simple item
+/// TreeItem<String> item = TreeItem(
+///   data: 'Document',
+///   expanded: true,
+///   selected: false,
+///   children: [
+///     TreeItem(data: 'Chapter 1'),
+///     TreeItem(data: 'Chapter 2'),
+///   ],
+/// );
+/// 
+/// // Update its state
+/// TreeItem<String> selected = item.updateState(selected: true);
+/// ```
 class TreeItem<T> extends TreeNode<T> {
+  /// The data value stored in this tree item.
+  ///
+  /// Type: `T`. This is the actual content that the tree item represents,
+  /// such as a string, object, or any other data type.
   final T data;
+  
+  /// List of child nodes beneath this item in the tree hierarchy.
+  ///
+  /// Type: `List<TreeNode<T>>`. Empty list indicates a leaf node. Children
+  /// are only visible when this item's [expanded] state is true.
   @override
   final List<TreeNode<T>> children;
+  
+  /// Whether this item is currently expanded to show its children.
+  ///
+  /// Type: `bool`. When true, child nodes are visible in tree views.
+  /// When false, children are hidden but still present in the data structure.
   @override
   final bool expanded;
+  
+  /// Whether this item is currently selected.
+  ///
+  /// Type: `bool`. Selection affects visual appearance and can trigger
+  /// recursive selection of children depending on tree configuration.
   @override
   final bool selected;
 
+  /// Creates a [TreeItem] with the specified data and configuration.
+  ///
+  /// Constructs a tree item node with user data and optional children,
+  /// expansion state, and selection state.
+  ///
+  /// Parameters:
+  /// - [data] (T, required): The data value to store in this tree item
+  /// - [children] (List<TreeNode<T>>, default: []): Child nodes list
+  /// - [expanded] (bool, default: false): Initial expansion state
+  /// - [selected] (bool, default: false): Initial selection state
+  ///
+  /// Example:
+  /// ```dart
+  /// // Simple leaf item
+  /// TreeItem<String> leaf = TreeItem(data: 'Leaf Node');
+  /// 
+  /// // Parent with children
+  /// TreeItem<String> parent = TreeItem(
+  ///   data: 'Parent Node',
+  ///   expanded: true,
+  ///   children: [
+  ///     TreeItem(data: 'Child 1'),
+  ///     TreeItem(data: 'Child 2'),
+  ///   ],
+  /// );
+  /// ```
   TreeItem({
     required this.data,
     this.children = const [],
@@ -130,14 +325,73 @@ class TreeItem<T> extends TreeNode<T> {
   }
 }
 
+/// A special tree node that serves as an invisible root container.
+///
+/// TreeRoot represents the invisible root of a tree structure that contains
+/// other tree nodes but doesn't appear in the visual tree. It's always considered
+/// expanded and never selected, serving purely as a container for organizing
+/// multiple top-level tree items.
+///
+/// This is useful when you need to group multiple tree items under a common
+/// parent without showing that parent in the tree view. All children of a
+/// TreeRoot appear at the top level of the tree.
+///
+/// TreeRoot maintains immutability like other tree nodes, but state update
+/// operations (expanded/selected) have no effect since these properties are
+/// fixed by design.
+///
+/// Example:
+/// ```dart
+/// TreeRoot<String> root = TreeRoot(
+///   children: [
+///     TreeItem(data: 'First Section'),
+///     TreeItem(data: 'Second Section'),
+///     TreeItem(data: 'Third Section'),
+///   ],
+/// );
+/// 
+/// // Root is always expanded and never selected
+/// print(root.expanded); // true
+/// print(root.selected); // false
+/// ```
 class TreeRoot<T> extends TreeNode<T> {
+  /// List of child nodes contained in this root.
+  ///
+  /// Type: `List<TreeNode<T>>`. These children appear as top-level items
+  /// in the tree view since the root itself is invisible.
   @override
   final List<TreeNode<T>> children;
+  
+  /// Always returns true since root containers are conceptually always expanded.
+  ///
+  /// Returns: `bool`. TreeRoot is always expanded to show its children.
   @override
   bool get expanded => true;
+  
+  /// Always returns false since root containers cannot be selected.
+  ///
+  /// Returns: `bool`. TreeRoot can never be selected in tree operations.
   @override
   bool get selected => false;
 
+  /// Creates a [TreeRoot] container with the specified children.
+  ///
+  /// Constructs an invisible root node that serves as a container for
+  /// multiple top-level tree items.
+  ///
+  /// Parameters:
+  /// - [children] (List<TreeNode<T>>, required): Child nodes to contain
+  ///
+  /// Example:
+  /// ```dart
+  /// TreeRoot<String> root = TreeRoot(
+  ///   children: [
+  ///     TreeItem(data: 'Item 1'),
+  ///     TreeItem(data: 'Item 2'),
+  ///     TreeItem(data: 'Item 3'),
+  ///   ],
+  /// );
+  /// ```
   TreeRoot({
     required this.children,
   });
@@ -381,6 +635,54 @@ class TreeItemExpandDefaultHandler<T> {
   }
 }
 
+/// A comprehensive tree view widget with hierarchical data display and interaction.
+///
+/// TreeView provides a scrollable tree interface that displays hierarchical data
+/// with support for expansion/collapse, multi-selection, keyboard navigation,
+/// and visual branch lines. It handles complex tree operations like recursive
+/// selection, range selection, and immutable state updates.
+///
+/// The widget supports both mouse and keyboard interaction including:
+/// - Click to select items and toggle expansion
+/// - Ctrl+Click for multi-selection  
+/// - Shift+Click for range selection
+/// - Arrow keys for navigation and selection
+/// - Space bar for selection toggle
+/// - Left/Right arrows for expand/collapse
+///
+/// Features:
+/// - Hierarchical data display with customizable branch lines
+/// - Single and multi-selection modes with recursive selection support
+/// - Keyboard navigation and accessibility
+/// - Scrollable content with shrink wrap support  
+/// - Customizable expand icons and visual styling
+/// - Immutable state management with helper methods
+/// - Focus management and scope integration
+///
+/// The tree uses immutable data structures where all modifications return new
+/// instances. Helper methods and extensions provide convenient operations for
+/// common tree manipulations like expanding, selecting, and filtering nodes.
+///
+/// Example:
+/// ```dart
+/// TreeView<String>(
+///   nodes: [
+///     TreeItem(
+///       data: 'Documents',
+///       expanded: true,
+///       children: [
+///         TreeItem(data: 'document1.txt'),
+///         TreeItem(data: 'document2.txt'),
+///       ],
+///     ),
+///     TreeItem(data: 'Images'),
+///   ],
+///   builder: (context, item) => Text(item.data),
+///   onSelectionChanged: (selected, multiSelect, isSelected) {
+///     // Handle selection changes
+///   },
+/// )
+/// ```
 class TreeView<T> extends StatefulWidget {
   static TreeNodeSelectionChanged<K> defaultSelectionHandler<K>(
       List<TreeNode<K>> nodes, ValueChanged<List<TreeNode<K>>> onChanged) {
@@ -669,18 +971,109 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// List of tree nodes to display in the tree view.
+  ///
+  /// Type: `List<TreeNode<T>>`. The root-level nodes that will be rendered
+  /// in the tree. Can contain TreeItem instances and TreeRoot containers.
   final List<TreeNode<T>> nodes;
+  
+  /// Builder function to create widgets for tree items.
+  ///
+  /// Type: `Widget Function(BuildContext, TreeItem<T>)`. Called for each
+  /// visible tree item to create its visual representation. Receives the
+  /// build context and the tree item data.
   final Widget Function(BuildContext context, TreeItem<T> node) builder;
+  
+  /// Whether the tree view should size itself to its content.
+  ///
+  /// Type: `bool`, default: `false`. When true, the tree takes only the space
+  /// needed for its content instead of expanding to fill available space.
   final bool shrinkWrap;
+  
+  /// Optional scroll controller for the tree's scroll view.
+  ///
+  /// Type: `ScrollController?`. Allows external control of scrolling behavior
+  /// and position within the tree view.
   final ScrollController? controller;
+  
+  /// The style of branch lines connecting tree nodes.
+  ///
+  /// Type: `BranchLine?`. If null, uses the theme's branch line or BranchLine.path.
+  /// Controls the visual connections drawn between parent and child nodes.
   final BranchLine? branchLine;
+  
+  /// Padding around the tree view content.
+  ///
+  /// Type: `EdgeInsetsGeometry?`. If null, uses 8 pixels on all sides.
+  /// Applied to the entire tree view scroll area.
   final EdgeInsetsGeometry? padding;
+  
+  /// Whether to show expand/collapse icons for nodes with children.
+  ///
+  /// Type: `bool?`. If null, defaults to true from theme. When false,
+  /// nodes cannot be visually expanded or collapsed.
   final bool? expandIcon;
+  
+  /// Whether multiple tree nodes can be selected simultaneously.
+  ///
+  /// Type: `bool?`. If null, defaults to true from theme. When false,
+  /// selecting a node automatically deselects all others.
   final bool? allowMultiSelect;
+  
+  /// Optional focus scope node for keyboard navigation.
+  ///
+  /// Type: `FocusScopeNode?`. Controls focus behavior within the tree view
+  /// for keyboard navigation and accessibility.
   final FocusScopeNode? focusNode;
+  
+  /// Callback invoked when node selection changes.
+  ///
+  /// Type: `TreeNodeSelectionChanged<T>?`. Called with the affected nodes,
+  /// whether multi-select mode is active, and the new selection state.
   final TreeNodeSelectionChanged<T>? onSelectionChanged;
+  
+  /// Whether selecting a parent node also selects its children.
+  ///
+  /// Type: `bool?`. If null, defaults to true from theme. When true,
+  /// selection operations recursively affect all descendant nodes.
   final bool? recursiveSelection;
 
+  /// Creates a [TreeView] with hierarchical data display and interaction.
+  ///
+  /// Configures a tree view widget that displays hierarchical data with support
+  /// for expansion, selection, keyboard navigation, and visual styling.
+  ///
+  /// Parameters:
+  /// - [key] (Key?): Widget identifier for the widget tree
+  /// - [nodes] (List<TreeNode<T>>, required): Root-level tree nodes to display  
+  /// - [builder] (Widget Function(BuildContext, TreeItem<T>), required): Builder for tree items
+  /// - [shrinkWrap] (bool, default: false): Whether to size to content
+  /// - [controller] (ScrollController?, optional): Scroll controller for the tree
+  /// - [branchLine] (BranchLine?, optional): Style for connecting lines
+  /// - [padding] (EdgeInsetsGeometry?, optional): Padding around content
+  /// - [expandIcon] (bool?, optional): Whether to show expand/collapse icons
+  /// - [allowMultiSelect] (bool?, optional): Whether to allow multi-selection
+  /// - [focusNode] (FocusScopeNode?, optional): Focus node for keyboard navigation
+  /// - [onSelectionChanged] (TreeNodeSelectionChanged<T>?, optional): Selection callback
+  /// - [recursiveSelection] (bool?, optional): Whether to select children recursively
+  ///
+  /// Example:
+  /// ```dart
+  /// TreeView<FileItem>(
+  ///   nodes: fileTreeNodes,
+  ///   allowMultiSelect: true,
+  ///   recursiveSelection: true,
+  ///   branchLine: BranchLine.path,
+  ///   builder: (context, item) => ListTile(
+  ///     leading: Icon(item.data.isDirectory ? Icons.folder : Icons.file_copy),
+  ///     title: Text(item.data.name),
+  ///     subtitle: Text(item.data.path),
+  ///   ),
+  ///   onSelectionChanged: (selectedNodes, multiSelect, isSelected) {
+  ///     handleSelectionChange(selectedNodes, isSelected);
+  ///   },
+  /// )
+  /// ```
   const TreeView({
     super.key,
     required this.nodes,
@@ -992,10 +1385,57 @@ class _TreeViewState<T> extends State<TreeView<T>> {
   }
 }
 
+/// Abstract base class for defining tree branch line styles.
+///
+/// BranchLine defines how visual connections are drawn between parent and child
+/// nodes in tree views. Different implementations provide various visual styles
+/// from no lines to complex path-based connections.
+///
+/// The class provides static instances for common branch line styles:
+/// - [BranchLine.none] - No visual connections
+/// - [BranchLine.line] - Simple vertical lines
+/// - [BranchLine.path] - Connected path lines showing hierarchy
+///
+/// Custom implementations can be created by extending this class and implementing
+/// the [build] method to return appropriate connection widgets.
+///
+/// Example:
+/// ```dart
+/// // Using built-in styles
+/// TreeView(
+///   branchLine: BranchLine.path, // Connected paths
+///   // ... other properties
+/// );
+/// 
+/// // Custom branch line implementation
+/// class CustomBranchLine extends BranchLine {
+///   @override
+///   Widget build(BuildContext context, List<TreeNodeDepth> depth, int index) {
+///     return CustomPaint(painter: MyCustomLinePainter());
+///   }
+/// }
+/// ```
 abstract class BranchLine {
+  /// Predefined branch line style with no visual connections.
   static const none = IndentGuideNone();
+  
+  /// Predefined branch line style with simple vertical lines.
   static const line = IndentGuideLine();
+  
+  /// Predefined branch line style with connected path lines.
   static const path = IndentGuidePath();
+  
+  /// Builds the visual representation of branch lines for a tree node.
+  ///
+  /// Creates a widget that shows the connection lines between tree nodes
+  /// based on the node's position in the hierarchy and its depth information.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): Build context for theme access
+  /// - [depth] (List<TreeNodeDepth>): Hierarchical depth information
+  /// - [index] (int): Index within the current depth level
+  ///
+  /// Returns: A [Widget] representing the branch line visualization
   Widget build(BuildContext context, List<TreeNodeDepth> depth, int index);
 }
 
@@ -1123,16 +1563,120 @@ class _PathPainter extends CustomPainter {
   }
 }
 
+/// A comprehensive tree item widget with interaction, expansion, and selection support.
+///
+/// TreeItemView provides a complete tree item interface that handles user
+/// interaction, visual feedback, expansion/collapse behavior, and keyboard
+/// navigation. It's designed to work within a TreeView context but can be
+/// used independently for custom tree implementations.
+///
+/// The widget supports both single and double-click interactions, optional
+/// leading and trailing widgets, expandable content, and focus management.
+/// It automatically integrates with the tree's selection and expansion state
+/// when used within a TreeView.
+///
+/// Features:
+/// - Click and double-click interaction support
+/// - Optional expand/collapse functionality for nodes with children
+/// - Leading and trailing widget support for icons or actions
+/// - Keyboard navigation with arrow keys and space bar
+/// - Visual selection feedback with customizable styling
+/// - Focus management and accessibility support
+/// - Integration with tree branch lines and indentation
+///
+/// The widget automatically applies appropriate styling based on selection state,
+/// focus state, and tree depth. It handles the visual representation of tree
+/// hierarchy through indentation and branch line integration.
+///
+/// Example:
+/// ```dart
+/// TreeItemView(
+///   leading: Icon(isDirectory ? Icons.folder : Icons.insert_drive_file),
+///   trailing: PopupMenuButton(items: contextMenuItems),
+///   expandable: hasChildren,
+///   onPressed: () => selectItem(item),
+///   onDoublePressed: () => openItem(item),
+///   onExpand: (expanded) => toggleExpansion(item, expanded),
+///   child: Text(item.name),
+/// )
+/// ```
 class TreeItemView extends StatefulWidget {
+  /// The main content widget for this tree item.
+  ///
+  /// Type: `Widget`. This widget represents the primary content of the tree item,
+  /// typically text or a combination of text and icons.
   final Widget child;
+  
+  /// Optional widget displayed at the leading edge of the item.
+  ///
+  /// Type: `Widget?`. Commonly used for icons that represent the item type,
+  /// such as folder or file icons. Positioned before the main content.
   final Widget? leading;
+  
+  /// Optional widget displayed at the trailing edge of the item.
+  ///
+  /// Type: `Widget?`. Commonly used for action buttons, status indicators,
+  /// or context menus. Positioned after the main content.
   final Widget? trailing;
+  
+  /// Callback invoked when the tree item is pressed/clicked.
+  ///
+  /// Type: `VoidCallback?`. Called for single-click interactions. If null,
+  /// the item will not respond to press gestures.
   final VoidCallback? onPressed;
+  
+  /// Callback invoked when the tree item is double-pressed/double-clicked.
+  ///
+  /// Type: `VoidCallback?`. Called for double-click interactions. If null,
+  /// the item will not respond to double-click gestures.
   final VoidCallback? onDoublePressed;
+  
+  /// Callback invoked when the expand/collapse state should change.
+  ///
+  /// Type: `ValueChanged<bool>?`. Called with the desired expansion state
+  /// when the user interacts with expand controls or uses keyboard shortcuts.
   final ValueChanged<bool>? onExpand;
+  
+  /// Whether this item can be expanded to show children.
+  ///
+  /// Type: `bool?`. If null, determined automatically based on whether the
+  /// tree node has children. When true, expand/collapse controls are shown.
   final bool? expandable;
+  
+  /// Optional focus node for keyboard navigation and focus management.
+  ///
+  /// Type: `FocusNode?`. If null, a focus node is created automatically.
+  /// Allows external control of focus state for this tree item.
   final FocusNode? focusNode;
 
+  /// Creates a [TreeItemView] with comprehensive tree item functionality.
+  ///
+  /// Configures a tree item widget with interaction support, optional expansion,
+  /// and customizable leading/trailing elements.
+  ///
+  /// Parameters:
+  /// - [key] (Key?): Widget identifier for the widget tree
+  /// - [child] (Widget, required): Main content widget for the tree item
+  /// - [leading] (Widget?, optional): Widget displayed before the content
+  /// - [trailing] (Widget?, optional): Widget displayed after the content  
+  /// - [onPressed] (VoidCallback?, optional): Callback for press/click events
+  /// - [onDoublePressed] (VoidCallback?, optional): Callback for double-click events
+  /// - [onExpand] (ValueChanged<bool>?, optional): Callback for expansion changes
+  /// - [expandable] (bool?, optional): Whether the item can be expanded
+  /// - [focusNode] (FocusNode?, optional): Focus node for keyboard navigation
+  ///
+  /// Example:
+  /// ```dart
+  /// TreeItemView(
+  ///   leading: Icon(Icons.folder),
+  ///   trailing: Badge(child: Text('3')),
+  ///   expandable: true,
+  ///   onPressed: () => handleSelection(),
+  ///   onDoublePressed: () => handleOpen(),
+  ///   onExpand: (expanded) => handleExpansion(expanded),
+  ///   child: Text('Project Folder'),
+  /// )
+  /// ```
   const TreeItemView({
     super.key,
     required this.child,

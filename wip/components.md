@@ -100,7 +100,7 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [x] Breadcrumb
 - [x] Dot Indicator
 - [ ] Expandable Sidebar
-- [ ] Menubar
+- [x] Menubar
 - [x] Navigation Bar
 - [ ] Navigation Menu
 - [ ] Navigation Rail
@@ -110,7 +110,7 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [x] Tab List
 - [x] Tab Pane
 - [x] Tabs
-- [ ] Tree
+- [x] Tree
 
 ## 🪟 Overlay Components
 
