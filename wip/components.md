@@ -129,8 +129,8 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [ ] Button Group
 - [ ] Calendar
 - [ ] CardButton
-- [ ] Chip
-- [ ] Command
+- [x] Chip
+- [x] Command
 - [ ] ComponentController
 - [ ] Context Menu
 - [ ] ControlledComponent
