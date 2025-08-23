@@ -2,7 +2,12 @@ import 'package:shadcn_flutter/src/components/control/hover.dart';
 
 import '../../../shadcn_flutter.dart';
 
-/// Theme configuration for [TooltipContainer].
+/// Theme data for customizing [TooltipContainer] widget appearance.
+///
+/// This class defines the visual properties that can be applied to
+/// tooltip containers, including surface effects, padding, colors,
+/// and border styling. These properties can be set at the theme level
+/// to provide consistent styling across the application.
 class TooltipTheme {
   /// Opacity applied to the tooltip surface color.
   final double? surfaceOpacity;
@@ -132,6 +137,49 @@ class TooltipContainer extends StatelessWidget {
   }
 }
 
+/// An interactive tooltip widget that displays contextual information on hover.
+///
+/// [Tooltip] provides contextual help and information by displaying a small overlay
+/// when users hover over or interact with the child widget. It supports configurable
+/// positioning, timing, and custom content through builder functions, making it
+/// ideal for providing additional context without cluttering the interface.
+///
+/// Key features:
+/// - Hover-activated tooltip display with configurable delays
+/// - Flexible positioning with alignment and anchor point control
+/// - Custom content through builder functions
+/// - Duration controls for show/hide timing and minimum display time
+/// - Smooth animations and transitions
+/// - Integration with the overlay system for proper z-ordering
+/// - Theme support for consistent styling
+/// - Automatic positioning adjustment to stay within screen bounds
+///
+/// Timing behavior:
+/// - Wait duration: Time to wait before showing tooltip on hover
+/// - Show duration: Animation time for tooltip appearance
+/// - Min duration: Minimum time tooltip stays visible once shown
+/// - Auto-hide: Tooltip disappears when hover ends (after min duration)
+///
+/// The tooltip uses a popover-based implementation that ensures proper layering
+/// and positioning relative to the trigger widget. The positioning system
+/// automatically adjusts to keep tooltips within the viewport.
+///
+/// Example:
+/// ```dart
+/// Tooltip(
+///   tooltip: (context) => TooltipContainer(
+///     child: Text('This button performs a critical action'),
+///   ),
+///   waitDuration: Duration(milliseconds: 800),
+///   showDuration: Duration(milliseconds: 150),
+///   alignment: Alignment.topCenter,
+///   anchorAlignment: Alignment.bottomCenter,
+///   child: IconButton(
+///     icon: Icon(Icons.warning),
+///     onPressed: () => _handleCriticalAction(),
+///   ),
+/// );
+/// ```
 class Tooltip extends StatefulWidget {
   final Widget child;
   final WidgetBuilder tooltip;
