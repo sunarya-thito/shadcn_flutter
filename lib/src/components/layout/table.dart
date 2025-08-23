@@ -6,12 +6,74 @@ import 'package:flutter/rendering.dart';
 import '../../../shadcn_flutter.dart';
 import '../../resizer.dart';
 
+/// Theme configuration for [Table] components.
+///
+/// [TableTheme] provides comprehensive styling options for table components
+/// including borders, background colors, corner radius, and cell theming.
+/// It integrates with the shadcn_flutter theming system to ensure consistent
+/// table styling throughout an application.
+///
+/// Used with [ComponentTheme] to apply theme values throughout the widget tree.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<TableTheme>(
+///   data: TableTheme(
+///     border: Border.all(color: Colors.grey.shade300),
+///     borderRadius: BorderRadius.circular(8.0),
+///     backgroundColor: Colors.grey.shade50,
+///     cellTheme: TableCellTheme(
+///       padding: EdgeInsets.all(12.0),
+///     ),
+///   ),
+///   child: MyTableWidget(),
+/// );
+/// ```
 class TableTheme {
+  /// Border configuration for the entire table.
+  ///
+  /// Type: `Border?`. Defines the outer border of the table container.
+  /// If null, uses the default theme border or no border.
   final Border? border;
+
+  /// Border radius for the table corners.
+  ///
+  /// Type: `BorderRadiusGeometry?`. Controls corner rounding of the table
+  /// container. If null, uses the theme's default radius.
   final BorderRadiusGeometry? borderRadius;
+
+  /// Background color for the table container.
+  ///
+  /// Type: `Color?`. Used as the background color behind all table content.
+  /// If null, uses the theme's default background color.
   final Color? backgroundColor;
+
+  /// Default theme for all table cells.
+  ///
+  /// Type: `TableCellTheme?`. Provides default styling for table cells
+  /// including padding, borders, and text styles. Individual cells can
+  /// override this theme.
   final TableCellTheme? cellTheme;
 
+  /// Creates a [TableTheme].
+  ///
+  /// All parameters are optional and will fall back to theme defaults
+  /// when not provided.
+  ///
+  /// Parameters:
+  /// - [border] (Border?, optional): Table container border
+  /// - [backgroundColor] (Color?, optional): Table background color
+  /// - [borderRadius] (BorderRadiusGeometry?, optional): Corner radius
+  /// - [cellTheme] (TableCellTheme?, optional): Default cell styling
+  ///
+  /// Example:
+  /// ```dart
+  /// TableTheme(
+  ///   border: Border.all(color: Colors.grey),
+  ///   borderRadius: BorderRadius.circular(4.0),
+  ///   backgroundColor: Colors.white,
+  /// );
+  /// ```
   const TableTheme({
     this.border,
     this.backgroundColor,
@@ -34,6 +96,22 @@ class TableTheme {
     return Object.hash(border, backgroundColor, cellTheme);
   }
 
+  /// Creates a copy of this theme with the given values replaced.
+  ///
+  /// Returns a new [TableTheme] instance with the same values as this theme,
+  /// except for any parameters that are explicitly provided. Use [ValueGetter]
+  /// functions to specify new values.
+  ///
+  /// Parameters are [ValueGetter] functions that return the new value when called.
+  /// This allows for conditional value setting and proper null handling.
+  ///
+  /// Example:
+  /// ```dart
+  /// final newTheme = originalTheme.copyWith(
+  ///   backgroundColor: () => Colors.blue.shade50,
+  ///   border: () => Border.all(color: Colors.blue),
+  /// );
+  /// ```
   TableTheme copyWith({
     ValueGetter<Border?>? border,
     ValueGetter<Color?>? backgroundColor,
@@ -58,11 +136,76 @@ class ConstrainedTableSize {
   });
 }
 
+/// Theme configuration for individual table cells.
+///
+/// [TableCellTheme] provides state-aware styling options for table cells
+/// using [WidgetStateProperty] to handle different interactive states like
+/// hover, selected, disabled, etc. This enables rich visual feedback for
+/// table interactions.
+///
+/// ## State-Aware Properties
+/// All properties use [WidgetStateProperty] to support different visual
+/// states:
+/// - [WidgetState.hovered]: Mouse hover state
+/// - [WidgetState.selected]: Cell/row selection state  
+/// - [WidgetState.disabled]: Disabled interaction state
+/// - [WidgetState.pressed]: Active press state
+///
+/// Example:
+/// ```dart
+/// TableCellTheme(
+///   backgroundColor: WidgetStateProperty.resolveWith((states) {
+///     if (states.contains(WidgetState.hovered)) {
+///       return Colors.blue.shade50;
+///     }
+///     return null;
+///   }),
+///   textStyle: WidgetStateProperty.all(
+///     TextStyle(fontWeight: FontWeight.w500),
+///   ),
+/// );
+/// ```
 class TableCellTheme {
+  /// State-aware border configuration for table cells.
+  ///
+  /// Type: `WidgetStateProperty<Border?>?`. Defines cell borders that can
+  /// change based on interactive states. Useful for highlighting selected
+  /// or hovered cells.
   final WidgetStateProperty<Border?>? border;
+
+  /// State-aware background color for table cells.
+  ///
+  /// Type: `WidgetStateProperty<Color?>?`. Controls cell background colors
+  /// that can change based on hover, selection, or other states.
   final WidgetStateProperty<Color?>? backgroundColor;
+
+  /// State-aware text styling for table cell content.
+  ///
+  /// Type: `WidgetStateProperty<TextStyle?>?`. Controls text appearance
+  /// including color, weight, size that can change based on cell states.
   final WidgetStateProperty<TextStyle?>? textStyle;
 
+  /// Creates a [TableCellTheme].
+  ///
+  /// All parameters are optional and use [WidgetStateProperty] for
+  /// state-aware styling.
+  ///
+  /// Parameters:
+  /// - [border] (WidgetStateProperty<Border?>?, optional): State-aware borders
+  /// - [backgroundColor] (WidgetStateProperty<Color?>?, optional): State-aware background
+  /// - [textStyle] (WidgetStateProperty<TextStyle?>?, optional): State-aware text styling
+  ///
+  /// Example:
+  /// ```dart
+  /// TableCellTheme(
+  ///   border: WidgetStateProperty.all(
+  ///     Border.all(color: Colors.grey.shade300),
+  ///   ),
+  ///   backgroundColor: WidgetStateProperty.resolveWith((states) {
+  ///     return states.contains(WidgetState.selected) ? Colors.blue.shade100 : null;
+  ///   }),
+  /// );
+  /// ```
   const TableCellTheme({
     this.border,
     this.backgroundColor,
@@ -84,6 +227,19 @@ class TableCellTheme {
     return Object.hash(border, backgroundColor, textStyle);
   }
 
+  /// Creates a copy of this cell theme with the given values replaced.
+  ///
+  /// Returns a new [TableCellTheme] instance with the same state properties
+  /// as this theme, except for any parameters that are explicitly provided.
+  /// Use [ValueGetter] functions to specify new state properties.
+  ///
+  /// Example:
+  /// ```dart
+  /// final newTheme = originalTheme.copyWith(
+  ///   backgroundColor: () => WidgetStateProperty.all(Colors.yellow.shade50),
+  ///   textStyle: () => WidgetStateProperty.all(TextStyle(fontWeight: FontWeight.bold)),
+  /// );
+  /// ```
   TableCellTheme copyWith({
     ValueGetter<WidgetStateProperty<Border>?>? border,
     ValueGetter<WidgetStateProperty<Color>?>? backgroundColor,
@@ -1339,18 +1495,150 @@ class _FlattenedTableCell extends _TableCellData {
   }
 }
 
+/// A flexible table widget with support for spanning, scrolling, and interactive features.
+///
+/// [Table] provides a comprehensive table component with advanced layout capabilities
+/// including cell spanning, flexible sizing, frozen cells, scrolling, and rich theming.
+/// It supports both simple data tables and complex layouts with header/footer rows.
+///
+/// ## Key Features
+/// - **Cell Spanning**: Support for colspan and rowspan across multiple cells
+/// - **Flexible Sizing**: Multiple sizing strategies (fixed, flex, intrinsic) for columns/rows
+/// - **Frozen Cells**: Ability to freeze specific cells during scrolling
+/// - **Interactive States**: Hover effects and selection states with visual feedback
+/// - **Scrolling**: Optional horizontal and vertical scrolling with viewport control
+/// - **Theming**: Comprehensive theming system for visual customization
+///
+/// ## Layout System
+/// The table uses a sophisticated layout system that handles:
+/// - Variable column widths via [TableSize] strategies
+/// - Dynamic row heights based on content
+/// - Complex cell spanning calculations
+/// - Efficient rendering with viewport culling
+///
+/// ## Sizing Strategies
+/// - [FlexTableSize]: Proportional sizing like CSS flex
+/// - [FixedTableSize]: Absolute pixel sizes
+/// - [IntrinsicTableSize]: Size based on content
+///
+/// Example:
+/// ```dart
+/// Table(
+///   rows: [
+///     TableHeader(cells: [
+///       TableCell(child: Text('Name')),
+///       TableCell(child: Text('Age')),
+///       TableCell(child: Text('City')),
+///     ]),
+///     TableRow(cells: [
+///       TableCell(child: Text('John Doe')),
+///       TableCell(child: Text('25')),
+///       TableCell(child: Text('New York')),
+///     ]),
+///   ],
+///   columnWidths: {
+///     0: FlexTableSize(flex: 2),
+///     1: FixedTableSize(width: 80),
+///     2: FlexTableSize(flex: 1),
+///   },
+/// );
+/// ```
 class Table extends StatefulWidget {
+  /// List of rows to display in the table.
+  ///
+  /// Type: `List<TableRow>`. Contains the table data organized as rows.
+  /// Can include [TableRow], [TableHeader], and [TableFooter] instances.
+  /// Each row contains a list of [TableCell] widgets.
   final List<TableRow> rows;
+
+  /// Default sizing strategy for all columns.
+  ///
+  /// Type: `TableSize`. Used when no specific width is provided in
+  /// [columnWidths]. Defaults to [FlexTableSize] for proportional sizing.
   final TableSize defaultColumnWidth;
+
+  /// Default sizing strategy for all rows.
+  ///
+  /// Type: `TableSize`. Used when no specific height is provided in
+  /// [rowHeights]. Defaults to [IntrinsicTableSize] for content-based sizing.
   final TableSize defaultRowHeight;
+
+  /// Specific column width overrides.
+  ///
+  /// Type: `Map<int, TableSize>?`. Maps column indices to specific sizing
+  /// strategies. Overrides [defaultColumnWidth] for specified columns.
   final Map<int, TableSize>? columnWidths;
+
+  /// Specific row height overrides.
+  ///
+  /// Type: `Map<int, TableSize>?`. Maps row indices to specific sizing
+  /// strategies. Overrides [defaultRowHeight] for specified rows.
   final Map<int, TableSize>? rowHeights;
+
+  /// Clipping behavior for the table content.
+  ///
+  /// Type: `Clip`. Controls how content is clipped at table boundaries.
+  /// Defaults to [Clip.hardEdge] for clean boundaries.
   final Clip clipBehavior;
+
+  /// Theme configuration for the table appearance.
+  ///
+  /// Type: `TableTheme?`. Controls borders, colors, and overall styling.
+  /// If null, uses the default theme from [ComponentTheme].
   final TableTheme? theme;
+
+  /// Configuration for frozen cells during scrolling.
+  ///
+  /// Type: `FrozenTableData?`. Specifies which cells remain visible
+  /// during horizontal or vertical scrolling. Useful for headers/footers.
   final FrozenTableData? frozenCells;
+
+  /// Horizontal scroll offset for the table viewport.
+  ///
+  /// Type: `double?`. Controls horizontal scrolling position. If provided,
+  /// the table displays within a scrollable viewport.
   final double? horizontalOffset;
+
+  /// Vertical scroll offset for the table viewport.
+  ///
+  /// Type: `double?`. Controls vertical scrolling position. If provided,
+  /// the table displays within a scrollable viewport.
   final double? verticalOffset;
+
+  /// Size constraints for the table viewport.
+  ///
+  /// Type: `Size?`. When provided with scroll offsets, constrains the
+  /// visible area of the table. Essential for scrolling behavior.
   final Size? viewportSize;
+
+  /// Creates a [Table] widget.
+  ///
+  /// The table displays data organized in rows and cells with flexible
+  /// sizing and interactive features.
+  ///
+  /// Parameters:
+  /// - [rows] (List<TableRow>, required): Table data organized as rows
+  /// - [defaultColumnWidth] (TableSize, default: FlexTableSize()): Default column sizing
+  /// - [defaultRowHeight] (TableSize, default: IntrinsicTableSize()): Default row sizing
+  /// - [columnWidths] (Map<int, TableSize>?, optional): Column-specific sizes
+  /// - [rowHeights] (Map<int, TableSize>?, optional): Row-specific sizes
+  /// - [clipBehavior] (Clip, default: Clip.hardEdge): Content clipping behavior
+  /// - [theme] (TableTheme?, optional): Visual styling configuration
+  /// - [frozenCells] (FrozenTableData?, optional): Frozen cell configuration
+  /// - [horizontalOffset] (double?, optional): Horizontal scroll position
+  /// - [verticalOffset] (double?, optional): Vertical scroll position
+  /// - [viewportSize] (Size?, optional): Viewport size constraints
+  ///
+  /// Example:
+  /// ```dart
+  /// Table(
+  ///   rows: [
+  ///     TableHeader(cells: [TableCell(child: Text('Header'))]),
+  ///     TableRow(cells: [TableCell(child: Text('Data'))]),
+  ///   ],
+  ///   columnWidths: {0: FixedTableSize(width: 200)},
+  /// );
+  /// ```
   const Table({
     super.key,
     required this.rows,
