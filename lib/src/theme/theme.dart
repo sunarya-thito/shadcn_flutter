@@ -82,16 +82,82 @@ class AdaptiveScaler extends StatelessWidget {
   }
 }
 
+/// Core theme data for shadcn_flutter applications.
+///
+/// [ThemeData] defines the foundational visual properties for an entire
+/// application, including colors, typography, border radius, scaling factors,
+/// and platform-specific adaptations. It serves as the primary configuration
+/// point for consistent styling across all framework components.
+///
+/// Example usage:
+/// ```dart
+/// final theme = ThemeData(
+///   colorScheme: ColorSchemes.zinc(),
+///   typography: Typography.geist(),
+///   radius: 0.5, // Base radius multiplier
+///   scaling: 1.2, // UI scaling factor
+/// );
+/// ```
 class ThemeData {
+  /// The color scheme defining all semantic colors for the application.
+  ///
+  /// Provides primary, secondary, surface, error, and other semantic colors
+  /// along with their variants for different states and contexts.
   final ColorScheme colorScheme;
+  
+  /// Typography configuration defining text styles and font settings.
+  ///
+  /// Controls font families, sizes, weights, and other text styling
+  /// properties used throughout the application.
   final Typography typography;
+  
+  /// Base radius multiplier for border radius calculations.
+  ///
+  /// All component border radii are calculated by multiplying this base
+  /// value by size-specific multipliers (e.g., radius * 12 for medium).
   final double radius;
+  
+  /// Global scaling factor applied to all UI measurements.
+  ///
+  /// Affects padding, margins, font sizes, and other dimensional properties
+  /// to support responsive design and accessibility requirements.
   final double scaling;
+  
+  /// Platform-specific configuration override.
+  ///
+  /// When null, uses the current platform. When set, forces theme adaptations
+  /// for the specified platform regardless of the actual running platform.
   final TargetPlatform? _platform;
+  
+  /// Default icon theme properties for icons throughout the application.
+  ///
+  /// Defines color, size, and opacity defaults for icons when not
+  /// explicitly overridden by local icon themes.
   final IconThemeProperties iconTheme;
+  
+  /// Opacity value for surface blur effects.
+  ///
+  /// When null, surface blur effects use theme-appropriate default opacity.
+  /// Used for glassmorphism and backdrop blur effects.
   final double? surfaceOpacity;
+  
+  /// Intensity of surface blur effects in logical pixels.
+  ///
+  /// When null, surface blur effects use theme-appropriate default blur radius.
+  /// Higher values create stronger blur effects.
   final double? surfaceBlur;
 
+  /// Creates a [ThemeData] with the specified configuration.
+  ///
+  /// Parameters:
+  /// - [colorScheme] (ColorScheme, required): Semantic color definitions
+  /// - [radius] (double, required): Base border radius multiplier  
+  /// - [scaling] (double, default: 1): Global UI scaling factor
+  /// - [typography] (Typography, default: geist): Text style configuration
+  /// - [iconTheme] (IconThemeProperties, default: default): Icon styling
+  /// - [platform] (TargetPlatform?, optional): Platform override
+  /// - [surfaceOpacity] (double?, optional): Surface blur opacity
+  /// - [surfaceBlur] (double?, optional): Surface blur intensity
   ThemeData({
     required this.colorScheme,
     required this.radius,
@@ -103,43 +169,82 @@ class ThemeData {
     this.surfaceBlur,
   }) : _platform = platform;
 
-  /// The current platform.
+  /// The current platform, either specified or detected from the environment.
   TargetPlatform get platform => _platform ?? defaultTargetPlatform;
 
-  /// At normal radius, the scaled radius is 24
+  /// Extra extra large border radius (radius * 24).
+  ///
+  /// At the default radius of 0.5, this produces a 12px radius.
   double get radiusXxl => radius * 24;
 
-  /// At normal radius, the scaled radius is 20
+  /// Extra large border radius (radius * 20).
+  ///
+  /// At the default radius of 0.5, this produces a 10px radius.
   double get radiusXl => radius * 20;
 
-  /// At normal radius, the scaled radius is 16
+  /// Large border radius (radius * 16).
+  ///
+  /// At the default radius of 0.5, this produces an 8px radius.
   double get radiusLg => radius * 16;
 
-  /// At normal radius, the scaled radius is 12
+  /// Medium border radius (radius * 12).
+  ///
+  /// At the default radius of 0.5, this produces a 6px radius.
   double get radiusMd => radius * 12;
 
-  /// At normal radius, the scaled radius is 8
+  /// Small border radius (radius * 8).
+  ///
+  /// At the default radius of 0.5, this produces a 4px radius.
   double get radiusSm => radius * 8;
 
-  /// At normal radius, the scaled radius is 4
+  /// Extra small border radius (radius * 4).
+  ///
+  /// At the default radius of 0.5, this produces a 2px radius.
   double get radiusXs => radius * 4;
 
+  /// BorderRadius object for extra extra large corners.
   BorderRadius get borderRadiusXxl => BorderRadius.circular(radiusXxl);
+  
+  /// BorderRadius object for extra large corners.
   BorderRadius get borderRadiusXl => BorderRadius.circular(radiusXl);
+  
+  /// BorderRadius object for large corners.
   BorderRadius get borderRadiusLg => BorderRadius.circular(radiusLg);
+  
+  /// BorderRadius object for medium corners.
   BorderRadius get borderRadiusMd => BorderRadius.circular(radiusMd);
+  
+  /// BorderRadius object for small corners.
   BorderRadius get borderRadiusSm => BorderRadius.circular(radiusSm);
+  
+  /// BorderRadius object for extra small corners.
   BorderRadius get borderRadiusXs => BorderRadius.circular(radiusXs);
 
+  /// Radius object for extra extra large corners.
   Radius get radiusXxlRadius => Radius.circular(radiusXxl);
+  
+  /// Radius object for extra large corners.
   Radius get radiusXlRadius => Radius.circular(radiusXl);
+  
+  /// Radius object for large corners.
   Radius get radiusLgRadius => Radius.circular(radiusLg);
+  
+  /// Radius object for medium corners.
   Radius get radiusMdRadius => Radius.circular(radiusMd);
+  
+  /// Radius object for small corners.
   Radius get radiusSmRadius => Radius.circular(radiusSm);
+  
+  /// Radius object for extra small corners.
   Radius get radiusXsRadius => Radius.circular(radiusXs);
 
+  /// The brightness mode of the current color scheme (light or dark).
   Brightness get brightness => colorScheme.brightness;
 
+  /// Creates a copy of this theme data with specified properties overridden.
+  ///
+  /// All parameters are optional and use ValueGetter callbacks to allow
+  /// for lazy evaluation and conditional updates.
   ThemeData copyWith({
     ValueGetter<ColorScheme>? colorScheme,
     ValueGetter<double>? radius,
@@ -163,6 +268,12 @@ class ThemeData {
     );
   }
 
+  /// Linearly interpolates between two theme data objects.
+  ///
+  /// Creates a smooth transition between themes [a] and [b] based on the
+  /// interpolation parameter [t], where 0.0 returns [a] and 1.0 returns [b].
+  ///
+  /// Used for theme animations and smooth transitions between light/dark modes.
   static ThemeData lerp(
     ThemeData a,
     ThemeData b,

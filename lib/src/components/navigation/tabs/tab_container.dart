@@ -45,18 +45,52 @@ class TabContainerTheme {
   }
 }
 
+/// Contextual data for tab children within a [TabContainer].
+///
+/// [TabContainerData] provides the necessary context information for widgets
+/// that are children of a [TabContainer], including the current selection state,
+/// the child's index, and callbacks for handling selection changes.
+///
+/// This data is automatically provided by [TabContainer] and can be accessed
+/// by child widgets using [TabContainerData.of(context)].
 class TabContainerData {
+  /// Retrieves the [TabContainerData] from the widget tree context.
+  ///
+  /// This method searches up the widget tree for the nearest [TabContainer]
+  /// and returns its associated data. If no [TabContainer] is found in the
+  /// ancestor chain, an assertion error is thrown.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): Widget tree context to search from
+  ///
+  /// Returns the [TabContainerData] instance from the nearest ancestor [TabContainer].
+  ///
+  /// Throws [AssertionError] if no [TabContainer] is found in the widget tree.
   static TabContainerData of(BuildContext context) {
     var data = Data.maybeOf<TabContainerData>(context);
     assert(data != null, 'TabChild must be a descendant of TabContainer');
     return data!;
   }
 
+  /// The zero-based index of this tab child within the container.
   final int index;
+  
+  /// The index of the currently selected tab in the container.
   final int selected;
+  
+  /// Callback invoked when a tab selection change is requested.
   final ValueChanged<int>? onSelect;
+  
+  /// Builder function for constructing child widgets within tabs.
   final TabChildBuilder childBuilder;
 
+  /// Creates a [TabContainerData] with the specified properties.
+  ///
+  /// Parameters:
+  /// - [index] (int, required): Zero-based index of this tab child
+  /// - [selected] (int, required): Index of the currently selected tab
+  /// - [onSelect] (ValueChanged<int>?, optional): Selection change callback
+  /// - [childBuilder] (TabChildBuilder, required): Child widget builder
   TabContainerData({
     required this.index,
     required this.selected,
@@ -78,11 +112,49 @@ class TabContainerData {
   int get hashCode => Object.hash(index, selected, onSelect, childBuilder);
 }
 
+/// Mixin for widgets that can be used as children within a [TabContainer].
+///
+/// [TabChild] defines the interface that widgets must implement to be
+/// compatible with tab container systems. It primarily indicates whether
+/// the child should be automatically indexed within the container.
+///
+/// Widgets that mix in [TabChild] can be placed within tab containers
+/// and will receive appropriate contextual data through [TabContainerData].
 mixin TabChild on Widget {
+  /// Whether this tab child should be automatically indexed by the container.
+  ///
+  /// When `true`, the tab container will assign an index to this child and
+  /// include it in the selection system. When `false`, the child is treated
+  /// as a non-interactive or decorative element.
   bool get indexed;
 }
 
+/// Mixin for tab children that can be identified by a key of type [T].
+///
+/// [KeyedTabChild] extends [TabChild] to provide a strongly-typed key system
+/// for identifying and managing tab children. This is useful when tabs need
+/// to be referenced by something other than their numeric index.
+///
+/// The key type [T] can be any type that uniquely identifies the tab child,
+/// such as String, enum values, or custom identifier objects.
+///
+/// Example usage:
+/// ```dart
+/// class MyTabChild extends StatelessWidget with TabChild, KeyedTabChild<String> {
+///   @override
+///   String get tabKey => 'unique-tab-id';
+///   
+///   @override
+///   bool get indexed => true;
+///   
+///   // ... widget implementation
+/// }
+/// ```
 mixin KeyedTabChild<T> on TabChild {
+  /// The unique key that identifies this tab child.
+  ///
+  /// This key should be unique within the tab container and remain constant
+  /// for the lifetime of the tab child widget.
   T get tabKey;
 }
 
