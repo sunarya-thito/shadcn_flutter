@@ -114,8 +114,8 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 
 ## 🪟 Overlay Components
 
-- [ ] Dialog
-- [ ] Drawer
+- [x] Dialog
+- [x] Drawer
 - [ ] Hover Card
 - [x] Popover
 - [ ] Sheet
