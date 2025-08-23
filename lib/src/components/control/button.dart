@@ -316,36 +316,114 @@ class ToggleState extends State<Toggle> with FormValueSupplier<bool, Toggle> {
   }
 }
 
+/// A button widget that can be in a selected or unselected state.
+///
+/// Similar to a toggle button but with distinct visual styles for selected
+/// and unselected states. Commonly used in button groups, tabs, or any interface
+/// where users need to see which option is currently active.
+///
+/// The button switches between two styles based on its value and supports
+/// all standard button interactions including tap, hover, focus, and long press.
+///
+/// Example:
+/// ```dart
+/// SelectedButton(
+///   value: isSelected,
+///   onChanged: (selected) => setState(() => isSelected = selected),
+///   style: ButtonStyle.outline(),
+///   selectedStyle: ButtonStyle.filled(),
+///   child: Text('Option 1'),
+/// )
+/// ```
 class SelectedButton extends StatefulWidget {
+  /// The current selected state of the button.
   final bool value;
+
+  /// Callback invoked when the selected state changes.
   final ValueChanged<bool>? onChanged;
+
+  /// The widget displayed inside the button.
   final Widget child;
+
+  /// The button style when unselected.
   final AbstractButtonStyle style;
+
+  /// The button style when selected.
   final AbstractButtonStyle selectedStyle;
+
+  /// Whether the button is enabled for interaction.
   final bool? enabled;
+
+  /// The alignment of the button's child within the button area.
   final AlignmentGeometry? alignment;
+
+  /// The alignment of the button within its margin area.
   final AlignmentGeometry? marginAlignment;
+
+  /// Whether to disable visual transitions between states.
   final bool disableTransition;
+
+  /// Callback invoked when the mouse hovers over the button.
   final ValueChanged<bool>? onHover;
+
+  /// Callback invoked when the button gains or loses focus.
   final ValueChanged<bool>? onFocus;
+
+  /// Whether to enable haptic and audio feedback.
   final bool? enableFeedback;
+
+  /// Callback invoked when a tap down gesture is detected.
   final GestureTapDownCallback? onTapDown;
+
+  /// Callback invoked when a tap up gesture is detected.
   final GestureTapUpCallback? onTapUp;
+
+  /// Callback invoked when a tap gesture is canceled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Callback invoked when a secondary tap down gesture is detected.
   final GestureTapDownCallback? onSecondaryTapDown;
+
+  /// Callback invoked when a secondary tap up gesture is detected.
   final GestureTapUpCallback? onSecondaryTapUp;
+
+  /// Callback invoked when a secondary tap gesture is canceled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+
+  /// Callback invoked when a tertiary tap down gesture is detected.
   final GestureTapDownCallback? onTertiaryTapDown;
+
+  /// Callback invoked when a tertiary tap up gesture is detected.
   final GestureTapUpCallback? onTertiaryTapUp;
+
+  /// Callback invoked when a tertiary tap gesture is canceled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+
+  /// Callback invoked when a long press gesture starts.
   final GestureLongPressStartCallback? onLongPressStart;
+
+  /// Callback invoked when a long press gesture ends.
   final GestureLongPressUpCallback? onLongPressUp;
+
+  /// Callback invoked when a long press gesture moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+
+  /// Callback invoked when a long press gesture completes.
   final GestureLongPressEndCallback? onLongPressEnd;
+
+  /// Callback invoked when a secondary long press gesture is detected.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+
+  /// Callback invoked when a tertiary long press gesture is detected.
   final GestureLongPressUpCallback? onTertiaryLongPress;
+
+  /// Whether to disable visual hover effects.
   final bool disableHoverEffect;
+
+  /// Controller for managing the button's interaction states.
   final WidgetStatesController? statesController;
+
+  /// Callback invoked when the button is pressed.
   final VoidCallback? onPressed;
 
   const SelectedButton({

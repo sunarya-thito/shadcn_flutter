@@ -28,16 +28,84 @@ class MultipleChoiceTheme {
   String toString() => 'MultipleChoiceTheme(allowUnselect: $allowUnselect)';
 }
 
+/// A mixin that provides choice selection functionality for multiple choice components.
+///
+/// This mixin defines the interface for components that allow users to select
+/// from multiple options. It provides static methods for triggering selections
+/// and retrieving current values from the widget tree context, as well as
+/// abstract methods that implementing classes must define.
+///
+/// Used by multiple choice widgets to standardize selection behavior and
+/// provide a consistent API for accessing selection state.
+///
+/// Example:
+/// ```dart
+/// class MyChoiceWidget extends StatefulWidget with Choice<String> {
+///   @override
+///   void selectItem(String item) {
+///     // Handle item selection
+///   }
+///   
+///   @override
+///   Iterable<String>? get value => _selectedItems;
+/// }
+/// ```
 mixin Choice<T> {
+  /// Triggers selection of an item in the choice component found in the widget tree.
+  ///
+  /// Locates the nearest Choice component in the widget tree and calls its
+  /// selectItem method with the provided item. This is a convenient way to
+  /// trigger selections from child widgets.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): The build context to search from.
+  /// - [item] (T): The item to select.
+  ///
+  /// Example:
+  /// ```dart
+  /// Choice.choose<String>(context, 'option1');
+  /// ```
   static void choose<T>(BuildContext context, T item) {
     Data.of<Choice<T>>(context).selectItem(item);
   }
 
+  /// Retrieves the current selection value from the choice component in the widget tree.
+  ///
+  /// Locates the nearest Choice component in the widget tree and returns its
+  /// current value. Returns null if no items are selected or if no Choice
+  /// component is found.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): The build context to search from.
+  ///
+  /// Returns:
+  /// An `Iterable<T>?` containing the selected items, or null if none selected.
+  ///
+  /// Example:
+  /// ```dart
+  /// final selected = Choice.getValue<String>(context);
+  /// ```
   static Iterable<T>? getValue<T>(BuildContext context) {
     return Data.of<Choice<T>>(context).value;
   }
 
+  /// Selects the specified item in the choice component.
+  ///
+  /// Abstract method that implementing classes must define to handle item
+  /// selection logic. This method is called when an item needs to be selected
+  /// or deselected.
+  ///
+  /// Parameters:
+  /// - [item] (T): The item to select or deselect.
   void selectItem(T item);
+
+  /// The current selection value of the choice component.
+  ///
+  /// Abstract getter that implementing classes must define to return the
+  /// current selected items. Returns null if no items are selected.
+  ///
+  /// Returns:
+  /// An `Iterable<T>?` containing the currently selected items.
   Iterable<T>? get value;
 }
 

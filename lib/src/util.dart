@@ -833,10 +833,31 @@ double wrapDouble(double value, double min, double max) {
   return (value - min) % range + min;
 }
 
+/// A widget that detects changes in the widget tree and triggers a callback.
+///
+/// Monitors the widget tree for changes by triggering the callback during
+/// initState. This is useful for detecting when widgets are rebuilt or
+/// when the widget tree structure changes.
+///
+/// Example:
+/// ```dart
+/// WidgetTreeChangeDetector(
+///   onWidgetTreeChange: () => print('Tree changed'),
+///   child: MyWidget(),
+/// )
+/// ```
 class WidgetTreeChangeDetector extends StatefulWidget {
+  /// The child widget to wrap.
   final Widget child;
+
+  /// Callback invoked when the widget tree changes.
   final void Function() onWidgetTreeChange;
 
+  /// Creates a [WidgetTreeChangeDetector].
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): The child widget to monitor.
+  /// - [onWidgetTreeChange] (function, required): Callback for tree changes.
   const WidgetTreeChangeDetector({
     super.key,
     required this.child,
@@ -861,6 +882,29 @@ class _WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
   }
 }
 
+/// Creates a Gap widget for spacing in layouts.
+///
+/// Provides a convenient function to create Gap widgets with optional
+/// cross-axis spacing. The Gap widget creates space along the main axis
+/// of Flex widgets (Rows, Columns, etc.).
+///
+/// Parameters:
+/// - [gap] (double): The main axis gap size.
+/// - [crossGap] (double?, optional): The cross axis gap size.
+///
+/// Returns:
+/// A `Widget` that represents the spacing gap.
+///
+/// Example:
+/// ```dart
+/// Column(
+///   children: [
+///     Text('First'),
+///     gap(16), // 16px vertical gap
+///     Text('Second'),
+///   ],
+/// )
+/// ```
 Widget gap(double gap, {double? crossGap}) {
   return Gap(
     gap,
@@ -868,7 +912,29 @@ Widget gap(double gap, {double? crossGap}) {
   );
 }
 
+/// Extension methods for Lists of Widgets that provide separator joining functionality.
+///
+/// Adds methods to insert separator widgets between list items, commonly
+/// used for creating lists with dividers, spacing, or other visual separations.
 extension Joinable<T extends Widget> on List<T> {
+  /// Inserts a separator widget between each item in the list.
+  ///
+  /// Creates a new list where the separator is placed between each pair of
+  /// adjacent items. The first and last items don't get separators before
+  /// or after them respectively.
+  ///
+  /// Parameters:
+  /// - [separator] (T): The widget to use as a separator.
+  ///
+  /// Returns:
+  /// A new `List<T>` with separators inserted between items.
+  ///
+  /// Example:
+  /// ```dart
+  /// final widgets = [Text('A'), Text('B'), Text('C')];
+  /// final withDividers = widgets.joinSeparator(Divider());
+  /// // Result: [Text('A'), Divider(), Text('B'), Divider(), Text('C')]
+  /// ```
   List<T> joinSeparator(T separator) {
     List<T> result = [];
     for (int i = 0; i < length; i++) {
@@ -881,11 +947,50 @@ extension Joinable<T extends Widget> on List<T> {
   }
 }
 
+/// Extension methods for Iterables that provide separator joining functionality.
+///
+/// Adds methods to insert separators between iterable items and build
+/// dynamic separators based on position or content.
 extension IterableExtension<T> on Iterable<T> {
+  /// Inserts a separator between each item in the iterable.
+  ///
+  /// Creates a new iterable where the separator is placed between each pair
+  /// of adjacent items. Uses lazy evaluation for better performance with
+  /// large iterables.
+  ///
+  /// Parameters:
+  /// - [separator] (T): The item to use as a separator.
+  ///
+  /// Returns:
+  /// An `Iterable<T>` with separators inserted between items.
+  ///
+  /// Example:
+  /// ```dart
+  /// final items = ['A', 'B', 'C'];
+  /// final joined = items.joinSeparator('-').toList();
+  /// // Result: ['A', '-', 'B', '-', 'C']
+  /// ```
   Iterable<T> joinSeparator(T separator) {
     return map((e) => [separator, e]).expand((element) => element).skip(1);
   }
 
+  /// Inserts dynamically generated separators between each item.
+  ///
+  /// Similar to joinSeparator, but the separator is generated on-demand
+  /// using the provided function. This allows for dynamic separators that
+  /// can vary based on position or other factors.
+  ///
+  /// Parameters:
+  /// - [separator] (ValueGetter<T>): Function that generates separator items.
+  ///
+  /// Returns:
+  /// An `Iterable<T>` with dynamically generated separators.
+  ///
+  /// Example:
+  /// ```dart
+  /// final items = [1, 2, 3];
+  /// final withSeparators = items.buildSeparator(() => Random().nextInt(10));
+  /// ```
   Iterable<T> buildSeparator(ValueGetter<T> separator) {
     return map((e) => [separator(), e]).expand((element) => element).skip(1);
   }
