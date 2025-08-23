@@ -41,16 +41,79 @@ mixin Choice<T> {
   Iterable<T>? get value;
 }
 
+/// A controller for managing [ControlledMultipleAnswer] selections programmatically.
+///
+/// This controller extends [ValueNotifier<Iterable<T>?>] to provide reactive
+/// state management for multiple selection components. It implements [ComponentController]
+/// to integrate with the controlled component system, allowing external control
+/// and listening to selection changes.
+///
+/// Example:
+/// ```dart
+/// final controller = MultipleAnswerController<String>(['option1', 'option2']);
+/// controller.addListener(() {
+///   print('Selected items: ${controller.value}');
+/// });
+/// ```
 class MultipleAnswerController<T> extends ValueNotifier<Iterable<T>?>
     with ComponentController<Iterable<T>?> {
+  /// Creates a [MultipleAnswerController] with an optional initial selection.
+  ///
+  /// Parameters:
+  /// - [value] (Iterable<T>?, optional): Initial selection of items
   MultipleAnswerController([super.value]);
 }
 
+/// A controller for managing [ControlledMultipleChoice] selection programmatically.
+///
+/// This controller extends [ValueNotifier<T?>] to provide reactive state
+/// management for single-choice components. It implements [ComponentController]
+/// to integrate with the controlled component system, allowing external control
+/// and listening to selection changes.
+///
+/// Example:
+/// ```dart
+/// final controller = MultipleChoiceController<String>('option1');
+/// controller.addListener(() {
+///   print('Selected item: ${controller.value}');
+/// });
+/// ```
 class MultipleChoiceController<T> extends ValueNotifier<T?>
     with ComponentController<T?> {
+  /// Creates a [MultipleChoiceController] with an optional initial selection.
+  ///
+  /// Parameters:
+  /// - [value] (T?, optional): Initial selected item
   MultipleChoiceController([super.value]);
 }
 
+/// A controlled widget for managing multiple item selections with external state management.
+///
+/// This widget provides a container for multiple selection interfaces where users
+/// can select multiple items from a set of choices. It integrates with the controlled
+/// component system to provide external state management, form integration, and
+/// programmatic control of selections.
+///
+/// The component maintains a collection of selected items and provides callbacks
+/// for selection changes. Child widgets can use the [Choice.choose] method to
+/// register item selections and [Choice.getValue] to access current selections.
+///
+/// Example:
+/// ```dart
+/// ControlledMultipleAnswer<String>(
+///   initialValue: ['apple', 'banana'],
+///   onChanged: (selections) {
+///     print('Selected: ${selections?.join(', ')}');
+///   },
+///   child: Column(
+///     children: [
+///       ChoiceItem(value: 'apple', child: Text('Apple')),
+///       ChoiceItem(value: 'banana', child: Text('Banana')),
+///       ChoiceItem(value: 'orange', child: Text('Orange')),
+///     ],
+///   ),
+/// );
+/// ```
 class ControlledMultipleAnswer<T> extends StatelessWidget
     with ControlledComponent<Iterable<T>?> {
   @override
@@ -61,9 +124,42 @@ class ControlledMultipleAnswer<T> extends StatelessWidget
   final ValueChanged<Iterable<T>?>? onChanged;
   @override
   final bool enabled;
+  
+  /// Whether selected items can be deselected by selecting them again.
+  ///
+  /// When true, users can toggle selections by clicking selected items to
+  /// deselect them. When false, items remain selected once chosen.
   final bool? allowUnselect;
+  
+  /// The widget subtree containing selectable choice items.
+  ///
+  /// Child widgets should provide choice items that use [Choice.choose]
+  /// to register selections and [Choice.getValue] to access current state.
   final Widget child;
 
+  /// Creates a [ControlledMultipleAnswer].
+  ///
+  /// Either [controller] or [initialValue] should be provided to establish
+  /// the initial selection state. The [child] should contain choice items
+  /// that integrate with the multiple selection system.
+  ///
+  /// Parameters:
+  /// - [controller] (MultipleAnswerController<T>?, optional): External controller for programmatic control
+  /// - [initialValue] (Iterable<T>?, optional): Initial selection when no controller provided
+  /// - [onChanged] (ValueChanged<Iterable<T>?>?, optional): Callback for selection changes
+  /// - [enabled] (bool, default: true): Whether selections can be modified
+  /// - [allowUnselect] (bool?, optional): Whether items can be deselected by re-selection
+  /// - [child] (Widget, required): Container with selectable choice items
+  ///
+  /// Example:
+  /// ```dart
+  /// ControlledMultipleAnswer<int>(
+  ///   initialValue: [1, 3],
+  ///   allowUnselect: true,
+  ///   onChanged: (values) => print('Selected: $values'),
+  ///   child: ChoiceList(items: [1, 2, 3, 4, 5]),
+  /// );
+  /// ```
   const ControlledMultipleAnswer({
     super.key,
     this.controller,
@@ -94,6 +190,33 @@ class ControlledMultipleAnswer<T> extends StatelessWidget
   }
 }
 
+/// A controlled widget for managing single item selection with external state management.
+///
+/// This widget provides a container for single-choice selection interfaces where
+/// users can select one item from a set of choices. It integrates with the controlled
+/// component system to provide external state management, form integration, and
+/// programmatic control of the selection.
+///
+/// The component maintains a single selected item and provides callbacks for
+/// selection changes. Child widgets can use the [Choice.choose] method to
+/// register item selections and [Choice.getValue] to access the current selection.
+///
+/// Example:
+/// ```dart
+/// ControlledMultipleChoice<String>(
+///   initialValue: 'medium',
+///   onChanged: (selection) {
+///     print('Selected size: $selection');
+///   },
+///   child: Column(
+///     children: [
+///       ChoiceItem(value: 'small', child: Text('Small')),
+///       ChoiceItem(value: 'medium', child: Text('Medium')),
+///       ChoiceItem(value: 'large', child: Text('Large')),
+///     ],
+///   ),
+/// );
+/// ```
 class ControlledMultipleChoice<T> extends StatelessWidget
     with ControlledComponent<T?> {
   @override
@@ -104,9 +227,43 @@ class ControlledMultipleChoice<T> extends StatelessWidget
   final ValueChanged<T?>? onChanged;
   @override
   final bool enabled;
+  
+  /// Whether the selected item can be deselected by selecting it again.
+  ///
+  /// When true, users can deselect the current selection by clicking it again,
+  /// setting the value to null. When false, once an item is selected, it
+  /// remains selected until another item is chosen.
   final bool? allowUnselect;
+  
+  /// The widget subtree containing selectable choice items.
+  ///
+  /// Child widgets should provide choice items that use [Choice.choose]
+  /// to register selections and [Choice.getValue] to access current state.
   final Widget child;
 
+  /// Creates a [ControlledMultipleChoice].
+  ///
+  /// Either [controller] or [initialValue] should be provided to establish
+  /// the initial selection state. The [child] should contain choice items
+  /// that integrate with the single selection system.
+  ///
+  /// Parameters:
+  /// - [controller] (MultipleChoiceController<T>?, optional): External controller for programmatic control
+  /// - [initialValue] (T?, optional): Initial selection when no controller provided
+  /// - [onChanged] (ValueChanged<T?>?, optional): Callback for selection changes
+  /// - [enabled] (bool, default: true): Whether selection can be modified
+  /// - [allowUnselect] (bool?, optional): Whether selection can be cleared by re-selection
+  /// - [child] (Widget, required): Container with selectable choice items
+  ///
+  /// Example:
+  /// ```dart
+  /// ControlledMultipleChoice<Theme>(
+  ///   initialValue: Theme.dark,
+  ///   allowUnselect: false,
+  ///   onChanged: (theme) => setAppTheme(theme),
+  ///   child: ThemeSelector(),
+  /// );
+  /// ```
   const ControlledMultipleChoice({
     super.key,
     this.controller,

@@ -60,14 +60,14 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [ ] DateInput
 - [ ] DurationInput
 - [ ] File Picker *(Work in Progress)*
-- [ ] Form
-- [ ] Formatted Input
+- [x] Form
+- [x] Formatted Input
 - [x] Input OTP
-- [ ] Item Picker
-- [ ] Multi Select
+- [x] Item Picker
+- [x] Multi Select
 - [ ] MultiSelectChip
 - [ ] Number Input
-- [ ] Phone Input
+- [x] Phone Input
 - [x] Radio Card
 - [x] Radio Group
 - [x] Select
@@ -76,7 +76,7 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [x] Switch
 - [x] Text Area
 - [x] Text Input
-- [ ] Time Picker
+- [x] Time Picker
 - [ ] TimeInput
 - [ ] Toggle
 
@@ -87,7 +87,7 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [ ] Card Image
 - [ ] Carousel
 - [x] Divider
-- [ ] Resizable
+- [x] Resizable
 - [x] Scaffold
 - [ ] Sortable
 - [ ] SortableDragHandle
