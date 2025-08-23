@@ -24,12 +24,12 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   level: TrackerLevel.critical,
 ///   tooltip: Text('System Alert'),
 /// );
-/// 
+///
 /// // Creating custom level
 /// class CustomLevel implements TrackerLevel {
 ///   @override
 ///   Color get color => Colors.purple;
-///   
+///
 ///   @override
 ///   String get name => 'Custom';
 /// }
@@ -73,7 +73,6 @@ abstract class TrackerLevel {
   /// Returns a [String] description of this tracker level, typically
   /// used in tooltips or accessibility labels.
   String get name;
-}
 }
 
 class _SimpleTrackerLevel implements TrackerLevel {

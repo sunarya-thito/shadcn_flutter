@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Theme configuration for calendar widgets.
-/// 
+///
 /// Provides styling options for calendar components, including arrow icon colors
 /// for navigation buttons and other visual elements.
 class CalendarTheme {
@@ -28,10 +28,10 @@ class CalendarTheme {
 }
 
 /// Defines the different view types available in calendar components.
-/// 
+///
 /// Specifies what granularity of time selection is displayed:
 /// - [date]: Shows individual days in a month grid
-/// - [month]: Shows months in a year grid  
+/// - [month]: Shows months in a year grid
 /// - [year]: Shows years in a decade grid
 enum CalendarViewType {
   date,
@@ -40,7 +40,7 @@ enum CalendarViewType {
 }
 
 /// Represents the interactive state of a date in the calendar.
-/// 
+///
 /// Controls whether a specific date can be selected or interacted with:
 /// - [disabled]: Date cannot be selected or clicked
 /// - [enabled]: Date is fully interactive and selectable
@@ -50,7 +50,7 @@ enum DateState {
 }
 
 /// Callback function type for determining the state of calendar dates.
-/// 
+///
 /// Takes a [DateTime] and returns a [DateState] to control whether
 /// that date should be enabled or disabled for user interaction.
 typedef DateStateBuilder = DateState Function(DateTime date);
@@ -121,8 +121,8 @@ class DatePickerDialog extends StatefulWidget {
   ///   initialViewType: CalendarViewType.date,
   ///   selectionMode: CalendarSelectionMode.range,
   ///   onChanged: (value) => handleDateChange(value),
-  ///   stateBuilder: (date) => date.isBefore(DateTime.now()) 
-  ///     ? DateState.disabled 
+  ///   stateBuilder: (date) => date.isBefore(DateTime.now())
+  ///     ? DateState.disabled
   ///     : DateState.enabled,
   /// )
   /// ```
@@ -572,7 +572,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
 /// final single = CalendarValue.single(DateTime.now());
 /// final range = CalendarValue.range(startDate, endDate);
 /// final multi = CalendarValue.multi([date1, date2, date3]);
-/// 
+///
 /// // Check if a date is selected
 /// final lookup = value.lookup(2024, 3, 15);
 /// final isSelected = lookup != CalendarValueLookup.none;
@@ -801,7 +801,7 @@ class MultiCalendarValue extends CalendarValue {
 /// - [none]: Date is not part of any selection
 /// - [selected]: Date is directly selected (single mode or exact match)
 /// - [start]: Date is the start of a selected range
-/// - [end]: Date is the end of a selected range  
+/// - [end]: Date is the end of a selected range
 /// - [inRange]: Date falls within a selected range but is not start/end
 enum CalendarValueLookup { none, selected, start, end, inRange }
 
@@ -812,7 +812,7 @@ enum CalendarValueLookup { none, selected, start, end, inRange }
 /// which month/year combination is displayed in calendar grids.
 ///
 /// Key Features:
-/// - **Navigation Methods**: [next], [previous], [nextYear], [previousYear]  
+/// - **Navigation Methods**: [next], [previous], [nextYear], [previousYear]
 /// - **Factory Constructors**: [now()], [fromDateTime()]
 /// - **Validation**: Ensures month values stay within 1-12 range
 /// - **Immutable**: All navigation returns new CalendarView instances
@@ -823,7 +823,7 @@ enum CalendarValueLookup { none, selected, start, end, inRange }
 /// final current = CalendarView.now();
 /// final specific = CalendarView(2024, 3); // March 2024
 /// final fromDate = CalendarView.fromDateTime(someDateTime);
-/// 
+///
 /// // Navigate between months
 /// final nextMonth = current.next;
 /// final prevMonth = current.previous;
@@ -848,6 +848,7 @@ class CalendarView {
   CalendarView(this.year, this.month) {
     assert(month >= 1 && month <= 12, 'Month must be between 1 and 12');
   }
+
   /// Creates a [CalendarView] for the current month and year.
   ///
   /// Uses [DateTime.now()] to determine the current date and extracts
@@ -861,6 +862,7 @@ class CalendarView {
     DateTime now = DateTime.now();
     return CalendarView(now.year, now.month);
   }
+
   /// Creates a [CalendarView] from an existing [DateTime].
   ///
   /// Extracts the year and month components from the provided [DateTime]
@@ -934,13 +936,6 @@ extension CalendarDateTime on DateTime {
   CalendarValue toCalendarValue() {
     return CalendarValue.single(this);
   }
-}
-
-enum CalendarSelectionMode {
-  none,
-  single,
-  range,
-  multi,
 }
 
 /// A highly customizable calendar widget supporting multiple selection modes.
@@ -1352,7 +1347,7 @@ class YearCalendar extends StatelessWidget {
 ///
 /// States include:
 /// - [none]: Normal unselected date
-/// - [today]: Current date highlighted  
+/// - [today]: Current date highlighted
 /// - [selected]: Single selected date or exact range boundary
 /// - [inRange]: Date within a selected range but not start/end
 /// - [startRange]/[endRange]: Range boundaries in other months
@@ -1382,7 +1377,7 @@ enum CalendarItemType {
 ///
 /// Key Features:
 /// - **Visual States**: Multiple appearance modes based on selection status
-/// - **Interactive**: Touch/click handling with callbacks  
+/// - **Interactive**: Touch/click handling with callbacks
 /// - **Responsive Sizing**: Configurable width/height with theme scaling
 /// - **Accessibility**: Screen reader support and focus management
 /// - **State Management**: Enabled/disabled states with visual feedback

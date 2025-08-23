@@ -1,4 +1,3 @@
-
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -34,13 +33,6 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// );
 /// ```
 class Switcher extends StatefulWidget {
-  final int index;
-  final ValueChanged<int>? onIndexChanged;
-  final AxisDirection direction;
-  final List<Widget> children;
-  final Duration duration;
-  final Curve curve;
-
   /// Current active child index.
   final int index;
 

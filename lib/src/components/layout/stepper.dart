@@ -19,10 +19,6 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// );
 /// ```
 class StepperTheme {
-  final Axis? direction;
-  final StepSize? size;
-  final StepVariant? variant;
-
   /// Layout direction for the stepper.
   final Axis? direction;
 
@@ -92,9 +88,6 @@ enum StepState {
 /// );
 /// ```
 class StepperValue {
-  final Map<int, StepState> stepStates;
-  final int currentStep;
-
   /// Map of step indices to their special states.
   final Map<int, StepState> stepStates;
 
@@ -143,10 +136,6 @@ class StepperValue {
 /// );
 /// ```
 class Step {
-  final Widget title;
-  final WidgetBuilder? contentBuilder;
-  final Widget? icon;
-
   /// The title widget displayed for this step.
   final Widget title;
 
@@ -843,11 +832,6 @@ const kLargeStepIndicatorSize = 44.0;
 /// Also includes utility methods like [hasFailure] to check for failed
 /// steps and array-style access to individual steps.
 class StepProperties {
-  final StepSize size;
-  final List<Step> steps;
-  final ValueListenable<StepperValue> state;
-  final Axis direction;
-
   /// Size configuration for step indicators.
   final StepSize size;
 
@@ -906,16 +890,16 @@ class StepProperties {
 /// Example:
 /// ```dart
 /// final controller = StepperController(currentStep: 0);
-/// 
+///
 /// // Navigate to next step
 /// controller.nextStep();
-/// 
+///
 /// // Mark step as failed
 /// controller.setStatus(1, StepState.failed);
-/// 
+///
 /// // Jump to specific step
 /// controller.jumpToStep(3);
-/// 
+///
 /// // Don't forget to dispose
 /// controller.dispose();
 /// ```
@@ -987,7 +971,7 @@ class StepperController extends ValueNotifier<StepperValue> {
   /// ```dart
   /// // Mark step as failed
   /// controller.setStatus(2, StepState.failed);
-  /// 
+  ///
   /// // Clear step state
   /// controller.setStatus(2, null);
   /// ```
@@ -1039,7 +1023,7 @@ class StepperController extends ValueNotifier<StepperValue> {
 /// Example:
 /// ```dart
 /// final controller = StepperController();
-/// 
+///
 /// Stepper(
 ///   controller: controller,
 ///   direction: Axis.vertical,
@@ -1062,12 +1046,6 @@ class StepperController extends ValueNotifier<StepperValue> {
 /// );
 /// ```
 class Stepper extends StatelessWidget {
-  final StepperController controller;
-  final List<Step> steps;
-  final Axis? direction;
-  final StepSize? size;
-  final StepVariant? variant;
-
   /// Controller for managing stepper state and navigation.
   final StepperController controller;
 
@@ -1098,7 +1076,7 @@ class Stepper extends StatelessWidget {
   /// Example:
   /// ```dart
   /// final controller = StepperController(currentStep: 0);
-  /// 
+  ///
   /// Stepper(
   ///   controller: controller,
   ///   direction: Axis.vertical,
@@ -1146,8 +1124,6 @@ class Stepper extends StatelessWidget {
 /// final stepIndex = stepData?.stepIndex ?? 0;
 /// ```
 class StepNumberData {
-  final int stepIndex;
-
   /// Zero-based index of the step.
   final int stepIndex;
 
@@ -1189,9 +1165,6 @@ class StepNumberData {
 /// );
 /// ```
 class StepNumber extends StatelessWidget {
-  final Widget? icon;
-  final VoidCallback? onPressed;
-
   /// Custom icon to display instead of step number.
   final Widget? icon;
 
@@ -1333,11 +1306,6 @@ class StepNumber extends StatelessWidget {
 /// );
 /// ```
 class StepTitle extends StatelessWidget {
-  final Widget title;
-  final Widget? subtitle;
-  final CrossAxisAlignment crossAxisAlignment;
-  final VoidCallback? onPressed;
-
   /// The main title widget for the step.
   final Widget title;
 
@@ -1433,9 +1401,6 @@ class StepTitle extends StatelessWidget {
 /// );
 /// ```
 class StepContainer extends StatefulWidget {
-  final Widget child;
-  final List<Widget> actions;
-
   /// The main content widget for the step.
   final Widget child;
 

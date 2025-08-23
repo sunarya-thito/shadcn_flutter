@@ -79,12 +79,12 @@ class ChipInputTheme {
 /// Example:
 /// ```dart
 /// final controller = ChipInputController<String>(['initial', 'chips']);
-/// 
+///
 /// // React to changes
 /// controller.addListener(() {
 ///   print('Chips: ${controller.value}');
 /// });
-/// 
+///
 /// // Programmatic control
 /// controller.add('new chip');
 /// controller.removeAt(0);
@@ -171,7 +171,7 @@ class ChipInputController<T> extends ValueNotifier<List<T>>
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = ChipInputController<String>(['apple', 'banana']);
-/// 
+///
 /// ControlledChipInput<String>(
 ///   controller: controller,
 ///   chipBuilder: (context, chip) => Chip(label: Text(chip)),
@@ -182,7 +182,7 @@ class ChipInputController<T> extends ValueNotifier<List<T>>
 /// **Callback-based (simple state management):**
 /// ```dart
 /// List<String> selectedItems = [];
-/// 
+///
 /// ControlledChipInput<String>(
 ///   initialValue: selectedItems,
 ///   onChanged: (items) => setState(() => selectedItems = items),
@@ -231,6 +231,26 @@ class ControlledChipInput<T> extends StatelessWidget
   /// list that appears during typing. When null, uses theme or framework defaults.
   final BoxConstraints? popoverConstraints;
 
+  /// Undo history controller for text input field.
+  ///
+  /// Allows programmatic undo/redo of text input changes. Delegated to the underlying [ChipInput].
+  final UndoHistoryController? undoHistoryController;
+
+  /// Callback fired when the user submits the input (e.g., presses enter).
+  ///
+  /// Delegated to the underlying [ChipInput]. Called with the submitted text value.
+  final ValueChanged<String>? onSubmitted;
+
+  /// Initial text value for the input field.
+  ///
+  /// Delegated to the underlying [ChipInput]. Sets the starting text in the input field.
+  final String? initialText;
+
+  /// Focus node for managing input focus.
+  ///
+  /// Delegated to the underlying [ChipInput]. Allows external control of focus state.
+  final FocusNode? focusNode;
+
   /// List of available suggestions for autocomplete functionality.
   ///
   /// Items from this list are filtered and presented to the user during typing.
@@ -242,6 +262,11 @@ class ControlledChipInput<T> extends StatelessWidget
   /// When using controller-based management, this is managed automatically.
   /// For callback-based management, this should reflect the current state.
   final List<T> chips;
+
+  /// List of input formatters for the text field.
+  ///
+  /// Delegated to the underlying [ChipInput]. Allows customization of text input formatting and restrictions.
+  final List<TextInputFormatter>? inputFormatters;
 
   /// Callback for handling suggestion selection.
   ///
@@ -269,11 +294,31 @@ class ControlledChipInput<T> extends StatelessWidget
   /// chips. When false, items appear as simple text tokens.
   final bool? useChips;
 
+  /// Text input action for the text field (e.g., done, next).
+  ///
+  /// Delegated to the underlying [ChipInput]. Allows customization of the keyboard action button.
+  final TextInputAction? textInputAction;
+
   /// Widget displayed when no chips are selected and no text is entered.
   ///
   /// Provides helpful instructions or context for the user about what to enter.
   /// Typically a Text widget with muted styling.
   final Widget? placeholder;
+
+  /// Builder for leading widget in suggestion list items.
+  ///
+  /// Delegated to the underlying [ChipInput]. Allows customization of leading content in suggestions.
+  final Widget Function(BuildContext, T)? suggestionLeadingBuilder;
+
+  /// Builder for trailing widget in suggestion list items.
+  ///
+  /// Delegated to the underlying [ChipInput]. Allows customization of trailing content in suggestions.
+  final Widget Function(BuildContext, T)? suggestionTrailingBuilder;
+
+  /// Widget displayed at the end of the input field.
+  ///
+  /// Delegated to the underlying [ChipInput]. Allows adding custom trailing widgets to the input field.
+  final Widget? inputTrailingWidget;
 
   /// Creates a [ControlledChipInput] with comprehensive customization options.
   ///
@@ -291,6 +336,15 @@ class ControlledChipInput<T> extends StatelessWidget
   /// - [suggestionBuilder] (ChipWidgetBuilder<T>?, optional): custom suggestion builder
   /// - [useChips] (bool?, optional): override chip rendering mode
   /// - [placeholder] (Widget?, optional): empty state placeholder widget
+  /// - [undoHistoryController] (UndoHistoryController?, optional): undo/redo controller for text input
+  /// - [onSubmitted] (ValueChanged<String>?, optional): callback for text submission
+  /// - [initialText] (String?, optional): initial text value for input field
+  /// - [focusNode] (FocusNode?, optional): focus node for input field
+  /// - [inputFormatters] (List<TextInputFormatter>?, optional): input formatters for text field
+  /// - [textInputAction] (TextInputAction?, optional): keyboard action button
+  /// - [suggestionLeadingBuilder] (Widget Function(BuildContext, T)?, optional): leading widget builder for suggestions
+  /// - [suggestionTrailingBuilder] (Widget Function(BuildContext, T)?, optional): trailing widget builder for suggestions
+  /// - [inputTrailingWidget] (Widget?, optional): trailing widget for input field
   ///
   /// Example:
   /// ```dart
@@ -302,6 +356,15 @@ class ControlledChipInput<T> extends StatelessWidget
   ///   ),
   ///   suggestions: ['apple', 'banana', 'cherry'],
   ///   placeholder: Text('Type to add fruits...'),
+  ///   undoHistoryController: myUndoController,
+  ///   onSubmitted: (text) => print('Submitted: $text'),
+  ///   initialText: 'Start typing...',
+  ///   focusNode: myFocusNode,
+  ///   inputFormatters: [myFormatter],
+  ///   textInputAction: TextInputAction.done,
+  ///   suggestionLeadingBuilder: (context, chip) => Icon(Icons.star),
+  ///   suggestionTrailingBuilder: (context, chip) => Icon(Icons.close),
+  ///   inputTrailingWidget: Icon(Icons.add),
   /// )
   /// ```
   const ControlledChipInput({

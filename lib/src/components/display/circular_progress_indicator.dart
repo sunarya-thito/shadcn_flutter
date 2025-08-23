@@ -150,7 +150,7 @@ class CircularProgressIndicator extends StatelessWidget {
   ///
   /// Type: `double?`. If null, calculates proportionally as size/12.
   /// Controls the thickness of both progress and background arcs.
-  final Color? strokeWidth;
+  final double? strokeWidth;
 
   /// The duration for smooth progress value transitions.
   ///

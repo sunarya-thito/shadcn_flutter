@@ -18,14 +18,6 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// );
 /// ```
 class CardImageTheme {
-  final AbstractButtonStyle? style;
-  final Axis? direction;
-  final double? hoverScale;
-  final double? normalScale;
-  final Color? backgroundColor;
-  final Color? borderColor;
-  final double? gap;
-
   /// Button style for the card.
   final AbstractButtonStyle? style;
 
@@ -54,7 +46,7 @@ class CardImageTheme {
   ///
   /// Parameters:
   /// - [style] (AbstractButtonStyle?): button style configuration
-  /// - [direction] (Axis?): layout direction (vertical/horizontal)  
+  /// - [direction] (Axis?): layout direction (vertical/horizontal)
   /// - [hoverScale] (double?): image scale on hover (default: 1.05)
   /// - [normalScale] (double?): normal image scale (default: 1.0)
   /// - [backgroundColor] (Color?): image background color
@@ -144,7 +136,7 @@ class CardImageTheme {
 ///
 /// The widget wraps the content in a [Button] for interaction handling
 /// and uses [OutlinedContainer] for the image styling. Layout direction
-/// can be configured to show content below (vertical) or beside 
+/// can be configured to show content below (vertical) or beside
 /// (horizontal) the image.
 ///
 /// Example:
@@ -157,21 +149,6 @@ class CardImageTheme {
 /// );
 /// ```
 class CardImage extends StatefulWidget {
-  final Widget image;
-  final Widget? title;
-  final Widget? subtitle;
-  final Widget? trailing;
-  final Widget? leading;
-  final VoidCallback? onPressed;
-  final bool? enabled;
-  final AbstractButtonStyle? style;
-  final Axis? direction;
-  final double? hoverScale;
-  final double? normalScale;
-  final Color? backgroundColor;
-  final Color? borderColor;
-  final double? gap;
-
   /// The primary image widget to display.
   final Widget image;
 

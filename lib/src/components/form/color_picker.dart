@@ -153,12 +153,12 @@ class ColorInputTheme {
 /// final controller = ColorInputController(
 ///   ColorDerivative.fromColor(Colors.blue),
 /// );
-/// 
+///
 /// // React to changes
 /// controller.addListener(() {
 ///   print('Color changed to: ${controller.value.color}');
 /// });
-/// 
+///
 /// // Programmatic control
 /// controller.value = ColorDerivative.fromHSV(HSVColor.fromColor(Colors.red));
 /// ```
@@ -203,13 +203,13 @@ class ColorInputController extends ValueNotifier<ColorDerivative>
   }
 
   /// Gets the current color as a standard [Color] object.
-  Color get color => value.color;
+  Color get color => value.toColor();
 
   /// Gets the current color as an HSV color representation.
-  HSVColor get hsvColor => value.hsvColor;
+  HSVColor get hsvColor => value.toHSVColor();
 
   /// Gets the current color as an HSL color representation.
-  HSLColor get hslColor => value.hslColor;
+  HSLColor get hslColor => value.toHSLColor();
 }
 
 /// Reactive color input with automatic state management and controller support.
@@ -235,7 +235,7 @@ class ColorInputController extends ValueNotifier<ColorDerivative>
 /// final controller = ColorInputController(
 ///   ColorDerivative.fromColor(Colors.blue),
 /// );
-/// 
+///
 /// ControlledColorInput(
 ///   controller: controller,
 ///   showAlpha: true,
@@ -247,7 +247,7 @@ class ColorInputController extends ValueNotifier<ColorDerivative>
 /// **Callback-based (simple state management):**
 /// ```dart
 /// ColorDerivative currentColor = ColorDerivative.fromColor(Colors.red);
-/// 
+///
 /// ControlledColorInput(
 ///   initialValue: currentColor,
 ///   onChanged: (color) => setState(() => currentColor = color),

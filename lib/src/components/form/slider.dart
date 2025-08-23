@@ -19,12 +19,12 @@ import '../../../shadcn_flutter.dart';
 /// Example:
 /// ```dart
 /// final controller = SliderController(SliderValue.single(0.5));
-/// 
+///
 /// // React to changes
 /// controller.addListener(() {
 ///   print('Slider value: ${controller.value}');
 /// });
-/// 
+///
 /// // Programmatic control
 /// controller.setValue(0.75);
 /// controller.setRange(0.2, 0.8);
@@ -56,19 +56,19 @@ class SliderController extends ValueNotifier<SliderValue>
   /// Converts the slider to dual-thumb mode with the specified [start] and [end] values.
   /// The values should be within the slider's min/max bounds with start <= end.
   void setRange(double start, double end) {
-    value = SliderValue.range(start, end);
+    value = SliderValue.ranged(start, end);
   }
 
   /// Returns true if the slider is in single-value mode.
-  bool get isSingle => value.isSingle;
+  bool get isSingle => !value.isRanged;
 
   /// Returns true if the slider is in range mode.
-  bool get isRange => value.isRange;
+  bool get isRanged => value.isRanged;
 
   /// Gets the current single value (valid only in single mode).
   ///
   /// Throws an exception if called when the slider is in range mode.
-  double get singleValue => value.single;
+  double get singleValue => value.value;
 
   /// Gets the current range start value (valid only in range mode).
   ///
@@ -101,7 +101,7 @@ class SliderController extends ValueNotifier<SliderValue>
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = SliderController(SliderValue.single(0.5));
-/// 
+///
 /// ControlledSlider(
 ///   controller: controller,
 ///   min: 0.0,
@@ -113,7 +113,7 @@ class SliderController extends ValueNotifier<SliderValue>
 /// **Callback-based (simple state management):**
 /// ```dart
 /// double currentValue = 50.0;
-/// 
+///
 /// ControlledSlider(
 ///   initialValue: SliderValue.single(currentValue),
 ///   onChanged: (value) => setState(() => currentValue = value.single),
