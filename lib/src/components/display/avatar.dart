@@ -1,26 +1,75 @@
 import '../../../shadcn_flutter.dart';
 
-/// A theme for [Avatar].
+/// Theme configuration for [Avatar] and related avatar components.
+///
+/// [AvatarTheme] provides styling options for avatar components including size,
+/// border radius, colors, and badge positioning. It enables consistent avatar
+/// styling across an application while allowing per-instance customization.
+///
+/// Used with [ComponentTheme] to apply theme values throughout the widget tree.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<AvatarTheme>(
+///   data: AvatarTheme(
+///     size: 48.0,
+///     borderRadius: 8.0,
+///     backgroundColor: Colors.grey.shade200,
+///     badgeAlignment: Alignment.topRight,
+///     textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+///   ),
+///   child: MyAvatarWidget(),
+/// );
+/// ```
 class AvatarTheme {
-  /// The default size of the avatar.
+  /// Default size for avatar components in logical pixels.
+  ///
+  /// Controls the width and height of avatar containers. If null, defaults
+  /// to 40 logical pixels scaled by theme scaling factor.
   final double? size;
 
-  /// The border radius of the avatar.
+  /// Border radius for avatar corners in logical pixels.
+  ///
+  /// Creates rounded corners on avatar containers. If null, defaults to
+  /// theme radius multiplied by avatar size for proportional rounding.
   final double? borderRadius;
 
-  /// The background color of the avatar.
+  /// Background color for avatar containers when displaying initials.
+  ///
+  /// Used as the background color when no image is provided or when image
+  /// loading fails. If null, uses the muted color from theme color scheme.
   final Color? backgroundColor;
 
-  /// The alignment of the badge relative to the avatar.
+  /// Alignment of badge relative to the main avatar.
+  ///
+  /// Controls where badges are positioned when attached to avatars.
+  /// If null, badges are positioned at a calculated offset based on avatar size.
   final AlignmentGeometry? badgeAlignment;
 
-  /// The gap between the avatar and the badge.
+  /// Spacing between avatar and badge components.
+  ///
+  /// Controls the gap between the main avatar and any attached badges.
+  /// If null, defaults to 4 logical pixels scaled by theme scaling factor.
   final double? badgeGap;
 
-  /// The text style of the initials.
+  /// Text style for avatar initials display.
+  ///
+  /// Applied to text when displaying user initials in avatar containers.
+  /// If null, uses bold foreground color from theme.
   final TextStyle? textStyle;
 
-  /// Creates a new [AvatarTheme].
+  /// Creates an [AvatarTheme] with the specified styling options.
+  ///
+  /// All parameters are optional and will fall back to component defaults
+  /// when not specified.
+  ///
+  /// Parameters:
+  /// - [size] (double?, optional): Default size for avatars.
+  /// - [borderRadius] (double?, optional): Border radius for avatar corners.
+  /// - [backgroundColor] (Color?, optional): Background color for initials display.
+  /// - [badgeAlignment] (AlignmentGeometry?, optional): Badge positioning relative to avatar.
+  /// - [badgeGap] (double?, optional): Spacing between avatar and badge.
+  /// - [textStyle] (TextStyle?, optional): Text style for initials.
   const AvatarTheme({
     this.size,
     this.borderRadius,
@@ -30,7 +79,18 @@ class AvatarTheme {
     this.textStyle,
   });
 
-  /// Creates a copy of this theme but with the given fields replaced with the new values.
+  /// Creates a copy of this theme with the given values replaced.
+  ///
+  /// Uses [ValueGetter] functions to allow conditional updates where
+  /// null getters preserve the original value.
+  ///
+  /// Example:
+  /// ```dart
+  /// final newTheme = originalTheme.copyWith(
+  ///   size: () => 60.0,
+  ///   backgroundColor: () => Colors.blue.shade100,
+  /// );
+  /// ```
   AvatarTheme copyWith({
     ValueGetter<double?>? size,
     ValueGetter<double?>? borderRadius,
@@ -75,13 +135,60 @@ class AvatarTheme {
       );
 }
 
+/// Abstract base class for avatar-related widgets.
+///
+/// [AvatarWidget] provides a common interface for avatar components, ensuring
+/// they expose size and border radius properties that can be used by container
+/// components like [AvatarGroup] for proper layout and clipping.
 abstract class AvatarWidget extends Widget {
+  /// Creates an [AvatarWidget] with optional key.
   const AvatarWidget({super.key});
 
+  /// Size of the avatar widget in logical pixels.
+  ///
+  /// Used by container widgets for layout calculations and clipping operations.
   double? get size;
+
+  /// Border radius of the avatar widget in logical pixels.
+  ///
+  /// Used by container widgets for proper clipping and visual effects.
   double? get borderRadius;
 }
 
+/// A circular or rounded rectangular widget for displaying user profile images or initials.
+///
+/// [Avatar] provides a versatile component for representing users in UI interfaces.
+/// It can display either an image (from network or other sources) or user initials,
+/// with automatic fallback to initials when image loading fails. The avatar supports
+/// optional badges for status indicators and integrates seamlessly with [AvatarGroup]
+/// for overlapping avatar layouts.
+///
+/// ## Key Features
+/// - **Flexible Content**: Supports both images and text initials
+/// - **Automatic Fallback**: Falls back to initials when images fail to load
+/// - **Badge Support**: Optional badge overlay for status or notification indicators
+/// - **Network Images**: Built-in support for network images with caching
+/// - **Theming**: Comprehensive theming via [AvatarTheme]
+/// - **Group Integration**: Works with [AvatarGroup] for overlapping layouts
+///
+/// ## Initials Generation
+/// The avatar includes intelligent initials generation via [getInitials]:
+/// - For single words: First two characters (e.g., "John" → "JO")
+/// - For multiple words: First character of first two words (e.g., "John Doe" → "JD")
+/// - Proper capitalization and fallback handling
+///
+/// Example:
+/// ```dart
+/// Avatar(
+///   initials: 'JD',
+///   size: 48,
+///   backgroundColor: Colors.blue.shade100,
+///   badge: AvatarBadge(
+///     color: Colors.green,
+///     size: 12,
+///   ),
+/// );
+/// ```
 class Avatar extends StatefulWidget implements AvatarWidget {
   static String getInitials(String name) {
     final List<String> parts = name.split(r'\s+');
