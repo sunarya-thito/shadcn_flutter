@@ -89,8 +89,8 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [x] Divider
 - [x] Resizable
 - [x] Scaffold
-- [ ] Sortable
-- [ ] SortableDragHandle
+- [x] Sortable
+- [x] SortableDragHandle
 - [x] Steps
 - [x] Stepper
 - [x] Timeline
@@ -107,8 +107,8 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [ ] Navigation Sidebar
 - [x] Pagination
 - [x] Switcher *(Experimental)*
-- [ ] Tab List
-- [ ] Tab Pane
+- [x] Tab List
+- [x] Tab Pane
 - [x] Tabs
 - [ ] Tree
 
