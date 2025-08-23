@@ -88,11 +88,76 @@ class SelectTheme {
       );
 }
 
+/// Controller for managing [ControlledSelect] state programmatically.
+///
+/// Extends [ValueNotifier] to provide reactive state management for select
+/// components. Can be used to programmatically change selection, listen to
+/// state changes, and integrate with forms and other reactive systems.
+///
+/// Example:
+/// ```dart
+/// final controller = SelectController<String>('initial');
+/// 
+/// // Listen to changes
+/// controller.addListener(() {
+///   print('Selection changed to: ${controller.value}');
+/// });
+/// 
+/// // Update selection
+/// controller.value = 'new_value';
+/// ```
 class SelectController<T> extends ValueNotifier<T?>
     with ComponentController<T?> {
+  /// Creates a [SelectController] with an optional initial value.
+  ///
+  /// The [value] parameter sets the initial selected item. Can be null
+  /// to start with no selection.
+  ///
+  /// Parameters:
+  /// - [value] (T?, optional): Initial selected value
   SelectController([super.value]);
 }
 
+/// Reactive single-selection dropdown with automatic state management.
+///
+/// A high-level select widget that provides automatic state management through
+/// the controlled component pattern. Supports both controller-based and callback-based
+/// state management with comprehensive customization options for item presentation,
+/// popup behavior, and interaction handling.
+///
+/// ## Features
+///
+/// - **Flexible item rendering**: Custom builders for complete visual control over items
+/// - **Popup positioning**: Configurable alignment and constraints for the dropdown
+/// - **Keyboard navigation**: Full keyboard support with arrow keys and Enter/Escape
+/// - **Form integration**: Automatic validation and form field registration
+/// - **Unselection support**: Optional ability to deselect the current selection
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = SelectController<String>('apple');
+/// 
+/// ControlledSelect<String>(
+///   controller: controller,
+///   items: ['apple', 'banana', 'cherry'],
+///   itemBuilder: (context, item) => Text(item),
+///   placeholder: Text('Choose fruit'),
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// String? selectedFruit;
+/// 
+/// ControlledSelect<String>(
+///   initialValue: selectedFruit,
+///   onChanged: (fruit) => setState(() => selectedFruit = fruit),
+///   items: ['apple', 'banana', 'cherry'],
+///   itemBuilder: (context, item) => Text(item),
+/// )
+/// ```
 class ControlledSelect<T> extends StatelessWidget
     with ControlledComponent<T?>, SelectBase<T> {
   @override
@@ -141,6 +206,45 @@ class ControlledSelect<T> extends StatelessWidget
   @override
   final Predicate<T>? showValuePredicate;
 
+  /// Creates a [ControlledSelect].
+  ///
+  /// Either [controller] or [onChanged] should be provided for interactivity.
+  /// The widget supports both controller-based and callback-based state management
+  /// patterns depending on application architecture needs.
+  ///
+  /// Parameters:
+  /// - [controller] (SelectController<T>?, optional): external state controller
+  /// - [initialValue] (T?, optional): starting selection when no controller
+  /// - [onChanged] (ValueChanged<T?>?, optional): selection change callback
+  /// - [enabled] (bool, default: true): whether select is interactive
+  /// - [placeholder] (Widget?, optional): widget shown when no item selected
+  /// - [filled] (bool, default: false): whether to use filled appearance
+  /// - [focusNode] (FocusNode?, optional): custom focus node for keyboard handling
+  /// - [constraints] (BoxConstraints?, optional): size constraints for select widget
+  /// - [popupConstraints] (BoxConstraints?, optional): size constraints for popup
+  /// - [popupWidthConstraint] (PopoverConstraint, default: anchorFixedSize): popup width behavior
+  /// - [borderRadius] (BorderRadiusGeometry?, optional): override select border radius
+  /// - [padding] (EdgeInsetsGeometry?, optional): override internal padding
+  /// - [popoverAlignment] (AlignmentGeometry, default: topCenter): popup alignment
+  /// - [popoverAnchorAlignment] (AlignmentGeometry?, optional): anchor alignment
+  /// - [disableHoverEffect] (bool, default: false): disable item hover effects
+  /// - [canUnselect] (bool, default: false): allow deselecting current item
+  /// - [autoClosePopover] (bool, default: true): close popup after selection
+  /// - [popup] (SelectPopupBuilder, required): builder for popup content
+  /// - [itemBuilder] (SelectItemBuilder<T>, required): builder for individual items
+  /// - [valueSelectionHandler] (SelectValueSelectionHandler<T>?, optional): custom selection logic
+  /// - [valueSelectionPredicate] (SelectValueSelectionPredicate<T>?, optional): selection validation
+  /// - [showValuePredicate] (Predicate<T>?, optional): visibility filter for values
+  ///
+  /// Example:
+  /// ```dart
+  /// ControlledSelect<String>(
+  ///   controller: controller,
+  ///   popup: (context, items) => ListView(children: items),
+  ///   itemBuilder: (context, item, selected) => Text(item),
+  ///   placeholder: Text('Select option'),
+  /// )
+  /// ```
   const ControlledSelect({
     super.key,
     this.controller,
@@ -203,10 +307,79 @@ class ControlledSelect<T> extends StatelessWidget
   }
 }
 
+/// Controller for managing [ControlledMultiSelect] state programmatically.
+///
+/// Extends [SelectController] to provide reactive state management for multi-selection
+/// components. Manages a collection of selected items with methods for adding,
+/// removing, and bulk operations.
+///
+/// Example:
+/// ```dart
+/// final controller = MultiSelectController<String>(['apple', 'banana']);
+/// 
+/// // Listen to changes
+/// controller.addListener(() {
+///   print('Selection changed to: ${controller.value}');
+/// });
+/// 
+/// // Update selection
+/// controller.value = ['apple', 'cherry'];
+/// ```
 class MultiSelectController<T> extends SelectController<Iterable<T>> {
+  /// Creates a [MultiSelectController] with an optional initial selection.
+  ///
+  /// The [value] parameter sets the initial selected items collection.
+  /// Can be null or empty to start with no selections.
+  ///
+  /// Parameters:
+  /// - [value] (Iterable<T>?, optional): Initial selected items
   MultiSelectController([super.value]);
 }
 
+/// Reactive multi-selection dropdown with automatic state management.
+///
+/// A high-level multi-select widget that provides automatic state management through
+/// the controlled component pattern. Supports both controller-based and callback-based
+/// state management with comprehensive customization options for item presentation,
+/// selection behavior, and popup management.
+///
+/// ## Features
+///
+/// - **Multiple selection**: Select and deselect multiple items simultaneously
+/// - **Flexible item rendering**: Custom builders for complete visual control over items
+/// - **Selection indicators**: Built-in checkboxes or custom selection indicators
+/// - **Popup positioning**: Configurable alignment and constraints for the dropdown
+/// - **Keyboard navigation**: Full keyboard support with Space for selection toggle
+/// - **Form integration**: Automatic validation and form field registration
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = MultiSelectController<String>(['apple']);
+/// 
+/// ControlledMultiSelect<String>(
+///   controller: controller,
+///   items: ['apple', 'banana', 'cherry', 'date'],
+///   itemBuilder: (context, item, selected) => ListTile(
+///     leading: Checkbox(value: selected),
+///     title: Text(item),
+///   ),
+///   placeholder: Text('Choose fruits'),
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// List<String> selectedFruits = [];
+/// 
+/// ControlledMultiSelect<String>(
+///   initialValue: selectedFruits,
+///   onChanged: (fruits) => setState(() => selectedFruits = fruits?.toList() ?? []),
+///   items: ['apple', 'banana', 'cherry'],
+///   itemBuilder: (context, item, selected) => Text(item),
+/// )
+/// ```
 class ControlledMultiSelect<T> extends StatelessWidget
     with ControlledComponent<Iterable<T>?>, SelectBase<Iterable<T>> {
   @override
@@ -258,6 +431,51 @@ class ControlledMultiSelect<T> extends StatelessWidget
   final Predicate<Iterable<T>>? showValuePredicate;
   final SelectValueBuilder<T> multiItemBuilder;
 
+  /// Creates a [ControlledMultiSelect].
+  ///
+  /// Either [controller] or [onChanged] should be provided for interactivity.
+  /// The widget supports both controller-based and callback-based state management
+  /// patterns with multiple item selection capabilities.
+  ///
+  /// Parameters:
+  /// - [controller] (MultiSelectController<T>?, optional): external state controller
+  /// - [initialValue] (Iterable<T>?, optional): starting selection when no controller
+  /// - [onChanged] (ValueChanged<Iterable<T>?>?, optional): selection change callback
+  /// - [enabled] (bool, default: true): whether select is interactive
+  /// - [placeholder] (Widget?, optional): widget shown when no items selected
+  /// - [filled] (bool, default: false): whether to use filled appearance
+  /// - [focusNode] (FocusNode?, optional): custom focus node for keyboard handling
+  /// - [constraints] (BoxConstraints?, optional): size constraints for select widget
+  /// - [popupConstraints] (BoxConstraints?, optional): size constraints for popup
+  /// - [popupWidthConstraint] (PopoverConstraint, default: anchorFixedSize): popup width behavior
+  /// - [borderRadius] (BorderRadiusGeometry?, optional): override select border radius
+  /// - [padding] (EdgeInsetsGeometry?, optional): override internal padding
+  /// - [popoverAlignment] (AlignmentGeometry, default: topCenter): popup alignment
+  /// - [popoverAnchorAlignment] (AlignmentGeometry?, optional): anchor alignment
+  /// - [disableHoverEffect] (bool, default: false): disable item hover effects
+  /// - [canUnselect] (bool, default: false): allow deselecting all items
+  /// - [autoClosePopover] (bool, default: false): close popup after each selection
+  /// - [popup] (SelectPopupBuilder, required): builder for popup content
+  /// - [itemBuilder] (SelectItemBuilder<T>, required): builder for individual items
+  /// - [multiItemBuilder] (SelectValueBuilder<T>, required): builder for selected items display
+  /// - [valueSelectionHandler] (SelectValueSelectionHandler<Iterable<T>>?, optional): custom selection logic
+  /// - [valueSelectionPredicate] (SelectValueSelectionPredicate<Iterable<T>>?, optional): selection validation
+  /// - [showValuePredicate] (Predicate<Iterable<T>>?, optional): visibility filter for values
+  ///
+  /// Example:
+  /// ```dart
+  /// ControlledMultiSelect<String>(
+  ///   controller: controller,
+  ///   popup: (context, items) => ListView(children: items),
+  ///   itemBuilder: (context, item, selected) => CheckboxListTile(
+  ///     value: selected,
+  ///     title: Text(item),
+  ///   ),
+  ///   multiItemBuilder: (context, items) => Wrap(
+  ///     children: items.map((item) => Chip(label: Text(item))).toList(),
+  ///   ),
+  /// )
+  /// ```
   const ControlledMultiSelect({
     super.key,
     this.controller,
@@ -905,11 +1123,59 @@ class SelectState<T> extends State<Select<T>>
   }
 }
 
+/// Chip widget designed for multi-select contexts with automatic removal functionality.
+///
+/// A specialized chip widget that integrates with multi-select components to display
+/// selected items with built-in removal capabilities. Automatically detects its
+/// multi-select context and provides appropriate removal behavior.
+///
+/// ## Features
+///
+/// - **Context-aware removal**: Automatically integrates with parent multi-select state
+/// - **Visual feedback**: Clear visual indication of selected state
+/// - **Interactive deletion**: Built-in X button for removing selections
+/// - **Consistent styling**: Matches multi-select component design patterns
+/// - **Accessibility**: Full screen reader support for selection management
+///
+/// This widget is typically used within multi-select components to represent
+/// individual selected items with the ability to remove them from the selection.
+///
+/// Example:
+/// ```dart
+/// MultiSelectChip(
+///   value: 'apple',
+///   child: Text('Apple'),
+///   style: ButtonStyle.secondary(),
+/// );
+/// ```
 class MultiSelectChip extends StatelessWidget {
   final Object? value;
   final Widget child;
   final AbstractButtonStyle style;
 
+  /// Creates a [MultiSelectChip].
+  ///
+  /// Designed to be used within multi-select components where it automatically
+  /// integrates with the parent selection state for removal functionality.
+  ///
+  /// Parameters:
+  /// - [value] (Object?, required): the value this chip represents in the selection
+  /// - [child] (Widget, required): content displayed inside the chip
+  /// - [style] (AbstractButtonStyle, default: primary): chip styling
+  ///
+  /// Example:
+  /// ```dart
+  /// MultiSelectChip(
+  ///   value: user.id,
+  ///   child: Row(
+  ///     children: [
+  ///       Avatar(user: user),
+  ///       Text(user.name),
+  ///     ],
+  ///   ),
+  ///   style: ButtonStyle.secondary(),
+  /// )
+  /// ```
   const MultiSelectChip({
     super.key,
     this.style = const ButtonStyle.primary(),
