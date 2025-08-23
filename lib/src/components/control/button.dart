@@ -905,6 +905,26 @@ class Button extends StatefulWidget {
     this.disableFocusOutline = false,
   });
 
+  /// Creates an outline button with border styling for secondary actions.
+  ///
+  /// Outline buttons use a transparent background with a visible border, making them
+  /// suitable for secondary actions that need clear visibility but less emphasis than
+  /// primary buttons. They provide good contrast against most backgrounds while
+  /// maintaining visual hierarchy.
+  ///
+  /// The button shows hover and focus effects while maintaining the outline aesthetic.
+  /// Border colors and text colors adapt to the current theme and interaction states.
+  ///
+  /// Parameters: Same as [Button] constructor, with [style] preset to [ButtonVariance.outline].
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.outline(
+  ///   onPressed: () => showMoreOptions(),
+  ///   leading: Icon(Icons.more_horiz),
+  ///   child: Text('More Options'),
+  /// );
+  /// ```
   const Button.outline({
     super.key,
     this.statesController,
@@ -989,6 +1009,25 @@ class Button extends StatefulWidget {
     this.disableFocusOutline = false,
   });
 
+  /// Creates a link button with hyperlink-style appearance for navigation actions.
+  ///
+  /// Link buttons appear as text links with underlines and color changes on hover,
+  /// making them suitable for navigation actions, cross-references, or any action
+  /// that conceptually "takes you somewhere." They have minimal visual weight and
+  /// integrate seamlessly with text content.
+  ///
+  /// The styling mimics web links with appropriate hover and focus states, including
+  /// underline effects and color transitions that follow accessibility guidelines.
+  ///
+  /// Parameters: Same as [Button] constructor, with [style] preset to [ButtonVariance.link].
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.link(
+  ///   onPressed: () => Navigator.pushNamed(context, '/profile'),
+  ///   child: Text('View Profile'),
+  /// );
+  /// ```
   const Button.link({
     super.key,
     this.statesController,
@@ -1024,6 +1063,24 @@ class Button extends StatefulWidget {
     this.disableFocusOutline = false,
   });
 
+  /// Creates a text button with plain text appearance for minimal actions.
+  ///
+  /// Text buttons have no background or border by default, appearing as plain text
+  /// with subtle hover effects. They're perfect for actions that should be available
+  /// but not prominent, such as "Cancel" in dialog boxes or secondary navigation items.
+  ///
+  /// The text styling adapts to interaction states with appropriate color changes
+  /// and opacity adjustments while maintaining minimal visual impact on the interface.
+  ///
+  /// Parameters: Same as [Button] constructor, with [style] preset to [ButtonVariance.text].
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.text(
+  ///   onPressed: () => Navigator.pop(context),
+  ///   child: Text('Cancel'),
+  /// );
+  /// ```
   const Button.text({
     super.key,
     this.statesController,
@@ -1108,6 +1165,25 @@ class Button extends StatefulWidget {
     this.disableFocusOutline = false,
   });
 
+  /// Creates a fixed button with consistent styling for stable UI elements.
+  ///
+  /// Fixed buttons maintain consistent appearance regardless of interaction state changes,
+  /// making them suitable for UI elements that need stable visual presentation such as
+  /// tabs, navigation items, or status indicators that shouldn't show hover effects.
+  ///
+  /// While the button still responds to interactions, the visual styling remains more
+  /// static compared to other button variants, providing predictable appearance for
+  /// interface elements that need consistent visual weight.
+  ///
+  /// Parameters: Same as [Button] constructor, with [style] preset to [ButtonVariance.fixed].
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.fixed(
+  ///   onPressed: () => switchTab(0),
+  ///   child: Text('Home'),
+  /// );
+  /// ```
   const Button.fixed({
     super.key,
     this.statesController,
@@ -1143,6 +1219,32 @@ class Button extends StatefulWidget {
     this.disableFocusOutline = false,
   });
 
+  /// Creates a card button with elevated card-like appearance for prominent content.
+  ///
+  /// Card buttons combine the interactive nature of buttons with the elevated appearance
+  /// of cards, making them suitable for content sections that need both visual prominence
+  /// and interaction capabilities. They provide depth through shadows and borders while
+  /// maintaining full button functionality.
+  ///
+  /// The card styling includes appropriate elevation, border radius, and background
+  /// colors that adapt to theme changes and interaction states, creating a cohesive
+  /// card-like experience with button behaviors.
+  ///
+  /// Parameters: Same as [Button] constructor, with [style] preset to [ButtonVariance.card].
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.card(
+  ///   onPressed: () => openDashboard(),
+  ///   leading: Icon(Icons.dashboard),
+  ///   child: Column(
+  ///     children: [
+  ///       Text('Dashboard'),
+  ///       Text('View analytics'),
+  ///     ],
+  ///   ),
+  /// );
+  /// ```
   const Button.card({
     super.key,
     this.statesController,
@@ -3580,6 +3682,34 @@ IconThemeData _buttonStaticIconTheme(
 }
 
 // Backward compatibility
+/// A convenient primary button widget with preset styling and common parameters.
+///
+/// [PrimaryButton] provides a simplified API for creating primary action buttons
+/// without the need to explicitly specify the button style. It wraps the base
+/// [Button] widget with [ButtonStyle.primary] and exposes commonly-used parameters
+/// as direct properties for ease of use.
+///
+/// This widget is ideal for developers who want the straightforward button creation
+/// experience without dealing with style configuration. It automatically handles
+/// primary button appearance while providing access to size, density, shape, and
+/// all interaction callbacks.
+///
+/// ## Key Features
+/// - **Preset Primary Styling**: Automatically uses primary button appearance
+/// - **Simplified API**: Direct properties instead of style configuration
+/// - **Full Feature Access**: All button features available through direct parameters
+/// - **Size and Shape Options**: Configurable size, density, and shape properties
+/// - **Complete Interaction Support**: All gesture callbacks and focus management
+///
+/// Example:
+/// ```dart
+/// PrimaryButton(
+///   onPressed: () => submitForm(),
+///   leading: Icon(Icons.send),
+///   size: ButtonSize.large,
+///   child: Text('Submit Form'),
+/// );
+/// ```
 class PrimaryButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
@@ -3611,6 +3741,35 @@ class PrimaryButton extends StatelessWidget {
   final GestureLongPressUpCallback? onSecondaryLongPress;
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
+  /// Creates a [PrimaryButton] with primary styling and configurable properties.
+  ///
+  /// This constructor provides a convenient way to create primary action buttons
+  /// without manually configuring button styles. The button automatically uses
+  /// primary colors and styling from the current theme while allowing customization
+  /// of size, density, shape, and all interaction behaviors.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): The main content displayed in the button
+  /// - [onPressed] (VoidCallback?, optional): Primary action callback
+  /// - [enabled] (bool?, optional): Whether button accepts input
+  /// - [leading] (Widget?, optional): Widget displayed before main content
+  /// - [trailing] (Widget?, optional): Widget displayed after main content  
+  /// - [alignment] (AlignmentGeometry?, optional): Content alignment within button
+  /// - [size] (ButtonSize, default: normal): Size variant for button dimensions
+  /// - [density] (ButtonDensity, default: normal): Spacing density setting
+  /// - [shape] (ButtonShape, default: rectangle): Border radius configuration
+  /// - [focusNode] (FocusNode?, optional): Focus management node
+  /// - [disableTransition] (bool, default: false): Whether to skip animations
+  ///
+  /// Example:
+  /// ```dart
+  /// PrimaryButton(
+  ///   onPressed: () => _handleSubmit(),
+  ///   leading: Icon(Icons.check),
+  ///   size: ButtonSize.large,
+  ///   child: Text('Submit'),
+  /// );
+  /// ```
   const PrimaryButton({
     super.key,
     required this.child,
@@ -3678,6 +3837,33 @@ class PrimaryButton extends StatelessWidget {
   }
 }
 
+/// A convenient secondary button widget with muted styling for supporting actions.
+///
+/// [SecondaryButton] provides a simplified API for creating secondary action buttons
+/// with preset secondary styling. It wraps the base [Button] widget with 
+/// [ButtonStyle.secondary] and exposes all commonly-used parameters as direct 
+/// properties for streamlined development.
+///
+/// Secondary buttons use muted background colors and medium contrast, making them
+/// suitable for actions that are important but not primary. They provide clear
+/// visual hierarchy while being less prominent than primary buttons.
+///
+/// ## Key Features
+/// - **Preset Secondary Styling**: Automatically uses secondary button appearance
+/// - **Muted Visual Weight**: Less prominent than primary buttons but still visible
+/// - **Full Feature Support**: Access to all button features through direct properties
+/// - **Theme Integration**: Adapts to theme changes and dark/light mode switches
+/// - **Comprehensive Gestures**: Complete support for all interaction patterns
+///
+/// Example:
+/// ```dart
+/// SecondaryButton(
+///   onPressed: () => showMoreOptions(),
+///   leading: Icon(Icons.more_horiz),
+///   size: ButtonSize.small,
+///   child: Text('More Options'),
+/// );
+/// ```
 class SecondaryButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
@@ -3710,6 +3896,30 @@ class SecondaryButton extends StatelessWidget {
   final GestureLongPressUpCallback? onSecondaryLongPress;
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
+  /// Creates a [SecondaryButton] with secondary styling for supporting actions.
+  ///
+  /// Provides a streamlined interface for creating buttons with secondary visual
+  /// treatment. The button uses muted colors and subtle backgrounds that provide
+  /// clear functionality without competing with primary actions.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Main button content
+  /// - [onPressed] (VoidCallback?, optional): Action callback when pressed
+  /// - [enabled] (bool?, optional): Whether button responds to interactions
+  /// - [leading] (Widget?, optional): Content shown before main child
+  /// - [trailing] (Widget?, optional): Content shown after main child
+  /// - [alignment] (AlignmentGeometry?, optional): Content positioning
+  /// - [size] (ButtonSize, default: normal): Button size variant
+  /// - [density] (ButtonDensity, default: normal): Padding density setting
+  /// - [shape] (ButtonShape, default: rectangle): Border radius styling
+  ///
+  /// Example:
+  /// ```dart
+  /// SecondaryButton(
+  ///   onPressed: () => _handleCancel(),
+  ///   child: Text('Cancel'),
+  /// );
+  /// ```
   const SecondaryButton({
     super.key,
     required this.child,
@@ -3777,6 +3987,32 @@ class SecondaryButton extends StatelessWidget {
   }
 }
 
+/// A convenient outline button widget with border styling for clear secondary actions.
+///
+/// [OutlineButton] provides a simplified interface for creating buttons with outline
+/// styling - transparent backgrounds with visible borders. This creates clear visual
+/// hierarchy while maintaining excellent contrast and accessibility across different
+/// themes and backgrounds.
+///
+/// Outline buttons are perfect for secondary actions that need clear visibility but
+/// shouldn't compete with primary actions. The border treatment provides definition
+/// while the transparent interior keeps visual weight appropriate for supporting roles.
+///
+/// ## Key Features  
+/// - **Preset Outline Styling**: Automatic outline appearance with theme colors
+/// - **Excellent Contrast**: Clear visibility across light and dark themes
+/// - **Secondary Action Design**: Appropriate visual weight for supporting actions
+/// - **Border Animations**: Smooth transitions for hover and focus states
+/// - **Accessibility Optimized**: High contrast borders meet accessibility guidelines
+///
+/// Example:
+/// ```dart
+/// OutlineButton(
+///   onPressed: () => showDialog(context: context, builder: _buildDialog),
+///   leading: Icon(Icons.info_outline),
+///   child: Text('More Info'),
+/// );
+/// ```
 class OutlineButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
@@ -3876,6 +4112,32 @@ class OutlineButton extends StatelessWidget {
   }
 }
 
+/// A convenient ghost button widget with minimal styling for subtle interactions.
+///
+/// [GhostButton] provides an easy way to create buttons with ghost styling - minimal
+/// visual treatment that becomes visible on interaction. These buttons have no background
+/// by default and only show subtle effects on hover, focus, and press states.
+///
+/// Ghost buttons are ideal for actions that should be available but not prominent,
+/// such as utility functions, navigation aids, or any interaction that shouldn't
+/// draw attention away from primary content. They integrate seamlessly with text
+/// and provide functionality without visual noise.
+///
+/// ## Key Features
+/// - **Minimal Visual Impact**: Nearly invisible until interaction
+/// - **Subtle State Feedback**: Gentle hover and focus effects  
+/// - **Content Integration**: Blends naturally with surrounding text and content
+/// - **Flexible Usage**: Perfect for toolbars, navigation, and utility functions
+/// - **Theme Adaptive**: Respects theme colors while maintaining subtlety
+///
+/// Example:
+/// ```dart
+/// GhostButton(
+///   onPressed: () => _toggleSettings(),
+///   leading: Icon(Icons.settings, size: 16),
+///   child: Text('Settings'),
+/// );
+/// ```
 class GhostButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
@@ -3975,6 +4237,31 @@ class GhostButton extends StatelessWidget {
   }
 }
 
+/// A convenient link button widget with hyperlink appearance for navigation actions.
+///
+/// [LinkButton] provides a streamlined way to create buttons that appear as hyperlinks
+/// with underlines, color changes, and link-like behavior. These buttons integrate
+/// seamlessly with text content and provide familiar web-like navigation patterns.
+///
+/// Link buttons are perfect for actions that conceptually "take you somewhere" such
+/// as navigation, cross-references, external links, or any action that users would
+/// expect to behave like a traditional web link. The styling includes appropriate
+/// hover effects and accessibility features.
+///
+/// ## Key Features
+/// - **Hyperlink Styling**: Familiar underlines and color changes
+/// - **Text Integration**: Blends naturally within paragraphs and text content
+/// - **Navigation Semantics**: Clear indication of navigation or reference actions
+/// - **Accessibility Support**: Proper focus indicators and screen reader support
+/// - **Responsive Effects**: Hover and focus states that match user expectations
+///
+/// Example:
+/// ```dart
+/// LinkButton(
+///   onPressed: () => _navigateToProfile(),
+///   child: Text('View Full Profile'),
+/// );
+/// ```
 class LinkButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
@@ -4074,6 +4361,31 @@ class LinkButton extends StatelessWidget {
   }
 }
 
+/// A convenient text button widget with plain text appearance for minimal actions.
+///
+/// [TextButton] offers a simple way to create buttons that appear as plain text
+/// with subtle hover effects. These buttons provide the least visual weight while
+/// still offering clear interactive feedback, making them perfect for Cancel actions,
+/// secondary navigation, or any function that should be available but not prominent.
+///
+/// Text buttons maintain readability and accessibility while providing minimal
+/// visual disruption to content flow. They're particularly useful in dialogs,
+/// forms, and dense interfaces where visual simplicity is important.
+///
+/// ## Key Features
+/// - **Minimal Appearance**: Plain text with subtle interaction effects
+/// - **Low Visual Weight**: Doesn't compete with other interface elements
+/// - **Readable Integration**: Works naturally within text and content layouts
+/// - **Accessible Feedback**: Clear hover and focus states despite minimal styling
+/// - **Space Efficient**: Takes minimal visual and layout space
+///
+/// Example:
+/// ```dart
+/// TextButton(
+///   onPressed: () => Navigator.pop(context),
+///   child: Text('Cancel'),
+/// );
+/// ```
 class TextButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
@@ -4154,6 +4466,32 @@ class TextButton extends StatelessWidget {
   }
 }
 
+/// A convenient destructive button widget with warning colors for dangerous actions.
+///
+/// [DestructiveButton] provides an easy interface for creating buttons that perform
+/// destructive or irreversible actions. These buttons use warning colors (typically
+/// red variants) to clearly communicate that the action will delete, remove, or
+/// otherwise negatively affect user data.
+///
+/// Destructive buttons are essential for maintaining user trust and preventing
+/// accidental data loss. They should be used sparingly and typically paired with
+/// confirmation dialogs to ensure user intent before performing dangerous operations.
+///
+/// ## Key Features
+/// - **Warning Color Scheme**: Red/destructive colors that signal danger
+/// - **Clear Visual Communication**: Immediately recognizable as potentially harmful
+/// - **High Contrast**: Ensures the warning nature is visible across themes
+/// - **Confirmation Patterns**: Designed to work with confirmation dialogs
+/// - **Accessibility Compliant**: Color choices meet accessibility contrast requirements
+///
+/// Example:
+/// ```dart
+/// DestructiveButton(
+///   onPressed: () => _showDeleteConfirmation(),
+///   leading: Icon(Icons.delete_outline),
+///   child: Text('Delete Account'),
+/// );
+/// ```
 class DestructiveButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
@@ -4254,6 +4592,32 @@ class DestructiveButton extends StatelessWidget {
   }
 }
 
+/// A convenient tab button widget with fixed styling for navigation interfaces.
+///
+/// [TabButton] provides a simplified interface for creating buttons that function
+/// as tab navigation elements. These buttons use fixed styling that maintains
+/// consistent appearance regardless of interaction states, making them ideal for
+/// tab bars, navigation segments, and other interface elements that need stable
+/// visual presentation.
+///
+/// Tab buttons are designed for contexts where visual consistency is more important
+/// than dynamic feedback. They still respond to interactions but with more subdued
+/// state changes that don't disrupt the overall navigation interface flow.
+///
+/// ## Key Features
+/// - **Fixed Visual Treatment**: Consistent appearance across interaction states
+/// - **Navigation Optimized**: Designed specifically for tab and segment interfaces
+/// - **Stable Presentation**: Minimal visual changes preserve layout consistency
+/// - **Selection Ready**: Works well with selected/unselected state management
+/// - **Interface Integration**: Seamless fit with navigation and segmented controls
+///
+/// Example:
+/// ```dart
+/// TabButton(
+///   onPressed: () => _selectTab(0),
+///   child: Text('Overview'),
+/// );
+/// ```
 class TabButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
@@ -4576,6 +4940,41 @@ class CardButton extends StatelessWidget {
   }
 }
 
+/// A specialized button widget optimized for icon-only content with multiple style variants.
+///
+/// [IconButton] provides a complete solution for icon-based interactions with automatic
+/// square padding, appropriate sizing, and multiple visual styles. Unlike regular buttons
+/// that are optimized for text content, icon buttons ensure icons are properly centered
+/// and sized within square or rectangular touch targets.
+///
+/// The widget supports all major button style variants through named constructors,
+/// each automatically configured with icon-appropriate density settings. The button
+/// handles icon theming, sizing, and accessibility concerns specific to icon-only
+/// interactions.
+///
+/// ## Key Features
+/// - **Icon-Optimized Layout**: Square padding and proper icon centering
+/// - **Multiple Style Variants**: Primary, secondary, outline, ghost, link, text, destructive
+/// - **Automatic Density**: Uses [ButtonDensity.icon] by default for proper spacing
+/// - **Theme Integration**: Icons automatically adapt to button state colors
+/// - **Touch Target Compliance**: Maintains appropriate minimum touch target sizes
+/// - **Accessibility Support**: Proper semantic labeling and focus management
+///
+/// ## Usage Patterns
+/// Icon buttons are commonly used for:
+/// - Toolbar actions and controls
+/// - Floating action buttons and quick actions  
+/// - Navigation elements and menu triggers
+/// - Form controls like clear, visibility toggle
+/// - Media controls like play, pause, skip
+///
+/// Example:
+/// ```dart
+/// IconButton.primary(
+///   onPressed: () => _saveDocument(),
+///   icon: Icon(Icons.save),
+/// );
+/// ```
 class IconButton extends StatelessWidget {
   final Widget icon;
   final VoidCallback? onPressed;
@@ -4608,6 +5007,32 @@ class IconButton extends StatelessWidget {
   final GestureLongPressUpCallback? onTertiaryLongPress;
   final AbstractButtonStyle variance;
 
+  /// Creates an [IconButton] with custom style variance.
+  ///
+  /// This base constructor allows complete customization of the icon button's
+  /// appearance through the [variance] parameter. It provides access to all
+  /// button functionality while optimizing layout and spacing for icon content.
+  ///
+  /// The button automatically uses [ButtonDensity.icon] to create square padding
+  /// that properly centers icon content within the touch target area.
+  ///
+  /// Parameters:
+  /// - [icon] (Widget, required): The icon widget to display
+  /// - [variance] (AbstractButtonStyle, required): The button style variant
+  /// - [onPressed] (VoidCallback?, optional): Action callback when pressed
+  /// - [enabled] (bool?, optional): Whether button accepts interactions
+  /// - [size] (ButtonSize, default: normal): Size variant for button dimensions
+  /// - [density] (ButtonDensity, default: icon): Padding density (icon optimized)
+  /// - [shape] (ButtonShape, default: rectangle): Border radius configuration
+  ///
+  /// Example:
+  /// ```dart
+  /// IconButton(
+  ///   icon: Icon(Icons.star),
+  ///   variance: ButtonVariance.primary,
+  ///   onPressed: () => _toggleFavorite(),
+  /// );
+  /// ```
   const IconButton({
     super.key,
     required this.icon,
@@ -4642,6 +5067,19 @@ class IconButton extends StatelessWidget {
     this.onTertiaryLongPress,
   });
 
+  /// Creates a primary icon button with prominent styling for main actions.
+  ///
+  /// Primary icon buttons use filled backgrounds with high contrast, making them
+  /// suitable for the most important icon-based actions in your interface. They
+  /// automatically use [ButtonVariance.primary] with icon-optimized spacing.
+  ///
+  /// Example:
+  /// ```dart
+  /// IconButton.primary(
+  ///   icon: Icon(Icons.add),
+  ///   onPressed: () => _createNew(),
+  /// );
+  /// ```
   const IconButton.primary({
     super.key,
     required this.icon,
