@@ -3,32 +3,166 @@ import 'dart:math';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// A function type that tests whether a value satisfies a specific condition.
+///
+/// Used throughout the framework for filtering and validation operations.
+/// Returns `true` if the value matches the predicate criteria, `false` otherwise.
+///
+/// Example:
+/// ```dart
+/// final isPositive = Predicate<int>((value) => value > 0);
+/// ```
 typedef Predicate<T> = bool Function(T value);
+
+/// A function type that transforms a value of type T to another value of the same type.
+///
+/// Commonly used for value transformation operations where the input and output
+/// types are identical, such as applying modifications or calculations.
+///
+/// Example:
+/// ```dart
+/// final doubleValue = UnaryOperator<int>((value) => value * 2);
+/// ```
 typedef UnaryOperator<T> = T Function(T value);
+
+/// A function type that combines two values of type T into a single value of the same type.
+///
+/// Used for operations like reduction, merging, or mathematical combinations
+/// where two operands produce one result of the same type.
+///
+/// Example:
+/// ```dart
+/// final addInts = BinaryOperator<int>((a, b) => a + b);
+/// ```
 typedef BinaryOperator<T> = T Function(T a, T b);
 
+/// The default animation duration used throughout the shadcn_flutter framework.
+///
+/// Set to 150 milliseconds to provide smooth, responsive animations that feel
+/// natural to users. This constant ensures consistent timing across all
+/// framework animations.
 const kDefaultDuration = Duration(milliseconds: 150);
 
+/// A callback function that receives a BuildContext for context-aware operations.
+///
+/// Used when operations need access to the widget tree context but don't
+/// need to return a value or handle additional parameters.
+///
+/// Example:
+/// ```dart
+/// final showSnackBar = ContextedCallback((context) {
+///   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+/// });
+/// ```
 typedef ContextedCallback = void Function(BuildContext context);
+
+/// A callback function that receives both a BuildContext and a value for context-aware operations.
+///
+/// Used when operations need access to the widget tree context and must handle
+/// a specific value, such as form field changes or user interactions.
+///
+/// Example:
+/// ```dart
+/// final onTextChanged = ContextedValueChanged<String>((context, value) {
+///   // Handle text change with context access
+/// });
+/// ```
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 
+/// A function type that calculates the relevance score for search operations.
+///
+/// Takes a value and query string, returning a double where higher values
+/// indicate better matches. Used for implementing custom search algorithms
+/// in components like autocomplete and filterable lists.
+///
+/// Example:
+/// ```dart
+/// final textSearchPredicate = SearchPredicate<String>((value, query) =>
+///   value.toLowerCase().contains(query.toLowerCase()) ? 1.0 : 0.0);
+/// ```
 typedef SearchPredicate<T> = double Function(T value, String query);
 
+/// Converts degrees to radians.
+///
+/// Parameters:
+/// - [deg] (double): The angle in degrees to convert.
+///
+/// Returns:
+/// A `double` representing the equivalent angle in radians.
+///
+/// Example:
+/// ```dart
+/// final radians = degToRad(90); // Returns π/2 (≈ 1.57)
+/// ```
 double degToRad(double deg) => deg * (pi / 180);
+
+/// Converts radians to degrees.
+///
+/// Parameters:
+/// - [rad] (double): The angle in radians to convert.
+///
+/// Returns:
+/// A `double` representing the equivalent angle in degrees.
+///
+/// Example:
+/// ```dart
+/// final degrees = radToDeg(pi); // Returns 180.0
+/// ```
 double radToDeg(double rad) => rad * (180 / pi);
 
+/// Defines the possible sorting directions for data operations.
+///
+/// Used by sortable components and data tables to indicate how items
+/// should be ordered. Supports three states: no sorting, ascending order,
+/// and descending order.
 enum SortDirection {
+  /// No sorting applied - items maintain their original order.
   none,
+
+  /// Items are sorted in ascending order (A-Z, 0-9, earliest to latest).
   ascending,
+
+  /// Items are sorted in descending order (Z-A, 9-0, latest to earliest).
   descending,
 }
 
+/// A callback function type for handling context action invocations.
+///
+/// Used with [CallbackContextAction] to define custom behavior when an
+/// Intent is invoked. Provides access to the intent and optional context.
+///
+/// Parameters:
+/// - [intent] (T): The intent being invoked
+/// - [context] (BuildContext?, optional): The build context if available
+///
+/// Returns:
+/// An optional `Object?` result from the action invocation.
 typedef OnContextInvokeCallback<T extends Intent> = Object? Function(T intent,
     [BuildContext? context]);
 
+/// A custom ContextAction that delegates its invoke behavior to a callback function.
+///
+/// Provides a flexible way to create context actions without extending the
+/// ContextAction class directly. Useful for inline action definitions and
+/// dynamic behavior configuration.
+///
+/// Example:
+/// ```dart
+/// final customAction = CallbackContextAction<MyIntent>(
+///   onInvoke: (intent, context) {
+///     // Handle the intent
+///     return someResult;
+///   },
+/// );
+/// ```
 class CallbackContextAction<T extends Intent> extends ContextAction<T> {
+  /// The callback function to invoke when the action is triggered.
   final OnContextInvokeCallback onInvoke;
 
+  /// Creates a [CallbackContextAction] with the specified callback.
+  ///
+  /// Parameters:
+  /// - [onInvoke] (OnContextInvokeCallback, required): Function to call when invoked.
   CallbackContextAction({required this.onInvoke});
 
   @override
@@ -37,11 +171,39 @@ class CallbackContextAction<T extends Intent> extends ContextAction<T> {
   }
 }
 
+/// A wrapper for nullable lerp functions that provides type-safe non-null interpolation.
+///
+/// Takes a nullable lerp function and provides a safe way to perform linear
+/// interpolation while ensuring the result is non-null. Useful for animation
+/// and transition calculations where null results are not acceptable.
+///
+/// Example:
+/// ```dart
+/// final colorLerp = SafeLerp(Color.lerp);
+/// final result = colorLerp.lerp(Colors.red, Colors.blue, 0.5);
+/// ```
 class SafeLerp<T> {
+  /// The underlying nullable lerp function.
   final T? Function(T? a, T? b, double t) nullableLerp;
 
+  /// Creates a [SafeLerp] wrapper around a nullable lerp function.
+  ///
+  /// Parameters:
+  /// - [nullableLerp] (function, required): The nullable lerp function to wrap.
   const SafeLerp(this.nullableLerp);
 
+  /// Performs linear interpolation between two non-null values.
+  ///
+  /// Parameters:
+  /// - [a] (T): The start value for interpolation.
+  /// - [b] (T): The end value for interpolation.
+  /// - [t] (double): The interpolation factor (0.0 to 1.0).
+  ///
+  /// Returns:
+  /// A non-null `T` value representing the interpolated result.
+  ///
+  /// Throws:
+  /// AssertionError if the underlying lerp function returns null.
   T lerp(T a, T b, double t) {
     T? result = nullableLerp(a, b, t);
     assert(result != null, 'Unsafe lerp');
@@ -49,7 +211,28 @@ class SafeLerp<T> {
   }
 }
 
+/// Extension methods for nullable lerp functions that provide type-safe interpolation.
+///
+/// Adds convenience methods to nullable lerp functions for guaranteed non-null
+/// interpolation results, preventing runtime null errors during animations.
 extension SafeLerpExtension<T> on T? Function(T? a, T? b, double t) {
+  /// Performs linear interpolation with a guarantee of non-null result.
+  ///
+  /// Parameters:
+  /// - [a] (T): The start value for interpolation.
+  /// - [b] (T): The end value for interpolation.  
+  /// - [t] (double): The interpolation factor (0.0 to 1.0).
+  ///
+  /// Returns:
+  /// A non-null `T` value representing the interpolated result.
+  ///
+  /// Throws:
+  /// AssertionError if the lerp function returns null.
+  ///
+  /// Example:
+  /// ```dart
+  /// final result = Color.lerp.nonNull(Colors.red, Colors.blue, 0.5);
+  /// ```
   T nonNull(T a, T b, double t) {
     T? result = this(a, b, t);
     assert(result != null);
@@ -57,27 +240,107 @@ extension SafeLerpExtension<T> on T? Function(T? a, T? b, double t) {
   }
 }
 
+/// Extension methods for Lists that provide null-safe operations and enhanced functionality.
+///
+/// Adds convenience methods for safe indexing, searching, and manipulation
+/// operations that return null instead of throwing exceptions when elements
+/// are not found.
 extension ListExtension<T> on List<T> {
+  /// Returns the index of the first occurrence of the object, or null if not found.
+  ///
+  /// Parameters:
+  /// - [obj] (T): The object to search for.
+  /// - [start] (int, default: 0): The index to start searching from.
+  ///
+  /// Returns:
+  /// The index of the first occurrence, or `null` if not found.
+  ///
+  /// Example:
+  /// ```dart
+  /// final list = ['a', 'b', 'c'];
+  /// final index = list.indexOfOrNull('b'); // Returns 1
+  /// final notFound = list.indexOfOrNull('x'); // Returns null
+  /// ```
   int? indexOfOrNull(T obj, [int start = 0]) {
     int index = indexOf(obj, start);
     return index == -1 ? null : index;
   }
 
+  /// Returns the index of the last occurrence of the object, or null if not found.
+  ///
+  /// Parameters:
+  /// - [obj] (T): The object to search for.
+  /// - [start] (int?, optional): The index to start searching backwards from.
+  ///
+  /// Returns:
+  /// The index of the last occurrence, or `null` if not found.
+  ///
+  /// Example:
+  /// ```dart
+  /// final list = ['a', 'b', 'a'];
+  /// final index = list.lastIndexOfOrNull('a'); // Returns 2
+  /// ```
   int? lastIndexOfOrNull(T obj, [int? start]) {
     int index = lastIndexOf(obj, start);
     return index == -1 ? null : index;
   }
 
+  /// Returns the index of the first element that satisfies the test, or null if none found.
+  ///
+  /// Parameters:
+  /// - [test] (Predicate<T>): The test function to apply to each element.
+  /// - [start] (int, default: 0): The index to start searching from.
+  ///
+  /// Returns:
+  /// The index of the first matching element, or `null` if none found.
+  ///
+  /// Example:
+  /// ```dart
+  /// final list = [1, 2, 3, 4];
+  /// final index = list.indexWhereOrNull((x) => x > 2); // Returns 2
+  /// ```
   int? indexWhereOrNull(Predicate<T> test, [int start = 0]) {
     int index = indexWhere(test, start);
     return index == -1 ? null : index;
   }
 
+  /// Returns the index of the last element that satisfies the test, or null if none found.
+  ///
+  /// Parameters:
+  /// - [test] (Predicate<T>): The test function to apply to each element.
+  /// - [start] (int?, optional): The index to start searching backwards from.
+  ///
+  /// Returns:
+  /// The index of the last matching element, or `null` if none found.
+  ///
+  /// Example:
+  /// ```dart
+  /// final list = [1, 2, 3, 2];
+  /// final index = list.lastIndexWhereOrNull((x) => x == 2); // Returns 3
+  /// ```
   int? lastIndexWhereOrNull(Predicate<T> test, [int? start]) {
     int index = lastIndexWhere(test, start);
     return index == -1 ? null : index;
   }
 
+  /// Moves an element to a new position in the list.
+  ///
+  /// If the element doesn't exist in the list, it will be inserted at the
+  /// target index. The method handles bounds checking and adjusts indices
+  /// as needed during the move operation.
+  ///
+  /// Parameters:
+  /// - [element] (T): The element to move.
+  /// - [targetIndex] (int): The index to move the element to.
+  ///
+  /// Returns:
+  /// `true` if the operation completed successfully.
+  ///
+  /// Example:
+  /// ```dart
+  /// final list = ['a', 'b', 'c'];
+  /// list.swapItem('b', 0); // Result: ['b', 'a', 'c']
+  /// ```
   bool swapItem(T element, int targetIndex) {
     int currentIndex = indexOf(element);
     if (currentIndex == -1) {
@@ -101,6 +364,20 @@ extension ListExtension<T> on List<T> {
     return true;
   }
 
+  /// Moves the first element matching the test to a new position in the list.
+  ///
+  /// Parameters:
+  /// - [test] (Predicate<T>): The test function to find the element.
+  /// - [targetIndex] (int): The index to move the element to.
+  ///
+  /// Returns:
+  /// `true` if an element was found and moved, `false` if no element matched the test.
+  ///
+  /// Example:
+  /// ```dart
+  /// final list = [1, 2, 3];
+  /// final moved = list.swapItemWhere((x) => x == 2, 0); // Result: [2, 1, 3]
+  /// ```
   bool swapItemWhere(Predicate<T> test, int targetIndex) {
     int currentIndex = indexWhere(test);
     if (currentIndex == -1) {
@@ -110,6 +387,20 @@ extension ListExtension<T> on List<T> {
     return swapItem(element, targetIndex);
   }
 
+  /// Safely retrieves an element at the specified index without throwing an exception.
+  ///
+  /// Parameters:
+  /// - [index] (int): The index of the element to retrieve.
+  ///
+  /// Returns:
+  /// The element at the index, or `null` if the index is out of bounds.
+  ///
+  /// Example:
+  /// ```dart
+  /// final list = ['a', 'b', 'c'];
+  /// final element = list.optGet(1); // Returns 'b'
+  /// final outOfBounds = list.optGet(10); // Returns null
+  /// ```
   T? optGet(int index) {
     if (index < 0 || index >= length) {
       return null;
@@ -118,10 +409,47 @@ extension ListExtension<T> on List<T> {
   }
 }
 
+/// Performs the inverse of linear interpolation (unlerp) on a double value.
+///
+/// Given a value and its min/max bounds, calculates the interpolation factor
+/// that would produce that value. Useful for converting absolute values back
+/// to normalized 0-1 range for animations and sliders.
+///
+/// Parameters:
+/// - [value] (double): The value to unlerp.
+/// - [min] (double): The minimum bound.
+/// - [max] (double): The maximum bound.
+///
+/// Returns:
+/// A `double` representing the interpolation factor (typically 0.0 to 1.0).
+///
+/// Example:
+/// ```dart
+/// final factor = unlerpDouble(50, 0, 100); // Returns 0.5
+/// ```
 double unlerpDouble(double value, double min, double max) {
   return (value - min) / (max - min);
 }
 
+/// Moves an element between multiple lists to a specific position.
+///
+/// Removes the element from all other lists and ensures it exists only
+/// in the target list at the specified index. Useful for drag-and-drop
+/// operations across multiple containers.
+///
+/// Parameters:
+/// - [lists] (List<List<T>>): All lists that might contain the element.
+/// - [element] (T): The element to move.
+/// - [targetList] (List<T>): The list to move the element to.
+/// - [targetIndex] (int): The index in the target list.
+///
+/// Example:
+/// ```dart
+/// final list1 = ['a', 'b'];
+/// final list2 = ['c'];
+/// swapItemInLists([list1, list2], 'b', list2, 0);
+/// // Result: list1 = ['a'], list2 = ['b', 'c']
+/// ```
 void swapItemInLists<T>(
     List<List<T>> lists, T element, List<T> targetList, int targetIndex) {
   for (var list in lists) {
@@ -132,6 +460,22 @@ void swapItemInLists<T>(
   targetList.swapItem(element, targetIndex);
 }
 
+/// Optionally resolves a BorderRadiusGeometry to a BorderRadius based on text direction.
+///
+/// If the radius is already a BorderRadius, returns it unchanged. Otherwise,
+/// resolves it using the context's text direction. Returns null if input is null.
+///
+/// Parameters:
+/// - [context] (BuildContext): The build context for directionality.
+/// - [radius] (BorderRadiusGeometry?): The border radius to resolve.
+///
+/// Returns:
+/// A resolved `BorderRadius?` or null if input was null.
+///
+/// Example:
+/// ```dart
+/// final resolved = optionallyResolveBorderRadius(context, borderRadius);
+/// ```
 BorderRadius? optionallyResolveBorderRadius(
     BuildContext context, BorderRadiusGeometry? radius) {
   if (radius == null) {
@@ -148,7 +492,27 @@ T styleValue<T>({T? widgetValue, T? themeValue, required T defaultValue}) {
   return widgetValue ?? themeValue ?? defaultValue;
 }
 
+/// Extension methods for FutureOr<T> that provide functional programming operations.
+///
+/// Adds methods to transform and chain FutureOr values, handling both
+/// synchronous and asynchronous values uniformly. Useful for operations
+/// that may or may not be asynchronous.
 extension FutureOrExtension<T> on FutureOr<T> {
+  /// Transforms the value using the provided function.
+  ///
+  /// If the FutureOr contains a Future, applies the transform after the
+  /// Future completes. Otherwise applies it immediately to the synchronous value.
+  ///
+  /// Parameters:
+  /// - [transform] (function): Function to transform the value.
+  ///
+  /// Returns:
+  /// A `FutureOr<R>` containing the transformed value.
+  ///
+  /// Example:
+  /// ```dart
+  /// final result = futureOrValue.map((value) => value.toString());
+  /// ```
   FutureOr<R> map<R>(R Function(T value) transform) {
     if (this is Future<T>) {
       return (this as Future<T>).then(transform);
@@ -156,6 +520,21 @@ extension FutureOrExtension<T> on FutureOr<T> {
     return transform(this as T);
   }
 
+  /// Transforms the value and flattens nested FutureOr results.
+  ///
+  /// Similar to map, but the transform function can return another FutureOr,
+  /// and the result is flattened to avoid nested FutureOr types.
+  ///
+  /// Parameters:
+  /// - [transform] (function): Function that returns a FutureOr<R>.
+  ///
+  /// Returns:
+  /// A flattened `FutureOr<R>` result.
+  ///
+  /// Example:
+  /// ```dart
+  /// final result = futureOrValue.flatMap((value) => processAsync(value));
+  /// ```
   FutureOr<R> flatMap<R>(FutureOr<R> Function(T value) transform) {
     if (this is Future<T>) {
       return (this as Future<T>).then(transform);
@@ -163,6 +542,18 @@ extension FutureOrExtension<T> on FutureOr<T> {
     return transform(this as T);
   }
 
+  /// Alias for flatMap - transforms and chains FutureOr operations.
+  ///
+  /// Parameters:
+  /// - [transform] (function): Function that returns a FutureOr<R>.
+  ///
+  /// Returns:
+  /// A `FutureOr<R>` result from the transform function.
+  ///
+  /// Example:
+  /// ```dart
+  /// final result = futureOrValue.then((value) => nextOperation(value));
+  /// ```
   FutureOr<R> then<R>(FutureOr<R> Function(T value) transform) {
     if (this is Future<T>) {
       return (this as Future<T>).then(transform);
@@ -171,7 +562,28 @@ extension FutureOrExtension<T> on FutureOr<T> {
   }
 }
 
+/// Extension methods for AlignmentGeometry that provide efficient resolution.
+///
+/// Adds methods to resolve alignment geometry to concrete Alignment objects
+/// while avoiding unnecessary resolution operations when the value is already
+/// resolved.
 extension AlignmentExtension on AlignmentGeometry {
+  /// Resolves the alignment geometry to an Alignment, optimizing for already-resolved values.
+  ///
+  /// Checks if the geometry is already an Alignment before attempting resolution
+  /// based on the context's directionality. This optimization avoids unnecessary
+  /// work when the alignment is already in the desired form.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): The build context for directionality.
+  ///
+  /// Returns:
+  /// A resolved `Alignment` object.
+  ///
+  /// Example:
+  /// ```dart
+  /// final alignment = AlignmentDirectional.start.optionallyResolve(context);
+  /// ```
   Alignment optionallyResolve(BuildContext context) {
     // Why?
     // Because this checks first if the alignment is already an Alignment
@@ -185,7 +597,27 @@ extension AlignmentExtension on AlignmentGeometry {
   }
 }
 
+/// Extension methods for BorderRadiusGeometry that provide efficient resolution.
+///
+/// Adds methods to resolve border radius geometry to concrete BorderRadius
+/// objects while avoiding unnecessary resolution when already resolved.
 extension BorderRadiusExtension on BorderRadiusGeometry {
+  /// Resolves the border radius geometry to a BorderRadius, optimizing for already-resolved values.
+  ///
+  /// Checks if the geometry is already a BorderRadius before attempting resolution
+  /// based on the context's directionality. This avoids unnecessary work when
+  /// the border radius is already in the desired form.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): The build context for directionality.
+  ///
+  /// Returns:
+  /// A resolved `BorderRadius` object.
+  ///
+  /// Example:
+  /// ```dart
+  /// final radius = BorderRadiusDirectional.circular(8).optionallyResolve(context);
+  /// ```
   BorderRadius optionallyResolve(BuildContext context) {
     if (this is BorderRadius) {
       return this as BorderRadius;
@@ -194,7 +626,27 @@ extension BorderRadiusExtension on BorderRadiusGeometry {
   }
 }
 
+/// Extension methods for EdgeInsetsGeometry that provide efficient resolution.
+///
+/// Adds methods to resolve edge insets geometry to concrete EdgeInsets
+/// objects while avoiding unnecessary resolution when already resolved.
 extension EdgeInsetsExtension on EdgeInsetsGeometry {
+  /// Resolves the edge insets geometry to EdgeInsets, optimizing for already-resolved values.
+  ///
+  /// Checks if the geometry is already EdgeInsets before attempting resolution
+  /// based on the context's directionality. This avoids unnecessary work when
+  /// the edge insets are already in the desired form.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): The build context for directionality.
+  ///
+  /// Returns:
+  /// A resolved `EdgeInsets` object.
+  ///
+  /// Example:
+  /// ```dart
+  /// final insets = EdgeInsetsDirectional.all(16).optionallyResolve(context);
+  /// ```
   EdgeInsets optionallyResolve(BuildContext context) {
     if (this is EdgeInsets) {
       return this as EdgeInsets;
@@ -203,6 +655,24 @@ extension EdgeInsetsExtension on EdgeInsetsGeometry {
   }
 }
 
+/// Reduces a border radius by subtracting the border width from each corner.
+///
+/// Calculates the inner border radius by subtracting the border width from
+/// each corner radius. Ensures that no corner radius becomes negative by
+/// clamping to zero. Useful for creating properly inset content areas.
+///
+/// Parameters:
+/// - [radius] (BorderRadius): The original border radius.
+/// - [borderWidth] (double): The width of the border to subtract.
+///
+/// Returns:
+/// A `BorderRadius` with reduced corner radii.
+///
+/// Example:
+/// ```dart
+/// final innerRadius = subtractByBorder(BorderRadius.circular(12), 2);
+/// // Results in corners with radius 10 (12 - 2)
+/// ```
 BorderRadius subtractByBorder(BorderRadius radius, double borderWidth) {
   return BorderRadius.only(
     topLeft: _subtractSafe(radius.topLeft, Radius.circular(borderWidth)),
@@ -213,6 +683,10 @@ BorderRadius subtractByBorder(BorderRadius radius, double borderWidth) {
   );
 }
 
+/// Safely subtracts one radius from another, ensuring non-negative results.
+///
+/// Private helper function that performs radius subtraction while preventing
+/// negative values by using max(0, result) on both x and y components.
 Radius _subtractSafe(Radius a, Radius b) {
   return Radius.elliptical(
     max(0, a.x - b.x),
@@ -220,6 +694,22 @@ Radius _subtractSafe(Radius a, Radius b) {
   );
 }
 
+/// Determines if the given platform is a mobile platform.
+///
+/// Checks if the target platform is one of the mobile platforms (Android, iOS,
+/// or Fuchsia) versus desktop platforms (macOS, Linux, Windows). Useful for
+/// platform-specific UI decisions.
+///
+/// Parameters:
+/// - [platform] (TargetPlatform): The platform to check.
+///
+/// Returns:
+/// `true` if the platform is mobile, `false` if desktop.
+///
+/// Example:
+/// ```dart
+/// final isOnMobile = isMobile(Theme.of(context).platform);
+/// ```
 bool isMobile(TargetPlatform platform) {
   switch (platform) {
     case TargetPlatform.android:
@@ -233,11 +723,37 @@ bool isMobile(TargetPlatform platform) {
   }
 }
 
+/// A widget that wraps a child with captured themes and inherited data.
+///
+/// Provides a way to apply previously captured themes and inherited widget
+/// data to a child widget. This is particularly useful for preserving context
+/// when widgets are rendered outside their original widget tree, such as in
+/// overlays or dialogs.
+///
+/// Example:
+/// ```dart
+/// CapturedWrapper(
+///   themes: capturedThemes,
+///   data: capturedData,
+///   child: MyWidget(),
+/// )
+/// ```
 class CapturedWrapper extends StatefulWidget {
+  /// The captured themes to apply to the child.
   final CapturedThemes? themes;
+
+  /// The captured inherited data to apply to the child.
   final CapturedData? data;
+
+  /// The child widget to wrap with captured context.
   final Widget child;
 
+  /// Creates a [CapturedWrapper].
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): The child widget to wrap.
+  /// - [themes] (CapturedThemes?, optional): Captured themes to apply.
+  /// - [data] (CapturedData?, optional): Captured inherited data to apply.
   const CapturedWrapper({
     super.key,
     this.themes,
@@ -267,12 +783,48 @@ class _CapturedWrapperState extends State<CapturedWrapper> {
   }
 }
 
+/// Interpolates between two values using linear interpolation.
+///
+/// Performs basic linear interpolation by calculating the intermediate value
+/// between begin and end based on the interpolation factor t. Works with
+/// numeric types that support arithmetic operations.
+///
+/// Parameters:
+/// - [begin] (T): The starting value.
+/// - [end] (T): The ending value.
+/// - [t] (double): The interpolation factor (0.0 to 1.0).
+///
+/// Returns:
+/// A value of type `T` representing the interpolated result.
+///
+/// Example:
+/// ```dart
+/// final result = tweenValue(0.0, 100.0, 0.5); // Returns 50.0
+/// ```
 T tweenValue<T>(T begin, T end, double t) {
   dynamic beginValue = begin;
   dynamic endValue = end;
   return (beginValue + (endValue - beginValue) * t) as T;
 }
 
+/// Wraps a double value within a specified range.
+///
+/// Constrains a value to stay within the given minimum and maximum bounds
+/// using modulo arithmetic. If the value exceeds the maximum, it wraps around
+/// to the minimum. Useful for cyclic values like angles or carousel indices.
+///
+/// Parameters:
+/// - [value] (double): The value to wrap.
+/// - [min] (double): The minimum bound.
+/// - [max] (double): The maximum bound.
+///
+/// Returns:
+/// A `double` value wrapped within the specified range.
+///
+/// Example:
+/// ```dart
+/// final wrapped = wrapDouble(370, 0, 360); // Returns 10.0
+/// ```
 double wrapDouble(double value, double min, double max) {
   final range = max - min;
   if (range == 0) {
