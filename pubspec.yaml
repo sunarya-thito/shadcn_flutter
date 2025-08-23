@@ -1,6 +1,6 @@
 name: shadcn_flutter
 description: "Beautifully designed components from Shadcn/UI is now available for Flutter"
-version: 0.0.41
+version: 0.0.42
 homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 documentation: "https://sunarya-thito.github.io/shadcn_flutter/"
 repository: "https://github.com/sunarya-thito/shadcn_flutter"
@@ -14,13 +14,13 @@ dependencies:
   email_validator: ^3.0.0
   flutter:
     sdk: flutter
-  skeletonizer: ^2.0.0-pre
-  syntax_highlight: ^0.4.0
-  country_flags: ^3.0.0
-  phonecodes: ^0.0.3
+  skeletonizer: ^2.1.0+1
+  syntax_highlight: ^0.5.0
+  country_flags: ^3.3.0
+  phonecodes: ^0.0.4
   cross_file: ^0.3.4+2
   image: ^4.2.0
-  web: ^1.0.0
+  web: ^1.1.1
   data_widget: ^0.0.2
   gap: ^3.0.1
   expressions: ^0.2.5+2

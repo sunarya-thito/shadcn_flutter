@@ -1,4 +1,5 @@
-
+## 0.0.42
+* Updated dependencies
 
 ## 0.0.41
 * Added AnimatedValueBuilder documentation
