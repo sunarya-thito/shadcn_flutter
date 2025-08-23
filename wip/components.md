@@ -4,39 +4,39 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 
 ## 🎬 Animation Components
 
-- [ ] Animated Value Builder
-- [ ] Number Ticker
-- [ ] Repeated Animation Builder
-- [ ] Timeline Animation
+- [x] Animated Value Builder
+- [x] Number Ticker
+- [x] Repeated Animation Builder
+- [x] Timeline Animation
 
 ## 🎮 Control Components
 
-- [ ] Button
+- [x] Button
 - [ ] Audio Control *(Work in Progress)*
 - [ ] Video Control *(Work in Progress)*
 
 ## 📂 Disclosure Components
 
-- [ ] Accordion
-- [ ] Collapsible
+- [x] Accordion
+- [x] Collapsible
 
 ## 📊 Display Components
 
-- [ ] Avatar
-- [ ] Avatar Group
-- [ ] Code Snippet
-- [ ] Table
-- [ ] Tracker
+- [x] Avatar
+- [x] Avatar Group
+- [x] Code Snippet
+- [x] Table
+- [x] Tracker
 
 ## 📢 Feedback Components
 
-- [ ] Alert
-- [ ] Alert Dialog
-- [ ] Circular Progress
-- [ ] Progress
-- [ ] Linear Progress
-- [ ] Skeleton
-- [ ] Toast
+- [x] Alert
+- [x] Alert Dialog
+- [x] Circular Progress
+- [x] Progress
+- [x] Linear Progress
+- [x] Skeleton
+- [x] Toast
 
 ## 📝 Form Components
 
