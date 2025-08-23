@@ -1,7 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// A theme for [StarRating].
+/// Theme data for customizing [StarRating] widget appearance.
+///
+/// This class defines the visual properties that can be applied to
+/// [StarRating] widgets, including colors for filled and unfilled stars,
+/// star sizing, and spacing between stars. These properties can be set
+/// at the theme level to provide consistent styling across the application.
 class StarRatingTheme {
   /// The color of the filled portion of the stars.
   final Color? activeColor;
@@ -58,11 +63,82 @@ class StarRatingTheme {
       );
 }
 
+/// A controller for managing [StarRating] widget values programmatically.
+///
+/// This controller extends [ValueNotifier] and implements [ComponentController]
+/// to provide a standardized way to control star rating values externally.
+/// It allows programmatic manipulation of the rating value and provides
+/// change notification capabilities.
+///
+/// The controller maintains a double value representing the current rating,
+/// which is typically in the range of 0.0 to the maximum rating value.
+///
+/// Example:
+/// ```dart
+/// final controller = StarRatingController(3.5);
+/// 
+/// // Listen to changes
+/// controller.addListener(() {
+///   print('Rating changed to: ${controller.value}');
+/// });
+/// 
+/// // Update the rating
+/// controller.value = 4.0;
+/// ```
 class StarRatingController extends ValueNotifier<double>
     with ComponentController<double> {
+  /// Creates a [StarRatingController] with the given initial [value].
+  ///
+  /// The [value] parameter sets the initial rating value. Defaults to 0.0
+  /// if not specified. The value should typically be within the range
+  /// supported by the star rating widget (0.0 to max value).
+  ///
+  /// Parameters:
+  /// - [value] (double, default: 0.0): Initial rating value
   StarRatingController([super.value = 0.0]);
 }
 
+/// Reactive star rating widget with automatic state management and controller support.
+///
+/// A high-level star rating widget that provides automatic state management through
+/// the controlled component pattern. Supports both controller-based and callback-based
+/// state management with comprehensive customization options for star appearance,
+/// interaction behavior, and rating precision.
+///
+/// ## Features
+///
+/// - **Fractional ratings**: Support for decimal values (e.g., 3.5 stars)
+/// - **Step control**: Configurable rating increments for precision
+/// - **Visual customization**: Comprehensive star shape and appearance options
+/// - **Interactive feedback**: Touch and drag support for rating selection
+/// - **Form integration**: Automatic validation and form field registration
+/// - **Accessibility**: Full screen reader and keyboard navigation support
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = StarRatingController(3.5);
+/// 
+/// ControlledStarRating(
+///   controller: controller,
+///   max: 5.0,
+///   step: 0.5,
+///   activeColor: Colors.amber,
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// double currentRating = 0.0;
+/// 
+/// ControlledStarRating(
+///   initialValue: currentRating,
+///   onChanged: (rating) => setState(() => currentRating = rating),
+///   max: 5.0,
+///   step: 1.0,
+/// )
+/// ```
 class ControlledStarRating extends StatelessWidget
     with ControlledComponent<double> {
   @override
@@ -88,6 +164,41 @@ class ControlledStarRating extends StatelessWidget
   final double? starInnerRadiusRatio;
   final double? starRotation;
 
+  /// Creates a [ControlledStarRating].
+  ///
+  /// Either [controller] or [onChanged] should be provided for interactivity.
+  /// The widget supports both controller-based and callback-based state management
+  /// patterns with extensive star appearance customization options.
+  ///
+  /// Parameters:
+  /// - [controller] (StarRatingController?, optional): external state controller
+  /// - [initialValue] (double, default: 0.0): starting rating when no controller
+  /// - [onChanged] (ValueChanged<double>?, optional): rating change callback
+  /// - [enabled] (bool, default: true): whether star rating is interactive
+  /// - [step] (double, default: 0.5): minimum increment for rating changes
+  /// - [direction] (Axis, default: horizontal): layout direction of stars
+  /// - [max] (double, default: 5.0): maximum rating value
+  /// - [activeColor] (Color?, optional): color of filled star portions
+  /// - [backgroundColor] (Color?, optional): color of unfilled star portions
+  /// - [starPoints] (double, default: 5): number of points per star
+  /// - [starSize] (double?, optional): override size of each star
+  /// - [starSpacing] (double?, optional): override spacing between stars
+  /// - [starPointRounding] (double?, optional): rounding radius for star points
+  /// - [starValleyRounding] (double?, optional): rounding radius for star valleys
+  /// - [starSquash] (double?, optional): vertical compression factor
+  /// - [starInnerRadiusRatio] (double?, optional): inner to outer radius ratio
+  /// - [starRotation] (double?, optional): rotation angle in radians
+  ///
+  /// Example:
+  /// ```dart
+  /// ControlledStarRating(
+  ///   controller: controller,
+  ///   max: 5.0,
+  ///   step: 0.1,
+  ///   activeColor: Colors.amber,
+  ///   backgroundColor: Colors.grey[300],
+  /// )
+  /// ```
   const ControlledStarRating({
     super.key,
     this.controller,
@@ -140,6 +251,46 @@ class ControlledStarRating extends StatelessWidget
   }
 }
 
+/// An interactive star rating widget for collecting user feedback and ratings.
+///
+/// [StarRating] provides a customizable rating interface using star-shaped
+/// indicators that users can tap or drag to select a rating value. The widget
+/// supports fractional ratings, customizable star appearance, and both horizontal
+/// and vertical orientations.
+///
+/// Key features:
+/// - Interactive star-based rating selection
+/// - Support for fractional ratings (e.g., 3.5 stars)
+/// - Customizable star shape with points, rounding, and squashing
+/// - Horizontal and vertical layout orientations
+/// - Configurable step increments for rating precision
+/// - Visual feedback with filled/unfilled star indicators
+/// - Touch and drag interaction support
+/// - Accessibility integration
+///
+/// The widget displays a series of star shapes that fill based on the current
+/// rating value. Users can interact with the stars to select new rating values,
+/// with support for fine-grained control through the step parameter.
+///
+/// Star appearance can be extensively customized:
+/// - Number of points per star
+/// - Star size and spacing
+/// - Point and valley rounding
+/// - Star squashing and inner radius ratio
+/// - Rotation angle
+/// - Fill and background colors
+///
+/// Example:
+/// ```dart
+/// StarRating(
+///   value: currentRating,
+///   max: 5.0,
+///   step: 0.5, // Allow half-star ratings
+///   onChanged: (rating) => setState(() => currentRating = rating),
+///   activeColor: Colors.amber,
+///   backgroundColor: Colors.grey[300],
+/// );
+/// ```
 class StarRating extends StatefulWidget {
   final double value;
   final ValueChanged<double>? onChanged;

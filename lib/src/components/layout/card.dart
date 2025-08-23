@@ -1,6 +1,14 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// Theme for [Card] and [SurfaceCard].
+/// Theme data for customizing [Card] and [SurfaceCard] widget appearance.
+///
+/// This class defines the visual properties that can be applied to card widgets,
+/// including padding, fill behavior, colors, borders, shadows, and surface effects.
+/// These properties can be set at the theme level to provide consistent styling
+/// across the application.
+///
+/// The theme affects both regular cards and surface cards, with surface cards
+/// supporting additional blur and opacity effects for glassmorphism styling.
 class CardTheme {
   /// Padding inside the card.
   final EdgeInsetsGeometry? padding;
@@ -113,6 +121,60 @@ class CardTheme {
       );
 }
 
+/// A versatile container widget that provides a card-like appearance with comprehensive styling options.
+///
+/// [Card] is a foundational layout component that wraps content in a visually distinct
+/// container with configurable borders, shadows, fills, and surface effects. It serves
+/// as the basis for many UI patterns including content cards, panels, sections, and
+/// grouped information displays.
+///
+/// Key features:
+/// - Flexible fill and border styling options
+/// - Configurable shadow effects for depth perception
+/// - Customizable corner radius and clipping behavior
+/// - Surface effects for glassmorphism and blur styling
+/// - Responsive padding with theme integration
+/// - Animation support for state transitions
+/// - Consistent theming across the application
+///
+/// The card supports various visual modes:
+/// - Filled cards with solid background colors
+/// - Outlined cards with transparent backgrounds and borders
+/// - Surface cards with blur effects and opacity
+/// - Elevated cards with shadow effects
+/// - Custom combinations of fill, border, and shadow
+///
+/// Visual hierarchy can be achieved through:
+/// - Shadow depth for elevation indication
+/// - Fill colors for emphasis and categorization
+/// - Border styles for subtle grouping
+/// - Surface effects for modern glass-like appearances
+///
+/// Example:
+/// ```dart
+/// Card(
+///   filled: true,
+///   fillColor: Colors.white,
+///   borderRadius: BorderRadius.circular(12),
+///   boxShadow: [
+///     BoxShadow(
+///       color: Colors.black.withOpacity(0.1),
+///       blurRadius: 8,
+///       offset: Offset(0, 2),
+///     ),
+///   ],
+///   child: Padding(
+///     padding: EdgeInsets.all(16),
+///     child: Column(
+///       children: [
+///         Text('Card Title', style: TextStyle(fontWeight: FontWeight.bold)),
+///         SizedBox(height: 8),
+///         Text('Card content goes here...'),
+///       ],
+///     ),
+///   ),
+/// );
+/// ```
 class Card extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;

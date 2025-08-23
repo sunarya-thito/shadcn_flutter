@@ -5,11 +5,122 @@ import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
 
+/// Reactive controller for managing slider state with value operations.
+///
+/// Extends [ValueNotifier] to provide state management for slider widgets
+/// using [SliderValue] objects that support both single and range slider
+/// configurations. Enables programmatic slider value changes and provides
+/// convenient methods for common slider operations.
+///
+/// The controller manages [SliderValue] objects which can represent either
+/// single values or dual-thumb range values, providing unified state management
+/// for different slider types.
+///
+/// Example:
+/// ```dart
+/// final controller = SliderController(SliderValue.single(0.5));
+/// 
+/// // React to changes
+/// controller.addListener(() {
+///   print('Slider value: ${controller.value}');
+/// });
+/// 
+/// // Programmatic control
+/// controller.setValue(0.75);
+/// controller.setRange(0.2, 0.8);
+/// ```
 class SliderController extends ValueNotifier<SliderValue>
     with ComponentController<SliderValue> {
+  /// Creates a [SliderController] with the specified initial value.
+  ///
+  /// The [value] parameter provides the initial slider configuration as a
+  /// [SliderValue]. The controller notifies listeners when the value changes
+  /// through any method calls or direct value assignment.
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = SliderController(SliderValue.single(0.3));
+  /// ```
   SliderController(super.value);
+
+  /// Sets the slider to a single value configuration.
+  ///
+  /// Converts the slider to single-thumb mode with the specified [value].
+  /// The value should be within the slider's min/max bounds.
+  void setValue(double value) {
+    this.value = SliderValue.single(value);
+  }
+
+  /// Sets the slider to a range value configuration.
+  ///
+  /// Converts the slider to dual-thumb mode with the specified [start] and [end] values.
+  /// The values should be within the slider's min/max bounds with start <= end.
+  void setRange(double start, double end) {
+    value = SliderValue.range(start, end);
+  }
+
+  /// Returns true if the slider is in single-value mode.
+  bool get isSingle => value.isSingle;
+
+  /// Returns true if the slider is in range mode.
+  bool get isRange => value.isRange;
+
+  /// Gets the current single value (valid only in single mode).
+  ///
+  /// Throws an exception if called when the slider is in range mode.
+  double get singleValue => value.single;
+
+  /// Gets the current range start value (valid only in range mode).
+  ///
+  /// Throws an exception if called when the slider is in single mode.
+  double get rangeStart => value.start;
+
+  /// Gets the current range end value (valid only in range mode).
+  ///
+  /// Throws an exception if called when the slider is in single mode.
+  double get rangeEnd => value.end;
 }
 
+/// Reactive slider with automatic state management and controller support.
+///
+/// A high-level slider widget that provides automatic state management through
+/// the controlled component pattern. Supports both single-value and range sliders
+/// with comprehensive customization options for styling, behavior, and interaction.
+///
+/// ## Features
+///
+/// - **Single and range modes**: Unified interface for different slider types
+/// - **Discrete divisions**: Optional snap-to-value behavior with tick marks
+/// - **Keyboard navigation**: Full arrow key support with custom step sizes
+/// - **Hint values**: Visual preview of suggested or default values
+/// - **Accessibility support**: Screen reader compatibility and semantic labels
+/// - **Form integration**: Automatic validation and form field registration
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = SliderController(SliderValue.single(0.5));
+/// 
+/// ControlledSlider(
+///   controller: controller,
+///   min: 0.0,
+///   max: 100.0,
+///   divisions: 100,
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// double currentValue = 50.0;
+/// 
+/// ControlledSlider(
+///   initialValue: SliderValue.single(currentValue),
+///   onChanged: (value) => setState(() => currentValue = value.single),
+///   min: 0.0,
+///   max: 100.0,
+/// )
+/// ```
 class ControlledSlider extends StatelessWidget
     with ControlledComponent<SliderValue> {
   @override

@@ -2,7 +2,16 @@ import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 import '../../../shadcn_flutter.dart';
 
-/// Theme data for [Radio].
+/// Theme data for customizing [Radio] widget appearance.
+///
+/// This class defines the visual properties that can be applied to
+/// [Radio] widgets, including colors for different states and sizing.
+/// These properties can be set at the theme level to provide consistent
+/// styling across the application.
+///
+/// The theme affects the radio button's visual appearance in both
+/// selected and unselected states, including border, background,
+/// and active indicator colors.
 class RadioTheme {
   final Color? activeColor;
   final Color? borderColor;
@@ -42,14 +51,89 @@ class RadioTheme {
       Object.hash(activeColor, borderColor, size, backgroundColor);
 }
 
+/// A radio button widget that displays a circular selection indicator.
+///
+/// [Radio] provides a visual representation of a selectable option within
+/// a radio group. It displays as a circular button with an inner dot when
+/// selected and an empty circle when unselected. The widget supports focus
+/// indication and customizable colors and sizing.
+///
+/// The radio button animates smoothly between selected and unselected states,
+/// providing visual feedback to user interactions. It integrates with the
+/// focus system to provide accessibility support and keyboard navigation.
+///
+/// Typically used within [RadioItem] or [RadioGroup] components rather than
+/// standalone, as it only provides the visual representation without the
+/// interaction logic.
+///
+/// Example:
+/// ```dart
+/// Radio(
+///   value: isSelected,
+///   focusing: hasFocus,
+///   size: 20,
+///   activeColor: Colors.blue,
+/// );
+/// ```
 class Radio extends StatelessWidget {
+  /// Whether this radio button is selected.
+  ///
+  /// When true, displays the inner selection indicator.
+  /// When false, shows only the outer circle border.
   final bool value;
+  
+  /// Whether this radio button currently has focus.
+  ///
+  /// When true, displays a focus outline around the radio button
+  /// for accessibility and keyboard navigation indication.
   final bool focusing;
+  
+  /// Size of the radio button in logical pixels.
+  ///
+  /// Controls both the width and height of the circular radio button.
+  /// If null, uses the size from the current [RadioTheme].
   final double? size;
+  
+  /// Color of the inner selection indicator when selected.
+  ///
+  /// Applied to the inner dot that appears when [value] is true.
+  /// If null, uses the activeColor from the current [RadioTheme].
   final Color? activeColor;
+  
+  /// Color of the outer border circle.
+  ///
+  /// Applied to the border of the radio button in both selected and
+  /// unselected states. If null, uses the borderColor from the current [RadioTheme].
   final Color? borderColor;
+  
+  /// Background color of the radio button circle.
+  ///
+  /// Applied as the fill color behind the border. If null, uses the
+  /// backgroundColor from the current [RadioTheme].
   final Color? backgroundColor;
 
+  /// Creates a [Radio] with the specified selection state and styling.
+  ///
+  /// The [value] parameter is required and determines whether the radio
+  /// appears selected. All other parameters are optional and will fall
+  /// back to theme values when not specified.
+  ///
+  /// Parameters:
+  /// - [value] (bool, required): Whether the radio button is selected
+  /// - [focusing] (bool, default: false): Whether the radio has focus
+  /// - [size] (double?, optional): Size of the radio button in pixels
+  /// - [activeColor] (Color?, optional): Color of the selection indicator
+  /// - [borderColor] (Color?, optional): Color of the outer border
+  /// - [backgroundColor] (Color?, optional): Color of the background fill
+  ///
+  /// Example:
+  /// ```dart
+  /// Radio(
+  ///   value: selectedValue == itemValue,
+  ///   focusing: focusNode.hasFocus,
+  ///   size: 18,
+  /// );
+  /// ```
   const Radio({
     super.key,
     required this.value,
@@ -516,11 +600,84 @@ class _RadioCardState<T> extends State<RadioCard<T>> {
   }
 }
 
+/// Controller for managing [ControlledRadioGroup] state programmatically.
+///
+/// Extends [ValueNotifier] to provide reactive state management for radio group
+/// components. Can be used to programmatically change selection, listen to
+/// state changes, and integrate with forms and other reactive systems.
+///
+/// Example:
+/// ```dart
+/// final controller = RadioGroupController<String>('option1');
+/// 
+/// // Listen to changes
+/// controller.addListener(() {
+///   print('Selection changed to: ${controller.value}');
+/// });
+/// 
+/// // Update selection
+/// controller.value = 'option2';
+/// ```
 class RadioGroupController<T> extends ValueNotifier<T?>
     with ComponentController<T?> {
+  /// Creates a [RadioGroupController] with an optional initial value.
+  ///
+  /// The [value] parameter sets the initial selected option. Can be null
+  /// to start with no selection.
+  ///
+  /// Parameters:
+  /// - [value] (T?, optional): Initial selected value
   RadioGroupController([super.value]);
 }
 
+/// Reactive radio button group with automatic state management and exclusivity.
+///
+/// A high-level radio group widget that provides automatic state management through
+/// the controlled component pattern. Manages mutual exclusion between radio options
+/// and supports both controller-based and callback-based state management.
+///
+/// ## Features
+///
+/// - **Mutual exclusion**: Automatically ensures only one radio button is selected
+/// - **Flexible layout**: Works with any child layout (Column, Row, Wrap, etc.)
+/// - **Keyboard navigation**: Full keyboard support with arrow keys and Space
+/// - **Form integration**: Automatic validation and form field registration
+/// - **State synchronization**: Keeps all radio buttons in sync automatically
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = RadioGroupController<String>('small');
+/// 
+/// ControlledRadioGroup<String>(
+///   controller: controller,
+///   child: Column(
+///     children: [
+///       Radio<String>(value: 'small', label: Text('Small')),
+///       Radio<String>(value: 'medium', label: Text('Medium')),
+///       Radio<String>(value: 'large', label: Text('Large')),
+///     ],
+///   ),
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// String? selectedSize;
+/// 
+/// ControlledRadioGroup<String>(
+///   initialValue: selectedSize,
+///   onChanged: (size) => setState(() => selectedSize = size),
+///   child: Column(
+///     children: [
+///       Radio<String>(value: 'small', label: Text('Small')),
+///       Radio<String>(value: 'medium', label: Text('Medium')),
+///       Radio<String>(value: 'large', label: Text('Large')),
+///     ],
+///   ),
+/// )
+/// ```
 class ControlledRadioGroup<T> extends StatelessWidget
     with ControlledComponent<T?> {
   @override
@@ -532,8 +689,38 @@ class ControlledRadioGroup<T> extends StatelessWidget
   @override
   final RadioGroupController<T?>? controller;
 
+  /// Child widget containing the radio buttons.
+  ///
+  /// Usually a layout widget like Column, Row, or Wrap containing multiple
+  /// [Radio] widgets. The radio group will manage the selection state
+  /// of all descendant radio buttons automatically.
   final Widget child;
 
+  /// Creates a [ControlledRadioGroup].
+  ///
+  /// Either [controller] or [onChanged] should be provided for interactivity.
+  /// The widget supports both controller-based and callback-based state management
+  /// patterns with automatic mutual exclusion between radio options.
+  ///
+  /// Parameters:
+  /// - [controller] (RadioGroupController<T>?, optional): external state controller
+  /// - [initialValue] (T?, optional): starting selection when no controller
+  /// - [onChanged] (ValueChanged<T?>?, optional): selection change callback
+  /// - [enabled] (bool, default: true): whether radio group is interactive
+  /// - [child] (Widget, required): layout containing radio buttons
+  ///
+  /// Example:
+  /// ```dart
+  /// ControlledRadioGroup<String>(
+  ///   controller: controller,
+  ///   child: Column(
+  ///     children: [
+  ///       Radio<String>(value: 'option1', label: Text('Option 1')),
+  ///       Radio<String>(value: 'option2', label: Text('Option 2')),
+  ///     ],
+  ///   ),
+  /// )
+  /// ```
   const ControlledRadioGroup({
     super.key,
     this.controller,

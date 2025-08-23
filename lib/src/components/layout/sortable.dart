@@ -6,27 +6,208 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// A draggable widget that supports drag-and-drop reordering with directional drop zones.
+///
+/// The Sortable widget enables drag-and-drop interactions with support for four directional 
+/// drop zones (top, left, right, bottom). It provides customizable callbacks for handling
+/// drop events, visual feedback during dragging, and placeholder widgets for smooth 
+/// reordering animations.
+///
+/// Features:
+/// - Four directional drop zones with individual accept/reject logic
+/// - Customizable ghost and placeholder widgets during drag operations  
+/// - Automatic scroll support when wrapped in ScrollableSortableLayer
+/// - Visual feedback with animated placeholders and fallback widgets
+/// - Robust drag session management with proper cleanup
+///
+/// The widget must be wrapped in a [SortableLayer] to function properly. Use 
+/// [ScrollableSortableLayer] for automatic scrolling during drag operations.
+///
+/// Example:
+/// ```dart
+/// SortableLayer(
+///   child: Column(
+///     children: [
+///       Sortable<String>(
+///         data: SortableData('Item 1'),
+///         onAcceptTop: (data) => reorderAbove(data.data),
+///         onAcceptBottom: (data) => reorderBelow(data.data),
+///         child: Card(child: Text('Item 1')),
+///       ),
+///       Sortable<String>(
+///         data: SortableData('Item 2'), 
+///         onAcceptTop: (data) => reorderAbove(data.data),
+///         onAcceptBottom: (data) => reorderBelow(data.data),
+///         child: Card(child: Text('Item 2')),
+///       ),
+///     ],
+///   ),
+/// )
+/// ```
 class Sortable<T> extends StatefulWidget {
+  /// Predicate to determine if data can be accepted when dropped above this widget.
+  ///
+  /// Type: `Predicate<SortableData<T>>?`. If null, drops from the top are not accepted.
+  /// Called before [onAcceptTop] to validate the drop operation.
   final Predicate<SortableData<T>>? canAcceptTop;
+  
+  /// Predicate to determine if data can be accepted when dropped to the left of this widget.
+  ///
+  /// Type: `Predicate<SortableData<T>>?`. If null, drops from the left are not accepted.
+  /// Called before [onAcceptLeft] to validate the drop operation.
   final Predicate<SortableData<T>>? canAcceptLeft;
+  
+  /// Predicate to determine if data can be accepted when dropped to the right of this widget.
+  ///
+  /// Type: `Predicate<SortableData<T>>?`. If null, drops from the right are not accepted.
+  /// Called before [onAcceptRight] to validate the drop operation.
   final Predicate<SortableData<T>>? canAcceptRight;
+  
+  /// Predicate to determine if data can be accepted when dropped below this widget.
+  ///
+  /// Type: `Predicate<SortableData<T>>?`. If null, drops from the bottom are not accepted.
+  /// Called before [onAcceptBottom] to validate the drop operation.
   final Predicate<SortableData<T>>? canAcceptBottom;
+  
+  /// Callback invoked when data is successfully dropped above this widget.
+  ///
+  /// Type: `ValueChanged<SortableData<T>>?`. The callback receives the dropped
+  /// data and should handle the reordering logic. Only called after [canAcceptTop]
+  /// validation passes.
   final ValueChanged<SortableData<T>>? onAcceptTop;
+  
+  /// Callback invoked when data is successfully dropped to the left of this widget.
+  ///
+  /// Type: `ValueChanged<SortableData<T>>?`. The callback receives the dropped
+  /// data and should handle the reordering logic. Only called after [canAcceptLeft]
+  /// validation passes.
   final ValueChanged<SortableData<T>>? onAcceptLeft;
+  
+  /// Callback invoked when data is successfully dropped to the right of this widget.
+  ///
+  /// Type: `ValueChanged<SortableData<T>>?`. The callback receives the dropped
+  /// data and should handle the reordering logic. Only called after [canAcceptRight]
+  /// validation passes.
   final ValueChanged<SortableData<T>>? onAcceptRight;
+  
+  /// Callback invoked when data is successfully dropped below this widget.
+  ///
+  /// Type: `ValueChanged<SortableData<T>>?`. The callback receives the dropped
+  /// data and should handle the reordering logic. Only called after [canAcceptBottom]
+  /// validation passes.
   final ValueChanged<SortableData<T>>? onAcceptBottom;
+  
+  /// Callback invoked when a drag operation starts on this widget.
+  ///
+  /// Type: `VoidCallback?`. Called immediately when the user begins dragging
+  /// this sortable item. Useful for providing haptic feedback or updating UI state.
   final VoidCallback? onDragStart;
+  
+  /// Callback invoked when a drag operation ends successfully.
+  ///
+  /// Type: `VoidCallback?`. Called when the drag completes with a successful drop.
+  /// This is called before the appropriate accept callback.
   final VoidCallback? onDragEnd;
+  
+  /// Callback invoked when a drag operation is cancelled.
+  ///
+  /// Type: `VoidCallback?`. Called when the drag is cancelled without a successful
+  /// drop, such as when the user releases outside valid drop zones.
   final VoidCallback? onDragCancel;
+  
+  /// The main child widget that will be made sortable.
+  ///
+  /// Type: `Widget`. This widget is displayed normally and becomes draggable
+  /// when drag interactions are initiated.
   final Widget child;
+  
+  /// The data associated with this sortable item.
+  ///
+  /// Type: `SortableData<T>`. Contains the actual data being sorted and provides
+  /// identity for the drag-and-drop operations.
   final SortableData<T> data;
+  
+  /// Widget displayed in drop zones when this item is being dragged over them.
+  ///
+  /// Type: `Widget?`. If null, uses [SizedBox.shrink]. This creates visual
+  /// space in potential drop locations, providing clear feedback about where
+  /// the item will be placed if dropped.
   final Widget? placeholder;
+  
+  /// Widget displayed while dragging instead of the original child.
+  ///
+  /// Type: `Widget?`. If null, uses [child]. Typically a semi-transparent
+  /// or styled version of the child to provide visual feedback during dragging.
   final Widget? ghost;
+  
+  /// Widget displayed in place of the child while it's being dragged.
+  ///
+  /// Type: `Widget?`. If null, the original child becomes invisible but maintains
+  /// its space. Used to show an alternative representation at the original location.
   final Widget? fallback;
+  
+  /// Widget displayed when the item is a candidate for dropping.
+  ///
+  /// Type: `Widget?`. Shows alternative styling when the dragged item hovers
+  /// over this sortable as a potential drop target.
   final Widget? candidateFallback;
+  
+  /// Whether drag interactions are enabled for this sortable.
+  ///
+  /// Type: `bool`, default: `true`. When false, the widget cannot be dragged
+  /// and will not respond to drag gestures.
   final bool enabled;
+  
+  /// How hit-testing behaves for drag gesture recognition.
+  ///
+  /// Type: `HitTestBehavior`, default: `HitTestBehavior.deferToChild`.
+  /// Controls how the gesture detector participates in hit testing.
   final HitTestBehavior behavior;
+  
+  /// Callback invoked when a drop operation fails.
+  ///
+  /// Type: `VoidCallback?`. Called when the user drops outside of any valid
+  /// drop zones or when drop validation fails.
   final VoidCallback? onDropFailed;
+  /// Creates a [Sortable] widget with drag-and-drop functionality.
+  ///
+  /// Configures a widget that can be dragged and accepts drops from other
+  /// sortable items. The widget supports directional drop zones and provides
+  /// extensive customization for drag interactions and visual feedback.
+  ///
+  /// Parameters:
+  /// - [key] (Key?): Widget identifier for the widget tree
+  /// - [data] (SortableData<T>, required): Data associated with this sortable item
+  /// - [child] (Widget, required): The main widget to make sortable
+  /// - [enabled] (bool, default: true): Whether drag interactions are enabled
+  /// - [canAcceptTop] (Predicate<SortableData<T>>?, optional): Validation for top drops
+  /// - [canAcceptLeft] (Predicate<SortableData<T>>?, optional): Validation for left drops  
+  /// - [canAcceptRight] (Predicate<SortableData<T>>?, optional): Validation for right drops
+  /// - [canAcceptBottom] (Predicate<SortableData<T>>?, optional): Validation for bottom drops
+  /// - [onAcceptTop] (ValueChanged<SortableData<T>>?, optional): Handler for top drops
+  /// - [onAcceptLeft] (ValueChanged<SortableData<T>>?, optional): Handler for left drops
+  /// - [onAcceptRight] (ValueChanged<SortableData<T>>?, optional): Handler for right drops
+  /// - [onAcceptBottom] (ValueChanged<SortableData<T>>?, optional): Handler for bottom drops
+  /// - [placeholder] (Widget?, default: SizedBox()): Widget shown in drop zones
+  /// - [ghost] (Widget?, optional): Widget displayed while dragging
+  /// - [fallback] (Widget?, optional): Widget shown at original position during drag
+  /// - [candidateFallback] (Widget?, optional): Widget shown when item is drop candidate
+  /// - [onDragStart] (VoidCallback?, optional): Called when drag starts
+  /// - [onDragEnd] (VoidCallback?, optional): Called when drag ends successfully
+  /// - [onDragCancel] (VoidCallback?, optional): Called when drag is cancelled
+  /// - [behavior] (HitTestBehavior, default: HitTestBehavior.deferToChild): Hit test behavior
+  /// - [onDropFailed] (VoidCallback?, optional): Called when drop fails
+  ///
+  /// Example:
+  /// ```dart
+  /// Sortable<String>(
+  ///   data: SortableData('item_1'),
+  ///   onAcceptTop: (data) => moveAbove(data.data),
+  ///   onAcceptBottom: (data) => moveBelow(data.data),  
+  ///   placeholder: Container(height: 2, color: Colors.blue),
+  ///   child: ListTile(title: Text('Draggable Item')),
+  /// )
+  /// ```
   const Sortable({
     super.key,
     this.enabled = true,
@@ -126,11 +307,67 @@ _SortableDropLocation? _getPosition(Offset position, Size size,
   return null;
 }
 
+/// A fallback drop zone for sortable items when dropped outside specific sortable widgets.
+///
+/// SortableDropFallback provides a catch-all drop zone that can accept sortable
+/// items when they're dropped outside of any specific sortable widget drop zones.
+/// This is useful for implementing deletion zones, creation areas, or general 
+/// drop handling areas.
+///
+/// The widget wraps its child with an invisible hit test layer that can detect
+/// and accept dropped sortable items based on configurable acceptance criteria.
+///
+/// Example:
+/// ```dart
+/// SortableDropFallback<String>(
+///   canAccept: (data) => data.data.startsWith('temp_'),
+///   onAccept: (data) => deleteItem(data.data),
+///   child: Container(
+///     height: 100,
+///     child: Center(child: Text('Drop here to delete')),
+///   ),
+/// )
+/// ```
 class SortableDropFallback<T> extends StatefulWidget {
+  /// Callback invoked when a sortable item is dropped on this fallback zone.
+  ///
+  /// Type: `ValueChanged<SortableData<T>>?`. Receives the dropped item's data
+  /// and should handle the drop operation. Only called if [canAccept] validation
+  /// passes or is null.
   final ValueChanged<SortableData<T>>? onAccept;
+  
+  /// Predicate to determine if dropped data can be accepted by this fallback zone.
+  ///
+  /// Type: `Predicate<SortableData<T>>?`. If null, all sortable items are accepted.
+  /// Return true to accept the drop, false to reject it.
   final Predicate<SortableData<T>>? canAccept;
+  
+  /// The child widget that defines the drop zone area.
+  ///
+  /// Type: `Widget`. This widget's bounds determine the area where drops can
+  /// be detected. The child is rendered normally with an invisible overlay
+  /// for drop detection.
   final Widget child;
 
+  /// Creates a [SortableDropFallback] drop zone.
+  ///
+  /// Configures a fallback drop zone that can accept sortable items dropped
+  /// outside of specific sortable widget drop zones.
+  ///
+  /// Parameters:
+  /// - [key] (Key?): Widget identifier for the widget tree
+  /// - [child] (Widget, required): The widget that defines the drop zone area
+  /// - [onAccept] (ValueChanged<SortableData<T>>?, optional): Handler for accepted drops
+  /// - [canAccept] (Predicate<SortableData<T>>?, optional): Validation for drops
+  ///
+  /// Example:
+  /// ```dart
+  /// SortableDropFallback<String>(
+  ///   canAccept: (data) => data.data.contains('removable'),
+  ///   onAccept: (data) => removeFromList(data.data),
+  ///   child: Icon(Icons.delete, size: 48),
+  /// )
+  /// ```
   const SortableDropFallback({
     super.key,
     required this.child,
@@ -756,12 +993,87 @@ class _SortableState<T> extends State<Sortable<T>>
   bool get wantKeepAlive => _dragging;
 }
 
+/// A dedicated drag handle for initiating sortable drag operations.
+///
+/// SortableDragHandle provides a specific area within a sortable widget that
+/// can be used to initiate drag operations. This is useful when you want to
+/// restrict drag initiation to a specific handle area rather than the entire
+/// sortable widget.
+///
+/// The handle automatically detects its parent Sortable widget and delegates
+/// drag operations to it. It provides visual feedback with appropriate mouse
+/// cursors and can be enabled/disabled independently.
+///
+/// Features:
+/// - Dedicated drag initiation area within sortable widgets
+/// - Automatic mouse cursor management (grab/grabbing states)
+/// - Independent enable/disable control
+/// - Automatic cleanup and lifecycle management
+///
+/// Example:
+/// ```dart
+/// Sortable<String>(
+///   data: SortableData('item'),
+///   child: Row(
+///     children: [
+///       SortableDragHandle(
+///         child: Icon(Icons.drag_handle),
+///       ),
+///       Expanded(child: Text('Drag me by the handle')),
+///     ],
+///   ),
+/// )
+/// ```
 class SortableDragHandle extends StatefulWidget {
+  /// The child widget that serves as the drag handle.
+  ///
+  /// Type: `Widget`. This widget defines the visual appearance of the drag handle
+  /// and responds to drag gestures. Commonly an icon like Icons.drag_handle.
   final Widget child;
+  
+  /// Whether the drag handle is enabled for drag operations.
+  ///
+  /// Type: `bool`, default: `true`. When false, the handle will not respond to
+  /// drag gestures and shows the default cursor instead of grab cursors.
   final bool enabled;
+  
+  /// How hit-testing behaves for this drag handle.
+  ///
+  /// Type: `HitTestBehavior?`. Controls how the gesture detector and mouse region
+  /// participate in hit testing. If null, uses default behavior.
   final HitTestBehavior? behavior;
+  
+  /// The mouse cursor displayed when hovering over the drag handle.
+  ///
+  /// Type: `MouseCursor?`. If null, uses SystemMouseCursors.grab when enabled,
+  /// or MouseCursor.defer when disabled. Changes to SystemMouseCursors.grabbing
+  /// during active drag operations.
   final MouseCursor? cursor;
 
+  /// Creates a [SortableDragHandle] for initiating drag operations.
+  ///
+  /// Configures a dedicated drag handle that can initiate drag operations for
+  /// its parent sortable widget. The handle provides visual feedback and can
+  /// be independently enabled or disabled.
+  ///
+  /// Parameters:
+  /// - [key] (Key?): Widget identifier for the widget tree
+  /// - [child] (Widget, required): The widget that serves as the drag handle
+  /// - [enabled] (bool, default: true): Whether drag operations are enabled
+  /// - [behavior] (HitTestBehavior?, optional): Hit test behavior for gestures
+  /// - [cursor] (MouseCursor?, optional): Mouse cursor when hovering
+  ///
+  /// Example:
+  /// ```dart
+  /// SortableDragHandle(
+  ///   enabled: isDragEnabled,
+  ///   cursor: SystemMouseCursors.move,
+  ///   child: Container(
+  ///     padding: EdgeInsets.all(8),
+  ///     child: Icon(Icons.drag_indicator),
+  ///   ),
+  /// )
+  /// ```
   const SortableDragHandle(
       {super.key,
       required this.child,
@@ -826,10 +1138,53 @@ class _SortableDragHandleState extends State<SortableDragHandle>
   }
 }
 
+/// Immutable data wrapper for sortable items in drag-and-drop operations.
+///
+/// SortableData wraps the actual data being sorted and provides identity for
+/// drag-and-drop operations. Each sortable item must have associated data that
+/// uniquely identifies it within the sorting context.
+///
+/// The class is immutable and uses reference equality for comparison, ensuring
+/// that each sortable item maintains its identity throughout drag operations.
+/// This is crucial for proper drop validation and handling.
+///
+/// Type parameter [T] represents the type of data being sorted, which can be
+/// any type including primitive types, custom objects, or complex data structures.
+///
+/// Example:
+/// ```dart
+/// // Simple string data
+/// SortableData<String>('item_1')
+/// 
+/// // Complex object data  
+/// SortableData<TodoItem>(TodoItem(id: 1, title: 'Task 1'))
+/// 
+/// // Map data
+/// SortableData<Map<String, dynamic>>({'id': 1, 'name': 'Item'})
+/// ```
 @immutable
 class SortableData<T> {
+  /// The actual data being wrapped for sorting operations.
+  ///
+  /// Type: `T`. This is the data that will be passed to drop handlers and
+  /// validation predicates. Can be any type that represents the sortable item.
   final T data;
 
+  /// Creates a [SortableData] wrapper for the given data.
+  ///
+  /// Wraps the provided data in an immutable container that can be used with
+  /// sortable widgets for drag-and-drop operations.
+  ///
+  /// Parameters:
+  /// - [data] (T, required): The data to wrap for sorting operations
+  ///
+  /// Example:
+  /// ```dart
+  /// // Wrapping different data types
+  /// SortableData('text_item')
+  /// SortableData(42)
+  /// SortableData(MyCustomObject(id: 1))
+  /// ```
   const SortableData(this.data);
 
   @override
@@ -844,12 +1199,97 @@ class SortableData<T> {
   String toString() => 'SortableData($data)';
 }
 
+/// A layer widget that manages drag-and-drop sessions for sortable widgets.
+///
+/// SortableLayer is a required wrapper that coordinates drag-and-drop operations
+/// between multiple sortable widgets. It provides the infrastructure for managing
+/// drag sessions, rendering ghost elements during dragging, and handling drop
+/// animations.
+///
+/// The layer maintains the drag state and provides a rendering context for ghost
+/// widgets that follow the cursor during drag operations. It also manages drop
+/// animations and cleanup when drag operations complete.
+///
+/// Features:
+/// - Centralized drag session management across multiple sortable widgets
+/// - Ghost widget rendering with cursor following during drag operations  
+/// - Configurable drop animations with custom duration and curves
+/// - Boundary locking to constrain drag operations within the layer bounds
+/// - Automatic cleanup and state management for drag sessions
+///
+/// All sortable widgets must be descendants of a SortableLayer to function properly.
+/// The layer should be placed at a level that encompasses all related sortable widgets.
+///
+/// Example:
+/// ```dart
+/// SortableLayer(
+///   lock: true, // Constrain dragging within bounds
+///   dropDuration: Duration(milliseconds: 300),
+///   dropCurve: Curves.easeOut,
+///   child: Column(
+///     children: [
+///       Sortable(...),
+///       Sortable(...),
+///       Sortable(...),
+///     ],
+///   ),
+/// )
+/// ```
 class SortableLayer extends StatefulWidget {
+  /// The child widget tree containing sortable widgets.
+  ///
+  /// Type: `Widget`. All sortable widgets must be descendants of this child
+  /// tree to function properly with the layer.
   final Widget child;
+  
+  /// Whether to lock dragging within the layer's bounds.
+  ///
+  /// Type: `bool`, default: `false`. When true, dragged items cannot be moved
+  /// outside the layer's visual bounds, providing spatial constraints.
   final bool lock;
+  
+  /// The clipping behavior for the layer.
+  ///
+  /// Type: `Clip?`. Controls how content is clipped. If null, uses Clip.hardEdge
+  /// when [lock] is true, otherwise Clip.none.
   final Clip? clipBehavior;
+  
+  /// Duration for drop animations when drag operations complete.
+  ///
+  /// Type: `Duration?`. If null, uses the default duration. Set to Duration.zero
+  /// to disable drop animations entirely.
   final Duration? dropDuration;
+  
+  /// Animation curve for drop transitions.
+  ///
+  /// Type: `Curve?`. If null, uses Curves.easeInOut. Controls the easing
+  /// behavior of items animating to their final drop position.
   final Curve? dropCurve;
+  
+  /// Creates a [SortableLayer] to manage drag-and-drop operations.
+  ///
+  /// Configures the layer that coordinates drag sessions between sortable widgets
+  /// and provides the rendering context for drag operations.
+  ///
+  /// Parameters:
+  /// - [key] (Key?): Widget identifier for the widget tree
+  /// - [child] (Widget, required): The widget tree containing sortable widgets
+  /// - [lock] (bool, default: false): Whether to constrain dragging within bounds
+  /// - [clipBehavior] (Clip?, optional): How to clip the layer content
+  /// - [dropDuration] (Duration?, optional): Duration for drop animations
+  /// - [dropCurve] (Curve?, optional): Curve for drop animation easing
+  ///
+  /// Example:
+  /// ```dart
+  /// SortableLayer(
+  ///   lock: true,
+  ///   dropDuration: Duration(milliseconds: 250),
+  ///   dropCurve: Curves.easeInOutCubic,
+  ///   child: ListView(
+  ///     children: sortableItems.map((item) => Sortable(...)).toList(),
+  ///   ),
+  /// )
+  /// ```
   const SortableLayer({
     super.key,
     this.lock = false,
@@ -862,11 +1302,40 @@ class SortableLayer extends StatefulWidget {
   @override
   State<SortableLayer> createState() => _SortableLayerState();
 
+  /// Ensures a pending drop operation is completed and dismisses it.
+  ///
+  /// Finds the sortable layer in the widget tree and ensures that any pending
+  /// drop operation for the specified data is completed and dismissed. This is
+  /// useful for programmatically finalizing drop operations.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): The build context to find the layer from
+  /// - [data] (Object): The data associated with the drop operation to dismiss
+  ///
+  /// Example:
+  /// ```dart
+  /// // After programmatic reordering
+  /// SortableLayer.ensureAndDismissDrop(context, sortableData);
+  /// ```
   static void ensureAndDismissDrop(BuildContext context, Object data) {
     final layer = Data.of<_SortableLayerState>(context);
     layer.ensureAndDismissDrop(data);
   }
 
+  /// Dismisses any pending drop operations.
+  ///
+  /// Finds the sortable layer in the widget tree and dismisses any currently
+  /// pending drop operations. This clears any visual feedback or animations
+  /// related to incomplete drops.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): The build context to find the layer from
+  ///
+  /// Example:
+  /// ```dart
+  /// // Clear any pending drops when navigating away
+  /// SortableLayer.dismissDrop(context);
+  /// ```
   static void dismissDrop(BuildContext context) {
     final layer = Data.of<_SortableLayerState>(context);
     layer.dismissDrop();
@@ -1115,12 +1584,98 @@ class _SortableLayerState extends State<SortableLayer>
   }
 }
 
+/// A sortable layer that provides automatic scrolling during drag operations.
+///
+/// ScrollableSortableLayer extends the basic sortable functionality with automatic
+/// scrolling when dragged items approach the edges of scrollable areas. This provides
+/// a smooth user experience when dragging items in long lists or grids that extend
+/// beyond the visible area.
+///
+/// The layer monitors drag positions and automatically scrolls the associated
+/// scroll controller when the drag position comes within the configured threshold
+/// of the scroll area edges. Scrolling speed is proportional to proximity to edges.
+///
+/// Features:
+/// - Automatic scrolling when dragging near scroll area edges
+/// - Configurable scroll threshold distance from edges
+/// - Proportional scrolling speed based on proximity
+/// - Optional overscroll support for scrolling beyond normal bounds
+/// - Integrated with standard Flutter ScrollController
+///
+/// This layer should wrap scrollable widgets like ListView, GridView, or CustomScrollView
+/// that contain sortable items. The scroll controller must be provided to enable
+/// automatic scrolling functionality.
+///
+/// Example:
+/// ```dart
+/// ScrollController scrollController = ScrollController();
+/// 
+/// ScrollableSortableLayer(
+///   controller: scrollController,
+///   scrollThreshold: 80.0,
+///   child: ListView.builder(
+///     controller: scrollController,
+///     itemBuilder: (context, index) => Sortable(...),
+///   ),
+/// )
+/// ```
 class ScrollableSortableLayer extends StatefulWidget {
+  /// The child widget containing sortable items within a scrollable area.
+  ///
+  /// Type: `Widget`. Typically a scrollable widget like ListView or GridView
+  /// that contains sortable items and uses the same controller.
   final Widget child;
+  
+  /// The scroll controller that manages the scrollable area.
+  ///
+  /// Type: `ScrollController`. Must be the same controller used by the scrollable
+  /// widget in the child tree. This allows the layer to control scrolling during
+  /// drag operations.
   final ScrollController controller;
+  
+  /// Distance from scroll area edges that triggers automatic scrolling.
+  ///
+  /// Type: `double`, default: `50.0`. When a dragged item comes within this
+  /// distance of the top or bottom edge (for vertical scrolling), automatic
+  /// scrolling begins. Larger values provide earlier scroll activation.
   final double scrollThreshold;
+  
+  /// Whether to allow scrolling beyond the normal scroll bounds.
+  ///
+  /// Type: `bool`, default: `false`. When true, drag operations can trigger
+  /// scrolling past the normal scroll limits, similar to overscroll behavior.
   final bool overscroll;
 
+  /// Creates a [ScrollableSortableLayer] with automatic scrolling support.
+  ///
+  /// Configures a sortable layer that provides automatic scrolling when dragged
+  /// items approach the edges of the scrollable area.
+  ///
+  /// Parameters:
+  /// - [key] (Key?): Widget identifier for the widget tree
+  /// - [child] (Widget, required): The scrollable widget containing sortable items
+  /// - [controller] (ScrollController, required): The scroll controller to manage
+  /// - [scrollThreshold] (double, default: 50.0): Distance from edges for scroll trigger
+  /// - [overscroll] (bool, default: false): Whether to allow overscroll behavior
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = ScrollController();
+  /// 
+  /// ScrollableSortableLayer(
+  ///   controller: controller,
+  ///   scrollThreshold: 60.0,
+  ///   overscroll: true,
+  ///   child: ListView.builder(
+  ///     controller: controller,
+  ///     itemCount: items.length,
+  ///     itemBuilder: (context, index) => Sortable<Item>(
+  ///       data: SortableData(items[index]),
+  ///       child: ItemWidget(items[index]),
+  ///     ),
+  ///   ),
+  /// )
+  /// ```
   const ScrollableSortableLayer({
     super.key,
     required this.child,

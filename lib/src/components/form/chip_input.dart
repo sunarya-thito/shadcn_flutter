@@ -3,18 +3,46 @@ import 'package:flutter/services.dart' hide TextInput;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
+/// Function signature for building custom chip widgets in chip input fields.
+///
+/// Takes a [BuildContext] and chip data of type [T], returning a widget that
+/// represents the chip visually. Allows complete customization of chip appearance
+/// and behavior within chip input components.
 typedef ChipWidgetBuilder<T> = Widget Function(BuildContext context, T chip);
 
-/// Theme data for [ChipInput].
+/// Theme configuration for [ChipInput] widget styling and behavior.
+///
+/// Defines visual properties and default behaviors for chip input components
+/// including popover constraints and chip rendering preferences. Applied globally
+/// through [ComponentTheme] or per-instance for customization.
 class ChipInputTheme {
+  /// Constraints applied to the suggestion popover container.
+  ///
+  /// Controls the maximum and minimum dimensions of the autocomplete suggestion
+  /// popover that appears during typing. When null, uses framework defaults
+  /// with reasonable size limits for suggestion lists.
   final BoxConstraints? popoverConstraints;
+
+  /// Whether to render selected items as interactive chip widgets by default.
+  ///
+  /// When true, selected items appear as dismissible chip widgets with close buttons.
+  /// When false, items appear as simple text tokens. Individual [ChipInput] widgets
+  /// can override this default behavior.
   final bool? useChips;
 
+  /// Creates a [ChipInputTheme].
+  ///
+  /// All parameters are optional and fall back to framework defaults when null.
+  /// The theme can be applied globally or to specific chip input instances.
   const ChipInputTheme({
     this.popoverConstraints,
     this.useChips,
   });
 
+  /// Creates a copy of this theme with specified properties overridden.
+  ///
+  /// Each parameter function is called only if provided, allowing selective
+  /// overrides while preserving existing values for unspecified properties.
   ChipInputTheme copyWith({
     ValueGetter<BoxConstraints?>? popoverConstraints,
     ValueGetter<bool?>? useChips,
@@ -39,40 +67,243 @@ class ChipInputTheme {
   int get hashCode => Object.hash(popoverConstraints, useChips);
 }
 
+/// Reactive controller for managing chip input state with convenient methods.
+///
+/// Extends [ValueNotifier] to provide state management for chip input widgets
+/// containing lists of typed objects. Supports adding, removing, and clearing
+/// chips programmatically while notifying listeners of changes.
+///
+/// The controller maintains a list of items of type [T] and provides methods
+/// for common list operations in chip input contexts.
+///
+/// Example:
+/// ```dart
+/// final controller = ChipInputController<String>(['initial', 'chips']);
+/// 
+/// // React to changes
+/// controller.addListener(() {
+///   print('Chips: ${controller.value}');
+/// });
+/// 
+/// // Programmatic control
+/// controller.add('new chip');
+/// controller.removeAt(0);
+/// ```
 class ChipInputController<T> extends ValueNotifier<List<T>>
     with ComponentController<List<T>> {
+  /// Creates a [ChipInputController] with an optional initial list of chips.
+  ///
+  /// The [value] parameter provides the initial chip list. When not specified,
+  /// starts with an empty list. The controller notifies listeners when the
+  /// chip list changes through any method calls or direct value assignment.
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = ChipInputController<String>(['apple', 'banana']);
+  /// ```
   ChipInputController([super.value = const []]);
+
+  /// Adds a new chip to the end of the current list.
+  ///
+  /// Notifies listeners of the change. The chip is appended to maintain
+  /// the existing order of chips in the input.
+  void add(T chip) {
+    value = [...value, chip];
+  }
+
+  /// Removes the chip at the specified index.
+  ///
+  /// Throws [RangeError] if the index is out of bounds. Notifies listeners
+  /// of the change if the removal is successful.
+  void removeAt(int index) {
+    final newList = [...value];
+    newList.removeAt(index);
+    value = newList;
+  }
+
+  /// Removes all chips matching the provided chip.
+  ///
+  /// Uses equality comparison to find matching chips. Removes all occurrences
+  /// and notifies listeners if any chips were removed.
+  void remove(T chip) {
+    value = value.where((item) => item != chip).toList();
+  }
+
+  /// Removes all chips from the input.
+  ///
+  /// Sets the value to an empty list and notifies listeners of the change.
+  void clear() {
+    value = [];
+  }
+
+  /// Returns true if the chip list contains the specified chip.
+  bool contains(T chip) {
+    return value.contains(chip);
+  }
+
+  /// Returns the number of chips currently in the input.
+  int get length => value.length;
+
+  /// Returns true if the chip input is empty.
+  bool get isEmpty => value.isEmpty;
+
+  /// Returns true if the chip input contains at least one chip.
+  bool get isNotEmpty => value.isNotEmpty;
 }
 
+/// Reactive chip input with automatic state management and controller support.
+///
+/// A high-level chip input widget that provides automatic state management through
+/// the controlled component pattern. Supports both controller-based and callback-based
+/// state management with comprehensive customization options for chips, suggestions,
+/// and input behavior.
+///
+/// ## Features
+///
+/// - **Flexible chip rendering**: Custom chip builders for complete visual control
+/// - **Autocomplete suggestions**: Real-time suggestions with customizable presentation
+/// - **Multiple input modes**: Text tokenization or chip-based entry
+/// - **Form integration**: Automatic validation and form field registration
+/// - **Keyboard navigation**: Full keyboard support for selection and deletion
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = ChipInputController<String>(['apple', 'banana']);
+/// 
+/// ControlledChipInput<String>(
+///   controller: controller,
+///   chipBuilder: (context, chip) => Chip(label: Text(chip)),
+///   suggestions: ['orange', 'grape', 'mango'],
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// List<String> selectedItems = [];
+/// 
+/// ControlledChipInput<String>(
+///   initialValue: selectedItems,
+///   onChanged: (items) => setState(() => selectedItems = items),
+///   chipBuilder: (context, chip) => CustomChipWidget(chip),
+/// )
+/// ```
 class ControlledChipInput<T> extends StatelessWidget
     with ControlledComponent<List<T>> {
+  /// Initial chip list when no controller is provided.
+  ///
+  /// Used only when [controller] is null. Provides the starting set of chips
+  /// to display in the input. Defaults to an empty list.
   @override
   final List<T> initialValue;
+
+  /// Callback fired when the chip list changes.
+  ///
+  /// Called with the new list of chips when user interactions modify the selection.
+  /// If both [controller] and [onChanged] are provided, both will receive updates.
   @override
   final ValueChanged<List<T>>? onChanged;
+
+  /// External controller for programmatic chip list management.
+  ///
+  /// When provided, takes precedence over [initialValue] and [onChanged].
+  /// The controller's state changes are automatically reflected in the widget.
   @override
   final ChipInputController<T>? controller;
+
+  /// Whether the chip input is interactive and enabled.
+  ///
+  /// When false, the input becomes read-only and visually disabled.
+  /// When null, automatically determines enabled state based on callbacks.
   @override
   final bool enabled;
-  final TextEditingController? textEditingController;
-  final BoxConstraints? popoverConstraints;
-  final UndoHistoryController? undoHistoryController;
-  final ValueChanged<String>? onSubmitted;
-  final String? initialText;
-  final FocusNode? focusNode;
-  final List<T> suggestions;
-  final List<T> chips;
-  final List<TextInputFormatter>? inputFormatters;
-  final void Function(int index)? onSuggestionChoosen;
-  final ChipWidgetBuilder<T> chipBuilder;
-  final ChipWidgetBuilder<T>? suggestionBuilder;
-  final bool? useChips;
-  final TextInputAction? textInputAction;
-  final Widget? placeholder;
-  final Widget Function(BuildContext, T)? suggestionLeadingBuilder;
-  final Widget Function(BuildContext, T)? suggestionTrailingBuilder;
-  final Widget? inputTrailingWidget;
 
+  /// External controller for the underlying text input field.
+  ///
+  /// Provides direct control over the text entry portion of the chip input.
+  /// When null, the widget manages its own text input controller internally.
+  final TextEditingController? textEditingController;
+
+  /// Constraints applied to the autocomplete suggestion popover.
+  ///
+  /// Overrides the theme default. Controls the size limits of the suggestion
+  /// list that appears during typing. When null, uses theme or framework defaults.
+  final BoxConstraints? popoverConstraints;
+
+  /// List of available suggestions for autocomplete functionality.
+  ///
+  /// Items from this list are filtered and presented to the user during typing.
+  /// The actual filtering logic is managed internally based on text input.
+  final List<T> suggestions;
+
+  /// Current list of selected chips to display.
+  ///
+  /// When using controller-based management, this is managed automatically.
+  /// For callback-based management, this should reflect the current state.
+  final List<T> chips;
+
+  /// Callback for handling suggestion selection.
+  ///
+  /// Called with the index of the selected suggestion when a user chooses
+  /// an item from the autocomplete list. The callback is responsible for
+  /// adding the suggestion to the chip list.
+  final void Function(int index)? onSuggestionChoosen;
+
+  /// Builder function for creating chip widget representations.
+  ///
+  /// Required function that defines how each chip appears visually in the input.
+  /// Receives the build context and chip data, returning a widget that represents
+  /// the chip with appropriate styling and interaction capabilities.
+  final ChipWidgetBuilder<T> chipBuilder;
+
+  /// Optional builder function for customizing suggestion list items.
+  ///
+  /// When provided, suggestions use this builder instead of default presentation.
+  /// Allows complete customization of how suggestions appear in the autocomplete popover.
+  final ChipWidgetBuilder<T>? suggestionBuilder;
+
+  /// Whether to render selected items as interactive chip widgets.
+  ///
+  /// Overrides the theme default. When true, selected items appear as dismissible
+  /// chips. When false, items appear as simple text tokens.
+  final bool? useChips;
+
+  /// Widget displayed when no chips are selected and no text is entered.
+  ///
+  /// Provides helpful instructions or context for the user about what to enter.
+  /// Typically a Text widget with muted styling.
+  final Widget? placeholder;
+
+  /// Creates a [ControlledChipInput] with comprehensive customization options.
+  ///
+  /// The [chipBuilder] parameter is required as it defines how chips are visually
+  /// represented. Either [controller] or [onChanged] should be provided for
+  /// interactivity, depending on the preferred state management approach.
+  ///
+  /// Parameters:
+  /// - [controller] (ChipInputController<T>?, optional): external state controller
+  /// - [initialValue] (List<T>, default: []): starting chips when no controller
+  /// - [onChanged] (ValueChanged<List<T>>?, optional): chip list change callback
+  /// - [enabled] (bool, default: true): whether input is interactive
+  /// - [chipBuilder] (ChipWidgetBuilder<T>, required): chip widget builder
+  /// - [suggestions] (List<T>, default: []): available autocomplete options
+  /// - [suggestionBuilder] (ChipWidgetBuilder<T>?, optional): custom suggestion builder
+  /// - [useChips] (bool?, optional): override chip rendering mode
+  /// - [placeholder] (Widget?, optional): empty state placeholder widget
+  ///
+  /// Example:
+  /// ```dart
+  /// ControlledChipInput<String>(
+  ///   controller: controller,
+  ///   chipBuilder: (context, chip) => Chip(
+  ///     label: Text(chip),
+  ///     onDeleted: () => controller.remove(chip),
+  ///   ),
+  ///   suggestions: ['apple', 'banana', 'cherry'],
+  ///   placeholder: Text('Type to add fruits...'),
+  /// )
+  /// ```
   const ControlledChipInput({
     super.key,
     this.controller,

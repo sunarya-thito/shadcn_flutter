@@ -136,11 +136,62 @@ class _KeyboardShortcutDisplayMapperState
   }
 }
 
+/// A widget that displays keyboard shortcuts in a visually appealing format.
+///
+/// Renders keyboard key combinations as styled keyboard key representations,
+/// typically used in tooltips, help text, or UI elements that need to
+/// communicate keyboard shortcuts to users. The display automatically
+/// formats keys with appropriate spacing and visual styling.
+///
+/// Supports both direct key specification through a list of [LogicalKeyboardKey]
+/// objects and automatic conversion from [ShortcutActivator] instances.
+/// Keys are displayed as individual key representations with configurable
+/// spacing between them.
+///
+/// The component integrates with the keyboard shortcut theming system
+/// and adapts its appearance based on the current theme and scaling settings.
+/// Visual styling matches platform conventions for keyboard key representations.
+///
+/// Example:
+/// ```dart
+/// KeyboardDisplay(
+///   keys: [
+///     LogicalKeyboardKey.controlLeft,
+///     LogicalKeyboardKey.keyS,
+///   ],
+///   spacing: 4.0,
+/// )
+/// ```
 class KeyboardDisplay extends StatelessWidget {
+  /// List of keyboard keys to display when using direct key specification.
   final List<LogicalKeyboardKey>? _keys;
+
+  /// Shortcut activator to convert to keyboard keys for display.
   final ShortcutActivator? _activator;
+
+  /// Spacing between individual keyboard key displays.
+  ///
+  /// Controls the horizontal gap between adjacent key representations.
+  /// When null, uses theme-appropriate default spacing.
   final double? spacing;
 
+  /// Creates a [KeyboardDisplay] from a list of keyboard keys.
+  ///
+  /// Displays the specified keyboard keys as styled key representations
+  /// with appropriate spacing. This constructor allows direct control
+  /// over which keys are displayed.
+  ///
+  /// Parameters:
+  /// - [keys] (List<LogicalKeyboardKey>, required): Keys to display
+  /// - [spacing] (double?, optional): Gap between key displays
+  ///
+  /// Example:
+  /// ```dart
+  /// KeyboardDisplay(
+  ///   keys: [LogicalKeyboardKey.alt, LogicalKeyboardKey.tab],
+  ///   spacing: 6.0,
+  /// )
+  /// ```
   const KeyboardDisplay({
     super.key,
     required List<LogicalKeyboardKey> keys,
@@ -148,6 +199,23 @@ class KeyboardDisplay extends StatelessWidget {
   })  : _keys = keys,
         _activator = null;
 
+  /// Creates a [KeyboardDisplay] from a shortcut activator.
+  ///
+  /// Automatically extracts the keyboard keys from the provided
+  /// [ShortcutActivator] and displays them as styled key representations.
+  /// This constructor is convenient when working with Flutter's shortcut system.
+  ///
+  /// Parameters:
+  /// - [activator] (ShortcutActivator, required): Shortcut to extract keys from
+  /// - [spacing] (double?, optional): Gap between key displays
+  ///
+  /// Example:
+  /// ```dart
+  /// KeyboardDisplay.fromActivator(
+  ///   activator: SingleActivator(LogicalKeyboardKey.keyS, control: true),
+  ///   spacing: 4.0,
+  /// )
+  /// ```
   const KeyboardDisplay.fromActivator({
     super.key,
     required ShortcutActivator activator,
@@ -173,11 +241,60 @@ class KeyboardDisplay extends StatelessWidget {
   }
 }
 
+/// A widget that displays a single keyboard key in a styled format.
+///
+/// Renders an individual keyboard key as a styled representation that
+/// resembles a physical keyboard key. Used internally by [KeyboardDisplay]
+/// but can also be used standalone for displaying individual keys.
+///
+/// The key display automatically formats the key label based on the
+/// [LogicalKeyboardKey] and applies appropriate styling including
+/// padding, shadows, and theme-consistent appearance.
+///
+/// Example:
+/// ```dart
+/// KeyboardKeyDisplay(
+///   keyboardKey: LogicalKeyboardKey.controlLeft,
+///   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+/// )
+/// ```
 class KeyboardKeyDisplay extends StatelessWidget {
+  /// The keyboard key to display.
+  ///
+  /// Specifies which keyboard key should be rendered. The display
+  /// automatically formats the key label and applies appropriate styling.
   final LogicalKeyboardKey keyboardKey;
+
+  /// Internal padding applied within the key display.
+  ///
+  /// Controls spacing around the key label text. When null,
+  /// uses theme-appropriate default padding for key displays.
   final EdgeInsetsGeometry? padding;
+
+  /// Box shadows applied to the key display for depth effect.
+  ///
+  /// Creates visual depth to simulate the appearance of physical
+  /// keyboard keys. When null, uses theme default shadows.
   final List<BoxShadow>? boxShadow;
 
+  /// Creates a [KeyboardKeyDisplay] for the specified keyboard key.
+  ///
+  /// The [keyboardKey] parameter is required and determines which
+  /// key is displayed. Visual appearance can be customized through
+  /// the optional padding and shadow parameters.
+  ///
+  /// Parameters:
+  /// - [keyboardKey] (LogicalKeyboardKey, required): Key to display
+  /// - [padding] (EdgeInsetsGeometry?, optional): Internal padding
+  /// - [boxShadow] (List<BoxShadow>?, optional): Shadow effects
+  ///
+  /// Example:
+  /// ```dart
+  /// KeyboardKeyDisplay(
+  ///   keyboardKey: LogicalKeyboardKey.escape,
+  ///   padding: EdgeInsets.all(6),
+  /// )
+  /// ```
   const KeyboardKeyDisplay({
     super.key,
     required this.keyboardKey,

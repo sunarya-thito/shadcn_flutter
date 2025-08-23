@@ -1,6 +1,45 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Reactive date input field with integrated date picker and text editing.
+///
+/// A high-level date input widget that combines text field functionality with
+/// date picker integration. Provides automatic state management through the
+/// controlled component pattern with support for both dialog and popover modes.
+///
+/// ## Features
+///
+/// - **Dual input modes**: Text field editing with date picker integration
+/// - **Multiple presentation modes**: Dialog or popover-based date selection
+/// - **Flexible date formatting**: Customizable date part ordering and separators
+/// - **Calendar integration**: Rich calendar interface with multiple view types
+/// - **Form integration**: Automatic validation and form field registration
+/// - **Accessibility**: Full screen reader and keyboard navigation support
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = DatePickerController(DateTime.now());
+/// 
+/// DateInput(
+///   controller: controller,
+///   mode: PromptMode.popover,
+///   placeholder: Text('Select date'),
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// DateTime? selectedDate;
+/// 
+/// DateInput(
+///   initialValue: selectedDate,
+///   onChanged: (date) => setState(() => selectedDate = date),
+///   mode: PromptMode.dialog,
+///   dialogTitle: Text('Choose Date'),
+/// )
+/// ```
 class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
   @override
   final DateTime? initialValue;
@@ -24,6 +63,39 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
   final InputPart? separator;
   final Map<DatePart, Widget>? placeholders;
 
+  /// Creates a [DateInput].
+  ///
+  /// Either [controller] or [onChanged] should be provided for interactivity.
+  /// The widget supports both controller-based and callback-based state management
+  /// patterns with flexible date picker integration options.
+  ///
+  /// Parameters:
+  /// - [controller] (DatePickerController?, optional): external state controller
+  /// - [initialValue] (DateTime?, optional): starting date when no controller
+  /// - [onChanged] (ValueChanged<DateTime?>?, optional): date change callback
+  /// - [enabled] (bool, default: true): whether input is interactive
+  /// - [placeholder] (Widget?, optional): widget shown when no date selected
+  /// - [mode] (PromptMode, default: dialog): date picker presentation mode
+  /// - [initialView] (CalendarView?, optional): starting calendar view
+  /// - [popoverAlignment] (AlignmentGeometry?, optional): popover alignment
+  /// - [popoverAnchorAlignment] (AlignmentGeometry?, optional): anchor alignment
+  /// - [popoverPadding] (EdgeInsetsGeometry?, optional): popover padding
+  /// - [dialogTitle] (Widget?, optional): title for dialog mode
+  /// - [initialViewType] (CalendarViewType?, optional): calendar view type
+  /// - [stateBuilder] (DateStateBuilder?, optional): custom date state builder
+  /// - [datePartsOrder] (List<DatePart>?, optional): order of date components
+  /// - [separator] (InputPart?, optional): separator between date parts
+  /// - [placeholders] (Map<DatePart, Widget>?, optional): placeholders for date parts
+  ///
+  /// Example:
+  /// ```dart
+  /// DateInput(
+  ///   controller: controller,
+  ///   mode: PromptMode.popover,
+  ///   placeholder: Text('Select date'),
+  ///   datePartsOrder: [DatePart.month, DatePart.day, DatePart.year],
+  /// )
+  /// ```
   const DateInput({
     super.key,
     this.controller,
@@ -348,6 +420,45 @@ class NullableTimeOfDay {
   }
 }
 
+/// Reactive time input field with formatted text editing and validation.
+///
+/// A high-level time input widget that provides structured time entry through
+/// formatted text fields. Supports hours, minutes, and optional seconds with
+/// automatic state management through the controlled component pattern.
+///
+/// ## Features
+///
+/// - **Structured time entry**: Separate fields for hours, minutes, and seconds
+/// - **Format validation**: Automatic validation and formatting of time components
+/// - **Flexible display**: Optional seconds display and customizable separators
+/// - **Form integration**: Automatic validation and form field registration
+/// - **Keyboard navigation**: Tab navigation between time components
+/// - **Accessibility**: Full screen reader support and keyboard input
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = ComponentController<TimeOfDay?>(TimeOfDay.now());
+/// 
+/// TimeInput(
+///   controller: controller,
+///   showSeconds: true,
+///   placeholder: Text('Enter time'),
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// TimeOfDay? selectedTime;
+/// 
+/// TimeInput(
+///   initialValue: selectedTime,
+///   onChanged: (time) => setState(() => selectedTime = time),
+///   showSeconds: false,
+///   separator: InputPart.text(':'),
+/// )
+/// ```
 class TimeInput extends StatefulWidget with ControlledComponent<TimeOfDay?> {
   @override
   final TimeOfDay? initialValue;
@@ -363,6 +474,35 @@ class TimeInput extends StatefulWidget with ControlledComponent<TimeOfDay?> {
   final InputPart? separator;
   final Map<TimePart, Widget>? placeholders;
 
+  /// Creates a [TimeInput].
+  ///
+  /// Either [controller] or [onChanged] should be provided for interactivity.
+  /// The widget supports both controller-based and callback-based state management
+  /// patterns with structured time component entry.
+  ///
+  /// Parameters:
+  /// - [controller] (ComponentController<TimeOfDay?>?, optional): external state controller
+  /// - [initialValue] (TimeOfDay?, optional): starting time when no controller
+  /// - [onChanged] (ValueChanged<TimeOfDay?>?, optional): time change callback
+  /// - [enabled] (bool, default: true): whether input is interactive
+  /// - [placeholder] (Widget?, optional): widget shown when no time selected
+  /// - [showSeconds] (bool, default: false): whether to include seconds input
+  /// - [separator] (InputPart?, optional): separator between time components
+  /// - [placeholders] (Map<TimePart, Widget>?, optional): placeholders for time parts
+  ///
+  /// Example:
+  /// ```dart
+  /// TimeInput(
+  ///   controller: controller,
+  ///   showSeconds: true,
+  ///   separator: InputPart.text(':'),
+  ///   placeholders: {
+  ///     TimePart.hour: Text('HH'),
+  ///     TimePart.minute: Text('MM'),
+  ///     TimePart.second: Text('SS'),
+  ///   },
+  /// )
+  /// ```
   const TimeInput({
     super.key,
     this.controller,
@@ -496,6 +636,46 @@ class _TimeInputState extends State<TimeInput> {
   }
 }
 
+/// Reactive duration input field with formatted text editing and validation.
+///
+/// A high-level duration input widget that provides structured duration entry through
+/// formatted text fields. Supports hours, minutes, and optional seconds with
+/// automatic state management through the controlled component pattern.
+///
+/// ## Features
+///
+/// - **Structured duration entry**: Separate fields for hours, minutes, and seconds
+/// - **Format validation**: Automatic validation and formatting of duration components
+/// - **Flexible display**: Optional seconds display and customizable separators
+/// - **Large value support**: Handle durations spanning multiple hours or days
+/// - **Form integration**: Automatic validation and form field registration
+/// - **Keyboard navigation**: Tab navigation between duration components
+/// - **Accessibility**: Full screen reader support and keyboard input
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = ComponentController<Duration?>(Duration(hours: 1, minutes: 30));
+/// 
+/// DurationInput(
+///   controller: controller,
+///   showSeconds: true,
+///   placeholder: Text('Enter duration'),
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// Duration? selectedDuration;
+/// 
+/// DurationInput(
+///   initialValue: selectedDuration,
+///   onChanged: (duration) => setState(() => selectedDuration = duration),
+///   showSeconds: false,
+///   separator: InputPart.text(':'),
+/// )
+/// ```
 class DurationInput extends StatefulWidget with ControlledComponent<Duration?> {
   @override
   final Duration? initialValue;
@@ -511,6 +691,35 @@ class DurationInput extends StatefulWidget with ControlledComponent<Duration?> {
   final InputPart? separator;
   final Map<TimePart, Widget>? placeholders;
 
+  /// Creates a [DurationInput].
+  ///
+  /// Either [controller] or [onChanged] should be provided for interactivity.
+  /// The widget supports both controller-based and callback-based state management
+  /// patterns with structured duration component entry.
+  ///
+  /// Parameters:
+  /// - [controller] (ComponentController<Duration?>?, optional): external state controller
+  /// - [initialValue] (Duration?, optional): starting duration when no controller
+  /// - [onChanged] (ValueChanged<Duration?>?, optional): duration change callback
+  /// - [enabled] (bool, default: true): whether input is interactive
+  /// - [placeholder] (Widget?, optional): widget shown when no duration selected
+  /// - [showSeconds] (bool, default: false): whether to include seconds input
+  /// - [separator] (InputPart?, optional): separator between duration components
+  /// - [placeholders] (Map<TimePart, Widget>?, optional): placeholders for time parts
+  ///
+  /// Example:
+  /// ```dart
+  /// DurationInput(
+  ///   controller: controller,
+  ///   showSeconds: true,
+  ///   separator: InputPart.text(':'),
+  ///   placeholders: {
+  ///     TimePart.hour: Text('HH'),
+  ///     TimePart.minute: Text('MM'),
+  ///     TimePart.second: Text('SS'),
+  ///   },
+  /// )
+  /// ```
   const DurationInput({
     super.key,
     this.controller,

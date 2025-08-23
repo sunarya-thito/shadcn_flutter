@@ -26,7 +26,12 @@ class DividerProperties {
   }
 }
 
-/// Theme configuration for [Divider].
+/// Theme data for customizing [Divider] widget appearance.
+///
+/// This class defines the visual properties that can be applied to
+/// [Divider] widgets, including line color, dimensions, spacing, and
+/// child padding. These properties can be set at the theme level
+/// to provide consistent styling across the application.
 class DividerTheme {
   /// Color of the divider line.
   final Color? color;
@@ -91,6 +96,51 @@ class DividerTheme {
       Object.hash(color, height, thickness, indent, endIndent, padding);
 }
 
+/// A horizontal line widget used to visually separate content sections.
+///
+/// [Divider] creates a thin horizontal line that spans the available width,
+/// optionally with indentation from either end. It's commonly used to separate
+/// content sections, list items, or create visual breaks in layouts. The divider
+/// can optionally contain a child widget (such as text) that appears centered
+/// on the divider line.
+///
+/// Key features:
+/// - Horizontal line spanning available width
+/// - Configurable thickness and color
+/// - Optional indentation from start and end
+/// - Support for child widgets (text, icons, etc.)
+/// - Customizable padding around child content
+/// - Theme integration for consistent styling
+/// - Implements PreferredSizeWidget for flexible layout
+///
+/// The divider automatically adapts to the current theme's border color
+/// and can be customized through individual properties or theme configuration.
+/// When a child is provided, the divider line is broken to accommodate the
+/// child content with appropriate padding.
+///
+/// Common use cases:
+/// - Separating sections in forms or settings screens
+/// - Creating breaks between list items
+/// - Dividing content areas in complex layouts
+/// - Adding labeled dividers with text or icons
+///
+/// Example:
+/// ```dart
+/// Column(
+///   children: [
+///     Text('Section 1'),
+///     Divider(),
+///     Text('Section 2'),
+///     Divider(
+///       child: Text('OR', style: TextStyle(color: Colors.grey)),
+///       thickness: 2,
+///       indent: 20,
+///       endIndent: 20,
+///     ),
+///     Text('Section 3'),
+///   ],
+/// );
+/// ```
 class Divider extends StatelessWidget implements PreferredSizeWidget {
   final Color? color;
   final double? height;

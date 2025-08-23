@@ -4,23 +4,96 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// {@template toast_theme}
-/// Theme data for [ToastLayer] providing default layout values.
-/// {@endtemplate}
+/// Theme configuration for toast notification system.
+///
+/// Provides comprehensive styling properties for toast notifications including
+/// layout, positioning, animation behavior, and visual effects. These properties
+/// integrate with the design system and can be overridden at the widget level.
+///
+/// The theme supports advanced features like stacking behavior, expansion modes,
+/// and sophisticated animation timing for professional toast experiences.
 class ToastTheme {
+  /// Maximum number of toast notifications to stack visually.
+  ///
+  /// Type: `int?`. If null, defaults to 3 stacked entries. Controls how many
+  /// toasts are visible simultaneously, with older toasts being collapsed or hidden.
   final int? maxStackedEntries;
+
+  /// Padding around the toast notification area.
+  ///
+  /// Type: `EdgeInsetsGeometry?`. If null, defaults to EdgeInsets.all(24) scaled
+  /// by theme scaling factor. Applied to the toast positioning within safe area.
   final EdgeInsetsGeometry? padding;
+
+  /// Behavior mode for toast stack expansion.
+  ///
+  /// Type: `ExpandMode?`. If null, defaults to [ExpandMode.expandOnHover].
+  /// Controls when stacked toasts expand to show multiple entries simultaneously.
   final ExpandMode? expandMode;
+
+  /// Offset for collapsed toast positioning.
+  ///
+  /// Type: `Offset?`. If null, defaults to Offset(0, 12) scaled by theme.
+  /// Controls the vertical/horizontal spacing between stacked toast entries.
   final Offset? collapsedOffset;
+
+  /// Scale factor for collapsed toast entries.
+  ///
+  /// Type: `double?`. If null, defaults to 0.9. Controls the size reduction
+  /// of toast notifications that are stacked behind the active toast.
   final double? collapsedScale;
+
+  /// Animation curve for toast expansion transitions.
+  ///
+  /// Type: `Curve?`. If null, defaults to Curves.easeOutCubic.
+  /// Applied when transitioning between collapsed and expanded stack states.
   final Curve? expandingCurve;
+
+  /// Duration for toast expansion animations.
+  ///
+  /// Type: `Duration?`. If null, defaults to 500 milliseconds.
+  /// Controls the timing of stack expansion and collapse transitions.
   final Duration? expandingDuration;
+
+  /// Opacity level for collapsed toast entries.
+  ///
+  /// Type: `double?`. If null, defaults to 1.0 (fully opaque).
+  /// Controls the visibility of toast notifications in the stack behind the active toast.
   final double? collapsedOpacity;
+
+  /// Initial opacity for toast entry animations.
+  ///
+  /// Type: `double?`. If null, defaults to 0.0 (fully transparent).
+  /// Starting opacity value for toast notifications when they first appear.
   final double? entryOpacity;
+
+  /// Spacing between expanded toast entries.
+  ///
+  /// Type: `double?`. If null, defaults to 8.0. Controls the gap between
+  /// toast notifications when the stack is in expanded state.
   final double? spacing;
+
+  /// Size constraints for individual toast notifications.
+  ///
+  /// Type: `BoxConstraints?`. If null, defaults to fixed width of 320 scaled
+  /// by theme. Defines the maximum/minimum dimensions for toast content.
   final BoxConstraints? toastConstraints;
 
-  /// {@macro toast_theme}
+  /// Creates a [ToastTheme].
+  ///
+  /// All parameters are optional and can be null to use intelligent defaults
+  /// that integrate with the current theme's design system and provide
+  /// professional toast notification behavior.
+  ///
+  /// Example:
+  /// ```dart
+  /// const ToastTheme(
+  ///   maxStackedEntries: 5,
+  ///   expandMode: ExpandMode.expandOnHover,
+  ///   spacing: 12.0,
+  ///   collapsedScale: 0.95,
+  /// );
+  /// ```
   const ToastTheme({
     this.maxStackedEntries,
     this.padding,
@@ -34,6 +107,25 @@ class ToastTheme {
     this.spacing,
     this.toastConstraints,
   });
+
+/// Type definition for toast content builder functions.
+///
+/// Takes a [BuildContext] and [ToastOverlay] instance, returning the widget
+/// that represents the toast's visual content. The overlay parameter provides
+/// control methods for dismissing or manipulating the toast notification.
+///
+/// Example:
+/// ```dart
+/// ToastBuilder builder = (context, overlay) => Card(
+///   child: ListTile(
+///     title: Text('Notification'),
+///     trailing: IconButton(
+///       icon: Icon(Icons.close),
+///       onPressed: overlay.close,
+///     ),
+///   ),
+/// );
+/// ```
 
   ToastTheme copyWith({
     ValueGetter<int?>? maxStackedEntries,
@@ -115,6 +207,48 @@ class ToastTheme {
 typedef ToastBuilder = Widget Function(
     BuildContext context, ToastOverlay overlay);
 
+/// Displays a toast notification with sophisticated positioning and animation.
+///
+/// Creates and shows a toast notification using the provided builder function
+/// within the nearest [ToastLayer] in the widget tree. The toast appears at
+/// the specified location with configurable animation, dismissal behavior,
+/// and automatic timeout.
+///
+/// The function handles theme capture and data inheritance to ensure the toast
+/// maintains consistent styling and access to inherited data from the calling
+/// context. Toast notifications are managed through a layered system that
+/// supports stacking, expansion, and smooth animations.
+///
+/// Parameters:
+/// - [context] (BuildContext, required): The build context for theme and data capture
+/// - [builder] (ToastBuilder, required): Function that builds the toast content widget
+/// - [location] (ToastLocation, default: bottomRight): Screen position for the toast
+/// - [dismissible] (bool, default: true): Whether users can dismiss via gesture
+/// - [curve] (Curve, default: easeOutCubic): Animation curve for entry/exit transitions
+/// - [entryDuration] (Duration, default: 500ms): Duration for toast entry animation
+/// - [onClosed] (VoidCallback?, optional): Callback invoked when toast is dismissed
+/// - [showDuration] (Duration, default: 5s): Auto-dismiss timeout duration
+///
+/// Returns:
+/// A [ToastOverlay] instance that provides control methods for the displayed toast.
+///
+/// Throws:
+/// - [AssertionError] if no [ToastLayer] is found in the widget tree.
+///
+/// Example:
+/// ```dart
+/// final toast = showToast(
+///   context: context,
+///   builder: (context, overlay) => AlertCard(
+///     title: 'Success',
+///     message: 'Operation completed successfully',
+///     onDismiss: overlay.close,
+///   ),
+///   location: ToastLocation.topRight,
+///   showDuration: Duration(seconds: 3),
+/// );
+/// ```
+
 ToastOverlay showToast({
   required BuildContext context,
   required ToastBuilder builder,
@@ -149,62 +283,259 @@ ToastOverlay showToast({
   return layer!.addEntry(entry);
 }
 
+/// Screen position enumeration for toast notification placement.
+///
+/// ToastLocation defines six standard positions around the screen edges where
+/// toast notifications can appear. Each location includes alignment information
+/// for both the toast container and the stacking direction of multiple toasts.
+///
+/// The enum ensures consistent positioning behavior across different screen
+/// sizes and orientations while providing intuitive placement options for
+/// various UI patterns and user experience requirements.
 enum ToastLocation {
+  /// Top-left corner with downward stacking.
+  ///
+  /// Toasts appear in the top-left area with new toasts stacking below existing ones.
+  /// Suitable for notifications that shouldn't interfere with main content areas.
   topLeft(
     childrenAlignment: Alignment.bottomCenter,
     alignment: Alignment.topLeft,
   ),
+
+  /// Top-center with downward stacking.
+  ///
+  /// Toasts appear centered at the top with new toasts stacking below existing ones.
+  /// Ideal for important notifications that need prominent visibility.
   topCenter(
     childrenAlignment: Alignment.bottomCenter,
     alignment: Alignment.topCenter,
   ),
+
+  /// Top-right corner with downward stacking.
+  ///
+  /// Toasts appear in the top-right area with new toasts stacking below existing ones.
+  /// Common choice for status updates and non-critical notifications.
   topRight(
     childrenAlignment: Alignment.bottomCenter,
     alignment: Alignment.topRight,
   ),
+
+  /// Bottom-left corner with upward stacking.
+  ///
+  /// Toasts appear in the bottom-left area with new toasts stacking above existing ones.
+  /// Useful for contextual actions and secondary notifications.
   bottomLeft(
     childrenAlignment: Alignment.topCenter,
     alignment: Alignment.bottomLeft,
   ),
+
+  /// Bottom-center with upward stacking.
+  ///
+  /// Toasts appear centered at the bottom with new toasts stacking above existing ones.
+  /// Popular for confirmation messages and user action feedback.
   bottomCenter(
     childrenAlignment: Alignment.topCenter,
     alignment: Alignment.bottomCenter,
   ),
+
+  /// Bottom-right corner with upward stacking.
+  ///
+  /// Toasts appear in the bottom-right area with new toasts stacking above existing ones.
+  /// Default location providing unobtrusive notification placement.
   bottomRight(
     childrenAlignment: Alignment.topCenter,
     alignment: Alignment.bottomRight,
   );
 
+  /// The alignment of the toast container within the screen.
+  ///
+  /// Type: `AlignmentGeometry`. Defines where the toast stack positions
+  /// itself relative to the screen boundaries and safe area constraints.
   final AlignmentGeometry alignment;
+
+  /// The alignment direction for stacking multiple toast notifications.
+  ///
+  /// Type: `AlignmentGeometry`. Defines the direction in which new toasts
+  /// are added to the stack relative to existing toast notifications.
   final AlignmentGeometry childrenAlignment;
 
+  /// Creates a [ToastLocation] with specified alignment properties.
+  ///
+  /// Parameters:
+  /// - [alignment] (AlignmentGeometry, required): Screen positioning for the toast stack
+  /// - [childrenAlignment] (AlignmentGeometry, required): Stacking direction for multiple toasts
   const ToastLocation({
     required this.alignment,
     required this.childrenAlignment,
   });
 }
 
+/// Expansion behavior modes for toast notification stacks.
+///
+/// ExpandMode controls when and how stacked toast notifications expand to
+/// show multiple entries simultaneously. Different modes provide various
+/// user interaction patterns for managing multiple notifications.
 enum ExpandMode {
+  /// Toast stack is always expanded, showing all notifications simultaneously.
+  ///
+  /// All stacked toasts remain visible and fully sized at all times.
+  /// Provides maximum information density but requires more screen space.
   alwaysExpanded,
+
+  /// Toast stack expands when mouse cursor hovers over the notification area.
+  ///
+  /// Default behavior that provides on-demand access to stacked notifications
+  /// through hover interaction. Collapses automatically after hover ends.
   expandOnHover,
+
+  /// Toast stack expands when user taps or clicks on the notification area.
+  ///
+  /// Provides touch-friendly interaction for mobile devices and touch screens.
+  /// Requires explicit user action to reveal stacked notifications.
   expandOnTap,
+
+  /// Toast expansion is completely disabled.
+  ///
+  /// Only the topmost toast is ever visible, with background toasts remaining
+  /// collapsed. Provides minimal screen footprint at the cost of stack visibility.
   disabled,
 }
 
+/// A sophisticated layer widget that provides toast notification infrastructure.
+///
+/// ToastLayer serves as the foundation for the toast notification system,
+/// managing the display, positioning, animation, and lifecycle of multiple
+/// toast notifications. It wraps application content and provides the necessary
+/// context for [showToast] functions to work properly.
+///
+/// The layer handles complex features including toast stacking, expansion modes,
+/// hover/tap interactions, automatic dismissal timing, gesture-based dismissal,
+/// and smooth animations between states. It ensures proper theme integration
+/// and responsive behavior across different screen sizes.
+///
+/// Key features:
+/// - Multi-location toast support with six standard positions
+/// - Intelligent toast stacking with configurable maximum entries
+/// - Interactive expansion modes (hover, tap, always, disabled)
+/// - Gesture-based dismissal with swipe recognition
+/// - Automatic timeout handling with pause on hover
+/// - Smooth animations for entry, exit, and state transitions
+/// - Safe area and padding handling for various screen layouts
+/// - Theme integration with comprehensive customization options
+///
+/// This is typically placed high in the widget tree, often wrapping the main
+/// application content or individual screens that need toast functionality.
+///
+/// Example:
+/// ```dart
+/// ToastLayer(
+///   maxStackedEntries: 4,
+///   expandMode: ExpandMode.expandOnHover,
+///   child: MyAppContent(),
+/// );
+/// ```
 class ToastLayer extends StatefulWidget {
+  /// The child widget to wrap with toast functionality.
+  ///
+  /// Type: `Widget`, required. The main application content that will have
+  /// toast notification capabilities available through the widget tree.
   final Widget child;
+
+  /// Maximum number of toast notifications to display simultaneously.
+  ///
+  /// Type: `int`, default: `3`. Controls how many toasts are visible at once,
+  /// with older toasts being hidden or collapsed when limit is exceeded.
   final int maxStackedEntries;
+
+  /// Padding around toast notification areas.
+  ///
+  /// Type: `EdgeInsetsGeometry?`. If null, uses default padding that respects
+  /// safe area constraints. Applied to toast positioning within screen boundaries.
   final EdgeInsetsGeometry? padding;
+
+  /// Behavior for toast stack expansion interactions.
+  ///
+  /// Type: `ExpandMode`, default: [ExpandMode.expandOnHover]. Controls when
+  /// stacked toasts expand to show multiple entries simultaneously.
   final ExpandMode expandMode;
+
+  /// Position offset for collapsed toast entries.
+  ///
+  /// Type: `Offset?`. If null, uses default offset that creates subtle
+  /// stacking effect. Applied to toasts behind the active notification.
   final Offset? collapsedOffset;
+
+  /// Scale factor for collapsed toast entries.
+  ///
+  /// Type: `double`, default: `0.9`. Controls size reduction of background
+  /// toasts to create depth perception in the stack visualization.
   final double collapsedScale;
+
+  /// Animation curve for expansion state transitions.
+  ///
+  /// Type: `Curve`, default: [Curves.easeOutCubic]. Applied when transitioning
+  /// between collapsed and expanded stack states.
   final Curve expandingCurve;
+
+  /// Duration for expansion animation transitions.
+  ///
+  /// Type: `Duration`, default: `500ms`. Controls timing of stack expansion
+  /// and collapse animations for smooth user experience.
   final Duration expandingDuration;
+
+  /// Opacity level for collapsed toast entries.
+  ///
+  /// Type: `double`, default: `1.0`. Controls visibility of background toasts
+  /// in the stack, with 1.0 being fully opaque and 0.0 being transparent.
   final double collapsedOpacity;
+
+  /// Initial opacity for toast entry animations.
+  ///
+  /// Type: `double`, default: `0.0`. Starting opacity value for toast
+  /// notifications during their entrance animation sequence.
   final double entryOpacity;
+
+  /// Spacing between toast entries in expanded mode.
+  ///
+  /// Type: `double`, default: `8.0`. Gap between individual toast notifications
+  /// when the stack is expanded to show multiple entries.
   final double spacing;
+
+  /// Size constraints for individual toast notifications.
+  ///
+  /// Type: `BoxConstraints?`. If null, uses responsive width based on screen
+  /// size and theme scaling. Defines maximum and minimum toast dimensions.
   final BoxConstraints? toastConstraints;
 
+  /// Creates a [ToastLayer].
+  ///
+  /// The [child] parameter is required as the content to wrap with toast
+  /// functionality. All other parameters have sensible defaults but can be
+  /// customized to match specific design requirements.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Content to wrap with toast capabilities
+  /// - [maxStackedEntries] (int, default: 3): Maximum visible toast count
+  /// - [padding] (EdgeInsetsGeometry?, optional): Toast area padding override
+  /// - [expandMode] (ExpandMode, default: expandOnHover): Stack expansion behavior
+  /// - [collapsedOffset] (Offset?, optional): Background toast positioning offset
+  /// - [collapsedScale] (double, default: 0.9): Background toast size reduction
+  /// - [expandingCurve] (Curve, default: easeOutCubic): Expansion animation curve
+  /// - [expandingDuration] (Duration, default: 500ms): Expansion animation timing
+  /// - [collapsedOpacity] (double, default: 1.0): Background toast visibility
+  /// - [entryOpacity] (double, default: 0.0): Toast entrance starting opacity
+  /// - [spacing] (double, default: 8.0): Gap between expanded toast entries
+  /// - [toastConstraints] (BoxConstraints?, optional): Individual toast size limits
+  ///
+  /// Example:
+  /// ```dart
+  /// ToastLayer(
+  ///   maxStackedEntries: 5,
+  ///   expandMode: ExpandMode.expandOnTap,
+  ///   spacing: 12.0,
+  ///   child: MaterialApp(home: HomePage()),
+  /// );
+  /// ```
   const ToastLayer({
     super.key,
     required this.child,
@@ -424,8 +755,43 @@ class _ToastLayerState extends State<ToastLayer> {
   }
 }
 
+/// Abstract interface for controlling individual toast notification instances.
+///
+/// ToastOverlay provides methods for managing the lifecycle and state of
+/// individual toast notifications after they have been displayed. Instances
+/// are returned by [showToast] and passed to [ToastBuilder] functions.
+///
+/// The interface allows checking the current display state and programmatically
+/// dismissing toast notifications, enabling responsive user interactions and
+/// proper cleanup when needed.
 abstract class ToastOverlay {
+  /// Whether the toast notification is currently being displayed.
+  ///
+  /// Type: `bool`. Returns true if the toast is visible or in the process
+  /// of animating in/out, false if it has been dismissed or closed.
   bool get isShowing;
+
+  /// Programmatically dismisses the toast notification.
+  ///
+  /// Triggers the dismissal animation and removes the toast from the display
+  /// stack. This method can be called multiple times safely - subsequent
+  /// calls after dismissal will have no effect.
+  ///
+  /// Example:
+  /// ```dart
+  /// final toast = showToast(context: context, builder: (context, overlay) {
+  ///   return AlertCard(
+  ///     title: 'Auto-close',
+  ///     trailing: IconButton(
+  ///       icon: Icon(Icons.close),
+  ///       onPressed: overlay.close,
+  ///     ),
+  ///   );
+  /// });
+  /// 
+  /// // Close programmatically after delay
+  /// Timer(Duration(seconds: 2), toast.close);
+  /// ```
   void close();
 }
 

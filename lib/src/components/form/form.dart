@@ -7,41 +7,180 @@ import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 import '../../../shadcn_flutter.dart';
 
+/// Abstract base class for implementing form field validation logic.
+///
+/// Validators are responsible for checking the validity of form field values
+/// and returning appropriate validation results. They support both synchronous
+/// and asynchronous validation through the [FutureOr] return type.
+///
+/// Validators can be combined using logical operators:
+/// - `&` or `+`: Combines validators (all must pass)
+/// - `|`: Creates OR logic (at least one must pass)
+/// - `~` or unary `-`: Negates the validator result
+///
+/// The generic type [T] represents the type of value being validated.
+///
+/// Example:
+/// ```dart
+/// final validator = RequiredValidator<String>() & 
+///                   MinLengthValidator(3) & 
+///                   EmailValidator();
+/// ```
 abstract class Validator<T> {
+  /// Creates a [Validator].
   const Validator();
+  
+  /// Validates the given [value] and returns a validation result.
+  ///
+  /// This method performs the actual validation logic and should return
+  /// null if the value is valid, or a [ValidationResult] describing the
+  /// validation error if invalid.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): The build context for localization access
+  /// - [value] (T?): The value to validate (may be null)
+  /// - [lifecycle] (FormValidationMode): The current validation trigger mode
+  ///
+  /// Returns a [FutureOr<ValidationResult?>] that is null for valid values
+  /// or contains error information for invalid values.
   FutureOr<ValidationResult?> validate(
       BuildContext context, T? value, FormValidationMode lifecycle);
 
+  /// Combines this validator with another validator using AND logic.
+  ///
+  /// Both validators must pass for the combined validator to be valid.
+  /// If either validator fails, the combined validator fails.
+  ///
+  /// Parameters:
+  /// - [other] (Validator<T>): The validator to combine with this one
+  ///
+  /// Returns a new [CompositeValidator] that requires both validators to pass.
+  ///
+  /// Example:
+  /// ```dart
+  /// final combined = requiredValidator.combine(emailValidator);
+  /// ```
   Validator<T> combine(Validator<T> other) {
     return CompositeValidator([this, other]);
   }
 
+  /// Combines this validator with another using AND logic (alias for [combine]).
+  ///
+  /// This operator provides a convenient syntax for combining validators
+  /// where both must pass for validation to succeed.
+  ///
+  /// Example:
+  /// ```dart
+  /// final validator = RequiredValidator<String>() & EmailValidator();
+  /// ```
   Validator<T> operator &(Validator<T> other) {
     return combine(other);
   }
 
+  /// Combines this validator with another using OR logic.
+  ///
+  /// At least one validator must pass for the combined validator to be valid.
+  /// Only if both validators fail will the combined validator fail.
+  ///
+  /// Parameters:
+  /// - [other] (Validator<T>): The validator to combine with this one using OR logic
+  ///
+  /// Returns a new [OrValidator] that requires at least one validator to pass.
+  ///
+  /// Example:
+  /// ```dart
+  /// final validator = emailValidator | phoneValidator;
+  /// ```
   Validator<T> operator |(Validator<T> other) {
     return OrValidator([this, other]);
   }
 
+  /// Negates this validator's result.
+  ///
+  /// Creates a validator that passes when this validator fails, and
+  /// fails when this validator passes. Useful for creating inverse
+  /// validation logic.
+  ///
+  /// Returns a [NotValidator] that inverts this validator's result.
+  ///
+  /// Example:
+  /// ```dart
+  /// final notEmpty = ~EmptyValidator<String>();
+  /// ```
   Validator<T> operator ~() {
     return NotValidator(this);
   }
 
+  /// Negates this validator's result (alias for `~` operator).
+  ///
+  /// Provides an alternative syntax for creating negated validators.
+  ///
+  /// Example:
+  /// ```dart
+  /// final notEmpty = -EmptyValidator<String>();
+  /// ```
   Validator<T> operator -() {
     return NotValidator(this);
   }
 
+  /// Combines this validator with another using AND logic (alias for [combine]).
+  ///
+  /// Alternative syntax for combining validators where both must pass.
+  ///
+  /// Example:
+  /// ```dart
+  /// final validator = requiredValidator + lengthValidator;
+  /// ```
   Validator<T> operator +(Validator<T> other) {
     return combine(other);
   }
 
+  /// Determines if this validator should be re-run when the specified form key changes.
+  ///
+  /// This method is used for cross-field validation where one field's validity
+  /// depends on another field's value. Return true if this validator should
+  /// be re-executed when the specified form field changes.
+  ///
+  /// Parameters:
+  /// - [source] (FormKey): The form key that changed
+  ///
+  /// Returns true if validation should be re-run, false otherwise.
+  ///
+  /// Example:
+  /// ```dart
+  /// @override
+  /// bool shouldRevalidate(FormKey source) {
+  ///   return source == passwordFieldKey; // Re-validate when password changes
+  /// }
+  /// ```
   bool shouldRevalidate(FormKey<dynamic> source) => false;
 }
 
+/// Defines when form field validation should occur during the component lifecycle.
+///
+/// This enumeration controls the timing of validation execution, allowing
+/// fine-grained control over when validation logic runs. Different validation
+/// modes can be used to optimize user experience and performance.
 enum FormValidationMode {
+  /// Validation occurs when the field is first created or initialized.
+  ///
+  /// This mode runs validation immediately when a form field is created,
+  /// which can be useful for fields with default values that need immediate
+  /// validation feedback.
   initial,
+  
+  /// Validation occurs when the field value changes.
+  ///
+  /// This is the most common validation mode, providing immediate feedback
+  /// as users interact with form fields. Validation runs after each value
+  /// change event.
   changed,
+  
+  /// Validation occurs when the form is submitted.
+  ///
+  /// This mode defers validation until form submission, reducing interruptions
+  /// during user input. Useful for complex validations that should only run
+  /// when the user attempts to submit the form.
   submitted,
 }
 
@@ -76,13 +215,71 @@ class ValidationMode<T> extends Validator<T> {
   int get hashCode => Object.hash(validator, mode);
 }
 
+/// A function type that evaluates a condition on a value and returns a boolean result.
+///
+/// This type alias represents a predicate function that can be either synchronous
+/// or asynchronous, accepting a nullable value of type [T] and returning either
+/// a boolean or a [Future<bool>]. Used primarily for conditional validation logic.
+///
+/// The generic type [T] represents the type of value being evaluated.
+///
+/// Example:
+/// ```dart
+/// FuturePredicate<String> isValidEmail = (value) async {
+///   if (value == null) return false;
+///   return await validateEmailOnServer(value);
+/// };
+/// ```
 typedef FuturePredicate<T> = FutureOr<bool> Function(T? value);
 
-/// This widget prevents form components from submitting its value to the form controller
+/// A widget that prevents form components from submitting their values to form controllers.
+///
+/// This widget creates a boundary that blocks form-related data propagation,
+/// effectively isolating child components from parent form controllers. When
+/// [ignoring] is true, any form components within the child widget tree will
+/// not participate in form validation or data collection.
+///
+/// This is useful for creating UI components that look like form fields but
+/// should not be included in form submission or validation, such as search
+/// fields, filters, or decorative input elements.
+///
+/// Example:
+/// ```dart
+/// Form(
+///   child: Column(
+///     children: [
+///       TextInput(label: 'Name'), // Participates in form
+///       IgnoreForm(
+///         child: TextInput(label: 'Search'), // Ignored by form
+///       ),
+///     ],
+///   ),
+/// );
+/// ```
 class IgnoreForm<T> extends StatelessWidget {
+  /// Whether to ignore form participation for child components.
+  ///
+  /// When true, creates a boundary that prevents child form components
+  /// from registering with parent form controllers. When false, child
+  /// components behave normally and participate in form operations.
   final bool ignoring;
+  
+  /// The widget subtree to optionally isolate from form participation.
   final Widget child;
 
+  /// Creates an [IgnoreForm] widget.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): The widget subtree to wrap
+  /// - [ignoring] (bool, default: true): Whether to block form participation
+  ///
+  /// Example:
+  /// ```dart
+  /// IgnoreForm(
+  ///   ignoring: shouldIgnore,
+  ///   child: MyFormField(),
+  /// );
+  /// ```
   const IgnoreForm({super.key, this.ignoring = true, required this.child});
 
   @override
@@ -1251,18 +1448,119 @@ extension FormMapValuesExtension on FormMapValues {
   }
 }
 
+/// A widget that provides form management capabilities for collecting and validating user input.
+///
+/// The Form widget creates a container that manages multiple form fields, providing
+/// centralized validation, data collection, and submission handling. It maintains
+/// form state through a [FormController] and coordinates validation across all
+/// participating form fields.
+///
+/// Form components within the widget tree automatically register themselves with
+/// the nearest Form ancestor, allowing centralized management of field values,
+/// validation states, and error handling. The Form provides validation lifecycle
+/// management and supports both synchronous and asynchronous validation.
+///
+/// Example:
+/// ```dart
+/// final controller = FormController();
+/// 
+/// Form(
+///   controller: controller,
+///   onSubmit: (values) async {
+///     print('Form submitted with values: $values');
+///   },
+///   child: Column(
+///     children: [
+///       TextInput(
+///         key: FormKey<String>('name'),
+///         label: 'Name',
+///         validator: RequiredValidator(),
+///       ),
+///       Button(
+///         onPressed: () => controller.submit(),
+///         child: Text('Submit'),
+///       ),
+///     ],
+///   ),
+/// );
+/// ```
 class Form extends StatefulWidget {
+  /// Retrieves the nearest [FormController] from the widget tree, if any.
+  ///
+  /// Returns the [FormController] instance from the nearest Form ancestor,
+  /// or null if no Form is found in the widget tree. This method is safe
+  /// to call even when no Form is present.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): The build context to search from
+  ///
+  /// Returns the [FormController] if found, null otherwise.
   static FormController? maybeOf(BuildContext context) {
     return Data.maybeOf<FormController>(context);
   }
 
+  /// Retrieves the nearest [FormController] from the widget tree.
+  ///
+  /// Returns the [FormController] instance from the nearest Form ancestor.
+  /// Throws an assertion error if no Form is found in the widget tree.
+  /// Use [maybeOf] if the Form might not be present.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): The build context to search from
+  ///
+  /// Returns the [FormController] from the nearest Form ancestor.
+  ///
+  /// Throws [AssertionError] if no Form is found in the widget tree.
   static FormController of(BuildContext context) {
     return Data.of<FormController>(context);
   }
 
+  /// Optional controller for programmatic form management.
+  ///
+  /// When provided, this controller manages form state externally and allows
+  /// programmatic access to form values, validation states, and submission.
+  /// If null, the Form creates and manages its own internal controller.
   final FormController? controller;
+  
+  /// The widget subtree containing form fields.
+  ///
+  /// This child widget should contain the form fields and other UI elements
+  /// that participate in the form. Form fields within this subtree automatically
+  /// register with this Form instance.
   final Widget child;
+  
+  /// Callback invoked when the form is submitted.
+  ///
+  /// This callback receives a map of form values keyed by their [FormKey]
+  /// identifiers. It is called when [FormController.submit] is invoked and
+  /// all form validations pass successfully.
+  ///
+  /// The callback can return a Future for asynchronous submission processing.
   final FormSubmitCallback? onSubmit;
+
+  /// Creates a [Form] widget.
+  ///
+  /// The [child] parameter is required and should contain the form fields
+  /// and UI elements that participate in the form. The [controller] and
+  /// [onSubmit] parameters are optional but commonly used for form management.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): The widget subtree containing form fields
+  /// - [onSubmit] (FormSubmitCallback?, optional): Callback for form submission
+  /// - [controller] (FormController?, optional): External form state controller
+  ///
+  /// Example:
+  /// ```dart
+  /// Form(
+  ///   onSubmit: (values) => print('Submitted: $values'),
+  ///   child: Column(
+  ///     children: [
+  ///       TextInput(key: FormKey('email'), label: 'Email'),
+  ///       Button(child: Text('Submit')),
+  ///     ],
+  ///   ),
+  /// );
+  /// ```
   const Form({super.key, required this.child, this.onSubmit, this.controller});
 
   @override
@@ -1276,12 +1574,48 @@ class _ValidatorResultStash {
   const _ValidatorResultStash(this.result, this.state);
 }
 
+/// Controller for managing form state, validation, and submission.
+///
+/// The FormController coordinates all form field interactions, maintaining
+/// a centralized registry of field values and validation states. It provides
+/// programmatic access to form data collection, validation triggering, and
+/// submission handling.
+///
+/// The controller automatically manages the lifecycle of form fields as they
+/// register and unregister, tracking their values and validation results.
+/// It supports both synchronous and asynchronous validation, cross-field
+/// validation dependencies, and comprehensive error state management.
+///
+/// Example:
+/// ```dart
+/// final controller = FormController();
+/// 
+/// // Listen to form state changes
+/// controller.addListener(() {
+///   print('Form validity: ${controller.isValid}');
+///   print('Form values: ${controller.values}');
+/// });
+/// 
+/// // Submit the form
+/// await controller.submit();
+/// 
+/// // Access specific field values
+/// final emailValue = controller.getValue(emailKey);
+/// ```
 class FormController extends ChangeNotifier {
   final Map<FormKey, FormValueState> _attachedInputs = {};
   final Map<FormKey, _ValidatorResultStash> _validity = {};
 
   bool _disposed = false;
 
+  /// A map of all current form field values keyed by their [FormKey].
+  ///
+  /// This getter provides access to the current state of all registered form
+  /// fields. The map is rebuilt on each access to reflect the latest values
+  /// from all active form fields.
+  ///
+  /// Returns a Map<FormKey, Object?> where each key corresponds to a form field
+  /// and each value is the current value of that field.
   Map<FormKey, Object?> get values {
     return {
       for (var entry in _attachedInputs.entries) entry.key: entry.value.value
@@ -1294,10 +1628,25 @@ class FormController extends ChangeNotifier {
     super.dispose();
   }
 
+  /// A map of all current validation results keyed by their [FormKey].
+  ///
+  /// This getter provides access to the validation state of all registered
+  /// form fields. Values can be either synchronous ValidationResult objects
+  /// or Future<ValidationResult?> for asynchronous validation.
+  ///
+  /// Returns a Map<FormKey, FutureOr<ValidationResult?>> representing the
+  /// current validation state of all form fields.
   Map<FormKey, FutureOr<ValidationResult?>> get validities {
     return {for (var entry in _validity.entries) entry.key: entry.value.result};
   }
 
+  /// A map of all current validation errors keyed by their [FormKey].
+  ///
+  /// This getter filters the validation results to only include fields with
+  /// validation errors. For asynchronous validations that are still pending,
+  /// a [WaitingResult] is included to indicate the validation is in progress.
+  ///
+  /// Returns a Map<FormKey, ValidationResult> containing only fields with errors.
   Map<FormKey, ValidationResult> get errors {
     final errors = <FormKey, ValidationResult>{};
     for (var entry in _validity.entries) {
@@ -1312,10 +1661,30 @@ class FormController extends ChangeNotifier {
     return errors;
   }
 
+  /// Retrieves the validation result for a specific form field.
+  ///
+  /// This method returns the current validation state for the specified form key,
+  /// which can be either a synchronous ValidationResult or a Future for asynchronous
+  /// validation. Returns null if no validation result exists for the key.
+  ///
+  /// Parameters:
+  /// - [key] (FormKey): The form key to get validation result for
+  ///
+  /// Returns the validation result or null if none exists.
   FutureOr<ValidationResult?>? getError(FormKey key) {
     return _validity[key]?.result;
   }
 
+  /// Retrieves the synchronous validation result for a specific form field.
+  ///
+  /// This method returns the current validation state for the specified form key,
+  /// converting asynchronous validations to [WaitingResult] objects. This provides
+  /// a synchronous interface for accessing validation states.
+  ///
+  /// Parameters:
+  /// - [key] (FormKey): The form key to get validation result for
+  ///
+  /// Returns the synchronous validation result or null if valid.
   ValidationResult? getSyncError(FormKey key) {
     var entry = _validity[key];
     var result = entry?.result;

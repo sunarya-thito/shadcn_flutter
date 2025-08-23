@@ -20,6 +20,12 @@ import '../../../shadcn_flutter.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/cupertino.dart' as cupertino;
 
+/// Theme data for customizing [TextField] appearance.
+///
+/// This class defines the visual properties that can be applied to
+/// [TextField] widgets, including border styling, fill state, padding,
+/// and border radius. These properties can be set at the theme level
+/// to provide consistent styling across the application.
 class TextFieldTheme {
   final BorderRadiusGeometry? borderRadius;
   final bool? filled;
@@ -570,6 +576,50 @@ mixin TextInput on Widget {
   bool get skipInputFeatureFocusTraversal;
 }
 
+/// A highly customizable single-line text input widget with extensive feature support.
+///
+/// [TextField] provides a comprehensive text editing experience with support for
+/// a wide range of input types, validation, formatting, and interactive features.
+/// It serves as the foundation for most text input scenarios in the shadcn_flutter
+/// design system, offering both basic text input and advanced capabilities through
+/// its feature system.
+///
+/// Key features:
+/// - Comprehensive text input with platform-native behavior
+/// - Extensive customization through [InputFeature] system
+/// - Built-in support for validation and formatting
+/// - Configurable appearance with theming support
+/// - Context menu customization and clipboard operations
+/// - Keyboard shortcuts and accessibility support
+/// - Form integration with automatic value management
+///
+/// The widget supports various input modes:
+/// - Single-line text input (default)
+/// - Obscured text for passwords
+/// - Formatted input with custom formatters
+/// - Auto-completion and suggestions
+/// - Numeric input with spinners
+///
+/// Input features can be added to enhance functionality:
+/// - Clear button for easy text clearing
+/// - Password visibility toggle
+/// - Copy/paste operations
+/// - Auto-complete suggestions
+/// - Validation indicators
+/// - Custom leading/trailing widgets
+///
+/// Example:
+/// ```dart
+/// TextField(
+///   hintText: 'Enter your email',
+///   keyboardType: TextInputType.emailAddress,
+///   features: [
+///     InputClearFeature(),
+///     InputRevalidateFeature(),
+///   ],
+///   onChanged: (text) => _handleTextChange(text),
+/// );
+/// ```
 class TextField extends StatefulWidget with TextInput {
   static EditableTextContextMenuBuilder nativeContextMenuBuilder() {
     return (context, editableTextState) {
