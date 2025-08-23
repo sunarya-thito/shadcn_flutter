@@ -40,9 +40,9 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 
 ## 📝 Form Components
 
-- [ ] AutoComplete
-- [ ] Checkbox
-- [ ] Chip Input
+- [x] AutoComplete
+- [x] Checkbox
+- [x] Chip Input
 - [ ] Color Picker
 - [ ] ControlledCheckbox
 - [ ] ControlledChipInput
