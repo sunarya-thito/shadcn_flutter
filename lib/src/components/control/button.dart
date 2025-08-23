@@ -1431,34 +1431,67 @@ class ButtonDensity {
   static const ButtonDensity compact = ButtonDensity(_densityCompact);
 }
 
+/// Returns the padding unchanged for normal density buttons.
+///
+/// This is the default density modifier that preserves the original padding
+/// values without any modification.
 EdgeInsets _densityNormal(EdgeInsets padding) {
   return padding;
 }
 
+/// Reduces button padding to 50% of the original size for dense layouts.
+///
+/// This density modifier creates more compact buttons suitable for tighter
+/// UI layouts where space is limited.
 EdgeInsets _densityDense(EdgeInsets padding) {
   return padding * 0.5;
 }
 
+/// Eliminates all padding for extremely compact button layouts.
+///
+/// This density modifier removes all padding, creating the most space-efficient
+/// button possible. Typically used in very constrained layouts or when custom
+/// spacing is managed externally.
 EdgeInsets _densityCompact(EdgeInsets padding) {
   return EdgeInsets.zero;
 }
 
+/// Creates square padding suitable for icon-only buttons.
+///
+/// This density modifier converts rectangular padding to square padding by using
+/// the minimum value from all sides, ensuring icons are centered properly in
+/// square button layouts.
 EdgeInsets _densityIcon(EdgeInsets padding) {
   return EdgeInsets.all(
       min(padding.top, min(padding.bottom, min(padding.left, padding.right))));
 }
 
+/// Creates comfortable square padding for larger icon-only buttons.
+///
+/// This density modifier converts rectangular padding to square padding by using
+/// the maximum value from all sides, providing more generous spacing around icons
+/// for improved touch targets and visual breathing room.
 EdgeInsets _densityIconComfortable(EdgeInsets padding) {
   return EdgeInsets.all(
       max(padding.top, max(padding.bottom, max(padding.left, padding.right))));
 }
 
+/// Creates compact square padding for dense icon-only buttons.
+///
+/// This density modifier converts rectangular padding to square padding by using
+/// the minimum value from all sides and further reduces it by 50%, creating very
+/// compact icon buttons suitable for toolbars or tight UI spaces.
 EdgeInsets _densityIconDense(EdgeInsets padding) {
   return EdgeInsets.all(
       min(padding.top, min(padding.bottom, min(padding.left, padding.right))) *
           0.5);
 }
 
+/// Doubles the padding for comfortable button layouts with larger touch targets.
+///
+/// This density modifier increases all padding values by 200%, creating buttons
+/// with more generous spacing that are easier to tap and provide better visual
+/// hierarchy in spacious UI designs.
 EdgeInsets _densityComfortable(EdgeInsets padding) {
   return padding * 2;
 }
@@ -1475,24 +1508,104 @@ enum ButtonShape {
   circle,
 }
 
+/// A function that returns a widget state-dependent value for button styling.
+///
+/// This typedef defines a function signature that takes the current [BuildContext]
+/// and a set of [WidgetState] values (such as hovered, pressed, focused, disabled)
+/// and returns a value of type [T] appropriate for that state combination.
+///
+/// Used extensively in button theming to provide different styling properties
+/// based on the button's current interaction state.
+///
+/// Example:
+/// ```dart
+/// ButtonStateProperty<Color> colorProperty = (context, states) {
+///   if (states.contains(WidgetState.pressed)) {
+///     return Theme.of(context).colorScheme.primary;
+///   } else if (states.contains(WidgetState.hovered)) {
+///     return Theme.of(context).colorScheme.primaryContainer;
+///   }
+///   return Theme.of(context).colorScheme.surface;
+/// };
+/// ```
 typedef ButtonStateProperty<T> = T Function(
     BuildContext context, Set<WidgetState> states);
 
+/// Abstract base class defining the styling interface for button components.
+///
+/// [AbstractButtonStyle] defines the contract that all button style implementations
+/// must follow, providing state-dependent properties for visual appearance,
+/// interaction behavior, and layout characteristics.
+///
+/// Each property is a [ButtonStateProperty] that can return different values
+/// based on the button's current widget states (pressed, hovered, focused, etc.).
+///
+/// Implementations include [ButtonVariance] classes for different visual styles
+/// and [ButtonStyle] for complete button styling configuration.
 abstract class AbstractButtonStyle {
+  /// The decoration (background, border, shadows) for different button states.
   ButtonStateProperty<Decoration> get decoration;
+  
+  /// The mouse cursor displayed when hovering over the button.
   ButtonStateProperty<MouseCursor> get mouseCursor;
+  
+  /// The internal padding between the button's border and content.
   ButtonStateProperty<EdgeInsetsGeometry> get padding;
+  
+  /// The text styling applied to text content within the button.
   ButtonStateProperty<TextStyle> get textStyle;
+  
+  /// The icon theme applied to icon content within the button.
   ButtonStateProperty<IconThemeData> get iconTheme;
+  
+  /// The external margin around the button.
   ButtonStateProperty<EdgeInsetsGeometry> get margin;
 }
 
+/// Complete button styling configuration combining visual variance, size, density and shape.
+///
+/// [ButtonStyle] is the primary way to customize button appearance in the shadcn_flutter
+/// framework. It combines a visual style variance with size, density, and shape modifiers
+/// to create comprehensive button styling.
+///
+/// The class provides convenient constructors for common button styles and allows for
+/// detailed customization through its properties.
+///
+/// Example:
+/// ```dart
+/// // Using predefined styles
+/// ButtonStyle.primary()
+/// ButtonStyle.secondary()
+/// ButtonStyle.outline()
+/// 
+/// // Custom configuration
+/// ButtonStyle(
+///   variance: ButtonVariance.primary,
+///   size: ButtonSize.large,
+///   density: ButtonDensity.comfortable,
+///   shape: ButtonShape.circle,
+/// )
+/// ```
 class ButtonStyle implements AbstractButtonStyle {
+  /// The visual style variance (primary, secondary, outline, ghost, etc.).
   final AbstractButtonStyle variance;
+  
+  /// The size configuration affecting padding and text scaling.
   final ButtonSize size;
+  
+  /// The density configuration affecting padding compression/expansion.
   final ButtonDensity density;
+  
+  /// The shape configuration (rectangle or circle).
   final ButtonShape shape;
 
+  /// Creates a [ButtonStyle] with custom configuration.
+  ///
+  /// Parameters:
+  /// - [variance] (AbstractButtonStyle, required): The visual style variant
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration  
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle({
     required this.variance,
     this.size = ButtonSize.normal,
@@ -1500,96 +1613,240 @@ class ButtonStyle implements AbstractButtonStyle {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates a primary button style with high-contrast styling for main actions.
+  ///
+  /// Primary buttons use the theme's primary color with high contrast text,
+  /// making them suitable for the most important actions in your interface.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.primary({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.primary;
 
+  /// Creates a secondary button style with muted styling for supporting actions.
+  ///
+  /// Secondary buttons use a subtle background color with medium contrast,
+  /// suitable for actions that are important but secondary to primary actions.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.secondary({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.secondary;
 
+  /// Creates an outline button style with border emphasis and transparent background.
+  ///
+  /// Outline buttons feature a prominent border with transparent background,
+  /// suitable for secondary actions that need clear boundaries.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.outline({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.outline;
 
+  /// Creates a ghost button style with minimal styling for subtle actions.
+  ///
+  /// Ghost buttons have no background by default and only show subtle hover
+  /// effects, perfect for actions that shouldn't draw attention from main content.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.ghost({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.ghost;
 
+  /// Creates a link button style that appears as clickable text.
+  ///
+  /// Link buttons have no background or border, styled to look like hyperlinks
+  /// with appropriate hover and focus states.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.link({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.link;
 
+  /// Creates a text button style for minimal text-only actions.
+  ///
+  /// Text buttons have minimal styling with just text color changes on interaction,
+  /// suitable for very subtle actions or inline controls.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.text({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.text;
 
+  /// Creates a destructive button style for dangerous actions.
+  ///
+  /// Destructive buttons use error/danger colors to indicate actions that
+  /// cannot be undone, such as deletion or permanent changes.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.destructive({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.destructive;
 
+  /// Creates a fixed button style with consistent positioning and no animations.
+  ///
+  /// Fixed buttons maintain their position and don't respond to layout changes
+  /// or animations, useful for overlay controls or persistent interface elements.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.fixed({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.fixed;
 
+  /// Creates a menu button style optimized for dropdown menu triggers.
+  ///
+  /// Menu buttons have styling appropriate for triggering dropdown menus,
+  /// with visual cues for expandable content.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.menu({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.menu;
 
+  /// Creates a menubar button style for horizontal menu bar items.
+  ///
+  /// Menubar buttons have minimal styling optimized for horizontal layout
+  /// in menu bars, with appropriate spacing and hover effects.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.menubar({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.menubar;
 
+  /// Creates a muted button style with subdued appearance.
+  ///
+  /// Muted buttons have very subtle styling with low contrast,
+  /// suitable for actions that should be barely noticeable until needed.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.muted({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.muted;
 
+  /// Creates a primary icon button style optimized for icon-only buttons.
+  ///
+  /// Combines primary styling with icon density for square buttons containing
+  /// only icons, with appropriate padding and touch targets.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: icon): Icon-specific density
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.primaryIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.primary;
 
+  /// Creates a secondary icon button style optimized for icon-only buttons.
+  ///
+  /// Combines secondary styling with icon density for square buttons containing
+  /// only icons, providing muted but clear interactive feedback.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: icon): Icon-specific density
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.secondaryIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.secondary;
 
+  /// Creates an outline icon button style optimized for icon-only buttons.
+  ///
+  /// Combines outline styling with icon density for square buttons containing
+  /// only icons, featuring a clear border with transparent background.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: icon): Icon-specific density
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.outlineIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.outline;
 
+  /// Creates a ghost icon button style optimized for icon-only buttons.
+  ///
+  /// Combines ghost styling with icon density for square buttons containing
+  /// only icons, featuring minimal visual weight with subtle hover effects.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: icon): Icon-specific density
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.ghostIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.ghost;
 
+  /// Creates a link icon button style optimized for icon-only buttons.
+  ///
+  /// Combines link styling with icon density for square buttons containing
+  /// only icons, appearing as clickable icon links with appropriate hover states.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: icon): Icon-specific density
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.linkIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
