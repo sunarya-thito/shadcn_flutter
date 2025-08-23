@@ -1,24 +1,108 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Closes the nearest overlay in the widget tree with an optional result value.
+///
+/// Searches up the widget tree for an overlay handler and closes it, optionally
+/// passing a result value that will be returned by the overlay's future.
+/// If no overlay handler is found, returns a completed future immediately.
+///
+/// This is a convenient way to programmatically close overlays from within
+/// their content widgets without needing direct access to the overlay controller.
+///
+/// Parameters:
+/// - [context] (BuildContext): The build context to search from.
+/// - [value] (T?, optional): Optional result value to return.
+///
+/// Returns:
+/// A `Future<void>` that completes when the overlay is closed.
+///
+/// Example:
+/// ```dart
+/// // Close overlay without result
+/// await closeOverlay(context);
+/// 
+/// // Close overlay with result
+/// await closeOverlay(context, 'user_selected_option');
+/// ```
 Future<void> closeOverlay<T>(BuildContext context, [T? value]) {
   return Data.maybeFind<OverlayHandlerStateMixin>(context)
           ?.closeWithResult(value) ??
       Future.value();
 }
 
+/// A mixin that provides overlay management capabilities to StatefulWidget states.
+///
+/// Implements common overlay functionality such as closing, positioning, and
+/// result handling. Widgets that show overlays (popovers, dialogs, sheets)
+/// should use this mixin to provide consistent overlay behavior.
+///
+/// The mixin defines abstract methods that implementing classes must override
+/// to provide specific overlay behavior, while also providing setters for
+/// common overlay properties like positioning and constraints.
+///
+/// Example:
+/// ```dart
+/// class MyOverlayState extends State<MyOverlay> 
+///     with OverlayHandlerStateMixin<MyOverlay> {
+///   @override
+///   Future<void> close([bool immediate = false]) {
+///     // Implement overlay closing logic
+///   }
+/// }
+/// ```
 mixin OverlayHandlerStateMixin<T extends StatefulWidget> on State<T> {
+  /// Closes the overlay with optional immediate mode.
+  ///
+  /// Parameters:
+  /// - [immediate] (bool, default: false): Whether to close immediately without animation.
+  ///
+  /// Returns:
+  /// A `Future<void>` that completes when the overlay is closed.
   Future<void> close([bool immediate = false]);
+
+  /// Schedules the overlay to close after the current frame.
+  ///
+  /// Useful for closing overlays in response to events that occur during
+  /// the build phase, ensuring the close happens at an appropriate time.
   void closeLater();
+
+  /// Closes the overlay and completes with the specified result value.
+  ///
+  /// Parameters:
+  /// - [value] (X?, optional): The result value to return.
+  ///
+  /// Returns:
+  /// A `Future<void>` that completes when the overlay is closed.
   Future<void> closeWithResult<X>([X? value]);
+
+  /// Sets the anchor context for overlay positioning.
   set anchorContext(BuildContext value) {}
+
+  /// Sets the alignment of the overlay relative to its anchor.
   set alignment(AlignmentGeometry value) {}
+
+  /// Sets the alignment of the anchor point.
   set anchorAlignment(AlignmentGeometry value) {}
+
+  /// Sets the width constraint for the overlay.
   set widthConstraint(PopoverConstraint value) {}
+
+  /// Sets the height constraint for the overlay.
   set heightConstraint(PopoverConstraint value) {}
+
+  /// Sets the margin around the overlay.
   set margin(EdgeInsets value) {}
+
+  /// Sets whether the overlay should follow its anchor when it moves.
   set follow(bool value) {}
+
+  /// Sets the offset from the calculated position.
   set offset(Offset? value) {}
+
+  /// Sets whether the overlay can invert horizontally if it would go off-screen.
   set allowInvertHorizontal(bool value) {}
+
+  /// Sets whether the overlay can invert vertically if it would go off-screen.
   set allowInvertVertical(bool value) {}
 }
 
