@@ -1,23 +1,73 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/hidden.dart';
 
+/// Enumeration defining alignment options for navigation bar items.
+///
+/// This enum provides various alignment strategies for positioning navigation
+/// items within the available space, corresponding to Flutter's MainAxisAlignment
+/// options but specifically tailored for navigation contexts.
 enum NavigationBarAlignment {
+  /// Align items to the start of the navigation bar.
   start(MainAxisAlignment.start),
+  
+  /// Center items within the navigation bar.
   center(MainAxisAlignment.center),
+  
+  /// Align items to the end of the navigation bar.
   end(MainAxisAlignment.end),
+  
+  /// Distribute items with space between them.
   spaceBetween(MainAxisAlignment.spaceBetween),
+  
+  /// Distribute items with space around them.
   spaceAround(MainAxisAlignment.spaceAround),
+  
+  /// Distribute items with equal space between and around them.
   spaceEvenly(MainAxisAlignment.spaceEvenly);
 
+  /// The corresponding MainAxisAlignment value.
   final MainAxisAlignment mainAxisAlignment;
 
+  /// Creates a NavigationBarAlignment with the associated MainAxisAlignment.
   const NavigationBarAlignment(this.mainAxisAlignment);
 }
 
-enum NavigationRailAlignment { start, center, end }
+/// Enumeration defining alignment options for navigation rail items.
+///
+/// This enum provides alignment strategies specifically for navigation rails,
+/// which are typically vertical navigation components.
+enum NavigationRailAlignment { 
+  /// Align items to the start (top) of the rail.
+  start, 
+  
+  /// Center items within the rail.
+  center, 
+  
+  /// Align items to the end (bottom) of the rail.
+  end 
+}
 
-enum NavigationContainerType { rail, bar, sidebar }
+/// Enumeration defining the type of navigation container.
+///
+/// This enum identifies the different navigation layout modes available,
+/// each with distinct visual presentations and interaction patterns.
+enum NavigationContainerType { 
+  /// Vertical rail navigation, typically positioned at the side.
+  rail, 
+  
+  /// Horizontal bar navigation, typically positioned at the top or bottom.
+  bar, 
+  
+  /// Expandable sidebar navigation with more space for content.
+  sidebar 
+}
 
+/// Theme data for customizing [NavigationBar] widget appearance.
+///
+/// This class defines the visual and behavioral properties that can be applied to
+/// [NavigationBar] widgets, including background colors, alignment, spacing,
+/// label presentation, and padding. These properties can be set at the theme level
+/// to provide consistent styling across the application.
 class NavigationBarTheme {
   final Color? backgroundColor;
   final NavigationBarAlignment? alignment;
@@ -95,6 +145,66 @@ abstract class NavigationBarItem extends Widget {
   bool get selectable;
 }
 
+/// A flexible navigation container widget for organizing navigation items.
+///
+/// [NavigationBar] provides a comprehensive navigation solution that can be configured
+/// for various layouts including horizontal bars, vertical rails, and expandable sidebars.
+/// It manages navigation item presentation, selection states, and provides extensive
+/// customization options for different navigation patterns.
+///
+/// Key features:
+/// - Flexible layout orientation (horizontal/vertical)
+/// - Multiple alignment strategies for item positioning
+/// - Configurable label presentation and positioning
+/// - Selection state management with callbacks
+/// - Surface effects for glassmorphism styling
+/// - Responsive behavior with expansion options
+/// - Theme integration for consistent styling
+/// - Support for gaps, dividers, and custom widgets
+///
+/// Navigation layout modes:
+/// - Bar mode: Horizontal layout for top/bottom navigation
+/// - Rail mode: Vertical compact layout for side navigation
+/// - Sidebar mode: Expanded vertical layout with more content space
+///
+/// Item organization features:
+/// - Automatic selection state management
+/// - Customizable spacing between items
+/// - Support for navigation gaps and dividers
+/// - Flexible item alignment options
+/// - Label display controls (always, never, selected)
+///
+/// The widget supports various navigation patterns:
+/// - Tab-style navigation with selection highlighting
+/// - Menu-style navigation with hover states
+/// - Hierarchical navigation with grouping
+/// - Responsive navigation that adapts to screen size
+///
+/// Example:
+/// ```dart
+/// NavigationBar(
+///   index: selectedIndex,
+///   onSelected: (index) => setState(() => selectedIndex = index),
+///   children: [
+///     NavigationItem(
+///       icon: Icon(Icons.home),
+///       label: Text('Home'),
+///       onPressed: () => _navigateToHome(),
+///     ),
+///     NavigationItem(
+///       icon: Icon(Icons.search),
+///       label: Text('Search'),
+///       onPressed: () => _navigateToSearch(),
+///     ),
+///     NavigationDivider(),
+///     NavigationItem(
+///       icon: Icon(Icons.settings),
+///       label: Text('Settings'),
+///       onPressed: () => _navigateToSettings(),
+///     ),
+///   ],
+/// );
+/// ```
 class NavigationBar extends StatefulWidget {
   final Color? backgroundColor;
   final List<NavigationBarItem> children;

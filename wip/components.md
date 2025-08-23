@@ -101,15 +101,15 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [ ] Dot Indicator
 - [ ] Expandable Sidebar
 - [ ] Menubar
-- [ ] Navigation Bar
+- [x] Navigation Bar
 - [ ] Navigation Menu
 - [ ] Navigation Rail
 - [ ] Navigation Sidebar
-- [ ] Pagination
+- [x] Pagination
 - [ ] Switcher *(Experimental)*
 - [ ] Tab List
 - [ ] Tab Pane
-- [ ] Tabs
+- [x] Tabs
 - [ ] Tree
 
 ## 🪟 Overlay Components
