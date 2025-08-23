@@ -121,13 +121,13 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [x] Sheet
 - [x] Swiper *(New Feature)*
 - [x] Tooltip
-- [ ] Window *(Experimental)*
+- [x] Window *(Experimental)*
 
 ## 🔧 Utility Components
 
 - [x] Badge
 - [x] Button Group
-- [ ] Calendar
+- [x] Calendar
 - [ ] CardButton
 - [x] Chip
 - [x] Command
@@ -138,10 +138,10 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [ ] IgnoreForm
 - [ ] Image Tools *(Work in Progress)*
 - [ ] Keyboard Display
-- [ ] Overflow Marquee
-- [ ] Refresh Trigger
+- [x] Overflow Marquee
+- [x] Refresh Trigger
 - [ ] StatedWidget
-- [ ] SubFocus
+- [x] SubFocus
 - [ ] WidgetStateProvider
 
 ---

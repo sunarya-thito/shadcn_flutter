@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Theme configuration for calendar widgets.
+/// 
+/// Provides styling options for calendar components, including arrow icon colors
+/// for navigation buttons and other visual elements.
 class CalendarTheme {
   /// Color of navigation arrow icons.
   final Color? arrowIconColor;
@@ -24,19 +27,71 @@ class CalendarTheme {
   int get hashCode => arrowIconColor.hashCode;
 }
 
+/// Defines the different view types available in calendar components.
+/// 
+/// Specifies what granularity of time selection is displayed:
+/// - [date]: Shows individual days in a month grid
+/// - [month]: Shows months in a year grid  
+/// - [year]: Shows years in a decade grid
 enum CalendarViewType {
   date,
   month,
   year,
 }
 
+/// Represents the interactive state of a date in the calendar.
+/// 
+/// Controls whether a specific date can be selected or interacted with:
+/// - [disabled]: Date cannot be selected or clicked
+/// - [enabled]: Date is fully interactive and selectable
 enum DateState {
   disabled,
   enabled,
 }
 
+/// Callback function type for determining the state of calendar dates.
+/// 
+/// Takes a [DateTime] and returns a [DateState] to control whether
+/// that date should be enabled or disabled for user interaction.
 typedef DateStateBuilder = DateState Function(DateTime date);
 
+/// Selection modes available for calendar components.
+///
+/// Determines how users can select dates in calendar widgets:
+/// - [none]: No date selection allowed (display only)
+/// - [single]: Only one date can be selected at a time
+/// - [range]: Two dates can be selected to form a date range
+/// - [multi]: Multiple individual dates can be selected
+enum CalendarSelectionMode {
+  none,
+  single,
+  range,
+  multi,
+}
+
+/// A date picker dialog that provides comprehensive date selection capabilities.
+///
+/// Displays a modal dialog containing a calendar interface with support for
+/// different view types (date, month, year), selection modes (single, range, multi),
+/// and customizable date states. Includes navigation controls and responsive layouts.
+///
+/// Features:
+/// - Multiple view types: date grid, month grid, year grid
+/// - Various selection modes: single date, date range, multiple dates
+/// - Navigation arrows with keyboard support
+/// - Customizable date state validation
+/// - Dual-calendar layout for range selection
+/// - Theme integration and localization support
+///
+/// Example:
+/// ```dart
+/// DatePickerDialog(
+///   initialViewType: CalendarViewType.date,
+///   selectionMode: CalendarSelectionMode.single,
+///   initialValue: CalendarValue.single(DateTime.now()),
+///   onChanged: (value) => print('Selected: $value'),
+/// )
+/// ```
 class DatePickerDialog extends StatefulWidget {
   final CalendarViewType initialViewType;
   final CalendarView? initialView;
@@ -46,6 +101,31 @@ class DatePickerDialog extends StatefulWidget {
   final ValueChanged<CalendarValue?>? onChanged;
   final DateStateBuilder? stateBuilder;
 
+  /// Creates a [DatePickerDialog] with comprehensive date selection options.
+  ///
+  /// Configures the dialog's initial state, selection behavior, and callbacks
+  /// for handling date changes and validation.
+  ///
+  /// Parameters:
+  /// - [initialViewType] (CalendarViewType, required): Starting view (date/month/year)
+  /// - [initialView] (CalendarView?, optional): Initial calendar view position
+  /// - [selectionMode] (CalendarSelectionMode, required): How dates can be selected
+  /// - [viewMode] (CalendarSelectionMode?, optional): Alternative view mode for display
+  /// - [initialValue] (CalendarValue?, optional): Pre-selected date(s)
+  /// - [onChanged] (ValueChanged<CalendarValue?>?, optional): Called when selection changes
+  /// - [stateBuilder] (DateStateBuilder?, optional): Custom date state validation
+  ///
+  /// Example:
+  /// ```dart
+  /// DatePickerDialog(
+  ///   initialViewType: CalendarViewType.date,
+  ///   selectionMode: CalendarSelectionMode.range,
+  ///   onChanged: (value) => handleDateChange(value),
+  ///   stateBuilder: (date) => date.isBefore(DateTime.now()) 
+  ///     ? DateState.disabled 
+  ///     : DateState.enabled,
+  /// )
+  /// ```
   const DatePickerDialog({
     super.key,
     required this.initialViewType,
@@ -472,6 +552,31 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
   }
 }
 
+/// Abstract base class representing calendar selection values.
+///
+/// Provides a unified interface for different types of calendar selections including
+/// single dates, date ranges, and multiple date collections. Handles date lookup
+/// operations and conversion between different selection types.
+///
+/// Subclasses include:
+/// - [SingleCalendarValue]: Represents a single selected date
+/// - [RangeCalendarValue]: Represents a date range with start and end
+/// - [MultiCalendarValue]: Represents multiple individual selected dates
+///
+/// The class provides factory constructors for easy creation and conversion
+/// methods to transform between different selection types as needed.
+///
+/// Example:
+/// ```dart
+/// // Create different value types
+/// final single = CalendarValue.single(DateTime.now());
+/// final range = CalendarValue.range(startDate, endDate);
+/// final multi = CalendarValue.multi([date1, date2, date3]);
+/// 
+/// // Check if a date is selected
+/// final lookup = value.lookup(2024, 3, 15);
+/// final isSelected = lookup != CalendarValueLookup.none;
+/// ```
 abstract class CalendarValue {
   CalendarValueLookup lookup(int year, [int? month = 1, int? day = 1]);
   const CalendarValue();
@@ -504,6 +609,18 @@ DateTime _convertNecessarry(DateTime from, int year, [int? month, int? date]) {
   return DateTime(from.year, from.month, from.day);
 }
 
+/// Calendar value representing a single selected date.
+///
+/// Encapsulates a single [DateTime] selection and provides lookup functionality
+/// to determine if a given date matches the selected date. Used primarily
+/// with [CalendarSelectionMode.single].
+///
+/// Example:
+/// ```dart
+/// final singleValue = SingleCalendarValue(DateTime(2024, 3, 15));
+/// final lookup = singleValue.lookup(2024, 3, 15);
+/// print(lookup == CalendarValueLookup.selected); // true
+/// ```
 class SingleCalendarValue extends CalendarValue {
   final DateTime date;
 
@@ -678,19 +795,85 @@ class MultiCalendarValue extends CalendarValue {
   }
 }
 
+/// Result type for calendar value lookup operations.
+///
+/// Indicates the relationship between a queried date and the current calendar selection:
+/// - [none]: Date is not part of any selection
+/// - [selected]: Date is directly selected (single mode or exact match)
+/// - [start]: Date is the start of a selected range
+/// - [end]: Date is the end of a selected range  
+/// - [inRange]: Date falls within a selected range but is not start/end
 enum CalendarValueLookup { none, selected, start, end, inRange }
 
+/// Represents a specific month and year view in calendar navigation.
+///
+/// Provides immutable representation of a calendar's current viewing position
+/// with navigation methods to move between months and years. Used to control
+/// which month/year combination is displayed in calendar grids.
+///
+/// Key Features:
+/// - **Navigation Methods**: [next], [previous], [nextYear], [previousYear]  
+/// - **Factory Constructors**: [now()], [fromDateTime()]
+/// - **Validation**: Ensures month values stay within 1-12 range
+/// - **Immutable**: All navigation returns new CalendarView instances
+///
+/// Example:
+/// ```dart
+/// // Create views for different dates
+/// final current = CalendarView.now();
+/// final specific = CalendarView(2024, 3); // March 2024
+/// final fromDate = CalendarView.fromDateTime(someDateTime);
+/// 
+/// // Navigate between months
+/// final nextMonth = current.next;
+/// final prevMonth = current.previous;
+/// final nextYear = current.nextYear;
+/// ```
 class CalendarView {
   final int year;
   final int month;
 
+  /// Creates a [CalendarView] for the specified year and month.
+  ///
+  /// Parameters:
+  /// - [year] (int): Four-digit year value
+  /// - [month] (int): Month number (1-12, where 1 = January)
+  ///
+  /// Throws [AssertionError] if month is not between 1 and 12.
+  ///
+  /// Example:
+  /// ```dart
+  /// final view = CalendarView(2024, 3); // March 2024
+  /// ```
   CalendarView(this.year, this.month) {
     assert(month >= 1 && month <= 12, 'Month must be between 1 and 12');
   }
+  /// Creates a [CalendarView] for the current month and year.
+  ///
+  /// Uses [DateTime.now()] to determine the current date and extracts
+  /// the year and month components.
+  ///
+  /// Example:
+  /// ```dart
+  /// final currentView = CalendarView.now();
+  /// ```
   factory CalendarView.now() {
     DateTime now = DateTime.now();
     return CalendarView(now.year, now.month);
   }
+  /// Creates a [CalendarView] from an existing [DateTime].
+  ///
+  /// Extracts the year and month components from the provided [DateTime]
+  /// and creates a corresponding calendar view.
+  ///
+  /// Parameters:
+  /// - [dateTime] (DateTime): Date to extract year and month from
+  ///
+  /// Example:
+  /// ```dart
+  /// final birthday = DateTime(1995, 7, 15);
+  /// final view = CalendarView.fromDateTime(birthday); // July 1995
+  /// ```
   factory CalendarView.fromDateTime(DateTime dateTime) {
     return CalendarView(dateTime.year, dateTime.month);
   }
@@ -760,6 +943,41 @@ enum CalendarSelectionMode {
   multi,
 }
 
+/// A highly customizable calendar widget supporting multiple selection modes.
+///
+/// Displays a grid-based calendar interface allowing users to view and select dates
+/// with comprehensive support for single selection, range selection, and multiple
+/// date selection. Includes built-in date validation, state management, and theme integration.
+///
+/// Key Features:
+/// - **Selection Modes**: Single date, date range, multiple dates, or display-only
+/// - **Date Validation**: Custom date state builder for enabling/disabling dates
+/// - **Interactive Grid**: Touch/click support with visual feedback
+/// - **Theme Integration**: Follows shadcn_flutter design system
+/// - **Accessibility**: Screen reader and keyboard navigation support
+/// - **Customizable Appearance**: Themed colors, spacing, and visual states
+///
+/// The calendar automatically handles date logic, leap years, month boundaries,
+/// and provides consistent visual feedback for different selection states.
+///
+/// Selection Behavior:
+/// - **Single**: Click to select one date, click again to deselect
+/// - **Range**: Click start date, then end date to form range
+/// - **Multi**: Click multiple dates to build selection set
+/// - **None**: Display-only mode with no interaction
+///
+/// Example:
+/// ```dart
+/// Calendar(
+///   view: CalendarView.now(),
+///   selectionMode: CalendarSelectionMode.range,
+///   value: CalendarValue.range(startDate, endDate),
+///   onChanged: (value) => setState(() => selectedDates = value),
+///   stateBuilder: (date) => date.isBefore(DateTime.now())
+///     ? DateState.disabled
+///     : DateState.enabled,
+/// )
+/// ```
 class Calendar extends StatefulWidget {
   final DateTime? now;
   final CalendarValue? value;
@@ -769,6 +987,36 @@ class Calendar extends StatefulWidget {
   final bool Function(DateTime date)? isDateEnabled;
   final DateStateBuilder? stateBuilder;
 
+  /// Creates a [Calendar] widget with flexible date selection capabilities.
+  ///
+  /// Configures the calendar's view, selection behavior, and interaction handling
+  /// with comprehensive options for customization and validation.
+  ///
+  /// Parameters:
+  /// - [view] (CalendarView, required): Month/year to display in calendar grid
+  /// - [selectionMode] (CalendarSelectionMode, required): How dates can be selected
+  /// - [now] (DateTime?, optional): Current date for highlighting, defaults to DateTime.now()
+  /// - [value] (CalendarValue?, optional): Currently selected date(s)
+  /// - [onChanged] (ValueChanged<CalendarValue?>?, optional): Called when selection changes
+  /// - [isDateEnabled] (bool Function(DateTime)?, optional): Legacy date validation function
+  /// - [stateBuilder] (DateStateBuilder?, optional): Custom date state validation
+  ///
+  /// The [view] parameter determines which month and year are shown in the calendar grid.
+  /// Use [CalendarView.now()] for current month or [CalendarView(year, month)] for specific dates.
+  ///
+  /// The [stateBuilder] takes precedence over [isDateEnabled] when both are provided.
+  ///
+  /// Example:
+  /// ```dart
+  /// Calendar(
+  ///   view: CalendarView(2024, 3), // March 2024
+  ///   selectionMode: CalendarSelectionMode.single,
+  ///   onChanged: (value) => print('Selected: ${value?.toString()}'),
+  ///   stateBuilder: (date) => date.weekday == DateTime.sunday
+  ///     ? DateState.disabled
+  ///     : DateState.enabled,
+  /// )
+  /// ```
   const Calendar({
     super.key,
     this.now,
@@ -1097,6 +1345,20 @@ class YearCalendar extends StatelessWidget {
   }
 }
 
+/// Visual states for individual calendar date items.
+///
+/// Defines the different visual appearances and behaviors that calendar date cells
+/// can have based on their selection state and position within ranges.
+///
+/// States include:
+/// - [none]: Normal unselected date
+/// - [today]: Current date highlighted  
+/// - [selected]: Single selected date or exact range boundary
+/// - [inRange]: Date within a selected range but not start/end
+/// - [startRange]/[endRange]: Range boundaries in other months
+/// - [startRangeSelected]/[endRangeSelected]: Range boundaries in current month
+/// - [startRangeSelectedShort]/[endRangeSelectedShort]: Boundaries in short ranges
+/// - [inRangeSelectedShort]: Middle dates in short ranges (typically 2-day ranges)
 enum CalendarItemType {
   none,
   today,
@@ -1112,6 +1374,34 @@ enum CalendarItemType {
   inRangeSelectedShort,
 }
 
+/// Individual calendar date cell with interactive behavior and visual states.
+///
+/// Represents a single date item within a calendar grid, handling touch interactions,
+/// visual state management, and theme integration. Supports different visual states
+/// for selection, ranges, and special dates like today.
+///
+/// Key Features:
+/// - **Visual States**: Multiple appearance modes based on selection status
+/// - **Interactive**: Touch/click handling with callbacks  
+/// - **Responsive Sizing**: Configurable width/height with theme scaling
+/// - **Accessibility**: Screen reader support and focus management
+/// - **State Management**: Enabled/disabled states with visual feedback
+/// - **Range Support**: Special styling for range start/end/middle positions
+///
+/// The item automatically applies appropriate button styling based on its [type]
+/// and handles edge cases for range visualization at row boundaries.
+///
+/// Example:
+/// ```dart
+/// CalendarItem(
+///   type: CalendarItemType.selected,
+///   indexAtRow: 2,
+///   rowCount: 7,
+///   state: DateState.enabled,
+///   onTap: () => handleDateTap(date),
+///   child: Text('15'),
+/// )
+/// ```
 class CalendarItem extends StatelessWidget {
   final Widget child;
   final CalendarItemType type;

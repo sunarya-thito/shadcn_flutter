@@ -1,10 +1,61 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Callback function type for building SubFocusScope widgets.
+/// 
+/// Receives the build context and the scope state for managing focus
+/// within the scope's widget tree.
 typedef SubFocusScopeBuilder = Widget Function(
   BuildContext context,
   SubFocusScopeState state,
 );
 
+/// Hierarchical focus management system for complex widget trees.
+///
+/// Creates a focus scope that manages keyboard navigation and focus traversal
+/// for child widgets. Provides centralized control over which child widget
+/// has focus and handles focus navigation between multiple focusable elements.
+///
+/// Key Features:
+/// - **Focus Hierarchy**: Manages focus relationships between parent and child widgets
+/// - **Keyboard Navigation**: Handles arrow key and tab navigation between elements
+/// - **Action Delegation**: Routes keyboard actions to currently focused child
+/// - **Auto-focus Support**: Automatically focuses first child when enabled
+/// - **Focus State Management**: Tracks and updates focus state across widget rebuilds
+/// - **Scroll Integration**: Ensures focused elements remain visible in scrollable areas
+///
+/// The scope maintains a list of attached [SubFocus] widgets and manages which
+/// one currently has focus. It handles focus traversal, action routing, and
+/// ensures focused widgets remain visible through scroll positioning.
+///
+/// Used commonly in:
+/// - Lists with keyboard navigation
+/// - Form field traversal
+/// - Menu and dropdown navigation
+/// - Tree view navigation
+/// - Tab panel systems
+///
+/// Example:
+/// ```dart
+/// SubFocusScope(
+///   autofocus: true,
+///   builder: (context, state) => Column(
+///     children: [
+///       SubFocus(
+///         builder: (context, focusState) => Container(
+///           color: focusState.isFocused ? Colors.blue : Colors.grey,
+///           child: Text('Item 1'),
+///         ),
+///       ),
+///       SubFocus(
+///         builder: (context, focusState) => Container(
+///           color: focusState.isFocused ? Colors.blue : Colors.grey,
+///           child: Text('Item 2'),
+///         ),
+///       ),
+///     ],
+///   ),
+/// )
+/// ```
 class SubFocusScope extends StatefulWidget {
   final SubFocusScopeBuilder? builder;
   final bool autofocus;
@@ -226,11 +277,64 @@ class _SubFocusScopeState extends State<SubFocusScope> with SubFocusScopeState {
   }
 }
 
+/// Callback function type for building SubFocus widgets.
+///
+/// Receives the build context and focus state for creating widgets that
+/// respond to focus changes and user interactions.
 typedef SubFocusBuilder = Widget Function(
   BuildContext context,
   SubFocusState state,
 );
 
+/// Individual focusable widget within a SubFocusScope hierarchy.
+///
+/// Creates a single focusable element that can receive keyboard focus and respond
+/// to user interactions within a [SubFocusScope]. Provides focus state information
+/// and handles focus-related behaviors like visibility scrolling and action routing.
+///
+/// Key Features:
+/// - **Focus State**: Tracks and reports whether this widget currently has focus
+/// - **Focus Request**: Can programmatically request focus from its parent scope
+/// - **Action Handling**: Receives and processes keyboard actions when focused
+/// - **Scroll Integration**: Automatically scrolls to ensure visibility when focused
+/// - **State Tracking**: Maintains focus count and state across widget lifecycle
+/// - **Enable/Disable**: Can be temporarily disabled to prevent focus acquisition
+///
+/// The widget uses a builder pattern to provide focus state to child widgets,
+/// allowing them to update their appearance and behavior based on focus status.
+/// This enables rich visual feedback for focused states.
+///
+/// Common Use Cases:
+/// - List items in navigable lists
+/// - Form fields in keyboard-navigable forms
+/// - Menu items in dropdown menus
+/// - Tree nodes in tree views
+/// - Tab headers in tab panels
+///
+/// Example:
+/// ```dart
+/// SubFocus(
+///   enabled: true,
+///   builder: (context, state) => GestureDetector(
+///     onTap: () => state.requestFocus(),
+///     child: Container(
+///       padding: EdgeInsets.all(8),
+///       decoration: BoxDecoration(
+///         color: state.isFocused ? Colors.blue : Colors.transparent,
+///         border: Border.all(
+///           color: state.isFocused ? Colors.blue : Colors.grey,
+///         ),
+///       ),
+///       child: Text(
+///         'Focusable Item',
+///         style: TextStyle(
+///           color: state.isFocused ? Colors.white : Colors.black,
+///         ),
+///       ),
+///     ),
+///   ),
+/// )
+/// ```
 class SubFocus extends StatefulWidget {
   final SubFocusBuilder builder;
   final bool enabled;
