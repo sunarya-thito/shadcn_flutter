@@ -1853,30 +1853,71 @@ class ButtonStyle implements AbstractButtonStyle {
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.link;
 
+  /// Creates a text icon button style optimized for icon-only buttons.
+  ///
+  /// Combines text styling with icon density for square buttons containing
+  /// only icons, featuring minimal text-style visual feedback.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: icon): Icon-specific density
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.textIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.text;
 
+  /// Creates a destructive icon button style optimized for icon-only buttons.
+  ///
+  /// Combines destructive styling with icon density for square buttons containing
+  /// only icons, using danger colors to indicate destructive actions.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: icon): Icon-specific density
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.destructiveIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.destructive;
 
+  /// Creates a fixed icon button style optimized for icon-only buttons.
+  ///
+  /// Combines fixed positioning styling with icon density for square buttons
+  /// containing only icons, maintaining consistent placement without animations.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: icon): Icon-specific density
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.fixedIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.fixed;
 
+  /// Creates a card button style for card-like interactive elements.
+  ///
+  /// Card buttons have elevated styling with card-like appearance,
+  /// suitable for larger interactive areas or content cards.
+  ///
+  /// Parameters:
+  /// - [size] (ButtonSize, default: normal): Size configuration
+  /// - [density] (ButtonDensity, default: normal): Density configuration
+  /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle.card({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.card;
 
+  /// Resolves button decoration, adapting for circular shape when needed.
+  ///
+  /// This method implements the decoration property from [AbstractButtonStyle],
+  /// delegating to the variance's decoration but adapting it for circular
+  /// buttons when [shape] is [ButtonShape.circle].
   @override
   ButtonStateProperty<Decoration> get decoration {
     if (shape == ButtonShape.circle) {
@@ -1885,6 +1926,10 @@ class ButtonStyle implements AbstractButtonStyle {
     return variance.decoration;
   }
 
+  /// Adapts a decoration for circular button shape.
+  ///
+  /// Takes the base decoration from the variance and modifies it to work
+  /// with circular buttons by setting appropriate shape properties.
   Decoration _resolveCircleDecoration(
       BuildContext context, Set<WidgetState> states) {
     var decoration = variance.decoration(context, states);
@@ -1908,11 +1953,17 @@ class ButtonStyle implements AbstractButtonStyle {
     }
   }
 
+  /// Delegates mouse cursor resolution to the underlying variance.
   @override
   ButtonStateProperty<MouseCursor> get mouseCursor {
     return variance.mouseCursor;
   }
 
+  /// Resolves button padding by applying size scaling and density modifications.
+  ///
+  /// If both size and density are normal, delegates directly to the variance.
+  /// Otherwise, applies scaling and density transformations to achieve the
+  /// desired button dimensions and spacing.
   @override
   ButtonStateProperty<EdgeInsetsGeometry> get padding {
     if (size == ButtonSize.normal && density == ButtonDensity.normal) {
@@ -1921,6 +1972,10 @@ class ButtonStyle implements AbstractButtonStyle {
     return _resolvePadding;
   }
 
+  /// Applies size and density transformations to base padding.
+  ///
+  /// First scales padding by the size factor, then applies the density
+  /// modifier to achieve the final padding configuration.
   EdgeInsetsGeometry _resolvePadding(
       BuildContext context, Set<WidgetState> states) {
     return density.modifier(
@@ -1928,6 +1983,10 @@ class ButtonStyle implements AbstractButtonStyle {
             size.scale);
   }
 
+  /// Resolves text style by applying size scaling to font size.
+  ///
+  /// If size is normal, delegates directly to the variance. Otherwise,
+  /// scales the font size according to the size configuration.
   @override
   ButtonStateProperty<TextStyle> get textStyle {
     if (size == ButtonSize.normal) {
@@ -1936,6 +1995,10 @@ class ButtonStyle implements AbstractButtonStyle {
     return _resolveTextStyle;
   }
 
+  /// Applies size scaling to the base text style font size.
+  ///
+  /// Preserves all other text style properties while scaling only the
+  /// font size by the configured size factor.
   TextStyle _resolveTextStyle(BuildContext context, Set<WidgetState> states) {
     var fontSize = variance.textStyle(context, states).fontSize;
     if (fontSize == null) {
@@ -1947,6 +2010,10 @@ class ButtonStyle implements AbstractButtonStyle {
         );
   }
 
+  /// Resolves icon theme by applying size scaling to icon size.
+  ///
+  /// If size is normal, delegates directly to the variance. Otherwise,
+  /// scales the icon size according to the size configuration.
   @override
   ButtonStateProperty<IconThemeData> get iconTheme {
     if (size == ButtonSize.normal) {
@@ -1955,6 +2022,10 @@ class ButtonStyle implements AbstractButtonStyle {
     return _resolveIconTheme;
   }
 
+  /// Applies size scaling to the base icon theme size.
+  ///
+  /// Preserves all other icon theme properties while scaling only the
+  /// icon size by the configured size factor.
   IconThemeData _resolveIconTheme(
       BuildContext context, Set<WidgetState> states) {
     var iconSize = variance.iconTheme(context, states).size;
@@ -1964,20 +2035,60 @@ class ButtonStyle implements AbstractButtonStyle {
         );
   }
 
+  /// Delegates margin resolution to the underlying variance.
   @override
   ButtonStateProperty<EdgeInsetsGeometry> get margin {
     return variance.margin;
   }
 }
 
+/// Abstract base class for button theme customization.
+///
+/// [ButtonTheme] allows components to provide theme overrides for button styling
+/// by specifying delegates that can modify or replace the base button style properties.
+/// 
+/// Each property is optional and uses a [ButtonStatePropertyDelegate] which receives
+/// the context, states, and base resolved value, allowing for sophisticated theme
+/// customization that can build upon or completely replace base styling.
+///
+/// Example usage in a custom component theme:
+/// ```dart
+/// class MyButtonTheme extends ButtonTheme {
+///   const MyButtonTheme() : super(
+///     decoration: _customDecoration,
+///     padding: _customPadding,
+///   );
+/// }
+/// 
+/// static Decoration _customDecoration(
+///   BuildContext context, 
+///   Set<WidgetState> states, 
+///   Decoration base,
+/// ) {
+///   // Modify or replace base decoration
+///   return base.copyWith(/* custom properties */);
+/// }
+/// ```
 abstract class ButtonTheme {
+  /// Optional decorator for button decoration (background, border, shadows).
   final ButtonStatePropertyDelegate<Decoration>? decoration;
+  
+  /// Optional decorator for mouse cursor on hover.
   final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
+  
+  /// Optional decorator for internal button padding.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
+  
+  /// Optional decorator for text styling within the button.
   final ButtonStatePropertyDelegate<TextStyle>? textStyle;
+  
+  /// Optional decorator for icon theme within the button.
   final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
+  
+  /// Optional decorator for external button margin.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
 
+  /// Creates a [ButtonTheme] with optional property decorators.
   const ButtonTheme(
       {this.decoration,
       this.mouseCursor,
@@ -2007,28 +2118,56 @@ abstract class ButtonTheme {
       '$runtimeType{decoration: $decoration, mouseCursor: $mouseCursor, padding: $padding, textStyle: $textStyle, iconTheme: $iconTheme, margin: $margin}';
 }
 
+/// Button style implementation that integrates with the component theme system.
+///
+/// [ComponentThemeButtonStyle] wraps a fallback [AbstractButtonStyle] and allows
+/// component-specific themes to override or modify button styling properties.
+/// It searches for a matching theme type [T] in the component theme hierarchy
+/// and applies any found theme decorators.
+///
+/// This enables components to provide their own button styling while maintaining
+/// the base button style as a fallback when no component theme is available.
+///
+/// Type parameter [T] should extend [ButtonTheme] and represent the specific
+/// component's button theme class.
 class ComponentThemeButtonStyle<T extends ButtonTheme>
     implements AbstractButtonStyle {
+  /// The fallback button style used when no component theme is found.
   final AbstractButtonStyle fallback;
 
+  /// Creates a [ComponentThemeButtonStyle] with the specified fallback style.
   const ComponentThemeButtonStyle({required this.fallback});
 
+  /// Searches for a component theme of type [T] in the current context.
+  ///
+  /// Returns the theme instance if found, or null if no matching theme
+  /// is available in the current widget tree.
   T? find(BuildContext context) {
     return ComponentTheme.maybeOf<T>(context);
   }
 
+  /// Resolves decoration by applying component theme overrides to the fallback.
   @override
   ButtonStateProperty<Decoration> get decoration => _resolveDecoration;
 
+  /// Combines fallback decoration with component theme decoration overrides.
+  ///
+  /// First resolves the fallback decoration, then applies any decoration
+  /// delegate from the component theme if available.
   Decoration _resolveDecoration(BuildContext context, Set<WidgetState> states) {
     var resolved = fallback.decoration(context, states);
     return find(context)?.decoration?.call(context, states, resolved) ??
         resolved;
   }
 
+  /// Resolves icon theme by applying component theme overrides to the fallback.
   @override
   ButtonStateProperty<IconThemeData> get iconTheme => _resolveIconTheme;
 
+  /// Combines fallback icon theme with component theme icon theme overrides.
+  ///
+  /// First resolves the fallback icon theme, then applies any icon theme
+  /// delegate from the component theme if available.
   IconThemeData _resolveIconTheme(
       BuildContext context, Set<WidgetState> states) {
     var resolved = fallback.iconTheme(context, states);
@@ -2036,18 +2175,28 @@ class ComponentThemeButtonStyle<T extends ButtonTheme>
         resolved;
   }
 
+  /// Resolves margin by applying component theme overrides to the fallback.
   @override
   ButtonStateProperty<EdgeInsetsGeometry> get margin => _resolveMargin;
 
+  /// Combines fallback margin with component theme margin overrides.
+  ///
+  /// First resolves the fallback margin, then applies any margin
+  /// delegate from the component theme if available.
   EdgeInsetsGeometry _resolveMargin(
       BuildContext context, Set<WidgetState> states) {
     var resolved = fallback.margin(context, states);
     return find(context)?.margin?.call(context, states, resolved) ?? resolved;
   }
 
+  /// Resolves mouse cursor by applying component theme overrides to the fallback.
   @override
   ButtonStateProperty<MouseCursor> get mouseCursor => _resolveMouseCursor;
 
+  /// Combines fallback mouse cursor with component theme cursor overrides.
+  ///
+  /// First resolves the fallback mouse cursor, then applies any cursor
+  /// delegate from the component theme if available.
   MouseCursor _resolveMouseCursor(
       BuildContext context, Set<WidgetState> states) {
     var resolved = fallback.mouseCursor(context, states);
@@ -2055,18 +2204,28 @@ class ComponentThemeButtonStyle<T extends ButtonTheme>
         resolved;
   }
 
+  /// Resolves padding by applying component theme overrides to the fallback.
   @override
   ButtonStateProperty<EdgeInsetsGeometry> get padding => _resolvePadding;
 
+  /// Combines fallback padding with component theme padding overrides.
+  ///
+  /// First resolves the fallback padding, then applies any padding
+  /// delegate from the component theme if available.
   EdgeInsetsGeometry _resolvePadding(
       BuildContext context, Set<WidgetState> states) {
     var resolved = fallback.padding(context, states);
     return find(context)?.padding?.call(context, states, resolved) ?? resolved;
   }
 
+  /// Resolves text style by applying component theme overrides to the fallback.
   @override
   ButtonStateProperty<TextStyle> get textStyle => _resolveTextStyle;
 
+  /// Combines fallback text style with component theme text style overrides.
+  ///
+  /// First resolves the fallback text style, then applies any text style
+  /// delegate from the component theme if available.
   TextStyle _resolveTextStyle(BuildContext context, Set<WidgetState> states) {
     var resolved = fallback.textStyle(context, states);
     return find(context)?.textStyle?.call(context, states, resolved) ??
@@ -2074,7 +2233,23 @@ class ComponentThemeButtonStyle<T extends ButtonTheme>
   }
 }
 
+/// Extension providing a copyWith method for [ShapeDecoration].
+///
+/// This extension adds convenient copying functionality to [ShapeDecoration],
+/// allowing selective property updates similar to other Flutter decoration classes.
+///
+/// Each parameter is optional and preserves the original value when not specified.
 extension ShapeDecorationExtension on ShapeDecoration {
+  /// Creates a copy of this [ShapeDecoration] with specified properties overridden.
+  ///
+  /// Parameters:
+  /// - [shape] (ShapeBorder?, optional): New shape border, or null to keep current
+  /// - [color] (Color?, optional): New fill color, or null to keep current  
+  /// - [gradient] (Gradient?, optional): New gradient, or null to keep current
+  /// - [shadows] (List<BoxShadow>?, optional): New shadows, or null to keep current
+  /// - [image] (DecorationImage?, optional): New background image, or null to keep current
+  ///
+  /// Returns a new [ShapeDecoration] with the specified modifications.
   ShapeDecoration copyWith({
     ShapeBorder? shape,
     Color? color,
