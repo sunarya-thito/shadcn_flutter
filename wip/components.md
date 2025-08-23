@@ -62,20 +62,20 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [ ] File Picker *(Work in Progress)*
 - [ ] Form
 - [ ] Formatted Input
-- [ ] Input OTP
+- [x] Input OTP
 - [ ] Item Picker
 - [ ] Multi Select
 - [ ] MultiSelectChip
 - [ ] Number Input
 - [ ] Phone Input
-- [ ] Radio Card
-- [ ] Radio Group
-- [ ] Select
+- [x] Radio Card
+- [x] Radio Group
+- [x] Select
 - [x] Slider
-- [ ] Star Rating
+- [x] Star Rating
 - [x] Switch
-- [ ] Text Area
-- [ ] Text Input
+- [x] Text Area
+- [x] Text Input
 - [ ] Time Picker
 - [ ] TimeInput
 - [ ] Toggle

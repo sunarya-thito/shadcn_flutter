@@ -6,6 +6,12 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/control/hover.dart';
 import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
+/// Theme data for customizing [Select] widget appearance and behavior.
+///
+/// This class defines the visual and behavioral properties that can be applied to
+/// [Select] widgets, including popup constraints, positioning, styling, and
+/// interaction behaviors. These properties can be set at the theme level
+/// to provide consistent behavior across the application.
 class SelectTheme {
   final BoxConstraints? popupConstraints;
   final AlignmentGeometry? popoverAlignment;
@@ -510,7 +516,53 @@ mixin SelectBase<T> {
   Predicate<T>? get showValuePredicate;
 }
 
+/// A customizable dropdown selection widget for single-value selection.
+///
+/// [Select] provides a comprehensive dropdown selection experience with support for
+/// custom item rendering, keyboard navigation, search functionality, and extensive
+/// customization options. It displays a trigger button that opens a popup containing
+/// selectable options when activated.
+///
+/// Key features:
+/// - Single-value selection with optional null/unselect capability
+/// - Customizable item rendering through builder functions
+/// - Keyboard navigation and accessibility support
+/// - Configurable popup positioning and constraints
+/// - Search and filtering capabilities
+/// - Focus management and interaction handling
+/// - Theming and visual customization
+/// - Form integration and validation support
+///
+/// The widget supports various configuration modes:
+/// - Filled or outlined appearance styles
+/// - Custom popup positioning and alignment
+/// - Conditional item visibility and selection
+/// - Hover effects and interaction feedback
+/// - Auto-closing popup behavior
+///
+/// Selection behavior can be customized through:
+/// - [valueSelectionHandler]: Custom logic for handling selection
+/// - [valueSelectionPredicate]: Conditions for allowing selection
+/// - [showValuePredicate]: Conditions for displaying items
+/// - [canUnselect]: Whether to allow deselecting the current value
+///
+/// Example:
+/// ```dart
+/// Select<String>(
+///   value: selectedItem,
+///   placeholder: Text('Choose an option'),
+///   onChanged: (value) => setState(() => selectedItem = value),
+///   popup: SelectPopup.menu(
+///     children: [
+///       SelectItem(value: 'option1', child: Text('Option 1')),
+///       SelectItem(value: 'option2', child: Text('Option 2')),
+///       SelectItem(value: 'option3', child: Text('Option 3')),
+///     ],
+///   ),
+/// );
+/// ```
 class Select<T> extends StatefulWidget with SelectBase<T> {
+  /// Default maximum height for select popups in logical pixels.
   static const kDefaultSelectMaxHeight = 240.0;
   @override
   final ValueChanged<T?>? onChanged; // if null, then it's a disabled combobox
