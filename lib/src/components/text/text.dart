@@ -2,9 +2,35 @@ import 'package:flutter/rendering.dart';
 
 import '../../../shadcn_flutter.dart';
 
+/// Abstract base class for text modifier widgets that apply styling transformations.
+///
+/// TextModifier provides a fluent API for applying text styling through a call
+/// method that accepts various text style properties. Implementing classes
+/// should define how these properties are applied to create styled text widgets.
+///
+/// This pattern allows for chainable text styling operations and consistent
+/// text styling APIs across different text components.
+///
+/// Example:
+/// ```dart
+/// // Usage through extension methods
+/// Text('Hello').large.bold.primary
+/// ```
 abstract class TextModifier extends Widget {
+  /// Creates a [TextModifier].
   const TextModifier({super.key});
 
+  /// Applies the specified text styling properties to create a styled widget.
+  ///
+  /// This method should be implemented by subclasses to define how text
+  /// styling properties are applied. All parameters are optional, allowing
+  /// for selective styling application.
+  ///
+  /// Parameters include standard text styling options like color, font size,
+  /// weight, decoration, and advanced typography features.
+  ///
+  /// Returns:
+  /// A [Widget] with the applied text styling.
   Widget call({
     Color? color,
     Color? backgroundColor,
@@ -34,17 +60,58 @@ abstract class TextModifier extends Widget {
   });
 }
 
+/// Extension methods that add fluent text styling capabilities to any Widget.
+///
+/// Provides a chainable API for applying common text styles, typography scales,
+/// and semantic styling to widgets. These methods return TextModifier instances
+/// that can be further chained or used with the call() method for additional styling.
+///
+/// Example:
+/// ```dart
+/// Text('Hello World')
+///   .large
+///   .bold
+///   .primary
+///   .call(letterSpacing: 1.2)
+/// ```
 extension TextExtension on Widget {
+  /// Applies sans-serif font family styling.
+  ///
+  /// Uses the theme's typography.sans style, typically a clean, modern
+  /// sans-serif font suitable for body text and UI elements.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Clean text').sans
+  /// ```
   TextModifier get sans => WrappedText(
         style: (context, theme) => theme.typography.sans,
         child: this,
       );
 
+  /// Applies monospace font family styling.
+  ///
+  /// Uses the theme's typography.mono style, typically a fixed-width font
+  /// suitable for code, technical content, or data display.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('code_example()').mono
+  /// ```
   TextModifier get mono => WrappedText(
         style: (context, theme) => theme.typography.mono,
         child: this,
       );
 
+  /// Applies extra small text size styling.
+  ///
+  /// Uses the theme's typography.xSmall style for very small text elements
+  /// like captions, footnotes, or secondary information.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('© 2024 Company').xSmall
+  /// ```
   TextModifier get xSmall => WrappedText(
         style: (context, theme) => theme.typography.xSmall,
         child: this,

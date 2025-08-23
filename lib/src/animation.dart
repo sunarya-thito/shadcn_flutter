@@ -1,16 +1,64 @@
 import 'package:flutter/widgets.dart';
 
+/// A function type for interpolating between two property values.
+///
+/// Used by animation systems to calculate intermediate values during transitions.
+/// Takes two nullable values and an interpolation factor, returning the
+/// interpolated result or null if interpolation is not possible.
+///
+/// Example:
+/// ```dart
+/// final colorLerp = PropertyLerp<Color>((a, b, t) => Color.lerp(a, b, t));
+/// ```
 typedef PropertyLerp<T> = T? Function(T? a, T? b, double t);
 
+/// An animation that provides fine-grained control over animation progression.
+///
+/// Unlike standard Flutter animations, ControlledAnimation allows you to animate
+/// between arbitrary start and end values with custom curves, making it ideal
+/// for complex animation sequences or when you need to chain multiple animations
+/// with different parameters.
+///
+/// The animation maintains internal from/to values and applies the specified
+/// curve to interpolate between them based on the underlying controller's progress.
+///
+/// Example:
+/// ```dart
+/// final controller = AnimationController(vsync: this);
+/// final animation = ControlledAnimation(controller);
+/// animation.forward(0.8, Curves.easeOut); // Animate from current to 0.8
+/// ```
 class ControlledAnimation extends Animation<double> {
+  /// The underlying animation controller.
   final AnimationController _controller;
 
+  /// Creates a [ControlledAnimation] wrapping the provided controller.
+  ///
+  /// Parameters:
+  /// - [_controller] (AnimationController): The controller to wrap.
   ControlledAnimation(this._controller);
 
   double _from = 0;
   double _to = 1;
   Curve _curve = Curves.linear;
 
+  /// Animates forward from the current value to the specified target value.
+  ///
+  /// Sets up the animation parameters and starts the forward animation.
+  /// The animation will interpolate from the current value to [to] using
+  /// the specified curve.
+  ///
+  /// Parameters:
+  /// - [to] (double): The target value to animate to.
+  /// - [curve] (Curve?, optional): The animation curve to use.
+  ///
+  /// Returns:
+  /// A `TickerFuture` that completes when the animation finishes.
+  ///
+  /// Example:
+  /// ```dart
+  /// animation.forward(1.0, Curves.easeInOut);
+  /// ```
   TickerFuture forward(double to, [Curve? curve]) {
     _from = value;
     _to = to;
@@ -18,6 +66,18 @@ class ControlledAnimation extends Animation<double> {
     return _controller.forward(from: 0);
   }
 
+  /// Sets the animation value directly without animating.
+  ///
+  /// Immediately sets the animation to the specified value and resets
+  /// the controller. Useful for initializing or jumping to specific states.
+  ///
+  /// Parameters:
+  /// - [value] (double): The value to set.
+  ///
+  /// Example:
+  /// ```dart
+  /// animation.value = 0.5; // Jump to 50%
+  /// ```
   set value(double value) {
     _from = value;
     _to = value;
