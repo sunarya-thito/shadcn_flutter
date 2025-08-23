@@ -46,7 +46,7 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [x] Color Picker
 - [x] ControlledCheckbox
 - [x] ControlledChipInput
-- [ ] ControlledChips
+- [ ] ControlledChips *(Not Found)*
 - [x] ControlledDatePicker
 - [x] ControlledMultiSelect
 - [x] ControlledRadioGroup
@@ -59,7 +59,7 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [x] Date Picker
 - [x] DateInput
 - [x] DurationInput
-- [ ] File Picker *(Work in Progress)*
+- [x] File Picker *(Work in Progress)*
 - [x] Form
 - [x] Formatted Input
 - [x] Input OTP
@@ -82,7 +82,7 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 
 ## 📐 Layout Components
 
-- [ ] App Bar
+- [x] App Bar
 - [x] Card
 - [x] Card Image
 - [x] Carousel
@@ -99,7 +99,7 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 
 - [x] Breadcrumb
 - [x] Dot Indicator
-- [ ] Expandable Sidebar
+- [ ] Expandable Sidebar *(Not Found)*
 - [x] Menubar
 - [x] Navigation Bar
 - [x] Navigation Menu
@@ -136,13 +136,13 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [x] ControlledComponent
 - [x] Dropdown Menu
 - [x] IgnoreForm
-- [ ] Image Tools *(Work in Progress)*
-- [ ] Keyboard Display
+- [x] Image Tools *(Work in Progress)*
+- [x] Keyboard Display
 - [x] Overflow Marquee
 - [x] Refresh Trigger
 - [x] StatedWidget
 - [x] SubFocus
-- [ ] WidgetStateProvider
+- [ ] WidgetStateProvider *(Not Found)*
 
 ---
 
