@@ -3,29 +3,59 @@ import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 import '../../../shadcn_flutter.dart';
 
+/// Standard duration for switch state transitions and animations.
 const kSwitchDuration = Duration(milliseconds: 100);
 
-/// A theme for [Switch] widgets.
+/// Theme configuration for [Switch] widget styling and visual appearance.
+///
+/// Defines the visual properties used by switch components including colors,
+/// spacing, and border styling for different switch states. All properties are
+/// optional and fall back to framework defaults when not specified.
+///
+/// Supports comprehensive customization of switch appearance including track
+/// colors, thumb colors, and layout properties to match application design.
 class SwitchTheme {
-  /// The color of the track when the switch is on.
+  /// Color of the switch track when in the active/on state.
+  ///
+  /// Applied as the background color of the switch track when toggled on.
+  /// When null, uses the theme's primary color for visual consistency.
   final Color? activeColor;
 
-  /// The color of the track when the switch is off.
+  /// Color of the switch track when in the inactive/off state.
+  ///
+  /// Applied as the background color of the switch track when toggled off.
+  /// When null, uses the theme's muted color for visual hierarchy.
   final Color? inactiveColor;
 
-  /// The color of the thumb when the switch is on.
+  /// Color of the switch thumb when in the active/on state.
+  ///
+  /// Applied to the circular thumb element when the switch is toggled on.
+  /// When null, uses the theme's primary foreground color for contrast.
   final Color? activeThumbColor;
 
-  /// The color of the thumb when the switch is off.
+  /// Color of the switch thumb when in the inactive/off state.
+  ///
+  /// Applied to the circular thumb element when the switch is toggled off.
+  /// When null, uses a contrasting color against the inactive track.
   final Color? inactiveThumbColor;
 
-  /// The gap between the switch and its leading/trailing widgets.
+  /// Spacing between the switch and its leading/trailing widgets.
+  ///
+  /// Applied on both sides of the switch when leading or trailing widgets
+  /// are provided. When null, defaults to framework spacing standards.
   final double? gap;
 
-  /// The border radius of the track.
+  /// Border radius applied to the switch track corners.
+  ///
+  /// Creates rounded corners on the switch track container. When null,
+  /// uses a fully rounded appearance typical of toggle switches.
   final BorderRadiusGeometry? borderRadius;
 
   /// Creates a [SwitchTheme].
+  ///
+  /// All parameters are optional and will use framework defaults when null.
+  /// The theme can be applied to individual switches or globally through
+  /// the component theme system.
   const SwitchTheme({
     this.activeColor,
     this.inactiveColor,

@@ -43,20 +43,20 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [x] AutoComplete
 - [x] Checkbox
 - [x] Chip Input
-- [ ] Color Picker
+- [x] Color Picker
 - [ ] ControlledCheckbox
 - [ ] ControlledChipInput
 - [ ] ControlledChips
-- [ ] ControlledDatePicker
+- [x] ControlledDatePicker
 - [ ] ControlledMultiSelect
 - [ ] ControlledRadioGroup
 - [ ] ControlledSelect
-- [ ] ControlledSlider
+- [x] ControlledSlider
 - [ ] ControlledStarRating
-- [ ] ControlledSwitch
+- [x] ControlledSwitch
 - [ ] ControlledTimePicker
 - [ ] ControlledToggle
-- [ ] Date Picker
+- [x] Date Picker
 - [ ] DateInput
 - [ ] DurationInput
 - [ ] File Picker *(Work in Progress)*
@@ -71,9 +71,9 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [ ] Radio Card
 - [ ] Radio Group
 - [ ] Select
-- [ ] Slider
+- [x] Slider
 - [ ] Star Rating
-- [ ] Switch
+- [x] Switch
 - [ ] Text Area
 - [ ] Text Input
 - [ ] Time Picker

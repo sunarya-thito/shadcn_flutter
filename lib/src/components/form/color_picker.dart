@@ -7,17 +7,68 @@ import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
 
-/// Theme data for [ColorInput].
+/// Theme configuration for [ColorInput] widget styling and behavior.
+///
+/// Defines the visual properties and default behaviors for color input components
+/// including popover presentation, picker modes, and interaction features. Applied
+/// globally through [ComponentTheme] or per-instance for customization.
+///
+/// Supports comprehensive customization of color picker appearance, positioning,
+/// and functionality to match application design requirements.
 class ColorInputTheme {
+  /// Whether to display alpha (transparency) controls by default.
+  ///
+  /// When true, color pickers include alpha/opacity sliders and inputs.
+  /// When false, only RGB/HSV controls are shown. Individual components
+  /// can override this theme setting.
   final bool? showAlpha;
+
+  /// Alignment point on the popover for anchor attachment.
+  ///
+  /// Determines where the color picker popover positions itself relative
+  /// to the anchor widget. When null, uses framework default alignment.
   final AlignmentGeometry? popoverAlignment;
+
+  /// Alignment point on the anchor widget for popover positioning.
+  ///
+  /// Specifies which part of the trigger widget the popover should align to.
+  /// When null, uses framework default anchor alignment.
   final AlignmentGeometry? popoverAnchorAlignment;
+
+  /// Internal padding applied to the color picker popover content.
+  ///
+  /// Controls spacing around the color picker interface within the popover
+  /// container. When null, uses framework default padding.
   final EdgeInsetsGeometry? popoverPadding;
+
+  /// Default interaction mode for color input triggers.
+  ///
+  /// Determines whether color selection opens a popover or modal dialog.
+  /// When null, uses framework default prompt mode behavior.
   final PromptMode? mode;
+
+  /// Default color picker interface type.
+  ///
+  /// Specifies whether to use HSV, HSL, or other color picker implementations.
+  /// When null, uses framework default picker mode.
   final ColorPickerMode? pickerMode;
+
+  /// Whether to enable screen color sampling functionality.
+  ///
+  /// When true, color pickers include tools to sample colors directly from
+  /// the screen. Platform support varies. When null, uses framework default.
   final bool? allowPickFromScreen;
+
+  /// Whether to display color value labels in picker interfaces.
+  ///
+  /// When true, shows numeric color values (hex, RGB, HSV, etc.) alongside
+  /// visual color pickers. When null, uses framework default label visibility.
   final bool? showLabel;
 
+  /// Creates a [ColorInputTheme].
+  ///
+  /// All parameters are optional and fall back to framework defaults when null.
+  /// The theme can be applied globally or to specific color input instances.
   const ColorInputTheme({
     this.showAlpha,
     this.popoverAlignment,
@@ -29,6 +80,10 @@ class ColorInputTheme {
     this.showLabel,
   });
 
+  /// Creates a copy of this theme with specified properties overridden.
+  ///
+  /// Each parameter function is called only if provided, allowing selective
+  /// overrides while preserving existing values for unspecified properties.
   ColorInputTheme copyWith({
     ValueGetter<bool?>? showAlpha,
     ValueGetter<AlignmentGeometry?>? popoverAlignment,
@@ -83,11 +138,122 @@ class ColorInputTheme {
       showLabel);
 }
 
+/// Reactive controller for managing color input state with color operations.
+///
+/// Extends [ValueNotifier] to provide state management for color input widgets
+/// using [ColorDerivative] values that support multiple color space representations.
+/// Enables programmatic color changes while maintaining color space fidelity.
+///
+/// The controller manages [ColorDerivative] objects which preserve original
+/// color space information (HSV, HSL, RGB) for accurate color manipulations
+/// and prevents precision loss during color space conversions.
+///
+/// Example:
+/// ```dart
+/// final controller = ColorInputController(
+///   ColorDerivative.fromColor(Colors.blue),
+/// );
+/// 
+/// // React to changes
+/// controller.addListener(() {
+///   print('Color changed to: ${controller.value.color}');
+/// });
+/// 
+/// // Programmatic control
+/// controller.value = ColorDerivative.fromHSV(HSVColor.fromColor(Colors.red));
+/// ```
 class ColorInputController extends ValueNotifier<ColorDerivative>
     with ComponentController<ColorDerivative> {
+  /// Creates a [ColorInputController] with the specified initial color.
+  ///
+  /// The [value] parameter provides the initial color as a [ColorDerivative].
+  /// The controller notifies listeners when the color changes through any
+  /// method calls or direct value assignment.
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = ColorInputController(
+  ///   ColorDerivative.fromColor(Colors.green),
+  /// );
+  /// ```
   ColorInputController(super.value);
+
+  /// Sets the color to a new [Color] value.
+  ///
+  /// Converts the color to a [ColorDerivative] preserving RGB color space
+  /// information. Notifies listeners of the change.
+  void setColor(Color color) {
+    value = ColorDerivative.fromColor(color);
+  }
+
+  /// Sets the color to a new HSV color value.
+  ///
+  /// Uses [ColorDerivative.fromHSV] to preserve HSV color space information
+  /// for accurate hue, saturation, and value manipulations.
+  void setHSVColor(HSVColor hsvColor) {
+    value = ColorDerivative.fromHSV(hsvColor);
+  }
+
+  /// Sets the color to a new HSL color value.
+  ///
+  /// Uses [ColorDerivative.fromHSL] to preserve HSL color space information
+  /// for accurate hue, saturation, and lightness manipulations.
+  void setHSLColor(HSLColor hslColor) {
+    value = ColorDerivative.fromHSL(hslColor);
+  }
+
+  /// Gets the current color as a standard [Color] object.
+  Color get color => value.color;
+
+  /// Gets the current color as an HSV color representation.
+  HSVColor get hsvColor => value.hsvColor;
+
+  /// Gets the current color as an HSL color representation.
+  HSLColor get hslColor => value.hslColor;
 }
 
+/// Reactive color input with automatic state management and controller support.
+///
+/// A high-level color picker widget that provides automatic state management through
+/// the controlled component pattern. Supports both controller-based and callback-based
+/// state management with comprehensive customization options for color picker presentation,
+/// interaction modes, and visual styling.
+///
+/// ## Features
+///
+/// - **Multiple picker modes**: HSV, HSL, and RGB color picker interfaces
+/// - **Alpha channel support**: Optional transparency/opacity controls
+/// - **Screen color sampling**: Pick colors directly from screen (platform dependent)
+/// - **Color history**: Automatic recent color tracking and storage
+/// - **Flexible presentation**: Popover or modal dialog interaction modes
+/// - **Accessibility support**: Full keyboard navigation and screen reader compatibility
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = ColorInputController(
+///   ColorDerivative.fromColor(Colors.blue),
+/// );
+/// 
+/// ControlledColorInput(
+///   controller: controller,
+///   showAlpha: true,
+///   allowPickFromScreen: true,
+///   pickerMode: ColorPickerMode.hsv,
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// ColorDerivative currentColor = ColorDerivative.fromColor(Colors.red);
+/// 
+/// ControlledColorInput(
+///   initialValue: currentColor,
+///   onChanged: (color) => setState(() => currentColor = color),
+///   mode: PromptMode.popover,
+/// )
+/// ```
 class ControlledColorInput extends StatelessWidget
     with ControlledComponent<ColorDerivative> {
   @override
