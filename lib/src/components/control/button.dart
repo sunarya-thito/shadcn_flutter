@@ -1484,6 +1484,34 @@ class ButtonSize {
   static const ButtonSize xLarge = ButtonSize(3);
 }
 
+/// A function that modifies button style properties based on context and state.
+///
+/// This typedef defines override functions used in [ButtonStyleOverride] to modify
+/// button styling properties. The function receives the current [BuildContext],
+/// a set of [WidgetState] values representing the button's interaction state,
+/// and the base value of type [T] that would normally be used.
+///
+/// The function should return a modified version of the base value. This allows
+/// for additive styling where overrides build upon the existing button style
+/// rather than completely replacing it.
+///
+/// Example:
+/// ```dart
+/// ButtonStatePropertyDelegate<EdgeInsets> paddingOverride = 
+///   (context, states, baseValue) {
+///     // Add extra padding when button is pressed
+///     if (states.contains(WidgetState.pressed)) {
+///       return baseValue + EdgeInsets.all(2);
+///     }
+///     return baseValue;
+///   };
+/// ```
+typedef ButtonStatePropertyDelegate<T> = T Function(
+  BuildContext context,
+  Set<WidgetState> states,
+  T value,
+);
+
 /// A function that modifies button padding based on density requirements.
 ///
 /// Takes the base padding and returns modified padding appropriate for the
@@ -5114,6 +5142,19 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates a secondary icon button with muted styling for supporting actions.
+  ///
+  /// Secondary icon buttons use subtle backgrounds and medium contrast, making them
+  /// suitable for supporting icon actions that should be visible but not compete
+  /// with primary actions. Perfect for toolbars and secondary controls.
+  ///
+  /// Example:
+  /// ```dart
+  /// IconButton.secondary(
+  ///   icon: Icon(Icons.more_vert),
+  ///   onPressed: () => _showMenu(),
+  /// );
+  /// ```
   const IconButton.secondary({
     super.key,
     required this.icon,
@@ -5148,6 +5189,19 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates an outline icon button with border styling for clear secondary actions.
+  ///
+  /// Outline icon buttons feature transparent backgrounds with visible borders,
+  /// providing excellent contrast and clear definition for secondary icon actions.
+  /// Ideal for toolbars where secondary actions need clear visibility.
+  ///
+  /// Example:
+  /// ```dart
+  /// IconButton.outline(
+  ///   icon: Icon(Icons.edit),
+  ///   onPressed: () => _editItem(),
+  /// );
+  /// ```
   const IconButton.outline({
     super.key,
     required this.icon,
@@ -5182,6 +5236,19 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates a ghost icon button with minimal styling for subtle icon interactions.
+  ///
+  /// Ghost icon buttons have no visible background until interaction, making them
+  /// perfect for utility actions, navigation icons, or any icon-based functionality
+  /// that should be available but not visually prominent.
+  ///
+  /// Example:
+  /// ```dart
+  /// IconButton.ghost(
+  ///   icon: Icon(Icons.close),
+  ///   onPressed: () => Navigator.pop(context),
+  /// );
+  /// ```
   const IconButton.ghost({
     super.key,
     required this.icon,
@@ -5216,6 +5283,19 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates a link icon button with hyperlink styling for navigation actions.
+  ///
+  /// Link icon buttons appear with link-like styling including hover effects and
+  /// appropriate colors. Perfect for navigation icons, external link indicators,
+  /// or any icon that represents a navigation or reference action.
+  ///
+  /// Example:
+  /// ```dart
+  /// IconButton.link(
+  ///   icon: Icon(Icons.open_in_new),
+  ///   onPressed: () => _openExternalLink(),
+  /// );
+  /// ```
   const IconButton.link({
     super.key,
     required this.icon,
@@ -5250,6 +5330,19 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates a text icon button with plain styling for minimal icon interactions.
+  ///
+  /// Text icon buttons provide the most minimal styling while maintaining clear
+  /// interactive feedback. Perfect for icons that should blend into text content
+  /// or interfaces where minimal visual impact is desired.
+  ///
+  /// Example:
+  /// ```dart
+  /// IconButton.text(
+  ///   icon: Icon(Icons.info_outline, size: 16),
+  ///   onPressed: () => _showTooltip(),
+  /// );
+  /// ```
   const IconButton.text({
     super.key,
     required this.icon,
@@ -5284,6 +5377,19 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates a destructive icon button with warning colors for dangerous actions.
+  ///
+  /// Destructive icon buttons use warning colors (typically red variants) to clearly
+  /// indicate that the icon action will delete, remove, or otherwise negatively
+  /// affect user data. Essential for maintaining clear communication about risky actions.
+  ///
+  /// Example:
+  /// ```dart
+  /// IconButton.destructive(
+  ///   icon: Icon(Icons.delete),
+  ///   onPressed: () => _confirmDelete(),
+  /// );
+  /// ```
   const IconButton.destructive({
     super.key,
     required this.icon,
@@ -5357,16 +5463,128 @@ class IconButton extends StatelessWidget {
   }
 }
 
+/// A widget that provides button style overrides to descendant button widgets.
+///
+/// [ButtonStyleOverride] allows you to customize the appearance of multiple buttons
+/// within a widget subtree by providing style overrides that are automatically applied
+/// to all descendant button widgets. This is particularly useful for theming sections
+/// of your UI or applying consistent styling modifications across button groups.
+///
+/// The widget works by providing a [ButtonStyleOverrideData] through the widget tree
+/// that button widgets automatically detect and apply. Style overrides are applied
+/// on top of the button's base style, allowing for fine-tuned customization without
+/// completely replacing the button's style.
+///
+/// ## Key Features
+/// - **Cascading Overrides**: Styles automatically apply to all descendant buttons
+/// - **Additive Styling**: Overrides are applied on top of existing button styles  
+/// - **Inheritance Support**: Can inherit and combine with parent overrides
+/// - **Selective Overrides**: Override only specific properties (padding, colors, etc.)
+/// - **State-Aware**: Support for different styles based on button states
+///
+/// ## Use Cases
+/// - Theming button sections in dark mode overlays
+/// - Applying consistent padding modifications to button groups
+/// - Customizing button colors for specific interface sections
+/// - Implementing design system variants across components
+///
+/// Example:
+/// ```dart
+/// ButtonStyleOverride(
+///   padding: (context, states, value) => value + EdgeInsets.all(4),
+///   textStyle: (context, states, value) => value.copyWith(
+///     fontWeight: FontWeight.bold,
+///   ),
+///   child: Column(
+///     children: [
+///       Button.primary(child: Text('Bold Primary')),
+///       Button.secondary(child: Text('Bold Secondary')), 
+///     ],
+///   ),
+/// );
+/// ```
 class ButtonStyleOverride extends StatelessWidget {
+  /// Whether to inherit overrides from parent ButtonStyleOverride widgets.
+  ///
+  /// When true, the overrides from this widget are combined with any overrides
+  /// from ancestor ButtonStyleOverride widgets. When false, this widget's
+  /// overrides completely replace any parent overrides.
   final bool inherit;
+
+  /// Override function for button decoration (background, borders, shadows).
+  ///
+  /// Takes the context, current states, and base decoration value, allowing
+  /// modification of background colors, borders, shadows, and border radius.
+  /// Return the modified decoration or the original value unchanged.
   final ButtonStatePropertyDelegate<Decoration>? decoration;
+
+  /// Override function for mouse cursor styling.
+  ///
+  /// Controls what cursor appears when hovering over buttons. Can be used to
+  /// enforce specific cursor types across button groups or disable cursor
+  /// changes entirely by returning a fixed cursor type.
   final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
+
+  /// Override function for button padding.
+  ///
+  /// Modifies the internal padding between button borders and content. Common
+  /// use cases include adding extra padding for touch targets, creating more
+  /// compact button groups, or adjusting spacing for specific design requirements.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
+
+  /// Override function for text styling within buttons.
+  ///
+  /// Controls font properties, colors, sizes, and text decorations. Can be used
+  /// to enforce consistent typography, apply color schemes, or modify text
+  /// properties based on button states.
   final ButtonStatePropertyDelegate<TextStyle>? textStyle;
+
+  /// Override function for icon theme styling within buttons.
+  ///
+  /// Controls icon colors, sizes, and opacity within button content. Useful for
+  /// ensuring icons match text colors, enforcing consistent icon sizing, or
+  /// applying icon-specific styling rules.
   final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
+
+  /// Override function for button margin.
+  ///
+  /// Modifies the external spacing around buttons. Can be used to create
+  /// consistent spacing in button groups, adjust alignment within layouts,
+  /// or apply layout-specific margin adjustments.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
+
+  /// The child widget tree that will receive the button style overrides.
+  ///
+  /// All button widgets within this subtree will automatically apply the
+  /// style overrides provided by this widget. The overrides work additively
+  /// with the button's base styling.
   final Widget child;
 
+  /// Creates a [ButtonStyleOverride] that replaces parent overrides.
+  ///
+  /// This constructor creates style overrides that completely replace any
+  /// overrides from parent ButtonStyleOverride widgets. Use when you need
+  /// complete control over button styling within a specific subtree.
+  ///
+  /// Parameters:
+  /// - [decoration] (optional): Function to override button decoration
+  /// - [mouseCursor] (optional): Function to override mouse cursor
+  /// - [padding] (optional): Function to override button padding  
+  /// - [textStyle] (optional): Function to override text styling
+  /// - [iconTheme] (optional): Function to override icon theme
+  /// - [margin] (optional): Function to override button margin
+  /// - [child] (required): The widget subtree to apply overrides to
+  ///
+  /// Example:
+  /// ```dart
+  /// ButtonStyleOverride(
+  ///   textStyle: (context, states, value) => value.copyWith(
+  ///     color: Colors.blue,
+  ///     fontWeight: FontWeight.w600,
+  ///   ),
+  ///   child: buttonGroup,
+  /// );
+  /// ```
   const ButtonStyleOverride({
     super.key,
     this.decoration,
@@ -5378,6 +5596,25 @@ class ButtonStyleOverride extends StatelessWidget {
     required this.child,
   }) : inherit = false;
 
+  /// Creates a [ButtonStyleOverride] that inherits from parent overrides.
+  ///
+  /// This constructor creates style overrides that combine with any existing
+  /// overrides from ancestor ButtonStyleOverride widgets. The combination
+  /// allows for layered styling where parent overrides are applied first,
+  /// followed by the overrides from this widget.
+  ///
+  /// Use this when you want to add additional styling on top of existing
+  /// theme overrides rather than replacing them entirely.
+  ///
+  /// Parameters: Same as the main constructor.
+  ///
+  /// Example:
+  /// ```dart
+  /// ButtonStyleOverride.inherit(
+  ///   padding: (context, states, value) => value + EdgeInsets.all(2),
+  ///   child: specificButtonGroup,
+  /// );
+  /// ```
   const ButtonStyleOverride.inherit({
     super.key,
     this.decoration,
@@ -5452,6 +5689,19 @@ class ButtonStyleOverride extends StatelessWidget {
   }
 }
 
+/// Data class containing button style override functions.
+///
+/// [ButtonStyleOverrideData] encapsulates the style override functions that can
+/// be applied to button widgets. Each property is a function that takes the current
+/// context, widget states, and base value, then returns a modified value.
+///
+/// This class is used internally by [ButtonStyleOverride] to pass override
+/// functions through the widget tree via the Data inheritance system. Button
+/// widgets automatically detect and apply these overrides when present.
+///
+/// The override functions work additively with the button's base style - they
+/// receive the computed base value and can modify it as needed rather than
+/// replacing it entirely.
 class ButtonStyleOverrideData {
   final ButtonStatePropertyDelegate<Decoration>? decoration;
   final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
