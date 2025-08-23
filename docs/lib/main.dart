@@ -124,9 +124,10 @@ String getReleaseTagName() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (kIsWeb) {
-    SemanticsBinding.instance.ensureSemantics();
-  }
+  // Interactive docs now serves as Widget Catalog
+  // if (kIsWeb) {
+  //   SemanticsBinding.instance.ensureSemantics();
+  // }
   _docs = jsonDecode(await rootBundle.loadString('docs.json'));
   String pubspecYml = await rootBundle.loadString('pubspec.lock');
   var dep = loadYaml(pubspecYml)['packages']['shadcn_flutter']['version'];

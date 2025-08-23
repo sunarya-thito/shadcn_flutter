@@ -14,7 +14,7 @@
 
 🚀 A comprehensive Flutter UI library inspired by shadcn/ui, providing elegant and customizable components for modern app development.
 
-**[📚 Documentation](https://sunarya-thito.github.io/shadcn_flutter/)** • **[📦 pub.dev](https://pub.dev/packages/shadcn_flutter)** • **[💬 Discord](https://discord.gg/ZzfBPQG4sV)**
+**[📚 Widget Catalog](https://sunarya-thito.github.io/shadcn_flutter/)** • **[📦 pub.dev](https://pub.dev/packages/shadcn_flutter)** • **[💬 Discord](https://discord.gg/ZzfBPQG4sV)**
 
 </div>
 
