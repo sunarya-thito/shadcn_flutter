@@ -2,11 +2,76 @@ import 'dart:ui';
 
 import '../../../shadcn_flutter.dart';
 
+/// A widget that applies backdrop blur effects to create glassmorphism-style surfaces.
+///
+/// [SurfaceBlur] wraps child content with a configurable backdrop blur effect
+/// that creates modern glassmorphism appearances by blurring content behind
+/// the surface. This is particularly useful for overlays, cards, navigation
+/// elements, and other surfaces that should integrate smoothly with the background.
+///
+/// The widget uses [BackdropFilter] with [ImageFilter.blur] to achieve the
+/// blur effect while preserving the child content's visibility and interactivity.
+/// Border radius support enables proper clipping for rounded surfaces.
+///
+/// Key features:
+/// - Configurable blur intensity with disabled state (blur = 0)
+/// - Support for custom border radius clipping
+/// - Efficient rendering with conditional blur application
+/// - Proper key management for stable widget identity
+/// - Integration with glassmorphism design patterns
+///
+/// Performance considerations:
+/// - Blur effects can impact rendering performance on lower-end devices
+/// - When surfaceBlur is null or 0, no backdrop filter is applied
+/// - Uses Stack layout only when blur is active
+///
+/// Example:
+/// ```dart
+/// SurfaceBlur(
+///   surfaceBlur: 10.0,
+///   borderRadius: BorderRadius.circular(12),
+///   child: Container(
+///     color: Colors.white.withOpacity(0.8),
+///     padding: EdgeInsets.all(16),
+///     child: Text('Glassmorphism content'),
+///   ),
+/// );
+/// ```
 class SurfaceBlur extends StatefulWidget {
+  /// The child widget to display with backdrop blur effect.
+  ///
+  /// This content appears above the blurred backdrop and maintains full
+  /// interactivity. Typically contains semi-transparent backgrounds to
+  /// achieve proper glassmorphism appearance.
   final Widget child;
+
+  /// The blur intensity for the backdrop effect.
+  ///
+  /// Controls the sigma value for the [ImageFilter.blur] applied to content
+  /// behind the surface. Higher values create more blur. When null or 0,
+  /// no blur effect is applied for optimal performance.
   final double? surfaceBlur;
+
+  /// Border radius for clipping the blur effect.
+  ///
+  /// Defines the shape of the blur clipping region to match rounded container
+  /// corners. When null, no clipping is applied (rectangular blur region).
   final BorderRadiusGeometry? borderRadius;
 
+  /// Creates a [SurfaceBlur] widget.
+  ///
+  /// The [child] parameter is required. The [surfaceBlur] parameter controls
+  /// blur intensity (null or 0 disables blur), and [borderRadius] provides
+  /// optional shape clipping for rounded surfaces.
+  ///
+  /// Example:
+  /// ```dart
+  /// SurfaceBlur(
+  ///   surfaceBlur: 8.0,
+  ///   borderRadius: BorderRadius.circular(16),
+  ///   child: MyGlassmorphismCard(),
+  /// );
+  /// ```
   const SurfaceBlur({
     super.key,
     required this.child,
