@@ -84,7 +84,7 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 
 - [ ] App Bar
 - [x] Card
-- [ ] Card Image
+- [x] Card Image
 - [x] Carousel
 - [x] Divider
 - [x] Resizable
@@ -92,8 +92,8 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [ ] Sortable
 - [ ] SortableDragHandle
 - [x] Steps
-- [ ] Stepper
-- [ ] Timeline
+- [x] Stepper
+- [x] Timeline
 
 ## 🧭 Navigation Components
 
@@ -106,7 +106,7 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 - [ ] Navigation Rail
 - [ ] Navigation Sidebar
 - [x] Pagination
-- [ ] Switcher *(Experimental)*
+- [x] Switcher *(Experimental)*
 - [ ] Tab List
 - [ ] Tab Pane
 - [x] Tabs
