@@ -83,12 +83,12 @@ A comprehensive list of components provided by the shadcn_flutter package, organ
 ## 📐 Layout Components
 
 - [ ] App Bar
-- [ ] Card
+- [x] Card
 - [ ] Card Image
 - [ ] Carousel
-- [ ] Divider
+- [x] Divider
 - [ ] Resizable
-- [ ] Scaffold
+- [x] Scaffold
 - [ ] Sortable
 - [ ] SortableDragHandle
 - [ ] Steps
