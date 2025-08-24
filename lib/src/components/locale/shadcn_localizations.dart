@@ -4,10 +4,34 @@ import 'package:flutter/foundation.dart';
 
 import '../../../shadcn_flutter.dart';
 
+/// Localizations delegate for the shadcn_flutter framework.
+///
+/// This delegate provides localized strings and formatting for all shadcn_flutter
+/// components. It integrates with Flutter's localization system to provide
+/// context-aware text content and formatting across different locales.
+///
+/// The delegate uses [DefaultShadcnLocalizations] as the implementation,
+/// providing English text by default. Custom localizations can be provided
+/// by extending [ShadcnLocalizations] and creating custom delegates.
+///
+/// Example:
+/// ```dart
+/// MaterialApp(
+///   localizationsDelegates: [
+///     ShadcnLocalizationsDelegate.delegate,
+///     GlobalMaterialLocalizations.delegate,
+///     GlobalWidgetsLocalizations.delegate,
+///   ],
+///   supportedLocales: [Locale('en', 'US')],
+/// )
+/// ```
 class ShadcnLocalizationsDelegate
     extends LocalizationsDelegate<ShadcnLocalizations> {
+  /// Shared instance of the shadcn_flutter localizations delegate.
   static const ShadcnLocalizationsDelegate delegate =
       ShadcnLocalizationsDelegate();
+  
+  /// Creates a [ShadcnLocalizationsDelegate].
   const ShadcnLocalizationsDelegate();
 
   @override
@@ -28,16 +52,83 @@ const _fileByteUnits =
 const _fileBitUnits = SizeUnitLocale(
     1024, ['Bi', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']);
 
+/// Configuration for formatting file sizes with different unit systems.
+///
+/// [SizeUnitLocale] provides comprehensive control over how file sizes are
+/// displayed, including the base unit system (1024 vs 1000), unit labels,
+/// and digit grouping separators for different locales.
+///
+/// Supports both binary (1024-based) and decimal (1000-based) unit systems
+/// commonly used for file sizes, with appropriate unit labels and formatting.
+///
+/// Example:
+/// ```dart
+/// // Custom binary units for European locales
+/// final europeanUnits = SizeUnitLocale(
+///   1024, 
+///   ['B', 'KB', 'MB', 'GB', 'TB'], 
+///   separator: ' ',
+/// );
+/// ```
 class SizeUnitLocale {
+  /// The base unit for size calculations.
+  ///
+  /// Typically 1024 for binary file sizes or 1000 for decimal sizes.
+  /// This base is raised to powers to calculate larger units.
   final int base;
+  
+  /// List of unit labels from smallest to largest.
+  ///
+  /// Each position represents the next power of the base. For example,
+  /// ['B', 'KB', 'MB'] represents bytes, kilobytes, and megabytes.
   final List<String> units;
-  // separator for digit grouping, e.g. 1,000,000
+  
+  /// Separator character for digit grouping in large numbers.
+  ///
+  /// Used to format large numbers with thousands separators, e.g.,
+  /// '1,000,000' with separator ',' or '1 000 000' with separator ' '.
   final String separator;
+  /// Creates a [SizeUnitLocale] with base, units, and separator.
+  ///
+  /// Parameters:
+  /// - [base] (int, required): Base for unit calculations (typically 1024 or 1000)
+  /// - [units] (List<String>, required): Unit labels from smallest to largest
+  /// - [separator] (String, default: ','): Digit grouping separator
+  ///
+  /// Example:
+  /// ```dart
+  /// SizeUnitLocale(
+  ///   1024, 
+  ///   ['B', 'KB', 'MB', 'GB'], 
+  ///   separator: ' ',
+  /// )
+  /// ```
   const SizeUnitLocale(this.base, this.units, {this.separator = ','});
 
+  /// Standard file byte units using binary (1024-based) system.
+  ///
+  /// Uses the conventional binary file size units: B, KB, MB, GB, TB, PB, EB, ZB, YB.
   static const SizeUnitLocale fileBytes = _fileByteUnits;
+  
+  /// Standard file bit units using binary (1024-based) system with 'i' notation.
+  ///
+  /// Uses binary units with proper 'i' notation: Bi, KiB, MiB, GiB, TiB, PiB, EiB, ZiB, YiB.
   static const SizeUnitLocale fileBits = _fileBitUnits;
 
+  /// Returns the appropriate unit label for a given byte value.
+  ///
+  /// Calculates which unit label should be used based on the magnitude
+  /// of the value and the configured base system.
+  ///
+  /// Parameters:
+  /// - [value] (int): The size value to determine the unit for
+  ///
+  /// Returns: The appropriate unit string (e.g., 'KB', 'MB', 'GB').
+  ///
+  /// Example:
+  /// ```dart
+  /// final unit = SizeUnitLocale.fileBytes.getUnit(1048576); // Returns 'MB'
+  /// ```
   String getUnit(int value) {
     if (value <= 0) return '0 ${units[0]}';
     var log10 = _log10(value);
@@ -47,10 +138,31 @@ class SizeUnitLocale {
   }
 }
 
+/// Calculates base-10 logarithm for unit calculations.
+///
+/// Used internally for determining the appropriate unit scale for file sizes.
+/// This avoids dependency on dart:math for a simple logarithm calculation.
 double _log10(num x) {
   return log(x) / ln10;
 }
 
+/// Formats a file size value according to the specified unit locale.
+///
+/// Converts raw byte values into human-readable format with appropriate units
+/// and formatting. Automatically selects the most appropriate unit based on
+/// the magnitude of the value.
+///
+/// Parameters:
+/// - [bytes] (int): The file size in bytes to format
+/// - [unit] (SizeUnitLocale): The unit system and formatting configuration
+///
+/// Returns: A formatted string like '1.5 MB' or '2.3 GB'.
+///
+/// Example:
+/// ```dart
+/// final formatted = formatFileSize(1048576, SizeUnitLocale.fileBytes);
+/// // Returns '1 MB'
+/// ```
 String formatFileSize(int bytes, SizeUnitLocale unit) {
   if (bytes <= 0) return '0 ${unit.units[0]}';
   final base = unit.base;
@@ -64,18 +176,42 @@ String formatFileSize(int bytes, SizeUnitLocale unit) {
   return '$formattedValue ${units[digitGroups]}';
 }
 
+/// Extracts the year from a DateTime.
+///
+/// Helper function for DatePart.year getter functionality.
 int _getYear(DateTime dateTime) => dateTime.year;
+
+/// Extracts the month from a DateTime.
+///
+/// Helper function for DatePart.month getter functionality.
 int _getMonth(DateTime dateTime) => dateTime.month;
+
+/// Extracts the day from a DateTime.
+///
+/// Helper function for DatePart.day getter functionality.
 int _getDay(DateTime dateTime) => dateTime.day;
 
+/// Computes valid year range (unrestricted).
+///
+/// Helper function for DatePart.year range computation.
+/// Returns (null, null) indicating no inherent year restrictions.
 (int? min, int? max) _computeYearValueRange(Map<DatePart, int> values) {
   return (null, null);
 }
 
+/// Computes valid month range (1-12).
+///
+/// Helper function for DatePart.month range computation.
+/// Always returns (1, 12) regardless of other date components.
 (int? min, int? max) _computeMonthValueRange(Map<DatePart, int> values) {
   return (1, 12);
 }
 
+/// Computes valid day range based on year and month.
+///
+/// Helper function for DatePart.day range computation.
+/// Calculates the number of days in the specified month and year,
+/// accounting for leap years and varying month lengths.
 (int? min, int? max) _computeDayValueRange(Map<DatePart, int> values) {
   final year = values[DatePart.year];
   final month = values[DatePart.month];
@@ -84,17 +220,63 @@ int _getDay(DateTime dateTime) => dateTime.day;
   return (1, daysInMonth);
 }
 
+/// Enumeration of date parts for date formatting and validation.
+///
+/// [DatePart] represents different components of a date (year, month, day)
+/// with associated parsing, validation, and range computation capabilities.
+/// Each part knows how to extract its value from a DateTime and compute
+/// valid ranges based on other date components.
+///
+/// Used primarily in date input components and date pickers for structured
+/// date entry and validation.
+///
+/// Example:
+/// ```dart
+/// final year = DatePart.year.getter(DateTime.now()); // Extract year
+/// final (min, max) = DatePart.day.computeValueRange({'year': 2024, 'month': 2});
+/// // Returns (1, 29) for February 2024
+/// ```
 enum DatePart {
+  /// Year component of a date.
+  ///
+  /// Extracts and validates 4-digit year values. Has no inherent range
+  /// constraints, allowing for historical and future dates.
   year(_getYear, _computeYearValueRange, length: 4),
+  
+  /// Month component of a date.
+  ///
+  /// Extracts and validates month values with a fixed range of 1-12.
+  /// Used for month selection and validation in date inputs.
   month(_getMonth, _computeMonthValueRange),
-  day(_getDay, _computeDayValueRange),
-  ;
+  
+  /// Day component of a date.
+  ///
+  /// Extracts and validates day values with dynamic range based on the
+  /// specific year and month to account for different month lengths.
+  day(_getDay, _computeDayValueRange);
 
+  /// Function to extract this date part's value from a DateTime.
   final int Function(DateTime dateTime) getter;
+  
+  /// Expected length in characters for this date part.
+  ///
+  /// Used for formatting and input validation. Year is 4 characters,
+  /// month and day are 2 characters with leading zeros if needed.
   final int length;
+  
+  /// Function to compute the valid value range for this date part.
+  ///
+  /// Takes a map of other date part values and returns the minimum and
+  /// maximum valid values for this part given those constraints.
   final (int? min, int? max) Function(Map<DatePart, int> values)
       computeValueRange;
 
+  /// Creates a [DatePart] with extraction and validation functions.
+  ///
+  /// Parameters:
+  /// - [getter] (Function): Extracts the value from a DateTime
+  /// - [computeValueRange] (Function): Computes valid range for this part
+  /// - [length] (int): Expected character length (defaults to 2)
   const DatePart(this.getter, this.computeValueRange, {this.length = 2});
 }
 
