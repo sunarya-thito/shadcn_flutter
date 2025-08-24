@@ -1,11 +1,41 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// Theme data for [MultipleChoice] and [MultipleAnswer].
+/// Theme configuration for multiple choice and multiple answer components.
+///
+/// [MultipleChoiceTheme] provides behavioral configuration for components that
+/// handle multiple selection scenarios, such as radio groups, checkbox lists,
+/// and choice widgets. It defines common behaviors that affect how users interact
+/// with selection-based components.
+///
+/// The theme focuses on interaction patterns rather than visual styling,
+/// controlling behaviors like whether selections can be deselected and how
+/// multiple selections are handled across different component types.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<MultipleChoiceTheme>(
+///   data: MultipleChoiceTheme(
+///     allowUnselect: true,  // Users can deselect items
+///   ),
+///   child: MyMultipleChoiceWidget(),
+/// )
+/// ```
 class MultipleChoiceTheme {
-  /// Whether selections can be unselected.
+  /// Whether selected items can be deselected by clicking them again.
+  ///
+  /// When true, users can click on already-selected items to deselect them,
+  /// providing more flexible interaction patterns. When false, selected items
+  /// remain selected until a different item is chosen (useful for radio
+  /// button-style components).
+  ///
+  /// When null, uses component-specific defaults which typically allow
+  /// deselection for multi-select components and prevent it for single-select.
   final bool? allowUnselect;
 
-  /// Creates a [MultipleChoiceTheme].
+  /// Creates a [MultipleChoiceTheme] with optional behavior configuration.
+  ///
+  /// Parameters:
+  /// - [allowUnselect]: Whether selections can be undone by re-clicking
   const MultipleChoiceTheme({this.allowUnselect});
 
   /// Returns a copy of this theme with the given fields replaced by the

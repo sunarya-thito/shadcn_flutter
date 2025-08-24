@@ -1,26 +1,74 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// Theme data for customizing [StarRating] widget appearance.
+/// Theme configuration for [StarRating] widget appearance and behavior.
 ///
-/// This class defines the visual properties that can be applied to
-/// [StarRating] widgets, including colors for filled and unfilled stars,
-/// star sizing, and spacing between stars. These properties can be set
-/// at the theme level to provide consistent styling across the application.
+/// [StarRatingTheme] provides comprehensive styling options for star rating
+/// components including colors for filled and unfilled states, star sizing,
+/// and spacing between individual stars. It integrates with the shadcn_flutter
+/// theming system to ensure consistent star rating styling across applications.
+///
+/// The theme supports customization of visual feedback, accessibility, and
+/// responsive sizing to create star rating interfaces that match your
+/// application's design system and user experience requirements.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<StarRatingTheme>(
+///   data: StarRatingTheme(
+///     activeColor: Colors.amber,
+///     backgroundColor: Colors.grey.shade300,
+///     starSize: 24.0,
+///     starSpacing: 4.0,
+///   ),
+///   child: StarRating(
+///     value: 4.5,
+///     onChanged: (rating) => handleRatingChange(rating),
+///   ),
+/// )
+/// ```
 class StarRatingTheme {
-  /// The color of the filled portion of the stars.
+  /// Color used for the filled portion of stars.
+  ///
+  /// This color represents the active rating value and should provide
+  /// clear visual feedback for the user's rating selection. When null,
+  /// uses the theme's primary or accent color for good visibility.
   final Color? activeColor;
 
-  /// The color of the unfilled portion of the stars.
+  /// Color used for the unfilled portion of stars.
+  ///
+  /// This color represents the inactive or unselected portion of the rating
+  /// scale. Should provide sufficient contrast with the active color while
+  /// remaining subtle. When null, uses the theme's muted color.
   final Color? backgroundColor;
 
-  /// The size of each star.
+  /// Size of each individual star in logical pixels.
+  ///
+  /// Controls both the width and height of star icons. Consider touch target
+  /// guidelines when setting star size - larger sizes improve accessibility
+  /// on touch devices. When null, uses a default size appropriate for the
+  /// current theme scaling.
   final double? starSize;
 
-  /// The spacing between stars.
+  /// Horizontal spacing between adjacent stars in logical pixels.
+  ///
+  /// Controls the gap between individual star icons in the rating display.
+  /// Proper spacing improves visual clarity and makes individual stars easier
+  /// to distinguish and tap. When null, uses a default spacing proportional
+  /// to the star size.
   final double? starSpacing;
 
-  /// Creates a [StarRatingTheme].
+  /// Creates a [StarRatingTheme] with optional styling properties.
+  ///
+  /// All parameters are optional and fall back to theme defaults when null.
+  /// Use this constructor to customize the appearance of star rating components
+  /// to match your application's visual design.
+  ///
+  /// Parameters:
+  /// - [activeColor]: Color for filled stars
+  /// - [backgroundColor]: Color for unfilled stars  
+  /// - [starSize]: Size of each star icon
+  /// - [starSpacing]: Gap between stars
   const StarRatingTheme({
     this.activeColor,
     this.backgroundColor,

@@ -2,23 +2,101 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Builder function for creating custom keyboard key display widgets.
+///
+/// This function is called for each keyboard key that needs to be displayed
+/// in a keyboard shortcut widget. It allows complete customization of how
+/// individual keys are rendered visually.
+///
+/// Parameters:
+/// - [context] (BuildContext): Build context for accessing theme and localization
+/// - [key] (LogicalKeyboardKey): The keyboard key to display
+///
+/// Returns: Widget - A widget representing the keyboard key
+///
+/// Example:
+/// ```dart
+/// KeyboardShortcutDisplayBuilder customKeyBuilder = (context, key) {
+///   return Container(
+///     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+///     decoration: BoxDecoration(
+///       color: Colors.grey.shade200,
+///       borderRadius: BorderRadius.circular(4),
+///       border: Border.all(color: Colors.grey.shade400),
+///     ),
+///     child: Text(
+///       key.debugName ?? key.keyLabel,
+///       style: TextStyle(fontFamily: 'monospace'),
+///     ),
+///   );
+/// };
+/// ```
 typedef KeyboardShortcutDisplayBuilder = Widget Function(
   BuildContext context,
   LogicalKeyboardKey key,
 );
 
-/// Theme for keyboard shortcut displays.
+/// Theme configuration for keyboard shortcut display components.
+///
+/// [KeyboardShortcutTheme] provides styling options for keyboard shortcut
+/// widgets including spacing between keys, padding within key displays, and
+/// shadow effects. It ensures consistent visual presentation of keyboard
+/// shortcuts across the application.
+///
+/// The theme focuses on creating keyboard key representations that are
+/// immediately recognizable and visually distinct, helping users understand
+/// keyboard shortcuts at a glance.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<KeyboardShortcutTheme>(
+///   data: KeyboardShortcutTheme(
+///     spacing: 4.0,
+///     keyPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+///     keyShadow: [
+///       BoxShadow(
+///         color: Colors.black26,
+///         offset: Offset(0, 2),
+///         blurRadius: 4,
+///       ),
+///     ],
+///   ),
+///   child: KeyboardShortcut(keys: [LogicalKeyboardKey.controlLeft, LogicalKeyboardKey.keyS]),
+/// )
+/// ```
 class KeyboardShortcutTheme {
-  /// Spacing between keys.
+  /// Horizontal spacing between individual key displays.
+  ///
+  /// Controls the gap between adjacent keyboard keys in the shortcut display.
+  /// Proper spacing helps users distinguish individual keys and improves
+  /// visual clarity. When null, uses a default spacing appropriate for
+  /// the current theme.
   final double? spacing;
 
-  /// Padding inside each key display.
+  /// Internal padding applied to each keyboard key display.
+  ///
+  /// Controls the space between the key label and the key's visual border.
+  /// Adequate padding ensures key labels are readable and the keys appear
+  /// properly sized. When null, uses default padding based on key size.
   final EdgeInsetsGeometry? keyPadding;
 
-  /// Shadow applied to key displays.
+  /// Shadow effects applied to keyboard key displays.
+  ///
+  /// Creates depth and visual separation for keyboard keys, making them
+  /// appear as physical keyboard keys. When null, uses subtle default
+  /// shadows that provide depth without being distracting.
   final List<BoxShadow>? keyShadow;
 
-  /// Creates a [KeyboardShortcutTheme].
+  /// Creates a [KeyboardShortcutTheme] with optional styling properties.
+  ///
+  /// All parameters are optional and fall back to theme defaults when null.
+  /// Use this constructor to customize the appearance of keyboard shortcut
+  /// displays to match your application's design system.
+  ///
+  /// Parameters:
+  /// - [spacing]: Gap between individual key displays
+  /// - [keyPadding]: Internal padding for each key
+  /// - [keyShadow]: Shadow effects for key depth
   const KeyboardShortcutTheme({
     this.spacing,
     this.keyPadding,
@@ -51,11 +129,53 @@ class KeyboardShortcutTheme {
   int get hashCode => Object.hash(spacing, keyPadding, keyShadow);
 }
 
+/// Handle for managing custom keyboard key display rendering.
+///
+/// [KeyboardShortcutDisplayHandle] wraps a [KeyboardShortcutDisplayBuilder]
+/// function to provide a convenient interface for rendering custom keyboard
+/// key displays. It acts as a bridge between the shortcut widget and custom
+/// key rendering logic.
+///
+/// This handle allows components to customize how individual keyboard keys
+/// are displayed while maintaining a consistent interface for key rendering
+/// across different shortcut contexts.
+///
+/// Example:
+/// ```dart
+/// final customHandle = KeyboardShortcutDisplayHandle(
+///   (context, key) => Container(
+///     padding: EdgeInsets.all(6),
+///     decoration: BoxDecoration(
+///       color: Theme.of(context).colorScheme.secondary,
+///       borderRadius: BorderRadius.circular(4),
+///     ),
+///     child: Text(key.keyLabel),
+///   ),
+/// );
+/// 
+/// // Use with keyboard shortcut widgets
+/// final display = customHandle.buildKeyboardDisplay(context, LogicalKeyboardKey.enter);
+/// ```
 class KeyboardShortcutDisplayHandle {
+  /// The builder function for creating keyboard key displays.
   final KeyboardShortcutDisplayBuilder _builder;
 
+  /// Creates a [KeyboardShortcutDisplayHandle] with the specified builder.
+  ///
+  /// Parameters:
+  /// - [_builder] (KeyboardShortcutDisplayBuilder): Function to render key displays
   const KeyboardShortcutDisplayHandle(this._builder);
 
+  /// Builds a widget representation of the specified keyboard key.
+  ///
+  /// Uses the internal builder function to create a visual representation
+  /// of the keyboard key appropriate for the current context and theme.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext): Build context for theme access
+  /// - [key] (LogicalKeyboardKey): The key to display
+  ///
+  /// Returns: Widget - The visual representation of the keyboard key
   Widget buildKeyboardDisplay(BuildContext context, LogicalKeyboardKey key) {
     return _builder(context, key);
   }
