@@ -16,15 +16,15 @@ import '../../../shadcn_flutter.dart';
 /// Example:
 /// ```dart
 /// final toggleController = ToggleController(false);
-/// 
+///
 /// // Listen to changes
 /// toggleController.addListener(() {
 ///   print('Toggle state: ${toggleController.value}');
 /// });
-/// 
+///
 /// // Toggle the state programmatically
 /// toggleController.toggle();
-/// 
+///
 /// // Set specific value
 /// toggleController.value = true;
 /// ```
@@ -39,7 +39,7 @@ class ToggleController extends ValueNotifier<bool>
   /// ```dart
   /// // Create controller starting in off state
   /// final controller = ToggleController();
-  /// 
+  ///
   /// // Create controller starting in on state
   /// final controller = ToggleController(true);
   /// ```
@@ -77,7 +77,7 @@ class ToggleController extends ValueNotifier<bool>
 /// Example:
 /// ```dart
 /// final controller = ToggleController(false);
-/// 
+///
 /// ControlledToggle(
 ///   controller: controller,
 ///   child: Row(
@@ -202,7 +202,7 @@ class ControlledToggle extends StatelessWidget with ControlledComponent<bool> {
 /// Example:
 /// ```dart
 /// bool isEnabled = false;
-/// 
+///
 /// Toggle(
 ///   value: isEnabled,
 ///   onChanged: (enabled) => setState(() => isEnabled = enabled),
@@ -211,31 +211,31 @@ class ControlledToggle extends StatelessWidget with ControlledComponent<bool> {
 /// ```
 class Toggle extends StatefulWidget {
   /// The current toggle state of the button.
-  /// 
+  ///
   /// When true, the button appears in its selected/active state. When false,
   /// it appears in its unselected/inactive state.
   final bool value;
-  
+
   /// Callback invoked when the toggle state changes.
-  /// 
+  ///
   /// Called with the new boolean value when the user taps the toggle button.
   /// Set to null to disable user interaction.
   final ValueChanged<bool>? onChanged;
-  
+
   /// The widget to display as the button's content.
-  /// 
+  ///
   /// Typically a [Text] widget, but can be any widget including rows with
   /// icons and text, custom graphics, or complex layouts.
   final Widget child;
-  
+
   /// The visual styling configuration for the button.
-  /// 
-  /// Defines colors, borders, padding, and other visual properties. 
+  ///
+  /// Defines colors, borders, padding, and other visual properties.
   /// Defaults to [ButtonStyle.ghost] for a subtle appearance.
   final ButtonStyle style;
-  
+
   /// Whether the toggle button is enabled for user interaction.
-  /// 
+  ///
   /// When false, the button ignores touch events and appears in a disabled
   /// visual state. When null, inherits from nearest [Form] or defaults to enabled.
   final bool? enabled;
@@ -769,6 +769,7 @@ class Button extends StatefulWidget {
   /// When true, removes the visual focus indicator that appears when the button
   /// is focused via keyboard navigation. Use carefully as this affects accessibility.
   final bool disableFocusOutline;
+
   /// Creates a [Button] with custom styling.
   ///
   /// This is the base constructor that allows complete customization of the button's
@@ -1530,7 +1531,7 @@ class ButtonSize {
 ///
 /// Example:
 /// ```dart
-/// ButtonStatePropertyDelegate<EdgeInsets> paddingOverride = 
+/// ButtonStatePropertyDelegate<EdgeInsets> paddingOverride =
 ///   (context, states, baseValue) {
 ///     // Add extra padding when button is pressed
 ///     if (states.contains(WidgetState.pressed)) {
@@ -1666,7 +1667,7 @@ EdgeInsets _densityComfortable(EdgeInsets padding) {
 enum ButtonShape {
   /// Rectangular button with theme-appropriate rounded corners.
   rectangle,
-  
+
   /// Circular button with equal width and height.
   circle,
 }
@@ -1708,19 +1709,19 @@ typedef ButtonStateProperty<T> = T Function(
 abstract class AbstractButtonStyle {
   /// The decoration (background, border, shadows) for different button states.
   ButtonStateProperty<Decoration> get decoration;
-  
+
   /// The mouse cursor displayed when hovering over the button.
   ButtonStateProperty<MouseCursor> get mouseCursor;
-  
+
   /// The internal padding between the button's border and content.
   ButtonStateProperty<EdgeInsetsGeometry> get padding;
-  
+
   /// The text styling applied to text content within the button.
   ButtonStateProperty<TextStyle> get textStyle;
-  
+
   /// The icon theme applied to icon content within the button.
   ButtonStateProperty<IconThemeData> get iconTheme;
-  
+
   /// The external margin around the button.
   ButtonStateProperty<EdgeInsetsGeometry> get margin;
 }
@@ -1740,7 +1741,7 @@ abstract class AbstractButtonStyle {
 /// ButtonStyle.primary()
 /// ButtonStyle.secondary()
 /// ButtonStyle.outline()
-/// 
+///
 /// // Custom configuration
 /// ButtonStyle(
 ///   variance: ButtonVariance.primary,
@@ -1752,13 +1753,13 @@ abstract class AbstractButtonStyle {
 class ButtonStyle implements AbstractButtonStyle {
   /// The visual style variance (primary, secondary, outline, ghost, etc.).
   final AbstractButtonStyle variance;
-  
+
   /// The size configuration affecting padding and text scaling.
   final ButtonSize size;
-  
+
   /// The density configuration affecting padding compression/expansion.
   final ButtonDensity density;
-  
+
   /// The shape configuration (rectangle or circle).
   final ButtonShape shape;
 
@@ -1767,7 +1768,7 @@ class ButtonStyle implements AbstractButtonStyle {
   /// Parameters:
   /// - [variance] (AbstractButtonStyle, required): The visual style variant
   /// - [size] (ButtonSize, default: normal): Size configuration
-  /// - [density] (ButtonDensity, default: normal): Density configuration  
+  /// - [density] (ButtonDensity, default: normal): Density configuration
   /// - [shape] (ButtonShape, default: rectangle): Shape configuration
   const ButtonStyle({
     required this.variance,
@@ -2209,7 +2210,7 @@ class ButtonStyle implements AbstractButtonStyle {
 ///
 /// [ButtonTheme] allows components to provide theme overrides for button styling
 /// by specifying delegates that can modify or replace the base button style properties.
-/// 
+///
 /// Each property is optional and uses a [ButtonStatePropertyDelegate] which receives
 /// the context, states, and base resolved value, allowing for sophisticated theme
 /// customization that can build upon or completely replace base styling.
@@ -2222,10 +2223,10 @@ class ButtonStyle implements AbstractButtonStyle {
 ///     padding: _customPadding,
 ///   );
 /// }
-/// 
+///
 /// static Decoration _customDecoration(
-///   BuildContext context, 
-///   Set<WidgetState> states, 
+///   BuildContext context,
+///   Set<WidgetState> states,
 ///   Decoration base,
 /// ) {
 ///   // Modify or replace base decoration
@@ -2235,19 +2236,19 @@ class ButtonStyle implements AbstractButtonStyle {
 abstract class ButtonTheme {
   /// Optional decorator for button decoration (background, border, shadows).
   final ButtonStatePropertyDelegate<Decoration>? decoration;
-  
+
   /// Optional decorator for mouse cursor on hover.
   final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
-  
+
   /// Optional decorator for internal button padding.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
-  
+
   /// Optional decorator for text styling within the button.
   final ButtonStatePropertyDelegate<TextStyle>? textStyle;
-  
+
   /// Optional decorator for icon theme within the button.
   final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
-  
+
   /// Optional decorator for external button margin.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
 
@@ -2407,7 +2408,7 @@ extension ShapeDecorationExtension on ShapeDecoration {
   ///
   /// Parameters:
   /// - [shape] (ShapeBorder?, optional): New shape border, or null to keep current
-  /// - [color] (Color?, optional): New fill color, or null to keep current  
+  /// - [color] (Color?, optional): New fill color, or null to keep current
   /// - [gradient] (Gradient?, optional): New gradient, or null to keep current
   /// - [shadows] (List<BoxShadow>?, optional): New shadows, or null to keep current
   /// - [image] (DecorationImage?, optional): New background image, or null to keep current
@@ -2952,7 +2953,7 @@ class CardButtonTheme extends ButtonTheme {
 ///
 /// The class provides predefined variants matching the shadcn design system:
 /// - [primary]: High-emphasis actions with filled background
-/// - [secondary]: Medium-emphasis actions with subtle background  
+/// - [secondary]: Medium-emphasis actions with subtle background
 /// - [outline]: Actions with border emphasis
 /// - [ghost]: Minimal actions with hover states
 /// - [link]: Text-like actions with underline
@@ -2974,7 +2975,7 @@ class CardButtonTheme extends ButtonTheme {
 ///   onPressed: () => save(),
 ///   child: Text('Save'),
 /// );
-/// 
+///
 /// Button(
 ///   style: ButtonVariance.outline,
 ///   onPressed: () => cancel(),
@@ -2998,7 +2999,7 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
-  
+
   /// Secondary button style for supporting actions.
   ///
   /// Provides medium visual emphasis with subtle background fill, suitable
@@ -3015,7 +3016,7 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
-  
+
   /// Outline button style with border emphasis.
   ///
   /// Features a transparent background with visible border, providing clear
@@ -3032,7 +3033,7 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
-  
+
   /// Ghost button style with minimal visual presence.
   ///
   /// Provides subtle hover effects without default background or border,
@@ -3049,7 +3050,7 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
-  
+
   /// Link button style resembling clickable text links.
   ///
   /// Styled to appear as hyperlinks with underline decoration and link colors,
@@ -3066,7 +3067,7 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
-  
+
   /// Text button style for minimal, text-only actions.
   ///
   /// Appears as plain text with subtle hover effects, suitable for actions
@@ -3083,7 +3084,7 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
-  
+
   /// Destructive button style for dangerous or irreversible actions.
   ///
   /// Uses warning colors (typically red-based) to signal potentially harmful
@@ -3189,23 +3190,23 @@ class ButtonVariance implements AbstractButtonStyle {
   /// The decoration (background, border, shadows) applied based on button state.
   @override
   final ButtonStateProperty<Decoration> decoration;
-  
+
   /// The mouse cursor displayed when hovering over the button.
   @override
   final ButtonStateProperty<MouseCursor> mouseCursor;
-  
+
   /// The internal padding between the button border and content.
   @override
   final ButtonStateProperty<EdgeInsetsGeometry> padding;
-  
+
   /// The text styling applied to text content within the button.
   @override
   final ButtonStateProperty<TextStyle> textStyle;
-  
+
   /// The icon theme data applied to icons within the button.
   @override
   final ButtonStateProperty<IconThemeData> iconTheme;
-  
+
   /// The external margin around the button.
   @override
   final ButtonStateProperty<EdgeInsetsGeometry> margin;
@@ -3270,7 +3271,7 @@ class ButtonVariance implements AbstractButtonStyle {
 /// ```dart
 /// // Create a constant red color for all button states
 /// final redColor = ButtonStylePropertyAll(Colors.red);
-/// 
+///
 /// // Use in button styling
 /// ButtonStyle(
 ///   backgroundColor: redColor, // Always red, regardless of state
@@ -3294,7 +3295,7 @@ class ButtonStylePropertyAll<T> {
   ///
   /// Parameters:
   /// - [context]: Build context (ignored)
-  /// - [states]: Button widget states (ignored)  
+  /// - [states]: Button widget states (ignored)
   /// - [value]: Base value (ignored, replaced with stored value)
   T call(BuildContext context, Set<WidgetState> states, T value) {
     return this.value;
@@ -3511,9 +3512,6 @@ extension ButtonStyleExtension on AbstractButtonStyle {
     );
   }
 }
-
-typedef ButtonStatePropertyDelegate<T> = T Function(
-    BuildContext context, Set<WidgetState> states, T value);
 
 class _CopyWithButtonStyle implements AbstractButtonStyle {
   final ButtonStatePropertyDelegate<Decoration>? _decoration;
@@ -4138,7 +4136,7 @@ class PrimaryButton extends StatelessWidget {
   /// - [onPressed] (VoidCallback?, optional): Primary action callback
   /// - [enabled] (bool?, optional): Whether button accepts input
   /// - [leading] (Widget?, optional): Widget displayed before main content
-  /// - [trailing] (Widget?, optional): Widget displayed after main content  
+  /// - [trailing] (Widget?, optional): Widget displayed after main content
   /// - [alignment] (AlignmentGeometry?, optional): Content alignment within button
   /// - [size] (ButtonSize, default: normal): Size variant for button dimensions
   /// - [density] (ButtonDensity, default: normal): Spacing density setting
@@ -4225,8 +4223,8 @@ class PrimaryButton extends StatelessWidget {
 /// A convenient secondary button widget with muted styling for supporting actions.
 ///
 /// [SecondaryButton] provides a simplified API for creating secondary action buttons
-/// with preset secondary styling. It wraps the base [Button] widget with 
-/// [ButtonStyle.secondary] and exposes all commonly-used parameters as direct 
+/// with preset secondary styling. It wraps the base [Button] widget with
+/// [ButtonStyle.secondary] and exposes all commonly-used parameters as direct
 /// properties for streamlined development.
 ///
 /// Secondary buttons use muted background colors and medium contrast, making them
@@ -4383,7 +4381,7 @@ class SecondaryButton extends StatelessWidget {
 /// shouldn't compete with primary actions. The border treatment provides definition
 /// while the transparent interior keeps visual weight appropriate for supporting roles.
 ///
-/// ## Key Features  
+/// ## Key Features
 /// - **Preset Outline Styling**: Automatic outline appearance with theme colors
 /// - **Excellent Contrast**: Clear visibility across light and dark themes
 /// - **Secondary Action Design**: Appropriate visual weight for supporting actions
@@ -4510,7 +4508,7 @@ class OutlineButton extends StatelessWidget {
 ///
 /// ## Key Features
 /// - **Minimal Visual Impact**: Nearly invisible until interaction
-/// - **Subtle State Feedback**: Gentle hover and focus effects  
+/// - **Subtle State Feedback**: Gentle hover and focus effects
 /// - **Content Integration**: Blends naturally with surrounding text and content
 /// - **Flexible Usage**: Perfect for toolbars, navigation, and utility functions
 /// - **Theme Adaptive**: Respects theme colors while maintaining subtlety
@@ -5348,7 +5346,7 @@ class CardButton extends StatelessWidget {
 /// ## Usage Patterns
 /// Icon buttons are commonly used for:
 /// - Toolbar actions and controls
-/// - Floating action buttons and quick actions  
+/// - Floating action buttons and quick actions
 /// - Navigation elements and menu triggers
 /// - Form controls like clear, visibility toggle
 /// - Media controls like play, pause, skip
@@ -5834,7 +5832,7 @@ class IconButton extends StatelessWidget {
 ///
 /// ## Key Features
 /// - **Cascading Overrides**: Styles automatically apply to all descendant buttons
-/// - **Additive Styling**: Overrides are applied on top of existing button styles  
+/// - **Additive Styling**: Overrides are applied on top of existing button styles
 /// - **Inheritance Support**: Can inherit and combine with parent overrides
 /// - **Selective Overrides**: Override only specific properties (padding, colors, etc.)
 /// - **State-Aware**: Support for different styles based on button states
@@ -5855,7 +5853,7 @@ class IconButton extends StatelessWidget {
 ///   child: Column(
 ///     children: [
 ///       Button.primary(child: Text('Bold Primary')),
-///       Button.secondary(child: Text('Bold Secondary')), 
+///       Button.secondary(child: Text('Bold Secondary')),
 ///     ],
 ///   ),
 /// );
@@ -5926,7 +5924,7 @@ class ButtonStyleOverride extends StatelessWidget {
   /// Parameters:
   /// - [decoration] (optional): Function to override button decoration
   /// - [mouseCursor] (optional): Function to override mouse cursor
-  /// - [padding] (optional): Function to override button padding  
+  /// - [padding] (optional): Function to override button padding
   /// - [textStyle] (optional): Function to override text styling
   /// - [iconTheme] (optional): Function to override icon theme
   /// - [margin] (optional): Function to override button margin
