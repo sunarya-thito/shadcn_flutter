@@ -375,38 +375,193 @@ class ShadcnApp extends StatefulWidget {
   /// Used by the platform to style system UI elements like status bars
   /// and navigation bars to complement the application's design.
   final Color? color;
+  
+  /// Background color for the application window.
+  ///
+  /// Sets the default background color for the entire application. When null,
+  /// uses the theme's surface color or system default.
   final Color? background;
+  
+  /// Locale configuration for the application.
+  ///
+  /// When specified, overrides the system locale. When null, the app
+  /// uses the system locale or the first supported locale.
   final Locale? locale;
 
+  /// Localization delegates for internationalization support.
+  ///
+  /// Provides localized strings, date formatting, and other locale-specific
+  /// resources. Include framework localization delegates as needed.
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
+  
+  /// Callback for resolving locale from a list of system locales.
+  ///
+  /// Called when the system provides multiple preferred locales. Should
+  /// return the best matching locale from [supportedLocales].
   final LocaleListResolutionCallback? localeListResolutionCallback;
+  
+  /// Callback for resolving a single locale from system preferences.
+  ///
+  /// Called when the system provides a single preferred locale. Should
+  /// return the best matching locale from [supportedLocales].
   final LocaleResolutionCallback? localeResolutionCallback;
+  
+  /// List of locales supported by the application.
+  ///
+  /// Used by locale resolution callbacks to determine the best locale
+  /// match. Defaults to English (US) if not specified.
   final Iterable<Locale> supportedLocales;
+  
+  /// Whether to display Flutter's performance overlay.
+  ///
+  /// Shows frame timing information, including rasterization and UI thread
+  /// performance. Useful for identifying performance bottlenecks.
   final bool showPerformanceOverlay;
+  
+  /// Whether to display Flutter's semantics debugger.
+  ///
+  /// Shows accessibility information like semantic labels, actions, and
+  /// tree structure. Helps debug accessibility implementations.
   final bool showSemanticsDebugger;
+  
+  /// Whether to show the debug mode banner in debug builds.
+  ///
+  /// The banner appears in the top-right corner to indicate debug mode.
+  /// Set to false to hide the banner in development.
   final bool debugShowCheckedModeBanner;
+  
+  /// Global keyboard shortcuts available throughout the application.
+  ///
+  /// Maps shortcut key combinations to Intent objects that trigger actions.
+  /// These shortcuts work regardless of the current focus.
   final Map<ShortcutActivator, Intent>? shortcuts;
+  
+  /// Global actions that can be triggered by shortcuts or other means.
+  ///
+  /// Maps Intent types to Action objects that handle the actual behavior.
+  /// Used in conjunction with [shortcuts] for keyboard handling.
   final Map<Type, Action<Intent>>? actions;
+  
+  /// Unique identifier for state restoration.
+  ///
+  /// Used by Flutter's state restoration system to save and restore app
+  /// state across app launches. Should be unique per app.
   final String? restorationScopeId;
+  
+  /// Custom scroll behavior for scrollable widgets in the app.
+  ///
+  /// Defines platform-specific scrolling physics, scrollbar appearance,
+  /// and overscroll indicators. When null, uses ShadcnScrollBehavior.
   final ScrollBehavior? scrollBehavior;
+  
+  /// Whether to display Material Design's baseline grid overlay.
+  ///
+  /// Shows the 4dp baseline grid used in Material Design for alignment.
+  /// Useful for ensuring proper spacing and alignment in development.
   final bool debugShowMaterialGrid;
+  
+  /// Material theme configuration for Material widgets.
+  ///
+  /// Applied to Material widgets like buttons, text fields, and dialogs
+  /// when they appear within the app. Complements shadcn_flutter theming.
   final m.ThemeData? materialTheme;
+  
+  /// Cupertino theme configuration for iOS-style widgets.
+  ///
+  /// Applied to Cupertino widgets when they appear within the app.
+  /// Provides iOS-style theming alongside shadcn_flutter components.
   final c.CupertinoThemeData? cupertinoTheme;
+  
+  /// Whether to disable the browser's context menu on web platforms.
+  ///
+  /// When true, prevents the default right-click context menu from appearing
+  /// in web browsers. Useful for custom context menu implementations.
   final bool disableBrowserContextMenu;
+  
+  /// Initial list of recently used colors for color picker components.
+  ///
+  /// These colors appear in color picker interfaces as quick selection options.
+  /// The list is maintained automatically as users select colors.
   final List<Color> initialRecentColors;
+  
+  /// Maximum number of recent colors to remember.
+  ///
+  /// When the recent colors list exceeds this limit, older colors are
+  /// removed automatically. Defaults to 10.
   final int maxRecentColors;
+  
+  /// Callback invoked when the recent colors list changes.
+  ///
+  /// Called whenever users select new colors or the recent colors list
+  /// is modified. Use this to persist recent colors across app sessions.
   final ValueChanged<List<Color>>? onRecentColorsChanged;
+  
+  /// Whether to enable pixel-perfect rendering for crisp visuals.
+  ///
+  /// When true, widget positioning and sizing is snapped to physical pixels
+  /// to avoid sub-pixel rendering blur. Recommended for crisp UI appearance.
   final bool pixelSnap;
+  
+  /// Whether to enable enhanced desktop scroll behavior.
+  ///
+  /// When true, activates desktop-optimized scrolling features like
+  /// scroll wheel interception and enhanced scroll physics.
   final bool enableScrollInterception;
+  
+  /// Custom handler for popover overlays.
+  ///
+  /// Allows customization of popover display behavior, positioning,
+  /// and lifecycle. When null, uses the default popover implementation.
   final OverlayHandler? popoverHandler;
+  
+  /// Custom handler for tooltip overlays.
+  ///
+  /// Allows customization of tooltip display behavior, positioning,
+  /// and timing. When null, uses the default tooltip implementation.
   final OverlayHandler? tooltipHandler;
+  
+  /// Custom handler for menu overlays.
+  ///
+  /// Allows customization of context menu and dropdown menu display
+  /// behavior. When null, uses the default menu implementation.
   final OverlayHandler? menuHandler;
+  
+  /// Whether to enable smooth animations during theme changes.
+  ///
+  /// When true, provides animated transitions when switching between
+  /// light and dark themes or other theme changes.
   final bool enableThemeAnimation;
 
   @override
   State<ShadcnApp> createState() => _ShadcnAppState();
 }
 
+/// Custom scroll behavior implementation for shadcn_flutter applications.
+///
+/// [ShadcnScrollBehavior] provides platform-appropriate scrolling physics and
+/// visual feedback optimized for the shadcn_flutter design system. It implements
+/// bouncing scroll physics across all platforms and provides platform-specific
+/// scrollbar and overscroll indicator styling.
+///
+/// ## Platform Adaptations
+///
+/// **Desktop platforms** (Linux, macOS, Windows):
+/// - Shows scrollbars for vertical scrolling
+/// - No overscroll indicators (clean desktop experience)
+///
+/// **Mobile platforms** (Android, iOS):
+/// - No scrollbars (touch-first interface)
+/// - Platform-appropriate overscroll indicators
+///
+/// ## Physics and Feedback
+///
+/// - **Bouncing physics**: Provides elastic scroll behavior across all platforms
+/// - **Stretching overscroll**: Android-style stretching indication
+/// - **Glowing overscroll**: Fallback glow effect for other platforms
+/// - **Theme integration**: Overscroll colors match the application theme
+///
+/// This behavior is automatically applied to all scrollable widgets within
+/// [ShadcnApp] unless overridden by custom scroll behavior configuration.
 class ShadcnScrollBehavior extends ScrollBehavior {
   const ShadcnScrollBehavior();
 
