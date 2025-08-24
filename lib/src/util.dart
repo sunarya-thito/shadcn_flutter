@@ -1504,41 +1504,132 @@ extension HSVColorExtension on HSVColor {
   }
 }
 
+/// A representation of a time during a 24-hour day, independent of date and timezone.
+///
+/// [TimeOfDay] stores hour, minute, and optional second values to represent 
+/// a specific moment within a day. It provides convenient constructors for
+/// common time creation scenarios and methods for time manipulation.
+///
+/// Key features:
+/// - 24-hour format representation (0-23 hours)
+/// - Optional second precision (defaults to 0)
+/// - Convenient AM/PM constructors
+/// - Creation from DateTime and Duration objects
+/// - Immutable design with copyWith functionality
+///
+/// Common use cases:
+/// - Time picker components
+/// - Schedule and calendar applications
+/// - Time-based calculations and comparisons
+/// - User interface time displays
+///
+/// Example:
+/// ```dart
+/// // Create specific times
+/// final morning = TimeOfDay(hour: 9, minute: 30);
+/// final afternoon = TimeOfDay.pm(hour: 3, minute: 15); // 15:15
+/// final now = TimeOfDay.now();
+/// 
+/// // Create from existing objects
+/// final fromDateTime = TimeOfDay.fromDateTime(DateTime.now());
+/// final fromDuration = TimeOfDay.fromDuration(Duration(hours: 2, minutes: 30));
+/// 
+/// // Modify existing times
+/// final modified = morning.copyWith(hour: () => 10);
+/// ```
 class TimeOfDay {
+  /// The hour component in 24-hour format (0-23).
   final int hour;
+  
+  /// The minute component (0-59).
   final int minute;
+  
+  /// The second component (0-59), defaults to 0.
   final int second;
 
+  /// Creates a [TimeOfDay] with the specified hour, minute, and optional second.
+  ///
+  /// Parameters:
+  /// - [hour] (int, required): Hour in 24-hour format (0-23)
+  /// - [minute] (int, required): Minute value (0-59)
+  /// - [second] (int, optional): Second value (0-59), defaults to 0
   const TimeOfDay({
     required this.hour,
     required this.minute,
     this.second = 0,
   });
 
+  /// Creates a [TimeOfDay] for PM hours (12:00-23:59).
+  ///
+  /// Automatically converts 12-hour PM format to 24-hour format by adding 12
+  /// to the provided hour value.
+  ///
+  /// Parameters:
+  /// - [hour] (int, required): Hour in 12-hour format (1-11, where 12 becomes 24)
+  /// - [minute] (int, required): Minute value (0-59)
+  /// - [second] (int, optional): Second value (0-59), defaults to 0
   const TimeOfDay.pm({
     required int hour,
     required this.minute,
     this.second = 0,
   }) : hour = hour + 12;
 
+  /// Creates a [TimeOfDay] for AM hours (00:00-11:59).
+  ///
+  /// Preserves the hour value as-is for morning times.
+  ///
+  /// Parameters:
+  /// - [hour] (int, required): Hour in 24-hour format (0-11)
+  /// - [minute] (int, required): Minute value (0-59)
+  /// - [second] (int, optional): Second value (0-59), defaults to 0
   const TimeOfDay.am({
     required this.hour,
     required this.minute,
     this.second = 0,
   });
 
+  /// Creates a [TimeOfDay] from a [DateTime] object.
+  ///
+  /// Extracts the hour, minute, and second components from the provided
+  /// [DateTime], discarding date and timezone information.
+  ///
+  /// Parameters:
+  /// - [dateTime] (DateTime, required): Source DateTime to extract time from
   TimeOfDay.fromDateTime(DateTime dateTime)
       : hour = dateTime.hour,
         minute = dateTime.minute,
         second = dateTime.second;
 
+  /// Creates a [TimeOfDay] from a [Duration] object.
+  ///
+  /// Converts the total duration into hours, minutes, and seconds,
+  /// wrapping values appropriately (e.g., 90 minutes becomes 1 hour 30 minutes).
+  ///
+  /// Parameters:
+  /// - [duration] (Duration, required): Source Duration to convert
   TimeOfDay.fromDuration(Duration duration)
       : hour = duration.inHours,
         minute = duration.inMinutes % 60,
         second = duration.inSeconds % 60;
 
+  /// Creates a [TimeOfDay] representing the current time.
+  ///
+  /// Convenience constructor that creates a TimeOfDay from the current
+  /// DateTime.now() value.
   TimeOfDay.now() : this.fromDateTime(DateTime.now());
 
+  /// Creates a copy of this [TimeOfDay] with specified fields replaced.
+  ///
+  /// Uses ValueGetter functions to allow for computed replacements.
+  /// Any field not specified retains its current value.
+  ///
+  /// Parameters:
+  /// - [hour] (ValueGetter<int>?, optional): New hour value provider
+  /// - [minute] (ValueGetter<int>?, optional): New minute value provider  
+  /// - [second] (ValueGetter<int>?, optional): New second value provider
+  ///
+  /// Returns:
+  /// A new [TimeOfDay] instance with updated values.
   TimeOfDay copyWith({
     ValueGetter<int>? hour,
     ValueGetter<int>? minute,
@@ -1551,6 +1642,18 @@ class TimeOfDay {
     );
   }
 
+  /// Creates a copy of this [TimeOfDay] with specified fields replaced.
+  ///
+  /// For backward compatibility. Provides direct value replacement
+  /// instead of ValueGetter functions.
+  ///
+  /// Parameters:
+  /// - [hour] (int?, optional): New hour value (0-23)
+  /// - [minute] (int?, optional): New minute value (0-59)
+  /// - [second] (int?, optional): New second value (0-59)
+  ///
+  /// Returns:
+  /// A new [TimeOfDay] instance with updated values.
   /// For backward compatibility
   TimeOfDay replacing({
     int? hour,
@@ -1581,6 +1684,32 @@ class TimeOfDay {
   }
 }
 
+/// Invokes an action on the currently focused widget if available.
+///
+/// Attempts to find and invoke the specified [Intent] on the widget that
+/// currently has focus. This is useful for triggering keyboard shortcuts
+/// or programmatic actions that should apply to the focused element.
+///
+/// The function searches for an appropriate action handler in the focused
+/// widget's context and invokes it if found and enabled.
+///
+/// Parameters:
+/// - [intent] (Intent, required): The intent/action to invoke
+///
+/// Returns:
+/// A tuple containing:
+/// - `bool`: Whether the action was found and enabled
+/// - `Object?`: The result returned by the invoked action (if any)
+///
+/// Example:
+/// ```dart
+/// final (enabled, result) = invokeActionOnFocusedWidget(
+///   const ActivateIntent(),
+/// );
+/// if (enabled) {
+///   print('Action was invoked with result: $result');
+/// }
+/// ```
 (bool enabled, Object? invokeResult) invokeActionOnFocusedWidget(
     Intent intent) {
   final context = primaryFocus?.context;
@@ -1595,7 +1724,26 @@ class TimeOfDay {
   return (false, null);
 }
 
+/// Extension methods for [TextEditingController] to provide additional text editing functionality.
+///
+/// Adds utility methods for working with text selection, word manipulation,
+/// and caret positioning to enhance text editing capabilities.
 extension TextEditingControllerExtension on TextEditingController {
+  /// Gets the word at the current cursor position.
+  ///
+  /// Returns the complete word where the cursor is currently positioned,
+  /// or null if no word is at the cursor or the text is empty.
+  /// Only works when the cursor is collapsed (no text selection).
+  ///
+  /// Returns:
+  /// The word at cursor position, or null if not applicable.
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = TextEditingController(text: 'Hello world');
+  /// controller.selection = TextSelection.collapsed(offset: 2);
+  /// print(controller.currentWord); // Output: 'Hello'
+  /// ```
   String? get currentWord {
     final value = this.value;
     final text = value.text;
@@ -1610,9 +1758,49 @@ extension TextEditingControllerExtension on TextEditingController {
   }
 }
 
+/// A record type representing word information with its position and content.
+///
+/// Contains the starting index and the actual word string, used by text
+/// manipulation functions to track word boundaries and content.
+///
+/// Fields:
+/// - `int start`: The starting index of the word in the text
+/// - `String word`: The actual word content
 typedef WordInfo = (int start, String word);
+
+/// A record type representing replacement information for text operations.
+///
+/// Contains the starting position and new text content for text replacement
+/// operations, providing a structured way to specify text modifications.
+///
+/// Fields:
+/// - `int start`: The starting index where replacement should occur
+/// - `String newText`: The new text to insert at the position
 typedef ReplacementInfo = (int start, String newText);
 
+/// Gets information about the word at the specified caret position.
+///
+/// Analyzes the text around the given caret position to identify word
+/// boundaries and extract the complete word. Uses the provided separator
+/// to determine word breaks (defaults to space character).
+///
+/// Parameters:
+/// - [text] (String, required): The text to analyze
+/// - [caret] (int, required): The caret position within the text
+/// - [separator] (String, optional): Word separator character, defaults to ' '
+///
+/// Returns:
+/// A [WordInfo] record containing the word's start position and content.
+///
+/// Throws:
+/// [RangeError] if caret position is outside the text bounds.
+///
+/// Example:
+/// ```dart
+/// final info = getWordAtCaret('Hello world', 7);
+/// print('Word: ${info.word}, starts at: ${info.start}');
+/// // Output: Word: world, starts at: 6
+/// ```
 WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
   if (caret < 0 || caret > text.length) {
     throw RangeError('Caret position is out of bounds.');
@@ -1635,6 +1823,31 @@ WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
   return (start, word);
 }
 
+/// Replaces the word at the specified caret position with a new replacement text.
+///
+/// Identifies the word boundaries around the caret position and replaces
+/// the entire word with the provided replacement text. Returns information
+/// about the replacement operation including the start position and the
+/// resulting text.
+///
+/// Parameters:
+/// - [text] (String, required): The original text to modify
+/// - [caret] (int, required): The caret position within the word to replace
+/// - [replacement] (String, required): The new text to replace the word with
+/// - [separator] (String, optional): Word separator character, defaults to ' '
+///
+/// Returns:
+/// A [ReplacementInfo] record containing the start position and the new text.
+///
+/// Throws:
+/// [RangeError] if caret position is outside the text bounds.
+///
+/// Example:
+/// ```dart
+/// final info = replaceWordAtCaret('Hello world', 7, 'universe');
+/// print('New text: ${info.newText}'); 
+/// // Output: New text: Hello universe
+/// ```
 ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
     [String separator = ' ']) {
   if (caret < 0 || caret > text.length) {
@@ -1657,19 +1870,79 @@ ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
   return (start, newText);
 }
 
+/// Clears the active text input field by invoking a clear intent.
+///
+/// Attempts to clear the content of the currently focused text input field
+/// by sending a [TextFieldClearIntent] to the focused widget. This is useful
+/// for programmatically clearing text fields without direct reference to
+/// the specific controller.
+///
+/// The function will only work if there is a currently focused text input
+/// that supports the clear intent action.
+///
+/// Example:
+/// ```dart
+/// // Clear the currently focused text field
+/// clearActiveTextInput();
+/// ```
 void clearActiveTextInput() {
   TextFieldClearIntent intent = const TextFieldClearIntent();
   invokeActionOnFocusedWidget(intent);
 }
 
+/// A mixin that enables intelligent widget caching based on value comparison.
+///
+/// Classes that implement [CachedValue] can determine when their associated
+/// widgets should be rebuilt by providing custom rebuild logic. This is useful
+/// for optimizing performance in scenarios where expensive widgets should only
+/// be rebuilt when specific conditions are met.
+///
+/// The mixin works in conjunction with [CachedValueWidget] to provide efficient
+/// widget caching and selective rebuilding.
 mixin CachedValue {
+  /// Determines whether the widget should be rebuilt based on value comparison.
+  ///
+  /// Compare the current value with the old value to decide if a rebuild
+  /// is necessary. Return true to trigger a rebuild, false to use cached widget.
+  ///
+  /// Parameters:
+  /// - [oldValue] (CachedValue, required): The previous value to compare against
+  ///
+  /// Returns:
+  /// True if the widget should rebuild, false to use cached version.
   bool shouldRebuild(covariant CachedValue oldValue);
 }
 
+/// A widget that caches its built content based on value changes.
+///
+/// [CachedValueWidget] builds its child widget only when necessary, caching
+/// the result for performance optimization. It works with [CachedValue] objects
+/// to determine when rebuilding is required, or falls back to equality comparison
+/// for non-CachedValue types.
+///
+/// This is particularly useful for expensive widgets that don't need frequent
+/// rebuilds, such as complex charts, heavy computations, or large lists.
+///
+/// Example:
+/// ```dart
+/// CachedValueWidget<String>(
+///   value: expensiveData,
+///   builder: (context, value) => ExpensiveWidget(data: value),
+/// )
+/// ```
 class CachedValueWidget<T> extends StatefulWidget {
+  /// The value to monitor for changes and pass to the builder.
   final T value;
+  
+  /// Builder function that creates the widget using the provided value.
   final Widget Function(BuildContext context, T value) builder;
 
+  /// Creates a [CachedValueWidget] with the specified value and builder.
+  ///
+  /// Parameters:
+  /// - [key] (Key?, optional): Widget key for identification
+  /// - [value] (T, required): The value to cache and monitor for changes  
+  /// - [builder] (Function, required): Builder function that creates the child widget
   const CachedValueWidget({
     super.key,
     required this.value,
@@ -1705,16 +1978,73 @@ class _CachedValueWidgetState<T> extends State<CachedValueWidget<T>> {
   }
 }
 
+/// A function type for converting values from one type to another.
+///
+/// Represents a conversion function that takes a value of type [F] (from)
+/// and returns a value of type [T] (to). Used in bidirectional conversion
+/// scenarios and data transformation operations.
+///
+/// Type parameters:
+/// - [F]: The source type to convert from
+/// - [T]: The target type to convert to
+///
+/// Example:
+/// ```dart
+/// final stringToInt = Convert<String, int>((s) => int.parse(s));
+/// final result = stringToInt('42'); // Returns 42
+/// ```
 typedef Convert<F, T> = T Function(F value);
 
+/// A class that provides bidirectional conversion between two types.
+///
+/// [BiDirectionalConvert] encapsulates conversion functions for transforming
+/// values from type [A] to type [B] and vice versa. This is useful for
+/// scenarios where you need to convert data back and forth between different
+/// representations, such as model objects and their serialized forms.
+///
+/// The class provides convenience methods for performing conversions in both
+/// directions while maintaining type safety.
+///
+/// Example:
+/// ```dart
+/// final converter = BiDirectionalConvert<String, int>(
+///   (str) => int.parse(str),
+///   (num) => num.toString(),
+/// );
+/// 
+/// final number = converter.convertA('42');    // Returns 42
+/// final string = converter.convertB(42);      // Returns '42'
+/// ```
 class BiDirectionalConvert<A, B> {
+  /// Conversion function from type A to type B.
   final Convert<A, B> aToB;
+  
+  /// Conversion function from type B to type A.
   final Convert<B, A> bToA;
 
+  /// Creates a [BiDirectionalConvert] with the specified conversion functions.
+  ///
+  /// Parameters:
+  /// - [aToB] (Convert<A, B>, required): Function to convert from A to B
+  /// - [bToA] (Convert<B, A>, required): Function to convert from B to A
   const BiDirectionalConvert(this.aToB, this.bToA);
 
+  /// Converts a value from type A to type B.
+  ///
+  /// Parameters:
+  /// - [value] (A, required): The value of type A to convert
+  ///
+  /// Returns:
+  /// The converted value of type B.
   B convertA(A value) => aToB(value);
 
+  /// Converts a value from type B to type A.
+  ///
+  /// Parameters:
+  /// - [value] (B, required): The value of type B to convert
+  ///
+  /// Returns:
+  /// The converted value of type A.
   A convertB(B value) => bToA(value);
 
   @override
@@ -1731,14 +2061,55 @@ class BiDirectionalConvert<A, B> {
   }
 }
 
+/// A controller that provides bidirectional conversion between two value types.
+///
+/// [ConvertedController] acts as an adapter between a [ValueNotifier] of type [F]
+/// and a [ComponentController] interface of type [T]. It automatically converts
+/// values in both directions using a [BiDirectionalConvert] instance, keeping
+/// both sides synchronized.
+///
+/// This is useful when you need to connect components that work with different
+/// data types but represent the same logical value, such as connecting a string
+/// input field to a numeric controller.
+///
+/// The controller handles:
+/// - Automatic conversion when the source value changes
+/// - Bidirectional updates without infinite loops
+/// - Change notification to listeners
+/// - Proper cleanup when disposed
+///
+/// Example:
+/// ```dart
+/// final sourceController = ValueNotifier<String>('42');
+/// final converter = BiDirectionalConvert<String, int>(
+///   int.parse,
+///   (num) => num.toString(),
+/// );
+/// final convertedController = ConvertedController(sourceController, converter);
+/// 
+/// print(convertedController.value); // 42 (int)
+/// convertedController.value = 100;
+/// print(sourceController.value);    // '100' (String)
+/// ```
 class ConvertedController<F, T> extends ChangeNotifier
     implements ComponentController<T> {
+  /// The source ValueNotifier that provides the original values.
   final ValueNotifier<F> _other;
+  
+  /// The bidirectional converter for transforming between F and T types.
   final BiDirectionalConvert<F, T> _convert;
 
+  /// The current converted value of type T.
   T _value;
+  
+  /// Flag to prevent infinite update loops during bidirectional conversion.
   bool _isUpdating = false;
 
+  /// Creates a [ConvertedController] with the specified source and converter.
+  ///
+  /// Parameters:
+  /// - [other] (ValueNotifier<F>, required): Source notifier to convert from
+  /// - [convert] (BiDirectionalConvert<F, T>, required): Conversion functions
   ConvertedController(
       ValueNotifier<F> other, BiDirectionalConvert<F, T> convert)
       : _other = other,
@@ -1792,7 +2163,32 @@ class ConvertedController<F, T> extends ChangeNotifier
   }
 }
 
+/// Extension methods for [TextEditingValue] to provide additional text manipulation functionality.
+///
+/// Adds utility methods for text replacement operations while preserving
+/// text selection state and handling edge cases automatically.
 extension TextEditingValueExtension on TextEditingValue {
+  /// Replaces the text content while preserving and adjusting the selection.
+  ///
+  /// Creates a new [TextEditingValue] with the specified text, automatically
+  /// adjusting the selection to stay within valid bounds. If the new text is
+  /// shorter than the current selection, the selection is clamped to fit.
+  ///
+  /// Parameters:
+  /// - [newText] (String, required): The new text content to set
+  ///
+  /// Returns:
+  /// A new [TextEditingValue] with updated text and adjusted selection.
+  ///
+  /// Example:
+  /// ```dart
+  /// final value = TextEditingValue(
+  ///   text: 'Hello world',
+  ///   selection: TextSelection(baseOffset: 6, extentOffset: 11),
+  /// );
+  /// final updated = value.replaceText('Hi');
+  /// // Result: text='Hi', selection collapsed at offset 2
+  /// ```
   TextEditingValue replaceText(String newText) {
     var selection = this.selection;
     selection = selection.copyWith(
@@ -1806,12 +2202,60 @@ extension TextEditingValueExtension on TextEditingValue {
   }
 }
 
+/// A callback function type for handling context-aware Intent actions.
+///
+/// Represents a function that processes an Intent with optional BuildContext,
+/// returning an optional result. Used by [ContextCallbackAction] to provide
+/// custom action handling logic that can access the widget tree context.
+///
+/// Type parameters:
+/// - [T]: The specific Intent type this callback handles
+///
+/// Parameters:
+/// - [intent] (T, required): The intent to process
+/// - [context] (BuildContext?, optional): The build context for widget tree access
+///
+/// Returns:
+/// An optional result object from processing the intent.
+///
+/// Example:
+/// ```dart
+/// final callback = OnContextedCallback<MyIntent>((intent, context) {
+///   // Handle the intent with optional context
+///   return someResult;
+/// });
+/// ```
 typedef OnContextedCallback<T extends Intent> = Object? Function(T intent,
     [BuildContext? context]);
 
+/// A context action that delegates intent handling to a callback function.
+///
+/// [ContextCallbackAction] provides a simple way to create context-aware actions
+/// by wrapping a callback function. This allows for flexible action handling
+/// without creating custom action classes for simple operations.
+///
+/// The action passes both the intent and optional context to the callback,
+/// enabling context-aware processing and returning any result produced by
+/// the callback function.
+///
+/// Example:
+/// ```dart
+/// final action = ContextCallbackAction<MyIntent>(
+///   onInvoke: (intent, context) {
+///     // Custom handling logic
+///     ScaffoldMessenger.of(context)?.showSnackBar(snackBar);
+///     return 'Action completed';
+///   },
+/// );
+/// ```
 class ContextCallbackAction<T extends Intent> extends ContextAction<T> {
+  /// The callback function to invoke when this action is triggered.
   final OnContextedCallback<T> onInvoke;
 
+  /// Creates a [ContextCallbackAction] with the specified callback.
+  ///
+  /// Parameters:
+  /// - [onInvoke] (OnContextedCallback<T>, required): Function to handle intents
   ContextCallbackAction({required this.onInvoke});
 
   @override
