@@ -2,14 +2,36 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// {@template menu_theme}
-/// Styling options for menu widgets such as [MenuGroup] and [MenuButton].
-/// {@endtemplate}
+/// Theme configuration for menu components including items, groups, and submenus.
+///
+/// [MenuTheme] provides styling options for menu-related widgets such as
+/// [MenuGroup] and [MenuButton], controlling spacing, positioning, and visual
+/// presentation. Used with [ComponentTheme] to apply consistent menu styling
+/// throughout an application.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<MenuTheme>(
+///   data: MenuTheme(
+///     itemPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+///     subMenuOffset: Offset(4, 0),
+///   ),
+///   child: MyMenuWidget(),
+/// );
+/// ```
 class MenuTheme {
-  /// Default padding applied to each menu item.
+  /// Padding applied to individual menu items for consistent spacing.
+  ///
+  /// Controls the internal spacing within each menu item, affecting both
+  /// text content and any icons or shortcuts. When null, uses framework
+  /// default padding based on the current theme scaling.
   final EdgeInsets? itemPadding;
 
-  /// Offset applied when showing a submenu.
+  /// Positional offset for submenu placement relative to parent menu items.
+  ///
+  /// Determines where submenus appear when triggered by hovering or clicking
+  /// on parent menu items. Typically a small horizontal offset to avoid
+  /// overlap. When null, uses framework default submenu positioning.
   final Offset? subMenuOffset;
 
   /// {@macro menu_theme}
@@ -167,6 +189,42 @@ abstract class MenuItem extends Widget {
 ///     MenuRadioItem(value: 'option1', child: Text('Option 1')),
 ///     MenuRadioItem(value: 'option2', child: Text('Option 2')),
 ///     MenuRadioItem(value: 'option3', child: Text('Option 3')),
+///   ],
+/// )
+/// ```
+/// A radio button group widget for menu contexts with mutual exclusion selection.
+///
+/// [MenuRadioGroup] manages a collection of radio button options within a menu,
+/// ensuring that only one option can be selected at a time. It provides the
+/// selection state and change handling logic while delegating visual representation
+/// to its child widgets.
+///
+/// The group automatically manages selection state, ensuring mutual exclusion
+/// across all radio items within the group. When one item is selected, all others
+/// are automatically deselected.
+///
+/// Key features:
+/// - **Mutual exclusion**: Only one option can be selected at a time
+/// - **Type safety**: Generic type parameter ensures type consistency
+/// - **Contextual callbacks**: Selection callbacks receive build context
+/// - **Flexible content**: Supports radio items mixed with other menu widgets
+/// - **Theme integration**: Inherits styling from parent menu components
+///
+/// Typically used with [MenuRadio] widgets, but can include other menu
+/// elements like dividers, labels, or subgroups for complex menu hierarchies.
+///
+/// Example:
+/// ```dart
+/// MenuRadioGroup<SortOrder>(
+///   value: currentSortOrder,
+///   onChanged: (context, order) {
+///     setState(() => currentSortOrder = order);
+///   },
+///   children: [
+///     MenuRadio(value: SortOrder.name, child: Text('Sort by Name')),
+///     MenuRadio(value: SortOrder.date, child: Text('Sort by Date')),
+///     MenuDivider(),
+///     MenuRadio(value: SortOrder.size, child: Text('Sort by Size')),
 ///   ],
 /// )
 /// ```
@@ -424,12 +482,69 @@ class MenuLabel extends StatelessWidget implements MenuItem {
   }
 }
 
+/// A checkbox menu item that can be toggled between checked and unchecked states.
+///
+/// [MenuCheckbox] provides a standard checkbox interaction within menu contexts,
+/// displaying a checkmark when selected and allowing users to toggle the state
+/// through interaction. It integrates with the menu system to provide consistent
+/// styling and behavior.
+///
+/// The checkbox automatically displays a checkmark icon when the value is true
+/// and shows an empty space when false. It supports all standard menu features
+/// including enabled/disabled states, trailing content, and auto-close behavior.
+///
+/// Key features:
+/// - **Toggle interaction**: Click or keyboard activation toggles the checkbox state
+/// - **Visual feedback**: Checkmark icon appears when selected
+/// - **Menu integration**: Consistent styling with other menu items
+/// - **Accessibility**: Full keyboard navigation and screen reader support
+/// - **Contextual callbacks**: Change callbacks receive build context
+///
+/// Example:
+/// ```dart
+/// MenuCheckbox(
+///   value: showLineNumbers,
+///   onChanged: (context, checked) {
+///     setState(() => showLineNumbers = checked);
+///   },
+///   child: Text('Show Line Numbers'),
+///   trailing: Text('Ctrl+L'),
+/// )
+/// ```
 class MenuCheckbox extends StatelessWidget implements MenuItem {
+  /// Whether the checkbox is currently checked.
+  ///
+  /// When true, displays a checkmark icon. When false, shows empty space.
   final bool value;
+  
+  /// Callback invoked when the checkbox state changes.
+  ///
+  /// Receives the build context and the new boolean state. If null,
+  /// the checkbox is read-only and cannot be toggled by user interaction.
   final ContextedValueChanged<bool>? onChanged;
+  
+  /// The primary content displayed for the checkbox menu item.
+  ///
+  /// Typically a [Text] widget describing the option, but can be any
+  /// widget including icons, rich text, or complex layouts.
   final Widget child;
+  
+  /// Optional widget displayed at the trailing edge of the checkbox item.
+  ///
+  /// Commonly used for keyboard shortcuts, additional info, or secondary
+  /// actions. Positioned at the right side of the menu item.
   final Widget? trailing;
+  
+  /// Whether the checkbox can be interacted with.
+  ///
+  /// When false, the checkbox appears dimmed and does not respond to
+  /// user interaction. The [onChanged] callback will not be invoked.
   final bool enabled;
+  
+  /// Whether the menu should automatically close when the checkbox is toggled.
+  ///
+  /// When true, selecting the checkbox closes the containing menu. When false,
+  /// the menu remains open for additional selections.
   final bool autoClose;
 
   const MenuCheckbox({
