@@ -104,8 +104,32 @@ class ChartColorScheme {
   Color get chart5 => chartColors[4];
 }
 
+/// A color implementation that provides a complete set of color shades from light to dark.
+///
+/// [ColorShades] implements both [Color] and [ColorSwatch] to provide a complete
+/// color system with 11 predefined shades ranging from 50 (lightest) to 950 (darkest).
+/// This matches common design system patterns where colors have systematic tonal
+/// variations for different UI contexts.
+///
+/// The shade system follows standard design token conventions:
+/// - 50: Lightest tint, often for backgrounds
+/// - 100-400: Light to medium-light shades  
+/// - 500: Base color (primary reference)
+/// - 600-900: Medium-dark to dark shades
+/// - 950: Darkest shade, often for text/borders
+///
+/// Example:
+/// ```dart
+/// final blueShades = ColorShades.sorted([...colorList]);
+/// final lightBlue = blueShades[200];  // Light shade
+/// final baseBlue = blueShades[500];   // Base color
+/// final darkBlue = blueShades[800];   // Dark shade
+/// ```
 class ColorShades implements Color, ColorSwatch {
+  /// The step value used for shade calculations.
   static const int _step = 100;
+  
+  /// Standard shade values from lightest (50) to darkest (950).
   static const List<int> shadeValues = [
     50,
     100,
@@ -119,13 +143,41 @@ class ColorShades implements Color, ColorSwatch {
     900,
     950
   ];
+  
+  /// Internal map storing the color values for each shade.
   final Map<int, Color> _colors;
 
+  /// Private constructor for creating empty ColorShades instances.
   ColorShades._() : _colors = {};
 
+  /// Protected constructor for creating ColorShades with predefined colors.
+  ///
+  /// Used internally and by subclasses to create instances with a specific
+  /// color map. The [_colors] map should contain entries for standard shade values.
   @protected
   const ColorShades.raw(this._colors);
 
+  /// Creates a [ColorShades] instance from a sorted list of colors.
+  ///
+  /// The [colors] list must contain exactly 11 colors corresponding to the
+  /// standard shade values (50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950).
+  /// Colors should be arranged from lightest to darkest.
+  ///
+  /// Parameters:
+  /// - [colors] (List<Color>, required): Exactly 11 colors in shade order
+  ///
+  /// Throws:
+  /// [AssertionError] if the colors list doesn't have exactly 11 items.
+  ///
+  /// Example:
+  /// ```dart
+  /// final shades = ColorShades.sorted([
+  ///   Color(0xFFEFF6FF), // 50 - lightest
+  ///   Color(0xFFDBEAFE), // 100
+  ///   // ... continue with increasingly darker shades
+  ///   Color(0xFF0C1E3A), // 950 - darkest
+  /// ]);
+  /// ```
   factory ColorShades.sorted(List<Color> colors) {
     assert(colors.length == shadeValues.length,
         'ColorShades.sorted: Invalid number of colors');
