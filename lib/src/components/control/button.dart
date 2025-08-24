@@ -210,10 +210,34 @@ class ControlledToggle extends StatelessWidget with ControlledComponent<bool> {
 /// );
 /// ```
 class Toggle extends StatefulWidget {
+  /// The current toggle state of the button.
+  /// 
+  /// When true, the button appears in its selected/active state. When false,
+  /// it appears in its unselected/inactive state.
   final bool value;
+  
+  /// Callback invoked when the toggle state changes.
+  /// 
+  /// Called with the new boolean value when the user taps the toggle button.
+  /// Set to null to disable user interaction.
   final ValueChanged<bool>? onChanged;
+  
+  /// The widget to display as the button's content.
+  /// 
+  /// Typically a [Text] widget, but can be any widget including rows with
+  /// icons and text, custom graphics, or complex layouts.
   final Widget child;
+  
+  /// The visual styling configuration for the button.
+  /// 
+  /// Defines colors, borders, padding, and other visual properties. 
+  /// Defaults to [ButtonStyle.ghost] for a subtle appearance.
   final ButtonStyle style;
+  
+  /// Whether the toggle button is enabled for user interaction.
+  /// 
+  /// When false, the button ignores touch events and appears in a disabled
+  /// visual state. When null, inherits from nearest [Form] or defaults to enabled.
   final bool? enabled;
 
   /// Creates a [Toggle].
@@ -255,7 +279,16 @@ class Toggle extends StatefulWidget {
 }
 
 // toggle button is just ghost button
+/// State class for [Toggle] widget that manages selection state and form integration.
+///
+/// Extends [State] and mixes in [FormValueSupplier] to provide reactive state
+/// management for toggle buttons with form integration support. Maintains a
+/// [WidgetStatesController] for managing visual states like selected, pressed, and focused.
 class ToggleState extends State<Toggle> with FormValueSupplier<bool, Toggle> {
+  /// Controller for managing widget visual states (selected, pressed, focused, etc.).
+  ///
+  /// Updates automatically when toggle value changes to reflect the current
+  /// selection state in the button's visual appearance.
   final WidgetStatesController statesController = WidgetStatesController();
 
   @override

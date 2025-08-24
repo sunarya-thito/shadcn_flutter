@@ -7,9 +7,27 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// background colors, and border radius styling. These properties can be
 /// set at the theme level to provide consistent styling across the application.
 class TabsTheme {
+  /// Padding applied to the entire tabs container.
+  ///
+  /// Controls the spacing around the collection of tabs. When null,
+  /// uses framework default container padding.
   final EdgeInsetsGeometry? containerPadding;
+  
+  /// Padding applied to individual tab items.
+  ///
+  /// Controls the internal spacing within each tab button. When null,
+  /// uses framework default tab padding.
   final EdgeInsetsGeometry? tabPadding;
+  
+  /// Background color for the tabs container.
+  ///
+  /// When null, uses the theme's surface color or transparent background
+  /// depending on the tabs style variant.
   final Color? backgroundColor;
+  
+  /// Border radius for the tabs container corners.
+  ///
+  /// When null, uses framework default border radius from the theme.
   final BorderRadiusGeometry? borderRadius;
 
   const TabsTheme({
@@ -101,9 +119,28 @@ class TabsTheme {
 /// );
 /// ```
 class Tabs extends StatelessWidget {
+  /// The index of the currently selected tab.
+  ///
+  /// Must be a valid index within the range [0, children.length-1].
+  /// When changed, the corresponding tab content will be displayed.
   final int index;
+  
+  /// Callback invoked when a tab is selected by user interaction.
+  ///
+  /// Receives the index of the newly selected tab. Use this to update
+  /// the [index] property and manage tab state changes.
   final ValueChanged<int> onChanged;
+  
+  /// List of tab definitions that specify both headers and content.
+  ///
+  /// Each [TabChild] contains a tab widget (header) and child widget (content).
+  /// The order determines tab sequence and index values.
   final List<TabChild> children;
+  
+  /// Custom padding to apply to individual tab headers.
+  ///
+  /// When null, uses theme defaults or framework fallbacks. Overrides
+  /// theme-level tab padding when specified.
   final EdgeInsetsGeometry? padding;
 
   const Tabs({

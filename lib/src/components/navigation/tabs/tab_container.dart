@@ -158,9 +158,24 @@ mixin KeyedTabChild<T> on TabChild {
   T get tabKey;
 }
 
+/// A wrapper widget that implements the [TabChild] interface for arbitrary widgets.
+///
+/// [TabChildWidget] allows any widget to be used within a [TabContainer] by
+/// wrapping it and providing the required [TabChild] interface. This is useful
+/// when you need to include widgets in tabs that don't natively implement
+/// the [TabChild] mixin.
 class TabChildWidget extends StatelessWidget with TabChild {
+  /// The widget to display as the tab child content.
+  ///
+  /// This can be any widget, from simple text to complex layouts.
   final Widget child;
+  
   @override
+  /// Whether this tab child should be automatically indexed by the container.
+  ///
+  /// When `true`, the tab container will assign an index to this child and
+  /// include it in the selection system. When `false`, the child is treated
+  /// as a non-interactive or decorative element.
   final bool indexed;
 
   const TabChildWidget({
@@ -175,6 +190,11 @@ class TabChildWidget extends StatelessWidget with TabChild {
   }
 }
 
+/// A keyed wrapper widget that implements both [TabChild] and [KeyedTabChild] interfaces.
+///
+/// [KeyedTabChildWidget] extends [TabChildWidget] to provide a strongly-typed key
+/// system for identifying tab children. The key is used both as the widget key
+/// and the tab identifier.
 class KeyedTabChildWidget<T> extends TabChildWidget with KeyedTabChild<T> {
   KeyedTabChildWidget({
     required T key,
@@ -189,7 +209,13 @@ class KeyedTabChildWidget<T> extends TabChildWidget with KeyedTabChild<T> {
   T get tabKey => key.value;
 }
 
+/// A tab item widget that automatically integrates with tab container theming.
+///
+/// [TabItem] provides a standardized way to create tab content that uses the
+/// tab container's configured child builder for consistent styling and behavior.
+/// Unlike [TabChildWidget], this always participates in tab indexing.
 class TabItem extends StatelessWidget with TabChild {
+  /// The widget content to display within the tab.
   final Widget child;
 
   const TabItem({
@@ -207,6 +233,10 @@ class TabItem extends StatelessWidget with TabChild {
   }
 }
 
+/// A keyed tab item that combines [TabItem] functionality with key-based identification.
+///
+/// [KeyedTabItem] provides the same theming integration as [TabItem] while
+/// adding strongly-typed key support for programmatic tab management.
 class KeyedTabItem<T> extends TabItem with KeyedTabChild<T> {
   KeyedTabItem({
     required T key,
@@ -220,16 +250,54 @@ class KeyedTabItem<T> extends TabItem with KeyedTabChild<T> {
   T get tabKey => key.value;
 }
 
+/// A function signature for building tab container layouts from child widgets.
+///
+/// Takes a build context and list of prepared tab children, returning the
+/// widget that arranges them within the container.
 typedef TabBuilder = Widget Function(
     BuildContext context, List<Widget> children);
+    
+/// A function signature for building individual tab child widgets.
+///
+/// Takes a build context, tab container data, and the child widget,
+/// returning the widget with applied tab styling and behavior.
 typedef TabChildBuilder = Widget Function(
     BuildContext context, TabContainerData data, Widget child);
 
+/// A container widget that manages tab children with selection state and theming.
+///
+/// [TabContainer] provides the infrastructure for tab-based interfaces by managing
+/// the selection state, providing contextual data to child widgets, and applying
+/// consistent styling through builder functions. It works with widgets that
+/// implement the [TabChild] mixin.
+///
+/// The container automatically indexes eligible children and provides them with
+/// [TabContainerData] containing selection state and interaction callbacks.
 class TabContainer extends StatelessWidget {
+  /// The index of the currently selected tab.
+  ///
+  /// Must be a valid index within the range of indexed tab children.
   final int selected;
+  
+  /// Callback invoked when tab selection changes.
+  ///
+  /// Receives the index of the newly selected tab. May be null to disable selection.
   final ValueChanged<int>? onSelect;
+  
+  /// List of tab child widgets to display within the container.
+  ///
+  /// Only children with [TabChild.indexed] set to true will participate in
+  /// the selection system and receive index values.
   final List<TabChild> children;
+  
+  /// Custom builder for arranging tab children within the container.
+  ///
+  /// When null, uses the theme builder or defaults to a vertical column layout.
   final TabBuilder? builder;
+  
+  /// Custom builder for styling individual tab children.
+  ///
+  /// When null, uses the theme child builder or passes children through unchanged.
   final TabChildBuilder? childBuilder;
 
   const TabContainer({
