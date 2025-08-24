@@ -2494,6 +2494,19 @@ extension DecorationExtension on Decoration {
   }
 }
 
+/// Theme configuration for primary button styling.
+///
+/// [PrimaryButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties specifically for primary buttons. Primary buttons represent the
+/// most important actions in an interface with high visual emphasis through
+/// filled backgrounds and contrasting colors.
+///
+/// This theme integrates with the shadcn theme system and can be customized
+/// through [ShadcnTheme] or used directly to override specific button styling
+/// properties while maintaining the primary button's visual hierarchy.
+///
+/// Each property accepts a [ButtonStatePropertyDelegate] function that can
+/// modify the base styling based on context and widget states.
 class PrimaryButtonTheme extends ButtonTheme {
   const PrimaryButtonTheme(
       {super.decoration,
@@ -2522,6 +2535,15 @@ class PrimaryButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for secondary button styling.
+///
+/// [SecondaryButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties for secondary buttons. Secondary buttons offer medium visual emphasis
+/// with subtle background fills, supporting primary actions without competing for
+/// visual attention.
+///
+/// Used for actions that complement primary buttons in forms, dialogs, and action
+/// groups where visual hierarchy needs to be maintained through varied emphasis levels.
 class SecondaryButtonTheme extends ButtonTheme {
   const SecondaryButtonTheme(
       {super.decoration,
@@ -2550,6 +2572,14 @@ class SecondaryButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for outline button styling.
+///
+/// [OutlineButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties for outline buttons. Outline buttons feature transparent backgrounds
+/// with visible borders, offering clear action boundaries without heavy visual weight.
+///
+/// Ideal for alternative actions, cancel buttons, or interfaces requiring multiple
+/// buttons with equal visual emphasis where filled backgrounds would be too dominant.
 class OutlineButtonTheme extends ButtonTheme {
   const OutlineButtonTheme(
       {super.decoration,
@@ -2578,6 +2608,15 @@ class OutlineButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for ghost button styling.
+///
+/// [GhostButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties for ghost buttons. Ghost buttons offer minimal visual presence
+/// with subtle hover effects, ideal for tertiary actions and contexts where
+/// visual noise should be minimized.
+///
+/// Perfect for toolbar buttons, table actions, or any interface elements that
+/// need interactivity without drawing attention away from primary content.
 class GhostButtonTheme extends ButtonTheme {
   const GhostButtonTheme(
       {super.decoration,
@@ -2606,6 +2645,15 @@ class GhostButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for link button styling.
+///
+/// [LinkButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties for link buttons. Link buttons are styled to resemble clickable
+/// hyperlinks with underline decoration and link colors, making them feel like
+/// text-based interactions rather than traditional buttons.
+///
+/// Suitable for navigation actions, external links, or any action that should
+/// integrate seamlessly with text content while maintaining clear interactivity.
 class LinkButtonTheme extends ButtonTheme {
   const LinkButtonTheme(
       {super.decoration,
@@ -2634,6 +2682,15 @@ class LinkButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for text button styling.
+///
+/// [TextButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties for text buttons. Text buttons appear as plain text with subtle
+/// hover effects, offering minimal visual distraction while maintaining clear
+/// interactivity.
+///
+/// Perfect for actions that should integrate seamlessly with text content or
+/// provide minimal visual presence in content-heavy interfaces.
 class TextButtonTheme extends ButtonTheme {
   const TextButtonTheme(
       {super.decoration,
@@ -2662,6 +2719,15 @@ class TextButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for destructive button styling.
+///
+/// [DestructiveButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties for destructive buttons. Destructive buttons use warning colors
+/// (typically red-based) to signal potentially harmful actions like deletion,
+/// removal, or other destructive operations.
+///
+/// Provides clear visual warning while maintaining standard button interaction
+/// patterns, helping users understand the consequences of their actions.
 class DestructiveButtonTheme extends ButtonTheme {
   const DestructiveButtonTheme(
       {super.decoration,
@@ -2690,6 +2756,16 @@ class DestructiveButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for fixed button styling.
+///
+/// [FixedButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties for fixed buttons. Fixed buttons maintain consistent appearance
+/// across interaction states, suitable for navigation tabs, status indicators,
+/// or UI elements that need predictable styling.
+///
+/// Provides static visual appearance with minimal state-based changes, ideal
+/// for interface elements that should maintain visual consistency regardless
+/// of user interaction.
 class FixedButtonTheme extends ButtonTheme {
   const FixedButtonTheme(
       {super.decoration,
@@ -2718,6 +2794,15 @@ class FixedButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for menu button styling.
+///
+/// [MenuButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties for menu buttons. Menu buttons are optimized for dropdown and
+/// context menu items with compact padding, full-width hover effects, and
+/// styling that integrates well with menu containers.
+///
+/// Designed specifically for menu contexts where buttons need consistent
+/// appearance and appropriate spacing within popup overlays and menu lists.
 class MenuButtonTheme extends ButtonTheme {
   const MenuButtonTheme(
       {super.decoration,
@@ -2746,6 +2831,15 @@ class MenuButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for menu bar button styling.
+///
+/// [MenubarButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties for menu bar buttons. This is a specialized variant of menu
+/// styling with adjusted padding and spacing optimized for horizontal menu
+/// bar layouts.
+///
+/// Provides consistent appearance across menu bar items while maintaining
+/// clear hover feedback appropriate for menu bar contexts.
 class MenubarButtonTheme extends ButtonTheme {
   const MenubarButtonTheme(
       {super.decoration,
@@ -2774,6 +2868,15 @@ class MenubarButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for muted button styling.
+///
+/// [MutedButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties for muted buttons. Muted buttons offer reduced visual prominence
+/// using subdued colors and subtle interactions, suitable for secondary actions
+/// that should remain accessible without competing for attention.
+///
+/// Perfect for actions that need to be available but shouldn't distract from
+/// primary interface elements or content.
 class MutedButtonTheme extends ButtonTheme {
   const MutedButtonTheme(
       {super.decoration,
@@ -2802,6 +2905,16 @@ class MutedButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for card button styling.
+///
+/// [CardButtonTheme] extends [ButtonTheme] to provide customizable styling
+/// properties for card buttons. Card buttons feature elevation, rounded corners,
+/// and styling that matches card components, suitable for button-like actions
+/// that should appear as interactive cards.
+///
+/// Ideal for buttons that need to integrate with card-based layouts or when
+/// buttons should have elevated, card-like presentation with appropriate shadows
+/// and surface styling.
 class CardButtonTheme extends ButtonTheme {
   const CardButtonTheme(
       {super.decoration,
@@ -2830,7 +2943,50 @@ class CardButtonTheme extends ButtonTheme {
   }
 }
 
+/// Concrete implementation providing predefined button styling variants.
+///
+/// [ButtonVariance] defines the core button styles used throughout the shadcn_flutter
+/// framework, implementing [AbstractButtonStyle] with state-dependent properties
+/// for consistent visual design. Each static variant provides a complete styling
+/// definition including decoration, padding, text styles, and interaction states.
+///
+/// The class provides predefined variants matching the shadcn design system:
+/// - [primary]: High-emphasis actions with filled background
+/// - [secondary]: Medium-emphasis actions with subtle background  
+/// - [outline]: Actions with border emphasis
+/// - [ghost]: Minimal actions with hover states
+/// - [link]: Text-like actions with underline
+/// - [text]: Simple text-based actions
+/// - [destructive]: Warning/danger actions with red theming
+/// - [fixed]: Static appearance for stable UI elements
+/// - [menu]: Specialized for dropdown and context menus
+/// - [menubar]: Optimized for menu bar layouts
+/// - [muted]: Subdued actions with reduced emphasis
+/// - [card]: Card-style actions with elevation
+///
+/// Each variant integrates with the theme system through [ComponentThemeButtonStyle]
+/// wrappers that allow customization while providing sensible fallbacks.
+///
+/// Example:
+/// ```dart
+/// Button(
+///   style: ButtonVariance.primary,
+///   onPressed: () => save(),
+///   child: Text('Save'),
+/// );
+/// 
+/// Button(
+///   style: ButtonVariance.outline,
+///   onPressed: () => cancel(),
+///   child: Text('Cancel'),
+/// );
+/// ```
 class ButtonVariance implements AbstractButtonStyle {
+  /// Primary button style for the most important actions.
+  ///
+  /// Provides high visual emphasis with filled background and contrasting text,
+  /// suitable for primary actions like "Save", "Submit", or "Continue". Uses
+  /// the theme's primary color with appropriate hover and focus states.
   static const AbstractButtonStyle primary =
       ComponentThemeButtonStyle<PrimaryButtonTheme>(
     fallback: ButtonVariance(
@@ -2842,6 +2998,12 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+  
+  /// Secondary button style for supporting actions.
+  ///
+  /// Provides medium visual emphasis with subtle background fill, suitable
+  /// for secondary actions that complement the primary action. Uses muted
+  /// colors with gentle hover effects for balanced visual hierarchy.
   static const AbstractButtonStyle secondary =
       ComponentThemeButtonStyle<SecondaryButtonTheme>(
     fallback: ButtonVariance(
@@ -2853,6 +3015,12 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+  
+  /// Outline button style with border emphasis.
+  ///
+  /// Features a transparent background with visible border, providing clear
+  /// action boundaries without heavy visual weight. Suitable for alternative
+  /// actions or when multiple buttons need equal visual emphasis.
   static const AbstractButtonStyle outline =
       ComponentThemeButtonStyle<OutlineButtonTheme>(
     fallback: ButtonVariance(
@@ -2864,6 +3032,12 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+  
+  /// Ghost button style with minimal visual presence.
+  ///
+  /// Provides subtle hover effects without default background or border,
+  /// ideal for tertiary actions, toolbar buttons, or contexts where visual
+  /// noise should be minimized while maintaining interactivity.
   static const AbstractButtonStyle ghost =
       ComponentThemeButtonStyle<GhostButtonTheme>(
     fallback: ButtonVariance(
@@ -2875,6 +3049,12 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+  
+  /// Link button style resembling clickable text links.
+  ///
+  /// Styled to appear as hyperlinks with underline decoration and link colors,
+  /// suitable for navigation actions, external links, or actions that should
+  /// feel like text-based interactions rather than traditional buttons.
   static const AbstractButtonStyle link =
       ComponentThemeButtonStyle<LinkButtonTheme>(
     fallback: ButtonVariance(
@@ -2886,6 +3066,12 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+  
+  /// Text button style for minimal, text-only actions.
+  ///
+  /// Appears as plain text with subtle hover effects, suitable for actions
+  /// that should integrate seamlessly with text content or provide minimal
+  /// visual distraction while maintaining clear interactivity.
   static const AbstractButtonStyle text =
       ComponentThemeButtonStyle<TextButtonTheme>(
     fallback: ButtonVariance(
@@ -2897,6 +3083,12 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+  
+  /// Destructive button style for dangerous or irreversible actions.
+  ///
+  /// Uses warning colors (typically red-based) to signal potentially harmful
+  /// actions like deletion, removal, or destructive operations. Provides clear
+  /// visual warning while maintaining standard button interaction patterns.
   static const AbstractButtonStyle destructive =
       ComponentThemeButtonStyle<DestructiveButtonTheme>(
     fallback: ButtonVariance(
@@ -2909,6 +3101,11 @@ class ButtonVariance implements AbstractButtonStyle {
     ),
   );
 
+  /// Fixed button style with consistent appearance across states.
+  ///
+  /// Maintains static visual appearance with minimal state-based changes,
+  /// suitable for navigation tabs, status indicators, or UI elements that
+  /// need predictable styling regardless of interaction state.
   static const AbstractButtonStyle fixed =
       ComponentThemeButtonStyle<FixedButtonTheme>(
     fallback: ButtonVariance(
@@ -2921,6 +3118,11 @@ class ButtonVariance implements AbstractButtonStyle {
     ),
   );
 
+  /// Menu button style optimized for dropdown and context menu items.
+  ///
+  /// Provides styling appropriate for menu contexts with compact padding,
+  /// full-width hover effects, and styling that integrates well with menu
+  /// containers and popup overlays.
   static const AbstractButtonStyle menu =
       ComponentThemeButtonStyle<MenuButtonTheme>(
     fallback: ButtonVariance(
@@ -2933,6 +3135,11 @@ class ButtonVariance implements AbstractButtonStyle {
     ),
   );
 
+  /// Menu bar button style for horizontal menu bar layouts.
+  ///
+  /// Specialized variant of menu styling with adjusted padding and spacing
+  /// optimized for menu bar contexts. Provides consistent appearance across
+  /// menu bar items while maintaining clear hover feedback.
   static const AbstractButtonStyle menubar =
       ComponentThemeButtonStyle<MenubarButtonTheme>(
     fallback: ButtonVariance(
@@ -2945,6 +3152,11 @@ class ButtonVariance implements AbstractButtonStyle {
     ),
   );
 
+  /// Muted button style with subdued visual emphasis.
+  ///
+  /// Provides reduced visual prominence using muted colors and subtle
+  /// interactions, suitable for secondary actions that should remain
+  /// accessible but not compete for attention with primary interface elements.
   static const AbstractButtonStyle muted =
       ComponentThemeButtonStyle<MutedButtonTheme>(
     fallback: ButtonVariance(
@@ -2957,6 +3169,11 @@ class ButtonVariance implements AbstractButtonStyle {
     ),
   );
 
+  /// Card button style with elevated appearance and card-like presentation.
+  ///
+  /// Features elevation, rounded corners, and styling that matches card components,
+  /// suitable for button-like actions that should appear as interactive cards
+  /// or when buttons need to integrate with card-based layouts.
   static const AbstractButtonStyle card =
       ComponentThemeButtonStyle<CardButtonTheme>(
     fallback: ButtonVariance(
@@ -2969,19 +3186,42 @@ class ButtonVariance implements AbstractButtonStyle {
     ),
   );
 
+  /// The decoration (background, border, shadows) applied based on button state.
   @override
   final ButtonStateProperty<Decoration> decoration;
+  
+  /// The mouse cursor displayed when hovering over the button.
   @override
   final ButtonStateProperty<MouseCursor> mouseCursor;
+  
+  /// The internal padding between the button border and content.
   @override
   final ButtonStateProperty<EdgeInsetsGeometry> padding;
+  
+  /// The text styling applied to text content within the button.
   @override
   final ButtonStateProperty<TextStyle> textStyle;
+  
+  /// The icon theme data applied to icons within the button.
   @override
   final ButtonStateProperty<IconThemeData> iconTheme;
+  
+  /// The external margin around the button.
   @override
   final ButtonStateProperty<EdgeInsetsGeometry> margin;
 
+  /// Creates a [ButtonVariance] with the specified state-dependent properties.
+  ///
+  /// All parameters are required [ButtonStateProperty] functions that return
+  /// appropriate values based on the button's current widget states.
+  ///
+  /// Parameters:
+  /// - [decoration]: Background, border, and shadow styling
+  /// - [mouseCursor]: Cursor appearance on hover
+  /// - [padding]: Internal spacing around content
+  /// - [textStyle]: Text appearance and typography
+  /// - [iconTheme]: Icon styling and colors
+  /// - [margin]: External spacing around button
   const ButtonVariance({
     required this.decoration,
     required this.mouseCursor,
@@ -3016,11 +3256,46 @@ class ButtonVariance implements AbstractButtonStyle {
   }
 }
 
+/// A button state property that returns the same value for all states.
+///
+/// [ButtonStylePropertyAll] is a utility class that implements a constant
+/// [ButtonStateProperty], returning the same value regardless of the button's
+/// widget states. This is useful when a property should remain consistent
+/// across all interaction states (hover, pressed, focused, etc.).
+///
+/// The class is callable and can be used directly as a [ButtonStateProperty]
+/// function while providing better debugging information than anonymous functions.
+///
+/// Example:
+/// ```dart
+/// // Create a constant red color for all button states
+/// final redColor = ButtonStylePropertyAll(Colors.red);
+/// 
+/// // Use in button styling
+/// ButtonStyle(
+///   backgroundColor: redColor, // Always red, regardless of state
+/// )
+/// ```
 class ButtonStylePropertyAll<T> {
+  /// The constant value returned for all button states.
   final T value;
 
+  /// Creates a [ButtonStylePropertyAll] with the specified constant value.
+  ///
+  /// The [value] will be returned by [call] regardless of the button's
+  /// current widget states.
   const ButtonStylePropertyAll(this.value);
 
+  /// Returns the constant [value] for any context and widget states.
+  ///
+  /// This method implements the [ButtonStateProperty] function signature,
+  /// ignoring the [context] and [states] parameters and always returning
+  /// the stored [value].
+  ///
+  /// Parameters:
+  /// - [context]: Build context (ignored)
+  /// - [states]: Button widget states (ignored)  
+  /// - [value]: Base value (ignored, replaced with stored value)
   T call(BuildContext context, Set<WidgetState> states, T value) {
     return this.value;
   }
@@ -3041,7 +3316,56 @@ class ButtonStylePropertyAll<T> {
   String toString() => 'ButtonStylePropertyAll(value: $value)';
 }
 
+/// Extension methods for [AbstractButtonStyle] providing style modification capabilities.
+///
+/// [ButtonStyleExtension] adds convenient methods to button styles for creating
+/// modified copies with selectively overridden properties. This enables
+/// composition and customization of existing button styles without creating
+/// entirely new style definitions.
+///
+/// The [copyWith] method accepts [ButtonStatePropertyDelegate] functions that
+/// can modify existing property values based on context and state, allowing
+/// for sophisticated style customizations that build upon base styles.
 extension ButtonStyleExtension on AbstractButtonStyle {
+  /// Creates a copy of this button style with selectively overridden properties.
+  ///
+  /// Each parameter is an optional [ButtonStatePropertyDelegate] that receives
+  /// the current context, widget states, and the original property value,
+  /// returning a modified value. This allows for additive modifications rather
+  /// than complete replacement of styling properties.
+  ///
+  /// If no overrides are provided, returns the original style unchanged for
+  /// performance optimization.
+  ///
+  /// Parameters:
+  /// - [decoration]: Override function for background/border styling
+  /// - [mouseCursor]: Override function for cursor appearance
+  /// - [padding]: Override function for internal spacing
+  /// - [textStyle]: Override function for text appearance
+  /// - [iconTheme]: Override function for icon styling
+  /// - [margin]: Override function for external spacing
+  ///
+  /// Example:
+  /// ```dart
+  /// final customStyle = ButtonVariance.primary.copyWith(
+  ///   decoration: (context, states, baseDecoration) {
+  ///     // Add extra border radius to primary style
+  ///     if (baseDecoration is BoxDecoration) {
+  ///       return baseDecoration.copyWith(
+  ///         borderRadius: BorderRadius.circular(16),
+  ///       );
+  ///     }
+  ///     return baseDecoration;
+  ///   },
+  ///   padding: (context, states, basePadding) {
+  ///     // Add extra padding when pressed
+  ///     if (states.contains(WidgetState.pressed)) {
+  ///       return basePadding + EdgeInsets.all(2);
+  ///     }
+  ///     return basePadding;
+  ///   },
+  /// );
+  /// ```
   AbstractButtonStyle copyWith({
     ButtonStatePropertyDelegate<Decoration>? decoration,
     ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
