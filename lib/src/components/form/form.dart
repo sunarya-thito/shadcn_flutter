@@ -830,12 +830,44 @@ class NotEmptyValidator extends NonNullValidator<String> {
   int get hashCode => message.hashCode;
 }
 
+/// Validator that enforces minimum and maximum string length constraints.
+///
+/// [LengthValidator] checks that string values meet specified length requirements,
+/// useful for fields like usernames, passwords, or any text input with size constraints.
+/// It can enforce minimum length, maximum length, or both.
+///
+/// The validator treats null values as having zero length, so a minimum length
+/// constraint will fail for null values while a maximum length constraint will pass.
+///
+/// Example:
+/// ```dart
+/// // Enforce minimum 3 characters, maximum 20 characters
+/// final validator = LengthValidator(min: 3, max: 20);
+/// 
+/// // Enforce only minimum length
+/// final minValidator = LengthValidator(min: 8);
+/// 
+/// // Enforce only maximum length  
+/// final maxValidator = LengthValidator(max: 100);
+/// ```
 class LengthValidator extends Validator<String> {
+  /// The minimum required length (inclusive). If null, no minimum is enforced.
   final int? min;
+  
+  /// The maximum allowed length (inclusive). If null, no maximum is enforced.
   final int? max;
-  final String?
-      message; // if null, use default message from ShadcnLocalizations
+  
+  /// Custom error message. If null, uses default message from [ShadcnLocalizations].
+  final String? message;
 
+  /// Creates a [LengthValidator] with optional minimum and maximum length constraints.
+  ///
+  /// At least one of [min] or [max] should be specified for meaningful validation.
+  /// 
+  /// Parameters:
+  /// - [min]: Minimum required length (inclusive), null for no minimum
+  /// - [max]: Maximum allowed length (inclusive), null for no maximum  
+  /// - [message]: Custom error message, null to use default localized message
   const LengthValidator({this.min, this.max, this.message});
 
   @override
@@ -876,21 +908,91 @@ class LengthValidator extends Validator<String> {
   int get hashCode => Object.hash(min, max, message);
 }
 
-enum CompareType { greater, greaterOrEqual, less, lessOrEqual, equal }
+/// Enumeration of comparison types for field validation.
+///
+/// Defines the different ways to compare two values in form validation,
+/// typically used with [CompareWith] validator to compare fields or
+/// with comparison validators to check against reference values.
+enum CompareType { 
+  /// Value must be greater than the comparison target.
+  greater, 
+  /// Value must be greater than or equal to the comparison target.
+  greaterOrEqual, 
+  /// Value must be less than the comparison target.
+  less, 
+  /// Value must be less than or equal to the comparison target.
+  lessOrEqual, 
+  /// Value must be exactly equal to the comparison target.
+  equal 
+}
 
+/// Validator that compares the current field's value with another form field.
+///
+/// [CompareWith] enables cross-field validation where one field's value must
+/// satisfy a comparison constraint with another field. This is commonly used
+/// for password confirmation, date range validation, or any scenario requiring
+/// field interdependence.
+///
+/// The generic type [T] must implement [Comparable] to enable value comparison.
+///
+/// Example:
+/// ```dart
+/// // Password confirmation field
+/// final confirmPasswordValidator = CompareWith<String>(
+///   passwordFieldKey,
+///   CompareType.equal,
+///   message: 'Passwords must match',
+/// );
+/// 
+/// // Or using convenience constructor
+/// final confirmValidator = CompareWith<String>.equal(
+///   passwordFieldKey,
+///   message: 'Passwords must match',
+/// );
+/// ```
 class CompareWith<T extends Comparable<T>> extends Validator<T> {
+  /// The form field key to compare against.
   final FormKey<T> key;
+  
+  /// The type of comparison to perform.
   final CompareType type;
-  final String?
-      message; // if null, use default message from ShadcnLocalizations
+  
+  /// Custom error message. If null, uses default message from [ShadcnLocalizations].
+  final String? message;
 
+  /// Creates a [CompareWith] validator with the specified comparison type.
+  ///
+  /// Parameters:
+  /// - [key]: The form field key to compare this field's value against
+  /// - [type]: The type of comparison to perform
+  /// - [message]: Custom error message, null to use default localized message
   const CompareWith(this.key, this.type, {this.message});
+  
+  /// Creates a [CompareWith] validator that checks for equality.
+  ///
+  /// Convenience constructor for [CompareType.equal].
   const CompareWith.equal(this.key, {this.message}) : type = CompareType.equal;
+  
+  /// Creates a [CompareWith] validator that checks the value is greater than the target field.
+  ///
+  /// Convenience constructor for [CompareType.greater].
   const CompareWith.greater(this.key, {this.message})
       : type = CompareType.greater;
+      
+  /// Creates a [CompareWith] validator that checks the value is greater than or equal to the target field.
+  ///
+  /// Convenience constructor for [CompareType.greaterOrEqual].
   const CompareWith.greaterOrEqual(this.key, {this.message})
       : type = CompareType.greaterOrEqual;
+      
+  /// Creates a [CompareWith] validator that checks the value is less than the target field.
+  ///
+  /// Convenience constructor for [CompareType.less].
   const CompareWith.less(this.key, {this.message}) : type = CompareType.less;
+  
+  /// Creates a [CompareWith] validator that checks the value is less than or equal to the target field.
+  ///
+  /// Convenience constructor for [CompareType.lessOrEqual].
   const CompareWith.lessOrEqual(this.key, {this.message})
       : type = CompareType.lessOrEqual;
 
@@ -972,14 +1074,53 @@ class CompareWith<T extends Comparable<T>> extends Validator<T> {
   int get hashCode => Object.hash(key, type, message);
 }
 
+/// Validator for enforcing secure password requirements.
+///
+/// [SafePasswordValidator] checks that passwords meet common security criteria
+/// including character type requirements. It validates against customizable rules
+/// for digits, lowercase letters, uppercase letters, and special characters.
+///
+/// This validator is essential for user registration and password change forms
+/// where security standards must be enforced.
+///
+/// Example:
+/// ```dart
+/// // Standard secure password (all requirements)
+/// final passwordValidator = SafePasswordValidator();
+/// 
+/// // Custom requirements (only digits and letters)
+/// final simpleValidator = SafePasswordValidator(
+///   requireSpecialChar: false,
+///   message: 'Password must contain digits and letters',
+/// );
+/// ```
 class SafePasswordValidator extends Validator<String> {
-  final String?
-      message; // if null, use default message from ShadcnLocalizations
+  /// Custom error message. If null, uses default message from [ShadcnLocalizations].
+  final String? message;
+  
+  /// Whether the password must contain at least one digit (0-9).
   final bool requireDigit;
+  
+  /// Whether the password must contain at least one lowercase letter (a-z).
   final bool requireLowercase;
+  
+  /// Whether the password must contain at least one uppercase letter (A-Z).
   final bool requireUppercase;
+  
+  /// Whether the password must contain at least one special character (!@#$%^&*).
   final bool requireSpecialChar;
 
+  /// Creates a [SafePasswordValidator] with customizable security requirements.
+  ///
+  /// By default, all security requirements are enabled. Disable specific
+  /// requirements by setting the corresponding boolean parameters to false.
+  ///
+  /// Parameters:
+  /// - [requireDigit]: Require at least one digit (default: true)
+  /// - [requireLowercase]: Require at least one lowercase letter (default: true)
+  /// - [requireUppercase]: Require at least one uppercase letter (default: true)
+  /// - [requireSpecialChar]: Require at least one special character (default: true)
+  /// - [message]: Custom error message, null to use default localized message
   const SafePasswordValidator(
       {this.requireDigit = true,
       this.requireLowercase = true,
@@ -1038,12 +1179,43 @@ class SafePasswordValidator extends Validator<String> {
       requireUppercase, requireSpecialChar, message);
 }
 
+/// Validator that enforces a minimum numeric value constraint.
+///
+/// [MinValidator] ensures that numeric values meet a minimum threshold,
+/// useful for fields like age, quantity, price, or any numeric input
+/// with lower bounds. Supports both inclusive and exclusive comparisons.
+///
+/// The generic type [T] must extend [num] to enable numeric comparison.
+///
+/// Example:
+/// ```dart
+/// // Age must be at least 18 (inclusive)
+/// final ageValidator = MinValidator<int>(18);
+/// 
+/// // Price must be greater than 0 (exclusive)
+/// final priceValidator = MinValidator<double>(
+///   0.0, 
+///   inclusive: false,
+///   message: 'Price must be greater than zero',
+/// );
+/// ```
 class MinValidator<T extends num> extends Validator<T> {
+  /// The minimum value threshold.
   final T min;
+  
+  /// Whether the comparison includes the minimum value itself.
+  /// If true, value >= min; if false, value > min.
   final bool inclusive;
-  final String?
-      message; // if null, use default message from ShadcnLocalizations
+  
+  /// Custom error message. If null, uses default message from [ShadcnLocalizations].
+  final String? message;
 
+  /// Creates a [MinValidator] with the specified minimum value constraint.
+  ///
+  /// Parameters:
+  /// - [min]: The minimum value threshold
+  /// - [inclusive]: Whether the minimum value is included (default: true)
+  /// - [message]: Custom error message, null to use default localized message
   const MinValidator(this.min, {this.inclusive = true, this.message});
 
   @override
@@ -1084,12 +1256,43 @@ class MinValidator<T extends num> extends Validator<T> {
   int get hashCode => Object.hash(min, inclusive, message);
 }
 
+/// Validator that enforces a maximum numeric value constraint.
+///
+/// [MaxValidator] ensures that numeric values don't exceed a maximum threshold,
+/// useful for fields like quantity limits, age restrictions, score caps, or any
+/// numeric input with upper bounds. Supports both inclusive and exclusive comparisons.
+///
+/// The generic type [T] must extend [num] to enable numeric comparison.
+///
+/// Example:
+/// ```dart
+/// // Age must be at most 65 (inclusive)
+/// final ageValidator = MaxValidator<int>(65);
+/// 
+/// // Temperature must be less than 100 (exclusive)
+/// final tempValidator = MaxValidator<double>(
+///   100.0, 
+///   inclusive: false,
+///   message: 'Temperature must be below 100 degrees',
+/// );
+/// ```
 class MaxValidator<T extends num> extends Validator<T> {
+  /// The maximum value threshold.
   final T max;
+  
+  /// Whether the comparison includes the maximum value itself.
+  /// If true, value <= max; if false, value < max.
   final bool inclusive;
-  final String?
-      message; // if null, use default message from ShadcnLocalizations
+  
+  /// Custom error message. If null, uses default message from [ShadcnLocalizations].
+  final String? message;
 
+  /// Creates a [MaxValidator] with the specified maximum value constraint.
+  ///
+  /// Parameters:
+  /// - [max]: The maximum value threshold
+  /// - [inclusive]: Whether the maximum value is included (default: true)
+  /// - [message]: Custom error message, null to use default localized message
   const MaxValidator(this.max, {this.inclusive = true, this.message});
 
   @override
@@ -1209,11 +1412,32 @@ class RegexValidator extends Validator<String> {
   int get hashCode => Object.hash(pattern, message);
 }
 
-// email validator using email_validator package
+/// Validator for email address format validation.
+///
+/// [EmailValidator] uses the `email_validator` package to check that string values
+/// conform to standard email address format requirements. It validates both the
+/// structure and domain format according to RFC specifications.
+///
+/// This validator is essential for email input fields in registration forms,
+/// contact forms, or any interface requiring valid email addresses.
+///
+/// Example:
+/// ```dart
+/// final emailValidator = EmailValidator();
+/// 
+/// // With custom message
+/// final customEmailValidator = EmailValidator(
+///   message: 'Please enter a valid email address',
+/// );
+/// ```
 class EmailValidator extends Validator<String> {
-  final String?
-      message; // if null, use default message from ShadcnLocalizations
+  /// Custom error message. If null, uses default message from [ShadcnLocalizations].
+  final String? message;
 
+  /// Creates an [EmailValidator].
+  ///
+  /// Parameters:
+  /// - [message]: Custom error message, null to use default localized message
   const EmailValidator({this.message});
 
   @override
@@ -1240,10 +1464,32 @@ class EmailValidator extends Validator<String> {
   int get hashCode => message.hashCode;
 }
 
+/// Validator for URL format validation.
+///
+/// [URLValidator] checks that string values conform to valid URL format
+/// by attempting to parse them with Dart's [Uri.parse] method. It validates
+/// the structural correctness of URLs including protocol, domain, and path components.
+///
+/// This validator is useful for website URL fields, API endpoint inputs,
+/// or any interface requiring valid web addresses.
+///
+/// Example:
+/// ```dart
+/// final urlValidator = URLValidator();
+/// 
+/// // With custom message
+/// final customUrlValidator = URLValidator(
+///   message: 'Please enter a valid website URL',
+/// );
+/// ```
 class URLValidator extends Validator<String> {
-  final String?
-      message; // if null, use default message from ShadcnLocalizations
+  /// Custom error message. If null, uses default message from [ShadcnLocalizations].
+  final String? message;
 
+  /// Creates a [URLValidator].
+  ///
+  /// Parameters:
+  /// - [message]: Custom error message, null to use default localized message
   const URLValidator({this.message});
 
   @override

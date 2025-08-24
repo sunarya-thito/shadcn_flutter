@@ -1,43 +1,143 @@
 import '../../shadcn_flutter.dart';
 
+/// A comprehensive typography system that defines consistent text styles for the application.
+///
+/// [Typography] provides a complete set of text styles including font families,
+/// sizes, weights, and semantic styles for different content types. It serves as
+/// the foundation for consistent typography across the entire application.
+///
+/// The class includes:
+/// - Font family styles (sans, mono)
+/// - Size variations (xSmall to x9Large)
+/// - Weight variations (thin to black)
+/// - Semantic heading styles (h1-h4)
+/// - Content-specific styles (p, blockQuote, inlineCode, etc.)
+/// - Utility styles (muted, lead, etc.)
+///
+/// Example:
+/// ```dart
+/// final typography = Typography.geist();
+/// Text('Heading', style: typography.h1);
+/// Text('Body text', style: typography.p);
+/// Text('Code snippet', style: typography.inlineCode);
+/// ```
 class Typography {
+  /// Base sans-serif font family style.
   final TextStyle sans;
+  
+  /// Base monospace font family style for code and fixed-width text.
   final TextStyle mono;
+  
+  /// Extra small text size (typically 12px).
   final TextStyle xSmall;
+  
+  /// Small text size (typically 14px).
   final TextStyle small;
+  
+  /// Base text size (typically 16px) - the default body text size.
   final TextStyle base;
+  
+  /// Large text size (typically 18px).
   final TextStyle large;
+  
+  /// Extra large text size (typically 20px).
   final TextStyle xLarge;
+  
+  /// 2x large text size (typically 24px).
   final TextStyle x2Large;
+  
+  /// 3x large text size (typically 30px).
   final TextStyle x3Large;
+  
+  /// 4x large text size (typically 36px).
   final TextStyle x4Large;
+  
+  /// 5x large text size (typically 48px).
   final TextStyle x5Large;
+  
+  /// 6x large text size (typically 60px).
   final TextStyle x6Large;
+  
+  /// 7x large text size (typically 72px).
   final TextStyle x7Large;
+  
+  /// 8x large text size (typically 96px).
   final TextStyle x8Large;
+  
+  /// 9x large text size (typically 128px) - for display headlines.
   final TextStyle x9Large;
+  
+  /// Thin font weight (typically FontWeight.w100).
   final TextStyle thin;
+  
+  /// Light font weight (typically FontWeight.w300).
   final TextStyle light;
+  
+  /// Extra light font weight (typically FontWeight.w200).
   final TextStyle extraLight;
+  
+  /// Normal font weight (typically FontWeight.w400) - regular text.
   final TextStyle normal;
+  
+  /// Medium font weight (typically FontWeight.w500).
   final TextStyle medium;
+  
+  /// Semi-bold font weight (typically FontWeight.w600).
   final TextStyle semiBold;
+  
+  /// Bold font weight (typically FontWeight.w700).
   final TextStyle bold;
+  
+  /// Extra bold font weight (typically FontWeight.w800).
   final TextStyle extraBold;
+  
+  /// Black font weight (typically FontWeight.w900) - heaviest weight.
   final TextStyle black;
+  
+  /// Italic text style.
   final TextStyle italic;
+  
+  /// Primary heading style (h1) - largest heading.
   final TextStyle h1;
+  
+  /// Secondary heading style (h2).
   final TextStyle h2;
+  
+  /// Tertiary heading style (h3).
   final TextStyle h3;
+  
+  /// Quaternary heading style (h4) - smallest heading.
   final TextStyle h4;
+  
+  /// Paragraph style for body text.
   final TextStyle p;
+  
+  /// Block quote style for quoted content.
   final TextStyle blockQuote;
+  
+  /// Inline code style for code snippets within text.
   final TextStyle inlineCode;
+  
+  /// Lead paragraph style for introductory or emphasized text.
   final TextStyle lead;
+  
+  /// Large text variant for emphasis.
   final TextStyle textLarge;
+  
+  /// Small text variant for fine print or secondary information.
   final TextStyle textSmall;
+  
+  /// Muted text style for less prominent content.
   final TextStyle textMuted;
 
+  /// Creates a Typography instance using the Geist font family.
+  ///
+  /// Provides a complete typography system based on the Geist font family,
+  /// with carefully chosen size and weight combinations for optimal readability
+  /// and visual hierarchy.
+  ///
+  /// All parameters are optional and have sensible defaults. You can override
+  /// any style to customize the typography system for your specific needs.
   const Typography.geist({
     this.sans =
         const TextStyle(fontFamily: 'GeistSans', package: 'shadcn_flutter'),
@@ -81,6 +181,13 @@ class Typography {
     this.textMuted = const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
   });
 
+  /// Creates a Typography instance with all styles explicitly defined.
+  ///
+  /// This constructor requires all text styles to be provided, giving you
+  /// complete control over the typography system. Use this when you need
+  /// a fully custom typography system that doesn't follow the Geist defaults.
+  ///
+  /// All parameters are required to ensure a complete typography system.
   const Typography({
     required this.sans,
     required this.mono,
@@ -120,6 +227,28 @@ class Typography {
     required this.textMuted,
   });
 
+  /// Creates a copy of this Typography with specified styles replaced.
+  ///
+  /// Allows selective modification of text styles while preserving the rest
+  /// of the typography system. Uses [ValueGetter] functions to allow for
+  /// computed style replacements.
+  ///
+  /// Any style not specified will retain its current value from this instance.
+  ///
+  /// Parameters:
+  /// All parameters are optional [ValueGetter<TextStyle>] functions that
+  /// provide new text styles for the corresponding properties.
+  ///
+  /// Returns:
+  /// A new [Typography] instance with updated styles.
+  ///
+  /// Example:
+  /// ```dart
+  /// final customTypography = typography.copyWith(
+  ///   h1: () => typography.h1.copyWith(color: Colors.blue),
+  ///   p: () => typography.p.copyWith(fontSize: 18),
+  /// );
+  /// ```
   Typography copyWith({
     ValueGetter<TextStyle>? sans,
     ValueGetter<TextStyle>? mono,
@@ -198,6 +327,30 @@ class Typography {
     );
   }
 
+  /// Creates a scaled version of this Typography with all font sizes multiplied by the given factor.
+  ///
+  /// Scales all text styles that have defined font sizes by the specified factor,
+  /// while preserving other style properties like font weight, family, and color.
+  /// This is useful for creating responsive typography or accessibility features
+  /// that require larger text sizes.
+  ///
+  /// Text styles without defined font sizes remain unchanged.
+  ///
+  /// Parameters:
+  /// - [factor] (double, required): The scaling factor to apply to font sizes
+  ///   (e.g., 1.2 for 20% larger, 0.8 for 20% smaller)
+  ///
+  /// Returns:
+  /// A new [Typography] instance with scaled font sizes.
+  ///
+  /// Example:
+  /// ```dart
+  /// // Create a typography system with 25% larger text
+  /// final largeTypography = typography.scale(1.25);
+  /// 
+  /// // Create a typography system with smaller text for compact displays
+  /// final compactTypography = typography.scale(0.9);
+  /// ```
   Typography scale(double factor) {
     return Typography(
       sans: sans.fontSize == null
