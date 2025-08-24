@@ -1,16 +1,46 @@
 import '../../../shadcn_flutter.dart';
 
+/// Theme configuration for basic layout components.
+///
+/// [BasicTheme] provides styling and layout configuration for basic UI
+/// components that have common layout patterns with leading, trailing,
+/// title, subtitle, and content areas. This theme allows customization
+/// of alignment, spacing, and padding for consistent layout behavior.
+///
+/// Used by components that follow a structured layout pattern with
+/// multiple content areas that need coordinated styling.
 class BasicTheme {
+  /// Alignment for the leading widget area.
   final AlignmentGeometry? leadingAlignment;
+  
+  /// Alignment for the trailing widget area.
   final AlignmentGeometry? trailingAlignment;
+  
+  /// Alignment for the title content area.
   final AlignmentGeometry? titleAlignment;
+  
+  /// Alignment for the subtitle content area.
   final AlignmentGeometry? subtitleAlignment;
+  
+  /// Alignment for the main content area.
   final AlignmentGeometry? contentAlignment;
+  
+  /// Spacing between content elements.
   final double? contentSpacing;
+  
+  /// Spacing between title and subtitle elements.
   final double? titleSpacing;
+  
+  /// Main axis alignment for the overall layout.
   final MainAxisAlignment? mainAxisAlignment;
+  
+  /// Padding applied to the entire component.
   final EdgeInsetsGeometry? padding;
 
+  /// Creates a [BasicTheme] with optional styling configuration.
+  ///
+  /// All parameters are optional, allowing selective customization
+  /// of layout properties while using defaults for others.
   const BasicTheme({
     this.leadingAlignment,
     this.trailingAlignment,
@@ -23,6 +53,17 @@ class BasicTheme {
     this.padding,
   });
 
+  /// Creates a copy of this BasicTheme with specified properties replaced.
+  ///
+  /// Uses [ValueGetter] functions to allow for computed replacement values.
+  /// Any property not specified retains its current value from this instance.
+  ///
+  /// Parameters:
+  /// All parameters are optional [ValueGetter] functions that provide new
+  /// values for the corresponding properties.
+  ///
+  /// Returns:
+  /// A new [BasicTheme] instance with updated properties.
   BasicTheme copyWith({
     ValueGetter<AlignmentGeometry?>? leadingAlignment,
     ValueGetter<AlignmentGeometry?>? trailingAlignment,
@@ -85,22 +126,83 @@ class BasicTheme {
       );
 }
 
+/// A flexible layout widget that provides structured areas for common UI patterns.
+///
+/// [Basic] creates a structured layout with designated areas for leading,
+/// trailing, title, subtitle, and content widgets. It's designed to handle
+/// common UI patterns where these elements need to be arranged in a
+/// consistent and customizable way.
+///
+/// The layout supports:
+/// - Optional leading and trailing widgets (icons, buttons, etc.)
+/// - Title and subtitle text areas with independent styling
+/// - Main content area for primary information
+/// - Configurable spacing and alignment for all areas
+/// - Flexible padding and main axis alignment
+///
+/// Example:
+/// ```dart
+/// Basic(
+///   leading: Icon(Icons.person),
+///   title: Text('User Name'),
+///   subtitle: Text('user@example.com'),
+///   content: Text('Additional details here'),
+///   trailing: IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
+///   contentSpacing: 12.0,
+/// )
+/// ```
 class Basic extends StatelessWidget {
+  /// Optional widget displayed at the leading position (typically left side).
   final Widget? leading;
+  
+  /// Optional title widget, usually displayed prominently.
   final Widget? title;
+  
+  /// Optional subtitle widget, typically displayed below the title.
   final Widget? subtitle;
+  
+  /// Optional content widget for the main content area.
   final Widget? content;
+  
+  /// Optional widget displayed at the trailing position (typically right side).
   final Widget? trailing;
+  
+  /// Alignment for the leading widget within its area.
   final AlignmentGeometry? leadingAlignment;
+  
+  /// Alignment for the trailing widget within its area.
   final AlignmentGeometry? trailingAlignment;
+  
+  /// Alignment for the title widget within its area.
   final AlignmentGeometry? titleAlignment;
+  
+  /// Alignment for the subtitle widget within its area.
   final AlignmentGeometry? subtitleAlignment;
+  
+  /// Alignment for the content widget within its area.
   final AlignmentGeometry? contentAlignment;
+  
+  /// Spacing between content elements.
   final double? contentSpacing;
+  
+  /// Spacing between title and subtitle elements.
   final double? titleSpacing;
+  
+  /// Main axis alignment for the overall layout.
   final MainAxisAlignment? mainAxisAlignment;
+  
+  /// Padding applied around the entire layout.
   final EdgeInsetsGeometry? padding;
 
+  /// Creates a [Basic] layout with optional structured content areas.
+  ///
+  /// All parameters are optional, allowing for flexible composition of
+  /// layouts ranging from simple single-element displays to complex
+  /// multi-area arrangements.
+  ///
+  /// Default spacing values:
+  /// - contentSpacing: typically 16.0
+  /// - titleSpacing: typically 4.0
   const Basic({
     super.key,
     this.leading,
