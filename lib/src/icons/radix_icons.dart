@@ -1,6 +1,90 @@
 import 'package:flutter/widgets.dart';
 
+/// A curated collection of Radix UI icons for Flutter applications.
+///
+/// [RadixIcons] provides access to the Radix Icons library, a set of crisp,
+/// pixel-perfect icons designed specifically for modern user interfaces.
+/// These icons are crafted by the Radix UI team with careful attention to
+/// consistency, clarity, and usability across different screen densities.
+///
+/// The icon set emphasizes simplicity and functionality, making it an excellent
+/// choice for professional applications that require clean, recognizable iconography.
+/// All icons follow consistent design principles with uniform stroke weights
+/// and optical alignment.
+///
+/// ## Design Philosophy
+/// - **Minimal & Clean**: Simple, uncluttered designs that communicate clearly
+/// - **Consistent Weight**: Uniform stroke width across all icons
+/// - **Pixel Perfect**: Optimized for crisp rendering at standard UI sizes
+/// - **Semantic Clarity**: Icons that clearly represent their intended function
+///
+/// ## Usage Examples
+/// ```dart
+/// // Basic icon usage
+/// Icon(RadixIcons.home)
+/// 
+/// // Customized appearance
+/// Icon(
+///   RadixIcons.gear,
+///   size: 18,
+///   color: Colors.grey.shade600,
+/// )
+/// 
+/// // In app bars
+/// AppBar(
+///   actions: [
+///     IconButton(
+///       onPressed: () => {},
+///       icon: Icon(RadixIcons.person),
+///     ),
+///   ],
+/// )
+/// 
+/// // In lists
+/// ListTile(
+///   leading: Icon(RadixIcons.folder),
+///   title: Text('Documents'),
+///   trailing: Icon(RadixIcons.chevronRight),
+/// )
+/// ```
+///
+/// ## Common Icon Categories
+/// The collection includes essential icons for:
+/// - **System Actions**: close, minimize, maximize, settings
+/// - **Navigation**: arrows, chevrons, home, back
+/// - **Content**: text, image, video, document
+/// - **Communication**: chat, mail, phone, notification
+/// - **Status**: check, cross, warning, info
+/// - **Editing**: pencil, trash, copy, paste
+/// - **Media Controls**: play, pause, stop, volume
+///
+/// ## Best Practices
+/// - Use consistent icon sizes throughout your application
+/// - Provide semantic labels for accessibility
+/// - Consider icon context and user expectations
+/// - Test icon clarity at different sizes and themes
+///
+/// ```dart
+/// // Accessible icon usage
+/// Semantics(
+///   label: 'Settings menu',
+///   child: GestureDetector(
+///     onTap: () => openSettings(),
+///     child: Icon(RadixIcons.gear),
+///   ),
+/// )
+/// ```
+///
+/// See also:
+/// - [LucideIcons] for alternative icon styling
+/// - [BootstrapIcons] for a larger icon collection
+/// - [Icon] widget for displaying icons
 class RadixIcons {
+  /// Private constructor to prevent instantiation.
+  ///
+  /// [RadixIcons] is designed as a static utility class containing only
+  /// static icon constants. The class provides icon data through static
+  /// properties and is not intended to be instantiated.
   RadixIcons._();
 
   static const IconData zoomOut = IconData(57344, fontFamily: 'RadixIcons', fontPackage: 'shadcn_flutter');
