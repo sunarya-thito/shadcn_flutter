@@ -4,11 +4,70 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-// This helps to simulate middle hold scroll on web and desktop platforms
+/// A specialized widget that intercepts and enhances scrolling behavior for desktop platforms.
+///
+/// [ScrollViewInterceptor] implements advanced scrolling interactions that simulate
+/// middle-mouse button hold-to-scroll functionality commonly expected on desktop
+/// and web platforms. It enhances the native scrolling experience by providing
+/// smooth, momentum-based scrolling through pointer gesture interception.
+///
+/// The widget wraps scroll views and intercepts pointer events to provide:
+/// - Middle mouse button hold-and-drag scrolling
+/// - Smooth momentum scrolling with physics simulation
+/// - Platform-appropriate cursor feedback during scroll operations
+/// - Configurable scroll sensitivity and maximum speed limits
+///
+/// Key features:
+/// - Desktop-optimized scrolling behavior enhancement
+/// - Middle mouse button hold-to-scroll simulation
+/// - Smooth momentum physics with customizable parameters
+/// - Automatic cursor management during scroll operations
+/// - Ticker-based animation for fluid scroll motion
+/// - Configurable enable/disable functionality
+///
+/// The component is particularly useful for desktop applications where users
+/// expect advanced scrolling interactions beyond basic wheel scrolling.
+///
+/// Example:
+/// ```dart
+/// ScrollViewInterceptor(
+///   enabled: true,
+///   child: ListView(
+///     children: listItems,
+///   ),
+/// );
+/// ```
 class ScrollViewInterceptor extends StatefulWidget {
+  /// The widget tree to wrap with enhanced scrolling behavior.
+  ///
+  /// This is typically a scrollable widget like [ListView], [SingleChildScrollView],
+  /// or [CustomScrollView] that will benefit from enhanced desktop scrolling
+  /// interactions.
   final Widget child;
+
+  /// Whether the scroll interception is enabled.
+  ///
+  /// When false, the widget acts as a pass-through without intercepting
+  /// any scroll events. Defaults to true to enable enhanced scrolling.
   final bool enabled;
 
+  /// Creates a [ScrollViewInterceptor].
+  ///
+  /// The [child] parameter is required and should contain the scrollable
+  /// content to be enhanced. The [enabled] parameter defaults to true
+  /// to activate scroll interception by default.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScrollViewInterceptor(
+  ///   enabled: Platform.isDesktop,
+  ///   child: CustomScrollView(
+  ///     slivers: [
+  ///       SliverList(delegate: listDelegate),
+  ///     ],
+  ///   ),
+  /// );
+  /// ```
   const ScrollViewInterceptor(
       {super.key, required this.child, this.enabled = true});
 
@@ -16,10 +75,34 @@ class ScrollViewInterceptor extends StatefulWidget {
   State<ScrollViewInterceptor> createState() => _ScrollViewInterceptorState();
 }
 
+/// Scroll drag speed multiplier for converting pointer movement to scroll velocity.
+///
+/// This constant determines how quickly scroll movement responds to pointer
+/// drag gestures. Lower values create more precise control, while higher
+/// values create faster scrolling response.
 const double kScrollDragSpeed = 0.02;
+
+/// Maximum scroll speed limit to prevent excessive scroll velocities.
+///
+/// This constant caps the maximum scroll speed to maintain smooth, controlled
+/// scrolling even with rapid pointer movements. Prevents scroll operations
+/// from becoming uncontrollably fast.
 const double kMaxScrollSpeed = 10;
 
+/// Specialized pointer scroll event for desktop scrolling operations.
+///
+/// [DesktopPointerScrollEvent] extends [PointerScrollEvent] to provide
+/// desktop-specific scroll event handling with enhanced metadata and
+/// behavior appropriate for desktop pointer interactions.
+///
+/// This event type enables proper recognition and processing of desktop
+/// scrolling gestures within the scroll view interceptor system.
 class DesktopPointerScrollEvent extends PointerScrollEvent {
+  /// Creates a [DesktopPointerScrollEvent] with the required pointer event properties.
+  ///
+  /// All parameters are required to properly identify and process the desktop
+  /// scroll event within the Flutter event system. These parameters correspond
+  /// to standard [PointerScrollEvent] properties but with desktop-specific handling.
   const DesktopPointerScrollEvent({
     required super.position,
     required super.device,

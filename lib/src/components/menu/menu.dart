@@ -2,14 +2,36 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// {@template menu_theme}
-/// Styling options for menu widgets such as [MenuGroup] and [MenuButton].
-/// {@endtemplate}
+/// Theme configuration for menu components including items, groups, and submenus.
+///
+/// [MenuTheme] provides styling options for menu-related widgets such as
+/// [MenuGroup] and [MenuButton], controlling spacing, positioning, and visual
+/// presentation. Used with [ComponentTheme] to apply consistent menu styling
+/// throughout an application.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<MenuTheme>(
+///   data: MenuTheme(
+///     itemPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+///     subMenuOffset: Offset(4, 0),
+///   ),
+///   child: MyMenuWidget(),
+/// );
+/// ```
 class MenuTheme {
-  /// Default padding applied to each menu item.
+  /// Padding applied to individual menu items for consistent spacing.
+  ///
+  /// Controls the internal spacing within each menu item, affecting both
+  /// text content and any icons or shortcuts. When null, uses framework
+  /// default padding based on the current theme scaling.
   final EdgeInsets? itemPadding;
 
-  /// Offset applied when showing a submenu.
+  /// Positional offset for submenu placement relative to parent menu items.
+  ///
+  /// Determines where submenus appear when triggered by hovering or clicking
+  /// on parent menu items. Typically a small horizontal offset to avoid
+  /// overlap. When null, uses framework default submenu positioning.
   final Offset? subMenuOffset;
 
   /// {@macro menu_theme}
@@ -47,10 +69,50 @@ class MenuTheme {
   }
 }
 
+/// Widget for displaying keyboard shortcuts in menus with customizable appearance.
+///
+/// [MenuShortcut] renders keyboard shortcut combinations using visual representations
+/// of individual keys, connected by a customizable combiner widget. It integrates
+/// with the keyboard shortcut display system to provide consistent visual styling
+/// across the application.
+///
+/// The widget automatically maps keyboard activators to their visual representations
+/// and arranges them in a horizontal layout with separators. This is commonly used
+/// in context menus, menu bars, and tooltips to show available shortcuts.
+///
+/// Example:
+/// ```dart
+/// MenuShortcut(
+///   activator: LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyS),
+///   combiner: Text(' + '), // Custom separator between keys
+/// )
+/// ```
 class MenuShortcut extends StatelessWidget {
+  /// The keyboard shortcut activator to display.
+  ///
+  /// Defines the key combination that triggers the associated action.
+  /// Can be a single key or a combination using LogicalKeySet.
   final ShortcutActivator activator;
+  
+  /// Widget used to separate individual keys in the display.
+  ///
+  /// When null, defaults to `Text(' + ')`. Used between each key
+  /// in multi-key combinations to show the relationship.
   final Widget? combiner;
 
+  /// Creates a [MenuShortcut] with keyboard activator and optional combiner.
+  ///
+  /// Parameters:
+  /// - [activator] (ShortcutActivator, required): The keyboard shortcut to display
+  /// - [combiner] (Widget?, optional): Separator between keys (defaults to ' + ')
+  ///
+  /// Example:
+  /// ```dart
+  /// MenuShortcut(
+  ///   activator: SingleActivator(LogicalKeyboardKey.enter),
+  ///   combiner: Icon(Icons.add, size: 12),
+  /// )
+  /// ```
   const MenuShortcut({super.key, required this.activator, this.combiner});
 
   @override
@@ -74,18 +136,136 @@ class MenuShortcut extends StatelessWidget {
   }
 }
 
+/// Abstract base class for all menu item widgets.
+///
+/// [MenuItem] defines the essential contract that all menu items must implement
+/// to participate in menu layouts and behavior. It provides properties for
+/// determining layout requirements and popover management.
+///
+/// Concrete implementations include [MenuButton], [MenuRadioGroup], [MenuDivider],
+/// and other specialized menu components that extend this base class.
+///
+/// The abstract properties allow menu containers to make informed decisions
+/// about layout, spacing, and interaction management across different item types.
 abstract class MenuItem extends Widget {
+  /// Creates a [MenuItem].
+  ///
+  /// Parameters:
+  /// - [key] (Key?, optional): Widget identifier for efficient updates
   const MenuItem({super.key});
 
+  /// Whether this menu item has leading content that affects layout.
+  ///
+  /// When true, indicates that the item has leading elements (like icons,
+  /// checkboxes, or radio buttons) that require space allocation in the
+  /// menu layout. Used for consistent alignment across menu items.
   bool get hasLeading;
+
+  /// Optional popover controller for managing submenu or popup behavior.
+  ///
+  /// When not null, indicates that this menu item can show additional
+  /// content in a popover. Used for submenus, tooltips, or other
+  /// secondary content displays. Returns null for simple menu items.
   PopoverController? get popoverController;
 }
 
+/// Radio button group container for exclusive selection within menus.
+///
+/// [MenuRadioGroup] provides a radio button selection interface within menu
+/// contexts, allowing users to choose one option from a group of mutually
+/// exclusive choices. It manages selection state and provides callbacks
+/// for selection changes.
+///
+/// The component integrates with the menu theming system and provides
+/// consistent styling and behavior patterns for radio button groups
+/// within menu layouts.
+///
+/// Example:
+/// ```dart
+/// MenuRadioGroup<String>(
+///   value: selectedOption,
+///   onChanged: (context, value) => setState(() => selectedOption = value),
+///   children: [
+///     MenuRadioItem(value: 'option1', child: Text('Option 1')),
+///     MenuRadioItem(value: 'option2', child: Text('Option 2')),
+///     MenuRadioItem(value: 'option3', child: Text('Option 3')),
+///   ],
+/// )
+/// ```
+/// A radio button group widget for menu contexts with mutual exclusion selection.
+///
+/// [MenuRadioGroup] manages a collection of radio button options within a menu,
+/// ensuring that only one option can be selected at a time. It provides the
+/// selection state and change handling logic while delegating visual representation
+/// to its child widgets.
+///
+/// The group automatically manages selection state, ensuring mutual exclusion
+/// across all radio items within the group. When one item is selected, all others
+/// are automatically deselected.
+///
+/// Key features:
+/// - **Mutual exclusion**: Only one option can be selected at a time
+/// - **Type safety**: Generic type parameter ensures type consistency
+/// - **Contextual callbacks**: Selection callbacks receive build context
+/// - **Flexible content**: Supports radio items mixed with other menu widgets
+/// - **Theme integration**: Inherits styling from parent menu components
+///
+/// Typically used with [MenuRadio] widgets, but can include other menu
+/// elements like dividers, labels, or subgroups for complex menu hierarchies.
+///
+/// Example:
+/// ```dart
+/// MenuRadioGroup<SortOrder>(
+///   value: currentSortOrder,
+///   onChanged: (context, order) {
+///     setState(() => currentSortOrder = order);
+///   },
+///   children: [
+///     MenuRadio(value: SortOrder.name, child: Text('Sort by Name')),
+///     MenuRadio(value: SortOrder.date, child: Text('Sort by Date')),
+///     MenuDivider(),
+///     MenuRadio(value: SortOrder.size, child: Text('Sort by Size')),
+///   ],
+/// )
+/// ```
 class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
+  /// The currently selected value within the radio group.
+  ///
+  /// When null, no option is selected. When set to a value, that option
+  /// will be marked as selected and others will be deselected.
   final T? value;
+  
+  /// Callback invoked when the selection changes.
+  ///
+  /// Receives both the build context and the newly selected value.
+  /// The context parameter provides access to theme and localization data.
   final ContextedValueChanged<T>? onChanged;
+  
+  /// List of radio items or other menu widgets within the group.
+  ///
+  /// Typically contains [MenuRadioItem] widgets, but can include
+  /// other menu items like dividers or labels for organization.
   final List<Widget> children;
 
+  /// Creates a [MenuRadioGroup] with selection state and options.
+  ///
+  /// Parameters:
+  /// - [value] (T?, required): Currently selected value
+  /// - [onChanged] (ContextedValueChanged<T>?, required): Selection change callback
+  /// - [children] (List<Widget>, required): Radio items and other menu widgets
+  ///
+  /// Example:
+  /// ```dart
+  /// MenuRadioGroup<Theme>(
+  ///   value: currentTheme,
+  ///   onChanged: (context, theme) => _updateTheme(theme),
+  ///   children: [
+  ///     MenuRadioItem(value: Theme.light, child: Text('Light')),
+  ///     MenuRadioItem(value: Theme.dark, child: Text('Dark')),
+  ///     MenuRadioItem(value: Theme.auto, child: Text('Auto')),
+  ///   ],
+  /// )
+  /// ```
   const MenuRadioGroup({
     super.key,
     required this.value,
@@ -302,12 +482,69 @@ class MenuLabel extends StatelessWidget implements MenuItem {
   }
 }
 
+/// A checkbox menu item that can be toggled between checked and unchecked states.
+///
+/// [MenuCheckbox] provides a standard checkbox interaction within menu contexts,
+/// displaying a checkmark when selected and allowing users to toggle the state
+/// through interaction. It integrates with the menu system to provide consistent
+/// styling and behavior.
+///
+/// The checkbox automatically displays a checkmark icon when the value is true
+/// and shows an empty space when false. It supports all standard menu features
+/// including enabled/disabled states, trailing content, and auto-close behavior.
+///
+/// Key features:
+/// - **Toggle interaction**: Click or keyboard activation toggles the checkbox state
+/// - **Visual feedback**: Checkmark icon appears when selected
+/// - **Menu integration**: Consistent styling with other menu items
+/// - **Accessibility**: Full keyboard navigation and screen reader support
+/// - **Contextual callbacks**: Change callbacks receive build context
+///
+/// Example:
+/// ```dart
+/// MenuCheckbox(
+///   value: showLineNumbers,
+///   onChanged: (context, checked) {
+///     setState(() => showLineNumbers = checked);
+///   },
+///   child: Text('Show Line Numbers'),
+///   trailing: Text('Ctrl+L'),
+/// )
+/// ```
 class MenuCheckbox extends StatelessWidget implements MenuItem {
+  /// Whether the checkbox is currently checked.
+  ///
+  /// When true, displays a checkmark icon. When false, shows empty space.
   final bool value;
+  
+  /// Callback invoked when the checkbox state changes.
+  ///
+  /// Receives the build context and the new boolean state. If null,
+  /// the checkbox is read-only and cannot be toggled by user interaction.
   final ContextedValueChanged<bool>? onChanged;
+  
+  /// The primary content displayed for the checkbox menu item.
+  ///
+  /// Typically a [Text] widget describing the option, but can be any
+  /// widget including icons, rich text, or complex layouts.
   final Widget child;
+  
+  /// Optional widget displayed at the trailing edge of the checkbox item.
+  ///
+  /// Commonly used for keyboard shortcuts, additional info, or secondary
+  /// actions. Positioned at the right side of the menu item.
   final Widget? trailing;
+  
+  /// Whether the checkbox can be interacted with.
+  ///
+  /// When false, the checkbox appears dimmed and does not respond to
+  /// user interaction. The [onChanged] callback will not be invoked.
   final bool enabled;
+  
+  /// Whether the menu should automatically close when the checkbox is toggled.
+  ///
+  /// When true, selecting the checkbox closes the containing menu. When false,
+  /// the menu remains open for additional selections.
   final bool autoClose;
 
   const MenuCheckbox({

@@ -1,38 +1,140 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Builder function for creating custom dot indicator widgets.
+///
+/// This function is called for each dot in a dot indicator to allow complete
+/// customization of dot appearance based on its state. The builder receives
+/// the dot's index and active state, enabling different visual presentations
+/// for active and inactive dots.
+///
+/// Parameters:
+/// - [context] (BuildContext): Build context for theme and localization access
+/// - [index] (int): Zero-based index of this dot in the indicator
+/// - [active] (bool): Whether this dot represents the currently active item
+///
+/// Returns: Widget - A widget representing the dot indicator
+///
+/// Example:
+/// ```dart
+/// DotBuilder customDotBuilder = (context, index, active) {
+///   return AnimatedContainer(
+///     duration: Duration(milliseconds: 200),
+///     width: active ? 16.0 : 8.0,
+///     height: 8.0,
+///     decoration: BoxDecoration(
+///       color: active ? Colors.blue : Colors.grey,
+///       borderRadius: BorderRadius.circular(4.0),
+///     ),
+///   );
+/// };
+/// ```
 typedef DotBuilder = Widget Function(
     BuildContext context, int index, bool active);
 
-/// Theme configuration for [DotIndicator] and its dot items.
+/// Theme configuration for [DotIndicator] appearance and behavior.
+///
+/// [DotIndicatorTheme] provides comprehensive styling options for dot indicator
+/// components including dot sizing, spacing, colors, and custom builders. It
+/// integrates with the shadcn_flutter theming system to ensure consistent
+/// dot indicator styling across applications.
+///
+/// The theme supports both default dot rendering and completely custom dot
+/// builders, allowing for flexible visual presentation while maintaining
+/// consistent behavior and accessibility features.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<DotIndicatorTheme>(
+///   data: DotIndicatorTheme(
+///     spacing: 8.0,
+///     size: 10.0,
+///     activeColor: Colors.blue,
+///     inactiveColor: Colors.grey.shade300,
+///     borderRadius: 5.0,
+///     padding: EdgeInsets.all(16.0),
+///   ),
+///   child: DotIndicator(count: 5, activeIndex: 2),
+/// )
+/// ```
 class DotIndicatorTheme {
-  /// Spacing between dots.
+  /// Horizontal spacing between individual dots.
+  ///
+  /// Controls the gap between adjacent dots in the indicator. Proper spacing
+  /// ensures dots are visually distinct while maintaining a cohesive appearance.
+  /// When null, uses a default spacing appropriate for the dot size.
   final double? spacing;
 
-  /// Padding around the dots container.
+  /// Padding around the entire dots container.
+  ///
+  /// Provides external spacing around the complete dot indicator, useful for
+  /// positioning the indicator within its parent layout. When null, uses
+  /// minimal default padding.
   final EdgeInsetsGeometry? padding;
 
-  /// Builder for individual dots.
+  /// Custom builder function for rendering individual dots.
+  ///
+  /// When provided, this builder is used instead of the default dot rendering.
+  /// Allows complete customization of dot appearance, animation, and behavior.
+  /// When null, uses the default dot rendering with theme colors and sizing.
   final DotBuilder? dotBuilder;
 
-  /// Size of each dot.
+  /// Size of each dot in logical pixels.
+  ///
+  /// Controls both width and height of circular dots. Larger sizes improve
+  /// accessibility on touch devices. When null, uses a default size that
+  /// balances visibility with space efficiency.
   final double? size;
 
-  /// Border radius of dots.
+  /// Border radius for dot corners.
+  ///
+  /// Controls the rounding of dot corners. Use half the dot size for perfect
+  /// circles, or smaller values for rounded rectangles. When null, creates
+  /// circular dots by default.
   final double? borderRadius;
 
-  /// Color of the active dot.
+  /// Color of the active dot (representing current position).
+  ///
+  /// Should provide clear visual distinction from inactive dots to indicate
+  /// the current position. When null, uses the theme's primary color for
+  /// good visibility and brand consistency.
   final Color? activeColor;
 
-  /// Color of the inactive dot.
+  /// Color of inactive dots (not representing current position).
+  ///
+  /// Should be subtle enough to not distract from the active dot while
+  /// remaining visible. When null, uses a muted color from the theme.
   final Color? inactiveColor;
 
-  /// Border color of the inactive dot.
+  /// Border color for inactive dots.
+  ///
+  /// Provides additional visual definition for inactive dots, especially
+  /// useful when the inactive color is very light or transparent. When null,
+  /// no border is applied to inactive dots.
   final Color? inactiveBorderColor;
 
-  /// Border width of the inactive dot.
+  /// Border width for inactive dots in logical pixels.
+  ///
+  /// Controls the thickness of the border around inactive dots when
+  /// [inactiveBorderColor] is specified. When null, uses a minimal
+  /// default border width.
   final double? inactiveBorderWidth;
 
-  /// Creates a [DotIndicatorTheme].
+  /// Creates a [DotIndicatorTheme] with optional styling properties.
+  ///
+  /// All parameters are optional and fall back to theme defaults when null.
+  /// Use this constructor to customize dot indicator appearance throughout
+  /// your application.
+  ///
+  /// Parameters:
+  /// - [spacing]: Gap between dots
+  /// - [padding]: External padding around indicator
+  /// - [dotBuilder]: Custom dot rendering function
+  /// - [size]: Size of each dot
+  /// - [borderRadius]: Corner rounding for dots
+  /// - [activeColor]: Color for the active dot
+  /// - [inactiveColor]: Color for inactive dots
+  /// - [inactiveBorderColor]: Border color for inactive dots
+  /// - [inactiveBorderWidth]: Border thickness for inactive dots
   const DotIndicatorTheme({
     this.spacing,
     this.padding,

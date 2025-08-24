@@ -11,6 +11,9 @@ import 'package:shadcn_flutter/src/components/patch.dart';
 /// and resize border thickness. Used to customize the visual appearance
 /// of window components within the application.
 ///
+/// These values integrate with the theming system and can be applied globally
+/// or per-window to control visual presentation of desktop-style window interfaces.
+///
 /// Example:
 /// ```dart
 /// WindowTheme(
@@ -19,9 +22,31 @@ import 'package:shadcn_flutter/src/components/patch.dart';
 /// )
 /// ```
 class WindowTheme {
+  /// Height of the title bar area in pixels.
+  ///
+  /// Controls the vertical space allocated for the window's title bar,
+  /// including title text and window controls. When null, uses system defaults.
   final double? titleBarHeight;
+  
+  /// Thickness of the resize border around window edges.
+  ///
+  /// Defines the sensitive area around window borders that allows resizing
+  /// when the window is resizable. When null, uses system defaults.
   final double? resizeThickness;
 
+  /// Creates a [WindowTheme] with optional styling properties.
+  ///
+  /// Parameters:
+  /// - [titleBarHeight] (double?, optional): Height of the title bar in pixels
+  /// - [resizeThickness] (double?, optional): Thickness of resize borders
+  ///
+  /// Example:
+  /// ```dart
+  /// WindowTheme(
+  ///   titleBarHeight: 40.0,  // Larger title bar
+  ///   resizeThickness: 6.0,  // Thicker resize borders for easier targeting
+  /// )
+  /// ```
   const WindowTheme({this.titleBarHeight, this.resizeThickness});
 
   WindowTheme copyWith({
@@ -56,6 +81,10 @@ class WindowTheme {
 /// including the target bounds and whether the window should be minimized
 /// during the snap operation.
 ///
+/// This class encapsulates the logic for window snapping operations, commonly
+/// used in desktop environments where windows can snap to edges, corners,
+/// or custom regions for improved window management.
+///
 /// Example:
 /// ```dart
 /// WindowSnapStrategy(
@@ -64,9 +93,34 @@ class WindowTheme {
 /// )
 /// ```
 class WindowSnapStrategy {
+  /// Target bounds for the window as relative coordinates.
+  ///
+  /// Values are expressed as percentages of the available screen space:
+  /// - (0, 0, 0.5, 1) = left half of screen
+  /// - (0.5, 0, 0.5, 1) = right half of screen
+  /// - (0, 0, 1, 0.5) = top half of screen
   final Rect relativeBounds;
+  
+  /// Whether the window should be minimized during the snap operation.
+  ///
+  /// When true, the window will be minimized before snapping to the target
+  /// position. When false, the window maintains its current visual state.
   final bool shouldMinifyWindow;
 
+  /// Creates a [WindowSnapStrategy] with target bounds and minification behavior.
+  ///
+  /// Parameters:
+  /// - [relativeBounds] (Rect, required): Target position as screen percentage
+  /// - [shouldMinifyWindow] (bool, default: true): Whether to minimize during snap
+  ///
+  /// Example:
+  /// ```dart
+  /// // Snap to right half of screen without minimizing
+  /// WindowSnapStrategy(
+  ///   relativeBounds: Rect.fromLTWH(0.5, 0, 0.5, 1),
+  ///   shouldMinifyWindow: false,
+  /// )
+  /// ```
   const WindowSnapStrategy({
     required this.relativeBounds,
     this.shouldMinifyWindow = true,
@@ -99,18 +153,102 @@ class WindowSnapStrategy {
 /// )
 /// ```
 class WindowState {
+  /// Current position and size of the window.
+  ///
+  /// Defines the window's absolute position on the screen and its dimensions.
+  /// Used for normal windowed mode when the window is not maximized.
   final Rect bounds;
+  
+  /// Position and size when the window is maximized.
+  ///
+  /// When not null, indicates the window is in maximized state. The window
+  /// will fill this area rather than using [bounds]. When null, the window
+  /// is not maximized and uses [bounds] for positioning.
   final Rect? maximized;
+  
+  /// Whether the window is currently minimized to the taskbar.
+  ///
+  /// When true, the window is hidden from view but remains in the taskbar
+  /// or dock. When false, the window is visible on screen.
   final bool minimized;
+  
+  /// Whether the window should always appear above other windows.
+  ///
+  /// When true, this window will be displayed on top of all other windows
+  /// regardless of focus state. Useful for always-visible tools or notifications.
   final bool alwaysOnTop;
+  
+  /// Whether the window can be closed by the user.
+  ///
+  /// When false, close buttons and close gestures are disabled, preventing
+  /// the user from closing the window through normal interactions.
   final bool closable;
+  
+  /// Whether the window can be resized by dragging edges or corners.
+  ///
+  /// When false, resize handles are hidden and resize operations are disabled.
+  /// The window maintains its current size until programmatically changed.
   final bool resizable;
+  
+  /// Whether the window can be moved by dragging the title bar.
+  ///
+  /// When false, drag operations on the title bar are ignored and the window
+  /// remains in its current position until programmatically moved.
   final bool draggable;
+  
+  /// Whether the window can be maximized to fill the screen.
+  ///
+  /// When false, maximize buttons and double-click maximize gestures are
+  /// disabled, preventing the window from entering fullscreen mode.
   final bool maximizable;
+  
+  /// Whether the window can be minimized to the taskbar.
+  ///
+  /// When false, minimize buttons and minimize gestures are disabled,
+  /// preventing the window from being hidden to the taskbar.
   final bool minimizable;
+  
+  /// Whether window snapping to screen edges is enabled.
+  ///
+  /// When true, dragging the window to screen edges will trigger snapping
+  /// behavior based on the available snap strategies.
   final bool enableSnapping;
+  
+  /// Size constraints applied to the window.
+  ///
+  /// Defines minimum and maximum dimensions for the window, preventing
+  /// it from being resized beyond these limits. Applies during both
+  /// manual resizing and programmatic size changes.
   final BoxConstraints constraints;
 
+  /// Creates a [WindowState] with position, capabilities, and behavior settings.
+  ///
+  /// Parameters:
+  /// - [bounds] (Rect, required): Window position and size for normal mode
+  /// - [maximized] (Rect?, optional): Position and size when maximized
+  /// - [minimized] (bool, default: false): Whether window is minimized
+  /// - [alwaysOnTop] (bool, default: false): Whether window stays on top
+  /// - [closable] (bool, default: true): Whether window can be closed
+  /// - [resizable] (bool, default: true): Whether window can be resized
+  /// - [draggable] (bool, default: true): Whether window can be moved
+  /// - [maximizable] (bool, default: true): Whether window can be maximized
+  /// - [minimizable] (bool, default: true): Whether window can be minimized
+  /// - [enableSnapping] (bool, default: true): Whether edge snapping is enabled
+  /// - [constraints] (BoxConstraints, default: kDefaultWindowConstraints): Size limits
+  ///
+  /// Example:
+  /// ```dart
+  /// WindowState(
+  ///   bounds: Rect.fromLTWH(200, 200, 800, 600),
+  ///   resizable: true,
+  ///   constraints: BoxConstraints(
+  ///     minWidth: 400,
+  ///     minHeight: 300,
+  ///     maxWidth: 1200,
+  ///     maxHeight: 900,
+  ///   ),
+  /// )
+  /// ```
   const WindowState({
     required this.bounds,
     this.maximized,

@@ -3,64 +3,177 @@ import 'dart:math';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// Size constraint for the carousel.
+/// Abstract base class for defining size constraints in carousel layouts.
+/// 
+/// CarouselSizeConstraint provides a flexible system for controlling how
+/// carousel items are sized within their container. It supports both fixed
+/// pixel-based sizing and fractional sizing relative to the available space.
+/// 
+/// The constraint system enables responsive carousel layouts that adapt to
+/// different screen sizes and orientations while maintaining consistent
+/// item proportions.
+/// 
+/// Example:
+/// ```dart
+/// // Fixed size constraint - items are always 200px wide
+/// final fixed = CarouselSizeConstraint.fixed(200.0);
+/// 
+/// // Fractional constraint - items take 80% of available width
+/// final fractional = CarouselSizeConstraint.fractional(0.8);
+/// ```
 abstract class CarouselSizeConstraint {
   /// Creates a carousel size constraint.
   const CarouselSizeConstraint();
 
   /// Creates a fixed carousel size constraint.
+  /// 
+  /// Items will have a fixed pixel size regardless of the container dimensions.
+  /// Useful when you need consistent absolute sizing across different screens.
+  /// 
+  /// Parameters:
+  /// - [size] (double): The fixed size in logical pixels
   const factory CarouselSizeConstraint.fixed(double size) =
       CarouselFixedConstraint;
 
   /// Creates a fractional carousel size constraint.
+  /// 
+  /// Items will be sized as a fraction of the available container space.
+  /// Enables responsive layouts that adapt to different screen sizes.
+  /// 
+  /// Parameters:
+  /// - [fraction] (double): Fraction of container size (0.0 to 1.0+)
   const factory CarouselSizeConstraint.fractional(double fraction) =
       CarouselFractionalConstraint;
 }
 
-/// A fixed carousel size constraint.
+/// A size constraint that specifies a fixed pixel size for carousel items.
+/// 
+/// CarouselFixedConstraint provides absolute sizing control, making carousel
+/// items maintain consistent pixel dimensions regardless of the container size.
+/// This is useful for maintaining specific design requirements or when working
+/// with fixed-size content like images or cards.
+/// 
+/// Example:
+/// ```dart
+/// final constraint = CarouselFixedConstraint(150.0);
+/// // All carousel items will be 150 logical pixels wide/high
+/// ```
 class CarouselFixedConstraint extends CarouselSizeConstraint {
-  /// The size of the constraint.
+  /// The fixed size for carousel items in logical pixels.
+  /// 
+  /// Must be greater than 0. This value is used directly as the width (for
+  /// horizontal carousels) or height (for vertical carousels) of each item.
   final double size;
 
   /// Creates a fixed carousel size constraint.
+  /// 
+  /// Parameters:
+  /// - [size] (double): The fixed size in logical pixels (must be > 0)
+  /// 
+  /// Throws:
+  /// - AssertionError if size is not greater than 0
   const CarouselFixedConstraint(this.size)
       : assert(size > 0, 'size must be greater than 0');
 }
 
-/// A fractional carousel size constraint.
+/// A size constraint that specifies a fractional size relative to the container.
+/// 
+/// CarouselFractionalConstraint enables responsive carousel layouts by sizing
+/// items as a percentage of the available container space. This allows carousels
+/// to adapt naturally to different screen sizes and orientations.
+/// 
+/// Example:
+/// ```dart
+/// final constraint = CarouselFractionalConstraint(0.7);
+/// // Each carousel item takes 70% of the container width/height
+/// ```
 class CarouselFractionalConstraint extends CarouselSizeConstraint {
-  /// The fraction of the constraint.
+  /// The fraction of container space each item should occupy.
+  /// 
+  /// Must be greater than 0. Values less than 1.0 create items smaller than
+  /// the container, while values greater than 1.0 create items larger than
+  /// the container (useful for creating bleeding/peek effects).
   final double fraction;
 
   /// Creates a fractional carousel size constraint.
+  /// 
+  /// Parameters:
+  /// - [fraction] (double): Fraction of container size (must be > 0)
+  /// 
+  /// Throws:
+  /// - AssertionError if fraction is not greater than 0
+  /// 
+  /// Example:
+  /// ```dart
+  /// // Items take 80% of available space
+  /// CarouselFractionalConstraint(0.8)
+  /// 
+  /// // Items are larger than container for peek effect
+  /// CarouselFractionalConstraint(1.2)
+  /// ```
   const CarouselFractionalConstraint(this.fraction)
       : assert(fraction > 0, 'fraction must be greater than 0');
 }
 
-/// A carousel layout.
+/// Abstract base class for defining carousel transition animations and layouts.
+/// 
+/// CarouselTransition controls how carousel items are positioned, animated,
+/// and transitioned between states. Different transition types provide various
+/// visual effects like sliding, fading, or custom animations.
+/// 
+/// The transition system enables rich carousel experiences with smooth animations
+/// and flexible layout options. Each transition type handles the mathematical
+/// calculations for item positioning based on the carousel's current progress.
+/// 
+/// Example:
+/// ```dart
+/// // Sliding transition with gap between items
+/// final sliding = CarouselTransition.sliding(gap: 16.0);
+/// 
+/// // Fade transition for crossfade effect
+/// final fading = CarouselTransition.fading();
+/// ```
 abstract class CarouselTransition {
-  /// Creates a carousel layout.
+  /// Creates a carousel transition.
   const CarouselTransition();
 
-  /// Creates a sliding carousel layout.
+  /// Creates a sliding carousel transition with optional gap between items.
+  /// 
+  /// Items slide horizontally or vertically with smooth motion. The gap
+  /// parameter adds spacing between items for visual separation.
+  /// 
+  /// Parameters:
+  /// - [gap] (double, default: 0): Space between items in logical pixels
   const factory CarouselTransition.sliding({double gap}) =
       SlidingCarouselTransition;
 
-  /// Creates a fading carousel layout.
+  /// Creates a fading carousel transition for crossfade effects.
+  /// 
+  /// Items fade in/out with opacity changes rather than positional movement.
+  /// Creates smooth crossfade transitions between carousel items.
   const factory CarouselTransition.fading() = FadingCarouselTransition;
 
-  /// Layouts the carousel items.
-  /// * [context] is the build context.
-  /// * [progress] is the progress of the carousel.
-  /// * [constraints] is the constraints of the carousel.
-  /// * [alignment] is the alignment of the carousel.
-  /// * [direction] is the direction of the carousel.
-  /// * [sizeConstraint] is the size constraint of the carousel.
-  /// * [progressedIndex] is the progressed index of the carousel.
-  /// * [itemCount] is the item count of the carousel.
-  /// * [itemBuilder] is the item builder of the carousel.
-  /// * [wrap] is whether the carousel should wrap.
-  /// * [reverse] is whether the carousel should reverse.
+  /// Calculates and layouts the carousel items based on current state.
+  /// 
+  /// This method is the core of the transition system, handling all the
+  /// mathematical calculations for item positioning, sizing, and animation
+  /// based on the carousel's progress and configuration.
+  /// 
+  /// Parameters:
+  /// - [context] (BuildContext): Build context for theme and scaling access
+  /// - [progress] (double): Current animation progress
+  /// - [constraints] (BoxConstraints): Available layout space
+  /// - [alignment] (CarouselAlignment): Item alignment within container
+  /// - [direction] (Axis): Scroll direction (horizontal/vertical)
+  /// - [sizeConstraint] (CarouselSizeConstraint): Item sizing rules
+  /// - [progressedIndex] (double): Current index with fractional progress
+  /// - [itemCount] (int?): Total number of items (null for infinite)
+  /// - [itemBuilder] (CarouselItemBuilder): Function to build items
+  /// - [wrap] (bool): Whether to wrap around at boundaries
+  /// - [reverse] (bool): Whether to reverse scroll direction
+  /// 
+  /// Returns:
+  /// A list of positioned widgets representing the visible carousel items.
   List<Widget> layout(
     BuildContext context, {
     required double progress,
@@ -76,15 +189,39 @@ abstract class CarouselTransition {
   });
 }
 
-/// A sliding carousel transition.
+/// A sliding transition that moves items horizontally or vertically with optional gaps.
+/// 
+/// SlidingCarouselTransition provides the classic carousel experience with smooth
+/// sliding animations between items. Items move in the specified direction with
+/// consistent spacing controlled by the gap parameter.
+/// 
+/// This transition type is ideal for traditional carousels, image galleries,
+/// and content sliders where spatial relationships between items are important.
+/// 
+/// Example:
+/// ```dart
+/// // Standard sliding without gaps
+/// final transition = SlidingCarouselTransition();
+/// 
+/// // Sliding with 20px gaps between items
+/// final gappedTransition = SlidingCarouselTransition(gap: 20.0);
+/// ```
 class SlidingCarouselTransition extends CarouselTransition {
-  /// The gap between the carousel items.
+  /// The gap between adjacent carousel items in logical pixels.
+  /// 
+  /// Controls the spacing between items in the sliding direction. Larger
+  /// values create more visual separation, while 0 creates seamless
+  /// item transitions.
   final double gap;
 
   /// Creates a sliding carousel transition.
+  /// 
+  /// Parameters:
+  /// - [gap] (double, default: 0): Space between items in logical pixels
   const SlidingCarouselTransition({this.gap = 0});
 
   @override
+  /// Layouts items with sliding positions based on progress and gap spacing.
   List<Widget> layout(
     BuildContext context, {
     required double progress,
@@ -260,31 +397,109 @@ class FadingCarouselTransition extends CarouselTransition {
   }
 }
 
-/// Builds a carousel item.
-/// The [index] is the index of the item.
+/// Function signature for building carousel items based on index.
+/// 
+/// CarouselItemBuilder defines the callback used by carousel components to
+/// construct widgets for each item position. The builder receives the build
+/// context and the item index, enabling dynamic content generation.
+/// 
+/// The index parameter corresponds to the item's position in the carousel
+/// sequence. For infinite carousels, the index can be any integer value.
+/// For finite carousels, the index is constrained to the item count.
+/// 
+/// Example:
+/// ```dart
+/// CarouselItemBuilder builder = (context, index) {
+///   return Container(
+///     decoration: BoxDecoration(color: Colors.blue[100 * (index % 9 + 1)]),
+///     child: Center(child: Text('Item $index')),
+///   );
+/// };
+/// ```
 typedef CarouselItemBuilder = Widget Function(BuildContext context, int index);
 
-/// A controller for the carousel.
+/// Controller for managing carousel state and animations.
+/// 
+/// CarouselController provides programmatic control over carousel position,
+/// navigation, and animations. It maintains the current position as a floating-point
+/// value to support smooth transitions between discrete item indices.
+/// 
+/// The controller uses an internal animation queue system to handle smooth
+/// transitions between positions. It supports both instant jumps and animated
+/// transitions with customizable timing and easing curves.
+/// 
+/// Example:
+/// ```dart
+/// final controller = CarouselController();
+/// 
+/// // Jump to next item instantly
+/// controller.next();
+/// 
+/// // Animate to next item over 300ms
+/// controller.animateNext(Duration(milliseconds: 300), Curves.easeOut);
+/// 
+/// // Jump to specific position
+/// controller.value = 5.0;
+/// ```
 class CarouselController extends Listenable {
   final AnimationQueueController _controller = AnimationQueueController();
 
-  /// Whether the carousel should animate.
+  /// Whether the carousel currently has active animations.
+  /// 
+  /// Returns true if the controller has pending or running animations that
+  /// require frame updates. Used by the carousel widget to determine when
+  /// to rebuild during animations.
   bool get shouldAnimate => _controller.shouldTick;
 
-  /// The current value of the controller.
+  /// The current position of the carousel as a floating-point value.
+  /// 
+  /// Integer values correspond to discrete item positions, while fractional
+  /// values represent intermediate positions during transitions. For example,
+  /// 1.5 represents halfway between items 1 and 2.
   double get value => _controller.value;
 
-  /// Jumps to the next item.
+  /// Instantly jumps to the next item without animation.
+  /// 
+  /// Increments the current position by 1 and rounds to the nearest integer.
+  /// For infinite carousels, this can continue indefinitely. For finite
+  /// carousels, the carousel widget handles boundary conditions.
+  /// 
+  /// Example:
+  /// ```dart
+  /// controller.next(); // 0.0 -> 1.0
+  /// ```
   void next() {
     _controller.value = (_controller.value + 1).roundToDouble();
   }
 
-  /// Jumps to the previous item.
+  /// Instantly jumps to the previous item without animation.
+  /// 
+  /// Decrements the current position by 1 and rounds to the nearest integer.
+  /// For infinite carousels, this can continue indefinitely in the negative
+  /// direction. For finite carousels, the carousel widget handles boundary conditions.
+  /// 
+  /// Example:
+  /// ```dart
+  /// controller.previous(); // 2.0 -> 1.0
+  /// ```
   void previous() {
     _controller.value = (_controller.value - 1).roundToDouble();
   }
 
-  /// Animates to the next item.
+  /// Animates to the next item with the specified duration and curve.
+  /// 
+  /// Creates a smooth transition to the next carousel position. The animation
+  /// replaces any currently running animations.
+  /// 
+  /// Parameters:
+  /// - [duration] (Duration): How long the animation should take
+  /// - [curve] (Curve, default: Curves.easeInOut): Easing curve for the animation
+  /// 
+  /// Example:
+  /// ```dart
+  /// // Smooth 500ms transition to next item
+  /// controller.animateNext(Duration(milliseconds: 500), Curves.easeOut);
+  /// ```
   void animateNext(Duration duration, [Curve curve = Curves.easeInOut]) {
     _controller.push(
       AnimationRequest(
@@ -296,7 +511,20 @@ class CarouselController extends Listenable {
     );
   }
 
-  /// Animates to the previous item.
+  /// Animates to the previous item with the specified duration and curve.
+  /// 
+  /// Creates a smooth transition to the previous carousel position. The animation
+  /// replaces any currently running animations.
+  /// 
+  /// Parameters:
+  /// - [duration] (Duration): How long the animation should take
+  /// - [curve] (Curve, default: Curves.easeInOut): Easing curve for the animation
+  /// 
+  /// Example:
+  /// ```dart
+  /// // Quick 200ms transition to previous item
+  /// controller.animatePrevious(Duration(milliseconds: 200), Curves.easeIn);
+  /// ```
   void animatePrevious(Duration duration, [Curve curve = Curves.easeInOut]) {
     _controller.push(
       AnimationRequest(
@@ -308,24 +536,72 @@ class CarouselController extends Listenable {
     );
   }
 
-  /// Snaps the current value to the nearest integer.
+  /// Snaps the current position to the nearest integer item index.
+  /// 
+  /// Useful for correcting position drift or ensuring the carousel is properly
+  /// aligned to discrete item positions after manual manipulation.
+  /// 
+  /// Example:
+  /// ```dart
+  /// // If controller.value is 2.3, snap() makes it 2.0
+  /// // If controller.value is 2.7, snap() makes it 3.0
+  /// controller.snap();
+  /// ```
   void snap() {
     _controller.value = _controller.value.roundToDouble();
   }
 
-  /// Animates the current value to the nearest integer.
+  /// Animates the current position to the nearest integer with smooth transition.
+  /// 
+  /// Similar to [snap] but with smooth animation instead of instant positioning.
+  /// Useful for correcting alignment issues with visual feedback.
+  /// 
+  /// Parameters:
+  /// - [duration] (Duration): How long the snap animation should take
+  /// - [curve] (Curve, default: Curves.easeInOut): Easing curve for the animation
+  /// 
+  /// Example:
+  /// ```dart
+  /// // Smoothly snap to nearest position over 200ms
+  /// controller.animateSnap(Duration(milliseconds: 200));
+  /// ```
   void animateSnap(Duration duration, [Curve curve = Curves.easeInOut]) {
     _controller.push(
       AnimationRequest(_controller.value.roundToDouble(), duration, curve),
     );
   }
 
-  /// Jumps to the specified value.
+  /// Instantly jumps to the specified position without animation.
+  /// 
+  /// Sets the carousel position immediately to the given value. Fractional
+  /// values are supported for positioning between items.
+  /// 
+  /// Parameters:
+  /// - [value] (double): The target position to jump to
+  /// 
+  /// Example:
+  /// ```dart
+  /// controller.jumpTo(5.5); // Jump to halfway between items 5 and 6
+  /// ```
   void jumpTo(double value) {
     _controller.value = value;
   }
 
-  /// Animates to the specified value.
+  /// Animates to the specified position with smooth transition.
+  /// 
+  /// Creates a smooth animation to the target position. The animation
+  /// replaces any currently running animations.
+  /// 
+  /// Parameters:
+  /// - [value] (double): The target position to animate to
+  /// - [duration] (Duration): How long the animation should take
+  /// - [curve] (Curve, default: Curves.linear): Easing curve for the animation
+  /// 
+  /// Example:
+  /// ```dart
+  /// // Animate to item 3 over 1 second with ease-out
+  /// controller.animateTo(3.0, Duration(seconds: 1), Curves.easeOut);
+  /// ```
   void animateTo(
     double value,
     Duration duration, [
@@ -334,7 +610,22 @@ class CarouselController extends Listenable {
     _controller.push(AnimationRequest(value, duration, curve), false);
   }
 
-  /// Animates to the specified value.
+  /// Gets the current index adjusted for finite carousels with wrapping.
+  /// 
+  /// For infinite carousels (itemCount is null), returns the raw controller value.
+  /// For finite carousels, wraps the value within the valid range [0, itemCount).
+  /// 
+  /// Parameters:
+  /// - [itemCount] (int?, optional): Total number of items in the carousel
+  /// 
+  /// Returns:
+  /// The current index, wrapped if necessary for finite carousels.
+  /// 
+  /// Example:
+  /// ```dart
+  /// // For a 5-item carousel at position 7.0
+  /// final index = controller.getCurrentIndex(5); // Returns 2.0 (7 % 5)
+  /// ```
   double getCurrentIndex(int? itemCount) {
     if (itemCount == null) {
       return _controller.value;
@@ -343,22 +634,35 @@ class CarouselController extends Listenable {
     }
   }
 
-  /// Animates to the specified value.
+  /// Advances animation progress by the specified time delta.
+  /// 
+  /// Called by the carousel widget during animation frames to update
+  /// the controller's internal animation state. Should not be called
+  /// directly by user code.
+  /// 
+  /// Parameters:
+  /// - [delta] (Duration): Time elapsed since the last tick
   void tick(Duration delta) {
     _controller.tick(delta);
   }
 
   @override
+  /// Registers a listener to be called when the controller value changes.
   void addListener(VoidCallback listener) {
     _controller.addListener(listener);
   }
 
   @override
+  /// Removes a previously registered listener.
   void removeListener(VoidCallback listener) {
     _controller.removeListener(listener);
   }
 
-  /// Disposes the controller.
+  /// Disposes the controller and releases resources.
+  /// 
+  /// Should be called when the controller is no longer needed to prevent
+  /// memory leaks. Typically called in the dispose method of the widget
+  /// that owns the controller.
   void dispose() {
     _controller.dispose();
   }

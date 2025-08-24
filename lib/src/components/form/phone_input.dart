@@ -3,14 +3,58 @@ import 'package:flutter/services.dart';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Represents a phone number with country information and validation.
+///
+/// [PhoneNumber] encapsulates a phone number consisting of a country (with dial code)
+/// and the local number portion. It provides convenient access to both the full
+/// international format and individual components.
+///
+/// The class handles phone number formatting and validation according to international
+/// standards, making it suitable for use in forms, contact management, and
+/// telecommunications applications.
+///
+/// Example:
+/// ```dart
+/// final phoneNumber = PhoneNumber(
+///   Country.usa,  // +1
+///   '5551234567',
+/// );
+/// 
+/// print(phoneNumber.fullNumber);  // "+15551234567"
+/// print(phoneNumber.value);       // "+15551234567" (or null if empty)
+/// ```
 class PhoneNumber {
+  /// The country associated with this phone number.
+  ///
+  /// Provides the country code, dial code, and other country-specific
+  /// information needed for proper phone number formatting and validation.
   final Country country;
+
+  /// The local phone number without the country code.
+  ///
+  /// This should contain only the national phone number portion,
+  /// without the leading country dial code. The format should follow
+  /// the country's local numbering conventions.
   final String number; // without country code
 
+  /// Creates a [PhoneNumber] with the specified country and local number.
+  ///
+  /// Parameters:
+  /// - [country] (Country): The country for this phone number
+  /// - [number] (String): The local number without country code
   const PhoneNumber(this.country, this.number);
 
+  /// The complete phone number in international format.
+  ///
+  /// Combines the country's dial code with the local number to create
+  /// the full international phone number format (e.g., "+15551234567").
   String get fullNumber => '${country.dialCode}$number';
 
+  /// The phone number value for form submission and validation.
+  ///
+  /// Returns the full international number if the local number is not empty,
+  /// or null if the number is empty. This is useful for form validation
+  /// and data submission where null represents "no phone number provided".
   String? get value => number.isEmpty ? null : fullNumber;
 
   @override
@@ -33,36 +77,109 @@ class PhoneNumber {
   }
 }
 
-/// Theme data for [PhoneInput].
+/// Theme configuration for [PhoneInput] widget styling and behavior.
+///
+/// [PhoneInputTheme] provides comprehensive styling options for phone input
+/// components including layout dimensions, country selector appearance, and
+/// visual presentation. It integrates with the shadcn_flutter theming system
+/// to ensure consistent phone input styling across applications.
+///
+/// The theme supports customization of the input field itself, the country
+/// selector popup, flag display, and overall layout constraints to create
+/// phone input interfaces that match your application's design requirements.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<PhoneInputTheme>(
+///   data: PhoneInputTheme(
+///     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+///     borderRadius: BorderRadius.circular(6),
+///     maxWidth: 300,
+///     flagHeight: 16,
+///     popupConstraints: BoxConstraints(maxHeight: 200),
+///   ),
+///   child: MyPhoneInputWidget(),
+/// )
+/// ```
 class PhoneInputTheme {
-  /// The padding of the [PhoneInput].
+  /// Internal padding applied to the phone input field.
+  ///
+  /// Controls spacing around the input content including the flag, country code,
+  /// and number input field. When null, uses the theme's default input padding.
   final EdgeInsetsGeometry? padding;
 
-  /// The border radius of the [PhoneInput].
+  /// Border radius for the phone input container.
+  ///
+  /// Defines the corner rounding of the input field container. When null,
+  /// uses the theme's default border radius. Applies to both the input
+  /// field and any associated visual elements.
   final BorderRadiusGeometry? borderRadius;
 
-  /// The constraints of the country selector popup.
+  /// Size constraints for the country selector popup.
+  ///
+  /// Controls the maximum and minimum dimensions of the dropdown that appears
+  /// when selecting countries. When null, uses reasonable defaults that ensure
+  /// the popup is large enough to show country options clearly.
   final BoxConstraints? popupConstraints;
 
-  /// The maximum width of the [PhoneInput].
+  /// Maximum width constraint for the entire phone input widget.
+  ///
+  /// Prevents the phone input from growing beyond this width, useful for
+  /// responsive layouts or when the input should have a consistent size
+  /// regardless of available space. When null, no maximum width is enforced.
   final double? maxWidth;
 
-  /// The height of the flag.
+  /// Height of the country flag displayed in the input field.
+  ///
+  /// Controls the vertical size of the flag icon shown next to the country code.
+  /// When null, uses a default height that's proportional to the input size
+  /// and ensures good visual balance with text elements.
   final double? flagHeight;
 
-  /// The width of the flag.
+  /// Width of the country flag displayed in the input field.
+  ///
+  /// Controls the horizontal size of the flag icon. When null, uses a default
+  /// width that maintains proper flag proportions and visual consistency
+  /// with the flag height.
   final double? flagWidth;
 
-  /// The gap between the flag and the country code.
+  /// Horizontal spacing between the flag and the country code display.
+  ///
+  /// Controls the gap between the flag icon and the country dial code text.
+  /// When null, uses a default spacing that provides clear visual separation
+  /// while maintaining compact layout.
   final double? flagGap;
 
-  /// The gap between the country code and the text field.
+  /// Horizontal spacing between the country code and the number input field.
+  ///
+  /// Controls the gap between the country dial code display and the main
+  /// phone number input field. When null, uses a default spacing that
+  /// clearly separates the two input areas.
   final double? countryGap;
 
-  /// The shape of the flag.
+  /// Visual shape style for the country flag display.
+  ///
+  /// Defines how the flag is presented visually - as a rectangle, circle,
+  /// or other shape. When null, uses the theme's default flag shape which
+  /// typically maintains the flag's natural proportions.
   final Shape? flagShape;
 
-  /// Theme data for [PhoneInput].
+  /// Creates a [PhoneInputTheme] with optional styling properties.
+  ///
+  /// All parameters are optional and fall back to theme defaults when null.
+  /// Use this constructor to customize the appearance and behavior of phone
+  /// input components throughout your application.
+  ///
+  /// Parameters:
+  /// - [padding]: Internal spacing around input content
+  /// - [borderRadius]: Corner rounding for the input container
+  /// - [popupConstraints]: Size limits for the country selector
+  /// - [maxWidth]: Maximum width constraint for the input
+  /// - [flagHeight]: Height of the country flag icon
+  /// - [flagWidth]: Width of the country flag icon
+  /// - [flagGap]: Spacing between flag and country code
+  /// - [countryGap]: Spacing between country code and number field
+  /// - [flagShape]: Visual style for the flag display
   const PhoneInputTheme({
     this.padding,
     this.borderRadius,

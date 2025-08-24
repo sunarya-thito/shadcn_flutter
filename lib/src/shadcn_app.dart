@@ -10,7 +10,88 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'platform_interface.dart'
     if (dart.library.js_interop) 'platform/platform_implementations_web.dart';
 
+/// The main application widget for shadcn_flutter apps.
+///
+/// [ShadcnApp] is the root widget for applications built with the shadcn_flutter
+/// framework. It provides comprehensive configuration for theming, navigation,
+/// internationalization, and framework-specific features like color management,
+/// scroll interception, and overlay handling.
+///
+/// The app supports both traditional route-based navigation and modern declarative
+/// routing through Flutter's Router API. It integrates shadcn_flutter theming
+/// with Material and Cupertino themes for seamless cross-platform development.
+///
+/// ## Features
+///
+/// - **Multi-theme support**: Light/dark theme switching with smooth animations
+/// - **Color management**: Recent colors tracking for color pickers
+/// - **Enhanced scrolling**: Desktop-optimized scroll interception
+/// - **Overlay management**: Integrated popover, tooltip, and menu handling
+/// - **Pixel snapping**: Crisp rendering on all screen densities
+/// - **Adaptive scaling**: Responsive scaling based on platform and user preferences
+///
+/// Example usage:
+/// ```dart
+/// ShadcnApp(
+///   title: 'My App',
+///   theme: ThemeData.light(),
+///   darkTheme: ThemeData.dark(),
+///   themeMode: ThemeMode.system,
+///   home: const HomeScreen(),
+///   enableThemeAnimation: true,
+/// )
+/// ```
 class ShadcnApp extends StatefulWidget {
+  /// Creates a [ShadcnApp] with traditional route-based navigation.
+  ///
+  /// This constructor provides the classic navigation approach using named routes
+  /// and route generators, similar to MaterialApp but with shadcn_flutter enhancements.
+  ///
+  /// Parameters:
+  /// - [key]: Optional widget key for the app widget
+  /// - [navigatorKey]: Global key for accessing the navigator state
+  /// - [home]: The default widget displayed when the app starts
+  /// - [routes]: Map of named routes to their respective builders
+  /// - [initialRoute]: Name of the initial route to display
+  /// - [onGenerateRoute]: Function to generate routes dynamically
+  /// - [onGenerateInitialRoutes]: Function to generate initial route stack
+  /// - [onUnknownRoute]: Fallback for unrecognized route names
+  /// - [onNavigationNotification]: Listener for navigation events
+  /// - [navigatorObservers]: List of observers for navigation changes
+  /// - [builder]: Custom builder for the app's main widget tree
+  /// - [title]: Application title shown in system UI
+  /// - [onGenerateTitle]: Function to generate localized titles
+  /// - [color]: Primary color for system UI elements
+  /// - [background]: Background color for the app
+  /// - [theme]: Required shadcn_flutter theme configuration
+  /// - [darkTheme]: Optional dark theme configuration
+  /// - [themeMode]: Controls light/dark theme selection
+  /// - [locale]: Locale for the app (overrides system locale)
+  /// - [localizationsDelegates]: Delegates for app localization
+  /// - [localeListResolutionCallback]: Custom locale list resolution
+  /// - [localeResolutionCallback]: Custom locale resolution
+  /// - [supportedLocales]: List of supported app locales
+  /// - [debugShowMaterialGrid]: Shows Material Design baseline grid
+  /// - [showPerformanceOverlay]: Displays performance metrics overlay
+  /// - [showSemanticsDebugger]: Shows accessibility information
+  /// - [debugShowCheckedModeBanner]: Shows debug mode banner
+  /// - [shortcuts]: Global keyboard shortcuts for the app
+  /// - [actions]: Global intent actions for the app
+  /// - [restorationScopeId]: State restoration identifier
+  /// - [scrollBehavior]: Custom scroll behavior configuration
+  /// - [materialTheme]: Material theme for Material widgets
+  /// - [cupertinoTheme]: Cupertino theme for iOS-style widgets
+  /// - [scaling]: Adaptive scaling configuration for responsive design
+  /// - [disableBrowserContextMenu]: Disables right-click context menu on web
+  /// - [initialRecentColors]: Initial list of recent colors for color pickers
+  /// - [maxRecentColors]: Maximum number of recent colors to remember
+  /// - [onRecentColorsChanged]: Callback when recent colors list changes
+  /// - [pixelSnap]: Enables pixel-perfect rendering for crisp visuals
+  /// - [enableScrollInterception]: Enables enhanced desktop scroll behavior
+  /// - [popoverHandler]: Custom handler for popover overlays
+  /// - [tooltipHandler]: Custom handler for tooltip overlays  
+  /// - [menuHandler]: Custom handler for menu overlays
+  /// - [enableThemeAnimation]: Enables smooth animations during theme changes
   const ShadcnApp({
     super.key,
     this.navigatorKey,
@@ -62,6 +143,53 @@ class ShadcnApp extends StatefulWidget {
         backButtonDispatcher = null,
         routerConfig = null;
 
+  /// Creates a [ShadcnApp] with modern declarative routing using Flutter's Router API.
+  ///
+  /// This constructor enables advanced routing features like URL synchronization,
+  /// browser history support, and deep linking through Flutter's Router API.
+  ///
+  /// Parameters:
+  /// - [key]: Optional widget key for the app widget
+  /// - [routeInformationProvider]: Provides route information from the platform
+  /// - [routeInformationParser]: Parses route information into app-specific objects
+  /// - [routerDelegate]: Manages the router's widget stack and state
+  /// - [routerConfig]: Complete router configuration (alternative to individual components)
+  /// - [backButtonDispatcher]: Handles system back button behavior
+  /// - [builder]: Custom builder for the app's main widget tree
+  /// - [title]: Application title shown in system UI
+  /// - [onGenerateTitle]: Function to generate localized titles
+  /// - [onNavigationNotification]: Listener for navigation events
+  /// - [color]: Primary color for system UI elements
+  /// - [background]: Background color for the app
+  /// - [theme]: Required shadcn_flutter theme configuration
+  /// - [darkTheme]: Optional dark theme configuration
+  /// - [themeMode]: Controls light/dark theme selection
+  /// - [locale]: Locale for the app (overrides system locale)
+  /// - [localizationsDelegates]: Delegates for app localization
+  /// - [localeListResolutionCallback]: Custom locale list resolution
+  /// - [localeResolutionCallback]: Custom locale resolution
+  /// - [supportedLocales]: List of supported app locales
+  /// - [debugShowMaterialGrid]: Shows Material Design baseline grid
+  /// - [showPerformanceOverlay]: Displays performance metrics overlay
+  /// - [showSemanticsDebugger]: Shows accessibility information
+  /// - [debugShowCheckedModeBanner]: Shows debug mode banner
+  /// - [shortcuts]: Global keyboard shortcuts for the app
+  /// - [actions]: Global intent actions for the app
+  /// - [restorationScopeId]: State restoration identifier
+  /// - [scrollBehavior]: Custom scroll behavior configuration
+  /// - [materialTheme]: Material theme for Material widgets
+  /// - [cupertinoTheme]: Cupertino theme for iOS-style widgets
+  /// - [scaling]: Adaptive scaling configuration for responsive design
+  /// - [disableBrowserContextMenu]: Disables right-click context menu on web
+  /// - [initialRecentColors]: Initial list of recent colors for color pickers
+  /// - [maxRecentColors]: Maximum number of recent colors to remember (default 50)
+  /// - [onRecentColorsChanged]: Callback when recent colors list changes
+  /// - [pixelSnap]: Enables pixel-perfect rendering for crisp visuals
+  /// - [enableScrollInterception]: Enables enhanced desktop scroll behavior (default false)
+  /// - [popoverHandler]: Custom handler for popover overlays
+  /// - [tooltipHandler]: Custom handler for tooltip overlays
+  /// - [menuHandler]: Custom handler for menu overlays
+  /// - [enableThemeAnimation]: Enables smooth animations during theme changes
   const ShadcnApp.router({
     super.key,
     this.routeInformationProvider,
@@ -114,79 +242,326 @@ class ShadcnApp extends StatefulWidget {
         routes = null,
         initialRoute = null;
 
+  /// Global key for accessing the navigator state programmatically.
+  ///
+  /// Used in traditional navigation mode to control navigation imperatively,
+  /// such as pushing routes or showing dialogs from outside the widget tree.
   final GlobalKey<NavigatorState>? navigatorKey;
 
+  /// Configuration for adaptive UI scaling based on platform and user preferences.
+  ///
+  /// Enables responsive design that adapts to different screen sizes, pixel
+  /// densities, and accessibility settings across platforms.
   final AdaptiveScaling? scaling;
 
+  /// The default widget to display when the app starts.
+  ///
+  /// Only used in traditional navigation mode. If provided, this widget
+  /// becomes the root of the navigation stack.
   final Widget? home;
 
+  /// Map of named routes to their respective widget builders.
+  ///
+  /// Only used in traditional navigation mode. Provides static routing
+  /// configuration for known routes in the application.
   final Map<String, WidgetBuilder>? routes;
 
+  /// The name of the initial route to display when the app starts.
+  ///
+  /// Only used in traditional navigation mode. Must correspond to a key
+  /// in the [routes] map or be handled by [onGenerateRoute].
   final String? initialRoute;
 
+  /// Function to generate routes dynamically based on route settings.
+  ///
+  /// Only used in traditional navigation mode. Called when a named route
+  /// is requested but not found in the static [routes] map.
   final RouteFactory? onGenerateRoute;
 
+  /// Function to generate the initial route stack when the app starts.
+  ///
+  /// Only used in traditional navigation mode. Allows customization of
+  /// the initial navigation stack beyond a single route.
   final InitialRouteListFactory? onGenerateInitialRoutes;
 
+  /// Fallback route generator for unrecognized route names.
+  ///
+  /// Only used in traditional navigation mode. Called when both [routes]
+  /// and [onGenerateRoute] fail to handle a route request.
   final RouteFactory? onUnknownRoute;
 
+  /// Callback invoked when navigation events occur in the app.
+  ///
+  /// Receives [NavigationNotification] events that bubble up from
+  /// navigation actions throughout the widget tree.
   final NotificationListenerCallback<NavigationNotification>?
       onNavigationNotification;
 
+  /// List of observers that monitor navigation changes.
+  ///
+  /// Only used in traditional navigation mode. Observers receive callbacks
+  /// for route push, pop, replace, and other navigation events.
   final List<NavigatorObserver>? navigatorObservers;
 
+  /// Provider for route information from the platform.
+  ///
+  /// Only used in router mode. Typically handles URL changes from the
+  /// browser or deep links from the operating system.
   final RouteInformationProvider? routeInformationProvider;
 
+  /// Parser that converts route information into app-specific objects.
+  ///
+  /// Only used in router mode. Converts URL strings or platform route
+  /// information into typed route configurations.
   final RouteInformationParser<Object>? routeInformationParser;
 
+  /// Delegate that builds the widget tree for the current route state.
+  ///
+  /// Only used in router mode. Manages the navigation stack and responds
+  /// to route configuration changes from the parser.
   final RouterDelegate<Object>? routerDelegate;
 
+  /// Handler for platform back button behavior.
+  ///
+  /// Only used in router mode. Customizes how system back button presses
+  /// are handled by the router.
   final BackButtonDispatcher? backButtonDispatcher;
 
+  /// Complete router configuration object.
+  ///
+  /// Only used in router mode. Alternative to providing individual router
+  /// components, encapsulating all routing behavior in a single object.
   final RouterConfig<Object>? routerConfig;
 
+  /// Custom builder that wraps the main application widget tree.
+  ///
+  /// Receives the built navigator and can wrap it with additional widgets
+  /// like providers, inherited widgets, or global overlays.
   final TransitionBuilder? builder;
 
+  /// The title of the application shown in the operating system UI.
+  ///
+  /// Appears in window titles, task switchers, and accessibility tools.
+  /// Can be overridden with [onGenerateTitle] for localization.
   final String title;
 
+  /// Function to generate localized application titles.
+  ///
+  /// Called with the current locale context to provide translated
+  /// application titles based on the active localization.
   final GenerateAppTitle? onGenerateTitle;
 
+  /// The primary shadcn_flutter theme configuration for the application.
+  ///
+  /// Defines colors, typography, spacing, and component styling for
+  /// the entire app. Required parameter that forms the foundation
+  /// of the app's visual design.
   final ThemeData theme;
+  
+  /// Optional dark theme configuration for the application.
+  ///
+  /// When provided, the app can switch between light and dark themes
+  /// based on the [themeMode] setting and system preferences.
   final ThemeData? darkTheme;
+  
+  /// Controls when to use light or dark theme variants.
+  ///
+  /// Can be set to always light, always dark, or follow system settings.
+  /// Works in conjunction with [theme] and [darkTheme] configurations.
   final ThemeMode themeMode;
+  
+  /// Primary color hint for the operating system UI.
+  ///
+  /// Used by the platform to style system UI elements like status bars
+  /// and navigation bars to complement the application's design.
   final Color? color;
+  
+  /// Background color for the application window.
+  ///
+  /// Sets the default background color for the entire application. When null,
+  /// uses the theme's surface color or system default.
   final Color? background;
+  
+  /// Locale configuration for the application.
+  ///
+  /// When specified, overrides the system locale. When null, the app
+  /// uses the system locale or the first supported locale.
   final Locale? locale;
 
+  /// Localization delegates for internationalization support.
+  ///
+  /// Provides localized strings, date formatting, and other locale-specific
+  /// resources. Include framework localization delegates as needed.
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
+  
+  /// Callback for resolving locale from a list of system locales.
+  ///
+  /// Called when the system provides multiple preferred locales. Should
+  /// return the best matching locale from [supportedLocales].
   final LocaleListResolutionCallback? localeListResolutionCallback;
+  
+  /// Callback for resolving a single locale from system preferences.
+  ///
+  /// Called when the system provides a single preferred locale. Should
+  /// return the best matching locale from [supportedLocales].
   final LocaleResolutionCallback? localeResolutionCallback;
+  
+  /// List of locales supported by the application.
+  ///
+  /// Used by locale resolution callbacks to determine the best locale
+  /// match. Defaults to English (US) if not specified.
   final Iterable<Locale> supportedLocales;
+  
+  /// Whether to display Flutter's performance overlay.
+  ///
+  /// Shows frame timing information, including rasterization and UI thread
+  /// performance. Useful for identifying performance bottlenecks.
   final bool showPerformanceOverlay;
+  
+  /// Whether to display Flutter's semantics debugger.
+  ///
+  /// Shows accessibility information like semantic labels, actions, and
+  /// tree structure. Helps debug accessibility implementations.
   final bool showSemanticsDebugger;
+  
+  /// Whether to show the debug mode banner in debug builds.
+  ///
+  /// The banner appears in the top-right corner to indicate debug mode.
+  /// Set to false to hide the banner in development.
   final bool debugShowCheckedModeBanner;
+  
+  /// Global keyboard shortcuts available throughout the application.
+  ///
+  /// Maps shortcut key combinations to Intent objects that trigger actions.
+  /// These shortcuts work regardless of the current focus.
   final Map<ShortcutActivator, Intent>? shortcuts;
+  
+  /// Global actions that can be triggered by shortcuts or other means.
+  ///
+  /// Maps Intent types to Action objects that handle the actual behavior.
+  /// Used in conjunction with [shortcuts] for keyboard handling.
   final Map<Type, Action<Intent>>? actions;
+  
+  /// Unique identifier for state restoration.
+  ///
+  /// Used by Flutter's state restoration system to save and restore app
+  /// state across app launches. Should be unique per app.
   final String? restorationScopeId;
+  
+  /// Custom scroll behavior for scrollable widgets in the app.
+  ///
+  /// Defines platform-specific scrolling physics, scrollbar appearance,
+  /// and overscroll indicators. When null, uses ShadcnScrollBehavior.
   final ScrollBehavior? scrollBehavior;
+  
+  /// Whether to display Material Design's baseline grid overlay.
+  ///
+  /// Shows the 4dp baseline grid used in Material Design for alignment.
+  /// Useful for ensuring proper spacing and alignment in development.
   final bool debugShowMaterialGrid;
+  
+  /// Material theme configuration for Material widgets.
+  ///
+  /// Applied to Material widgets like buttons, text fields, and dialogs
+  /// when they appear within the app. Complements shadcn_flutter theming.
   final m.ThemeData? materialTheme;
+  
+  /// Cupertino theme configuration for iOS-style widgets.
+  ///
+  /// Applied to Cupertino widgets when they appear within the app.
+  /// Provides iOS-style theming alongside shadcn_flutter components.
   final c.CupertinoThemeData? cupertinoTheme;
+  
+  /// Whether to disable the browser's context menu on web platforms.
+  ///
+  /// When true, prevents the default right-click context menu from appearing
+  /// in web browsers. Useful for custom context menu implementations.
   final bool disableBrowserContextMenu;
+  
+  /// Initial list of recently used colors for color picker components.
+  ///
+  /// These colors appear in color picker interfaces as quick selection options.
+  /// The list is maintained automatically as users select colors.
   final List<Color> initialRecentColors;
+  
+  /// Maximum number of recent colors to remember.
+  ///
+  /// When the recent colors list exceeds this limit, older colors are
+  /// removed automatically. Defaults to 10.
   final int maxRecentColors;
+  
+  /// Callback invoked when the recent colors list changes.
+  ///
+  /// Called whenever users select new colors or the recent colors list
+  /// is modified. Use this to persist recent colors across app sessions.
   final ValueChanged<List<Color>>? onRecentColorsChanged;
+  
+  /// Whether to enable pixel-perfect rendering for crisp visuals.
+  ///
+  /// When true, widget positioning and sizing is snapped to physical pixels
+  /// to avoid sub-pixel rendering blur. Recommended for crisp UI appearance.
   final bool pixelSnap;
+  
+  /// Whether to enable enhanced desktop scroll behavior.
+  ///
+  /// When true, activates desktop-optimized scrolling features like
+  /// scroll wheel interception and enhanced scroll physics.
   final bool enableScrollInterception;
+  
+  /// Custom handler for popover overlays.
+  ///
+  /// Allows customization of popover display behavior, positioning,
+  /// and lifecycle. When null, uses the default popover implementation.
   final OverlayHandler? popoverHandler;
+  
+  /// Custom handler for tooltip overlays.
+  ///
+  /// Allows customization of tooltip display behavior, positioning,
+  /// and timing. When null, uses the default tooltip implementation.
   final OverlayHandler? tooltipHandler;
+  
+  /// Custom handler for menu overlays.
+  ///
+  /// Allows customization of context menu and dropdown menu display
+  /// behavior. When null, uses the default menu implementation.
   final OverlayHandler? menuHandler;
+  
+  /// Whether to enable smooth animations during theme changes.
+  ///
+  /// When true, provides animated transitions when switching between
+  /// light and dark themes or other theme changes.
   final bool enableThemeAnimation;
 
   @override
   State<ShadcnApp> createState() => _ShadcnAppState();
 }
 
+/// Custom scroll behavior implementation for shadcn_flutter applications.
+///
+/// [ShadcnScrollBehavior] provides platform-appropriate scrolling physics and
+/// visual feedback optimized for the shadcn_flutter design system. It implements
+/// bouncing scroll physics across all platforms and provides platform-specific
+/// scrollbar and overscroll indicator styling.
+///
+/// ## Platform Adaptations
+///
+/// **Desktop platforms** (Linux, macOS, Windows):
+/// - Shows scrollbars for vertical scrolling
+/// - No overscroll indicators (clean desktop experience)
+///
+/// **Mobile platforms** (Android, iOS):
+/// - No scrollbars (touch-first interface)
+/// - Platform-appropriate overscroll indicators
+///
+/// ## Physics and Feedback
+///
+/// - **Bouncing physics**: Provides elastic scroll behavior across all platforms
+/// - **Stretching overscroll**: Android-style stretching indication
+/// - **Glowing overscroll**: Fallback glow effect for other platforms
+/// - **Theme integration**: Overscroll colors match the application theme
+///
+/// This behavior is automatically applied to all scrollable widgets within
+/// [ShadcnApp] unless overridden by custom scroll behavior configuration.
 class ShadcnScrollBehavior extends ScrollBehavior {
   const ShadcnScrollBehavior();
 

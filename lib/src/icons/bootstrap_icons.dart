@@ -1,6 +1,81 @@
 import 'package:flutter/widgets.dart';
 
+/// A comprehensive collection of Bootstrap Icons for Flutter applications.
+///
+/// [BootstrapIcons] provides access to the complete Bootstrap Icons library,
+/// offering over 1,600 high-quality SVG icons designed by the Bootstrap team.
+/// These icons are crafted with a 16x16 grid in mind and are optimized for
+/// both web and mobile interfaces.
+///
+/// All icons are provided as [IconData] constants that integrate seamlessly
+/// with Flutter's [Icon] widget and icon-related components throughout the
+/// shadcn_flutter framework.
+///
+/// ## Design Principles
+/// - **Pixel Perfect**: Designed on a 16px grid for crisp rendering
+/// - **Consistent Style**: Uniform stroke width and corner radius
+/// - **Comprehensive Coverage**: Icons for every common UI scenario
+/// - **Professional Quality**: Maintained by the Bootstrap team
+///
+/// ## Usage Examples
+/// ```dart
+/// // Simple icon usage
+/// Icon(BootstrapIcons.house)
+/// 
+/// // Styled icon
+/// Icon(
+///   BootstrapIcons.search,
+///   size: 20,
+///   color: Theme.of(context).primaryColor,
+/// )
+/// 
+/// // In navigation
+/// BottomNavigationBarItem(
+///   icon: Icon(BootstrapIcons.person),
+///   label: 'Profile',
+/// )
+/// 
+/// // In buttons
+/// ElevatedButton.icon(
+///   onPressed: () => {},
+///   icon: Icon(BootstrapIcons.download),
+///   label: Text('Download'),
+/// )
+/// ```
+///
+/// ## Icon Categories
+/// The collection includes icons for:
+/// - **Navigation**: arrows, chevrons, house, compass
+/// - **Actions**: plus, minus, x, check, trash
+/// - **Communication**: envelope, telephone, chat, megaphone  
+/// - **Media**: play, pause, volume, camera, image
+/// - **Files**: folder, file, archive, cloud
+/// - **Social**: heart, star, share, bookmark
+/// - **Shopping**: cart, bag, credit card, currency
+/// - **Technology**: gear, tools, code, database
+///
+/// ## Accessibility Notes
+/// Always provide meaningful semantic labels when using icons:
+/// ```dart
+/// IconButton(
+///   onPressed: () => deleteItem(),
+///   icon: Icon(
+///     BootstrapIcons.trash,
+///     semanticLabel: 'Delete item',
+///   ),
+/// )
+/// ```
+///
+/// See also:
+/// - [LucideIcons] for Lucide icon alternatives
+/// - [RadixIcons] for Radix UI icon set
+/// - [Icon] widget for displaying icons
 class BootstrapIcons {
+  /// Private constructor to prevent instantiation.
+  ///
+  /// [BootstrapIcons] serves as a static utility class containing icon constants.
+  /// The class is not meant to be instantiated as all functionality is provided
+  /// through static icon data properties.
   BootstrapIcons._();
 
   static const IconData icon123 = IconData(63103, fontFamily: 'BootstrapIcons', fontPackage: 'shadcn_flutter');

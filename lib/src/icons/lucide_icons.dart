@@ -1,6 +1,66 @@
 import 'package:flutter/widgets.dart';
 
+/// A comprehensive collection of Lucide icons for Flutter applications.
+///
+/// [LucideIcons] provides access to over 1,000 carefully crafted icons from the
+/// Lucide icon library. These icons are designed with consistent stroke widths,
+/// corner radius, and visual styling, making them perfect for modern UI design.
+///
+/// All icons are provided as [IconData] constants that can be used directly with
+/// Flutter's [Icon] widget or any component that accepts icon data.
+///
+/// ## Features
+/// - **Consistent Design**: All icons follow the same design principles
+/// - **Scalable**: Vector-based icons that scale perfectly at any size
+/// - **Lightweight**: Optimized font format for fast loading
+/// - **Comprehensive**: Covers all common UI iconography needs
+///
+/// ## Usage
+/// ```dart
+/// // Basic usage with Icon widget
+/// Icon(LucideIcons.home)
+/// 
+/// // With customization
+/// Icon(
+///   LucideIcons.search,
+///   size: 24,
+///   color: Colors.blue,
+/// )
+/// 
+/// // In buttons and other widgets
+/// IconButton(
+///   onPressed: () => {},
+///   icon: Icon(LucideIcons.settings),
+/// )
+/// ```
+///
+/// ## Categories
+/// The icons are organized into various categories including:
+/// - **Navigation**: home, menu, chevron, arrow icons
+/// - **Actions**: save, delete, edit, copy, share icons
+/// - **Communication**: mail, message, phone, video icons
+/// - **Media**: play, pause, volume, image, file icons
+/// - **Interface**: search, filter, sort, grid, list icons
+/// - **Status**: check, x, alert, info, warning icons
+///
+/// ## Accessibility
+/// When using these icons, remember to provide semantic labels for screen readers:
+/// ```dart
+/// Icon(
+///   LucideIcons.settings,
+///   semanticLabel: 'Open settings',
+/// )
+/// ```
+///
+/// See also:
+/// - [RadixIcons] for an alternative icon set
+/// - [BootstrapIcons] for Bootstrap-style icons
+/// - [Icon] widget for displaying icons
 class LucideIcons {
+  /// Private constructor to prevent instantiation.
+  ///
+  /// [LucideIcons] is designed as a static utility class containing only
+  /// static icon constants. Direct instantiation is not needed or supported.
   LucideIcons._();
 
   static const IconData aArrowDown = IconData(58761, fontFamily: 'LucideIcons', fontPackage: 'shadcn_flutter');

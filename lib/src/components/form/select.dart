@@ -12,16 +12,91 @@ import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 /// [Select] widgets, including popup constraints, positioning, styling, and
 /// interaction behaviors. These properties can be set at the theme level
 /// to provide consistent behavior across the application.
+///
+/// The theme integrates with the shadcn_flutter theming system and can be
+/// applied globally or per-widget to control select component presentation
+/// and user interaction patterns.
+///
+/// Example:
+/// ```dart
+/// SelectTheme(
+///   popupConstraints: BoxConstraints(maxHeight: 200),
+///   popoverAlignment: Alignment.bottomCenter,
+///   borderRadius: BorderRadius.circular(6),
+///   canUnselect: true,
+///   autoClosePopover: true,
+/// );
+/// ```
 class SelectTheme {
+  /// Size constraints applied to the dropdown popup.
+  ///
+  /// Controls the minimum and maximum dimensions of the dropdown menu.
+  /// When null, uses framework default constraints.
   final BoxConstraints? popupConstraints;
+  
+  /// Alignment point on the popover for positioning.
+  ///
+  /// Determines where the dropdown popover positions itself relative to the
+  /// trigger widget. When null, uses framework default alignment.
   final AlignmentGeometry? popoverAlignment;
+  
+  /// Alignment point on the anchor widget for popover positioning.
+  ///
+  /// Specifies which part of the trigger widget the popover should align to.
+  /// When null, uses framework default anchor alignment.
   final AlignmentGeometry? popoverAnchorAlignment;
+  
+  /// Border radius applied to the select widget.
+  ///
+  /// Controls the curvature of select widget corners. When null, uses
+  /// the default border radius from the theme system.
   final BorderRadiusGeometry? borderRadius;
+  
+  /// Internal padding applied to the select content.
+  ///
+  /// Controls spacing around the selected value display and dropdown trigger.
+  /// When null, uses default padding from the theme system.
   final EdgeInsetsGeometry? padding;
+  
+  /// Whether to disable hover effects on the select widget.
+  ///
+  /// When true, prevents hover state changes for the select trigger.
+  /// Useful for custom styling or disabled states.
   final bool? disableHoverEffect;
+  
+  /// Whether users can unselect the currently selected value.
+  ///
+  /// When true, clicking the currently selected option will deselect it.
+  /// When false, a value must always remain selected.
   final bool? canUnselect;
+  
+  /// Whether the dropdown should close automatically after selection.
+  ///
+  /// When true, the dropdown closes immediately after an option is selected.
+  /// When false, the dropdown remains open for multiple interactions.
   final bool? autoClosePopover;
 
+  /// Creates a [SelectTheme] with optional styling and behavior properties.
+  ///
+  /// Parameters:
+  /// - [popupConstraints] (BoxConstraints?, optional): Dropdown size constraints
+  /// - [popoverAlignment] (AlignmentGeometry?, optional): Popover positioning alignment
+  /// - [popoverAnchorAlignment] (AlignmentGeometry?, optional): Anchor alignment for popover
+  /// - [borderRadius] (BorderRadiusGeometry?, optional): Select widget corner curvature
+  /// - [padding] (EdgeInsetsGeometry?, optional): Internal content padding
+  /// - [disableHoverEffect] (bool?, optional): Whether to disable hover styling
+  /// - [canUnselect] (bool?, optional): Whether users can deselect values
+  /// - [autoClosePopover] (bool?, optional): Whether dropdown closes after selection
+  ///
+  /// Example:
+  /// ```dart
+  /// SelectTheme(
+  ///   popupConstraints: BoxConstraints(maxHeight: 300, maxWidth: 200),
+  ///   borderRadius: BorderRadius.circular(8),
+  ///   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+  ///   canUnselect: false,
+  /// );
+  /// ```
   const SelectTheme({
     this.popupConstraints,
     this.popoverAlignment,
@@ -33,6 +108,22 @@ class SelectTheme {
     this.autoClosePopover,
   });
 
+  /// Creates a copy of this theme with specified properties replaced.
+  ///
+  /// Each parameter function is called to obtain the new value for that property.
+  /// Properties with null functions retain their current values.
+  ///
+  /// Parameters: Function getters for each theme property to potentially override.
+  ///
+  /// Returns: A new [SelectTheme] with updated properties.
+  ///
+  /// Example:
+  /// ```dart
+  /// final newTheme = currentTheme.copyWith(
+  ///   canUnselect: () => false,
+  ///   borderRadius: () => BorderRadius.circular(12),
+  /// );
+  /// ```
   SelectTheme copyWith({
     ValueGetter<BoxConstraints?>? popupConstraints,
     ValueGetter<AlignmentGeometry?>? popoverAlignment,
@@ -160,49 +251,91 @@ class SelectController<T> extends ValueNotifier<T?>
 /// ```
 class ControlledSelect<T> extends StatelessWidget
     with ControlledComponent<T?>, SelectBase<T> {
+  /// Initial value for the select when no controller is provided.
   @override
   final T? initialValue;
+  
+  /// Callback invoked when the selection changes.
   @override
   final ValueChanged<T?>? onChanged;
+  
+  /// Whether the select widget is interactive.
   @override
   final bool enabled;
+  
+  /// External controller for managing select state programmatically.
   @override
   final SelectController<T>? controller;
 
+  /// Widget displayed when no item is currently selected.
   @override
   final Widget? placeholder;
+  
+  /// Whether to use filled appearance styling.
   @override
   final bool filled;
+  
+  /// Focus node for managing keyboard focus and navigation.
   @override
   final FocusNode? focusNode;
+  
+  /// Size constraints applied to the select widget container.
   @override
   final BoxConstraints? constraints;
+  
+  /// Size constraints applied to the dropdown popup.
   @override
   final BoxConstraints? popupConstraints;
+  
+  /// Width constraint behavior for the dropdown popup.
   @override
   final PopoverConstraint popupWidthConstraint;
+  
+  /// Border radius applied to the select widget.
   @override
   final BorderRadiusGeometry? borderRadius;
+  
+  /// Internal padding for select content.
   @override
   final EdgeInsetsGeometry? padding;
+  
+  /// Alignment for the dropdown popup relative to anchor.
   @override
   final AlignmentGeometry popoverAlignment;
+  
+  /// Anchor alignment point for popup positioning.
   @override
   final AlignmentGeometry? popoverAnchorAlignment;
+  
+  /// Whether to disable hover effects on select items.
   @override
   final bool disableHoverEffect;
+  
+  /// Whether users can deselect the current selection.
   @override
   final bool canUnselect;
+  
+  /// Whether to close popup automatically after selection.
   @override
   final bool autoClosePopover;
+  
+  /// Builder function for creating the dropdown popup content.
   @override
   final SelectPopupBuilder popup;
+  
+  /// Builder function for rendering individual select items.
   @override
   final SelectValueBuilder<T> itemBuilder;
+  
+  /// Custom handler for selection behavior logic.
   @override
   final SelectValueSelectionHandler<T>? valueSelectionHandler;
+  
+  /// Predicate function to validate item selection.
   @override
   final SelectValueSelectionPredicate<T>? valueSelectionPredicate;
+  
+  /// Predicate function to filter which values are displayed.
   @override
   final Predicate<T>? showValuePredicate;
 

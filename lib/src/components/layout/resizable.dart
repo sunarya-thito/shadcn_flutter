@@ -5,24 +5,51 @@ import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/resizer.dart';
 
-/// Theme for [HorizontalResizableDragger] and [VerticalResizableDragger].
+/// Theme configuration for resizable dragger components.
+///
+/// [ResizableDraggerTheme] defines the visual styling for resize handles and
+/// dividers used in resizable layout components. It controls the appearance
+/// of both horizontal and vertical dragger elements including colors, dimensions,
+/// and icon styling.
+///
+/// Applied through component theming to provide consistent resizable interfaces
+/// throughout the application. All properties are optional with fallbacks to
+/// framework defaults.
 class ResizableDraggerTheme {
-  /// Background color of the dragger.
+  /// Background color of the dragger handle.
+  ///
+  /// When null, uses the theme's surface color or transparent background
+  /// depending on the dragger's visual state.
   final Color? color;
 
-  /// Border radius of the dragger.
+  /// Border radius for rounded dragger corners.
+  ///
+  /// Controls corner rounding for the dragger handle. When null, uses
+  /// the theme's default border radius.
   final double? borderRadius;
 
-  /// Width of the dragger.
+  /// Width of the dragger handle in logical pixels.
+  ///
+  /// For vertical dragger (resizing horizontally), this controls the
+  /// handle thickness. When null, uses framework default width.
   final double? width;
 
-  /// Height of the dragger.
+  /// Height of the dragger handle in logical pixels.
+  ///
+  /// For horizontal dragger (resizing vertically), this controls the
+  /// handle thickness. When null, uses framework default height.
   final double? height;
 
-  /// Icon size inside the dragger.
+  /// Size of the icon displayed within the dragger handle.
+  ///
+  /// Controls the visual indicator icon (typically grip lines) shown
+  /// in the dragger. When null, uses framework default icon size.
   final double? iconSize;
 
-  /// Icon color inside the dragger.
+  /// Color of the icon displayed within the dragger handle.
+  ///
+  /// When null, uses the theme's foreground color or contrasts with
+  /// the dragger background color.
   final Color? iconColor;
 
   const ResizableDraggerTheme({
@@ -69,7 +96,34 @@ class ResizableDraggerTheme {
       Object.hash(color, borderRadius, width, height, iconSize, iconColor);
 }
 
-/// A Horizontal dragger that can be used as a divider between resizable panes.
+/// A horizontal resize handle for dividing resizable panes vertically.
+///
+/// [HorizontalResizableDragger] provides a visual divider that can be dragged
+/// horizontally to resize adjacent panes. It displays a centered container with
+/// a grip icon that indicates the resize functionality to users.
+///
+/// The dragger automatically adapts its appearance based on the current theme
+/// and applied [ResizableDraggerTheme] configuration. It's typically used in
+/// horizontal split pane layouts where users need to adjust the relative sizes
+/// of top and bottom content areas.
+///
+/// Visual features:
+/// - Centered grip icon with configurable size and color
+/// - Rounded corners with theme-aware border radius
+/// - Hover and interaction states for better usability
+/// - Responsive sizing based on theme scaling
+/// - Integration with resizable layout systems
+///
+/// Example usage:
+/// ```dart
+/// Column(
+///   children: [
+///     Expanded(child: topPane),
+///     HorizontalResizableDragger(),
+///     Expanded(child: bottomPane),
+///   ],
+/// )
+/// ```
 class HorizontalResizableDragger extends StatelessWidget {
   /// Creates a [HorizontalResizableDragger].
   const HorizontalResizableDragger({super.key});
@@ -120,7 +174,34 @@ class HorizontalResizableDragger extends StatelessWidget {
   }
 }
 
-/// A Vertical dragger that can be used as a divider between resizable panes.
+/// A vertical resize handle for dividing resizable panes horizontally.
+///
+/// [VerticalResizableDragger] provides a visual divider that can be dragged
+/// vertically to resize adjacent panes. It displays a centered container with
+/// a rotated grip icon that indicates the resize functionality to users.
+///
+/// The dragger automatically adapts its appearance based on the current theme
+/// and applied [ResizableDraggerTheme] configuration. It's typically used in
+/// vertical split pane layouts where users need to adjust the relative sizes
+/// of left and right content areas.
+///
+/// Visual features:
+/// - Rotated grip icon oriented vertically with configurable size and color
+/// - Rounded corners with theme-aware border radius
+/// - Hover and interaction states for better usability
+/// - Responsive sizing based on theme scaling (width/height swapped from horizontal)
+/// - Integration with resizable layout systems
+///
+/// Example usage:
+/// ```dart
+/// Row(
+///   children: [
+///     Expanded(child: leftPane),
+///     VerticalResizableDragger(),
+///     Expanded(child: rightPane),
+///   ],
+/// )
+/// ```
 class VerticalResizableDragger extends StatelessWidget {
   /// Creates a [VerticalResizableDragger].
   const VerticalResizableDragger({super.key});
@@ -174,23 +255,118 @@ class VerticalResizableDragger extends StatelessWidget {
   }
 }
 
-/// A sibling of a resizable panel.
+/// Enumeration defining the relationship to adjacent panels in resizable layouts.
+///
+/// [PanelSibling] specifies which adjacent panels should be considered during
+/// resize operations. It provides directional context for space borrowing and
+/// constraint satisfaction in multi-panel layouts.
+///
+/// Each enum value includes a numerical direction for algorithm calculations:
+/// - Negative values indicate "before" direction (left/top)
+/// - Positive values indicate "after" direction (right/bottom)
+/// - Zero indicates consideration of both directions
 enum PanelSibling {
+  /// Indicates panels positioned before (left/top of) the current panel.
+  ///
+  /// Used when resize operations should primarily affect preceding panels
+  /// in the layout sequence. Direction value: -1
   before(-1),
+  
+  /// Indicates panels positioned after (right/bottom of) the current panel.
+  ///
+  /// Used when resize operations should primarily affect following panels
+  /// in the layout sequence. Direction value: 1
   after(1),
+  
+  /// Indicates panels in both directions should be considered.
+  ///
+  /// Used when resize operations can affect panels on either side of the
+  /// current panel. Direction value: 0 (neutral)
   both(0);
 
+  /// Numerical direction indicator for algorithm calculations.
+  ///
+  /// Used by resize algorithms to determine space borrowing direction:
+  /// - -1: Borrow from/return to preceding panels
+  /// - +1: Borrow from/return to following panels  
+  /// - 0: Consider both directions
   final int direction;
 
   const PanelSibling(this.direction);
 }
 
+/// Controller interface for managing individual resizable pane behavior.
+///
+/// [ResizablePaneController] provides the contract for controlling a single
+/// panel within a resizable layout system. It extends [ValueListenable] to
+/// provide reactive updates and includes methods for direct size manipulation,
+/// collapse/expand operations, and inter-panel coordination.
+///
+/// ## Core Functionality
+///
+/// The controller manages three primary aspects:
+/// - **Size management**: Direct size setting and computation with constraints
+/// - **Collapse state**: Toggle between normal and collapsed modes
+/// - **Panel coordination**: Space borrowing and constraint satisfaction with neighbors
+///
+/// ## Implementation Pattern
+///
+/// Controllers are typically attached to panel state objects that handle the
+/// actual layout and constraint logic. The mixin provides the interface while
+/// implementation classes handle the specific resize algorithms.
+///
+/// Example usage:
+/// ```dart
+/// class MyPaneController with ResizablePaneController {
+///   double _size = 200.0;
+///   
+///   @override
+///   double get value => _size;
+///   
+///   @override
+///   void resize(double newSize, double paneSize) {
+///     _size = newSize.clamp(50.0, 400.0);
+///     notifyListeners();
+///   }
+/// }
+/// ```
 mixin ResizablePaneController implements ValueListenable<double> {
-  /// Resizes the controller by the given [delta] amount.
+  /// Resizes the controller by setting a new absolute size.
+  ///
+  /// Parameters:
+  /// - [newSize]: The target size for the panel
+  /// - [paneSize]: The total available space for size calculations
+  ///
+  /// The implementation should handle constraint satisfaction and notify
+  /// listeners of the size change.
   void resize(double newSize, double paneSize);
+  
+  /// Collapses the panel to its minimum or collapsed size.
+  ///
+  /// Transitions the panel to collapsed state, typically freeing up space
+  /// for other panels in the layout. The exact collapsed size depends on
+  /// the panel's configuration.
   void collapse();
+  
+  /// Expands the panel from collapsed state to normal size.
+  ///
+  /// Restores the panel to its normal operating size, potentially requiring
+  /// space to be borrowed from adjacent panels.
   void expand();
+  
+  /// Computes the actual panel size given layout constraints.
+  ///
+  /// Parameters:
+  /// - [paneSize]: Total available space for the panel
+  /// - [minSize]: Optional minimum size constraint override
+  /// - [maxSize]: Optional maximum size constraint override
+  ///
+  /// Returns the computed size respecting all constraints.
   double computeSize(double paneSize, {double? minSize, double? maxSize});
+  
+  /// Whether the panel is currently in collapsed state.
+  ///
+  /// Returns true if the panel is collapsed, false if expanded normally.
   bool get collapsed;
   bool tryExpandSize(double size,
       [PanelSibling direction = PanelSibling.both]) {

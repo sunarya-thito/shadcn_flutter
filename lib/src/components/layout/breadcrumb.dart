@@ -2,12 +2,34 @@ import 'package:flutter/gestures.dart';
 
 import '../../../shadcn_flutter.dart';
 
-/// Theme for [Breadcrumb].
+/// Theme configuration for [Breadcrumb] navigation components.
+///
+/// [BreadcrumbTheme] provides styling options for breadcrumb navigation
+/// including separator widgets and container padding. Used with [ComponentTheme]
+/// to apply consistent breadcrumb styling throughout an application.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<BreadcrumbTheme>(
+///   data: BreadcrumbTheme(
+///     separator: Icon(Icons.arrow_forward_ios, size: 12),
+///     padding: EdgeInsets.all(8.0),
+///   ),
+///   child: MyBreadcrumbWidget(),
+/// );
+/// ```
 class BreadcrumbTheme {
-  /// Separator widget between breadcrumb items.
+  /// Widget displayed between breadcrumb navigation items.
+  ///
+  /// Provides visual separation between breadcrumb items to indicate
+  /// navigation hierarchy. When null, uses the default arrow separator.
+  /// Common options include arrows, slashes, or custom icons.
   final Widget? separator;
 
-  /// Padding around the breadcrumb row.
+  /// Padding applied around the entire breadcrumb row.
+  ///
+  /// Controls spacing around the breadcrumb container. When null,
+  /// uses framework default padding or no padding.
   final EdgeInsetsGeometry? padding;
 
   /// Creates a [BreadcrumbTheme].
@@ -101,10 +123,35 @@ class _SlashSeparator extends StatelessWidget {
 /// );
 /// ```
 class Breadcrumb extends StatelessWidget {
+  /// Predefined arrow-style separator with right-pointing chevron icon.
+  ///
+  /// Uses a small, muted chevron right icon with appropriate horizontal padding.
+  /// This is the default separator when no custom separator is specified.
   static const Widget arrowSeparator = _ArrowSeparator();
+  
+  /// Predefined slash-style separator using a forward slash character.
+  ///
+  /// Uses a small, muted forward slash with minimal horizontal padding.
+  /// Provides a more compact separator option for breadcrumb trails.
   static const Widget slashSeparator = _SlashSeparator();
+  
+  /// List of widgets representing the breadcrumb navigation path.
+  ///
+  /// Items should be ordered from root to current location. The last item
+  /// is treated as the current page and styled differently from navigation items.
+  /// Typically includes interactive elements like buttons for navigation items.
   final List<Widget> children;
+  
+  /// Custom separator widget to display between breadcrumb items.
+  ///
+  /// When null, uses theme separator or [arrowSeparator] as fallback.
+  /// Can be any widget including icons, text, or custom graphics.
   final Widget? separator;
+  
+  /// Padding applied around the entire breadcrumb navigation row.
+  ///
+  /// When null, uses theme padding or no padding as fallback.
+  /// Controls spacing around the breadcrumb container.
   final EdgeInsetsGeometry? padding;
 
   /// Creates a [Breadcrumb] navigation trail.

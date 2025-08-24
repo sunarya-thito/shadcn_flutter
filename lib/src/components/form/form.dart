@@ -184,10 +184,52 @@ enum FormValidationMode {
   submitted,
 }
 
+/// A validator wrapper that controls when validation logic should run.
+///
+/// [ValidationMode] acts as a conditional wrapper around another validator,
+/// executing the wrapped validator only during specified form lifecycle phases.
+/// This provides fine-grained control over validation timing and can improve
+/// user experience by avoiding premature or excessive validation feedback.
+///
+/// The validator uses a set of [FormValidationMode] values to determine when
+/// the wrapped validator should execute. By default, it runs during all phases
+/// (initial, changed, and submitted) but can be restricted to specific phases.
+///
+/// Example:
+/// ```dart
+/// // Only validate on submit to avoid interrupting user input
+/// final submitOnlyValidator = ValidationMode(
+///   EmailValidator(),
+///   mode: {FormValidationMode.submitted},
+/// );
+/// 
+/// // Validate only after initial input and on submit
+/// final delayedValidator = ValidationMode(
+///   RequiredValidator(),
+///   mode: {FormValidationMode.changed, FormValidationMode.submitted},
+/// );
+/// ```
 class ValidationMode<T> extends Validator<T> {
+  /// The wrapped validator to execute conditionally.
   final Validator<T> validator;
+  
+  /// The set of form lifecycle phases when this validator should run.
   final Set<FormValidationMode> mode;
 
+  /// Creates a [ValidationMode] that conditionally executes a validator.
+  ///
+  /// Parameters:
+  /// - [validator] (Validator<T>, required): The validator to wrap
+  /// - [mode] (Set<FormValidationMode>, optional): When to execute validation
+  ///   Defaults to all phases: {initial, changed, submitted}
+  ///
+  /// Example:
+  /// ```dart
+  /// ValidationMode(
+  ///   RequiredValidator<String>(),
+  ///   mode: {FormValidationMode.submitted}, // Only validate on form submit
+  /// );
+  /// ```
   const ValidationMode(this.validator,
       {this.mode = const {
         FormValidationMode.changed,
@@ -296,11 +338,70 @@ class IgnoreForm<T> extends StatelessWidget {
   }
 }
 
+/// A validator that executes validation logic based on a conditional predicate.
+///
+/// [ConditionalValidator] wraps a predicate function that determines whether
+/// the validated value is acceptable. The predicate can be synchronous or
+/// asynchronous, making it suitable for both client-side and server-side
+/// validation scenarios.
+///
+/// The validator supports cross-field dependencies through the [dependencies]
+/// parameter, allowing validation to be re-triggered when related form fields
+/// change. This enables complex validation scenarios like password confirmation,
+/// field matching, or conditional required fields.
+///
+/// Example:
+/// ```dart
+/// // Simple conditional validation
+/// ConditionalValidator<String>(
+///   (value) => value != null && value.length >= 8,
+///   message: 'Password must be at least 8 characters long',
+/// );
+/// 
+/// // Async validation with server check
+/// ConditionalValidator<String>(
+///   (value) async => await checkUsernameAvailable(value),
+///   message: 'Username is already taken',
+/// );
+/// 
+/// // Cross-field validation with dependencies
+/// ConditionalValidator<String>(
+///   (value) => value == passwordFieldValue,
+///   message: 'Passwords do not match',
+///   dependencies: [passwordFieldKey],
+/// );
+/// ```
 class ConditionalValidator<T> extends Validator<T> {
+  /// The predicate function that tests the validity of the value.
+  ///
+  /// Should return true if the value is valid, false if invalid.
+  /// Can be asynchronous for server-side validation.
   final FuturePredicate<T> predicate;
+  
+  /// The error message to display when validation fails.
   final String message;
+  
+  /// List of form keys that should trigger re-validation of this validator.
+  ///
+  /// When any field in this list changes, this validator will be re-executed
+  /// to ensure validation remains accurate for cross-field dependencies.
   final List<FormKey> dependencies;
 
+  /// Creates a [ConditionalValidator] with a predicate function.
+  ///
+  /// Parameters:
+  /// - [predicate] (FuturePredicate<T>, required): The validation logic function
+  /// - [message] (String, required): Error message for validation failures
+  /// - [dependencies] (List<FormKey>, optional): Form fields that affect this validation
+  ///
+  /// Example:
+  /// ```dart
+  /// ConditionalValidator<String>(
+  ///   (value) => value != null && value.contains('@'),
+  ///   message: 'Please enter a valid email address',
+  ///   dependencies: [domainFieldKey], // Re-validate when domain field changes
+  /// );
+  /// ```
   const ConditionalValidator(this.predicate,
       {required this.message, this.dependencies = const []});
 
@@ -338,13 +439,85 @@ class ConditionalValidator<T> extends Validator<T> {
   int get hashCode => Object.hash(predicate, message);
 }
 
+/// A function type for building custom validation logic.
+///
+/// This type alias represents a validation function that takes a nullable value
+/// of type [T] and returns either null (for valid values) or a [ValidationResult]
+/// (for invalid values). The function can be asynchronous using [FutureOr].
+///
+/// Used primarily with [ValidatorBuilder] to create inline validators without
+/// defining separate validator classes.
+///
+/// Example:
+/// ```dart
+/// ValidatorBuilderFunction<String> emailChecker = (value) {
+///   if (value?.contains('@') != true) {
+///     return InvalidResult('Must contain @ symbol');
+///   }
+///   return null; // Valid
+/// };
+/// ```
 typedef ValidatorBuilderFunction<T> = FutureOr<ValidationResult?> Function(
     T? value);
 
+/// A validator that uses a builder function for validation logic.
+///
+/// [ValidatorBuilder] provides a lightweight way to create validators using
+/// inline functions instead of creating separate validator classes. It's
+/// particularly useful for one-off validation logic or when prototyping.
+///
+/// The validator can specify dependencies on other form fields, enabling
+/// cross-field validation scenarios where the validation logic depends on
+/// values from other fields in the form.
+///
+/// Example:
+/// ```dart
+/// // Simple inline validator
+/// ValidatorBuilder<String>((value) {
+///   if (value == null || value.isEmpty) {
+///     return InvalidResult('Field is required');
+///   }
+///   return null;
+/// });
+/// 
+/// // Cross-field validator with dependencies
+/// ValidatorBuilder<String>(
+///   (value) {
+///     if (value != confirmPasswordValue) {
+///       return InvalidResult('Passwords do not match');
+///     }
+///     return null;
+///   },
+///   dependencies: [confirmPasswordKey],
+/// );
+/// ```
 class ValidatorBuilder<T> extends Validator<T> {
+  /// The builder function that performs validation.
+  ///
+  /// Should return null for valid values or a ValidationResult for invalid values.
   final ValidatorBuilderFunction<T> builder;
+  
+  /// List of form keys that should trigger re-validation when they change.
+  ///
+  /// Enables cross-field validation by re-executing this validator when
+  /// dependent fields are modified.
   final List<FormKey> dependencies;
 
+  /// Creates a [ValidatorBuilder] with a validation function.
+  ///
+  /// Parameters:
+  /// - [builder] (ValidatorBuilderFunction<T>, required): The validation function
+  /// - [dependencies] (List<FormKey>, optional): Fields that affect this validation
+  ///
+  /// Example:
+  /// ```dart
+  /// ValidatorBuilder<int>(
+  ///   (value) => value != null && value > 0 
+  ///     ? null 
+  ///     : InvalidResult('Must be positive'),
+  ///   dependencies: [relatedFieldKey],
+  /// );
+  /// ```
   const ValidatorBuilder(this.builder, {this.dependencies = const []});
 
   @override
@@ -367,11 +540,50 @@ class ValidatorBuilder<T> extends Validator<T> {
   int get hashCode => builder.hashCode;
 }
 
+/// A validator that negates another validator's result.
+///
+/// [NotValidator] inverts the validation logic of another validator, making
+/// valid values invalid and invalid values valid. This is useful for creating
+/// inverse validation rules or excluding certain patterns.
+///
+/// If no custom error message is provided, it uses a default negation message
+/// from the localization system. Custom messages can be provided for more
+/// specific error descriptions.
+///
+/// Example:
+/// ```dart
+/// // Negate an email validator to reject email formats
+/// final notEmail = NotValidator(
+///   EmailValidator(),
+///   message: 'Please do not enter an email address',
+/// );
+/// 
+/// // Using operator syntax
+/// final notEmpty = ~EmptyValidator<String>();
+/// ```
 class NotValidator<T> extends Validator<T> {
+  /// The validator whose result should be negated.
   final Validator<T> validator;
-  final String?
-      message; // if null, use default message from ShadcnLocalizations
+  
+  /// Custom error message for when validation fails.
+  ///
+  /// If null, uses default negation message from ShadcnLocalizations.
+  final String? message;
 
+  /// Creates a [NotValidator] that negates another validator.
+  ///
+  /// Parameters:
+  /// - [validator] (Validator<T>, required): The validator to negate
+  /// - [message] (String?, optional): Custom error message. If null, uses
+  ///   default localization message for negation.
+  ///
+  /// Example:
+  /// ```dart
+  /// NotValidator(
+  ///   RequiredValidator<String>(),
+  ///   message: 'This field must be empty',
+  /// );
+  /// ```
   const NotValidator(this.validator, {this.message});
 
   @override
@@ -404,9 +616,46 @@ class NotValidator<T> extends Validator<T> {
   int get hashCode => Object.hash(validator, message);
 }
 
+/// A validator that implements OR logic across multiple validators.
+///
+/// [OrValidator] passes validation if at least one of its child validators
+/// passes. It executes validators sequentially until one succeeds (returns null)
+/// or all fail. This is useful for accepting multiple valid formats or
+/// creating alternative validation paths.
+///
+/// The validator supports both synchronous and asynchronous child validators,
+/// properly handling mixed scenarios with appropriate chaining logic.
+///
+/// Example:
+/// ```dart
+/// // Accept either email or phone number format
+/// final contactValidator = OrValidator([
+///   EmailValidator(),
+///   PhoneValidator(),
+/// ]);
+/// 
+/// // Using operator syntax
+/// final flexible = EmailValidator() | PhoneValidator() | UsernameValidator();
+/// ```
 class OrValidator<T> extends Validator<T> {
+  /// The list of validators to evaluate using OR logic.
+  ///
+  /// Validation passes if any validator in this list succeeds.
   final List<Validator<T>> validators;
 
+  /// Creates an [OrValidator] with a list of validators.
+  ///
+  /// Parameters:
+  /// - [validators] (List<Validator<T>>, required): The validators to combine with OR logic
+  ///
+  /// Example:
+  /// ```dart
+  /// OrValidator([
+  ///   EmailValidator(),
+  ///   PhoneValidator(),
+  ///   UsernameValidator(),
+  /// ]);
+  /// ```
   const OrValidator(this.validators);
 
   @override
@@ -464,10 +713,45 @@ class OrValidator<T> extends Validator<T> {
   int get hashCode => validators.hashCode;
 }
 
+/// A validator that ensures a value is not null.
+///
+/// [NonNullValidator] rejects null values and passes any non-null value,
+/// including empty strings, zero, false, and empty collections. This is
+/// useful for form fields where any non-null value is considered valid
+/// input, regardless of its content.
+///
+/// For string fields where empty strings should also be rejected, use
+/// [NotEmptyValidator] instead, which extends this validator with additional
+/// empty string checking.
+///
+/// Example:
+/// ```dart
+/// // Accept any non-null value
+/// final validator = NonNullValidator<String>(
+///   message: 'Please provide a value',
+/// );
+/// 
+/// // Works with any type
+/// final numberValidator = NonNullValidator<int>();
+/// ```
 class NonNullValidator<T> extends Validator<T> {
-  final String?
-      message; // if null, use default message from ShadcnLocalizations
+  /// Custom error message for null values.
+  ///
+  /// If null, uses default message from ShadcnLocalizations.
+  final String? message;
 
+  /// Creates a [NonNullValidator].
+  ///
+  /// Parameters:
+  /// - [message] (String?, optional): Custom error message. If null, uses
+  ///   default localization message for required fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// NonNullValidator<String>(
+  ///   message: 'This field cannot be empty',
+  /// );
+  /// ```
   const NonNullValidator({this.message});
 
   @override
@@ -489,7 +773,42 @@ class NonNullValidator<T> extends Validator<T> {
   int get hashCode => message.hashCode;
 }
 
+/// A validator that ensures string values are not null or empty.
+///
+/// [NotEmptyValidator] extends [NonNullValidator] to also reject empty strings,
+/// making it suitable for required text fields where blank input is not
+/// acceptable. This validator is commonly used for essential form fields
+/// like names, titles, and descriptions.
+///
+/// The validator considers both null values and empty strings (length 0) as
+/// invalid, while accepting strings with whitespace or any other content.
+///
+/// Example:
+/// ```dart
+/// // Require non-empty text input
+/// final nameValidator = NotEmptyValidator(
+///   message: 'Name is required',
+/// );
+/// 
+/// // Use with text fields
+/// TextInput(
+///   label: 'Full Name',
+///   validator: NotEmptyValidator(),
+/// );
+/// ```
 class NotEmptyValidator extends NonNullValidator<String> {
+  /// Creates a [NotEmptyValidator].
+  ///
+  /// Parameters:
+  /// - [message] (String?, optional): Custom error message. If null, uses
+  ///   default localization message for required fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// NotEmptyValidator(
+  ///   message: 'Please enter your name',
+  /// );
+  /// ```
   const NotEmptyValidator({super.message});
 
   @override

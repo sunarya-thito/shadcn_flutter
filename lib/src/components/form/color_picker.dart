@@ -268,16 +268,69 @@ class ControlledColorInput extends StatelessWidget
   @override
   final ColorInputController? controller;
 
+  /// Whether to include an alpha (opacity) slider in the color picker.
+  ///
+  /// When `true`, users can adjust the opacity of the selected color.
+  /// When `null`, inherits from the theme or uses a default value.
   final bool? showAlpha;
+  
+  /// Alignment of the color picker popover relative to its anchor.
+  ///
+  /// Controls how the popover is positioned when it opens. Common values
+  /// include [Alignment.topLeft], [Alignment.bottomLeft], etc.
   final AlignmentGeometry? popoverAlignment;
+  
+  /// Alignment point on the anchor widget where the popover attaches.
+  ///
+  /// Specifies which point of the input field the popover should be
+  /// anchored to when positioning itself.
   final AlignmentGeometry? popoverAnchorAlignment;
+  
+  /// Padding applied inside the color picker popover.
+  ///
+  /// Controls the spacing between the popover's content and its edges.
   final EdgeInsetsGeometry? popoverPadding;
+  
+  /// Widget displayed when no color is selected.
+  ///
+  /// Typically shows hint text or a placeholder graphic to indicate
+  /// that the user should select a color.
   final Widget? placeholder;
+  
+  /// Mode determining how the color picker is presented to the user.
+  ///
+  /// Controls whether the picker appears as a popover, dialog, or other
+  /// presentation format based on platform and context.
   final PromptMode? mode;
+  
+  /// Initial mode of the color picker interface.
+  ///
+  /// Determines which color selection interface is shown first, such as
+  /// HSV sliders, RGB inputs, or color wheel.
   final ColorPickerMode? pickerMode;
+  
+  /// Optional title widget displayed in dialog mode.
+  ///
+  /// When using dialog presentation mode, this widget appears at the top
+  /// of the dialog to provide context or instructions.
   final Widget? dialogTitle;
+  
+  /// Whether to enable screen color picking functionality.
+  ///
+  /// When `true`, provides an eyedropper tool allowing users to pick
+  /// colors from anywhere on the screen (platform support required).
   final bool? allowPickFromScreen;
+  
+  /// Whether to display the color value as text alongside the visual preview.
+  ///
+  /// Shows the color's hex code, RGB values, or other textual representation
+  /// alongside the color swatch.
   final bool? showLabel;
+  
+  /// Storage system for managing color history and recent colors.
+  ///
+  /// Enables saving and retrieving recently used colors for quick access.
+  /// When null, color history features are disabled.
   final ColorHistoryStorage? storage;
 
   const ControlledColorInput({

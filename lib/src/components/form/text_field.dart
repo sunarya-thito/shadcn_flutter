@@ -26,12 +26,62 @@ import 'package:flutter/cupertino.dart' as cupertino;
 /// [TextField] widgets, including border styling, fill state, padding,
 /// and border radius. These properties can be set at the theme level
 /// to provide consistent styling across the application.
+///
+/// The theme integrates with the framework's design system to ensure
+/// consistent text field appearance throughout an application while
+/// still allowing per-instance customization when needed.
+///
+/// Example:
+/// ```dart
+/// TextFieldTheme(
+///   borderRadius: BorderRadius.circular(8),
+///   filled: true,
+///   padding: EdgeInsets.all(12),
+///   border: Border.all(color: Colors.grey),
+/// );
+/// ```
 class TextFieldTheme {
+  /// Border radius applied to the text field container.
+  ///
+  /// Controls the curvature of text field corners. When null, uses
+  /// the default border radius from the theme system.
   final BorderRadiusGeometry? borderRadius;
+  
+  /// Whether the text field background should be filled.
+  ///
+  /// When true, applies a background fill color to the text field.
+  /// When false or null, the text field has a transparent background.
   final bool? filled;
+  
+  /// Internal padding applied to the text field content.
+  ///
+  /// Controls the space between the text field border and the text content.
+  /// When null, uses default padding values from the theme system.
   final EdgeInsetsGeometry? padding;
+  
+  /// Border configuration for the text field.
+  ///
+  /// Defines border appearance including width, color, and style.
+  /// When null, uses the default border from the theme system.
   final Border? border;
 
+  /// Creates a [TextFieldTheme] with optional styling properties.
+  ///
+  /// Parameters:
+  /// - [border] (Border?, optional): Text field border configuration
+  /// - [borderRadius] (BorderRadiusGeometry?, optional): Corner curvature
+  /// - [filled] (bool?, optional): Whether to show background fill
+  /// - [padding] (EdgeInsetsGeometry?, optional): Internal content padding
+  ///
+  /// Example:
+  /// ```dart
+  /// TextFieldTheme(
+  ///   border: Border.all(color: theme.colorScheme.outline),
+  ///   borderRadius: BorderRadius.circular(6),
+  ///   filled: true,
+  ///   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+  /// );
+  /// ```
   const TextFieldTheme({
     this.border,
     this.borderRadius,
@@ -39,6 +89,22 @@ class TextFieldTheme {
     this.padding,
   });
 
+  /// Creates a copy of this theme with specified properties replaced.
+  ///
+  /// Each parameter function is called to obtain the new value for that property.
+  /// Properties with null functions retain their current values.
+  ///
+  /// Parameters: Function getters for each theme property to potentially override.
+  ///
+  /// Returns: A new [TextFieldTheme] with updated properties.
+  ///
+  /// Example:
+  /// ```dart
+  /// final newTheme = currentTheme.copyWith(
+  ///   filled: () => true,
+  ///   borderRadius: () => BorderRadius.circular(12),
+  /// );
+  /// ```
   TextFieldTheme copyWith({
     ValueGetter<Border?>? border,
     ValueGetter<BorderRadiusGeometry?>? borderRadius,
@@ -67,41 +133,203 @@ class TextFieldTheme {
   int get hashCode => Object.hash(border, borderRadius, filled, padding);
 }
 
+/// Default height constant for text field components in the design system.
+///
+/// Set to 34 pixels to provide consistent sizing across text input components
+/// while ensuring adequate touch targets and visual balance within forms.
 const kTextFieldHeight = 34;
 
+/// Abstract base class defining visibility conditions for input field features.
+///
+/// [InputFeatureVisibility] provides a flexible system for controlling when
+/// input field features (like clear buttons, password toggles, or action buttons)
+/// should be visible based on the current state of the text field.
+///
+/// The system supports complex visibility logic through factory constructors:
+/// - Logical AND combinations with [InputFeatureVisibility.and]
+/// - Logical OR combinations with [InputFeatureVisibility.or]
+/// - Negation with [InputFeatureVisibility.not]
+///
+/// Built-in conditions include:
+/// - [textNotEmpty]: Visible when text field contains content
+/// - [textEmpty]: Visible when text field is empty
+/// - [focused]: Visible when text field has focus
+/// - [hovered]: Visible when text field is being hovered
+/// - [hasSelection]: Visible when text has been selected
+/// - [always]: Always visible
+/// - [never]: Never visible
+///
+/// Custom visibility conditions can be created by extending this class and
+/// implementing [canShow] and [getDependencies] methods.
+///
+/// Example:
+/// ```dart
+/// // Show clear button when text is not empty and field is focused
+/// final clearButtonVisibility = InputFeatureVisibility.and([
+///   InputFeatureVisibility.textNotEmpty,
+///   InputFeatureVisibility.focused,
+/// ]);
+/// 
+/// // Show password toggle when focused OR hovered
+/// final toggleVisibility = InputFeatureVisibility.or([
+///   InputFeatureVisibility.focused,
+///   InputFeatureVisibility.hovered,
+/// ]);
+/// ```
 abstract class InputFeatureVisibility {
+  /// Creates an AND condition that requires all features to be satisfied.
+  ///
+  /// The resulting visibility condition is true only when all provided
+  /// features evaluate to true.
+  ///
+  /// Parameters:
+  /// - [features] (Iterable<InputFeatureVisibility>): Conditions to combine with AND logic
   const factory InputFeatureVisibility.and(
     Iterable<InputFeatureVisibility> features,
   ) = _LogicAndInputFeatureVisibility;
+  
+  /// Creates an OR condition where at least one feature must be satisfied.
+  ///
+  /// The resulting visibility condition is true when any of the provided
+  /// features evaluates to true.
+  ///
+  /// Parameters:
+  /// - [features] (Iterable<InputFeatureVisibility>): Conditions to combine with OR logic
   const factory InputFeatureVisibility.or(
     Iterable<InputFeatureVisibility> features,
   ) = _LogicOrInputFeatureVisibility;
+  
+  /// Creates a negated condition that inverts the result of another feature.
+  ///
+  /// The resulting visibility condition is true when the provided feature
+  /// evaluates to false, and false when it evaluates to true.
+  ///
+  /// Parameters:
+  /// - [feature] (InputFeatureVisibility): The condition to negate
   const factory InputFeatureVisibility.not(InputFeatureVisibility feature) =
       _NegateInputFeatureVisibility;
+  
+  /// Visibility condition that is true when the text field contains content.
+  ///
+  /// Useful for features like clear buttons that should only appear when
+  /// there's content to clear.
   static const InputFeatureVisibility textNotEmpty =
       _TextNotEmptyInputFeatureVisibility();
+  
+  /// Visibility condition that is true when the text field is empty.
+  ///
+  /// Useful for placeholder features or hints that should only appear
+  /// when the field has no content.
   static const InputFeatureVisibility textEmpty =
       _TextEmptyInputFeatureVisibility();
+  
+  /// Visibility condition that is true when the text field has focus.
+  ///
+  /// Useful for features that should only be interactive when the user
+  /// is actively editing the field.
   static const InputFeatureVisibility focused =
       _FocusedInputFeatureVisibility();
+  
+  /// Visibility condition that is true when the text field is being hovered.
+  ///
+  /// Useful for features that should appear on mouse hover for desktop
+  /// interaction patterns.
   static const InputFeatureVisibility hovered =
       _HoveredInputFeatureVisibility();
+  
+  /// Visibility condition that is never true.
+  ///
+  /// Used to disable features completely or as a base for conditional logic.
   static const InputFeatureVisibility never =
       _NeverVisibleInputFeatureVisibility();
+  
+  /// Visibility condition that is always true.
+  ///
+  /// Used for features that should always be visible regardless of field state.
   static const InputFeatureVisibility always =
       _AlwaysVisibleInputFeatureVisibility();
+  
+  /// Visibility condition that is true when text is selected in the field.
+  ///
+  /// Useful for features like copy/cut actions that require text selection.
   static const InputFeatureVisibility hasSelection =
       _HasSelectionInputFeatureVisibility();
+      
+  /// Creates an [InputFeatureVisibility].
   const InputFeatureVisibility();
+  
+  /// Returns the listenables that this visibility condition depends on.
+  ///
+  /// The text field will listen to these dependencies and re-evaluate
+  /// visibility when they change. This enables reactive visibility updates.
+  ///
+  /// Parameters:
+  /// - [state] (TextFieldState): The text field state to analyze
+  ///
+  /// Returns: An iterable of [Listenable] objects to monitor for changes.
   Iterable<Listenable> getDependencies(TextFieldState state);
+  
+  /// Determines whether the feature should be visible given the current state.
+  ///
+  /// This method contains the core logic for evaluating visibility conditions
+  /// based on the text field's current state.
+  ///
+  /// Parameters:
+  /// - [state] (TextFieldState): The current text field state
+  ///
+  /// Returns: true if the feature should be visible, false otherwise.
   bool canShow(TextFieldState state);
 
+  /// Combines this visibility condition with another using AND logic.
+  ///
+  /// Creates a compound condition that requires both this condition and the
+  /// other condition to be true for the feature to be visible.
+  ///
+  /// Parameters:
+  /// - [other] (InputFeatureVisibility): The condition to combine with this one
+  ///
+  /// Returns: A new visibility condition requiring both conditions to be true.
+  ///
+  /// Example:
+  /// ```dart
+  /// final combinedVisibility = textNotEmpty.and(focused);
+  /// ```
   InputFeatureVisibility and(InputFeatureVisibility other) =>
       InputFeatureVisibility.and([this, other]);
   InputFeatureVisibility operator &(InputFeatureVisibility other) => and(other);
+  /// Combines this visibility condition with another using OR logic.
+  ///
+  /// Creates a compound condition that is true when either this condition or the
+  /// other condition (or both) evaluate to true.
+  ///
+  /// Parameters:
+  /// - [other] (InputFeatureVisibility): The condition to combine with this one
+  ///
+  /// Returns: A new visibility condition requiring either condition to be true.
+  ///
+  /// Example:
+  /// ```dart
+  /// final flexibleVisibility = focused.or(hovered);
+  /// ```
   InputFeatureVisibility or(InputFeatureVisibility other) =>
       InputFeatureVisibility.or([this, other]);
+  
+  /// Operator syntax for OR logic (alias for [or]).
+  ///
+  /// Example:
+  /// ```dart
+  /// final visibility = textNotEmpty | focused;
+  /// ```
   InputFeatureVisibility operator |(InputFeatureVisibility other) => or(other);
+  
+  /// Operator syntax for negation (alias for [InputFeatureVisibility.not]).
+  ///
+  /// Creates a condition that is true when this condition is false.
+  ///
+  /// Example:
+  /// ```dart
+  /// final invisibleWhenEmpty = ~textEmpty;
+  /// ```
   InputFeatureVisibility operator ~() => InputFeatureVisibility.not(this);
 }
 

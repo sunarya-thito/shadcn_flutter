@@ -68,16 +68,78 @@ enum NavigationContainerType {
 /// [NavigationBar] widgets, including background colors, alignment, spacing,
 /// label presentation, and padding. These properties can be set at the theme level
 /// to provide consistent styling across the application.
+///
+/// Example:
+/// ```dart
+/// NavigationBarTheme(
+///   backgroundColor: Colors.blue.shade50,
+///   alignment: NavigationBarAlignment.center,
+///   spacing: 16.0,
+///   labelType: NavigationLabelType.all,
+///   padding: EdgeInsets.symmetric(horizontal: 20),
+/// );
+/// ```
 class NavigationBarTheme {
+  /// Background color for the navigation bar.
+  ///
+  /// When null, uses the default theme background color.
   final Color? backgroundColor;
+  
+  /// Alignment strategy for navigation bar items.
+  ///
+  /// Determines how navigation items are positioned within the available space.
   final NavigationBarAlignment? alignment;
+  
+  /// The axis direction for laying out navigation items.
+  ///
+  /// Typically [Axis.horizontal] for bars and [Axis.vertical] for rails.
   final Axis? direction;
+  
+  /// Spacing between navigation items.
+  ///
+  /// Controls the gap between individual navigation elements.
   final double? spacing;
+  
+  /// Controls which navigation items show labels.
+  ///
+  /// Determines label visibility behavior across selected/unselected items.
   final NavigationLabelType? labelType;
+  
+  /// Position of labels relative to navigation icons.
+  ///
+  /// Controls whether labels appear below, beside, or overlay icons.
   final NavigationLabelPosition? labelPosition;
+  
+  /// Size category for navigation labels.
+  ///
+  /// Controls the text size and visual prominence of labels.
   final NavigationLabelSize? labelSize;
+  
+  /// Internal padding applied to the navigation bar container.
+  ///
+  /// Controls spacing around the entire navigation content area.
   final EdgeInsetsGeometry? padding;
 
+  /// Creates a [NavigationBarTheme] with optional styling properties.
+  ///
+  /// Parameters:
+  /// - [backgroundColor] (Color?, optional): Navigation bar background color
+  /// - [alignment] (NavigationBarAlignment?, optional): Item alignment strategy
+  /// - [direction] (Axis?, optional): Layout direction for navigation items  
+  /// - [spacing] (double?, optional): Spacing between navigation items
+  /// - [labelType] (NavigationLabelType?, optional): Label visibility behavior
+  /// - [labelPosition] (NavigationLabelPosition?, optional): Label positioning
+  /// - [labelSize] (NavigationLabelSize?, optional): Label size category
+  /// - [padding] (EdgeInsetsGeometry?, optional): Container padding
+  ///
+  /// Example:
+  /// ```dart
+  /// NavigationBarTheme(
+  ///   backgroundColor: theme.colorScheme.surface,
+  ///   alignment: NavigationBarAlignment.spaceEvenly,
+  ///   spacing: 12.0,
+  /// );
+  /// ```
   const NavigationBarTheme({
     this.backgroundColor,
     this.alignment,
@@ -89,6 +151,22 @@ class NavigationBarTheme {
     this.padding,
   });
 
+  /// Creates a copy of this theme with specified properties replaced.
+  ///
+  /// Each parameter function is called to obtain the new value for that property.
+  /// Properties with null functions retain their current values.
+  ///
+  /// Parameters: Function getters for each theme property to potentially override.
+  ///
+  /// Returns: A new [NavigationBarTheme] with updated properties.
+  ///
+  /// Example:
+  /// ```dart
+  /// final newTheme = currentTheme.copyWith(
+  ///   backgroundColor: () => Colors.red,
+  ///   spacing: () => 20.0,
+  /// );
+  /// ```
   NavigationBarTheme copyWith({
     ValueGetter<Color?>? backgroundColor,
     ValueGetter<NavigationBarAlignment?>? alignment,
@@ -139,9 +217,32 @@ class NavigationBarTheme {
       );
 }
 
+/// Abstract base class for all navigation bar item widgets.
+///
+/// This class serves as the foundation for widgets that can be placed within
+/// a [NavigationBar]. It defines the essential contract that all navigation
+/// items must follow, particularly around selection behavior.
+///
+/// Concrete implementations include [NavigationItem], [NavigationDivider],
+/// [NavigationGap], and other specialized navigation components.
+///
+/// The primary requirement is implementing [selectable] to indicate whether
+/// the item can be selected by user interaction and contribute to navigation
+/// state management.
 abstract class NavigationBarItem extends Widget {
+  /// Creates a [NavigationBarItem].
+  ///
+  /// Parameters:
+  /// - [key] (Key?, optional): Widget identifier for efficient updates
   const NavigationBarItem({super.key});
 
+  /// Whether this navigation item can be selected by user interaction.
+  ///
+  /// Selectable items participate in navigation state management and can
+  /// trigger selection callbacks. Non-selectable items (like dividers or
+  /// gaps) are purely presentational and don't affect navigation state.
+  ///
+  /// Returns `true` for interactive navigation items, `false` for decorative elements.
   bool get selectable;
 }
 
@@ -206,25 +307,140 @@ abstract class NavigationBarItem extends Widget {
 /// );
 /// ```
 class NavigationBar extends StatefulWidget {
+  /// Background color for the navigation bar.
+  ///
+  /// When null, uses the theme's default navigation bar background color.
   final Color? backgroundColor;
+  
+  /// List of navigation items to display in the bar.
+  ///
+  /// Can include [NavigationItem], [NavigationDivider], [NavigationGap],
+  /// and other [NavigationBarItem] implementations.
   final List<NavigationBarItem> children;
+  
+  /// Alignment strategy for navigation items within the available space.
+  ///
+  /// Controls how items are distributed across the navigation container.
+  /// Defaults to [NavigationBarAlignment.center].
   final NavigationBarAlignment? alignment;
+  
+  /// Layout direction for navigation items.
+  ///
+  /// [Axis.horizontal] for bar-style navigation, [Axis.vertical] for rail-style.
+  /// Defaults to [Axis.horizontal].
   final Axis? direction;
+  
+  /// Spacing between navigation items.
+  ///
+  /// Controls the gap between individual navigation elements.
+  /// Scales with the current theme scaling factor.
   final double? spacing;
+  
+  /// Controls which navigation items display labels.
+  ///
+  /// Determines label visibility behavior (all, selected only, none).
+  /// Defaults to [NavigationLabelType.none].
   final NavigationLabelType? labelType;
+  
+  /// Position of labels relative to navigation icons.
+  ///
+  /// Controls whether labels appear below, beside, or overlay icons.
+  /// Defaults to [NavigationLabelPosition.bottom].
   final NavigationLabelPosition? labelPosition;
+  
+  /// Size category for navigation labels.
+  ///
+  /// Controls the text size and visual prominence of labels.
+  /// Defaults to [NavigationLabelSize.small].
   final NavigationLabelSize? labelSize;
+  
+  /// Internal padding applied to the navigation container.
+  ///
+  /// Controls spacing around the entire navigation content area.
   final EdgeInsetsGeometry? padding;
+  
+  /// Box constraints applied to the navigation container.
+  ///
+  /// Used to control the overall size and layout behavior of the navigation bar.
   final BoxConstraints? constraints;
+  
+  /// Whether the navigation bar should expand to fill available space.
+  ///
+  /// When true, the navigation bar takes up all available space in its parent.
   final bool? expands;
+  
+  /// Currently selected navigation item index.
+  ///
+  /// Used for highlighting the active navigation item. Can be null for no selection.
   final int? index;
+  
+  /// Callback invoked when a navigation item is selected.
+  ///
+  /// Receives the index of the selected navigation item.
   final ValueChanged<int>? onSelected;
+  
+  /// Opacity level for surface blur effects.
+  ///
+  /// Controls the transparency of glassmorphism background effects.
+  /// Values from 0.0 (transparent) to 1.0 (opaque).
   final double? surfaceOpacity;
+  
+  /// Blur intensity for surface effects.
+  ///
+  /// Controls the gaussian blur strength for glassmorphism styling.
+  /// Higher values create more blur effect.
   final double? surfaceBlur;
+  
+  /// Whether the navigation bar is in expanded state.
+  ///
+  /// Affects layout and presentation of navigation items.
   final bool? expanded;
+  
+  /// Whether to maintain cross-axis size during layout.
+  ///
+  /// Controls sizing behavior perpendicular to the main layout direction.
   final bool? keepCrossAxisSize;
+  
+  /// Whether to maintain main-axis size during layout.
+  ///
+  /// Controls sizing behavior along the primary layout direction.
   final bool? keepMainAxisSize;
 
+  /// Creates a [NavigationBar] with the specified configuration.
+  ///
+  /// Parameters:
+  /// - [children] (List<NavigationBarItem>, required): Navigation items to display
+  /// - [backgroundColor] (Color?, optional): Navigation bar background color
+  /// - [alignment] (NavigationBarAlignment?, optional): Item alignment strategy
+  /// - [direction] (Axis?, optional): Layout direction for navigation items
+  /// - [spacing] (double?, optional): Spacing between navigation items
+  /// - [labelType] (NavigationLabelType?, optional): Label visibility behavior
+  /// - [labelPosition] (NavigationLabelPosition?, optional): Label positioning
+  /// - [labelSize] (NavigationLabelSize?, optional): Label size category
+  /// - [padding] (EdgeInsetsGeometry?, optional): Container padding
+  /// - [constraints] (BoxConstraints?, optional): Container size constraints
+  /// - [expands] (bool?, optional): Whether to fill available space
+  /// - [index] (int?, optional): Currently selected item index
+  /// - [onSelected] (ValueChanged<int>?, optional): Selection change callback
+  /// - [surfaceOpacity] (double?, optional): Glassmorphism opacity level
+  /// - [surfaceBlur] (double?, optional): Glassmorphism blur intensity
+  /// - [expanded] (bool?, optional): Whether navigation is in expanded state
+  /// - [keepCrossAxisSize] (bool?, optional): Maintain cross-axis sizing
+  /// - [keepMainAxisSize] (bool?, optional): Maintain main-axis sizing
+  ///
+  /// Example:
+  /// ```dart
+  /// NavigationBar(
+  ///   index: selectedIndex,
+  ///   onSelected: (index) => _handleSelection(index),
+  ///   alignment: NavigationBarAlignment.spaceEvenly,
+  ///   labelType: NavigationLabelType.all,
+  ///   children: [
+  ///     NavigationItem(icon: Icons.home, label: Text('Home')),
+  ///     NavigationItem(icon: Icons.search, label: Text('Search')),
+  ///   ],
+  /// );
+  /// ```
   const NavigationBar({
     super.key,
     this.backgroundColor,

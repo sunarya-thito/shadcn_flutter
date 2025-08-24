@@ -978,12 +978,32 @@ class AvatarGroup extends StatelessWidget {
   }
 }
 
+/// Custom clipper for creating overlapping avatar effects in avatar groups.
+///
+/// [AvatarGroupClipper] creates clipping paths that allow avatars to overlap
+/// in a visually appealing way while maintaining proper border radius and
+/// spacing. It calculates the clipping area based on the previous avatar's
+/// size and position to create seamless overlapping effects.
 class AvatarGroupClipper extends CustomClipper<Path> {
+  /// Border radius of the avatar being clipped.
   final double borderRadius;
+  
+  /// Alignment of the avatar within its container.
   final Alignment alignment;
+  
+  /// Size of the previous avatar in the group for overlap calculation.
   final double previousAvatarSize;
+  
+  /// Gap spacing between overlapping avatars.
   final double gap;
 
+  /// Creates an [AvatarGroupClipper] with the specified parameters.
+  ///
+  /// Parameters:
+  /// - [borderRadius] (double, required): Radius for rounded avatar corners
+  /// - [alignment] (Alignment, required): Avatar positioning within container
+  /// - [previousAvatarSize] (double, required): Size of overlapping avatar
+  /// - [gap] (double, required): Spacing between avatar edges
   const AvatarGroupClipper({
     required this.borderRadius,
     required this.alignment,

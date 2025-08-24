@@ -2,12 +2,41 @@ import 'dart:ui';
 
 import '../../../shadcn_flutter.dart';
 
+/// Properties that define the visual appearance of divider components.
+///
+/// Contains styling information for dividers including color, thickness,
+/// and indentation values. Used by divider widgets to maintain consistent
+/// appearance and enable smooth animations between different states.
+///
+/// Example:
+/// ```dart
+/// const properties = DividerProperties(
+///   color: Colors.grey,
+///   thickness: 1.0,
+///   indent: 16.0,
+///   endIndent: 16.0,
+/// );
+/// ```
 class DividerProperties {
+  /// The color of the divider line.
   final Color color;
+
+  /// The thickness of the divider line in logical pixels.
   final double thickness;
+
+  /// The amount of empty space before the divider line.
   final double indent;
+
+  /// The amount of empty space after the divider line.
   final double endIndent;
 
+  /// Creates [DividerProperties] with the specified styling values.
+  ///
+  /// Parameters:
+  /// - [color] (Color, required): The color of the divider.
+  /// - [thickness] (double, required): The thickness of the divider.
+  /// - [indent] (double, required): Leading indent space.
+  /// - [endIndent] (double, required): Trailing indent space.
   const DividerProperties({
     required this.color,
     required this.thickness,
@@ -15,6 +44,24 @@ class DividerProperties {
     required this.endIndent,
   });
 
+  /// Linearly interpolates between two [DividerProperties] instances.
+  ///
+  /// Animates all properties (color, thickness, indents) from the first
+  /// instance to the second using the interpolation factor. Used for
+  /// smooth transitions in animated dividers.
+  ///
+  /// Parameters:
+  /// - [a] (DividerProperties): The starting properties.
+  /// - [b] (DividerProperties): The ending properties.
+  /// - [t] (double): The interpolation factor (0.0 to 1.0).
+  ///
+  /// Returns:
+  /// A [DividerProperties] instance with interpolated values.
+  ///
+  /// Example:
+  /// ```dart
+  /// final result = DividerProperties.lerp(startProps, endProps, 0.5);
+  /// ```
   static DividerProperties lerp(
       DividerProperties a, DividerProperties b, double t) {
     return DividerProperties(

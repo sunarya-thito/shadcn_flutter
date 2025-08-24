@@ -8,9 +8,24 @@ Color _fromAHSL(double a, double h, double s, double l) {
   return HSLColor.fromAHSL(a, h, s, l).toColor();
 }
 
+/// A chart color scheme that uses a single color for all chart elements.
+///
+/// Implements [ChartColorScheme] by providing the same color for all chart
+/// color properties. Useful when you want a monochromatic chart appearance
+/// or when working with single-series data visualizations.
+///
+/// Example:
+/// ```dart
+/// final scheme = SingleChartColorScheme(Colors.blue);
+/// ```
 class SingleChartColorScheme implements ChartColorScheme {
+  /// The single color used for all chart elements.
   final Color color;
 
+  /// Creates a [SingleChartColorScheme] with the specified color.
+  ///
+  /// Parameters:
+  /// - [color] (Color): The color to use for all chart elements.
   const SingleChartColorScheme(this.color);
 
   @override
@@ -32,19 +47,60 @@ class SingleChartColorScheme implements ChartColorScheme {
   Color get chart5 => color;
 }
 
+/// Defines colors used for chart and data visualization components.
+///
+/// Provides a standardized set of colors for different chart series or data
+/// categories. Includes individual color properties for up to 5 chart series
+/// and a list containing all colors for programmatic access.
+///
+/// Example:
+/// ```dart
+/// final scheme = ChartColorScheme([
+///   Colors.blue,
+///   Colors.red,
+///   Colors.green,
+///   Colors.orange,
+///   Colors.purple,
+/// ]);
+/// ```
 class ChartColorScheme {
+  /// The list of colors used for chart elements.
   final List<Color> chartColors;
 
+  /// Creates a [ChartColorScheme] with the specified colors.
+  ///
+  /// Parameters:
+  /// - [chartColors] (List<Color>): Colors for different chart series.
+  ///   Should contain at least 5 colors for full coverage.
   const ChartColorScheme(this.chartColors);
 
+  /// Creates a single-color chart scheme.
+  ///
+  /// Factory constructor that creates a [SingleChartColorScheme] using
+  /// the provided color for all chart elements.
+  ///
+  /// Parameters:
+  /// - [color] (Color): The color to use for all elements.
+  ///
+  /// Returns:
+  /// A [SingleChartColorScheme] instance.
   factory ChartColorScheme.single(Color color) {
     return SingleChartColorScheme(color);
   }
 
+  /// Primary chart color (series 1).
   Color get chart1 => chartColors[0];
+
+  /// Secondary chart color (series 2).
   Color get chart2 => chartColors[1];
+
+  /// Tertiary chart color (series 3).
   Color get chart3 => chartColors[2];
+
+  /// Quaternary chart color (series 4).
   Color get chart4 => chartColors[3];
+
+  /// Quinary chart color (series 5).
   Color get chart5 => chartColors[4];
 }
 
