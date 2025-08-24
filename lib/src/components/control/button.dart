@@ -4094,34 +4094,92 @@ IconThemeData _buttonStaticIconTheme(
 /// );
 /// ```
 class PrimaryButton extends StatelessWidget {
+  /// The primary content widget displayed in the button.
   final Widget child;
+  
+  /// Callback invoked when the button is pressed.
   final VoidCallback? onPressed;
+  
+  /// Whether the button is enabled for user interaction.
+  /// When null, defaults to enabled unless onPressed is null.
   final bool? enabled;
+  
+  /// Optional widget displayed before the child content.
   final Widget? leading;
+  
+  /// Optional widget displayed after the child content.
   final Widget? trailing;
+  
+  /// Alignment of the button content within the button area.
   final AlignmentGeometry? alignment;
+  
+  /// Size configuration for the button dimensions and padding.
   final ButtonSize size;
+  
+  /// Density configuration that affects padding and spacing.
   final ButtonDensity density;
+  
+  /// Shape configuration for the button corners and border.
   final ButtonShape shape;
+  
+  /// Optional focus node for managing keyboard focus.
   final FocusNode? focusNode;
+  
+  /// Whether to disable visual transitions and animations.
   final bool disableTransition;
+  
+  /// Callback invoked when the button is hovered or unhovered.
   final ValueChanged<bool>? onHover;
+  
+  /// Callback invoked when the button gains or loses focus.
   final ValueChanged<bool>? onFocus;
+  
+  /// Whether to provide haptic/audio feedback on interactions.
   final bool? enableFeedback;
+  
+  /// Callback for primary tap down events.
   final GestureTapDownCallback? onTapDown;
+  
+  /// Callback for primary tap up events.
   final GestureTapUpCallback? onTapUp;
+  
+  /// Callback for primary tap cancel events.
   final GestureTapCancelCallback? onTapCancel;
+  
+  /// Callback for secondary tap down events (typically right-click).
   final GestureTapDownCallback? onSecondaryTapDown;
+  
+  /// Callback for secondary tap up events.
   final GestureTapUpCallback? onSecondaryTapUp;
+  
+  /// Callback for secondary tap cancel events.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+  
+  /// Callback for tertiary tap down events (typically middle-click).
   final GestureTapDownCallback? onTertiaryTapDown;
+  
+  /// Callback for tertiary tap up events.
   final GestureTapUpCallback? onTertiaryTapUp;
+  
+  /// Callback for tertiary tap cancel events.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+  
+  /// Callback for long press start events.
   final GestureLongPressStartCallback? onLongPressStart;
+  
+  /// Callback for long press up events.
   final GestureLongPressUpCallback? onLongPressUp;
+  
+  /// Callback for long press move update events.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  
+  /// Callback for long press end events.
   final GestureLongPressEndCallback? onLongPressEnd;
+  
+  /// Callback for secondary button long press events.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+  
+  /// Callback for tertiary button long press events.
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
   /// Creates a [PrimaryButton] with primary styling and configurable properties.
@@ -4248,35 +4306,92 @@ class PrimaryButton extends StatelessWidget {
 /// );
 /// ```
 class SecondaryButton extends StatelessWidget {
+  /// The primary content widget displayed in the button.
   final Widget child;
+  
+  /// Callback invoked when the button is pressed.
   final VoidCallback? onPressed;
+  
+  /// Whether the button is enabled for user interaction.
+  /// When null, defaults to enabled unless onPressed is null.
   final bool? enabled;
+  
+  /// Optional widget displayed before the child content.
   final Widget? leading;
+  
+  /// Optional widget displayed after the child content.
   final Widget? trailing;
+  
+  /// Alignment of the button content within the button area.
   final AlignmentGeometry? alignment;
+  
+  /// Size configuration for the button dimensions and padding.
   final ButtonSize size;
+  
+  /// Density configuration that affects padding and spacing.
   final ButtonDensity density;
+  
+  /// Shape configuration for the button corners and border.
   final ButtonShape shape;
+  
+  /// Optional focus node for managing keyboard focus.
   final FocusNode? focusNode;
+  
+  /// Whether to disable visual transitions and animations.
   final bool disableTransition;
+  
+  /// Callback invoked when the button is hovered or unhovered.
   final ValueChanged<bool>? onHover;
+  
+  /// Callback invoked when the button gains or loses focus.
   final ValueChanged<bool>? onFocus;
 
+  /// Whether to provide haptic/audio feedback on interactions.
   final bool? enableFeedback;
+  
+  /// Callback for primary tap down events.
   final GestureTapDownCallback? onTapDown;
+  
+  /// Callback for primary tap up events.
   final GestureTapUpCallback? onTapUp;
+  
+  /// Callback for primary tap cancel events.
   final GestureTapCancelCallback? onTapCancel;
+  
+  /// Callback for secondary tap down events (typically right-click).
   final GestureTapDownCallback? onSecondaryTapDown;
+  
+  /// Callback for secondary tap up events.
   final GestureTapUpCallback? onSecondaryTapUp;
+  
+  /// Callback for secondary tap cancel events.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+  
+  /// Callback for tertiary tap down events (typically middle-click).
   final GestureTapDownCallback? onTertiaryTapDown;
+  
+  /// Callback for tertiary tap up events.
   final GestureTapUpCallback? onTertiaryTapUp;
+  
+  /// Callback for tertiary tap cancel events.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+  
+  /// Callback for long press start events.
   final GestureLongPressStartCallback? onLongPressStart;
+  
+  /// Callback for long press up events.
   final GestureLongPressUpCallback? onLongPressUp;
+  
+  /// Callback for long press move update events.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  
+  /// Callback for long press end events.
   final GestureLongPressEndCallback? onLongPressEnd;
+  
+  /// Callback for secondary button long press events.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+  
+  /// Callback for tertiary button long press events.
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
   /// Creates a [SecondaryButton] with secondary styling for supporting actions.
