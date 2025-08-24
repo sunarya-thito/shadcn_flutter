@@ -459,6 +459,11 @@ class SelectedButton extends StatefulWidget {
   /// Callback invoked when the button is pressed.
   final VoidCallback? onPressed;
 
+  /// Creates a [SelectedButton].
+  ///
+  /// The [value] and [child] parameters are required.
+  /// The [style] defaults to [ButtonStyle.ghost] for the unselected state,
+  /// and [selectedStyle] defaults to [ButtonStyle.secondary] for the selected state.
   const SelectedButton({
     super.key,
     required this.value,
@@ -497,8 +502,13 @@ class SelectedButton extends StatefulWidget {
   SelectedButtonState createState() => SelectedButtonState();
 }
 
-// toggle button is just ghost button
+/// Internal state class for [SelectedButton] that manages selection state.
+///
+/// This class handles the internal state management for the selected button,
+/// including maintaining the [WidgetStatesController] and updating the
+/// [WidgetState.selected] state when the button's value changes.
 class SelectedButtonState extends State<SelectedButton> {
+  /// Controller that manages the widget's interactive states including selected state.
   late WidgetStatesController statesController;
   @override
   void initState() {
@@ -1318,6 +1328,14 @@ class Button extends StatefulWidget {
   ButtonState createState() => ButtonState();
 }
 
+/// Internal state class for [Button] widgets that manages interaction state and feedback.
+///
+/// This class provides common state management functionality for all button types,
+/// including handling platform-specific feedback, gesture recognition, and
+/// state transitions. It serves as the base state class for various button implementations.
+///
+/// The generic type [T] extends [Button] to ensure type safety when accessing
+/// widget properties from the state class.
 class ButtonState<T extends Button> extends State<T> {
   bool get _shouldEnableFeedback {
     final platform = Theme.of(context).platform;
@@ -2431,7 +2449,29 @@ extension ShapeDecorationExtension on ShapeDecoration {
   }
 }
 
+/// Extension on [Decoration] that provides conditional copying functionality.
+///
+/// This extension adds the ability to create a new [BoxDecoration] from any [Decoration]
+/// with specified property overrides. If the current decoration is already a [BoxDecoration],
+/// it preserves existing properties; otherwise, it creates a new [BoxDecoration] with the
+/// provided properties.
 extension DecorationExtension on Decoration {
+  /// Creates a [BoxDecoration] with specified properties, preserving existing values if this is already a [BoxDecoration].
+  ///
+  /// This method is particularly useful for style merging where you want to override
+  /// specific decoration properties while maintaining others.
+  ///
+  /// Parameters:
+  /// - [color] (Color?): Fill color for the decoration
+  /// - [image] (DecorationImage?): Background image
+  /// - [border] (BoxBorder?): Border configuration
+  /// - [borderRadius] (BorderRadiusGeometry?): Corner rounding
+  /// - [boxShadow] (List<BoxShadow>?): Drop shadow effects
+  /// - [gradient] (Gradient?): Gradient fill
+  /// - [shape] (BoxShape?): Basic shape (rectangle or circle)
+  /// - [backgroundBlendMode] (BlendMode?): How background blends with content
+  ///
+  /// Returns a new [BoxDecoration] with the merged properties.
   BoxDecoration copyWithIfBoxDecoration({
     Color? color,
     DecorationImage? image,
@@ -2468,6 +2508,20 @@ extension DecorationExtension on Decoration {
     );
   }
 
+  /// Creates a [ShapeDecoration] with specified properties, preserving existing values if this is already a [ShapeDecoration].
+  ///
+  /// This method is similar to [copyWithIfBoxDecoration] but specifically for [ShapeDecoration].
+  /// If the current decoration is already a [ShapeDecoration], it preserves existing properties;
+  /// otherwise, it creates a new [ShapeDecoration] with the provided properties.
+  ///
+  /// Parameters:
+  /// - [shape] (ShapeBorder?): The shape border for the decoration
+  /// - [color] (Color?): Fill color for the decoration  
+  /// - [gradient] (Gradient?): Gradient fill
+  /// - [shadows] (List<BoxShadow>?): Drop shadow effects
+  /// - [image] (DecorationImage?): Background image
+  ///
+  /// Returns a new [ShapeDecoration] with the merged properties.
   ShapeDecoration copyWithIfShapeDecoration({
     ShapeBorder? shape,
     Color? color,
@@ -2517,6 +2571,21 @@ class PrimaryButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this [PrimaryButtonTheme] with specified properties overridden.
+  ///
+  /// Each parameter allows you to override specific theme properties while
+  /// preserving others. Parameters use [ValueGetter] functions to enable
+  /// context-sensitive theme modifications.
+  ///
+  /// Parameters:
+  /// - [decoration]: New decoration delegate or null to keep current
+  /// - [mouseCursor]: New mouse cursor delegate or null to keep current  
+  /// - [padding]: New padding delegate or null to keep current
+  /// - [textStyle]: New text style delegate or null to keep current
+  /// - [iconTheme]: New icon theme delegate or null to keep current
+  /// - [margin]: New margin delegate or null to keep current
+  ///
+  /// Returns a new [PrimaryButtonTheme] with the specified modifications.
   PrimaryButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2554,6 +2623,21 @@ class SecondaryButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this [SecondaryButtonTheme] with specified properties overridden.
+  ///
+  /// Each parameter allows you to override specific theme properties while
+  /// preserving others. Parameters use [ValueGetter] functions to enable
+  /// context-sensitive theme modifications.
+  ///
+  /// Parameters:
+  /// - [decoration]: New decoration delegate or null to keep current
+  /// - [mouseCursor]: New mouse cursor delegate or null to keep current  
+  /// - [padding]: New padding delegate or null to keep current
+  /// - [textStyle]: New text style delegate or null to keep current
+  /// - [iconTheme]: New icon theme delegate or null to keep current
+  /// - [margin]: New margin delegate or null to keep current
+  ///
+  /// Returns a new [SecondaryButtonTheme] with the specified modifications.
   SecondaryButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2590,6 +2674,21 @@ class OutlineButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this [OutlineButtonTheme] with specified properties overridden.
+  ///
+  /// Each parameter allows you to override specific theme properties while
+  /// preserving others. Parameters use [ValueGetter] functions to enable
+  /// context-sensitive theme modifications.
+  ///
+  /// Parameters:
+  /// - [decoration]: New decoration delegate or null to keep current
+  /// - [mouseCursor]: New mouse cursor delegate or null to keep current  
+  /// - [padding]: New padding delegate or null to keep current
+  /// - [textStyle]: New text style delegate or null to keep current
+  /// - [iconTheme]: New icon theme delegate or null to keep current
+  /// - [margin]: New margin delegate or null to keep current
+  ///
+  /// Returns a new [OutlineButtonTheme] with the specified modifications.
   OutlineButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2627,6 +2726,21 @@ class GhostButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this [GhostButtonTheme] with specified properties overridden.
+  ///
+  /// Each parameter allows you to override specific theme properties while
+  /// preserving others. Parameters use [ValueGetter] functions to enable
+  /// context-sensitive theme modifications.
+  ///
+  /// Parameters:
+  /// - [decoration]: New decoration delegate or null to keep current
+  /// - [mouseCursor]: New mouse cursor delegate or null to keep current  
+  /// - [padding]: New padding delegate or null to keep current
+  /// - [textStyle]: New text style delegate or null to keep current
+  /// - [iconTheme]: New icon theme delegate or null to keep current
+  /// - [margin]: New margin delegate or null to keep current
+  ///
+  /// Returns a new [GhostButtonTheme] with the specified modifications.
   GhostButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2664,6 +2778,21 @@ class LinkButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this [LinkButtonTheme] with specified properties overridden.
+  ///
+  /// Each parameter allows you to override specific theme properties while
+  /// preserving others. Parameters use [ValueGetter] functions to enable
+  /// context-sensitive theme modifications.
+  ///
+  /// Parameters:
+  /// - [decoration]: New decoration delegate or null to keep current
+  /// - [mouseCursor]: New mouse cursor delegate or null to keep current  
+  /// - [padding]: New padding delegate or null to keep current
+  /// - [textStyle]: New text style delegate or null to keep current
+  /// - [iconTheme]: New icon theme delegate or null to keep current
+  /// - [margin]: New margin delegate or null to keep current
+  ///
+  /// Returns a new [LinkButtonTheme] with the specified modifications.
   LinkButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2701,6 +2830,21 @@ class TextButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this [TextButtonTheme] with specified properties overridden.
+  ///
+  /// Each parameter allows you to override specific theme properties while
+  /// preserving others. Parameters use [ValueGetter] functions to enable
+  /// context-sensitive theme modifications.
+  ///
+  /// Parameters:
+  /// - [decoration]: New decoration delegate or null to keep current
+  /// - [mouseCursor]: New mouse cursor delegate or null to keep current  
+  /// - [padding]: New padding delegate or null to keep current
+  /// - [textStyle]: New text style delegate or null to keep current
+  /// - [iconTheme]: New icon theme delegate or null to keep current
+  /// - [margin]: New margin delegate or null to keep current
+  ///
+  /// Returns a new [TextButtonTheme] with the specified modifications.
   TextButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2738,6 +2882,21 @@ class DestructiveButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this [DestructiveButtonTheme] with specified properties overridden.
+  ///
+  /// Each parameter allows you to override specific theme properties while
+  /// preserving others. Parameters use [ValueGetter] functions to enable
+  /// context-sensitive theme modifications.
+  ///
+  /// Parameters:
+  /// - [decoration]: New decoration delegate or null to keep current
+  /// - [mouseCursor]: New mouse cursor delegate or null to keep current  
+  /// - [padding]: New padding delegate or null to keep current
+  /// - [textStyle]: New text style delegate or null to keep current
+  /// - [iconTheme]: New icon theme delegate or null to keep current
+  /// - [margin]: New margin delegate or null to keep current
+  ///
+  /// Returns a new [DestructiveButtonTheme] with the specified modifications.
   DestructiveButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2776,6 +2935,21 @@ class FixedButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this [FixedButtonTheme] with specified properties overridden.
+  ///
+  /// Each parameter allows you to override specific theme properties while
+  /// preserving others. Parameters use [ValueGetter] functions to enable
+  /// context-sensitive theme modifications.
+  ///
+  /// Parameters:
+  /// - [decoration]: New decoration delegate or null to keep current
+  /// - [mouseCursor]: New mouse cursor delegate or null to keep current  
+  /// - [padding]: New padding delegate or null to keep current
+  /// - [textStyle]: New text style delegate or null to keep current
+  /// - [iconTheme]: New icon theme delegate or null to keep current
+  /// - [margin]: New margin delegate or null to keep current
+  ///
+  /// Returns a new [FixedButtonTheme] with the specified modifications.
   FixedButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
