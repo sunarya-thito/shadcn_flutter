@@ -2,13 +2,93 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
+/// Builder function for generating command search results.
+///
+/// This function is called whenever the search query changes and should return
+/// a stream of widgets representing the filtered command results. The stream
+/// allows for asynchronous filtering and dynamic result updates.
+///
+/// Parameters:
+/// - [context] (BuildContext): The build context for accessing theme and localization
+/// - [query] (String?): The current search query, null when no search is active
+///
+/// Returns: Stream<List<Widget>> - A stream of command result widgets
+///
+/// Example:
+/// ```dart
+/// CommandBuilder myBuilder = (context, query) async* {
+///   final filteredCommands = query == null 
+///     ? allCommands 
+///     : allCommands.where((cmd) => cmd.name.contains(query));
+///   
+///   yield filteredCommands.map((cmd) => 
+///     CommandItem(
+///       onTap: () => executeCommand(cmd),
+///       child: Text(cmd.name),
+///     )
+///   ).toList();
+/// };
+/// ```
 typedef CommandBuilder = Stream<List<Widget>> Function(
     BuildContext context, String? query);
 
+/// Builder function for creating error display widgets.
+///
+/// Called when the command system encounters an error during search or execution.
+/// Should return a widget that appropriately displays the error to the user.
+///
+/// Parameters:
+/// - [context] (BuildContext): The build context for accessing theme and styling
+/// - [error] (Object): The error object that occurred
+/// - [stackTrace] (StackTrace?): Optional stack trace for debugging
+///
+/// Returns: Widget - A widget that displays the error state
+///
+/// Example:
+/// ```dart
+/// ErrorWidgetBuilder errorBuilder = (context, error, stackTrace) {
+///   return Container(
+///     padding: EdgeInsets.all(16),
+///     child: Column(
+///       children: [
+///         Icon(Icons.error, color: Colors.red),
+///         Text('Search failed: ${error.toString()}'),
+///       ],
+///     ),
+///   );
+/// };
+/// ```
 typedef ErrorWidgetBuilder = Widget Function(
     BuildContext context, Object error, StackTrace? stackTrace);
 
+/// Default empty state widget for command interfaces.
+///
+/// [CommandEmpty] displays a localized message when no command results are found.
+/// It provides a consistent empty state across all command interfaces in the application.
+///
+/// The widget shows centered text with appropriate padding and styling that matches
+/// the theme's small text style. The message is automatically localized using
+/// [ShadcnLocalizations].
+///
+/// Used internally by [Command] when search results are empty, but can also be
+/// used directly in custom command implementations.
+///
+/// Example usage in custom command builders:
+/// ```dart
+/// CommandBuilder builder = (context, query) async* {
+///   final results = await searchCommands(query);
+///   if (results.isEmpty) {
+///     yield [CommandEmpty()];
+///   } else {
+///     yield results.map((cmd) => CommandItem(...)).toList();
+///   }
+/// };
+/// ```
 class CommandEmpty extends StatelessWidget {
+  /// Creates a [CommandEmpty] widget.
+  ///
+  /// This widget requires no configuration as it uses localized text and
+  /// theme-appropriate styling automatically.
   const CommandEmpty({super.key});
 
   @override
@@ -20,6 +100,59 @@ class CommandEmpty extends StatelessWidget {
   }
 }
 
+/// Displays a modal command palette dialog for application-wide command execution.
+///
+/// [showCommandDialog] creates a centered modal dialog containing a command interface
+/// that allows users to search and execute application commands. The dialog is
+/// commonly triggered by keyboard shortcuts (like Cmd+K) for quick access to functionality.
+///
+/// The dialog supports real-time search with debouncing, asynchronous command loading,
+/// and customizable error/loading states. It provides a modern command palette
+/// experience similar to those found in VS Code, Sublime Text, and other applications.
+///
+/// Parameters:
+/// - [context] (BuildContext, required): The build context for displaying the dialog
+/// - [builder] (CommandBuilder, required): Function that generates command results based on search query
+/// - [constraints] (BoxConstraints?, optional): Size constraints for the dialog. Defaults to 510x349 scaled
+/// - [autofocus] (bool, optional): Whether the search field should auto-focus. Defaults to true
+/// - [debounceDuration] (Duration, optional): Delay before triggering search after typing. Defaults to 500ms
+/// - [emptyBuilder] (WidgetBuilder?, optional): Custom widget for empty search results
+/// - [errorBuilder] (ErrorWidgetBuilder?, optional): Custom widget for error states
+/// - [loadingBuilder] (WidgetBuilder?, optional): Custom widget for loading states
+/// - [surfaceOpacity] (double?, optional): Opacity of the modal backdrop
+/// - [surfaceBlur] (double?, optional): Blur amount for the modal backdrop
+///
+/// Returns: Future<T?> - Resolves when the dialog closes, with optional result value
+///
+/// Example:
+/// ```dart
+/// // Show command dialog with custom commands
+/// showCommandDialog<String>(
+///   context: context,
+///   builder: (context, query) async* {
+///     final commands = [
+///       Command('Open Settings', () => openSettings()),
+///       Command('Create New File', () => createFile()),
+///       Command('Toggle Theme', () => toggleTheme()),
+///     ];
+///     
+///     final filtered = query == null ? commands : 
+///       commands.where((cmd) => cmd.name.toLowerCase().contains(query.toLowerCase()));
+///     
+///     yield filtered.map((cmd) => 
+///       CommandItem(
+///         onTap: () {
+///           Navigator.pop(context, cmd.name);
+///           cmd.action();
+///         },
+///         child: Text(cmd.name),
+///       )
+///     ).toList();
+///   },
+///   constraints: BoxConstraints.tightFor(width: 600, height: 400),
+///   debounceDuration: Duration(milliseconds: 300),
+/// );
+/// ```
 Future<T?> showCommandDialog<T>({
   required BuildContext context,
   required CommandBuilder builder,

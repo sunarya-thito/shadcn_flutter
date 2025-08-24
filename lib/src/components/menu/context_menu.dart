@@ -2,15 +2,61 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// Theme for [ContextMenuPopup] and context menu widgets.
+/// Theme configuration for context menu appearance and visual effects.
+///
+/// [ContextMenuTheme] provides styling options for context menu popups including
+/// surface opacity and blur effects. These settings control the visual presentation
+/// of context menus to ensure they stand out from background content while maintaining
+/// visual coherence with the design system.
+///
+/// Context menus benefit from subtle surface effects that help establish visual
+/// hierarchy and focus attention on available actions. The opacity and blur effects
+/// create depth while ensuring content remains readable.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<ContextMenuTheme>(
+///   data: ContextMenuTheme(
+///     surfaceOpacity: 0.95,
+///     surfaceBlur: 8.0,
+///   ),
+///   child: MyContextMenuWidget(),
+/// )
+/// ```
 class ContextMenuTheme {
-  /// Surface opacity for the popup container.
+  /// Opacity level for the context menu popup surface.
+  ///
+  /// Controls the transparency of the context menu background. Values range
+  /// from 0.0 (fully transparent) to 1.0 (fully opaque). When null, uses
+  /// the theme's default surface opacity.
+  ///
+  /// Typical values:
+  /// - 0.9-1.0: High opacity for better readability
+  /// - 0.8-0.9: Moderate transparency showing content below
+  /// - 0.6-0.8: High transparency for subtle overlay effect
   final double? surfaceOpacity;
 
-  /// Surface blur for the popup container.
+  /// Blur amount applied to the context menu popup surface.
+  ///
+  /// Creates a frosted glass effect by blurring content behind the menu.
+  /// Higher values create more pronounced blur effects. When null, uses
+  /// the theme's default surface blur amount.
+  ///
+  /// Typical values:
+  /// - 0.0: No blur effect
+  /// - 4.0-8.0: Subtle blur for depth
+  /// - 12.0-20.0: Strong blur for prominent separation
   final double? surfaceBlur;
 
-  /// Creates a [ContextMenuTheme].
+  /// Creates a [ContextMenuTheme] with optional visual effect settings.
+  ///
+  /// Both parameters are optional and fall back to theme defaults when null.
+  /// Use these settings to create context menus that match your application's
+  /// visual style and hierarchy requirements.
+  ///
+  /// Parameters:
+  /// - [surfaceOpacity]: Opacity level for the popup surface (0.0-1.0)
+  /// - [surfaceBlur]: Blur amount for the popup surface (0.0+)
   const ContextMenuTheme({this.surfaceOpacity, this.surfaceBlur});
 
   /// Returns a copy of this theme with the given fields replaced.
@@ -37,11 +83,56 @@ class ContextMenuTheme {
   int get hashCode => Object.hash(surfaceOpacity, surfaceBlur);
 }
 
+/// Desktop-specific context menu for editable text widgets.
+///
+/// [DesktopEditableTextContextMenu] provides standard text editing actions
+/// (cut, copy, paste, select all, undo, redo) in a context menu format optimized
+/// for desktop platforms. It integrates with Flutter's text editing system and
+/// respects platform conventions for text interaction.
+///
+/// This widget is typically used internally by text input widgets but can be
+/// customized or extended for specialized text editing interfaces. It automatically
+/// enables/disables menu items based on current text selection and clipboard state.
+///
+/// The menu respects system accessibility settings and provides keyboard shortcuts
+/// where appropriate, making it suitable for production desktop applications.
+///
+/// Example usage in custom text widgets:
+/// ```dart
+/// DesktopEditableTextContextMenu(
+///   anchorContext: context,
+///   editableTextState: textFieldState,
+///   undoHistoryController: undoController,
+/// )
+/// ```
 class DesktopEditableTextContextMenu extends StatelessWidget {
+  /// Build context of the widget that anchors the context menu.
+  ///
+  /// Used for positioning the context menu relative to the text widget
+  /// and accessing theme and localization data. Should be the context
+  /// of the editable text widget that triggered the menu.
   final BuildContext anchorContext;
+
+  /// State of the editable text widget that owns the text being edited.
+  ///
+  /// Provides access to current text content, selection state, and text
+  /// editing operations. Used to determine which menu items are available
+  /// and to execute text operations when items are selected.
   final EditableTextState editableTextState;
+
+  /// Controller for managing undo/redo operations.
+  ///
+  /// When provided, enables undo and redo menu items that operate on the
+  /// text editing history. When null, undo/redo operations are not available
+  /// in the context menu.
   final UndoHistoryController? undoHistoryController;
 
+  /// Creates a [DesktopEditableTextContextMenu] for text editing operations.
+  ///
+  /// Parameters:
+  /// - [anchorContext] (BuildContext, required): Context for menu positioning
+  /// - [editableTextState] (EditableTextState, required): Text widget state
+  /// - [undoHistoryController] (UndoHistoryController?, optional): Undo/redo controller
   const DesktopEditableTextContextMenu({
     super.key,
     required this.anchorContext,
