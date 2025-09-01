@@ -5,6 +5,7 @@ import 'package:docs/pages/docs/colors_page.dart';
 import 'package:docs/pages/docs/components/accordion_example.dart';
 import 'package:docs/pages/docs/components/alert_dialog_example.dart';
 import 'package:docs/pages/docs/components/alert_example.dart';
+import 'package:docs/pages/docs/components/animated_lifecycle_example.dart';
 import 'package:docs/pages/docs/components/animated_value_builder_example.dart';
 import 'package:docs/pages/docs/components/app_bar_example.dart';
 import 'package:docs/pages/docs/components/autocomplete_example.dart';
@@ -757,6 +758,13 @@ class MyAppState extends State<MyApp> {
               builder: (context, state) {
                 return const SwitcherExample();
               }),
+          GoRoute(
+            path: 'animated_lifecycle',
+            name: 'animated_lifecycle',
+            builder: (context, state) {
+              return const AnimatedLifecycleExample();
+            },
+          )
         ]),
   ];
   late ColorScheme colorScheme;

@@ -333,6 +333,8 @@ class DocsPageState extends State<DocsPage> {
         // the indicator itself is provided by scaffold
         ShadcnDocsPage('Refresh Trigger', 'refresh_trigger'),
         ShadcnDocsPage('Overflow Marquee', 'overflow_marquee'),
+        ShadcnDocsPage('Animated Lifecycle', 'animated_lifecycle',
+            ShadcnFeatureTag.experimental),
       ],
     ),
     // COMPONENTS END
