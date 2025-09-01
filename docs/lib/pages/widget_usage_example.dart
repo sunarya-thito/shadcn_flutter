@@ -155,24 +155,19 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
             code: snapshot.data!,
             mode: widget.mode,
             actions: [
-              Semantics(
-                linkUrl: Uri.tryParse(
-                    'https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/${widget.path}'),
-                link: true,
-                child: GhostButton(
-                  density: ButtonDensity.icon,
-                  onPressed: () {
-                    // open in new tab
-                    //https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/lib/pages/docs/layout_page/layout_page_example_1.dart
-                    String url =
-                        'https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/${widget.path}';
-                    // html.window.open(url, 'blank');
-                    if (!kIsWeb) launchUrlString(url);
-                  },
-                  child: const Icon(
-                    Icons.open_in_new,
-                    size: 16,
-                  ),
+              GhostButton(
+                density: ButtonDensity.icon,
+                onPressed: () {
+                  // open in new tab
+                  //https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/lib/pages/docs/layout_page/layout_page_example_1.dart
+                  String url =
+                      'https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/${widget.path}';
+                  // html.window.open(url, 'blank');
+                  launchUrlString(url);
+                },
+                child: const Icon(
+                  Icons.open_in_new,
+                  size: 16,
                 ),
               )
             ],
