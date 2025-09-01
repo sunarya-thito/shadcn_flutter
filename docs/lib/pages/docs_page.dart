@@ -577,10 +577,8 @@ class DocsPageState extends State<DocsPage> {
                                   child: GhostButton(
                                     density: ButtonDensity.icon,
                                     onPressed: () {
-                                      if (!kIsWeb) {
-                                        openInNewTab(
-                                            'https://github.com/sunarya-thito/shadcn_flutter');
-                                      }
+                                      openInNewTab(
+                                          'https://github.com/sunarya-thito/shadcn_flutter');
                                     },
                                     child: FaIcon(
                                       FontAwesomeIcons.github,
@@ -590,30 +588,22 @@ class DocsPageState extends State<DocsPage> {
                                   ),
                                 ),
                                 // pub.dev icon
-                                Semantics(
-                                  link: true,
-                                  linkUrl: Uri.tryParse(
-                                    'https://pub.dev/packages/shadcn_flutter',
-                                  ),
-                                  child: GhostButton(
-                                      density: ButtonDensity.icon,
-                                      onPressed: () {
-                                        if (!kIsWeb) {
-                                          openInNewTab(
-                                              'https://pub.dev/packages/shadcn_flutter');
-                                        }
-                                      },
-                                      child: ColorFiltered(
-                                        // turns into white
-                                        colorFilter: ColorFilter.mode(
-                                          theme.colorScheme.secondaryForeground,
-                                          BlendMode.srcIn,
-                                        ),
-                                        child: FlutterLogo(
-                                          size: 24 * theme.scaling,
-                                        ),
-                                      )),
-                                ),
+                                GhostButton(
+                                    density: ButtonDensity.icon,
+                                    onPressed: () {
+                                      openInNewTab(
+                                          'https://pub.dev/packages/shadcn_flutter');
+                                    },
+                                    child: ColorFiltered(
+                                      // turns into white
+                                      colorFilter: ColorFilter.mode(
+                                        theme.colorScheme.secondaryForeground,
+                                        BlendMode.srcIn,
+                                      ),
+                                      child: FlutterLogo(
+                                        size: 24 * theme.scaling,
+                                      ),
+                                    )),
                               ],
                               child: Center(
                                 child: SizedBox(
@@ -861,47 +851,31 @@ class DocsPageState extends State<DocsPage> {
           ),
         ),
         Gap(8 * theme.scaling),
-        Semantics(
-          link: true,
-          linkUrl: Uri.tryParse(
-            'https://github.com/sunarya-thito/shadcn_flutter',
-          ),
-          child: GhostButton(
-            density: ButtonDensity.icon,
-            onPressed: () {
-              if (!kIsWeb) {
-                openInNewTab('https://github.com/sunarya-thito/shadcn_flutter');
-              }
-            },
-            child: FaIcon(FontAwesomeIcons.github,
-                    color: theme.colorScheme.secondaryForeground)
-                .iconLarge(),
-          ),
+        GhostButton(
+          density: ButtonDensity.icon,
+          onPressed: () {
+            openInNewTab('https://github.com/sunarya-thito/shadcn_flutter');
+          },
+          child: FaIcon(FontAwesomeIcons.github,
+                  color: theme.colorScheme.secondaryForeground)
+              .iconLarge(),
         ),
         // pub.dev icon
-        Semantics(
-          link: true,
-          linkUrl: Uri.tryParse(
-            'https://pub.dev/packages/shadcn_flutter',
-          ),
-          child: GhostButton(
-              density: ButtonDensity.icon,
-              onPressed: () {
-                if (!kIsWeb) {
-                  openInNewTab('https://pub.dev/packages/shadcn_flutter');
-                }
-              },
-              child: ColorFiltered(
-                // turns into white
-                colorFilter: ColorFilter.mode(
-                  theme.colorScheme.secondaryForeground,
-                  BlendMode.srcIn,
-                ),
-                child: FlutterLogo(
-                  size: 24 * theme.scaling,
-                ),
-              )),
-        ),
+        GhostButton(
+            density: ButtonDensity.icon,
+            onPressed: () {
+              openInNewTab('https://pub.dev/packages/shadcn_flutter');
+            },
+            child: ColorFiltered(
+              // turns into white
+              colorFilter: ColorFilter.mode(
+                theme.colorScheme.secondaryForeground,
+                BlendMode.srcIn,
+              ),
+              child: FlutterLogo(
+                size: 24 * theme.scaling,
+              ),
+            )),
       ],
     );
   }
