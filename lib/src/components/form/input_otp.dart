@@ -586,6 +586,7 @@ class _InputOTPState extends State<InputOTP>
         widget.onSubmitted?.call(val);
       }
     }
+    formValue = this.value;
   }
 
   @override
