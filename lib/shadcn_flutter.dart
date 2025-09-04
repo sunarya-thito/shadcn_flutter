@@ -208,3 +208,4 @@ export 'src/components/form/multiple_choice.dart';
 export 'src/components/wrapper.dart';
 export 'src/components/navigation/subfocus.dart';
 export 'src/components/navigation/switcher.dart';
+export 'src/components/layout/focus_outline.dart';
