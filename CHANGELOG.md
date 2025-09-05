@@ -1,3 +1,7 @@
+## 0.0.44
+
+- Fix: Sortable onDragEnd not triggered when the drag failed
+
 ## 0.0.43
 
 - Exported FocusOutline
