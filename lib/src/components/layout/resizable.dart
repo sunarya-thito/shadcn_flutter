@@ -647,6 +647,9 @@ class ResizablePanel extends StatefulWidget {
   /// value provides a more compact appearance.
   final double? draggerThickness;
 
+  /// Hides the divider when not hovered or being dragged.
+  final bool optionalDivider;
+
   /// Creates a horizontal resizable panel with panes arranged left-to-right.
   ///
   /// This is a convenience constructor that sets [direction] to [Axis.horizontal]
@@ -675,6 +678,7 @@ class ResizablePanel extends StatefulWidget {
     this.dividerBuilder = defaultDividerBuilder,
     this.draggerBuilder,
     this.draggerThickness,
+    this.optionalDivider = false,
   }) : direction = Axis.horizontal;
 
   /// Creates a vertical resizable panel with panes arranged top-to-bottom.
@@ -705,6 +709,7 @@ class ResizablePanel extends StatefulWidget {
     this.dividerBuilder = defaultDividerBuilder,
     this.draggerBuilder,
     this.draggerThickness,
+    this.optionalDivider = false,
   }) : direction = Axis.vertical;
 
   /// Creates a resizable panel with the specified direction and configuration.
@@ -736,6 +741,7 @@ class ResizablePanel extends StatefulWidget {
     this.dividerBuilder = defaultDividerBuilder,
     this.draggerBuilder,
     this.draggerThickness,
+    this.optionalDivider = false,
   });
 
   @override
@@ -758,7 +764,8 @@ class _ResizableItem extends ResizableItem {
 
 class _ResizablePanelState extends State<ResizablePanel> {
   final List<ResizablePaneController> _controllers = [];
-
+  final Set<int> _hoveredDividers = {};
+  final Set<int> _draggingDividers = {};
   late double _panelSize;
 
   List<ResizableItem> computeDraggers() {
@@ -822,6 +829,17 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 
   @override
+  void didUpdateWidget(covariant ResizablePanel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.optionalDivider != oldWidget.optionalDivider) {
+      if (!widget.optionalDivider) {
+        _hoveredDividers.clear();
+        _draggingDividers.clear();
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Data.inherit(
       data: ResizableData(widget.direction),
@@ -856,7 +874,16 @@ class _ResizablePanelState extends State<ResizablePanel> {
       if (i < dividers.length) {
         children.add(_ResizableLayoutChild(
           isDivider: true,
-          child: dividers[i],
+          child: widget.optionalDivider
+              ? AnimatedOpacity(
+                  opacity: _hoveredDividers.contains(i) ||
+                          _draggingDividers.contains(i)
+                      ? 1.0
+                      : 0.0,
+                  duration: kDefaultDuration,
+                  child: dividers[i],
+                )
+              : dividers[i],
         ));
       }
     }
@@ -865,7 +892,17 @@ class _ResizablePanelState extends State<ResizablePanel> {
         children.add(_ResizableLayoutChild(
           index: i,
           isDragger: true,
-          child: widget.draggerBuilder!(context) ?? const SizedBox(),
+          // child: widget.draggerBuilder!(context) ?? const SizedBox(),
+          child: widget.optionalDivider
+              ? AnimatedOpacity(
+                  opacity: _hoveredDividers.contains(i) ||
+                          _draggingDividers.contains(i)
+                      ? 1.0
+                      : 0.0,
+                  duration: kDefaultDuration,
+                  child: widget.draggerBuilder!(context) ?? const SizedBox(),
+                )
+              : widget.draggerBuilder!(context) ?? const SizedBox(),
         ));
       }
     }
@@ -873,11 +910,37 @@ class _ResizablePanelState extends State<ResizablePanel> {
       children.add(_ResizableLayoutChild(
         index: i,
         isDragger: false,
-        child: _Resizer(
-          direction: widget.direction,
-          index: i,
-          thickness: widget.draggerThickness ?? 8,
-          panelState: this,
+        child: MouseRegion(
+          onEnter: (_) {
+            if (!widget.optionalDivider) return;
+            setState(() {
+              _hoveredDividers.add(i);
+            });
+          },
+          onExit: (_) {
+            if (!widget.optionalDivider) return;
+            setState(() {
+              _hoveredDividers.remove(i);
+            });
+          },
+          child: _Resizer(
+            direction: widget.direction,
+            index: i,
+            thickness: widget.draggerThickness ?? 8,
+            panelState: this,
+            onResizeStart: () {
+              if (!widget.optionalDivider) return;
+              setState(() {
+                _draggingDividers.add(i);
+              });
+            },
+            onResizeEnd: () {
+              if (!widget.optionalDivider) return;
+              setState(() {
+                _draggingDividers.remove(i);
+              });
+            },
+          ),
         ),
       ));
     }
@@ -902,12 +965,16 @@ class _Resizer extends StatefulWidget {
   final int index;
   final double thickness;
   final _ResizablePanelState panelState;
+  final VoidCallback? onResizeStart;
+  final VoidCallback? onResizeEnd;
 
   const _Resizer({
     required this.direction,
     required this.index,
     required this.thickness,
     required this.panelState,
+    this.onResizeStart,
+    this.onResizeEnd,
   });
 
   @override
@@ -924,6 +991,7 @@ class _ResizerState extends State<_Resizer> {
 
     // Call onSizeChangeStart callbacks for affected panes
     _callSizeChangeStartCallbacks();
+    widget.onResizeStart?.call();
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
@@ -938,6 +1006,7 @@ class _ResizerState extends State<_Resizer> {
     // Call onSizeChangeEnd callbacks for affected panes
     _callSizeChangeEndCallbacks();
     _dragSession = null;
+    widget.onResizeEnd?.call();
   }
 
   void _onDragCancel() {
@@ -947,6 +1016,7 @@ class _ResizerState extends State<_Resizer> {
     // Call onSizeChangeCancel callbacks for affected panes
     _callSizeChangeCancelCallbacks();
     _dragSession = null;
+    widget.onResizeEnd?.call();
   }
 
   void _callSizeChangeStartCallbacks() {
