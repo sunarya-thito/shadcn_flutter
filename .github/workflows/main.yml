@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy
 
 on:
   workflow_dispatch:
@@ -7,7 +7,40 @@ on:
     - master
 
 jobs:
+  compilation-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '3.35.1'
+        channel: 'stable'
+
+    - name: Check main library compilation and analysis
+      run: |
+        flutter pub get
+        dart analyze --fatal-infos
+        dart pub publish --dry-run
+      working-directory: './'
+
+    - name: Check example app compilation and tests
+      run: |
+        flutter pub get
+        flutter analyze --fatal-infos
+        flutter test
+        flutter build web --no-web-resources-cdn
+      working-directory: './example'
+
+    - name: Check docs app compilation
+      run: |
+        flutter pub get
+        flutter analyze --fatal-infos
+        flutter build web --no-web-resources-cdn
+      working-directory: './docs'
+
   deploy:
+    needs: compilation-check
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
