@@ -397,7 +397,7 @@ class DateRangePicker extends StatelessWidget {
   final EdgeInsetsGeometry? popoverPadding;
   final Widget? dialogTitle;
   final DateStateBuilder? stateBuilder;
-  final Widget? icon;
+  final Icon? icon;
   final TextStyle? textStyle;
   final String? dateFormat;
 
