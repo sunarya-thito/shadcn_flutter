@@ -1,4 +1,3 @@
-
 import '../../../shadcn_flutter.dart';
 
 /// Theme configuration for [DatePicker] widget styling and behavior.
@@ -47,6 +46,24 @@ class DatePickerTheme {
   /// container. When null, uses framework default padding.
   final EdgeInsetsGeometry? popoverPadding;
 
+  /// Style of text displayed for the selected date.
+  ///
+  /// Defines the appearance of the date text in the selection field.
+  /// When null, uses the framework's default style.
+  final TextStyle? textStyle;
+
+  /// Custom icon widget for the date picker.
+  ///
+  /// Allows the default icon to be completely replaced by a custom icon.
+  /// When null, uses the default icon.
+  final Icon? icon;
+
+  /// Custom date format for displaying the selected date.
+  ///
+  /// Defines how the date should be formatted in the input field.
+  /// When null, uses the framework's default date formatting.
+  final String? dateFormat;
+
   /// Creates a [DatePickerTheme].
   ///
   /// All parameters are optional and fall back to framework defaults when null.
@@ -58,6 +75,9 @@ class DatePickerTheme {
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
+    this.textStyle,
+    this.icon,
+    this.dateFormat,
   });
 
   DatePickerTheme copyWith({
@@ -67,6 +87,9 @@ class DatePickerTheme {
     ValueGetter<AlignmentGeometry?>? popoverAlignment,
     ValueGetter<AlignmentGeometry?>? popoverAnchorAlignment,
     ValueGetter<EdgeInsetsGeometry?>? popoverPadding,
+    ValueGetter<TextStyle?>? textStyle,
+    ValueGetter<Icon?>? icon,
+    ValueGetter<String?>? dateFormat,
   }) {
     return DatePickerTheme(
       mode: mode == null ? this.mode : mode(),
@@ -80,6 +103,9 @@ class DatePickerTheme {
           : popoverAnchorAlignment(),
       popoverPadding:
           popoverPadding == null ? this.popoverPadding : popoverPadding(),
+      textStyle: textStyle == null ? this.textStyle : textStyle(),
+      icon: icon == null ? this.icon : icon(),
+      dateFormat: dateFormat == null ? this.dateFormat : dateFormat(),
     );
   }
 
@@ -91,7 +117,10 @@ class DatePickerTheme {
         other.initialViewType == initialViewType &&
         other.popoverAlignment == popoverAlignment &&
         other.popoverAnchorAlignment == popoverAnchorAlignment &&
-        other.popoverPadding == popoverPadding;
+        other.popoverPadding == popoverPadding &&
+        other.textStyle == textStyle &&
+        other.icon == icon &&
+        other.dateFormat == dateFormat;
   }
 
   @override
@@ -102,6 +131,9 @@ class DatePickerTheme {
         popoverAlignment,
         popoverAnchorAlignment,
         popoverPadding,
+        textStyle,
+        icon,
+        dateFormat,
       );
 }
 
@@ -130,6 +162,9 @@ class ControlledDatePicker extends StatelessWidget
   final Widget? dialogTitle;
   final CalendarViewType? initialViewType;
   final DateStateBuilder? stateBuilder;
+  final Icon? icon;
+  final TextStyle? textStyle;
+  final String? dateFormat;
 
   const ControlledDatePicker({
     super.key,
@@ -146,6 +181,9 @@ class ControlledDatePicker extends StatelessWidget
     this.dialogTitle,
     this.initialViewType,
     this.stateBuilder,
+    this.icon,
+    this.textStyle,
+    this.dateFormat,
   });
 
   @override
@@ -169,6 +207,9 @@ class ControlledDatePicker extends StatelessWidget
           dialogTitle: dialogTitle,
           initialViewType: initialViewType,
           stateBuilder: stateBuilder,
+          icon: icon,
+          textStyle: textStyle,
+          dateFormat: dateFormat,
         );
       },
     );
@@ -188,6 +229,9 @@ class DatePicker extends StatelessWidget {
   final CalendarViewType? initialViewType;
   final DateStateBuilder? stateBuilder;
   final bool? enabled;
+  final Icon? icon;
+  final TextStyle? textStyle;
+  final String? dateFormat;
 
   const DatePicker({
     super.key,
@@ -203,6 +247,9 @@ class DatePicker extends StatelessWidget {
     this.initialViewType,
     this.stateBuilder,
     this.enabled,
+    this.icon,
+    this.textStyle,
+    this.dateFormat,
   });
 
   @override
@@ -239,6 +286,25 @@ class DatePicker extends StatelessWidget {
       themeValue: compTheme?.initialViewType,
       defaultValue: CalendarViewType.date,
     );
+    final resolvedTextStyle = styleValue(
+      widgetValue: textStyle,
+      themeValue: compTheme?.textStyle,
+      defaultValue: const TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+        color: Colors.blue,
+      ),
+    );
+    final resolvedIcon = styleValue(
+      widgetValue: icon,
+      themeValue: compTheme?.icon,
+      defaultValue: const Icon(LucideIcons.calendarDays),
+    );
+    final resolvedDateFormat = styleValue(
+      widgetValue: dateFormat,
+      themeValue: compTheme?.dateFormat,
+      defaultValue: null,
+    );
     return ObjectFormField(
       dialogTitle: dialogTitle,
       enabled: enabled,
@@ -248,9 +314,25 @@ class DatePicker extends StatelessWidget {
       value: value,
       onChanged: onChanged,
       placeholder: placeholder ?? Text(localizations.placeholderDatePicker),
-      trailing: const Icon(LucideIcons.calendarDays),
+      trailing: resolvedIcon,
       builder: (context, value) {
-        return Text(localizations.formatDateTime(value, showTime: false));
+        String formattedDate;
+        if (resolvedDateFormat != null) {
+          try {
+            formattedDate =
+                localizations.formatDateWithPattern(value, resolvedDateFormat);
+          } catch (e) {
+            // Fallback to default formatting if custom format is invalid
+            formattedDate =
+                localizations.formatDateTime(value, showTime: false);
+          }
+        } else {
+          formattedDate = localizations.formatDateTime(value, showTime: false);
+        }
+        return Text(
+          formattedDate,
+          style: resolvedTextStyle,
+        );
       },
       mode: resolvedMode,
       editorBuilder: (context, handler) {
@@ -315,6 +397,9 @@ class DateRangePicker extends StatelessWidget {
   final EdgeInsetsGeometry? popoverPadding;
   final Widget? dialogTitle;
   final DateStateBuilder? stateBuilder;
+  final Widget? icon;
+  final TextStyle? textStyle;
+  final String? dateFormat;
 
   const DateRangePicker({
     super.key,
@@ -329,11 +414,30 @@ class DateRangePicker extends StatelessWidget {
     this.dialogTitle,
     this.initialViewType,
     this.stateBuilder,
+    this.icon,
+    this.textStyle,
+    this.dateFormat,
   });
 
   @override
   Widget build(BuildContext context) {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
+    final compTheme = ComponentTheme.maybeOf<DatePickerTheme>(context);
+    final resolvedTextStyle = styleValue(
+      widgetValue: textStyle,
+      themeValue: compTheme?.textStyle,
+      defaultValue: null,
+    );
+    final resolvedIcon = styleValue(
+      widgetValue: icon,
+      themeValue: compTheme?.icon,
+      defaultValue: const Icon(LucideIcons.calendarDays),
+    );
+    final resolvedDateFormat = styleValue(
+      widgetValue: dateFormat,
+      themeValue: compTheme?.dateFormat,
+      defaultValue: null,
+    );
     return ObjectFormField(
       popoverAlignment: popoverAlignment,
       popoverAnchorAlignment: popoverAnchorAlignment,
@@ -343,10 +447,34 @@ class DateRangePicker extends StatelessWidget {
       onChanged: onChanged,
       dialogTitle: dialogTitle,
       placeholder: placeholder ?? Text(localizations.placeholderDatePicker),
-      trailing: const Icon(LucideIcons.calendarRange),
+      trailing: resolvedIcon,
       builder: (context, value) {
+        String formattedStartDate;
+        String formattedEndDate;
+
+        if (resolvedDateFormat != null) {
+          try {
+            formattedStartDate = localizations.formatDateWithPattern(
+                value.start, resolvedDateFormat);
+            formattedEndDate = localizations.formatDateWithPattern(
+                value.end, resolvedDateFormat);
+          } catch (e) {
+            // Fallback to default formatting if custom format is invalid
+            formattedStartDate =
+                localizations.formatDateTime(value.start, showTime: false);
+            formattedEndDate =
+                localizations.formatDateTime(value.end, showTime: false);
+          }
+        } else {
+          formattedStartDate =
+              localizations.formatDateTime(value.start, showTime: false);
+          formattedEndDate =
+              localizations.formatDateTime(value.end, showTime: false);
+        }
+
         return Text(
-          '${localizations.formatDateTime(value.start, showTime: false)} - ${localizations.formatDateTime(value.end, showTime: false)}',
+          '$formattedStartDate - $formattedEndDate',
+          style: resolvedTextStyle,
         );
       },
       editorBuilder: (context, handler) {

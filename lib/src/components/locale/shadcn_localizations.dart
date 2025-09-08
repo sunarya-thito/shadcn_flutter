@@ -209,6 +209,23 @@ abstract class ShadcnLocalizations {
       bool showSeconds = false,
       bool use24HourFormat = true});
 
+  /// Formats a date using a custom pattern string
+  ///
+  /// Supports common patterns:
+  /// - yyyy: 4-digit year (e.g., 2025)
+  /// - yy: 2-digit year (e.g., 25)
+  /// - MM: 2-digit month (e.g., 01, 12)
+  /// - M: 1-2 digit month (e.g., 1, 12)
+  /// - dd: 2-digit day (e.g., 01, 31)
+  /// - d: 1-2 digit day (e.g., 1, 31)
+  /// - HH: 2-digit hour (e.g., 01, 23)
+  /// - H: 1-2 digit hour (e.g., 1, 23)
+  /// - mm: 2-digit minute (e.g., 01, 59)
+  /// - m: 1-2 digit minute (e.g., 1, 59)
+  /// - ss: 2-digit second (e.g., 01, 59)
+  /// - s: 1-2 digit second (e.g., 1, 59)
+  String formatDateWithPattern(DateTime date, String pattern);
+
   String formatTimeOfDay(
     TimeOfDay time, {
     bool use24HourFormat = true,
@@ -665,6 +682,27 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
         }
       }
     }
+    return result;
+  }
+
+  @override
+  String formatDateWithPattern(DateTime date, String pattern) {
+    String result = pattern;
+
+    // Replace common patterns
+    result = result.replaceAll('yyyy', date.year.toString().padLeft(4, '0'));
+    result = result.replaceAll('yy', date.year.toString().substring(2));
+    result = result.replaceAll('MM', date.month.toString().padLeft(2, '0'));
+    result = result.replaceAll('M', date.month.toString());
+    result = result.replaceAll('dd', date.day.toString().padLeft(2, '0'));
+    result = result.replaceAll('d', date.day.toString());
+    result = result.replaceAll('HH', date.hour.toString().padLeft(2, '0'));
+    result = result.replaceAll('H', date.hour.toString());
+    result = result.replaceAll('mm', date.minute.toString().padLeft(2, '0'));
+    result = result.replaceAll('m', date.minute.toString());
+    result = result.replaceAll('ss', date.second.toString().padLeft(2, '0'));
+    result = result.replaceAll('s', date.second.toString());
+
     return result;
   }
 
