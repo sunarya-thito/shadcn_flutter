@@ -91,6 +91,7 @@ class ThemeData {
   final IconThemeProperties iconTheme;
   final double? surfaceOpacity;
   final double? surfaceBlur;
+  final bool defaultEnableFeedback;
 
   ThemeData({
     this.colorScheme = ColorSchemes.lightDefaultColor,
@@ -101,6 +102,7 @@ class ThemeData {
     TargetPlatform? platform,
     this.surfaceOpacity,
     this.surfaceBlur,
+    this.defaultEnableFeedback = true,
   }) : _platform = platform;
 
   ThemeData.dark({
@@ -112,6 +114,7 @@ class ThemeData {
     TargetPlatform? platform,
     this.surfaceOpacity,
     this.surfaceBlur,
+    this.defaultEnableFeedback = true,
   }) : _platform = platform;
 
   /// The current platform.
@@ -160,6 +163,7 @@ class ThemeData {
     ValueGetter<IconThemeProperties>? iconTheme,
     ValueGetter<double>? surfaceOpacity,
     ValueGetter<double>? surfaceBlur,
+    ValueGetter<bool>? defaultEnableFeedback,
   }) {
     return ThemeData(
       colorScheme: colorScheme == null ? this.colorScheme : colorScheme(),
@@ -171,6 +175,8 @@ class ThemeData {
       surfaceOpacity:
           surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
       surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
+      defaultEnableFeedback:
+          defaultEnableFeedback == null ? this.defaultEnableFeedback : defaultEnableFeedback(),
     );
   }
 
@@ -188,6 +194,7 @@ class ThemeData {
       iconTheme: IconThemeProperties.lerp(a.iconTheme, b.iconTheme, t),
       surfaceOpacity: lerpDouble(a.surfaceOpacity, b.surfaceOpacity, t),
       surfaceBlur: lerpDouble(a.surfaceBlur, b.surfaceBlur, t),
+      defaultEnableFeedback: t < 0.5 ? a.defaultEnableFeedback : b.defaultEnableFeedback,
     );
   }
 
@@ -202,7 +209,8 @@ class ThemeData {
         other.scaling == scaling &&
         other.iconTheme == iconTheme &&
         other.surfaceOpacity == surfaceOpacity &&
-        other.surfaceBlur == surfaceBlur;
+        other.surfaceBlur == surfaceBlur &&
+        other.defaultEnableFeedback == defaultEnableFeedback;
   }
 
   @override
@@ -215,12 +223,13 @@ class ThemeData {
       iconTheme,
       surfaceOpacity,
       surfaceBlur,
+      defaultEnableFeedback,
     );
   }
 
   @override
   String toString() {
-    return 'ThemeData(colorScheme: $colorScheme, typography: $typography, radius: $radius, scaling: $scaling, iconTheme: $iconTheme, surfaceOpacity: $surfaceOpacity, surfaceBlur: $surfaceBlur)';
+    return 'ThemeData(colorScheme: $colorScheme, typography: $typography, radius: $radius, scaling: $scaling, iconTheme: $iconTheme, surfaceOpacity: $surfaceOpacity, surfaceBlur: $surfaceBlur, defaultEnableFeedback: $defaultEnableFeedback)';
   }
 }
 

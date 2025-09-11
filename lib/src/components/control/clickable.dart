@@ -375,7 +375,7 @@ class Clickable extends StatefulWidget {
   final Map<LogicalKeySet, Intent>? shortcuts;
   final Map<Type, Action<Intent>>? actions;
   final bool focusOutline;
-  final bool enableFeedback;
+  final bool? enableFeedback;
   final VoidCallback? onLongPress;
   final GestureTapDownCallback? onTapDown;
   final GestureTapUpCallback? onTapUp;
@@ -419,7 +419,7 @@ class Clickable extends StatefulWidget {
     this.shortcuts,
     this.actions,
     this.focusOutline = true,
-    this.enableFeedback = true,
+    this.enableFeedback,
     this.transform,
     this.onLongPress,
     this.onTapDown,
@@ -502,7 +502,7 @@ class _ClickableState extends State<Clickable> {
     } else {
       if (widget.onPressed != null) {
         widget.onPressed!();
-        if (widget.enableFeedback) {
+        if (widget.enableFeedback ?? Theme.of(context).defaultEnableFeedback) {
           feedbackForTap(context);
         }
       }
@@ -561,7 +561,7 @@ class _ClickableState extends State<Clickable> {
         onTertiaryLongPress: widget.onTertiaryLongPress,
         onTapDown: widget.onPressed != null
             ? (details) {
-                if (widget.enableFeedback) {
+                if (widget.enableFeedback ?? Theme.of(context).defaultEnableFeedback) {
                   // also dispatch hover
                   _controller.update(WidgetState.hovered, true);
                 }
@@ -571,7 +571,7 @@ class _ClickableState extends State<Clickable> {
             : widget.onTapDown,
         onTapUp: widget.onPressed != null
             ? (details) {
-                if (widget.enableFeedback) {
+                if (widget.enableFeedback ?? Theme.of(context).defaultEnableFeedback) {
                   // also dispatch hover
                   _controller.update(WidgetState.hovered, false);
                 }
@@ -581,7 +581,7 @@ class _ClickableState extends State<Clickable> {
             : widget.onTapUp,
         onTapCancel: widget.onPressed != null
             ? () {
-                if (widget.enableFeedback) {
+                if (widget.enableFeedback ?? Theme.of(context).defaultEnableFeedback) {
                   // also dispatch hover
                   _controller.update(WidgetState.hovered, false);
                 }
