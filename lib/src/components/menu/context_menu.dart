@@ -435,6 +435,14 @@ Widget buildEditableTextContextMenu(
         editableTextState: editableTextState,
         undoHistoryController: undoHistoryController,
       );
+    default:
+      // TODO: Other platforms. For TargetPlatform.ohos.pc2in1
+      // TODO: ohos.mobile
+      return DesktopEditableTextContextMenu(
+        anchorContext: innerContext,
+        editableTextState: editableTextState,
+        undoHistoryController: undoHistoryController,
+      );
   }
 }
 
@@ -471,7 +479,7 @@ class _ContextMenuState extends State<ContextMenu> {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget.items, oldWidget.items)) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        if(mounted) _children.value = widget.items;
+        if (mounted) _children.value = widget.items;
       });
     }
   }
