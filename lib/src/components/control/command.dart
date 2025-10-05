@@ -207,7 +207,7 @@ class _CommandState extends State<Command> {
     final theme = Theme.of(context);
     bool canPop = Navigator.of(context).canPop();
     final localization = ShadcnLocalizations.of(context);
-    return SubFocusScope(builder: (context, state) {
+    return SubFocusScope(autofocus: true, builder: (context, state) {
       return Actions(
         actions: {
           NextItemIntent: CallbackAction<NextItemIntent>(
