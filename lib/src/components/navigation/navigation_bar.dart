@@ -1263,9 +1263,11 @@ class _NavigationItemState
 
 class NavigationButton extends AbstractNavigationButton {
   final VoidCallback? onPressed;
+  final bool enableFeedback;
   const NavigationButton({
     super.key,
     this.onPressed,
+    this.enableFeedback = true,
     super.label,
     super.spacing,
     super.style,
@@ -1324,6 +1326,7 @@ class _NavigationButtonState
         onPressed: widget.onPressed,
         marginAlignment: widget.marginAlignment,
         style: style,
+        enableFeedback: widget.enableFeedback,
         alignment: widget.alignment ??
             (data?.containerType == NavigationContainerType.sidebar &&
                     data?.labelDirection == Axis.horizontal
