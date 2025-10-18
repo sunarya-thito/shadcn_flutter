@@ -230,6 +230,10 @@ bool isMobile(TargetPlatform platform) {
     case TargetPlatform.linux:
     case TargetPlatform.windows:
       return false;
+    default:
+      // TODO: Other platforms. For TargetPlatform.ohos.pc2in1
+      // TODO: ohos.mobile
+      return false;
   }
 }
 
