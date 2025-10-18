@@ -1832,6 +1832,7 @@ class CalendarGrid extends StatelessWidget {
     ));
     for (int i = 0; i < data.items.length; i += 7) {
       rows.add(Row(
+        mainAxisSize: MainAxisSize.min,
         children: data.items.sublist(i, i + 7).map((e) {
           return SizedBox(
             width: theme.scaling * 32,
