@@ -50,7 +50,7 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
         });
       },
       suggestions: _suggestions,
-      onSuggestionChoosen: (index) {
+      onSuggestionChosen: (index) {
         setState(() {
           _chips.add(_suggestions[index]);
           _controller.clear();

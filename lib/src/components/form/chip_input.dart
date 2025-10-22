@@ -273,7 +273,15 @@ class ControlledChipInput<T> extends StatelessWidget
   /// Called with the index of the selected suggestion when a user chooses
   /// an item from the autocomplete list. The callback is responsible for
   /// adding the suggestion to the chip list.
+  @Deprecated('Use onSuggestionChosen instead')
   final void Function(int index)? onSuggestionChoosen;
+
+  /// Callback for handling suggestion selection.
+  ///
+  /// Called with the index of the selected suggestion when a user chooses
+  /// an item from the autocomplete list. The callback is responsible for
+  /// adding the suggestion to the chip list.
+  final void Function(int index)? onSuggestionChosen;
 
   /// Builder function for creating chip widget representations.
   ///
@@ -382,7 +390,8 @@ class ControlledChipInput<T> extends StatelessWidget
     this.suggestions = const [],
     this.chips = const [],
     this.inputFormatters,
-    this.onSuggestionChoosen,
+    @Deprecated('Use onSuggestionChosen instead') this.onSuggestionChoosen,
+    this.onSuggestionChosen,
     required this.chipBuilder,
     this.suggestionBuilder,
     this.useChips,
@@ -412,6 +421,7 @@ class ControlledChipInput<T> extends StatelessWidget
           chips: data.value,
           inputFormatters: inputFormatters,
           onSuggestionChoosen: onSuggestionChoosen,
+          onSuggestionChosen: onSuggestionChosen,
           onChanged: data.onChanged,
           useChips: useChips,
           chipBuilder: chipBuilder,
@@ -438,7 +448,9 @@ class ChipInput<T> extends StatefulWidget {
   final List<T> suggestions;
   final List<T> chips;
   final List<TextInputFormatter>? inputFormatters;
+  @Deprecated('Use onSuggestionChosen instead')
   final void Function(int index)? onSuggestionChoosen;
+  final void Function(int index)? onSuggestionChosen;
   final ValueChanged<List<T>>? onChanged;
   final ChipWidgetBuilder<T> chipBuilder;
   final ChipWidgetBuilder<T>? suggestionBuilder;
@@ -461,7 +473,8 @@ class ChipInput<T> extends StatefulWidget {
     this.suggestions = const [],
     this.chips = const [],
     this.inputFormatters,
-    this.onSuggestionChoosen,
+    @Deprecated('Use onSuggestionChosen instead') this.onSuggestionChoosen,
+    this.onSuggestionChosen,
     this.onChanged,
     this.useChips,
     this.suggestionBuilder,
@@ -612,6 +625,7 @@ class ChipInputState<T> extends State<ChipInput<T>>
                         value: i == _selectedSuggestions.value,
                         onChanged: (value) {
                           if (value) {
+                            widget.onSuggestionChosen?.call(i);
                             widget.onSuggestionChoosen?.call(i);
                             _controller.clear();
                             _selectedSuggestions.value = -1;
@@ -669,6 +683,7 @@ class ChipInputState<T> extends State<ChipInput<T>>
         _selectedSuggestions.value < _suggestions.value.length) {
       // A suggestion is selected, use it
       widget.onSuggestionChoosen?.call(_selectedSuggestions.value);
+      widget.onSuggestionChosen?.call(_selectedSuggestions.value);
     } else if (text.isNotEmpty) {
       // No suggestion selected, use the entered text
       widget.onSubmitted?.call(text);
@@ -710,6 +725,7 @@ class ChipInputState<T> extends State<ChipInput<T>>
                 var index = _selectedSuggestions.value;
                 if (index >= 0 && index < _suggestions.value.length) {
                   widget.onSuggestionChoosen?.call(index);
+                  widget.onSuggestionChosen?.call(index);
                   _controller.clear();
                   _selectedSuggestions.value = -1;
                 } else if (_suggestions.value.isNotEmpty) {
