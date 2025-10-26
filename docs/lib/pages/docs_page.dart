@@ -223,6 +223,12 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Checkbox', 'checkbox'),
         ShadcnDocsPage('Chip Input', 'chip_input'),
         ShadcnDocsPage('Color Picker', 'color_picker'),
+        ShadcnDocsPage('Linear Gradient Picker', 'linear_gradient_picker',
+            ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Radial Gradient Picker', 'radial_gradient_picker',
+            ShadcnFeatureTag.workInProgress),
+        ShadcnDocsPage('Sweep Gradient Picker', 'sweep_gradient_picker',
+            ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Date Picker', 'date_picker'),
         // TODO: https://file-vault-delta.vercel.app/ also https://uploader.sadmn.com/
         ShadcnDocsPage(
