@@ -199,7 +199,6 @@ class ChipEditingController<T> extends TextEditingController {
         List<InlineSpan> children = [];
         String text = value.text;
         StringBuffer buffer = StringBuffer();
-        int count = 0;
         for (int i = 0; i < text.length; i++) {
           int codeUnit = text.codeUnitAt(i);
           if (codeUnit >= _chipStart && codeUnit <= _chipEnd) {
@@ -208,8 +207,9 @@ class ChipEditingController<T> extends TextEditingController {
               children.add(TextSpan(style: style, text: buffer.toString()));
               buffer.clear();
             }
-            Widget? chipWidget = provider.buildChip(
-                context, _chipMap[codeUnit - _chipStart] as T);
+            T? chip = _chipMap[codeUnit - _chipStart];
+            Widget? chipWidget =
+                chip == null ? null : provider.buildChip(context, chip);
             if (chipWidget != null) {
               bool previousIsChip = i > 0 &&
                   text.codeUnitAt(i - 1) >= _chipStart &&
@@ -231,7 +231,6 @@ class ChipEditingController<T> extends TextEditingController {
                   child: chipWidget,
                 ),
               ));
-              count++;
             }
           } else {
             buffer.writeCharCode(codeUnit);
@@ -303,27 +302,27 @@ class ChipEditingController<T> extends TextEditingController {
     return buffer.toString();
   }
 
-  int get chipCount {
-    int count = 0;
-    String text = value.text;
-    for (int i = 0; i < text.length; i++) {
-      int codeUnit = text.codeUnitAt(i);
-      if (codeUnit >= _chipStart && codeUnit <= _chipEnd) {
-        count++;
-      }
-    }
-    return count;
-  }
-
   void insertChipAtCursor(T? Function(String chipText) chipConverter) {
     final boundaries = _findChipTextBoundaries(selection.baseOffset);
     String chipText = value.text.substring(boundaries.start, boundaries.end);
     T? chip = chipConverter(chipText);
     if (chip != null) {
-      int chipIndex = _nextChipIndex++;
+      int chipIndex = _nextAvailableChipIndex;
       _replaceAsChip(boundaries.start, boundaries.end, chipIndex);
       _chipMap[chipIndex] = chip;
     }
+  }
+
+  void clearTextAtCursor() {
+    final boundaries = _findChipTextBoundaries(selection.baseOffset);
+    String text = value.text;
+    StringBuffer buffer = StringBuffer();
+    buffer.write(text.substring(0, boundaries.start));
+    buffer.write(text.substring(boundaries.end));
+    super.value = value.copyWith(
+      text: buffer.toString(),
+      selection: TextSelection.collapsed(offset: boundaries.start),
+    );
   }
 
   void appendChip(T chip) {
@@ -332,6 +331,7 @@ class ChipEditingController<T> extends TextEditingController {
     // sometimes theres chip and then text and then chip
     // so we need to find the last chip position
     String text = value.text;
+    int chipIndex = _nextAvailableChipIndex;
     int lastChipIndex = -1;
     for (int i = text.length - 1; i >= 0; i--) {
       int codeUnit = text.codeUnitAt(i);
@@ -341,23 +341,36 @@ class ChipEditingController<T> extends TextEditingController {
       }
     }
     String newText = text.replaceRange(lastChipIndex + 1, lastChipIndex + 1,
-        String.fromCharCode(_chipStart + chipCount));
+        String.fromCharCode(_chipStart + chipIndex));
     super.value = value.copyWith(
       text: newText,
       selection: TextSelection.collapsed(offset: lastChipIndex + 2),
     );
+    _chipMap[chipIndex] = chip;
+  }
+
+  void appendChipAtCursor(T chip) {
+    // append chip at the cursor position
+    final boundaries = _findChipTextBoundaries(selection.baseOffset);
+    String text = value.text;
     int chipIndex = _nextAvailableChipIndex;
+    String newText = text.replaceRange(boundaries.end, boundaries.end,
+        String.fromCharCode(_chipStart + chipIndex));
+    super.value = value.copyWith(
+      text: newText,
+      selection: TextSelection.collapsed(offset: boundaries.end + 1),
+    );
     _chipMap[chipIndex] = chip;
   }
 
   void insertChip(T chip) {
     // insert chip at the start
-    String newText = String.fromCharCode(_chipStart + chipCount) + value.text;
+    int chipIndex = _nextAvailableChipIndex;
+    String newText = String.fromCharCode(_chipStart + chipIndex) + value.text;
     super.value = value.copyWith(
       text: newText,
       selection: const TextSelection.collapsed(offset: 1),
     );
-    int chipIndex = _nextAvailableChipIndex;
     _chipMap[chipIndex] = chip;
   }
 
@@ -736,16 +749,15 @@ class ChipInputState<T> extends State<ChipInput<T>>
             actions: {
               SelectSuggestionIntent: CallbackAction(
                 onInvoke: (intent) {
-                  var index = _selectedSuggestions.value;
+                  final index = _selectedSuggestions.value;
                   if (index >= 0 && index < _suggestions.value.length) {
-                    widget.onSuggestionChoosen?.call(index);
                     widget.onSuggestionChosen?.call(index);
-                    _controller.clear();
+                    widget.onSuggestionChoosen?.call(index);
+                    _controller.clearTextAtCursor();
                     _selectedSuggestions.value = -1;
-                  } else if (_suggestions.value.isNotEmpty) {
-                    _selectedSuggestions.value = 0;
+                    _popoverController.close();
+                    _controller.appendChipAtCursor(_suggestions.value[index]);
                   }
-                  return null;
                 },
               ),
               NextSuggestionIntent: CallbackAction(

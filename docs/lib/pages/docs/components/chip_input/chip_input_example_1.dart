@@ -24,7 +24,8 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
     _controller.addListener(
       () {
         setState(() {
-          var value = _controller.text;
+          var value =
+              _controller.plainText; // IMPORTANT: use plainText instead of text
           if (value.isNotEmpty) {
             _suggestions = _availableSuggestions.where((element) {
               return element.startsWith(value);
