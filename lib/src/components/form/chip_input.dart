@@ -422,9 +422,17 @@ class ChipEditingController<T> extends TextEditingController {
     if (chipIndex != null) {
       String text = value.text;
       StringBuffer buffer = StringBuffer();
+      int currentCursorOffset = value.selection.baseOffset;
+      int newCursorOffset = currentCursorOffset;
+
       for (int i = 0; i < text.length; i++) {
         int codeUnit = text.codeUnitAt(i);
         if (codeUnit == _chipStart + chipIndex!) {
+          // Found the chip to remove
+          // Adjust cursor position if it's after the removed chip
+          if (currentCursorOffset > i) {
+            newCursorOffset = currentCursorOffset - 1;
+          }
           // skip this code unit
           continue;
         }
@@ -432,7 +440,7 @@ class ChipEditingController<T> extends TextEditingController {
       }
       super.value = value.copyWith(
         text: buffer.toString(),
-        selection: TextSelection.collapsed(offset: buffer.length),
+        selection: TextSelection.collapsed(offset: newCursorOffset),
       );
       _chipMap.remove(chipIndex);
     }
