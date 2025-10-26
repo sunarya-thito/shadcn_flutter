@@ -2179,7 +2179,7 @@ class TextFieldState extends State<TextField>
           scrollPhysics: widget.scrollPhysics,
           enableInteractiveSelection: widget.enableInteractiveSelection,
           autofillClient: this,
-          clipBehavior: widget.clipBehavior,
+          clipBehavior: Clip.none,
           restorationId: 'editable',
           stylusHandwritingEnabled: widget.stylusHandwritingEnabled,
           enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
@@ -2251,6 +2251,7 @@ class TextFieldState extends State<TextField>
                   child: IgnorePointer(
                     ignoring: !enabled,
                     child: Container(
+                      clipBehavior: widget.clipBehavior,
                       decoration: effectiveDecoration,
                       child:
                           _selectionGestureDetectorBuilder.buildGestureDetector(

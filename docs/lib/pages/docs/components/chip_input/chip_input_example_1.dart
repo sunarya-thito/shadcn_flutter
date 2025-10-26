@@ -8,9 +8,8 @@ class ChipInputExample1 extends StatefulWidget {
 }
 
 class _ChipInputExample1State extends State<ChipInputExample1> {
-  List<String> _chips = [];
   List<String> _suggestions = [];
-  final TextEditingController _controller = TextEditingController();
+  final ChipEditingController<String> _controller = ChipEditingController();
   static const List<String> _availableSuggestions = [
     'hello world',
     'lorem ipsum',
@@ -40,31 +39,30 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
 
   @override
   Widget build(BuildContext context) {
-    return ChipInput<String>(
-      controller: _controller,
-      onSubmitted: (value) {
-        setState(() {
-          _chips.add(value);
-          _suggestions.clear();
-          _controller.clear();
-        });
-      },
-      suggestions: _suggestions,
-      onSuggestionChosen: (index) {
-        setState(() {
-          _chips.add(_suggestions[index]);
-          _controller.clear();
-        });
-      },
-      onChanged: (value) {
-        setState(() {
-          _chips = value;
-        });
-      },
-      chips: _chips,
-      chipBuilder: (context, chip) {
-        return Text(chip);
-      },
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ChipInput<String>(
+          controller: _controller,
+          onSubmitted: (value) {
+            setState(() {
+              _suggestions.clear();
+            });
+            return '@$value';
+          },
+          suggestions: _suggestions,
+          chipBuilder: (context, chip) {
+            return Text(chip);
+          },
+        ),
+        gap(24),
+        ListenableBuilder(
+          listenable: _controller,
+          builder: (context, child) {
+            return Text('Current chips: ${_controller.chips.join(', ')}');
+          },
+        ),
+      ],
     );
   }
 }

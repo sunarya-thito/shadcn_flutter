@@ -1294,7 +1294,8 @@ class _RenderResizableLayout extends RenderBox
         ? !constraints.hasBoundedHeight
         : !constraints.hasBoundedWidth;
     if (hasInfiniteCross) {
-      for (final child in getChildrenAsList()) {
+      RenderBox? child = firstChild;
+      while (child != null) {
         final childParentData = child.parentData as _ResizableLayoutParentData;
         if (childParentData.isDragger != true &&
             childParentData.index == null) {
@@ -1306,6 +1307,7 @@ class _RenderResizableLayout extends RenderBox
                 intrinsicCross, child.getMaxIntrinsicWidth(double.infinity));
           }
         }
+        child = childParentData.nextSibling;
       }
     } else {
       intrinsicCross = direction == Axis.horizontal
@@ -1356,7 +1358,7 @@ class _RenderResizableLayout extends RenderBox
     mainOffset = 0;
     // lay out the panes
     child = firstChild;
-    List<double> sizes = [];
+    // List<double> sizes = [];
     double parentSize = direction == Axis.horizontal
         ? constraints.maxWidth
         : constraints.maxHeight;
@@ -1392,7 +1394,7 @@ class _RenderResizableLayout extends RenderBox
           child.layout(childConstraints, parentUsesSize: true);
           Size childSize = child.size;
           var sizeExtent = _getSizeExtent(childSize);
-          sizes.add(sizeExtent);
+          // sizes.add(sizeExtent);
           childParentData.offset = _createOffset(mainOffset, 0);
           mainOffset += sizeExtent;
         } else {
