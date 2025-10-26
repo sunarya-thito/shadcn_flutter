@@ -15,6 +15,7 @@ class InputHintFeature extends InputFeature {
   final bool enableShortcuts;
   const InputHintFeature({
     super.visibility,
+    super.skipFocusTraversal,
     required this.popupBuilder,
     this.position = InputFeaturePosition.trailing,
     this.icon,
@@ -112,6 +113,7 @@ class InputPasswordToggleFeature extends InputFeature {
     this.iconShow,
     this.mode = PasswordPeekMode.toggle,
     this.position = InputFeaturePosition.trailing,
+    super.skipFocusTraversal,
   });
 
   @override
@@ -191,6 +193,7 @@ class InputClearFeature extends InputFeature {
   final Widget? icon;
   const InputClearFeature({
     super.visibility,
+    super.skipFocusTraversal,
     this.position = InputFeaturePosition.trailing,
     this.icon,
   });
@@ -232,6 +235,7 @@ class InputRevalidateFeature extends InputFeature {
   final Widget? icon;
   const InputRevalidateFeature({
     super.visibility,
+    super.skipFocusTraversal,
     this.position = InputFeaturePosition.trailing,
     this.icon,
   });
@@ -321,6 +325,7 @@ class InputAutoCompleteFeature extends InputFeature {
 
   const InputAutoCompleteFeature({
     super.visibility,
+    super.skipFocusTraversal,
     required this.querySuggestions,
     required this.child,
     this.popoverConstraints,
@@ -391,6 +396,7 @@ class InputSpinnerFeature extends InputFeature {
   final double? invalidValue;
   const InputSpinnerFeature({
     super.visibility,
+    super.skipFocusTraversal,
     this.step = 1.0,
     this.enableGesture = true,
     this.invalidValue = 0.0,
@@ -515,6 +521,7 @@ class InputCopyFeature extends InputFeature {
   final Widget? icon;
   const InputCopyFeature({
     super.visibility,
+    super.skipFocusTraversal,
     this.position = InputFeaturePosition.trailing,
     this.icon,
   });
@@ -556,6 +563,7 @@ class InputLeadingFeature extends InputFeature {
   const InputLeadingFeature(
     this.prefix, {
     super.visibility,
+    super.skipFocusTraversal,
   });
 
   @override
@@ -574,6 +582,7 @@ class InputTrailingFeature extends InputFeature {
   const InputTrailingFeature(
     this.suffix, {
     super.visibility,
+    super.skipFocusTraversal,
   });
 
   @override
@@ -593,6 +602,7 @@ class InputPasteFeature extends InputFeature {
   final Widget? icon;
   const InputPasteFeature({
     super.visibility,
+    super.skipFocusTraversal,
     this.position = InputFeaturePosition.trailing,
     this.icon,
   });

@@ -264,6 +264,7 @@ abstract class InputFeature {
     Widget? icon,
     InputFeaturePosition position,
     bool enableShortcuts,
+    bool skipFocusTraversal,
   }) = InputHintFeature;
   const factory InputFeature.passwordToggle({
     InputFeatureVisibility visibility,
@@ -271,16 +272,19 @@ abstract class InputFeature {
     InputFeaturePosition position,
     Widget? icon,
     Widget? iconShow,
+    bool skipFocusTraversal,
   }) = InputPasswordToggleFeature;
   const factory InputFeature.clear({
     InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
+    bool skipFocusTraversal,
   }) = InputClearFeature;
   const factory InputFeature.revalidate({
     InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
+    bool skipFocusTraversal,
   }) = InputRevalidateFeature;
   const factory InputFeature.autoComplete({
     InputFeatureVisibility visibility,
@@ -291,34 +295,43 @@ abstract class InputFeature {
     AlignmentDirectional? popoverAnchorAlignment,
     AlignmentDirectional? popoverAlignment,
     AutoCompleteMode mode,
+    bool skipFocusTraversal,
   }) = InputAutoCompleteFeature;
   const factory InputFeature.spinner({
     InputFeatureVisibility visibility,
     double step,
     bool enableGesture,
     double? invalidValue,
+    bool skipFocusTraversal,
   }) = InputSpinnerFeature;
   const factory InputFeature.copy({
     InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
+    bool skipFocusTraversal,
   }) = InputCopyFeature;
   const factory InputFeature.paste({
     InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
+    bool skipFocusTraversal,
   }) = InputPasteFeature;
   const factory InputFeature.leading(
     Widget child, {
     InputFeatureVisibility visibility,
+    bool skipFocusTraversal,
   }) = InputLeadingFeature;
   const factory InputFeature.trailing(
     Widget child, {
     InputFeatureVisibility visibility,
+    bool skipFocusTraversal,
   }) = InputTrailingFeature;
 
   final InputFeatureVisibility visibility;
-  const InputFeature({this.visibility = InputFeatureVisibility.always});
+  final bool skipFocusTraversal;
+  const InputFeature(
+      {this.visibility = InputFeatureVisibility.always,
+      this.skipFocusTraversal = true});
   InputFeatureState createState();
 
   static bool canUpdate(InputFeature oldFeature, InputFeature newFeature) {
@@ -762,7 +775,7 @@ class TextField extends StatefulWidget with TextInput {
     this.statesController,
     this.features = const [],
     this.submitFormatters = const [],
-    this.skipInputFeatureFocusTraversal = true,
+    this.skipInputFeatureFocusTraversal = false,
   })  : assert(obscuringCharacter.length == 1),
         smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
@@ -1794,15 +1807,15 @@ class TextFieldState extends State<TextField>
         for (final attached in _attachedFeatures) {
           leadingChildren.addAll(attached.state._internalBuildLeading().map(
                 (e) => Focus(
-                  skipTraversal: widget.skipInputFeatureFocusTraversal,
+                  skipTraversal: widget.skipInputFeatureFocusTraversal ||
+                      attached.feature.skipFocusTraversal,
                   child: e,
                 ),
               ));
-        }
-        for (final attached in _attachedFeatures) {
           trailingChildren.addAll(attached.state._internalBuildTrailing().map(
-                (e) => Focus(
-                  skipTraversal: widget.skipInputFeatureFocusTraversal,
+                (e) => FocusScope(
+                  skipTraversal: widget.skipInputFeatureFocusTraversal ||
+                      attached.feature.skipFocusTraversal,
                   child: e,
                 ),
               ));
