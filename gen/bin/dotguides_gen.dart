@@ -6,129 +6,10 @@ const topicsDirPath = '.guides/docs';
 const usageMdPath = '.guides/usage.md';
 
 Future<void> main(List<String> args) async {
-  await generateUsageMd();
   await generateTopicPrompts();
 }
 
-Future<void> generateUsageMd() async {
-  final out = File(usageMdPath);
-  if (!out.parent.existsSync()) out.parent.createSync(recursive: true);
-
-  final readme = File('README.md');
-  final install = File('docs/lib/pages/docs/installation_page.dart');
-
-  final b = StringBuffer();
-
-  if (readme.existsSync()) {
-    final text = readme.readAsStringSync();
-    final intro = _extractReadmeIntro(text);
-    if (intro.isNotEmpty) {
-      b.writeln(intro.trim());
-      b.writeln();
-    }
-  }
-
-  if (install.existsSync()) {
-    final src = install.readAsStringSync();
-    final steps = _extractInstallationSteps(src);
-    if (steps.isNotEmpty) {
-      b.writeln('## Installation');
-      for (final s in steps) {
-        b.writeln('- ${s.title}');
-        if (s.description != null && s.description!.trim().isNotEmpty) {
-          b.writeln('  - ${s.description!.trim()}');
-        }
-        if (s.code != null && s.code!.code.trim().isNotEmpty) {
-          final lang = s.code!.mode ?? 'text';
-          b.writeln();
-          b.writeln('```$lang');
-          b.writeln(s.code!.code.trim());
-          b.writeln('```');
-        }
-      }
-    }
-  }
-
-  await out.writeAsString('${b.toString().trim()}\n');
-  stdout.writeln('Wrote $usageMdPath');
-}
-
-String _extractReadmeIntro(String text) {
-  final idx = text.indexOf(
-    RegExp(
-      r'^##\s+🥟?\s*🧩\s*Components Library|^##\s+Components Library',
-      multiLine: true,
-    ),
-  );
-  if (idx == -1) return text.trim();
-  return text.substring(0, idx).trim();
-}
-
-class _Snippet {
-  final String code;
-  final String? mode;
-  _Snippet(this.code, this.mode);
-}
-
-class _InstallStep {
-  final String title;
-  final String? description;
-  final _Snippet? code;
-  _InstallStep(this.title, this.description, this.code);
-}
-
-List<_InstallStep> _extractInstallationSteps(String src) {
-  final steps = <_InstallStep>[];
-  final titleExp = RegExp(
-    r"StepItem\(\s*title:\s*const\s*Text\('([^']+)'\)",
-    multiLine: true,
-  );
-  final titles = titleExp.allMatches(src).map((m) => m.group(1)!).toList();
-
-  final triple = RegExp(
-    r"CodeSnippet\(\s*code:\s*'''([\s\S]*?)'''\s*,\s*mode:\s*'([^']+)'",
-    multiLine: true,
-  );
-  final single = RegExp(
-    r"CodeSnippet\(\s*code:\s*'([^']+)'\s*,\s*mode:\s*'([^']+)'",
-    multiLine: true,
-  );
-  final snippets = <_Snippet>[];
-  for (final m in triple.allMatches(src)) {
-    snippets.add(_Snippet(m.group(1)!, m.group(2)));
-  }
-  for (final m in single.allMatches(src)) {
-    snippets.add(_Snippet(m.group(1)!, m.group(2)));
-  }
-
-  final textExp = RegExp(r"Text\('([^']+)'\)\.p\(\)", multiLine: true);
-  final texts = textExp.allMatches(src).map((m) => m.group(1)!).toList();
-
-  for (var i = 0; i < titles.length; i++) {
-    final title = titles[i];
-    _Snippet? code;
-    if (i < snippets.length) code = snippets[i];
-    final desc = i < texts.length ? texts[i] : null;
-    steps.add(_InstallStep(title, desc, code));
-  }
-
-  final expYaml = RegExp(
-    r"dependencies:\n[\s\S]*?shadcn_flutter:[\s\S]*?git:[\s\S]*?url:[\s\S]*?",
-    multiLine: true,
-  );
-  final expMatch = expYaml.firstMatch(src);
-  if (expMatch != null) {
-    steps.add(
-      _InstallStep(
-        'Experimental Version',
-        'Use the Git dependency to track the latest changes (not recommended for production).',
-        _Snippet(expMatch.group(0)!, 'yaml'),
-      ),
-    );
-  }
-
-  return steps;
-}
+// Note: usage.md is now maintained manually under .guides/usage.md
 
 Future<void> generateTopicPrompts() async {
   final dir = Directory(topicsDirPath);
@@ -140,7 +21,15 @@ Future<void> generateTopicPrompts() async {
 
   for (final t in topics) {
     final fileName = '${_sanitizeFileName(t.slug)}.md';
-    final outFile = File('$topicsDirPath/$fileName');
+    final category = _categoryDirFor(t);
+    final outDirPath = category.isEmpty
+        ? topicsDirPath
+        : '$topicsDirPath/$category';
+    final outDir = Directory(outDirPath);
+    if (!outDir.existsSync()) {
+      outDir.createSync(recursive: true);
+    }
+    final outFile = File('$outDirPath/$fileName');
     final fm = StringBuffer()
       ..writeln('---')
       ..writeln('title: ${_yamlString(t.title)}')
@@ -150,6 +39,30 @@ Future<void> generateTopicPrompts() async {
     final content = body.isEmpty ? fm.toString() : '$fm\n$body\n';
     await outFile.writeAsString(content);
     stdout.writeln('Wrote topic: ${outFile.path}');
+  }
+}
+
+/// Map topic slug prefixes to directory categories under .guides/docs
+String _categoryDirFor(_Topic t) {
+  final slug = t.slug;
+  final prefix = slug.contains('-') ? slug.split('-').first : slug;
+  switch (prefix) {
+    case 'class':
+      return 'classes';
+    case 'mixin':
+      return 'mixins';
+    case 'extension':
+      return 'extensions';
+    case 'enum':
+      return 'enums';
+    case 'var':
+      return 'vars';
+    case 'fn':
+      return 'fns';
+    case 'example':
+      return 'examples';
+    default:
+      return '';
   }
 }
 
