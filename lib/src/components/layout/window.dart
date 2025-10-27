@@ -417,7 +417,8 @@ class WindowWidget extends StatefulWidget {
     this.maximized,
     this.minimized,
     this.constraints,
-  });
+  })  : titleBarHeight = null,
+        resizeThickness = null;
 
   @override
   State<WindowWidget> createState() => _WindowWidgetState();
@@ -1082,7 +1083,7 @@ class WindowNavigator extends StatefulWidget {
 /// - **WindowWidget**: Stateful widget that renders the actual window
 /// - **WindowNavigator**: Container managing multiple windows
 ///
-/// The system supports both controlled (external state management) and 
+/// The system supports both controlled (external state management) and
 /// uncontrolled (internal state management) modes for different use cases.
 ///
 /// Usage Patterns:
