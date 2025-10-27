@@ -250,7 +250,7 @@ String _fieldSigWithDocs(FieldDeclaration node) {
     // For const, omit 'var' when type is not provided.
     final typePart = typeSrc == null ? (isConst ? '' : 'var') : typeSrc;
     final typeSpace = typePart.isNotEmpty ? ' ' : '';
-    if (isConst && init != null && init.isNotEmpty) {
+    if (isConst && init != null && init.isNotEmpty && !_isIconDataInit(typeSrc, init)) {
       b.writeln('  $staticPart$constPart$typePart$typeSpace$name = $init;');
     } else {
       b.writeln('  $staticPart$constPart$typePart$typeSpace$name;');
@@ -393,6 +393,22 @@ String _sanitizeFileName(String input) {
   return trimmed.isEmpty ? 'topic' : trimmed;
 }
 
+bool _isIconDataInit(String? typeSrc, String? initSrc) {
+  if ((typeSrc ?? '').contains('IconData')) return true;
+  final init = initSrc ?? '';
+  // Common patterns for icon data in this repo/ecosystem
+  // - IconData(hex, ...)
+  // - Icons.name
+  // - LucideIcons.name
+  // - BootstrapIcons.name
+  // - RadixIcons.name
+  return RegExp(r'\bIconData\s*\(').hasMatch(init) ||
+      init.contains('Icons.') ||
+      init.contains('LucideIcons.') ||
+      init.contains('BootstrapIcons.') ||
+      init.contains('RadixIcons.');
+}
+
 List<_Topic> _collectApiTopics() {
   final topics = <_Topic>[];
   final libDir = Directory('lib');
@@ -484,7 +500,7 @@ List<_Topic> _collectApiTopics() {
           final constPart = isConst ? 'const ' : (isFinal ? 'final ' : '');
           final typePart = type == null ? (isConst ? '' : 'var') : type;
           final typeSpace = typePart.isNotEmpty ? ' ' : '';
-          final sig = (isConst && init != null && init.isNotEmpty)
+      final sig = (isConst && init != null && init.isNotEmpty && !_isIconDataInit(type, init))
               ? '$constPart$typePart$typeSpace$name = $init;'
               : '$constPart$typePart$typeSpace$name;';
           final body = StringBuffer()
