@@ -5,6 +5,7 @@ import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:flutter/cupertino.dart'
     show
+        ConstrainedBox,
         CupertinoSpellCheckSuggestionsToolbar,
         cupertinoDesktopTextSelectionHandleControls;
 import 'package:flutter/foundation.dart'
@@ -1790,7 +1791,7 @@ class TextFieldState extends State<TextField>
           children: [
             // Insert a prefix at the front if the prefix visibility mode matches
             // the current text state.
-            leadingWidget,
+            if (leadingChildren.isNotEmpty) leadingWidget,
             // In the middle part, stack the placeholder on top of the main EditableText
             // if needed.
             Expanded(
@@ -1807,7 +1808,7 @@ class TextFieldState extends State<TextField>
                 ],
               ),
             ),
-            trailingWidget,
+            if (trailingChildren.isNotEmpty) trailingWidget,
           ],
         );
       },
@@ -2299,11 +2300,23 @@ class TextFieldState extends State<TextField>
     for (final attached in _attachedFeatures) {
       textField = attached.state.wrap(textField);
     }
-    return WidgetStatesProvider(
-      states: {
-        if (_effectiveFocusNode.hasFocus) WidgetState.hovered,
-      },
-      child: textField,
+
+    double fontHeight =
+        (defaultTextStyle.fontSize ?? 14.0) * (defaultTextStyle.height ?? 1.0);
+    double verticalPadding = (widget.padding?.vertical ??
+        compTheme?.padding?.vertical ??
+        (8.0 * 2 * theme.scaling));
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: fontHeight + verticalPadding,
+      ),
+      child: WidgetStatesProvider(
+        states: {
+          if (_effectiveFocusNode.hasFocus) WidgetState.hovered,
+        },
+        child: textField,
+      ),
     );
   }
 

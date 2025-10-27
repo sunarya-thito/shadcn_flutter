@@ -147,9 +147,7 @@ Future<void> generateTopicPrompts() async {
       ..writeln('description: ${_yamlString(t.description)}')
       ..writeln('---');
     final body = t.body.trim();
-    final content = body.isEmpty
-        ? fm.toString()
-        : '$fm\n$body\n';
+    final content = body.isEmpty ? fm.toString() : '$fm\n$body\n';
     await outFile.writeAsString(content);
     stdout.writeln('Wrote topic: ${outFile.path}');
   }
@@ -560,6 +558,10 @@ List<_Topic> _collectExampleTopics() {
   if (!examplesRoot.existsSync()) return topics;
   for (final entity in examplesRoot.listSync(recursive: true)) {
     if (entity is! File || !entity.path.endsWith('.dart')) continue;
+    // only include files that has number (e.g., tile_example_1.dart, tile_example_2.dart)
+    if (!RegExp(r'_\d+\.dart$').hasMatch(entity.path)) {
+      continue;
+    }
     final content = entity.readAsStringSync();
     final lines = content.split(RegExp(r'\r?\n'));
     final descLines = <String>[];

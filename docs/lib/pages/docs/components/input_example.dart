@@ -1,6 +1,7 @@
 import 'package:docs/pages/docs/component_page.dart';
 import 'package:docs/pages/docs/components/input/input_example_3.dart';
 import 'package:docs/pages/docs/components/input/input_example_4.dart';
+import 'package:docs/pages/docs/components/input/input_example_5.dart';
 import 'package:docs/pages/widget_usage_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -37,6 +38,11 @@ class InputExample extends StatelessWidget {
           title: 'Revalidate Form Feature Example',
           path: 'lib/pages/docs/components/input/input_example_4.dart',
           child: InputExample4(),
+        ),
+        WidgetUsageExample(
+          title: 'Grouped Inputs Example',
+          path: 'lib/pages/docs/components/input/input_example_5.dart',
+          child: InputExample5(),
         ),
       ],
     );
