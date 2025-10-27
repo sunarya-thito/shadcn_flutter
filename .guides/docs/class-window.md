@@ -26,7 +26,7 @@ description: "A comprehensive windowing system for creating desktop-like window 
 /// - **WindowWidget**: Stateful widget that renders the actual window
 /// - **WindowNavigator**: Container managing multiple windows
 ///
-/// The system supports both controlled (external state management) and 
+/// The system supports both controlled (external state management) and
 /// uncontrolled (internal state management) modes for different use cases.
 ///
 /// Usage Patterns:
