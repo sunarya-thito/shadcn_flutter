@@ -27,7 +27,7 @@ Map<String, String> paramMapping = {
   'chart-5': 'chart5',
 };
 
-main() {
+void main() {
   String result = '';
   result += 'import \'../../shadcn_flutter.dart\';\n';
   result += 'import \'dart:ui\';\n';

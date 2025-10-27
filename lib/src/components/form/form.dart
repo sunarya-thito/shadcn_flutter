@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:email_validator/email_validator.dart' as email_validator;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart' as widgets;
-import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 import '../../../shadcn_flutter.dart';
 
@@ -198,7 +197,7 @@ class ValidationMode<T> extends Validator<T> {
   @override
   FutureOr<ValidationResult?> validate(
       BuildContext context, T? value, FormValidationMode lifecycle) {
-    if (this.mode.contains(lifecycle)) {
+    if (mode.contains(lifecycle)) {
       return validator.validate(context, value, lifecycle);
     }
     return null;

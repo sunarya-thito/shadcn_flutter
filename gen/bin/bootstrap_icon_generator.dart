@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'woff2otf.dart';
 
-main() {
+void main() {
   String fontFamily =
       'BootstrapIcons'; // as defined in pubspec.yml (not bootstrap-icons as defined in the font file)
   File jsonFile = File('icons/bootstrap/bootstrap-icons.json');

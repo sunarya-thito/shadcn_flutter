@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/control/hover.dart';
-import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 /// Theme data for customizing [Select] widget appearance and behavior.
 ///

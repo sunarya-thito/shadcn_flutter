@@ -167,7 +167,7 @@ Map<String, String> _parseVariables(String cssContent) {
   return variables;
 }
 
-main() {
+void main() {
   // Get all CSS files in the colors directory
   final colorsDir = Directory('colors');
   final cssFiles = colorsDir

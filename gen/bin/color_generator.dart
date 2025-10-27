@@ -1,6 +1,6 @@
 import 'dart:io';
 
-main() {
+void main() {
   String result = "import 'package:shadcn_flutter/shadcn_flutter.dart';\n"
       "\n"
       "class Colors {\n";

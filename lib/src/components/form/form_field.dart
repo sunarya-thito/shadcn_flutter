@@ -178,9 +178,9 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
       shape: shape,
       onPressed: widget.onChanged == null ? null : prompt,
       enabled: enabled,
-      child: this.value == null
+      child: value == null
           ? widget.placeholder.muted()
-          : widget.builder(context, this.value as T),
+          : widget.builder(context, value as T),
     );
   }
 }
@@ -233,10 +233,10 @@ class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>>
   set value(T? value) {
     if (mounted) {
       setState(() {
-        this._value = value;
+        _value = value;
       });
     } else {
-      this._value = value;
+      _value = value;
     }
   }
 
@@ -330,10 +330,10 @@ class _ObjectFormFieldPopupState<T> extends State<_ObjectFormFieldPopup<T>>
   set value(T? value) {
     if (mounted) {
       setState(() {
-        this._value = value;
+        _value = value;
       });
     } else {
-      this._value = value;
+      _value = value;
     }
     widget.onChanged?.call(value);
   }

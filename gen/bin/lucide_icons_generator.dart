@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'bootstrap_icon_generator.dart';
 
-main() async {
+Future<void> main() async {
   String fontFamily = 'LucideIcons'; // as defined in pubspec.yml
   File jsonFile = File('icons/lucide/info.json');
 

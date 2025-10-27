@@ -417,8 +417,6 @@ class WindowWidget extends StatefulWidget {
     this.maximized,
     this.minimized,
     this.constraints,
-    this.titleBarHeight,
-    this.resizeThickness,
   });
 
   @override

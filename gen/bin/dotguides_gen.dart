@@ -49,7 +49,7 @@ Future<void> generateUsageMd() async {
     }
   }
 
-  await out.writeAsString(b.toString().trim() + '\n');
+  await out.writeAsString('${b.toString().trim()}\n');
   stdout.writeln('Wrote $usageMdPath');
 }
 
@@ -139,7 +139,7 @@ Future<void> generateTopicPrompts() async {
   topics.addAll(_collectExampleTopics());
 
   for (final t in topics) {
-    final fileName = _sanitizeFileName(t.slug) + '.md';
+    final fileName = '${_sanitizeFileName(t.slug)}.md';
     final outFile = File('$topicsDirPath/$fileName');
     final fm = StringBuffer()
       ..writeln('---')
@@ -149,7 +149,7 @@ Future<void> generateTopicPrompts() async {
     final body = t.body.trim();
     final content = body.isEmpty
         ? fm.toString()
-        : fm.toString() + '\n' + body + '\n';
+        : '$fm\n$body\n';
     await outFile.writeAsString(content);
     stdout.writeln('Wrote topic: ${outFile.path}');
   }
@@ -163,7 +163,7 @@ String _yamlString(String v) {
       .replaceAll('"', r'\"')
       .replaceAll('\r', ' ')
       .replaceAll('\n', ' ');
-  return '"' + safe + '"';
+  return '"$safe"';
 }
 
 class _Topic {
@@ -248,7 +248,7 @@ String _fieldSigWithDocs(FieldDeclaration node) {
     final staticPart = isStatic ? 'static ' : '';
     final constPart = isConst ? 'const ' : (isFinal ? 'final ' : '');
     // For const, omit 'var' when type is not provided.
-    final typePart = typeSrc == null ? (isConst ? '' : 'var') : typeSrc;
+    final typePart = typeSrc ?? (isConst ? '' : 'var');
     final typeSpace = typePart.isNotEmpty ? ' ' : '';
     if (isConst &&
         init != null &&
@@ -273,7 +273,7 @@ String _ctorSigWithDocs(ConstructorDeclaration node) {
       : (node.constKeyword != null ? 'const ' : '');
   final className = node.returnType.toSource();
   final params = node.parameters.toSource();
-  b.writeln('  ${mod}${className}${name != null ? '.$name' : ''}$params;');
+  b.writeln('  $mod$className${name != null ? '.$name' : ''}$params;');
   return b.toString();
 }
 
@@ -501,7 +501,7 @@ List<_Topic> _collectApiTopics() {
           if (_isPrivateName(name)) continue;
           final init = v.initializer?.toSource().trim();
           final constPart = isConst ? 'const ' : (isFinal ? 'final ' : '');
-          final typePart = type == null ? (isConst ? '' : 'var') : type;
+          final typePart = type ?? (isConst ? '' : 'var');
           final typeSpace = typePart.isNotEmpty ? ' ' : '';
           final sig =
               (isConst &&
@@ -587,7 +587,7 @@ List<_Topic> _collectExampleTopics() {
         .skip(1)
         .join('-')
         .replaceAll('.dart', '');
-    final title = 'Example: ' + rel.split('/').takeLast(3).join('/');
+    final title = 'Example: ${rel.split('/').takeLast(3).join('/')}';
     final desc = descLines.isEmpty
         ? 'Component example'
         : _firstSentence(descLines.join(' '));

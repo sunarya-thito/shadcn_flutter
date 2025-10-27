@@ -7,7 +7,7 @@ const kUnsafeName = [
   'switch',
 ];
 
-main() {
+void main() {
   String fontFamily =
       'RadixIcons'; // as defined in pubspec.yml (not bootstrap-icons as defined in the font file)
   File cssFile = File('icons/radix/iconly.css');

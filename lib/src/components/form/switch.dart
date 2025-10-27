@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 
 import '../../../shadcn_flutter.dart';
 

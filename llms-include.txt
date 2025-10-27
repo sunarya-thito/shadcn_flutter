@@ -1,4 +1,4 @@
 # Here is the list of all files that should be included
 # when writing llms-full.txt.
 # You can use pattern like /docs/** (parsed using pkg:glob)
-/docs/lib/pages/docs/components/**.dart
+/docs/lib/pages/docs/components/*/**.dart
