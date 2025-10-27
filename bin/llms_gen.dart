@@ -55,7 +55,6 @@ void readAllDocs(void Function(String content) writer) {
   final libDir = Directory('lib');
   if (!libDir.existsSync()) return;
 
-  bool isPublicName(String name) => !name.startsWith('_');
 
   // Helper to convert a documentation comment to lines prefixed with '///'.
   String doc(Comment? comment) {
@@ -74,6 +73,8 @@ void readAllDocs(void Function(String content) writer) {
   // Render a type parameter list or return empty string.
   String toSrcOrEmpty(AstNode? node) => node == null ? '' : node.toSource();
 
+  bool isPrivateName(String name) => name.startsWith('_');
+
   // Field declarations (possibly multiple variables in one).
   String fieldSignature(FieldDeclaration node) {
     final b = StringBuffer();
@@ -82,7 +83,7 @@ void readAllDocs(void Function(String content) writer) {
     final type = node.fields.type?.toSource() ?? 'var';
     for (final v in node.fields.variables) {
       final name = v.name.lexeme;
-      if (!isPublicName(name)) continue;
+      if (isPrivateName(v.name.lexeme)) continue;
       if (docs.isNotEmpty) b.writeln(docs);
       b.writeln('  ${isStatic ? 'static ' : ''}$type $name;'); // no initializer
     }
@@ -90,6 +91,9 @@ void readAllDocs(void Function(String content) writer) {
   }
 
   String constructorSignature(ConstructorDeclaration node) {
+    // Skip private named constructors
+    final ctorName = node.name?.lexeme;
+    if (ctorName != null && isPrivateName(ctorName)) return '';
     final docs = doc(node.documentationComment);
     final b = StringBuffer();
     if (docs.isNotEmpty) b.writeln(docs);
@@ -97,13 +101,16 @@ void readAllDocs(void Function(String content) writer) {
         ? 'factory '
         : (node.constKeyword != null ? 'const ' : '');
     final className = node.returnType.toSource();
-    final name = node.name?.lexeme;
+    final name = ctorName;
     final params = node.parameters.toSource();
     b.writeln('  ${mod}${className}${name != null ? '.$name' : ''}$params;');
     return b.toString();
   }
 
   String methodSignature(MethodDeclaration node) {
+    // Skip private methods/getters/setters
+    final nameLex = node.name.lexeme;
+    if (isPrivateName(nameLex)) return '';
     final docs = doc(node.documentationComment);
     final b = StringBuffer();
     if (docs.isNotEmpty) b.writeln(docs);
@@ -167,9 +174,59 @@ void readAllDocs(void Function(String content) writer) {
 
   String enumSignature(EnumDeclaration node) {
     final docs = doc(node.documentationComment);
-    final names = node.constants.map((c) => c.name.lexeme).join(', ');
+    final names = node.constants
+        .map((c) => c.name.lexeme)
+        .where((n) => !isPrivateName(n))
+        .join(', ');
     return [if (docs.isNotEmpty) docs, 'enum ${node.name.lexeme} { $names }']
         .join('\n');
+  }
+
+  String topLevelVariableSignature(TopLevelVariableDeclaration node) {
+    final b = StringBuffer();
+    final docs = doc(node.documentationComment);
+    final list = node.variables;
+    final type = list.type?.toSource();
+    final isFinal = list.isFinal;
+    final isConst = list.isConst;
+    final isLate = list.lateKeyword != null;
+    for (final v in list.variables) {
+      final name = v.name.lexeme;
+      if (isPrivateName(name)) continue;
+      if (docs.isNotEmpty) b.writeln(docs);
+      final modifier = isConst
+          ? 'const '
+          : isFinal
+              ? 'final '
+              : (type == null ? 'var ' : '');
+      final typePart = type ?? '';
+      final latePart = isLate ? 'late ' : '';
+      b.writeln('${latePart}${modifier}${typePart}${typePart.isNotEmpty ? ' ' : ''}$name;');
+    }
+    return b.toString();
+  }
+
+  String topLevelFunctionSignature(FunctionDeclaration node) {
+    final name = node.name.lexeme;
+    if (isPrivateName(name)) return '';
+    final docs = doc(node.documentationComment);
+    final b = StringBuffer();
+    if (docs.isNotEmpty) b.writeln(docs);
+    final isGetter = node.isGetter;
+    final isSetter = node.isSetter;
+    final typeParams = toSrcOrEmpty(node.functionExpression.typeParameters);
+    if (isGetter) {
+      final rt = node.returnType?.toSource() ?? 'dynamic';
+      b.writeln('$rt get $name;');
+    } else if (isSetter) {
+      final params = node.functionExpression.parameters?.toSource() ?? '(value)';
+      b.writeln('set $name$params;');
+    } else {
+      final rt = node.returnType?.toSource() ?? 'void';
+      final params = node.functionExpression.parameters?.toSource() ?? '()';
+      b.writeln('$rt $name$typeParams$params;');
+    }
+    return b.toString();
   }
 
   for (final entity in libDir.listSync(recursive: true)) {
@@ -183,6 +240,7 @@ void readAllDocs(void Function(String content) writer) {
 
     for (final decl in unit.declarations) {
       if (decl is ClassDeclaration) {
+        if (isPrivateName(decl.name.lexeme)) continue;
         final docs = doc(decl.documentationComment);
         if (docs.isNotEmpty) buffer.writeln(docs);
         buffer.writeln('${classHeader(decl)} {');
@@ -190,14 +248,17 @@ void readAllDocs(void Function(String content) writer) {
           if (member is FieldDeclaration) {
             buffer.write(fieldSignature(member));
           } else if (member is ConstructorDeclaration) {
-            buffer.write(constructorSignature(member));
+            final sig = constructorSignature(member);
+            if (sig.isNotEmpty) buffer.write(sig);
           } else if (member is MethodDeclaration) {
-            buffer.write(methodSignature(member));
+            final sig = methodSignature(member);
+            if (sig.isNotEmpty) buffer.write(sig);
           }
         }
         buffer.writeln('}');
         buffer.writeln();
       } else if (decl is MixinDeclaration) {
+        if (isPrivateName(decl.name.lexeme)) continue;
         final docs = doc(decl.documentationComment);
         if (docs.isNotEmpty) buffer.writeln(docs);
         buffer.writeln('${mixinHeader(decl)} {');
@@ -205,12 +266,15 @@ void readAllDocs(void Function(String content) writer) {
           if (member is FieldDeclaration) {
             buffer.write(fieldSignature(member));
           } else if (member is MethodDeclaration) {
-            buffer.write(methodSignature(member));
+            final sig = methodSignature(member);
+            if (sig.isNotEmpty) buffer.write(sig);
           }
         }
         buffer.writeln('}');
         buffer.writeln();
       } else if (decl is ExtensionDeclaration) {
+        final extName = decl.name?.lexeme;
+        if (extName != null && isPrivateName(extName)) continue;
         final docs = doc(decl.documentationComment);
         if (docs.isNotEmpty) buffer.writeln(docs);
         buffer.writeln('${extensionHeader(decl)} {');
@@ -218,14 +282,28 @@ void readAllDocs(void Function(String content) writer) {
           if (member is FieldDeclaration) {
             buffer.write(fieldSignature(member));
           } else if (member is MethodDeclaration) {
-            buffer.write(methodSignature(member));
+            final sig = methodSignature(member);
+            if (sig.isNotEmpty) buffer.write(sig);
           }
         }
         buffer.writeln('}');
         buffer.writeln();
       } else if (decl is EnumDeclaration) {
+        if (isPrivateName(decl.name.lexeme)) continue;
         buffer.writeln(enumSignature(decl));
         buffer.writeln();
+      } else if (decl is TopLevelVariableDeclaration) {
+        final sig = topLevelVariableSignature(decl);
+        if (sig.isNotEmpty) {
+          buffer.writeln(sig);
+          buffer.writeln();
+        }
+      } else if (decl is FunctionDeclaration) {
+        final sig = topLevelFunctionSignature(decl);
+        if (sig.isNotEmpty) {
+          buffer.writeln(sig);
+          buffer.writeln();
+        }
       }
     }
 
@@ -253,6 +331,16 @@ Future<void> generateLLMSFull() async {
       kept.add(line);
     }
     return kept.join('\n');
+  }
+
+  // 1) Prepend README.md at the very beginning, if present.
+  final readmeFile = File('README.md');
+  if (readmeFile.existsSync()) {
+    final readmeText = readmeFile.readAsStringSync();
+    final filtered = stripEmptyLines(readmeText);
+    if (filtered.isNotEmpty) {
+      sink.writeln(filtered);
+    }
   }
 
   readAllDocs((content) {
