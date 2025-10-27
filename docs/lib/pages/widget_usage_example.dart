@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';

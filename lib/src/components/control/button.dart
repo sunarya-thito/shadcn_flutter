@@ -16,15 +16,15 @@ import '../../../shadcn_flutter.dart';
 /// Example:
 /// ```dart
 /// final toggleController = ToggleController(false);
-/// 
+///
 /// // Listen to changes
 /// toggleController.addListener(() {
 ///   print('Toggle state: ${toggleController.value}');
 /// });
-/// 
+///
 /// // Toggle the state programmatically
 /// toggleController.toggle();
-/// 
+///
 /// // Set specific value
 /// toggleController.value = true;
 /// ```
@@ -39,7 +39,7 @@ class ToggleController extends ValueNotifier<bool>
   /// ```dart
   /// // Create controller starting in off state
   /// final controller = ToggleController();
-  /// 
+  ///
   /// // Create controller starting in on state
   /// final controller = ToggleController(true);
   /// ```
@@ -77,7 +77,7 @@ class ToggleController extends ValueNotifier<bool>
 /// Example:
 /// ```dart
 /// final controller = ToggleController(false);
-/// 
+///
 /// ControlledToggle(
 ///   controller: controller,
 ///   child: Row(
@@ -202,7 +202,7 @@ class ControlledToggle extends StatelessWidget with ControlledComponent<bool> {
 /// Example:
 /// ```dart
 /// bool isEnabled = false;
-/// 
+///
 /// Toggle(
 ///   value: isEnabled,
 ///   onChanged: (enabled) => setState(() => isEnabled = enabled),
@@ -658,6 +658,7 @@ class Button extends StatefulWidget {
   /// When true, removes the visual focus indicator that appears when the button
   /// is focused via keyboard navigation. Use carefully as this affects accessibility.
   final bool disableFocusOutline;
+
   /// Creates a [Button] with custom styling.
   ///
   /// This is the base constructor that allows complete customization of the button's
@@ -1392,7 +1393,7 @@ EdgeInsets _densityComfortable(EdgeInsets padding) {
 enum ButtonShape {
   /// Rectangular button with theme-appropriate rounded corners.
   rectangle,
-  
+
   /// Circular button with equal width and height.
   circle,
 }

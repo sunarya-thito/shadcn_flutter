@@ -130,7 +130,6 @@ export 'src/components/form/formatted_input.dart';
 export 'src/components/form/formatter.dart';
 export 'src/components/form/image.dart';
 export 'src/components/form/input_otp.dart';
-export 'src/components/form/number_input.dart';
 export 'src/components/form/phone_input.dart';
 export 'src/components/form/radio_group.dart';
 export 'src/components/form/select.dart';

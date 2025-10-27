@@ -230,9 +230,8 @@ bool isMobile(TargetPlatform platform) {
     case TargetPlatform.linux:
     case TargetPlatform.windows:
       return false;
+    // ignore: unreachable_switch_default
     default:
-      // TODO: Other platforms. For TargetPlatform.ohos.pc2in1
-      // TODO: ohos.mobile
       return false;
   }
 }
@@ -296,11 +295,11 @@ class WidgetTreeChangeDetector extends StatefulWidget {
   });
 
   @override
-  _WidgetTreeChangeDetectorState createState() =>
-      _WidgetTreeChangeDetectorState();
+  WidgetTreeChangeDetectorState createState() =>
+      WidgetTreeChangeDetectorState();
 }
 
-class _WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
+class WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
   @override
   void initState() {
     super.initState();
@@ -792,7 +791,7 @@ extension ColorExtension on Color {
   }
 
   String toHex({bool includeHashSign = false, bool includeAlpha = true}) {
-    String hex = value.toRadixString(16).padLeft(8, '0');
+    String hex = toARGB32().toRadixString(16).padLeft(8, '0');
     if (!includeAlpha) {
       hex = hex.substring(2);
     }
@@ -983,19 +982,19 @@ WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
 }
 
 ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
-    [String separator = ' ']) {
+    bool Function(String char) isSeparator) {
   if (caret < 0 || caret > text.length) {
     throw RangeError('Caret position is out of bounds.');
   }
 
   // Get the start and end of the word
   int start = caret;
-  while (start > 0 && !separator.contains(text[start - 1])) {
+  while (start > 0 && !isSeparator(text[start - 1])) {
     start--;
   }
 
   int end = caret;
-  while (end < text.length && !separator.contains(text[end])) {
+  while (end < text.length && !isSeparator(text[end])) {
     end++;
   }
 
@@ -1076,6 +1075,9 @@ class BiDirectionalConvert<A, B> {
         other.aToB == aToB &&
         other.bToA == bToA;
   }
+
+  @override
+  int get hashCode => Object.hash(aToB, bToA);
 }
 
 class ConvertedController<F, T> extends ChangeNotifier

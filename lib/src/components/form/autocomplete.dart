@@ -192,7 +192,7 @@ class AutoComplete extends StatefulWidget {
   ///
   /// Parameters:
   /// - [suggestions] (List<String>, required): available autocomplete options
-  /// - [child] (Widget, required): widget to receive autocomplete functionality  
+  /// - [child] (Widget, required): widget to receive autocomplete functionality
   /// - [popoverConstraints] (BoxConstraints?, optional): popover size limits
   /// - [popoverWidthConstraint] (PopoverConstraint?, optional): width strategy
   /// - [popoverAnchorAlignment] (AlignmentDirectional?, optional): anchor point
@@ -275,6 +275,12 @@ class _AutoCompleteItemState extends State<_AutoCompleteItem> {
       });
     }
   }
+}
+
+class AutoCompleteIntent extends Intent {
+  final String suggestion;
+  final AutoCompleteMode mode;
+  const AutoCompleteIntent(this.suggestion, this.mode);
 }
 
 class _AutoCompleteState extends State<AutoComplete> {
@@ -381,23 +387,9 @@ class _AutoCompleteState extends State<AutoComplete> {
     suggestion = widget.completer(
       suggestion,
     );
-    switch (_mode) {
-      case AutoCompleteMode.append:
-        TextFieldAppendTextIntent intent =
-            TextFieldAppendTextIntent(text: suggestion);
-        invokeActionOnFocusedWidget(intent);
-        break;
-      case AutoCompleteMode.replaceWord:
-        TextFieldReplaceCurrentWordIntent intent =
-            TextFieldReplaceCurrentWordIntent(text: suggestion);
-        invokeActionOnFocusedWidget(intent);
-        break;
-      case AutoCompleteMode.replaceAll:
-        TextFieldSetTextIntent intent =
-            TextFieldSetTextIntent(text: suggestion);
-        invokeActionOnFocusedWidget(intent);
-        break;
-    }
+    invokeActionOnFocusedWidget(
+      AutoCompleteIntent(suggestion, _mode),
+    );
   }
 
   @override

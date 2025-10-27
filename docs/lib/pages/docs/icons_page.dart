@@ -253,9 +253,11 @@ class _IconsPageState extends State<IconsPage> {
                                 ).gap(12).p(),
                                 const Gap(32),
                                 TextField(
-                                  leading: const Icon(Icons.search),
                                   placeholder: const Text('Search icons'),
                                   controller: _controller,
+                                  features: const [
+                                    InputFeature.leading(Icon(Icons.search)),
+                                  ],
                                 ),
                               ],
                             ),
@@ -272,7 +274,8 @@ class _IconsPageState extends State<IconsPage> {
                     SliverPadding(
                       padding: const EdgeInsets.only(top: 16),
                       sliver: SliverGrid(
-                        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 120,
                           mainAxisSpacing: 8,
                           crossAxisSpacing: 8,
@@ -304,9 +307,9 @@ class _IconsPageState extends State<IconsPage> {
                     ),
                     SliverPadding(
                       padding: const EdgeInsets.only(top: 16),
-                      sliver
-                          : SliverGrid(
-                        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      sliver: SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 120,
                           mainAxisSpacing: 8,
                           crossAxisSpacing: 8,
@@ -339,7 +342,8 @@ class _IconsPageState extends State<IconsPage> {
                     SliverPadding(
                       padding: const EdgeInsets.only(top: 16, bottom: 16),
                       sliver: SliverGrid(
-                        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 120,
                           mainAxisSpacing: 8,
                           crossAxisSpacing: 8,

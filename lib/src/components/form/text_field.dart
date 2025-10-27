@@ -12,7 +12,6 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:shadcn_flutter/src/components/layout/focus_outline.dart';
 import 'package:shadcn_flutter/src/components/layout/hidden.dart';
 
 import '../../../shadcn_flutter.dart';
@@ -519,11 +518,9 @@ mixin TextInput on Widget {
   BoxDecoration? get decoration;
   EdgeInsetsGeometry? get padding;
   Widget? get placeholder;
-  Widget? get leading;
-  Widget? get trailing;
   CrossAxisAlignment get crossAxisAlignment;
   String? get clearButtonSemanticLabel;
-  TextInputType get keyboardType;
+  TextInputType? get keyboardType;
   TextInputAction? get textInputAction;
   TextCapitalization get textCapitalization;
   TextStyle? get style;
@@ -566,7 +563,6 @@ mixin TextInput on Widget {
   DragStartBehavior get dragStartBehavior;
   ScrollController? get scrollController;
   ScrollPhysics? get scrollPhysics;
-  bool get selectionEnabled;
   GestureTapCallback? get onTap;
   Iterable<String>? get autofillHints;
   Clip get clipBehavior;
@@ -587,6 +583,435 @@ mixin TextInput on Widget {
   List<InputFeature> get features;
   List<TextInputFormatter>? get submitFormatters;
   bool get skipInputFeatureFocusTraversal;
+}
+
+abstract class TextInputStatefulWidget extends StatefulWidget with TextInput {
+  @override
+  final Object groupId;
+  @override
+  final TextEditingController? controller;
+  @override
+  final FocusNode? focusNode;
+  @override
+  final BoxDecoration? decoration;
+  @override
+  final EdgeInsetsGeometry? padding;
+  @override
+  final Widget? placeholder;
+  @override
+  final CrossAxisAlignment crossAxisAlignment;
+  @override
+  final String? clearButtonSemanticLabel;
+  @override
+  final TextInputType? keyboardType;
+  @override
+  final TextInputAction? textInputAction;
+  @override
+  final TextCapitalization textCapitalization;
+  @override
+  final TextStyle? style;
+  @override
+  final StrutStyle? strutStyle;
+  @override
+  final TextAlign textAlign;
+  @override
+  final TextAlignVertical? textAlignVertical;
+  @override
+  final TextDirection? textDirection;
+  @override
+  final bool readOnly;
+  @override
+  final bool? showCursor;
+  @override
+  final bool autofocus;
+  @override
+  final String obscuringCharacter;
+  @override
+  final bool obscureText;
+  @override
+  final bool autocorrect;
+  @override
+  final SmartDashesType smartDashesType;
+  @override
+  final SmartQuotesType smartQuotesType;
+  @override
+  final bool enableSuggestions;
+  @override
+  final int? maxLines;
+  @override
+  final int? minLines;
+  @override
+  final bool expands;
+  @override
+  final int? maxLength;
+  @override
+  final MaxLengthEnforcement? maxLengthEnforcement;
+  @override
+  final ValueChanged<String>? onChanged;
+  @override
+  final VoidCallback? onEditingComplete;
+  @override
+  final ValueChanged<String>? onSubmitted;
+  @override
+  final TapRegionCallback? onTapOutside;
+  @override
+  final TapRegionCallback? onTapUpOutside;
+  @override
+  final List<TextInputFormatter>? inputFormatters;
+  @override
+  final bool enabled;
+  @override
+  final double cursorWidth;
+  @override
+  final double? cursorHeight;
+  @override
+  final Radius cursorRadius;
+  @override
+  final bool cursorOpacityAnimates;
+  @override
+  final Color? cursorColor;
+  @override
+  final ui.BoxHeightStyle selectionHeightStyle;
+  @override
+  final ui.BoxWidthStyle selectionWidthStyle;
+  @override
+  final Brightness? keyboardAppearance;
+  @override
+  final EdgeInsets scrollPadding;
+  @override
+  final bool enableInteractiveSelection;
+  @override
+  final TextSelectionControls? selectionControls;
+  @override
+  final DragStartBehavior dragStartBehavior;
+  @override
+  final ScrollController? scrollController;
+  @override
+  final ScrollPhysics? scrollPhysics;
+  @override
+  final GestureTapCallback? onTap;
+  @override
+  final Iterable<String>? autofillHints;
+  @override
+  final Clip clipBehavior;
+  @override
+  final String? restorationId;
+  @override
+  final bool stylusHandwritingEnabled;
+  @override
+  final bool enableIMEPersonalizedLearning;
+  @override
+  final ContentInsertionConfiguration? contentInsertionConfiguration;
+  @override
+  final EditableTextContextMenuBuilder? contextMenuBuilder;
+  @override
+  final String? initialValue;
+  @override
+  final String? hintText;
+  @override
+  final Border? border;
+  @override
+  final BorderRadiusGeometry? borderRadius;
+  @override
+  final bool? filled;
+  @override
+  final WidgetStatesController? statesController;
+  @override
+  final TextMagnifierConfiguration? magnifierConfiguration;
+  @override
+  final SpellCheckConfiguration? spellCheckConfiguration;
+  @override
+  final UndoHistoryController? undoController;
+  @override
+  final List<InputFeature> features;
+  @override
+  final List<TextInputFormatter>? submitFormatters;
+  @override
+  final bool skipInputFeatureFocusTraversal;
+
+  const TextInputStatefulWidget({
+    super.key,
+    this.groupId = EditableText,
+    this.controller,
+    this.focusNode,
+    this.decoration,
+    this.padding,
+    this.placeholder,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.clearButtonSemanticLabel,
+    this.keyboardType,
+    this.textInputAction,
+    this.textCapitalization = TextCapitalization.none,
+    this.style,
+    this.strutStyle,
+    this.textAlign = TextAlign.start,
+    this.textAlignVertical,
+    this.textDirection,
+    this.readOnly = false,
+    this.showCursor,
+    this.autofocus = false,
+    this.obscuringCharacter = '•',
+    this.obscureText = false,
+    this.autocorrect = true,
+    this.smartDashesType = SmartDashesType.enabled,
+    this.smartQuotesType = SmartQuotesType.enabled,
+    this.enableSuggestions = true,
+    this.maxLines = 1,
+    this.minLines,
+    this.expands = false,
+    this.maxLength,
+    this.maxLengthEnforcement,
+    this.onChanged,
+    this.onEditingComplete,
+    this.onSubmitted,
+    this.onTapOutside,
+    this.onTapUpOutside,
+    this.inputFormatters,
+    this.enabled = true,
+    this.cursorWidth = 2.0,
+    this.cursorHeight,
+    this.cursorRadius = const Radius.circular(2.0),
+    this.cursorOpacityAnimates = true,
+    this.cursorColor,
+    this.selectionHeightStyle = ui.BoxHeightStyle.tight,
+    this.selectionWidthStyle = ui.BoxWidthStyle.tight,
+    this.keyboardAppearance,
+    this.scrollPadding = const EdgeInsets.all(20.0),
+    this.enableInteractiveSelection = true,
+    this.selectionControls,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.scrollController,
+    this.scrollPhysics,
+    this.onTap,
+    this.autofillHints = const [],
+    this.clipBehavior = Clip.hardEdge,
+    this.restorationId,
+    this.stylusHandwritingEnabled =
+        EditableText.defaultStylusHandwritingEnabled,
+    this.enableIMEPersonalizedLearning = true,
+    this.contentInsertionConfiguration,
+    this.contextMenuBuilder,
+    this.initialValue,
+    this.hintText,
+    this.border,
+    this.borderRadius,
+    this.filled,
+    this.statesController,
+    this.magnifierConfiguration,
+    this.spellCheckConfiguration,
+    this.undoController,
+    this.features = const [],
+    this.submitFormatters = const [],
+    this.skipInputFeatureFocusTraversal = false,
+  });
+
+  TextField copyWith({
+    ValueGetter<Key?>? key,
+    ValueGetter<Object>? groupId,
+    ValueGetter<TextEditingController?>? controller,
+    ValueGetter<String?>? initialValue,
+    ValueGetter<FocusNode?>? focusNode,
+    ValueGetter<UndoHistoryController?>? undoController,
+    ValueGetter<BoxDecoration?>? decoration,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+    ValueGetter<Widget?>? placeholder,
+    ValueGetter<CrossAxisAlignment>? crossAxisAlignment,
+    ValueGetter<String?>? clearButtonSemanticLabel,
+    ValueGetter<TextInputType?>? keyboardType,
+    ValueGetter<TextInputAction?>? textInputAction,
+    ValueGetter<TextCapitalization>? textCapitalization,
+    ValueGetter<TextStyle?>? style,
+    ValueGetter<StrutStyle?>? strutStyle,
+    ValueGetter<TextAlign>? textAlign,
+    ValueGetter<TextAlignVertical?>? textAlignVertical,
+    ValueGetter<TextDirection?>? textDirection,
+    ValueGetter<bool>? readOnly,
+    ValueGetter<bool?>? showCursor,
+    ValueGetter<bool>? autofocus,
+    ValueGetter<String>? obscuringCharacter,
+    ValueGetter<bool>? obscureText,
+    ValueGetter<bool>? autocorrect,
+    ValueGetter<SmartDashesType>? smartDashesType,
+    ValueGetter<SmartQuotesType>? smartQuotesType,
+    ValueGetter<bool>? enableSuggestions,
+    ValueGetter<int?>? maxLines,
+    ValueGetter<int?>? minLines,
+    ValueGetter<bool>? expands,
+    ValueGetter<int?>? maxLength,
+    ValueGetter<MaxLengthEnforcement?>? maxLengthEnforcement,
+    ValueGetter<ValueChanged<String>?>? onChanged,
+    ValueGetter<VoidCallback?>? onEditingComplete,
+    ValueGetter<ValueChanged<String>?>? onSubmitted,
+    ValueGetter<TapRegionCallback?>? onTapOutside,
+    ValueGetter<TapRegionCallback?>? onTapUpOutside,
+    ValueGetter<List<TextInputFormatter>?>? inputFormatters,
+    ValueGetter<bool>? enabled,
+    ValueGetter<double>? cursorWidth,
+    ValueGetter<double?>? cursorHeight,
+    ValueGetter<Radius>? cursorRadius,
+    ValueGetter<bool>? cursorOpacityAnimates,
+    ValueGetter<Color?>? cursorColor,
+    ValueGetter<ui.BoxHeightStyle>? selectionHeightStyle,
+    ValueGetter<ui.BoxWidthStyle>? selectionWidthStyle,
+    ValueGetter<Brightness?>? keyboardAppearance,
+    ValueGetter<EdgeInsets>? scrollPadding,
+    ValueGetter<bool>? enableInteractiveSelection,
+    ValueGetter<TextSelectionControls?>? selectionControls,
+    ValueGetter<DragStartBehavior>? dragStartBehavior,
+    ValueGetter<ScrollController?>? scrollController,
+    ValueGetter<ScrollPhysics?>? scrollPhysics,
+    ValueGetter<GestureTapCallback?>? onTap,
+    ValueGetter<Iterable<String>?>? autofillHints,
+    ValueGetter<Clip>? clipBehavior,
+    ValueGetter<String?>? restorationId,
+    ValueGetter<bool>? stylusHandwritingEnabled,
+    ValueGetter<bool>? enableIMEPersonalizedLearning,
+    ValueGetter<ContentInsertionConfiguration?>? contentInsertionConfiguration,
+    ValueGetter<EditableTextContextMenuBuilder?>? contextMenuBuilder,
+    ValueGetter<String?>? hintText,
+    ValueGetter<Border?>? border,
+    ValueGetter<BorderRadiusGeometry?>? borderRadius,
+    ValueGetter<bool?>? filled,
+    ValueGetter<WidgetStatesController?>? statesController,
+    ValueGetter<TextMagnifierConfiguration?>? magnifierConfiguration,
+    ValueGetter<SpellCheckConfiguration?>? spellCheckConfiguration,
+    ValueGetter<List<InputFeature>>? features,
+    ValueGetter<List<TextInputFormatter>?>? submitFormatters,
+    ValueGetter<bool>? skipInputFeatureFocusTraversal,
+  }) {
+    return TextField(
+      key: key == null ? this.key : key(),
+      groupId: groupId == null ? this.groupId : groupId(),
+      controller: controller == null ? this.controller : controller(),
+      initialValue: initialValue == null ? this.initialValue : initialValue(),
+      focusNode: focusNode == null ? this.focusNode : focusNode(),
+      undoController:
+          undoController == null ? this.undoController : undoController(),
+      decoration: decoration == null ? this.decoration : decoration(),
+      padding: padding == null ? this.padding : padding(),
+      placeholder: placeholder == null ? this.placeholder : placeholder(),
+      crossAxisAlignment: crossAxisAlignment == null
+          ? this.crossAxisAlignment
+          : crossAxisAlignment(),
+      clearButtonSemanticLabel: clearButtonSemanticLabel == null
+          ? this.clearButtonSemanticLabel
+          : clearButtonSemanticLabel(),
+      keyboardType: keyboardType == null ? this.keyboardType : keyboardType(),
+      textInputAction:
+          textInputAction == null ? this.textInputAction : textInputAction(),
+      textCapitalization: textCapitalization == null
+          ? this.textCapitalization
+          : textCapitalization(),
+      style: style == null ? this.style : style(),
+      strutStyle: strutStyle == null ? this.strutStyle : strutStyle(),
+      textAlign: textAlign == null ? this.textAlign : textAlign(),
+      textAlignVertical: textAlignVertical == null
+          ? this.textAlignVertical
+          : textAlignVertical(),
+      textDirection:
+          textDirection == null ? this.textDirection : textDirection(),
+      readOnly: readOnly == null ? this.readOnly : readOnly(),
+      showCursor: showCursor == null ? this.showCursor : showCursor(),
+      autofocus: autofocus == null ? this.autofocus : autofocus(),
+      obscuringCharacter: obscuringCharacter == null
+          ? this.obscuringCharacter
+          : obscuringCharacter(),
+      obscureText: obscureText == null ? this.obscureText : obscureText(),
+      autocorrect: autocorrect == null ? this.autocorrect : autocorrect(),
+      smartDashesType:
+          smartDashesType == null ? this.smartDashesType : smartDashesType(),
+      smartQuotesType:
+          smartQuotesType == null ? this.smartQuotesType : smartQuotesType(),
+      enableSuggestions: enableSuggestions == null
+          ? this.enableSuggestions
+          : enableSuggestions(),
+      maxLines: maxLines == null ? this.maxLines : maxLines(),
+      minLines: minLines == null ? this.minLines : minLines(),
+      expands: expands == null ? this.expands : expands(),
+      maxLength: maxLength == null ? this.maxLength : maxLength(),
+      maxLengthEnforcement: maxLengthEnforcement == null
+          ? this.maxLengthEnforcement
+          : maxLengthEnforcement(),
+      onChanged: onChanged == null ? this.onChanged : onChanged(),
+      onEditingComplete: onEditingComplete == null
+          ? this.onEditingComplete
+          : onEditingComplete(),
+      onSubmitted: onSubmitted == null ? this.onSubmitted : onSubmitted(),
+      onTapOutside: onTapOutside == null ? this.onTapOutside : onTapOutside(),
+      onTapUpOutside:
+          onTapUpOutside == null ? this.onTapUpOutside : onTapUpOutside(),
+      inputFormatters:
+          inputFormatters == null ? this.inputFormatters : inputFormatters(),
+      enabled: enabled == null ? this.enabled : enabled(),
+      cursorWidth: cursorWidth == null ? this.cursorWidth : cursorWidth(),
+      cursorHeight: cursorHeight == null ? this.cursorHeight : cursorHeight(),
+      cursorRadius: cursorRadius == null ? this.cursorRadius : cursorRadius(),
+      cursorOpacityAnimates: cursorOpacityAnimates == null
+          ? this.cursorOpacityAnimates
+          : cursorOpacityAnimates(),
+      cursorColor: cursorColor == null ? this.cursorColor : cursorColor(),
+      selectionHeightStyle: selectionHeightStyle == null
+          ? this.selectionHeightStyle
+          : selectionHeightStyle(),
+      selectionWidthStyle: selectionWidthStyle == null
+          ? this.selectionWidthStyle
+          : selectionWidthStyle(),
+      keyboardAppearance: keyboardAppearance == null
+          ? this.keyboardAppearance
+          : keyboardAppearance(),
+      scrollPadding:
+          scrollPadding == null ? this.scrollPadding : scrollPadding(),
+      enableInteractiveSelection: enableInteractiveSelection == null
+          ? this.enableInteractiveSelection
+          : enableInteractiveSelection(),
+      selectionControls: selectionControls == null
+          ? this.selectionControls
+          : selectionControls(),
+      dragStartBehavior: dragStartBehavior == null
+          ? this.dragStartBehavior
+          : dragStartBehavior(),
+      scrollController:
+          scrollController == null ? this.scrollController : scrollController(),
+      scrollPhysics:
+          scrollPhysics == null ? this.scrollPhysics : scrollPhysics(),
+      onTap: onTap == null ? this.onTap : onTap(),
+      autofillHints:
+          autofillHints == null ? this.autofillHints : autofillHints(),
+      clipBehavior: clipBehavior == null ? this.clipBehavior : clipBehavior(),
+      restorationId:
+          restorationId == null ? this.restorationId : restorationId(),
+      stylusHandwritingEnabled: stylusHandwritingEnabled == null
+          ? this.stylusHandwritingEnabled
+          : stylusHandwritingEnabled(),
+      enableIMEPersonalizedLearning: enableIMEPersonalizedLearning == null
+          ? this.enableIMEPersonalizedLearning
+          : enableIMEPersonalizedLearning(),
+      contentInsertionConfiguration: contentInsertionConfiguration == null
+          ? this.contentInsertionConfiguration
+          : contentInsertionConfiguration(),
+      contextMenuBuilder: contextMenuBuilder == null
+          ? this.contextMenuBuilder
+          : contextMenuBuilder(),
+      hintText: hintText == null ? this.hintText : hintText(),
+      border: border == null ? this.border : border(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
+      filled: filled == null ? this.filled : filled(),
+      statesController:
+          statesController == null ? this.statesController : statesController(),
+      magnifierConfiguration: magnifierConfiguration == null
+          ? this.magnifierConfiguration
+          : magnifierConfiguration(),
+      spellCheckConfiguration: spellCheckConfiguration == null
+          ? this.spellCheckConfiguration
+          : spellCheckConfiguration(),
+      features: features == null ? this.features : features(),
+      submitFormatters:
+          submitFormatters == null ? this.submitFormatters : submitFormatters(),
+      skipInputFeatureFocusTraversal: skipInputFeatureFocusTraversal == null
+          ? this.skipInputFeatureFocusTraversal
+          : skipInputFeatureFocusTraversal(),
+    );
+  }
 }
 
 /// A highly customizable single-line text input widget with extensive feature support.
@@ -633,7 +1058,7 @@ mixin TextInput on Widget {
 ///   onChanged: (text) => _handleTextChange(text),
 /// );
 /// ```
-class TextField extends StatefulWidget with TextInput {
+class TextField extends TextInputStatefulWidget {
   static EditableTextContextMenuBuilder nativeContextMenuBuilder() {
     return (context, editableTextState) {
       return material.AdaptiveTextSelectionToolbar.editableText(
@@ -702,336 +1127,85 @@ class TextField extends StatefulWidget with TextInput {
 
   const TextField({
     super.key,
-    this.groupId = EditableText,
-    this.controller,
-    this.initialValue,
-    this.focusNode,
-    this.undoController,
-    this.decoration,
-    this.padding,
-    this.placeholder,
-    @Deprecated('Use InputFeature.leading instead') this.leading,
-    @Deprecated('Use InputFeature.trailing instead') this.trailing,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.clearButtonSemanticLabel,
-    TextInputType? keyboardType,
-    this.textInputAction,
-    this.textCapitalization = TextCapitalization.none,
-    this.style,
-    this.strutStyle,
-    this.textAlign = TextAlign.start,
-    this.textAlignVertical,
-    this.textDirection,
-    this.readOnly = false,
-    this.showCursor,
-    this.autofocus = false,
-    this.obscuringCharacter = '•',
-    this.obscureText = false,
-    this.autocorrect = true,
-    SmartDashesType? smartDashesType,
-    SmartQuotesType? smartQuotesType,
-    this.enableSuggestions = true,
-    this.maxLines = 1,
-    this.minLines,
-    this.expands = false,
-    this.maxLength,
-    this.maxLengthEnforcement,
-    this.onChanged,
-    this.onEditingComplete,
-    this.onSubmitted,
-    this.onTapOutside,
-    this.onTapUpOutside,
-    this.inputFormatters,
-    this.enabled = true,
-    this.cursorWidth = 2.0,
-    this.cursorHeight,
-    this.cursorRadius = const Radius.circular(2.0),
-    this.cursorOpacityAnimates = true,
-    this.cursorColor,
-    this.selectionHeightStyle = ui.BoxHeightStyle.tight,
-    this.selectionWidthStyle = ui.BoxWidthStyle.tight,
-    this.keyboardAppearance,
-    this.scrollPadding = const EdgeInsets.all(20.0),
-    this.dragStartBehavior = DragStartBehavior.start,
-    bool? enableInteractiveSelection,
-    this.selectionControls,
-    this.onTap,
-    this.scrollController,
-    this.scrollPhysics,
-    this.autofillHints = const [],
-    this.contentInsertionConfiguration,
-    this.clipBehavior = Clip.hardEdge,
-    this.restorationId,
-    this.stylusHandwritingEnabled =
-        EditableText.defaultStylusHandwritingEnabled,
-    this.enableIMEPersonalizedLearning = true,
-    this.contextMenuBuilder = _defaultContextMenuBuilder,
-    this.spellCheckConfiguration,
-    this.magnifierConfiguration,
-    this.hintText,
-    this.border,
-    this.borderRadius,
-    this.filled,
-    this.statesController,
-    this.features = const [],
-    this.submitFormatters = const [],
-    this.skipInputFeatureFocusTraversal = false,
-  })  : assert(obscuringCharacter.length == 1),
-        smartDashesType = smartDashesType ??
-            (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
-        smartQuotesType = smartQuotesType ??
-            (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
-        assert(maxLines == null || maxLines > 0),
-        assert(minLines == null || minLines > 0),
-        assert(
-          (maxLines == null) || (minLines == null) || (maxLines >= minLines),
-          "minLines can't be greater than maxLines",
-        ),
-        assert(
-          !expands || (maxLines == null && minLines == null),
-          'minLines and maxLines must be null when expands is true.',
-        ),
-        assert(!obscureText || maxLines == 1,
-            'Obscured fields cannot be multiline.'),
-        assert(maxLength == null || maxLength > 0),
-        // Assert the following instead of setting it directly to avoid surprising the user by silently changing the value they set.
-        assert(
-          !identical(textInputAction, TextInputAction.newline) ||
-              maxLines == 1 ||
-              !identical(keyboardType, TextInputType.text),
-          'Use keyboardType TextInputType.multiline when using TextInputAction.newline on a multiline TextField.',
-        ),
-        keyboardType = keyboardType ??
-            (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
-        enableInteractiveSelection =
-            enableInteractiveSelection ?? (!readOnly || !obscureText);
-
-  @override
-  final bool skipInputFeatureFocusTraversal;
-
-  @override
-  final List<InputFeature> features;
-
-  @override
-  final Object groupId;
-
-  @override
-  final TextEditingController? controller;
-
-  @override
-  final FocusNode? focusNode;
-
-  @override
-  final BoxDecoration? decoration;
-
-  @override
-  final EdgeInsetsGeometry? padding;
-
-  @override
-  final Widget? placeholder;
-
-  @override
-  final Widget? leading;
-
-  @override
-  final Widget? trailing;
-
-  @override
-  final CrossAxisAlignment crossAxisAlignment;
-
-  @override
-  final String? clearButtonSemanticLabel;
-
-  @override
-  final TextInputType keyboardType;
-
-  @override
-  final TextInputAction? textInputAction;
-
-  @override
-  final TextCapitalization textCapitalization;
-
-  @override
-  final TextStyle? style;
-
-  @override
-  final StrutStyle? strutStyle;
-
-  @override
-  final TextAlign textAlign;
-
-  @override
-  final TextAlignVertical? textAlignVertical;
-
-  @override
-  final TextDirection? textDirection;
-
-  @override
-  final bool readOnly;
-
-  @override
-  final bool? showCursor;
-
-  @override
-  final bool autofocus;
-
-  @override
-  final String obscuringCharacter;
-
-  @override
-  final bool obscureText;
-
-  @override
-  final bool autocorrect;
-
-  @override
-  final SmartDashesType smartDashesType;
-
-  @override
-  final SmartQuotesType smartQuotesType;
-
-  @override
-  final bool enableSuggestions;
-
-  @override
-  final int? maxLines;
-
-  @override
-  final int? minLines;
-
-  @override
-  final bool expands;
-
-  @override
-  final int? maxLength;
-
-  @override
-  final MaxLengthEnforcement? maxLengthEnforcement;
-
-  @override
-  final ValueChanged<String>? onChanged;
-
-  @override
-  final VoidCallback? onEditingComplete;
-
-  @override
-  final ValueChanged<String>? onSubmitted;
-
-  @override
-  final TapRegionCallback? onTapOutside;
-
-  @override
-  final TapRegionCallback? onTapUpOutside;
-
-  @override
-  final List<TextInputFormatter>? inputFormatters;
-
-  @override
-  final bool enabled;
-
-  @override
-  final double cursorWidth;
-
-  @override
-  final double? cursorHeight;
-
-  @override
-  final Radius cursorRadius;
-
-  @override
-  final bool cursorOpacityAnimates;
-
-  @override
-  final Color? cursorColor;
-
-  @override
-  final ui.BoxHeightStyle selectionHeightStyle;
-
-  @override
-  final ui.BoxWidthStyle selectionWidthStyle;
-
-  @override
-  final Brightness? keyboardAppearance;
-
-  @override
-  final EdgeInsets scrollPadding;
-
-  @override
-  final bool enableInteractiveSelection;
-
-  @override
-  final TextSelectionControls? selectionControls;
-
-  @override
-  final DragStartBehavior dragStartBehavior;
-
-  @override
-  final ScrollController? scrollController;
-
-  @override
-  final ScrollPhysics? scrollPhysics;
-
-  @override
-  bool get selectionEnabled => enableInteractiveSelection;
-
-  @override
-  final GestureTapCallback? onTap;
-
-  @override
-  final Iterable<String>? autofillHints;
-
-  @override
-  final Clip clipBehavior;
-
-  @override
-  final String? restorationId;
-
-  @override
-  final bool stylusHandwritingEnabled;
-
-  @override
-  final bool enableIMEPersonalizedLearning;
-
-  @override
-  final ContentInsertionConfiguration? contentInsertionConfiguration;
-
-  @override
-  final EditableTextContextMenuBuilder? contextMenuBuilder;
-
-  @override
-  final String? initialValue;
-
-  @override
-  final String?
-      hintText; // used for autofill hints (use placeholder for decoration)
-
-  @override
-  final Border? border;
-
-  @override
-  final BorderRadiusGeometry? borderRadius;
-
-  @override
-  final bool? filled;
-
-  @override
-  final WidgetStatesController? statesController;
-
-  @override
-  final List<TextInputFormatter>? submitFormatters;
-
-  static Widget _defaultContextMenuBuilder(
+    super.groupId,
+    super.controller,
+    super.initialValue,
+    super.focusNode,
+    super.undoController,
+    super.decoration,
+    super.padding,
+    super.placeholder,
+    super.crossAxisAlignment,
+    super.clearButtonSemanticLabel,
+    super.keyboardType,
+    super.textInputAction,
+    super.textCapitalization,
+    super.style,
+    super.strutStyle,
+    super.textAlign,
+    super.textAlignVertical,
+    super.textDirection,
+    super.readOnly,
+    super.showCursor,
+    super.autofocus,
+    super.obscuringCharacter,
+    super.obscureText,
+    super.autocorrect,
+    super.smartDashesType,
+    super.smartQuotesType,
+    super.enableSuggestions,
+    super.maxLines,
+    super.minLines,
+    super.expands,
+    super.maxLength,
+    super.maxLengthEnforcement,
+    super.onChanged,
+    super.onEditingComplete,
+    super.onSubmitted,
+    super.onTapOutside,
+    super.onTapUpOutside,
+    super.inputFormatters,
+    super.enabled,
+    super.cursorWidth,
+    super.cursorHeight,
+    super.cursorRadius,
+    super.cursorOpacityAnimates,
+    super.cursorColor,
+    super.selectionHeightStyle,
+    super.selectionWidthStyle,
+    super.keyboardAppearance,
+    super.scrollPadding,
+    super.enableInteractiveSelection,
+    super.selectionControls,
+    super.dragStartBehavior,
+    super.scrollController,
+    super.scrollPhysics,
+    super.onTap,
+    super.autofillHints,
+    super.clipBehavior,
+    super.restorationId,
+    super.stylusHandwritingEnabled,
+    super.enableIMEPersonalizedLearning,
+    super.contentInsertionConfiguration,
+    super.contextMenuBuilder = defaultContextMenuBuilder,
+    super.hintText,
+    super.border,
+    super.borderRadius,
+    super.filled,
+    super.statesController,
+    super.magnifierConfiguration,
+    super.spellCheckConfiguration,
+    super.features,
+    super.submitFormatters,
+    super.skipInputFeatureFocusTraversal,
+  });
+
+  static Widget defaultContextMenuBuilder(
     BuildContext context,
     EditableTextState editableTextState,
   ) {
     return buildEditableTextContextMenu(context, editableTextState);
   }
-
-  @override
-  final TextMagnifierConfiguration? magnifierConfiguration;
-
-  @override
-  final SpellCheckConfiguration? spellCheckConfiguration;
 
   @visibleForTesting
   static Widget defaultSpellCheckSuggestionsToolbarBuilder(
@@ -1041,9 +1215,6 @@ class TextField extends StatefulWidget with TextInput {
     return CupertinoSpellCheckSuggestionsToolbar.editableText(
         editableTextState: editableTextState);
   }
-
-  @override
-  final UndoHistoryController? undoController;
 
   @override
   State<TextField> createState() => TextFieldState();
@@ -1134,14 +1305,6 @@ class TextField extends StatefulWidget with TextInput {
     );
     properties.add(ColorProperty('cursorColor', cursorColor));
     properties.add(
-      FlagProperty(
-        'selectionEnabled',
-        value: selectionEnabled,
-        defaultValue: true,
-        ifFalse: 'selection disabled',
-      ),
-    );
-    properties.add(
       DiagnosticsProperty<TextSelectionControls>(
         'selectionControls',
         selectionControls,
@@ -1206,212 +1369,6 @@ class TextField extends StatefulWidget with TextInput {
     );
     properties.add(IterableProperty<InputFeature>('features', features));
   }
-
-  TextField copyWith({
-    ValueGetter<Key?>? key,
-    ValueGetter<TextEditingController?>? controller,
-    ValueGetter<String?>? initialValue,
-    ValueGetter<FocusNode?>? focusNode,
-    ValueGetter<UndoHistoryController?>? undoController,
-    ValueGetter<BoxDecoration?>? decoration,
-    ValueGetter<EdgeInsetsGeometry?>? padding,
-    ValueGetter<Widget?>? placeholder,
-    ValueGetter<Widget?>? leading,
-    ValueGetter<Widget?>? trailing,
-    ValueGetter<CrossAxisAlignment>? crossAxisAlignment,
-    ValueGetter<String?>? clearButtonSemanticLabel,
-    ValueGetter<TextInputType?>? keyboardType,
-    ValueGetter<TextInputAction?>? textInputAction,
-    ValueGetter<TextCapitalization>? textCapitalization,
-    ValueGetter<TextStyle?>? style,
-    ValueGetter<StrutStyle?>? strutStyle,
-    ValueGetter<TextAlign>? textAlign,
-    ValueGetter<TextAlignVertical?>? textAlignVertical,
-    ValueGetter<TextDirection?>? textDirection,
-    ValueGetter<bool>? readOnly,
-    ValueGetter<bool?>? showCursor,
-    ValueGetter<bool>? autofocus,
-    ValueGetter<String>? obscuringCharacter,
-    ValueGetter<bool>? obscureText,
-    ValueGetter<bool>? autocorrect,
-    ValueGetter<SmartDashesType?>? smartDashesType,
-    ValueGetter<SmartQuotesType?>? smartQuotesType,
-    ValueGetter<bool>? enableSuggestions,
-    ValueGetter<int?>? maxLines,
-    ValueGetter<int?>? minLines,
-    ValueGetter<bool>? expands,
-    ValueGetter<int?>? maxLength,
-    ValueGetter<MaxLengthEnforcement?>? maxLengthEnforcement,
-    ValueGetter<ValueChanged<String>?>? onChanged,
-    ValueGetter<VoidCallback?>? onEditingComplete,
-    ValueGetter<ValueChanged<String>?>? onSubmitted,
-    ValueGetter<TapRegionCallback?>? onTapOutside,
-    ValueGetter<TapRegionCallback?>? onTapUpOutside,
-    ValueGetter<List<TextInputFormatter>?>? inputFormatters,
-    ValueGetter<bool>? enabled,
-    ValueGetter<double>? cursorWidth,
-    ValueGetter<double?>? cursorHeight,
-    ValueGetter<Radius>? cursorRadius,
-    ValueGetter<bool>? cursorOpacityAnimates,
-    ValueGetter<Color?>? cursorColor,
-    ValueGetter<ui.BoxHeightStyle>? selectionHeightStyle,
-    ValueGetter<ui.BoxWidthStyle>? selectionWidthStyle,
-    ValueGetter<Brightness?>? keyboardAppearance,
-    ValueGetter<EdgeInsets>? scrollPadding,
-    ValueGetter<bool>? enableInteractiveSelection,
-    ValueGetter<TextSelectionControls?>? selectionControls,
-    ValueGetter<GestureTapCallback?>? onTap,
-    ValueGetter<ScrollController?>? scrollController,
-    ValueGetter<ScrollPhysics?>? scrollPhysics,
-    ValueGetter<Iterable<String>?>? autofillHints,
-    ValueGetter<Clip>? clipBehavior,
-    ValueGetter<String?>? restorationId,
-    ValueGetter<bool>? stylusHandwritingEnabled,
-    ValueGetter<bool>? enableIMEPersonalizedLearning,
-    ValueGetter<ContentInsertionConfiguration?>? contentInsertionConfiguration,
-    ValueGetter<EditableTextContextMenuBuilder?>? contextMenuBuilder,
-    ValueGetter<String?>? hintText,
-    ValueGetter<Border?>? border,
-    ValueGetter<BorderRadiusGeometry?>? borderRadius,
-    ValueGetter<bool?>? filled,
-    ValueGetter<WidgetStatesController?>? statesController,
-    ValueGetter<TextMagnifierConfiguration?>? magnifierConfiguration,
-    ValueGetter<SpellCheckConfiguration?>? spellCheckConfiguration,
-    ValueGetter<List<InputFeature>>? features,
-    ValueGetter<List<TextInputFormatter>?>? submitFormatters,
-    ValueGetter<bool>? skipInputFeatureFocusTraversal,
-  }) {
-    return TextField(
-      key: key == null ? this.key : key(),
-      controller: controller == null ? this.controller : controller(),
-      initialValue: initialValue == null ? this.initialValue : initialValue(),
-      focusNode: focusNode == null ? this.focusNode : focusNode(),
-      undoController:
-          undoController == null ? this.undoController : undoController(),
-      decoration: decoration == null ? this.decoration : decoration(),
-      padding: padding == null ? this.padding : padding(),
-      placeholder: placeholder == null ? this.placeholder : placeholder(),
-      leading: leading == null ? this.leading : leading(),
-      trailing: trailing == null ? this.trailing : trailing(),
-      crossAxisAlignment: crossAxisAlignment == null
-          ? this.crossAxisAlignment
-          : crossAxisAlignment(),
-      clearButtonSemanticLabel: clearButtonSemanticLabel == null
-          ? this.clearButtonSemanticLabel
-          : clearButtonSemanticLabel(),
-      keyboardType: keyboardType == null ? this.keyboardType : keyboardType(),
-      textInputAction:
-          textInputAction == null ? this.textInputAction : textInputAction(),
-      textCapitalization: textCapitalization == null
-          ? this.textCapitalization
-          : textCapitalization(),
-      style: style == null ? this.style : style(),
-      strutStyle: strutStyle == null ? this.strutStyle : strutStyle(),
-      textAlign: textAlign == null ? this.textAlign : textAlign(),
-      textAlignVertical: textAlignVertical == null
-          ? this.textAlignVertical
-          : textAlignVertical(),
-      textDirection:
-          textDirection == null ? this.textDirection : textDirection(),
-      readOnly: readOnly == null ? this.readOnly : readOnly(),
-      showCursor: showCursor == null ? this.showCursor : showCursor(),
-      autofocus: autofocus == null ? this.autofocus : autofocus(),
-      obscuringCharacter: obscuringCharacter == null
-          ? this.obscuringCharacter
-          : obscuringCharacter(),
-      obscureText: obscureText == null ? this.obscureText : obscureText(),
-      autocorrect: autocorrect == null ? this.autocorrect : autocorrect(),
-      smartDashesType:
-          smartDashesType == null ? this.smartDashesType : smartDashesType(),
-      smartQuotesType:
-          smartQuotesType == null ? this.smartQuotesType : smartQuotesType(),
-      enableSuggestions: enableSuggestions == null
-          ? this.enableSuggestions
-          : enableSuggestions(),
-      maxLines: maxLines == null ? this.maxLines : maxLines(),
-      minLines: minLines == null ? this.minLines : minLines(),
-      expands: expands == null ? this.expands : expands(),
-      maxLength: maxLength == null ? this.maxLength : maxLength(),
-      maxLengthEnforcement: maxLengthEnforcement == null
-          ? this.maxLengthEnforcement
-          : maxLengthEnforcement(),
-      onChanged: onChanged == null ? this.onChanged : onChanged(),
-      onEditingComplete: onEditingComplete == null
-          ? this.onEditingComplete
-          : onEditingComplete(),
-      onSubmitted: onSubmitted == null ? this.onSubmitted : onSubmitted(),
-      onTapOutside: onTapOutside == null ? this.onTapOutside : onTapOutside(),
-      onTapUpOutside:
-          onTapUpOutside == null ? this.onTapUpOutside : onTapUpOutside(),
-      inputFormatters:
-          inputFormatters == null ? this.inputFormatters : inputFormatters(),
-      enabled: enabled == null ? this.enabled : enabled(),
-      cursorWidth: cursorWidth == null ? this.cursorWidth : cursorWidth(),
-      cursorHeight: cursorHeight == null ? this.cursorHeight : cursorHeight(),
-      cursorRadius: cursorRadius == null ? this.cursorRadius : cursorRadius(),
-      cursorOpacityAnimates: cursorOpacityAnimates == null
-          ? this.cursorOpacityAnimates
-          : cursorOpacityAnimates(),
-      cursorColor: cursorColor == null ? this.cursorColor : cursorColor(),
-      selectionHeightStyle: selectionHeightStyle == null
-          ? this.selectionHeightStyle
-          : selectionHeightStyle(),
-      selectionWidthStyle: selectionWidthStyle == null
-          ? this.selectionWidthStyle
-          : selectionWidthStyle(),
-      keyboardAppearance: keyboardAppearance == null
-          ? this.keyboardAppearance
-          : keyboardAppearance(),
-      scrollPadding:
-          scrollPadding == null ? this.scrollPadding : scrollPadding(),
-      enableInteractiveSelection: enableInteractiveSelection == null
-          ? this.enableInteractiveSelection
-          : enableInteractiveSelection(),
-      selectionControls: selectionControls == null
-          ? this.selectionControls
-          : selectionControls(),
-      onTap: onTap == null ? this.onTap : onTap(),
-      scrollController:
-          scrollController == null ? this.scrollController : scrollController(),
-      scrollPhysics:
-          scrollPhysics == null ? this.scrollPhysics : scrollPhysics(),
-      autofillHints:
-          autofillHints == null ? this.autofillHints : autofillHints(),
-      clipBehavior: clipBehavior == null ? this.clipBehavior : clipBehavior(),
-      restorationId:
-          restorationId == null ? this.restorationId : restorationId(),
-      stylusHandwritingEnabled: stylusHandwritingEnabled == null
-          ? this.stylusHandwritingEnabled
-          : stylusHandwritingEnabled(),
-      enableIMEPersonalizedLearning: enableIMEPersonalizedLearning == null
-          ? this.enableIMEPersonalizedLearning
-          : enableIMEPersonalizedLearning(),
-      contentInsertionConfiguration: contentInsertionConfiguration == null
-          ? this.contentInsertionConfiguration
-          : contentInsertionConfiguration(),
-      contextMenuBuilder: contextMenuBuilder == null
-          ? this.contextMenuBuilder
-          : contextMenuBuilder(),
-      hintText: hintText == null ? this.hintText : hintText(),
-      border: border == null ? this.border : border(),
-      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
-      filled: filled == null ? this.filled : filled(),
-      statesController:
-          statesController == null ? this.statesController : statesController(),
-      magnifierConfiguration: magnifierConfiguration == null
-          ? this.magnifierConfiguration
-          : magnifierConfiguration(),
-      spellCheckConfiguration: spellCheckConfiguration == null
-          ? this.spellCheckConfiguration
-          : spellCheckConfiguration(),
-      features: features == null ? this.features : features(),
-      submitFormatters:
-          submitFormatters == null ? this.submitFormatters : submitFormatters(),
-      skipInputFeatureFocusTraversal: skipInputFeatureFocusTraversal == null
-          ? this.skipInputFeatureFocusTraversal
-          : skipInputFeatureFocusTraversal(),
-    );
-  }
 }
 
 class _AttachedInputFeature {
@@ -1466,7 +1423,8 @@ class TextFieldState extends State<TextField>
       GlobalKey<EditableTextState>();
 
   @override
-  bool get selectionEnabled => widget.selectionEnabled;
+  bool get selectionEnabled =>
+      widget.enableInteractiveSelection && widget.enabled;
   // End of API for TextSelectionGestureDetectorBuilderDelegate.
 
   @override
@@ -1693,8 +1651,11 @@ class TextFieldState extends State<TextField>
         if (cause == SelectionChangedCause.longPress) {
           _editableText.bringIntoView(selection.extent);
         }
+      // ignore: unreachable_switch_default
       default:
-        // TODO: Other platforms. For TargetPlatform.ohos
+        // using the normal flutter sdk, this is unreachable.
+        // but for other forks like flutter for ohos, we keep it
+        // so that they can add their own platform specific behavior.
         if (cause == SelectionChangedCause.longPress) {
           _editableText.bringIntoView(selection.extent);
         }
@@ -1711,8 +1672,8 @@ class TextFieldState extends State<TextField>
         if (cause == SelectionChangedCause.drag) {
           _editableText.hideToolbar();
         }
+      // ignore: unreachable_switch_default
       default:
-        // TODO: Other platforms. For TargetPlatform.ohos
         if (cause == SelectionChangedCause.drag) {
           _editableText.hideToolbar();
         }
@@ -1728,10 +1689,7 @@ class TextFieldState extends State<TextField>
 
   // True if any surrounding decoration widgets will be shown.
   bool get _hasDecoration {
-    return widget.placeholder != null ||
-        widget.leading != null ||
-        widget.trailing != null ||
-        widget.features.isNotEmpty;
+    return widget.placeholder != null || widget.features.isNotEmpty;
   }
 
   // Provide default behavior if widget.textAlignVertical is not set.
@@ -1795,15 +1753,8 @@ class TextFieldState extends State<TextField>
                 ),
               );
 
-        Widget? leadingWidget = widget.leading;
-
-        Widget? trailingWidget = widget.trailing;
-
         List<Widget> leadingChildren = [];
         List<Widget> trailingChildren = [];
-        if (leadingWidget != null) {
-          leadingChildren.add(leadingWidget);
-        }
         for (final attached in _attachedFeatures) {
           leadingChildren.addAll(attached.state._internalBuildLeading().map(
                 (e) => Focus(
@@ -1820,29 +1771,18 @@ class TextFieldState extends State<TextField>
                 ),
               ));
         }
-        if (trailingWidget != null) {
-          trailingChildren.add(trailingWidget);
-        }
 
-        if (leadingChildren.isNotEmpty) {
-          leadingWidget = Row(
-            mainAxisSize: MainAxisSize.min,
-            spacing: 4 * theme.scaling,
-            children: leadingChildren,
-          );
-        } else {
-          leadingWidget = null;
-        }
+        Widget leadingWidget = Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 4 * theme.scaling,
+          children: leadingChildren,
+        );
 
-        if (trailingChildren.isNotEmpty) {
-          trailingWidget = Row(
-            mainAxisSize: MainAxisSize.min,
-            spacing: 4 * theme.scaling,
-            children: trailingChildren,
-          );
-        } else {
-          trailingWidget = null;
-        }
+        Widget trailingWidget = Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 4 * theme.scaling,
+          children: trailingChildren,
+        );
 
         return Row(
           crossAxisAlignment: widget.crossAxisAlignment,
@@ -1850,7 +1790,7 @@ class TextFieldState extends State<TextField>
           children: [
             // Insert a prefix at the front if the prefix visibility mode matches
             // the current text state.
-            if (leadingWidget != null) leadingWidget,
+            leadingWidget,
             // In the middle part, stack the placeholder on top of the main EditableText
             // if needed.
             Expanded(
@@ -1867,7 +1807,7 @@ class TextFieldState extends State<TextField>
                 ],
               ),
             ),
-            if (trailingWidget != null) trailingWidget,
+            trailingWidget,
           ],
         );
       },
@@ -1936,71 +1876,85 @@ class TextFieldState extends State<TextField>
     }
     return Actions(
         actions: {
-          TextFieldClearIntent: CallbackAction(
-            onInvoke: (_) {
-              effectiveController.clear();
-              return;
-            },
+          TextFieldClearIntent: Action.overridable(
+            context: context,
+            defaultAction: CallbackAction<TextFieldClearIntent>(
+              onInvoke: (intent) {
+                effectiveController.clear();
+                return;
+              },
+            ),
           ),
-          TextFieldAppendTextIntent: CallbackAction<TextFieldAppendTextIntent>(
-            onInvoke: (intent) {
-              final newText = effectiveController.text + intent.text;
-              effectiveController.value = TextEditingValue(
-                text: newText,
-                selection: TextSelection.collapsed(offset: newText.length),
-              );
-              return;
-            },
+          TextFieldAppendTextIntent: Action.overridable(
+            context: context,
+            defaultAction: CallbackAction<TextFieldAppendTextIntent>(
+              onInvoke: (intent) {
+                _appendText(intent.text);
+                return;
+              },
+            ),
           ),
-          TextFieldReplaceCurrentWordIntent:
-              CallbackAction<TextFieldReplaceCurrentWordIntent>(
-            onInvoke: (intent) {
-              final replacement = intent.text;
-              final value = effectiveController.value;
-              final text = value.text;
-              final selection = value.selection;
-              if (selection.isCollapsed) {
-                int start = selection.start;
-                final newText = replaceWordAtCaret(text, start, replacement);
-                effectiveController.value = TextEditingValue(
-                  text: newText.$2,
-                  selection: TextSelection.collapsed(
-                    offset: newText.$1 + replacement.length,
-                  ),
+          TextFieldReplaceCurrentWordIntent: Action.overridable(
+            context: context,
+            defaultAction: CallbackAction<TextFieldReplaceCurrentWordIntent>(
+              onInvoke: (intent) {
+                _replaceCurrentWord(intent.text);
+                return;
+              },
+            ),
+          ),
+          TextFieldSetTextIntent: Action.overridable(
+            context: context,
+            defaultAction: CallbackAction<TextFieldSetTextIntent>(
+              onInvoke: (intent) {
+                _setText(intent.text);
+                return;
+              },
+            ),
+          ),
+          TextFieldSetSelectionIntent: Action.overridable(
+            context: context,
+            defaultAction: CallbackAction<TextFieldSetSelectionIntent>(
+              onInvoke: (intent) {
+                effectiveController.selection = intent.selection;
+                return;
+              },
+            ),
+          ),
+          TextFieldSelectAllAndCopyIntent: Action.overridable(
+            context: context,
+            defaultAction: CallbackAction<TextFieldSelectAllAndCopyIntent>(
+              onInvoke: (intent) {
+                effectiveController.selection = TextSelection(
+                  baseOffset: 0,
+                  extentOffset: effectiveController.text.length,
                 );
-              }
-              return;
-            },
+                var text = effectiveController.text;
+                if (text.isNotEmpty) {
+                  Clipboard.setData(ClipboardData(text: text));
+                }
+                return;
+              },
+            ),
           ),
-          TextFieldSetTextIntent: CallbackAction<TextFieldSetTextIntent>(
-            onInvoke: (intent) {
-              effectiveController.value = TextEditingValue(
-                  text: intent.text,
-                  selection:
-                      TextSelection.collapsed(offset: intent.text.length));
-              return;
-            },
-          ),
-          TextFieldSetSelectionIntent:
-              CallbackAction<TextFieldSetSelectionIntent>(
-            onInvoke: (intent) {
-              effectiveController.selection = intent.selection;
-              return;
-            },
-          ),
-          TextFieldSelectAllAndCopyIntent:
-              CallbackAction<TextFieldSelectAllAndCopyIntent>(
-            onInvoke: (intent) {
-              effectiveController.selection = TextSelection(
-                baseOffset: 0,
-                extentOffset: effectiveController.text.length,
-              );
-              var text = effectiveController.text;
-              if (text.isNotEmpty) {
-                Clipboard.setData(ClipboardData(text: text));
-              }
-              return;
-            },
+          AutoCompleteIntent: Action.overridable(
+            context: context,
+            defaultAction: CallbackAction<AutoCompleteIntent>(
+              onInvoke: (intent) {
+                switch (intent.mode) {
+                  case AutoCompleteMode.append:
+                    _appendText(intent.suggestion);
+                    break;
+                  case AutoCompleteMode.replaceWord:
+                    _replaceCurrentWord(intent.suggestion);
+                    break;
+                  case AutoCompleteMode.replaceAll:
+                    _setText(intent.suggestion);
+                    break;
+                }
+                return;
+              },
+            ),
           ),
           ...featureActions,
         },
@@ -2008,6 +1962,41 @@ class TextFieldState extends State<TextField>
           shortcuts: featureShortcuts,
           child: child,
         ));
+  }
+
+  void _appendText(String text) {
+    final newText = effectiveController.text + text;
+    effectiveController.value = TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
+    );
+  }
+
+  void _replaceCurrentWord(String text) {
+    final replacement = text;
+    final value = effectiveController.value;
+    final selection = value.selection;
+    if (selection.isCollapsed) {
+      int start = selection.start;
+      final newText =
+          replaceWordAtCaret(value.text, start, replacement, (char) {
+        return char == ' ' ||
+            char == '\n' ||
+            char == '\t' ||
+            ChipInput.isChipCharacter(char);
+      });
+      effectiveController.value = TextEditingValue(
+        text: newText.$2,
+        selection: TextSelection.collapsed(
+          offset: newText.$1 + replacement.length,
+        ),
+      );
+    }
+  }
+
+  void _setText(String text) {
+    effectiveController.value = TextEditingValue(
+        text: text, selection: TextSelection.collapsed(offset: text.length));
   }
 
   @override
@@ -2040,8 +2029,8 @@ class TextFieldState extends State<TextField>
         handleDidLoseAccessibilityFocus = () {
           _effectiveFocusNode.unfocus();
         };
+      // ignore: unreachable_switch_default
       default:
-        // TODO: Other platforms. For TargetPlatform.ohos
         textSelectionControls ??= cupertinoDesktopTextSelectionHandleControls;
         handleDidGainAccessibilityFocus = () {
           // Automatically activate the TextField when it receives accessibility focus.
@@ -2099,7 +2088,7 @@ class TextFieldState extends State<TextField>
       themeValue: compTheme?.border,
       widgetValue: widget.border,
     );
-    final BoxDecoration effectiveDecoration = widget.decoration ??
+    Decoration effectiveDecoration = widget.decoration ??
         BoxDecoration(
           borderRadius: optionallyResolveBorderRadius(
                 context,
@@ -2111,6 +2100,17 @@ class TextFieldState extends State<TextField>
               : theme.colorScheme.input.scaleAlpha(0.3),
           border: effectiveBorder,
         );
+
+    // final inputGroup = InputGroupData.maybeOf(context);
+    // if (inputGroup != null) {
+    //   effectiveDecoration = inputGroup.applyBoxDecoration(effectiveDecoration, Directionality.maybeOf(context) ?? TextDirection.ltr);
+    // }
+    final styleOverride = Data.maybeOf<ButtonStyleOverrideData>(context);
+    if (styleOverride != null) {
+      effectiveDecoration = styleOverride.decoration
+              ?.call(context, _statesController.value, effectiveDecoration) ??
+          effectiveDecoration;
+    }
 
     final Color selectionColor =
         DefaultSelectionStyle.of(context).selectionColor ??
@@ -2159,8 +2159,7 @@ class TextFieldState extends State<TextField>
               const TextMagnifierConfiguration(),
           // Only show the selection highlight when the text field is focused.
           selectionColor: _effectiveFocusNode.hasFocus ? selectionColor : null,
-          selectionControls:
-              widget.selectionEnabled ? textSelectionControls : null,
+          selectionControls: selectionEnabled ? textSelectionControls : null,
           groupId: widget.groupId,
           onChanged: _onChanged,
           onSelectionChanged: _handleSelectionChanged,
@@ -2207,7 +2206,9 @@ class TextFieldState extends State<TextField>
       cursor: enabled ? SystemMouseCursors.text : SystemMouseCursors.forbidden,
       child: FocusOutline(
         focused: _effectiveFocusNode.hasFocus,
-        borderRadius: effectiveDecoration.borderRadius,
+        borderRadius: effectiveDecoration is BoxDecoration
+            ? effectiveDecoration.borderRadius
+            : null,
         child: IconTheme.merge(
           data: theme.iconTheme.small.copyWith(
             color: theme.colorScheme.mutedForeground,

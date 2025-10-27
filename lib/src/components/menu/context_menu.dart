@@ -435,9 +435,8 @@ Widget buildEditableTextContextMenu(
         editableTextState: editableTextState,
         undoHistoryController: undoHistoryController,
       );
+    // ignore: unreachable_switch_default
     default:
-      // TODO: Other platforms. For TargetPlatform.ohos.pc2in1
-      // TODO: ohos.mobile
       return DesktopEditableTextContextMenu(
         anchorContext: innerContext,
         editableTextState: editableTextState,

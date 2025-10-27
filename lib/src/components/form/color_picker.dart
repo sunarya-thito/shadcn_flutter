@@ -1030,11 +1030,6 @@ class _ColorInputSetState extends State<ColorInputSet> {
                     });
                   },
                   children: [
-                    // Text(localizations.colorPickerTabRGB),
-                    // Text(localizations.colorPickerTabHSL),
-                    // Text(localizations.colorPickerTabHSV),
-                    // if (widget.storage != null)
-                    //   Text(localizations.colorPickerTabRecent),
                     TabItem(
                       child: Text(localizations.colorPickerTabRGB),
                     ),
@@ -1410,8 +1405,8 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                             color: HSVColor.fromAHSV(
                               color.opacity,
                               color.hsvHue,
-                              color.hsvSat,
-                              color.hsvVal,
+                              1,
+                              1,
                             ),
                             radius: Radius.circular(theme.radiusLg),
                             onColorChanged: (value) {
@@ -1709,8 +1704,8 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
                       color: HSVColor.fromAHSV(
                         color.opacity,
                         color.hsvHue,
-                        color.hsvSat,
-                        color.hsvVal,
+                        1.0,
+                        1.0,
                       ),
                       radius: Radius.circular(theme.radiusLg),
                       onColorChanged: (value) {
@@ -1740,12 +1735,7 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
                 ),
                 child: widget.mode == ColorPickerMode.hsl
                     ? HSLColorPickerArea(
-                        color: HSLColor.fromAHSL(
-                          color.opacity,
-                          color.hslHue,
-                          1,
-                          0.5,
-                        ),
+                        color: color.toHSLColor(),
                         sliderType: HSLColorSliderType.alpha,
                         reverse: true,
                         radius: Radius.circular(theme.radiusLg),
@@ -1759,12 +1749,7 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
                         },
                       )
                     : HSVColorPickerArea(
-                        color: HSVColor.fromAHSV(
-                          color.opacity,
-                          color.hsvHue,
-                          color.hsvSat,
-                          color.hsvVal,
-                        ),
+                        color: color.toHSVColor(),
                         onColorChanged: (value) {
                           widget.onColorChanged
                               ?.call(widget.color.changeToAlpha(value.alpha));
@@ -2422,6 +2407,21 @@ final class _HSVColor extends ColorDerivative {
   }
 
   @override
+  ColorDerivative changeToHSVHue(double hue) {
+    return _HSVColor(color.withHue(hue));
+  }
+
+  @override
+  ColorDerivative changeToHSVSaturation(double saturation) {
+    return _HSVColor(color.withSaturation(saturation));
+  }
+
+  @override
+  ColorDerivative changeToHSVValue(double value) {
+    return _HSVColor(color.withValue(value));
+  }
+
+  @override
   ColorDerivative transform(ColorDerivative old) {
     if (old is _HSVColor) {
       return _HSVColor(color);
@@ -2499,6 +2499,27 @@ final class _HSLColor extends ColorDerivative {
   @override
   ColorDerivative changeToAlpha(double alpha) {
     return _HSLColor(color.withAlpha(alpha));
+  }
+
+  @override
+  ColorDerivative changeToHSLHue(double hue) {
+    return _HSLColor(color.withHue(hue));
+  }
+
+  @override
+  ColorDerivative changeToHSLSaturation(double saturation) {
+    return _HSLColor(color.withSaturation(saturation));
+  }
+
+  @override
+  ColorDerivative changeToHSLLightness(double lightness) {
+    return _HSLColor(color.withLightness(lightness));
+  }
+
+  @override
+  ColorDerivative changeToHSVHue(double hue) {
+    // should be the same as changing HSL hue
+    return _HSLColor(color.withHue(hue));
   }
 
   @override

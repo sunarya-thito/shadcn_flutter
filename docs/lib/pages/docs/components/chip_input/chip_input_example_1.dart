@@ -24,8 +24,8 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
     _controller.addListener(
       () {
         setState(() {
-          var value =
-              _controller.plainText; // IMPORTANT: use plainText instead of text
+          var value = _controller
+              .textAtCursor; // IMPORTANT: use textAtCursor instead of text
           if (value.isNotEmpty) {
             _suggestions = _availableSuggestions.where((element) {
               return element.startsWith(value);
@@ -43,18 +43,20 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ChipInput<String>(
-          controller: _controller,
-          onSubmitted: (value) {
-            setState(() {
-              _suggestions.clear();
-            });
-            return '@$value';
-          },
+        AutoComplete(
           suggestions: _suggestions,
-          chipBuilder: (context, chip) {
-            return Text(chip);
-          },
+          child: ChipInput<String>(
+            controller: _controller,
+            onChipSubmitted: (value) {
+              setState(() {
+                _suggestions.clear();
+              });
+              return '@$value';
+            },
+            chipBuilder: (context, chip) {
+              return Text(chip);
+            },
+          ),
         ),
         gap(24),
         ListenableBuilder(

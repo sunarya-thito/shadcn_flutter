@@ -236,6 +236,7 @@ class _OverflowMarqueeState extends State<OverflowMarquee>
         elapsed: elapsed,
         step: step,
         textDirection: textDirection,
+        curve: curve,
         child: widget.child,
       ),
     );
@@ -251,6 +252,7 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
   final Duration elapsed;
   final double step;
   final TextDirection textDirection;
+  final Curve curve;
 
   const _OverflowMarqueeLayout({
     required this.direction,
@@ -261,6 +263,7 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
     required this.elapsed,
     required this.step,
     required this.textDirection,
+    required this.curve,
     required Widget child,
   }) : super(child: child);
 
@@ -275,6 +278,7 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
       step: step,
       elapsed: elapsed,
       textDirection: textDirection,
+      curve: curve,
     );
   }
 
@@ -315,6 +319,10 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
       renderObject.textDirection = textDirection;
       hasChanged = true;
     }
+    if (renderObject.curve != curve) {
+      renderObject.curve = curve;
+      hasChanged = true;
+    }
     if (hasChanged) {
       renderObject.markNeedsLayout();
     }
@@ -335,6 +343,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
   Duration elapsed;
   double step;
   TextDirection textDirection;
+  Curve curve;
 
   _RenderOverflowMarqueeLayout({
     required this.direction,
@@ -345,6 +354,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     required this.elapsed,
     required this.step,
     required this.textDirection,
+    required this.curve,
   }) : super(null);
 
   @override
@@ -430,6 +440,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
         delayDurationInMicros + durationInMicros) {
       double progress =
           (cycleElapsedInMicros - delayDurationInMicros) / durationInMicros;
+      progress = curve.transform(progress);
       return reverse ? 1 - progress : progress;
     } else {
       return reverse ? 0 : 1;
