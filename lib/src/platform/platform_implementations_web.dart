@@ -13,6 +13,7 @@ extension type _Window(JSObject _) implements JSObject {
 
 @JS()
 extension type _GlobalThis(JSObject _) implements JSObject {
+  // ignore: non_constant_identifier_names
   external JSObject? get ShadcnApp;
 }
 

@@ -122,7 +122,7 @@ class _ShadcnScrollbar extends RawScrollbar {
   final Color? color;
 
   @override
-  _ShadcnScrollbarState createState() => _ShadcnScrollbarState();
+  RawScrollbarState<_ShadcnScrollbar> createState() => _ShadcnScrollbarState();
 }
 
 class _ShadcnScrollbarState extends RawScrollbarState<_ShadcnScrollbar> {
@@ -170,8 +170,7 @@ class _ShadcnScrollbarState extends RawScrollbarState<_ShadcnScrollbar> {
           themeValue: compTheme?.radius,
           defaultValue: Radius.circular(_theme.radiusSm))
       ..minLength = _kScrollbarMinLength
-      ..padding =
-          MediaQuery.paddingOf(context) + EdgeInsets.all(_theme.scaling)
+      ..padding = MediaQuery.paddingOf(context) + EdgeInsets.all(_theme.scaling)
       ..scrollbarOrientation = widget.scrollbarOrientation
       ..ignorePointer = !enableGestures;
   }

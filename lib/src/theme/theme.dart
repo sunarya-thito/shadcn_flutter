@@ -284,7 +284,7 @@ class AnimatedTheme extends ImplicitlyAnimatedWidget {
   });
 
   @override
-  _AnimatedThemeState createState() => _AnimatedThemeState();
+  AnimatedWidgetBaseState<AnimatedTheme> createState() => _AnimatedThemeState();
 }
 
 class _AnimatedThemeState extends AnimatedWidgetBaseState<AnimatedTheme> {

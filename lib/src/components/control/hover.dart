@@ -25,11 +25,9 @@ class HoverTheme {
     return HoverTheme(
       debounceDuration:
           debounceDuration == null ? this.debounceDuration : debounceDuration(),
-      hitTestBehavior: hitTestBehavior == null
-          ? this.hitTestBehavior
-          : hitTestBehavior(),
-      waitDuration:
-          waitDuration == null ? this.waitDuration : waitDuration(),
+      hitTestBehavior:
+          hitTestBehavior == null ? this.hitTestBehavior : hitTestBehavior(),
+      waitDuration: waitDuration == null ? this.waitDuration : waitDuration(),
       minDuration: minDuration == null ? this.minDuration : minDuration(),
       showDuration: showDuration == null ? this.showDuration : showDuration(),
     );
@@ -156,7 +154,7 @@ class Hover extends StatefulWidget {
   });
 
   @override
-  _HoverState createState() => _HoverState();
+  State<Hover> createState() => _HoverState();
 }
 
 class _HoverState extends State<Hover> with SingleTickerProviderStateMixin {

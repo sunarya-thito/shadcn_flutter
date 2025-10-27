@@ -23,12 +23,12 @@ mixin ComponentController<T> implements ValueNotifier<T> {}
 /// Example:
 /// ```dart
 /// final controller = ComponentValueController<String>('initial value');
-/// 
+///
 /// // Listen to changes
 /// controller.addListener(() {
 ///   print('Value changed to: ${controller.value}');
 /// });
-/// 
+///
 /// // Update the value
 /// controller.value = 'new value';
 /// ```
@@ -59,20 +59,20 @@ mixin ControlledComponent<T> on Widget {
   /// and manages the component's state externally. This is useful for
   /// form validation, programmatic value changes, and state persistence.
   ComponentController<T>? get controller;
-  
+
   /// The initial value for this component when no controller is provided.
   ///
   /// This value is used only when [controller] is null. It sets the
   /// component's initial state and is ignored if a controller is present.
   T? get initialValue;
-  
+
   /// Callback invoked when the component's value changes.
   ///
   /// This callback is called whenever the user interacts with the component
   /// or when the value is changed programmatically. The callback receives
   /// the new value as its parameter.
   ValueChanged<T>? get onChanged;
-  
+
   /// Whether this component is enabled and accepts user input.
   ///
   /// When false, the component is displayed in a disabled state and
@@ -95,14 +95,14 @@ class ControlledComponentData<T> {
   /// This represents the component's current state and should be
   /// used by the UI to display the correct value to the user.
   final T value;
-  
+
   /// Callback to invoke when the value should change.
   ///
   /// This callback should be called whenever the user interaction
   /// or programmatic action requires the value to be updated.
   /// The new value should be passed as the parameter.
   final ValueChanged<T> onChanged;
-  
+
   /// Whether the component should accept user input.
   ///
   /// When false, the component should display in a disabled state
@@ -162,7 +162,7 @@ class ControlledComponentAdapter<T> extends StatefulWidget
   final bool enabled;
   @override
   final ComponentController<T>? controller;
-  
+
   /// A builder function that creates the widget UI using the provided state data.
   ///
   /// This function receives the current [BuildContext] and [ControlledComponentData]
@@ -209,7 +209,7 @@ class ControlledComponentAdapter<T> extends StatefulWidget
             'Either controller or initialValue must be provided');
 
   @override
-  _ControlledComponentAdapterState<T> createState() =>
+  State<ControlledComponentAdapter<T>> createState() =>
       _ControlledComponentAdapterState<T>();
 }
 

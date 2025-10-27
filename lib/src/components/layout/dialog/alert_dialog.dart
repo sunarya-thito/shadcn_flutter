@@ -13,7 +13,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// Key features:
 /// - Modal presentation with backdrop blur and overlay
 /// - Flexible content layout with optional elements
-/// - Automatic theme integration and responsive scaling  
+/// - Automatic theme integration and responsive scaling
 /// - Customizable surface effects (blur, opacity)
 /// - Action button layout with proper spacing
 /// - Safe area handling for various screen sizes
@@ -131,7 +131,7 @@ class AlertDialog extends StatefulWidget {
   });
 
   @override
-  _AlertDialogState createState() => _AlertDialogState();
+  State<AlertDialog> createState() => _AlertDialogState();
 }
 
 class _AlertDialogState extends State<AlertDialog> {

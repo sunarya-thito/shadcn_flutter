@@ -585,7 +585,7 @@ class Checkbox extends StatefulWidget {
   });
 
   @override
-  _CheckboxState createState() => _CheckboxState();
+  State<Checkbox> createState() => _CheckboxState();
 }
 
 class _CheckboxState extends State<Checkbox>

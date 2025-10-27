@@ -369,7 +369,7 @@ class Slider extends StatefulWidget {
   }) : assert(min <= max);
 
   @override
-  _SliderState createState() => _SliderState();
+  State<Slider> createState() => _SliderState();
 }
 
 class _SliderState extends State<Slider>

@@ -21,14 +21,14 @@ import '../../../shadcn_flutter.dart';
 ///
 /// Example:
 /// ```dart
-/// final validator = RequiredValidator<String>() & 
-///                   MinLengthValidator(3) & 
+/// final validator = RequiredValidator<String>() &
+///                   MinLengthValidator(3) &
 ///                   EmailValidator();
 /// ```
 abstract class Validator<T> {
   /// Creates a [Validator].
   const Validator();
-  
+
   /// Validates the given [value] and returns a validation result.
   ///
   /// This method performs the actual validation logic and should return
@@ -167,14 +167,14 @@ enum FormValidationMode {
   /// which can be useful for fields with default values that need immediate
   /// validation feedback.
   initial,
-  
+
   /// Validation occurs when the field value changes.
   ///
   /// This is the most common validation mode, providing immediate feedback
   /// as users interact with form fields. Validation runs after each value
   /// change event.
   changed,
-  
+
   /// Validation occurs when the form is submitted.
   ///
   /// This mode defers validation until form submission, reducing interruptions
@@ -262,7 +262,7 @@ class IgnoreForm<T> extends StatelessWidget {
   /// from registering with parent form controllers. When false, child
   /// components behave normally and participate in form operations.
   final bool ignoring;
-  
+
   /// The widget subtree to optionally isolate from form participation.
   final Widget child;
 
@@ -854,6 +854,9 @@ class RangeValidator<T extends num> extends Validator<T> {
         other.inclusive == inclusive &&
         other.message == message;
   }
+
+  @override
+  int get hashCode => Object.hash(min, max, inclusive, message);
 }
 
 class RegexValidator extends Validator<String> {
@@ -1462,7 +1465,7 @@ extension FormMapValuesExtension on FormMapValues {
 /// Example:
 /// ```dart
 /// final controller = FormController();
-/// 
+///
 /// Form(
 ///   controller: controller,
 ///   onSubmit: (values) async {
@@ -1520,14 +1523,14 @@ class Form extends StatefulWidget {
   /// programmatic access to form values, validation states, and submission.
   /// If null, the Form creates and manages its own internal controller.
   final FormController? controller;
-  
+
   /// The widget subtree containing form fields.
   ///
   /// This child widget should contain the form fields and other UI elements
   /// that participate in the form. Form fields within this subtree automatically
   /// register with this Form instance.
   final Widget child;
-  
+
   /// Callback invoked when the form is submitted.
   ///
   /// This callback receives a map of form values keyed by their [FormKey]
@@ -1588,16 +1591,16 @@ class _ValidatorResultStash {
 /// Example:
 /// ```dart
 /// final controller = FormController();
-/// 
+///
 /// // Listen to form state changes
 /// controller.addListener(() {
 ///   print('Form validity: ${controller.isValid}');
 ///   print('Form values: ${controller.values}');
 /// });
-/// 
+///
 /// // Submit the form
 /// await controller.submit();
-/// 
+///
 /// // Access specific field values
 /// final emailValue = controller.getValue(emailKey);
 /// ```
@@ -2099,6 +2102,10 @@ class SubmissionResult {
         mapEquals(other.values, values) &&
         mapEquals(other.errors, errors);
   }
+
+  @override
+  int get hashCode => Object.hash(
+      Object.hashAll(values.entries), Object.hashAll(errors.entries));
 }
 
 class FormField<T> extends StatelessWidget {

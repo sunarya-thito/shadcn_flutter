@@ -147,7 +147,7 @@ class ConstrainedTableSize {
 /// All properties use [WidgetStateProperty] to support different visual
 /// states:
 /// - [WidgetState.hovered]: Mouse hover state
-/// - [WidgetState.selected]: Cell/row selection state  
+/// - [WidgetState.selected]: Cell/row selection state
 /// - [WidgetState.disabled]: Disabled interaction state
 /// - [WidgetState.pressed]: Active press state
 ///
@@ -1376,8 +1376,7 @@ class TableFooter extends TableRow {
 }
 
 class TableHeader extends TableRow {
-  const TableHeader({required cells, cellTheme})
-      : super(cells: cells, cellTheme: cellTheme);
+  const TableHeader({required super.cells, super.cellTheme});
 
   @override
   TableCellTheme buildDefaultTheme(BuildContext context) {

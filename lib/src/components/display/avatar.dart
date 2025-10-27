@@ -101,8 +101,7 @@ class AvatarTheme {
   }) {
     return AvatarTheme(
       size: size == null ? this.size : size(),
-      borderRadius:
-          borderRadius == null ? this.borderRadius : borderRadius(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
       backgroundColor:
           backgroundColor == null ? this.backgroundColor : backgroundColor(),
       badgeAlignment:
@@ -378,7 +377,7 @@ class Avatar extends StatefulWidget implements AvatarWidget {
         );
 
   @override
-  _AvatarState createState() => _AvatarState();
+  State<Avatar> createState() => _AvatarState();
 }
 
 class _AvatarState extends State<Avatar> {

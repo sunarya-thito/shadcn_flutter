@@ -225,8 +225,15 @@ class AbsoluteResizablePaneController extends ChangeNotifier
   double _size;
   bool _collapsed = false;
 
+  _ResizablePaneState? _state;
+
   @override
-  _ResizablePaneState? _paneState;
+  _ResizablePaneState? get _paneState => _state;
+
+  @override
+  set _paneState(_ResizablePaneState? value) {
+    _state = value;
+  }
 
   AbsoluteResizablePaneController(this._size, {bool collapsed = false})
       : _collapsed = collapsed;

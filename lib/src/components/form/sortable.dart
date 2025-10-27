@@ -61,7 +61,8 @@ class RawSortableList<T> extends StatelessWidget {
   final SortableWidgetBuilder<T> builder;
   final ValueChanged<ListChanges<T>>? onChanged;
   final bool enabled;
-  const RawSortableList({super.key, 
+  const RawSortableList({
+    super.key,
     required this.delegate,
     required this.builder,
     this.onChanged,
@@ -81,13 +82,11 @@ class RawSortableParentData extends ContainerBoxParentData<RenderBox> {
 class RawSortableItemPositioned
     extends ParentDataWidget<RawSortableParentData> {
   final Offset offset;
-  @override
-  final Widget child;
   const RawSortableItemPositioned({
     super.key,
     required this.offset,
-    required this.child,
-  }) : super(child: child);
+    required super.child,
+  });
 
   @override
   void applyParentData(RenderObject renderObject) {
