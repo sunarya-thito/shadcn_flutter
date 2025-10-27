@@ -11,6 +11,9 @@ class _FilePickerExample1State extends State<FilePickerExample1> {
   final List<XFile> _files = [];
   @override
   Widget build(BuildContext context) {
+    // Placeholder for a file picker demo. The `_files` list would store the
+    // selected files after invoking a picker (e.g., pickFiles()). Left empty
+    // intentionally in this example to show the scaffold for state.
     return Container();
   }
 }

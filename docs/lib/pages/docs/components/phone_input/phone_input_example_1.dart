@@ -15,6 +15,7 @@ class _PhoneInputExample1State extends State<PhoneInputExample1> {
       mainAxisSize: MainAxisSize.min,
       children: [
         PhoneInput(
+          // Preselect a country; phone parsing/formatting adapt accordingly.
           initialCountry: Country.indonesia,
           onChanged: (value) {
             setState(() {

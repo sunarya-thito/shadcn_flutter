@@ -12,6 +12,7 @@ class _MaterialExample1State extends State<MaterialExample1> {
   int _counter = 0;
 
   void _incrementCounter() {
+    // Demonstrates using a Material SnackBar inside a typical Scaffold app.
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('You have pushed the button $_counter times'),
@@ -41,6 +42,8 @@ class _MaterialExample1State extends State<MaterialExample1> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const shadcnui.Gap(64),
+            // You can compose shadcn_flutter widgets inside a Material app.
+            // Wrapping with ShadcnUI ensures inherited theme/semantics are properly applied.
             shadcnui.ShadcnUI(
                 child: shadcnui.Card(
               child: Column(
@@ -51,6 +54,7 @@ class _MaterialExample1State extends State<MaterialExample1> {
                   const shadcnui.Gap(16),
                   shadcnui.PrimaryButton(
                     onPressed: () {
+                      // Show a native Material dialog
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -74,6 +78,7 @@ class _MaterialExample1State extends State<MaterialExample1> {
                   const shadcnui.Gap(8),
                   shadcnui.SecondaryButton(
                     onPressed: () {
+                      // Show a shadcn_flutter dialog side-by-side for comparison
                       shadcnui.showDialog(
                         context: context,
                         builder: (context) {

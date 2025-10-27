@@ -74,6 +74,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                   runSpacing: 8,
                   spacing: 8,
                   children: [
+                    // Alignment of items within the rail.
                     Select<NavigationRailAlignment>(
                       value: alignment,
                       itemBuilder:
@@ -97,6 +98,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                           ),
                       ])),
                     ),
+                    // Label visibility behavior for each destination.
                     Select<NavigationLabelType>(
                       value: labelType,
                       itemBuilder:
@@ -124,6 +126,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                         ),
                       ),
                     ),
+                    // Where the label appears relative to the icon.
                     Select<NavigationLabelPosition>(
                       value: labelPosition,
                       itemBuilder:
@@ -149,6 +152,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                         ),
                       ),
                     ),
+                    // Toggle custom vs default button styles for normal/selected.
                     Checkbox(
                       state: customButtonStyle
                           ? CheckboxState.checked
@@ -160,6 +164,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
                       },
                       trailing: const Text('Custom Button Style'),
                     ),
+                    // Whether the rail is in expanded mode (shows labels, etc.).
                     Checkbox(
                       state: expanded
                           ? CheckboxState.checked

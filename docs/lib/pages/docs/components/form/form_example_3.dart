@@ -55,6 +55,8 @@ class _FormExample3State extends State<FormExample3> {
                   key: _usernameKey,
                   label: const Text('Username'),
                   hint: const Text('This is your public display name'),
+                  // Combine validators: length + async availability check,
+                  // but only run the async validator on submit.
                   validator: const LengthValidator(min: 4) &
                       ValidationMode(
                         ConditionalValidator((value) async {

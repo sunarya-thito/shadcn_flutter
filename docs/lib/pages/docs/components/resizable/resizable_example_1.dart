@@ -13,9 +13,11 @@ class _ResizableExample1State extends State<ResizableExample1> {
   Widget build(BuildContext context) {
     return const OutlinedContainer(
       clipBehavior: Clip.antiAlias,
+      // A horizontal panel splits available width into multiple resizable panes.
       child: ResizablePanel.horizontal(
         children: [
           ResizablePane(
+            // Initial width in logical pixels for this pane.
             initialSize: 80,
             child: NumberedContainer(
               index: 0,

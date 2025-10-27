@@ -36,6 +36,8 @@ class _MultiSelectExample2State extends State<MultiSelectExample2> {
 
   @override
   Widget build(BuildContext context) {
+    // Multi-select with grouped options and a search field.
+    // The popup is built dynamically and groups items under a label.
     return MultiSelect<String>(
       itemBuilder: (context, item) {
         return MultiSelectChip(value: item, child: Text(item));

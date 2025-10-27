@@ -21,6 +21,7 @@ class _StepperExample4State extends State<StepperExample4> {
           title: const Text('Step 1'),
           icon: StepNumber(
             onPressed: () {
+              // Tap on the step icon to jump directly to the step.
               controller.jumpToStep(0);
             },
           ),

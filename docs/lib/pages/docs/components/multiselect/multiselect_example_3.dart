@@ -44,6 +44,8 @@ class _MultiSelectExample3State extends State<MultiSelectExample3> {
 
   @override
   Widget build(BuildContext context) {
+    // Advanced multi-select with async loading, empty and loading builders,
+    // and dynamic per-item styling.
     return MultiSelect<String>(
       itemBuilder: (context, item) {
         var color = _getColorByChip(item);
@@ -72,8 +74,10 @@ class _MultiSelectExample3State extends State<MultiSelectExample3> {
           final filteredFruits = searchQuery == null
               ? fruits.entries.toList()
               : _filteredFruits(searchQuery).toList();
+          // Simulate an async load to demonstrate loadingBuilder.
           await Future.delayed(const Duration(milliseconds: 500));
           return SelectItemBuilder(
+            // Use childCount=0 to switch to emptyBuilder when there are no items.
             childCount: filteredFruits.isEmpty ? 0 : null,
             builder: (context, index) {
               final entry = filteredFruits[index % filteredFruits.length];

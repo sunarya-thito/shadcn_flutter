@@ -15,6 +15,7 @@ class _StepperExample1State extends State<StepperExample1> {
   Widget build(BuildContext context) {
     return Stepper(
       controller: controller,
+      // Vertical layout with 3 steps and Next/Prev actions.
       direction: Axis.vertical,
       steps: [
         Step(
@@ -28,6 +29,7 @@ class _StepperExample1State extends State<StepperExample1> {
                 PrimaryButton(
                     child: const Text('Next'),
                     onPressed: () {
+                      // Advance to the next step.
                       controller.nextStep();
                     }),
               ],
@@ -46,6 +48,7 @@ class _StepperExample1State extends State<StepperExample1> {
                 SecondaryButton(
                   child: const Text('Prev'),
                   onPressed: () {
+                    // Move back one step.
                     controller.previousStep();
                   },
                 ),

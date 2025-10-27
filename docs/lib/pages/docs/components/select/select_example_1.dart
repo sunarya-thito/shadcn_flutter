@@ -12,23 +12,28 @@ class _SelectExample1State extends State<SelectExample1> {
   @override
   Widget build(BuildContext context) {
     return Select<String>(
+      // How to render each selected item as text in the field.
       itemBuilder: (context, item) {
         return Text(item);
       },
+      // Limit the popup size so it doesn't grow too large in the docs view.
       popupConstraints: const BoxConstraints(
         maxHeight: 300,
         maxWidth: 200,
       ),
       onChanged: (value) {
         setState(() {
+          // Save the currently selected value (or null to clear).
           selectedValue = value;
         });
       },
+      // The current selection bound to this field.
       value: selectedValue,
       placeholder: const Text('Select a fruit'),
       popup: const SelectPopup(
         items: SelectItemList(
           children: [
+            // A simple static list of options.
             SelectItemButton(
               value: 'Apple',
               child: Text('Apple'),

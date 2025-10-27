@@ -68,6 +68,7 @@ class _FormExample2State extends State<FormExample2> {
                   label: const Text('Username'),
                   hint: const Text('This is your public display name'),
                   validator: const LengthValidator(min: 4),
+                  // Show validation messages when the value changes and after submit.
                   showErrors: const {
                     FormValidationMode.changed,
                     FormValidationMode.submitted
@@ -78,6 +79,7 @@ class _FormExample2State extends State<FormExample2> {
                   key: _passwordKey,
                   label: const Text('Password'),
                   validator: const LengthValidator(min: 8),
+                  // Same validation visibility behavior for password.
                   showErrors: const {
                     FormValidationMode.changed,
                     FormValidationMode.submitted
@@ -91,6 +93,7 @@ class _FormExample2State extends State<FormExample2> {
                   label: const Text('Confirm Password'),
                   validator: CompareWith.equal(_passwordKey,
                       message: 'Passwords do not match'),
+                  // Mirror validation visibility on confirm.
                   showErrors: const {
                     FormValidationMode.changed,
                     FormValidationMode.submitted
@@ -104,6 +107,7 @@ class _FormExample2State extends State<FormExample2> {
                   label: const Text('I agree to the terms and conditions'),
                   validator: const CompareTo.equal(CheckboxState.checked,
                       message: 'You must agree to the terms and conditions'),
+                  // Inline field with a trailing checkbox and same visibility behavior.
                   showErrors: const {
                     FormValidationMode.changed,
                     FormValidationMode.submitted

@@ -1,5 +1,9 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Calendar with single-date selection and a "today" marker.
+///
+/// Uses [CalendarSelectionMode.single] to allow selecting exactly one date,
+/// and passes `now` to highlight the current day in the view.
 class CalendarExample2 extends StatefulWidget {
   const CalendarExample2({super.key});
 
@@ -56,6 +60,7 @@ class _CalendarExample2State extends State<CalendarExample2> {
                 });
               },
               selectionMode: CalendarSelectionMode.single,
+              // Provide a "today" reference for visual emphasis.
               now: DateTime.now(),
             ),
           ],

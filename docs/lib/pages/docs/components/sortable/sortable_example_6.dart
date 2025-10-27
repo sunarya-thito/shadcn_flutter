@@ -70,6 +70,8 @@ class _SortableExample6State extends State<SortableExample6> {
                     // Remove the item from the list if the drop failed
                     setState(() {
                       var removed = names.removeAt(i);
+                      // Ensure the drag overlay exists and then dismiss it so
+                      // the item does not animate back to its original position.
                       SortableLayer.ensureAndDismissDrop(context, removed);
                       // Dismissing drop will prevent the SortableLayer from
                       // animating the item back to its original position

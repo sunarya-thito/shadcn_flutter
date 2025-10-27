@@ -13,9 +13,11 @@ class _ResizableExample2State extends State<ResizableExample2> {
   Widget build(BuildContext context) {
     return const OutlinedContainer(
       clipBehavior: Clip.antiAlias,
+      // A vertical panel splits available height into multiple resizable rows (panes).
       child: ResizablePanel.vertical(
         children: [
           ResizablePane(
+            // Initial height in logical pixels for this row.
             initialSize: 80,
             child: NumberedContainer(
               index: 0,

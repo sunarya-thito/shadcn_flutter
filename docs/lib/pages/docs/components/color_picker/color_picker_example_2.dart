@@ -7,9 +7,11 @@ class ColorPickerExample2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return PrimaryButton(
       onPressed: () async {
+        // Screen color picker: lets the user sample any on-screen color.
         final history = ColorHistoryStorage.of(context);
         final result = await pickColorFromScreen(context, history);
         if (result != null && context.mounted) {
+          // Show a toast with the hex value and a preview swatch.
           showToast(
             context: context,
             builder: (context, overlay) {

@@ -18,6 +18,7 @@ class _FormExample1State extends State<FormExample1> {
     return SizedBox(
       width: 480,
       child: Form(
+        // Submit handler receives a typed map of field keys to values.
         onSubmit: (context, values) {
           // Get the values individually
           String? username = _usernameKey[values];
@@ -89,6 +90,7 @@ class _FormExample1State extends State<FormExample1> {
             const Gap(24),
             FormErrorBuilder(
               builder: (context, errors, child) {
+                // Disable the submit button while there are validation errors.
                 return PrimaryButton(
                   onPressed: errors.isEmpty ? () => context.submitForm() : null,
                   child: const Text('Submit'),

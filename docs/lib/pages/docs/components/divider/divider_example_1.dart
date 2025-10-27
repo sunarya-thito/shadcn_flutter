@@ -1,5 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Horizontal dividers between list items.
+///
+/// Use [Divider] to visually separate vertically-stacked content.
 class DividerExample1 extends StatelessWidget {
   const DividerExample1({super.key});
 

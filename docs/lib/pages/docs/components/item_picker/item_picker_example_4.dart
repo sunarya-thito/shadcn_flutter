@@ -36,6 +36,7 @@ class _ItemPickerExample4State extends State<ItemPickerExample4> {
           context,
           items: ItemList(colors),
           initialValue: colors[selectedColor],
+          // Force a list layout instead of a grid for narrower rows.
           layout: ItemPickerLayout.list,
           title: const Text('Pick a color'),
           builder: (context, item) {

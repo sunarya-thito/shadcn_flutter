@@ -1,5 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+// Demonstrates a basic Table with a header row and body rows,
+// including right-aligned numeric cells for amounts.
+
 class TableExample1 extends StatefulWidget {
   const TableExample1({super.key});
 
@@ -8,6 +11,7 @@ class TableExample1 extends StatefulWidget {
 }
 
 class _TableExample1State extends State<TableExample1> {
+  // Helper to build a header cell with muted, semibold text.
   TableCell buildHeaderCell(String text, [bool alignRight = false]) {
     return TableCell(
       child: Container(
@@ -18,6 +22,7 @@ class _TableExample1State extends State<TableExample1> {
     );
   }
 
+  // Helper to build a regular body cell with optional right alignment.
   TableCell buildCell(String text, [bool alignRight = false]) {
     return TableCell(
       child: Container(
@@ -32,6 +37,7 @@ class _TableExample1State extends State<TableExample1> {
   Widget build(BuildContext context) {
     return Table(
       rows: [
+        // Header row: typically use TableHeader, but a TableRow works for simple cases.
         TableRow(
           cells: [
             buildHeaderCell('Invoice'),
@@ -40,6 +46,7 @@ class _TableExample1State extends State<TableExample1> {
             buildHeaderCell('Amount', true),
           ],
         ),
+        // Body rows with invoice data.
         TableRow(
           cells: [
             buildCell('INV001'),
@@ -96,6 +103,7 @@ class _TableExample1State extends State<TableExample1> {
             buildCell('\$300.00', true),
           ],
         ),
+        // Footer supports spanning across columns via TableCell.columnSpan.
         TableFooter(
           cells: [
             TableCell(

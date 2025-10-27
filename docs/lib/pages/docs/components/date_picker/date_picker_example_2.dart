@@ -1,5 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// DateRangePicker in popover and dialog modes.
+///
+/// Similar to the single-date picker, but selects a [DateTimeRange].
 class DatePickerExample2 extends StatefulWidget {
   const DatePickerExample2({super.key});
 
@@ -26,6 +29,7 @@ class _DatePickerExample2State extends State<DatePickerExample2> {
         DateRangePicker(
           value: _value,
           mode: PromptMode.dialog,
+          // Title for the dialog variant.
           dialogTitle: const Text('Select Date Range'),
           onChanged: (value) {
             setState(() {

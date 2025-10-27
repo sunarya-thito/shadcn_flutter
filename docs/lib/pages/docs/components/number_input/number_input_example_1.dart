@@ -23,9 +23,11 @@ class _NumberInputExample1State extends State<NumberInputExample1> {
               });
             },
             features: const [
+              // Adds stepper/spinner controls to nudge the value up/down.
               InputFeature.spinner(),
             ],
             submitFormatters: [
+              // Allow math expressions (e.g., 1+2*3) that resolve on submit.
               TextInputFormatters.mathExpression(),
             ],
           ),

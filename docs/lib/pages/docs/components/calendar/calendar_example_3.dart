@@ -1,5 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Calendar with multi-date selection.
+///
+/// [CalendarSelectionMode.multi] allows selecting multiple individual days.
 class CalendarExample3 extends StatefulWidget {
   const CalendarExample3({super.key});
 
@@ -55,6 +58,7 @@ class _CalendarExample3State extends State<CalendarExample3> {
                   _value = value;
                 });
               },
+              // Multi selection lets users toggle arbitrary dates on/off.
               selectionMode: CalendarSelectionMode.multi,
             ),
           ],

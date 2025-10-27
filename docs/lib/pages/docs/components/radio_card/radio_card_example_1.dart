@@ -8,22 +8,28 @@ class RadioCardExample1 extends StatefulWidget {
 }
 
 class _RadioCardExample1State extends State<RadioCardExample1> {
+  // Currently selected option. The RadioGroup below binds to this value.
   int value = 1;
   @override
   Widget build(BuildContext context) {
     return RadioGroup(
+      // Provide the selected value so RadioCard children can render checked state.
       value: value,
       onChanged: (value) {
         setState(() {
+          // Update selection when any RadioCard is tapped.
           this.value = value;
         });
       },
       child: const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Each RadioCard acts as a large tappable radio option.
+          // Assign a unique 'value' for identification within the RadioGroup.
           RadioCard(
             value: 1,
             child: Basic(
+              // 'Basic' is a helper layout that shows a title and a content line.
               title: Text('8-core CPU'),
               content: Text('32 GB RAM'),
             ),
@@ -43,7 +49,9 @@ class _RadioCardExample1State extends State<RadioCardExample1> {
             ),
           ),
         ],
-      ).gap(12),
+      )
+          // Add horizontal spacing between the cards via the .gap extension.
+          .gap(12),
     );
   }
 }

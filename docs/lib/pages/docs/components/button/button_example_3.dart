@@ -1,5 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Outline button.
+///
+/// Uses an outlined border for a minimal visual weight.
 class ButtonExample3 extends StatelessWidget {
   const ButtonExample3({super.key});
 

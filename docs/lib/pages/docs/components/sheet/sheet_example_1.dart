@@ -8,6 +8,7 @@ class SheetExample1 extends StatefulWidget {
 }
 
 class _SheetExample1State extends State<SheetExample1> {
+  // A form controller to read values and validation state inside the sheet.
   final FormController controller = FormController();
 
   void saveProfile() {
@@ -16,6 +17,7 @@ class _SheetExample1State extends State<SheetExample1> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Profile updated'),
+          // For demo, show raw form values.
           content: Text('Content: ${controller.values}'),
           actions: [
             PrimaryButton(
@@ -50,6 +52,7 @@ class _SheetExample1State extends State<SheetExample1> {
                   density: ButtonDensity.icon,
                   child: const Icon(Icons.close),
                   onPressed: () {
+                    // Close the sheet without saving.
                     closeSheet(context);
                   },
                 ),
@@ -90,9 +93,12 @@ class _SheetExample1State extends State<SheetExample1> {
               child: FormErrorBuilder(
                 builder: (context, errors, child) {
                   return PrimaryButton(
+                    // Disable save while there are validation errors.
                     onPressed: errors.isNotEmpty
                         ? null
                         : () {
+                            // Attempt to submit the form; close the sheet when successful
+                            // and show a confirmation dialog.
                             context.submitForm().then(
                               (value) {
                                 if (value.errors.isEmpty) {
@@ -123,8 +129,10 @@ class _SheetExample1State extends State<SheetExample1> {
         openSheet(
           context: context,
           builder: (context) {
+            // Build the sheet content; keep it small and focused on the form.
             return buildSheet(context);
           },
+          // Slide in from the end (right on LTR).
           position: OverlayPosition.end,
         );
       },

@@ -20,6 +20,7 @@ class _StepperExample5State extends State<StepperExample5> {
         Step(
           title: const Text('Step 1'),
           icon: const StepNumber(
+            // You can customize the step icon, e.g., use a person icon.
             icon: Icon(Icons.person),
           ),
           contentBuilder: (context) {
@@ -44,6 +45,7 @@ class _StepperExample5State extends State<StepperExample5> {
         Step(
           title: const Text('Step 2'),
           icon: const StepNumber(
+            // Another custom icon for the second step.
             icon: Icon(Icons.house_outlined),
           ),
           contentBuilder: (context) {
@@ -71,6 +73,7 @@ class _StepperExample5State extends State<StepperExample5> {
         Step(
           title: const Text('Step 3'),
           icon: const StepNumber(
+            // And a briefcase icon for the third.
             icon: Icon(Icons.work_outline),
           ),
           contentBuilder: (context) {

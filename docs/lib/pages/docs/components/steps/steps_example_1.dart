@@ -6,6 +6,7 @@ class StepsExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Steps(
+      // Static steps list with titles and supporting content lines.
       children: [
         StepItem(
           title: Text('Create a project'),

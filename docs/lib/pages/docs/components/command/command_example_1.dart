@@ -6,6 +6,8 @@ class CommandExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Command(
+      // The builder is an async generator producing lists of CommandCategory
+      // based on the current search query. Each yield updates the UI.
       builder: (context, query) async* {
         Map<String, List<String>> items = {
           'Suggestions': ['Calendar', 'Search Emoji', 'Launch'],
@@ -32,6 +34,7 @@ class CommandExample1 extends StatelessWidget {
             }
           }
           if (resultItems.isNotEmpty) {
+            // Simulate latency to showcase incremental results.
             await Future.delayed(const Duration(seconds: 1));
             yield [
               CommandCategory(

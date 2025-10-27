@@ -5,6 +5,8 @@ class LinearProgressExample1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Indeterminate linear progress indicator with a fixed width.
+    // When no `value` is provided, it displays an animated looping bar.
     return const SizedBox(
       width: 200,
       child: LinearProgressIndicator(),

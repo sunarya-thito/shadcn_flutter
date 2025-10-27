@@ -1,3 +1,8 @@
+// Components catalog page used by the docs app.
+//
+// Renders the grid/list of component tiles and links to each component's
+// example wrapper page. This is part of the documentation scaffolding rather
+// than a demo unit. Comments added only; behavior unchanged.
 import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';

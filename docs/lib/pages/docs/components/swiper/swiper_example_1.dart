@@ -67,7 +67,9 @@ class _SwiperExample1State extends State<SwiperExample1> {
           ),
         );
       },
+      // Swiper displays an overlay (drawer/sheet) that can be swiped in from a chosen edge.
       position: _position,
+      // Choose the overlay type: Drawer slides over content; Sheet peeks up from an edge.
       handler: _typeDrawer ? SwiperHandler.drawer : SwiperHandler.sheet,
       child: SizedBox(
         height: 500,

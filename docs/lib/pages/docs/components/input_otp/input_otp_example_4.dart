@@ -5,6 +5,9 @@ class InputOTPExample4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // OTP comprised of uppercase alphabet characters only, split into
+    // multiple groups with separators. Each InputOTPChild.character controls
+    // what kinds of characters are permitted.
     return InputOTP(
       children: [
         InputOTPChild.character(

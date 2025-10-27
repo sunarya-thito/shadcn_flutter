@@ -19,12 +19,14 @@ class _ResizableExample5State extends State<ResizableExample5> {
       child: ResizablePanel.horizontal(
         children: [
           ResizablePane.controlled(
+            // This controlled pane supports collapsing with a minimum and collapsed size.
             minSize: 100,
             collapsedSize: 40,
             controller: controller,
             child: AnimatedBuilder(
               animation: controller,
               builder: (context, child) {
+                // Render a different UI when the pane is collapsed.
                 if (controller.collapsed) {
                   return Container(
                     alignment: Alignment.center,
@@ -44,6 +46,7 @@ class _ResizableExample5State extends State<ResizableExample5> {
             ),
           ),
           ResizablePane(
+            // A standard resizable pane with an absolute initial width.
             initialSize: 300,
             child: Container(
               alignment: Alignment.center,

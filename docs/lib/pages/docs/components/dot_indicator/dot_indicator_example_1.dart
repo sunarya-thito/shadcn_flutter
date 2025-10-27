@@ -11,6 +11,8 @@ class _DotIndicatorExample1State extends State<DotIndicatorExample1> {
   int _index = 0;
   @override
   Widget build(BuildContext context) {
+    // A simple pager-like dot indicator with 5 steps.
+    // Tap/click updates the current index via onChanged.
     return DotIndicator(
         index: _index,
         length: 5,

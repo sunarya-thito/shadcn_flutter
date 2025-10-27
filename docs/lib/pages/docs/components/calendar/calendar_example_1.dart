@@ -1,5 +1,9 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Calendar with range selection mode.
+///
+/// Demonstrates navigating months using a custom header and binding
+/// a [CalendarValue] for a date range via [CalendarSelectionMode.range].
 class CalendarExample1 extends StatefulWidget {
   const CalendarExample1({super.key});
 
@@ -8,7 +12,9 @@ class CalendarExample1 extends StatefulWidget {
 }
 
 class _CalendarExample1State extends State<CalendarExample1> {
+  // Holds the current selection (start/end) when in range mode.
   CalendarValue? _value;
+  // Tracks the current month/year view independent of selection.
   CalendarView _view = CalendarView.now();
   @override
   Widget build(BuildContext context) {
@@ -25,6 +31,7 @@ class _CalendarExample1State extends State<CalendarExample1> {
                   density: ButtonDensity.icon,
                   onPressed: () {
                     setState(() {
+                      // Move the calendar view to the previous month.
                       _view = _view.previous;
                     });
                   },
@@ -39,6 +46,7 @@ class _CalendarExample1State extends State<CalendarExample1> {
                   density: ButtonDensity.icon,
                   onPressed: () {
                     setState(() {
+                      // Move the calendar view to the next month.
                       _view = _view.next;
                     });
                   },
@@ -55,6 +63,7 @@ class _CalendarExample1State extends State<CalendarExample1> {
                   _value = value;
                 });
               },
+              // Range selection allows choosing a start and end date.
               selectionMode: CalendarSelectionMode.range,
             ),
           ],

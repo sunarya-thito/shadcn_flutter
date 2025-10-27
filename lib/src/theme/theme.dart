@@ -92,7 +92,7 @@ class ThemeData {
   final double? surfaceOpacity;
   final double? surfaceBlur;
 
-  ThemeData({
+  const ThemeData({
     this.colorScheme = ColorSchemes.lightDefaultColor,
     this.radius = 0.5,
     this.scaling = 1,
@@ -103,7 +103,7 @@ class ThemeData {
     this.surfaceBlur,
   }) : _platform = platform;
 
-  ThemeData.dark({
+  const ThemeData.dark({
     this.colorScheme = ColorSchemes.darkDefaultColor,
     this.radius = 0.5,
     this.scaling = 1,

@@ -41,6 +41,7 @@ class _SelectExample3State extends State<SelectExample3> {
         return Text(item);
       },
       popup: SelectPopup.builder(
+        // Popup with async data loading and custom empty/loading UI.
         searchPlaceholder: const Text('Search fruit'),
         emptyBuilder: (context) {
           return const Center(
@@ -60,6 +61,7 @@ class _SelectExample3State extends State<SelectExample3> {
           // In a real-world scenario, you would fetch data from an API or database
           await Future.delayed(const Duration(milliseconds: 500));
           return SelectItemBuilder(
+            // When 0, the popup renders the emptyBuilder; otherwise the builder lazily builds rows.
             childCount: filteredFruits.isEmpty ? 0 : null,
             builder: (context, index) {
               final entry = filteredFruits[index % filteredFruits.length];

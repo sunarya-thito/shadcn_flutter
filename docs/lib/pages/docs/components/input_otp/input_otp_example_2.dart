@@ -5,6 +5,8 @@ class InputOTPExample2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Pre-populate the first group using the characters from the string '123'.
+    // InputOTP takes a list of code units for its initial value.
     return InputOTP(
       initialValue: '123'.codeUnits,
       children: [

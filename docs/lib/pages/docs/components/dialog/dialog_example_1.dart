@@ -1,5 +1,10 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Dialog with a simple profile edit form.
+///
+/// Opens an [AlertDialog] containing a small form. When the user taps
+/// "Save changes", the dialog closes and returns the form values via
+/// [Navigator.pop].
 class DialogExample1 extends StatelessWidget {
   const DialogExample1({super.key});
 
@@ -7,6 +12,7 @@ class DialogExample1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return PrimaryButton(
       onPressed: () {
+        // Present a Material dialog on top of the current route.
         showDialog(
           context: context,
           builder: (context) {
@@ -49,6 +55,7 @@ class DialogExample1 extends StatelessWidget {
                 PrimaryButton(
                   child: const Text('Save changes'),
                   onPressed: () {
+                    // Return the form values and close the dialog.
                     Navigator.of(context).pop(controller.values);
                   },
                 ),

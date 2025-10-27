@@ -14,6 +14,7 @@ class _PaginationExample1State extends State<PaginationExample1> {
     return Pagination(
       page: page,
       totalPages: 20,
+      // Limit how many page buttons are visible at once (rest via ellipsis).
       onPageChanged: (value) {
         setState(() {
           page = value;

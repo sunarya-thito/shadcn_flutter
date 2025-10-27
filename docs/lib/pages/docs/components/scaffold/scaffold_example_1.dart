@@ -8,6 +8,7 @@ class ScaffoldExample1 extends StatefulWidget {
 }
 
 class _ScaffoldExample1State extends State<ScaffoldExample1> {
+  // Simple counter to demonstrate updating content inside the Scaffold body.
   int _counter = 0;
 
   void _incrementCounter() {
@@ -19,6 +20,7 @@ class _ScaffoldExample1State extends State<ScaffoldExample1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Show an indeterminate progress indicator in the header area (for demo purposes).
       loadingProgressIndeterminate: true,
       headers: [
         AppBar(
@@ -44,12 +46,14 @@ class _ScaffoldExample1State extends State<ScaffoldExample1> {
             ),
           ],
         ),
+        // Divider between the header and the body.
         const Divider(),
       ],
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // The .p() extension adds default padding around the widget.
             const Text('You have pushed the button this many times:').p(),
             Text(
               '$_counter',

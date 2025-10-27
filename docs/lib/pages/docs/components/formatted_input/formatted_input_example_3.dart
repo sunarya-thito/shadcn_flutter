@@ -14,6 +14,7 @@ class _FormattedInputExample3State extends State<FormattedInputExample3> {
     return Column(
       children: [
         TimeInput(
+          // Built-in formatted control for time-of-day values.
           onChanged: (value) => setState(() => _selected = value),
         ),
         const Gap(16),

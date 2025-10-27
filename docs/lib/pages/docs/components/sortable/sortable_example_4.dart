@@ -37,19 +37,23 @@ class _SortableExample4State extends State<SortableExample4> {
     return SizedBox(
       height: 400,
       child: SortableLayer(
+        // Constrain drag overlays to the layer bounds so they scroll within the list.
         lock: true,
         child: SortableDropFallback<int>(
+          // If dropped outside a specific edge target, append to the end.
           onAccept: (value) {
             setState(() {
               names.add(names.removeAt(value.data));
             });
           },
+          // Wrap the scrollable so auto-scrolling can occur while dragging near edges.
           child: ScrollableSortableLayer(
             controller: controller,
             child: ListView.builder(
               controller: controller,
               itemBuilder: (context, i) {
                 return Sortable<String>(
+                  // Stable key helps maintain drag state with virtualization.
                   key: ValueKey(i),
                   data: names[i],
                   onAcceptTop: (value) {

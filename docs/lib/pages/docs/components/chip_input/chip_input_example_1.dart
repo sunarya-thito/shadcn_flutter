@@ -1,5 +1,12 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// ChipInput with inline autocomplete suggestions.
+///
+/// Shows how to:
+/// - Listen to a [ChipEditingController] to compute suggestions based on
+///   the current token being typed (using [textAtCursor]).
+/// - Wrap [ChipInput] with [AutoComplete] to display suggestions.
+/// - Transform submitted chips (here we prepend '@').
 class ChipInputExample1 extends StatefulWidget {
   const ChipInputExample1({super.key});
 
@@ -8,8 +15,11 @@ class ChipInputExample1 extends StatefulWidget {
 }
 
 class _ChipInputExample1State extends State<ChipInputExample1> {
+  // Current filtered suggestions for the token at the cursor.
   List<String> _suggestions = [];
+  // Controller manages both chips and text entry.
   final ChipEditingController<String> _controller = ChipEditingController();
+  // Static suggestion pool to match against.
   static const List<String> _availableSuggestions = [
     'hello world',
     'lorem ipsum',
@@ -24,8 +34,9 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
     _controller.addListener(
       () {
         setState(() {
-          var value = _controller
-              .textAtCursor; // IMPORTANT: use textAtCursor instead of text
+          // IMPORTANT: use textAtCursor instead of text so we only consider
+          // the current token under the caret when filtering suggestions.
+          var value = _controller.textAtCursor;
           if (value.isNotEmpty) {
             _suggestions = _availableSuggestions.where((element) {
               return element.startsWith(value);
@@ -44,6 +55,7 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
       mainAxisSize: MainAxisSize.min,
       children: [
         AutoComplete(
+          // Provide suggestions to show below the input as the user types.
           suggestions: _suggestions,
           child: ChipInput<String>(
             controller: _controller,
@@ -51,6 +63,7 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
               setState(() {
                 _suggestions = [];
               });
+              // Transform the chip value before storing it.
               return '@$value';
             },
             chipBuilder: (context, chip) {
@@ -62,6 +75,7 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
         ListenableBuilder(
           listenable: _controller,
           builder: (context, child) {
+            // Reflect the current chip list for demonstration.
             return Text('Current chips: ${_controller.chips.join(', ')}');
           },
         ),

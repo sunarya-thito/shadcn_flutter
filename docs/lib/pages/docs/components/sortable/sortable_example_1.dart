@@ -8,6 +8,7 @@ class SortableExample1 extends StatefulWidget {
 }
 
 class _SortableExample1State extends State<SortableExample1> {
+  // Two separate lists for demonstrating cross-list drag-and-drop.
   List<SortableData<String>> invited = [
     const SortableData('James'),
     const SortableData('John'),
@@ -33,12 +34,14 @@ class _SortableExample1State extends State<SortableExample1> {
     return SizedBox(
       height: 500,
       child: SortableLayer(
+        // The SortableLayer coordinates drag-over/accept behavior for nested Sortable zones.
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: Card(
                 child: SortableDropFallback<String>(
+                  // If dropped into empty space in this list, append to the end.
                   onAccept: (value) {
                     setState(() {
                       swapItemInLists(
@@ -51,12 +54,14 @@ class _SortableExample1State extends State<SortableExample1> {
                       for (int i = 0; i < invited.length; i++)
                         Sortable<String>(
                           data: invited[i],
+                          // Insert above the current index when dropped at the top edge.
                           onAcceptTop: (value) {
                             setState(() {
                               swapItemInLists(
                                   [invited, reserved], value, invited, i);
                             });
                           },
+                          // Insert below the current index when dropped at the bottom edge.
                           onAcceptBottom: (value) {
                             setState(() {
                               swapItemInLists(
@@ -77,6 +82,7 @@ class _SortableExample1State extends State<SortableExample1> {
             Expanded(
               child: Card(
                 child: SortableDropFallback<String>(
+                  // Same behavior for the second list.
                   onAccept: (value) {
                     setState(() {
                       swapItemInLists([invited, reserved], value, reserved,

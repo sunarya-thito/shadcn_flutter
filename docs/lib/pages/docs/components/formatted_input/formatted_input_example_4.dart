@@ -14,6 +14,7 @@ class _FormattedInputExample4State extends State<FormattedInputExample4> {
     return Column(
       children: [
         DurationInput(
+          // Built-in formatted control for durations; shows HH:MM and (optionally) SS.
           onChanged: (value) => setState(() => _selected = value),
           showSeconds: true,
         ),

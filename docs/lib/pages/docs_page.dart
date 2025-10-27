@@ -1,3 +1,12 @@
+// Docs page scaffold and navigation structure.
+//
+// Provides the high-level layout for documentation pages, including:
+// - Sidebar sections and pages (DocsPageState.sections) with routing names.
+// - On-this-page anchors with visibility tracking for in-page nav.
+// - Optional scrollability and per-page navigation items.
+//
+// This is part of the docs framework (a wrapper/renderer), not a component demo.
+// Comments added for clarity; behavior unchanged.
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -160,6 +169,13 @@ class DocsPageState extends State<DocsPage> {
         ]),
         Icons.book),
     // COMPONENTS BEGIN
+    ShadcnDocsSection(
+      'Application',
+      [
+        ShadcnDocsPage('ShadcnApp', 'app'),
+        ShadcnDocsPage('ShadcnUI', 'wrapper'),
+      ],
+    ),
     ShadcnDocsSection(
       'Animation',
       [

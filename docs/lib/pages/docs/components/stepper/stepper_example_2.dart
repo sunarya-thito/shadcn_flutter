@@ -15,6 +15,7 @@ class _StepperExample2State extends State<StepperExample2> {
   Widget build(BuildContext context) {
     return Stepper(
       controller: controller,
+      // Horizontal layout using the same 3-step flow.
       direction: Axis.horizontal,
       steps: [
         Step(

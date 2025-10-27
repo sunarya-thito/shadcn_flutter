@@ -46,6 +46,7 @@ class _SwitcherExample1State extends State<SwitcherExample1> {
         gap(24),
         ClipRect(
           child: Switcher(
+            // The index selects which child is visible; transitions are directional.
             index: index,
             direction: directions[directionIndex % directions.length],
             onIndexChanged: (index) {
@@ -57,6 +58,7 @@ class _SwitcherExample1State extends State<SwitcherExample1> {
               for (int i = 0; i < 100; i++)
                 NumberedContainer(
                   index: i,
+                  // Demonstrate different sizes to show animated size transitions.
                   width: sizes[i % sizes.length].width,
                   height: sizes[i % sizes.length].height,
                 )

@@ -18,6 +18,7 @@ class _SelectExample2State extends State<SelectExample2> {
 
   Iterable<MapEntry<String, List<String>>> _filteredFruits(
       String searchQuery) sync* {
+    // Yield entries whose key or children match the current search query.
     for (final entry in fruits.entries) {
       final filteredValues = entry.value
           .where((value) => _filterName(value, searchQuery))
@@ -31,6 +32,7 @@ class _SelectExample2State extends State<SelectExample2> {
   }
 
   bool _filterName(String name, String searchQuery) {
+    // Case-insensitive substring filter.
     return name.toLowerCase().contains(searchQuery);
   }
 
@@ -41,8 +43,10 @@ class _SelectExample2State extends State<SelectExample2> {
         return Text(item);
       },
       popup: SelectPopup.builder(
+        // Provide a search field inside the popup.
         searchPlaceholder: const Text('Search fruit'),
         builder: (context, searchQuery) {
+          // Filter entries by the user's search.
           final filteredFruits = searchQuery == null
               ? fruits.entries
               : _filteredFruits(searchQuery);
@@ -50,6 +54,7 @@ class _SelectExample2State extends State<SelectExample2> {
             children: [
               for (final entry in filteredFruits)
                 SelectGroup(
+                  // Group by category (e.g., Apple, Banana) with a header label.
                   headers: [
                     SelectLabel(
                       child: Text(entry.key),

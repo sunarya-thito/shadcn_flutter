@@ -2,6 +2,9 @@ import 'dart:ui';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+// Demonstrates a scrollable Table hooked to ScrollableClient with frozen
+// rows/columns and diagonal drag panning.
+
 class TableExample3 extends StatefulWidget {
   const TableExample3({super.key});
 
@@ -10,6 +13,7 @@ class TableExample3 extends StatefulWidget {
 }
 
 class _TableExample3State extends State<TableExample3> {
+  // Builds a bordered cell; amounts can be right-aligned by passing true.
   TableCell buildCell(String text, [bool alignRight = false]) {
     final theme = Theme.of(context);
     return TableCell(
@@ -37,20 +41,27 @@ class _TableExample3State extends State<TableExample3> {
           PointerDeviceKind.touch,
           PointerDeviceKind.mouse,
         },
+        // Disable overscroll glow and bouncing to keep the table steady.
         overscroll: false,
       ),
       child: SizedBox(
         height: 400,
         child: OutlinedContainer(
           child: ScrollableClient(
+              // Allow simultaneous horizontal and vertical drags for panning.
               diagonalDragBehavior: DiagonalDragBehavior.free,
               builder: (context, offset, viewportSize, child) {
                 return Table(
+                  // Hook the table's scroll offsets to the ScrollableClient.
                   horizontalOffset: offset.dx,
                   verticalOffset: offset.dy,
+                  // The viewport tells the table how much content area is visible.
                   viewportSize: viewportSize,
+                  // Fixed sizes for consistent cell dimensions.
                   defaultColumnWidth: const FixedTableSize(150),
                   defaultRowHeight: const FixedTableSize(40),
+                  // Freeze the first and fourth rows, and the first and third columns.
+                  // These rows/columns stay pinned while the rest scrolls.
                   frozenCells: const FrozenTableData(
                     frozenRows: [
                       TableRef(0),

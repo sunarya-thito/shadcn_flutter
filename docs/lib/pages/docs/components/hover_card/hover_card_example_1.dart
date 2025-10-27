@@ -5,8 +5,13 @@ class HoverCardExample1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // HoverCard shows a floating panel when the user hovers over the child.
+    // - hoverBuilder builds the content of the floating card.
+    // - child is the anchor widget users point at/hover to reveal the card.
     return HoverCard(
       hoverBuilder: (context) {
+        // SurfaceCard provides an elevated container with default padding and
+        // surface styling. We constrain the width so the text wraps nicely.
         return const SurfaceCard(
           child: Basic(
             leading: FlutterLogo(),
@@ -17,6 +22,8 @@ class HoverCardExample1 extends StatelessWidget {
         ).sized(width: 300);
       },
       child: LinkButton(
+        // The LinkButton acts as the hover target. onPressed is provided for
+        // completeness but not used in this example.
         onPressed: () {},
         child: const Text('@flutter'),
       ),

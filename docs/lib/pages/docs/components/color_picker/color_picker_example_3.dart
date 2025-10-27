@@ -10,6 +10,7 @@ class ColorPickerExample3 extends StatelessWidget {
       children: [
         PrimaryButton(
           onPressed: () {
+            // Show the color picker as a popover anchored to the button.
             showColorPicker(
               context: context,
               offset: const Offset(0, 8),
@@ -24,6 +25,7 @@ class ColorPickerExample3 extends StatelessWidget {
         const Gap(16),
         PrimaryButton(
           onPressed: () {
+            // Show the color picker as a dialog with a title.
             showColorPickerDialog(
               context: context,
               title: const Text('Select Color'),

@@ -26,7 +26,9 @@ class SkeletonExample1 extends StatelessWidget {
           ).asSkeleton(),
           // Note: Avatar and other Image related widget needs its own skeleton
           trailing: const Icon(Icons.arrow_forward),
-        ).asSkeleton(),
+        )
+            // Wrap the whole row in a skeleton to show a loading placeholder for text and icons.
+            .asSkeleton(),
       ],
     );
   }

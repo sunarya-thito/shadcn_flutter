@@ -10,6 +10,7 @@ class RepeatedAnimationBuilderExample3 extends StatefulWidget {
 
 class _RepeatedAnimationBuilderExample3State
     extends State<RepeatedAnimationBuilderExample3> {
+  // Whether the animation is currently playing. Toggled by the button below.
   bool play = true;
   @override
   Widget build(BuildContext context) {
@@ -17,13 +18,17 @@ class _RepeatedAnimationBuilderExample3State
       mainAxisSize: MainAxisSize.min,
       children: [
         RepeatedAnimationBuilder(
+          // Drive play/pause from local state.
           play: play,
           start: const Offset(-100, 0),
           end: const Offset(100, 0),
           duration: const Duration(seconds: 1),
+          // Provide a different reverse duration to show asymmetric timing.
           reverseDuration: const Duration(seconds: 5),
+          // Use separate forward/reverse curves.
           curve: Curves.linear,
           reverseCurve: Curves.easeInOutCubic,
+          // Ping-pong between start and end, reversing the direction each cycle.
           mode: RepeatMode.pingPongReverse,
           builder: (context, value, child) {
             return Transform.translate(
@@ -40,6 +45,7 @@ class _RepeatedAnimationBuilderExample3State
         PrimaryButton(
           onPressed: () {
             setState(() {
+              // Toggle the 'play' flag, which starts/stops the animation.
               play = !play;
             });
           },

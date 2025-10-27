@@ -12,6 +12,8 @@ class _InputOTPExample1State extends State<InputOTPExample1> {
   String? submittedValue;
   @override
   Widget build(BuildContext context) {
+    // Basic OTP input with onChanged and onSubmitted callbacks.
+    // The example groups 3 digits, a visual separator, then 3 more digits.
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -27,6 +29,7 @@ class _InputOTPExample1State extends State<InputOTPExample1> {
             });
           },
           children: [
+            // Each character cell allows digits. The separator is a visual divider only.
             InputOTPChild.character(allowDigit: true),
             InputOTPChild.character(allowDigit: true),
             InputOTPChild.character(allowDigit: true),

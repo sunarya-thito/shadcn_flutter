@@ -6,6 +6,8 @@ class KeyboardDisplayExample1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // KeyboardDisplay renders keycaps/shortcuts inline.
+    // Below we show two variants: explicit key list and a SingleActivator.
     return const Column(
       children: [
         KeyboardDisplay(keys: [

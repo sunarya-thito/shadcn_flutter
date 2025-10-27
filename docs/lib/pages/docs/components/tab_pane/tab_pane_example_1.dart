@@ -1,5 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+// Demonstrates TabPane with sortable, closable tabs backed by custom data.
+// Tracks a focused index and renders a content area for the active tab.
+
 class TabPaneExample1 extends StatefulWidget {
   const TabPaneExample1({super.key});
 
@@ -26,12 +29,15 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Build the initial set of tabs. TabPaneData wraps your custom data type
+    // (here, MyTab) and adds selection/drag metadata.
     tabs = [
       for (int i = 0; i < 3; i++)
         TabPaneData(MyTab('Tab ${i + 1}', i + 1, 'Content ${i + 1}')),
     ];
   }
 
+  // Render a single tab header item. It shows a badge-like count and a close button.
   TabItem _buildTabItem(MyTab data) {
     return TabItem(
       child: ConstrainedBox(
@@ -69,21 +75,25 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
   Widget build(BuildContext context) {
     return TabPane<MyTab>(
       // children: tabs.map((e) => _buildTabItem(e)).toList(),
+      // Provide the items and how to render each tab header.
       items: tabs,
       itemBuilder: (context, item, index) {
         return _buildTabItem(item.data);
       },
+      // The currently focused tab index.
       focused: focused,
       onFocused: (value) {
         setState(() {
           focused = value;
         });
       },
+      // Allow reordering via drag-and-drop; update the list with the new order.
       onSort: (value) {
         setState(() {
           tabs = value;
         });
       },
+      // Optional leading/trailing actions for the tab strip.
       leading: [
         IconButton.secondary(
           icon: const Icon(Icons.arrow_drop_down),
@@ -110,6 +120,7 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
           },
         )
       ],
+      // The content area; you can render based on the focused index.
       child: SizedBox(
         height: 400,
         child: Center(

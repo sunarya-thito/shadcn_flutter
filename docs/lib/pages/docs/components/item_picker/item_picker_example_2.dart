@@ -7,6 +7,7 @@ class ItemPickerExample2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return PrimaryButton(
       onPressed: () {
+        // Dialog variant of the item picker for a more prominent selection flow.
         showItemPickerDialog<int>(
           context,
           title: const Text('Pick a number'),

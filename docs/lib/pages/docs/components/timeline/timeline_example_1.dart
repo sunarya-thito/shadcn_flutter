@@ -1,11 +1,15 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+// Demonstrates a static Timeline with entries showing time, title, and content.
+
 class TimelineExample1 extends StatelessWidget {
   const TimelineExample1({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Timeline(
+      // Each TimelineData item renders a time, title, and detailed content.
+      // Styling/layout comes from the Timeline widget; content is plain widgets.
       data: [
         TimelineData(
           time: const Text('2022-01-01'),

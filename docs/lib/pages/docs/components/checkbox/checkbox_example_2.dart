@@ -1,5 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Checkbox with three states (unchecked, indeterminate, checked).
+///
+/// Enabling [tristate] allows the middle "indeterminate" state.
 class CheckboxExample2 extends StatefulWidget {
   const CheckboxExample2({super.key});
 
@@ -19,6 +22,7 @@ class _CheckboxExample2State extends State<CheckboxExample2> {
         });
       },
       trailing: const Text('Remember me'),
+      // Allow toggling: unchecked -> indeterminate -> checked -> ...
       tristate: true,
     );
   }

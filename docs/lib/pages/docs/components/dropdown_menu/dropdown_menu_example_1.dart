@@ -1,5 +1,9 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Dropdown menu anchored to a button.
+///
+/// Uses [showDropdown] to present a [DropdownMenu] overlay with labels,
+/// dividers, buttons, and a nested submenu.
 class DropdownMenuExample1 extends StatelessWidget {
   const DropdownMenuExample1({super.key});
 
@@ -7,6 +11,7 @@ class DropdownMenuExample1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlineButton(
       onPressed: () {
+        // Show the dropdown relative to the button.
         showDropdown(
           context: context,
           builder: (context) {
@@ -31,6 +36,7 @@ class DropdownMenuExample1 extends StatelessWidget {
                   child: Text('Team'),
                 ),
                 MenuButton(
+                  // Demonstrates a nested submenu.
                   subMenu: [
                     MenuButton(
                       child: Text('Email'),
@@ -66,6 +72,7 @@ class DropdownMenuExample1 extends StatelessWidget {
             );
           },
         ).future.then((_) {
+          // Called when the dropdown is closed.
           print('Closed');
         });
       },

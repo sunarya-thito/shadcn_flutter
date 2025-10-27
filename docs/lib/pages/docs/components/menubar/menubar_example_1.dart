@@ -14,6 +14,8 @@ class _MenubarExample1State extends State<MenubarExample1> {
   int _selectedProfile = 1;
   @override
   Widget build(BuildContext context) {
+    // Typical desktop-style menubar with nested submenus, shortcuts,
+    // checkboxes (non-closing), and a radio group.
     return Menubar(
       children: [
         const MenuButton(
@@ -141,6 +143,7 @@ class _MenubarExample1State extends State<MenubarExample1> {
                   _showBookmarksBar = value;
                 });
               },
+              // Keep the submenu open while toggling for quicker multi-actions.
               autoClose: false,
               child: const Text('Always Show Bookmarks Bar'),
             ),
@@ -151,6 +154,7 @@ class _MenubarExample1State extends State<MenubarExample1> {
                   _showFullURLs = value;
                 });
               },
+              // Also keep open here to demonstrate autoClose control.
               autoClose: false,
               child: const Text('Always Show Full URLs'),
             ),
@@ -198,6 +202,7 @@ class _MenubarExample1State extends State<MenubarExample1> {
               children: const [
                 MenuRadio<int>(
                   value: 0,
+                  // Disable auto-close to let users quickly toggle multiple options.
                   autoClose: false,
                   child: Text('Andy'),
                 ),

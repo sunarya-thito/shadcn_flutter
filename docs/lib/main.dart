@@ -1,3 +1,13 @@
+// Docs application entry point and router setup.
+//
+// This file wires up the Shadcn Flutter documentation app:
+// - Configures routes for each docs section and example wrapper using go_router.
+// - Loads docs metadata (docs.json), preferences, and theme.
+// - Hosts the component example wrappers (e.g., button_example.dart), which in
+//   turn display the actual demo units (e.g., button_example_1.dart).
+//
+// Note: This is scaffolding for the docs site, not a component demo itself.
+// Edits here should avoid changing runtime behavior; comments only.
 import 'dart:convert';
 import 'dart:io';
 
@@ -7,6 +17,7 @@ import 'package:docs/pages/docs/components/alert_dialog_example.dart';
 import 'package:docs/pages/docs/components/alert_example.dart';
 import 'package:docs/pages/docs/components/animated_value_builder_example.dart';
 import 'package:docs/pages/docs/components/app_bar_example.dart';
+import 'package:docs/pages/docs/components/app_example.dart';
 import 'package:docs/pages/docs/components/autocomplete_example.dart';
 import 'package:docs/pages/docs/components/avatar_example.dart';
 import 'package:docs/pages/docs/components/avatar_group_example.dart';
@@ -74,6 +85,7 @@ import 'package:docs/pages/docs/components/tooltip_example.dart';
 import 'package:docs/pages/docs/components/tracker_example.dart';
 import 'package:docs/pages/docs/components/tree_example.dart';
 import 'package:docs/pages/docs/components/window_example.dart';
+import 'package:docs/pages/docs/components/wrapper_example.dart';
 import 'package:docs/pages/docs/components_page.dart';
 import 'package:docs/pages/docs/icons_page.dart';
 import 'package:docs/pages/docs/installation_page.dart';
@@ -757,6 +769,20 @@ class MyAppState extends State<MyApp> {
               builder: (context, state) {
                 return const SwitcherExample();
               }),
+          GoRoute(
+            path: 'app',
+            name: 'app',
+            builder: (context, state) {
+              return const AppExample();
+            },
+          ),
+          GoRoute(
+            path: 'wrapper',
+            name: 'wrapper',
+            builder: (context, state) {
+              return const WrapperExample();
+            },
+          ),
         ]),
   ];
   late ColorScheme colorScheme;

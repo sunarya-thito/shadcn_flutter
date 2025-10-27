@@ -33,6 +33,11 @@ jobs:
       run: cp -r ./docs/config/docs-dev.json ./docs/public/assets/docs.json
       working-directory: './'
 
+    - name: Generate LLMs Documentation
+      run: |
+        dart ./bin/llms_gen.dart
+      working-directory: './'
+
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
       with:

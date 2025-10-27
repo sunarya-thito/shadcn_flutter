@@ -77,6 +77,7 @@ class _StepperExample6State extends State<StepperExample6> {
                 value: _currentVariant == i,
                 onChanged: (value) {
                   setState(() {
+                    // Choose among visual variants (circle, alt circle, line).
                     _currentVariant = i;
                   });
                 },
@@ -88,6 +89,7 @@ class _StepperExample6State extends State<StepperExample6> {
                 value: _currentStepSize == i,
                 onChanged: (value) {
                   setState(() {
+                    // Pick the step size used by the Stepper.
                     _currentStepSize = i;
                   });
                 },
@@ -101,6 +103,7 @@ class _StepperExample6State extends State<StepperExample6> {
                   value: controller.value.stepStates[1] == StepState.failed,
                   onChanged: (value) {
                     if (value) {
+                      // Mark step 2 as failed to demo error state.
                       controller.setStatus(1, StepState.failed);
                     } else {
                       controller.setStatus(1, null);
@@ -116,6 +119,7 @@ class _StepperExample6State extends State<StepperExample6> {
         Stepper(
           controller: controller,
           direction: direction,
+          // Apply the chosen size and visual variant.
           size: _stepSize[_currentStepSize],
           variant: _variants[_currentVariant],
           steps: [

@@ -32,6 +32,9 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   icon_font_generator: ^4.0.0
   archive: any
+  glob: ^2.1.3
+  analyzer: ^6.5.0
+  file: ^7.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

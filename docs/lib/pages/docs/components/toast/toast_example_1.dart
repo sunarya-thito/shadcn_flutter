@@ -1,5 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+// Demonstrates toast overlays in different screen locations with a custom
+// content builder and programmatic close via the overlay handle.
+
 class ToastExample1 extends StatefulWidget {
   const ToastExample1({super.key});
 
@@ -8,6 +11,7 @@ class ToastExample1 extends StatefulWidget {
 }
 
 class _ToastExample1State extends State<ToastExample1> {
+  // Builder for the toast content; receives an overlay handle so we can close it.
   Widget buildToast(BuildContext context, ToastOverlay overlay) {
     return SurfaceCard(
       child: Basic(
@@ -16,6 +20,7 @@ class _ToastExample1State extends State<ToastExample1> {
         trailing: PrimaryButton(
             size: ButtonSize.small,
             onPressed: () {
+              // Close the toast programmatically when clicking Undo.
               overlay.close();
             },
             child: const Text('Undo')),
@@ -35,6 +40,7 @@ class _ToastExample1State extends State<ToastExample1> {
             showToast(
               context: context,
               builder: buildToast,
+              // Position bottom-left.
               location: ToastLocation.bottomLeft,
             );
           },
@@ -45,6 +51,7 @@ class _ToastExample1State extends State<ToastExample1> {
             showToast(
               context: context,
               builder: buildToast,
+              // Position bottom-right.
               location: ToastLocation.bottomRight,
             );
           },
@@ -55,6 +62,7 @@ class _ToastExample1State extends State<ToastExample1> {
             showToast(
               context: context,
               builder: buildToast,
+              // Position top-left.
               location: ToastLocation.topLeft,
             );
           },
@@ -65,6 +73,7 @@ class _ToastExample1State extends State<ToastExample1> {
             showToast(
               context: context,
               builder: buildToast,
+              // Position top-right.
               location: ToastLocation.topRight,
             );
           },

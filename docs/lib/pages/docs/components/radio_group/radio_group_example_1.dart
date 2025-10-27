@@ -8,6 +8,7 @@ class RadioGroupExample1 extends StatefulWidget {
 }
 
 class _RadioGroupExample1State extends State<RadioGroupExample1> {
+  // Start with no selection (null). The UI reflects this until the user picks an option.
   int? selectedValue;
 
   @override
@@ -15,16 +16,19 @@ class _RadioGroupExample1State extends State<RadioGroupExample1> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // A generic RadioGroup for int values. It controls selection for its RadioItem children.
         RadioGroup<int>(
           value: selectedValue,
           onChanged: (value) {
             setState(() {
+              // Save the selected value emitted by the tapped RadioItem.
               selectedValue = value;
             });
           },
           child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Each RadioItem represents a single choice with an associated integer value.
               RadioItem(
                 value: 1,
                 trailing: Text('Option 1'),
@@ -41,6 +45,7 @@ class _RadioGroupExample1State extends State<RadioGroupExample1> {
           ),
         ),
         const Gap(16),
+        // Echo the selection below for demonstration purposes.
         Text('Selected: $selectedValue'),
       ],
     );

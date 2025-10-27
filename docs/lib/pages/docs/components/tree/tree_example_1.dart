@@ -1,5 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+// Demonstrates TreeView with expandable items, branch lines (path/line),
+// and optional recursive selection behavior.
+
 class TreeExample1 extends StatefulWidget {
   const TreeExample1({super.key});
 
@@ -76,11 +79,15 @@ class _TreeExample1State extends State<TreeExample1> {
             height: 300,
             width: 250,
             child: TreeView(
+              // Show a separate expand/collapse icon when true; otherwise use row affordance.
               expandIcon: expandIcon,
               shrinkWrap: true,
+              // When true, selecting a parent can affect children (see below toggle).
               recursiveSelection: recursiveSelection,
               nodes: treeItems,
+              // Draw connecting lines either as path curves or straight lines.
               branchLine: usePath ? BranchLine.path : BranchLine.line,
+              // Use a built-in handler to update selection state across nodes.
               onSelectionChanged: TreeView.defaultSelectionHandler(
                 treeItems,
                 (value) {
@@ -105,6 +112,7 @@ class _TreeExample1State extends State<TreeExample1> {
                       : Icon(node.expanded
                           ? BootstrapIcons.folder2Open
                           : BootstrapIcons.folder2),
+                  // Expand/collapse handling; updates treeItems with new expanded state.
                   onExpand: TreeView.defaultItemExpandHandler(treeItems, node,
                       (value) {
                     setState(() {
@@ -169,6 +177,7 @@ class _TreeExample1State extends State<TreeExample1> {
             setState(() {
               recursiveSelection = value == CheckboxState.checked;
               if (recursiveSelection) {
+                // Update nodes so parent/child reflect selected state recursively.
                 treeItems = treeItems.updateRecursiveSelection();
               }
             });

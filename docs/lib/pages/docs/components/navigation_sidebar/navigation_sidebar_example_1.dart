@@ -1,5 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+// Demonstrates a vertical NavigationSidebar with labels, dividers, and gaps.
+// Selection is index-based and controlled by local state.
+
 class NavigationSidebarExample1 extends StatefulWidget {
   const NavigationSidebarExample1({super.key});
 
@@ -9,9 +12,11 @@ class NavigationSidebarExample1 extends StatefulWidget {
 }
 
 class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
+  // Currently selected item index in the sidebar.
   int selected = 0;
 
   NavigationBarItem buildButton(String label, IconData icon) {
+    // Helper for a standard navigation item with text label and icon.
     return NavigationItem(
       label: Text(label),
       child: Icon(icon),
@@ -24,6 +29,7 @@ class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
       height: 400,
       child: OutlinedContainer(
         child: NavigationSidebar(
+          // Wire selection to local state.
           index: selected,
           onSelected: (index) {
             setState(() {
@@ -31,6 +37,8 @@ class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
             });
           },
           children: [
+            // A mix of labels, gaps, dividers, and items can be used to
+            // structure the navigation list into logical sections.
             const NavigationLabel(child: Text('Discovery')),
             buildButton('Listen Now', BootstrapIcons.playCircle),
             buildButton('Browse', BootstrapIcons.grid),

@@ -9,7 +9,9 @@ class RepeatedAnimationBuilderExample2 extends StatelessWidget {
       start: const Offset(-100, 0),
       end: const Offset(100, 0),
       duration: const Duration(seconds: 1),
+      // Apply a non-linear easing curve.
       curve: Curves.easeInOutCubic,
+      // Reverse mode plays forward to 'end', then backward to 'start', and repeats.
       mode: RepeatMode.reverse,
       builder: (context, value, child) {
         return Transform.translate(

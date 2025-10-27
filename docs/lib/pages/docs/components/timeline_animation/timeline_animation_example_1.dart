@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+// Demonstrates TimelineAnimation by composing offset and rotation keyframes
+// sampled by a shared controller.
+
 class TimelineAnimationExample1 extends StatefulWidget {
   const TimelineAnimationExample1({super.key});
 
@@ -12,6 +15,9 @@ class TimelineAnimationExample1 extends StatefulWidget {
 
 class _TimelineAnimationExample1State extends State<TimelineAnimationExample1>
     with SingleTickerProviderStateMixin {
+  // Timeline of Offset values combining absolute and relative keyframes.
+  // AbsoluteKeyframe defines a start and end value over a fixed duration.
+  // RelativeKeyframe appends a delta over the given duration.
   final TimelineAnimation<Offset> offsetTimeline = TimelineAnimation(
     keyframes: [
       const AbsoluteKeyframe(
@@ -32,8 +38,10 @@ class _TimelineAnimationExample1State extends State<TimelineAnimationExample1>
         Offset(-100, -100),
       ),
     ],
+    // Provide a lerp function for Offset values.
     lerp: Transformers.typeOffset,
   );
+  // A separate timeline animating rotation in radians. StillKeyframe pauses movement.
   final TimelineAnimation<double> rotationTimeline = TimelineAnimation(
     keyframes: [
       const AbsoluteKeyframe(
@@ -52,6 +60,7 @@ class _TimelineAnimationExample1State extends State<TimelineAnimationExample1>
         Duration(seconds: 2),
       ),
     ],
+    // Provide a lerp function for double values.
     lerp: Transformers.typeDouble,
   );
 
@@ -62,6 +71,7 @@ class _TimelineAnimationExample1State extends State<TimelineAnimationExample1>
     super.initState();
     controller = AnimationController(
       vsync: this,
+      // Use the maximum duration across all timelines so they loop together.
       duration: timelineMaxDuration([
         offsetTimeline,
         rotationTimeline,
@@ -81,8 +91,10 @@ class _TimelineAnimationExample1State extends State<TimelineAnimationExample1>
       animation: controller,
       builder: (context, child) {
         return Transform.translate(
+          // Sample the offset timeline using the shared controller.
           offset: offsetTimeline.transformWithController(controller),
           child: Transform.rotate(
+            // Sample the rotation timeline using the shared controller.
             angle: rotationTimeline.transformWithController(controller),
             child: Container(
               width: 50,

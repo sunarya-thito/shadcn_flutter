@@ -1,5 +1,9 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Collapsible list with a trigger and multiple content sections.
+///
+/// The first item is a [CollapsibleTrigger] that toggles visibility of
+/// subsequent [CollapsibleContent] sections.
 class CollapsibleExample1 extends StatelessWidget {
   const CollapsibleExample1({super.key});
 

@@ -1,5 +1,9 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Drawer overlay opened from different screen edges.
+///
+/// Repeatedly opens nested drawers cycling through positions to showcase
+/// [openDrawer] and how to close using [closeOverlay].
 class DrawerExample1 extends StatefulWidget {
   const DrawerExample1({super.key});
 
@@ -8,6 +12,7 @@ class DrawerExample1 extends StatefulWidget {
 }
 
 class _DrawerExample1State extends State<DrawerExample1> {
+  // Sequence of positions to cycle through as drawers are stacked.
   List<OverlayPosition> positions = [
     OverlayPosition.end,
     OverlayPosition.end,
@@ -18,6 +23,7 @@ class _DrawerExample1State extends State<DrawerExample1> {
     OverlayPosition.start,
     OverlayPosition.start,
   ];
+  // Open a drawer and optionally open another from within it.
   void open(BuildContext context, int count) {
     openDrawer(
       context: context,
@@ -35,6 +41,7 @@ class _DrawerExample1State extends State<DrawerExample1> {
                 const Gap(16),
                 PrimaryButton(
                   onPressed: () {
+                    // Open another drawer on top.
                     open(context, count + 1);
                   },
                   child: const Text('Open Another Drawer'),
@@ -42,6 +49,7 @@ class _DrawerExample1State extends State<DrawerExample1> {
                 const Gap(8),
                 SecondaryButton(
                   onPressed: () {
+                    // Close the current top-most overlay.
                     closeOverlay(context);
                   },
                   child: const Text('Close Drawer'),
