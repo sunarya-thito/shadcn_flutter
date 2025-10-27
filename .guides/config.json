@@ -1,0 +1,9 @@
+{
+  "description": "A set of guides for interacting with this awesome library.",
+  "mcpServers": {
+    "your_library": {
+      "command": "some-mcp-command",
+      "args": ["arg1", "arg2"]
+    }
+  }
+}

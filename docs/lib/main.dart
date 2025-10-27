@@ -134,12 +134,21 @@ String getReleaseTagName() {
   return latestVersion == null ? 'Release' : 'Release ($latestVersion)';
 }
 
+const bool enableWebSemantics = bool.fromEnvironment(
+  'ENABLE_WEB_SEMANTICS',
+  defaultValue: false,
+);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Interactive docs now serves as Widget Catalog
-  // if (kIsWeb) {
-  //   SemanticsBinding.instance.ensureSemantics();
-  // }
+  // to enable web semantics, use the following command:
+  // flutter run -d chrome --dart-define=ENABLE_WEB_SEMANTICS=true
+  if (kIsWeb && enableWebSemantics) {
+    if (kDebugMode) {
+      print('Enabling web semantics as requested.');
+    }
+    SemanticsBinding.instance.ensureSemantics();
+  }
   _docs = jsonDecode(await rootBundle.loadString('docs.json'));
   String pubspecYml = await rootBundle.loadString('pubspec.lock');
   var dep = loadYaml(pubspecYml)['packages']['shadcn_flutter']['version'];
@@ -150,8 +159,6 @@ void main() async {
   GoRouter.optionURLReflectsImperativeAPIs = true;
   final prefs = await SharedPreferences.getInstance();
   var colorScheme = prefs.getString('colorScheme');
-  // ColorScheme? initialColorScheme =
-  //     colorSchemes[colorScheme ?? 'darkZync'];
   ColorScheme? initialColorScheme;
   if (colorScheme != null) {
     if (colorScheme.startsWith('{')) {

@@ -1,0 +1,1240 @@
+---
+applyTo: "**"
+---
+
+<dotguides>
+This workspace uses the *Dotguides* system for providing context-aware coding guidance for open source packages it uses. Use the `read_docs` tool to load documentation files relevant to specific tasks.
+
+## Detected Languages
+
+Language: flutter
+Runtime: flutter
+Version: >=3.3.0 <4.0.0
+Package Manager: pub
+
+## Package Usage Guides
+
+The following are the discovered package usage guides for this workspace. FOLLOW THEIR GUIDANCE CAREFULLY. Not all packages have discoverable guidance files.
+
+<package name="shadcn_flutter">
+<docs>
+[Usage Guide](guides:shadcn_flutter:usage) - ALWAYS read this before trying to use shadcn_flutter
+- [Class: AbsoluteKeyframe](docs:shadcn_flutter:class-absolutekeyframe): Reference for AbsoluteKeyframe
+- [Class: AbsoluteResizablePaneController](docs:shadcn_flutter:class-absoluteresizablepanecontroller): Reference for AbsoluteResizablePaneController
+- [Class: AbstractButtonStyle](docs:shadcn_flutter:class-abstractbuttonstyle): Reference for AbstractButtonStyle
+- [Class: AbstractNavigationButton](docs:shadcn_flutter:class-abstractnavigationbutton): Reference for AbstractNavigationButton
+- [Class: AcceptSuggestionIntent](docs:shadcn_flutter:class-acceptsuggestionintent): Intent for accepting the currently selected autocomplete suggestion.
+- [Class: Accordion](docs:shadcn_flutter:class-accordion): A container widget that displays a list of collapsible items with only one item expanded at a time.
+- [Class: AccordionItem](docs:shadcn_flutter:class-accordionitem): An individual item within an [Accordion] that can be expanded or collapsed.
+- [Class: AccordionState](docs:shadcn_flutter:class-accordionstate): Reference for AccordionState
+- [Class: AccordionTheme](docs:shadcn_flutter:class-accordiontheme): Theme configuration for [Accordion], [AccordionItem], and [AccordionTrigger] widgets.
+- [Class: AccordionTrigger](docs:shadcn_flutter:class-accordiontrigger): A specialized trigger widget designed for use within [AccordionItem].
+- [Class: ActiveDotItem](docs:shadcn_flutter:class-activedotitem): Reference for ActiveDotItem
+- [Class: AdaptiveScaler](docs:shadcn_flutter:class-adaptivescaler): Reference for AdaptiveScaler
+- [Class: AdaptiveScaling](docs:shadcn_flutter:class-adaptivescaling): Reference for AdaptiveScaling
+- [Class: Alert](docs:shadcn_flutter:class-alert): A versatile alert component for displaying important messages or notifications.
+- [Class: AlertDialog](docs:shadcn_flutter:class-alertdialog): A modal dialog component for displaying important alerts and confirmations.
+- [Class: AlertTheme](docs:shadcn_flutter:class-alerttheme): Theme configuration for [Alert] components.
+- [Class: AnimatedCheckPainter](docs:shadcn_flutter:class-animatedcheckpainter): Custom painter for drawing animated checkmarks in checkboxes.
+- [Class: AnimatedProperty](docs:shadcn_flutter:class-animatedproperty): Reference for AnimatedProperty
+- [Class: AnimatedTheme](docs:shadcn_flutter:class-animatedtheme): Reference for AnimatedTheme
+- [Class: AnimatedValueBuilder](docs:shadcn_flutter:class-animatedvaluebuilder): A versatile animated widget that smoothly transitions between values.
+- [Class: AnimatedValueBuilderState](docs:shadcn_flutter:class-animatedvaluebuilderstate): Reference for AnimatedValueBuilderState
+- [Class: AnimationQueueController](docs:shadcn_flutter:class-animationqueuecontroller): Reference for AnimationQueueController
+- [Class: AnimationRequest](docs:shadcn_flutter:class-animationrequest): Reference for AnimationRequest
+- [Class: AnimationRunner](docs:shadcn_flutter:class-animationrunner): Reference for AnimationRunner
+- [Class: AppBar](docs:shadcn_flutter:class-appbar): A customizable application bar component for layout headers.
+- [Class: AutoComplete](docs:shadcn_flutter:class-autocomplete): Intelligent autocomplete functionality with customizable suggestion handling.
+- [Class: AutoCompleteIntent](docs:shadcn_flutter:class-autocompleteintent): Reference for AutoCompleteIntent
+- [Class: AutoCompleteTheme](docs:shadcn_flutter:class-autocompletetheme): Theme configuration for [AutoComplete] widget styling and behavior.
+- [Class: Avatar](docs:shadcn_flutter:class-avatar): A circular or rounded rectangular widget for displaying user profile images or initials.
+- [Class: AvatarBadge](docs:shadcn_flutter:class-avatarbadge): A circular badge widget designed to overlay on [Avatar] components.
+- [Class: AvatarGroup](docs:shadcn_flutter:class-avatargroup): A widget that arranges multiple [AvatarWidget]s in an overlapping layout.
+- [Class: AvatarGroupClipper](docs:shadcn_flutter:class-avatargroupclipper): Reference for AvatarGroupClipper
+- [Class: AvatarTheme](docs:shadcn_flutter:class-avatartheme): Theme configuration for [Avatar] and related avatar components.
+- [Class: AvatarWidget](docs:shadcn_flutter:class-avatarwidget): Abstract base class for avatar-related widgets.
+- [Class: BackdropTransformData](docs:shadcn_flutter:class-backdroptransformdata): Reference for BackdropTransformData
+- [Class: BadgeTheme](docs:shadcn_flutter:class-badgetheme): Theme data for customizing badge widget appearance across different styles.
+- [Class: Basic](docs:shadcn_flutter:class-basic): Reference for Basic
+- [Class: BasicLayout](docs:shadcn_flutter:class-basiclayout): Same as basic, but without forcing the text style
+- [Class: BasicTheme](docs:shadcn_flutter:class-basictheme): Reference for BasicTheme
+- [Class: BiDirectionalConvert](docs:shadcn_flutter:class-bidirectionalconvert): Reference for BiDirectionalConvert
+- [Class: BootstrapIcons](docs:shadcn_flutter:class-bootstrapicons): Reference for BootstrapIcons
+- [Class: BranchLine](docs:shadcn_flutter:class-branchline): Abstract base class for defining tree branch line styles.
+- [Class: Breadcrumb](docs:shadcn_flutter:class-breadcrumb): Navigation breadcrumb trail showing hierarchical path with customizable separators.
+- [Class: BreadcrumbTheme](docs:shadcn_flutter:class-breadcrumbtheme): Theme for [Breadcrumb].
+- [Class: Button](docs:shadcn_flutter:class-button): A versatile, customizable button widget with comprehensive styling and interaction support.
+- [Class: ButtonDensity](docs:shadcn_flutter:class-buttondensity): Defines the padding density for button components.
+- [Class: ButtonGroup](docs:shadcn_flutter:class-buttongroup): A widget that groups multiple buttons together with connected borders.
+- [Class: ButtonSize](docs:shadcn_flutter:class-buttonsize): Defines the relative size scaling for button components.
+- [Class: ButtonState](docs:shadcn_flutter:class-buttonstate): Reference for ButtonState
+- [Class: ButtonStyle](docs:shadcn_flutter:class-buttonstyle): Reference for ButtonStyle
+- [Class: ButtonStyleOverride](docs:shadcn_flutter:class-buttonstyleoverride): Reference for ButtonStyleOverride
+- [Class: ButtonStyleOverrideData](docs:shadcn_flutter:class-buttonstyleoverridedata): Reference for ButtonStyleOverrideData
+- [Class: ButtonStylePropertyAll](docs:shadcn_flutter:class-buttonstylepropertyall): Reference for ButtonStylePropertyAll
+- [Class: ButtonTheme](docs:shadcn_flutter:class-buttontheme): Reference for ButtonTheme
+- [Class: ButtonVariance](docs:shadcn_flutter:class-buttonvariance): Reference for ButtonVariance
+- [Class: CachedValueWidget](docs:shadcn_flutter:class-cachedvaluewidget): Reference for CachedValueWidget
+- [Class: Calendar](docs:shadcn_flutter:class-calendar): A highly customizable calendar widget supporting multiple selection modes.
+- [Class: CalendarGrid](docs:shadcn_flutter:class-calendargrid): Reference for CalendarGrid
+- [Class: CalendarGridData](docs:shadcn_flutter:class-calendargriddata): Reference for CalendarGridData
+- [Class: CalendarGridItem](docs:shadcn_flutter:class-calendargriditem): Reference for CalendarGridItem
+- [Class: CalendarItem](docs:shadcn_flutter:class-calendaritem): Individual calendar date cell with interactive behavior and visual states.
+- [Class: CalendarTheme](docs:shadcn_flutter:class-calendartheme): Theme configuration for calendar widgets.
+- [Class: CalendarValue](docs:shadcn_flutter:class-calendarvalue): Abstract base class representing calendar selection values.
+- [Class: CalendarView](docs:shadcn_flutter:class-calendarview): Represents a specific month and year view in calendar navigation.
+- [Class: CallbackContextAction](docs:shadcn_flutter:class-callbackcontextaction): Reference for CallbackContextAction
+- [Class: CapturedWrapper](docs:shadcn_flutter:class-capturedwrapper): Reference for CapturedWrapper
+- [Class: Card](docs:shadcn_flutter:class-card): A versatile container widget that provides a card-like appearance with comprehensive styling options.
+- [Class: CardButton](docs:shadcn_flutter:class-cardbutton): A button styled as a card with elevated appearance and extensive gesture support.
+- [Class: CardButtonTheme](docs:shadcn_flutter:class-cardbuttontheme): Reference for CardButtonTheme
+- [Class: CardImage](docs:shadcn_flutter:class-cardimage): Interactive card component with an image and optional text content.
+- [Class: CardImageTheme](docs:shadcn_flutter:class-cardimagetheme): Theme configuration for [CardImage] components.
+- [Class: CardTheme](docs:shadcn_flutter:class-cardtheme): Theme data for customizing [Card] and [SurfaceCard] widget appearance.
+- [Class: Carousel](docs:shadcn_flutter:class-carousel): Interactive carousel widget with automatic transitions and customizable layouts.
+- [Class: CarouselController](docs:shadcn_flutter:class-carouselcontroller): A controller for the carousel.
+- [Class: CarouselDotIndicator](docs:shadcn_flutter:class-carouseldotindicator): A dot indicator for the carousel.
+- [Class: CarouselFixedConstraint](docs:shadcn_flutter:class-carouselfixedconstraint): A fixed carousel size constraint.
+- [Class: CarouselFractionalConstraint](docs:shadcn_flutter:class-carouselfractionalconstraint): A fractional carousel size constraint.
+- [Class: CarouselSizeConstraint](docs:shadcn_flutter:class-carouselsizeconstraint): Size constraint for the carousel.
+- [Class: CarouselTheme](docs:shadcn_flutter:class-carouseltheme): Theme data for [Carousel].
+- [Class: CarouselTransition](docs:shadcn_flutter:class-carouseltransition): A carousel layout.
+- [Class: CharacterInputOTPChild](docs:shadcn_flutter:class-characterinputotpchild): Reference for CharacterInputOTPChild
+- [Class: ChartColorScheme](docs:shadcn_flutter:class-chartcolorscheme): Reference for ChartColorScheme
+- [Class: CheckboardPainter](docs:shadcn_flutter:class-checkboardpainter): Reference for CheckboardPainter
+- [Class: Checkbox](docs:shadcn_flutter:class-checkbox): Core checkbox widget with comprehensive theming and interaction support.
+- [Class: CheckboxController](docs:shadcn_flutter:class-checkboxcontroller): Reactive controller for managing checkbox state with convenient methods.
+- [Class: CheckboxTheme](docs:shadcn_flutter:class-checkboxtheme): Theme configuration for [Checkbox] widget styling and visual appearance.
+- [Class: Chip](docs:shadcn_flutter:class-chip): Compact interactive element for tags, labels, and selections.
+- [Class: ChipButton](docs:shadcn_flutter:class-chipbutton): Specialized button component designed for use within chips.
+- [Class: ChipEditingController](docs:shadcn_flutter:class-chipeditingcontroller): Reference for ChipEditingController
+- [Class: ChipInput](docs:shadcn_flutter:class-chipinput): Reference for ChipInput
+- [Class: ChipInputState](docs:shadcn_flutter:class-chipinputstate): Reference for ChipInputState
+- [Class: ChipInputTheme](docs:shadcn_flutter:class-chipinputtheme): Theme configuration for [ChipInput] widget styling and behavior.
+- [Class: ChipSubmitIntent](docs:shadcn_flutter:class-chipsubmitintent): Reference for ChipSubmitIntent
+- [Class: ChipTheme](docs:shadcn_flutter:class-chiptheme): Theme for [Chip].
+- [Class: CircularProgressIndicator](docs:shadcn_flutter:class-circularprogressindicator): A circular progress indicator that displays task completion as a rotating arc.
+- [Class: CircularProgressIndicatorTheme](docs:shadcn_flutter:class-circularprogressindicatortheme): Theme configuration for [CircularProgressIndicator] components.
+- [Class: Clickable](docs:shadcn_flutter:class-clickable): Reference for Clickable
+- [Class: ClickDetails](docs:shadcn_flutter:class-clickdetails): Reference for ClickDetails
+- [Class: ClickDetector](docs:shadcn_flutter:class-clickdetector): Reference for ClickDetector
+- [Class: CloseMenuIntent](docs:shadcn_flutter:class-closemenuintent): Reference for CloseMenuIntent
+- [Class: CodeSnippet](docs:shadcn_flutter:class-codesnippet): A syntax-highlighted code display widget with copy functionality.
+- [Class: CodeSnippetTheme](docs:shadcn_flutter:class-codesnippettheme): Theme configuration for [CodeSnippet] components.
+- [Class: CollapseTreeNodeIntent](docs:shadcn_flutter:class-collapsetreenodeintent): Reference for CollapseTreeNodeIntent
+- [Class: Collapsible](docs:shadcn_flutter:class-collapsible): A container widget that can show or hide its content with a collapsible interface.
+- [Class: CollapsibleContent](docs:shadcn_flutter:class-collapsiblecontent): A content widget that shows or hides based on the parent [Collapsible] state.
+- [Class: CollapsibleState](docs:shadcn_flutter:class-collapsiblestate): Reference for CollapsibleState
+- [Class: CollapsibleStateData](docs:shadcn_flutter:class-collapsiblestatedata): Internal data structure for sharing collapsible state between child widgets.
+- [Class: CollapsibleTheme](docs:shadcn_flutter:class-collapsibletheme): Theme configuration for [Collapsible], [CollapsibleTrigger], and [CollapsibleContent] widgets.
+- [Class: CollapsibleTrigger](docs:shadcn_flutter:class-collapsibletrigger): A trigger widget that controls the expansion state of its parent [Collapsible].
+- [Class: ColorDerivative](docs:shadcn_flutter:class-colorderivative): Reference for ColorDerivative
+- [Class: ColorHistoryGrid](docs:shadcn_flutter:class-colorhistorygrid): Reference for ColorHistoryGrid
+- [Class: ColorHistoryStorage](docs:shadcn_flutter:class-colorhistorystorage): Reference for ColorHistoryStorage
+- [Class: ColorInput](docs:shadcn_flutter:class-colorinput): Reference for ColorInput
+- [Class: ColorInputController](docs:shadcn_flutter:class-colorinputcontroller): Reactive controller for managing color input state with color operations.
+- [Class: ColorInputPopup](docs:shadcn_flutter:class-colorinputpopup): Reference for ColorInputPopup
+- [Class: ColorInputSet](docs:shadcn_flutter:class-colorinputset): Reference for ColorInputSet
+- [Class: ColorInputTheme](docs:shadcn_flutter:class-colorinputtheme): Theme configuration for [ColorInput] widget styling and behavior.
+- [Class: ColorPickerSet](docs:shadcn_flutter:class-colorpickerset): Reference for ColorPickerSet
+- [Class: ColorPickingLayer](docs:shadcn_flutter:class-colorpickinglayer): Reference for ColorPickingLayer
+- [Class: ColorPickingLayerScope](docs:shadcn_flutter:class-colorpickinglayerscope): Reference for ColorPickingLayerScope
+- [Class: ColorPickingResult](docs:shadcn_flutter:class-colorpickingresult): Reference for ColorPickingResult
+- [Class: Colors](docs:shadcn_flutter:class-colors): Reference for Colors
+- [Class: ColorScheme](docs:shadcn_flutter:class-colorscheme): Reference for ColorScheme
+- [Class: ColorSchemes](docs:shadcn_flutter:class-colorschemes): Reference for ColorSchemes
+- [Class: ColorShades](docs:shadcn_flutter:class-colorshades): Reference for ColorShades
+- [Class: Command](docs:shadcn_flutter:class-command): Interactive command palette with search functionality and dynamic results.
+- [Class: CommandCategory](docs:shadcn_flutter:class-commandcategory): Reference for CommandCategory
+- [Class: CommandEmpty](docs:shadcn_flutter:class-commandempty): Reference for CommandEmpty
+- [Class: CommandItem](docs:shadcn_flutter:class-commanditem): Reference for CommandItem
+- [Class: CompareTo](docs:shadcn_flutter:class-compareto): Reference for CompareTo
+- [Class: CompareWith](docs:shadcn_flutter:class-comparewith): Reference for CompareWith
+- [Class: ComponentTheme](docs:shadcn_flutter:class-componenttheme): Reference for ComponentTheme
+- [Class: ComponentThemeButtonStyle](docs:shadcn_flutter:class-componentthemebuttonstyle): Reference for ComponentThemeButtonStyle
+- [Class: ComponentValueController](docs:shadcn_flutter:class-componentvaluecontroller): A concrete implementation of [ComponentController] that manages a single value.
+- [Class: CompositeValidator](docs:shadcn_flutter:class-compositevalidator): Reference for CompositeValidator
+- [Class: ConditionalValidator](docs:shadcn_flutter:class-conditionalvalidator): Reference for ConditionalValidator
+- [Class: ConstantBreakpoint](docs:shadcn_flutter:class-constantbreakpoint): Reference for ConstantBreakpoint
+- [Class: ConstrainedTableSize](docs:shadcn_flutter:class-constrainedtablesize): Reference for ConstrainedTableSize
+- [Class: ContextCallbackAction](docs:shadcn_flutter:class-contextcallbackaction): Reference for ContextCallbackAction
+- [Class: ContextMenu](docs:shadcn_flutter:class-contextmenu): Reference for ContextMenu
+- [Class: ContextMenuPopup](docs:shadcn_flutter:class-contextmenupopup): Reference for ContextMenuPopup
+- [Class: ContextMenuTheme](docs:shadcn_flutter:class-contextmenutheme): Theme for [ContextMenuPopup] and context menu widgets.
+- [Class: ControlledAnimation](docs:shadcn_flutter:class-controlledanimation): Reference for ControlledAnimation
+- [Class: ControlledCheckbox](docs:shadcn_flutter:class-controlledcheckbox): Reactive checkbox with automatic state management and controller support.
+- [Class: ControlledColorInput](docs:shadcn_flutter:class-controlledcolorinput): Reactive color input with automatic state management and controller support.
+- [Class: ControlledComponentAdapter](docs:shadcn_flutter:class-controlledcomponentadapter): A widget adapter that bridges controlled component logic with custom UI implementations.
+- [Class: ControlledComponentData](docs:shadcn_flutter:class-controlledcomponentdata): Immutable data container for controlled component state.
+- [Class: ControlledDatePicker](docs:shadcn_flutter:class-controlleddatepicker): Reference for ControlledDatePicker
+- [Class: ControlledMultipleAnswer](docs:shadcn_flutter:class-controlledmultipleanswer): A controlled widget for managing multiple item selections with external state management.
+- [Class: ControlledMultipleChoice](docs:shadcn_flutter:class-controlledmultiplechoice): A controlled widget for managing single item selection with external state management.
+- [Class: ControlledMultiSelect](docs:shadcn_flutter:class-controlledmultiselect): Reactive multi-selection dropdown with automatic state management.
+- [Class: ControlledRadioGroup](docs:shadcn_flutter:class-controlledradiogroup): Reactive radio button group with automatic state management and exclusivity.
+- [Class: ControlledSelect](docs:shadcn_flutter:class-controlledselect): Reactive single-selection dropdown with automatic state management.
+- [Class: ControlledSlider](docs:shadcn_flutter:class-controlledslider): Reactive slider with automatic state management and controller support.
+- [Class: ControlledStarRating](docs:shadcn_flutter:class-controlledstarrating): Reactive star rating widget with automatic state management and controller support.
+- [Class: ControlledSwitch](docs:shadcn_flutter:class-controlledswitch): Reference for ControlledSwitch
+- [Class: ControlledTimePicker](docs:shadcn_flutter:class-controlledtimepicker): A controlled time picker widget for selecting time values with external state management.
+- [Class: ControlledToggle](docs:shadcn_flutter:class-controlledtoggle): A controlled version of [Toggle] that integrates with form state management.
+- [Class: ConvertedController](docs:shadcn_flutter:class-convertedcontroller): Reference for ConvertedController
+- [Class: CrossFadedTransition](docs:shadcn_flutter:class-crossfadedtransition): A widget that smoothly transitions between different child widgets.
+- [Class: DashedContainer](docs:shadcn_flutter:class-dashedcontainer): Reference for DashedContainer
+- [Class: DashedContainerProperties](docs:shadcn_flutter:class-dashedcontainerproperties): Reference for DashedContainerProperties
+- [Class: DashedLine](docs:shadcn_flutter:class-dashedline): Reference for DashedLine
+- [Class: DashedLinePainter](docs:shadcn_flutter:class-dashedlinepainter): Reference for DashedLinePainter
+- [Class: DashedLineProperties](docs:shadcn_flutter:class-dashedlineproperties): Reference for DashedLineProperties
+- [Class: DashedPainter](docs:shadcn_flutter:class-dashedpainter): Reference for DashedPainter
+- [Class: DateInput](docs:shadcn_flutter:class-dateinput): Reactive date input field with integrated date picker and text editing.
+- [Class: DatePicker](docs:shadcn_flutter:class-datepicker): Reference for DatePicker
+- [Class: DatePickerController](docs:shadcn_flutter:class-datepickercontroller): Reference for DatePickerController
+- [Class: DatePickerDialog](docs:shadcn_flutter:class-datepickerdialog): A date picker dialog that provides comprehensive date selection capabilities.
+- [Class: DatePickerTheme](docs:shadcn_flutter:class-datepickertheme): Theme configuration for [DatePicker] widget styling and behavior.
+- [Class: DateRangePicker](docs:shadcn_flutter:class-daterangepicker): Reference for DateRangePicker
+- [Class: DateTimeRange](docs:shadcn_flutter:class-datetimerange): Reference for DateTimeRange
+- [Class: DecreaseSliderValue](docs:shadcn_flutter:class-decreaseslidervalue): Reference for DecreaseSliderValue
+- [Class: DecreaseStarIntent](docs:shadcn_flutter:class-decreasestarintent): Reference for DecreaseStarIntent
+- [Class: DefaultRefreshIndicator](docs:shadcn_flutter:class-defaultrefreshindicator): Reference for DefaultRefreshIndicator
+- [Class: DefaultShadcnLocalizations](docs:shadcn_flutter:class-defaultshadcnlocalizations): Reference for DefaultShadcnLocalizations
+- [Class: DesktopEditableTextContextMenu](docs:shadcn_flutter:class-desktopeditabletextcontextmenu): Reference for DesktopEditableTextContextMenu
+- [Class: DesktopPointerScrollEvent](docs:shadcn_flutter:class-desktoppointerscrollevent): Reference for DesktopPointerScrollEvent
+- [Class: DestructiveBadge](docs:shadcn_flutter:class-destructivebadge): Reference for DestructiveBadge
+- [Class: DestructiveButton](docs:shadcn_flutter:class-destructivebutton): Reference for DestructiveButton
+- [Class: DestructiveButtonTheme](docs:shadcn_flutter:class-destructivebuttontheme): Reference for DestructiveButtonTheme
+- [Class: DialogOverlayCompleter](docs:shadcn_flutter:class-dialogoverlaycompleter): Completer that manages the lifecycle of a dialog overlay.
+- [Class: DialogOverlayHandler](docs:shadcn_flutter:class-dialogoverlayhandler): Overlay handler that manages dialog display using the navigation stack.
+- [Class: DialogRoute](docs:shadcn_flutter:class-dialogroute): Custom route implementation for shadcn_flutter dialogs.
+- [Class: DirectionalMenuFocusIntent](docs:shadcn_flutter:class-directionalmenufocusintent): Reference for DirectionalMenuFocusIntent
+- [Class: DirectionalSelectTreeNodeIntent](docs:shadcn_flutter:class-directionalselecttreenodeintent): Reference for DirectionalSelectTreeNodeIntent
+- [Class: Divider](docs:shadcn_flutter:class-divider): A horizontal line widget used to visually separate content sections.
+- [Class: DividerPainter](docs:shadcn_flutter:class-dividerpainter): Reference for DividerPainter
+- [Class: DividerProperties](docs:shadcn_flutter:class-dividerproperties): Reference for DividerProperties
+- [Class: DividerTheme](docs:shadcn_flutter:class-dividertheme): Theme data for customizing [Divider] widget appearance.
+- [Class: DotIndicator](docs:shadcn_flutter:class-dotindicator): Navigation indicator with customizable dots showing current position in a sequence.
+- [Class: DotIndicatorTheme](docs:shadcn_flutter:class-dotindicatortheme): Theme configuration for [DotIndicator] and its dot items.
+- [Class: DotItem](docs:shadcn_flutter:class-dotitem): Reference for DotItem
+- [Class: DrawerEntryWidget](docs:shadcn_flutter:class-drawerentrywidget): Reference for DrawerEntryWidget
+- [Class: DrawerEntryWidgetState](docs:shadcn_flutter:class-drawerentrywidgetstate): Reference for DrawerEntryWidgetState
+- [Class: DrawerLayerData](docs:shadcn_flutter:class-drawerlayerdata): Reference for DrawerLayerData
+- [Class: DrawerOverlay](docs:shadcn_flutter:class-draweroverlay): Reference for DrawerOverlay
+- [Class: DrawerOverlayCompleter](docs:shadcn_flutter:class-draweroverlaycompleter): Reference for DrawerOverlayCompleter
+- [Class: DrawerOverlayEntry](docs:shadcn_flutter:class-draweroverlayentry): Reference for DrawerOverlayEntry
+- [Class: DrawerOverlayState](docs:shadcn_flutter:class-draweroverlaystate): Reference for DrawerOverlayState
+- [Class: DrawerSwiperHandler](docs:shadcn_flutter:class-drawerswiperhandler): Drawer-style swiper handler with backdrop transformation.
+- [Class: DrawerTheme](docs:shadcn_flutter:class-drawertheme): Theme configuration for drawer and sheet overlays.
+- [Class: DrawerWrapper](docs:shadcn_flutter:class-drawerwrapper): Reference for DrawerWrapper
+- [Class: DropdownMenu](docs:shadcn_flutter:class-dropdownmenu): Reference for DropdownMenu
+- [Class: DropdownMenuData](docs:shadcn_flutter:class-dropdownmenudata): Reference for DropdownMenuData
+- [Class: DropdownMenuTheme](docs:shadcn_flutter:class-dropdownmenutheme): Theme for [DropdownMenu].
+- [Class: DurationInput](docs:shadcn_flutter:class-durationinput): Reactive duration input field with formatted text editing and validation.
+- [Class: DurationPicker](docs:shadcn_flutter:class-durationpicker): Reference for DurationPicker
+- [Class: DurationPickerController](docs:shadcn_flutter:class-durationpickercontroller): Reference for DurationPickerController
+- [Class: DurationPickerDialog](docs:shadcn_flutter:class-durationpickerdialog): Reference for DurationPickerDialog
+- [Class: EditablePart](docs:shadcn_flutter:class-editablepart): Reference for EditablePart
+- [Class: EmailValidator](docs:shadcn_flutter:class-emailvalidator): Reference for EmailValidator
+- [Class: EmptySelectItem](docs:shadcn_flutter:class-emptyselectitem): Reference for EmptySelectItem
+- [Class: ExpandTreeNodeIntent](docs:shadcn_flutter:class-expandtreenodeintent): Reference for ExpandTreeNodeIntent
+- [Class: FadeScroll](docs:shadcn_flutter:class-fadescroll): Reference for FadeScroll
+- [Class: FadeScrollTheme](docs:shadcn_flutter:class-fadescrolltheme): Theme configuration for [FadeScroll].
+- [Class: FadingCarouselTransition](docs:shadcn_flutter:class-fadingcarouseltransition): A fading carousel transition.
+- [Class: FileIconProvider](docs:shadcn_flutter:class-fileiconprovider): Reference for FileIconProvider
+- [Class: FileIconProviderData](docs:shadcn_flutter:class-fileiconproviderdata): Reference for FileIconProviderData
+- [Class: FileItem](docs:shadcn_flutter:class-fileitem): Reference for FileItem
+- [Class: FilePicker](docs:shadcn_flutter:class-filepicker): A file picker widget for selecting and managing file uploads.
+- [Class: FixedButtonTheme](docs:shadcn_flutter:class-fixedbuttontheme): Reference for FixedButtonTheme
+- [Class: FixedTableSize](docs:shadcn_flutter:class-fixedtablesize): Reference for FixedTableSize
+- [Class: FixedTooltipOverlayHandler](docs:shadcn_flutter:class-fixedtooltipoverlayhandler): Reference for FixedTooltipOverlayHandler
+- [Class: FlexibleResizablePaneController](docs:shadcn_flutter:class-flexibleresizablepanecontroller): Reference for FlexibleResizablePaneController
+- [Class: FlexTableSize](docs:shadcn_flutter:class-flextablesize): Reference for FlexTableSize
+- [Class: FocusOutline](docs:shadcn_flutter:class-focusoutline): Reference for FocusOutline
+- [Class: FocusOutlineTheme](docs:shadcn_flutter:class-focusoutlinetheme): Reference for FocusOutlineTheme
+- [Class: Form](docs:shadcn_flutter:class-form): A widget that provides form management capabilities for collecting and validating user input.
+- [Class: FormattedInput](docs:shadcn_flutter:class-formattedinput): A controlled input widget for structured data entry with formatting.
+- [Class: FormattedInputController](docs:shadcn_flutter:class-formattedinputcontroller): A controller for managing [FormattedInput] values programmatically.
+- [Class: FormattedInputData](docs:shadcn_flutter:class-formattedinputdata): Reference for FormattedInputData
+- [Class: FormattedInputTheme](docs:shadcn_flutter:class-formattedinputtheme): Reference for FormattedInputTheme
+- [Class: FormattedObjectInput](docs:shadcn_flutter:class-formattedobjectinput): Reference for FormattedObjectInput
+- [Class: FormattedValue](docs:shadcn_flutter:class-formattedvalue): Reference for FormattedValue
+- [Class: FormattedValuePart](docs:shadcn_flutter:class-formattedvaluepart): Reference for FormattedValuePart
+- [Class: FormController](docs:shadcn_flutter:class-formcontroller): Controller for managing form state, validation, and submission.
+- [Class: FormEntry](docs:shadcn_flutter:class-formentry): Reference for FormEntry
+- [Class: FormEntryErrorBuilder](docs:shadcn_flutter:class-formentryerrorbuilder): Reference for FormEntryErrorBuilder
+- [Class: FormEntryInterceptor](docs:shadcn_flutter:class-formentryinterceptor): Reference for FormEntryInterceptor
+- [Class: FormEntryState](docs:shadcn_flutter:class-formentrystate): Reference for FormEntryState
+- [Class: FormErrorBuilder](docs:shadcn_flutter:class-formerrorbuilder): Reference for FormErrorBuilder
+- [Class: FormField](docs:shadcn_flutter:class-formfield): Reference for FormField
+- [Class: FormInline](docs:shadcn_flutter:class-forminline): Reference for FormInline
+- [Class: FormKey](docs:shadcn_flutter:class-formkey): Reference for FormKey
+- [Class: FormPendingBuilder](docs:shadcn_flutter:class-formpendingbuilder): Reference for FormPendingBuilder
+- [Class: FormState](docs:shadcn_flutter:class-formstate): Reference for FormState
+- [Class: FormTableLayout](docs:shadcn_flutter:class-formtablelayout): Reference for FormTableLayout
+- [Class: FormValidityNotification](docs:shadcn_flutter:class-formvaliditynotification): Reference for FormValidityNotification
+- [Class: FormValueState](docs:shadcn_flutter:class-formvaluestate): Reference for FormValueState
+- [Class: FrozenTableData](docs:shadcn_flutter:class-frozentabledata): Reference for FrozenTableData
+- [Class: FullScreenDialogOverlayHandler](docs:shadcn_flutter:class-fullscreendialogoverlayhandler): Full-screen variant of the dialog overlay handler.
+- [Class: FutureOrBuilder](docs:shadcn_flutter:class-futureorbuilder): Reference for FutureOrBuilder
+- [Class: GhostButton](docs:shadcn_flutter:class-ghostbutton): Reference for GhostButton
+- [Class: GhostButtonTheme](docs:shadcn_flutter:class-ghostbuttontheme): Reference for GhostButtonTheme
+- [Class: GridItemPickerLayout](docs:shadcn_flutter:class-griditempickerlayout): Reference for GridItemPickerLayout
+- [Class: GroupParentData](docs:shadcn_flutter:class-groupparentdata): Reference for GroupParentData
+- [Class: GroupPositioned](docs:shadcn_flutter:class-grouppositioned): Reference for GroupPositioned
+- [Class: GroupWidget](docs:shadcn_flutter:class-groupwidget): Reference for GroupWidget
+- [Class: Hidden](docs:shadcn_flutter:class-hidden): Reference for Hidden
+- [Class: HiddenTheme](docs:shadcn_flutter:class-hiddentheme): Theme for [Hidden].
+- [Class: HorizontalResizableDragger](docs:shadcn_flutter:class-horizontalresizabledragger): A Horizontal dragger that can be used as a divider between resizable panes.
+- [Class: Hover](docs:shadcn_flutter:class-hover): Reference for Hover
+- [Class: HoverActivity](docs:shadcn_flutter:class-hoveractivity): A widget that tracks the hover state of the mouse cursor  and will call the [onHover] with period of [debounceDuration] when the cursor is hovering over the child widget.
+- [Class: HoverCard](docs:shadcn_flutter:class-hovercard): A widget that displays a popover when hovered or long-pressed.
+- [Class: HoverCardTheme](docs:shadcn_flutter:class-hovercardtheme): Theme configuration for hover card behavior and appearance.
+- [Class: HoverTheme](docs:shadcn_flutter:class-hovertheme): Reference for HoverTheme
+- [Class: HSLColorPickerArea](docs:shadcn_flutter:class-hslcolorpickerarea): Reference for HSLColorPickerArea
+- [Class: HSLColorPickerPainter](docs:shadcn_flutter:class-hslcolorpickerpainter): Reference for HSLColorPickerPainter
+- [Class: HSVColorPickerArea](docs:shadcn_flutter:class-hsvcolorpickerarea): Reference for HSVColorPickerArea
+- [Class: HSVColorPickerPainter](docs:shadcn_flutter:class-hsvcolorpickerpainter): Reference for HSVColorPickerPainter
+- [Class: IconButton](docs:shadcn_flutter:class-iconbutton): Reference for IconButton
+- [Class: IconThemeDataTween](docs:shadcn_flutter:class-iconthemedatatween): Reference for IconThemeDataTween
+- [Class: IconThemeProperties](docs:shadcn_flutter:class-iconthemeproperties): Reference for IconThemeProperties
+- [Class: IgnoreForm](docs:shadcn_flutter:class-ignoreform): A widget that prevents form components from submitting their values to form controllers.
+- [Class: ImageInput](docs:shadcn_flutter:class-imageinput): Reference for ImageInput
+- [Class: ImageProperties](docs:shadcn_flutter:class-imageproperties): Reference for ImageProperties
+- [Class: ImageTools](docs:shadcn_flutter:class-imagetools): A widget providing image editing and manipulation tools.
+- [Class: InactiveDotItem](docs:shadcn_flutter:class-inactivedotitem): Reference for InactiveDotItem
+- [Class: IncreaseSliderValue](docs:shadcn_flutter:class-increaseslidervalue): Reference for IncreaseSliderValue
+- [Class: IncreaseStarIntent](docs:shadcn_flutter:class-increasestarintent): Reference for IncreaseStarIntent
+- [Class: IndentGuideLine](docs:shadcn_flutter:class-indentguideline): Reference for IndentGuideLine
+- [Class: IndentGuideNone](docs:shadcn_flutter:class-indentguidenone): Reference for IndentGuideNone
+- [Class: IndentGuidePath](docs:shadcn_flutter:class-indentguidepath): Reference for IndentGuidePath
+- [Class: InputAutoCompleteFeature](docs:shadcn_flutter:class-inputautocompletefeature): Reference for InputAutoCompleteFeature
+- [Class: InputClearFeature](docs:shadcn_flutter:class-inputclearfeature): Reference for InputClearFeature
+- [Class: InputCopyFeature](docs:shadcn_flutter:class-inputcopyfeature): Reference for InputCopyFeature
+- [Class: InputFeature](docs:shadcn_flutter:class-inputfeature): Reference for InputFeature
+- [Class: InputFeatureState](docs:shadcn_flutter:class-inputfeaturestate): Reference for InputFeatureState
+- [Class: InputFeatureVisibility](docs:shadcn_flutter:class-inputfeaturevisibility): Reference for InputFeatureVisibility
+- [Class: InputHintFeature](docs:shadcn_flutter:class-inputhintfeature): Reference for InputHintFeature
+- [Class: InputLeadingFeature](docs:shadcn_flutter:class-inputleadingfeature): Reference for InputLeadingFeature
+- [Class: InputOTP](docs:shadcn_flutter:class-inputotp): A specialized input widget for One-Time Password (OTP) and verification code entry.
+- [Class: InputOTPChild](docs:shadcn_flutter:class-inputotpchild): Reference for InputOTPChild
+- [Class: InputOTPChildData](docs:shadcn_flutter:class-inputotpchilddata): Reference for InputOTPChildData
+- [Class: InputOTPTheme](docs:shadcn_flutter:class-inputotptheme): Theme data for customizing [InputOTP] widget appearance.
+- [Class: InputPart](docs:shadcn_flutter:class-inputpart): Reference for InputPart
+- [Class: InputPasswordToggleFeature](docs:shadcn_flutter:class-inputpasswordtogglefeature): Reference for InputPasswordToggleFeature
+- [Class: InputPasteFeature](docs:shadcn_flutter:class-inputpastefeature): Reference for InputPasteFeature
+- [Class: InputRevalidateFeature](docs:shadcn_flutter:class-inputrevalidatefeature): Reference for InputRevalidateFeature
+- [Class: InputShowHintIntent](docs:shadcn_flutter:class-inputshowhintintent): Reference for InputShowHintIntent
+- [Class: InputSpinnerFeature](docs:shadcn_flutter:class-inputspinnerfeature): Reference for InputSpinnerFeature
+- [Class: InputTrailingFeature](docs:shadcn_flutter:class-inputtrailingfeature): Reference for InputTrailingFeature
+- [Class: InstantTooltip](docs:shadcn_flutter:class-instanttooltip): Reference for InstantTooltip
+- [Class: IntervalDuration](docs:shadcn_flutter:class-intervalduration): A custom curve that creates time-based intervals within an animation duration.
+- [Class: IntrinsicTableSize](docs:shadcn_flutter:class-intrinsictablesize): Reference for IntrinsicTableSize
+- [Class: InvalidResult](docs:shadcn_flutter:class-invalidresult): Reference for InvalidResult
+- [Class: ItemBuilder](docs:shadcn_flutter:class-itembuilder): Reference for ItemBuilder
+- [Class: ItemChildDelegate](docs:shadcn_flutter:class-itemchilddelegate): Reference for ItemChildDelegate
+- [Class: ItemList](docs:shadcn_flutter:class-itemlist): Reference for ItemList
+- [Class: ItemPicker](docs:shadcn_flutter:class-itempicker): A widget for selecting items from a collection using various presentation modes.
+- [Class: ItemPickerData](docs:shadcn_flutter:class-itempickerdata): Reference for ItemPickerData
+- [Class: ItemPickerDialog](docs:shadcn_flutter:class-itempickerdialog): Reference for ItemPickerDialog
+- [Class: ItemPickerLayout](docs:shadcn_flutter:class-itempickerlayout): Reference for ItemPickerLayout
+- [Class: ItemPickerOption](docs:shadcn_flutter:class-itempickeroption): Reference for ItemPickerOption
+- [Class: KeyboardDisplay](docs:shadcn_flutter:class-keyboarddisplay): A widget that displays keyboard shortcuts in a visually appealing format.
+- [Class: KeyboardKeyDisplay](docs:shadcn_flutter:class-keyboardkeydisplay): A widget that displays a single keyboard key in a styled format.
+- [Class: KeyboardShortcutDisplayHandle](docs:shadcn_flutter:class-keyboardshortcutdisplayhandle): Reference for KeyboardShortcutDisplayHandle
+- [Class: KeyboardShortcutDisplayMapper](docs:shadcn_flutter:class-keyboardshortcutdisplaymapper): Reference for KeyboardShortcutDisplayMapper
+- [Class: KeyboardShortcutTheme](docs:shadcn_flutter:class-keyboardshortcuttheme): Theme for keyboard shortcut displays.
+- [Class: KeyedTabChildWidget](docs:shadcn_flutter:class-keyedtabchildwidget): Reference for KeyedTabChildWidget
+- [Class: KeyedTabItem](docs:shadcn_flutter:class-keyedtabitem): Reference for KeyedTabItem
+- [Class: Keyframe](docs:shadcn_flutter:class-keyframe): Reference for Keyframe
+- [Class: Label](docs:shadcn_flutter:class-label): Reference for Label
+- [Class: LegacyColorSchemes](docs:shadcn_flutter:class-legacycolorschemes): Reference for LegacyColorSchemes
+- [Class: LengthValidator](docs:shadcn_flutter:class-lengthvalidator): Reference for LengthValidator
+- [Class: LinearProgressIndicator](docs:shadcn_flutter:class-linearprogressindicator): A sophisticated linear progress indicator with advanced visual effects.
+- [Class: LinearProgressIndicatorTheme](docs:shadcn_flutter:class-linearprogressindicatortheme): Theme configuration for [LinearProgressIndicator] components.
+- [Class: LinkButton](docs:shadcn_flutter:class-linkbutton): Reference for LinkButton
+- [Class: LinkButtonTheme](docs:shadcn_flutter:class-linkbuttontheme): Reference for LinkButtonTheme
+- [Class: ListChange](docs:shadcn_flutter:class-listchange): Reference for ListChange
+- [Class: ListChanges](docs:shadcn_flutter:class-listchanges): Reference for ListChanges
+- [Class: ListInsertChange](docs:shadcn_flutter:class-listinsertchange): Reference for ListInsertChange
+- [Class: ListItemPickerLayout](docs:shadcn_flutter:class-listitempickerlayout): Reference for ListItemPickerLayout
+- [Class: ListRemoveChange](docs:shadcn_flutter:class-listremovechange): Reference for ListRemoveChange
+- [Class: ListSwapChange](docs:shadcn_flutter:class-listswapchange): Reference for ListSwapChange
+- [Class: LucideIcons](docs:shadcn_flutter:class-lucideicons): Reference for LucideIcons
+- [Class: MaxValidator](docs:shadcn_flutter:class-maxvalidator): Reference for MaxValidator
+- [Class: MediaQueryVisibility](docs:shadcn_flutter:class-mediaqueryvisibility): Reference for MediaQueryVisibility
+- [Class: MediaQueryVisibilityTheme](docs:shadcn_flutter:class-mediaqueryvisibilitytheme): Theme configuration for [MediaQueryVisibility].
+- [Class: Menubar](docs:shadcn_flutter:class-menubar): A horizontal menubar widget for displaying application menus and menu items.
+- [Class: MenubarButtonTheme](docs:shadcn_flutter:class-menubarbuttontheme): Reference for MenubarButtonTheme
+- [Class: MenubarState](docs:shadcn_flutter:class-menubarstate): Reference for MenubarState
+- [Class: MenubarTheme](docs:shadcn_flutter:class-menubartheme): Theme configuration for [Menubar] appearance and layout.
+- [Class: MenuButton](docs:shadcn_flutter:class-menubutton): Reference for MenuButton
+- [Class: MenuButtonTheme](docs:shadcn_flutter:class-menubuttontheme): Reference for MenuButtonTheme
+- [Class: MenuCheckbox](docs:shadcn_flutter:class-menucheckbox): Reference for MenuCheckbox
+- [Class: MenuData](docs:shadcn_flutter:class-menudata): Reference for MenuData
+- [Class: MenuDivider](docs:shadcn_flutter:class-menudivider): Reference for MenuDivider
+- [Class: MenuGap](docs:shadcn_flutter:class-menugap): Reference for MenuGap
+- [Class: MenuGroup](docs:shadcn_flutter:class-menugroup): Reference for MenuGroup
+- [Class: MenuGroupData](docs:shadcn_flutter:class-menugroupdata): Reference for MenuGroupData
+- [Class: MenuItem](docs:shadcn_flutter:class-menuitem): Reference for MenuItem
+- [Class: MenuLabel](docs:shadcn_flutter:class-menulabel): Reference for MenuLabel
+- [Class: MenuOverlayHandler](docs:shadcn_flutter:class-menuoverlayhandler): Reference for MenuOverlayHandler
+- [Class: MenuPopup](docs:shadcn_flutter:class-menupopup): Reference for MenuPopup
+- [Class: MenuPopupTheme](docs:shadcn_flutter:class-menupopuptheme): A theme for [MenuPopup].
+- [Class: MenuRadio](docs:shadcn_flutter:class-menuradio): Reference for MenuRadio
+- [Class: MenuRadioGroup](docs:shadcn_flutter:class-menuradiogroup): Reference for MenuRadioGroup
+- [Class: MenuShortcut](docs:shadcn_flutter:class-menushortcut): Reference for MenuShortcut
+- [Class: MenuTheme](docs:shadcn_flutter:class-menutheme): {@template menu_theme}  Styling options for menu widgets such as [MenuGroup] and [MenuButton].
+- [Class: MiniColorPickerSet](docs:shadcn_flutter:class-minicolorpickerset): Reference for MiniColorPickerSet
+- [Class: MinValidator](docs:shadcn_flutter:class-minvalidator): Reference for MinValidator
+- [Class: MobileEditableTextContextMenu](docs:shadcn_flutter:class-mobileeditabletextcontextmenu): Reference for MobileEditableTextContextMenu
+- [Class: ModalBackdrop](docs:shadcn_flutter:class-modalbackdrop): A visual backdrop widget that creates modal-style overlays.
+- [Class: ModalBackdropTheme](docs:shadcn_flutter:class-modalbackdroptheme): Theme configuration for modal backdrop appearance and behavior.
+- [Class: ModalContainer](docs:shadcn_flutter:class-modalcontainer): A container widget that provides consistent styling for modal content.
+- [Class: MonthCalendar](docs:shadcn_flutter:class-monthcalendar): Reference for MonthCalendar
+- [Class: MoreDots](docs:shadcn_flutter:class-moredots): Reference for MoreDots
+- [Class: MultiCalendarValue](docs:shadcn_flutter:class-multicalendarvalue): Reference for MultiCalendarValue
+- [Class: MultipleAnswer](docs:shadcn_flutter:class-multipleanswer): Reference for MultipleAnswer
+- [Class: MultipleAnswerController](docs:shadcn_flutter:class-multipleanswercontroller): A controller for managing [ControlledMultipleAnswer] selections programmatically.
+- [Class: MultipleChoice](docs:shadcn_flutter:class-multiplechoice): Reference for MultipleChoice
+- [Class: MultipleChoiceController](docs:shadcn_flutter:class-multiplechoicecontroller): A controller for managing [ControlledMultipleChoice] selection programmatically.
+- [Class: MultipleChoiceTheme](docs:shadcn_flutter:class-multiplechoicetheme): Theme data for [MultipleChoice] and [MultipleAnswer].
+- [Class: MultiSelect](docs:shadcn_flutter:class-multiselect): Reference for MultiSelect
+- [Class: MultiSelectChip](docs:shadcn_flutter:class-multiselectchip): Chip widget designed for multi-select contexts with automatic removal functionality.
+- [Class: MultiSelectController](docs:shadcn_flutter:class-multiselectcontroller): Controller for managing [ControlledMultiSelect] state programmatically.
+- [Class: MutedButtonTheme](docs:shadcn_flutter:class-mutedbuttontheme): Reference for MutedButtonTheme
+- [Class: NavigateSuggestionIntent](docs:shadcn_flutter:class-navigatesuggestionintent): Intent for navigating through autocomplete suggestions via keyboard.
+- [Class: NavigationBar](docs:shadcn_flutter:class-navigationbar): A flexible navigation container widget for organizing navigation items.
+- [Class: NavigationBarItem](docs:shadcn_flutter:class-navigationbaritem): Reference for NavigationBarItem
+- [Class: NavigationBarTheme](docs:shadcn_flutter:class-navigationbartheme): Theme data for customizing [NavigationBar] widget appearance.
+- [Class: NavigationButton](docs:shadcn_flutter:class-navigationbutton): Reference for NavigationButton
+- [Class: NavigationChildControlData](docs:shadcn_flutter:class-navigationchildcontroldata): Reference for NavigationChildControlData
+- [Class: NavigationControlData](docs:shadcn_flutter:class-navigationcontroldata): Reference for NavigationControlData
+- [Class: NavigationDivider](docs:shadcn_flutter:class-navigationdivider): Reference for NavigationDivider
+- [Class: NavigationGap](docs:shadcn_flutter:class-navigationgap): Reference for NavigationGap
+- [Class: NavigationItem](docs:shadcn_flutter:class-navigationitem): Reference for NavigationItem
+- [Class: NavigationLabel](docs:shadcn_flutter:class-navigationlabel): Reference for NavigationLabel
+- [Class: NavigationMenu](docs:shadcn_flutter:class-navigationmenu): A horizontal navigation menu with dropdown content support.
+- [Class: NavigationMenuContent](docs:shadcn_flutter:class-navigationmenucontent): A content item displayed within a navigation menu popover.
+- [Class: NavigationMenuContentList](docs:shadcn_flutter:class-navigationmenucontentlist): A grid layout container for organizing navigation menu content items.
+- [Class: NavigationMenuItem](docs:shadcn_flutter:class-navigationmenuitem): An individual menu item within a [NavigationMenu].
+- [Class: NavigationMenuItemState](docs:shadcn_flutter:class-navigationmenuitemstate): Reference for NavigationMenuItemState
+- [Class: NavigationMenuState](docs:shadcn_flutter:class-navigationmenustate): Reference for NavigationMenuState
+- [Class: NavigationMenuTheme](docs:shadcn_flutter:class-navigationmenutheme): Theme configuration for [NavigationMenu] components.
+- [Class: NavigationPadding](docs:shadcn_flutter:class-navigationpadding): Reference for NavigationPadding
+- [Class: NavigationRail](docs:shadcn_flutter:class-navigationrail): A vertical or horizontal navigation rail component for sidebar navigation.
+- [Class: NavigationSidebar](docs:shadcn_flutter:class-navigationsidebar): A full-width navigation sidebar component for comprehensive navigation.
+- [Class: NavigationWidget](docs:shadcn_flutter:class-navigationwidget): Reference for NavigationWidget
+- [Class: NextItemIntent](docs:shadcn_flutter:class-nextitemintent): Reference for NextItemIntent
+- [Class: NextMenuFocusIntent](docs:shadcn_flutter:class-nextmenufocusintent): Reference for NextMenuFocusIntent
+- [Class: NonNullValidator](docs:shadcn_flutter:class-nonnullvalidator): Reference for NonNullValidator
+- [Class: NotEmptyValidator](docs:shadcn_flutter:class-notemptyvalidator): Reference for NotEmptyValidator
+- [Class: NotValidator](docs:shadcn_flutter:class-notvalidator): Reference for NotValidator
+- [Class: NullableDate](docs:shadcn_flutter:class-nullabledate): Reference for NullableDate
+- [Class: NullableTimeOfDay](docs:shadcn_flutter:class-nullabletimeofday): Reference for NullableTimeOfDay
+- [Class: NumberTicker](docs:shadcn_flutter:class-numberticker): A widget that smoothly animates between numeric values with customizable display.
+- [Class: NumberTickerTheme](docs:shadcn_flutter:class-numbertickertheme): Theme configuration for [NumberTicker] widgets.
+- [Class: ObjectFormField](docs:shadcn_flutter:class-objectformfield): Reference for ObjectFormField
+- [Class: ObjectFormFieldDialogResult](docs:shadcn_flutter:class-objectformfielddialogresult): Reference for ObjectFormFieldDialogResult
+- [Class: ObjectFormFieldState](docs:shadcn_flutter:class-objectformfieldstate): Reference for ObjectFormFieldState
+- [Class: ObjectFormHandler](docs:shadcn_flutter:class-objectformhandler): Reference for ObjectFormHandler
+- [Class: OpenSubMenuIntent](docs:shadcn_flutter:class-opensubmenuintent): Reference for OpenSubMenuIntent
+- [Class: OrValidator](docs:shadcn_flutter:class-orvalidator): Reference for OrValidator
+- [Class: OTPSeparator](docs:shadcn_flutter:class-otpseparator): Reference for OTPSeparator
+- [Class: OutlineBadge](docs:shadcn_flutter:class-outlinebadge): Reference for OutlineBadge
+- [Class: OutlineButton](docs:shadcn_flutter:class-outlinebutton): Reference for OutlineButton
+- [Class: OutlineButtonTheme](docs:shadcn_flutter:class-outlinebuttontheme): Reference for OutlineButtonTheme
+- [Class: OutlinedContainer](docs:shadcn_flutter:class-outlinedcontainer): Reference for OutlinedContainer
+- [Class: OutlinedContainerTheme](docs:shadcn_flutter:class-outlinedcontainertheme): Reference for OutlinedContainerTheme
+- [Class: OverflowMarquee](docs:shadcn_flutter:class-overflowmarquee): Automatically scrolling widget for content that overflows its container.
+- [Class: OverflowMarqueeTheme](docs:shadcn_flutter:class-overflowmarqueetheme): Theme configuration for [OverflowMarquee] scrolling text displays.
+- [Class: OverlayBarrier](docs:shadcn_flutter:class-overlaybarrier): Reference for OverlayBarrier
+- [Class: OverlayCompleter](docs:shadcn_flutter:class-overlaycompleter): Reference for OverlayCompleter
+- [Class: OverlayHandler](docs:shadcn_flutter:class-overlayhandler): Reference for OverlayHandler
+- [Class: OverlayManager](docs:shadcn_flutter:class-overlaymanager): Reference for OverlayManager
+- [Class: OverlayManagerAsTooltipOverlayHandler](docs:shadcn_flutter:class-overlaymanagerastooltipoverlayhandler): Reference for OverlayManagerAsTooltipOverlayHandler
+- [Class: OverlayManagerLayer](docs:shadcn_flutter:class-overlaymanagerlayer): Reference for OverlayManagerLayer
+- [Class: OverlayPopoverEntry](docs:shadcn_flutter:class-overlaypopoverentry): Reference for OverlayPopoverEntry
+- [Class: Pagination](docs:shadcn_flutter:class-pagination): A navigation widget for paginated content with comprehensive page controls.
+- [Class: PaginationTheme](docs:shadcn_flutter:class-paginationtheme): Theme data for customizing [Pagination] widget appearance.
+- [Class: PhoneInput](docs:shadcn_flutter:class-phoneinput): A specialized input widget for entering international phone numbers.
+- [Class: PhoneInputTheme](docs:shadcn_flutter:class-phoneinputtheme): Theme data for [PhoneInput].
+- [Class: PhoneNumber](docs:shadcn_flutter:class-phonenumber): Reference for PhoneNumber
+- [Class: PointerData](docs:shadcn_flutter:class-pointerdata): Reference for PointerData
+- [Class: Popover](docs:shadcn_flutter:class-popover): A comprehensive popover overlay system for displaying contextual content.
+- [Class: PopoverController](docs:shadcn_flutter:class-popovercontroller): A controller for managing multiple popovers and their lifecycle.
+- [Class: PopoverLayout](docs:shadcn_flutter:class-popoverlayout): Reference for PopoverLayout
+- [Class: PopoverLayoutRender](docs:shadcn_flutter:class-popoverlayoutrender): Reference for PopoverLayoutRender
+- [Class: PopoverOverlayHandler](docs:shadcn_flutter:class-popoveroverlayhandler): Reference for PopoverOverlayHandler
+- [Class: PopoverOverlayWidget](docs:shadcn_flutter:class-popoveroverlaywidget): Reference for PopoverOverlayWidget
+- [Class: PopoverOverlayWidgetState](docs:shadcn_flutter:class-popoveroverlaywidgetstate): Reference for PopoverOverlayWidgetState
+- [Class: PreviousItemIntent](docs:shadcn_flutter:class-previousitemintent): Reference for PreviousItemIntent
+- [Class: PrimaryBadge](docs:shadcn_flutter:class-primarybadge): A primary style badge widget for highlighting important information or status.
+- [Class: PrimaryButton](docs:shadcn_flutter:class-primarybutton): Reference for PrimaryButton
+- [Class: PrimaryButtonTheme](docs:shadcn_flutter:class-primarybuttontheme): Reference for PrimaryButtonTheme
+- [Class: Progress](docs:shadcn_flutter:class-progress): A linear progress indicator that visually represents task completion.
+- [Class: ProgressTheme](docs:shadcn_flutter:class-progresstheme): Theme configuration for [Progress] components.
+- [Class: Radio](docs:shadcn_flutter:class-radio): A radio button widget that displays a circular selection indicator.
+- [Class: RadioCard](docs:shadcn_flutter:class-radiocard): Reference for RadioCard
+- [Class: RadioCardTheme](docs:shadcn_flutter:class-radiocardtheme): Theme data for the [RadioCard] widget.
+- [Class: RadioGroup](docs:shadcn_flutter:class-radiogroup): Reference for RadioGroup
+- [Class: RadioGroupController](docs:shadcn_flutter:class-radiogroupcontroller): Controller for managing [ControlledRadioGroup] state programmatically.
+- [Class: RadioGroupData](docs:shadcn_flutter:class-radiogroupdata): Reference for RadioGroupData
+- [Class: RadioGroupState](docs:shadcn_flutter:class-radiogroupstate): Reference for RadioGroupState
+- [Class: RadioItem](docs:shadcn_flutter:class-radioitem): Reference for RadioItem
+- [Class: RadioTheme](docs:shadcn_flutter:class-radiotheme): Theme data for customizing [Radio] widget appearance.
+- [Class: RadixIcons](docs:shadcn_flutter:class-radixicons): Reference for RadixIcons
+- [Class: RangeCalendarValue](docs:shadcn_flutter:class-rangecalendarvalue): Reference for RangeCalendarValue
+- [Class: RangeValidator](docs:shadcn_flutter:class-rangevalidator): Reference for RangeValidator
+- [Class: RawCell](docs:shadcn_flutter:class-rawcell): Reference for RawCell
+- [Class: RawSortableItemPositioned](docs:shadcn_flutter:class-rawsortableitempositioned): Reference for RawSortableItemPositioned
+- [Class: RawSortableList](docs:shadcn_flutter:class-rawsortablelist): Reference for RawSortableList
+- [Class: RawSortableParentData](docs:shadcn_flutter:class-rawsortableparentdata): Reference for RawSortableParentData
+- [Class: RawSortableStack](docs:shadcn_flutter:class-rawsortablestack): RawSortableStack prevents the stacking children from going outside the bounds of this widget.
+- [Class: RawTableLayout](docs:shadcn_flutter:class-rawtablelayout): Reference for RawTableLayout
+- [Class: RecentColorsScope](docs:shadcn_flutter:class-recentcolorsscope): Reference for RecentColorsScope
+- [Class: RecentColorsScopeState](docs:shadcn_flutter:class-recentcolorsscopestate): Reference for RecentColorsScopeState
+- [Class: RefreshTrigger](docs:shadcn_flutter:class-refreshtrigger): A widget that provides pull-to-refresh functionality.
+- [Class: RefreshTriggerPhysics](docs:shadcn_flutter:class-refreshtriggerphysics): Reference for RefreshTriggerPhysics
+- [Class: RefreshTriggerStage](docs:shadcn_flutter:class-refreshtriggerstage): Reference for RefreshTriggerStage
+- [Class: RefreshTriggerState](docs:shadcn_flutter:class-refreshtriggerstate): Reference for RefreshTriggerState
+- [Class: RefreshTriggerTheme](docs:shadcn_flutter:class-refreshtriggertheme): Theme configuration for [RefreshTrigger].
+- [Class: RegexValidator](docs:shadcn_flutter:class-regexvalidator): Reference for RegexValidator
+- [Class: RelativeKeyframe](docs:shadcn_flutter:class-relativekeyframe): Reference for RelativeKeyframe
+- [Class: RenderGroup](docs:shadcn_flutter:class-rendergroup): Reference for RenderGroup
+- [Class: RenderRawSortableStack](docs:shadcn_flutter:class-renderrawsortablestack): Reference for RenderRawSortableStack
+- [Class: RenderScrollableClientViewport](docs:shadcn_flutter:class-renderscrollableclientviewport): Reference for RenderScrollableClientViewport
+- [Class: RenderTableLayout](docs:shadcn_flutter:class-rendertablelayout): Reference for RenderTableLayout
+- [Class: RepeatedAnimationBuilder](docs:shadcn_flutter:class-repeatedanimationbuilder): An animated widget that continuously repeats an animation between two values.
+- [Class: ReplaceResult](docs:shadcn_flutter:class-replaceresult): Reference for ReplaceResult
+- [Class: ResizableData](docs:shadcn_flutter:class-resizabledata): Reference for ResizableData
+- [Class: ResizableDraggerTheme](docs:shadcn_flutter:class-resizabledraggertheme): Theme for [HorizontalResizableDragger] and [VerticalResizableDragger].
+- [Class: ResizableItem](docs:shadcn_flutter:class-resizableitem): Reference for ResizableItem
+- [Class: ResizablePane](docs:shadcn_flutter:class-resizablepane): Reference for ResizablePane
+- [Class: ResizablePanel](docs:shadcn_flutter:class-resizablepanel): A container widget that creates resizable panels separated by interactive dividers.
+- [Class: ResizableTable](docs:shadcn_flutter:class-resizabletable): Reference for ResizableTable
+- [Class: ResizableTableController](docs:shadcn_flutter:class-resizabletablecontroller): Reference for ResizableTableController
+- [Class: ResizableTableTheme](docs:shadcn_flutter:class-resizabletabletheme): Reference for ResizableTableTheme
+- [Class: Resizer](docs:shadcn_flutter:class-resizer): Reference for Resizer
+- [Class: SafeLerp](docs:shadcn_flutter:class-safelerp): Reference for SafeLerp
+- [Class: SafePasswordValidator](docs:shadcn_flutter:class-safepasswordvalidator): Reference for SafePasswordValidator
+- [Class: Scaffold](docs:shadcn_flutter:class-scaffold): A fundamental layout widget that provides the basic structure for screen layouts.
+- [Class: ScaffoldBarData](docs:shadcn_flutter:class-scaffoldbardata): Reference for ScaffoldBarData
+- [Class: ScaffoldBoxConstraints](docs:shadcn_flutter:class-scaffoldboxconstraints): Reference for ScaffoldBoxConstraints
+- [Class: ScaffoldFooterPadding](docs:shadcn_flutter:class-scaffoldfooterpadding): Reference for ScaffoldFooterPadding
+- [Class: ScaffoldHeaderPadding](docs:shadcn_flutter:class-scaffoldheaderpadding): Reference for ScaffoldHeaderPadding
+- [Class: ScaffoldPaddingStorage](docs:shadcn_flutter:class-scaffoldpaddingstorage): Reference for ScaffoldPaddingStorage
+- [Class: ScaffoldState](docs:shadcn_flutter:class-scaffoldstate): Reference for ScaffoldState
+- [Class: ScaffoldTheme](docs:shadcn_flutter:class-scaffoldtheme): Theme data for customizing [Scaffold] widget appearance.
+- [Class: ScrollableClient](docs:shadcn_flutter:class-scrollableclient): Reference for ScrollableClient
+- [Class: ScrollableClientTheme](docs:shadcn_flutter:class-scrollableclienttheme): Theme data for [ScrollableClient].
+- [Class: ScrollableClientViewport](docs:shadcn_flutter:class-scrollableclientviewport): Reference for ScrollableClientViewport
+- [Class: ScrollableSortableLayer](docs:shadcn_flutter:class-scrollablesortablelayer): A sortable layer that provides automatic scrolling during drag operations.
+- [Class: Scrollbar](docs:shadcn_flutter:class-scrollbar): Reference for Scrollbar
+- [Class: ScrollbarTheme](docs:shadcn_flutter:class-scrollbartheme): Theme configuration for [Scrollbar].
+- [Class: ScrollViewInterceptor](docs:shadcn_flutter:class-scrollviewinterceptor): Reference for ScrollViewInterceptor
+- [Class: SecondaryBadge](docs:shadcn_flutter:class-secondarybadge): Reference for SecondaryBadge
+- [Class: SecondaryButton](docs:shadcn_flutter:class-secondarybutton): Reference for SecondaryButton
+- [Class: SecondaryButtonTheme](docs:shadcn_flutter:class-secondarybuttontheme): Reference for SecondaryButtonTheme
+- [Class: Select](docs:shadcn_flutter:class-select): A customizable dropdown selection widget for single-value selection.
+- [Class: SelectableText](docs:shadcn_flutter:class-selectabletext): Reference for SelectableText
+- [Class: SelectableTextTheme](docs:shadcn_flutter:class-selectabletexttheme): {@template selectable_text_theme}  Theme data for [SelectableText] to customize cursor and selection behavior.
+- [Class: SelectController](docs:shadcn_flutter:class-selectcontroller): Controller for managing [ControlledSelect] state programmatically.
+- [Class: SelectData](docs:shadcn_flutter:class-selectdata): Reference for SelectData
+- [Class: SelectedButton](docs:shadcn_flutter:class-selectedbutton): Reference for SelectedButton
+- [Class: SelectedButtonState](docs:shadcn_flutter:class-selectedbuttonstate): Reference for SelectedButtonState
+- [Class: SelectGroup](docs:shadcn_flutter:class-selectgroup): Reference for SelectGroup
+- [Class: SelectItem](docs:shadcn_flutter:class-selectitem): Reference for SelectItem
+- [Class: SelectItemBuilder](docs:shadcn_flutter:class-selectitembuilder): Reference for SelectItemBuilder
+- [Class: SelectItemButton](docs:shadcn_flutter:class-selectitembutton): Reference for SelectItemButton
+- [Class: SelectItemDelegate](docs:shadcn_flutter:class-selectitemdelegate): Reference for SelectItemDelegate
+- [Class: SelectItemList](docs:shadcn_flutter:class-selectitemlist): Reference for SelectItemList
+- [Class: SelectLabel](docs:shadcn_flutter:class-selectlabel): Reference for SelectLabel
+- [Class: SelectPopup](docs:shadcn_flutter:class-selectpopup): Reference for SelectPopup
+- [Class: SelectState](docs:shadcn_flutter:class-selectstate): Reference for SelectState
+- [Class: SelectTheme](docs:shadcn_flutter:class-selecttheme): Theme data for customizing [Select] widget appearance and behavior.
+- [Class: SelectTreeNodeIntent](docs:shadcn_flutter:class-selecttreenodeintent): Reference for SelectTreeNodeIntent
+- [Class: SeparatedFlex](docs:shadcn_flutter:class-separatedflex): Reference for SeparatedFlex
+- [Class: SeparatedIterable](docs:shadcn_flutter:class-separatediterable): Reference for SeparatedIterable
+- [Class: SeparatedIterator](docs:shadcn_flutter:class-separatediterator): Reference for SeparatedIterator
+- [Class: ShadcnAnimatedTheme](docs:shadcn_flutter:class-shadcnanimatedtheme): Reference for ShadcnAnimatedTheme
+- [Class: ShadcnApp](docs:shadcn_flutter:class-shadcnapp): Reference for ShadcnApp
+- [Class: ShadcnFlutterPlatformImplementations](docs:shadcn_flutter:class-shadcnflutterplatformimplementations): Reference for ShadcnFlutterPlatformImplementations
+- [Class: ShadcnLayer](docs:shadcn_flutter:class-shadcnlayer): Reference for ShadcnLayer
+- [Class: ShadcnLocalizations](docs:shadcn_flutter:class-shadcnlocalizations): Reference for ShadcnLocalizations
+- [Class: ShadcnLocalizationsDelegate](docs:shadcn_flutter:class-shadcnlocalizationsdelegate): Reference for ShadcnLocalizationsDelegate
+- [Class: ShadcnPointArcTween](docs:shadcn_flutter:class-shadcnpointarctween): Reference for ShadcnPointArcTween
+- [Class: ShadcnRectArcTween](docs:shadcn_flutter:class-shadcnrectarctween): Reference for ShadcnRectArcTween
+- [Class: ShadcnScrollBehavior](docs:shadcn_flutter:class-shadcnscrollbehavior): Reference for ShadcnScrollBehavior
+- [Class: ShadcnSkeletonizerConfigLayer](docs:shadcn_flutter:class-shadcnskeletonizerconfiglayer): A configuration layer that provides Skeletonizer setup with theme integration.
+- [Class: ShadcnUI](docs:shadcn_flutter:class-shadcnui): Reference for ShadcnUI
+- [Class: SheetOverlayHandler](docs:shadcn_flutter:class-sheetoverlayhandler): Reference for SheetOverlayHandler
+- [Class: SheetSwiperHandler](docs:shadcn_flutter:class-sheetswiperhandler): Sheet-style swiper handler with minimal styling.
+- [Class: SheetWrapper](docs:shadcn_flutter:class-sheetwrapper): Reference for SheetWrapper
+- [Class: SingleCalendarValue](docs:shadcn_flutter:class-singlecalendarvalue): Calendar value representing a single selected date.
+- [Class: SingleChartColorScheme](docs:shadcn_flutter:class-singlechartcolorscheme): Reference for SingleChartColorScheme
+- [Class: SizeUnitLocale](docs:shadcn_flutter:class-sizeunitlocale): Reference for SizeUnitLocale
+- [Class: SkeletonTheme](docs:shadcn_flutter:class-skeletontheme): Theme configuration for skeleton loading effects.
+- [Class: Slider](docs:shadcn_flutter:class-slider): Reference for Slider
+- [Class: SliderController](docs:shadcn_flutter:class-slidercontroller): Reactive controller for managing slider state with value operations.
+- [Class: SliderTheme](docs:shadcn_flutter:class-slidertheme): Theme for [Slider].
+- [Class: SliderValue](docs:shadcn_flutter:class-slidervalue): Reference for SliderValue
+- [Class: SlidingCarouselTransition](docs:shadcn_flutter:class-slidingcarouseltransition): A sliding carousel transition.
+- [Class: Sortable](docs:shadcn_flutter:class-sortable): A draggable widget that supports drag-and-drop reordering with directional drop zones.
+- [Class: SortableChildBuilderDelegate](docs:shadcn_flutter:class-sortablechildbuilderdelegate): Reference for SortableChildBuilderDelegate
+- [Class: SortableChildListDelegate](docs:shadcn_flutter:class-sortablechildlistdelegate): Reference for SortableChildListDelegate
+- [Class: SortableData](docs:shadcn_flutter:class-sortabledata): Immutable data wrapper for sortable items in drag-and-drop operations.
+- [Class: SortableDragHandle](docs:shadcn_flutter:class-sortabledraghandle): A dedicated drag handle for initiating sortable drag operations.
+- [Class: SortableDropFallback](docs:shadcn_flutter:class-sortabledropfallback): A fallback drop zone for sortable items when dropped outside specific sortable widgets.
+- [Class: SortableLayer](docs:shadcn_flutter:class-sortablelayer): A layer widget that manages drag-and-drop sessions for sortable widgets.
+- [Class: SortableListDelegate](docs:shadcn_flutter:class-sortablelistdelegate): Reference for SortableListDelegate
+- [Class: Spinner](docs:shadcn_flutter:class-spinner): Reference for Spinner
+- [Class: SpinnerElement](docs:shadcn_flutter:class-spinnerelement): Reference for SpinnerElement
+- [Class: SpinnerTheme](docs:shadcn_flutter:class-spinnertheme): Theme configuration for spinner widgets.
+- [Class: SpinnerTransform](docs:shadcn_flutter:class-spinnertransform): Reference for SpinnerTransform
+- [Class: StageBreakpoint](docs:shadcn_flutter:class-stagebreakpoint): Reference for StageBreakpoint
+- [Class: StageContainer](docs:shadcn_flutter:class-stagecontainer): Reference for StageContainer
+- [Class: StageContainerTheme](docs:shadcn_flutter:class-stagecontainertheme): Reference for StageContainerTheme
+- [Class: StagedBreakpoint](docs:shadcn_flutter:class-stagedbreakpoint): Reference for StagedBreakpoint
+- [Class: StarRating](docs:shadcn_flutter:class-starrating): An interactive star rating widget for collecting user feedback and ratings.
+- [Class: StarRatingController](docs:shadcn_flutter:class-starratingcontroller): A controller for managing [StarRating] widget values programmatically.
+- [Class: StarRatingTheme](docs:shadcn_flutter:class-starratingtheme): Theme data for customizing [StarRating] widget appearance.
+- [Class: StatedWidget](docs:shadcn_flutter:class-statedwidget): An abstract widget that provides state-aware visual variations.
+- [Class: StaticPart](docs:shadcn_flutter:class-staticpart): Reference for StaticPart
+- [Class: Step](docs:shadcn_flutter:class-step): Represents a single step in a stepper component.
+- [Class: StepContainer](docs:shadcn_flutter:class-stepcontainer): Container widget for step content with optional action buttons.
+- [Class: StepItem](docs:shadcn_flutter:class-stepitem): Reference for StepItem
+- [Class: StepNumber](docs:shadcn_flutter:class-stepnumber): Step indicator widget displaying step number, checkmark, or custom icon.
+- [Class: StepNumberData](docs:shadcn_flutter:class-stepnumberdata): Data class providing step index context to descendant widgets.
+- [Class: Stepper](docs:shadcn_flutter:class-stepper): A multi-step navigation component with visual progress indication.
+- [Class: StepperController](docs:shadcn_flutter:class-steppercontroller): Controller for managing stepper state and navigation.
+- [Class: StepperTheme](docs:shadcn_flutter:class-steppertheme): Theme configuration for [Stepper] components.
+- [Class: StepperValue](docs:shadcn_flutter:class-steppervalue): Immutable value representing the current state of a stepper.
+- [Class: StepProperties](docs:shadcn_flutter:class-stepproperties): Contains properties and state information for stepper rendering.
+- [Class: Steps](docs:shadcn_flutter:class-steps): Vertical step progression widget with numbered indicators and connectors.
+- [Class: StepsTheme](docs:shadcn_flutter:class-stepstheme): Theme for [Steps].
+- [Class: StepTitle](docs:shadcn_flutter:class-steptitle): Clickable step title widget with optional subtitle.
+- [Class: StepVariant](docs:shadcn_flutter:class-stepvariant): Abstract base class for step visual presentation variants.
+- [Class: StillKeyframe](docs:shadcn_flutter:class-stillkeyframe): Reference for StillKeyframe
+- [Class: SubFocus](docs:shadcn_flutter:class-subfocus): Individual focusable widget within a SubFocusScope hierarchy.
+- [Class: SubFocusScope](docs:shadcn_flutter:class-subfocusscope): Hierarchical focus management system for complex widget trees.
+- [Class: SubmissionResult](docs:shadcn_flutter:class-submissionresult): Reference for SubmissionResult
+- [Class: SubmitButton](docs:shadcn_flutter:class-submitbutton): Reference for SubmitButton
+- [Class: SurfaceBarrierPainter](docs:shadcn_flutter:class-surfacebarrierpainter): Custom painter that creates a barrier effect with an optional cutout.
+- [Class: SurfaceBlur](docs:shadcn_flutter:class-surfaceblur): Reference for SurfaceBlur
+- [Class: SurfaceCard](docs:shadcn_flutter:class-surfacecard): Reference for SurfaceCard
+- [Class: Swiper](docs:shadcn_flutter:class-swiper): A gesture-responsive widget that triggers overlay content through swiping.
+- [Class: SwiperHandler](docs:shadcn_flutter:class-swiperhandler): Abstract handler interface for swiper overlay implementations.
+- [Class: SwiperTheme](docs:shadcn_flutter:class-swipertheme): Theme configuration for swiper overlay behavior and appearance.
+- [Class: Switch](docs:shadcn_flutter:class-switch): Reference for Switch
+- [Class: SwitchController](docs:shadcn_flutter:class-switchcontroller): Reference for SwitchController
+- [Class: Switcher](docs:shadcn_flutter:class-switcher): A swipeable container that transitions between multiple child widgets.
+- [Class: SwitchTheme](docs:shadcn_flutter:class-switchtheme): Theme configuration for [Switch] widget styling and visual appearance.
+- [Class: TabButton](docs:shadcn_flutter:class-tabbutton): Reference for TabButton
+- [Class: TabChildWidget](docs:shadcn_flutter:class-tabchildwidget): Reference for TabChildWidget
+- [Class: TabContainer](docs:shadcn_flutter:class-tabcontainer): Reference for TabContainer
+- [Class: TabContainerData](docs:shadcn_flutter:class-tabcontainerdata): Reference for TabContainerData
+- [Class: TabContainerTheme](docs:shadcn_flutter:class-tabcontainertheme): {@template tab_container_theme}  Theme data for [TabContainer] providing default builders.
+- [Class: TabItem](docs:shadcn_flutter:class-tabitem): Reference for TabItem
+- [Class: Table](docs:shadcn_flutter:class-table): A flexible table widget with support for spanning, scrolling, and interactive features.
+- [Class: TableCell](docs:shadcn_flutter:class-tablecell): Reference for TableCell
+- [Class: TableCellTheme](docs:shadcn_flutter:class-tablecelltheme): Theme configuration for individual table cells.
+- [Class: TableFooter](docs:shadcn_flutter:class-tablefooter): Reference for TableFooter
+- [Class: TableHeader](docs:shadcn_flutter:class-tableheader): Reference for TableHeader
+- [Class: TableLayoutResult](docs:shadcn_flutter:class-tablelayoutresult): Reference for TableLayoutResult
+- [Class: TableParentData](docs:shadcn_flutter:class-tableparentdata): Reference for TableParentData
+- [Class: TableRef](docs:shadcn_flutter:class-tableref): Reference for TableRef
+- [Class: TableRow](docs:shadcn_flutter:class-tablerow): Reference for TableRow
+- [Class: TableSize](docs:shadcn_flutter:class-tablesize): Reference for TableSize
+- [Class: TableTheme](docs:shadcn_flutter:class-tabletheme): Theme configuration for [Table] components.
+- [Class: TabList](docs:shadcn_flutter:class-tablist): A horizontal tab list widget for selecting between multiple tab content areas.
+- [Class: TabListTheme](docs:shadcn_flutter:class-tablisttheme): Theme configuration for [TabList] appearance and behavior.
+- [Class: TabPane](docs:shadcn_flutter:class-tabpane): A comprehensive tab pane widget with sortable tabs and integrated content display.
+- [Class: TabPaneData](docs:shadcn_flutter:class-tabpanedata): Data wrapper for tab pane items that extends sortable functionality.
+- [Class: TabPaneState](docs:shadcn_flutter:class-tabpanestate): Reference for TabPaneState
+- [Class: TabPaneTheme](docs:shadcn_flutter:class-tabpanetheme): Theme configuration for [TabPane] appearance and layout.
+- [Class: Tabs](docs:shadcn_flutter:class-tabs): A tabbed interface widget for organizing content into switchable panels.
+- [Class: TabsTheme](docs:shadcn_flutter:class-tabstheme): Theme data for customizing [Tabs] widget appearance.
+- [Class: TextArea](docs:shadcn_flutter:class-textarea): A multi-line text input widget with resizable dimensions and comprehensive styling.
+- [Class: TextButton](docs:shadcn_flutter:class-textbutton): Reference for TextButton
+- [Class: TextButtonTheme](docs:shadcn_flutter:class-textbuttontheme): Reference for TextButtonTheme
+- [Class: TextField](docs:shadcn_flutter:class-textfield): A highly customizable single-line text input widget with extensive feature support.
+- [Class: TextFieldAppendTextIntent](docs:shadcn_flutter:class-textfieldappendtextintent): Reference for TextFieldAppendTextIntent
+- [Class: TextFieldClearIntent](docs:shadcn_flutter:class-textfieldclearintent): Reference for TextFieldClearIntent
+- [Class: TextFieldReplaceCurrentWordIntent](docs:shadcn_flutter:class-textfieldreplacecurrentwordintent): Reference for TextFieldReplaceCurrentWordIntent
+- [Class: TextFieldSelectAllAndCopyIntent](docs:shadcn_flutter:class-textfieldselectallandcopyintent): Reference for TextFieldSelectAllAndCopyIntent
+- [Class: TextFieldSetSelectionIntent](docs:shadcn_flutter:class-textfieldsetselectionintent): Reference for TextFieldSetSelectionIntent
+- [Class: TextFieldSetTextIntent](docs:shadcn_flutter:class-textfieldsettextintent): Reference for TextFieldSetTextIntent
+- [Class: TextFieldState](docs:shadcn_flutter:class-textfieldstate): Reference for TextFieldState
+- [Class: TextFieldTheme](docs:shadcn_flutter:class-textfieldtheme): Theme data for customizing [TextField] appearance.
+- [Class: TextInputFormatters](docs:shadcn_flutter:class-textinputformatters): Reference for TextInputFormatters
+- [Class: TextInputStatefulWidget](docs:shadcn_flutter:class-textinputstatefulwidget): Reference for TextInputStatefulWidget
+- [Class: TextModifier](docs:shadcn_flutter:class-textmodifier): Reference for TextModifier
+- [Class: Theme](docs:shadcn_flutter:class-theme): Reference for Theme
+- [Class: ThemeData](docs:shadcn_flutter:class-themedata): Reference for ThemeData
+- [Class: ThemeDataTween](docs:shadcn_flutter:class-themedatatween): Reference for ThemeDataTween
+- [Class: TimeInput](docs:shadcn_flutter:class-timeinput): Reactive time input field with formatted text editing and validation.
+- [Class: Timeline](docs:shadcn_flutter:class-timeline): A vertical timeline widget for displaying chronological data.
+- [Class: TimelineAnimatable](docs:shadcn_flutter:class-timelineanimatable): Reference for TimelineAnimatable
+- [Class: TimelineAnimation](docs:shadcn_flutter:class-timelineanimation): Reference for TimelineAnimation
+- [Class: TimelineData](docs:shadcn_flutter:class-timelinedata): Data model for individual timeline entries.
+- [Class: TimelineTheme](docs:shadcn_flutter:class-timelinetheme): Theme configuration for [Timeline] widgets.
+- [Class: TimeOfDay](docs:shadcn_flutter:class-timeofday): Reference for TimeOfDay
+- [Class: TimePicker](docs:shadcn_flutter:class-timepicker): Reference for TimePicker
+- [Class: TimePickerController](docs:shadcn_flutter:class-timepickercontroller): A controller for managing [ControlledTimePicker] values programmatically.
+- [Class: TimePickerDialog](docs:shadcn_flutter:class-timepickerdialog): Reference for TimePickerDialog
+- [Class: TimePickerTheme](docs:shadcn_flutter:class-timepickertheme): Reference for TimePickerTheme
+- [Class: TimeRange](docs:shadcn_flutter:class-timerange): Reference for TimeRange
+- [Class: ToastEntry](docs:shadcn_flutter:class-toastentry): Reference for ToastEntry
+- [Class: ToastEntryLayout](docs:shadcn_flutter:class-toastentrylayout): Reference for ToastEntryLayout
+- [Class: ToastLayer](docs:shadcn_flutter:class-toastlayer): A sophisticated layer widget that provides toast notification infrastructure.
+- [Class: ToastOverlay](docs:shadcn_flutter:class-toastoverlay): Abstract interface for controlling individual toast notification instances.
+- [Class: ToastTheme](docs:shadcn_flutter:class-toasttheme): Theme configuration for toast notification system.
+- [Class: Toggle](docs:shadcn_flutter:class-toggle): Simple toggle button with stateful on/off behavior.
+- [Class: ToggleController](docs:shadcn_flutter:class-togglecontroller): A controller for managing toggle state in toggle buttons and switches.
+- [Class: ToggleState](docs:shadcn_flutter:class-togglestate): Reference for ToggleState
+- [Class: Tooltip](docs:shadcn_flutter:class-tooltip): An interactive tooltip widget that displays contextual information on hover.
+- [Class: TooltipContainer](docs:shadcn_flutter:class-tooltipcontainer): Reference for TooltipContainer
+- [Class: TooltipTheme](docs:shadcn_flutter:class-tooltiptheme): Theme data for customizing [TooltipContainer] widget appearance.
+- [Class: Tracker](docs:shadcn_flutter:class-tracker): A widget that displays a tracker.
+- [Class: TrackerData](docs:shadcn_flutter:class-trackerdata): A data container for individual tracker segments.
+- [Class: TrackerLevel](docs:shadcn_flutter:class-trackerlevel): An abstract class that defines values for different Tracker levels.
+- [Class: TrackerTheme](docs:shadcn_flutter:class-trackertheme): Theme configuration for [Tracker] components.
+- [Class: Transformers](docs:shadcn_flutter:class-transformers): Reference for Transformers
+- [Class: TreeItem](docs:shadcn_flutter:class-treeitem): A concrete tree node implementation that holds data and state.
+- [Class: TreeItemExpandDefaultHandler](docs:shadcn_flutter:class-treeitemexpanddefaulthandler): Reference for TreeItemExpandDefaultHandler
+- [Class: TreeItemView](docs:shadcn_flutter:class-treeitemview): A comprehensive tree item widget with interaction, expansion, and selection support.
+- [Class: TreeNode](docs:shadcn_flutter:class-treenode): Abstract base class representing a node in a tree structure.
+- [Class: TreeNodeData](docs:shadcn_flutter:class-treenodedata): Reference for TreeNodeData
+- [Class: TreeNodeDepth](docs:shadcn_flutter:class-treenodedepth): Reference for TreeNodeDepth
+- [Class: TreeRoot](docs:shadcn_flutter:class-treeroot): A special tree node that serves as an invisible root container.
+- [Class: TreeSelectionDefaultHandler](docs:shadcn_flutter:class-treeselectiondefaulthandler): Reference for TreeSelectionDefaultHandler
+- [Class: TreeTheme](docs:shadcn_flutter:class-treetheme): Theme configuration for [TreeView] appearance and behavior.
+- [Class: TreeView](docs:shadcn_flutter:class-treeview): A comprehensive tree view widget with hierarchical data display and interaction.
+- [Class: Typography](docs:shadcn_flutter:class-typography): Reference for Typography
+- [Class: UnorderedListData](docs:shadcn_flutter:class-unorderedlistdata): Reference for UnorderedListData
+- [Class: URLValidator](docs:shadcn_flutter:class-urlvalidator): Reference for URLValidator
+- [Class: Validated](docs:shadcn_flutter:class-validated): Reference for Validated
+- [Class: ValidationMode](docs:shadcn_flutter:class-validationmode): Reference for ValidationMode
+- [Class: ValidationResult](docs:shadcn_flutter:class-validationresult): Reference for ValidationResult
+- [Class: Validator](docs:shadcn_flutter:class-validator): Abstract base class for implementing form field validation logic.
+- [Class: ValidatorBuilder](docs:shadcn_flutter:class-validatorbuilder): Reference for ValidatorBuilder
+- [Class: VerticalDivider](docs:shadcn_flutter:class-verticaldivider): Reference for VerticalDivider
+- [Class: VerticalDividerPainter](docs:shadcn_flutter:class-verticaldividerpainter): Reference for VerticalDividerPainter
+- [Class: VerticalResizableDragger](docs:shadcn_flutter:class-verticalresizabledragger): A Vertical dragger that can be used as a divider between resizable panes.
+- [Class: WaitingResult](docs:shadcn_flutter:class-waitingresult): Reference for WaitingResult
+- [Class: WidgetInputOTPChild](docs:shadcn_flutter:class-widgetinputotpchild): Reference for WidgetInputOTPChild
+- [Class: WidgetPart](docs:shadcn_flutter:class-widgetpart): Reference for WidgetPart
+- [Class: WidgetStatesData](docs:shadcn_flutter:class-widgetstatesdata): Reference for WidgetStatesData
+- [Class: WidgetStatesProvider](docs:shadcn_flutter:class-widgetstatesprovider): Reference for WidgetStatesProvider
+- [Class: WidgetTreeChangeDetector](docs:shadcn_flutter:class-widgettreechangedetector): Reference for WidgetTreeChangeDetector
+- [Class: WidgetTreeChangeDetectorState](docs:shadcn_flutter:class-widgettreechangedetectorstate): Reference for WidgetTreeChangeDetectorState
+- [Class: Window](docs:shadcn_flutter:class-window): A comprehensive windowing system for creating desktop-like window interfaces.
+- [Class: WindowActions](docs:shadcn_flutter:class-windowactions): Reference for WindowActions
+- [Class: WindowController](docs:shadcn_flutter:class-windowcontroller): Reactive controller for managing window state and operations.
+- [Class: WindowNavigator](docs:shadcn_flutter:class-windownavigator): Reference for WindowNavigator
+- [Class: WindowSnapStrategy](docs:shadcn_flutter:class-windowsnapstrategy): Configuration for window snapping behavior and positioning.
+- [Class: WindowState](docs:shadcn_flutter:class-windowstate): Complete state configuration for a window instance.
+- [Class: WindowTheme](docs:shadcn_flutter:class-windowtheme): Theme configuration for window components.
+- [Class: WindowViewport](docs:shadcn_flutter:class-windowviewport): Reference for WindowViewport
+- [Class: WindowWidget](docs:shadcn_flutter:class-windowwidget): Reference for WindowWidget
+- [Class: WrappedIcon](docs:shadcn_flutter:class-wrappedicon): Reference for WrappedIcon
+- [Class: WrappedText](docs:shadcn_flutter:class-wrappedtext): Reference for WrappedText
+- [Class: Wrapper](docs:shadcn_flutter:class-wrapper): Reference for Wrapper
+- [Class: YearCalendar](docs:shadcn_flutter:class-yearcalendar): Reference for YearCalendar
+- [Enum: AutoCompleteMode](docs:shadcn_flutter:enum-autocompletemode): Text replacement strategies for autocomplete suggestion application.
+- [Enum: ButtonShape](docs:shadcn_flutter:enum-buttonshape): Defines the shape style for button components.
+- [Enum: CalendarItemType](docs:shadcn_flutter:enum-calendaritemtype): Visual states for individual calendar date items.
+- [Enum: CalendarSelectionMode](docs:shadcn_flutter:enum-calendarselectionmode): Selection modes available for calendar components.
+- [Enum: CalendarValueLookup](docs:shadcn_flutter:enum-calendarvaluelookup): Result type for calendar value lookup operations.
+- [Enum: CalendarViewType](docs:shadcn_flutter:enum-calendarviewtype): Defines the different view types available in calendar components.
+- [Enum: CarouselAlignment](docs:shadcn_flutter:enum-carouselalignment): CarouselAlignment is used to align the carousel items.
+- [Enum: CheckboxState](docs:shadcn_flutter:enum-checkboxstate): Represents the possible states of a checkbox widget.
+- [Enum: ColorPickerMode](docs:shadcn_flutter:enum-colorpickermode): Reference for ColorPickerMode
+- [Enum: CompareType](docs:shadcn_flutter:enum-comparetype): Reference for CompareType
+- [Enum: DatePart](docs:shadcn_flutter:enum-datepart): Reference for DatePart
+- [Enum: DateState](docs:shadcn_flutter:enum-datestate): Represents the interactive state of a date in the calendar.
+- [Enum: DurationPart](docs:shadcn_flutter:enum-durationpart): Reference for DurationPart
+- [Enum: ExpandMode](docs:shadcn_flutter:enum-expandmode): Expansion behavior modes for toast notification stacks.
+- [Enum: FocusChangeReason](docs:shadcn_flutter:enum-focuschangereason): Reference for FocusChangeReason
+- [Enum: FormValidationMode](docs:shadcn_flutter:enum-formvalidationmode): Defines when form field validation should occur during the component lifecycle.
+- [Enum: HSLColorSliderType](docs:shadcn_flutter:enum-hslcolorslidertype): Reference for HSLColorSliderType
+- [Enum: HSVColorSliderType](docs:shadcn_flutter:enum-hsvcolorslidertype): Reference for HSVColorSliderType
+- [Enum: ImageType](docs:shadcn_flutter:enum-imagetype): Reference for ImageType
+- [Enum: InputFeaturePosition](docs:shadcn_flutter:enum-inputfeatureposition): Reference for InputFeaturePosition
+- [Enum: NavigationBarAlignment](docs:shadcn_flutter:enum-navigationbaralignment): Enumeration defining alignment options for navigation bar items.
+- [Enum: NavigationContainerType](docs:shadcn_flutter:enum-navigationcontainertype): Enumeration defining the type of navigation container.
+- [Enum: NavigationLabelPosition](docs:shadcn_flutter:enum-navigationlabelposition): Reference for NavigationLabelPosition
+- [Enum: NavigationLabelSize](docs:shadcn_flutter:enum-navigationlabelsize): Reference for NavigationLabelSize
+- [Enum: NavigationLabelType](docs:shadcn_flutter:enum-navigationlabeltype): Reference for NavigationLabelType
+- [Enum: NavigationOverflow](docs:shadcn_flutter:enum-navigationoverflow): Reference for NavigationOverflow
+- [Enum: NavigationRailAlignment](docs:shadcn_flutter:enum-navigationrailalignment): Enumeration defining alignment options for navigation rail items.
+- [Enum: OverlayPosition](docs:shadcn_flutter:enum-overlayposition): Reference for OverlayPosition
+- [Enum: PanelSibling](docs:shadcn_flutter:enum-panelsibling): A sibling of a resizable panel.
+- [Enum: PasswordPeekMode](docs:shadcn_flutter:enum-passwordpeekmode): Reference for PasswordPeekMode
+- [Enum: PopoverConstraint](docs:shadcn_flutter:enum-popoverconstraint): Reference for PopoverConstraint
+- [Enum: PromptMode](docs:shadcn_flutter:enum-promptmode): Reference for PromptMode
+- [Enum: RepeatMode](docs:shadcn_flutter:enum-repeatmode): Defines how a repeated animation should behave when it reaches completion.
+- [Enum: SelectionPosition](docs:shadcn_flutter:enum-selectionposition): Reference for SelectionPosition
+- [Enum: SortDirection](docs:shadcn_flutter:enum-sortdirection): Reference for SortDirection
+- [Enum: StepSize](docs:shadcn_flutter:enum-stepsize): Defines the size variants available for step indicators.
+- [Enum: StepState](docs:shadcn_flutter:enum-stepstate): Represents the state of an individual step in a stepper.
+- [Enum: TableCellResizeMode](docs:shadcn_flutter:enum-tablecellresizemode): Reference for TableCellResizeMode
+- [Enum: ThemeMode](docs:shadcn_flutter:enum-thememode): Reference for ThemeMode
+- [Enum: TimePart](docs:shadcn_flutter:enum-timepart): Reference for TimePart
+- [Enum: ToastLocation](docs:shadcn_flutter:enum-toastlocation): Screen position enumeration for toast notification placement.
+- [Enum: TriggerStage](docs:shadcn_flutter:enum-triggerstage): Reference for TriggerStage
+- [Example: components/accordion/accordion_example_1.dart](docs:shadcn_flutter:example-accordion-accordion_example_1): Component example
+- [Example: components/accordion/accordion_tile.dart](docs:shadcn_flutter:example-accordion-accordion_tile): Component example
+- [Example: docs/components/accordion_example.dart](docs:shadcn_flutter:example-accordion_example): Component example
+- [Example: components/alert/alert_example_1.dart](docs:shadcn_flutter:example-alert-alert_example_1): Component example
+- [Example: components/alert/alert_example_2.dart](docs:shadcn_flutter:example-alert-alert_example_2): Component example
+- [Example: components/alert/alert_tile.dart](docs:shadcn_flutter:example-alert-alert_tile): Component example
+- [Example: components/alert_dialog/alert_dialog_example_1.dart](docs:shadcn_flutter:example-alert_dialog-alert_dialog_example_1): Component example
+- [Example: components/alert_dialog/alert_dialog_tile.dart](docs:shadcn_flutter:example-alert_dialog-alert_dialog_tile): Component example
+- [Example: docs/components/alert_dialog_example.dart](docs:shadcn_flutter:example-alert_dialog_example): Component example
+- [Example: docs/components/alert_example.dart](docs:shadcn_flutter:example-alert_example): Component example
+- [Example: components/animated_value_builder/animated_value_builder_example_1.dart](docs:shadcn_flutter:example-animated_value_builder-animated_value_builder_example_1): Component example
+- [Example: components/animated_value_builder/animated_value_builder_example_2.dart](docs:shadcn_flutter:example-animated_value_builder-animated_value_builder_example_2): Component example
+- [Example: components/animated_value_builder/animated_value_builder_tile.dart](docs:shadcn_flutter:example-animated_value_builder-animated_value_builder_tile): Component example
+- [Example: docs/components/animated_value_builder_example.dart](docs:shadcn_flutter:example-animated_value_builder_example): Component example
+- [Example: components/app/app_example_1.dart](docs:shadcn_flutter:example-app-app_example_1): Component example
+- [Example: components/app/app_example_2.dart](docs:shadcn_flutter:example-app-app_example_2): Component example
+- [Example: components/app/app_example_3.dart](docs:shadcn_flutter:example-app-app_example_3): Component example
+- [Example: components/app_bar/app_bar_example_1.dart](docs:shadcn_flutter:example-app_bar-app_bar_example_1): Component example
+- [Example: components/app_bar/app_bar_tile.dart](docs:shadcn_flutter:example-app_bar-app_bar_tile): Component example
+- [Example: docs/components/app_bar_example.dart](docs:shadcn_flutter:example-app_bar_example): Component example
+- [Example: docs/components/app_example.dart](docs:shadcn_flutter:example-app_example): App example page: lists and renders ShadcnApp demos.
+- [Example: components/autocomplete/autocomplete_example_1.dart](docs:shadcn_flutter:example-autocomplete-autocomplete_example_1): Component example
+- [Example: components/autocomplete/autocomplete_tile.dart](docs:shadcn_flutter:example-autocomplete-autocomplete_tile): Component example
+- [Example: docs/components/autocomplete_example.dart](docs:shadcn_flutter:example-autocomplete_example): Component example
+- [Example: components/avatar/avatar_example_1.dart](docs:shadcn_flutter:example-avatar-avatar_example_1): Component example
+- [Example: components/avatar/avatar_example_2.dart](docs:shadcn_flutter:example-avatar-avatar_example_2): Component example
+- [Example: components/avatar/avatar_example_3.dart](docs:shadcn_flutter:example-avatar-avatar_example_3): Component example
+- [Example: components/avatar/avatar_tile.dart](docs:shadcn_flutter:example-avatar-avatar_tile): Component example
+- [Example: docs/components/avatar_example.dart](docs:shadcn_flutter:example-avatar_example): Component example
+- [Example: components/avatar_group/avatar_group_example_1.dart](docs:shadcn_flutter:example-avatar_group-avatar_group_example_1): Component example
+- [Example: components/avatar_group/avatar_group_tile.dart](docs:shadcn_flutter:example-avatar_group-avatar_group_tile): Component example
+- [Example: docs/components/avatar_group_example.dart](docs:shadcn_flutter:example-avatar_group_example): Component example
+- [Example: components/badge/badge_example_1.dart](docs:shadcn_flutter:example-badge-badge_example_1): Component example
+- [Example: components/badge/badge_example_2.dart](docs:shadcn_flutter:example-badge-badge_example_2): Component example
+- [Example: components/badge/badge_example_3.dart](docs:shadcn_flutter:example-badge-badge_example_3): Component example
+- [Example: components/badge/badge_example_4.dart](docs:shadcn_flutter:example-badge-badge_example_4): Component example
+- [Example: components/badge/badge_tile.dart](docs:shadcn_flutter:example-badge-badge_tile): Component example
+- [Example: docs/components/badge_example.dart](docs:shadcn_flutter:example-badge_example): Component example
+- [Example: components/breadcrumb/breadcrumb_example_1.dart](docs:shadcn_flutter:example-breadcrumb-breadcrumb_example_1): Component example
+- [Example: components/breadcrumb/breadcrumb_tile.dart](docs:shadcn_flutter:example-breadcrumb-breadcrumb_tile): Component example
+- [Example: docs/components/breadcrumb_example.dart](docs:shadcn_flutter:example-breadcrumb_example): Component example
+- [Example: components/button/button_example_1.dart](docs:shadcn_flutter:example-button-button_example_1): Component example
+- [Example: components/button/button_example_10.dart](docs:shadcn_flutter:example-button-button_example_10): Component example
+- [Example: components/button/button_example_11.dart](docs:shadcn_flutter:example-button-button_example_11): Component example
+- [Example: components/button/button_example_12.dart](docs:shadcn_flutter:example-button-button_example_12): Component example
+- [Example: components/button/button_example_13.dart](docs:shadcn_flutter:example-button-button_example_13): Component example
+- [Example: components/button/button_example_14.dart](docs:shadcn_flutter:example-button-button_example_14): Component example
+- [Example: components/button/button_example_15.dart](docs:shadcn_flutter:example-button-button_example_15): Component example
+- [Example: components/button/button_example_16.dart](docs:shadcn_flutter:example-button-button_example_16): Component example
+- [Example: components/button/button_example_17.dart](docs:shadcn_flutter:example-button-button_example_17): Component example
+- [Example: components/button/button_example_2.dart](docs:shadcn_flutter:example-button-button_example_2): Component example
+- [Example: components/button/button_example_3.dart](docs:shadcn_flutter:example-button-button_example_3): Component example
+- [Example: components/button/button_example_4.dart](docs:shadcn_flutter:example-button-button_example_4): Component example
+- [Example: components/button/button_example_5.dart](docs:shadcn_flutter:example-button-button_example_5): Component example
+- [Example: components/button/button_example_6.dart](docs:shadcn_flutter:example-button-button_example_6): Component example
+- [Example: components/button/button_example_7.dart](docs:shadcn_flutter:example-button-button_example_7): Component example
+- [Example: components/button/button_example_8.dart](docs:shadcn_flutter:example-button-button_example_8): Component example
+- [Example: components/button/button_example_9.dart](docs:shadcn_flutter:example-button-button_example_9): Component example
+- [Example: components/button/button_tile.dart](docs:shadcn_flutter:example-button-button_tile): Component example
+- [Example: docs/components/button_example.dart](docs:shadcn_flutter:example-button_example): Component example
+- [Example: components/calendar/calendar_example_1.dart](docs:shadcn_flutter:example-calendar-calendar_example_1): Component example
+- [Example: components/calendar/calendar_example_2.dart](docs:shadcn_flutter:example-calendar-calendar_example_2): Component example
+- [Example: components/calendar/calendar_example_3.dart](docs:shadcn_flutter:example-calendar-calendar_example_3): Component example
+- [Example: components/calendar/calendar_example_4.dart](docs:shadcn_flutter:example-calendar-calendar_example_4): Component example
+- [Example: components/calendar/calendar_tile.dart](docs:shadcn_flutter:example-calendar-calendar_tile): Component example
+- [Example: docs/components/calendar_example.dart](docs:shadcn_flutter:example-calendar_example): Component example
+- [Example: components/card/card_example_1.dart](docs:shadcn_flutter:example-card-card_example_1): Component example
+- [Example: components/card/card_tile.dart](docs:shadcn_flutter:example-card-card_tile): Component example
+- [Example: docs/components/card_example.dart](docs:shadcn_flutter:example-card_example): Component example
+- [Example: components/card_image/card_image_example_1.dart](docs:shadcn_flutter:example-card_image-card_image_example_1): Component example
+- [Example: components/card_image/card_image_tile.dart](docs:shadcn_flutter:example-card_image-card_image_tile): Component example
+- [Example: docs/components/card_image_example.dart](docs:shadcn_flutter:example-card_image_example): Component example
+- [Example: components/carousel/carousel_example_1.dart](docs:shadcn_flutter:example-carousel-carousel_example_1): Component example
+- [Example: components/carousel/carousel_example_2.dart](docs:shadcn_flutter:example-carousel-carousel_example_2): Component example
+- [Example: components/carousel/carousel_example_3.dart](docs:shadcn_flutter:example-carousel-carousel_example_3): Component example
+- [Example: components/carousel/carousel_example_4.dart](docs:shadcn_flutter:example-carousel-carousel_example_4): Component example
+- [Example: components/carousel/carousel_tile.dart](docs:shadcn_flutter:example-carousel-carousel_tile): Component example
+- [Example: docs/components/carousel_example.dart](docs:shadcn_flutter:example-carousel_example): Component example
+- [Example: components/checkbox/checkbox_example_1.dart](docs:shadcn_flutter:example-checkbox-checkbox_example_1): Component example
+- [Example: components/checkbox/checkbox_example_2.dart](docs:shadcn_flutter:example-checkbox-checkbox_example_2): Component example
+- [Example: components/checkbox/checkbox_tile.dart](docs:shadcn_flutter:example-checkbox-checkbox_tile): Component example
+- [Example: docs/components/checkbox_example.dart](docs:shadcn_flutter:example-checkbox_example): Component example
+- [Example: components/chip/chip_example_1.dart](docs:shadcn_flutter:example-chip-chip_example_1): Component example
+- [Example: components/chip/chip_tile.dart](docs:shadcn_flutter:example-chip-chip_tile): Component example
+- [Example: docs/components/chip_example.dart](docs:shadcn_flutter:example-chip_example): Component example
+- [Example: components/chip_input/chip_input_example_1.dart](docs:shadcn_flutter:example-chip_input-chip_input_example_1): Component example
+- [Example: components/chip_input/chip_input_tile.dart](docs:shadcn_flutter:example-chip_input-chip_input_tile): Component example
+- [Example: docs/components/chip_input_example.dart](docs:shadcn_flutter:example-chip_input_example): Component example
+- [Example: components/choices/choices_example_1.dart](docs:shadcn_flutter:example-choices-choices_example_1): Component example
+- [Example: components/circular_progress/circular_progress_example_1.dart](docs:shadcn_flutter:example-circular_progress-circular_progress_example_1): Component example
+- [Example: components/circular_progress/circular_progress_example_2.dart](docs:shadcn_flutter:example-circular_progress-circular_progress_example_2): Component example
+- [Example: components/circular_progress/circular_progress_tile.dart](docs:shadcn_flutter:example-circular_progress-circular_progress_tile): Component example
+- [Example: docs/components/circular_progress_example.dart](docs:shadcn_flutter:example-circular_progress_example): Component example
+- [Example: components/code_snippet/code_snippet_example_1.dart](docs:shadcn_flutter:example-code_snippet-code_snippet_example_1): Component example
+- [Example: components/code_snippet/code_snippet_tile.dart](docs:shadcn_flutter:example-code_snippet-code_snippet_tile): Component example
+- [Example: docs/components/code_snippet_example.dart](docs:shadcn_flutter:example-code_snippet_example): Component example
+- [Example: components/collapsible/collapsible_example_1.dart](docs:shadcn_flutter:example-collapsible-collapsible_example_1): Component example
+- [Example: components/collapsible/collapsible_tile.dart](docs:shadcn_flutter:example-collapsible-collapsible_tile): Component example
+- [Example: docs/components/collapsible_example.dart](docs:shadcn_flutter:example-collapsible_example): Component example
+- [Example: components/color_picker/color_picker_example_1.dart](docs:shadcn_flutter:example-color_picker-color_picker_example_1): Component example
+- [Example: components/color_picker/color_picker_example_2.dart](docs:shadcn_flutter:example-color_picker-color_picker_example_2): Component example
+- [Example: components/color_picker/color_picker_example_3.dart](docs:shadcn_flutter:example-color_picker-color_picker_example_3): Component example
+- [Example: components/color_picker/color_picker_tile.dart](docs:shadcn_flutter:example-color_picker-color_picker_tile): Component example
+- [Example: docs/components/color_picker_example.dart](docs:shadcn_flutter:example-color_picker_example): Component example
+- [Example: components/command/command_example_1.dart](docs:shadcn_flutter:example-command-command_example_1): Component example
+- [Example: components/command/command_tile.dart](docs:shadcn_flutter:example-command-command_tile): Component example
+- [Example: docs/components/command_example.dart](docs:shadcn_flutter:example-command_example): Component example
+- [Example: components/context_menu/context_menu_example_1.dart](docs:shadcn_flutter:example-context_menu-context_menu_example_1): Component example
+- [Example: components/context_menu/context_menu_tile.dart](docs:shadcn_flutter:example-context_menu-context_menu_tile): Component example
+- [Example: docs/components/context_menu_example.dart](docs:shadcn_flutter:example-context_menu_example): Component example
+- [Example: components/date_picker/date_picker_example_1.dart](docs:shadcn_flutter:example-date_picker-date_picker_example_1): Component example
+- [Example: components/date_picker/date_picker_example_2.dart](docs:shadcn_flutter:example-date_picker-date_picker_example_2): Component example
+- [Example: components/date_picker/date_picker_tile.dart](docs:shadcn_flutter:example-date_picker-date_picker_tile): Component example
+- [Example: docs/components/date_picker_example.dart](docs:shadcn_flutter:example-date_picker_example): Component example
+- [Example: components/dialog/dialog_example_1.dart](docs:shadcn_flutter:example-dialog-dialog_example_1): Component example
+- [Example: components/dialog/dialog_tile.dart](docs:shadcn_flutter:example-dialog-dialog_tile): Component example
+- [Example: docs/components/dialog_example.dart](docs:shadcn_flutter:example-dialog_example): Component example
+- [Example: components/divider/divider_example_1.dart](docs:shadcn_flutter:example-divider-divider_example_1): Component example
+- [Example: components/divider/divider_example_2.dart](docs:shadcn_flutter:example-divider-divider_example_2): Component example
+- [Example: components/divider/divider_example_3.dart](docs:shadcn_flutter:example-divider-divider_example_3): Component example
+- [Example: components/divider/divider_tile.dart](docs:shadcn_flutter:example-divider-divider_tile): Component example
+- [Example: docs/components/divider_example.dart](docs:shadcn_flutter:example-divider_example): Component example
+- [Example: components/dot_indicator/dot_indicator_example_1.dart](docs:shadcn_flutter:example-dot_indicator-dot_indicator_example_1): Component example
+- [Example: components/dot_indicator/dot_indicator_tile.dart](docs:shadcn_flutter:example-dot_indicator-dot_indicator_tile): Component example
+- [Example: docs/components/dot_indicator_example.dart](docs:shadcn_flutter:example-dot_indicator_example): Component example
+- [Example: components/drawer/drawer_example_1.dart](docs:shadcn_flutter:example-drawer-drawer_example_1): Component example
+- [Example: components/drawer/drawer_tile.dart](docs:shadcn_flutter:example-drawer-drawer_tile): Component example
+- [Example: docs/components/drawer_example.dart](docs:shadcn_flutter:example-drawer_example): Component example
+- [Example: components/dropdown_menu/dropdown_menu_example_1.dart](docs:shadcn_flutter:example-dropdown_menu-dropdown_menu_example_1): Component example
+- [Example: components/dropdown_menu/dropdown_menu_tile.dart](docs:shadcn_flutter:example-dropdown_menu-dropdown_menu_tile): Component example
+- [Example: docs/components/dropdown_menu_example.dart](docs:shadcn_flutter:example-dropdown_menu_example): Component example
+- [Example: components/expandable_sidebar/expandable_sidebar_example_1.dart](docs:shadcn_flutter:example-expandable_sidebar-expandable_sidebar_example_1): Component example
+- [Example: components/expandable_sidebar/expandable_sidebar_tile.dart](docs:shadcn_flutter:example-expandable_sidebar-expandable_sidebar_tile): Component example
+- [Example: docs/components/expandable_sidebar_example.dart](docs:shadcn_flutter:example-expandable_sidebar_example): Component example
+- [Example: components/file_picker/file_picker_example_1.dart](docs:shadcn_flutter:example-file_picker-file_picker_example_1): Component example
+- [Example: components/form/form_example_1.dart](docs:shadcn_flutter:example-form-form_example_1): Component example
+- [Example: components/form/form_example_2.dart](docs:shadcn_flutter:example-form-form_example_2): Component example
+- [Example: components/form/form_example_3.dart](docs:shadcn_flutter:example-form-form_example_3): Component example
+- [Example: components/form/form_tile.dart](docs:shadcn_flutter:example-form-form_tile): Component example
+- [Example: components/formatted_input/formatted_input_example_1.dart](docs:shadcn_flutter:example-formatted_input-formatted_input_example_1): Component example
+- [Example: components/formatted_input/formatted_input_example_2.dart](docs:shadcn_flutter:example-formatted_input-formatted_input_example_2): Component example
+- [Example: components/formatted_input/formatted_input_example_3.dart](docs:shadcn_flutter:example-formatted_input-formatted_input_example_3): Component example
+- [Example: components/formatted_input/formatted_input_example_4.dart](docs:shadcn_flutter:example-formatted_input-formatted_input_example_4): Component example
+- [Example: components/formatted_input/formatted_input_tile.dart](docs:shadcn_flutter:example-formatted_input-formatted_input_tile): Component example
+- [Example: docs/components/formatted_input_example.dart](docs:shadcn_flutter:example-formatted_input_example): Component example
+- [Example: docs/components/form_example.dart](docs:shadcn_flutter:example-form_example): Component example
+- [Example: components/hover_card/hover_card_example_1.dart](docs:shadcn_flutter:example-hover_card-hover_card_example_1): Component example
+- [Example: components/hover_card/hover_card_tile.dart](docs:shadcn_flutter:example-hover_card-hover_card_tile): Component example
+- [Example: docs/components/hover_card_example.dart](docs:shadcn_flutter:example-hover_card_example): Component example
+- [Example: components/input/input_example_1.dart](docs:shadcn_flutter:example-input-input_example_1): Component example
+- [Example: components/input/input_example_2.dart](docs:shadcn_flutter:example-input-input_example_2): Component example
+- [Example: components/input/input_example_3.dart](docs:shadcn_flutter:example-input-input_example_3): Component example
+- [Example: components/input/input_example_4.dart](docs:shadcn_flutter:example-input-input_example_4): Component example
+- [Example: components/input/input_tile.dart](docs:shadcn_flutter:example-input-input_tile): Component example
+- [Example: docs/components/input_example.dart](docs:shadcn_flutter:example-input_example): Component example
+- [Example: components/input_otp/input_otp_example_1.dart](docs:shadcn_flutter:example-input_otp-input_otp_example_1): Component example
+- [Example: components/input_otp/input_otp_example_2.dart](docs:shadcn_flutter:example-input_otp-input_otp_example_2): Component example
+- [Example: components/input_otp/input_otp_example_3.dart](docs:shadcn_flutter:example-input_otp-input_otp_example_3): Component example
+- [Example: components/input_otp/input_otp_example_4.dart](docs:shadcn_flutter:example-input_otp-input_otp_example_4): Component example
+- [Example: components/input_otp/input_otp_tile.dart](docs:shadcn_flutter:example-input_otp-input_otp_tile): Component example
+- [Example: docs/components/input_otp_example.dart](docs:shadcn_flutter:example-input_otp_example): Component example
+- [Example: components/item_picker/item_picker_example_1.dart](docs:shadcn_flutter:example-item_picker-item_picker_example_1): Component example
+- [Example: components/item_picker/item_picker_example_2.dart](docs:shadcn_flutter:example-item_picker-item_picker_example_2): Component example
+- [Example: components/item_picker/item_picker_example_3.dart](docs:shadcn_flutter:example-item_picker-item_picker_example_3): Component example
+- [Example: components/item_picker/item_picker_example_4.dart](docs:shadcn_flutter:example-item_picker-item_picker_example_4): Component example
+- [Example: components/item_picker/item_picker_example_5.dart](docs:shadcn_flutter:example-item_picker-item_picker_example_5): Component example
+- [Example: components/item_picker/item_picker_tile.dart](docs:shadcn_flutter:example-item_picker-item_picker_tile): Component example
+- [Example: docs/components/item_picker_example.dart](docs:shadcn_flutter:example-item_picker_example): Component example
+- [Example: components/keyboard_display/keyboard_display_example_1.dart](docs:shadcn_flutter:example-keyboard_display-keyboard_display_example_1): Component example
+- [Example: components/keyboard_display/keyboard_display_tile.dart](docs:shadcn_flutter:example-keyboard_display-keyboard_display_tile): Component example
+- [Example: docs/components/keyboard_display_example.dart](docs:shadcn_flutter:example-keyboard_display_example): Component example
+- [Example: components/linear_progress/linear_progress_example_1.dart](docs:shadcn_flutter:example-linear_progress-linear_progress_example_1): Component example
+- [Example: components/linear_progress/linear_progress_example_2.dart](docs:shadcn_flutter:example-linear_progress-linear_progress_example_2): Component example
+- [Example: components/linear_progress/linear_progress_tile.dart](docs:shadcn_flutter:example-linear_progress-linear_progress_tile): Component example
+- [Example: docs/components/linear_progress_example.dart](docs:shadcn_flutter:example-linear_progress_example): Component example
+- [Example: components/material/cupertino_example_1.dart](docs:shadcn_flutter:example-material-cupertino_example_1): Component example
+- [Example: components/material/material_example_1.dart](docs:shadcn_flutter:example-material-material_example_1): Component example
+- [Example: docs/components/material_example.dart](docs:shadcn_flutter:example-material_example): Component example
+- [Example: components/menubar/menubar_example_1.dart](docs:shadcn_flutter:example-menubar-menubar_example_1): Component example
+- [Example: components/menubar/menubar_tile.dart](docs:shadcn_flutter:example-menubar-menubar_tile): Component example
+- [Example: docs/components/menubar_example.dart](docs:shadcn_flutter:example-menubar_example): Component example
+- [Example: components/multiselect/multiselect_example_1.dart](docs:shadcn_flutter:example-multiselect-multiselect_example_1): Component example
+- [Example: components/multiselect/multiselect_example_2.dart](docs:shadcn_flutter:example-multiselect-multiselect_example_2): Component example
+- [Example: components/multiselect/multiselect_example_3.dart](docs:shadcn_flutter:example-multiselect-multiselect_example_3): Component example
+- [Example: components/multiselect/multiselect_tile.dart](docs:shadcn_flutter:example-multiselect-multiselect_tile): Component example
+- [Example: docs/components/multiselect_example.dart](docs:shadcn_flutter:example-multiselect_example): Component example
+- [Example: components/navigation_bar/navigation_bar_example_1.dart](docs:shadcn_flutter:example-navigation_bar-navigation_bar_example_1): Component example
+- [Example: components/navigation_bar/navigation_bar_tile.dart](docs:shadcn_flutter:example-navigation_bar-navigation_bar_tile): Component example
+- [Example: docs/components/navigation_bar_example.dart](docs:shadcn_flutter:example-navigation_bar_example): Component example
+- [Example: components/navigation_menu/navigation_menu_example_1.dart](docs:shadcn_flutter:example-navigation_menu-navigation_menu_example_1): Component example
+- [Example: components/navigation_menu/navigation_menu_tile.dart](docs:shadcn_flutter:example-navigation_menu-navigation_menu_tile): Component example
+- [Example: docs/components/navigation_menu_example.dart](docs:shadcn_flutter:example-navigation_menu_example): Component example
+- [Example: components/navigation_rail/navigation_rail_example_1.dart](docs:shadcn_flutter:example-navigation_rail-navigation_rail_example_1): Component example
+- [Example: components/navigation_rail/navigation_rail_tile.dart](docs:shadcn_flutter:example-navigation_rail-navigation_rail_tile): Component example
+- [Example: docs/components/navigation_rail_example.dart](docs:shadcn_flutter:example-navigation_rail_example): Component example
+- [Example: components/navigation_sidebar/navigation_sidebar_example_1.dart](docs:shadcn_flutter:example-navigation_sidebar-navigation_sidebar_example_1): Component example
+- [Example: components/navigation_sidebar/navigation_sidebar_tile.dart](docs:shadcn_flutter:example-navigation_sidebar-navigation_sidebar_tile): Component example
+- [Example: docs/components/navigation_sidebar_example.dart](docs:shadcn_flutter:example-navigation_sidebar_example): Component example
+- [Example: docs/components/number_example.dart](docs:shadcn_flutter:example-number_example): Component example
+- [Example: components/number_input/number_input_example_1.dart](docs:shadcn_flutter:example-number_input-number_input_example_1): Component example
+- [Example: components/number_input/number_input_tile.dart](docs:shadcn_flutter:example-number_input-number_input_tile): Component example
+- [Example: docs/components/number_input_example.dart](docs:shadcn_flutter:example-number_input_example): Component example
+- [Example: components/number_ticker/number_ticker_example_1.dart](docs:shadcn_flutter:example-number_ticker-number_ticker_example_1): Component example
+- [Example: components/number_ticker/number_ticker_tile.dart](docs:shadcn_flutter:example-number_ticker-number_ticker_tile): Component example
+- [Example: components/overflow_marquee/overflow_marquee_example_1.dart](docs:shadcn_flutter:example-overflow_marquee-overflow_marquee_example_1): Component example
+- [Example: components/overflow_marquee/overflow_marquee_tile.dart](docs:shadcn_flutter:example-overflow_marquee-overflow_marquee_tile): Component example
+- [Example: docs/components/overflow_marquee_example.dart](docs:shadcn_flutter:example-overflow_marquee_example): Component example
+- [Example: components/pagination/pagination_example_1.dart](docs:shadcn_flutter:example-pagination-pagination_example_1): Component example
+- [Example: components/pagination/pagination_tile.dart](docs:shadcn_flutter:example-pagination-pagination_tile): Component example
+- [Example: docs/components/pagination_example.dart](docs:shadcn_flutter:example-pagination_example): Component example
+- [Example: components/phone_input/phone_input_example_1.dart](docs:shadcn_flutter:example-phone_input-phone_input_example_1): Component example
+- [Example: components/phone_input/phone_input_tile.dart](docs:shadcn_flutter:example-phone_input-phone_input_tile): Component example
+- [Example: docs/components/phone_input_example.dart](docs:shadcn_flutter:example-phone_input_example): Component example
+- [Example: components/popover/popover_example_1.dart](docs:shadcn_flutter:example-popover-popover_example_1): Component example
+- [Example: components/popover/popover_tile.dart](docs:shadcn_flutter:example-popover-popover_tile): Component example
+- [Example: docs/components/popover_example.dart](docs:shadcn_flutter:example-popover_example): Component example
+- [Example: components/progress/progress_example_1.dart](docs:shadcn_flutter:example-progress-progress_example_1): Component example
+- [Example: components/progress/progress_tile.dart](docs:shadcn_flutter:example-progress-progress_tile): Component example
+- [Example: docs/components/progress_example.dart](docs:shadcn_flutter:example-progress_example): Component example
+- [Example: components/radio_card/radio_card_example_1.dart](docs:shadcn_flutter:example-radio_card-radio_card_example_1): Component example
+- [Example: components/radio_card/radio_card_tile.dart](docs:shadcn_flutter:example-radio_card-radio_card_tile): Component example
+- [Example: docs/components/radio_card_example.dart](docs:shadcn_flutter:example-radio_card_example): Component example
+- [Example: components/radio_group/radio_group_example_1.dart](docs:shadcn_flutter:example-radio_group-radio_group_example_1): Component example
+- [Example: components/radio_group/radio_group_tile.dart](docs:shadcn_flutter:example-radio_group-radio_group_tile): Component example
+- [Example: docs/components/radio_group_example.dart](docs:shadcn_flutter:example-radio_group_example): Component example
+- [Example: components/refresh_trigger/refresh_trigger_example_1.dart](docs:shadcn_flutter:example-refresh_trigger-refresh_trigger_example_1): Component example
+- [Example: components/refresh_trigger/refresh_trigger_tile.dart](docs:shadcn_flutter:example-refresh_trigger-refresh_trigger_tile): Component example
+- [Example: docs/components/refresh_trigger_example.dart](docs:shadcn_flutter:example-refresh_trigger_example): Component example
+- [Example: components/repeated_animation_builder/repeated_animation_builder_example_1.dart](docs:shadcn_flutter:example-repeated_animation_builder-repeated_animation_builder_example_1): Component example
+- [Example: components/repeated_animation_builder/repeated_animation_builder_example_2.dart](docs:shadcn_flutter:example-repeated_animation_builder-repeated_animation_builder_example_2): Component example
+- [Example: components/repeated_animation_builder/repeated_animation_builder_example_3.dart](docs:shadcn_flutter:example-repeated_animation_builder-repeated_animation_builder_example_3): Component example
+- [Example: components/repeated_animation_builder/repeated_animation_builder_tile.dart](docs:shadcn_flutter:example-repeated_animation_builder-repeated_animation_builder_tile): Component example
+- [Example: docs/components/repeated_animation_builder_example.dart](docs:shadcn_flutter:example-repeated_animation_builder_example): Component example
+- [Example: components/resizable/resizable_example_1.dart](docs:shadcn_flutter:example-resizable-resizable_example_1): Component example
+- [Example: components/resizable/resizable_example_2.dart](docs:shadcn_flutter:example-resizable-resizable_example_2): Component example
+- [Example: components/resizable/resizable_example_3.dart](docs:shadcn_flutter:example-resizable-resizable_example_3): Component example
+- [Example: components/resizable/resizable_example_4.dart](docs:shadcn_flutter:example-resizable-resizable_example_4): Component example
+- [Example: components/resizable/resizable_example_5.dart](docs:shadcn_flutter:example-resizable-resizable_example_5): Component example
+- [Example: components/resizable/resizable_example_6.dart](docs:shadcn_flutter:example-resizable-resizable_example_6): Component example
+- [Example: components/resizable/resizable_example_7.dart](docs:shadcn_flutter:example-resizable-resizable_example_7): Component example
+- [Example: components/resizable/resizable_tile.dart](docs:shadcn_flutter:example-resizable-resizable_tile): Component example
+- [Example: docs/components/resizable_example.dart](docs:shadcn_flutter:example-resizable_example): Component example
+- [Example: components/scaffold/scaffold_example_1.dart](docs:shadcn_flutter:example-scaffold-scaffold_example_1): Component example
+- [Example: components/scaffold/scaffold_tile.dart](docs:shadcn_flutter:example-scaffold-scaffold_tile): Component example
+- [Example: docs/components/scaffold_example.dart](docs:shadcn_flutter:example-scaffold_example): Component example
+- [Example: components/select/select_example_1.dart](docs:shadcn_flutter:example-select-select_example_1): Component example
+- [Example: components/select/select_example_2.dart](docs:shadcn_flutter:example-select-select_example_2): Component example
+- [Example: components/select/select_example_3.dart](docs:shadcn_flutter:example-select-select_example_3): Component example
+- [Example: components/select/select_example_4.dart](docs:shadcn_flutter:example-select-select_example_4): Component example
+- [Example: components/select/select_tile.dart](docs:shadcn_flutter:example-select-select_tile): Component example
+- [Example: docs/components/select_example.dart](docs:shadcn_flutter:example-select_example): Component example
+- [Example: components/sheet/sheet_example_1.dart](docs:shadcn_flutter:example-sheet-sheet_example_1): Component example
+- [Example: components/sheet/sheet_tile.dart](docs:shadcn_flutter:example-sheet-sheet_tile): Component example
+- [Example: docs/components/sheet_example.dart](docs:shadcn_flutter:example-sheet_example): Component example
+- [Example: components/skeleton/skeleton_example_1.dart](docs:shadcn_flutter:example-skeleton-skeleton_example_1): Component example
+- [Example: components/skeleton/skeleton_tile.dart](docs:shadcn_flutter:example-skeleton-skeleton_tile): Component example
+- [Example: docs/components/skeleton_example.dart](docs:shadcn_flutter:example-skeleton_example): Component example
+- [Example: components/slider/slider_example_1.dart](docs:shadcn_flutter:example-slider-slider_example_1): Component example
+- [Example: components/slider/slider_example_2.dart](docs:shadcn_flutter:example-slider-slider_example_2): Component example
+- [Example: components/slider/slider_example_3.dart](docs:shadcn_flutter:example-slider-slider_example_3): Component example
+- [Example: components/slider/slider_tile.dart](docs:shadcn_flutter:example-slider-slider_tile): Component example
+- [Example: docs/components/slider_example.dart](docs:shadcn_flutter:example-slider_example): Component example
+- [Example: components/sortable/sortable_example_1.dart](docs:shadcn_flutter:example-sortable-sortable_example_1): Component example
+- [Example: components/sortable/sortable_example_2.dart](docs:shadcn_flutter:example-sortable-sortable_example_2): Component example
+- [Example: components/sortable/sortable_example_3.dart](docs:shadcn_flutter:example-sortable-sortable_example_3): Component example
+- [Example: components/sortable/sortable_example_4.dart](docs:shadcn_flutter:example-sortable-sortable_example_4): Component example
+- [Example: components/sortable/sortable_example_5.dart](docs:shadcn_flutter:example-sortable-sortable_example_5): Component example
+- [Example: components/sortable/sortable_example_6.dart](docs:shadcn_flutter:example-sortable-sortable_example_6): Component example
+- [Example: components/sortable/sortable_tile.dart](docs:shadcn_flutter:example-sortable-sortable_tile): Component example
+- [Example: docs/components/sortable_example.dart](docs:shadcn_flutter:example-sortable_example): Component example
+- [Example: components/star_rating/star_rating_example_1.dart](docs:shadcn_flutter:example-star_rating-star_rating_example_1): Component example
+- [Example: components/star_rating/star_rating_tile.dart](docs:shadcn_flutter:example-star_rating-star_rating_tile): Component example
+- [Example: docs/components/star_rating_example.dart](docs:shadcn_flutter:example-star_rating_example): Component example
+- [Example: components/stepper/stepper_example_1.dart](docs:shadcn_flutter:example-stepper-stepper_example_1): Component example
+- [Example: components/stepper/stepper_example_2.dart](docs:shadcn_flutter:example-stepper-stepper_example_2): Component example
+- [Example: components/stepper/stepper_example_3.dart](docs:shadcn_flutter:example-stepper-stepper_example_3): Component example
+- [Example: components/stepper/stepper_example_4.dart](docs:shadcn_flutter:example-stepper-stepper_example_4): Component example
+- [Example: components/stepper/stepper_example_5.dart](docs:shadcn_flutter:example-stepper-stepper_example_5): Component example
+- [Example: components/stepper/stepper_example_6.dart](docs:shadcn_flutter:example-stepper-stepper_example_6): Component example
+- [Example: components/stepper/stepper_tile.dart](docs:shadcn_flutter:example-stepper-stepper_tile): Component example
+- [Example: docs/components/stepper_example.dart](docs:shadcn_flutter:example-stepper_example): Component example
+- [Example: components/steps/steps_example_1.dart](docs:shadcn_flutter:example-steps-steps_example_1): Component example
+- [Example: components/steps/steps_tile.dart](docs:shadcn_flutter:example-steps-steps_tile): Component example
+- [Example: docs/components/steps_example.dart](docs:shadcn_flutter:example-steps_example): Component example
+- [Example: components/swiper/swiper_example_1.dart](docs:shadcn_flutter:example-swiper-swiper_example_1): Component example
+- [Example: components/swiper/swiper_tile.dart](docs:shadcn_flutter:example-swiper-swiper_tile): Component example
+- [Example: docs/components/swiper_example.dart](docs:shadcn_flutter:example-swiper_example): Component example
+- [Example: components/switch/switch_example_1.dart](docs:shadcn_flutter:example-switch-switch_example_1): Component example
+- [Example: components/switch/switch_tile.dart](docs:shadcn_flutter:example-switch-switch_tile): Component example
+- [Example: components/switcher/switcher_example_1.dart](docs:shadcn_flutter:example-switcher-switcher_example_1): Component example
+- [Example: components/switcher/switcher_example_2.dart](docs:shadcn_flutter:example-switcher-switcher_example_2): Component example
+- [Example: docs/components/switcher_example.dart](docs:shadcn_flutter:example-switcher_example): Component example
+- [Example: docs/components/switch_example.dart](docs:shadcn_flutter:example-switch_example): Component example
+- [Example: components/table/table_example_1.dart](docs:shadcn_flutter:example-table-table_example_1): Component example
+- [Example: components/table/table_example_2.dart](docs:shadcn_flutter:example-table-table_example_2): Component example
+- [Example: components/table/table_example_3.dart](docs:shadcn_flutter:example-table-table_example_3): Component example
+- [Example: components/table/table_tile.dart](docs:shadcn_flutter:example-table-table_tile): Component example
+- [Example: docs/components/table_example.dart](docs:shadcn_flutter:example-table_example): Component example
+- [Example: components/tabs/tabs_example_1.dart](docs:shadcn_flutter:example-tabs-tabs_example_1): Component example
+- [Example: components/tabs/tabs_tile.dart](docs:shadcn_flutter:example-tabs-tabs_tile): Component example
+- [Example: docs/components/tabs_example.dart](docs:shadcn_flutter:example-tabs_example): Component example
+- [Example: components/tab_list/tab_list_example_1.dart](docs:shadcn_flutter:example-tab_list-tab_list_example_1): Component example
+- [Example: components/tab_list/tab_list_tile.dart](docs:shadcn_flutter:example-tab_list-tab_list_tile): Component example
+- [Example: docs/components/tab_list_example.dart](docs:shadcn_flutter:example-tab_list_example): Component example
+- [Example: components/tab_pane/tab_pane_example_1.dart](docs:shadcn_flutter:example-tab_pane-tab_pane_example_1): Component example
+- [Example: components/tab_pane/tab_pane_tile.dart](docs:shadcn_flutter:example-tab_pane-tab_pane_tile): Component example
+- [Example: docs/components/tab_pane_example.dart](docs:shadcn_flutter:example-tab_pane_example): Component example
+- [Example: components/text_area/text_area_example_1.dart](docs:shadcn_flutter:example-text_area-text_area_example_1): Component example
+- [Example: components/text_area/text_area_example_2.dart](docs:shadcn_flutter:example-text_area-text_area_example_2): Component example
+- [Example: components/text_area/text_area_example_3.dart](docs:shadcn_flutter:example-text_area-text_area_example_3): Component example
+- [Example: components/text_area/text_area_tile.dart](docs:shadcn_flutter:example-text_area-text_area_tile): Component example
+- [Example: docs/components/text_area_example.dart](docs:shadcn_flutter:example-text_area_example): Component example
+- [Example: components/timeline/timeline_example_1.dart](docs:shadcn_flutter:example-timeline-timeline_example_1): Component example
+- [Example: components/timeline/timeline_tile.dart](docs:shadcn_flutter:example-timeline-timeline_tile): Component example
+- [Example: components/timeline_animation/timeline_animation_example_1.dart](docs:shadcn_flutter:example-timeline_animation-timeline_animation_example_1): Component example
+- [Example: components/timeline_animation/timeline_animation_tile.dart](docs:shadcn_flutter:example-timeline_animation-timeline_animation_tile): Component example
+- [Example: docs/components/timeline_animation.dart](docs:shadcn_flutter:example-timeline_animation): Component example
+- [Example: docs/components/timeline_example.dart](docs:shadcn_flutter:example-timeline_example): Component example
+- [Example: components/time_picker/time_picker_example_1.dart](docs:shadcn_flutter:example-time_picker-time_picker_example_1): Component example
+- [Example: components/time_picker/time_picker_tile.dart](docs:shadcn_flutter:example-time_picker-time_picker_tile): Component example
+- [Example: docs/components/time_picker_example.dart](docs:shadcn_flutter:example-time_picker_example): Component example
+- [Example: components/toast/toast_example_1.dart](docs:shadcn_flutter:example-toast-toast_example_1): Component example
+- [Example: components/toast/toast_tile.dart](docs:shadcn_flutter:example-toast-toast_tile): Component example
+- [Example: docs/components/toast_example.dart](docs:shadcn_flutter:example-toast_example): Component example
+- [Example: components/toggle/toggle_example_1.dart](docs:shadcn_flutter:example-toggle-toggle_example_1): Component example
+- [Example: components/toggle/toggle_example_2.dart](docs:shadcn_flutter:example-toggle-toggle_example_2): Component example
+- [Example: components/toggle/toggle_tile.dart](docs:shadcn_flutter:example-toggle-toggle_tile): Component example
+- [Example: docs/components/toggle_example.dart](docs:shadcn_flutter:example-toggle_example): Component example
+- [Example: components/tooltip/tooltip_example_1.dart](docs:shadcn_flutter:example-tooltip-tooltip_example_1): Component example
+- [Example: components/tooltip/tooltip_tile.dart](docs:shadcn_flutter:example-tooltip-tooltip_tile): Component example
+- [Example: docs/components/tooltip_example.dart](docs:shadcn_flutter:example-tooltip_example): Component example
+- [Example: components/tracker/tracker_example_1.dart](docs:shadcn_flutter:example-tracker-tracker_example_1): Component example
+- [Example: components/tracker/tracker_tile.dart](docs:shadcn_flutter:example-tracker-tracker_tile): Component example
+- [Example: docs/components/tracker_example.dart](docs:shadcn_flutter:example-tracker_example): Component example
+- [Example: components/tree/tree_example_1.dart](docs:shadcn_flutter:example-tree-tree_example_1): Component example
+- [Example: components/tree/tree_tile.dart](docs:shadcn_flutter:example-tree-tree_tile): Component example
+- [Example: docs/components/tree_example.dart](docs:shadcn_flutter:example-tree_example): Component example
+- [Example: components/window/window_example_1.dart](docs:shadcn_flutter:example-window-window_example_1): Component example
+- [Example: components/window/window_tile.dart](docs:shadcn_flutter:example-window-window_tile): Component example
+- [Example: docs/components/window_example.dart](docs:shadcn_flutter:example-window_example): Component example
+- [Example: components/wrapper/wrapper_example_1.dart](docs:shadcn_flutter:example-wrapper-wrapper_example_1): Component example
+- [Example: docs/components/wrapper_example.dart](docs:shadcn_flutter:example-wrapper_example): Wrapper example page: lists and renders the Wrapper component demos.
+- [Extension: AlignmentExtension](docs:shadcn_flutter:extension-alignmentextension): Reference for extension
+- [Extension: BorderRadiusExtension](docs:shadcn_flutter:extension-borderradiusextension): Reference for extension
+- [Extension: ButtonStyleExtension](docs:shadcn_flutter:extension-buttonstyleextension): Reference for extension
+- [Extension: CalendarDateTime](docs:shadcn_flutter:extension-calendardatetime): Reference for extension
+- [Extension: ColorExtension](docs:shadcn_flutter:extension-colorextension): Reference for extension
+- [Extension: ColumnExtension](docs:shadcn_flutter:extension-columnextension): Reference for extension
+- [Extension: DebugContainer](docs:shadcn_flutter:extension-debugcontainer): Reference for extension
+- [Extension: DecorationExtension](docs:shadcn_flutter:extension-decorationextension): Reference for extension
+- [Extension: DoubleExtension](docs:shadcn_flutter:extension-doubleextension): Reference for extension
+- [Extension: EdgeInsetsExtension](docs:shadcn_flutter:extension-edgeinsetsextension): Reference for extension
+- [Extension: FlexExtension](docs:shadcn_flutter:extension-flexextension): Reference for extension
+- [Extension: FormExtension](docs:shadcn_flutter:extension-formextension): Reference for extension
+- [Extension: FormMapValuesExtension](docs:shadcn_flutter:extension-formmapvaluesextension): Reference for extension
+- [Extension: FutureOrExtension](docs:shadcn_flutter:extension-futureorextension): Reference for extension
+- [Extension: HSLColorExtension](docs:shadcn_flutter:extension-hslcolorextension): Reference for extension
+- [Extension: HSVColorExtension](docs:shadcn_flutter:extension-hsvcolorextension): Reference for extension
+- [Extension: IconExtension](docs:shadcn_flutter:extension-iconextension): Reference for extension
+- [Extension: IntExtension](docs:shadcn_flutter:extension-intextension): Reference for extension
+- [Extension: IterableExtension](docs:shadcn_flutter:extension-iterableextension): Reference for extension
+- [Extension: Joinable](docs:shadcn_flutter:extension-joinable): Reference for extension
+- [Extension: ListExtension](docs:shadcn_flutter:extension-listextension): Reference for extension
+- [Extension: OTPCodepointListExtension](docs:shadcn_flutter:extension-otpcodepointlistextension): Reference for extension
+- [Extension: RowExtension](docs:shadcn_flutter:extension-rowextension): Reference for extension
+- [Extension: SafeLerpExtension](docs:shadcn_flutter:extension-safelerpextension): Reference for extension
+- [Extension: ShapeDecorationExtension](docs:shadcn_flutter:extension-shapedecorationextension): Reference for extension
+- [Extension: SkeletonExtension](docs:shadcn_flutter:extension-skeletonextension): Extension methods for adding skeleton loading effects to any widget.
+- [Extension: TextEditingControllerExtension](docs:shadcn_flutter:extension-texteditingcontrollerextension): Reference for extension
+- [Extension: TextEditingValueExtension](docs:shadcn_flutter:extension-texteditingvalueextension): Reference for extension
+- [Extension: TextExtension](docs:shadcn_flutter:extension-textextension): Reference for extension
+- [Extension: ThemeExtension](docs:shadcn_flutter:extension-themeextension): Theme extension for [BuildContext]
+- [Extension: TreeNodeListExtension](docs:shadcn_flutter:extension-treenodelistextension): Reference for extension
+- [Extension: WidgetExtension](docs:shadcn_flutter:extension-widgetextension): Reference for extension
+- [Extension: WidgetStateExtension](docs:shadcn_flutter:extension-widgetstateextension): Reference for extension
+- [Function: applyImageProperties](docs:shadcn_flutter:fn-applyimageproperties): Top-level function applyImageProperties
+- [Function: buildEditableTextContextMenu](docs:shadcn_flutter:fn-buildeditabletextcontextmenu): Top-level function buildEditableTextContextMenu
+- [Function: clearActiveTextInput](docs:shadcn_flutter:fn-clearactivetextinput): Top-level function clearActiveTextInput
+- [Function: closeDrawer](docs:shadcn_flutter:fn-closedrawer): Top-level function closeDrawer
+- [Function: closeOverlay](docs:shadcn_flutter:fn-closeoverlay): Top-level function closeOverlay
+- [Function: closePopover](docs:shadcn_flutter:fn-closepopover): Top-level function closePopover
+- [Function: closeSheet](docs:shadcn_flutter:fn-closesheet): Top-level function closeSheet
+- [Function: colorToHex](docs:shadcn_flutter:fn-colortohex): Top-level function colorToHex
+- [Function: contraintToNewText](docs:shadcn_flutter:fn-contrainttonewtext): Top-level function contraintToNewText
+- [Function: debugPostSticker](docs:shadcn_flutter:fn-debugpoststicker): Top-level function debugPostSticker
+- [Function: degToRad](docs:shadcn_flutter:fn-degtorad): Top-level function degToRad
+- [Function: formatFileSize](docs:shadcn_flutter:fn-formatfilesize): Top-level function formatFileSize
+- [Function: gap](docs:shadcn_flutter:fn-gap): Top-level function gap
+- [Function: getBullet](docs:shadcn_flutter:fn-getbullet): Top-level function getBullet
+- [Function: getWordAtCaret](docs:shadcn_flutter:fn-getwordatcaret): Top-level function getWordAtCaret
+- [Function: hexFromColor](docs:shadcn_flutter:fn-hexfromcolor): Top-level function hexFromColor
+- [Function: invokeActionOnFocusedWidget](docs:shadcn_flutter:fn-invokeactiononfocusedwidget): Top-level function invokeActionOnFocusedWidget
+- [Function: isMobile](docs:shadcn_flutter:fn-ismobile): Top-level function isMobile
+- [Function: join](docs:shadcn_flutter:fn-join): Top-level function join
+- [Function: maxDuration](docs:shadcn_flutter:fn-maxduration): Top-level function maxDuration
+- [Function: minDuration](docs:shadcn_flutter:fn-minduration): Top-level function minDuration
+- [Function: mutateSeparated](docs:shadcn_flutter:fn-mutateseparated): Top-level function mutateSeparated
+- [Function: openDrawer](docs:shadcn_flutter:fn-opendrawer): Opens a drawer and returns a future that completes when dismissed.
+- [Function: openDrawerOverlay](docs:shadcn_flutter:fn-opendraweroverlay): Opens a drawer overlay with comprehensive customization options.
+- [Function: openRawDrawer](docs:shadcn_flutter:fn-openrawdrawer): Top-level function openRawDrawer
+- [Function: openSheet](docs:shadcn_flutter:fn-opensheet): Opens a sheet and returns a future that completes when dismissed.
+- [Function: openSheetOverlay](docs:shadcn_flutter:fn-opensheetoverlay): Opens a sheet overlay with minimal styling and full-screen expansion.
+- [Function: optionallyResolveBorderRadius](docs:shadcn_flutter:fn-optionallyresolveborderradius): Top-level function optionallyResolveBorderRadius
+- [Function: pickColorFromScreen](docs:shadcn_flutter:fn-pickcolorfromscreen): Top-level function pickColorFromScreen
+- [Function: radToDeg](docs:shadcn_flutter:fn-radtodeg): Top-level function radToDeg
+- [Function: replaceWordAtCaret](docs:shadcn_flutter:fn-replacewordatcaret): Top-level function replaceWordAtCaret
+- [Function: shortcutActivatorToKeySet](docs:shadcn_flutter:fn-shortcutactivatortokeyset): Top-level function shortcutActivatorToKeySet
+- [Function: showColorPicker](docs:shadcn_flutter:fn-showcolorpicker): Top-level function showColorPicker
+- [Function: showColorPickerDialog](docs:shadcn_flutter:fn-showcolorpickerdialog): Top-level function showColorPickerDialog
+- [Function: showCommandDialog](docs:shadcn_flutter:fn-showcommanddialog): Top-level function showCommandDialog
+- [Function: showDialog](docs:shadcn_flutter:fn-showdialog): Displays a dialog using the shadcn_flutter design system.
+- [Function: showDropdown](docs:shadcn_flutter:fn-showdropdown): Top-level function showDropdown
+- [Function: showItemPicker](docs:shadcn_flutter:fn-showitempicker): Top-level function showItemPicker
+- [Function: showItemPickerDialog](docs:shadcn_flutter:fn-showitempickerdialog): Top-level function showItemPickerDialog
+- [Function: showPopover](docs:shadcn_flutter:fn-showpopover): Top-level function showPopover
+- [Function: showToast](docs:shadcn_flutter:fn-showtoast): Displays a toast notification with sophisticated positioning and animation.
+- [Function: styleValue](docs:shadcn_flutter:fn-stylevalue): A style helper function that returns the value from the widget, theme, or default value.
+- [Function: subtractByBorder](docs:shadcn_flutter:fn-subtractbyborder): Top-level function subtractByBorder
+- [Function: swapItemInLists](docs:shadcn_flutter:fn-swapiteminlists): Top-level function swapItemInLists
+- [Function: timelineMaxDuration](docs:shadcn_flutter:fn-timelinemaxduration): Top-level function timelineMaxDuration
+- [Function: tweenValue](docs:shadcn_flutter:fn-tweenvalue): Top-level function tweenValue
+- [Function: unlerpDouble](docs:shadcn_flutter:fn-unlerpdouble): Top-level function unlerpDouble
+- [Function: wrapDouble](docs:shadcn_flutter:fn-wrapdouble): Top-level function wrapDouble
+- [Mixin: AnimatedMixin](docs:shadcn_flutter:mixin-animatedmixin): Reference for AnimatedMixin
+- [Mixin: CachedValue](docs:shadcn_flutter:mixin-cachedvalue): Reference for CachedValue
+- [Mixin: Choice](docs:shadcn_flutter:mixin-choice): Reference for Choice
+- [Mixin: ComponentController](docs:shadcn_flutter:mixin-componentcontroller): A mixin that defines the interface for controlling component values.
+- [Mixin: ControlledComponent](docs:shadcn_flutter:mixin-controlledcomponent): A mixin that provides a standardized interface for controlled components.
+- [Mixin: FormFieldHandle](docs:shadcn_flutter:mixin-formfieldhandle): Reference for FormFieldHandle
+- [Mixin: FormValueSupplier](docs:shadcn_flutter:mixin-formvaluesupplier): Reference for FormValueSupplier
+- [Mixin: KeyedTabChild](docs:shadcn_flutter:mixin-keyedtabchild): Reference for KeyedTabChild
+- [Mixin: NavigationContainerMixin](docs:shadcn_flutter:mixin-navigationcontainermixin): Reference for NavigationContainerMixin
+- [Mixin: OverlayHandlerStateMixin](docs:shadcn_flutter:mixin-overlayhandlerstatemixin): Reference for OverlayHandlerStateMixin
+- [Mixin: ResizablePaneController](docs:shadcn_flutter:mixin-resizablepanecontroller): Reference for ResizablePaneController
+- [Mixin: SelectBase](docs:shadcn_flutter:mixin-selectbase): Reference for SelectBase
+- [Mixin: SelectPopupHandle](docs:shadcn_flutter:mixin-selectpopuphandle): Reference for SelectPopupHandle
+- [Mixin: SubFocusScopeState](docs:shadcn_flutter:mixin-subfocusscopestate): Reference for SubFocusScopeState
+- [Mixin: SubFocusState](docs:shadcn_flutter:mixin-subfocusstate): Reference for SubFocusState
+- [Mixin: TabChild](docs:shadcn_flutter:mixin-tabchild): Reference for TabChild
+- [Mixin: TextInput](docs:shadcn_flutter:mixin-textinput): Mixin widget used to avoid human error (e.
+- [Mixin: WindowHandle](docs:shadcn_flutter:mixin-windowhandle): Reference for WindowHandle
+- [Mixin: WindowNavigatorHandle](docs:shadcn_flutter:mixin-windownavigatorhandle): Reference for WindowNavigatorHandle
+- [Variable: kBackdropScaleDown](docs:shadcn_flutter:var-kbackdropscaledown): Top-level variable kBackdropScaleDown
+- [Variable: kDebugContainerVisible](docs:shadcn_flutter:var-kdebugcontainervisible): Top-level variable kDebugContainerVisible
+- [Variable: kDebugStickerVisible](docs:shadcn_flutter:var-kdebugstickervisible): Top-level variable kDebugStickerVisible
+- [Variable: kDefaultDuration](docs:shadcn_flutter:var-kdefaultduration): Top-level variable kDefaultDuration
+- [Variable: kDefaultWindowConstraints](docs:shadcn_flutter:var-kdefaultwindowconstraints): Top-level variable kDefaultWindowConstraints
+- [Variable: kDoubleTapMinTime](docs:shadcn_flutter:var-kdoubletapmintime): Top-level variable kDoubleTapMinTime
+- [Variable: kLargeStepIndicatorSize](docs:shadcn_flutter:var-klargestepindicatorsize): Top-level variable kLargeStepIndicatorSize
+- [Variable: kMaxScrollSpeed](docs:shadcn_flutter:var-kmaxscrollspeed): Top-level variable kMaxScrollSpeed
+- [Variable: kMediumStepIndicatorSize](docs:shadcn_flutter:var-kmediumstepindicatorsize): Top-level variable kMediumStepIndicatorSize
+- [Variable: kScrollDragSpeed](docs:shadcn_flutter:var-kscrolldragspeed): Top-level variable kScrollDragSpeed
+- [Variable: kSmallStepIndicatorSize](docs:shadcn_flutter:var-ksmallstepindicatorsize): Top-level variable kSmallStepIndicatorSize
+- [Variable: kSwitchDuration](docs:shadcn_flutter:var-kswitchduration): Standard duration for switch state transitions and animations.
+- [Variable: kTextFieldHeight](docs:shadcn_flutter:var-ktextfieldheight): Top-level variable kTextFieldHeight
+</docs>
+</package>
+</dotguides>

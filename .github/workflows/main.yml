@@ -35,7 +35,7 @@ jobs:
 
     - name: Generate LLMs Documentation
       run: |
-        dart ./bin/llms_gen.dart
+        dart .gen/bin/llms_gen.dart
       working-directory: './'
 
     - name: Deploy

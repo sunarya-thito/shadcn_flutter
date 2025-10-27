@@ -1,0 +1,23 @@
+{
+  "context": {
+    "fileName": [
+      "GEMINI.md",
+      "DOTGUIDES.md"
+    ]
+  },
+  "mcpServers": {
+    "dotguides": {
+      "command": "dotguides",
+      "args": [
+        "mcp"
+      ]
+    },
+    "your_library": {
+      "command": "some-mcp-command",
+      "args": [
+        "arg1",
+        "arg2"
+      ]
+    }
+  }
+}

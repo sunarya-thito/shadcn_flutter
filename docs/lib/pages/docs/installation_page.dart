@@ -80,10 +80,6 @@ void main() {
     ShadcnApp(
       title: 'My App',
       home: MyHomePage(),
-      theme: ThemeData(
-        colorScheme: ColorSchemes.darkZinc(),
-        radius: 0.5,
-      ),
     ),
   );
 }

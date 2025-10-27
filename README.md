@@ -121,7 +121,11 @@ and customizable components for modern app development.
 
 ## 🧠 LLMs Support
 
-`shadcn_flutter` has `llms-full.txt` file which contains
+This repository includes a prebuilt, machine‑friendly reference file you can
+feed to LLMs and editor assistants:
+
+- [`llms-full.txt`](https://sunarya-thito.github.io/shadcn_flutter/llms-full.txt) -
+  Full component reference with props, methods, and usage examples
 
 ## 🤝 Contributing & Support
 

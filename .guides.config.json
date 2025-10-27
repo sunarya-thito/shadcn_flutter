@@ -1,0 +1,10 @@
+{
+  "packages": {
+    "disabled": [],
+    "discovered": [
+      "shadcn_flutter"
+    ]
+  },
+  "agent": "gemini-cli",
+  "contextBudget": "medium"
+}
