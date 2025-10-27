@@ -33,6 +33,11 @@ jobs:
       run: cp -r ./docs/config/docs-dev.json ./docs/public/assets/docs.json
       working-directory: './'
 
+    - name: Prepare gen dependencies
+      run: |
+        dart pub get
+      working-directory: './gen'
+
     - name: Generate LLMs Documentation
       run: |
         dart gen/bin/llms_gen.dart
