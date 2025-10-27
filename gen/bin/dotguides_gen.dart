@@ -250,7 +250,10 @@ String _fieldSigWithDocs(FieldDeclaration node) {
     // For const, omit 'var' when type is not provided.
     final typePart = typeSrc == null ? (isConst ? '' : 'var') : typeSrc;
     final typeSpace = typePart.isNotEmpty ? ' ' : '';
-    if (isConst && init != null && init.isNotEmpty && !_isIconDataInit(typeSrc, init)) {
+    if (isConst &&
+        init != null &&
+        init.isNotEmpty &&
+        !_isIconDataInit(typeSrc, init)) {
       b.writeln('  $staticPart$constPart$typePart$typeSpace$name = $init;');
     } else {
       b.writeln('  $staticPart$constPart$typePart$typeSpace$name;');
@@ -500,7 +503,11 @@ List<_Topic> _collectApiTopics() {
           final constPart = isConst ? 'const ' : (isFinal ? 'final ' : '');
           final typePart = type == null ? (isConst ? '' : 'var') : type;
           final typeSpace = typePart.isNotEmpty ? ' ' : '';
-      final sig = (isConst && init != null && init.isNotEmpty && !_isIconDataInit(type, init))
+          final sig =
+              (isConst &&
+                  init != null &&
+                  init.isNotEmpty &&
+                  !_isIconDataInit(type, init))
               ? '$constPart$typePart$typeSpace$name = $init;'
               : '$constPart$typePart$typeSpace$name;';
           final body = StringBuffer()
