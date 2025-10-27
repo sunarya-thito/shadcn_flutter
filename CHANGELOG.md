@@ -1,3 +1,40 @@
+## 0.0.45
+
+- Breaking changes
+  - Removed NumberInput (previously deprecated) and its export. Migrate to
+    TextField with InputSpinnerFeature or to FormattedInput depending on your
+    use case.
+
+- Inputs
+  - TextField: migrated to a stateful base (TextInputStatefulWidget) with richer
+    editing model and actions. Leading/trailing properties were removed; use
+    InputLeadingFeature/InputTrailingFeature or other InputFeature adornments
+    instead. Added groupId, Action.overridable-based intents
+    (append/replace/set), AutoCompleteIntent support, better selection defaults,
+    defaultContextMenuBuilder, minimum height sizing, and platform fallbacks.
+    Clip behavior inside the Editable is now none to avoid content clipping.
+  - Input features: all features accept skipFocusTraversal to prevent them from
+    being part of focus order when desired.
+  - ChipInput (BREAKING): reworked ChipInput with better UX. No longer handles
+    suggestion selection internally; use AutoCompleteFeature for suggestions
+    instead. Added onChipsChanged callback for external chip state management.
+  - OverflowMarquee: curve is now applied correctly to the scroll animation.
+
+- Components
+  - Checkbox: add backgroundColor for unchecked state (thanks @fabionuno).
+  - Resizable: new optionalDivider that hides dividers until hover/drag; added
+    intrinsic size/dry layout computation for better measure/layout behavior.
+  - Command: autofocus the first item in the command palette for faster keyboard
+    UX (@cbenhagen).
+  - Calendar: use min-size rows to fix alignment issues (@andyhorn).
+  - Window: normalize WindowWidget constructor defaults for titleBarHeight and
+    resizeThickness to avoid incorrect implicit values.
+
+- Theming and platform
+  - ThemeData constructors are now const and ShadcnApp provides sensible
+    non-null defaults for theme/darkTheme. Added scroll/context-menu fallbacks
+    for unknown platforms to avoid runtime issues (e.g., TargetPlatform.ohos).
+
 ## 0.0.44
 
 - Fix: Sortable onDragEnd not triggered when the drag failed
