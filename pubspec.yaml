@@ -24,7 +24,6 @@ dependencies:
   data_widget: ^0.0.2
   gap: ^3.0.1
   expressions: ^0.2.5+2
-  flexiblebox: ^1.0.0
 
 dev_dependencies:
   flutter_test:
