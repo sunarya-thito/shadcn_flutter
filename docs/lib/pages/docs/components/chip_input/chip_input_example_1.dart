@@ -49,7 +49,7 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
             controller: _controller,
             onChipSubmitted: (value) {
               setState(() {
-                _suggestions.clear();
+                _suggestions = [];
               });
               return '@$value';
             },

@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Function signature for building custom chip widgets in chip input fields.
@@ -243,12 +244,29 @@ class ChipEditingController<T> extends TextEditingController {
             children.add(TextSpan(style: style, text: buffer.toString()));
             buffer.clear();
           }
+          T? chip = _chipMap[codeUnit - _chipStart];
           Widget? chipWidget =
-              provider.buildChip(context, _chipMap[codeUnit - _chipStart] as T);
+              chip == null ? null : provider.buildChip(context, chip);
           if (chipWidget != null) {
+            bool previousIsChip = i > 0 &&
+                text.codeUnitAt(i - 1) >= _chipStart &&
+                text.codeUnitAt(i - 1) <= _chipEnd;
+            bool nextIsChip = i < text.length - 1 &&
+                text.codeUnitAt(i + 1) >= _chipStart &&
+                text.codeUnitAt(i + 1) <= _chipEnd;
             children.add(WidgetSpan(
               alignment: PlaceholderAlignment.middle,
-              child: chipWidget,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: previousIsChip
+                      ? spacing / 2
+                      : i == 0
+                          ? 0
+                          : spacing,
+                  right: nextIsChip ? spacing / 2 : spacing,
+                ),
+                child: chipWidget,
+              ),
             ));
           }
         } else {
@@ -624,28 +642,45 @@ class ChipInputState<T> extends State<ChipInput<T>>
   Widget build(BuildContext context) {
     return Data<_ChipProvider<T>>.inherit(
         data: this,
-        child: Actions(
-          actions: {
-            if (widget.autoInsertSuggestion)
-              AutoCompleteIntent: Action.overridable(
-                defaultAction: CallbackAction<AutoCompleteIntent>(
+        child: Shortcuts(
+          shortcuts: {
+            LogicalKeySet(LogicalKeyboardKey.enter): const ChipSubmitIntent(),
+          },
+          child: Actions(
+            actions: {
+              if (widget.autoInsertSuggestion)
+                AutoCompleteIntent: Action.overridable(
+                  defaultAction: CallbackAction<AutoCompleteIntent>(
+                    onInvoke: (intent) {
+                      _controller.insertChipAtCursor(
+                          (text) => widget.onChipSubmitted(intent.suggestion));
+                      widget.onChipsChanged?.call(_controller.chips);
+                      return;
+                    },
+                  ),
+                  context: context,
+                ),
+              ChipSubmitIntent: Action.overridable(
+                defaultAction: CallbackAction<ChipSubmitIntent>(
                   onInvoke: (intent) {
                     _controller.insertChipAtCursor(
-                        (text) => widget.onChipSubmitted(intent.suggestion));
+                        (text) => widget.onChipSubmitted(text));
                     widget.onChipsChanged?.call(_controller.chips);
+                    return;
                   },
                 ),
                 context: context,
               ),
-          },
-          child: widget.copyWith(
-            controller: () => _controller,
-            onSubmitted: () => (value) {
-              _controller.insertChipAtCursor(widget.onChipSubmitted);
             },
-            onChanged: () => (text) {
-              widget.onChanged?.call(_controller.plainText);
-            },
+            child: widget.copyWith(
+              controller: () => _controller,
+              onSubmitted: () => (value) {
+                _controller.insertChipAtCursor(widget.onChipSubmitted);
+              },
+              onChanged: () => (text) {
+                widget.onChanged?.call(_controller.plainText);
+              },
+            ),
           ),
         ));
   }
@@ -654,4 +689,8 @@ class ChipInputState<T> extends State<ChipInput<T>>
   void didReplaceFormValue(List<T> value) {
     widget.onChipsChanged?.call(value);
   }
+}
+
+class ChipSubmitIntent extends Intent {
+  const ChipSubmitIntent();
 }
