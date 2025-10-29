@@ -4605,6 +4605,13 @@ class ButtonGroup extends StatelessWidget {
   /// connected appearance.
   final List<Widget> children;
 
+  /// Whether the button group should be shrink-wrapped or expanded.
+  ///
+  /// When true, the group will expand to fill available space in the
+  /// cross axis. When false, the group will size itself based on its
+  /// children's intrinsic size.
+  final bool expands;
+
   /// Creates a [ButtonGroup] that arranges buttons with connected borders.
   ///
   /// Parameters:
@@ -4630,96 +4637,205 @@ class ButtonGroup extends StatelessWidget {
   const ButtonGroup({
     super.key,
     this.direction = Axis.horizontal,
+    this.expands = false,
     required this.children,
   });
 
+  const ButtonGroup.horizontal({
+    super.key,
+    this.expands = false,
+    required this.children,
+  }) : direction = Axis.horizontal;
+
+  const ButtonGroup.vertical({
+    super.key,
+    this.expands = false,
+    required this.children,
+  }) : direction = Axis.vertical;
+
   @override
   Widget build(BuildContext context) {
+    final parentGroupData = Data.maybeOf<ButtonGroupData>(context);
     List<Widget> children = List.from(this.children);
     if (children.length > 1) {
       for (int i = 0; i < children.length; i++) {
-        children[i] = ButtonStyleOverride(
-          decoration: (context, states, value) {
-            if (value is BoxDecoration) {
-              BorderRadius resolvedBorderRadius;
-              BorderRadiusGeometry? borderRadius = value.borderRadius;
-              if (borderRadius is BorderRadius) {
-                resolvedBorderRadius = borderRadius;
-              } else if (borderRadius == null) {
-                resolvedBorderRadius = BorderRadius.zero;
-              } else {
-                resolvedBorderRadius =
-                    borderRadius.resolve(Directionality.of(context));
+        var groupData = direction == Axis.horizontal
+            ? ButtonGroupData.horizontalIndex(i, children.length)
+            : ButtonGroupData.verticalIndex(i, children.length);
+        if (parentGroupData != null) {
+          groupData = parentGroupData.applyToButtonGroupData(groupData);
+        }
+        children[i] = Data.inherit(
+          data: groupData,
+          child: ButtonStyleOverride(
+            decoration: (context, states, value) {
+              if (value is BoxDecoration) {
+                final borderRadius = groupData.applyToBorderRadius(
+                    value.borderRadius ?? BorderRadius.zero,
+                    Directionality.of(context));
+                return value.copyWith(borderRadius: borderRadius);
               }
-              if (direction == Axis.horizontal) {
-                if (i == 0) {
-                  return value.copyWith(
-                    borderRadius: resolvedBorderRadius.copyWith(
-                      topRight: Radius.zero,
-                      bottomRight: Radius.zero,
-                    ),
-                  );
-                } else if (i == children.length - 1) {
-                  return value.copyWith(
-                    borderRadius: resolvedBorderRadius.copyWith(
-                      topLeft: Radius.zero,
-                      bottomLeft: Radius.zero,
-                    ),
-                  );
-                } else {
-                  return value.copyWith(
-                    borderRadius: resolvedBorderRadius.copyWith(
-                      topLeft: Radius.zero,
-                      topRight: Radius.zero,
-                      bottomLeft: Radius.zero,
-                      bottomRight: Radius.zero,
-                    ),
-                  );
-                }
-              } else {
-                if (i == 0) {
-                  return value.copyWith(
-                    borderRadius: resolvedBorderRadius.copyWith(
-                      bottomLeft: Radius.zero,
-                      bottomRight: Radius.zero,
-                    ),
-                  );
-                } else if (i == children.length - 1) {
-                  return value.copyWith(
-                    borderRadius: resolvedBorderRadius.copyWith(
-                      topLeft: Radius.zero,
-                      topRight: Radius.zero,
-                    ),
-                  );
-                } else {
-                  return value.copyWith(
-                    borderRadius: resolvedBorderRadius.copyWith(
-                      topLeft: Radius.zero,
-                      topRight: Radius.zero,
-                      bottomLeft: Radius.zero,
-                      bottomRight: Radius.zero,
-                    ),
-                  );
-                }
-              }
-            }
-            return value;
-          },
-          child: children[i],
+              return value;
+            },
+            child: children[i],
+          ),
         );
       }
     }
     Widget flex = Flex(
+      clipBehavior: Clip.none,
       mainAxisSize: MainAxisSize.min,
       direction: direction,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: children,
     );
-    if (direction == Axis.horizontal) {
-      flex = IntrinsicHeight(child: flex);
-    } else {
-      flex = IntrinsicWidth(child: flex);
+    if (!expands) {
+      if (direction == Axis.horizontal) {
+        flex = IntrinsicHeight(child: flex);
+      } else {
+        flex = IntrinsicWidth(child: flex);
+      }
     }
     return flex;
+  }
+}
+
+class ButtonGroupData {
+  static const ButtonGroupData none = ButtonGroupData.all(1.0);
+  static const ButtonGroupData zero = ButtonGroupData.all(0.0);
+  static const ButtonGroupData horizontalStart =
+      ButtonGroupData.horizontal(end: 0.0);
+  static const ButtonGroupData horizontalEnd =
+      ButtonGroupData.horizontal(start: 0.0);
+  static const ButtonGroupData verticalTop =
+      ButtonGroupData.vertical(bottom: 0.0);
+  static const ButtonGroupData verticalBottom =
+      ButtonGroupData.vertical(top: 0.0);
+  final double topStartValue;
+  final double topEndValue;
+  final double bottomStartValue;
+  final double bottomEndValue;
+
+  const ButtonGroupData({
+    required this.topStartValue,
+    required this.topEndValue,
+    required this.bottomStartValue,
+    required this.bottomEndValue,
+  });
+
+  const ButtonGroupData.horizontal({
+    double start = 1.0,
+    double end = 1.0,
+  })  : topStartValue = start,
+        topEndValue = end,
+        bottomStartValue = start,
+        bottomEndValue = end;
+
+  const ButtonGroupData.vertical({
+    double top = 1.0,
+    double bottom = 1.0,
+  })  : topStartValue = top,
+        topEndValue = top,
+        bottomStartValue = bottom,
+        bottomEndValue = bottom;
+
+  const ButtonGroupData.all(double value)
+      : topStartValue = value,
+        topEndValue = value,
+        bottomStartValue = value,
+        bottomEndValue = value;
+
+  factory ButtonGroupData.horizontalIndex(int index, int length) {
+    if (length <= 1) {
+      return none;
+    } else {
+      if (index == 0) {
+        return horizontalStart;
+      } else if (index == length - 1) {
+        return horizontalEnd;
+      } else {
+        return zero;
+      }
+    }
+  }
+
+  factory ButtonGroupData.verticalIndex(int index, int length) {
+    if (length <= 1) {
+      return none;
+    } else {
+      if (index == 0) {
+        return verticalTop;
+      } else if (index == length - 1) {
+        return verticalBottom;
+      } else {
+        return zero;
+      }
+    }
+  }
+
+  BorderRadiusGeometry applyToBorderRadius(
+      BorderRadiusGeometry borderRadius, TextDirection textDirection) {
+    final topLeftValue =
+        textDirection == TextDirection.ltr ? topStartValue : topEndValue;
+    final topRightValue =
+        textDirection == TextDirection.ltr ? topEndValue : topStartValue;
+    final bottomLeftValue =
+        textDirection == TextDirection.ltr ? bottomStartValue : bottomEndValue;
+    final bottomRightValue =
+        textDirection == TextDirection.ltr ? bottomEndValue : bottomStartValue;
+    final resolvedBorderRadius = borderRadius.resolve(textDirection);
+    return BorderRadius.only(
+      topLeft: Radius.elliptical(
+        resolvedBorderRadius.topLeft.x * topLeftValue,
+        resolvedBorderRadius.topLeft.y * topLeftValue,
+      ),
+      topRight: Radius.elliptical(
+        resolvedBorderRadius.topRight.x * topRightValue,
+        resolvedBorderRadius.topRight.y * topRightValue,
+      ),
+      bottomLeft: Radius.elliptical(
+        resolvedBorderRadius.bottomLeft.x * bottomLeftValue,
+        resolvedBorderRadius.bottomLeft.y * bottomLeftValue,
+      ),
+      bottomRight: Radius.elliptical(
+        resolvedBorderRadius.bottomRight.x * bottomRightValue,
+        resolvedBorderRadius.bottomRight.y * bottomRightValue,
+      ),
+    );
+  }
+
+  ButtonGroupData applyToButtonGroupData(ButtonGroupData other) {
+    return ButtonGroupData(
+      topStartValue: topStartValue * other.topStartValue,
+      topEndValue: topEndValue * other.topEndValue,
+      bottomStartValue: bottomStartValue * other.bottomStartValue,
+      bottomEndValue: bottomEndValue * other.bottomEndValue,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ButtonGroupData(topStartValue: $topStartValue, topEndValue: $topEndValue, bottomStartValue: $bottomStartValue, bottomEndValue: $bottomEndValue)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is ButtonGroupData &&
+        other.topStartValue == topStartValue &&
+        other.topEndValue == topEndValue &&
+        other.bottomStartValue == bottomStartValue &&
+        other.bottomEndValue == bottomEndValue;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      topStartValue,
+      topEndValue,
+      bottomStartValue,
+      bottomEndValue,
+    );
   }
 }
