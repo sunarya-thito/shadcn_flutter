@@ -233,6 +233,7 @@ abstract class ShadcnLocalizations {
   String get colorPickerTabRGB;
   String get colorPickerTabHSV;
   String get colorPickerTabHSL;
+  String get colorPickerTabHEX;
 
   String get commandMoveUp;
   String get commandMoveDown;
@@ -251,6 +252,8 @@ abstract class ShadcnLocalizations {
         return colorPickerTabHSV;
       case ColorPickerMode.hsl:
         return colorPickerTabHSL;
+      case ColorPickerMode.hex:
+        return colorPickerTabHEX;
     }
   }
 
@@ -854,6 +857,9 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
 
   @override
   String get colorPickerTabHSL => 'HSL';
+
+  @override
+  String get colorPickerTabHEX => 'HEX';
 
   @override
   String get colorHue => 'Hue';
