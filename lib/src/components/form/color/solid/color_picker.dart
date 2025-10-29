@@ -119,7 +119,7 @@ class ColorPicker extends StatefulWidget {
 
 class _ColorPickerState extends State<ColorPicker> {
   late ColorPickerMode _mode;
-  
+
   ColorDerivative? _changingValue;
 
   @override
