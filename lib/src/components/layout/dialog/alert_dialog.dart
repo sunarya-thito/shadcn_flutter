@@ -99,7 +99,7 @@ class AlertDialog extends StatefulWidget {
   /// - [leading] (Widget?, optional): Icon or graphic at dialog start
   /// - [title] (Widget?, optional): Primary dialog heading
   /// - [content] (Widget?, optional): Detailed description or message
-  /// - [actions] (List<Widget>?, optional): Action buttons for user response
+  /// - [actions] (`List<Widget>?`, optional): Action buttons for user response
   /// - [trailing] (Widget?, optional): Additional controls at dialog end
   /// - [surfaceBlur] (double?, optional): Backdrop blur intensity
   /// - [surfaceOpacity] (double?, optional): Backdrop opacity level

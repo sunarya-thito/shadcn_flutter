@@ -116,7 +116,7 @@ class ControlledComponentData<T> {
   ///
   /// Parameters:
   /// - [value] (T, required): The current value to display
-  /// - [onChanged] (ValueChanged<T>, required): Callback for value changes
+  /// - [onChanged] (`ValueChanged<T>`, required): Callback for value changes
   /// - [enabled] (bool, required): Whether the component accepts input
   const ControlledComponentData({
     required this.value,
@@ -181,8 +181,8 @@ class ControlledComponentAdapter<T> extends StatefulWidget
   /// Parameters:
   /// - [builder] (required): Function that builds the UI using state data
   /// - [initialValue] (T?, optional): Initial value when no controller is used
-  /// - [onChanged] (ValueChanged<T>?, optional): Callback for value changes
-  /// - [controller] (ComponentController<T>?, optional): External controller for value management
+  /// - [onChanged] (`ValueChanged<T>?`, optional): Callback for value changes
+  /// - [controller] (`ComponentController<T>?`, optional): External controller for value management
   /// - [enabled] (bool, default: true): Whether the component accepts user input
   ///
   /// Throws [AssertionError] if neither controller nor initialValue is provided.

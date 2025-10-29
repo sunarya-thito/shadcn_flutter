@@ -8,7 +8,7 @@ class FilePickerExample1 extends StatefulWidget {
 }
 
 class _FilePickerExample1State extends State<FilePickerExample1> {
-  final List<XFile> _files = [];
+  // final List<XFile> _files = [];
   @override
   Widget build(BuildContext context) {
     // Placeholder for a file picker demo. The `_files` list would store the

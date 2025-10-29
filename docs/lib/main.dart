@@ -155,7 +155,9 @@ void main() async {
   if (dep is String) {
     _packageLatestVersion = dep;
   }
-  print('Running app with flavor: $flavor');
+  if (kDebugMode) {
+    print('Running app with flavor: $flavor');
+  }
   GoRouter.optionURLReflectsImperativeAPIs = true;
   final prefs = await SharedPreferences.getInstance();
   var colorScheme = prefs.getString('colorScheme');

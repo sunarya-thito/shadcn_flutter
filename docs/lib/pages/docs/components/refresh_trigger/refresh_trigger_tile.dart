@@ -69,7 +69,7 @@ class RefreshTriggerTile extends StatelessWidget implements IComponentPage {
                         width: double.infinity,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.muted.withOpacity(0.5),
+                          color: theme.colorScheme.muted.withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child:
@@ -80,7 +80,7 @@ class RefreshTriggerTile extends StatelessWidget implements IComponentPage {
                         width: double.infinity,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.muted.withOpacity(0.5),
+                          color: theme.colorScheme.muted.withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child:
@@ -91,7 +91,7 @@ class RefreshTriggerTile extends StatelessWidget implements IComponentPage {
                         width: double.infinity,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.muted.withOpacity(0.5),
+                          color: theme.colorScheme.muted.withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child:

@@ -110,7 +110,7 @@ class TabPaneData<T> extends SortableData<T> {
 ///
 /// Parameters:
 /// - [context] (BuildContext): Build context for theme access
-/// - [item] (TabPaneData<T>): The data for this specific tab
+/// - [item] (`TabPaneData<T>`): The data for this specific tab
 /// - [index] (int): Zero-based index of this tab in the list
 ///
 /// Returns: A [TabChild] widget for the tab button
@@ -238,14 +238,14 @@ class TabPane<T> extends StatefulWidget {
   ///
   /// Parameters:
   /// - [key] (Key?): Widget identifier for the widget tree
-  /// - [items] (List<TabPaneData<T>>, required): Tab data items to display
-  /// - [itemBuilder] (TabPaneItemBuilder<T>, required): Builder for tab widgets
+  /// - [items] (`List<TabPaneData<T>>`, required): Tab data items to display
+  /// - [itemBuilder] (`TabPaneItemBuilder<T>`, required): Builder for tab widgets
   /// - [focused] (int, default: 0): Index of the currently focused tab
-  /// - [onFocused] (ValueChanged<int>, required): Callback for focus changes
+  /// - [onFocused] (`ValueChanged<int>`, required): Callback for focus changes
   /// - [child] (Widget, required): Content widget for the main display area
-  /// - [onSort] (ValueChanged<List<TabPaneData<T>>>?, optional): Callback for tab reordering
-  /// - [leading] (List<Widget>, default: []): Widgets before the tab area
-  /// - [trailing] (List<Widget>, default: []): Widgets after the tab area
+  /// - [onSort] (`ValueChanged<List<TabPaneData<T>>>?`, optional): Callback for tab reordering
+  /// - [leading] (`List<Widget>`, default: []): Widgets before the tab area
+  /// - [trailing] (`List<Widget>`, default: []): Widgets after the tab area
   /// - [borderRadius] (BorderRadiusGeometry?, optional): Border radius override
   /// - [backgroundColor] (Color?, optional): Background color override
   /// - [border] (BorderSide?, optional): Border styling override

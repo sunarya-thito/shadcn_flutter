@@ -7,10 +7,10 @@ class ToggleExample2 extends StatefulWidget {
   const ToggleExample2({super.key});
 
   @override
-  _ToggleExample2State createState() => _ToggleExample2State();
+  ToggleExample2State createState() => ToggleExample2State();
 }
 
-class _ToggleExample2State extends State<ToggleExample2> {
+class ToggleExample2State extends State<ToggleExample2> {
   int flag = 0;
 
   @override

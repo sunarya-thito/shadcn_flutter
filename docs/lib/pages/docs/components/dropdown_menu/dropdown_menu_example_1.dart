@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Dropdown menu anchored to a button.
@@ -73,7 +74,9 @@ class DropdownMenuExample1 extends StatelessWidget {
           },
         ).future.then((_) {
           // Called when the dropdown is closed.
-          print('Closed');
+          if (kDebugMode) {
+            print('Closed');
+          }
         });
       },
       child: const Text('Open'),

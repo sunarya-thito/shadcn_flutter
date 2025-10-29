@@ -143,9 +143,9 @@ class TabList extends StatelessWidget {
   ///
   /// Parameters:
   /// - [key] (Key?): Widget identifier for the widget tree
-  /// - [children] (List<TabChild>, required): List of tab items to display
+  /// - [children] (`List<TabChild>`, required): List of tab items to display
   /// - [index] (int, required): Index of the currently active tab
-  /// - [onChanged] (ValueChanged<int>?, required): Callback for tab selection
+  /// - [onChanged] (`ValueChanged<int>?`, required): Callback for tab selection
   ///
   /// Example:
   /// ```dart

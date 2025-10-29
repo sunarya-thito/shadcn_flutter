@@ -208,9 +208,9 @@ class Collapsible extends StatefulWidget {
   /// Creates a [Collapsible] widget with the specified children.
   ///
   /// Parameters:
-  /// - [children] (List<Widget>, required): Widgets to display in the collapsible container.
+  /// - [children] (`List<Widget>`, required): Widgets to display in the collapsible container.
   /// - [isExpanded] (bool?, optional): Initial expansion state for uncontrolled mode.
-  /// - [onExpansionChanged] (ValueChanged<bool>?, optional): Callback for controlled mode.
+  /// - [onExpansionChanged] (`ValueChanged<bool>?`, optional): Callback for controlled mode.
   ///
   /// ## Mode Selection
   /// - **Uncontrolled Mode**: When [onExpansionChanged] is null, the widget manages

@@ -191,7 +191,7 @@ class AutoComplete extends StatefulWidget {
   /// customized through the optional positioning and constraint parameters.
   ///
   /// Parameters:
-  /// - [suggestions] (List<String>, required): available autocomplete options
+  /// - [suggestions] (`List<String>`, required): available autocomplete options
   /// - [child] (Widget, required): widget to receive autocomplete functionality
   /// - [popoverConstraints] (BoxConstraints?, optional): popover size limits
   /// - [popoverWidthConstraint] (PopoverConstraint?, optional): width strategy

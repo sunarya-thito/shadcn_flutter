@@ -588,8 +588,8 @@ class AppBar extends StatefulWidget {
   /// and trailing areas support multiple widgets with automatic spacing.
   ///
   /// Parameters:
-  /// - [leading] (List<Widget>, default: []): Leading area widgets (left side)
-  /// - [trailing] (List<Widget>, default: []): Trailing area widgets (right side)
+  /// - [leading] (`List<Widget>`, default: []): Leading area widgets (left side)
+  /// - [trailing] (`List<Widget>`, default: []): Trailing area widgets (right side)
   /// - [title] (Widget?, optional): Primary title content
   /// - [header] (Widget?, optional): Secondary content above title
   /// - [subtitle] (Widget?, optional): Secondary content below title

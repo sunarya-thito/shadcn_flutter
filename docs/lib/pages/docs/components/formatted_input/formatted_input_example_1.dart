@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class FormattedInputExample1 extends StatelessWidget {
@@ -12,7 +13,9 @@ class FormattedInputExample1 extends StatelessWidget {
         for (FormattedValuePart part in value.values) {
           parts.add(part.value ?? '');
         }
-        print(parts.join('/'));
+        if (kDebugMode) {
+          print(parts.join('/'));
+        }
       },
       initialValue: FormattedValue([
         const InputPart.editable(length: 2, width: 40, placeholder: Text('MM'))

@@ -61,15 +61,17 @@ class _ItemPickerExample3State extends State<ItemPickerExample3> {
           (value) {
             if (value != null) {
               selectedColor = colors.indexOf(value);
-              showToast(
-                context: context,
-                builder: (context, overlay) {
-                  return SurfaceCard(
-                    child: Text('You picked ${value.name}!'),
-                  );
-                },
-              );
-            } else {
+              if (context.mounted) {
+                showToast(
+                  context: context,
+                  builder: (context, overlay) {
+                    return SurfaceCard(
+                      child: Text('You picked ${value.name}!'),
+                    );
+                  },
+                );
+              }
+            } else if (context.mounted) {
               showToast(
                 context: context,
                 builder: (context, overlay) {

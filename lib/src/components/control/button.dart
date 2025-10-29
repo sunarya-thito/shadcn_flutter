@@ -137,7 +137,7 @@ class ControlledToggle extends StatelessWidget with ControlledComponent<bool> {
   /// Parameters:
   /// - [controller] (ToggleController?, optional): External state controller.
   /// - [initialValue] (bool?, optional): Initial state for uncontrolled mode.
-  /// - [onChanged] (ValueChanged<bool>?, optional): State change callback.
+  /// - [onChanged] (`ValueChanged<bool>?`, optional): State change callback.
   /// - [enabled] (bool, default: true): Whether the toggle is interactive.
   /// - [child] (Widget, required): Content to display in the toggle button.
   /// - [style] (ButtonStyle, default: ButtonStyle.ghost()): Visual styling.
@@ -223,7 +223,7 @@ class Toggle extends StatefulWidget {
   ///
   /// Parameters:
   /// - [value] (bool, required): current toggle state
-  /// - [onChanged] (ValueChanged<bool>?, optional): callback when state changes
+  /// - [onChanged] (`ValueChanged<bool>?`, optional): callback when state changes
   /// - [child] (Widget, required): content displayed inside the button
   /// - [enabled] (bool?, optional): whether button is interactive
   /// - [style] (ButtonStyle, default: ghost): button styling
@@ -676,8 +676,8 @@ class Button extends StatefulWidget {
   /// - [style] (AbstractButtonStyle, required): Visual styling configuration.
   /// - [enabled] (bool?, optional): Whether button responds to interactions.
   /// - [disableTransition] (bool, default: false): Whether to disable state animations.
-  /// - [onFocus] (ValueChanged<bool>?, optional): Focus state change callback.
-  /// - [onHover] (ValueChanged<bool>?, optional): Hover state change callback.
+  /// - [onFocus] (`ValueChanged<bool>?`, optional): Focus state change callback.
+  /// - [onHover] (`ValueChanged<bool>?`, optional): Hover state change callback.
   /// - [disableHoverEffect] (bool, default: false): Whether to disable hover visuals.
   /// - [enableFeedback] (bool?, optional): Whether to provide haptic feedback.
   /// - [marginAlignment] (AlignmentGeometry?, optional): Margin positioning.
@@ -1211,7 +1211,7 @@ class ButtonState<T extends Button> extends State<T> {
           ? WidgetStateProperty.resolveWith((states) {
               if (states.contains(WidgetState.pressed)) {
                 // scale down to 95% with alignment at center
-                return Matrix4.identity()..scale(0.95);
+                return Matrix4.identity()..scaleByDouble(0.95, 0.95, 0.95, 1);
               }
               return null;
             })
@@ -4616,7 +4616,7 @@ class ButtonGroup extends StatelessWidget {
   ///
   /// Parameters:
   /// - [direction] (Axis, default: Axis.horizontal): Layout direction for the buttons.
-  /// - [children] (List<Widget>, required): The buttons to group together.
+  /// - [children] (`List<Widget>`, required): The buttons to group together.
   ///
   /// The group automatically handles:
   /// - Border radius adjustments for first/middle/last buttons

@@ -324,7 +324,7 @@ class Tracker extends StatelessWidget {
   /// with hover tooltips for additional context.
   ///
   /// Parameters:
-  /// - [data] (List<TrackerData>, required): Status data points to display
+  /// - [data] (`List<TrackerData>`, required): Status data points to display
   ///
   /// Example:
   /// ```dart

@@ -1,3 +1,4 @@
+import 'package:docs/code_highlighter.dart';
 import 'package:docs/radix_icons.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -9,10 +10,10 @@ class IconsPage extends StatefulWidget {
   const IconsPage({super.key});
 
   @override
-  _IconsPageState createState() => _IconsPageState();
+  IconsPageState createState() => IconsPageState();
 }
 
-class _IconsPageState extends State<IconsPage> {
+class IconsPageState extends State<IconsPage> {
   // this separates "separateByCamelCase" to "separate By Camel Case"
   List<String> _separateByCamelCase(String text) {
     List<String> result = [];
@@ -54,7 +55,7 @@ class _IconsPageState extends State<IconsPage> {
               children: [
                 const Text('Use this code to display this icon:'),
                 const Gap(8),
-                CodeSnippet(
+                CodeBlock(
                   code: 'Icon($className.${entry.key})',
                   mode: 'dart',
                 ),

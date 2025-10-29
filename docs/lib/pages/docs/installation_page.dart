@@ -1,3 +1,4 @@
+import 'package:docs/code_highlighter.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -7,10 +8,10 @@ class InstallationPage extends StatefulWidget {
   const InstallationPage({super.key});
 
   @override
-  _InstallationPageState createState() => _InstallationPageState();
+  InstallationPageState createState() => InstallationPageState();
 }
 
-class _InstallationPageState extends State<InstallationPage> {
+class InstallationPageState extends State<InstallationPage> {
   final OnThisPage _manualKey = OnThisPage();
   final OnThisPage _experimentalKey = OnThisPage();
   @override
@@ -37,7 +38,7 @@ class _InstallationPageState extends State<InstallationPage> {
                   const Text(
                           'Create a new Flutter project using the following command:')
                       .p(),
-                  const CodeSnippet(
+                  const CodeBlock(
                     code: 'flutter create my_app\ncd my_app',
                     mode: 'shell',
                   ).p(),
@@ -49,7 +50,7 @@ class _InstallationPageState extends State<InstallationPage> {
                   const Text(
                           'Next, add the shadcn_flutter dependency to your project.')
                       .p(),
-                  const CodeSnippet(
+                  const CodeBlock(
                     code: 'flutter pub add shadcn_flutter',
                     mode: 'shell',
                   ).p(),
@@ -61,7 +62,7 @@ class _InstallationPageState extends State<InstallationPage> {
                   const Text(
                           'Now, you can import the package in your Dart code.')
                       .p(),
-                  const CodeSnippet(
+                  const CodeBlock(
                     code:
                         'import \'package:shadcn_flutter/shadcn_flutter.dart\';',
                     mode: 'dart',
@@ -73,7 +74,7 @@ class _InstallationPageState extends State<InstallationPage> {
                 content: [
                   const Text('Add the ShadcnApp widget to your main function.')
                       .p(),
-                  const CodeSnippet(
+                  const CodeBlock(
                     code: '''
 void main() {
   runApp(
@@ -92,7 +93,7 @@ void main() {
                 title: const Text('Run the app'),
                 content: [
                   const Text('Run the app using the following command:').p(),
-                  const CodeSnippet(
+                  const CodeBlock(
                     code: 'flutter run',
                     mode: 'shell',
                   ).p(),
@@ -106,7 +107,7 @@ void main() {
                   'To use an experimental version, use git instead of version number in your '
                   'pubspec.yaml file:')
               .p(),
-          const CodeSnippet(
+          const CodeBlock(
             // code: 'shadcn_flutter:\n'
             //     '  git:\n'
             //     '    url: "https://github.com/sunarya-thito/shadcn_flutter.git"',

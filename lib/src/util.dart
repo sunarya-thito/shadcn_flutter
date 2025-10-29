@@ -169,6 +169,14 @@ extension FutureOrExtension<T> on FutureOr<T> {
     }
     return transform(this as T);
   }
+
+  FutureOr<T> catchError(Function onError,
+      {bool Function(Object error)? test}) {
+    if (this is Future<T>) {
+      return (this as Future<T>).catchError(onError, test: test);
+    }
+    return this;
+  }
 }
 
 extension AlignmentExtension on AlignmentGeometry {

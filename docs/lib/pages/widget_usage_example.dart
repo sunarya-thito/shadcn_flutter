@@ -1,3 +1,5 @@
+import 'package:docs/code_highlighter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -42,7 +44,7 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
           ),
         ),
         gap(12),
-        CodeSnippetFutureBuilder(
+        CodeBlockFutureBuilder(
           path: widget.path,
           mode: 'dart',
           summarize: widget.summarize,
@@ -52,12 +54,12 @@ class _WidgetUsageExampleState extends State<WidgetUsageExample> {
   }
 }
 
-class CodeSnippetFutureBuilder extends StatefulWidget {
+class CodeBlockFutureBuilder extends StatefulWidget {
   final String path;
   final String mode;
   final bool summarize;
 
-  const CodeSnippetFutureBuilder({
+  const CodeBlockFutureBuilder({
     super.key,
     required this.path,
     this.mode = 'dart',
@@ -65,11 +67,10 @@ class CodeSnippetFutureBuilder extends StatefulWidget {
   });
 
   @override
-  State<CodeSnippetFutureBuilder> createState() =>
-      _CodeSnippetFutureBuilderState();
+  State<CodeBlockFutureBuilder> createState() => _CodeBlockFutureBuilderState();
 }
 
-class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
+class _CodeBlockFutureBuilderState extends State<CodeBlockFutureBuilder> {
   late Future<String> futureCode;
 
   void _refresh() {
@@ -81,8 +82,10 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
       try {
         return widget.summarize ? _formatCode(code) : code;
       } catch (e, stackTrace) {
-        print(e);
-        print(stackTrace);
+        if (kDebugMode) {
+          print(e);
+          print(stackTrace);
+        }
         return code;
       }
     });
@@ -95,7 +98,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
   }
 
   @override
-  void didUpdateWidget(covariant CodeSnippetFutureBuilder oldWidget) {
+  void didUpdateWidget(covariant CodeBlockFutureBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.path != widget.path) {
       _refresh();
@@ -106,12 +109,16 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return FutureBuilder<String>(
-      future: futureCode,
+      future: futureCode.catchError((err, stackTrace) {
+        if (kDebugMode) {
+          print(err);
+          print(stackTrace);
+        }
+        return Future<String>.error(err, stackTrace);
+      }),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          print(snapshot.error);
-          print(snapshot.stackTrace);
-          return CodeSnippet(
+          return CodeBlock(
             code:
                 'Error loading code\n${snapshot.error}\n${snapshot.stackTrace}',
             mode: widget.mode,
@@ -129,7 +136,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
         }
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == null) {
-            return CodeSnippet(
+            return CodeBlock(
               code: 'No code found',
               mode: widget.mode,
               actions: [
@@ -150,7 +157,7 @@ class _CodeSnippetFutureBuilderState extends State<CodeSnippetFutureBuilder> {
               ],
             );
           }
-          return CodeSnippet(
+          return CodeBlock(
             code: snapshot.data!,
             mode: widget.mode,
             actions: [

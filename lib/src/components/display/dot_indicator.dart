@@ -153,7 +153,7 @@ class DotIndicator extends StatelessWidget {
   /// Parameters:
   /// - [index] (int, required): current active dot position (0-based)
   /// - [length] (int, required): total number of dots to display
-  /// - [onChanged] (ValueChanged<int>?, optional): callback when dot is tapped
+  /// - [onChanged] (`ValueChanged<int>?`, optional): callback when dot is tapped
   /// - [spacing] (double?, optional): override spacing between dots
   /// - [direction] (Axis, default: horizontal): layout direction of dots
   /// - [padding] (EdgeInsetsGeometry?, optional): padding around dot container
@@ -198,10 +198,10 @@ class DotIndicator extends StatelessWidget {
         themeValue: compTheme?.spacing,
         defaultValue: 8 * scaling);
     final padding = styleValue(
-            widgetValue: this.padding,
-            themeValue: compTheme?.padding,
-            defaultValue: const EdgeInsets.all(8))
-        .resolve(directionality) *
+                widgetValue: this.padding,
+                themeValue: compTheme?.padding,
+                defaultValue: const EdgeInsets.all(8))
+            .resolve(directionality) *
         theme.scaling;
     final dotBuilder =
         this.dotBuilder ?? compTheme?.dotBuilder ?? _defaultDotBuilder;
@@ -352,12 +352,12 @@ class InactiveDotItem extends StatelessWidget {
         widgetValue: this.borderRadius,
         themeValue: compTheme?.borderRadius,
         defaultValue: theme.radiusMd);
-    final borderColor =
-        this.borderColor ?? compTheme?.inactiveBorderColor ?? theme.colorScheme.secondary;
+    final borderColor = this.borderColor ??
+        compTheme?.inactiveBorderColor ??
+        theme.colorScheme.secondary;
     final borderWidth =
         this.borderWidth ?? compTheme?.inactiveBorderWidth ?? (2 * scaling);
-    final color =
-        this.color ?? compTheme?.inactiveColor;
+    final color = this.color ?? compTheme?.inactiveColor;
     return Container(
       width: size,
       height: size,

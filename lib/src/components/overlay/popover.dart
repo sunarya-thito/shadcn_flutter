@@ -738,7 +738,7 @@ OverlayCompleter<T?> showPopover<T>({
 /// Example usage:
 /// ```dart
 /// final controller = PopoverController();
-/// 
+///
 /// // Show a popover
 /// final popover = await controller.show<String>(
 ///   context: context,
@@ -755,7 +755,7 @@ OverlayCompleter<T?> showPopover<T>({
 class Popover {
   /// Global key for accessing the overlay handler state.
   final GlobalKey<OverlayHandlerStateMixin> key;
-  
+
   /// The overlay completer that manages this popover's lifecycle.
   final OverlayCompleter entry;
 
@@ -844,16 +844,16 @@ class Popover {
 ///   @override
 ///   _MyWidgetState createState() => _MyWidgetState();
 /// }
-/// 
+///
 /// class _MyWidgetState extends State<MyWidget> {
 ///   final PopoverController _popoverController = PopoverController();
-///   
+///
 ///   @override
 ///   void dispose() {
 ///     _popoverController.dispose();
 ///     super.dispose();
 ///   }
-///   
+///
 ///   void _showMenu() async {
 ///     await _popoverController.show(
 ///       context: context,
@@ -1220,11 +1220,13 @@ class PopoverLayoutRender extends RenderShiftedBox {
     }
     Matrix4 transform = Matrix4.identity();
     Offset alignmentTranslation = scaleAlignment.alongSize(childSize);
-    transform.translate(childOffset.dx, childOffset.dy);
-    transform.translate(alignmentTranslation.dx, alignmentTranslation.dy);
-    transform.scale(_scale, _scale);
-    transform.translate(-alignmentTranslation.dx, -alignmentTranslation.dy);
-    transform.translate(-childOffset.dx, -childOffset.dy);
+    transform.translateByDouble(childOffset.dx, childOffset.dy, 0, 1);
+    transform.translateByDouble(
+        alignmentTranslation.dx, alignmentTranslation.dy, 0, 1);
+    transform.scaleByDouble(_scale, _scale, 1, 1);
+    transform.translateByDouble(
+        -alignmentTranslation.dx, -alignmentTranslation.dy, 0, 1);
+    transform.translateByDouble(-childOffset.dx, -childOffset.dy, 0, 1);
     return transform;
   }
 
@@ -1276,7 +1278,7 @@ class PopoverLayoutRender extends RenderShiftedBox {
         final Matrix4 effectiveTransform =
             Matrix4.translationValues(offset.dx, offset.dy, 0.0)
               ..multiply(transform)
-              ..translate(-offset.dx, -offset.dy);
+              ..translateByDouble(-offset.dx, -offset.dy, 0, 1);
         final ui.ImageFilter filter = ui.ImageFilter.matrix(
           effectiveTransform.storage,
           filterQuality: _filterQuality!,

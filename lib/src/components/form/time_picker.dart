@@ -72,7 +72,7 @@ class TimePickerTheme {
 
 /// A controller for managing [ControlledTimePicker] values programmatically.
 ///
-/// This controller extends [ValueNotifier<TimeOfDay?>] to provide reactive
+/// This controller extends `ValueNotifier<TimeOfDay?>` to provide reactive
 /// state management for time picker components. It implements [ComponentController]
 /// to integrate with the controlled component system, allowing external control
 /// and listening to time selection changes.
@@ -132,43 +132,43 @@ class ControlledTimePicker extends StatelessWidget
   /// Determines how the time selection interface is displayed to the user.
   /// Can be either dialog mode (modal popup) or popover mode (dropdown).
   final PromptMode mode;
-  
+
   /// Widget displayed when no time is selected.
   ///
   /// This placeholder appears in the picker button when [initialValue] is null
   /// and no time has been selected yet. If null, a default placeholder is used.
   final Widget? placeholder;
-  
+
   /// Alignment for the popover relative to its anchor widget.
   ///
   /// Used only when [mode] is [PromptMode.popover]. Controls where the popover
   /// appears relative to the picker button.
   final AlignmentGeometry? popoverAlignment;
-  
+
   /// Alignment of the anchor point on the picker button.
   ///
   /// Used only when [mode] is [PromptMode.popover]. Determines which point
   /// on the picker button the popover aligns to.
   final AlignmentGeometry? popoverAnchorAlignment;
-  
+
   /// Internal padding for the popover content.
   ///
   /// Used only when [mode] is [PromptMode.popover]. Controls spacing inside
   /// the popover container around the time picker interface.
   final EdgeInsetsGeometry? popoverPadding;
-  
+
   /// Whether to use 24-hour format for time display and input.
   ///
   /// When true, times are displayed in 24-hour format (00:00-23:59).
   /// When false or null, uses the system default format preference.
   final bool? use24HourFormat;
-  
+
   /// Whether to include seconds in the time selection.
   ///
   /// When true, the time picker allows selection of seconds in addition
   /// to hours and minutes. When false, only hours and minutes are selectable.
   final bool showSeconds;
-  
+
   /// Optional title widget for the dialog mode.
   ///
   /// Used only when [mode] is [PromptMode.dialog]. Displayed at the top
@@ -184,7 +184,7 @@ class ControlledTimePicker extends StatelessWidget
   /// Parameters:
   /// - [controller] (TimePickerController?, optional): External controller for programmatic control
   /// - [initialValue] (TimeOfDay?, optional): Initial time when no controller is provided
-  /// - [onChanged] (ValueChanged<TimeOfDay?>?, optional): Callback for time selection changes
+  /// - [onChanged] (`ValueChanged<TimeOfDay?>?`, optional): Callback for time selection changes
   /// - [enabled] (bool, default: true): Whether the picker accepts user interaction
   /// - [mode] (PromptMode, default: PromptMode.dialog): Presentation style (dialog or popover)
   /// - [placeholder] (Widget?, optional): Content displayed when no time is selected
@@ -281,12 +281,10 @@ class TimePicker extends StatelessWidget {
     bool use24HourFormat = this.use24HourFormat ??
         compTheme?.use24HourFormat ??
         MediaQuery.of(context).alwaysUse24HourFormat;
-    final bool showSeconds =
-        compTheme?.showSeconds ?? this.showSeconds;
+    final bool showSeconds = compTheme?.showSeconds ?? this.showSeconds;
     return ObjectFormField(
       value: value,
-      placeholder: placeholder ??
-          Text(localizations.placeholderTimePicker),
+      placeholder: placeholder ?? Text(localizations.placeholderTimePicker),
       onChanged: onChanged,
       builder: (context, value) {
         return Text(localizations.formatTimeOfDay(value,

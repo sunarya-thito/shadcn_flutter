@@ -2,38 +2,59 @@
 
 - Breaking changes
   - Color picker refactor and file layout
-    - Most color picker code moved from a single `lib/src/components/form/color_picker.dart` into multiple focused files under `lib/src/components/form/color/solid/`.
-    - If you were deep-importing internals, update your imports to the new paths. Importing via the main barrel (`package:shadcn_flutter/shadcn_flutter.dart`) continues to work but the old internal path is removed.
+    - Most color picker code moved from a single
+      `lib/src/components/form/color_picker.dart` into multiple focused files
+      under `lib/src/components/form/color/solid/`.
+    - If you were deep-importing internals, update your imports to the new
+      paths. Importing via the main barrel
+      (`package:shadcn_flutter/shadcn_flutter.dart`) continues to work but the
+      old internal path is removed.
   - API renames (ColorPicker / ColorInput)
     - `allowPickFromScreen` ➜ `enableEyeDropper`
     - `onPickFromScreen` ➜ `onEyeDropperRequested`
-    - Add the new callback only when you need to override the built-in prompt behavior (popover closes, then eye-dropper starts).
+    - Add the new callback only when you need to override the built-in prompt
+      behavior (popover closes, then eye-dropper starts).
   - Internal widgets/classes
-    - `HSVColorPickerArea` / `HSLColorPickerArea` replaced by exported `HSVColorSlider` / `HSLColorSlider`.
-    - Checkerboard painter consolidated as `AlphaPainter` (replaces ad-hoc checkboard usage in the old file).
-    - Old helper composites like `ColorPickerSet`, `MiniColorPickerSet`, and popup/dialog variants were removed in favor of `ColorInput` + `ColorPicker` with prompt modes.
+    - `HSVColorPickerArea` / `HSLColorPickerArea` replaced by exported
+      `HSVColorSlider` / `HSLColorSlider`.
+    - Checkerboard painter consolidated as `AlphaPainter` (replaces ad-hoc
+      checkboard usage in the old file).
+    - Old helper composites like `ColorPickerSet`, `MiniColorPickerSet`, and
+      popup/dialog variants were removed in favor of `ColorInput` +
+      `ColorPicker` with prompt modes.
 
 - Color system and utilities
-  - Introduced core color utilities with a `ColorDerivative` abstraction for HSV/HSL transforms and RGB channel ops; added `colorToHex` helpers and gradient types (linear, radial, sweep) for future composition.
+  - Reorganized existing color utilities under the new color module; no
+    functional changes to `ColorDerivative` or `colorToHex`. Added gradient
+    types (linear, radial, sweep) for future composition.
 
 - Color Picker
-  - Replaced legacy ColorPicker implementation with a new slider-based picker using dedicated HSV/HSL painters and alpha checkerboard. Supports live editing via `onChanging`/`onChanged` and consistent display using an effective in-progress value.
-  - Added modes for RGB, HSV, HSL, and HEX; optional alpha controls; horizontal/vertical orientation; spacing and slider size theming via `ColorPickerTheme`.
+  - Replaced legacy ColorPicker implementation with a new slider-based picker
+    using dedicated HSV/HSL painters and alpha checkerboard. Supports live
+    editing via `onChanging`/`onChanged` and consistent display using an
+    effective in-progress value.
+  - Added modes for RGB, HSV, HSL, and HEX; optional alpha controls;
+    horizontal/vertical orientation; spacing and slider size theming via
+    `ColorPickerTheme`.
 
 - Color Input
-  - New `ColorInput` widget with `ColorInputController` and theming. Integrates popover/dialog prompting, optional HEX label display, orientation, and EyeDropper integration. `ControlledColorInput` variant for form integration.
+  - New `ColorInput` widget with `ColorInputController` and theming. Integrates
+    popover/dialog prompting, optional HEX label display, orientation, and
+    EyeDropper integration. `ControlledColorInput` variant for form integration.
 
 - Eye Dropper and History
-  - Added screen color picker (`pickColorFromScreen` and `ColorPickingLayer`) with magnified preview and label; added `RecentColorsScope` and `ColorHistoryGrid` to persist and pick previously sampled colors.
+  - Added screen color picker (`pickColorFromScreen` and `ColorPickingLayer`)
+    with magnified preview and label; added `RecentColorsScope` and
+    `ColorHistoryGrid` to persist and pick previously sampled colors.
 
 - API exports
-  - Public exports updated to include color utilities, ColorPicker, ColorInput, EyeDropper, History, and slider widgets.
+  - Public exports updated to include color utilities, ColorPicker, ColorInput,
+    EyeDropper, History, and slider widgets.
 
 - i18n and formatting
-  - Added `colorPickerTabHEX` localization key and `TextInputFormatters.hex` (supports optional hash prefix) for safe HEX input. If you provide a custom localization, add this new key.
-
-- Components
-  - Button: Added `ToggleController`, `ControlledToggle`, and `Toggle` widget with ghost/secondary styles.
+  - Added `colorPickerTabHEX` localization key and `TextInputFormatters.hex`
+    (supports optional hash prefix) for safe HEX input. If you provide a custom
+    localization, add this new key.
 
 ## 0.0.45
 

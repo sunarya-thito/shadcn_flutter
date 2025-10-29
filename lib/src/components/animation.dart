@@ -125,7 +125,7 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
   /// - [initialValue] (T?, optional): Starting value for animation. If null, no initial animation occurs.
   /// - [value] (T, required): Target value to animate to.
   /// - [duration] (Duration, required): Animation duration.
-  /// - [builder] (AnimatedChildBuilder<T>, required): Builds widget from animated value.
+  /// - [builder] (`AnimatedChildBuilder<T>`, required): Builds widget from animated value.
   /// - [onEnd] (Function?, optional): Called when animation completes.
   /// - [curve] (Curve, default: Curves.linear): Animation timing curve.
   /// - [lerp] (Function?, optional): Custom interpolation for complex types.
@@ -168,7 +168,7 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
   /// - [initialValue] (T?, optional): Starting value for animation.
   /// - [value] (T, required): Target value to animate to.
   /// - [duration] (Duration, required): Animation duration.
-  /// - [builder] (AnimationBuilder<T>, required): Builds widget from Animation object.
+  /// - [builder] (`AnimationBuilder<T>`, required): Builds widget from Animation object.
   /// - [onEnd] (Function?, optional): Called when animation completes.
   /// - [curve] (Curve, default: Curves.linear): Animation timing curve.
   /// - [lerp] (Function?, optional): Custom interpolation function.
@@ -212,7 +212,7 @@ class AnimatedValueBuilder<T> extends StatefulWidget {
   /// - [initialValue] (T?, optional): Starting value for animation.
   /// - [value] (T, required): Target value to animate to.
   /// - [duration] (Duration, required): Animation duration.
-  /// - [builder] (AnimatedChildValueBuilder<T>, required): Builds widget with raw interpolation data.
+  /// - [builder] (`AnimatedChildValueBuilder<T>`, required): Builds widget with raw interpolation data.
   /// - [onEnd] (Function?, optional): Called when animation completes.
   /// - [curve] (Curve, default: Curves.linear): Animation timing curve.
   /// - [child] (Widget?, optional): Optional child passed to builder.
@@ -436,7 +436,7 @@ enum RepeatMode {
 ///
 /// The widget supports different repeat modes via [RepeatMode]:
 /// - [RepeatMode.repeat]: Continuous forward animation with instant reset
-/// - [RepeatMode.reverse]: Continuous reverse animation  
+/// - [RepeatMode.reverse]: Continuous reverse animation
 /// - [RepeatMode.pingPong]: Smooth back-and-forth animation
 /// - [RepeatMode.pingPongReverse]: Ping-pong starting in reverse
 ///

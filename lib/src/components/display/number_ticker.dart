@@ -71,9 +71,9 @@ class NumberTickerTheme {
   /// null getters preserve the original value.
   ///
   /// Parameters:
-  /// - [duration] (ValueGetter<Duration?>?, optional): New duration value.
-  /// - [curve] (ValueGetter<Curve?>?, optional): New curve value.
-  /// - [style] (ValueGetter<TextStyle?>?, optional): New text style value.
+  /// - [duration] (`ValueGetter<Duration?>?`, optional): New duration value.
+  /// - [curve] (`ValueGetter<Curve?>?`, optional): New curve value.
+  /// - [style] (`ValueGetter<TextStyle?>?`, optional): New text style value.
   ///
   /// Example:
   /// ```dart
@@ -112,7 +112,7 @@ class NumberTickerTheme {
 /// [NumberTicker] provides animated transitions when numeric values change,
 /// making it ideal for displaying counters, statistics, prices, or any numeric
 /// data that changes over time. It offers two construction modes:
-/// 
+///
 /// - Default constructor: Uses a formatter function to display numbers as text
 /// - [NumberTicker.builder]: Provides a custom builder for complete control
 ///

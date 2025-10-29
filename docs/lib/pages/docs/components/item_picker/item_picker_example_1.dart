@@ -23,7 +23,7 @@ class ItemPickerExample1 extends StatelessWidget {
           },
         ).then(
           (value) {
-            if (value != null) {
+            if (value != null && context.mounted) {
               // Feedback via toast when a selection is made.
               showToast(
                 context: context,
@@ -33,7 +33,7 @@ class ItemPickerExample1 extends StatelessWidget {
                   );
                 },
               );
-            } else {
+            } else if (context.mounted) {
               showToast(
                 context: context,
                 builder: (context, overlay) {

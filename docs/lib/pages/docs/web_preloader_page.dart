@@ -1,3 +1,4 @@
+import 'package:docs/code_highlighter.dart';
 import 'package:docs/pages/docs_page.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -24,7 +25,7 @@ class WebPreloaderPage extends StatelessWidget {
                     const Text(
                             'If you don\'t have a web directory, create one.')
                         .p(),
-                    const CodeSnippet(
+                    const CodeBlock(
                       code: 'flutter create . --platforms=web',
                       mode: 'shell',
                     ).p(),
@@ -53,7 +54,7 @@ class WebPreloaderPage extends StatelessWidget {
                         children: [
                           Text('Standard Preloader'),
                           Gap(8),
-                          CodeSnippet(
+                          CodeBlock(
                             code:
                                 '<script src="https://cdn.jsdelivr.net/gh/sunarya-thito/shadcn_flutter@latest/web_loaders/standard.js"></script>',
                             mode: 'javascript',
@@ -71,7 +72,7 @@ class WebPreloaderPage extends StatelessWidget {
                         .thenText(' tag.')
                         .p(),
                     const Text('For example:').p(),
-                    const CodeSnippet(
+                    const CodeBlock(
                       code: '''
 <!DOCTYPE html>
 <html>
@@ -91,7 +92,7 @@ class WebPreloaderPage extends StatelessWidget {
                   title: const Text('Run the app'),
                   content: [
                     const Text('Run the app using the following command:').p(),
-                    const CodeSnippet(
+                    const CodeBlock(
                       code: 'flutter run -d chrome',
                       mode: 'shell',
                     ).p(),

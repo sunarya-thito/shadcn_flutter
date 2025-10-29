@@ -97,7 +97,7 @@ class StepperValue {
   /// Creates a [StepperValue].
   ///
   /// Parameters:
-  /// - [stepStates] (Map<int, StepState>, required): step states by index
+  /// - [stepStates] (`Map<int, StepState>`, required): step states by index
   /// - [currentStep] (int, required): currently active step index
   StepperValue({
     required this.stepStates,
@@ -907,7 +907,7 @@ class StepperController extends ValueNotifier<StepperValue> {
   /// Creates a [StepperController].
   ///
   /// Parameters:
-  /// - [stepStates] (Map<int, StepState>?): initial step states (default: empty)
+  /// - [stepStates] (`Map<int, StepState>?`): initial step states (default: empty)
   /// - [currentStep] (int?): initial active step index (default: 0)
   ///
   /// Example:
@@ -1068,7 +1068,7 @@ class Stepper extends StatelessWidget {
   ///
   /// Parameters:
   /// - [controller] (StepperController, required): manages state and navigation
-  /// - [steps] (List<Step>, required): list of steps to display
+  /// - [steps] (`List<Step>`, required): list of steps to display
   /// - [direction] (Axis?): horizontal or vertical layout (default: horizontal)
   /// - [size] (StepSize?): step indicator size (default: medium)
   /// - [variant] (StepVariant?): visual style (default: circle)
@@ -1414,7 +1414,7 @@ class StepContainer extends StatefulWidget {
   ///
   /// Parameters:
   /// - [child] (Widget, required): main step content
-  /// - [actions] (List<Widget>, required): action buttons or widgets
+  /// - [actions] (`List<Widget>`, required): action buttons or widgets
   ///
   /// Example:
   /// ```dart

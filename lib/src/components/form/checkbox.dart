@@ -323,7 +323,7 @@ class ControlledCheckbox extends StatelessWidget
   /// Parameters:
   /// - [controller] (CheckboxController?, optional): external state controller
   /// - [initialValue] (CheckboxState, default: unchecked): starting state when no controller
-  /// - [onChanged] (ValueChanged<CheckboxState>?, optional): state change callback
+  /// - [onChanged] (`ValueChanged<CheckboxState>?`, optional): state change callback
   /// - [enabled] (bool, default: true): whether checkbox is interactive
   /// - [leading] (Widget?, optional): widget displayed before checkbox
   /// - [trailing] (Widget?, optional): widget displayed after checkbox
@@ -546,7 +546,7 @@ class Checkbox extends StatefulWidget {
   ///
   /// Parameters:
   /// - [state] (CheckboxState, required): current checkbox state to display
-  /// - [onChanged] (ValueChanged<CheckboxState>?, required): interaction callback
+  /// - [onChanged] (`ValueChanged<CheckboxState>?`, required): interaction callback
   /// - [leading] (Widget?, optional): widget displayed before checkbox
   /// - [trailing] (Widget?, optional): widget displayed after checkbox
   /// - [tristate] (bool, default: false): enable indeterminate state cycling

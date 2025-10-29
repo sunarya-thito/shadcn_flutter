@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class NamedColor {
@@ -56,7 +57,9 @@ class _ItemPickerExample5State extends State<ItemPickerExample5> {
       value: colors[selectedColor],
       placeholder: const Text('Pick a color'),
       onChanged: (value) {
-        print('You picked $value!');
+        if (kDebugMode) {
+          print('You picked $value!');
+        }
         if (value != null) {
           setState(() {
             selectedColor = colors.indexOf(value);

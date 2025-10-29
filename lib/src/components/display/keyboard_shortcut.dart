@@ -182,7 +182,7 @@ class KeyboardDisplay extends StatelessWidget {
   /// over which keys are displayed.
   ///
   /// Parameters:
-  /// - [keys] (List<LogicalKeyboardKey>, required): Keys to display
+  /// - [keys] (`List<LogicalKeyboardKey>`, required): Keys to display
   /// - [spacing] (double?, optional): Gap between key displays
   ///
   /// Example:
@@ -286,7 +286,7 @@ class KeyboardKeyDisplay extends StatelessWidget {
   /// Parameters:
   /// - [keyboardKey] (LogicalKeyboardKey, required): Key to display
   /// - [padding] (EdgeInsetsGeometry?, optional): Internal padding
-  /// - [boxShadow] (List<BoxShadow>?, optional): Shadow effects
+  /// - [boxShadow] (`List<BoxShadow>?`, optional): Shadow effects
   ///
   /// Example:
   /// ```dart

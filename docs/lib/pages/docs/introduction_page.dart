@@ -7,10 +7,10 @@ class IntroductionPage extends StatefulWidget {
   const IntroductionPage({super.key});
 
   @override
-  _IntroductionPageState createState() => _IntroductionPageState();
+  IntroductionPageState createState() => IntroductionPageState();
 }
 
-class _IntroductionPageState extends State<IntroductionPage> {
+class IntroductionPageState extends State<IntroductionPage> {
   final OnThisPage featuresKey = OnThisPage();
   final OnThisPage faqKey = OnThisPage();
   final OnThisPage notesKey = OnThisPage();

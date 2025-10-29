@@ -664,7 +664,7 @@ class ResizablePanel extends StatefulWidget {
   /// horizontal layouts.
   ///
   /// Parameters:
-  /// - [children] (List<ResizablePane>, required): The panes to arrange horizontally
+  /// - [children] (`List<ResizablePane>`, required): The panes to arrange horizontally
   /// - [dividerBuilder] (OptionalWidgetBuilder?, optional): Custom divider builder
   /// - [draggerBuilder] (OptionalWidgetBuilder?, optional): Custom dragger builder
   /// - [draggerThickness] (double?, optional): Size of the draggable resize area
@@ -695,7 +695,7 @@ class ResizablePanel extends StatefulWidget {
   /// vertical layouts.
   ///
   /// Parameters:
-  /// - [children] (List<ResizablePane>, required): The panes to arrange vertically
+  /// - [children] (`List<ResizablePane>`, required): The panes to arrange vertically
   /// - [dividerBuilder] (OptionalWidgetBuilder?, optional): Custom divider builder
   /// - [draggerBuilder] (OptionalWidgetBuilder?, optional): Custom dragger builder
   /// - [draggerThickness] (double?, optional): Size of the draggable resize area
@@ -727,7 +727,7 @@ class ResizablePanel extends StatefulWidget {
   ///
   /// Parameters:
   /// - [direction] (Axis, required): The axis along which panes are arranged
-  /// - [children] (List<ResizablePane>, required): The panes to arrange
+  /// - [children] (`List<ResizablePane>`, required): The panes to arrange
   /// - [dividerBuilder] (OptionalWidgetBuilder?, optional): Custom divider builder
   /// - [draggerBuilder] (OptionalWidgetBuilder?, optional): Custom dragger builder
   /// - [draggerThickness] (double?, optional): Size of the draggable resize area

@@ -1,6 +1,3 @@
-import 'package:flutter/services.dart';
-import 'package:syntax_highlight/syntax_highlight.dart';
-
 import '../../../shadcn_flutter.dart';
 
 /// Theme configuration for [CodeSnippet] components.
@@ -63,7 +60,7 @@ class CodeSnippetTheme {
   ///
   /// Parameters:
   /// - [backgroundColor] (Color?, optional): Container background color
-  /// - [borderColor] (Color?, optional): Border outline color  
+  /// - [borderColor] (Color?, optional): Border outline color
   /// - [borderWidth] (double?, optional): Border thickness in pixels
   /// - [borderRadius] (BorderRadiusGeometry?, optional): Corner radius
   /// - [padding] (EdgeInsetsGeometry?, optional): Content padding
@@ -188,18 +185,7 @@ class CodeSnippet extends StatefulWidget {
   /// scrollable code container. Useful for limiting height in layouts.
   final BoxConstraints? constraints;
 
-  /// The source code content to display.
-  ///
-  /// Type: `String`. The raw code text that will be syntax highlighted
-  /// and displayed. Line breaks and indentation are preserved.
-  final String code;
-
-  /// Programming language mode for syntax highlighting.
-  ///
-  /// Type: `String`. Specifies the language for syntax highlighting.
-  /// Supported values: 'dart', 'json', 'yaml', 'sql', 'js', 'ts'.
-  /// Unsupported languages fall back to plain text display.
-  final String mode;
+  final Widget code;
 
   /// Additional action widgets displayed in the top-right corner.
   ///
@@ -216,12 +202,12 @@ class CodeSnippet extends StatefulWidget {
   /// - [code] (String, required): The source code to display
   /// - [mode] (String, required): Programming language for highlighting
   /// - [constraints] (BoxConstraints?, optional): Size constraints for display area
-  /// - [actions] (List<Widget>, default: []): Additional action buttons
+  /// - [actions] (`List<Widget>`, default: []): Additional action buttons
   ///
   /// Example:
   /// ```dart
   /// CodeSnippet(
-  ///   code: 'print("Hello World")',
+  ///   code: Text('print("Hello, World!");'),
   ///   mode: 'dart',
   ///   constraints: BoxConstraints(maxHeight: 150),
   /// );
@@ -231,7 +217,6 @@ class CodeSnippet extends StatefulWidget {
     this.constraints,
     this.actions = const [],
     required this.code,
-    required this.mode,
   });
 
   @override
@@ -239,79 +224,65 @@ class CodeSnippet extends StatefulWidget {
 }
 
 class _CodeSnippetState extends State<CodeSnippet> {
-  static const Set<String> _supportedLanguages = {
-    'json',
-    'yaml',
-    'dart',
-    'sql',
-  };
-  static const Map<String, String> _languageAlias = {
-    'yml': 'yaml',
-    // since its similar to dart, temporarily use dart as fallback to js and ts
-    'js': 'dart',
-    'ts': 'dart',
-    'javascript': 'dart',
-    //
-  };
-  static final Map<String, Future<void>> _initializedLanguages = {};
-  static final Map<Brightness, Future<HighlighterTheme>> _initializedThemes =
-      {};
-  static Future<String?> _initializeLanguage(String mode) {
-    // check for alias
-    if (_languageAlias.containsKey(mode)) {
-      mode = _languageAlias[mode]!;
-    }
-    if (!_supportedLanguages.contains(mode)) {
-      return Future.value(null);
-    }
-    if (_initializedLanguages.containsKey(mode)) {
-      _initializedLanguages[mode]!;
-      return Future.value(mode);
-    }
-    final future = Highlighter.initialize([mode]);
-    _initializedLanguages[mode] = future;
-    return future.then((_) => mode);
-  }
+  // static final Map<String, Future<void>> _initializedLanguages = {};
+  // static final Map<Brightness, Future<HighlighterTheme>> _initializedThemes =
+  //     {};
+  // static Future<String?> _initializeLanguage(String mode) {
+  //   // check for alias
+  //   if (_languageAlias.containsKey(mode)) {
+  //     mode = _languageAlias[mode]!;
+  //   }
+  //   if (!_supportedLanguages.contains(mode)) {
+  //     return Future.value(null);
+  //   }
+  //   if (_initializedLanguages.containsKey(mode)) {
+  //     _initializedLanguages[mode]!;
+  //     return Future.value(mode);
+  //   }
+  //   final future = Highlighter.initialize([mode]);
+  //   _initializedLanguages[mode] = future;
+  //   return future.then((_) => mode);
+  // }
 
-  static Future<HighlighterTheme> _initializeTheme(Brightness brightness) {
-    if (_initializedThemes.containsKey(brightness)) {
-      return _initializedThemes[brightness]!;
-    }
-    final future = HighlighterTheme.loadForBrightness(brightness);
-    _initializedThemes[brightness] = future;
-    return future;
-  }
+  // static Future<HighlighterTheme> _initializeTheme(Brightness brightness) {
+  //   if (_initializedThemes.containsKey(brightness)) {
+  //     return _initializedThemes[brightness]!;
+  //   }
+  //   final future = HighlighterTheme.loadForBrightness(brightness);
+  //   _initializedThemes[brightness] = future;
+  //   return future;
+  // }
 
-  late Future<Highlighter?> _highlighter;
-  Brightness? _brightness;
+  // late Future<Highlighter?> _highlighter;
+  // Brightness? _brightness;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    var newBrightness = Theme.of(context).brightness;
-    if (_brightness != newBrightness) {
-      _brightness = newBrightness;
-      _highlighter = _initializeHighlighter();
-    }
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   var newBrightness = Theme.of(context).brightness;
+  //   if (_brightness != newBrightness) {
+  //     _brightness = newBrightness;
+  //     // _highlighter = _initializeHighlighter();
+  //   }
+  // }
 
-  @override
-  void didUpdateWidget(covariant CodeSnippet oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.mode != widget.mode) {
-      _highlighter = _initializeHighlighter();
-    }
-  }
+  // @override
+  // void didUpdateWidget(covariant CodeSnippet oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (oldWidget.mode != widget.mode) {
+  //     _highlighter = _initializeHighlighter();
+  //   }
+  // }
 
-  Future<Highlighter?> _initializeHighlighter() async {
-    String mode = widget.mode;
-    String? language = await _initializeLanguage(mode);
-    if (language == null) {
-      return null;
-    }
-    final themeData = await _initializeTheme(_brightness ?? Brightness.light);
-    return Highlighter(language: language, theme: themeData);
-  }
+  // Future<Highlighter?> _initializeHighlighter() async {
+  //   String mode = widget.mode;
+  //   String? language = await _initializeLanguage(mode);
+  //   if (language == null) {
+  //     return null;
+  //   }
+  //   final themeData = await _initializeTheme(_brightness ?? Brightness.light);
+  //   return Highlighter(language: language, theme: themeData);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -343,82 +314,65 @@ class _CodeSnippetState extends State<CodeSnippet> {
       ),
     );
 
-    return Semantics(
-      value: widget.code,
-      child: Container(
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          border: Border.all(
-            color: borderColor,
-            width: borderWidth,
-          ),
-          borderRadius: borderRadius,
+    return Container(
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        border: Border.all(
+          color: borderColor,
+          width: borderWidth,
         ),
-        child: Stack(
-          fit: StackFit.passthrough,
-          children: [
-            FutureBuilder(
-                future: _highlighter,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(16),
-                      child: const CircularProgressIndicator(),
-                    );
-                  }
-                  var data = snapshot.data;
-                  return Container(
-                    constraints: widget.constraints,
-                    child: SingleChildScrollView(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        padding: padding,
-                        child: data == null
-                            ? SelectableText(widget.code).muted().mono().small()
-                            : SelectableText.rich(
-                                data.highlight(widget.code),
-                              ).mono().small(),
-                      ),
-                    ),
-                  );
-                }),
-            Positioned(
-              right: 8,
-              top: 8,
-              child: Row(
-                children: [
-                  ...widget.actions,
-                  GhostButton(
-                    density: ButtonDensity.icon,
-                    onPressed: () {
-                      Clipboard.setData(ClipboardData(text: widget.code))
-                          .then((value) {
-                        if (context.mounted) {
-                          showToast(
-                            context: context,
-                            showDuration: const Duration(seconds: 2),
-                            builder: (context, overlay) {
-                              final localizations =
-                                  ShadcnLocalizations.of(context);
-                              return Alert(
-                                leading: const Icon(
-                                  LucideIcons.copyCheck,
-                                ).iconSmall(),
-                                title: Text(localizations.toastSnippetCopied),
-                              );
-                            },
-                          );
-                        }
-                      });
-                    },
-                    child: const Icon(LucideIcons.copy).iconSmall(),
-                  ),
-                ],
-              ).gap(4),
+        borderRadius: borderRadius,
+      ),
+      child: Stack(
+        fit: StackFit.passthrough,
+        children: [
+          Container(
+            constraints: widget.constraints,
+            child: SingleChildScrollView(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: padding,
+                child: widget.code.mono.small.muted,
+              ),
             ),
-          ],
-        ),
+          ),
+          Positioned(
+            right: 8,
+            top: 8,
+            child: Row(
+              children: [
+                ...widget.actions,
+                // if (wid)
+                // GhostButton(
+                //   density: ButtonDensity.icon,
+                //   onPressed: () {
+                //     // Clipboard.setData(ClipboardData(text: widget.code))
+                //     //     .then((value) {
+                //     //   if (context.mounted) {
+                //     //     showToast(
+                //     //       context: context,
+                //     //       showDuration: const Duration(seconds: 2),
+                //     //       builder: (context, overlay) {
+                //     //         final localizations =
+                //     //             ShadcnLocalizations.of(context);
+                //     //         return Alert(
+                //     //           leading: const Icon(
+                //     //             LucideIcons.copyCheck,
+                //     //           ).iconSmall(),
+                //     //           title: Text(localizations.toastSnippetCopied),
+                //     //         );
+                //     //       },
+                //     //     );
+                //     //   }
+                //     // });
+
+                //   },
+                //   child: const Icon(LucideIcons.copy).iconSmall(),
+                // ),
+              ],
+            ).gap(4),
+          ),
+        ],
       ),
     );
   }

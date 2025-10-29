@@ -1,3 +1,4 @@
+import 'package:docs/code_highlighter.dart';
 import 'package:docs/pages/docs/state/data_example_1.dart';
 import 'package:docs/pages/docs/state/data_example_10.dart';
 import 'package:docs/pages/docs/state/data_example_11.dart';
@@ -170,7 +171,7 @@ class _StateManagementPageState extends State<StateManagementPage> {
           const SelectableText(
                   'The MultiData widget allows you to pass multiple data to the children. Take a look at the following example:')
               .p(),
-          const CodeSnippet(
+          const CodeBlock(
             code: 'Data<int>.inherit(\n'
                 '\tdata: counter,\n'
                 '\tchild: Data<String>.inherit(\n'
@@ -185,7 +186,7 @@ class _StateManagementPageState extends State<StateManagementPage> {
           const SelectableText(
                   'You can avoid nesting by using the MultiData widget.')
               .p(),
-          const CodeSnippet(
+          const CodeBlock(
             code: 'MultiData(\n'
                 '\tdataList: [\n'
                 '\t\tData<int>(counter),\n'
@@ -250,7 +251,7 @@ class _StateManagementPageState extends State<StateManagementPage> {
                   'different every time the object is instantiated even if the object has the same '
                   'field values.')
               .p(),
-          const CodeSnippetFutureBuilder(
+          const CodeBlockFutureBuilder(
             path: 'lib/pages/docs/state/data_example_16.dart',
             summarize: false,
           ).p(),
@@ -258,7 +259,7 @@ class _StateManagementPageState extends State<StateManagementPage> {
           const SelectableText(
                   'DistinctData is a mixin that allows you to notify children when specific fields change.')
               .p(),
-          const CodeSnippetFutureBuilder(
+          const CodeBlockFutureBuilder(
             path: 'lib/pages/docs/state/data_example_17.dart',
             summarize: false,
           ).p(),

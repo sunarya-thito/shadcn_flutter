@@ -1,4 +1,4 @@
-library shadcn_flutter;
+library;
 
 // bundle from https://pub.dev/packages/country_flags
 export 'package:country_flags/country_flags.dart' show CountryFlag;

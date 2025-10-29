@@ -177,7 +177,7 @@ abstract class TreeNode<T> {
   /// all other properties including state. Used for structural modifications.
   ///
   /// Parameters:
-  /// - [children] (List<TreeNode<T>>): New list of child nodes
+  /// - [children] (`List<TreeNode<T>>`): New list of child nodes
   ///
   /// Returns: A new `TreeNode<T>` instance with updated children
   ///
@@ -254,7 +254,7 @@ class TreeItem<T> extends TreeNode<T> {
   ///
   /// Parameters:
   /// - [data] (T, required): The data value to store in this tree item
-  /// - [children] (List<TreeNode<T>>, default: []): Child nodes list
+  /// - [children] (`List<TreeNode<T>>`, default: []): Child nodes list
   /// - [expanded] (bool, default: false): Initial expansion state
   /// - [selected] (bool, default: false): Initial selection state
   ///
@@ -380,7 +380,7 @@ class TreeRoot<T> extends TreeNode<T> {
   /// multiple top-level tree items.
   ///
   /// Parameters:
-  /// - [children] (List<TreeNode<T>>, required): Child nodes to contain
+  /// - [children] (`List<TreeNode<T>>`, required): Child nodes to contain
   ///
   /// Example:
   /// ```dart
@@ -1045,8 +1045,8 @@ class TreeView<T> extends StatefulWidget {
   ///
   /// Parameters:
   /// - [key] (Key?): Widget identifier for the widget tree
-  /// - [nodes] (List<TreeNode<T>>, required): Root-level tree nodes to display  
-  /// - [builder] (Widget Function(BuildContext, TreeItem<T>), required): Builder for tree items
+  /// - [nodes] (`List<TreeNode<T>>`, required): Root-level tree nodes to display  
+  /// - [builder] (Widget Function(BuildContext, `TreeItem<T>`), required): Builder for tree items
   /// - [shrinkWrap] (bool, default: false): Whether to size to content
   /// - [controller] (ScrollController?, optional): Scroll controller for the tree
   /// - [branchLine] (BranchLine?, optional): Style for connecting lines
@@ -1054,7 +1054,7 @@ class TreeView<T> extends StatefulWidget {
   /// - [expandIcon] (bool?, optional): Whether to show expand/collapse icons
   /// - [allowMultiSelect] (bool?, optional): Whether to allow multi-selection
   /// - [focusNode] (FocusScopeNode?, optional): Focus node for keyboard navigation
-  /// - [onSelectionChanged] (TreeNodeSelectionChanged<T>?, optional): Selection callback
+  /// - [onSelectionChanged] (`TreeNodeSelectionChanged<T>?`, optional): Selection callback
   /// - [recursiveSelection] (bool?, optional): Whether to select children recursively
   ///
   /// Example:
@@ -1432,7 +1432,7 @@ abstract class BranchLine {
   ///
   /// Parameters:
   /// - [context] (BuildContext): Build context for theme access
-  /// - [depth] (List<TreeNodeDepth>): Hierarchical depth information
+  /// - [depth] (`List<TreeNodeDepth>`): Hierarchical depth information
   /// - [index] (int): Index within the current depth level
   ///
   /// Returns: A [Widget] representing the branch line visualization
@@ -1661,7 +1661,7 @@ class TreeItemView extends StatefulWidget {
   /// - [trailing] (Widget?, optional): Widget displayed after the content  
   /// - [onPressed] (VoidCallback?, optional): Callback for press/click events
   /// - [onDoublePressed] (VoidCallback?, optional): Callback for double-click events
-  /// - [onExpand] (ValueChanged<bool>?, optional): Callback for expansion changes
+  /// - [onExpand] (`ValueChanged<bool>?`, optional): Callback for expansion changes
   /// - [expandable] (bool?, optional): Whether the item can be expanded
   /// - [focusNode] (FocusNode?, optional): Focus node for keyboard navigation
   ///

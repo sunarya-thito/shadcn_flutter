@@ -59,8 +59,8 @@ class Switcher extends StatefulWidget {
   /// Parameters:
   /// - [index] (int, default: 0): initial active child index
   /// - [direction] (AxisDirection, required): swipe transition direction
-  /// - [children] (List<Widget>, required): child widgets to switch between
-  /// - [onIndexChanged] (ValueChanged<int>?): called when index changes
+  /// - [children] (`List<Widget>`, required): child widgets to switch between
+  /// - [onIndexChanged] (`ValueChanged<int>?`): called when index changes
   /// - [duration] (Duration, default: 300ms): transition animation duration
   /// - [curve] (Curve, default: Curves.easeInOut): transition animation curve
   ///

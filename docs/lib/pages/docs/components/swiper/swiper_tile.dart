@@ -50,7 +50,8 @@ class SwiperTile extends StatelessWidget implements IComponentPage {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.background.withOpacity(0.8),
+                      color:
+                          theme.colorScheme.background.withValues(alpha: 0.8),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.chevron_left, size: 20),
@@ -66,7 +67,8 @@ class SwiperTile extends StatelessWidget implements IComponentPage {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.background.withOpacity(0.8),
+                      color:
+                          theme.colorScheme.background.withValues(alpha: 0.8),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.chevron_right, size: 20),
@@ -95,7 +97,7 @@ class SwiperTile extends StatelessWidget implements IComponentPage {
                       height: 8,
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primaryForeground
-                            .withOpacity(0.5),
+                            .withValues(alpha: 0.5),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -105,7 +107,7 @@ class SwiperTile extends StatelessWidget implements IComponentPage {
                       height: 8,
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primaryForeground
-                            .withOpacity(0.5),
+                            .withValues(alpha: 0.5),
                         shape: BoxShape.circle,
                       ),
                     ),

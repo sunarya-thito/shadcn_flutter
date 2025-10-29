@@ -40,7 +40,7 @@ abstract class Validator<T> {
   /// - [value] (T?): The value to validate (may be null)
   /// - [lifecycle] (FormValidationMode): The current validation trigger mode
   ///
-  /// Returns a [FutureOr<ValidationResult?>] that is null for valid values
+  /// Returns a `FutureOr<ValidationResult?>` that is null for valid values
   /// or contains error information for invalid values.
   FutureOr<ValidationResult?> validate(
       BuildContext context, T? value, FormValidationMode lifecycle);
@@ -51,7 +51,7 @@ abstract class Validator<T> {
   /// If either validator fails, the combined validator fails.
   ///
   /// Parameters:
-  /// - [other] (Validator<T>): The validator to combine with this one
+  /// - [other] (`Validator<T>`): The validator to combine with this one
   ///
   /// Returns a new [CompositeValidator] that requires both validators to pass.
   ///
@@ -82,7 +82,7 @@ abstract class Validator<T> {
   /// Only if both validators fail will the combined validator fail.
   ///
   /// Parameters:
-  /// - [other] (Validator<T>): The validator to combine with this one using OR logic
+  /// - [other] (`Validator<T>`): The validator to combine with this one using OR logic
   ///
   /// Returns a new [OrValidator] that requires at least one validator to pass.
   ///
@@ -218,7 +218,7 @@ class ValidationMode<T> extends Validator<T> {
 ///
 /// This type alias represents a predicate function that can be either synchronous
 /// or asynchronous, accepting a nullable value of type [T] and returning either
-/// a boolean or a [Future<bool>]. Used primarily for conditional validation logic.
+/// a boolean or a `Future<bool>`. Used primarily for conditional validation logic.
 ///
 /// The generic type [T] represents the type of value being evaluated.
 ///
@@ -1616,7 +1616,7 @@ class FormController extends ChangeNotifier {
   /// fields. The map is rebuilt on each access to reflect the latest values
   /// from all active form fields.
   ///
-  /// Returns a Map<FormKey, Object?> where each key corresponds to a form field
+  /// Returns a `Map<FormKey, Object?>` where each key corresponds to a form field
   /// and each value is the current value of that field.
   Map<FormKey, Object?> get values {
     return {
@@ -1634,9 +1634,9 @@ class FormController extends ChangeNotifier {
   ///
   /// This getter provides access to the validation state of all registered
   /// form fields. Values can be either synchronous ValidationResult objects
-  /// or Future<ValidationResult?> for asynchronous validation.
+  /// or `Future<ValidationResult?>` for asynchronous validation.
   ///
-  /// Returns a Map<FormKey, FutureOr<ValidationResult?>> representing the
+  /// Returns a `Map<FormKey, FutureOr<ValidationResult?>>` representing the
   /// current validation state of all form fields.
   Map<FormKey, FutureOr<ValidationResult?>> get validities {
     return {for (var entry in _validity.entries) entry.key: entry.value.result};
@@ -1648,7 +1648,7 @@ class FormController extends ChangeNotifier {
   /// validation errors. For asynchronous validations that are still pending,
   /// a [WaitingResult] is included to indicate the validation is in progress.
   ///
-  /// Returns a Map<FormKey, ValidationResult> containing only fields with errors.
+  /// Returns a `Map<FormKey, ValidationResult>` containing only fields with errors.
   Map<FormKey, ValidationResult> get errors {
     final errors = <FormKey, ValidationResult>{};
     for (var entry in _validity.entries) {

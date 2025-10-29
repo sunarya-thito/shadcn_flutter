@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 // Shows how to open a contextual popover anchored to a button, with a custom
@@ -83,7 +84,9 @@ class PopoverExample1 extends StatelessWidget {
           },
         ).future.then((_) {
           // Optional completion hook after the popover is dismissed.
-          print('Popover closed');
+          if (kDebugMode) {
+            print('Popover closed');
+          }
         });
       },
       child: const Text('Open popover'),

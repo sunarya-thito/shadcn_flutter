@@ -1,4 +1,4 @@
-library shadcn_flutter_extension;
+library;
 
 // This file exports extensions only.
 

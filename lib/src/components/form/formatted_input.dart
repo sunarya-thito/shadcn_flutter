@@ -452,7 +452,7 @@ class FormattedValue {
 
 /// A controller for managing [FormattedInput] values programmatically.
 ///
-/// This controller extends [ValueNotifier<FormattedValue>] to provide reactive
+/// This controller extends `ValueNotifier<FormattedValue>` to provide reactive
 /// state management for formatted input components. It implements [ComponentController]
 /// to integrate with the controlled component system, allowing external control
 /// and listening to formatted input changes.
@@ -516,20 +516,20 @@ class FormattedInput extends StatefulWidget
   final bool enabled;
   @override
   final FormattedInputController? controller;
-  
+
   /// Text style applied to all input segments.
   ///
   /// This style affects both static text and editable input fields within
   /// the formatted input. Using a monospace font family is recommended
   /// for consistent character spacing across segments.
   final TextStyle? style;
-  
+
   /// Widget displayed at the beginning of the input.
   ///
   /// Commonly used for icons or labels that provide context for the input
   /// content, such as a phone icon for phone number inputs.
   final Widget? leading;
-  
+
   /// Widget displayed at the end of the input.
   ///
   /// Can be used for action buttons, status indicators, or additional
@@ -544,7 +544,7 @@ class FormattedInput extends StatefulWidget
   ///
   /// Parameters:
   /// - [initialValue] (FormattedValue?, optional): Initial structure and values
-  /// - [onChanged] (ValueChanged<FormattedValue>?, optional): Callback for value changes
+  /// - [onChanged] (`ValueChanged<FormattedValue>?`, optional): Callback for value changes
   /// - [style] (TextStyle?, optional): Text styling for all segments
   /// - [leading] (Widget?, optional): Widget displayed before the input
   /// - [trailing] (Widget?, optional): Widget displayed after the input

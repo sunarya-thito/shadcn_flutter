@@ -1,3 +1,4 @@
+import 'package:docs/code_highlighter.dart';
 import 'package:docs/main.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -252,7 +253,7 @@ class _ThemePageState extends State<ThemePage> {
 
           const Text('Code').h2().anchored(codeKey),
           const Text('Use the following code to apply the color scheme.').p(),
-          CodeSnippet(
+          CodeBlock(
             code: customColorScheme ? buildCustomCode() : buildPremadeCode(),
             mode: 'dart',
           ).p(),

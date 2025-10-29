@@ -6,10 +6,10 @@ class ToggleExample1 extends StatefulWidget {
   const ToggleExample1({super.key});
 
   @override
-  _ToggleExample1State createState() => _ToggleExample1State();
+  ToggleExample1State createState() => ToggleExample1State();
 }
 
-class _ToggleExample1State extends State<ToggleExample1> {
+class ToggleExample1State extends State<ToggleExample1> {
   bool value = false;
 
   @override

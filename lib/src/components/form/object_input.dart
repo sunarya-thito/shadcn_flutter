@@ -21,7 +21,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = DatePickerController(DateTime.now());
-/// 
+///
 /// DateInput(
 ///   controller: controller,
 ///   mode: PromptMode.popover,
@@ -32,7 +32,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// **Callback-based (simple state management):**
 /// ```dart
 /// DateTime? selectedDate;
-/// 
+///
 /// DateInput(
 ///   initialValue: selectedDate,
 ///   onChanged: (date) => setState(() => selectedDate = date),
@@ -72,7 +72,7 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
   /// Parameters:
   /// - [controller] (DatePickerController?, optional): external state controller
   /// - [initialValue] (DateTime?, optional): starting date when no controller
-  /// - [onChanged] (ValueChanged<DateTime?>?, optional): date change callback
+  /// - [onChanged] (`ValueChanged<DateTime?>?`, optional): date change callback
   /// - [enabled] (bool, default: true): whether input is interactive
   /// - [placeholder] (Widget?, optional): widget shown when no date selected
   /// - [mode] (PromptMode, default: dialog): date picker presentation mode
@@ -83,9 +83,9 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
   /// - [dialogTitle] (Widget?, optional): title for dialog mode
   /// - [initialViewType] (CalendarViewType?, optional): calendar view type
   /// - [stateBuilder] (DateStateBuilder?, optional): custom date state builder
-  /// - [datePartsOrder] (List<DatePart>?, optional): order of date components
+  /// - [datePartsOrder] (`List<DatePart>?`, optional): order of date components
   /// - [separator] (InputPart?, optional): separator between date parts
-  /// - [placeholders] (Map<DatePart, Widget>?, optional): placeholders for date parts
+  /// - [placeholders] (`Map<DatePart, Widget>?`, optional): placeholders for date parts
   ///
   /// Example:
   /// ```dart
@@ -440,7 +440,7 @@ class NullableTimeOfDay {
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = ComponentController<TimeOfDay?>(TimeOfDay.now());
-/// 
+///
 /// TimeInput(
 ///   controller: controller,
 ///   showSeconds: true,
@@ -451,7 +451,7 @@ class NullableTimeOfDay {
 /// **Callback-based (simple state management):**
 /// ```dart
 /// TimeOfDay? selectedTime;
-/// 
+///
 /// TimeInput(
 ///   initialValue: selectedTime,
 ///   onChanged: (time) => setState(() => selectedTime = time),
@@ -481,14 +481,14 @@ class TimeInput extends StatefulWidget with ControlledComponent<TimeOfDay?> {
   /// patterns with structured time component entry.
   ///
   /// Parameters:
-  /// - [controller] (ComponentController<TimeOfDay?>?, optional): external state controller
+  /// - [controller] (`ComponentController<TimeOfDay?>?`, optional): external state controller
   /// - [initialValue] (TimeOfDay?, optional): starting time when no controller
-  /// - [onChanged] (ValueChanged<TimeOfDay?>?, optional): time change callback
+  /// - [onChanged] (`ValueChanged<TimeOfDay?>?`, optional): time change callback
   /// - [enabled] (bool, default: true): whether input is interactive
   /// - [placeholder] (Widget?, optional): widget shown when no time selected
   /// - [showSeconds] (bool, default: false): whether to include seconds input
   /// - [separator] (InputPart?, optional): separator between time components
-  /// - [placeholders] (Map<TimePart, Widget>?, optional): placeholders for time parts
+  /// - [placeholders] (`Map<TimePart, Widget>?`, optional): placeholders for time parts
   ///
   /// Example:
   /// ```dart
@@ -657,7 +657,7 @@ class _TimeInputState extends State<TimeInput> {
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = ComponentController<Duration?>(Duration(hours: 1, minutes: 30));
-/// 
+///
 /// DurationInput(
 ///   controller: controller,
 ///   showSeconds: true,
@@ -668,7 +668,7 @@ class _TimeInputState extends State<TimeInput> {
 /// **Callback-based (simple state management):**
 /// ```dart
 /// Duration? selectedDuration;
-/// 
+///
 /// DurationInput(
 ///   initialValue: selectedDuration,
 ///   onChanged: (duration) => setState(() => selectedDuration = duration),
@@ -698,14 +698,14 @@ class DurationInput extends StatefulWidget with ControlledComponent<Duration?> {
   /// patterns with structured duration component entry.
   ///
   /// Parameters:
-  /// - [controller] (ComponentController<Duration?>?, optional): external state controller
+  /// - [controller] (`ComponentController<Duration?>?`, optional): external state controller
   /// - [initialValue] (Duration?, optional): starting duration when no controller
-  /// - [onChanged] (ValueChanged<Duration?>?, optional): duration change callback
+  /// - [onChanged] (`ValueChanged<Duration?>?`, optional): duration change callback
   /// - [enabled] (bool, default: true): whether input is interactive
   /// - [placeholder] (Widget?, optional): widget shown when no duration selected
   /// - [showSeconds] (bool, default: false): whether to include seconds input
   /// - [separator] (InputPart?, optional): separator between duration components
-  /// - [placeholders] (Map<TimePart, Widget>?, optional): placeholders for time parts
+  /// - [placeholders] (`Map<TimePart, Widget>?`, optional): placeholders for time parts
   ///
   /// Example:
   /// ```dart

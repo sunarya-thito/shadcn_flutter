@@ -416,7 +416,7 @@ class NavigationMenuContentList extends StatelessWidget {
   /// grid's appearance and spacing.
   ///
   /// Parameters:
-  /// - [children] (List<Widget>, required): Items to arrange in grid
+  /// - [children] (`List<Widget>`, required): Items to arrange in grid
   /// - [crossAxisCount] (int, default: 3): Number of columns per row
   /// - [spacing] (double?, optional): Horizontal spacing between items
   /// - [runSpacing] (double?, optional): Vertical spacing between rows
@@ -551,7 +551,7 @@ class NavigationMenu extends StatefulWidget {
   /// Parameters:
   /// - [surfaceOpacity] (double?, optional): Popover background opacity
   /// - [surfaceBlur] (double?, optional): Popover backdrop blur intensity
-  /// - [children] (List<Widget>, required): Menu items to display
+  /// - [children] (`List<Widget>`, required): Menu items to display
   ///
   /// Example:
   /// ```dart

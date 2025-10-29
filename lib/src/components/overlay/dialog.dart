@@ -180,7 +180,7 @@ class ModalBackdrop extends StatelessWidget {
   /// - [borderRadius] (BorderRadiusGeometry?, optional): corner radius for cutout
   /// - [barrierColor] (Color?, optional): backdrop color, defaults to black with 80% opacity
   /// - [padding] (EdgeInsetsGeometry?, optional): padding around child
-  /// - [fadeAnimation] (Animation<double>?, optional): fade transition animation
+  /// - [fadeAnimation] (`Animation<double>?`, optional): fade transition animation
   ///
   /// Example:
   /// ```dart
@@ -355,7 +355,7 @@ class ModalContainer extends StatelessWidget {
   /// - [clipBehavior] (Clip, default: Clip.none): clipping behavior for content
   /// - [borderColor] (Color?, optional): border color
   /// - [borderWidth] (double?, optional): border width in logical pixels
-  /// - [boxShadow] (List<BoxShadow>?, optional): drop shadow effects
+  /// - [boxShadow] (`List<BoxShadow>?`, optional): drop shadow effects
   /// - [surfaceOpacity] (double?, optional): backdrop opacity level
   /// - [surfaceBlur] (double?, optional): backdrop blur intensity
   /// - [duration] (Duration?, optional): animation duration for transitions
@@ -1098,7 +1098,7 @@ class DialogOverlayCompleter<T> extends OverlayCompleter<T> {
   /// Creates a [DialogOverlayCompleter].
   ///
   /// Parameters:
-  /// - [route] (DialogRoute<T>, required): the dialog route to manage
+  /// - [route] (`DialogRoute<T>`, required): the dialog route to manage
   ///
   /// Example:
   /// ```dart

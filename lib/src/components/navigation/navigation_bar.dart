@@ -582,13 +582,13 @@ class NavigationRail extends StatefulWidget {
   /// to specific layout requirements and design systems.
   ///
   /// Parameters:
-  /// - [children] (List<NavigationBarItem>, required): Navigation destinations
+  /// - [children] (`List<NavigationBarItem>`, required): Navigation destinations
   /// - [alignment] (NavigationRailAlignment, default: center): Item alignment along main axis
   /// - [direction] (Axis, default: vertical): Layout orientation of the rail
   /// - [labelType] (NavigationLabelType, default: selected): When to show labels
   /// - [labelPosition] (NavigationLabelPosition, default: bottom): Label positioning
   /// - [index] (int?, optional): Currently selected item index
-  /// - [onSelected] (ValueChanged<int>?, optional): Selection change callback
+  /// - [onSelected] (`ValueChanged<int>?`, optional): Selection change callback
   ///
   /// Example:
   /// ```dart
@@ -849,12 +849,12 @@ class NavigationSidebar extends StatefulWidget {
   /// suitable for desktop and tablet interfaces.
   ///
   /// Parameters:
-  /// - [children] (List<NavigationBarItem>, required): Navigation destinations
+  /// - [children] (`List<NavigationBarItem>`, required): Navigation destinations
   /// - [labelType] (NavigationLabelType, default: expanded): Label display behavior
   /// - [labelPosition] (NavigationLabelPosition, default: end): Label positioning
   /// - [labelSize] (NavigationLabelSize, default: large): Size variant for items
   /// - [index] (int?, optional): Currently selected item index
-  /// - [onSelected] (ValueChanged<int>?, optional): Selection change callback
+  /// - [onSelected] (`ValueChanged<int>?`, optional): Selection change callback
   /// - [expanded] (bool, default: true): Whether to fill available width
   ///
   /// Example:

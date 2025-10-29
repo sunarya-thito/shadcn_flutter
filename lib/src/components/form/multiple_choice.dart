@@ -43,7 +43,7 @@ mixin Choice<T> {
 
 /// A controller for managing [ControlledMultipleAnswer] selections programmatically.
 ///
-/// This controller extends [ValueNotifier<Iterable<T>?>] to provide reactive
+/// This controller extends `ValueNotifier<Iterable<T>?>` to provide reactive
 /// state management for multiple selection components. It implements [ComponentController]
 /// to integrate with the controlled component system, allowing external control
 /// and listening to selection changes.
@@ -60,13 +60,13 @@ class MultipleAnswerController<T> extends ValueNotifier<Iterable<T>?>
   /// Creates a [MultipleAnswerController] with an optional initial selection.
   ///
   /// Parameters:
-  /// - [value] (Iterable<T>?, optional): Initial selection of items
+  /// - [value] (`Iterable<T>?`, optional): Initial selection of items
   MultipleAnswerController([super.value]);
 }
 
 /// A controller for managing [ControlledMultipleChoice] selection programmatically.
 ///
-/// This controller extends [ValueNotifier<T?>] to provide reactive state
+/// This controller extends `ValueNotifier<T?>` to provide reactive state
 /// management for single-choice components. It implements [ComponentController]
 /// to integrate with the controlled component system, allowing external control
 /// and listening to selection changes.
@@ -124,13 +124,13 @@ class ControlledMultipleAnswer<T> extends StatelessWidget
   final ValueChanged<Iterable<T>?>? onChanged;
   @override
   final bool enabled;
-  
+
   /// Whether selected items can be deselected by selecting them again.
   ///
   /// When true, users can toggle selections by clicking selected items to
   /// deselect them. When false, items remain selected once chosen.
   final bool? allowUnselect;
-  
+
   /// The widget subtree containing selectable choice items.
   ///
   /// Child widgets should provide choice items that use [Choice.choose]
@@ -144,9 +144,9 @@ class ControlledMultipleAnswer<T> extends StatelessWidget
   /// that integrate with the multiple selection system.
   ///
   /// Parameters:
-  /// - [controller] (MultipleAnswerController<T>?, optional): External controller for programmatic control
-  /// - [initialValue] (Iterable<T>?, optional): Initial selection when no controller provided
-  /// - [onChanged] (ValueChanged<Iterable<T>?>?, optional): Callback for selection changes
+  /// - [controller] (`MultipleAnswerController<T>?`, optional): External controller for programmatic control
+  /// - [initialValue] (`Iterable<T>?`, optional): Initial selection when no controller provided
+  /// - [onChanged] (`ValueChanged<Iterable<T>?>?`, optional): Callback for selection changes
   /// - [enabled] (bool, default: true): Whether selections can be modified
   /// - [allowUnselect] (bool?, optional): Whether items can be deselected by re-selection
   /// - [child] (Widget, required): Container with selectable choice items
@@ -227,14 +227,14 @@ class ControlledMultipleChoice<T> extends StatelessWidget
   final ValueChanged<T?>? onChanged;
   @override
   final bool enabled;
-  
+
   /// Whether the selected item can be deselected by selecting it again.
   ///
   /// When true, users can deselect the current selection by clicking it again,
   /// setting the value to null. When false, once an item is selected, it
   /// remains selected until another item is chosen.
   final bool? allowUnselect;
-  
+
   /// The widget subtree containing selectable choice items.
   ///
   /// Child widgets should provide choice items that use [Choice.choose]
@@ -248,9 +248,9 @@ class ControlledMultipleChoice<T> extends StatelessWidget
   /// that integrate with the single selection system.
   ///
   /// Parameters:
-  /// - [controller] (MultipleChoiceController<T>?, optional): External controller for programmatic control
+  /// - [controller] (`MultipleChoiceController<T>?`, optional): External controller for programmatic control
   /// - [initialValue] (T?, optional): Initial selection when no controller provided
-  /// - [onChanged] (ValueChanged<T?>?, optional): Callback for selection changes
+  /// - [onChanged] (`ValueChanged<T?>?`, optional): Callback for selection changes
   /// - [enabled] (bool, default: true): Whether selection can be modified
   /// - [allowUnselect] (bool?, optional): Whether selection can be cleared by re-selection
   /// - [child] (Widget, required): Container with selectable choice items

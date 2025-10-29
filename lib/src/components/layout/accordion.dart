@@ -56,7 +56,7 @@ class Accordion extends StatefulWidget {
   /// Creates an [Accordion] widget with the specified items.
   ///
   /// Parameters:
-  /// - [items] (List<Widget>, required): List of [AccordionItem] widgets to display.
+  /// - [items] (`List<Widget>`, required): List of [AccordionItem] widgets to display.
   ///
   /// The accordion automatically handles:
   /// - State management for mutual exclusion of expanded items

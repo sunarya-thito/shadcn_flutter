@@ -109,7 +109,7 @@ class Steps extends StatelessWidget {
   /// displayed with an automatically numbered circular indicator.
   ///
   /// Parameters:
-  /// - [children] (List<Widget>, required): list of widgets representing each step
+  /// - [children] (`List<Widget>`, required): list of widgets representing each step
   ///
   /// Example:
   /// ```dart

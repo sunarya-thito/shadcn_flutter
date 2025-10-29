@@ -96,12 +96,12 @@ class SelectTheme {
 /// Example:
 /// ```dart
 /// final controller = SelectController<String>('initial');
-/// 
+///
 /// // Listen to changes
 /// controller.addListener(() {
 ///   print('Selection changed to: ${controller.value}');
 /// });
-/// 
+///
 /// // Update selection
 /// controller.value = 'new_value';
 /// ```
@@ -137,7 +137,7 @@ class SelectController<T> extends ValueNotifier<T?>
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = SelectController<String>('apple');
-/// 
+///
 /// ControlledSelect<String>(
 ///   controller: controller,
 ///   items: ['apple', 'banana', 'cherry'],
@@ -149,7 +149,7 @@ class SelectController<T> extends ValueNotifier<T?>
 /// **Callback-based (simple state management):**
 /// ```dart
 /// String? selectedFruit;
-/// 
+///
 /// ControlledSelect<String>(
 ///   initialValue: selectedFruit,
 ///   onChanged: (fruit) => setState(() => selectedFruit = fruit),
@@ -212,9 +212,9 @@ class ControlledSelect<T> extends StatelessWidget
   /// patterns depending on application architecture needs.
   ///
   /// Parameters:
-  /// - [controller] (SelectController<T>?, optional): external state controller
+  /// - [controller] (`SelectController<T>?`, optional): external state controller
   /// - [initialValue] (T?, optional): starting selection when no controller
-  /// - [onChanged] (ValueChanged<T?>?, optional): selection change callback
+  /// - [onChanged] (`ValueChanged<T?>?`, optional): selection change callback
   /// - [enabled] (bool, default: true): whether select is interactive
   /// - [placeholder] (Widget?, optional): widget shown when no item selected
   /// - [filled] (bool, default: false): whether to use filled appearance
@@ -230,10 +230,10 @@ class ControlledSelect<T> extends StatelessWidget
   /// - [canUnselect] (bool, default: false): allow deselecting current item
   /// - [autoClosePopover] (bool, default: true): close popup after selection
   /// - [popup] (SelectPopupBuilder, required): builder for popup content
-  /// - [itemBuilder] (SelectItemBuilder<T>, required): builder for individual items
-  /// - [valueSelectionHandler] (SelectValueSelectionHandler<T>?, optional): custom selection logic
-  /// - [valueSelectionPredicate] (SelectValueSelectionPredicate<T>?, optional): selection validation
-  /// - [showValuePredicate] (Predicate<T>?, optional): visibility filter for values
+  /// - [itemBuilder] (`SelectItemBuilder<T>`, required): builder for individual items
+  /// - [valueSelectionHandler] (`SelectValueSelectionHandler<T>?`, optional): custom selection logic
+  /// - [valueSelectionPredicate] (`SelectValueSelectionPredicate<T>?`, optional): selection validation
+  /// - [showValuePredicate] (`Predicate<T>?`, optional): visibility filter for values
   ///
   /// Example:
   /// ```dart
@@ -315,12 +315,12 @@ class ControlledSelect<T> extends StatelessWidget
 /// Example:
 /// ```dart
 /// final controller = MultiSelectController<String>(['apple', 'banana']);
-/// 
+///
 /// // Listen to changes
 /// controller.addListener(() {
 ///   print('Selection changed to: ${controller.value}');
 /// });
-/// 
+///
 /// // Update selection
 /// controller.value = ['apple', 'cherry'];
 /// ```
@@ -331,7 +331,7 @@ class MultiSelectController<T> extends SelectController<Iterable<T>> {
   /// Can be null or empty to start with no selections.
   ///
   /// Parameters:
-  /// - [value] (Iterable<T>?, optional): Initial selected items
+  /// - [value] (`Iterable<T>?`, optional): Initial selected items
   MultiSelectController([super.value]);
 }
 
@@ -356,7 +356,7 @@ class MultiSelectController<T> extends SelectController<Iterable<T>> {
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = MultiSelectController<String>(['apple']);
-/// 
+///
 /// ControlledMultiSelect<String>(
 ///   controller: controller,
 ///   items: ['apple', 'banana', 'cherry', 'date'],
@@ -371,7 +371,7 @@ class MultiSelectController<T> extends SelectController<Iterable<T>> {
 /// **Callback-based (simple state management):**
 /// ```dart
 /// List<String> selectedFruits = [];
-/// 
+///
 /// ControlledMultiSelect<String>(
 ///   initialValue: selectedFruits,
 ///   onChanged: (fruits) => setState(() => selectedFruits = fruits?.toList() ?? []),
@@ -437,9 +437,9 @@ class ControlledMultiSelect<T> extends StatelessWidget
   /// patterns with multiple item selection capabilities.
   ///
   /// Parameters:
-  /// - [controller] (MultiSelectController<T>?, optional): external state controller
-  /// - [initialValue] (Iterable<T>?, optional): starting selection when no controller
-  /// - [onChanged] (ValueChanged<Iterable<T>?>?, optional): selection change callback
+  /// - [controller] (`MultiSelectController<T>?`, optional): external state controller
+  /// - [initialValue] (`Iterable<T>?`, optional): starting selection when no controller
+  /// - [onChanged] (`ValueChanged<Iterable<T>?>?`, optional): selection change callback
   /// - [enabled] (bool, default: true): whether select is interactive
   /// - [placeholder] (Widget?, optional): widget shown when no items selected
   /// - [filled] (bool, default: false): whether to use filled appearance
@@ -455,11 +455,11 @@ class ControlledMultiSelect<T> extends StatelessWidget
   /// - [canUnselect] (bool, default: false): allow deselecting all items
   /// - [autoClosePopover] (bool, default: false): close popup after each selection
   /// - [popup] (SelectPopupBuilder, required): builder for popup content
-  /// - [itemBuilder] (SelectItemBuilder<T>, required): builder for individual items
-  /// - [multiItemBuilder] (SelectValueBuilder<T>, required): builder for selected items display
-  /// - [valueSelectionHandler] (SelectValueSelectionHandler<Iterable<T>>?, optional): custom selection logic
-  /// - [valueSelectionPredicate] (SelectValueSelectionPredicate<Iterable<T>>?, optional): selection validation
-  /// - [showValuePredicate] (Predicate<Iterable<T>>?, optional): visibility filter for values
+  /// - [itemBuilder] (`SelectItemBuilder<T>`, required): builder for individual items
+  /// - [multiItemBuilder] (`SelectValueBuilder<T>`, required): builder for selected items display
+  /// - [valueSelectionHandler] (`SelectValueSelectionHandler<Iterable<T>>?`, optional): custom selection logic
+  /// - [valueSelectionPredicate] (`SelectValueSelectionPredicate<Iterable<T>>?`, optional): selection validation
+  /// - [showValuePredicate] (`Predicate<Iterable<T>>?`, optional): visibility filter for values
   ///
   /// Example:
   /// ```dart

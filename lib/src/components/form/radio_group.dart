@@ -1,4 +1,3 @@
-
 import '../../../shadcn_flutter.dart';
 
 /// Theme data for customizing [Radio] widget appearance.
@@ -80,31 +79,31 @@ class Radio extends StatelessWidget {
   /// When true, displays the inner selection indicator.
   /// When false, shows only the outer circle border.
   final bool value;
-  
+
   /// Whether this radio button currently has focus.
   ///
   /// When true, displays a focus outline around the radio button
   /// for accessibility and keyboard navigation indication.
   final bool focusing;
-  
+
   /// Size of the radio button in logical pixels.
   ///
   /// Controls both the width and height of the circular radio button.
   /// If null, uses the size from the current [RadioTheme].
   final double? size;
-  
+
   /// Color of the inner selection indicator when selected.
   ///
   /// Applied to the inner dot that appears when [value] is true.
   /// If null, uses the activeColor from the current [RadioTheme].
   final Color? activeColor;
-  
+
   /// Color of the outer border circle.
   ///
   /// Applied to the border of the radio button in both selected and
   /// unselected states. If null, uses the borderColor from the current [RadioTheme].
   final Color? borderColor;
-  
+
   /// Background color of the radio button circle.
   ///
   /// Applied as the fill color behind the border. If null, uses the
@@ -608,12 +607,12 @@ class _RadioCardState<T> extends State<RadioCard<T>> {
 /// Example:
 /// ```dart
 /// final controller = RadioGroupController<String>('option1');
-/// 
+///
 /// // Listen to changes
 /// controller.addListener(() {
 ///   print('Selection changed to: ${controller.value}');
 /// });
-/// 
+///
 /// // Update selection
 /// controller.value = 'option2';
 /// ```
@@ -648,7 +647,7 @@ class RadioGroupController<T> extends ValueNotifier<T?>
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = RadioGroupController<String>('small');
-/// 
+///
 /// ControlledRadioGroup<String>(
 ///   controller: controller,
 ///   child: Column(
@@ -664,7 +663,7 @@ class RadioGroupController<T> extends ValueNotifier<T?>
 /// **Callback-based (simple state management):**
 /// ```dart
 /// String? selectedSize;
-/// 
+///
 /// ControlledRadioGroup<String>(
 ///   initialValue: selectedSize,
 ///   onChanged: (size) => setState(() => selectedSize = size),
@@ -702,9 +701,9 @@ class ControlledRadioGroup<T> extends StatelessWidget
   /// patterns with automatic mutual exclusion between radio options.
   ///
   /// Parameters:
-  /// - [controller] (RadioGroupController<T>?, optional): external state controller
+  /// - [controller] (`RadioGroupController<T>?`, optional): external state controller
   /// - [initialValue] (T?, optional): starting selection when no controller
-  /// - [onChanged] (ValueChanged<T?>?, optional): selection change callback
+  /// - [onChanged] (`ValueChanged<T?>?`, optional): selection change callback
   /// - [enabled] (bool, default: true): whether radio group is interactive
   /// - [child] (Widget, required): layout containing radio buttons
   ///

@@ -173,7 +173,7 @@ class ControlledStarRating extends StatelessWidget
   /// Parameters:
   /// - [controller] (StarRatingController?, optional): external state controller
   /// - [initialValue] (double, default: 0.0): starting rating when no controller
-  /// - [onChanged] (ValueChanged<double>?, optional): rating change callback
+  /// - [onChanged] (`ValueChanged<double>?`, optional): rating change callback
   /// - [enabled] (bool, default: true): whether star rating is interactive
   /// - [step] (double, default: 0.5): minimum increment for rating changes
   /// - [direction] (Axis, default: horizontal): layout direction of stars

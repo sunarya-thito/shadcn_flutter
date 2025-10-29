@@ -178,17 +178,17 @@ class Sortable<T> extends StatefulWidget {
   ///
   /// Parameters:
   /// - [key] (Key?): Widget identifier for the widget tree
-  /// - [data] (SortableData<T>, required): Data associated with this sortable item
+  /// - [data] (`SortableData<T>`, required): Data associated with this sortable item
   /// - [child] (Widget, required): The main widget to make sortable
   /// - [enabled] (bool, default: true): Whether drag interactions are enabled
-  /// - [canAcceptTop] (Predicate<SortableData<T>>?, optional): Validation for top drops
-  /// - [canAcceptLeft] (Predicate<SortableData<T>>?, optional): Validation for left drops
-  /// - [canAcceptRight] (Predicate<SortableData<T>>?, optional): Validation for right drops
-  /// - [canAcceptBottom] (Predicate<SortableData<T>>?, optional): Validation for bottom drops
-  /// - [onAcceptTop] (ValueChanged<SortableData<T>>?, optional): Handler for top drops
-  /// - [onAcceptLeft] (ValueChanged<SortableData<T>>?, optional): Handler for left drops
-  /// - [onAcceptRight] (ValueChanged<SortableData<T>>?, optional): Handler for right drops
-  /// - [onAcceptBottom] (ValueChanged<SortableData<T>>?, optional): Handler for bottom drops
+  /// - [canAcceptTop] (`Predicate<SortableData<T>>?`, optional): Validation for top drops
+  /// - [canAcceptLeft] (`Predicate<SortableData<T>>?`, optional): Validation for left drops
+  /// - [canAcceptRight] (`Predicate<SortableData<T>>?`, optional): Validation for right drops
+  /// - [canAcceptBottom] (`Predicate<SortableData<T>>?`, optional): Validation for bottom drops
+  /// - [onAcceptTop] (`ValueChanged<SortableData<T>>?`, optional): Handler for top drops
+  /// - [onAcceptLeft] (`ValueChanged<SortableData<T>>?`, optional): Handler for left drops
+  /// - [onAcceptRight] (`ValueChanged<SortableData<T>>?`, optional): Handler for right drops
+  /// - [onAcceptBottom] (`ValueChanged<SortableData<T>>?`, optional): Handler for bottom drops
   /// - [placeholder] (Widget?, default: SizedBox()): Widget shown in drop zones
   /// - [ghost] (Widget?, optional): Widget displayed while dragging
   /// - [fallback] (Widget?, optional): Widget shown at original position during drag
@@ -358,8 +358,8 @@ class SortableDropFallback<T> extends StatefulWidget {
   /// Parameters:
   /// - [key] (Key?): Widget identifier for the widget tree
   /// - [child] (Widget, required): The widget that defines the drop zone area
-  /// - [onAccept] (ValueChanged<SortableData<T>>?, optional): Handler for accepted drops
-  /// - [canAccept] (Predicate<SortableData<T>>?, optional): Validation for drops
+  /// - [onAccept] (`ValueChanged<SortableData<T>>?`, optional): Handler for accepted drops
+  /// - [canAccept] (`Predicate<SortableData<T>>?`, optional): Validation for drops
   ///
   /// Example:
   /// ```dart

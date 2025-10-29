@@ -180,10 +180,10 @@ class ColorShades implements Color, ColorSwatch {
   Color get _primary => _colors[500]!;
 
   @override
-  int get alpha => _primary.alpha;
+  int get alpha => (_primary.a * 255).round() & 0xFF;
 
   @override
-  int get blue => _primary.blue;
+  int get blue => (_primary.b * 255).round() & 0xFF;
 
   @override
   double computeLuminance() {
@@ -191,15 +191,16 @@ class ColorShades implements Color, ColorSwatch {
   }
 
   @override
-  int get green => _primary.green;
+  int get green => (_primary.g * 255).round() & 0xFF;
 
   @override
-  double get opacity => _primary.opacity;
+  double get opacity => _primary.a;
 
   @override
-  int get red => _primary.red;
+  int get red => (_primary.r * 255).round() & 0xFF;
 
   @override
+  @Deprecated('Use toARGB32() instead')
   int get value => _primary.value;
 
   @override
@@ -217,7 +218,8 @@ class ColorShades implements Color, ColorSwatch {
     // calculate the difference between the current blue value and the new value
     int delta = b - blue;
     for (final key in shadeValues) {
-      int safe = (_colors[key]!.blue + delta).clamp(0, 255);
+      int safe =
+          (((_colors[key]!.b * 255).round() & 0xFF) + delta).clamp(0, 255);
       colors[key] = _colors[key]!.withBlue(safe);
     }
     return ColorShades._direct(colors);
@@ -229,7 +231,8 @@ class ColorShades implements Color, ColorSwatch {
     // calculate the difference between the current green value and the new value
     int delta = g - green;
     for (final key in shadeValues) {
-      int safe = (_colors[key]!.green + delta).clamp(0, 255);
+      int safe =
+          (((_colors[key]!.g * 255).round() & 0xFF) + delta).clamp(0, 255);
       colors[key] = _colors[key]!.withGreen(safe);
     }
     return ColorShades._direct(colors);
@@ -250,7 +253,8 @@ class ColorShades implements Color, ColorSwatch {
     // calculate the difference between the current red value and the new value
     int delta = r - red;
     for (final key in shadeValues) {
-      int safe = (_colors[key]!.red + delta).clamp(0, 255);
+      int safe =
+          (((_colors[key]!.r * 255).round() & 0xFF) + delta).clamp(0, 255);
       colors[key] = _colors[key]!.withRed(safe);
     }
     return ColorShades._direct(colors);
@@ -308,7 +312,7 @@ class ColorShades implements Color, ColorSwatch {
 }
 
 String hexFromColor(Color color) {
-  return '#${color.value.toRadixString(16).toUpperCase()}';
+  return colorToHex(color, true);
 }
 
 class ColorScheme implements ChartColorScheme {
@@ -430,6 +434,7 @@ class ColorScheme implements ChartColorScheme {
         accent = map._col('accent'),
         accentForeground = map._col('accentForeground'),
         destructive = map._col('destructive'),
+        // ignore: deprecated_member_use_from_same_package
         destructiveForeground = map._col('destructiveForeground'),
         border = map._col('border'),
         input = map._col('input'),
@@ -469,6 +474,7 @@ class ColorScheme implements ChartColorScheme {
       'accent': hexFromColor(accent),
       'accentForeground': hexFromColor(accentForeground),
       'destructive': hexFromColor(destructive),
+      // ignore: deprecated_member_use_from_same_package
       'destructiveForeground': hexFromColor(destructiveForeground),
       'border': hexFromColor(border),
       'input': hexFromColor(input),
@@ -507,6 +513,7 @@ class ColorScheme implements ChartColorScheme {
       'accent': accent,
       'accentForeground': accentForeground,
       'destructive': destructive,
+      // ignore: deprecated_member_use_from_same_package
       'destructiveForeground': destructiveForeground,
       'border': border,
       'input': input,
@@ -628,6 +635,7 @@ class ColorScheme implements ChartColorScheme {
           accentForeground == null ? this.accentForeground : accentForeground(),
       destructive: destructive == null ? this.destructive : destructive(),
       destructiveForeground: destructiveForeground == null
+          // ignore: deprecated_member_use_from_same_package
           ? this.destructiveForeground
           : destructiveForeground(),
       border: border == null ? this.border : border(),
@@ -682,8 +690,6 @@ class ColorScheme implements ChartColorScheme {
       accent: Color.lerp(a.accent, b.accent, t)!,
       accentForeground: Color.lerp(a.accentForeground, b.accentForeground, t)!,
       destructive: Color.lerp(a.destructive, b.destructive, t)!,
-      destructiveForeground:
-          Color.lerp(a.destructiveForeground, b.destructiveForeground, t)!,
       border: Color.lerp(a.border, b.border, t)!,
       input: Color.lerp(a.input, b.input, t)!,
       ring: Color.lerp(a.ring, b.ring, t)!,
@@ -727,7 +733,6 @@ class ColorScheme implements ChartColorScheme {
           accent == other.accent &&
           accentForeground == other.accentForeground &&
           destructive == other.destructive &&
-          destructiveForeground == other.destructiveForeground &&
           border == other.border &&
           input == other.input &&
           ring == other.ring &&
@@ -764,6 +769,7 @@ class ColorScheme implements ChartColorScheme {
           accent,
           accentForeground,
           destructive,
+          // ignore: deprecated_member_use_from_same_package
           destructiveForeground,
           border,
           input,
@@ -787,6 +793,7 @@ class ColorScheme implements ChartColorScheme {
 
   @override
   String toString() {
+    // ignore: deprecated_member_use_from_same_package
     return 'ColorScheme{brightness: $brightness, background: $background, foreground: $foreground, card: $card, cardForeground: $cardForeground, popover: $popover, popoverForeground: $popoverForeground, primary: $primary, primaryForeground: $primaryForeground, secondary: $secondary, secondaryForeground: $secondaryForeground, muted: $muted, mutedForeground: $mutedForeground, accent: $accent, accentForeground: $accentForeground, destructive: $destructive, destructiveForeground: $destructiveForeground, border: $border, input: $input, ring: $ring, chart1: $chart1, chart2: $chart2, chart3: $chart3, chart4: $chart4, chart5: $chart5, sidebar: $sidebar, sidebarForeground: $sidebarForeground, sidebarPrimary: $sidebarPrimary, sidebarPrimaryForeground: $sidebarPrimaryForeground, sidebarAccent: $sidebarAccent, sidebarAccentForeground: $sidebarAccentForeground, sidebarBorder: $sidebarBorder, sidebarRing: $sidebarRing}';
   }
 }

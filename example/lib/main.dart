@@ -29,10 +29,10 @@ class CounterPage extends StatefulWidget {
   const CounterPage({super.key});
 
   @override
-  _CounterPageState createState() => _CounterPageState();
+  CounterPageState createState() => CounterPageState();
 }
 
-class _CounterPageState extends State<CounterPage> {
+class CounterPageState extends State<CounterPage> {
   int _counter = 0;
 
   int _selected = 0;
