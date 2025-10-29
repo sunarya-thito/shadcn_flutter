@@ -164,19 +164,30 @@ class _ColorsPageState extends State<ColorsPage> {
                     mouseCursor:
                         const WidgetStatePropertyAll(SystemMouseCursors.click),
                     onPressed: () {
-                      showColorPicker(
+                      showPopover(
                         context: context,
-                        color: ColorDerivative.fromColor(swatch[shade]),
+                        alignment: Alignment.topCenter,
+                        anchorAlignment: Alignment.bottomCenter,
                         offset: const Offset(0, 8),
-                        showAlpha: false,
-                        onColorChanged: (value) {
-                          setState(() {
-                            _customColor = ColorShades.shiftHSL(
-                              value.toHSLColor(),
-                              base: shade,
-                              500,
-                            );
-                          });
+                        widthConstraint: PopoverConstraint.intrinsic,
+                        heightConstraint: PopoverConstraint.intrinsic,
+                        builder: (context) {
+                          return SurfaceCard(
+                            child: ColorPicker(
+                              value: ColorDerivative.fromColor(swatch[shade]),
+                              showAlpha: false,
+                              onChanged: (value) {
+                                setState(() {
+                                  _customColor = ColorShades.shiftHSL(
+                                    value.toHSLColor(),
+                                    base: shade,
+                                    500,
+                                  );
+                                });
+                                Navigator.pop(context);
+                              },
+                            ),
+                          );
                         },
                       );
                     },

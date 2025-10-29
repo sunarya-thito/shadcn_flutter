@@ -16,8 +16,9 @@ class ColorPickerTile extends StatelessWidget implements IComponentPage {
       reverse: true,
       reverseVertical: true,
       example: Card(
-        child: ColorPickerSet(
-            color: ColorDerivative.fromColor(material.Colors.blue)),
+        child: ColorPicker(
+          value: ColorDerivative.fromColor(material.Colors.blue),
+        ),
       ),
     );
   }
