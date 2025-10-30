@@ -1,5 +1,21 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Closes the currently active overlay with an optional result value.
+///
+/// Searches up the widget tree for an [OverlayHandlerStateMixin] and
+/// requests it to close with the provided result. If no overlay handler
+/// is found, returns a completed future.
+///
+/// Parameters:
+/// - [context] (BuildContext, required): Build context from within the overlay
+/// - [value] (T?): Optional result value to return when closing
+///
+/// Returns a [Future] that completes when the overlay is closed.
+///
+/// Example:
+/// ```dart
+/// closeOverlay(context, 'user_confirmed');
+/// ```
 Future<void> closeOverlay<T>(BuildContext context, [T? value]) {
   return Data.maybeFind<OverlayHandlerStateMixin>(context)
           ?.closeWithResult(value) ??

@@ -279,56 +279,56 @@ TODO:
 - [ ] lib/src/components/overlay/drawer.dart:1513:  const DrawerOverlay({super.key, required this.child});
 - [ ] lib/src/components/overlay/drawer.dart:1540:class DrawerOverlayState extends State<DrawerOverlay> {
 - [ ] lib/src/components/overlay/drawer.dart:1544:  void addEntry(DrawerOverlayEntry entry) {
-- [ ] lib/src/components/overlay/drawer.dart:1550:  Size computeSize() {
-- [ ] lib/src/components/overlay/drawer.dart:1556:  void removeEntry(DrawerOverlayEntry entry) {
-- [ ] lib/src/components/overlay/drawer.dart:1542:  final GlobalKey backdropKey = GlobalKey();
-- [ ] lib/src/components/overlay/drawer.dart:1615:class DrawerEntryWidget<T> extends StatefulWidget {
-- [ ] lib/src/components/overlay/drawer.dart:1616:  final DrawerBuilder builder;
-- [ ] lib/src/components/overlay/drawer.dart:1617:  final Widget backdrop;
-- [ ] lib/src/components/overlay/drawer.dart:1618:  final BackdropBuilder backdropBuilder;
-- [ ] lib/src/components/overlay/drawer.dart:1619:  final BarrierBuilder barrierBuilder;
-- [ ] lib/src/components/overlay/drawer.dart:1620:  final bool modal;
-- [ ] lib/src/components/overlay/drawer.dart:1621:  final CapturedThemes? themes;
-- [ ] lib/src/components/overlay/drawer.dart:1622:  final CapturedData? data;
-- [ ] lib/src/components/overlay/drawer.dart:1623:  final Completer<T> completer;
-- [ ] lib/src/components/overlay/drawer.dart:1624:  final OverlayPosition position;
-- [ ] lib/src/components/overlay/drawer.dart:1625:  final int stackIndex;
-- [ ] lib/src/components/overlay/drawer.dart:1626:  final int totalStack;
-- [ ] lib/src/components/overlay/drawer.dart:1627:  final bool useSafeArea;
-- [ ] lib/src/components/overlay/drawer.dart:1628:  final AnimationController? animationController;
-- [ ] lib/src/components/overlay/drawer.dart:1629:  final bool autoOpen;
-- [ ] lib/src/components/overlay/drawer.dart:1631:  const DrawerEntryWidget({
-- [ ] lib/src/components/overlay/drawer.dart:1653:class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
-- [ ] lib/src/components/overlay/drawer.dart:1698:  Future<void> close([T? result]) {
-- [ ] lib/src/components/overlay/drawer.dart:1655:  late ValueNotifier<double> additionalOffset = ValueNotifier(0);
-- [ ] lib/src/components/overlay/drawer.dart:1873:typedef BackdropBuilder = Widget Function(BuildContext context, Widget child,
-- [ ] lib/src/components/overlay/drawer.dart:1876:typedef BarrierBuilder = Widget? Function(BuildContext context, Widget child,
-- [ ] lib/src/components/overlay/drawer.dart:1879:class DrawerOverlayEntry<T> {
-- [ ] lib/src/components/overlay/drawer.dart:1880:  final GlobalKey<DrawerEntryWidgetState<T>> key = GlobalKey();
-- [ ] lib/src/components/overlay/drawer.dart:1881:  final BackdropBuilder backdropBuilder;
-- [ ] lib/src/components/overlay/drawer.dart:1882:  final DrawerBuilder builder;
-- [ ] lib/src/components/overlay/drawer.dart:1883:  final bool modal;
-- [ ] lib/src/components/overlay/drawer.dart:1884:  final BarrierBuilder barrierBuilder;
-- [ ] lib/src/components/overlay/drawer.dart:1885:  final CapturedThemes? themes;
-- [ ] lib/src/components/overlay/drawer.dart:1886:  final CapturedData? data;
-- [ ] lib/src/components/overlay/drawer.dart:1887:  final Completer<T> completer;
-- [ ] lib/src/components/overlay/drawer.dart:1888:  final OverlayPosition position;
-- [ ] lib/src/components/overlay/drawer.dart:1889:  final bool barrierDismissible;
-- [ ] lib/src/components/overlay/drawer.dart:1890:  final bool useSafeArea;
-- [ ] lib/src/components/overlay/drawer.dart:1891:  final AnimationController? animationController;
-- [ ] lib/src/components/overlay/drawer.dart:1892:  final bool autoOpen;
-- [ ] lib/src/components/overlay/drawer.dart:1893:  final BoxConstraints? constraints;
-- [ ] lib/src/components/overlay/drawer.dart:1894:  final AlignmentGeometry? alignment;
-- [ ] lib/src/components/overlay/drawer.dart:1896:  DrawerOverlayEntry({
-- [ ] lib/src/components/overlay/drawer.dart:1914:class DrawerOverlayCompleter<T> extends OverlayCompleter<T> {
+- [x] lib/src/components/overlay/drawer.dart:1550:  Size computeSize() {
+- [x] lib/src/components/overlay/drawer.dart:1556:  void removeEntry(DrawerOverlayEntry entry) {
+- [x] lib/src/components/overlay/drawer.dart:1542:  final GlobalKey backdropKey = GlobalKey();
+- [x] lib/src/components/overlay/drawer.dart:1615:class DrawerEntryWidget<T> extends StatefulWidget {
+- [x] lib/src/components/overlay/drawer.dart:1616:  final DrawerBuilder builder;
+- [x] lib/src/components/overlay/drawer.dart:1617:  final Widget backdrop;
+- [x] lib/src/components/overlay/drawer.dart:1618:  final BackdropBuilder backdropBuilder;
+- [x] lib/src/components/overlay/drawer.dart:1619:  final BarrierBuilder barrierBuilder;
+- [x] lib/src/components/overlay/drawer.dart:1620:  final bool modal;
+- [x] lib/src/components/overlay/drawer.dart:1621:  final CapturedThemes? themes;
+- [x] lib/src/components/overlay/drawer.dart:1622:  final CapturedData? data;
+- [x] lib/src/components/overlay/drawer.dart:1623:  final Completer<T> completer;
+- [x] lib/src/components/overlay/drawer.dart:1624:  final OverlayPosition position;
+- [x] lib/src/components/overlay/drawer.dart:1625:  final int stackIndex;
+- [x] lib/src/components/overlay/drawer.dart:1626:  final int totalStack;
+- [x] lib/src/components/overlay/drawer.dart:1627:  final bool useSafeArea;
+- [x] lib/src/components/overlay/drawer.dart:1628:  final AnimationController? animationController;
+- [x] lib/src/components/overlay/drawer.dart:1629:  final bool autoOpen;
+- [x] lib/src/components/overlay/drawer.dart:1631:  const DrawerEntryWidget({
+- [x] lib/src/components/overlay/drawer.dart:1653:class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
+- [x] lib/src/components/overlay/drawer.dart:1698:  Future<void> close([T? result]) {
+- [x] lib/src/components/overlay/drawer.dart:1655:  late ValueNotifier<double> additionalOffset = ValueNotifier(0);
+- [x] lib/src/components/overlay/drawer.dart:1873:typedef BackdropBuilder = Widget Function(BuildContext context, Widget child,
+- [x] lib/src/components/overlay/drawer.dart:1876:typedef BarrierBuilder = Widget? Function(BuildContext context, Widget child,
+- [x] lib/src/components/overlay/drawer.dart:1879:class DrawerOverlayEntry<T> {
+- [x] lib/src/components/overlay/drawer.dart:1880:  final GlobalKey<DrawerEntryWidgetState<T>> key = GlobalKey();
+- [x] lib/src/components/overlay/drawer.dart:1881:  final BackdropBuilder backdropBuilder;
+- [x] lib/src/components/overlay/drawer.dart:1882:  final DrawerBuilder builder;
+- [x] lib/src/components/overlay/drawer.dart:1883:  final bool modal;
+- [x] lib/src/components/overlay/drawer.dart:1884:  final BarrierBuilder barrierBuilder;
+- [x] lib/src/components/overlay/drawer.dart:1885:  final CapturedThemes? themes;
+- [x] lib/src/components/overlay/drawer.dart:1886:  final CapturedData? data;
+- [x] lib/src/components/overlay/drawer.dart:1887:  final Completer<T> completer;
+- [x] lib/src/components/overlay/drawer.dart:1888:  final OverlayPosition position;
+- [x] lib/src/components/overlay/drawer.dart:1889:  final bool barrierDismissible;
+- [x] lib/src/components/overlay/drawer.dart:1890:  final bool useSafeArea;
+- [x] lib/src/components/overlay/drawer.dart:1891:  final AnimationController? animationController;
+- [x] lib/src/components/overlay/drawer.dart:1892:  final bool autoOpen;
+- [x] lib/src/components/overlay/drawer.dart:1893:  final BoxConstraints? constraints;
+- [x] lib/src/components/overlay/drawer.dart:1894:  final AlignmentGeometry? alignment;
+- [x] lib/src/components/overlay/drawer.dart:1896:  DrawerOverlayEntry({
+- [x] lib/src/components/overlay/drawer.dart:1914:class DrawerOverlayCompleter<T> extends OverlayCompleter<T> {
 - [ ] lib/src/components/overlay/drawer.dart:1927:  AnimationController? get animationController =>
-- [ ] lib/src/components/overlay/drawer.dart:1917:  DrawerOverlayCompleter(this._entry);
-- [ ] lib/src/components/overlay/drawer.dart:1945:class SheetOverlayHandler extends OverlayHandler {
-- [ ] lib/src/components/overlay/drawer.dart:1946:  static bool isSheetOverlay(BuildContext context) {
-- [ ] lib/src/components/overlay/drawer.dart:1950:  final OverlayPosition position;
+- [x] lib/src/components/overlay/drawer.dart:1917:  DrawerOverlayCompleter(this._entry);
+- [x] lib/src/components/overlay/drawer.dart:1945:class SheetOverlayHandler extends OverlayHandler {
+- [x] lib/src/components/overlay/drawer.dart:1946:  static bool isSheetOverlay(BuildContext context) {
+- [x] lib/src/components/overlay/drawer.dart:1950:  final OverlayPosition position;
 - [ ] lib/src/components/overlay/drawer.dart:1951:  final Color? barrierColor;
-- [ ] lib/src/components/overlay/drawer.dart:1953:  const SheetOverlayHandler({
-- [ ] lib/src/components/overlay/overlay.dart:3:Future<void> closeOverlay<T>(BuildContext context, [T? value]) {
+- [x] lib/src/components/overlay/drawer.dart:1953:  const SheetOverlayHandler({
+- [x] lib/src/components/overlay/overlay.dart:3:Future<void> closeOverlay<T>(BuildContext context, [T? value]) {
 - [ ] lib/src/components/overlay/overlay.dart:9:mixin OverlayHandlerStateMixin<T extends StatefulWidget> on State<T> {
 - [ ] lib/src/components/overlay/overlay.dart:10:  Future<void> close([bool immediate = false]);
 - [ ] lib/src/components/overlay/overlay.dart:11:  void closeLater();
