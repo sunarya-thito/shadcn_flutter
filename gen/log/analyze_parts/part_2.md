@@ -616,82 +616,82 @@ TODO:
 - [x] lib\src\components\layout\overflow_marquee.dart:138:19
 - [x] lib\src\components\layout\overflow_marquee.dart:139:17
 - [x] lib\src\components\layout\overflow_marquee.dart:140:16
-- [ ] lib\src\components\layout\resizable.dart:37:25
-- [ ] lib\src\components\layout\resizable.dart:28:9
-- [ ] lib\src\components\layout\resizable.dart:179:3
-- [ ] lib\src\components\layout\resizable.dart:180:3
-- [ ] lib\src\components\layout\resizable.dart:181:3
-- [ ] lib\src\components\layout\resizable.dart:183:13
-- [ ] lib\src\components\layout\resizable.dart:188:7
-- [ ] lib\src\components\layout\resizable.dart:194:12
-- [ ] lib\src\components\layout\resizable.dart:191:8
-- [ ] lib\src\components\layout\resizable.dart:192:8
-- [ ] lib\src\components\layout\resizable.dart:193:10
-- [ ] lib\src\components\layout\resizable.dart:195:8
-- [ ] lib\src\components\layout\resizable.dart:201:8
-- [ ] lib\src\components\layout\resizable.dart:206:8
-- [ ] lib\src\components\layout\resizable.dart:223:7
-- [ ] lib\src\components\layout\resizable.dart:238:3
-- [ ] lib\src\components\layout\resizable.dart:279:7
-- [ ] lib\src\components\layout\resizable.dart:283:3
-- [ ] lib\src\components\layout\resizable.dart:322:7
-- [ ] lib\src\components\layout\resizable.dart:323:34
-- [ ] lib\src\components\layout\resizable.dart:324:17
-- [ ] lib\src\components\layout\resizable.dart:325:17
-- [ ] lib\src\components\layout\resizable.dart:326:17
-- [ ] lib\src\components\layout\resizable.dart:327:17
-- [ ] lib\src\components\layout\resizable.dart:328:17
-- [ ] lib\src\components\layout\resizable.dart:329:16
-- [ ] lib\src\components\layout\resizable.dart:330:31
-- [ ] lib\src\components\layout\resizable.dart:331:31
-- [ ] lib\src\components\layout\resizable.dart:332:31
-- [ ] lib\src\components\layout\resizable.dart:333:31
-- [ ] lib\src\components\layout\resizable.dart:334:15
-- [ ] lib\src\components\layout\resizable.dart:336:9
-- [ ] lib\src\components\layout\resizable.dart:351:23
-- [ ] lib\src\components\layout\resizable.dart:366:23
-- [ ] lib\src\components\layout\resizable.dart:555:9
-- [ ] lib\src\components\layout\resizable.dart:964:7
-- [ ] lib\src\components\layout\resizable.dart:965:14
-- [ ] lib\src\components\layout\resizable.dart:967:3
-- [ ] lib\src\components\layout\scaffold.dart:36:17
-- [ ] lib\src\components\layout\scaffold.dart:28:9
-- [ ] lib\src\components\layout\scaffold.dart:133:22
-- [ ] lib\src\components\layout\scaffold.dart:134:22
-- [ ] lib\src\components\layout\scaffold.dart:135:16
-- [ ] lib\src\components\layout\scaffold.dart:136:17
-- [ ] lib\src\components\layout\scaffold.dart:137:14
-- [ ] lib\src\components\layout\scaffold.dart:139:7
-- [ ] lib\src\components\layout\scaffold.dart:140:14
-- [ ] lib\src\components\layout\scaffold.dart:141:16
-- [ ] lib\src\components\layout\scaffold.dart:142:16
-- [ ] lib\src\components\layout\scaffold.dart:143:16
-- [ ] lib\src\components\layout\scaffold.dart:144:15
-- [ ] lib\src\components\layout\scaffold.dart:145:15
-- [ ] lib\src\components\layout\scaffold.dart:147:9
-- [ ] lib\src\components\layout\scaffold.dart:167:7
-- [ ] lib\src\components\layout\scaffold.dart:168:14
-- [ ] lib\src\components\layout\scaffold.dart:169:13
-- [ ] lib\src\components\layout\scaffold.dart:170:13
-- [ ] lib\src\components\layout\scaffold.dart:172:9
-- [ ] lib\src\components\layout\scaffold.dart:179:7
-- [ ] lib\src\components\layout\scaffold.dart:180:10
-- [ ] lib\src\components\layout\scaffold.dart:260:10
-- [ ] lib\src\components\layout\scaffold.dart:359:7
-- [ ] lib\src\components\layout\scaffold.dart:360:10
-- [ ] lib\src\components\layout\scaffold.dart:361:10
-- [ ] lib\src\components\layout\scaffold.dart:362:10
-- [ ] lib\src\components\layout\scaffold.dart:363:10
-- [ ] lib\src\components\layout\scaffold.dart:365:3
-- [ ] lib\src\components\layout\scaffold.dart:373:7
-- [ ] lib\src\components\layout\scaffold.dart:374:16
-- [ ] lib\src\components\layout\scaffold.dart:375:16
-- [ ] lib\src\components\layout\scaffold.dart:377:9
-- [ ] lib\src\components\layout\scaffold.dart:386:34
-- [ ] lib\src\components\layout\scaffold.dart:903:7
-- [ ] lib\src\components\layout\scaffold.dart:904:9
-- [ ] lib\src\components\layout\scaffold.dart:914:7
-- [ ] lib\src\components\layout\scaffold.dart:915:9
+- [x] lib\src\components\layout\resizable.dart:37:25
+- [x] lib\src\components\layout\resizable.dart:28:9
+- [x] lib\src\components\layout\resizable.dart:179:3
+- [x] lib\src\components\layout\resizable.dart:180:3
+- [x] lib\src\components\layout\resizable.dart:181:3
+- [x] lib\src\components\layout\resizable.dart:183:13
+- [x] lib\src\components\layout\resizable.dart:188:7
+- [x] lib\src\components\layout\resizable.dart:194:12
+- [x] lib\src\components\layout\resizable.dart:191:8
+- [x] lib\src\components\layout\resizable.dart:192:8
+- [x] lib\src\components\layout\resizable.dart:193:10
+- [x] lib\src\components\layout\resizable.dart:195:8
+- [x] lib\src\components\layout\resizable.dart:201:8
+- [x] lib\src\components\layout\resizable.dart:206:8
+- [x] lib\src\components\layout\resizable.dart:223:7
+- [x] lib\src\components\layout\resizable.dart:238:3
+- [x] lib\src\components\layout\resizable.dart:279:7
+- [x] lib\src\components\layout\resizable.dart:283:3
+- [x] lib\src\components\layout\resizable.dart:322:7
+- [x] lib\src\components\layout\resizable.dart:323:34
+- [x] lib\src\components\layout\resizable.dart:324:17
+- [x] lib\src\components\layout\resizable.dart:325:17
+- [x] lib\src\components\layout\resizable.dart:326:17
+- [x] lib\src\components\layout\resizable.dart:327:17
+- [x] lib\src\components\layout\resizable.dart:328:17
+- [x] lib\src\components\layout\resizable.dart:329:16
+- [x] lib\src\components\layout\resizable.dart:330:31
+- [x] lib\src\components\layout\resizable.dart:331:31
+- [x] lib\src\components\layout\resizable.dart:332:31
+- [x] lib\src\components\layout\resizable.dart:333:31
+- [x] lib\src\components\layout\resizable.dart:334:15
+- [x] lib\src\components\layout\resizable.dart:336:9
+- [x] lib\src\components\layout\resizable.dart:351:23
+- [x] lib\src\components\layout\resizable.dart:366:23
+- [x] lib\src\components\layout\resizable.dart:555:9
+- [x] lib\src\components\layout\resizable.dart:964:7
+- [x] lib\src\components\layout\resizable.dart:965:14
+- [x] lib\src\components\layout\resizable.dart:967:3
+- [x] lib\src\components\layout\scaffold.dart:36:17
+- [x] lib\src\components\layout\scaffold.dart:28:9
+- [x] lib\src\components\layout\scaffold.dart:133:22
+- [x] lib\src\components\layout\scaffold.dart:134:22
+- [x] lib\src\components\layout\scaffold.dart:135:16
+- [x] lib\src\components\layout\scaffold.dart:136:17
+- [x] lib\src\components\layout\scaffold.dart:137:14
+- [x] lib\src\components\layout\scaffold.dart:139:7
+- [x] lib\src\components\layout\scaffold.dart:140:14
+- [x] lib\src\components\layout\scaffold.dart:141:16
+- [x] lib\src\components\layout\scaffold.dart:142:16
+- [x] lib\src\components\layout\scaffold.dart:143:16
+- [x] lib\src\components\layout\scaffold.dart:144:15
+- [x] lib\src\components\layout\scaffold.dart:145:15
+- [x] lib\src\components\layout\scaffold.dart:147:9
+- [x] lib\src\components\layout\scaffold.dart:167:7
+- [x] lib\src\components\layout\scaffold.dart:168:14
+- [x] lib\src\components\layout\scaffold.dart:169:13
+- [x] lib\src\components\layout\scaffold.dart:170:13
+- [x] lib\src\components\layout\scaffold.dart:172:9
+- [x] lib\src\components\layout\scaffold.dart:179:7
+- [x] lib\src\components\layout\scaffold.dart:180:10
+- [x] lib\src\components\layout\scaffold.dart:260:10
+- [x] lib\src\components\layout\scaffold.dart:359:7
+- [x] lib\src\components\layout\scaffold.dart:360:10
+- [x] lib\src\components\layout\scaffold.dart:361:10
+- [x] lib\src\components\layout\scaffold.dart:362:10
+- [x] lib\src\components\layout\scaffold.dart:363:10
+- [x] lib\src\components\layout\scaffold.dart:365:3
+- [x] lib\src\components\layout\scaffold.dart:373:7
+- [x] lib\src\components\layout\scaffold.dart:374:16
+- [x] lib\src\components\layout\scaffold.dart:375:16
+- [x] lib\src\components\layout\scaffold.dart:377:9
+- [x] lib\src\components\layout\scaffold.dart:386:34
+- [x] lib\src\components\layout\scaffold.dart:903:7
+- [x] lib\src\components\layout\scaffold.dart:904:9
+- [x] lib\src\components\layout\scaffold.dart:914:7
+- [x] lib\src\components\layout\scaffold.dart:915:9
 - [ ] lib\src\components\layout\scrollable_client.dart:25:25
 - [ ] lib\src\components\layout\scrollable_client.dart:9:31
 - [ ] lib\src\components\layout\scrollable_client.dart:10:28
