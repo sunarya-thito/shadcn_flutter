@@ -427,15 +427,33 @@ class TreeRoot<T> extends TreeNode<T> {
   String toString() => 'TreeRoot(children: $children)';
 }
 
+/// Represents the visual position of a selected item within a group.
+///
+/// Used to determine border radius styling for selected tree items
+/// when multiple consecutive items are selected.
 enum SelectionPosition {
+  /// First item in a selection group.
   start,
+
+  /// Middle item in a selection group.
   middle,
+
+  /// Last item in a selection group.
   end,
+
+  /// Single selected item (not part of a group).
   single,
 }
 
+/// Reason for a focus change event in tree navigation.
+///
+/// Used to differentiate between programmatic focus changes and
+/// user-initiated focus changes.
 enum FocusChangeReason {
+  /// Focus changed due to focus scope management.
   focusScope,
+
+  /// Focus changed due to direct user interaction.
   userInteraction,
 }
 
@@ -451,26 +469,62 @@ BorderRadius _borderRadiusFromPosition(
   return BorderRadius.zero;
 }
 
+/// Data container for rendering a tree node.
+///
+/// Holds all information needed to display a single tree node including
+/// its position, expansion state, and visual styling.
 class TreeNodeData<T> {
+  /// The tree node being rendered.
   final TreeNode<T> node;
+
+  /// The branch line style for this node.
   final BranchLine indentGuide;
+
+  /// Whether this node is currently expanded.
   final bool expanded;
+
+  /// List of depth information from root to this node.
   final List<TreeNodeDepth> depth;
+
+  /// Whether to show the expand/collapse icon.
   final bool expandIcon;
+
+  /// Callback when focus changes for this node.
   final void Function(FocusChangeReason reason)? onFocusChanged;
+
+  /// Visual position of this node within a selection group.
   SelectionPosition? selectionPosition;
+
+  /// Creates a [TreeNodeData] with the specified properties.
   TreeNodeData(this.depth, this.node, this.indentGuide, this.expanded,
       this.expandIcon, this.onFocusChanged);
 }
 
+/// Represents depth information for a tree node.
+///
+/// Contains index and count information used for rendering
+/// indent guides and branch lines.
 class TreeNodeDepth {
+  /// Index of this child among its siblings (0-based).
   final int childIndex;
+
+  /// Total number of children at this level.
   final int childCount;
 
+  /// Creates a [TreeNodeDepth] with the specified index and count.
   TreeNodeDepth(this.childIndex, this.childCount);
 }
 
+/// Function that transforms a tree node, optionally returning a new node.
+///
+/// Used for operations like updating, replacing, or removing nodes.
+/// Return null to remove the node, or return a modified node to replace it.
 typedef TreeNodeUnaryOperator<K> = TreeNode<K>? Function(TreeNode<K> node);
+
+/// Function that transforms a tree node with parent context.
+///
+/// Similar to [TreeNodeUnaryOperator] but provides access to the parent node.
+/// Useful for operations that need parent-child relationship information.
 typedef TreeNodeUnaryOperatorWithParent<K> = TreeNode<K>? Function(
     TreeNode<K>? parent, TreeNode<K> node);
 
@@ -597,15 +651,42 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   }
 }
 
+/// Callback invoked when tree node selection changes.
+///
+/// Parameters:
+/// - [selectedNodes]: The nodes affected by the selection change
+/// - [multiSelect]: Whether the operation allows multiple selection
+/// - [selected]: Whether the nodes are being selected (true) or deselected (false)
 typedef TreeNodeSelectionChanged<T> = void Function(
     List<TreeNode<T>> selectedNodes, bool multiSelect, bool selected);
 
+/// Default handler for tree node selection changes.
+///
+/// Manages selection state updates by toggling, adding, or setting
+/// selected nodes based on selection mode.
+///
+/// Example:
+/// ```dart
+/// final handler = TreeSelectionDefaultHandler(nodes, (updated) {
+///   setState(() => nodes = updated);
+/// });
+/// ```
 class TreeSelectionDefaultHandler<T> {
+  /// The current list of tree nodes.
   final List<TreeNode<T>> nodes;
+
+  /// Callback when selection state changes.
   final ValueChanged<List<TreeNode<T>>> onChanged;
 
+  /// Creates a [TreeSelectionDefaultHandler].
   TreeSelectionDefaultHandler(this.nodes, this.onChanged);
 
+  /// Handles a selection change event.
+  ///
+  /// Parameters:
+  /// - [selectedNodes]: Nodes to select or deselect
+  /// - [multiSelect]: Whether multi-selection is enabled
+  /// - [selected]: Whether to select (true) or deselect (false)
   void call(List<TreeNode<T>> selectedNodes, bool multiSelect, bool selected) {
     if (multiSelect) {
       if (selected) {
@@ -619,13 +700,34 @@ class TreeSelectionDefaultHandler<T> {
   }
 }
 
+/// Default handler for tree item expand/collapse operations.
+///
+/// Manages the expansion state of tree nodes when users interact
+/// with expand/collapse controls.
+///
+/// Example:
+/// ```dart
+/// final handler = TreeItemExpandDefaultHandler(nodes, targetNode, (updated) {
+///   setState(() => nodes = updated);
+/// });
+/// ```
 class TreeItemExpandDefaultHandler<T> {
+  /// The current list of tree nodes.
   final List<TreeNode<T>> nodes;
+
+  /// Callback when expansion state changes.
   final ValueChanged<List<TreeNode<T>>> onChanged;
+
+  /// The target node to expand or collapse.
   final TreeNode<T> target;
 
+  /// Creates a [TreeItemExpandDefaultHandler].
   TreeItemExpandDefaultHandler(this.nodes, this.target, this.onChanged);
 
+  /// Handles an expand/collapse event.
+  ///
+  /// Parameters:
+  /// - [expanded]: Whether to expand (true) or collapse (false) the node
   void call(bool expanded) {
     if (expanded) {
       onChanged(nodes.expandNode(target));
@@ -1439,7 +1541,20 @@ abstract class BranchLine {
   Widget build(BuildContext context, List<TreeNodeDepth> depth, int index);
 }
 
+/// Branch line implementation with no visual connections.
+///
+/// Displays tree nodes without any connecting lines between parent and child
+/// nodes. Use this for a minimal tree appearance.
+///
+/// Example:
+/// ```dart
+/// TreeView(
+///   branchLine: BranchLine.none,
+///   // ...
+/// );
+/// ```
 class IndentGuideNone implements BranchLine {
+  /// Creates an [IndentGuideNone].
   const IndentGuideNone();
 
   @override
@@ -1448,9 +1563,24 @@ class IndentGuideNone implements BranchLine {
   }
 }
 
+/// Branch line implementation with simple vertical lines.
+///
+/// Displays vertical lines alongside tree nodes to indicate hierarchy levels.
+/// Does not draw horizontal connections.
+///
+/// Example:
+/// ```dart
+/// TreeView(
+///   branchLine: BranchLine.line,
+///   // or with custom color:
+///   branchLine: IndentGuideLine(color: Colors.blue),
+/// );
+/// ```
 class IndentGuideLine implements BranchLine {
+  /// Custom color for the line. If null, uses the theme border color.
   final Color? color;
 
+  /// Creates an [IndentGuideLine] with optional custom color.
   const IndentGuideLine({this.color});
 
   @override
@@ -1468,9 +1598,24 @@ class IndentGuideLine implements BranchLine {
   }
 }
 
+/// Branch line implementation with connected path lines.
+///
+/// Displays L-shaped or T-shaped connectors showing the hierarchical
+/// structure of the tree. This is the most common branch line style.
+///
+/// Example:
+/// ```dart
+/// TreeView(
+///   branchLine: BranchLine.path,
+///   // or with custom color:
+///   branchLine: IndentGuidePath(color: Colors.grey),
+/// );
+/// ```
 class IndentGuidePath implements BranchLine {
+  /// Custom color for the path. If null, uses the theme border color.
   final Color? color;
 
+  /// Creates an [IndentGuidePath] with optional custom color.
   const IndentGuidePath({this.color});
 
   @override
@@ -1939,20 +2084,41 @@ class _TreeItemViewState extends State<TreeItemView> {
   }
 }
 
+/// Intent to expand a tree node.
+///
+/// Used with Flutter's Actions/Shortcuts system to programmatically
+/// expand a collapsed tree node to show its children.
 class ExpandTreeNodeIntent extends Intent {
+  /// Creates an [ExpandTreeNodeIntent].
   const ExpandTreeNodeIntent();
 }
 
+/// Intent to collapse a tree node.
+///
+/// Used with Flutter's Actions/Shortcuts system to programmatically
+/// collapse an expanded tree node to hide its children.
 class CollapseTreeNodeIntent extends Intent {
+  /// Creates a [CollapseTreeNodeIntent].
   const CollapseTreeNodeIntent();
 }
 
+/// Intent to select a tree node.
+///
+/// Used with Flutter's Actions/Shortcuts system to programmatically
+/// select the currently focused tree node.
 class SelectTreeNodeIntent extends Intent {
+  /// Creates a [SelectTreeNodeIntent].
   const SelectTreeNodeIntent();
 }
 
+/// Intent to navigate and select tree nodes directionally.
+///
+/// Used with Flutter's Actions/Shortcuts system to move focus
+/// up or down the tree and optionally select nodes.
 class DirectionalSelectTreeNodeIntent extends Intent {
+  /// Whether to move forward (true) or backward (false) in the tree.
   final bool forward;
 
+  /// Creates a [DirectionalSelectTreeNodeIntent].
   const DirectionalSelectTreeNodeIntent(this.forward);
 }
