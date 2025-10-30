@@ -343,6 +343,17 @@ class KeyboardKeyDisplay extends StatelessWidget {
   }
 }
 
+/// Converts a [ShortcutActivator] into a list of logical keyboard keys.
+///
+/// Extracts modifier keys (control, alt, meta, shift) and the primary key from
+/// a shortcut activator, returning them as a list of `List<LogicalKeyboardKey>`.
+///
+/// Parameters:
+/// - [activator] (`ShortcutActivator`, required): The shortcut to convert.
+///
+/// Returns: `List<LogicalKeyboardKey>` — all keys involved in the shortcut.
+///
+/// Supports [CharacterActivator] and [SingleActivator] types.
 List<LogicalKeyboardKey> shortcutActivatorToKeySet(
     ShortcutActivator activator) {
   List<LogicalKeyboardKey> keys = [];

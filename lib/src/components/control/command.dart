@@ -49,6 +49,9 @@ typedef ErrorWidgetBuilder = Widget Function(
 ///
 /// Displays a localized "No results" message with standard styling.
 class CommandEmpty extends StatelessWidget {
+  /// Creates a [CommandEmpty] widget.
+  ///
+  /// Displays a standard empty state message when no command results are found.
   const CommandEmpty({super.key});
 
   @override
