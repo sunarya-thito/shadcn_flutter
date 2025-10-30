@@ -230,44 +230,44 @@ TODO:
 - [x] lib/src/util.dart:459:double wrapDouble(double value, double min, double max) {
 - [x] lib/src/util.dart:496:Widget gap(double gap, {double? crossGap}) {
 - [x] lib/src/util.dart:925:Iterable<Widget> join(Iterable<Widget> widgets, Widget separator) {
-- [ ] lib/src/util.dart:1114:(bool enabled, Object? invokeResult) invokeActionOnFocusedWidget(
-- [ ] lib/src/util.dart:1146:WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
-- [ ] lib/src/util.dart:1168:ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
-- [ ] lib/src/util.dart:1190:void clearActiveTextInput() {
+- [x] lib/src/util.dart:1114:(bool enabled, Object? invokeResult) invokeActionOnFocusedWidget(
+- [x] lib/src/util.dart:1146:WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
+- [x] lib/src/util.dart:1168:ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
+- [x] lib/src/util.dart:1190:void clearActiveTextInput() {
 - [x] lib/src/util.dart:69:  CallbackContextAction({required this.onInvoke});
-- [ ] lib/src/util.dart:344:  FutureOr<T> catchError(Function onError,
-- [ ] lib/src/util.dart:353:extension AlignmentExtension on AlignmentGeometry {
-- [ ] lib/src/util.dart:354:  Alignment optionallyResolve(BuildContext context) {
-- [ ] lib/src/util.dart:367:extension BorderRadiusExtension on BorderRadiusGeometry {
-- [ ] lib/src/util.dart:368:  BorderRadius optionallyResolve(BuildContext context) {
-- [ ] lib/src/util.dart:376:extension EdgeInsetsExtension on EdgeInsetsGeometry {
-- [ ] lib/src/util.dart:377:  EdgeInsets optionallyResolve(BuildContext context) {
-- [ ] lib/src/util.dart:420:  final CapturedThemes? themes;
-- [ ] lib/src/util.dart:421:  final CapturedData? data;
-- [ ] lib/src/util.dart:422:  final Widget child;
-- [ ] lib/src/util.dart:424:  const CapturedWrapper({
+- [x] lib/src/util.dart:344:  FutureOr<T> catchError(Function onError,
+- [x] lib/src/util.dart:353:extension AlignmentExtension on AlignmentGeometry {
+- [x] lib/src/util.dart:354:  Alignment optionallyResolve(BuildContext context) {
+- [x] lib/src/util.dart:367:extension BorderRadiusExtension on BorderRadiusGeometry {
+- [x] lib/src/util.dart:368:  BorderRadius optionallyResolve(BuildContext context) {
+- [x] lib/src/util.dart:376:extension EdgeInsetsExtension on EdgeInsetsGeometry {
+- [x] lib/src/util.dart:377:  EdgeInsets optionallyResolve(BuildContext context) {
+- [x] lib/src/util.dart:420:  final CapturedThemes? themes;
+- [x] lib/src/util.dart:421:  final CapturedData? data;
+- [x] lib/src/util.dart:422:  final Widget child;
+- [x] lib/src/util.dart:424:  const CapturedWrapper({
 - [x] lib/src/util.dart:469:  final Widget child;
 - [x] lib/src/util.dart:470:  final void Function() onWidgetTreeChange;
 - [x] lib/src/util.dart:472:  const WidgetTreeChangeDetector({
 - [x] lib/src/util.dart:483:class WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
 - [x] lib/src/util.dart:503:extension Joinable<T extends Widget> on List<T> {
 - [x] lib/src/util.dart:504:  List<T> joinSeparator(T separator) {
-- [ ] lib/src/util.dart:516:extension IterableExtension<T> on Iterable<T> {
-- [ ] lib/src/util.dart:517:  Iterable<T> joinSeparator(T separator) {
-- [ ] lib/src/util.dart:521:  Iterable<T> buildSeparator(ValueGetter<T> separator) {
-- [ ] lib/src/util.dart:526:typedef NeverWidgetBuilder = Widget Function(
-- [ ] lib/src/util.dart:538:extension WidgetExtension on Widget {
-- [ ] lib/src/util.dart:539:  NeverWidgetBuilder get asBuilder => ([a, b, c, d, e, f, g, h, i, j]) => this;
-- [ ] lib/src/util.dart:540:  Widget sized({double? width, double? height}) {
-- [ ] lib/src/util.dart:555:  Widget constrained(
-- [ ] lib/src/util.dart:599:  Widget withPadding(
-- [ ] lib/src/util.dart:644:  Widget withMargin(
-- [ ] lib/src/util.dart:687:  Widget center({Key? key}) {
-- [ ] lib/src/util.dart:694:  Widget withAlign(AlignmentGeometry alignment) {
-- [ ] lib/src/util.dart:701:  Widget positioned(
-- [ ] lib/src/util.dart:713:  Widget expanded({int flex = 1}) {
-- [ ] lib/src/util.dart:720:  Widget withOpacity(double opacity) {
-- [ ] lib/src/util.dart:727:  Widget clip({Clip clipBehavior = Clip.hardEdge}) {
+- [x] lib/src/util.dart:516:extension IterableExtension<T> on Iterable<T> {
+- [x] lib/src/util.dart:517:  Iterable<T> joinSeparator(T separator) {
+- [x] lib/src/util.dart:521:  Iterable<T> buildSeparator(ValueGetter<T> separator) {
+- [x] lib/src/util.dart:526:typedef NeverWidgetBuilder = Widget Function(
+- [x] lib/src/util.dart:538:extension WidgetExtension on Widget {
+- [x] lib/src/util.dart:539:  NeverWidgetBuilder get asBuilder => ([a, b, c, d, e, f, g, h, i, j]) => this;
+- [x] lib/src/util.dart:540:  Widget sized({double? width, double? height}) {
+- [x] lib/src/util.dart:555:  Widget constrained(
+- [x] lib/src/util.dart:599:  Widget withPadding(
+- [x] lib/src/util.dart:644:  Widget withMargin(
+- [x] lib/src/util.dart:687:  Widget center({Key? key}) {
+- [x] lib/src/util.dart:694:  Widget withAlign(AlignmentGeometry alignment) {
+- [x] lib/src/util.dart:701:  Widget positioned(
+- [x] lib/src/util.dart:713:  Widget expanded({int flex = 1}) {
+- [x] lib/src/util.dart:720:  Widget withOpacity(double opacity) {
+- [x] lib/src/util.dart:727:  Widget clip({Clip clipBehavior = Clip.hardEdge}) {
 - [ ] lib/src/util.dart:734:  Widget clipRRect(
 - [ ] lib/src/util.dart:744:  Widget clipOval({Clip clipBehavior = Clip.antiAlias}) {
 - [ ] lib/src/util.dart:751:  Widget clipPath(
