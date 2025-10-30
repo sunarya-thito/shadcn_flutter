@@ -4035,37 +4035,94 @@ class PrimaryButton extends StatelessWidget {
 /// A simplified wrapper around [Button.secondary] with the same properties
 /// as [PrimaryButton] but using secondary button styling for supporting actions.
 class SecondaryButton extends StatelessWidget {
+  /// The widget to display as the button's content.
   final Widget child;
+
+  /// Called when the button is pressed. If `null`, the button is disabled.
   final VoidCallback? onPressed;
+
+  /// Whether the button is enabled. Overrides the `onPressed` check if provided.
   final bool? enabled;
+
+  /// Widget displayed before the [child].
   final Widget? leading;
+
+  /// Widget displayed after the [child].
   final Widget? trailing;
+
+  /// Alignment of the button's content.
   final AlignmentGeometry? alignment;
+
+  /// Size variant of the button (defaults to [ButtonSize.normal]).
   final ButtonSize size;
+
+  /// Density variant affecting spacing (defaults to [ButtonDensity.normal]).
   final ButtonDensity density;
+
+  /// Shape of the button (defaults to [ButtonShape.rectangle]).
   final ButtonShape shape;
+
+  /// Focus node for keyboard focus management.
   final FocusNode? focusNode;
+
+  /// Whether to disable style transition animations (defaults to `false`).
   final bool disableTransition;
+
+  /// Called when hover state changes.
   final ValueChanged<bool>? onHover;
+
+  /// Called when focus state changes.
   final ValueChanged<bool>? onFocus;
 
+  /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
+
+  /// Called when primary tap down occurs.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when primary tap up occurs.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called when secondary tap down occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
+
+  /// Called when secondary tap up occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
+
+  /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+
+  /// Called when tertiary tap down occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
+
+  /// Called when tertiary tap up occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
+
+  /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+
+  /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+
+  /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+
+  /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+
+  /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+
+  /// Called when secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+
+  /// Called when tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
+  /// Creates a secondary button with the specified properties.
   const SecondaryButton({
     super.key,
     required this.child,
@@ -4133,38 +4190,99 @@ class SecondaryButton extends StatelessWidget {
   }
 }
 
+/// Convenience widget for creating an outline button.
+///
+/// A simplified wrapper around [Button.outline] with the same properties
+/// as [PrimaryButton] but using outline button styling with a visible border.
 class OutlineButton extends StatelessWidget {
+  /// The widget to display as the button's content.
   final Widget child;
+
+  /// Called when the button is pressed. If `null`, the button is disabled.
   final VoidCallback? onPressed;
+
+  /// Whether the button is enabled. Overrides the `onPressed` check if provided.
   final bool? enabled;
+
+  /// Widget displayed before the [child].
   final Widget? leading;
+
+  /// Widget displayed after the [child].
   final Widget? trailing;
+
+  /// Alignment of the button's content.
   final AlignmentGeometry? alignment;
+
+  /// Size variant of the button (defaults to [ButtonSize.normal]).
   final ButtonSize size;
+
+  /// Density variant affecting spacing (defaults to [ButtonDensity.normal]).
   final ButtonDensity density;
+
+  /// Shape of the button (defaults to [ButtonShape.rectangle]).
   final ButtonShape shape;
+
+  /// Focus node for keyboard focus management.
   final FocusNode? focusNode;
+
+  /// Whether to disable style transition animations (defaults to `false`).
   final bool disableTransition;
+
+  /// Called when hover state changes.
   final ValueChanged<bool>? onHover;
+
+  /// Called when focus state changes.
   final ValueChanged<bool>? onFocus;
 
+  /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
+
+  /// Called when primary tap down occurs.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when primary tap up occurs.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called when secondary tap down occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
+
+  /// Called when secondary tap up occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
+
+  /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+
+  /// Called when tertiary tap down occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
+
+  /// Called when tertiary tap up occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
+
+  /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+
+  /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+
+  /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+
+  /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+
+  /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+
+  /// Called when secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+
+  /// Called when tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
+  /// Creates an outline button with the specified properties.
   const OutlineButton({
     super.key,
     required this.child,
@@ -4232,38 +4350,99 @@ class OutlineButton extends StatelessWidget {
   }
 }
 
+/// Convenience widget for creating a ghost button.
+///
+/// A simplified wrapper around [Button.ghost] with the same properties
+/// as [PrimaryButton] but using ghost button styling with minimal visual presence.
 class GhostButton extends StatelessWidget {
+  /// The widget to display as the button's content.
   final Widget child;
+
+  /// Called when the button is pressed. If `null`, the button is disabled.
   final VoidCallback? onPressed;
+
+  /// Whether the button is enabled. Overrides the `onPressed` check if provided.
   final bool? enabled;
+
+  /// Widget displayed before the [child].
   final Widget? leading;
+
+  /// Widget displayed after the [child].
   final Widget? trailing;
+
+  /// Alignment of the button's content.
   final AlignmentGeometry? alignment;
+
+  /// Size variant of the button (defaults to [ButtonSize.normal]).
   final ButtonSize size;
+
+  /// Density variant affecting spacing (defaults to [ButtonDensity.normal]).
   final ButtonDensity density;
+
+  /// Shape of the button (defaults to [ButtonShape.rectangle]).
   final ButtonShape shape;
+
+  /// Focus node for keyboard focus management.
   final FocusNode? focusNode;
+
+  /// Whether to disable style transition animations (defaults to `false`).
   final bool disableTransition;
+
+  /// Called when hover state changes.
   final ValueChanged<bool>? onHover;
+
+  /// Called when focus state changes.
   final ValueChanged<bool>? onFocus;
 
+  /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
+
+  /// Called when primary tap down occurs.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when primary tap up occurs.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called when secondary tap down occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
+
+  /// Called when secondary tap up occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
+
+  /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+
+  /// Called when tertiary tap down occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
+
+  /// Called when tertiary tap up occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
+
+  /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+
+  /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+
+  /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+
+  /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+
+  /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+
+  /// Called when secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+
+  /// Called when tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
+  /// Creates a ghost button with the specified properties.
   const GhostButton({
     super.key,
     required this.child,
@@ -4331,38 +4510,99 @@ class GhostButton extends StatelessWidget {
   }
 }
 
+/// Convenience widget for creating a link button.
+///
+/// A simplified wrapper around [Button.link] with the same properties
+/// as [PrimaryButton] but using link button styling that resembles a hyperlink.
 class LinkButton extends StatelessWidget {
+  /// The widget to display as the button's content.
   final Widget child;
+
+  /// Called when the button is pressed. If `null`, the button is disabled.
   final VoidCallback? onPressed;
+
+  /// Whether the button is enabled. Overrides the `onPressed` check if provided.
   final bool? enabled;
+
+  /// Widget displayed before the [child].
   final Widget? leading;
+
+  /// Widget displayed after the [child].
   final Widget? trailing;
+
+  /// Alignment of the button's content.
   final AlignmentGeometry? alignment;
+
+  /// Size variant of the button (defaults to [ButtonSize.normal]).
   final ButtonSize size;
+
+  /// Density variant affecting spacing (defaults to [ButtonDensity.normal]).
   final ButtonDensity density;
+
+  /// Shape of the button (defaults to [ButtonShape.rectangle]).
   final ButtonShape shape;
+
+  /// Focus node for keyboard focus management.
   final FocusNode? focusNode;
+
+  /// Whether to disable style transition animations (defaults to `false`).
   final bool disableTransition;
+
+  /// Called when hover state changes.
   final ValueChanged<bool>? onHover;
+
+  /// Called when focus state changes.
   final ValueChanged<bool>? onFocus;
 
+  /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
+
+  /// Called when primary tap down occurs.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when primary tap up occurs.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called when secondary tap down occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
+
+  /// Called when secondary tap up occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
+
+  /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+
+  /// Called when tertiary tap down occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
+
+  /// Called when tertiary tap up occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
+
+  /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+
+  /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+
+  /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+
+  /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+
+  /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+
+  /// Called when secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+
+  /// Called when tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
+  /// Creates a link button with the specified properties.
   const LinkButton({
     super.key,
     required this.child,
@@ -4430,37 +4670,99 @@ class LinkButton extends StatelessWidget {
   }
 }
 
+/// Convenience widget for creating a text button.
+///
+/// A simplified wrapper around [Button.text] with the same properties
+/// as [PrimaryButton] but using text button styling with minimal styling.
 class TextButton extends StatelessWidget {
+  /// The widget to display as the button's content.
   final Widget child;
+
+  /// Called when the button is pressed. If `null`, the button is disabled.
   final VoidCallback? onPressed;
+
+  /// Whether the button is enabled. Overrides the `onPressed` check if provided.
   final bool? enabled;
+
+  /// Widget displayed before the [child].
   final Widget? leading;
+
+  /// Widget displayed after the [child].
   final Widget? trailing;
+
+  /// Alignment of the button's content.
   final AlignmentGeometry? alignment;
+
+  /// Size variant of the button (defaults to [ButtonSize.normal]).
   final ButtonSize size;
+
+  /// Density variant affecting spacing (defaults to [ButtonDensity.normal]).
   final ButtonDensity density;
+
+  /// Shape of the button (defaults to [ButtonShape.rectangle]).
   final ButtonShape shape;
+
+  /// Focus node for keyboard focus management.
   final FocusNode? focusNode;
+
+  /// Whether to disable style transition animations (defaults to `false`).
   final bool disableTransition;
+
+  /// Called when hover state changes.
   final ValueChanged<bool>? onHover;
+
+  /// Called when focus state changes.
   final ValueChanged<bool>? onFocus;
+
+  /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
+
+  /// Called when primary tap down occurs.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when primary tap up occurs.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called when secondary tap down occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
+
+  /// Called when secondary tap up occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
+
+  /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+
+  /// Called when tertiary tap down occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
+
+  /// Called when tertiary tap up occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
+
+  /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+
+  /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+
+  /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+
+  /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+
+  /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+
+  /// Called when secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+
+  /// Called when tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
+  /// Creates a text button with the specified properties.
   const TextButton({
     super.key,
     required this.child,
@@ -4510,38 +4812,99 @@ class TextButton extends StatelessWidget {
   }
 }
 
+/// Convenience widget for creating a destructive button.
+///
+/// A simplified wrapper around [Button.destructive] with the same properties
+/// as [PrimaryButton] but using destructive button styling for dangerous actions.
 class DestructiveButton extends StatelessWidget {
+  /// The widget to display as the button's content.
   final Widget child;
+
+  /// Called when the button is pressed. If `null`, the button is disabled.
   final VoidCallback? onPressed;
+
+  /// Whether the button is enabled. Overrides the `onPressed` check if provided.
   final bool? enabled;
+
+  /// Widget displayed before the [child].
   final Widget? leading;
+
+  /// Widget displayed after the [child].
   final Widget? trailing;
+
+  /// Alignment of the button's content.
   final AlignmentGeometry? alignment;
+
+  /// Size variant of the button (defaults to [ButtonSize.normal]).
   final ButtonSize size;
+
+  /// Density variant affecting spacing (defaults to [ButtonDensity.normal]).
   final ButtonDensity density;
+
+  /// Shape of the button (defaults to [ButtonShape.rectangle]).
   final ButtonShape shape;
+
+  /// Focus node for keyboard focus management.
   final FocusNode? focusNode;
+
+  /// Whether to disable style transition animations (defaults to `false`).
   final bool disableTransition;
+
+  /// Called when hover state changes.
   final ValueChanged<bool>? onHover;
+
+  /// Called when focus state changes.
   final ValueChanged<bool>? onFocus;
 
+  /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
+
+  /// Called when primary tap down occurs.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when primary tap up occurs.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called when secondary tap down occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
+
+  /// Called when secondary tap up occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
+
+  /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+
+  /// Called when tertiary tap down occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
+
+  /// Called when tertiary tap up occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
+
+  /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+
+  /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+
+  /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+
+  /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+
+  /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+
+  /// Called when secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+
+  /// Called when tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
+  /// Creates a destructive button with the specified properties.
   const DestructiveButton({
     super.key,
     required this.child,
@@ -4610,38 +4973,99 @@ class DestructiveButton extends StatelessWidget {
   }
 }
 
+/// Convenience widget for creating a tab button.
+///
+/// A simplified wrapper around [Button] with the same properties
+/// as [PrimaryButton] but using tab button styling for tabbed navigation.
 class TabButton extends StatelessWidget {
+  /// The widget to display as the button's content.
   final Widget child;
+
+  /// Called when the button is pressed. If `null`, the button is disabled.
   final VoidCallback? onPressed;
+
+  /// Whether the button is enabled. Overrides the `onPressed` check if provided.
   final bool? enabled;
+
+  /// Widget displayed before the [child].
   final Widget? leading;
+
+  /// Widget displayed after the [child].
   final Widget? trailing;
+
+  /// Alignment of the button's content.
   final AlignmentGeometry? alignment;
+
+  /// Size variant of the button (defaults to [ButtonSize.normal]).
   final ButtonSize size;
+
+  /// Density variant affecting spacing (defaults to [ButtonDensity.normal]).
   final ButtonDensity density;
+
+  /// Shape of the button (defaults to [ButtonShape.rectangle]).
   final ButtonShape shape;
+
+  /// Focus node for keyboard focus management.
   final FocusNode? focusNode;
+
+  /// Whether to disable style transition animations (defaults to `false`).
   final bool disableTransition;
+
+  /// Called when hover state changes.
   final ValueChanged<bool>? onHover;
+
+  /// Called when focus state changes.
   final ValueChanged<bool>? onFocus;
 
+  /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
+
+  /// Called when primary tap down occurs.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when primary tap up occurs.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called when secondary tap down occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
+
+  /// Called when secondary tap up occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
+
+  /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+
+  /// Called when tertiary tap down occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
+
+  /// Called when tertiary tap up occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
+
+  /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+
+  /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+
+  /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+
+  /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+
+  /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+
+  /// Called when secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+
+  /// Called when tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
+  /// Creates a tab button with the specified properties.
   const TabButton({
     super.key,
     required this.child,
@@ -4821,21 +5245,52 @@ class CardButton extends StatelessWidget {
   /// when it loses focus. Supports keyboard navigation patterns.
   final ValueChanged<bool>? onFocus;
 
+  /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
+
+  /// Called when primary tap down occurs.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when primary tap up occurs.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called when secondary tap down occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
+
+  /// Called when secondary tap up occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
+
+  /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+
+  /// Called when tertiary tap down occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
+
+  /// Called when tertiary tap up occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
+
+  /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+
+  /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+
+  /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+
+  /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+
+  /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+
+  /// Called when secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+
+  /// Called when tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
 
   /// Creates a [CardButton] with card-styled appearance and comprehensive interaction support.
@@ -4932,38 +5387,103 @@ class CardButton extends StatelessWidget {
   }
 }
 
+/// Icon-only button widget with support for multiple visual styles.
+///
+/// [IconButton] is optimized for displaying buttons with icon content,
+/// using icon-specific density and sizing by default. Supports various
+/// button styles through named constructors or the [variance] parameter.
 class IconButton extends StatelessWidget {
+  /// The icon widget to display in the button.
   final Widget icon;
+
+  /// Called when the button is pressed. If `null`, the button is disabled.
   final VoidCallback? onPressed;
+
+  /// Whether the button is enabled. Overrides the `onPressed` check if provided.
   final bool? enabled;
+
+  /// Widget displayed before the [icon].
   final Widget? leading;
+
+  /// Widget displayed after the [icon].
   final Widget? trailing;
+
+  /// Alignment of the button's content.
   final AlignmentGeometry? alignment;
+
+  /// Size variant of the button (defaults to [ButtonSize.normal]).
   final ButtonSize size;
+
+  /// Density variant affecting spacing (defaults to [ButtonDensity.icon]).
   final ButtonDensity density;
+
+  /// Shape of the button (defaults to [ButtonShape.rectangle]).
   final ButtonShape shape;
+
+  /// Focus node for keyboard focus management.
   final FocusNode? focusNode;
+
+  /// Whether to disable style transition animations (defaults to `false`).
   final bool disableTransition;
+
+  /// Called when hover state changes.
   final ValueChanged<bool>? onHover;
+
+  /// Called when focus state changes.
   final ValueChanged<bool>? onFocus;
+
+  /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
+
+  /// Called when primary tap down occurs.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when primary tap up occurs.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called when secondary tap down occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
+
+  /// Called when secondary tap up occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
+
+  /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+
+  /// Called when tertiary tap down occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
+
+  /// Called when tertiary tap up occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
+
+  /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+
+  /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+
+  /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+
+  /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+
+  /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+
+  /// Called when secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+
+  /// Called when tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
+
+  /// The button style variant to apply.
   final AbstractButtonStyle variance;
 
+  /// Creates an icon button with the specified style variance.
   const IconButton({
     super.key,
     required this.icon,
@@ -4998,6 +5518,7 @@ class IconButton extends StatelessWidget {
     this.onTertiaryLongPress,
   });
 
+  /// Creates an icon button with primary styling.
   const IconButton.primary({
     super.key,
     required this.icon,
@@ -5032,6 +5553,7 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates an icon button with secondary styling.
   const IconButton.secondary({
     super.key,
     required this.icon,
@@ -5066,6 +5588,7 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates an icon button with outline styling.
   const IconButton.outline({
     super.key,
     required this.icon,
@@ -5100,6 +5623,7 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates an icon button with ghost styling.
   const IconButton.ghost({
     super.key,
     required this.icon,
@@ -5134,6 +5658,7 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates an icon button with link styling.
   const IconButton.link({
     super.key,
     required this.icon,
@@ -5168,6 +5693,7 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates an icon button with text styling.
   const IconButton.text({
     super.key,
     required this.icon,
@@ -5202,6 +5728,7 @@ class IconButton extends StatelessWidget {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates an icon button with destructive styling.
   const IconButton.destructive({
     super.key,
     required this.icon,
