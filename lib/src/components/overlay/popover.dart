@@ -6,7 +6,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Handles overlay presentation for popover components.
+///
+/// Manages the display, positioning, and lifecycle of popover overlays
+/// with support for alignment, constraints, and modal behavior.
 class PopoverOverlayHandler extends OverlayHandler {
+  /// Creates a [PopoverOverlayHandler].
   const PopoverOverlayHandler();
   @override
   OverlayCompleter<T> show<T>({
@@ -184,7 +189,12 @@ class PopoverOverlayHandler extends OverlayHandler {
   }
 }
 
+/// Internal widget for rendering popover overlays.
+///
+/// Manages positioning, constraints, and lifecycle of popover content
+/// relative to an anchor widget.
 class PopoverOverlayWidget extends StatefulWidget {
+  /// Creates a [PopoverOverlayWidget].
   const PopoverOverlayWidget({
     super.key,
     required this.anchorContext,
@@ -215,31 +225,81 @@ class PopoverOverlayWidget extends StatefulWidget {
     this.layerLink,
   });
 
+  /// Explicit position for the popover.
   final Offset? position;
+
+  /// Alignment of the popover relative to the anchor.
   final AlignmentGeometry alignment;
+
+  /// Alignment point on the anchor widget.
   final AlignmentGeometry anchorAlignment;
+
+  /// Captured theme data from context.
   final CapturedThemes? themes;
+
+  /// Captured inherited data from context.
   final CapturedData? data;
+
+  /// Builder function for popover content.
   final WidgetBuilder builder;
+
+  /// Size of the anchor widget.
   final Size? anchorSize;
+
+  /// Animation controller for show/hide transitions.
   final Animation<double> animation;
+
+  /// Width constraint mode for the popover.
   final PopoverConstraint widthConstraint;
+
+  /// Height constraint mode for the popover.
   final PopoverConstraint heightConstraint;
+
   // final PopoverRoute? route;
+
+  /// Callback when popover is closing.
   final FutureVoidCallback? onClose;
+
+  /// Callback for immediate close without animation.
   final VoidCallback? onImmediateClose;
+
+  /// Callback when user taps outside the popover.
   final VoidCallback? onTapOutside;
+
+  /// Region group identifier for coordinating multiple overlays.
   final Object? regionGroupId;
+
+  /// Additional offset applied to popover position.
   final Offset? offset;
+
+  /// Alignment for transition animations.
   final AlignmentGeometry? transitionAlignment;
+
+  /// Margin around the popover.
   final EdgeInsetsGeometry? margin;
+
+  /// Whether popover follows anchor movement.
   final bool follow;
+
+  /// Build context of the anchor widget.
   final BuildContext anchorContext;
+
+  /// Whether to consume taps outside the popover.
   final bool consumeOutsideTaps;
+
+  /// Callback on each frame when following anchor.
   final ValueChanged<PopoverOverlayWidgetState>? onTickFollow;
+
+  /// Allow horizontal inversion when constrained.
   final bool allowInvertHorizontal;
+
+  /// Allow vertical inversion when constrained.
   final bool allowInvertVertical;
+
+  /// Callback when closing with a result value.
   final PopoverFutureVoidCallback<Object?>? onCloseWithResult;
+
+  /// Layer link for positioning.
   final LayerLink? layerLink;
 
   @override
@@ -599,6 +659,15 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
   }
 }
 
+/// Closes the current popover overlay.
+///
+/// Deprecated: Use [closeOverlay] instead.
+///
+/// Parameters:
+/// - [context] (`BuildContext`, required): Widget context.
+/// - [result] (`T?`, optional): Result to return when closing.
+///
+/// Returns: `Future<void>` — completes when popover is closed.
 @Deprecated('Use closeOverlay instead')
 Future<void> closePopover<T>(BuildContext context, [T? result]) {
   return closeOverlay<T>(context, result);
@@ -647,6 +716,46 @@ class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
   bool get isAnimationCompleted => animationCompleter.isCompleted;
 }
 
+/// Displays a popover overlay with specified alignment and behavior.
+///
+/// Parameters:
+/// - [context] (`BuildContext`, required): Widget context.
+/// - [alignment] (`AlignmentGeometry`, required): Popover alignment relative to anchor.
+/// - [builder] (`WidgetBuilder`, required): Builds popover content.
+/// - [position] (`Offset?`, optional): Explicit position.
+/// - [anchorAlignment] (`AlignmentGeometry?`, optional): Anchor alignment point.
+/// - [widthConstraint] (`PopoverConstraint`, optional): Width constraint mode. Default: flexible.
+/// - [heightConstraint] (`PopoverConstraint`, optional): Height constraint mode. Default: flexible.
+/// - [key] (`Key?`, optional): Widget key.
+/// - [rootOverlay] (`bool`, optional): Use root overlay. Default: true.
+/// - [modal] (`bool`, optional): Modal behavior. Default: true.
+/// - [barrierDismissable] (`bool`, optional): Tap outside to dismiss. Default: true.
+/// - [clipBehavior] (`Clip`, optional): Clipping behavior. Default: Clip.none.
+/// - [regionGroupId] (`Object?`, optional): Region grouping identifier.
+/// - [offset] (`Offset?`, optional): Additional offset.
+/// - [transitionAlignment] (`AlignmentGeometry?`, optional): Transition origin.
+/// - [margin] (`EdgeInsetsGeometry?`, optional): Popover margin.
+/// - [follow] (`bool`, optional): Follow anchor movement. Default: true.
+/// - [consumeOutsideTaps] (`bool`, optional): Consume outside taps. Default: true.
+/// - [onTickFollow] (`ValueChanged<PopoverOverlayWidgetState>?`, optional): Follow callback.
+/// - [allowInvertHorizontal] (`bool`, optional): Allow horizontal inversion. Default: true.
+/// - [allowInvertVertical] (`bool`, optional): Allow vertical inversion. Default: true.
+/// - [dismissBackdropFocus] (`bool`, optional): Dismiss on backdrop focus. Default: true.
+/// - [showDuration] (`Duration?`, optional): Show animation duration.
+/// - [dismissDuration] (`Duration?`, optional): Dismiss animation duration.
+/// - [overlayBarrier] (`OverlayBarrier?`, optional): Custom barrier configuration.
+/// - [handler] (`OverlayHandler?`, optional): Custom overlay handler.
+///
+/// Returns: `OverlayCompleter<T?>` — handle to control the popover.
+///
+/// Example:
+/// ```dart
+/// showPopover(
+///   context: context,
+///   alignment: Alignment.bottomCenter,
+///   builder: (context) => Text('Popover content'),
+/// );
+/// ```
 OverlayCompleter<T?> showPopover<T>({
   required BuildContext context,
   required AlignmentGeometry alignment,

@@ -1067,6 +1067,14 @@ class _NavigationSidebarState extends State<NavigationSidebar>
   }
 }
 
+/// Determines when labels are shown in navigation items.
+///
+/// Values:
+/// - `none`: No labels shown.
+/// - `selected`: Labels shown only for selected items.
+/// - `all`: Labels always shown for all items.
+/// - `tooltip`: Labels shown as tooltips on hover.
+/// - `expanded`: Labels shown when navigation is expanded.
 enum NavigationLabelType { none, selected, all, tooltip, expanded }
 
 enum NavigationLabelPosition { start, end, top, bottom }
