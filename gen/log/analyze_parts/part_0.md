@@ -589,34 +589,34 @@ TODO:
 - [ ] lib/src/shadcn_app.dart:956:  double? get radius {
 - [ ] lib/src/shadcn_app.dart:967:  double? get beginAngle {
 - [ ] lib/src/shadcn_app.dart:978:  double? get endAngle {
-- [ ] lib/src/theme/color_scheme.dart:357:String hexFromColor(Color color) {
-- [ ] lib/src/theme/color_scheme.dart:211:  Color get shade50 => _colors[50]!;
-- [ ] lib/src/theme/color_scheme.dart:212:  Color get shade100 => _colors[100]!;
-- [ ] lib/src/theme/color_scheme.dart:213:  Color get shade200 => _colors[200]!;
-- [ ] lib/src/theme/color_scheme.dart:214:  Color get shade300 => _colors[300]!;
-- [ ] lib/src/theme/color_scheme.dart:215:  Color get shade400 => _colors[400]!;
-- [ ] lib/src/theme/color_scheme.dart:216:  Color get shade500 => _colors[500]!;
-- [ ] lib/src/theme/color_scheme.dart:217:  Color get shade600 => _colors[600]!;
-- [ ] lib/src/theme/color_scheme.dart:218:  Color get shade700 => _colors[700]!;
-- [ ] lib/src/theme/color_scheme.dart:219:  Color get shade800 => _colors[800]!;
-- [ ] lib/src/theme/color_scheme.dart:220:  Color get shade900 => _colors[900]!;
-- [ ] lib/src/theme/color_scheme.dart:221:  Color get shade950 => _colors[950]!;
-- [ ] lib/src/theme/color_scheme.dart:74:  static const List<int> shadeValues = [
-- [ ] lib/src/theme/color_scheme.dart:567:  Map<String, String> toMap() {
-- [ ] lib/src/theme/color_scheme.dart:606:  Map<String, Color> toColorMap() {
-- [ ] lib/src/theme/color_scheme.dart:683:  ColorScheme copyWith({
-- [ ] lib/src/theme/color_scheme.dart:779:  static ColorScheme lerp(ColorScheme a, ColorScheme b, double t) {
-- [ ] lib/src/theme/color_scheme.dart:367:  static const Set<String> colorKeys = {
-- [ ] lib/src/theme/color_scheme.dart:644:  ColorScheme.fromColors({
-- [ ] lib/src/theme/generated_colors.dart:322:  static const Color transparent = Color(0x00000000);
-- [ ] lib/src/theme/generated_colors.dart:323:  static final List<Color> primaries = [
-- [ ] lib/src/theme/theme.dart:29:  ThemeData scale(ThemeData theme) {
-- [ ] lib/src/theme/theme.dart:40:  static AdaptiveScaling lerp(
-- [ ] lib/src/theme/theme.dart:10:  static const AdaptiveScaling desktop = AdaptiveScaling();
-- [ ] lib/src/theme/theme.dart:11:  static const AdaptiveScaling mobile = AdaptiveScaling(1.25);
-- [ ] lib/src/theme/theme.dart:12:  final double radiusScaling;
-- [ ] lib/src/theme/theme.dart:13:  final double sizeScaling;
-- [ ] lib/src/theme/theme.dart:14:  final double textScaling;
+- [x] lib/src/theme/color_scheme.dart:357:String hexFromColor(Color color) {
+- [x] lib/src/theme/color_scheme.dart:211:  Color get shade50 => _colors[50]!;
+- [x] lib/src/theme/color_scheme.dart:212:  Color get shade100 => _colors[100]!;
+- [x] lib/src/theme/color_scheme.dart:213:  Color get shade200 => _colors[200]!;
+- [x] lib/src/theme/color_scheme.dart:214:  Color get shade300 => _colors[300]!;
+- [x] lib/src/theme/color_scheme.dart:215:  Color get shade400 => _colors[400]!;
+- [x] lib/src/theme/color_scheme.dart:216:  Color get shade500 => _colors[500]!;
+- [x] lib/src/theme/color_scheme.dart:217:  Color get shade600 => _colors[600]!;
+- [x] lib/src/theme/color_scheme.dart:218:  Color get shade700 => _colors[700]!;
+- [x] lib/src/theme/color_scheme.dart:219:  Color get shade800 => _colors[800]!;
+- [x] lib/src/theme/color_scheme.dart:220:  Color get shade900 => _colors[900]!;
+- [x] lib/src/theme/color_scheme.dart:221:  Color get shade950 => _colors[950]!;
+- [x] lib/src/theme/color_scheme.dart:74:  static const List<int> shadeValues = [
+- [x] lib/src/theme/color_scheme.dart:567:  Map<String, String> toMap() {
+- [x] lib/src/theme/color_scheme.dart:606:  Map<String, Color> toColorMap() {
+- [x] lib/src/theme/color_scheme.dart:683:  ColorScheme copyWith({
+- [x] lib/src/theme/color_scheme.dart:779:  static ColorScheme lerp(ColorScheme a, ColorScheme b, double t) {
+- [x] lib/src/theme/color_scheme.dart:367:  static const Set<String> colorKeys = {
+- [x] lib/src/theme/color_scheme.dart:644:  ColorScheme.fromColors({
+- [x] lib/src/theme/generated_colors.dart:322:  static const Color transparent = Color(0x00000000);
+- [x] lib/src/theme/generated_colors.dart:323:  static final List<Color> primaries = [
+- [x] lib/src/theme/theme.dart:29:  ThemeData scale(ThemeData theme) {
+- [x] lib/src/theme/theme.dart:40:  static AdaptiveScaling lerp(
+- [x] lib/src/theme/theme.dart:10:  static const AdaptiveScaling desktop = AdaptiveScaling();
+- [x] lib/src/theme/theme.dart:11:  static const AdaptiveScaling mobile = AdaptiveScaling(1.25);
+- [x] lib/src/theme/theme.dart:12:  final double radiusScaling;
+- [x] lib/src/theme/theme.dart:13:  final double sizeScaling;
+- [x] lib/src/theme/theme.dart:14:  final double textScaling;
 - [ ] lib/src/theme/theme.dart:16:  const AdaptiveScaling([double scaling = 1])
 - [ ] lib/src/theme/theme.dart:23:  const AdaptiveScaling.only({
 - [ ] lib/src/theme/theme.dart:55:  static AdaptiveScaling defaultScalingOf(BuildContext context) {
