@@ -359,99 +359,99 @@ TODO:
 - [x] lib\src\resizer.dart:71:16
 - [x] lib\src\resizer.dart:72:16
 - [x] lib\src\resizer.dart:73:3
-- [ ] lib\src\shadcn_app.dart:13:7
-- [ ] lib\src\shadcn_app.dart:14:9
-- [ ] lib\src\shadcn_app.dart:65:19
-- [ ] lib\src\shadcn_app.dart:117:36
-- [ ] lib\src\shadcn_app.dart:119:26
-- [ ] lib\src\shadcn_app.dart:121:17
-- [ ] lib\src\shadcn_app.dart:123:37
-- [ ] lib\src\shadcn_app.dart:125:17
-- [ ] lib\src\shadcn_app.dart:127:23
-- [ ] lib\src\shadcn_app.dart:129:34
-- [ ] lib\src\shadcn_app.dart:131:23
-- [ ] lib\src\shadcn_app.dart:134:7
-- [ ] lib\src\shadcn_app.dart:136:34
-- [ ] lib\src\shadcn_app.dart:138:35
-- [ ] lib\src\shadcn_app.dart:140:41
-- [ ] lib\src\shadcn_app.dart:142:33
-- [ ] lib\src\shadcn_app.dart:144:31
-- [ ] lib\src\shadcn_app.dart:146:31
-- [ ] lib\src\shadcn_app.dart:148:28
-- [ ] lib\src\shadcn_app.dart:150:16
-- [ ] lib\src\shadcn_app.dart:152:27
-- [ ] lib\src\shadcn_app.dart:154:19
-- [ ] lib\src\shadcn_app.dart:155:20
-- [ ] lib\src\shadcn_app.dart:156:19
-- [ ] lib\src\shadcn_app.dart:157:16
-- [ ] lib\src\shadcn_app.dart:158:16
-- [ ] lib\src\shadcn_app.dart:159:17
-- [ ] lib\src\shadcn_app.dart:161:51
-- [ ] lib\src\shadcn_app.dart:162:39
-- [ ] lib\src\shadcn_app.dart:163:35
-- [ ] lib\src\shadcn_app.dart:164:26
-- [ ] lib\src\shadcn_app.dart:165:14
-- [ ] lib\src\shadcn_app.dart:166:14
-- [ ] lib\src\shadcn_app.dart:167:14
-- [ ] lib\src\shadcn_app.dart:168:41
-- [ ] lib\src\shadcn_app.dart:169:36
-- [ ] lib\src\shadcn_app.dart:170:17
-- [ ] lib\src\shadcn_app.dart:171:25
-- [ ] lib\src\shadcn_app.dart:172:14
-- [ ] lib\src\shadcn_app.dart:173:22
-- [ ] lib\src\shadcn_app.dart:174:31
-- [ ] lib\src\shadcn_app.dart:175:14
-- [ ] lib\src\shadcn_app.dart:176:21
-- [ ] lib\src\shadcn_app.dart:177:13
-- [ ] lib\src\shadcn_app.dart:178:36
-- [ ] lib\src\shadcn_app.dart:179:14
-- [ ] lib\src\shadcn_app.dart:180:14
-- [ ] lib\src\shadcn_app.dart:181:25
-- [ ] lib\src\shadcn_app.dart:182:25
-- [ ] lib\src\shadcn_app.dart:183:25
-- [ ] lib\src\shadcn_app.dart:184:14
-- [ ] lib\src\shadcn_app.dart:190:7
-- [ ] lib\src\shadcn_app.dart:191:9
-- [ ] lib\src\shadcn_app.dart:470:7
-- [ ] lib\src\shadcn_app.dart:471:17
-- [ ] lib\src\shadcn_app.dart:472:19
-- [ ] lib\src\shadcn_app.dart:473:20
-- [ ] lib\src\shadcn_app.dart:474:19
-- [ ] lib\src\shadcn_app.dart:475:26
-- [ ] lib\src\shadcn_app.dart:476:21
-- [ ] lib\src\shadcn_app.dart:477:13
-- [ ] lib\src\shadcn_app.dart:478:36
-- [ ] lib\src\shadcn_app.dart:479:63
-- [ ] lib\src\shadcn_app.dart:480:14
-- [ ] lib\src\shadcn_app.dart:481:25
-- [ ] lib\src\shadcn_app.dart:482:25
-- [ ] lib\src\shadcn_app.dart:483:25
-- [ ] lib\src\shadcn_app.dart:484:14
-- [ ] lib\src\shadcn_app.dart:486:9
-- [ ] lib\src\shadcn_app.dart:574:7
-- [ ] lib\src\shadcn_app.dart:575:16
-- [ ] lib\src\shadcn_app.dart:576:19
-- [ ] lib\src\shadcn_app.dart:577:18
-- [ ] lib\src\shadcn_app.dart:578:15
-- [ ] lib\src\shadcn_app.dart:579:23
-- [ ] lib\src\shadcn_app.dart:581:9
-- [ ] lib\src\shadcn_app.dart:607:7
-- [ ] lib\src\shadcn_app.dart:650:28
-- [ ] lib\src\shadcn_app.dart:661:28
-- [ ] lib\src\shadcn_app.dart:608:3
-- [ ] lib\src\shadcn_app.dart:736:7
-- [ ] lib\src\shadcn_app.dart:794:15
-- [ ] lib\src\shadcn_app.dart:805:15
-- [ ] lib\src\shadcn_app.dart:816:15
-- [ ] lib\src\shadcn_app.dart:827:15
-- [ ] lib\src\shadcn_app.dart:737:3
-- [ ] lib\src\shadcn_app.dart:876:7
-- [ ] lib\src\shadcn_app.dart:877:20
-- [ ] lib\src\shadcn_app.dart:878:16
-- [ ] lib\src\shadcn_app.dart:880:9
-- [ ] lib\src\shadcn_app.dart:917:7
-- [ ] lib\src\shadcn_app.dart:918:16
-- [ ] lib\src\shadcn_app.dart:920:3
+- [x] lib\src\shadcn_app.dart:13:7
+- [x] lib\src\shadcn_app.dart:14:9
+- [x] lib\src\shadcn_app.dart:65:19
+- [x] lib\src\shadcn_app.dart:117:36
+- [x] lib\src\shadcn_app.dart:119:26
+- [x] lib\src\shadcn_app.dart:121:17
+- [x] lib\src\shadcn_app.dart:123:37
+- [x] lib\src\shadcn_app.dart:125:17
+- [x] lib\src\shadcn_app.dart:127:23
+- [x] lib\src\shadcn_app.dart:129:34
+- [x] lib\src\shadcn_app.dart:131:23
+- [x] lib\src\shadcn_app.dart:134:7
+- [x] lib\src\shadcn_app.dart:136:34
+- [x] lib\src\shadcn_app.dart:138:35
+- [x] lib\src\shadcn_app.dart:140:41
+- [x] lib\src\shadcn_app.dart:142:33
+- [x] lib\src\shadcn_app.dart:144:31
+- [x] lib\src\shadcn_app.dart:146:31
+- [x] lib\src\shadcn_app.dart:148:28
+- [x] lib\src\shadcn_app.dart:150:16
+- [x] lib\src\shadcn_app.dart:152:27
+- [x] lib\src\shadcn_app.dart:154:19
+- [x] lib\src\shadcn_app.dart:155:20
+- [x] lib\src\shadcn_app.dart:156:19
+- [x] lib\src\shadcn_app.dart:157:16
+- [x] lib\src\shadcn_app.dart:158:16
+- [x] lib\src\shadcn_app.dart:159:17
+- [x] lib\src\shadcn_app.dart:161:51
+- [x] lib\src\shadcn_app.dart:162:39
+- [x] lib\src\shadcn_app.dart:163:35
+- [x] lib\src\shadcn_app.dart:164:26
+- [x] lib\src\shadcn_app.dart:165:14
+- [x] lib\src\shadcn_app.dart:166:14
+- [x] lib\src\shadcn_app.dart:167:14
+- [x] lib\src\shadcn_app.dart:168:41
+- [x] lib\src\shadcn_app.dart:169:36
+- [x] lib\src\shadcn_app.dart:170:17
+- [x] lib\src\shadcn_app.dart:171:25
+- [x] lib\src\shadcn_app.dart:172:14
+- [x] lib\src\shadcn_app.dart:173:22
+- [x] lib\src\shadcn_app.dart:174:31
+- [x] lib\src\shadcn_app.dart:175:14
+- [x] lib\src\shadcn_app.dart:176:21
+- [x] lib\src\shadcn_app.dart:177:13
+- [x] lib\src\shadcn_app.dart:178:36
+- [x] lib\src\shadcn_app.dart:179:14
+- [x] lib\src\shadcn_app.dart:180:14
+- [x] lib\src\shadcn_app.dart:181:25
+- [x] lib\src\shadcn_app.dart:182:25
+- [x] lib\src\shadcn_app.dart:183:25
+- [x] lib\src\shadcn_app.dart:184:14
+- [x] lib\src\shadcn_app.dart:190:7
+- [x] lib\src\shadcn_app.dart:191:9
+- [x] lib\src\shadcn_app.dart:470:7
+- [x] lib\src\shadcn_app.dart:471:17
+- [x] lib\src\shadcn_app.dart:472:19
+- [x] lib\src\shadcn_app.dart:473:20
+- [x] lib\src\shadcn_app.dart:474:19
+- [x] lib\src\shadcn_app.dart:475:26
+- [x] lib\src\shadcn_app.dart:476:21
+- [x] lib\src\shadcn_app.dart:477:13
+- [x] lib\src\shadcn_app.dart:478:36
+- [x] lib\src\shadcn_app.dart:479:63
+- [x] lib\src\shadcn_app.dart:480:14
+- [x] lib\src\shadcn_app.dart:481:25
+- [x] lib\src\shadcn_app.dart:482:25
+- [x] lib\src\shadcn_app.dart:483:25
+- [x] lib\src\shadcn_app.dart:484:14
+- [x] lib\src\shadcn_app.dart:486:9
+- [x] lib\src\shadcn_app.dart:574:7
+- [x] lib\src\shadcn_app.dart:575:16
+- [x] lib\src\shadcn_app.dart:576:19
+- [x] lib\src\shadcn_app.dart:577:18
+- [x] lib\src\shadcn_app.dart:578:15
+- [x] lib\src\shadcn_app.dart:579:23
+- [x] lib\src\shadcn_app.dart:581:9
+- [x] lib\src\shadcn_app.dart:607:7
+- [x] lib\src\shadcn_app.dart:650:28
+- [x] lib\src\shadcn_app.dart:661:28
+- [x] lib\src\shadcn_app.dart:608:3
+- [x] lib\src\shadcn_app.dart:736:7
+- [x] lib\src\shadcn_app.dart:794:15
+- [x] lib\src\shadcn_app.dart:805:15
+- [x] lib\src\shadcn_app.dart:816:15
+- [x] lib\src\shadcn_app.dart:827:15
+- [x] lib\src\shadcn_app.dart:737:3
+- [x] lib\src\shadcn_app.dart:876:7
+- [x] lib\src\shadcn_app.dart:877:20
+- [x] lib\src\shadcn_app.dart:878:16
+- [x] lib\src\shadcn_app.dart:880:9
+- [x] lib\src\shadcn_app.dart:917:7
+- [x] lib\src\shadcn_app.dart:918:16
+- [x] lib\src\shadcn_app.dart:920:3
 - [ ] lib\src\theme\color_scheme.dart:314:8
 - [ ] lib\src\theme\color_scheme.dart:10:7
 - [ ] lib\src\theme\color_scheme.dart:11:15
