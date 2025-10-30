@@ -7,9 +7,12 @@ Color _fromAHSL(double a, double h, double s, double l) {
   return HSLColor.fromAHSL(a, h, s, l).toColor();
 }
 
+/// A chart color scheme that uses a single color for all chart elements.
 class SingleChartColorScheme implements ChartColorScheme {
+  /// The single color used for all chart elements.
   final Color color;
 
+  /// Creates a single color chart scheme.
   const SingleChartColorScheme(this.color);
 
   @override
@@ -31,22 +34,41 @@ class SingleChartColorScheme implements ChartColorScheme {
   Color get chart5 => color;
 }
 
+/// A color scheme for charts with 5 distinct colors.
+///
+/// Provides colors for up to 5 different data series in charts.
 class ChartColorScheme {
+  /// The list of chart colors.
   final List<Color> chartColors;
 
+  /// Creates a chart color scheme with the given colors.
   const ChartColorScheme(this.chartColors);
 
+  /// Creates a chart color scheme using a single color for all elements.
   factory ChartColorScheme.single(Color color) {
     return SingleChartColorScheme(color);
   }
 
+  /// Color for the first chart series.
   Color get chart1 => chartColors[0];
+  
+  /// Color for the second chart series.
   Color get chart2 => chartColors[1];
+  
+  /// Color for the third chart series.
   Color get chart3 => chartColors[2];
+  
+  /// Color for the fourth chart series.
   Color get chart4 => chartColors[3];
+  
+  /// Color for the fifth chart series.
   Color get chart5 => chartColors[4];
 }
 
+/// A collection of color shades from light to dark.
+///
+/// Implements both [Color] and [ColorSwatch] to provide a primary color
+/// and access to different shade values (50, 100, 200, ..., 950).
 class ColorShades implements Color, ColorSwatch {
   static const int _step = 100;
   static const List<int> shadeValues = [
@@ -66,9 +88,14 @@ class ColorShades implements Color, ColorSwatch {
 
   ColorShades._() : _colors = {};
 
+  /// Creates color shades from a raw map.
   @protected
   const ColorShades.raw(this._colors);
 
+  /// Creates color shades from a sorted list of colors.
+  ///
+  /// The list must contain exactly 11 colors corresponding to shades
+  /// 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, and 950.
   factory ColorShades.sorted(List<Color> colors) {
     assert(colors.length == shadeValues.length,
         'ColorShades.sorted: Invalid number of colors');
@@ -79,6 +106,12 @@ class ColorShades implements Color, ColorSwatch {
     return slate;
   }
 
+  /// Creates color shades from an accent color.
+  ///
+  /// Generates a full shade range by shifting the accent color's HSL values.
+  /// [base] is the shade value for the accent color (default: 500).
+  /// [hueShift], [saturationStepDown], [saturationStepUp], [lightnessStepDown],
+  /// and [lightnessStepUp] control how shades are generated.
   factory ColorShades.fromAccent(Color accent,
       {int base = 500,
       int hueShift = 0,
@@ -97,6 +130,9 @@ class ColorShades implements Color, ColorSwatch {
         lightnessStepDown: lightnessStepDown,
         lightnessStepUp: lightnessStepUp);
   }
+  /// Creates color shades from an accent HSL color.
+  ///
+  /// Similar to [fromAccent] but takes an HSL color directly.
   factory ColorShades.fromAccentHSL(HSLColor accent,
       {int base = 500,
       int hueShift = 0,
@@ -123,6 +159,9 @@ class ColorShades implements Color, ColorSwatch {
     return slate;
   }
 
+  /// Shifts an HSL color to a target shade value.
+  ///
+  /// Used internally to generate shade variations.
   static HSLColor shiftHSL(
     HSLColor hsv,
     int targetBase, {
@@ -148,6 +187,9 @@ class ColorShades implements Color, ColorSwatch {
     return HSLColor.fromAHSL(a, h, s, l);
   }
 
+  /// Creates color shades from a map of shade values to colors.
+  ///
+  /// The map must contain all standard shade values (50-950).
   factory ColorShades.fromMap(Map<int, Color> colors) {
     final slate = ColorShades._();
     for (final key in shadeValues) {
@@ -160,6 +202,7 @@ class ColorShades implements Color, ColorSwatch {
 
   ColorShades._direct(this._colors);
 
+  /// Gets the color for a specific shade value.
   Color get(int key) {
     assert(_colors.containsKey(key), 'ColorShades.get: Missing value for $key');
     return _colors[key]!;
@@ -315,6 +358,11 @@ String hexFromColor(Color color) {
   return colorToHex(color, true);
 }
 
+/// The color scheme for shadcn_flutter applications.
+///
+/// Defines all the semantic colors used throughout the app including
+/// background, foreground, primary, secondary, destructive colors, etc.
+/// Also includes sidebar and chart colors.
 class ColorScheme implements ChartColorScheme {
   static const Set<String> colorKeys = {
     'background',
@@ -342,35 +390,92 @@ class ColorScheme implements ChartColorScheme {
     'chart4',
     'chart5',
   };
+  
+  /// The brightness of this color scheme (light or dark).
   final Brightness brightness;
+  
+  /// The background color.
   final Color background;
+  
+  /// The foreground color (typically text).
   final Color foreground;
+  
+  /// The card background color.
   final Color card;
+  
+  /// The card foreground color.
   final Color cardForeground;
+  
+  /// The popover background color.
   final Color popover;
+  
+  /// The popover foreground color.
   final Color popoverForeground;
+  
+  /// The primary brand color.
   final Color primary;
+  
+  /// The foreground color for primary elements.
   final Color primaryForeground;
+  
+  /// The secondary color.
   final Color secondary;
+  
+  /// The foreground color for secondary elements.
   final Color secondaryForeground;
+  
+  /// The muted background color.
   final Color muted;
+  
+  /// The muted foreground color.
   final Color mutedForeground;
+  
+  /// The accent color.
   final Color accent;
+  
+  /// The foreground color for accented elements.
   final Color accentForeground;
+  
+  /// The destructive action color (typically red).
   final Color destructive;
+  
+  /// The foreground color for destructive elements.
   @Deprecated('Legacy color')
   final Color destructiveForeground;
+  
+  /// The border color.
   final Color border;
+  
+  /// The input field border color.
   final Color input;
+  
+  /// The focus ring color.
   final Color ring;
+  
+  /// The sidebar background color.
   final Color sidebar;
+  
+  /// The sidebar foreground color.
   final Color sidebarForeground;
+  
+  /// The sidebar primary color.
   final Color sidebarPrimary;
+  
+  /// The sidebar primary foreground color.
   final Color sidebarPrimaryForeground;
+  
+  /// The sidebar accent color.
   final Color sidebarAccent;
+  
+  /// The sidebar accent foreground color.
   final Color sidebarAccentForeground;
+  
+  /// The sidebar border color.
   final Color sidebarBorder;
+  
+  /// The sidebar ring color.
   final Color sidebarRing;
+  
   @override
   final Color chart1;
   @override
@@ -382,6 +487,7 @@ class ColorScheme implements ChartColorScheme {
   @override
   final Color chart5;
 
+  /// Creates a color scheme with all required colors.
   const ColorScheme({
     required this.brightness,
     required this.background,
@@ -418,6 +524,7 @@ class ColorScheme implements ChartColorScheme {
     required this.sidebarRing,
   });
 
+  /// Creates a color scheme from a map of color names to values.
   ColorScheme.fromMap(Map<String, dynamic> map)
       : background = map._col('background'),
         foreground = map._col('foreground'),

@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Defines scaling behavior for adaptive layouts.
+///
+/// Provides different scaling strategies for text and icons.
 class AdaptiveScaling {
   static const AdaptiveScaling desktop = AdaptiveScaling();
   static const AdaptiveScaling mobile = AdaptiveScaling(1.25);
@@ -47,6 +50,7 @@ class AdaptiveScaling {
   }
 }
 
+/// A widget that applies adaptive scaling to its descendants.
 class AdaptiveScaler extends StatelessWidget {
   static AdaptiveScaling defaultScalingOf(BuildContext context) {
     final theme = Theme.of(context);
@@ -82,6 +86,10 @@ class AdaptiveScaler extends StatelessWidget {
   }
 }
 
+/// The theme data for shadcn_flutter.
+///
+/// Contains all theming information including colors, typography,
+/// scaling, and platform-specific settings.
 class ThemeData {
   final ColorScheme colorScheme;
   final Typography typography;
@@ -224,6 +232,7 @@ class ThemeData {
   }
 }
 
+/// An inherited widget that provides theme data to its descendants.
 class Theme extends InheritedTheme {
   final ThemeData data;
 
@@ -259,6 +268,7 @@ class Theme extends InheritedTheme {
   }
 }
 
+/// A tween for animating between two [ThemeData] values.
 class ThemeDataTween extends Tween<ThemeData> {
   ThemeDataTween({required ThemeData super.begin, required super.end});
 
@@ -271,6 +281,7 @@ class ThemeDataTween extends Tween<ThemeData> {
   }
 }
 
+/// A widget that animates theme changes over time.
 class AnimatedTheme extends ImplicitlyAnimatedWidget {
   final ThemeData data;
   final Widget child;
@@ -306,6 +317,9 @@ class _AnimatedThemeState extends AnimatedWidgetBaseState<AnimatedTheme> {
   }
 }
 
+/// Properties for icon theming.
+///
+/// Defines size and color for different icon sizes.
 class IconThemeProperties {
   final IconThemeData x4Small;
   final IconThemeData x3Small;
@@ -460,6 +474,7 @@ class IconThemeProperties {
   }
 }
 
+/// An inherited widget that provides component-specific theme data.
 class ComponentTheme<T> extends InheritedTheme {
   final T data;
 

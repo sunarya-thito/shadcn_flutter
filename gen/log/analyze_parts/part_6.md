@@ -452,76 +452,76 @@ TODO:
 - [x] lib\src\shadcn_app.dart:917:7
 - [x] lib\src\shadcn_app.dart:918:16
 - [x] lib\src\shadcn_app.dart:920:3
-- [ ] lib\src\theme\color_scheme.dart:314:8
-- [ ] lib\src\theme\color_scheme.dart:10:7
-- [ ] lib\src\theme\color_scheme.dart:11:15
-- [ ] lib\src\theme\color_scheme.dart:13:9
-- [ ] lib\src\theme\color_scheme.dart:34:7
-- [ ] lib\src\theme\color_scheme.dart:43:13
-- [ ] lib\src\theme\color_scheme.dart:44:13
-- [ ] lib\src\theme\color_scheme.dart:45:13
-- [ ] lib\src\theme\color_scheme.dart:46:13
-- [ ] lib\src\theme\color_scheme.dart:47:13
-- [ ] lib\src\theme\color_scheme.dart:35:21
-- [ ] lib\src\theme\color_scheme.dart:37:9
-- [ ] lib\src\theme\color_scheme.dart:39:28
-- [ ] lib\src\theme\color_scheme.dart:50:7
-- [ ] lib\src\theme\color_scheme.dart:168:13
-- [ ] lib\src\theme\color_scheme.dart:169:13
-- [ ] lib\src\theme\color_scheme.dart:170:13
-- [ ] lib\src\theme\color_scheme.dart:171:13
-- [ ] lib\src\theme\color_scheme.dart:172:13
-- [ ] lib\src\theme\color_scheme.dart:173:13
-- [ ] lib\src\theme\color_scheme.dart:174:13
-- [ ] lib\src\theme\color_scheme.dart:175:13
-- [ ] lib\src\theme\color_scheme.dart:176:13
-- [ ] lib\src\theme\color_scheme.dart:177:13
-- [ ] lib\src\theme\color_scheme.dart:178:13
-- [ ] lib\src\theme\color_scheme.dart:126:19
-- [ ] lib\src\theme\color_scheme.dart:163:9
-- [ ] lib\src\theme\color_scheme.dart:52:26
-- [ ] lib\src\theme\color_scheme.dart:70:21
-- [ ] lib\src\theme\color_scheme.dart:72:23
-- [ ] lib\src\theme\color_scheme.dart:82:23
-- [ ] lib\src\theme\color_scheme.dart:100:23
-- [ ] lib\src\theme\color_scheme.dart:151:23
-- [ ] lib\src\theme\color_scheme.dart:318:7
-- [ ] lib\src\theme\color_scheme.dart:460:23
-- [ ] lib\src\theme\color_scheme.dart:499:22
-- [ ] lib\src\theme\color_scheme.dart:576:15
-- [ ] lib\src\theme\color_scheme.dart:672:22
-- [ ] lib\src\theme\color_scheme.dart:319:28
-- [ ] lib\src\theme\color_scheme.dart:345:20
-- [ ] lib\src\theme\color_scheme.dart:346:15
-- [ ] lib\src\theme\color_scheme.dart:347:15
-- [ ] lib\src\theme\color_scheme.dart:348:15
-- [ ] lib\src\theme\color_scheme.dart:349:15
-- [ ] lib\src\theme\color_scheme.dart:350:15
-- [ ] lib\src\theme\color_scheme.dart:351:15
-- [ ] lib\src\theme\color_scheme.dart:352:15
-- [ ] lib\src\theme\color_scheme.dart:353:15
-- [ ] lib\src\theme\color_scheme.dart:354:15
-- [ ] lib\src\theme\color_scheme.dart:355:15
-- [ ] lib\src\theme\color_scheme.dart:356:15
-- [ ] lib\src\theme\color_scheme.dart:357:15
-- [ ] lib\src\theme\color_scheme.dart:358:15
-- [ ] lib\src\theme\color_scheme.dart:359:15
-- [ ] lib\src\theme\color_scheme.dart:360:15
-- [ ] lib\src\theme\color_scheme.dart:362:15
-- [ ] lib\src\theme\color_scheme.dart:363:15
-- [ ] lib\src\theme\color_scheme.dart:364:15
-- [ ] lib\src\theme\color_scheme.dart:365:15
-- [ ] lib\src\theme\color_scheme.dart:366:15
-- [ ] lib\src\theme\color_scheme.dart:367:15
-- [ ] lib\src\theme\color_scheme.dart:368:15
-- [ ] lib\src\theme\color_scheme.dart:369:15
-- [ ] lib\src\theme\color_scheme.dart:370:15
-- [ ] lib\src\theme\color_scheme.dart:371:15
-- [ ] lib\src\theme\color_scheme.dart:372:15
-- [ ] lib\src\theme\color_scheme.dart:373:15
-- [ ] lib\src\theme\color_scheme.dart:385:9
-- [ ] lib\src\theme\color_scheme.dart:421:15
-- [ ] lib\src\theme\color_scheme.dart:537:15
+- [x] lib\src\theme\color_scheme.dart:314:8
+- [x] lib\src\theme\color_scheme.dart:10:7
+- [x] lib\src\theme\color_scheme.dart:11:15
+- [x] lib\src\theme\color_scheme.dart:13:9
+- [x] lib\src\theme\color_scheme.dart:34:7
+- [x] lib\src\theme\color_scheme.dart:43:13
+- [x] lib\src\theme\color_scheme.dart:44:13
+- [x] lib\src\theme\color_scheme.dart:45:13
+- [x] lib\src\theme\color_scheme.dart:46:13
+- [x] lib\src\theme\color_scheme.dart:47:13
+- [x] lib\src\theme\color_scheme.dart:35:21
+- [x] lib\src\theme\color_scheme.dart:37:9
+- [x] lib\src\theme\color_scheme.dart:39:28
+- [x] lib\src\theme\color_scheme.dart:50:7
+- [x] lib\src\theme\color_scheme.dart:168:13
+- [x] lib\src\theme\color_scheme.dart:169:13
+- [x] lib\src\theme\color_scheme.dart:170:13
+- [x] lib\src\theme\color_scheme.dart:171:13
+- [x] lib\src\theme\color_scheme.dart:172:13
+- [x] lib\src\theme\color_scheme.dart:173:13
+- [x] lib\src\theme\color_scheme.dart:174:13
+- [x] lib\src\theme\color_scheme.dart:175:13
+- [x] lib\src\theme\color_scheme.dart:176:13
+- [x] lib\src\theme\color_scheme.dart:177:13
+- [x] lib\src\theme\color_scheme.dart:178:13
+- [x] lib\src\theme\color_scheme.dart:126:19
+- [x] lib\src\theme\color_scheme.dart:163:9
+- [x] lib\src\theme\color_scheme.dart:52:26
+- [x] lib\src\theme\color_scheme.dart:70:21
+- [x] lib\src\theme\color_scheme.dart:72:23
+- [x] lib\src\theme\color_scheme.dart:82:23
+- [x] lib\src\theme\color_scheme.dart:100:23
+- [x] lib\src\theme\color_scheme.dart:151:23
+- [x] lib\src\theme\color_scheme.dart:318:7
+- [x] lib\src\theme\color_scheme.dart:460:23
+- [x] lib\src\theme\color_scheme.dart:499:22
+- [x] lib\src\theme\color_scheme.dart:576:15
+- [x] lib\src\theme\color_scheme.dart:672:22
+- [x] lib\src\theme\color_scheme.dart:319:28
+- [x] lib\src\theme\color_scheme.dart:345:20
+- [x] lib\src\theme\color_scheme.dart:346:15
+- [x] lib\src\theme\color_scheme.dart:347:15
+- [x] lib\src\theme\color_scheme.dart:348:15
+- [x] lib\src\theme\color_scheme.dart:349:15
+- [x] lib\src\theme\color_scheme.dart:350:15
+- [x] lib\src\theme\color_scheme.dart:351:15
+- [x] lib\src\theme\color_scheme.dart:352:15
+- [x] lib\src\theme\color_scheme.dart:353:15
+- [x] lib\src\theme\color_scheme.dart:354:15
+- [x] lib\src\theme\color_scheme.dart:355:15
+- [x] lib\src\theme\color_scheme.dart:356:15
+- [x] lib\src\theme\color_scheme.dart:357:15
+- [x] lib\src\theme\color_scheme.dart:358:15
+- [x] lib\src\theme\color_scheme.dart:359:15
+- [x] lib\src\theme\color_scheme.dart:360:15
+- [x] lib\src\theme\color_scheme.dart:362:15
+- [x] lib\src\theme\color_scheme.dart:363:15
+- [x] lib\src\theme\color_scheme.dart:364:15
+- [x] lib\src\theme\color_scheme.dart:365:15
+- [x] lib\src\theme\color_scheme.dart:366:15
+- [x] lib\src\theme\color_scheme.dart:367:15
+- [x] lib\src\theme\color_scheme.dart:368:15
+- [x] lib\src\theme\color_scheme.dart:369:15
+- [x] lib\src\theme\color_scheme.dart:370:15
+- [x] lib\src\theme\color_scheme.dart:371:15
+- [x] lib\src\theme\color_scheme.dart:372:15
+- [x] lib\src\theme\color_scheme.dart:373:15
+- [x] lib\src\theme\color_scheme.dart:385:9
+- [x] lib\src\theme\color_scheme.dart:421:15
+- [x] lib\src\theme\color_scheme.dart:537:15
 - [x] lib\src\theme\generated_colors.dart:3:7
 - [x] lib\src\theme\generated_colors.dart:4:22
 - [x] lib\src\theme\generated_colors.dart:5:22
@@ -611,287 +611,287 @@ TODO:
 - [x] lib\src\theme\legacy_generated_themes.dart:1042:22
 - [x] lib\src\theme\legacy_generated_themes.dart:1086:22
 - [x] lib\src\theme\legacy_generated_themes.dart:1128:22
-- [ ] lib\src\theme\theme.dart:6:7
-- [ ] lib\src\theme\theme.dart:26:13
-- [ ] lib\src\theme\theme.dart:37:26
-- [ ] lib\src\theme\theme.dart:7:32
-- [ ] lib\src\theme\theme.dart:8:32
-- [ ] lib\src\theme\theme.dart:9:16
-- [ ] lib\src\theme\theme.dart:10:16
-- [ ] lib\src\theme\theme.dart:11:16
-- [ ] lib\src\theme\theme.dart:13:9
-- [ ] lib\src\theme\theme.dart:20:25
-- [ ] lib\src\theme\theme.dart:50:7
-- [ ] lib\src\theme\theme.dart:51:26
-- [ ] lib\src\theme\theme.dart:56:26
-- [ ] lib\src\theme\theme.dart:66:25
-- [ ] lib\src\theme\theme.dart:67:16
-- [ ] lib\src\theme\theme.dart:69:9
-- [ ] lib\src\theme\theme.dart:85:7
-- [ ] lib\src\theme\theme.dart:138:20
-- [ ] lib\src\theme\theme.dart:139:20
-- [ ] lib\src\theme\theme.dart:140:20
-- [ ] lib\src\theme\theme.dart:141:20
-- [ ] lib\src\theme\theme.dart:142:20
-- [ ] lib\src\theme\theme.dart:143:20
-- [ ] lib\src\theme\theme.dart:145:14
-- [ ] lib\src\theme\theme.dart:146:14
-- [ ] lib\src\theme\theme.dart:147:14
-- [ ] lib\src\theme\theme.dart:148:14
-- [ ] lib\src\theme\theme.dart:149:14
-- [ ] lib\src\theme\theme.dart:150:14
-- [ ] lib\src\theme\theme.dart:152:18
-- [ ] lib\src\theme\theme.dart:154:13
-- [ ] lib\src\theme\theme.dart:177:20
-- [ ] lib\src\theme\theme.dart:86:21
-- [ ] lib\src\theme\theme.dart:87:20
-- [ ] lib\src\theme\theme.dart:88:16
-- [ ] lib\src\theme\theme.dart:89:16
-- [ ] lib\src\theme\theme.dart:91:29
-- [ ] lib\src\theme\theme.dart:92:17
-- [ ] lib\src\theme\theme.dart:93:17
-- [ ] lib\src\theme\theme.dart:95:9
-- [ ] lib\src\theme\theme.dart:106:19
-- [ ] lib\src\theme\theme.dart:227:7
-- [ ] lib\src\theme\theme.dart:236:20
-- [ ] lib\src\theme\theme.dart:228:19
-- [ ] lib\src\theme\theme.dart:230:9
-- [ ] lib\src\theme\theme.dart:262:7
-- [ ] lib\src\theme\theme.dart:263:3
-- [ ] lib\src\theme\theme.dart:274:7
-- [ ] lib\src\theme\theme.dart:275:19
-- [ ] lib\src\theme\theme.dart:276:16
-- [ ] lib\src\theme\theme.dart:278:9
-- [ ] lib\src\theme\theme.dart:309:7
-- [ ] lib\src\theme\theme.dart:336:23
-- [ ] lib\src\theme\theme.dart:364:23
-- [ ] lib\src\theme\theme.dart:402:30
-- [ ] lib\src\theme\theme.dart:310:23
-- [ ] lib\src\theme\theme.dart:311:23
-- [ ] lib\src\theme\theme.dart:312:23
-- [ ] lib\src\theme\theme.dart:313:23
-- [ ] lib\src\theme\theme.dart:314:23
-- [ ] lib\src\theme\theme.dart:315:23
-- [ ] lib\src\theme\theme.dart:316:23
-- [ ] lib\src\theme\theme.dart:317:23
-- [ ] lib\src\theme\theme.dart:318:23
-- [ ] lib\src\theme\theme.dart:319:23
-- [ ] lib\src\theme\theme.dart:320:23
-- [ ] lib\src\theme\theme.dart:322:9
-- [ ] lib\src\theme\theme.dart:463:7
-- [ ] lib\src\theme\theme.dart:486:12
-- [ ] lib\src\theme\theme.dart:492:13
-- [ ] lib\src\theme\theme.dart:464:11
-- [ ] lib\src\theme\theme.dart:466:9
-- [ ] lib\src\theme\theme.dart:507:6
-- [ ] lib\src\theme\theme.dart:508:3
-- [ ] lib\src\theme\theme.dart:509:3
-- [ ] lib\src\theme\theme.dart:510:3
-- [ ] lib\src\theme\typography.dart:3:7
-- [ ] lib\src\theme\typography.dart:123:14
-- [ ] lib\src\theme\typography.dart:201:14
-- [ ] lib\src\theme\typography.dart:312:21
-- [ ] lib\src\theme\typography.dart:4:19
-- [ ] lib\src\theme\typography.dart:5:19
-- [ ] lib\src\theme\typography.dart:6:19
-- [ ] lib\src\theme\typography.dart:7:19
-- [ ] lib\src\theme\typography.dart:8:19
-- [ ] lib\src\theme\typography.dart:9:19
-- [ ] lib\src\theme\typography.dart:10:19
-- [ ] lib\src\theme\typography.dart:11:19
-- [ ] lib\src\theme\typography.dart:12:19
-- [ ] lib\src\theme\typography.dart:13:19
-- [ ] lib\src\theme\typography.dart:14:19
-- [ ] lib\src\theme\typography.dart:15:19
-- [ ] lib\src\theme\typography.dart:16:19
-- [ ] lib\src\theme\typography.dart:17:19
-- [ ] lib\src\theme\typography.dart:18:19
-- [ ] lib\src\theme\typography.dart:19:19
-- [ ] lib\src\theme\typography.dart:20:19
-- [ ] lib\src\theme\typography.dart:21:19
-- [ ] lib\src\theme\typography.dart:22:19
-- [ ] lib\src\theme\typography.dart:23:19
-- [ ] lib\src\theme\typography.dart:24:19
-- [ ] lib\src\theme\typography.dart:25:19
-- [ ] lib\src\theme\typography.dart:26:19
-- [ ] lib\src\theme\typography.dart:27:19
-- [ ] lib\src\theme\typography.dart:28:19
-- [ ] lib\src\theme\typography.dart:29:19
-- [ ] lib\src\theme\typography.dart:30:19
-- [ ] lib\src\theme\typography.dart:31:19
-- [ ] lib\src\theme\typography.dart:32:19
-- [ ] lib\src\theme\typography.dart:33:19
-- [ ] lib\src\theme\typography.dart:34:19
-- [ ] lib\src\theme\typography.dart:35:19
-- [ ] lib\src\theme\typography.dart:36:19
-- [ ] lib\src\theme\typography.dart:37:19
-- [ ] lib\src\theme\typography.dart:38:19
-- [ ] lib\src\theme\typography.dart:39:19
-- [ ] lib\src\theme\typography.dart:41:20
-- [ ] lib\src\theme\typography.dart:84:9
-- [ ] lib\src\util.dart:17:8
-- [ ] lib\src\util.dart:18:8
-- [ ] lib\src\util.dart:121:8
-- [ ] lib\src\util.dart:125:6
-- [ ] lib\src\util.dart:135:15
-- [ ] lib\src\util.dart:214:14
-- [ ] lib\src\util.dart:231:6
-- [ ] lib\src\util.dart:281:3
-- [ ] lib\src\util.dart:287:8
-- [ ] lib\src\util.dart:323:8
-- [ ] lib\src\util.dart:751:18
-- [ ] lib\src\util.dart:938:38
-- [ ] lib\src\util.dart:970:10
-- [ ] lib\src\util.dart:992:17
-- [ ] lib\src\util.dart:1014:6
-- [ ] lib\src\util.dart:6:9
-- [ ] lib\src\util.dart:7:9
-- [ ] lib\src\util.dart:8:9
-- [ ] lib\src\util.dart:10:7
-- [ ] lib\src\util.dart:12:9
-- [ ] lib\src\util.dart:13:9
-- [ ] lib\src\util.dart:15:9
-- [ ] lib\src\util.dart:20:6
-- [ ] lib\src\util.dart:21:3
-- [ ] lib\src\util.dart:22:3
-- [ ] lib\src\util.dart:23:3
-- [ ] lib\src\util.dart:26:9
-- [ ] lib\src\util.dart:29:7
-- [ ] lib\src\util.dart:30:33
-- [ ] lib\src\util.dart:32:3
-- [ ] lib\src\util.dart:40:7
-- [ ] lib\src\util.dart:45:5
-- [ ] lib\src\util.dart:41:43
-- [ ] lib\src\util.dart:43:9
-- [ ] lib\src\util.dart:52:11
-- [ ] lib\src\util.dart:53:5
-- [ ] lib\src\util.dart:60:11
-- [ ] lib\src\util.dart:61:8
-- [ ] lib\src\util.dart:66:8
-- [ ] lib\src\util.dart:71:8
-- [ ] lib\src\util.dart:76:8
-- [ ] lib\src\util.dart:81:8
-- [ ] lib\src\util.dart:104:8
-- [ ] lib\src\util.dart:113:6
-- [ ] lib\src\util.dart:151:11
-- [ ] lib\src\util.dart:152:15
-- [ ] lib\src\util.dart:159:15
-- [ ] lib\src\util.dart:166:15
-- [ ] lib\src\util.dart:173:15
-- [ ] lib\src\util.dart:182:11
-- [ ] lib\src\util.dart:183:13
-- [ ] lib\src\util.dart:196:11
-- [ ] lib\src\util.dart:197:16
-- [ ] lib\src\util.dart:205:11
-- [ ] lib\src\util.dart:206:14
-- [ ] lib\src\util.dart:247:7
-- [ ] lib\src\util.dart:248:25
-- [ ] lib\src\util.dart:249:23
-- [ ] lib\src\util.dart:250:16
-- [ ] lib\src\util.dart:252:9
-- [ ] lib\src\util.dart:295:7
-- [ ] lib\src\util.dart:296:16
-- [ ] lib\src\util.dart:297:25
-- [ ] lib\src\util.dart:299:9
-- [ ] lib\src\util.dart:310:7
-- [ ] lib\src\util.dart:330:11
-- [ ] lib\src\util.dart:331:11
-- [ ] lib\src\util.dart:343:11
-- [ ] lib\src\util.dart:344:15
-- [ ] lib\src\util.dart:348:15
-- [ ] lib\src\util.dart:353:9
-- [ ] lib\src\util.dart:365:11
-- [ ] lib\src\util.dart:366:26
-- [ ] lib\src\util.dart:367:10
-- [ ] lib\src\util.dart:382:10
-- [ ] lib\src\util.dart:426:10
-- [ ] lib\src\util.dart:471:10
-- [ ] lib\src\util.dart:514:10
-- [ ] lib\src\util.dart:521:10
-- [ ] lib\src\util.dart:528:10
-- [ ] lib\src\util.dart:540:10
-- [ ] lib\src\util.dart:547:10
-- [ ] lib\src\util.dart:554:10
-- [ ] lib\src\util.dart:561:10
-- [ ] lib\src\util.dart:571:10
-- [ ] lib\src\util.dart:578:10
-- [ ] lib\src\util.dart:588:10
-- [ ] lib\src\util.dart:596:10
-- [ ] lib\src\util.dart:604:10
-- [ ] lib\src\util.dart:610:10
-- [ ] lib\src\util.dart:621:11
-- [ ] lib\src\util.dart:622:10
-- [ ] lib\src\util.dart:626:10
-- [ ] lib\src\util.dart:643:11
-- [ ] lib\src\util.dart:644:10
-- [ ] lib\src\util.dart:648:10
-- [ ] lib\src\util.dart:665:7
-- [ ] lib\src\util.dart:666:27
-- [ ] lib\src\util.dart:667:22
-- [ ] lib\src\util.dart:668:28
-- [ ] lib\src\util.dart:669:24
-- [ ] lib\src\util.dart:670:27
-- [ ] lib\src\util.dart:671:23
-- [ ] lib\src\util.dart:672:22
-- [ ] lib\src\util.dart:673:14
-- [ ] lib\src\util.dart:674:16
-- [ ] lib\src\util.dart:675:14
-- [ ] lib\src\util.dart:677:9
-- [ ] lib\src\util.dart:727:11
-- [ ] lib\src\util.dart:728:10
-- [ ] lib\src\util.dart:734:10
-- [ ] lib\src\util.dart:755:11
-- [ ] lib\src\util.dart:756:10
-- [ ] lib\src\util.dart:757:10
-- [ ] lib\src\util.dart:760:11
-- [ ] lib\src\util.dart:761:7
-- [ ] lib\src\util.dart:762:7
-- [ ] lib\src\util.dart:765:7
-- [ ] lib\src\util.dart:766:3
-- [ ] lib\src\util.dart:772:11
-- [ ] lib\src\util.dart:773:9
-- [ ] lib\src\util.dart:779:9
-- [ ] lib\src\util.dart:796:9
-- [ ] lib\src\util.dart:801:10
-- [ ] lib\src\util.dart:812:12
-- [ ] lib\src\util.dart:816:12
-- [ ] lib\src\util.dart:821:11
-- [ ] lib\src\util.dart:822:12
-- [ ] lib\src\util.dart:841:11
-- [ ] lib\src\util.dart:842:12
-- [ ] lib\src\util.dart:861:7
-- [ ] lib\src\util.dart:896:13
-- [ ] lib\src\util.dart:862:13
-- [ ] lib\src\util.dart:863:13
-- [ ] lib\src\util.dart:864:13
-- [ ] lib\src\util.dart:866:9
-- [ ] lib\src\util.dart:872:19
-- [ ] lib\src\util.dart:878:19
-- [ ] lib\src\util.dart:884:13
-- [ ] lib\src\util.dart:889:13
-- [ ] lib\src\util.dart:894:13
-- [ ] lib\src\util.dart:952:11
-- [ ] lib\src\util.dart:953:15
-- [ ] lib\src\util.dart:967:9
-- [ ] lib\src\util.dart:968:9
-- [ ] lib\src\util.dart:1019:7
-- [ ] lib\src\util.dart:1020:8
-- [ ] lib\src\util.dart:1023:7
-- [ ] lib\src\util.dart:1024:11
-- [ ] lib\src\util.dart:1025:56
-- [ ] lib\src\util.dart:1027:9
-- [ ] lib\src\util.dart:1062:9
-- [ ] lib\src\util.dart:1064:7
-- [ ] lib\src\util.dart:1070:5
-- [ ] lib\src\util.dart:1072:5
-- [ ] lib\src\util.dart:1065:23
-- [ ] lib\src\util.dart:1066:23
-- [ ] lib\src\util.dart:1068:9
-- [ ] lib\src\util.dart:1091:7
-- [ ] lib\src\util.dart:1099:3
-- [ ] lib\src\util.dart:1152:11
-- [ ] lib\src\util.dart:1153:20
-- [ ] lib\src\util.dart:1166:9
-- [ ] lib\src\util.dart:1169:7
-- [ ] lib\src\util.dart:1170:32
-- [ ] lib\src\util.dart:1172:3
+- [x] lib\src\theme\theme.dart:6:7
+- [x] lib\src\theme\theme.dart:26:13
+- [x] lib\src\theme\theme.dart:37:26
+- [x] lib\src\theme\theme.dart:7:32
+- [x] lib\src\theme\theme.dart:8:32
+- [x] lib\src\theme\theme.dart:9:16
+- [x] lib\src\theme\theme.dart:10:16
+- [x] lib\src\theme\theme.dart:11:16
+- [x] lib\src\theme\theme.dart:13:9
+- [x] lib\src\theme\theme.dart:20:25
+- [x] lib\src\theme\theme.dart:50:7
+- [x] lib\src\theme\theme.dart:51:26
+- [x] lib\src\theme\theme.dart:56:26
+- [x] lib\src\theme\theme.dart:66:25
+- [x] lib\src\theme\theme.dart:67:16
+- [x] lib\src\theme\theme.dart:69:9
+- [x] lib\src\theme\theme.dart:85:7
+- [x] lib\src\theme\theme.dart:138:20
+- [x] lib\src\theme\theme.dart:139:20
+- [x] lib\src\theme\theme.dart:140:20
+- [x] lib\src\theme\theme.dart:141:20
+- [x] lib\src\theme\theme.dart:142:20
+- [x] lib\src\theme\theme.dart:143:20
+- [x] lib\src\theme\theme.dart:145:14
+- [x] lib\src\theme\theme.dart:146:14
+- [x] lib\src\theme\theme.dart:147:14
+- [x] lib\src\theme\theme.dart:148:14
+- [x] lib\src\theme\theme.dart:149:14
+- [x] lib\src\theme\theme.dart:150:14
+- [x] lib\src\theme\theme.dart:152:18
+- [x] lib\src\theme\theme.dart:154:13
+- [x] lib\src\theme\theme.dart:177:20
+- [x] lib\src\theme\theme.dart:86:21
+- [x] lib\src\theme\theme.dart:87:20
+- [x] lib\src\theme\theme.dart:88:16
+- [x] lib\src\theme\theme.dart:89:16
+- [x] lib\src\theme\theme.dart:91:29
+- [x] lib\src\theme\theme.dart:92:17
+- [x] lib\src\theme\theme.dart:93:17
+- [x] lib\src\theme\theme.dart:95:9
+- [x] lib\src\theme\theme.dart:106:19
+- [x] lib\src\theme\theme.dart:227:7
+- [x] lib\src\theme\theme.dart:236:20
+- [x] lib\src\theme\theme.dart:228:19
+- [x] lib\src\theme\theme.dart:230:9
+- [x] lib\src\theme\theme.dart:262:7
+- [x] lib\src\theme\theme.dart:263:3
+- [x] lib\src\theme\theme.dart:274:7
+- [x] lib\src\theme\theme.dart:275:19
+- [x] lib\src\theme\theme.dart:276:16
+- [x] lib\src\theme\theme.dart:278:9
+- [x] lib\src\theme\theme.dart:309:7
+- [x] lib\src\theme\theme.dart:336:23
+- [x] lib\src\theme\theme.dart:364:23
+- [x] lib\src\theme\theme.dart:402:30
+- [x] lib\src\theme\theme.dart:310:23
+- [x] lib\src\theme\theme.dart:311:23
+- [x] lib\src\theme\theme.dart:312:23
+- [x] lib\src\theme\theme.dart:313:23
+- [x] lib\src\theme\theme.dart:314:23
+- [x] lib\src\theme\theme.dart:315:23
+- [x] lib\src\theme\theme.dart:316:23
+- [x] lib\src\theme\theme.dart:317:23
+- [x] lib\src\theme\theme.dart:318:23
+- [x] lib\src\theme\theme.dart:319:23
+- [x] lib\src\theme\theme.dart:320:23
+- [x] lib\src\theme\theme.dart:322:9
+- [x] lib\src\theme\theme.dart:463:7
+- [x] lib\src\theme\theme.dart:486:12
+- [x] lib\src\theme\theme.dart:492:13
+- [x] lib\src\theme\theme.dart:464:11
+- [x] lib\src\theme\theme.dart:466:9
+- [x] lib\src\theme\theme.dart:507:6
+- [x] lib\src\theme\theme.dart:508:3
+- [x] lib\src\theme\theme.dart:509:3
+- [x] lib\src\theme\theme.dart:510:3
+- [x] lib\src\theme\typography.dart:3:7
+- [x] lib\src\theme\typography.dart:123:14
+- [x] lib\src\theme\typography.dart:201:14
+- [x] lib\src\theme\typography.dart:312:21
+- [x] lib\src\theme\typography.dart:4:19
+- [x] lib\src\theme\typography.dart:5:19
+- [x] lib\src\theme\typography.dart:6:19
+- [x] lib\src\theme\typography.dart:7:19
+- [x] lib\src\theme\typography.dart:8:19
+- [x] lib\src\theme\typography.dart:9:19
+- [x] lib\src\theme\typography.dart:10:19
+- [x] lib\src\theme\typography.dart:11:19
+- [x] lib\src\theme\typography.dart:12:19
+- [x] lib\src\theme\typography.dart:13:19
+- [x] lib\src\theme\typography.dart:14:19
+- [x] lib\src\theme\typography.dart:15:19
+- [x] lib\src\theme\typography.dart:16:19
+- [x] lib\src\theme\typography.dart:17:19
+- [x] lib\src\theme\typography.dart:18:19
+- [x] lib\src\theme\typography.dart:19:19
+- [x] lib\src\theme\typography.dart:20:19
+- [x] lib\src\theme\typography.dart:21:19
+- [x] lib\src\theme\typography.dart:22:19
+- [x] lib\src\theme\typography.dart:23:19
+- [x] lib\src\theme\typography.dart:24:19
+- [x] lib\src\theme\typography.dart:25:19
+- [x] lib\src\theme\typography.dart:26:19
+- [x] lib\src\theme\typography.dart:27:19
+- [x] lib\src\theme\typography.dart:28:19
+- [x] lib\src\theme\typography.dart:29:19
+- [x] lib\src\theme\typography.dart:30:19
+- [x] lib\src\theme\typography.dart:31:19
+- [x] lib\src\theme\typography.dart:32:19
+- [x] lib\src\theme\typography.dart:33:19
+- [x] lib\src\theme\typography.dart:34:19
+- [x] lib\src\theme\typography.dart:35:19
+- [x] lib\src\theme\typography.dart:36:19
+- [x] lib\src\theme\typography.dart:37:19
+- [x] lib\src\theme\typography.dart:38:19
+- [x] lib\src\theme\typography.dart:39:19
+- [x] lib\src\theme\typography.dart:41:20
+- [x] lib\src\theme\typography.dart:84:9
+- [x] lib\src\util.dart:17:8
+- [x] lib\src\util.dart:18:8
+- [x] lib\src\util.dart:121:8
+- [x] lib\src\util.dart:125:6
+- [x] lib\src\util.dart:135:15
+- [x] lib\src\util.dart:214:14
+- [x] lib\src\util.dart:231:6
+- [x] lib\src\util.dart:281:3
+- [x] lib\src\util.dart:287:8
+- [x] lib\src\util.dart:323:8
+- [x] lib\src\util.dart:751:18
+- [x] lib\src\util.dart:938:38
+- [x] lib\src\util.dart:970:10
+- [x] lib\src\util.dart:992:17
+- [x] lib\src\util.dart:1014:6
+- [x] lib\src\util.dart:6:9
+- [x] lib\src\util.dart:7:9
+- [x] lib\src\util.dart:8:9
+- [x] lib\src\util.dart:10:7
+- [x] lib\src\util.dart:12:9
+- [x] lib\src\util.dart:13:9
+- [x] lib\src\util.dart:15:9
+- [x] lib\src\util.dart:20:6
+- [x] lib\src\util.dart:21:3
+- [x] lib\src\util.dart:22:3
+- [x] lib\src\util.dart:23:3
+- [x] lib\src\util.dart:26:9
+- [x] lib\src\util.dart:29:7
+- [x] lib\src\util.dart:30:33
+- [x] lib\src\util.dart:32:3
+- [x] lib\src\util.dart:40:7
+- [x] lib\src\util.dart:45:5
+- [x] lib\src\util.dart:41:43
+- [x] lib\src\util.dart:43:9
+- [x] lib\src\util.dart:52:11
+- [x] lib\src\util.dart:53:5
+- [x] lib\src\util.dart:60:11
+- [x] lib\src\util.dart:61:8
+- [x] lib\src\util.dart:66:8
+- [x] lib\src\util.dart:71:8
+- [x] lib\src\util.dart:76:8
+- [x] lib\src\util.dart:81:8
+- [x] lib\src\util.dart:104:8
+- [x] lib\src\util.dart:113:6
+- [x] lib\src\util.dart:151:11
+- [x] lib\src\util.dart:152:15
+- [x] lib\src\util.dart:159:15
+- [x] lib\src\util.dart:166:15
+- [x] lib\src\util.dart:173:15
+- [x] lib\src\util.dart:182:11
+- [x] lib\src\util.dart:183:13
+- [x] lib\src\util.dart:196:11
+- [x] lib\src\util.dart:197:16
+- [x] lib\src\util.dart:205:11
+- [x] lib\src\util.dart:206:14
+- [x] lib\src\util.dart:247:7
+- [x] lib\src\util.dart:248:25
+- [x] lib\src\util.dart:249:23
+- [x] lib\src\util.dart:250:16
+- [x] lib\src\util.dart:252:9
+- [x] lib\src\util.dart:295:7
+- [x] lib\src\util.dart:296:16
+- [x] lib\src\util.dart:297:25
+- [x] lib\src\util.dart:299:9
+- [x] lib\src\util.dart:310:7
+- [x] lib\src\util.dart:330:11
+- [x] lib\src\util.dart:331:11
+- [x] lib\src\util.dart:343:11
+- [x] lib\src\util.dart:344:15
+- [x] lib\src\util.dart:348:15
+- [x] lib\src\util.dart:353:9
+- [x] lib\src\util.dart:365:11
+- [x] lib\src\util.dart:366:26
+- [x] lib\src\util.dart:367:10
+- [x] lib\src\util.dart:382:10
+- [x] lib\src\util.dart:426:10
+- [x] lib\src\util.dart:471:10
+- [x] lib\src\util.dart:514:10
+- [x] lib\src\util.dart:521:10
+- [x] lib\src\util.dart:528:10
+- [x] lib\src\util.dart:540:10
+- [x] lib\src\util.dart:547:10
+- [x] lib\src\util.dart:554:10
+- [x] lib\src\util.dart:561:10
+- [x] lib\src\util.dart:571:10
+- [x] lib\src\util.dart:578:10
+- [x] lib\src\util.dart:588:10
+- [x] lib\src\util.dart:596:10
+- [x] lib\src\util.dart:604:10
+- [x] lib\src\util.dart:610:10
+- [x] lib\src\util.dart:621:11
+- [x] lib\src\util.dart:622:10
+- [x] lib\src\util.dart:626:10
+- [x] lib\src\util.dart:643:11
+- [x] lib\src\util.dart:644:10
+- [x] lib\src\util.dart:648:10
+- [x] lib\src\util.dart:665:7
+- [x] lib\src\util.dart:666:27
+- [x] lib\src\util.dart:667:22
+- [x] lib\src\util.dart:668:28
+- [x] lib\src\util.dart:669:24
+- [x] lib\src\util.dart:670:27
+- [x] lib\src\util.dart:671:23
+- [x] lib\src\util.dart:672:22
+- [x] lib\src\util.dart:673:14
+- [x] lib\src\util.dart:674:16
+- [x] lib\src\util.dart:675:14
+- [x] lib\src\util.dart:677:9
+- [x] lib\src\util.dart:727:11
+- [x] lib\src\util.dart:728:10
+- [x] lib\src\util.dart:734:10
+- [x] lib\src\util.dart:755:11
+- [x] lib\src\util.dart:756:10
+- [x] lib\src\util.dart:757:10
+- [x] lib\src\util.dart:760:11
+- [x] lib\src\util.dart:761:7
+- [x] lib\src\util.dart:762:7
+- [x] lib\src\util.dart:765:7
+- [x] lib\src\util.dart:766:3
+- [x] lib\src\util.dart:772:11
+- [x] lib\src\util.dart:773:9
+- [x] lib\src\util.dart:779:9
+- [x] lib\src\util.dart:796:9
+- [x] lib\src\util.dart:801:10
+- [x] lib\src\util.dart:812:12
+- [x] lib\src\util.dart:816:12
+- [x] lib\src\util.dart:821:11
+- [x] lib\src\util.dart:822:12
+- [x] lib\src\util.dart:841:11
+- [x] lib\src\util.dart:842:12
+- [x] lib\src\util.dart:861:7
+- [x] lib\src\util.dart:896:13
+- [x] lib\src\util.dart:862:13
+- [x] lib\src\util.dart:863:13
+- [x] lib\src\util.dart:864:13
+- [x] lib\src\util.dart:866:9
+- [x] lib\src\util.dart:872:19
+- [x] lib\src\util.dart:878:19
+- [x] lib\src\util.dart:884:13
+- [x] lib\src\util.dart:889:13
+- [x] lib\src\util.dart:894:13
+- [x] lib\src\util.dart:952:11
+- [x] lib\src\util.dart:953:15
+- [x] lib\src\util.dart:967:9
+- [x] lib\src\util.dart:968:9
+- [x] lib\src\util.dart:1019:7
+- [x] lib\src\util.dart:1020:8
+- [x] lib\src\util.dart:1023:7
+- [x] lib\src\util.dart:1024:11
+- [x] lib\src\util.dart:1025:56
+- [x] lib\src\util.dart:1027:9
+- [x] lib\src\util.dart:1062:9
+- [x] lib\src\util.dart:1064:7
+- [x] lib\src\util.dart:1070:5
+- [x] lib\src\util.dart:1072:5
+- [x] lib\src\util.dart:1065:23
+- [x] lib\src\util.dart:1066:23
+- [x] lib\src\util.dart:1068:9
+- [x] lib\src\util.dart:1091:7
+- [x] lib\src\util.dart:1099:3
+- [x] lib\src\util.dart:1152:11
+- [x] lib\src\util.dart:1153:20
+- [x] lib\src\util.dart:1166:9
+- [x] lib\src\util.dart:1169:7
+- [x] lib\src\util.dart:1170:32
+- [x] lib\src\util.dart:1172:3
