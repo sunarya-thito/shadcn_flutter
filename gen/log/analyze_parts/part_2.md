@@ -34,51 +34,51 @@ TODO:
 - [x] lib\src\components\form\slider.dart:353:17
 - [x] lib\src\components\form\slider.dart:354:15
 - [x] lib\src\components\form\slider.dart:356:9
-- [ ] lib\src\components\form\sortable.dart:5:9
-- [ ] lib\src\components\form\sortable.dart:6:9
-- [ ] lib\src\components\form\sortable.dart:9:7
-- [ ] lib\src\components\form\sortable.dart:13:8
-- [ ] lib\src\components\form\sortable.dart:10:29
-- [ ] lib\src\components\form\sortable.dart:11:9
-- [ ] lib\src\components\form\sortable.dart:20:16
-- [ ] lib\src\components\form\sortable.dart:22:8
-- [ ] lib\src\components\form\sortable.dart:21:9
-- [ ] lib\src\components\form\sortable.dart:25:7
-- [ ] lib\src\components\form\sortable.dart:26:13
-- [ ] lib\src\components\form\sortable.dart:27:13
-- [ ] lib\src\components\form\sortable.dart:28:9
-- [ ] lib\src\components\form\sortable.dart:38:7
-- [ ] lib\src\components\form\sortable.dart:39:13
-- [ ] lib\src\components\form\sortable.dart:40:9
-- [ ] lib\src\components\form\sortable.dart:48:7
-- [ ] lib\src\components\form\sortable.dart:49:13
-- [ ] lib\src\components\form\sortable.dart:50:11
-- [ ] lib\src\components\form\sortable.dart:51:9
-- [ ] lib\src\components\form\sortable.dart:59:7
-- [ ] lib\src\components\form\sortable.dart:60:33
-- [ ] lib\src\components\form\sortable.dart:61:34
-- [ ] lib\src\components\form\sortable.dart:62:39
-- [ ] lib\src\components\form\sortable.dart:63:14
-- [ ] lib\src\components\form\sortable.dart:64:9
-- [ ] lib\src\components\form\sortable.dart:78:7
-- [ ] lib\src\components\form\sortable.dart:79:11
-- [ ] lib\src\components\form\sortable.dart:82:7
-- [ ] lib\src\components\form\sortable.dart:84:16
-- [ ] lib\src\components\form\sortable.dart:85:9
-- [ ] lib\src\components\form\sortable.dart:110:9
-- [ ] lib\src\components\form\sortable.dart:127:7
-- [ ] lib\src\components\form\sortable.dart:131:8
-- [ ] lib\src\components\form\sortable.dart:183:16
-- [ ] lib\src\components\form\sortable.dart:185:12
-- [ ] lib\src\components\form\sortable.dart:186:5
-- [ ] lib\src\components\form\sortable.dart:184:9
-- [ ] lib\src\components\form\sortable.dart:189:7
-- [ ] lib\src\components\form\sortable.dart:190:17
-- [ ] lib\src\components\form\sortable.dart:191:34
-- [ ] lib\src\components\form\sortable.dart:192:9
-- [ ] lib\src\components\form\sortable.dart:201:7
-- [ ] lib\src\components\form\sortable.dart:204:32
-- [ ] lib\src\components\form\sortable.dart:205:9
+- [x] lib\src\components\form\sortable.dart:5:9
+- [x] lib\src\components\form\sortable.dart:6:9
+- [x] lib\src\components\form\sortable.dart:9:7
+- [x] lib\src\components\form\sortable.dart:13:8
+- [x] lib\src\components\form\sortable.dart:10:29
+- [x] lib\src\components\form\sortable.dart:11:9
+- [x] lib\src\components\form\sortable.dart:20:16
+- [x] lib\src\components\form\sortable.dart:22:8
+- [x] lib\src\components\form\sortable.dart:21:9
+- [x] lib\src\components\form\sortable.dart:25:7
+- [x] lib\src\components\form\sortable.dart:26:13
+- [x] lib\src\components\form\sortable.dart:27:13
+- [x] lib\src\components\form\sortable.dart:28:9
+- [x] lib\src\components\form\sortable.dart:38:7
+- [x] lib\src\components\form\sortable.dart:39:13
+- [x] lib\src\components\form\sortable.dart:40:9
+- [x] lib\src\components\form\sortable.dart:48:7
+- [x] lib\src\components\form\sortable.dart:49:13
+- [x] lib\src\components\form\sortable.dart:50:11
+- [x] lib\src\components\form\sortable.dart:51:9
+- [x] lib\src\components\form\sortable.dart:59:7
+- [x] lib\src\components\form\sortable.dart:60:33
+- [x] lib\src\components\form\sortable.dart:61:34
+- [x] lib\src\components\form\sortable.dart:62:39
+- [x] lib\src\components\form\sortable.dart:63:14
+- [x] lib\src\components\form\sortable.dart:64:9
+- [x] lib\src\components\form\sortable.dart:78:7
+- [x] lib\src\components\form\sortable.dart:79:11
+- [x] lib\src\components\form\sortable.dart:82:7
+- [x] lib\src\components\form\sortable.dart:84:16
+- [x] lib\src\components\form\sortable.dart:85:9
+- [x] lib\src\components\form\sortable.dart:110:9
+- [x] lib\src\components\form\sortable.dart:127:7
+- [x] lib\src\components\form\sortable.dart:131:8
+- [x] lib\src\components\form\sortable.dart:183:16
+- [x] lib\src\components\form\sortable.dart:185:12
+- [x] lib\src\components\form\sortable.dart:186:5
+- [x] lib\src\components\form\sortable.dart:184:9
+- [x] lib\src\components\form\sortable.dart:189:7
+- [x] lib\src\components\form\sortable.dart:190:17
+- [x] lib\src\components\form\sortable.dart:191:34
+- [x] lib\src\components\form\sortable.dart:192:9
+- [x] lib\src\components\form\sortable.dart:201:7
+- [x] lib\src\components\form\sortable.dart:204:32
+- [x] lib\src\components\form\sortable.dart:205:9
 - [ ] lib\src\components\form\star_rating.dart:153:16
 - [ ] lib\src\components\form\star_rating.dart:154:14
 - [ ] lib\src\components\form\star_rating.dart:155:16
