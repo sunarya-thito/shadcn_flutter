@@ -972,6 +972,34 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   @override
   final Predicate<T>? showValuePredicate;
 
+  /// Creates a single-selection dropdown widget.
+  ///
+  /// The [popup] and [itemBuilder] parameters are required to define the
+  /// dropdown content and how selected values are displayed.
+  ///
+  /// Parameters:
+  /// - [key] (Key?): Widget key for controlling widget identity
+  /// - [onChanged] (`ValueChanged<T?>?`): Callback when selection changes; if null, select is disabled
+  /// - [placeholder] (Widget?): Widget shown when no value is selected
+  /// - [filled] (bool): Whether to use filled background style, defaults to false
+  /// - [focusNode] (FocusNode?): Focus node for keyboard interaction
+  /// - [constraints] (BoxConstraints?): Size constraints for the select button
+  /// - [popupConstraints] (BoxConstraints?): Size constraints for the popup menu
+  /// - [popupWidthConstraint] (PopoverConstraint): Width constraint mode for popup, defaults to `PopoverConstraint.anchorFixedSize`
+  /// - [value] (T?): Currently selected value
+  /// - [disableHoverEffect] (bool): Whether to disable hover visual feedback, defaults to false
+  /// - [borderRadius] (BorderRadiusGeometry?): Custom border radius
+  /// - [padding] (EdgeInsetsGeometry?): Custom padding
+  /// - [popoverAlignment] (AlignmentGeometry): Popup alignment, defaults to `Alignment.topCenter`
+  /// - [popoverAnchorAlignment] (AlignmentGeometry?): Anchor alignment for popup positioning
+  /// - [canUnselect] (bool): Whether user can deselect current value, defaults to false
+  /// - [autoClosePopover] (bool?): Whether popup closes after selection, defaults to true
+  /// - [enabled] (bool?): Whether select is enabled for interaction
+  /// - [valueSelectionHandler] (`SelectValueSelectionHandler<T>?`): Custom selection logic
+  /// - [valueSelectionPredicate] (`SelectValueSelectionPredicate<T>?`): Predicate for allowing selection
+  /// - [showValuePredicate] (`Predicate<T>?`): Predicate for showing items
+  /// - [popup] (SelectPopupBuilder): Required builder for popup content
+  /// - [itemBuilder] (`SelectValueBuilder<T>`): Required builder for selected value display
   const Select({
     super.key,
     this.onChanged,
@@ -1001,6 +1029,21 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   SelectState<T> createState() => SelectState<T>();
 }
 
+/// State class for the [Select] widget managing selection and popup interactions.
+///
+/// This state class handles the select dropdown's internal state including:
+/// - Focus management for keyboard navigation
+/// - Popup controller for opening/closing the dropdown menu
+/// - Value change notifications
+/// - Theme integration
+///
+/// The state implements [FormValueSupplier] to integrate with form validation
+/// and value management systems.
+///
+/// See also:
+/// - [Select], the widget that uses this state
+/// - [PopoverController], used to control the dropdown popup
+/// - [FormValueSupplier], the mixin providing form integration
 class SelectState<T> extends State<Select<T>>
     with FormValueSupplier<T, Select<T>> {
   late FocusNode _focusNode;
@@ -1424,6 +1467,34 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   @override
   final Predicate<Iterable<T>>? showValuePredicate;
 
+  /// Creates a multi-selection dropdown widget.
+  ///
+  /// Allows selecting multiple items from a dropdown list, displaying them as chips.
+  /// The [value], [popup], and [itemBuilder] parameters are required.
+  ///
+  /// Parameters:
+  /// - [key] (Key?): Widget key for controlling widget identity
+  /// - [onChanged] (`ValueChanged<Iterable<T>?>?`): Callback when selection changes; if null, widget is disabled
+  /// - [placeholder] (Widget?): Widget shown when no values are selected
+  /// - [filled] (bool): Whether to use filled background style, defaults to false
+  /// - [focusNode] (FocusNode?): Focus node for keyboard interaction
+  /// - [constraints] (BoxConstraints?): Size constraints for the select button
+  /// - [popupConstraints] (BoxConstraints?): Size constraints for the popup menu
+  /// - [popupWidthConstraint] (PopoverConstraint): Width constraint mode for popup, defaults to `PopoverConstraint.anchorFixedSize`
+  /// - [value] (`Iterable<T>`): Required currently selected values
+  /// - [disableHoverEffect] (bool): Whether to disable hover visual feedback, defaults to false
+  /// - [borderRadius] (BorderRadiusGeometry?): Custom border radius
+  /// - [padding] (EdgeInsetsGeometry?): Custom padding
+  /// - [popoverAlignment] (AlignmentGeometry): Popup alignment, defaults to `Alignment.topCenter`
+  /// - [popoverAnchorAlignment] (AlignmentGeometry?): Anchor alignment for popup positioning
+  /// - [canUnselect] (bool): Whether user can deselect items, defaults to true
+  /// - [autoClosePopover] (bool?): Whether popup closes after selection, defaults to false
+  /// - [enabled] (bool?): Whether multi-select is enabled for interaction
+  /// - [valueSelectionHandler] (`SelectValueSelectionHandler<Iterable<T>>?`): Custom selection logic
+  /// - [valueSelectionPredicate] (`SelectValueSelectionPredicate<Iterable<T>>?`): Predicate for allowing selection
+  /// - [showValuePredicate] (`Predicate<Iterable<T>>?`): Predicate for showing items
+  /// - [popup] (SelectPopupBuilder): Required builder for popup content
+  /// - [itemBuilder] (`SelectValueBuilder<T>`): Required builder for individual chip items
   const MultiSelect({
     super.key,
     this.onChanged,
