@@ -597,53 +597,53 @@ TODO:
 - [x] lib\src\components\navigation\subfocus.dart:355:11
 - [x] lib\src\components\navigation\subfocus.dart:357:8
 - [x] lib\src\components\navigation\subfocus.dart:358:8
-- [ ] lib\src\components\navigation\tabs\tabs.dart:22:13
-- [ ] lib\src\components\navigation\tabs\tabs.dart:10:29
-- [ ] lib\src\components\navigation\tabs\tabs.dart:11:29
-- [ ] lib\src\components\navigation\tabs\tabs.dart:12:16
-- [ ] lib\src\components\navigation\tabs\tabs.dart:13:31
-- [ ] lib\src\components\navigation\tabs\tabs.dart:15:9
-- [ ] lib\src\components\navigation\tabs\tabs.dart:104:13
-- [ ] lib\src\components\navigation\tabs\tabs.dart:105:27
-- [ ] lib\src\components\navigation\tabs\tabs.dart:106:24
-- [ ] lib\src\components\navigation\tabs\tabs.dart:107:29
-- [ ] lib\src\components\navigation\tabs\tabs.dart:109:9
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:48:7
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:49:27
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:55:13
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:56:13
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:57:28
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:58:25
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:60:3
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:81:7
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:82:12
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:85:7
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:86:9
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:89:7
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:90:16
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:94:9
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:106:7
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:107:3
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:120:7
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:121:16
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:123:9
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:138:7
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:139:3
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:151:9
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:153:9
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:156:7
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:157:13
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:158:28
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:159:24
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:160:21
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:161:26
-- [ ] lib\src\components\navigation\tabs\tab_container.dart:163:9
-- [ ] lib\src\components\navigation\tabs\tab_list.dart:53:16
-- [ ] lib\src\components\navigation\tabs\tab_list.dart:46:9
-- [ ] lib\src\components\navigation\tabs\tab_pane.dart:55:16
-- [ ] lib\src\components\navigation\tabs\tab_pane.dart:48:9
-- [ ] lib\src\components\navigation\tabs\tab_pane.dart:305:7
-- [ ] lib\src\components\navigation\tabs\tab_pane.dart:307:16
+- [x] lib\src\components\navigation\tabs\tabs.dart:22:13
+- [x] lib\src\components\navigation\tabs\tabs.dart:10:29
+- [x] lib\src\components\navigation\tabs\tabs.dart:11:29
+- [x] lib\src\components\navigation\tabs\tabs.dart:12:16
+- [x] lib\src\components\navigation\tabs\tabs.dart:13:31
+- [x] lib\src\components\navigation\tabs\tabs.dart:15:9
+- [x] lib\src\components\navigation\tabs\tabs.dart:104:13
+- [x] lib\src\components\navigation\tabs\tabs.dart:105:27
+- [x] lib\src\components\navigation\tabs\tabs.dart:106:24
+- [x] lib\src\components\navigation\tabs\tabs.dart:107:29
+- [x] lib\src\components\navigation\tabs\tabs.dart:109:9
+- [x] lib\src\components\navigation\tabs\tab_container.dart:48:7
+- [x] lib\src\components\navigation\tabs\tab_container.dart:49:27
+- [x] lib\src\components\navigation\tabs\tab_container.dart:55:13
+- [x] lib\src\components\navigation\tabs\tab_container.dart:56:13
+- [x] lib\src\components\navigation\tabs\tab_container.dart:57:28
+- [x] lib\src\components\navigation\tabs\tab_container.dart:58:25
+- [x] lib\src\components\navigation\tabs\tab_container.dart:60:3
+- [x] lib\src\components\navigation\tabs\tab_container.dart:81:7
+- [x] lib\src\components\navigation\tabs\tab_container.dart:82:12
+- [x] lib\src\components\navigation\tabs\tab_container.dart:85:7
+- [x] lib\src\components\navigation\tabs\tab_container.dart:86:9
+- [x] lib\src\components\navigation\tabs\tab_container.dart:89:7
+- [x] lib\src\components\navigation\tabs\tab_container.dart:90:16
+- [x] lib\src\components\navigation\tabs\tab_container.dart:94:9
+- [x] lib\src\components\navigation\tabs\tab_container.dart:106:7
+- [x] lib\src\components\navigation\tabs\tab_container.dart:107:3
+- [x] lib\src\components\navigation\tabs\tab_container.dart:120:7
+- [x] lib\src\components\navigation\tabs\tab_container.dart:121:16
+- [x] lib\src\components\navigation\tabs\tab_container.dart:123:9
+- [x] lib\src\components\navigation\tabs\tab_container.dart:138:7
+- [x] lib\src\components\navigation\tabs\tab_container.dart:139:3
+- [x] lib\src\components\navigation\tabs\tab_container.dart:151:9
+- [x] lib\src\components\navigation\tabs\tab_container.dart:153:9
+- [x] lib\src\components\navigation\tabs\tab_container.dart:156:7
+- [x] lib\src\components\navigation\tabs\tab_container.dart:157:13
+- [x] lib\src\components\navigation\tabs\tab_container.dart:158:28
+- [x] lib\src\components\navigation\tabs\tab_container.dart:159:24
+- [x] lib\src\components\navigation\tabs\tab_container.dart:160:21
+- [x] lib\src\components\navigation\tabs\tab_container.dart:161:26
+- [x] lib\src\components\navigation\tabs\tab_container.dart:163:9
+- [x] lib\src\components\navigation\tabs\tab_list.dart:53:16
+- [x] lib\src\components\navigation\tabs\tab_list.dart:46:9
+- [x] lib\src\components\navigation\tabs\tab_pane.dart:55:16
+- [x] lib\src\components\navigation\tabs\tab_pane.dart:48:9
+- [x] lib\src\components\navigation\tabs\tab_pane.dart:305:7
+- [x] lib\src\components\navigation\tabs\tab_pane.dart:307:16
 - [ ] lib\src\components\overlay\dialog.dart:551:3
 - [ ] lib\src\components\overlay\drawer.dart:989:14
 - [ ] lib\src\components\overlay\drawer.dart:1200:28
