@@ -69,6 +69,9 @@ class CallbackContextAction<T extends Intent> extends ContextAction<T> {
   /// Callback to execute when action is invoked.
   final OnContextInvokeCallback onInvoke;
 
+  /// Creates a [CallbackContextAction] with the given callback.
+  /// Parameters:
+  /// - [onInvoke] (OnContextInvokeCallback, required): Callback to execute
   CallbackContextAction({required this.onInvoke});
 
   @override
@@ -150,7 +153,7 @@ extension ListExtension<T> on List<T> {
   /// Finds the first index where test is true, returning null if not found.
   ///
   /// Parameters:
-  /// - [test] (Predicate<T>, required): Test function
+  /// - [test] (`Predicate<T>`, required): Test function
   /// - [start] (int): Index to start searching from, defaults to 0
   ///
   /// Returns index or null if no match found.
@@ -162,7 +165,7 @@ extension ListExtension<T> on List<T> {
   /// Finds the last index where test is true, returning null if not found.
   ///
   /// Parameters:
-  /// - [test] (Predicate<T>, required): Test function
+  /// - [test] (`Predicate<T>`, required): Test function
   /// - [start] (int?): Index to search backwards from
   ///
   /// Returns last index or null if no match found.
@@ -209,7 +212,7 @@ extension ListExtension<T> on List<T> {
   /// Returns false if no element matches the test.
   ///
   /// Parameters:
-  /// - [test] (Predicate<T>, required): Test function to find element
+  /// - [test] (`Predicate<T>`, required): Test function to find element
   /// - [targetIndex] (int, required): Destination index
   ///
   /// Returns true if element was found and moved.
