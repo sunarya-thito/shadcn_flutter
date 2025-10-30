@@ -14,6 +14,13 @@ class InputOTPTheme {
 
   const InputOTPTheme({this.spacing, this.height});
 
+  /// Creates a copy of this theme with specified properties overridden.
+  ///
+  /// Parameters:
+  /// - [spacing] (`ValueGetter<double?>?`, optional): New spacing value.
+  /// - [height] (`ValueGetter<double?>?`, optional): New height value.
+  ///
+  /// Returns: A new [InputOTPTheme] with updated properties.
   InputOTPTheme copyWith({
     ValueGetter<double?>? spacing,
     ValueGetter<double?>? height,
@@ -47,12 +54,51 @@ class _InputOTPSpacing extends StatelessWidget {
   }
 }
 
+/// Abstract base class for OTP input child elements.
+///
+/// Defines the interface for children that can be placed within an [InputOTP]
+/// widget, including actual input fields, separators, and spacers.
+/// Subclasses implement the [build] method to render their content.
+///
+/// Common factories:
+/// - [separator]: Creates a visual separator between OTP groups.
+/// - [space]: Creates spacing between OTP input fields.
+/// - [empty]: Creates an empty placeholder.
+/// - [InputOTPChild.input]: Creates a configurable character input.
+/// - [InputOTPChild.character]: Creates a character input with preset filters.
+///
+/// Example:
+/// ```dart
+/// InputOTP(
+///   children: [
+///     InputOTPChild.input(predicate: (cp) => cp >= 48 && cp <= 57),
+///     InputOTPChild.space,
+///     InputOTPChild.input(),
+///   ],
+/// )
+/// ```
 abstract class InputOTPChild {
+  /// A visual separator between OTP groups (e.g., a dash or line).
   static InputOTPChild get separator =>
       const WidgetInputOTPChild(OTPSeparator());
+  
+  /// Spacing between OTP input fields.
   static InputOTPChild get space =>
       const WidgetInputOTPChild(_InputOTPSpacing());
+  
+  /// An empty placeholder that takes no space.
   static InputOTPChild get empty => const WidgetInputOTPChild(SizedBox());
+  
+  /// Creates a customizable character input field.
+  ///
+  /// Parameters:
+  /// - [predicate] (`CodepointPredicate?`, optional): Function to validate codepoints.
+  /// - [transform] (`CodepointUnaryOperator?`, optional): Function to transform codepoints.
+  /// - [obscured] (`bool`, default: `false`): Whether to obscure the input.
+  /// - [readOnly] (`bool`, default: `false`): Whether the input is read-only.
+  /// - [keyboardType] (`TextInputType?`, optional): Keyboard type for input.
+  ///
+  /// Returns: A [CharacterInputOTPChild] configured with the specified options.
   factory InputOTPChild.input({
     CodepointPredicate? predicate,
     CodepointUnaryOperator? transform,
@@ -67,6 +113,28 @@ abstract class InputOTPChild {
         readOnly: readOnly,
         keyboardType: keyboardType,
       );
+  
+  /// Creates a character input with alphabet and digit filtering.
+  ///
+  /// Parameters:
+  /// - [allowLowercaseAlphabet] (`bool`, default: `false`): Allow lowercase letters.
+  /// - [allowUppercaseAlphabet] (`bool`, default: `false`): Allow uppercase letters.
+  /// - [allowDigit] (`bool`, default: `false`): Allow numeric digits.
+  /// - [obscured] (`bool`, default: `false`): Whether to obscure the input.
+  /// - [onlyUppercaseAlphabet] (`bool`, default: `false`): Convert to uppercase only.
+  /// - [onlyLowercaseAlphabet] (`bool`, default: `false`): Convert to lowercase only.
+  /// - [readOnly] (`bool`, default: `false`): Whether the input is read-only.
+  /// - [keyboardType] (`TextInputType?`, optional): Keyboard type for input.
+  ///
+  /// Returns: A [CharacterInputOTPChild] configured for alphabet/digit input.
+  ///
+  /// Example:
+  /// ```dart
+  /// InputOTPChild.character(
+  ///   allowDigit: true,
+  ///   allowUppercaseAlphabet: true,
+  /// )
+  /// ```
   factory InputOTPChild.character({
     bool allowLowercaseAlphabet = false,
     bool allowUppercaseAlphabet = false,
@@ -115,14 +183,52 @@ abstract class InputOTPChild {
       readOnly: readOnly,
     );
   }
+  
+  /// Creates an [InputOTPChild].
   const InputOTPChild();
+  
+  /// Builds the widget for this OTP child.
+  ///
+  /// Parameters:
+  /// - [context] (`BuildContext`, required): The build context.
+  /// - [data] (`InputOTPChildData`, required): Data for building the child.
+  ///
+  /// Returns: The widget representing this OTP child.
   Widget build(BuildContext context, InputOTPChildData data);
+  
+  /// Whether this child can hold a value (i.e., is an input field).
   bool get hasValue;
 }
 
+/// A predicate that tests whether a Unicode codepoint is valid.
+///
+/// Parameters:
+/// - [codepoint] (`int`): The Unicode codepoint to test.
+///
+/// Returns: `true` if the codepoint passes the predicate, `false` otherwise.
 typedef CodepointPredicate = bool Function(int codepoint);
+
+/// A function that transforms a Unicode codepoint to another.
+///
+/// Parameters:
+/// - [codepoint] (`int`): The Unicode codepoint to transform.
+///
+/// Returns: The transformed codepoint.
 typedef CodepointUnaryOperator = int Function(int codepoint);
 
+/// A character-based OTP input field with validation and transformation.
+///
+/// Supports filtering input based on codepoint predicates and transforming
+/// input characters (e.g., converting to uppercase). Commonly used for
+/// creating numeric or alphanumeric OTP fields.
+///
+/// Example:
+/// ```dart
+/// CharacterInputOTPChild(
+///   predicate: CharacterInputOTPChild.isDigit,
+///   keyboardType: TextInputType.number,
+/// )
+/// ```
 class CharacterInputOTPChild extends InputOTPChild {
   static const int _startAlphabetLower = 97; // 'a'
   static const int _endAlphabetLower = 122; // 'z'
@@ -131,23 +237,74 @@ class CharacterInputOTPChild extends InputOTPChild {
   static const int _startDigit = 48; // '0'
   static const int _endDigit = 57; // '9'
 
+  /// Tests if the codepoint is a lowercase letter (a-z).
+  ///
+  /// Parameters:
+  /// - [codepoint] (`int`, required): The codepoint to test.
+  ///
+  /// Returns: `true` if the codepoint is a lowercase letter.
   static bool isAlphabetLower(int codepoint) =>
       codepoint >= _startAlphabetLower && codepoint <= _endAlphabetLower;
+  
+  /// Tests if the codepoint is an uppercase letter (A-Z).
+  ///
+  /// Parameters:
+  /// - [codepoint] (`int`, required): The codepoint to test.
+  ///
+  /// Returns: `true` if the codepoint is an uppercase letter.
   static bool isAlphabetUpper(int codepoint) =>
       codepoint >= _startAlphabetUpper && codepoint <= _endAlphabetUpper;
+  
+  /// Converts a lowercase letter to uppercase.
+  ///
+  /// Parameters:
+  /// - [codepoint] (`int`, required): The codepoint to convert.
+  ///
+  /// Returns: The uppercase codepoint if lowercase, otherwise unchanged.
   static int lowerToUpper(int codepoint) =>
       isAlphabetLower(codepoint) ? codepoint - 32 : codepoint;
+  
+  /// Converts an uppercase letter to lowercase.
+  ///
+  /// Parameters:
+  /// - [codepoint] (`int`, required): The codepoint to convert.
+  ///
+  /// Returns: The lowercase codepoint if uppercase, otherwise unchanged.
   static int upperToLower(int codepoint) =>
       isAlphabetUpper(codepoint) ? codepoint + 32 : codepoint;
+  
+  /// Tests if the codepoint is a digit (0-9).
+  ///
+  /// Parameters:
+  /// - [codepoint] (`int`, required): The codepoint to test.
+  ///
+  /// Returns: `true` if the codepoint is a digit.
   static bool isDigit(int codepoint) =>
       codepoint >= _startDigit && codepoint <= _endDigit;
 
+  /// Predicate to validate allowed codepoints.
   final CodepointPredicate? predicate;
+  
+  /// Function to transform codepoints before storing.
   final CodepointUnaryOperator? transform;
+  
+  /// Whether to obscure the input character.
   final bool obscured;
+  
+  /// Whether the input is read-only.
   final bool readOnly;
+  
+  /// The keyboard type to use for input.
   final TextInputType? keyboardType;
 
+  /// Creates a [CharacterInputOTPChild].
+  ///
+  /// Parameters:
+  /// - [predicate] (`CodepointPredicate?`, optional): Validates input codepoints.
+  /// - [transform] (`CodepointUnaryOperator?`, optional): Transforms codepoints.
+  /// - [obscured] (`bool`, default: `false`): Whether to obscure the character.
+  /// - [readOnly] (`bool`, default: `false`): Whether the field is read-only.
+  /// - [keyboardType] (`TextInputType?`, optional): Keyboard type for input.
   const CharacterInputOTPChild({
     this.predicate,
     this.transform,
@@ -402,9 +559,25 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
   }
 }
 
+/// A widget-based OTP child that doesn't accept input.
+///
+/// Used for displaying static content like separators or spacers within
+/// an [InputOTP] widget. This child does not hold any value.
+///
+/// Example:
+/// ```dart
+/// WidgetInputOTPChild(
+///   Icon(Icons.arrow_forward),
+/// )
+/// ```
 class WidgetInputOTPChild extends InputOTPChild {
+  /// The widget to display.
   final Widget child;
 
+  /// Creates a [WidgetInputOTPChild].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): The widget to display.
   const WidgetInputOTPChild(this.child);
 
   @override
@@ -423,7 +596,23 @@ class WidgetInputOTPChild extends InputOTPChild {
   bool get hasValue => false;
 }
 
+/// A visual separator for OTP input groups.
+///
+/// Displays a dash "-" character between groups of OTP input fields.
+/// Automatically applies theming and spacing based on the current theme.
+///
+/// Example:
+/// ```dart
+/// InputOTP(
+///   children: [
+///     InputOTPChild.input(),
+///     OTPSeparator(),
+///     InputOTPChild.input(),
+///   ],
+/// )
+/// ```
 class OTPSeparator extends StatelessWidget {
+  /// Creates an [OTPSeparator].
   const OTPSeparator({super.key});
 
   @override
@@ -437,15 +626,36 @@ class OTPSeparator extends StatelessWidget {
   }
 }
 
+/// Data passed to [InputOTPChild.build] for rendering OTP input fields.
+///
+/// Contains information about focus nodes, index positions, current value,
+/// and callbacks for changing values. Used internally by [InputOTP] to
+/// coordinate input fields.
 class InputOTPChildData {
+  /// Focus node for the previous input field.
   final FocusNode? previousFocusNode;
+  
+  /// Focus node for this input field.
   final FocusNode? focusNode;
+  
+  /// Focus node for the next input field.
   final FocusNode? nextFocusNode;
+  
+  /// Overall index within all OTP children.
   final int index;
+  
+  /// Index of the group this child belongs to.
   final int groupIndex;
+  
+  /// Total number of children in this group.
   final int groupLength;
+  
+  /// Relative index within the group.
   final int relativeIndex;
+  
+  /// Current value (codepoint) of this input field.
   final int? value;
+  
   final _InputOTPState _state;
   final GlobalKey<_OTPCharacterInputState>? _key;
 
@@ -462,6 +672,10 @@ class InputOTPChildData {
     this.value,
   });
 
+  /// Updates the value for this OTP input field.
+  ///
+  /// Parameters:
+  /// - [value] (`int?`, required): The new codepoint value or null.
   void changeValue(int? value) {
     _state._changeValue(index, value);
   }
@@ -494,9 +708,24 @@ class _InputOTPChild {
         key = old.key;
 }
 
+/// A list of nullable codepoints representing OTP input values.
+///
+/// Each element represents a character's Unicode codepoint, or null if not set.
 typedef OTPCodepointList = List<int?>;
 
+/// Extension methods for [OTPCodepointList].
 extension OTPCodepointListExtension on OTPCodepointList {
+  /// Converts the codepoint list to a string.
+  ///
+  /// Null values are converted to empty strings.
+  ///
+  /// Returns: A string representation of the OTP code.
+  ///
+  /// Example:
+  /// ```dart
+  /// final codes = [49, 50, 51]; // '1', '2', '3'
+  /// print(codes.otpToString()); // '123'
+  /// ```
   String otpToString() {
     return map((e) => e == null ? '' : String.fromCharCode(e)).join();
   }
@@ -549,11 +778,25 @@ extension OTPCodepointListExtension on OTPCodepointList {
 /// );
 /// ```
 class InputOTP extends StatefulWidget {
+  /// The list of children defining input fields, separators, and spaces.
   final List<InputOTPChild> children;
+  
+  /// Initial OTP codepoint values.
   final OTPCodepointList? initialValue;
+  
+  /// Called when the OTP value changes.
   final ValueChanged<OTPCodepointList>? onChanged;
+  
+  /// Called when the user submits the OTP (e.g., presses Enter on last field).
   final ValueChanged<OTPCodepointList>? onSubmitted;
 
+  /// Creates an [InputOTP] widget.
+  ///
+  /// Parameters:
+  /// - [children] (`List<InputOTPChild>`, required): The OTP input fields and decorations.
+  /// - [initialValue] (`OTPCodepointList?`, optional): Initial codepoints.
+  /// - [onChanged] (`ValueChanged<OTPCodepointList>?`, optional): Value change callback.
+  /// - [onSubmitted] (`ValueChanged<OTPCodepointList>?`, optional): Submit callback.
   const InputOTP({
     super.key,
     required this.children,
