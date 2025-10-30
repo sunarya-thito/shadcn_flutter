@@ -71,6 +71,11 @@ class ChartColorScheme {
 /// and access to different shade values (50, 100, 200, ..., 950).
 class ColorShades implements Color, ColorSwatch {
   static const int _step = 100;
+  
+  /// Standard shade values used in color palettes.
+  ///
+  /// Contains the standard Material Design shade values from lightest (50)
+  /// to darkest (950): [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].
   static const List<int> shadeValues = [
     50,
     100,
@@ -208,16 +213,38 @@ class ColorShades implements Color, ColorSwatch {
     return _colors[key]!;
   }
 
+  /// Gets the lightest shade (50).
   Color get shade50 => _colors[50]!;
+
+  /// Gets shade 100.
   Color get shade100 => _colors[100]!;
+
+  /// Gets shade 200.
   Color get shade200 => _colors[200]!;
+
+  /// Gets shade 300.
   Color get shade300 => _colors[300]!;
+
+  /// Gets shade 400.
   Color get shade400 => _colors[400]!;
+
+  /// Gets the medium/default shade (500).
   Color get shade500 => _colors[500]!;
+
+  /// Gets shade 600.
   Color get shade600 => _colors[600]!;
+
+  /// Gets shade 700.
   Color get shade700 => _colors[700]!;
+
+  /// Gets shade 800.
   Color get shade800 => _colors[800]!;
+
+  /// Gets shade 900.
   Color get shade900 => _colors[900]!;
+
+  /// Gets the darkest shade (950).
+  Color get shade950 => _colors[950]!;
   Color get shade950 => _colors[950]!;
 
   Color get _primary => _colors[500]!;
@@ -354,6 +381,14 @@ class ColorShades implements Color, ColorSwatch {
   }
 }
 
+/// Converts a Flutter [Color] to hexadecimal string representation.
+///
+/// Returns a hex string with hash prefix (e.g., "#RRGGBB" or "#AARRGGBB").
+///
+/// Parameters:
+/// - [color] (Color, required): Color to convert
+///
+/// Returns hex string representation.
 String hexFromColor(Color color) {
   return colorToHex(color, true);
 }
@@ -364,6 +399,10 @@ String hexFromColor(Color color) {
 /// background, foreground, primary, secondary, destructive colors, etc.
 /// Also includes sidebar and chart colors.
 class ColorScheme implements ChartColorScheme {
+  /// Set of recognized color key names for the color scheme.
+  ///
+  /// Contains all valid color property names that can be used when
+  /// constructing or serializing a ColorScheme.
   static const Set<String> colorKeys = {
     'background',
     'foreground',
@@ -564,6 +603,12 @@ class ColorScheme implements ChartColorScheme {
                 .firstOrNull ??
             Brightness.light;
 
+  /// Converts the color scheme to a map of hex color strings.
+  ///
+  /// Returns a map where keys are color property names and values are
+  /// hex-encoded color strings (e.g., "#RRGGBB").
+  ///
+  /// Useful for serialization or CSS generation.
   Map<String, String> toMap() {
     return {
       'background': hexFromColor(background),
@@ -603,6 +648,12 @@ class ColorScheme implements ChartColorScheme {
     };
   }
 
+  /// Converts the color scheme to a map of Color objects.
+  ///
+  /// Returns a map where keys are color property names and values are
+  /// Flutter Color objects.
+  ///
+  /// Useful for programmatic color access.
   Map<String, Color> toColorMap() {
     return {
       'background': background,
@@ -641,6 +692,21 @@ class ColorScheme implements ChartColorScheme {
     };
   }
 
+  /// Creates a ColorScheme from a map of colors.
+  ///
+  /// Constructs a ColorScheme by looking up color values from a map.
+  ///
+  /// Parameters:
+  /// - [colors] (`Map<String, Color>`, required): Map of color name to Color
+  /// - [brightness] (Brightness, required): Theme brightness (light or dark)
+  ///
+  /// Example:
+  /// ```dart
+  /// ColorScheme.fromColors(
+  ///   colors: {'background': Colors.white, 'foreground': Colors.black, ...},
+  ///   brightness: Brightness.light,
+  /// )
+  /// ```
   ColorScheme.fromColors({
     required Map<String, Color> colors,
     required Brightness brightness,
@@ -680,6 +746,21 @@ class ColorScheme implements ChartColorScheme {
           sidebarRing: colors._col('sidebarRing'),
         );
 
+  /// Creates a copy of this ColorScheme with specified properties replaced.
+  ///
+  /// Returns a new ColorScheme with any provided properties replaced.
+  /// Uses ValueGetter for each property to allow lazy evaluation.
+  ///
+  /// Parameters are ValueGetters for all color scheme properties. Only
+  /// provided parameters will be replaced in the copy.
+  ///
+  /// Example:
+  /// ```dart
+  /// scheme.copyWith(
+  ///   background: () => Colors.white,
+  ///   foreground: () => Colors.black,
+  /// )
+  /// ```
   ColorScheme copyWith({
     ValueGetter<Brightness>? brightness,
     ValueGetter<Color>? background,
@@ -776,6 +857,17 @@ class ColorScheme implements ChartColorScheme {
   @override
   List<Color> get chartColors => [chart1, chart2, chart3, chart4, chart5];
 
+  /// Linearly interpolates between two ColorSchemes.
+  ///
+  /// Creates a new ColorScheme that represents a transition between [a] and [b]
+  /// at position [t]. When t=0, returns [a]; when t=1, returns [b].
+  ///
+  /// Parameters:
+  /// - [a] (ColorScheme, required): Start color scheme
+  /// - [b] (ColorScheme, required): End color scheme
+  /// - [t] (double, required): Interpolation position (0.0 to 1.0)
+  ///
+  /// Returns interpolated ColorScheme.
   static ColorScheme lerp(ColorScheme a, ColorScheme b, double t) {
     return ColorScheme(
       brightness: t < 0.5 ? a.brightness : b.brightness,

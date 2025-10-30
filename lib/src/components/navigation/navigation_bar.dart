@@ -1077,14 +1077,36 @@ class _NavigationSidebarState extends State<NavigationSidebar>
 /// - `expanded`: Labels shown when navigation is expanded.
 enum NavigationLabelType { none, selected, all, tooltip, expanded }
 
+/// Position of navigation item labels relative to icons.
+///
+/// - `start`: Label before icon (left in LTR, right in RTL)
+/// - `end`: Label after icon (right in LTR, left in RTL)
+/// - `top`: Label above icon
+/// - `bottom`: Label below icon
 enum NavigationLabelPosition { start, end, top, bottom }
 
+/// Size variant for navigation item labels.
+///
+/// - `small`: Compact label text
+/// - `large`: Larger label text
 enum NavigationLabelSize { small, large }
 
+/// Data class tracking navigation child position and selection state.
+///
+/// Associates a navigation item with its logical index (for selection)
+/// and actual index (for layout position).
 class NavigationChildControlData {
+  /// Logical index for selection (null if not selectable).
   final int? index;
+
+  /// Actual position index in the navigation layout.
   final int actualIndex;
 
+  /// Creates navigation child control data.
+  ///
+  /// Parameters:
+  /// - [index] (int?): Logical selection index
+  /// - [actualIndex] (int, required): Layout position index
   NavigationChildControlData({this.index, required this.actualIndex});
 
   @override
@@ -1102,21 +1124,54 @@ class NavigationChildControlData {
   }
 }
 
+/// Data class containing navigation control configuration and state.
+///
+/// Manages layout, styling, and interaction settings for navigation
+/// containers and their children. Used internally to coordinate
+/// behavior across navigation items.
 class NavigationControlData {
+  /// Type of navigation container (bar, rail, etc.).
   final NavigationContainerType containerType;
+
+  /// Label display type from parent container.
   final NavigationLabelType parentLabelType;
+
+  /// Label position relative to icon from parent.
   final NavigationLabelPosition parentLabelPosition;
+
+  /// Label size variant from parent.
   final NavigationLabelSize parentLabelSize;
+
+  /// Padding applied by parent container.
   final EdgeInsets parentPadding;
+
+  /// Layout direction (horizontal or vertical).
   final Axis direction;
+
+  /// Currently selected item index (null if none selected).
   final int? selectedIndex;
+
+  /// Total number of child items.
   final int childCount;
+
+  /// Callback when an item is selected.
   final ValueChanged<int> onSelected;
+
+  /// Whether the navigation is expanded to fill available space.
   final bool expanded;
+
+  /// Spacing between navigation items.
   final double spacing;
+
+  /// Whether to maintain cross-axis size constraints.
   final bool keepCrossAxisSize;
+
+  /// Whether to maintain main-axis size constraints.
   final bool keepMainAxisSize;
 
+  /// Computed label direction based on parent label position.
+  ///
+  /// Returns horizontal for start/end positions, vertical for top/bottom.
   Axis get labelDirection {
     return parentLabelPosition == NavigationLabelPosition.start ||
             parentLabelPosition == NavigationLabelPosition.end
@@ -1124,6 +1179,22 @@ class NavigationControlData {
         : Axis.vertical;
   }
 
+  /// Creates navigation control data.
+  ///
+  /// Parameters:
+  /// - [containerType] (NavigationContainerType, required): Container type
+  /// - [parentLabelType] (NavigationLabelType, required): Label display type
+  /// - [parentLabelPosition] (NavigationLabelPosition, required): Label position
+  /// - [parentLabelSize] (NavigationLabelSize, required): Label size variant
+  /// - [parentPadding] (EdgeInsets, required): Container padding
+  /// - [direction] (Axis, required): Layout direction
+  /// - [selectedIndex] (int?): Selected item index
+  /// - [onSelected] (`ValueChanged<int>`, required): Selection callback
+  /// - [expanded] (bool, required): Whether expanded
+  /// - [childCount] (int, required): Number of children
+  /// - [spacing] (double, required): Item spacing
+  /// - [keepCrossAxisSize] (bool, required): Maintain cross-axis size
+  /// - [keepMainAxisSize] (bool, required): Maintain main-axis size
   NavigationControlData({
     required this.containerType,
     required this.parentLabelType,
@@ -1180,18 +1251,33 @@ class NavigationControlData {
   }
 }
 
+/// Spacing gap between navigation items.
+///
+/// Creates empty space in navigation bars or sidebars. Automatically
+/// uses appropriate gap type based on container (Gap for boxes, SliverGap for slivers).
 class NavigationGap extends StatelessWidget implements NavigationBarItem {
+  /// Size of the gap in logical pixels.
   final double gap;
 
+  /// Creates a navigation gap.
+  ///
+  /// Parameters:
+  /// - [gap] (double, required): Gap size in logical pixels
   const NavigationGap(this.gap, {super.key});
 
   @override
   bool get selectable => false;
 
+  /// Builds the gap widget for box-based navigation containers.
+  ///
+  /// Returns a [Gap] widget with the specified gap size.
   Widget buildBox(BuildContext context) {
     return Gap(gap);
   }
 
+  /// Builds the gap widget for sliver-based navigation containers.
+  ///
+  /// Returns a [SliverGap] widget with the specified gap size.
   Widget buildSliver(BuildContext context) {
     return SliverGap(gap);
   }
@@ -1206,10 +1292,22 @@ class NavigationGap extends StatelessWidget implements NavigationBarItem {
   }
 }
 
+/// Visual divider between navigation items.
+///
+/// Renders a horizontal or vertical line separator in navigation bars.
+/// Automatically adapts direction based on navigation orientation.
 class NavigationDivider extends StatelessWidget implements NavigationBarItem {
+  /// Optional thickness of the divider line.
   final double? thickness;
+
+  /// Optional color for the divider.
   final Color? color;
 
+  /// Creates a navigation divider.
+  ///
+  /// Parameters:
+  /// - [thickness] (double?): Line thickness
+  /// - [color] (Color?): Divider color
   const NavigationDivider({super.key, this.thickness, this.color});
 
   @override
@@ -1258,11 +1356,49 @@ class NavigationDivider extends StatelessWidget implements NavigationBarItem {
   }
 }
 
+/// Selectable navigation item with selection state management.
+///
+/// Represents a clickable navigation item that can be selected. Supports
+/// custom styling for selected/unselected states, labels, and icons.
+///
+/// Example:
+/// ```dart
+/// NavigationItem(
+///   index: 0,
+///   label: Text('Home'),
+///   child: Icon(Icons.home),
+///   selected: selectedIndex == 0,
+///   onChanged: (selected) => setState(() => selectedIndex = 0),
+/// )
+/// ```
 class NavigationItem extends AbstractNavigationButton {
+  /// Custom style when item is selected.
   final AbstractButtonStyle? selectedStyle;
+
+  /// Whether this item is currently selected.
   final bool? selected;
+
+  /// Callback when selection state changes.
   final ValueChanged<bool>? onChanged;
+
+  /// Optional index for selection management.
   final int? index;
+
+  /// Creates a navigation item.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Icon or content widget
+  /// - [selectedStyle] (AbstractButtonStyle?): Style when selected
+  /// - [selected] (bool?): Current selection state
+  /// - [onChanged] (`ValueChanged<bool>?`): Selection change callback
+  /// - [index] (int?): Item index for selection
+  /// - [label] (Widget?): Optional label text
+  /// - [spacing] (double?): Space between icon and label
+  /// - [style] (AbstractButtonStyle?): Default style
+  /// - [alignment] (AlignmentGeometry?): Content alignment
+  /// - [enabled] (bool?): Whether enabled for interaction
+  /// - [overflow] (TextOverflow?): Label overflow behavior
+  /// - [marginAlignment] (AlignmentGeometry?): Margin alignment
   const NavigationItem({
     super.key,
     this.selectedStyle,
@@ -1367,8 +1503,36 @@ class _NavigationItemState
   }
 }
 
+/// Non-selectable navigation button for actions.
+///
+/// Similar to [NavigationItem] but without selection state. Used for
+/// action buttons in navigation (e.g., settings, logout) that trigger
+/// callbacks rather than changing navigation state.
+///
+/// Example:
+/// ```dart
+/// NavigationButton(
+///   label: Text('Settings'),
+///   child: Icon(Icons.settings),
+///   onPressed: () => _openSettings(),
+/// )
+/// ```
 class NavigationButton extends AbstractNavigationButton {
+  /// Callback when button is pressed.
   final VoidCallback? onPressed;
+
+  /// Creates a navigation button.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Icon or content widget
+  /// - [onPressed] (VoidCallback?): Press callback
+  /// - [label] (Widget?): Optional label text
+  /// - [spacing] (double?): Space between icon and label
+  /// - [style] (AbstractButtonStyle?): Button style
+  /// - [alignment] (AlignmentGeometry?): Content alignment
+  /// - [enabled] (bool?): Whether enabled for interaction
+  /// - [overflow] (TextOverflow?): Label overflow behavior
+  /// - [marginAlignment] (AlignmentGeometry?): Margin alignment
   const NavigationButton({
     super.key,
     this.onPressed,
@@ -1453,18 +1617,49 @@ class _NavigationButtonState
   }
 }
 
+/// Abstract base class for navigation button widgets.
+///
+/// Provides common properties and behavior for navigation items and buttons.
+/// Subclasses include [NavigationItem] and [NavigationButton].
+///
+/// Handles layout, labels, styling, and integration with navigation containers.
 abstract class AbstractNavigationButton extends StatefulWidget
     implements NavigationBarItem {
+  /// Main content widget (typically an icon).
   final Widget child;
+
+  /// Optional label text widget.
   final Widget? label;
+
+  /// Spacing between icon and label.
   final double? spacing;
+
+  /// Custom button style.
   final AbstractButtonStyle? style;
+
+  /// Content alignment within the button.
   final AlignmentGeometry? alignment;
 
+  /// Whether the button is enabled for interaction.
   final bool? enabled;
+
+  /// How to handle label overflow.
   final NavigationOverflow overflow;
+
+  /// Alignment for margins.
   final AlignmentGeometry? marginAlignment;
 
+  /// Creates an abstract navigation button.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Main content (icon)
+  /// - [spacing] (double?): Icon-label spacing
+  /// - [label] (Widget?): Label widget
+  /// - [style] (AbstractButtonStyle?): Button style
+  /// - [alignment] (AlignmentGeometry?): Content alignment
+  /// - [enabled] (bool?): Enabled state
+  /// - [overflow] (NavigationOverflow): Overflow behavior, defaults to marquee
+  /// - [marginAlignment] (AlignmentGeometry?): Margin alignment
   const AbstractNavigationButton({
     super.key,
     this.spacing,
@@ -1624,9 +1819,19 @@ class _NavigationLabeled extends StatelessWidget {
   }
 }
 
+/// Internal widget that applies spacing between navigation items.
+///
+/// Automatically calculates and applies appropriate padding based on
+/// navigation direction, item position, and parent spacing configuration.
+/// Used internally by navigation components.
 class NavigationPadding extends StatelessWidget {
+  /// Child widget to wrap with padding.
   final Widget child;
 
+  /// Creates a navigation padding wrapper.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Widget to wrap
   const NavigationPadding({super.key, required this.child});
 
   @override
@@ -1651,18 +1856,55 @@ class NavigationPadding extends StatelessWidget {
   }
 }
 
+/// Overflow behavior for navigation item labels.
+///
+/// - `clip`: Clip text that exceeds bounds
+/// - `marquee`: Scroll text horizontally when too long
+/// - `ellipsis`: Show ellipsis (...) for overflow
+/// - `none`: No overflow handling
 enum NavigationOverflow { clip, marquee, ellipsis, none }
 
+/// Non-interactive label widget for navigation sections.
+///
+/// Displays text headers or section labels within navigation bars or sidebars.
+/// Supports different overflow behaviors and can be configured as floating or
+/// pinned when used in sidebars.
+///
+/// Example:
+/// ```dart
+/// NavigationLabel(
+///   child: Text('Main Menu').semiBold(),
+///   padding: EdgeInsets.all(8),
+/// )
+/// ```
 class NavigationLabel extends StatelessWidget implements NavigationBarItem {
+  /// Content widget to display as the label.
   final Widget child;
+
+  /// Alignment of the label content.
   final AlignmentGeometry? alignment;
+
+  /// Padding around the label.
   final EdgeInsetsGeometry? padding;
+
+  /// How to handle text overflow.
   final NavigationOverflow overflow;
 
-  // these options are ignored in NavigationBar and NavigationRail
+  /// Whether the label floats when scrolling (sidebar only).
   final bool floating;
+
+  /// Whether the label is pinned when scrolling (sidebar only).
   final bool pinned;
 
+  /// Creates a navigation label.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Label content
+  /// - [alignment] (AlignmentGeometry?): Content alignment
+  /// - [floating] (bool): Floating behavior, defaults to false
+  /// - [pinned] (bool): Pinned behavior, defaults to false
+  /// - [overflow] (NavigationOverflow): Overflow handling, defaults to clip
+  /// - [padding] (EdgeInsetsGeometry?): Label padding
   const NavigationLabel({
     super.key,
     this.alignment,
@@ -1685,6 +1927,16 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
     return buildBox(context, data);
   }
 
+  /// Builds the child widget with visibility and overflow handling.
+  ///
+  /// Wraps the child with [Hidden] widget that responds to expansion state
+  /// and applies overflow handling based on the overflow property.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): Build context
+  /// - [data] (NavigationControlData?): Navigation control data
+  ///
+  /// Returns the wrapped child widget.
   Widget buildChild(BuildContext context, NavigationControlData? data) {
     bool expanded = data?.expanded ?? true;
     return Hidden(
@@ -1703,6 +1955,16 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
     );
   }
 
+  /// Builds the label for box-based navigation containers.
+  ///
+  /// Creates a centered, padded container with the label text.
+  /// Appropriate for use in navigation bars and rails.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): Build context
+  /// - [data] (NavigationControlData?): Navigation control data
+  ///
+  /// Returns widget for box-based navigation.
   Widget buildBox(BuildContext context, NavigationControlData? data) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
@@ -1716,6 +1978,16 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
     );
   }
 
+  /// Builds the label for sliver-based navigation containers (sidebars).
+  ///
+  /// Creates a persistent header that can be configured as floating or pinned.
+  /// Animates based on expansion state and supports scrolling behaviors.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): Build context
+  /// - [data] (NavigationControlData?): Navigation control data
+  ///
+  /// Returns sliver widget for sidebar navigation.
   Widget buildSliver(BuildContext context, NavigationControlData? data) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
@@ -1864,17 +2136,61 @@ class _NavigationLabelBackgroundPainter extends CustomPainter {
   }
 }
 
+/// Builder function for navigation widgets with selection state.
+///
+/// Parameters:
+/// - [context] (BuildContext): Build context
+/// - [selected] (bool): Whether this item is currently selected
+///
+/// Returns a widget that adapts to selection state.
 typedef NavigationWidgetBuilder = Widget Function(
     BuildContext context, bool selected);
 
+/// Custom widget wrapper for navigation items.
+///
+/// Allows inserting custom widgets into navigation containers with optional
+/// selection tracking. Can be used with a static child or a builder that
+/// responds to selection state.
+///
+/// Example:
+/// ```dart
+/// // Static widget
+/// NavigationWidget(
+///   index: 0,
+///   child: CustomNavigationItem(),
+/// )
+///
+/// // Builder with selection state
+/// NavigationWidget.builder(
+///   index: 1,
+///   builder: (context, selected) => CustomItem(
+///     highlighted: selected,
+///   ),
+/// )
+/// ```
 class NavigationWidget extends StatelessWidget implements NavigationBarItem {
+  /// Optional index for selection tracking.
   final int? index;
+
+  /// Static child widget.
   final Widget? child;
+
+  /// Builder function that receives selection state.
   final NavigationWidgetBuilder? builder;
 
+  /// Creates a navigation widget with a static child.
+  ///
+  /// Parameters:
+  /// - [index] (int?): Selection index
+  /// - [child] (Widget, required): Static child widget
   const NavigationWidget({super.key, this.index, required Widget this.child})
       : builder = null;
 
+  /// Creates a navigation widget with a selection-aware builder.
+  ///
+  /// Parameters:
+  /// - [index] (int?): Selection index
+  /// - [builder] (NavigationWidgetBuilder, required): Builder receiving selection state
   const NavigationWidget.builder({
     super.key,
     this.index,

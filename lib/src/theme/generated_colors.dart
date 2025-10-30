@@ -319,7 +319,14 @@ class Colors {
     900: Color(0xff881337),
     950: Color(0xff4c0519),
   });
+
+  /// Fully transparent color.
   static const Color transparent = Color(0x00000000);
+
+  /// List of primary color swatches from the Material color palette.
+  ///
+  /// Contains all standard Material Design color shades (slate, gray, zinc,
+  /// neutral, stone, red, orange, amber, yellow, lime, green, emerald, etc.).
   static final List<Color> primaries = [
     slate,
     gray,

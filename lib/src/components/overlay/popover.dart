@@ -306,8 +306,21 @@ class PopoverOverlayWidget extends StatefulWidget {
   State<PopoverOverlayWidget> createState() => PopoverOverlayWidgetState();
 }
 
+/// Callback type for popover futures with value transformation.
+///
+/// Parameters:
+/// - [value] (T): Input value to transform
+///
+/// Returns a [Future] with the transformed value.
 typedef PopoverFutureVoidCallback<T> = Future<T> Function(T value);
 
+/// Size constraint strategies for popover overlays.
+///
+/// - `flexible`: Size flexibly based on content and available space
+/// - `intrinsic`: Use intrinsic content size
+/// - `anchorFixedSize`: Match anchor's exact size
+/// - `anchorMinSize`: Use anchor size as minimum
+/// - `anchorMaxSize`: Use anchor size as maximum
 enum PopoverConstraint {
   flexible,
   intrinsic,
@@ -316,6 +329,11 @@ enum PopoverConstraint {
   anchorMaxSize,
 }
 
+/// State class for [PopoverOverlayWidget] managing popover positioning and lifecycle.
+///
+/// Handles dynamic positioning, anchor tracking, size constraints, and
+/// animation for popover overlays. Implements [OverlayHandlerStateMixin]
+/// for standard overlay lifecycle management.
 class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
     with SingleTickerProviderStateMixin, OverlayHandlerStateMixin {
   late BuildContext _anchorContext;
@@ -442,20 +460,48 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
     }
   }
 
+  /// Gets the anchor widget's size.
   Size? get anchorSize => _anchorSize;
+
+  /// Gets the anchor alignment for positioning.
   AlignmentGeometry get anchorAlignment => _anchorAlignment;
+
+  /// Gets the explicit position offset.
   Offset? get position => _position;
+
+  /// Gets the popover alignment.
   AlignmentGeometry get alignment => _alignment;
+
+  /// Gets the width constraint strategy.
   PopoverConstraint get widthConstraint => _widthConstraint;
+
+  /// Gets the height constraint strategy.
   PopoverConstraint get heightConstraint => _heightConstraint;
+
+  /// Gets the position offset.
   Offset? get offset => _offset;
+
+  /// Gets the margin around the popover.
   EdgeInsetsGeometry? get margin => _margin;
+
+  /// Gets whether the popover follows the anchor on movement.
   bool get follow => _follow;
+
+  /// Gets the anchor build context.
   BuildContext get anchorContext => _anchorContext;
+
+  /// Gets whether horizontal inversion is allowed.
   bool get allowInvertHorizontal => _allowInvertHorizontal;
+
+  /// Gets whether vertical inversion is allowed.
   bool get allowInvertVertical => _allowInvertVertical;
+
+  /// Gets the layer link for positioning.
   LayerLink? get layerLink => _layerLink;
 
+  /// Sets the layer link for positioning.
+  ///
+  /// Updates the layer link and manages ticker state for anchor tracking.
   set layerLink(LayerLink? value) {
     if (_layerLink != value) {
       setState(() {
@@ -480,6 +526,9 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
     }
   }
 
+  /// Sets the popover position.
+  ///
+  /// Updates the explicit position and triggers a rebuild.
   set position(Offset? value) {
     if (_position != value) {
       setState(() {
@@ -673,10 +722,17 @@ Future<void> closePopover<T>(BuildContext context, [T? result]) {
   return closeOverlay<T>(context, result);
 }
 
+/// Implementation of [OverlayCompleter] for popover overlays.
+///
+/// Manages the lifecycle of a popover overlay entry, tracking completion
+/// state and handling overlay/barrier entry disposal.
 class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
   late OverlayEntry _overlayEntry;
   late OverlayEntry? _barrierEntry;
+
+  /// Completer for the popover's result value.
   final Completer<T?> completer = Completer();
+
   final Completer<T?> animationCompleter = Completer();
 
   bool _removed = false;
@@ -685,6 +741,13 @@ class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
   @override
   bool get isCompleted => completer.isCompleted;
 
+  /// Initializes the popover entry with overlay entries.
+  ///
+  /// Must be called before the popover can be displayed.
+  ///
+  /// Parameters:
+  /// - [overlayEntry] (OverlayEntry, required): Main overlay entry
+  /// - [barrierEntry] (OverlayEntry?): Optional barrier entry
   void initialize(OverlayEntry overlayEntry, [OverlayEntry? barrierEntry]) {
     _overlayEntry = overlayEntry;
     _barrierEntry = barrierEntry;
@@ -976,16 +1039,57 @@ class PopoverController extends ChangeNotifier {
   bool _disposed = false;
   final List<Popover> _openPopovers = [];
 
+  /// Whether there are any open popovers that haven't completed.
+  ///
+  /// Returns true if any popover is currently open and not yet completed.
   bool get hasOpenPopover =>
       _openPopovers.isNotEmpty &&
       _openPopovers.any((element) => !element.entry.isCompleted);
 
+  /// Whether there are any mounted popovers with animations in progress.
+  ///
+  /// Returns true if any popover is mounted and its animation hasn't completed.
   bool get hasMountedPopover =>
       _openPopovers.isNotEmpty &&
       _openPopovers.any((element) => !element.entry.isAnimationCompleted);
 
+  /// Gets an unmodifiable view of currently open popovers.
+  ///
+  /// Returns an iterable of [Popover] instances that are currently managed
+  /// by this controller.
   Iterable<Popover> get openPopovers => List.unmodifiable(_openPopovers);
 
+  /// Shows a popover with the specified configuration.
+  ///
+  /// Creates and displays a popover overlay with extensive customization options.
+  /// If [closeOthers] is true, closes existing popovers before showing the new one.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): Build context
+  /// - [builder] (WidgetBuilder, required): Popover content builder
+  /// - [alignment] (AlignmentGeometry, required): Popover alignment
+  /// - [anchorAlignment] (AlignmentGeometry?): Anchor alignment
+  /// - [widthConstraint] (PopoverConstraint): Width constraint, defaults to flexible
+  /// - [heightConstraint] (PopoverConstraint): Height constraint, defaults to flexible
+  /// - [modal] (bool): Modal behavior, defaults to true
+  /// - [closeOthers] (bool): Close other popovers, defaults to true
+  /// - [offset] (Offset?): Position offset
+  /// - [key] (`GlobalKey<OverlayHandlerStateMixin>?`): Widget key
+  /// - [regionGroupId] (Object?): Region group ID
+  /// - [transitionAlignment] (AlignmentGeometry?): Transition alignment
+  /// - [consumeOutsideTaps] (bool): Consume outside taps, defaults to true
+  /// - [margin] (EdgeInsetsGeometry?): Popover margin
+  /// - [onTickFollow] (`ValueChanged<PopoverOverlayWidgetState>?`): Follow tick callback
+  /// - [follow] (bool): Follow anchor on move, defaults to true
+  /// - [allowInvertHorizontal] (bool): Allow horizontal inversion, defaults to true
+  /// - [allowInvertVertical] (bool): Allow vertical inversion, defaults to true
+  /// - [dismissBackdropFocus] (bool): Dismiss on backdrop focus, defaults to true
+  /// - [showDuration] (Duration?): Show animation duration
+  /// - [hideDuration] (Duration?): Hide animation duration
+  /// - [overlayBarrier] (OverlayBarrier?): Custom barrier configuration
+  /// - [handler] (OverlayHandler?): Custom overlay handler
+  ///
+  /// Returns a [Future] that completes with the popover result when dismissed.
   Future<T?> show<T>({
     required BuildContext context,
     required WidgetBuilder builder,
@@ -1055,6 +1159,13 @@ class PopoverController extends ChangeNotifier {
     return res.future;
   }
 
+  /// Closes all managed popovers.
+  ///
+  /// Closes all popovers managed by this controller. If [immediate] is true,
+  /// closes without animation.
+  ///
+  /// Parameters:
+  /// - [immediate] (bool): Skip animation if true, defaults to false
   void close([bool immediate = false]) {
     for (Popover key in _openPopovers) {
       key.close(immediate);
@@ -1063,6 +1174,9 @@ class PopoverController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Schedules closure of all popovers for the next frame.
+  ///
+  /// Defers closing to avoid issues when called during widget builds.
   void closeLater() {
     for (Popover key in _openPopovers) {
       key.closeLater();
@@ -1131,6 +1245,10 @@ class PopoverController extends ChangeNotifier {
     }
   }
 
+  /// Disposes all managed popovers.
+  ///
+  /// Schedules closure of all popovers. Called automatically when the
+  /// controller is disposed.
   void disposePopovers() {
     for (Popover key in _openPopovers) {
       key.closeLater();
@@ -1146,20 +1264,51 @@ class PopoverController extends ChangeNotifier {
   }
 }
 
+/// Custom layout widget for positioning popover content.
+///
+/// Handles popover positioning with alignment, sizing constraints, and
+/// automatic inversion when content would overflow screen bounds.
 class PopoverLayout extends SingleChildRenderObjectWidget {
+  /// Popover alignment relative to anchor.
   final Alignment alignment;
+
+  /// Anchor alignment for positioning.
   final Alignment anchorAlignment;
+
+  /// Explicit position offset (overrides alignment).
   final Offset? position;
+
+  /// Size of the anchor widget.
   final Size? anchorSize;
+
+  /// Width constraint strategy.
   final PopoverConstraint widthConstraint;
+
+  /// Height constraint strategy.
   final PopoverConstraint heightConstraint;
+
+  /// Additional offset from computed position.
   final Offset? offset;
+
+  /// Margin around the popover.
   final EdgeInsets margin;
+
+  /// Scale factor for the popover.
   final double scale;
+
+  /// Alignment point for scaling transformation.
   final Alignment scaleAlignment;
+
+  /// Filter quality for scaled content.
   final FilterQuality? filterQuality;
+
+  /// Whether to allow horizontal position inversion.
   final bool allowInvertHorizontal;
+
+  /// Whether to allow vertical position inversion.
   final bool allowInvertVertical;
+
+  /// Creates a popover layout widget.
   const PopoverLayout({
     super.key,
     required this.alignment,
@@ -1259,6 +1408,11 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
   }
 }
 
+/// Custom render object for popover layout positioning.
+///
+/// Handles the low-level layout calculations for positioning popover content
+/// relative to an anchor with automatic constraint adjustments and inversion
+/// when the popover would overflow the viewport.
 class PopoverLayoutRender extends RenderShiftedBox {
   Alignment _alignment;
   Alignment _anchorAlignment;
@@ -1277,6 +1431,10 @@ class PopoverLayoutRender extends RenderShiftedBox {
   bool _invertX = false;
   bool _invertY = false;
 
+  /// Creates a popover layout render object.
+  ///
+  /// All parameters control how the popover is positioned and sized relative
+  /// to its anchor.
   PopoverLayoutRender({
     RenderBox? child,
     required Alignment alignment,
@@ -1407,6 +1565,15 @@ class PopoverLayoutRender extends RenderShiftedBox {
     }
   }
 
+  /// Computes appropriate box constraints for the popover child.
+  ///
+  /// Applies width and height constraint strategies to the child based on
+  /// anchor size, viewport constraints, and margin settings.
+  ///
+  /// Parameters:
+  /// - [constraints]: The incoming constraints from parent
+  ///
+  /// Returns box constraints with min/max values for width and height.
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
     double minWidth = 0;
     double maxWidth = constraints.maxWidth;

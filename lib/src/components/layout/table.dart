@@ -384,6 +384,32 @@ class ResizableTableController extends ChangeNotifier {
   final Map<int, ConstrainedTableSize>? _widthConstraints;
   final Map<int, ConstrainedTableSize>? _heightConstraints;
 
+  /// Creates a controller for managing resizable table dimensions.
+  ///
+  /// This controller manages column widths and row heights with support for
+  /// constraints and dynamic resizing. It provides methods to resize individual
+  /// columns/rows or adjust shared borders between adjacent columns/rows.
+  ///
+  /// Parameters:
+  /// - [columnWidths] (`Map<int, double>?`): Initial column widths by index
+  /// - [defaultColumnWidth] (double, required): Default width for columns without explicit width
+  /// - [rowHeights] (`Map<int, double>?`): Initial row heights by index
+  /// - [defaultRowHeight] (double, required): Default height for rows without explicit height
+  /// - [defaultWidthConstraint] (ConstrainedTableSize?): Default width constraints applied to all columns
+  /// - [defaultHeightConstraint] (ConstrainedTableSize?): Default height constraints applied to all rows
+  /// - [widthConstraints] (`Map<int, ConstrainedTableSize>?`): Per-column width constraints
+  /// - [heightConstraints] (`Map<int, ConstrainedTableSize>?`): Per-row height constraints
+  ///
+  /// Example:
+  /// ```dart
+  /// ResizableTableController(
+  ///   defaultColumnWidth: 100,
+  ///   defaultRowHeight: 40,
+  ///   widthConstraints: {
+  ///     0: ConstrainedTableSize(min: 80, max: 200),
+  ///   },
+  /// )
+  /// ```
   ResizableTableController({
     Map<int, double>? columnWidths,
     required double defaultColumnWidth,
@@ -1386,6 +1412,19 @@ class TableCell {
     this.enabled = true,
   });
 
+  /// Builds the widget tree for this table cell.
+  ///
+  /// This method renders the cell with appropriate styling including:
+  /// - Background color based on theme and state
+  /// - Border styling with state resolution
+  /// - Hover effects for column and row highlighting
+  /// - Selection state visualization
+  /// - Resize handles if the table is resizable
+  ///
+  /// The build process integrates with the table's hover system to provide
+  /// visual feedback when the mouse hovers over cells in the same row or column.
+  ///
+  /// Returns a [Widget] representing the fully styled table cell.
   Widget build(BuildContext context) {
     final flattenedData = Data.of<_FlattenedTableCell>(context);
     final resizedData = Data.maybeOf<_ResizableTableData>(context);
@@ -1532,6 +1571,21 @@ class TableRow {
   /// Creates a [TableRow].
   const TableRow({required this.cells, this.cellTheme, this.selected = false});
 
+  /// Builds the default theme for cells in this row.
+  ///
+  /// Creates a [TableCellTheme] with default styling when no explicit [cellTheme]
+  /// is provided. The default theme includes:
+  /// - Border with bottom line using theme border color
+  /// - Background color that changes to muted on hover
+  /// - Text style that becomes muted when disabled
+  ///
+  /// The theme uses [WidgetStateProperty] to adapt styling based on cell state
+  /// (hovered, selected, disabled).
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): Build context for accessing theme data
+  ///
+  /// Returns [TableCellTheme] with default or custom cell styling.
   TableCellTheme buildDefaultTheme(BuildContext context) {
     if (cellTheme != null) {
       return cellTheme!;
@@ -2389,6 +2443,21 @@ class RawTableLayout extends MultiChildRenderObjectWidget {
 /// ```
 typedef TableSizeSupplier = TableSize Function(int index);
 
+/// Custom render object for laying out table cells with advanced features.
+///
+/// Provides a sophisticated table layout system with support for:
+/// - Flexible and fixed column widths and row heights
+/// - Frozen columns and rows (sticky headers/footers)
+/// - Viewport-based scrolling and clipping
+/// -Span cells (cells that span multiple columns/rows)
+/// - Dynamic sizing based on content or constraints
+///
+/// This render object handles the complex layout calculations needed for
+/// tables with variable-sized cells, scrolling, and frozen regions.
+///
+/// See also:
+/// - [TableSize], which defines sizing strategies for columns and rows
+/// - [TableLayoutResult], which contains the computed layout dimensions
 class RenderTableLayout extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, TableParentData>,
@@ -2404,6 +2473,24 @@ class RenderTableLayout extends RenderBox
 
   TableLayoutResult? _layoutResult;
 
+  /// Creates a render object for table layout.
+  ///
+  /// Initializes the table layout system with sizing functions and optional
+  /// frozen cell configurations. This render object handles the complex
+  /// layout calculations for tables with variable cell sizes.
+  ///
+  /// Parameters:
+  /// - [children] (`List<RenderBox>?`): Optional initial child render boxes
+  /// - [width] (TableSizeSupplier, required): Function providing width for each column
+  /// - [height] (TableSizeSupplier, required): Function providing height for each row
+  /// - [clipBehavior] (Clip, required): How to clip children outside table bounds
+  /// - [frozenCell] (CellPredicate?): Predicate identifying frozen columns
+  /// - [frozenRow] (CellPredicate?): Predicate identifying frozen rows
+  /// - [verticalOffset] (double?): Vertical scroll offset for viewport
+  /// - [horizontalOffset] (double?): Horizontal scroll offset for viewport
+  /// - [viewportSize] (Size?): Size of the visible viewport area
+  ///
+  /// Frozen cells remain visible during scrolling, useful for sticky headers.
   RenderTableLayout(
       {List<RenderBox>? children,
       required TableSizeSupplier width,
@@ -2669,6 +2756,23 @@ class RenderTableLayout extends RenderBox
     _layoutResult = result;
   }
 
+  /// Computes the table layout with specified constraints.
+  ///
+  /// Performs the complex table layout algorithm that:
+  /// 1. Determines maximum row and column counts from child cells
+  /// 2. Calculates fixed and flexible sizing for all columns and rows
+  /// 3. Distributes available space among flex items
+  /// 4. Handles both tight and loose flex constraints
+  /// 5. Computes final dimensions for each column and row
+  ///
+  /// The layout algorithm respects size constraints from [TableSize] objects
+  /// and ensures cells spanning multiple columns/rows are properly handled.
+  ///
+  /// Parameters:
+  /// - [constraints] (BoxConstraints, required): Layout constraints for the table
+  /// - [intrinsicComputer] (IntrinsicComputer?): Optional function to compute intrinsic sizes
+  ///
+  /// Returns [TableLayoutResult] containing computed dimensions and layout metadata.
   TableLayoutResult computeTableSize(BoxConstraints constraints,
       [IntrinsicComputer? intrinsicComputer]) {
     double flexWidth = 0;
@@ -2925,46 +3029,130 @@ class RenderTableLayout extends RenderBox
   }
 
   // delegate from TableLayoutResult, with read-only view
+  /// Gets an unmodifiable list of computed column widths.
+  ///
+  /// Returns the width of each column after layout calculation. The list
+  /// index corresponds to the column index, and the value is the width in
+  /// logical pixels.
+  ///
+  /// Throws [AssertionError] if called before layout is complete.
+  ///
+  /// Returns an unmodifiable `List<double>` of column widths.
   List<double> get columnWidths {
     assert(_layoutResult != null, 'Layout result is not available');
     return List.unmodifiable(_layoutResult!.columnWidths);
   }
 
+  /// Gets an unmodifiable list of computed row heights.
+  ///
+  /// Returns the height of each row after layout calculation. The list
+  /// index corresponds to the row index, and the value is the height in
+  /// logical pixels.
+  ///
+  /// Throws [AssertionError] if called before layout is complete.
+  ///
+  /// Returns an unmodifiable `List<double>` of row heights.
   List<double> get rowHeights {
     assert(_layoutResult != null, 'Layout result is not available');
     return List.unmodifiable(_layoutResult!.rowHeights);
   }
 
+  /// Gets the top-left offset of a cell at the specified position.
+  ///
+  /// Calculates the cumulative offset by summing the widths of all columns
+  /// before the specified column and heights of all rows before the specified row.
+  ///
+  /// Parameters:
+  /// - [column] (int, required): Zero-based column index
+  /// - [row] (int, required): Zero-based row index
+  ///
+  /// Throws [AssertionError] if called before layout is complete.
+  ///
+  /// Returns [Offset] representing the cell's top-left corner position.
   Offset getOffset(int column, int row) {
     assert(_layoutResult != null, 'Layout result is not available');
     return _layoutResult!.getOffset(column, row);
   }
 
+  /// Gets the remaining unclaimed width in the table layout.
+  ///
+  /// This represents horizontal space not allocated to any column after
+  /// fixed and flex sizing calculations. Useful for understanding how much
+  /// space is available for expansion or debugging layout issues.
+  ///
+  /// Throws [AssertionError] if called before layout is complete.
+  ///
+  /// Returns remaining width in logical pixels as a double.
   double get remainingWidth {
     assert(_layoutResult != null, 'Layout result is not available');
     return _layoutResult!.remainingWidth;
   }
 
+  /// Gets the remaining unclaimed height in the table layout.
+  ///
+  /// This represents vertical space not allocated to any row after
+  /// fixed and flex sizing calculations. Useful for understanding how much
+  /// space is available for expansion or debugging layout issues.
+  ///
+  /// Throws [AssertionError] if called before layout is complete.
+  ///
+  /// Returns remaining height in logical pixels as a double.
   double get remainingHeight {
     assert(_layoutResult != null, 'Layout result is not available');
     return _layoutResult!.remainingHeight;
   }
 
+  /// Gets the remaining loose (flexible) width available for loose flex items.
+  ///
+  /// Loose flex items can shrink below their flex allocation. This getter
+  /// returns the remaining width available specifically for items with
+  /// loose flex constraints (FlexFit.loose).
+  ///
+  /// Throws [AssertionError] if called before layout is complete.
+  ///
+  /// Returns remaining loose width in logical pixels as a double.
   double get remainingLooseWidth {
     assert(_layoutResult != null, 'Layout result is not available');
     return _layoutResult!.remainingLooseWidth;
   }
 
+  /// Gets the remaining loose (flexible) height available for loose flex items.
+  ///
+  /// Loose flex items can shrink below their flex allocation. This getter
+  /// returns the remaining height available specifically for items with
+  /// loose flex constraints (FlexFit.loose).
+  ///
+  /// Throws [AssertionError] if called before layout is complete.
+  ///
+  /// Returns remaining loose height in logical pixels as a double.
   double get remainingLooseHeight {
     assert(_layoutResult != null, 'Layout result is not available');
     return _layoutResult!.remainingLooseHeight;
   }
 
+  /// Indicates whether any column uses tight flex sizing.
+  ///
+  /// Tight flex items must occupy their full flex allocation. This getter
+  /// returns true if at least one column has a tight flex constraint
+  /// (FlexFit.tight), which affects how remaining space is distributed.
+  ///
+  /// Throws [AssertionError] if called before layout is complete.
+  ///
+  /// Returns true if table has tight flex width columns, false otherwise.
   bool get hasTightFlexWidth {
     assert(_layoutResult != null, 'Layout result is not available');
     return _layoutResult!.hasTightFlexWidth;
   }
 
+  /// Indicates whether any row uses tight flex sizing.
+  ///
+  /// Tight flex items must occupy their full flex allocation. This getter
+  /// returns true if at least one row has a tight flex constraint
+  /// (FlexFit.tight), which affects how remaining space is distributed.
+  ///
+  /// Throws [AssertionError] if called before layout is complete.
+  ///
+  /// Returns true if table has tight flex height rows, false otherwise.
   bool get hasTightFlexHeight {
     assert(_layoutResult != null, 'Layout result is not available');
     return _layoutResult!.hasTightFlexHeight;
@@ -3018,6 +3206,16 @@ class TableLayoutResult {
     required this.hasTightFlexHeight,
   });
 
+  /// Calculates the top-left offset of a cell at the given position.
+  ///
+  /// Computes the cumulative offset by summing all column widths before
+  /// the target column and all row heights before the target row.
+  ///
+  /// Parameters:
+  /// - [column] (int, required): Zero-based column index
+  /// - [row] (int, required): Zero-based row index
+  ///
+  /// Returns [Offset] representing the cell's position relative to table origin.
   Offset getOffset(int column, int row) {
     double x = 0;
     for (int i = 0; i < column; i++) {
@@ -3035,10 +3233,24 @@ class TableLayoutResult {
     return Size(width, height);
   }
 
+  /// Gets the total width of the table.
+  ///
+  /// Calculates the sum of all column widths to determine the table's
+  /// total horizontal extent. This is the natural width the table would
+  /// occupy without any constraints.
+  ///
+  /// Returns total table width in logical pixels as a double.
   double get width {
     return columnWidths.fold(0, (a, b) => a + b);
   }
 
+  /// Gets the total height of the table.
+  ///
+  /// Calculates the sum of all row heights to determine the table's
+  /// total vertical extent. This is the natural height the table would
+  /// occupy without any constraints.
+  ///
+  /// Returns total table height in logical pixels as a double.
   double get height {
     return rowHeights.fold(0, (a, b) => a + b);
   }

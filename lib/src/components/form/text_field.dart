@@ -1134,6 +1134,27 @@ abstract class TextInputStatefulWidget extends StatefulWidget with TextInput {
   @override
   final bool skipInputFeatureFocusTraversal;
 
+  /// Creates a stateful text input widget with comprehensive configuration options.
+  ///
+  /// This constructor accepts all properties defined in the [TextInput] mixin,
+  /// providing extensive control over text input behavior, appearance, and interactions.
+  ///
+  /// Most parameters mirror Flutter's [EditableText] widget while adding custom
+  /// features like input features, decorations, and form integration.
+  ///
+  /// Key parameters include:
+  /// - [controller]: Text editing controller, created automatically if null
+  /// - [focusNode]: Focus node for keyboard interaction
+  /// - [decoration]: Box decoration for the input container
+  /// - [padding]: Inner padding around the text field
+  /// - [placeholder]: Widget shown when field is empty
+  /// - [enabled]: Whether input accepts user interaction, defaults to true
+  /// - [readOnly]: Whether text can be edited, defaults to false
+  /// - [obscureText]: Whether to hide input (for passwords), defaults to false
+  /// - [maxLines]: Maximum number of lines, defaults to 1
+  /// - [features]: List of input features (e.g., clear button, character count)
+  ///
+  /// See [TextInput] mixin documentation for full parameter details.
   const TextInputStatefulWidget({
     super.key,
     this.groupId = EditableText,
@@ -1542,6 +1563,28 @@ class TextField extends TextInputStatefulWidget {
     };
   }
 
+  /// Creates a text input field widget.
+  ///
+  /// A comprehensive text field implementation with support for various input
+  /// types, validation, formatting, and interactive features. All parameters
+  /// are forwarded to the parent [TextInputStatefulWidget] constructor.
+  ///
+  /// This constructor provides extensive customization options matching Flutter's
+  /// [EditableText] while adding custom features like input decorations, features,
+  /// and form integration.
+  ///
+  /// Example:
+  /// ```dart
+  /// TextField(
+  ///   controller: myController,
+  ///   hintText: 'Enter text',
+  ///   keyboardType: TextInputType.text,
+  ///   maxLines: 3,
+  ///   onChanged: (value) => print(value),
+  /// )
+  /// ```
+  ///
+  /// See [TextInputStatefulWidget] and [TextInput] for parameter details.
   const TextField({
     super.key,
     super.groupId,
