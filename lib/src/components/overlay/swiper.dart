@@ -93,6 +93,10 @@ class SwiperTheme {
     this.behavior,
   });
 
+  /// Creates a copy of this theme with optionally replaced values.
+  ///
+  /// All parameters are wrapped in [ValueGetter] to allow lazy evaluation
+  /// and dynamic theme changes.
   SwiperTheme copyWith({
     ValueGetter<bool?>? expands,
     ValueGetter<bool?>? draggable,
@@ -199,6 +203,8 @@ abstract class SwiperHandler {
   
   /// Handler for sheet-style swipers with minimal styling.
   static const SwiperHandler sheet = SheetSwiperHandler();
+  
+  /// Creates a swiper handler.
   const SwiperHandler();
   
   /// Creates a swiper overlay with the specified configuration.
@@ -242,6 +248,7 @@ abstract class SwiperHandler {
 /// )
 /// ```
 class DrawerSwiperHandler extends SwiperHandler {
+  /// Creates a drawer-style swiper handler.
   const DrawerSwiperHandler();
 
   @override
@@ -298,6 +305,7 @@ class DrawerSwiperHandler extends SwiperHandler {
 /// )
 /// ```
 class SheetSwiperHandler extends SwiperHandler {
+  /// Creates a sheet-style swiper handler.
   const SheetSwiperHandler();
 
   @override

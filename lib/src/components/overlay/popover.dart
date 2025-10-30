@@ -1408,6 +1408,11 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
   }
 }
 
+/// Custom render object for popover layout positioning.
+///
+/// Handles the low-level layout calculations for positioning popover content
+/// relative to an anchor with automatic constraint adjustments and inversion
+/// when the popover would overflow the viewport.
 class PopoverLayoutRender extends RenderShiftedBox {
   Alignment _alignment;
   Alignment _anchorAlignment;
@@ -1426,6 +1431,10 @@ class PopoverLayoutRender extends RenderShiftedBox {
   bool _invertX = false;
   bool _invertY = false;
 
+  /// Creates a popover layout render object.
+  ///
+  /// All parameters control how the popover is positioned and sized relative
+  /// to its anchor.
   PopoverLayoutRender({
     RenderBox? child,
     required Alignment alignment,
@@ -1556,6 +1565,15 @@ class PopoverLayoutRender extends RenderShiftedBox {
     }
   }
 
+  /// Computes appropriate box constraints for the popover child.
+  ///
+  /// Applies width and height constraint strategies to the child based on
+  /// anchor size, viewport constraints, and margin settings.
+  ///
+  /// Parameters:
+  /// - [constraints]: The incoming constraints from parent
+  ///
+  /// Returns box constraints with min/max values for width and height.
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
     double minWidth = 0;
     double maxWidth = constraints.maxWidth;

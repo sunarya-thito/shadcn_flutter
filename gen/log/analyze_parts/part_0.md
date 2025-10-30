@@ -396,55 +396,55 @@ TODO:
 - [x] lib/src/components/overlay/popover.dart:1157:  final EdgeInsets margin;
 - [x] lib/src/components/overlay/popover.dart:1158:  final double scale;
 - [x] lib/src/components/overlay/popover.dart:1159:  final Alignment scaleAlignment;
-- [ ] lib/src/components/overlay/popover.dart:1160:  final FilterQuality? filterQuality;
+- [x] lib/src/components/overlay/popover.dart:1160:  final FilterQuality? filterQuality;
 - [x] lib/src/components/overlay/popover.dart:1161:  final bool allowInvertHorizontal;
 - [x] lib/src/components/overlay/popover.dart:1162:  final bool allowInvertVertical;
 - [x] lib/src/components/overlay/popover.dart:1163:  const PopoverLayout({
-- [ ] lib/src/components/overlay/popover.dart:1262:class PopoverLayoutRender extends RenderShiftedBox {
-- [ ] lib/src/components/overlay/popover.dart:1410:  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-- [ ] lib/src/components/overlay/popover.dart:1280:  PopoverLayoutRender({
-- [ ] lib/src/components/overlay/refresh_trigger.dart:7:typedef RefreshIndicatorBuilder = Widget Function(
-- [ ] lib/src/components/overlay/refresh_trigger.dart:10:typedef FutureVoidCallback = Future<void> Function();
-- [ ] lib/src/components/overlay/refresh_trigger.dart:167:  static Widget defaultIndicatorBuilder(
-- [ ] lib/src/components/overlay/refresh_trigger.dart:172:  final double? minExtent;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:173:  final double? maxExtent;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:174:  final FutureVoidCallback? onRefresh;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:175:  final Widget child;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:176:  final Axis direction;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:177:  final bool reverse;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:178:  final RefreshIndicatorBuilder? indicatorBuilder;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:179:  final Curve? curve;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:180:  final Duration? completeDuration;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:230:class DefaultRefreshIndicator extends StatefulWidget {
-- [ ] lib/src/components/overlay/refresh_trigger.dart:231:  final RefreshTriggerStage stage;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:233:  const DefaultRefreshIndicator({super.key, required this.stage});
-- [ ] lib/src/components/overlay/refresh_trigger.dart:371:class RefreshTriggerState extends State<RefreshTrigger>
-- [ ] lib/src/components/overlay/refresh_trigger.dart:546:  Future<void> refresh([FutureVoidCallback? refreshCallback]) async {
-- [ ] lib/src/components/overlay/refresh_trigger.dart:645:enum TriggerStage {
-- [ ] lib/src/components/overlay/refresh_trigger.dart:646:  idle,
-- [ ] lib/src/components/overlay/refresh_trigger.dart:647:  pulling,
-- [ ] lib/src/components/overlay/refresh_trigger.dart:648:  refreshing,
-- [ ] lib/src/components/overlay/refresh_trigger.dart:649:  completed,
-- [ ] lib/src/components/overlay/refresh_trigger.dart:652:class RefreshTriggerStage {
-- [ ] lib/src/components/overlay/refresh_trigger.dart:661:  double get extentValue => extent.value;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:653:  final TriggerStage stage;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:654:  final Animation<double> extent;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:655:  final Axis direction;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:656:  final bool reverse;
-- [ ] lib/src/components/overlay/refresh_trigger.dart:658:  const RefreshTriggerStage(
-- [ ] lib/src/components/overlay/refresh_trigger.dart:664:class RefreshTriggerPhysics extends ScrollPhysics {}
-- [ ] lib/src/components/overlay/swiper.dart:96:  SwiperTheme copyWith({
-- [ ] lib/src/components/overlay/swiper.dart:202:  const SwiperHandler();
-- [ ] lib/src/components/overlay/swiper.dart:245:  const DrawerSwiperHandler();
-- [ ] lib/src/components/overlay/swiper.dart:301:  const SheetSwiperHandler();
-- [ ] lib/src/components/overlay/toast.dart:207:typedef ToastBuilder = Widget Function(
-- [ ] lib/src/components/overlay/toast.dart:822:class ToastEntry {
-- [ ] lib/src/components/overlay/toast.dart:823:  final ToastBuilder builder;
-- [ ] lib/src/components/overlay/toast.dart:824:  final ToastLocation location;
-- [ ] lib/src/components/overlay/toast.dart:825:  final bool dismissible;
-- [ ] lib/src/components/overlay/toast.dart:826:  final Curve curve;
-- [ ] lib/src/components/overlay/toast.dart:827:  final Duration duration;
-- [ ] lib/src/components/overlay/toast.dart:828:  final CapturedThemes? themes;
+- [x] lib/src/components/overlay/popover.dart:1262:class PopoverLayoutRender extends RenderShiftedBox {
+- [x] lib/src/components/overlay/popover.dart:1410:  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
+- [x] lib/src/components/overlay/popover.dart:1280:  PopoverLayoutRender({
+- [x] lib/src/components/overlay/refresh_trigger.dart:7:typedef RefreshIndicatorBuilder = Widget Function(
+- [x] lib/src/components/overlay/refresh_trigger.dart:10:typedef FutureVoidCallback = Future<void> Function();
+- [x] lib/src/components/overlay/refresh_trigger.dart:167:  static Widget defaultIndicatorBuilder(
+- [x] lib/src/components/overlay/refresh_trigger.dart:172:  final double? minExtent;
+- [x] lib/src/components/overlay/refresh_trigger.dart:173:  final double? maxExtent;
+- [x] lib/src/components/overlay/refresh_trigger.dart:174:  final FutureVoidCallback? onRefresh;
+- [x] lib/src/components/overlay/refresh_trigger.dart:175:  final Widget child;
+- [x] lib/src/components/overlay/refresh_trigger.dart:176:  final Axis direction;
+- [x] lib/src/components/overlay/refresh_trigger.dart:177:  final bool reverse;
+- [x] lib/src/components/overlay/refresh_trigger.dart:178:  final RefreshIndicatorBuilder? indicatorBuilder;
+- [x] lib/src/components/overlay/refresh_trigger.dart:179:  final Curve? curve;
+- [x] lib/src/components/overlay/refresh_trigger.dart:180:  final Duration? completeDuration;
+- [x] lib/src/components/overlay/refresh_trigger.dart:230:class DefaultRefreshIndicator extends StatefulWidget {
+- [x] lib/src/components/overlay/refresh_trigger.dart:231:  final RefreshTriggerStage stage;
+- [x] lib/src/components/overlay/refresh_trigger.dart:233:  const DefaultRefreshIndicator({super.key, required this.stage});
+- [x] lib/src/components/overlay/refresh_trigger.dart:371:class RefreshTriggerState extends State<RefreshTrigger>
+- [x] lib/src/components/overlay/refresh_trigger.dart:546:  Future<void> refresh([FutureVoidCallback? refreshCallback]) async {
+- [x] lib/src/components/overlay/refresh_trigger.dart:645:enum TriggerStage {
+- [x] lib/src/components/overlay/refresh_trigger.dart:646:  idle,
+- [x] lib/src/components/overlay/refresh_trigger.dart:647:  pulling,
+- [x] lib/src/components/overlay/refresh_trigger.dart:648:  refreshing,
+- [x] lib/src/components/overlay/refresh_trigger.dart:649:  completed,
+- [x] lib/src/components/overlay/refresh_trigger.dart:652:class RefreshTriggerStage {
+- [x] lib/src/components/overlay/refresh_trigger.dart:661:  double get extentValue => extent.value;
+- [x] lib/src/components/overlay/refresh_trigger.dart:653:  final TriggerStage stage;
+- [x] lib/src/components/overlay/refresh_trigger.dart:654:  final Animation<double> extent;
+- [x] lib/src/components/overlay/refresh_trigger.dart:655:  final Axis direction;
+- [x] lib/src/components/overlay/refresh_trigger.dart:656:  final bool reverse;
+- [x] lib/src/components/overlay/refresh_trigger.dart:658:  const RefreshTriggerStage(
+- [x] lib/src/components/overlay/refresh_trigger.dart:664:class RefreshTriggerPhysics extends ScrollPhysics {}
+- [x] lib/src/components/overlay/swiper.dart:96:  SwiperTheme copyWith({
+- [x] lib/src/components/overlay/swiper.dart:202:  const SwiperHandler();
+- [x] lib/src/components/overlay/swiper.dart:245:  const DrawerSwiperHandler();
+- [x] lib/src/components/overlay/swiper.dart:301:  const SheetSwiperHandler();
+- [x] lib/src/components/overlay/toast.dart:207:typedef ToastBuilder = Widget Function(
+- [x] lib/src/components/overlay/toast.dart:822:class ToastEntry {
+- [x] lib/src/components/overlay/toast.dart:823:  final ToastBuilder builder;
+- [x] lib/src/components/overlay/toast.dart:824:  final ToastLocation location;
+- [x] lib/src/components/overlay/toast.dart:825:  final bool dismissible;
+- [x] lib/src/components/overlay/toast.dart:826:  final Curve curve;
+- [x] lib/src/components/overlay/toast.dart:827:  final Duration duration;
+- [x] lib/src/components/overlay/toast.dart:828:  final CapturedThemes? themes;
 - [ ] lib/src/components/overlay/toast.dart:829:  final CapturedData? data;
 - [ ] lib/src/components/overlay/toast.dart:830:  final VoidCallback? onClosed;
 - [ ] lib/src/components/overlay/toast.dart:831:  final Duration? showDuration;

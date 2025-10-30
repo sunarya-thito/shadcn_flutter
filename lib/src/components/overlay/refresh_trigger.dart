@@ -4,9 +4,19 @@ import 'dart:math';
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Builder function for custom refresh indicators.
+///
+/// Parameters:
+/// - [context]: The build context
+/// - [stage]: Current refresh trigger stage with progress information
+///
+/// Returns a widget that visualizes the refresh state.
 typedef RefreshIndicatorBuilder = Widget Function(
     BuildContext context, RefreshTriggerStage stage);
 
+/// Callback for async refresh operations.
+///
+/// Returns a Future that completes when the refresh operation finishes.
 typedef FutureVoidCallback = Future<void> Function();
 
 /// Theme configuration for [RefreshTrigger].
@@ -164,19 +174,59 @@ class RefreshTriggerTheme {
 /// )
 /// ```
 class RefreshTrigger extends StatefulWidget {
+  /// Default indicator builder that creates a spinning progress indicator.
+  ///
+  /// Displays a platform-appropriate circular progress indicator that rotates
+  /// based on pull extent and animates during refresh.
   static Widget defaultIndicatorBuilder(
       BuildContext context, RefreshTriggerStage stage) {
     return DefaultRefreshIndicator(stage: stage);
   }
 
+  /// Minimum pull extent required to trigger refresh.
+  ///
+  /// Pull distance must exceed this value to activate the refresh callback.
+  /// If null, uses theme or default value.
   final double? minExtent;
+  
+  /// Maximum pull extent allowed.
+  ///
+  /// Limits how far the user can pull to prevent excessive stretching.
+  /// If null, uses theme or default value.
   final double? maxExtent;
+  
+  /// Callback invoked when refresh is triggered.
+  ///
+  /// Should return a Future that completes when the refresh operation finishes.
+  /// While the Future is pending, the refresh indicator shows loading state.
   final FutureVoidCallback? onRefresh;
+  
+  /// The scrollable child widget being refreshed.
   final Widget child;
+  
+  /// Direction of the pull gesture.
+  ///
+  /// Defaults to [Axis.vertical] for standard top-down pull-to-refresh.
   final Axis direction;
+  
+  /// Whether to reverse the pull direction.
+  ///
+  /// If true, pull gesture is inverted (e.g., pull down instead of up).
   final bool reverse;
+  
+  /// Custom builder for the refresh indicator.
+  ///
+  /// If null, uses [defaultIndicatorBuilder].
   final RefreshIndicatorBuilder? indicatorBuilder;
+  
+  /// Animation curve for extent changes.
+  ///
+  /// Controls how the pull extent animates during interactions.
   final Curve? curve;
+  
+  /// Duration for the completion animation.
+  ///
+  /// Time to display the completion state before hiding the indicator.
   final Duration? completeDuration;
 
   /// Creates a [RefreshTrigger] with pull-to-refresh functionality.
@@ -227,9 +277,15 @@ class RefreshTrigger extends StatefulWidget {
   State<RefreshTrigger> createState() => RefreshTriggerState();
 }
 
+/// Default refresh indicator widget with platform-appropriate styling.
+///
+/// Displays a circular progress indicator that responds to pull gestures
+/// and animates during the refresh lifecycle stages.
 class DefaultRefreshIndicator extends StatefulWidget {
+  /// Current refresh trigger stage.
   final RefreshTriggerStage stage;
 
+  /// Creates a default refresh indicator.
   const DefaultRefreshIndicator({super.key, required this.stage});
 
   @override
@@ -368,6 +424,10 @@ class _RefreshTriggerTween extends Animatable<double> {
   }
 }
 
+/// State for the refresh trigger widget.
+///
+/// Manages the refresh lifecycle, gesture detection, and animation coordination
+/// for pull-to-refresh functionality.
 class RefreshTriggerState extends State<RefreshTrigger>
     with SingleTickerProviderStateMixin {
   double _currentExtent = 0;
@@ -543,6 +603,16 @@ class RefreshTriggerState extends State<RefreshTrigger>
     return false;
   }
 
+  /// Triggers a refresh programmatically.
+  ///
+  /// Initiates the refresh animation and invokes the provided callback or
+  /// widget's [onRefresh] callback. Can be called from parent widgets to
+  /// trigger refresh without user gesture.
+  ///
+  /// Parameters:
+  /// - [refreshCallback]: Optional callback to use instead of widget's onRefresh
+  ///
+  /// Returns a Future that completes when refresh finishes.
   Future<void> refresh([FutureVoidCallback? refreshCallback]) async {
     _scrolling = false;
     int count = ++_currentFutureCount;
@@ -642,23 +712,59 @@ class RefreshTriggerState extends State<RefreshTrigger>
   }
 }
 
+/// Lifecycle stages of a refresh trigger.
+///
+/// Represents the different states a refresh indicator can be in:
+/// - [idle]: No refresh in progress, waiting for user interaction
+/// - [pulling]: User is pulling but hasn't reached min extent
+/// - [refreshing]: Refresh callback is executing
+/// - [completed]: Refresh completed, showing completion state
 enum TriggerStage {
+  /// Idle state, no refresh in progress.
   idle,
+  
+  /// Pulling state, user is dragging the indicator.
   pulling,
+  
+  /// Refreshing state, async refresh operation is executing.
   refreshing,
+  
+  /// Completed state, refresh finished successfully.
   completed,
 }
 
+/// Immutable snapshot of refresh trigger state.
+///
+/// Provides information about the current refresh stage and pull extent
+/// to indicator builders for rendering appropriate UI.
 class RefreshTriggerStage {
+  /// Current stage of the refresh lifecycle.
   final TriggerStage stage;
+  
+  /// Animated pull extent value.
+  ///
+  /// Range depends on min/max extent configuration. Use [extentValue] for
+  /// current numeric value.
   final Animation<double> extent;
+  
+  /// Direction of the pull gesture.
   final Axis direction;
+  
+  /// Whether the pull direction is reversed.
   final bool reverse;
 
+  /// Creates a refresh trigger stage snapshot.
   const RefreshTriggerStage(
       this.stage, this.extent, this.direction, this.reverse);
 
+  /// Current numeric value of the pull extent.
+  ///
+  /// Convenience getter for [extent.value].
   double get extentValue => extent.value;
 }
 
+/// Custom scroll physics for refresh trigger behavior.
+///
+/// Enables over-scroll to allow pulling beyond content bounds for refresh.
+/// Applied automatically by [RefreshTrigger] to its child scrollable.
 class RefreshTriggerPhysics extends ScrollPhysics {}
