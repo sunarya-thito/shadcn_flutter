@@ -182,7 +182,7 @@ TODO:
 - [x] lib/src/components/control/button.dart:3322:  final GestureLongPressUpCallback? onSecondaryLongPress;
 - [x] lib/src/components/control/button.dart:3323:  final GestureLongPressUpCallback? onTertiaryLongPress;
 - [x] lib/src/components/control/button.dart:3325:  const SecondaryButton({
-- [ ] lib/src/components/control/button.dart:3392:class OutlineButton extends StatelessWidget {
+- [x] lib/src/components/control/button.dart:3392:class OutlineButton extends StatelessWidget {
 - [x] lib/src/components/control/button.dart:3393:  final Widget child;
 - [x] lib/src/components/control/button.dart:3394:  final VoidCallback? onPressed;
 - [x] lib/src/components/control/button.dart:3395:  final bool? enabled;
@@ -213,7 +213,7 @@ TODO:
 - [x] lib/src/components/control/button.dart:3421:  final GestureLongPressUpCallback? onSecondaryLongPress;
 - [x] lib/src/components/control/button.dart:3422:  final GestureLongPressUpCallback? onTertiaryLongPress;
 - [x] lib/src/components/control/button.dart:3424:  const OutlineButton({
-- [ ] lib/src/components/control/button.dart:3491:class GhostButton extends StatelessWidget {
+- [x] lib/src/components/control/button.dart:3491:class GhostButton extends StatelessWidget {
 - [x] lib/src/components/control/button.dart:3492:  final Widget child;
 - [x] lib/src/components/control/button.dart:3493:  final VoidCallback? onPressed;
 - [x] lib/src/components/control/button.dart:3494:  final bool? enabled;
@@ -244,7 +244,7 @@ TODO:
 - [x] lib/src/components/control/button.dart:3520:  final GestureLongPressUpCallback? onSecondaryLongPress;
 - [x] lib/src/components/control/button.dart:3521:  final GestureLongPressUpCallback? onTertiaryLongPress;
 - [x] lib/src/components/control/button.dart:3523:  const GhostButton({
-- [ ] lib/src/components/control/button.dart:3590:class LinkButton extends StatelessWidget {
+- [x] lib/src/components/control/button.dart:3590:class LinkButton extends StatelessWidget {
 - [x] lib/src/components/control/button.dart:3591:  final Widget child;
 - [x] lib/src/components/control/button.dart:3592:  final VoidCallback? onPressed;
 - [x] lib/src/components/control/button.dart:3593:  final bool? enabled;
@@ -275,7 +275,7 @@ TODO:
 - [x] lib/src/components/control/button.dart:3619:  final GestureLongPressUpCallback? onSecondaryLongPress;
 - [x] lib/src/components/control/button.dart:3620:  final GestureLongPressUpCallback? onTertiaryLongPress;
 - [x] lib/src/components/control/button.dart:3622:  const LinkButton({
-- [ ] lib/src/components/control/button.dart:3689:class TextButton extends StatelessWidget {
+- [x] lib/src/components/control/button.dart:3689:class TextButton extends StatelessWidget {
 - [x] lib/src/components/control/button.dart:3690:  final Widget child;
 - [x] lib/src/components/control/button.dart:3691:  final VoidCallback? onPressed;
 - [x] lib/src/components/control/button.dart:3692:  final bool? enabled;
@@ -306,7 +306,7 @@ TODO:
 - [x] lib/src/components/control/button.dart:3717:  final GestureLongPressUpCallback? onSecondaryLongPress;
 - [x] lib/src/components/control/button.dart:3718:  final GestureLongPressUpCallback? onTertiaryLongPress;
 - [x] lib/src/components/control/button.dart:3720:  const TextButton({
-- [ ] lib/src/components/control/button.dart:3769:class DestructiveButton extends StatelessWidget {
+- [x] lib/src/components/control/button.dart:3769:class DestructiveButton extends StatelessWidget {
 - [x] lib/src/components/control/button.dart:3770:  final Widget child;
 - [x] lib/src/components/control/button.dart:3771:  final VoidCallback? onPressed;
 - [x] lib/src/components/control/button.dart:3772:  final bool? enabled;
@@ -337,7 +337,7 @@ TODO:
 - [x] lib/src/components/control/button.dart:3798:  final GestureLongPressUpCallback? onSecondaryLongPress;
 - [x] lib/src/components/control/button.dart:3799:  final GestureLongPressUpCallback? onTertiaryLongPress;
 - [x] lib/src/components/control/button.dart:3801:  const DestructiveButton({
-- [ ] lib/src/components/control/button.dart:3869:class TabButton extends StatelessWidget {
+- [x] lib/src/components/control/button.dart:3869:class TabButton extends StatelessWidget {
 - [x] lib/src/components/control/button.dart:3870:  final Widget child;
 - [x] lib/src/components/control/button.dart:3871:  final VoidCallback? onPressed;
 - [x] lib/src/components/control/button.dart:3872:  final bool? enabled;
@@ -384,7 +384,7 @@ TODO:
 - [x] lib/src/components/control/button.dart:4093:  final GestureLongPressEndCallback? onLongPressEnd;
 - [x] lib/src/components/control/button.dart:4094:  final GestureLongPressUpCallback? onSecondaryLongPress;
 - [x] lib/src/components/control/button.dart:4095:  final GestureLongPressUpCallback? onTertiaryLongPress;
-- [ ] lib/src/components/control/button.dart:4191:class IconButton extends StatelessWidget {
+- [x] lib/src/components/control/button.dart:4191:class IconButton extends StatelessWidget {
 - [x] lib/src/components/control/button.dart:4192:  final Widget icon;
 - [x] lib/src/components/control/button.dart:4193:  final VoidCallback? onPressed;
 - [x] lib/src/components/control/button.dart:4194:  final bool? enabled;
@@ -444,25 +444,25 @@ TODO:
 - [x] lib/src/components/control/button.dart:4637:  const ButtonStyleOverrideData({
 - [x] lib/src/components/control/button.dart:4765:  const ButtonGroup.horizontal({
 - [x] lib/src/components/control/button.dart:4771:  const ButtonGroup.vertical({
-- [ ] lib/src/components/control/button.dart:4824:class ButtonGroupData {
-- [ ] lib/src/components/control/button.dart:4897:  BorderRadiusGeometry applyToBorderRadius(
-- [ ] lib/src/components/control/button.dart:4928:  ButtonGroupData applyToButtonGroupData(ButtonGroupData other) {
-- [ ] lib/src/components/control/button.dart:4825:  static const ButtonGroupData none = ButtonGroupData.all(1.0);
-- [ ] lib/src/components/control/button.dart:4826:  static const ButtonGroupData zero = ButtonGroupData.all(0.0);
-- [ ] lib/src/components/control/button.dart:4827:  static const ButtonGroupData horizontalStart =
-- [ ] lib/src/components/control/button.dart:4829:  static const ButtonGroupData horizontalEnd =
-- [ ] lib/src/components/control/button.dart:4831:  static const ButtonGroupData verticalTop =
-- [ ] lib/src/components/control/button.dart:4833:  static const ButtonGroupData verticalBottom =
-- [ ] lib/src/components/control/button.dart:4835:  final double topStartValue;
-- [ ] lib/src/components/control/button.dart:4836:  final double topEndValue;
-- [ ] lib/src/components/control/button.dart:4837:  final double bottomStartValue;
-- [ ] lib/src/components/control/button.dart:4838:  final double bottomEndValue;
-- [ ] lib/src/components/control/button.dart:4840:  const ButtonGroupData({
-- [ ] lib/src/components/control/button.dart:4847:  const ButtonGroupData.horizontal({
-- [ ] lib/src/components/control/button.dart:4855:  const ButtonGroupData.vertical({
-- [ ] lib/src/components/control/button.dart:4863:  const ButtonGroupData.all(double value)
-- [ ] lib/src/components/control/button.dart:4869:  factory ButtonGroupData.horizontalIndex(int index, int length) {
-- [ ] lib/src/components/control/button.dart:4883:  factory ButtonGroupData.verticalIndex(int index, int length) {
+- [x] lib/src/components/control/button.dart:4824:class ButtonGroupData {
+- [x] lib/src/components/control/button.dart:4897:  BorderRadiusGeometry applyToBorderRadius(
+- [x] lib/src/components/control/button.dart:4928:  ButtonGroupData applyToButtonGroupData(ButtonGroupData other) {
+- [x] lib/src/components/control/button.dart:4825:  static const ButtonGroupData none = ButtonGroupData.all(1.0);
+- [x] lib/src/components/control/button.dart:4826:  static const ButtonGroupData zero = ButtonGroupData.all(0.0);
+- [x] lib/src/components/control/button.dart:4827:  static const ButtonGroupData horizontalStart =
+- [x] lib/src/components/control/button.dart:4829:  static const ButtonGroupData horizontalEnd =
+- [x] lib/src/components/control/button.dart:4831:  static const ButtonGroupData verticalTop =
+- [x] lib/src/components/control/button.dart:4833:  static const ButtonGroupData verticalBottom =
+- [x] lib/src/components/control/button.dart:4835:  final double topStartValue;
+- [x] lib/src/components/control/button.dart:4836:  final double topEndValue;
+- [x] lib/src/components/control/button.dart:4837:  final double bottomStartValue;
+- [x] lib/src/components/control/button.dart:4838:  final double bottomEndValue;
+- [x] lib/src/components/control/button.dart:4840:  const ButtonGroupData({
+- [x] lib/src/components/control/button.dart:4847:  const ButtonGroupData.horizontal({
+- [x] lib/src/components/control/button.dart:4855:  const ButtonGroupData.vertical({
+- [x] lib/src/components/control/button.dart:4863:  const ButtonGroupData.all(double value)
+- [x] lib/src/components/control/button.dart:4869:  factory ButtonGroupData.horizontalIndex(int index, int length) {
+- [x] lib/src/components/control/button.dart:4883:  factory ButtonGroupData.verticalIndex(int index, int length) {
 - [x] lib/src/components/control/clickable.dart:363:class WidgetStatesData {
 - [x] lib/src/components/control/clickable.dart:364:  final Set<WidgetState> states;
 - [x] lib/src/components/control/clickable.dart:366:  const WidgetStatesData(this.states);
@@ -523,42 +523,42 @@ TODO:
 - [x] lib/src/components/control/scrollview.dart:20:const double kMaxScrollSpeed = 10;
 - [x] lib/src/components/control/scrollview.dart:22:class DesktopPointerScrollEvent extends PointerScrollEvent {
 - [x] lib/src/components/control/scrollview.dart:23:  const DesktopPointerScrollEvent({
-- [ ] lib/src/components/debug.dart:9:void debugPostSticker(
-- [ ] lib/src/components/debug.dart:6:const kDebugStickerVisible = true;
-- [ ] lib/src/components/debug.dart:7:const kDebugContainerVisible = true;
-- [ ] lib/src/components/debug.dart:49:extension DebugContainer on Widget {
-- [ ] lib/src/components/debug.dart:50:  Widget debugContainer([Color color = Colors.red]) {
-- [ ] lib/src/components/display/avatar.dart:980:class AvatarGroupClipper extends CustomClipper<Path> {
-- [ ] lib/src/components/display/avatar.dart:981:  final double borderRadius;
-- [ ] lib/src/components/display/avatar.dart:982:  final Alignment alignment;
-- [ ] lib/src/components/display/avatar.dart:983:  final double previousAvatarSize;
-- [ ] lib/src/components/display/avatar.dart:984:  final double gap;
-- [ ] lib/src/components/display/avatar.dart:986:  const AvatarGroupClipper({
+- [x] lib/src/components/debug.dart:9:void debugPostSticker(
+- [x] lib/src/components/debug.dart:6:const kDebugStickerVisible = true;
+- [x] lib/src/components/debug.dart:7:const kDebugContainerVisible = true;
+- [x] lib/src/components/debug.dart:49:extension DebugContainer on Widget {
+- [x] lib/src/components/debug.dart:50:  Widget debugContainer([Color color = Colors.red]) {
+- [x] lib/src/components/display/avatar.dart:980:class AvatarGroupClipper extends CustomClipper<Path> {
+- [x] lib/src/components/display/avatar.dart:981:  final double borderRadius;
+- [x] lib/src/components/display/avatar.dart:982:  final Alignment alignment;
+- [x] lib/src/components/display/avatar.dart:983:  final double previousAvatarSize;
+- [x] lib/src/components/display/avatar.dart:984:  final double gap;
+- [x] lib/src/components/display/avatar.dart:986:  const AvatarGroupClipper({
 - [x] lib/src/components/display/badge.dart:103:  final Widget child;
 - [x] lib/src/components/display/badge.dart:104:  final VoidCallback? onPressed;
-- [ ] lib/src/components/display/badge.dart:105:  final Widget? leading;
-- [ ] lib/src/components/display/badge.dart:106:  final Widget? trailing;
+- [x] lib/src/components/display/badge.dart:105:  final Widget? leading;
+- [x] lib/src/components/display/badge.dart:106:  final Widget? trailing;
 - [x] lib/src/components/display/badge.dart:107:  final AbstractButtonStyle? style;
 - [x] lib/src/components/display/badge.dart:109:  const PrimaryBadge({
 - [x] lib/src/components/display/badge.dart:145:class SecondaryBadge extends StatelessWidget {
 - [x] lib/src/components/display/badge.dart:146:  final Widget child;
 - [x] lib/src/components/display/badge.dart:147:  final VoidCallback? onPressed;
-- [ ] lib/src/components/display/badge.dart:148:  final Widget? leading;
-- [ ] lib/src/components/display/badge.dart:149:  final Widget? trailing;
+- [x] lib/src/components/display/badge.dart:148:  final Widget? leading;
+- [x] lib/src/components/display/badge.dart:149:  final Widget? trailing;
 - [x] lib/src/components/display/badge.dart:150:  final AbstractButtonStyle? style;
 - [x] lib/src/components/display/badge.dart:152:  const SecondaryBadge({
 - [x] lib/src/components/display/badge.dart:188:class OutlineBadge extends StatelessWidget {
 - [x] lib/src/components/display/badge.dart:189:  final Widget child;
 - [x] lib/src/components/display/badge.dart:190:  final VoidCallback? onPressed;
-- [ ] lib/src/components/display/badge.dart:191:  final Widget? leading;
-- [ ] lib/src/components/display/badge.dart:192:  final Widget? trailing;
+- [x] lib/src/components/display/badge.dart:191:  final Widget? leading;
+- [x] lib/src/components/display/badge.dart:192:  final Widget? trailing;
 - [x] lib/src/components/display/badge.dart:193:  final AbstractButtonStyle? style;
 - [x] lib/src/components/display/badge.dart:195:  const OutlineBadge({
 - [x] lib/src/components/display/badge.dart:231:class DestructiveBadge extends StatelessWidget {
 - [x] lib/src/components/display/badge.dart:232:  final Widget child;
 - [x] lib/src/components/display/badge.dart:233:  final VoidCallback? onPressed;
-- [ ] lib/src/components/display/badge.dart:234:  final Widget? leading;
-- [ ] lib/src/components/display/badge.dart:235:  final Widget? trailing;
+- [x] lib/src/components/display/badge.dart:234:  final Widget? leading;
+- [x] lib/src/components/display/badge.dart:235:  final Widget? trailing;
 - [x] lib/src/components/display/badge.dart:236:  final AbstractButtonStyle? style;
 - [x] lib/src/components/display/badge.dart:238:  const DestructiveBadge({
 - [x] lib/src/components/display/calendar.dart:14:  CalendarTheme copyWith({ValueGetter<Color?>? arrowIconColor}) {
@@ -590,14 +590,14 @@ TODO:
 - [x] lib/src/components/display/calendar.dart:582:  const CalendarValue();
 - [x] lib/src/components/display/calendar.dart:625:  final DateTime date;
 - [x] lib/src/components/display/calendar.dart:627:  SingleCalendarValue(this.date);
-- [ ] lib/src/components/display/calendar.dart:672:class RangeCalendarValue extends CalendarValue {
+- [x] lib/src/components/display/calendar.dart:672:class RangeCalendarValue extends CalendarValue {
 - [x] lib/src/components/display/calendar.dart:673:  final DateTime start;
 - [x] lib/src/components/display/calendar.dart:674:  final DateTime end;
 - [x] lib/src/components/display/calendar.dart:676:  RangeCalendarValue(DateTime start, DateTime end)
-- [ ] lib/src/components/display/calendar.dart:743:class MultiCalendarValue extends CalendarValue {
+- [x] lib/src/components/display/calendar.dart:743:class MultiCalendarValue extends CalendarValue {
 - [x] lib/src/components/display/calendar.dart:744:  final List<DateTime> dates;
 - [x] lib/src/components/display/calendar.dart:746:  MultiCalendarValue(this.dates);
-- [ ] lib/src/components/display/calendar.dart:806:enum CalendarValueLookup { none, selected, start, end, inRange }
+- [x] lib/src/components/display/calendar.dart:806:enum CalendarValueLookup { none, selected, start, end, inRange }
 - [x] lib/src/components/display/calendar.dart:883:  CalendarView get next {
 - [x] lib/src/components/display/calendar.dart:890:  CalendarView get previous {
 - [x] lib/src/components/display/calendar.dart:897:  CalendarView get nextYear {
@@ -605,7 +605,7 @@ TODO:
 - [x] lib/src/components/display/calendar.dart:920:  CalendarView copyWith({
 - [x] lib/src/components/display/calendar.dart:833:  final int year;
 - [x] lib/src/components/display/calendar.dart:834:  final int month;
-- [ ] lib/src/components/display/calendar.dart:931:extension CalendarDateTime on DateTime {
+- [x] lib/src/components/display/calendar.dart:931:extension CalendarDateTime on DateTime {
 - [x] lib/src/components/display/calendar.dart:932:  CalendarView toCalendarView() {
 - [x] lib/src/components/display/calendar.dart:936:  CalendarValue toCalendarValue() {
 - [x] lib/src/components/display/calendar.dart:977:  final DateTime? now;
@@ -615,57 +615,57 @@ TODO:
 - [x] lib/src/components/display/calendar.dart:981:  final ValueChanged<CalendarValue?>? onChanged;
 - [x] lib/src/components/display/calendar.dart:982:  final bool Function(DateTime date)? isDateEnabled;
 - [x] lib/src/components/display/calendar.dart:983:  final DateStateBuilder? stateBuilder;
-- [ ] lib/src/components/display/calendar.dart:1178:class MonthCalendar extends StatelessWidget {
-- [ ] lib/src/components/display/calendar.dart:1179:  final CalendarView value;
-- [ ] lib/src/components/display/calendar.dart:1180:  final ValueChanged<CalendarView> onChanged;
-- [ ] lib/src/components/display/calendar.dart:1181:  final DateTime? now;
-- [ ] lib/src/components/display/calendar.dart:1182:  final CalendarValue? calendarValue;
-- [ ] lib/src/components/display/calendar.dart:1183:  final DateStateBuilder? stateBuilder;
-- [ ] lib/src/components/display/calendar.dart:1185:  const MonthCalendar({
-- [ ] lib/src/components/display/calendar.dart:1261:class YearCalendar extends StatelessWidget {
-- [ ] lib/src/components/display/calendar.dart:1262:  final int yearSelectStart;
-- [ ] lib/src/components/display/calendar.dart:1263:  final int value;
-- [ ] lib/src/components/display/calendar.dart:1264:  final ValueChanged<int> onChanged;
-- [ ] lib/src/components/display/calendar.dart:1265:  final DateTime? now;
-- [ ] lib/src/components/display/calendar.dart:1266:  final CalendarValue? calendarValue;
-- [ ] lib/src/components/display/calendar.dart:1267:  final DateStateBuilder? stateBuilder;
-- [ ] lib/src/components/display/calendar.dart:1269:  const YearCalendar({
-- [ ] lib/src/components/display/calendar.dart:1358:  none,
-- [ ] lib/src/components/display/calendar.dart:1359:  today,
-- [ ] lib/src/components/display/calendar.dart:1360:  selected,
-- [ ] lib/src/components/display/calendar.dart:1362:  inRange,
-- [ ] lib/src/components/display/calendar.dart:1363:  startRange, // same as startRangeSelected, but used for other months
-- [ ] lib/src/components/display/calendar.dart:1364:  endRange, // same as endRangeSelected, but used for other months
-- [ ] lib/src/components/display/calendar.dart:1365:  startRangeSelected,
-- [ ] lib/src/components/display/calendar.dart:1366:  endRangeSelected,
-- [ ] lib/src/components/display/calendar.dart:1367:  startRangeSelectedShort,
-- [ ] lib/src/components/display/calendar.dart:1368:  endRangeSelectedShort, // usually when the range are just 2 days
-- [ ] lib/src/components/display/calendar.dart:1369:  inRangeSelectedShort,
-- [ ] lib/src/components/display/calendar.dart:1401:  final Widget child;
-- [ ] lib/src/components/display/calendar.dart:1402:  final CalendarItemType type;
-- [ ] lib/src/components/display/calendar.dart:1403:  final VoidCallback? onTap;
-- [ ] lib/src/components/display/calendar.dart:1404:  final int indexAtRow;
-- [ ] lib/src/components/display/calendar.dart:1405:  final int rowCount;
-- [ ] lib/src/components/display/calendar.dart:1406:  final double? width;
-- [ ] lib/src/components/display/calendar.dart:1407:  final double? height;
-- [ ] lib/src/components/display/calendar.dart:1408:  final DateState state;
-- [ ] lib/src/components/display/calendar.dart:1410:  const CalendarItem({
-- [ ] lib/src/components/display/calendar.dart:1678:class CalendarGridData {
-- [ ] lib/src/components/display/calendar.dart:1679:  final int month;
-- [ ] lib/src/components/display/calendar.dart:1680:  final int year;
-- [ ] lib/src/components/display/calendar.dart:1681:  final List<CalendarGridItem> items;
-- [ ] lib/src/components/display/calendar.dart:1683:  factory CalendarGridData({required int month, required int year}) {
-- [ ] lib/src/components/display/calendar.dart:1752:class CalendarGridItem {
-- [ ] lib/src/components/display/calendar.dart:1761:  bool get isToday {
-- [ ] lib/src/components/display/calendar.dart:1753:  final DateTime date;
-- [ ] lib/src/components/display/calendar.dart:1754:  final int indexInRow;
-- [ ] lib/src/components/display/calendar.dart:1755:  final int rowIndex;
-- [ ] lib/src/components/display/calendar.dart:1756:  final bool fromAnotherMonth;
-- [ ] lib/src/components/display/calendar.dart:1758:  CalendarGridItem(
-- [ ] lib/src/components/display/calendar.dart:1783:class CalendarGrid extends StatelessWidget {
-- [ ] lib/src/components/display/calendar.dart:1784:  final CalendarGridData data;
-- [ ] lib/src/components/display/calendar.dart:1785:  final Widget Function(CalendarGridItem item) itemBuilder;
-- [ ] lib/src/components/display/calendar.dart:1787:  const CalendarGrid({
+- [x] lib/src/components/display/calendar.dart:1178:class MonthCalendar extends StatelessWidget {
+- [x] lib/src/components/display/calendar.dart:1179:  final CalendarView value;
+- [x] lib/src/components/display/calendar.dart:1180:  final ValueChanged<CalendarView> onChanged;
+- [x] lib/src/components/display/calendar.dart:1181:  final DateTime? now;
+- [x] lib/src/components/display/calendar.dart:1182:  final CalendarValue? calendarValue;
+- [x] lib/src/components/display/calendar.dart:1183:  final DateStateBuilder? stateBuilder;
+- [x] lib/src/components/display/calendar.dart:1185:  const MonthCalendar({
+- [x] lib/src/components/display/calendar.dart:1261:class YearCalendar extends StatelessWidget {
+- [x] lib/src/components/display/calendar.dart:1262:  final int yearSelectStart;
+- [x] lib/src/components/display/calendar.dart:1263:  final int value;
+- [x] lib/src/components/display/calendar.dart:1264:  final ValueChanged<int> onChanged;
+- [x] lib/src/components/display/calendar.dart:1265:  final DateTime? now;
+- [x] lib/src/components/display/calendar.dart:1266:  final CalendarValue? calendarValue;
+- [x] lib/src/components/display/calendar.dart:1267:  final DateStateBuilder? stateBuilder;
+- [x] lib/src/components/display/calendar.dart:1269:  const YearCalendar({
+- [x] lib/src/components/display/calendar.dart:1358:  none,
+- [x] lib/src/components/display/calendar.dart:1359:  today,
+- [x] lib/src/components/display/calendar.dart:1360:  selected,
+- [x] lib/src/components/display/calendar.dart:1362:  inRange,
+- [x] lib/src/components/display/calendar.dart:1363:  startRange, // same as startRangeSelected, but used for other months
+- [x] lib/src/components/display/calendar.dart:1364:  endRange, // same as endRangeSelected, but used for other months
+- [x] lib/src/components/display/calendar.dart:1365:  startRangeSelected,
+- [x] lib/src/components/display/calendar.dart:1366:  endRangeSelected,
+- [x] lib/src/components/display/calendar.dart:1367:  startRangeSelectedShort,
+- [x] lib/src/components/display/calendar.dart:1368:  endRangeSelectedShort, // usually when the range are just 2 days
+- [x] lib/src/components/display/calendar.dart:1369:  inRangeSelectedShort,
+- [x] lib/src/components/display/calendar.dart:1401:  final Widget child;
+- [x] lib/src/components/display/calendar.dart:1402:  final CalendarItemType type;
+- [x] lib/src/components/display/calendar.dart:1403:  final VoidCallback? onTap;
+- [x] lib/src/components/display/calendar.dart:1404:  final int indexAtRow;
+- [x] lib/src/components/display/calendar.dart:1405:  final int rowCount;
+- [x] lib/src/components/display/calendar.dart:1406:  final double? width;
+- [x] lib/src/components/display/calendar.dart:1407:  final double? height;
+- [x] lib/src/components/display/calendar.dart:1408:  final DateState state;
+- [x] lib/src/components/display/calendar.dart:1410:  const CalendarItem({
+- [x] lib/src/components/display/calendar.dart:1678:class CalendarGridData {
+- [x] lib/src/components/display/calendar.dart:1679:  final int month;
+- [x] lib/src/components/display/calendar.dart:1680:  final int year;
+- [x] lib/src/components/display/calendar.dart:1681:  final List<CalendarGridItem> items;
+- [x] lib/src/components/display/calendar.dart:1683:  factory CalendarGridData({required int month, required int year}) {
+- [x] lib/src/components/display/calendar.dart:1752:class CalendarGridItem {
+- [x] lib/src/components/display/calendar.dart:1761:  bool get isToday {
+- [x] lib/src/components/display/calendar.dart:1753:  final DateTime date;
+- [x] lib/src/components/display/calendar.dart:1754:  final int indexInRow;
+- [x] lib/src/components/display/calendar.dart:1755:  final int rowIndex;
+- [x] lib/src/components/display/calendar.dart:1756:  final bool fromAnotherMonth;
+- [x] lib/src/components/display/calendar.dart:1758:  CalendarGridItem(
+- [x] lib/src/components/display/calendar.dart:1783:class CalendarGrid extends StatelessWidget {
+- [x] lib/src/components/display/calendar.dart:1784:  final CalendarGridData data;
+- [x] lib/src/components/display/calendar.dart:1785:  final Widget Function(CalendarGridItem item) itemBuilder;
+- [x] lib/src/components/display/calendar.dart:1787:  const CalendarGrid({
 - [x] lib/src/components/display/carousel.dart:406:  CarouselTheme copyWith({
 - [x] lib/src/components/display/carousel.dart:386:  final CarouselAlignment? alignment;
 - [x] lib/src/components/display/carousel.dart:387:  final Axis? direction;
@@ -684,8 +684,8 @@ TODO:
 - [x] lib/src/components/display/chip.dart:135:  final Widget? trailing;
 - [x] lib/src/components/display/chip.dart:136:  final VoidCallback? onPressed;
 - [x] lib/src/components/display/chip.dart:137:  final AbstractButtonStyle? style;
-- [ ] lib/src/components/display/circular_progress_indicator.dart:59:  CircularProgressIndicatorTheme copyWith({
-- [ ] lib/src/components/display/code_snippet.dart:188:  final Widget code;
+- [x] lib/src/components/display/circular_progress_indicator.dart:59:  CircularProgressIndicatorTheme copyWith({
+- [x] lib/src/components/display/code_snippet.dart:188:  final Widget code;
 - [x] lib/src/components/display/divider.dart:5:class DividerProperties {
 - [x] lib/src/components/display/divider.dart:18:  static DividerProperties lerp(
 - [x] lib/src/components/display/divider.dart:6:  final Color color;
@@ -778,10 +778,10 @@ TODO:
 - [x] lib/src/components/display/spinner.dart:40:  final Color? color;
 - [x] lib/src/components/display/spinner.dart:41:  final double? size;
 - [x] lib/src/components/display/spinner.dart:42:  const Spinner({super.key, this.color, this.size});
-- [ ] lib/src/components/form/autocomplete.dart:280:class AutoCompleteIntent extends Intent {
-- [ ] lib/src/components/form/autocomplete.dart:281:  final String suggestion;
-- [ ] lib/src/components/form/autocomplete.dart:282:  final AutoCompleteMode mode;
-- [ ] lib/src/components/form/autocomplete.dart:283:  const AutoCompleteIntent(this.suggestion, this.mode);
+- [x] lib/src/components/form/autocomplete.dart:280:class AutoCompleteIntent extends Intent {
+- [x] lib/src/components/form/autocomplete.dart:281:  final String suggestion;
+- [x] lib/src/components/form/autocomplete.dart:282:  final AutoCompleteMode mode;
+- [x] lib/src/components/form/autocomplete.dart:283:  const AutoCompleteIntent(this.suggestion, this.mode);
 - [x] lib/src/components/form/chip_input.dart:24:  final double? spacing;
 - [x] lib/src/components/form/chip_input.dart:62:class ChipEditingController<T> extends TextEditingController {
 - [x] lib/src/components/form/chip_input.dart:125:  List<T> get chips => List.unmodifiable(_chipMap.values);
@@ -926,96 +926,96 @@ TODO:
 - [x] lib/src/components/form/form.dart:1637:  final Widget child;
 - [x] lib/src/components/form/form.dart:1638:  final Validator<T>? validator;
 - [x] lib/src/components/form/form.dart:1640:  const FormEntry(
-- [ ] lib/src/components/form/form.dart:1650:mixin FormFieldHandle {
-- [ ] lib/src/components/form/form.dart:1651:  bool get mounted;
-- [ ] lib/src/components/form/form.dart:1652:  FormKey get formKey;
-- [ ] lib/src/components/form/form.dart:1655:  ValueListenable<ValidationResult?>? get validity;
-- [ ] lib/src/components/form/form.dart:1653:  FutureOr<ValidationResult?> reportNewFormValue<T>(T? value);
-- [ ] lib/src/components/form/form.dart:1654:  FutureOr<ValidationResult?> revalidate();
-- [ ] lib/src/components/form/form.dart:1664:class FormEntryState extends State<FormEntry> with FormFieldHandle {
-- [ ] lib/src/components/form/form.dart:1752:class FormEntryInterceptor<T> extends StatefulWidget {
-- [ ] lib/src/components/form/form.dart:1753:  final Widget child;
-- [ ] lib/src/components/form/form.dart:1754:  final ValueChanged<T>? onValueReported;
-- [ ] lib/src/components/form/form.dart:1756:  const FormEntryInterceptor(
-- [ ] lib/src/components/form/form.dart:1831:class FormValueState<T> {
-- [ ] lib/src/components/form/form.dart:1832:  final T? value;
-- [ ] lib/src/components/form/form.dart:1833:  final Validator<T>? validator;
-- [ ] lib/src/components/form/form.dart:1835:  FormValueState({this.value, this.validator});
-- [ ] lib/src/components/form/form.dart:1853:typedef FormMapValues = Map<FormKey, dynamic>;
-- [ ] lib/src/components/form/form.dart:1855:typedef FormSubmitCallback = void Function(
-- [ ] lib/src/components/form/form.dart:1858:extension FormMapValuesExtension on FormMapValues {
-- [ ] lib/src/components/form/form.dart:1859:  T? getValue<T>(FormKey<T> key) {
-- [ ] lib/src/components/form/form.dart:2116:  T? getValue<T>(FormKey<T> key) {
-- [ ] lib/src/components/form/form.dart:2120:  bool hasValue(FormKey key) {
-- [ ] lib/src/components/form/form.dart:2124:  void revalidate(BuildContext context, FormValidationMode state) {
-- [ ] lib/src/components/form/form.dart:2163:  FutureOr<ValidationResult?> attach(BuildContext context,
-- [ ] lib/src/components/form/form.dart:2256:class FormState extends State<Form> {
-- [ ] lib/src/components/form/form.dart:2285:class FormEntryErrorBuilder extends StatelessWidget {
-- [ ] lib/src/components/form/form.dart:2287:      BuildContext context, ValidationResult? error, Widget? child) builder;
-- [ ] lib/src/components/form/form.dart:2288:  final Widget? child;
-- [ ] lib/src/components/form/form.dart:2289:  final Set<FormValidationMode>? modes;
-- [ ] lib/src/components/form/form.dart:2291:  const FormEntryErrorBuilder(
-- [ ] lib/src/components/form/form.dart:2316:class WaitingResult extends ValidationResult {
-- [ ] lib/src/components/form/form.dart:2318:  const WaitingResult.attached({required FormKey key, required super.state})
-- [ ] lib/src/components/form/form.dart:2333:class FormErrorBuilder extends StatelessWidget {
-- [ ] lib/src/components/form/form.dart:2334:  final Widget? child;
-- [ ] lib/src/components/form/form.dart:2336:      Map<FormKey, ValidationResult> errors, Widget? child) builder;
-- [ ] lib/src/components/form/form.dart:2338:  const FormErrorBuilder({super.key, required this.builder, this.child});
-- [ ] lib/src/components/form/form.dart:2353:typedef FormPendingWidgetBuilder = Widget Function(BuildContext context,
-- [ ] lib/src/components/form/form.dart:2356:class FormPendingBuilder extends StatelessWidget {
-- [ ] lib/src/components/form/form.dart:2357:  final Widget? child;
-- [ ] lib/src/components/form/form.dart:2358:  final FormPendingWidgetBuilder builder;
-- [ ] lib/src/components/form/form.dart:2360:  const FormPendingBuilder({super.key, required this.builder, this.child});
-- [ ] lib/src/components/form/form.dart:2387:extension FormExtension on BuildContext {
-- [ ] lib/src/components/form/form.dart:2388:  T? getFormValue<T>(FormKey<T> key) {
-- [ ] lib/src/components/form/form.dart:2397:  FutureOr<SubmissionResult> submitForm() {
-- [ ] lib/src/components/form/form.dart:2449:mixin FormValueSupplier<T, X extends StatefulWidget> on State<X> {
-- [ ] lib/src/components/form/form.dart:2454:  T? get formValue => _cachedValue?.value as T?;
-- [ ] lib/src/components/form/form.dart:2455:  set formValue(T? value) {
-- [ ] lib/src/components/form/form.dart:2474:  void didReplaceFormValue(T value);
-- [ ] lib/src/components/form/form.dart:2505:class SubmissionResult {
-- [ ] lib/src/components/form/form.dart:2506:  final Map<FormKey, Object?> values;
-- [ ] lib/src/components/form/form.dart:2507:  final Map<FormKey, ValidationResult> errors;
-- [ ] lib/src/components/form/form.dart:2509:  const SubmissionResult(this.values, this.errors);
-- [ ] lib/src/components/form/form.dart:2528:class FormField<T> extends StatelessWidget {
-- [ ] lib/src/components/form/form.dart:2529:  final Widget label;
-- [ ] lib/src/components/form/form.dart:2530:  final Widget? hint;
-- [ ] lib/src/components/form/form.dart:2531:  final Widget child;
-- [ ] lib/src/components/form/form.dart:2532:  final Widget? leadingLabel;
-- [ ] lib/src/components/form/form.dart:2533:  final Widget? trailingLabel;
-- [ ] lib/src/components/form/form.dart:2534:  final MainAxisAlignment? labelAxisAlignment;
-- [ ] lib/src/components/form/form.dart:2535:  final double? leadingGap;
-- [ ] lib/src/components/form/form.dart:2536:  final double? trailingGap;
-- [ ] lib/src/components/form/form.dart:2537:  final EdgeInsetsGeometry? padding;
-- [ ] lib/src/components/form/form.dart:2538:  final Validator<T>? validator;
-- [ ] lib/src/components/form/form.dart:2539:  final Set<FormValidationMode>? showErrors;
-- [ ] lib/src/components/form/form.dart:2541:  const FormField({
-- [ ] lib/src/components/form/form.dart:2634:class FormInline<T> extends StatelessWidget {
-- [ ] lib/src/components/form/form.dart:2635:  final Widget label;
-- [ ] lib/src/components/form/form.dart:2636:  final Widget? hint;
-- [ ] lib/src/components/form/form.dart:2637:  final Widget child;
-- [ ] lib/src/components/form/form.dart:2638:  final Validator<T>? validator;
-- [ ] lib/src/components/form/form.dart:2639:  final Set<FormValidationMode>? showErrors;
-- [ ] lib/src/components/form/form.dart:2641:  const FormInline({
-- [ ] lib/src/components/form/form.dart:2702:class FormTableLayout extends StatelessWidget {
-- [ ] lib/src/components/form/form.dart:2703:  final List<FormField> rows;
-- [ ] lib/src/components/form/form.dart:2704:  final double? spacing;
-- [ ] lib/src/components/form/form.dart:2706:  const FormTableLayout({super.key, required this.rows, this.spacing});
-- [ ] lib/src/components/form/form.dart:2795:class SubmitButton extends StatelessWidget {
-- [ ] lib/src/components/form/form.dart:2796:  final AbstractButtonStyle? style;
-- [ ] lib/src/components/form/form.dart:2797:  final Widget child;
-- [ ] lib/src/components/form/form.dart:2798:  final Widget? loading;
-- [ ] lib/src/components/form/form.dart:2799:  final Widget? error;
-- [ ] lib/src/components/form/form.dart:2800:  final Widget? leading;
-- [ ] lib/src/components/form/form.dart:2801:  final Widget? trailing;
-- [ ] lib/src/components/form/form.dart:2802:  final Widget? loadingLeading;
-- [ ] lib/src/components/form/form.dart:2803:  final Widget? loadingTrailing;
-- [ ] lib/src/components/form/form.dart:2804:  final Widget? errorLeading;
-- [ ] lib/src/components/form/form.dart:2805:  final Widget? errorTrailing;
-- [ ] lib/src/components/form/form.dart:2806:  final AlignmentGeometry? alignment;
-- [ ] lib/src/components/form/form.dart:2807:  final bool disableHoverEffect;
-- [ ] lib/src/components/form/form.dart:2808:  final bool? enabled;
-- [ ] lib/src/components/form/form.dart:2809:  final bool? enableFeedback;
-- [ ] lib/src/components/form/form.dart:2810:  final bool disableTransition;
-- [ ] lib/src/components/form/form.dart:2811:  final FocusNode? focusNode;
-- [ ] lib/src/components/form/form.dart:2813:  const SubmitButton({
+- [x] lib/src/components/form/form.dart:1650:mixin FormFieldHandle {
+- [x] lib/src/components/form/form.dart:1651:  bool get mounted;
+- [x] lib/src/components/form/form.dart:1652:  FormKey get formKey;
+- [x] lib/src/components/form/form.dart:1655:  ValueListenable<ValidationResult?>? get validity;
+- [x] lib/src/components/form/form.dart:1653:  FutureOr<ValidationResult?> reportNewFormValue<T>(T? value);
+- [x] lib/src/components/form/form.dart:1654:  FutureOr<ValidationResult?> revalidate();
+- [x] lib/src/components/form/form.dart:1664:class FormEntryState extends State<FormEntry> with FormFieldHandle {
+- [x] lib/src/components/form/form.dart:1752:class FormEntryInterceptor<T> extends StatefulWidget {
+- [x] lib/src/components/form/form.dart:1753:  final Widget child;
+- [x] lib/src/components/form/form.dart:1754:  final ValueChanged<T>? onValueReported;
+- [x] lib/src/components/form/form.dart:1756:  const FormEntryInterceptor(
+- [x] lib/src/components/form/form.dart:1831:class FormValueState<T> {
+- [x] lib/src/components/form/form.dart:1832:  final T? value;
+- [x] lib/src/components/form/form.dart:1833:  final Validator<T>? validator;
+- [x] lib/src/components/form/form.dart:1835:  FormValueState({this.value, this.validator});
+- [x] lib/src/components/form/form.dart:1853:typedef FormMapValues = Map<FormKey, dynamic>;
+- [x] lib/src/components/form/form.dart:1855:typedef FormSubmitCallback = void Function(
+- [x] lib/src/components/form/form.dart:1858:extension FormMapValuesExtension on FormMapValues {
+- [x] lib/src/components/form/form.dart:1859:  T? getValue<T>(FormKey<T> key) {
+- [x] lib/src/components/form/form.dart:2116:  T? getValue<T>(FormKey<T> key) {
+- [x] lib/src/components/form/form.dart:2120:  bool hasValue(FormKey key) {
+- [x] lib/src/components/form/form.dart:2124:  void revalidate(BuildContext context, FormValidationMode state) {
+- [x] lib/src/components/form/form.dart:2163:  FutureOr<ValidationResult?> attach(BuildContext context,
+- [x] lib/src/components/form/form.dart:2256:class FormState extends State<Form> {
+- [x] lib/src/components/form/form.dart:2285:class FormEntryErrorBuilder extends StatelessWidget {
+- [x] lib/src/components/form/form.dart:2287:      BuildContext context, ValidationResult? error, Widget? child) builder;
+- [x] lib/src/components/form/form.dart:2288:  final Widget? child;
+- [x] lib/src/components/form/form.dart:2289:  final Set<FormValidationMode>? modes;
+- [x] lib/src/components/form/form.dart:2291:  const FormEntryErrorBuilder(
+- [x] lib/src/components/form/form.dart:2316:class WaitingResult extends ValidationResult {
+- [x] lib/src/components/form/form.dart:2318:  const WaitingResult.attached({required FormKey key, required super.state})
+- [x] lib/src/components/form/form.dart:2333:class FormErrorBuilder extends StatelessWidget {
+- [x] lib/src/components/form/form.dart:2334:  final Widget? child;
+- [x] lib/src/components/form/form.dart:2336:      Map<FormKey, ValidationResult> errors, Widget? child) builder;
+- [x] lib/src/components/form/form.dart:2338:  const FormErrorBuilder({super.key, required this.builder, this.child});
+- [x] lib/src/components/form/form.dart:2353:typedef FormPendingWidgetBuilder = Widget Function(BuildContext context,
+- [x] lib/src/components/form/form.dart:2356:class FormPendingBuilder extends StatelessWidget {
+- [x] lib/src/components/form/form.dart:2357:  final Widget? child;
+- [x] lib/src/components/form/form.dart:2358:  final FormPendingWidgetBuilder builder;
+- [x] lib/src/components/form/form.dart:2360:  const FormPendingBuilder({super.key, required this.builder, this.child});
+- [x] lib/src/components/form/form.dart:2387:extension FormExtension on BuildContext {
+- [x] lib/src/components/form/form.dart:2388:  T? getFormValue<T>(FormKey<T> key) {
+- [x] lib/src/components/form/form.dart:2397:  FutureOr<SubmissionResult> submitForm() {
+- [x] lib/src/components/form/form.dart:2449:mixin FormValueSupplier<T, X extends StatefulWidget> on State<X> {
+- [x] lib/src/components/form/form.dart:2454:  T? get formValue => _cachedValue?.value as T?;
+- [x] lib/src/components/form/form.dart:2455:  set formValue(T? value) {
+- [x] lib/src/components/form/form.dart:2474:  void didReplaceFormValue(T value);
+- [x] lib/src/components/form/form.dart:2505:class SubmissionResult {
+- [x] lib/src/components/form/form.dart:2506:  final Map<FormKey, Object?> values;
+- [x] lib/src/components/form/form.dart:2507:  final Map<FormKey, ValidationResult> errors;
+- [x] lib/src/components/form/form.dart:2509:  const SubmissionResult(this.values, this.errors);
+- [x] lib/src/components/form/form.dart:2528:class FormField<T> extends StatelessWidget {
+- [x] lib/src/components/form/form.dart:2529:  final Widget label;
+- [x] lib/src/components/form/form.dart:2530:  final Widget? hint;
+- [x] lib/src/components/form/form.dart:2531:  final Widget child;
+- [x] lib/src/components/form/form.dart:2532:  final Widget? leadingLabel;
+- [x] lib/src/components/form/form.dart:2533:  final Widget? trailingLabel;
+- [x] lib/src/components/form/form.dart:2534:  final MainAxisAlignment? labelAxisAlignment;
+- [x] lib/src/components/form/form.dart:2535:  final double? leadingGap;
+- [x] lib/src/components/form/form.dart:2536:  final double? trailingGap;
+- [x] lib/src/components/form/form.dart:2537:  final EdgeInsetsGeometry? padding;
+- [x] lib/src/components/form/form.dart:2538:  final Validator<T>? validator;
+- [x] lib/src/components/form/form.dart:2539:  final Set<FormValidationMode>? showErrors;
+- [x] lib/src/components/form/form.dart:2541:  const FormField({
+- [x] lib/src/components/form/form.dart:2634:class FormInline<T> extends StatelessWidget {
+- [x] lib/src/components/form/form.dart:2635:  final Widget label;
+- [x] lib/src/components/form/form.dart:2636:  final Widget? hint;
+- [x] lib/src/components/form/form.dart:2637:  final Widget child;
+- [x] lib/src/components/form/form.dart:2638:  final Validator<T>? validator;
+- [x] lib/src/components/form/form.dart:2639:  final Set<FormValidationMode>? showErrors;
+- [x] lib/src/components/form/form.dart:2641:  const FormInline({
+- [x] lib/src/components/form/form.dart:2702:class FormTableLayout extends StatelessWidget {
+- [x] lib/src/components/form/form.dart:2703:  final List<FormField> rows;
+- [x] lib/src/components/form/form.dart:2704:  final double? spacing;
+- [x] lib/src/components/form/form.dart:2706:  const FormTableLayout({super.key, required this.rows, this.spacing});
+- [x] lib/src/components/form/form.dart:2795:class SubmitButton extends StatelessWidget {
+- [x] lib/src/components/form/form.dart:2796:  final AbstractButtonStyle? style;
+- [x] lib/src/components/form/form.dart:2797:  final Widget child;
+- [x] lib/src/components/form/form.dart:2798:  final Widget? loading;
+- [x] lib/src/components/form/form.dart:2799:  final Widget? error;
+- [x] lib/src/components/form/form.dart:2800:  final Widget? leading;
+- [x] lib/src/components/form/form.dart:2801:  final Widget? trailing;
+- [x] lib/src/components/form/form.dart:2802:  final Widget? loadingLeading;
+- [x] lib/src/components/form/form.dart:2803:  final Widget? loadingTrailing;
+- [x] lib/src/components/form/form.dart:2804:  final Widget? errorLeading;
+- [x] lib/src/components/form/form.dart:2805:  final Widget? errorTrailing;
+- [x] lib/src/components/form/form.dart:2806:  final AlignmentGeometry? alignment;
+- [x] lib/src/components/form/form.dart:2807:  final bool disableHoverEffect;
+- [x] lib/src/components/form/form.dart:2808:  final bool? enabled;
+- [x] lib/src/components/form/form.dart:2809:  final bool? enableFeedback;
+- [x] lib/src/components/form/form.dart:2810:  final bool disableTransition;
+- [x] lib/src/components/form/form.dart:2811:  final FocusNode? focusNode;
+- [x] lib/src/components/form/form.dart:2813:  const SubmitButton({
