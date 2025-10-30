@@ -66,28 +66,28 @@ TODO:
 - [x] lib/src/components/layout/window.dart:2511:  const WindowViewport({
 - [x] lib/src/components/layout/window.dart:2538:class WindowActions extends StatelessWidget {
 - [x] lib/src/components/layout/window.dart:2539:  const WindowActions({super.key});
-- [ ] lib/src/components/locale/shadcn_localizations.dart:149:  final int Function(DateTime dateTime) getter;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:150:  final int length;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:152:      computeValueRange;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:707:  String get timeDaysAbbreviation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:708:  String get timeHoursAbbreviation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:709:  String get timeMinutesAbbreviation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:710:  String get timeSecondsAbbreviation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:711:  String get placeholderDurationPicker;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:717:  String get durationDay;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:718:  String get durationHour;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:719:  String get durationMinute;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:720:  String get durationSecond;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:746:  Map<String, String> get localizedMimeTypes;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:624:  String getAbbreviatedWeekday(int weekday) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:645:  String getMonth(int month) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:676:  String getAbbreviatedMonth(int month) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:712:  String formatDuration(Duration duration,
-- [ ] lib/src/components/locale/shadcn_localizations.dart:722:  String getDurationPartAbbreviation(DurationPart part) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:735:  String getTimePartAbbreviation(TimePart part) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:749:class DefaultShadcnLocalizations extends ShadcnLocalizations {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:750:  static const ShadcnLocalizations instance = DefaultShadcnLocalizations();
-- [ ] lib/src/components/locale/shadcn_localizations.dart:752:  const DefaultShadcnLocalizations();
+- [x] lib/src/components/locale/shadcn_localizations.dart:149:  final int Function(DateTime dateTime) getter;
+- [x] lib/src/components/locale/shadcn_localizations.dart:150:  final int length;
+- [x] lib/src/components/locale/shadcn_localizations.dart:152:      computeValueRange;
+- [x] lib/src/components/locale/shadcn_localizations.dart:707:  String get timeDaysAbbreviation;
+- [x] lib/src/components/locale/shadcn_localizations.dart:708:  String get timeHoursAbbreviation;
+- [x] lib/src/components/locale/shadcn_localizations.dart:709:  String get timeMinutesAbbreviation;
+- [x] lib/src/components/locale/shadcn_localizations.dart:710:  String get timeSecondsAbbreviation;
+- [x] lib/src/components/locale/shadcn_localizations.dart:711:  String get placeholderDurationPicker;
+- [x] lib/src/components/locale/shadcn_localizations.dart:717:  String get durationDay;
+- [x] lib/src/components/locale/shadcn_localizations.dart:718:  String get durationHour;
+- [x] lib/src/components/locale/shadcn_localizations.dart:719:  String get durationMinute;
+- [x] lib/src/components/locale/shadcn_localizations.dart:720:  String get durationSecond;
+- [x] lib/src/components/locale/shadcn_localizations.dart:746:  Map<String, String> get localizedMimeTypes;
+- [x] lib/src/components/locale/shadcn_localizations.dart:624:  String getAbbreviatedWeekday(int weekday) {
+- [x] lib/src/components/locale/shadcn_localizations.dart:645:  String getMonth(int month) {
+- [x] lib/src/components/locale/shadcn_localizations.dart:676:  String getAbbreviatedMonth(int month) {
+- [x] lib/src/components/locale/shadcn_localizations.dart:712:  String formatDuration(Duration duration,
+- [x] lib/src/components/locale/shadcn_localizations.dart:722:  String getDurationPartAbbreviation(DurationPart part) {
+- [x] lib/src/components/locale/shadcn_localizations.dart:735:  String getTimePartAbbreviation(TimePart part) {
+- [x] lib/src/components/locale/shadcn_localizations.dart:749:class DefaultShadcnLocalizations extends ShadcnLocalizations {
+- [x] lib/src/components/locale/shadcn_localizations.dart:750:  static const ShadcnLocalizations instance = DefaultShadcnLocalizations();
+- [x] lib/src/components/locale/shadcn_localizations.dart:752:  const DefaultShadcnLocalizations();
 - [ ] lib/src/components/menu/menu.dart:96:abstract class MenuItem extends Widget {
 - [ ] lib/src/components/menu/menu.dart:99:  bool get hasLeading;
 - [ ] lib/src/components/menu/menu.dart:100:  PopoverController? get popoverController;

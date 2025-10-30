@@ -146,8 +146,17 @@ enum DatePart {
   day(_getDay, _computeDayValueRange),
   ;
 
+  /// Function that extracts the date/time component value from a DateTime.
   final int Function(DateTime dateTime) getter;
+
+  /// Maximum number of digits for this date component.
   final int length;
+
+  /// Function that computes the valid value range for this component.
+  ///
+  /// Takes a map of already-set date component values and returns the
+  /// minimum and maximum valid values for this component, considering
+  /// constraints like month lengths or leap years.
   final (int? min, int? max) Function(Map<DatePart, int> values)
       computeValueRange;
 
@@ -621,6 +630,14 @@ abstract class ShadcnLocalizations {
     }
   }
 
+  /// Gets the abbreviated weekday name for a given weekday constant.
+  ///
+  /// Parameters:
+  /// - [weekday] (int, required): Weekday constant from DateTime (DateTime.monday through DateTime.sunday)
+  ///
+  /// Returns the localized abbreviated weekday name (e.g., "Mon", "Tue").
+  ///
+  /// Throws [ArgumentError] if weekday is not a valid constant.
   String getAbbreviatedWeekday(int weekday) {
     switch (weekday) {
       case DateTime.monday:
@@ -642,6 +659,14 @@ abstract class ShadcnLocalizations {
     }
   }
 
+  /// Gets the full month name for a given month constant.
+  ///
+  /// Parameters:
+  /// - [month] (int, required): Month constant from DateTime (DateTime.january through DateTime.december)
+  ///
+  /// Returns the localized full month name (e.g., "January", "February").
+  ///
+  /// Throws [ArgumentError] if month is not a valid constant.
   String getMonth(int month) {
     switch (month) {
       case DateTime.january:
@@ -673,6 +698,14 @@ abstract class ShadcnLocalizations {
     }
   }
 
+  /// Gets the abbreviated month name for a given month constant.
+  ///
+  /// Parameters:
+  /// - [month] (int, required): Month constant from DateTime (DateTime.january through DateTime.december)
+  ///
+  /// Returns the localized abbreviated month name (e.g., "Jan", "Feb").
+  ///
+  /// Throws [ArgumentError] if month is not a valid constant.
   String getAbbreviatedMonth(int month) {
     switch (month) {
       case DateTime.january:
@@ -704,21 +737,55 @@ abstract class ShadcnLocalizations {
     }
   }
 
+  /// Gets the abbreviated label for days in time displays (e.g., "d").
   String get timeDaysAbbreviation;
+
+  /// Gets the abbreviated label for hours in time displays (e.g., "h").
   String get timeHoursAbbreviation;
+
+  /// Gets the abbreviated label for minutes in time displays (e.g., "m").
   String get timeMinutesAbbreviation;
+
+  /// Gets the abbreviated label for seconds in time displays (e.g., "s").
   String get timeSecondsAbbreviation;
+
+  /// Gets the placeholder text for duration picker inputs.
   String get placeholderDurationPicker;
+
+  /// Formats a duration as a localized string.
+  ///
+  /// Parameters:
+  /// - [duration] (Duration, required): The duration to format
+  /// - [showDays] (bool): Whether to show days component, defaults to true
+  /// - [showHours] (bool): Whether to show hours component, defaults to true
+  /// - [showMinutes] (bool): Whether to show minutes component, defaults to true
+  /// - [showSeconds] (bool): Whether to show seconds component, defaults to true
+  ///
+  /// Returns a formatted duration string (e.g., "2d 3h 45m 12s").
   String formatDuration(Duration duration,
       {bool showDays = true,
       bool showHours = true,
       bool showMinutes = true,
       bool showSeconds = true});
+
+  /// Gets the full word for "day" in duration displays.
   String get durationDay;
+
+  /// Gets the full word for "hour" in duration displays.
   String get durationHour;
+
+  /// Gets the full word for "minute" in duration displays.
   String get durationMinute;
+
+  /// Gets the full word for "second" in duration displays.
   String get durationSecond;
 
+  /// Gets the abbreviated label for a duration component.
+  ///
+  /// Parameters:
+  /// - [part] (DurationPart, required): The duration component type
+  ///
+  /// Returns the localized abbreviation string for the component (e.g., "d", "h", "m", "s").
   String getDurationPartAbbreviation(DurationPart part) {
     switch (part) {
       case DurationPart.day:
@@ -732,6 +799,12 @@ abstract class ShadcnLocalizations {
     }
   }
 
+  /// Gets the abbreviated label for a time component.
+  ///
+  /// Parameters:
+  /// - [part] (TimePart, required): The time component type
+  ///
+  /// Returns the localized abbreviation string for the component (e.g., "h", "m", "s").
   String getTimePartAbbreviation(TimePart part) {
     switch (part) {
       case TimePart.hour:
@@ -743,12 +816,23 @@ abstract class ShadcnLocalizations {
     }
   }
 
+  /// Gets a map of MIME types to their localized display names.
+  ///
+  /// Provides human-readable names for file types used in file pickers
+  /// and upload dialogs. The map keys are MIME type strings (e.g., "image/png")
+  /// and values are localized descriptions (e.g., "PNG Image").
   Map<String, String> get localizedMimeTypes;
 }
 
+/// Default English implementation of Shadcn localizations.
+///
+/// Provides English translations for all localized strings in Shadcn Flutter.
+/// This is the default localization used when no specific locale is provided.
 class DefaultShadcnLocalizations extends ShadcnLocalizations {
+  /// Singleton instance of the default localizations.
   static const ShadcnLocalizations instance = DefaultShadcnLocalizations();
 
+  /// Creates a default English localizations instance.
   const DefaultShadcnLocalizations();
 
   @override
