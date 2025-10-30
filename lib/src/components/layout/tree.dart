@@ -1011,16 +1011,38 @@ class TreeView<T> extends StatefulWidget {
     return changed ? newNodes : null;
   }
 
+  /// Applies a transformation operator to all nodes in a tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [operator] (`TreeNodeUnaryOperator<K>`, required): Transformation function.
+  ///
+  /// Returns: `List<TreeNode<K>>` — transformed tree.
   static List<TreeNode<K>> replaceNodes<K>(
       List<TreeNode<K>> nodes, TreeNodeUnaryOperator<K> operator) {
     return _replaceNodes(nodes, operator) ?? nodes;
   }
 
+  /// Applies a transformation operator to all nodes with parent context.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [operator] (`TreeNodeUnaryOperatorWithParent<K>`, required): Transformation function.
+  ///
+  /// Returns: `List<TreeNode<K>>` — transformed tree.
   static List<TreeNode<K>> replaceNodesWithParent<K>(
       List<TreeNode<K>> nodes, TreeNodeUnaryOperatorWithParent<K> operator) {
     return _replaceNodesWithParent(null, nodes, operator) ?? nodes;
   }
 
+  /// Replaces a specific node in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [oldNode] (`TreeNode<K>`, required): Node to replace.
+  /// - [newNode] (`TreeNode<K>`, required): Replacement node.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node replaced.
   static List<TreeNode<K>> replaceNode<K>(
       List<TreeNode<K>> nodes, TreeNode<K> oldNode, TreeNode<K> newNode) {
     return replaceNodes(nodes, (node) {
@@ -1038,6 +1060,30 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Replaces a node by matching its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [oldItem] (`K`, required): Item value to find.
+  /// - [newItem] (`TreeNode<K>`, required): Replacement node.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item replaced.
+  static List<TreeNode<K>> replaceItem<K>(
+      List<TreeNode<K>> nodes, K oldItem, TreeNode<K> newItem) {
+    return replaceNodes(nodes, (node) {
+      if (node is TreeItem<K> && node.data == oldItem) {
+        return newItem;
+      }
+      return null;
+    });
+  }
+
+  /// Updates selection state to maintain parent-child consistency.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with updated selection.
   static List<TreeNode<K>> updateRecursiveSelection<K>(
       List<TreeNode<K>> nodes) {
     return replaceNodesWithParent(nodes, (parent, node) {
@@ -1051,10 +1097,22 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Gets all selected nodes from the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — selected nodes.
   static List<TreeNode<K>> getSelectedNodes<K>(List<TreeNode<K>> nodes) {
     return nodes.where((node) => node.selected).toList();
   }
 
+  /// Gets all selected item values from the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<K>` — selected item values.
   static List<K> getSelectedItems<K>(List<TreeNode<K>> nodes) {
     return nodes
         .whereType<TreeItem<K>>()
@@ -1063,18 +1121,37 @@ class TreeView<T> extends StatefulWidget {
         .toList();
   }
 
+  /// Expands all nodes in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all nodes expanded.
   static List<TreeNode<K>> expandAll<K>(List<TreeNode<K>> nodes) {
     return replaceNodes(nodes, (node) {
       return node.expanded ? null : node.updateState(expanded: true);
     });
   }
 
+  /// Collapses all nodes in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all nodes collapsed.
   static List<TreeNode<K>> collapseAll<K>(List<TreeNode<K>> nodes) {
     return replaceNodes(nodes, (node) {
       return node.expanded ? node.updateState(expanded: false) : null;
     });
   }
 
+  /// Expands a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to expand.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node expanded.
   static List<TreeNode<K>> expandNode<K>(
       List<TreeNode<K>> nodes, TreeNode<K> target) {
     return replaceNodes(nodes, (node) {
@@ -1082,6 +1159,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Expands a node by its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`K`, required): Item value to expand.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item expanded.
   static List<TreeNode<K>> expandItem<K>(List<TreeNode<K>> nodes, K target) {
     return replaceNodes(nodes, (node) {
       if (node is TreeItem<K> && node.data == target && !node.expanded) {
@@ -1091,6 +1175,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Collapses a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to collapse.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node collapsed.
   static List<TreeNode<K>> collapseNode<K>(
       List<TreeNode<K>> nodes, TreeNode<K> target) {
     return replaceNodes(nodes, (node) {
