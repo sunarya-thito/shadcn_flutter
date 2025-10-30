@@ -1714,11 +1714,39 @@ class FormEntry<T> extends StatefulWidget {
   State<FormEntry> createState() => FormEntryState();
 }
 
+/// Interface for form field state management.
+///
+/// Provides methods and properties for managing form field lifecycle, validation,
+/// and value reporting. Typically mixed into state classes that participate in
+/// form validation and submission workflows.
+///
+/// Implementations should:
+/// - Track mount state to prevent operations on disposed widgets
+/// - Report value changes to parent forms
+/// - Support both synchronous and asynchronous validation
 mixin FormFieldHandle {
+  /// Whether the widget is currently mounted in the widget tree.
   bool get mounted;
+
+  /// The unique key identifying this field within its form.
   FormKey get formKey;
+
+  /// Reports a new value to the form and triggers validation.
+  ///
+  /// Parameters:
+  /// - [value] (`T?`, required): The new field value.
+  ///
+  /// Returns: `FutureOr<ValidationResult?>` — validation result if applicable.
   FutureOr<ValidationResult?> reportNewFormValue<T>(T? value);
+
+  /// Re-runs validation on the current value.
+  ///
+  /// Returns: `FutureOr<ValidationResult?>` — validation result if applicable.
   FutureOr<ValidationResult?> revalidate();
+
+  /// A listenable for the current validation state.
+  ///
+  /// Returns `null` if no validation has been performed or if validation passed.
   ValueListenable<ValidationResult?>? get validity;
 }
 
@@ -1728,6 +1756,10 @@ class _FormEntryCachedValue {
   _FormEntryCachedValue(this.value);
 }
 
+/// State class for [FormEntry] widgets.
+///
+/// Manages form field lifecycle and integrates with parent [FormController]
+/// for validation and value reporting.
 class FormEntryState extends State<FormEntry> with FormFieldHandle {
   FormController? _controller;
   _FormEntryCachedValue? _cachedValue;
@@ -1816,10 +1848,31 @@ class FormEntryState extends State<FormEntry> with FormFieldHandle {
   }
 }
 
+/// A widget that intercepts form value reports.
+///
+/// Wraps a form field to observe value changes before they reach the parent form.
+/// Useful for implementing side effects like logging, analytics, or derived state
+/// updates when form field values change.
+///
+/// Example:
+/// ```dart
+/// FormEntryInterceptor<String>(
+///   onValueReported: (value) => print('Email changed: $value'),
+///   child: TextFormField(),
+/// )
+/// ```
 class FormEntryInterceptor<T> extends StatefulWidget {
+  /// The child widget (typically a form field).
   final Widget child;
+
+  /// Callback invoked when a value is reported by the child field.
   final ValueChanged<T>? onValueReported;
 
+  /// Creates a [FormEntryInterceptor].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): The form field to wrap.
+  /// - [onValueReported] (`ValueChanged<T>?`, optional): Called with new values.
   const FormEntryInterceptor(
       {super.key, required this.child, this.onValueReported});
 
@@ -1895,10 +1948,22 @@ class _FormEntryHandleInterceptor with FormFieldHandle {
   int get hashCode => Object.hash(handle, onValueReported);
 }
 
+/// Holds the current value and validator for a form field.
+///
+/// Immutable snapshot of a form field's state used internally by form controllers
+/// to track field values and their associated validation rules.
 class FormValueState<T> {
+  /// The current field value.
   final T? value;
+
+  /// The validator function for this field.
   final Validator<T>? validator;
 
+  /// Creates a [FormValueState].
+  ///
+  /// Parameters:
+  /// - [value] (`T?`, optional): Current field value.
+  /// - [validator] (`Validator<T>?`, optional): Validation function.
   FormValueState({this.value, this.validator});
 
   @override
@@ -1917,12 +1982,28 @@ class FormValueState<T> {
   int get hashCode => Object.hash(value, validator);
 }
 
+/// A map of form field keys to their values.
+///
+/// Used to collect and pass around form data, where each key uniquely identifies
+/// a form field and maps to its current value.
 typedef FormMapValues = Map<FormKey, dynamic>;
 
+/// Callback function for form submission.
+///
+/// Parameters:
+/// - [context] (`BuildContext`): The build context.
+/// - [values] (`FormMapValues`): Map of all form field values.
 typedef FormSubmitCallback = void Function(
     BuildContext context, FormMapValues values);
 
+/// Extension methods for [FormMapValues].
 extension FormMapValuesExtension on FormMapValues {
+  /// Retrieves a typed value for a specific form key.
+  ///
+  /// Parameters:
+  /// - [key] (`FormKey<T>`, required): The form key to look up.
+  ///
+  /// Returns: `T?` — the value if found and correctly typed, null otherwise.
   T? getValue<T>(FormKey<T> key) {
     Object? value = this[key];
     if (value == null) {
@@ -2180,14 +2261,34 @@ class FormController extends ChangeNotifier {
     return result;
   }
 
+  /// Retrieves the current value for a specific form field.
+  ///
+  /// Parameters:
+  /// - [key] (`FormKey<T>`, required): The form key to look up.
+  ///
+  /// Returns: `T?` — the field value if exists, null otherwise.
   T? getValue<T>(FormKey<T> key) {
     return _attachedInputs[key]?.value as T?;
   }
 
+  /// Checks if a form field has a non-null value.
+  ///
+  /// Parameters:
+  /// - [key] (`FormKey`, required): The form key to check.
+  ///
+  /// Returns: `bool` — true if field has a value, false otherwise.
   bool hasValue(FormKey key) {
     return _attachedInputs[key]?.value != null;
   }
 
+  /// Revalidates all form fields with validators.
+  ///
+  /// Runs validation on all registered fields and updates their validation states.
+  /// Supports both synchronous and asynchronous validators.
+  ///
+  /// Parameters:
+  /// - [context] (`BuildContext`, required): The build context.
+  /// - [state] (`FormValidationMode`, required): Validation mode to use.
   void revalidate(BuildContext context, FormValidationMode state) {
     bool changed = false;
     for (var entry in _attachedInputs.entries) {
@@ -2227,6 +2328,20 @@ class FormController extends ChangeNotifier {
     }
   }
 
+  /// Attaches a form field to this controller.
+  ///
+  /// Registers the field and runs initial validation if a validator is provided.
+  /// Manages field lifecycle transitions (initial → changed) and coordinates
+  /// revalidation of dependent fields.
+  ///
+  /// Parameters:
+  /// - [context] (`BuildContext`, required): The build context.
+  /// - [handle] (`FormFieldHandle`, required): The field handle to attach.
+  /// - [value] (`Object?`, required): Current field value.
+  /// - [validator] (`Validator?`, optional): Validation function.
+  /// - [forceRevalidate] (`bool`, default: `false`): Force revalidation even if unchanged.
+  ///
+  /// Returns: `FutureOr<ValidationResult?>` — validation result if applicable.
   FutureOr<ValidationResult?> attach(BuildContext context,
       FormFieldHandle handle, Object? value, Validator? validator,
       [bool forceRevalidate = false]) {
@@ -2870,8 +2985,15 @@ class FormInline<T> extends StatelessWidget {
 class FormTableLayout extends StatelessWidget {
   /// List of form field rows to display in the table.
   final List<FormField> rows;
+
+  /// Vertical spacing between rows.
   final double? spacing;
 
+  /// Creates a [FormTableLayout].
+  ///
+  /// Parameters:
+  /// - [rows] (`List<FormField>`, required): Form fields to arrange in rows.
+  /// - [spacing] (`double?`, optional): Custom row spacing.
   const FormTableLayout({super.key, required this.rows, this.spacing});
 
   @override
@@ -2961,24 +3083,91 @@ class FormTableLayout extends StatelessWidget {
   }
 }
 
+/// A button that automatically handles form submission states.
+///
+/// Renders different content based on form validation state:
+/// - Default: Shows [child] with optional leading/trailing widgets
+/// - Loading: Shows [loading] during async validation
+/// - Error: Shows [error] when validation fails
+///
+/// Automatically disables during validation and enables when form is valid.
+///
+/// Example:
+/// ```dart
+/// SubmitButton(
+///   child: Text('Submit'),
+///   loading: Text('Validating...'),
+///   error: Text('Fix errors'),
+/// )
+/// ```
 class SubmitButton extends StatelessWidget {
+  /// Button style configuration.
   final AbstractButtonStyle? style;
+
+  /// Default button content.
   final Widget child;
+
+  /// Content shown during async validation (loading state).
   final Widget? loading;
+
+  /// Content shown when validation errors exist.
   final Widget? error;
+
+  /// Leading widget in default state.
   final Widget? leading;
+
+  /// Trailing widget in default state.
   final Widget? trailing;
+
+  /// Leading widget in loading state.
   final Widget? loadingLeading;
+
+  /// Trailing widget in loading state.
   final Widget? loadingTrailing;
+
+  /// Leading widget in error state.
   final Widget? errorLeading;
+
+  /// Trailing widget in error state.
   final Widget? errorTrailing;
+
+  /// Content alignment within the button.
   final AlignmentGeometry? alignment;
+
+  /// Whether to disable hover effects.
   final bool disableHoverEffect;
+
+  /// Whether the button is enabled (null uses form state).
   final bool? enabled;
+
+  /// Whether to enable haptic feedback on press.
   final bool? enableFeedback;
+
+  /// Whether to disable state transition animations.
   final bool disableTransition;
+
+  /// Focus node for keyboard navigation.
   final FocusNode? focusNode;
 
+  /// Creates a [SubmitButton].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): Default button content.
+  /// - [style] (`AbstractButtonStyle?`, optional): Button styling.
+  /// - [loading] (`Widget?`, optional): Loading state content.
+  /// - [error] (`Widget?`, optional): Error state content.
+  /// - [leading] (`Widget?`, optional): Leading widget (default state).
+  /// - [trailing] (`Widget?`, optional): Trailing widget (default state).
+  /// - [loadingLeading] (`Widget?`, optional): Leading widget (loading state).
+  /// - [loadingTrailing] (`Widget?`, optional): Trailing widget (loading state).
+  /// - [errorLeading] (`Widget?`, optional): Leading widget (error state).
+  /// - [errorTrailing] (`Widget?`, optional): Trailing widget (error state).
+  /// - [alignment] (`AlignmentGeometry?`, optional): Content alignment.
+  /// - [disableHoverEffect] (`bool`, default: `false`): Disable hover.
+  /// - [enabled] (`bool?`, optional): Override enabled state.
+  /// - [enableFeedback] (`bool?`, optional): Enable haptic feedback.
+  /// - [disableTransition] (`bool`, default: `false`): Disable animations.
+  /// - [focusNode] (`FocusNode?`, optional): Focus node.
   const SubmitButton({
     super.key,
     required this.child,
