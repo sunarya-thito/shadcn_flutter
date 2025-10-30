@@ -598,205 +598,205 @@ TODO:
 - [x] lib\src\components\form\formatted_input.dart:420:34
 - [x] lib\src\components\form\formatted_input.dart:422:9
 - [x] lib\src\components\form\formatted_input.dart:739:7
-- [ ] lib\src\components\form\formatted_input.dart:740:13
-- [ ] lib\src\components\form\formatted_input.dart:741:17
-- [ ] lib\src\components\form\formatted_input.dart:742:14
-- [ ] lib\src\components\form\formatted_input.dart:743:35
-- [ ] lib\src\components\form\formatted_input.dart:744:20
-- [ ] lib\src\components\form\formatted_input.dart:745:25
-- [ ] lib\src\components\form\formatted_input.dart:746:3
-- [ ] lib\src\components\form\formatted_input.dart:772:9
-- [ ] lib\src\components\form\formatted_input.dart:775:7
-- [ ] lib\src\components\form\formatted_input.dart:781:37
-- [ ] lib\src\components\form\formatted_input.dart:782:40
-- [ ] lib\src\components\form\formatted_input.dart:787:49
-- [ ] lib\src\components\form\formatted_input.dart:788:25
-- [ ] lib\src\components\form\formatted_input.dart:789:28
-- [ ] lib\src\components\form\formatted_input.dart:790:28
-- [ ] lib\src\components\form\formatted_input.dart:791:17
-- [ ] lib\src\components\form\formatted_input.dart:792:17
-- [ ] lib\src\components\form\formatted_input.dart:794:9
-- [ ] lib\src\components\form\formatter.dart:6:15
-- [ ] lib\src\components\form\formatter.dart:13:7
-- [ ] lib\src\components\form\formatter.dart:16:29
-- [ ] lib\src\components\form\formatter.dart:20:29
-- [ ] lib\src\components\form\formatter.dart:24:29
-- [ ] lib\src\components\form\formatter.dart:30:29
-- [ ] lib\src\components\form\formatter.dart:34:29
-- [ ] lib\src\components\form\formatter.dart:14:35
-- [ ] lib\src\components\form\formatter.dart:15:35
-- [ ] lib\src\components\form\form_field.dart:3:6
-- [ ] lib\src\components\form\form_field.dart:4:3
-- [ ] lib\src\components\form\form_field.dart:5:3
-- [ ] lib\src\components\form\form_field.dart:8:7
-- [ ] lib\src\components\form\form_field.dart:9:12
-- [ ] lib\src\components\form\form_field.dart:10:27
-- [ ] lib\src\components\form\form_field.dart:11:16
-- [ ] lib\src\components\form\form_field.dart:12:56
-- [ ] lib\src\components\form\form_field.dart:13:17
-- [ ] lib\src\components\form\form_field.dart:14:17
-- [ ] lib\src\components\form\form_field.dart:15:20
-- [ ] lib\src\components\form\form_field.dart:17:7
-- [ ] lib\src\components\form\form_field.dart:18:28
-- [ ] lib\src\components\form\form_field.dart:19:28
-- [ ] lib\src\components\form\form_field.dart:20:29
-- [ ] lib\src\components\form\form_field.dart:21:17
-- [ ] lib\src\components\form\form_field.dart:22:21
-- [ ] lib\src\components\form\form_field.dart:23:24
-- [ ] lib\src\components\form\form_field.dart:24:22
-- [ ] lib\src\components\form\form_field.dart:26:60
-- [ ] lib\src\components\form\form_field.dart:27:15
-- [ ] lib\src\components\form\form_field.dart:28:14
-- [ ] lib\src\components\form\form_field.dart:30:9
-- [ ] lib\src\components\form\form_field.dart:56:16
-- [ ] lib\src\components\form\form_field.dart:57:10
-- [ ] lib\src\components\form\form_field.dart:58:7
-- [ ] lib\src\components\form\form_field.dart:59:8
-- [ ] lib\src\components\form\form_field.dart:60:16
-- [ ] lib\src\components\form\form_field.dart:62:31
-- [ ] lib\src\components\form\form_field.dart:66:31
-- [ ] lib\src\components\form\form_field.dart:71:7
-- [ ] lib\src\components\form\form_field.dart:81:10
-- [ ] lib\src\components\form\form_field.dart:101:12
-- [ ] lib\src\components\form\form_field.dart:83:7
-- [ ] lib\src\components\form\form_field.dart:160:8
-- [ ] lib\src\components\form\form_field.dart:213:7
-- [ ] lib\src\components\form\form_field.dart:214:12
-- [ ] lib\src\components\form\form_field.dart:216:3
-- [ ] lib\src\components\form\input.dart:6:6
-- [ ] lib\src\components\form\input.dart:7:3
-- [ ] lib\src\components\form\input.dart:8:3
-- [ ] lib\src\components\form\input.dart:11:7
-- [ ] lib\src\components\form\input.dart:12:23
-- [ ] lib\src\components\form\input.dart:13:17
-- [ ] lib\src\components\form\input.dart:14:30
-- [ ] lib\src\components\form\input.dart:15:14
-- [ ] lib\src\components\form\input.dart:16:9
-- [ ] lib\src\components\form\input.dart:96:7
-- [ ] lib\src\components\form\input.dart:97:9
-- [ ] lib\src\components\form\input.dart:100:6
-- [ ] lib\src\components\form\input.dart:101:3
-- [ ] lib\src\components\form\input.dart:102:3
-- [ ] lib\src\components\form\input.dart:105:7
-- [ ] lib\src\components\form\input.dart:106:26
-- [ ] lib\src\components\form\input.dart:107:30
-- [ ] lib\src\components\form\input.dart:108:17
-- [ ] lib\src\components\form\input.dart:109:17
-- [ ] lib\src\components\form\input.dart:110:9
-- [ ] lib\src\components\form\input.dart:191:7
-- [ ] lib\src\components\form\input.dart:192:30
-- [ ] lib\src\components\form\input.dart:193:17
-- [ ] lib\src\components\form\input.dart:194:9
-- [ ] lib\src\components\form\input.dart:233:7
-- [ ] lib\src\components\form\input.dart:234:30
-- [ ] lib\src\components\form\input.dart:235:17
-- [ ] lib\src\components\form\input.dart:236:9
-- [ ] lib\src\components\form\input.dart:315:9
-- [ ] lib\src\components\form\input.dart:317:7
-- [ ] lib\src\components\form\input.dart:318:27
-- [ ] lib\src\components\form\input.dart:319:16
-- [ ] lib\src\components\form\input.dart:320:25
-- [ ] lib\src\components\form\input.dart:321:28
-- [ ] lib\src\components\form\input.dart:322:31
-- [ ] lib\src\components\form\input.dart:323:31
-- [ ] lib\src\components\form\input.dart:324:26
-- [ ] lib\src\components\form\input.dart:326:9
-- [ ] lib\src\components\form\input.dart:393:7
-- [ ] lib\src\components\form\input.dart:394:16
-- [ ] lib\src\components\form\input.dart:395:14
-- [ ] lib\src\components\form\input.dart:396:17
-- [ ] lib\src\components\form\input.dart:397:9
-- [ ] lib\src\components\form\input.dart:519:7
-- [ ] lib\src\components\form\input.dart:520:30
-- [ ] lib\src\components\form\input.dart:521:17
-- [ ] lib\src\components\form\input.dart:522:9
-- [ ] lib\src\components\form\input.dart:561:7
-- [ ] lib\src\components\form\input.dart:562:16
-- [ ] lib\src\components\form\input.dart:563:9
-- [ ] lib\src\components\form\input.dart:580:7
-- [ ] lib\src\components\form\input.dart:581:16
-- [ ] lib\src\components\form\input.dart:582:9
-- [ ] lib\src\components\form\input.dart:600:7
-- [ ] lib\src\components\form\input.dart:601:30
-- [ ] lib\src\components\form\input.dart:602:17
-- [ ] lib\src\components\form\input.dart:603:9
-- [ ] lib\src\components\form\input_otp.dart:17:17
-- [ ] lib\src\components\form\input_otp.dart:12:17
-- [ ] lib\src\components\form\input_otp.dart:13:17
-- [ ] lib\src\components\form\input_otp.dart:15:9
-- [ ] lib\src\components\form\input_otp.dart:50:16
-- [ ] lib\src\components\form\input_otp.dart:51:28
-- [ ] lib\src\components\form\input_otp.dart:53:28
-- [ ] lib\src\components\form\input_otp.dart:55:28
-- [ ] lib\src\components\form\input_otp.dart:120:12
-- [ ] lib\src\components\form\input_otp.dart:119:10
-- [ ] lib\src\components\form\input_otp.dart:56:25
-- [ ] lib\src\components\form\input_otp.dart:70:25
-- [ ] lib\src\components\form\input_otp.dart:118:9
-- [ ] lib\src\components\form\input_otp.dart:123:9
-- [ ] lib\src\components\form\input_otp.dart:124:9
-- [ ] lib\src\components\form\input_otp.dart:126:7
-- [ ] lib\src\components\form\input_otp.dart:134:15
-- [ ] lib\src\components\form\input_otp.dart:136:15
-- [ ] lib\src\components\form\input_otp.dart:138:14
-- [ ] lib\src\components\form\input_otp.dart:140:14
-- [ ] lib\src\components\form\input_otp.dart:142:15
-- [ ] lib\src\components\form\input_otp.dart:145:29
-- [ ] lib\src\components\form\input_otp.dart:146:33
-- [ ] lib\src\components\form\input_otp.dart:147:14
-- [ ] lib\src\components\form\input_otp.dart:148:14
-- [ ] lib\src\components\form\input_otp.dart:149:24
-- [ ] lib\src\components\form\input_otp.dart:151:9
-- [ ] lib\src\components\form\input_otp.dart:405:7
-- [ ] lib\src\components\form\input_otp.dart:406:16
-- [ ] lib\src\components\form\input_otp.dart:408:9
-- [ ] lib\src\components\form\input_otp.dart:426:7
-- [ ] lib\src\components\form\input_otp.dart:427:9
-- [ ] lib\src\components\form\input_otp.dart:440:7
-- [ ] lib\src\components\form\input_otp.dart:465:8
-- [ ] lib\src\components\form\input_otp.dart:441:20
-- [ ] lib\src\components\form\input_otp.dart:442:20
-- [ ] lib\src\components\form\input_otp.dart:443:20
-- [ ] lib\src\components\form\input_otp.dart:444:13
-- [ ] lib\src\components\form\input_otp.dart:445:13
-- [ ] lib\src\components\form\input_otp.dart:446:13
-- [ ] lib\src\components\form\input_otp.dart:447:13
-- [ ] lib\src\components\form\input_otp.dart:448:14
-- [ ] lib\src\components\form\input_otp.dart:497:9
-- [ ] lib\src\components\form\input_otp.dart:499:11
-- [ ] lib\src\components\form\input_otp.dart:500:10
-- [ ] lib\src\components\form\input_otp.dart:552:29
-- [ ] lib\src\components\form\input_otp.dart:553:27
-- [ ] lib\src\components\form\input_otp.dart:554:41
-- [ ] lib\src\components\form\input_otp.dart:555:41
-- [ ] lib\src\components\form\input_otp.dart:557:9
-- [ ] lib\src\components\form\item_picker.dart:284:12
-- [ ] lib\src\components\form\item_picker.dart:382:12
-- [ ] lib\src\components\form\item_picker.dart:183:16
-- [ ] lib\src\components\form\item_picker.dart:185:12
-- [ ] lib\src\components\form\item_picker.dart:186:15
-- [ ] lib\src\components\form\item_picker.dart:184:9
-- [ ] lib\src\components\form\item_picker.dart:189:7
-- [ ] lib\src\components\form\item_picker.dart:190:17
-- [ ] lib\src\components\form\item_picker.dart:191:9
-- [ ] lib\src\components\form\item_picker.dart:198:7
-- [ ] lib\src\components\form\item_picker.dart:201:32
-- [ ] lib\src\components\form\item_picker.dart:202:9
-- [ ] lib\src\components\form\item_picker.dart:208:9
-- [ ] lib\src\components\form\item_picker.dart:210:16
-- [ ] lib\src\components\form\item_picker.dart:214:10
-- [ ] lib\src\components\form\item_picker.dart:211:37
-- [ ] lib\src\components\form\item_picker.dart:212:37
-- [ ] lib\src\components\form\item_picker.dart:213:9
-- [ ] lib\src\components\form\item_picker.dart:218:7
-- [ ] lib\src\components\form\item_picker.dart:219:9
-- [ ] lib\src\components\form\item_picker.dart:245:7
-- [ ] lib\src\components\form\item_picker.dart:249:20
-- [ ] lib\src\components\form\item_picker.dart:246:13
-- [ ] lib\src\components\form\item_picker.dart:247:9
-- [ ] lib\src\components\form\item_picker.dart:417:7
-- [ ] lib\src\components\form\item_picker.dart:418:30
-- [ ] lib\src\components\form\item_picker.dart:419:30
+- [x] lib\src\components\form\formatted_input.dart:740:13
+- [x] lib\src\components\form\formatted_input.dart:741:17
+- [x] lib\src\components\form\formatted_input.dart:742:14
+- [x] lib\src\components\form\formatted_input.dart:743:35
+- [x] lib\src\components\form\formatted_input.dart:744:20
+- [x] lib\src\components\form\formatted_input.dart:745:25
+- [x] lib\src\components\form\formatted_input.dart:746:3
+- [x] lib\src\components\form\formatted_input.dart:772:9
+- [x] lib\src\components\form\formatted_input.dart:775:7
+- [x] lib\src\components\form\formatted_input.dart:781:37
+- [x] lib\src\components\form\formatted_input.dart:782:40
+- [x] lib\src\components\form\formatted_input.dart:787:49
+- [x] lib\src\components\form\formatted_input.dart:788:25
+- [x] lib\src\components\form\formatted_input.dart:789:28
+- [x] lib\src\components\form\formatted_input.dart:790:28
+- [x] lib\src\components\form\formatted_input.dart:791:17
+- [x] lib\src\components\form\formatted_input.dart:792:17
+- [x] lib\src\components\form\formatted_input.dart:794:9
+- [x] lib\src\components\form\formatter.dart:6:15
+- [x] lib\src\components\form\formatter.dart:13:7
+- [x] lib\src\components\form\formatter.dart:16:29
+- [x] lib\src\components\form\formatter.dart:20:29
+- [x] lib\src\components\form\formatter.dart:24:29
+- [x] lib\src\components\form\formatter.dart:30:29
+- [x] lib\src\components\form\formatter.dart:34:29
+- [x] lib\src\components\form\formatter.dart:14:35
+- [x] lib\src\components\form\formatter.dart:15:35
+- [x] lib\src\components\form\form_field.dart:3:6
+- [x] lib\src\components\form\form_field.dart:4:3
+- [x] lib\src\components\form\form_field.dart:5:3
+- [x] lib\src\components\form\form_field.dart:8:7
+- [x] lib\src\components\form\form_field.dart:9:12
+- [x] lib\src\components\form\form_field.dart:10:27
+- [x] lib\src\components\form\form_field.dart:11:16
+- [x] lib\src\components\form\form_field.dart:12:56
+- [x] lib\src\components\form\form_field.dart:13:17
+- [x] lib\src\components\form\form_field.dart:14:17
+- [x] lib\src\components\form\form_field.dart:15:20
+- [x] lib\src\components\form\form_field.dart:17:7
+- [x] lib\src\components\form\form_field.dart:18:28
+- [x] lib\src\components\form\form_field.dart:19:28
+- [x] lib\src\components\form\form_field.dart:20:29
+- [x] lib\src\components\form\form_field.dart:21:17
+- [x] lib\src\components\form\form_field.dart:22:21
+- [x] lib\src\components\form\form_field.dart:23:24
+- [x] lib\src\components\form\form_field.dart:24:22
+- [x] lib\src\components\form\form_field.dart:26:60
+- [x] lib\src\components\form\form_field.dart:27:15
+- [x] lib\src\components\form\form_field.dart:28:14
+- [x] lib\src\components\form\form_field.dart:30:9
+- [x] lib\src\components\form\form_field.dart:56:16
+- [x] lib\src\components\form\form_field.dart:57:10
+- [x] lib\src\components\form\form_field.dart:58:7
+- [x] lib\src\components\form\form_field.dart:59:8
+- [x] lib\src\components\form\form_field.dart:60:16
+- [x] lib\src\components\form\form_field.dart:62:31
+- [x] lib\src\components\form\form_field.dart:66:31
+- [x] lib\src\components\form\form_field.dart:71:7
+- [x] lib\src\components\form\form_field.dart:81:10
+- [x] lib\src\components\form\form_field.dart:101:12
+- [x] lib\src\components\form\form_field.dart:83:7
+- [x] lib\src\components\form\form_field.dart:160:8
+- [x] lib\src\components\form\form_field.dart:213:7
+- [x] lib\src\components\form\form_field.dart:214:12
+- [x] lib\src\components\form\form_field.dart:216:3
+- [x] lib\src\components\form\input.dart:6:6
+- [x] lib\src\components\form\input.dart:7:3
+- [x] lib\src\components\form\input.dart:8:3
+- [x] lib\src\components\form\input.dart:11:7
+- [x] lib\src\components\form\input.dart:12:23
+- [x] lib\src\components\form\input.dart:13:17
+- [x] lib\src\components\form\input.dart:14:30
+- [x] lib\src\components\form\input.dart:15:14
+- [x] lib\src\components\form\input.dart:16:9
+- [x] lib\src\components\form\input.dart:96:7
+- [x] lib\src\components\form\input.dart:97:9
+- [x] lib\src\components\form\input.dart:100:6
+- [x] lib\src\components\form\input.dart:101:3
+- [x] lib\src\components\form\input.dart:102:3
+- [x] lib\src\components\form\input.dart:105:7
+- [x] lib\src\components\form\input.dart:106:26
+- [x] lib\src\components\form\input.dart:107:30
+- [x] lib\src\components\form\input.dart:108:17
+- [x] lib\src\components\form\input.dart:109:17
+- [x] lib\src\components\form\input.dart:110:9
+- [x] lib\src\components\form\input.dart:191:7
+- [x] lib\src\components\form\input.dart:192:30
+- [x] lib\src\components\form\input.dart:193:17
+- [x] lib\src\components\form\input.dart:194:9
+- [x] lib\src\components\form\input.dart:233:7
+- [x] lib\src\components\form\input.dart:234:30
+- [x] lib\src\components\form\input.dart:235:17
+- [x] lib\src\components\form\input.dart:236:9
+- [x] lib\src\components\form\input.dart:315:9
+- [x] lib\src\components\form\input.dart:317:7
+- [x] lib\src\components\form\input.dart:318:27
+- [x] lib\src\components\form\input.dart:319:16
+- [x] lib\src\components\form\input.dart:320:25
+- [x] lib\src\components\form\input.dart:321:28
+- [x] lib\src\components\form\input.dart:322:31
+- [x] lib\src\components\form\input.dart:323:31
+- [x] lib\src\components\form\input.dart:324:26
+- [x] lib\src\components\form\input.dart:326:9
+- [x] lib\src\components\form\input.dart:393:7
+- [x] lib\src\components\form\input.dart:394:16
+- [x] lib\src\components\form\input.dart:395:14
+- [x] lib\src\components\form\input.dart:396:17
+- [x] lib\src\components\form\input.dart:397:9
+- [x] lib\src\components\form\input.dart:519:7
+- [x] lib\src\components\form\input.dart:520:30
+- [x] lib\src\components\form\input.dart:521:17
+- [x] lib\src\components\form\input.dart:522:9
+- [x] lib\src\components\form\input.dart:561:7
+- [x] lib\src\components\form\input.dart:562:16
+- [x] lib\src\components\form\input.dart:563:9
+- [x] lib\src\components\form\input.dart:580:7
+- [x] lib\src\components\form\input.dart:581:16
+- [x] lib\src\components\form\input.dart:582:9
+- [x] lib\src\components\form\input.dart:600:7
+- [x] lib\src\components\form\input.dart:601:30
+- [x] lib\src\components\form\input.dart:602:17
+- [x] lib\src\components\form\input.dart:603:9
+- [x] lib\src\components\form\input_otp.dart:17:17
+- [x] lib\src\components\form\input_otp.dart:12:17
+- [x] lib\src\components\form\input_otp.dart:13:17
+- [x] lib\src\components\form\input_otp.dart:15:9
+- [x] lib\src\components\form\input_otp.dart:50:16
+- [x] lib\src\components\form\input_otp.dart:51:28
+- [x] lib\src\components\form\input_otp.dart:53:28
+- [x] lib\src\components\form\input_otp.dart:55:28
+- [x] lib\src\components\form\input_otp.dart:120:12
+- [x] lib\src\components\form\input_otp.dart:119:10
+- [x] lib\src\components\form\input_otp.dart:56:25
+- [x] lib\src\components\form\input_otp.dart:70:25
+- [x] lib\src\components\form\input_otp.dart:118:9
+- [x] lib\src\components\form\input_otp.dart:123:9
+- [x] lib\src\components\form\input_otp.dart:124:9
+- [x] lib\src\components\form\input_otp.dart:126:7
+- [x] lib\src\components\form\input_otp.dart:134:15
+- [x] lib\src\components\form\input_otp.dart:136:15
+- [x] lib\src\components\form\input_otp.dart:138:14
+- [x] lib\src\components\form\input_otp.dart:140:14
+- [x] lib\src\components\form\input_otp.dart:142:15
+- [x] lib\src\components\form\input_otp.dart:145:29
+- [x] lib\src\components\form\input_otp.dart:146:33
+- [x] lib\src\components\form\input_otp.dart:147:14
+- [x] lib\src\components\form\input_otp.dart:148:14
+- [x] lib\src\components\form\input_otp.dart:149:24
+- [x] lib\src\components\form\input_otp.dart:151:9
+- [x] lib\src\components\form\input_otp.dart:405:7
+- [x] lib\src\components\form\input_otp.dart:406:16
+- [x] lib\src\components\form\input_otp.dart:408:9
+- [x] lib\src\components\form\input_otp.dart:426:7
+- [x] lib\src\components\form\input_otp.dart:427:9
+- [x] lib\src\components\form\input_otp.dart:440:7
+- [x] lib\src\components\form\input_otp.dart:465:8
+- [x] lib\src\components\form\input_otp.dart:441:20
+- [x] lib\src\components\form\input_otp.dart:442:20
+- [x] lib\src\components\form\input_otp.dart:443:20
+- [x] lib\src\components\form\input_otp.dart:444:13
+- [x] lib\src\components\form\input_otp.dart:445:13
+- [x] lib\src\components\form\input_otp.dart:446:13
+- [x] lib\src\components\form\input_otp.dart:447:13
+- [x] lib\src\components\form\input_otp.dart:448:14
+- [x] lib\src\components\form\input_otp.dart:497:9
+- [x] lib\src\components\form\input_otp.dart:499:11
+- [x] lib\src\components\form\input_otp.dart:500:10
+- [x] lib\src\components\form\input_otp.dart:552:29
+- [x] lib\src\components\form\input_otp.dart:553:27
+- [x] lib\src\components\form\input_otp.dart:554:41
+- [x] lib\src\components\form\input_otp.dart:555:41
+- [x] lib\src\components\form\input_otp.dart:557:9
+- [x] lib\src\components\form\item_picker.dart:284:12
+- [x] lib\src\components\form\item_picker.dart:382:12
+- [x] lib\src\components\form\item_picker.dart:183:16
+- [x] lib\src\components\form\item_picker.dart:185:12
+- [x] lib\src\components\form\item_picker.dart:186:15
+- [x] lib\src\components\form\item_picker.dart:184:9
+- [x] lib\src\components\form\item_picker.dart:189:7
+- [x] lib\src\components\form\item_picker.dart:190:17
+- [x] lib\src\components\form\item_picker.dart:191:9
+- [x] lib\src\components\form\item_picker.dart:198:7
+- [x] lib\src\components\form\item_picker.dart:201:32
+- [x] lib\src\components\form\item_picker.dart:202:9
+- [x] lib\src\components\form\item_picker.dart:208:9
+- [x] lib\src\components\form\item_picker.dart:210:16
+- [x] lib\src\components\form\item_picker.dart:214:10
+- [x] lib\src\components\form\item_picker.dart:211:37
+- [x] lib\src\components\form\item_picker.dart:212:37
+- [x] lib\src\components\form\item_picker.dart:213:9
+- [x] lib\src\components\form\item_picker.dart:218:7
+- [x] lib\src\components\form\item_picker.dart:219:9
+- [x] lib\src\components\form\item_picker.dart:245:7
+- [x] lib\src\components\form\item_picker.dart:249:20
+- [x] lib\src\components\form\item_picker.dart:246:13
+- [x] lib\src\components\form\item_picker.dart:247:9
+- [x] lib\src\components\form\item_picker.dart:417:7
+- [x] lib\src\components\form\item_picker.dart:418:30
+- [x] lib\src\components\form\item_picker.dart:419:30
 - [x] lib\src\components\form\item_picker.dart:420:26
 - [x] lib\src\components\form\item_picker.dart:421:12
 - [x] lib\src\components\form\item_picker.dart:422:27
@@ -878,45 +878,45 @@ TODO:
 - [x] lib\src\components\form\phone_input.dart:7:17
 - [x] lib\src\components\form\phone_input.dart:8:16
 - [x] lib\src\components\form\phone_input.dart:10:9
-- [ ] lib\src\components\form\radio_group.dart:22:14
-- [ ] lib\src\components\form\radio_group.dart:14:16
-- [ ] lib\src\components\form\radio_group.dart:15:16
-- [ ] lib\src\components\form\radio_group.dart:16:16
-- [ ] lib\src\components\form\radio_group.dart:17:17
-- [ ] lib\src\components\form\radio_group.dart:19:9
-- [ ] lib\src\components\form\radio_group.dart:196:7
-- [ ] lib\src\components\form\radio_group.dart:197:9
-- [ ] lib\src\components\form\radio_group.dart:200:7
-- [ ] lib\src\components\form\radio_group.dart:201:9
-- [ ] lib\src\components\form\radio_group.dart:204:7
-- [ ] lib\src\components\form\radio_group.dart:205:17
-- [ ] lib\src\components\form\radio_group.dart:206:17
-- [ ] lib\src\components\form\radio_group.dart:207:11
-- [ ] lib\src\components\form\radio_group.dart:208:14
-- [ ] lib\src\components\form\radio_group.dart:209:20
-- [ ] lib\src\components\form\radio_group.dart:211:9
-- [ ] lib\src\components\form\radio_group.dart:317:7
-- [ ] lib\src\components\form\radio_group.dart:318:16
-- [ ] lib\src\components\form\radio_group.dart:319:11
-- [ ] lib\src\components\form\radio_group.dart:320:14
-- [ ] lib\src\components\form\radio_group.dart:321:20
-- [ ] lib\src\components\form\radio_group.dart:323:9
-- [ ] lib\src\components\form\radio_group.dart:749:7
-- [ ] lib\src\components\form\radio_group.dart:750:16
-- [ ] lib\src\components\form\radio_group.dart:751:12
-- [ ] lib\src\components\form\radio_group.dart:752:26
-- [ ] lib\src\components\form\radio_group.dart:753:15
-- [ ] lib\src\components\form\radio_group.dart:754:9
-- [ ] lib\src\components\form\radio_group.dart:766:7
-- [ ] lib\src\components\form\radio_group.dart:767:12
-- [ ] lib\src\components\form\radio_group.dart:768:14
-- [ ] lib\src\components\form\radio_group.dart:770:3
-- [ ] lib\src\components\form\radio_group.dart:784:7
-- [ ] lib\src\components\form\radio_group.dart:786:12
-- [ ] lib\src\components\form\select.dart:35:15
-- [ ] lib\src\components\form\select.dart:15:25
-- [ ] lib\src\components\form\select.dart:16:28
-- [ ] lib\src\components\form\select.dart:17:28
+- [x] lib\src\components\form\radio_group.dart:22:14
+- [x] lib\src\components\form\radio_group.dart:14:16
+- [x] lib\src\components\form\radio_group.dart:15:16
+- [x] lib\src\components\form\radio_group.dart:16:16
+- [x] lib\src\components\form\radio_group.dart:17:17
+- [x] lib\src\components\form\radio_group.dart:19:9
+- [x] lib\src\components\form\radio_group.dart:196:7
+- [x] lib\src\components\form\radio_group.dart:197:9
+- [x] lib\src\components\form\radio_group.dart:200:7
+- [x] lib\src\components\form\radio_group.dart:201:9
+- [x] lib\src\components\form\radio_group.dart:204:7
+- [x] lib\src\components\form\radio_group.dart:205:17
+- [x] lib\src\components\form\radio_group.dart:206:17
+- [x] lib\src\components\form\radio_group.dart:207:11
+- [x] lib\src\components\form\radio_group.dart:208:14
+- [x] lib\src\components\form\radio_group.dart:209:20
+- [x] lib\src\components\form\radio_group.dart:211:9
+- [x] lib\src\components\form\radio_group.dart:317:7
+- [x] lib\src\components\form\radio_group.dart:318:16
+- [x] lib\src\components\form\radio_group.dart:319:11
+- [x] lib\src\components\form\radio_group.dart:320:14
+- [x] lib\src\components\form\radio_group.dart:321:20
+- [x] lib\src\components\form\radio_group.dart:323:9
+- [x] lib\src\components\form\radio_group.dart:749:7
+- [x] lib\src\components\form\radio_group.dart:750:16
+- [x] lib\src\components\form\radio_group.dart:751:12
+- [x] lib\src\components\form\radio_group.dart:752:26
+- [x] lib\src\components\form\radio_group.dart:753:15
+- [x] lib\src\components\form\radio_group.dart:754:9
+- [x] lib\src\components\form\radio_group.dart:766:7
+- [x] lib\src\components\form\radio_group.dart:767:12
+- [x] lib\src\components\form\radio_group.dart:768:14
+- [x] lib\src\components\form\radio_group.dart:770:3
+- [x] lib\src\components\form\radio_group.dart:784:7
+- [x] lib\src\components\form\radio_group.dart:786:12
+- [x] lib\src\components\form\select.dart:35:15
+- [x] lib\src\components\form\select.dart:15:25
+- [x] lib\src\components\form\select.dart:16:28
+- [x] lib\src\components\form\select.dart:17:28
 - [x] lib\src\components\form\select.dart:18:31
 - [x] lib\src\components\form\select.dart:19:29
 - [x] lib\src\components\form\select.dart:20:15
@@ -973,56 +973,56 @@ TODO:
 - [x] lib\src\components\form\select.dart:1151:17
 - [x] lib\src\components\form\select.dart:1152:16
 - [x] lib\src\components\form\select.dart:1153:29
-- [ ] lib\src\components\form\select.dart:1203:7
-- [ ] lib\src\components\form\select.dart:1219:22
-- [ ] lib\src\components\form\select.dart:1234:15
-- [ ] lib\src\components\form\select.dart:1245:31
-- [ ] lib\src\components\form\select.dart:1249:9
-- [ ] lib\src\components\form\select.dart:1321:9
-- [ ] lib\src\components\form\select.dart:1323:7
-- [ ] lib\src\components\form\select.dart:1324:15
-- [ ] lib\src\components\form\select.dart:1325:28
-- [ ] lib\src\components\form\select.dart:1326:37
-- [ ] lib\src\components\form\select.dart:1327:14
-- [ ] lib\src\components\form\select.dart:1328:14
-- [ ] lib\src\components\form\select.dart:1330:9
-- [ ] lib\src\components\form\select.dart:1354:9
-- [ ] lib\src\components\form\select.dart:1359:7
-- [ ] lib\src\components\form\select.dart:1360:32
-- [ ] lib\src\components\form\select.dart:1361:40
-- [ ] lib\src\components\form\select.dart:1362:32
-- [ ] lib\src\components\form\select.dart:1363:17
-- [ ] lib\src\components\form\select.dart:1364:24
-- [ ] lib\src\components\form\select.dart:1365:24
-- [ ] lib\src\components\form\select.dart:1366:29
-- [ ] lib\src\components\form\select.dart:1367:17
-- [ ] lib\src\components\form\select.dart:1368:17
-- [ ] lib\src\components\form\select.dart:1369:15
-- [ ] lib\src\components\form\select.dart:1370:15
-- [ ] lib\src\components\form\select.dart:1371:14
-- [ ] lib\src\components\form\select.dart:1372:27
-- [ ] lib\src\components\form\select.dart:1373:14
-- [ ] lib\src\components\form\select.dart:1374:14
-- [ ] lib\src\components\form\select.dart:1376:21
-- [ ] lib\src\components\form\select.dart:1394:9
-- [ ] lib\src\components\form\select.dart:1412:21
-- [ ] lib\src\components\form\select.dart:1439:7
-- [ ] lib\src\components\form\select.dart:1442:12
-- [ ] lib\src\components\form\select.dart:1440:8
-- [ ] lib\src\components\form\select.dart:1441:8
-- [ ] lib\src\components\form\select.dart:1443:28
-- [ ] lib\src\components\form\select.dart:1857:16
-- [ ] lib\src\components\form\select.dart:1861:12
-- [ ] lib\src\components\form\select.dart:1860:11
-- [ ] lib\src\components\form\select.dart:1858:16
-- [ ] lib\src\components\form\select.dart:1859:9
-- [ ] lib\src\components\form\select.dart:1866:7
-- [ ] lib\src\components\form\select.dart:1867:9
-- [ ] lib\src\components\form\select.dart:1881:9
-- [ ] lib\src\components\form\select.dart:1884:7
-- [ ] lib\src\components\form\select.dart:1885:33
-- [ ] lib\src\components\form\select.dart:1886:14
-- [ ] lib\src\components\form\select.dart:1888:9
-- [ ] lib\src\components\form\select.dart:1905:7
-- [ ] lib\src\components\form\select.dart:1906:22
+- [x] lib\src\components\form\select.dart:1203:7
+- [x] lib\src\components\form\select.dart:1219:22
+- [x] lib\src\components\form\select.dart:1234:15
+- [x] lib\src\components\form\select.dart:1245:31
+- [x] lib\src\components\form\select.dart:1249:9
+- [x] lib\src\components\form\select.dart:1321:9
+- [x] lib\src\components\form\select.dart:1323:7
+- [x] lib\src\components\form\select.dart:1324:15
+- [x] lib\src\components\form\select.dart:1325:28
+- [x] lib\src\components\form\select.dart:1326:37
+- [x] lib\src\components\form\select.dart:1327:14
+- [x] lib\src\components\form\select.dart:1328:14
+- [x] lib\src\components\form\select.dart:1330:9
+- [x] lib\src\components\form\select.dart:1354:9
+- [x] lib\src\components\form\select.dart:1359:7
+- [x] lib\src\components\form\select.dart:1360:32
+- [x] lib\src\components\form\select.dart:1361:40
+- [x] lib\src\components\form\select.dart:1362:32
+- [x] lib\src\components\form\select.dart:1363:17
+- [x] lib\src\components\form\select.dart:1364:24
+- [x] lib\src\components\form\select.dart:1365:24
+- [x] lib\src\components\form\select.dart:1366:29
+- [x] lib\src\components\form\select.dart:1367:17
+- [x] lib\src\components\form\select.dart:1368:17
+- [x] lib\src\components\form\select.dart:1369:15
+- [x] lib\src\components\form\select.dart:1370:15
+- [x] lib\src\components\form\select.dart:1371:14
+- [x] lib\src\components\form\select.dart:1372:27
+- [x] lib\src\components\form\select.dart:1373:14
+- [x] lib\src\components\form\select.dart:1374:14
+- [x] lib\src\components\form\select.dart:1376:21
+- [x] lib\src\components\form\select.dart:1394:9
+- [x] lib\src\components\form\select.dart:1412:21
+- [x] lib\src\components\form\select.dart:1439:7
+- [x] lib\src\components\form\select.dart:1442:12
+- [x] lib\src\components\form\select.dart:1440:8
+- [x] lib\src\components\form\select.dart:1441:8
+- [x] lib\src\components\form\select.dart:1443:28
+- [x] lib\src\components\form\select.dart:1857:16
+- [x] lib\src\components\form\select.dart:1861:12
+- [x] lib\src\components\form\select.dart:1860:11
+- [x] lib\src\components\form\select.dart:1858:16
+- [x] lib\src\components\form\select.dart:1859:9
+- [x] lib\src\components\form\select.dart:1866:7
+- [x] lib\src\components\form\select.dart:1867:9
+- [x] lib\src\components\form\select.dart:1881:9
+- [x] lib\src\components\form\select.dart:1884:7
+- [x] lib\src\components\form\select.dart:1885:33
+- [x] lib\src\components\form\select.dart:1886:14
+- [x] lib\src\components\form\select.dart:1888:9
+- [x] lib\src\components\form\select.dart:1905:7
+- [x] lib\src\components\form\select.dart:1906:22
 - [ ] lib\src\components\form\select.dart:1908:9
