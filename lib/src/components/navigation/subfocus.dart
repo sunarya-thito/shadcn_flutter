@@ -57,25 +57,116 @@ typedef SubFocusScopeBuilder = Widget Function(
 /// )
 /// ```
 class SubFocusScope extends StatefulWidget {
+  /// Builder function that creates the widget tree for this scope.
+  ///
+  /// Called with the build context and the scope's state for managing
+  /// focus within child widgets. If `null`, the scope acts as an invisible
+  /// wrapper without building additional UI.
   final SubFocusScopeBuilder? builder;
+
+  /// Whether the first child should automatically receive focus.
+  ///
+  /// When `true`, the first attached [SubFocus] widget will automatically
+  /// gain focus when the scope is built. Defaults to `false`.
   final bool autofocus;
+
+  /// Creates a sub-focus scope.
+  ///
+  /// Parameters:
+  /// - [builder]: Widget builder with scope state (optional)
+  /// - [autofocus]: Auto-focus first child (defaults to `false`)
   const SubFocusScope({super.key, this.builder, this.autofocus = false});
 
   @override
   State<SubFocusScope> createState() => _SubFocusScopeState();
 }
 
+/// Mixin providing focus scope state management capabilities.
+///
+/// Defines the interface for interacting with a [SubFocusScope], including
+/// methods for focus management, child attachment/detachment, and action routing.
+///
+/// This mixin is implemented by internal scope state classes and provides
+/// the public API for focus operations within a scope.
 mixin SubFocusScopeState {
+  /// Invokes an action on the currently focused child widget.
+  ///
+  /// Routes keyboard shortcuts or other intents to the focused child.
+  /// Returns the result of the action, or `null` if no child is focused
+  /// or the action is not handled.
+  ///
+  /// Parameters:
+  /// - [intent]: The intent/action to invoke
+  ///
+  /// Returns the action result or `null`.
   Object? invokeActionOnFocused(Intent intent);
 
+  /// Moves focus to the next child in the specified direction.
+  ///
+  /// Traverses the focus order in the given direction, wrapping around
+  /// at the edges if needed. Returns `true` if focus was successfully
+  /// moved, `false` otherwise (e.g., no children available).
+  ///
+  /// Parameters:
+  /// - [direction]: Direction to traverse (defaults to [TraversalDirection.down])
+  ///
+  /// Returns `true` if focus moved successfully.
   bool nextFocus([TraversalDirection direction = TraversalDirection.down]);
+
+  /// Retrieves the nearest [SubFocusScopeState] from the widget tree.
+  ///
+  /// Searches up the widget tree for an ancestor [SubFocusScope] and
+  /// returns its state. Returns `null` if no scope is found.
+  ///
+  /// Parameters:
+  /// - [context]: Build context to search from
+  ///
+  /// Returns the scope state or `null`.
   static SubFocusScopeState? maybeOf(BuildContext context) {
     return Data.maybeOf<SubFocusScopeState>(context);
   }
 
+  /// Detaches a child focus state from this scope.
+  ///
+  /// Called when a [SubFocus] widget is disposed or removed from the tree.
+  /// Removes the child from the scope's managed focus list.
+  ///
+  /// Parameters:
+  /// - [child]: The child state to detach
   void detach(SubFocusState child);
+
+  /// Attaches a child focus state to this scope.
+  ///
+  /// Called when a [SubFocus] widget is initialized. Adds the child to
+  /// the scope's managed focus list and may auto-focus it if configured.
+  ///
+  /// Parameters:
+  /// - [child]: The child state to attach
+  ///
+  /// Returns `true` if attachment succeeded.
   bool attach(SubFocusState child);
+
+  /// Requests focus for a specific child.
+  ///
+  /// Transfers focus to the specified child, unfocusing the previously
+  /// focused child if any. Updates visual state and ensures the focused
+  /// widget is scrolled into view if needed.
+  ///
+  /// Parameters:
+  /// - [child]: The child to receive focus
+  ///
+  /// Returns `true` if focus was granted successfully.
   bool requestFocus(SubFocusState child);
+
+  /// Removes focus from a specific child.
+  ///
+  /// If the specified child currently has focus, clears the focus state.
+  /// Otherwise, does nothing.
+  ///
+  /// Parameters:
+  /// - [child]: The child to unfocus
+  ///
+  /// Returns `true` if the child was unfocused, `false` if it didn't have focus.
   bool unfocus(SubFocusState child);
 }
 
@@ -281,6 +372,16 @@ class _SubFocusScopeState extends State<SubFocusScope> with SubFocusScopeState {
 ///
 /// Receives the build context and focus state for creating widgets that
 /// respond to focus changes and user interactions.
+/// Callback function type for building SubFocus widgets.
+/// 
+/// Receives the build context and the focus state for managing focus
+/// presentation and behavior within the widget.
+///
+/// Parameters:
+/// - [context]: The build context
+/// - [state]: The focus state providing focus information and control methods
+///
+/// Returns the widget tree for this focusable element.
 typedef SubFocusBuilder = Widget Function(
   BuildContext context,
   SubFocusState state,
@@ -336,25 +437,102 @@ typedef SubFocusBuilder = Widget Function(
 /// )
 /// ```
 class SubFocus extends StatefulWidget {
+  /// Builder function that creates the widget tree with focus state.
+  ///
+  /// Called with the build context and focus state, allowing the widget
+  /// to update its appearance and behavior based on the current focus status.
   final SubFocusBuilder builder;
+
+  /// Whether this focusable element is enabled.
+  ///
+  /// When `false`, the element cannot receive focus and is excluded from
+  /// the focus traversal order. Defaults to `true`.
   final bool enabled;
+
+  /// Creates a focusable widget.
+  ///
+  /// Parameters:
+  /// - [builder]: Widget builder with focus state (required)
+  /// - [enabled]: Whether focus is enabled (defaults to `true`)
   const SubFocus({super.key, required this.builder, this.enabled = true});
 
   @override
   State<SubFocus> createState() => _SubFocusState();
 }
 
+/// Mixin providing focus state and control capabilities for focusable widgets.
+///
+/// Defines the interface for interacting with a [SubFocus] widget, including
+/// methods for focus management, visibility control, and action handling.
+///
+/// This mixin is implemented by internal focus state classes and provides
+/// the public API for focus operations on individual focusable elements.
 mixin SubFocusState {
+  /// Retrieves the render box for this focusable element.
+  ///
+  /// Used for positioning and scroll calculations. Returns `null` if
+  /// the widget is not currently rendered.
+  ///
+  /// Returns the [RenderBox] or `null`.
   RenderBox? findRenderObject();
+
+  /// Scrolls the widget into view within its scrollable ancestor.
+  ///
+  /// Ensures the focused widget is visible by scrolling its nearest
+  /// [Scrollable] ancestor. Useful when focus moves to an off-screen element.
+  ///
+  /// Parameters:
+  /// - [alignmentPolicy]: How to align the widget when scrolling
   void ensureVisible({
     ScrollPositionAlignmentPolicy alignmentPolicy =
         ScrollPositionAlignmentPolicy.explicit,
   });
+
+  /// Whether this element currently has focus.
+  ///
+  /// Returns `true` if this is the focused element in its parent scope.
   bool get isFocused;
+
+  /// Requests focus for this element.
+  ///
+  /// Asks the parent scope to transfer focus to this element. Returns
+  /// `true` if focus was successfully acquired, `false` otherwise.
+  ///
+  /// Returns `true` on success.
   bool requestFocus();
+
+  /// Invokes an action/intent on this focused element.
+  ///
+  /// Routes keyboard shortcuts or other actions to this widget's
+  /// action handlers. Returns the action result or `null` if not handled.
+  ///
+  /// Parameters:
+  /// - [intent]: The intent/action to invoke
+  ///
+  /// Returns the action result or `null`.
   Object? invokeAction(Intent intent);
+
+  /// The number of times this element has received focus.
+  ///
+  /// Increments each time [requestFocus] succeeds. Useful for analytics
+  /// or behavior tracking.
   int get focusCount;
+
+  /// Marks this element as focused or unfocused (internal method).
+  ///
+  /// Called by the parent scope to update focus state. Should not be
+  /// called directly by application code.
+  ///
+  /// Parameters:
+  /// - [focused]: Whether the element should be focused
   void markFocused(bool focused);
+
+  /// Removes focus from this element.
+  ///
+  /// Asks the parent scope to clear focus from this element. Returns
+  /// `true` if focus was successfully removed, `false` if it didn't have focus.
+  ///
+  /// Returns `true` on success.
   bool unfocus();
 }
 
