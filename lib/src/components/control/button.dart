@@ -465,6 +465,41 @@ class SelectedButton extends StatefulWidget {
   /// Called when the button is pressed (tapped).
   final VoidCallback? onPressed;
 
+  /// Creates a [SelectedButton] widget.
+  ///
+  /// A button that toggles between selected and unselected states, applying
+  /// different styles based on the current [value].
+  ///
+  /// Parameters:
+  /// - [value] (required): The current selection state (`true` for selected).
+  /// - [onChanged]: Callback invoked when the selection state changes. If `null`, the button is disabled.
+  /// - [child] (required): The widget displayed inside the button.
+  /// - [enabled]: Whether the button is enabled. Defaults to checking if [onChanged] is non-null.
+  /// - [style]: Style applied when unselected. Defaults to [ButtonStyle.ghost].
+  /// - [selectedStyle]: Style applied when selected. Defaults to [ButtonStyle.secondary].
+  /// - [alignment]: Alignment of the child within the button.
+  /// - [marginAlignment]: Margin alignment for the button.
+  /// - [disableTransition]: If `true`, disables style transition animations. Defaults to `false`.
+  /// - [onHover]: Called when the hover state changes.
+  /// - [onFocus]: Called when the focus state changes.
+  /// - [enableFeedback]: Whether to enable haptic/audio feedback.
+  /// - [onTapDown], [onTapUp], [onTapCancel]: Primary tap gesture callbacks.
+  /// - [onSecondaryTapDown], [onSecondaryTapUp], [onSecondaryTapCancel]: Secondary tap gesture callbacks.
+  /// - [onTertiaryTapDown], [onTertiaryTapUp], [onTertiaryTapCancel]: Tertiary tap gesture callbacks.
+  /// - [onLongPressStart], [onLongPressUp], [onLongPressMoveUpdate], [onLongPressEnd]: Long press gesture callbacks.
+  /// - [onSecondaryLongPress], [onTertiaryLongPress]: Secondary and tertiary long press callbacks.
+  /// - [disableHoverEffect]: If `true`, disables the hover effect. Defaults to `false`.
+  /// - [statesController]: Optional controller for programmatic state management.
+  /// - [onPressed]: Called when the button is tapped.
+  ///
+  /// Example:
+  /// ```dart
+  /// SelectedButton(
+  ///   value: isSelected,
+  ///   onChanged: (selected) => setState(() => isSelected = selected),
+  ///   child: Text('Toggle Me'),
+  /// )
+  /// ```
   const SelectedButton({
     super.key,
     required this.value,
@@ -509,6 +544,11 @@ class SelectedButton extends StatefulWidget {
 /// Handles widget state controller lifecycle and synchronizes the selected state
 /// with the button's value.
 class SelectedButtonState extends State<SelectedButton> {
+  /// The controller managing widget states (selected, hovered, focused, etc.).
+  ///
+  /// This controller is either provided via [SelectedButton.statesController]
+  /// or created automatically. It tracks and manages the button's interactive
+  /// states and updates them based on user interactions and the selection value.
   late WidgetStatesController statesController;
   @override
   void initState() {
@@ -949,6 +989,20 @@ class Button extends StatefulWidget {
     this.disableFocusOutline = false,
   });
 
+  /// Creates an outline button with a border and transparent background.
+  ///
+  /// Outline buttons feature a visible border and transparent background, providing
+  /// a minimal yet distinct appearance. They're ideal for secondary actions that need
+  /// to stand out more than ghost buttons but less than filled buttons. The outline
+  /// style works well in layouts where visual hierarchy matters.
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.outline(
+  ///   onPressed: () => showMore(),
+  ///   child: Text('Learn More'),
+  /// );
+  /// ```
   const Button.outline({
     super.key,
     this.statesController,
@@ -1033,6 +1087,19 @@ class Button extends StatefulWidget {
     this.disableFocusOutline = false,
   });
 
+  /// Creates a link-styled button with underline decoration.
+  ///
+  /// Link buttons appear as inline text links, typically underlined on hover,
+  /// making them suitable for navigation or inline actions within text. They have
+  /// minimal visual presence and work well for tertiary actions or embedded links.
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.link(
+  ///   onPressed: () => openUrl(),
+  ///   child: Text('View Documentation'),
+  /// );
+  /// ```
   const Button.link({
     super.key,
     this.statesController,
@@ -1068,6 +1135,19 @@ class Button extends StatefulWidget {
     this.disableFocusOutline = false,
   });
 
+  /// Creates a text-only button with no background or border.
+  ///
+  /// Text buttons display only their text content without any background fill or
+  /// border decoration. They're the most minimal button style, useful for actions
+  /// that should be accessible but not visually prominent, such as "Skip" or "Not now".
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.text(
+  ///   onPressed: () => skipStep(),
+  ///   child: Text('Skip'),
+  /// );
+  /// ```
   const Button.text({
     super.key,
     this.statesController,
@@ -1152,6 +1232,19 @@ class Button extends StatefulWidget {
     this.disableFocusOutline = false,
   });
 
+  /// Creates a fixed-style button with consistent dimensions.
+  ///
+  /// Fixed buttons maintain specific dimensions regardless of content, making them
+  /// ideal for grids, toolbars, or layouts where uniform button sizing is required.
+  /// They're commonly used in icon-heavy interfaces or when precise spacing matters.
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.fixed(
+  ///   onPressed: () => performAction(),
+  ///   child: Icon(Icons.add),
+  /// );
+  /// ```
   const Button.fixed({
     super.key,
     this.statesController,
@@ -1187,6 +1280,24 @@ class Button extends StatefulWidget {
     this.disableFocusOutline = false,
   });
 
+  /// Creates a card-style button with elevated appearance.
+  ///
+  /// Card buttons feature subtle shadows and borders to create a card-like elevated
+  /// appearance. They work well in content-heavy layouts where buttons need to stand
+  /// out from surrounding content, such as feature cards or call-to-action sections.
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.card(
+  ///   onPressed: () => selectOption(),
+  ///   child: Column(
+  ///     children: [
+  ///       Icon(Icons.star),
+  ///       Text('Premium'),
+  ///     ],
+  ///   ),
+  /// );
+  /// ```
   const Button.card({
     super.key,
     this.statesController,
@@ -1226,6 +1337,21 @@ class Button extends StatefulWidget {
   ButtonState createState() => ButtonState();
 }
 
+/// State class for [Button] widgets managing interactive state and rendering.
+///
+/// [ButtonState] handles the button's lifecycle, manages the [WidgetStatesController]
+/// for tracking interactive states (pressed, hovered, focused, disabled), and
+/// coordinates with the button's style system to apply appropriate visual changes
+/// based on the current state.
+///
+/// This class is generic, allowing it to manage state for various button types
+/// (primary, secondary, outline, etc.) through the type parameter [T].
+///
+/// The state class automatically:
+/// - Creates or uses a provided [WidgetStatesController]
+/// - Updates the disabled state based on [onPressed] availability
+/// - Manages focus and hover interactions
+/// - Applies style transitions and animations
 class ButtonState<T extends Button> extends State<T> {
   bool get _shouldEnableFeedback {
     final platform = Theme.of(context).platform;
@@ -1519,24 +1645,107 @@ enum ButtonShape {
   circle,
 }
 
+/// Function signature for button state-dependent properties.
+///
+/// [ButtonStateProperty] is a function type that resolves a property value based
+/// on the current widget states (hovered, pressed, focused, disabled, etc.) and
+/// build context. This allows button styles to dynamically adapt their appearance
+/// based on user interactions.
+///
+/// Parameters:
+/// - [context]: The build context for accessing theme data
+/// - [states]: Set of current widget states (e.g., `{WidgetState.hovered, WidgetState.pressed}`)
+///
+/// Returns the property value of type [T] appropriate for the current states.
+///
+/// Example:
+/// ```dart
+/// ButtonStateProperty<Color> backgroundColor = (context, states) {
+///   if (states.contains(WidgetState.disabled)) return Colors.grey;
+///   if (states.contains(WidgetState.pressed)) return Colors.blue.shade700;
+///   if (states.contains(WidgetState.hovered)) return Colors.blue.shade400;
+///   return Colors.blue;
+/// };
+/// ```
 typedef ButtonStateProperty<T> = T Function(
     BuildContext context, Set<WidgetState> states);
 
+/// Abstract interface defining the style properties for button components.
+///
+/// [AbstractButtonStyle] specifies the contract for button styling, requiring
+/// implementations to provide state-dependent values for decoration, cursor,
+/// padding, text style, icon theme, and margin. This abstraction allows for
+/// flexible button theming while maintaining a consistent API.
+///
+/// All properties return [ButtonStateProperty] functions that resolve values
+/// based on the button's current interactive state (hovered, pressed, focused, etc.).
+///
+/// Implementations include [ButtonStyle] and [ButtonVariance], which provide
+/// concrete styling configurations for different button types.
 abstract class AbstractButtonStyle {
+  /// Returns the decoration (background, border, shadows) based on button state.
   ButtonStateProperty<Decoration> get decoration;
+
+  /// Returns the mouse cursor appearance based on button state.
   ButtonStateProperty<MouseCursor> get mouseCursor;
+
+  /// Returns the internal padding based on button state.
   ButtonStateProperty<EdgeInsetsGeometry> get padding;
+
+  /// Returns the text style based on button state.
   ButtonStateProperty<TextStyle> get textStyle;
+
+  /// Returns the icon theme based on button state.
   ButtonStateProperty<IconThemeData> get iconTheme;
+
+  /// Returns the external margin based on button state.
   ButtonStateProperty<EdgeInsetsGeometry> get margin;
 }
 
+/// Configurable button style combining variance, size, density, and shape.
+///
+/// [ButtonStyle] implements [AbstractButtonStyle] and provides a composable way
+/// to create button styles by combining a base variance (primary, secondary, outline,
+/// etc.) with size, density, and shape modifiers. This allows for flexible button
+/// customization while maintaining consistency.
+///
+/// The class provides named constructors for common button variants (primary,
+/// secondary, outline, etc.) and can be further customized with size and density options.
+///
+/// Example:
+/// ```dart
+/// // Create a large primary button
+/// const ButtonStyle.primary(
+///   size: ButtonSize.large,
+///   density: ButtonDensity.comfortable,
+/// )
+///
+/// // Create a small outline button with circular shape
+/// const ButtonStyle.outline(
+///   size: ButtonSize.small,
+///   shape: ButtonShape.circle,
+/// )
+/// ```
 class ButtonStyle implements AbstractButtonStyle {
+  /// The base style variance (primary, secondary, outline, etc.).
   final AbstractButtonStyle variance;
+
+  /// The size configuration affecting padding and minimum dimensions.
   final ButtonSize size;
+
+  /// The density configuration affecting spacing and compactness.
   final ButtonDensity density;
+
+  /// The shape configuration (rectangle or circle).
   final ButtonShape shape;
 
+  /// Creates a custom [ButtonStyle] with the specified variance and modifiers.
+  ///
+  /// Parameters:
+  /// - [variance] (required): The base button style variant
+  /// - [size]: The button size. Defaults to [ButtonSize.normal]
+  /// - [density]: The button density. Defaults to [ButtonDensity.normal]
+  /// - [shape]: The button shape. Defaults to [ButtonShape.rectangle]
   const ButtonStyle({
     required this.variance,
     this.size = ButtonSize.normal,
@@ -1544,120 +1753,179 @@ class ButtonStyle implements AbstractButtonStyle {
     this.shape = ButtonShape.rectangle,
   });
 
+  /// Creates a primary button style with prominent filled appearance.
+  ///
+  /// Primary buttons use the theme's primary color with high contrast, making them
+  /// ideal for the main action on a screen.
   const ButtonStyle.primary({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.primary;
 
+  /// Creates a secondary button style with muted appearance.
+  ///
+  /// Secondary buttons have less visual prominence than primary buttons, suitable
+  /// for supporting or alternative actions.
   const ButtonStyle.secondary({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.secondary;
 
+  /// Creates an outline button style with border and no background.
+  ///
+  /// Outline buttons feature a border with transparent background, providing a
+  /// clear but subtle appearance for secondary actions.
   const ButtonStyle.outline({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.outline;
 
+  /// Creates a ghost button style with minimal visual presence.
+  ///
+  /// Ghost buttons have no background or border, only showing on hover, making
+  /// them ideal for tertiary actions.
   const ButtonStyle.ghost({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.ghost;
 
+  /// Creates a link button style resembling a text hyperlink.
+  ///
+  /// Link buttons appear as inline links with underline decoration, typically
+  /// used for navigation or inline actions.
   const ButtonStyle.link({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.link;
 
+  /// Creates a text-only button style with no background or border.
+  ///
+  /// Text buttons display only their text content, making them the most minimal
+  /// button style for unobtrusive actions.
   const ButtonStyle.text({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.text;
 
+  /// Creates a destructive button style for delete/remove actions.
+  ///
+  /// Destructive buttons use warning colors (typically red) to indicate actions
+  /// that remove or delete data.
   const ButtonStyle.destructive({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.destructive;
 
+  /// Creates a fixed-size button style with consistent dimensions.
+  ///
+  /// Fixed buttons maintain specific dimensions regardless of content, useful
+  /// for icon buttons or grid layouts.
   const ButtonStyle.fixed({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.fixed;
 
+  /// Creates a menu button style for dropdown menu triggers.
+  ///
+  /// Menu buttons are designed for triggering dropdown menus, with appropriate
+  /// spacing and styling for menu contexts.
   const ButtonStyle.menu({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.menu;
 
+  /// Creates a menubar button style for menubar items.
+  ///
+  /// Menubar buttons are optimized for horizontal menu bars with appropriate
+  /// padding and hover effects.
   const ButtonStyle.menubar({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.menubar;
 
+  /// Creates a muted button style with subdued appearance.
+  ///
+  /// Muted buttons use low-contrast colors for minimal visual impact while
+  /// remaining functional.
   const ButtonStyle.muted({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.muted;
 
+  /// Creates a primary icon button style with compact icon density.
+  ///
+  /// Icon buttons are optimized for displaying icons without text, using
+  /// [ButtonDensity.icon] for appropriate spacing.
   const ButtonStyle.primaryIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.primary;
 
+  /// Creates a secondary icon button style with compact icon density.
   const ButtonStyle.secondaryIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.secondary;
 
+  /// Creates an outline icon button style with compact icon density.
   const ButtonStyle.outlineIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.outline;
 
+  /// Creates a ghost icon button style with compact icon density.
   const ButtonStyle.ghostIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.ghost;
 
+  /// Creates a link icon button style with compact icon density.
   const ButtonStyle.linkIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.link;
 
+  /// Creates a text icon button style with compact icon density.
   const ButtonStyle.textIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.text;
 
+  /// Creates a destructive icon button style with compact icon density.
   const ButtonStyle.destructiveIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.destructive;
 
+  /// Creates a fixed icon button style with compact icon density.
   const ButtonStyle.fixedIcon({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.icon,
     this.shape = ButtonShape.rectangle,
   }) : variance = ButtonVariance.fixed;
 
+  /// Creates a card button style with elevated appearance.
+  ///
+  /// Card buttons feature subtle shadows and borders creating an elevated,
+  /// card-like appearance suitable for content-heavy layouts.
   const ButtonStyle.card({
     this.size = ButtonSize.normal,
     this.density = ButtonDensity.normal,
