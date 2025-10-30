@@ -561,60 +561,60 @@ TODO:
 - [ ] lib/src/components/display/badge.dart:235:  final Widget? trailing;
 - [x] lib/src/components/display/badge.dart:236:  final AbstractButtonStyle? style;
 - [x] lib/src/components/display/badge.dart:238:  const DestructiveBadge({
-- [ ] lib/src/components/display/calendar.dart:14:  CalendarTheme copyWith({ValueGetter<Color?>? arrowIconColor}) {
-- [ ] lib/src/components/display/calendar.dart:12:  const CalendarTheme({this.arrowIconColor});
-- [ ] lib/src/components/display/calendar.dart:37:  date,
-- [ ] lib/src/components/display/calendar.dart:38:  month,
-- [ ] lib/src/components/display/calendar.dart:39:  year,
-- [ ] lib/src/components/display/calendar.dart:48:  disabled,
-- [ ] lib/src/components/display/calendar.dart:49:  enabled,
-- [ ] lib/src/components/display/calendar.dart:66:  none,
-- [ ] lib/src/components/display/calendar.dart:67:  single,
-- [ ] lib/src/components/display/calendar.dart:68:  range,
-- [ ] lib/src/components/display/calendar.dart:69:  multi,
-- [ ] lib/src/components/display/calendar.dart:96:  final CalendarViewType initialViewType;
-- [ ] lib/src/components/display/calendar.dart:97:  final CalendarView? initialView;
-- [ ] lib/src/components/display/calendar.dart:98:  final CalendarSelectionMode selectionMode;
-- [ ] lib/src/components/display/calendar.dart:99:  final CalendarSelectionMode? viewMode;
-- [ ] lib/src/components/display/calendar.dart:100:  final CalendarValue? initialValue;
-- [ ] lib/src/components/display/calendar.dart:101:  final ValueChanged<CalendarValue?>? onChanged;
-- [ ] lib/src/components/display/calendar.dart:102:  final DateStateBuilder? stateBuilder;
-- [ ] lib/src/components/display/calendar.dart:599:  CalendarView get view;
-- [ ] lib/src/components/display/calendar.dart:581:  CalendarValueLookup lookup(int year, [int? month = 1, int? day = 1]);
-- [ ] lib/src/components/display/calendar.dart:583:  static SingleCalendarValue single(DateTime date) {
-- [ ] lib/src/components/display/calendar.dart:587:  static RangeCalendarValue range(DateTime start, DateTime end) {
-- [ ] lib/src/components/display/calendar.dart:591:  static MultiCalendarValue multi(List<DateTime> dates) {
-- [ ] lib/src/components/display/calendar.dart:595:  SingleCalendarValue toSingle();
-- [ ] lib/src/components/display/calendar.dart:596:  RangeCalendarValue toRange();
-- [ ] lib/src/components/display/calendar.dart:597:  MultiCalendarValue toMulti();
-- [ ] lib/src/components/display/calendar.dart:582:  const CalendarValue();
-- [ ] lib/src/components/display/calendar.dart:625:  final DateTime date;
-- [ ] lib/src/components/display/calendar.dart:627:  SingleCalendarValue(this.date);
+- [x] lib/src/components/display/calendar.dart:14:  CalendarTheme copyWith({ValueGetter<Color?>? arrowIconColor}) {
+- [x] lib/src/components/display/calendar.dart:12:  const CalendarTheme({this.arrowIconColor});
+- [x] lib/src/components/display/calendar.dart:37:  date,
+- [x] lib/src/components/display/calendar.dart:38:  month,
+- [x] lib/src/components/display/calendar.dart:39:  year,
+- [x] lib/src/components/display/calendar.dart:48:  disabled,
+- [x] lib/src/components/display/calendar.dart:49:  enabled,
+- [x] lib/src/components/display/calendar.dart:66:  none,
+- [x] lib/src/components/display/calendar.dart:67:  single,
+- [x] lib/src/components/display/calendar.dart:68:  range,
+- [x] lib/src/components/display/calendar.dart:69:  multi,
+- [x] lib/src/components/display/calendar.dart:96:  final CalendarViewType initialViewType;
+- [x] lib/src/components/display/calendar.dart:97:  final CalendarView? initialView;
+- [x] lib/src/components/display/calendar.dart:98:  final CalendarSelectionMode selectionMode;
+- [x] lib/src/components/display/calendar.dart:99:  final CalendarSelectionMode? viewMode;
+- [x] lib/src/components/display/calendar.dart:100:  final CalendarValue? initialValue;
+- [x] lib/src/components/display/calendar.dart:101:  final ValueChanged<CalendarValue?>? onChanged;
+- [x] lib/src/components/display/calendar.dart:102:  final DateStateBuilder? stateBuilder;
+- [x] lib/src/components/display/calendar.dart:599:  CalendarView get view;
+- [x] lib/src/components/display/calendar.dart:581:  CalendarValueLookup lookup(int year, [int? month = 1, int? day = 1]);
+- [x] lib/src/components/display/calendar.dart:583:  static SingleCalendarValue single(DateTime date) {
+- [x] lib/src/components/display/calendar.dart:587:  static RangeCalendarValue range(DateTime start, DateTime end) {
+- [x] lib/src/components/display/calendar.dart:591:  static MultiCalendarValue multi(List<DateTime> dates) {
+- [x] lib/src/components/display/calendar.dart:595:  SingleCalendarValue toSingle();
+- [x] lib/src/components/display/calendar.dart:596:  RangeCalendarValue toRange();
+- [x] lib/src/components/display/calendar.dart:597:  MultiCalendarValue toMulti();
+- [x] lib/src/components/display/calendar.dart:582:  const CalendarValue();
+- [x] lib/src/components/display/calendar.dart:625:  final DateTime date;
+- [x] lib/src/components/display/calendar.dart:627:  SingleCalendarValue(this.date);
 - [ ] lib/src/components/display/calendar.dart:672:class RangeCalendarValue extends CalendarValue {
-- [ ] lib/src/components/display/calendar.dart:673:  final DateTime start;
-- [ ] lib/src/components/display/calendar.dart:674:  final DateTime end;
-- [ ] lib/src/components/display/calendar.dart:676:  RangeCalendarValue(DateTime start, DateTime end)
+- [x] lib/src/components/display/calendar.dart:673:  final DateTime start;
+- [x] lib/src/components/display/calendar.dart:674:  final DateTime end;
+- [x] lib/src/components/display/calendar.dart:676:  RangeCalendarValue(DateTime start, DateTime end)
 - [ ] lib/src/components/display/calendar.dart:743:class MultiCalendarValue extends CalendarValue {
-- [ ] lib/src/components/display/calendar.dart:744:  final List<DateTime> dates;
-- [ ] lib/src/components/display/calendar.dart:746:  MultiCalendarValue(this.dates);
+- [x] lib/src/components/display/calendar.dart:744:  final List<DateTime> dates;
+- [x] lib/src/components/display/calendar.dart:746:  MultiCalendarValue(this.dates);
 - [ ] lib/src/components/display/calendar.dart:806:enum CalendarValueLookup { none, selected, start, end, inRange }
-- [ ] lib/src/components/display/calendar.dart:883:  CalendarView get next {
-- [ ] lib/src/components/display/calendar.dart:890:  CalendarView get previous {
-- [ ] lib/src/components/display/calendar.dart:897:  CalendarView get nextYear {
-- [ ] lib/src/components/display/calendar.dart:901:  CalendarView get previousYear {
-- [ ] lib/src/components/display/calendar.dart:920:  CalendarView copyWith({
-- [ ] lib/src/components/display/calendar.dart:833:  final int year;
-- [ ] lib/src/components/display/calendar.dart:834:  final int month;
+- [x] lib/src/components/display/calendar.dart:883:  CalendarView get next {
+- [x] lib/src/components/display/calendar.dart:890:  CalendarView get previous {
+- [x] lib/src/components/display/calendar.dart:897:  CalendarView get nextYear {
+- [x] lib/src/components/display/calendar.dart:901:  CalendarView get previousYear {
+- [x] lib/src/components/display/calendar.dart:920:  CalendarView copyWith({
+- [x] lib/src/components/display/calendar.dart:833:  final int year;
+- [x] lib/src/components/display/calendar.dart:834:  final int month;
 - [ ] lib/src/components/display/calendar.dart:931:extension CalendarDateTime on DateTime {
-- [ ] lib/src/components/display/calendar.dart:932:  CalendarView toCalendarView() {
-- [ ] lib/src/components/display/calendar.dart:936:  CalendarValue toCalendarValue() {
-- [ ] lib/src/components/display/calendar.dart:977:  final DateTime? now;
-- [ ] lib/src/components/display/calendar.dart:978:  final CalendarValue? value;
-- [ ] lib/src/components/display/calendar.dart:979:  final CalendarView view;
-- [ ] lib/src/components/display/calendar.dart:980:  final CalendarSelectionMode selectionMode;
-- [ ] lib/src/components/display/calendar.dart:981:  final ValueChanged<CalendarValue?>? onChanged;
-- [ ] lib/src/components/display/calendar.dart:982:  final bool Function(DateTime date)? isDateEnabled;
-- [ ] lib/src/components/display/calendar.dart:983:  final DateStateBuilder? stateBuilder;
+- [x] lib/src/components/display/calendar.dart:932:  CalendarView toCalendarView() {
+- [x] lib/src/components/display/calendar.dart:936:  CalendarValue toCalendarValue() {
+- [x] lib/src/components/display/calendar.dart:977:  final DateTime? now;
+- [x] lib/src/components/display/calendar.dart:978:  final CalendarValue? value;
+- [x] lib/src/components/display/calendar.dart:979:  final CalendarView view;
+- [x] lib/src/components/display/calendar.dart:980:  final CalendarSelectionMode selectionMode;
+- [x] lib/src/components/display/calendar.dart:981:  final ValueChanged<CalendarValue?>? onChanged;
+- [x] lib/src/components/display/calendar.dart:982:  final bool Function(DateTime date)? isDateEnabled;
+- [x] lib/src/components/display/calendar.dart:983:  final DateStateBuilder? stateBuilder;
 - [ ] lib/src/components/display/calendar.dart:1178:class MonthCalendar extends StatelessWidget {
 - [ ] lib/src/components/display/calendar.dart:1179:  final CalendarView value;
 - [ ] lib/src/components/display/calendar.dart:1180:  final ValueChanged<CalendarView> onChanged;
@@ -782,150 +782,150 @@ TODO:
 - [ ] lib/src/components/form/autocomplete.dart:281:  final String suggestion;
 - [ ] lib/src/components/form/autocomplete.dart:282:  final AutoCompleteMode mode;
 - [ ] lib/src/components/form/autocomplete.dart:283:  const AutoCompleteIntent(this.suggestion, this.mode);
-- [ ] lib/src/components/form/chip_input.dart:24:  final double? spacing;
-- [ ] lib/src/components/form/chip_input.dart:62:class ChipEditingController<T> extends TextEditingController {
-- [ ] lib/src/components/form/chip_input.dart:125:  List<T> get chips => List.unmodifiable(_chipMap.values);
-- [ ] lib/src/components/form/chip_input.dart:297:  String get plainText {
-- [ ] lib/src/components/form/chip_input.dart:309:  String get textAtCursor {
-- [ ] lib/src/components/form/chip_input.dart:127:  set chips(List<T> newChips) {
-- [ ] lib/src/components/form/chip_input.dart:157:  void removeAllChips() {
-- [ ] lib/src/components/form/chip_input.dart:314:  void insertChipAtCursor(T? Function(String chipText) chipConverter) {
-- [ ] lib/src/components/form/chip_input.dart:325:  void clearTextAtCursor() {
-- [ ] lib/src/components/form/chip_input.dart:337:  void appendChip(T chip) {
-- [ ] lib/src/components/form/chip_input.dart:361:  void appendChipAtCursor(T chip) {
-- [ ] lib/src/components/form/chip_input.dart:375:  void insertChip(T chip) {
-- [ ] lib/src/components/form/chip_input.dart:424:  void removeChip(T chip) {
-- [ ] lib/src/components/form/chip_input.dart:88:  factory ChipEditingController({String? text, List<T>? initialChips}) {
-- [ ] lib/src/components/form/chip_input.dart:463:typedef ChipSubmissionCallback<T> = T? Function(String chipText);
-- [ ] lib/src/components/form/chip_input.dart:465:class ChipInput<T> extends TextInputStatefulWidget {
-- [ ] lib/src/components/form/chip_input.dart:466:  static bool isChipUnicode(int codeUnit) {
-- [ ] lib/src/components/form/chip_input.dart:471:  static bool isChipCharacter(String character) {
-- [ ] lib/src/components/form/chip_input.dart:477:  final ChipWidgetBuilder<T> chipBuilder;
-- [ ] lib/src/components/form/chip_input.dart:478:  final ChipSubmissionCallback<T> onChipSubmitted;
-- [ ] lib/src/components/form/chip_input.dart:479:  final ValueChanged<List<T>>? onChipsChanged;
-- [ ] lib/src/components/form/chip_input.dart:480:  final bool? useChips;
-- [ ] lib/src/components/form/chip_input.dart:481:  final List<T>? initialChips;
-- [ ] lib/src/components/form/chip_input.dart:482:  final bool autoInsertSuggestion;
-- [ ] lib/src/components/form/chip_input.dart:484:  const ChipInput({
-- [ ] lib/src/components/form/chip_input.dart:573:class ChipInputState<T> extends State<ChipInput<T>>
-- [ ] lib/src/components/form/chip_input.dart:694:class ChipSubmitIntent extends Intent {
-- [ ] lib/src/components/form/chip_input.dart:695:  const ChipSubmitIntent();
-- [ ] lib/src/components/form/color/color.dart:787:class RadialColorGradient extends ColorGradient {
-- [ ] lib/src/components/form/color/color.dart:788:  final List<ColorStop> colors;
-- [ ] lib/src/components/form/color/color.dart:789:  final TileMode tileMode;
-- [ ] lib/src/components/form/color/color.dart:790:  final AlignmentGeometry center;
-- [ ] lib/src/components/form/color/color.dart:791:  final AlignmentGeometry? focal;
-- [ ] lib/src/components/form/color/color.dart:792:  final double radius;
-- [ ] lib/src/components/form/color/color.dart:793:  final double focalRadius;
-- [ ] lib/src/components/form/color/color.dart:794:  const RadialColorGradient({
-- [ ] lib/src/components/form/color/color.dart:898:class SweepColorGradient extends ColorGradient {
-- [ ] lib/src/components/form/color/color.dart:899:  final List<ColorStop> colors;
-- [ ] lib/src/components/form/color/color.dart:900:  final TileMode tileMode;
-- [ ] lib/src/components/form/color/color.dart:901:  final AlignmentGeometry center;
-- [ ] lib/src/components/form/color/color.dart:902:  final double startAngle;
-- [ ] lib/src/components/form/color/color.dart:903:  final double endAngle;
-- [ ] lib/src/components/form/color/color.dart:904:  const SweepColorGradient({
-- [ ] lib/src/components/form/color/solid/color_input.dart:463:class ControlledColorInput extends StatelessWidget
-- [ ] lib/src/components/form/color/solid/color_input.dart:477:  final bool? showAlpha;
-- [ ] lib/src/components/form/color/solid/color_input.dart:478:  final AlignmentGeometry? popoverAlignment;
-- [ ] lib/src/components/form/color/solid/color_input.dart:479:  final AlignmentGeometry? popoverAnchorAlignment;
-- [ ] lib/src/components/form/color/solid/color_input.dart:480:  final EdgeInsetsGeometry? popoverPadding;
-- [ ] lib/src/components/form/color/solid/color_input.dart:481:  final Widget? placeholder;
-- [ ] lib/src/components/form/color/solid/color_input.dart:482:  final PromptMode? promptMode;
-- [ ] lib/src/components/form/color/solid/color_input.dart:483:  final Widget? dialogTitle;
-- [ ] lib/src/components/form/color/solid/color_input.dart:484:  final bool? showLabel;
-- [ ] lib/src/components/form/color/solid/color_input.dart:485:  final Axis? orientation;
-- [ ] lib/src/components/form/color/solid/color_input.dart:486:  final bool? enableEyeDropper;
-- [ ] lib/src/components/form/color/solid/color_input.dart:487:  final ColorPickerMode? initialMode;
-- [ ] lib/src/components/form/color/solid/color_input.dart:488:  final ValueChanged<ColorDerivative>? onChanging;
-- [ ] lib/src/components/form/color/solid/color_input.dart:489:  const ControlledColorInput({
-- [ ] lib/src/components/form/color/solid/color_picker.dart:479:class ColorControls extends StatelessWidget {
-- [ ] lib/src/components/form/color/solid/color_picker.dart:583:  List<Widget> buildInputs(BuildContext context) {
-- [ ] lib/src/components/form/color/solid/color_picker.dart:602:  List<Widget> buildRGBInputs(BuildContext context) {
-- [ ] lib/src/components/form/color/solid/color_picker.dart:672:  List<Widget> buildHSLInputs(BuildContext context) {
-- [ ] lib/src/components/form/color/solid/color_picker.dart:739:  List<Widget> buildHSVInputs(BuildContext context) {
-- [ ] lib/src/components/form/color/solid/color_picker.dart:813:  List<Widget> buildHEXInputs(BuildContext context) {
-- [ ] lib/src/components/form/color/solid/color_picker.dart:480:  final ColorDerivative value;
-- [ ] lib/src/components/form/color/solid/color_picker.dart:481:  final ValueChanged<ColorDerivative>? onChanged;
-- [ ] lib/src/components/form/color/solid/color_picker.dart:482:  final ValueChanged<ColorDerivative>? onChanging;
-- [ ] lib/src/components/form/color/solid/color_picker.dart:483:  final ValueChanged<ColorPickerMode>? onModeChanged;
-- [ ] lib/src/components/form/color/solid/color_picker.dart:484:  final bool showAlpha;
-- [ ] lib/src/components/form/color/solid/color_picker.dart:485:  final ColorPickerMode mode;
-- [ ] lib/src/components/form/color/solid/color_picker.dart:486:  final double? controlSpacing;
-- [ ] lib/src/components/form/color/solid/color_picker.dart:487:  final bool? enableEyeDropper;
-- [ ] lib/src/components/form/color/solid/color_picker.dart:488:  final VoidCallback? onEyeDropperRequested;
-- [ ] lib/src/components/form/color/solid/color_picker.dart:490:  const ColorControls({
-- [ ] lib/src/components/form/color/solid/eye_dropper.dart:349:Future<Color?> pickColorFromScreen(BuildContext context,
-- [ ] lib/src/components/form/color/solid/history.dart:222:class RecentColorsScopeState extends State<RecentColorsScope>
-- [ ] lib/src/components/form/date_picker.dart:242:class DatePicker extends StatelessWidget {
-- [ ] lib/src/components/form/date_picker.dart:243:  final DateTime? value;
-- [ ] lib/src/components/form/date_picker.dart:244:  final ValueChanged<DateTime?>? onChanged;
-- [ ] lib/src/components/form/date_picker.dart:245:  final Widget? placeholder;
-- [ ] lib/src/components/form/date_picker.dart:246:  final PromptMode? mode;
-- [ ] lib/src/components/form/date_picker.dart:247:  final CalendarView? initialView;
-- [ ] lib/src/components/form/date_picker.dart:248:  final AlignmentGeometry? popoverAlignment;
-- [ ] lib/src/components/form/date_picker.dart:249:  final AlignmentGeometry? popoverAnchorAlignment;
-- [ ] lib/src/components/form/date_picker.dart:250:  final EdgeInsetsGeometry? popoverPadding;
-- [ ] lib/src/components/form/date_picker.dart:251:  final Widget? dialogTitle;
-- [ ] lib/src/components/form/date_picker.dart:252:  final CalendarViewType? initialViewType;
-- [ ] lib/src/components/form/date_picker.dart:253:  final DateStateBuilder? stateBuilder;
-- [ ] lib/src/components/form/date_picker.dart:254:  final bool? enabled;
-- [ ] lib/src/components/form/date_picker.dart:256:  const DatePicker({
-- [ ] lib/src/components/form/date_picker.dart:339:class DateTimeRange {
-- [ ] lib/src/components/form/date_picker.dart:359:  DateTimeRange copyWith({
-- [ ] lib/src/components/form/date_picker.dart:340:  final DateTime start;
-- [ ] lib/src/components/form/date_picker.dart:341:  final DateTime end;
-- [ ] lib/src/components/form/date_picker.dart:343:  const DateTimeRange(this.start, this.end);
-- [ ] lib/src/components/form/date_picker.dart:370:class DateRangePicker extends StatelessWidget {
-- [ ] lib/src/components/form/date_picker.dart:371:  final DateTimeRange? value;
-- [ ] lib/src/components/form/date_picker.dart:372:  final ValueChanged<DateTimeRange?>? onChanged;
-- [ ] lib/src/components/form/date_picker.dart:373:  final Widget? placeholder;
-- [ ] lib/src/components/form/date_picker.dart:374:  final PromptMode mode;
-- [ ] lib/src/components/form/date_picker.dart:375:  final CalendarView? initialView;
-- [ ] lib/src/components/form/date_picker.dart:376:  final CalendarViewType? initialViewType;
-- [ ] lib/src/components/form/date_picker.dart:377:  final AlignmentGeometry? popoverAlignment;
-- [ ] lib/src/components/form/date_picker.dart:378:  final AlignmentGeometry? popoverAnchorAlignment;
-- [ ] lib/src/components/form/date_picker.dart:379:  final EdgeInsetsGeometry? popoverPadding;
-- [ ] lib/src/components/form/date_picker.dart:380:  final Widget? dialogTitle;
-- [ ] lib/src/components/form/date_picker.dart:381:  final DateStateBuilder? stateBuilder;
-- [ ] lib/src/components/form/date_picker.dart:383:  const DateRangePicker({
-- [ ] lib/src/components/form/file_picker.dart:37:  final Widget? title;
-- [ ] lib/src/components/form/file_picker.dart:38:  final Widget? subtitle;
-- [ ] lib/src/components/form/file_picker.dart:39:  final bool hotDropEnabled;
-- [ ] lib/src/components/form/file_picker.dart:40:  final bool hotDropping;
-- [ ] lib/src/components/form/file_picker.dart:41:  final List<Widget> children;
-- [ ] lib/src/components/form/file_picker.dart:42:  final VoidCallback? onAdd;
-- [ ] lib/src/components/form/file_picker.dart:44:  const FilePicker({
-- [ ] lib/src/components/form/form.dart:1609:typedef AutoCompleteKey = FormKey<String>;
-- [ ] lib/src/components/form/form.dart:1610:typedef CheckboxKey = FormKey<CheckboxState>;
-- [ ] lib/src/components/form/form.dart:1611:typedef ChipInputKey<T> = FormKey<List<T>>;
-- [ ] lib/src/components/form/form.dart:1612:typedef ColorPickerKey = FormKey<Color>;
-- [ ] lib/src/components/form/form.dart:1613:typedef DatePickerKey = FormKey<DateTime>;
-- [ ] lib/src/components/form/form.dart:1614:typedef DateInputKey = FormKey<DateTime>;
-- [ ] lib/src/components/form/form.dart:1615:typedef DurationPickerKey = FormKey<Duration>;
-- [ ] lib/src/components/form/form.dart:1616:typedef DurationInputKey = FormKey<Duration>;
-- [ ] lib/src/components/form/form.dart:1617:typedef InputKey = FormKey<String>;
-- [ ] lib/src/components/form/form.dart:1618:typedef InputOTPKey = FormKey<List<int?>>;
-- [ ] lib/src/components/form/form.dart:1619:typedef MultiSelectKey<T> = FormKey<Iterable<T>>;
-- [ ] lib/src/components/form/form.dart:1620:typedef MultipleAnswerKey<T> = FormKey<Iterable<T>>;
-- [ ] lib/src/components/form/form.dart:1621:typedef MultipleChoiceKey<T> = FormKey<T>;
-- [ ] lib/src/components/form/form.dart:1622:typedef NumberInputKey = FormKey<num>;
-- [ ] lib/src/components/form/form.dart:1623:typedef PhoneInputKey = FormKey<PhoneNumber>;
-- [ ] lib/src/components/form/form.dart:1624:typedef RadioCardKey = FormKey<int>;
-- [ ] lib/src/components/form/form.dart:1625:typedef RadioGroupKey = FormKey<int>;
-- [ ] lib/src/components/form/form.dart:1626:typedef SelectKey<T> = FormKey<T>;
-- [ ] lib/src/components/form/form.dart:1627:typedef SliderKey = FormKey<SliderValue>;
-- [ ] lib/src/components/form/form.dart:1628:typedef StarRatingKey = FormKey<double>;
-- [ ] lib/src/components/form/form.dart:1629:typedef SwitchKey = FormKey<bool>;
-- [ ] lib/src/components/form/form.dart:1630:typedef TextAreaKey = FormKey<String>;
-- [ ] lib/src/components/form/form.dart:1631:typedef TextFieldKey = FormKey<String>;
-- [ ] lib/src/components/form/form.dart:1632:typedef TimePickerKey = FormKey<TimeOfDay>;
-- [ ] lib/src/components/form/form.dart:1633:typedef TimeInputKey = FormKey<TimeOfDay>;
-- [ ] lib/src/components/form/form.dart:1634:typedef ToggleKey = FormKey<bool>;
-- [ ] lib/src/components/form/form.dart:1636:class FormEntry<T> extends StatefulWidget {
-- [ ] lib/src/components/form/form.dart:1637:  final Widget child;
-- [ ] lib/src/components/form/form.dart:1638:  final Validator<T>? validator;
-- [ ] lib/src/components/form/form.dart:1640:  const FormEntry(
+- [x] lib/src/components/form/chip_input.dart:24:  final double? spacing;
+- [x] lib/src/components/form/chip_input.dart:62:class ChipEditingController<T> extends TextEditingController {
+- [x] lib/src/components/form/chip_input.dart:125:  List<T> get chips => List.unmodifiable(_chipMap.values);
+- [x] lib/src/components/form/chip_input.dart:297:  String get plainText {
+- [x] lib/src/components/form/chip_input.dart:309:  String get textAtCursor {
+- [x] lib/src/components/form/chip_input.dart:127:  set chips(List<T> newChips) {
+- [x] lib/src/components/form/chip_input.dart:157:  void removeAllChips() {
+- [x] lib/src/components/form/chip_input.dart:314:  void insertChipAtCursor(T? Function(String chipText) chipConverter) {
+- [x] lib/src/components/form/chip_input.dart:325:  void clearTextAtCursor() {
+- [x] lib/src/components/form/chip_input.dart:337:  void appendChip(T chip) {
+- [x] lib/src/components/form/chip_input.dart:361:  void appendChipAtCursor(T chip) {
+- [x] lib/src/components/form/chip_input.dart:375:  void insertChip(T chip) {
+- [x] lib/src/components/form/chip_input.dart:424:  void removeChip(T chip) {
+- [x] lib/src/components/form/chip_input.dart:88:  factory ChipEditingController({String? text, List<T>? initialChips}) {
+- [x] lib/src/components/form/chip_input.dart:463:typedef ChipSubmissionCallback<T> = T? Function(String chipText);
+- [x] lib/src/components/form/chip_input.dart:465:class ChipInput<T> extends TextInputStatefulWidget {
+- [x] lib/src/components/form/chip_input.dart:466:  static bool isChipUnicode(int codeUnit) {
+- [x] lib/src/components/form/chip_input.dart:471:  static bool isChipCharacter(String character) {
+- [x] lib/src/components/form/chip_input.dart:477:  final ChipWidgetBuilder<T> chipBuilder;
+- [x] lib/src/components/form/chip_input.dart:478:  final ChipSubmissionCallback<T> onChipSubmitted;
+- [x] lib/src/components/form/chip_input.dart:479:  final ValueChanged<List<T>>? onChipsChanged;
+- [x] lib/src/components/form/chip_input.dart:480:  final bool? useChips;
+- [x] lib/src/components/form/chip_input.dart:481:  final List<T>? initialChips;
+- [x] lib/src/components/form/chip_input.dart:482:  final bool autoInsertSuggestion;
+- [x] lib/src/components/form/chip_input.dart:484:  const ChipInput({
+- [x] lib/src/components/form/chip_input.dart:573:class ChipInputState<T> extends State<ChipInput<T>>
+- [x] lib/src/components/form/chip_input.dart:694:class ChipSubmitIntent extends Intent {
+- [x] lib/src/components/form/chip_input.dart:695:  const ChipSubmitIntent();
+- [x] lib/src/components/form/color/color.dart:787:class RadialColorGradient extends ColorGradient {
+- [x] lib/src/components/form/color/color.dart:788:  final List<ColorStop> colors;
+- [x] lib/src/components/form/color/color.dart:789:  final TileMode tileMode;
+- [x] lib/src/components/form/color/color.dart:790:  final AlignmentGeometry center;
+- [x] lib/src/components/form/color/color.dart:791:  final AlignmentGeometry? focal;
+- [x] lib/src/components/form/color/color.dart:792:  final double radius;
+- [x] lib/src/components/form/color/color.dart:793:  final double focalRadius;
+- [x] lib/src/components/form/color/color.dart:794:  const RadialColorGradient({
+- [x] lib/src/components/form/color/color.dart:898:class SweepColorGradient extends ColorGradient {
+- [x] lib/src/components/form/color/color.dart:899:  final List<ColorStop> colors;
+- [x] lib/src/components/form/color/color.dart:900:  final TileMode tileMode;
+- [x] lib/src/components/form/color/color.dart:901:  final AlignmentGeometry center;
+- [x] lib/src/components/form/color/color.dart:902:  final double startAngle;
+- [x] lib/src/components/form/color/color.dart:903:  final double endAngle;
+- [x] lib/src/components/form/color/color.dart:904:  const SweepColorGradient({
+- [x] lib/src/components/form/color/solid/color_input.dart:463:class ControlledColorInput extends StatelessWidget
+- [x] lib/src/components/form/color/solid/color_input.dart:477:  final bool? showAlpha;
+- [x] lib/src/components/form/color/solid/color_input.dart:478:  final AlignmentGeometry? popoverAlignment;
+- [x] lib/src/components/form/color/solid/color_input.dart:479:  final AlignmentGeometry? popoverAnchorAlignment;
+- [x] lib/src/components/form/color/solid/color_input.dart:480:  final EdgeInsetsGeometry? popoverPadding;
+- [x] lib/src/components/form/color/solid/color_input.dart:481:  final Widget? placeholder;
+- [x] lib/src/components/form/color/solid/color_input.dart:482:  final PromptMode? promptMode;
+- [x] lib/src/components/form/color/solid/color_input.dart:483:  final Widget? dialogTitle;
+- [x] lib/src/components/form/color/solid/color_input.dart:484:  final bool? showLabel;
+- [x] lib/src/components/form/color/solid/color_input.dart:485:  final Axis? orientation;
+- [x] lib/src/components/form/color/solid/color_input.dart:486:  final bool? enableEyeDropper;
+- [x] lib/src/components/form/color/solid/color_input.dart:487:  final ColorPickerMode? initialMode;
+- [x] lib/src/components/form/color/solid/color_input.dart:488:  final ValueChanged<ColorDerivative>? onChanging;
+- [x] lib/src/components/form/color/solid/color_input.dart:489:  const ControlledColorInput({
+- [x] lib/src/components/form/color/solid/color_picker.dart:479:class ColorControls extends StatelessWidget {
+- [x] lib/src/components/form/color/solid/color_picker.dart:583:  List<Widget> buildInputs(BuildContext context) {
+- [x] lib/src/components/form/color/solid/color_picker.dart:602:  List<Widget> buildRGBInputs(BuildContext context) {
+- [x] lib/src/components/form/color/solid/color_picker.dart:672:  List<Widget> buildHSLInputs(BuildContext context) {
+- [x] lib/src/components/form/color/solid/color_picker.dart:739:  List<Widget> buildHSVInputs(BuildContext context) {
+- [x] lib/src/components/form/color/solid/color_picker.dart:813:  List<Widget> buildHEXInputs(BuildContext context) {
+- [x] lib/src/components/form/color/solid/color_picker.dart:480:  final ColorDerivative value;
+- [x] lib/src/components/form/color/solid/color_picker.dart:481:  final ValueChanged<ColorDerivative>? onChanged;
+- [x] lib/src/components/form/color/solid/color_picker.dart:482:  final ValueChanged<ColorDerivative>? onChanging;
+- [x] lib/src/components/form/color/solid/color_picker.dart:483:  final ValueChanged<ColorPickerMode>? onModeChanged;
+- [x] lib/src/components/form/color/solid/color_picker.dart:484:  final bool showAlpha;
+- [x] lib/src/components/form/color/solid/color_picker.dart:485:  final ColorPickerMode mode;
+- [x] lib/src/components/form/color/solid/color_picker.dart:486:  final double? controlSpacing;
+- [x] lib/src/components/form/color/solid/color_picker.dart:487:  final bool? enableEyeDropper;
+- [x] lib/src/components/form/color/solid/color_picker.dart:488:  final VoidCallback? onEyeDropperRequested;
+- [x] lib/src/components/form/color/solid/color_picker.dart:490:  const ColorControls({
+- [x] lib/src/components/form/color/solid/eye_dropper.dart:349:Future<Color?> pickColorFromScreen(BuildContext context,
+- [x] lib/src/components/form/color/solid/history.dart:222:class RecentColorsScopeState extends State<RecentColorsScope>
+- [x] lib/src/components/form/date_picker.dart:242:class DatePicker extends StatelessWidget {
+- [x] lib/src/components/form/date_picker.dart:243:  final DateTime? value;
+- [x] lib/src/components/form/date_picker.dart:244:  final ValueChanged<DateTime?>? onChanged;
+- [x] lib/src/components/form/date_picker.dart:245:  final Widget? placeholder;
+- [x] lib/src/components/form/date_picker.dart:246:  final PromptMode? mode;
+- [x] lib/src/components/form/date_picker.dart:247:  final CalendarView? initialView;
+- [x] lib/src/components/form/date_picker.dart:248:  final AlignmentGeometry? popoverAlignment;
+- [x] lib/src/components/form/date_picker.dart:249:  final AlignmentGeometry? popoverAnchorAlignment;
+- [x] lib/src/components/form/date_picker.dart:250:  final EdgeInsetsGeometry? popoverPadding;
+- [x] lib/src/components/form/date_picker.dart:251:  final Widget? dialogTitle;
+- [x] lib/src/components/form/date_picker.dart:252:  final CalendarViewType? initialViewType;
+- [x] lib/src/components/form/date_picker.dart:253:  final DateStateBuilder? stateBuilder;
+- [x] lib/src/components/form/date_picker.dart:254:  final bool? enabled;
+- [x] lib/src/components/form/date_picker.dart:256:  const DatePicker({
+- [x] lib/src/components/form/date_picker.dart:339:class DateTimeRange {
+- [x] lib/src/components/form/date_picker.dart:359:  DateTimeRange copyWith({
+- [x] lib/src/components/form/date_picker.dart:340:  final DateTime start;
+- [x] lib/src/components/form/date_picker.dart:341:  final DateTime end;
+- [x] lib/src/components/form/date_picker.dart:343:  const DateTimeRange(this.start, this.end);
+- [x] lib/src/components/form/date_picker.dart:370:class DateRangePicker extends StatelessWidget {
+- [x] lib/src/components/form/date_picker.dart:371:  final DateTimeRange? value;
+- [x] lib/src/components/form/date_picker.dart:372:  final ValueChanged<DateTimeRange?>? onChanged;
+- [x] lib/src/components/form/date_picker.dart:373:  final Widget? placeholder;
+- [x] lib/src/components/form/date_picker.dart:374:  final PromptMode mode;
+- [x] lib/src/components/form/date_picker.dart:375:  final CalendarView? initialView;
+- [x] lib/src/components/form/date_picker.dart:376:  final CalendarViewType? initialViewType;
+- [x] lib/src/components/form/date_picker.dart:377:  final AlignmentGeometry? popoverAlignment;
+- [x] lib/src/components/form/date_picker.dart:378:  final AlignmentGeometry? popoverAnchorAlignment;
+- [x] lib/src/components/form/date_picker.dart:379:  final EdgeInsetsGeometry? popoverPadding;
+- [x] lib/src/components/form/date_picker.dart:380:  final Widget? dialogTitle;
+- [x] lib/src/components/form/date_picker.dart:381:  final DateStateBuilder? stateBuilder;
+- [x] lib/src/components/form/date_picker.dart:383:  const DateRangePicker({
+- [x] lib/src/components/form/file_picker.dart:37:  final Widget? title;
+- [x] lib/src/components/form/file_picker.dart:38:  final Widget? subtitle;
+- [x] lib/src/components/form/file_picker.dart:39:  final bool hotDropEnabled;
+- [x] lib/src/components/form/file_picker.dart:40:  final bool hotDropping;
+- [x] lib/src/components/form/file_picker.dart:41:  final List<Widget> children;
+- [x] lib/src/components/form/file_picker.dart:42:  final VoidCallback? onAdd;
+- [x] lib/src/components/form/file_picker.dart:44:  const FilePicker({
+- [x] lib/src/components/form/form.dart:1609:typedef AutoCompleteKey = FormKey<String>;
+- [x] lib/src/components/form/form.dart:1610:typedef CheckboxKey = FormKey<CheckboxState>;
+- [x] lib/src/components/form/form.dart:1611:typedef ChipInputKey<T> = FormKey<List<T>>;
+- [x] lib/src/components/form/form.dart:1612:typedef ColorPickerKey = FormKey<Color>;
+- [x] lib/src/components/form/form.dart:1613:typedef DatePickerKey = FormKey<DateTime>;
+- [x] lib/src/components/form/form.dart:1614:typedef DateInputKey = FormKey<DateTime>;
+- [x] lib/src/components/form/form.dart:1615:typedef DurationPickerKey = FormKey<Duration>;
+- [x] lib/src/components/form/form.dart:1616:typedef DurationInputKey = FormKey<Duration>;
+- [x] lib/src/components/form/form.dart:1617:typedef InputKey = FormKey<String>;
+- [x] lib/src/components/form/form.dart:1618:typedef InputOTPKey = FormKey<List<int?>>;
+- [x] lib/src/components/form/form.dart:1619:typedef MultiSelectKey<T> = FormKey<Iterable<T>>;
+- [x] lib/src/components/form/form.dart:1620:typedef MultipleAnswerKey<T> = FormKey<Iterable<T>>;
+- [x] lib/src/components/form/form.dart:1621:typedef MultipleChoiceKey<T> = FormKey<T>;
+- [x] lib/src/components/form/form.dart:1622:typedef NumberInputKey = FormKey<num>;
+- [x] lib/src/components/form/form.dart:1623:typedef PhoneInputKey = FormKey<PhoneNumber>;
+- [x] lib/src/components/form/form.dart:1624:typedef RadioCardKey = FormKey<int>;
+- [x] lib/src/components/form/form.dart:1625:typedef RadioGroupKey = FormKey<int>;
+- [x] lib/src/components/form/form.dart:1626:typedef SelectKey<T> = FormKey<T>;
+- [x] lib/src/components/form/form.dart:1627:typedef SliderKey = FormKey<SliderValue>;
+- [x] lib/src/components/form/form.dart:1628:typedef StarRatingKey = FormKey<double>;
+- [x] lib/src/components/form/form.dart:1629:typedef SwitchKey = FormKey<bool>;
+- [x] lib/src/components/form/form.dart:1630:typedef TextAreaKey = FormKey<String>;
+- [x] lib/src/components/form/form.dart:1631:typedef TextFieldKey = FormKey<String>;
+- [x] lib/src/components/form/form.dart:1632:typedef TimePickerKey = FormKey<TimeOfDay>;
+- [x] lib/src/components/form/form.dart:1633:typedef TimeInputKey = FormKey<TimeOfDay>;
+- [x] lib/src/components/form/form.dart:1634:typedef ToggleKey = FormKey<bool>;
+- [x] lib/src/components/form/form.dart:1636:class FormEntry<T> extends StatefulWidget {
+- [x] lib/src/components/form/form.dart:1637:  final Widget child;
+- [x] lib/src/components/form/form.dart:1638:  final Validator<T>? validator;
+- [x] lib/src/components/form/form.dart:1640:  const FormEntry(
 - [ ] lib/src/components/form/form.dart:1650:mixin FormFieldHandle {
 - [ ] lib/src/components/form/form.dart:1651:  bool get mounted;
 - [ ] lib/src/components/form/form.dart:1652:  FormKey get formKey;

@@ -1606,37 +1606,104 @@ class FormKey<T> extends LocalKey {
   }
 }
 
+// Type aliases for form field keys
+
+/// Form key type for autocomplete fields with string values.
 typedef AutoCompleteKey = FormKey<String>;
+
+/// Form key type for checkbox fields with [CheckboxState] values.
 typedef CheckboxKey = FormKey<CheckboxState>;
+
+/// Form key type for chip input fields with list values.
 typedef ChipInputKey<T> = FormKey<List<T>>;
+
+/// Form key type for color picker fields with [Color] values.
 typedef ColorPickerKey = FormKey<Color>;
+
+/// Form key type for date picker fields with [DateTime] values.
 typedef DatePickerKey = FormKey<DateTime>;
+
+/// Form key type for date input fields with [DateTime] values.
 typedef DateInputKey = FormKey<DateTime>;
+
+/// Form key type for duration picker fields with [Duration] values.
 typedef DurationPickerKey = FormKey<Duration>;
+
+/// Form key type for duration input fields with [Duration] values.
 typedef DurationInputKey = FormKey<Duration>;
+
+/// Form key type for text input fields with string values.
 typedef InputKey = FormKey<String>;
+
+/// Form key type for OTP input fields with lists of nullable integers.
 typedef InputOTPKey = FormKey<List<int?>>;
+
+/// Form key type for multi-select fields with iterable values.
 typedef MultiSelectKey<T> = FormKey<Iterable<T>>;
+
+/// Form key type for multiple answer fields with iterable values.
 typedef MultipleAnswerKey<T> = FormKey<Iterable<T>>;
+
+/// Form key type for multiple choice fields with single selected values.
 typedef MultipleChoiceKey<T> = FormKey<T>;
+
+/// Form key type for number input fields with numeric values.
 typedef NumberInputKey = FormKey<num>;
+
+/// Form key type for phone input fields with [PhoneNumber] values.
 typedef PhoneInputKey = FormKey<PhoneNumber>;
+
+/// Form key type for radio card fields with integer index values.
 typedef RadioCardKey = FormKey<int>;
+
+/// Form key type for radio group fields with integer index values.
 typedef RadioGroupKey = FormKey<int>;
+
+/// Form key type for select dropdown fields with typed values.
 typedef SelectKey<T> = FormKey<T>;
+
+/// Form key type for slider fields with [SliderValue] values.
 typedef SliderKey = FormKey<SliderValue>;
+
+/// Form key type for star rating fields with double values.
 typedef StarRatingKey = FormKey<double>;
+
+/// Form key type for switch fields with boolean values.
 typedef SwitchKey = FormKey<bool>;
+
+/// Form key type for text area fields with string values.
 typedef TextAreaKey = FormKey<String>;
+
+/// Form key type for text field inputs with string values.
 typedef TextFieldKey = FormKey<String>;
+
+/// Form key type for time picker fields with [TimeOfDay] values.
 typedef TimePickerKey = FormKey<TimeOfDay>;
+
+/// Form key type for time input fields with [TimeOfDay] values.
 typedef TimeInputKey = FormKey<TimeOfDay>;
+
+/// Form key type for toggle fields with boolean values.
 typedef ToggleKey = FormKey<bool>;
 
+/// A form field entry that wraps a form widget with validation.
+///
+/// [FormEntry] associates a [FormKey] with a form field widget and optional
+/// validator. It integrates with the form state management system to track
+/// field values and validation states.
 class FormEntry<T> extends StatefulWidget {
+  /// The form field widget to wrap.
   final Widget child;
+
+  /// Optional validator function for this form field.
+  ///
+  /// Called when form validation is triggered. Should return `null` for valid
+  /// values or a validation error message for invalid values.
   final Validator<T>? validator;
 
+  /// Creates a form entry with a typed key.
+  ///
+  /// The [key] parameter must be a [FormKey<T>] to ensure type safety.
   const FormEntry(
       {required FormKey<T> super.key, required this.child, this.validator});
 
