@@ -265,19 +265,45 @@ class ControlledTimePicker extends StatelessWidget
   }
 }
 
+/// A time picker widget for selecting time values.
+///
+/// Provides time selection interface with hours, minutes, and optional
+/// seconds in either popover or dialog mode.
 class TimePicker extends StatelessWidget {
+  /// The currently selected time value.
   final TimeOfDay? value;
+
+  /// Callback invoked when the selected time changes.
   final ValueChanged<TimeOfDay?>? onChanged;
+
+  /// The display mode for the time picker (popover or dialog).
   final PromptMode mode;
+
+  /// Placeholder widget shown when no time is selected.
   final Widget? placeholder;
+
+  /// Alignment of the popover relative to the anchor.
   final AlignmentGeometry? popoverAlignment;
+
+  /// Anchor alignment for the popover.
   final AlignmentGeometry? popoverAnchorAlignment;
+
+  /// Padding inside the popover.
   final EdgeInsetsGeometry? popoverPadding;
+
+  /// Whether to use 24-hour format.
   final bool? use24HourFormat;
+
+  /// Whether to show seconds selection.
   final bool showSeconds;
+
+  /// Title widget for the dialog mode.
   final Widget? dialogTitle;
+
+  /// Whether the time picker is enabled.
   final bool? enabled;
 
+  /// Creates a time picker.
   const TimePicker({
     super.key,
     required this.value,
@@ -331,12 +357,24 @@ class TimePicker extends StatelessWidget {
   }
 }
 
+/// Dialog widget for interactive time selection.
+///
+/// Displays input fields for hours, minutes, and optional seconds
+/// with AM/PM toggle for 12-hour format.
 class TimePickerDialog extends StatefulWidget {
+  /// The initial time value.
   final TimeOfDay? initialValue;
+
+  /// Callback invoked when the time changes.
   final ValueChanged<TimeOfDay?>? onChanged;
+
+  /// Whether to use 24-hour format.
   final bool use24HourFormat;
+
+  /// Whether to show seconds input.
   final bool showSeconds;
 
+  /// Creates a time picker dialog.
   const TimePickerDialog({
     super.key,
     this.initialValue,
@@ -638,16 +676,34 @@ enum TimePart {
 /// )
 /// ```
 class DurationPicker extends StatelessWidget {
+  /// The currently selected duration value.
   final Duration? value;
+
+  /// Callback invoked when the selected duration changes.
   final ValueChanged<Duration?>? onChanged;
+
+  /// The display mode for the duration picker (popover or dialog).
   final PromptMode mode;
+
+  /// Placeholder widget shown when no duration is selected.
   final Widget? placeholder;
+
+  /// Alignment of the popover relative to the anchor.
   final AlignmentGeometry? popoverAlignment;
+
+  /// Anchor alignment for the popover.
   final AlignmentGeometry? popoverAnchorAlignment;
+
+  /// Padding inside the popover.
   final EdgeInsetsGeometry? popoverPadding;
+
+  /// Title widget for the dialog mode.
   final Widget? dialogTitle;
+
+  /// Whether the duration picker is enabled.
   final bool? enabled;
 
+  /// Creates a duration picker.
   const DurationPicker({
     super.key,
     required this.value,
@@ -687,10 +743,18 @@ class DurationPicker extends StatelessWidget {
   }
 }
 
+/// Dialog widget for interactive duration selection.
+///
+/// Displays input fields for days, hours, minutes, and seconds
+/// for selecting durations.
 class DurationPickerDialog extends StatefulWidget {
+  /// The initial duration value.
   final Duration? initialValue;
+
+  /// Callback invoked when the duration changes.
   final ValueChanged<Duration?>? onChanged;
 
+  /// Creates a duration picker dialog.
   const DurationPickerDialog({
     super.key,
     this.initialValue,

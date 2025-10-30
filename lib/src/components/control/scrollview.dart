@@ -4,11 +4,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-// This helps to simulate middle hold scroll on web and desktop platforms
+/// Widget that intercepts scroll events to simulate middle-button drag scrolling.
+///
+/// Helps simulate middle-hold scroll on web and desktop platforms by intercepting
+/// pointer events and converting drag gestures into scroll events.
 class ScrollViewInterceptor extends StatefulWidget {
+  /// The child widget to wrap with scroll interception functionality.
   final Widget child;
+
+  /// Whether scroll interception is enabled.
   final bool enabled;
 
+  /// Creates a scroll view interceptor.
   const ScrollViewInterceptor(
       {super.key, required this.child, this.enabled = true});
 
@@ -16,10 +23,17 @@ class ScrollViewInterceptor extends StatefulWidget {
   State<ScrollViewInterceptor> createState() => _ScrollViewInterceptorState();
 }
 
+/// The drag speed multiplier for scroll interception (0.02).
 const double kScrollDragSpeed = 0.02;
+
+/// The maximum scroll speed allowed (10.0).
 const double kMaxScrollSpeed = 10;
 
+/// A custom pointer scroll event for desktop platforms.
+///
+/// Extends [PointerScrollEvent] with desktop-specific scroll event handling.
 class DesktopPointerScrollEvent extends PointerScrollEvent {
+  /// Creates a desktop pointer scroll event.
   const DesktopPointerScrollEvent({
     required super.position,
     required super.device,

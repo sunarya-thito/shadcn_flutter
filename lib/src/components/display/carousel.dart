@@ -383,15 +383,31 @@ enum CarouselAlignment {
 
 /// Theme data for [Carousel].
 class CarouselTheme {
+  /// The alignment of carousel items.
   final CarouselAlignment? alignment;
+
+  /// The scroll direction (horizontal or vertical).
   final Axis? direction;
+
+  /// Whether to wrap around to the beginning after reaching the end.
   final bool? wrap;
+
+  /// Whether to pause autoplay on hover.
   final bool? pauseOnHover;
+
+  /// The duration between automatic slides.
   final Duration? autoplaySpeed;
+
+  /// Whether the carousel can be dragged.
   final bool? draggable;
+
+  /// The transition animation speed.
   final Duration? speed;
+
+  /// The transition animation curve.
   final Curve? curve;
 
+  /// Creates a carousel theme.
   const CarouselTheme({
     this.alignment,
     this.direction,
@@ -403,6 +419,7 @@ class CarouselTheme {
     this.curve,
   });
 
+  /// Creates a copy of this theme with the given fields replaced.
   CarouselTheme copyWith({
     ValueGetter<CarouselAlignment?>? alignment,
     ValueGetter<Axis?>? direction,

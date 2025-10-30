@@ -2349,12 +2349,21 @@ class FormState extends State<Form> {
   }
 }
 
+/// Widget builder for displaying form entry validation errors.
+///
+/// Conditionally renders error messages based on validation state and modes.
 class FormEntryErrorBuilder extends StatelessWidget {
+  /// Builder function that creates the error display widget.
   final Widget Function(
       BuildContext context, ValidationResult? error, Widget? child) builder;
+
+  /// Optional child widget passed to the builder.
   final Widget? child;
+
+  /// Validation modes that trigger error display.
   final Set<FormValidationMode>? modes;
 
+  /// Creates a form entry error builder.
   const FormEntryErrorBuilder(
       {super.key, required this.builder, this.child, this.modes});
 
@@ -2380,8 +2389,14 @@ class FormEntryErrorBuilder extends StatelessWidget {
   }
 }
 
+/// Validation result indicating a validation is in progress.
+///
+/// Used when asynchronous validation is being performed and the result
+/// is not yet available.
 class WaitingResult extends ValidationResult {
   final FormKey? _key;
+
+  /// Creates a waiting result attached to a form key.
   const WaitingResult.attached({required FormKey key, required super.state})
       : _key = key;
 
@@ -2397,11 +2412,18 @@ class WaitingResult extends ValidationResult {
   }
 }
 
+/// Widget builder for displaying form-wide validation errors.
+///
+/// Provides access to all form validation errors for rendering error summaries.
 class FormErrorBuilder extends StatelessWidget {
+  /// Optional child widget passed to the builder.
   final Widget? child;
+
+  /// Builder function that creates the error display from all form errors.
   final Widget Function(BuildContext context,
       Map<FormKey, ValidationResult> errors, Widget? child) builder;
 
+  /// Creates a form error builder.
   const FormErrorBuilder({super.key, required this.builder, this.child});
 
   @override
@@ -2417,13 +2439,23 @@ class FormErrorBuilder extends StatelessWidget {
   }
 }
 
+/// Builder function type for displaying pending form validations.
+///
+/// Takes the context, map of pending validation futures, and optional child widget.
 typedef FormPendingWidgetBuilder = Widget Function(BuildContext context,
     Map<FormKey, Future<ValidationResult?>> errors, Widget? child);
 
+/// Widget builder for displaying pending form validations.
+///
+/// Shows feedback while asynchronous validations are in progress.
 class FormPendingBuilder extends StatelessWidget {
+  /// Optional child widget passed to the builder.
   final Widget? child;
+
+  /// Builder function for creating pending validation display.
   final FormPendingWidgetBuilder builder;
 
+  /// Creates a form pending builder.
   const FormPendingBuilder({super.key, required this.builder, this.child});
 
   @override
@@ -2451,7 +2483,11 @@ class FormPendingBuilder extends StatelessWidget {
   }
 }
 
+/// Extension methods on [BuildContext] for form operations.
 extension FormExtension on BuildContext {
+  /// Gets the current value for a form field by key.
+  ///
+  /// Returns null if the form or field is not found.
   T? getFormValue<T>(FormKey<T> key) {
     final formController = Data.maybeFind<FormController>(this);
     if (formController != null) {
@@ -2461,6 +2497,10 @@ extension FormExtension on BuildContext {
     return null;
   }
 
+  /// Submits the form and triggers validation.
+  ///
+  /// Returns a [SubmissionResult] with form values and any validation errors.
+  /// May return a Future if asynchronous validation is in progress.
   FutureOr<SubmissionResult> submitForm() {
     final formState = Data.maybeFind<FormState>(this);
     assert(formState != null, 'Form not found');
@@ -2513,12 +2553,19 @@ extension FormExtension on BuildContext {
   }
 }
 
+/// Mixin that provides form value management for stateful widgets.
+///
+/// Integrates a widget with the form system, managing value updates,
+/// validation, and form state synchronization.
 mixin FormValueSupplier<T, X extends StatefulWidget> on State<X> {
   _FormEntryCachedValue? _cachedValue;
   int _futureCounter = 0;
   FormFieldHandle? _entryState;
 
+  /// Gets the current form value.
   T? get formValue => _cachedValue?.value as T?;
+
+  /// Sets a new form value and triggers validation.
   set formValue(T? value) {
     if (_cachedValue != null && _cachedValue!.value == value) {
       return;
@@ -2537,6 +2584,9 @@ mixin FormValueSupplier<T, X extends StatefulWidget> on State<X> {
     }
   }
 
+  /// Called when a form value is replaced by validation logic.
+  ///
+  /// Subclasses should override this to handle value replacements.
   @protected
   void didReplaceFormValue(T value);
 
@@ -2569,9 +2619,19 @@ mixin FormValueSupplier<T, X extends StatefulWidget> on State<X> {
   }
 }
 
+/// Result of a form submission containing values and validation errors.
+///
+/// Returned when a form is submitted, containing all field values
+/// and any validation errors that occurred.
 class SubmissionResult {
+  /// Map of form field values keyed by their FormKey.
   final Map<FormKey, Object?> values;
+
+  /// Map of validation errors keyed by their FormKey.
   final Map<FormKey, ValidationResult> errors;
+
+  /// Creates a submission result.
+  const SubmissionResult(this.values, this.errors);
 
   const SubmissionResult(this.values, this.errors);
 
@@ -2592,19 +2652,45 @@ class SubmissionResult {
       Object.hashAll(values.entries), Object.hashAll(errors.entries));
 }
 
+/// A standard form field widget with label, validation, and error display.
+///
+/// Provides a consistent layout for form inputs with labels, hints,
+/// validation, and error messaging.
 class FormField<T> extends StatelessWidget {
+  /// The label widget for the form field.
   final Widget label;
+
+  /// Optional hint text displayed below the field.
   final Widget? hint;
+
+  /// The main input widget.
   final Widget child;
+
+  /// Optional widget displayed before the label.
   final Widget? leadingLabel;
+
+  /// Optional widget displayed after the label.
   final Widget? trailingLabel;
+
+  /// Alignment of the label axis.
   final MainAxisAlignment? labelAxisAlignment;
+
+  /// Gap between leading label and main label.
   final double? leadingGap;
+
+  /// Gap between main label and trailing label.
   final double? trailingGap;
+
+  /// Padding around the form field.
   final EdgeInsetsGeometry? padding;
+
+  /// Validator function for this field.
   final Validator<T>? validator;
+
+  /// Validation modes that trigger error display.
   final Set<FormValidationMode>? showErrors;
 
+  /// Creates a form field.
   const FormField({
     required FormKey<T> super.key,
     required this.label,
@@ -2698,13 +2784,27 @@ class FormField<T> extends StatelessWidget {
   }
 }
 
+/// An inline form field widget with label next to the input.
+///
+/// Provides a compact horizontal layout for form inputs with labels
+/// and validation.
 class FormInline<T> extends StatelessWidget {
+  /// The label widget for the form field.
   final Widget label;
+
+  /// Optional hint text displayed below the field.
   final Widget? hint;
+
+  /// The main input widget.
   final Widget child;
+
+  /// Validator function for this field.
   final Validator<T>? validator;
+
+  /// Validation modes that trigger error display.
   final Set<FormValidationMode>? showErrors;
 
+  /// Creates an inline form field.
   const FormInline({
     required FormKey<T> super.key,
     required this.label,
@@ -2766,7 +2866,11 @@ class FormInline<T> extends StatelessWidget {
   }
 }
 
+/// A table-based layout for multiple form fields.
+///
+/// Arranges form fields in a table layout for structured data entry.
 class FormTableLayout extends StatelessWidget {
+  /// List of form field rows to display in the table.
   final List<FormField> rows;
   final double? spacing;
 

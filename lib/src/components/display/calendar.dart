@@ -11,6 +11,7 @@ class CalendarTheme {
 
   const CalendarTheme({this.arrowIconColor});
 
+  /// Creates a copy of this theme with the given fields replaced.
   CalendarTheme copyWith({ValueGetter<Color?>? arrowIconColor}) {
     return CalendarTheme(
         arrowIconColor:
@@ -93,12 +94,25 @@ enum CalendarSelectionMode {
 /// )
 /// ```
 class DatePickerDialog extends StatefulWidget {
+  /// The initial view type to display (date, month, or year grid).
   final CalendarViewType initialViewType;
+
+  /// The initial calendar view position (month/year to display).
   final CalendarView? initialView;
+
+  /// The selection mode determining how dates can be selected.
   final CalendarSelectionMode selectionMode;
+
+  /// Alternative view mode for display purposes.
   final CalendarSelectionMode? viewMode;
+
+  /// The initially selected date value(s).
   final CalendarValue? initialValue;
+
+  /// Callback invoked when the selected date(s) change.
   final ValueChanged<CalendarValue?>? onChanged;
+
+  /// Builder function to determine the state of each date.
   final DateStateBuilder? stateBuilder;
 
   /// Creates a [DatePickerDialog] with comprehensive date selection options.
@@ -578,24 +592,40 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
 /// final isSelected = lookup != CalendarValueLookup.none;
 /// ```
 abstract class CalendarValue {
+  /// Looks up whether the specified date is part of this calendar value.
+  ///
+  /// Returns a [CalendarValueLookup] indicating the relationship of the
+  /// queried date to this value (none, selected, start, end, or inRange).
   CalendarValueLookup lookup(int year, [int? month = 1, int? day = 1]);
+
+  /// Creates a base calendar value.
   const CalendarValue();
+
+  /// Factory constructor to create a single date value.
   static SingleCalendarValue single(DateTime date) {
     return SingleCalendarValue(date);
   }
 
+  /// Factory constructor to create a date range value.
   static RangeCalendarValue range(DateTime start, DateTime end) {
     return RangeCalendarValue(start, end);
   }
 
+  /// Factory constructor to create a multi-date value.
   static MultiCalendarValue multi(List<DateTime> dates) {
     return MultiCalendarValue(dates);
   }
 
+  /// Converts this value to a single calendar value.
   SingleCalendarValue toSingle();
+
+  /// Converts this value to a range calendar value.
   RangeCalendarValue toRange();
+
+  /// Converts this value to a multi calendar value.
   MultiCalendarValue toMulti();
 
+  /// Returns the calendar view associated with this value.
   CalendarView get view;
 }
 
@@ -622,8 +652,10 @@ DateTime _convertNecessarry(DateTime from, int year, [int? month, int? date]) {
 /// print(lookup == CalendarValueLookup.selected); // true
 /// ```
 class SingleCalendarValue extends CalendarValue {
+  /// The selected date.
   final DateTime date;
 
+  /// Creates a single calendar value with the specified date.
   SingleCalendarValue(this.date);
 
   @override
@@ -669,10 +701,23 @@ class SingleCalendarValue extends CalendarValue {
   }
 }
 
+/// Calendar value representing a date range selection.
+///
+/// Encapsulates a date range with start and end dates. Provides lookup
+/// functionality to determine if a date is the start, end, within the range,
+/// or outside. Used with [CalendarSelectionMode.range].
+///
+/// The range is automatically normalized so start is always before or equal to end.
 class RangeCalendarValue extends CalendarValue {
+  /// The start date of the range (always <= end).
   final DateTime start;
+
+  /// The end date of the range (always >= start).
   final DateTime end;
 
+  /// Creates a range calendar value with the specified start and end dates.
+  ///
+  /// Automatically normalizes the range so [start] is before [end].
   RangeCalendarValue(DateTime start, DateTime end)
       : start = start.isBefore(end) ? start : end,
         end = start.isBefore(end) ? end : start;
@@ -740,9 +785,16 @@ class RangeCalendarValue extends CalendarValue {
   }
 }
 
+/// Calendar value representing multiple selected dates.
+///
+/// Encapsulates a list of individually selected dates. Provides lookup
+/// functionality to determine if a date is among the selected dates.
+/// Used with [CalendarSelectionMode.multi].
 class MultiCalendarValue extends CalendarValue {
+  /// The list of selected dates.
   final List<DateTime> dates;
 
+  /// Creates a multi calendar value with the specified list of dates.
   MultiCalendarValue(this.dates);
 
   @override
@@ -830,7 +882,10 @@ enum CalendarValueLookup { none, selected, start, end, inRange }
 /// final nextYear = current.nextYear;
 /// ```
 class CalendarView {
+  /// The year component of this view.
   final int year;
+
+  /// The month component of this view (1-12).
   final int month;
 
   /// Creates a [CalendarView] for the specified year and month.
@@ -894,10 +949,12 @@ class CalendarView {
     return CalendarView(year, month - 1);
   }
 
+  /// Returns a view for the next year with the same month.
   CalendarView get nextYear {
     return CalendarView(year + 1, month);
   }
 
+  /// Returns a view for the previous year with the same month.
   CalendarView get previousYear {
     return CalendarView(year - 1, month);
   }
@@ -917,6 +974,7 @@ class CalendarView {
   @override
   int get hashCode => year.hashCode ^ month.hashCode;
 
+  /// Creates a copy of this view with the given fields replaced.
   CalendarView copyWith({
     ValueGetter<int>? year,
     ValueGetter<int>? month,
@@ -928,11 +986,14 @@ class CalendarView {
   }
 }
 
+/// Extension methods on [DateTime] for calendar operations.
 extension CalendarDateTime on DateTime {
+  /// Converts this DateTime to a CalendarView.
   CalendarView toCalendarView() {
     return CalendarView.fromDateTime(this);
   }
 
+  /// Converts this DateTime to a single CalendarValue.
   CalendarValue toCalendarValue() {
     return CalendarValue.single(this);
   }
@@ -974,12 +1035,25 @@ extension CalendarDateTime on DateTime {
 /// )
 /// ```
 class Calendar extends StatefulWidget {
+  /// The current date for highlighting purposes (defaults to DateTime.now()).
   final DateTime? now;
+
+  /// The currently selected date value(s).
   final CalendarValue? value;
+
+  /// The month and year view to display in the calendar.
   final CalendarView view;
+
+  /// The selection mode determining how dates can be selected.
   final CalendarSelectionMode selectionMode;
+
+  /// Callback invoked when the selected date(s) change.
   final ValueChanged<CalendarValue?>? onChanged;
+
+  /// Legacy function to determine if a date should be enabled.
   final bool Function(DateTime date)? isDateEnabled;
+
+  /// Builder function to determine the state of each date.
   final DateStateBuilder? stateBuilder;
 
   /// Creates a [Calendar] widget with flexible date selection capabilities.
@@ -1175,13 +1249,27 @@ class _CalendarState extends State<Calendar> {
   }
 }
 
+/// A calendar widget that displays months in a year grid.
+///
+/// Shows a 4x3 grid of months for year selection. Used as part of the calendar
+/// navigation when users want to select a different month.
 class MonthCalendar extends StatelessWidget {
+  /// The current calendar view (year to display).
   final CalendarView value;
+
+  /// Callback invoked when a month is selected.
   final ValueChanged<CalendarView> onChanged;
+
+  /// The current date for highlighting purposes.
   final DateTime? now;
+
+  /// The currently selected calendar value.
   final CalendarValue? calendarValue;
+
+  /// Builder function to determine the state of each month.
   final DateStateBuilder? stateBuilder;
 
+  /// Creates a month selection calendar.
   const MonthCalendar({
     super.key,
     required this.value,
@@ -1258,14 +1346,30 @@ class MonthCalendar extends StatelessWidget {
   }
 }
 
+/// A calendar widget that displays years in a grid.
+///
+/// Shows a 4x4 grid of years for year selection. Used as part of the calendar
+/// navigation when users want to select a different year.
 class YearCalendar extends StatelessWidget {
+  /// The starting year for the grid display.
   final int yearSelectStart;
+
+  /// The currently selected year value.
   final int value;
+
+  /// Callback invoked when a year is selected.
   final ValueChanged<int> onChanged;
+
+  /// The current date for highlighting purposes.
   final DateTime? now;
+
+  /// The currently selected calendar value.
   final CalendarValue? calendarValue;
+
+  /// Builder function to determine the state of each year.
   final DateStateBuilder? stateBuilder;
 
+  /// Creates a year selection calendar.
   const YearCalendar({
     super.key,
     required this.yearSelectStart,
@@ -1398,15 +1502,31 @@ enum CalendarItemType {
 /// )
 /// ```
 class CalendarItem extends StatelessWidget {
+  /// The widget to display as the date content.
   final Widget child;
+
+  /// The visual state type for this calendar item.
   final CalendarItemType type;
+
+  /// Callback invoked when the item is tapped.
   final VoidCallback? onTap;
+
+  /// The position of this item in its row (0-indexed).
   final int indexAtRow;
+
+  /// The total number of items per row.
   final int rowCount;
+
+  /// Optional fixed width for the item.
   final double? width;
+
+  /// Optional fixed height for the item.
   final double? height;
+
+  /// The interaction state of this date (enabled/disabled).
   final DateState state;
 
+  /// Creates a calendar item with the specified properties.
   const CalendarItem({
     super.key,
     required this.child,
@@ -1675,11 +1795,25 @@ class CalendarItem extends StatelessWidget {
   }
 }
 
+/// Data structure representing a complete calendar month grid.
+///
+/// Contains all the information needed to render a calendar grid including
+/// dates from the current month and overflow dates from adjacent months
+/// to fill complete weeks.
 class CalendarGridData {
+  /// The month number (1-12) this grid represents.
   final int month;
+
+  /// The year this grid represents.
   final int year;
+
+  /// The list of calendar grid items including current and adjacent month dates.
   final List<CalendarGridItem> items;
 
+  /// Creates calendar grid data for the specified month and year.
+  ///
+  /// Automatically calculates and includes dates from previous and next months
+  /// to fill complete weeks in the grid.
   factory CalendarGridData({required int month, required int year}) {
     DateTime firstDayOfMonth = DateTime(year, month, 1);
     int daysInMonth = DateTime(year, month == 12 ? 1 : month + 1, 0).day;
@@ -1749,15 +1883,27 @@ class CalendarGridData {
   int get hashCode => Object.hash(month, year, items);
 }
 
+/// Individual item within a calendar grid representing a single date cell.
+///
+/// Contains metadata about a date's position and state within the calendar grid.
 class CalendarGridItem {
+  /// The date this grid item represents.
   final DateTime date;
+
+  /// The index of this item within its row (0-6 for day of week).
   final int indexInRow;
+
+  /// The row index in the calendar grid.
   final int rowIndex;
+
+  /// Whether this date belongs to a different month than the grid's primary month.
   final bool fromAnotherMonth;
 
+  /// Creates a calendar grid item.
   CalendarGridItem(
       this.date, this.indexInRow, this.fromAnotherMonth, this.rowIndex);
 
+  /// Returns true if this item represents today's date.
   bool get isToday {
     DateTime now = DateTime.now();
     return date.year == now.year &&
@@ -1780,10 +1926,18 @@ class CalendarGridItem {
   int get hashCode => Object.hash(date, indexInRow, fromAnotherMonth, rowIndex);
 }
 
+/// Widget that renders a calendar grid using provided data.
+///
+/// Takes calendar grid data and an item builder to render the visual grid
+/// of calendar dates. Handles layout and arrangement of dates in a weekly grid.
 class CalendarGrid extends StatelessWidget {
+  /// The grid data containing all calendar items to display.
   final CalendarGridData data;
+
+  /// Builder function to create widgets for each grid item.
   final Widget Function(CalendarGridItem item) itemBuilder;
 
+  /// Creates a calendar grid widget.
   const CalendarGrid({
     super.key,
     required this.data,

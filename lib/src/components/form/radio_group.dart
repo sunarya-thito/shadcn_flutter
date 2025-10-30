@@ -193,21 +193,38 @@ class Radio extends StatelessWidget {
   }
 }
 
+/// Intent for navigating to the next item in a radio group.
 class NextItemIntent extends Intent {
+  /// Creates a next item intent.
   const NextItemIntent();
 }
 
+/// Intent for navigating to the previous item in a radio group.
 class PreviousItemIntent extends Intent {
+  /// Creates a previous item intent.
   const PreviousItemIntent();
 }
 
+/// A radio button item with optional leading and trailing widgets.
+///
+/// Used within a [RadioGroup] to create selectable radio button options.
 class RadioItem<T> extends StatefulWidget {
+  /// Optional widget displayed before the radio button.
   final Widget? leading;
+
+  /// Optional widget displayed after the radio button.
   final Widget? trailing;
+
+  /// The value represented by this radio item.
   final T value;
+
+  /// Whether this radio item is enabled.
   final bool enabled;
+
+  /// Focus node for keyboard navigation.
   final FocusNode? focusNode;
 
+  /// Creates a radio item.
   const RadioItem({
     super.key,
     this.leading,
@@ -314,12 +331,23 @@ class _RadioItemState<T> extends State<RadioItem<T>> {
   }
 }
 
+/// A card-style radio button with custom content.
+///
+/// Provides a larger, card-like selection area within a [RadioGroup].
 class RadioCard<T> extends StatefulWidget {
+  /// The child widget displayed in the card.
   final Widget child;
+
+  /// The value represented by this radio card.
   final T value;
+
+  /// Whether this radio card is enabled.
   final bool enabled;
+
+  /// Focus node for keyboard navigation.
   final FocusNode? focusNode;
 
+  /// Creates a radio card.
   const RadioCard({
     super.key,
     required this.child,
@@ -746,11 +774,23 @@ class ControlledRadioGroup<T> extends StatelessWidget
   }
 }
 
+/// A group of radio buttons for single-selection input.
+///
+/// Manages the selection state and provides context for child radio items.
 class RadioGroup<T> extends StatefulWidget {
+  /// The child widget containing radio items.
   final Widget child;
+
+  /// The currently selected value.
   final T? value;
+
+  /// Callback invoked when the selection changes.
   final ValueChanged<T>? onChanged;
+
+  /// Whether the radio group is enabled.
   final bool? enabled;
+
+  /// Creates a radio group.
   const RadioGroup({
     super.key,
     required this.child,
@@ -763,10 +803,17 @@ class RadioGroup<T> extends StatefulWidget {
   RadioGroupState<T> createState() => RadioGroupState<T>();
 }
 
+/// Data class holding radio group state information.
+///
+/// Contains the selected item and enabled state for a radio group.
 class RadioGroupData<T> {
+  /// The currently selected item value.
   final T? selectedItem;
+
+  /// Whether the radio group is enabled.
   final bool enabled;
 
+  /// Creates radio group data.
   RadioGroupData(this.selectedItem, this.enabled);
 
   @override
@@ -781,8 +828,12 @@ class RadioGroupData<T> {
   int get hashCode => Object.hash(selectedItem, enabled);
 }
 
+/// State class for [RadioGroup] with form integration.
+///
+/// Manages selection state and integrates with the form validation system.
 class RadioGroupState<T> extends State<RadioGroup<T>>
     with FormValueSupplier<T, RadioGroup<T>> {
+  /// Whether the radio group is currently enabled.
   bool get enabled => widget.enabled ?? widget.onChanged != null;
   void _setSelected(T value) {
     if (!enabled) return;

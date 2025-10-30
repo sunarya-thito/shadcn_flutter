@@ -48,9 +48,13 @@ class ChipTheme {
 /// );
 /// ```
 class ChipButton extends StatelessWidget {
+  /// The widget to display as the button content.
   final Widget child;
+
+  /// Callback invoked when the button is pressed.
   final VoidCallback? onPressed;
 
+  /// Creates a chip button with the specified child and callback.
   const ChipButton({
     super.key,
     required this.child,
@@ -130,10 +134,19 @@ class ChipButton extends StatelessWidget {
 /// );
 /// ```
 class Chip extends StatelessWidget {
+  /// The main content of the chip.
   final Widget child;
+
+  /// Optional widget displayed before the child.
   final Widget? leading;
+
+  /// Optional widget displayed after the child.
   final Widget? trailing;
+
+  /// Callback invoked when the chip is pressed.
   final VoidCallback? onPressed;
+
+  /// Custom button style for the chip.
   final AbstractButtonStyle? style;
 
   /// Creates a [Chip].

@@ -1,5 +1,9 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Builder function type for creating custom dot widgets.
+///
+/// Takes the build context, dot index, and whether the dot is active,
+/// and returns a widget to display for that dot.
 typedef DotBuilder = Widget Function(
     BuildContext context, int index, bool active);
 
@@ -137,12 +141,25 @@ class DotIndicator extends StatelessWidget {
     return active ? const ActiveDotItem() : const InactiveDotItem();
   }
 
+  /// The current active index (0-based).
   final int index;
+
+  /// The total number of dots to display.
   final int length;
+
+  /// Callback invoked when a dot is tapped.
   final ValueChanged<int>? onChanged;
+
+  /// Spacing between dots.
   final double? spacing;
+
+  /// The direction of the dot layout (horizontal or vertical).
   final Axis direction;
+
+  /// Padding around the dots container.
   final EdgeInsetsGeometry? padding;
+
+  /// Custom builder for individual dots.
   final DotBuilder? dotBuilder;
 
   /// Creates a [DotIndicator].
@@ -240,13 +257,26 @@ class DotIndicator extends StatelessWidget {
   }
 }
 
+/// A basic dot item widget with customizable appearance.
+///
+/// Used as a base component for creating custom dot indicators.
 class DotItem extends StatelessWidget {
+  /// The size of the dot.
   final double? size;
+
+  /// The color of the dot.
   final Color? color;
+
+  /// The border radius of the dot.
   final double? borderRadius;
+
+  /// The border color of the dot.
   final Color? borderColor;
+
+  /// The border width of the dot.
   final double? borderWidth;
 
+  /// Creates a dot item with the specified properties.
   const DotItem({
     super.key,
     this.size,
@@ -274,13 +304,26 @@ class DotItem extends StatelessWidget {
   }
 }
 
+/// An active dot item widget representing the current position.
+///
+/// Styled to highlight the currently active item in a dot indicator.
 class ActiveDotItem extends StatelessWidget {
+  /// The size of the dot.
   final double? size;
+
+  /// The color of the dot.
   final Color? color;
+
+  /// The border radius of the dot.
   final double? borderRadius;
+
+  /// The border color of the dot.
   final Color? borderColor;
+
+  /// The border width of the dot.
   final double? borderWidth;
 
+  /// Creates an active dot item with the specified properties.
   const ActiveDotItem({
     super.key,
     this.size,
@@ -323,13 +366,27 @@ class ActiveDotItem extends StatelessWidget {
   }
 }
 
+/// An inactive dot item widget representing non-current positions.
+///
+/// Styled to indicate inactive items in a dot indicator with
+/// optional border styling.
 class InactiveDotItem extends StatelessWidget {
+  /// The size of the dot.
   final double? size;
+
+  /// The color of the dot.
   final Color? color;
+
+  /// The border radius of the dot.
   final double? borderRadius;
+
+  /// The border color of the dot.
   final Color? borderColor;
+
+  /// The border width of the dot.
   final double? borderWidth;
 
+  /// Creates an inactive dot item with the specified properties.
   const InactiveDotItem({
     super.key,
     this.size,

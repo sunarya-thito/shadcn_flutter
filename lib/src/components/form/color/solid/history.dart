@@ -219,6 +219,10 @@ class _ColorListNotifier extends ChangeNotifier {
   }
 }
 
+/// State class for [RecentColorsScope] implementing color history storage.
+///
+/// Manages the list of recently used colors and provides storage functionality
+/// for color history tracking.
 class RecentColorsScopeState extends State<RecentColorsScope>
     implements ColorHistoryStorage {
   late _ColorListNotifier _recentColors;
