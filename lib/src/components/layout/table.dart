@@ -479,6 +479,14 @@ class ResizableTableController extends ChangeNotifier {
     return absA < absB ? a : b;
   }
 
+  /// Resizes adjacent rows by dragging their shared border.
+  ///
+  /// Parameters:
+  /// - [previousRow] (`int`, required): Index of row before border.
+  /// - [nextRow] (`int`, required): Index of row after border.
+  /// - [deltaHeight] (`double`, required): Height change in pixels.
+  ///
+  /// Returns: `double` — actual height change applied.
   double resizeRowBorder(int previousRow, int nextRow, double deltaHeight) {
     if (previousRow < 0 || nextRow < 0 || deltaHeight == 0) {
       return 0;
@@ -514,6 +522,13 @@ class ResizableTableController extends ChangeNotifier {
     return delta;
   }
 
+  /// Resizes a specific row to a new height.
+  ///
+  /// Parameters:
+  /// - [row] (`int`, required): Row index.
+  /// - [height] (`double`, required): New height in pixels.
+  ///
+  /// Returns: `bool` — true if resize succeeded, false otherwise.
   bool resizeRow(int row, double height) {
     if (row < 0 || height < 0) {
       return false;
@@ -532,38 +547,83 @@ class ResizableTableController extends ChangeNotifier {
     return true;
   }
 
+  /// Gets an unmodifiable map of custom column widths.
+  ///
+  /// Returns: `Map<int, double>?` — map of column indices to widths, or null if none set.
   Map<int, double>? get columnWidths => _columnWidths == null
       ? null
       : Map<int, double>.unmodifiable(_columnWidths!);
 
+  /// Gets an unmodifiable map of custom row heights.
+  ///
+  /// Returns: `Map<int, double>?` — map of row indices to heights, or null if none set.
   Map<int, double>? get rowHeights =>
       _rowHeights == null ? null : Map<int, double>.unmodifiable(_rowHeights!);
 
+  /// Gets the width of a specific column.
+  ///
+  /// Parameters:
+  /// - [index] (`int`, required): Column index.
+  ///
+  /// Returns: `double` — column width in pixels.
   double getColumnWidth(int index) {
     return _columnWidths?[index] ?? _defaultColumnWidth;
   }
 
+  /// Gets the height of a specific row.
+  ///
+  /// Parameters:
+  /// - [index] (`int`, required): Row index.
+  ///
+  /// Returns: `double` — row height in pixels.
   double getRowHeight(int index) {
     return _rowHeights?[index] ?? _defaultRowHeight;
   }
 
+  /// Gets the minimum height constraint for a specific row.
+  ///
+  /// Parameters:
+  /// - [index] (`int`, required): Row index.
+  ///
+  /// Returns: `double?` — minimum height, or null if unconstrained.
   double? getRowMinHeight(int index) {
     return _heightConstraints?[index]?.min ?? _defaultHeightConstraint?.min;
   }
 
+  /// Gets the maximum height constraint for a specific row.
+  ///
+  /// Parameters:
+  /// - [index] (`int`, required): Row index.
+  ///
+  /// Returns: `double?` — maximum height, or null if unconstrained.
   double? getRowMaxHeight(int index) {
     return _heightConstraints?[index]?.max ?? _defaultHeightConstraint?.max;
   }
 
+  /// Gets the minimum width constraint for a specific column.
+  ///
+  /// Parameters:
+  /// - [index] (`int`, required): Column index.
+  ///
+  /// Returns: `double?` — minimum width, or null if unconstrained.
   double? getColumnMinWidth(int index) {
     return _widthConstraints?[index]?.min ?? _defaultWidthConstraint?.min;
   }
 
+  /// Gets the maximum width constraint for a specific column.
+  ///
+  /// Parameters:
+  /// - [index] (`int`, required): Column index.
+  ///
+  /// Returns: `double?` — maximum width, or null if unconstrained.
   double? getColumnMaxWidth(int index) {
     return _widthConstraints?[index]?.max ?? _defaultWidthConstraint?.max;
   }
 }
 
+/// Defines how table cells should resize.
+///
+/// Determines the behavior when a table cell is resized by the user.
 enum TableCellResizeMode {
   /// The cell size will expand when resized
   expand,
@@ -575,18 +635,65 @@ enum TableCellResizeMode {
   none,
 }
 
+/// A table widget with resizable columns and rows.
+///
+/// Displays tabular data with interactive row and column resizing capabilities.
+/// Supports frozen rows/columns, custom resize modes, and scrolling viewports.
+///
+/// Example:
+/// ```dart
+/// ResizableTable(
+///   controller: ResizableTableController(),
+///   rows: [
+///     TableRow(children: [Text('Cell 1'), Text('Cell 2')]),
+///     TableRow(children: [Text('Cell 3'), Text('Cell 4')]),
+///   ],
+/// )
+/// ```
 class ResizableTable extends StatefulWidget {
+  /// List of table rows to display.
   final List<TableRow> rows;
+
+  /// Controller for managing table resize state.
   final ResizableTableController controller;
+
+  /// Theme for table styling.
   final ResizableTableTheme? theme;
+
+  /// How content should be clipped at table boundaries.
   final Clip clipBehavior;
+
+  /// Resize mode for column widths.
   final TableCellResizeMode cellWidthResizeMode;
+
+  /// Resize mode for row heights.
   final TableCellResizeMode cellHeightResizeMode;
+
+  /// Configuration for frozen (non-scrolling) rows and columns.
   final FrozenTableData? frozenCells;
+
+  /// Horizontal scroll offset.
   final double? horizontalOffset;
+
+  /// Vertical scroll offset.
   final double? verticalOffset;
+
+  /// Size of the visible viewport.
   final Size? viewportSize;
 
+  /// Creates a [ResizableTable].
+  ///
+  /// Parameters:
+  /// - [rows] (`List<TableRow>`, required): Table rows.
+  /// - [controller] (`ResizableTableController`, required): Resize controller.
+  /// - [theme] (`ResizableTableTheme?`, optional): Table theme.
+  /// - [clipBehavior] (`Clip`, default: `Clip.hardEdge`): Clipping behavior.
+  /// - [cellWidthResizeMode] (`TableCellResizeMode`, default: `reallocate`): Column resize mode.
+  /// - [cellHeightResizeMode] (`TableCellResizeMode`, default: `expand`): Row resize mode.
+  /// - [frozenCells] (`FrozenTableData?`, optional): Frozen cell configuration.
+  /// - [horizontalOffset] (`double?`, optional): Horizontal scroll offset.
+  /// - [verticalOffset] (`double?`, optional): Vertical scroll offset.
+  /// - [viewportSize] (`Size?`, optional): Viewport size.
   const ResizableTable({
     super.key,
     required this.rows,
