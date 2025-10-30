@@ -1025,4 +1025,4 @@ TODO:
 - [x] lib\src\components\form\select.dart:1888:9
 - [x] lib\src\components\form\select.dart:1905:7
 - [x] lib\src\components\form\select.dart:1906:22
-- [ ] lib\src\components\form\select.dart:1908:9
+- [x] lib\src\components\form\select.dart:1908:9
