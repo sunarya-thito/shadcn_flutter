@@ -316,6 +316,14 @@ class ResizableTableTheme {
     return Object.hash(tableTheme, resizerThickness, resizerColor);
   }
 
+  /// Creates a copy of this theme with the given fields replaced.
+  ///
+  /// Parameters:
+  /// - [tableTheme] (`ValueGetter<TableTheme?>?`, optional): New table theme.
+  /// - [resizerThickness] (`ValueGetter<double?>?`, optional): New resizer thickness.
+  /// - [resizerColor] (`ValueGetter<Color?>?`, optional): New resizer color.
+  ///
+  /// Returns: A new [ResizableTableTheme] with updated properties.
   ResizableTableTheme copyWith({
     ValueGetter<TableTheme?>? tableTheme,
     ValueGetter<double?>? resizerThickness,
@@ -394,6 +402,13 @@ class ResizableTableController extends ChangeNotifier {
         _defaultWidthConstraint = defaultWidthConstraint,
         _defaultHeightConstraint = defaultHeightConstraint;
 
+  /// Resizes a specific column to a new width.
+  ///
+  /// Parameters:
+  /// - [column] (`int`, required): Column index.
+  /// - [width] (`double`, required): New width in pixels.
+  ///
+  /// Returns: `bool` — true if resize succeeded, false otherwise.
   bool resizeColumn(int column, double width) {
     if (column < 0 || width < 0) {
       return false;
@@ -412,6 +427,14 @@ class ResizableTableController extends ChangeNotifier {
     return true;
   }
 
+  /// Resizes adjacent columns by dragging their shared border.
+  ///
+  /// Parameters:
+  /// - [previousColumn] (`int`, required): Index of column before border.
+  /// - [nextColumn] (`int`, required): Index of column after border.
+  /// - [deltaWidth] (`double`, required): Width change in pixels.
+  ///
+  /// Returns: `double` — actual width change applied.
   double resizeColumnBorder(
       int previousColumn, int nextColumn, double deltaWidth) {
     if (previousColumn < 0 || nextColumn < 0 || deltaWidth == 0) {
