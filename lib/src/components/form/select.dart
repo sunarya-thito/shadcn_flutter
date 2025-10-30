@@ -940,7 +940,10 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   final BoxConstraints? popupConstraints;
   @override
   final PopoverConstraint popupWidthConstraint;
+
+  /// The currently selected value.
   final T? value;
+
   @override
   final BorderRadiusGeometry? borderRadius;
   @override
@@ -955,6 +958,8 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   final bool canUnselect;
   @override
   final bool? autoClosePopover;
+
+  /// Whether the select is enabled for user interaction.
   final bool? enabled;
   @override
   final SelectPopupBuilder popup;
@@ -1293,8 +1298,13 @@ class SelectState<T> extends State<Select<T>>
 /// );
 /// ```
 class MultiSelectChip extends StatelessWidget {
+  /// The value this chip represents in the selection.
   final Object? value;
+
+  /// The content displayed inside the chip.
   final Widget child;
+
+  /// The chip styling.
   final AbstractButtonStyle style;
 
   /// Creates a [MultiSelectChip].
@@ -1345,6 +1355,20 @@ class MultiSelectChip extends StatelessWidget {
   }
 }
 
+/// A customizable dropdown selection widget for multi-value selection.
+///
+/// Extends the base select functionality to support selecting multiple items
+/// simultaneously. Displays selected items as removable chips within the trigger.
+///
+/// Example:
+/// ```dart
+/// MultiSelect<String>(
+///   value: selectedItems,
+///   onChanged: (items) => setState(() => selectedItems = items),
+///   popup: SelectPopup.menu(children: [...]),
+///   multiItemBuilder: (context, item) => Text(item),
+/// )
+/// ```
 class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   @override
   final ValueChanged<Iterable<T>?>?
@@ -1361,7 +1385,10 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final BoxConstraints? popupConstraints;
   @override
   final PopoverConstraint popupWidthConstraint;
+
+  /// The currently selected values.
   final Iterable<T>? value;
+
   @override
   final BorderRadiusGeometry? borderRadius;
   @override
@@ -1376,7 +1403,10 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final bool canUnselect;
   @override
   final bool? autoClosePopover;
+
+  /// Whether the multi-select is enabled for user interaction.
   final bool? enabled;
+
   @override
   final SelectPopupBuilder popup;
   @override
@@ -1387,7 +1417,10 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final SelectValueSelectionHandler<Iterable<T>>? valueSelectionHandler;
   @override
   final SelectValueSelectionPredicate<Iterable<T>>? valueSelectionPredicate;
+
+  /// Builder for rendering individual items in the chip display.
   final SelectValueBuilder<T> multiItemBuilder;
+
   @override
   final Predicate<Iterable<T>>? showValuePredicate;
 
