@@ -2733,7 +2733,28 @@ class CardButtonTheme extends ButtonTheme {
   }
 }
 
+/// Implementation of [AbstractButtonStyle] providing concrete button style variants.
+///
+/// [ButtonVariance] implements [AbstractButtonStyle] with state property functions
+/// and provides static constants for all standard button variants (primary, secondary,
+/// outline, etc.). Each variant is wrapped in a [ComponentThemeButtonStyle] to enable
+/// theme-level customization.
+///
+/// The static variance constants serve as the base styles used by [ButtonStyle]'s
+/// named constructors and can be used directly when creating custom button styles.
+///
+/// Example:
+/// ```dart
+/// // Use a variant directly
+/// Button(
+///   style: ButtonVariance.primary,
+///   child: Text('Click Me'),
+/// )
+/// ```
 class ButtonVariance implements AbstractButtonStyle {
+  /// Primary button variant with prominent filled appearance.
+  ///
+  /// Features high-contrast styling suitable for the main action on a screen.
   static const AbstractButtonStyle primary =
       ComponentThemeButtonStyle<PrimaryButtonTheme>(
     fallback: ButtonVariance(
@@ -2745,6 +2766,10 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+
+  /// Secondary button variant with muted appearance.
+  ///
+  /// Features subtle styling suitable for supporting or alternative actions.
   static const AbstractButtonStyle secondary =
       ComponentThemeButtonStyle<SecondaryButtonTheme>(
     fallback: ButtonVariance(
@@ -2756,6 +2781,10 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+
+  /// Outline button variant with border and transparent background.
+  ///
+  /// Features a visible border without filled background, suitable for secondary actions.
   static const AbstractButtonStyle outline =
       ComponentThemeButtonStyle<OutlineButtonTheme>(
     fallback: ButtonVariance(
@@ -2767,6 +2796,10 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+
+  /// Ghost button variant with minimal visual presence.
+  ///
+  /// Features no background or border by default, only showing on hover.
   static const AbstractButtonStyle ghost =
       ComponentThemeButtonStyle<GhostButtonTheme>(
     fallback: ButtonVariance(
@@ -2778,6 +2811,10 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+
+  /// Link button variant resembling a text hyperlink.
+  ///
+  /// Features inline link styling with underline decoration.
   static const AbstractButtonStyle link =
       ComponentThemeButtonStyle<LinkButtonTheme>(
     fallback: ButtonVariance(
@@ -2789,6 +2826,10 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+
+  /// Text button variant with only text content.
+  ///
+  /// Features minimal styling with no background or border decoration.
   static const AbstractButtonStyle text =
       ComponentThemeButtonStyle<TextButtonTheme>(
     fallback: ButtonVariance(
@@ -2800,6 +2841,10 @@ class ButtonVariance implements AbstractButtonStyle {
       margin: _buttonZeroMargin,
     ),
   );
+
+  /// Destructive button variant for delete/remove actions.
+  ///
+  /// Features warning colors (typically red) to indicate data-destructive actions.
   static const AbstractButtonStyle destructive =
       ComponentThemeButtonStyle<DestructiveButtonTheme>(
     fallback: ButtonVariance(
@@ -2812,6 +2857,9 @@ class ButtonVariance implements AbstractButtonStyle {
     ),
   );
 
+  /// Fixed button variant with consistent dimensions.
+  ///
+  /// Features fixed sizing regardless of content, suitable for icon buttons.
   static const AbstractButtonStyle fixed =
       ComponentThemeButtonStyle<FixedButtonTheme>(
     fallback: ButtonVariance(
@@ -2824,6 +2872,9 @@ class ButtonVariance implements AbstractButtonStyle {
     ),
   );
 
+  /// Menu button variant for dropdown menu triggers.
+  ///
+  /// Features appropriate spacing and styling for menu contexts.
   static const AbstractButtonStyle menu =
       ComponentThemeButtonStyle<MenuButtonTheme>(
     fallback: ButtonVariance(
@@ -2836,6 +2887,9 @@ class ButtonVariance implements AbstractButtonStyle {
     ),
   );
 
+  /// Menubar button variant for horizontal menu bars.
+  ///
+  /// Features optimized padding and styling for menubar contexts.
   static const AbstractButtonStyle menubar =
       ComponentThemeButtonStyle<MenubarButtonTheme>(
     fallback: ButtonVariance(
@@ -2848,6 +2902,9 @@ class ButtonVariance implements AbstractButtonStyle {
     ),
   );
 
+  /// Muted button variant with subdued appearance.
+  ///
+  /// Features low-contrast styling for minimal visual impact.
   static const AbstractButtonStyle muted =
       ComponentThemeButtonStyle<MutedButtonTheme>(
     fallback: ButtonVariance(
@@ -2860,6 +2917,9 @@ class ButtonVariance implements AbstractButtonStyle {
     ),
   );
 
+  /// Card button variant with elevated appearance.
+  ///
+  /// Features subtle shadows and borders creating a card-like elevated look.
   static const AbstractButtonStyle card =
       ComponentThemeButtonStyle<CardButtonTheme>(
     fallback: ButtonVariance(
@@ -2885,6 +2945,10 @@ class ButtonVariance implements AbstractButtonStyle {
   @override
   final ButtonStateProperty<EdgeInsetsGeometry> margin;
 
+  /// Creates a custom [ButtonVariance] with the specified style properties.
+  ///
+  /// All parameters are required [ButtonStateProperty] functions that resolve
+  /// values based on the button's current state.
   const ButtonVariance({
     required this.decoration,
     required this.mouseCursor,
@@ -2919,11 +2983,30 @@ class ButtonVariance implements AbstractButtonStyle {
   }
 }
 
+/// A button state property delegate that always returns the same value.
+///
+/// [ButtonStylePropertyAll] implements a [ButtonStatePropertyDelegate] that
+/// ignores the context, states, and default value parameters, always returning
+/// its stored [value]. This is useful for creating static style properties that
+/// don't change based on button state.
+///
+/// Example:
+/// ```dart
+/// final alwaysRedDecoration = ButtonStylePropertyAll<Decoration>(
+///   BoxDecoration(color: Colors.red),
+/// );
+/// ```
 class ButtonStylePropertyAll<T> {
+  /// The constant value to return regardless of state.
   final T value;
 
+  /// Creates a [ButtonStylePropertyAll] with the specified constant value.
   const ButtonStylePropertyAll(this.value);
 
+  /// Returns the stored [value], ignoring all parameters.
+  ///
+  /// This method signature matches [ButtonStatePropertyDelegate] for compatibility,
+  /// but the [context], [states], and [value] parameters are unused.
   T call(BuildContext context, Set<WidgetState> states, T value) {
     return this.value;
   }
@@ -2944,7 +3027,27 @@ class ButtonStylePropertyAll<T> {
   String toString() => 'ButtonStylePropertyAll(value: $value)';
 }
 
+/// Extension methods on [AbstractButtonStyle] for convenient style modifications.
+///
+/// Provides utility methods to create modified copies of button styles with
+/// selective property changes. These methods enable fluent style customization
+/// without manually implementing [ButtonVariance] instances.
 extension ButtonStyleExtension on AbstractButtonStyle {
+  /// Creates a copy of this style with selectively replaced properties.
+  ///
+  /// Each parameter is a [ButtonStatePropertyDelegate] that can modify or
+  /// replace the corresponding style property. If all parameters are `null`,
+  /// returns the original style unchanged for efficiency.
+  ///
+  /// Example:
+  /// ```dart
+  /// final customStyle = ButtonVariance.primary.copyWith(
+  ///   decoration: (context, states, defaultDecoration) {
+  ///     // Custom decoration logic
+  ///     return myCustomDecoration;
+  ///   },
+  /// );
+  /// ```
   AbstractButtonStyle copyWith({
     ButtonStatePropertyDelegate<Decoration>? decoration,
     ButtonStatePropertyDelegate<MouseCursor>? mouseCursor,
@@ -2972,6 +3075,24 @@ extension ButtonStyleExtension on AbstractButtonStyle {
     );
   }
 
+  /// Creates a copy with custom background colors for different states.
+  ///
+  /// Modifies the decoration to apply state-specific background colors.
+  /// Only works with [BoxDecoration]; other decoration types are returned unchanged.
+  ///
+  /// Parameters:
+  /// - [color]: Background color for normal state
+  /// - [hoverColor]: Background color when hovered
+  /// - [focusColor]: Background color when focused
+  /// - [disabledColor]: Background color when disabled
+  ///
+  /// Example:
+  /// ```dart
+  /// final style = ButtonVariance.primary.withBackgroundColor(
+  ///   color: Colors.blue,
+  ///   hoverColor: Colors.blue.shade700,
+  /// );
+  /// ```
   AbstractButtonStyle withBackgroundColor(
       {Color? color,
       Color? hoverColor,
@@ -2995,6 +3116,24 @@ extension ButtonStyleExtension on AbstractButtonStyle {
     );
   }
 
+  /// Creates a copy with custom foreground colors for different states.
+  ///
+  /// Modifies both text style and icon theme to apply state-specific foreground
+  /// colors for text and icons.
+  ///
+  /// Parameters:
+  /// - [color]: Foreground color for normal state
+  /// - [hoverColor]: Foreground color when hovered
+  /// - [focusColor]: Foreground color when focused
+  /// - [disabledColor]: Foreground color when disabled
+  ///
+  /// Example:
+  /// ```dart
+  /// final style = ButtonVariance.outline.withForegroundColor(
+  ///   color: Colors.black,
+  ///   disabledColor: Colors.grey,
+  /// );
+  /// ```
   AbstractButtonStyle withForegroundColor(
       {Color? color,
       Color? hoverColor,
@@ -3026,6 +3165,24 @@ extension ButtonStyleExtension on AbstractButtonStyle {
     );
   }
 
+  /// Creates a copy with custom borders for different states.
+  ///
+  /// Modifies the decoration to apply state-specific borders.
+  /// Only works with [BoxDecoration]; other decoration types are returned unchanged.
+  ///
+  /// Parameters:
+  /// - [border]: Border for normal state
+  /// - [hoverBorder]: Border when hovered
+  /// - [focusBorder]: Border when focused
+  /// - [disabledBorder]: Border when disabled
+  ///
+  /// Example:
+  /// ```dart
+  /// final style = ButtonVariance.outline.withBorder(
+  ///   border: Border.all(color: Colors.blue),
+  ///   hoverBorder: Border.all(color: Colors.blue.shade700, width: 2),
+  /// );
+  /// ```
   AbstractButtonStyle withBorder(
       {Border? border,
       Border? hoverBorder,
@@ -3049,6 +3206,24 @@ extension ButtonStyleExtension on AbstractButtonStyle {
     );
   }
 
+  /// Creates a copy with custom border radius for different states.
+  ///
+  /// Modifies the decoration to apply state-specific border radius.
+  /// Only works with [BoxDecoration]; other decoration types are returned unchanged.
+  ///
+  /// Parameters:
+  /// - [borderRadius]: Border radius for normal state
+  /// - [hoverBorderRadius]: Border radius when hovered
+  /// - [focusBorderRadius]: Border radius when focused
+  /// - [disabledBorderRadius]: Border radius when disabled
+  ///
+  /// Example:
+  /// ```dart
+  /// final style = ButtonVariance.primary.withBorderRadius(
+  ///   borderRadius: BorderRadius.circular(8),
+  ///   hoverBorderRadius: BorderRadius.circular(12),
+  /// );
+  /// ```
   AbstractButtonStyle withBorderRadius(
       {BorderRadiusGeometry? borderRadius,
       BorderRadiusGeometry? hoverBorderRadius,
@@ -3072,6 +3247,19 @@ extension ButtonStyleExtension on AbstractButtonStyle {
     );
   }
 
+  /// Creates a copy with custom padding for different states.
+  ///
+  /// Modifies the padding to apply state-specific values.
+  ///
+  /// Parameters:
+  /// - [padding]: Padding for normal state
+  /// - [hoverPadding]: Padding when hovered
+  /// - [focusPadding]: Padding when focused
+  /// - [disabledPadding]: Padding when disabled
+  ///
+  /// Note: The implementation currently doesn't change padding based on state
+  /// due to a limitation in the state resolution logic, but the API is provided
+  /// for consistency with other style properties.
   AbstractButtonStyle withPadding(
       {EdgeInsetsGeometry? padding,
       EdgeInsetsGeometry? hoverPadding,
@@ -3091,6 +3279,29 @@ extension ButtonStyleExtension on AbstractButtonStyle {
   }
 }
 
+/// Function signature for button state property delegates with default value.
+///
+/// [ButtonStatePropertyDelegate] extends [ButtonStateProperty] by adding a
+/// `value` parameter representing the default or base value. This allows delegates
+/// to modify existing values rather than always creating them from scratch.
+///
+/// The delegate receives:
+/// - [context]: Build context for accessing theme data
+/// - [states]: Current widget states
+/// - [value]: The default value from the base style
+///
+/// Returns the final property value of type [T], which may be the default value,
+/// a modified version of it, or a completely new value.
+///
+/// Example:
+/// ```dart
+/// ButtonStatePropertyDelegate<Color> customColor = (context, states, defaultColor) {
+///   if (states.contains(WidgetState.disabled)) {
+///     return defaultColor.withOpacity(0.5); // Modify default
+///   }
+///   return defaultColor; // Use default
+/// };
+/// ```
 typedef ButtonStatePropertyDelegate<T> = T Function(
     BuildContext context, Set<WidgetState> states, T value);
 
