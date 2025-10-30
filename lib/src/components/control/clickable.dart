@@ -360,9 +360,25 @@ class WidgetStatesProvider extends StatelessWidget {
   }
 }
 
+/// Data class wrapping a set of widget states.
+///
+/// [WidgetStatesData] is a simple container for a `Set<WidgetState>` that can
+/// be passed through the widget tree using the [Data] inherited widget system.
+/// It's used by components like [Clickable] to propagate state information
+/// (hovered, pressed, focused, etc.) to descendant widgets.
+///
+/// Example:
+/// ```dart
+/// const statesData = WidgetStatesData({WidgetState.hovered, WidgetState.focused});
+/// ```
 class WidgetStatesData {
+  /// The set of current widget states.
+  ///
+  /// Common states include [WidgetState.hovered], [WidgetState.pressed],
+  /// [WidgetState.focused], [WidgetState.disabled], and [WidgetState.selected].
   final Set<WidgetState> states;
 
+  /// Creates widget states data with the specified states.
   const WidgetStatesData(this.states);
 
   @override
@@ -588,6 +604,34 @@ class Clickable extends StatefulWidget {
   /// Whether to disable the focus outline.
   final bool disableFocusOutline;
 
+  /// Creates a [Clickable] widget.
+  ///
+  /// A clickable area with state-dependent styling and comprehensive gesture support.
+  ///
+  /// Parameters:
+  /// - [child] (required): The widget to display and make clickable
+  /// - [enabled]: Whether the widget is enabled. Defaults to `true`
+  /// - [onPressed]: Primary tap callback. If `null`, widget is disabled
+  /// - [decoration], [mouseCursor], [padding], [textStyle], [iconTheme], [margin], [transform]:
+  ///   State-dependent property functions for styling
+  /// - [focusNode]: Optional focus node for keyboard focus management
+  /// - [behavior]: Hit test behavior. Defaults to [HitTestBehavior.translucent]
+  /// - [onHover], [onFocus]: State change callbacks
+  /// - [disableTransition]: If `true`, disables animation transitions. Defaults to `false`
+  /// - [disableHoverEffect]: If `true`, disables hover visual effects. Defaults to `false`
+  /// - [onDoubleTap]: Double tap callback
+  /// - [shortcuts], [actions]: Keyboard shortcuts and actions
+  /// - [focusOutline]: Whether to show focus outline. Defaults to `true`
+  /// - [enableFeedback]: Whether to enable haptic/audio feedback. Defaults to `true`
+  /// - [onTapDown], [onTapUp], [onTapCancel]: Primary tap gesture callbacks
+  /// - [onSecondaryTapDown], [onSecondaryTapUp], [onSecondaryTapCancel]: Secondary tap callbacks
+  /// - [onTertiaryTapDown], [onTertiaryTapUp], [onTertiaryTapCancel]: Tertiary tap callbacks
+  /// - [onLongPress], [onLongPressStart], [onLongPressUp], [onLongPressMoveUpdate], [onLongPressEnd]:
+  ///   Long press gesture callbacks
+  /// - [onSecondaryLongPress], [onTertiaryLongPress]: Secondary and tertiary long press callbacks
+  /// - [statesController]: Optional controller for programmatic state management
+  /// - [marginAlignment]: Alignment for applying margin
+  /// - [disableFocusOutline]: Whether to disable the focus outline. Defaults to `false`
   const Clickable({
     super.key,
     required this.child,
@@ -636,6 +680,11 @@ class Clickable extends StatefulWidget {
   State<Clickable> createState() => _ClickableState();
 }
 
+/// Minimum time interval between taps to be considered a double tap.
+///
+/// Taps that occur within this duration (300ms) of a previous tap are counted
+/// as part of a multi-tap gesture sequence. Used internally by [Clickable] to
+/// detect double-tap gestures.
 const kDoubleTapMinTime = Duration(milliseconds: 300);
 
 class _ClickableState extends State<Clickable> {

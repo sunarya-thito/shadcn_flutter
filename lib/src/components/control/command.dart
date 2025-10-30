@@ -170,15 +170,52 @@ Future<T?> showCommandDialog<T>({
 /// );
 /// ```
 class Command extends StatefulWidget {
+  /// Whether the search input should be auto-focused when the command palette opens.
+  ///
+  /// Defaults to `true` for convenient keyboard-driven interaction.
   final bool autofocus;
+
+  /// Async builder function that provides search results based on the query.
+  ///
+  /// Receives the current search query string and should return a stream of
+  /// widget lists representing the filtered command results.
   final CommandBuilder builder;
+
+  /// Debounce duration for search input to prevent excessive rebuilds.
+  ///
+  /// The builder is called only after the user stops typing for this duration,
+  /// reducing unnecessary API calls or computations. Defaults to 500ms.
   final Duration
       debounceDuration; // debounce is used to prevent too many requests
+
+  /// Custom widget builder for displaying empty search results.
+  ///
+  /// If `null`, displays a default "No results" message via [CommandEmpty].
   final WidgetBuilder? emptyBuilder;
+
+  /// Custom widget builder for displaying error states.
+  ///
+  /// Receives the error object and stack trace for custom error presentation.
   final ErrorWidgetBuilder? errorBuilder;
+
+  /// Custom widget builder for displaying loading state while fetching results.
+  ///
+  /// If `null`, displays a default loading spinner.
   final WidgetBuilder? loadingBuilder;
+
+  /// Optional opacity override for the command palette surface.
+  ///
+  /// When provided, overrides the theme's default surface opacity.
   final double? surfaceOpacity;
+
+  /// Optional blur amount override for the command palette surface backdrop.
+  ///
+  /// When provided, overrides the theme's default surface blur.
   final double? surfaceBlur;
+
+  /// Optional custom placeholder widget for the search input field.
+  ///
+  /// If `null`, displays default localized placeholder text.
   final Widget? searchPlaceholder;
 
   /// Creates a [Command] palette.
@@ -451,6 +488,22 @@ class CommandCategory extends StatelessWidget {
   /// Optional title widget displayed above the category items.
   final Widget? title;
 
+  /// Creates a [CommandCategory] to group related command items.
+  ///
+  /// Parameters:
+  /// - [children] (`List<Widget>`, required): The command items in this category
+  /// - [title] (Widget?, optional): Optional category header text
+  ///
+  /// Example:
+  /// ```dart
+  /// CommandCategory(
+  ///   title: Text('Edit'),
+  ///   children: [
+  ///     CommandItem(title: Text('Cut'), onTap: () => cut()),
+  ///     CommandItem(title: Text('Copy'), onTap: () => copy()),
+  ///   ],
+  /// )
+  /// ```
   const CommandCategory({
     super.key,
     required this.children,
@@ -506,6 +559,23 @@ class CommandItem extends StatefulWidget {
   /// Called when the item is selected/tapped.
   final VoidCallback? onTap;
 
+  /// Creates a [CommandItem] for display in a command palette.
+  ///
+  /// Parameters:
+  /// - [title] (Widget, required): The main label for this command
+  /// - [leading] (Widget?, optional): Widget displayed before the title (e.g., icon)
+  /// - [trailing] (Widget?, optional): Widget displayed after the title (e.g., shortcut)
+  /// - [onTap] (VoidCallback?, optional): Callback when the item is selected
+  ///
+  /// Example:
+  /// ```dart
+  /// CommandItem(
+  ///   leading: Icon(Icons.file_copy),
+  ///   title: Text('Duplicate'),
+  ///   trailing: Text('Ctrl+D'),
+  ///   onTap: () => duplicate(),
+  /// )
+  /// ```
   const CommandItem({
     super.key,
     this.leading,
