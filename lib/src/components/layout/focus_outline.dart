@@ -29,6 +29,14 @@ class FocusOutlineTheme {
     this.borderRadius,
   });
 
+  /// Creates a copy of this theme with the given fields replaced.
+  ///
+  /// Parameters:
+  /// - [border] (`ValueGetter<Border?>?`, optional): New border.
+  /// - [align] (`ValueGetter<double?>?`, optional): New alignment offset.
+  /// - [borderRadius] (`ValueGetter<BorderRadiusGeometry?>?`, optional): New border radius.
+  ///
+  /// Returns: A new [FocusOutlineTheme] with updated properties.
   FocusOutlineTheme copyWith({
     ValueGetter<Border?>? border,
     ValueGetter<double?>? align,
