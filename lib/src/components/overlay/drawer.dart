@@ -1196,6 +1196,14 @@ class _SheetWrapperState extends _DrawerWrapperState {
   }
 }
 
+/// Position for overlay components like drawers and sheets.
+///
+/// - `left`: Positioned on the left edge
+/// - `right`: Positioned on the right edge
+/// - `top`: Positioned on the top edge
+/// - `bottom`: Positioned on the bottom edge
+/// - `start`: Positioned at the start (left in LTR, right in RTL)
+/// - `end`: Positioned at the end (right in LTR, left in RTL)
 enum OverlayPosition {
   left,
   right,
@@ -1205,11 +1213,24 @@ enum OverlayPosition {
   end,
 }
 
+/// Scale factor for backdrop transform when drawer is open.
+///
+/// Constant value of 0.95 creates a subtle zoom-out effect on the
+/// background content when overlays appear.
 const kBackdropScaleDown = 0.95;
 
+/// Data class containing backdrop transformation information.
+///
+/// Holds the size difference needed to scale and position backdrop
+/// content when overlays are displayed.
 class BackdropTransformData {
+  /// The difference in size between original and transformed backdrop.
   final Size sizeDifference;
 
+  /// Creates backdrop transform data.
+  ///
+  /// Parameters:
+  /// - [sizeDifference] (Size, required): Size difference for transform
   BackdropTransformData(this.sizeDifference);
 }
 
@@ -1483,12 +1504,29 @@ Future<void> closeDrawer<T>(BuildContext context, [T? result]) {
   return data!.state.close(result);
 }
 
+/// Data class representing a drawer overlay layer in the hierarchy.
+///
+/// Tracks the drawer overlay state and its parent layer, enabling nested
+/// drawer management and size computation across the layer stack.
 class DrawerLayerData {
+  /// The drawer overlay state for this layer.
   final DrawerOverlayState overlay;
+
+  /// The parent drawer layer, null if this is the root layer.
   final DrawerLayerData? parent;
 
+  /// Creates drawer layer data.
+  ///
+  /// Parameters:
+  /// - [overlay] (DrawerOverlayState, required): Overlay state for this layer
+  /// - [parent] (DrawerLayerData?): Parent layer in the hierarchy
   const DrawerLayerData(this.overlay, this.parent);
 
+  /// Computes the size of this drawer layer.
+  ///
+  /// Delegates to the overlay state to calculate the layer dimensions.
+  ///
+  /// Returns the computed size or null if not available.
   Size? computeSize() {
     return overlay.computeSize();
   }
@@ -1507,14 +1545,41 @@ class DrawerLayerData {
   }
 }
 
+/// Widget that manages drawer overlay layers.
+///
+/// Provides a container for drawer overlays, managing their lifecycle and
+/// hierarchical relationships. Supports nested drawers through layer data
+/// propagation.
+///
+/// Example:
+/// ```dart
+/// DrawerOverlay(
+///   child: MyAppContent(),
+/// )
+/// ```
 class DrawerOverlay extends StatefulWidget {
+  /// Child widget displayed under the overlay layer.
   final Widget child;
 
+  /// Creates a drawer overlay.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Content widget
   const DrawerOverlay({super.key, required this.child});
 
   @override
   State<DrawerOverlay> createState() => DrawerOverlayState();
 
+  /// Finds the drawer layer data from the widget tree.
+  ///
+  /// Searches up the widget tree for the nearest [DrawerLayerData].
+  /// Optionally navigates to the root layer if [root] is true.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): Build context
+  /// - [root] (bool): Whether to find root layer, defaults to false
+  ///
+  /// Returns [DrawerLayerData] or null if not found.
   static DrawerLayerData? maybeFind(BuildContext context, [bool root = false]) {
     var data = Data.maybeFind<DrawerLayerData>(context);
     if (root) {
@@ -1525,6 +1590,16 @@ class DrawerOverlay extends StatefulWidget {
     return data;
   }
 
+  /// Finds the drawer layer data using messenger lookup.
+  ///
+  /// Similar to [maybeFind] but uses the messenger mechanism for lookup.
+  /// Optionally navigates to the root layer if [root] is true.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): Build context
+  /// - [root] (bool): Whether to find root layer, defaults to false
+  ///
+  /// Returns [DrawerLayerData] or null if not found.
   static DrawerLayerData? maybeFindMessenger(BuildContext context,
       [bool root = false]) {
     var data = Data.maybeFindMessenger<DrawerLayerData>(context);

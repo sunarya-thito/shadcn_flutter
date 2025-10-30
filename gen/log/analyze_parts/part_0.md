@@ -235,44 +235,44 @@ TODO:
 - [ ] lib/src/components/navigation/navigation_bar.dart:1627:class NavigationPadding extends StatelessWidget {
 - [ ] lib/src/components/navigation/navigation_bar.dart:1628:  final Widget child;
 - [ ] lib/src/components/navigation/navigation_bar.dart:1630:  const NavigationPadding({super.key, required this.child});
-- [ ] lib/src/components/navigation/navigation_bar.dart:1654:enum NavigationOverflow { clip, marquee, ellipsis, none }
-- [ ] lib/src/components/navigation/navigation_bar.dart:1656:class NavigationLabel extends StatelessWidget implements NavigationBarItem {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1688:  Widget buildChild(BuildContext context, NavigationControlData? data) {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1706:  Widget buildBox(BuildContext context, NavigationControlData? data) {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1719:  Widget buildSliver(BuildContext context, NavigationControlData? data) {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1657:  final Widget child;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1658:  final AlignmentGeometry? alignment;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1659:  final EdgeInsetsGeometry? padding;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1660:  final NavigationOverflow overflow;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1663:  final bool floating;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1664:  final bool pinned;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1666:  const NavigationLabel({
-- [ ] lib/src/components/navigation/navigation_bar.dart:1867:typedef NavigationWidgetBuilder = Widget Function(
-- [ ] lib/src/components/navigation/navigation_bar.dart:1870:class NavigationWidget extends StatelessWidget implements NavigationBarItem {
+- [x] lib/src/components/navigation/navigation_bar.dart:1654:enum NavigationOverflow { clip, marquee, ellipsis, none }
+- [x] lib/src/components/navigation/navigation_bar.dart:1656:class NavigationLabel extends StatelessWidget implements NavigationBarItem {
+- [x] lib/src/components/navigation/navigation_bar.dart:1688:  Widget buildChild(BuildContext context, NavigationControlData? data) {
+- [x] lib/src/components/navigation/navigation_bar.dart:1706:  Widget buildBox(BuildContext context, NavigationControlData? data) {
+- [x] lib/src/components/navigation/navigation_bar.dart:1719:  Widget buildSliver(BuildContext context, NavigationControlData? data) {
+- [x] lib/src/components/navigation/navigation_bar.dart:1657:  final Widget child;
+- [x] lib/src/components/navigation/navigation_bar.dart:1658:  final AlignmentGeometry? alignment;
+- [x] lib/src/components/navigation/navigation_bar.dart:1659:  final EdgeInsetsGeometry? padding;
+- [x] lib/src/components/navigation/navigation_bar.dart:1660:  final NavigationOverflow overflow;
+- [x] lib/src/components/navigation/navigation_bar.dart:1663:  final bool floating;
+- [x] lib/src/components/navigation/navigation_bar.dart:1664:  final bool pinned;
+- [x] lib/src/components/navigation/navigation_bar.dart:1666:  const NavigationLabel({
+- [x] lib/src/components/navigation/navigation_bar.dart:1867:typedef NavigationWidgetBuilder = Widget Function(
+- [x] lib/src/components/navigation/navigation_bar.dart:1870:class NavigationWidget extends StatelessWidget implements NavigationBarItem {
 - [ ] lib/src/components/navigation/navigation_bar.dart:1871:  final int? index;
 - [ ] lib/src/components/navigation/navigation_bar.dart:1872:  final Widget? child;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1873:  final NavigationWidgetBuilder? builder;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1875:  const NavigationWidget({super.key, this.index, required Widget this.child})
-- [ ] lib/src/components/navigation/navigation_bar.dart:1878:  const NavigationWidget.builder({
-- [ ] lib/src/components/navigation/tabs/tab_list.dart:46:  const TabListTheme({
-- [ ] lib/src/components/navigation/tabs/tab_pane.dart:48:  const TabPaneTheme({
-- [ ] lib/src/components/overlay/drawer.dart:1199:enum OverlayPosition {
-- [ ] lib/src/components/overlay/drawer.dart:1200:  left,
-- [ ] lib/src/components/overlay/drawer.dart:1201:  right,
-- [ ] lib/src/components/overlay/drawer.dart:1202:  top,
-- [ ] lib/src/components/overlay/drawer.dart:1203:  bottom,
-- [ ] lib/src/components/overlay/drawer.dart:1204:  start,
-- [ ] lib/src/components/overlay/drawer.dart:1205:  end,
-- [ ] lib/src/components/overlay/drawer.dart:1208:const kBackdropScaleDown = 0.95;
-- [ ] lib/src/components/overlay/drawer.dart:1210:class BackdropTransformData {
-- [ ] lib/src/components/overlay/drawer.dart:1211:  final Size sizeDifference;
-- [ ] lib/src/components/overlay/drawer.dart:1213:  BackdropTransformData(this.sizeDifference);
-- [ ] lib/src/components/overlay/drawer.dart:1486:class DrawerLayerData {
+- [x] lib/src/components/navigation/navigation_bar.dart:1873:  final NavigationWidgetBuilder? builder;
+- [x] lib/src/components/navigation/navigation_bar.dart:1875:  const NavigationWidget({super.key, this.index, required Widget this.child})
+- [x] lib/src/components/navigation/navigation_bar.dart:1878:  const NavigationWidget.builder({
+- [x] lib/src/components/navigation/tabs/tab_list.dart:46:  const TabListTheme({
+- [x] lib/src/components/navigation/tabs/tab_pane.dart:48:  const TabPaneTheme({
+- [x] lib/src/components/overlay/drawer.dart:1199:enum OverlayPosition {
+- [x] lib/src/components/overlay/drawer.dart:1200:  left,
+- [x] lib/src/components/overlay/drawer.dart:1201:  right,
+- [x] lib/src/components/overlay/drawer.dart:1202:  top,
+- [x] lib/src/components/overlay/drawer.dart:1203:  bottom,
+- [x] lib/src/components/overlay/drawer.dart:1204:  start,
+- [x] lib/src/components/overlay/drawer.dart:1205:  end,
+- [x] lib/src/components/overlay/drawer.dart:1208:const kBackdropScaleDown = 0.95;
+- [x] lib/src/components/overlay/drawer.dart:1210:class BackdropTransformData {
+- [x] lib/src/components/overlay/drawer.dart:1211:  final Size sizeDifference;
+- [x] lib/src/components/overlay/drawer.dart:1213:  BackdropTransformData(this.sizeDifference);
+- [x] lib/src/components/overlay/drawer.dart:1486:class DrawerLayerData {
 - [ ] lib/src/components/overlay/drawer.dart:1492:  Size? computeSize() {
-- [ ] lib/src/components/overlay/drawer.dart:1487:  final DrawerOverlayState overlay;
+- [x] lib/src/components/overlay/drawer.dart:1487:  final DrawerOverlayState overlay;
 - [ ] lib/src/components/overlay/drawer.dart:1488:  final DrawerLayerData? parent;
-- [ ] lib/src/components/overlay/drawer.dart:1490:  const DrawerLayerData(this.overlay, this.parent);
-- [ ] lib/src/components/overlay/drawer.dart:1510:class DrawerOverlay extends StatefulWidget {
+- [x] lib/src/components/overlay/drawer.dart:1490:  const DrawerLayerData(this.overlay, this.parent);
+- [x] lib/src/components/overlay/drawer.dart:1510:class DrawerOverlay extends StatefulWidget {
 - [ ] lib/src/components/overlay/drawer.dart:1518:  static DrawerLayerData? maybeFind(BuildContext context, [bool root = false]) {
 - [ ] lib/src/components/overlay/drawer.dart:1528:  static DrawerLayerData? maybeFindMessenger(BuildContext context,
 - [ ] lib/src/components/overlay/drawer.dart:1511:  final Widget child;

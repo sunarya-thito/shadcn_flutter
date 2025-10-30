@@ -1791,18 +1791,55 @@ class NavigationPadding extends StatelessWidget {
   }
 }
 
+/// Overflow behavior for navigation item labels.
+///
+/// - `clip`: Clip text that exceeds bounds
+/// - `marquee`: Scroll text horizontally when too long
+/// - `ellipsis`: Show ellipsis (...) for overflow
+/// - `none`: No overflow handling
 enum NavigationOverflow { clip, marquee, ellipsis, none }
 
+/// Non-interactive label widget for navigation sections.
+///
+/// Displays text headers or section labels within navigation bars or sidebars.
+/// Supports different overflow behaviors and can be configured as floating or
+/// pinned when used in sidebars.
+///
+/// Example:
+/// ```dart
+/// NavigationLabel(
+///   child: Text('Main Menu').semiBold(),
+///   padding: EdgeInsets.all(8),
+/// )
+/// ```
 class NavigationLabel extends StatelessWidget implements NavigationBarItem {
+  /// Content widget to display as the label.
   final Widget child;
+
+  /// Alignment of the label content.
   final AlignmentGeometry? alignment;
+
+  /// Padding around the label.
   final EdgeInsetsGeometry? padding;
+
+  /// How to handle text overflow.
   final NavigationOverflow overflow;
 
-  // these options are ignored in NavigationBar and NavigationRail
+  /// Whether the label floats when scrolling (sidebar only).
   final bool floating;
+
+  /// Whether the label is pinned when scrolling (sidebar only).
   final bool pinned;
 
+  /// Creates a navigation label.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Label content
+  /// - [alignment] (AlignmentGeometry?): Content alignment
+  /// - [floating] (bool): Floating behavior, defaults to false
+  /// - [pinned] (bool): Pinned behavior, defaults to false
+  /// - [overflow] (NavigationOverflow): Overflow handling, defaults to clip
+  /// - [padding] (EdgeInsetsGeometry?): Label padding
   const NavigationLabel({
     super.key,
     this.alignment,
@@ -1825,6 +1862,16 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
     return buildBox(context, data);
   }
 
+  /// Builds the child widget with visibility and overflow handling.
+  ///
+  /// Wraps the child with [Hidden] widget that responds to expansion state
+  /// and applies overflow handling based on the overflow property.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): Build context
+  /// - [data] (NavigationControlData?): Navigation control data
+  ///
+  /// Returns the wrapped child widget.
   Widget buildChild(BuildContext context, NavigationControlData? data) {
     bool expanded = data?.expanded ?? true;
     return Hidden(
@@ -1843,6 +1890,16 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
     );
   }
 
+  /// Builds the label for box-based navigation containers.
+  ///
+  /// Creates a centered, padded container with the label text.
+  /// Appropriate for use in navigation bars and rails.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): Build context
+  /// - [data] (NavigationControlData?): Navigation control data
+  ///
+  /// Returns widget for box-based navigation.
   Widget buildBox(BuildContext context, NavigationControlData? data) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
@@ -1856,6 +1913,16 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
     );
   }
 
+  /// Builds the label for sliver-based navigation containers (sidebars).
+  ///
+  /// Creates a persistent header that can be configured as floating or pinned.
+  /// Animates based on expansion state and supports scrolling behaviors.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): Build context
+  /// - [data] (NavigationControlData?): Navigation control data
+  ///
+  /// Returns sliver widget for sidebar navigation.
   Widget buildSliver(BuildContext context, NavigationControlData? data) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
@@ -2004,17 +2071,61 @@ class _NavigationLabelBackgroundPainter extends CustomPainter {
   }
 }
 
+/// Builder function for navigation widgets with selection state.
+///
+/// Parameters:
+/// - [context] (BuildContext): Build context
+/// - [selected] (bool): Whether this item is currently selected
+///
+/// Returns a widget that adapts to selection state.
 typedef NavigationWidgetBuilder = Widget Function(
     BuildContext context, bool selected);
 
+/// Custom widget wrapper for navigation items.
+///
+/// Allows inserting custom widgets into navigation containers with optional
+/// selection tracking. Can be used with a static child or a builder that
+/// responds to selection state.
+///
+/// Example:
+/// ```dart
+/// // Static widget
+/// NavigationWidget(
+///   index: 0,
+///   child: CustomNavigationItem(),
+/// )
+///
+/// // Builder with selection state
+/// NavigationWidget.builder(
+///   index: 1,
+///   builder: (context, selected) => CustomItem(
+///     highlighted: selected,
+///   ),
+/// )
+/// ```
 class NavigationWidget extends StatelessWidget implements NavigationBarItem {
+  /// Optional index for selection tracking.
   final int? index;
+
+  /// Static child widget.
   final Widget? child;
+
+  /// Builder function that receives selection state.
   final NavigationWidgetBuilder? builder;
 
+  /// Creates a navigation widget with a static child.
+  ///
+  /// Parameters:
+  /// - [index] (int?): Selection index
+  /// - [child] (Widget, required): Static child widget
   const NavigationWidget({super.key, this.index, required Widget this.child})
       : builder = null;
 
+  /// Creates a navigation widget with a selection-aware builder.
+  ///
+  /// Parameters:
+  /// - [index] (int?): Selection index
+  /// - [builder] (NavigationWidgetBuilder, required): Builder receiving selection state
   const NavigationWidget.builder({
     super.key,
     this.index,
