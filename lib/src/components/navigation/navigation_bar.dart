@@ -1124,21 +1124,54 @@ class NavigationChildControlData {
   }
 }
 
+/// Data class containing navigation control configuration and state.
+///
+/// Manages layout, styling, and interaction settings for navigation
+/// containers and their children. Used internally to coordinate
+/// behavior across navigation items.
 class NavigationControlData {
+  /// Type of navigation container (bar, rail, etc.).
   final NavigationContainerType containerType;
+
+  /// Label display type from parent container.
   final NavigationLabelType parentLabelType;
+
+  /// Label position relative to icon from parent.
   final NavigationLabelPosition parentLabelPosition;
+
+  /// Label size variant from parent.
   final NavigationLabelSize parentLabelSize;
+
+  /// Padding applied by parent container.
   final EdgeInsets parentPadding;
+
+  /// Layout direction (horizontal or vertical).
   final Axis direction;
+
+  /// Currently selected item index (null if none selected).
   final int? selectedIndex;
+
+  /// Total number of child items.
   final int childCount;
+
+  /// Callback when an item is selected.
   final ValueChanged<int> onSelected;
+
+  /// Whether the navigation is expanded to fill available space.
   final bool expanded;
+
+  /// Spacing between navigation items.
   final double spacing;
+
+  /// Whether to maintain cross-axis size constraints.
   final bool keepCrossAxisSize;
+
+  /// Whether to maintain main-axis size constraints.
   final bool keepMainAxisSize;
 
+  /// Computed label direction based on parent label position.
+  ///
+  /// Returns horizontal for start/end positions, vertical for top/bottom.
   Axis get labelDirection {
     return parentLabelPosition == NavigationLabelPosition.start ||
             parentLabelPosition == NavigationLabelPosition.end
@@ -1146,6 +1179,22 @@ class NavigationControlData {
         : Axis.vertical;
   }
 
+  /// Creates navigation control data.
+  ///
+  /// Parameters:
+  /// - [containerType] (NavigationContainerType, required): Container type
+  /// - [parentLabelType] (NavigationLabelType, required): Label display type
+  /// - [parentLabelPosition] (NavigationLabelPosition, required): Label position
+  /// - [parentLabelSize] (NavigationLabelSize, required): Label size variant
+  /// - [parentPadding] (EdgeInsets, required): Container padding
+  /// - [direction] (Axis, required): Layout direction
+  /// - [selectedIndex] (int?): Selected item index
+  /// - [onSelected] (`ValueChanged<int>`, required): Selection callback
+  /// - [expanded] (bool, required): Whether expanded
+  /// - [childCount] (int, required): Number of children
+  /// - [spacing] (double, required): Item spacing
+  /// - [keepCrossAxisSize] (bool, required): Maintain cross-axis size
+  /// - [keepMainAxisSize] (bool, required): Maintain main-axis size
   NavigationControlData({
     required this.containerType,
     required this.parentLabelType,
@@ -1219,10 +1268,16 @@ class NavigationGap extends StatelessWidget implements NavigationBarItem {
   @override
   bool get selectable => false;
 
+  /// Builds the gap widget for box-based navigation containers.
+  ///
+  /// Returns a [Gap] widget with the specified gap size.
   Widget buildBox(BuildContext context) {
     return Gap(gap);
   }
 
+  /// Builds the gap widget for sliver-based navigation containers.
+  ///
+  /// Returns a [SliverGap] widget with the specified gap size.
   Widget buildSliver(BuildContext context) {
     return SliverGap(gap);
   }
@@ -1764,9 +1819,19 @@ class _NavigationLabeled extends StatelessWidget {
   }
 }
 
+/// Internal widget that applies spacing between navigation items.
+///
+/// Automatically calculates and applies appropriate padding based on
+/// navigation direction, item position, and parent spacing configuration.
+/// Used internally by navigation components.
 class NavigationPadding extends StatelessWidget {
+  /// Child widget to wrap with padding.
   final Widget child;
 
+  /// Creates a navigation padding wrapper.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Widget to wrap
   const NavigationPadding({super.key, required this.child});
 
   @override

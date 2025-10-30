@@ -188,25 +188,25 @@ TODO:
 - [ ] lib/src/components/navigation/navigation_bar.dart:1085:  final int? index;
 - [x] lib/src/components/navigation/navigation_bar.dart:1086:  final int actualIndex;
 - [x] lib/src/components/navigation/navigation_bar.dart:1088:  NavigationChildControlData({this.index, required this.actualIndex});
-- [ ] lib/src/components/navigation/navigation_bar.dart:1105:class NavigationControlData {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1120:  Axis get labelDirection {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1106:  final NavigationContainerType containerType;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1107:  final NavigationLabelType parentLabelType;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1108:  final NavigationLabelPosition parentLabelPosition;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1109:  final NavigationLabelSize parentLabelSize;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1110:  final EdgeInsets parentPadding;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1111:  final Axis direction;
+- [x] lib/src/components/navigation/navigation_bar.dart:1105:class NavigationControlData {
+- [x] lib/src/components/navigation/navigation_bar.dart:1120:  Axis get labelDirection {
+- [x] lib/src/components/navigation/navigation_bar.dart:1106:  final NavigationContainerType containerType;
+- [x] lib/src/components/navigation/navigation_bar.dart:1107:  final NavigationLabelType parentLabelType;
+- [x] lib/src/components/navigation/navigation_bar.dart:1108:  final NavigationLabelPosition parentLabelPosition;
+- [x] lib/src/components/navigation/navigation_bar.dart:1109:  final NavigationLabelSize parentLabelSize;
+- [x] lib/src/components/navigation/navigation_bar.dart:1110:  final EdgeInsets parentPadding;
+- [x] lib/src/components/navigation/navigation_bar.dart:1111:  final Axis direction;
 - [ ] lib/src/components/navigation/navigation_bar.dart:1112:  final int? selectedIndex;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1113:  final int childCount;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1114:  final ValueChanged<int> onSelected;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1115:  final bool expanded;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1116:  final double spacing;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1117:  final bool keepCrossAxisSize;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1118:  final bool keepMainAxisSize;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1127:  NavigationControlData({
+- [x] lib/src/components/navigation/navigation_bar.dart:1113:  final int childCount;
+- [x] lib/src/components/navigation/navigation_bar.dart:1114:  final ValueChanged<int> onSelected;
+- [x] lib/src/components/navigation/navigation_bar.dart:1115:  final bool expanded;
+- [x] lib/src/components/navigation/navigation_bar.dart:1116:  final double spacing;
+- [x] lib/src/components/navigation/navigation_bar.dart:1117:  final bool keepCrossAxisSize;
+- [x] lib/src/components/navigation/navigation_bar.dart:1118:  final bool keepMainAxisSize;
+- [x] lib/src/components/navigation/navigation_bar.dart:1127:  NavigationControlData({
 - [x] lib/src/components/navigation/navigation_bar.dart:1183:class NavigationGap extends StatelessWidget implements NavigationBarItem {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1191:  Widget buildBox(BuildContext context) {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1195:  Widget buildSliver(BuildContext context) {
+- [x] lib/src/components/navigation/navigation_bar.dart:1191:  Widget buildBox(BuildContext context) {
+- [x] lib/src/components/navigation/navigation_bar.dart:1195:  Widget buildSliver(BuildContext context) {
 - [x] lib/src/components/navigation/navigation_bar.dart:1184:  final double gap;
 - [x] lib/src/components/navigation/navigation_bar.dart:1186:  const NavigationGap(this.gap, {super.key});
 - [x] lib/src/components/navigation/navigation_bar.dart:1209:class NavigationDivider extends StatelessWidget implements NavigationBarItem {
@@ -232,9 +232,9 @@ TODO:
 - [x] lib/src/components/navigation/navigation_bar.dart:1465:  final NavigationOverflow overflow;
 - [ ] lib/src/components/navigation/navigation_bar.dart:1466:  final AlignmentGeometry? marginAlignment;
 - [x] lib/src/components/navigation/navigation_bar.dart:1468:  const AbstractNavigationButton({
-- [ ] lib/src/components/navigation/navigation_bar.dart:1627:class NavigationPadding extends StatelessWidget {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1628:  final Widget child;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1630:  const NavigationPadding({super.key, required this.child});
+- [x] lib/src/components/navigation/navigation_bar.dart:1627:class NavigationPadding extends StatelessWidget {
+- [x] lib/src/components/navigation/navigation_bar.dart:1628:  final Widget child;
+- [x] lib/src/components/navigation/navigation_bar.dart:1630:  const NavigationPadding({super.key, required this.child});
 - [x] lib/src/components/navigation/navigation_bar.dart:1654:enum NavigationOverflow { clip, marquee, ellipsis, none }
 - [x] lib/src/components/navigation/navigation_bar.dart:1656:class NavigationLabel extends StatelessWidget implements NavigationBarItem {
 - [x] lib/src/components/navigation/navigation_bar.dart:1688:  Widget buildChild(BuildContext context, NavigationControlData? data) {
