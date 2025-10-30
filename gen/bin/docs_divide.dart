@@ -28,6 +28,7 @@ void main() async {
   final projectDir = Directory.current.path;
   print('Project directory: $projectDir');
   content = content.replaceAll('$projectDir\\', '');
+  content = content.replaceAll('$projectDir/', '');
   await analyzeLog.writeAsString(content);
   // "C:\Users\LQQ\shadcn_flutter\shadcn_flutter\lib\src\animation.dart:385:10"
   // group by file path, and then split parts into files (/gen/log/analyze_parts/)
@@ -37,10 +38,67 @@ void main() async {
       .split('\n')
       .where((line) => line.trim().isNotEmpty)
       .toList();
+
+  // Parse analyzer lines -> map of file -> set of unique target lines (as code text)
   final Map<String, List<String>> fileMap = {};
-  for (final line in lines) {
-    final filePath = line.split(':').first;
-    fileMap.putIfAbsent(filePath, () => []).add(line);
+  final Map<String, List<String>> fileCache = {}; // os-path -> file lines
+  final Set<String> seen = {}; // dedupe by file:lineNumber
+
+  final regex = RegExp(r'^(.+\.dart):(\d+):(\d+)');
+  for (final raw in lines) {
+    final match = regex.firstMatch(raw);
+    if (match == null) continue;
+
+    String filePath = match.group(1)!; // as written by analyzer (likely relative)
+    final lineNoStr = match.group(2)!;
+    final lineNo = int.tryParse(lineNoStr);
+    if (lineNo == null || lineNo <= 0) continue;
+
+    // Normalize for output (forward slashes) and for file IO (OS separator)
+    final normalizedPath = filePath.replaceAll('\\', '/');
+    final osPath = filePath
+        .replaceAll('\\', Platform.pathSeparator)
+        .replaceAll('/', Platform.pathSeparator);
+
+    // Deduplicate the same file:line number
+    final key = '$normalizedPath:$lineNo';
+    if (seen.contains(key)) continue;
+
+    // Read file lines (cached)
+    List<String> fileLines = fileCache[osPath] ?? [];
+    if (fileLines.isEmpty) {
+      final f = File(osPath);
+      if (!f.existsSync()) {
+        // try alternative normalized path style
+        final altPath = normalizedPath
+            .replaceAll('/', Platform.pathSeparator)
+            .replaceAll('\\', Platform.pathSeparator);
+        final f2 = File(altPath);
+        if (f2.existsSync()) {
+          fileLines = await f2.readAsLines();
+        } else {
+          // Fallback: cannot read file, skip
+          continue;
+        }
+      } else {
+        fileLines = await f.readAsLines();
+      }
+      fileCache[osPath] = fileLines;
+    }
+
+    String codeLine;
+    if (lineNo - 1 >= 0 && lineNo - 1 < fileLines.length) {
+      codeLine = fileLines[lineNo - 1].trimRight();
+    } else {
+      // Out of range; fallback to the raw message without analyzer metadata
+      // Remove the leading path:line:col portion
+      codeLine = raw.replaceFirst(regex, '').trim();
+    }
+
+    final output = '$normalizedPath:$lineNo:$codeLine';
+    fileMap.putIfAbsent(normalizedPath, () => []);
+    fileMap[normalizedPath]!.add(output);
+    seen.add(key);
   }
   final partsDir = Directory('gen/log/analyze_parts');
   if (!partsDir.existsSync()) {
@@ -60,11 +118,11 @@ void main() async {
       currentFileLines = ['TODO:'];
       parts.add(currentFileLines);
     }
-    for (final line in entry.value) {
+    for (final output in entry.value) {
       if (currentFileLines.length >= maxLinePerTask) {
         exceeded = true;
       }
-      currentFileLines.add('- [ ] ${line.trim()}');
+      currentFileLines.add('- [ ] ${output.trim()}');
     }
     if (exceeded) {
       partIndex++;
