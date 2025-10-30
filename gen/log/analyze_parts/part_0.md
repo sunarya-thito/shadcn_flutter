@@ -1,33 +1,33 @@
 TODO:
-- [ ] lib/src/components/control/command.dart:52:  const CommandEmpty({super.key});
-- [ ] lib/src/components/display/calendar.dart:12:  const CalendarTheme({this.arrowIconColor});
-- [ ] lib/src/components/display/calendar.dart:38:  date,
-- [ ] lib/src/components/display/calendar.dart:39:  month,
-- [ ] lib/src/components/display/calendar.dart:40:  year,
-- [ ] lib/src/components/display/calendar.dart:49:  disabled,
-- [ ] lib/src/components/display/calendar.dart:50:  enabled,
-- [ ] lib/src/components/display/calendar.dart:67:  none,
-- [ ] lib/src/components/display/calendar.dart:68:  single,
-- [ ] lib/src/components/display/calendar.dart:69:  range,
-- [ ] lib/src/components/display/calendar.dart:70:  multi,
-- [ ] lib/src/components/display/calendar.dart:858:enum CalendarValueLookup { none, selected, start, end, inRange }
-- [ ] lib/src/components/display/calendar.dart:938:  CalendarView get next {
-- [ ] lib/src/components/display/calendar.dart:945:  CalendarView get previous {
-- [ ] lib/src/components/display/calendar.dart:1462:  none,
-- [ ] lib/src/components/display/calendar.dart:1463:  today,
-- [ ] lib/src/components/display/calendar.dart:1464:  selected,
-- [ ] lib/src/components/display/calendar.dart:1466:  inRange,
-- [ ] lib/src/components/display/calendar.dart:1467:  startRange, // same as startRangeSelected, but used for other months
-- [ ] lib/src/components/display/calendar.dart:1468:  endRange, // same as endRangeSelected, but used for other months
-- [ ] lib/src/components/display/calendar.dart:1469:  startRangeSelected,
-- [ ] lib/src/components/display/calendar.dart:1470:  endRangeSelected,
-- [ ] lib/src/components/display/calendar.dart:1471:  startRangeSelectedShort,
-- [ ] lib/src/components/display/calendar.dart:1472:  endRangeSelectedShort, // usually when the range are just 2 days
-- [ ] lib/src/components/display/calendar.dart:1473:  inRangeSelectedShort,
-- [ ] lib/src/components/display/keyboard_shortcut.dart:346:List<LogicalKeyboardKey> shortcutActivatorToKeySet(
-- [ ] lib/src/components/form/chip_input.dart:63:class ChipEditingController<T> extends TextEditingController {
-- [ ] lib/src/components/form/date_picker.dart:367:class DateTimeRange {
-- [ ] lib/src/components/form/date_picker.dart:387:  DateTimeRange copyWith({
+- [x] lib/src/components/control/command.dart:52:  const CommandEmpty({super.key});
+- [x] lib/src/components/display/calendar.dart:12:  const CalendarTheme({this.arrowIconColor});
+- [x] lib/src/components/display/calendar.dart:38:  date,
+- [x] lib/src/components/display/calendar.dart:39:  month,
+- [x] lib/src/components/display/calendar.dart:40:  year,
+- [x] lib/src/components/display/calendar.dart:49:  disabled,
+- [x] lib/src/components/display/calendar.dart:50:  enabled,
+- [x] lib/src/components/display/calendar.dart:67:  none,
+- [x] lib/src/components/display/calendar.dart:68:  single,
+- [x] lib/src/components/display/calendar.dart:69:  range,
+- [x] lib/src/components/display/calendar.dart:70:  multi,
+- [x] lib/src/components/display/calendar.dart:858:enum CalendarValueLookup { none, selected, start, end, inRange }
+- [x] lib/src/components/display/calendar.dart:938:  CalendarView get next {
+- [x] lib/src/components/display/calendar.dart:945:  CalendarView get previous {
+- [x] lib/src/components/display/calendar.dart:1462:  none,
+- [x] lib/src/components/display/calendar.dart:1463:  today,
+- [x] lib/src/components/display/calendar.dart:1464:  selected,
+- [x] lib/src/components/display/calendar.dart:1466:  inRange,
+- [x] lib/src/components/display/calendar.dart:1467:  startRange, // same as startRangeSelected, but used for other months
+- [x] lib/src/components/display/calendar.dart:1468:  endRange, // same as endRangeSelected, but used for other months
+- [x] lib/src/components/display/calendar.dart:1469:  startRangeSelected,
+- [x] lib/src/components/display/calendar.dart:1470:  endRangeSelected,
+- [x] lib/src/components/display/calendar.dart:1471:  startRangeSelectedShort,
+- [x] lib/src/components/display/calendar.dart:1472:  endRangeSelectedShort, // usually when the range are just 2 days
+- [x] lib/src/components/display/calendar.dart:1473:  inRangeSelectedShort,
+- [x] lib/src/components/display/keyboard_shortcut.dart:346:List<LogicalKeyboardKey> shortcutActivatorToKeySet(
+- [x] lib/src/components/form/chip_input.dart:63:class ChipEditingController<T> extends TextEditingController {
+- [x] lib/src/components/form/date_picker.dart:367:class DateTimeRange {
+- [x] lib/src/components/form/date_picker.dart:387:  DateTimeRange copyWith({
 - [ ] lib/src/components/form/date_picker.dart:368:  final DateTime start;
 - [ ] lib/src/components/form/date_picker.dart:369:  final DateTime end;
 - [ ] lib/src/components/form/date_picker.dart:371:  const DateTimeRange(this.start, this.end);
