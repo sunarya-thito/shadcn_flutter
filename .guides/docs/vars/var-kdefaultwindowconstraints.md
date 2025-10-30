@@ -1,6 +1,6 @@
 ---
 title: "Variable: kDefaultWindowConstraints"
-description: "Top-level variable kDefaultWindowConstraints"
+description: "Default size constraints for window components."
 ---
 
 Signature

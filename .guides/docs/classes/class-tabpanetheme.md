@@ -44,7 +44,35 @@ class TabPaneTheme {
   /// Type: `double?`. If null, uses 32 logical pixels scaled by theme scaling.
   /// This determines the vertical space allocated for the tab buttons.
   final double? barHeight;
+  /// Creates a [TabPaneTheme].
+  ///
+  /// All parameters are optional and allow customization of tab pane appearance.
+  ///
+  /// Parameters:
+  /// - [borderRadius] (`BorderRadiusGeometry?`, optional): Border radius for the tab pane container.
+  /// - [backgroundColor] (`Color?`, optional): Background color of the tab pane.
+  /// - [border] (`BorderSide?`, optional): Border styling for the tab pane.
+  /// - [barHeight] (`double?`, optional): Height of the tab bar area.
+  ///
+  /// Example:
+  /// ```dart
+  /// const TabPaneTheme(
+  ///   borderRadius: BorderRadius.circular(8),
+  ///   backgroundColor: Colors.white,
+  ///   border: BorderSide(color: Colors.grey),
+  ///   barHeight: 32.0,
+  /// )
+  /// ```
   const TabPaneTheme({this.borderRadius, this.backgroundColor, this.border, this.barHeight});
+  /// Creates a copy with specified fields replaced.
+  ///
+  /// Parameters:
+  /// - [borderRadius] (`ValueGetter<BorderRadiusGeometry?>?`, optional): new border radius getter
+  /// - [backgroundColor] (`ValueGetter<Color?>?`, optional): new background color getter
+  /// - [border] (`ValueGetter<BorderSide?>?`, optional): new border getter
+  /// - [barHeight] (`ValueGetter<double?>?`, optional): new bar height getter
+  ///
+  /// Returns: `TabPaneTheme` — new theme with updated values
   TabPaneTheme copyWith({ValueGetter<BorderRadiusGeometry?>? borderRadius, ValueGetter<Color?>? backgroundColor, ValueGetter<BorderSide?>? border, ValueGetter<double?>? barHeight});
   bool operator ==(Object other);
   int get hashCode;

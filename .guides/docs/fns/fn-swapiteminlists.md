@@ -1,6 +1,6 @@
 ---
 title: "Function: swapItemInLists"
-description: "Top-level function swapItemInLists"
+description: "Swaps an element between multiple lists."
 ---
 
 Signature

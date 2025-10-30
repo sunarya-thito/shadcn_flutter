@@ -1,6 +1,6 @@
 ---
 title: "Function: maxDuration"
-description: "Top-level function maxDuration"
+description: "Returns the maximum of two [Duration] values."
 ---
 
 Signature

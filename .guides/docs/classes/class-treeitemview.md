@@ -91,7 +91,7 @@ class TreeItemView extends StatefulWidget {
   /// - [key] (Key?): Widget identifier for the widget tree
   /// - [child] (Widget, required): Main content widget for the tree item
   /// - [leading] (Widget?, optional): Widget displayed before the content
-  /// - [trailing] (Widget?, optional): Widget displayed after the content  
+  /// - [trailing] (Widget?, optional): Widget displayed after the content
   /// - [onPressed] (VoidCallback?, optional): Callback for press/click events
   /// - [onDoublePressed] (VoidCallback?, optional): Callback for double-click events
   /// - [onExpand] (`ValueChanged<bool>?`, optional): Callback for expansion changes

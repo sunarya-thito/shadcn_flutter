@@ -49,6 +49,7 @@ class DatePickerTheme {
   /// All parameters are optional and fall back to framework defaults when null.
   /// The theme can be applied globally or to specific date picker instances.
   const DatePickerTheme({this.mode, this.initialView, this.initialViewType, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverPadding});
+  /// Creates a copy of this theme with specified properties overridden.
   DatePickerTheme copyWith({ValueGetter<PromptMode?>? mode, ValueGetter<CalendarView?>? initialView, ValueGetter<CalendarViewType?>? initialViewType, ValueGetter<AlignmentGeometry?>? popoverAlignment, ValueGetter<AlignmentGeometry?>? popoverAnchorAlignment, ValueGetter<EdgeInsetsGeometry?>? popoverPadding});
   bool operator ==(Object other);
   int get hashCode;

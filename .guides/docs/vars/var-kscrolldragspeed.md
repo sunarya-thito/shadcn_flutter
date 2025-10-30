@@ -1,6 +1,6 @@
 ---
 title: "Variable: kScrollDragSpeed"
-description: "Top-level variable kScrollDragSpeed"
+description: "The drag speed multiplier for scroll interception (0."
 ---
 
 Signature

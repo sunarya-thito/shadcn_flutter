@@ -66,15 +66,47 @@ description: "A widget that provides pull-to-refresh functionality."
 /// )
 /// ```
 class RefreshTrigger extends StatefulWidget {
+  /// Default indicator builder that creates a spinning progress indicator.
+  ///
+  /// Displays a platform-appropriate circular progress indicator that rotates
+  /// based on pull extent and animates during refresh.
   static Widget defaultIndicatorBuilder(BuildContext context, RefreshTriggerStage stage);
+  /// Minimum pull extent required to trigger refresh.
+  ///
+  /// Pull distance must exceed this value to activate the refresh callback.
+  /// If null, uses theme or default value.
   final double? minExtent;
+  /// Maximum pull extent allowed.
+  ///
+  /// Limits how far the user can pull to prevent excessive stretching.
+  /// If null, uses theme or default value.
   final double? maxExtent;
+  /// Callback invoked when refresh is triggered.
+  ///
+  /// Should return a Future that completes when the refresh operation finishes.
+  /// While the Future is pending, the refresh indicator shows loading state.
   final FutureVoidCallback? onRefresh;
+  /// The scrollable child widget being refreshed.
   final Widget child;
+  /// Direction of the pull gesture.
+  ///
+  /// Defaults to [Axis.vertical] for standard top-down pull-to-refresh.
   final Axis direction;
+  /// Whether to reverse the pull direction.
+  ///
+  /// If true, pull gesture is inverted (e.g., pull down instead of up).
   final bool reverse;
+  /// Custom builder for the refresh indicator.
+  ///
+  /// If null, uses [defaultIndicatorBuilder].
   final RefreshIndicatorBuilder? indicatorBuilder;
+  /// Animation curve for extent changes.
+  ///
+  /// Controls how the pull extent animates during interactions.
   final Curve? curve;
+  /// Duration for the completion animation.
+  ///
+  /// Time to display the completion state before hiding the indicator.
   final Duration? completeDuration;
   /// Creates a [RefreshTrigger] with pull-to-refresh functionality.
   ///

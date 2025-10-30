@@ -1,6 +1,6 @@
 ---
 title: "Function: hexFromColor"
-description: "Top-level function hexFromColor"
+description: "Converts a Flutter [Color] to hexadecimal string representation."
 ---
 
 Signature

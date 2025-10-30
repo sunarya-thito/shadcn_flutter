@@ -1,6 +1,6 @@
 ---
 title: "Function: optionallyResolveBorderRadius"
-description: "Top-level function optionallyResolveBorderRadius"
+description: "Resolves a BorderRadiusGeometry to BorderRadius if needed."
 ---
 
 Signature

@@ -1,9 +1,10 @@
 ---
 title: "Class: WidgetTreeChangeDetectorState"
-description: "Reference for WidgetTreeChangeDetectorState"
+description: "State for [WidgetTreeChangeDetector]."
 ---
 
 ```dart
+/// State for [WidgetTreeChangeDetector].
 class WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
   void initState();
   Widget build(BuildContext context);

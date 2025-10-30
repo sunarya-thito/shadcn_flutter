@@ -69,6 +69,10 @@ class SwiperTheme {
   /// )
   /// ```
   const SwiperTheme({this.expands, this.draggable, this.barrierDismissible, this.backdropBuilder, this.useSafeArea, this.showDragHandle, this.borderRadius, this.dragHandleSize, this.transformBackdrop, this.surfaceOpacity, this.surfaceBlur, this.barrierColor, this.behavior});
+  /// Creates a copy of this theme with optionally replaced values.
+  ///
+  /// All parameters are wrapped in [ValueGetter] to allow lazy evaluation
+  /// and dynamic theme changes.
   SwiperTheme copyWith({ValueGetter<bool?>? expands, ValueGetter<bool?>? draggable, ValueGetter<bool?>? barrierDismissible, ValueGetter<WidgetBuilder?>? backdropBuilder, ValueGetter<bool?>? useSafeArea, ValueGetter<bool?>? showDragHandle, ValueGetter<BorderRadiusGeometry?>? borderRadius, ValueGetter<Size?>? dragHandleSize, ValueGetter<bool?>? transformBackdrop, ValueGetter<double?>? surfaceOpacity, ValueGetter<double?>? surfaceBlur, ValueGetter<Color?>? barrierColor, ValueGetter<HitTestBehavior?>? behavior});
   int get hashCode;
   bool operator ==(Object other);

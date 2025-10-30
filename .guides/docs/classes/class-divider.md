@@ -50,13 +50,21 @@ description: "A horizontal line widget used to visually separate content section
 /// );
 /// ```
 class Divider extends StatelessWidget implements PreferredSizeWidget {
+  /// The color of the divider line.
   final Color? color;
+  /// The total height of the divider (including padding).
   final double? height;
+  /// The thickness of the divider line.
   final double? thickness;
+  /// The amount of empty space before the divider line starts.
   final double? indent;
+  /// The amount of empty space after the divider line ends.
   final double? endIndent;
+  /// Optional child widget to display alongside the divider (e.g., text label).
   final Widget? child;
+  /// Padding around the divider content.
   final EdgeInsetsGeometry? padding;
+  /// Creates a horizontal divider.
   const Divider({super.key, this.color, this.height, this.thickness, this.indent, this.endIndent, this.child, this.padding});
   Size get preferredSize;
   Widget build(BuildContext context);

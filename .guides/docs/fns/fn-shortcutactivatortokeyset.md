@@ -1,6 +1,6 @@
 ---
 title: "Function: shortcutActivatorToKeySet"
-description: "Top-level function shortcutActivatorToKeySet"
+description: "Converts a [ShortcutActivator] into a list of logical keyboard keys."
 ---
 
 Signature

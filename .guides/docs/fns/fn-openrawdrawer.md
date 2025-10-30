@@ -1,6 +1,6 @@
 ---
 title: "Function: openRawDrawer"
-description: "Top-level function openRawDrawer"
+description: "Opens a raw drawer overlay with full customization."
 ---
 
 Signature

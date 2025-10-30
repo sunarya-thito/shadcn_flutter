@@ -25,7 +25,7 @@ description: "Abstract base class for defining tree branch line styles."
 ///   branchLine: BranchLine.path, // Connected paths
 ///   // ... other properties
 /// );
-/// 
+///
 /// // Custom branch line implementation
 /// class CustomBranchLine extends BranchLine {
 ///   @override

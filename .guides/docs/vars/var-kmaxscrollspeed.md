@@ -1,6 +1,6 @@
 ---
 title: "Variable: kMaxScrollSpeed"
-description: "Top-level variable kMaxScrollSpeed"
+description: "The maximum scroll speed allowed (10."
 ---
 
 Signature

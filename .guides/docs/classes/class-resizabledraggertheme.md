@@ -18,7 +18,9 @@ class ResizableDraggerTheme {
   final double? iconSize;
   /// Icon color inside the dragger.
   final Color? iconColor;
+  /// Creates a [ResizableDraggerTheme].
   const ResizableDraggerTheme({this.color, this.borderRadius, this.width, this.height, this.iconSize, this.iconColor});
+  /// Creates a copy of this theme with the given fields replaced.
   ResizableDraggerTheme copyWith({ValueGetter<Color?>? color, ValueGetter<double?>? borderRadius, ValueGetter<double?>? width, ValueGetter<double?>? height, ValueGetter<double?>? iconSize, ValueGetter<Color?>? iconColor});
   bool operator ==(Object other);
   int get hashCode;

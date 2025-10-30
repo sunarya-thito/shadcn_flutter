@@ -33,14 +33,23 @@ description: "Individual calendar date cell with interactive behavior and visual
 /// )
 /// ```
 class CalendarItem extends StatelessWidget {
+  /// The widget to display as the date content.
   final Widget child;
+  /// The visual state type for this calendar item.
   final CalendarItemType type;
+  /// Callback invoked when the item is tapped.
   final VoidCallback? onTap;
+  /// The position of this item in its row (0-indexed).
   final int indexAtRow;
+  /// The total number of items per row.
   final int rowCount;
+  /// Optional fixed width for the item.
   final double? width;
+  /// Optional fixed height for the item.
   final double? height;
+  /// The interaction state of this date (enabled/disabled).
   final DateState state;
+  /// Creates a calendar item with the specified properties.
   const CalendarItem({super.key, required this.child, required this.type, required this.indexAtRow, required this.rowCount, this.onTap, this.width, this.height, required this.state});
   Widget build(BuildContext context);
 }

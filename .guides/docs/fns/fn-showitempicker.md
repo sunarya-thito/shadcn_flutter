@@ -1,6 +1,6 @@
 ---
 title: "Function: showItemPicker"
-description: "Top-level function showItemPicker"
+description: "Shows an item picker in a popover overlay."
 ---
 
 Signature

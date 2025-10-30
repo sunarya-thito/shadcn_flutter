@@ -52,8 +52,22 @@ description: "Hierarchical focus management system for complex widget trees."
 /// )
 /// ```
 class SubFocusScope extends StatefulWidget {
+  /// Builder function that creates the widget tree for this scope.
+  ///
+  /// Called with the build context and the scope's state for managing
+  /// focus within child widgets. If `null`, the scope acts as an invisible
+  /// wrapper without building additional UI.
   final SubFocusScopeBuilder? builder;
+  /// Whether the first child should automatically receive focus.
+  ///
+  /// When `true`, the first attached [SubFocus] widget will automatically
+  /// gain focus when the scope is built. Defaults to `false`.
   final bool autofocus;
+  /// Creates a sub-focus scope.
+  ///
+  /// Parameters:
+  /// - [builder]: Widget builder with scope state (optional)
+  /// - [autofocus]: Auto-focus first child (defaults to `false`)
   const SubFocusScope({super.key, this.builder, this.autofocus = false});
   State<SubFocusScope> createState();
 }

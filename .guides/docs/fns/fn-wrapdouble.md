@@ -1,6 +1,6 @@
 ---
 title: "Function: wrapDouble"
-description: "Top-level function wrapDouble"
+description: "Wraps a value within a specified range."
 ---
 
 Signature

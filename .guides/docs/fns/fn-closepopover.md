@@ -1,6 +1,6 @@
 ---
 title: "Function: closePopover"
-description: "Top-level function closePopover"
+description: "Closes the current popover overlay."
 ---
 
 Signature

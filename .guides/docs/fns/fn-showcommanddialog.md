@@ -1,6 +1,6 @@
 ---
 title: "Function: showCommandDialog"
-description: "Top-level function showCommandDialog"
+description: "Shows a command palette in a modal dialog."
 ---
 
 Signature

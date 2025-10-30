@@ -59,18 +59,55 @@ description: "A versatile container widget that provides a card-like appearance 
 /// );
 /// ```
 class Card extends StatelessWidget {
+  /// The child widget to display within the card.
   final Widget child;
+  /// Padding inside the card around the [child].
+  ///
+  /// If `null`, uses default padding from the theme.
   final EdgeInsetsGeometry? padding;
+  /// Whether the card has a filled background.
+  ///
+  /// When `true`, the card has a solid background color. When `false` or
+  /// `null`, uses theme defaults.
   final bool? filled;
+  /// The background fill color of the card.
+  ///
+  /// Only applies when [filled] is `true`. If `null`, uses theme default.
   final Color? fillColor;
+  /// Border radius for rounded corners on the card.
+  ///
+  /// If `null`, uses default border radius from the theme.
   final BorderRadiusGeometry? borderRadius;
+  /// Color of the card's border.
+  ///
+  /// If `null`, uses default border color from the theme.
   final Color? borderColor;
+  /// Width of the card's border in logical pixels.
+  ///
+  /// If `null`, uses default border width from the theme.
   final double? borderWidth;
+  /// How to clip the card's content.
+  ///
+  /// Controls overflow clipping behavior. If `null`, uses [Clip.none].
   final Clip? clipBehavior;
+  /// Box shadows to apply to the card.
+  ///
+  /// Creates elevation and depth effects. If `null`, no shadows are applied.
   final List<BoxShadow>? boxShadow;
+  /// Opacity of the card's surface effect.
+  ///
+  /// Controls the transparency of surface overlays. If `null`, uses theme default.
   final double? surfaceOpacity;
+  /// Blur amount for the card's surface effect.
+  ///
+  /// Creates a frosted glass or blur effect. If `null`, no blur is applied.
   final double? surfaceBlur;
+  /// Duration for card appearance animations.
+  ///
+  /// Controls how long transitions take when card properties change. If `null`,
+  /// uses default animation duration.
   final Duration? duration;
+  /// Creates a [Card].
   const Card({super.key, required this.child, this.padding, this.filled, this.fillColor, this.borderRadius, this.clipBehavior, this.borderColor, this.borderWidth, this.boxShadow, this.surfaceOpacity, this.surfaceBlur, this.duration});
   Widget build(BuildContext context);
 }

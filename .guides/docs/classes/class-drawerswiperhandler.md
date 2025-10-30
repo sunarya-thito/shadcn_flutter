@@ -19,6 +19,7 @@ description: "Drawer-style swiper handler with backdrop transformation."
 /// )
 /// ```
 class DrawerSwiperHandler extends SwiperHandler {
+  /// Creates a drawer-style swiper handler.
   const DrawerSwiperHandler();
   DrawerOverlayCompleter openSwiper({required BuildContext context, required WidgetBuilder builder, required OverlayPosition position, bool? expands, bool? draggable, bool? barrierDismissible, WidgetBuilder? backdropBuilder, bool? useSafeArea, bool? showDragHandle, BorderRadiusGeometry? borderRadius, Size? dragHandleSize, bool? transformBackdrop, double? surfaceOpacity, double? surfaceBlur, Color? barrierColor});
 }

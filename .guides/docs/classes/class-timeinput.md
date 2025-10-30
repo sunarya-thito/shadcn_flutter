@@ -48,9 +48,13 @@ class TimeInput extends StatefulWidget with ControlledComponent<TimeOfDay?> {
   final ValueChanged<TimeOfDay?>? onChanged;
   final bool enabled;
   final ComponentController<TimeOfDay?>? controller;
+  /// Placeholder widget shown when no time is selected.
   final Widget? placeholder;
+  /// Whether to show seconds input field.
   final bool showSeconds;
+  /// Separator widget between time parts.
   final InputPart? separator;
+  /// Custom placeholders for individual time parts.
   final Map<TimePart, Widget>? placeholders;
   /// Creates a [TimeInput].
   ///

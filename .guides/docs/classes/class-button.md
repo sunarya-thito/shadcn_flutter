@@ -251,6 +251,20 @@ class Button extends StatefulWidget {
   /// );
   /// ```
   const Button.secondary({super.key, this.statesController, this.leading, this.trailing, required this.child, this.onPressed, this.focusNode, this.alignment, this.enabled, this.style = ButtonVariance.secondary, this.disableTransition = false, this.onFocus, this.onHover, this.disableHoverEffect = false, this.enableFeedback, this.onTapDown, this.onTapUp, this.onTapCancel, this.onSecondaryTapDown, this.onSecondaryTapUp, this.onSecondaryTapCancel, this.onTertiaryTapDown, this.onTertiaryTapUp, this.onTertiaryTapCancel, this.onLongPressStart, this.onLongPressUp, this.onLongPressMoveUpdate, this.onLongPressEnd, this.onSecondaryLongPress, this.onTertiaryLongPress, this.marginAlignment, this.disableFocusOutline = false});
+  /// Creates an outline button with a border and transparent background.
+  ///
+  /// Outline buttons feature a visible border and transparent background, providing
+  /// a minimal yet distinct appearance. They're ideal for secondary actions that need
+  /// to stand out more than ghost buttons but less than filled buttons. The outline
+  /// style works well in layouts where visual hierarchy matters.
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.outline(
+  ///   onPressed: () => showMore(),
+  ///   child: Text('Learn More'),
+  /// );
+  /// ```
   const Button.outline({super.key, this.statesController, this.leading, this.trailing, required this.child, this.onPressed, this.focusNode, this.alignment, this.enabled, this.style = ButtonVariance.outline, this.disableTransition = false, this.onFocus, this.onHover, this.disableHoverEffect = false, this.enableFeedback, this.onTapDown, this.onTapUp, this.onTapCancel, this.onSecondaryTapDown, this.onSecondaryTapUp, this.onSecondaryTapCancel, this.onTertiaryTapDown, this.onTertiaryTapUp, this.onTertiaryTapCancel, this.onLongPressStart, this.onLongPressUp, this.onLongPressMoveUpdate, this.onLongPressEnd, this.onSecondaryLongPress, this.onTertiaryLongPress, this.marginAlignment, this.disableFocusOutline = false});
   /// Creates a ghost button with minimal styling for subtle actions.
   ///
@@ -267,7 +281,33 @@ class Button extends StatefulWidget {
   /// );
   /// ```
   const Button.ghost({super.key, this.statesController, this.leading, this.trailing, required this.child, this.onPressed, this.focusNode, this.alignment, this.enabled, this.style = ButtonVariance.ghost, this.disableTransition = false, this.onFocus, this.onHover, this.disableHoverEffect = false, this.enableFeedback, this.onTapDown, this.onTapUp, this.onTapCancel, this.onSecondaryTapDown, this.onSecondaryTapUp, this.onSecondaryTapCancel, this.onTertiaryTapDown, this.onTertiaryTapUp, this.onTertiaryTapCancel, this.onLongPressStart, this.onLongPressUp, this.onLongPressMoveUpdate, this.onLongPressEnd, this.onSecondaryLongPress, this.onTertiaryLongPress, this.marginAlignment, this.disableFocusOutline = false});
+  /// Creates a link-styled button with underline decoration.
+  ///
+  /// Link buttons appear as inline text links, typically underlined on hover,
+  /// making them suitable for navigation or inline actions within text. They have
+  /// minimal visual presence and work well for tertiary actions or embedded links.
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.link(
+  ///   onPressed: () => openUrl(),
+  ///   child: Text('View Documentation'),
+  /// );
+  /// ```
   const Button.link({super.key, this.statesController, this.leading, this.trailing, required this.child, this.onPressed, this.focusNode, this.alignment, this.enabled, this.style = ButtonVariance.link, this.disableTransition = false, this.onFocus, this.onHover, this.disableHoverEffect = false, this.enableFeedback, this.onTapDown, this.onTapUp, this.onTapCancel, this.onSecondaryTapDown, this.onSecondaryTapUp, this.onSecondaryTapCancel, this.onTertiaryTapDown, this.onTertiaryTapUp, this.onTertiaryTapCancel, this.onLongPressStart, this.onLongPressUp, this.onLongPressMoveUpdate, this.onLongPressEnd, this.onSecondaryLongPress, this.onTertiaryLongPress, this.marginAlignment, this.disableFocusOutline = false});
+  /// Creates a text-only button with no background or border.
+  ///
+  /// Text buttons display only their text content without any background fill or
+  /// border decoration. They're the most minimal button style, useful for actions
+  /// that should be accessible but not visually prominent, such as "Skip" or "Not now".
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.text(
+  ///   onPressed: () => skipStep(),
+  ///   child: Text('Skip'),
+  /// );
+  /// ```
   const Button.text({super.key, this.statesController, this.leading, this.trailing, required this.child, this.onPressed, this.focusNode, this.alignment, this.enabled, this.style = ButtonVariance.text, this.disableTransition = false, this.onFocus, this.onHover, this.disableHoverEffect = false, this.enableFeedback, this.onTapDown, this.onTapUp, this.onTapCancel, this.onSecondaryTapDown, this.onSecondaryTapUp, this.onSecondaryTapCancel, this.onTertiaryTapDown, this.onTertiaryTapUp, this.onTertiaryTapCancel, this.onLongPressStart, this.onLongPressUp, this.onLongPressMoveUpdate, this.onLongPressEnd, this.onSecondaryLongPress, this.onTertiaryLongPress, this.marginAlignment, this.disableFocusOutline = false});
   /// Creates a destructive button for actions that delete or destroy data.
   ///
@@ -284,7 +324,38 @@ class Button extends StatefulWidget {
   /// );
   /// ```
   const Button.destructive({super.key, this.statesController, this.leading, this.trailing, required this.child, this.onPressed, this.focusNode, this.alignment, this.enabled, this.style = ButtonVariance.destructive, this.disableTransition = false, this.onFocus, this.onHover, this.disableHoverEffect = false, this.enableFeedback, this.onTapDown, this.onTapUp, this.onTapCancel, this.onSecondaryTapDown, this.onSecondaryTapUp, this.onSecondaryTapCancel, this.onTertiaryTapDown, this.onTertiaryTapUp, this.onTertiaryTapCancel, this.onLongPressStart, this.onLongPressUp, this.onLongPressMoveUpdate, this.onLongPressEnd, this.onSecondaryLongPress, this.onTertiaryLongPress, this.marginAlignment, this.disableFocusOutline = false});
+  /// Creates a fixed-style button with consistent dimensions.
+  ///
+  /// Fixed buttons maintain specific dimensions regardless of content, making them
+  /// ideal for grids, toolbars, or layouts where uniform button sizing is required.
+  /// They're commonly used in icon-heavy interfaces or when precise spacing matters.
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.fixed(
+  ///   onPressed: () => performAction(),
+  ///   child: Icon(Icons.add),
+  /// );
+  /// ```
   const Button.fixed({super.key, this.statesController, this.leading, this.trailing, required this.child, this.onPressed, this.focusNode, this.alignment, this.enabled, this.style = ButtonVariance.fixed, this.disableTransition = false, this.onFocus, this.onHover, this.disableHoverEffect = false, this.enableFeedback, this.onTapDown, this.onTapUp, this.onTapCancel, this.onSecondaryTapDown, this.onSecondaryTapUp, this.onSecondaryTapCancel, this.onTertiaryTapDown, this.onTertiaryTapUp, this.onTertiaryTapCancel, this.onLongPressStart, this.onLongPressUp, this.onLongPressMoveUpdate, this.onLongPressEnd, this.onSecondaryLongPress, this.onTertiaryLongPress, this.marginAlignment, this.disableFocusOutline = false});
+  /// Creates a card-style button with elevated appearance.
+  ///
+  /// Card buttons feature subtle shadows and borders to create a card-like elevated
+  /// appearance. They work well in content-heavy layouts where buttons need to stand
+  /// out from surrounding content, such as feature cards or call-to-action sections.
+  ///
+  /// Example:
+  /// ```dart
+  /// Button.card(
+  ///   onPressed: () => selectOption(),
+  ///   child: Column(
+  ///     children: [
+  ///       Icon(Icons.star),
+  ///       Text('Premium'),
+  ///     ],
+  ///   ),
+  /// );
+  /// ```
   const Button.card({super.key, this.statesController, this.leading, this.trailing, required this.child, this.onPressed, this.focusNode, this.alignment, this.enabled, this.style = ButtonVariance.card, this.disableTransition = false, this.onFocus, this.onHover, this.disableHoverEffect = false, this.enableFeedback, this.onTapDown, this.onTapUp, this.onTapCancel, this.onSecondaryTapDown, this.onSecondaryTapUp, this.onSecondaryTapCancel, this.onTertiaryTapDown, this.onTertiaryTapUp, this.onTertiaryTapCancel, this.onLongPressStart, this.onLongPressUp, this.onLongPressMoveUpdate, this.onLongPressEnd, this.onSecondaryLongPress, this.onTertiaryLongPress, this.marginAlignment, this.disableFocusOutline = false});
   ButtonState createState();
 }

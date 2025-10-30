@@ -1,6 +1,6 @@
 ---
 title: "Variable: kDebugContainerVisible"
-description: "Top-level variable kDebugContainerVisible"
+description: "Whether debug containers are visible in the UI."
 ---
 
 Signature

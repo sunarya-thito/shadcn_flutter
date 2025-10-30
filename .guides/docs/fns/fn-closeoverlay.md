@@ -1,6 +1,6 @@
 ---
 title: "Function: closeOverlay"
-description: "Top-level function closeOverlay"
+description: "Closes the currently active overlay with an optional result value."
 ---
 
 Signature

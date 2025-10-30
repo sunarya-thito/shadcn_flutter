@@ -1,6 +1,6 @@
 ---
 title: "Function: showItemPickerDialog"
-description: "Top-level function showItemPickerDialog"
+description: "Shows an item picker in a modal dialog."
 ---
 
 Signature

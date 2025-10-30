@@ -1,6 +1,6 @@
 ---
 title: "Function: formatFileSize"
-description: "Top-level function formatFileSize"
+description: "Formats a file size in bytes to a human-readable string."
 ---
 
 Signature

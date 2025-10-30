@@ -45,7 +45,7 @@ class DrawerTheme {
   ///
   /// Parameters:
   /// - [surfaceOpacity] (double?, optional): opacity for backdrop surface effects
-  /// - [surfaceBlur] (double?, optional): blur intensity for backdrop effects  
+  /// - [surfaceBlur] (double?, optional): blur intensity for backdrop effects
   /// - [barrierColor] (Color?, optional): color of the modal barrier
   /// - [showDragHandle] (bool?, optional): whether to show drag handles
   /// - [dragHandleSize] (Size?, optional): size of the drag handle
@@ -59,6 +59,16 @@ class DrawerTheme {
   /// )
   /// ```
   const DrawerTheme({this.surfaceOpacity, this.surfaceBlur, this.barrierColor, this.showDragHandle, this.dragHandleSize});
+  /// Creates a copy of this theme with the given fields replaced.
+  ///
+  /// Parameters:
+  /// - [surfaceOpacity] (`ValueGetter<double?>?`, optional): New surface opacity.
+  /// - [surfaceBlur] (`ValueGetter<double?>?`, optional): New surface blur amount.
+  /// - [barrierColor] (`ValueGetter<Color?>?`, optional): New barrier color.
+  /// - [showDragHandle] (`ValueGetter<bool?>?`, optional): New show drag handle setting.
+  /// - [dragHandleSize] (`ValueGetter<Size?>?`, optional): New drag handle size.
+  ///
+  /// Returns: A new [DrawerTheme] with updated properties.
   DrawerTheme copyWith({ValueGetter<double?>? surfaceOpacity, ValueGetter<double?>? surfaceBlur, ValueGetter<Color?>? barrierColor, ValueGetter<bool?>? showDragHandle, ValueGetter<Size?>? dragHandleSize});
   bool operator ==(Object other);
   int get hashCode;

@@ -17,7 +17,9 @@ description: "Calendar value representing a single selected date."
 /// print(lookup == CalendarValueLookup.selected); // true
 /// ```
 class SingleCalendarValue extends CalendarValue {
+  /// The selected date.
   final DateTime date;
+  /// Creates a single calendar value with the specified date.
   SingleCalendarValue(this.date);
   CalendarValueLookup lookup(int year, [int? month, int? day]);
   CalendarView get view;

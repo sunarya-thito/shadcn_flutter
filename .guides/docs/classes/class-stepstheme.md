@@ -14,7 +14,9 @@ class StepsTheme {
   final Color? indicatorColor;
   /// Thickness of the connector line.
   final double? connectorThickness;
+  /// Creates a [StepsTheme].
   const StepsTheme({this.indicatorSize, this.spacing, this.indicatorColor, this.connectorThickness});
+  /// Creates a copy of this theme with the given fields replaced.
   StepsTheme copyWith({ValueGetter<double?>? indicatorSize, ValueGetter<double?>? spacing, ValueGetter<Color?>? indicatorColor, ValueGetter<double?>? connectorThickness});
   bool operator ==(Object other);
   int get hashCode;

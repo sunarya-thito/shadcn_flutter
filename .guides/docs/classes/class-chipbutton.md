@@ -18,8 +18,11 @@ description: "Specialized button component designed for use within chips."
 /// );
 /// ```
 class ChipButton extends StatelessWidget {
+  /// The widget to display as the button content.
   final Widget child;
+  /// Callback invoked when the button is pressed.
   final VoidCallback? onPressed;
+  /// Creates a chip button with the specified child and callback.
   const ChipButton({super.key, required this.child, this.onPressed});
   Widget build(BuildContext context);
 }

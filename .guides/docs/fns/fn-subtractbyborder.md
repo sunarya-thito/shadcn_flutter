@@ -1,6 +1,6 @@
 ---
 title: "Function: subtractByBorder"
-description: "Top-level function subtractByBorder"
+description: "Subtracts a border width from a border radius."
 ---
 
 Signature

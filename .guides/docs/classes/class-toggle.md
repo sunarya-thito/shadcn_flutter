@@ -32,10 +32,21 @@ description: "Simple toggle button with stateful on/off behavior."
 /// );
 /// ```
 class Toggle extends StatefulWidget {
+  /// The current toggle state (on/off).
   final bool value;
+  /// Called when the toggle state changes.
+  ///
+  /// If `null`, the toggle is considered disabled and won't respond to user input.
   final ValueChanged<bool>? onChanged;
+  /// The widget displayed inside the toggle button.
   final Widget child;
+  /// The visual style for the button.
+  ///
+  /// Defaults to ghost style for a subtle appearance.
   final ButtonStyle style;
+  /// Whether the toggle button is enabled.
+  ///
+  /// If `null`, the button is enabled only when [onChanged] is not `null`.
   final bool? enabled;
   /// Creates a [Toggle].
   ///

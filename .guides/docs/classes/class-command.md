@@ -33,22 +33,51 @@ description: "Interactive command palette with search functionality and dynamic 
 ///   builder: (context, query) async* {
 ///     final results = await searchService.search(query);
 ///     yield results.map((item) => CommandItem(
-///       onSelected: () => handleCommand(item),
-///       child: Text(item.title),
+///       onTap: () => handleCommand(item),
+///       title: Text(item.title),
 ///     )).toList();
 ///   },
 ///   emptyBuilder: (context) => Text('No results found'),
 /// );
 /// ```
 class Command extends StatefulWidget {
+  /// Whether the search input should be auto-focused when the command palette opens.
+  ///
+  /// Defaults to `true` for convenient keyboard-driven interaction.
   final bool autofocus;
+  /// Async builder function that provides search results based on the query.
+  ///
+  /// Receives the current search query string and should return a stream of
+  /// widget lists representing the filtered command results.
   final CommandBuilder builder;
+  /// Debounce duration for search input to prevent excessive rebuilds.
+  ///
+  /// The builder is called only after the user stops typing for this duration,
+  /// reducing unnecessary API calls or computations. Defaults to 500ms.
   final Duration debounceDuration;
+  /// Custom widget builder for displaying empty search results.
+  ///
+  /// If `null`, displays a default "No results" message via [CommandEmpty].
   final WidgetBuilder? emptyBuilder;
+  /// Custom widget builder for displaying error states.
+  ///
+  /// Receives the error object and stack trace for custom error presentation.
   final ErrorWidgetBuilder? errorBuilder;
+  /// Custom widget builder for displaying loading state while fetching results.
+  ///
+  /// If `null`, displays a default loading spinner.
   final WidgetBuilder? loadingBuilder;
+  /// Optional opacity override for the command palette surface.
+  ///
+  /// When provided, overrides the theme's default surface opacity.
   final double? surfaceOpacity;
+  /// Optional blur amount override for the command palette surface backdrop.
+  ///
+  /// When provided, overrides the theme's default surface blur.
   final double? surfaceBlur;
+  /// Optional custom placeholder widget for the search input field.
+  ///
+  /// If `null`, displays default localized placeholder text.
   final Widget? searchPlaceholder;
   /// Creates a [Command] palette.
   ///
@@ -77,8 +106,8 @@ class Command extends StatefulWidget {
   ///       cmd.name.toLowerCase().contains(query?.toLowerCase() ?? '')
   ///     );
   ///     yield filtered.map((cmd) => CommandItem(
-  ///       child: Text(cmd.name),
-  ///       onSelected: () => cmd.execute(),
+  ///       title: Text(cmd.name),
+  ///       onTap: () => cmd.execute(),
   ///     )).toList();
   ///   },
   /// )

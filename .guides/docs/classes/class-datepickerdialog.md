@@ -28,12 +28,19 @@ description: "A date picker dialog that provides comprehensive date selection ca
 /// )
 /// ```
 class DatePickerDialog extends StatefulWidget {
+  /// The initial view type to display (date, month, or year grid).
   final CalendarViewType initialViewType;
+  /// The initial calendar view position (month/year to display).
   final CalendarView? initialView;
+  /// The selection mode determining how dates can be selected.
   final CalendarSelectionMode selectionMode;
+  /// Alternative view mode for display purposes.
   final CalendarSelectionMode? viewMode;
+  /// The initially selected date value(s).
   final CalendarValue? initialValue;
+  /// Callback invoked when the selected date(s) change.
   final ValueChanged<CalendarValue?>? onChanged;
+  /// Builder function to determine the state of each date.
   final DateStateBuilder? stateBuilder;
   /// Creates a [DatePickerDialog] with comprehensive date selection options.
   ///

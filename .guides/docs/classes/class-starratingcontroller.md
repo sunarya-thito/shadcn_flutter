@@ -17,12 +17,12 @@ description: "A controller for managing [StarRating] widget values programmatica
 /// Example:
 /// ```dart
 /// final controller = StarRatingController(3.5);
-/// 
+///
 /// // Listen to changes
 /// controller.addListener(() {
 ///   print('Rating changed to: ${controller.value}');
 /// });
-/// 
+///
 /// // Update the rating
 /// controller.value = 4.0;
 /// ```

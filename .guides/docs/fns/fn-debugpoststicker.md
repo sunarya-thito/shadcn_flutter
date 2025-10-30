@@ -1,6 +1,6 @@
 ---
 title: "Function: debugPostSticker"
-description: "Top-level function debugPostSticker"
+description: "Posts a temporary debug sticker overlay at the specified position."
 ---
 
 Signature

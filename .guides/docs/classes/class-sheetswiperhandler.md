@@ -19,6 +19,7 @@ description: "Sheet-style swiper handler with minimal styling."
 /// )
 /// ```
 class SheetSwiperHandler extends SwiperHandler {
+  /// Creates a sheet-style swiper handler.
   const SheetSwiperHandler();
   DrawerOverlayCompleter openSwiper({required BuildContext context, required WidgetBuilder builder, required OverlayPosition position, bool? expands, bool? draggable, bool? barrierDismissible, WidgetBuilder? backdropBuilder, bool? useSafeArea, bool? showDragHandle, BorderRadiusGeometry? borderRadius, Size? dragHandleSize, bool? transformBackdrop, double? surfaceOpacity, double? surfaceBlur, Color? barrierColor});
 }

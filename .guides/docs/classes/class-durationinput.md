@@ -49,9 +49,13 @@ class DurationInput extends StatefulWidget with ControlledComponent<Duration?> {
   final ValueChanged<Duration?>? onChanged;
   final bool enabled;
   final ComponentController<Duration?>? controller;
+  /// Placeholder widget shown when no duration is selected.
   final Widget? placeholder;
+  /// Whether to show seconds input field.
   final bool showSeconds;
+  /// Separator widget between duration parts.
   final InputPart? separator;
+  /// Custom placeholders for individual time parts.
   final Map<TimePart, Widget>? placeholders;
   /// Creates a [DurationInput].
   ///

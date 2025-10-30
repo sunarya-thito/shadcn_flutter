@@ -13,7 +13,7 @@ description: "A comprehensive tree view widget with hierarchical data display an
 ///
 /// The widget supports both mouse and keyboard interaction including:
 /// - Click to select items and toggle expansion
-/// - Ctrl+Click for multi-selection  
+/// - Ctrl+Click for multi-selection
 /// - Shift+Click for range selection
 /// - Arrow keys for navigation and selection
 /// - Space bar for selection toggle
@@ -23,7 +23,7 @@ description: "A comprehensive tree view widget with hierarchical data display an
 /// - Hierarchical data display with customizable branch lines
 /// - Single and multi-selection modes with recursive selection support
 /// - Keyboard navigation and accessibility
-/// - Scrollable content with shrink wrap support  
+/// - Scrollable content with shrink wrap support
 /// - Customizable expand icons and visual styling
 /// - Immutable state management with helper methods
 /// - Focus management and scope integration
@@ -53,37 +53,262 @@ description: "A comprehensive tree view widget with hierarchical data display an
 /// )
 /// ```
 class TreeView<T> extends StatefulWidget {
+  /// Creates a default selection changed handler for tree nodes.
+  ///
+  /// Returns a handler that manages node selection state changes in a tree view.
+  /// The handler updates the tree structure when selection changes occur.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Current tree node list
+  /// - [onChanged] (`ValueChanged<List<TreeNode<K>>>`, required): Callback when nodes change
+  ///
+  /// Returns a `TreeNodeSelectionChanged<K>` function that handles selection changes.
   static TreeNodeSelectionChanged<K> defaultSelectionHandler<K>(List<TreeNode<K>> nodes, ValueChanged<List<TreeNode<K>>> onChanged);
+  /// Creates a default expand/collapse handler for tree items.
+  ///
+  /// Returns a handler that manages the expanded/collapsed state of a specific
+  /// tree node. The handler updates the tree structure when expansion changes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Current tree node list
+  /// - [target] (`TreeNode<K>`, required): The node being expanded/collapsed
+  /// - [onChanged] (`ValueChanged<List<TreeNode<K>>>`, required): Callback when nodes change
+  ///
+  /// Returns a `ValueChanged<bool>` function that handles expand/collapse events.
   static ValueChanged<bool> defaultItemExpandHandler<K>(List<TreeNode<K>> nodes, TreeNode<K> target, ValueChanged<List<TreeNode<K>>> onChanged);
+  /// Applies a transformation operator to all nodes in a tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [operator] (`TreeNodeUnaryOperator<K>`, required): Transformation function.
+  ///
+  /// Returns: `List<TreeNode<K>>` — transformed tree.
   static List<TreeNode<K>> replaceNodes<K>(List<TreeNode<K>> nodes, TreeNodeUnaryOperator<K> operator);
+  /// Applies a transformation operator to all nodes with parent context.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [operator] (`TreeNodeUnaryOperatorWithParent<K>`, required): Transformation function.
+  ///
+  /// Returns: `List<TreeNode<K>>` — transformed tree.
   static List<TreeNode<K>> replaceNodesWithParent<K>(List<TreeNode<K>> nodes, TreeNodeUnaryOperatorWithParent<K> operator);
+  /// Replaces a specific node in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [oldNode] (`TreeNode<K>`, required): Node to replace.
+  /// - [newNode] (`TreeNode<K>`, required): Replacement node.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node replaced.
   static List<TreeNode<K>> replaceNode<K>(List<TreeNode<K>> nodes, TreeNode<K> oldNode, TreeNode<K> newNode);
+  /// Replaces a node by matching its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [oldItem] (`K`, required): Item value to find.
+  /// - [newItem] (`TreeNode<K>`, required): Replacement node.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item replaced.
   static List<TreeNode<K>> replaceItem<K>(List<TreeNode<K>> nodes, K oldItem, TreeNode<K> newItem);
+  /// Updates selection state to maintain parent-child consistency.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with updated selection.
   static List<TreeNode<K>> updateRecursiveSelection<K>(List<TreeNode<K>> nodes);
+  /// Gets all selected nodes from the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — selected nodes.
   static List<TreeNode<K>> getSelectedNodes<K>(List<TreeNode<K>> nodes);
+  /// Gets all selected item values from the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<K>` — selected item values.
   static List<K> getSelectedItems<K>(List<TreeNode<K>> nodes);
+  /// Expands all nodes in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all nodes expanded.
   static List<TreeNode<K>> expandAll<K>(List<TreeNode<K>> nodes);
+  /// Collapses all nodes in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all nodes collapsed.
   static List<TreeNode<K>> collapseAll<K>(List<TreeNode<K>> nodes);
+  /// Expands a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to expand.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node expanded.
   static List<TreeNode<K>> expandNode<K>(List<TreeNode<K>> nodes, TreeNode<K> target);
+  /// Expands a node by its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`K`, required): Item value to expand.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item expanded.
   static List<TreeNode<K>> expandItem<K>(List<TreeNode<K>> nodes, K target);
+  /// Collapses a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to collapse.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node collapsed.
   static List<TreeNode<K>> collapseNode<K>(List<TreeNode<K>> nodes, TreeNode<K> target);
+  /// Collapses a node by its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`K`, required): Item value to collapse.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item collapsed.
   static List<TreeNode<K>> collapseItem<K>(List<TreeNode<K>> nodes, K target);
+  /// Selects a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node selected.
   static List<TreeNode<K>> selectNode<K>(List<TreeNode<K>> nodes, TreeNode<K> target);
+  /// Selects a node by its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`K`, required): Item value to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item selected.
   static List<TreeNode<K>> selectItem<K>(List<TreeNode<K>> nodes, K target);
+  /// Deselects a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node deselected.
   static List<TreeNode<K>> deselectNode<K>(List<TreeNode<K>> nodes, TreeNode<K> target);
+  /// Deselects a node by its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`K`, required): Item value to deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item deselected.
   static List<TreeNode<K>> deselectItem<K>(List<TreeNode<K>> nodes, K target);
+  /// Toggles selection state of a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node selection toggled.
   static List<TreeNode<K>> toggleSelectNode<K>(List<TreeNode<K>> nodes, TreeNode<K> target);
+  /// Toggles selection state of multiple nodes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [targets] (`Iterable<TreeNode<K>>`, required): Nodes to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with nodes toggled.
   static List<TreeNode<K>> toggleSelectNodes<K>(List<TreeNode<K>> nodes, Iterable<TreeNode<K>> targets);
+  /// Toggles selection state of a node by its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`K`, required): Item value to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item toggled.
   static List<TreeNode<K>> toggleSelectItem<K>(List<TreeNode<K>> nodes, K target);
+  /// Toggles selection state of multiple items.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [targets] (`Iterable<K>`, required): Item values to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with items toggled.
   static List<TreeNode<K>> toggleSelectItems<K>(List<TreeNode<K>> nodes, Iterable<K> targets);
+  /// Selects all nodes in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all nodes selected.
   static List<TreeNode<K>> selectAll<K>(List<TreeNode<K>> nodes);
+  /// Deselects all nodes in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all nodes deselected.
   static List<TreeNode<K>> deselectAll<K>(List<TreeNode<K>> nodes);
+  /// Toggles selection state of all nodes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all selections toggled.
   static List<TreeNode<K>> toggleSelectAll<K>(List<TreeNode<K>> nodes);
+  /// Selects specific nodes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [selectedNodes] (`Iterable<TreeNode<K>>`, required): Nodes to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with specified nodes selected.
   static List<TreeNode<K>> selectNodes<K>(List<TreeNode<K>> nodes, Iterable<TreeNode<K>> selectedNodes);
+  /// Selects nodes by their item values.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [selectedItems] (`Iterable<K>`, required): Item values to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with specified items selected.
   static List<TreeNode<K>> selectItems<K>(List<TreeNode<K>> nodes, Iterable<K> selectedItems);
+  /// Deselects specific nodes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [deselectedNodes] (`Iterable<TreeNode<K>>`, required): Nodes to deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with specified nodes deselected.
   static List<TreeNode<K>> deselectNodes<K>(List<TreeNode<K>> nodes, Iterable<TreeNode<K>> deselectedNodes);
+  /// Deselects nodes by their item values.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [deselectedItems] (`Iterable<K>`, required): Item values to deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with specified items deselected.
   static List<TreeNode<K>> deselectItems<K>(List<TreeNode<K>> nodes, Iterable<K> deselectedItems);
+  /// Sets the selected nodes, replacing current selection.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [selectedNodes] (`Iterable<TreeNode<K>>`, required): Nodes to select (all others deselected).
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with only specified nodes selected.
   static List<TreeNode<K>> setSelectedNodes<K>(List<TreeNode<K>> nodes, Iterable<TreeNode<K>> selectedNodes);
+  /// Sets the selected items by value, replacing current selection.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [selectedItems] (`Iterable<K>`, required): Item values to select (all others deselected).
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with only specified items selected.
   static List<TreeNode<K>> setSelectedItems<K>(List<TreeNode<K>> nodes, Iterable<K> selectedItems);
   /// List of tree nodes to display in the tree view.
   ///
@@ -148,7 +373,7 @@ class TreeView<T> extends StatefulWidget {
   ///
   /// Parameters:
   /// - [key] (Key?): Widget identifier for the widget tree
-  /// - [nodes] (`List<TreeNode<T>>`, required): Root-level tree nodes to display  
+  /// - [nodes] (`List<TreeNode<T>>`, required): Root-level tree nodes to display
   /// - [builder] (Widget Function(BuildContext, `TreeItem<T>`), required): Builder for tree items
   /// - [shrinkWrap] (bool, default: false): Whether to size to content
   /// - [controller] (ScrollController?, optional): Scroll controller for the tree

@@ -1,6 +1,6 @@
 ---
 title: "Function: contraintToNewText"
-description: "Top-level function contraintToNewText"
+description: "Constrains the text selection to fit within the new text length."
 ---
 
 Signature

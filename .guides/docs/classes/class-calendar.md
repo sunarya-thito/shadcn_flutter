@@ -40,12 +40,19 @@ description: "A highly customizable calendar widget supporting multiple selectio
 /// )
 /// ```
 class Calendar extends StatefulWidget {
+  /// The current date for highlighting purposes (defaults to DateTime.now()).
   final DateTime? now;
+  /// The currently selected date value(s).
   final CalendarValue? value;
+  /// The month and year view to display in the calendar.
   final CalendarView view;
+  /// The selection mode determining how dates can be selected.
   final CalendarSelectionMode selectionMode;
+  /// Callback invoked when the selected date(s) change.
   final ValueChanged<CalendarValue?>? onChanged;
+  /// Legacy function to determine if a date should be enabled.
   final bool Function(DateTime date)? isDateEnabled;
+  /// Builder function to determine the state of each date.
   final DateStateBuilder? stateBuilder;
   /// Creates a [Calendar] widget with flexible date selection capabilities.
   ///

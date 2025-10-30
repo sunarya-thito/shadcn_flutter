@@ -16,6 +16,7 @@ class ChipInputTheme {
   /// When false, items appear as simple text tokens. Individual [ChipInput] widgets
   /// can override this default behavior.
   final bool? useChips;
+  /// The spacing between chips.
   final double? spacing;
   /// Creates a [ChipInputTheme].
   ///

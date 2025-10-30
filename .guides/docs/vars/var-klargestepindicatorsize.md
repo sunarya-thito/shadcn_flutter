@@ -1,6 +1,6 @@
 ---
 title: "Variable: kLargeStepIndicatorSize"
-description: "Top-level variable kLargeStepIndicatorSize"
+description: "Default large step indicator size in logical pixels."
 ---
 
 Signature

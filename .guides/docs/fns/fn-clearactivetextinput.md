@@ -1,6 +1,6 @@
 ---
 title: "Function: clearActiveTextInput"
-description: "Top-level function clearActiveTextInput"
+description: "Clears the currently active text input field."
 ---
 
 Signature

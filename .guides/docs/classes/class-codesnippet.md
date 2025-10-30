@@ -53,6 +53,7 @@ class CodeSnippet extends StatefulWidget {
   /// Type: `BoxConstraints?`. Controls the maximum/minimum size of the
   /// scrollable code container. Useful for limiting height in layouts.
   final BoxConstraints? constraints;
+  /// The code widget to display (typically Text or RichText with syntax highlighting).
   final Widget code;
   /// Additional action widgets displayed in the top-right corner.
   ///

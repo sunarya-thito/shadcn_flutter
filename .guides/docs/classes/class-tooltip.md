@@ -48,13 +48,30 @@ description: "An interactive tooltip widget that displays contextual information
 /// );
 /// ```
 class Tooltip extends StatefulWidget {
+  /// The widget that triggers the tooltip on hover.
   final Widget child;
+  /// Builder function for the tooltip content.
   final WidgetBuilder tooltip;
+  /// Alignment of the tooltip relative to the anchor.
   final AlignmentGeometry alignment;
+  /// Alignment point on the child widget where tooltip anchors.
   final AlignmentGeometry anchorAlignment;
+  /// Time to wait before showing the tooltip on hover.
   final Duration waitDuration;
+  /// Duration of the tooltip show animation.
   final Duration showDuration;
+  /// Minimum time the tooltip stays visible once shown.
   final Duration minDuration;
+  /// Creates a [Tooltip].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): Widget that triggers the tooltip.
+  /// - [tooltip] (`WidgetBuilder`, required): Builder for tooltip content.
+  /// - [alignment] (`AlignmentGeometry`, default: `Alignment.topCenter`): Tooltip position.
+  /// - [anchorAlignment] (`AlignmentGeometry`, default: `Alignment.bottomCenter`): Anchor point on child.
+  /// - [waitDuration] (`Duration`, default: 500ms): Delay before showing.
+  /// - [showDuration] (`Duration`, default: 200ms): Animation duration.
+  /// - [minDuration] (`Duration`, default: 0ms): Minimum visible time.
   const Tooltip({super.key, required this.child, required this.tooltip, this.alignment = Alignment.topCenter, this.anchorAlignment = Alignment.bottomCenter, this.waitDuration = const Duration(milliseconds: 500), this.showDuration = const Duration(milliseconds: 200), this.minDuration = const Duration(milliseconds: 0)});
   State<Tooltip> createState();
 }

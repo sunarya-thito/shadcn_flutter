@@ -1,6 +1,6 @@
 ---
 title: "Function: mutateSeparated"
-description: "Top-level function mutateSeparated"
+description: "Mutates a list to contain source elements with separators between them."
 ---
 
 Signature

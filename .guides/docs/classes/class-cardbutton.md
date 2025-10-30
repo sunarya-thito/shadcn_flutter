@@ -103,21 +103,37 @@ class CardButton extends StatelessWidget {
   /// Called with true when the button gains focus, and false
   /// when it loses focus. Supports keyboard navigation patterns.
   final ValueChanged<bool>? onFocus;
+  /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
+  /// Called when primary tap down occurs.
   final GestureTapDownCallback? onTapDown;
+  /// Called when primary tap up occurs.
   final GestureTapUpCallback? onTapUp;
+  /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+  /// Called when secondary tap down occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
+  /// Called when secondary tap up occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
+  /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+  /// Called when tertiary tap down occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
+  /// Called when tertiary tap up occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
+  /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+  /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+  /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+  /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+  /// Called when secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+  /// Called when tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
   /// Creates a [CardButton] with card-styled appearance and comprehensive interaction support.
   ///

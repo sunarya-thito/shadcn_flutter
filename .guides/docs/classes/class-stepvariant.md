@@ -26,6 +26,7 @@ abstract class StepVariant {
   static const StepVariant circleAlt = _StepVariantCircleAlternative();
   /// Minimal line variant with progress bars as step indicators.
   static const StepVariant line = _StepVariantLine();
+  /// Creates a [StepVariant].
   const StepVariant();
   /// Builds the stepper widget using this variant's visual style.
   ///

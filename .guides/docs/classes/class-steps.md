@@ -51,6 +51,10 @@ description: "Vertical step progression widget with numbered indicators and conn
 /// );
 /// ```
 class Steps extends StatelessWidget {
+  /// List of widgets representing each step in the sequence.
+  ///
+  /// Each widget will be displayed with an automatically numbered
+  /// circular indicator showing its position in the sequence.
   final List<Widget> children;
   /// Creates a [Steps] widget.
   ///

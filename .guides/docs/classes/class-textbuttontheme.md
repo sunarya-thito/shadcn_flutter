@@ -1,11 +1,17 @@
 ---
 title: "Class: TextButtonTheme"
-description: "Reference for TextButtonTheme"
+description: "Theme configuration for text button styling."
 ---
 
 ```dart
+/// Theme configuration for text button styling.
+///
+/// Provides theme-level customization for text buttons. Text buttons display only
+/// their text content without background or border decoration.
 class TextButtonTheme extends ButtonTheme {
+  /// Creates a [TextButtonTheme] with optional style property delegates.
   const TextButtonTheme({super.decoration, super.mouseCursor, super.padding, super.textStyle, super.iconTheme, super.margin});
+  /// Creates a copy of this theme with selectively replaced properties.
   TextButtonTheme copyWith({ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration, ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor, ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? padding, ValueGetter<ButtonStatePropertyDelegate<TextStyle>?>? textStyle, ValueGetter<ButtonStatePropertyDelegate<IconThemeData>?>? iconTheme, ValueGetter<ButtonStatePropertyDelegate<EdgeInsetsGeometry>?>? margin});
 }
 ```

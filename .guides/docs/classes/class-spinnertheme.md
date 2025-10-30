@@ -10,7 +10,9 @@ class SpinnerTheme {
   final Color? color;
   /// Size of the spinner widget.
   final double? size;
+  /// Creates a [SpinnerTheme] with optional color and size.
   const SpinnerTheme({this.color, this.size});
+  /// Creates a copy of this theme with selectively replaced properties.
   SpinnerTheme copyWith({ValueGetter<Color?>? color, ValueGetter<double?>? size});
   bool operator ==(Object other);
   int get hashCode;

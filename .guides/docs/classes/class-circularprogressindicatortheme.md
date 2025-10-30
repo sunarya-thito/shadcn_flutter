@@ -48,6 +48,7 @@ class CircularProgressIndicatorTheme {
   /// );
   /// ```
   const CircularProgressIndicatorTheme({this.color, this.backgroundColor, this.size, this.strokeWidth});
+  /// Creates a copy of this theme with the given fields replaced.
   CircularProgressIndicatorTheme copyWith({ValueGetter<Color?>? color, ValueGetter<Color?>? backgroundColor, ValueGetter<double?>? size, ValueGetter<double?>? strokeWidth});
   bool operator ==(Object other);
   int get hashCode;

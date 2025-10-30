@@ -1,6 +1,6 @@
 ---
 title: "Function: colorToHex"
-description: "Top-level function colorToHex"
+description: "Converts a [Color] to its hexadecimal string representation."
 ---
 
 Signature

@@ -1,6 +1,6 @@
 ---
 title: "Function: isMobile"
-description: "Top-level function isMobile"
+description: "Determines if a platform is mobile."
 ---
 
 Signature

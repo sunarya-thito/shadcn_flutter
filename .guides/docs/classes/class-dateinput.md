@@ -48,17 +48,29 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
   final ValueChanged<DateTime?>? onChanged;
   final bool enabled;
   final DatePickerController? controller;
+  /// Placeholder widget shown when no date is selected.
   final Widget? placeholder;
+  /// Presentation mode for date picker (dialog or popover).
   final PromptMode mode;
+  /// Initial calendar view to display.
   final CalendarView? initialView;
+  /// Alignment of popover relative to anchor.
   final AlignmentGeometry? popoverAlignment;
+  /// Alignment of anchor for popover positioning.
   final AlignmentGeometry? popoverAnchorAlignment;
+  /// Padding inside the popover.
   final EdgeInsetsGeometry? popoverPadding;
+  /// Title widget for dialog mode.
   final Widget? dialogTitle;
+  /// Initial view type (date, month, or year).
   final CalendarViewType? initialViewType;
+  /// Callback to determine date state (enabled/disabled).
   final DateStateBuilder? stateBuilder;
+  /// Order of date components in the input display.
   final List<DatePart>? datePartsOrder;
+  /// Separator widget between date parts.
   final InputPart? separator;
+  /// Custom placeholders for individual date parts.
   final Map<DatePart, Widget>? placeholders;
   /// Creates a [DateInput].
   ///

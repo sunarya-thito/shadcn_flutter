@@ -11,7 +11,12 @@ description: "Theme configuration for calendar widgets."
 class CalendarTheme {
   /// Color of navigation arrow icons.
   final Color? arrowIconColor;
+  /// Creates a [CalendarTheme].
+  ///
+  /// Parameters:
+  /// - [arrowIconColor] (`Color?`, optional): Color for navigation arrow icons.
   const CalendarTheme({this.arrowIconColor});
+  /// Creates a copy of this theme with the given fields replaced.
   CalendarTheme copyWith({ValueGetter<Color?>? arrowIconColor});
   bool operator ==(Object other);
   int get hashCode;

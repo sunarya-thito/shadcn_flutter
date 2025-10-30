@@ -43,7 +43,35 @@ class TabListTheme {
   /// Type: `double?`. If null, uses 2 logical pixels scaled by theme scaling.
   /// The indicator appears at the bottom of the active tab.
   final double? indicatorHeight;
+  /// Creates a [TabListTheme].
+  ///
+  /// All parameters are optional and allow customization of tab list appearance.
+  ///
+  /// Parameters:
+  /// - [borderColor] (`Color?`, optional): Color of the tab list border.
+  /// - [borderWidth] (`double?`, optional): Width of the tab list border.
+  /// - [indicatorColor] (`Color?`, optional): Color of the active tab indicator.
+  /// - [indicatorHeight] (`double?`, optional): Height of the active tab indicator.
+  ///
+  /// Example:
+  /// ```dart
+  /// const TabListTheme(
+  ///   borderColor: Colors.grey,
+  ///   borderWidth: 1.0,
+  ///   indicatorColor: Colors.blue,
+  ///   indicatorHeight: 2.0,
+  /// )
+  /// ```
   const TabListTheme({this.borderColor, this.borderWidth, this.indicatorColor, this.indicatorHeight});
+  /// Creates a copy with specified fields replaced.
+  ///
+  /// Parameters:
+  /// - [borderColor] (`ValueGetter<Color?>?`, optional): new border color getter
+  /// - [borderWidth] (`ValueGetter<double?>?`, optional): new border width getter
+  /// - [indicatorColor] (`ValueGetter<Color?>?`, optional): new indicator color getter
+  /// - [indicatorHeight] (`ValueGetter<double?>?`, optional): new indicator height getter
+  ///
+  /// Returns: `TabListTheme` — new theme with updated values
   TabListTheme copyWith({ValueGetter<Color?>? borderColor, ValueGetter<double?>? borderWidth, ValueGetter<Color?>? indicatorColor, ValueGetter<double?>? indicatorHeight});
   bool operator ==(Object other);
   int get hashCode;

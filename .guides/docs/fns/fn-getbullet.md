@@ -1,6 +1,6 @@
 ---
 title: "Function: getBullet"
-description: "Top-level function getBullet"
+description: "Creates a bullet widget for list items based on depth."
 ---
 
 Signature

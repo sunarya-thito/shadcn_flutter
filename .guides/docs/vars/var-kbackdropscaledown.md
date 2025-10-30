@@ -1,6 +1,6 @@
 ---
 title: "Variable: kBackdropScaleDown"
-description: "Top-level variable kBackdropScaleDown"
+description: "Scale factor for backdrop transform when drawer is open."
 ---
 
 Signature

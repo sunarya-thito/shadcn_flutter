@@ -51,10 +51,21 @@ description: "A specialized input widget for One-Time Password (OTP) and verific
 /// );
 /// ```
 class InputOTP extends StatefulWidget {
+  /// The list of children defining input fields, separators, and spaces.
   final List<InputOTPChild> children;
+  /// Initial OTP codepoint values.
   final OTPCodepointList? initialValue;
+  /// Called when the OTP value changes.
   final ValueChanged<OTPCodepointList>? onChanged;
+  /// Called when the user submits the OTP (e.g., presses Enter on last field).
   final ValueChanged<OTPCodepointList>? onSubmitted;
+  /// Creates an [InputOTP] widget.
+  ///
+  /// Parameters:
+  /// - [children] (`List<InputOTPChild>`, required): The OTP input fields and decorations.
+  /// - [initialValue] (`OTPCodepointList?`, optional): Initial codepoints.
+  /// - [onChanged] (`ValueChanged<OTPCodepointList>?`, optional): Value change callback.
+  /// - [onSubmitted] (`ValueChanged<OTPCodepointList>?`, optional): Submit callback.
   const InputOTP({super.key, required this.children, this.initialValue, this.onChanged, this.onSubmitted});
   State<InputOTP> createState();
 }

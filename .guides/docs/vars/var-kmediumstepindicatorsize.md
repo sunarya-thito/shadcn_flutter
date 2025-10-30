@@ -1,6 +1,6 @@
 ---
 title: "Variable: kMediumStepIndicatorSize"
-description: "Top-level variable kMediumStepIndicatorSize"
+description: "Default medium step indicator size in logical pixels."
 ---
 
 Signature

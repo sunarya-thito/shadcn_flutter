@@ -1,6 +1,6 @@
 ---
 title: "Function: showDropdown"
-description: "Top-level function showDropdown"
+description: "Shows a dropdown menu overlay at a specified position or anchored to a widget."
 ---
 
 Signature

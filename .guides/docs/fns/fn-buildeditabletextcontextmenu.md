@@ -1,6 +1,6 @@
 ---
 title: "Function: buildEditableTextContextMenu"
-description: "Top-level function buildEditableTextContextMenu"
+description: "Builds an appropriate context menu for editable text based on platform."
 ---
 
 Signature

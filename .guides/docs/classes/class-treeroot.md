@@ -28,7 +28,7 @@ description: "A special tree node that serves as an invisible root container."
 ///     TreeItem(data: 'Third Section'),
 ///   ],
 /// );
-/// 
+///
 /// // Root is always expanded and never selected
 /// print(root.expanded); // true
 /// print(root.selected); // false

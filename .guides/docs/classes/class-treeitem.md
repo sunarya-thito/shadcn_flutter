@@ -30,7 +30,7 @@ description: "A concrete tree node implementation that holds data and state."
 ///     TreeItem(data: 'Chapter 2'),
 ///   ],
 /// );
-/// 
+///
 /// // Update its state
 /// TreeItem<String> selected = item.updateState(selected: true);
 /// ```
@@ -70,7 +70,7 @@ class TreeItem<T> extends TreeNode<T> {
   /// ```dart
   /// // Simple leaf item
   /// TreeItem<String> leaf = TreeItem(data: 'Leaf Node');
-  /// 
+  ///
   /// // Parent with children
   /// TreeItem<String> parent = TreeItem(
   ///   data: 'Parent Node',

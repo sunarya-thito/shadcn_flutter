@@ -1,6 +1,6 @@
 ---
 title: "Function: minDuration"
-description: "Top-level function minDuration"
+description: "Returns the minimum of two [Duration] values."
 ---
 
 Signature

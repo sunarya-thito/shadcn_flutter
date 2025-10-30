@@ -30,8 +30,11 @@ description: "Chip widget designed for multi-select contexts with automatic remo
 /// );
 /// ```
 class MultiSelectChip extends StatelessWidget {
+  /// The value this chip represents in the selection.
   final Object? value;
+  /// The content displayed inside the chip.
   final Widget child;
+  /// The chip styling.
   final AbstractButtonStyle style;
   /// Creates a [MultiSelectChip].
   ///

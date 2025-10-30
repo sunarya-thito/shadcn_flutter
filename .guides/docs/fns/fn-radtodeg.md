@@ -1,6 +1,6 @@
 ---
 title: "Function: radToDeg"
-description: "Top-level function radToDeg"
+description: "Converts radians to degrees."
 ---
 
 Signature

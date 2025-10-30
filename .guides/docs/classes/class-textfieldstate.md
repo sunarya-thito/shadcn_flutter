@@ -1,10 +1,17 @@
 ---
 title: "Class: TextFieldState"
-description: "Reference for TextFieldState"
+description: "State class for [TextField] widget."
 ---
 
 ```dart
+/// State class for [TextField] widget.
+///
+/// Manages the text field's state including text editing, selection,
+/// input features, form integration, and restoration.
 class TextFieldState extends State<TextField> with RestorationMixin, AutomaticKeepAliveClientMixin<TextField>, FormValueSupplier<String, TextField>, TickerProviderStateMixin implements TextSelectionGestureDetectorBuilderDelegate, AutofillClient {
+  /// The effective text editing controller for this text field.
+  ///
+  /// Returns the widget's controller or the internally created controller.
   TextEditingController get effectiveController;
   bool get forcePressEnabled;
   final GlobalKey<EditableTextState> editableTextKey;

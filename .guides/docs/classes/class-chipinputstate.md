@@ -1,9 +1,12 @@
 ---
 title: "Class: ChipInputState"
-description: "Reference for ChipInputState"
+description: "State class for [ChipInput]."
 ---
 
 ```dart
+/// State class for [ChipInput].
+///
+/// Manages the chip input's internal state and chip rendering.
 class ChipInputState<T> extends State<ChipInput<T>> with FormValueSupplier<List<T>, ChipInput<T>> implements _ChipProvider<T> {
   Widget? buildChip(BuildContext context, T chip);
   void initState();

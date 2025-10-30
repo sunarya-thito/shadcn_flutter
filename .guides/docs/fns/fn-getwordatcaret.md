@@ -1,6 +1,6 @@
 ---
 title: "Function: getWordAtCaret"
-description: "Top-level function getWordAtCaret"
+description: "Gets the word at the caret position in a text string."
 ---
 
 Signature

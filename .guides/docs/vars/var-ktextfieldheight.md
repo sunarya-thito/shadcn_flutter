@@ -1,6 +1,6 @@
 ---
 title: "Variable: kTextFieldHeight"
-description: "Top-level variable kTextFieldHeight"
+description: "Standard height for text field components in logical pixels."
 ---
 
 Signature

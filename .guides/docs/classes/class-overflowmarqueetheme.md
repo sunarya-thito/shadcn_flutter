@@ -43,7 +43,9 @@ class OverflowMarqueeTheme {
   final double? fadePortion;
   /// Animation curve of the scroll.
   final Curve? curve;
+  /// Creates an [OverflowMarqueeTheme].
   const OverflowMarqueeTheme({this.direction, this.duration, this.delayDuration, this.step, this.fadePortion, this.curve});
+  /// Creates a copy of this theme with the given fields replaced.
   OverflowMarqueeTheme copyWith({ValueGetter<Axis?>? direction, ValueGetter<Duration?>? duration, ValueGetter<Duration?>? delayDuration, ValueGetter<double?>? step, ValueGetter<double?>? fadePortion, ValueGetter<Curve?>? curve});
   bool operator ==(Object other);
   int get hashCode;

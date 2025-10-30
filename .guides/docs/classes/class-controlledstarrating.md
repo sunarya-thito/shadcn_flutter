@@ -25,7 +25,7 @@ description: "Reactive star rating widget with automatic state management and co
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = StarRatingController(3.5);
-/// 
+///
 /// ControlledStarRating(
 ///   controller: controller,
 ///   max: 5.0,
@@ -37,7 +37,7 @@ description: "Reactive star rating widget with automatic state management and co
 /// **Callback-based (simple state management):**
 /// ```dart
 /// double currentRating = 0.0;
-/// 
+///
 /// ControlledStarRating(
 ///   initialValue: currentRating,
 ///   onChanged: (rating) => setState(() => currentRating = rating),
@@ -50,18 +50,66 @@ class ControlledStarRating extends StatelessWidget with ControlledComponent<doub
   final ValueChanged<double>? onChanged;
   final bool enabled;
   final StarRatingController? controller;
+  /// The minimum increment for rating changes.
+  ///
+  /// When a user interacts with the star rating, the value will snap to
+  /// multiples of this step. For example, a step of `0.5` allows half-star
+  /// ratings, while `1.0` allows only whole-star ratings.
   final double step;
+  /// The layout direction of the stars.
+  ///
+  /// Stars can be arranged horizontally ([Axis.horizontal]) or vertically
+  /// ([Axis.vertical]). Defaults to horizontal.
   final Axis direction;
+  /// The maximum rating value.
+  ///
+  /// Determines how many stars are displayed. For example, `max: 5.0` shows
+  /// 5 stars. Defaults to `5.0`.
   final double max;
+  /// The color of filled star portions.
+  ///
+  /// If `null`, uses the theme's primary color.
   final Color? activeColor;
+  /// The color of unfilled star portions.
+  ///
+  /// If `null`, uses a default background color from the theme.
   final Color? backgroundColor;
+  /// The number of points per star.
+  ///
+  /// Controls the star shape. Defaults to `5` for traditional five-pointed
+  /// stars. Higher values create stars with more points.
   final double starPoints;
+  /// Override size of each star.
+  ///
+  /// If `null`, uses the default size from the theme.
   final double? starSize;
+  /// Override spacing between stars.
+  ///
+  /// If `null`, uses the default spacing from the theme.
   final double? starSpacing;
+  /// Rounding radius for star points.
+  ///
+  /// Controls how rounded the tips of the star points appear. If `null`,
+  /// uses sharp points.
   final double? starPointRounding;
+  /// Rounding radius for star valleys.
+  ///
+  /// Controls how rounded the inner valleys between star points appear.
+  /// If `null`, uses sharp valleys.
   final double? starValleyRounding;
+  /// Vertical compression factor for stars.
+  ///
+  /// Values less than `1.0` make stars appear squashed. If `null`, stars
+  /// maintain their natural proportions.
   final double? starSquash;
+  /// Inner to outer radius ratio for stars.
+  ///
+  /// Controls the depth of star valleys. Lower values create deeper valleys.
+  /// If `null`, uses a default ratio.
   final double? starInnerRadiusRatio;
+  /// Rotation angle for stars in radians.
+  ///
+  /// Rotates each star by this angle. If `null`, stars are not rotated.
   final double? starRotation;
   /// Creates a [ControlledStarRating].
   ///

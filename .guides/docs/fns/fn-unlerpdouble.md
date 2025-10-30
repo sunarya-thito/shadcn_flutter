@@ -1,6 +1,6 @@
 ---
 title: "Function: unlerpDouble"
-description: "Top-level function unlerpDouble"
+description: "Inverse lerp: finds the interpolation parameter given a value."
 ---
 
 Signature

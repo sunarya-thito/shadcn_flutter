@@ -71,6 +71,7 @@ class ControlledMultiSelect<T> extends StatelessWidget with ControlledComponent<
   final SelectValueSelectionHandler<Iterable<T>>? valueSelectionHandler;
   final SelectValueSelectionPredicate<Iterable<T>>? valueSelectionPredicate;
   final Predicate<Iterable<T>>? showValuePredicate;
+  /// Builder for rendering individual items in multi-select mode.
   final SelectValueBuilder<T> multiItemBuilder;
   /// Creates a [ControlledMultiSelect].
   ///

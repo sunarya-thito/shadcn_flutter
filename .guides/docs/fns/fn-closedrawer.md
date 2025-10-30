@@ -1,6 +1,6 @@
 ---
 title: "Function: closeDrawer"
-description: "Top-level function closeDrawer"
+description: "Closes the currently open drawer overlay."
 ---
 
 Signature

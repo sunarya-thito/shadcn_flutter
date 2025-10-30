@@ -1,6 +1,6 @@
 ---
 title: "Variable: kDebugStickerVisible"
-description: "Top-level variable kDebugStickerVisible"
+description: "Whether debug stickers are visible in the UI."
 ---
 
 Signature

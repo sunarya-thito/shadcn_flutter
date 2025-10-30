@@ -1,6 +1,6 @@
 ---
 title: "Function: gap"
-description: "Top-level function gap"
+description: "Creates a gap widget with specified spacing."
 ---
 
 Signature

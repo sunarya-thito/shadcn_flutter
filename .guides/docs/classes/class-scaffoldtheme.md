@@ -21,7 +21,9 @@ class ScaffoldTheme {
   final bool? showLoadingSparks;
   /// Whether the scaffold should resize for the onscreen keyboard.
   final bool? resizeToAvoidBottomInset;
+  /// Creates a [ScaffoldTheme].
   const ScaffoldTheme({this.backgroundColor, this.headerBackgroundColor, this.footerBackgroundColor, this.showLoadingSparks, this.resizeToAvoidBottomInset});
+  /// Creates a copy of this theme with the given fields replaced.
   ScaffoldTheme copyWith({ValueGetter<Color?>? backgroundColor, ValueGetter<Color?>? headerBackgroundColor, ValueGetter<Color?>? footerBackgroundColor, ValueGetter<bool?>? showLoadingSparks, ValueGetter<bool?>? resizeToAvoidBottomInset});
   bool operator ==(Object other);
   int get hashCode;

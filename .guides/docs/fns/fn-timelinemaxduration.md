@@ -1,6 +1,6 @@
 ---
 title: "Function: timelineMaxDuration"
-description: "Top-level function timelineMaxDuration"
+description: "Finds the maximum total duration among multiple timeline animations."
 ---
 
 Signature

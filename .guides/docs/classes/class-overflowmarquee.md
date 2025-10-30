@@ -43,12 +43,31 @@ description: "Automatically scrolling widget for content that overflows its cont
 /// )
 /// ```
 class OverflowMarquee extends StatefulWidget {
+  /// The child widget to display and potentially scroll.
   final Widget child;
+  /// Scroll direction (horizontal or vertical).
+  ///
+  /// If `null`, uses theme default or [Axis.horizontal].
   final Axis? direction;
+  /// Total duration for one complete scroll cycle.
+  ///
+  /// If `null`, uses theme default.
   final Duration? duration;
+  /// Distance to scroll per animation step.
+  ///
+  /// If `null`, scrolls the entire overflow amount.
   final double? step;
+  /// Pause duration between scroll cycles.
+  ///
+  /// If `null`, uses theme default.
   final Duration? delayDuration;
+  /// Portion of edges to apply fade effect (0.0 to 1.0).
+  ///
+  /// For example, 0.15 fades 15% of each edge. If `null`, uses theme default.
   final double? fadePortion;
+  /// Animation curve for scroll motion.
+  ///
+  /// If `null`, uses theme default or [Curves.linear].
   final Curve? curve;
   /// Creates an [OverflowMarquee] widget with customizable scrolling behavior.
   ///

@@ -82,9 +82,43 @@ class FormController extends ChangeNotifier {
   ///
   /// Returns the synchronous validation result or null if valid.
   ValidationResult? getSyncError(FormKey key);
+  /// Retrieves the current value for a specific form field.
+  ///
+  /// Parameters:
+  /// - [key] (`FormKey<T>`, required): The form key to look up.
+  ///
+  /// Returns: `T?` — the field value if exists, null otherwise.
   T? getValue<T>(FormKey<T> key);
+  /// Checks if a form field has a non-null value.
+  ///
+  /// Parameters:
+  /// - [key] (`FormKey`, required): The form key to check.
+  ///
+  /// Returns: `bool` — true if field has a value, false otherwise.
   bool hasValue(FormKey key);
+  /// Revalidates all form fields with validators.
+  ///
+  /// Runs validation on all registered fields and updates their validation states.
+  /// Supports both synchronous and asynchronous validators.
+  ///
+  /// Parameters:
+  /// - [context] (`BuildContext`, required): The build context.
+  /// - [state] (`FormValidationMode`, required): Validation mode to use.
   void revalidate(BuildContext context, FormValidationMode state);
+  /// Attaches a form field to this controller.
+  ///
+  /// Registers the field and runs initial validation if a validator is provided.
+  /// Manages field lifecycle transitions (initial → changed) and coordinates
+  /// revalidation of dependent fields.
+  ///
+  /// Parameters:
+  /// - [context] (`BuildContext`, required): The build context.
+  /// - [handle] (`FormFieldHandle`, required): The field handle to attach.
+  /// - [value] (`Object?`, required): Current field value.
+  /// - [validator] (`Validator?`, optional): Validation function.
+  /// - [forceRevalidate] (`bool`, default: `false`): Force revalidation even if unchanged.
+  ///
+  /// Returns: `FutureOr<ValidationResult?>` — validation result if applicable.
   FutureOr<ValidationResult?> attach(BuildContext context, FormFieldHandle handle, Object? value, Validator? validator, [bool forceRevalidate = false]);
 }
 ```

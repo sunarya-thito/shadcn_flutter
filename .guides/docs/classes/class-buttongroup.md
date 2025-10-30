@@ -83,7 +83,15 @@ class ButtonGroup extends StatelessWidget {
   /// );
   /// ```
   const ButtonGroup({super.key, this.direction = Axis.horizontal, this.expands = false, required this.children});
+  /// Creates a horizontal button group.
+  ///
+  /// A convenience constructor equivalent to `ButtonGroup(direction: Axis.horizontal)`.
+  /// Arranges buttons in a row with connected borders.
   const ButtonGroup.horizontal({super.key, this.expands = false, required this.children});
+  /// Creates a vertical button group.
+  ///
+  /// A convenience constructor equivalent to `ButtonGroup(direction: Axis.vertical)`.
+  /// Arranges buttons in a column with connected borders.
   const ButtonGroup.vertical({super.key, this.expands = false, required this.children});
   Widget build(BuildContext context);
 }

@@ -1,6 +1,6 @@
 ---
 title: "Function: join"
-description: "Top-level function join"
+description: "An iterable that inserts a separator between each widget."
 ---
 
 Signature

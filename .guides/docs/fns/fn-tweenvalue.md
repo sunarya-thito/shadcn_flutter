@@ -1,6 +1,6 @@
 ---
 title: "Function: tweenValue"
-description: "Top-level function tweenValue"
+description: "Linearly interpolates between two numeric values."
 ---
 
 Signature

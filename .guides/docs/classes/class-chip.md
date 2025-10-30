@@ -37,10 +37,15 @@ description: "Compact interactive element for tags, labels, and selections."
 /// );
 /// ```
 class Chip extends StatelessWidget {
+  /// The main content of the chip.
   final Widget child;
+  /// Optional widget displayed before the child.
   final Widget? leading;
+  /// Optional widget displayed after the child.
   final Widget? trailing;
+  /// Callback invoked when the chip is pressed.
   final VoidCallback? onPressed;
+  /// Custom button style for the chip.
   final AbstractButtonStyle? style;
   /// Creates a [Chip].
   ///

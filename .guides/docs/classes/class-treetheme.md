@@ -49,7 +49,37 @@ class TreeTheme {
   /// Type: `bool?`. If null, defaults to true. When true, selection operations
   /// recursively affect all descendant nodes.
   final bool? recursiveSelection;
+  /// Creates a theme for tree view components.
+  ///
+  /// This constructor allows customization of tree visualization and behavior
+  /// including branch lines, spacing, icons, and selection modes.
+  ///
+  /// Parameters:
+  /// - [branchLine] (BranchLine?): Visual style for lines connecting tree nodes
+  /// - [padding] (EdgeInsetsGeometry?): Padding around tree items
+  /// - [expandIcon] (bool?): Whether to show expand/collapse icons
+  /// - [allowMultiSelect] (bool?): Whether multiple nodes can be selected simultaneously
+  /// - [recursiveSelection] (bool?): Whether selecting parent selects all children
+  ///
+  /// Example:
+  /// ```dart
+  /// TreeTheme(
+  ///   branchLine: BranchLine.solid,
+  ///   padding: EdgeInsets.all(8),
+  ///   allowMultiSelect: true,
+  /// )
+  /// ```
   const TreeTheme({this.branchLine, this.padding, this.expandIcon, this.allowMultiSelect, this.recursiveSelection});
+  /// Creates a copy of this theme with the given fields replaced.
+  ///
+  /// Parameters:
+  /// - [branchLine] (`ValueGetter<BranchLine?>?`, optional): New branch line style.
+  /// - [padding] (`ValueGetter<EdgeInsetsGeometry?>?`, optional): New padding.
+  /// - [expandIcon] (`ValueGetter<bool?>?`, optional): New expand icon visibility.
+  /// - [allowMultiSelect] (`ValueGetter<bool?>?`, optional): New multi-select setting.
+  /// - [recursiveSelection] (`ValueGetter<bool?>?`, optional): New recursive selection setting.
+  ///
+  /// Returns: A new [TreeTheme] with updated properties.
   TreeTheme copyWith({ValueGetter<BranchLine?>? branchLine, ValueGetter<EdgeInsetsGeometry?>? padding, ValueGetter<bool?>? expandIcon, ValueGetter<bool?>? allowMultiSelect, ValueGetter<bool?>? recursiveSelection});
   bool operator ==(Object other);
   int get hashCode;

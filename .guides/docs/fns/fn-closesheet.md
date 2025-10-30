@@ -1,6 +1,6 @@
 ---
 title: "Function: closeSheet"
-description: "Top-level function closeSheet"
+description: "Closes the currently open sheet overlay."
 ---
 
 Signature

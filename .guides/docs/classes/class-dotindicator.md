@@ -33,12 +33,19 @@ description: "Navigation indicator with customizable dots showing current positi
 /// );
 /// ```
 class DotIndicator extends StatelessWidget {
+  /// The current active index (0-based).
   final int index;
+  /// The total number of dots to display.
   final int length;
+  /// Callback invoked when a dot is tapped.
   final ValueChanged<int>? onChanged;
+  /// Spacing between dots.
   final double? spacing;
+  /// The direction of the dot layout (horizontal or vertical).
   final Axis direction;
+  /// Padding around the dots container.
   final EdgeInsetsGeometry? padding;
+  /// Custom builder for individual dots.
   final DotBuilder? dotBuilder;
   /// Creates a [DotIndicator].
   ///

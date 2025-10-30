@@ -31,12 +31,27 @@ description: "A file picker widget for selecting and managing file uploads."
 /// )
 /// ```
 class FilePicker extends StatelessWidget {
+  /// Title widget displayed above the file picker.
   final Widget? title;
+  /// Subtitle widget displayed below the title.
   final Widget? subtitle;
+  /// Whether drag-and-drop functionality is enabled.
   final bool hotDropEnabled;
+  /// Whether a drag-and-drop operation is currently in progress.
   final bool hotDropping;
+  /// List of file item widgets to display.
   final List<Widget> children;
+  /// Callback when the add file button is pressed.
   final VoidCallback? onAdd;
+  /// Creates a [FilePicker].
+  ///
+  /// Parameters:
+  /// - [title] (`Widget?`, optional): Title displayed above picker.
+  /// - [subtitle] (`Widget?`, optional): Subtitle below title.
+  /// - [hotDropEnabled] (`bool`, default: `false`): Enable drag-and-drop.
+  /// - [hotDropping] (`bool`, default: `false`): Currently dropping files.
+  /// - [onAdd] (`VoidCallback?`, optional): Called when add button pressed.
+  /// - [children] (`List<Widget>`, required): File item widgets.
   const FilePicker({super.key, this.title, this.subtitle, this.hotDropEnabled = false, this.hotDropping = false, this.onAdd, required this.children});
   Widget build(BuildContext context);
 }

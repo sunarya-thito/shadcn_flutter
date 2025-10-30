@@ -26,6 +26,7 @@ abstract class SwiperHandler {
   static const SwiperHandler drawer = DrawerSwiperHandler();
   /// Handler for sheet-style swipers with minimal styling.
   static const SwiperHandler sheet = SheetSwiperHandler();
+  /// Creates a swiper handler.
   const SwiperHandler();
   /// Creates a swiper overlay with the specified configuration.
   ///

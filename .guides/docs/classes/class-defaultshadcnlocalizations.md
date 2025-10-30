@@ -1,11 +1,17 @@
 ---
 title: "Class: DefaultShadcnLocalizations"
-description: "Reference for DefaultShadcnLocalizations"
+description: "Default English implementation of Shadcn localizations."
 ---
 
 ```dart
+/// Default English implementation of Shadcn localizations.
+///
+/// Provides English translations for all localized strings in Shadcn Flutter.
+/// This is the default localization used when no specific locale is provided.
 class DefaultShadcnLocalizations extends ShadcnLocalizations {
+  /// Singleton instance of the default localizations.
   static const ShadcnLocalizations instance = DefaultShadcnLocalizations();
+  /// Creates a default English localizations instance.
   const DefaultShadcnLocalizations();
   final Map<String, String> localizedMimeTypes;
   String get commandMoveUp;

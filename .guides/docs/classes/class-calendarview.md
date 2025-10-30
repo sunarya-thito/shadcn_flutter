@@ -29,7 +29,9 @@ description: "Represents a specific month and year view in calendar navigation."
 /// final nextYear = current.nextYear;
 /// ```
 class CalendarView {
+  /// The year component of this view.
   final int year;
+  /// The month component of this view (1-12).
   final int month;
   /// Creates a [CalendarView] for the specified year and month.
   ///
@@ -68,13 +70,24 @@ class CalendarView {
   /// final view = CalendarView.fromDateTime(birthday); // July 1995
   /// ```
   factory CalendarView.fromDateTime(DateTime dateTime);
+  /// Returns a view for the next month.
+  ///
+  /// Advances to the next month, rolling over to January of the next year
+  /// if the current month is December.
   CalendarView get next;
+  /// Returns a view for the previous month.
+  ///
+  /// Moves back to the previous month, rolling back to December of the previous
+  /// year if the current month is January.
   CalendarView get previous;
+  /// Returns a view for the next year with the same month.
   CalendarView get nextYear;
+  /// Returns a view for the previous year with the same month.
   CalendarView get previousYear;
   String toString();
   bool operator ==(Object other);
   int get hashCode;
+  /// Creates a copy of this view with the given fields replaced.
   CalendarView copyWith({ValueGetter<int>? year, ValueGetter<int>? month});
 }
 ```

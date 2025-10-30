@@ -24,10 +24,10 @@ description: "Abstract base class representing a node in a tree structure."
 ///   data: 'parent',
 ///   children: [TreeItem(data: 'child1'), TreeItem(data: 'child2')],
 /// );
-/// 
+///
 /// // Expand the node
 /// TreeNode<String> expanded = node.updateState(expanded: true);
-/// 
+///
 /// // Check if it's a leaf
 /// bool isLeaf = node.leaf; // false, has children
 /// ```
