@@ -237,6 +237,7 @@ class Card extends StatelessWidget {
   final Duration? duration;
 
   /// Creates a [Card].
+  const Card({
     super.key,
     required this.child,
     this.padding,
@@ -318,8 +319,7 @@ class Card extends StatelessWidget {
       borderRadius: borderRadius,
       borderWidth: borderWidth,
       borderColor: borderColor,
-      backgroundColor:
-          filled ? fillColor : theme.colorScheme.card,
+      backgroundColor: filled ? fillColor : theme.colorScheme.card,
       boxShadow: boxShadow,
       padding: padding,
       surfaceOpacity: surfaceOpacity,
@@ -409,6 +409,7 @@ class SurfaceCard extends StatelessWidget {
   final Duration? duration;
 
   /// Creates a [SurfaceCard].
+  const SurfaceCard({
     super.key,
     required this.child,
     this.padding,
@@ -452,11 +453,9 @@ class SurfaceCard extends StatelessWidget {
       padding: padding,
       surfaceOpacity:
           surfaceOpacity ?? compTheme?.surfaceOpacity ?? theme.surfaceOpacity,
-      surfaceBlur:
-          surfaceBlur ?? compTheme?.surfaceBlur ?? theme.surfaceBlur,
+      surfaceBlur: surfaceBlur ?? compTheme?.surfaceBlur ?? theme.surfaceBlur,
       duration: duration ?? compTheme?.duration,
       child: child,
     );
   }
 }
-
