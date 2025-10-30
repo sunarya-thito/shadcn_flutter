@@ -1,0 +1,42 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+    - master
+    types: [ opened, synchronize, reopened, ready_for_review ]
+
+concurrency:
+  group: pr-${{ github.event.pull_request.head.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze-and-test:
+    name: Analyze and Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '3.35.1'
+        channel: stable
+
+    - name: Flutter version
+      run: flutter --version
+
+    - name: Get dependencies (root)
+      run: flutter pub get
+
+    - name: Analyze (root)
+      run: flutter analyze --no-preamble --no-congratulate --no-pub
+
+    - name: Get dependencies and test (example)
+      run: |
+        cd example
+        flutter pub get
+        flutter test
