@@ -13,7 +13,7 @@ description: "An animated widget that continuously repeats an animation between 
 ///
 /// The widget supports different repeat modes via [RepeatMode]:
 /// - [RepeatMode.repeat]: Continuous forward animation with instant reset
-/// - [RepeatMode.reverse]: Continuous reverse animation  
+/// - [RepeatMode.reverse]: Continuous reverse animation
 /// - [RepeatMode.pingPong]: Smooth back-and-forth animation
 /// - [RepeatMode.pingPongReverse]: Ping-pong starting in reverse
 ///

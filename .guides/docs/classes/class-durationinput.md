@@ -25,7 +25,7 @@ description: "Reactive duration input field with formatted text editing and vali
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = ComponentController<Duration?>(Duration(hours: 1, minutes: 30));
-/// 
+///
 /// DurationInput(
 ///   controller: controller,
 ///   showSeconds: true,
@@ -36,7 +36,7 @@ description: "Reactive duration input field with formatted text editing and vali
 /// **Callback-based (simple state management):**
 /// ```dart
 /// Duration? selectedDuration;
-/// 
+///
 /// DurationInput(
 ///   initialValue: selectedDuration,
 ///   onChanged: (duration) => setState(() => selectedDuration = duration),
@@ -60,14 +60,14 @@ class DurationInput extends StatefulWidget with ControlledComponent<Duration?> {
   /// patterns with structured duration component entry.
   ///
   /// Parameters:
-  /// - [controller] (ComponentController<Duration?>?, optional): external state controller
+  /// - [controller] (`ComponentController<Duration?>?`, optional): external state controller
   /// - [initialValue] (Duration?, optional): starting duration when no controller
-  /// - [onChanged] (ValueChanged<Duration?>?, optional): duration change callback
+  /// - [onChanged] (`ValueChanged<Duration?>?`, optional): duration change callback
   /// - [enabled] (bool, default: true): whether input is interactive
   /// - [placeholder] (Widget?, optional): widget shown when no duration selected
   /// - [showSeconds] (bool, default: false): whether to include seconds input
   /// - [separator] (InputPart?, optional): separator between duration components
-  /// - [placeholders] (Map<TimePart, Widget>?, optional): placeholders for time parts
+  /// - [placeholders] (`Map<TimePart, Widget>?`, optional): placeholders for time parts
   ///
   /// Example:
   /// ```dart

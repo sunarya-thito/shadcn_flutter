@@ -5,6 +5,7 @@ description: "Component example"
 
 Source preview
 ```dart
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 // Shows how to open a contextual popover anchored to a button, with a custom
@@ -64,5 +65,4 @@ class PopoverExample1 extends StatelessWidget {
                             child: TextField(
                               initialValue: '25px',
                             ),
-                          ),
 ```

@@ -46,7 +46,7 @@ class DatePickerDialog extends StatefulWidget {
   /// - [selectionMode] (CalendarSelectionMode, required): How dates can be selected
   /// - [viewMode] (CalendarSelectionMode?, optional): Alternative view mode for display
   /// - [initialValue] (CalendarValue?, optional): Pre-selected date(s)
-  /// - [onChanged] (ValueChanged<CalendarValue?>?, optional): Called when selection changes
+  /// - [onChanged] (`ValueChanged<CalendarValue>?`, optional): Called when selection changes
   /// - [stateBuilder] (DateStateBuilder?, optional): Custom date state validation
   ///
   /// Example:

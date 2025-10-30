@@ -48,22 +48,24 @@ class ColorInputTheme {
   ///
   /// When true, color pickers include tools to sample colors directly from
   /// the screen. Platform support varies. When null, uses framework default.
-  final bool? allowPickFromScreen;
+  final bool? enableEyeDropper;
   /// Whether to display color value labels in picker interfaces.
   ///
   /// When true, shows numeric color values (hex, RGB, HSV, etc.) alongside
   /// visual color pickers. When null, uses framework default label visibility.
   final bool? showLabel;
+  /// The orientation of the color input layout.
+  final Axis? orientation;
   /// Creates a [ColorInputTheme].
   ///
   /// All parameters are optional and fall back to framework defaults when null.
   /// The theme can be applied globally or to specific color input instances.
-  const ColorInputTheme({this.showAlpha, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverPadding, this.mode, this.pickerMode, this.allowPickFromScreen, this.showLabel});
+  const ColorInputTheme({this.showAlpha, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverPadding, this.mode, this.pickerMode, this.enableEyeDropper, this.showLabel, this.orientation});
   /// Creates a copy of this theme with specified properties overridden.
   ///
   /// Each parameter function is called only if provided, allowing selective
   /// overrides while preserving existing values for unspecified properties.
-  ColorInputTheme copyWith({ValueGetter<bool?>? showAlpha, ValueGetter<AlignmentGeometry?>? popoverAlignment, ValueGetter<AlignmentGeometry?>? popoverAnchorAlignment, ValueGetter<EdgeInsetsGeometry?>? popoverPadding, ValueGetter<PromptMode?>? mode, ValueGetter<ColorPickerMode?>? pickerMode, ValueGetter<bool?>? allowPickFromScreen, ValueGetter<bool?>? showLabel});
+  ColorInputTheme copyWith({ValueGetter<bool?>? showAlpha, ValueGetter<AlignmentGeometry?>? popoverAlignment, ValueGetter<AlignmentGeometry?>? popoverAnchorAlignment, ValueGetter<EdgeInsetsGeometry?>? popoverPadding, ValueGetter<PromptMode?>? mode, ValueGetter<ColorPickerMode?>? pickerMode, ValueGetter<bool?>? enableEyeDropper, ValueGetter<bool?>? showLabel, ValueGetter<Axis?>? orientation});
   bool operator ==(Object other);
   int get hashCode;
 }

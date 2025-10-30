@@ -57,7 +57,7 @@ class Calendar extends StatefulWidget {
   /// - [selectionMode] (CalendarSelectionMode, required): How dates can be selected
   /// - [now] (DateTime?, optional): Current date for highlighting, defaults to DateTime.now()
   /// - [value] (CalendarValue?, optional): Currently selected date(s)
-  /// - [onChanged] (ValueChanged<CalendarValue?>?, optional): Called when selection changes
+  /// - [onChanged] (`ValueChanged<CalendarValue>?`, optional): Called when selection changes
   /// - [isDateEnabled] (bool Function(DateTime)?, optional): Legacy date validation function
   /// - [stateBuilder] (DateStateBuilder?, optional): Custom date state validation
   ///

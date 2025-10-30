@@ -148,8 +148,8 @@ class TreeView<T> extends StatefulWidget {
   ///
   /// Parameters:
   /// - [key] (Key?): Widget identifier for the widget tree
-  /// - [nodes] (List<TreeNode<T>>, required): Root-level tree nodes to display  
-  /// - [builder] (Widget Function(BuildContext, TreeItem<T>), required): Builder for tree items
+  /// - [nodes] (`List<TreeNode<T>>`, required): Root-level tree nodes to display  
+  /// - [builder] (Widget Function(BuildContext, `TreeItem<T>`), required): Builder for tree items
   /// - [shrinkWrap] (bool, default: false): Whether to size to content
   /// - [controller] (ScrollController?, optional): Scroll controller for the tree
   /// - [branchLine] (BranchLine?, optional): Style for connecting lines
@@ -157,7 +157,7 @@ class TreeView<T> extends StatefulWidget {
   /// - [expandIcon] (bool?, optional): Whether to show expand/collapse icons
   /// - [allowMultiSelect] (bool?, optional): Whether to allow multi-selection
   /// - [focusNode] (FocusScopeNode?, optional): Focus node for keyboard navigation
-  /// - [onSelectionChanged] (TreeNodeSelectionChanged<T>?, optional): Selection callback
+  /// - [onSelectionChanged] (`TreeNodeSelectionChanged<T>?`, optional): Selection callback
   /// - [recursiveSelection] (bool?, optional): Whether to select children recursively
   ///
   /// Example:

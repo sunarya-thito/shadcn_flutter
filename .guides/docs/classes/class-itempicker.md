@@ -88,10 +88,10 @@ class ItemPicker<T> extends StatelessWidget {
   /// options control the picker's layout and presentation style.
   ///
   /// Parameters:
-  /// - [items] (ItemChildDelegate<T>, required): Source of items for selection
-  /// - [builder] (ItemPickerBuilder<T>, required): Function to build item representations
+  /// - [items] (`ItemChildDelegate<T>`, required): Source of items for selection
+  /// - [builder] (`ItemPickerBuilder<T>`, required): Function to build item representations
   /// - [value] (T?, optional): Currently selected item
-  /// - [onChanged] (ValueChanged<T?>?, optional): Callback for selection changes
+  /// - [onChanged] (`ValueChanged<T?>?`, optional): Callback for selection changes
   /// - [layout] (ItemPickerLayout?, optional): Arrangement style for items
   /// - [placeholder] (Widget?, optional): Content shown when no item is selected
   /// - [title] (Widget?, optional): Title for the picker interface

@@ -46,7 +46,7 @@ class KeyboardKeyDisplay extends StatelessWidget {
   /// Parameters:
   /// - [keyboardKey] (LogicalKeyboardKey, required): Key to display
   /// - [padding] (EdgeInsetsGeometry?, optional): Internal padding
-  /// - [boxShadow] (List<BoxShadow>?, optional): Shadow effects
+  /// - [boxShadow] (`List<BoxShadow>?`, optional): Shadow effects
   ///
   /// Example:
   /// ```dart

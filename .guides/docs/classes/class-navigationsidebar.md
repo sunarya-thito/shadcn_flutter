@@ -132,12 +132,12 @@ class NavigationSidebar extends StatefulWidget {
   /// suitable for desktop and tablet interfaces.
   ///
   /// Parameters:
-  /// - [children] (List<NavigationBarItem>, required): Navigation destinations
+  /// - [children] (`List<NavigationBarItem>`, required): Navigation destinations
   /// - [labelType] (NavigationLabelType, default: expanded): Label display behavior
   /// - [labelPosition] (NavigationLabelPosition, default: end): Label positioning
   /// - [labelSize] (NavigationLabelSize, default: large): Size variant for items
   /// - [index] (int?, optional): Currently selected item index
-  /// - [onSelected] (ValueChanged<int>?, optional): Selection change callback
+  /// - [onSelected] (`ValueChanged<int>?`, optional): Selection change callback
   /// - [expanded] (bool, default: true): Whether to fill available width
   ///
   /// Example:

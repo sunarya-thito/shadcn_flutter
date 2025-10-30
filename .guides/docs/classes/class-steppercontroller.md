@@ -34,7 +34,7 @@ class StepperController extends ValueNotifier<StepperValue> {
   /// Creates a [StepperController].
   ///
   /// Parameters:
-  /// - [stepStates] (Map<int, StepState>?): initial step states (default: empty)
+  /// - [stepStates] (`Map<int, StepState>?`): initial step states (default: empty)
   /// - [currentStep] (int?): initial active step index (default: 0)
   ///
   /// Example:

@@ -69,7 +69,7 @@ class ControlledToggle extends StatelessWidget with ControlledComponent<bool> {
   /// Parameters:
   /// - [controller] (ToggleController?, optional): External state controller.
   /// - [initialValue] (bool?, optional): Initial state for uncontrolled mode.
-  /// - [onChanged] (ValueChanged<bool>?, optional): State change callback.
+  /// - [onChanged] (`ValueChanged<bool>?`, optional): State change callback.
   /// - [enabled] (bool, default: true): Whether the toggle is interactive.
   /// - [child] (Widget, required): Content to display in the toggle button.
   /// - [style] (ButtonStyle, default: ButtonStyle.ghost()): Visual styling.

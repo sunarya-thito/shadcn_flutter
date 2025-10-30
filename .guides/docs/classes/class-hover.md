@@ -12,6 +12,6 @@ class Hover extends StatefulWidget {
   final Duration? showDuration;
   final HitTestBehavior? hitTestBehavior;
   const Hover({super.key, required this.child, required this.onHover, this.waitDuration, this.minDuration, this.showDuration, this.hitTestBehavior});
-  _HoverState createState();
+  State<Hover> createState();
 }
 ```

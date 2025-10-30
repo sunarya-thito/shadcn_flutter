@@ -54,9 +54,9 @@ class ControlledMultipleChoice<T> extends StatelessWidget with ControlledCompone
   /// that integrate with the single selection system.
   ///
   /// Parameters:
-  /// - [controller] (MultipleChoiceController<T>?, optional): External controller for programmatic control
+  /// - [controller] (`MultipleChoiceController<T>?`, optional): External controller for programmatic control
   /// - [initialValue] (T?, optional): Initial selection when no controller provided
-  /// - [onChanged] (ValueChanged<T?>?, optional): Callback for selection changes
+  /// - [onChanged] (`ValueChanged<T?>?`, optional): Callback for selection changes
   /// - [enabled] (bool, default: true): Whether selection can be modified
   /// - [allowUnselect] (bool?, optional): Whether selection can be cleared by re-selection
   /// - [child] (Widget, required): Container with selectable choice items

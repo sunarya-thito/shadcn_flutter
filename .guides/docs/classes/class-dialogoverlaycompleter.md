@@ -28,7 +28,7 @@ class DialogOverlayCompleter<T> extends OverlayCompleter<T> {
   /// Creates a [DialogOverlayCompleter].
   ///
   /// Parameters:
-  /// - [route] (DialogRoute<T>, required): the dialog route to manage
+  /// - [route] (`DialogRoute<T>`, required): the dialog route to manage
   ///
   /// Example:
   /// ```dart

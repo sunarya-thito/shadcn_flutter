@@ -76,7 +76,7 @@ abstract class TreeNode<T> {
   /// all other properties including state. Used for structural modifications.
   ///
   /// Parameters:
-  /// - [children] (List<TreeNode<T>>): New list of child nodes
+  /// - [children] (`List<TreeNode<T>>`): New list of child nodes
   ///
   /// Returns: A new `TreeNode<T>` instance with updated children
   ///

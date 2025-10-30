@@ -52,7 +52,7 @@ class Breadcrumb extends StatelessWidget {
   /// is styled differently from the preceding navigation items.
   ///
   /// Parameters:
-  /// - [children] (List<Widget>, required): breadcrumb items from root to current
+  /// - [children] (`List<Widget>`, required): breadcrumb items from root to current
   /// - [separator] (Widget?, optional): custom separator between items
   /// - [padding] (EdgeInsetsGeometry?, optional): padding around the breadcrumb
   ///

@@ -12,5 +12,6 @@ class RangeValidator<T extends num> extends Validator<T> {
   const RangeValidator(this.min, this.max, {this.inclusive = true, this.message});
   FutureOr<ValidationResult?> validate(BuildContext context, T? value, FormValidationMode state);
   bool operator ==(Object other);
+  int get hashCode;
 }
 ```

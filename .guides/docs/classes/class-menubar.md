@@ -87,7 +87,7 @@ class Menubar extends StatefulWidget {
   ///
   /// Parameters:
   /// - [key] (Key?): Widget identifier for the widget tree
-  /// - [children] (List<MenuItem>, required): Menu items to display horizontally
+  /// - [children] (`List<MenuItem>`, required): Menu items to display horizontally
   /// - [popoverOffset] (Offset?, optional): Positioning offset for dropdown menus
   /// - [border] (bool, default: true): Whether to show a border around the menubar
   ///

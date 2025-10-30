@@ -58,7 +58,7 @@ class ModalBackdrop extends StatelessWidget {
   /// - [borderRadius] (BorderRadiusGeometry?, optional): corner radius for cutout
   /// - [barrierColor] (Color?, optional): backdrop color, defaults to black with 80% opacity
   /// - [padding] (EdgeInsetsGeometry?, optional): padding around child
-  /// - [fadeAnimation] (Animation<double>?, optional): fade transition animation
+  /// - [fadeAnimation] (`Animation<double>?`, optional): fade transition animation
   ///
   /// Example:
   /// ```dart

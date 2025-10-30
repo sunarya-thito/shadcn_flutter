@@ -48,7 +48,7 @@ abstract class BranchLine {
   ///
   /// Parameters:
   /// - [context] (BuildContext): Build context for theme access
-  /// - [depth] (List<TreeNodeDepth>): Hierarchical depth information
+  /// - [depth] (`List<TreeNodeDepth>`): Hierarchical depth information
   /// - [index] (int): Index within the current depth level
   ///
   /// Returns: A [Widget] representing the branch line visualization

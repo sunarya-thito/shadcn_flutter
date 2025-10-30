@@ -25,7 +25,7 @@ class StepperValue {
   /// Creates a [StepperValue].
   ///
   /// Parameters:
-  /// - [stepStates] (Map<int, StepState>, required): step states by index
+  /// - [stepStates] (`Map<int, StepState>`, required): step states by index
   /// - [currentStep] (int, required): currently active step index
   StepperValue({required this.stepStates, required this.currentStep});
   bool operator ==(Object other);

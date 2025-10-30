@@ -70,7 +70,7 @@ class NavigationMenu extends StatefulWidget {
   /// Parameters:
   /// - [surfaceOpacity] (double?, optional): Popover background opacity
   /// - [surfaceBlur] (double?, optional): Popover backdrop blur intensity
-  /// - [children] (List<Widget>, required): Menu items to display
+  /// - [children] (`List<Widget>`, required): Menu items to display
   ///
   /// Example:
   /// ```dart

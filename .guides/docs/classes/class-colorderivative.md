@@ -23,14 +23,13 @@ abstract class ColorDerivative {
   int get green;
   int get blue;
   ColorDerivative transform(ColorDerivative old);
-  ColorDerivative changeToAlpha(double alpha);
+  ColorDerivative changeToOpacity(double alpha);
   ColorDerivative changeToColor(Color color);
   ColorDerivative changeToHSV(HSVColor color);
   ColorDerivative changeToHSL(HSLColor color);
   ColorDerivative changeToColorRed(double red);
   ColorDerivative changeToColorGreen(double green);
   ColorDerivative changeToColorBlue(double blue);
-  ColorDerivative changeToColorAlpha(double alpha);
   ColorDerivative changeToHSVHue(double hue);
   ColorDerivative changeToHSVSaturation(double saturation);
   ColorDerivative changeToHSVValue(double value);

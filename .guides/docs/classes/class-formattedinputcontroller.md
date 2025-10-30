@@ -6,7 +6,7 @@ description: "A controller for managing [FormattedInput] values programmatically
 ```dart
 /// A controller for managing [FormattedInput] values programmatically.
 ///
-/// This controller extends [ValueNotifier<FormattedValue>] to provide reactive
+/// This controller extends `ValueNotifier<FormattedValue>` to provide reactive
 /// state management for formatted input components. It implements [ComponentController]
 /// to integrate with the controlled component system, allowing external control
 /// and listening to formatted input changes.

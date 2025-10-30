@@ -108,7 +108,7 @@ class ControlledCheckbox extends StatelessWidget with ControlledComponent<Checkb
   /// Parameters:
   /// - [controller] (CheckboxController?, optional): external state controller
   /// - [initialValue] (CheckboxState, default: unchecked): starting state when no controller
-  /// - [onChanged] (ValueChanged<CheckboxState>?, optional): state change callback
+  /// - [onChanged] (`ValueChanged<CheckboxState>?`, optional): state change callback
   /// - [enabled] (bool, default: true): whether checkbox is interactive
   /// - [leading] (Widget?, optional): widget displayed before checkbox
   /// - [trailing] (Widget?, optional): widget displayed after checkbox

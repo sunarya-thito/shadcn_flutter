@@ -81,7 +81,7 @@ class ControlledTimePicker extends StatelessWidget with ControlledComponent<Time
   /// Parameters:
   /// - [controller] (TimePickerController?, optional): External controller for programmatic control
   /// - [initialValue] (TimeOfDay?, optional): Initial time when no controller is provided
-  /// - [onChanged] (ValueChanged<TimeOfDay?>?, optional): Callback for time selection changes
+  /// - [onChanged] (`ValueChanged<TimeOfDay?>?`, optional): Callback for time selection changes
   /// - [enabled] (bool, default: true): Whether the picker accepts user interaction
   /// - [mode] (PromptMode, default: PromptMode.dialog): Presentation style (dialog or popover)
   /// - [placeholder] (Widget?, optional): Content displayed when no time is selected

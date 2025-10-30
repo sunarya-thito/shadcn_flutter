@@ -16,8 +16,7 @@ class CodeSnippetExample1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CodeSnippet(
-      code: 'flutter pub get',
-      mode: 'shell',
+      code: Text('flutter pub get'),
     );
   }
 }

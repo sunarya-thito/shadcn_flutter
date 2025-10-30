@@ -10,5 +10,6 @@ class SubmissionResult {
   const SubmissionResult(this.values, this.errors);
   String toString();
   bool operator ==(Object other);
+  int get hashCode;
 }
 ```

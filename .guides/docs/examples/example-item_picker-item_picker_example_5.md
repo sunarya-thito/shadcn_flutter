@@ -5,6 +5,7 @@ description: "Component example"
 
 Source preview
 ```dart
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class NamedColor {
@@ -63,6 +64,5 @@ class _ItemPickerExample5State extends State<ItemPickerExample5> {
       value: colors[selectedColor],
       placeholder: const Text('Pick a color'),
       onChanged: (value) {
-        print('You picked $value!');
-        if (value != null) {
+        if (kDebugMode) {
 ```

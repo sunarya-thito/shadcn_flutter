@@ -61,7 +61,7 @@ class NavigationMenuContentList extends StatelessWidget {
   /// grid's appearance and spacing.
   ///
   /// Parameters:
-  /// - [children] (List<Widget>, required): Items to arrange in grid
+  /// - [children] (`List<Widget>`, required): Items to arrange in grid
   /// - [crossAxisCount] (int, default: 3): Number of columns per row
   /// - [spacing] (double?, optional): Horizontal spacing between items
   /// - [runSpacing] (double?, optional): Vertical spacing between rows

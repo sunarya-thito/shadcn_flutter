@@ -63,6 +63,6 @@ class _ItemPickerExample4State extends State<ItemPickerExample4> {
           (value) {
             if (value != null) {
               selectedColor = colors.indexOf(value);
-              showToast(
-                context: context,
+              if (context.mounted) {
+                showToast(
 ```

@@ -37,7 +37,7 @@ description: "A comprehensive popover overlay system for displaying contextual c
 /// Example usage:
 /// ```dart
 /// final controller = PopoverController();
-/// 
+///
 /// // Show a popover
 /// final popover = await controller.show<String>(
 ///   context: context,

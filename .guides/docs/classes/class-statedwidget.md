@@ -13,7 +13,7 @@ description: "An abstract widget that provides state-aware visual variations."
 ///
 /// Three factory constructors provide different approaches to state handling:
 /// - Default constructor: Explicit widgets for each state
-/// - `.map()`: Map-based state-to-widget associations  
+/// - `.map()`: Map-based state-to-widget associations
 /// - `.builder()`: Function-based dynamic state handling
 ///
 /// The state resolution follows a priority order where earlier states in the
@@ -25,7 +25,7 @@ description: "An abstract widget that provides state-aware visual variations."
 /// StatedWidget(
 ///   child: Text('Default'),
 ///   disabled: Text('Disabled State'),
-///   hovered: Text('Hovered State'),  
+///   hovered: Text('Hovered State'),
 ///   pressed: Text('Pressed State'),
 ///   selected: Text('Selected State'),
 /// )
@@ -49,7 +49,7 @@ abstract class StatedWidget extends StatelessWidget {
   ///
   /// Parameters:
   /// - [child] (Widget, required): Default widget for normal state
-  /// - [order] (List<WidgetState>, default: defaultStateOrder): State priority order
+  /// - [order] (`List<WidgetState>`, default: defaultStateOrder): State priority order
   /// - [disabled] (Widget?, optional): Widget for disabled state
   /// - [selected] (Widget?, optional): Widget for selected state
   /// - [pressed] (Widget?, optional): Widget for pressed/active state
@@ -79,7 +79,7 @@ abstract class StatedWidget extends StatelessWidget {
   /// matches in the provided map.
   ///
   /// Parameters:
-  /// - [states] (Map<Object, Widget>, required): Map of state-to-widget mappings
+  /// - [states] (`Map<Object, Widget>`, required): Map of state-to-widget mappings
   /// - [child] (Widget?, optional): Fallback widget when no state matches
   ///
   /// Example:

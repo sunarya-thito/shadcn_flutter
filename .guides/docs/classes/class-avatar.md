@@ -164,6 +164,6 @@ class Avatar extends StatefulWidget implements AvatarWidget {
   /// );
   /// ```
   Avatar.network({super.key, required this.initials, this.backgroundColor, this.size, this.borderRadius, this.badge, this.badgeAlignment, this.badgeGap, int? cacheWidth, int? cacheHeight, required String photoUrl});
-  _AvatarState createState();
+  State<Avatar> createState();
 }
 ```

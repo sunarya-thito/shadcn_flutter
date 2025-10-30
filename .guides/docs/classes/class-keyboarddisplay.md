@@ -43,7 +43,7 @@ class KeyboardDisplay extends StatelessWidget {
   /// over which keys are displayed.
   ///
   /// Parameters:
-  /// - [keys] (List<LogicalKeyboardKey>, required): Keys to display
+  /// - [keys] (`List<LogicalKeyboardKey>`, required): Keys to display
   /// - [spacing] (double?, optional): Gap between key displays
   ///
   /// Example:

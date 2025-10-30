@@ -44,7 +44,7 @@ class Toggle extends StatefulWidget {
   ///
   /// Parameters:
   /// - [value] (bool, required): current toggle state
-  /// - [onChanged] (ValueChanged<bool>?, optional): callback when state changes
+  /// - [onChanged] (`ValueChanged<bool>?`, optional): callback when state changes
   /// - [child] (Widget, required): content displayed inside the button
   /// - [enabled] (bool?, optional): whether button is interactive
   /// - [style] (ButtonStyle, default: ghost): button styling

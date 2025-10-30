@@ -6,7 +6,7 @@ description: "A controller for managing [ControlledTimePicker] values programmat
 ```dart
 /// A controller for managing [ControlledTimePicker] values programmatically.
 ///
-/// This controller extends [ValueNotifier<TimeOfDay?>] to provide reactive
+/// This controller extends `ValueNotifier<TimeOfDay?>` to provide reactive
 /// state management for time picker components. It implements [ComponentController]
 /// to integrate with the controlled component system, allowing external control
 /// and listening to time selection changes.

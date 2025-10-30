@@ -19,7 +19,7 @@ description: "A widget that provides form management capabilities for collecting
 /// Example:
 /// ```dart
 /// final controller = FormController();
-/// 
+///
 /// Form(
 ///   controller: controller,
 ///   onSubmit: (values) async {

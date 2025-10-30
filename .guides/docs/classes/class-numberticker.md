@@ -9,7 +9,7 @@ description: "A widget that smoothly animates between numeric values with custom
 /// [NumberTicker] provides animated transitions when numeric values change,
 /// making it ideal for displaying counters, statistics, prices, or any numeric
 /// data that changes over time. It offers two construction modes:
-/// 
+///
 /// - Default constructor: Uses a formatter function to display numbers as text
 /// - [NumberTicker.builder]: Provides a custom builder for complete control
 ///

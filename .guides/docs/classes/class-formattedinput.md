@@ -60,7 +60,7 @@ class FormattedInput extends StatefulWidget with ControlledComponent<FormattedVa
   ///
   /// Parameters:
   /// - [initialValue] (FormattedValue?, optional): Initial structure and values
-  /// - [onChanged] (ValueChanged<FormattedValue>?, optional): Callback for value changes
+  /// - [onChanged] (`ValueChanged<FormattedValue>?`, optional): Callback for value changes
   /// - [style] (TextStyle?, optional): Text styling for all segments
   /// - [leading] (Widget?, optional): Widget displayed before the input
   /// - [trailing] (Widget?, optional): Widget displayed after the input

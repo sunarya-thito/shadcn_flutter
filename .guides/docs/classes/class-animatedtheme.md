@@ -8,6 +8,6 @@ class AnimatedTheme extends ImplicitlyAnimatedWidget {
   final ThemeData data;
   final Widget child;
   const AnimatedTheme({super.key, required this.data, required super.duration, super.curve, required this.child});
-  _AnimatedThemeState createState();
+  AnimatedWidgetBaseState<AnimatedTheme> createState();
 }
 ```

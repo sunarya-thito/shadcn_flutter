@@ -94,7 +94,7 @@ class TreeItemView extends StatefulWidget {
   /// - [trailing] (Widget?, optional): Widget displayed after the content  
   /// - [onPressed] (VoidCallback?, optional): Callback for press/click events
   /// - [onDoublePressed] (VoidCallback?, optional): Callback for double-click events
-  /// - [onExpand] (ValueChanged<bool>?, optional): Callback for expansion changes
+  /// - [onExpand] (`ValueChanged<bool>?`, optional): Callback for expansion changes
   /// - [expandable] (bool?, optional): Whether the item can be expanded
   /// - [focusNode] (FocusNode?, optional): Focus node for keyboard navigation
   ///

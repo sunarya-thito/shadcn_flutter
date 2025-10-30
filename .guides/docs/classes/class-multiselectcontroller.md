@@ -13,12 +13,12 @@ description: "Controller for managing [ControlledMultiSelect] state programmatic
 /// Example:
 /// ```dart
 /// final controller = MultiSelectController<String>(['apple', 'banana']);
-/// 
+///
 /// // Listen to changes
 /// controller.addListener(() {
 ///   print('Selection changed to: ${controller.value}');
 /// });
-/// 
+///
 /// // Update selection
 /// controller.value = ['apple', 'cherry'];
 /// ```
@@ -29,7 +29,7 @@ class MultiSelectController<T> extends SelectController<Iterable<T>> {
   /// Can be null or empty to start with no selections.
   ///
   /// Parameters:
-  /// - [value] (Iterable<T>?, optional): Initial selected items
+  /// - [value] (`Iterable<T>?`, optional): Initial selected items
   MultiSelectController([super.value]);
 }
 ```

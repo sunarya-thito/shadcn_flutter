@@ -5,6 +5,7 @@ description: "Component example"
 
 Source preview
 ```dart
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Dropdown menu anchored to a button.
@@ -64,5 +65,4 @@ class DropdownMenuExample1 extends StatelessWidget {
                 MenuDivider(),
                 MenuButton(
                   child: Text('GitHub'),
-                ),
 ```

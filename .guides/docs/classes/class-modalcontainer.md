@@ -77,7 +77,7 @@ class ModalContainer extends StatelessWidget {
   /// - [clipBehavior] (Clip, default: Clip.none): clipping behavior for content
   /// - [borderColor] (Color?, optional): border color
   /// - [borderWidth] (double?, optional): border width in logical pixels
-  /// - [boxShadow] (List<BoxShadow>?, optional): drop shadow effects
+  /// - [boxShadow] (`List<BoxShadow>?`, optional): drop shadow effects
   /// - [surfaceOpacity] (double?, optional): backdrop opacity level
   /// - [surfaceBlur] (double?, optional): backdrop blur intensity
   /// - [duration] (Duration?, optional): animation duration for transitions

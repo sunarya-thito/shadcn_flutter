@@ -13,12 +13,12 @@ description: "Controller for managing [ControlledSelect] state programmatically.
 /// Example:
 /// ```dart
 /// final controller = SelectController<String>('initial');
-/// 
+///
 /// // Listen to changes
 /// controller.addListener(() {
 ///   print('Selection changed to: ${controller.value}');
 /// });
-/// 
+///
 /// // Update selection
 /// controller.value = 'new_value';
 /// ```

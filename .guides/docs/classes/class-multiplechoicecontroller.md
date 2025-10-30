@@ -6,7 +6,7 @@ description: "A controller for managing [ControlledMultipleChoice] selection pro
 ```dart
 /// A controller for managing [ControlledMultipleChoice] selection programmatically.
 ///
-/// This controller extends [ValueNotifier<T?>] to provide reactive state
+/// This controller extends `ValueNotifier<T?>` to provide reactive state
 /// management for single-choice components. It implements [ComponentController]
 /// to integrate with the controlled component system, allowing external control
 /// and listening to selection changes.

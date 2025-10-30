@@ -52,8 +52,8 @@ class ControlledComponentAdapter<T> extends StatefulWidget with ControlledCompon
   /// Parameters:
   /// - [builder] (required): Function that builds the UI using state data
   /// - [initialValue] (T?, optional): Initial value when no controller is used
-  /// - [onChanged] (ValueChanged<T>?, optional): Callback for value changes
-  /// - [controller] (ComponentController<T>?, optional): External controller for value management
+  /// - [onChanged] (`ValueChanged<T>?`, optional): Callback for value changes
+  /// - [controller] (`ComponentController<T>?`, optional): External controller for value management
   /// - [enabled] (bool, default: true): Whether the component accepts user input
   ///
   /// Throws [AssertionError] if neither controller nor initialValue is provided.
@@ -70,6 +70,6 @@ class ControlledComponentAdapter<T> extends StatefulWidget with ControlledCompon
   /// );
   /// ```
   const ControlledComponentAdapter({super.key, required this.builder, this.initialValue, this.onChanged, this.controller, this.enabled = true});
-  _ControlledComponentAdapterState<T> createState();
+  State<ControlledComponentAdapter<T>> createState();
 }
 ```

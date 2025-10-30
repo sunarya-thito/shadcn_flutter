@@ -23,7 +23,7 @@ description: "Reactive radio button group with automatic state management and ex
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = RadioGroupController<String>('small');
-/// 
+///
 /// ControlledRadioGroup<String>(
 ///   controller: controller,
 ///   child: Column(
@@ -39,7 +39,7 @@ description: "Reactive radio button group with automatic state management and ex
 /// **Callback-based (simple state management):**
 /// ```dart
 /// String? selectedSize;
-/// 
+///
 /// ControlledRadioGroup<String>(
 ///   initialValue: selectedSize,
 ///   onChanged: (size) => setState(() => selectedSize = size),
@@ -70,9 +70,9 @@ class ControlledRadioGroup<T> extends StatelessWidget with ControlledComponent<T
   /// patterns with automatic mutual exclusion between radio options.
   ///
   /// Parameters:
-  /// - [controller] (RadioGroupController<T>?, optional): external state controller
+  /// - [controller] (`RadioGroupController<T>?`, optional): external state controller
   /// - [initialValue] (T?, optional): starting selection when no controller
-  /// - [onChanged] (ValueChanged<T?>?, optional): selection change callback
+  /// - [onChanged] (`ValueChanged<T?>?`, optional): selection change callback
   /// - [enabled] (bool, default: true): whether radio group is interactive
   /// - [child] (Widget, required): layout containing radio buttons
   ///

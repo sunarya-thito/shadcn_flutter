@@ -59,7 +59,7 @@ class CodeSnippetTheme {
   ///
   /// Parameters:
   /// - [backgroundColor] (Color?, optional): Container background color
-  /// - [borderColor] (Color?, optional): Border outline color  
+  /// - [borderColor] (Color?, optional): Border outline color
   /// - [borderWidth] (double?, optional): Border thickness in pixels
   /// - [borderRadius] (BorderRadiusGeometry?, optional): Corner radius
   /// - [padding] (EdgeInsetsGeometry?, optional): Content padding

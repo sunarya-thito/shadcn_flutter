@@ -28,16 +28,16 @@ description: "A controller for managing multiple popovers and their lifecycle."
 ///   @override
 ///   _MyWidgetState createState() => _MyWidgetState();
 /// }
-/// 
+///
 /// class _MyWidgetState extends State<MyWidget> {
 ///   final PopoverController _popoverController = PopoverController();
-///   
+///
 ///   @override
 ///   void dispose() {
 ///     _popoverController.dispose();
 ///     super.dispose();
 ///   }
-///   
+///
 ///   void _showMenu() async {
 ///     await _popoverController.show(
 ///       context: context,

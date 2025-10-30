@@ -53,9 +53,9 @@ class ControlledMultipleAnswer<T> extends StatelessWidget with ControlledCompone
   /// that integrate with the multiple selection system.
   ///
   /// Parameters:
-  /// - [controller] (MultipleAnswerController<T>?, optional): External controller for programmatic control
-  /// - [initialValue] (Iterable<T>?, optional): Initial selection when no controller provided
-  /// - [onChanged] (ValueChanged<Iterable<T>?>?, optional): Callback for selection changes
+  /// - [controller] (`MultipleAnswerController<T>?`, optional): External controller for programmatic control
+  /// - [initialValue] (`Iterable<T>?`, optional): Initial selection when no controller provided
+  /// - [onChanged] (`ValueChanged<Iterable<T>?>?`, optional): Callback for selection changes
   /// - [enabled] (bool, default: true): Whether selections can be modified
   /// - [allowUnselect] (bool?, optional): Whether items can be deselected by re-selection
   /// - [child] (Widget, required): Container with selectable choice items

@@ -109,6 +109,7 @@ abstract class ShadcnLocalizations {
   String get colorPickerTabRGB;
   String get colorPickerTabHSV;
   String get colorPickerTabHSL;
+  String get colorPickerTabHEX;
   String get commandMoveUp;
   String get commandMoveDown;
   String get commandActivate;

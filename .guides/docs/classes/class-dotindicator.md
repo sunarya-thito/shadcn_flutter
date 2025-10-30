@@ -48,7 +48,7 @@ class DotIndicator extends StatelessWidget {
   /// Parameters:
   /// - [index] (int, required): current active dot position (0-based)
   /// - [length] (int, required): total number of dots to display
-  /// - [onChanged] (ValueChanged<int>?, optional): callback when dot is tapped
+  /// - [onChanged] (`ValueChanged<int>?`, optional): callback when dot is tapped
   /// - [spacing] (double?, optional): override spacing between dots
   /// - [direction] (Axis, default: horizontal): layout direction of dots
   /// - [padding] (EdgeInsetsGeometry?, optional): padding around dot container

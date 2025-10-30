@@ -54,11 +54,17 @@ class ButtonGroup extends StatelessWidget {
   /// The group automatically applies border modifications to create the
   /// connected appearance.
   final List<Widget> children;
+  /// Whether the button group should be shrink-wrapped or expanded.
+  ///
+  /// When true, the group will expand to fill available space in the
+  /// cross axis. When false, the group will size itself based on its
+  /// children's intrinsic size.
+  final bool expands;
   /// Creates a [ButtonGroup] that arranges buttons with connected borders.
   ///
   /// Parameters:
   /// - [direction] (Axis, default: Axis.horizontal): Layout direction for the buttons.
-  /// - [children] (List<Widget>, required): The buttons to group together.
+  /// - [children] (`List<Widget>`, required): The buttons to group together.
   ///
   /// The group automatically handles:
   /// - Border radius adjustments for first/middle/last buttons
@@ -76,7 +82,9 @@ class ButtonGroup extends StatelessWidget {
   ///   ],
   /// );
   /// ```
-  const ButtonGroup({super.key, this.direction = Axis.horizontal, required this.children});
+  const ButtonGroup({super.key, this.direction = Axis.horizontal, this.expands = false, required this.children});
+  const ButtonGroup.horizontal({super.key, this.expands = false, required this.children});
+  const ButtonGroup.vertical({super.key, this.expands = false, required this.children});
   Widget build(BuildContext context);
 }
 ```

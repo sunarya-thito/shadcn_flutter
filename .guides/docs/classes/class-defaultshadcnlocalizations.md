@@ -111,6 +111,7 @@ class DefaultShadcnLocalizations extends ShadcnLocalizations {
   String get colorPickerTabRGB;
   String get colorPickerTabHSV;
   String get colorPickerTabHSL;
+  String get colorPickerTabHEX;
   String get colorHue;
   String get colorSaturation;
   String get colorValue;

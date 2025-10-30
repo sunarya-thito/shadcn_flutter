@@ -13,12 +13,12 @@ description: "Controller for managing [ControlledRadioGroup] state programmatica
 /// Example:
 /// ```dart
 /// final controller = RadioGroupController<String>('option1');
-/// 
+///
 /// // Listen to changes
 /// controller.addListener(() {
 ///   print('Selection changed to: ${controller.value}');
 /// });
-/// 
+///
 /// // Update selection
 /// controller.value = 'option2';
 /// ```

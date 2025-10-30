@@ -56,9 +56,9 @@ class NumberTickerTheme {
   /// null getters preserve the original value.
   ///
   /// Parameters:
-  /// - [duration] (ValueGetter<Duration?>?, optional): New duration value.
-  /// - [curve] (ValueGetter<Curve?>?, optional): New curve value.
-  /// - [style] (ValueGetter<TextStyle?>?, optional): New text style value.
+  /// - [duration] (`ValueGetter<Duration?>?`, optional): New duration value.
+  /// - [curve] (`ValueGetter<Curve?>?`, optional): New curve value.
+  /// - [style] (`ValueGetter<TextStyle?>?`, optional): New text style value.
   ///
   /// Example:
   /// ```dart

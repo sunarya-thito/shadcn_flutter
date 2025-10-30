@@ -51,8 +51,8 @@ class SortableDropFallback<T> extends StatefulWidget {
   /// Parameters:
   /// - [key] (Key?): Widget identifier for the widget tree
   /// - [child] (Widget, required): The widget that defines the drop zone area
-  /// - [onAccept] (ValueChanged<SortableData<T>>?, optional): Handler for accepted drops
-  /// - [canAccept] (Predicate<SortableData<T>>?, optional): Validation for drops
+  /// - [onAccept] (`ValueChanged<SortableData<T>>?`, optional): Handler for accepted drops
+  /// - [canAccept] (`Predicate<SortableData<T>>?`, optional): Validation for drops
   ///
   /// Example:
   /// ```dart

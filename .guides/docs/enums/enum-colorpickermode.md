@@ -8,5 +8,6 @@ enum ColorPickerMode {
   rgb,
   hsl,
   hsv,
+  hex,
 }
 ```

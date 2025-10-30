@@ -36,7 +36,7 @@ class ControlledComponentData<T> {
   ///
   /// Parameters:
   /// - [value] (T, required): The current value to display
-  /// - [onChanged] (ValueChanged<T>, required): Callback for value changes
+  /// - [onChanged] (`ValueChanged<T>`, required): Callback for value changes
   /// - [enabled] (bool, required): Whether the component accepts input
   const ControlledComponentData({required this.value, required this.onChanged, required this.enabled});
 }

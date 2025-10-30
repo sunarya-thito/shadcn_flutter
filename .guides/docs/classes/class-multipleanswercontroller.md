@@ -6,7 +6,7 @@ description: "A controller for managing [ControlledMultipleAnswer] selections pr
 ```dart
 /// A controller for managing [ControlledMultipleAnswer] selections programmatically.
 ///
-/// This controller extends [ValueNotifier<Iterable<T>?>] to provide reactive
+/// This controller extends `ValueNotifier<Iterable<T>?>` to provide reactive
 /// state management for multiple selection components. It implements [ComponentController]
 /// to integrate with the controlled component system, allowing external control
 /// and listening to selection changes.
@@ -22,7 +22,7 @@ class MultipleAnswerController<T> extends ValueNotifier<Iterable<T>?> with Compo
   /// Creates a [MultipleAnswerController] with an optional initial selection.
   ///
   /// Parameters:
-  /// - [value] (Iterable<T>?, optional): Initial selection of items
+  /// - [value] (`Iterable<T>?`, optional): Initial selection of items
   MultipleAnswerController([super.value]);
 }
 ```

@@ -15,7 +15,7 @@ description: "Theme configuration for individual table cells."
 /// All properties use [WidgetStateProperty] to support different visual
 /// states:
 /// - [WidgetState.hovered]: Mouse hover state
-/// - [WidgetState.selected]: Cell/row selection state  
+/// - [WidgetState.selected]: Cell/row selection state
 /// - [WidgetState.disabled]: Disabled interaction state
 /// - [WidgetState.pressed]: Active press state
 ///
@@ -56,9 +56,9 @@ class TableCellTheme {
   /// state-aware styling.
   ///
   /// Parameters:
-  /// - [border] (WidgetStateProperty<Border?>?, optional): State-aware borders
-  /// - [backgroundColor] (WidgetStateProperty<Color?>?, optional): State-aware background
-  /// - [textStyle] (WidgetStateProperty<TextStyle?>?, optional): State-aware text styling
+  /// - [border] (`WidgetStateProperty<Border?>?`, optional): State-aware borders
+  /// - [backgroundColor] (`WidgetStateProperty<Color?>?`, optional): State-aware background
+  /// - [textStyle] (`WidgetStateProperty<TextStyle?>?`, optional): State-aware text styling
   ///
   /// Example:
   /// ```dart

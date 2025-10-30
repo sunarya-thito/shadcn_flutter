@@ -53,7 +53,7 @@ class TreeRoot<T> extends TreeNode<T> {
   /// multiple top-level tree items.
   ///
   /// Parameters:
-  /// - [children] (List<TreeNode<T>>, required): Child nodes to contain
+  /// - [children] (`List<TreeNode<T>>`, required): Child nodes to contain
   ///
   /// Example:
   /// ```dart

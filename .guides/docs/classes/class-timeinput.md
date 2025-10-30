@@ -24,7 +24,7 @@ description: "Reactive time input field with formatted text editing and validati
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = ComponentController<TimeOfDay?>(TimeOfDay.now());
-/// 
+///
 /// TimeInput(
 ///   controller: controller,
 ///   showSeconds: true,
@@ -35,7 +35,7 @@ description: "Reactive time input field with formatted text editing and validati
 /// **Callback-based (simple state management):**
 /// ```dart
 /// TimeOfDay? selectedTime;
-/// 
+///
 /// TimeInput(
 ///   initialValue: selectedTime,
 ///   onChanged: (time) => setState(() => selectedTime = time),
@@ -59,14 +59,14 @@ class TimeInput extends StatefulWidget with ControlledComponent<TimeOfDay?> {
   /// patterns with structured time component entry.
   ///
   /// Parameters:
-  /// - [controller] (ComponentController<TimeOfDay?>?, optional): external state controller
+  /// - [controller] (`ComponentController<TimeOfDay?>?`, optional): external state controller
   /// - [initialValue] (TimeOfDay?, optional): starting time when no controller
-  /// - [onChanged] (ValueChanged<TimeOfDay?>?, optional): time change callback
+  /// - [onChanged] (`ValueChanged<TimeOfDay?>?`, optional): time change callback
   /// - [enabled] (bool, default: true): whether input is interactive
   /// - [placeholder] (Widget?, optional): widget shown when no time selected
   /// - [showSeconds] (bool, default: false): whether to include seconds input
   /// - [separator] (InputPart?, optional): separator between time components
-  /// - [placeholders] (Map<TimePart, Widget>?, optional): placeholders for time parts
+  /// - [placeholders] (`Map<TimePart, Widget>?`, optional): placeholders for time parts
   ///
   /// Example:
   /// ```dart

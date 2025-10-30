@@ -24,7 +24,7 @@ description: "Reactive single-selection dropdown with automatic state management
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = SelectController<String>('apple');
-/// 
+///
 /// ControlledSelect<String>(
 ///   controller: controller,
 ///   items: ['apple', 'banana', 'cherry'],
@@ -36,7 +36,7 @@ description: "Reactive single-selection dropdown with automatic state management
 /// **Callback-based (simple state management):**
 /// ```dart
 /// String? selectedFruit;
-/// 
+///
 /// ControlledSelect<String>(
 ///   initialValue: selectedFruit,
 ///   onChanged: (fruit) => setState(() => selectedFruit = fruit),
@@ -74,9 +74,9 @@ class ControlledSelect<T> extends StatelessWidget with ControlledComponent<T?>, 
   /// patterns depending on application architecture needs.
   ///
   /// Parameters:
-  /// - [controller] (SelectController<T>?, optional): external state controller
+  /// - [controller] (`SelectController<T>?`, optional): external state controller
   /// - [initialValue] (T?, optional): starting selection when no controller
-  /// - [onChanged] (ValueChanged<T?>?, optional): selection change callback
+  /// - [onChanged] (`ValueChanged<T?>?`, optional): selection change callback
   /// - [enabled] (bool, default: true): whether select is interactive
   /// - [placeholder] (Widget?, optional): widget shown when no item selected
   /// - [filled] (bool, default: false): whether to use filled appearance
@@ -92,10 +92,10 @@ class ControlledSelect<T> extends StatelessWidget with ControlledComponent<T?>, 
   /// - [canUnselect] (bool, default: false): allow deselecting current item
   /// - [autoClosePopover] (bool, default: true): close popup after selection
   /// - [popup] (SelectPopupBuilder, required): builder for popup content
-  /// - [itemBuilder] (SelectItemBuilder<T>, required): builder for individual items
-  /// - [valueSelectionHandler] (SelectValueSelectionHandler<T>?, optional): custom selection logic
-  /// - [valueSelectionPredicate] (SelectValueSelectionPredicate<T>?, optional): selection validation
-  /// - [showValuePredicate] (Predicate<T>?, optional): visibility filter for values
+  /// - [itemBuilder] (`SelectItemBuilder<T>`, required): builder for individual items
+  /// - [valueSelectionHandler] (`SelectValueSelectionHandler<T>?`, optional): custom selection logic
+  /// - [valueSelectionPredicate] (`SelectValueSelectionPredicate<T>?`, optional): selection validation
+  /// - [showValuePredicate] (`Predicate<T>?`, optional): visibility filter for values
   ///
   /// Example:
   /// ```dart

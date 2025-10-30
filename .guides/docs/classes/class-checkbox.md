@@ -112,7 +112,7 @@ class Checkbox extends StatefulWidget {
   ///
   /// Parameters:
   /// - [state] (CheckboxState, required): current checkbox state to display
-  /// - [onChanged] (ValueChanged<CheckboxState>?, required): interaction callback
+  /// - [onChanged] (`ValueChanged<CheckboxState>?`, required): interaction callback
   /// - [leading] (Widget?, optional): widget displayed before checkbox
   /// - [trailing] (Widget?, optional): widget displayed after checkbox
   /// - [tristate] (bool, default: false): enable indeterminate state cycling
@@ -135,6 +135,6 @@ class Checkbox extends StatefulWidget {
   /// )
   /// ```
   const Checkbox({super.key, required this.state, required this.onChanged, this.leading, this.trailing, this.tristate = false, this.enabled, this.size, this.gap, this.backgroundColor, this.activeColor, this.borderColor, this.borderRadius});
-  _CheckboxState createState();
+  State<Checkbox> createState();
 }
 ```

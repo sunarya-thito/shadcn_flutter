@@ -5,22 +5,22 @@ description: "Reference for extension"
 
 ```dart
 extension IconExtension on Widget {
-  Widget iconX4Small();
-  Widget iconX3Small();
-  Widget iconX2Small();
-  Widget iconXSmall();
-  Widget iconSmall();
-  Widget iconMedium();
-  Widget iconLarge();
-  Widget iconXLarge();
-  Widget iconX2Large();
-  Widget iconX3Large();
-  Widget iconX4Large();
-  Widget iconMutedForeground();
-  Widget iconDestructiveForeground();
-  Widget iconPrimaryForeground();
-  Widget iconPrimary();
-  Widget iconSecondary();
-  Widget iconSecondaryForeground();
+  WrappedIcon get iconX4Small;
+  WrappedIcon get iconX3Small;
+  WrappedIcon get iconX2Small;
+  WrappedIcon get iconXSmall;
+  WrappedIcon get iconSmall;
+  WrappedIcon get iconMedium;
+  WrappedIcon get iconLarge;
+  WrappedIcon get iconXLarge;
+  WrappedIcon get iconX2Large;
+  WrappedIcon get iconX3Large;
+  WrappedIcon get iconX4Large;
+  WrappedIcon get iconMutedForeground;
+  WrappedIcon get iconDestructiveForeground;
+  WrappedIcon get iconPrimaryForeground;
+  WrappedIcon get iconPrimary;
+  WrappedIcon get iconSecondary;
+  WrappedIcon get iconSecondaryForeground;
 }
 ```

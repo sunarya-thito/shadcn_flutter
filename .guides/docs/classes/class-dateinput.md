@@ -24,7 +24,7 @@ description: "Reactive date input field with integrated date picker and text edi
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = DatePickerController(DateTime.now());
-/// 
+///
 /// DateInput(
 ///   controller: controller,
 ///   mode: PromptMode.popover,
@@ -35,7 +35,7 @@ description: "Reactive date input field with integrated date picker and text edi
 /// **Callback-based (simple state management):**
 /// ```dart
 /// DateTime? selectedDate;
-/// 
+///
 /// DateInput(
 ///   initialValue: selectedDate,
 ///   onChanged: (date) => setState(() => selectedDate = date),
@@ -69,7 +69,7 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
   /// Parameters:
   /// - [controller] (DatePickerController?, optional): external state controller
   /// - [initialValue] (DateTime?, optional): starting date when no controller
-  /// - [onChanged] (ValueChanged<DateTime?>?, optional): date change callback
+  /// - [onChanged] (`ValueChanged<DateTime?>?`, optional): date change callback
   /// - [enabled] (bool, default: true): whether input is interactive
   /// - [placeholder] (Widget?, optional): widget shown when no date selected
   /// - [mode] (PromptMode, default: dialog): date picker presentation mode
@@ -80,9 +80,9 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
   /// - [dialogTitle] (Widget?, optional): title for dialog mode
   /// - [initialViewType] (CalendarViewType?, optional): calendar view type
   /// - [stateBuilder] (DateStateBuilder?, optional): custom date state builder
-  /// - [datePartsOrder] (List<DatePart>?, optional): order of date components
+  /// - [datePartsOrder] (`List<DatePart>?`, optional): order of date components
   /// - [separator] (InputPart?, optional): separator between date parts
-  /// - [placeholders] (Map<DatePart, Widget>?, optional): placeholders for date parts
+  /// - [placeholders] (`Map<DatePart, Widget>?`, optional): placeholders for date parts
   ///
   /// Example:
   /// ```dart

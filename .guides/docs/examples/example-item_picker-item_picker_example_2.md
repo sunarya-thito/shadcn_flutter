@@ -29,7 +29,7 @@ class ItemPickerExample2 extends StatelessWidget {
           },
         ).then(
           (value) {
-            if (value != null) {
+            if (value != null && context.mounted) {
               showToast(
                 context: context,
                 builder: (context, overlay) {
@@ -38,7 +38,7 @@ class ItemPickerExample2 extends StatelessWidget {
                   );
                 },
               );
-            } else {
+            } else if (context.mounted) {
               showToast(
                 context: context,
                 builder: (context, overlay) {

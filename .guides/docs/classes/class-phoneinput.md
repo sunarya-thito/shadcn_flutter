@@ -90,13 +90,13 @@ class PhoneInput extends StatefulWidget {
   /// Parameters:
   /// - [initialCountry] (Country?, optional): Default country when no initial value provided
   /// - [initialValue] (PhoneNumber?, optional): Complete initial phone number with country
-  /// - [onChanged] (ValueChanged<PhoneNumber>?, optional): Callback for phone number changes
+  /// - [onChanged] (`ValueChanged<PhoneNumber>?`, optional): Callback for phone number changes
   /// - [controller] (TextEditingController?, optional): Controller for the number input field
   /// - [filterPlusCode] (bool, default: true): Whether to filter out plus symbols
   /// - [filterZeroCode] (bool, default: true): Whether to filter out leading zeros
   /// - [filterCountryCode] (bool, default: true): Whether to filter out country codes
   /// - [onlyNumber] (bool, default: true): Whether to allow only numeric input
-  /// - [countries] (List<Country>?, optional): Specific countries to show in selector
+  /// - [countries] (`List<Country>?`, optional): Specific countries to show in selector
   /// - [searchPlaceholder] (Widget?, optional): Placeholder for country search field
   ///
   /// Example:

@@ -10,9 +10,9 @@ description: "A vertical timeline widget for displaying chronological data."
 /// or data points with time information, titles, optional content, and visual
 /// indicators. Each entry is represented by a [TimelineData] object and displayed
 /// with a consistent three-column layout:
-/// 
+///
 /// 1. Left column: Time/timestamp information (right-aligned)
-/// 2. Center column: Visual indicator dot and connecting lines  
+/// 2. Center column: Visual indicator dot and connecting lines
 /// 3. Right column: Title and optional content
 ///
 /// The timeline automatically handles:
@@ -36,7 +36,7 @@ description: "A vertical timeline widget for displaying chronological data."
 ///       color: Colors.green,
 ///     ),
 ///     TimelineData(
-///       time: Text('2:00 PM'), 
+///       time: Text('2:00 PM'),
 ///       title: Text('Code Review'),
 ///       content: Text('Review pull requests and provide feedback.'),
 ///     ),
@@ -59,7 +59,7 @@ class Timeline extends StatelessWidget {
   /// Creates a [Timeline] widget with the specified data entries.
   ///
   /// Parameters:
-  /// - [data] (List<TimelineData>, required): Timeline entries to display in order.
+  /// - [data] (`List<TimelineData>`, required): Timeline entries to display in order.
   /// - [timeConstraints] (BoxConstraints?, optional): Override width constraints for time column.
   ///
   /// The timeline automatically handles layout, styling, and visual indicators

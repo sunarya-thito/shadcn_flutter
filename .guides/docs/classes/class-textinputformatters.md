@@ -11,5 +11,6 @@ class TextInputFormatters {
   static TextInputFormatter integerOnly({int? min, int? max});
   static TextInputFormatter digitsOnly({double? min, double? max, int? decimalDigits});
   static TextInputFormatter mathExpression({Map<String, dynamic>? context});
+  static TextInputFormatter hex({bool hashPrefix = false});
 }
 ```

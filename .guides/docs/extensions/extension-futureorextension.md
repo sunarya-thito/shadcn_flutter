@@ -8,5 +8,6 @@ extension FutureOrExtension<T> on FutureOr<T> {
   FutureOr<R> map<R>(R Function(T value) transform);
   FutureOr<R> flatMap<R>(FutureOr<R> Function(T value) transform);
   FutureOr<R> then<R>(FutureOr<R> Function(T value) transform);
+  FutureOr<T> catchError(Function onError, {bool Function(Object error)? test});
 }
 ```

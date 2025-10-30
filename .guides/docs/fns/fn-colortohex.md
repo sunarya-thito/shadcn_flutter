@@ -5,5 +5,5 @@ description: "Top-level function colorToHex"
 
 Signature
 ```dart
-String colorToHex(Color color, [bool showAlpha = true]);
+String colorToHex(Color color, [bool showAlpha = false, bool hashPrefix = true]);
 ```

@@ -46,7 +46,7 @@ class StepContainer extends StatefulWidget {
   ///
   /// Parameters:
   /// - [child] (Widget, required): main step content
-  /// - [actions] (List<Widget>, required): action buttons or widgets
+  /// - [actions] (`List<Widget>`, required): action buttons or widgets
   ///
   /// Example:
   /// ```dart

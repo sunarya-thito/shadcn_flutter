@@ -61,7 +61,7 @@ class Stepper extends StatelessWidget {
   ///
   /// Parameters:
   /// - [controller] (StepperController, required): manages state and navigation
-  /// - [steps] (List<Step>, required): list of steps to display
+  /// - [steps] (`List<Step>`, required): list of steps to display
   /// - [direction] (Axis?): horizontal or vertical layout (default: horizontal)
   /// - [size] (StepSize?): step indicator size (default: medium)
   /// - [variant] (StepVariant?): visual style (default: circle)

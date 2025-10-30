@@ -19,8 +19,8 @@ description: "Abstract base class for implementing form field validation logic."
 ///
 /// Example:
 /// ```dart
-/// final validator = RequiredValidator<String>() & 
-///                   MinLengthValidator(3) & 
+/// final validator = RequiredValidator<String>() &
+///                   MinLengthValidator(3) &
 ///                   EmailValidator();
 /// ```
 abstract class Validator<T> {
@@ -37,7 +37,7 @@ abstract class Validator<T> {
   /// - [value] (T?): The value to validate (may be null)
   /// - [lifecycle] (FormValidationMode): The current validation trigger mode
   ///
-  /// Returns a [FutureOr<ValidationResult?>] that is null for valid values
+  /// Returns a `FutureOr<ValidationResult?>` that is null for valid values
   /// or contains error information for invalid values.
   FutureOr<ValidationResult?> validate(BuildContext context, T? value, FormValidationMode lifecycle);
   /// Combines this validator with another validator using AND logic.
@@ -46,7 +46,7 @@ abstract class Validator<T> {
   /// If either validator fails, the combined validator fails.
   ///
   /// Parameters:
-  /// - [other] (Validator<T>): The validator to combine with this one
+  /// - [other] (`Validator<T>`): The validator to combine with this one
   ///
   /// Returns a new [CompositeValidator] that requires both validators to pass.
   ///
@@ -71,7 +71,7 @@ abstract class Validator<T> {
   /// Only if both validators fail will the combined validator fail.
   ///
   /// Parameters:
-  /// - [other] (Validator<T>): The validator to combine with this one using OR logic
+  /// - [other] (`Validator<T>`): The validator to combine with this one using OR logic
   ///
   /// Returns a new [OrValidator] that requires at least one validator to pass.
   ///

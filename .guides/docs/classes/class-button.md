@@ -201,8 +201,8 @@ class Button extends StatefulWidget {
   /// - [style] (AbstractButtonStyle, required): Visual styling configuration.
   /// - [enabled] (bool?, optional): Whether button responds to interactions.
   /// - [disableTransition] (bool, default: false): Whether to disable state animations.
-  /// - [onFocus] (ValueChanged<bool>?, optional): Focus state change callback.
-  /// - [onHover] (ValueChanged<bool>?, optional): Hover state change callback.
+  /// - [onFocus] (`ValueChanged<bool>?`, optional): Focus state change callback.
+  /// - [onHover] (`ValueChanged<bool>?`, optional): Hover state change callback.
   /// - [disableHoverEffect] (bool, default: false): Whether to disable hover visuals.
   /// - [enableFeedback] (bool?, optional): Whether to provide haptic feedback.
   /// - [marginAlignment] (AlignmentGeometry?, optional): Margin positioning.

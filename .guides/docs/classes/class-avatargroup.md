@@ -71,7 +71,7 @@ class AvatarGroup extends StatelessWidget {
   ///
   /// Parameters:
   /// - [alignment] (AlignmentGeometry, required): Direction of overlap
-  /// - [children] (List<AvatarWidget>, required): Avatars to arrange
+  /// - [children] (`List<AvatarWidget>`, required): Avatars to arrange
   /// - [gap] (double?, optional): Spacing between avatars
   /// - [clipBehavior] (Clip?, optional): Clipping behavior
   ///
@@ -90,7 +90,7 @@ class AvatarGroup extends StatelessWidget {
   /// of previous avatars, creating a rightward flow.
   ///
   /// Parameters:
-  /// - [children] (List<AvatarWidget>, required): Avatars to arrange
+  /// - [children] (`List<AvatarWidget>`, required): Avatars to arrange
   /// - [gap] (double?, optional): Spacing between overlapping edges
   /// - [offset] (double, default: 0.5): Amount of overlap (0.0 to 1.0)
   ///
@@ -108,7 +108,7 @@ class AvatarGroup extends StatelessWidget {
   /// of previous avatars, creating a leftward flow.
   ///
   /// Parameters:
-  /// - [children] (List<AvatarWidget>, required): Avatars to arrange
+  /// - [children] (`List<AvatarWidget>`, required): Avatars to arrange
   /// - [gap] (double?, optional): Spacing between overlapping edges
   /// - [offset] (double, default: 0.5): Amount of overlap (0.0 to 1.0)
   ///
@@ -126,7 +126,7 @@ class AvatarGroup extends StatelessWidget {
   /// In RTL locales, behaves like [toRight].
   ///
   /// Parameters:
-  /// - [children] (List<AvatarWidget>, required): Avatars to arrange
+  /// - [children] (`List<AvatarWidget>`, required): Avatars to arrange
   /// - [gap] (double?, optional): Spacing between overlapping edges
   /// - [offset] (double, default: 0.5): Amount of overlap (0.0 to 1.0)
   ///
@@ -143,7 +143,7 @@ class AvatarGroup extends StatelessWidget {
   /// In RTL locales, behaves like [toLeft].
   ///
   /// Parameters:
-  /// - [children] (List<AvatarWidget>, required): Avatars to arrange
+  /// - [children] (`List<AvatarWidget>`, required): Avatars to arrange
   /// - [gap] (double?, optional): Spacing between overlapping edges
   /// - [offset] (double, default: 0.5): Amount of overlap (0.0 to 1.0)
   ///
@@ -160,7 +160,7 @@ class AvatarGroup extends StatelessWidget {
   /// of previous avatars, creating a downward flow.
   ///
   /// Parameters:
-  /// - [children] (List<AvatarWidget>, required): Avatars to arrange
+  /// - [children] (`List<AvatarWidget>`, required): Avatars to arrange
   /// - [gap] (double?, optional): Spacing between overlapping edges
   /// - [offset] (double, default: 0.5): Amount of overlap (0.0 to 1.0)
   ///
@@ -177,7 +177,7 @@ class AvatarGroup extends StatelessWidget {
   /// of previous avatars, creating an upward flow.
   ///
   /// Parameters:
-  /// - [children] (List<AvatarWidget>, required): Avatars to arrange
+  /// - [children] (`List<AvatarWidget>`, required): Avatars to arrange
   /// - [gap] (double?, optional): Spacing between overlapping edges
   /// - [offset] (double, default: 0.5): Amount of overlap (0.0 to 1.0)
   ///

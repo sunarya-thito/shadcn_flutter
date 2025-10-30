@@ -62,7 +62,7 @@ class TreeItem<T> extends TreeNode<T> {
   ///
   /// Parameters:
   /// - [data] (T, required): The data value to store in this tree item
-  /// - [children] (List<TreeNode<T>>, default: []): Child nodes list
+  /// - [children] (`List<TreeNode<T>>`, default: []): Child nodes list
   /// - [expanded] (bool, default: false): Initial expansion state
   /// - [selected] (bool, default: false): Initial selection state
   ///

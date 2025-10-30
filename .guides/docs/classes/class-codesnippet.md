@@ -53,17 +53,7 @@ class CodeSnippet extends StatefulWidget {
   /// Type: `BoxConstraints?`. Controls the maximum/minimum size of the
   /// scrollable code container. Useful for limiting height in layouts.
   final BoxConstraints? constraints;
-  /// The source code content to display.
-  ///
-  /// Type: `String`. The raw code text that will be syntax highlighted
-  /// and displayed. Line breaks and indentation are preserved.
-  final String code;
-  /// Programming language mode for syntax highlighting.
-  ///
-  /// Type: `String`. Specifies the language for syntax highlighting.
-  /// Supported values: 'dart', 'json', 'yaml', 'sql', 'js', 'ts'.
-  /// Unsupported languages fall back to plain text display.
-  final String mode;
+  final Widget code;
   /// Additional action widgets displayed in the top-right corner.
   ///
   /// Type: `List<Widget>`. Custom action buttons shown alongside the
@@ -78,17 +68,17 @@ class CodeSnippet extends StatefulWidget {
   /// - [code] (String, required): The source code to display
   /// - [mode] (String, required): Programming language for highlighting
   /// - [constraints] (BoxConstraints?, optional): Size constraints for display area
-  /// - [actions] (List<Widget>, default: []): Additional action buttons
+  /// - [actions] (`List<Widget>`, default: []): Additional action buttons
   ///
   /// Example:
   /// ```dart
   /// CodeSnippet(
-  ///   code: 'print("Hello World")',
+  ///   code: Text('print("Hello, World!");'),
   ///   mode: 'dart',
   ///   constraints: BoxConstraints(maxHeight: 150),
   /// );
   /// ```
-  const CodeSnippet({super.key, this.constraints, this.actions = const [], required this.code, required this.mode});
+  const CodeSnippet({super.key, this.constraints, this.actions = const [], required this.code});
   State<CodeSnippet> createState();
 }
 ```

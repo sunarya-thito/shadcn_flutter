@@ -115,11 +115,11 @@ class Table extends StatefulWidget {
   /// sizing and interactive features.
   ///
   /// Parameters:
-  /// - [rows] (List<TableRow>, required): Table data organized as rows
+  /// - [rows] (`List<TableRow>`, required): Table data organized as rows
   /// - [defaultColumnWidth] (TableSize, default: FlexTableSize()): Default column sizing
   /// - [defaultRowHeight] (TableSize, default: IntrinsicTableSize()): Default row sizing
-  /// - [columnWidths] (Map<int, TableSize>?, optional): Column-specific sizes
-  /// - [rowHeights] (Map<int, TableSize>?, optional): Row-specific sizes
+  /// - [columnWidths] (`Map<int, TableSize>?`, optional): Column-specific sizes
+  /// - [rowHeights] (`Map<int, TableSize>?`, optional): Row-specific sizes
   /// - [clipBehavior] (Clip, default: Clip.hardEdge): Content clipping behavior
   /// - [theme] (TableTheme?, optional): Visual styling configuration
   /// - [frozenCells] (FrozenTableData?, optional): Frozen cell configuration
