@@ -1,46 +1,118 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Defines the color representation mode for color pickers.
+///
+/// Specifies which color model and input controls to display in the color picker
+/// interface. Each mode provides different controls optimized for that color space.
 enum ColorPickerMode {
+  /// RGB (Red, Green, Blue) color mode.
   rgb,
+  
+  /// HSL (Hue, Saturation, Lightness) color mode.
   hsl,
+  
+  /// HSV (Hue, Saturation, Value) color mode.
   hsv,
+  
+  /// Hexadecimal color code mode.
   hex,
 }
 
+/// Defines available slider types for HSV color pickers.
+///
+/// Each slider type controls different aspects of the HSV color model,
+/// allowing fine-tuned control over hue, saturation, value, and alpha channels.
 enum HSVColorSliderType {
+  /// Hue slider only.
   hue,
+  
+  /// Combined hue and saturation slider.
   hueSat,
+  
+  /// Combined hue and value slider.
   hueVal,
+  
+  /// Combined hue and alpha slider.
   hueAlpha,
+  
+  /// Saturation slider only.
   sat,
+  
+  /// Combined saturation and value slider.
   satVal,
+  
+  /// Combined saturation and alpha slider.
   satAlpha,
+  
+  /// Value (brightness) slider only.
   val,
+  
+  /// Combined value and alpha slider.
   valAlpha,
+  
+  /// Alpha (opacity) slider only.
   alpha;
 }
 
+/// Defines available slider types for HSL color pickers.
+///
+/// Each slider type controls different aspects of the HSL color model,
+/// allowing fine-tuned control over hue, saturation, luminance, and alpha channels.
 enum HSLColorSliderType {
+  /// Hue slider only.
   hue,
+  
+  /// Combined hue and saturation slider.
   hueSat,
+  
+  /// Combined hue and luminance slider.
   hueLum,
+  
+  /// Combined hue and alpha slider.
   hueAlpha,
+  
+  /// Saturation slider only.
   sat,
+  
+  /// Combined saturation and luminance slider.
   satLum,
+  
+  /// Combined saturation and alpha slider.
   satAlpha,
+  
+  /// Luminance (lightness) slider only.
   lum,
+  
+  /// Combined luminance and alpha slider.
   lumAlpha,
+  
+  /// Alpha (opacity) slider only.
   alpha;
 }
 
+/// Theme configuration for [ColorPicker] widget styling and layout.
+///
+/// Defines visual and layout properties for color picker components including
+/// spacing, orientation, and feature availability. Applied globally through
+/// [ComponentTheme] or per-instance.
 class ColorPickerTheme {
+  /// Spacing between major color picker sections.
   final double? spacing;
+  
+  /// Spacing between individual controls within sections.
   final double? controlSpacing;
+  
+  /// Layout orientation (horizontal or vertical).
   final Axis? orientation;
+  
+  /// Whether to enable the eye dropper feature.
   final bool? enableEyeDropper;
+  
+  /// The size of color sliders.
   final double? sliderSize;
 
+  /// Creates a [ColorPickerTheme].
   const ColorPickerTheme({
     this.spacing,
     this.controlSpacing,
@@ -49,6 +121,7 @@ class ColorPickerTheme {
     this.sliderSize,
   });
 
+  /// Creates a copy of this theme with specified properties overridden.
   ColorPickerTheme copyWith({
     ValueGetter<double?>? spacing,
     ValueGetter<double?>? controlSpacing,
@@ -83,20 +156,70 @@ class ColorPickerTheme {
       spacing, controlSpacing, orientation, enableEyeDropper, sliderSize);
 }
 
+/// A comprehensive color picker widget with multiple color mode support.
+///
+/// [ColorPicker] provides an interactive interface for selecting colors using
+/// various color representation models (RGB, HSL, HSV, HEX). It supports alpha
+/// channel control, eye dropper functionality, and customizable layout.
+///
+/// Features:
+/// - Multiple color modes (RGB, HSL, HSV, HEX)
+/// - Optional alpha/opacity control
+/// - Screen color sampling with eye dropper
+/// - Flexible layout orientation
+/// - Real-time color updates
+/// - Mode switching during use
+///
+/// Example:
+/// ```dart
+/// ColorPicker(
+///   value: ColorDerivative.fromColor(Colors.blue),
+///   onChanged: (color) {
+///     print('Selected: ${color.toColor()}');
+///   },
+///   showAlpha: true,
+///   initialMode: ColorPickerMode.hsv,
+///   enableEyeDropper: true,
+/// )
+/// ```
 class ColorPicker extends StatefulWidget {
+  /// The current color value.
   final ColorDerivative value;
+  
+  /// Called when the color is finalized.
   final ValueChanged<ColorDerivative>? onChanged;
+  
+  /// Called continuously while the color is being changed.
   final ValueChanged<ColorDerivative>? onChanging;
+  
+  /// Whether to show alpha (opacity) controls.
   final bool showAlpha;
+  
+  /// The initial color picker mode.
   final ColorPickerMode initialMode;
+  
+  /// Called when the color picker mode changes.
   final ValueChanged<ColorPickerMode>? onModeChanged;
+  
+  /// Called when the eye dropper button is pressed.
   final VoidCallback? onEyeDropperRequested;
+  
+  /// Whether to enable the eye dropper feature.
   final bool? enableEyeDropper;
+  
+  /// Layout orientation of the color picker.
   final Axis? orientation;
+  
+  /// Spacing between major sections.
   final double? spacing;
+  
+  /// Spacing between individual controls.
   final double? controlSpacing;
+  
+  /// Size of the color sliders.
   final double? sliderSize;
 
+  /// Creates a [ColorPicker] widget.
   const ColorPicker({
     super.key,
     required this.value,

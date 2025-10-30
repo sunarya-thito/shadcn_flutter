@@ -60,6 +60,7 @@ class DatePickerTheme {
     this.popoverPadding,
   });
 
+  /// Creates a copy of this theme with specified properties overridden.
   DatePickerTheme copyWith({
     ValueGetter<PromptMode?>? mode,
     ValueGetter<CalendarView?>? initialView,
@@ -105,32 +106,95 @@ class DatePickerTheme {
       );
 }
 
+/// A controller for managing the selected date in a [DatePicker].
+///
+/// [DatePickerController] extends [ValueNotifier] to hold the currently selected
+/// date and notify listeners when it changes. Use this to programmatically control
+/// the date picker or react to date selection changes.
+///
+/// Example:
+/// ```dart
+/// final controller = DatePickerController(DateTime.now());
+/// controller.addListener(() {
+///   print('Selected date: ${controller.value}');
+/// });
+/// ```
 class DatePickerController extends ValueNotifier<DateTime?>
     with ComponentController<DateTime?> {
+  /// Creates a [DatePickerController] with the specified initial date.
   DatePickerController(super.value);
 }
 
+/// A controlled date picker widget with comprehensive date selection features.
+///
+/// [ControlledDatePicker] provides a complete date selection interface with
+/// customizable presentation modes (popover or modal), calendar views, and
+/// flexible positioning. It integrates with [DatePickerController] for
+/// programmatic control.
+///
+/// Features:
+/// - Multiple presentation modes (popover, modal)
+/// - Various calendar views (month, year, decade)
+/// - Custom date state builders
+/// - Flexible positioning
+/// - Optional placeholder when no date is selected
+///
+/// Example:
+/// ```dart
+/// ControlledDatePicker(
+///   initialValue: DateTime.now(),
+///   onChanged: (date) {
+///     print('Selected: $date');
+///   },
+///   placeholder: Text('Select a date'),
+/// )
+/// ```
 class ControlledDatePicker extends StatelessWidget
     with ControlledComponent<DateTime?> {
   @override
+  /// The initial date value.
   final DateTime? initialValue;
+  
   @override
+  /// Called when the selected date changes.
   final ValueChanged<DateTime?>? onChanged;
+  
   @override
+  /// Whether the date picker is enabled.
   final bool enabled;
+  
   @override
+  /// Optional controller for programmatic access.
   final DatePickerController? controller;
 
+  /// Widget displayed when no date is selected.
   final Widget? placeholder;
+  
+  /// Presentation mode (popover or modal).
   final PromptMode? mode;
+  
+  /// Initial calendar view to display.
   final CalendarView? initialView;
+  
+  /// Popover alignment relative to the anchor.
   final AlignmentGeometry? popoverAlignment;
+  
+  /// Anchor alignment for popover positioning.
   final AlignmentGeometry? popoverAnchorAlignment;
+  
+  /// Internal padding for the popover.
   final EdgeInsetsGeometry? popoverPadding;
+  
+  /// Title for the dialog when using modal mode.
   final Widget? dialogTitle;
+  
+  /// Initial calendar view type.
   final CalendarViewType? initialViewType;
+  
+  /// Builder for customizing date cell states.
   final DateStateBuilder? stateBuilder;
 
+  /// Creates a [ControlledDatePicker].
   const ControlledDatePicker({
     super.key,
     this.controller,

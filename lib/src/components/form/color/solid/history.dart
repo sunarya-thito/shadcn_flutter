@@ -1,12 +1,38 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// A grid widget that displays a history of previously used colors.
+///
+/// [ColorHistoryGrid] presents colors from a [ColorHistoryStorage] in a grid
+/// layout, allowing users to quickly reuse recently selected colors. The grid
+/// can highlight the currently selected color and supports custom layouts.
+///
+/// Example:
+/// ```dart
+/// ColorHistoryGrid(
+///   storage: myColorHistory,
+///   onColorPicked: (color) {
+///     print('Selected from history: $color');
+///   },
+///   crossAxisCount: 8,
+/// )
+/// ```
 class ColorHistoryGrid extends StatelessWidget {
+  /// The storage containing the color history.
   final ColorHistoryStorage storage;
+  
+  /// Called when a color from the history is picked.
   final ValueChanged<Color>? onColorPicked;
+  
+  /// Spacing between grid items.
   final double? spacing;
+  
+  /// Number of columns in the grid.
   final int crossAxisCount;
+  
+  /// The currently selected color to highlight.
   final Color? selectedColor;
 
+  /// Creates a [ColorHistoryGrid].
   const ColorHistoryGrid({
     super.key,
     required this.storage,
@@ -108,23 +134,69 @@ class ColorHistoryGrid extends StatelessWidget {
   }
 }
 
+/// An abstract interface for storing and managing color history.
+///
+/// [ColorHistoryStorage] defines the contract for color history management,
+/// including adding new colors, clearing history, and accessing recent colors.
+/// Implementations should provide storage mechanisms (in-memory, persistent, etc.).
 abstract class ColorHistoryStorage implements Listenable {
+  /// Adds a color to the history.
+  ///
+  /// Parameters:
+  /// - [color]: The color to add to the history.
   void addHistory(Color color);
+  
+  /// Replaces the entire color history with a new list.
+  ///
+  /// Parameters:
+  /// - [colors]: The new list of colors to set as the history.
   void setHistory(List<Color> colors);
+  
+  /// Clears all colors from the history.
   void clear();
+  
+  /// The maximum number of colors that can be stored in the history.
   int get capacity;
+  
+  /// The list of recent colors, ordered from most to least recent.
   List<Color> get recentColors;
+  
+  /// Finds the [ColorHistoryStorage] in the widget tree.
   static ColorHistoryStorage of(BuildContext context) {
     return Data.of<ColorHistoryStorage>(context);
   }
 }
 
+/// Provides color history storage in the widget tree.
+///
+/// [RecentColorsScope] manages a list of recently used colors and makes it
+/// available to descendant widgets through [ColorHistoryStorage]. It supports
+/// a configurable maximum capacity and notifies listeners of changes.
+///
+/// Example:
+/// ```dart
+/// RecentColorsScope(
+///   maxRecentColors: 20,
+///   onRecentColorsChanged: (colors) {
+///     // Save colors to persistent storage
+///   },
+///   child: MyColorPicker(),
+/// )
+/// ```
 class RecentColorsScope extends StatefulWidget {
+  /// Initial colors to populate the history.
   final List<Color> initialRecentColors;
+  
+  /// Maximum number of colors to keep in the history.
   final int maxRecentColors;
+  
+  /// Called when the recent colors list changes.
   final ValueChanged<List<Color>>? onRecentColorsChanged;
+  
+  /// The child widget.
   final Widget child;
 
+  /// Creates a [RecentColorsScope].
   const RecentColorsScope({
     super.key,
     this.initialRecentColors = const [],

@@ -5,17 +5,59 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// A function that builds a preview label widget for the eye dropper.
+///
+/// Parameters:
+/// - [context]: The build context.
+/// - [color]: The currently selected color under the cursor.
+///
+/// Returns: A widget to display as the color preview label.
 typedef PreviewLabelBuilder = Widget Function(
     BuildContext context, Color color);
 
+/// A layer widget that provides eye dropper (color picking) functionality.
+///
+/// [EyeDropperLayer] wraps its child widget and enables screen color sampling.
+/// When active, it displays a magnified preview of the area under the cursor
+/// and allows users to pick colors directly from the screen.
+///
+/// Features:
+/// - Magnified preview of screen area
+/// - Customizable preview size and scale
+/// - Optional color label display
+/// - Flexible preview positioning
+///
+/// Example:
+/// ```dart
+/// EyeDropperLayer(
+///   child: MyApp(),
+///   showPreview: true,
+///   previewScale: 10,
+///   previewLabelBuilder: (context, color) {
+///     return Text('Color: ${colorToHex(color)}');
+///   },
+/// )
+/// ```
 class EyeDropperLayer extends StatefulWidget {
+  /// The child widget to wrap.
   final Widget child;
+  
+  /// Alignment of the preview overlay.
   final AlignmentGeometry? previewAlignment;
+  
+  /// Whether to show the magnified preview.
   final bool showPreview;
+  
+  /// Size of the preview overlay.
   final Size? previewSize;
+  
+  /// Magnification scale of the preview.
   final double previewScale;
+  
+  /// Builder for custom preview label widgets.
   final PreviewLabelBuilder? previewLabelBuilder;
 
+  /// Creates an [EyeDropperLayer].
   const EyeDropperLayer({
     super.key,
     required this.child,
@@ -403,24 +445,59 @@ class _ColorPreviewPainter extends CustomPainter {
   }
 }
 
+/// Provides access to eye dropper functionality in the widget tree.
+///
+/// [EyeDropperLayerScope] is an abstract interface that allows widgets to
+/// request color picking functionality from an ancestor [EyeDropperLayer].
+/// Use the static methods to find the scope in the widget tree.
 abstract class EyeDropperLayerScope {
+  /// Prompts the user to pick a color from the screen.
+  ///
+  /// Parameters:
+  /// - [historyStorage]: Optional storage for color picking history.
+  ///
+  /// Returns: A [Future] that completes with the picked color, or null if cancelled.
   Future<Color?> promptPickColor([ColorHistoryStorage? historyStorage]);
+  
+  /// Finds the root [EyeDropperLayerScope] in the widget tree.
+  ///
+  /// Searches up the tree to find the topmost eye dropper scope.
   static EyeDropperLayerScope findRoot(BuildContext context) {
     return Data.findRoot<EyeDropperLayerScope>(context);
   }
 
+  /// Finds the nearest [EyeDropperLayerScope] in the widget tree.
+  ///
+  /// Searches up the tree to find the closest eye dropper scope.
   static EyeDropperLayerScope find(BuildContext context) {
     return Data.find<EyeDropperLayerScope>(context);
   }
 }
 
+/// Represents the result of an eye dropper color picking operation.
+///
+/// [EyeDropperResult] contains the picked color along with all colors
+/// captured in the sampling area. This allows for accessing individual
+/// pixels from the captured region.
 class EyeDropperResult {
+  /// The size of the captured area.
   final Size size;
+  
+  /// All colors in the captured area, stored row by row.
   final List<Color> colors;
+  
+  /// The specific color that was picked by the user.
   final Color pickedColor;
 
+  /// Creates an [EyeDropperResult].
   const EyeDropperResult(this.colors, this.size, this.pickedColor);
 
+  /// Gets the color at the specified position in the captured area.
+  ///
+  /// Parameters:
+  /// - [position]: The offset position within the captured area.
+  ///
+  /// Returns: The color at that position.
   Color operator [](Offset position) {
     int index =
         (position.dy.floor() * size.width + position.dx.floor()).toInt();

@@ -4,12 +4,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Theme configuration for [FormattedInput] widget styling.
+///
+/// Defines visual properties for formatted input components including
+/// height and padding. Applied globally through [ComponentTheme] or per-instance.
 class FormattedInputTheme {
+  /// The height of the formatted input.
   final double? height;
+  
+  /// Internal padding for the formatted input.
   final EdgeInsetsGeometry? padding;
 
+  /// Creates a [FormattedInputTheme].
   const FormattedInputTheme({this.height, this.padding});
 
+  /// Creates a copy of this theme with specified properties overridden.
   FormattedInputTheme copyWith({
     ValueGetter<double?>? height,
     ValueGetter<EdgeInsetsGeometry?>? padding,
@@ -32,8 +41,21 @@ class FormattedInputTheme {
   int get hashCode => Object.hash(height, padding);
 }
 
+/// Abstract base class for parts of a formatted input.
+///
+/// [InputPart] defines the interface for components that make up a formatted
+/// input field, such as static text, editable sections, or custom widgets.
+/// Each part can be rendered and may optionally hold a value.
+///
+/// Example parts:
+/// - Static text separators (e.g., "/", "-")
+/// - Editable numeric fields (e.g., month, day, year)
+/// - Custom widget decorations
 abstract class InputPart implements FormattedValuePart {
+  /// Creates a static text part.
   const factory InputPart.static(String text) = StaticPart;
+  
+  /// Creates an editable input part.
   const factory InputPart.editable({
     required int length,
     bool obscureText,
@@ -41,29 +63,43 @@ abstract class InputPart implements FormattedValuePart {
     Widget? placeholder,
     required double width,
   }) = EditablePart;
+  
+  /// Creates a custom widget part.
   const factory InputPart.widget(Widget widget) = WidgetPart;
 
+  /// Creates an [InputPart].
   const InputPart();
+  
+  /// Builds the widget for this part.
   Widget build(BuildContext context, FormattedInputData data);
+  
+  /// A unique key identifying this part.
   Object? get partKey;
 
+  /// Whether this part can hold a value.
   bool get canHaveValue => false;
 
   @override
+  /// The current value of this part, or null if it doesn't hold a value.
   String? get value => null;
 
   @override
+  /// Returns this part.
   InputPart get part => this;
 
   @override
+  /// Creates a copy of this part with the specified value.
   FormattedValuePart withValue(String value) {
     return FormattedValuePart(this, value);
   }
 }
 
+/// A part that displays a custom widget.
 class WidgetPart extends InputPart {
+  /// The widget to display.
   final Widget widget;
 
+  /// Creates a [WidgetPart] with the specified widget.
   const WidgetPart(this.widget);
 
   @override
@@ -75,7 +111,9 @@ class WidgetPart extends InputPart {
   Object? get partKey => widget.key;
 }
 
+/// A part that displays static, non-editable text.
 class StaticPart extends InputPart {
+  /// The static text to display.
   final String text;
 
   const StaticPart(this.text);
@@ -109,12 +147,38 @@ class _StaticPartWidgetState extends State<_StaticPartWidget> {
   }
 }
 
+/// A part that represents an editable input field section.
+///
+/// [EditablePart] defines a user-editable portion of a formatted input,
+/// such as a date component, time segment, or numeric field. Each editable
+/// part can have a fixed length, input formatters, and optional obscuring.
+///
+/// Example:
+/// ```dart
+/// EditablePart(
+///   length: 2,
+///   width: 40.0,
+///   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+///   placeholder: Text('MM'),
+/// )
+/// ```
 class EditablePart extends InputPart {
+  /// The maximum length of text this part can hold.
   final int length;
+  
+  /// Whether to obscure the text (e.g., for passwords).
   final bool obscureText;
+  
+  /// Input formatters to apply to this part.
   final List<TextInputFormatter> inputFormatters;
+  
+  /// The width of this input part.
   final double width;
+  
+  /// Optional placeholder widget to display when empty.
   final Widget? placeholder;
+  
+  /// Creates an [EditablePart] with the specified configuration.
   const EditablePart({
     required this.length,
     this.obscureText = false,
@@ -736,13 +800,30 @@ class _FormattedInputState extends State<FormattedInput> {
   }
 }
 
+/// Internal data structure for formatted input parts.
+///
+/// [FormattedInputData] holds the state and configuration data needed
+/// to render and manage an individual input part within a formatted input.
 class FormattedInputData {
+  /// The index of this part in the formatted input.
   final int partIndex;
+  
+  /// The initial value for this part.
   final String? initialValue;
+  
+  /// Whether this part is enabled for editing.
   final bool enabled;
+  
+  /// The controller managing the overall formatted input.
   final FormattedInputController? controller;
+  
+  /// The focus node for this specific part.
   final FocusNode? focusNode;
+  
+  /// All focus nodes in the formatted input.
   final List<FocusNode> focusNodes;
+  
+  /// Creates a [FormattedInputData].
   FormattedInputData({
     required this.partIndex,
     required this.initialValue,
@@ -769,28 +850,77 @@ class FormattedInputData {
       partIndex, initialValue, enabled, controller, focusNode, focusNodes);
 }
 
+/// A function type for building custom popup content for formatted object inputs.
+///
+/// Parameters:
+/// - [context]: The build context.
+/// - [controller]: The controller managing the input value.
+///
+/// Returns: A widget to display in the popup.
 typedef FormattedInputPopupBuilder<T> = Widget Function(
     BuildContext context, ComponentController<T?> controller);
 
+/// A formatted input widget that works with complex objects.
+///
+/// [FormattedObjectInput] extends formatted input functionality to handle
+/// objects of type [T], converting between the object and its formatted
+/// string representation. It can optionally display a popup for advanced editing.
+///
+/// Example:
+/// ```dart
+/// FormattedObjectInput<DateTime>(
+///   converter: dateConverter,
+///   parts: [
+///     InputPart.editable(length: 2, width: 30), // Month
+///     InputPart.static('/'),
+///     InputPart.editable(length: 2, width: 30), // Day
+///   ],
+///   popupBuilder: (context, controller) => CalendarWidget(),
+/// )
+/// ```
 class FormattedObjectInput<T> extends StatefulWidget
     with ControlledComponent<T?> {
   @override
+  /// The initial value of the input.
   final T? initialValue;
+  
   @override
+  /// Called when the value changes.
   final ValueChanged<T?>? onChanged;
+  
+  /// Called when the individual parts change.
   final ValueChanged<List<String>>? onPartsChanged;
+  
+  /// Builder for creating a custom popup widget.
   final FormattedInputPopupBuilder<T>? popupBuilder;
+  
   @override
+  /// Whether the input is enabled.
   final bool enabled;
+  
   @override
+  /// Optional controller for external control.
   final ComponentController<T?>? controller;
+  
+  /// Converter between the object type and string parts.
   final BiDirectionalConvert<T?, List<String?>> converter;
+  
+  /// The input parts that make up the formatted input.
   final List<InputPart> parts;
+  
+  /// Alignment of the popover relative to the anchor.
   final AlignmentGeometry? popoverAlignment;
+  
+  /// Anchor alignment for popover positioning.
   final AlignmentGeometry? popoverAnchorAlignment;
+  
+  /// Offset for the popover position.
   final Offset? popoverOffset;
+  
+  /// Icon displayed in the popover trigger.
   final Widget? popoverIcon;
 
+  /// Creates a [FormattedObjectInput].
   const FormattedObjectInput({
     super.key,
     this.initialValue,

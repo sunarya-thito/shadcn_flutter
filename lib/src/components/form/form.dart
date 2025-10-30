@@ -183,10 +183,27 @@ enum FormValidationMode {
   submitted,
 }
 
+/// A validator wrapper that controls when validation occurs based on form lifecycle.
+///
+/// [ValidationMode] wraps another validator and only executes it during specific
+/// validation modes. This allows fine-grained control over when validation rules
+/// are applied during the form lifecycle (initial load, value changes, submission).
+///
+/// Example:
+/// ```dart
+/// ValidationMode(
+///   EmailValidator(),
+///   mode: {FormValidationMode.changed, FormValidationMode.submitted},
+/// )
+/// ```
 class ValidationMode<T> extends Validator<T> {
+  /// The underlying validator to execute when mode conditions are met.
   final Validator<T> validator;
+  
+  /// The set of validation modes during which this validator should run.
   final Set<FormValidationMode> mode;
 
+  /// Creates a [ValidationMode] that conditionally validates based on lifecycle mode.
   const ValidationMode(this.validator,
       {this.mode = const {
         FormValidationMode.changed,
@@ -295,11 +312,34 @@ class IgnoreForm<T> extends StatelessWidget {
   }
 }
 
+/// A validator that applies conditional validation based on form state.
+///
+/// [ConditionalValidator] only executes validation when a predicate condition
+/// is met. This allows validation rules to depend on other form field values
+/// or dynamic conditions.
+///
+/// Example:
+/// ```dart
+/// ConditionalValidator<String>(
+///   (context, value, getFieldValue) async {
+///     final country = await getFieldValue('country');
+///     return country == 'US';
+///   },
+///   message: 'ZIP code required for US addresses',
+///   dependencies: ['country'],
+/// )
+/// ```
 class ConditionalValidator<T> extends Validator<T> {
+  /// The predicate function that determines if validation should be applied.
   final FuturePredicate<T> predicate;
+  
+  /// The error message to display when validation fails.
   final String message;
+  
+  /// List of form field keys this validator depends on.
   final List<FormKey> dependencies;
 
+  /// Creates a [ConditionalValidator] with the specified predicate and dependencies.
   const ConditionalValidator(this.predicate,
       {required this.message, this.dependencies = const []});
 
@@ -337,13 +377,39 @@ class ConditionalValidator<T> extends Validator<T> {
   int get hashCode => Object.hash(predicate, message);
 }
 
+/// A function type for building custom validators.
+///
+/// Parameters:
+/// - [value] (`T?`): The value to validate.
+///
+/// Returns a `FutureOr<ValidationResult?>` that is null for valid values.
 typedef ValidatorBuilderFunction<T> = FutureOr<ValidationResult?> Function(
     T? value);
 
+/// A validator that uses a custom builder function for validation logic.
+///
+/// [ValidatorBuilder] provides a flexible way to create validators using
+/// inline functions or custom validation logic without extending the Validator class.
+///
+/// Example:
+/// ```dart
+/// ValidatorBuilder<String>(
+///   (value) {
+///     if (value != null && value.contains('@')) {
+///       return null; // Valid
+///     }
+///     return InvalidResult('Must contain @');
+///   },
+/// )
+/// ```
 class ValidatorBuilder<T> extends Validator<T> {
+  /// The function that performs the validation.
   final ValidatorBuilderFunction<T> builder;
+  
+  /// List of form field keys this validator depends on.
   final List<FormKey> dependencies;
 
+  /// Creates a [ValidatorBuilder] with the specified builder function.
   const ValidatorBuilder(this.builder, {this.dependencies = const []});
 
   @override
@@ -366,11 +432,28 @@ class ValidatorBuilder<T> extends Validator<T> {
   int get hashCode => builder.hashCode;
 }
 
+/// A validator that negates the result of another validator.
+///
+/// [NotValidator] inverts the validation logic - it passes when the wrapped
+/// validator fails and fails when the wrapped validator passes. Useful for
+/// creating exclusion rules.
+///
+/// Example:
+/// ```dart
+/// NotValidator(
+///   EmailValidator(),
+///   message: 'Must not be an email address',
+/// )
+/// ```
 class NotValidator<T> extends Validator<T> {
+  /// The validator whose result will be negated.
   final Validator<T> validator;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [NotValidator] that negates the result of another validator.
   const NotValidator(this.validator, {this.message});
 
   @override
@@ -403,9 +486,23 @@ class NotValidator<T> extends Validator<T> {
   int get hashCode => Object.hash(validator, message);
 }
 
+/// A validator that combines multiple validators with OR logic.
+///
+/// [OrValidator] passes if at least one of the wrapped validators passes.
+/// Only fails if all validators fail. Useful for accepting multiple valid formats.
+///
+/// Example:
+/// ```dart
+/// OrValidator([
+///   EmailValidator(),
+///   PhoneValidator(),
+/// ])
+/// ```
 class OrValidator<T> extends Validator<T> {
+  /// The list of validators to combine with OR logic.
   final List<Validator<T>> validators;
 
+  /// Creates an [OrValidator] from a list of validators.
   const OrValidator(this.validators);
 
   @override
@@ -463,10 +560,23 @@ class OrValidator<T> extends Validator<T> {
   int get hashCode => validators.hashCode;
 }
 
+/// A validator that ensures a value is not null.
+///
+/// [NonNullValidator] is a simple validator that fails if the value is null.
+/// Commonly used to mark fields as required.
+///
+/// Example:
+/// ```dart
+/// NonNullValidator<String>(
+///   message: 'This field is required',
+/// )
+/// ```
 class NonNullValidator<T> extends Validator<T> {
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [NonNullValidator] with an optional custom message.
   const NonNullValidator({this.message});
 
   @override
@@ -488,7 +598,19 @@ class NonNullValidator<T> extends Validator<T> {
   int get hashCode => message.hashCode;
 }
 
+/// A validator that ensures a string is not null or empty.
+///
+/// [NotEmptyValidator] extends [NonNullValidator] to also check for empty strings.
+/// Commonly used for text field validation.
+///
+/// Example:
+/// ```dart
+/// NotEmptyValidator(
+///   message: 'Please enter a value',
+/// )
+/// ```
 class NotEmptyValidator extends NonNullValidator<String> {
+  /// Creates a [NotEmptyValidator] with an optional custom message.
   const NotEmptyValidator({super.message});
 
   @override
@@ -510,12 +632,31 @@ class NotEmptyValidator extends NonNullValidator<String> {
   int get hashCode => message.hashCode;
 }
 
+/// A validator that checks if a string's length is within specified bounds.
+///
+/// [LengthValidator] validates that a string's length falls within the minimum
+/// and/or maximum bounds. Either bound can be null to check only one direction.
+///
+/// Example:
+/// ```dart
+/// LengthValidator(
+///   min: 3,
+///   max: 20,
+///   message: 'Must be between 3 and 20 characters',
+/// )
+/// ```
 class LengthValidator extends Validator<String> {
+  /// Minimum length requirement (inclusive), or null for no minimum.
   final int? min;
+  
+  /// Maximum length requirement (inclusive), or null for no maximum.
   final int? max;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [LengthValidator] with optional min/max bounds.
   const LengthValidator({this.min, this.max, this.message});
 
   @override
@@ -556,21 +697,68 @@ class LengthValidator extends Validator<String> {
   int get hashCode => Object.hash(min, max, message);
 }
 
-enum CompareType { greater, greaterOrEqual, less, lessOrEqual, equal }
+/// Defines comparison operators for numeric validation.
+///
+/// Used by [CompareValidator] to specify the type of comparison to perform.
+enum CompareType { 
+  /// Value must be greater than the compared value.
+  greater, 
+  
+  /// Value must be greater than or equal to the compared value.
+  greaterOrEqual, 
+  
+  /// Value must be less than the compared value.
+  less, 
+  
+  /// Value must be less than or equal to the compared value.
+  lessOrEqual, 
+  
+  /// Value must be equal to the compared value.
+  equal 
+}
 
+/// A validator that compares a field's value with another form field's value.
+///
+/// [CompareWith] validates by comparing the current field's value against
+/// another field identified by a [FormKey]. Supports various comparison types
+/// including equality, greater than, less than, etc.
+///
+/// Example:
+/// ```dart
+/// CompareWith.greaterOrEqual(
+///   FormKey<int>('minAge'),
+///   message: 'Must be at least the minimum age',
+/// )
+/// ```
 class CompareWith<T extends Comparable<T>> extends Validator<T> {
+  /// The form field key to compare against.
   final FormKey<T> key;
+  
+  /// The type of comparison to perform.
   final CompareType type;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [CompareWith] validator with the specified comparison type.
   const CompareWith(this.key, this.type, {this.message});
+  
+  /// Creates a validator that checks for equality with another field.
   const CompareWith.equal(this.key, {this.message}) : type = CompareType.equal;
+  
+  /// Creates a validator that checks if value is greater than another field.
   const CompareWith.greater(this.key, {this.message})
       : type = CompareType.greater;
+      
+  /// Creates a validator that checks if value is greater than or equal to another field.
   const CompareWith.greaterOrEqual(this.key, {this.message})
       : type = CompareType.greaterOrEqual;
+      
+  /// Creates a validator that checks if value is less than another field.
   const CompareWith.less(this.key, {this.message}) : type = CompareType.less;
+  
+  /// Creates a validator that checks if value is less than or equal to another field.
   const CompareWith.lessOrEqual(this.key, {this.message})
       : type = CompareType.lessOrEqual;
 
@@ -652,14 +840,40 @@ class CompareWith<T extends Comparable<T>> extends Validator<T> {
   int get hashCode => Object.hash(key, type, message);
 }
 
+/// A validator for ensuring password strength and security requirements.
+///
+/// [SafePasswordValidator] checks passwords against common security criteria:
+/// digits, lowercase letters, uppercase letters, and special characters.
+/// Each requirement can be individually enabled or disabled.
+///
+/// Example:
+/// ```dart
+/// SafePasswordValidator(
+///   requireDigit: true,
+///   requireLowercase: true,
+///   requireUppercase: true,
+///   requireSpecialChar: true,
+///   message: 'Password must meet security requirements',
+/// )
+/// ```
 class SafePasswordValidator extends Validator<String> {
+  /// Custom error message, or null to use default localized messages.
   final String?
       message; // if null, use default message from ShadcnLocalizations
+      
+  /// Whether password must contain at least one digit.
   final bool requireDigit;
+  
+  /// Whether password must contain at least one lowercase letter.
   final bool requireLowercase;
+  
+  /// Whether password must contain at least one uppercase letter.
   final bool requireUppercase;
+  
+  /// Whether password must contain at least one special character.
   final bool requireSpecialChar;
 
+  /// Creates a [SafePasswordValidator] with configurable requirements.
   const SafePasswordValidator(
       {this.requireDigit = true,
       this.requireLowercase = true,
@@ -718,12 +932,31 @@ class SafePasswordValidator extends Validator<String> {
       requireUppercase, requireSpecialChar, message);
 }
 
+/// A validator that checks if a numeric value meets a minimum threshold.
+///
+/// [MinValidator] ensures that numeric values are greater than (or equal to)
+/// a specified minimum value. Useful for enforcing minimum quantities, ages, etc.
+///
+/// Example:
+/// ```dart
+/// MinValidator<int>(
+///   18,
+///   inclusive: true,
+///   message: 'Must be at least 18 years old',
+/// )
+/// ```
 class MinValidator<T extends num> extends Validator<T> {
+  /// The minimum acceptable value.
   final T min;
+  
+  /// Whether the minimum value itself is acceptable (true) or must be exceeded (false).
   final bool inclusive;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [MinValidator] with the specified minimum value.
   const MinValidator(this.min, {this.inclusive = true, this.message});
 
   @override
@@ -764,12 +997,31 @@ class MinValidator<T extends num> extends Validator<T> {
   int get hashCode => Object.hash(min, inclusive, message);
 }
 
+/// A validator that checks if a numeric value does not exceed a maximum threshold.
+///
+/// [MaxValidator] ensures that numeric values are less than (or equal to)
+/// a specified maximum value. Useful for enforcing maximum quantities, limits, etc.
+///
+/// Example:
+/// ```dart
+/// MaxValidator<int>(
+///   100,
+///   inclusive: true,
+///   message: 'Must not exceed 100',
+/// )
+/// ```
 class MaxValidator<T extends num> extends Validator<T> {
+  /// The maximum acceptable value.
   final T max;
+  
+  /// Whether the maximum value itself is acceptable (true) or must not be reached (false).
   final bool inclusive;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [MaxValidator] with the specified maximum value.
   const MaxValidator(this.max, {this.inclusive = true, this.message});
 
   @override
@@ -810,13 +1062,35 @@ class MaxValidator<T extends num> extends Validator<T> {
   int get hashCode => Object.hash(max, inclusive, message);
 }
 
+/// A validator that checks if a numeric value falls within a specified range.
+///
+/// [RangeValidator] ensures values are between minimum and maximum bounds.
+/// Both bounds can be inclusive or exclusive depending on configuration.
+///
+/// Example:
+/// ```dart
+/// RangeValidator<double>(
+///   0.0,
+///   100.0,
+///   inclusive: true,
+///   message: 'Must be between 0 and 100',
+/// )
+/// ```
 class RangeValidator<T extends num> extends Validator<T> {
+  /// The minimum acceptable value.
   final T min;
+  
+  /// The maximum acceptable value.
   final T max;
+  
+  /// Whether the bounds are inclusive (true) or exclusive (false).
   final bool inclusive;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [RangeValidator] with the specified min and max bounds.
   const RangeValidator(this.min, this.max,
       {this.inclusive = true, this.message});
 
@@ -859,11 +1133,27 @@ class RangeValidator<T extends num> extends Validator<T> {
   int get hashCode => Object.hash(min, max, inclusive, message);
 }
 
+/// A validator that checks if a string matches a regular expression pattern.
+///
+/// [RegexValidator] provides flexible pattern-based validation using regular
+/// expressions. Useful for validating formats like phone numbers, postal codes, etc.
+///
+/// Example:
+/// ```dart
+/// RegexValidator(
+///   RegExp(r'^\d{3}-\d{3}-\d{4}$'),
+///   message: 'Must be in format: XXX-XXX-XXXX',
+/// )
+/// ```
 class RegexValidator extends Validator<String> {
+  /// The regular expression pattern to match against.
   final RegExp pattern;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [RegexValidator] with the specified pattern.
   const RegexValidator(this.pattern, {this.message});
 
   @override
@@ -892,11 +1182,23 @@ class RegexValidator extends Validator<String> {
   int get hashCode => Object.hash(pattern, message);
 }
 
-// email validator using email_validator package
+/// A validator that checks if a string is a valid email address.
+///
+/// [EmailValidator] uses the email_validator package to validate email
+/// addresses according to standard email format rules.
+///
+/// Example:
+/// ```dart
+/// EmailValidator(
+///   message: 'Please enter a valid email address',
+/// )
+/// ```
 class EmailValidator extends Validator<String> {
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates an [EmailValidator] with an optional custom message.
   const EmailValidator({this.message});
 
   @override
@@ -923,10 +1225,23 @@ class EmailValidator extends Validator<String> {
   int get hashCode => message.hashCode;
 }
 
+/// A validator that checks if a string is a valid URL.
+///
+/// [URLValidator] validates URLs using Dart's Uri parsing capabilities
+/// to ensure the string represents a valid web address.
+///
+/// Example:
+/// ```dart
+/// URLValidator(
+///   message: 'Please enter a valid URL',
+/// )
+/// ```
 class URLValidator extends Validator<String> {
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [URLValidator] with an optional custom message.
   const URLValidator({this.message});
 
   @override
@@ -954,19 +1269,48 @@ class URLValidator extends Validator<String> {
   int get hashCode => message.hashCode;
 }
 
+/// A validator that compares a value against a static comparison value.
+///
+/// [CompareTo] validates by comparing the field value against a fixed value
+/// (unlike [CompareWith] which compares against another field). Supports
+/// various comparison types.
+///
+/// Example:
+/// ```dart
+/// CompareTo.greaterOrEqual(
+///   18,
+///   message: 'Must be at least 18',
+/// )
+/// ```
 class CompareTo<T extends Comparable<T>> extends Validator<T> {
+  /// The value to compare against.
   final T? value;
+  
+  /// The type of comparison to perform.
   final CompareType type;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [CompareTo] validator with the specified comparison type.
   const CompareTo(this.value, this.type, {this.message});
+  
+  /// Creates a validator that checks for equality with a value.
   const CompareTo.equal(this.value, {this.message}) : type = CompareType.equal;
+  
+  /// Creates a validator that checks if field value is greater than the specified value.
   const CompareTo.greater(this.value, {this.message})
       : type = CompareType.greater;
+      
+  /// Creates a validator that checks if field value is greater than or equal to the specified value.
   const CompareTo.greaterOrEqual(this.value, {this.message})
       : type = CompareType.greaterOrEqual;
+      
+  /// Creates a validator that checks if field value is less than the specified value.
   const CompareTo.less(this.value, {this.message}) : type = CompareType.less;
+  
+  /// Creates a validator that checks if field value is less than or equal to the specified value.
   const CompareTo.lessOrEqual(this.value, {this.message})
       : type = CompareType.lessOrEqual;
 
@@ -1039,9 +1383,25 @@ class CompareTo<T extends Comparable<T>> extends Validator<T> {
   int get hashCode => Object.hash(value, type, message);
 }
 
+/// A validator that combines multiple validators with AND logic.
+///
+/// [CompositeValidator] runs multiple validators sequentially and only passes
+/// if all validators pass. If any validator fails, validation stops and returns
+/// that error. Created automatically when using the `&` operator between validators.
+///
+/// Example:
+/// ```dart
+/// CompositeValidator([
+///   NonNullValidator(),
+///   MinLengthValidator(3),
+///   EmailValidator(),
+/// ])
+/// ```
 class CompositeValidator<T> extends Validator<T> {
+  /// The list of validators to run sequentially.
   final List<Validator<T>> validators;
 
+  /// Creates a [CompositeValidator] from a list of validators.
   const CompositeValidator(this.validators);
 
   @override
@@ -1099,19 +1459,40 @@ class CompositeValidator<T> extends Validator<T> {
   int get hashCode => validators.hashCode;
 }
 
+/// Abstract base class representing the result of a validation operation.
+///
+/// [ValidationResult] encapsulates the outcome of validating a form field value.
+/// Subclasses include [InvalidResult] for validation failures and [ValidResult]
+/// for successful validation.
 abstract class ValidationResult {
+  /// The form validation mode that triggered this result.
   final FormValidationMode state;
+  
+  /// Creates a [ValidationResult] with the specified validation state.
   const ValidationResult({required this.state});
+  
+  /// The form field key associated with this validation result.
   FormKey get key;
+  
+  /// Attaches a form field key to this validation result.
   ValidationResult attach(FormKey key);
 }
 
+/// A validation result that indicates a value should be replaced.
+///
+/// [ReplaceResult] is used when validation determines that the submitted
+/// value should be transformed or replaced with a different value. For example,
+/// trimming whitespace or formatting input.
 class ReplaceResult<T> extends ValidationResult {
+  /// The replacement value to use.
   final T value;
+  
   final FormKey? _key;
 
+  /// Creates a [ReplaceResult] with the specified replacement value.
   const ReplaceResult(this.value, {required super.state}) : _key = null;
 
+  /// Creates a [ReplaceResult] already attached to a form field key.
   const ReplaceResult.attached(this.value,
       {required FormKey key, required super.state})
       : _key = key;
@@ -1128,11 +1509,21 @@ class ReplaceResult<T> extends ValidationResult {
   }
 }
 
+/// A validation result indicating that validation failed.
+///
+/// [InvalidResult] contains an error message describing why validation failed.
+/// This is the most common validation result type returned by validators when
+/// a value doesn't meet the validation criteria.
 class InvalidResult extends ValidationResult {
+  /// The error message describing the validation failure.
   final String message;
+  
   final FormKey? _key;
 
+  /// Creates an [InvalidResult] with the specified error message.
   const InvalidResult(this.message, {required super.state}) : _key = null;
+  
+  /// Creates an [InvalidResult] already attached to a form field key.
   const InvalidResult.attached(this.message,
       {required FormKey key, required super.state})
       : _key = key;
@@ -1149,28 +1540,54 @@ class InvalidResult extends ValidationResult {
   }
 }
 
+/// A notification sent when a form field's validation state changes.
+///
+/// [FormValidityNotification] is dispatched through the notification system
+/// when a field's validity transitions between valid, invalid, or null states.
+/// Useful for updating UI or tracking form validation status.
 class FormValidityNotification extends Notification {
+  /// The previous validation result, or null if there was none.
   final ValidationResult? oldValidity;
+  
+  /// The new validation result, or null if now valid.
   final ValidationResult? newValidity;
 
+  /// Creates a [FormValidityNotification] with old and new validity states.
   const FormValidityNotification(this.newValidity, this.oldValidity);
 }
 
+/// A key that uniquely identifies a form field and its type.
+///
+/// [FormKey] extends [LocalKey] and is used throughout the form system to
+/// reference specific form fields. It includes type information to ensure
+/// type-safe access to form values.
+///
+/// Example:
+/// ```dart
+/// const emailKey = FormKey<String>('email');
+/// const ageKey = FormKey<int>('age');
+/// ```
 class FormKey<T> extends LocalKey {
+  /// The underlying key object.
   final Object key;
 
+  /// Creates a [FormKey] with the specified key object.
   const FormKey(this.key);
 
+  /// Gets the generic type parameter of this key.
   Type get type => T;
 
+  /// Checks if a dynamic value is an instance of this key's type.
   bool isInstanceOf(dynamic value) {
     return value is T;
   }
 
+  /// Gets the value associated with this key from the form values map.
   T? getValue(FormMapValues values) {
     return values.getValue(this);
   }
 
+  /// Operator overload to get the value from form values (same as [getValue]).
   T? operator [](FormMapValues values) {
     return values.getValue(this);
   }
