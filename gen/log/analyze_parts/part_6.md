@@ -1,338 +1,338 @@
 TODO:
-- [ ] lib\src\icons\radix_icons.dart:3:7
-- [ ] lib\src\icons\radix_icons.dart:6:25
-- [ ] lib\src\icons\radix_icons.dart:7:25
-- [ ] lib\src\icons\radix_icons.dart:8:25
-- [ ] lib\src\icons\radix_icons.dart:9:25
-- [ ] lib\src\icons\radix_icons.dart:10:25
-- [ ] lib\src\icons\radix_icons.dart:11:25
-- [ ] lib\src\icons\radix_icons.dart:12:25
-- [ ] lib\src\icons\radix_icons.dart:13:25
-- [ ] lib\src\icons\radix_icons.dart:14:25
-- [ ] lib\src\icons\radix_icons.dart:15:25
-- [ ] lib\src\icons\radix_icons.dart:16:25
-- [ ] lib\src\icons\radix_icons.dart:17:25
-- [ ] lib\src\icons\radix_icons.dart:18:25
-- [ ] lib\src\icons\radix_icons.dart:19:25
-- [ ] lib\src\icons\radix_icons.dart:20:25
-- [ ] lib\src\icons\radix_icons.dart:21:25
-- [ ] lib\src\icons\radix_icons.dart:22:25
-- [ ] lib\src\icons\radix_icons.dart:23:25
-- [ ] lib\src\icons\radix_icons.dart:24:25
-- [ ] lib\src\icons\radix_icons.dart:25:25
-- [ ] lib\src\icons\radix_icons.dart:26:25
-- [ ] lib\src\icons\radix_icons.dart:27:25
-- [ ] lib\src\icons\radix_icons.dart:28:25
-- [ ] lib\src\icons\radix_icons.dart:29:25
-- [ ] lib\src\icons\radix_icons.dart:30:25
-- [ ] lib\src\icons\radix_icons.dart:31:25
-- [ ] lib\src\icons\radix_icons.dart:32:25
-- [ ] lib\src\icons\radix_icons.dart:33:25
-- [ ] lib\src\icons\radix_icons.dart:34:25
-- [ ] lib\src\icons\radix_icons.dart:35:25
-- [ ] lib\src\icons\radix_icons.dart:36:25
-- [ ] lib\src\icons\radix_icons.dart:37:25
-- [ ] lib\src\icons\radix_icons.dart:38:25
-- [ ] lib\src\icons\radix_icons.dart:39:25
-- [ ] lib\src\icons\radix_icons.dart:40:25
-- [ ] lib\src\icons\radix_icons.dart:41:25
-- [ ] lib\src\icons\radix_icons.dart:42:25
-- [ ] lib\src\icons\radix_icons.dart:43:25
-- [ ] lib\src\icons\radix_icons.dart:44:25
-- [ ] lib\src\icons\radix_icons.dart:45:25
-- [ ] lib\src\icons\radix_icons.dart:46:25
-- [ ] lib\src\icons\radix_icons.dart:47:25
-- [ ] lib\src\icons\radix_icons.dart:48:25
-- [ ] lib\src\icons\radix_icons.dart:49:25
-- [ ] lib\src\icons\radix_icons.dart:50:25
-- [ ] lib\src\icons\radix_icons.dart:51:25
-- [ ] lib\src\icons\radix_icons.dart:52:25
-- [ ] lib\src\icons\radix_icons.dart:53:25
-- [ ] lib\src\icons\radix_icons.dart:54:25
-- [ ] lib\src\icons\radix_icons.dart:55:25
-- [ ] lib\src\icons\radix_icons.dart:56:25
-- [ ] lib\src\icons\radix_icons.dart:57:25
-- [ ] lib\src\icons\radix_icons.dart:58:25
-- [ ] lib\src\icons\radix_icons.dart:59:25
-- [ ] lib\src\icons\radix_icons.dart:60:25
-- [ ] lib\src\icons\radix_icons.dart:61:25
-- [ ] lib\src\icons\radix_icons.dart:62:25
-- [ ] lib\src\icons\radix_icons.dart:63:25
-- [ ] lib\src\icons\radix_icons.dart:64:25
-- [ ] lib\src\icons\radix_icons.dart:65:25
-- [ ] lib\src\icons\radix_icons.dart:66:25
-- [ ] lib\src\icons\radix_icons.dart:67:25
-- [ ] lib\src\icons\radix_icons.dart:68:25
-- [ ] lib\src\icons\radix_icons.dart:69:25
-- [ ] lib\src\icons\radix_icons.dart:70:25
-- [ ] lib\src\icons\radix_icons.dart:71:25
-- [ ] lib\src\icons\radix_icons.dart:72:25
-- [ ] lib\src\icons\radix_icons.dart:73:25
-- [ ] lib\src\icons\radix_icons.dart:74:25
-- [ ] lib\src\icons\radix_icons.dart:75:25
-- [ ] lib\src\icons\radix_icons.dart:76:25
-- [ ] lib\src\icons\radix_icons.dart:77:25
-- [ ] lib\src\icons\radix_icons.dart:78:25
-- [ ] lib\src\icons\radix_icons.dart:79:25
-- [ ] lib\src\icons\radix_icons.dart:80:25
-- [ ] lib\src\icons\radix_icons.dart:81:25
-- [ ] lib\src\icons\radix_icons.dart:82:25
-- [ ] lib\src\icons\radix_icons.dart:83:25
-- [ ] lib\src\icons\radix_icons.dart:84:25
-- [ ] lib\src\icons\radix_icons.dart:85:25
-- [ ] lib\src\icons\radix_icons.dart:86:25
-- [ ] lib\src\icons\radix_icons.dart:87:25
-- [ ] lib\src\icons\radix_icons.dart:88:25
-- [ ] lib\src\icons\radix_icons.dart:89:25
-- [ ] lib\src\icons\radix_icons.dart:90:25
-- [ ] lib\src\icons\radix_icons.dart:91:25
-- [ ] lib\src\icons\radix_icons.dart:92:25
-- [ ] lib\src\icons\radix_icons.dart:93:25
-- [ ] lib\src\icons\radix_icons.dart:94:25
-- [ ] lib\src\icons\radix_icons.dart:95:25
-- [ ] lib\src\icons\radix_icons.dart:96:25
-- [ ] lib\src\icons\radix_icons.dart:97:25
-- [ ] lib\src\icons\radix_icons.dart:98:25
-- [ ] lib\src\icons\radix_icons.dart:99:25
-- [ ] lib\src\icons\radix_icons.dart:100:25
-- [ ] lib\src\icons\radix_icons.dart:101:25
-- [ ] lib\src\icons\radix_icons.dart:102:25
-- [ ] lib\src\icons\radix_icons.dart:103:25
-- [ ] lib\src\icons\radix_icons.dart:104:25
-- [ ] lib\src\icons\radix_icons.dart:105:25
-- [ ] lib\src\icons\radix_icons.dart:106:25
-- [ ] lib\src\icons\radix_icons.dart:107:25
-- [ ] lib\src\icons\radix_icons.dart:108:25
-- [ ] lib\src\icons\radix_icons.dart:109:25
-- [ ] lib\src\icons\radix_icons.dart:110:25
-- [ ] lib\src\icons\radix_icons.dart:111:25
-- [ ] lib\src\icons\radix_icons.dart:112:25
-- [ ] lib\src\icons\radix_icons.dart:113:25
-- [ ] lib\src\icons\radix_icons.dart:114:25
-- [ ] lib\src\icons\radix_icons.dart:115:25
-- [ ] lib\src\icons\radix_icons.dart:116:25
-- [ ] lib\src\icons\radix_icons.dart:117:25
-- [ ] lib\src\icons\radix_icons.dart:118:25
-- [ ] lib\src\icons\radix_icons.dart:119:25
-- [ ] lib\src\icons\radix_icons.dart:120:25
-- [ ] lib\src\icons\radix_icons.dart:121:25
-- [ ] lib\src\icons\radix_icons.dart:122:25
-- [ ] lib\src\icons\radix_icons.dart:123:25
-- [ ] lib\src\icons\radix_icons.dart:124:25
-- [ ] lib\src\icons\radix_icons.dart:125:25
-- [ ] lib\src\icons\radix_icons.dart:126:25
-- [ ] lib\src\icons\radix_icons.dart:127:25
-- [ ] lib\src\icons\radix_icons.dart:128:25
-- [ ] lib\src\icons\radix_icons.dart:129:25
-- [ ] lib\src\icons\radix_icons.dart:130:25
-- [ ] lib\src\icons\radix_icons.dart:131:25
-- [ ] lib\src\icons\radix_icons.dart:132:25
-- [ ] lib\src\icons\radix_icons.dart:133:25
-- [ ] lib\src\icons\radix_icons.dart:134:25
-- [ ] lib\src\icons\radix_icons.dart:135:25
-- [ ] lib\src\icons\radix_icons.dart:136:25
-- [ ] lib\src\icons\radix_icons.dart:137:25
-- [ ] lib\src\icons\radix_icons.dart:138:25
-- [ ] lib\src\icons\radix_icons.dart:139:25
-- [ ] lib\src\icons\radix_icons.dart:140:25
-- [ ] lib\src\icons\radix_icons.dart:141:25
-- [ ] lib\src\icons\radix_icons.dart:142:25
-- [ ] lib\src\icons\radix_icons.dart:143:25
-- [ ] lib\src\icons\radix_icons.dart:144:25
-- [ ] lib\src\icons\radix_icons.dart:145:25
-- [ ] lib\src\icons\radix_icons.dart:146:25
-- [ ] lib\src\icons\radix_icons.dart:147:25
-- [ ] lib\src\icons\radix_icons.dart:148:25
-- [ ] lib\src\icons\radix_icons.dart:149:25
-- [ ] lib\src\icons\radix_icons.dart:150:25
-- [ ] lib\src\icons\radix_icons.dart:151:25
-- [ ] lib\src\icons\radix_icons.dart:152:25
-- [ ] lib\src\icons\radix_icons.dart:153:25
-- [ ] lib\src\icons\radix_icons.dart:154:25
-- [ ] lib\src\icons\radix_icons.dart:155:25
-- [ ] lib\src\icons\radix_icons.dart:156:25
-- [ ] lib\src\icons\radix_icons.dart:157:25
-- [ ] lib\src\icons\radix_icons.dart:158:25
-- [ ] lib\src\icons\radix_icons.dart:159:25
-- [ ] lib\src\icons\radix_icons.dart:160:25
-- [ ] lib\src\icons\radix_icons.dart:161:25
-- [ ] lib\src\icons\radix_icons.dart:162:25
-- [ ] lib\src\icons\radix_icons.dart:163:25
-- [ ] lib\src\icons\radix_icons.dart:164:25
-- [ ] lib\src\icons\radix_icons.dart:165:25
-- [ ] lib\src\icons\radix_icons.dart:166:25
-- [ ] lib\src\icons\radix_icons.dart:167:25
-- [ ] lib\src\icons\radix_icons.dart:168:25
-- [ ] lib\src\icons\radix_icons.dart:169:25
-- [ ] lib\src\icons\radix_icons.dart:170:25
-- [ ] lib\src\icons\radix_icons.dart:171:25
-- [ ] lib\src\icons\radix_icons.dart:172:25
-- [ ] lib\src\icons\radix_icons.dart:173:25
-- [ ] lib\src\icons\radix_icons.dart:174:25
-- [ ] lib\src\icons\radix_icons.dart:175:25
-- [ ] lib\src\icons\radix_icons.dart:176:25
-- [ ] lib\src\icons\radix_icons.dart:177:25
-- [ ] lib\src\icons\radix_icons.dart:178:25
-- [ ] lib\src\icons\radix_icons.dart:179:25
-- [ ] lib\src\icons\radix_icons.dart:180:25
-- [ ] lib\src\icons\radix_icons.dart:181:25
-- [ ] lib\src\icons\radix_icons.dart:182:25
-- [ ] lib\src\icons\radix_icons.dart:183:25
-- [ ] lib\src\icons\radix_icons.dart:184:25
-- [ ] lib\src\icons\radix_icons.dart:185:25
-- [ ] lib\src\icons\radix_icons.dart:186:25
-- [ ] lib\src\icons\radix_icons.dart:187:25
-- [ ] lib\src\icons\radix_icons.dart:188:25
-- [ ] lib\src\icons\radix_icons.dart:189:25
-- [ ] lib\src\icons\radix_icons.dart:190:25
-- [ ] lib\src\icons\radix_icons.dart:191:25
-- [ ] lib\src\icons\radix_icons.dart:192:25
-- [ ] lib\src\icons\radix_icons.dart:193:25
-- [ ] lib\src\icons\radix_icons.dart:194:25
-- [ ] lib\src\icons\radix_icons.dart:195:25
-- [ ] lib\src\icons\radix_icons.dart:196:25
-- [ ] lib\src\icons\radix_icons.dart:197:25
-- [ ] lib\src\icons\radix_icons.dart:198:25
-- [ ] lib\src\icons\radix_icons.dart:199:25
-- [ ] lib\src\icons\radix_icons.dart:200:25
-- [ ] lib\src\icons\radix_icons.dart:201:25
-- [ ] lib\src\icons\radix_icons.dart:202:25
-- [ ] lib\src\icons\radix_icons.dart:203:25
-- [ ] lib\src\icons\radix_icons.dart:204:25
-- [ ] lib\src\icons\radix_icons.dart:205:25
-- [ ] lib\src\icons\radix_icons.dart:206:25
-- [ ] lib\src\icons\radix_icons.dart:207:25
-- [ ] lib\src\icons\radix_icons.dart:208:25
-- [ ] lib\src\icons\radix_icons.dart:209:25
-- [ ] lib\src\icons\radix_icons.dart:210:25
-- [ ] lib\src\icons\radix_icons.dart:211:25
-- [ ] lib\src\icons\radix_icons.dart:212:25
-- [ ] lib\src\icons\radix_icons.dart:213:25
-- [ ] lib\src\icons\radix_icons.dart:214:25
-- [ ] lib\src\icons\radix_icons.dart:215:25
-- [ ] lib\src\icons\radix_icons.dart:216:25
-- [ ] lib\src\icons\radix_icons.dart:217:25
-- [ ] lib\src\icons\radix_icons.dart:218:25
-- [ ] lib\src\icons\radix_icons.dart:219:25
-- [ ] lib\src\icons\radix_icons.dart:220:25
-- [ ] lib\src\icons\radix_icons.dart:221:25
-- [ ] lib\src\icons\radix_icons.dart:222:25
-- [ ] lib\src\icons\radix_icons.dart:223:25
-- [ ] lib\src\icons\radix_icons.dart:224:25
-- [ ] lib\src\icons\radix_icons.dart:225:25
-- [ ] lib\src\icons\radix_icons.dart:226:25
-- [ ] lib\src\icons\radix_icons.dart:227:25
-- [ ] lib\src\icons\radix_icons.dart:228:25
-- [ ] lib\src\icons\radix_icons.dart:229:25
-- [ ] lib\src\icons\radix_icons.dart:230:25
-- [ ] lib\src\icons\radix_icons.dart:231:25
-- [ ] lib\src\icons\radix_icons.dart:232:25
-- [ ] lib\src\icons\radix_icons.dart:233:25
-- [ ] lib\src\icons\radix_icons.dart:234:25
-- [ ] lib\src\icons\radix_icons.dart:235:25
-- [ ] lib\src\icons\radix_icons.dart:236:25
-- [ ] lib\src\icons\radix_icons.dart:237:25
-- [ ] lib\src\icons\radix_icons.dart:238:25
-- [ ] lib\src\icons\radix_icons.dart:239:25
-- [ ] lib\src\icons\radix_icons.dart:240:25
-- [ ] lib\src\icons\radix_icons.dart:241:25
-- [ ] lib\src\icons\radix_icons.dart:242:25
-- [ ] lib\src\icons\radix_icons.dart:243:25
-- [ ] lib\src\icons\radix_icons.dart:244:25
-- [ ] lib\src\icons\radix_icons.dart:245:25
-- [ ] lib\src\icons\radix_icons.dart:246:25
-- [ ] lib\src\icons\radix_icons.dart:247:25
-- [ ] lib\src\icons\radix_icons.dart:248:25
-- [ ] lib\src\icons\radix_icons.dart:249:25
-- [ ] lib\src\icons\radix_icons.dart:250:25
-- [ ] lib\src\icons\radix_icons.dart:251:25
-- [ ] lib\src\icons\radix_icons.dart:252:25
-- [ ] lib\src\icons\radix_icons.dart:253:25
-- [ ] lib\src\icons\radix_icons.dart:254:25
-- [ ] lib\src\icons\radix_icons.dart:255:25
-- [ ] lib\src\icons\radix_icons.dart:256:25
-- [ ] lib\src\icons\radix_icons.dart:257:25
-- [ ] lib\src\icons\radix_icons.dart:258:25
-- [ ] lib\src\icons\radix_icons.dart:259:25
-- [ ] lib\src\icons\radix_icons.dart:260:25
-- [ ] lib\src\icons\radix_icons.dart:261:25
-- [ ] lib\src\icons\radix_icons.dart:262:25
-- [ ] lib\src\icons\radix_icons.dart:263:25
-- [ ] lib\src\icons\radix_icons.dart:264:25
-- [ ] lib\src\icons\radix_icons.dart:265:25
-- [ ] lib\src\icons\radix_icons.dart:266:25
-- [ ] lib\src\icons\radix_icons.dart:267:25
-- [ ] lib\src\icons\radix_icons.dart:268:25
-- [ ] lib\src\icons\radix_icons.dart:269:25
-- [ ] lib\src\icons\radix_icons.dart:270:25
-- [ ] lib\src\icons\radix_icons.dart:271:25
-- [ ] lib\src\icons\radix_icons.dart:272:25
-- [ ] lib\src\icons\radix_icons.dart:273:25
-- [ ] lib\src\icons\radix_icons.dart:274:25
-- [ ] lib\src\icons\radix_icons.dart:275:25
-- [ ] lib\src\icons\radix_icons.dart:276:25
-- [ ] lib\src\icons\radix_icons.dart:277:25
-- [ ] lib\src\icons\radix_icons.dart:278:25
-- [ ] lib\src\icons\radix_icons.dart:279:25
-- [ ] lib\src\icons\radix_icons.dart:280:25
-- [ ] lib\src\icons\radix_icons.dart:281:25
-- [ ] lib\src\icons\radix_icons.dart:282:25
-- [ ] lib\src\icons\radix_icons.dart:283:25
-- [ ] lib\src\icons\radix_icons.dart:284:25
-- [ ] lib\src\icons\radix_icons.dart:285:25
-- [ ] lib\src\icons\radix_icons.dart:286:25
-- [ ] lib\src\icons\radix_icons.dart:287:25
-- [ ] lib\src\icons\radix_icons.dart:288:25
-- [ ] lib\src\icons\radix_icons.dart:289:25
-- [ ] lib\src\icons\radix_icons.dart:290:25
-- [ ] lib\src\icons\radix_icons.dart:291:25
-- [ ] lib\src\icons\radix_icons.dart:292:25
-- [ ] lib\src\icons\radix_icons.dart:293:25
-- [ ] lib\src\icons\radix_icons.dart:294:25
-- [ ] lib\src\icons\radix_icons.dart:295:25
-- [ ] lib\src\icons\radix_icons.dart:296:25
-- [ ] lib\src\icons\radix_icons.dart:297:25
-- [ ] lib\src\icons\radix_icons.dart:298:25
-- [ ] lib\src\icons\radix_icons.dart:299:25
-- [ ] lib\src\icons\radix_icons.dart:300:25
-- [ ] lib\src\icons\radix_icons.dart:301:25
-- [ ] lib\src\icons\radix_icons.dart:302:25
-- [ ] lib\src\icons\radix_icons.dart:303:25
-- [ ] lib\src\icons\radix_icons.dart:304:25
-- [ ] lib\src\icons\radix_icons.dart:305:25
-- [ ] lib\src\icons\radix_icons.dart:306:25
-- [ ] lib\src\icons\radix_icons.dart:307:25
-- [ ] lib\src\icons\radix_icons.dart:308:25
-- [ ] lib\src\icons\radix_icons.dart:309:25
-- [ ] lib\src\icons\radix_icons.dart:310:25
-- [ ] lib\src\icons\radix_icons.dart:311:25
-- [ ] lib\src\icons\radix_icons.dart:312:25
-- [ ] lib\src\icons\radix_icons.dart:313:25
-- [ ] lib\src\icons\radix_icons.dart:314:25
-- [ ] lib\src\icons\radix_icons.dart:315:25
-- [ ] lib\src\icons\radix_icons.dart:316:25
-- [ ] lib\src\icons\radix_icons.dart:317:25
-- [ ] lib\src\icons\radix_icons.dart:318:25
-- [ ] lib\src\icons\radix_icons.dart:319:25
-- [ ] lib\src\icons\radix_icons.dart:320:25
-- [ ] lib\src\icons\radix_icons.dart:321:25
-- [ ] lib\src\icons\radix_icons.dart:322:25
-- [ ] lib\src\icons\radix_icons.dart:323:25
-- [ ] lib\src\icons\radix_icons.dart:324:25
-- [ ] lib\src\icons\radix_icons.dart:325:25
-- [ ] lib\src\icons\radix_icons.dart:326:25
-- [ ] lib\src\icons\radix_icons.dart:327:25
-- [ ] lib\src\icons\radix_icons.dart:328:25
-- [ ] lib\src\icons\radix_icons.dart:329:25
-- [ ] lib\src\icons\radix_icons.dart:330:25
-- [ ] lib\src\icons\radix_icons.dart:331:25
-- [ ] lib\src\icons\radix_icons.dart:332:25
-- [ ] lib\src\icons\radix_icons.dart:333:25
-- [ ] lib\src\icons\radix_icons.dart:334:25
-- [ ] lib\src\icons\radix_icons.dart:335:25
-- [ ] lib\src\icons\radix_icons.dart:336:25
-- [ ] lib\src\icons\radix_icons.dart:337:25
-- [ ] lib\src\icons\radix_icons.dart:338:25
+- [x] lib\src\icons\radix_icons.dart:3:7
+- [x] lib\src\icons\radix_icons.dart:6:25
+- [x] lib\src\icons\radix_icons.dart:7:25
+- [x] lib\src\icons\radix_icons.dart:8:25
+- [x] lib\src\icons\radix_icons.dart:9:25
+- [x] lib\src\icons\radix_icons.dart:10:25
+- [x] lib\src\icons\radix_icons.dart:11:25
+- [x] lib\src\icons\radix_icons.dart:12:25
+- [x] lib\src\icons\radix_icons.dart:13:25
+- [x] lib\src\icons\radix_icons.dart:14:25
+- [x] lib\src\icons\radix_icons.dart:15:25
+- [x] lib\src\icons\radix_icons.dart:16:25
+- [x] lib\src\icons\radix_icons.dart:17:25
+- [x] lib\src\icons\radix_icons.dart:18:25
+- [x] lib\src\icons\radix_icons.dart:19:25
+- [x] lib\src\icons\radix_icons.dart:20:25
+- [x] lib\src\icons\radix_icons.dart:21:25
+- [x] lib\src\icons\radix_icons.dart:22:25
+- [x] lib\src\icons\radix_icons.dart:23:25
+- [x] lib\src\icons\radix_icons.dart:24:25
+- [x] lib\src\icons\radix_icons.dart:25:25
+- [x] lib\src\icons\radix_icons.dart:26:25
+- [x] lib\src\icons\radix_icons.dart:27:25
+- [x] lib\src\icons\radix_icons.dart:28:25
+- [x] lib\src\icons\radix_icons.dart:29:25
+- [x] lib\src\icons\radix_icons.dart:30:25
+- [x] lib\src\icons\radix_icons.dart:31:25
+- [x] lib\src\icons\radix_icons.dart:32:25
+- [x] lib\src\icons\radix_icons.dart:33:25
+- [x] lib\src\icons\radix_icons.dart:34:25
+- [x] lib\src\icons\radix_icons.dart:35:25
+- [x] lib\src\icons\radix_icons.dart:36:25
+- [x] lib\src\icons\radix_icons.dart:37:25
+- [x] lib\src\icons\radix_icons.dart:38:25
+- [x] lib\src\icons\radix_icons.dart:39:25
+- [x] lib\src\icons\radix_icons.dart:40:25
+- [x] lib\src\icons\radix_icons.dart:41:25
+- [x] lib\src\icons\radix_icons.dart:42:25
+- [x] lib\src\icons\radix_icons.dart:43:25
+- [x] lib\src\icons\radix_icons.dart:44:25
+- [x] lib\src\icons\radix_icons.dart:45:25
+- [x] lib\src\icons\radix_icons.dart:46:25
+- [x] lib\src\icons\radix_icons.dart:47:25
+- [x] lib\src\icons\radix_icons.dart:48:25
+- [x] lib\src\icons\radix_icons.dart:49:25
+- [x] lib\src\icons\radix_icons.dart:50:25
+- [x] lib\src\icons\radix_icons.dart:51:25
+- [x] lib\src\icons\radix_icons.dart:52:25
+- [x] lib\src\icons\radix_icons.dart:53:25
+- [x] lib\src\icons\radix_icons.dart:54:25
+- [x] lib\src\icons\radix_icons.dart:55:25
+- [x] lib\src\icons\radix_icons.dart:56:25
+- [x] lib\src\icons\radix_icons.dart:57:25
+- [x] lib\src\icons\radix_icons.dart:58:25
+- [x] lib\src\icons\radix_icons.dart:59:25
+- [x] lib\src\icons\radix_icons.dart:60:25
+- [x] lib\src\icons\radix_icons.dart:61:25
+- [x] lib\src\icons\radix_icons.dart:62:25
+- [x] lib\src\icons\radix_icons.dart:63:25
+- [x] lib\src\icons\radix_icons.dart:64:25
+- [x] lib\src\icons\radix_icons.dart:65:25
+- [x] lib\src\icons\radix_icons.dart:66:25
+- [x] lib\src\icons\radix_icons.dart:67:25
+- [x] lib\src\icons\radix_icons.dart:68:25
+- [x] lib\src\icons\radix_icons.dart:69:25
+- [x] lib\src\icons\radix_icons.dart:70:25
+- [x] lib\src\icons\radix_icons.dart:71:25
+- [x] lib\src\icons\radix_icons.dart:72:25
+- [x] lib\src\icons\radix_icons.dart:73:25
+- [x] lib\src\icons\radix_icons.dart:74:25
+- [x] lib\src\icons\radix_icons.dart:75:25
+- [x] lib\src\icons\radix_icons.dart:76:25
+- [x] lib\src\icons\radix_icons.dart:77:25
+- [x] lib\src\icons\radix_icons.dart:78:25
+- [x] lib\src\icons\radix_icons.dart:79:25
+- [x] lib\src\icons\radix_icons.dart:80:25
+- [x] lib\src\icons\radix_icons.dart:81:25
+- [x] lib\src\icons\radix_icons.dart:82:25
+- [x] lib\src\icons\radix_icons.dart:83:25
+- [x] lib\src\icons\radix_icons.dart:84:25
+- [x] lib\src\icons\radix_icons.dart:85:25
+- [x] lib\src\icons\radix_icons.dart:86:25
+- [x] lib\src\icons\radix_icons.dart:87:25
+- [x] lib\src\icons\radix_icons.dart:88:25
+- [x] lib\src\icons\radix_icons.dart:89:25
+- [x] lib\src\icons\radix_icons.dart:90:25
+- [x] lib\src\icons\radix_icons.dart:91:25
+- [x] lib\src\icons\radix_icons.dart:92:25
+- [x] lib\src\icons\radix_icons.dart:93:25
+- [x] lib\src\icons\radix_icons.dart:94:25
+- [x] lib\src\icons\radix_icons.dart:95:25
+- [x] lib\src\icons\radix_icons.dart:96:25
+- [x] lib\src\icons\radix_icons.dart:97:25
+- [x] lib\src\icons\radix_icons.dart:98:25
+- [x] lib\src\icons\radix_icons.dart:99:25
+- [x] lib\src\icons\radix_icons.dart:100:25
+- [x] lib\src\icons\radix_icons.dart:101:25
+- [x] lib\src\icons\radix_icons.dart:102:25
+- [x] lib\src\icons\radix_icons.dart:103:25
+- [x] lib\src\icons\radix_icons.dart:104:25
+- [x] lib\src\icons\radix_icons.dart:105:25
+- [x] lib\src\icons\radix_icons.dart:106:25
+- [x] lib\src\icons\radix_icons.dart:107:25
+- [x] lib\src\icons\radix_icons.dart:108:25
+- [x] lib\src\icons\radix_icons.dart:109:25
+- [x] lib\src\icons\radix_icons.dart:110:25
+- [x] lib\src\icons\radix_icons.dart:111:25
+- [x] lib\src\icons\radix_icons.dart:112:25
+- [x] lib\src\icons\radix_icons.dart:113:25
+- [x] lib\src\icons\radix_icons.dart:114:25
+- [x] lib\src\icons\radix_icons.dart:115:25
+- [x] lib\src\icons\radix_icons.dart:116:25
+- [x] lib\src\icons\radix_icons.dart:117:25
+- [x] lib\src\icons\radix_icons.dart:118:25
+- [x] lib\src\icons\radix_icons.dart:119:25
+- [x] lib\src\icons\radix_icons.dart:120:25
+- [x] lib\src\icons\radix_icons.dart:121:25
+- [x] lib\src\icons\radix_icons.dart:122:25
+- [x] lib\src\icons\radix_icons.dart:123:25
+- [x] lib\src\icons\radix_icons.dart:124:25
+- [x] lib\src\icons\radix_icons.dart:125:25
+- [x] lib\src\icons\radix_icons.dart:126:25
+- [x] lib\src\icons\radix_icons.dart:127:25
+- [x] lib\src\icons\radix_icons.dart:128:25
+- [x] lib\src\icons\radix_icons.dart:129:25
+- [x] lib\src\icons\radix_icons.dart:130:25
+- [x] lib\src\icons\radix_icons.dart:131:25
+- [x] lib\src\icons\radix_icons.dart:132:25
+- [x] lib\src\icons\radix_icons.dart:133:25
+- [x] lib\src\icons\radix_icons.dart:134:25
+- [x] lib\src\icons\radix_icons.dart:135:25
+- [x] lib\src\icons\radix_icons.dart:136:25
+- [x] lib\src\icons\radix_icons.dart:137:25
+- [x] lib\src\icons\radix_icons.dart:138:25
+- [x] lib\src\icons\radix_icons.dart:139:25
+- [x] lib\src\icons\radix_icons.dart:140:25
+- [x] lib\src\icons\radix_icons.dart:141:25
+- [x] lib\src\icons\radix_icons.dart:142:25
+- [x] lib\src\icons\radix_icons.dart:143:25
+- [x] lib\src\icons\radix_icons.dart:144:25
+- [x] lib\src\icons\radix_icons.dart:145:25
+- [x] lib\src\icons\radix_icons.dart:146:25
+- [x] lib\src\icons\radix_icons.dart:147:25
+- [x] lib\src\icons\radix_icons.dart:148:25
+- [x] lib\src\icons\radix_icons.dart:149:25
+- [x] lib\src\icons\radix_icons.dart:150:25
+- [x] lib\src\icons\radix_icons.dart:151:25
+- [x] lib\src\icons\radix_icons.dart:152:25
+- [x] lib\src\icons\radix_icons.dart:153:25
+- [x] lib\src\icons\radix_icons.dart:154:25
+- [x] lib\src\icons\radix_icons.dart:155:25
+- [x] lib\src\icons\radix_icons.dart:156:25
+- [x] lib\src\icons\radix_icons.dart:157:25
+- [x] lib\src\icons\radix_icons.dart:158:25
+- [x] lib\src\icons\radix_icons.dart:159:25
+- [x] lib\src\icons\radix_icons.dart:160:25
+- [x] lib\src\icons\radix_icons.dart:161:25
+- [x] lib\src\icons\radix_icons.dart:162:25
+- [x] lib\src\icons\radix_icons.dart:163:25
+- [x] lib\src\icons\radix_icons.dart:164:25
+- [x] lib\src\icons\radix_icons.dart:165:25
+- [x] lib\src\icons\radix_icons.dart:166:25
+- [x] lib\src\icons\radix_icons.dart:167:25
+- [x] lib\src\icons\radix_icons.dart:168:25
+- [x] lib\src\icons\radix_icons.dart:169:25
+- [x] lib\src\icons\radix_icons.dart:170:25
+- [x] lib\src\icons\radix_icons.dart:171:25
+- [x] lib\src\icons\radix_icons.dart:172:25
+- [x] lib\src\icons\radix_icons.dart:173:25
+- [x] lib\src\icons\radix_icons.dart:174:25
+- [x] lib\src\icons\radix_icons.dart:175:25
+- [x] lib\src\icons\radix_icons.dart:176:25
+- [x] lib\src\icons\radix_icons.dart:177:25
+- [x] lib\src\icons\radix_icons.dart:178:25
+- [x] lib\src\icons\radix_icons.dart:179:25
+- [x] lib\src\icons\radix_icons.dart:180:25
+- [x] lib\src\icons\radix_icons.dart:181:25
+- [x] lib\src\icons\radix_icons.dart:182:25
+- [x] lib\src\icons\radix_icons.dart:183:25
+- [x] lib\src\icons\radix_icons.dart:184:25
+- [x] lib\src\icons\radix_icons.dart:185:25
+- [x] lib\src\icons\radix_icons.dart:186:25
+- [x] lib\src\icons\radix_icons.dart:187:25
+- [x] lib\src\icons\radix_icons.dart:188:25
+- [x] lib\src\icons\radix_icons.dart:189:25
+- [x] lib\src\icons\radix_icons.dart:190:25
+- [x] lib\src\icons\radix_icons.dart:191:25
+- [x] lib\src\icons\radix_icons.dart:192:25
+- [x] lib\src\icons\radix_icons.dart:193:25
+- [x] lib\src\icons\radix_icons.dart:194:25
+- [x] lib\src\icons\radix_icons.dart:195:25
+- [x] lib\src\icons\radix_icons.dart:196:25
+- [x] lib\src\icons\radix_icons.dart:197:25
+- [x] lib\src\icons\radix_icons.dart:198:25
+- [x] lib\src\icons\radix_icons.dart:199:25
+- [x] lib\src\icons\radix_icons.dart:200:25
+- [x] lib\src\icons\radix_icons.dart:201:25
+- [x] lib\src\icons\radix_icons.dart:202:25
+- [x] lib\src\icons\radix_icons.dart:203:25
+- [x] lib\src\icons\radix_icons.dart:204:25
+- [x] lib\src\icons\radix_icons.dart:205:25
+- [x] lib\src\icons\radix_icons.dart:206:25
+- [x] lib\src\icons\radix_icons.dart:207:25
+- [x] lib\src\icons\radix_icons.dart:208:25
+- [x] lib\src\icons\radix_icons.dart:209:25
+- [x] lib\src\icons\radix_icons.dart:210:25
+- [x] lib\src\icons\radix_icons.dart:211:25
+- [x] lib\src\icons\radix_icons.dart:212:25
+- [x] lib\src\icons\radix_icons.dart:213:25
+- [x] lib\src\icons\radix_icons.dart:214:25
+- [x] lib\src\icons\radix_icons.dart:215:25
+- [x] lib\src\icons\radix_icons.dart:216:25
+- [x] lib\src\icons\radix_icons.dart:217:25
+- [x] lib\src\icons\radix_icons.dart:218:25
+- [x] lib\src\icons\radix_icons.dart:219:25
+- [x] lib\src\icons\radix_icons.dart:220:25
+- [x] lib\src\icons\radix_icons.dart:221:25
+- [x] lib\src\icons\radix_icons.dart:222:25
+- [x] lib\src\icons\radix_icons.dart:223:25
+- [x] lib\src\icons\radix_icons.dart:224:25
+- [x] lib\src\icons\radix_icons.dart:225:25
+- [x] lib\src\icons\radix_icons.dart:226:25
+- [x] lib\src\icons\radix_icons.dart:227:25
+- [x] lib\src\icons\radix_icons.dart:228:25
+- [x] lib\src\icons\radix_icons.dart:229:25
+- [x] lib\src\icons\radix_icons.dart:230:25
+- [x] lib\src\icons\radix_icons.dart:231:25
+- [x] lib\src\icons\radix_icons.dart:232:25
+- [x] lib\src\icons\radix_icons.dart:233:25
+- [x] lib\src\icons\radix_icons.dart:234:25
+- [x] lib\src\icons\radix_icons.dart:235:25
+- [x] lib\src\icons\radix_icons.dart:236:25
+- [x] lib\src\icons\radix_icons.dart:237:25
+- [x] lib\src\icons\radix_icons.dart:238:25
+- [x] lib\src\icons\radix_icons.dart:239:25
+- [x] lib\src\icons\radix_icons.dart:240:25
+- [x] lib\src\icons\radix_icons.dart:241:25
+- [x] lib\src\icons\radix_icons.dart:242:25
+- [x] lib\src\icons\radix_icons.dart:243:25
+- [x] lib\src\icons\radix_icons.dart:244:25
+- [x] lib\src\icons\radix_icons.dart:245:25
+- [x] lib\src\icons\radix_icons.dart:246:25
+- [x] lib\src\icons\radix_icons.dart:247:25
+- [x] lib\src\icons\radix_icons.dart:248:25
+- [x] lib\src\icons\radix_icons.dart:249:25
+- [x] lib\src\icons\radix_icons.dart:250:25
+- [x] lib\src\icons\radix_icons.dart:251:25
+- [x] lib\src\icons\radix_icons.dart:252:25
+- [x] lib\src\icons\radix_icons.dart:253:25
+- [x] lib\src\icons\radix_icons.dart:254:25
+- [x] lib\src\icons\radix_icons.dart:255:25
+- [x] lib\src\icons\radix_icons.dart:256:25
+- [x] lib\src\icons\radix_icons.dart:257:25
+- [x] lib\src\icons\radix_icons.dart:258:25
+- [x] lib\src\icons\radix_icons.dart:259:25
+- [x] lib\src\icons\radix_icons.dart:260:25
+- [x] lib\src\icons\radix_icons.dart:261:25
+- [x] lib\src\icons\radix_icons.dart:262:25
+- [x] lib\src\icons\radix_icons.dart:263:25
+- [x] lib\src\icons\radix_icons.dart:264:25
+- [x] lib\src\icons\radix_icons.dart:265:25
+- [x] lib\src\icons\radix_icons.dart:266:25
+- [x] lib\src\icons\radix_icons.dart:267:25
+- [x] lib\src\icons\radix_icons.dart:268:25
+- [x] lib\src\icons\radix_icons.dart:269:25
+- [x] lib\src\icons\radix_icons.dart:270:25
+- [x] lib\src\icons\radix_icons.dart:271:25
+- [x] lib\src\icons\radix_icons.dart:272:25
+- [x] lib\src\icons\radix_icons.dart:273:25
+- [x] lib\src\icons\radix_icons.dart:274:25
+- [x] lib\src\icons\radix_icons.dart:275:25
+- [x] lib\src\icons\radix_icons.dart:276:25
+- [x] lib\src\icons\radix_icons.dart:277:25
+- [x] lib\src\icons\radix_icons.dart:278:25
+- [x] lib\src\icons\radix_icons.dart:279:25
+- [x] lib\src\icons\radix_icons.dart:280:25
+- [x] lib\src\icons\radix_icons.dart:281:25
+- [x] lib\src\icons\radix_icons.dart:282:25
+- [x] lib\src\icons\radix_icons.dart:283:25
+- [x] lib\src\icons\radix_icons.dart:284:25
+- [x] lib\src\icons\radix_icons.dart:285:25
+- [x] lib\src\icons\radix_icons.dart:286:25
+- [x] lib\src\icons\radix_icons.dart:287:25
+- [x] lib\src\icons\radix_icons.dart:288:25
+- [x] lib\src\icons\radix_icons.dart:289:25
+- [x] lib\src\icons\radix_icons.dart:290:25
+- [x] lib\src\icons\radix_icons.dart:291:25
+- [x] lib\src\icons\radix_icons.dart:292:25
+- [x] lib\src\icons\radix_icons.dart:293:25
+- [x] lib\src\icons\radix_icons.dart:294:25
+- [x] lib\src\icons\radix_icons.dart:295:25
+- [x] lib\src\icons\radix_icons.dart:296:25
+- [x] lib\src\icons\radix_icons.dart:297:25
+- [x] lib\src\icons\radix_icons.dart:298:25
+- [x] lib\src\icons\radix_icons.dart:299:25
+- [x] lib\src\icons\radix_icons.dart:300:25
+- [x] lib\src\icons\radix_icons.dart:301:25
+- [x] lib\src\icons\radix_icons.dart:302:25
+- [x] lib\src\icons\radix_icons.dart:303:25
+- [x] lib\src\icons\radix_icons.dart:304:25
+- [x] lib\src\icons\radix_icons.dart:305:25
+- [x] lib\src\icons\radix_icons.dart:306:25
+- [x] lib\src\icons\radix_icons.dart:307:25
+- [x] lib\src\icons\radix_icons.dart:308:25
+- [x] lib\src\icons\radix_icons.dart:309:25
+- [x] lib\src\icons\radix_icons.dart:310:25
+- [x] lib\src\icons\radix_icons.dart:311:25
+- [x] lib\src\icons\radix_icons.dart:312:25
+- [x] lib\src\icons\radix_icons.dart:313:25
+- [x] lib\src\icons\radix_icons.dart:314:25
+- [x] lib\src\icons\radix_icons.dart:315:25
+- [x] lib\src\icons\radix_icons.dart:316:25
+- [x] lib\src\icons\radix_icons.dart:317:25
+- [x] lib\src\icons\radix_icons.dart:318:25
+- [x] lib\src\icons\radix_icons.dart:319:25
+- [x] lib\src\icons\radix_icons.dart:320:25
+- [x] lib\src\icons\radix_icons.dart:321:25
+- [x] lib\src\icons\radix_icons.dart:322:25
+- [x] lib\src\icons\radix_icons.dart:323:25
+- [x] lib\src\icons\radix_icons.dart:324:25
+- [x] lib\src\icons\radix_icons.dart:325:25
+- [x] lib\src\icons\radix_icons.dart:326:25
+- [x] lib\src\icons\radix_icons.dart:327:25
+- [x] lib\src\icons\radix_icons.dart:328:25
+- [x] lib\src\icons\radix_icons.dart:329:25
+- [x] lib\src\icons\radix_icons.dart:330:25
+- [x] lib\src\icons\radix_icons.dart:331:25
+- [x] lib\src\icons\radix_icons.dart:332:25
+- [x] lib\src\icons\radix_icons.dart:333:25
+- [x] lib\src\icons\radix_icons.dart:334:25
+- [x] lib\src\icons\radix_icons.dart:335:25
+- [x] lib\src\icons\radix_icons.dart:336:25
+- [x] lib\src\icons\radix_icons.dart:337:25
+- [x] lib\src\icons\radix_icons.dart:338:25
 - [ ] lib\src\platform\platform_implementations_web.dart:39:7
 - [ ] lib\src\platform\platform_implementations_web.dart:44:8
 - [ ] lib\src\platform\platform_implementations_web.dart:53:8
