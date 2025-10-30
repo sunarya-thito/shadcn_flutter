@@ -333,32 +333,32 @@ TODO:
 - [x] lib\src\icons\radix_icons.dart:336:25
 - [x] lib\src\icons\radix_icons.dart:337:25
 - [x] lib\src\icons\radix_icons.dart:338:25
-- [ ] lib\src\platform\platform_implementations_web.dart:39:7
-- [ ] lib\src\platform\platform_implementations_web.dart:44:8
-- [ ] lib\src\platform\platform_implementations_web.dart:53:8
-- [ ] lib\src\platform_interface.dart:3:7
-- [ ] lib\src\platform_interface.dart:4:8
-- [ ] lib\src\platform_interface.dart:7:8
-- [ ] lib\src\resizer.dart:27:7
-- [ ] lib\src\resizer.dart:46:12
-- [ ] lib\src\resizer.dart:48:14
-- [ ] lib\src\resizer.dart:52:14
-- [ ] lib\src\resizer.dart:29:16
-- [ ] lib\src\resizer.dart:30:16
-- [ ] lib\src\resizer.dart:31:14
-- [ ] lib\src\resizer.dart:32:17
-- [ ] lib\src\resizer.dart:33:14
-- [ ] lib\src\resizer.dart:37:3
-- [ ] lib\src\resizer.dart:69:7
-- [ ] lib\src\resizer.dart:183:8
-- [ ] lib\src\resizer.dart:244:8
-- [ ] lib\src\resizer.dart:292:8
-- [ ] lib\src\resizer.dart:334:8
-- [ ] lib\src\resizer.dart:520:8
-- [ ] lib\src\resizer.dart:70:29
-- [ ] lib\src\resizer.dart:71:16
-- [ ] lib\src\resizer.dart:72:16
-- [ ] lib\src\resizer.dart:73:3
+- [x] lib\src\platform\platform_implementations_web.dart:39:7
+- [x] lib\src\platform\platform_implementations_web.dart:44:8
+- [x] lib\src\platform\platform_implementations_web.dart:53:8
+- [x] lib\src\platform_interface.dart:3:7
+- [x] lib\src\platform_interface.dart:4:8
+- [x] lib\src\platform_interface.dart:7:8
+- [x] lib\src\resizer.dart:27:7
+- [x] lib\src\resizer.dart:46:12
+- [x] lib\src\resizer.dart:48:14
+- [x] lib\src\resizer.dart:52:14
+- [x] lib\src\resizer.dart:29:16
+- [x] lib\src\resizer.dart:30:16
+- [x] lib\src\resizer.dart:31:14
+- [x] lib\src\resizer.dart:32:17
+- [x] lib\src\resizer.dart:33:14
+- [x] lib\src\resizer.dart:37:3
+- [x] lib\src\resizer.dart:69:7
+- [x] lib\src\resizer.dart:183:8
+- [x] lib\src\resizer.dart:244:8
+- [x] lib\src\resizer.dart:292:8
+- [x] lib\src\resizer.dart:334:8
+- [x] lib\src\resizer.dart:520:8
+- [x] lib\src\resizer.dart:70:29
+- [x] lib\src\resizer.dart:71:16
+- [x] lib\src\resizer.dart:72:16
+- [x] lib\src\resizer.dart:73:3
 - [ ] lib\src\shadcn_app.dart:13:7
 - [ ] lib\src\shadcn_app.dart:14:9
 - [ ] lib\src\shadcn_app.dart:65:19
