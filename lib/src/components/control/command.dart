@@ -17,7 +17,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// ```dart
 /// CommandBuilder myBuilder = (context, query) async* {
 ///   final results = await fetchResults(query);
-///   yield results.map((r) => CommandItem(child: Text(r))).toList();
+///   yield results.map((r) => CommandItem(title: Text(r))).toList();
 /// };
 /// ```
 typedef CommandBuilder = Stream<List<Widget>> Function(
@@ -162,8 +162,8 @@ Future<T?> showCommandDialog<T>({
 ///   builder: (context, query) async* {
 ///     final results = await searchService.search(query);
 ///     yield results.map((item) => CommandItem(
-///       onSelected: () => handleCommand(item),
-///       child: Text(item.title),
+///       onTap: () => handleCommand(item),
+///       title: Text(item.title),
 ///     )).toList();
 ///   },
 ///   emptyBuilder: (context) => Text('No results found'),
@@ -208,8 +208,8 @@ class Command extends StatefulWidget {
   ///       cmd.name.toLowerCase().contains(query?.toLowerCase() ?? '')
   ///     );
   ///     yield filtered.map((cmd) => CommandItem(
-  ///       child: Text(cmd.name),
-  ///       onSelected: () => cmd.execute(),
+  ///       title: Text(cmd.name),
+  ///       onTap: () => cmd.execute(),
   ///     )).toList();
   ///   },
   /// )
