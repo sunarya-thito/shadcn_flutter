@@ -1276,6 +1276,11 @@ extension FlexExtension on Flex {
   }
 }
 
+/// An iterable that inserts a separator between each widget.
+///
+/// Parameters:
+/// - [widgets] (`Iterable<Widget>`, required): Original widgets.
+/// - [separator] (`Widget`, required): Widget to insert between items.
 Iterable<Widget> join(Iterable<Widget> widgets, Widget separator) {
   return SeparatedIterable(widgets, separator);
 }

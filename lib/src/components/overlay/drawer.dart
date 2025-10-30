@@ -41,16 +41,16 @@ typedef DrawerBuilder = Widget Function(BuildContext context, Size extraSize,
 class DrawerTheme {
   /// Surface opacity for backdrop effects.
   final double? surfaceOpacity;
-  
+
   /// Surface blur intensity for backdrop effects.
   final double? surfaceBlur;
-  
+
   /// Color of the barrier behind the drawer.
   final Color? barrierColor;
-  
+
   /// Whether to display the drag handle for draggable drawers.
   final bool? showDragHandle;
-  
+
   /// Size of the drag handle when displayed.
   final Size? dragHandleSize;
 
@@ -60,7 +60,7 @@ class DrawerTheme {
   ///
   /// Parameters:
   /// - [surfaceOpacity] (double?, optional): opacity for backdrop surface effects
-  /// - [surfaceBlur] (double?, optional): blur intensity for backdrop effects  
+  /// - [surfaceBlur] (double?, optional): blur intensity for backdrop effects
   /// - [barrierColor] (Color?, optional): color of the modal barrier
   /// - [showDragHandle] (bool?, optional): whether to show drag handles
   /// - [dragHandleSize] (Size?, optional): size of the drag handle
@@ -1197,19 +1197,23 @@ class _SheetWrapperState extends _DrawerWrapperState {
 }
 
 /// Position for overlay components like drawers and sheets.
-///
-/// - `left`: Positioned on the left edge
-/// - `right`: Positioned on the right edge
-/// - `top`: Positioned on the top edge
-/// - `bottom`: Positioned on the bottom edge
-/// - `start`: Positioned at the start (left in LTR, right in RTL)
-/// - `end`: Positioned at the end (right in LTR, left in RTL)
 enum OverlayPosition {
+  /// Positioned on the left edge
   left,
+
+  /// Positioned on the right edge
   right,
+
+  /// Positioned on the top edge
   top,
+
+  /// Positioned on the bottom edge
   bottom,
+
+  /// Positioned at the start (left in LTR, right in RTL)
   start,
+
+  /// Positioned at the end (right in LTR, left in RTL)
   end,
 }
 
@@ -1619,7 +1623,7 @@ class DrawerOverlay extends StatefulWidget {
 /// backdrop transformations.
 class DrawerOverlayState extends State<DrawerOverlay> {
   final List<DrawerOverlayEntry> _entries = [];
-  
+
   /// Key for the backdrop widget to enable transformations.
   final GlobalKey backdropKey = GlobalKey();
 

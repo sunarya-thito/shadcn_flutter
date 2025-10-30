@@ -1008,6 +1008,21 @@ class WrappedText extends StatelessWidget implements TextModifier {
     );
   }
 
+  /// Creates a copy of this [WrappedText] with modified properties.
+  ///
+  /// Each parameter is a builder function that, if provided, will
+  /// replace the corresponding property in the new instance.
+  /// If a parameter is `null`, the existing property value is retained.
+  ///
+  /// Parameters:
+  /// - [style] (`ValueGetter<WrappedTextDataBuilder<TextStyle>?>?`, optional): New style builder.
+  /// - [textAlign] (`ValueGetter<WrappedTextDataBuilder<TextAlign>?>?`, optional): New text alignment builder.
+  /// - [softWrap] (`ValueGetter<WrappedTextDataBuilder<bool>?>?`, optional): New soft wrap builder.
+  /// - [overflow] (`ValueGetter<WrappedTextDataBuilder<TextOverflow>?>?`, optional): New overflow handling builder.
+  /// - [maxLines] (`ValueGetter<WrappedTextDataBuilder<int>?>?`, optional): New max lines builder.
+  /// - [textWidthBasis] (`ValueGetter<WrappedTextDataBuilder<TextWidthBasis>?>?`, optional): New text width basis builder.
+  /// - [wrapper] (`ValueGetter<WidgetTextWrapper?>?`, optional): New container wrapper function.
+  /// - [child] (`ValueGetter<Widget>?`, optional): New child widget.
   WrappedText copyWith({
     ValueGetter<WrappedTextDataBuilder<TextStyle>?>? style,
     ValueGetter<WrappedTextDataBuilder<TextAlign>?>? textAlign,
@@ -1031,6 +1046,12 @@ class WrappedText extends StatelessWidget implements TextModifier {
     );
   }
 
+  /// Creates a copy of this [WrappedText] with an updated style.
+  ///
+  /// The provided [style] builder is merged with the existing style.
+  ///
+  /// Parameters:
+  /// - [style] (`WrappedTextDataBuilder<TextStyle>`, required): New style builder to merge.
   WrappedText copyWithStyle(WrappedTextDataBuilder<TextStyle> style) {
     return WrappedText(
       wrapper: wrapper,

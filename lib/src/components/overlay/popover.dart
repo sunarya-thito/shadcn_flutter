@@ -322,10 +322,19 @@ typedef PopoverFutureVoidCallback<T> = Future<T> Function(T value);
 /// - `anchorMinSize`: Use anchor size as minimum
 /// - `anchorMaxSize`: Use anchor size as maximum
 enum PopoverConstraint {
+  /// Size flexibly based on content and available space
   flexible,
+
+  /// Use intrinsic content size
   intrinsic,
+
+  /// Match anchor's exact size
   anchorFixedSize,
+
+  /// Use anchor size as minimum
   anchorMinSize,
+
+  /// Use anchor size as maximum
   anchorMaxSize,
 }
 

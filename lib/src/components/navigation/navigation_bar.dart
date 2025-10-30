@@ -9,19 +9,19 @@ import 'package:shadcn_flutter/src/components/layout/hidden.dart';
 enum NavigationBarAlignment {
   /// Align items to the start of the navigation bar.
   start(MainAxisAlignment.start),
-  
+
   /// Center items within the navigation bar.
   center(MainAxisAlignment.center),
-  
+
   /// Align items to the end of the navigation bar.
   end(MainAxisAlignment.end),
-  
+
   /// Distribute items with space between them.
   spaceBetween(MainAxisAlignment.spaceBetween),
-  
+
   /// Distribute items with space around them.
   spaceAround(MainAxisAlignment.spaceAround),
-  
+
   /// Distribute items with equal space between and around them.
   spaceEvenly(MainAxisAlignment.spaceEvenly);
 
@@ -36,30 +36,30 @@ enum NavigationBarAlignment {
 ///
 /// This enum provides alignment strategies specifically for navigation rails,
 /// which are typically vertical navigation components.
-enum NavigationRailAlignment { 
+enum NavigationRailAlignment {
   /// Align items to the start (top) of the rail.
-  start, 
-  
+  start,
+
   /// Center items within the rail.
-  center, 
-  
+  center,
+
   /// Align items to the end (bottom) of the rail.
-  end 
+  end
 }
 
 /// Enumeration defining the type of navigation container.
 ///
 /// This enum identifies the different navigation layout modes available,
 /// each with distinct visual presentations and interaction patterns.
-enum NavigationContainerType { 
+enum NavigationContainerType {
   /// Vertical rail navigation, typically positioned at the side.
-  rail, 
-  
+  rail,
+
   /// Horizontal bar navigation, typically positioned at the top or bottom.
-  bar, 
-  
+  bar,
+
   /// Expandable sidebar navigation with more space for content.
-  sidebar 
+  sidebar
 }
 
 /// Theme data for customizing [NavigationBar] widget appearance.
@@ -1096,28 +1096,46 @@ class _NavigationSidebarState extends State<NavigationSidebar>
 }
 
 /// Determines when labels are shown in navigation items.
-///
-/// Values:
-/// - `none`: No labels shown.
-/// - `selected`: Labels shown only for selected items.
-/// - `all`: Labels always shown for all items.
-/// - `tooltip`: Labels shown as tooltips on hover.
-/// - `expanded`: Labels shown when navigation is expanded.
-enum NavigationLabelType { none, selected, all, tooltip, expanded }
+enum NavigationLabelType {
+  /// No labels displayed.
+  none,
+
+  /// Labels shown only for selected items.
+  selected,
+
+  /// Labels always shown for all items.
+  all,
+
+  /// Labels shown as tooltips on hover.
+  tooltip,
+
+  /// Labels shown when navigation is expanded.
+  expanded,
+}
 
 /// Position of navigation item labels relative to icons.
-///
-/// - `start`: Label before icon (left in LTR, right in RTL)
-/// - `end`: Label after icon (right in LTR, left in RTL)
-/// - `top`: Label above icon
-/// - `bottom`: Label below icon
-enum NavigationLabelPosition { start, end, top, bottom }
+enum NavigationLabelPosition {
+  /// Label before icon (left in LTR, right in RTL)
+  start,
+
+  /// Label after icon (right in LTR, left in RTL)
+  end,
+
+  /// Label above icon
+  top,
+
+  /// Label below icon
+  bottom,
+}
 
 /// Size variant for navigation item labels.
-///
-/// - `small`: Compact label text
-/// - `large`: Larger label text
-enum NavigationLabelSize { small, large }
+enum NavigationLabelSize {
+  /// Compact label text
+  small,
+
+  /// Larger label text
+  large,
+}
 
 /// Data class tracking navigation child position and selection state.
 ///
@@ -1885,12 +1903,19 @@ class NavigationPadding extends StatelessWidget {
 }
 
 /// Overflow behavior for navigation item labels.
-///
-/// - `clip`: Clip text that exceeds bounds
-/// - `marquee`: Scroll text horizontally when too long
-/// - `ellipsis`: Show ellipsis (...) for overflow
-/// - `none`: No overflow handling
-enum NavigationOverflow { clip, marquee, ellipsis, none }
+enum NavigationOverflow {
+  /// Clip text that exceeds bounds
+  clip,
+
+  /// Scroll text horizontally when too long
+  marquee,
+
+  /// Show ellipsis (...) for overflow
+  ellipsis,
+
+  /// No overflow handling
+  none,
+}
 
 /// Non-interactive label widget for navigation sections.
 ///
