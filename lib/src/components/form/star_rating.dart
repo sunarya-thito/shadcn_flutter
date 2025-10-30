@@ -76,12 +76,12 @@ class StarRatingTheme {
 /// Example:
 /// ```dart
 /// final controller = StarRatingController(3.5);
-/// 
+///
 /// // Listen to changes
 /// controller.addListener(() {
 ///   print('Rating changed to: ${controller.value}');
 /// });
-/// 
+///
 /// // Update the rating
 /// controller.value = 4.0;
 /// ```
@@ -119,7 +119,7 @@ class StarRatingController extends ValueNotifier<double>
 /// **Controller-based (recommended for complex state):**
 /// ```dart
 /// final controller = StarRatingController(3.5);
-/// 
+///
 /// ControlledStarRating(
 ///   controller: controller,
 ///   max: 5.0,
@@ -131,7 +131,7 @@ class StarRatingController extends ValueNotifier<double>
 /// **Callback-based (simple state management):**
 /// ```dart
 /// double currentRating = 0.0;
-/// 
+///
 /// ControlledStarRating(
 ///   initialValue: currentRating,
 ///   onChanged: (rating) => setState(() => currentRating = rating),
@@ -439,6 +439,7 @@ class StarRating extends StatefulWidget {
   final bool? enabled;
 
   /// Creates a [StarRating].
+  const StarRating({
     super.key,
     required this.value,
     this.onChanged,
@@ -495,9 +496,9 @@ class _StarRatingState extends State<StarRating>
     var starInnerRadiusRatio = widget.starInnerRadiusRatio ?? 0.4;
     var starRotation = widget.starRotation ?? 0.0;
     var starSize = styleValue(
-        widgetValue: widget.starSize,
-        themeValue: compTheme?.starSize,
-        defaultValue: 24.0) *
+            widgetValue: widget.starSize,
+            themeValue: compTheme?.starSize,
+            defaultValue: 24.0) *
         scaling;
     return Container(
       width: starSize,

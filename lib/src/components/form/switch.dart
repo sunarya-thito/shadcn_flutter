@@ -201,6 +201,7 @@ class ControlledSwitch extends StatelessWidget with ControlledComponent<bool> {
   final BorderRadiusGeometry? borderRadius;
 
   /// Creates a [ControlledSwitch].
+  const ControlledSwitch({
     super.key,
     this.controller,
     this.initialValue = false,
@@ -313,6 +314,7 @@ class Switch extends StatefulWidget {
   final BorderRadiusGeometry? borderRadius;
 
   /// Creates a [Switch].
+  const Switch({
     super.key,
     required this.value,
     required this.onChanged,
