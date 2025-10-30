@@ -1269,19 +1269,48 @@ class URLValidator extends Validator<String> {
   int get hashCode => message.hashCode;
 }
 
+/// A validator that compares a value against a static comparison value.
+///
+/// [CompareTo] validates by comparing the field value against a fixed value
+/// (unlike [CompareWith] which compares against another field). Supports
+/// various comparison types.
+///
+/// Example:
+/// ```dart
+/// CompareTo.greaterOrEqual(
+///   18,
+///   message: 'Must be at least 18',
+/// )
+/// ```
 class CompareTo<T extends Comparable<T>> extends Validator<T> {
+  /// The value to compare against.
   final T? value;
+  
+  /// The type of comparison to perform.
   final CompareType type;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [CompareTo] validator with the specified comparison type.
   const CompareTo(this.value, this.type, {this.message});
+  
+  /// Creates a validator that checks for equality with a value.
   const CompareTo.equal(this.value, {this.message}) : type = CompareType.equal;
+  
+  /// Creates a validator that checks if field value is greater than the specified value.
   const CompareTo.greater(this.value, {this.message})
       : type = CompareType.greater;
+      
+  /// Creates a validator that checks if field value is greater than or equal to the specified value.
   const CompareTo.greaterOrEqual(this.value, {this.message})
       : type = CompareType.greaterOrEqual;
+      
+  /// Creates a validator that checks if field value is less than the specified value.
   const CompareTo.less(this.value, {this.message}) : type = CompareType.less;
+  
+  /// Creates a validator that checks if field value is less than or equal to the specified value.
   const CompareTo.lessOrEqual(this.value, {this.message})
       : type = CompareType.lessOrEqual;
 
@@ -1354,9 +1383,25 @@ class CompareTo<T extends Comparable<T>> extends Validator<T> {
   int get hashCode => Object.hash(value, type, message);
 }
 
+/// A validator that combines multiple validators with AND logic.
+///
+/// [CompositeValidator] runs multiple validators sequentially and only passes
+/// if all validators pass. If any validator fails, validation stops and returns
+/// that error. Created automatically when using the `&` operator between validators.
+///
+/// Example:
+/// ```dart
+/// CompositeValidator([
+///   NonNullValidator(),
+///   MinLengthValidator(3),
+///   EmailValidator(),
+/// ])
+/// ```
 class CompositeValidator<T> extends Validator<T> {
+  /// The list of validators to run sequentially.
   final List<Validator<T>> validators;
 
+  /// Creates a [CompositeValidator] from a list of validators.
   const CompositeValidator(this.validators);
 
   @override
@@ -1414,19 +1459,40 @@ class CompositeValidator<T> extends Validator<T> {
   int get hashCode => validators.hashCode;
 }
 
+/// Abstract base class representing the result of a validation operation.
+///
+/// [ValidationResult] encapsulates the outcome of validating a form field value.
+/// Subclasses include [InvalidResult] for validation failures and [ValidResult]
+/// for successful validation.
 abstract class ValidationResult {
+  /// The form validation mode that triggered this result.
   final FormValidationMode state;
+  
+  /// Creates a [ValidationResult] with the specified validation state.
   const ValidationResult({required this.state});
+  
+  /// The form field key associated with this validation result.
   FormKey get key;
+  
+  /// Attaches a form field key to this validation result.
   ValidationResult attach(FormKey key);
 }
 
+/// A validation result that indicates a value should be replaced.
+///
+/// [ReplaceResult] is used when validation determines that the submitted
+/// value should be transformed or replaced with a different value. For example,
+/// trimming whitespace or formatting input.
 class ReplaceResult<T> extends ValidationResult {
+  /// The replacement value to use.
   final T value;
+  
   final FormKey? _key;
 
+  /// Creates a [ReplaceResult] with the specified replacement value.
   const ReplaceResult(this.value, {required super.state}) : _key = null;
 
+  /// Creates a [ReplaceResult] already attached to a form field key.
   const ReplaceResult.attached(this.value,
       {required FormKey key, required super.state})
       : _key = key;
@@ -1443,11 +1509,21 @@ class ReplaceResult<T> extends ValidationResult {
   }
 }
 
+/// A validation result indicating that validation failed.
+///
+/// [InvalidResult] contains an error message describing why validation failed.
+/// This is the most common validation result type returned by validators when
+/// a value doesn't meet the validation criteria.
 class InvalidResult extends ValidationResult {
+  /// The error message describing the validation failure.
   final String message;
+  
   final FormKey? _key;
 
+  /// Creates an [InvalidResult] with the specified error message.
   const InvalidResult(this.message, {required super.state}) : _key = null;
+  
+  /// Creates an [InvalidResult] already attached to a form field key.
   const InvalidResult.attached(this.message,
       {required FormKey key, required super.state})
       : _key = key;
@@ -1464,28 +1540,54 @@ class InvalidResult extends ValidationResult {
   }
 }
 
+/// A notification sent when a form field's validation state changes.
+///
+/// [FormValidityNotification] is dispatched through the notification system
+/// when a field's validity transitions between valid, invalid, or null states.
+/// Useful for updating UI or tracking form validation status.
 class FormValidityNotification extends Notification {
+  /// The previous validation result, or null if there was none.
   final ValidationResult? oldValidity;
+  
+  /// The new validation result, or null if now valid.
   final ValidationResult? newValidity;
 
+  /// Creates a [FormValidityNotification] with old and new validity states.
   const FormValidityNotification(this.newValidity, this.oldValidity);
 }
 
+/// A key that uniquely identifies a form field and its type.
+///
+/// [FormKey] extends [LocalKey] and is used throughout the form system to
+/// reference specific form fields. It includes type information to ensure
+/// type-safe access to form values.
+///
+/// Example:
+/// ```dart
+/// const emailKey = FormKey<String>('email');
+/// const ageKey = FormKey<int>('age');
+/// ```
 class FormKey<T> extends LocalKey {
+  /// The underlying key object.
   final Object key;
 
+  /// Creates a [FormKey] with the specified key object.
   const FormKey(this.key);
 
+  /// Gets the generic type parameter of this key.
   Type get type => T;
 
+  /// Checks if a dynamic value is an instance of this key's type.
   bool isInstanceOf(dynamic value) {
     return value is T;
   }
 
+  /// Gets the value associated with this key from the form values map.
   T? getValue(FormMapValues values) {
     return values.getValue(this);
   }
 
+  /// Operator overload to get the value from form values (same as [getValue]).
   T? operator [](FormMapValues values) {
     return values.getValue(this);
   }
