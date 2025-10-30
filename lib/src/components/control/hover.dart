@@ -1,12 +1,43 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Theme configuration for hover-related widgets and behaviors.
+///
+/// [HoverTheme] provides configurable durations and behaviors for hover
+/// interactions throughout the application. It can be registered in the
+/// component theme system to customize hover behavior globally.
+///
+/// Example:
+/// ```dart
+/// HoverTheme(
+///   debounceDuration: Duration(milliseconds: 100),
+///   hitTestBehavior: HitTestBehavior.opaque,
+/// )
+/// ```
 class HoverTheme {
+  /// Debounce duration for repeated hover events.
+  ///
+  /// When set, hover callbacks are throttled to fire at most once per this duration.
   final Duration? debounceDuration;
+
+  /// Hit test behavior for hover detection.
+  ///
+  /// Determines how the widget participates in hit testing for mouse events.
   final HitTestBehavior? hitTestBehavior;
+
+  /// Wait duration before showing hover feedback (e.g., tooltips).
+  ///
+  /// Delays the appearance of hover-triggered UI to avoid flashing on quick passes.
   final Duration? waitDuration;
+
+  /// Minimum duration to keep hover feedback visible once shown.
+  ///
+  /// Prevents hover UI from disappearing too quickly.
   final Duration? minDuration;
+
+  /// Duration for hover feedback show animations.
   final Duration? showDuration;
 
+  /// Creates a [HoverTheme] with optional configuration values.
   const HoverTheme({
     this.debounceDuration,
     this.hitTestBehavior,
@@ -15,6 +46,9 @@ class HoverTheme {
     this.showDuration,
   });
 
+  /// Creates a copy of this theme with selectively replaced properties.
+  ///
+  /// Parameters are [ValueGetter] functions to allow setting values to `null`.
   HoverTheme copyWith({
     ValueGetter<Duration?>? debounceDuration,
     ValueGetter<HitTestBehavior?>? hitTestBehavior,
@@ -53,16 +87,50 @@ class HoverTheme {
       );
 }
 
-/// A widget that tracks the hover state of the mouse cursor
-/// and will call the [onHover] with period of [debounceDuration] when the cursor is hovering over the child widget.
+/// A widget that tracks mouse hover state and triggers callbacks.
+///
+/// [HoverActivity] monitors when the mouse cursor enters, hovers over, and exits
+/// its child widget, calling appropriate callbacks. The [onHover] callback can be
+/// called repeatedly while hovering if [debounceDuration] is set.
+///
+/// Example:
+/// ```dart
+/// HoverActivity(
+///   debounceDuration: Duration(milliseconds: 500),
+///   onEnter: () => print('Mouse entered'),
+///   onHover: () => print('Still hovering'),
+///   onExit: () => print('Mouse exited'),
+///   child: Container(
+///     width: 100,
+///     height: 100,
+///     color: Colors.blue,
+///   ),
+/// )
+/// ```
 class HoverActivity extends StatefulWidget {
+  /// The widget to track for hover events.
   final Widget child;
+
+  /// Called periodically while hovering, at intervals of [debounceDuration].
+  ///
+  /// If [debounceDuration] is `null`, this is called only once on initial hover.
   final VoidCallback? onHover;
+
+  /// Called when the mouse cursor exits the widget bounds.
   final VoidCallback? onExit;
+
+  /// Called when the mouse cursor first enters the widget bounds.
   final VoidCallback? onEnter;
+
+  /// Interval for repeated [onHover] callbacks while the cursor remains over the widget.
+  ///
+  /// If `null`, [onHover] is called only once when hover begins.
   final Duration? debounceDuration;
+
+  /// Hit test behavior determining how this widget participates in pointer event handling.
   final HitTestBehavior? hitTestBehavior;
 
+  /// Creates a [HoverActivity] widget.
   const HoverActivity({
     super.key,
     required this.child,

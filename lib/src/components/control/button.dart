@@ -5275,16 +5275,63 @@ class IconButton extends StatelessWidget {
   }
 }
 
+/// Widget for locally overriding button styles within a subtree.
+///
+/// [ButtonStyleOverride] allows selective customization of button style properties
+/// for all descendant buttons without replacing the entire button style. It provides
+/// style property delegates that can intercept and modify the default values.
+///
+/// The widget supports two modes:
+/// - **Replace mode** (default): Applies overrides directly
+/// - **Inherit mode**: Chains with parent overrides, allowing nested customization
+///
+/// Example:
+/// ```dart
+/// ButtonStyleOverride(
+///   decoration: (context, states, defaultDecoration) {
+///     // Customize decoration for all buttons in this subtree
+///     return BoxDecoration(color: Colors.red);
+///   },
+///   child: Column(
+///     children: [
+///       PrimaryButton(child: Text('Red Button')),
+///       SecondaryButton(child: Text('Also Red')),
+///     ],
+///   ),
+/// )
+/// ```
 class ButtonStyleOverride extends StatelessWidget {
+  /// Whether to inherit and chain with parent overrides.
+  ///
+  /// When `true`, this override's delegates receive the parent override's result
+  /// as their default value, allowing nested style modifications. When `false`,
+  /// parent overrides are ignored.
   final bool inherit;
+
+  /// Optional decoration override delegate.
   final ButtonStatePropertyDelegate<Decoration>? decoration;
+
+  /// Optional mouse cursor override delegate.
   final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
+
+  /// Optional padding override delegate.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
+
+  /// Optional text style override delegate.
   final ButtonStatePropertyDelegate<TextStyle>? textStyle;
+
+  /// Optional icon theme override delegate.
   final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
+
+  /// Optional margin override delegate.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
+
+  /// The widget subtree where overrides apply.
   final Widget child;
 
+  /// Creates a button style override in replace mode.
+  ///
+  /// Overrides apply to all descendant buttons, ignoring parent overrides.
   const ButtonStyleOverride({
     super.key,
     this.decoration,
@@ -5296,6 +5343,10 @@ class ButtonStyleOverride extends StatelessWidget {
     required this.child,
   }) : inherit = false;
 
+  /// Creates a button style override in inherit mode.
+  ///
+  /// Overrides chain with parent overrides, allowing nested customization where
+  /// each level can modify the result of the previous level.
   const ButtonStyleOverride.inherit({
     super.key,
     this.decoration,
@@ -5370,14 +5421,34 @@ class ButtonStyleOverride extends StatelessWidget {
   }
 }
 
+/// Data class holding button style override delegates.
+///
+/// [ButtonStyleOverrideData] is used internally by [ButtonStyleOverride] to pass
+/// style override delegates through the widget tree via the [Data] inherited widget
+/// system. It stores optional delegates for each button style property.
+///
+/// This class is typically not used directly by application code; instead, use
+/// [ButtonStyleOverride] widget to apply style overrides.
 class ButtonStyleOverrideData {
+  /// Optional decoration override delegate.
   final ButtonStatePropertyDelegate<Decoration>? decoration;
+
+  /// Optional mouse cursor override delegate.
   final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
+
+  /// Optional padding override delegate.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
+
+  /// Optional text style override delegate.
   final ButtonStatePropertyDelegate<TextStyle>? textStyle;
+
+  /// Optional icon theme override delegate.
   final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
+
+  /// Optional margin override delegate.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
 
+  /// Creates button style override data with the specified delegates.
   const ButtonStyleOverrideData({
     this.decoration,
     this.mouseCursor,
@@ -5506,12 +5577,20 @@ class ButtonGroup extends StatelessWidget {
     required this.children,
   });
 
+  /// Creates a horizontal button group.
+  ///
+  /// A convenience constructor equivalent to `ButtonGroup(direction: Axis.horizontal)`.
+  /// Arranges buttons in a row with connected borders.
   const ButtonGroup.horizontal({
     super.key,
     this.expands = false,
     required this.children,
   }) : direction = Axis.horizontal;
 
+  /// Creates a vertical button group.
+  ///
+  /// A convenience constructor equivalent to `ButtonGroup(direction: Axis.vertical)`.
+  /// Arranges buttons in a column with connected borders.
   const ButtonGroup.vertical({
     super.key,
     this.expands = false,
@@ -5565,22 +5644,64 @@ class ButtonGroup extends StatelessWidget {
   }
 }
 
+/// Data class defining border radius multipliers for grouped buttons.
+///
+/// [ButtonGroupData] specifies which corners of a button should have reduced
+/// border radius when part of a [ButtonGroup]. Values of 0.0 remove the radius
+/// entirely (for internal buttons), while 1.0 preserves the full radius (for
+/// end buttons).
+///
+/// This class uses directional values (start/end) to support RTL layouts properly.
+/// The static constants provide common configurations for different positions
+/// within a button group.
+///
+/// Example:
+/// ```dart
+/// // First button in horizontal group - preserve left radius, remove right
+/// ButtonGroupData.horizontal(end: 0.0)
+///
+/// // Middle button - remove all radius
+/// ButtonGroupData.zero
+///
+/// // Last button in horizontal group - remove left radius, preserve right
+/// ButtonGroupData.horizontal(start: 0.0)
+/// ```
 class ButtonGroupData {
+  /// No modification - full border radius on all corners.
   static const ButtonGroupData none = ButtonGroupData.all(1.0);
+
+  /// Zero radius - removes border radius from all corners.
   static const ButtonGroupData zero = ButtonGroupData.all(0.0);
+
+  /// Horizontal start position - full start radius, no end radius.
   static const ButtonGroupData horizontalStart =
       ButtonGroupData.horizontal(end: 0.0);
+
+  /// Horizontal end position - no start radius, full end radius.
   static const ButtonGroupData horizontalEnd =
       ButtonGroupData.horizontal(start: 0.0);
+
+  /// Vertical top position - full top radius, no bottom radius.
   static const ButtonGroupData verticalTop =
       ButtonGroupData.vertical(bottom: 0.0);
+
+  /// Vertical bottom position - no top radius, full bottom radius.
   static const ButtonGroupData verticalBottom =
       ButtonGroupData.vertical(top: 0.0);
+
+  /// Border radius multiplier for top-start corner (0.0 to 1.0).
   final double topStartValue;
+
+  /// Border radius multiplier for top-end corner (0.0 to 1.0).
   final double topEndValue;
+
+  /// Border radius multiplier for bottom-start corner (0.0 to 1.0).
   final double bottomStartValue;
+
+  /// Border radius multiplier for bottom-end corner (0.0 to 1.0).
   final double bottomEndValue;
 
+  /// Creates button group data with individual corner multipliers.
   const ButtonGroupData({
     required this.topStartValue,
     required this.topEndValue,
@@ -5588,6 +5709,9 @@ class ButtonGroupData {
     required this.bottomEndValue,
   });
 
+  /// Creates horizontal group data with start and end multipliers.
+  ///
+  /// Both top and bottom on each side use the same value.
   const ButtonGroupData.horizontal({
     double start = 1.0,
     double end = 1.0,
@@ -5596,6 +5720,9 @@ class ButtonGroupData {
         bottomStartValue = start,
         bottomEndValue = end;
 
+  /// Creates vertical group data with top and bottom multipliers.
+  ///
+  /// Both start and end on each side use the same value.
   const ButtonGroupData.vertical({
     double top = 1.0,
     double bottom = 1.0,
@@ -5604,12 +5731,20 @@ class ButtonGroupData {
         bottomStartValue = bottom,
         bottomEndValue = bottom;
 
+  /// Creates group data with the same multiplier for all corners.
   const ButtonGroupData.all(double value)
       : topStartValue = value,
         topEndValue = value,
         bottomStartValue = value,
         bottomEndValue = value;
 
+  /// Creates group data for a button at [index] in a horizontal group of [length] buttons.
+  ///
+  /// Returns:
+  /// - [horizontalStart] for the first button (index 0)
+  /// - [zero] for middle buttons
+  /// - [horizontalEnd] for the last button
+  /// - [none] if group has only one button
   factory ButtonGroupData.horizontalIndex(int index, int length) {
     if (length <= 1) {
       return none;
@@ -5624,6 +5759,13 @@ class ButtonGroupData {
     }
   }
 
+  /// Creates group data for a button at [index] in a vertical group of [length] buttons.
+  ///
+  /// Returns:
+  /// - [verticalTop] for the first button (index 0)
+  /// - [zero] for middle buttons
+  /// - [verticalBottom] for the last button
+  /// - [none] if group has only one button
   factory ButtonGroupData.verticalIndex(int index, int length) {
     if (length <= 1) {
       return none;
@@ -5638,6 +5780,16 @@ class ButtonGroupData {
     }
   }
 
+  /// Applies corner multipliers to a border radius.
+  ///
+  /// Multiplies each corner's radius by the corresponding corner value,
+  /// properly handling text direction for start/end mapping to left/right.
+  ///
+  /// Parameters:
+  /// - [borderRadius]: The base border radius to modify
+  /// - [textDirection]: Text direction for resolving start/end to left/right
+  ///
+  /// Returns a new [BorderRadiusGeometry] with modified corner radii.
   BorderRadiusGeometry applyToBorderRadius(
       BorderRadiusGeometry borderRadius, TextDirection textDirection) {
     final topLeftValue =
@@ -5669,6 +5821,18 @@ class ButtonGroupData {
     );
   }
 
+  /// Combines this group data with another by multiplying corresponding corner values.
+  ///
+  /// Useful for nesting button groups or applying multiple grouping effects.
+  /// Each corner value is multiplied: result = this.value * other.value.
+  ///
+  /// Example:
+  /// ```dart
+  /// final half = ButtonGroupData.all(0.5);
+  /// final end = ButtonGroupData.horizontal(start: 0.0);
+  /// final combined = half.applyToButtonGroupData(end);
+  /// // combined has: topStart=0, bottomStart=0, topEnd=0.5, bottomEnd=0.5
+  /// ```
   ButtonGroupData applyToButtonGroupData(ButtonGroupData other) {
     return ButtonGroupData(
       topStartValue: topStartValue * other.topStartValue,
