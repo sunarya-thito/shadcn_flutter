@@ -733,6 +733,10 @@ class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
   /// Completer for the popover's result value.
   final Completer<T?> completer = Completer();
 
+  /// Completer that tracks the popover's animation lifecycle.
+  ///
+  /// Completes when the popover's entry and exit animations finish.
+  /// Used internally to coordinate animation timing and cleanup.
   final Completer<T?> animationCompleter = Completer();
 
   bool _removed = false;

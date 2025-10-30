@@ -371,8 +371,19 @@ class SelectableText extends StatelessWidget {
   /// {@macro flutter.widgets.editableText.cursorRadius}
   final Radius? cursorRadius;
 
+  /// Color of the text cursor.
+  ///
+  /// If null, defaults to the theme's cursor color.
   final Color? cursorColor;
+
+  /// Defines the height of text selection boxes.
+  ///
+  /// See [ui.BoxHeightStyle] for available options.
   final ui.BoxHeightStyle selectionHeightStyle;
+
+  /// Defines the width of text selection boxes.
+  ///
+  /// See [ui.BoxWidthStyle] for available options.
   final ui.BoxWidthStyle selectionWidthStyle;
 
   /// {@macro flutter.widgets.editableText.enableInteractiveSelection}

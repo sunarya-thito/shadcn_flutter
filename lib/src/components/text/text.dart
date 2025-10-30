@@ -2,9 +2,50 @@ import 'package:flutter/rendering.dart';
 
 import '../../../shadcn_flutter.dart';
 
+/// Abstract base class for text modifier widgets.
+///
+/// Text modifiers provide a fluent API for applying text styles and
+/// transformations. They extend [Widget] and can be called as functions
+/// to apply additional style properties.
+///
+/// Use the [TextExtension] methods to create and chain text modifiers.
 abstract class TextModifier extends Widget {
+  /// Creates a [TextModifier].
   const TextModifier({super.key});
 
+  /// Applies additional text style properties to this modifier.
+  ///
+  /// All parameters are optional and can be used to override or extend
+  /// the current text styling.
+  ///
+  /// Parameters:
+  /// - [color] (`Color?`, optional): Text color.
+  /// - [backgroundColor] (`Color?`, optional): Background color for text.
+  /// - [fontSize] (`double?`, optional): Font size in logical pixels.
+  /// - [fontWeight] (`FontWeight?`, optional): Font weight (e.g., bold, normal).
+  /// - [fontStyle] (`FontStyle?`, optional): Font style (e.g., italic, normal).
+  /// - [letterSpacing] (`double?`, optional): Space between letters.
+  /// - [wordSpacing] (`double?`, optional): Space between words.
+  /// - [textBaseline] (`TextBaseline?`, optional): Text baseline alignment.
+  /// - [height] (`double?`, optional): Line height multiplier.
+  /// - [leadingDistribution] (`TextLeadingDistribution?`, optional): How to distribute line height.
+  /// - [locale] (`Locale?`, optional): Locale for font selection.
+  /// - [foreground] (`Paint?`, optional): Custom foreground paint.
+  /// - [background] (`Paint?`, optional): Custom background paint.
+  /// - [shadows] (`List<Shadow>?`, optional): Text shadows.
+  /// - [fontFeatures] (`List<FontFeature>?`, optional): OpenType font features.
+  /// - [fontVariations] (`List<FontVariation>?`, optional): Font variations.
+  /// - [decoration] (`TextDecoration?`, optional): Text decoration (underline, etc.).
+  /// - [decorationColor] (`Color?`, optional): Decoration color.
+  /// - [decorationStyle] (`TextDecorationStyle?`, optional): Decoration style.
+  /// - [decorationThickness] (`double?`, optional): Decoration thickness.
+  /// - [debugLabel] (`String?`, optional): Debug label for text style.
+  /// - [fontFamily] (`String?`, optional): Font family name.
+  /// - [fontFamilyFallback] (`List<String>?`, optional): Fallback font families.
+  /// - [package] (`String?`, optional): Package containing the font.
+  /// - [overflow] (`TextOverflow?`, optional): How to handle text overflow.
+  ///
+  /// Returns: `Widget` — the modified text widget.
   Widget call({
     Color? color,
     Color? backgroundColor,
@@ -34,132 +75,167 @@ abstract class TextModifier extends Widget {
   });
 }
 
+/// Extension providing text styling modifiers for widgets.
+///
+/// This extension adds a fluent API for applying text styles to widgets.
+/// Each property returns a [TextModifier] that can be further chained.
+///
+/// Example:
+/// ```dart
+/// Text('Hello').sans.large.bold.muted
+/// ```
 extension TextExtension on Widget {
+  /// Applies sans-serif font family.
   TextModifier get sans => WrappedText(
         style: (context, theme) => theme.typography.sans,
         child: this,
       );
 
+  /// Applies monospace font family.
   TextModifier get mono => WrappedText(
         style: (context, theme) => theme.typography.mono,
         child: this,
       );
 
+  /// Applies extra-small font size.
   TextModifier get xSmall => WrappedText(
         style: (context, theme) => theme.typography.xSmall,
         child: this,
       );
 
+  /// Applies small font size.
   TextModifier get small => WrappedText(
         style: (context, theme) => theme.typography.small,
         child: this,
       );
 
+  /// Applies base (default) font size.
   TextModifier get base => WrappedText(
         style: (context, theme) => theme.typography.base,
         child: this,
       );
 
+  /// Applies large font size.
   TextModifier get large => WrappedText(
         style: (context, theme) => theme.typography.large,
         child: this,
       );
 
+  /// Applies extra-large font size.
   TextModifier get xLarge => WrappedText(
         style: (context, theme) => theme.typography.xLarge,
         child: this,
       );
 
+  /// Applies 2x large font size.
   TextModifier get x2Large => WrappedText(
         style: (context, theme) => theme.typography.x2Large,
         child: this,
       );
 
+  /// Applies 3x large font size.
   TextModifier get x3Large => WrappedText(
         style: (context, theme) => theme.typography.x3Large,
         child: this,
       );
 
+  /// Applies 4x large font size.
   TextModifier get x4Large => WrappedText(
         style: (context, theme) => theme.typography.x4Large,
         child: this,
       );
 
+  /// Applies 5x large font size.
   TextModifier get x5Large => WrappedText(
         style: (context, theme) => theme.typography.x5Large,
         child: this,
       );
 
+  /// Applies 6x large font size.
   TextModifier get x6Large => WrappedText(
         style: (context, theme) => theme.typography.x6Large,
         child: this,
       );
 
+  /// Applies 7x large font size.
   TextModifier get x7Large => WrappedText(
         style: (context, theme) => theme.typography.x7Large,
         child: this,
       );
 
+  /// Applies 8x large font size.
   TextModifier get x8Large => WrappedText(
         style: (context, theme) => theme.typography.x8Large,
         child: this,
       );
 
+  /// Applies 9x large font size.
   TextModifier get x9Large => WrappedText(
         style: (context, theme) => theme.typography.x9Large,
         child: this,
       );
 
+  /// Applies thin font weight (100).
   TextModifier get thin => WrappedText(
         style: (context, theme) => theme.typography.thin,
         child: this,
       );
 
+  /// Applies extra-light font weight (200).
   TextModifier get extraLight => WrappedText(
         style: (context, theme) => theme.typography.extraLight,
         child: this,
       );
 
+  /// Applies light font weight (300).
   TextModifier get light => WrappedText(
         style: (context, theme) => theme.typography.light,
         child: this,
       );
 
+  /// Applies normal font weight (400).
   TextModifier get normal => WrappedText(
         style: (context, theme) => theme.typography.normal,
         child: this,
       );
 
+  /// Applies medium font weight (500).
   TextModifier get medium => WrappedText(
         style: (context, theme) => theme.typography.medium,
         child: this,
       );
 
+  /// Applies semi-bold font weight (600).
   TextModifier get semiBold => WrappedText(
         style: (context, theme) => theme.typography.semiBold,
         child: this,
       );
 
+  /// Applies bold font weight (700).
   TextModifier get bold => WrappedText(
         style: (context, theme) => theme.typography.bold,
         child: this,
       );
 
+  /// Applies extra-bold font weight (800).
   TextModifier get extraBold => WrappedText(
         style: (context, theme) => theme.typography.extraBold,
         child: this,
       );
 
+  /// Applies black font weight (900).
   TextModifier get black => WrappedText(
         style: (context, theme) => theme.typography.black,
         child: this,
       );
 
+  /// Applies italic font style.
   TextModifier get italic => WrappedText(
         style: (context, theme) => theme.typography.italic,
         child: this,
       );
 
+  /// Applies underline text decoration.
   TextModifier get underline => WrappedText(
         style: (context, theme) => const TextStyle(
           decoration: TextDecoration.underline,
@@ -167,6 +243,7 @@ extension TextExtension on Widget {
         child: this,
       );
 
+  /// Applies muted foreground color.
   TextModifier get muted => WrappedText(
         style: (context, theme) => TextStyle(
           color: theme.colorScheme.mutedForeground,
@@ -174,6 +251,7 @@ extension TextExtension on Widget {
         child: this,
       );
 
+  /// Applies primary foreground color.
   TextModifier get primaryForeground => WrappedText(
         style: (context, theme) => TextStyle(
           color: theme.colorScheme.primaryForeground,
@@ -181,6 +259,7 @@ extension TextExtension on Widget {
         child: this,
       );
 
+  /// Applies secondary foreground color.
   TextModifier get secondaryForeground => WrappedText(
         style: (context, theme) => TextStyle(
           color: theme.colorScheme.secondaryForeground,
@@ -188,11 +267,13 @@ extension TextExtension on Widget {
         child: this,
       );
 
+  /// Applies heading 1 style.
   TextModifier get h1 => WrappedText(
         style: (context, theme) => theme.typography.h1,
         child: this,
       );
 
+  /// Applies heading 2 style with bottom border.
   TextModifier get h2 => WrappedText(
         style: (context, theme) => theme.typography.h2,
         wrapper: (context, child) => Container(
@@ -211,11 +292,13 @@ extension TextExtension on Widget {
         child: this,
       );
 
+  /// Applies heading 3 style.
   TextModifier get h3 => WrappedText(
         style: (context, theme) => theme.typography.h3,
         child: this,
       );
 
+  /// Applies heading 4 style.
   TextModifier get h4 => WrappedText(
         style: (context, theme) => theme.typography.h4,
         child: this,
