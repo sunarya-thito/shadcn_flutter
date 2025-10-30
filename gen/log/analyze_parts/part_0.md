@@ -515,14 +515,14 @@ TODO:
 - [x] lib/src/components/control/scrollbar.dart:81:  final bool? interactive;
 - [x] lib/src/components/control/scrollbar.dart:82:  final ScrollNotificationPredicate? notificationPredicate;
 - [x] lib/src/components/control/scrollbar.dart:83:  final ScrollbarOrientation? scrollbarOrientation;
-- [ ] lib/src/components/control/scrollview.dart:8:class ScrollViewInterceptor extends StatefulWidget {
-- [ ] lib/src/components/control/scrollview.dart:9:  final Widget child;
-- [ ] lib/src/components/control/scrollview.dart:10:  final bool enabled;
-- [ ] lib/src/components/control/scrollview.dart:12:  const ScrollViewInterceptor(
-- [ ] lib/src/components/control/scrollview.dart:19:const double kScrollDragSpeed = 0.02;
-- [ ] lib/src/components/control/scrollview.dart:20:const double kMaxScrollSpeed = 10;
-- [ ] lib/src/components/control/scrollview.dart:22:class DesktopPointerScrollEvent extends PointerScrollEvent {
-- [ ] lib/src/components/control/scrollview.dart:23:  const DesktopPointerScrollEvent({
+- [x] lib/src/components/control/scrollview.dart:8:class ScrollViewInterceptor extends StatefulWidget {
+- [x] lib/src/components/control/scrollview.dart:9:  final Widget child;
+- [x] lib/src/components/control/scrollview.dart:10:  final bool enabled;
+- [x] lib/src/components/control/scrollview.dart:12:  const ScrollViewInterceptor(
+- [x] lib/src/components/control/scrollview.dart:19:const double kScrollDragSpeed = 0.02;
+- [x] lib/src/components/control/scrollview.dart:20:const double kMaxScrollSpeed = 10;
+- [x] lib/src/components/control/scrollview.dart:22:class DesktopPointerScrollEvent extends PointerScrollEvent {
+- [x] lib/src/components/control/scrollview.dart:23:  const DesktopPointerScrollEvent({
 - [ ] lib/src/components/debug.dart:9:void debugPostSticker(
 - [ ] lib/src/components/debug.dart:6:const kDebugStickerVisible = true;
 - [ ] lib/src/components/debug.dart:7:const kDebugContainerVisible = true;
@@ -534,33 +534,33 @@ TODO:
 - [ ] lib/src/components/display/avatar.dart:983:  final double previousAvatarSize;
 - [ ] lib/src/components/display/avatar.dart:984:  final double gap;
 - [ ] lib/src/components/display/avatar.dart:986:  const AvatarGroupClipper({
-- [ ] lib/src/components/display/badge.dart:103:  final Widget child;
-- [ ] lib/src/components/display/badge.dart:104:  final VoidCallback? onPressed;
+- [x] lib/src/components/display/badge.dart:103:  final Widget child;
+- [x] lib/src/components/display/badge.dart:104:  final VoidCallback? onPressed;
 - [ ] lib/src/components/display/badge.dart:105:  final Widget? leading;
 - [ ] lib/src/components/display/badge.dart:106:  final Widget? trailing;
-- [ ] lib/src/components/display/badge.dart:107:  final AbstractButtonStyle? style;
-- [ ] lib/src/components/display/badge.dart:109:  const PrimaryBadge({
-- [ ] lib/src/components/display/badge.dart:145:class SecondaryBadge extends StatelessWidget {
-- [ ] lib/src/components/display/badge.dart:146:  final Widget child;
-- [ ] lib/src/components/display/badge.dart:147:  final VoidCallback? onPressed;
+- [x] lib/src/components/display/badge.dart:107:  final AbstractButtonStyle? style;
+- [x] lib/src/components/display/badge.dart:109:  const PrimaryBadge({
+- [x] lib/src/components/display/badge.dart:145:class SecondaryBadge extends StatelessWidget {
+- [x] lib/src/components/display/badge.dart:146:  final Widget child;
+- [x] lib/src/components/display/badge.dart:147:  final VoidCallback? onPressed;
 - [ ] lib/src/components/display/badge.dart:148:  final Widget? leading;
 - [ ] lib/src/components/display/badge.dart:149:  final Widget? trailing;
-- [ ] lib/src/components/display/badge.dart:150:  final AbstractButtonStyle? style;
-- [ ] lib/src/components/display/badge.dart:152:  const SecondaryBadge({
-- [ ] lib/src/components/display/badge.dart:188:class OutlineBadge extends StatelessWidget {
-- [ ] lib/src/components/display/badge.dart:189:  final Widget child;
-- [ ] lib/src/components/display/badge.dart:190:  final VoidCallback? onPressed;
+- [x] lib/src/components/display/badge.dart:150:  final AbstractButtonStyle? style;
+- [x] lib/src/components/display/badge.dart:152:  const SecondaryBadge({
+- [x] lib/src/components/display/badge.dart:188:class OutlineBadge extends StatelessWidget {
+- [x] lib/src/components/display/badge.dart:189:  final Widget child;
+- [x] lib/src/components/display/badge.dart:190:  final VoidCallback? onPressed;
 - [ ] lib/src/components/display/badge.dart:191:  final Widget? leading;
 - [ ] lib/src/components/display/badge.dart:192:  final Widget? trailing;
-- [ ] lib/src/components/display/badge.dart:193:  final AbstractButtonStyle? style;
-- [ ] lib/src/components/display/badge.dart:195:  const OutlineBadge({
-- [ ] lib/src/components/display/badge.dart:231:class DestructiveBadge extends StatelessWidget {
-- [ ] lib/src/components/display/badge.dart:232:  final Widget child;
-- [ ] lib/src/components/display/badge.dart:233:  final VoidCallback? onPressed;
+- [x] lib/src/components/display/badge.dart:193:  final AbstractButtonStyle? style;
+- [x] lib/src/components/display/badge.dart:195:  const OutlineBadge({
+- [x] lib/src/components/display/badge.dart:231:class DestructiveBadge extends StatelessWidget {
+- [x] lib/src/components/display/badge.dart:232:  final Widget child;
+- [x] lib/src/components/display/badge.dart:233:  final VoidCallback? onPressed;
 - [ ] lib/src/components/display/badge.dart:234:  final Widget? leading;
 - [ ] lib/src/components/display/badge.dart:235:  final Widget? trailing;
-- [ ] lib/src/components/display/badge.dart:236:  final AbstractButtonStyle? style;
-- [ ] lib/src/components/display/badge.dart:238:  const DestructiveBadge({
+- [x] lib/src/components/display/badge.dart:236:  final AbstractButtonStyle? style;
+- [x] lib/src/components/display/badge.dart:238:  const DestructiveBadge({
 - [ ] lib/src/components/display/calendar.dart:14:  CalendarTheme copyWith({ValueGetter<Color?>? arrowIconColor}) {
 - [ ] lib/src/components/display/calendar.dart:12:  const CalendarTheme({this.arrowIconColor});
 - [ ] lib/src/components/display/calendar.dart:37:  date,
@@ -666,118 +666,118 @@ TODO:
 - [ ] lib/src/components/display/calendar.dart:1784:  final CalendarGridData data;
 - [ ] lib/src/components/display/calendar.dart:1785:  final Widget Function(CalendarGridItem item) itemBuilder;
 - [ ] lib/src/components/display/calendar.dart:1787:  const CalendarGrid({
-- [ ] lib/src/components/display/carousel.dart:406:  CarouselTheme copyWith({
-- [ ] lib/src/components/display/carousel.dart:386:  final CarouselAlignment? alignment;
-- [ ] lib/src/components/display/carousel.dart:387:  final Axis? direction;
-- [ ] lib/src/components/display/carousel.dart:388:  final bool? wrap;
-- [ ] lib/src/components/display/carousel.dart:389:  final bool? pauseOnHover;
-- [ ] lib/src/components/display/carousel.dart:390:  final Duration? autoplaySpeed;
-- [ ] lib/src/components/display/carousel.dart:391:  final bool? draggable;
-- [ ] lib/src/components/display/carousel.dart:392:  final Duration? speed;
-- [ ] lib/src/components/display/carousel.dart:393:  final Curve? curve;
-- [ ] lib/src/components/display/carousel.dart:395:  const CarouselTheme({
-- [ ] lib/src/components/display/chip.dart:51:  final Widget child;
-- [ ] lib/src/components/display/chip.dart:52:  final VoidCallback? onPressed;
-- [ ] lib/src/components/display/chip.dart:54:  const ChipButton({
-- [ ] lib/src/components/display/chip.dart:133:  final Widget child;
-- [ ] lib/src/components/display/chip.dart:134:  final Widget? leading;
-- [ ] lib/src/components/display/chip.dart:135:  final Widget? trailing;
-- [ ] lib/src/components/display/chip.dart:136:  final VoidCallback? onPressed;
-- [ ] lib/src/components/display/chip.dart:137:  final AbstractButtonStyle? style;
+- [x] lib/src/components/display/carousel.dart:406:  CarouselTheme copyWith({
+- [x] lib/src/components/display/carousel.dart:386:  final CarouselAlignment? alignment;
+- [x] lib/src/components/display/carousel.dart:387:  final Axis? direction;
+- [x] lib/src/components/display/carousel.dart:388:  final bool? wrap;
+- [x] lib/src/components/display/carousel.dart:389:  final bool? pauseOnHover;
+- [x] lib/src/components/display/carousel.dart:390:  final Duration? autoplaySpeed;
+- [x] lib/src/components/display/carousel.dart:391:  final bool? draggable;
+- [x] lib/src/components/display/carousel.dart:392:  final Duration? speed;
+- [x] lib/src/components/display/carousel.dart:393:  final Curve? curve;
+- [x] lib/src/components/display/carousel.dart:395:  const CarouselTheme({
+- [x] lib/src/components/display/chip.dart:51:  final Widget child;
+- [x] lib/src/components/display/chip.dart:52:  final VoidCallback? onPressed;
+- [x] lib/src/components/display/chip.dart:54:  const ChipButton({
+- [x] lib/src/components/display/chip.dart:133:  final Widget child;
+- [x] lib/src/components/display/chip.dart:134:  final Widget? leading;
+- [x] lib/src/components/display/chip.dart:135:  final Widget? trailing;
+- [x] lib/src/components/display/chip.dart:136:  final VoidCallback? onPressed;
+- [x] lib/src/components/display/chip.dart:137:  final AbstractButtonStyle? style;
 - [ ] lib/src/components/display/circular_progress_indicator.dart:59:  CircularProgressIndicatorTheme copyWith({
 - [ ] lib/src/components/display/code_snippet.dart:188:  final Widget code;
-- [ ] lib/src/components/display/divider.dart:5:class DividerProperties {
-- [ ] lib/src/components/display/divider.dart:18:  static DividerProperties lerp(
-- [ ] lib/src/components/display/divider.dart:6:  final Color color;
-- [ ] lib/src/components/display/divider.dart:7:  final double thickness;
-- [ ] lib/src/components/display/divider.dart:8:  final double indent;
-- [ ] lib/src/components/display/divider.dart:9:  final double endIndent;
-- [ ] lib/src/components/display/divider.dart:11:  const DividerProperties({
-- [ ] lib/src/components/display/divider.dart:145:  final Color? color;
-- [ ] lib/src/components/display/divider.dart:146:  final double? height;
-- [ ] lib/src/components/display/divider.dart:147:  final double? thickness;
-- [ ] lib/src/components/display/divider.dart:148:  final double? indent;
-- [ ] lib/src/components/display/divider.dart:149:  final double? endIndent;
-- [ ] lib/src/components/display/divider.dart:150:  final Widget? child;
-- [ ] lib/src/components/display/divider.dart:151:  final EdgeInsetsGeometry? padding;
-- [ ] lib/src/components/display/divider.dart:153:  const Divider({
-- [ ] lib/src/components/display/divider.dart:288:class DividerPainter extends CustomPainter {
-- [ ] lib/src/components/display/divider.dart:289:  final Color color;
-- [ ] lib/src/components/display/divider.dart:290:  final double thickness;
-- [ ] lib/src/components/display/divider.dart:291:  final double indent;
-- [ ] lib/src/components/display/divider.dart:292:  final double endIndent;
-- [ ] lib/src/components/display/divider.dart:294:  DividerPainter({
-- [ ] lib/src/components/display/divider.dart:321:class VerticalDividerPainter extends CustomPainter {
-- [ ] lib/src/components/display/divider.dart:322:  final Color color;
-- [ ] lib/src/components/display/divider.dart:323:  final double thickness;
-- [ ] lib/src/components/display/divider.dart:324:  final double indent;
-- [ ] lib/src/components/display/divider.dart:325:  final double endIndent;
-- [ ] lib/src/components/display/divider.dart:327:  const VerticalDividerPainter({
-- [ ] lib/src/components/display/divider.dart:354:class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
-- [ ] lib/src/components/display/divider.dart:355:  final Color? color;
-- [ ] lib/src/components/display/divider.dart:356:  final double? width;
-- [ ] lib/src/components/display/divider.dart:357:  final double? thickness;
-- [ ] lib/src/components/display/divider.dart:358:  final double? indent;
-- [ ] lib/src/components/display/divider.dart:359:  final double? endIndent;
-- [ ] lib/src/components/display/divider.dart:360:  final Widget? child;
-- [ ] lib/src/components/display/divider.dart:361:  final EdgeInsetsGeometry? padding;
-- [ ] lib/src/components/display/divider.dart:363:  const VerticalDivider({
-- [ ] lib/src/components/display/dot_indicator.dart:3:typedef DotBuilder = Widget Function(
-- [ ] lib/src/components/display/dot_indicator.dart:140:  final int index;
-- [ ] lib/src/components/display/dot_indicator.dart:141:  final int length;
-- [ ] lib/src/components/display/dot_indicator.dart:142:  final ValueChanged<int>? onChanged;
-- [ ] lib/src/components/display/dot_indicator.dart:143:  final double? spacing;
-- [ ] lib/src/components/display/dot_indicator.dart:144:  final Axis direction;
-- [ ] lib/src/components/display/dot_indicator.dart:145:  final EdgeInsetsGeometry? padding;
-- [ ] lib/src/components/display/dot_indicator.dart:146:  final DotBuilder? dotBuilder;
-- [ ] lib/src/components/display/dot_indicator.dart:243:class DotItem extends StatelessWidget {
-- [ ] lib/src/components/display/dot_indicator.dart:244:  final double? size;
-- [ ] lib/src/components/display/dot_indicator.dart:245:  final Color? color;
-- [ ] lib/src/components/display/dot_indicator.dart:246:  final double? borderRadius;
-- [ ] lib/src/components/display/dot_indicator.dart:247:  final Color? borderColor;
-- [ ] lib/src/components/display/dot_indicator.dart:248:  final double? borderWidth;
-- [ ] lib/src/components/display/dot_indicator.dart:250:  const DotItem({
-- [ ] lib/src/components/display/dot_indicator.dart:277:class ActiveDotItem extends StatelessWidget {
-- [ ] lib/src/components/display/dot_indicator.dart:278:  final double? size;
-- [ ] lib/src/components/display/dot_indicator.dart:279:  final Color? color;
-- [ ] lib/src/components/display/dot_indicator.dart:280:  final double? borderRadius;
-- [ ] lib/src/components/display/dot_indicator.dart:281:  final Color? borderColor;
-- [ ] lib/src/components/display/dot_indicator.dart:282:  final double? borderWidth;
-- [ ] lib/src/components/display/dot_indicator.dart:284:  const ActiveDotItem({
-- [ ] lib/src/components/display/dot_indicator.dart:326:class InactiveDotItem extends StatelessWidget {
-- [ ] lib/src/components/display/dot_indicator.dart:327:  final double? size;
-- [ ] lib/src/components/display/dot_indicator.dart:328:  final Color? color;
-- [ ] lib/src/components/display/dot_indicator.dart:329:  final double? borderRadius;
-- [ ] lib/src/components/display/dot_indicator.dart:330:  final Color? borderColor;
-- [ ] lib/src/components/display/dot_indicator.dart:331:  final double? borderWidth;
-- [ ] lib/src/components/display/dot_indicator.dart:333:  const InactiveDotItem({
-- [ ] lib/src/components/display/fade_scroll.dart:49:class FadeScroll extends StatelessWidget {
-- [ ] lib/src/components/display/fade_scroll.dart:50:  final double? startOffset;
-- [ ] lib/src/components/display/fade_scroll.dart:51:  final double? endOffset;
-- [ ] lib/src/components/display/fade_scroll.dart:52:  final double startCrossOffset;
-- [ ] lib/src/components/display/fade_scroll.dart:53:  final double endCrossOffset;
-- [ ] lib/src/components/display/fade_scroll.dart:54:  final Widget child;
-- [ ] lib/src/components/display/fade_scroll.dart:55:  final ScrollController controller;
-- [ ] lib/src/components/display/fade_scroll.dart:56:  final List<Color>? gradient;
-- [ ] lib/src/components/display/fade_scroll.dart:58:  const FadeScroll({
-- [ ] lib/src/components/display/keyboard_shortcut.dart:328:List<LogicalKeyboardKey> shortcutActivatorToKeySet(
-- [ ] lib/src/components/display/keyboard_shortcut.dart:5:typedef KeyboardShortcutDisplayBuilder = Widget Function(
-- [ ] lib/src/components/display/keyboard_shortcut.dart:54:class KeyboardShortcutDisplayHandle {
-- [ ] lib/src/components/display/keyboard_shortcut.dart:59:  Widget buildKeyboardDisplay(BuildContext context, LogicalKeyboardKey key) {
-- [ ] lib/src/components/display/keyboard_shortcut.dart:57:  const KeyboardShortcutDisplayHandle(this._builder);
-- [ ] lib/src/components/display/keyboard_shortcut.dart:64:class KeyboardShortcutDisplayMapper extends StatefulWidget {
-- [ ] lib/src/components/display/keyboard_shortcut.dart:98:  final KeyboardShortcutDisplayBuilder builder;
-- [ ] lib/src/components/display/keyboard_shortcut.dart:99:  final Widget child;
-- [ ] lib/src/components/display/keyboard_shortcut.dart:101:  const KeyboardShortcutDisplayMapper({
-- [ ] lib/src/components/display/spinner.dart:13:  SpinnerTheme copyWith({
-- [ ] lib/src/components/display/spinner.dart:11:  const SpinnerTheme({this.color, this.size});
-- [ ] lib/src/components/display/spinner.dart:33:abstract class SpinnerTransform {}
-- [ ] lib/src/components/display/spinner.dart:35:abstract class SpinnerElement {
-- [ ] lib/src/components/display/spinner.dart:36:  void paint(Canvas canvas, Size size, Matrix4 transform);
-- [ ] lib/src/components/display/spinner.dart:39:abstract class Spinner extends StatelessWidget {
-- [ ] lib/src/components/display/spinner.dart:40:  final Color? color;
-- [ ] lib/src/components/display/spinner.dart:41:  final double? size;
-- [ ] lib/src/components/display/spinner.dart:42:  const Spinner({super.key, this.color, this.size});
+- [x] lib/src/components/display/divider.dart:5:class DividerProperties {
+- [x] lib/src/components/display/divider.dart:18:  static DividerProperties lerp(
+- [x] lib/src/components/display/divider.dart:6:  final Color color;
+- [x] lib/src/components/display/divider.dart:7:  final double thickness;
+- [x] lib/src/components/display/divider.dart:8:  final double indent;
+- [x] lib/src/components/display/divider.dart:9:  final double endIndent;
+- [x] lib/src/components/display/divider.dart:11:  const DividerProperties({
+- [x] lib/src/components/display/divider.dart:145:  final Color? color;
+- [x] lib/src/components/display/divider.dart:146:  final double? height;
+- [x] lib/src/components/display/divider.dart:147:  final double? thickness;
+- [x] lib/src/components/display/divider.dart:148:  final double? indent;
+- [x] lib/src/components/display/divider.dart:149:  final double? endIndent;
+- [x] lib/src/components/display/divider.dart:150:  final Widget? child;
+- [x] lib/src/components/display/divider.dart:151:  final EdgeInsetsGeometry? padding;
+- [x] lib/src/components/display/divider.dart:153:  const Divider({
+- [x] lib/src/components/display/divider.dart:288:class DividerPainter extends CustomPainter {
+- [x] lib/src/components/display/divider.dart:289:  final Color color;
+- [x] lib/src/components/display/divider.dart:290:  final double thickness;
+- [x] lib/src/components/display/divider.dart:291:  final double indent;
+- [x] lib/src/components/display/divider.dart:292:  final double endIndent;
+- [x] lib/src/components/display/divider.dart:294:  DividerPainter({
+- [x] lib/src/components/display/divider.dart:321:class VerticalDividerPainter extends CustomPainter {
+- [x] lib/src/components/display/divider.dart:322:  final Color color;
+- [x] lib/src/components/display/divider.dart:323:  final double thickness;
+- [x] lib/src/components/display/divider.dart:324:  final double indent;
+- [x] lib/src/components/display/divider.dart:325:  final double endIndent;
+- [x] lib/src/components/display/divider.dart:327:  const VerticalDividerPainter({
+- [x] lib/src/components/display/divider.dart:354:class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
+- [x] lib/src/components/display/divider.dart:355:  final Color? color;
+- [x] lib/src/components/display/divider.dart:356:  final double? width;
+- [x] lib/src/components/display/divider.dart:357:  final double? thickness;
+- [x] lib/src/components/display/divider.dart:358:  final double? indent;
+- [x] lib/src/components/display/divider.dart:359:  final double? endIndent;
+- [x] lib/src/components/display/divider.dart:360:  final Widget? child;
+- [x] lib/src/components/display/divider.dart:361:  final EdgeInsetsGeometry? padding;
+- [x] lib/src/components/display/divider.dart:363:  const VerticalDivider({
+- [x] lib/src/components/display/dot_indicator.dart:3:typedef DotBuilder = Widget Function(
+- [x] lib/src/components/display/dot_indicator.dart:140:  final int index;
+- [x] lib/src/components/display/dot_indicator.dart:141:  final int length;
+- [x] lib/src/components/display/dot_indicator.dart:142:  final ValueChanged<int>? onChanged;
+- [x] lib/src/components/display/dot_indicator.dart:143:  final double? spacing;
+- [x] lib/src/components/display/dot_indicator.dart:144:  final Axis direction;
+- [x] lib/src/components/display/dot_indicator.dart:145:  final EdgeInsetsGeometry? padding;
+- [x] lib/src/components/display/dot_indicator.dart:146:  final DotBuilder? dotBuilder;
+- [x] lib/src/components/display/dot_indicator.dart:243:class DotItem extends StatelessWidget {
+- [x] lib/src/components/display/dot_indicator.dart:244:  final double? size;
+- [x] lib/src/components/display/dot_indicator.dart:245:  final Color? color;
+- [x] lib/src/components/display/dot_indicator.dart:246:  final double? borderRadius;
+- [x] lib/src/components/display/dot_indicator.dart:247:  final Color? borderColor;
+- [x] lib/src/components/display/dot_indicator.dart:248:  final double? borderWidth;
+- [x] lib/src/components/display/dot_indicator.dart:250:  const DotItem({
+- [x] lib/src/components/display/dot_indicator.dart:277:class ActiveDotItem extends StatelessWidget {
+- [x] lib/src/components/display/dot_indicator.dart:278:  final double? size;
+- [x] lib/src/components/display/dot_indicator.dart:279:  final Color? color;
+- [x] lib/src/components/display/dot_indicator.dart:280:  final double? borderRadius;
+- [x] lib/src/components/display/dot_indicator.dart:281:  final Color? borderColor;
+- [x] lib/src/components/display/dot_indicator.dart:282:  final double? borderWidth;
+- [x] lib/src/components/display/dot_indicator.dart:284:  const ActiveDotItem({
+- [x] lib/src/components/display/dot_indicator.dart:326:class InactiveDotItem extends StatelessWidget {
+- [x] lib/src/components/display/dot_indicator.dart:327:  final double? size;
+- [x] lib/src/components/display/dot_indicator.dart:328:  final Color? color;
+- [x] lib/src/components/display/dot_indicator.dart:329:  final double? borderRadius;
+- [x] lib/src/components/display/dot_indicator.dart:330:  final Color? borderColor;
+- [x] lib/src/components/display/dot_indicator.dart:331:  final double? borderWidth;
+- [x] lib/src/components/display/dot_indicator.dart:333:  const InactiveDotItem({
+- [x] lib/src/components/display/fade_scroll.dart:49:class FadeScroll extends StatelessWidget {
+- [x] lib/src/components/display/fade_scroll.dart:50:  final double? startOffset;
+- [x] lib/src/components/display/fade_scroll.dart:51:  final double? endOffset;
+- [x] lib/src/components/display/fade_scroll.dart:52:  final double startCrossOffset;
+- [x] lib/src/components/display/fade_scroll.dart:53:  final double endCrossOffset;
+- [x] lib/src/components/display/fade_scroll.dart:54:  final Widget child;
+- [x] lib/src/components/display/fade_scroll.dart:55:  final ScrollController controller;
+- [x] lib/src/components/display/fade_scroll.dart:56:  final List<Color>? gradient;
+- [x] lib/src/components/display/fade_scroll.dart:58:  const FadeScroll({
+- [x] lib/src/components/display/keyboard_shortcut.dart:328:List<LogicalKeyboardKey> shortcutActivatorToKeySet(
+- [x] lib/src/components/display/keyboard_shortcut.dart:5:typedef KeyboardShortcutDisplayBuilder = Widget Function(
+- [x] lib/src/components/display/keyboard_shortcut.dart:54:class KeyboardShortcutDisplayHandle {
+- [x] lib/src/components/display/keyboard_shortcut.dart:59:  Widget buildKeyboardDisplay(BuildContext context, LogicalKeyboardKey key) {
+- [x] lib/src/components/display/keyboard_shortcut.dart:57:  const KeyboardShortcutDisplayHandle(this._builder);
+- [x] lib/src/components/display/keyboard_shortcut.dart:64:class KeyboardShortcutDisplayMapper extends StatefulWidget {
+- [x] lib/src/components/display/keyboard_shortcut.dart:98:  final KeyboardShortcutDisplayBuilder builder;
+- [x] lib/src/components/display/keyboard_shortcut.dart:99:  final Widget child;
+- [x] lib/src/components/display/keyboard_shortcut.dart:101:  const KeyboardShortcutDisplayMapper({
+- [x] lib/src/components/display/spinner.dart:13:  SpinnerTheme copyWith({
+- [x] lib/src/components/display/spinner.dart:11:  const SpinnerTheme({this.color, this.size});
+- [x] lib/src/components/display/spinner.dart:33:abstract class SpinnerTransform {}
+- [x] lib/src/components/display/spinner.dart:35:abstract class SpinnerElement {
+- [x] lib/src/components/display/spinner.dart:36:  void paint(Canvas canvas, Size size, Matrix4 transform);
+- [x] lib/src/components/display/spinner.dart:39:abstract class Spinner extends StatelessWidget {
+- [x] lib/src/components/display/spinner.dart:40:  final Color? color;
+- [x] lib/src/components/display/spinner.dart:41:  final double? size;
+- [x] lib/src/components/display/spinner.dart:42:  const Spinner({super.key, this.color, this.size});
 - [ ] lib/src/components/form/autocomplete.dart:280:class AutoCompleteIntent extends Intent {
 - [ ] lib/src/components/form/autocomplete.dart:281:  final String suggestion;
 - [ ] lib/src/components/form/autocomplete.dart:282:  final AutoCompleteMode mode;
