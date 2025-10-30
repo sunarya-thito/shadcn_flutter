@@ -11,6 +11,7 @@ class CalendarTheme {
 
   const CalendarTheme({this.arrowIconColor});
 
+  /// Creates a copy of this theme with the given fields replaced.
   CalendarTheme copyWith({ValueGetter<Color?>? arrowIconColor}) {
     return CalendarTheme(
         arrowIconColor:
@@ -93,12 +94,25 @@ enum CalendarSelectionMode {
 /// )
 /// ```
 class DatePickerDialog extends StatefulWidget {
+  /// The initial view type to display (date, month, or year grid).
   final CalendarViewType initialViewType;
+
+  /// The initial calendar view position (month/year to display).
   final CalendarView? initialView;
+
+  /// The selection mode determining how dates can be selected.
   final CalendarSelectionMode selectionMode;
+
+  /// Alternative view mode for display purposes.
   final CalendarSelectionMode? viewMode;
+
+  /// The initially selected date value(s).
   final CalendarValue? initialValue;
+
+  /// Callback invoked when the selected date(s) change.
   final ValueChanged<CalendarValue?>? onChanged;
+
+  /// Builder function to determine the state of each date.
   final DateStateBuilder? stateBuilder;
 
   /// Creates a [DatePickerDialog] with comprehensive date selection options.
@@ -578,24 +592,40 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
 /// final isSelected = lookup != CalendarValueLookup.none;
 /// ```
 abstract class CalendarValue {
+  /// Looks up whether the specified date is part of this calendar value.
+  ///
+  /// Returns a [CalendarValueLookup] indicating the relationship of the
+  /// queried date to this value (none, selected, start, end, or inRange).
   CalendarValueLookup lookup(int year, [int? month = 1, int? day = 1]);
+
+  /// Creates a base calendar value.
   const CalendarValue();
+
+  /// Factory constructor to create a single date value.
   static SingleCalendarValue single(DateTime date) {
     return SingleCalendarValue(date);
   }
 
+  /// Factory constructor to create a date range value.
   static RangeCalendarValue range(DateTime start, DateTime end) {
     return RangeCalendarValue(start, end);
   }
 
+  /// Factory constructor to create a multi-date value.
   static MultiCalendarValue multi(List<DateTime> dates) {
     return MultiCalendarValue(dates);
   }
 
+  /// Converts this value to a single calendar value.
   SingleCalendarValue toSingle();
+
+  /// Converts this value to a range calendar value.
   RangeCalendarValue toRange();
+
+  /// Converts this value to a multi calendar value.
   MultiCalendarValue toMulti();
 
+  /// Returns the calendar view associated with this value.
   CalendarView get view;
 }
 
@@ -622,8 +652,10 @@ DateTime _convertNecessarry(DateTime from, int year, [int? month, int? date]) {
 /// print(lookup == CalendarValueLookup.selected); // true
 /// ```
 class SingleCalendarValue extends CalendarValue {
+  /// The selected date.
   final DateTime date;
 
+  /// Creates a single calendar value with the specified date.
   SingleCalendarValue(this.date);
 
   @override
@@ -669,10 +701,23 @@ class SingleCalendarValue extends CalendarValue {
   }
 }
 
+/// Calendar value representing a date range selection.
+///
+/// Encapsulates a date range with start and end dates. Provides lookup
+/// functionality to determine if a date is the start, end, within the range,
+/// or outside. Used with [CalendarSelectionMode.range].
+///
+/// The range is automatically normalized so start is always before or equal to end.
 class RangeCalendarValue extends CalendarValue {
+  /// The start date of the range (always <= end).
   final DateTime start;
+
+  /// The end date of the range (always >= start).
   final DateTime end;
 
+  /// Creates a range calendar value with the specified start and end dates.
+  ///
+  /// Automatically normalizes the range so [start] is before [end].
   RangeCalendarValue(DateTime start, DateTime end)
       : start = start.isBefore(end) ? start : end,
         end = start.isBefore(end) ? end : start;
@@ -740,9 +785,16 @@ class RangeCalendarValue extends CalendarValue {
   }
 }
 
+/// Calendar value representing multiple selected dates.
+///
+/// Encapsulates a list of individually selected dates. Provides lookup
+/// functionality to determine if a date is among the selected dates.
+/// Used with [CalendarSelectionMode.multi].
 class MultiCalendarValue extends CalendarValue {
+  /// The list of selected dates.
   final List<DateTime> dates;
 
+  /// Creates a multi calendar value with the specified list of dates.
   MultiCalendarValue(this.dates);
 
   @override
@@ -830,7 +882,10 @@ enum CalendarValueLookup { none, selected, start, end, inRange }
 /// final nextYear = current.nextYear;
 /// ```
 class CalendarView {
+  /// The year component of this view.
   final int year;
+
+  /// The month component of this view (1-12).
   final int month;
 
   /// Creates a [CalendarView] for the specified year and month.
@@ -894,10 +949,12 @@ class CalendarView {
     return CalendarView(year, month - 1);
   }
 
+  /// Returns a view for the next year with the same month.
   CalendarView get nextYear {
     return CalendarView(year + 1, month);
   }
 
+  /// Returns a view for the previous year with the same month.
   CalendarView get previousYear {
     return CalendarView(year - 1, month);
   }
@@ -917,6 +974,7 @@ class CalendarView {
   @override
   int get hashCode => year.hashCode ^ month.hashCode;
 
+  /// Creates a copy of this view with the given fields replaced.
   CalendarView copyWith({
     ValueGetter<int>? year,
     ValueGetter<int>? month,
@@ -928,11 +986,14 @@ class CalendarView {
   }
 }
 
+/// Extension methods on [DateTime] for calendar operations.
 extension CalendarDateTime on DateTime {
+  /// Converts this DateTime to a CalendarView.
   CalendarView toCalendarView() {
     return CalendarView.fromDateTime(this);
   }
 
+  /// Converts this DateTime to a single CalendarValue.
   CalendarValue toCalendarValue() {
     return CalendarValue.single(this);
   }
