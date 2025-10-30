@@ -77,47 +77,47 @@ TODO:
 - [x] lib\src\components\async.dart:10:34
 - [x] lib\src\components\async.dart:11:12
 - [x] lib\src\components\async.dart:13:9
-- [ ] lib\src\components\control\button.dart:213:14
-- [ ] lib\src\components\control\button.dart:214:29
-- [ ] lib\src\components\control\button.dart:215:16
-- [ ] lib\src\components\control\button.dart:216:21
-- [ ] lib\src\components\control\button.dart:217:15
-- [ ] lib\src\components\control\button.dart:258:7
-- [ ] lib\src\components\control\button.dart:259:32
-- [ ] lib\src\components\control\button.dart:319:7
-- [ ] lib\src\components\control\button.dart:320:14
-- [ ] lib\src\components\control\button.dart:321:29
-- [ ] lib\src\components\control\button.dart:322:16
-- [ ] lib\src\components\control\button.dart:323:29
-- [ ] lib\src\components\control\button.dart:324:29
-- [ ] lib\src\components\control\button.dart:325:15
-- [ ] lib\src\components\control\button.dart:326:28
-- [ ] lib\src\components\control\button.dart:327:28
-- [ ] lib\src\components\control\button.dart:328:14
-- [ ] lib\src\components\control\button.dart:329:29
-- [ ] lib\src\components\control\button.dart:330:29
-- [ ] lib\src\components\control\button.dart:331:15
-- [ ] lib\src\components\control\button.dart:332:33
-- [ ] lib\src\components\control\button.dart:333:31
-- [ ] lib\src\components\control\button.dart:334:35
-- [ ] lib\src\components\control\button.dart:335:33
-- [ ] lib\src\components\control\button.dart:336:31
-- [ ] lib\src\components\control\button.dart:337:35
-- [ ] lib\src\components\control\button.dart:338:33
-- [ ] lib\src\components\control\button.dart:339:31
-- [ ] lib\src\components\control\button.dart:340:35
-- [ ] lib\src\components\control\button.dart:341:40
-- [ ] lib\src\components\control\button.dart:342:37
-- [ ] lib\src\components\control\button.dart:343:45
-- [ ] lib\src\components\control\button.dart:344:38
-- [ ] lib\src\components\control\button.dart:345:37
-- [ ] lib\src\components\control\button.dart:346:37
-- [ ] lib\src\components\control\button.dart:347:14
-- [ ] lib\src\components\control\button.dart:348:33
-- [ ] lib\src\components\control\button.dart:349:23
-- [ ] lib\src\components\control\button.dart:351:9
-- [ ] lib\src\components\control\button.dart:390:7
-- [ ] lib\src\components\control\button.dart:391:31
+- [x] lib\src\components\control\button.dart:213:14
+- [x] lib\src\components\control\button.dart:214:29
+- [x] lib\src\components\control\button.dart:215:16
+- [x] lib\src\components\control\button.dart:216:21
+- [x] lib\src\components\control\button.dart:217:15
+- [x] lib\src\components\control\button.dart:258:7
+- [x] lib\src\components\control\button.dart:259:32
+- [x] lib\src\components\control\button.dart:319:7
+- [x] lib\src\components\control\button.dart:320:14
+- [x] lib\src\components\control\button.dart:321:29
+- [x] lib\src\components\control\button.dart:322:16
+- [x] lib\src\components\control\button.dart:323:29
+- [x] lib\src\components\control\button.dart:324:29
+- [x] lib\src\components\control\button.dart:325:15
+- [x] lib\src\components\control\button.dart:326:28
+- [x] lib\src\components\control\button.dart:327:28
+- [x] lib\src\components\control\button.dart:328:14
+- [x] lib\src\components\control\button.dart:329:29
+- [x] lib\src\components\control\button.dart:330:29
+- [x] lib\src\components\control\button.dart:331:15
+- [x] lib\src\components\control\button.dart:332:33
+- [x] lib\src\components\control\button.dart:333:31
+- [x] lib\src\components\control\button.dart:334:35
+- [x] lib\src\components\control\button.dart:335:33
+- [x] lib\src\components\control\button.dart:336:31
+- [x] lib\src\components\control\button.dart:337:35
+- [x] lib\src\components\control\button.dart:338:33
+- [x] lib\src\components\control\button.dart:339:31
+- [x] lib\src\components\control\button.dart:340:35
+- [x] lib\src\components\control\button.dart:341:40
+- [x] lib\src\components\control\button.dart:342:37
+- [x] lib\src\components\control\button.dart:343:45
+- [x] lib\src\components\control\button.dart:344:38
+- [x] lib\src\components\control\button.dart:345:37
+- [x] lib\src\components\control\button.dart:346:37
+- [x] lib\src\components\control\button.dart:347:14
+- [x] lib\src\components\control\button.dart:348:33
+- [x] lib\src\components\control\button.dart:349:23
+- [x] lib\src\components\control\button.dart:351:9
+- [x] lib\src\components\control\button.dart:390:7
+- [x] lib\src\components\control\button.dart:391:31
 - [ ] lib\src\components\control\button.dart:831:16
 - [ ] lib\src\components\control\button.dart:915:16
 - [ ] lib\src\components\control\button.dart:950:16
