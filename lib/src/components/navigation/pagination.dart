@@ -96,19 +96,73 @@ class PaginationTheme {
 /// );
 /// ```
 class Pagination extends StatelessWidget {
+  /// The current active page number (1-indexed).
+  ///
+  /// Must be between 1 and [totalPages] inclusive.
   final int page;
+
+  /// The total number of pages available.
+  ///
+  /// Must be >= 1.
   final int totalPages;
+
+  /// Callback invoked when the page changes.
+  ///
+  /// Called with the new page number (1-indexed) when user navigates.
   final ValueChanged<int> onPageChanged;
 
-  /// The maximum number of pages to show in the pagination.
+  /// The maximum number of page buttons to show.
+  ///
+  /// When total pages exceed this number, pagination shows a subset
+  /// centered around the current page. Defaults to 3.
   final int maxPages;
+
+  /// Whether to show a button to skip to the first page.
+  ///
+  /// Displays a "first page" button when `true`. Defaults to `true`.
   final bool showSkipToFirstPage;
+
+  /// Whether to show a button to skip to the last page.
+  ///
+  /// Displays a "last page" button when `true`. Defaults to `true`.
   final bool showSkipToLastPage;
+
+  /// Whether to hide the previous button on the first page.
+  ///
+  /// When `true`, hides the "previous" button when [page] is 1.
+  /// Defaults to `false`.
   final bool hidePreviousOnFirstPage;
+
+  /// Whether to hide the next button on the last page.
+  ///
+  /// When `true`, hides the "next" button when [page] equals [totalPages].
+  /// Defaults to `false`.
   final bool hideNextOnLastPage;
+
+  /// Whether to show text labels on previous/next buttons.
+  ///
+  /// When `true`, shows "Previous" and "Next" text along with icons.
+  /// When `false`, shows only icons. If `null`, uses theme default.
   final bool? showLabel;
+
+  /// Spacing between pagination controls in logical pixels.
+  ///
+  /// If `null`, uses theme default spacing.
   final double? gap;
 
+  /// Creates a pagination widget.
+  ///
+  /// Parameters:
+  /// - [page]: Current page number (required, 1-indexed)
+  /// - [totalPages]: Total page count (required, >= 1)
+  /// - [onPageChanged]: Page change callback (required)
+  /// - [maxPages]: Max visible page buttons (defaults to 3)
+  /// - [showSkipToFirstPage]: Show first-page button (defaults to `true`)
+  /// - [showSkipToLastPage]: Show last-page button (defaults to `true`)
+  /// - [hidePreviousOnFirstPage]: Hide previous on page 1 (defaults to `false`)
+  /// - [hideNextOnLastPage]: Hide next on last page (defaults to `false`)
+  /// - [showLabel]: Show button labels (optional, uses theme default)
+  /// - [gap]: Spacing between controls (optional, uses theme default)
   const Pagination({
     super.key,
     required this.page,
@@ -123,8 +177,21 @@ class Pagination extends StatelessWidget {
     this.gap,
   });
 
+  /// Whether there is a previous page available.
+  ///
+  /// Returns `true` if [page] > 1, indicating backward navigation is possible.
   bool get hasPrevious => page > 1;
+
+  /// Whether there is a next page available.
+  ///
+  /// Returns `true` if [page] < [totalPages], indicating forward navigation is possible.
   bool get hasNext => page < totalPages;
+
+  /// The sequence of page numbers to display.
+  ///
+  /// Generates an optimized list of page numbers based on [maxPages] and
+  /// the current [page]. For small page counts, shows all pages. For large
+  /// counts, shows a centered window around the current page.
   Iterable<int> get pages sync* {
     if (totalPages <= maxPages) {
       yield* List.generate(totalPages, (index) => index + 1);
@@ -142,6 +209,10 @@ class Pagination extends StatelessWidget {
     }
   }
 
+  /// The first page number currently being displayed.
+  ///
+  /// In the visible page range, this is the lowest page number shown.
+  /// Used to determine if there are more pages before the visible range.
   int get firstShownPage {
     if (totalPages <= maxPages) {
       return 1;
@@ -151,6 +222,10 @@ class Pagination extends StatelessWidget {
     }
   }
 
+  /// The last page number currently being displayed.
+  ///
+  /// In the visible page range, this is the highest page number shown.
+  /// Used to determine if there are more pages after the visible range.
   int get lastShownPage {
     if (totalPages <= maxPages) {
       return totalPages;
@@ -160,7 +235,14 @@ class Pagination extends StatelessWidget {
     }
   }
 
+  /// Whether there are pages before the first shown page.
+  ///
+  /// Returns `true` if [firstShownPage] > 1, indicating truncated previous pages.
   bool get hasMorePreviousPages => firstShownPage > 1;
+
+  /// Whether there are pages after the last shown page.
+  ///
+  /// Returns `true` if [lastShownPage] < [totalPages], indicating truncated next pages.
   bool get hasMoreNextPages => lastShownPage < totalPages;
 
   Widget _buildPreviousLabel(

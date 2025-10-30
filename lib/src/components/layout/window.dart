@@ -19,11 +19,41 @@ import 'package:shadcn_flutter/src/components/patch.dart';
 /// )
 /// ```
 class WindowTheme {
+  /// Height of the window's title bar in logical pixels.
+  ///
+  /// Determines the vertical space allocated for the title bar which typically
+  /// contains the window title, control buttons (minimize, maximize, close),
+  /// and any custom action widgets.
+  ///
+  /// If `null`, uses the default title bar height from the theme.
   final double? titleBarHeight;
+
+  /// Thickness of the window's resize border in logical pixels.
+  ///
+  /// Defines the width of the interactive area along window edges that
+  /// allows users to resize the window by dragging. A larger value makes
+  /// it easier to grab the edge for resizing.
+  ///
+  /// If `null`, uses the default resize border thickness from the theme.
   final double? resizeThickness;
 
+  /// Creates a window theme with optional title bar and resize border settings.
+  ///
+  /// Both parameters are optional. When `null`, the corresponding values
+  /// will fall back to theme defaults.
   const WindowTheme({this.titleBarHeight, this.resizeThickness});
 
+  /// Creates a copy of this theme with optionally replaced values.
+  ///
+  /// Uses [ValueGetter] functions to allow nullable value replacement.
+  /// If a parameter is `null`, the current value is retained. If provided,
+  /// the getter function is called to retrieve the new value.
+  ///
+  /// Parameters:
+  /// - [titleBarHeight]: Optional getter for new title bar height
+  /// - [resizeThickness]: Optional getter for new resize thickness
+  ///
+  /// Returns a new [WindowTheme] instance with updated values.
   WindowTheme copyWith({
     ValueGetter<double?>? titleBarHeight,
     ValueGetter<double?>? resizeThickness,
@@ -64,9 +94,26 @@ class WindowTheme {
 /// )
 /// ```
 class WindowSnapStrategy {
+  /// Relative bounds where the window should snap, in screen-relative coordinates.
+  ///
+  /// Values range from 0.0 to 1.0, representing proportions of the screen.
+  /// For example, `Rect.fromLTWH(0, 0, 0.5, 1)` represents the left half
+  /// of the screen (0% to 50% horizontally, full height).
   final Rect relativeBounds;
+
+  /// Whether the window should be minimized during the snap operation.
+  ///
+  /// When `true`, the window will minimize before snapping to the target
+  /// position. When `false`, the window immediately snaps without minimizing.
+  ///
+  /// Defaults to `true`.
   final bool shouldMinifyWindow;
 
+  /// Creates a window snap strategy with the specified bounds and behavior.
+  ///
+  /// Parameters:
+  /// - [relativeBounds]: Target screen region (required, in 0.0-1.0 coordinates)
+  /// - [shouldMinifyWindow]: Whether to minimize during snap (defaults to `true`)
   const WindowSnapStrategy({
     required this.relativeBounds,
     this.shouldMinifyWindow = true,
@@ -99,18 +146,86 @@ class WindowSnapStrategy {
 /// )
 /// ```
 class WindowState {
+  /// Current position and size of the window.
+  ///
+  /// Represents the window's bounding rectangle in logical pixels,
+  /// with coordinates relative to the screen's top-left corner.
   final Rect bounds;
+
+  /// Bounds of the window when maximized, or `null` if not maximized.
+  ///
+  /// When non-null, indicates the window is in maximized state and
+  /// stores the previous bounds for restoration when un-maximizing.
   final Rect? maximized;
+
+  /// Whether the window is currently minimized to the taskbar.
+  ///
+  /// When `true`, the window is hidden from view but remains in memory.
+  /// Defaults to `false`.
   final bool minimized;
+
+  /// Whether the window should always appear on top of other windows.
+  ///
+  /// When `true`, this window will be rendered above other windows
+  /// regardless of focus state. Defaults to `false`.
   final bool alwaysOnTop;
+
+  /// Whether the window can be closed by the user.
+  ///
+  /// When `false`, the close button is disabled or hidden.
+  /// Defaults to `true`.
   final bool closable;
+
+  /// Whether the window can be resized by dragging its edges or corners.
+  ///
+  /// When `false`, the window maintains a fixed size.
+  /// Defaults to `true`.
   final bool resizable;
+
+  /// Whether the window can be moved by dragging its title bar.
+  ///
+  /// When `false`, the window position is fixed.
+  /// Defaults to `true`.
   final bool draggable;
+
+  /// Whether the window can be maximized to fill the screen.
+  ///
+  /// When `false`, the maximize button is disabled or hidden.
+  /// Defaults to `true`.
   final bool maximizable;
+
+  /// Whether the window can be minimized to the taskbar.
+  ///
+  /// When `false`, the minimize button is disabled or hidden.
+  /// Defaults to `true`.
   final bool minimizable;
+
+  /// Whether edge snapping is enabled for this window.
+  ///
+  /// When `true`, dragging the window near screen edges or regions
+  /// will trigger snap-to-edge behavior. Defaults to `true`.
   final bool enableSnapping;
+
+  /// Size constraints for the window.
+  ///
+  /// Enforces minimum and maximum width/height limits when resizing.
+  /// Defaults to [kDefaultWindowConstraints].
   final BoxConstraints constraints;
 
+  /// Creates a window state with the specified configuration.
+  ///
+  /// Parameters:
+  /// - [bounds]: Current window bounds (required)
+  /// - [maximized]: Maximized state bounds (optional, `null` if not maximized)
+  /// - [minimized]: Minimized state (defaults to `false`)
+  /// - [alwaysOnTop]: Always-on-top behavior (defaults to `false`)
+  /// - [closable]: Allow closing (defaults to `true`)
+  /// - [resizable]: Allow resizing (defaults to `true`)
+  /// - [draggable]: Allow dragging (defaults to `true`)
+  /// - [maximizable]: Allow maximizing (defaults to `true`)
+  /// - [minimizable]: Allow minimizing (defaults to `true`)
+  /// - [enableSnapping]: Enable edge snapping (defaults to `true`)
+  /// - [constraints]: Size constraints (defaults to [kDefaultWindowConstraints])
   const WindowState({
     required this.bounds,
     this.maximized,
@@ -161,6 +276,15 @@ class WindowState {
     return 'WindowState(bounds: $bounds, maximized: $maximized, minimized: $minimized, alwaysOnTop: $alwaysOnTop, closable: $closable, resizable: $resizable, draggable: $draggable, maximizable: $maximizable, minimizable: $minimizable, enableSnapping: $enableSnapping, constraints: $constraints)';
   }
 
+  /// Creates a copy of this state with only the maximized bounds changed.
+  ///
+  /// This is a specialized version of [copyWith] that only modifies the
+  /// [maximized] property while preserving all other state values.
+  ///
+  /// Parameters:
+  /// - [maximized]: New maximized bounds, or `null` to restore window
+  ///
+  /// Returns a new [WindowState] with updated maximized property.
   WindowState withMaximized(Rect? maximized) {
     return WindowState(
       bounds: bounds,
@@ -177,6 +301,28 @@ class WindowState {
     );
   }
 
+  /// Creates a copy of this state with selectively updated properties.
+  ///
+  /// Uses [ValueGetter] functions to allow nullable value replacement.
+  /// Properties not provided (null) retain their current values. When
+  /// a getter is provided, it's called to obtain the new value.
+  ///
+  /// Note: This method does not allow updating [maximized]. Use
+  /// [withMaximized] instead for that purpose.
+  ///
+  /// Parameters:
+  /// - [bounds]: Optional getter for new window bounds
+  /// - [minimized]: Optional getter for minimized state
+  /// - [alwaysOnTop]: Optional getter for always-on-top behavior
+  /// - [closable]: Optional getter for closable state
+  /// - [resizable]: Optional getter for resizable state
+  /// - [draggable]: Optional getter for draggable state
+  /// - [maximizable]: Optional getter for maximizable state
+  /// - [minimizable]: Optional getter for minimizable state
+  /// - [enableSnapping]: Optional getter for snapping enabled state
+  /// - [constraints]: Optional getter for size constraints
+  ///
+  /// Returns a new [WindowState] instance with updated values.
   WindowState copyWith({
     ValueGetter<Rect>? bounds,
     ValueGetter<bool>? minimized,
@@ -271,98 +417,302 @@ class WindowController extends ValueNotifier<WindowState> {
           constraints: constraints,
         ));
 
+  /// Whether the controller is currently attached to a window widget.
+  ///
+  /// Returns `true` if the controller is mounted within a window widget
+  /// and can safely access [attachedState]. Returns `false` otherwise.
   bool get mounted => _attachedState != null;
 
+  /// The window handle this controller is attached to.
+  ///
+  /// Provides access to the underlying window implementation for advanced
+  /// operations. Only accessible when [mounted] is `true`.
+  ///
+  /// Throws an assertion error if accessed when not mounted.
   WindowHandle get attachedState {
     assert(mounted, 'Window is not attached');
     return _attachedState!;
   }
 
+  /// Current position and size of the window.
+  ///
+  /// Setting this property updates the window bounds and triggers a UI refresh.
+  /// The setter is a no-op if the new value equals the current value.
   Rect get bounds => value.bounds;
+
+  /// Updates the window bounds.
+  ///
+  /// Changes take effect immediately and trigger listener notifications.
   set bounds(Rect value) {
     if (value == bounds) return;
     this.value = this.value.copyWith(bounds: () => value);
   }
 
+  /// Maximized bounds, or `null` if the window is not maximized.
+  ///
+  /// When non-null, indicates the window is in maximized state.
   Rect? get maximized => value.maximized;
+
+  /// Sets the maximized state and bounds.
+  ///
+  /// Pass a [Rect] to maximize the window to those bounds.
+  /// Pass `null` to restore the window from maximized state.
   set maximized(Rect? value) {
     if (value == maximized) return;
     this.value = this.value.withMaximized(value);
   }
 
+  /// Whether the window is currently minimized.
+  ///
+  /// When `true`, the window is hidden from view (e.g., in taskbar).
   bool get minimized => value.minimized;
+
+  /// Sets the minimized state.
+  ///
+  /// Set to `true` to minimize the window, `false` to restore it.
   set minimized(bool value) {
     if (value == minimized) return;
     this.value = this.value.copyWith(minimized: () => value);
   }
 
+  /// Whether the window always appears on top of other windows.
   bool get alwaysOnTop => value.alwaysOnTop;
+
+  /// Sets the always-on-top behavior.
+  ///
+  /// When `true`, the window renders above other windows regardless of focus.
   set alwaysOnTop(bool value) {
     if (value == alwaysOnTop) return;
     this.value = this.value.copyWith(alwaysOnTop: () => value);
   }
 
+  /// Whether the window can be closed.
   bool get closable => value.closable;
+
+  /// Sets whether the window can be closed.
+  ///
+  /// When `false`, the close button is disabled or hidden.
   set closable(bool value) {
     if (value == closable) return;
     this.value = this.value.copyWith(closable: () => value);
   }
 
+  /// Whether the window can be resized by dragging edges/corners.
   bool get resizable => value.resizable;
+
+  /// Sets whether the window can be resized.
   set resizable(bool value) {
     if (value == resizable) return;
     this.value = this.value.copyWith(resizable: () => value);
   }
 
+  /// Whether the window can be moved by dragging the title bar.
   bool get draggable => value.draggable;
+
+  /// Sets whether the window can be dragged.
   set draggable(bool value) {
     if (value == draggable) return;
     this.value = this.value.copyWith(draggable: () => value);
   }
 
+  /// Whether the window can be maximized.
   bool get maximizable => value.maximizable;
+
+  /// Sets whether the window can be maximized.
+  ///
+  /// When `false`, the maximize button is disabled or hidden.
   set maximizable(bool value) {
     if (value == maximizable) return;
     this.value = this.value.copyWith(maximizable: () => value);
   }
 
+  /// Whether the window can be minimized.
   bool get minimizable => value.minimizable;
+
+  /// Sets whether the window can be minimized.
+  ///
+  /// When `false`, the minimize button is disabled or hidden.
   set minimizable(bool value) {
     if (value == minimizable) return;
     this.value = this.value.copyWith(minimizable: () => value);
   }
 
+  /// Whether edge snapping is enabled for the window.
   bool get enableSnapping => value.enableSnapping;
+
+  /// Sets whether edge snapping is enabled.
+  ///
+  /// When `true`, dragging near screen edges triggers snap behavior.
   set enableSnapping(bool value) {
     if (value == enableSnapping) return;
     this.value = this.value.copyWith(enableSnapping: () => value);
   }
 
+  /// Size constraints for the window.
+  ///
+  /// Defines min/max width and height limits for resizing.
   BoxConstraints get constraints => value.constraints;
+
+  /// Sets the size constraints for the window.
   set constraints(BoxConstraints value) {
     if (value == constraints) return;
     this.value = this.value.copyWith(constraints: () => value);
   }
 }
 
+/// A resizable, draggable window widget with title bar and content area.
+///
+/// Provides a desktop-style window experience with full control over sizing,
+/// positioning, and window controls (minimize, maximize, close). Supports both
+/// controlled and uncontrolled modes for flexible state management.
+///
+/// Key Features:
+/// - **Resizable**: Drag edges/corners to resize (when enabled)
+/// - **Draggable**: Drag title bar to move window (when enabled)
+/// - **Maximizable**: Fill screen or custom bounds
+/// - **Minimizable**: Collapse to taskbar or hidden state
+/// - **Snapping**: Auto-snap to screen edges when dragging near them
+/// - **Customizable**: Title, actions, content, and theme settings
+///
+/// Usage Patterns:
+///
+/// **Uncontrolled Mode** (direct state props):
+/// ```dart
+/// WindowWidget(
+///   title: Text('My Window'),
+///   content: Text('Window content here'),
+///   bounds: Rect.fromLTWH(100, 100, 800, 600),
+///   resizable: true,
+///   draggable: true,
+/// )
+/// ```
+///
+/// **Controlled Mode** (via controller):
+/// ```dart
+/// final controller = WindowController(
+///   bounds: Rect.fromLTWH(100, 100, 800, 600),
+/// );
+///
+/// WindowWidget.controlled(
+///   controller: controller,
+///   title: Text('Controlled Window'),
+///   content: Text('Content'),
+/// )
+/// ```
+///
+/// See also:
+/// - [WindowController] for programmatic window control
+/// - [WindowTheme] for styling options
+/// - [WindowState] for state configuration details
 class WindowWidget extends StatefulWidget {
+  /// Widget displayed in the window's title bar.
+  ///
+  /// Typically a [Text] widget, but can be any widget. Positioned on the
+  /// left side of the title bar by default.
   final Widget? title;
+
+  /// Widget(s) displayed in the title bar's action area.
+  ///
+  /// Usually contains window control buttons (minimize, maximize, close)
+  /// or custom action buttons. Positioned on the right side of the title bar.
   final Widget? actions;
+
+  /// Main content widget displayed in the window body.
+  ///
+  /// This is the primary content area below the title bar. Can be any widget,
+  /// such as forms, lists, or custom layouts.
   final Widget? content;
+
+  /// Optional controller for programmatic window control.
+  ///
+  /// When provided (via [WindowWidget.controlled]), the controller manages
+  /// all window state. When `null` (default constructor), widget properties
+  /// control the state directly.
   final WindowController? controller;
+
+  /// Whether the window can be resized by dragging edges/corners.
+  ///
+  /// Defaults to `true`. Ignored when using [WindowWidget.controlled].
   final bool? resizable;
+
+  /// Whether the window can be moved by dragging the title bar.
+  ///
+  /// Defaults to `true`. Ignored when using [WindowWidget.controlled].
   final bool? draggable;
+
+  /// Whether the window can be closed.
+  ///
+  /// Defaults to `true`. Ignored when using [WindowWidget.controlled].
   final bool? closable;
+
+  /// Whether the window can be maximized.
+  ///
+  /// Defaults to `true`. Ignored when using [WindowWidget.controlled].
   final bool? maximizable;
+
+  /// Whether the window can be minimized.
+  ///
+  /// Defaults to `true`. Ignored when using [WindowWidget.controlled].
   final bool? minimizable;
+
+  /// Initial position and size of the window.
+  ///
+  /// Required for default constructor. Ignored when using [WindowWidget.controlled].
   final Rect? bounds;
+
+  /// Initial maximized bounds, or `null` if not maximized.
+  ///
+  /// Ignored when using [WindowWidget.controlled].
   final Rect? maximized;
+
+  /// Whether the window starts minimized.
+  ///
+  /// Defaults to `false`. Ignored when using [WindowWidget.controlled].
   final bool? minimized;
+
+  /// Whether edge snapping is enabled.
+  ///
+  /// Defaults to `true`. Ignored when using [WindowWidget.controlled].
   final bool? enableSnapping;
+
+  /// Size constraints for the window.
+  ///
+  /// Enforces min/max dimensions during resizing.
+  /// Defaults to [kDefaultWindowConstraints]. Ignored when using [WindowWidget.controlled].
   final BoxConstraints? constraints;
+
+  /// Height of the title bar in logical pixels.
+  ///
+  /// If `null`, uses the theme's default title bar height.
   final double? titleBarHeight;
+
+  /// Thickness of the resize border in logical pixels.
+  ///
+  /// If `null`, uses the theme's default resize thickness.
   final double? resizeThickness;
 
+  /// Creates a window with direct state management.
+  ///
+  /// All window state properties ([bounds], [minimized], etc.) are managed
+  /// directly through widget properties. State changes require rebuilding
+  /// the widget with new property values.
+  ///
+  /// Parameters:
+  /// - [title]: Title bar content
+  /// - [actions]: Action buttons area content
+  /// - [content]: Main window content
+  /// - [titleBarHeight]: Custom title bar height (optional)
+  /// - [resizeThickness]: Custom resize border thickness (optional)
+  /// - [resizable]: Enable resizing (defaults to `true`)
+  /// - [draggable]: Enable dragging (defaults to `true`)
+  /// - [closable]: Enable closing (defaults to `true`)
+  /// - [maximizable]: Enable maximizing (defaults to `true`)
+  /// - [minimizable]: Enable minimizing (defaults to `true`)
+  /// - [enableSnapping]: Enable edge snapping (defaults to `true`)
+  /// - [bounds]: Initial window bounds (required)
+  /// - [maximized]: Initial maximized bounds (optional)
+  /// - [minimized]: Start minimized (defaults to `false`)
+  /// - [constraints]: Size constraints (defaults to [kDefaultWindowConstraints])
   const WindowWidget({
     super.key,
     this.title,
@@ -382,6 +732,36 @@ class WindowWidget extends StatefulWidget {
     BoxConstraints this.constraints = kDefaultWindowConstraints,
   }) : controller = null;
 
+  /// Creates a window with controller-based state management.
+  ///
+  /// State is managed entirely through the provided [controller]. All state
+  /// properties from the default constructor are unavailable and must be
+  /// controlled via the controller instead.
+  ///
+  /// This pattern is recommended when you need:
+  /// - Programmatic control over window state
+  /// - To listen to state changes
+  /// - To share state across multiple widgets
+  /// - More reactive state updates
+  ///
+  /// Parameters:
+  /// - [controller]: The window controller (required)
+  /// - [title]: Title bar content
+  /// - [actions]: Action buttons area content
+  /// - [content]: Main window content
+  /// - [titleBarHeight]: Custom title bar height (optional)
+  /// - [resizeThickness]: Custom resize border thickness (optional)
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = WindowController(
+  ///   bounds: Rect.fromLTWH(100, 100, 800, 600),
+  /// );
+  ///
+  /// // Later, programmatically control:
+  /// controller.minimized = true;
+  /// controller.bounds = Rect.fromLTWH(200, 200, 900, 700);
+  /// ```
   const WindowWidget.controlled({
     super.key,
     this.title,

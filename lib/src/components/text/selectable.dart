@@ -8,12 +8,42 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// Theme data for [SelectableText] to customize cursor and selection behavior.
 /// {@endtemplate}
 class SelectableTextTheme {
+  /// Width of the text cursor in logical pixels.
+  ///
+  /// If `null`, uses the default cursor width from the platform or theme.
   final double? cursorWidth;
+
+  /// Height of the text cursor in logical pixels.
+  ///
+  /// If `null`, the cursor height matches the line height of the text.
   final double? cursorHeight;
+
+  /// Corner radius of the text cursor.
+  ///
+  /// If `null`, the cursor has square corners (no rounding).
   final Radius? cursorRadius;
+
+  /// Color of the text cursor.
+  ///
+  /// If `null`, uses the theme's primary color or platform default.
   final Color? cursorColor;
+
+  /// How tall the selection highlight boxes should be.
+  ///
+  /// Determines vertical sizing behavior for text selection highlights.
+  /// If `null`, uses platform or theme defaults.
   final ui.BoxHeightStyle? selectionHeightStyle;
+
+  /// How wide the selection highlight boxes should be.
+  ///
+  /// Determines horizontal sizing behavior for text selection highlights.
+  /// If `null`, uses platform or theme defaults.
   final ui.BoxWidthStyle? selectionWidthStyle;
+
+  /// Whether to enable interactive text selection (e.g., selecting with mouse/touch).
+  ///
+  /// When `true`, users can select text by dragging. When `false`, text
+  /// selection gestures are disabled. If `null`, uses platform defaults.
   final bool? enableInteractiveSelection;
 
   /// {@macro selectable_text_theme}
@@ -27,6 +57,21 @@ class SelectableTextTheme {
     this.enableInteractiveSelection,
   });
 
+  /// Creates a copy of this theme with optionally replaced values.
+  ///
+  /// Uses [ValueGetter] functions to allow nullable value replacement.
+  /// Properties not provided retain their current values.
+  ///
+  /// Parameters:
+  /// - [cursorWidth]: Optional getter for new cursor width
+  /// - [cursorHeight]: Optional getter for new cursor height
+  /// - [cursorRadius]: Optional getter for new cursor radius
+  /// - [cursorColor]: Optional getter for new cursor color
+  /// - [selectionHeightStyle]: Optional getter for new selection height style
+  /// - [selectionWidthStyle]: Optional getter for new selection width style
+  /// - [enableInteractiveSelection]: Optional getter for new interactive selection state
+  ///
+  /// Returns a new [SelectableTextTheme] with updated values.
   SelectableTextTheme copyWith({
     ValueGetter<double?>? cursorWidth,
     ValueGetter<double?>? cursorHeight,
@@ -77,7 +122,91 @@ class SelectableTextTheme {
   }
 }
 
+/// A text widget that supports text selection by users.
+///
+/// Displays text (plain or styled) that users can select, copy, and interact with.
+/// Provides cursor display, selection highlighting, and context menu support for
+/// rich text interaction experiences.
+///
+/// Features:
+/// - **Text Selection**: Click and drag to select text portions
+/// - **Copy Support**: Built-in copy functionality via context menu
+/// - **Cursor Display**: Optional cursor for indicating selection position
+/// - **Rich Text**: Supports styled text via [TextSpan] (use `.rich` constructor)
+/// - **Customizable**: Full control over cursor, selection, and interaction behavior
+///
+/// Usage Patterns:
+///
+/// **Basic Selectable Text**:
+/// ```dart
+/// SelectableText(
+///   'Select this text!',
+///   style: TextStyle(fontSize: 16),
+/// )
+/// ```
+///
+/// **Rich Text Selection**:
+/// ```dart
+/// SelectableText.rich(
+///   TextSpan(
+///     children: [
+///       TextSpan(text: 'Bold ', style: TextStyle(fontWeight: FontWeight.bold)),
+///       TextSpan(text: 'and normal text'),
+///     ],
+///   ),
+/// )
+/// ```
+///
+/// **Custom Cursor**:
+/// ```dart
+/// SelectableText(
+///   'Text with custom cursor',
+///   showCursor: true,
+///   cursorColor: Colors.blue,
+///   cursorWidth: 3.0,
+/// )
+/// ```
+///
+/// See also:
+/// - [Text] for non-selectable text display
+/// - [TextField] for editable text input
+/// - [SelectableTextTheme] for theming selection appearance
 class SelectableText extends StatelessWidget {
+  /// Creates selectable text from a plain string.
+  ///
+  /// The [data] parameter is the text to display. All other parameters
+  /// are optional and control various aspects of text rendering and selection.
+  ///
+  /// Parameters:
+  /// - [data]: The text string to display (required)
+  /// - [focusNode]: Focus node for keyboard interaction
+  /// - [style]: Text style for the content
+  /// - [strutStyle]: Strut style for line height
+  /// - [textAlign]: How to align text horizontally
+  /// - [textDirection]: Text direction (LTR or RTL)
+  /// - [textScaler]: Text scaling factor
+  /// - [showCursor]: Whether to show the cursor (defaults to `false`)
+  /// - [autofocus]: Auto-focus on mount (defaults to `false`)
+  /// - [minLines]: Minimum number of lines to occupy
+  /// - [maxLines]: Maximum number of lines before scrolling
+  /// - [cursorWidth]: Width of cursor (defaults to 2.0)
+  /// - [cursorHeight]: Height of cursor (null = line height)
+  /// - [cursorRadius]: Cursor corner radius
+  /// - [cursorColor]: Cursor color
+  /// - [selectionHeightStyle]: Selection box height behavior
+  /// - [selectionWidthStyle]: Selection box width behavior
+  /// - [dragStartBehavior]: When to start drag gestures
+  /// - [enableInteractiveSelection]: Enable selection (defaults to `true`)
+  /// - [selectionControls]: Custom selection toolbar controls
+  /// - [onTap]: Callback when text is tapped
+  /// - [scrollPhysics]: Scroll behavior physics
+  /// - [semanticsLabel]: Semantic label for accessibility
+  /// - [textHeightBehavior]: How to handle line heights
+  /// - [textWidthBasis]: Basis for measuring text width
+  /// - [onSelectionChanged]: Callback when selection changes
+  /// - [useNativeContextMenu]: Use platform context menu (defaults to `false`)
+  /// - [contextMenuBuilder]: Custom context menu builder
+  /// - [magnifierConfiguration]: Text magnifier configuration
   const SelectableText(
     String this.data, {
     super.key,
@@ -117,6 +246,31 @@ class SelectableText extends StatelessWidget {
         ),
         textSpan = null;
 
+  /// Creates selectable text from a [TextSpan] for styled/rich text.
+  ///
+  /// Use this constructor when you need to display text with multiple styles,
+  /// inline widgets, or complex formatting. The [textSpan] can contain nested
+  /// spans with different styles, colors, and even tap handlers.
+  ///
+  /// Parameters are identical to the default constructor, except:
+  /// - [textSpan]: The styled text span tree to display (required)
+  /// - [data] is not available (use [textSpan] instead)
+  ///
+  /// Example:
+  /// ```dart
+  /// SelectableText.rich(
+  ///   TextSpan(
+  ///     text: 'Visit our ',
+  ///     children: [
+  ///       TextSpan(
+  ///         text: 'website',
+  ///         style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+  ///       ),
+  ///       TextSpan(text: ' for more info'),
+  ///     ],
+  ///   ),
+  /// )
+  /// ```
   const SelectableText.rich(
     TextSpan this.textSpan, {
     super.key,
@@ -156,13 +310,32 @@ class SelectableText extends StatelessWidget {
         ),
         data = null;
 
+  /// The plain text string to display.
+  ///
+  /// Either [data] or [textSpan] must be non-null, but not both.
+  /// Used when constructing with the default constructor.
   final String? data;
 
+  /// The styled text span to display.
+  ///
+  /// Either [data] or [textSpan] must be non-null, but not both.
+  /// Used when constructing with the [SelectableText.rich] constructor.
   final TextSpan? textSpan;
+
+  /// Focus node for managing keyboard focus.
+  ///
+  /// If `null`, a focus node is created internally.
   final FocusNode? focusNode;
 
+  /// Whether to use the platform's native context menu.
+  ///
+  /// When `true`, uses the operating system's built-in context menu.
+  /// When `false`, uses Flutter's custom context menu.
   final bool useNativeContextMenu;
 
+  /// The text style to apply to the text.
+  ///
+  /// If `null`, uses the default text style from the theme.
   final TextStyle? style;
 
   /// {@macro flutter.widgets.editableText.strutStyle}
