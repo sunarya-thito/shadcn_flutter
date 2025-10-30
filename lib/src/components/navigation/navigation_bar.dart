@@ -250,26 +250,79 @@ abstract class NavigationBarItem extends Widget {
 ///   ],
 /// );
 /// ```
+/// A flexible navigation container widget.
+///
+/// Provides a customizable navigation bar that can be configured for various
+/// layouts including horizontal bars, vertical rails, and expandable sidebars.
+/// Manages navigation item presentation and selection states.
+///
+/// Example:
+/// ```dart
+/// NavigationBar(
+///   index: selectedIndex,
+///   onSelected: (index) => setState(() => selectedIndex = index),
+///   children: [
+///     NavigationButton(child: Text('Home')),
+///     NavigationButton(child: Text('Settings')),
+///   ],
+/// )
+/// ```
 class NavigationBar extends StatefulWidget {
+  /// Background color of the navigation bar.
   final Color? backgroundColor;
+
+  /// List of navigation items to display.
   final List<NavigationBarItem> children;
+
+  /// Alignment of navigation items.
   final NavigationBarAlignment? alignment;
+
+  /// Layout direction (horizontal or vertical).
   final Axis? direction;
+
+  /// Spacing between navigation items.
   final double? spacing;
+
+  /// Type of label display.
   final NavigationLabelType? labelType;
+
+  /// Position of labels relative to icons.
   final NavigationLabelPosition? labelPosition;
+
+  /// Size variant for labels.
   final NavigationLabelSize? labelSize;
+
+  /// Internal padding of the navigation bar.
   final EdgeInsetsGeometry? padding;
+
+  /// Size constraints for the navigation bar.
   final BoxConstraints? constraints;
+
+  /// Whether the navigation bar expands to fill available space.
   final bool? expands;
+
+  /// Currently selected item index.
   final int? index;
+
+  /// Callback when an item is selected.
   final ValueChanged<int>? onSelected;
+
+  /// Surface opacity for the navigation bar background.
   final double? surfaceOpacity;
+
+  /// Surface blur amount for the navigation bar background.
   final double? surfaceBlur;
+
+  /// Whether the navigation bar is in expanded state (for collapsible bars).
   final bool? expanded;
+
+  /// Whether to keep cross-axis size when expanding/collapsing.
   final bool? keepCrossAxisSize;
+
+  /// Whether to keep main-axis size when expanding/collapsing.
   final bool? keepMainAxisSize;
 
+  /// Creates a [NavigationBar].
   const NavigationBar({
     super.key,
     this.backgroundColor,
