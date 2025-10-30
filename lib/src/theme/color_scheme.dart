@@ -245,7 +245,6 @@ class ColorShades implements Color, ColorSwatch {
 
   /// Gets the darkest shade (950).
   Color get shade950 => _colors[950]!;
-  Color get shade950 => _colors[950]!;
 
   Color get _primary => _colors[500]!;
 
