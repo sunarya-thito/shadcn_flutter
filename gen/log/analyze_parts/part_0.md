@@ -69,8 +69,8 @@ TODO:
 - [x] lib\src\collection.dart:34:3
 - [x] lib\src\collection.dart:40:7
 - [x] lib\src\collection.dart:47:3
-- [ ] lib\src\components\animation.dart:291:7
-- [ ] lib\src\components\animation.dart:323:5
+- [x] lib\src\components\animation.dart:291:7
+- [x] lib\src\components\animation.dart:323:5
 - [x] lib\src\components\async.dart:5:9
 - [x] lib\src\components\async.dart:8:7
 - [x] lib\src\components\async.dart:9:21
