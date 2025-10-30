@@ -79,42 +79,42 @@ TODO:
 - [x] lib\src\components\form\sortable.dart:201:7
 - [x] lib\src\components\form\sortable.dart:204:32
 - [x] lib\src\components\form\sortable.dart:205:9
-- [ ] lib\src\components\form\star_rating.dart:153:16
-- [ ] lib\src\components\form\star_rating.dart:154:14
-- [ ] lib\src\components\form\star_rating.dart:155:16
-- [ ] lib\src\components\form\star_rating.dart:156:16
-- [ ] lib\src\components\form\star_rating.dart:157:16
-- [ ] lib\src\components\form\star_rating.dart:158:16
-- [ ] lib\src\components\form\star_rating.dart:159:17
-- [ ] lib\src\components\form\star_rating.dart:160:17
-- [ ] lib\src\components\form\star_rating.dart:161:17
-- [ ] lib\src\components\form\star_rating.dart:162:17
-- [ ] lib\src\components\form\star_rating.dart:163:17
-- [ ] lib\src\components\form\star_rating.dart:164:17
-- [ ] lib\src\components\form\star_rating.dart:165:17
-- [ ] lib\src\components\form\star_rating.dart:295:16
-- [ ] lib\src\components\form\star_rating.dart:296:31
-- [ ] lib\src\components\form\star_rating.dart:297:16
-- [ ] lib\src\components\form\star_rating.dart:298:14
-- [ ] lib\src\components\form\star_rating.dart:299:16
-- [ ] lib\src\components\form\star_rating.dart:300:16
-- [ ] lib\src\components\form\star_rating.dart:301:16
-- [ ] lib\src\components\form\star_rating.dart:302:16
-- [ ] lib\src\components\form\star_rating.dart:303:17
-- [ ] lib\src\components\form\star_rating.dart:304:17
-- [ ] lib\src\components\form\star_rating.dart:305:17
-- [ ] lib\src\components\form\star_rating.dart:306:17
-- [ ] lib\src\components\form\star_rating.dart:307:17
-- [ ] lib\src\components\form\star_rating.dart:308:17
-- [ ] lib\src\components\form\star_rating.dart:309:17
-- [ ] lib\src\components\form\star_rating.dart:310:15
-- [ ] lib\src\components\form\star_rating.dart:312:9
-- [ ] lib\src\components\form\star_rating.dart:572:7
-- [ ] lib\src\components\form\star_rating.dart:573:16
-- [ ] lib\src\components\form\star_rating.dart:575:9
-- [ ] lib\src\components\form\star_rating.dart:578:7
-- [ ] lib\src\components\form\star_rating.dart:579:16
-- [ ] lib\src\components\form\star_rating.dart:581:9
+- [x] lib\src\components\form\star_rating.dart:153:16
+- [x] lib\src\components\form\star_rating.dart:154:14
+- [x] lib\src\components\form\star_rating.dart:155:16
+- [x] lib\src\components\form\star_rating.dart:156:16
+- [x] lib\src\components\form\star_rating.dart:157:16
+- [x] lib\src\components\form\star_rating.dart:158:16
+- [x] lib\src\components\form\star_rating.dart:159:17
+- [x] lib\src\components\form\star_rating.dart:160:17
+- [x] lib\src\components\form\star_rating.dart:161:17
+- [x] lib\src\components\form\star_rating.dart:162:17
+- [x] lib\src\components\form\star_rating.dart:163:17
+- [x] lib\src\components\form\star_rating.dart:164:17
+- [x] lib\src\components\form\star_rating.dart:165:17
+- [x] lib\src\components\form\star_rating.dart:295:16
+- [x] lib\src\components\form\star_rating.dart:296:31
+- [x] lib\src\components\form\star_rating.dart:297:16
+- [x] lib\src\components\form\star_rating.dart:298:14
+- [x] lib\src\components\form\star_rating.dart:299:16
+- [x] lib\src\components\form\star_rating.dart:300:16
+- [x] lib\src\components\form\star_rating.dart:301:16
+- [x] lib\src\components\form\star_rating.dart:302:16
+- [x] lib\src\components\form\star_rating.dart:303:17
+- [x] lib\src\components\form\star_rating.dart:304:17
+- [x] lib\src\components\form\star_rating.dart:305:17
+- [x] lib\src\components\form\star_rating.dart:306:17
+- [x] lib\src\components\form\star_rating.dart:307:17
+- [x] lib\src\components\form\star_rating.dart:308:17
+- [x] lib\src\components\form\star_rating.dart:309:17
+- [x] lib\src\components\form\star_rating.dart:310:15
+- [x] lib\src\components\form\star_rating.dart:312:9
+- [x] lib\src\components\form\star_rating.dart:572:7
+- [x] lib\src\components\form\star_rating.dart:573:16
+- [x] lib\src\components\form\star_rating.dart:575:9
+- [x] lib\src\components\form\star_rating.dart:578:7
+- [x] lib\src\components\form\star_rating.dart:579:16
+- [x] lib\src\components\form\star_rating.dart:581:9
 - [ ] lib\src\components\form\switch.dart:113:7
 - [ ] lib\src\components\form\switch.dart:117:8
 - [ ] lib\src\components\form\switch.dart:115:3
