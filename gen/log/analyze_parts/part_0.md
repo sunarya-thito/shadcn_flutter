@@ -1,123 +1,123 @@
 TODO:
-- [ ] lib\src\animation.dart:385:10
-- [ ] lib\src\animation.dart:389:10
-- [ ] lib\src\animation.dart:393:10
-- [ ] lib\src\animation.dart:3:9
-- [ ] lib\src\animation.dart:5:7
-- [ ] lib\src\animation.dart:14:16
-- [ ] lib\src\animation.dart:8:3
-- [ ] lib\src\animation.dart:56:7
-- [ ] lib\src\animation.dart:57:18
-- [ ] lib\src\animation.dart:64:15
-- [ ] lib\src\animation.dart:71:17
-- [ ] lib\src\animation.dart:78:18
-- [ ] lib\src\animation.dart:88:16
-- [ ] lib\src\animation.dart:99:7
-- [ ] lib\src\animation.dart:101:23
-- [ ] lib\src\animation.dart:115:25
-- [ ] lib\src\animation.dart:119:28
-- [ ] lib\src\animation.dart:123:27
-- [ ] lib\src\animation.dart:128:7
-- [ ] lib\src\animation.dart:151:9
-- [ ] lib\src\animation.dart:158:7
-- [ ] lib\src\animation.dart:167:7
-- [ ] lib\src\animation.dart:168:16
-- [ ] lib\src\animation.dart:169:18
-- [ ] lib\src\animation.dart:170:15
-- [ ] lib\src\animation.dart:172:3
-- [ ] lib\src\animation.dart:175:7
-- [ ] lib\src\animation.dart:176:16
-- [ ] lib\src\animation.dart:177:16
-- [ ] lib\src\animation.dart:178:18
-- [ ] lib\src\animation.dart:179:15
-- [ ] lib\src\animation.dart:182:3
-- [ ] lib\src\animation.dart:185:7
-- [ ] lib\src\animation.dart:212:14
-- [ ] lib\src\animation.dart:214:12
-- [ ] lib\src\animation.dart:205:7
-- [ ] lib\src\animation.dart:193:8
-- [ ] lib\src\animation.dart:216:8
-- [ ] lib\src\animation.dart:188:3
-- [ ] lib\src\animation.dart:236:16
-- [ ] lib\src\animation.dart:237:16
-- [ ] lib\src\animation.dart:238:5
-- [ ] lib\src\animation.dart:241:7
-- [ ] lib\src\animation.dart:242:11
-- [ ] lib\src\animation.dart:243:11
-- [ ] lib\src\animation.dart:247:9
-- [ ] lib\src\animation.dart:259:7
-- [ ] lib\src\animation.dart:260:11
-- [ ] lib\src\animation.dart:264:9
-- [ ] lib\src\animation.dart:281:7
-- [ ] lib\src\animation.dart:282:12
-- [ ] lib\src\animation.dart:286:9
-- [ ] lib\src\animation.dart:300:7
-- [ ] lib\src\animation.dart:301:18
-- [ ] lib\src\animation.dart:302:30
-- [ ] lib\src\animation.dart:304:3
-- [ ] lib\src\animation.dart:314:7
-- [ ] lib\src\animation.dart:315:12
-- [ ] lib\src\animation.dart:353:25
-- [ ] lib\src\animation.dart:357:5
-- [ ] lib\src\animation.dart:361:25
-- [ ] lib\src\animation.dart:319:25
-- [ ] lib\src\animation.dart:320:18
-- [ ] lib\src\animation.dart:321:27
-- [ ] lib\src\animation.dart:329:11
-- [ ] lib\src\collection.dart:1:6
-- [ ] lib\src\collection.dart:30:7
-- [ ] lib\src\collection.dart:34:3
-- [ ] lib\src\collection.dart:40:7
-- [ ] lib\src\collection.dart:47:3
-- [ ] lib\src\components\animation.dart:291:7
-- [ ] lib\src\components\animation.dart:323:5
-- [ ] lib\src\components\async.dart:5:9
-- [ ] lib\src\components\async.dart:8:7
-- [ ] lib\src\components\async.dart:9:21
-- [ ] lib\src\components\async.dart:10:34
-- [ ] lib\src\components\async.dart:11:12
-- [ ] lib\src\components\async.dart:13:9
-- [ ] lib\src\components\control\button.dart:213:14
-- [ ] lib\src\components\control\button.dart:214:29
-- [ ] lib\src\components\control\button.dart:215:16
-- [ ] lib\src\components\control\button.dart:216:21
-- [ ] lib\src\components\control\button.dart:217:15
-- [ ] lib\src\components\control\button.dart:258:7
-- [ ] lib\src\components\control\button.dart:259:32
-- [ ] lib\src\components\control\button.dart:319:7
-- [ ] lib\src\components\control\button.dart:320:14
-- [ ] lib\src\components\control\button.dart:321:29
-- [ ] lib\src\components\control\button.dart:322:16
-- [ ] lib\src\components\control\button.dart:323:29
-- [ ] lib\src\components\control\button.dart:324:29
-- [ ] lib\src\components\control\button.dart:325:15
-- [ ] lib\src\components\control\button.dart:326:28
-- [ ] lib\src\components\control\button.dart:327:28
-- [ ] lib\src\components\control\button.dart:328:14
-- [ ] lib\src\components\control\button.dart:329:29
-- [ ] lib\src\components\control\button.dart:330:29
-- [ ] lib\src\components\control\button.dart:331:15
-- [ ] lib\src\components\control\button.dart:332:33
-- [ ] lib\src\components\control\button.dart:333:31
-- [ ] lib\src\components\control\button.dart:334:35
-- [ ] lib\src\components\control\button.dart:335:33
-- [ ] lib\src\components\control\button.dart:336:31
-- [ ] lib\src\components\control\button.dart:337:35
-- [ ] lib\src\components\control\button.dart:338:33
-- [ ] lib\src\components\control\button.dart:339:31
-- [ ] lib\src\components\control\button.dart:340:35
-- [ ] lib\src\components\control\button.dart:341:40
-- [ ] lib\src\components\control\button.dart:342:37
-- [ ] lib\src\components\control\button.dart:343:45
-- [ ] lib\src\components\control\button.dart:344:38
-- [ ] lib\src\components\control\button.dart:345:37
-- [ ] lib\src\components\control\button.dart:346:37
-- [ ] lib\src\components\control\button.dart:347:14
-- [ ] lib\src\components\control\button.dart:348:33
-- [ ] lib\src\components\control\button.dart:349:23
-- [ ] lib\src\components\control\button.dart:351:9
-- [ ] lib\src\components\control\button.dart:390:7
-- [ ] lib\src\components\control\button.dart:391:31
+- [x] lib\src\animation.dart:385:10
+- [x] lib\src\animation.dart:389:10
+- [x] lib\src\animation.dart:393:10
+- [x] lib\src\animation.dart:3:9
+- [x] lib\src\animation.dart:5:7
+- [x] lib\src\animation.dart:14:16
+- [x] lib\src\animation.dart:8:3
+- [x] lib\src\animation.dart:56:7
+- [x] lib\src\animation.dart:57:18
+- [x] lib\src\animation.dart:64:15
+- [x] lib\src\animation.dart:71:17
+- [x] lib\src\animation.dart:78:18
+- [x] lib\src\animation.dart:88:16
+- [x] lib\src\animation.dart:99:7
+- [x] lib\src\animation.dart:101:23
+- [x] lib\src\animation.dart:115:25
+- [x] lib\src\animation.dart:119:28
+- [x] lib\src\animation.dart:123:27
+- [x] lib\src\animation.dart:128:7
+- [x] lib\src\animation.dart:151:9
+- [x] lib\src\animation.dart:158:7
+- [x] lib\src\animation.dart:167:7
+- [x] lib\src\animation.dart:168:16
+- [x] lib\src\animation.dart:169:18
+- [x] lib\src\animation.dart:170:15
+- [x] lib\src\animation.dart:172:3
+- [x] lib\src\animation.dart:175:7
+- [x] lib\src\animation.dart:176:16
+- [x] lib\src\animation.dart:177:16
+- [x] lib\src\animation.dart:178:18
+- [x] lib\src\animation.dart:179:15
+- [x] lib\src\animation.dart:182:3
+- [x] lib\src\animation.dart:185:7
+- [x] lib\src\animation.dart:212:14
+- [x] lib\src\animation.dart:214:12
+- [x] lib\src\animation.dart:205:7
+- [x] lib\src\animation.dart:193:8
+- [x] lib\src\animation.dart:216:8
+- [x] lib\src\animation.dart:188:3
+- [x] lib\src\animation.dart:236:16
+- [x] lib\src\animation.dart:237:16
+- [x] lib\src\animation.dart:238:5
+- [x] lib\src\animation.dart:241:7
+- [x] lib\src\animation.dart:242:11
+- [x] lib\src\animation.dart:243:11
+- [x] lib\src\animation.dart:247:9
+- [x] lib\src\animation.dart:259:7
+- [x] lib\src\animation.dart:260:11
+- [x] lib\src\animation.dart:264:9
+- [x] lib\src\animation.dart:281:7
+- [x] lib\src\animation.dart:282:12
+- [x] lib\src\animation.dart:286:9
+- [x] lib\src\animation.dart:300:7
+- [x] lib\src\animation.dart:301:18
+- [x] lib\src\animation.dart:302:30
+- [x] lib\src\animation.dart:304:3
+- [x] lib\src\animation.dart:314:7
+- [x] lib\src\animation.dart:315:12
+- [x] lib\src\animation.dart:353:25
+- [x] lib\src\animation.dart:357:5
+- [x] lib\src\animation.dart:361:25
+- [x] lib\src\animation.dart:319:25
+- [x] lib\src\animation.dart:320:18
+- [x] lib\src\animation.dart:321:27
+- [x] lib\src\animation.dart:329:11
+- [x] lib\src\collection.dart:1:6
+- [x] lib\src\collection.dart:30:7
+- [x] lib\src\collection.dart:34:3
+- [x] lib\src\collection.dart:40:7
+- [x] lib\src\collection.dart:47:3
+- [x] lib\src\components\animation.dart:291:7
+- [x] lib\src\components\animation.dart:323:5
+- [x] lib\src\components\async.dart:5:9
+- [x] lib\src\components\async.dart:8:7
+- [x] lib\src\components\async.dart:9:21
+- [x] lib\src\components\async.dart:10:34
+- [x] lib\src\components\async.dart:11:12
+- [x] lib\src\components\async.dart:13:9
+- [x] lib\src\components\control\button.dart:213:14
+- [x] lib\src\components\control\button.dart:214:29
+- [x] lib\src\components\control\button.dart:215:16
+- [x] lib\src\components\control\button.dart:216:21
+- [x] lib\src\components\control\button.dart:217:15
+- [x] lib\src\components\control\button.dart:258:7
+- [x] lib\src\components\control\button.dart:259:32
+- [x] lib\src\components\control\button.dart:319:7
+- [x] lib\src\components\control\button.dart:320:14
+- [x] lib\src\components\control\button.dart:321:29
+- [x] lib\src\components\control\button.dart:322:16
+- [x] lib\src\components\control\button.dart:323:29
+- [x] lib\src\components\control\button.dart:324:29
+- [x] lib\src\components\control\button.dart:325:15
+- [x] lib\src\components\control\button.dart:326:28
+- [x] lib\src\components\control\button.dart:327:28
+- [x] lib\src\components\control\button.dart:328:14
+- [x] lib\src\components\control\button.dart:329:29
+- [x] lib\src\components\control\button.dart:330:29
+- [x] lib\src\components\control\button.dart:331:15
+- [x] lib\src\components\control\button.dart:332:33
+- [x] lib\src\components\control\button.dart:333:31
+- [x] lib\src\components\control\button.dart:334:35
+- [x] lib\src\components\control\button.dart:335:33
+- [x] lib\src\components\control\button.dart:336:31
+- [x] lib\src\components\control\button.dart:337:35
+- [x] lib\src\components\control\button.dart:338:33
+- [x] lib\src\components\control\button.dart:339:31
+- [x] lib\src\components\control\button.dart:340:35
+- [x] lib\src\components\control\button.dart:341:40
+- [x] lib\src\components\control\button.dart:342:37
+- [x] lib\src\components\control\button.dart:343:45
+- [x] lib\src\components\control\button.dart:344:38
+- [x] lib\src\components\control\button.dart:345:37
+- [x] lib\src\components\control\button.dart:346:37
+- [x] lib\src\components\control\button.dart:347:14
+- [x] lib\src\components\control\button.dart:348:33
+- [x] lib\src\components\control\button.dart:349:23
+- [x] lib\src\components\control\button.dart:351:9
+- [x] lib\src\components\control\button.dart:390:7
+- [x] lib\src\components\control\button.dart:391:31
 - [ ] lib\src\components\control\button.dart:831:16
 - [ ] lib\src\components\control\button.dart:915:16
 - [ ] lib\src\components\control\button.dart:950:16
@@ -580,91 +580,91 @@ TODO:
 - [ ] lib\src\components\control\button.dart:4742:25
 - [ ] lib\src\components\control\button.dart:4748:27
 - [ ] lib\src\components\control\button.dart:4762:27
-- [ ] lib\src\components\control\clickable.dart:6:11
-- [ ] lib\src\components\control\clickable.dart:7:12
-- [ ] lib\src\components\control\clickable.dart:8:12
-- [ ] lib\src\components\control\clickable.dart:9:12
-- [ ] lib\src\components\control\clickable.dart:10:12
-- [ ] lib\src\components\control\clickable.dart:11:12
-- [ ] lib\src\components\control\clickable.dart:12:12
-- [ ] lib\src\components\control\clickable.dart:226:7
-- [ ] lib\src\components\control\clickable.dart:227:33
-- [ ] lib\src\components\control\clickable.dart:228:27
-- [ ] lib\src\components\control\clickable.dart:229:16
-- [ ] lib\src\components\control\clickable.dart:230:14
-- [ ] lib\src\components\control\clickable.dart:231:14
-- [ ] lib\src\components\control\clickable.dart:233:9
-- [ ] lib\src\components\control\clickable.dart:241:30
-- [ ] lib\src\components\control\clickable.dart:283:7
-- [ ] lib\src\components\control\clickable.dart:284:26
-- [ ] lib\src\components\control\clickable.dart:286:9
-- [ ] lib\src\components\control\clickable.dart:357:7
-- [ ] lib\src\components\control\clickable.dart:358:16
-- [ ] lib\src\components\control\clickable.dart:359:14
-- [ ] lib\src\components\control\clickable.dart:360:29
-- [ ] lib\src\components\control\clickable.dart:361:29
-- [ ] lib\src\components\control\clickable.dart:362:43
-- [ ] lib\src\components\control\clickable.dart:363:44
-- [ ] lib\src\components\control\clickable.dart:364:51
-- [ ] lib\src\components\control\clickable.dart:365:42
-- [ ] lib\src\components\control\clickable.dart:366:46
-- [ ] lib\src\components\control\clickable.dart:367:51
-- [ ] lib\src\components\control\clickable.dart:368:40
-- [ ] lib\src\components\control\clickable.dart:369:23
-- [ ] lib\src\components\control\clickable.dart:370:23
-- [ ] lib\src\components\control\clickable.dart:371:20
-- [ ] lib\src\components\control\clickable.dart:372:25
-- [ ] lib\src\components\control\clickable.dart:373:14
-- [ ] lib\src\components\control\clickable.dart:374:37
-- [ ] lib\src\components\control\clickable.dart:375:36
-- [ ] lib\src\components\control\clickable.dart:376:14
-- [ ] lib\src\components\control\clickable.dart:377:14
-- [ ] lib\src\components\control\clickable.dart:378:23
-- [ ] lib\src\components\control\clickable.dart:379:33
-- [ ] lib\src\components\control\clickable.dart:380:31
-- [ ] lib\src\components\control\clickable.dart:381:35
-- [ ] lib\src\components\control\clickable.dart:382:33
-- [ ] lib\src\components\control\clickable.dart:383:31
-- [ ] lib\src\components\control\clickable.dart:384:35
-- [ ] lib\src\components\control\clickable.dart:385:33
-- [ ] lib\src\components\control\clickable.dart:386:31
-- [ ] lib\src\components\control\clickable.dart:387:35
-- [ ] lib\src\components\control\clickable.dart:388:40
-- [ ] lib\src\components\control\clickable.dart:389:37
-- [ ] lib\src\components\control\clickable.dart:390:45
-- [ ] lib\src\components\control\clickable.dart:391:38
-- [ ] lib\src\components\control\clickable.dart:392:37
-- [ ] lib\src\components\control\clickable.dart:393:37
-- [ ] lib\src\components\control\clickable.dart:394:14
-- [ ] lib\src\components\control\clickable.dart:395:33
-- [ ] lib\src\components\control\clickable.dart:396:28
-- [ ] lib\src\components\control\clickable.dart:397:14
-- [ ] lib\src\components\control\clickable.dart:399:9
-- [ ] lib\src\components\control\clickable.dart:447:7
-- [ ] lib\src\components\control\command.dart:22:12
-- [ ] lib\src\components\control\command.dart:4:9
-- [ ] lib\src\components\control\command.dart:7:9
-- [ ] lib\src\components\control\command.dart:10:7
-- [ ] lib\src\components\control\command.dart:11:9
-- [ ] lib\src\components\control\command.dart:100:14
-- [ ] lib\src\components\control\command.dart:101:24
-- [ ] lib\src\components\control\command.dart:103:7
-- [ ] lib\src\components\control\command.dart:104:24
-- [ ] lib\src\components\control\command.dart:105:29
-- [ ] lib\src\components\control\command.dart:106:24
-- [ ] lib\src\components\control\command.dart:107:17
-- [ ] lib\src\components\control\command.dart:108:17
-- [ ] lib\src\components\control\command.dart:109:17
-- [ ] lib\src\components\control\command.dart:357:7
-- [ ] lib\src\components\control\command.dart:358:22
-- [ ] lib\src\components\control\command.dart:359:17
-- [ ] lib\src\components\control\command.dart:361:9
-- [ ] lib\src\components\control\command.dart:387:7
-- [ ] lib\src\components\control\command.dart:388:17
-- [ ] lib\src\components\control\command.dart:389:16
-- [ ] lib\src\components\control\command.dart:390:17
-- [ ] lib\src\components\control\command.dart:391:23
-- [ ] lib\src\components\control\command.dart:393:9
+- [x] lib\src\components\control\clickable.dart:6:11
+- [x] lib\src\components\control\clickable.dart:7:12
+- [x] lib\src\components\control\clickable.dart:8:12
+- [x] lib\src\components\control\clickable.dart:9:12
+- [x] lib\src\components\control\clickable.dart:10:12
+- [x] lib\src\components\control\clickable.dart:11:12
+- [x] lib\src\components\control\clickable.dart:12:12
+- [x] lib\src\components\control\clickable.dart:226:7
+- [x] lib\src\components\control\clickable.dart:227:33
+- [x] lib\src\components\control\clickable.dart:228:27
+- [x] lib\src\components\control\clickable.dart:229:16
+- [x] lib\src\components\control\clickable.dart:230:14
+- [x] lib\src\components\control\clickable.dart:231:14
+- [x] lib\src\components\control\clickable.dart:233:9
+- [x] lib\src\components\control\clickable.dart:241:30
+- [x] lib\src\components\control\clickable.dart:283:7
+- [x] lib\src\components\control\clickable.dart:284:26
+- [x] lib\src\components\control\clickable.dart:286:9
+- [x] lib\src\components\control\clickable.dart:357:7
+- [x] lib\src\components\control\clickable.dart:358:16
+- [x] lib\src\components\control\clickable.dart:359:14
+- [x] lib\src\components\control\clickable.dart:360:29
+- [x] lib\src\components\control\clickable.dart:361:29
+- [x] lib\src\components\control\clickable.dart:362:43
+- [x] lib\src\components\control\clickable.dart:363:44
+- [x] lib\src\components\control\clickable.dart:364:51
+- [x] lib\src\components\control\clickable.dart:365:42
+- [x] lib\src\components\control\clickable.dart:366:46
+- [x] lib\src\components\control\clickable.dart:367:51
+- [x] lib\src\components\control\clickable.dart:368:40
+- [x] lib\src\components\control\clickable.dart:369:23
+- [x] lib\src\components\control\clickable.dart:370:23
+- [x] lib\src\components\control\clickable.dart:371:20
+- [x] lib\src\components\control\clickable.dart:372:25
+- [x] lib\src\components\control\clickable.dart:373:14
+- [x] lib\src\components\control\clickable.dart:374:37
+- [x] lib\src\components\control\clickable.dart:375:36
+- [x] lib\src\components\control\clickable.dart:376:14
+- [x] lib\src\components\control\clickable.dart:377:14
+- [x] lib\src\components\control\clickable.dart:378:23
+- [x] lib\src\components\control\clickable.dart:379:33
+- [x] lib\src\components\control\clickable.dart:380:31
+- [x] lib\src\components\control\clickable.dart:381:35
+- [x] lib\src\components\control\clickable.dart:382:33
+- [x] lib\src\components\control\clickable.dart:383:31
+- [x] lib\src\components\control\clickable.dart:384:35
+- [x] lib\src\components\control\clickable.dart:385:33
+- [x] lib\src\components\control\clickable.dart:386:31
+- [x] lib\src\components\control\clickable.dart:387:35
+- [x] lib\src\components\control\clickable.dart:388:40
+- [x] lib\src\components\control\clickable.dart:389:37
+- [x] lib\src\components\control\clickable.dart:390:45
+- [x] lib\src\components\control\clickable.dart:391:38
+- [x] lib\src\components\control\clickable.dart:392:37
+- [x] lib\src\components\control\clickable.dart:393:37
+- [x] lib\src\components\control\clickable.dart:394:14
+- [x] lib\src\components\control\clickable.dart:395:33
+- [x] lib\src\components\control\clickable.dart:396:28
+- [x] lib\src\components\control\clickable.dart:397:14
+- [x] lib\src\components\control\clickable.dart:399:9
+- [x] lib\src\components\control\clickable.dart:447:7
+- [x] lib\src\components\control\command.dart:22:12
+- [x] lib\src\components\control\command.dart:4:9
+- [x] lib\src\components\control\command.dart:7:9
+- [x] lib\src\components\control\command.dart:10:7
+- [x] lib\src\components\control\command.dart:11:9
+- [x] lib\src\components\control\command.dart:100:14
+- [x] lib\src\components\control\command.dart:101:24
+- [x] lib\src\components\control\command.dart:103:7
+- [x] lib\src\components\control\command.dart:104:24
+- [x] lib\src\components\control\command.dart:105:29
+- [x] lib\src\components\control\command.dart:106:24
+- [x] lib\src\components\control\command.dart:107:17
+- [x] lib\src\components\control\command.dart:108:17
+- [x] lib\src\components\control\command.dart:109:17
+- [x] lib\src\components\control\command.dart:357:7
+- [x] lib\src\components\control\command.dart:358:22
+- [x] lib\src\components\control\command.dart:359:17
+- [x] lib\src\components\control\command.dart:361:9
+- [x] lib\src\components\control\command.dart:387:7
+- [x] lib\src\components\control\command.dart:388:17
+- [x] lib\src\components\control\command.dart:389:16
+- [x] lib\src\components\control\command.dart:390:17
+- [x] lib\src\components\control\command.dart:391:23
+- [x] lib\src\components\control\command.dart:393:9
 - [ ] lib\src\components\control\hover.dart:3:7
 - [ ] lib\src\components\control\hover.dart:18:14
 - [ ] lib\src\components\control\hover.dart:4:19

@@ -1,12 +1,53 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// A builder function that produces command search results as a stream.
+///
+/// ## Parameters
+///
+/// * [context] - The build context.
+/// * [query] - The current search query string, or `null` for initial state.
+///
+/// ## Returns
+///
+/// A `Stream` of widget lists representing filtered/matched results.
+///
+/// ## Example
+///
+/// ```dart
+/// CommandBuilder myBuilder = (context, query) async* {
+///   final results = await fetchResults(query);
+///   yield results.map((r) => CommandItem(title: Text(r))).toList();
+/// };
+/// ```
 typedef CommandBuilder = Stream<List<Widget>> Function(
     BuildContext context, String? query);
 
+/// A builder function for error widgets in command palettes.
+///
+/// ## Parameters
+///
+/// * [context] - The build context.
+/// * [error] - The error object that was caught.
+/// * [stackTrace] - Optional stack trace for debugging.
+///
+/// ## Returns
+///
+/// A widget to display when an error occurs.
+///
+/// ## Example
+///
+/// ```dart
+/// ErrorWidgetBuilder errorBuilder = (context, error, stackTrace) {
+///   return Text('Error: $error');
+/// };
+/// ```
 typedef ErrorWidgetBuilder = Widget Function(
     BuildContext context, Object error, StackTrace? stackTrace);
 
+/// A default widget displayed when command search returns no results.
+///
+/// Displays a localized "No results" message with standard styling.
 class CommandEmpty extends StatelessWidget {
   const CommandEmpty({super.key});
 
@@ -19,6 +60,38 @@ class CommandEmpty extends StatelessWidget {
   }
 }
 
+/// Shows a command palette in a modal dialog.
+///
+/// Displays a [Command] widget in a modal dialog with customizable constraints,
+/// backdrop effects, and search behavior.
+///
+/// ## Parameters
+///
+/// * [context] - The build context.
+/// * [builder] - The command builder for search results.
+/// * [constraints] - Optional size constraints. Defaults to 510x349.
+/// * [autofocus] - Whether to auto-focus the search field. Defaults to `true`.
+/// * [debounceDuration] - Search debounce delay. Defaults to 500ms.
+/// * [emptyBuilder] - Custom widget for empty results.
+/// * [errorBuilder] - Custom widget for error states.
+/// * [loadingBuilder] - Custom widget for loading states.
+/// * [surfaceOpacity] - Modal surface opacity.
+/// * [surfaceBlur] - Modal surface blur amount.
+///
+/// ## Returns
+///
+/// A `Future` that completes with the dialog result of type [T], or `null` if dismissed.
+///
+/// ## Example
+///
+/// ```dart
+/// final result = await showCommandDialog<String>(
+///   context: context,
+///   builder: (context, query) async* {
+///     yield commands.where((c) => c.contains(query ?? '')).toList();
+///   },
+/// );
+/// ```
 Future<T?> showCommandDialog<T>({
   required BuildContext context,
   required CommandBuilder builder,
@@ -89,8 +162,8 @@ Future<T?> showCommandDialog<T>({
 ///   builder: (context, query) async* {
 ///     final results = await searchService.search(query);
 ///     yield results.map((item) => CommandItem(
-///       onSelected: () => handleCommand(item),
-///       child: Text(item.title),
+///       onTap: () => handleCommand(item),
+///       title: Text(item.title),
 ///     )).toList();
 ///   },
 ///   emptyBuilder: (context) => Text('No results found'),
@@ -135,8 +208,8 @@ class Command extends StatefulWidget {
   ///       cmd.name.toLowerCase().contains(query?.toLowerCase() ?? '')
   ///     );
   ///     yield filtered.map((cmd) => CommandItem(
-  ///       child: Text(cmd.name),
-  ///       onSelected: () => cmd.execute(),
+  ///       title: Text(cmd.name),
+  ///       onTap: () => cmd.execute(),
   ///     )).toList();
   ///   },
   /// )
@@ -354,8 +427,28 @@ class _CommandState extends State<Command> {
   }
 }
 
+/// A category grouping for command items in a command palette.
+///
+/// Groups related command items under an optional category title. Items within
+/// a category are visually grouped and can be navigated as a unit.
+///
+/// ## Example
+///
+/// ```dart
+/// CommandCategory(
+///   title: Text('File'),
+///   children: [
+///     CommandItem(title: Text('New File'), onTap: () {}),
+///     CommandItem(title: Text('Open File'), onTap: () {}),
+///     CommandItem(title: Text('Save'), onTap: () {}),
+///   ],
+/// )
+/// ```
 class CommandCategory extends StatelessWidget {
+  /// The list of command items in this category.
   final List<Widget> children;
+  
+  /// Optional title widget displayed above the category items.
   final Widget? title;
 
   const CommandCategory({
@@ -384,10 +477,33 @@ class CommandCategory extends StatelessWidget {
   }
 }
 
+/// An individual selectable item in a command palette.
+///
+/// Represents a single command or option that can be selected via click or
+/// keyboard navigation. Supports optional leading and trailing widgets for
+/// icons, shortcuts, or other decorations.
+///
+/// ## Example
+///
+/// ```dart
+/// CommandItem(
+///   leading: Icon(Icons.save),
+///   title: Text('Save File'),
+///   trailing: Text('Ctrl+S'),
+///   onTap: () => saveFile(),
+/// )
+/// ```
 class CommandItem extends StatefulWidget {
+  /// Optional widget displayed before the title (e.g., an icon).
   final Widget? leading;
+  
+  /// The main title/label of the command item.
   final Widget title;
+  
+  /// Optional widget displayed after the title (e.g., keyboard shortcut).
   final Widget? trailing;
+  
+  /// Called when the item is selected/tapped.
   final VoidCallback? onTap;
 
   const CommandItem({

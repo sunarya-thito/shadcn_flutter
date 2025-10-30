@@ -210,10 +210,25 @@ class ControlledToggle extends StatelessWidget with ControlledComponent<bool> {
 /// );
 /// ```
 class Toggle extends StatefulWidget {
+  /// The current toggle state (on/off).
   final bool value;
+  
+  /// Called when the toggle state changes.
+  ///
+  /// If `null`, the toggle is considered disabled and won't respond to user input.
   final ValueChanged<bool>? onChanged;
+  
+  /// The widget displayed inside the toggle button.
   final Widget child;
+  
+  /// The visual style for the button.
+  ///
+  /// Defaults to ghost style for a subtle appearance.
   final ButtonStyle style;
+  
+  /// Whether the toggle button is enabled.
+  ///
+  /// If `null`, the button is enabled only when [onChanged] is not `null`.
   final bool? enabled;
 
   /// Creates a [Toggle].
@@ -255,7 +270,14 @@ class Toggle extends StatefulWidget {
 }
 
 // toggle button is just ghost button
+/// State class for [Toggle] that manages the toggle behavior and form integration.
+///
+/// This state class handles:
+/// - Maintaining widget states (selected, pressed, hovered, etc.)
+/// - Form value integration via [FormValueSupplier]
+/// - Updating the selected state based on the toggle value
 class ToggleState extends State<Toggle> with FormValueSupplier<bool, Toggle> {
+  /// Controller for managing widget interaction states.
   final WidgetStatesController statesController = WidgetStatesController();
 
   @override
@@ -316,36 +338,131 @@ class ToggleState extends State<Toggle> with FormValueSupplier<bool, Toggle> {
   }
 }
 
+/// A button that changes style based on its selected state.
+///
+/// [SelectedButton] provides a stateful button that displays different styles
+/// when selected versus unselected. It supports all standard button gestures
+/// including tap, long press, and hover interactions.
+///
+/// ## Overview
+///
+/// Use [SelectedButton] when you need a button that visually indicates selection
+/// state, such as in tab bars, segmented controls, or toggle groups. The button
+/// automatically switches between [style] (unselected) and [selectedStyle] (selected)
+/// based on the [value] parameter.
+///
+/// ## Example
+///
+/// ```dart
+/// SelectedButton(
+///   value: isSelected,
+///   onChanged: (selected) => setState(() => isSelected = selected),
+///   style: const ButtonStyle.ghost(),
+///   selectedStyle: const ButtonStyle.secondary(),
+///   child: Text('Option A'),
+/// )
+/// ```
 class SelectedButton extends StatefulWidget {
+  /// The current selection state of the button.
   final bool value;
+  
+  /// Called when the selection state changes.
+  ///
+  /// If `null`, the button is disabled.
   final ValueChanged<bool>? onChanged;
+  
+  /// The widget displayed inside the button.
   final Widget child;
+  
+  /// The button style when not selected.
+  ///
+  /// Defaults to ghost style.
   final AbstractButtonStyle style;
+  
+  /// The button style when selected.
+  ///
+  /// Defaults to secondary style.
   final AbstractButtonStyle selectedStyle;
+  
+  /// Whether the button is enabled.
+  ///
+  /// If `null`, enabled state is determined by whether [onChanged] is non-null.
   final bool? enabled;
+  
+  /// The alignment of the child within the button.
   final AlignmentGeometry? alignment;
+  
+  /// The margin alignment for the button.
   final AlignmentGeometry? marginAlignment;
+  
+  /// Whether to disable style transition animations.
+  ///
+  /// Defaults to `false`. When `true`, style changes are instant.
   final bool disableTransition;
+  
+  /// Called when the hover state changes.
   final ValueChanged<bool>? onHover;
+  
+  /// Called when the focus state changes.
   final ValueChanged<bool>? onFocus;
+  
+  /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
+  
+  /// Called when a primary tap down event occurs.
   final GestureTapDownCallback? onTapDown;
+  
+  /// Called when a primary tap up event occurs.
   final GestureTapUpCallback? onTapUp;
+  
+  /// Called when a primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+  
+  /// Called when a secondary tap down event occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
+  
+  /// Called when a secondary tap up event occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
+  
+  /// Called when a secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+  
+  /// Called when a tertiary tap down event occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
+  
+  /// Called when a tertiary tap up event occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
+  
+  /// Called when a tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+  
+  /// Called when a long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+  
+  /// Called when a long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+  
+  /// Called when a long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  
+  /// Called when a long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+  
+  /// Called when a secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+  
+  /// Called when a tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
+  
+  /// Whether to disable the hover effect.
+  ///
+  /// Defaults to `false`.
   final bool disableHoverEffect;
+  
+  /// Optional controller for programmatic state management.
   final WidgetStatesController? statesController;
+  
+  /// Called when the button is pressed (tapped).
   final VoidCallback? onPressed;
 
   const SelectedButton({
@@ -387,6 +504,10 @@ class SelectedButton extends StatefulWidget {
 }
 
 // toggle button is just ghost button
+/// State class for [SelectedButton] managing selection and interaction states.
+///
+/// Handles widget state controller lifecycle and synchronizes the selected state
+/// with the button's value.
 class SelectedButtonState extends State<SelectedButton> {
   late WidgetStatesController statesController;
   @override
