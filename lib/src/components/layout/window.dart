@@ -391,6 +391,21 @@ class WindowState {
 /// ```
 class WindowController extends ValueNotifier<WindowState> {
   WindowHandle? _attachedState;
+
+  /// Creates a [WindowController].
+  ///
+  /// Parameters:
+  /// - [bounds] (`Rect`, required): Initial window bounds.
+  /// - [maximized] (`Rect?`, optional): Maximized bounds, or null if not maximized.
+  /// - [minimized] (`bool`, default: `false`): Initial minimized state.
+  /// - [focused] (`bool`, default: `false`): Initial focused state.
+  /// - [closable] (`bool`, default: `true`): Whether window can be closed.
+  /// - [resizable] (`bool`, default: `true`): Whether window can be resized.
+  /// - [draggable] (`bool`, default: `true`): Whether window can be dragged.
+  /// - [maximizable] (`bool`, default: `true`): Whether window can be maximized.
+  /// - [minimizable] (`bool`, default: `true`): Whether window can be minimized.
+  /// - [enableSnapping] (`bool`, default: `true`): Whether window snapping is enabled.
+  /// - [constraints] (`BoxConstraints`, default: `kDefaultWindowConstraints`): Size constraints.
   WindowController({
     required Rect bounds,
     Rect? maximized,
@@ -804,30 +819,81 @@ class WindowWidget extends StatefulWidget {
   State<WindowWidget> createState() => _WindowWidgetState();
 }
 
+/// Interface for controlling window state and behavior.
+///
+/// Mixin that provides access to window properties and operations.
+/// Implemented by window state classes to manage window lifecycle.
 mixin WindowHandle on State<WindowWidget> {
+  /// Gets the current window bounds.
   Rect get bounds;
+
+  /// Sets the window bounds.
   set bounds(Rect value);
+
+  /// Gets the maximized bounds, or null if not maximized.
   Rect? get maximized;
+
+  /// Sets the maximized bounds.
   set maximized(Rect? value);
+
+  /// Whether the window is minimized.
   bool get minimized;
+
+  /// Sets the minimized state.
   set minimized(bool value);
+
+  /// Whether the window has focus.
   bool get focused;
+
+  /// Sets the focused state.
   set focused(bool value);
+
+  /// Closes the window.
   void close();
+
+  /// Whether the window stays on top of other windows.
   bool get alwaysOnTop;
+
+  /// Sets the always-on-top state.
   set alwaysOnTop(bool value);
+
+  /// Whether the window can be resized.
   bool get resizable;
+
+  /// Whether the window can be dragged.
   bool get draggable;
+
+  /// Whether the window can be closed.
   bool get closable;
+
+  /// Whether the window can be maximized.
   bool get maximizable;
+
+  /// Whether the window can be minimized.
   bool get minimizable;
+
+  /// Whether window snapping is enabled.
   bool get enableSnapping;
+
+  /// Sets the resizable state.
   set resizable(bool value);
+
+  /// Sets the draggable state.
   set draggable(bool value);
+
+  /// Sets the closable state.
   set closable(bool value);
+
+  /// Sets the maximizable state.
   set maximizable(bool value);
+
+  /// Sets the minimizable state.
   set minimizable(bool value);
+
+  /// Sets the snapping enabled state.
   set enableSnapping(bool value);
+
+  /// Gets the window controller.
   WindowController get controller;
 }
 
@@ -1425,11 +1491,38 @@ class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
   }
 }
 
+/// A widget that manages multiple floating windows.
+///
+/// Provides a desktop-style window management system where multiple windows
+/// can be displayed, dragged, resized, minimized, and maximized.
+///
+/// Example:
+/// ```dart
+/// WindowNavigator(
+///   initialWindows: [
+///     Window(
+///       controller: WindowController(bounds: Rect.fromLTWH(100, 100, 400, 300)),
+///       child: Text('Window Content'),
+///     ),
+///   ],
+/// )
+/// ```
 class WindowNavigator extends StatefulWidget {
+  /// Initial list of windows to display.
   final List<Window> initialWindows;
+
+  /// Optional background child widget.
   final Widget? child;
+
+  /// Whether to show the top snap bar for window snapping.
   final bool showTopSnapBar;
 
+  /// Creates a [WindowNavigator].
+  ///
+  /// Parameters:
+  /// - [initialWindows] (`List<Window>`, required): Windows to display initially.
+  /// - [child] (`Widget?`, optional): Background widget.
+  /// - [showTopSnapBar] (`bool`, default: `true`): Show snap bar.
   const WindowNavigator({
     super.key,
     required this.initialWindows,
