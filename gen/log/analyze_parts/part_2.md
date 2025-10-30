@@ -367,39 +367,39 @@ TODO:
 - [x] lib\src\components\form\validated.dart:8:22
 - [x] lib\src\components\form\validated.dart:9:17
 - [x] lib\src\components\form\validated.dart:11:9
-- [ ] lib\src\components\icon\icon.dart:3:11
-- [ ] lib\src\components\icon\icon.dart:4:19
-- [ ] lib\src\components\icon\icon.dart:9:19
-- [ ] lib\src\components\icon\icon.dart:14:19
-- [ ] lib\src\components\icon\icon.dart:19:19
-- [ ] lib\src\components\icon\icon.dart:24:19
-- [ ] lib\src\components\icon\icon.dart:29:19
-- [ ] lib\src\components\icon\icon.dart:34:19
-- [ ] lib\src\components\icon\icon.dart:39:19
-- [ ] lib\src\components\icon\icon.dart:44:19
-- [ ] lib\src\components\icon\icon.dart:49:19
-- [ ] lib\src\components\icon\icon.dart:54:19
-- [ ] lib\src\components\icon\icon.dart:59:19
-- [ ] lib\src\components\icon\icon.dart:67:19
-- [ ] lib\src\components\icon\icon.dart:74:19
-- [ ] lib\src\components\icon\icon.dart:81:19
-- [ ] lib\src\components\icon\icon.dart:88:19
-- [ ] lib\src\components\icon\icon.dart:95:19
-- [ ] lib\src\components\icon\icon.dart:103:9
-- [ ] lib\src\components\icon\icon.dart:106:7
-- [ ] lib\src\components\icon\icon.dart:116:10
-- [ ] lib\src\components\icon\icon.dart:130:15
-- [ ] lib\src\components\icon\icon.dart:107:47
-- [ ] lib\src\components\icon\icon.dart:108:16
-- [ ] lib\src\components\icon\icon.dart:110:9
-- [ ] lib\src\components\icon\triple_dots.dart:3:7
-- [ ] lib\src\components\icon\triple_dots.dart:4:14
-- [ ] lib\src\components\icon\triple_dots.dart:5:13
-- [ ] lib\src\components\icon\triple_dots.dart:6:17
-- [ ] lib\src\components\icon\triple_dots.dart:7:16
-- [ ] lib\src\components\icon\triple_dots.dart:8:16
-- [ ] lib\src\components\icon\triple_dots.dart:9:29
-- [ ] lib\src\components\icon\triple_dots.dart:11:9
+- [x] lib\src\components\icon\icon.dart:3:11
+- [x] lib\src\components\icon\icon.dart:4:19
+- [x] lib\src\components\icon\icon.dart:9:19
+- [x] lib\src\components\icon\icon.dart:14:19
+- [x] lib\src\components\icon\icon.dart:19:19
+- [x] lib\src\components\icon\icon.dart:24:19
+- [x] lib\src\components\icon\icon.dart:29:19
+- [x] lib\src\components\icon\icon.dart:34:19
+- [x] lib\src\components\icon\icon.dart:39:19
+- [x] lib\src\components\icon\icon.dart:44:19
+- [x] lib\src\components\icon\icon.dart:49:19
+- [x] lib\src\components\icon\icon.dart:54:19
+- [x] lib\src\components\icon\icon.dart:59:19
+- [x] lib\src\components\icon\icon.dart:67:19
+- [x] lib\src\components\icon\icon.dart:74:19
+- [x] lib\src\components\icon\icon.dart:81:19
+- [x] lib\src\components\icon\icon.dart:88:19
+- [x] lib\src\components\icon\icon.dart:95:19
+- [x] lib\src\components\icon\icon.dart:103:9
+- [x] lib\src\components\icon\icon.dart:106:7
+- [x] lib\src\components\icon\icon.dart:116:10
+- [x] lib\src\components\icon\icon.dart:130:15
+- [x] lib\src\components\icon\icon.dart:107:47
+- [x] lib\src\components\icon\icon.dart:108:16
+- [x] lib\src\components\icon\icon.dart:110:9
+- [x] lib\src\components\icon\triple_dots.dart:3:7
+- [x] lib\src\components\icon\triple_dots.dart:4:14
+- [x] lib\src\components\icon\triple_dots.dart:5:13
+- [x] lib\src\components\icon\triple_dots.dart:6:17
+- [x] lib\src\components\icon\triple_dots.dart:7:16
+- [x] lib\src\components\icon\triple_dots.dart:8:16
+- [x] lib\src\components\icon\triple_dots.dart:9:29
+- [x] lib\src\components\icon\triple_dots.dart:11:9
 - [ ] lib\src\components\layout\accordion.dart:88:7
 - [ ] lib\src\components\layout\basic.dart:3:7
 - [ ] lib\src\components\layout\basic.dart:26:14
