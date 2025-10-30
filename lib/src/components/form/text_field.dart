@@ -27,11 +27,33 @@ import 'package:flutter/cupertino.dart' as cupertino;
 /// and border radius. These properties can be set at the theme level
 /// to provide consistent styling across the application.
 class TextFieldTheme {
+  /// Border radius for text field corners.
+  ///
+  /// If `null`, uses default border radius from the theme.
   final BorderRadiusGeometry? borderRadius;
+
+  /// Whether the text field has a filled background.
+  ///
+  /// When `true`, applies a background fill color.
   final bool? filled;
+
+  /// Padding inside the text field.
+  ///
+  /// If `null`, uses default padding from the theme.
   final EdgeInsetsGeometry? padding;
+
+  /// Border style for the text field.
+  ///
+  /// If `null`, uses default border from the theme.
   final Border? border;
 
+  /// Creates a [TextFieldTheme].
+  ///
+  /// Parameters:
+  /// - [border] (`Border?`, optional): Border style.
+  /// - [borderRadius] (`BorderRadiusGeometry?`, optional): Corner rounding.
+  /// - [filled] (`bool?`, optional): Whether background is filled.
+  /// - [padding] (`EdgeInsetsGeometry?`, optional): Internal padding.
   const TextFieldTheme({
     this.border,
     this.borderRadius,
@@ -39,6 +61,9 @@ class TextFieldTheme {
     this.padding,
   });
 
+  /// Creates a copy of this theme with the given fields replaced.
+  ///
+  /// Parameters use value getters to allow `null` values to be explicitly set.
   TextFieldTheme copyWith({
     ValueGetter<Border?>? border,
     ValueGetter<BorderRadiusGeometry?>? borderRadius,
@@ -67,41 +92,92 @@ class TextFieldTheme {
   int get hashCode => Object.hash(border, borderRadius, filled, padding);
 }
 
+/// Standard height for text field components in logical pixels.
 const kTextFieldHeight = 34;
 
+/// Abstract base class for controlling input feature visibility.
+///
+/// Defines when UI elements like clear buttons, password toggles, or other
+/// input features should be visible based on text field state. Supports
+/// logical operations (AND, OR, NOT) to combine multiple visibility conditions.
+///
+/// Example:
+/// ```dart
+/// // Show clear button when text is not empty and field is focused
+/// final visibility = InputFeatureVisibility.textNotEmpty & 
+///                   InputFeatureVisibility.focused;
+/// ```
 abstract class InputFeatureVisibility {
+  /// Creates a visibility condition that is true when all [features] are true.
   const factory InputFeatureVisibility.and(
     Iterable<InputFeatureVisibility> features,
   ) = _LogicAndInputFeatureVisibility;
+
+  /// Creates a visibility condition that is true when any [features] is true.
   const factory InputFeatureVisibility.or(
     Iterable<InputFeatureVisibility> features,
   ) = _LogicOrInputFeatureVisibility;
+
+  /// Creates a visibility condition that inverts the given [feature].
   const factory InputFeatureVisibility.not(InputFeatureVisibility feature) =
       _NegateInputFeatureVisibility;
+
+  /// Visibility condition: text field is not empty.
   static const InputFeatureVisibility textNotEmpty =
       _TextNotEmptyInputFeatureVisibility();
+
+  /// Visibility condition: text field is empty.
   static const InputFeatureVisibility textEmpty =
       _TextEmptyInputFeatureVisibility();
+
+  /// Visibility condition: text field has focus.
   static const InputFeatureVisibility focused =
       _FocusedInputFeatureVisibility();
+
+  /// Visibility condition: text field is being hovered.
   static const InputFeatureVisibility hovered =
       _HoveredInputFeatureVisibility();
+
+  /// Visibility condition: never visible.
   static const InputFeatureVisibility never =
       _NeverVisibleInputFeatureVisibility();
+
+  /// Visibility condition: always visible.
   static const InputFeatureVisibility always =
       _AlwaysVisibleInputFeatureVisibility();
+
+  /// Visibility condition: text field has selected text.
   static const InputFeatureVisibility hasSelection =
       _HasSelectionInputFeatureVisibility();
+
+  /// Creates an [InputFeatureVisibility].
   const InputFeatureVisibility();
+
+  /// Gets the listenable dependencies for this visibility condition.
+  ///
+  /// Returns the state objects that should be monitored for changes.
   Iterable<Listenable> getDependencies(TextFieldState state);
+
+  /// Checks if the feature can be shown in the current state.
+  ///
+  /// Returns `true` if all visibility conditions are met.
   bool canShow(TextFieldState state);
 
+  /// Combines this visibility with [other] using logical AND.
   InputFeatureVisibility and(InputFeatureVisibility other) =>
       InputFeatureVisibility.and([this, other]);
+
+  /// Operator form of [and]. Combines conditions with logical AND.
   InputFeatureVisibility operator &(InputFeatureVisibility other) => and(other);
+
+  /// Combines this visibility with [other] using logical OR.
   InputFeatureVisibility or(InputFeatureVisibility other) =>
       InputFeatureVisibility.or([this, other]);
+
+  /// Operator form of [or]. Combines conditions with logical OR.
   InputFeatureVisibility operator |(InputFeatureVisibility other) => or(other);
+
+  /// Inverts this visibility condition using logical NOT.
   InputFeatureVisibility operator ~() => InputFeatureVisibility.not(this);
 }
 
@@ -257,7 +333,36 @@ class _AlwaysVisibleInputFeatureVisibility extends InputFeatureVisibility {
   bool canShow(TextFieldState state) => true;
 }
 
+/// Abstract factory for creating input field feature components.
+///
+/// Provides factory constructors for common text field features like password
+/// toggles, clear buttons, hints, autocomplete, and spinners. Features can be
+/// conditionally shown based on field state using [InputFeatureVisibility].
+///
+/// Example:
+/// ```dart
+/// TextField(
+///   leading: [
+///     InputFeature.hint(
+///       popupBuilder: (context) => Text('Enter email'),
+///     ),
+///   ],
+///   trailing: [
+///     InputFeature.clear(),
+///     InputFeature.passwordToggle(),
+///   ],
+/// )
+/// ```
 abstract class InputFeature {
+  /// Creates a hint/tooltip feature for the input field.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show hint.
+  /// - [popupBuilder] (`WidgetBuilder`, required): Builds the hint popup content.
+  /// - [icon] (`Widget?`, optional): Icon to display for the hint trigger.
+  /// - [position] (`InputFeaturePosition`, default: trailing): Where to place the hint.
+  /// - [enableShortcuts] (`bool`, default: true): Enable keyboard shortcuts.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.hint({
     InputFeatureVisibility visibility,
     required WidgetBuilder popupBuilder,
@@ -266,6 +371,16 @@ abstract class InputFeature {
     bool enableShortcuts,
     bool skipFocusTraversal,
   }) = InputHintFeature;
+
+  /// Creates a password visibility toggle feature.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show toggle.
+  /// - [mode] (`PasswordPeekMode`, default: toggle): Toggle or peek mode.
+  /// - [position] (`InputFeaturePosition`, default: trailing): Where to place toggle.
+  /// - [icon] (`Widget?`, optional): Icon when password is hidden.
+  /// - [iconShow] (`Widget?`, optional): Icon when password is visible.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.passwordToggle({
     InputFeatureVisibility visibility,
     PasswordPeekMode mode,
@@ -274,18 +389,49 @@ abstract class InputFeature {
     Widget? iconShow,
     bool skipFocusTraversal,
   }) = InputPasswordToggleFeature;
+
+  /// Creates a clear text button feature.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: textNotEmpty): When to show clear button.
+  /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
+  /// - [icon] (`Widget?`, optional): Custom clear icon.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.clear({
     InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
     bool skipFocusTraversal,
   }) = InputClearFeature;
+
+  /// Creates a revalidate button feature.
+  ///
+  /// Triggers form validation when clicked.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show button.
+  /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
+  /// - [icon] (`Widget?`, optional): Custom revalidate icon.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.revalidate({
     InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
     bool skipFocusTraversal,
   }) = InputRevalidateFeature;
+
+  /// Creates an autocomplete feature.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: focused): When to show autocomplete.
+  /// - [querySuggestions] (`SuggestionBuilder`, required): Builds suggestion list.
+  /// - [child] (`Widget`, required): Child widget in the autocomplete popup.
+  /// - [popoverConstraints] (`BoxConstraints?`, optional): Size constraints for popup.
+  /// - [popoverWidthConstraint] (`PopoverConstraint?`, optional): Width constraint mode.
+  /// - [popoverAnchorAlignment] (`AlignmentDirectional?`, optional): Anchor alignment.
+  /// - [popoverAlignment] (`AlignmentDirectional?`, optional): Popup alignment.
+  /// - [mode] (`AutoCompleteMode`, default: popup): Display mode.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.autoComplete({
     InputFeatureVisibility visibility,
     required SuggestionBuilder querySuggestions,
@@ -297,6 +443,15 @@ abstract class InputFeature {
     AutoCompleteMode mode,
     bool skipFocusTraversal,
   }) = InputAutoCompleteFeature;
+
+  /// Creates a numeric spinner feature for incrementing/decrementing values.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show spinner.
+  /// - [step] (`double`, default: 1): Increment/decrement step size.
+  /// - [enableGesture] (`bool`, default: true): Enable drag gestures.
+  /// - [invalidValue] (`double?`, optional): Value to use when input is invalid.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.spinner({
     InputFeatureVisibility visibility,
     double step,
@@ -304,23 +459,48 @@ abstract class InputFeature {
     double? invalidValue,
     bool skipFocusTraversal,
   }) = InputSpinnerFeature;
+
+  /// Creates a copy to clipboard button feature.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: textNotEmpty): When to show copy button.
+  /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
+  /// - [icon] (`Widget?`, optional): Custom copy icon.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.copy({
     InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
     bool skipFocusTraversal,
   }) = InputCopyFeature;
+
+  /// Creates a paste from clipboard button feature.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show paste button.
+  /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
+  /// - [icon] (`Widget?`, optional): Custom paste icon.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.paste({
     InputFeatureVisibility visibility,
     InputFeaturePosition position,
     Widget? icon,
     bool skipFocusTraversal,
   }) = InputPasteFeature;
+
+  /// Creates a custom leading widget feature.
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): Widget to display.
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show widget.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.leading(
     Widget child, {
     InputFeatureVisibility visibility,
     bool skipFocusTraversal,
   }) = InputLeadingFeature;
+
+  /// Creates a custom trailing widget feature.
   const factory InputFeature.trailing(
     Widget child, {
     InputFeatureVisibility visibility,
@@ -2327,34 +2507,68 @@ class TextFieldState extends State<TextField>
   }
 }
 
+/// Intent to append text to the current text field content.
+///
+/// Used with Flutter's Actions/Shortcuts system to programmatically
+/// append text to a text field.
 class TextFieldAppendTextIntent extends Intent {
+  /// Creates a [TextFieldAppendTextIntent] with the text to append.
   const TextFieldAppendTextIntent({required this.text});
 
+  /// The text to append to the current content.
   final String text;
 }
 
+/// Intent to clear all text from the text field.
+///
+/// Used with Flutter's Actions/Shortcuts system to programmatically
+/// clear text field content.
 class TextFieldClearIntent extends Intent {
+  /// Creates a [TextFieldClearIntent].
   const TextFieldClearIntent();
 }
 
+/// Intent to replace the current word in the text field.
+///
+/// Replaces the word at the current cursor position with new text.
+/// Used with Flutter's Actions/Shortcuts system.
 class TextFieldReplaceCurrentWordIntent extends Intent {
+  /// Creates a [TextFieldReplaceCurrentWordIntent] with replacement text.
   const TextFieldReplaceCurrentWordIntent({required this.text});
 
+  /// The text to replace the current word with.
   final String text;
 }
 
+/// Intent to set the entire text field content to a specific value.
+///
+/// Replaces all existing text with the provided text.
+/// Used with Flutter's Actions/Shortcuts system.
 class TextFieldSetTextIntent extends Intent {
+  /// Creates a [TextFieldSetTextIntent] with the new text.
   const TextFieldSetTextIntent({required this.text});
 
+  /// The text to set as the field's content.
   final String text;
 }
 
+/// Intent to set the text selection in the text field.
+///
+/// Used with Flutter's Actions/Shortcuts system to programmatically
+/// control cursor position and text selection.
 class TextFieldSetSelectionIntent extends Intent {
+  /// The text selection to apply.
   final TextSelection selection;
 
+  /// Creates a [TextFieldSetSelectionIntent] with the selection.
   const TextFieldSetSelectionIntent({required this.selection});
 }
 
+/// Intent to select all text in the field and copy it to clipboard.
+///
+/// Combines selection and copy operations in a single intent.
+/// Used with Flutter's Actions/Shortcuts system.
 class TextFieldSelectAllAndCopyIntent extends Intent {
+  /// Creates a [TextFieldSelectAllAndCopyIntent].
   const TextFieldSelectAllAndCopyIntent();
 }

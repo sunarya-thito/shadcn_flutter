@@ -25,6 +25,7 @@ class ScaffoldTheme {
   /// Whether the scaffold should resize for the onscreen keyboard.
   final bool? resizeToAvoidBottomInset;
 
+  /// Creates a [ScaffoldTheme].
   const ScaffoldTheme({
     this.backgroundColor,
     this.headerBackgroundColor,
@@ -33,6 +34,7 @@ class ScaffoldTheme {
     this.resizeToAvoidBottomInset,
   });
 
+  /// Creates a copy of this theme with the given fields replaced.
   ScaffoldTheme copyWith({
     ValueGetter<Color?>? backgroundColor,
     ValueGetter<Color?>? headerBackgroundColor,
@@ -164,11 +166,21 @@ class Scaffold extends StatefulWidget {
   State<Scaffold> createState() => ScaffoldState();
 }
 
+/// Data class for identifying scaffold bar (header/footer) positioning.
+///
+/// Provides context about a bar's position within the scaffold layout,
+/// including whether it's a header or footer and its index among siblings.
 class ScaffoldBarData {
+  /// Whether this bar is in the header section (vs footer).
   final bool isHeader;
+
+  /// Zero-based index of this child bar.
   final int childIndex;
+
+  /// Total number of children in this section.
   final int childrenCount;
 
+  /// Creates [ScaffoldBarData].
   const ScaffoldBarData({
     this.isHeader = true,
     required this.childIndex,
@@ -176,6 +188,10 @@ class ScaffoldBarData {
   });
 }
 
+/// State class for [Scaffold] widget.
+///
+/// Manages the scaffold's layout state and provides methods for building
+/// header, footer, and body sections with proper theming and constraints.
 class ScaffoldState extends State<Scaffold> {
   Widget buildHeader(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<ScaffoldTheme>(context);

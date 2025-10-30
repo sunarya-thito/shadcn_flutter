@@ -110,15 +110,46 @@ class SwitchTheme {
       );
 }
 
+/// Controller for managing switch state.
+///
+/// Extends [ValueNotifier] with [bool] values to provide state management
+/// for switch widgets. Includes a convenience [toggle] method for flipping
+/// the switch state.
+///
+/// Example:
+/// ```dart
+/// final controller = SwitchController(true);
+/// controller.toggle(); // Now false
+/// ```
 class SwitchController extends ValueNotifier<bool>
     with ComponentController<bool> {
+  /// Creates a [SwitchController].
+  ///
+  /// Parameters:
+  /// - [value] (`bool`, default: `false`): Initial switch state.
   SwitchController([super.value = false]);
 
+  /// Toggles the switch state between `true` and `false`.
   void toggle() {
     value = !value;
   }
 }
 
+/// A controlled switch widget with automatic state management.
+///
+/// Manages its state either through an external [controller] or internal
+/// state with [initialValue]. Provides a toggle interface for boolean values
+/// with customizable appearance including colors, icons, and layout options.
+///
+/// Example:
+/// ```dart
+/// ControlledSwitch(
+///   initialValue: true,
+///   onChanged: (value) => print('Switched to: $value'),
+///   leading: Icon(Icons.wifi),
+///   activeColor: Colors.green,
+/// )
+/// ```
 class ControlledSwitch extends StatelessWidget with ControlledComponent<bool> {
   @override
   final bool initialValue;
@@ -129,16 +160,47 @@ class ControlledSwitch extends StatelessWidget with ControlledComponent<bool> {
   @override
   final SwitchController? controller;
 
+  /// Optional leading widget displayed before the switch.
+  ///
+  /// Typically an icon or text label.
   final Widget? leading;
+
+  /// Optional trailing widget displayed after the switch.
+  ///
+  /// Typically an icon or text label.
   final Widget? trailing;
+
+  /// Spacing between the switch and [leading]/[trailing] widgets.
+  ///
+  /// If `null`, uses the default gap from the theme.
   final double? gap;
+
+  /// Color of the switch when in the active (on) state.
+  ///
+  /// If `null`, uses the theme's primary color.
   final Color? activeColor;
+
+  /// Color of the switch when in the inactive (off) state.
+  ///
+  /// If `null`, uses a default inactive color from the theme.
   final Color? inactiveColor;
+
+  /// Color of the thumb (knob) when the switch is active.
+  ///
+  /// If `null`, uses a default thumb color.
   final Color? activeThumbColor;
+
+  /// Color of the thumb (knob) when the switch is inactive.
+  ///
+  /// If `null`, uses a default thumb color.
   final Color? inactiveThumbColor;
+
+  /// Border radius for the switch track.
+  ///
+  /// If `null`, uses the default border radius from the theme.
   final BorderRadiusGeometry? borderRadius;
 
-  const ControlledSwitch({
+  /// Creates a [ControlledSwitch].
     super.key,
     this.controller,
     this.initialValue = false,
@@ -180,20 +242,77 @@ class ControlledSwitch extends StatelessWidget with ControlledComponent<bool> {
   }
 }
 
+/// A Material Design switch for toggling boolean values.
+///
+/// Provides a sliding toggle control for selecting between two states (on/off).
+/// Supports customization of colors, leading/trailing widgets, and appearance
+/// options. Unlike [ControlledSwitch], this widget requires explicit state
+/// management.
+///
+/// Example:
+/// ```dart
+/// Switch(
+///   value: isEnabled,
+///   onChanged: (value) => setState(() => isEnabled = value),
+///   activeColor: Colors.blue,
+///   leading: Text('Enable feature'),
+/// )
+/// ```
 class Switch extends StatefulWidget {
+  /// The current state of the switch.
   final bool value;
+
+  /// Callback invoked when the switch state changes.
+  ///
+  /// If `null`, the switch is disabled.
   final ValueChanged<bool>? onChanged;
+
+  /// Optional leading widget displayed before the switch.
+  ///
+  /// Typically an icon or text label.
   final Widget? leading;
+
+  /// Optional trailing widget displayed after the switch.
+  ///
+  /// Typically an icon or text label.
   final Widget? trailing;
+
+  /// Whether the switch is interactive.
+  ///
+  /// When `false`, the switch is disabled. Defaults to `true`.
   final bool? enabled;
+
+  /// Spacing between the switch and [leading]/[trailing] widgets.
+  ///
+  /// If `null`, uses the default gap from the theme.
   final double? gap;
+
+  /// Color of the switch when in the active (on) state.
+  ///
+  /// If `null`, uses the theme's primary color.
   final Color? activeColor;
+
+  /// Color of the switch when in the inactive (off) state.
+  ///
+  /// If `null`, uses a default inactive color from the theme.
   final Color? inactiveColor;
+
+  /// Color of the thumb (knob) when the switch is active.
+  ///
+  /// If `null`, uses a default thumb color.
   final Color? activeThumbColor;
+
+  /// Color of the thumb (knob) when the switch is inactive.
+  ///
+  /// If `null`, uses a default thumb color.
   final Color? inactiveThumbColor;
+
+  /// Border radius for the switch track.
+  ///
+  /// If `null`, uses the default border radius from the theme.
   final BorderRadiusGeometry? borderRadius;
 
-  const Switch({
+  /// Creates a [Switch].
     super.key,
     required this.value,
     required this.onChanged,

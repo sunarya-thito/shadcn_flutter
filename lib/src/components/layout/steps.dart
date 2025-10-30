@@ -14,6 +14,7 @@ class StepsTheme {
   /// Thickness of the connector line.
   final double? connectorThickness;
 
+  /// Creates a [StepsTheme].
   const StepsTheme({
     this.indicatorSize,
     this.spacing,
@@ -21,6 +22,7 @@ class StepsTheme {
     this.connectorThickness,
   });
 
+  /// Creates a copy of this theme with the given fields replaced.
   StepsTheme copyWith({
     ValueGetter<double?>? indicatorSize,
     ValueGetter<double?>? spacing,
@@ -187,10 +189,29 @@ class Steps extends StatelessWidget {
   }
 }
 
+/// A vertical step indicator widget that displays a step's title and content.
+///
+/// Typically used as children within [Steps] to create a multi-step
+/// process visualization. Displays a title in bold followed by content items.
+///
+/// Example:
+/// ```dart
+/// StepItem(
+///   title: Text('Step Title'),
+///   content: [
+///     Text('Step description'),
+///     Text('Additional details'),
+///   ],
+/// )
+/// ```
 class StepItem extends StatelessWidget {
+  /// The title of this step, displayed prominently.
   final Widget title;
+
+  /// List of content widgets to display under the title.
   final List<Widget> content;
 
+  /// Creates a [StepItem].
   const StepItem({
     super.key,
     required this.title,

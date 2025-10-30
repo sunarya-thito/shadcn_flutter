@@ -132,15 +132,91 @@ class ControlledSlider extends StatelessWidget
   @override
   final bool enabled;
 
+  /// Callback invoked when the user starts changing the slider value.
+  ///
+  /// Called once when the user begins dragging the slider thumb or interacting
+  /// with the slider track. Receives the initial [SliderValue] at the start of
+  /// the interaction.
   final ValueChanged<SliderValue>? onChangeStart;
+
+  /// Callback invoked when the user finishes changing the slider value.
+  ///
+  /// Called once when the user releases the slider thumb or completes the
+  /// interaction. Receives the final [SliderValue] at the end of the interaction.
   final ValueChanged<SliderValue>? onChangeEnd;
+
+  /// The minimum value the slider can represent.
+  ///
+  /// Defaults to `0`. Must be less than [max].
   final double min;
+
+  /// The maximum value the slider can represent.
+  ///
+  /// Defaults to `1`. Must be greater than [min].
   final double max;
+
+  /// The number of discrete divisions the slider range is divided into.
+  ///
+  /// If `null`, the slider is continuous. If non-null, the slider will snap to
+  /// discrete values in the range `[min, max]`.
   final int? divisions;
+
+  /// An optional hint value displayed on the slider track.
+  ///
+  /// Provides visual feedback showing a target or reference value. The hint is
+  /// typically rendered as a subtle marker on the track.
   final SliderValue? hintValue;
+
+  /// The step size for keyboard increment actions.
+  ///
+  /// When the user presses the increase key, the slider value will increase by
+  /// this amount. If `null`, a default increment is used.
   final double? increaseStep;
+
+  /// The step size for keyboard decrement actions.
+  ///
+  /// When the user presses the decrease key, the slider value will decrease by
+  /// this amount. If `null`, a default decrement is used.
   final double? decreaseStep;
 
+  /// Creates a [ControlledSlider].
+  ///
+  /// A controlled slider that manages its state either through an external
+  /// [controller] or internal state with [initialValue]. Use this when you need
+  /// programmatic control over the slider value.
+  ///
+  /// Parameters:
+  /// - [controller] (`SliderController?`, optional): External controller for
+  ///   managing slider state. If provided, it becomes the source of truth.
+  /// - [initialValue] (`SliderValue`, default: `SliderValue.single(0)`): Initial
+  ///   value when no controller is provided.
+  /// - [onChanged] (`ValueChanged<SliderValue>?`, optional): Called when the
+  ///   slider value changes during interaction.
+  /// - [onChangeStart] (`ValueChanged<SliderValue>?`, optional): Called when the
+  ///   user begins interaction.
+  /// - [onChangeEnd] (`ValueChanged<SliderValue>?`, optional): Called when the
+  ///   user completes interaction.
+  /// - [min] (`double`, default: `0`): Minimum slider value.
+  /// - [max] (`double`, default: `1`): Maximum slider value.
+  /// - [divisions] (`int?`, optional): Number of discrete divisions. If `null`,
+  ///   the slider is continuous.
+  /// - [hintValue] (`SliderValue?`, optional): Visual hint marker on the track.
+  /// - [increaseStep] (`double?`, optional): Keyboard increment step size.
+  /// - [decreaseStep] (`double?`, optional): Keyboard decrement step size.
+  /// - [enabled] (`bool`, default: `true`): Whether the slider is interactive.
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = SliderController(SliderValue.single(0.5));
+  ///
+  /// ControlledSlider(
+  ///   controller: controller,
+  ///   min: 0.0,
+  ///   max: 100.0,
+  ///   divisions: 100,
+  ///   onChanged: (value) => print('Value: $value'),
+  /// )
+  /// ```
   const ControlledSlider({
     super.key,
     this.controller,
@@ -182,7 +258,40 @@ class ControlledSlider extends StatelessWidget
   }
 }
 
+/// Represents a slider value, supporting both single and range configurations.
+///
+/// A [SliderValue] can represent either a single point value or a dual-thumb
+/// range with start and end values. Use [SliderValue.single] for single-thumb
+/// sliders and [SliderValue.ranged] for range sliders.
+///
+/// This class provides value interpolation, division rounding, and comparison
+/// operations needed for slider animations and discrete value snapping.
+///
+/// Example:
+/// ```dart
+/// // Single value slider
+/// final single = SliderValue.single(0.5);
+/// print(single.value); // 0.5
+///
+/// // Range slider
+/// final range = SliderValue.ranged(0.2, 0.8);
+/// print(range.start); // 0.2
+/// print(range.end);   // 0.8
+/// ```
 class SliderValue {
+  /// Linearly interpolates between two [SliderValue] objects.
+  ///
+  /// Returns `null` if either [a] or [b] is `null`, or if the values have
+  /// mismatched types (one single, one ranged). Otherwise, interpolates between
+  /// the values using the interpolation factor [t] (typically 0.0 to 1.0).
+  ///
+  /// Parameters:
+  /// - [a] (`SliderValue?`, optional): Start value for interpolation.
+  /// - [b] (`SliderValue?`, optional): End value for interpolation.
+  /// - [t] (`double`, required): Interpolation factor, where 0.0 returns [a]
+  ///   and 1.0 returns [b].
+  ///
+  /// Returns: `SliderValue?` — interpolated value, or `null` if incompatible.
   static SliderValue? lerp(SliderValue? a, SliderValue? b, double t) {
     if (a == null || b == null) return null;
     if (a.isRanged && b.isRanged) {
@@ -201,15 +310,60 @@ class SliderValue {
   // if its a single value slider, then the trackbar is clickable and the thumb can be dragged
   // if its a ranged slider, then the trackbar is not clickable and the thumb can be dragged
   final double _end;
+
+  /// Creates a single-value [SliderValue] with the specified [value].
+  ///
+  /// Use this constructor for standard single-thumb sliders. The slider will
+  /// have one draggable thumb and a clickable track.
+  ///
+  /// Parameters:
+  /// - [value] (`double`, required): The slider value position.
+  ///
+  /// Example:
+  /// ```dart
+  /// final slider = SliderValue.single(0.75);
+  /// ```
   const SliderValue.single(double value)
       : _start = null,
         _end = value;
+
+  /// Creates a range [SliderValue] with start and end positions.
+  ///
+  /// Use this constructor for dual-thumb range sliders. The slider will have
+  /// two draggable thumbs but a non-clickable track.
+  ///
+  /// Parameters:
+  /// - [_start] (`double`, required): The start position of the range.
+  /// - [_end] (`double`, required): The end position of the range.
+  ///
+  /// Example:
+  /// ```dart
+  /// final range = SliderValue.ranged(0.2, 0.8);
+  /// ```
   const SliderValue.ranged(double this._start, this._end);
 
+  /// Whether this is a range slider value (dual-thumb).
+  ///
+  /// Returns `true` if created with [SliderValue.ranged], `false` if created
+  /// with [SliderValue.single].
   bool get isRanged => _start != null;
 
+  /// The start position of the slider value.
+  ///
+  /// For ranged sliders, returns the actual start position. For single-value
+  /// sliders, returns the same as [value].
   double get start => _start ?? _end;
+
+  /// The end position of the slider value.
+  ///
+  /// For ranged sliders, returns the end position. For single-value sliders,
+  /// returns the same as [value].
   double get end => _end;
+
+  /// The value position for single-value sliders.
+  ///
+  /// Always returns the end position. For single-value sliders, this is the
+  /// primary value. For ranged sliders, this returns the end of the range.
   double get value => _end;
 
   @override
@@ -221,6 +375,22 @@ class SliderValue {
   @override
   int get hashCode => _start.hashCode ^ _end.hashCode;
 
+  /// Rounds the slider value to discrete divisions.
+  ///
+  /// Snaps the value(s) to the nearest division point based on the specified
+  /// number of [divisions]. Useful for creating discrete stepped sliders.
+  ///
+  /// Parameters:
+  /// - [divisions] (`int`, required): Number of discrete steps.
+  ///
+  /// Returns: `SliderValue` — rounded value.
+  ///
+  /// Example:
+  /// ```dart
+  /// final value = SliderValue.single(0.333);
+  /// final rounded = value.roundToDivisions(10);
+  /// // Results in SliderValue.single(0.3)
+  /// ```
   SliderValue roundToDivisions(int divisions) {
     if (!isRanged) {
       return SliderValue.single((_end * divisions).round() / divisions);
@@ -332,27 +502,132 @@ class SliderTheme {
       thumbSize);
 }
 
+/// Intent for increasing the slider value via keyboard shortcuts.
+///
+/// Used with Flutter's shortcuts and actions system to handle keyboard
+/// input for incrementing slider values. Typically bound to arrow keys.
 class IncreaseSliderValue extends Intent {
+  /// Creates an [IncreaseSliderValue] intent.
   const IncreaseSliderValue();
 }
 
+/// Intent for decreasing the slider value via keyboard shortcuts.
+///
+/// Used with Flutter's shortcuts and actions system to handle keyboard
+/// input for decrementing slider values. Typically bound to arrow keys.
 class DecreaseSliderValue extends Intent {
+  /// Creates a [DecreaseSliderValue] intent.
   const DecreaseSliderValue();
 }
 
+/// A Material Design slider widget for selecting values or ranges.
+///
+/// A highly customizable slider supporting both single-value and range
+/// selection modes. Provides keyboard navigation, discrete divisions,
+/// hint values, and comprehensive theming options.
+///
+/// Unlike [ControlledSlider], this widget is uncontrolled and requires
+/// explicit value management through [onChanged]. For a controlled
+/// alternative with automatic state management, use [ControlledSlider].
+///
+/// Example:
+/// ```dart
+/// Slider(
+///   value: SliderValue.single(0.5),
+///   min: 0.0,
+///   max: 1.0,
+///   divisions: 10,
+///   onChanged: (newValue) {
+///     setState(() => value = newValue);
+///   },
+/// )
+/// ```
 class Slider extends StatefulWidget {
+  /// The current value of the slider.
+  ///
+  /// Can be either a single value or a range. The slider's visual state
+  /// reflects this value.
   final SliderValue value;
+
+  /// Callback invoked when the slider value changes.
+  ///
+  /// Called repeatedly during slider interaction as the user drags the thumb
+  /// or clicks the track. Receives the new [SliderValue].
   final ValueChanged<SliderValue>? onChanged;
+
+  /// Callback invoked when the user starts changing the slider value.
+  ///
+  /// Called once when interaction begins. Receives the initial [SliderValue].
   final ValueChanged<SliderValue>? onChangeStart;
+
+  /// Callback invoked when the user finishes changing the slider value.
+  ///
+  /// Called once when interaction ends. Receives the final [SliderValue].
   final ValueChanged<SliderValue>? onChangeEnd;
+
+  /// The minimum value the slider can represent.
+  ///
+  /// Defaults to `0`. Must be less than [max].
   final double min;
+
+  /// The maximum value the slider can represent.
+  ///
+  /// Defaults to `1`. Must be greater than [min].
   final double max;
+
+  /// The number of discrete divisions the slider range is divided into.
+  ///
+  /// If `null`, the slider is continuous. If specified, the slider snaps to
+  /// discrete values.
   final int? divisions;
+
+  /// An optional hint value displayed on the slider track.
+  ///
+  /// Renders as a visual marker showing a target or reference position.
   final SliderValue? hintValue;
+
+  /// The step size for keyboard increment actions.
+  ///
+  /// Used when the user triggers increase actions via keyboard. If `null`,
+  /// a default step is calculated based on the slider range.
   final double? increaseStep;
+
+  /// The step size for keyboard decrement actions.
+  ///
+  /// Used when the user triggers decrease actions via keyboard. If `null`,
+  /// a default step is calculated based on the slider range.
   final double? decreaseStep;
+
+  /// Whether the slider is interactive.
+  ///
+  /// When `false` or `null` with no [onChanged] callback, the slider is
+  /// displayed in a disabled state and does not respond to user input.
   final bool? enabled;
 
+  /// Creates a [Slider].
+  ///
+  /// Parameters:
+  /// - [value] (`SliderValue`, required): Current slider value.
+  /// - [onChanged] (`ValueChanged<SliderValue>?`, optional): Value change callback.
+  /// - [onChangeStart] (`ValueChanged<SliderValue>?`, optional): Interaction start callback.
+  /// - [onChangeEnd] (`ValueChanged<SliderValue>?`, optional): Interaction end callback.
+  /// - [min] (`double`, default: `0`): Minimum value.
+  /// - [max] (`double`, default: `1`): Maximum value.
+  /// - [divisions] (`int?`, optional): Number of discrete divisions.
+  /// - [hintValue] (`SliderValue?`, optional): Visual hint marker.
+  /// - [increaseStep] (`double?`, optional): Keyboard increment step.
+  /// - [decreaseStep] (`double?`, optional): Keyboard decrement step.
+  /// - [enabled] (`bool?`, optional): Whether interactive.
+  ///
+  /// Example:
+  /// ```dart
+  /// Slider(
+  ///   value: SliderValue.ranged(0.2, 0.8),
+  ///   min: 0.0,
+  ///   max: 1.0,
+  ///   onChanged: (value) => print('Range: ${value.start}-${value.end}'),
+  /// )
+  /// ```
   const Slider({
     super.key,
     required this.value,

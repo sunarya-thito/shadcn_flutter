@@ -25,6 +25,7 @@ class ResizableDraggerTheme {
   /// Icon color inside the dragger.
   final Color? iconColor;
 
+  /// Creates a [ResizableDraggerTheme].
   const ResizableDraggerTheme({
     this.color,
     this.borderRadius,
@@ -34,6 +35,7 @@ class ResizableDraggerTheme {
     this.iconColor,
   });
 
+  /// Creates a copy of this theme with the given fields replaced.
   ResizableDraggerTheme copyWith({
     ValueGetter<Color?>? color,
     ValueGetter<double?>? borderRadius,
@@ -174,35 +176,67 @@ class VerticalResizableDragger extends StatelessWidget {
   }
 }
 
-/// A sibling of a resizable panel.
+/// Represents the position of a panel relative to another panel.
+///
+/// Used to specify which neighboring panel should be affected when
+/// expanding or collapsing a resizable panel.
 enum PanelSibling {
+  /// The panel before (left/top) the current panel.
   before(-1),
+
+  /// The panel after (right/bottom) the current panel.
   after(1),
+
+  /// Both panels on either side of the current panel.
   both(0);
 
+  /// Direction value used internally for calculations.
   final int direction;
 
   const PanelSibling(this.direction);
 }
 
+/// Mixin for controllers that manage resizable pane sizing.
+///
+/// Provides methods to resize, collapse, and expand panels programmatically.
+/// Implementations include [AbsoluteResizablePaneController] for fixed sizes
+/// and [FlexibleResizablePaneController] for flexible/proportional sizes.
 mixin ResizablePaneController implements ValueListenable<double> {
-  /// Resizes the controller by the given [delta] amount.
+  /// Resizes the controller to the given [newSize] within the [paneSize] bounds.
   void resize(double newSize, double paneSize);
+
+  /// Collapses the panel to its minimum size.
   void collapse();
+
+  /// Expands the panel to its maximum or default size.
   void expand();
+
+  /// Computes the actual size based on [paneSize] and optional constraints.
   double computeSize(double paneSize, {double? minSize, double? maxSize});
+
+  /// Whether the panel is currently collapsed.
   bool get collapsed;
+
+  /// Attempts to expand by [size] pixels in the specified [direction].
+  ///
+  /// Returns `true` if successful, `false` if expansion was blocked.
   bool tryExpandSize(double size,
       [PanelSibling direction = PanelSibling.both]) {
     assert(_paneState != null, 'ResizablePaneController is not attached');
     return _paneState!.tryExpandSize(size, direction);
   }
 
+  /// Attempts to expand the panel in the specified [direction].
+  ///
+  /// Returns `true` if successful, `false` if expansion was blocked.
   bool tryExpand([PanelSibling direction = PanelSibling.both]) {
     assert(_paneState != null, 'ResizablePaneController is not attached');
     return _paneState!.tryExpand(direction);
   }
 
+  /// Attempts to collapse the panel in the specified [direction].
+  ///
+  /// Returns `true` if successful, `false` if collapse was blocked.
   bool tryCollapse([PanelSibling direction = PanelSibling.both]) {
     assert(_paneState != null, 'ResizablePaneController is not attached');
     return _paneState!.tryCollapse(direction);
@@ -220,6 +254,20 @@ mixin ResizablePaneController implements ValueListenable<double> {
   }
 }
 
+/// Controller for resizable panes with absolute (fixed) sizing.
+///
+/// Manages a panel with a specific pixel size that can be adjusted through
+/// dragging or programmatic control. Size is maintained as an absolute value.
+///
+/// Example:
+/// ```dart
+/// final controller = AbsoluteResizablePaneController(200);
+/// 
+/// ResizablePane(
+///   controller: controller,
+///   child: Container(color: Colors.blue),
+/// )
+/// ```
 class AbsoluteResizablePaneController extends ChangeNotifier
     with ResizablePaneController {
   double _size;
@@ -276,6 +324,20 @@ class AbsoluteResizablePaneController extends ChangeNotifier
   }
 }
 
+/// Controller for resizable panes with flexible (proportional) sizing.
+///
+/// Manages a panel whose size is specified as a flex factor relative to
+/// the total available space. Similar to Flutter's [Flexible] widget concept.
+///
+/// Example:
+/// ```dart
+/// final controller = FlexibleResizablePaneController(1.0);
+/// 
+/// ResizablePane(
+///   controller: controller,
+///   child: Container(color: Colors.red),
+/// )
+/// ```
 class FlexibleResizablePaneController extends ChangeNotifier
     with ResizablePaneController {
   double _flex;
@@ -319,20 +381,71 @@ class FlexibleResizablePaneController extends ChangeNotifier
   }
 }
 
+/// A resizable panel that can be part of a [ResizablePanel] layout.
+///
+/// Represents a single pane in a resizable layout that can be resized by
+/// dragging handles between panes. Supports absolute sizing, flex-based sizing,
+/// and external controller management.
+///
+/// Three constructor variants:
+/// - Default: Fixed absolute size in pixels
+/// - [ResizablePane.flex]: Proportional flex-based sizing
+/// - [ResizablePane.controlled]: Externally controlled via [ResizablePaneController]
+///
+/// Example:
+/// ```dart
+/// ResizablePanel(
+///   children: [
+///     ResizablePane(
+///       initialSize: 200,
+///       minSize: 100,
+///       child: Container(color: Colors.blue),
+///     ),
+///     ResizablePane.flex(
+///       initialFlex: 2,
+///       child: Container(color: Colors.red),
+///     ),
+///   ],
+/// )
+/// ```
 class ResizablePane extends StatefulWidget {
+  /// Optional external controller for managing this pane's size.
   final ResizablePaneController? controller;
+
+  /// Initial size in pixels (for absolute sizing).
   final double? initialSize;
+
+  /// Initial flex factor (for flexible sizing).
   final double? initialFlex;
+
+  /// Minimum size constraint in pixels.
   final double? minSize;
+
+  /// Maximum size constraint in pixels.
   final double? maxSize;
+
+  /// Size when collapsed (defaults to 0).
   final double? collapsedSize;
+
+  /// Child widget to display in this pane.
   final Widget child;
+
+  /// Callback when resize drag starts.
   final ValueChanged<double>? onSizeChangeStart;
+
+  /// Callback during resize drag.
   final ValueChanged<double>? onSizeChange;
+
+  /// Callback when resize drag ends.
   final ValueChanged<double>? onSizeChangeEnd;
+
+  /// Callback when resize drag is cancelled.
   final ValueChanged<double>? onSizeChangeCancel;
+
+  /// Whether the pane starts collapsed.
   final bool? initialCollapsed;
 
+  /// Creates a [ResizablePane] with absolute pixel sizing.
   const ResizablePane({
     super.key,
     required double this.initialSize,
@@ -348,6 +461,7 @@ class ResizablePane extends StatefulWidget {
   })  : controller = null,
         initialFlex = null;
 
+  /// Creates a [ResizablePane] with flex-based proportional sizing.
   const ResizablePane.flex({
     super.key,
     double this.initialFlex = 1,
@@ -363,6 +477,7 @@ class ResizablePane extends StatefulWidget {
   })  : controller = null,
         initialSize = null;
 
+  /// Creates a [ResizablePane] controlled by an external [controller].
   const ResizablePane.controlled({
     super.key,
     required ResizablePaneController this.controller,
@@ -961,9 +1076,14 @@ class _ResizablePanelState extends State<ResizablePanel> {
   }
 }
 
+/// Data class providing information about a resizable panel's orientation.
+///
+/// Used internally to pass layout direction information through the widget tree.
 class ResizableData {
+  /// The axis direction of the resizable panel (horizontal or vertical).
   final Axis direction;
 
+  /// Creates [ResizableData] with the specified [direction].
   ResizableData(this.direction);
 }
 
