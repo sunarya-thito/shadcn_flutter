@@ -100,7 +100,7 @@ TODO:
 - [x] lib/src/components/menu/menu.dart:138:class MenuRadio<T> extends StatelessWidget {
 - [x] lib/src/components/menu/menu.dart:139:  final T value;
 - [x] lib/src/components/menu/menu.dart:140:  final Widget child;
-- [ ] lib/src/components/menu/menu.dart:141:  final Widget? trailing;
+- [x] lib/src/components/menu/menu.dart:141:  final Widget? trailing;
 - [x] lib/src/components/menu/menu.dart:142:  final FocusNode? focusNode;
 - [x] lib/src/components/menu/menu.dart:143:  final bool enabled;
 - [x] lib/src/components/menu/menu.dart:144:  final bool autoClose;
@@ -114,22 +114,22 @@ TODO:
 - [x] lib/src/components/menu/menu.dart:243:  final Widget child;
 - [x] lib/src/components/menu/menu.dart:244:  final List<MenuItem>? subMenu;
 - [x] lib/src/components/menu/menu.dart:245:  final ContextedCallback? onPressed;
-- [ ] lib/src/components/menu/menu.dart:246:  final Widget? trailing;
-- [ ] lib/src/components/menu/menu.dart:247:  final Widget? leading;
+- [x] lib/src/components/menu/menu.dart:246:  final Widget? trailing;
+- [x] lib/src/components/menu/menu.dart:247:  final Widget? leading;
 - [x] lib/src/components/menu/menu.dart:248:  final bool enabled;
 - [x] lib/src/components/menu/menu.dart:249:  final FocusNode? focusNode;
 - [x] lib/src/components/menu/menu.dart:250:  final bool autoClose;
 - [x] lib/src/components/menu/menu.dart:253:  const MenuButton({
 - [x] lib/src/components/menu/menu.dart:273:class MenuLabel extends StatelessWidget implements MenuItem {
 - [x] lib/src/components/menu/menu.dart:274:  final Widget child;
-- [ ] lib/src/components/menu/menu.dart:275:  final Widget? trailing;
-- [ ] lib/src/components/menu/menu.dart:276:  final Widget? leading;
+- [x] lib/src/components/menu/menu.dart:275:  final Widget? trailing;
+- [x] lib/src/components/menu/menu.dart:276:  final Widget? leading;
 - [x] lib/src/components/menu/menu.dart:278:  const MenuLabel({
 - [x] lib/src/components/menu/menu.dart:324:class MenuCheckbox extends StatelessWidget implements MenuItem {
 - [x] lib/src/components/menu/menu.dart:325:  final bool value;
 - [x] lib/src/components/menu/menu.dart:326:  final ContextedValueChanged<bool>? onChanged;
 - [x] lib/src/components/menu/menu.dart:327:  final Widget child;
-- [ ] lib/src/components/menu/menu.dart:328:  final Widget? trailing;
+- [x] lib/src/components/menu/menu.dart:328:  final Widget? trailing;
 - [x] lib/src/components/menu/menu.dart:329:  final bool enabled;
 - [x] lib/src/components/menu/menu.dart:330:  final bool autoClose;
 - [x] lib/src/components/menu/menu.dart:332:  const MenuCheckbox({
@@ -154,7 +154,7 @@ TODO:
 - [x] lib/src/components/menu/menu.dart:685:class MenuGroup extends StatefulWidget {
 - [x] lib/src/components/menu/menu.dart:686:  final List<MenuItem> children;
 - [x] lib/src/components/menu/menu.dart:687:  final Widget Function(BuildContext context, List<Widget> children) builder;
-- [ ] lib/src/components/menu/menu.dart:688:  final MenuGroupData? parent;
+- [x] lib/src/components/menu/menu.dart:688:  final MenuGroupData? parent;
 - [x] lib/src/components/menu/menu.dart:689:  final Offset? subMenuOffset;
 - [x] lib/src/components/menu/menu.dart:690:  final VoidCallback? onDismissed;
 - [x] lib/src/components/menu/menu.dart:691:  final Object? regionGroupId;
@@ -196,7 +196,7 @@ TODO:
 - [x] lib/src/components/navigation/navigation_bar.dart:1109:  final NavigationLabelSize parentLabelSize;
 - [x] lib/src/components/navigation/navigation_bar.dart:1110:  final EdgeInsets parentPadding;
 - [x] lib/src/components/navigation/navigation_bar.dart:1111:  final Axis direction;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1112:  final int? selectedIndex;
+- [x] lib/src/components/navigation/navigation_bar.dart:1112:  final int? selectedIndex;
 - [x] lib/src/components/navigation/navigation_bar.dart:1113:  final int childCount;
 - [x] lib/src/components/navigation/navigation_bar.dart:1114:  final ValueChanged<int> onSelected;
 - [x] lib/src/components/navigation/navigation_bar.dart:1115:  final bool expanded;
@@ -210,11 +210,11 @@ TODO:
 - [x] lib/src/components/navigation/navigation_bar.dart:1184:  final double gap;
 - [x] lib/src/components/navigation/navigation_bar.dart:1186:  const NavigationGap(this.gap, {super.key});
 - [x] lib/src/components/navigation/navigation_bar.dart:1209:class NavigationDivider extends StatelessWidget implements NavigationBarItem {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1210:  final double? thickness;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1211:  final Color? color;
+- [x] lib/src/components/navigation/navigation_bar.dart:1210:  final double? thickness;
+- [x] lib/src/components/navigation/navigation_bar.dart:1211:  final Color? color;
 - [x] lib/src/components/navigation/navigation_bar.dart:1213:  const NavigationDivider({super.key, this.thickness, this.color});
 - [x] lib/src/components/navigation/navigation_bar.dart:1261:class NavigationItem extends AbstractNavigationButton {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1262:  final AbstractButtonStyle? selectedStyle;
+- [x] lib/src/components/navigation/navigation_bar.dart:1262:  final AbstractButtonStyle? selectedStyle;
 - [x] lib/src/components/navigation/navigation_bar.dart:1263:  final bool? selected;
 - [x] lib/src/components/navigation/navigation_bar.dart:1264:  final ValueChanged<bool>? onChanged;
 - [x] lib/src/components/navigation/navigation_bar.dart:1265:  final int? index;
@@ -224,13 +224,13 @@ TODO:
 - [x] lib/src/components/navigation/navigation_bar.dart:1372:  const NavigationButton({
 - [x] lib/src/components/navigation/navigation_bar.dart:1456:abstract class AbstractNavigationButton extends StatefulWidget
 - [x] lib/src/components/navigation/navigation_bar.dart:1458:  final Widget child;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1459:  final Widget? label;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1460:  final double? spacing;
+- [x] lib/src/components/navigation/navigation_bar.dart:1459:  final Widget? label;
+- [x] lib/src/components/navigation/navigation_bar.dart:1460:  final double? spacing;
 - [x] lib/src/components/navigation/navigation_bar.dart:1461:  final AbstractButtonStyle? style;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1462:  final AlignmentGeometry? alignment;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1464:  final bool? enabled;
+- [x] lib/src/components/navigation/navigation_bar.dart:1462:  final AlignmentGeometry? alignment;
+- [x] lib/src/components/navigation/navigation_bar.dart:1464:  final bool? enabled;
 - [x] lib/src/components/navigation/navigation_bar.dart:1465:  final NavigationOverflow overflow;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1466:  final AlignmentGeometry? marginAlignment;
+- [x] lib/src/components/navigation/navigation_bar.dart:1466:  final AlignmentGeometry? marginAlignment;
 - [x] lib/src/components/navigation/navigation_bar.dart:1468:  const AbstractNavigationButton({
 - [x] lib/src/components/navigation/navigation_bar.dart:1627:class NavigationPadding extends StatelessWidget {
 - [x] lib/src/components/navigation/navigation_bar.dart:1628:  final Widget child;
@@ -270,15 +270,15 @@ TODO:
 - [x] lib/src/components/overlay/drawer.dart:1486:class DrawerLayerData {
 - [x] lib/src/components/overlay/drawer.dart:1492:  Size? computeSize() {
 - [x] lib/src/components/overlay/drawer.dart:1487:  final DrawerOverlayState overlay;
-- [ ] lib/src/components/overlay/drawer.dart:1488:  final DrawerLayerData? parent;
+- [x] lib/src/components/overlay/drawer.dart:1488:  final DrawerLayerData? parent;
 - [x] lib/src/components/overlay/drawer.dart:1490:  const DrawerLayerData(this.overlay, this.parent);
 - [x] lib/src/components/overlay/drawer.dart:1510:class DrawerOverlay extends StatefulWidget {
-- [ ] lib/src/components/overlay/drawer.dart:1518:  static DrawerLayerData? maybeFind(BuildContext context, [bool root = false]) {
+- [x] lib/src/components/overlay/drawer.dart:1518:  static DrawerLayerData? maybeFind(BuildContext context, [bool root = false]) {
 - [x] lib/src/components/overlay/drawer.dart:1528:  static DrawerLayerData? maybeFindMessenger(BuildContext context,
 - [x] lib/src/components/overlay/drawer.dart:1511:  final Widget child;
 - [x] lib/src/components/overlay/drawer.dart:1513:  const DrawerOverlay({super.key, required this.child});
-- [ ] lib/src/components/overlay/drawer.dart:1540:class DrawerOverlayState extends State<DrawerOverlay> {
-- [ ] lib/src/components/overlay/drawer.dart:1544:  void addEntry(DrawerOverlayEntry entry) {
+- [x] lib/src/components/overlay/drawer.dart:1540:class DrawerOverlayState extends State<DrawerOverlay> {
+- [x] lib/src/components/overlay/drawer.dart:1544:  void addEntry(DrawerOverlayEntry entry) {
 - [x] lib/src/components/overlay/drawer.dart:1550:  Size computeSize() {
 - [x] lib/src/components/overlay/drawer.dart:1556:  void removeEntry(DrawerOverlayEntry entry) {
 - [x] lib/src/components/overlay/drawer.dart:1542:  final GlobalKey backdropKey = GlobalKey();
@@ -321,12 +321,12 @@ TODO:
 - [x] lib/src/components/overlay/drawer.dart:1894:  final AlignmentGeometry? alignment;
 - [x] lib/src/components/overlay/drawer.dart:1896:  DrawerOverlayEntry({
 - [x] lib/src/components/overlay/drawer.dart:1914:class DrawerOverlayCompleter<T> extends OverlayCompleter<T> {
-- [ ] lib/src/components/overlay/drawer.dart:1927:  AnimationController? get animationController =>
+- [x] lib/src/components/overlay/drawer.dart:1927:  AnimationController? get animationController =>
 - [x] lib/src/components/overlay/drawer.dart:1917:  DrawerOverlayCompleter(this._entry);
 - [x] lib/src/components/overlay/drawer.dart:1945:class SheetOverlayHandler extends OverlayHandler {
 - [x] lib/src/components/overlay/drawer.dart:1946:  static bool isSheetOverlay(BuildContext context) {
 - [x] lib/src/components/overlay/drawer.dart:1950:  final OverlayPosition position;
-- [ ] lib/src/components/overlay/drawer.dart:1951:  final Color? barrierColor;
+- [x] lib/src/components/overlay/drawer.dart:1951:  final Color? barrierColor;
 - [x] lib/src/components/overlay/drawer.dart:1953:  const SheetOverlayHandler({
 - [x] lib/src/components/overlay/overlay.dart:3:Future<void> closeOverlay<T>(BuildContext context, [T? value]) {
 - [x] lib/src/components/overlay/overlay.dart:9:mixin OverlayHandlerStateMixin<T extends StatefulWidget> on State<T> {
@@ -359,25 +359,25 @@ TODO:
 - [x] lib/src/components/overlay/popover.dart:315:  anchorMinSize,
 - [x] lib/src/components/overlay/popover.dart:316:  anchorMaxSize,
 - [x] lib/src/components/overlay/popover.dart:319:class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
-- [ ] lib/src/components/overlay/popover.dart:445:  Size? get anchorSize => _anchorSize;
+- [x] lib/src/components/overlay/popover.dart:445:  Size? get anchorSize => _anchorSize;
 - [x] lib/src/components/overlay/popover.dart:446:  AlignmentGeometry get anchorAlignment => _anchorAlignment;
-- [ ] lib/src/components/overlay/popover.dart:447:  Offset? get position => _position;
+- [x] lib/src/components/overlay/popover.dart:447:  Offset? get position => _position;
 - [x] lib/src/components/overlay/popover.dart:448:  AlignmentGeometry get alignment => _alignment;
 - [x] lib/src/components/overlay/popover.dart:449:  PopoverConstraint get widthConstraint => _widthConstraint;
 - [x] lib/src/components/overlay/popover.dart:450:  PopoverConstraint get heightConstraint => _heightConstraint;
-- [ ] lib/src/components/overlay/popover.dart:451:  Offset? get offset => _offset;
-- [ ] lib/src/components/overlay/popover.dart:452:  EdgeInsetsGeometry? get margin => _margin;
+- [x] lib/src/components/overlay/popover.dart:451:  Offset? get offset => _offset;
+- [x] lib/src/components/overlay/popover.dart:452:  EdgeInsetsGeometry? get margin => _margin;
 - [x] lib/src/components/overlay/popover.dart:453:  bool get follow => _follow;
 - [x] lib/src/components/overlay/popover.dart:454:  BuildContext get anchorContext => _anchorContext;
 - [x] lib/src/components/overlay/popover.dart:455:  bool get allowInvertHorizontal => _allowInvertHorizontal;
 - [x] lib/src/components/overlay/popover.dart:456:  bool get allowInvertVertical => _allowInvertVertical;
-- [ ] lib/src/components/overlay/popover.dart:457:  LayerLink? get layerLink => _layerLink;
+- [x] lib/src/components/overlay/popover.dart:457:  LayerLink? get layerLink => _layerLink;
 - [x] lib/src/components/overlay/popover.dart:459:  set layerLink(LayerLink? value) {
 - [x] lib/src/components/overlay/popover.dart:483:  set position(Offset? value) {
 - [x] lib/src/components/overlay/popover.dart:676:class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
 - [x] lib/src/components/overlay/popover.dart:688:  void initialize(OverlayEntry overlayEntry, [OverlayEntry? barrierEntry]) {
-- [ ] lib/src/components/overlay/popover.dart:679:  final Completer<T?> completer = Completer();
-- [ ] lib/src/components/overlay/popover.dart:680:  final Completer<T?> animationCompleter = Completer();
+- [x] lib/src/components/overlay/popover.dart:679:  final Completer<T?> completer = Completer();
+- [x] lib/src/components/overlay/popover.dart:680:  final Completer<T?> animationCompleter = Completer();
 - [x] lib/src/components/overlay/popover.dart:979:  bool get hasOpenPopover =>
 - [x] lib/src/components/overlay/popover.dart:983:  bool get hasMountedPopover =>
 - [x] lib/src/components/overlay/popover.dart:987:  Iterable<Popover> get openPopovers => List.unmodifiable(_openPopovers);
@@ -388,11 +388,11 @@ TODO:
 - [x] lib/src/components/overlay/popover.dart:1149:class PopoverLayout extends SingleChildRenderObjectWidget {
 - [x] lib/src/components/overlay/popover.dart:1150:  final Alignment alignment;
 - [x] lib/src/components/overlay/popover.dart:1151:  final Alignment anchorAlignment;
-- [ ] lib/src/components/overlay/popover.dart:1152:  final Offset? position;
-- [ ] lib/src/components/overlay/popover.dart:1153:  final Size? anchorSize;
+- [x] lib/src/components/overlay/popover.dart:1152:  final Offset? position;
+- [x] lib/src/components/overlay/popover.dart:1153:  final Size? anchorSize;
 - [x] lib/src/components/overlay/popover.dart:1154:  final PopoverConstraint widthConstraint;
 - [x] lib/src/components/overlay/popover.dart:1155:  final PopoverConstraint heightConstraint;
-- [ ] lib/src/components/overlay/popover.dart:1156:  final Offset? offset;
+- [x] lib/src/components/overlay/popover.dart:1156:  final Offset? offset;
 - [x] lib/src/components/overlay/popover.dart:1157:  final EdgeInsets margin;
 - [x] lib/src/components/overlay/popover.dart:1158:  final double scale;
 - [x] lib/src/components/overlay/popover.dart:1159:  final Alignment scaleAlignment;
@@ -445,150 +445,150 @@ TODO:
 - [x] lib/src/components/overlay/toast.dart:826:  final Curve curve;
 - [x] lib/src/components/overlay/toast.dart:827:  final Duration duration;
 - [x] lib/src/components/overlay/toast.dart:828:  final CapturedThemes? themes;
-- [ ] lib/src/components/overlay/toast.dart:829:  final CapturedData? data;
-- [ ] lib/src/components/overlay/toast.dart:830:  final VoidCallback? onClosed;
+- [x] lib/src/components/overlay/toast.dart:829:  final CapturedData? data;
+- [x] lib/src/components/overlay/toast.dart:830:  final VoidCallback? onClosed;
 - [x] lib/src/components/overlay/toast.dart:831:  final Duration? showDuration;
 - [x] lib/src/components/overlay/toast.dart:833:  ToastEntry({
-- [ ] lib/src/components/overlay/toast.dart:846:class ToastEntryLayout extends StatefulWidget {
+- [x] lib/src/components/overlay/toast.dart:846:class ToastEntryLayout extends StatefulWidget {
 - [x] lib/src/components/overlay/toast.dart:847:  final ToastEntry entry;
-- [ ] lib/src/components/overlay/toast.dart:848:  final bool expanded;
-- [ ] lib/src/components/overlay/toast.dart:849:  final bool visible;
+- [x] lib/src/components/overlay/toast.dart:848:  final bool expanded;
+- [x] lib/src/components/overlay/toast.dart:849:  final bool visible;
 - [x] lib/src/components/overlay/toast.dart:850:  final bool dismissible;
-- [ ] lib/src/components/overlay/toast.dart:851:  final AlignmentGeometry previousAlignment;
-- [ ] lib/src/components/overlay/toast.dart:852:  final Curve curve;
+- [x] lib/src/components/overlay/toast.dart:851:  final AlignmentGeometry previousAlignment;
+- [x] lib/src/components/overlay/toast.dart:852:  final Curve curve;
 - [x] lib/src/components/overlay/toast.dart:853:  final Duration duration;
-- [ ] lib/src/components/overlay/toast.dart:854:  final CapturedThemes? themes;
-- [ ] lib/src/components/overlay/toast.dart:855:  final CapturedData? data;
+- [x] lib/src/components/overlay/toast.dart:854:  final CapturedThemes? themes;
+- [x] lib/src/components/overlay/toast.dart:855:  final CapturedData? data;
 - [x] lib/src/components/overlay/toast.dart:856:  final ValueListenable<bool> closing;
-- [ ] lib/src/components/overlay/toast.dart:857:  final VoidCallback onClosed;
-- [ ] lib/src/components/overlay/toast.dart:858:  final Offset collapsedOffset;
+- [x] lib/src/components/overlay/toast.dart:857:  final VoidCallback onClosed;
+- [x] lib/src/components/overlay/toast.dart:858:  final Offset collapsedOffset;
 - [x] lib/src/components/overlay/toast.dart:859:  final double collapsedScale;
-- [ ] lib/src/components/overlay/toast.dart:860:  final Curve expandingCurve;
-- [ ] lib/src/components/overlay/toast.dart:861:  final Duration expandingDuration;
+- [x] lib/src/components/overlay/toast.dart:860:  final Curve expandingCurve;
+- [x] lib/src/components/overlay/toast.dart:861:  final Duration expandingDuration;
 - [x] lib/src/components/overlay/toast.dart:862:  final double collapsedOpacity;
 - [x] lib/src/components/overlay/toast.dart:863:  final double entryOpacity;
 - [x] lib/src/components/overlay/toast.dart:864:  final Widget child;
-- [ ] lib/src/components/overlay/toast.dart:865:  final Offset entryOffset;
-- [ ] lib/src/components/overlay/toast.dart:866:  final AlignmentGeometry entryAlignment;
+- [x] lib/src/components/overlay/toast.dart:865:  final Offset entryOffset;
+- [x] lib/src/components/overlay/toast.dart:866:  final AlignmentGeometry entryAlignment;
 - [x] lib/src/components/overlay/toast.dart:867:  final double spacing;
-- [ ] lib/src/components/overlay/toast.dart:868:  final int index;
-- [ ] lib/src/components/overlay/toast.dart:869:  final int actualIndex;
-- [ ] lib/src/components/overlay/toast.dart:870:  final VoidCallback? onClosing;
-- [ ] lib/src/components/overlay/toast.dart:872:  const ToastEntryLayout({
-- [ ] lib/src/components/overlay/tooltip.dart:71:class TooltipContainer extends StatelessWidget {
-- [ ] lib/src/components/overlay/tooltip.dart:89:  Widget call(BuildContext context) {
-- [ ] lib/src/components/overlay/tooltip.dart:72:  final Widget child;
-- [ ] lib/src/components/overlay/tooltip.dart:73:  final double? surfaceOpacity;
-- [ ] lib/src/components/overlay/tooltip.dart:74:  final double? surfaceBlur;
-- [ ] lib/src/components/overlay/tooltip.dart:75:  final EdgeInsetsGeometry? padding;
-- [ ] lib/src/components/overlay/tooltip.dart:76:  final Color? backgroundColor;
-- [ ] lib/src/components/overlay/tooltip.dart:77:  final BorderRadiusGeometry? borderRadius;
-- [ ] lib/src/components/overlay/tooltip.dart:79:  const TooltipContainer({
-- [ ] lib/src/components/overlay/tooltip.dart:184:  final Widget child;
-- [ ] lib/src/components/overlay/tooltip.dart:185:  final WidgetBuilder tooltip;
-- [ ] lib/src/components/overlay/tooltip.dart:186:  final AlignmentGeometry alignment;
-- [ ] lib/src/components/overlay/tooltip.dart:187:  final AlignmentGeometry anchorAlignment;
-- [ ] lib/src/components/overlay/tooltip.dart:188:  final Duration waitDuration;
-- [ ] lib/src/components/overlay/tooltip.dart:189:  final Duration showDuration;
-- [ ] lib/src/components/overlay/tooltip.dart:190:  final Duration minDuration;
-- [ ] lib/src/components/overlay/tooltip.dart:192:  const Tooltip({
-- [ ] lib/src/components/overlay/tooltip.dart:241:class InstantTooltip extends StatefulWidget {
-- [ ] lib/src/components/overlay/tooltip.dart:242:  final Widget child;
-- [ ] lib/src/components/overlay/tooltip.dart:243:  final HitTestBehavior behavior;
-- [ ] lib/src/components/overlay/tooltip.dart:244:  final WidgetBuilder tooltipBuilder;
-- [ ] lib/src/components/overlay/tooltip.dart:245:  final AlignmentGeometry tooltipAlignment;
-- [ ] lib/src/components/overlay/tooltip.dart:246:  final AlignmentGeometry? tooltipAnchorAlignment;
-- [ ] lib/src/components/overlay/tooltip.dart:248:  const InstantTooltip({
-- [ ] lib/src/components/overlay/tooltip.dart:301:class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
-- [ ] lib/src/components/overlay/tooltip.dart:302:  final OverlayManager overlayManager;
-- [ ] lib/src/components/overlay/tooltip.dart:304:  const OverlayManagerAsTooltipOverlayHandler({
-- [ ] lib/src/components/overlay/tooltip.dart:367:class FixedTooltipOverlayHandler extends OverlayHandler {
-- [ ] lib/src/components/overlay/tooltip.dart:368:  const FixedTooltipOverlayHandler();
-- [ ] lib/src/components/text/selectable.dart:374:  final Color? cursorColor;
-- [ ] lib/src/components/text/selectable.dart:375:  final ui.BoxHeightStyle selectionHeightStyle;
-- [ ] lib/src/components/text/selectable.dart:376:  final ui.BoxWidthStyle selectionWidthStyle;
-- [ ] lib/src/components/text/text.dart:631:Widget getBullet(BuildContext context, int depth, double size) {
-- [ ] lib/src/components/text/text.dart:5:abstract class TextModifier extends Widget {
-- [ ] lib/src/components/text/text.dart:8:  Widget call({
-- [ ] lib/src/components/text/text.dart:6:  const TextModifier({super.key});
-- [ ] lib/src/components/text/text.dart:37:extension TextExtension on Widget {
-- [ ] lib/src/components/text/text.dart:38:  TextModifier get sans => WrappedText(
-- [ ] lib/src/components/text/text.dart:43:  TextModifier get mono => WrappedText(
-- [ ] lib/src/components/text/text.dart:48:  TextModifier get xSmall => WrappedText(
-- [ ] lib/src/components/text/text.dart:53:  TextModifier get small => WrappedText(
-- [ ] lib/src/components/text/text.dart:58:  TextModifier get base => WrappedText(
-- [ ] lib/src/components/text/text.dart:63:  TextModifier get large => WrappedText(
-- [ ] lib/src/components/text/text.dart:68:  TextModifier get xLarge => WrappedText(
-- [ ] lib/src/components/text/text.dart:73:  TextModifier get x2Large => WrappedText(
-- [ ] lib/src/components/text/text.dart:78:  TextModifier get x3Large => WrappedText(
-- [ ] lib/src/components/text/text.dart:83:  TextModifier get x4Large => WrappedText(
-- [ ] lib/src/components/text/text.dart:88:  TextModifier get x5Large => WrappedText(
-- [ ] lib/src/components/text/text.dart:93:  TextModifier get x6Large => WrappedText(
-- [ ] lib/src/components/text/text.dart:98:  TextModifier get x7Large => WrappedText(
-- [ ] lib/src/components/text/text.dart:103:  TextModifier get x8Large => WrappedText(
-- [ ] lib/src/components/text/text.dart:108:  TextModifier get x9Large => WrappedText(
-- [ ] lib/src/components/text/text.dart:113:  TextModifier get thin => WrappedText(
-- [ ] lib/src/components/text/text.dart:118:  TextModifier get extraLight => WrappedText(
-- [ ] lib/src/components/text/text.dart:123:  TextModifier get light => WrappedText(
-- [ ] lib/src/components/text/text.dart:128:  TextModifier get normal => WrappedText(
-- [ ] lib/src/components/text/text.dart:133:  TextModifier get medium => WrappedText(
-- [ ] lib/src/components/text/text.dart:138:  TextModifier get semiBold => WrappedText(
-- [ ] lib/src/components/text/text.dart:143:  TextModifier get bold => WrappedText(
-- [ ] lib/src/components/text/text.dart:148:  TextModifier get extraBold => WrappedText(
-- [ ] lib/src/components/text/text.dart:153:  TextModifier get black => WrappedText(
-- [ ] lib/src/components/text/text.dart:158:  TextModifier get italic => WrappedText(
-- [ ] lib/src/components/text/text.dart:163:  TextModifier get underline => WrappedText(
-- [ ] lib/src/components/text/text.dart:170:  TextModifier get muted => WrappedText(
-- [ ] lib/src/components/text/text.dart:177:  TextModifier get primaryForeground => WrappedText(
-- [ ] lib/src/components/text/text.dart:184:  TextModifier get secondaryForeground => WrappedText(
-- [ ] lib/src/components/text/text.dart:191:  TextModifier get h1 => WrappedText(
-- [ ] lib/src/components/text/text.dart:196:  TextModifier get h2 => WrappedText(
-- [ ] lib/src/components/text/text.dart:214:  TextModifier get h3 => WrappedText(
-- [ ] lib/src/components/text/text.dart:219:  TextModifier get h4 => WrappedText(
-- [ ] lib/src/components/text/text.dart:224:  TextModifier get p => WrappedText(
-- [ ] lib/src/components/text/text.dart:235:  TextModifier get firstP => WrappedText(
-- [ ] lib/src/components/text/text.dart:240:  TextModifier get blockQuote => WrappedText(
-- [ ] lib/src/components/text/text.dart:257:  TextModifier get li => WrappedText(
-- [ ] lib/src/components/text/text.dart:283:  TextModifier get inlineCode => WrappedText(
-- [ ] lib/src/components/text/text.dart:305:  TextModifier get lead => WrappedText(
-- [ ] lib/src/components/text/text.dart:310:  TextModifier get textLarge => WrappedText(
-- [ ] lib/src/components/text/text.dart:315:  TextModifier get textSmall => WrappedText(
-- [ ] lib/src/components/text/text.dart:320:  TextModifier get textMuted => WrappedText(
-- [ ] lib/src/components/text/text.dart:325:  TextModifier get singleLine => WrappedText(
-- [ ] lib/src/components/text/text.dart:331:  TextModifier get ellipsis => WrappedText(
-- [ ] lib/src/components/text/text.dart:336:  TextModifier get textCenter => WrappedText(
-- [ ] lib/src/components/text/text.dart:341:  TextModifier get textRight => WrappedText(
-- [ ] lib/src/components/text/text.dart:346:  TextModifier get textLeft => WrappedText(
-- [ ] lib/src/components/text/text.dart:351:  TextModifier get textJustify => WrappedText(
-- [ ] lib/src/components/text/text.dart:356:  TextModifier get textStart => WrappedText(
-- [ ] lib/src/components/text/text.dart:361:  TextModifier get textEnd => WrappedText(
-- [ ] lib/src/components/text/text.dart:366:  TextModifier get modify => WrappedText(
-- [ ] lib/src/components/text/text.dart:373:  TextModifier get foreground => WrappedText(
-- [ ] lib/src/components/text/text.dart:380:  Widget then(InlineSpan span) {
-- [ ] lib/src/components/text/text.dart:424:  Widget thenText(String text) {
-- [ ] lib/src/components/text/text.dart:428:  Widget thenInlineCode(String text) {
-- [ ] lib/src/components/text/text.dart:437:  Widget thenButton({
-- [ ] lib/src/components/text/text.dart:671:class UnorderedListData {
-- [ ] lib/src/components/text/text.dart:672:  final int depth;
-- [ ] lib/src/components/text/text.dart:674:  const UnorderedListData({this.depth = 0});
-- [ ] lib/src/components/text/text.dart:677:typedef WrappedTextDataBuilder<T> = T Function(
-- [ ] lib/src/components/text/text.dart:679:typedef WidgetTextWrapper = Widget Function(BuildContext context, Widget child);
-- [ ] lib/src/components/text/text.dart:681:class WrappedText extends StatelessWidget implements TextModifier {
-- [ ] lib/src/components/text/text.dart:776:  WrappedText copyWith({
-- [ ] lib/src/components/text/text.dart:799:  WrappedText copyWithStyle(WrappedTextDataBuilder<TextStyle> style) {
-- [ ] lib/src/components/text/text.dart:682:  final Widget child;
-- [ ] lib/src/components/text/text.dart:683:  final WrappedTextDataBuilder<TextStyle?>? style;
-- [ ] lib/src/components/text/text.dart:684:  final WrappedTextDataBuilder<TextAlign?>? textAlign;
-- [ ] lib/src/components/text/text.dart:685:  final WrappedTextDataBuilder<bool?>? softWrap;
-- [ ] lib/src/components/text/text.dart:686:  final WrappedTextDataBuilder<TextOverflow?>? overflow;
-- [ ] lib/src/components/text/text.dart:687:  final WrappedTextDataBuilder<int?>? maxLines;
-- [ ] lib/src/components/text/text.dart:688:  final WrappedTextDataBuilder<TextWidthBasis?>? textWidthBasis;
-- [ ] lib/src/components/text/text.dart:689:  final WidgetTextWrapper? wrapper;
-- [ ] lib/src/components/text/text.dart:691:  const WrappedText({
-- [ ] lib/src/shadcn_app.dart:945:  Offset? get center {
-- [ ] lib/src/shadcn_app.dart:956:  double? get radius {
-- [ ] lib/src/shadcn_app.dart:967:  double? get beginAngle {
-- [ ] lib/src/shadcn_app.dart:978:  double? get endAngle {
+- [x] lib/src/components/overlay/toast.dart:868:  final int index;
+- [x] lib/src/components/overlay/toast.dart:869:  final int actualIndex;
+- [x] lib/src/components/overlay/toast.dart:870:  final VoidCallback? onClosing;
+- [x] lib/src/components/overlay/toast.dart:872:  const ToastEntryLayout({
+- [x] lib/src/components/overlay/tooltip.dart:71:class TooltipContainer extends StatelessWidget {
+- [x] lib/src/components/overlay/tooltip.dart:89:  Widget call(BuildContext context) {
+- [x] lib/src/components/overlay/tooltip.dart:72:  final Widget child;
+- [x] lib/src/components/overlay/tooltip.dart:73:  final double? surfaceOpacity;
+- [x] lib/src/components/overlay/tooltip.dart:74:  final double? surfaceBlur;
+- [x] lib/src/components/overlay/tooltip.dart:75:  final EdgeInsetsGeometry? padding;
+- [x] lib/src/components/overlay/tooltip.dart:76:  final Color? backgroundColor;
+- [x] lib/src/components/overlay/tooltip.dart:77:  final BorderRadiusGeometry? borderRadius;
+- [x] lib/src/components/overlay/tooltip.dart:79:  const TooltipContainer({
+- [x] lib/src/components/overlay/tooltip.dart:184:  final Widget child;
+- [x] lib/src/components/overlay/tooltip.dart:185:  final WidgetBuilder tooltip;
+- [x] lib/src/components/overlay/tooltip.dart:186:  final AlignmentGeometry alignment;
+- [x] lib/src/components/overlay/tooltip.dart:187:  final AlignmentGeometry anchorAlignment;
+- [x] lib/src/components/overlay/tooltip.dart:188:  final Duration waitDuration;
+- [x] lib/src/components/overlay/tooltip.dart:189:  final Duration showDuration;
+- [x] lib/src/components/overlay/tooltip.dart:190:  final Duration minDuration;
+- [x] lib/src/components/overlay/tooltip.dart:192:  const Tooltip({
+- [x] lib/src/components/overlay/tooltip.dart:241:class InstantTooltip extends StatefulWidget {
+- [x] lib/src/components/overlay/tooltip.dart:242:  final Widget child;
+- [x] lib/src/components/overlay/tooltip.dart:243:  final HitTestBehavior behavior;
+- [x] lib/src/components/overlay/tooltip.dart:244:  final WidgetBuilder tooltipBuilder;
+- [x] lib/src/components/overlay/tooltip.dart:245:  final AlignmentGeometry tooltipAlignment;
+- [x] lib/src/components/overlay/tooltip.dart:246:  final AlignmentGeometry? tooltipAnchorAlignment;
+- [x] lib/src/components/overlay/tooltip.dart:248:  const InstantTooltip({
+- [x] lib/src/components/overlay/tooltip.dart:301:class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
+- [x] lib/src/components/overlay/tooltip.dart:302:  final OverlayManager overlayManager;
+- [x] lib/src/components/overlay/tooltip.dart:304:  const OverlayManagerAsTooltipOverlayHandler({
+- [x] lib/src/components/overlay/tooltip.dart:367:class FixedTooltipOverlayHandler extends OverlayHandler {
+- [x] lib/src/components/overlay/tooltip.dart:368:  const FixedTooltipOverlayHandler();
+- [x] lib/src/components/text/selectable.dart:374:  final Color? cursorColor;
+- [x] lib/src/components/text/selectable.dart:375:  final ui.BoxHeightStyle selectionHeightStyle;
+- [x] lib/src/components/text/selectable.dart:376:  final ui.BoxWidthStyle selectionWidthStyle;
+- [x] lib/src/components/text/text.dart:631:Widget getBullet(BuildContext context, int depth, double size) {
+- [x] lib/src/components/text/text.dart:5:abstract class TextModifier extends Widget {
+- [x] lib/src/components/text/text.dart:8:  Widget call({
+- [x] lib/src/components/text/text.dart:6:  const TextModifier({super.key});
+- [x] lib/src/components/text/text.dart:37:extension TextExtension on Widget {
+- [x] lib/src/components/text/text.dart:38:  TextModifier get sans => WrappedText(
+- [x] lib/src/components/text/text.dart:43:  TextModifier get mono => WrappedText(
+- [x] lib/src/components/text/text.dart:48:  TextModifier get xSmall => WrappedText(
+- [x] lib/src/components/text/text.dart:53:  TextModifier get small => WrappedText(
+- [x] lib/src/components/text/text.dart:58:  TextModifier get base => WrappedText(
+- [x] lib/src/components/text/text.dart:63:  TextModifier get large => WrappedText(
+- [x] lib/src/components/text/text.dart:68:  TextModifier get xLarge => WrappedText(
+- [x] lib/src/components/text/text.dart:73:  TextModifier get x2Large => WrappedText(
+- [x] lib/src/components/text/text.dart:78:  TextModifier get x3Large => WrappedText(
+- [x] lib/src/components/text/text.dart:83:  TextModifier get x4Large => WrappedText(
+- [x] lib/src/components/text/text.dart:88:  TextModifier get x5Large => WrappedText(
+- [x] lib/src/components/text/text.dart:93:  TextModifier get x6Large => WrappedText(
+- [x] lib/src/components/text/text.dart:98:  TextModifier get x7Large => WrappedText(
+- [x] lib/src/components/text/text.dart:103:  TextModifier get x8Large => WrappedText(
+- [x] lib/src/components/text/text.dart:108:  TextModifier get x9Large => WrappedText(
+- [x] lib/src/components/text/text.dart:113:  TextModifier get thin => WrappedText(
+- [x] lib/src/components/text/text.dart:118:  TextModifier get extraLight => WrappedText(
+- [x] lib/src/components/text/text.dart:123:  TextModifier get light => WrappedText(
+- [x] lib/src/components/text/text.dart:128:  TextModifier get normal => WrappedText(
+- [x] lib/src/components/text/text.dart:133:  TextModifier get medium => WrappedText(
+- [x] lib/src/components/text/text.dart:138:  TextModifier get semiBold => WrappedText(
+- [x] lib/src/components/text/text.dart:143:  TextModifier get bold => WrappedText(
+- [x] lib/src/components/text/text.dart:148:  TextModifier get extraBold => WrappedText(
+- [x] lib/src/components/text/text.dart:153:  TextModifier get black => WrappedText(
+- [x] lib/src/components/text/text.dart:158:  TextModifier get italic => WrappedText(
+- [x] lib/src/components/text/text.dart:163:  TextModifier get underline => WrappedText(
+- [x] lib/src/components/text/text.dart:170:  TextModifier get muted => WrappedText(
+- [x] lib/src/components/text/text.dart:177:  TextModifier get primaryForeground => WrappedText(
+- [x] lib/src/components/text/text.dart:184:  TextModifier get secondaryForeground => WrappedText(
+- [x] lib/src/components/text/text.dart:191:  TextModifier get h1 => WrappedText(
+- [x] lib/src/components/text/text.dart:196:  TextModifier get h2 => WrappedText(
+- [x] lib/src/components/text/text.dart:214:  TextModifier get h3 => WrappedText(
+- [x] lib/src/components/text/text.dart:219:  TextModifier get h4 => WrappedText(
+- [x] lib/src/components/text/text.dart:224:  TextModifier get p => WrappedText(
+- [x] lib/src/components/text/text.dart:235:  TextModifier get firstP => WrappedText(
+- [x] lib/src/components/text/text.dart:240:  TextModifier get blockQuote => WrappedText(
+- [x] lib/src/components/text/text.dart:257:  TextModifier get li => WrappedText(
+- [x] lib/src/components/text/text.dart:283:  TextModifier get inlineCode => WrappedText(
+- [x] lib/src/components/text/text.dart:305:  TextModifier get lead => WrappedText(
+- [x] lib/src/components/text/text.dart:310:  TextModifier get textLarge => WrappedText(
+- [x] lib/src/components/text/text.dart:315:  TextModifier get textSmall => WrappedText(
+- [x] lib/src/components/text/text.dart:320:  TextModifier get textMuted => WrappedText(
+- [x] lib/src/components/text/text.dart:325:  TextModifier get singleLine => WrappedText(
+- [x] lib/src/components/text/text.dart:331:  TextModifier get ellipsis => WrappedText(
+- [x] lib/src/components/text/text.dart:336:  TextModifier get textCenter => WrappedText(
+- [x] lib/src/components/text/text.dart:341:  TextModifier get textRight => WrappedText(
+- [x] lib/src/components/text/text.dart:346:  TextModifier get textLeft => WrappedText(
+- [x] lib/src/components/text/text.dart:351:  TextModifier get textJustify => WrappedText(
+- [x] lib/src/components/text/text.dart:356:  TextModifier get textStart => WrappedText(
+- [x] lib/src/components/text/text.dart:361:  TextModifier get textEnd => WrappedText(
+- [x] lib/src/components/text/text.dart:366:  TextModifier get modify => WrappedText(
+- [x] lib/src/components/text/text.dart:373:  TextModifier get foreground => WrappedText(
+- [x] lib/src/components/text/text.dart:380:  Widget then(InlineSpan span) {
+- [x] lib/src/components/text/text.dart:424:  Widget thenText(String text) {
+- [x] lib/src/components/text/text.dart:428:  Widget thenInlineCode(String text) {
+- [x] lib/src/components/text/text.dart:437:  Widget thenButton({
+- [x] lib/src/components/text/text.dart:671:class UnorderedListData {
+- [x] lib/src/components/text/text.dart:672:  final int depth;
+- [x] lib/src/components/text/text.dart:674:  const UnorderedListData({this.depth = 0});
+- [x] lib/src/components/text/text.dart:677:typedef WrappedTextDataBuilder<T> = T Function(
+- [x] lib/src/components/text/text.dart:679:typedef WidgetTextWrapper = Widget Function(BuildContext context, Widget child);
+- [x] lib/src/components/text/text.dart:681:class WrappedText extends StatelessWidget implements TextModifier {
+- [x] lib/src/components/text/text.dart:776:  WrappedText copyWith({
+- [x] lib/src/components/text/text.dart:799:  WrappedText copyWithStyle(WrappedTextDataBuilder<TextStyle> style) {
+- [x] lib/src/components/text/text.dart:682:  final Widget child;
+- [x] lib/src/components/text/text.dart:683:  final WrappedTextDataBuilder<TextStyle?>? style;
+- [x] lib/src/components/text/text.dart:684:  final WrappedTextDataBuilder<TextAlign?>? textAlign;
+- [x] lib/src/components/text/text.dart:685:  final WrappedTextDataBuilder<bool?>? softWrap;
+- [x] lib/src/components/text/text.dart:686:  final WrappedTextDataBuilder<TextOverflow?>? overflow;
+- [x] lib/src/components/text/text.dart:687:  final WrappedTextDataBuilder<int?>? maxLines;
+- [x] lib/src/components/text/text.dart:688:  final WrappedTextDataBuilder<TextWidthBasis?>? textWidthBasis;
+- [x] lib/src/components/text/text.dart:689:  final WidgetTextWrapper? wrapper;
+- [x] lib/src/components/text/text.dart:691:  const WrappedText({
+- [x] lib/src/shadcn_app.dart:945:  Offset? get center {
+- [x] lib/src/shadcn_app.dart:956:  double? get radius {
+- [x] lib/src/shadcn_app.dart:967:  double? get beginAngle {
+- [x] lib/src/shadcn_app.dart:978:  double? get endAngle {
 - [x] lib/src/theme/color_scheme.dart:357:String hexFromColor(Color color) {
 - [x] lib/src/theme/color_scheme.dart:211:  Color get shade50 => _colors[50]!;
 - [x] lib/src/theme/color_scheme.dart:212:  Color get shade100 => _colors[100]!;
@@ -617,84 +617,84 @@ TODO:
 - [x] lib/src/theme/theme.dart:12:  final double radiusScaling;
 - [x] lib/src/theme/theme.dart:13:  final double sizeScaling;
 - [x] lib/src/theme/theme.dart:14:  final double textScaling;
-- [ ] lib/src/theme/theme.dart:16:  const AdaptiveScaling([double scaling = 1])
+- [x] lib/src/theme/theme.dart:16:  const AdaptiveScaling([double scaling = 1])
 - [x] lib/src/theme/theme.dart:23:  const AdaptiveScaling.only({
-- [ ] lib/src/theme/theme.dart:55:  static AdaptiveScaling defaultScalingOf(BuildContext context) {
+- [x] lib/src/theme/theme.dart:55:  static AdaptiveScaling defaultScalingOf(BuildContext context) {
 - [x] lib/src/theme/theme.dart:60:  static AdaptiveScaling defaultScaling(ThemeData theme) {
-- [ ] lib/src/theme/theme.dart:70:  final AdaptiveScaling scaling;
-- [ ] lib/src/theme/theme.dart:71:  final Widget child;
-- [ ] lib/src/theme/theme.dart:73:  const AdaptiveScaler({
-- [ ] lib/src/theme/theme.dart:146:  BorderRadius get borderRadiusXxl => BorderRadius.circular(radiusXxl);
-- [ ] lib/src/theme/theme.dart:147:  BorderRadius get borderRadiusXl => BorderRadius.circular(radiusXl);
-- [ ] lib/src/theme/theme.dart:148:  BorderRadius get borderRadiusLg => BorderRadius.circular(radiusLg);
-- [ ] lib/src/theme/theme.dart:149:  BorderRadius get borderRadiusMd => BorderRadius.circular(radiusMd);
-- [ ] lib/src/theme/theme.dart:150:  BorderRadius get borderRadiusSm => BorderRadius.circular(radiusSm);
-- [ ] lib/src/theme/theme.dart:151:  BorderRadius get borderRadiusXs => BorderRadius.circular(radiusXs);
-- [ ] lib/src/theme/theme.dart:153:  Radius get radiusXxlRadius => Radius.circular(radiusXxl);
-- [ ] lib/src/theme/theme.dart:154:  Radius get radiusXlRadius => Radius.circular(radiusXl);
+- [x] lib/src/theme/theme.dart:70:  final AdaptiveScaling scaling;
+- [x] lib/src/theme/theme.dart:71:  final Widget child;
+- [x] lib/src/theme/theme.dart:73:  const AdaptiveScaler({
+- [x] lib/src/theme/theme.dart:146:  BorderRadius get borderRadiusXxl => BorderRadius.circular(radiusXxl);
+- [x] lib/src/theme/theme.dart:147:  BorderRadius get borderRadiusXl => BorderRadius.circular(radiusXl);
+- [x] lib/src/theme/theme.dart:148:  BorderRadius get borderRadiusLg => BorderRadius.circular(radiusLg);
+- [x] lib/src/theme/theme.dart:149:  BorderRadius get borderRadiusMd => BorderRadius.circular(radiusMd);
+- [x] lib/src/theme/theme.dart:150:  BorderRadius get borderRadiusSm => BorderRadius.circular(radiusSm);
+- [x] lib/src/theme/theme.dart:151:  BorderRadius get borderRadiusXs => BorderRadius.circular(radiusXs);
+- [x] lib/src/theme/theme.dart:153:  Radius get radiusXxlRadius => Radius.circular(radiusXxl);
+- [x] lib/src/theme/theme.dart:154:  Radius get radiusXlRadius => Radius.circular(radiusXl);
 - [x] lib/src/theme/theme.dart:155:  Radius get radiusLgRadius => Radius.circular(radiusLg);
-- [ ] lib/src/theme/theme.dart:156:  Radius get radiusMdRadius => Radius.circular(radiusMd);
-- [ ] lib/src/theme/theme.dart:157:  Radius get radiusSmRadius => Radius.circular(radiusSm);
+- [x] lib/src/theme/theme.dart:156:  Radius get radiusMdRadius => Radius.circular(radiusMd);
+- [x] lib/src/theme/theme.dart:157:  Radius get radiusSmRadius => Radius.circular(radiusSm);
 - [x] lib/src/theme/theme.dart:158:  Radius get radiusXsRadius => Radius.circular(radiusXs);
-- [ ] lib/src/theme/theme.dart:160:  Brightness get brightness => colorScheme.brightness;
-- [ ] lib/src/theme/theme.dart:162:  ThemeData copyWith({
-- [ ] lib/src/theme/theme.dart:185:  static ThemeData lerp(
-- [ ] lib/src/theme/theme.dart:94:  final ColorScheme colorScheme;
-- [ ] lib/src/theme/theme.dart:95:  final Typography typography;
-- [ ] lib/src/theme/theme.dart:96:  final double radius;
-- [ ] lib/src/theme/theme.dart:97:  final double scaling;
-- [ ] lib/src/theme/theme.dart:99:  final IconThemeProperties iconTheme;
-- [ ] lib/src/theme/theme.dart:100:  final double? surfaceOpacity;
-- [ ] lib/src/theme/theme.dart:101:  final double? surfaceBlur;
-- [ ] lib/src/theme/theme.dart:103:  const ThemeData({
-- [ ] lib/src/theme/theme.dart:114:  const ThemeData.dark({
-- [ ] lib/src/theme/theme.dart:245:  static ThemeData of(BuildContext context) {
-- [ ] lib/src/theme/theme.dart:237:  final ThemeData data;
-- [ ] lib/src/theme/theme.dart:239:  const Theme({
-- [ ] lib/src/theme/theme.dart:273:  ThemeDataTween({required ThemeData super.begin, required super.end});
-- [ ] lib/src/theme/theme.dart:286:  final ThemeData data;
-- [ ] lib/src/theme/theme.dart:287:  final Widget child;
-- [ ] lib/src/theme/theme.dart:289:  const AnimatedTheme({
+- [x] lib/src/theme/theme.dart:160:  Brightness get brightness => colorScheme.brightness;
+- [x] lib/src/theme/theme.dart:162:  ThemeData copyWith({
+- [x] lib/src/theme/theme.dart:185:  static ThemeData lerp(
+- [x] lib/src/theme/theme.dart:94:  final ColorScheme colorScheme;
+- [x] lib/src/theme/theme.dart:95:  final Typography typography;
+- [x] lib/src/theme/theme.dart:96:  final double radius;
+- [x] lib/src/theme/theme.dart:97:  final double scaling;
+- [x] lib/src/theme/theme.dart:99:  final IconThemeProperties iconTheme;
+- [x] lib/src/theme/theme.dart:100:  final double? surfaceOpacity;
+- [x] lib/src/theme/theme.dart:101:  final double? surfaceBlur;
+- [x] lib/src/theme/theme.dart:103:  const ThemeData({
+- [x] lib/src/theme/theme.dart:114:  const ThemeData.dark({
+- [x] lib/src/theme/theme.dart:245:  static ThemeData of(BuildContext context) {
+- [x] lib/src/theme/theme.dart:237:  final ThemeData data;
+- [x] lib/src/theme/theme.dart:239:  const Theme({
+- [x] lib/src/theme/theme.dart:273:  ThemeDataTween({required ThemeData super.begin, required super.end});
+- [x] lib/src/theme/theme.dart:286:  final ThemeData data;
+- [x] lib/src/theme/theme.dart:287:  final Widget child;
+- [x] lib/src/theme/theme.dart:289:  const AnimatedTheme({
 - [x] lib/src/theme/theme.dart:350:  IconThemeProperties copyWith({
-- [ ] lib/src/theme/theme.dart:378:  IconThemeProperties scale(double factor) {
-- [ ] lib/src/theme/theme.dart:416:  static IconThemeProperties lerp(
-- [ ] lib/src/theme/theme.dart:324:  final IconThemeData x4Small;
-- [ ] lib/src/theme/theme.dart:325:  final IconThemeData x3Small;
-- [ ] lib/src/theme/theme.dart:326:  final IconThemeData x2Small;
-- [ ] lib/src/theme/theme.dart:327:  final IconThemeData xSmall;
-- [ ] lib/src/theme/theme.dart:328:  final IconThemeData small;
-- [ ] lib/src/theme/theme.dart:329:  final IconThemeData medium;
-- [ ] lib/src/theme/theme.dart:330:  final IconThemeData large;
-- [ ] lib/src/theme/theme.dart:331:  final IconThemeData xLarge;
-- [ ] lib/src/theme/theme.dart:332:  final IconThemeData x2Large;
-- [ ] lib/src/theme/theme.dart:333:  final IconThemeData x3Large;
-- [ ] lib/src/theme/theme.dart:334:  final IconThemeData x4Large;
-- [ ] lib/src/theme/theme.dart:336:  const IconThemeProperties({
-- [ ] lib/src/theme/theme.dart:501:  static T of<T>(BuildContext context) {
+- [x] lib/src/theme/theme.dart:378:  IconThemeProperties scale(double factor) {
+- [x] lib/src/theme/theme.dart:416:  static IconThemeProperties lerp(
+- [x] lib/src/theme/theme.dart:324:  final IconThemeData x4Small;
+- [x] lib/src/theme/theme.dart:325:  final IconThemeData x3Small;
+- [x] lib/src/theme/theme.dart:326:  final IconThemeData x2Small;
+- [x] lib/src/theme/theme.dart:327:  final IconThemeData xSmall;
+- [x] lib/src/theme/theme.dart:328:  final IconThemeData small;
+- [x] lib/src/theme/theme.dart:329:  final IconThemeData medium;
+- [x] lib/src/theme/theme.dart:330:  final IconThemeData large;
+- [x] lib/src/theme/theme.dart:331:  final IconThemeData xLarge;
+- [x] lib/src/theme/theme.dart:332:  final IconThemeData x2Large;
+- [x] lib/src/theme/theme.dart:333:  final IconThemeData x3Large;
+- [x] lib/src/theme/theme.dart:334:  final IconThemeData x4Large;
+- [x] lib/src/theme/theme.dart:336:  const IconThemeProperties({
+- [x] lib/src/theme/theme.dart:501:  static T of<T>(BuildContext context) {
 - [x] lib/src/theme/theme.dart:507:  static T? maybeOf<T>(BuildContext context) {
-- [ ] lib/src/theme/theme.dart:479:  final T data;
-- [ ] lib/src/theme/theme.dart:481:  const ComponentTheme({
-- [ ] lib/src/theme/theme.dart:522:enum ThemeMode {
-- [ ] lib/src/theme/theme.dart:523:  system,
-- [ ] lib/src/theme/theme.dart:524:  light,
-- [ ] lib/src/theme/theme.dart:525:  dark,
-- [ ] lib/src/theme/typography.dart:279:  Typography scale(double factor) {
-- [ ] lib/src/theme/typography.dart:390:  static Typography lerp(Typography a, Typography b, double t) {
+- [x] lib/src/theme/theme.dart:479:  final T data;
+- [x] lib/src/theme/theme.dart:481:  const ComponentTheme({
+- [x] lib/src/theme/theme.dart:522:enum ThemeMode {
+- [x] lib/src/theme/theme.dart:523:  system,
+- [x] lib/src/theme/theme.dart:524:  light,
+- [x] lib/src/theme/theme.dart:525:  dark,
+- [x] lib/src/theme/typography.dart:279:  Typography scale(double factor) {
+- [x] lib/src/theme/typography.dart:390:  static Typography lerp(Typography a, Typography b, double t) {
 - [x] lib/src/util.dart:25:double degToRad(double deg) => deg * (pi / 180);
 - [x] lib/src/util.dart:26:double radToDeg(double rad) => rad * (180 / pi);
 - [x] lib/src/util.dart:132:double unlerpDouble(double value, double min, double max) {
 - [x] lib/src/util.dart:136:void swapItemInLists<T>(
-- [ ] lib/src/util.dart:146:BorderRadius? optionallyResolveBorderRadius(
+- [x] lib/src/util.dart:146:BorderRadius? optionallyResolveBorderRadius(
 - [x] lib/src/util.dart:225:BorderRadius subtractByBorder(BorderRadius radius, double borderWidth) {
 - [x] lib/src/util.dart:242:bool isMobile(TargetPlatform platform) {
 - [x] lib/src/util.dart:293:T tweenValue<T>(T begin, T end, double t) {
-- [ ] lib/src/util.dart:299:double wrapDouble(double value, double min, double max) {
+- [x] lib/src/util.dart:299:double wrapDouble(double value, double min, double max) {
 - [x] lib/src/util.dart:336:Widget gap(double gap, {double? crossGap}) {
-- [ ] lib/src/util.dart:765:Iterable<Widget> join(Iterable<Widget> widgets, Widget separator) {
-- [ ] lib/src/util.dart:954:(bool enabled, Object? invokeResult) invokeActionOnFocusedWidget(
-- [ ] lib/src/util.dart:986:WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
-- [ ] lib/src/util.dart:1008:ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
-- [ ] lib/src/util.dart:1030:void clearActiveTextInput() {
+- [x] lib/src/util.dart:765:Iterable<Widget> join(Iterable<Widget> widgets, Widget separator) {
+- [x] lib/src/util.dart:954:(bool enabled, Object? invokeResult) invokeActionOnFocusedWidget(
+- [x] lib/src/util.dart:986:WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
+- [x] lib/src/util.dart:1008:ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
+- [x] lib/src/util.dart:1030:void clearActiveTextInput() {
 - [x] lib/src/util.dart:13:const kDefaultDuration = Duration(milliseconds: 150);
 - [x] lib/src/util.dart:30:  none,
 - [x] lib/src/util.dart:31:  ascending,
@@ -703,14 +703,14 @@ TODO:
 - [x] lib/src/util.dart:40:  final OnContextInvokeCallback onInvoke;
 - [x] lib/src/util.dart:42:  CallbackContextAction({required this.onInvoke});
 - [x] lib/src/util.dart:56:  T lerp(T a, T b, double t) {
-- [ ] lib/src/util.dart:52:  final T? Function(T? a, T? b, double t) nullableLerp;
+- [x] lib/src/util.dart:52:  final T? Function(T? a, T? b, double t) nullableLerp;
 - [x] lib/src/util.dart:54:  const SafeLerp(this.nullableLerp);
 - [x] lib/src/util.dart:63:extension SafeLerpExtension<T> on T? Function(T? a, T? b, double t) {
 - [x] lib/src/util.dart:64:  T nonNull(T a, T b, double t) {
 - [x] lib/src/util.dart:71:extension ListExtension<T> on List<T> {
-- [ ] lib/src/util.dart:72:  int? indexOfOrNull(T obj, [int start = 0]) {
-- [ ] lib/src/util.dart:77:  int? lastIndexOfOrNull(T obj, [int? start]) {
-- [ ] lib/src/util.dart:82:  int? indexWhereOrNull(Predicate<T> test, [int start = 0]) {
+- [x] lib/src/util.dart:72:  int? indexOfOrNull(T obj, [int start = 0]) {
+- [x] lib/src/util.dart:77:  int? lastIndexOfOrNull(T obj, [int? start]) {
+- [x] lib/src/util.dart:82:  int? indexWhereOrNull(Predicate<T> test, [int start = 0]) {
 - [x] lib/src/util.dart:87:  int? lastIndexWhereOrNull(Predicate<T> test, [int? start]) {
 - [x] lib/src/util.dart:92:  bool swapItem(T element, int targetIndex) {
 - [x] lib/src/util.dart:115:  bool swapItemWhere(Predicate<T> test, int targetIndex) {
@@ -719,112 +719,112 @@ TODO:
 - [x] lib/src/util.dart:163:  FutureOr<R> map<R>(R Function(T value) transform) {
 - [x] lib/src/util.dart:170:  FutureOr<R> flatMap<R>(FutureOr<R> Function(T value) transform) {
 - [x] lib/src/util.dart:177:  FutureOr<R> then<R>(FutureOr<R> Function(T value) transform) {
-- [ ] lib/src/util.dart:184:  FutureOr<T> catchError(Function onError,
-- [ ] lib/src/util.dart:193:extension AlignmentExtension on AlignmentGeometry {
-- [ ] lib/src/util.dart:194:  Alignment optionallyResolve(BuildContext context) {
+- [x] lib/src/util.dart:184:  FutureOr<T> catchError(Function onError,
+- [x] lib/src/util.dart:193:extension AlignmentExtension on AlignmentGeometry {
+- [x] lib/src/util.dart:194:  Alignment optionallyResolve(BuildContext context) {
 - [x] lib/src/util.dart:207:extension BorderRadiusExtension on BorderRadiusGeometry {
 - [x] lib/src/util.dart:208:  BorderRadius optionallyResolve(BuildContext context) {
-- [ ] lib/src/util.dart:216:extension EdgeInsetsExtension on EdgeInsetsGeometry {
-- [ ] lib/src/util.dart:217:  EdgeInsets optionallyResolve(BuildContext context) {
+- [x] lib/src/util.dart:216:extension EdgeInsetsExtension on EdgeInsetsGeometry {
+- [x] lib/src/util.dart:217:  EdgeInsets optionallyResolve(BuildContext context) {
 - [x] lib/src/util.dart:260:  final CapturedThemes? themes;
 - [x] lib/src/util.dart:261:  final CapturedData? data;
-- [ ] lib/src/util.dart:262:  final Widget child;
-- [ ] lib/src/util.dart:264:  const CapturedWrapper({
-- [ ] lib/src/util.dart:309:  final Widget child;
-- [ ] lib/src/util.dart:310:  final void Function() onWidgetTreeChange;
-- [ ] lib/src/util.dart:312:  const WidgetTreeChangeDetector({
+- [x] lib/src/util.dart:262:  final Widget child;
+- [x] lib/src/util.dart:264:  const CapturedWrapper({
+- [x] lib/src/util.dart:309:  final Widget child;
+- [x] lib/src/util.dart:310:  final void Function() onWidgetTreeChange;
+- [x] lib/src/util.dart:312:  const WidgetTreeChangeDetector({
 - [x] lib/src/util.dart:323:class WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
-- [ ] lib/src/util.dart:343:extension Joinable<T extends Widget> on List<T> {
-- [ ] lib/src/util.dart:344:  List<T> joinSeparator(T separator) {
-- [ ] lib/src/util.dart:356:extension IterableExtension<T> on Iterable<T> {
-- [ ] lib/src/util.dart:357:  Iterable<T> joinSeparator(T separator) {
-- [ ] lib/src/util.dart:361:  Iterable<T> buildSeparator(ValueGetter<T> separator) {
-- [ ] lib/src/util.dart:366:typedef NeverWidgetBuilder = Widget Function(
-- [ ] lib/src/util.dart:378:extension WidgetExtension on Widget {
-- [ ] lib/src/util.dart:379:  NeverWidgetBuilder get asBuilder => ([a, b, c, d, e, f, g, h, i, j]) => this;
-- [ ] lib/src/util.dart:380:  Widget sized({double? width, double? height}) {
-- [ ] lib/src/util.dart:395:  Widget constrained(
-- [ ] lib/src/util.dart:439:  Widget withPadding(
-- [ ] lib/src/util.dart:484:  Widget withMargin(
-- [ ] lib/src/util.dart:527:  Widget center({Key? key}) {
-- [ ] lib/src/util.dart:534:  Widget withAlign(AlignmentGeometry alignment) {
-- [ ] lib/src/util.dart:541:  Widget positioned(
-- [ ] lib/src/util.dart:553:  Widget expanded({int flex = 1}) {
-- [ ] lib/src/util.dart:560:  Widget withOpacity(double opacity) {
-- [ ] lib/src/util.dart:567:  Widget clip({Clip clipBehavior = Clip.hardEdge}) {
-- [ ] lib/src/util.dart:574:  Widget clipRRect(
-- [ ] lib/src/util.dart:584:  Widget clipOval({Clip clipBehavior = Clip.antiAlias}) {
-- [ ] lib/src/util.dart:591:  Widget clipPath(
-- [ ] lib/src/util.dart:601:  Widget transform({Key? key, required Matrix4 transform}) {
-- [ ] lib/src/util.dart:609:  Widget intrinsicWidth({double? stepWidth, double? stepHeight}) {
-- [ ] lib/src/util.dart:617:  Widget intrinsicHeight() {
-- [ ] lib/src/util.dart:623:  Widget intrinsic({double? stepWidth, double? stepHeight}) {
-- [ ] lib/src/util.dart:634:extension ColumnExtension on Column {
-- [ ] lib/src/util.dart:635:  Widget gap(double gap) {
-- [ ] lib/src/util.dart:639:  Widget separator(Widget separator) {
-- [ ] lib/src/util.dart:656:extension RowExtension on Row {
-- [ ] lib/src/util.dart:657:  Widget gap(double gap) {
-- [ ] lib/src/util.dart:661:  Widget separator(Widget separator) {
-- [ ] lib/src/util.dart:680:  final MainAxisAlignment mainAxisAlignment;
-- [ ] lib/src/util.dart:681:  final MainAxisSize mainAxisSize;
-- [ ] lib/src/util.dart:682:  final CrossAxisAlignment crossAxisAlignment;
-- [ ] lib/src/util.dart:683:  final TextDirection? textDirection;
-- [ ] lib/src/util.dart:684:  final VerticalDirection verticalDirection;
-- [ ] lib/src/util.dart:685:  final TextBaseline? textBaseline;
-- [ ] lib/src/util.dart:686:  final List<Widget> children;
-- [ ] lib/src/util.dart:687:  final Axis direction;
-- [ ] lib/src/util.dart:688:  final Widget separator;
-- [ ] lib/src/util.dart:689:  final Clip clipBehavior;
-- [ ] lib/src/util.dart:691:  const SeparatedFlex({
-- [ ] lib/src/util.dart:741:extension FlexExtension on Flex {
-- [ ] lib/src/util.dart:742:  Widget gap(double gap) {
-- [ ] lib/src/util.dart:748:  Widget separator(Widget separator) {
-- [ ] lib/src/util.dart:769:extension DoubleExtension on double {
-- [ ] lib/src/util.dart:770:  double min(double other) => this < other ? this : other;
-- [ ] lib/src/util.dart:771:  double max(double other) => this > other ? this : other;
-- [ ] lib/src/util.dart:774:extension IntExtension on int {
-- [ ] lib/src/util.dart:775:  int min(int other) => this < other ? this : other;
-- [ ] lib/src/util.dart:776:  int max(int other) => this > other ? this : other;
-- [ ] lib/src/util.dart:781:  IconThemeDataTween({super.begin, super.end});
-- [ ] lib/src/util.dart:787:extension ColorExtension on Color {
-- [ ] lib/src/util.dart:788:  Color scaleAlpha(double factor) {
-- [ ] lib/src/util.dart:794:  Color getContrastColor([double luminanceContrast = 1]) {
-- [ ] lib/src/util.dart:811:  Color withLuminance(double luminance) {
-- [ ] lib/src/util.dart:816:  String toHex({bool includeHashSign = false, bool includeAlpha = true}) {
-- [ ] lib/src/util.dart:827:  HSLColor toHSL() {
-- [ ] lib/src/util.dart:831:  HSVColor toHSV() {
-- [ ] lib/src/util.dart:836:extension HSLColorExtension on HSLColor {
-- [ ] lib/src/util.dart:837:  HSVColor toHSV() {
-- [ ] lib/src/util.dart:856:extension HSVColorExtension on HSVColor {
-- [ ] lib/src/util.dart:857:  HSLColor toHSL() {
-- [ ] lib/src/util.dart:912:  TimeOfDay copyWith({
-- [ ] lib/src/util.dart:878:  final int hour;
-- [ ] lib/src/util.dart:879:  final int minute;
-- [ ] lib/src/util.dart:880:  final int second;
-- [ ] lib/src/util.dart:882:  const TimeOfDay({
-- [ ] lib/src/util.dart:888:  const TimeOfDay.pm({
-- [ ] lib/src/util.dart:894:  const TimeOfDay.am({
-- [ ] lib/src/util.dart:900:  TimeOfDay.fromDateTime(DateTime dateTime)
-- [ ] lib/src/util.dart:905:  TimeOfDay.fromDuration(Duration duration)
-- [ ] lib/src/util.dart:910:  TimeOfDay.now() : this.fromDateTime(DateTime.now());
-- [ ] lib/src/util.dart:968:extension TextEditingControllerExtension on TextEditingController {
-- [ ] lib/src/util.dart:969:  String? get currentWord {
-- [ ] lib/src/util.dart:983:typedef WordInfo = (int start, String word);
-- [ ] lib/src/util.dart:984:typedef ReplacementInfo = (int start, String newText);
-- [ ] lib/src/util.dart:1035:mixin CachedValue {
-- [ ] lib/src/util.dart:1036:  bool shouldRebuild(covariant CachedValue oldValue);
-- [ ] lib/src/util.dart:1041:  final T value;
-- [ ] lib/src/util.dart:1042:  final Widget Function(BuildContext context, T value) builder;
-- [ ] lib/src/util.dart:1044:  const CachedValueWidget({
-- [ ] lib/src/util.dart:1079:typedef Convert<F, T> = T Function(F value);
-- [ ] lib/src/util.dart:1088:  B convertA(A value) => aToB(value);
-- [ ] lib/src/util.dart:1090:  A convertB(B value) => bToA(value);
-- [ ] lib/src/util.dart:1083:  final Convert<A, B> aToB;
-- [ ] lib/src/util.dart:1084:  final Convert<B, A> bToA;
-- [ ] lib/src/util.dart:1086:  const BiDirectionalConvert(this.aToB, this.bToA);
-- [ ] lib/src/util.dart:1118:  ConvertedController(
-- [ ] lib/src/util.dart:1171:extension TextEditingValueExtension on TextEditingValue {
-- [ ] lib/src/util.dart:1172:  TextEditingValue replaceText(String newText) {
-- [ ] lib/src/util.dart:1185:typedef OnContextedCallback<T extends Intent> = Object? Function(T intent,
-- [ ] lib/src/util.dart:1190:  final OnContextedCallback<T> onInvoke;
-- [ ] lib/src/util.dart:1192:  ContextCallbackAction({required this.onInvoke});
+- [x] lib/src/util.dart:343:extension Joinable<T extends Widget> on List<T> {
+- [x] lib/src/util.dart:344:  List<T> joinSeparator(T separator) {
+- [x] lib/src/util.dart:356:extension IterableExtension<T> on Iterable<T> {
+- [x] lib/src/util.dart:357:  Iterable<T> joinSeparator(T separator) {
+- [x] lib/src/util.dart:361:  Iterable<T> buildSeparator(ValueGetter<T> separator) {
+- [x] lib/src/util.dart:366:typedef NeverWidgetBuilder = Widget Function(
+- [x] lib/src/util.dart:378:extension WidgetExtension on Widget {
+- [x] lib/src/util.dart:379:  NeverWidgetBuilder get asBuilder => ([a, b, c, d, e, f, g, h, i, j]) => this;
+- [x] lib/src/util.dart:380:  Widget sized({double? width, double? height}) {
+- [x] lib/src/util.dart:395:  Widget constrained(
+- [x] lib/src/util.dart:439:  Widget withPadding(
+- [x] lib/src/util.dart:484:  Widget withMargin(
+- [x] lib/src/util.dart:527:  Widget center({Key? key}) {
+- [x] lib/src/util.dart:534:  Widget withAlign(AlignmentGeometry alignment) {
+- [x] lib/src/util.dart:541:  Widget positioned(
+- [x] lib/src/util.dart:553:  Widget expanded({int flex = 1}) {
+- [x] lib/src/util.dart:560:  Widget withOpacity(double opacity) {
+- [x] lib/src/util.dart:567:  Widget clip({Clip clipBehavior = Clip.hardEdge}) {
+- [x] lib/src/util.dart:574:  Widget clipRRect(
+- [x] lib/src/util.dart:584:  Widget clipOval({Clip clipBehavior = Clip.antiAlias}) {
+- [x] lib/src/util.dart:591:  Widget clipPath(
+- [x] lib/src/util.dart:601:  Widget transform({Key? key, required Matrix4 transform}) {
+- [x] lib/src/util.dart:609:  Widget intrinsicWidth({double? stepWidth, double? stepHeight}) {
+- [x] lib/src/util.dart:617:  Widget intrinsicHeight() {
+- [x] lib/src/util.dart:623:  Widget intrinsic({double? stepWidth, double? stepHeight}) {
+- [x] lib/src/util.dart:634:extension ColumnExtension on Column {
+- [x] lib/src/util.dart:635:  Widget gap(double gap) {
+- [x] lib/src/util.dart:639:  Widget separator(Widget separator) {
+- [x] lib/src/util.dart:656:extension RowExtension on Row {
+- [x] lib/src/util.dart:657:  Widget gap(double gap) {
+- [x] lib/src/util.dart:661:  Widget separator(Widget separator) {
+- [x] lib/src/util.dart:680:  final MainAxisAlignment mainAxisAlignment;
+- [x] lib/src/util.dart:681:  final MainAxisSize mainAxisSize;
+- [x] lib/src/util.dart:682:  final CrossAxisAlignment crossAxisAlignment;
+- [x] lib/src/util.dart:683:  final TextDirection? textDirection;
+- [x] lib/src/util.dart:684:  final VerticalDirection verticalDirection;
+- [x] lib/src/util.dart:685:  final TextBaseline? textBaseline;
+- [x] lib/src/util.dart:686:  final List<Widget> children;
+- [x] lib/src/util.dart:687:  final Axis direction;
+- [x] lib/src/util.dart:688:  final Widget separator;
+- [x] lib/src/util.dart:689:  final Clip clipBehavior;
+- [x] lib/src/util.dart:691:  const SeparatedFlex({
+- [x] lib/src/util.dart:741:extension FlexExtension on Flex {
+- [x] lib/src/util.dart:742:  Widget gap(double gap) {
+- [x] lib/src/util.dart:748:  Widget separator(Widget separator) {
+- [x] lib/src/util.dart:769:extension DoubleExtension on double {
+- [x] lib/src/util.dart:770:  double min(double other) => this < other ? this : other;
+- [x] lib/src/util.dart:771:  double max(double other) => this > other ? this : other;
+- [x] lib/src/util.dart:774:extension IntExtension on int {
+- [x] lib/src/util.dart:775:  int min(int other) => this < other ? this : other;
+- [x] lib/src/util.dart:776:  int max(int other) => this > other ? this : other;
+- [x] lib/src/util.dart:781:  IconThemeDataTween({super.begin, super.end});
+- [x] lib/src/util.dart:787:extension ColorExtension on Color {
+- [x] lib/src/util.dart:788:  Color scaleAlpha(double factor) {
+- [x] lib/src/util.dart:794:  Color getContrastColor([double luminanceContrast = 1]) {
+- [x] lib/src/util.dart:811:  Color withLuminance(double luminance) {
+- [x] lib/src/util.dart:816:  String toHex({bool includeHashSign = false, bool includeAlpha = true}) {
+- [x] lib/src/util.dart:827:  HSLColor toHSL() {
+- [x] lib/src/util.dart:831:  HSVColor toHSV() {
+- [x] lib/src/util.dart:836:extension HSLColorExtension on HSLColor {
+- [x] lib/src/util.dart:837:  HSVColor toHSV() {
+- [x] lib/src/util.dart:856:extension HSVColorExtension on HSVColor {
+- [x] lib/src/util.dart:857:  HSLColor toHSL() {
+- [x] lib/src/util.dart:912:  TimeOfDay copyWith({
+- [x] lib/src/util.dart:878:  final int hour;
+- [x] lib/src/util.dart:879:  final int minute;
+- [x] lib/src/util.dart:880:  final int second;
+- [x] lib/src/util.dart:882:  const TimeOfDay({
+- [x] lib/src/util.dart:888:  const TimeOfDay.pm({
+- [x] lib/src/util.dart:894:  const TimeOfDay.am({
+- [x] lib/src/util.dart:900:  TimeOfDay.fromDateTime(DateTime dateTime)
+- [x] lib/src/util.dart:905:  TimeOfDay.fromDuration(Duration duration)
+- [x] lib/src/util.dart:910:  TimeOfDay.now() : this.fromDateTime(DateTime.now());
+- [x] lib/src/util.dart:968:extension TextEditingControllerExtension on TextEditingController {
+- [x] lib/src/util.dart:969:  String? get currentWord {
+- [x] lib/src/util.dart:983:typedef WordInfo = (int start, String word);
+- [x] lib/src/util.dart:984:typedef ReplacementInfo = (int start, String newText);
+- [x] lib/src/util.dart:1035:mixin CachedValue {
+- [x] lib/src/util.dart:1036:  bool shouldRebuild(covariant CachedValue oldValue);
+- [x] lib/src/util.dart:1041:  final T value;
+- [x] lib/src/util.dart:1042:  final Widget Function(BuildContext context, T value) builder;
+- [x] lib/src/util.dart:1044:  const CachedValueWidget({
+- [x] lib/src/util.dart:1079:typedef Convert<F, T> = T Function(F value);
+- [x] lib/src/util.dart:1088:  B convertA(A value) => aToB(value);
+- [x] lib/src/util.dart:1090:  A convertB(B value) => bToA(value);
+- [x] lib/src/util.dart:1083:  final Convert<A, B> aToB;
+- [x] lib/src/util.dart:1084:  final Convert<B, A> bToA;
+- [x] lib/src/util.dart:1086:  const BiDirectionalConvert(this.aToB, this.bToA);
+- [x] lib/src/util.dart:1118:  ConvertedController(
+- [x] lib/src/util.dart:1171:extension TextEditingValueExtension on TextEditingValue {
+- [x] lib/src/util.dart:1172:  TextEditingValue replaceText(String newText) {
+- [x] lib/src/util.dart:1185:typedef OnContextedCallback<T extends Intent> = Object? Function(T intent,
+- [x] lib/src/util.dart:1190:  final OnContextedCallback<T> onInvoke;
+- [x] lib/src/util.dart:1192:  ContextCallbackAction({required this.onInvoke});
