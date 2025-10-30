@@ -378,28 +378,28 @@ TODO:
 - [x] lib/src/components/overlay/popover.dart:688:  void initialize(OverlayEntry overlayEntry, [OverlayEntry? barrierEntry]) {
 - [ ] lib/src/components/overlay/popover.dart:679:  final Completer<T?> completer = Completer();
 - [ ] lib/src/components/overlay/popover.dart:680:  final Completer<T?> animationCompleter = Completer();
-- [ ] lib/src/components/overlay/popover.dart:979:  bool get hasOpenPopover =>
-- [ ] lib/src/components/overlay/popover.dart:983:  bool get hasMountedPopover =>
-- [ ] lib/src/components/overlay/popover.dart:987:  Iterable<Popover> get openPopovers => List.unmodifiable(_openPopovers);
+- [x] lib/src/components/overlay/popover.dart:979:  bool get hasOpenPopover =>
+- [x] lib/src/components/overlay/popover.dart:983:  bool get hasMountedPopover =>
+- [x] lib/src/components/overlay/popover.dart:987:  Iterable<Popover> get openPopovers => List.unmodifiable(_openPopovers);
 - [ ] lib/src/components/overlay/popover.dart:989:  Future<T?> show<T>({
-- [ ] lib/src/components/overlay/popover.dart:1058:  void close([bool immediate = false]) {
-- [ ] lib/src/components/overlay/popover.dart:1066:  void closeLater() {
-- [ ] lib/src/components/overlay/popover.dart:1134:  void disposePopovers() {
-- [ ] lib/src/components/overlay/popover.dart:1149:class PopoverLayout extends SingleChildRenderObjectWidget {
-- [ ] lib/src/components/overlay/popover.dart:1150:  final Alignment alignment;
-- [ ] lib/src/components/overlay/popover.dart:1151:  final Alignment anchorAlignment;
+- [x] lib/src/components/overlay/popover.dart:1058:  void close([bool immediate = false]) {
+- [x] lib/src/components/overlay/popover.dart:1066:  void closeLater() {
+- [x] lib/src/components/overlay/popover.dart:1134:  void disposePopovers() {
+- [x] lib/src/components/overlay/popover.dart:1149:class PopoverLayout extends SingleChildRenderObjectWidget {
+- [x] lib/src/components/overlay/popover.dart:1150:  final Alignment alignment;
+- [x] lib/src/components/overlay/popover.dart:1151:  final Alignment anchorAlignment;
 - [ ] lib/src/components/overlay/popover.dart:1152:  final Offset? position;
 - [ ] lib/src/components/overlay/popover.dart:1153:  final Size? anchorSize;
-- [ ] lib/src/components/overlay/popover.dart:1154:  final PopoverConstraint widthConstraint;
-- [ ] lib/src/components/overlay/popover.dart:1155:  final PopoverConstraint heightConstraint;
+- [x] lib/src/components/overlay/popover.dart:1154:  final PopoverConstraint widthConstraint;
+- [x] lib/src/components/overlay/popover.dart:1155:  final PopoverConstraint heightConstraint;
 - [ ] lib/src/components/overlay/popover.dart:1156:  final Offset? offset;
-- [ ] lib/src/components/overlay/popover.dart:1157:  final EdgeInsets margin;
-- [ ] lib/src/components/overlay/popover.dart:1158:  final double scale;
-- [ ] lib/src/components/overlay/popover.dart:1159:  final Alignment scaleAlignment;
+- [x] lib/src/components/overlay/popover.dart:1157:  final EdgeInsets margin;
+- [x] lib/src/components/overlay/popover.dart:1158:  final double scale;
+- [x] lib/src/components/overlay/popover.dart:1159:  final Alignment scaleAlignment;
 - [ ] lib/src/components/overlay/popover.dart:1160:  final FilterQuality? filterQuality;
-- [ ] lib/src/components/overlay/popover.dart:1161:  final bool allowInvertHorizontal;
-- [ ] lib/src/components/overlay/popover.dart:1162:  final bool allowInvertVertical;
-- [ ] lib/src/components/overlay/popover.dart:1163:  const PopoverLayout({
+- [x] lib/src/components/overlay/popover.dart:1161:  final bool allowInvertHorizontal;
+- [x] lib/src/components/overlay/popover.dart:1162:  final bool allowInvertVertical;
+- [x] lib/src/components/overlay/popover.dart:1163:  const PopoverLayout({
 - [ ] lib/src/components/overlay/popover.dart:1262:class PopoverLayoutRender extends RenderShiftedBox {
 - [ ] lib/src/components/overlay/popover.dart:1410:  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
 - [ ] lib/src/components/overlay/popover.dart:1280:  PopoverLayoutRender({
