@@ -276,15 +276,15 @@ class _ThemePageState extends State<ThemePage> {
     }
     buffer += '\n\t\t),';
     buffer += '\n\t\tradius: $radius,';
+    if (surfaceOpacity != 1) {
+      buffer += '\n\t\tsurfaceOpacity: $surfaceOpacity,';
+    }
+    if (surfaceBlur != 0) {
+      buffer += '\n\t\tsurfaceBlur: $surfaceBlur,';
+    }
     buffer += '\n\t),';
     if (scaling != 1) {
       buffer += '\n\tscaling: const AdaptiveScaling($scaling),';
-    }
-    if (surfaceOpacity != 1) {
-      buffer += '\n\tsurfaceOpacity: $surfaceOpacity,';
-    }
-    if (surfaceBlur != 0) {
-      buffer += '\n\tsurfaceBlur: $surfaceBlur,';
     }
     buffer += '\n...';
     buffer += '\n)';
@@ -299,15 +299,15 @@ class _ThemePageState extends State<ThemePage> {
     buffer += '\n\ttheme: ThemeData(';
     buffer += '\n\t\tcolorScheme: ColorSchemes.$name,';
     buffer += '\n\t\tradius: $radius,';
+    if (surfaceOpacity != 1) {
+      buffer += '\n\t\tsurfaceOpacity: $surfaceOpacity,';
+    }
+    if (surfaceBlur != 0) {
+      buffer += '\n\t\tsurfaceBlur: $surfaceBlur,';
+    }
     buffer += '\n\t),';
     if (scaling != 1) {
       buffer += '\n\tscaling: const AdaptiveScaling($scaling),';
-    }
-    if (surfaceOpacity != 1) {
-      buffer += '\n\tsurfaceOpacity: $surfaceOpacity,';
-    }
-    if (surfaceBlur != 0) {
-      buffer += '\n\tsurfaceBlur: $surfaceBlur,';
     }
     buffer += '\n...';
     buffer += '\n)';

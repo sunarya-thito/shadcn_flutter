@@ -328,7 +328,7 @@ class ColorsPageState extends State<ColorsPage> {
                   buildColorRow(context, color.key, color.value),
                 ],
               ),
-            ).withMargin(
+            ).withPadding(
               top: 32,
             ),
           const Text('Generate Color').h2().anchored(_customColorKey),

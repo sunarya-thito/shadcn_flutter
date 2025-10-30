@@ -110,6 +110,7 @@ class CodeBlock extends StatelessWidget {
       actions: [
         ...actions,
         IconButton.outline(
+          size: ButtonSize.small,
           onPressed: () {
             Clipboard.setData(ClipboardData(text: code)).then((_) {
               if (context.mounted) {
