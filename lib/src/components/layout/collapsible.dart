@@ -255,6 +255,10 @@ class Collapsible extends StatefulWidget {
   State<Collapsible> createState() => CollapsibleState();
 }
 
+/// State class for [Collapsible] widget.
+///
+/// Manages the expansion/collapse animation state and handles transitions
+/// between expanded and collapsed states.
 class CollapsibleState extends State<Collapsible> {
   late bool _isExpanded;
 
