@@ -423,27 +423,27 @@ TODO:
 - [x] lib/src/components/control/button.dart:4393:  const IconButton.link({
 - [x] lib/src/components/control/button.dart:4427:  const IconButton.text({
 - [x] lib/src/components/control/button.dart:4461:  const IconButton.destructive({
-- [ ] lib/src/components/control/button.dart:4534:class ButtonStyleOverride extends StatelessWidget {
-- [ ] lib/src/components/control/button.dart:4535:  final bool inherit;
-- [ ] lib/src/components/control/button.dart:4536:  final ButtonStatePropertyDelegate<Decoration>? decoration;
-- [ ] lib/src/components/control/button.dart:4537:  final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
-- [ ] lib/src/components/control/button.dart:4538:  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
-- [ ] lib/src/components/control/button.dart:4539:  final ButtonStatePropertyDelegate<TextStyle>? textStyle;
-- [ ] lib/src/components/control/button.dart:4540:  final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
-- [ ] lib/src/components/control/button.dart:4541:  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
-- [ ] lib/src/components/control/button.dart:4542:  final Widget child;
-- [ ] lib/src/components/control/button.dart:4544:  const ButtonStyleOverride({
-- [ ] lib/src/components/control/button.dart:4555:  const ButtonStyleOverride.inherit({
-- [ ] lib/src/components/control/button.dart:4629:class ButtonStyleOverrideData {
-- [ ] lib/src/components/control/button.dart:4630:  final ButtonStatePropertyDelegate<Decoration>? decoration;
-- [ ] lib/src/components/control/button.dart:4631:  final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
-- [ ] lib/src/components/control/button.dart:4632:  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
-- [ ] lib/src/components/control/button.dart:4633:  final ButtonStatePropertyDelegate<TextStyle>? textStyle;
-- [ ] lib/src/components/control/button.dart:4634:  final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
-- [ ] lib/src/components/control/button.dart:4635:  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
-- [ ] lib/src/components/control/button.dart:4637:  const ButtonStyleOverrideData({
-- [ ] lib/src/components/control/button.dart:4765:  const ButtonGroup.horizontal({
-- [ ] lib/src/components/control/button.dart:4771:  const ButtonGroup.vertical({
+- [x] lib/src/components/control/button.dart:4534:class ButtonStyleOverride extends StatelessWidget {
+- [x] lib/src/components/control/button.dart:4535:  final bool inherit;
+- [x] lib/src/components/control/button.dart:4536:  final ButtonStatePropertyDelegate<Decoration>? decoration;
+- [x] lib/src/components/control/button.dart:4537:  final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
+- [x] lib/src/components/control/button.dart:4538:  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
+- [x] lib/src/components/control/button.dart:4539:  final ButtonStatePropertyDelegate<TextStyle>? textStyle;
+- [x] lib/src/components/control/button.dart:4540:  final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
+- [x] lib/src/components/control/button.dart:4541:  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
+- [x] lib/src/components/control/button.dart:4542:  final Widget child;
+- [x] lib/src/components/control/button.dart:4544:  const ButtonStyleOverride({
+- [x] lib/src/components/control/button.dart:4555:  const ButtonStyleOverride.inherit({
+- [x] lib/src/components/control/button.dart:4629:class ButtonStyleOverrideData {
+- [x] lib/src/components/control/button.dart:4630:  final ButtonStatePropertyDelegate<Decoration>? decoration;
+- [x] lib/src/components/control/button.dart:4631:  final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
+- [x] lib/src/components/control/button.dart:4632:  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
+- [x] lib/src/components/control/button.dart:4633:  final ButtonStatePropertyDelegate<TextStyle>? textStyle;
+- [x] lib/src/components/control/button.dart:4634:  final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
+- [x] lib/src/components/control/button.dart:4635:  final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
+- [x] lib/src/components/control/button.dart:4637:  const ButtonStyleOverrideData({
+- [x] lib/src/components/control/button.dart:4765:  const ButtonGroup.horizontal({
+- [x] lib/src/components/control/button.dart:4771:  const ButtonGroup.vertical({
 - [ ] lib/src/components/control/button.dart:4824:class ButtonGroupData {
 - [ ] lib/src/components/control/button.dart:4897:  BorderRadiusGeometry applyToBorderRadius(
 - [ ] lib/src/components/control/button.dart:4928:  ButtonGroupData applyToButtonGroupData(ButtonGroupData other) {
@@ -463,58 +463,58 @@ TODO:
 - [ ] lib/src/components/control/button.dart:4863:  const ButtonGroupData.all(double value)
 - [ ] lib/src/components/control/button.dart:4869:  factory ButtonGroupData.horizontalIndex(int index, int length) {
 - [ ] lib/src/components/control/button.dart:4883:  factory ButtonGroupData.verticalIndex(int index, int length) {
-- [ ] lib/src/components/control/clickable.dart:363:class WidgetStatesData {
-- [ ] lib/src/components/control/clickable.dart:364:  final Set<WidgetState> states;
-- [ ] lib/src/components/control/clickable.dart:366:  const WidgetStatesData(this.states);
-- [ ] lib/src/components/control/clickable.dart:591:  const Clickable({
-- [ ] lib/src/components/control/clickable.dart:639:const kDoubleTapMinTime = Duration(milliseconds: 300);
-- [ ] lib/src/components/control/command.dart:52:  const CommandEmpty({super.key});
-- [ ] lib/src/components/control/command.dart:173:  final bool autofocus;
-- [ ] lib/src/components/control/command.dart:174:  final CommandBuilder builder;
-- [ ] lib/src/components/control/command.dart:176:      debounceDuration; // debounce is used to prevent too many requests
-- [ ] lib/src/components/control/command.dart:177:  final WidgetBuilder? emptyBuilder;
-- [ ] lib/src/components/control/command.dart:178:  final ErrorWidgetBuilder? errorBuilder;
-- [ ] lib/src/components/control/command.dart:179:  final WidgetBuilder? loadingBuilder;
-- [ ] lib/src/components/control/command.dart:180:  final double? surfaceOpacity;
-- [ ] lib/src/components/control/command.dart:181:  final double? surfaceBlur;
-- [ ] lib/src/components/control/command.dart:182:  final Widget? searchPlaceholder;
-- [ ] lib/src/components/control/command.dart:454:  const CommandCategory({
-- [ ] lib/src/components/control/command.dart:509:  const CommandItem({
-- [ ] lib/src/components/control/hover.dart:3:class HoverTheme {
-- [ ] lib/src/components/control/hover.dart:18:  HoverTheme copyWith({
-- [ ] lib/src/components/control/hover.dart:4:  final Duration? debounceDuration;
-- [ ] lib/src/components/control/hover.dart:5:  final HitTestBehavior? hitTestBehavior;
-- [ ] lib/src/components/control/hover.dart:6:  final Duration? waitDuration;
-- [ ] lib/src/components/control/hover.dart:7:  final Duration? minDuration;
-- [ ] lib/src/components/control/hover.dart:8:  final Duration? showDuration;
-- [ ] lib/src/components/control/hover.dart:10:  const HoverTheme({
-- [ ] lib/src/components/control/hover.dart:59:  final Widget child;
-- [ ] lib/src/components/control/hover.dart:60:  final VoidCallback? onHover;
-- [ ] lib/src/components/control/hover.dart:61:  final VoidCallback? onExit;
-- [ ] lib/src/components/control/hover.dart:62:  final VoidCallback? onEnter;
-- [ ] lib/src/components/control/hover.dart:63:  final Duration? debounceDuration;
-- [ ] lib/src/components/control/hover.dart:64:  final HitTestBehavior? hitTestBehavior;
-- [ ] lib/src/components/control/hover.dart:66:  const HoverActivity({
-- [ ] lib/src/components/control/hover.dart:137:class Hover extends StatefulWidget {
-- [ ] lib/src/components/control/hover.dart:138:  final Widget child;
-- [ ] lib/src/components/control/hover.dart:139:  final void Function(bool hovered) onHover;
-- [ ] lib/src/components/control/hover.dart:140:  final Duration? waitDuration;
-- [ ] lib/src/components/control/hover.dart:142:      minDuration; // The minimum duration to show the hover, if the cursor is quickly moved over the widget.
-- [ ] lib/src/components/control/hover.dart:143:  final Duration? showDuration; // The duration to show the hover
-- [ ] lib/src/components/control/hover.dart:144:  final HitTestBehavior? hitTestBehavior;
-- [ ] lib/src/components/control/hover.dart:146:  const Hover({
-- [ ] lib/src/components/control/scrollbar.dart:57:class Scrollbar extends StatelessWidget {
-- [ ] lib/src/components/control/scrollbar.dart:58:  const Scrollbar({
-- [ ] lib/src/components/control/scrollbar.dart:71:  final Widget child;
-- [ ] lib/src/components/control/scrollbar.dart:72:  final ScrollController? controller;
-- [ ] lib/src/components/control/scrollbar.dart:73:  final bool? thumbVisibility;
-- [ ] lib/src/components/control/scrollbar.dart:74:  final bool? trackVisibility;
-- [ ] lib/src/components/control/scrollbar.dart:76:  final double? thickness;
-- [ ] lib/src/components/control/scrollbar.dart:78:  final Radius? radius;
-- [ ] lib/src/components/control/scrollbar.dart:79:  final Color? color;
-- [ ] lib/src/components/control/scrollbar.dart:81:  final bool? interactive;
-- [ ] lib/src/components/control/scrollbar.dart:82:  final ScrollNotificationPredicate? notificationPredicate;
-- [ ] lib/src/components/control/scrollbar.dart:83:  final ScrollbarOrientation? scrollbarOrientation;
+- [x] lib/src/components/control/clickable.dart:363:class WidgetStatesData {
+- [x] lib/src/components/control/clickable.dart:364:  final Set<WidgetState> states;
+- [x] lib/src/components/control/clickable.dart:366:  const WidgetStatesData(this.states);
+- [x] lib/src/components/control/clickable.dart:591:  const Clickable({
+- [x] lib/src/components/control/clickable.dart:639:const kDoubleTapMinTime = Duration(milliseconds: 300);
+- [x] lib/src/components/control/command.dart:52:  const CommandEmpty({super.key});
+- [x] lib/src/components/control/command.dart:173:  final bool autofocus;
+- [x] lib/src/components/control/command.dart:174:  final CommandBuilder builder;
+- [x] lib/src/components/control/command.dart:176:      debounceDuration; // debounce is used to prevent too many requests
+- [x] lib/src/components/control/command.dart:177:  final WidgetBuilder? emptyBuilder;
+- [x] lib/src/components/control/command.dart:178:  final ErrorWidgetBuilder? errorBuilder;
+- [x] lib/src/components/control/command.dart:179:  final WidgetBuilder? loadingBuilder;
+- [x] lib/src/components/control/command.dart:180:  final double? surfaceOpacity;
+- [x] lib/src/components/control/command.dart:181:  final double? surfaceBlur;
+- [x] lib/src/components/control/command.dart:182:  final Widget? searchPlaceholder;
+- [x] lib/src/components/control/command.dart:454:  const CommandCategory({
+- [x] lib/src/components/control/command.dart:509:  const CommandItem({
+- [x] lib/src/components/control/hover.dart:3:class HoverTheme {
+- [x] lib/src/components/control/hover.dart:18:  HoverTheme copyWith({
+- [x] lib/src/components/control/hover.dart:4:  final Duration? debounceDuration;
+- [x] lib/src/components/control/hover.dart:5:  final HitTestBehavior? hitTestBehavior;
+- [x] lib/src/components/control/hover.dart:6:  final Duration? waitDuration;
+- [x] lib/src/components/control/hover.dart:7:  final Duration? minDuration;
+- [x] lib/src/components/control/hover.dart:8:  final Duration? showDuration;
+- [x] lib/src/components/control/hover.dart:10:  const HoverTheme({
+- [x] lib/src/components/control/hover.dart:59:  final Widget child;
+- [x] lib/src/components/control/hover.dart:60:  final VoidCallback? onHover;
+- [x] lib/src/components/control/hover.dart:61:  final VoidCallback? onExit;
+- [x] lib/src/components/control/hover.dart:62:  final VoidCallback? onEnter;
+- [x] lib/src/components/control/hover.dart:63:  final Duration? debounceDuration;
+- [x] lib/src/components/control/hover.dart:64:  final HitTestBehavior? hitTestBehavior;
+- [x] lib/src/components/control/hover.dart:66:  const HoverActivity({
+- [x] lib/src/components/control/hover.dart:137:class Hover extends StatefulWidget {
+- [x] lib/src/components/control/hover.dart:138:  final Widget child;
+- [x] lib/src/components/control/hover.dart:139:  final void Function(bool hovered) onHover;
+- [x] lib/src/components/control/hover.dart:140:  final Duration? waitDuration;
+- [x] lib/src/components/control/hover.dart:142:      minDuration; // The minimum duration to show the hover, if the cursor is quickly moved over the widget.
+- [x] lib/src/components/control/hover.dart:143:  final Duration? showDuration; // The duration to show the hover
+- [x] lib/src/components/control/hover.dart:144:  final HitTestBehavior? hitTestBehavior;
+- [x] lib/src/components/control/hover.dart:146:  const Hover({
+- [x] lib/src/components/control/scrollbar.dart:57:class Scrollbar extends StatelessWidget {
+- [x] lib/src/components/control/scrollbar.dart:58:  const Scrollbar({
+- [x] lib/src/components/control/scrollbar.dart:71:  final Widget child;
+- [x] lib/src/components/control/scrollbar.dart:72:  final ScrollController? controller;
+- [x] lib/src/components/control/scrollbar.dart:73:  final bool? thumbVisibility;
+- [x] lib/src/components/control/scrollbar.dart:74:  final bool? trackVisibility;
+- [x] lib/src/components/control/scrollbar.dart:76:  final double? thickness;
+- [x] lib/src/components/control/scrollbar.dart:78:  final Radius? radius;
+- [x] lib/src/components/control/scrollbar.dart:79:  final Color? color;
+- [x] lib/src/components/control/scrollbar.dart:81:  final bool? interactive;
+- [x] lib/src/components/control/scrollbar.dart:82:  final ScrollNotificationPredicate? notificationPredicate;
+- [x] lib/src/components/control/scrollbar.dart:83:  final ScrollbarOrientation? scrollbarOrientation;
 - [ ] lib/src/components/control/scrollview.dart:8:class ScrollViewInterceptor extends StatefulWidget {
 - [ ] lib/src/components/control/scrollview.dart:9:  final Widget child;
 - [ ] lib/src/components/control/scrollview.dart:10:  final bool enabled;
