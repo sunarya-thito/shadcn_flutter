@@ -3,12 +3,40 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Extension on `Set<WidgetState>` providing convenient boolean getters for common states.
+///
+/// This extension simplifies checking for widget states by providing readable
+/// property accessors instead of using `contains()` calls.
+///
+/// ## Example
+///
+/// ```dart
+/// Set<WidgetState> states = {WidgetState.hovered, WidgetState.focused};
+///
+/// if (states.hovered) {
+///   // Handle hover state
+/// }
+/// if (states.disabled) {
+///   // Handle disabled state
+/// }
+/// ```
 extension WidgetStateExtension on Set<WidgetState> {
+  /// Whether the widget is in a disabled state.
   bool get disabled => contains(WidgetState.disabled);
+  
+  /// Whether the widget is in an error state.
   bool get error => contains(WidgetState.error);
+  
+  /// Whether the widget is in a selected state.
   bool get selected => contains(WidgetState.selected);
+  
+  /// Whether the widget is in a pressed state.
   bool get pressed => contains(WidgetState.pressed);
+  
+  /// Whether the widget is in a hovered state.
   bool get hovered => contains(WidgetState.hovered);
+  
+  /// Whether the widget is in a focused state.
   bool get focused => contains(WidgetState.focused);
 }
 
@@ -223,13 +251,57 @@ class _ParamStatedWidget extends StatedWidget {
   }
 }
 
+/// A widget that provides widget state information to descendants via `Data`.
+///
+/// [WidgetStatesProvider] manages and propagates widget states (like hovered,
+/// pressed, disabled) down the widget tree using the Data inheritance mechanism.
+/// It supports both static state sets and dynamic controller-based states.
+///
+/// ## Overview
+///
+/// Use [WidgetStatesProvider] to:
+/// - Share widget states with descendant widgets
+/// - Control states programmatically via [WidgetStatesController]
+/// - Inherit states from ancestor providers
+/// - Create state boundaries to isolate state contexts
+///
+/// ## Example
+///
+/// ```dart
+/// WidgetStatesProvider(
+///   states: {WidgetState.hovered},
+///   child: StatedWidget(
+///     child: Text('Normal'),
+///     hovered: Text('Hovered'),
+///   ),
+/// )
+/// ```
 class WidgetStatesProvider extends StatelessWidget {
+  /// Optional controller for programmatic state management.
   final WidgetStatesController? controller;
+  
+  /// Static set of widget states to provide.
   final Set<WidgetState>? states;
+  
+  /// The child widget that can access the provided states.
   final Widget child;
+  
+  /// Whether to inherit states from ancestor providers.
+  ///
+  /// When `true`, combines local states with inherited states.
   final bool inherit;
+  
+  /// Whether this provider acts as a state boundary.
   final bool boundary;
 
+  /// Creates a widget states provider with optional controller and states.
+  ///
+  /// ## Parameters
+  ///
+  /// * [controller] - Optional controller for dynamic state management.
+  /// * [child] - The descendant widget that can access states.
+  /// * [states] - Static set of states to provide. Defaults to empty set.
+  /// * [inherit] - Whether to inherit from ancestors. Defaults to `true`.
   const WidgetStatesProvider({
     super.key,
     this.controller,
@@ -238,6 +310,14 @@ class WidgetStatesProvider extends StatelessWidget {
     this.inherit = true,
   }) : boundary = false;
 
+  /// Creates a widget states provider that acts as a state boundary.
+  ///
+  /// A boundary provider blocks state inheritance from ancestors, creating
+  /// an isolated state context for its descendants.
+  ///
+  /// ## Parameters
+  ///
+  /// * [child] - The descendant widget.
   const WidgetStatesProvider.boundary({
     super.key,
     required this.child,
@@ -354,46 +434,158 @@ class _BuilderStatedWidget extends StatedWidget {
   }
 }
 
+/// A highly configurable clickable widget with extensive gesture and state support.
+///
+/// [Clickable] provides a comprehensive foundation for interactive widgets, handling
+/// various input gestures (tap, double-tap, long-press, etc.), visual states, and
+/// accessibility features. It manages decoration, styling, and transitions based on
+/// widget states like hover, focus, and press.
+///
+/// ## Overview
+///
+/// Use [Clickable] when building custom interactive components that need:
+/// - Fine-grained gesture control (primary, secondary, tertiary taps)
+/// - State-aware styling (decoration, text style, mouse cursor, etc.)
+/// - Focus management and keyboard shortcuts
+/// - Smooth transitions between states
+/// - Accessibility features like focus outlines
+///
+/// ## Example
+///
+/// ```dart
+/// Clickable(
+///   onPressed: () => print('Clicked!'),
+///   decoration: WidgetStateProperty.resolveWith((states) {
+///     if (states.contains(WidgetState.pressed)) {
+///       return BoxDecoration(color: Colors.blue.shade700);
+///     }
+///     return BoxDecoration(color: Colors.blue);
+///   }),
+///   child: Padding(
+///     padding: EdgeInsets.all(8),
+///     child: Text('Click Me'),
+///   ),
+/// )
+/// ```
 class Clickable extends StatefulWidget {
+  /// The child widget displayed within the clickable area.
   final Widget child;
+  
+  /// Whether the widget is enabled and can respond to interactions.
   final bool enabled;
+  
+  /// Called when hover state changes.
   final ValueChanged<bool>? onHover;
+  
+  /// Called when focus state changes.
   final ValueChanged<bool>? onFocus;
+  
+  /// State-aware decoration for the widget.
   final WidgetStateProperty<Decoration?>? decoration;
+  
+  /// State-aware mouse cursor style.
   final WidgetStateProperty<MouseCursor?>? mouseCursor;
+  
+  /// State-aware padding around the child.
   final WidgetStateProperty<EdgeInsetsGeometry?>? padding;
+  
+  /// State-aware text style applied to text descendants.
   final WidgetStateProperty<TextStyle?>? textStyle;
+  
+  /// State-aware icon theme applied to icon descendants.
   final WidgetStateProperty<IconThemeData?>? iconTheme;
+  
+  /// State-aware margin around the widget.
   final WidgetStateProperty<EdgeInsetsGeometry?>? margin;
+  
+  /// State-aware transformation matrix.
   final WidgetStateProperty<Matrix4?>? transform;
+  
+  /// Called when the widget is tapped (primary button).
   final VoidCallback? onPressed;
+  
+  /// Called when the widget is double-tapped.
   final VoidCallback? onDoubleTap;
+  
+  /// Focus node for keyboard focus management.
   final FocusNode? focusNode;
+  
+  /// How to behave during hit testing.
   final HitTestBehavior behavior;
+  
+  /// Whether to disable state transition animations.
   final bool disableTransition;
+  
+  /// Keyboard shortcuts to handle.
   final Map<LogicalKeySet, Intent>? shortcuts;
+  
+  /// Actions to handle for intents.
   final Map<Type, Action<Intent>>? actions;
+  
+  /// Whether to show focus outline for accessibility.
   final bool focusOutline;
+  
+  /// Whether to enable haptic/audio feedback.
   final bool enableFeedback;
+  
+  /// Called when long-pressed.
   final VoidCallback? onLongPress;
+  
+  /// Called on primary tap down.
   final GestureTapDownCallback? onTapDown;
+  
+  /// Called on primary tap up.
   final GestureTapUpCallback? onTapUp;
+  
+  /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+  
+  /// Called on secondary (right-click) tap down.
   final GestureTapDownCallback? onSecondaryTapDown;
+  
+  /// Called on secondary tap up.
   final GestureTapUpCallback? onSecondaryTapUp;
+  
+  /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
+  
+  /// Called on tertiary (middle-click) tap down.
   final GestureTapDownCallback? onTertiaryTapDown;
+  
+  /// Called on tertiary tap up.
   final GestureTapUpCallback? onTertiaryTapUp;
+  
+  /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
+  
+  /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
+  
+  /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
+  
+  /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
+  
+  /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
+  
+  /// Called on secondary long press completion.
   final GestureLongPressUpCallback? onSecondaryLongPress;
+  
+  /// Called on tertiary long press completion.
   final GestureLongPressUpCallback? onTertiaryLongPress;
+  
+  /// Whether to disable hover visual effects.
   final bool disableHoverEffect;
+  
+  /// Optional controller for programmatic state management.
   final WidgetStatesController? statesController;
+  
+  /// Alignment for applying margin.
   final AlignmentGeometry? marginAlignment;
+  
+  /// Whether to disable the focus outline.
   final bool disableFocusOutline;
 
   const Clickable({
