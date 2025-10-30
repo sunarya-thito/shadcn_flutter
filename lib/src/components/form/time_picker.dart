@@ -1,15 +1,33 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Theme configuration for [TimePicker] widget appearance and behavior.
+///
+/// Defines default settings for time picker components including display
+/// format, popover positioning, and dialog customization.
 class TimePickerTheme {
+  /// Mode for displaying the time picker (popover or dialog).
   final PromptMode? mode;
+
+  /// Alignment of the popover relative to its anchor.
   final AlignmentGeometry? popoverAlignment;
+
+  /// Alignment point on the anchor widget for popover positioning.
   final AlignmentGeometry? popoverAnchorAlignment;
+
+  /// Padding inside the popover.
   final EdgeInsetsGeometry? popoverPadding;
+
+  /// Whether to use 24-hour time format.
   final bool? use24HourFormat;
+
+  /// Whether to show seconds picker.
   final bool? showSeconds;
+
+  /// Custom title widget for the time picker dialog.
   final Widget? dialogTitle;
 
+  /// Creates a [TimePickerTheme].
   const TimePickerTheme({
     this.mode,
     this.popoverAlignment,
@@ -20,6 +38,7 @@ class TimePickerTheme {
     this.dialogTitle,
   });
 
+  /// Creates a copy of this theme with the given fields replaced.
   TimePickerTheme copyWith({
     ValueGetter<PromptMode?>? mode,
     ValueGetter<AlignmentGeometry?>? popoverAlignment,
@@ -554,24 +573,70 @@ class _TimeFormatter extends TextInputFormatter {
   }
 }
 
+/// Controller for managing [DurationPicker] values programmatically.
+///
+/// Extends `ValueNotifier<Duration?>` to provide reactive state management
+/// for duration picker components. Integrates with the controlled component
+/// system for external control and change notifications.
+///
+/// Example:
+/// ```dart
+/// final controller = DurationPickerController(Duration(hours: 2, minutes: 30));
+/// controller.addListener(() {
+///   print('Selected duration: ${controller.value}');
+/// });
+/// ```
 class DurationPickerController extends ValueNotifier<Duration?>
     with ComponentController<Duration?> {
+  /// Creates a [DurationPickerController] with an initial value.
   DurationPickerController(super.value);
 }
 
+/// Represents the parts of a duration that can be selected.
+///
+/// Used by [DurationPicker] to specify which time units are editable.
 enum DurationPart {
+  /// Day component of the duration.
   day,
+
+  /// Hour component of the duration.
   hour,
+
+  /// Minute component of the duration.
   minute,
+
+  /// Second component of the duration.
   second,
 }
 
+/// Represents the parts of a time-of-day that can be selected.
+///
+/// Used by [TimePicker] to specify which time components are editable.
 enum TimePart {
+  /// Hour component (0-23 or 1-12 depending on format).
   hour,
+
+  /// Minute component (0-59).
   minute,
+
+  /// Second component (0-59).
   second,
 }
 
+/// Widget for picking duration values with day, hour, minute, and second components.
+///
+/// Provides an input interface for selecting time durations. Can be controlled
+/// externally via [DurationPickerController] or used with callbacks.
+///
+/// Example:
+/// ```dart
+/// DurationPicker(
+///   value: Duration(hours: 1, minutes: 30),
+///   onChanged: (duration) {
+///     print('Selected: $duration');
+///   },
+/// )
+/// ```
 class DurationPicker extends StatelessWidget {
   final Duration? value;
   final ValueChanged<Duration?>? onChanged;
@@ -786,15 +851,32 @@ class _DurationPickerDialogState extends State<DurationPickerDialog> {
   }
 }
 
+/// Represents a range of time with a start and end time.
+///
+/// Used to define time intervals or periods. Both [start] and [end]
+/// are represented as [TimeOfDay] values.
+///
+/// Example:
+/// ```dart
+/// final workHours = TimeRange(
+///   start: TimeOfDay(hour: 9, minute: 0),
+///   end: TimeOfDay(hour: 17, minute: 0),
+/// );
+/// ```
 class TimeRange {
+  /// The start time of the range.
   final TimeOfDay start;
+
+  /// The end time of the range.
   final TimeOfDay end;
 
+  /// Creates a [TimeRange] with the specified start and end times.
   const TimeRange({
     required this.start,
     required this.end,
   });
 
+  /// Creates a copy of this range with the given fields replaced.
   TimeRange copyWith({
     ValueGetter<TimeOfDay>? start,
     ValueGetter<TimeOfDay>? end,
