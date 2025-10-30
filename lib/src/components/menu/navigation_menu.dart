@@ -577,7 +577,12 @@ class NavigationMenu extends StatefulWidget {
   State<NavigationMenu> createState() => NavigationMenuState();
 }
 
+/// State class for [NavigationMenu] managing menu interactions and timing.
+///
+/// Handles hover debouncing, popover control, active menu item tracking,
+/// and content builder management for navigation menu items.
 class NavigationMenuState extends State<NavigationMenu> {
+  /// Debounce duration for hover interactions to prevent flickering.
   static const Duration kDebounceDuration = Duration(milliseconds: 200);
   // final GlobalKey<PopoverAnchorState> _popoverKey = GlobalKey();
   // final ValueNotifier<bool> _visible = ValueNotifier(false);

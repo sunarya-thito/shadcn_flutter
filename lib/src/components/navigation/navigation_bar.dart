@@ -1077,14 +1077,36 @@ class _NavigationSidebarState extends State<NavigationSidebar>
 /// - `expanded`: Labels shown when navigation is expanded.
 enum NavigationLabelType { none, selected, all, tooltip, expanded }
 
+/// Position of navigation item labels relative to icons.
+///
+/// - `start`: Label before icon (left in LTR, right in RTL)
+/// - `end`: Label after icon (right in LTR, left in RTL)
+/// - `top`: Label above icon
+/// - `bottom`: Label below icon
 enum NavigationLabelPosition { start, end, top, bottom }
 
+/// Size variant for navigation item labels.
+///
+/// - `small`: Compact label text
+/// - `large`: Larger label text
 enum NavigationLabelSize { small, large }
 
+/// Data class tracking navigation child position and selection state.
+///
+/// Associates a navigation item with its logical index (for selection)
+/// and actual index (for layout position).
 class NavigationChildControlData {
+  /// Logical index for selection (null if not selectable).
   final int? index;
+
+  /// Actual position index in the navigation layout.
   final int actualIndex;
 
+  /// Creates navigation child control data.
+  ///
+  /// Parameters:
+  /// - [index] (int?): Logical selection index
+  /// - [actualIndex] (int, required): Layout position index
   NavigationChildControlData({this.index, required this.actualIndex});
 
   @override
@@ -1180,9 +1202,18 @@ class NavigationControlData {
   }
 }
 
+/// Spacing gap between navigation items.
+///
+/// Creates empty space in navigation bars or sidebars. Automatically
+/// uses appropriate gap type based on container (Gap for boxes, SliverGap for slivers).
 class NavigationGap extends StatelessWidget implements NavigationBarItem {
+  /// Size of the gap in logical pixels.
   final double gap;
 
+  /// Creates a navigation gap.
+  ///
+  /// Parameters:
+  /// - [gap] (double, required): Gap size in logical pixels
   const NavigationGap(this.gap, {super.key});
 
   @override
@@ -1206,10 +1237,22 @@ class NavigationGap extends StatelessWidget implements NavigationBarItem {
   }
 }
 
+/// Visual divider between navigation items.
+///
+/// Renders a horizontal or vertical line separator in navigation bars.
+/// Automatically adapts direction based on navigation orientation.
 class NavigationDivider extends StatelessWidget implements NavigationBarItem {
+  /// Optional thickness of the divider line.
   final double? thickness;
+
+  /// Optional color for the divider.
   final Color? color;
 
+  /// Creates a navigation divider.
+  ///
+  /// Parameters:
+  /// - [thickness] (double?): Line thickness
+  /// - [color] (Color?): Divider color
   const NavigationDivider({super.key, this.thickness, this.color});
 
   @override
@@ -1258,11 +1301,49 @@ class NavigationDivider extends StatelessWidget implements NavigationBarItem {
   }
 }
 
+/// Selectable navigation item with selection state management.
+///
+/// Represents a clickable navigation item that can be selected. Supports
+/// custom styling for selected/unselected states, labels, and icons.
+///
+/// Example:
+/// ```dart
+/// NavigationItem(
+///   index: 0,
+///   label: Text('Home'),
+///   child: Icon(Icons.home),
+///   selected: selectedIndex == 0,
+///   onChanged: (selected) => setState(() => selectedIndex = 0),
+/// )
+/// ```
 class NavigationItem extends AbstractNavigationButton {
+  /// Custom style when item is selected.
   final AbstractButtonStyle? selectedStyle;
+
+  /// Whether this item is currently selected.
   final bool? selected;
+
+  /// Callback when selection state changes.
   final ValueChanged<bool>? onChanged;
+
+  /// Optional index for selection management.
   final int? index;
+
+  /// Creates a navigation item.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Icon or content widget
+  /// - [selectedStyle] (AbstractButtonStyle?): Style when selected
+  /// - [selected] (bool?): Current selection state
+  /// - [onChanged] (`ValueChanged<bool>?`): Selection change callback
+  /// - [index] (int?): Item index for selection
+  /// - [label] (Widget?): Optional label text
+  /// - [spacing] (double?): Space between icon and label
+  /// - [style] (AbstractButtonStyle?): Default style
+  /// - [alignment] (AlignmentGeometry?): Content alignment
+  /// - [enabled] (bool?): Whether enabled for interaction
+  /// - [overflow] (TextOverflow?): Label overflow behavior
+  /// - [marginAlignment] (AlignmentGeometry?): Margin alignment
   const NavigationItem({
     super.key,
     this.selectedStyle,
@@ -1367,8 +1448,36 @@ class _NavigationItemState
   }
 }
 
+/// Non-selectable navigation button for actions.
+///
+/// Similar to [NavigationItem] but without selection state. Used for
+/// action buttons in navigation (e.g., settings, logout) that trigger
+/// callbacks rather than changing navigation state.
+///
+/// Example:
+/// ```dart
+/// NavigationButton(
+///   label: Text('Settings'),
+///   child: Icon(Icons.settings),
+///   onPressed: () => _openSettings(),
+/// )
+/// ```
 class NavigationButton extends AbstractNavigationButton {
+  /// Callback when button is pressed.
   final VoidCallback? onPressed;
+
+  /// Creates a navigation button.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Icon or content widget
+  /// - [onPressed] (VoidCallback?): Press callback
+  /// - [label] (Widget?): Optional label text
+  /// - [spacing] (double?): Space between icon and label
+  /// - [style] (AbstractButtonStyle?): Button style
+  /// - [alignment] (AlignmentGeometry?): Content alignment
+  /// - [enabled] (bool?): Whether enabled for interaction
+  /// - [overflow] (TextOverflow?): Label overflow behavior
+  /// - [marginAlignment] (AlignmentGeometry?): Margin alignment
   const NavigationButton({
     super.key,
     this.onPressed,
@@ -1453,18 +1562,49 @@ class _NavigationButtonState
   }
 }
 
+/// Abstract base class for navigation button widgets.
+///
+/// Provides common properties and behavior for navigation items and buttons.
+/// Subclasses include [NavigationItem] and [NavigationButton].
+///
+/// Handles layout, labels, styling, and integration with navigation containers.
 abstract class AbstractNavigationButton extends StatefulWidget
     implements NavigationBarItem {
+  /// Main content widget (typically an icon).
   final Widget child;
+
+  /// Optional label text widget.
   final Widget? label;
+
+  /// Spacing between icon and label.
   final double? spacing;
+
+  /// Custom button style.
   final AbstractButtonStyle? style;
+
+  /// Content alignment within the button.
   final AlignmentGeometry? alignment;
 
+  /// Whether the button is enabled for interaction.
   final bool? enabled;
+
+  /// How to handle label overflow.
   final NavigationOverflow overflow;
+
+  /// Alignment for margins.
   final AlignmentGeometry? marginAlignment;
 
+  /// Creates an abstract navigation button.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Main content (icon)
+  /// - [spacing] (double?): Icon-label spacing
+  /// - [label] (Widget?): Label widget
+  /// - [style] (AbstractButtonStyle?): Button style
+  /// - [alignment] (AlignmentGeometry?): Content alignment
+  /// - [enabled] (bool?): Enabled state
+  /// - [overflow] (NavigationOverflow): Overflow behavior, defaults to marquee
+  /// - [marginAlignment] (AlignmentGeometry?): Margin alignment
   const AbstractNavigationButton({
     super.key,
     this.spacing,
