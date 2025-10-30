@@ -1874,6 +1874,14 @@ mixin WindowNavigatorHandle on State<WindowNavigator> {
   }
 }
 
+/// Default size constraints for window components.
+///
+/// Defines minimum width and height values to ensure windows
+/// remain usable and visible.
+///
+/// The constraints are:
+/// - Minimum width: 200 pixels
+/// - Minimum height: 200 pixels
 const kDefaultWindowConstraints = BoxConstraints(
   minWidth: 200,
   minHeight: 200,

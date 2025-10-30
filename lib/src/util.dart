@@ -341,6 +341,16 @@ extension FutureOrExtension<T> on FutureOr<T> {
     return transform(this as T);
   }
 
+  /// Catches errors in a [Future] or passes through non-Future values.
+  ///
+  /// If this [FutureOr] is a [Future], calls [catchError] on it.
+  /// Otherwise, returns the value unchanged.
+  ///
+  /// Parameters:
+  /// - [onError] (`Function`, required): Error handler callback.
+  /// - [test] (`bool Function(Object)?`, optional): Predicate to filter errors.
+  ///
+  /// Returns: `FutureOr<T>` — the result with error handling applied.
   FutureOr<T> catchError(Function onError,
       {bool Function(Object error)? test}) {
     if (this is Future<T>) {
@@ -350,7 +360,18 @@ extension FutureOrExtension<T> on FutureOr<T> {
   }
 }
 
+/// Extension adding resolution optimization for [AlignmentGeometry].
 extension AlignmentExtension on AlignmentGeometry {
+  /// Resolves to [Alignment], skipping resolution if already resolved.
+  ///
+  /// Optimizes by checking if this is already an [Alignment] before
+  /// resolving based on text directionality. This avoids unnecessary
+  /// directionality lookups when the alignment is already concrete.
+  ///
+  /// Parameters:
+  /// - [context] (`BuildContext`, required): Context for directionality.
+  ///
+  /// Returns: `Alignment` — the resolved alignment.
   Alignment optionallyResolve(BuildContext context) {
     // Why?
     // Because this checks first if the alignment is already an Alignment
@@ -364,7 +385,17 @@ extension AlignmentExtension on AlignmentGeometry {
   }
 }
 
+/// Extension adding resolution optimization for [BorderRadiusGeometry].
 extension BorderRadiusExtension on BorderRadiusGeometry {
+  /// Resolves to [BorderRadius], skipping resolution if already resolved.
+  ///
+  /// Optimizes by checking if this is already a [BorderRadius] before
+  /// resolving based on text directionality.
+  ///
+  /// Parameters:
+  /// - [context] (`BuildContext`, required): Context for directionality.
+  ///
+  /// Returns: `BorderRadius` — the resolved border radius.
   BorderRadius optionallyResolve(BuildContext context) {
     if (this is BorderRadius) {
       return this as BorderRadius;
@@ -373,7 +404,17 @@ extension BorderRadiusExtension on BorderRadiusGeometry {
   }
 }
 
+/// Extension adding resolution optimization for [EdgeInsetsGeometry].
 extension EdgeInsetsExtension on EdgeInsetsGeometry {
+  /// Resolves to [EdgeInsets], skipping resolution if already resolved.
+  ///
+  /// Optimizes by checking if this is already an [EdgeInsets] before
+  /// resolving based on text directionality.
+  ///
+  /// Parameters:
+  /// - [context] (`BuildContext`, required): Context for directionality.
+  ///
+  /// Returns: `EdgeInsets` — the resolved edge insets.
   EdgeInsets optionallyResolve(BuildContext context) {
     if (this is EdgeInsets) {
       return this as EdgeInsets;
@@ -382,6 +423,16 @@ extension EdgeInsetsExtension on EdgeInsetsGeometry {
   }
 }
 
+/// Subtracts a border width from a border radius.
+///
+/// Reduces each corner's radius by the border width, ensuring the inner
+/// radius accounts for the border thickness. Prevents negative radii.
+///
+/// Parameters:
+/// - [radius] (`BorderRadius`, required): Original border radius.
+/// - [borderWidth] (`double`, required): Border width to subtract.
+///
+/// Returns: `BorderRadius` — adjusted border radius.
 BorderRadius subtractByBorder(BorderRadius radius, double borderWidth) {
   return BorderRadius.only(
     topLeft: _subtractSafe(radius.topLeft, Radius.circular(borderWidth)),
@@ -399,6 +450,14 @@ Radius _subtractSafe(Radius a, Radius b) {
   );
 }
 
+/// Determines if a platform is mobile.
+///
+/// Returns `true` for Android, iOS, and Fuchsia platforms.
+///
+/// Parameters:
+/// - [platform] (`TargetPlatform`, required): Platform to check.
+///
+/// Returns: `bool` — `true` if mobile, `false` otherwise.
 bool isMobile(TargetPlatform platform) {
   switch (platform) {
     case TargetPlatform.android:
@@ -415,12 +474,27 @@ bool isMobile(TargetPlatform platform) {
   }
 }
 
-/// A widget that captures its render object for later use.
+/// A widget that wraps a child with captured themes and data.
+///
+/// Applies previously captured inherited themes and data to the widget tree.
+/// This is useful for maintaining theme and data context when moving widgets
+/// across different parts of the tree.
 class CapturedWrapper extends StatefulWidget {
+  /// Captured theme data to apply.
   final CapturedThemes? themes;
+
+  /// Captured inherited data to apply.
   final CapturedData? data;
+
+  /// The child widget to wrap.
   final Widget child;
 
+  /// Creates a [CapturedWrapper].
+  ///
+  /// Parameters:
+  /// - [themes] (`CapturedThemes?`, optional): Themes to apply.
+  /// - [data] (`CapturedData?`, optional): Data to apply.
+  /// - [child] (`Widget`, required): Child widget.
   const CapturedWrapper({
     super.key,
     this.themes,
@@ -450,12 +524,33 @@ class _CapturedWrapperState extends State<CapturedWrapper> {
   }
 }
 
+/// Linearly interpolates between two numeric values.
+///
+/// Uses the formula: `begin + (end - begin) * t`.
+///
+/// Parameters:
+/// - [begin] (`T`, required): Start value.
+/// - [end] (`T`, required): End value.
+/// - [t] (`double`, required): Interpolation factor (0.0 to 1.0).
+///
+/// Returns: `T` — interpolated value.
 T tweenValue<T>(T begin, T end, double t) {
   dynamic beginValue = begin;
   dynamic endValue = end;
   return (beginValue + (endValue - beginValue) * t) as T;
 }
 
+/// Wraps a value within a specified range.
+///
+/// If the value exceeds the range, it wraps around to the beginning.
+/// Returns the minimum value if the range is zero.
+///
+/// Parameters:
+/// - [value] (`double`, required): Value to wrap.
+/// - [min] (`double`, required): Minimum value of range.
+/// - [max] (`double`, required): Maximum value of range.
+///
+/// Returns: `double` — wrapped value within [min, max).
 double wrapDouble(double value, double min, double max) {
   final range = max - min;
   if (range == 0) {
@@ -466,9 +561,17 @@ double wrapDouble(double value, double min, double max) {
 
 /// A widget that detects changes in the widget tree.
 class WidgetTreeChangeDetector extends StatefulWidget {
+  /// The child widget to monitor.
   final Widget child;
+
+  /// Callback invoked when the widget tree changes.
   final void Function() onWidgetTreeChange;
 
+  /// Creates a [WidgetTreeChangeDetector].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): Child widget.
+  /// - [onWidgetTreeChange] (`VoidCallback`, required): Change callback.
   const WidgetTreeChangeDetector({
     super.key,
     required this.child,
@@ -480,6 +583,7 @@ class WidgetTreeChangeDetector extends StatefulWidget {
       WidgetTreeChangeDetectorState();
 }
 
+/// State for [WidgetTreeChangeDetector].
 class WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
   @override
   void initState() {
@@ -493,6 +597,13 @@ class WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
   }
 }
 
+/// Creates a gap widget with specified spacing.
+///
+/// Parameters:
+/// - [gap] (`double`, required): Main axis spacing.
+/// - [crossGap] (`double?`, optional): Cross axis spacing.
+///
+/// Returns: `Widget` — a Gap widget.
 Widget gap(double gap, {double? crossGap}) {
   return Gap(
     gap,
@@ -500,7 +611,14 @@ Widget gap(double gap, {double? crossGap}) {
   );
 }
 
+/// Extension for joining lists of widgets with a separator.
 extension Joinable<T extends Widget> on List<T> {
+  /// Joins widgets with a separator between each item.
+  ///
+  /// Parameters:
+  /// - [separator] (`T`, required): Widget to insert between items.
+  ///
+  /// Returns: `List<T>` — list with separators inserted.
   List<T> joinSeparator(T separator) {
     List<T> result = [];
     for (int i = 0; i < length; i++) {
@@ -513,16 +631,34 @@ extension Joinable<T extends Widget> on List<T> {
   }
 }
 
+/// Extension adding separator joining for iterables.
 extension IterableExtension<T> on Iterable<T> {
+  /// Joins iterable items with a separator between each.
+  ///
+  /// Parameters:
+  /// - [separator] (`T`, required): Item to insert between elements.
+  ///
+  /// Returns: `Iterable<T>` — iterable with separators inserted.
   Iterable<T> joinSeparator(T separator) {
     return map((e) => [separator, e]).expand((element) => element).skip(1);
   }
 
+  /// Joins iterable items with dynamically built separators.
+  ///
+  /// Each separator is created by calling the builder function.
+  ///
+  /// Parameters:
+  /// - [separator] (`ValueGetter<T>`, required): Builder for separator items.
+  ///
+  /// Returns: `Iterable<T>` — iterable with separators inserted.
   Iterable<T> buildSeparator(ValueGetter<T> separator) {
     return map((e) => [separator(), e]).expand((element) => element).skip(1);
   }
 }
 
+/// Function signature for a widget builder that accepts any number of parameters.
+///
+/// This allows widgets to be used as builders with flexible parameters.
 typedef NeverWidgetBuilder = Widget Function(
     [dynamic,
     dynamic,
@@ -535,8 +671,22 @@ typedef NeverWidgetBuilder = Widget Function(
     dynamic,
     dynamic]);
 
+/// Extension adding layout and styling utilities to widgets.
 extension WidgetExtension on Widget {
+  /// Converts this widget to a builder function.
+  ///
+  /// Returns a [NeverWidgetBuilder] that ignores all parameters and returns this widget.
   NeverWidgetBuilder get asBuilder => ([a, b, c, d, e, f, g, h, i, j]) => this;
+
+  /// Wraps this widget in a [SizedBox] with specified dimensions.
+  ///
+  /// If this widget is already a [SizedBox], merges the dimensions.
+  ///
+  /// Parameters:
+  /// - [width] (`double?`, optional): Desired width.
+  /// - [height] (`double?`, optional): Desired height.
+  ///
+  /// Returns: `Widget` — sized widget.
   Widget sized({double? width, double? height}) {
     if (this is SizedBox) {
       return SizedBox(
@@ -552,6 +702,19 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Wraps this widget in a [ConstrainedBox] with specified constraints.
+  ///
+  /// If this widget is already a [ConstrainedBox], merges the constraints.
+  ///
+  /// Parameters:
+  /// - [minWidth] (`double?`, optional): Minimum width.
+  /// - [maxWidth] (`double?`, optional): Maximum width.
+  /// - [minHeight] (`double?`, optional): Minimum height.
+  /// - [maxHeight] (`double?`, optional): Maximum height.
+  /// - [width] (`double?`, optional): Fixed width (sets both min and max).
+  /// - [height] (`double?`, optional): Fixed height (sets both min and max).
+  ///
+  /// Returns: `Widget` — constrained widget.
   Widget constrained(
       {double? minWidth,
       double? maxWidth,
@@ -596,6 +759,24 @@ extension WidgetExtension on Widget {
   //   );
   // }
 
+  /// Wraps this widget in a [Padding] widget.
+  ///
+  /// Provides flexible padding specification via individual edges,
+  /// combined directions, or uniform padding.
+  ///
+  /// Parameters:
+  /// - [top] (`double?`, optional): Top padding.
+  /// - [bottom] (`double?`, optional): Bottom padding.
+  /// - [left] (`double?`, optional): Left padding.
+  /// - [right] (`double?`, optional): Right padding.
+  /// - [horizontal] (`double?`, optional): Left and right padding (cannot use with left/right).
+  /// - [vertical] (`double?`, optional): Top and bottom padding (cannot use with top/bottom).
+  /// - [all] (`double?`, optional): Uniform padding on all sides (cannot use with others).
+  /// - [padding] (`EdgeInsetsGeometry?`, optional): Direct padding value (overrides all other params).
+  ///
+  /// Returns: `Widget` — padded widget.
+  ///
+  /// Throws [FlutterError] if conflicting parameters are used.
   Widget withPadding(
       {double? top,
       double? bottom,
@@ -641,6 +822,23 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Wraps this widget in a [Container] with margin.
+  ///
+  /// Provides flexible margin specification via individual edges,
+  /// combined directions, or uniform margin.
+  ///
+  /// Parameters:
+  /// - [top] (`double?`, optional): Top margin.
+  /// - [bottom] (`double?`, optional): Bottom margin.
+  /// - [left] (`double?`, optional): Left margin.
+  /// - [right] (`double?`, optional): Right margin.
+  /// - [horizontal] (`double?`, optional): Left and right margin (cannot use with left/right).
+  /// - [vertical] (`double?`, optional): Top and bottom margin (cannot use with top/bottom).
+  /// - [all] (`double?`, optional): Uniform margin on all sides (cannot use with others).
+  ///
+  /// Returns: `Widget` — widget with margin.
+  ///
+  /// Throws [FlutterError] if conflicting parameters are used.
   Widget withMargin(
       {double? top,
       double? bottom,
@@ -684,6 +882,12 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Centers this widget horizontally and vertically.
+  ///
+  /// Parameters:
+  /// - [key] (`Key?`, optional): Widget key.
+  ///
+  /// Returns: `Widget` — centered widget.
   Widget center({Key? key}) {
     return Center(
       key: key,
@@ -691,6 +895,12 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Aligns this widget within its parent.
+  ///
+  /// Parameters:
+  /// - [alignment] (`AlignmentGeometry`, required): Alignment position.
+  ///
+  /// Returns: `Widget` — aligned widget.
   Widget withAlign(AlignmentGeometry alignment) {
     return Align(
       alignment: alignment,
@@ -698,6 +908,16 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Positions this widget absolutely within a [Stack].
+  ///
+  /// Parameters:
+  /// - [key] (`Key?`, optional): Widget key.
+  /// - [left] (`double?`, optional): Left offset.
+  /// - [top] (`double?`, optional): Top offset.
+  /// - [right] (`double?`, optional): Right offset.
+  /// - [bottom] (`double?`, optional): Bottom offset.
+  ///
+  /// Returns: `Widget` — positioned widget.
   Widget positioned(
       {Key? key, double? left, double? top, double? right, double? bottom}) {
     return Positioned(
@@ -710,6 +930,12 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Makes this widget expanded within a [Flex] parent (Row/Column).
+  ///
+  /// Parameters:
+  /// - [flex] (`int`, default: 1): Flex factor for space distribution.
+  ///
+  /// Returns: `Widget` — expanded widget.
   Widget expanded({int flex = 1}) {
     return Expanded(
       flex: flex,
@@ -717,6 +943,12 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Applies opacity to this widget.
+  ///
+  /// Parameters:
+  /// - [opacity] (`double`, required): Opacity value (0.0 to 1.0).
+  ///
+  /// Returns: `Widget` — widget with opacity.
   Widget withOpacity(double opacity) {
     return Opacity(
       opacity: opacity,
@@ -724,6 +956,12 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Clips this widget to a rectangle.
+  ///
+  /// Parameters:
+  /// - [clipBehavior] (`Clip`, default: `Clip.hardEdge`): Clipping behavior.
+  ///
+  /// Returns: `Widget` — clipped widget.
   Widget clip({Clip clipBehavior = Clip.hardEdge}) {
     return ClipRect(
       clipBehavior: clipBehavior,
@@ -731,6 +969,13 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Clips this widget to a rounded rectangle.
+  ///
+  /// Parameters:
+  /// - [borderRadius] (`BorderRadiusGeometry`, default: `BorderRadius.zero`): Corner radii.
+  /// - [clipBehavior] (`Clip`, default: `Clip.antiAlias`): Clipping behavior.
+  ///
+  /// Returns: `Widget` — clipped widget.
   Widget clipRRect(
       {BorderRadiusGeometry borderRadius = BorderRadius.zero,
       Clip clipBehavior = Clip.antiAlias}) {
@@ -741,6 +986,12 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Clips this widget to an oval shape.
+  ///
+  /// Parameters:
+  /// - [clipBehavior] (`Clip`, default: `Clip.antiAlias`): Clipping behavior.
+  ///
+  /// Returns: `Widget` — clipped widget.
   Widget clipOval({Clip clipBehavior = Clip.antiAlias}) {
     return ClipOval(
       clipBehavior: clipBehavior,
@@ -748,6 +999,13 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Clips this widget to a custom path.
+  ///
+  /// Parameters:
+  /// - [clipBehavior] (`Clip`, default: `Clip.antiAlias`): Clipping behavior.
+  /// - [clipper] (`CustomClipper<Path>`, required): Custom clipper for the path.
+  ///
+  /// Returns: `Widget` — clipped widget.
   Widget clipPath(
       {Clip clipBehavior = Clip.antiAlias,
       required CustomClipper<Path> clipper}) {
@@ -758,6 +1016,13 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Applies a transformation matrix to this widget.
+  ///
+  /// Parameters:
+  /// - [key] (`Key?`, optional): Widget key.
+  /// - [transform] (`Matrix4`, required): Transformation matrix.
+  ///
+  /// Returns: `Widget` — transformed widget.
   Widget transform({Key? key, required Matrix4 transform}) {
     return Transform(
       key: key,
@@ -766,6 +1031,13 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Sizes this widget to its intrinsic width.
+  ///
+  /// Parameters:
+  /// - [stepWidth] (`double?`, optional): Stepping for width.
+  /// - [stepHeight] (`double?`, optional): Stepping for height.
+  ///
+  /// Returns: `Widget` — intrinsically sized widget.
   Widget intrinsicWidth({double? stepWidth, double? stepHeight}) {
     return IntrinsicWidth(
       stepWidth: stepWidth,
@@ -774,12 +1046,22 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Sizes this widget to its intrinsic height.
+  ///
+  /// Returns: `Widget` — intrinsically sized widget.
   Widget intrinsicHeight() {
     return IntrinsicHeight(
       child: this,
     );
   }
 
+  /// Sizes this widget to both intrinsic width and height.
+  ///
+  /// Parameters:
+  /// - [stepWidth] (`double?`, optional): Stepping for width.
+  /// - [stepHeight] (`double?`, optional): Stepping for height.
+  ///
+  /// Returns: `Widget` — intrinsically sized widget.
   Widget intrinsic({double? stepWidth, double? stepHeight}) {
     return IntrinsicWidth(
       stepWidth: stepWidth,
@@ -791,11 +1073,24 @@ extension WidgetExtension on Widget {
   }
 }
 
+/// Extension adding gap and separator utilities to [Column].
 extension ColumnExtension on Column {
+  /// Adds gaps between column children.
+  ///
+  /// Parameters:
+  /// - [gap] (`double`, required): Vertical spacing between children.
+  ///
+  /// Returns: `Widget` — column with gaps.
   Widget gap(double gap) {
     return separator(SizedBox(height: gap));
   }
 
+  /// Adds separators between column children.
+  ///
+  /// Parameters:
+  /// - [separator] (`Widget`, required): Widget to insert between children.
+  ///
+  /// Returns: `Widget` — column with separators.
   Widget separator(Widget separator) {
     return SeparatedFlex(
       key: key,
@@ -813,11 +1108,24 @@ extension ColumnExtension on Column {
   }
 }
 
+/// Extension adding gap and separator utilities to [Row].
 extension RowExtension on Row {
+  /// Adds gaps between row children.
+  ///
+  /// Parameters:
+  /// - [gap] (`double`, required): Horizontal spacing between children.
+  ///
+  /// Returns: `Widget` — row with gaps.
   Widget gap(double gap) {
     return separator(SizedBox(width: gap));
   }
 
+  /// Adds separators between row children.
+  ///
+  /// Parameters:
+  /// - [separator] (`Widget`, required): Widget to insert between children.
+  ///
+  /// Returns: `Widget` — row with separators.
   Widget separator(Widget separator) {
     return SeparatedFlex(
       key: key,
@@ -836,8 +1144,56 @@ extension RowExtension on Row {
 }
 
 /// A flex widget that adds separators between children.
+///
+/// Used internally by [ColumnExtension] and [RowExtension] to insert
+/// separators between flex children while maintaining flex properties.
 class SeparatedFlex extends StatefulWidget {
+  /// Main axis alignment for flex children.
   final MainAxisAlignment mainAxisAlignment;
+
+  /// Main axis size constraint for the flex.
+  final MainAxisSize mainAxisSize;
+
+  /// Cross axis alignment for flex children.
+  final CrossAxisAlignment crossAxisAlignment;
+
+  /// Text direction for the flex.
+  final TextDirection? textDirection;
+
+  /// Vertical direction for laying out children.
+  final VerticalDirection verticalDirection;
+
+  /// Text baseline for aligning text children.
+  final TextBaseline? textBaseline;
+
+  /// Children widgets to display with separators.
+  final List<Widget> children;
+
+  /// Flex direction (horizontal or vertical).
+  final Axis direction;
+
+  /// Separator widget to insert between children.
+  final Widget separator;
+
+  /// Clipping behavior for the flex.
+  final Clip clipBehavior;
+
+  /// Creates a [SeparatedFlex].
+  ///
+  /// All flex-related parameters match [Flex] widget parameters.
+  const SeparatedFlex({
+    super.key,
+    required this.mainAxisAlignment,
+    required this.mainAxisSize,
+    required this.crossAxisAlignment,
+    this.textDirection,
+    required this.verticalDirection,
+    this.textBaseline,
+    required this.children,
+    required this.separator,
+    required this.direction,
+    this.clipBehavior = Clip.none,
+  });
   final MainAxisSize mainAxisSize;
   final CrossAxisAlignment crossAxisAlignment;
   final TextDirection? textDirection;
@@ -898,13 +1254,28 @@ class _SeparatedFlexState extends State<SeparatedFlex> {
   }
 }
 
+/// Extension adding gap and separator utilities to [Flex].
 extension FlexExtension on Flex {
+  /// Adds gaps between flex children.
+  ///
+  /// The gap direction depends on the flex direction (vertical or horizontal).
+  ///
+  /// Parameters:
+  /// - [gap] (`double`, required): Spacing between children.
+  ///
+  /// Returns: `Widget` — flex with gaps.
   Widget gap(double gap) {
     return separator(direction == Axis.vertical
         ? SizedBox(height: gap)
         : SizedBox(width: gap));
   }
 
+  /// Adds separators between flex children.
+  ///
+  /// Parameters:
+  /// - [separator] (`Widget`, required): Widget to insert between children.
+  ///
+  /// Returns: `Widget` — flex with separators.
   Widget separator(Widget separator) {
     return SeparatedFlex(
       key: key,
@@ -926,31 +1297,80 @@ Iterable<Widget> join(Iterable<Widget> widgets, Widget separator) {
   return SeparatedIterable(widgets, separator);
 }
 
+/// Extension adding min/max utilities to [double].
 extension DoubleExtension on double {
+  /// Returns the minimum of this value and another.
+  ///
+  /// Parameters:
+  /// - [other] (`double`, required): Value to compare.
+  ///
+  /// Returns: `double` — the smaller value.
   double min(double other) => this < other ? this : other;
+
+  /// Returns the maximum of this value and another.
+  ///
+  /// Parameters:
+  /// - [other] (`double`, required): Value to compare.
+  ///
+  /// Returns: `double` — the larger value.
   double max(double other) => this > other ? this : other;
 }
 
+/// Extension adding min/max utilities to [int].
 extension IntExtension on int {
+  /// Returns the minimum of this value and another.
+  ///
+  /// Parameters:
+  /// - [other] (`int`, required): Value to compare.
+  ///
+  /// Returns: `int` — the smaller value.
   int min(int other) => this < other ? this : other;
+
+  /// Returns the maximum of this value and another.
+  ///
+  /// Parameters:
+  /// - [other] (`int`, required): Value to compare.
+  ///
+  /// Returns: `int` — the larger value.
   int max(int other) => this > other ? this : other;
 }
 
 /// A tween for animating between two [IconThemeData] values.
 class IconThemeDataTween extends Tween<IconThemeData> {
+  /// Creates an [IconThemeDataTween].
+  ///
+  /// Parameters:
+  /// - [begin] (`IconThemeData?`, optional): Starting icon theme.
+  /// - [end] (`IconThemeData?`, optional): Ending icon theme.
   IconThemeDataTween({super.begin, super.end});
 
   @override
   IconThemeData lerp(double t) => IconThemeData.lerp(begin, end, t);
 }
 
+/// Extension adding color manipulation utilities to [Color].
 extension ColorExtension on Color {
+  /// Scales the alpha channel by a factor.
+  ///
+  /// Parameters:
+  /// - [factor] (`double`, required): Multiplier for alpha (0.0 to 1.0+).
+  ///
+  /// Returns: `Color` — color with scaled alpha.
   Color scaleAlpha(double factor) {
     return withValues(
       alpha: a * factor,
     );
   }
 
+  /// Gets a contrasting color based on luminance.
+  ///
+  /// Adjusts luminance to create contrast. If current lightness >= 0.5,
+  /// reduces it; otherwise increases it.
+  ///
+  /// Parameters:
+  /// - [luminanceContrast] (`double`, default: 1): Contrast factor (0.0 to 1.0).
+  ///
+  /// Returns: `Color` — contrasting color.
   Color getContrastColor([double luminanceContrast = 1]) {
     // luminance contrast is between 0..1
     assert(luminanceContrast >= 0 && luminanceContrast <= 1,
@@ -968,11 +1388,31 @@ extension ColorExtension on Color {
     return hsl.withLightness(targetLuminance).toColor();
   }
 
+  /// Sets the luminance (lightness) of this color.
+  ///
+  /// Parameters:
+  /// - [luminance] (`double`, required): Target luminance (0.0 to 1.0).
+  ///
+  /// Returns: `Color` — color with specified luminance.
   Color withLuminance(double luminance) {
     final hsl = HSLColor.fromColor(this);
     return hsl.withLightness(luminance).toColor();
   }
 
+  /// Converts this color to hexadecimal string.
+  ///
+  /// Parameters:
+  /// - [includeHashSign] (`bool`, default: false): Whether to prefix with '#'.
+  /// - [includeAlpha] (`bool`, default: true): Whether to include alpha channel.
+  ///
+  /// Returns: `String` — hexadecimal color representation.
+  ///
+  /// Example:
+  /// ```dart
+  /// Color.fromARGB(255, 255, 0, 0).toHex() // 'ffff0000'
+  /// Color.fromARGB(255, 255, 0, 0).toHex(includeHashSign: true) // '#ffff0000'
+  /// Color.fromARGB(255, 255, 0, 0).toHex(includeAlpha: false) // 'ff0000'
+  /// ```
   String toHex({bool includeHashSign = false, bool includeAlpha = true}) {
     String hex = toARGB32().toRadixString(16).padLeft(8, '0');
     if (!includeAlpha) {
@@ -984,16 +1424,26 @@ extension ColorExtension on Color {
     return hex;
   }
 
+  /// Converts this color to HSL color space.
+  ///
+  /// Returns: `HSLColor` — HSL representation.
   HSLColor toHSL() {
     return HSLColor.fromColor(this);
   }
 
+  /// Converts this color to HSV color space.
+  ///
+  /// Returns: `HSVColor` — HSV representation.
   HSVColor toHSV() {
     return HSVColor.fromColor(this);
   }
 }
 
+/// Extension for converting [HSLColor] to other color spaces.
 extension HSLColorExtension on HSLColor {
+  /// Converts this HSL color to HSV color space.
+  ///
+  /// Returns: `HSVColor` — HSV representation.
   HSVColor toHSV() {
     final double l = lightness;
     final double s = saturation;
@@ -1013,7 +1463,11 @@ extension HSLColorExtension on HSLColor {
   }
 }
 
+/// Extension for converting [HSVColor] to other color spaces.
 extension HSVColorExtension on HSVColor {
+  /// Converts this HSV color to HSL color space.
+  ///
+  /// Returns: `HSLColor` — HSL representation.
   HSLColor toHSL() {
     final double v = value;
     final double s = saturation;
@@ -1033,42 +1487,85 @@ extension HSVColorExtension on HSVColor {
   }
 }
 
-/// Represents a time of day with hour and minute.
+/// Represents a time of day with hour, minute, and second.
+///
+/// Provides constructors for various time representations including
+/// AM/PM notation, DateTime conversion, and Duration conversion.
 class TimeOfDay {
+  /// Hour component (0-23).
   final int hour;
+
+  /// Minute component (0-59).
   final int minute;
+
+  /// Second component (0-59).
   final int second;
 
+  /// Creates a [TimeOfDay] with specified components.
+  ///
+  /// Parameters:
+  /// - [hour] (`int`, required): Hour (0-23).
+  /// - [minute] (`int`, required): Minute (0-59).
+  /// - [second] (`int`, default: 0): Second (0-59).
   const TimeOfDay({
     required this.hour,
     required this.minute,
     this.second = 0,
   });
 
+  /// Creates a PM time (adds 12 to the hour).
+  ///
+  /// Parameters:
+  /// - [hour] (`int`, required): Hour in 12-hour format (1-12).
+  /// - [minute] (`int`, required): Minute (0-59).
+  /// - [second] (`int`, default: 0): Second (0-59).
   const TimeOfDay.pm({
     required int hour,
     required this.minute,
     this.second = 0,
   }) : hour = hour + 12;
 
+  /// Creates an AM time.
+  ///
+  /// Parameters:
+  /// - [hour] (`int`, required): Hour in 12-hour format (0-11).
+  /// - [minute] (`int`, required): Minute (0-59).
+  /// - [second] (`int`, default: 0): Second (0-59).
   const TimeOfDay.am({
     required this.hour,
     required this.minute,
     this.second = 0,
   });
 
+  /// Creates a [TimeOfDay] from a [DateTime].
+  ///
+  /// Parameters:
+  /// - [dateTime] (`DateTime`, required): DateTime to extract time from.
   TimeOfDay.fromDateTime(DateTime dateTime)
       : hour = dateTime.hour,
         minute = dateTime.minute,
         second = dateTime.second;
 
+  /// Creates a [TimeOfDay] from a [Duration].
+  ///
+  /// Parameters:
+  /// - [duration] (`Duration`, required): Duration to convert.
   TimeOfDay.fromDuration(Duration duration)
       : hour = duration.inHours,
         minute = duration.inMinutes % 60,
         second = duration.inSeconds % 60;
 
+  /// Creates a [TimeOfDay] representing the current time.
   TimeOfDay.now() : this.fromDateTime(DateTime.now());
 
+  /// Creates a copy with specified fields replaced.
+  ///
+  /// Parameters:
+  /// - [hour] (`ValueGetter<int>?`, optional): New hour value.
+  /// - [minute] (`ValueGetter<int>?`, optional): New minute value.
+  /// - [second] (`ValueGetter<int>?`, optional): New second value.
+  ///
+  /// Returns: `TimeOfDay` — copy with updated values.
   TimeOfDay copyWith({
     ValueGetter<int>? hour,
     ValueGetter<int>? minute,
@@ -1111,6 +1608,24 @@ class TimeOfDay {
   }
 }
 
+/// Invokes an action on the currently focused widget.
+///
+/// Attempts to find and invoke an action associated with the given intent
+/// on the widget that currently has focus. This is useful for triggering
+/// actions programmatically.
+///
+/// Parameters:
+/// - [intent] (`Intent`, required): The intent to invoke.
+///
+/// Returns: `(bool enabled, Object? invokeResult)` — a record containing
+/// whether the action was enabled and the result of invoking it.
+///
+/// Example:
+/// ```dart
+/// final (enabled, result) = invokeActionOnFocusedWidget(
+///   ActivateIntent(),
+/// );
+/// ```
 (bool enabled, Object? invokeResult) invokeActionOnFocusedWidget(
     Intent intent) {
   final context = primaryFocus?.context;
@@ -1125,7 +1640,11 @@ class TimeOfDay {
   return (false, null);
 }
 
+/// Extension adding word-related utilities to [TextEditingController].
 extension TextEditingControllerExtension on TextEditingController {
+  /// Gets the word at the current cursor position.
+  ///
+  /// Returns `null` if the text is empty or the selection is not collapsed.
   String? get currentWord {
     final value = this.value;
     final text = value.text;
@@ -1140,9 +1659,32 @@ extension TextEditingControllerExtension on TextEditingController {
   }
 }
 
+/// Record type for word information: (start index, word string).
 typedef WordInfo = (int start, String word);
+
+/// Record type for replacement information: (start index, new text).
 typedef ReplacementInfo = (int start, String newText);
 
+/// Gets the word at the caret position in a text string.
+///
+/// Finds the word boundaries around the caret position using the specified
+/// separator characters.
+///
+/// Parameters:
+/// - [text] (`String`, required): The text to search in.
+/// - [caret] (`int`, required): The caret position (0 to text.length).
+/// - [separator] (`String`, default: ' '): Characters that separate words.
+///
+/// Returns: `WordInfo` — a record `(int start, String word)` containing
+/// the start index and the word at the caret.
+///
+/// Throws [RangeError] if caret is out of bounds.
+///
+/// Example:
+/// ```dart
+/// final (start, word) = getWordAtCaret('Hello world', 7);
+/// // Returns (6, 'world')
+/// ```
 WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
   if (caret < 0 || caret > text.length) {
     throw RangeError('Caret position is out of bounds.');
@@ -1165,6 +1707,32 @@ WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
   return (start, word);
 }
 
+/// Replaces the word at the caret position with a new string.
+///
+/// Finds the word boundaries around the caret using the separator predicate
+/// and replaces that word with the provided replacement string.
+///
+/// Parameters:
+/// - [text] (`String`, required): The text to modify.
+/// - [caret] (`int`, required): The caret position (0 to text.length).
+/// - [replacement] (`String`, required): The replacement text.
+/// - [isSeparator] (`bool Function(String)`, required): Predicate to identify separator characters.
+///
+/// Returns: `ReplacementInfo` — a record `(int start, String newText)` containing
+/// the start index of the replacement and the new text.
+///
+/// Throws [RangeError] if caret is out of bounds.
+///
+/// Example:
+/// ```dart
+/// final (start, newText) = replaceWordAtCaret(
+///   'Hello world',
+///   7,
+///   'universe',
+///   (ch) => ch == ' ',
+/// );
+/// // Returns (6, 'Hello universe')
+/// ```
 ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
     bool Function(String char) isSeparator) {
   if (caret < 0 || caret > text.length) {
@@ -1187,20 +1755,50 @@ ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
   return (start, newText);
 }
 
+/// Clears the currently active text input field.
+///
+/// Invokes a [TextFieldClearIntent] on the focused widget to clear its content.
+/// This is useful for programmatically clearing text fields that have focus.
+///
+/// Example:
+/// ```dart
+/// clearActiveTextInput(); // Clears the focused text field
+/// ```
 void clearActiveTextInput() {
   TextFieldClearIntent intent = const TextFieldClearIntent();
   invokeActionOnFocusedWidget(intent);
 }
 
+/// Mixin for values that need custom rebuild logic.
+///
+/// Implement this mixin to control when a [CachedValueWidget] should rebuild
+/// based on custom comparison logic.
 mixin CachedValue {
+  /// Determines if the widget should rebuild when value changes.
+  ///
+  /// Parameters:
+  /// - [oldValue] (`CachedValue`, required): Previous value to compare against.
+  ///
+  /// Returns: `bool` — `true` if rebuild is needed.
   bool shouldRebuild(covariant CachedValue oldValue);
 }
 
 /// A widget that caches a computed value.
+///
+/// Caches the result of [builder] and only rebuilds when [value] changes.
+/// If [value] implements [CachedValue], uses custom rebuild logic.
 class CachedValueWidget<T> extends StatefulWidget {
+  /// The value to cache and pass to builder.
   final T value;
+
+  /// Builder function that creates the widget from the value.
   final Widget Function(BuildContext context, T value) builder;
 
+  /// Creates a [CachedValueWidget].
+  ///
+  /// Parameters:
+  /// - [value] (`T`, required): Value to cache.
+  /// - [builder] (`Widget Function(BuildContext, T)`, required): Widget builder.
   const CachedValueWidget({
     super.key,
     required this.value,
@@ -1236,17 +1834,41 @@ class _CachedValueWidgetState<T> extends State<CachedValueWidget<T>> {
   }
 }
 
+/// Function type for converting from type `F` to type `T`.
 typedef Convert<F, T> = T Function(F value);
 
 /// A bidirectional converter between types [A] and [B].
+///
+/// Encapsulates conversion logic in both directions, allowing seamless
+/// transformation between two types.
 class BiDirectionalConvert<A, B> {
+  /// Converter from type A to type B.
   final Convert<A, B> aToB;
+
+  /// Converter from type B to type A.
   final Convert<B, A> bToA;
 
+  /// Creates a [BiDirectionalConvert].
+  ///
+  /// Parameters:
+  /// - [aToB] (`Convert<A, B>`, required): A to B converter.
+  /// - [bToA] (`Convert<B, A>`, required): B to A converter.
   const BiDirectionalConvert(this.aToB, this.bToA);
 
+  /// Converts a value from type A to type B.
+  ///
+  /// Parameters:
+  /// - [value] (`A`, required): Value to convert.
+  ///
+  /// Returns: `B` — converted value.
   B convertA(A value) => aToB(value);
 
+  /// Converts a value from type B to type A.
+  ///
+  /// Parameters:
+  /// - [value] (`B`, required): Value to convert.
+  ///
+  /// Returns: `A` — converted value.
   A convertB(B value) => bToA(value);
 
   @override
@@ -1267,6 +1889,9 @@ class BiDirectionalConvert<A, B> {
 }
 
 /// A controller that converts between types [F] and [T].
+///
+/// Maintains bidirectional synchronization between two value notifiers
+/// with different types using a [BiDirectionalConvert].
 class ConvertedController<F, T> extends ChangeNotifier
     implements ComponentController<T> {
   final ValueNotifier<F> _other;
@@ -1275,6 +1900,11 @@ class ConvertedController<F, T> extends ChangeNotifier
   T _value;
   bool _isUpdating = false;
 
+  /// Creates a [ConvertedController].
+  ///
+  /// Parameters:
+  /// - [other] (`ValueNotifier<F>`, required): Source value notifier.
+  /// - [convert] (`BiDirectionalConvert<F, T>`, required): Bidirectional converter.
   ConvertedController(
       ValueNotifier<F> other, BiDirectionalConvert<F, T> convert)
       : _other = other,
@@ -1328,7 +1958,16 @@ class ConvertedController<F, T> extends ChangeNotifier
   }
 }
 
+/// Extension adding text replacement utilities to [TextEditingValue].
 extension TextEditingValueExtension on TextEditingValue {
+  /// Replaces the text while preserving selection within bounds.
+  ///
+  /// Adjusts the selection to stay within the new text length.
+  ///
+  /// Parameters:
+  /// - [newText] (`String`, required): Replacement text.
+  ///
+  /// Returns: `TextEditingValue` — value with new text and adjusted selection.
   TextEditingValue replaceText(String newText) {
     var selection = this.selection;
     selection = selection.copyWith(
@@ -1342,13 +1981,19 @@ extension TextEditingValueExtension on TextEditingValue {
   }
 }
 
+/// Callback type for context actions with optional context parameter.
 typedef OnContextedCallback<T extends Intent> = Object? Function(T intent,
     [BuildContext? context]);
 
 /// A context action that executes a callback with context.
 class ContextCallbackAction<T extends Intent> extends ContextAction<T> {
+  /// The callback to execute when the action is invoked.
   final OnContextedCallback<T> onInvoke;
 
+  /// Creates a [ContextCallbackAction].
+  ///
+  /// Parameters:
+  /// - [onInvoke] (`OnContextedCallback<T>`, required): Callback function.
   ContextCallbackAction({required this.onInvoke});
 
   @override

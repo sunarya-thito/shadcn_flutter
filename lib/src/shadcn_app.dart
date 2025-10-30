@@ -942,6 +942,11 @@ class ShadcnPointArcTween extends Tween<Offset> {
     _dirty = false;
   }
 
+  /// Gets the center point of the arc between [begin] and [end].
+  ///
+  /// Returns `null` if either [begin] or [end] is null.
+  ///
+  /// The center is computed lazily and cached for performance.
   Offset? get center {
     if (begin == null || end == null) {
       return null;
@@ -953,6 +958,12 @@ class ShadcnPointArcTween extends Tween<Offset> {
   }
 
   Offset? _center;
+
+  /// Gets the radius of the arc between [begin] and [end].
+  ///
+  /// Returns `null` if either [begin] or [end] is null.
+  ///
+  /// The radius is the distance from the center to either endpoint.
   double? get radius {
     if (begin == null || end == null) {
       return null;
@@ -964,6 +975,12 @@ class ShadcnPointArcTween extends Tween<Offset> {
   }
 
   double? _radius;
+
+  /// Gets the starting angle of the arc in radians.
+  ///
+  /// Returns `null` if either [begin] or [end] is null.
+  ///
+  /// Angle is measured clockwise from the positive x-axis.
   double? get beginAngle {
     if (begin == null || end == null) {
       return null;
@@ -975,6 +992,12 @@ class ShadcnPointArcTween extends Tween<Offset> {
   }
 
   double? _beginAngle;
+
+  /// Gets the ending angle of the arc in radians.
+  ///
+  /// Returns `null` if either [begin] or [end] is null.
+  ///
+  /// Angle is measured clockwise from the positive x-axis.
   double? get endAngle {
     if (begin == null || end == null) {
       return null;

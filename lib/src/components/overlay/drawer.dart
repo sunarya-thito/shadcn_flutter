@@ -1623,6 +1623,21 @@ class DrawerOverlayState extends State<DrawerOverlay> {
   /// Key for the backdrop widget to enable transformations.
   final GlobalKey backdropKey = GlobalKey();
 
+  /// Adds a drawer overlay entry to the list of active entries.
+  ///
+  /// Updates the widget state to include the new entry, triggering a rebuild
+  /// to display the drawer overlay.
+  ///
+  /// Parameters:
+  /// - [entry] (`DrawerOverlayEntry`, required): The drawer entry to add.
+  ///
+  /// Example:
+  /// ```dart
+  /// final entry = DrawerOverlayEntry(
+  ///   builder: (context) => MyDrawerContent(),
+  /// );
+  /// drawerState.addEntry(entry);
+  /// ```
   void addEntry(DrawerOverlayEntry entry) {
     setState(() {
       _entries.add(entry);

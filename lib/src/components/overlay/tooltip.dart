@@ -68,14 +68,52 @@ class TooltipTheme {
       surfaceOpacity, surfaceBlur, padding, backgroundColor, borderRadius);
 }
 
+/// A styled container widget for tooltip content.
+///
+/// Provides consistent visual styling for tooltip popups with customizable
+/// background, opacity, blur, padding, and border radius. Integrates with
+/// the tooltip theme system while allowing per-instance overrides.
 class TooltipContainer extends StatelessWidget {
+  /// The tooltip content widget.
   final Widget child;
+
+  /// Opacity applied to the background surface (0.0 to 1.0).
   final double? surfaceOpacity;
+
+  /// Blur radius applied to the background surface.
   final double? surfaceBlur;
+
+  /// Padding around the tooltip content.
   final EdgeInsetsGeometry? padding;
+
+  /// Background color of the tooltip container.
   final Color? backgroundColor;
+
+  /// Border radius for rounded corners.
   final BorderRadiusGeometry? borderRadius;
 
+  /// Creates a [TooltipContainer].
+  ///
+  /// All styling parameters are optional and fall back to theme defaults.
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): Content to display in the tooltip.
+  /// - [surfaceOpacity] (`double?`, optional): Background opacity (0.0-1.0).
+  /// - [surfaceBlur] (`double?`, optional): Background blur radius.
+  /// - [padding] (`EdgeInsetsGeometry?`, optional): Content padding.
+  /// - [backgroundColor] (`Color?`, optional): Background color.
+  /// - [borderRadius] (`BorderRadiusGeometry?`, optional): Border radius.
+  ///
+  /// Example:
+  /// ```dart
+  /// TooltipContainer(
+  ///   surfaceOpacity: 0.9,
+  ///   padding: EdgeInsets.all(8),
+  ///   backgroundColor: Colors.black,
+  ///   borderRadius: BorderRadius.circular(4),
+  ///   child: Text('Tooltip text'),
+  /// )
+  /// ```
   const TooltipContainer({
     super.key,
     this.surfaceOpacity,
@@ -86,6 +124,9 @@ class TooltipContainer extends StatelessWidget {
     required this.child,
   });
 
+  /// Builds the tooltip container.
+  ///
+  /// This allows using the widget as a builder function.
   Widget call(BuildContext context) {
     return this;
   }
@@ -181,14 +222,37 @@ class TooltipContainer extends StatelessWidget {
 /// );
 /// ```
 class Tooltip extends StatefulWidget {
+  /// The widget that triggers the tooltip on hover.
   final Widget child;
+
+  /// Builder function for the tooltip content.
   final WidgetBuilder tooltip;
+
+  /// Alignment of the tooltip relative to the anchor.
   final AlignmentGeometry alignment;
+
+  /// Alignment point on the child widget where tooltip anchors.
   final AlignmentGeometry anchorAlignment;
+
+  /// Time to wait before showing the tooltip on hover.
   final Duration waitDuration;
+
+  /// Duration of the tooltip show animation.
   final Duration showDuration;
+
+  /// Minimum time the tooltip stays visible once shown.
   final Duration minDuration;
 
+  /// Creates a [Tooltip].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): Widget that triggers the tooltip.
+  /// - [tooltip] (`WidgetBuilder`, required): Builder for tooltip content.
+  /// - [alignment] (`AlignmentGeometry`, default: `Alignment.topCenter`): Tooltip position.
+  /// - [anchorAlignment] (`AlignmentGeometry`, default: `Alignment.bottomCenter`): Anchor point on child.
+  /// - [waitDuration] (`Duration`, default: 500ms): Delay before showing.
+  /// - [showDuration] (`Duration`, default: 200ms): Animation duration.
+  /// - [minDuration] (`Duration`, default: 0ms): Minimum visible time.
   const Tooltip({
     super.key,
     required this.child,
@@ -238,13 +302,46 @@ class _TooltipState extends State<Tooltip> {
   }
 }
 
+/// A tooltip that shows immediately on hover without delay.
+///
+/// Unlike [Tooltip], this widget displays the tooltip instantly when the
+/// mouse enters the child widget area. It's useful for situations where
+/// immediate feedback is desired, such as toolbar buttons or icon-only
+/// controls where labels need to be visible right away.
+///
+/// The tooltip automatically closes when the mouse leaves the widget.
 class InstantTooltip extends StatefulWidget {
+  /// The widget that triggers the tooltip on hover.
   final Widget child;
+
+  /// How to behave during hit testing.
   final HitTestBehavior behavior;
+
+  /// Builder function for the tooltip content.
   final WidgetBuilder tooltipBuilder;
+
+  /// Alignment of the tooltip relative to the anchor.
   final AlignmentGeometry tooltipAlignment;
+
+  /// Alignment point on the child widget where tooltip anchors.
   final AlignmentGeometry? tooltipAnchorAlignment;
 
+  /// Creates an [InstantTooltip].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): Widget that triggers the tooltip.
+  /// - [tooltipBuilder] (`WidgetBuilder`, required): Builder for tooltip content.
+  /// - [behavior] (`HitTestBehavior`, default: `HitTestBehavior.translucent`): Hit test behavior.
+  /// - [tooltipAlignment] (`AlignmentGeometry`, default: `Alignment.bottomCenter`): Tooltip position.
+  /// - [tooltipAnchorAlignment] (`AlignmentGeometry?`, optional): Anchor point on child.
+  ///
+  /// Example:
+  /// ```dart
+  /// InstantTooltip(
+  ///   tooltipBuilder: (context) => Text('Help text'),
+  ///   child: Icon(Icons.help),
+  /// )
+  /// ```
   const InstantTooltip({
     super.key,
     required this.child,
@@ -298,9 +395,20 @@ class _InstantTooltipState extends State<InstantTooltip> {
   }
 }
 
+/// Overlay handler that delegates tooltip display to an [OverlayManager].
+///
+/// This handler integrates tooltips with the overlay management system,
+/// allowing tooltips to be displayed through the overlay manager's
+/// tooltip-specific display logic. This ensures proper layering and
+/// lifecycle management within the overlay system.
 class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
+  /// The overlay manager instance to use for displaying tooltips.
   final OverlayManager overlayManager;
 
+  /// Creates an [OverlayManagerAsTooltipOverlayHandler].
+  ///
+  /// Parameters:
+  /// - [overlayManager] (`OverlayManager`, required): The overlay manager instance.
   const OverlayManagerAsTooltipOverlayHandler({
     required this.overlayManager,
   });
@@ -364,7 +472,17 @@ class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
   }
 }
 
+/// A fixed overlay handler for tooltips using direct overlay entries.
+///
+/// This handler creates tooltips using Flutter's built-in overlay system
+/// without delegating to an overlay manager. Tooltips are positioned
+/// directly in the overlay and use fixed positioning relative to their
+/// anchor widget.
+///
+/// Use this handler when you need direct control over tooltip overlay
+/// entries or when not using an overlay manager.
 class FixedTooltipOverlayHandler extends OverlayHandler {
+  /// Creates a [FixedTooltipOverlayHandler].
   const FixedTooltipOverlayHandler();
 
   @override
