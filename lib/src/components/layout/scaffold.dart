@@ -132,20 +132,44 @@ class ScaffoldTheme {
 /// );
 /// ```
 class Scaffold extends StatefulWidget {
+  /// Header widgets displayed at the top of the scaffold.
   final List<Widget> headers;
+
+  /// Footer widgets displayed at the bottom of the scaffold.
   final List<Widget> footers;
+
+  /// Main content widget.
   final Widget child;
+
+  /// Loading progress value (0.0 to 1.0).
   final double? loadingProgress;
+
+  /// Whether loading indicator shows indeterminate progress.
   final bool loadingProgressIndeterminate;
+
+  /// Whether header floats above content (takes no layout space).
   final bool
-      floatingHeader; // when header floats, it takes no space in the layout, and positioned on top of the content
+      floatingHeader;
+
+  /// Whether footer floats above content (takes no layout space).
   final bool floatingFooter;
+
+  /// Background color for header section.
   final Color? headerBackgroundColor;
+
+  /// Background color for footer section.
   final Color? footerBackgroundColor;
+
+  /// Background color for the scaffold.
   final Color? backgroundColor;
+
+  /// Whether to show loading sparks effect.
   final bool? showLoadingSparks;
+
+  /// Whether to resize when keyboard appears.
   final bool? resizeToAvoidBottomInset;
 
+  /// Creates a [Scaffold].
   const Scaffold({
     super.key,
     required this.child,
@@ -193,6 +217,12 @@ class ScaffoldBarData {
 /// Manages the scaffold's layout state and provides methods for building
 /// header, footer, and body sections with proper theming and constraints.
 class ScaffoldState extends State<Scaffold> {
+  /// Builds the header section of the scaffold.
+  ///
+  /// Parameters:
+  /// - [context] (`BuildContext`, required): Build context.
+  ///
+  /// Returns: Widget tree for the header.
   Widget buildHeader(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<ScaffoldTheme>(context);
     return RepaintBoundary(
@@ -273,6 +303,13 @@ class ScaffoldState extends State<Scaffold> {
     );
   }
 
+  /// Builds the footer section of the scaffold.
+  ///
+  /// Parameters:
+  /// - [context] (`BuildContext`, required): Build context.
+  /// - [viewInsets] (`EdgeInsets`, required): View insets (e.g., keyboard).
+  ///
+  /// Returns: Widget tree for the footer.
   Widget buildFooter(BuildContext context, EdgeInsets viewInsets) {
     final compTheme = ComponentTheme.maybeOf<ScaffoldTheme>(context);
     return Offstage(
@@ -372,12 +409,29 @@ class ScaffoldState extends State<Scaffold> {
   }
 }
 
+/// Storage for scaffold padding values.
+///
+/// Holds padding values for all four sides of the scaffold content area.
 class ScaffoldPaddingStorage {
+  /// Top padding value.
   double top;
+
+  /// Left padding value.
   double left;
+
+  /// Right padding value.
   double right;
+
+  /// Bottom padding value.
   double bottom;
 
+  /// Creates a [ScaffoldPaddingStorage].
+  ///
+  /// Parameters:
+  /// - [top] (`double`, required): Top padding.
+  /// - [left] (`double`, required): Left padding.
+  /// - [right] (`double`, required): Right padding.
+  /// - [bottom] (`double`, required): Bottom padding.
   ScaffoldPaddingStorage({
     required this.top,
     required this.left,
@@ -386,10 +440,22 @@ class ScaffoldPaddingStorage {
   });
 }
 
+/// Box constraints with additional header and footer height information.
+///
+/// Extends [BoxConstraints] to include scaffold-specific layout measurements.
 class ScaffoldBoxConstraints extends BoxConstraints {
+  /// Height of the header section.
   final double headerHeight;
+
+  /// Height of the footer section.
   final double footerHeight;
 
+  /// Creates [ScaffoldBoxConstraints].
+  ///
+  /// Parameters:
+  /// - [headerHeight] (`double`, required): Header height.
+  /// - [footerHeight] (`double`, required): Footer height.
+  /// - Additional [BoxConstraints] parameters.
   const ScaffoldBoxConstraints({
     required this.headerHeight,
     required this.footerHeight,
@@ -399,6 +465,14 @@ class ScaffoldBoxConstraints extends BoxConstraints {
     super.maxHeight,
   });
 
+  /// Creates [ScaffoldBoxConstraints] from existing [BoxConstraints].
+  ///
+  /// Parameters:
+  /// - [constraints] (`BoxConstraints`, required): Base constraints.
+  /// - [headerHeight] (`double`, required): Header height.
+  /// - [footerHeight] (`double`, required): Footer height.
+  ///
+  /// Returns: New [ScaffoldBoxConstraints] with scaffold-specific data.
   factory ScaffoldBoxConstraints.fromBoxConstraints({
     required BoxConstraints constraints,
     required double headerHeight,
@@ -916,7 +990,11 @@ class _ScaffoldRenderFlex extends RenderBox
   }
 }
 
+/// Widget that applies header-aware padding to its child.
+///
+/// Automatically adjusts padding based on scaffold header height.
 class ScaffoldHeaderPadding extends SingleChildRenderObjectWidget {
+  /// Creates [ScaffoldHeaderPadding].
   const ScaffoldHeaderPadding({super.key, super.child});
 
   @override
@@ -927,7 +1005,11 @@ class ScaffoldHeaderPadding extends SingleChildRenderObjectWidget {
   }
 }
 
+/// Widget that applies footer-aware padding to its child.
+///
+/// Automatically adjusts padding based on scaffold footer height.
 class ScaffoldFooterPadding extends SingleChildRenderObjectWidget {
+  /// Creates [ScaffoldFooterPadding].
   const ScaffoldFooterPadding({super.key, super.child});
 
   @override
