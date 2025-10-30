@@ -1003,6 +1003,9 @@ extension WidgetExtension on Widget {
   ///
   /// Parameters:
   /// - [clipBehavior] (`Clip`, default: `Clip.antiAlias`): Clipping behavior.
+  /// - [clipper] (`CustomClipper<Path>`, required): Custom clipper for the path.
+  ///
+  /// Returns: `Widget` — clipped widget.
   Widget clipPath(
       {Clip clipBehavior = Clip.antiAlias,
       required CustomClipper<Path> clipper}) {
@@ -1013,6 +1016,13 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Applies a transformation matrix to this widget.
+  ///
+  /// Parameters:
+  /// - [key] (`Key?`, optional): Widget key.
+  /// - [transform] (`Matrix4`, required): Transformation matrix.
+  ///
+  /// Returns: `Widget` — transformed widget.
   Widget transform({Key? key, required Matrix4 transform}) {
     return Transform(
       key: key,
@@ -1021,6 +1031,13 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Sizes this widget to its intrinsic width.
+  ///
+  /// Parameters:
+  /// - [stepWidth] (`double?`, optional): Stepping for width.
+  /// - [stepHeight] (`double?`, optional): Stepping for height.
+  ///
+  /// Returns: `Widget` — intrinsically sized widget.
   Widget intrinsicWidth({double? stepWidth, double? stepHeight}) {
     return IntrinsicWidth(
       stepWidth: stepWidth,
@@ -1029,12 +1046,22 @@ extension WidgetExtension on Widget {
     );
   }
 
+  /// Sizes this widget to its intrinsic height.
+  ///
+  /// Returns: `Widget` — intrinsically sized widget.
   Widget intrinsicHeight() {
     return IntrinsicHeight(
       child: this,
     );
   }
 
+  /// Sizes this widget to both intrinsic width and height.
+  ///
+  /// Parameters:
+  /// - [stepWidth] (`double?`, optional): Stepping for width.
+  /// - [stepHeight] (`double?`, optional): Stepping for height.
+  ///
+  /// Returns: `Widget` — intrinsically sized widget.
   Widget intrinsic({double? stepWidth, double? stepHeight}) {
     return IntrinsicWidth(
       stepWidth: stepWidth,
@@ -1046,11 +1073,24 @@ extension WidgetExtension on Widget {
   }
 }
 
+/// Extension adding gap and separator utilities to [Column].
 extension ColumnExtension on Column {
+  /// Adds gaps between column children.
+  ///
+  /// Parameters:
+  /// - [gap] (`double`, required): Vertical spacing between children.
+  ///
+  /// Returns: `Widget` — column with gaps.
   Widget gap(double gap) {
     return separator(SizedBox(height: gap));
   }
 
+  /// Adds separators between column children.
+  ///
+  /// Parameters:
+  /// - [separator] (`Widget`, required): Widget to insert between children.
+  ///
+  /// Returns: `Widget` — column with separators.
   Widget separator(Widget separator) {
     return SeparatedFlex(
       key: key,
@@ -1068,11 +1108,24 @@ extension ColumnExtension on Column {
   }
 }
 
+/// Extension adding gap and separator utilities to [Row].
 extension RowExtension on Row {
+  /// Adds gaps between row children.
+  ///
+  /// Parameters:
+  /// - [gap] (`double`, required): Horizontal spacing between children.
+  ///
+  /// Returns: `Widget` — row with gaps.
   Widget gap(double gap) {
     return separator(SizedBox(width: gap));
   }
 
+  /// Adds separators between row children.
+  ///
+  /// Parameters:
+  /// - [separator] (`Widget`, required): Widget to insert between children.
+  ///
+  /// Returns: `Widget` — row with separators.
   Widget separator(Widget separator) {
     return SeparatedFlex(
       key: key,
@@ -1091,8 +1144,56 @@ extension RowExtension on Row {
 }
 
 /// A flex widget that adds separators between children.
+///
+/// Used internally by [ColumnExtension] and [RowExtension] to insert
+/// separators between flex children while maintaining flex properties.
 class SeparatedFlex extends StatefulWidget {
+  /// Main axis alignment for flex children.
   final MainAxisAlignment mainAxisAlignment;
+
+  /// Main axis size constraint for the flex.
+  final MainAxisSize mainAxisSize;
+
+  /// Cross axis alignment for flex children.
+  final CrossAxisAlignment crossAxisAlignment;
+
+  /// Text direction for the flex.
+  final TextDirection? textDirection;
+
+  /// Vertical direction for laying out children.
+  final VerticalDirection verticalDirection;
+
+  /// Text baseline for aligning text children.
+  final TextBaseline? textBaseline;
+
+  /// Children widgets to display with separators.
+  final List<Widget> children;
+
+  /// Flex direction (horizontal or vertical).
+  final Axis direction;
+
+  /// Separator widget to insert between children.
+  final Widget separator;
+
+  /// Clipping behavior for the flex.
+  final Clip clipBehavior;
+
+  /// Creates a [SeparatedFlex].
+  ///
+  /// All flex-related parameters match [Flex] widget parameters.
+  const SeparatedFlex({
+    super.key,
+    required this.mainAxisAlignment,
+    required this.mainAxisSize,
+    required this.crossAxisAlignment,
+    this.textDirection,
+    required this.verticalDirection,
+    this.textBaseline,
+    required this.children,
+    required this.separator,
+    required this.direction,
+    this.clipBehavior = Clip.none,
+  });
   final MainAxisSize mainAxisSize;
   final CrossAxisAlignment crossAxisAlignment;
   final TextDirection? textDirection;
@@ -1153,13 +1254,28 @@ class _SeparatedFlexState extends State<SeparatedFlex> {
   }
 }
 
+/// Extension adding gap and separator utilities to [Flex].
 extension FlexExtension on Flex {
+  /// Adds gaps between flex children.
+  ///
+  /// The gap direction depends on the flex direction (vertical or horizontal).
+  ///
+  /// Parameters:
+  /// - [gap] (`double`, required): Spacing between children.
+  ///
+  /// Returns: `Widget` — flex with gaps.
   Widget gap(double gap) {
     return separator(direction == Axis.vertical
         ? SizedBox(height: gap)
         : SizedBox(width: gap));
   }
 
+  /// Adds separators between flex children.
+  ///
+  /// Parameters:
+  /// - [separator] (`Widget`, required): Widget to insert between children.
+  ///
+  /// Returns: `Widget` — flex with separators.
   Widget separator(Widget separator) {
     return SeparatedFlex(
       key: key,
@@ -1181,31 +1297,80 @@ Iterable<Widget> join(Iterable<Widget> widgets, Widget separator) {
   return SeparatedIterable(widgets, separator);
 }
 
+/// Extension adding min/max utilities to [double].
 extension DoubleExtension on double {
+  /// Returns the minimum of this value and another.
+  ///
+  /// Parameters:
+  /// - [other] (`double`, required): Value to compare.
+  ///
+  /// Returns: `double` — the smaller value.
   double min(double other) => this < other ? this : other;
+
+  /// Returns the maximum of this value and another.
+  ///
+  /// Parameters:
+  /// - [other] (`double`, required): Value to compare.
+  ///
+  /// Returns: `double` — the larger value.
   double max(double other) => this > other ? this : other;
 }
 
+/// Extension adding min/max utilities to [int].
 extension IntExtension on int {
+  /// Returns the minimum of this value and another.
+  ///
+  /// Parameters:
+  /// - [other] (`int`, required): Value to compare.
+  ///
+  /// Returns: `int` — the smaller value.
   int min(int other) => this < other ? this : other;
+
+  /// Returns the maximum of this value and another.
+  ///
+  /// Parameters:
+  /// - [other] (`int`, required): Value to compare.
+  ///
+  /// Returns: `int` — the larger value.
   int max(int other) => this > other ? this : other;
 }
 
 /// A tween for animating between two [IconThemeData] values.
 class IconThemeDataTween extends Tween<IconThemeData> {
+  /// Creates an [IconThemeDataTween].
+  ///
+  /// Parameters:
+  /// - [begin] (`IconThemeData?`, optional): Starting icon theme.
+  /// - [end] (`IconThemeData?`, optional): Ending icon theme.
   IconThemeDataTween({super.begin, super.end});
 
   @override
   IconThemeData lerp(double t) => IconThemeData.lerp(begin, end, t);
 }
 
+/// Extension adding color manipulation utilities to [Color].
 extension ColorExtension on Color {
+  /// Scales the alpha channel by a factor.
+  ///
+  /// Parameters:
+  /// - [factor] (`double`, required): Multiplier for alpha (0.0 to 1.0+).
+  ///
+  /// Returns: `Color` — color with scaled alpha.
   Color scaleAlpha(double factor) {
     return withValues(
       alpha: a * factor,
     );
   }
 
+  /// Gets a contrasting color based on luminance.
+  ///
+  /// Adjusts luminance to create contrast. If current lightness >= 0.5,
+  /// reduces it; otherwise increases it.
+  ///
+  /// Parameters:
+  /// - [luminanceContrast] (`double`, default: 1): Contrast factor (0.0 to 1.0).
+  ///
+  /// Returns: `Color` — contrasting color.
   Color getContrastColor([double luminanceContrast = 1]) {
     // luminance contrast is between 0..1
     assert(luminanceContrast >= 0 && luminanceContrast <= 1,
@@ -1223,11 +1388,31 @@ extension ColorExtension on Color {
     return hsl.withLightness(targetLuminance).toColor();
   }
 
+  /// Sets the luminance (lightness) of this color.
+  ///
+  /// Parameters:
+  /// - [luminance] (`double`, required): Target luminance (0.0 to 1.0).
+  ///
+  /// Returns: `Color` — color with specified luminance.
   Color withLuminance(double luminance) {
     final hsl = HSLColor.fromColor(this);
     return hsl.withLightness(luminance).toColor();
   }
 
+  /// Converts this color to hexadecimal string.
+  ///
+  /// Parameters:
+  /// - [includeHashSign] (`bool`, default: false): Whether to prefix with '#'.
+  /// - [includeAlpha] (`bool`, default: true): Whether to include alpha channel.
+  ///
+  /// Returns: `String` — hexadecimal color representation.
+  ///
+  /// Example:
+  /// ```dart
+  /// Color.fromARGB(255, 255, 0, 0).toHex() // 'ffff0000'
+  /// Color.fromARGB(255, 255, 0, 0).toHex(includeHashSign: true) // '#ffff0000'
+  /// Color.fromARGB(255, 255, 0, 0).toHex(includeAlpha: false) // 'ff0000'
+  /// ```
   String toHex({bool includeHashSign = false, bool includeAlpha = true}) {
     String hex = toARGB32().toRadixString(16).padLeft(8, '0');
     if (!includeAlpha) {
@@ -1239,16 +1424,26 @@ extension ColorExtension on Color {
     return hex;
   }
 
+  /// Converts this color to HSL color space.
+  ///
+  /// Returns: `HSLColor` — HSL representation.
   HSLColor toHSL() {
     return HSLColor.fromColor(this);
   }
 
+  /// Converts this color to HSV color space.
+  ///
+  /// Returns: `HSVColor` — HSV representation.
   HSVColor toHSV() {
     return HSVColor.fromColor(this);
   }
 }
 
+/// Extension for converting [HSLColor] to other color spaces.
 extension HSLColorExtension on HSLColor {
+  /// Converts this HSL color to HSV color space.
+  ///
+  /// Returns: `HSVColor` — HSV representation.
   HSVColor toHSV() {
     final double l = lightness;
     final double s = saturation;
@@ -1268,7 +1463,11 @@ extension HSLColorExtension on HSLColor {
   }
 }
 
+/// Extension for converting [HSVColor] to other color spaces.
 extension HSVColorExtension on HSVColor {
+  /// Converts this HSV color to HSL color space.
+  ///
+  /// Returns: `HSLColor` — HSL representation.
   HSLColor toHSL() {
     final double v = value;
     final double s = saturation;

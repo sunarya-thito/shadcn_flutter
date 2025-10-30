@@ -268,48 +268,48 @@ TODO:
 - [x] lib/src/util.dart:713:  Widget expanded({int flex = 1}) {
 - [x] lib/src/util.dart:720:  Widget withOpacity(double opacity) {
 - [x] lib/src/util.dart:727:  Widget clip({Clip clipBehavior = Clip.hardEdge}) {
-- [ ] lib/src/util.dart:734:  Widget clipRRect(
-- [ ] lib/src/util.dart:744:  Widget clipOval({Clip clipBehavior = Clip.antiAlias}) {
-- [ ] lib/src/util.dart:751:  Widget clipPath(
-- [ ] lib/src/util.dart:761:  Widget transform({Key? key, required Matrix4 transform}) {
-- [ ] lib/src/util.dart:769:  Widget intrinsicWidth({double? stepWidth, double? stepHeight}) {
-- [ ] lib/src/util.dart:777:  Widget intrinsicHeight() {
-- [ ] lib/src/util.dart:783:  Widget intrinsic({double? stepWidth, double? stepHeight}) {
-- [ ] lib/src/util.dart:794:extension ColumnExtension on Column {
-- [ ] lib/src/util.dart:795:  Widget gap(double gap) {
-- [ ] lib/src/util.dart:799:  Widget separator(Widget separator) {
-- [ ] lib/src/util.dart:816:extension RowExtension on Row {
-- [ ] lib/src/util.dart:817:  Widget gap(double gap) {
-- [ ] lib/src/util.dart:821:  Widget separator(Widget separator) {
-- [ ] lib/src/util.dart:840:  final MainAxisAlignment mainAxisAlignment;
-- [ ] lib/src/util.dart:841:  final MainAxisSize mainAxisSize;
-- [ ] lib/src/util.dart:842:  final CrossAxisAlignment crossAxisAlignment;
-- [ ] lib/src/util.dart:843:  final TextDirection? textDirection;
-- [ ] lib/src/util.dart:844:  final VerticalDirection verticalDirection;
-- [ ] lib/src/util.dart:845:  final TextBaseline? textBaseline;
-- [ ] lib/src/util.dart:846:  final List<Widget> children;
-- [ ] lib/src/util.dart:847:  final Axis direction;
-- [ ] lib/src/util.dart:848:  final Widget separator;
-- [ ] lib/src/util.dart:849:  final Clip clipBehavior;
-- [ ] lib/src/util.dart:851:  const SeparatedFlex({
-- [ ] lib/src/util.dart:901:extension FlexExtension on Flex {
-- [ ] lib/src/util.dart:902:  Widget gap(double gap) {
-- [ ] lib/src/util.dart:908:  Widget separator(Widget separator) {
-- [ ] lib/src/util.dart:929:extension DoubleExtension on double {
-- [ ] lib/src/util.dart:930:  double min(double other) => this < other ? this : other;
-- [ ] lib/src/util.dart:931:  double max(double other) => this > other ? this : other;
-- [ ] lib/src/util.dart:934:extension IntExtension on int {
-- [ ] lib/src/util.dart:935:  int min(int other) => this < other ? this : other;
-- [ ] lib/src/util.dart:936:  int max(int other) => this > other ? this : other;
-- [ ] lib/src/util.dart:941:  IconThemeDataTween({super.begin, super.end});
-- [ ] lib/src/util.dart:947:extension ColorExtension on Color {
-- [ ] lib/src/util.dart:948:  Color scaleAlpha(double factor) {
-- [ ] lib/src/util.dart:954:  Color getContrastColor([double luminanceContrast = 1]) {
-- [ ] lib/src/util.dart:971:  Color withLuminance(double luminance) {
-- [ ] lib/src/util.dart:976:  String toHex({bool includeHashSign = false, bool includeAlpha = true}) {
-- [ ] lib/src/util.dart:987:  HSLColor toHSL() {
-- [ ] lib/src/util.dart:991:  HSVColor toHSV() {
-- [ ] lib/src/util.dart:996:extension HSLColorExtension on HSLColor {
+- [x] lib/src/util.dart:734:  Widget clipRRect(
+- [x] lib/src/util.dart:744:  Widget clipOval({Clip clipBehavior = Clip.antiAlias}) {
+- [x] lib/src/util.dart:751:  Widget clipPath(
+- [x] lib/src/util.dart:761:  Widget transform({Key? key, required Matrix4 transform}) {
+- [x] lib/src/util.dart:769:  Widget intrinsicWidth({double? stepWidth, double? stepHeight}) {
+- [x] lib/src/util.dart:777:  Widget intrinsicHeight() {
+- [x] lib/src/util.dart:783:  Widget intrinsic({double? stepWidth, double? stepHeight}) {
+- [x] lib/src/util.dart:794:extension ColumnExtension on Column {
+- [x] lib/src/util.dart:795:  Widget gap(double gap) {
+- [x] lib/src/util.dart:799:  Widget separator(Widget separator) {
+- [x] lib/src/util.dart:816:extension RowExtension on Row {
+- [x] lib/src/util.dart:817:  Widget gap(double gap) {
+- [x] lib/src/util.dart:821:  Widget separator(Widget separator) {
+- [x] lib/src/util.dart:840:  final MainAxisAlignment mainAxisAlignment;
+- [x] lib/src/util.dart:841:  final MainAxisSize mainAxisSize;
+- [x] lib/src/util.dart:842:  final CrossAxisAlignment crossAxisAlignment;
+- [x] lib/src/util.dart:843:  final TextDirection? textDirection;
+- [x] lib/src/util.dart:844:  final VerticalDirection verticalDirection;
+- [x] lib/src/util.dart:845:  final TextBaseline? textBaseline;
+- [x] lib/src/util.dart:846:  final List<Widget> children;
+- [x] lib/src/util.dart:847:  final Axis direction;
+- [x] lib/src/util.dart:848:  final Widget separator;
+- [x] lib/src/util.dart:849:  final Clip clipBehavior;
+- [x] lib/src/util.dart:851:  const SeparatedFlex({
+- [x] lib/src/util.dart:901:extension FlexExtension on Flex {
+- [x] lib/src/util.dart:902:  Widget gap(double gap) {
+- [x] lib/src/util.dart:908:  Widget separator(Widget separator) {
+- [x] lib/src/util.dart:929:extension DoubleExtension on double {
+- [x] lib/src/util.dart:930:  double min(double other) => this < other ? this : other;
+- [x] lib/src/util.dart:931:  double max(double other) => this > other ? this : other;
+- [x] lib/src/util.dart:934:extension IntExtension on int {
+- [x] lib/src/util.dart:935:  int min(int other) => this < other ? this : other;
+- [x] lib/src/util.dart:936:  int max(int other) => this > other ? this : other;
+- [x] lib/src/util.dart:941:  IconThemeDataTween({super.begin, super.end});
+- [x] lib/src/util.dart:947:extension ColorExtension on Color {
+- [x] lib/src/util.dart:948:  Color scaleAlpha(double factor) {
+- [x] lib/src/util.dart:954:  Color getContrastColor([double luminanceContrast = 1]) {
+- [x] lib/src/util.dart:971:  Color withLuminance(double luminance) {
+- [x] lib/src/util.dart:976:  String toHex({bool includeHashSign = false, bool includeAlpha = true}) {
+- [x] lib/src/util.dart:987:  HSLColor toHSL() {
+- [x] lib/src/util.dart:991:  HSVColor toHSV() {
+- [x] lib/src/util.dart:996:extension HSLColorExtension on HSLColor {
 - [ ] lib/src/util.dart:997:  HSVColor toHSV() {
 - [ ] lib/src/util.dart:1016:extension HSVColorExtension on HSVColor {
 - [ ] lib/src/util.dart:1017:  HSLColor toHSL() {
