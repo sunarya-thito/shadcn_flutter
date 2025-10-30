@@ -115,32 +115,32 @@ TODO:
 - [x] lib\src\components\form\star_rating.dart:578:7
 - [x] lib\src\components\form\star_rating.dart:579:16
 - [x] lib\src\components\form\star_rating.dart:581:9
-- [ ] lib\src\components\form\switch.dart:113:7
-- [ ] lib\src\components\form\switch.dart:117:8
-- [ ] lib\src\components\form\switch.dart:115:3
-- [ ] lib\src\components\form\switch.dart:122:7
-- [ ] lib\src\components\form\switch.dart:132:17
-- [ ] lib\src\components\form\switch.dart:133:17
-- [ ] lib\src\components\form\switch.dart:134:17
-- [ ] lib\src\components\form\switch.dart:135:16
-- [ ] lib\src\components\form\switch.dart:136:16
-- [ ] lib\src\components\form\switch.dart:137:16
-- [ ] lib\src\components\form\switch.dart:138:16
-- [ ] lib\src\components\form\switch.dart:139:31
-- [ ] lib\src\components\form\switch.dart:141:9
-- [ ] lib\src\components\form\switch.dart:183:7
-- [ ] lib\src\components\form\switch.dart:184:14
-- [ ] lib\src\components\form\switch.dart:185:29
-- [ ] lib\src\components\form\switch.dart:186:17
-- [ ] lib\src\components\form\switch.dart:187:17
-- [ ] lib\src\components\form\switch.dart:188:15
-- [ ] lib\src\components\form\switch.dart:189:17
-- [ ] lib\src\components\form\switch.dart:190:16
-- [ ] lib\src\components\form\switch.dart:191:16
-- [ ] lib\src\components\form\switch.dart:192:16
-- [ ] lib\src\components\form\switch.dart:193:16
-- [ ] lib\src\components\form\switch.dart:194:31
-- [ ] lib\src\components\form\switch.dart:196:9
+- [x] lib\src\components\form\switch.dart:113:7
+- [x] lib\src\components\form\switch.dart:117:8
+- [x] lib\src\components\form\switch.dart:115:3
+- [x] lib\src\components\form\switch.dart:122:7
+- [x] lib\src\components\form\switch.dart:132:17
+- [x] lib\src\components\form\switch.dart:133:17
+- [x] lib\src\components\form\switch.dart:134:17
+- [x] lib\src\components\form\switch.dart:135:16
+- [x] lib\src\components\form\switch.dart:136:16
+- [x] lib\src\components\form\switch.dart:137:16
+- [x] lib\src\components\form\switch.dart:138:16
+- [x] lib\src\components\form\switch.dart:139:31
+- [x] lib\src\components\form\switch.dart:141:9
+- [x] lib\src\components\form\switch.dart:183:7
+- [x] lib\src\components\form\switch.dart:184:14
+- [x] lib\src\components\form\switch.dart:185:29
+- [x] lib\src\components\form\switch.dart:186:17
+- [x] lib\src\components\form\switch.dart:187:17
+- [x] lib\src\components\form\switch.dart:188:15
+- [x] lib\src\components\form\switch.dart:189:17
+- [x] lib\src\components\form\switch.dart:190:16
+- [x] lib\src\components\form\switch.dart:191:16
+- [x] lib\src\components\form\switch.dart:192:16
+- [x] lib\src\components\form\switch.dart:193:16
+- [x] lib\src\components\form\switch.dart:194:31
+- [x] lib\src\components\form\switch.dart:196:9
 - [ ] lib\src\components\form\text_field.dart:42:18
 - [ ] lib\src\components\form\text_field.dart:30:31
 - [ ] lib\src\components\form\text_field.dart:31:15
@@ -361,12 +361,12 @@ TODO:
 - [ ] lib\src\components\form\time_picker.dart:790:19
 - [ ] lib\src\components\form\time_picker.dart:791:19
 - [ ] lib\src\components\form\time_picker.dart:793:9
-- [ ] lib\src\components\form\validated.dart:3:9
-- [ ] lib\src\components\form\validated.dart:6:7
-- [ ] lib\src\components\form\validated.dart:7:26
-- [ ] lib\src\components\form\validated.dart:8:22
-- [ ] lib\src\components\form\validated.dart:9:17
-- [ ] lib\src\components\form\validated.dart:11:9
+- [x] lib\src\components\form\validated.dart:3:9
+- [x] lib\src\components\form\validated.dart:6:7
+- [x] lib\src\components\form\validated.dart:7:26
+- [x] lib\src\components\form\validated.dart:8:22
+- [x] lib\src\components\form\validated.dart:9:17
+- [x] lib\src\components\form\validated.dart:11:9
 - [ ] lib\src\components\icon\icon.dart:3:11
 - [ ] lib\src\components\icon\icon.dart:4:19
 - [ ] lib\src\components\icon\icon.dart:9:19
