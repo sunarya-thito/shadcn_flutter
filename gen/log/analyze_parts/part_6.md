@@ -522,95 +522,95 @@ TODO:
 - [ ] lib\src\theme\color_scheme.dart:385:9
 - [ ] lib\src\theme\color_scheme.dart:421:15
 - [ ] lib\src\theme\color_scheme.dart:537:15
-- [ ] lib\src\theme\generated_colors.dart:3:7
-- [ ] lib\src\theme\generated_colors.dart:4:22
-- [ ] lib\src\theme\generated_colors.dart:5:22
-- [ ] lib\src\theme\generated_colors.dart:6:28
-- [ ] lib\src\theme\generated_colors.dart:19:28
-- [ ] lib\src\theme\generated_colors.dart:32:28
-- [ ] lib\src\theme\generated_colors.dart:45:28
-- [ ] lib\src\theme\generated_colors.dart:58:28
-- [ ] lib\src\theme\generated_colors.dart:71:28
-- [ ] lib\src\theme\generated_colors.dart:84:28
-- [ ] lib\src\theme\generated_colors.dart:97:28
-- [ ] lib\src\theme\generated_colors.dart:110:28
-- [ ] lib\src\theme\generated_colors.dart:123:28
-- [ ] lib\src\theme\generated_colors.dart:136:28
-- [ ] lib\src\theme\generated_colors.dart:149:28
-- [ ] lib\src\theme\generated_colors.dart:162:28
-- [ ] lib\src\theme\generated_colors.dart:175:28
-- [ ] lib\src\theme\generated_colors.dart:188:28
-- [ ] lib\src\theme\generated_colors.dart:201:28
-- [ ] lib\src\theme\generated_colors.dart:214:28
-- [ ] lib\src\theme\generated_colors.dart:227:28
-- [ ] lib\src\theme\generated_colors.dart:240:28
-- [ ] lib\src\theme\generated_colors.dart:253:28
-- [ ] lib\src\theme\generated_colors.dart:266:28
-- [ ] lib\src\theme\generated_colors.dart:279:28
-- [ ] lib\src\theme\generated_colors.dart:292:22
-- [ ] lib\src\theme\generated_colors.dart:293:28
-- [ ] lib\src\theme\generated_themes.dart:25:7
-- [ ] lib\src\theme\generated_themes.dart:99:21
-- [ ] lib\src\theme\generated_themes.dart:179:21
-- [ ] lib\src\theme\generated_themes.dart:259:21
-- [ ] lib\src\theme\generated_themes.dart:339:21
-- [ ] lib\src\theme\generated_themes.dart:419:21
-- [ ] lib\src\theme\generated_themes.dart:499:21
-- [ ] lib\src\theme\generated_themes.dart:579:21
-- [ ] lib\src\theme\generated_themes.dart:659:21
-- [ ] lib\src\theme\generated_themes.dart:27:27
-- [ ] lib\src\theme\generated_themes.dart:63:27
-- [ ] lib\src\theme\generated_themes.dart:107:27
-- [ ] lib\src\theme\generated_themes.dart:143:27
-- [ ] lib\src\theme\generated_themes.dart:187:27
-- [ ] lib\src\theme\generated_themes.dart:223:27
-- [ ] lib\src\theme\generated_themes.dart:267:27
-- [ ] lib\src\theme\generated_themes.dart:303:27
-- [ ] lib\src\theme\generated_themes.dart:347:27
-- [ ] lib\src\theme\generated_themes.dart:383:27
-- [ ] lib\src\theme\generated_themes.dart:427:27
-- [ ] lib\src\theme\generated_themes.dart:463:27
-- [ ] lib\src\theme\generated_themes.dart:507:27
-- [ ] lib\src\theme\generated_themes.dart:543:27
-- [ ] lib\src\theme\generated_themes.dart:587:27
-- [ ] lib\src\theme\generated_themes.dart:623:27
-- [ ] lib\src\theme\legacy_generated_themes.dart:29:7
-- [ ] lib\src\theme\legacy_generated_themes.dart:31:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:73:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:114:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:122:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:166:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:209:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:217:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:258:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:300:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:308:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:352:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:395:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:403:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:444:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:485:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:493:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:534:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:575:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:583:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:625:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:666:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:674:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:715:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:757:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:765:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:807:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:848:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:856:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:900:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:943:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:951:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:992:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:1034:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:1042:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:1086:22
-- [ ] lib\src\theme\legacy_generated_themes.dart:1128:22
+- [x] lib\src\theme\generated_colors.dart:3:7
+- [x] lib\src\theme\generated_colors.dart:4:22
+- [x] lib\src\theme\generated_colors.dart:5:22
+- [x] lib\src\theme\generated_colors.dart:6:28
+- [x] lib\src\theme\generated_colors.dart:19:28
+- [x] lib\src\theme\generated_colors.dart:32:28
+- [x] lib\src\theme\generated_colors.dart:45:28
+- [x] lib\src\theme\generated_colors.dart:58:28
+- [x] lib\src\theme\generated_colors.dart:71:28
+- [x] lib\src\theme\generated_colors.dart:84:28
+- [x] lib\src\theme\generated_colors.dart:97:28
+- [x] lib\src\theme\generated_colors.dart:110:28
+- [x] lib\src\theme\generated_colors.dart:123:28
+- [x] lib\src\theme\generated_colors.dart:136:28
+- [x] lib\src\theme\generated_colors.dart:149:28
+- [x] lib\src\theme\generated_colors.dart:162:28
+- [x] lib\src\theme\generated_colors.dart:175:28
+- [x] lib\src\theme\generated_colors.dart:188:28
+- [x] lib\src\theme\generated_colors.dart:201:28
+- [x] lib\src\theme\generated_colors.dart:214:28
+- [x] lib\src\theme\generated_colors.dart:227:28
+- [x] lib\src\theme\generated_colors.dart:240:28
+- [x] lib\src\theme\generated_colors.dart:253:28
+- [x] lib\src\theme\generated_colors.dart:266:28
+- [x] lib\src\theme\generated_colors.dart:279:28
+- [x] lib\src\theme\generated_colors.dart:292:22
+- [x] lib\src\theme\generated_colors.dart:293:28
+- [x] lib\src\theme\generated_themes.dart:25:7
+- [x] lib\src\theme\generated_themes.dart:99:21
+- [x] lib\src\theme\generated_themes.dart:179:21
+- [x] lib\src\theme\generated_themes.dart:259:21
+- [x] lib\src\theme\generated_themes.dart:339:21
+- [x] lib\src\theme\generated_themes.dart:419:21
+- [x] lib\src\theme\generated_themes.dart:499:21
+- [x] lib\src\theme\generated_themes.dart:579:21
+- [x] lib\src\theme\generated_themes.dart:659:21
+- [x] lib\src\theme\generated_themes.dart:27:27
+- [x] lib\src\theme\generated_themes.dart:63:27
+- [x] lib\src\theme\generated_themes.dart:107:27
+- [x] lib\src\theme\generated_themes.dart:143:27
+- [x] lib\src\theme\generated_themes.dart:187:27
+- [x] lib\src\theme\generated_themes.dart:223:27
+- [x] lib\src\theme\generated_themes.dart:267:27
+- [x] lib\src\theme\generated_themes.dart:303:27
+- [x] lib\src\theme\generated_themes.dart:347:27
+- [x] lib\src\theme\generated_themes.dart:383:27
+- [x] lib\src\theme\generated_themes.dart:427:27
+- [x] lib\src\theme\generated_themes.dart:463:27
+- [x] lib\src\theme\generated_themes.dart:507:27
+- [x] lib\src\theme\generated_themes.dart:543:27
+- [x] lib\src\theme\generated_themes.dart:587:27
+- [x] lib\src\theme\generated_themes.dart:623:27
+- [x] lib\src\theme\legacy_generated_themes.dart:29:7
+- [x] lib\src\theme\legacy_generated_themes.dart:31:22
+- [x] lib\src\theme\legacy_generated_themes.dart:73:22
+- [x] lib\src\theme\legacy_generated_themes.dart:114:22
+- [x] lib\src\theme\legacy_generated_themes.dart:122:22
+- [x] lib\src\theme\legacy_generated_themes.dart:166:22
+- [x] lib\src\theme\legacy_generated_themes.dart:209:22
+- [x] lib\src\theme\legacy_generated_themes.dart:217:22
+- [x] lib\src\theme\legacy_generated_themes.dart:258:22
+- [x] lib\src\theme\legacy_generated_themes.dart:300:22
+- [x] lib\src\theme\legacy_generated_themes.dart:308:22
+- [x] lib\src\theme\legacy_generated_themes.dart:352:22
+- [x] lib\src\theme\legacy_generated_themes.dart:395:22
+- [x] lib\src\theme\legacy_generated_themes.dart:403:22
+- [x] lib\src\theme\legacy_generated_themes.dart:444:22
+- [x] lib\src\theme\legacy_generated_themes.dart:485:22
+- [x] lib\src\theme\legacy_generated_themes.dart:493:22
+- [x] lib\src\theme\legacy_generated_themes.dart:534:22
+- [x] lib\src\theme\legacy_generated_themes.dart:575:22
+- [x] lib\src\theme\legacy_generated_themes.dart:583:22
+- [x] lib\src\theme\legacy_generated_themes.dart:625:22
+- [x] lib\src\theme\legacy_generated_themes.dart:666:22
+- [x] lib\src\theme\legacy_generated_themes.dart:674:22
+- [x] lib\src\theme\legacy_generated_themes.dart:715:22
+- [x] lib\src\theme\legacy_generated_themes.dart:757:22
+- [x] lib\src\theme\legacy_generated_themes.dart:765:22
+- [x] lib\src\theme\legacy_generated_themes.dart:807:22
+- [x] lib\src\theme\legacy_generated_themes.dart:848:22
+- [x] lib\src\theme\legacy_generated_themes.dart:856:22
+- [x] lib\src\theme\legacy_generated_themes.dart:900:22
+- [x] lib\src\theme\legacy_generated_themes.dart:943:22
+- [x] lib\src\theme\legacy_generated_themes.dart:951:22
+- [x] lib\src\theme\legacy_generated_themes.dart:992:22
+- [x] lib\src\theme\legacy_generated_themes.dart:1034:22
+- [x] lib\src\theme\legacy_generated_themes.dart:1042:22
+- [x] lib\src\theme\legacy_generated_themes.dart:1086:22
+- [x] lib\src\theme\legacy_generated_themes.dart:1128:22
 - [ ] lib\src\theme\theme.dart:6:7
 - [ ] lib\src\theme\theme.dart:26:13
 - [ ] lib\src\theme\theme.dart:37:26

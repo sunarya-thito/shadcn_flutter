@@ -1,8 +1,17 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// A collection of color constants and shades for shadcn_flutter.
+///
+/// This class provides predefined colors and color shades that can be used
+/// throughout the application. All colors follow the shadcn design system.
 class Colors {
+  /// Pure black color.
   static const Color black = Color(0xff000000);
+  
+  /// Pure white color.
   static const Color white = Color(0xffffffff);
+  
+  /// Slate color shades (50-950).
   static const ColorShades slate = ColorShades.raw({
     50: Color(0xfff8fafc),
     100: Color(0xfff1f5f9),
@@ -16,6 +25,7 @@ class Colors {
     900: Color(0xff0f172a),
     950: Color(0xff020617),
   });
+  /// Gray color shades (50-950).
   static const ColorShades gray = ColorShades.raw({
     50: Color(0xfff9fafb),
     100: Color(0xfff3f4f6),
@@ -29,6 +39,7 @@ class Colors {
     900: Color(0xff111827),
     950: Color(0xff030712),
   });
+  /// Zinc color shades (50-950).
   static const ColorShades zinc = ColorShades.raw({
     50: Color(0xfffafafa),
     100: Color(0xfff4f4f5),
@@ -42,6 +53,7 @@ class Colors {
     900: Color(0xff18181b),
     950: Color(0xff09090b),
   });
+  /// Neutral color shades (50-950).
   static const ColorShades neutral = ColorShades.raw({
     50: Color(0xfffafafa),
     100: Color(0xfff5f5f5),
@@ -55,6 +67,7 @@ class Colors {
     900: Color(0xff171717),
     950: Color(0xff0a0a0a),
   });
+  /// Stone color shades (50-950).
   static const ColorShades stone = ColorShades.raw({
     50: Color(0xfffafaf9),
     100: Color(0xfff5f5f4),
@@ -68,6 +81,7 @@ class Colors {
     900: Color(0xff1c1917),
     950: Color(0xff0c0a09),
   });
+  /// Red color shades (50-950).
   static const ColorShades red = ColorShades.raw({
     50: Color(0xfffef2f2),
     100: Color(0xfffee2e2),
@@ -81,6 +95,7 @@ class Colors {
     900: Color(0xff7f1d1d),
     950: Color(0xff450a0a),
   });
+  /// Orange color shades (50-950).
   static const ColorShades orange = ColorShades.raw({
     50: Color(0xfffff7ed),
     100: Color(0xffffedd5),
@@ -94,6 +109,7 @@ class Colors {
     900: Color(0xff7c2d12),
     950: Color(0xff431407),
   });
+  /// Amber color shades (50-950).
   static const ColorShades amber = ColorShades.raw({
     50: Color(0xfffffbeb),
     100: Color(0xfffef3c7),
@@ -107,6 +123,7 @@ class Colors {
     900: Color(0xff78350f),
     950: Color(0xff451a03),
   });
+  /// Yellow color shades (50-950).
   static const ColorShades yellow = ColorShades.raw({
     50: Color(0xfffefce8),
     100: Color(0xfffef9c3),
@@ -120,6 +137,7 @@ class Colors {
     900: Color(0xff713f12),
     950: Color(0xff422006),
   });
+  /// Lime color shades (50-950).
   static const ColorShades lime = ColorShades.raw({
     50: Color(0xfff7fee7),
     100: Color(0xffecfccb),
@@ -133,6 +151,7 @@ class Colors {
     900: Color(0xff365314),
     950: Color(0xff1a2e05),
   });
+  /// Green color shades (50-950).
   static const ColorShades green = ColorShades.raw({
     50: Color(0xfff0fdf4),
     100: Color(0xffdcfce7),
@@ -146,6 +165,7 @@ class Colors {
     900: Color(0xff14532d),
     950: Color(0xff052e16),
   });
+  /// Emerald color shades (50-950).
   static const ColorShades emerald = ColorShades.raw({
     50: Color(0xffecfdf5),
     100: Color(0xffd1fae5),
@@ -159,6 +179,7 @@ class Colors {
     900: Color(0xff064e3b),
     950: Color(0xff022c22),
   });
+  /// Teal color shades (50-950).
   static const ColorShades teal = ColorShades.raw({
     50: Color(0xfff0fdfa),
     100: Color(0xffccfbf1),
@@ -172,6 +193,7 @@ class Colors {
     900: Color(0xff134e4a),
     950: Color(0xff042f2e),
   });
+  /// Cyan color shades (50-950).
   static const ColorShades cyan = ColorShades.raw({
     50: Color(0xffecfeff),
     100: Color(0xffcffafe),
@@ -185,6 +207,7 @@ class Colors {
     900: Color(0xff164e63),
     950: Color(0xff083344),
   });
+  /// Sky color shades (50-950).
   static const ColorShades sky = ColorShades.raw({
     50: Color(0xfff0f9ff),
     100: Color(0xffe0f2fe),
@@ -198,6 +221,7 @@ class Colors {
     900: Color(0xff0c4a6e),
     950: Color(0xff082f49),
   });
+  /// Blue color shades (50-950).
   static const ColorShades blue = ColorShades.raw({
     50: Color(0xffeff6ff),
     100: Color(0xffdbeafe),
@@ -211,6 +235,7 @@ class Colors {
     900: Color(0xff1e3a8a),
     950: Color(0xff172554),
   });
+  /// Indigo color shades (50-950).
   static const ColorShades indigo = ColorShades.raw({
     50: Color(0xffeef2ff),
     100: Color(0xffe0e7ff),
@@ -224,6 +249,7 @@ class Colors {
     900: Color(0xff312e81),
     950: Color(0xff1e1b4b),
   });
+  /// Violet color shades (50-950).
   static const ColorShades violet = ColorShades.raw({
     50: Color(0xfff5f3ff),
     100: Color(0xffede9fe),
@@ -237,6 +263,7 @@ class Colors {
     900: Color(0xff4c1d95),
     950: Color(0xff1e1b4b),
   });
+  /// Purple color shades (50-950).
   static const ColorShades purple = ColorShades.raw({
     50: Color(0xfffaf5ff),
     100: Color(0xfff3e8ff),
@@ -250,6 +277,7 @@ class Colors {
     900: Color(0xff581c87),
     950: Color(0xff3b0764),
   });
+  /// Fuchsia color shades (50-950).
   static const ColorShades fuchsia = ColorShades.raw({
     50: Color(0xfffdf4ff),
     100: Color(0xfffae8ff),
@@ -263,6 +291,7 @@ class Colors {
     900: Color(0xff701a75),
     950: Color(0xff4a044e),
   });
+  /// Pink color shades (50-950).
   static const ColorShades pink = ColorShades.raw({
     50: Color(0xfffdf2f8),
     100: Color(0xfffce7f3),
@@ -276,6 +305,7 @@ class Colors {
     900: Color(0xff831843),
     950: Color(0xff500724),
   });
+  /// Rose color shades (50-950).
   static const ColorShades rose = ColorShades.raw({
     50: Color(0xfffff1f2),
     100: Color(0xffffe4e6),

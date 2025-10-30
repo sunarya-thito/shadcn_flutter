@@ -26,8 +26,15 @@ void _assertNotThemeModeSystem(ThemeMode mode, String label) {
   }
 }
 
+/// Legacy color schemes using HSL color definitions.
+///
+/// These color schemes use HSL (Hue, Saturation, Lightness) for color definition
+/// and are provided for backward compatibility. New code should prefer
+/// using the RGB-based [ColorSchemes] class.
 class LegacyColorSchemes {
   const LegacyColorSchemes._();
+  
+  /// Returns light zinc color scheme.
   static ColorScheme lightZinc() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -70,6 +77,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark zinc color scheme.
   static ColorScheme darkZinc() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -111,6 +119,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns zinc color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme zinc(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Zinc');
@@ -119,6 +131,7 @@ class LegacyColorSchemes {
     return mode == ThemeMode.light ? lightZinc() : darkZinc();
   }
 
+  /// Returns light slate color scheme.
   static ColorScheme lightSlate() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -163,6 +176,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark slate color scheme.
   static ColorScheme darkSlate() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -206,6 +220,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns slate color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme slate(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Slate');
@@ -214,6 +232,7 @@ class LegacyColorSchemes {
     return mode == ThemeMode.light ? lightSlate() : darkSlate();
   }
 
+  /// Returns light stone color scheme.
   static ColorScheme lightStone() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -255,6 +274,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark stone color scheme.
   static ColorScheme darkStone() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -297,6 +317,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns stone color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme stone(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Stone');
@@ -305,6 +329,7 @@ class LegacyColorSchemes {
     return mode == ThemeMode.light ? lightStone() : darkStone();
   }
 
+  /// Returns light gray color scheme.
   static ColorScheme lightGray() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -349,6 +374,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark gray color scheme.
   static ColorScheme darkGray() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -392,6 +418,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns gray color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme gray(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Gray');
@@ -400,6 +430,7 @@ class LegacyColorSchemes {
     return mode == ThemeMode.light ? lightGray() : darkGray();
   }
 
+  /// Returns light neutral color scheme.
   static ColorScheme lightNeutral() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -441,6 +472,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark neutral color scheme.
   static ColorScheme darkNeutral() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -482,6 +514,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns neutral color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme neutral(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Neutral');
@@ -490,6 +526,7 @@ class LegacyColorSchemes {
     return mode == ThemeMode.light ? lightNeutral() : darkNeutral();
   }
 
+  /// Returns light red color scheme.
   static ColorScheme lightRed() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -531,6 +568,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark red color scheme.
   static ColorScheme darkRed() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -572,6 +610,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns red color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme red(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Red');
@@ -580,6 +622,7 @@ class LegacyColorSchemes {
     return mode == ThemeMode.light ? lightRed() : darkRed();
   }
 
+  /// Returns light rose color scheme.
   static ColorScheme lightRose() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -622,6 +665,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark rose color scheme.
   static ColorScheme darkRose() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -663,6 +707,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns rose color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme rose(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Rose');
@@ -671,6 +719,7 @@ class LegacyColorSchemes {
     return mode == ThemeMode.light ? lightRose() : darkRose();
   }
 
+  /// Returns light orange color scheme.
   static ColorScheme lightOrange() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -712,6 +761,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark orange color scheme.
   static ColorScheme darkOrange() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -754,6 +804,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns orange color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme orange(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Orange');
@@ -762,6 +816,7 @@ class LegacyColorSchemes {
     return mode == ThemeMode.light ? lightOrange() : darkOrange();
   }
 
+  /// Returns light green color scheme.
   static ColorScheme lightGreen() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -804,6 +859,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark green color scheme.
   static ColorScheme darkGreen() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -845,6 +901,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns green color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme green(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Green');
@@ -853,6 +913,7 @@ class LegacyColorSchemes {
     return mode == ThemeMode.light ? lightGreen() : darkGreen();
   }
 
+  /// Returns light blue color scheme.
   static ColorScheme lightBlue() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -897,6 +958,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark blue color scheme.
   static ColorScheme darkBlue() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -940,6 +1002,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns blue color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme blue(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Blue');
@@ -948,6 +1014,7 @@ class LegacyColorSchemes {
     return mode == ThemeMode.light ? lightBlue() : darkBlue();
   }
 
+  /// Returns light yellow color scheme.
   static ColorScheme lightYellow() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -989,6 +1056,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark yellow color scheme.
   static ColorScheme darkYellow() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -1031,6 +1099,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns yellow color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme yellow(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Yellow');
@@ -1039,6 +1111,7 @@ class LegacyColorSchemes {
     return mode == ThemeMode.light ? lightYellow() : darkYellow();
   }
 
+  /// Returns light violet color scheme.
   static ColorScheme lightViolet() {
     return ColorScheme(
       brightness: Brightness.light,
@@ -1083,6 +1156,7 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns dark violet color scheme.
   static ColorScheme darkViolet() {
     return ColorScheme(
       brightness: Brightness.dark,
@@ -1125,6 +1199,10 @@ class LegacyColorSchemes {
     );
   }
 
+  /// Returns violet color scheme for the given [mode].
+  ///
+  /// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+  /// [ThemeMode.system] is not supported.
   static ColorScheme violet(ThemeMode mode) {
     assert(() {
       _assertNotThemeModeSystem(mode, 'Violet');
