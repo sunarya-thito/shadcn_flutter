@@ -481,20 +481,20 @@ TODO:
 - [ ] lib\src\components\layout\card.dart:303:19
 - [ ] lib\src\components\layout\card.dart:305:9
 - [ ] lib\src\components\layout\collapsible.dart:258:7
-- [ ] lib\src\components\layout\focus_outline.dart:3:7
-- [ ] lib\src\components\layout\focus_outline.dart:14:21
-- [ ] lib\src\components\layout\focus_outline.dart:4:17
-- [ ] lib\src\components\layout\focus_outline.dart:5:31
-- [ ] lib\src\components\layout\focus_outline.dart:6:17
-- [ ] lib\src\components\layout\focus_outline.dart:8:9
-- [ ] lib\src\components\layout\focus_outline.dart:40:7
-- [ ] lib\src\components\layout\focus_outline.dart:41:16
-- [ ] lib\src\components\layout\focus_outline.dart:42:14
-- [ ] lib\src\components\layout\focus_outline.dart:43:31
-- [ ] lib\src\components\layout\focus_outline.dart:44:17
-- [ ] lib\src\components\layout\focus_outline.dart:45:17
-- [ ] lib\src\components\layout\focus_outline.dart:46:19
-- [ ] lib\src\components\layout\focus_outline.dart:47:9
+- [x] lib\src\components\layout\focus_outline.dart:3:7
+- [x] lib\src\components\layout\focus_outline.dart:14:21
+- [x] lib\src\components\layout\focus_outline.dart:4:17
+- [x] lib\src\components\layout\focus_outline.dart:5:31
+- [x] lib\src\components\layout\focus_outline.dart:6:17
+- [x] lib\src\components\layout\focus_outline.dart:8:9
+- [x] lib\src\components\layout\focus_outline.dart:40:7
+- [x] lib\src\components\layout\focus_outline.dart:41:16
+- [x] lib\src\components\layout\focus_outline.dart:42:14
+- [x] lib\src\components\layout\focus_outline.dart:43:31
+- [x] lib\src\components\layout\focus_outline.dart:44:17
+- [x] lib\src\components\layout\focus_outline.dart:45:17
+- [x] lib\src\components\layout\focus_outline.dart:46:19
+- [x] lib\src\components\layout\focus_outline.dart:47:9
 - [ ] lib\src\components\layout\group.dart:4:7
 - [ ] lib\src\components\layout\group.dart:5:9
 - [ ] lib\src\components\layout\group.dart:19:7
@@ -516,22 +516,22 @@ TODO:
 - [ ] lib\src\components\layout\group.dart:183:17
 - [ ] lib\src\components\layout\group.dart:184:17
 - [ ] lib\src\components\layout\group.dart:185:17
-- [ ] lib\src\components\layout\hidden.dart:80:7
-- [ ] lib\src\components\layout\hidden.dart:81:14
-- [ ] lib\src\components\layout\hidden.dart:82:16
-- [ ] lib\src\components\layout\hidden.dart:83:15
-- [ ] lib\src\components\layout\hidden.dart:84:15
-- [ ] lib\src\components\layout\hidden.dart:85:19
-- [ ] lib\src\components\layout\hidden.dart:86:16
-- [ ] lib\src\components\layout\hidden.dart:87:15
-- [ ] lib\src\components\layout\hidden.dart:88:15
-- [ ] lib\src\components\layout\hidden.dart:90:9
-- [ ] lib\src\components\layout\media_query.dart:37:7
-- [ ] lib\src\components\layout\media_query.dart:38:17
-- [ ] lib\src\components\layout\media_query.dart:39:17
-- [ ] lib\src\components\layout\media_query.dart:40:16
-- [ ] lib\src\components\layout\media_query.dart:41:17
-- [ ] lib\src\components\layout\media_query.dart:43:9
+- [x] lib\src\components\layout\hidden.dart:80:7
+- [x] lib\src\components\layout\hidden.dart:81:14
+- [x] lib\src\components\layout\hidden.dart:82:16
+- [x] lib\src\components\layout\hidden.dart:83:15
+- [x] lib\src\components\layout\hidden.dart:84:15
+- [x] lib\src\components\layout\hidden.dart:85:19
+- [x] lib\src\components\layout\hidden.dart:86:16
+- [x] lib\src\components\layout\hidden.dart:87:15
+- [x] lib\src\components\layout\hidden.dart:88:15
+- [x] lib\src\components\layout\hidden.dart:90:9
+- [x] lib\src\components\layout\media_query.dart:37:7
+- [x] lib\src\components\layout\media_query.dart:38:17
+- [x] lib\src\components\layout\media_query.dart:39:17
+- [x] lib\src\components\layout\media_query.dart:40:16
+- [x] lib\src\components\layout\media_query.dart:41:17
+- [x] lib\src\components\layout\media_query.dart:43:9
 - [ ] lib\src\components\layout\outlined_container.dart:5:7
 - [ ] lib\src\components\layout\outlined_container.dart:6:16
 - [ ] lib\src\components\layout\outlined_container.dart:7:17
