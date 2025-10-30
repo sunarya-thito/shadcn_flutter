@@ -3,14 +3,33 @@ import 'package:flutter/services.dart';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Represents a phone number with country code information.
+///
+/// [PhoneNumber] combines a country (with dial code) and a phone number
+/// string to create a complete international phone number.
+///
+/// Example:
+/// ```dart
+/// final phone = PhoneNumber(
+///   Country(dialCode: '+1', code: 'US'),
+///   '5551234567',
+/// );
+/// print(phone.fullNumber); // +15551234567
+/// ```
 class PhoneNumber {
+  /// The country associated with this phone number.
   final Country country;
+  
+  /// The phone number without the country code.
   final String number; // without country code
 
+  /// Creates a [PhoneNumber] with the specified country and number.
   const PhoneNumber(this.country, this.number);
 
+  /// Gets the complete phone number including country code.
   String get fullNumber => '${country.dialCode}$number';
 
+  /// Gets the full number or null if the number is empty.
   String? get value => number.isEmpty ? null : fullNumber;
 
   @override
