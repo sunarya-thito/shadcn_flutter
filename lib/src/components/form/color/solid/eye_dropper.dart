@@ -346,6 +346,10 @@ class _EyeDropperLayerState extends State<EyeDropperLayer>
   }
 }
 
+/// Prompts the user to pick a color from the screen using an eye dropper tool.
+///
+/// Returns the selected color, or null if the operation was cancelled.
+/// Optionally stores the selected color in the provided [storage].
 Future<Color?> pickColorFromScreen(BuildContext context,
     [ColorHistoryStorage? storage]) {
   final scope = EyeDropperLayerScope.find(context);

@@ -12,15 +12,31 @@ import 'package:shadcn_flutter/src/components/control/hover.dart';
 /// interaction behaviors. These properties can be set at the theme level
 /// to provide consistent behavior across the application.
 class SelectTheme {
+  /// Constraints for the popup menu size.
   final BoxConstraints? popupConstraints;
+
+  /// Alignment of the popover relative to the anchor.
   final AlignmentGeometry? popoverAlignment;
+
+  /// Anchor alignment for the popover.
   final AlignmentGeometry? popoverAnchorAlignment;
+
+  /// Border radius for select items.
   final BorderRadiusGeometry? borderRadius;
+
+  /// Padding inside select items.
   final EdgeInsetsGeometry? padding;
+
+  /// Whether to disable hover effects on items.
   final bool? disableHoverEffect;
+
+  /// Whether the selected item can be unselected.
   final bool? canUnselect;
+
+  /// Whether to automatically close the popover after selection.
   final bool? autoClosePopover;
 
+  /// Creates a select theme.
   const SelectTheme({
     this.popupConstraints,
     this.popoverAlignment,
@@ -32,6 +48,7 @@ class SelectTheme {
     this.autoClosePopover,
   });
 
+  /// Creates a copy of this theme with the given fields replaced.
   SelectTheme copyWith({
     ValueGetter<BoxConstraints?>? popupConstraints,
     ValueGetter<AlignmentGeometry?>? popoverAlignment,
@@ -534,12 +551,23 @@ class ControlledMultiSelect<T> extends StatelessWidget
   }
 }
 
+/// A button widget representing a selectable item in a dropdown menu.
+///
+/// Used within select dropdowns to create clickable option items.
 class SelectItemButton<T> extends StatelessWidget {
+  /// The value this item represents.
   final T value;
+
+  /// The child widget to display as the item content.
   final Widget child;
+
+  /// The button style for this item.
   final AbstractButtonStyle style;
+
+  /// Whether this item is enabled.
   final bool? enabled;
 
+  /// Creates a select item button.
   const SelectItemButton({
     super.key,
     required this.value,
@@ -598,11 +626,21 @@ class SelectItemButton<T> extends StatelessWidget {
   }
 }
 
+/// A container for grouping related select items with optional headers and footers.
+///
+/// Organizes select menu items into logical sections with optional header
+/// and footer widgets.
 class SelectGroup extends StatelessWidget {
+  /// Optional header widgets displayed above the group.
   final List<Widget>? headers;
+
+  /// The list of select items in this group.
   final List<Widget> children;
+
+  /// Optional footer widgets displayed below the group.
   final List<Widget>? footers;
 
+  /// Creates a select group.
   const SelectGroup({
     super.key,
     this.headers,
