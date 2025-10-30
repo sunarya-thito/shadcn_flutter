@@ -120,10 +120,32 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
   State<DateInput> createState() => _DateInputState();
 }
 
+/// Represents a date with nullable components (year, month, day).
+///
+/// Useful for date input scenarios where individual date parts may be
+/// missing or incomplete. Can convert to [DateTime] when all parts are present.
+///
+/// Example:
+/// ```dart
+/// final date = NullableDate(year: 2024, month: 1, day: 15);
+/// print(date.nullableDate); // DateTime(2024, 1, 15)
+/// ```
 class NullableDate {
+  /// The year component (nullable).
   final int? year;
+  
+  /// The month component (nullable).
   final int? month;
+  
+  /// The day component (nullable).
   final int? day;
+  
+  /// Creates a [NullableDate].
+  ///
+  /// Parameters:
+  /// - [year] (`int?`, optional): Year value.
+  /// - [month] (`int?`, optional): Month value (1-12).
+  /// - [day] (`int?`, optional): Day value (1-31).
   NullableDate({this.year, this.month, this.day});
 
   @override
@@ -144,6 +166,14 @@ class NullableDate {
   @override
   int get hashCode => Object.hash(year, month, day);
 
+  /// Creates a copy with specified parts replaced.
+  ///
+  /// Parameters:
+  /// - [year] (`ValueGetter<int?>?`, optional): New year value.
+  /// - [month] (`ValueGetter<int?>?`, optional): New month value.
+  /// - [day] (`ValueGetter<int?>?`, optional): New day value.
+  ///
+  /// Returns: A new [NullableDate] with updated parts.
   NullableDate copyWith({
     ValueGetter<int?>? year,
     ValueGetter<int?>? month,
@@ -156,10 +186,16 @@ class NullableDate {
     );
   }
 
+  /// Converts to [DateTime], using 0 for missing parts.
+  ///
+  /// Returns: A [DateTime] instance (may be invalid if parts are null/0).
   DateTime get date {
     return DateTime(year ?? 0, month ?? 0, day ?? 0);
   }
 
+  /// Converts to [DateTime] only if all parts are present.
+  ///
+  /// Returns: A [DateTime] if complete, otherwise null.
   DateTime? get nullableDate {
     if (year == null || month == null || day == null) {
       return null;
@@ -167,6 +203,12 @@ class NullableDate {
     return date;
   }
 
+  /// Retrieves the value of a specific date part.
+  ///
+  /// Parameters:
+  /// - [part] (`DatePart`, required): The date part to retrieve.
+  ///
+  /// Returns: The value of the specified part, or null if not set.
   int? operator [](DatePart part) {
     switch (part) {
       case DatePart.year:
@@ -178,6 +220,9 @@ class NullableDate {
     }
   }
 
+  /// Converts to a map of date parts.
+  ///
+  /// Returns: A `Map<DatePart, int>` with non-null parts.
   Map<DatePart, int> toMap() {
     return {
       if (year != null) DatePart.year: year!,
@@ -345,11 +390,32 @@ class _DateInputState extends State<DateInput> {
   }
 }
 
+/// Represents a time with nullable components (hour, minute, second).
+///
+/// Useful for time input scenarios where individual time parts may be
+/// missing or incomplete. Can convert to [TimeOfDay] when hour and minute are present.
+///
+/// Example:
+/// ```dart
+/// final time = NullableTimeOfDay(hour: 14, minute: 30, second: 0);
+/// print(time.toTimeOfDay); // TimeOfDay(hour: 14, minute: 30)
+/// ```
 class NullableTimeOfDay {
+  /// The hour component (nullable, 0-23).
   final int? hour;
+  
+  /// The minute component (nullable, 0-59).
   final int? minute;
+  
+  /// The second component (nullable, 0-59).
   final int? second;
 
+  /// Creates a [NullableTimeOfDay].
+  ///
+  /// Parameters:
+  /// - [hour] (`int?`, optional): Hour value (0-23).
+  /// - [minute] (`int?`, optional): Minute value (0-59).
+  /// - [second] (`int?`, optional): Second value (0-59).
   NullableTimeOfDay({this.hour, this.minute, this.second});
 
   @override
@@ -370,6 +436,14 @@ class NullableTimeOfDay {
   @override
   int get hashCode => Object.hash(hour, minute, second);
 
+  /// Creates a copy with specified parts replaced.
+  ///
+  /// Parameters:
+  /// - [hour] (`ValueGetter<int?>?`, optional): New hour value.
+  /// - [minute] (`ValueGetter<int?>?`, optional): New minute value.
+  /// - [second] (`ValueGetter<int?>?`, optional): New second value.
+  ///
+  /// Returns: A new [NullableTimeOfDay] with updated parts.
   NullableTimeOfDay copyWith({
     ValueGetter<int?>? hour,
     ValueGetter<int?>? minute,
@@ -382,6 +456,9 @@ class NullableTimeOfDay {
     );
   }
 
+  /// Converts to [TimeOfDay] if hour and minute are present.
+  ///
+  /// Returns: A [TimeOfDay] instance, or null if hour or minute is missing.
   TimeOfDay? get toTimeOfDay {
     if (hour == null || minute == null) {
       return null;
@@ -389,6 +466,12 @@ class NullableTimeOfDay {
     return TimeOfDay(hour: hour!, minute: minute!);
   }
 
+  /// Creates a [NullableTimeOfDay] from a [TimeOfDay].
+  ///
+  /// Parameters:
+  /// - [timeOfDay] (`TimeOfDay?`, optional): The time to convert.
+  ///
+  /// Returns: A [NullableTimeOfDay] instance, or null if input is null.
   static NullableTimeOfDay? fromTimeOfDay(TimeOfDay? timeOfDay) {
     if (timeOfDay == null) {
       return null;
@@ -400,6 +483,12 @@ class NullableTimeOfDay {
     );
   }
 
+  /// Retrieves the value of a specific time part.
+  ///
+  /// Parameters:
+  /// - [part] (`TimePart`, required): The time part to retrieve.
+  ///
+  /// Returns: The value of the specified part, or null if not set.
   int? operator [](TimePart part) {
     switch (part) {
       case TimePart.hour:
@@ -411,6 +500,9 @@ class NullableTimeOfDay {
     }
   }
 
+  /// Converts to a map of time parts.
+  ///
+  /// Returns: A `Map<TimePart, int>` with non-null parts.
   Map<TimePart, int> toMap() {
     return {
       if (hour != null) TimePart.hour: hour!,
