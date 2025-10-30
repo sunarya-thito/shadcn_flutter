@@ -8,7 +8,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 typedef PreviewLabelBuilder = Widget Function(
     BuildContext context, Color color);
 
-class ColorPickingLayer extends StatefulWidget {
+class EyeDropperLayer extends StatefulWidget {
   final Widget child;
   final AlignmentGeometry? previewAlignment;
   final bool showPreview;
@@ -16,7 +16,7 @@ class ColorPickingLayer extends StatefulWidget {
   final double previewScale;
   final PreviewLabelBuilder? previewLabelBuilder;
 
-  const ColorPickingLayer({
+  const EyeDropperLayer({
     super.key,
     required this.child,
     this.previewAlignment,
@@ -27,7 +27,7 @@ class ColorPickingLayer extends StatefulWidget {
   });
 
   @override
-  State<ColorPickingLayer> createState() => _ColorPickingLayerState();
+  State<EyeDropperLayer> createState() => _EyeDropperLayerState();
 }
 
 class _ScreenshotResult {
@@ -67,20 +67,20 @@ class _ScreenshotImage extends ImageProvider<_ScreenshotImage> {
   }
 }
 
-class _ColorPickingCompleter {
+class _EyeDropperCompleter {
   final Completer<Color?> completer;
   final Set<ColorHistoryStorage> recentColorsScope;
 
-  _ColorPickingCompleter(this.completer, this.recentColorsScope);
+  _EyeDropperCompleter(this.completer, this.recentColorsScope);
 }
 
-class _ColorPickingLayerState extends State<ColorPickingLayer>
-    implements ColorPickingLayerScope {
+class _EyeDropperLayerState extends State<EyeDropperLayer>
+    implements EyeDropperLayerScope {
   final GlobalKey _repaintKey = GlobalKey();
   _ScreenshotResult? _currentPicking;
-  ColorPickingResult? _preview;
+  EyeDropperResult? _preview;
   Offset? _currentPosition;
-  _ColorPickingCompleter? _session;
+  _EyeDropperCompleter? _session;
 
   Widget _buildPreviewLabel(BuildContext context, Color color) {
     if (widget.previewLabelBuilder != null) {
@@ -109,7 +109,7 @@ class _ColorPickingLayerState extends State<ColorPickingLayer>
     final completer = Completer<Color?>();
     final screenshot = await _screenshotWidget();
     setState(() {
-      _session = _ColorPickingCompleter(
+      _session = _EyeDropperCompleter(
         completer,
         historyStorage != null ? {historyStorage} : {},
       );
@@ -143,7 +143,7 @@ class _ColorPickingLayerState extends State<ColorPickingLayer>
         colors, Size(image.width.toDouble(), image.height.toDouble()), img);
   }
 
-  ColorPickingResult? _getPreview(Offset globalPosition, Size size) {
+  EyeDropperResult? _getPreview(Offset globalPosition, Size size) {
     final image = _currentPicking;
     if (image == null) return null;
     final colors = <Color>[];
@@ -164,7 +164,7 @@ class _ColorPickingLayerState extends State<ColorPickingLayer>
     final globalIndex = globalPosition.dy.floor() * image.size.width.floor() +
         globalPosition.dx.floor();
     final pickedColor = image.colors[globalIndex];
-    return ColorPickingResult(colors, size, pickedColor);
+    return EyeDropperResult(colors, size, pickedColor);
   }
 
   @override
@@ -172,7 +172,7 @@ class _ColorPickingLayerState extends State<ColorPickingLayer>
     final theme = Theme.of(context);
     final previewSize =
         widget.previewSize ?? const Size(100, 100) * theme.scaling;
-    return Data<ColorPickingLayerScope>.inherit(
+    return Data<EyeDropperLayerScope>.inherit(
       data: this,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -306,7 +306,7 @@ class _ColorPickingLayerState extends State<ColorPickingLayer>
 
 Future<Color?> pickColorFromScreen(BuildContext context,
     [ColorHistoryStorage? storage]) {
-  final scope = ColorPickingLayerScope.find(context);
+  final scope = EyeDropperLayerScope.find(context);
   return scope.promptPickColor(storage);
 }
 
@@ -403,23 +403,23 @@ class _ColorPreviewPainter extends CustomPainter {
   }
 }
 
-abstract class ColorPickingLayerScope {
+abstract class EyeDropperLayerScope {
   Future<Color?> promptPickColor([ColorHistoryStorage? historyStorage]);
-  static ColorPickingLayerScope findRoot(BuildContext context) {
-    return Data.findRoot<ColorPickingLayerScope>(context);
+  static EyeDropperLayerScope findRoot(BuildContext context) {
+    return Data.findRoot<EyeDropperLayerScope>(context);
   }
 
-  static ColorPickingLayerScope find(BuildContext context) {
-    return Data.find<ColorPickingLayerScope>(context);
+  static EyeDropperLayerScope find(BuildContext context) {
+    return Data.find<EyeDropperLayerScope>(context);
   }
 }
 
-class ColorPickingResult {
+class EyeDropperResult {
   final Size size;
   final List<Color> colors;
   final Color pickedColor;
 
-  const ColorPickingResult(this.colors, this.size, this.pickedColor);
+  const EyeDropperResult(this.colors, this.size, this.pickedColor);
 
   Color operator [](Offset position) {
     int index =

@@ -546,7 +546,7 @@ class ShadcnLayer extends StatelessWidget {
                       initialRecentColors: initialRecentColors,
                       maxRecentColors: maxRecentColors,
                       onRecentColorsChanged: onRecentColorsChanged,
-                      child: ColorPickingLayer(
+                      child: EyeDropperLayer(
                         child: KeyboardShortcutDisplayMapper(
                           child: ToastLayer(
                             child: builder != null
