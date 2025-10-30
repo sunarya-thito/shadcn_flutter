@@ -109,8 +109,8 @@ class CodeBlock extends StatelessWidget {
       code: CodeHighlighter(code: code, mode: mode),
       actions: [
         ...actions,
-        IconButton.outline(
-          size: ButtonSize.small,
+        IconButton.ghost(
+          density: ButtonDensity.icon,
           onPressed: () {
             Clipboard.setData(ClipboardData(text: code)).then((_) {
               if (context.mounted) {
@@ -132,7 +132,10 @@ class CodeBlock extends StatelessWidget {
               }
             });
           },
-          icon: const Icon(Icons.copy),
+          icon: const Icon(
+            Icons.copy,
+            size: 16,
+          ),
         ),
       ],
     );
