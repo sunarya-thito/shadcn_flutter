@@ -104,7 +104,7 @@ const kTextFieldHeight = 34;
 /// Example:
 /// ```dart
 /// // Show clear button when text is not empty and field is focused
-/// final visibility = InputFeatureVisibility.textNotEmpty & 
+/// final visibility = InputFeatureVisibility.textNotEmpty &
 ///                   InputFeatureVisibility.focused;
 /// ```
 abstract class InputFeatureVisibility {
@@ -579,10 +579,6 @@ abstract class InputFeatureState<T extends InputFeature> {
     return inputState!.effectiveController;
   }
 
-  /// Initializes this feature state.
-  ///
-  /// Called when the feature is first attached to a text field.
-  void initState() {
   late AnimationController _visibilityController;
 
   Iterable<Widget> _internalBuildLeading() sync* {
@@ -611,6 +607,9 @@ abstract class InputFeatureState<T extends InputFeature> {
     }
   }
 
+  /// Initializes this feature state.
+  ///
+  /// Called when the feature is first attached to a text field.
   void initState() {
     _visibilityController = AnimationController(
       vsync: tickerProvider,
@@ -1787,6 +1786,12 @@ class TextField extends TextInputStatefulWidget {
     );
     properties.add(IterableProperty<InputFeature>('features', features));
   }
+}
+
+class _AttachedInputFeature {
+  InputFeature feature;
+  final InputFeatureState state;
+  _AttachedInputFeature(this.feature, this.state);
 }
 
 /// State class for [TextField] widget.

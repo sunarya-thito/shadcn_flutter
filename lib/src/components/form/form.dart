@@ -199,7 +199,7 @@ enum FormValidationMode {
 class ValidationMode<T> extends Validator<T> {
   /// The underlying validator to execute when mode conditions are met.
   final Validator<T> validator;
-  
+
   /// The set of validation modes during which this validator should run.
   final Set<FormValidationMode> mode;
 
@@ -332,10 +332,10 @@ class IgnoreForm<T> extends StatelessWidget {
 class ConditionalValidator<T> extends Validator<T> {
   /// The predicate function that determines if validation should be applied.
   final FuturePredicate<T> predicate;
-  
+
   /// The error message to display when validation fails.
   final String message;
-  
+
   /// List of form field keys this validator depends on.
   final List<FormKey> dependencies;
 
@@ -405,7 +405,7 @@ typedef ValidatorBuilderFunction<T> = FutureOr<ValidationResult?> Function(
 class ValidatorBuilder<T> extends Validator<T> {
   /// The function that performs the validation.
   final ValidatorBuilderFunction<T> builder;
-  
+
   /// List of form field keys this validator depends on.
   final List<FormKey> dependencies;
 
@@ -448,7 +448,7 @@ class ValidatorBuilder<T> extends Validator<T> {
 class NotValidator<T> extends Validator<T> {
   /// The validator whose result will be negated.
   final Validator<T> validator;
-  
+
   /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
@@ -648,10 +648,10 @@ class NotEmptyValidator extends NonNullValidator<String> {
 class LengthValidator extends Validator<String> {
   /// Minimum length requirement (inclusive), or null for no minimum.
   final int? min;
-  
+
   /// Maximum length requirement (inclusive), or null for no maximum.
   final int? max;
-  
+
   /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
@@ -700,21 +700,21 @@ class LengthValidator extends Validator<String> {
 /// Defines comparison operators for numeric validation.
 ///
 /// Used by [CompareValidator] to specify the type of comparison to perform.
-enum CompareType { 
+enum CompareType {
   /// Value must be greater than the compared value.
-  greater, 
-  
+  greater,
+
   /// Value must be greater than or equal to the compared value.
-  greaterOrEqual, 
-  
+  greaterOrEqual,
+
   /// Value must be less than the compared value.
-  less, 
-  
+  less,
+
   /// Value must be less than or equal to the compared value.
-  lessOrEqual, 
-  
+  lessOrEqual,
+
   /// Value must be equal to the compared value.
-  equal 
+  equal
 }
 
 /// A validator that compares a field's value with another form field's value.
@@ -733,31 +733,31 @@ enum CompareType {
 class CompareWith<T extends Comparable<T>> extends Validator<T> {
   /// The form field key to compare against.
   final FormKey<T> key;
-  
+
   /// The type of comparison to perform.
   final CompareType type;
-  
+
   /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
   /// Creates a [CompareWith] validator with the specified comparison type.
   const CompareWith(this.key, this.type, {this.message});
-  
+
   /// Creates a validator that checks for equality with another field.
   const CompareWith.equal(this.key, {this.message}) : type = CompareType.equal;
-  
+
   /// Creates a validator that checks if value is greater than another field.
   const CompareWith.greater(this.key, {this.message})
       : type = CompareType.greater;
-      
+
   /// Creates a validator that checks if value is greater than or equal to another field.
   const CompareWith.greaterOrEqual(this.key, {this.message})
       : type = CompareType.greaterOrEqual;
-      
+
   /// Creates a validator that checks if value is less than another field.
   const CompareWith.less(this.key, {this.message}) : type = CompareType.less;
-  
+
   /// Creates a validator that checks if value is less than or equal to another field.
   const CompareWith.lessOrEqual(this.key, {this.message})
       : type = CompareType.lessOrEqual;
@@ -860,16 +860,16 @@ class SafePasswordValidator extends Validator<String> {
   /// Custom error message, or null to use default localized messages.
   final String?
       message; // if null, use default message from ShadcnLocalizations
-      
+
   /// Whether password must contain at least one digit.
   final bool requireDigit;
-  
+
   /// Whether password must contain at least one lowercase letter.
   final bool requireLowercase;
-  
+
   /// Whether password must contain at least one uppercase letter.
   final bool requireUppercase;
-  
+
   /// Whether password must contain at least one special character.
   final bool requireSpecialChar;
 
@@ -948,10 +948,10 @@ class SafePasswordValidator extends Validator<String> {
 class MinValidator<T extends num> extends Validator<T> {
   /// The minimum acceptable value.
   final T min;
-  
+
   /// Whether the minimum value itself is acceptable (true) or must be exceeded (false).
   final bool inclusive;
-  
+
   /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
@@ -1013,10 +1013,10 @@ class MinValidator<T extends num> extends Validator<T> {
 class MaxValidator<T extends num> extends Validator<T> {
   /// The maximum acceptable value.
   final T max;
-  
+
   /// Whether the maximum value itself is acceptable (true) or must not be reached (false).
   final bool inclusive;
-  
+
   /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
@@ -1079,13 +1079,13 @@ class MaxValidator<T extends num> extends Validator<T> {
 class RangeValidator<T extends num> extends Validator<T> {
   /// The minimum acceptable value.
   final T min;
-  
+
   /// The maximum acceptable value.
   final T max;
-  
+
   /// Whether the bounds are inclusive (true) or exclusive (false).
   final bool inclusive;
-  
+
   /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
@@ -1148,7 +1148,7 @@ class RangeValidator<T extends num> extends Validator<T> {
 class RegexValidator extends Validator<String> {
   /// The regular expression pattern to match against.
   final RegExp pattern;
-  
+
   /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
@@ -1285,31 +1285,31 @@ class URLValidator extends Validator<String> {
 class CompareTo<T extends Comparable<T>> extends Validator<T> {
   /// The value to compare against.
   final T? value;
-  
+
   /// The type of comparison to perform.
   final CompareType type;
-  
+
   /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
   /// Creates a [CompareTo] validator with the specified comparison type.
   const CompareTo(this.value, this.type, {this.message});
-  
+
   /// Creates a validator that checks for equality with a value.
   const CompareTo.equal(this.value, {this.message}) : type = CompareType.equal;
-  
+
   /// Creates a validator that checks if field value is greater than the specified value.
   const CompareTo.greater(this.value, {this.message})
       : type = CompareType.greater;
-      
+
   /// Creates a validator that checks if field value is greater than or equal to the specified value.
   const CompareTo.greaterOrEqual(this.value, {this.message})
       : type = CompareType.greaterOrEqual;
-      
+
   /// Creates a validator that checks if field value is less than the specified value.
   const CompareTo.less(this.value, {this.message}) : type = CompareType.less;
-  
+
   /// Creates a validator that checks if field value is less than or equal to the specified value.
   const CompareTo.lessOrEqual(this.value, {this.message})
       : type = CompareType.lessOrEqual;
@@ -1467,13 +1467,13 @@ class CompositeValidator<T> extends Validator<T> {
 abstract class ValidationResult {
   /// The form validation mode that triggered this result.
   final FormValidationMode state;
-  
+
   /// Creates a [ValidationResult] with the specified validation state.
   const ValidationResult({required this.state});
-  
+
   /// The form field key associated with this validation result.
   FormKey get key;
-  
+
   /// Attaches a form field key to this validation result.
   ValidationResult attach(FormKey key);
 }
@@ -1486,7 +1486,7 @@ abstract class ValidationResult {
 class ReplaceResult<T> extends ValidationResult {
   /// The replacement value to use.
   final T value;
-  
+
   final FormKey? _key;
 
   /// Creates a [ReplaceResult] with the specified replacement value.
@@ -1517,12 +1517,12 @@ class ReplaceResult<T> extends ValidationResult {
 class InvalidResult extends ValidationResult {
   /// The error message describing the validation failure.
   final String message;
-  
+
   final FormKey? _key;
 
   /// Creates an [InvalidResult] with the specified error message.
   const InvalidResult(this.message, {required super.state}) : _key = null;
-  
+
   /// Creates an [InvalidResult] already attached to a form field key.
   const InvalidResult.attached(this.message,
       {required FormKey key, required super.state})
@@ -1548,7 +1548,7 @@ class InvalidResult extends ValidationResult {
 class FormValidityNotification extends Notification {
   /// The previous validation result, or null if there was none.
   final ValidationResult? oldValidity;
-  
+
   /// The new validation result, or null if now valid.
   final ValidationResult? newValidity;
 
@@ -2631,8 +2631,6 @@ class SubmissionResult {
   final Map<FormKey, ValidationResult> errors;
 
   /// Creates a submission result.
-  const SubmissionResult(this.values, this.errors);
-
   const SubmissionResult(this.values, this.errors);
 
   @override
