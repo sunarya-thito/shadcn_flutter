@@ -1035,12 +1035,25 @@ extension CalendarDateTime on DateTime {
 /// )
 /// ```
 class Calendar extends StatefulWidget {
+  /// The current date for highlighting purposes (defaults to DateTime.now()).
   final DateTime? now;
+
+  /// The currently selected date value(s).
   final CalendarValue? value;
+
+  /// The month and year view to display in the calendar.
   final CalendarView view;
+
+  /// The selection mode determining how dates can be selected.
   final CalendarSelectionMode selectionMode;
+
+  /// Callback invoked when the selected date(s) change.
   final ValueChanged<CalendarValue?>? onChanged;
+
+  /// Legacy function to determine if a date should be enabled.
   final bool Function(DateTime date)? isDateEnabled;
+
+  /// Builder function to determine the state of each date.
   final DateStateBuilder? stateBuilder;
 
   /// Creates a [Calendar] widget with flexible date selection capabilities.
@@ -1236,13 +1249,27 @@ class _CalendarState extends State<Calendar> {
   }
 }
 
+/// A calendar widget that displays months in a year grid.
+///
+/// Shows a 4x3 grid of months for year selection. Used as part of the calendar
+/// navigation when users want to select a different month.
 class MonthCalendar extends StatelessWidget {
+  /// The current calendar view (year to display).
   final CalendarView value;
+
+  /// Callback invoked when a month is selected.
   final ValueChanged<CalendarView> onChanged;
+
+  /// The current date for highlighting purposes.
   final DateTime? now;
+
+  /// The currently selected calendar value.
   final CalendarValue? calendarValue;
+
+  /// Builder function to determine the state of each month.
   final DateStateBuilder? stateBuilder;
 
+  /// Creates a month selection calendar.
   const MonthCalendar({
     super.key,
     required this.value,
@@ -1319,14 +1346,30 @@ class MonthCalendar extends StatelessWidget {
   }
 }
 
+/// A calendar widget that displays years in a grid.
+///
+/// Shows a 4x4 grid of years for year selection. Used as part of the calendar
+/// navigation when users want to select a different year.
 class YearCalendar extends StatelessWidget {
+  /// The starting year for the grid display.
   final int yearSelectStart;
+
+  /// The currently selected year value.
   final int value;
+
+  /// Callback invoked when a year is selected.
   final ValueChanged<int> onChanged;
+
+  /// The current date for highlighting purposes.
   final DateTime? now;
+
+  /// The currently selected calendar value.
   final CalendarValue? calendarValue;
+
+  /// Builder function to determine the state of each year.
   final DateStateBuilder? stateBuilder;
 
+  /// Creates a year selection calendar.
   const YearCalendar({
     super.key,
     required this.yearSelectStart,
@@ -1459,15 +1502,31 @@ enum CalendarItemType {
 /// )
 /// ```
 class CalendarItem extends StatelessWidget {
+  /// The widget to display as the date content.
   final Widget child;
+
+  /// The visual state type for this calendar item.
   final CalendarItemType type;
+
+  /// Callback invoked when the item is tapped.
   final VoidCallback? onTap;
+
+  /// The position of this item in its row (0-indexed).
   final int indexAtRow;
+
+  /// The total number of items per row.
   final int rowCount;
+
+  /// Optional fixed width for the item.
   final double? width;
+
+  /// Optional fixed height for the item.
   final double? height;
+
+  /// The interaction state of this date (enabled/disabled).
   final DateState state;
 
+  /// Creates a calendar item with the specified properties.
   const CalendarItem({
     super.key,
     required this.child,
@@ -1736,11 +1795,25 @@ class CalendarItem extends StatelessWidget {
   }
 }
 
+/// Data structure representing a complete calendar month grid.
+///
+/// Contains all the information needed to render a calendar grid including
+/// dates from the current month and overflow dates from adjacent months
+/// to fill complete weeks.
 class CalendarGridData {
+  /// The month number (1-12) this grid represents.
   final int month;
+
+  /// The year this grid represents.
   final int year;
+
+  /// The list of calendar grid items including current and adjacent month dates.
   final List<CalendarGridItem> items;
 
+  /// Creates calendar grid data for the specified month and year.
+  ///
+  /// Automatically calculates and includes dates from previous and next months
+  /// to fill complete weeks in the grid.
   factory CalendarGridData({required int month, required int year}) {
     DateTime firstDayOfMonth = DateTime(year, month, 1);
     int daysInMonth = DateTime(year, month == 12 ? 1 : month + 1, 0).day;
@@ -1810,15 +1883,27 @@ class CalendarGridData {
   int get hashCode => Object.hash(month, year, items);
 }
 
+/// Individual item within a calendar grid representing a single date cell.
+///
+/// Contains metadata about a date's position and state within the calendar grid.
 class CalendarGridItem {
+  /// The date this grid item represents.
   final DateTime date;
+
+  /// The index of this item within its row (0-6 for day of week).
   final int indexInRow;
+
+  /// The row index in the calendar grid.
   final int rowIndex;
+
+  /// Whether this date belongs to a different month than the grid's primary month.
   final bool fromAnotherMonth;
 
+  /// Creates a calendar grid item.
   CalendarGridItem(
       this.date, this.indexInRow, this.fromAnotherMonth, this.rowIndex);
 
+  /// Returns true if this item represents today's date.
   bool get isToday {
     DateTime now = DateTime.now();
     return date.year == now.year &&
@@ -1841,10 +1926,18 @@ class CalendarGridItem {
   int get hashCode => Object.hash(date, indexInRow, fromAnotherMonth, rowIndex);
 }
 
+/// Widget that renders a calendar grid using provided data.
+///
+/// Takes calendar grid data and an item builder to render the visual grid
+/// of calendar dates. Handles layout and arrangement of dates in a weekly grid.
 class CalendarGrid extends StatelessWidget {
+  /// The grid data containing all calendar items to display.
   final CalendarGridData data;
+
+  /// Builder function to create widgets for each grid item.
   final Widget Function(CalendarGridItem item) itemBuilder;
 
+  /// Creates a calendar grid widget.
   const CalendarGrid({
     super.key,
     required this.data,
