@@ -2,6 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Builder function type for creating custom keyboard key displays.
+///
+/// Takes the build context and logical keyboard key, and returns
+/// a widget representing that key.
 typedef KeyboardShortcutDisplayBuilder = Widget Function(
   BuildContext context,
   LogicalKeyboardKey key,
@@ -51,16 +55,26 @@ class KeyboardShortcutTheme {
   int get hashCode => Object.hash(spacing, keyPadding, keyShadow);
 }
 
+/// Handle for accessing keyboard shortcut display builders.
+///
+/// Wraps a keyboard shortcut display builder function to provide
+/// a consistent API for building key displays.
 class KeyboardShortcutDisplayHandle {
   final KeyboardShortcutDisplayBuilder _builder;
 
+  /// Creates a handle with the specified builder.
   const KeyboardShortcutDisplayHandle(this._builder);
 
+  /// Builds a display widget for the specified keyboard key.
   Widget buildKeyboardDisplay(BuildContext context, LogicalKeyboardKey key) {
     return _builder(context, key);
   }
 }
 
+/// Widget that provides keyboard shortcut display customization.
+///
+/// Allows customization of how keyboard shortcuts are displayed
+/// throughout the widget tree using a builder function.
 class KeyboardShortcutDisplayMapper extends StatefulWidget {
   static Widget _defaultBuilder(BuildContext context, LogicalKeyboardKey key) {
     switch (key) {
@@ -95,9 +109,13 @@ class KeyboardShortcutDisplayMapper extends StatefulWidget {
     }
   }
 
+  /// The builder function for creating key displays.
   final KeyboardShortcutDisplayBuilder builder;
+
+  /// The child widget that will have access to this mapper.
   final Widget child;
 
+  /// Creates a keyboard shortcut display mapper.
   const KeyboardShortcutDisplayMapper({
     super.key,
     this.builder = _defaultBuilder,
