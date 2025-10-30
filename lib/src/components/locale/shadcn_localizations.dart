@@ -4,10 +4,18 @@ import 'package:flutter/foundation.dart';
 
 import '../../../shadcn_flutter.dart';
 
+/// Localization delegate for Shadcn Flutter components.
+///
+/// Provides localized strings and formatters for UI components.
+/// Supports internationalization of form validation messages, date formats,
+/// and other user-facing text.
 class ShadcnLocalizationsDelegate
     extends LocalizationsDelegate<ShadcnLocalizations> {
+  /// Singleton instance of the delegate.
   static const ShadcnLocalizationsDelegate delegate =
       ShadcnLocalizationsDelegate();
+
+  /// Creates a [ShadcnLocalizationsDelegate].
   const ShadcnLocalizationsDelegate();
 
   @override
@@ -28,16 +36,40 @@ const _fileByteUnits =
 const _fileBitUnits = SizeUnitLocale(
     1024, ['Bi', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']);
 
+/// Configuration for file size unit formatting.
+///
+/// Defines the base (1024 for binary) and unit labels for formatting
+/// file sizes and data volumes.
 class SizeUnitLocale {
+  /// Base for unit conversion (typically 1024 for binary units).
   final int base;
+
+  /// List of unit labels (e.g., ['B', 'KB', 'MB', 'GB']).
   final List<String> units;
-  // separator for digit grouping, e.g. 1,000,000
+
+  /// Separator for digit grouping (e.g., ',' for 1,000,000).
   final String separator;
+
+  /// Creates a [SizeUnitLocale].
+  ///
+  /// Parameters:
+  /// - [base] (`int`, required): Base for unit conversion.
+  /// - [units] (`List<String>`, required): Unit labels.
+  /// - [separator] (`String`, default: ','): Digit separator.
   const SizeUnitLocale(this.base, this.units, {this.separator = ','});
 
+  /// Standard file size units in bytes (B, KB, MB, GB, etc.).
   static const SizeUnitLocale fileBytes = _fileByteUnits;
+
+  /// Binary file size units (Bi, KiB, MiB, GiB, etc.).
   static const SizeUnitLocale fileBits = _fileBitUnits;
 
+  /// Gets the appropriate unit label for a value.
+  ///
+  /// Parameters:
+  /// - [value] (`int`, required): The value to get unit for.
+  ///
+  /// Returns: `String` — the unit label.
   String getUnit(int value) {
     if (value <= 0) return '0 ${units[0]}';
     var log10 = _log10(value);
@@ -51,6 +83,22 @@ double _log10(num x) {
   return log(x) / ln10;
 }
 
+/// Formats a file size in bytes to a human-readable string.
+///
+/// Converts byte values to appropriate units (B, KB, MB, GB, etc.) based
+/// on the provided locale unit configuration.
+///
+/// Parameters:
+/// - [bytes] (`int`, required): File size in bytes.
+/// - [unit] (`SizeUnitLocale`, required): Unit locale configuration.
+///
+/// Returns: `String` — formatted file size with unit.
+///
+/// Example:
+/// ```dart
+/// formatFileSize(1024, SizeUnitLocale.fileBytes) // "1 KB"
+/// formatFileSize(1536, SizeUnitLocale.fileBytes) // "1.5 KB"
+/// ```
 String formatFileSize(int bytes, SizeUnitLocale unit) {
   if (bytes <= 0) return '0 ${unit.units[0]}';
   final base = unit.base;
@@ -84,9 +132,17 @@ int _getDay(DateTime dateTime) => dateTime.day;
   return (1, daysInMonth);
 }
 
+/// Represents a part of a date (year, month, or day).
+///
+/// Provides metadata and operations for individual date components.
 enum DatePart {
+  /// Year component (4 digits).
   year(_getYear, _computeYearValueRange, length: 4),
+
+  /// Month component.
   month(_getMonth, _computeMonthValueRange),
+
+  /// Day component.
   day(_getDay, _computeDayValueRange),
   ;
 
