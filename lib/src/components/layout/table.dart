@@ -2189,7 +2189,12 @@ class RawCell extends ParentDataWidget<TableParentData> {
   Type get debugTypicalAncestorWidgetClass => RawTableLayout;
 }
 
+/// Base class for table sizing strategies.
+///
+/// Abstract class that defines how table columns and rows should be sized.
+/// Implementations include fixed, flexible, and intrinsic sizing modes.
 abstract class TableSize {
+  /// Creates a [TableSize].
   const TableSize();
 }
 
@@ -2250,7 +2255,33 @@ class IntrinsicTableSize extends TableSize {
 /// index and span values.
 typedef CellPredicate = bool Function(int index, int span);
 
+/// Low-level table layout widget.
+///
+/// Provides raw table layout functionality with support for frozen rows/columns
+/// and scrolling. Used internally by higher-level table widgets.
+///
+/// Example:
+/// ```dart
+/// RawTableLayout(
+///   width: (index) => FlexTableSize(),
+///   height: (index) => FixedTableSize(50),
+///   clipBehavior: Clip.hardEdge,
+///   children: [...],
+/// )
+/// ```
 class RawTableLayout extends MultiChildRenderObjectWidget {
+  /// Creates a [RawTableLayout].
+  ///
+  /// Parameters:
+  /// - [children] (`List<Widget>`, optional): Table cell widgets.
+  /// - [width] (`TableSizeSupplier`, required): Column width supplier.
+  /// - [height] (`TableSizeSupplier`, required): Row height supplier.
+  /// - [clipBehavior] (`Clip`, required): Content clipping behavior.
+  /// - [frozenColumn] (`CellPredicate?`, optional): Frozen column predicate.
+  /// - [frozenRow] (`CellPredicate?`, optional): Frozen row predicate.
+  /// - [verticalOffset] (`double?`, optional): Vertical scroll offset.
+  /// - [horizontalOffset] (`double?`, optional): Horizontal scroll offset.
+  /// - [viewportSize] (`Size?`, optional): Viewport size for scrolling.
   const RawTableLayout({
     super.key,
     super.children,
@@ -2264,13 +2295,28 @@ class RawTableLayout extends MultiChildRenderObjectWidget {
     this.viewportSize,
   });
 
+  /// Supplier function for column widths.
   final TableSizeSupplier width;
+
+  /// Supplier function for row heights.
   final TableSizeSupplier height;
+
+  /// How content should be clipped.
   final Clip clipBehavior;
+
+  /// Predicate for determining frozen columns.
   final CellPredicate? frozenColumn;
+
+  /// Predicate for determining frozen rows.
   final CellPredicate? frozenRow;
+
+  /// Vertical scroll offset.
   final double? verticalOffset;
+
+  /// Horizontal scroll offset.
   final double? horizontalOffset;
+
+  /// Size of the visible viewport.
   final Size? viewportSize;
 
   @override
