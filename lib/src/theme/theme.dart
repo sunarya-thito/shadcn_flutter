@@ -22,6 +22,10 @@ class AdaptiveScaling {
   /// Scaling factor for text.
   final double textScaling;
 
+  /// Creates uniform [AdaptiveScaling] with the same factor for all properties.
+  ///
+  /// Parameters:
+  /// - [scaling] (`double`, default: 1): Scaling factor for radius, size, and text.
   const AdaptiveScaling([double scaling = 1])
       : this.only(
           radiusScaling: scaling,
@@ -29,6 +33,12 @@ class AdaptiveScaling {
           textScaling: scaling,
         );
 
+  /// Creates [AdaptiveScaling] with individual scaling factors.
+  ///
+  /// Parameters:
+  /// - [radiusScaling] (`double`, default: 1): Border radius scaling factor.
+  /// - [sizeScaling] (`double`, default: 1): Size and spacing scaling factor.
+  /// - [textScaling] (`double`, default: 1): Text and icon scaling factor.
   const AdaptiveScaling.only({
     this.radiusScaling = 1,
     this.sizeScaling = 1,
@@ -81,11 +91,19 @@ class AdaptiveScaling {
 
 /// A widget that applies adaptive scaling to its descendants.
 class AdaptiveScaler extends StatelessWidget {
+  /// Gets the default adaptive scaling for the current context.
+  ///
+  /// Returns [AdaptiveScaling.mobile] for iOS/Android platforms,
+  /// [AdaptiveScaling.desktop] for other platforms.
   static AdaptiveScaling defaultScalingOf(BuildContext context) {
     final theme = Theme.of(context);
     return defaultScaling(theme);
   }
 
+  /// Gets the default adaptive scaling for the given theme.
+  ///
+  /// Returns [AdaptiveScaling.mobile] for iOS/Android platforms,
+  /// [AdaptiveScaling.desktop] for other platforms.
   static AdaptiveScaling defaultScaling(ThemeData theme) {
     switch (theme.platform) {
       case TargetPlatform.iOS:
@@ -96,9 +114,17 @@ class AdaptiveScaler extends StatelessWidget {
     }
   }
 
+  /// The scaling to apply.
   final AdaptiveScaling scaling;
+
+  /// The widget below this widget in the tree.
   final Widget child;
 
+  /// Creates an [AdaptiveScaler].
+  ///
+  /// Parameters:
+  /// - [scaling] (`AdaptiveScaling`, required): Scaling factors to apply.
+  /// - [child] (`Widget`, required): Child widget.
   const AdaptiveScaler({
     super.key,
     required this.scaling,
@@ -120,15 +146,40 @@ class AdaptiveScaler extends StatelessWidget {
 /// Contains all theming information including colors, typography,
 /// scaling, and platform-specific settings.
 class ThemeData {
+  /// The color scheme for this theme.
   final ColorScheme colorScheme;
+
+  /// The typography settings for this theme.
   final Typography typography;
+
+  /// Base radius multiplier for border radius calculations.
   final double radius;
+
+  /// Scale factor for sizes and spacing.
   final double scaling;
+
   final TargetPlatform? _platform;
+
+  /// Icon theme properties defining icon sizes across different scales.
   final IconThemeProperties iconTheme;
+
+  /// Default opacity for surface overlays (0.0 to 1.0).
   final double? surfaceOpacity;
+
+  /// Default blur radius for surface effects.
   final double? surfaceBlur;
 
+  /// Creates a [ThemeData] with light color scheme.
+  ///
+  /// Parameters:
+  /// - [colorScheme] (`ColorScheme`, default: light colors): Color palette.
+  /// - [radius] (`double`, default: 0.5): Base radius multiplier.
+  /// - [scaling] (`double`, default: 1): Size scaling factor.
+  /// - [typography] (`Typography`, default: Geist): Typography settings.
+  /// - [iconTheme] (`IconThemeProperties`, default: standard sizes): Icon theme.
+  /// - [platform] (`TargetPlatform?`, optional): Target platform override.
+  /// - [surfaceOpacity] (`double?`, optional): Surface overlay opacity.
+  /// - [surfaceBlur] (`double?`, optional): Surface blur radius.
   const ThemeData({
     this.colorScheme = ColorSchemes.lightDefaultColor,
     this.radius = 0.5,
@@ -140,6 +191,17 @@ class ThemeData {
     this.surfaceBlur,
   }) : _platform = platform;
 
+  /// Creates a [ThemeData] with dark color scheme.
+  ///
+  /// Parameters:
+  /// - [colorScheme] (`ColorScheme`, default: dark colors): Color palette.
+  /// - [radius] (`double`, default: 0.5): Base radius multiplier.
+  /// - [scaling] (`double`, default: 1): Size scaling factor.
+  /// - [typography] (`Typography`, default: Geist): Typography settings.
+  /// - [iconTheme] (`IconThemeProperties`, default: standard sizes): Icon theme.
+  /// - [platform] (`TargetPlatform?`, optional): Target platform override.
+  /// - [surfaceOpacity] (`double?`, optional): Surface overlay opacity.
+  /// - [surfaceBlur] (`double?`, optional): Surface blur radius.
   const ThemeData.dark({
     this.colorScheme = ColorSchemes.darkDefaultColor,
     this.radius = 0.5,
@@ -172,22 +234,50 @@ class ThemeData {
   /// At normal radius, the scaled radius is 4
   double get radiusXs => radius * 4;
 
+  /// Creates a circular border radius using [radiusXxl].
   BorderRadius get borderRadiusXxl => BorderRadius.circular(radiusXxl);
+
+  /// Creates a circular border radius using [radiusXl].
   BorderRadius get borderRadiusXl => BorderRadius.circular(radiusXl);
+
+  /// Creates a circular border radius using [radiusLg].
   BorderRadius get borderRadiusLg => BorderRadius.circular(radiusLg);
+
+  /// Creates a circular border radius using [radiusMd].
   BorderRadius get borderRadiusMd => BorderRadius.circular(radiusMd);
+
+  /// Creates a circular border radius using [radiusSm].
   BorderRadius get borderRadiusSm => BorderRadius.circular(radiusSm);
+
+  /// Creates a circular border radius using [radiusXs].
   BorderRadius get borderRadiusXs => BorderRadius.circular(radiusXs);
 
+  /// Creates a circular radius using [radiusXxl].
   Radius get radiusXxlRadius => Radius.circular(radiusXxl);
+
+  /// Creates a circular radius using [radiusXl].
   Radius get radiusXlRadius => Radius.circular(radiusXl);
+
+  /// Creates a circular radius using [radiusLg].
   Radius get radiusLgRadius => Radius.circular(radiusLg);
+
+  /// Creates a circular radius using [radiusMd].
   Radius get radiusMdRadius => Radius.circular(radiusMd);
+
+  /// Creates a circular radius using [radiusSm].
   Radius get radiusSmRadius => Radius.circular(radiusSm);
+
+  /// Creates a circular radius using [radiusXs].
   Radius get radiusXsRadius => Radius.circular(radiusXs);
 
+  /// Gets the brightness (light or dark) from the color scheme.
   Brightness get brightness => colorScheme.brightness;
 
+  /// Creates a copy of this theme with specified properties overridden.
+  ///
+  /// All parameters are optional getters that provide new values when present.
+  ///
+  /// Returns: `ThemeData` — a new theme with updated values.
   ThemeData copyWith({
     ValueGetter<ColorScheme>? colorScheme,
     ValueGetter<double>? radius,
@@ -211,6 +301,14 @@ class ThemeData {
     );
   }
 
+  /// Linearly interpolates between two theme datas.
+  ///
+  /// Parameters:
+  /// - [a] (`ThemeData`, required): Start theme.
+  /// - [b] (`ThemeData`, required): End theme.
+  /// - [t] (`double`, required): Interpolation position (0.0 to 1.0).
+  ///
+  /// Returns: `ThemeData` — interpolated theme.
   static ThemeData lerp(
     ThemeData a,
     ThemeData b,
@@ -263,14 +361,25 @@ class ThemeData {
 
 /// An inherited widget that provides theme data to its descendants.
 class Theme extends InheritedTheme {
+  /// The theme data to provide to descendants.
   final ThemeData data;
 
+  /// Creates a [Theme].
+  ///
+  /// Parameters:
+  /// - [data] (`ThemeData`, required): Theme data to provide.
+  /// - [child] (`Widget`, required): Child widget.
   const Theme({
     super.key,
     required this.data,
     required super.child,
   });
 
+  /// Gets the [ThemeData] from the closest [Theme] ancestor.
+  ///
+  /// Throws if no [Theme] is found in the widget tree.
+  ///
+  /// Returns: `ThemeData` — the theme data.
   static ThemeData of(BuildContext context) {
     final theme = context.dependOnInheritedWidgetOfExactType<Theme>();
     assert(theme != null, 'No Theme found in context');
@@ -299,6 +408,11 @@ class Theme extends InheritedTheme {
 
 /// A tween for animating between two [ThemeData] values.
 class ThemeDataTween extends Tween<ThemeData> {
+  /// Creates a [ThemeDataTween].
+  ///
+  /// Parameters:
+  /// - [begin] (`ThemeData`, required): Starting theme.
+  /// - [end] (`ThemeData`, required): Ending theme.
   ThemeDataTween({required ThemeData super.begin, required super.end});
 
   @override
@@ -312,9 +426,19 @@ class ThemeDataTween extends Tween<ThemeData> {
 
 /// A widget that animates theme changes over time.
 class AnimatedTheme extends ImplicitlyAnimatedWidget {
+  /// The target theme data to animate to.
   final ThemeData data;
+
+  /// The widget below this widget in the tree.
   final Widget child;
 
+  /// Creates an [AnimatedTheme].
+  ///
+  /// Parameters:
+  /// - [data] (`ThemeData`, required): Target theme.
+  /// - [duration] (`Duration`, required): Animation duration.
+  /// - [curve] (`Curve`, optional): Animation curve.
+  /// - [child] (`Widget`, required): Child widget.
   const AnimatedTheme({
     super.key,
     required this.data,
