@@ -306,8 +306,21 @@ class PopoverOverlayWidget extends StatefulWidget {
   State<PopoverOverlayWidget> createState() => PopoverOverlayWidgetState();
 }
 
+/// Callback type for popover futures with value transformation.
+///
+/// Parameters:
+/// - [value] (T): Input value to transform
+///
+/// Returns a [Future] with the transformed value.
 typedef PopoverFutureVoidCallback<T> = Future<T> Function(T value);
 
+/// Size constraint strategies for popover overlays.
+///
+/// - `flexible`: Size flexibly based on content and available space
+/// - `intrinsic`: Use intrinsic content size
+/// - `anchorFixedSize`: Match anchor's exact size
+/// - `anchorMinSize`: Use anchor size as minimum
+/// - `anchorMaxSize`: Use anchor size as maximum
 enum PopoverConstraint {
   flexible,
   intrinsic,
@@ -316,6 +329,11 @@ enum PopoverConstraint {
   anchorMaxSize,
 }
 
+/// State class for [PopoverOverlayWidget] managing popover positioning and lifecycle.
+///
+/// Handles dynamic positioning, anchor tracking, size constraints, and
+/// animation for popover overlays. Implements [OverlayHandlerStateMixin]
+/// for standard overlay lifecycle management.
 class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
     with SingleTickerProviderStateMixin, OverlayHandlerStateMixin {
   late BuildContext _anchorContext;
@@ -442,20 +460,48 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
     }
   }
 
+  /// Gets the anchor widget's size.
   Size? get anchorSize => _anchorSize;
+
+  /// Gets the anchor alignment for positioning.
   AlignmentGeometry get anchorAlignment => _anchorAlignment;
+
+  /// Gets the explicit position offset.
   Offset? get position => _position;
+
+  /// Gets the popover alignment.
   AlignmentGeometry get alignment => _alignment;
+
+  /// Gets the width constraint strategy.
   PopoverConstraint get widthConstraint => _widthConstraint;
+
+  /// Gets the height constraint strategy.
   PopoverConstraint get heightConstraint => _heightConstraint;
+
+  /// Gets the position offset.
   Offset? get offset => _offset;
+
+  /// Gets the margin around the popover.
   EdgeInsetsGeometry? get margin => _margin;
+
+  /// Gets whether the popover follows the anchor on movement.
   bool get follow => _follow;
+
+  /// Gets the anchor build context.
   BuildContext get anchorContext => _anchorContext;
+
+  /// Gets whether horizontal inversion is allowed.
   bool get allowInvertHorizontal => _allowInvertHorizontal;
+
+  /// Gets whether vertical inversion is allowed.
   bool get allowInvertVertical => _allowInvertVertical;
+
+  /// Gets the layer link for positioning.
   LayerLink? get layerLink => _layerLink;
 
+  /// Sets the layer link for positioning.
+  ///
+  /// Updates the layer link and manages ticker state for anchor tracking.
   set layerLink(LayerLink? value) {
     if (_layerLink != value) {
       setState(() {
@@ -480,6 +526,9 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
     }
   }
 
+  /// Sets the popover position.
+  ///
+  /// Updates the explicit position and triggers a rebuild.
   set position(Offset? value) {
     if (_position != value) {
       setState(() {
@@ -673,10 +722,17 @@ Future<void> closePopover<T>(BuildContext context, [T? result]) {
   return closeOverlay<T>(context, result);
 }
 
+/// Implementation of [OverlayCompleter] for popover overlays.
+///
+/// Manages the lifecycle of a popover overlay entry, tracking completion
+/// state and handling overlay/barrier entry disposal.
 class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
   late OverlayEntry _overlayEntry;
   late OverlayEntry? _barrierEntry;
+
+  /// Completer for the popover's result value.
   final Completer<T?> completer = Completer();
+
   final Completer<T?> animationCompleter = Completer();
 
   bool _removed = false;
@@ -685,6 +741,13 @@ class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
   @override
   bool get isCompleted => completer.isCompleted;
 
+  /// Initializes the popover entry with overlay entries.
+  ///
+  /// Must be called before the popover can be displayed.
+  ///
+  /// Parameters:
+  /// - [overlayEntry] (OverlayEntry, required): Main overlay entry
+  /// - [barrierEntry] (OverlayEntry?): Optional barrier entry
   void initialize(OverlayEntry overlayEntry, [OverlayEntry? barrierEntry]) {
     _overlayEntry = overlayEntry;
     _barrierEntry = barrierEntry;

@@ -329,53 +329,53 @@ TODO:
 - [ ] lib/src/components/overlay/drawer.dart:1951:  final Color? barrierColor;
 - [x] lib/src/components/overlay/drawer.dart:1953:  const SheetOverlayHandler({
 - [x] lib/src/components/overlay/overlay.dart:3:Future<void> closeOverlay<T>(BuildContext context, [T? value]) {
-- [ ] lib/src/components/overlay/overlay.dart:9:mixin OverlayHandlerStateMixin<T extends StatefulWidget> on State<T> {
-- [ ] lib/src/components/overlay/overlay.dart:10:  Future<void> close([bool immediate = false]);
-- [ ] lib/src/components/overlay/overlay.dart:11:  void closeLater();
-- [ ] lib/src/components/overlay/overlay.dart:12:  Future<void> closeWithResult<X>([X? value]);
-- [ ] lib/src/components/overlay/overlay.dart:25:abstract class OverlayCompleter<T> {
-- [ ] lib/src/components/overlay/overlay.dart:28:  bool get isCompleted;
-- [ ] lib/src/components/overlay/overlay.dart:29:  bool get isAnimationCompleted;
+- [x] lib/src/components/overlay/overlay.dart:9:mixin OverlayHandlerStateMixin<T extends StatefulWidget> on State<T> {
+- [x] lib/src/components/overlay/overlay.dart:10:  Future<void> close([bool immediate = false]);
+- [x] lib/src/components/overlay/overlay.dart:11:  void closeLater();
+- [x] lib/src/components/overlay/overlay.dart:12:  Future<void> closeWithResult<X>([X? value]);
+- [x] lib/src/components/overlay/overlay.dart:25:abstract class OverlayCompleter<T> {
+- [x] lib/src/components/overlay/overlay.dart:28:  bool get isCompleted;
+- [x] lib/src/components/overlay/overlay.dart:29:  bool get isAnimationCompleted;
 - [ ] lib/src/components/overlay/overlay.dart:30:  Future<T?> get future;
-- [ ] lib/src/components/overlay/overlay.dart:31:  Future<void> get animationFuture;
-- [ ] lib/src/components/overlay/overlay.dart:26:  void remove();
-- [ ] lib/src/components/overlay/overlay.dart:27:  void dispose();
+- [x] lib/src/components/overlay/overlay.dart:31:  Future<void> get animationFuture;
+- [x] lib/src/components/overlay/overlay.dart:26:  void remove();
+- [x] lib/src/components/overlay/overlay.dart:27:  void dispose();
 - [ ] lib/src/components/overlay/overlay.dart:50:  OverlayCompleter<T?> show<T>({
-- [ ] lib/src/components/overlay/overlay.dart:80:class OverlayBarrier {
-- [ ] lib/src/components/overlay/overlay.dart:81:  final EdgeInsetsGeometry padding;
-- [ ] lib/src/components/overlay/overlay.dart:82:  final BorderRadiusGeometry borderRadius;
+- [x] lib/src/components/overlay/overlay.dart:80:class OverlayBarrier {
+- [x] lib/src/components/overlay/overlay.dart:81:  final EdgeInsetsGeometry padding;
+- [x] lib/src/components/overlay/overlay.dart:82:  final BorderRadiusGeometry borderRadius;
 - [ ] lib/src/components/overlay/overlay.dart:83:  final Color? barrierColor;
-- [ ] lib/src/components/overlay/overlay.dart:85:  const OverlayBarrier({
-- [ ] lib/src/components/overlay/overlay.dart:92:abstract class OverlayManager implements OverlayHandler {
-- [ ] lib/src/components/overlay/overlay.dart:93:  static OverlayManager of(BuildContext context) {
+- [x] lib/src/components/overlay/overlay.dart:85:  const OverlayBarrier({
+- [x] lib/src/components/overlay/overlay.dart:92:abstract class OverlayManager implements OverlayHandler {
+- [x] lib/src/components/overlay/overlay.dart:93:  static OverlayManager of(BuildContext context) {
 - [ ] lib/src/components/overlay/overlay.dart:129:  OverlayCompleter<T?> showTooltip<T>({
 - [ ] lib/src/components/overlay/overlay.dart:158:  OverlayCompleter<T?> showMenu<T>({
-- [ ] lib/src/components/overlay/overlay.dart:205:  const OverlayManagerLayer({
-- [ ] lib/src/components/overlay/popover.dart:309:typedef PopoverFutureVoidCallback<T> = Future<T> Function(T value);
-- [ ] lib/src/components/overlay/popover.dart:311:enum PopoverConstraint {
-- [ ] lib/src/components/overlay/popover.dart:312:  flexible,
-- [ ] lib/src/components/overlay/popover.dart:313:  intrinsic,
-- [ ] lib/src/components/overlay/popover.dart:314:  anchorFixedSize,
-- [ ] lib/src/components/overlay/popover.dart:315:  anchorMinSize,
-- [ ] lib/src/components/overlay/popover.dart:316:  anchorMaxSize,
-- [ ] lib/src/components/overlay/popover.dart:319:class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
+- [x] lib/src/components/overlay/overlay.dart:205:  const OverlayManagerLayer({
+- [x] lib/src/components/overlay/popover.dart:309:typedef PopoverFutureVoidCallback<T> = Future<T> Function(T value);
+- [x] lib/src/components/overlay/popover.dart:311:enum PopoverConstraint {
+- [x] lib/src/components/overlay/popover.dart:312:  flexible,
+- [x] lib/src/components/overlay/popover.dart:313:  intrinsic,
+- [x] lib/src/components/overlay/popover.dart:314:  anchorFixedSize,
+- [x] lib/src/components/overlay/popover.dart:315:  anchorMinSize,
+- [x] lib/src/components/overlay/popover.dart:316:  anchorMaxSize,
+- [x] lib/src/components/overlay/popover.dart:319:class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
 - [ ] lib/src/components/overlay/popover.dart:445:  Size? get anchorSize => _anchorSize;
-- [ ] lib/src/components/overlay/popover.dart:446:  AlignmentGeometry get anchorAlignment => _anchorAlignment;
+- [x] lib/src/components/overlay/popover.dart:446:  AlignmentGeometry get anchorAlignment => _anchorAlignment;
 - [ ] lib/src/components/overlay/popover.dart:447:  Offset? get position => _position;
-- [ ] lib/src/components/overlay/popover.dart:448:  AlignmentGeometry get alignment => _alignment;
-- [ ] lib/src/components/overlay/popover.dart:449:  PopoverConstraint get widthConstraint => _widthConstraint;
-- [ ] lib/src/components/overlay/popover.dart:450:  PopoverConstraint get heightConstraint => _heightConstraint;
+- [x] lib/src/components/overlay/popover.dart:448:  AlignmentGeometry get alignment => _alignment;
+- [x] lib/src/components/overlay/popover.dart:449:  PopoverConstraint get widthConstraint => _widthConstraint;
+- [x] lib/src/components/overlay/popover.dart:450:  PopoverConstraint get heightConstraint => _heightConstraint;
 - [ ] lib/src/components/overlay/popover.dart:451:  Offset? get offset => _offset;
 - [ ] lib/src/components/overlay/popover.dart:452:  EdgeInsetsGeometry? get margin => _margin;
-- [ ] lib/src/components/overlay/popover.dart:453:  bool get follow => _follow;
-- [ ] lib/src/components/overlay/popover.dart:454:  BuildContext get anchorContext => _anchorContext;
-- [ ] lib/src/components/overlay/popover.dart:455:  bool get allowInvertHorizontal => _allowInvertHorizontal;
-- [ ] lib/src/components/overlay/popover.dart:456:  bool get allowInvertVertical => _allowInvertVertical;
+- [x] lib/src/components/overlay/popover.dart:453:  bool get follow => _follow;
+- [x] lib/src/components/overlay/popover.dart:454:  BuildContext get anchorContext => _anchorContext;
+- [x] lib/src/components/overlay/popover.dart:455:  bool get allowInvertHorizontal => _allowInvertHorizontal;
+- [x] lib/src/components/overlay/popover.dart:456:  bool get allowInvertVertical => _allowInvertVertical;
 - [ ] lib/src/components/overlay/popover.dart:457:  LayerLink? get layerLink => _layerLink;
-- [ ] lib/src/components/overlay/popover.dart:459:  set layerLink(LayerLink? value) {
-- [ ] lib/src/components/overlay/popover.dart:483:  set position(Offset? value) {
-- [ ] lib/src/components/overlay/popover.dart:676:class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
-- [ ] lib/src/components/overlay/popover.dart:688:  void initialize(OverlayEntry overlayEntry, [OverlayEntry? barrierEntry]) {
+- [x] lib/src/components/overlay/popover.dart:459:  set layerLink(LayerLink? value) {
+- [x] lib/src/components/overlay/popover.dart:483:  set position(Offset? value) {
+- [x] lib/src/components/overlay/popover.dart:676:class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
+- [x] lib/src/components/overlay/popover.dart:688:  void initialize(OverlayEntry overlayEntry, [OverlayEntry? barrierEntry]) {
 - [ ] lib/src/components/overlay/popover.dart:679:  final Completer<T?> completer = Completer();
 - [ ] lib/src/components/overlay/popover.dart:680:  final Completer<T?> animationCompleter = Completer();
 - [ ] lib/src/components/overlay/popover.dart:979:  bool get hasOpenPopover =>
