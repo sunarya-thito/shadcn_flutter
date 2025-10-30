@@ -1356,15 +1356,31 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   }
 }
 
+/// Callback type for handling selection changes in select components.
+///
+/// Returns true if the change was successful, false otherwise.
 typedef SelectValueChanged<T> = bool Function(T value, bool selected);
 
+/// Data class holding select dropdown state and configuration.
+///
+/// Contains selection state, callbacks, and display options for select popups.
 class SelectData {
+  /// Whether to automatically close the popup after selection.
   final bool? autoClose;
+
+  /// Predicate to check if a value is currently selected.
   final Predicate<Object?> isSelected;
+
+  /// Callback invoked when selection changes.
   final SelectValueChanged<Object?> onChanged;
+
+  /// Whether any items are currently selected.
   final bool hasSelection;
+
+  /// Whether the select is enabled for interaction.
   final bool enabled;
 
+  /// Creates select data.
   const SelectData({
     required this.autoClose,
     required this.isSelected,
@@ -1389,28 +1405,65 @@ class SelectData {
       Object.hash(isSelected, onChanged, autoClose, hasSelection, enabled);
 }
 
+/// Builder function type for creating select item delegates.
+///
+/// Takes the build context and optional search query, returns a delegate
+/// for rendering select items.
 typedef SelectItemsBuilder<T> = FutureOr<SelectItemDelegate> Function(
   BuildContext context,
   String? searchQuery,
 );
 
+/// A popup widget for displaying selectable items in a dropdown.
+///
+/// Provides a searchable, scrollable list of items with various display modes.
 class SelectPopup<T> extends StatefulWidget {
+  /// Builder function for dynamically generating select items.
   final SelectItemsBuilder<T>? builder;
+
+  /// Static list of select items to display.
   final FutureOr<SelectItemDelegate?>? items;
+
+  /// Controller for the search input field.
   final TextEditingController? searchController;
+
+  /// Placeholder widget for the search field.
   final Widget? searchPlaceholder;
+
+  /// Builder for empty state display.
   final WidgetBuilder? emptyBuilder;
+
+  /// Builder for loading state display.
   final WidgetBuilder? loadingBuilder;
+
+  /// Builder for error state display.
   final ErrorWidgetBuilder? errorBuilder;
+
+  /// Blur amount for the popup surface.
   final double? surfaceBlur;
+
+  /// Opacity for the popup surface.
   final double? surfaceOpacity;
+
+  /// Whether to auto-close the popup after selection.
   final bool? autoClose;
+
+  /// Whether selected items can be unselected.
   final bool? canUnselect;
+
+  /// Whether search functionality is enabled.
   final bool enableSearch;
+
+  /// Controller for the items scroll view.
   final ScrollController? scrollController;
+
+  /// Whether the list should shrink-wrap its contents.
   final bool shrinkWrap;
+
+  /// Whether to disable item virtualization.
   final bool disableVirtualization;
 
+  /// Creates a select popup with a dynamic builder.
   const SelectPopup.builder({
     super.key,
     required this.builder,
@@ -1429,6 +1482,7 @@ class SelectPopup<T> extends StatefulWidget {
         shrinkWrap = false,
         disableVirtualization = false;
 
+  /// Creates a select popup with static items.
   const SelectPopup({
     super.key,
     this.items,
@@ -1447,6 +1501,7 @@ class SelectPopup<T> extends StatefulWidget {
         enableSearch = false,
         disableVirtualization = false;
 
+  /// Creates a select popup without virtualization optimization.
   const SelectPopup.noVirtualization({
     super.key,
     FutureOr<SelectItemList?>? this.items,
@@ -1474,10 +1529,20 @@ class SelectPopup<T> extends StatefulWidget {
   State<SelectPopup<T>> createState() => _SelectPopupState<T>();
 }
 
+/// Mixin providing select popup interaction methods.
+///
+/// Allows widgets to check selection state and update selections.
 mixin SelectPopupHandle {
+  /// Checks if the given value is currently selected.
   bool isSelected(Object? value);
+
+  /// Updates the selection state for the given value.
   void selectItem(Object? value, bool selected);
+
+  /// Whether any items are currently selected.
   bool get hasSelection;
+
+  /// Retrieves the nearest SelectPopupHandle from the widget tree.
   static SelectPopupHandle of(BuildContext context) {
     return Data.of<SelectPopupHandle>(context);
   }
@@ -1892,16 +1957,30 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
   }
 }
 
+/// Abstract base class for building select item lists.
+///
+/// Provides interface for rendering select items with optional caching
+/// and change detection.
 abstract class SelectItemDelegate with CachedValue {
+  /// An empty select item delegate constant.
   static const empty = EmptySelectItem();
+
+  /// Creates a select item delegate.
   const SelectItemDelegate();
+
+  /// Builds a widget for the item at the given index.
   Widget? build(BuildContext context, int index);
+
+  /// Estimated number of children in this delegate.
   int? get estimatedChildCount => null;
+
   @override
   bool shouldRebuild(covariant SelectItemDelegate oldDelegate);
 }
 
+/// An empty select item delegate that renders no items.
 class EmptySelectItem extends SelectItemDelegate {
+  /// Creates an empty select item.
   const EmptySelectItem();
 
   @override
@@ -1916,13 +1995,23 @@ class EmptySelectItem extends SelectItemDelegate {
   }
 }
 
+/// Builder function type for creating select item widgets.
+///
+/// Takes the build context and item index, returns the widget for that item.
 typedef SelectItemWidgetBuilder = Widget Function(
     BuildContext context, int index);
 
+/// A select item delegate that uses a builder function.
+///
+/// Provides items through a builder function with optional child count.
 class SelectItemBuilder extends SelectItemDelegate {
+  /// The builder function for creating item widgets.
   final SelectItemWidgetBuilder builder;
+
+  /// The number of children this delegate can build.
   final int? childCount;
 
+  /// Creates a select item builder.
   const SelectItemBuilder({required this.builder, this.childCount});
 
   @override

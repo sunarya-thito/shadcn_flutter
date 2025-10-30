@@ -507,33 +507,49 @@ abstract class InputFeature {
     bool skipFocusTraversal,
   }) = InputTrailingFeature;
 
+  /// Visibility mode for this input feature.
   final InputFeatureVisibility visibility;
+
+  /// Whether to skip this feature in focus traversal.
   final bool skipFocusTraversal;
+
+  /// Creates an input feature.
   const InputFeature(
       {this.visibility = InputFeatureVisibility.always,
       this.skipFocusTraversal = true});
+
+  /// Creates the state for this input feature.
   InputFeatureState createState();
 
+  /// Checks if an old feature can be updated to a new feature.
   static bool canUpdate(InputFeature oldFeature, InputFeature newFeature) {
     return oldFeature.runtimeType == newFeature.runtimeType;
   }
 }
 
+/// Abstract base state class for input features.
+///
+/// Manages the lifecycle and state of features that extend text field
+/// functionality, such as clear buttons, counters, or custom decorations.
 abstract class InputFeatureState<T extends InputFeature> {
   _AttachedInputFeature? _attached;
   TextFieldState? _inputState;
+
+  /// The input feature associated with this state.
   T get feature {
     assert(
         _attached != null && _attached!.feature is T, 'Feature not attached');
     return _attached!.feature as T;
   }
 
+  /// The ticker provider for animations.
   TickerProvider get tickerProvider {
     var inputState = _inputState;
     assert(inputState != null, 'Feature not attached');
     return inputState!;
   }
 
+  /// The build context for this feature.
   BuildContext get context {
     var inputState = _inputState;
     assert(inputState != null, 'Feature not attached');
@@ -546,23 +562,27 @@ abstract class InputFeatureState<T extends InputFeature> {
     return context;
   }
 
+  /// The parent text field widget.
   TextField get input {
     var inputState = _inputState;
     assert(inputState != null, 'Feature not attached');
     return inputState!.widget;
   }
 
+  /// Whether this feature is currently attached to a text field.
   bool get attached => _attached != null;
 
+  /// The text editing controller for the text field.
   TextEditingController get controller {
     var inputState = _inputState;
     assert(inputState != null, 'Feature not attached');
     return inputState!.effectiveController;
   }
 
-  // used to control whether the feature should be mounted or not
-  // with AnimationController, we are able to determine when to
-  // not mount the widget
+  /// Initializes this feature state.
+  ///
+  /// Called when the feature is first attached to a text field.
+  void initState() {
   late AnimationController _visibilityController;
 
   Iterable<Widget> _internalBuildLeading() sync* {
@@ -604,6 +624,9 @@ abstract class InputFeatureState<T extends InputFeature> {
     }
   }
 
+  /// Called when dependencies change.
+  ///
+  /// Override to respond to dependency changes in the widget tree.
   void didChangeDependencies() {}
 
   void _updateAnimation() {
@@ -621,6 +644,9 @@ abstract class InputFeatureState<T extends InputFeature> {
     }
   }
 
+  /// Disposes resources used by this feature state.
+  ///
+  /// Called when the feature is detached from the text field.
   void dispose() {
     _visibilityController.dispose();
     for (var dependency in feature.visibility.getDependencies(_inputState!)) {
@@ -628,6 +654,9 @@ abstract class InputFeatureState<T extends InputFeature> {
     }
   }
 
+  /// Called when the feature is updated.
+  ///
+  /// Override to respond to feature configuration changes.
   void didFeatureUpdate(InputFeature oldFeature) {
     if (oldFeature.visibility != feature.visibility) {
       for (var oldDependency
@@ -641,13 +670,44 @@ abstract class InputFeatureState<T extends InputFeature> {
     }
   }
 
+  /// Called when the text field's text changes.
+  ///
+  /// Override to respond to text changes.
   void onTextChanged(String text) {}
+
+  /// Called when the text field's selection changes.
+  ///
+  /// Override to respond to selection changes.
   void onSelectionChanged(TextSelection selection) {}
+
+  /// Builds leading widgets for the text field.
+  ///
+  /// Override to provide widgets shown before the input.
   Iterable<Widget> buildLeading() sync* {}
+
+  /// Builds trailing widgets for the text field.
+  ///
+  /// Override to provide widgets shown after the input.
   Iterable<Widget> buildTrailing() sync* {}
+
+  /// Builds actions for keyboard shortcuts.
+  ///
+  /// Override to provide custom actions.
   Iterable<MapEntry<Type, Action<Intent>>> buildActions() sync* {}
+
+  /// Builds keyboard shortcuts.
+  ///
+  /// Override to provide custom keyboard shortcuts.
   Iterable<MapEntry<ShortcutActivator, Intent>> buildShortcuts() sync* {}
+
+  /// Wraps the text field widget.
+  ///
+  /// Override to wrap the field with additional widgets.
   Widget wrap(Widget child) => child;
+
+  /// Intercepts and modifies the text field configuration.
+  ///
+  /// Override to modify the text field before rendering.
   TextField interceptInput(TextField input) => input;
 
   void setState(VoidCallback fn) {
