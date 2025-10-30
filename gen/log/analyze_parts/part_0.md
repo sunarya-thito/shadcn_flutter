@@ -680,10 +680,10 @@ TODO:
 - [ ] lib/src/theme/theme.dart:525:  dark,
 - [ ] lib/src/theme/typography.dart:279:  Typography scale(double factor) {
 - [ ] lib/src/theme/typography.dart:390:  static Typography lerp(Typography a, Typography b, double t) {
-- [ ] lib/src/util.dart:25:double degToRad(double deg) => deg * (pi / 180);
-- [ ] lib/src/util.dart:26:double radToDeg(double rad) => rad * (180 / pi);
-- [ ] lib/src/util.dart:132:double unlerpDouble(double value, double min, double max) {
-- [ ] lib/src/util.dart:136:void swapItemInLists<T>(
+- [x] lib/src/util.dart:25:double degToRad(double deg) => deg * (pi / 180);
+- [x] lib/src/util.dart:26:double radToDeg(double rad) => rad * (180 / pi);
+- [x] lib/src/util.dart:132:double unlerpDouble(double value, double min, double max) {
+- [x] lib/src/util.dart:136:void swapItemInLists<T>(
 - [ ] lib/src/util.dart:146:BorderRadius? optionallyResolveBorderRadius(
 - [ ] lib/src/util.dart:225:BorderRadius subtractByBorder(BorderRadius radius, double borderWidth) {
 - [ ] lib/src/util.dart:242:bool isMobile(TargetPlatform platform) {
@@ -695,30 +695,30 @@ TODO:
 - [ ] lib/src/util.dart:986:WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
 - [ ] lib/src/util.dart:1008:ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
 - [ ] lib/src/util.dart:1030:void clearActiveTextInput() {
-- [ ] lib/src/util.dart:13:const kDefaultDuration = Duration(milliseconds: 150);
-- [ ] lib/src/util.dart:30:  none,
-- [ ] lib/src/util.dart:31:  ascending,
-- [ ] lib/src/util.dart:32:  descending,
-- [ ] lib/src/util.dart:35:typedef OnContextInvokeCallback<T extends Intent> = Object? Function(T intent,
-- [ ] lib/src/util.dart:40:  final OnContextInvokeCallback onInvoke;
-- [ ] lib/src/util.dart:42:  CallbackContextAction({required this.onInvoke});
-- [ ] lib/src/util.dart:56:  T lerp(T a, T b, double t) {
+- [x] lib/src/util.dart:13:const kDefaultDuration = Duration(milliseconds: 150);
+- [x] lib/src/util.dart:30:  none,
+- [x] lib/src/util.dart:31:  ascending,
+- [x] lib/src/util.dart:32:  descending,
+- [x] lib/src/util.dart:35:typedef OnContextInvokeCallback<T extends Intent> = Object? Function(T intent,
+- [x] lib/src/util.dart:40:  final OnContextInvokeCallback onInvoke;
+- [x] lib/src/util.dart:42:  CallbackContextAction({required this.onInvoke});
+- [x] lib/src/util.dart:56:  T lerp(T a, T b, double t) {
 - [ ] lib/src/util.dart:52:  final T? Function(T? a, T? b, double t) nullableLerp;
-- [ ] lib/src/util.dart:54:  const SafeLerp(this.nullableLerp);
-- [ ] lib/src/util.dart:63:extension SafeLerpExtension<T> on T? Function(T? a, T? b, double t) {
-- [ ] lib/src/util.dart:64:  T nonNull(T a, T b, double t) {
-- [ ] lib/src/util.dart:71:extension ListExtension<T> on List<T> {
+- [x] lib/src/util.dart:54:  const SafeLerp(this.nullableLerp);
+- [x] lib/src/util.dart:63:extension SafeLerpExtension<T> on T? Function(T? a, T? b, double t) {
+- [x] lib/src/util.dart:64:  T nonNull(T a, T b, double t) {
+- [x] lib/src/util.dart:71:extension ListExtension<T> on List<T> {
 - [ ] lib/src/util.dart:72:  int? indexOfOrNull(T obj, [int start = 0]) {
 - [ ] lib/src/util.dart:77:  int? lastIndexOfOrNull(T obj, [int? start]) {
 - [ ] lib/src/util.dart:82:  int? indexWhereOrNull(Predicate<T> test, [int start = 0]) {
 - [ ] lib/src/util.dart:87:  int? lastIndexWhereOrNull(Predicate<T> test, [int? start]) {
-- [ ] lib/src/util.dart:92:  bool swapItem(T element, int targetIndex) {
-- [ ] lib/src/util.dart:115:  bool swapItemWhere(Predicate<T> test, int targetIndex) {
+- [x] lib/src/util.dart:92:  bool swapItem(T element, int targetIndex) {
+- [x] lib/src/util.dart:115:  bool swapItemWhere(Predicate<T> test, int targetIndex) {
 - [ ] lib/src/util.dart:124:  T? optGet(int index) {
-- [ ] lib/src/util.dart:162:extension FutureOrExtension<T> on FutureOr<T> {
-- [ ] lib/src/util.dart:163:  FutureOr<R> map<R>(R Function(T value) transform) {
-- [ ] lib/src/util.dart:170:  FutureOr<R> flatMap<R>(FutureOr<R> Function(T value) transform) {
-- [ ] lib/src/util.dart:177:  FutureOr<R> then<R>(FutureOr<R> Function(T value) transform) {
+- [x] lib/src/util.dart:162:extension FutureOrExtension<T> on FutureOr<T> {
+- [x] lib/src/util.dart:163:  FutureOr<R> map<R>(R Function(T value) transform) {
+- [x] lib/src/util.dart:170:  FutureOr<R> flatMap<R>(FutureOr<R> Function(T value) transform) {
+- [x] lib/src/util.dart:177:  FutureOr<R> then<R>(FutureOr<R> Function(T value) transform) {
 - [ ] lib/src/util.dart:184:  FutureOr<T> catchError(Function onError,
 - [ ] lib/src/util.dart:193:extension AlignmentExtension on AlignmentGeometry {
 - [ ] lib/src/util.dart:194:  Alignment optionallyResolve(BuildContext context) {

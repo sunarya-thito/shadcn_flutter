@@ -10,6 +10,7 @@ typedef UnaryOperator<T> = T Function(T value);
 /// A function that takes two values of type [T] and returns a value of type [T].
 typedef BinaryOperator<T> = T Function(T a, T b);
 
+/// Default animation duration for UI transitions (150ms).
 const kDefaultDuration = Duration(milliseconds: 150);
 
 /// A callback that receives a [BuildContext].
@@ -22,21 +23,47 @@ typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 /// Returns a score where higher values indicate better matches.
 typedef SearchPredicate<T> = double Function(T value, String query);
 
+/// Converts degrees to radians.
+///
+/// Parameters:
+/// - [deg] (double, required): Angle in degrees
+///
+/// Returns angle in radians.
 double degToRad(double deg) => deg * (pi / 180);
+
+/// Converts radians to degrees.
+///
+/// Parameters:
+/// - [rad] (double, required): Angle in radians
+///
+/// Returns angle in degrees.
 double radToDeg(double rad) => rad * (180 / pi);
 
 /// The direction for sorting.
 enum SortDirection {
+  /// No sorting applied.
   none,
+
+  /// Sort in ascending order (A to Z, 0 to 9).
   ascending,
+
+  /// Sort in descending order (Z to A, 9 to 0).
   descending,
 }
 
+/// Callback signature for context actions.
+///
+/// Parameters:
+/// - [intent] (Intent, required): The intent being invoked
+/// - [context] (BuildContext?): Optional build context
+///
+/// Returns result of the action invocation.
 typedef OnContextInvokeCallback<T extends Intent> = Object? Function(T intent,
     [BuildContext? context]);
 
 /// A context action that executes a callback.
 class CallbackContextAction<T extends Intent> extends ContextAction<T> {
+  /// Callback to execute when action is invoked.
   final OnContextInvokeCallback onInvoke;
 
   CallbackContextAction({required this.onInvoke});
@@ -49,10 +76,22 @@ class CallbackContextAction<T extends Intent> extends ContextAction<T> {
 
 /// A utility for safely interpolating between values of type [T].
 class SafeLerp<T> {
+  /// Nullable lerp function that can handle null values.
   final T? Function(T? a, T? b, double t) nullableLerp;
 
+  /// Creates a SafeLerp with the given nullable lerp function.
   const SafeLerp(this.nullableLerp);
 
+  /// Interpolates between non-null values.
+  ///
+  /// Asserts that the result is non-null.
+  ///
+  /// Parameters:
+  /// - [a] (T, required): Start value
+  /// - [b] (T, required): End value
+  /// - [t] (double, required): Interpolation position (0.0 to 1.0)
+  ///
+  /// Returns interpolated value.
   T lerp(T a, T b, double t) {
     T? result = nullableLerp(a, b, t);
     assert(result != null, 'Unsafe lerp');
@@ -60,7 +99,18 @@ class SafeLerp<T> {
   }
 }
 
+/// Extension on nullable lerp functions to create non-null lerp helpers.
 extension SafeLerpExtension<T> on T? Function(T? a, T? b, double t) {
+  /// Wraps this nullable lerp function to work with non-null values.
+  ///
+  /// Asserts that the lerp result is non-null.
+  ///
+  /// Parameters:
+  /// - [a] (T, required): Start value
+  /// - [b] (T, required): End value
+  /// - [t] (double, required): Interpolation position
+  ///
+  /// Returns interpolated non-null value.
   T nonNull(T a, T b, double t) {
     T? result = this(a, b, t);
     assert(result != null);
@@ -68,27 +118,66 @@ extension SafeLerpExtension<T> on T? Function(T? a, T? b, double t) {
   }
 }
 
+/// Extension methods for List operations with null-safe variants.
 extension ListExtension<T> on List<T> {
+  /// Finds the first index of an element, returning null if not found.
+  ///
+  /// Parameters:
+  /// - [obj] (T, required): Element to find
+  /// - [start] (int): Index to start searching from, defaults to 0
+  ///
+  /// Returns index or null if not found.
   int? indexOfOrNull(T obj, [int start = 0]) {
     int index = indexOf(obj, start);
     return index == -1 ? null : index;
   }
 
+  /// Finds the last index of an element, returning null if not found.
+  ///
+  /// Parameters:
+  /// - [obj] (T, required): Element to find
+  /// - [start] (int?): Index to search backwards from
+  ///
+  /// Returns last index or null if not found.
   int? lastIndexOfOrNull(T obj, [int? start]) {
     int index = lastIndexOf(obj, start);
     return index == -1 ? null : index;
   }
 
+  /// Finds the first index where test is true, returning null if not found.
+  ///
+  /// Parameters:
+  /// - [test] (Predicate<T>, required): Test function
+  /// - [start] (int): Index to start searching from, defaults to 0
+  ///
+  /// Returns index or null if no match found.
   int? indexWhereOrNull(Predicate<T> test, [int start = 0]) {
     int index = indexWhere(test, start);
     return index == -1 ? null : index;
   }
 
+  /// Finds the last index where test is true, returning null if not found.
+  ///
+  /// Parameters:
+  /// - [test] (Predicate<T>, required): Test function
+  /// - [start] (int?): Index to search backwards from
+  ///
+  /// Returns last index or null if no match found.
   int? lastIndexWhereOrNull(Predicate<T> test, [int? start]) {
     int index = lastIndexWhere(test, start);
     return index == -1 ? null : index;
   }
 
+  /// Moves an element to a target index in the list.
+  ///
+  /// If the element doesn't exist, inserts it at the target index.
+  /// If targetIndex >= length, moves element to the end.
+  ///
+  /// Parameters:
+  /// - [element] (T, required): Element to move
+  /// - [targetIndex] (int, required): Destination index
+  ///
+  /// Returns true if operation succeeded.
   bool swapItem(T element, int targetIndex) {
     int currentIndex = indexOf(element);
     if (currentIndex == -1) {
@@ -112,6 +201,15 @@ extension ListExtension<T> on List<T> {
     return true;
   }
 
+  /// Moves the first element matching test to a target index.
+  ///
+  /// Returns false if no element matches the test.
+  ///
+  /// Parameters:
+  /// - [test] (Predicate<T>, required): Test function to find element
+  /// - [targetIndex] (int, required): Destination index
+  ///
+  /// Returns true if element was found and moved.
   bool swapItemWhere(Predicate<T> test, int targetIndex) {
     int currentIndex = indexWhere(test);
     if (currentIndex == -1) {
@@ -121,6 +219,12 @@ extension ListExtension<T> on List<T> {
     return swapItem(element, targetIndex);
   }
 
+  /// Safely gets an element at index, returning null if out of bounds.
+  ///
+  /// Parameters:
+  /// - [index] (int, required): Index to access
+  ///
+  /// Returns element at index or null if index is out of bounds.
   T? optGet(int index) {
     if (index < 0 || index >= length) {
       return null;
@@ -129,10 +233,31 @@ extension ListExtension<T> on List<T> {
   }
 }
 
+/// Inverse lerp: finds the interpolation parameter given a value.
+///
+/// Given a value between min and max, returns the interpolation parameter t
+/// (typically 0.0 to 1.0) that would produce that value.
+///
+/// Parameters:
+/// - [value] (double, required): Value to unlerp
+/// - [min] (double, required): Minimum bound
+/// - [max] (double, required): Maximum bound
+///
+/// Returns interpolation parameter.
 double unlerpDouble(double value, double min, double max) {
   return (value - min) / (max - min);
 }
 
+/// Swaps an element between multiple lists.
+///
+/// Removes the element from all lists except the target list, then moves it
+/// to the specified index in the target list.
+///
+/// Parameters:
+/// - [lists] (`List<List<T>>`, required): Lists to manage
+/// - [element] (T, required): Element to swap
+/// - [targetList] (`List<T>`, required): Destination list
+/// - [targetIndex] (int, required): Destination index in target list
 void swapItemInLists<T>(
     List<List<T>> lists, T element, List<T> targetList, int targetIndex) {
   for (var list in lists) {
@@ -143,6 +268,16 @@ void swapItemInLists<T>(
   targetList.swapItem(element, targetIndex);
 }
 
+/// Resolves a BorderRadiusGeometry to BorderRadius if needed.
+///
+/// Returns null if radius is null, returns radius as-is if already BorderRadius,
+/// otherwise resolves using text directionality from context.
+///
+/// Parameters:
+/// - [context] (BuildContext, required): Build context for directionality
+/// - [radius] (BorderRadiusGeometry?): Border radius to resolve
+///
+/// Returns resolved BorderRadius or null.
 BorderRadius? optionallyResolveBorderRadius(
     BuildContext context, BorderRadiusGeometry? radius) {
   if (radius == null) {
@@ -159,7 +294,17 @@ T styleValue<T>({T? widgetValue, T? themeValue, required T defaultValue}) {
   return widgetValue ?? themeValue ?? defaultValue;
 }
 
+/// Extension methods for FutureOr transformation operations.
 extension FutureOrExtension<T> on FutureOr<T> {
+  /// Transforms the value using a synchronous function.
+  ///
+  /// If this is a Future, applies transform asynchronously.
+  /// Otherwise applies it synchronously.
+  ///
+  /// Parameters:
+  /// - [transform] (Function, required): Transformation function
+  ///
+  /// Returns transformed value as FutureOr.
   FutureOr<R> map<R>(R Function(T value) transform) {
     if (this is Future<T>) {
       return (this as Future<T>).then(transform);
@@ -167,6 +312,15 @@ extension FutureOrExtension<T> on FutureOr<T> {
     return transform(this as T);
   }
 
+  /// Transforms the value using a function that returns FutureOr.
+  ///
+  /// Flattens nested FutureOr results. If this is a Future, chains the
+  /// transformation. Otherwise applies it synchronously.
+  ///
+  /// Parameters:
+  /// - [transform] (Function, required): Transformation function returning FutureOr
+  ///
+  /// Returns flattened transformed value as FutureOr.
   FutureOr<R> flatMap<R>(FutureOr<R> Function(T value) transform) {
     if (this is Future<T>) {
       return (this as Future<T>).then(transform);
@@ -174,6 +328,12 @@ extension FutureOrExtension<T> on FutureOr<T> {
     return transform(this as T);
   }
 
+  /// Alias for flatMap - transforms with FutureOr function.
+  ///
+  /// Parameters:
+  /// - [transform] (Function, required): Transformation function
+  ///
+  /// Returns transformed value as FutureOr.
   FutureOr<R> then<R>(FutureOr<R> Function(T value) transform) {
     if (this is Future<T>) {
       return (this as Future<T>).then(transform);
