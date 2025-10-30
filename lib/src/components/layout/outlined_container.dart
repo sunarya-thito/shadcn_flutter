@@ -2,11 +2,37 @@ import 'dart:ui';
 
 import '../../../shadcn_flutter.dart';
 
+/// A widget that applies a blur effect to its background.
+///
+/// Creates a frosted glass or translucent blur effect behind the child widget
+/// using a backdrop filter. The blur amount is controlled by [surfaceBlur].
+///
+/// Example:
+/// ```dart
+/// SurfaceBlur(
+///   surfaceBlur: 10,
+///   borderRadius: BorderRadius.circular(8),
+///   child: Container(
+///     color: Colors.white.withOpacity(0.5),
+///     child: Text('Blurred background'),
+///   ),
+/// )
+/// ```
 class SurfaceBlur extends StatefulWidget {
+  /// The child widget to display with blurred background.
   final Widget child;
+
+  /// The amount of blur to apply (sigma value for blur filter).
+  ///
+  /// If `null` or `<= 0`, no blur is applied.
   final double? surfaceBlur;
+
+  /// Border radius for clipping the blur effect.
+  ///
+  /// If `null`, no rounding is applied.
   final BorderRadiusGeometry? borderRadius;
 
+  /// Creates a [SurfaceBlur].
   const SurfaceBlur({
     super.key,
     required this.child,
@@ -47,17 +73,39 @@ class _SurfaceBlurState extends State<SurfaceBlur> {
   }
 }
 
+/// Theme configuration for [OutlinedContainer] appearance.
+///
+/// Defines styling properties including background color, border styles,
+/// shadows, padding, and surface effects for outlined containers.
 class OutlinedContainerTheme {
+  /// Background color for the container.
   final Color? backgroundColor;
+
+  /// Color of the container's border.
   final Color? borderColor;
+
+  /// Border radius for rounded corners.
   final BorderRadiusGeometry? borderRadius;
+
+  /// Style of the border (solid, dotted, etc).
   final BorderStyle? borderStyle;
+
+  /// Width of the border in logical pixels.
   final double? borderWidth;
+
+  /// Box shadows to apply for depth/elevation effects.
   final List<BoxShadow>? boxShadow;
+
+  /// Padding inside the container.
   final EdgeInsetsGeometry? padding;
+
+  /// Opacity for surface overlay effects.
   final double? surfaceOpacity;
+
+  /// Blur amount for surface backdrop effects.
   final double? surfaceBlur;
 
+  /// Creates an [OutlinedContainerTheme].
   const OutlinedContainerTheme({
     this.backgroundColor,
     this.borderColor,
@@ -70,6 +118,7 @@ class OutlinedContainerTheme {
     this.surfaceBlur,
   });
 
+  /// Creates a copy of this theme with the given fields replaced.
   OutlinedContainerTheme copyWith({
     ValueGetter<Color?>? backgroundColor,
     ValueGetter<Color?>? borderColor,
@@ -125,21 +174,91 @@ class OutlinedContainerTheme {
       );
 }
 
+/// A container widget with customizable border and surface effects.
+///
+/// Provides a styled container with border, background, shadows, padding,
+/// and optional surface blur effects. Supports theming and animations.
+///
+/// Example:
+/// ```dart
+/// OutlinedContainer(
+///   borderRadius: BorderRadius.circular(12),
+///   borderColor: Colors.blue,
+///   backgroundColor: Colors.white,
+///   padding: EdgeInsets.all(16),
+///   child: Text('Outlined content'),
+/// )
+/// ```
 class OutlinedContainer extends StatefulWidget {
+  /// The child widget to display inside the container.
   final Widget child;
+
+  /// Background color of the container.
+  ///
+  /// If `null`, uses theme default.
   final Color? backgroundColor;
+
+  /// Color of the container's border.
+  ///
+  /// If `null`, uses theme default.
   final Color? borderColor;
+
+  /// How to clip the container's content.
+  ///
+  /// Defaults to [Clip.antiAlias].
   final Clip clipBehavior;
+
+  /// Border radius for rounded corners.
+  ///
+  /// If `null`, uses theme default.
   final BorderRadiusGeometry? borderRadius;
+
+  /// Style of the border.
+  ///
+  /// If `null`, uses [BorderStyle.solid].
   final BorderStyle? borderStyle;
+
+  /// Width of the border in logical pixels.
+  ///
+  /// If `null`, uses theme default.
   final double? borderWidth;
+
+  /// Box shadows for elevation effects.
+  ///
+  /// If `null`, no shadows are applied.
   final List<BoxShadow>? boxShadow;
+
+  /// Padding inside the container.
+  ///
+  /// If `null`, uses theme default.
   final EdgeInsetsGeometry? padding;
+
+  /// Opacity for surface overlay effects.
+  ///
+  /// If provided, modulates the background color's alpha.
   final double? surfaceOpacity;
+
+  /// Blur amount for surface backdrop effects.
+  ///
+  /// If `null` or `<= 0`, no blur is applied.
   final double? surfaceBlur;
+
+  /// Explicit width of the container.
+  ///
+  /// If `null`, size is determined by child and padding.
   final double? width;
+
+  /// Explicit height of the container.
+  ///
+  /// If `null`, size is determined by child and padding.
   final double? height;
+
+  /// Duration for animating property changes.
+  ///
+  /// If `null`, changes are applied immediately without animation.
   final Duration? duration;
+
+  /// Creates an [OutlinedContainer].
   const OutlinedContainer({
     super.key,
     required this.child,
@@ -253,12 +372,24 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
   }
 }
 
+/// Properties for defining a dashed line appearance.
+///
+/// Encapsulates the visual properties of a dashed line including dash width,
+/// gap between dashes, thickness, and color. Supports interpolation for animations.
 class DashedLineProperties {
+  /// Width of each dash segment.
   final double width;
+
+  /// Gap between consecutive dash segments.
   final double gap;
+
+  /// Thickness (height) of the line.
   final double thickness;
+
+  /// Color of the dashed line.
   final Color color;
 
+  /// Creates [DashedLineProperties].
   const DashedLineProperties({
     required this.width,
     required this.gap,
@@ -266,6 +397,7 @@ class DashedLineProperties {
     required this.color,
   });
 
+  /// Linearly interpolates between two [DashedLineProperties].
   static DashedLineProperties lerp(
     DashedLineProperties a,
     DashedLineProperties b,
@@ -280,12 +412,42 @@ class DashedLineProperties {
   }
 }
 
+/// A widget that displays a horizontal dashed line.
+///
+/// Renders a customizable dashed line with configurable dash width, gap,
+/// thickness, and color. Animates changes to properties smoothly.
+///
+/// Example:
+/// ```dart
+/// DashedLine(
+///   width: 10,
+///   gap: 5,
+///   thickness: 2,
+///   color: Colors.grey,
+/// )
+/// ```
 class DashedLine extends StatelessWidget {
+  /// Width of each dash segment.
+  ///
+  /// If `null`, uses scaled default (8).
   final double? width;
+
+  /// Gap between consecutive dash segments.
+  ///
+  /// If `null`, uses scaled default (5).
   final double? gap;
+
+  /// Thickness (height) of the line.
+  ///
+  /// If `null`, uses scaled default (1).
   final double? thickness;
+
+  /// Color of the dashed line.
+  ///
+  /// If `null`, uses theme border color.
   final Color? color;
 
+  /// Creates a [DashedLine].
   const DashedLine({
     super.key,
     this.width,
@@ -321,13 +483,27 @@ class DashedLine extends StatelessWidget {
   }
 }
 
+/// Properties for defining a dashed container border appearance.
+///
+/// Encapsulates the visual properties of a dashed container border including
+/// dash width, gap, thickness, color, and border radius. Supports interpolation.
 class DashedContainerProperties {
+  /// Width of each dash segment.
   final double width;
+
+  /// Gap between consecutive dash segments.
   final double gap;
+
+  /// Thickness of the border.
   final double thickness;
+
+  /// Color of the dashed border.
   final Color color;
+
+  /// Border radius for rounded corners.
   final BorderRadiusGeometry borderRadius;
 
+  /// Creates [DashedContainerProperties].
   const DashedContainerProperties({
     required this.width,
     required this.gap,
@@ -336,6 +512,7 @@ class DashedContainerProperties {
     required this.borderRadius,
   });
 
+  /// Linearly interpolates between two [DashedContainerProperties].
   static DashedContainerProperties lerp(
     BuildContext context,
     DashedContainerProperties a,
@@ -356,14 +533,54 @@ class DashedContainerProperties {
   }
 }
 
+/// A container with a dashed border outline.
+///
+/// Renders a container with a customizable dashed border that can have rounded
+/// corners. Animates border property changes smoothly.
+///
+/// Example:
+/// ```dart
+/// DashedContainer(
+///   strokeWidth: 10,
+///   gap: 5,
+///   thickness: 2,
+///   borderRadius: BorderRadius.circular(8),
+///   child: Padding(
+///     padding: EdgeInsets.all(16),
+///     child: Text('Dashed border'),
+///   ),
+/// )
+/// ```
 class DashedContainer extends StatelessWidget {
+  /// Width of each dash segment.
+  ///
+  /// If `null`, uses scaled default (8).
   final double? strokeWidth;
+
+  /// Gap between consecutive dash segments.
+  ///
+  /// If `null`, uses scaled default (5).
   final double? gap;
+
+  /// Thickness of the border.
+  ///
+  /// If `null`, uses scaled default (1).
   final double? thickness;
+
+  /// Color of the dashed border.
+  ///
+  /// If `null`, uses theme border color.
   final Color? color;
+
+  /// The child widget inside the container.
   final Widget child;
+
+  /// Border radius for rounded corners.
+  ///
+  /// If `null`, uses theme default border radius.
   final BorderRadiusGeometry? borderRadius;
 
+  /// Creates a [DashedContainer].
   const DashedContainer({
     super.key,
     this.strokeWidth,

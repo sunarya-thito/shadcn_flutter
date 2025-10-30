@@ -1,7 +1,26 @@
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// A multi-child layout widget that positions children using absolute coordinates.
+///
+/// Similar to Flutter's [Stack] but with more explicit positioning control.
+/// Children are positioned using [GroupPositioned] widgets that specify their
+/// exact location and/or size within the group's bounds.
+///
+/// Example:
+/// ```dart
+/// GroupWidget(
+///   children: [
+///     GroupPositioned(
+///       top: 10,
+///       left: 10,
+///       child: Text('Positioned text'),
+///     ),
+///   ],
+/// )
+/// ```
 class GroupWidget extends MultiChildRenderObjectWidget {
+  /// Creates a [GroupWidget].
   const GroupWidget({
     super.key,
     super.children,
@@ -16,19 +35,41 @@ class GroupWidget extends MultiChildRenderObjectWidget {
   void updateRenderObject(BuildContext context, RenderGroup renderObject) {}
 }
 
+/// Parent data for children of [GroupWidget].
+///
+/// Stores positioning and sizing information for each child widget within
+/// a [GroupWidget]. These values are set by [GroupPositioned].
 class GroupParentData extends ContainerBoxParentData<RenderBox> {
+  /// Distance from the top edge of the group.
   double? top;
+
+  /// Distance from the left edge of the group.
   double? left;
+
+  /// Distance from the right edge of the group.
   double? right;
+
+  /// Distance from the bottom edge of the group.
   double? bottom;
+
+  /// Explicit width of the child.
   double? width;
+
+  /// Explicit height of the child.
   double? height;
 }
 
+/// Render object for [GroupWidget] that handles absolute positioning of children.
+///
+/// Manages layout and painting of children positioned using [GroupParentData].
 class RenderGroup extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, GroupParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, GroupParentData> {
+  /// Creates a [RenderGroup].
+  ///
+  /// Parameters:
+  /// - [children] (`List<RenderBox>?`, optional): Initial list of child render objects.
   RenderGroup({
     List<RenderBox>? children,
   }) {
@@ -145,7 +186,32 @@ class RenderGroup extends RenderBox
   }
 }
 
+/// Positions a child widget within a [GroupWidget].
+///
+/// Controls the position and optionally the size of a child using absolute
+/// coordinates. At least one positioning parameter should be provided.
+///
+/// Example:
+/// ```dart
+/// GroupPositioned(
+///   top: 20,
+///   left: 20,
+///   width: 100,
+///   height: 50,
+///   child: Container(color: Colors.blue),
+/// )
+/// ```
 class GroupPositioned extends ParentDataWidget<GroupParentData> {
+  /// Creates a [GroupPositioned].
+  ///
+  /// Parameters:
+  /// - [top] (`double?`, optional): Distance from top edge.
+  /// - [left] (`double?`, optional): Distance from left edge.
+  /// - [right] (`double?`, optional): Distance from right edge.
+  /// - [bottom] (`double?`, optional): Distance from bottom edge.
+  /// - [width] (`double?`, optional): Explicit width.
+  /// - [height] (`double?`, optional): Explicit height.
+  /// - [child] (`Widget`, required): The child to position.
   const GroupPositioned({
     super.key,
     this.top,
@@ -157,6 +223,9 @@ class GroupPositioned extends ParentDataWidget<GroupParentData> {
     required super.child,
   });
 
+  /// Creates a [GroupPositioned] that fills the entire group bounds.
+  ///
+  /// Sets all edges to 0, making the child fill the available space.
   const GroupPositioned.fill({
     super.key,
     this.top = 0,
@@ -167,6 +236,10 @@ class GroupPositioned extends ParentDataWidget<GroupParentData> {
     this.height,
     required super.child,
   });
+
+  /// Creates a [GroupPositioned] from a [Rect].
+  ///
+  /// Positions and sizes the child according to the given rectangle.
   GroupPositioned.fromRect({
     super.key,
     required Rect rect,
@@ -177,11 +250,23 @@ class GroupPositioned extends ParentDataWidget<GroupParentData> {
         height = rect.height,
         right = null,
         bottom = null;
+
+  /// Distance from the top edge of the group.
   final double? top;
+
+  /// Distance from the left edge of the group.
   final double? left;
+
+  /// Distance from the right edge of the group.
   final double? right;
+
+  /// Distance from the bottom edge of the group.
   final double? bottom;
+
+  /// Explicit width of the child.
   final double? width;
+
+  /// Explicit height of the child.
   final double? height;
 
   @override
