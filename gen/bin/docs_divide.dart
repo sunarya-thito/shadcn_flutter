@@ -49,7 +49,9 @@ void main() async {
     final match = regex.firstMatch(raw);
     if (match == null) continue;
 
-    String filePath = match.group(1)!; // as written by analyzer (likely relative)
+    String filePath = match.group(
+      1,
+    )!; // as written by analyzer (likely relative)
     final lineNoStr = match.group(2)!;
     final lineNo = int.tryParse(lineNoStr);
     if (lineNo == null || lineNo <= 0) continue;
