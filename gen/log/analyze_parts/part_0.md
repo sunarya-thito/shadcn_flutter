@@ -23,49 +23,49 @@ TODO:
 - [x] lib/src/components/layout/table.dart:3038:  double get width {
 - [x] lib/src/components/layout/table.dart:3042:  double get height {
 - [x] lib/src/components/layout/table.dart:3021:  Offset getOffset(int column, int row) {
-- [ ] lib/src/components/layout/tree.dart:55:  const TreeTheme({
-- [ ] lib/src/components/layout/tree.dart:964:  static TreeNodeSelectionChanged<K> defaultSelectionHandler<K>(
-- [ ] lib/src/components/layout/tree.dart:969:  static ValueChanged<bool> defaultItemExpandHandler<K>(List<TreeNode<K>> nodes,
-- [ ] lib/src/components/layout/window.dart:1643:  WindowHandle get handle {
-- [ ] lib/src/components/layout/window.dart:1649:  bool get mounted => _key.currentContext != null;
-- [ ] lib/src/components/layout/window.dart:1587:  final Widget? title;
-- [ ] lib/src/components/layout/window.dart:1588:  final Widget? actions;
-- [ ] lib/src/components/layout/window.dart:1589:  final Widget? content;
-- [ ] lib/src/components/layout/window.dart:1590:  final WindowController? controller;
-- [ ] lib/src/components/layout/window.dart:1591:  final Rect? bounds;
-- [ ] lib/src/components/layout/window.dart:1592:  final Rect? maximized;
-- [ ] lib/src/components/layout/window.dart:1593:  final bool? minimized;
-- [ ] lib/src/components/layout/window.dart:1594:  final bool? alwaysOnTop;
-- [ ] lib/src/components/layout/window.dart:1595:  final bool? enableSnapping;
-- [ ] lib/src/components/layout/window.dart:1596:  final bool? resizable;
-- [ ] lib/src/components/layout/window.dart:1597:  final bool? draggable;
-- [ ] lib/src/components/layout/window.dart:1598:  final bool? closable;
-- [ ] lib/src/components/layout/window.dart:1599:  final bool? maximizable;
-- [ ] lib/src/components/layout/window.dart:1600:  final bool? minimizable;
-- [ ] lib/src/components/layout/window.dart:1601:  final BoxConstraints? constraints;
-- [ ] lib/src/components/layout/window.dart:1607:  final ValueNotifier<bool> closed = ValueNotifier(false);
-- [ ] lib/src/components/layout/window.dart:1609:  Window.controlled({
-- [ ] lib/src/components/layout/window.dart:1626:  Window({
-- [ ] lib/src/components/layout/window.dart:1697:mixin WindowNavigatorHandle on State<WindowNavigator> {
-- [ ] lib/src/components/layout/window.dart:1704:  List<Window> get windows;
-- [ ] lib/src/components/layout/window.dart:1698:  void pushWindow(Window window);
-- [ ] lib/src/components/layout/window.dart:1699:  void focusWindow(Window window);
-- [ ] lib/src/components/layout/window.dart:1700:  void unfocusWindow(Window window);
-- [ ] lib/src/components/layout/window.dart:1701:  void setAlwaysOnTop(Window window, bool value);
-- [ ] lib/src/components/layout/window.dart:1702:  void removeWindow(Window window);
-- [ ] lib/src/components/layout/window.dart:1703:  bool isFocused(Window window);
-- [ ] lib/src/components/layout/window.dart:1711:const kDefaultWindowConstraints = BoxConstraints(
-- [ ] lib/src/components/layout/window.dart:2502:class WindowViewport {
-- [ ] lib/src/components/layout/window.dart:2503:  final Size size;
-- [ ] lib/src/components/layout/window.dart:2504:  final WindowNavigatorHandle navigator;
-- [ ] lib/src/components/layout/window.dart:2505:  final bool focused;
-- [ ] lib/src/components/layout/window.dart:2506:  final bool alwaysOnTop;
-- [ ] lib/src/components/layout/window.dart:2507:  final bool closed;
-- [ ] lib/src/components/layout/window.dart:2508:  final bool minify;
-- [ ] lib/src/components/layout/window.dart:2509:  final bool ignorePointer;
-- [ ] lib/src/components/layout/window.dart:2511:  const WindowViewport({
-- [ ] lib/src/components/layout/window.dart:2538:class WindowActions extends StatelessWidget {
-- [ ] lib/src/components/layout/window.dart:2539:  const WindowActions({super.key});
+- [x] lib/src/components/layout/tree.dart:55:  const TreeTheme({
+- [x] lib/src/components/layout/tree.dart:964:  static TreeNodeSelectionChanged<K> defaultSelectionHandler<K>(
+- [x] lib/src/components/layout/tree.dart:969:  static ValueChanged<bool> defaultItemExpandHandler<K>(List<TreeNode<K>> nodes,
+- [x] lib/src/components/layout/window.dart:1643:  WindowHandle get handle {
+- [x] lib/src/components/layout/window.dart:1649:  bool get mounted => _key.currentContext != null;
+- [x] lib/src/components/layout/window.dart:1587:  final Widget? title;
+- [x] lib/src/components/layout/window.dart:1588:  final Widget? actions;
+- [x] lib/src/components/layout/window.dart:1589:  final Widget? content;
+- [x] lib/src/components/layout/window.dart:1590:  final WindowController? controller;
+- [x] lib/src/components/layout/window.dart:1591:  final Rect? bounds;
+- [x] lib/src/components/layout/window.dart:1592:  final Rect? maximized;
+- [x] lib/src/components/layout/window.dart:1593:  final bool? minimized;
+- [x] lib/src/components/layout/window.dart:1594:  final bool? alwaysOnTop;
+- [x] lib/src/components/layout/window.dart:1595:  final bool? enableSnapping;
+- [x] lib/src/components/layout/window.dart:1596:  final bool? resizable;
+- [x] lib/src/components/layout/window.dart:1597:  final bool? draggable;
+- [x] lib/src/components/layout/window.dart:1598:  final bool? closable;
+- [x] lib/src/components/layout/window.dart:1599:  final bool? maximizable;
+- [x] lib/src/components/layout/window.dart:1600:  final bool? minimizable;
+- [x] lib/src/components/layout/window.dart:1601:  final BoxConstraints? constraints;
+- [x] lib/src/components/layout/window.dart:1607:  final ValueNotifier<bool> closed = ValueNotifier(false);
+- [x] lib/src/components/layout/window.dart:1609:  Window.controlled({
+- [x] lib/src/components/layout/window.dart:1626:  Window({
+- [x] lib/src/components/layout/window.dart:1697:mixin WindowNavigatorHandle on State<WindowNavigator> {
+- [x] lib/src/components/layout/window.dart:1704:  List<Window> get windows;
+- [x] lib/src/components/layout/window.dart:1698:  void pushWindow(Window window);
+- [x] lib/src/components/layout/window.dart:1699:  void focusWindow(Window window);
+- [x] lib/src/components/layout/window.dart:1700:  void unfocusWindow(Window window);
+- [x] lib/src/components/layout/window.dart:1701:  void setAlwaysOnTop(Window window, bool value);
+- [x] lib/src/components/layout/window.dart:1702:  void removeWindow(Window window);
+- [x] lib/src/components/layout/window.dart:1703:  bool isFocused(Window window);
+- [x] lib/src/components/layout/window.dart:1711:const kDefaultWindowConstraints = BoxConstraints(
+- [x] lib/src/components/layout/window.dart:2502:class WindowViewport {
+- [x] lib/src/components/layout/window.dart:2503:  final Size size;
+- [x] lib/src/components/layout/window.dart:2504:  final WindowNavigatorHandle navigator;
+- [x] lib/src/components/layout/window.dart:2505:  final bool focused;
+- [x] lib/src/components/layout/window.dart:2506:  final bool alwaysOnTop;
+- [x] lib/src/components/layout/window.dart:2507:  final bool closed;
+- [x] lib/src/components/layout/window.dart:2508:  final bool minify;
+- [x] lib/src/components/layout/window.dart:2509:  final bool ignorePointer;
+- [x] lib/src/components/layout/window.dart:2511:  const WindowViewport({
+- [x] lib/src/components/layout/window.dart:2538:class WindowActions extends StatelessWidget {
+- [x] lib/src/components/layout/window.dart:2539:  const WindowActions({super.key});
 - [ ] lib/src/components/locale/shadcn_localizations.dart:149:  final int Function(DateTime dateTime) getter;
 - [ ] lib/src/components/locale/shadcn_localizations.dart:150:  final int length;
 - [ ] lib/src/components/locale/shadcn_localizations.dart:152:      computeValueRange;

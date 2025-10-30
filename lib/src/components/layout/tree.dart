@@ -52,6 +52,26 @@ class TreeTheme {
   /// recursively affect all descendant nodes.
   final bool? recursiveSelection;
 
+  /// Creates a theme for tree view components.
+  ///
+  /// This constructor allows customization of tree visualization and behavior
+  /// including branch lines, spacing, icons, and selection modes.
+  ///
+  /// Parameters:
+  /// - [branchLine] (BranchLine?): Visual style for lines connecting tree nodes
+  /// - [padding] (EdgeInsetsGeometry?): Padding around tree items
+  /// - [expandIcon] (bool?): Whether to show expand/collapse icons
+  /// - [allowMultiSelect] (bool?): Whether multiple nodes can be selected simultaneously
+  /// - [recursiveSelection] (bool?): Whether selecting parent selects all children
+  ///
+  /// Example:
+  /// ```dart
+  /// TreeTheme(
+  ///   branchLine: BranchLine.solid,
+  ///   padding: EdgeInsets.all(8),
+  ///   allowMultiSelect: true,
+  /// )
+  /// ```
   const TreeTheme({
     this.branchLine,
     this.padding,
@@ -961,11 +981,32 @@ class TreeItemExpandDefaultHandler<T> {
 /// )
 /// ```
 class TreeView<T> extends StatefulWidget {
+  /// Creates a default selection changed handler for tree nodes.
+  ///
+  /// Returns a handler that manages node selection state changes in a tree view.
+  /// The handler updates the tree structure when selection changes occur.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Current tree node list
+  /// - [onChanged] (`ValueChanged<List<TreeNode<K>>>`, required): Callback when nodes change
+  ///
+  /// Returns a `TreeNodeSelectionChanged<K>` function that handles selection changes.
   static TreeNodeSelectionChanged<K> defaultSelectionHandler<K>(
       List<TreeNode<K>> nodes, ValueChanged<List<TreeNode<K>>> onChanged) {
     return TreeSelectionDefaultHandler(nodes, onChanged).call;
   }
 
+  /// Creates a default expand/collapse handler for tree items.
+  ///
+  /// Returns a handler that manages the expanded/collapsed state of a specific
+  /// tree node. The handler updates the tree structure when expansion changes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Current tree node list
+  /// - [target] (`TreeNode<K>`, required): The node being expanded/collapsed
+  /// - [onChanged] (`ValueChanged<List<TreeNode<K>>>`, required): Callback when nodes change
+  ///
+  /// Returns a `ValueChanged<bool>` function that handles expand/collapse events.
   static ValueChanged<bool> defaultItemExpandHandler<K>(List<TreeNode<K>> nodes,
       TreeNode<K> target, ValueChanged<List<TreeNode<K>>> onChanged) {
     return TreeItemExpandDefaultHandler(nodes, target, onChanged).call;
