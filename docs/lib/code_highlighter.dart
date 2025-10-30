@@ -109,7 +109,7 @@ class CodeBlock extends StatelessWidget {
       code: CodeHighlighter(code: code, mode: mode),
       actions: [
         ...actions,
-        IconButton.outline(
+        IconButton.ghost(
           size: ButtonSize.small,
           onPressed: () {
             Clipboard.setData(ClipboardData(text: code)).then((_) {
