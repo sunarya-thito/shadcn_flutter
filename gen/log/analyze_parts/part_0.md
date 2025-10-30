@@ -1,69 +1,69 @@
 TODO:
-- [ ] lib\src\animation.dart:385:10
-- [ ] lib\src\animation.dart:389:10
-- [ ] lib\src\animation.dart:393:10
-- [ ] lib\src\animation.dart:3:9
-- [ ] lib\src\animation.dart:5:7
-- [ ] lib\src\animation.dart:14:16
-- [ ] lib\src\animation.dart:8:3
-- [ ] lib\src\animation.dart:56:7
-- [ ] lib\src\animation.dart:57:18
-- [ ] lib\src\animation.dart:64:15
-- [ ] lib\src\animation.dart:71:17
-- [ ] lib\src\animation.dart:78:18
-- [ ] lib\src\animation.dart:88:16
-- [ ] lib\src\animation.dart:99:7
-- [ ] lib\src\animation.dart:101:23
-- [ ] lib\src\animation.dart:115:25
-- [ ] lib\src\animation.dart:119:28
-- [ ] lib\src\animation.dart:123:27
-- [ ] lib\src\animation.dart:128:7
-- [ ] lib\src\animation.dart:151:9
-- [ ] lib\src\animation.dart:158:7
-- [ ] lib\src\animation.dart:167:7
-- [ ] lib\src\animation.dart:168:16
-- [ ] lib\src\animation.dart:169:18
-- [ ] lib\src\animation.dart:170:15
-- [ ] lib\src\animation.dart:172:3
-- [ ] lib\src\animation.dart:175:7
-- [ ] lib\src\animation.dart:176:16
-- [ ] lib\src\animation.dart:177:16
-- [ ] lib\src\animation.dart:178:18
-- [ ] lib\src\animation.dart:179:15
-- [ ] lib\src\animation.dart:182:3
-- [ ] lib\src\animation.dart:185:7
-- [ ] lib\src\animation.dart:212:14
-- [ ] lib\src\animation.dart:214:12
-- [ ] lib\src\animation.dart:205:7
-- [ ] lib\src\animation.dart:193:8
-- [ ] lib\src\animation.dart:216:8
-- [ ] lib\src\animation.dart:188:3
-- [ ] lib\src\animation.dart:236:16
-- [ ] lib\src\animation.dart:237:16
-- [ ] lib\src\animation.dart:238:5
-- [ ] lib\src\animation.dart:241:7
-- [ ] lib\src\animation.dart:242:11
-- [ ] lib\src\animation.dart:243:11
-- [ ] lib\src\animation.dart:247:9
-- [ ] lib\src\animation.dart:259:7
-- [ ] lib\src\animation.dart:260:11
-- [ ] lib\src\animation.dart:264:9
-- [ ] lib\src\animation.dart:281:7
-- [ ] lib\src\animation.dart:282:12
-- [ ] lib\src\animation.dart:286:9
-- [ ] lib\src\animation.dart:300:7
-- [ ] lib\src\animation.dart:301:18
-- [ ] lib\src\animation.dart:302:30
-- [ ] lib\src\animation.dart:304:3
-- [ ] lib\src\animation.dart:314:7
-- [ ] lib\src\animation.dart:315:12
-- [ ] lib\src\animation.dart:353:25
-- [ ] lib\src\animation.dart:357:5
-- [ ] lib\src\animation.dart:361:25
-- [ ] lib\src\animation.dart:319:25
-- [ ] lib\src\animation.dart:320:18
-- [ ] lib\src\animation.dart:321:27
-- [ ] lib\src\animation.dart:329:11
+- [x] lib\src\animation.dart:385:10
+- [x] lib\src\animation.dart:389:10
+- [x] lib\src\animation.dart:393:10
+- [x] lib\src\animation.dart:3:9
+- [x] lib\src\animation.dart:5:7
+- [x] lib\src\animation.dart:14:16
+- [x] lib\src\animation.dart:8:3
+- [x] lib\src\animation.dart:56:7
+- [x] lib\src\animation.dart:57:18
+- [x] lib\src\animation.dart:64:15
+- [x] lib\src\animation.dart:71:17
+- [x] lib\src\animation.dart:78:18
+- [x] lib\src\animation.dart:88:16
+- [x] lib\src\animation.dart:99:7
+- [x] lib\src\animation.dart:101:23
+- [x] lib\src\animation.dart:115:25
+- [x] lib\src\animation.dart:119:28
+- [x] lib\src\animation.dart:123:27
+- [x] lib\src\animation.dart:128:7
+- [x] lib\src\animation.dart:151:9
+- [x] lib\src\animation.dart:158:7
+- [x] lib\src\animation.dart:167:7
+- [x] lib\src\animation.dart:168:16
+- [x] lib\src\animation.dart:169:18
+- [x] lib\src\animation.dart:170:15
+- [x] lib\src\animation.dart:172:3
+- [x] lib\src\animation.dart:175:7
+- [x] lib\src\animation.dart:176:16
+- [x] lib\src\animation.dart:177:16
+- [x] lib\src\animation.dart:178:18
+- [x] lib\src\animation.dart:179:15
+- [x] lib\src\animation.dart:182:3
+- [x] lib\src\animation.dart:185:7
+- [x] lib\src\animation.dart:212:14
+- [x] lib\src\animation.dart:214:12
+- [x] lib\src\animation.dart:205:7
+- [x] lib\src\animation.dart:193:8
+- [x] lib\src\animation.dart:216:8
+- [x] lib\src\animation.dart:188:3
+- [x] lib\src\animation.dart:236:16
+- [x] lib\src\animation.dart:237:16
+- [x] lib\src\animation.dart:238:5
+- [x] lib\src\animation.dart:241:7
+- [x] lib\src\animation.dart:242:11
+- [x] lib\src\animation.dart:243:11
+- [x] lib\src\animation.dart:247:9
+- [x] lib\src\animation.dart:259:7
+- [x] lib\src\animation.dart:260:11
+- [x] lib\src\animation.dart:264:9
+- [x] lib\src\animation.dart:281:7
+- [x] lib\src\animation.dart:282:12
+- [x] lib\src\animation.dart:286:9
+- [x] lib\src\animation.dart:300:7
+- [x] lib\src\animation.dart:301:18
+- [x] lib\src\animation.dart:302:30
+- [x] lib\src\animation.dart:304:3
+- [x] lib\src\animation.dart:314:7
+- [x] lib\src\animation.dart:315:12
+- [x] lib\src\animation.dart:353:25
+- [x] lib\src\animation.dart:357:5
+- [x] lib\src\animation.dart:361:25
+- [x] lib\src\animation.dart:319:25
+- [x] lib\src\animation.dart:320:18
+- [x] lib\src\animation.dart:321:27
+- [x] lib\src\animation.dart:329:11
 - [ ] lib\src\collection.dart:1:6
 - [ ] lib\src\collection.dart:30:7
 - [ ] lib\src\collection.dart:34:3
