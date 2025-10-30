@@ -304,6 +304,7 @@ extension TextExtension on Widget {
         child: this,
       );
 
+  /// Applies paragraph style with top spacing.
   TextModifier get p => WrappedText(
         style: (context, theme) => theme.typography.p,
         child: this,
@@ -315,11 +316,13 @@ extension TextExtension on Widget {
         },
       );
 
+  /// Applies paragraph style for the first paragraph (no top spacing).
   TextModifier get firstP => WrappedText(
         style: (context, theme) => theme.typography.p,
         child: this,
       );
 
+  /// Applies block quote style with left border.
   TextModifier get blockQuote => WrappedText(
         style: (context, theme) => theme.typography.blockQuote,
         wrapper: (context, child) => Container(
@@ -337,6 +340,9 @@ extension TextExtension on Widget {
         child: this,
       );
 
+  /// Applies list item style with bullet point.
+  ///
+  /// Automatically adds a bullet point and indents nested list items.
   TextModifier get li => WrappedText(
         wrapper: (context, child) {
           UnorderedListData? data = Data.maybeOf(context);
@@ -363,6 +369,7 @@ extension TextExtension on Widget {
         child: this,
       );
 
+  /// Applies inline code style with background and padding.
   TextModifier get inlineCode => WrappedText(
         style: (context, theme) => theme.typography.inlineCode,
         wrapper: (context, child) {
@@ -385,67 +392,80 @@ extension TextExtension on Widget {
         child: this,
       );
 
+  /// Applies lead paragraph style with muted color.
   TextModifier get lead => WrappedText(
         style: (context, theme) => theme.typography.lead,
         child: this,
       ).muted;
 
+  /// Applies large text style.
   TextModifier get textLarge => WrappedText(
         style: (context, theme) => theme.typography.textLarge,
         child: this,
       );
 
+  /// Applies small text style.
   TextModifier get textSmall => WrappedText(
         style: (context, theme) => theme.typography.textSmall,
         child: this,
       );
 
+  /// Applies muted text style with muted color.
   TextModifier get textMuted => WrappedText(
         style: (context, theme) => theme.typography.textMuted,
         child: this,
       ).muted;
 
+  /// Constrains text to a single line without wrapping.
   TextModifier get singleLine => WrappedText(
         softWrap: (context, theme) => false,
         maxLines: (context, theme) => 1,
         child: this,
       );
 
+  /// Applies ellipsis overflow to text.
   TextModifier get ellipsis => WrappedText(
         overflow: (context, theme) => TextOverflow.ellipsis,
         child: this,
       );
 
+  /// Centers text horizontally.
   TextModifier get textCenter => WrappedText(
         textAlign: (context, theme) => TextAlign.center,
         child: this,
       );
 
+  /// Right-aligns text.
   TextModifier get textRight => WrappedText(
         textAlign: (context, theme) => TextAlign.right,
         child: this,
       );
 
+  /// Left-aligns text.
   TextModifier get textLeft => WrappedText(
         textAlign: (context, theme) => TextAlign.left,
         child: this,
       );
 
+  /// Justifies text alignment.
   TextModifier get textJustify => WrappedText(
         textAlign: (context, theme) => TextAlign.justify,
         child: this,
       );
 
+  /// Aligns text to the start (left in LTR, right in RTL).
   TextModifier get textStart => WrappedText(
         textAlign: (context, theme) => TextAlign.start,
         child: this,
       );
 
+  /// Aligns text to the end (right in LTR, left in RTL).
   TextModifier get textEnd => WrappedText(
         textAlign: (context, theme) => TextAlign.end,
         child: this,
       );
 
+  /// Applies primary foreground color modifier.
   TextModifier get modify => WrappedText(
         style: (context, theme) => TextStyle(
           color: theme.colorScheme.primaryForeground,
@@ -453,6 +473,7 @@ extension TextExtension on Widget {
         child: this,
       );
 
+  /// Applies standard foreground color.
   TextModifier get foreground => WrappedText(
         style: (context, theme) => TextStyle(
           color: theme.colorScheme.foreground,
@@ -460,6 +481,20 @@ extension TextExtension on Widget {
         child: this,
       );
 
+  /// Appends an inline span to the current text widget.
+  ///
+  /// Allows chaining multiple text spans together. Works with [Text],
+  /// [SelectableText], and [RichText] widgets.
+  ///
+  /// Parameters:
+  /// - [span] (`InlineSpan`, required): The span to append.
+  ///
+  /// Returns: `Widget` — a rich text widget with the appended span.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello ').then(TextSpan(text: 'World'))
+  /// ```
   Widget then(InlineSpan span) {
     if (this is RichText) {
       final text = this as RichText;
@@ -504,10 +539,36 @@ extension TextExtension on Widget {
     );
   }
 
+  /// Appends a text span to the current text widget.
+  ///
+  /// Convenience method for appending plain text.
+  ///
+  /// Parameters:
+  /// - [text] (`String`, required): Text to append.
+  ///
+  /// Returns: `Widget` — a rich text widget with the appended text.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello ').thenText('World')
+  /// ```
   Widget thenText(String text) {
     return then(TextSpan(text: text));
   }
 
+  /// Appends inline code to the current text widget.
+  ///
+  /// The appended text is styled as inline code with background.
+  ///
+  /// Parameters:
+  /// - [text] (`String`, required): Code text to append.
+  ///
+  /// Returns: `Widget` — a rich text widget with the appended code.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Use ').thenInlineCode('myFunction()')
+  /// ```
   Widget thenInlineCode(String text) {
     return then(
       WidgetSpan(
@@ -517,6 +578,23 @@ extension TextExtension on Widget {
     );
   }
 
+  /// Appends a button widget to the current text widget.
+  ///
+  /// Creates an inline button within the text flow.
+  ///
+  /// Parameters:
+  /// - [onPressed] (`VoidCallback`, required): Button press handler.
+  /// - [child] (`Widget`, required): Button content.
+  ///
+  /// Returns: `Widget` — a rich text widget with the appended button.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Click ').thenButton(
+  ///   onPressed: () => print('clicked'),
+  ///   child: Text('here'),
+  /// )
+  /// ```
   Widget thenButton({
     required VoidCallback onPressed,
     required Widget child,
@@ -711,6 +789,24 @@ class _SelectableTextThenWidget extends StatelessWidget {
   }
 }
 
+/// Creates a bullet widget for list items based on depth.
+///
+/// Returns different bullet styles for different nesting levels:
+/// - Depth 0: Filled circle
+/// - Depth 1: Hollow circle (stroke only)
+/// - Depth 2+: Filled square
+///
+/// Parameters:
+/// - [context] (`BuildContext`, required): Build context for theme access.
+/// - [depth] (`int`, required): Nesting depth (0 = top level).
+/// - [size] (`double`, required): Size of the bullet in logical pixels.
+///
+/// Returns: `Widget` — a centered bullet widget.
+///
+/// Example:
+/// ```dart
+/// getBullet(context, 0, 6.0) // Filled circle bullet
+/// ```
 Widget getBullet(BuildContext context, int depth, double size) {
   final themeData = Theme.of(context);
   if (depth == 0) {
@@ -751,26 +847,82 @@ Widget getBullet(BuildContext context, int depth, double size) {
   );
 }
 
+/// Data class for tracking unordered list nesting depth.
+///
+/// Used internally by the list item modifier to handle bullet points
+/// and indentation for nested lists.
 class UnorderedListData {
+  /// The nesting depth of the list (0 = top level).
   final int depth;
 
+  /// Creates an [UnorderedListData].
+  ///
+  /// Parameters:
+  /// - [depth] (`int`, default: 0): Nesting depth.
   const UnorderedListData({this.depth = 0});
 }
 
+/// Function signature for building data from context and theme.
+///
+/// Used by [WrappedText] to compute style properties dynamically.
+///
+/// Type parameter `T` is the return type of the builder function.
 typedef WrappedTextDataBuilder<T> = T Function(
     BuildContext context, ThemeData theme);
+
+/// Function signature for wrapping widgets with additional structure.
+///
+/// Used by [WrappedText] to add container widgets around text content.
 typedef WidgetTextWrapper = Widget Function(BuildContext context, Widget child);
 
+/// A widget that wraps text with customizable styling and layout.
+///
+/// [WrappedText] provides a declarative way to apply text styles and
+/// transformations using builder functions. It implements [TextModifier]
+/// and is the foundation for the fluent text styling API.
+///
+/// All style properties are computed dynamically using builder functions
+/// that receive the current [BuildContext] and [ThemeData], enabling
+/// theme-aware and responsive text styling.
 class WrappedText extends StatelessWidget implements TextModifier {
+  /// The child widget to wrap with styling.
   final Widget child;
+
+  /// Builder for the text style.
   final WrappedTextDataBuilder<TextStyle?>? style;
+
+  /// Builder for text alignment.
   final WrappedTextDataBuilder<TextAlign?>? textAlign;
+
+  /// Builder for soft wrap behavior.
   final WrappedTextDataBuilder<bool?>? softWrap;
+
+  /// Builder for text overflow handling.
   final WrappedTextDataBuilder<TextOverflow?>? overflow;
+
+  /// Builder for maximum number of lines.
   final WrappedTextDataBuilder<int?>? maxLines;
+
+  /// Builder for text width basis.
   final WrappedTextDataBuilder<TextWidthBasis?>? textWidthBasis;
+
+  /// Optional wrapper function to add container widgets around the child.
   final WidgetTextWrapper? wrapper;
 
+  /// Creates a [WrappedText].
+  ///
+  /// All styling parameters are optional and use builder functions for
+  /// dynamic, theme-aware styling.
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): Widget to apply styling to.
+  /// - [style] (`WrappedTextDataBuilder<TextStyle?>?`, optional): Text style builder.
+  /// - [textAlign] (`WrappedTextDataBuilder<TextAlign?>?`, optional): Text alignment builder.
+  /// - [softWrap] (`WrappedTextDataBuilder<bool?>?`, optional): Soft wrap builder.
+  /// - [overflow] (`WrappedTextDataBuilder<TextOverflow?>?`, optional): Overflow handling builder.
+  /// - [maxLines] (`WrappedTextDataBuilder<int?>?`, optional): Max lines builder.
+  /// - [textWidthBasis] (`WrappedTextDataBuilder<TextWidthBasis?>?`, optional): Text width basis builder.
+  /// - [wrapper] (`WidgetTextWrapper?`, optional): Container wrapper function.
   const WrappedText({
     super.key,
     required this.child,
