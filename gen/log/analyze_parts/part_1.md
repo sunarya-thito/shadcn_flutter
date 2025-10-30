@@ -1,878 +1,4 @@
 TODO:
-- [ ] lib/src/components/icon/icon.dart:181:  Widget call() {
-- [ ] lib/src/components/icon/icon.dart:195:  WrappedIcon copyWith({
-- [ ] lib/src/components/layout/basic.dart:456:class Label extends StatelessWidget {
-- [ ] lib/src/components/layout/basic.dart:457:  final Widget? leading;
-- [ ] lib/src/components/layout/basic.dart:458:  final Widget child;
-- [ ] lib/src/components/layout/basic.dart:459:  final Widget? trailing;
-- [ ] lib/src/components/layout/basic.dart:461:  const Label({
-- [ ] lib/src/components/layout/focus_outline.dart:32:  FocusOutlineTheme copyWith({
-- [ ] lib/src/components/layout/outlined_container.dart:626:class DashedLinePainter extends CustomPainter {
-- [ ] lib/src/components/layout/outlined_container.dart:627:  final double width;
-- [ ] lib/src/components/layout/outlined_container.dart:628:  final double gap;
-- [ ] lib/src/components/layout/outlined_container.dart:629:  final double thickness;
-- [ ] lib/src/components/layout/outlined_container.dart:630:  final Color color;
-- [ ] lib/src/components/layout/outlined_container.dart:632:  DashedLinePainter({
-- [ ] lib/src/components/layout/outlined_container.dart:674:class DashedPainter extends CustomPainter {
-- [ ] lib/src/components/layout/outlined_container.dart:675:  final double width;
-- [ ] lib/src/components/layout/outlined_container.dart:676:  final double gap;
-- [ ] lib/src/components/layout/outlined_container.dart:677:  final double thickness;
-- [ ] lib/src/components/layout/outlined_container.dart:678:  final Color color;
-- [ ] lib/src/components/layout/outlined_container.dart:679:  final BorderRadius? borderRadius;
-- [ ] lib/src/components/layout/outlined_container.dart:681:  DashedPainter({
-- [ ] lib/src/components/layout/resizable.dart:286:  AbsoluteResizablePaneController(this._size, {bool collapsed = false})
-- [ ] lib/src/components/layout/resizable.dart:345:  FlexibleResizablePaneController(this._flex, {bool collapsed = false})
-- [ ] lib/src/components/layout/resizable.dart:670:typedef OptionalWidgetBuilder = Widget? Function(BuildContext context);
-- [ ] lib/src/components/layout/scaffold.dart:135:  final List<Widget> headers;
-- [ ] lib/src/components/layout/scaffold.dart:136:  final List<Widget> footers;
-- [ ] lib/src/components/layout/scaffold.dart:137:  final Widget child;
-- [ ] lib/src/components/layout/scaffold.dart:138:  final double? loadingProgress;
-- [ ] lib/src/components/layout/scaffold.dart:139:  final bool loadingProgressIndeterminate;
-- [ ] lib/src/components/layout/scaffold.dart:141:      floatingHeader; // when header floats, it takes no space in the layout, and positioned on top of the content
-- [ ] lib/src/components/layout/scaffold.dart:142:  final bool floatingFooter;
-- [ ] lib/src/components/layout/scaffold.dart:143:  final Color? headerBackgroundColor;
-- [ ] lib/src/components/layout/scaffold.dart:144:  final Color? footerBackgroundColor;
-- [ ] lib/src/components/layout/scaffold.dart:145:  final Color? backgroundColor;
-- [ ] lib/src/components/layout/scaffold.dart:146:  final bool? showLoadingSparks;
-- [ ] lib/src/components/layout/scaffold.dart:147:  final bool? resizeToAvoidBottomInset;
-- [ ] lib/src/components/layout/scaffold.dart:149:  const Scaffold({
-- [ ] lib/src/components/layout/scaffold.dart:196:  Widget buildHeader(BuildContext context) {
-- [ ] lib/src/components/layout/scaffold.dart:276:  Widget buildFooter(BuildContext context, EdgeInsets viewInsets) {
-- [ ] lib/src/components/layout/scaffold.dart:375:class ScaffoldPaddingStorage {
-- [ ] lib/src/components/layout/scaffold.dart:376:  double top;
-- [ ] lib/src/components/layout/scaffold.dart:377:  double left;
-- [ ] lib/src/components/layout/scaffold.dart:378:  double right;
-- [ ] lib/src/components/layout/scaffold.dart:379:  double bottom;
-- [ ] lib/src/components/layout/scaffold.dart:381:  ScaffoldPaddingStorage({
-- [ ] lib/src/components/layout/scaffold.dart:389:class ScaffoldBoxConstraints extends BoxConstraints {
-- [ ] lib/src/components/layout/scaffold.dart:390:  final double headerHeight;
-- [ ] lib/src/components/layout/scaffold.dart:391:  final double footerHeight;
-- [ ] lib/src/components/layout/scaffold.dart:393:  const ScaffoldBoxConstraints({
-- [ ] lib/src/components/layout/scaffold.dart:402:  factory ScaffoldBoxConstraints.fromBoxConstraints({
-- [ ] lib/src/components/layout/scaffold.dart:919:class ScaffoldHeaderPadding extends SingleChildRenderObjectWidget {
-- [ ] lib/src/components/layout/scaffold.dart:920:  const ScaffoldHeaderPadding({super.key, super.child});
-- [ ] lib/src/components/layout/scaffold.dart:930:class ScaffoldFooterPadding extends SingleChildRenderObjectWidget {
-- [ ] lib/src/components/layout/scaffold.dart:931:  const ScaffoldFooterPadding({super.key, super.child});
-- [ ] lib/src/components/layout/steps.dart:106:  final List<Widget> children;
-- [ ] lib/src/components/layout/table.dart:319:  ResizableTableTheme copyWith({
-- [ ] lib/src/components/layout/table.dart:512:  Map<int, double>? get columnWidths => _columnWidths == null
-- [ ] lib/src/components/layout/table.dart:516:  Map<int, double>? get rowHeights =>
-- [ ] lib/src/components/layout/table.dart:397:  bool resizeColumn(int column, double width) {
-- [ ] lib/src/components/layout/table.dart:415:  double resizeColumnBorder(
-- [ ] lib/src/components/layout/table.dart:459:  double resizeRowBorder(int previousRow, int nextRow, double deltaHeight) {
-- [ ] lib/src/components/layout/table.dart:494:  bool resizeRow(int row, double height) {
-- [ ] lib/src/components/layout/table.dart:519:  double getColumnWidth(int index) {
-- [ ] lib/src/components/layout/table.dart:523:  double getRowHeight(int index) {
-- [ ] lib/src/components/layout/table.dart:527:  double? getRowMinHeight(int index) {
-- [ ] lib/src/components/layout/table.dart:531:  double? getRowMaxHeight(int index) {
-- [ ] lib/src/components/layout/table.dart:535:  double? getColumnMinWidth(int index) {
-- [ ] lib/src/components/layout/table.dart:539:  double? getColumnMaxWidth(int index) {
-- [ ] lib/src/components/layout/table.dart:379:  ResizableTableController({
-- [ ] lib/src/components/layout/table.dart:544:enum TableCellResizeMode {
-- [ ] lib/src/components/layout/table.dart:555:class ResizableTable extends StatefulWidget {
-- [ ] lib/src/components/layout/table.dart:556:  final List<TableRow> rows;
-- [ ] lib/src/components/layout/table.dart:557:  final ResizableTableController controller;
-- [ ] lib/src/components/layout/table.dart:558:  final ResizableTableTheme? theme;
-- [ ] lib/src/components/layout/table.dart:559:  final Clip clipBehavior;
-- [ ] lib/src/components/layout/table.dart:560:  final TableCellResizeMode cellWidthResizeMode;
-- [ ] lib/src/components/layout/table.dart:561:  final TableCellResizeMode cellHeightResizeMode;
-- [ ] lib/src/components/layout/table.dart:562:  final FrozenTableData? frozenCells;
-- [ ] lib/src/components/layout/table.dart:563:  final double? horizontalOffset;
-- [ ] lib/src/components/layout/table.dart:564:  final double? verticalOffset;
-- [ ] lib/src/components/layout/table.dart:565:  final Size? viewportSize;
-- [ ] lib/src/components/layout/table.dart:567:  const ResizableTable({
-- [ ] lib/src/components/layout/table.dart:1259:  Widget build(BuildContext context) {
-- [ ] lib/src/components/layout/table.dart:1405:  TableCellTheme buildDefaultTheme(BuildContext context) {
-- [ ] lib/src/components/layout/table.dart:2062:abstract class TableSize {
-- [ ] lib/src/components/layout/table.dart:2063:  const TableSize();
-- [ ] lib/src/components/layout/table.dart:2123:class RawTableLayout extends MultiChildRenderObjectWidget {
-- [ ] lib/src/components/layout/table.dart:2124:  const RawTableLayout({
-- [ ] lib/src/components/layout/table.dart:2137:  final TableSizeSupplier width;
-- [ ] lib/src/components/layout/table.dart:2138:  final TableSizeSupplier height;
-- [ ] lib/src/components/layout/table.dart:2139:  final Clip clipBehavior;
-- [ ] lib/src/components/layout/table.dart:2140:  final CellPredicate? frozenColumn;
-- [ ] lib/src/components/layout/table.dart:2141:  final CellPredicate? frozenRow;
-- [ ] lib/src/components/layout/table.dart:2142:  final double? verticalOffset;
-- [ ] lib/src/components/layout/table.dart:2143:  final double? horizontalOffset;
-- [ ] lib/src/components/layout/table.dart:2144:  final Size? viewportSize;
-- [ ] lib/src/components/layout/table.dart:2216:class RenderTableLayout extends RenderBox
-- [ ] lib/src/components/layout/table.dart:2752:  List<double> get columnWidths {
-- [ ] lib/src/components/layout/table.dart:2757:  List<double> get rowHeights {
-- [ ] lib/src/components/layout/table.dart:2767:  double get remainingWidth {
-- [ ] lib/src/components/layout/table.dart:2772:  double get remainingHeight {
-- [ ] lib/src/components/layout/table.dart:2777:  double get remainingLooseWidth {
-- [ ] lib/src/components/layout/table.dart:2782:  double get remainingLooseHeight {
-- [ ] lib/src/components/layout/table.dart:2787:  bool get hasTightFlexWidth {
-- [ ] lib/src/components/layout/table.dart:2792:  bool get hasTightFlexHeight {
-- [ ] lib/src/components/layout/table.dart:2496:  TableLayoutResult computeTableSize(BoxConstraints constraints,
-- [ ] lib/src/components/layout/table.dart:2762:  Offset getOffset(int column, int row) {
-- [ ] lib/src/components/layout/table.dart:2231:  RenderTableLayout(
-- [ ] lib/src/components/layout/table.dart:2862:  double get width {
-- [ ] lib/src/components/layout/table.dart:2866:  double get height {
-- [ ] lib/src/components/layout/table.dart:2845:  Offset getOffset(int column, int row) {
-- [ ] lib/src/components/layout/tree.dart:63:  TreeTheme copyWith({
-- [ ] lib/src/components/layout/tree.dart:55:  const TreeTheme({
-- [ ] lib/src/components/layout/tree.dart:531:extension TreeNodeListExtension<K> on List<TreeNode<K>> {
-- [ ] lib/src/components/layout/tree.dart:568:  List<TreeNode<K>> get selectedNodes {
-- [ ] lib/src/components/layout/tree.dart:572:  List<K> get selectedItems {
-- [ ] lib/src/components/layout/tree.dart:532:  List<TreeNode<K>> replaceNodes(TreeNodeUnaryOperator<K> operator) {
-- [ ] lib/src/components/layout/tree.dart:536:  List<TreeNode<K>> replaceNode(TreeNode<K> oldNode, TreeNode<K> newNode) {
-- [ ] lib/src/components/layout/tree.dart:540:  List<TreeNode<K>> replaceItem(K oldItem, TreeNode<K> newItem) {
-- [ ] lib/src/components/layout/tree.dart:544:  List<TreeNode<K>> expandAll() {
-- [ ] lib/src/components/layout/tree.dart:548:  List<TreeNode<K>> collapseAll() {
-- [ ] lib/src/components/layout/tree.dart:552:  List<TreeNode<K>> expandNode(TreeNode<K> target) {
-- [ ] lib/src/components/layout/tree.dart:556:  List<TreeNode<K>> expandItem(K target) {
-- [ ] lib/src/components/layout/tree.dart:560:  List<TreeNode<K>> collapseNode(TreeNode<K> target) {
-- [ ] lib/src/components/layout/tree.dart:564:  List<TreeNode<K>> collapseItem(K target) {
-- [ ] lib/src/components/layout/tree.dart:576:  List<TreeNode<K>> selectNode(TreeNode<K> target) {
-- [ ] lib/src/components/layout/tree.dart:580:  List<TreeNode<K>> selectItem(K target) {
-- [ ] lib/src/components/layout/tree.dart:584:  List<TreeNode<K>> deselectNode(TreeNode<K> target) {
-- [ ] lib/src/components/layout/tree.dart:588:  List<TreeNode<K>> deselectItem(K target) {
-- [ ] lib/src/components/layout/tree.dart:592:  List<TreeNode<K>> toggleSelectNode(TreeNode<K> target) {
-- [ ] lib/src/components/layout/tree.dart:596:  List<TreeNode<K>> toggleSelectNodes(Iterable<TreeNode<K>> targets) {
-- [ ] lib/src/components/layout/tree.dart:600:  List<TreeNode<K>> toggleSelectItem(K target) {
-- [ ] lib/src/components/layout/tree.dart:604:  List<TreeNode<K>> toggleSelectItems(Iterable<K> targets) {
-- [ ] lib/src/components/layout/tree.dart:608:  List<TreeNode<K>> selectAll() {
-- [ ] lib/src/components/layout/tree.dart:612:  List<TreeNode<K>> deselectAll() {
-- [ ] lib/src/components/layout/tree.dart:616:  List<TreeNode<K>> toggleSelectAll() {
-- [ ] lib/src/components/layout/tree.dart:620:  List<TreeNode<K>> selectNodes(Iterable<TreeNode<K>> nodes) {
-- [ ] lib/src/components/layout/tree.dart:624:  List<TreeNode<K>> selectItems(Iterable<K> items) {
-- [ ] lib/src/components/layout/tree.dart:628:  List<TreeNode<K>> deselectNodes(Iterable<TreeNode<K>> nodes) {
-- [ ] lib/src/components/layout/tree.dart:632:  List<TreeNode<K>> deselectItems(Iterable<K> items) {
-- [ ] lib/src/components/layout/tree.dart:636:  List<TreeNode<K>> setSelectedNodes(Iterable<TreeNode<K>> nodes) {
-- [ ] lib/src/components/layout/tree.dart:640:  List<TreeNode<K>> setSelectedItems(Iterable<K> items) {
-- [ ] lib/src/components/layout/tree.dart:644:  List<TreeNode<K>> replaceNodesWithParent(
-- [ ] lib/src/components/layout/tree.dart:649:  List<TreeNode<K>> updateRecursiveSelection() {
-- [ ] lib/src/components/layout/tree.dart:789:  static TreeNodeSelectionChanged<K> defaultSelectionHandler<K>(
-- [ ] lib/src/components/layout/tree.dart:794:  static ValueChanged<bool> defaultItemExpandHandler<K>(List<TreeNode<K>> nodes,
-- [ ] lib/src/components/layout/tree.dart:839:  static List<TreeNode<K>> replaceNodes<K>(
-- [ ] lib/src/components/layout/tree.dart:844:  static List<TreeNode<K>> replaceNodesWithParent<K>(
-- [ ] lib/src/components/layout/tree.dart:849:  static List<TreeNode<K>> replaceNode<K>(
-- [ ] lib/src/components/layout/tree.dart:856:  static List<TreeNode<K>> replaceItem<K>(
-- [ ] lib/src/components/layout/tree.dart:866:  static List<TreeNode<K>> updateRecursiveSelection<K>(
-- [ ] lib/src/components/layout/tree.dart:879:  static List<TreeNode<K>> getSelectedNodes<K>(List<TreeNode<K>> nodes) {
-- [ ] lib/src/components/layout/tree.dart:883:  static List<K> getSelectedItems<K>(List<TreeNode<K>> nodes) {
-- [ ] lib/src/components/layout/tree.dart:891:  static List<TreeNode<K>> expandAll<K>(List<TreeNode<K>> nodes) {
-- [ ] lib/src/components/layout/tree.dart:897:  static List<TreeNode<K>> collapseAll<K>(List<TreeNode<K>> nodes) {
-- [ ] lib/src/components/layout/tree.dart:903:  static List<TreeNode<K>> expandNode<K>(
-- [ ] lib/src/components/layout/tree.dart:910:  static List<TreeNode<K>> expandItem<K>(List<TreeNode<K>> nodes, K target) {
-- [ ] lib/src/components/layout/tree.dart:919:  static List<TreeNode<K>> collapseNode<K>(
-- [ ] lib/src/components/layout/tree.dart:926:  static List<TreeNode<K>> collapseItem<K>(List<TreeNode<K>> nodes, K target) {
-- [ ] lib/src/components/layout/tree.dart:935:  static List<TreeNode<K>> selectNode<K>(
-- [ ] lib/src/components/layout/tree.dart:942:  static List<TreeNode<K>> selectItem<K>(List<TreeNode<K>> nodes, K target) {
-- [ ] lib/src/components/layout/tree.dart:951:  static List<TreeNode<K>> deselectNode<K>(
-- [ ] lib/src/components/layout/tree.dart:958:  static List<TreeNode<K>> deselectItem<K>(List<TreeNode<K>> nodes, K target) {
-- [ ] lib/src/components/layout/tree.dart:967:  static List<TreeNode<K>> toggleSelectNode<K>(
-- [ ] lib/src/components/layout/tree.dart:974:  static List<TreeNode<K>> toggleSelectNodes<K>(
-- [ ] lib/src/components/layout/tree.dart:983:  static List<TreeNode<K>> toggleSelectItem<K>(
-- [ ] lib/src/components/layout/tree.dart:993:  static List<TreeNode<K>> toggleSelectItems<K>(
-- [ ] lib/src/components/layout/tree.dart:1003:  static List<TreeNode<K>> selectAll<K>(List<TreeNode<K>> nodes) {
-- [ ] lib/src/components/layout/tree.dart:1009:  static List<TreeNode<K>> deselectAll<K>(List<TreeNode<K>> nodes) {
-- [ ] lib/src/components/layout/tree.dart:1015:  static List<TreeNode<K>> toggleSelectAll<K>(List<TreeNode<K>> nodes) {
-- [ ] lib/src/components/layout/tree.dart:1021:  static List<TreeNode<K>> selectNodes<K>(
-- [ ] lib/src/components/layout/tree.dart:1030:  static List<TreeNode<K>> selectItems<K>(
-- [ ] lib/src/components/layout/tree.dart:1040:  static List<TreeNode<K>> deselectNodes<K>(
-- [ ] lib/src/components/layout/tree.dart:1049:  static List<TreeNode<K>> deselectItems<K>(
-- [ ] lib/src/components/layout/tree.dart:1059:  static List<TreeNode<K>> setSelectedNodes<K>(
-- [ ] lib/src/components/layout/tree.dart:1066:  static List<TreeNode<K>> setSelectedItems<K>(
-- [ ] lib/src/components/layout/window.dart:394:  WindowController({
-- [ ] lib/src/components/layout/window.dart:807:mixin WindowHandle on State<WindowWidget> {
-- [ ] lib/src/components/layout/window.dart:808:  Rect get bounds;
-- [ ] lib/src/components/layout/window.dart:810:  Rect? get maximized;
-- [ ] lib/src/components/layout/window.dart:812:  bool get minimized;
-- [ ] lib/src/components/layout/window.dart:814:  bool get focused;
-- [ ] lib/src/components/layout/window.dart:817:  bool get alwaysOnTop;
-- [ ] lib/src/components/layout/window.dart:819:  bool get resizable;
-- [ ] lib/src/components/layout/window.dart:820:  bool get draggable;
-- [ ] lib/src/components/layout/window.dart:821:  bool get closable;
-- [ ] lib/src/components/layout/window.dart:822:  bool get maximizable;
-- [ ] lib/src/components/layout/window.dart:823:  bool get minimizable;
-- [ ] lib/src/components/layout/window.dart:824:  bool get enableSnapping;
-- [ ] lib/src/components/layout/window.dart:831:  WindowController get controller;
-- [ ] lib/src/components/layout/window.dart:809:  set bounds(Rect value);
-- [ ] lib/src/components/layout/window.dart:811:  set maximized(Rect? value);
-- [ ] lib/src/components/layout/window.dart:813:  set minimized(bool value);
-- [ ] lib/src/components/layout/window.dart:815:  set focused(bool value);
-- [ ] lib/src/components/layout/window.dart:818:  set alwaysOnTop(bool value);
-- [ ] lib/src/components/layout/window.dart:825:  set resizable(bool value);
-- [ ] lib/src/components/layout/window.dart:826:  set draggable(bool value);
-- [ ] lib/src/components/layout/window.dart:827:  set closable(bool value);
-- [ ] lib/src/components/layout/window.dart:828:  set maximizable(bool value);
-- [ ] lib/src/components/layout/window.dart:829:  set minimizable(bool value);
-- [ ] lib/src/components/layout/window.dart:830:  set enableSnapping(bool value);
-- [ ] lib/src/components/layout/window.dart:816:  void close();
-- [ ] lib/src/components/layout/window.dart:1428:class WindowNavigator extends StatefulWidget {
-- [ ] lib/src/components/layout/window.dart:1429:  final List<Window> initialWindows;
-- [ ] lib/src/components/layout/window.dart:1430:  final Widget? child;
-- [ ] lib/src/components/layout/window.dart:1431:  final bool showTopSnapBar;
-- [ ] lib/src/components/layout/window.dart:1433:  const WindowNavigator({
-- [ ] lib/src/components/layout/window.dart:1550:  WindowHandle get handle {
-- [ ] lib/src/components/layout/window.dart:1556:  bool get mounted => _key.currentContext != null;
-- [ ] lib/src/components/layout/window.dart:1494:  final Widget? title;
-- [ ] lib/src/components/layout/window.dart:1495:  final Widget? actions;
-- [ ] lib/src/components/layout/window.dart:1496:  final Widget? content;
-- [ ] lib/src/components/layout/window.dart:1497:  final WindowController? controller;
-- [ ] lib/src/components/layout/window.dart:1498:  final Rect? bounds;
-- [ ] lib/src/components/layout/window.dart:1499:  final Rect? maximized;
-- [ ] lib/src/components/layout/window.dart:1500:  final bool? minimized;
-- [ ] lib/src/components/layout/window.dart:1501:  final bool? alwaysOnTop;
-- [ ] lib/src/components/layout/window.dart:1502:  final bool? enableSnapping;
-- [ ] lib/src/components/layout/window.dart:1503:  final bool? resizable;
-- [ ] lib/src/components/layout/window.dart:1504:  final bool? draggable;
-- [ ] lib/src/components/layout/window.dart:1505:  final bool? closable;
-- [ ] lib/src/components/layout/window.dart:1506:  final bool? maximizable;
-- [ ] lib/src/components/layout/window.dart:1507:  final bool? minimizable;
-- [ ] lib/src/components/layout/window.dart:1508:  final BoxConstraints? constraints;
-- [ ] lib/src/components/layout/window.dart:1514:  final ValueNotifier<bool> closed = ValueNotifier(false);
-- [ ] lib/src/components/layout/window.dart:1516:  Window.controlled({
-- [ ] lib/src/components/layout/window.dart:1533:  Window({
-- [ ] lib/src/components/layout/window.dart:1604:mixin WindowNavigatorHandle on State<WindowNavigator> {
-- [ ] lib/src/components/layout/window.dart:1611:  List<Window> get windows;
-- [ ] lib/src/components/layout/window.dart:1605:  void pushWindow(Window window);
-- [ ] lib/src/components/layout/window.dart:1606:  void focusWindow(Window window);
-- [ ] lib/src/components/layout/window.dart:1607:  void unfocusWindow(Window window);
-- [ ] lib/src/components/layout/window.dart:1608:  void setAlwaysOnTop(Window window, bool value);
-- [ ] lib/src/components/layout/window.dart:1609:  void removeWindow(Window window);
-- [ ] lib/src/components/layout/window.dart:1610:  bool isFocused(Window window);
-- [ ] lib/src/components/layout/window.dart:1618:const kDefaultWindowConstraints = BoxConstraints(
-- [ ] lib/src/components/layout/window.dart:2409:class WindowViewport {
-- [ ] lib/src/components/layout/window.dart:2410:  final Size size;
-- [ ] lib/src/components/layout/window.dart:2411:  final WindowNavigatorHandle navigator;
-- [ ] lib/src/components/layout/window.dart:2412:  final bool focused;
-- [ ] lib/src/components/layout/window.dart:2413:  final bool alwaysOnTop;
-- [ ] lib/src/components/layout/window.dart:2414:  final bool closed;
-- [ ] lib/src/components/layout/window.dart:2415:  final bool minify;
-- [ ] lib/src/components/layout/window.dart:2416:  final bool ignorePointer;
-- [ ] lib/src/components/layout/window.dart:2418:  const WindowViewport({
-- [ ] lib/src/components/layout/window.dart:2445:class WindowActions extends StatelessWidget {
-- [ ] lib/src/components/layout/window.dart:2446:  const WindowActions({super.key});
-- [ ] lib/src/components/locale/shadcn_localizations.dart:54:String formatFileSize(int bytes, SizeUnitLocale unit) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:7:class ShadcnLocalizationsDelegate
-- [ ] lib/src/components/locale/shadcn_localizations.dart:9:  static const ShadcnLocalizationsDelegate delegate =
-- [ ] lib/src/components/locale/shadcn_localizations.dart:11:  const ShadcnLocalizationsDelegate();
-- [ ] lib/src/components/locale/shadcn_localizations.dart:31:class SizeUnitLocale {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:41:  String getUnit(int value) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:32:  final int base;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:33:  final List<String> units;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:35:  final String separator;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:36:  const SizeUnitLocale(this.base, this.units, {this.separator = ','});
-- [ ] lib/src/components/locale/shadcn_localizations.dart:38:  static const SizeUnitLocale fileBytes = _fileByteUnits;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:39:  static const SizeUnitLocale fileBits = _fileBitUnits;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:87:enum DatePart {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:88:  year(_getYear, _computeYearValueRange, length: 4),
-- [ ] lib/src/components/locale/shadcn_localizations.dart:89:  month(_getMonth, _computeMonthValueRange),
-- [ ] lib/src/components/locale/shadcn_localizations.dart:90:  day(_getDay, _computeDayValueRange),
-- [ ] lib/src/components/locale/shadcn_localizations.dart:93:  final int Function(DateTime dateTime) getter;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:94:  final int length;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:96:      computeValueRange;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:101:abstract class ShadcnLocalizations {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:110:  String get formNotEmpty;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:111:  String get invalidValue;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:112:  String get invalidEmail;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:113:  String get invalidURL;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:123:  String get formPasswordDigits;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:124:  String get formPasswordLowercase;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:125:  String get formPasswordUppercase;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:126:  String get formPasswordSpecial;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:128:  List<DatePart> get datePartsOrder;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:129:  String get dateYearAbbreviation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:130:  String get dateMonthAbbreviation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:131:  String get dateDayAbbreviation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:144:  String get commandSearch;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:145:  String get commandEmpty;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:146:  String get datePickerSelectYear;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:147:  String get abbreviatedMonday;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:148:  String get abbreviatedTuesday;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:149:  String get abbreviatedWednesday;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:150:  String get abbreviatedThursday;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:151:  String get abbreviatedFriday;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:152:  String get abbreviatedSaturday;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:153:  String get abbreviatedSunday;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:154:  String get monthJanuary;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:155:  String get monthFebruary;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:156:  String get monthMarch;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:157:  String get monthApril;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:158:  String get monthMay;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:159:  String get monthJune;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:160:  String get monthJuly;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:161:  String get monthAugust;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:162:  String get monthSeptember;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:163:  String get monthOctober;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:164:  String get monthNovember;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:165:  String get monthDecember;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:166:  String get abbreviatedJanuary;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:167:  String get abbreviatedFebruary;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:168:  String get abbreviatedMarch;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:169:  String get abbreviatedApril;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:170:  String get abbreviatedMay;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:171:  String get abbreviatedJune;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:172:  String get abbreviatedJuly;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:173:  String get abbreviatedAugust;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:174:  String get abbreviatedSeptember;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:175:  String get abbreviatedOctober;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:176:  String get abbreviatedNovember;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:177:  String get abbreviatedDecember;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:178:  String get buttonCancel;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:179:  String get buttonOk;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:180:  String get buttonClose;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:181:  String get buttonSave;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:182:  String get buttonReset;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:183:  String get timeHour;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:184:  String get timeMinute;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:185:  String get timeSecond;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:186:  String get timeAM;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:187:  String get timePM;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:188:  String get colorRed;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:189:  String get colorGreen;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:190:  String get colorBlue;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:191:  String get colorAlpha;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:192:  String get colorHue;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:193:  String get colorSaturation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:194:  String get colorValue;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:195:  String get colorLightness;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:196:  String get menuCut;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:197:  String get menuCopy;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:198:  String get menuPaste;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:199:  String get menuSelectAll;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:200:  String get menuUndo;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:201:  String get menuRedo;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:202:  String get menuDelete;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:203:  String get menuShare;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:204:  String get menuSearchWeb;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:205:  String get menuLiveTextInput;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:217:  String get placeholderDatePicker;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:218:  String get placeholderTimePicker;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:219:  String get placeholderColorPicker;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:220:  String get buttonPrevious;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:221:  String get buttonNext;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:223:  String get refreshTriggerPull;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:224:  String get refreshTriggerRelease;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:225:  String get refreshTriggerRefreshing;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:226:  String get refreshTriggerComplete;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:228:  String get searchPlaceholderCountry;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:229:  String get emptyCountryList;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:230:  String get toastSnippetCopied;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:232:  String get colorPickerTabRecent;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:233:  String get colorPickerTabRGB;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:234:  String get colorPickerTabHSV;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:235:  String get colorPickerTabHSL;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:236:  String get colorPickerTabHEX;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:238:  String get commandMoveUp;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:239:  String get commandMoveDown;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:240:  String get commandActivate;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:243:  String get dataTableNext;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:244:  String get dataTablePrevious;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:245:  String get dataTableColumns;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:343:  String get timeDaysAbbreviation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:344:  String get timeHoursAbbreviation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:345:  String get timeMinutesAbbreviation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:346:  String get timeSecondsAbbreviation;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:347:  String get placeholderDurationPicker;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:353:  String get durationDay;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:354:  String get durationHour;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:355:  String get durationMinute;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:356:  String get durationSecond;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:382:  Map<String, String> get localizedMimeTypes;
-- [ ] lib/src/components/locale/shadcn_localizations.dart:102:  static ShadcnLocalizations of(BuildContext context) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:114:  String formatNumber(double value);
-- [ ] lib/src/components/locale/shadcn_localizations.dart:115:  String formLessThan(double value);
-- [ ] lib/src/components/locale/shadcn_localizations.dart:116:  String formGreaterThan(double value);
-- [ ] lib/src/components/locale/shadcn_localizations.dart:117:  String formLessThanOrEqualTo(double value);
-- [ ] lib/src/components/locale/shadcn_localizations.dart:118:  String formGreaterThanOrEqualTo(double value);
-- [ ] lib/src/components/locale/shadcn_localizations.dart:119:  String formBetweenInclusively(double min, double max);
-- [ ] lib/src/components/locale/shadcn_localizations.dart:120:  String formBetweenExclusively(double min, double max);
-- [ ] lib/src/components/locale/shadcn_localizations.dart:121:  String formLengthLessThan(int value);
-- [ ] lib/src/components/locale/shadcn_localizations.dart:122:  String formLengthGreaterThan(int value);
-- [ ] lib/src/components/locale/shadcn_localizations.dart:133:  String getDatePartAbbreviation(DatePart part) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:206:  String formatDateTime(DateTime dateTime,
-- [ ] lib/src/components/locale/shadcn_localizations.dart:212:  String formatTimeOfDay(
-- [ ] lib/src/components/locale/shadcn_localizations.dart:242:  String dataTableSelectedRows(int count, int total);
-- [ ] lib/src/components/locale/shadcn_localizations.dart:247:  String getColorPickerMode(ColorPickerMode mode) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:260:  String getAbbreviatedWeekday(int weekday) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:281:  String getMonth(int month) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:312:  String getAbbreviatedMonth(int month) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:348:  String formatDuration(Duration duration,
-- [ ] lib/src/components/locale/shadcn_localizations.dart:358:  String getDurationPartAbbreviation(DurationPart part) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:371:  String getTimePartAbbreviation(TimePart part) {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:108:  const ShadcnLocalizations();
-- [ ] lib/src/components/locale/shadcn_localizations.dart:385:class DefaultShadcnLocalizations extends ShadcnLocalizations {
-- [ ] lib/src/components/locale/shadcn_localizations.dart:386:  static const ShadcnLocalizations instance = DefaultShadcnLocalizations();
-- [ ] lib/src/components/locale/shadcn_localizations.dart:388:  const DefaultShadcnLocalizations();
-- [ ] lib/src/components/menu/context_menu.dart:416:Widget buildEditableTextContextMenu(
-- [ ] lib/src/components/menu/context_menu.dart:40:class DesktopEditableTextContextMenu extends StatelessWidget {
-- [ ] lib/src/components/menu/context_menu.dart:41:  final BuildContext anchorContext;
-- [ ] lib/src/components/menu/context_menu.dart:42:  final EditableTextState editableTextState;
-- [ ] lib/src/components/menu/context_menu.dart:43:  final UndoHistoryController? undoHistoryController;
-- [ ] lib/src/components/menu/context_menu.dart:45:  const DesktopEditableTextContextMenu({
-- [ ] lib/src/components/menu/context_menu.dart:231:class MobileEditableTextContextMenu extends StatelessWidget {
-- [ ] lib/src/components/menu/context_menu.dart:232:  final BuildContext anchorContext;
-- [ ] lib/src/components/menu/context_menu.dart:233:  final EditableTextState editableTextState;
-- [ ] lib/src/components/menu/context_menu.dart:234:  final UndoHistoryController? undoHistoryController;
-- [ ] lib/src/components/menu/context_menu.dart:236:  const MobileEditableTextContextMenu({
-- [ ] lib/src/components/menu/context_menu.dart:448:class ContextMenu extends StatefulWidget {
-- [ ] lib/src/components/menu/context_menu.dart:449:  final Widget child;
-- [ ] lib/src/components/menu/context_menu.dart:450:  final List<MenuItem> items;
-- [ ] lib/src/components/menu/context_menu.dart:451:  final HitTestBehavior behavior;
-- [ ] lib/src/components/menu/context_menu.dart:452:  final Axis direction;
-- [ ] lib/src/components/menu/context_menu.dart:453:  final bool enabled;
-- [ ] lib/src/components/menu/context_menu.dart:455:  const ContextMenu(
-- [ ] lib/src/components/menu/context_menu.dart:581:class ContextMenuPopup extends StatelessWidget {
-- [ ] lib/src/components/menu/context_menu.dart:582:  final BuildContext anchorContext;
-- [ ] lib/src/components/menu/context_menu.dart:583:  final Offset position;
-- [ ] lib/src/components/menu/context_menu.dart:584:  final List<MenuItem> children;
-- [ ] lib/src/components/menu/context_menu.dart:585:  final CapturedThemes? themes;
-- [ ] lib/src/components/menu/context_menu.dart:586:  final Axis direction;
-- [ ] lib/src/components/menu/context_menu.dart:587:  final ValueChanged<PopoverOverlayWidgetState>? onTickFollow;
-- [ ] lib/src/components/menu/context_menu.dart:588:  final Size? anchorSize;
-- [ ] lib/src/components/menu/context_menu.dart:589:  const ContextMenuPopup({
-- [ ] lib/src/components/menu/menu.dart:50:class MenuShortcut extends StatelessWidget {
-- [ ] lib/src/components/menu/menu.dart:51:  final ShortcutActivator activator;
-- [ ] lib/src/components/menu/menu.dart:52:  final Widget? combiner;
-- [ ] lib/src/components/menu/menu.dart:54:  const MenuShortcut({super.key, required this.activator, this.combiner});
-- [ ] lib/src/components/menu/menu.dart:77:abstract class MenuItem extends Widget {
-- [ ] lib/src/components/menu/menu.dart:80:  bool get hasLeading;
-- [ ] lib/src/components/menu/menu.dart:81:  PopoverController? get popoverController;
-- [ ] lib/src/components/menu/menu.dart:78:  const MenuItem({super.key});
-- [ ] lib/src/components/menu/menu.dart:84:class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:85:  final T? value;
-- [ ] lib/src/components/menu/menu.dart:86:  final ContextedValueChanged<T>? onChanged;
-- [ ] lib/src/components/menu/menu.dart:87:  final List<Widget> children;
-- [ ] lib/src/components/menu/menu.dart:89:  const MenuRadioGroup({
-- [ ] lib/src/components/menu/menu.dart:119:class MenuRadio<T> extends StatelessWidget {
-- [ ] lib/src/components/menu/menu.dart:120:  final T value;
-- [ ] lib/src/components/menu/menu.dart:121:  final Widget child;
-- [ ] lib/src/components/menu/menu.dart:122:  final Widget? trailing;
-- [ ] lib/src/components/menu/menu.dart:123:  final FocusNode? focusNode;
-- [ ] lib/src/components/menu/menu.dart:124:  final bool enabled;
-- [ ] lib/src/components/menu/menu.dart:125:  final bool autoClose;
-- [ ] lib/src/components/menu/menu.dart:127:  const MenuRadio({
-- [ ] lib/src/components/menu/menu.dart:167:class MenuDivider extends StatelessWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:168:  const MenuDivider({super.key});
-- [ ] lib/src/components/menu/menu.dart:206:class MenuGap extends StatelessWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:207:  final double size;
-- [ ] lib/src/components/menu/menu.dart:209:  const MenuGap(this.size, {super.key});
-- [ ] lib/src/components/menu/menu.dart:223:class MenuButton extends StatefulWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:224:  final Widget child;
-- [ ] lib/src/components/menu/menu.dart:225:  final List<MenuItem>? subMenu;
-- [ ] lib/src/components/menu/menu.dart:226:  final ContextedCallback? onPressed;
-- [ ] lib/src/components/menu/menu.dart:227:  final Widget? trailing;
-- [ ] lib/src/components/menu/menu.dart:228:  final Widget? leading;
-- [ ] lib/src/components/menu/menu.dart:229:  final bool enabled;
-- [ ] lib/src/components/menu/menu.dart:230:  final FocusNode? focusNode;
-- [ ] lib/src/components/menu/menu.dart:231:  final bool autoClose;
-- [ ] lib/src/components/menu/menu.dart:234:  const MenuButton({
-- [ ] lib/src/components/menu/menu.dart:254:class MenuLabel extends StatelessWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:255:  final Widget child;
-- [ ] lib/src/components/menu/menu.dart:256:  final Widget? trailing;
-- [ ] lib/src/components/menu/menu.dart:257:  final Widget? leading;
-- [ ] lib/src/components/menu/menu.dart:259:  const MenuLabel({
-- [ ] lib/src/components/menu/menu.dart:305:class MenuCheckbox extends StatelessWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:306:  final bool value;
-- [ ] lib/src/components/menu/menu.dart:307:  final ContextedValueChanged<bool>? onChanged;
-- [ ] lib/src/components/menu/menu.dart:308:  final Widget child;
-- [ ] lib/src/components/menu/menu.dart:309:  final Widget? trailing;
-- [ ] lib/src/components/menu/menu.dart:310:  final bool enabled;
-- [ ] lib/src/components/menu/menu.dart:311:  final bool autoClose;
-- [ ] lib/src/components/menu/menu.dart:313:  const MenuCheckbox({
-- [ ] lib/src/components/menu/menu.dart:575:class MenuGroupData {
-- [ ] lib/src/components/menu/menu.dart:598:  bool get hasOpenPopovers {
-- [ ] lib/src/components/menu/menu.dart:636:  MenuGroupData get root {
-- [ ] lib/src/components/menu/menu.dart:607:  void closeOthers() {
-- [ ] lib/src/components/menu/menu.dart:613:  void closeAll() {
-- [ ] lib/src/components/menu/menu.dart:576:  final MenuGroupData? parent;
-- [ ] lib/src/components/menu/menu.dart:577:  final List<MenuData> children;
-- [ ] lib/src/components/menu/menu.dart:578:  final bool hasLeading;
-- [ ] lib/src/components/menu/menu.dart:579:  final Offset? subMenuOffset;
-- [ ] lib/src/components/menu/menu.dart:580:  final VoidCallback? onDismissed;
-- [ ] lib/src/components/menu/menu.dart:581:  final Object? regionGroupId;
-- [ ] lib/src/components/menu/menu.dart:582:  final Axis direction;
-- [ ] lib/src/components/menu/menu.dart:583:  final EdgeInsets itemPadding;
-- [ ] lib/src/components/menu/menu.dart:584:  final SubFocusScopeState focusScope;
-- [ ] lib/src/components/menu/menu.dart:586:  MenuGroupData(
-- [ ] lib/src/components/menu/menu.dart:659:class MenuData {
-- [ ] lib/src/components/menu/menu.dart:660:  final PopoverController popoverController;
-- [ ] lib/src/components/menu/menu.dart:662:  MenuData({PopoverController? popoverController})
-- [ ] lib/src/components/menu/menu.dart:666:class MenuGroup extends StatefulWidget {
-- [ ] lib/src/components/menu/menu.dart:667:  final List<MenuItem> children;
-- [ ] lib/src/components/menu/menu.dart:668:  final Widget Function(BuildContext context, List<Widget> children) builder;
-- [ ] lib/src/components/menu/menu.dart:669:  final MenuGroupData? parent;
-- [ ] lib/src/components/menu/menu.dart:670:  final Offset? subMenuOffset;
-- [ ] lib/src/components/menu/menu.dart:671:  final VoidCallback? onDismissed;
-- [ ] lib/src/components/menu/menu.dart:672:  final Object? regionGroupId;
-- [ ] lib/src/components/menu/menu.dart:673:  final Axis direction;
-- [ ] lib/src/components/menu/menu.dart:674:  final Map<Type, Action> actions;
-- [ ] lib/src/components/menu/menu.dart:675:  final EdgeInsets? itemPadding;
-- [ ] lib/src/components/menu/menu.dart:676:  final bool autofocus;
-- [ ] lib/src/components/menu/menu.dart:677:  final FocusNode? focusNode;
-- [ ] lib/src/components/menu/menu.dart:679:  const MenuGroup({
-- [ ] lib/src/components/menu/menu.dart:903:class CloseMenuIntent extends Intent {
-- [ ] lib/src/components/menu/menu.dart:904:  const CloseMenuIntent();
-- [ ] lib/src/components/menu/menu.dart:907:class OpenSubMenuIntent extends Intent {
-- [ ] lib/src/components/menu/menu.dart:908:  const OpenSubMenuIntent();
-- [ ] lib/src/components/menu/menu.dart:911:class NextMenuFocusIntent extends Intent {
-- [ ] lib/src/components/menu/menu.dart:912:  final bool forward;
-- [ ] lib/src/components/menu/menu.dart:914:  const NextMenuFocusIntent(this.forward);
-- [ ] lib/src/components/menu/menu.dart:917:class MenuOverlayHandler extends OverlayHandler {
-- [ ] lib/src/components/menu/menu.dart:918:  final OverlayManager manager;
-- [ ] lib/src/components/menu/menu.dart:920:  const MenuOverlayHandler(this.manager);
-- [ ] lib/src/components/menu/menu.dart:982:class DirectionalMenuFocusIntent extends Intent {
-- [ ] lib/src/components/menu/menu.dart:983:  final TraversalDirection direction;
-- [ ] lib/src/components/menu/menu.dart:985:  const DirectionalMenuFocusIntent(this.direction);
-- [ ] lib/src/components/menu/menubar.dart:245:class MenubarState extends State<Menubar> {
-- [ ] lib/src/components/menu/menubar.dart:275:  Widget buildContainer(BuildContext context, ThemeData theme,
-- [ ] lib/src/components/menu/navigation_menu.dart:155:class NavigationMenuItemState extends State<NavigationMenuItem> {
-- [ ] lib/src/components/menu/navigation_menu.dart:577:class NavigationMenuState extends State<NavigationMenu> {
-- [ ] lib/src/components/menu/navigation_menu.dart:592:  bool isActive(NavigationMenuItemState item) {
-- [ ] lib/src/components/menu/navigation_menu.dart:640:  NavigationMenuItemState? findByWidget(Widget widget) {
-- [ ] lib/src/components/menu/navigation_menu.dart:646:  Widget buildContent(int index) {
-- [ ] lib/src/components/menu/navigation_menu.dart:661:  void close() {
-- [ ] lib/src/components/menu/navigation_menu.dart:665:  Widget buildPopover(BuildContext context) {
-- [ ] lib/src/components/menu/navigation_menu.dart:747:  EdgeInsets? requestMargin() {
-- [ ] lib/src/components/menu/navigation_menu.dart:578:  static const Duration kDebounceDuration = Duration(milliseconds: 200);
-- [ ] lib/src/components/navigation/navigation_bar.dart:92:  NavigationBarTheme copyWith({
-- [ ] lib/src/components/navigation/navigation_bar.dart:72:  final Color? backgroundColor;
-- [ ] lib/src/components/navigation/navigation_bar.dart:73:  final NavigationBarAlignment? alignment;
-- [ ] lib/src/components/navigation/navigation_bar.dart:74:  final Axis? direction;
-- [ ] lib/src/components/navigation/navigation_bar.dart:75:  final double? spacing;
-- [ ] lib/src/components/navigation/navigation_bar.dart:76:  final NavigationLabelType? labelType;
-- [ ] lib/src/components/navigation/navigation_bar.dart:77:  final NavigationLabelPosition? labelPosition;
-- [ ] lib/src/components/navigation/navigation_bar.dart:78:  final NavigationLabelSize? labelSize;
-- [ ] lib/src/components/navigation/navigation_bar.dart:79:  final EdgeInsetsGeometry? padding;
-- [ ] lib/src/components/navigation/navigation_bar.dart:81:  const NavigationBarTheme({
-- [ ] lib/src/components/navigation/navigation_bar.dart:142:abstract class NavigationBarItem extends Widget {
-- [ ] lib/src/components/navigation/navigation_bar.dart:145:  bool get selectable;
-- [ ] lib/src/components/navigation/navigation_bar.dart:143:  const NavigationBarItem({super.key});
-- [ ] lib/src/components/navigation/navigation_bar.dart:209:  final Color? backgroundColor;
-- [ ] lib/src/components/navigation/navigation_bar.dart:210:  final List<NavigationBarItem> children;
-- [ ] lib/src/components/navigation/navigation_bar.dart:211:  final NavigationBarAlignment? alignment;
-- [ ] lib/src/components/navigation/navigation_bar.dart:212:  final Axis? direction;
-- [ ] lib/src/components/navigation/navigation_bar.dart:213:  final double? spacing;
-- [ ] lib/src/components/navigation/navigation_bar.dart:214:  final NavigationLabelType? labelType;
-- [ ] lib/src/components/navigation/navigation_bar.dart:215:  final NavigationLabelPosition? labelPosition;
-- [ ] lib/src/components/navigation/navigation_bar.dart:216:  final NavigationLabelSize? labelSize;
-- [ ] lib/src/components/navigation/navigation_bar.dart:217:  final EdgeInsetsGeometry? padding;
-- [ ] lib/src/components/navigation/navigation_bar.dart:218:  final BoxConstraints? constraints;
-- [ ] lib/src/components/navigation/navigation_bar.dart:219:  final bool? expands;
-- [ ] lib/src/components/navigation/navigation_bar.dart:220:  final int? index;
-- [ ] lib/src/components/navigation/navigation_bar.dart:221:  final ValueChanged<int>? onSelected;
-- [ ] lib/src/components/navigation/navigation_bar.dart:222:  final double? surfaceOpacity;
-- [ ] lib/src/components/navigation/navigation_bar.dart:223:  final double? surfaceBlur;
-- [ ] lib/src/components/navigation/navigation_bar.dart:224:  final bool? expanded;
-- [ ] lib/src/components/navigation/navigation_bar.dart:225:  final bool? keepCrossAxisSize;
-- [ ] lib/src/components/navigation/navigation_bar.dart:226:  final bool? keepMainAxisSize;
-- [ ] lib/src/components/navigation/navigation_bar.dart:228:  const NavigationBar({
-- [ ] lib/src/components/navigation/navigation_bar.dart:410:mixin NavigationContainerMixin {
-- [ ] lib/src/components/navigation/navigation_bar.dart:411:  List<Widget> wrapChildren(
-- [ ] lib/src/components/navigation/navigation_bar.dart:972:enum NavigationLabelType { none, selected, all, tooltip, expanded }
-- [ ] lib/src/components/navigation/navigation_bar.dart:974:enum NavigationLabelPosition { start, end, top, bottom }
-- [ ] lib/src/components/navigation/navigation_bar.dart:976:enum NavigationLabelSize { small, large }
-- [ ] lib/src/components/navigation/navigation_bar.dart:978:class NavigationChildControlData {
-- [ ] lib/src/components/navigation/navigation_bar.dart:979:  final int? index;
-- [ ] lib/src/components/navigation/navigation_bar.dart:980:  final int actualIndex;
-- [ ] lib/src/components/navigation/navigation_bar.dart:982:  NavigationChildControlData({this.index, required this.actualIndex});
-- [ ] lib/src/components/navigation/navigation_bar.dart:999:class NavigationControlData {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1014:  Axis get labelDirection {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1000:  final NavigationContainerType containerType;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1001:  final NavigationLabelType parentLabelType;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1002:  final NavigationLabelPosition parentLabelPosition;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1003:  final NavigationLabelSize parentLabelSize;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1004:  final EdgeInsets parentPadding;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1005:  final Axis direction;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1006:  final int? selectedIndex;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1007:  final int childCount;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1008:  final ValueChanged<int> onSelected;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1009:  final bool expanded;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1010:  final double spacing;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1011:  final bool keepCrossAxisSize;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1012:  final bool keepMainAxisSize;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1021:  NavigationControlData({
-- [ ] lib/src/components/navigation/navigation_bar.dart:1077:class NavigationGap extends StatelessWidget implements NavigationBarItem {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1085:  Widget buildBox(BuildContext context) {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1089:  Widget buildSliver(BuildContext context) {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1078:  final double gap;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1080:  const NavigationGap(this.gap, {super.key});
-- [ ] lib/src/components/navigation/navigation_bar.dart:1103:class NavigationDivider extends StatelessWidget implements NavigationBarItem {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1104:  final double? thickness;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1105:  final Color? color;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1107:  const NavigationDivider({super.key, this.thickness, this.color});
-- [ ] lib/src/components/navigation/navigation_bar.dart:1155:class NavigationItem extends AbstractNavigationButton {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1156:  final AbstractButtonStyle? selectedStyle;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1157:  final bool? selected;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1158:  final ValueChanged<bool>? onChanged;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1159:  final int? index;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1160:  const NavigationItem({
-- [ ] lib/src/components/navigation/navigation_bar.dart:1264:class NavigationButton extends AbstractNavigationButton {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1265:  final VoidCallback? onPressed;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1266:  const NavigationButton({
-- [ ] lib/src/components/navigation/navigation_bar.dart:1350:abstract class AbstractNavigationButton extends StatefulWidget
-- [ ] lib/src/components/navigation/navigation_bar.dart:1352:  final Widget child;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1353:  final Widget? label;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1354:  final double? spacing;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1355:  final AbstractButtonStyle? style;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1356:  final AlignmentGeometry? alignment;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1358:  final bool? enabled;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1359:  final NavigationOverflow overflow;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1360:  final AlignmentGeometry? marginAlignment;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1362:  const AbstractNavigationButton({
-- [ ] lib/src/components/navigation/navigation_bar.dart:1521:class NavigationPadding extends StatelessWidget {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1522:  final Widget child;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1524:  const NavigationPadding({super.key, required this.child});
-- [ ] lib/src/components/navigation/navigation_bar.dart:1548:enum NavigationOverflow { clip, marquee, ellipsis, none }
-- [ ] lib/src/components/navigation/navigation_bar.dart:1550:class NavigationLabel extends StatelessWidget implements NavigationBarItem {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1582:  Widget buildChild(BuildContext context, NavigationControlData? data) {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1600:  Widget buildBox(BuildContext context, NavigationControlData? data) {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1613:  Widget buildSliver(BuildContext context, NavigationControlData? data) {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1551:  final Widget child;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1552:  final AlignmentGeometry? alignment;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1553:  final EdgeInsetsGeometry? padding;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1554:  final NavigationOverflow overflow;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1557:  final bool floating;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1558:  final bool pinned;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1560:  const NavigationLabel({
-- [ ] lib/src/components/navigation/navigation_bar.dart:1761:typedef NavigationWidgetBuilder = Widget Function(
-- [ ] lib/src/components/navigation/navigation_bar.dart:1764:class NavigationWidget extends StatelessWidget implements NavigationBarItem {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1765:  final int? index;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1766:  final Widget? child;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1767:  final NavigationWidgetBuilder? builder;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1769:  const NavigationWidget({super.key, this.index, required Widget this.child})
-- [ ] lib/src/components/navigation/navigation_bar.dart:1772:  const NavigationWidget.builder({
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:198:class TabItem extends StatelessWidget with TabChild {
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:199:  final Widget child;
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:201:  const TabItem({
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:216:class KeyedTabItem<T> extends TabItem with KeyedTabChild<T> {
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:217:  KeyedTabItem({
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:229:typedef TabBuilder = Widget Function(
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:231:typedef TabChildBuilder = Widget Function(
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:234:class TabContainer extends StatelessWidget {
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:235:  final int selected;
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:236:  final ValueChanged<int>? onSelect;
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:237:  final List<TabChild> children;
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:238:  final TabBuilder? builder;
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:239:  final TabChildBuilder? childBuilder;
-- [ ] lib/src/components/navigation/tabs/tab_container.dart:241:  const TabContainer({
-- [ ] lib/src/components/navigation/tabs/tab_list.dart:53:  TabListTheme copyWith({
-- [ ] lib/src/components/navigation/tabs/tab_list.dart:46:  const TabListTheme({
-- [ ] lib/src/components/navigation/tabs/tab_pane.dart:55:  TabPaneTheme copyWith({
-- [ ] lib/src/components/navigation/tabs/tab_pane.dart:48:  const TabPaneTheme({
-- [ ] lib/src/components/navigation/tabs/tab_pane.dart:305:class TabPaneState<T> extends State<TabPane<T>> {
-- [ ] lib/src/components/navigation/tabs/tab_pane.dart:307:  static const kTabDrag = #tabDrag;
-- [ ] lib/src/components/overlay/dialog.dart:551:  DialogRoute({
-- [ ] lib/src/components/overlay/drawer.dart:989:Future<void> closeSheet(BuildContext context) {
-- [ ] lib/src/components/overlay/drawer.dart:1200:DrawerOverlayCompleter<T?> openRawDrawer<T>({
-- [ ] lib/src/components/overlay/drawer.dart:1381:Future<void> closeDrawer<T>(BuildContext context, [T? result]) {
-- [ ] lib/src/components/overlay/drawer.dart:84:  DrawerTheme copyWith({
-- [ ] lib/src/components/overlay/drawer.dart:416:class DrawerWrapper extends StatefulWidget {
-- [ ] lib/src/components/overlay/drawer.dart:417:  final OverlayPosition position;
-- [ ] lib/src/components/overlay/drawer.dart:418:  final Widget child;
-- [ ] lib/src/components/overlay/drawer.dart:419:  final bool expands;
-- [ ] lib/src/components/overlay/drawer.dart:420:  final bool draggable;
-- [ ] lib/src/components/overlay/drawer.dart:421:  final Size extraSize;
-- [ ] lib/src/components/overlay/drawer.dart:422:  final Size size;
-- [ ] lib/src/components/overlay/drawer.dart:423:  final bool showDragHandle;
-- [ ] lib/src/components/overlay/drawer.dart:424:  final BorderRadiusGeometry? borderRadius;
-- [ ] lib/src/components/overlay/drawer.dart:425:  final Size? dragHandleSize;
-- [ ] lib/src/components/overlay/drawer.dart:426:  final EdgeInsets padding;
-- [ ] lib/src/components/overlay/drawer.dart:427:  final double? surfaceOpacity;
-- [ ] lib/src/components/overlay/drawer.dart:428:  final double? surfaceBlur;
-- [ ] lib/src/components/overlay/drawer.dart:429:  final Color? barrierColor;
-- [ ] lib/src/components/overlay/drawer.dart:430:  final int stackIndex;
-- [ ] lib/src/components/overlay/drawer.dart:431:  final double? gapBeforeDragger;
-- [ ] lib/src/components/overlay/drawer.dart:432:  final double? gapAfterDragger;
-- [ ] lib/src/components/overlay/drawer.dart:433:  final AnimationController? animationController;
-- [ ] lib/src/components/overlay/drawer.dart:434:  final BoxConstraints? constraints;
-- [ ] lib/src/components/overlay/drawer.dart:435:  final AlignmentGeometry? alignment;
-- [ ] lib/src/components/overlay/drawer.dart:437:  const DrawerWrapper({
-- [ ] lib/src/components/overlay/drawer.dart:994:class SheetWrapper extends DrawerWrapper {
-- [ ] lib/src/components/overlay/drawer.dart:995:  const SheetWrapper({
-- [ ] lib/src/components/overlay/drawer.dart:1133:enum OverlayPosition {
-- [ ] lib/src/components/overlay/drawer.dart:1134:  left,
-- [ ] lib/src/components/overlay/drawer.dart:1135:  right,
-- [ ] lib/src/components/overlay/drawer.dart:1136:  top,
-- [ ] lib/src/components/overlay/drawer.dart:1137:  bottom,
-- [ ] lib/src/components/overlay/drawer.dart:1138:  start,
-- [ ] lib/src/components/overlay/drawer.dart:1139:  end,
-- [ ] lib/src/components/overlay/drawer.dart:1142:const kBackdropScaleDown = 0.95;
-- [ ] lib/src/components/overlay/drawer.dart:1144:class BackdropTransformData {
-- [ ] lib/src/components/overlay/drawer.dart:1145:  final Size sizeDifference;
-- [ ] lib/src/components/overlay/drawer.dart:1147:  BackdropTransformData(this.sizeDifference);
-- [ ] lib/src/components/overlay/drawer.dart:1387:class DrawerLayerData {
-- [ ] lib/src/components/overlay/drawer.dart:1393:  Size? computeSize() {
-- [ ] lib/src/components/overlay/drawer.dart:1388:  final DrawerOverlayState overlay;
-- [ ] lib/src/components/overlay/drawer.dart:1389:  final DrawerLayerData? parent;
-- [ ] lib/src/components/overlay/drawer.dart:1391:  const DrawerLayerData(this.overlay, this.parent);
-- [ ] lib/src/components/overlay/drawer.dart:1411:class DrawerOverlay extends StatefulWidget {
-- [ ] lib/src/components/overlay/drawer.dart:1419:  static DrawerLayerData? maybeFind(BuildContext context, [bool root = false]) {
-- [ ] lib/src/components/overlay/drawer.dart:1429:  static DrawerLayerData? maybeFindMessenger(BuildContext context,
-- [ ] lib/src/components/overlay/drawer.dart:1412:  final Widget child;
-- [ ] lib/src/components/overlay/drawer.dart:1414:  const DrawerOverlay({super.key, required this.child});
-- [ ] lib/src/components/overlay/drawer.dart:1441:class DrawerOverlayState extends State<DrawerOverlay> {
-- [ ] lib/src/components/overlay/drawer.dart:1445:  void addEntry(DrawerOverlayEntry entry) {
-- [ ] lib/src/components/overlay/drawer.dart:1451:  Size computeSize() {
-- [ ] lib/src/components/overlay/drawer.dart:1457:  void removeEntry(DrawerOverlayEntry entry) {
-- [ ] lib/src/components/overlay/drawer.dart:1443:  final GlobalKey backdropKey = GlobalKey();
-- [ ] lib/src/components/overlay/drawer.dart:1516:class DrawerEntryWidget<T> extends StatefulWidget {
-- [ ] lib/src/components/overlay/drawer.dart:1517:  final DrawerBuilder builder;
-- [ ] lib/src/components/overlay/drawer.dart:1518:  final Widget backdrop;
-- [ ] lib/src/components/overlay/drawer.dart:1519:  final BackdropBuilder backdropBuilder;
-- [ ] lib/src/components/overlay/drawer.dart:1520:  final BarrierBuilder barrierBuilder;
-- [ ] lib/src/components/overlay/drawer.dart:1521:  final bool modal;
-- [ ] lib/src/components/overlay/drawer.dart:1522:  final CapturedThemes? themes;
-- [ ] lib/src/components/overlay/drawer.dart:1523:  final CapturedData? data;
-- [ ] lib/src/components/overlay/drawer.dart:1524:  final Completer<T> completer;
-- [ ] lib/src/components/overlay/drawer.dart:1525:  final OverlayPosition position;
-- [ ] lib/src/components/overlay/drawer.dart:1526:  final int stackIndex;
-- [ ] lib/src/components/overlay/drawer.dart:1527:  final int totalStack;
-- [ ] lib/src/components/overlay/drawer.dart:1528:  final bool useSafeArea;
-- [ ] lib/src/components/overlay/drawer.dart:1529:  final AnimationController? animationController;
-- [ ] lib/src/components/overlay/drawer.dart:1530:  final bool autoOpen;
-- [ ] lib/src/components/overlay/drawer.dart:1532:  const DrawerEntryWidget({
-- [ ] lib/src/components/overlay/drawer.dart:1554:class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
-- [ ] lib/src/components/overlay/drawer.dart:1599:  Future<void> close([T? result]) {
-- [ ] lib/src/components/overlay/drawer.dart:1556:  late ValueNotifier<double> additionalOffset = ValueNotifier(0);
-- [ ] lib/src/components/overlay/drawer.dart:1774:typedef BackdropBuilder = Widget Function(BuildContext context, Widget child,
-- [ ] lib/src/components/overlay/drawer.dart:1777:typedef BarrierBuilder = Widget? Function(BuildContext context, Widget child,
-- [ ] lib/src/components/overlay/drawer.dart:1780:class DrawerOverlayEntry<T> {
-- [ ] lib/src/components/overlay/drawer.dart:1781:  final GlobalKey<DrawerEntryWidgetState<T>> key = GlobalKey();
-- [ ] lib/src/components/overlay/drawer.dart:1782:  final BackdropBuilder backdropBuilder;
-- [ ] lib/src/components/overlay/drawer.dart:1783:  final DrawerBuilder builder;
-- [ ] lib/src/components/overlay/drawer.dart:1784:  final bool modal;
-- [ ] lib/src/components/overlay/drawer.dart:1785:  final BarrierBuilder barrierBuilder;
-- [ ] lib/src/components/overlay/drawer.dart:1786:  final CapturedThemes? themes;
-- [ ] lib/src/components/overlay/drawer.dart:1787:  final CapturedData? data;
-- [ ] lib/src/components/overlay/drawer.dart:1788:  final Completer<T> completer;
-- [ ] lib/src/components/overlay/drawer.dart:1789:  final OverlayPosition position;
-- [ ] lib/src/components/overlay/drawer.dart:1790:  final bool barrierDismissible;
-- [ ] lib/src/components/overlay/drawer.dart:1791:  final bool useSafeArea;
-- [ ] lib/src/components/overlay/drawer.dart:1792:  final AnimationController? animationController;
-- [ ] lib/src/components/overlay/drawer.dart:1793:  final bool autoOpen;
-- [ ] lib/src/components/overlay/drawer.dart:1794:  final BoxConstraints? constraints;
-- [ ] lib/src/components/overlay/drawer.dart:1795:  final AlignmentGeometry? alignment;
-- [ ] lib/src/components/overlay/drawer.dart:1797:  DrawerOverlayEntry({
-- [ ] lib/src/components/overlay/drawer.dart:1815:class DrawerOverlayCompleter<T> extends OverlayCompleter<T> {
-- [ ] lib/src/components/overlay/drawer.dart:1828:  AnimationController? get animationController =>
-- [ ] lib/src/components/overlay/drawer.dart:1818:  DrawerOverlayCompleter(this._entry);
-- [ ] lib/src/components/overlay/drawer.dart:1846:class SheetOverlayHandler extends OverlayHandler {
-- [ ] lib/src/components/overlay/drawer.dart:1847:  static bool isSheetOverlay(BuildContext context) {
-- [ ] lib/src/components/overlay/drawer.dart:1851:  final OverlayPosition position;
-- [ ] lib/src/components/overlay/drawer.dart:1852:  final Color? barrierColor;
-- [ ] lib/src/components/overlay/drawer.dart:1854:  const SheetOverlayHandler({
-- [ ] lib/src/components/overlay/hover_card.dart:69:  HoverCardTheme copyWith({
-- [ ] lib/src/components/overlay/overlay.dart:3:Future<void> closeOverlay<T>(BuildContext context, [T? value]) {
-- [ ] lib/src/components/overlay/overlay.dart:9:mixin OverlayHandlerStateMixin<T extends StatefulWidget> on State<T> {
-- [ ] lib/src/components/overlay/overlay.dart:10:  Future<void> close([bool immediate = false]);
-- [ ] lib/src/components/overlay/overlay.dart:11:  void closeLater();
-- [ ] lib/src/components/overlay/overlay.dart:12:  Future<void> closeWithResult<X>([X? value]);
-- [ ] lib/src/components/overlay/overlay.dart:25:abstract class OverlayCompleter<T> {
-- [ ] lib/src/components/overlay/overlay.dart:28:  bool get isCompleted;
-- [ ] lib/src/components/overlay/overlay.dart:29:  bool get isAnimationCompleted;
-- [ ] lib/src/components/overlay/overlay.dart:30:  Future<T?> get future;
-- [ ] lib/src/components/overlay/overlay.dart:31:  Future<void> get animationFuture;
-- [ ] lib/src/components/overlay/overlay.dart:26:  void remove();
-- [ ] lib/src/components/overlay/overlay.dart:27:  void dispose();
-- [ ] lib/src/components/overlay/overlay.dart:34:abstract class OverlayHandler {
-- [ ] lib/src/components/overlay/overlay.dart:39:  OverlayCompleter<T?> show<T>({
-- [ ] lib/src/components/overlay/overlay.dart:35:  static const OverlayHandler popover = PopoverOverlayHandler();
-- [ ] lib/src/components/overlay/overlay.dart:36:  static const OverlayHandler sheet = SheetOverlayHandler();
-- [ ] lib/src/components/overlay/overlay.dart:37:  static const OverlayHandler dialog = DialogOverlayHandler();
-- [ ] lib/src/components/overlay/overlay.dart:38:  const OverlayHandler();
-- [ ] lib/src/components/overlay/overlay.dart:69:class OverlayBarrier {
-- [ ] lib/src/components/overlay/overlay.dart:70:  final EdgeInsetsGeometry padding;
-- [ ] lib/src/components/overlay/overlay.dart:71:  final BorderRadiusGeometry borderRadius;
-- [ ] lib/src/components/overlay/overlay.dart:72:  final Color? barrierColor;
-- [ ] lib/src/components/overlay/overlay.dart:74:  const OverlayBarrier({
-- [ ] lib/src/components/overlay/overlay.dart:81:abstract class OverlayManager implements OverlayHandler {
-- [ ] lib/src/components/overlay/overlay.dart:82:  static OverlayManager of(BuildContext context) {
-- [ ] lib/src/components/overlay/overlay.dart:118:  OverlayCompleter<T?> showTooltip<T>({
-- [ ] lib/src/components/overlay/overlay.dart:147:  OverlayCompleter<T?> showMenu<T>({
-- [ ] lib/src/components/overlay/overlay.dart:177:class OverlayManagerLayer extends StatefulWidget {
-- [ ] lib/src/components/overlay/overlay.dart:178:  final OverlayHandler popoverHandler;
-- [ ] lib/src/components/overlay/overlay.dart:179:  final OverlayHandler tooltipHandler;
-- [ ] lib/src/components/overlay/overlay.dart:180:  final OverlayHandler menuHandler;
-- [ ] lib/src/components/overlay/overlay.dart:181:  final Widget child;
-- [ ] lib/src/components/overlay/overlay.dart:183:  const OverlayManagerLayer({
-- [ ] lib/src/components/overlay/popover.dart:603:Future<void> closePopover<T>(BuildContext context, [T? result]) {
-- [ ] lib/src/components/overlay/popover.dart:650:OverlayCompleter<T?> showPopover<T>({
-- [ ] lib/src/components/overlay/popover.dart:9:class PopoverOverlayHandler extends OverlayHandler {
-- [ ] lib/src/components/overlay/popover.dart:10:  const PopoverOverlayHandler();
-- [ ] lib/src/components/overlay/popover.dart:187:class PopoverOverlayWidget extends StatefulWidget {
-- [ ] lib/src/components/overlay/popover.dart:188:  const PopoverOverlayWidget({
-- [ ] lib/src/components/overlay/popover.dart:218:  final Offset? position;
-- [ ] lib/src/components/overlay/popover.dart:219:  final AlignmentGeometry alignment;
-- [ ] lib/src/components/overlay/popover.dart:220:  final AlignmentGeometry anchorAlignment;
-- [ ] lib/src/components/overlay/popover.dart:221:  final CapturedThemes? themes;
-- [ ] lib/src/components/overlay/popover.dart:222:  final CapturedData? data;
-- [ ] lib/src/components/overlay/popover.dart:223:  final WidgetBuilder builder;
-- [ ] lib/src/components/overlay/popover.dart:224:  final Size? anchorSize;
-- [ ] lib/src/components/overlay/popover.dart:225:  final Animation<double> animation;
-- [ ] lib/src/components/overlay/popover.dart:226:  final PopoverConstraint widthConstraint;
-- [ ] lib/src/components/overlay/popover.dart:227:  final PopoverConstraint heightConstraint;
-- [ ] lib/src/components/overlay/popover.dart:229:  final FutureVoidCallback? onClose;
-- [ ] lib/src/components/overlay/popover.dart:230:  final VoidCallback? onImmediateClose;
-- [ ] lib/src/components/overlay/popover.dart:231:  final VoidCallback? onTapOutside;
-- [ ] lib/src/components/overlay/popover.dart:232:  final Object? regionGroupId;
-- [ ] lib/src/components/overlay/popover.dart:233:  final Offset? offset;
-- [ ] lib/src/components/overlay/popover.dart:234:  final AlignmentGeometry? transitionAlignment;
-- [ ] lib/src/components/overlay/popover.dart:235:  final EdgeInsetsGeometry? margin;
-- [ ] lib/src/components/overlay/popover.dart:236:  final bool follow;
-- [ ] lib/src/components/overlay/popover.dart:237:  final BuildContext anchorContext;
-- [ ] lib/src/components/overlay/popover.dart:238:  final bool consumeOutsideTaps;
-- [ ] lib/src/components/overlay/popover.dart:239:  final ValueChanged<PopoverOverlayWidgetState>? onTickFollow;
-- [ ] lib/src/components/overlay/popover.dart:240:  final bool allowInvertHorizontal;
-- [ ] lib/src/components/overlay/popover.dart:241:  final bool allowInvertVertical;
-- [ ] lib/src/components/overlay/popover.dart:242:  final PopoverFutureVoidCallback<Object?>? onCloseWithResult;
-- [ ] lib/src/components/overlay/popover.dart:243:  final LayerLink? layerLink;
-- [ ] lib/src/components/overlay/popover.dart:249:typedef PopoverFutureVoidCallback<T> = Future<T> Function(T value);
-- [ ] lib/src/components/overlay/popover.dart:251:enum PopoverConstraint {
-- [ ] lib/src/components/overlay/popover.dart:252:  flexible,
-- [ ] lib/src/components/overlay/popover.dart:253:  intrinsic,
-- [ ] lib/src/components/overlay/popover.dart:254:  anchorFixedSize,
-- [ ] lib/src/components/overlay/popover.dart:255:  anchorMinSize,
-- [ ] lib/src/components/overlay/popover.dart:256:  anchorMaxSize,
-- [ ] lib/src/components/overlay/popover.dart:259:class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
-- [ ] lib/src/components/overlay/popover.dart:385:  Size? get anchorSize => _anchorSize;
-- [ ] lib/src/components/overlay/popover.dart:386:  AlignmentGeometry get anchorAlignment => _anchorAlignment;
-- [ ] lib/src/components/overlay/popover.dart:387:  Offset? get position => _position;
-- [ ] lib/src/components/overlay/popover.dart:388:  AlignmentGeometry get alignment => _alignment;
-- [ ] lib/src/components/overlay/popover.dart:389:  PopoverConstraint get widthConstraint => _widthConstraint;
-- [ ] lib/src/components/overlay/popover.dart:390:  PopoverConstraint get heightConstraint => _heightConstraint;
-- [ ] lib/src/components/overlay/popover.dart:391:  Offset? get offset => _offset;
-- [ ] lib/src/components/overlay/popover.dart:392:  EdgeInsetsGeometry? get margin => _margin;
-- [ ] lib/src/components/overlay/popover.dart:393:  bool get follow => _follow;
-- [ ] lib/src/components/overlay/popover.dart:394:  BuildContext get anchorContext => _anchorContext;
-- [ ] lib/src/components/overlay/popover.dart:395:  bool get allowInvertHorizontal => _allowInvertHorizontal;
-- [ ] lib/src/components/overlay/popover.dart:396:  bool get allowInvertVertical => _allowInvertVertical;
-- [ ] lib/src/components/overlay/popover.dart:397:  LayerLink? get layerLink => _layerLink;
-- [ ] lib/src/components/overlay/popover.dart:399:  set layerLink(LayerLink? value) {
-- [ ] lib/src/components/overlay/popover.dart:423:  set position(Offset? value) {
-- [ ] lib/src/components/overlay/popover.dart:607:class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
-- [ ] lib/src/components/overlay/popover.dart:619:  void initialize(OverlayEntry overlayEntry, [OverlayEntry? barrierEntry]) {
-- [ ] lib/src/components/overlay/popover.dart:610:  final Completer<T?> completer = Completer();
-- [ ] lib/src/components/overlay/popover.dart:611:  final Completer<T?> animationCompleter = Completer();
-- [ ] lib/src/components/overlay/popover.dart:870:  bool get hasOpenPopover =>
-- [ ] lib/src/components/overlay/popover.dart:874:  bool get hasMountedPopover =>
-- [ ] lib/src/components/overlay/popover.dart:878:  Iterable<Popover> get openPopovers => List.unmodifiable(_openPopovers);
-- [ ] lib/src/components/overlay/popover.dart:880:  Future<T?> show<T>({
-- [ ] lib/src/components/overlay/popover.dart:949:  void close([bool immediate = false]) {
-- [ ] lib/src/components/overlay/popover.dart:957:  void closeLater() {
-- [ ] lib/src/components/overlay/popover.dart:1025:  void disposePopovers() {
-- [ ] lib/src/components/overlay/popover.dart:1040:class PopoverLayout extends SingleChildRenderObjectWidget {
-- [ ] lib/src/components/overlay/popover.dart:1041:  final Alignment alignment;
-- [ ] lib/src/components/overlay/popover.dart:1042:  final Alignment anchorAlignment;
-- [ ] lib/src/components/overlay/popover.dart:1043:  final Offset? position;
-- [ ] lib/src/components/overlay/popover.dart:1044:  final Size? anchorSize;
-- [ ] lib/src/components/overlay/popover.dart:1045:  final PopoverConstraint widthConstraint;
-- [ ] lib/src/components/overlay/popover.dart:1046:  final PopoverConstraint heightConstraint;
-- [ ] lib/src/components/overlay/popover.dart:1047:  final Offset? offset;
-- [ ] lib/src/components/overlay/popover.dart:1048:  final EdgeInsets margin;
-- [ ] lib/src/components/overlay/popover.dart:1049:  final double scale;
-- [ ] lib/src/components/overlay/popover.dart:1050:  final Alignment scaleAlignment;
-- [ ] lib/src/components/overlay/popover.dart:1051:  final FilterQuality? filterQuality;
-- [ ] lib/src/components/overlay/popover.dart:1052:  final bool allowInvertHorizontal;
-- [ ] lib/src/components/overlay/popover.dart:1053:  final bool allowInvertVertical;
-- [ ] lib/src/components/overlay/popover.dart:1054:  const PopoverLayout({
-- [ ] lib/src/components/overlay/popover.dart:1153:class PopoverLayoutRender extends RenderShiftedBox {
-- [ ] lib/src/components/overlay/popover.dart:1301:  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-- [ ] lib/src/components/overlay/popover.dart:1171:  PopoverLayoutRender({
 - [ ] lib/src/components/overlay/refresh_trigger.dart:7:typedef RefreshIndicatorBuilder = Widget Function(
 - [ ] lib/src/components/overlay/refresh_trigger.dart:10:typedef FutureVoidCallback = Future<void> Function();
 - [ ] lib/src/components/overlay/refresh_trigger.dart:167:  static Widget defaultIndicatorBuilder(
@@ -1055,3 +181,246 @@ TODO:
 - [ ] lib/src/components/text/text.dart:688:  final WrappedTextDataBuilder<TextWidthBasis?>? textWidthBasis;
 - [ ] lib/src/components/text/text.dart:689:  final WidgetTextWrapper? wrapper;
 - [ ] lib/src/components/text/text.dart:691:  const WrappedText({
+- [ ] lib/src/shadcn_app.dart:945:  Offset? get center {
+- [ ] lib/src/shadcn_app.dart:956:  double? get radius {
+- [ ] lib/src/shadcn_app.dart:967:  double? get beginAngle {
+- [ ] lib/src/shadcn_app.dart:978:  double? get endAngle {
+- [ ] lib/src/theme/color_scheme.dart:357:String hexFromColor(Color color) {
+- [ ] lib/src/theme/color_scheme.dart:211:  Color get shade50 => _colors[50]!;
+- [ ] lib/src/theme/color_scheme.dart:212:  Color get shade100 => _colors[100]!;
+- [ ] lib/src/theme/color_scheme.dart:213:  Color get shade200 => _colors[200]!;
+- [ ] lib/src/theme/color_scheme.dart:214:  Color get shade300 => _colors[300]!;
+- [ ] lib/src/theme/color_scheme.dart:215:  Color get shade400 => _colors[400]!;
+- [ ] lib/src/theme/color_scheme.dart:216:  Color get shade500 => _colors[500]!;
+- [ ] lib/src/theme/color_scheme.dart:217:  Color get shade600 => _colors[600]!;
+- [ ] lib/src/theme/color_scheme.dart:218:  Color get shade700 => _colors[700]!;
+- [ ] lib/src/theme/color_scheme.dart:219:  Color get shade800 => _colors[800]!;
+- [ ] lib/src/theme/color_scheme.dart:220:  Color get shade900 => _colors[900]!;
+- [ ] lib/src/theme/color_scheme.dart:221:  Color get shade950 => _colors[950]!;
+- [ ] lib/src/theme/color_scheme.dart:74:  static const List<int> shadeValues = [
+- [ ] lib/src/theme/color_scheme.dart:567:  Map<String, String> toMap() {
+- [ ] lib/src/theme/color_scheme.dart:606:  Map<String, Color> toColorMap() {
+- [ ] lib/src/theme/color_scheme.dart:683:  ColorScheme copyWith({
+- [ ] lib/src/theme/color_scheme.dart:779:  static ColorScheme lerp(ColorScheme a, ColorScheme b, double t) {
+- [ ] lib/src/theme/color_scheme.dart:367:  static const Set<String> colorKeys = {
+- [ ] lib/src/theme/color_scheme.dart:644:  ColorScheme.fromColors({
+- [ ] lib/src/theme/generated_colors.dart:322:  static const Color transparent = Color(0x00000000);
+- [ ] lib/src/theme/generated_colors.dart:323:  static final List<Color> primaries = [
+- [ ] lib/src/theme/theme.dart:29:  ThemeData scale(ThemeData theme) {
+- [ ] lib/src/theme/theme.dart:40:  static AdaptiveScaling lerp(
+- [ ] lib/src/theme/theme.dart:10:  static const AdaptiveScaling desktop = AdaptiveScaling();
+- [ ] lib/src/theme/theme.dart:11:  static const AdaptiveScaling mobile = AdaptiveScaling(1.25);
+- [ ] lib/src/theme/theme.dart:12:  final double radiusScaling;
+- [ ] lib/src/theme/theme.dart:13:  final double sizeScaling;
+- [ ] lib/src/theme/theme.dart:14:  final double textScaling;
+- [ ] lib/src/theme/theme.dart:16:  const AdaptiveScaling([double scaling = 1])
+- [ ] lib/src/theme/theme.dart:23:  const AdaptiveScaling.only({
+- [ ] lib/src/theme/theme.dart:55:  static AdaptiveScaling defaultScalingOf(BuildContext context) {
+- [ ] lib/src/theme/theme.dart:60:  static AdaptiveScaling defaultScaling(ThemeData theme) {
+- [ ] lib/src/theme/theme.dart:70:  final AdaptiveScaling scaling;
+- [ ] lib/src/theme/theme.dart:71:  final Widget child;
+- [ ] lib/src/theme/theme.dart:73:  const AdaptiveScaler({
+- [ ] lib/src/theme/theme.dart:146:  BorderRadius get borderRadiusXxl => BorderRadius.circular(radiusXxl);
+- [ ] lib/src/theme/theme.dart:147:  BorderRadius get borderRadiusXl => BorderRadius.circular(radiusXl);
+- [ ] lib/src/theme/theme.dart:148:  BorderRadius get borderRadiusLg => BorderRadius.circular(radiusLg);
+- [ ] lib/src/theme/theme.dart:149:  BorderRadius get borderRadiusMd => BorderRadius.circular(radiusMd);
+- [ ] lib/src/theme/theme.dart:150:  BorderRadius get borderRadiusSm => BorderRadius.circular(radiusSm);
+- [ ] lib/src/theme/theme.dart:151:  BorderRadius get borderRadiusXs => BorderRadius.circular(radiusXs);
+- [ ] lib/src/theme/theme.dart:153:  Radius get radiusXxlRadius => Radius.circular(radiusXxl);
+- [ ] lib/src/theme/theme.dart:154:  Radius get radiusXlRadius => Radius.circular(radiusXl);
+- [ ] lib/src/theme/theme.dart:155:  Radius get radiusLgRadius => Radius.circular(radiusLg);
+- [ ] lib/src/theme/theme.dart:156:  Radius get radiusMdRadius => Radius.circular(radiusMd);
+- [ ] lib/src/theme/theme.dart:157:  Radius get radiusSmRadius => Radius.circular(radiusSm);
+- [ ] lib/src/theme/theme.dart:158:  Radius get radiusXsRadius => Radius.circular(radiusXs);
+- [ ] lib/src/theme/theme.dart:160:  Brightness get brightness => colorScheme.brightness;
+- [ ] lib/src/theme/theme.dart:162:  ThemeData copyWith({
+- [ ] lib/src/theme/theme.dart:185:  static ThemeData lerp(
+- [ ] lib/src/theme/theme.dart:94:  final ColorScheme colorScheme;
+- [ ] lib/src/theme/theme.dart:95:  final Typography typography;
+- [ ] lib/src/theme/theme.dart:96:  final double radius;
+- [ ] lib/src/theme/theme.dart:97:  final double scaling;
+- [ ] lib/src/theme/theme.dart:99:  final IconThemeProperties iconTheme;
+- [ ] lib/src/theme/theme.dart:100:  final double? surfaceOpacity;
+- [ ] lib/src/theme/theme.dart:101:  final double? surfaceBlur;
+- [ ] lib/src/theme/theme.dart:103:  const ThemeData({
+- [ ] lib/src/theme/theme.dart:114:  const ThemeData.dark({
+- [ ] lib/src/theme/theme.dart:245:  static ThemeData of(BuildContext context) {
+- [ ] lib/src/theme/theme.dart:237:  final ThemeData data;
+- [ ] lib/src/theme/theme.dart:239:  const Theme({
+- [ ] lib/src/theme/theme.dart:273:  ThemeDataTween({required ThemeData super.begin, required super.end});
+- [ ] lib/src/theme/theme.dart:286:  final ThemeData data;
+- [ ] lib/src/theme/theme.dart:287:  final Widget child;
+- [ ] lib/src/theme/theme.dart:289:  const AnimatedTheme({
+- [ ] lib/src/theme/theme.dart:350:  IconThemeProperties copyWith({
+- [ ] lib/src/theme/theme.dart:378:  IconThemeProperties scale(double factor) {
+- [ ] lib/src/theme/theme.dart:416:  static IconThemeProperties lerp(
+- [ ] lib/src/theme/theme.dart:324:  final IconThemeData x4Small;
+- [ ] lib/src/theme/theme.dart:325:  final IconThemeData x3Small;
+- [ ] lib/src/theme/theme.dart:326:  final IconThemeData x2Small;
+- [ ] lib/src/theme/theme.dart:327:  final IconThemeData xSmall;
+- [ ] lib/src/theme/theme.dart:328:  final IconThemeData small;
+- [ ] lib/src/theme/theme.dart:329:  final IconThemeData medium;
+- [ ] lib/src/theme/theme.dart:330:  final IconThemeData large;
+- [ ] lib/src/theme/theme.dart:331:  final IconThemeData xLarge;
+- [ ] lib/src/theme/theme.dart:332:  final IconThemeData x2Large;
+- [ ] lib/src/theme/theme.dart:333:  final IconThemeData x3Large;
+- [ ] lib/src/theme/theme.dart:334:  final IconThemeData x4Large;
+- [ ] lib/src/theme/theme.dart:336:  const IconThemeProperties({
+- [ ] lib/src/theme/theme.dart:501:  static T of<T>(BuildContext context) {
+- [ ] lib/src/theme/theme.dart:507:  static T? maybeOf<T>(BuildContext context) {
+- [ ] lib/src/theme/theme.dart:479:  final T data;
+- [ ] lib/src/theme/theme.dart:481:  const ComponentTheme({
+- [ ] lib/src/theme/theme.dart:522:enum ThemeMode {
+- [ ] lib/src/theme/theme.dart:523:  system,
+- [ ] lib/src/theme/theme.dart:524:  light,
+- [ ] lib/src/theme/theme.dart:525:  dark,
+- [ ] lib/src/theme/typography.dart:279:  Typography scale(double factor) {
+- [ ] lib/src/theme/typography.dart:390:  static Typography lerp(Typography a, Typography b, double t) {
+- [ ] lib/src/util.dart:25:double degToRad(double deg) => deg * (pi / 180);
+- [ ] lib/src/util.dart:26:double radToDeg(double rad) => rad * (180 / pi);
+- [ ] lib/src/util.dart:132:double unlerpDouble(double value, double min, double max) {
+- [ ] lib/src/util.dart:136:void swapItemInLists<T>(
+- [ ] lib/src/util.dart:146:BorderRadius? optionallyResolveBorderRadius(
+- [ ] lib/src/util.dart:225:BorderRadius subtractByBorder(BorderRadius radius, double borderWidth) {
+- [ ] lib/src/util.dart:242:bool isMobile(TargetPlatform platform) {
+- [ ] lib/src/util.dart:293:T tweenValue<T>(T begin, T end, double t) {
+- [ ] lib/src/util.dart:299:double wrapDouble(double value, double min, double max) {
+- [ ] lib/src/util.dart:336:Widget gap(double gap, {double? crossGap}) {
+- [ ] lib/src/util.dart:765:Iterable<Widget> join(Iterable<Widget> widgets, Widget separator) {
+- [ ] lib/src/util.dart:954:(bool enabled, Object? invokeResult) invokeActionOnFocusedWidget(
+- [ ] lib/src/util.dart:986:WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
+- [ ] lib/src/util.dart:1008:ReplacementInfo replaceWordAtCaret(String text, int caret, String replacement,
+- [ ] lib/src/util.dart:1030:void clearActiveTextInput() {
+- [ ] lib/src/util.dart:13:const kDefaultDuration = Duration(milliseconds: 150);
+- [ ] lib/src/util.dart:30:  none,
+- [ ] lib/src/util.dart:31:  ascending,
+- [ ] lib/src/util.dart:32:  descending,
+- [ ] lib/src/util.dart:35:typedef OnContextInvokeCallback<T extends Intent> = Object? Function(T intent,
+- [ ] lib/src/util.dart:40:  final OnContextInvokeCallback onInvoke;
+- [ ] lib/src/util.dart:42:  CallbackContextAction({required this.onInvoke});
+- [ ] lib/src/util.dart:56:  T lerp(T a, T b, double t) {
+- [ ] lib/src/util.dart:52:  final T? Function(T? a, T? b, double t) nullableLerp;
+- [ ] lib/src/util.dart:54:  const SafeLerp(this.nullableLerp);
+- [ ] lib/src/util.dart:63:extension SafeLerpExtension<T> on T? Function(T? a, T? b, double t) {
+- [ ] lib/src/util.dart:64:  T nonNull(T a, T b, double t) {
+- [ ] lib/src/util.dart:71:extension ListExtension<T> on List<T> {
+- [ ] lib/src/util.dart:72:  int? indexOfOrNull(T obj, [int start = 0]) {
+- [ ] lib/src/util.dart:77:  int? lastIndexOfOrNull(T obj, [int? start]) {
+- [ ] lib/src/util.dart:82:  int? indexWhereOrNull(Predicate<T> test, [int start = 0]) {
+- [ ] lib/src/util.dart:87:  int? lastIndexWhereOrNull(Predicate<T> test, [int? start]) {
+- [ ] lib/src/util.dart:92:  bool swapItem(T element, int targetIndex) {
+- [ ] lib/src/util.dart:115:  bool swapItemWhere(Predicate<T> test, int targetIndex) {
+- [ ] lib/src/util.dart:124:  T? optGet(int index) {
+- [ ] lib/src/util.dart:162:extension FutureOrExtension<T> on FutureOr<T> {
+- [ ] lib/src/util.dart:163:  FutureOr<R> map<R>(R Function(T value) transform) {
+- [ ] lib/src/util.dart:170:  FutureOr<R> flatMap<R>(FutureOr<R> Function(T value) transform) {
+- [ ] lib/src/util.dart:177:  FutureOr<R> then<R>(FutureOr<R> Function(T value) transform) {
+- [ ] lib/src/util.dart:184:  FutureOr<T> catchError(Function onError,
+- [ ] lib/src/util.dart:193:extension AlignmentExtension on AlignmentGeometry {
+- [ ] lib/src/util.dart:194:  Alignment optionallyResolve(BuildContext context) {
+- [ ] lib/src/util.dart:207:extension BorderRadiusExtension on BorderRadiusGeometry {
+- [ ] lib/src/util.dart:208:  BorderRadius optionallyResolve(BuildContext context) {
+- [ ] lib/src/util.dart:216:extension EdgeInsetsExtension on EdgeInsetsGeometry {
+- [ ] lib/src/util.dart:217:  EdgeInsets optionallyResolve(BuildContext context) {
+- [ ] lib/src/util.dart:260:  final CapturedThemes? themes;
+- [ ] lib/src/util.dart:261:  final CapturedData? data;
+- [ ] lib/src/util.dart:262:  final Widget child;
+- [ ] lib/src/util.dart:264:  const CapturedWrapper({
+- [ ] lib/src/util.dart:309:  final Widget child;
+- [ ] lib/src/util.dart:310:  final void Function() onWidgetTreeChange;
+- [ ] lib/src/util.dart:312:  const WidgetTreeChangeDetector({
+- [ ] lib/src/util.dart:323:class WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
+- [ ] lib/src/util.dart:343:extension Joinable<T extends Widget> on List<T> {
+- [ ] lib/src/util.dart:344:  List<T> joinSeparator(T separator) {
+- [ ] lib/src/util.dart:356:extension IterableExtension<T> on Iterable<T> {
+- [ ] lib/src/util.dart:357:  Iterable<T> joinSeparator(T separator) {
+- [ ] lib/src/util.dart:361:  Iterable<T> buildSeparator(ValueGetter<T> separator) {
+- [ ] lib/src/util.dart:366:typedef NeverWidgetBuilder = Widget Function(
+- [ ] lib/src/util.dart:378:extension WidgetExtension on Widget {
+- [ ] lib/src/util.dart:379:  NeverWidgetBuilder get asBuilder => ([a, b, c, d, e, f, g, h, i, j]) => this;
+- [ ] lib/src/util.dart:380:  Widget sized({double? width, double? height}) {
+- [ ] lib/src/util.dart:395:  Widget constrained(
+- [ ] lib/src/util.dart:439:  Widget withPadding(
+- [ ] lib/src/util.dart:484:  Widget withMargin(
+- [ ] lib/src/util.dart:527:  Widget center({Key? key}) {
+- [ ] lib/src/util.dart:534:  Widget withAlign(AlignmentGeometry alignment) {
+- [ ] lib/src/util.dart:541:  Widget positioned(
+- [ ] lib/src/util.dart:553:  Widget expanded({int flex = 1}) {
+- [ ] lib/src/util.dart:560:  Widget withOpacity(double opacity) {
+- [ ] lib/src/util.dart:567:  Widget clip({Clip clipBehavior = Clip.hardEdge}) {
+- [ ] lib/src/util.dart:574:  Widget clipRRect(
+- [ ] lib/src/util.dart:584:  Widget clipOval({Clip clipBehavior = Clip.antiAlias}) {
+- [ ] lib/src/util.dart:591:  Widget clipPath(
+- [ ] lib/src/util.dart:601:  Widget transform({Key? key, required Matrix4 transform}) {
+- [ ] lib/src/util.dart:609:  Widget intrinsicWidth({double? stepWidth, double? stepHeight}) {
+- [ ] lib/src/util.dart:617:  Widget intrinsicHeight() {
+- [ ] lib/src/util.dart:623:  Widget intrinsic({double? stepWidth, double? stepHeight}) {
+- [ ] lib/src/util.dart:634:extension ColumnExtension on Column {
+- [ ] lib/src/util.dart:635:  Widget gap(double gap) {
+- [ ] lib/src/util.dart:639:  Widget separator(Widget separator) {
+- [ ] lib/src/util.dart:656:extension RowExtension on Row {
+- [ ] lib/src/util.dart:657:  Widget gap(double gap) {
+- [ ] lib/src/util.dart:661:  Widget separator(Widget separator) {
+- [ ] lib/src/util.dart:680:  final MainAxisAlignment mainAxisAlignment;
+- [ ] lib/src/util.dart:681:  final MainAxisSize mainAxisSize;
+- [ ] lib/src/util.dart:682:  final CrossAxisAlignment crossAxisAlignment;
+- [ ] lib/src/util.dart:683:  final TextDirection? textDirection;
+- [ ] lib/src/util.dart:684:  final VerticalDirection verticalDirection;
+- [ ] lib/src/util.dart:685:  final TextBaseline? textBaseline;
+- [ ] lib/src/util.dart:686:  final List<Widget> children;
+- [ ] lib/src/util.dart:687:  final Axis direction;
+- [ ] lib/src/util.dart:688:  final Widget separator;
+- [ ] lib/src/util.dart:689:  final Clip clipBehavior;
+- [ ] lib/src/util.dart:691:  const SeparatedFlex({
+- [ ] lib/src/util.dart:741:extension FlexExtension on Flex {
+- [ ] lib/src/util.dart:742:  Widget gap(double gap) {
+- [ ] lib/src/util.dart:748:  Widget separator(Widget separator) {
+- [ ] lib/src/util.dart:769:extension DoubleExtension on double {
+- [ ] lib/src/util.dart:770:  double min(double other) => this < other ? this : other;
+- [ ] lib/src/util.dart:771:  double max(double other) => this > other ? this : other;
+- [ ] lib/src/util.dart:774:extension IntExtension on int {
+- [ ] lib/src/util.dart:775:  int min(int other) => this < other ? this : other;
+- [ ] lib/src/util.dart:776:  int max(int other) => this > other ? this : other;
+- [ ] lib/src/util.dart:781:  IconThemeDataTween({super.begin, super.end});
+- [ ] lib/src/util.dart:787:extension ColorExtension on Color {
+- [ ] lib/src/util.dart:788:  Color scaleAlpha(double factor) {
+- [ ] lib/src/util.dart:794:  Color getContrastColor([double luminanceContrast = 1]) {
+- [ ] lib/src/util.dart:811:  Color withLuminance(double luminance) {
+- [ ] lib/src/util.dart:816:  String toHex({bool includeHashSign = false, bool includeAlpha = true}) {
+- [ ] lib/src/util.dart:827:  HSLColor toHSL() {
+- [ ] lib/src/util.dart:831:  HSVColor toHSV() {
+- [ ] lib/src/util.dart:836:extension HSLColorExtension on HSLColor {
+- [ ] lib/src/util.dart:837:  HSVColor toHSV() {
+- [ ] lib/src/util.dart:856:extension HSVColorExtension on HSVColor {
+- [ ] lib/src/util.dart:857:  HSLColor toHSL() {
+- [ ] lib/src/util.dart:912:  TimeOfDay copyWith({
+- [ ] lib/src/util.dart:878:  final int hour;
+- [ ] lib/src/util.dart:879:  final int minute;
+- [ ] lib/src/util.dart:880:  final int second;
+- [ ] lib/src/util.dart:882:  const TimeOfDay({
+- [ ] lib/src/util.dart:888:  const TimeOfDay.pm({
+- [ ] lib/src/util.dart:894:  const TimeOfDay.am({
+- [ ] lib/src/util.dart:900:  TimeOfDay.fromDateTime(DateTime dateTime)
+- [ ] lib/src/util.dart:905:  TimeOfDay.fromDuration(Duration duration)
+- [ ] lib/src/util.dart:910:  TimeOfDay.now() : this.fromDateTime(DateTime.now());
+- [ ] lib/src/util.dart:968:extension TextEditingControllerExtension on TextEditingController {
+- [ ] lib/src/util.dart:969:  String? get currentWord {
+- [ ] lib/src/util.dart:983:typedef WordInfo = (int start, String word);
+- [ ] lib/src/util.dart:984:typedef ReplacementInfo = (int start, String newText);
+- [ ] lib/src/util.dart:1035:mixin CachedValue {
+- [ ] lib/src/util.dart:1036:  bool shouldRebuild(covariant CachedValue oldValue);
+- [ ] lib/src/util.dart:1041:  final T value;
+- [ ] lib/src/util.dart:1042:  final Widget Function(BuildContext context, T value) builder;
+- [ ] lib/src/util.dart:1044:  const CachedValueWidget({
+- [ ] lib/src/util.dart:1079:typedef Convert<F, T> = T Function(F value);
+- [ ] lib/src/util.dart:1088:  B convertA(A value) => aToB(value);
+- [ ] lib/src/util.dart:1090:  A convertB(B value) => bToA(value);
+- [ ] lib/src/util.dart:1083:  final Convert<A, B> aToB;
+- [ ] lib/src/util.dart:1084:  final Convert<B, A> bToA;
+- [ ] lib/src/util.dart:1086:  const BiDirectionalConvert(this.aToB, this.bToA);
+- [ ] lib/src/util.dart:1118:  ConvertedController(
+- [ ] lib/src/util.dart:1171:extension TextEditingValueExtension on TextEditingValue {
+- [ ] lib/src/util.dart:1172:  TextEditingValue replaceText(String newText) {
+- [ ] lib/src/util.dart:1185:typedef OnContextedCallback<T extends Intent> = Object? Function(T intent,
+- [ ] lib/src/util.dart:1190:  final OnContextedCallback<T> onInvoke;
+- [ ] lib/src/util.dart:1192:  ContextCallbackAction({required this.onInvoke});
