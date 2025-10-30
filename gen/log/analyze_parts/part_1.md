@@ -1,513 +1,4 @@
 TODO:
-- [x] lib/src/components/form/formatted_input.dart:119:  const StaticPart(this.text);
-- [x] lib/src/components/form/formatted_input.dart:456:class FormattedValuePart {
-- [x] lib/src/components/form/formatted_input.dart:462:  FormattedValuePart withValue(String value) {
-- [x] lib/src/components/form/formatted_input.dart:457:  final InputPart part;
-- [x] lib/src/components/form/formatted_input.dart:458:  final String? value;
-- [x] lib/src/components/form/formatted_input.dart:460:  const FormattedValuePart(this.part, [this.value]);
-- [x] lib/src/components/form/formatted_input.dart:483:class FormattedValue {
-- [x] lib/src/components/form/formatted_input.dart:488:  Iterable<FormattedValuePart> get values =>
-- [x] lib/src/components/form/formatted_input.dart:491:  FormattedValuePart? operator [](int index) {
-- [x] lib/src/components/form/formatted_input.dart:484:  final List<FormattedValuePart> parts;
-- [x] lib/src/components/form/formatted_input.dart:486:  const FormattedValue([this.parts = const []]);
-- [x] lib/src/components/form/form_field.dart:146:class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
-- [x] lib/src/components/form/form_field.dart:156:  T? get value => formValue;
-- [x] lib/src/components/form/form_field.dart:176:  bool get enabled => widget.enabled ?? widget.onChanged != null;
-- [x] lib/src/components/form/form_field.dart:158:  set value(T? value) {
-- [x] lib/src/components/form/form_field.dart:235:  void prompt([T? value]) {
-- [x] lib/src/components/form/form_field.dart:288:class ObjectFormFieldDialogResult<T> {
-- [x] lib/src/components/form/form_field.dart:289:  final T? value;
-- [x] lib/src/components/form/form_field.dart:291:  ObjectFormFieldDialogResult(this.value);
-- [x] lib/src/components/form/input.dart:6:enum InputFeaturePosition {
-- [x] lib/src/components/form/input.dart:7:  leading,
-- [x] lib/src/components/form/input.dart:8:  trailing,
-- [x] lib/src/components/form/input.dart:11:class InputHintFeature extends InputFeature {
-- [x] lib/src/components/form/input.dart:12:  final WidgetBuilder popupBuilder;
-- [x] lib/src/components/form/input.dart:13:  final Widget? icon;
-- [x] lib/src/components/form/input.dart:14:  final InputFeaturePosition position;
-- [x] lib/src/components/form/input.dart:15:  final bool enableShortcuts;
-- [x] lib/src/components/form/input.dart:16:  const InputHintFeature({
-- [x] lib/src/components/form/input.dart:96:class InputShowHintIntent extends Intent {
-- [x] lib/src/components/form/input.dart:97:  const InputShowHintIntent();
-- [x] lib/src/components/form/input.dart:100:enum PasswordPeekMode {
-- [x] lib/src/components/form/input.dart:101:  hold,
-- [x] lib/src/components/form/input.dart:102:  toggle,
-- [x] lib/src/components/form/input.dart:105:class InputPasswordToggleFeature extends InputFeature {
-- [x] lib/src/components/form/input.dart:106:  final PasswordPeekMode mode;
-- [x] lib/src/components/form/input.dart:107:  final InputFeaturePosition position;
-- [x] lib/src/components/form/input.dart:108:  final Widget? icon;
-- [x] lib/src/components/form/input.dart:109:  final Widget? iconShow;
-- [x] lib/src/components/form/input.dart:110:  const InputPasswordToggleFeature({
-- [x] lib/src/components/form/input.dart:191:class InputClearFeature extends InputFeature {
-- [x] lib/src/components/form/input.dart:192:  final InputFeaturePosition position;
-- [x] lib/src/components/form/input.dart:193:  final Widget? icon;
-- [x] lib/src/components/form/input.dart:194:  const InputClearFeature({
-- [x] lib/src/components/form/input.dart:233:class InputRevalidateFeature extends InputFeature {
-- [x] lib/src/components/form/input.dart:234:  final InputFeaturePosition position;
-- [x] lib/src/components/form/input.dart:235:  final Widget? icon;
-- [x] lib/src/components/form/input.dart:236:  const InputRevalidateFeature({
-- [x] lib/src/components/form/input.dart:315:typedef SuggestionBuilder = FutureOr<Iterable<String>> Function(String query);
-- [x] lib/src/components/form/input.dart:317:class InputAutoCompleteFeature extends InputFeature {
-- [x] lib/src/components/form/input.dart:318:  final SuggestionBuilder querySuggestions;
-- [x] lib/src/components/form/input.dart:319:  final Widget child;
-- [x] lib/src/components/form/input.dart:320:  final BoxConstraints? popoverConstraints;
-- [x] lib/src/components/form/input.dart:321:  final PopoverConstraint? popoverWidthConstraint;
-- [x] lib/src/components/form/input.dart:322:  final AlignmentDirectional? popoverAnchorAlignment;
-- [x] lib/src/components/form/input.dart:323:  final AlignmentDirectional? popoverAlignment;
-- [x] lib/src/components/form/input.dart:324:  final AutoCompleteMode mode;
-- [x] lib/src/components/form/input.dart:326:  const InputAutoCompleteFeature({
-- [x] lib/src/components/form/input.dart:393:class InputSpinnerFeature extends InputFeature {
-- [x] lib/src/components/form/input.dart:394:  final double step;
-- [x] lib/src/components/form/input.dart:395:  final bool enableGesture;
-- [x] lib/src/components/form/input.dart:396:  final double? invalidValue;
-- [x] lib/src/components/form/input.dart:397:  const InputSpinnerFeature({
-- [x] lib/src/components/form/input.dart:519:class InputCopyFeature extends InputFeature {
-- [x] lib/src/components/form/input.dart:520:  final InputFeaturePosition position;
-- [x] lib/src/components/form/input.dart:521:  final Widget? icon;
-- [x] lib/src/components/form/input.dart:522:  const InputCopyFeature({
-- [x] lib/src/components/form/input.dart:561:class InputLeadingFeature extends InputFeature {
-- [x] lib/src/components/form/input.dart:562:  final Widget prefix;
-- [x] lib/src/components/form/input.dart:563:  const InputLeadingFeature(
-- [x] lib/src/components/form/input.dart:580:class InputTrailingFeature extends InputFeature {
-- [x] lib/src/components/form/input.dart:581:  final Widget suffix;
-- [x] lib/src/components/form/input.dart:582:  const InputTrailingFeature(
-- [x] lib/src/components/form/input.dart:600:class InputPasteFeature extends InputFeature {
-- [x] lib/src/components/form/input.dart:601:  final InputFeaturePosition position;
-- [x] lib/src/components/form/input.dart:602:  final Widget? icon;
-- [x] lib/src/components/form/input.dart:603:  const InputPasteFeature({
-- [x] lib/src/components/form/input_otp.dart:17:  InputOTPTheme copyWith({
-- [x] lib/src/components/form/input_otp.dart:12:  final double? spacing;
-- [x] lib/src/components/form/input_otp.dart:13:  final double? height;
-- [x] lib/src/components/form/input_otp.dart:15:  const InputOTPTheme({this.spacing, this.height});
-- [x] lib/src/components/form/input_otp.dart:50:abstract class InputOTPChild {
-- [x] lib/src/components/form/input_otp.dart:51:  static InputOTPChild get separator =>
-- [x] lib/src/components/form/input_otp.dart:53:  static InputOTPChild get space =>
-- [x] lib/src/components/form/input_otp.dart:55:  static InputOTPChild get empty => const WidgetInputOTPChild(SizedBox());
-- [x] lib/src/components/form/input_otp.dart:120:  bool get hasValue;
-- [x] lib/src/components/form/input_otp.dart:119:  Widget build(BuildContext context, InputOTPChildData data);
-- [x] lib/src/components/form/input_otp.dart:56:  factory InputOTPChild.input({
-- [x] lib/src/components/form/input_otp.dart:70:  factory InputOTPChild.character({
-- [x] lib/src/components/form/input_otp.dart:118:  const InputOTPChild();
-- [x] lib/src/components/form/input_otp.dart:123:typedef CodepointPredicate = bool Function(int codepoint);
-- [x] lib/src/components/form/input_otp.dart:124:typedef CodepointUnaryOperator = int Function(int codepoint);
-- [x] lib/src/components/form/input_otp.dart:126:class CharacterInputOTPChild extends InputOTPChild {
-- [x] lib/src/components/form/input_otp.dart:134:  static bool isAlphabetLower(int codepoint) =>
-- [x] lib/src/components/form/input_otp.dart:136:  static bool isAlphabetUpper(int codepoint) =>
-- [x] lib/src/components/form/input_otp.dart:138:  static int lowerToUpper(int codepoint) =>
-- [x] lib/src/components/form/input_otp.dart:140:  static int upperToLower(int codepoint) =>
-- [x] lib/src/components/form/input_otp.dart:142:  static bool isDigit(int codepoint) =>
-- [x] lib/src/components/form/input_otp.dart:145:  final CodepointPredicate? predicate;
-- [x] lib/src/components/form/input_otp.dart:146:  final CodepointUnaryOperator? transform;
-- [x] lib/src/components/form/input_otp.dart:147:  final bool obscured;
-- [x] lib/src/components/form/input_otp.dart:148:  final bool readOnly;
-- [x] lib/src/components/form/input_otp.dart:149:  final TextInputType? keyboardType;
-- [x] lib/src/components/form/input_otp.dart:151:  const CharacterInputOTPChild({
-- [x] lib/src/components/form/input_otp.dart:405:class WidgetInputOTPChild extends InputOTPChild {
-- [x] lib/src/components/form/input_otp.dart:406:  final Widget child;
-- [x] lib/src/components/form/input_otp.dart:408:  const WidgetInputOTPChild(this.child);
-- [x] lib/src/components/form/input_otp.dart:426:class OTPSeparator extends StatelessWidget {
-- [x] lib/src/components/form/input_otp.dart:427:  const OTPSeparator({super.key});
-- [x] lib/src/components/form/input_otp.dart:440:class InputOTPChildData {
-- [x] lib/src/components/form/input_otp.dart:465:  void changeValue(int? value) {
-- [x] lib/src/components/form/input_otp.dart:441:  final FocusNode? previousFocusNode;
-- [x] lib/src/components/form/input_otp.dart:442:  final FocusNode? focusNode;
-- [x] lib/src/components/form/input_otp.dart:443:  final FocusNode? nextFocusNode;
-- [x] lib/src/components/form/input_otp.dart:444:  final int index;
-- [x] lib/src/components/form/input_otp.dart:445:  final int groupIndex;
-- [x] lib/src/components/form/input_otp.dart:446:  final int groupLength;
-- [x] lib/src/components/form/input_otp.dart:447:  final int relativeIndex;
-- [x] lib/src/components/form/input_otp.dart:448:  final int? value;
-- [x] lib/src/components/form/input_otp.dart:497:typedef OTPCodepointList = List<int?>;
-- [x] lib/src/components/form/input_otp.dart:499:extension OTPCodepointListExtension on OTPCodepointList {
-- [x] lib/src/components/form/input_otp.dart:500:  String otpToString() {
-- [x] lib/src/components/form/input_otp.dart:552:  final List<InputOTPChild> children;
-- [x] lib/src/components/form/input_otp.dart:553:  final OTPCodepointList? initialValue;
-- [x] lib/src/components/form/input_otp.dart:554:  final ValueChanged<OTPCodepointList>? onChanged;
-- [x] lib/src/components/form/input_otp.dart:555:  final ValueChanged<OTPCodepointList>? onSubmitted;
-- [x] lib/src/components/form/input_otp.dart:557:  const InputOTP({
-- [x] lib/src/components/form/item_picker.dart:284:Future<T?> showItemPicker<T>(
-- [x] lib/src/components/form/item_picker.dart:382:Future<T?> showItemPickerDialog<T>(
-- [x] lib/src/components/form/item_picker.dart:183:abstract class ItemChildDelegate<T> {
-- [x] lib/src/components/form/item_picker.dart:185:  int? get itemCount;
-- [x] lib/src/components/form/item_picker.dart:186:  T? operator [](int index);
-- [x] lib/src/components/form/item_picker.dart:184:  const ItemChildDelegate();
-- [x] lib/src/components/form/item_picker.dart:189:class ItemList<T> extends ItemChildDelegate<T> {
-- [x] lib/src/components/form/item_picker.dart:190:  final List<T> items;
-- [x] lib/src/components/form/item_picker.dart:191:  const ItemList(this.items);
-- [x] lib/src/components/form/item_picker.dart:198:class ItemBuilder<T> extends ItemChildDelegate<T> {
-- [x] lib/src/components/form/item_picker.dart:201:  final T? Function(int index) itemBuilder;
-- [x] lib/src/components/form/item_picker.dart:202:  const ItemBuilder({this.itemCount, required this.itemBuilder});
-- [x] lib/src/components/form/item_picker.dart:208:typedef ItemPickerBuilder<T> = Widget Function(BuildContext context, T item);
-- [x] lib/src/components/form/item_picker.dart:210:abstract class ItemPickerLayout {
-- [x] lib/src/components/form/item_picker.dart:214:  Widget build(
-- [x] lib/src/components/form/item_picker.dart:211:  static const ListItemPickerLayout list = ListItemPickerLayout();
-- [x] lib/src/components/form/item_picker.dart:212:  static const GridItemPickerLayout grid = GridItemPickerLayout();
-- [x] lib/src/components/form/item_picker.dart:213:  const ItemPickerLayout();
-- [x] lib/src/components/form/item_picker.dart:218:class ListItemPickerLayout extends ItemPickerLayout {
-- [x] lib/src/components/form/item_picker.dart:219:  const ListItemPickerLayout();
-- [x] lib/src/components/form/item_picker.dart:245:class GridItemPickerLayout extends ItemPickerLayout {
-- [x] lib/src/components/form/item_picker.dart:249:  ItemPickerLayout call({int crossAxisCount = 4}) {
-- [x] lib/src/components/form/item_picker.dart:246:  final int crossAxisCount;
-- [x] lib/src/components/form/item_picker.dart:247:  const GridItemPickerLayout({this.crossAxisCount = 4});
-- [x] lib/src/components/form/item_picker.dart:417:class ItemPickerDialog<T> extends StatefulWidget {
-- [x] lib/src/components/form/item_picker.dart:418:  final ItemChildDelegate<T> items;
-- [x] lib/src/components/form/item_picker.dart:419:  final ItemPickerBuilder<T> builder;
-- [x] lib/src/components/form/item_picker.dart:420:  final ItemPickerLayout layout;
-- [x] lib/src/components/form/item_picker.dart:421:  final T? value;
-- [x] lib/src/components/form/item_picker.dart:422:  final ValueChanged<T?>? onChanged;
-- [x] lib/src/components/form/item_picker.dart:423:  const ItemPickerDialog({
-- [x] lib/src/components/form/item_picker.dart:459:class ItemPickerData {
-- [x] lib/src/components/form/item_picker.dart:460:  final Object? value;
-- [x] lib/src/components/form/item_picker.dart:461:  final ValueChanged<Object?>? onChanged;
-- [x] lib/src/components/form/item_picker.dart:462:  final ItemPickerLayout layout;
-- [x] lib/src/components/form/item_picker.dart:463:  const ItemPickerData({this.value, this.onChanged, required this.layout});
-- [x] lib/src/components/form/item_picker.dart:478:class ItemPickerOption<T> extends StatelessWidget {
-- [x] lib/src/components/form/item_picker.dart:479:  final T value;
-- [x] lib/src/components/form/item_picker.dart:480:  final Widget? label;
-- [x] lib/src/components/form/item_picker.dart:481:  final Widget child;
-- [x] lib/src/components/form/item_picker.dart:482:  final AbstractButtonStyle? style;
-- [x] lib/src/components/form/item_picker.dart:483:  final AbstractButtonStyle? selectedStyle;
-- [x] lib/src/components/form/item_picker.dart:484:  const ItemPickerOption({
-- [x] lib/src/components/form/multiple_choice.dart:313:class MultipleChoice<T> extends StatefulWidget {
-- [x] lib/src/components/form/multiple_choice.dart:314:  final Widget child;
-- [x] lib/src/components/form/multiple_choice.dart:315:  final T? value;
-- [x] lib/src/components/form/multiple_choice.dart:316:  final ValueChanged<T?>? onChanged;
-- [x] lib/src/components/form/multiple_choice.dart:317:  final bool? enabled;
-- [x] lib/src/components/form/multiple_choice.dart:318:  final bool? allowUnselect;
-- [x] lib/src/components/form/multiple_choice.dart:320:  const MultipleChoice({
-- [x] lib/src/components/form/multiple_choice.dart:396:class MultipleAnswer<T> extends StatefulWidget {
-- [x] lib/src/components/form/multiple_choice.dart:397:  final Widget child;
-- [x] lib/src/components/form/multiple_choice.dart:398:  final Iterable<T>? value;
-- [x] lib/src/components/form/multiple_choice.dart:399:  final ValueChanged<Iterable<T>?>? onChanged;
-- [x] lib/src/components/form/multiple_choice.dart:400:  final bool? enabled;
-- [x] lib/src/components/form/multiple_choice.dart:401:  final bool? allowUnselect;
-- [x] lib/src/components/form/multiple_choice.dart:403:  const MultipleAnswer({
-- [x] lib/src/components/form/object_input.dart:53:  final Widget? placeholder;
-- [x] lib/src/components/form/object_input.dart:54:  final PromptMode mode;
-- [x] lib/src/components/form/object_input.dart:55:  final CalendarView? initialView;
-- [x] lib/src/components/form/object_input.dart:56:  final AlignmentGeometry? popoverAlignment;
-- [x] lib/src/components/form/object_input.dart:57:  final AlignmentGeometry? popoverAnchorAlignment;
-- [x] lib/src/components/form/object_input.dart:58:  final EdgeInsetsGeometry? popoverPadding;
-- [x] lib/src/components/form/object_input.dart:59:  final Widget? dialogTitle;
-- [x] lib/src/components/form/object_input.dart:60:  final CalendarViewType? initialViewType;
-- [x] lib/src/components/form/object_input.dart:61:  final DateStateBuilder? stateBuilder;
-- [x] lib/src/components/form/object_input.dart:62:  final List<DatePart>? datePartsOrder;
-- [x] lib/src/components/form/object_input.dart:63:  final InputPart? separator;
-- [x] lib/src/components/form/object_input.dart:64:  final Map<DatePart, Widget>? placeholders;
-- [x] lib/src/components/form/object_input.dart:123:class NullableDate {
-- [x] lib/src/components/form/object_input.dart:159:  DateTime get date {
-- [x] lib/src/components/form/object_input.dart:163:  DateTime? get nullableDate {
-- [x] lib/src/components/form/object_input.dart:147:  NullableDate copyWith({
-- [x] lib/src/components/form/object_input.dart:170:  int? operator [](DatePart part) {
-- [x] lib/src/components/form/object_input.dart:181:  Map<DatePart, int> toMap() {
-- [x] lib/src/components/form/object_input.dart:124:  final int? year;
-- [x] lib/src/components/form/object_input.dart:125:  final int? month;
-- [x] lib/src/components/form/object_input.dart:126:  final int? day;
-- [x] lib/src/components/form/object_input.dart:127:  NullableDate({this.year, this.month, this.day});
-- [x] lib/src/components/form/object_input.dart:348:class NullableTimeOfDay {
-- [x] lib/src/components/form/object_input.dart:385:  TimeOfDay? get toTimeOfDay {
-- [x] lib/src/components/form/object_input.dart:373:  NullableTimeOfDay copyWith({
-- [x] lib/src/components/form/object_input.dart:392:  static NullableTimeOfDay? fromTimeOfDay(TimeOfDay? timeOfDay) {
-- [x] lib/src/components/form/object_input.dart:403:  int? operator [](TimePart part) {
-- [x] lib/src/components/form/object_input.dart:414:  Map<TimePart, int> toMap() {
-- [x] lib/src/components/form/object_input.dart:349:  final int? hour;
-- [x] lib/src/components/form/object_input.dart:350:  final int? minute;
-- [x] lib/src/components/form/object_input.dart:351:  final int? second;
-- [x] lib/src/components/form/object_input.dart:353:  NullableTimeOfDay({this.hour, this.minute, this.second});
-- [x] lib/src/components/form/object_input.dart:472:  final Widget? placeholder;
-- [x] lib/src/components/form/object_input.dart:473:  final bool showSeconds;
-- [x] lib/src/components/form/object_input.dart:474:  final InputPart? separator;
-- [x] lib/src/components/form/object_input.dart:475:  final Map<TimePart, Widget>? placeholders;
-- [x] lib/src/components/form/object_input.dart:689:  final Widget? placeholder;
-- [x] lib/src/components/form/object_input.dart:690:  final bool showSeconds;
-- [x] lib/src/components/form/object_input.dart:691:  final InputPart? separator;
-- [x] lib/src/components/form/object_input.dart:692:  final Map<TimePart, Widget>? placeholders;
-- [ ] lib/src/components/form/radio_group.dart:22:  RadioTheme copyWith({
-- [ ] lib/src/components/form/radio_group.dart:14:  final Color? activeColor;
-- [ ] lib/src/components/form/radio_group.dart:15:  final Color? borderColor;
-- [ ] lib/src/components/form/radio_group.dart:16:  final Color? backgroundColor;
-- [ ] lib/src/components/form/radio_group.dart:17:  final double? size;
-- [ ] lib/src/components/form/radio_group.dart:19:  const RadioTheme(
-- [ ] lib/src/components/form/radio_group.dart:196:class NextItemIntent extends Intent {
-- [ ] lib/src/components/form/radio_group.dart:197:  const NextItemIntent();
-- [ ] lib/src/components/form/radio_group.dart:200:class PreviousItemIntent extends Intent {
-- [ ] lib/src/components/form/radio_group.dart:201:  const PreviousItemIntent();
-- [ ] lib/src/components/form/radio_group.dart:204:class RadioItem<T> extends StatefulWidget {
-- [ ] lib/src/components/form/radio_group.dart:205:  final Widget? leading;
-- [ ] lib/src/components/form/radio_group.dart:206:  final Widget? trailing;
-- [ ] lib/src/components/form/radio_group.dart:207:  final T value;
-- [ ] lib/src/components/form/radio_group.dart:208:  final bool enabled;
-- [ ] lib/src/components/form/radio_group.dart:209:  final FocusNode? focusNode;
-- [ ] lib/src/components/form/radio_group.dart:211:  const RadioItem({
-- [ ] lib/src/components/form/radio_group.dart:317:class RadioCard<T> extends StatefulWidget {
-- [ ] lib/src/components/form/radio_group.dart:318:  final Widget child;
-- [ ] lib/src/components/form/radio_group.dart:319:  final T value;
-- [ ] lib/src/components/form/radio_group.dart:320:  final bool enabled;
-- [ ] lib/src/components/form/radio_group.dart:321:  final FocusNode? focusNode;
-- [ ] lib/src/components/form/radio_group.dart:323:  const RadioCard({
-- [ ] lib/src/components/form/radio_group.dart:749:class RadioGroup<T> extends StatefulWidget {
-- [ ] lib/src/components/form/radio_group.dart:750:  final Widget child;
-- [ ] lib/src/components/form/radio_group.dart:751:  final T? value;
-- [ ] lib/src/components/form/radio_group.dart:752:  final ValueChanged<T>? onChanged;
-- [ ] lib/src/components/form/radio_group.dart:753:  final bool? enabled;
-- [ ] lib/src/components/form/radio_group.dart:754:  const RadioGroup({
-- [ ] lib/src/components/form/radio_group.dart:766:class RadioGroupData<T> {
-- [ ] lib/src/components/form/radio_group.dart:767:  final T? selectedItem;
-- [ ] lib/src/components/form/radio_group.dart:768:  final bool enabled;
-- [ ] lib/src/components/form/radio_group.dart:770:  RadioGroupData(this.selectedItem, this.enabled);
-- [ ] lib/src/components/form/radio_group.dart:784:class RadioGroupState<T> extends State<RadioGroup<T>>
-- [ ] lib/src/components/form/radio_group.dart:786:  bool get enabled => widget.enabled ?? widget.onChanged != null;
-- [ ] lib/src/components/form/select.dart:35:  SelectTheme copyWith({
-- [ ] lib/src/components/form/select.dart:15:  final BoxConstraints? popupConstraints;
-- [ ] lib/src/components/form/select.dart:16:  final AlignmentGeometry? popoverAlignment;
-- [ ] lib/src/components/form/select.dart:17:  final AlignmentGeometry? popoverAnchorAlignment;
-- [ ] lib/src/components/form/select.dart:18:  final BorderRadiusGeometry? borderRadius;
-- [ ] lib/src/components/form/select.dart:19:  final EdgeInsetsGeometry? padding;
-- [ ] lib/src/components/form/select.dart:20:  final bool? disableHoverEffect;
-- [ ] lib/src/components/form/select.dart:21:  final bool? canUnselect;
-- [ ] lib/src/components/form/select.dart:22:  final bool? autoClosePopover;
-- [ ] lib/src/components/form/select.dart:24:  const SelectTheme({
-- [ ] lib/src/components/form/select.dart:431:  final SelectValueBuilder<T> multiItemBuilder;
-- [ ] lib/src/components/form/select.dart:537:class SelectItemButton<T> extends StatelessWidget {
-- [ ] lib/src/components/form/select.dart:538:  final T value;
-- [ ] lib/src/components/form/select.dart:539:  final Widget child;
-- [ ] lib/src/components/form/select.dart:540:  final AbstractButtonStyle style;
-- [ ] lib/src/components/form/select.dart:541:  final bool? enabled;
-- [ ] lib/src/components/form/select.dart:543:  const SelectItemButton({
-- [ ] lib/src/components/form/select.dart:601:class SelectGroup extends StatelessWidget {
-- [ ] lib/src/components/form/select.dart:602:  final List<Widget>? headers;
-- [ ] lib/src/components/form/select.dart:603:  final List<Widget> children;
-- [ ] lib/src/components/form/select.dart:604:  final List<Widget>? footers;
-- [ ] lib/src/components/form/select.dart:606:  const SelectGroup({
-- [ ] lib/src/components/form/select.dart:626:class SelectItem extends StatelessWidget {
-- [ ] lib/src/components/form/select.dart:627:  final WidgetBuilder builder;
-- [ ] lib/src/components/form/select.dart:628:  final Object? value;
-- [ ] lib/src/components/form/select.dart:630:  const SelectItem({super.key, required this.value, required this.builder});
-- [ ] lib/src/components/form/select.dart:643:class SelectLabel extends StatelessWidget {
-- [ ] lib/src/components/form/select.dart:644:  final Widget child;
-- [ ] lib/src/components/form/select.dart:646:  const SelectLabel({super.key, required this.child});
-- [ ] lib/src/components/form/select.dart:659:typedef SelectPopupBuilder = Widget Function(BuildContext context);
-- [ ] lib/src/components/form/select.dart:660:typedef SelectValueBuilder<T> = Widget Function(BuildContext context, T value);
-- [ ] lib/src/components/form/select.dart:661:typedef SelectValueSelectionHandler<T> = T? Function(
-- [ ] lib/src/components/form/select.dart:663:typedef SelectValueSelectionPredicate<T> = bool Function(
-- [ ] lib/src/components/form/select.dart:714:mixin SelectBase<T> {
-- [ ] lib/src/components/form/select.dart:715:  ValueChanged<T?>? get onChanged;
-- [ ] lib/src/components/form/select.dart:716:  Widget? get placeholder;
-- [ ] lib/src/components/form/select.dart:717:  bool get filled;
-- [ ] lib/src/components/form/select.dart:718:  FocusNode? get focusNode;
-- [ ] lib/src/components/form/select.dart:719:  BoxConstraints? get constraints;
-- [ ] lib/src/components/form/select.dart:720:  BoxConstraints? get popupConstraints;
-- [ ] lib/src/components/form/select.dart:721:  PopoverConstraint get popupWidthConstraint;
-- [ ] lib/src/components/form/select.dart:722:  BorderRadiusGeometry? get borderRadius;
-- [ ] lib/src/components/form/select.dart:723:  EdgeInsetsGeometry? get padding;
-- [ ] lib/src/components/form/select.dart:724:  AlignmentGeometry get popoverAlignment;
-- [ ] lib/src/components/form/select.dart:725:  AlignmentGeometry? get popoverAnchorAlignment;
-- [ ] lib/src/components/form/select.dart:726:  bool get disableHoverEffect;
-- [ ] lib/src/components/form/select.dart:727:  bool get canUnselect;
-- [ ] lib/src/components/form/select.dart:728:  bool? get autoClosePopover;
-- [ ] lib/src/components/form/select.dart:729:  SelectPopupBuilder get popup;
-- [ ] lib/src/components/form/select.dart:730:  SelectValueBuilder<T> get itemBuilder;
-- [ ] lib/src/components/form/select.dart:731:  SelectValueSelectionHandler<T>? get valueSelectionHandler;
-- [ ] lib/src/components/form/select.dart:732:  SelectValueSelectionPredicate<T>? get valueSelectionPredicate;
-- [ ] lib/src/components/form/select.dart:733:  Predicate<T>? get showValuePredicate;
-- [ ] lib/src/components/form/select.dart:798:  final T? value;
-- [ ] lib/src/components/form/select.dart:813:  final bool? enabled;
-- [ ] lib/src/components/form/select.dart:825:  const Select({
-- [ ] lib/src/components/form/select.dart:854:class SelectState<T> extends State<Select<T>>
-- [ ] lib/src/components/form/select.dart:1151:  final Object? value;
-- [ ] lib/src/components/form/select.dart:1152:  final Widget child;
-- [ ] lib/src/components/form/select.dart:1153:  final AbstractButtonStyle style;
-- [ ] lib/src/components/form/select.dart:1203:class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
-- [ ] lib/src/components/form/select.dart:1219:  final Iterable<T>? value;
-- [ ] lib/src/components/form/select.dart:1234:  final bool? enabled;
-- [ ] lib/src/components/form/select.dart:1245:  final SelectValueBuilder<T> multiItemBuilder;
-- [ ] lib/src/components/form/select.dart:1249:  const MultiSelect({
-- [ ] lib/src/components/form/select.dart:1321:typedef SelectValueChanged<T> = bool Function(T value, bool selected);
-- [ ] lib/src/components/form/select.dart:1323:class SelectData {
-- [ ] lib/src/components/form/select.dart:1324:  final bool? autoClose;
-- [ ] lib/src/components/form/select.dart:1325:  final Predicate<Object?> isSelected;
-- [ ] lib/src/components/form/select.dart:1326:  final SelectValueChanged<Object?> onChanged;
-- [ ] lib/src/components/form/select.dart:1327:  final bool hasSelection;
-- [ ] lib/src/components/form/select.dart:1328:  final bool enabled;
-- [ ] lib/src/components/form/select.dart:1330:  const SelectData({
-- [ ] lib/src/components/form/select.dart:1354:typedef SelectItemsBuilder<T> = FutureOr<SelectItemDelegate> Function(
-- [ ] lib/src/components/form/select.dart:1359:class SelectPopup<T> extends StatefulWidget {
-- [ ] lib/src/components/form/select.dart:1360:  final SelectItemsBuilder<T>? builder;
-- [ ] lib/src/components/form/select.dart:1361:  final FutureOr<SelectItemDelegate?>? items;
-- [ ] lib/src/components/form/select.dart:1362:  final TextEditingController? searchController;
-- [ ] lib/src/components/form/select.dart:1363:  final Widget? searchPlaceholder;
-- [ ] lib/src/components/form/select.dart:1364:  final WidgetBuilder? emptyBuilder;
-- [ ] lib/src/components/form/select.dart:1365:  final WidgetBuilder? loadingBuilder;
-- [ ] lib/src/components/form/select.dart:1366:  final ErrorWidgetBuilder? errorBuilder;
-- [ ] lib/src/components/form/select.dart:1367:  final double? surfaceBlur;
-- [ ] lib/src/components/form/select.dart:1368:  final double? surfaceOpacity;
-- [ ] lib/src/components/form/select.dart:1369:  final bool? autoClose;
-- [ ] lib/src/components/form/select.dart:1370:  final bool? canUnselect;
-- [ ] lib/src/components/form/select.dart:1371:  final bool enableSearch;
-- [ ] lib/src/components/form/select.dart:1372:  final ScrollController? scrollController;
-- [ ] lib/src/components/form/select.dart:1373:  final bool shrinkWrap;
-- [ ] lib/src/components/form/select.dart:1374:  final bool disableVirtualization;
-- [ ] lib/src/components/form/select.dart:1376:  const SelectPopup.builder({
-- [ ] lib/src/components/form/select.dart:1394:  const SelectPopup({
-- [ ] lib/src/components/form/select.dart:1412:  const SelectPopup.noVirtualization({
-- [ ] lib/src/components/form/select.dart:1439:mixin SelectPopupHandle {
-- [ ] lib/src/components/form/select.dart:1442:  bool get hasSelection;
-- [ ] lib/src/components/form/select.dart:1440:  bool isSelected(Object? value);
-- [ ] lib/src/components/form/select.dart:1441:  void selectItem(Object? value, bool selected);
-- [ ] lib/src/components/form/select.dart:1443:  static SelectPopupHandle of(BuildContext context) {
-- [ ] lib/src/components/form/select.dart:1857:abstract class SelectItemDelegate with CachedValue {
-- [ ] lib/src/components/form/select.dart:1861:  int? get estimatedChildCount => null;
-- [ ] lib/src/components/form/select.dart:1860:  Widget? build(BuildContext context, int index);
-- [ ] lib/src/components/form/select.dart:1858:  static const empty = EmptySelectItem();
-- [ ] lib/src/components/form/select.dart:1859:  const SelectItemDelegate();
-- [ ] lib/src/components/form/select.dart:1866:class EmptySelectItem extends SelectItemDelegate {
-- [ ] lib/src/components/form/select.dart:1867:  const EmptySelectItem();
-- [ ] lib/src/components/form/select.dart:1881:typedef SelectItemWidgetBuilder = Widget Function(
-- [ ] lib/src/components/form/select.dart:1884:class SelectItemBuilder extends SelectItemDelegate {
-- [ ] lib/src/components/form/select.dart:1885:  final SelectItemWidgetBuilder builder;
-- [ ] lib/src/components/form/select.dart:1886:  final int? childCount;
-- [ ] lib/src/components/form/select.dart:1888:  const SelectItemBuilder({required this.builder, this.childCount});
-- [ ] lib/src/components/form/sortable.dart:212:  const RawSortableStack({
-- [ ] lib/src/components/form/text_field.dart:515:  InputFeatureState createState();
-- [ ] lib/src/components/form/text_field.dart:517:  static bool canUpdate(InputFeature oldFeature, InputFeature newFeature) {
-- [ ] lib/src/components/form/text_field.dart:510:  final InputFeatureVisibility visibility;
-- [ ] lib/src/components/form/text_field.dart:511:  final bool skipFocusTraversal;
-- [ ] lib/src/components/form/text_field.dart:512:  const InputFeature(
-- [ ] lib/src/components/form/text_field.dart:522:abstract class InputFeatureState<T extends InputFeature> {
-- [ ] lib/src/components/form/text_field.dart:525:  T get feature {
-- [ ] lib/src/components/form/text_field.dart:531:  TickerProvider get tickerProvider {
-- [ ] lib/src/components/form/text_field.dart:537:  BuildContext get context {
-- [ ] lib/src/components/form/text_field.dart:549:  TextField get input {
-- [ ] lib/src/components/form/text_field.dart:555:  bool get attached => _attached != null;
-- [ ] lib/src/components/form/text_field.dart:557:  TextEditingController get controller {
-- [ ] lib/src/components/form/text_field.dart:594:  void initState() {
-- [ ] lib/src/components/form/text_field.dart:607:  void didChangeDependencies() {}
-- [ ] lib/src/components/form/text_field.dart:624:  void dispose() {
-- [ ] lib/src/components/form/text_field.dart:631:  void didFeatureUpdate(InputFeature oldFeature) {
-- [ ] lib/src/components/form/text_field.dart:644:  void onTextChanged(String text) {}
-- [ ] lib/src/components/form/text_field.dart:645:  void onSelectionChanged(TextSelection selection) {}
-- [ ] lib/src/components/form/text_field.dart:646:  Iterable<Widget> buildLeading() sync* {}
-- [ ] lib/src/components/form/text_field.dart:647:  Iterable<Widget> buildTrailing() sync* {}
-- [ ] lib/src/components/form/text_field.dart:648:  Iterable<MapEntry<Type, Action<Intent>>> buildActions() sync* {}
-- [ ] lib/src/components/form/text_field.dart:649:  Iterable<MapEntry<ShortcutActivator, Intent>> buildShortcuts() sync* {}
-- [ ] lib/src/components/form/text_field.dart:650:  Widget wrap(Widget child) => child;
-- [ ] lib/src/components/form/text_field.dart:651:  TextField interceptInput(TextField input) => input;
-- [ ] lib/src/components/form/text_field.dart:653:  void setState(VoidCallback fn) {
-- [ ] lib/src/components/form/text_field.dart:696:  Object get groupId;
-- [ ] lib/src/components/form/text_field.dart:697:  TextEditingController? get controller;
-- [ ] lib/src/components/form/text_field.dart:698:  FocusNode? get focusNode;
-- [ ] lib/src/components/form/text_field.dart:699:  BoxDecoration? get decoration;
-- [ ] lib/src/components/form/text_field.dart:700:  EdgeInsetsGeometry? get padding;
-- [ ] lib/src/components/form/text_field.dart:701:  Widget? get placeholder;
-- [ ] lib/src/components/form/text_field.dart:702:  CrossAxisAlignment get crossAxisAlignment;
-- [ ] lib/src/components/form/text_field.dart:703:  String? get clearButtonSemanticLabel;
-- [ ] lib/src/components/form/text_field.dart:704:  TextInputType? get keyboardType;
-- [ ] lib/src/components/form/text_field.dart:705:  TextInputAction? get textInputAction;
-- [ ] lib/src/components/form/text_field.dart:706:  TextCapitalization get textCapitalization;
-- [ ] lib/src/components/form/text_field.dart:707:  TextStyle? get style;
-- [ ] lib/src/components/form/text_field.dart:708:  StrutStyle? get strutStyle;
-- [ ] lib/src/components/form/text_field.dart:709:  TextAlign get textAlign;
-- [ ] lib/src/components/form/text_field.dart:710:  TextAlignVertical? get textAlignVertical;
-- [ ] lib/src/components/form/text_field.dart:711:  TextDirection? get textDirection;
-- [ ] lib/src/components/form/text_field.dart:712:  bool get readOnly;
-- [ ] lib/src/components/form/text_field.dart:713:  bool? get showCursor;
-- [ ] lib/src/components/form/text_field.dart:714:  bool get autofocus;
-- [ ] lib/src/components/form/text_field.dart:715:  String get obscuringCharacter;
-- [ ] lib/src/components/form/text_field.dart:716:  bool get obscureText;
-- [ ] lib/src/components/form/text_field.dart:717:  bool get autocorrect;
-- [ ] lib/src/components/form/text_field.dart:718:  SmartDashesType get smartDashesType;
-- [ ] lib/src/components/form/text_field.dart:719:  SmartQuotesType get smartQuotesType;
-- [ ] lib/src/components/form/text_field.dart:720:  bool get enableSuggestions;
-- [ ] lib/src/components/form/text_field.dart:721:  int? get maxLines;
-- [ ] lib/src/components/form/text_field.dart:722:  int? get minLines;
-- [ ] lib/src/components/form/text_field.dart:723:  bool get expands;
-- [ ] lib/src/components/form/text_field.dart:724:  int? get maxLength;
-- [ ] lib/src/components/form/text_field.dart:725:  MaxLengthEnforcement? get maxLengthEnforcement;
-- [ ] lib/src/components/form/text_field.dart:726:  ValueChanged<String>? get onChanged;
-- [ ] lib/src/components/form/text_field.dart:727:  VoidCallback? get onEditingComplete;
-- [ ] lib/src/components/form/text_field.dart:728:  ValueChanged<String>? get onSubmitted;
-- [ ] lib/src/components/form/text_field.dart:729:  TapRegionCallback? get onTapOutside;
-- [ ] lib/src/components/form/text_field.dart:730:  TapRegionCallback? get onTapUpOutside;
-- [ ] lib/src/components/form/text_field.dart:731:  List<TextInputFormatter>? get inputFormatters;
-- [ ] lib/src/components/form/text_field.dart:732:  bool get enabled;
-- [ ] lib/src/components/form/text_field.dart:733:  double get cursorWidth;
-- [ ] lib/src/components/form/text_field.dart:734:  double? get cursorHeight;
-- [ ] lib/src/components/form/text_field.dart:735:  Radius get cursorRadius;
-- [ ] lib/src/components/form/text_field.dart:736:  bool get cursorOpacityAnimates;
-- [ ] lib/src/components/form/text_field.dart:737:  Color? get cursorColor;
-- [ ] lib/src/components/form/text_field.dart:738:  ui.BoxHeightStyle get selectionHeightStyle;
-- [ ] lib/src/components/form/text_field.dart:739:  ui.BoxWidthStyle get selectionWidthStyle;
-- [ ] lib/src/components/form/text_field.dart:740:  Brightness? get keyboardAppearance;
-- [ ] lib/src/components/form/text_field.dart:741:  EdgeInsets get scrollPadding;
-- [ ] lib/src/components/form/text_field.dart:742:  bool get enableInteractiveSelection;
-- [ ] lib/src/components/form/text_field.dart:743:  TextSelectionControls? get selectionControls;
-- [ ] lib/src/components/form/text_field.dart:744:  DragStartBehavior get dragStartBehavior;
-- [ ] lib/src/components/form/text_field.dart:745:  ScrollController? get scrollController;
-- [ ] lib/src/components/form/text_field.dart:746:  ScrollPhysics? get scrollPhysics;
-- [ ] lib/src/components/form/text_field.dart:747:  GestureTapCallback? get onTap;
-- [ ] lib/src/components/form/text_field.dart:748:  Iterable<String>? get autofillHints;
-- [ ] lib/src/components/form/text_field.dart:749:  Clip get clipBehavior;
-- [ ] lib/src/components/form/text_field.dart:750:  String? get restorationId;
-- [ ] lib/src/components/form/text_field.dart:751:  bool get stylusHandwritingEnabled;
-- [ ] lib/src/components/form/text_field.dart:752:  bool get enableIMEPersonalizedLearning;
-- [ ] lib/src/components/form/text_field.dart:753:  ContentInsertionConfiguration? get contentInsertionConfiguration;
-- [ ] lib/src/components/form/text_field.dart:754:  EditableTextContextMenuBuilder? get contextMenuBuilder;
-- [ ] lib/src/components/form/text_field.dart:755:  String? get initialValue;
-- [ ] lib/src/components/form/text_field.dart:756:  String? get hintText;
-- [ ] lib/src/components/form/text_field.dart:757:  Border? get border;
-- [ ] lib/src/components/form/text_field.dart:758:  BorderRadiusGeometry? get borderRadius;
-- [ ] lib/src/components/form/text_field.dart:759:  bool? get filled;
-- [ ] lib/src/components/form/text_field.dart:760:  WidgetStatesController? get statesController;
-- [ ] lib/src/components/form/text_field.dart:761:  TextMagnifierConfiguration? get magnifierConfiguration;
-- [ ] lib/src/components/form/text_field.dart:762:  SpellCheckConfiguration? get spellCheckConfiguration;
-- [ ] lib/src/components/form/text_field.dart:763:  UndoHistoryController? get undoController;
-- [ ] lib/src/components/form/text_field.dart:764:  List<InputFeature> get features;
-- [ ] lib/src/components/form/text_field.dart:765:  List<TextInputFormatter>? get submitFormatters;
-- [ ] lib/src/components/form/text_field.dart:766:  bool get skipInputFeatureFocusTraversal;
-- [ ] lib/src/components/form/text_field.dart:769:abstract class TextInputStatefulWidget extends StatefulWidget with TextInput {
-- [ ] lib/src/components/form/text_field.dart:989:  TextField copyWith({
-- [ ] lib/src/components/form/text_field.dart:913:  const TextInputStatefulWidget({
-- [ ] lib/src/components/form/text_field.dart:1243:  static EditableTextContextMenuBuilder nativeContextMenuBuilder() {
-- [ ] lib/src/components/form/text_field.dart:1250:  static EditableTextContextMenuBuilder cupertinoContextMenuBuilder() {
-- [ ] lib/src/components/form/text_field.dart:1257:  static EditableTextContextMenuBuilder materialContextMenuBuilder() {
-- [ ] lib/src/components/form/text_field.dart:1384:  static Widget defaultContextMenuBuilder(
-- [ ] lib/src/components/form/text_field.dart:1392:  static Widget defaultSpellCheckSuggestionsToolbarBuilder(
-- [ ] lib/src/components/form/text_field.dart:1309:  const TextField({
-- [ ] lib/src/components/form/text_field.dart:1561:class TextFieldState extends State<TextField>
-- [ ] lib/src/components/form/text_field.dart:1578:  TextEditingController get effectiveController =>
-- [ ] lib/src/components/form/time_picker.dart:268:class TimePicker extends StatelessWidget {
-- [ ] lib/src/components/form/time_picker.dart:269:  final TimeOfDay? value;
-- [ ] lib/src/components/form/time_picker.dart:270:  final ValueChanged<TimeOfDay?>? onChanged;
-- [ ] lib/src/components/form/time_picker.dart:271:  final PromptMode mode;
-- [ ] lib/src/components/form/time_picker.dart:272:  final Widget? placeholder;
-- [ ] lib/src/components/form/time_picker.dart:273:  final AlignmentGeometry? popoverAlignment;
-- [ ] lib/src/components/form/time_picker.dart:274:  final AlignmentGeometry? popoverAnchorAlignment;
-- [ ] lib/src/components/form/time_picker.dart:275:  final EdgeInsetsGeometry? popoverPadding;
-- [ ] lib/src/components/form/time_picker.dart:276:  final bool? use24HourFormat;
-- [ ] lib/src/components/form/time_picker.dart:277:  final bool showSeconds;
-- [ ] lib/src/components/form/time_picker.dart:278:  final Widget? dialogTitle;
-- [ ] lib/src/components/form/time_picker.dart:279:  final bool? enabled;
-- [ ] lib/src/components/form/time_picker.dart:281:  const TimePicker({
-- [ ] lib/src/components/form/time_picker.dart:334:class TimePickerDialog extends StatefulWidget {
-- [ ] lib/src/components/form/time_picker.dart:335:  final TimeOfDay? initialValue;
-- [ ] lib/src/components/form/time_picker.dart:336:  final ValueChanged<TimeOfDay?>? onChanged;
-- [ ] lib/src/components/form/time_picker.dart:337:  final bool use24HourFormat;
-- [ ] lib/src/components/form/time_picker.dart:338:  final bool showSeconds;
-- [ ] lib/src/components/form/time_picker.dart:340:  const TimePickerDialog({
-- [ ] lib/src/components/form/time_picker.dart:641:  final Duration? value;
-- [ ] lib/src/components/form/time_picker.dart:642:  final ValueChanged<Duration?>? onChanged;
-- [ ] lib/src/components/form/time_picker.dart:643:  final PromptMode mode;
-- [ ] lib/src/components/form/time_picker.dart:644:  final Widget? placeholder;
-- [ ] lib/src/components/form/time_picker.dart:645:  final AlignmentGeometry? popoverAlignment;
-- [ ] lib/src/components/form/time_picker.dart:646:  final AlignmentGeometry? popoverAnchorAlignment;
-- [ ] lib/src/components/form/time_picker.dart:647:  final EdgeInsetsGeometry? popoverPadding;
-- [ ] lib/src/components/form/time_picker.dart:648:  final Widget? dialogTitle;
-- [ ] lib/src/components/form/time_picker.dart:649:  final bool? enabled;
-- [ ] lib/src/components/form/time_picker.dart:651:  const DurationPicker({
-- [ ] lib/src/components/form/time_picker.dart:690:class DurationPickerDialog extends StatefulWidget {
-- [ ] lib/src/components/form/time_picker.dart:691:  final Duration? initialValue;
-- [ ] lib/src/components/form/time_picker.dart:692:  final ValueChanged<Duration?>? onChanged;
-- [ ] lib/src/components/form/time_picker.dart:694:  const DurationPickerDialog({
 - [ ] lib/src/components/icon/icon.dart:181:  Widget call() {
 - [ ] lib/src/components/icon/icon.dart:195:  WrappedIcon copyWith({
 - [ ] lib/src/components/layout/basic.dart:456:class Label extends StatelessWidget {
@@ -1027,3 +518,540 @@ TODO:
 - [ ] lib/src/components/menu/menu.dart:982:class DirectionalMenuFocusIntent extends Intent {
 - [ ] lib/src/components/menu/menu.dart:983:  final TraversalDirection direction;
 - [ ] lib/src/components/menu/menu.dart:985:  const DirectionalMenuFocusIntent(this.direction);
+- [ ] lib/src/components/menu/menubar.dart:245:class MenubarState extends State<Menubar> {
+- [ ] lib/src/components/menu/menubar.dart:275:  Widget buildContainer(BuildContext context, ThemeData theme,
+- [ ] lib/src/components/menu/navigation_menu.dart:155:class NavigationMenuItemState extends State<NavigationMenuItem> {
+- [ ] lib/src/components/menu/navigation_menu.dart:577:class NavigationMenuState extends State<NavigationMenu> {
+- [ ] lib/src/components/menu/navigation_menu.dart:592:  bool isActive(NavigationMenuItemState item) {
+- [ ] lib/src/components/menu/navigation_menu.dart:640:  NavigationMenuItemState? findByWidget(Widget widget) {
+- [ ] lib/src/components/menu/navigation_menu.dart:646:  Widget buildContent(int index) {
+- [ ] lib/src/components/menu/navigation_menu.dart:661:  void close() {
+- [ ] lib/src/components/menu/navigation_menu.dart:665:  Widget buildPopover(BuildContext context) {
+- [ ] lib/src/components/menu/navigation_menu.dart:747:  EdgeInsets? requestMargin() {
+- [ ] lib/src/components/menu/navigation_menu.dart:578:  static const Duration kDebounceDuration = Duration(milliseconds: 200);
+- [ ] lib/src/components/navigation/navigation_bar.dart:92:  NavigationBarTheme copyWith({
+- [ ] lib/src/components/navigation/navigation_bar.dart:72:  final Color? backgroundColor;
+- [ ] lib/src/components/navigation/navigation_bar.dart:73:  final NavigationBarAlignment? alignment;
+- [ ] lib/src/components/navigation/navigation_bar.dart:74:  final Axis? direction;
+- [ ] lib/src/components/navigation/navigation_bar.dart:75:  final double? spacing;
+- [ ] lib/src/components/navigation/navigation_bar.dart:76:  final NavigationLabelType? labelType;
+- [ ] lib/src/components/navigation/navigation_bar.dart:77:  final NavigationLabelPosition? labelPosition;
+- [ ] lib/src/components/navigation/navigation_bar.dart:78:  final NavigationLabelSize? labelSize;
+- [ ] lib/src/components/navigation/navigation_bar.dart:79:  final EdgeInsetsGeometry? padding;
+- [ ] lib/src/components/navigation/navigation_bar.dart:81:  const NavigationBarTheme({
+- [ ] lib/src/components/navigation/navigation_bar.dart:142:abstract class NavigationBarItem extends Widget {
+- [ ] lib/src/components/navigation/navigation_bar.dart:145:  bool get selectable;
+- [ ] lib/src/components/navigation/navigation_bar.dart:143:  const NavigationBarItem({super.key});
+- [ ] lib/src/components/navigation/navigation_bar.dart:209:  final Color? backgroundColor;
+- [ ] lib/src/components/navigation/navigation_bar.dart:210:  final List<NavigationBarItem> children;
+- [ ] lib/src/components/navigation/navigation_bar.dart:211:  final NavigationBarAlignment? alignment;
+- [ ] lib/src/components/navigation/navigation_bar.dart:212:  final Axis? direction;
+- [ ] lib/src/components/navigation/navigation_bar.dart:213:  final double? spacing;
+- [ ] lib/src/components/navigation/navigation_bar.dart:214:  final NavigationLabelType? labelType;
+- [ ] lib/src/components/navigation/navigation_bar.dart:215:  final NavigationLabelPosition? labelPosition;
+- [ ] lib/src/components/navigation/navigation_bar.dart:216:  final NavigationLabelSize? labelSize;
+- [ ] lib/src/components/navigation/navigation_bar.dart:217:  final EdgeInsetsGeometry? padding;
+- [ ] lib/src/components/navigation/navigation_bar.dart:218:  final BoxConstraints? constraints;
+- [ ] lib/src/components/navigation/navigation_bar.dart:219:  final bool? expands;
+- [ ] lib/src/components/navigation/navigation_bar.dart:220:  final int? index;
+- [ ] lib/src/components/navigation/navigation_bar.dart:221:  final ValueChanged<int>? onSelected;
+- [ ] lib/src/components/navigation/navigation_bar.dart:222:  final double? surfaceOpacity;
+- [ ] lib/src/components/navigation/navigation_bar.dart:223:  final double? surfaceBlur;
+- [ ] lib/src/components/navigation/navigation_bar.dart:224:  final bool? expanded;
+- [ ] lib/src/components/navigation/navigation_bar.dart:225:  final bool? keepCrossAxisSize;
+- [ ] lib/src/components/navigation/navigation_bar.dart:226:  final bool? keepMainAxisSize;
+- [ ] lib/src/components/navigation/navigation_bar.dart:228:  const NavigationBar({
+- [ ] lib/src/components/navigation/navigation_bar.dart:410:mixin NavigationContainerMixin {
+- [ ] lib/src/components/navigation/navigation_bar.dart:411:  List<Widget> wrapChildren(
+- [ ] lib/src/components/navigation/navigation_bar.dart:972:enum NavigationLabelType { none, selected, all, tooltip, expanded }
+- [ ] lib/src/components/navigation/navigation_bar.dart:974:enum NavigationLabelPosition { start, end, top, bottom }
+- [ ] lib/src/components/navigation/navigation_bar.dart:976:enum NavigationLabelSize { small, large }
+- [ ] lib/src/components/navigation/navigation_bar.dart:978:class NavigationChildControlData {
+- [ ] lib/src/components/navigation/navigation_bar.dart:979:  final int? index;
+- [ ] lib/src/components/navigation/navigation_bar.dart:980:  final int actualIndex;
+- [ ] lib/src/components/navigation/navigation_bar.dart:982:  NavigationChildControlData({this.index, required this.actualIndex});
+- [ ] lib/src/components/navigation/navigation_bar.dart:999:class NavigationControlData {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1014:  Axis get labelDirection {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1000:  final NavigationContainerType containerType;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1001:  final NavigationLabelType parentLabelType;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1002:  final NavigationLabelPosition parentLabelPosition;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1003:  final NavigationLabelSize parentLabelSize;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1004:  final EdgeInsets parentPadding;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1005:  final Axis direction;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1006:  final int? selectedIndex;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1007:  final int childCount;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1008:  final ValueChanged<int> onSelected;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1009:  final bool expanded;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1010:  final double spacing;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1011:  final bool keepCrossAxisSize;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1012:  final bool keepMainAxisSize;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1021:  NavigationControlData({
+- [ ] lib/src/components/navigation/navigation_bar.dart:1077:class NavigationGap extends StatelessWidget implements NavigationBarItem {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1085:  Widget buildBox(BuildContext context) {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1089:  Widget buildSliver(BuildContext context) {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1078:  final double gap;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1080:  const NavigationGap(this.gap, {super.key});
+- [ ] lib/src/components/navigation/navigation_bar.dart:1103:class NavigationDivider extends StatelessWidget implements NavigationBarItem {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1104:  final double? thickness;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1105:  final Color? color;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1107:  const NavigationDivider({super.key, this.thickness, this.color});
+- [ ] lib/src/components/navigation/navigation_bar.dart:1155:class NavigationItem extends AbstractNavigationButton {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1156:  final AbstractButtonStyle? selectedStyle;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1157:  final bool? selected;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1158:  final ValueChanged<bool>? onChanged;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1159:  final int? index;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1160:  const NavigationItem({
+- [ ] lib/src/components/navigation/navigation_bar.dart:1264:class NavigationButton extends AbstractNavigationButton {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1265:  final VoidCallback? onPressed;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1266:  const NavigationButton({
+- [ ] lib/src/components/navigation/navigation_bar.dart:1350:abstract class AbstractNavigationButton extends StatefulWidget
+- [ ] lib/src/components/navigation/navigation_bar.dart:1352:  final Widget child;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1353:  final Widget? label;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1354:  final double? spacing;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1355:  final AbstractButtonStyle? style;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1356:  final AlignmentGeometry? alignment;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1358:  final bool? enabled;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1359:  final NavigationOverflow overflow;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1360:  final AlignmentGeometry? marginAlignment;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1362:  const AbstractNavigationButton({
+- [ ] lib/src/components/navigation/navigation_bar.dart:1521:class NavigationPadding extends StatelessWidget {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1522:  final Widget child;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1524:  const NavigationPadding({super.key, required this.child});
+- [ ] lib/src/components/navigation/navigation_bar.dart:1548:enum NavigationOverflow { clip, marquee, ellipsis, none }
+- [ ] lib/src/components/navigation/navigation_bar.dart:1550:class NavigationLabel extends StatelessWidget implements NavigationBarItem {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1582:  Widget buildChild(BuildContext context, NavigationControlData? data) {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1600:  Widget buildBox(BuildContext context, NavigationControlData? data) {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1613:  Widget buildSliver(BuildContext context, NavigationControlData? data) {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1551:  final Widget child;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1552:  final AlignmentGeometry? alignment;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1553:  final EdgeInsetsGeometry? padding;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1554:  final NavigationOverflow overflow;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1557:  final bool floating;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1558:  final bool pinned;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1560:  const NavigationLabel({
+- [ ] lib/src/components/navigation/navigation_bar.dart:1761:typedef NavigationWidgetBuilder = Widget Function(
+- [ ] lib/src/components/navigation/navigation_bar.dart:1764:class NavigationWidget extends StatelessWidget implements NavigationBarItem {
+- [ ] lib/src/components/navigation/navigation_bar.dart:1765:  final int? index;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1766:  final Widget? child;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1767:  final NavigationWidgetBuilder? builder;
+- [ ] lib/src/components/navigation/navigation_bar.dart:1769:  const NavigationWidget({super.key, this.index, required Widget this.child})
+- [ ] lib/src/components/navigation/navigation_bar.dart:1772:  const NavigationWidget.builder({
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:198:class TabItem extends StatelessWidget with TabChild {
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:199:  final Widget child;
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:201:  const TabItem({
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:216:class KeyedTabItem<T> extends TabItem with KeyedTabChild<T> {
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:217:  KeyedTabItem({
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:229:typedef TabBuilder = Widget Function(
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:231:typedef TabChildBuilder = Widget Function(
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:234:class TabContainer extends StatelessWidget {
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:235:  final int selected;
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:236:  final ValueChanged<int>? onSelect;
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:237:  final List<TabChild> children;
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:238:  final TabBuilder? builder;
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:239:  final TabChildBuilder? childBuilder;
+- [ ] lib/src/components/navigation/tabs/tab_container.dart:241:  const TabContainer({
+- [ ] lib/src/components/navigation/tabs/tab_list.dart:53:  TabListTheme copyWith({
+- [ ] lib/src/components/navigation/tabs/tab_list.dart:46:  const TabListTheme({
+- [ ] lib/src/components/navigation/tabs/tab_pane.dart:55:  TabPaneTheme copyWith({
+- [ ] lib/src/components/navigation/tabs/tab_pane.dart:48:  const TabPaneTheme({
+- [ ] lib/src/components/navigation/tabs/tab_pane.dart:305:class TabPaneState<T> extends State<TabPane<T>> {
+- [ ] lib/src/components/navigation/tabs/tab_pane.dart:307:  static const kTabDrag = #tabDrag;
+- [ ] lib/src/components/overlay/dialog.dart:551:  DialogRoute({
+- [ ] lib/src/components/overlay/drawer.dart:989:Future<void> closeSheet(BuildContext context) {
+- [ ] lib/src/components/overlay/drawer.dart:1200:DrawerOverlayCompleter<T?> openRawDrawer<T>({
+- [ ] lib/src/components/overlay/drawer.dart:1381:Future<void> closeDrawer<T>(BuildContext context, [T? result]) {
+- [ ] lib/src/components/overlay/drawer.dart:84:  DrawerTheme copyWith({
+- [ ] lib/src/components/overlay/drawer.dart:416:class DrawerWrapper extends StatefulWidget {
+- [ ] lib/src/components/overlay/drawer.dart:417:  final OverlayPosition position;
+- [ ] lib/src/components/overlay/drawer.dart:418:  final Widget child;
+- [ ] lib/src/components/overlay/drawer.dart:419:  final bool expands;
+- [ ] lib/src/components/overlay/drawer.dart:420:  final bool draggable;
+- [ ] lib/src/components/overlay/drawer.dart:421:  final Size extraSize;
+- [ ] lib/src/components/overlay/drawer.dart:422:  final Size size;
+- [ ] lib/src/components/overlay/drawer.dart:423:  final bool showDragHandle;
+- [ ] lib/src/components/overlay/drawer.dart:424:  final BorderRadiusGeometry? borderRadius;
+- [ ] lib/src/components/overlay/drawer.dart:425:  final Size? dragHandleSize;
+- [ ] lib/src/components/overlay/drawer.dart:426:  final EdgeInsets padding;
+- [ ] lib/src/components/overlay/drawer.dart:427:  final double? surfaceOpacity;
+- [ ] lib/src/components/overlay/drawer.dart:428:  final double? surfaceBlur;
+- [ ] lib/src/components/overlay/drawer.dart:429:  final Color? barrierColor;
+- [ ] lib/src/components/overlay/drawer.dart:430:  final int stackIndex;
+- [ ] lib/src/components/overlay/drawer.dart:431:  final double? gapBeforeDragger;
+- [ ] lib/src/components/overlay/drawer.dart:432:  final double? gapAfterDragger;
+- [ ] lib/src/components/overlay/drawer.dart:433:  final AnimationController? animationController;
+- [ ] lib/src/components/overlay/drawer.dart:434:  final BoxConstraints? constraints;
+- [ ] lib/src/components/overlay/drawer.dart:435:  final AlignmentGeometry? alignment;
+- [ ] lib/src/components/overlay/drawer.dart:437:  const DrawerWrapper({
+- [ ] lib/src/components/overlay/drawer.dart:994:class SheetWrapper extends DrawerWrapper {
+- [ ] lib/src/components/overlay/drawer.dart:995:  const SheetWrapper({
+- [ ] lib/src/components/overlay/drawer.dart:1133:enum OverlayPosition {
+- [ ] lib/src/components/overlay/drawer.dart:1134:  left,
+- [ ] lib/src/components/overlay/drawer.dart:1135:  right,
+- [ ] lib/src/components/overlay/drawer.dart:1136:  top,
+- [ ] lib/src/components/overlay/drawer.dart:1137:  bottom,
+- [ ] lib/src/components/overlay/drawer.dart:1138:  start,
+- [ ] lib/src/components/overlay/drawer.dart:1139:  end,
+- [ ] lib/src/components/overlay/drawer.dart:1142:const kBackdropScaleDown = 0.95;
+- [ ] lib/src/components/overlay/drawer.dart:1144:class BackdropTransformData {
+- [ ] lib/src/components/overlay/drawer.dart:1145:  final Size sizeDifference;
+- [ ] lib/src/components/overlay/drawer.dart:1147:  BackdropTransformData(this.sizeDifference);
+- [ ] lib/src/components/overlay/drawer.dart:1387:class DrawerLayerData {
+- [ ] lib/src/components/overlay/drawer.dart:1393:  Size? computeSize() {
+- [ ] lib/src/components/overlay/drawer.dart:1388:  final DrawerOverlayState overlay;
+- [ ] lib/src/components/overlay/drawer.dart:1389:  final DrawerLayerData? parent;
+- [ ] lib/src/components/overlay/drawer.dart:1391:  const DrawerLayerData(this.overlay, this.parent);
+- [ ] lib/src/components/overlay/drawer.dart:1411:class DrawerOverlay extends StatefulWidget {
+- [ ] lib/src/components/overlay/drawer.dart:1419:  static DrawerLayerData? maybeFind(BuildContext context, [bool root = false]) {
+- [ ] lib/src/components/overlay/drawer.dart:1429:  static DrawerLayerData? maybeFindMessenger(BuildContext context,
+- [ ] lib/src/components/overlay/drawer.dart:1412:  final Widget child;
+- [ ] lib/src/components/overlay/drawer.dart:1414:  const DrawerOverlay({super.key, required this.child});
+- [ ] lib/src/components/overlay/drawer.dart:1441:class DrawerOverlayState extends State<DrawerOverlay> {
+- [ ] lib/src/components/overlay/drawer.dart:1445:  void addEntry(DrawerOverlayEntry entry) {
+- [ ] lib/src/components/overlay/drawer.dart:1451:  Size computeSize() {
+- [ ] lib/src/components/overlay/drawer.dart:1457:  void removeEntry(DrawerOverlayEntry entry) {
+- [ ] lib/src/components/overlay/drawer.dart:1443:  final GlobalKey backdropKey = GlobalKey();
+- [ ] lib/src/components/overlay/drawer.dart:1516:class DrawerEntryWidget<T> extends StatefulWidget {
+- [ ] lib/src/components/overlay/drawer.dart:1517:  final DrawerBuilder builder;
+- [ ] lib/src/components/overlay/drawer.dart:1518:  final Widget backdrop;
+- [ ] lib/src/components/overlay/drawer.dart:1519:  final BackdropBuilder backdropBuilder;
+- [ ] lib/src/components/overlay/drawer.dart:1520:  final BarrierBuilder barrierBuilder;
+- [ ] lib/src/components/overlay/drawer.dart:1521:  final bool modal;
+- [ ] lib/src/components/overlay/drawer.dart:1522:  final CapturedThemes? themes;
+- [ ] lib/src/components/overlay/drawer.dart:1523:  final CapturedData? data;
+- [ ] lib/src/components/overlay/drawer.dart:1524:  final Completer<T> completer;
+- [ ] lib/src/components/overlay/drawer.dart:1525:  final OverlayPosition position;
+- [ ] lib/src/components/overlay/drawer.dart:1526:  final int stackIndex;
+- [ ] lib/src/components/overlay/drawer.dart:1527:  final int totalStack;
+- [ ] lib/src/components/overlay/drawer.dart:1528:  final bool useSafeArea;
+- [ ] lib/src/components/overlay/drawer.dart:1529:  final AnimationController? animationController;
+- [ ] lib/src/components/overlay/drawer.dart:1530:  final bool autoOpen;
+- [ ] lib/src/components/overlay/drawer.dart:1532:  const DrawerEntryWidget({
+- [ ] lib/src/components/overlay/drawer.dart:1554:class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
+- [ ] lib/src/components/overlay/drawer.dart:1599:  Future<void> close([T? result]) {
+- [ ] lib/src/components/overlay/drawer.dart:1556:  late ValueNotifier<double> additionalOffset = ValueNotifier(0);
+- [ ] lib/src/components/overlay/drawer.dart:1774:typedef BackdropBuilder = Widget Function(BuildContext context, Widget child,
+- [ ] lib/src/components/overlay/drawer.dart:1777:typedef BarrierBuilder = Widget? Function(BuildContext context, Widget child,
+- [ ] lib/src/components/overlay/drawer.dart:1780:class DrawerOverlayEntry<T> {
+- [ ] lib/src/components/overlay/drawer.dart:1781:  final GlobalKey<DrawerEntryWidgetState<T>> key = GlobalKey();
+- [ ] lib/src/components/overlay/drawer.dart:1782:  final BackdropBuilder backdropBuilder;
+- [ ] lib/src/components/overlay/drawer.dart:1783:  final DrawerBuilder builder;
+- [ ] lib/src/components/overlay/drawer.dart:1784:  final bool modal;
+- [ ] lib/src/components/overlay/drawer.dart:1785:  final BarrierBuilder barrierBuilder;
+- [ ] lib/src/components/overlay/drawer.dart:1786:  final CapturedThemes? themes;
+- [ ] lib/src/components/overlay/drawer.dart:1787:  final CapturedData? data;
+- [ ] lib/src/components/overlay/drawer.dart:1788:  final Completer<T> completer;
+- [ ] lib/src/components/overlay/drawer.dart:1789:  final OverlayPosition position;
+- [ ] lib/src/components/overlay/drawer.dart:1790:  final bool barrierDismissible;
+- [ ] lib/src/components/overlay/drawer.dart:1791:  final bool useSafeArea;
+- [ ] lib/src/components/overlay/drawer.dart:1792:  final AnimationController? animationController;
+- [ ] lib/src/components/overlay/drawer.dart:1793:  final bool autoOpen;
+- [ ] lib/src/components/overlay/drawer.dart:1794:  final BoxConstraints? constraints;
+- [ ] lib/src/components/overlay/drawer.dart:1795:  final AlignmentGeometry? alignment;
+- [ ] lib/src/components/overlay/drawer.dart:1797:  DrawerOverlayEntry({
+- [ ] lib/src/components/overlay/drawer.dart:1815:class DrawerOverlayCompleter<T> extends OverlayCompleter<T> {
+- [ ] lib/src/components/overlay/drawer.dart:1828:  AnimationController? get animationController =>
+- [ ] lib/src/components/overlay/drawer.dart:1818:  DrawerOverlayCompleter(this._entry);
+- [ ] lib/src/components/overlay/drawer.dart:1846:class SheetOverlayHandler extends OverlayHandler {
+- [ ] lib/src/components/overlay/drawer.dart:1847:  static bool isSheetOverlay(BuildContext context) {
+- [ ] lib/src/components/overlay/drawer.dart:1851:  final OverlayPosition position;
+- [ ] lib/src/components/overlay/drawer.dart:1852:  final Color? barrierColor;
+- [ ] lib/src/components/overlay/drawer.dart:1854:  const SheetOverlayHandler({
+- [ ] lib/src/components/overlay/hover_card.dart:69:  HoverCardTheme copyWith({
+- [ ] lib/src/components/overlay/overlay.dart:3:Future<void> closeOverlay<T>(BuildContext context, [T? value]) {
+- [ ] lib/src/components/overlay/overlay.dart:9:mixin OverlayHandlerStateMixin<T extends StatefulWidget> on State<T> {
+- [ ] lib/src/components/overlay/overlay.dart:10:  Future<void> close([bool immediate = false]);
+- [ ] lib/src/components/overlay/overlay.dart:11:  void closeLater();
+- [ ] lib/src/components/overlay/overlay.dart:12:  Future<void> closeWithResult<X>([X? value]);
+- [ ] lib/src/components/overlay/overlay.dart:25:abstract class OverlayCompleter<T> {
+- [ ] lib/src/components/overlay/overlay.dart:28:  bool get isCompleted;
+- [ ] lib/src/components/overlay/overlay.dart:29:  bool get isAnimationCompleted;
+- [ ] lib/src/components/overlay/overlay.dart:30:  Future<T?> get future;
+- [ ] lib/src/components/overlay/overlay.dart:31:  Future<void> get animationFuture;
+- [ ] lib/src/components/overlay/overlay.dart:26:  void remove();
+- [ ] lib/src/components/overlay/overlay.dart:27:  void dispose();
+- [ ] lib/src/components/overlay/overlay.dart:34:abstract class OverlayHandler {
+- [ ] lib/src/components/overlay/overlay.dart:39:  OverlayCompleter<T?> show<T>({
+- [ ] lib/src/components/overlay/overlay.dart:35:  static const OverlayHandler popover = PopoverOverlayHandler();
+- [ ] lib/src/components/overlay/overlay.dart:36:  static const OverlayHandler sheet = SheetOverlayHandler();
+- [ ] lib/src/components/overlay/overlay.dart:37:  static const OverlayHandler dialog = DialogOverlayHandler();
+- [ ] lib/src/components/overlay/overlay.dart:38:  const OverlayHandler();
+- [ ] lib/src/components/overlay/overlay.dart:69:class OverlayBarrier {
+- [ ] lib/src/components/overlay/overlay.dart:70:  final EdgeInsetsGeometry padding;
+- [ ] lib/src/components/overlay/overlay.dart:71:  final BorderRadiusGeometry borderRadius;
+- [ ] lib/src/components/overlay/overlay.dart:72:  final Color? barrierColor;
+- [ ] lib/src/components/overlay/overlay.dart:74:  const OverlayBarrier({
+- [ ] lib/src/components/overlay/overlay.dart:81:abstract class OverlayManager implements OverlayHandler {
+- [ ] lib/src/components/overlay/overlay.dart:82:  static OverlayManager of(BuildContext context) {
+- [ ] lib/src/components/overlay/overlay.dart:118:  OverlayCompleter<T?> showTooltip<T>({
+- [ ] lib/src/components/overlay/overlay.dart:147:  OverlayCompleter<T?> showMenu<T>({
+- [ ] lib/src/components/overlay/overlay.dart:177:class OverlayManagerLayer extends StatefulWidget {
+- [ ] lib/src/components/overlay/overlay.dart:178:  final OverlayHandler popoverHandler;
+- [ ] lib/src/components/overlay/overlay.dart:179:  final OverlayHandler tooltipHandler;
+- [ ] lib/src/components/overlay/overlay.dart:180:  final OverlayHandler menuHandler;
+- [ ] lib/src/components/overlay/overlay.dart:181:  final Widget child;
+- [ ] lib/src/components/overlay/overlay.dart:183:  const OverlayManagerLayer({
+- [ ] lib/src/components/overlay/popover.dart:603:Future<void> closePopover<T>(BuildContext context, [T? result]) {
+- [ ] lib/src/components/overlay/popover.dart:650:OverlayCompleter<T?> showPopover<T>({
+- [ ] lib/src/components/overlay/popover.dart:9:class PopoverOverlayHandler extends OverlayHandler {
+- [ ] lib/src/components/overlay/popover.dart:10:  const PopoverOverlayHandler();
+- [ ] lib/src/components/overlay/popover.dart:187:class PopoverOverlayWidget extends StatefulWidget {
+- [ ] lib/src/components/overlay/popover.dart:188:  const PopoverOverlayWidget({
+- [ ] lib/src/components/overlay/popover.dart:218:  final Offset? position;
+- [ ] lib/src/components/overlay/popover.dart:219:  final AlignmentGeometry alignment;
+- [ ] lib/src/components/overlay/popover.dart:220:  final AlignmentGeometry anchorAlignment;
+- [ ] lib/src/components/overlay/popover.dart:221:  final CapturedThemes? themes;
+- [ ] lib/src/components/overlay/popover.dart:222:  final CapturedData? data;
+- [ ] lib/src/components/overlay/popover.dart:223:  final WidgetBuilder builder;
+- [ ] lib/src/components/overlay/popover.dart:224:  final Size? anchorSize;
+- [ ] lib/src/components/overlay/popover.dart:225:  final Animation<double> animation;
+- [ ] lib/src/components/overlay/popover.dart:226:  final PopoverConstraint widthConstraint;
+- [ ] lib/src/components/overlay/popover.dart:227:  final PopoverConstraint heightConstraint;
+- [ ] lib/src/components/overlay/popover.dart:229:  final FutureVoidCallback? onClose;
+- [ ] lib/src/components/overlay/popover.dart:230:  final VoidCallback? onImmediateClose;
+- [ ] lib/src/components/overlay/popover.dart:231:  final VoidCallback? onTapOutside;
+- [ ] lib/src/components/overlay/popover.dart:232:  final Object? regionGroupId;
+- [ ] lib/src/components/overlay/popover.dart:233:  final Offset? offset;
+- [ ] lib/src/components/overlay/popover.dart:234:  final AlignmentGeometry? transitionAlignment;
+- [ ] lib/src/components/overlay/popover.dart:235:  final EdgeInsetsGeometry? margin;
+- [ ] lib/src/components/overlay/popover.dart:236:  final bool follow;
+- [ ] lib/src/components/overlay/popover.dart:237:  final BuildContext anchorContext;
+- [ ] lib/src/components/overlay/popover.dart:238:  final bool consumeOutsideTaps;
+- [ ] lib/src/components/overlay/popover.dart:239:  final ValueChanged<PopoverOverlayWidgetState>? onTickFollow;
+- [ ] lib/src/components/overlay/popover.dart:240:  final bool allowInvertHorizontal;
+- [ ] lib/src/components/overlay/popover.dart:241:  final bool allowInvertVertical;
+- [ ] lib/src/components/overlay/popover.dart:242:  final PopoverFutureVoidCallback<Object?>? onCloseWithResult;
+- [ ] lib/src/components/overlay/popover.dart:243:  final LayerLink? layerLink;
+- [ ] lib/src/components/overlay/popover.dart:249:typedef PopoverFutureVoidCallback<T> = Future<T> Function(T value);
+- [ ] lib/src/components/overlay/popover.dart:251:enum PopoverConstraint {
+- [ ] lib/src/components/overlay/popover.dart:252:  flexible,
+- [ ] lib/src/components/overlay/popover.dart:253:  intrinsic,
+- [ ] lib/src/components/overlay/popover.dart:254:  anchorFixedSize,
+- [ ] lib/src/components/overlay/popover.dart:255:  anchorMinSize,
+- [ ] lib/src/components/overlay/popover.dart:256:  anchorMaxSize,
+- [ ] lib/src/components/overlay/popover.dart:259:class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
+- [ ] lib/src/components/overlay/popover.dart:385:  Size? get anchorSize => _anchorSize;
+- [ ] lib/src/components/overlay/popover.dart:386:  AlignmentGeometry get anchorAlignment => _anchorAlignment;
+- [ ] lib/src/components/overlay/popover.dart:387:  Offset? get position => _position;
+- [ ] lib/src/components/overlay/popover.dart:388:  AlignmentGeometry get alignment => _alignment;
+- [ ] lib/src/components/overlay/popover.dart:389:  PopoverConstraint get widthConstraint => _widthConstraint;
+- [ ] lib/src/components/overlay/popover.dart:390:  PopoverConstraint get heightConstraint => _heightConstraint;
+- [ ] lib/src/components/overlay/popover.dart:391:  Offset? get offset => _offset;
+- [ ] lib/src/components/overlay/popover.dart:392:  EdgeInsetsGeometry? get margin => _margin;
+- [ ] lib/src/components/overlay/popover.dart:393:  bool get follow => _follow;
+- [ ] lib/src/components/overlay/popover.dart:394:  BuildContext get anchorContext => _anchorContext;
+- [ ] lib/src/components/overlay/popover.dart:395:  bool get allowInvertHorizontal => _allowInvertHorizontal;
+- [ ] lib/src/components/overlay/popover.dart:396:  bool get allowInvertVertical => _allowInvertVertical;
+- [ ] lib/src/components/overlay/popover.dart:397:  LayerLink? get layerLink => _layerLink;
+- [ ] lib/src/components/overlay/popover.dart:399:  set layerLink(LayerLink? value) {
+- [ ] lib/src/components/overlay/popover.dart:423:  set position(Offset? value) {
+- [ ] lib/src/components/overlay/popover.dart:607:class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
+- [ ] lib/src/components/overlay/popover.dart:619:  void initialize(OverlayEntry overlayEntry, [OverlayEntry? barrierEntry]) {
+- [ ] lib/src/components/overlay/popover.dart:610:  final Completer<T?> completer = Completer();
+- [ ] lib/src/components/overlay/popover.dart:611:  final Completer<T?> animationCompleter = Completer();
+- [ ] lib/src/components/overlay/popover.dart:870:  bool get hasOpenPopover =>
+- [ ] lib/src/components/overlay/popover.dart:874:  bool get hasMountedPopover =>
+- [ ] lib/src/components/overlay/popover.dart:878:  Iterable<Popover> get openPopovers => List.unmodifiable(_openPopovers);
+- [ ] lib/src/components/overlay/popover.dart:880:  Future<T?> show<T>({
+- [ ] lib/src/components/overlay/popover.dart:949:  void close([bool immediate = false]) {
+- [ ] lib/src/components/overlay/popover.dart:957:  void closeLater() {
+- [ ] lib/src/components/overlay/popover.dart:1025:  void disposePopovers() {
+- [ ] lib/src/components/overlay/popover.dart:1040:class PopoverLayout extends SingleChildRenderObjectWidget {
+- [ ] lib/src/components/overlay/popover.dart:1041:  final Alignment alignment;
+- [ ] lib/src/components/overlay/popover.dart:1042:  final Alignment anchorAlignment;
+- [ ] lib/src/components/overlay/popover.dart:1043:  final Offset? position;
+- [ ] lib/src/components/overlay/popover.dart:1044:  final Size? anchorSize;
+- [ ] lib/src/components/overlay/popover.dart:1045:  final PopoverConstraint widthConstraint;
+- [ ] lib/src/components/overlay/popover.dart:1046:  final PopoverConstraint heightConstraint;
+- [ ] lib/src/components/overlay/popover.dart:1047:  final Offset? offset;
+- [ ] lib/src/components/overlay/popover.dart:1048:  final EdgeInsets margin;
+- [ ] lib/src/components/overlay/popover.dart:1049:  final double scale;
+- [ ] lib/src/components/overlay/popover.dart:1050:  final Alignment scaleAlignment;
+- [ ] lib/src/components/overlay/popover.dart:1051:  final FilterQuality? filterQuality;
+- [ ] lib/src/components/overlay/popover.dart:1052:  final bool allowInvertHorizontal;
+- [ ] lib/src/components/overlay/popover.dart:1053:  final bool allowInvertVertical;
+- [ ] lib/src/components/overlay/popover.dart:1054:  const PopoverLayout({
+- [ ] lib/src/components/overlay/popover.dart:1153:class PopoverLayoutRender extends RenderShiftedBox {
+- [ ] lib/src/components/overlay/popover.dart:1301:  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
+- [ ] lib/src/components/overlay/popover.dart:1171:  PopoverLayoutRender({
+- [ ] lib/src/components/overlay/refresh_trigger.dart:7:typedef RefreshIndicatorBuilder = Widget Function(
+- [ ] lib/src/components/overlay/refresh_trigger.dart:10:typedef FutureVoidCallback = Future<void> Function();
+- [ ] lib/src/components/overlay/refresh_trigger.dart:167:  static Widget defaultIndicatorBuilder(
+- [ ] lib/src/components/overlay/refresh_trigger.dart:172:  final double? minExtent;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:173:  final double? maxExtent;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:174:  final FutureVoidCallback? onRefresh;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:175:  final Widget child;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:176:  final Axis direction;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:177:  final bool reverse;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:178:  final RefreshIndicatorBuilder? indicatorBuilder;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:179:  final Curve? curve;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:180:  final Duration? completeDuration;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:230:class DefaultRefreshIndicator extends StatefulWidget {
+- [ ] lib/src/components/overlay/refresh_trigger.dart:231:  final RefreshTriggerStage stage;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:233:  const DefaultRefreshIndicator({super.key, required this.stage});
+- [ ] lib/src/components/overlay/refresh_trigger.dart:371:class RefreshTriggerState extends State<RefreshTrigger>
+- [ ] lib/src/components/overlay/refresh_trigger.dart:546:  Future<void> refresh([FutureVoidCallback? refreshCallback]) async {
+- [ ] lib/src/components/overlay/refresh_trigger.dart:645:enum TriggerStage {
+- [ ] lib/src/components/overlay/refresh_trigger.dart:646:  idle,
+- [ ] lib/src/components/overlay/refresh_trigger.dart:647:  pulling,
+- [ ] lib/src/components/overlay/refresh_trigger.dart:648:  refreshing,
+- [ ] lib/src/components/overlay/refresh_trigger.dart:649:  completed,
+- [ ] lib/src/components/overlay/refresh_trigger.dart:652:class RefreshTriggerStage {
+- [ ] lib/src/components/overlay/refresh_trigger.dart:661:  double get extentValue => extent.value;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:653:  final TriggerStage stage;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:654:  final Animation<double> extent;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:655:  final Axis direction;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:656:  final bool reverse;
+- [ ] lib/src/components/overlay/refresh_trigger.dart:658:  const RefreshTriggerStage(
+- [ ] lib/src/components/overlay/refresh_trigger.dart:664:class RefreshTriggerPhysics extends ScrollPhysics {}
+- [ ] lib/src/components/overlay/swiper.dart:96:  SwiperTheme copyWith({
+- [ ] lib/src/components/overlay/swiper.dart:202:  const SwiperHandler();
+- [ ] lib/src/components/overlay/swiper.dart:245:  const DrawerSwiperHandler();
+- [ ] lib/src/components/overlay/swiper.dart:301:  const SheetSwiperHandler();
+- [ ] lib/src/components/overlay/toast.dart:207:typedef ToastBuilder = Widget Function(
+- [ ] lib/src/components/overlay/toast.dart:822:class ToastEntry {
+- [ ] lib/src/components/overlay/toast.dart:823:  final ToastBuilder builder;
+- [ ] lib/src/components/overlay/toast.dart:824:  final ToastLocation location;
+- [ ] lib/src/components/overlay/toast.dart:825:  final bool dismissible;
+- [ ] lib/src/components/overlay/toast.dart:826:  final Curve curve;
+- [ ] lib/src/components/overlay/toast.dart:827:  final Duration duration;
+- [ ] lib/src/components/overlay/toast.dart:828:  final CapturedThemes? themes;
+- [ ] lib/src/components/overlay/toast.dart:829:  final CapturedData? data;
+- [ ] lib/src/components/overlay/toast.dart:830:  final VoidCallback? onClosed;
+- [ ] lib/src/components/overlay/toast.dart:831:  final Duration? showDuration;
+- [ ] lib/src/components/overlay/toast.dart:833:  ToastEntry({
+- [ ] lib/src/components/overlay/toast.dart:846:class ToastEntryLayout extends StatefulWidget {
+- [ ] lib/src/components/overlay/toast.dart:847:  final ToastEntry entry;
+- [ ] lib/src/components/overlay/toast.dart:848:  final bool expanded;
+- [ ] lib/src/components/overlay/toast.dart:849:  final bool visible;
+- [ ] lib/src/components/overlay/toast.dart:850:  final bool dismissible;
+- [ ] lib/src/components/overlay/toast.dart:851:  final AlignmentGeometry previousAlignment;
+- [ ] lib/src/components/overlay/toast.dart:852:  final Curve curve;
+- [ ] lib/src/components/overlay/toast.dart:853:  final Duration duration;
+- [ ] lib/src/components/overlay/toast.dart:854:  final CapturedThemes? themes;
+- [ ] lib/src/components/overlay/toast.dart:855:  final CapturedData? data;
+- [ ] lib/src/components/overlay/toast.dart:856:  final ValueListenable<bool> closing;
+- [ ] lib/src/components/overlay/toast.dart:857:  final VoidCallback onClosed;
+- [ ] lib/src/components/overlay/toast.dart:858:  final Offset collapsedOffset;
+- [ ] lib/src/components/overlay/toast.dart:859:  final double collapsedScale;
+- [ ] lib/src/components/overlay/toast.dart:860:  final Curve expandingCurve;
+- [ ] lib/src/components/overlay/toast.dart:861:  final Duration expandingDuration;
+- [ ] lib/src/components/overlay/toast.dart:862:  final double collapsedOpacity;
+- [ ] lib/src/components/overlay/toast.dart:863:  final double entryOpacity;
+- [ ] lib/src/components/overlay/toast.dart:864:  final Widget child;
+- [ ] lib/src/components/overlay/toast.dart:865:  final Offset entryOffset;
+- [ ] lib/src/components/overlay/toast.dart:866:  final AlignmentGeometry entryAlignment;
+- [ ] lib/src/components/overlay/toast.dart:867:  final double spacing;
+- [ ] lib/src/components/overlay/toast.dart:868:  final int index;
+- [ ] lib/src/components/overlay/toast.dart:869:  final int actualIndex;
+- [ ] lib/src/components/overlay/toast.dart:870:  final VoidCallback? onClosing;
+- [ ] lib/src/components/overlay/toast.dart:872:  const ToastEntryLayout({
+- [ ] lib/src/components/overlay/tooltip.dart:71:class TooltipContainer extends StatelessWidget {
+- [ ] lib/src/components/overlay/tooltip.dart:89:  Widget call(BuildContext context) {
+- [ ] lib/src/components/overlay/tooltip.dart:72:  final Widget child;
+- [ ] lib/src/components/overlay/tooltip.dart:73:  final double? surfaceOpacity;
+- [ ] lib/src/components/overlay/tooltip.dart:74:  final double? surfaceBlur;
+- [ ] lib/src/components/overlay/tooltip.dart:75:  final EdgeInsetsGeometry? padding;
+- [ ] lib/src/components/overlay/tooltip.dart:76:  final Color? backgroundColor;
+- [ ] lib/src/components/overlay/tooltip.dart:77:  final BorderRadiusGeometry? borderRadius;
+- [ ] lib/src/components/overlay/tooltip.dart:79:  const TooltipContainer({
+- [ ] lib/src/components/overlay/tooltip.dart:184:  final Widget child;
+- [ ] lib/src/components/overlay/tooltip.dart:185:  final WidgetBuilder tooltip;
+- [ ] lib/src/components/overlay/tooltip.dart:186:  final AlignmentGeometry alignment;
+- [ ] lib/src/components/overlay/tooltip.dart:187:  final AlignmentGeometry anchorAlignment;
+- [ ] lib/src/components/overlay/tooltip.dart:188:  final Duration waitDuration;
+- [ ] lib/src/components/overlay/tooltip.dart:189:  final Duration showDuration;
+- [ ] lib/src/components/overlay/tooltip.dart:190:  final Duration minDuration;
+- [ ] lib/src/components/overlay/tooltip.dart:192:  const Tooltip({
+- [ ] lib/src/components/overlay/tooltip.dart:241:class InstantTooltip extends StatefulWidget {
+- [ ] lib/src/components/overlay/tooltip.dart:242:  final Widget child;
+- [ ] lib/src/components/overlay/tooltip.dart:243:  final HitTestBehavior behavior;
+- [ ] lib/src/components/overlay/tooltip.dart:244:  final WidgetBuilder tooltipBuilder;
+- [ ] lib/src/components/overlay/tooltip.dart:245:  final AlignmentGeometry tooltipAlignment;
+- [ ] lib/src/components/overlay/tooltip.dart:246:  final AlignmentGeometry? tooltipAnchorAlignment;
+- [ ] lib/src/components/overlay/tooltip.dart:248:  const InstantTooltip({
+- [ ] lib/src/components/overlay/tooltip.dart:301:class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
+- [ ] lib/src/components/overlay/tooltip.dart:302:  final OverlayManager overlayManager;
+- [ ] lib/src/components/overlay/tooltip.dart:304:  const OverlayManagerAsTooltipOverlayHandler({
+- [ ] lib/src/components/overlay/tooltip.dart:367:class FixedTooltipOverlayHandler extends OverlayHandler {
+- [ ] lib/src/components/overlay/tooltip.dart:368:  const FixedTooltipOverlayHandler();
+- [ ] lib/src/components/text/selectable.dart:374:  final Color? cursorColor;
+- [ ] lib/src/components/text/selectable.dart:375:  final ui.BoxHeightStyle selectionHeightStyle;
+- [ ] lib/src/components/text/selectable.dart:376:  final ui.BoxWidthStyle selectionWidthStyle;
+- [ ] lib/src/components/text/text.dart:631:Widget getBullet(BuildContext context, int depth, double size) {
+- [ ] lib/src/components/text/text.dart:5:abstract class TextModifier extends Widget {
+- [ ] lib/src/components/text/text.dart:8:  Widget call({
+- [ ] lib/src/components/text/text.dart:6:  const TextModifier({super.key});
+- [ ] lib/src/components/text/text.dart:37:extension TextExtension on Widget {
+- [ ] lib/src/components/text/text.dart:38:  TextModifier get sans => WrappedText(
+- [ ] lib/src/components/text/text.dart:43:  TextModifier get mono => WrappedText(
+- [ ] lib/src/components/text/text.dart:48:  TextModifier get xSmall => WrappedText(
+- [ ] lib/src/components/text/text.dart:53:  TextModifier get small => WrappedText(
+- [ ] lib/src/components/text/text.dart:58:  TextModifier get base => WrappedText(
+- [ ] lib/src/components/text/text.dart:63:  TextModifier get large => WrappedText(
+- [ ] lib/src/components/text/text.dart:68:  TextModifier get xLarge => WrappedText(
+- [ ] lib/src/components/text/text.dart:73:  TextModifier get x2Large => WrappedText(
+- [ ] lib/src/components/text/text.dart:78:  TextModifier get x3Large => WrappedText(
+- [ ] lib/src/components/text/text.dart:83:  TextModifier get x4Large => WrappedText(
+- [ ] lib/src/components/text/text.dart:88:  TextModifier get x5Large => WrappedText(
+- [ ] lib/src/components/text/text.dart:93:  TextModifier get x6Large => WrappedText(
+- [ ] lib/src/components/text/text.dart:98:  TextModifier get x7Large => WrappedText(
+- [ ] lib/src/components/text/text.dart:103:  TextModifier get x8Large => WrappedText(
+- [ ] lib/src/components/text/text.dart:108:  TextModifier get x9Large => WrappedText(
+- [ ] lib/src/components/text/text.dart:113:  TextModifier get thin => WrappedText(
+- [ ] lib/src/components/text/text.dart:118:  TextModifier get extraLight => WrappedText(
+- [ ] lib/src/components/text/text.dart:123:  TextModifier get light => WrappedText(
+- [ ] lib/src/components/text/text.dart:128:  TextModifier get normal => WrappedText(
+- [ ] lib/src/components/text/text.dart:133:  TextModifier get medium => WrappedText(
+- [ ] lib/src/components/text/text.dart:138:  TextModifier get semiBold => WrappedText(
+- [ ] lib/src/components/text/text.dart:143:  TextModifier get bold => WrappedText(
+- [ ] lib/src/components/text/text.dart:148:  TextModifier get extraBold => WrappedText(
+- [ ] lib/src/components/text/text.dart:153:  TextModifier get black => WrappedText(
+- [ ] lib/src/components/text/text.dart:158:  TextModifier get italic => WrappedText(
+- [ ] lib/src/components/text/text.dart:163:  TextModifier get underline => WrappedText(
+- [ ] lib/src/components/text/text.dart:170:  TextModifier get muted => WrappedText(
+- [ ] lib/src/components/text/text.dart:177:  TextModifier get primaryForeground => WrappedText(
+- [ ] lib/src/components/text/text.dart:184:  TextModifier get secondaryForeground => WrappedText(
+- [ ] lib/src/components/text/text.dart:191:  TextModifier get h1 => WrappedText(
+- [ ] lib/src/components/text/text.dart:196:  TextModifier get h2 => WrappedText(
+- [ ] lib/src/components/text/text.dart:214:  TextModifier get h3 => WrappedText(
+- [ ] lib/src/components/text/text.dart:219:  TextModifier get h4 => WrappedText(
+- [ ] lib/src/components/text/text.dart:224:  TextModifier get p => WrappedText(
+- [ ] lib/src/components/text/text.dart:235:  TextModifier get firstP => WrappedText(
+- [ ] lib/src/components/text/text.dart:240:  TextModifier get blockQuote => WrappedText(
+- [ ] lib/src/components/text/text.dart:257:  TextModifier get li => WrappedText(
+- [ ] lib/src/components/text/text.dart:283:  TextModifier get inlineCode => WrappedText(
+- [ ] lib/src/components/text/text.dart:305:  TextModifier get lead => WrappedText(
+- [ ] lib/src/components/text/text.dart:310:  TextModifier get textLarge => WrappedText(
+- [ ] lib/src/components/text/text.dart:315:  TextModifier get textSmall => WrappedText(
+- [ ] lib/src/components/text/text.dart:320:  TextModifier get textMuted => WrappedText(
+- [ ] lib/src/components/text/text.dart:325:  TextModifier get singleLine => WrappedText(
+- [ ] lib/src/components/text/text.dart:331:  TextModifier get ellipsis => WrappedText(
+- [ ] lib/src/components/text/text.dart:336:  TextModifier get textCenter => WrappedText(
+- [ ] lib/src/components/text/text.dart:341:  TextModifier get textRight => WrappedText(
+- [ ] lib/src/components/text/text.dart:346:  TextModifier get textLeft => WrappedText(
+- [ ] lib/src/components/text/text.dart:351:  TextModifier get textJustify => WrappedText(
+- [ ] lib/src/components/text/text.dart:356:  TextModifier get textStart => WrappedText(
+- [ ] lib/src/components/text/text.dart:361:  TextModifier get textEnd => WrappedText(
+- [ ] lib/src/components/text/text.dart:366:  TextModifier get modify => WrappedText(
+- [ ] lib/src/components/text/text.dart:373:  TextModifier get foreground => WrappedText(
+- [ ] lib/src/components/text/text.dart:380:  Widget then(InlineSpan span) {
+- [ ] lib/src/components/text/text.dart:424:  Widget thenText(String text) {
+- [ ] lib/src/components/text/text.dart:428:  Widget thenInlineCode(String text) {
+- [ ] lib/src/components/text/text.dart:437:  Widget thenButton({
+- [ ] lib/src/components/text/text.dart:671:class UnorderedListData {
+- [ ] lib/src/components/text/text.dart:672:  final int depth;
+- [ ] lib/src/components/text/text.dart:674:  const UnorderedListData({this.depth = 0});
+- [ ] lib/src/components/text/text.dart:677:typedef WrappedTextDataBuilder<T> = T Function(
+- [ ] lib/src/components/text/text.dart:679:typedef WidgetTextWrapper = Widget Function(BuildContext context, Widget child);
+- [ ] lib/src/components/text/text.dart:681:class WrappedText extends StatelessWidget implements TextModifier {
+- [ ] lib/src/components/text/text.dart:776:  WrappedText copyWith({
+- [ ] lib/src/components/text/text.dart:799:  WrappedText copyWithStyle(WrappedTextDataBuilder<TextStyle> style) {
+- [ ] lib/src/components/text/text.dart:682:  final Widget child;
+- [ ] lib/src/components/text/text.dart:683:  final WrappedTextDataBuilder<TextStyle?>? style;
+- [ ] lib/src/components/text/text.dart:684:  final WrappedTextDataBuilder<TextAlign?>? textAlign;
+- [ ] lib/src/components/text/text.dart:685:  final WrappedTextDataBuilder<bool?>? softWrap;
+- [ ] lib/src/components/text/text.dart:686:  final WrappedTextDataBuilder<TextOverflow?>? overflow;
+- [ ] lib/src/components/text/text.dart:687:  final WrappedTextDataBuilder<int?>? maxLines;
+- [ ] lib/src/components/text/text.dart:688:  final WrappedTextDataBuilder<TextWidthBasis?>? textWidthBasis;
+- [ ] lib/src/components/text/text.dart:689:  final WidgetTextWrapper? wrapper;
+- [ ] lib/src/components/text/text.dart:691:  const WrappedText({
