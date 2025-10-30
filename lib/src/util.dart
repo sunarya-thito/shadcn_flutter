@@ -5,8 +5,10 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// A function that tests a value of type [T] and returns a boolean.
 typedef Predicate<T> = bool Function(T value);
+
 /// A function that takes a value of type [T] and returns a value of type [T].
 typedef UnaryOperator<T> = T Function(T value);
+
 /// A function that takes two values of type [T] and returns a value of type [T].
 typedef BinaryOperator<T> = T Function(T a, T b);
 
@@ -15,6 +17,7 @@ const kDefaultDuration = Duration(milliseconds: 150);
 
 /// A callback that receives a [BuildContext].
 typedef ContextedCallback = void Function(BuildContext context);
+
 /// A callback that receives a [BuildContext] and a value of type [T].
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 
@@ -1181,29 +1184,6 @@ class SeparatedFlex extends StatefulWidget {
   /// Creates a [SeparatedFlex].
   ///
   /// All flex-related parameters match [Flex] widget parameters.
-  const SeparatedFlex({
-    super.key,
-    required this.mainAxisAlignment,
-    required this.mainAxisSize,
-    required this.crossAxisAlignment,
-    this.textDirection,
-    required this.verticalDirection,
-    this.textBaseline,
-    required this.children,
-    required this.separator,
-    required this.direction,
-    this.clipBehavior = Clip.none,
-  });
-  final MainAxisSize mainAxisSize;
-  final CrossAxisAlignment crossAxisAlignment;
-  final TextDirection? textDirection;
-  final VerticalDirection verticalDirection;
-  final TextBaseline? textBaseline;
-  final List<Widget> children;
-  final Axis direction;
-  final Widget separator;
-  final Clip clipBehavior;
-
   const SeparatedFlex({
     super.key,
     required this.mainAxisAlignment,
