@@ -22,8 +22,15 @@ void _assertNotThemeModeSystem(ThemeMode mode, String label) {
     throw FlutterError.fromParts(diagnosticList);
   }
 }
+
+/// A collection of predefined color schemes for shadcn_flutter.
+///
+/// Provides light and dark variants of different color schemes including
+/// blue, gray, green, neutral, orange, red, rose, slate, stone, violet,
+/// yellow, and zinc.
 class ColorSchemes {
   ColorSchemes._();
+	/// Light blue color scheme.
 	static const ColorScheme lightBlue = 
 		ColorScheme(
 			brightness: Brightness.light,
@@ -60,6 +67,7 @@ class ColorSchemes {
 			sidebarRing: Color(0xFF2B7FFF),
 		);
 
+	/// Dark blue color scheme.
 	static const ColorScheme darkBlue = 
 		ColorScheme(
 			brightness: Brightness.dark,
@@ -96,6 +104,10 @@ class ColorSchemes {
 			sidebarRing: Color(0xFF1447E6),
 		);
 
+	/// Returns blue color scheme for the given [mode].
+	///
+	/// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+	/// [ThemeMode.system] is not supported.
 	static ColorScheme blue(ThemeMode mode) {
 		assert(() {
 			_assertNotThemeModeSystem(mode, 'Blue');
@@ -104,6 +116,7 @@ class ColorSchemes {
 		return mode == ThemeMode.light ? lightBlue : darkBlue;
 	}
 
+	/// Light defaultcolor color scheme.
 	static const ColorScheme lightDefaultColor = 
 		ColorScheme(
 			brightness: Brightness.light,
@@ -140,6 +153,7 @@ class ColorSchemes {
 			sidebarRing: Color(0xFFA1A1A1),
 		);
 
+	/// Dark defaultcolor color scheme.
 	static const ColorScheme darkDefaultColor = 
 		ColorScheme(
 			brightness: Brightness.dark,
@@ -176,6 +190,10 @@ class ColorSchemes {
 			sidebarRing: Color(0xFF737373),
 		);
 
+	/// Returns defaultcolor color scheme for the given [mode].
+	///
+	/// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+	/// [ThemeMode.system] is not supported.
 	static ColorScheme defaultcolor(ThemeMode mode) {
 		assert(() {
 			_assertNotThemeModeSystem(mode, 'DefaultColor');
@@ -184,6 +202,7 @@ class ColorSchemes {
 		return mode == ThemeMode.light ? lightDefaultColor : darkDefaultColor;
 	}
 
+	/// Light green color scheme.
 	static const ColorScheme lightGreen = 
 		ColorScheme(
 			brightness: Brightness.light,
@@ -220,6 +239,7 @@ class ColorSchemes {
 			sidebarRing: Color(0xFF00C950),
 		);
 
+	/// Dark green color scheme.
 	static const ColorScheme darkGreen = 
 		ColorScheme(
 			brightness: Brightness.dark,
@@ -256,6 +276,10 @@ class ColorSchemes {
 			sidebarRing: Color(0xFF008236),
 		);
 
+	/// Returns green color scheme for the given [mode].
+	///
+	/// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+	/// [ThemeMode.system] is not supported.
 	static ColorScheme green(ThemeMode mode) {
 		assert(() {
 			_assertNotThemeModeSystem(mode, 'Green');
@@ -264,6 +288,7 @@ class ColorSchemes {
 		return mode == ThemeMode.light ? lightGreen : darkGreen;
 	}
 
+	/// Light orange color scheme.
 	static const ColorScheme lightOrange = 
 		ColorScheme(
 			brightness: Brightness.light,
@@ -300,6 +325,7 @@ class ColorSchemes {
 			sidebarRing: Color(0xFFFF6900),
 		);
 
+	/// Dark orange color scheme.
 	static const ColorScheme darkOrange = 
 		ColorScheme(
 			brightness: Brightness.dark,
@@ -336,6 +362,10 @@ class ColorSchemes {
 			sidebarRing: Color(0xFFF54900),
 		);
 
+	/// Returns orange color scheme for the given [mode].
+	///
+	/// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+	/// [ThemeMode.system] is not supported.
 	static ColorScheme orange(ThemeMode mode) {
 		assert(() {
 			_assertNotThemeModeSystem(mode, 'Orange');
@@ -344,6 +374,7 @@ class ColorSchemes {
 		return mode == ThemeMode.light ? lightOrange : darkOrange;
 	}
 
+	/// Light red color scheme.
 	static const ColorScheme lightRed = 
 		ColorScheme(
 			brightness: Brightness.light,
@@ -380,6 +411,7 @@ class ColorSchemes {
 			sidebarRing: Color(0xFFFB2C36),
 		);
 
+	/// Dark red color scheme.
 	static const ColorScheme darkRed = 
 		ColorScheme(
 			brightness: Brightness.dark,
@@ -416,6 +448,10 @@ class ColorSchemes {
 			sidebarRing: Color(0xFFFB2C36),
 		);
 
+	/// Returns red color scheme for the given [mode].
+	///
+	/// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+	/// [ThemeMode.system] is not supported.
 	static ColorScheme red(ThemeMode mode) {
 		assert(() {
 			_assertNotThemeModeSystem(mode, 'Red');
@@ -424,6 +460,7 @@ class ColorSchemes {
 		return mode == ThemeMode.light ? lightRed : darkRed;
 	}
 
+	/// Light rose color scheme.
 	static const ColorScheme lightRose = 
 		ColorScheme(
 			brightness: Brightness.light,
@@ -460,6 +497,7 @@ class ColorSchemes {
 			sidebarRing: Color(0xFFFF2056),
 		);
 
+	/// Dark rose color scheme.
 	static const ColorScheme darkRose = 
 		ColorScheme(
 			brightness: Brightness.dark,
@@ -496,6 +534,10 @@ class ColorSchemes {
 			sidebarRing: Color(0xFFFF2056),
 		);
 
+	/// Returns rose color scheme for the given [mode].
+	///
+	/// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+	/// [ThemeMode.system] is not supported.
 	static ColorScheme rose(ThemeMode mode) {
 		assert(() {
 			_assertNotThemeModeSystem(mode, 'Rose');
@@ -504,6 +546,7 @@ class ColorSchemes {
 		return mode == ThemeMode.light ? lightRose : darkRose;
 	}
 
+	/// Light violet color scheme.
 	static const ColorScheme lightViolet = 
 		ColorScheme(
 			brightness: Brightness.light,
@@ -540,6 +583,7 @@ class ColorSchemes {
 			sidebarRing: Color(0xFF8E51FF),
 		);
 
+	/// Dark violet color scheme.
 	static const ColorScheme darkViolet = 
 		ColorScheme(
 			brightness: Brightness.dark,
@@ -576,6 +620,10 @@ class ColorSchemes {
 			sidebarRing: Color(0xFF7F22FE),
 		);
 
+	/// Returns violet color scheme for the given [mode].
+	///
+	/// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+	/// [ThemeMode.system] is not supported.
 	static ColorScheme violet(ThemeMode mode) {
 		assert(() {
 			_assertNotThemeModeSystem(mode, 'Violet');
@@ -584,6 +632,7 @@ class ColorSchemes {
 		return mode == ThemeMode.light ? lightViolet : darkViolet;
 	}
 
+	/// Light yellow color scheme.
 	static const ColorScheme lightYellow = 
 		ColorScheme(
 			brightness: Brightness.light,
@@ -620,6 +669,7 @@ class ColorSchemes {
 			sidebarRing: Color(0xFFF0B100),
 		);
 
+	/// Dark yellow color scheme.
 	static const ColorScheme darkYellow = 
 		ColorScheme(
 			brightness: Brightness.dark,
@@ -656,6 +706,10 @@ class ColorSchemes {
 			sidebarRing: Color(0xFFA65F00),
 		);
 
+	/// Returns yellow color scheme for the given [mode].
+	///
+	/// The [mode] must be either [ThemeMode.light] or [ThemeMode.dark].
+	/// [ThemeMode.system] is not supported.
 	static ColorScheme yellow(ThemeMode mode) {
 		assert(() {
 			_assertNotThemeModeSystem(mode, 'Yellow');

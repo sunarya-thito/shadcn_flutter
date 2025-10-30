@@ -3,20 +3,29 @@ import 'dart:math';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// A function that tests a value of type [T] and returns a boolean.
 typedef Predicate<T> = bool Function(T value);
+/// A function that takes a value of type [T] and returns a value of type [T].
 typedef UnaryOperator<T> = T Function(T value);
+/// A function that takes two values of type [T] and returns a value of type [T].
 typedef BinaryOperator<T> = T Function(T a, T b);
 
 const kDefaultDuration = Duration(milliseconds: 150);
 
+/// A callback that receives a [BuildContext].
 typedef ContextedCallback = void Function(BuildContext context);
+/// A callback that receives a [BuildContext] and a value of type [T].
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
 
+/// A function that scores how well a value matches a search query.
+///
+/// Returns a score where higher values indicate better matches.
 typedef SearchPredicate<T> = double Function(T value, String query);
 
 double degToRad(double deg) => deg * (pi / 180);
 double radToDeg(double rad) => rad * (180 / pi);
 
+/// The direction for sorting.
 enum SortDirection {
   none,
   ascending,
@@ -26,6 +35,7 @@ enum SortDirection {
 typedef OnContextInvokeCallback<T extends Intent> = Object? Function(T intent,
     [BuildContext? context]);
 
+/// A context action that executes a callback.
 class CallbackContextAction<T extends Intent> extends ContextAction<T> {
   final OnContextInvokeCallback onInvoke;
 
@@ -37,6 +47,7 @@ class CallbackContextAction<T extends Intent> extends ContextAction<T> {
   }
 }
 
+/// A utility for safely interpolating between values of type [T].
 class SafeLerp<T> {
   final T? Function(T? a, T? b, double t) nullableLerp;
 
@@ -244,6 +255,7 @@ bool isMobile(TargetPlatform platform) {
   }
 }
 
+/// A widget that captures its render object for later use.
 class CapturedWrapper extends StatefulWidget {
   final CapturedThemes? themes;
   final CapturedData? data;
@@ -292,6 +304,7 @@ double wrapDouble(double value, double min, double max) {
   return (value - min) % range + min;
 }
 
+/// A widget that detects changes in the widget tree.
 class WidgetTreeChangeDetector extends StatefulWidget {
   final Widget child;
   final void Function() onWidgetTreeChange;
@@ -662,6 +675,7 @@ extension RowExtension on Row {
   }
 }
 
+/// A flex widget that adds separators between children.
 class SeparatedFlex extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
   final MainAxisSize mainAxisSize;
@@ -762,6 +776,7 @@ extension IntExtension on int {
   int max(int other) => this > other ? this : other;
 }
 
+/// A tween for animating between two [IconThemeData] values.
 class IconThemeDataTween extends Tween<IconThemeData> {
   IconThemeDataTween({super.begin, super.end});
 
@@ -858,6 +873,7 @@ extension HSVColorExtension on HSVColor {
   }
 }
 
+/// Represents a time of day with hour and minute.
 class TimeOfDay {
   final int hour;
   final int minute;
@@ -1020,6 +1036,7 @@ mixin CachedValue {
   bool shouldRebuild(covariant CachedValue oldValue);
 }
 
+/// A widget that caches a computed value.
 class CachedValueWidget<T> extends StatefulWidget {
   final T value;
   final Widget Function(BuildContext context, T value) builder;
@@ -1061,6 +1078,7 @@ class _CachedValueWidgetState<T> extends State<CachedValueWidget<T>> {
 
 typedef Convert<F, T> = T Function(F value);
 
+/// A bidirectional converter between types [A] and [B].
 class BiDirectionalConvert<A, B> {
   final Convert<A, B> aToB;
   final Convert<B, A> bToA;
@@ -1088,6 +1106,7 @@ class BiDirectionalConvert<A, B> {
   int get hashCode => Object.hash(aToB, bToA);
 }
 
+/// A controller that converts between types [F] and [T].
 class ConvertedController<F, T> extends ChangeNotifier
     implements ComponentController<T> {
   final ValueNotifier<F> _other;
@@ -1166,6 +1185,7 @@ extension TextEditingValueExtension on TextEditingValue {
 typedef OnContextedCallback<T extends Intent> = Object? Function(T intent,
     [BuildContext? context]);
 
+/// A context action that executes a callback with context.
 class ContextCallbackAction<T extends Intent> extends ContextAction<T> {
   final OnContextedCallback<T> onInvoke;
 

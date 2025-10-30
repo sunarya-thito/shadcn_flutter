@@ -24,16 +24,38 @@
 //   // print('Total: ${items.fold(0.0, (prev, item) => prev + item.newValue)}');
 // }
 
+/// Represents a resizable item in a resizable layout.
+///
+/// Each item has a current size, minimum/maximum constraints, and can be
+/// collapsed to a smaller size. Items can be marked as non-resizable.
 class ResizableItem {
   double _value;
+  
+  /// Minimum size this item can be resized to.
   final double min;
+  
+  /// Maximum size this item can be resized to.
   final double max;
+  
+  /// Whether this item is currently in collapsed state.
   final bool collapsed;
+  
+  /// Size of the item when collapsed. If null, collapsed size is 0.
   final double? collapsedSize;
+  
+  /// Whether this item can be resized.
   final bool resizable;
   double? _newValue;
   bool? _newCollapsed;
 
+  /// Creates a resizable item with the given constraints.
+  ///
+  /// [value] is the initial size of the item.
+  /// [min] is the minimum size (defaults to 0).
+  /// [max] is the maximum size (defaults to infinity).
+  /// [collapsed] indicates if the item starts collapsed.
+  /// [collapsedSize] is the size when collapsed (defaults to 0 if null).
+  /// [resizable] indicates if the item can be resized (defaults to true).
   ResizableItem({
     required double value,
     this.min = 0,
@@ -43,12 +65,15 @@ class ResizableItem {
     this.resizable = true,
   }) : _value = value;
 
+  /// Whether this item is collapsed after resizing operations.
   bool get newCollapsed => _newCollapsed ?? collapsed;
 
+  /// The size of this item after resizing operations.
   double get newValue {
     return _newValue ?? _value;
   }
 
+  /// The current size of this item before any resize operations.
   double get value {
     return _value;
   }
@@ -66,10 +91,31 @@ class _BorrowInfo {
   _BorrowInfo(this.givenSize, this.from);
 }
 
+/// Manages the resizing of multiple [ResizableItem]s in a layout.
+///
+/// This class handles complex resize operations including:
+/// - Dragging dividers between items
+/// - Expanding and collapsing items
+/// - Borrowing and redistributing space between items
+/// - Respecting min/max constraints
 class Resizer {
+  /// The list of resizable items being managed.
   final List<ResizableItem> items;
+  
+  /// Ratio threshold for collapsing an item (0.0 to 1.0).
+  /// When an item gets smaller than `min + (collapsedSize - min) * collapseRatio`,
+  /// it will collapse.
   final double collapseRatio;
+  
+  /// Ratio threshold for expanding a collapsed item (0.0 to 1.0).
+  /// When dragging past `(min - collapsedSize) * expandRatio`,
+  /// a collapsed item will expand.
   final double expandRatio;
+  
+  /// Creates a resizer for the given [items].
+  ///
+  /// [collapseRatio] controls when items collapse (defaults to 0.5).
+  /// [expandRatio] controls when collapsed items expand (defaults to 0.5).
   Resizer(
     this.items, {
     this.collapseRatio = 0.5, // half of min size
@@ -180,6 +226,11 @@ class Resizer {
     return _BorrowInfo(delta, index);
   }
 
+  /// Attempts to expand an item at [index] by [delta] in the given [direction].
+  ///
+  /// [direction] can be -1 (borrow from left), 0 (borrow from both sides),
+  /// or 1 (borrow from right).
+  /// Returns true if the expansion was successful.
   bool attemptExpand(int index, int direction, double delta) {
     final item = items[index];
     double currentSize = item.newValue; // check
@@ -241,6 +292,11 @@ class Resizer {
     return false;
   }
 
+  /// Attempts to collapse an item at [index] in the given [direction].
+  ///
+  /// [direction] can be -1 (give space to left), 0 (give to both sides),
+  /// or 1 (give space to right).
+  /// Returns true if the collapse was successful.
   bool attemptCollapse(int index, int direction) {
     if (index == 0) {
       direction = 1;
@@ -289,6 +345,11 @@ class Resizer {
     return false;
   }
 
+  /// Attempts to expand a collapsed item at [index] in the given [direction].
+  ///
+  /// [direction] can be -1 (borrow from left), 0 (borrow from both sides),
+  /// or 1 (borrow from right).
+  /// Returns true if the expansion was successful.
   bool attemptExpandCollapsed(int index, int direction) {
     if (index == 0) {
       direction = 1;
@@ -331,6 +392,11 @@ class Resizer {
     return false;
   }
 
+  /// Handles dragging a divider at [index] by [delta] pixels.
+  ///
+  /// This is the main method for interactive resizing. It redistributes space
+  /// between items, handles collapsing/expanding, and respects constraints.
+  /// The divider at [index] is between item [index-1] and item [index].
   void dragDivider(int index, double delta) {
     if (delta == 0) {
       return;
@@ -517,6 +583,10 @@ class Resizer {
     }
   }
 
+  /// Resets all items to their original state.
+  ///
+  /// Clears any pending resize operations and restores items to their
+  /// original values and collapsed states.
   void reset() {
     for (final item in items) {
       if (item._newValue != null) {

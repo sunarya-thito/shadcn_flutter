@@ -36,11 +36,19 @@ extension type _ShadcnAppTheme._(JSObject _) implements JSObject {
       String background, String foreground, String primary);
 }
 
+/// Web platform-specific implementations for shadcn_flutter.
+///
+/// This class provides web-specific functionality, including integration
+/// with the JavaScript preloader and theme synchronization.
 class ShadcnFlutterPlatformImplementations {
   bool get _isPreloaderAvailable {
     return _window.globalThis.ShadcnApp != null;
   }
 
+  /// Called when the app is initialized.
+  ///
+  /// Notifies the JavaScript preloader that the Flutter app is ready
+  /// by dispatching a "shadcn_flutter_app_ready" event.
   void onAppInitialized() {
     if (!_isPreloaderAvailable) {
       return;
@@ -50,6 +58,10 @@ class ShadcnFlutterPlatformImplementations {
     _window.dispatchEvent(event);
   }
 
+  /// Called when the theme changes.
+  ///
+  /// Synchronizes the Flutter theme with the JavaScript preloader by
+  /// dispatching a theme change event with the new color values.
   void onThemeChanged(ThemeData theme) {
     if (!_isPreloaderAvailable) {
       return;
