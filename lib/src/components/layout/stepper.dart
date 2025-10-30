@@ -250,6 +250,7 @@ abstract class StepVariant {
   /// Minimal line variant with progress bars as step indicators.
   static const StepVariant line = _StepVariantLine();
 
+  /// Creates a [StepVariant].
   const StepVariant();
 
   /// Builds the stepper widget using this variant's visual style.
@@ -819,8 +820,13 @@ class _StepVariantLine extends StepVariant {
   }
 }
 
+/// Default small step indicator size in logical pixels.
 const kSmallStepIndicatorSize = 36.0;
+
+/// Default medium step indicator size in logical pixels.
 const kMediumStepIndicatorSize = 40.0;
+
+/// Default large step indicator size in logical pixels.
 const kLargeStepIndicatorSize = 44.0;
 
 /// Contains properties and state information for stepper rendering.

@@ -692,35 +692,35 @@ TODO:
 - [x] lib\src\components\layout\scaffold.dart:904:9
 - [x] lib\src\components\layout\scaffold.dart:914:7
 - [x] lib\src\components\layout\scaffold.dart:915:9
-- [ ] lib\src\components\layout\scrollable_client.dart:25:25
-- [ ] lib\src\components\layout\scrollable_client.dart:9:31
-- [ ] lib\src\components\layout\scrollable_client.dart:10:28
-- [ ] lib\src\components\layout\scrollable_client.dart:11:44
-- [ ] lib\src\components\layout\scrollable_client.dart:12:15
-- [ ] lib\src\components\layout\scrollable_client.dart:13:26
-- [ ] lib\src\components\layout\scrollable_client.dart:14:15
-- [ ] lib\src\components\layout\scrollable_client.dart:16:9
-- [ ] lib\src\components\layout\scrollable_client.dart:69:9
-- [ ] lib\src\components\layout\scrollable_client.dart:72:7
-- [ ] lib\src\components\layout\scrollable_client.dart:73:15
-- [ ] lib\src\components\layout\scrollable_client.dart:74:14
-- [ ] lib\src\components\layout\scrollable_client.dart:75:27
-- [ ] lib\src\components\layout\scrollable_client.dart:76:27
-- [ ] lib\src\components\layout\scrollable_client.dart:77:27
-- [ ] lib\src\components\layout\scrollable_client.dart:78:17
-- [ ] lib\src\components\layout\scrollable_client.dart:79:31
-- [ ] lib\src\components\layout\scrollable_client.dart:80:28
-- [ ] lib\src\components\layout\scrollable_client.dart:81:44
-- [ ] lib\src\components\layout\scrollable_client.dart:82:15
-- [ ] lib\src\components\layout\scrollable_client.dart:83:26
-- [ ] lib\src\components\layout\scrollable_client.dart:84:15
-- [ ] lib\src\components\layout\scrollable_client.dart:86:9
-- [ ] lib\src\components\layout\scrollable_client.dart:224:7
-- [ ] lib\src\components\layout\scrollable_client.dart:225:14
-- [ ] lib\src\components\layout\scrollable_client.dart:226:9
-- [ ] lib\src\components\layout\scrollable_client.dart:256:7
-- [ ] lib\src\components\layout\scrollable_client.dart:257:14
-- [ ] lib\src\components\layout\scrollable_client.dart:258:3
+- [x] lib\src\components\layout\scrollable_client.dart:25:25
+- [x] lib\src\components\layout\scrollable_client.dart:9:31
+- [x] lib\src\components\layout\scrollable_client.dart:10:28
+- [x] lib\src\components\layout\scrollable_client.dart:11:44
+- [x] lib\src\components\layout\scrollable_client.dart:12:15
+- [x] lib\src\components\layout\scrollable_client.dart:13:26
+- [x] lib\src\components\layout\scrollable_client.dart:14:15
+- [x] lib\src\components\layout\scrollable_client.dart:16:9
+- [x] lib\src\components\layout\scrollable_client.dart:69:9
+- [x] lib\src\components\layout\scrollable_client.dart:72:7
+- [x] lib\src\components\layout\scrollable_client.dart:73:15
+- [x] lib\src\components\layout\scrollable_client.dart:74:14
+- [x] lib\src\components\layout\scrollable_client.dart:75:27
+- [x] lib\src\components\layout\scrollable_client.dart:76:27
+- [x] lib\src\components\layout\scrollable_client.dart:77:27
+- [x] lib\src\components\layout\scrollable_client.dart:78:17
+- [x] lib\src\components\layout\scrollable_client.dart:79:31
+- [x] lib\src\components\layout\scrollable_client.dart:80:28
+- [x] lib\src\components\layout\scrollable_client.dart:81:44
+- [x] lib\src\components\layout\scrollable_client.dart:82:15
+- [x] lib\src\components\layout\scrollable_client.dart:83:26
+- [x] lib\src\components\layout\scrollable_client.dart:84:15
+- [x] lib\src\components\layout\scrollable_client.dart:86:9
+- [x] lib\src\components\layout\scrollable_client.dart:224:7
+- [x] lib\src\components\layout\scrollable_client.dart:225:14
+- [x] lib\src\components\layout\scrollable_client.dart:226:9
+- [x] lib\src\components\layout\scrollable_client.dart:256:7
+- [x] lib\src\components\layout\scrollable_client.dart:257:14
+- [x] lib\src\components\layout\scrollable_client.dart:258:3
 - [x] lib\src\components\layout\stage_container.dart:6:16
 - [x] lib\src\components\layout\stage_container.dart:24:14
 - [x] lib\src\components\layout\stage_container.dart:25:14
@@ -746,10 +746,10 @@ TODO:
 - [x] lib\src\components\layout\stage_container.dart:120:67
 - [x] lib\src\components\layout\stage_container.dart:121:20
 - [x] lib\src\components\layout\stage_container.dart:123:9
-- [ ] lib\src\components\layout\stepper.dart:253:9
-- [ ] lib\src\components\layout\stepper.dart:822:7
-- [ ] lib\src\components\layout\stepper.dart:823:7
-- [ ] lib\src\components\layout\stepper.dart:824:7
+- [x] lib\src\components\layout\stepper.dart:253:9
+- [x] lib\src\components\layout\stepper.dart:822:7
+- [x] lib\src\components\layout\stepper.dart:823:7
+- [x] lib\src\components\layout\stepper.dart:824:7
 - [x] lib\src\components\layout\steps.dart:24:14
 - [x] lib\src\components\layout\steps.dart:17:9
 - [x] lib\src\components\layout\steps.dart:104:22
