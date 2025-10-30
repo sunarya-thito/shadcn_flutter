@@ -1,39 +1,39 @@
 TODO:
-- [ ] lib\src\components\form\slider.dart:135:36
-- [ ] lib\src\components\form\slider.dart:136:36
-- [ ] lib\src\components\form\slider.dart:137:16
-- [ ] lib\src\components\form\slider.dart:138:16
-- [ ] lib\src\components\form\slider.dart:139:14
-- [ ] lib\src\components\form\slider.dart:140:22
-- [ ] lib\src\components\form\slider.dart:141:17
-- [ ] lib\src\components\form\slider.dart:142:17
-- [ ] lib\src\components\form\slider.dart:144:9
-- [ ] lib\src\components\form\slider.dart:185:7
-- [ ] lib\src\components\form\slider.dart:209:12
-- [ ] lib\src\components\form\slider.dart:211:14
-- [ ] lib\src\components\form\slider.dart:212:14
-- [ ] lib\src\components\form\slider.dart:213:14
-- [ ] lib\src\components\form\slider.dart:186:23
-- [ ] lib\src\components\form\slider.dart:224:15
-- [ ] lib\src\components\form\slider.dart:204:21
-- [ ] lib\src\components\form\slider.dart:207:21
-- [ ] lib\src\components\form\slider.dart:335:7
-- [ ] lib\src\components\form\slider.dart:336:9
-- [ ] lib\src\components\form\slider.dart:339:7
-- [ ] lib\src\components\form\slider.dart:340:9
-- [ ] lib\src\components\form\slider.dart:343:7
-- [ ] lib\src\components\form\slider.dart:344:21
-- [ ] lib\src\components\form\slider.dart:345:36
-- [ ] lib\src\components\form\slider.dart:346:36
-- [ ] lib\src\components\form\slider.dart:347:36
-- [ ] lib\src\components\form\slider.dart:348:16
-- [ ] lib\src\components\form\slider.dart:349:16
-- [ ] lib\src\components\form\slider.dart:350:14
-- [ ] lib\src\components\form\slider.dart:351:22
-- [ ] lib\src\components\form\slider.dart:352:17
-- [ ] lib\src\components\form\slider.dart:353:17
-- [ ] lib\src\components\form\slider.dart:354:15
-- [ ] lib\src\components\form\slider.dart:356:9
+- [x] lib\src\components\form\slider.dart:135:36
+- [x] lib\src\components\form\slider.dart:136:36
+- [x] lib\src\components\form\slider.dart:137:16
+- [x] lib\src\components\form\slider.dart:138:16
+- [x] lib\src\components\form\slider.dart:139:14
+- [x] lib\src\components\form\slider.dart:140:22
+- [x] lib\src\components\form\slider.dart:141:17
+- [x] lib\src\components\form\slider.dart:142:17
+- [x] lib\src\components\form\slider.dart:144:9
+- [x] lib\src\components\form\slider.dart:185:7
+- [x] lib\src\components\form\slider.dart:209:12
+- [x] lib\src\components\form\slider.dart:211:14
+- [x] lib\src\components\form\slider.dart:212:14
+- [x] lib\src\components\form\slider.dart:213:14
+- [x] lib\src\components\form\slider.dart:186:23
+- [x] lib\src\components\form\slider.dart:224:15
+- [x] lib\src\components\form\slider.dart:204:21
+- [x] lib\src\components\form\slider.dart:207:21
+- [x] lib\src\components\form\slider.dart:335:7
+- [x] lib\src\components\form\slider.dart:336:9
+- [x] lib\src\components\form\slider.dart:339:7
+- [x] lib\src\components\form\slider.dart:340:9
+- [x] lib\src\components\form\slider.dart:343:7
+- [x] lib\src\components\form\slider.dart:344:21
+- [x] lib\src\components\form\slider.dart:345:36
+- [x] lib\src\components\form\slider.dart:346:36
+- [x] lib\src\components\form\slider.dart:347:36
+- [x] lib\src\components\form\slider.dart:348:16
+- [x] lib\src\components\form\slider.dart:349:16
+- [x] lib\src\components\form\slider.dart:350:14
+- [x] lib\src\components\form\slider.dart:351:22
+- [x] lib\src\components\form\slider.dart:352:17
+- [x] lib\src\components\form\slider.dart:353:17
+- [x] lib\src\components\form\slider.dart:354:15
+- [x] lib\src\components\form\slider.dart:356:9
 - [ ] lib\src\components\form\sortable.dart:5:9
 - [ ] lib\src\components\form\sortable.dart:6:9
 - [ ] lib\src\components\form\sortable.dart:9:7
