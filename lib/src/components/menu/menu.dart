@@ -93,18 +93,60 @@ class MenuShortcut extends StatelessWidget {
   }
 }
 
+/// Abstract base class for menu item widgets.
+///
+/// All menu items (buttons, checkboxes, radio buttons, dividers, etc.) must
+/// implement this interface. Menu items can be placed within menu groups and
+/// support features like leading icons and popover controllers.
+///
+/// See also:
+/// - [MenuButton], clickable menu item
+/// - [MenuCheckbox], checkbox menu item
+/// - [MenuRadio], radio button menu item
+/// - [MenuDivider], divider between menu items
 abstract class MenuItem extends Widget {
+  /// Creates a menu item.
   const MenuItem({super.key});
 
+  /// Whether this menu item has a leading widget (icon, checkbox indicator, etc.).
   bool get hasLeading;
+
+  /// Optional popover controller for submenu functionality.
   PopoverController? get popoverController;
 }
 
+/// Radio button group container for menu items.
+///
+/// Groups multiple [MenuRadio] items together with shared selection state.
+/// Only one radio button in the group can be selected at a time.
+///
+/// Example:
+/// ```dart
+/// MenuRadioGroup<String>(
+///   value: selectedOption,
+///   onChanged: (context, value) => setState(() => selectedOption = value),
+///   children: [
+///     MenuRadio(value: 'option1', child: Text('Option 1')),
+///     MenuRadio(value: 'option2', child: Text('Option 2')),
+///   ],
+/// )
+/// ```
 class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
+  /// Currently selected value.
   final T? value;
+
+  /// Callback when selection changes.
   final ContextedValueChanged<T>? onChanged;
+
+  /// List of [MenuRadio] children.
   final List<Widget> children;
 
+  /// Creates a radio group for menu items.
+  ///
+  /// Parameters:
+  /// - [value] (T?): Currently selected value
+  /// - [onChanged] (`ContextedValueChanged<T>?`): Selection change callback
+  /// - [children] (`List<Widget>`): Radio button children
   const MenuRadioGroup({
     super.key,
     required this.value,
@@ -135,14 +177,40 @@ class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
   }
 }
 
+/// Individual radio button item within a [MenuRadioGroup].
+///
+/// Displays a radio button indicator when selected and integrates with
+/// the parent radio group for selection management.
 class MenuRadio<T> extends StatelessWidget {
+  /// The value this radio button represents.
   final T value;
+
+  /// Content widget displayed for this option.
   final Widget child;
+
+  /// Optional trailing widget (e.g., keyboard shortcut).
   final Widget? trailing;
+
+  /// Focus node for keyboard navigation.
   final FocusNode? focusNode;
+
+  /// Whether this radio button is enabled.
   final bool enabled;
+
+  /// Whether selecting this radio closes the menu automatically.
   final bool autoClose;
 
+  /// Creates a radio button menu item.
+  ///
+  /// Must be a child of [MenuRadioGroup].
+  ///
+  /// Parameters:
+  /// - [value] (T, required): Value for this option
+  /// - [child] (Widget, required): Display content
+  /// - [trailing] (Widget?): Optional trailing widget
+  /// - [focusNode] (FocusNode?): Focus node for navigation
+  /// - [enabled] (bool): Whether enabled, defaults to true
+  /// - [autoClose] (bool): Whether to auto-close menu, defaults to true
   const MenuRadio({
     super.key,
     required this.value,
@@ -183,7 +251,24 @@ class MenuRadio<T> extends StatelessWidget {
   }
 }
 
+/// Visual divider between menu items.
+///
+/// Renders a horizontal or vertical line to separate groups of menu items.
+/// Automatically adapts direction based on the parent menu's orientation.
+///
+/// Example:
+/// ```dart
+/// MenuGroup(
+///   children: [
+///     MenuButton(child: Text('Cut')),
+///     MenuButton(child: Text('Copy')),
+///     MenuDivider(), // Separator
+///     MenuButton(child: Text('Paste')),
+///   ],
+/// )
+/// ```
 class MenuDivider extends StatelessWidget implements MenuItem {
+  /// Creates a menu divider.
   const MenuDivider({super.key});
   @override
   Widget build(BuildContext context) {
@@ -222,9 +307,18 @@ class MenuDivider extends StatelessWidget implements MenuItem {
   PopoverController? get popoverController => null;
 }
 
+/// Spacing gap between menu items.
+///
+/// Creates empty vertical or horizontal space within a menu, based on
+/// the menu's direction. Useful for visually grouping related items.
 class MenuGap extends StatelessWidget implements MenuItem {
+  /// Size of the gap in logical pixels.
   final double size;
 
+  /// Creates a menu gap.
+  ///
+  /// Parameters:
+  /// - [size] (double, required): Gap size in logical pixels
   const MenuGap(this.size, {super.key});
 
   @override
@@ -239,17 +333,60 @@ class MenuGap extends StatelessWidget implements MenuItem {
   PopoverController? get popoverController => null;
 }
 
+/// Clickable button menu item with optional submenu support.
+///
+/// Primary menu item type that responds to user interaction. Can display
+/// leading icons, trailing widgets (shortcuts), and nested submenus.
+///
+/// Example:
+/// ```dart
+/// MenuButton(
+///   leading: Icon(Icons.cut),
+///   trailing: Text('Ctrl+X').textSmall().muted(),
+///   onPressed: (context) => _handleCut(),
+///   child: Text('Cut'),
+/// )
+/// ```
 class MenuButton extends StatefulWidget implements MenuItem {
+  /// Content widget displayed in the button.
   final Widget child;
+
+  /// Optional submenu items shown on hover or click.
   final List<MenuItem>? subMenu;
+
+  /// Callback when button is pressed.
   final ContextedCallback? onPressed;
+
+  /// Optional trailing widget (e.g., keyboard shortcut indicator).
   final Widget? trailing;
+
+  /// Optional leading widget (e.g., icon).
   final Widget? leading;
+
+  /// Whether the button is enabled for interaction.
   final bool enabled;
+
+  /// Focus node for keyboard navigation.
   final FocusNode? focusNode;
+
+  /// Whether selecting this button closes the menu automatically.
   final bool autoClose;
+
   @override
   final PopoverController? popoverController;
+
+  /// Creates a menu button.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Main content
+  /// - [subMenu] (`List<MenuItem>?`): Optional nested submenu
+  /// - [onPressed] (ContextedCallback?): Click handler
+  /// - [trailing] (Widget?): Trailing widget
+  /// - [leading] (Widget?): Leading icon or widget
+  /// - [enabled] (bool): Whether enabled, defaults to true
+  /// - [focusNode] (FocusNode?): Focus node
+  /// - [autoClose] (bool): Auto-close behavior, defaults to true
+  /// - [popoverController] (PopoverController?): Optional popover controller
   const MenuButton({
     super.key,
     required this.child,
@@ -270,11 +407,34 @@ class MenuButton extends StatefulWidget implements MenuItem {
   bool get hasLeading => leading != null;
 }
 
+/// Non-interactive label menu item.
+///
+/// Displays text or content without click handlers. Useful for section
+/// headers or informational text within menus.
+///
+/// Example:
+/// ```dart
+/// MenuLabel(
+///   leading: Icon(Icons.settings),
+///   child: Text('Settings').semiBold(),
+/// )
+/// ```
 class MenuLabel extends StatelessWidget implements MenuItem {
+  /// Content widget displayed in the label.
   final Widget child;
+
+  /// Optional trailing widget.
   final Widget? trailing;
+
+  /// Optional leading widget (e.g., icon).
   final Widget? leading;
 
+  /// Creates a menu label.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Main content
+  /// - [trailing] (Widget?): Trailing widget
+  /// - [leading] (Widget?): Leading icon or widget
   const MenuLabel({
     super.key,
     required this.child,
@@ -321,14 +481,46 @@ class MenuLabel extends StatelessWidget implements MenuItem {
   }
 }
 
+/// Checkbox menu item with checked/unchecked state.
+///
+/// Displays a checkmark when selected. Used for togglable menu options.
+///
+/// Example:
+/// ```dart
+/// MenuCheckbox(
+///   value: showToolbar,
+///   onChanged: (context, value) => setState(() => showToolbar = value),
+///   child: Text('Show Toolbar'),
+/// )
+/// ```
 class MenuCheckbox extends StatelessWidget implements MenuItem {
+  /// Current checked state.
   final bool value;
+
+  /// Callback when checkbox state changes.
   final ContextedValueChanged<bool>? onChanged;
+
+  /// Content widget displayed for this option.
   final Widget child;
+
+  /// Optional trailing widget (e.g., keyboard shortcut).
   final Widget? trailing;
+
+  /// Whether this checkbox is enabled.
   final bool enabled;
+
+  /// Whether checking this box closes the menu automatically.
   final bool autoClose;
 
+  /// Creates a checkbox menu item.
+  ///
+  /// Parameters:
+  /// - [value] (bool): Current checked state, defaults to false
+  /// - [onChanged] (`ContextedValueChanged<bool>?`): State change callback
+  /// - [child] (Widget, required): Display content
+  /// - [trailing] (Widget?): Optional trailing widget
+  /// - [enabled] (bool): Whether enabled, defaults to true
+  /// - [autoClose] (bool): Whether to auto-close menu, defaults to true
   const MenuCheckbox({
     super.key,
     this.value = false,
@@ -591,17 +783,51 @@ class _MenuButtonState extends State<MenuButton> {
   }
 }
 
+/// Data class containing menu group state and configuration.
+///
+/// Manages the hierarchical structure of menu groups, tracking parent-child
+/// relationships, popover state, and layout properties. Used internally by
+/// the menu system to coordinate behavior across nested menus.
 class MenuGroupData {
+  /// Parent menu group, null for root menus.
   final MenuGroupData? parent;
+
+  /// Child menu items' data.
   final List<MenuData> children;
+
+  /// Whether any child items have leading widgets.
   final bool hasLeading;
+
+  /// Offset for positioning submenus relative to parent.
   final Offset? subMenuOffset;
+
+  /// Callback when menu is dismissed.
   final VoidCallback? onDismissed;
+
+  /// Region group ID for tap region management.
   final Object? regionGroupId;
+
+  /// Layout direction (horizontal or vertical).
   final Axis direction;
+
+  /// Padding around menu items.
   final EdgeInsets itemPadding;
+
+  /// Focus scope state for keyboard navigation.
   final SubFocusScopeState focusScope;
 
+  /// Creates menu group data.
+  ///
+  /// Parameters:
+  /// - [parent] (MenuGroupData?): Parent group
+  /// - [children] (`List<MenuData>`): Child items
+  /// - [hasLeading] (bool): Whether items have leading widgets
+  /// - [subMenuOffset] (Offset?): Submenu offset
+  /// - [onDismissed] (VoidCallback?): Dismissal callback
+  /// - [regionGroupId] (Object?): Region group ID
+  /// - [direction] (Axis): Layout direction
+  /// - [itemPadding] (EdgeInsets): Item padding
+  /// - [focusScope] (SubFocusScopeState): Focus scope
   MenuGroupData(
     this.parent,
     this.children,
@@ -614,6 +840,9 @@ class MenuGroupData {
     this.focusScope,
   );
 
+  /// Checks if any child menu items have open popovers.
+  ///
+  /// Returns true if at least one child has an open submenu popover.
   bool get hasOpenPopovers {
     for (final child in children) {
       if (child.popoverController.hasOpenPopover) {
@@ -623,12 +852,19 @@ class MenuGroupData {
     return false;
   }
 
+  /// Closes all open popovers in child menu items.
+  ///
+  /// Iterates through children and closes any open submenu popovers.
   void closeOthers() {
     for (final child in children) {
       child.popoverController.close();
     }
   }
 
+  /// Closes all menus in the hierarchy by bubbling up to root.
+  ///
+  /// Recursively closes popovers in parent groups and invokes the
+  /// dismissal callback at the root level.
   void closeAll() {
     var menuGroupData = parent;
     if (menuGroupData == null) {
@@ -652,6 +888,11 @@ class MenuGroupData {
     return false;
   }
 
+  /// Gets the root menu group in the hierarchy.
+  ///
+  /// Traverses up the parent chain to find the topmost menu group.
+  ///
+  /// Returns the root [MenuGroupData].
   MenuGroupData get root {
     var menuGroupData = parent;
     if (menuGroupData == null) {
@@ -675,26 +916,89 @@ class MenuGroupData {
   }
 }
 
+/// Data container for individual menu item state.
+///
+/// Wraps a popover controller for each menu item, managing submenu
+/// display and interaction state.
 class MenuData {
+  /// Controller for this item's submenu popover.
   final PopoverController popoverController;
 
+  /// Creates menu item data.
+  ///
+  /// Parameters:
+  /// - [popoverController] (PopoverController?): Optional controller, creates default if null
   MenuData({PopoverController? popoverController})
       : popoverController = popoverController ?? PopoverController();
 }
 
+/// Container widget for organizing menu items into a group.
+///
+/// Provides layout, focus management, and keyboard navigation for a collection
+/// of menu items. Supports both horizontal and vertical orientations, nested
+/// submenus, and customizable actions.
+///
+/// Example:
+/// ```dart
+/// MenuGroup(
+///   direction: Axis.vertical,
+///   builder: (context, children) => Column(children: children),
+///   children: [
+///     MenuButton(child: Text('Cut')),
+///     MenuButton(child: Text('Copy')),
+///     MenuDivider(),
+///     MenuButton(child: Text('Paste')),
+///   ],
+/// )
+/// ```
 class MenuGroup extends StatefulWidget {
+  /// List of menu item widgets.
   final List<MenuItem> children;
+
+  /// Builder function that layouts the menu items.
   final Widget Function(BuildContext context, List<Widget> children) builder;
+
+  /// Parent menu group for nested submenus.
   final MenuGroupData? parent;
+
+  /// Offset for positioning submenus.
   final Offset? subMenuOffset;
+
+  /// Callback when menu is dismissed.
   final VoidCallback? onDismissed;
+
+  /// Region group ID for tap region management.
   final Object? regionGroupId;
+
+  /// Layout direction (horizontal or vertical).
   final Axis direction;
+
+  /// Custom keyboard actions.
   final Map<Type, Action> actions;
+
+  /// Padding around menu items.
   final EdgeInsets? itemPadding;
+
+  /// Whether to autofocus on mount.
   final bool autofocus;
+
+  /// Optional focus node for keyboard navigation.
   final FocusNode? focusNode;
 
+  /// Creates a menu group.
+  ///
+  /// Parameters:
+  /// - [children] (`List<MenuItem>`, required): Menu items
+  /// - [builder] (Function, required): Layout builder
+  /// - [direction] (Axis, required): Layout direction
+  /// - [parent] (MenuGroupData?): Parent group for nesting
+  /// - [subMenuOffset] (Offset?): Submenu positioning offset
+  /// - [onDismissed] (VoidCallback?): Dismissal callback
+  /// - [regionGroupId] (Object?): Tap region group ID
+  /// - [actions] (`Map<Type, Action>`): Custom actions, defaults to empty
+  /// - [itemPadding] (EdgeInsets?): Item padding
+  /// - [autofocus] (bool): Auto-focus behavior, defaults to true
+  /// - [focusNode] (FocusNode?): Focus node
   const MenuGroup({
     super.key,
     required this.children,
@@ -919,23 +1223,48 @@ class _MenuGroupState extends State<MenuGroup> {
   }
 }
 
+/// Intent for closing the current menu via keyboard action.
+///
+/// Used with keyboard shortcuts to dismiss open menus.
 class CloseMenuIntent extends Intent {
+  /// Creates a close menu intent.
   const CloseMenuIntent();
 }
 
+/// Intent for opening a submenu via keyboard action.
+///
+/// Triggers submenu expansion when navigating with keyboard.
 class OpenSubMenuIntent extends Intent {
+  /// Creates an open submenu intent.
   const OpenSubMenuIntent();
 }
 
+/// Intent for moving focus to next/previous menu item.
+///
+/// Used for keyboard navigation within menus (Tab/Shift+Tab).
 class NextMenuFocusIntent extends Intent {
+  /// Whether to move focus forward (true) or backward (false).
   final bool forward;
 
+  /// Creates a next menu focus intent.
+  ///
+  /// Parameters:
+  /// - [forward] (bool, required): Direction of focus movement
   const NextMenuFocusIntent(this.forward);
 }
 
+/// Overlay handler specialized for menu popover display.
+///
+/// Delegates to an [OverlayManager] to show menu popovers with
+/// appropriate positioning, transitions, and dismissal behavior.
 class MenuOverlayHandler extends OverlayHandler {
+  /// The overlay manager handling menu display.
   final OverlayManager manager;
 
+  /// Creates a menu overlay handler.
+  ///
+  /// Parameters:
+  /// - [manager] (OverlayManager, required): Overlay manager for menu display
   const MenuOverlayHandler(this.manager);
 
   @override
@@ -998,8 +1327,16 @@ class MenuOverlayHandler extends OverlayHandler {
   }
 }
 
+/// Intent for directional focus traversal within menus.
+///
+/// Used for arrow key navigation (up, down, left, right) within menu structures.
 class DirectionalMenuFocusIntent extends Intent {
+  /// Direction of focus traversal.
   final TraversalDirection direction;
 
+  /// Creates a directional menu focus intent.
+  ///
+  /// Parameters:
+  /// - [direction] (TraversalDirection, required): Traversal direction
   const DirectionalMenuFocusIntent(this.direction);
 }

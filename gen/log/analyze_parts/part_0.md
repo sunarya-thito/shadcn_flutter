@@ -88,95 +88,95 @@ TODO:
 - [x] lib/src/components/locale/shadcn_localizations.dart:749:class DefaultShadcnLocalizations extends ShadcnLocalizations {
 - [x] lib/src/components/locale/shadcn_localizations.dart:750:  static const ShadcnLocalizations instance = DefaultShadcnLocalizations();
 - [x] lib/src/components/locale/shadcn_localizations.dart:752:  const DefaultShadcnLocalizations();
-- [ ] lib/src/components/menu/menu.dart:96:abstract class MenuItem extends Widget {
-- [ ] lib/src/components/menu/menu.dart:99:  bool get hasLeading;
-- [ ] lib/src/components/menu/menu.dart:100:  PopoverController? get popoverController;
-- [ ] lib/src/components/menu/menu.dart:97:  const MenuItem({super.key});
-- [ ] lib/src/components/menu/menu.dart:103:class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
+- [x] lib/src/components/menu/menu.dart:96:abstract class MenuItem extends Widget {
+- [x] lib/src/components/menu/menu.dart:99:  bool get hasLeading;
+- [x] lib/src/components/menu/menu.dart:100:  PopoverController? get popoverController;
+- [x] lib/src/components/menu/menu.dart:97:  const MenuItem({super.key});
+- [x] lib/src/components/menu/menu.dart:103:class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
 - [ ] lib/src/components/menu/menu.dart:104:  final T? value;
-- [ ] lib/src/components/menu/menu.dart:105:  final ContextedValueChanged<T>? onChanged;
-- [ ] lib/src/components/menu/menu.dart:106:  final List<Widget> children;
-- [ ] lib/src/components/menu/menu.dart:108:  const MenuRadioGroup({
-- [ ] lib/src/components/menu/menu.dart:138:class MenuRadio<T> extends StatelessWidget {
-- [ ] lib/src/components/menu/menu.dart:139:  final T value;
-- [ ] lib/src/components/menu/menu.dart:140:  final Widget child;
+- [x] lib/src/components/menu/menu.dart:105:  final ContextedValueChanged<T>? onChanged;
+- [x] lib/src/components/menu/menu.dart:106:  final List<Widget> children;
+- [x] lib/src/components/menu/menu.dart:108:  const MenuRadioGroup({
+- [x] lib/src/components/menu/menu.dart:138:class MenuRadio<T> extends StatelessWidget {
+- [x] lib/src/components/menu/menu.dart:139:  final T value;
+- [x] lib/src/components/menu/menu.dart:140:  final Widget child;
 - [ ] lib/src/components/menu/menu.dart:141:  final Widget? trailing;
-- [ ] lib/src/components/menu/menu.dart:142:  final FocusNode? focusNode;
-- [ ] lib/src/components/menu/menu.dart:143:  final bool enabled;
-- [ ] lib/src/components/menu/menu.dart:144:  final bool autoClose;
-- [ ] lib/src/components/menu/menu.dart:146:  const MenuRadio({
-- [ ] lib/src/components/menu/menu.dart:186:class MenuDivider extends StatelessWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:187:  const MenuDivider({super.key});
-- [ ] lib/src/components/menu/menu.dart:225:class MenuGap extends StatelessWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:226:  final double size;
-- [ ] lib/src/components/menu/menu.dart:228:  const MenuGap(this.size, {super.key});
-- [ ] lib/src/components/menu/menu.dart:242:class MenuButton extends StatefulWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:243:  final Widget child;
-- [ ] lib/src/components/menu/menu.dart:244:  final List<MenuItem>? subMenu;
-- [ ] lib/src/components/menu/menu.dart:245:  final ContextedCallback? onPressed;
+- [x] lib/src/components/menu/menu.dart:142:  final FocusNode? focusNode;
+- [x] lib/src/components/menu/menu.dart:143:  final bool enabled;
+- [x] lib/src/components/menu/menu.dart:144:  final bool autoClose;
+- [x] lib/src/components/menu/menu.dart:146:  const MenuRadio({
+- [x] lib/src/components/menu/menu.dart:186:class MenuDivider extends StatelessWidget implements MenuItem {
+- [x] lib/src/components/menu/menu.dart:187:  const MenuDivider({super.key});
+- [x] lib/src/components/menu/menu.dart:225:class MenuGap extends StatelessWidget implements MenuItem {
+- [x] lib/src/components/menu/menu.dart:226:  final double size;
+- [x] lib/src/components/menu/menu.dart:228:  const MenuGap(this.size, {super.key});
+- [x] lib/src/components/menu/menu.dart:242:class MenuButton extends StatefulWidget implements MenuItem {
+- [x] lib/src/components/menu/menu.dart:243:  final Widget child;
+- [x] lib/src/components/menu/menu.dart:244:  final List<MenuItem>? subMenu;
+- [x] lib/src/components/menu/menu.dart:245:  final ContextedCallback? onPressed;
 - [ ] lib/src/components/menu/menu.dart:246:  final Widget? trailing;
 - [ ] lib/src/components/menu/menu.dart:247:  final Widget? leading;
-- [ ] lib/src/components/menu/menu.dart:248:  final bool enabled;
-- [ ] lib/src/components/menu/menu.dart:249:  final FocusNode? focusNode;
-- [ ] lib/src/components/menu/menu.dart:250:  final bool autoClose;
-- [ ] lib/src/components/menu/menu.dart:253:  const MenuButton({
-- [ ] lib/src/components/menu/menu.dart:273:class MenuLabel extends StatelessWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:274:  final Widget child;
+- [x] lib/src/components/menu/menu.dart:248:  final bool enabled;
+- [x] lib/src/components/menu/menu.dart:249:  final FocusNode? focusNode;
+- [x] lib/src/components/menu/menu.dart:250:  final bool autoClose;
+- [x] lib/src/components/menu/menu.dart:253:  const MenuButton({
+- [x] lib/src/components/menu/menu.dart:273:class MenuLabel extends StatelessWidget implements MenuItem {
+- [x] lib/src/components/menu/menu.dart:274:  final Widget child;
 - [ ] lib/src/components/menu/menu.dart:275:  final Widget? trailing;
 - [ ] lib/src/components/menu/menu.dart:276:  final Widget? leading;
-- [ ] lib/src/components/menu/menu.dart:278:  const MenuLabel({
-- [ ] lib/src/components/menu/menu.dart:324:class MenuCheckbox extends StatelessWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:325:  final bool value;
-- [ ] lib/src/components/menu/menu.dart:326:  final ContextedValueChanged<bool>? onChanged;
-- [ ] lib/src/components/menu/menu.dart:327:  final Widget child;
+- [x] lib/src/components/menu/menu.dart:278:  const MenuLabel({
+- [x] lib/src/components/menu/menu.dart:324:class MenuCheckbox extends StatelessWidget implements MenuItem {
+- [x] lib/src/components/menu/menu.dart:325:  final bool value;
+- [x] lib/src/components/menu/menu.dart:326:  final ContextedValueChanged<bool>? onChanged;
+- [x] lib/src/components/menu/menu.dart:327:  final Widget child;
 - [ ] lib/src/components/menu/menu.dart:328:  final Widget? trailing;
-- [ ] lib/src/components/menu/menu.dart:329:  final bool enabled;
-- [ ] lib/src/components/menu/menu.dart:330:  final bool autoClose;
-- [ ] lib/src/components/menu/menu.dart:332:  const MenuCheckbox({
-- [ ] lib/src/components/menu/menu.dart:594:class MenuGroupData {
-- [ ] lib/src/components/menu/menu.dart:617:  bool get hasOpenPopovers {
-- [ ] lib/src/components/menu/menu.dart:655:  MenuGroupData get root {
-- [ ] lib/src/components/menu/menu.dart:626:  void closeOthers() {
-- [ ] lib/src/components/menu/menu.dart:632:  void closeAll() {
-- [ ] lib/src/components/menu/menu.dart:595:  final MenuGroupData? parent;
-- [ ] lib/src/components/menu/menu.dart:596:  final List<MenuData> children;
-- [ ] lib/src/components/menu/menu.dart:597:  final bool hasLeading;
-- [ ] lib/src/components/menu/menu.dart:598:  final Offset? subMenuOffset;
-- [ ] lib/src/components/menu/menu.dart:599:  final VoidCallback? onDismissed;
-- [ ] lib/src/components/menu/menu.dart:600:  final Object? regionGroupId;
-- [ ] lib/src/components/menu/menu.dart:601:  final Axis direction;
-- [ ] lib/src/components/menu/menu.dart:602:  final EdgeInsets itemPadding;
-- [ ] lib/src/components/menu/menu.dart:603:  final SubFocusScopeState focusScope;
-- [ ] lib/src/components/menu/menu.dart:605:  MenuGroupData(
-- [ ] lib/src/components/menu/menu.dart:678:class MenuData {
-- [ ] lib/src/components/menu/menu.dart:679:  final PopoverController popoverController;
-- [ ] lib/src/components/menu/menu.dart:681:  MenuData({PopoverController? popoverController})
-- [ ] lib/src/components/menu/menu.dart:685:class MenuGroup extends StatefulWidget {
-- [ ] lib/src/components/menu/menu.dart:686:  final List<MenuItem> children;
-- [ ] lib/src/components/menu/menu.dart:687:  final Widget Function(BuildContext context, List<Widget> children) builder;
+- [x] lib/src/components/menu/menu.dart:329:  final bool enabled;
+- [x] lib/src/components/menu/menu.dart:330:  final bool autoClose;
+- [x] lib/src/components/menu/menu.dart:332:  const MenuCheckbox({
+- [x] lib/src/components/menu/menu.dart:594:class MenuGroupData {
+- [x] lib/src/components/menu/menu.dart:617:  bool get hasOpenPopovers {
+- [x] lib/src/components/menu/menu.dart:655:  MenuGroupData get root {
+- [x] lib/src/components/menu/menu.dart:626:  void closeOthers() {
+- [x] lib/src/components/menu/menu.dart:632:  void closeAll() {
+- [x] lib/src/components/menu/menu.dart:595:  final MenuGroupData? parent;
+- [x] lib/src/components/menu/menu.dart:596:  final List<MenuData> children;
+- [x] lib/src/components/menu/menu.dart:597:  final bool hasLeading;
+- [x] lib/src/components/menu/menu.dart:598:  final Offset? subMenuOffset;
+- [x] lib/src/components/menu/menu.dart:599:  final VoidCallback? onDismissed;
+- [x] lib/src/components/menu/menu.dart:600:  final Object? regionGroupId;
+- [x] lib/src/components/menu/menu.dart:601:  final Axis direction;
+- [x] lib/src/components/menu/menu.dart:602:  final EdgeInsets itemPadding;
+- [x] lib/src/components/menu/menu.dart:603:  final SubFocusScopeState focusScope;
+- [x] lib/src/components/menu/menu.dart:605:  MenuGroupData(
+- [x] lib/src/components/menu/menu.dart:678:class MenuData {
+- [x] lib/src/components/menu/menu.dart:679:  final PopoverController popoverController;
+- [x] lib/src/components/menu/menu.dart:681:  MenuData({PopoverController? popoverController})
+- [x] lib/src/components/menu/menu.dart:685:class MenuGroup extends StatefulWidget {
+- [x] lib/src/components/menu/menu.dart:686:  final List<MenuItem> children;
+- [x] lib/src/components/menu/menu.dart:687:  final Widget Function(BuildContext context, List<Widget> children) builder;
 - [ ] lib/src/components/menu/menu.dart:688:  final MenuGroupData? parent;
-- [ ] lib/src/components/menu/menu.dart:689:  final Offset? subMenuOffset;
-- [ ] lib/src/components/menu/menu.dart:690:  final VoidCallback? onDismissed;
-- [ ] lib/src/components/menu/menu.dart:691:  final Object? regionGroupId;
-- [ ] lib/src/components/menu/menu.dart:692:  final Axis direction;
-- [ ] lib/src/components/menu/menu.dart:693:  final Map<Type, Action> actions;
-- [ ] lib/src/components/menu/menu.dart:694:  final EdgeInsets? itemPadding;
-- [ ] lib/src/components/menu/menu.dart:695:  final bool autofocus;
-- [ ] lib/src/components/menu/menu.dart:696:  final FocusNode? focusNode;
-- [ ] lib/src/components/menu/menu.dart:698:  const MenuGroup({
-- [ ] lib/src/components/menu/menu.dart:922:class CloseMenuIntent extends Intent {
-- [ ] lib/src/components/menu/menu.dart:923:  const CloseMenuIntent();
-- [ ] lib/src/components/menu/menu.dart:926:class OpenSubMenuIntent extends Intent {
-- [ ] lib/src/components/menu/menu.dart:927:  const OpenSubMenuIntent();
-- [ ] lib/src/components/menu/menu.dart:930:class NextMenuFocusIntent extends Intent {
-- [ ] lib/src/components/menu/menu.dart:931:  final bool forward;
-- [ ] lib/src/components/menu/menu.dart:933:  const NextMenuFocusIntent(this.forward);
-- [ ] lib/src/components/menu/menu.dart:936:class MenuOverlayHandler extends OverlayHandler {
-- [ ] lib/src/components/menu/menu.dart:937:  final OverlayManager manager;
-- [ ] lib/src/components/menu/menu.dart:939:  const MenuOverlayHandler(this.manager);
-- [ ] lib/src/components/menu/menu.dart:1001:class DirectionalMenuFocusIntent extends Intent {
-- [ ] lib/src/components/menu/menu.dart:1002:  final TraversalDirection direction;
-- [ ] lib/src/components/menu/menu.dart:1004:  const DirectionalMenuFocusIntent(this.direction);
+- [x] lib/src/components/menu/menu.dart:689:  final Offset? subMenuOffset;
+- [x] lib/src/components/menu/menu.dart:690:  final VoidCallback? onDismissed;
+- [x] lib/src/components/menu/menu.dart:691:  final Object? regionGroupId;
+- [x] lib/src/components/menu/menu.dart:692:  final Axis direction;
+- [x] lib/src/components/menu/menu.dart:693:  final Map<Type, Action> actions;
+- [x] lib/src/components/menu/menu.dart:694:  final EdgeInsets? itemPadding;
+- [x] lib/src/components/menu/menu.dart:695:  final bool autofocus;
+- [x] lib/src/components/menu/menu.dart:696:  final FocusNode? focusNode;
+- [x] lib/src/components/menu/menu.dart:698:  const MenuGroup({
+- [x] lib/src/components/menu/menu.dart:922:class CloseMenuIntent extends Intent {
+- [x] lib/src/components/menu/menu.dart:923:  const CloseMenuIntent();
+- [x] lib/src/components/menu/menu.dart:926:class OpenSubMenuIntent extends Intent {
+- [x] lib/src/components/menu/menu.dart:927:  const OpenSubMenuIntent();
+- [x] lib/src/components/menu/menu.dart:930:class NextMenuFocusIntent extends Intent {
+- [x] lib/src/components/menu/menu.dart:931:  final bool forward;
+- [x] lib/src/components/menu/menu.dart:933:  const NextMenuFocusIntent(this.forward);
+- [x] lib/src/components/menu/menu.dart:936:class MenuOverlayHandler extends OverlayHandler {
+- [x] lib/src/components/menu/menu.dart:937:  final OverlayManager manager;
+- [x] lib/src/components/menu/menu.dart:939:  const MenuOverlayHandler(this.manager);
+- [x] lib/src/components/menu/menu.dart:1001:class DirectionalMenuFocusIntent extends Intent {
+- [x] lib/src/components/menu/menu.dart:1002:  final TraversalDirection direction;
+- [x] lib/src/components/menu/menu.dart:1004:  const DirectionalMenuFocusIntent(this.direction);
 - [ ] lib/src/components/menu/navigation_menu.dart:580:class NavigationMenuState extends State<NavigationMenu> {
 - [ ] lib/src/components/menu/navigation_menu.dart:581:  static const Duration kDebounceDuration = Duration(milliseconds: 200);
 - [ ] lib/src/components/navigation/navigation_bar.dart:508:mixin NavigationContainerMixin {
