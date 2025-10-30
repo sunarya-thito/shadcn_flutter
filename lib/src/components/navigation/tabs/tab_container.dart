@@ -195,9 +195,18 @@ class KeyedTabChildWidget<T> extends TabChildWidget with KeyedTabChild<T> {
   T get tabKey => key.value;
 }
 
+/// A basic tab item widget.
+///
+/// Represents a single tab item with content that can be displayed
+/// in a [TabContainer].
 class TabItem extends StatelessWidget with TabChild {
+  /// Content widget for this tab.
   final Widget child;
 
+  /// Creates a [TabItem].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): content to display in this tab
   const TabItem({
     super.key,
     required this.child,
@@ -213,7 +222,15 @@ class TabItem extends StatelessWidget with TabChild {
   }
 }
 
+/// A keyed tab item widget.
+///
+/// Similar to [TabItem] but includes a unique key for identification.
 class KeyedTabItem<T> extends TabItem with KeyedTabChild<T> {
+  /// Creates a [KeyedTabItem].
+  ///
+  /// Parameters:
+  /// - [key] (`T`, required): unique key for this tab
+  /// - [child] (`Widget`, required): content to display in this tab
   KeyedTabItem({
     required T key,
     required super.child,
@@ -226,18 +243,54 @@ class KeyedTabItem<T> extends TabItem with KeyedTabChild<T> {
   T get tabKey => key.value;
 }
 
+/// Builder function for creating tab layout.
+///
+/// Parameters:
+/// - [context] (`BuildContext`): build context
+/// - [children] (`List<Widget>`): list of tab widgets
+///
+/// Returns: `Widget` — the tab layout widget
 typedef TabBuilder = Widget Function(
     BuildContext context, List<Widget> children);
+
+/// Builder function for creating individual tab child widgets.
+///
+/// Parameters:
+/// - [context] (`BuildContext`): build context
+/// - [data] (`TabContainerData`): tab container data
+/// - [child] (`Widget`): child widget to wrap
+///
+/// Returns: `Widget` — the wrapped child widget
 typedef TabChildBuilder = Widget Function(
     BuildContext context, TabContainerData data, Widget child);
 
+/// Container widget for managing multiple tabs.
+///
+/// Provides tab selection and content display with customizable builders.
 class TabContainer extends StatelessWidget {
+  /// Currently selected tab index.
   final int selected;
+
+  /// Callback when tab selection changes.
   final ValueChanged<int>? onSelect;
+
+  /// List of tab children to display.
   final List<TabChild> children;
+
+  /// Optional custom tab layout builder.
   final TabBuilder? builder;
+
+  /// Optional custom child widget builder.
   final TabChildBuilder? childBuilder;
 
+  /// Creates a [TabContainer].
+  ///
+  /// Parameters:
+  /// - [selected] (`int`, required): index of the selected tab
+  /// - [onSelect] (`ValueChanged<int>?`, optional): callback when tab changes
+  /// - [children] (`List<TabChild>`, required): list of tab items
+  /// - [builder] (`TabBuilder?`, optional): custom tab layout builder
+  /// - [childBuilder] (`TabChildBuilder?`, optional): custom child builder
   const TabContainer({
     super.key,
     required this.selected,

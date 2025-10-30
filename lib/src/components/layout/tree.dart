@@ -60,6 +60,16 @@ class TreeTheme {
     this.recursiveSelection,
   });
 
+  /// Creates a copy of this theme with the given fields replaced.
+  ///
+  /// Parameters:
+  /// - [branchLine] (`ValueGetter<BranchLine?>?`, optional): New branch line style.
+  /// - [padding] (`ValueGetter<EdgeInsetsGeometry?>?`, optional): New padding.
+  /// - [expandIcon] (`ValueGetter<bool?>?`, optional): New expand icon visibility.
+  /// - [allowMultiSelect] (`ValueGetter<bool?>?`, optional): New multi-select setting.
+  /// - [recursiveSelection] (`ValueGetter<bool?>?`, optional): New recursive selection setting.
+  ///
+  /// Returns: A new [TreeTheme] with updated properties.
   TreeTheme copyWith({
     ValueGetter<BranchLine?>? branchLine,
     ValueGetter<EdgeInsetsGeometry?>? padding,
@@ -528,124 +538,289 @@ typedef TreeNodeUnaryOperator<K> = TreeNode<K>? Function(TreeNode<K> node);
 typedef TreeNodeUnaryOperatorWithParent<K> = TreeNode<K>? Function(
     TreeNode<K>? parent, TreeNode<K> node);
 
+/// Extension methods for manipulating lists of tree nodes.
+///
+/// Provides convenience methods for common tree operations like expansion,
+/// collapse, selection, and node replacement. All methods return a new list
+/// and do not modify the original.
 extension TreeNodeListExtension<K> on List<TreeNode<K>> {
+  /// Applies an operator to all nodes in the tree.
+  ///
+  /// Parameters:
+  /// - [operator] (`TreeNodeUnaryOperator<K>`, required): Transform function.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with transformed nodes.
   List<TreeNode<K>> replaceNodes(TreeNodeUnaryOperator<K> operator) {
     return TreeView.replaceNodes(this, operator);
   }
 
+  /// Replaces a specific node in the tree.
+  ///
+  /// Parameters:
+  /// - [oldNode] (`TreeNode<K>`, required): Node to replace.
+  /// - [newNode] (`TreeNode<K>`, required): Replacement node.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with node replaced.
   List<TreeNode<K>> replaceNode(TreeNode<K> oldNode, TreeNode<K> newNode) {
     return TreeView.replaceNode(this, oldNode, newNode);
   }
 
+  /// Replaces a node by its item value.
+  ///
+  /// Parameters:
+  /// - [oldItem] (`K`, required): Item value to find.
+  /// - [newItem] (`TreeNode<K>`, required): Replacement node.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with item replaced.
   List<TreeNode<K>> replaceItem(K oldItem, TreeNode<K> newItem) {
     return TreeView.replaceItem(this, oldItem, newItem);
   }
 
+  /// Expands all nodes in the tree.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with all nodes expanded.
   List<TreeNode<K>> expandAll() {
     return TreeView.expandAll(this);
   }
 
+  /// Collapses all nodes in the tree.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with all nodes collapsed.
   List<TreeNode<K>> collapseAll() {
     return TreeView.collapseAll(this);
   }
 
+  /// Expands a specific node.
+  ///
+  /// Parameters:
+  /// - [target] (`TreeNode<K>`, required): Node to expand.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with node expanded.
   List<TreeNode<K>> expandNode(TreeNode<K> target) {
     return TreeView.expandNode(this, target);
   }
 
+  /// Expands a node by its item value.
+  ///
+  /// Parameters:
+  /// - [target] (`K`, required): Item value to find and expand.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with item expanded.
   List<TreeNode<K>> expandItem(K target) {
     return TreeView.expandItem(this, target);
   }
 
+  /// Collapses a specific node.
+  ///
+  /// Parameters:
+  /// - [target] (`TreeNode<K>`, required): Node to collapse.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with node collapsed.
   List<TreeNode<K>> collapseNode(TreeNode<K> target) {
     return TreeView.collapseNode(this, target);
   }
 
+  /// Collapses a node by its item value.
+  ///
+  /// Parameters:
+  /// - [target] (`K`, required): Item value to find and collapse.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with item collapsed.
   List<TreeNode<K>> collapseItem(K target) {
     return TreeView.collapseItem(this, target);
   }
 
+  /// Gets all selected nodes in the tree.
+  ///
+  /// Returns: `List<TreeNode<K>>` — list of selected nodes.
   List<TreeNode<K>> get selectedNodes {
     return TreeView.getSelectedNodes(this);
   }
 
+  /// Gets all selected item values in the tree.
+  ///
+  /// Returns: `List<K>` — list of selected item values.
   List<K> get selectedItems {
     return TreeView.getSelectedItems(this);
   }
 
+  /// Selects a specific node.
+  ///
+  /// Parameters:
+  /// - [target] (`TreeNode<K>`, required): Node to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with node selected.
   List<TreeNode<K>> selectNode(TreeNode<K> target) {
     return TreeView.selectNode(this, target);
   }
 
+  /// Selects a node by its item value.
+  ///
+  /// Parameters:
+  /// - [target] (`K`, required): Item value to find and select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with item selected.
   List<TreeNode<K>> selectItem(K target) {
     return TreeView.selectItem(this, target);
   }
 
+  /// Deselects a specific node.
+  ///
+  /// Parameters:
+  /// - [target] (`TreeNode<K>`, required): Node to deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with node deselected.
   List<TreeNode<K>> deselectNode(TreeNode<K> target) {
     return TreeView.deselectNode(this, target);
   }
 
+  /// Deselects a node by its item value.
+  ///
+  /// Parameters:
+  /// - [target] (`K`, required): Item value to find and deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with item deselected.
   List<TreeNode<K>> deselectItem(K target) {
     return TreeView.deselectItem(this, target);
   }
 
+  /// Toggles selection state of a specific node.
+  ///
+  /// Parameters:
+  /// - [target] (`TreeNode<K>`, required): Node to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with node selection toggled.
   List<TreeNode<K>> toggleSelectNode(TreeNode<K> target) {
     return TreeView.toggleSelectNode(this, target);
   }
 
+  /// Toggles selection state of multiple nodes.
+  ///
+  /// Parameters:
+  /// - [targets] (`Iterable<TreeNode<K>>`, required): Nodes to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with nodes toggled.
   List<TreeNode<K>> toggleSelectNodes(Iterable<TreeNode<K>> targets) {
     return TreeView.toggleSelectNodes(this, targets);
   }
 
+  /// Toggles selection state of a node by its item value.
+  ///
+  /// Parameters:
+  /// - [target] (`K`, required): Item value to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with item toggled.
   List<TreeNode<K>> toggleSelectItem(K target) {
     return TreeView.toggleSelectItem(this, target);
   }
 
+  /// Toggles selection state of multiple items.
+  ///
+  /// Parameters:
+  /// - [targets] (`Iterable<K>`, required): Item values to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with items toggled.
   List<TreeNode<K>> toggleSelectItems(Iterable<K> targets) {
     return TreeView.toggleSelectItems(this, targets);
   }
 
+  /// Selects all nodes in the tree.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with all nodes selected.
   List<TreeNode<K>> selectAll() {
     return TreeView.selectAll(this);
   }
 
+  /// Deselects all nodes in the tree.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with all nodes deselected.
   List<TreeNode<K>> deselectAll() {
     return TreeView.deselectAll(this);
   }
 
+  /// Toggles selection state of all nodes in the tree.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with all selections toggled.
   List<TreeNode<K>> toggleSelectAll() {
     return TreeView.toggleSelectAll(this);
   }
 
+  /// Selects specific nodes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`Iterable<TreeNode<K>>`, required): Nodes to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with nodes selected.
   List<TreeNode<K>> selectNodes(Iterable<TreeNode<K>> nodes) {
     return TreeView.selectNodes(this, nodes);
   }
 
+  /// Selects nodes by their item values.
+  ///
+  /// Parameters:
+  /// - [items] (`Iterable<K>`, required): Item values to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with items selected.
   List<TreeNode<K>> selectItems(Iterable<K> items) {
     return TreeView.selectItems(this, items);
   }
 
+  /// Deselects specific nodes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`Iterable<TreeNode<K>>`, required): Nodes to deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with nodes deselected.
   List<TreeNode<K>> deselectNodes(Iterable<TreeNode<K>> nodes) {
     return TreeView.deselectNodes(this, nodes);
   }
 
+  /// Deselects nodes by their item values.
+  ///
+  /// Parameters:
+  /// - [items] (`Iterable<K>`, required): Item values to deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with items deselected.
   List<TreeNode<K>> deselectItems(Iterable<K> items) {
     return TreeView.deselectItems(this, items);
   }
 
+  /// Sets the selected nodes, replacing current selection.
+  ///
+  /// Parameters:
+  /// - [nodes] (`Iterable<TreeNode<K>>`, required): Nodes to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with only specified nodes selected.
   List<TreeNode<K>> setSelectedNodes(Iterable<TreeNode<K>> nodes) {
     return TreeView.setSelectedNodes(this, nodes);
   }
 
+  /// Sets the selected items by value, replacing current selection.
+  ///
+  /// Parameters:
+  /// - [items] (`Iterable<K>`, required): Item values to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with only specified items selected.
   List<TreeNode<K>> setSelectedItems(Iterable<K> items) {
     return TreeView.setSelectedItems(this, items);
   }
 
+  /// Applies an operator to all nodes with parent context.
+  ///
+  /// Parameters:
+  /// - [operator] (`TreeNodeUnaryOperatorWithParent<K>`, required): Transform function with parent.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with transformed nodes.
   List<TreeNode<K>> replaceNodesWithParent(
       TreeNodeUnaryOperatorWithParent<K> operator) {
     return TreeView.replaceNodesWithParent(this, operator);
   }
 
+  /// Updates selection state based on recursive selection rules.
+  ///
+  /// Ensures parent-child selection consistency when recursive selection is enabled.
+  ///
+  /// Returns: `List<TreeNode<K>>` — new tree with updated selection state.
   List<TreeNode<K>> updateRecursiveSelection() {
     return TreeView.updateRecursiveSelection(this);
   }
@@ -836,16 +1011,38 @@ class TreeView<T> extends StatefulWidget {
     return changed ? newNodes : null;
   }
 
+  /// Applies a transformation operator to all nodes in a tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [operator] (`TreeNodeUnaryOperator<K>`, required): Transformation function.
+  ///
+  /// Returns: `List<TreeNode<K>>` — transformed tree.
   static List<TreeNode<K>> replaceNodes<K>(
       List<TreeNode<K>> nodes, TreeNodeUnaryOperator<K> operator) {
     return _replaceNodes(nodes, operator) ?? nodes;
   }
 
+  /// Applies a transformation operator to all nodes with parent context.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [operator] (`TreeNodeUnaryOperatorWithParent<K>`, required): Transformation function.
+  ///
+  /// Returns: `List<TreeNode<K>>` — transformed tree.
   static List<TreeNode<K>> replaceNodesWithParent<K>(
       List<TreeNode<K>> nodes, TreeNodeUnaryOperatorWithParent<K> operator) {
     return _replaceNodesWithParent(null, nodes, operator) ?? nodes;
   }
 
+  /// Replaces a specific node in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [oldNode] (`TreeNode<K>`, required): Node to replace.
+  /// - [newNode] (`TreeNode<K>`, required): Replacement node.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node replaced.
   static List<TreeNode<K>> replaceNode<K>(
       List<TreeNode<K>> nodes, TreeNode<K> oldNode, TreeNode<K> newNode) {
     return replaceNodes(nodes, (node) {
@@ -863,6 +1060,30 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Replaces a node by matching its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [oldItem] (`K`, required): Item value to find.
+  /// - [newItem] (`TreeNode<K>`, required): Replacement node.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item replaced.
+  static List<TreeNode<K>> replaceItem<K>(
+      List<TreeNode<K>> nodes, K oldItem, TreeNode<K> newItem) {
+    return replaceNodes(nodes, (node) {
+      if (node is TreeItem<K> && node.data == oldItem) {
+        return newItem;
+      }
+      return null;
+    });
+  }
+
+  /// Updates selection state to maintain parent-child consistency.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with updated selection.
   static List<TreeNode<K>> updateRecursiveSelection<K>(
       List<TreeNode<K>> nodes) {
     return replaceNodesWithParent(nodes, (parent, node) {
@@ -876,10 +1097,22 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Gets all selected nodes from the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — selected nodes.
   static List<TreeNode<K>> getSelectedNodes<K>(List<TreeNode<K>> nodes) {
     return nodes.where((node) => node.selected).toList();
   }
 
+  /// Gets all selected item values from the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<K>` — selected item values.
   static List<K> getSelectedItems<K>(List<TreeNode<K>> nodes) {
     return nodes
         .whereType<TreeItem<K>>()
@@ -888,18 +1121,37 @@ class TreeView<T> extends StatefulWidget {
         .toList();
   }
 
+  /// Expands all nodes in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all nodes expanded.
   static List<TreeNode<K>> expandAll<K>(List<TreeNode<K>> nodes) {
     return replaceNodes(nodes, (node) {
       return node.expanded ? null : node.updateState(expanded: true);
     });
   }
 
+  /// Collapses all nodes in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all nodes collapsed.
   static List<TreeNode<K>> collapseAll<K>(List<TreeNode<K>> nodes) {
     return replaceNodes(nodes, (node) {
       return node.expanded ? node.updateState(expanded: false) : null;
     });
   }
 
+  /// Expands a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to expand.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node expanded.
   static List<TreeNode<K>> expandNode<K>(
       List<TreeNode<K>> nodes, TreeNode<K> target) {
     return replaceNodes(nodes, (node) {
@@ -907,6 +1159,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Expands a node by its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`K`, required): Item value to expand.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item expanded.
   static List<TreeNode<K>> expandItem<K>(List<TreeNode<K>> nodes, K target) {
     return replaceNodes(nodes, (node) {
       if (node is TreeItem<K> && node.data == target && !node.expanded) {
@@ -916,6 +1175,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Collapses a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to collapse.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node collapsed.
   static List<TreeNode<K>> collapseNode<K>(
       List<TreeNode<K>> nodes, TreeNode<K> target) {
     return replaceNodes(nodes, (node) {
@@ -932,6 +1198,29 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Collapses a node by its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`K`, required): Item value to collapse.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item collapsed.
+  static List<TreeNode<K>> collapseItem<K>(List<TreeNode<K>> nodes, K target) {
+    return replaceNodes(nodes, (node) {
+      if (node is TreeItem<K> && node.data == target) {
+        return node.updateState(expanded: false);
+      }
+      return null;
+    });
+  }
+
+  /// Selects a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node selected.
   static List<TreeNode<K>> selectNode<K>(
       List<TreeNode<K>> nodes, TreeNode<K> target) {
     return replaceNodes(nodes, (node) {
@@ -939,6 +1228,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Selects a node by its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`K`, required): Item value to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item selected.
   static List<TreeNode<K>> selectItem<K>(List<TreeNode<K>> nodes, K target) {
     return replaceNodes(nodes, (node) {
       if (node is TreeItem<K> && node.data == target) {
@@ -948,6 +1244,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Deselects a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node deselected.
   static List<TreeNode<K>> deselectNode<K>(
       List<TreeNode<K>> nodes, TreeNode<K> target) {
     return replaceNodes(nodes, (node) {
@@ -955,6 +1258,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Deselects a node by its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`K`, required): Item value to deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item deselected.
   static List<TreeNode<K>> deselectItem<K>(List<TreeNode<K>> nodes, K target) {
     return replaceNodes(nodes, (node) {
       if (node is TreeItem<K> && node.data == target) {
@@ -964,6 +1274,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Toggles selection state of a specific node.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`TreeNode<K>`, required): Node to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with node selection toggled.
   static List<TreeNode<K>> toggleSelectNode<K>(
       List<TreeNode<K>> nodes, TreeNode<K> target) {
     return replaceNodes(nodes, (node) {
@@ -971,6 +1288,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Toggles selection state of multiple nodes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [targets] (`Iterable<TreeNode<K>>`, required): Nodes to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with nodes toggled.
   static List<TreeNode<K>> toggleSelectNodes<K>(
       List<TreeNode<K>> nodes, Iterable<TreeNode<K>> targets) {
     return replaceNodes(nodes, (node) {
@@ -980,6 +1304,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Toggles selection state of a node by its item value.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [target] (`K`, required): Item value to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with item toggled.
   static List<TreeNode<K>> toggleSelectItem<K>(
       List<TreeNode<K>> nodes, K target) {
     return replaceNodes(nodes, (node) {
@@ -990,6 +1321,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Toggles selection state of multiple items.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [targets] (`Iterable<K>`, required): Item values to toggle.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with items toggled.
   static List<TreeNode<K>> toggleSelectItems<K>(
       List<TreeNode<K>> nodes, Iterable<K> targets) {
     return replaceNodes(nodes, (node) {
@@ -1000,24 +1338,49 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Selects all nodes in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all nodes selected.
   static List<TreeNode<K>> selectAll<K>(List<TreeNode<K>> nodes) {
     return replaceNodes(nodes, (node) {
       return node.updateState(selected: true);
     });
   }
 
+  /// Deselects all nodes in the tree.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all nodes deselected.
   static List<TreeNode<K>> deselectAll<K>(List<TreeNode<K>> nodes) {
     return replaceNodes(nodes, (node) {
       return node.updateState(selected: false);
     });
   }
 
+  /// Toggles selection state of all nodes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with all selections toggled.
   static List<TreeNode<K>> toggleSelectAll<K>(List<TreeNode<K>> nodes) {
     return replaceNodes(nodes, (node) {
       return node.updateState(selected: !node.selected);
     });
   }
 
+  /// Selects specific nodes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [selectedNodes] (`Iterable<TreeNode<K>>`, required): Nodes to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with specified nodes selected.
   static List<TreeNode<K>> selectNodes<K>(
       List<TreeNode<K>> nodes, Iterable<TreeNode<K>> selectedNodes) {
     return replaceNodes(nodes, (node) {
@@ -1027,6 +1390,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Selects nodes by their item values.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [selectedItems] (`Iterable<K>`, required): Item values to select.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with specified items selected.
   static List<TreeNode<K>> selectItems<K>(
       List<TreeNode<K>> nodes, Iterable<K> selectedItems) {
     return replaceNodes(nodes, (node) {
@@ -1037,6 +1407,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Deselects specific nodes.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [deselectedNodes] (`Iterable<TreeNode<K>>`, required): Nodes to deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with specified nodes deselected.
   static List<TreeNode<K>> deselectNodes<K>(
       List<TreeNode<K>> nodes, Iterable<TreeNode<K>> deselectedNodes) {
     return replaceNodes(nodes, (node) {
@@ -1046,6 +1423,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Deselects nodes by their item values.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [deselectedItems] (`Iterable<K>`, required): Item values to deselect.
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with specified items deselected.
   static List<TreeNode<K>> deselectItems<K>(
       List<TreeNode<K>> nodes, Iterable<K> deselectedItems) {
     return replaceNodes(nodes, (node) {
@@ -1056,6 +1440,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Sets the selected nodes, replacing current selection.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [selectedNodes] (`Iterable<TreeNode<K>>`, required): Nodes to select (all others deselected).
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with only specified nodes selected.
   static List<TreeNode<K>> setSelectedNodes<K>(
       List<TreeNode<K>> nodes, Iterable<TreeNode<K>> selectedNodes) {
     return replaceNodes(nodes, (node) {
@@ -1063,6 +1454,13 @@ class TreeView<T> extends StatefulWidget {
     });
   }
 
+  /// Sets the selected items by value, replacing current selection.
+  ///
+  /// Parameters:
+  /// - [nodes] (`List<TreeNode<K>>`, required): Tree nodes.
+  /// - [selectedItems] (`Iterable<K>`, required): Item values to select (all others deselected).
+  ///
+  /// Returns: `List<TreeNode<K>>` — tree with only specified items selected.
   static List<TreeNode<K>> setSelectedItems<K>(
       List<TreeNode<K>> nodes, Iterable<K> selectedItems) {
     return replaceNodes(nodes, (node) {

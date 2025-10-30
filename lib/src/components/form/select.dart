@@ -445,6 +445,8 @@ class ControlledMultiSelect<T> extends StatelessWidget
   final SelectValueSelectionPredicate<Iterable<T>>? valueSelectionPredicate;
   @override
   final Predicate<Iterable<T>>? showValuePredicate;
+
+  /// Builder for rendering individual items in multi-select mode.
   final SelectValueBuilder<T> multiItemBuilder;
 
   /// Creates a [ControlledMultiSelect].
@@ -661,10 +663,31 @@ class SelectGroup extends StatelessWidget {
   }
 }
 
+/// Represents a selectable item in a dropdown menu.
+///
+/// Used within select popups to define individual selectable options.
+/// Automatically applies selected state styling when the item matches
+/// the current selection.
+///
+/// Example:
+/// ```dart
+/// SelectItem(
+///   value: 'option1',
+///   builder: (context) => Text('Option 1'),
+/// )
+/// ```
 class SelectItem extends StatelessWidget {
+  /// Builder for the item's content.
   final WidgetBuilder builder;
+
+  /// The value associated with this item.
   final Object? value;
 
+  /// Creates a [SelectItem].
+  ///
+  /// Parameters:
+  /// - [value] (`Object?`, required): Item value.
+  /// - [builder] (`WidgetBuilder`, required): Content builder.
   const SelectItem({super.key, required this.value, required this.builder});
 
   @override
@@ -678,9 +701,24 @@ class SelectItem extends StatelessWidget {
   }
 }
 
+/// A label widget for grouping items in a select popup.
+///
+/// Displays a non-selectable label to organize dropdown items into categories.
+///
+/// Example:
+/// ```dart
+/// SelectLabel(
+///   child: Text('Category Name'),
+/// )
+/// ```
 class SelectLabel extends StatelessWidget {
+  /// The label content.
   final Widget child;
 
+  /// Creates a [SelectLabel].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): Label content.
   const SelectLabel({super.key, required this.child});
 
   @override
@@ -694,10 +732,38 @@ class SelectLabel extends StatelessWidget {
   }
 }
 
+/// Builder function for select popup content.
+///
+/// Returns the widget tree for the dropdown/popup menu.
 typedef SelectPopupBuilder = Widget Function(BuildContext context);
+
+/// Builder function for rendering selected values.
+///
+/// Parameters:
+/// - [context] (`BuildContext`): Build context.
+/// - [value] (`T`): The selected value.
+///
+/// Returns: Widget representation of the value.
 typedef SelectValueBuilder<T> = Widget Function(BuildContext context, T value);
+
+/// Handler for custom selection logic.
+///
+/// Parameters:
+/// - [oldValue] (`T?`): Previous selection.
+/// - [value] (`Object?`): Newly selected item.
+/// - [selected] (`bool`): Whether item is being selected (true) or deselected (false).
+///
+/// Returns: `T?` — the new selection state.
 typedef SelectValueSelectionHandler<T> = T? Function(
     T? oldValue, Object? value, bool selected);
+
+/// Predicate for testing value selection state.
+///
+/// Parameters:
+/// - [value] (`T?`): Current selection.
+/// - [test] (`Object?`): Value to test against.
+///
+/// Returns: `bool` — true if test matches selection.
 typedef SelectValueSelectionPredicate<T> = bool Function(
     T? value, Object? test);
 
@@ -749,25 +815,66 @@ bool _defaultMultiSelectValueSelectionPredicate<T>(
   return value.contains(test);
 }
 
+/// Common interface for select components.
+///
+/// Defines the contract for both single and multi-select widgets, providing
+/// properties for popup behavior, styling, and value handling.
 mixin SelectBase<T> {
+  /// Callback when selection changes.
   ValueChanged<T?>? get onChanged;
+
+  /// Placeholder widget shown when nothing is selected.
   Widget? get placeholder;
+
+  /// Whether to use filled appearance style.
   bool get filled;
+
+  /// Focus node for keyboard navigation.
   FocusNode? get focusNode;
+
+  /// Size constraints for the select trigger.
   BoxConstraints? get constraints;
+
+  /// Size constraints for the popup menu.
   BoxConstraints? get popupConstraints;
+
+  /// How popup width should relate to trigger width.
   PopoverConstraint get popupWidthConstraint;
+
+  /// Border radius of the select trigger.
   BorderRadiusGeometry? get borderRadius;
+
+  /// Internal padding of the select trigger.
   EdgeInsetsGeometry? get padding;
+
+  /// Alignment of popup relative to trigger.
   AlignmentGeometry get popoverAlignment;
+
+  /// Alignment of anchor point for popup positioning.
   AlignmentGeometry? get popoverAnchorAlignment;
+
+  /// Whether to disable hover effects.
   bool get disableHoverEffect;
+
+  /// Whether clicking selected item deselects it.
   bool get canUnselect;
+
+  /// Whether popup auto-closes after selection.
   bool? get autoClosePopover;
+
+  /// Builder for popup content.
   SelectPopupBuilder get popup;
+
+  /// Builder for rendering selected values.
   SelectValueBuilder<T> get itemBuilder;
+
+  /// Custom selection handler logic.
   SelectValueSelectionHandler<T>? get valueSelectionHandler;
+
+  /// Predicate for testing selection state.
   SelectValueSelectionPredicate<T>? get valueSelectionPredicate;
+
+  /// Predicate for showing value in trigger.
   Predicate<T>? get showValuePredicate;
 }
 
@@ -833,7 +940,10 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   final BoxConstraints? popupConstraints;
   @override
   final PopoverConstraint popupWidthConstraint;
+
+  /// The currently selected value.
   final T? value;
+
   @override
   final BorderRadiusGeometry? borderRadius;
   @override
@@ -848,6 +958,8 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   final bool canUnselect;
   @override
   final bool? autoClosePopover;
+
+  /// Whether the select is enabled for user interaction.
   final bool? enabled;
   @override
   final SelectPopupBuilder popup;
@@ -1186,8 +1298,13 @@ class SelectState<T> extends State<Select<T>>
 /// );
 /// ```
 class MultiSelectChip extends StatelessWidget {
+  /// The value this chip represents in the selection.
   final Object? value;
+
+  /// The content displayed inside the chip.
   final Widget child;
+
+  /// The chip styling.
   final AbstractButtonStyle style;
 
   /// Creates a [MultiSelectChip].
@@ -1238,6 +1355,20 @@ class MultiSelectChip extends StatelessWidget {
   }
 }
 
+/// A customizable dropdown selection widget for multi-value selection.
+///
+/// Extends the base select functionality to support selecting multiple items
+/// simultaneously. Displays selected items as removable chips within the trigger.
+///
+/// Example:
+/// ```dart
+/// MultiSelect<String>(
+///   value: selectedItems,
+///   onChanged: (items) => setState(() => selectedItems = items),
+///   popup: SelectPopup.menu(children: [...]),
+///   multiItemBuilder: (context, item) => Text(item),
+/// )
+/// ```
 class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   @override
   final ValueChanged<Iterable<T>?>?
@@ -1254,7 +1385,10 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final BoxConstraints? popupConstraints;
   @override
   final PopoverConstraint popupWidthConstraint;
+
+  /// The currently selected values.
   final Iterable<T>? value;
+
   @override
   final BorderRadiusGeometry? borderRadius;
   @override
@@ -1269,7 +1403,10 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final bool canUnselect;
   @override
   final bool? autoClosePopover;
+
+  /// Whether the multi-select is enabled for user interaction.
   final bool? enabled;
+
   @override
   final SelectPopupBuilder popup;
   @override
@@ -1280,7 +1417,10 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final SelectValueSelectionHandler<Iterable<T>>? valueSelectionHandler;
   @override
   final SelectValueSelectionPredicate<Iterable<T>>? valueSelectionPredicate;
+
+  /// Builder for rendering individual items in the chip display.
   final SelectValueBuilder<T> multiItemBuilder;
+
   @override
   final Predicate<Iterable<T>>? showValuePredicate;
 

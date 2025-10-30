@@ -52,6 +52,15 @@ class TabPaneTheme {
     this.barHeight,
   });
 
+  /// Creates a copy with specified fields replaced.
+  ///
+  /// Parameters:
+  /// - [borderRadius] (`ValueGetter<BorderRadiusGeometry?>?`, optional): new border radius getter
+  /// - [backgroundColor] (`ValueGetter<Color?>?`, optional): new background color getter
+  /// - [border] (`ValueGetter<BorderSide?>?`, optional): new border getter
+  /// - [barHeight] (`ValueGetter<double?>?`, optional): new bar height getter
+  ///
+  /// Returns: `TabPaneTheme` — new theme with updated values
   TabPaneTheme copyWith({
     ValueGetter<BorderRadiusGeometry?>? borderRadius,
     ValueGetter<Color?>? backgroundColor,
@@ -302,8 +311,13 @@ class _TabGhostData {
   int get hashCode => 0;
 }
 
+/// State class for [TabPane] widget.
+///
+/// Manages the scrolling and rendering of tab pane content.
 class TabPaneState<T> extends State<TabPane<T>> {
   final ScrollController _scrollController = ScrollController();
+
+  /// Drag gesture identifier for tab interactions.
   static const kTabDrag = #tabDrag;
 
   Widget _childBuilder(

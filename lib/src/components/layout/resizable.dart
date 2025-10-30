@@ -283,6 +283,11 @@ class AbsoluteResizablePaneController extends ChangeNotifier
     _state = value;
   }
 
+  /// Creates an [AbsoluteResizablePaneController].
+  ///
+  /// Parameters:
+  /// - [_size] (`double`, required): Initial absolute size in pixels.
+  /// - [collapsed] (`bool`, default: `false`): Initial collapsed state.
   AbsoluteResizablePaneController(this._size, {bool collapsed = false})
       : _collapsed = collapsed;
 
@@ -342,6 +347,12 @@ class FlexibleResizablePaneController extends ChangeNotifier
     with ResizablePaneController {
   double _flex;
   bool _collapsed = false;
+
+  /// Creates a [FlexibleResizablePaneController].
+  ///
+  /// Parameters:
+  /// - [_flex] (`double`, required): Initial flex factor.
+  /// - [collapsed] (`bool`, default: `false`): Initial collapsed state.
   FlexibleResizablePaneController(this._flex, {bool collapsed = false})
       : _collapsed = collapsed;
 
@@ -667,6 +678,10 @@ class _ResizablePanelData {
   }
 }
 
+/// Builder function that optionally returns a widget.
+///
+/// Used for conditional widget building where a widget may or may not be created
+/// based on runtime conditions.
 typedef OptionalWidgetBuilder = Widget? Function(BuildContext context);
 
 /// A container widget that creates resizable panels separated by interactive dividers.

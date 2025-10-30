@@ -178,6 +178,9 @@ class WrappedIcon extends StatelessWidget {
     required this.child,
   });
 
+  /// Returns this widget (callable syntax support).
+  ///
+  /// Allows using the wrapped icon as a callable function.
   Widget call() {
     return this;
   }
@@ -192,6 +195,12 @@ class WrappedIcon extends StatelessWidget {
     );
   }
 
+  /// Creates a copy of this wrapped icon with modified icon theme data.
+  ///
+  /// Parameters:
+  /// - [data] (`WrappedIconDataBuilder<IconThemeData>?`, optional): New icon theme data builder.
+  ///
+  /// Returns: A new [WrappedIcon] with merged theme data.
   WrappedIcon copyWith({
     WrappedIconDataBuilder<IconThemeData>? data,
   }) {

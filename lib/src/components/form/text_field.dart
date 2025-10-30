@@ -709,6 +709,12 @@ abstract class InputFeatureState<T extends InputFeature> {
   /// Override to modify the text field before rendering.
   TextField interceptInput(TextField input) => input;
 
+  /// Triggers a state update for the attached text field.
+  ///
+  /// Parameters:
+  /// - [fn] (`VoidCallback`, required): State update callback.
+  ///
+  /// Throws: AssertionError if feature is not attached.
   void setState(VoidCallback fn) {
     assert(attached, 'Feature not attached');
     _inputState!._setStateFeature(fn);

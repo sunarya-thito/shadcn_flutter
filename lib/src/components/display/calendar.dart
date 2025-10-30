@@ -9,6 +9,10 @@ class CalendarTheme {
   /// Color of navigation arrow icons.
   final Color? arrowIconColor;
 
+  /// Creates a [CalendarTheme].
+  ///
+  /// Parameters:
+  /// - [arrowIconColor] (`Color?`, optional): Color for navigation arrow icons.
   const CalendarTheme({this.arrowIconColor});
 
   /// Creates a copy of this theme with the given fields replaced.
@@ -30,23 +34,23 @@ class CalendarTheme {
 
 /// Defines the different view types available in calendar components.
 ///
-/// Specifies what granularity of time selection is displayed:
-/// - [date]: Shows individual days in a month grid
-/// - [month]: Shows months in a year grid
-/// - [year]: Shows years in a decade grid
+/// Specifies what granularity of time selection is displayed.
 enum CalendarViewType {
+  /// Shows individual days in a month grid.
   date,
+  /// Shows months in a year grid.
   month,
+  /// Shows years in a decade grid.
   year,
 }
 
 /// Represents the interactive state of a date in the calendar.
 ///
-/// Controls whether a specific date can be selected or interacted with:
-/// - [disabled]: Date cannot be selected or clicked
-/// - [enabled]: Date is fully interactive and selectable
+/// Controls whether a specific date can be selected or interacted with.
 enum DateState {
+  /// Date cannot be selected or clicked.
   disabled,
+  /// Date is fully interactive and selectable.
   enabled,
 }
 
@@ -58,15 +62,15 @@ typedef DateStateBuilder = DateState Function(DateTime date);
 
 /// Selection modes available for calendar components.
 ///
-/// Determines how users can select dates in calendar widgets:
-/// - [none]: No date selection allowed (display only)
-/// - [single]: Only one date can be selected at a time
-/// - [range]: Two dates can be selected to form a date range
-/// - [multi]: Multiple individual dates can be selected
+/// Determines how users can select dates in calendar widgets.
 enum CalendarSelectionMode {
+  /// No date selection allowed (display only).
   none,
+  /// Only one date can be selected at a time.
   single,
+  /// Two dates can be selected to form a date range.
   range,
+  /// Multiple individual dates can be selected.
   multi,
 }
 
@@ -849,13 +853,19 @@ class MultiCalendarValue extends CalendarValue {
 
 /// Result type for calendar value lookup operations.
 ///
-/// Indicates the relationship between a queried date and the current calendar selection:
-/// - [none]: Date is not part of any selection
-/// - [selected]: Date is directly selected (single mode or exact match)
-/// - [start]: Date is the start of a selected range
-/// - [end]: Date is the end of a selected range
-/// - [inRange]: Date falls within a selected range but is not start/end
-enum CalendarValueLookup { none, selected, start, end, inRange }
+/// Indicates the relationship between a queried date and the current calendar selection.
+enum CalendarValueLookup {
+  /// Date is not part of any selection.
+  none,
+  /// Date is directly selected (single mode or exact match).
+  selected,
+  /// Date is the start of a selected range.
+  start,
+  /// Date is the end of a selected range.
+  end,
+  /// Date falls within a selected range but is not start/end.
+  inRange
+}
 
 /// Represents a specific month and year view in calendar navigation.
 ///
@@ -935,6 +945,10 @@ class CalendarView {
     return CalendarView(dateTime.year, dateTime.month);
   }
 
+  /// Returns a view for the next month.
+  ///
+  /// Advances to the next month, rolling over to January of the next year
+  /// if the current month is December.
   CalendarView get next {
     if (month == 12) {
       return CalendarView(year + 1, 1);
@@ -942,6 +956,10 @@ class CalendarView {
     return CalendarView(year, month + 1);
   }
 
+  /// Returns a view for the previous month.
+  ///
+  /// Moves back to the previous month, rolling back to December of the previous
+  /// year if the current month is January.
   CalendarView get previous {
     if (month == 1) {
       return CalendarView(year - 1, 12);
@@ -1448,28 +1466,28 @@ class YearCalendar extends StatelessWidget {
 ///
 /// Defines the different visual appearances and behaviors that calendar date cells
 /// can have based on their selection state and position within ranges.
-///
-/// States include:
-/// - [none]: Normal unselected date
-/// - [today]: Current date highlighted
-/// - [selected]: Single selected date or exact range boundary
-/// - [inRange]: Date within a selected range but not start/end
-/// - [startRange]/[endRange]: Range boundaries in other months
-/// - [startRangeSelected]/[endRangeSelected]: Range boundaries in current month
-/// - [startRangeSelectedShort]/[endRangeSelectedShort]: Boundaries in short ranges
-/// - [inRangeSelectedShort]: Middle dates in short ranges (typically 2-day ranges)
 enum CalendarItemType {
+  /// Normal unselected date.
   none,
+  /// Current date highlighted.
   today,
+  /// Single selected date or exact range boundary.
   selected,
-  // when its the date in the range
+  /// Date within a selected range but not start/end.
   inRange,
-  startRange, // same as startRangeSelected, but used for other months
-  endRange, // same as endRangeSelected, but used for other months
+  /// Range start boundary in other months (same as startRangeSelected).
+  startRange,
+  /// Range end boundary in other months (same as endRangeSelected).
+  endRange,
+  /// Range start boundary in current month.
   startRangeSelected,
+  /// Range end boundary in current month.
   endRangeSelected,
+  /// Range start boundary in short ranges.
   startRangeSelectedShort,
-  endRangeSelectedShort, // usually when the range are just 2 days
+  /// Range end boundary in short ranges (typically 2-day ranges).
+  endRangeSelectedShort,
+  /// Middle dates in short ranges (typically 2-day ranges).
   inRangeSelectedShort,
 }
 

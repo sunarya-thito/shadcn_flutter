@@ -69,15 +69,41 @@ enum NavigationContainerType {
 /// label presentation, and padding. These properties can be set at the theme level
 /// to provide consistent styling across the application.
 class NavigationBarTheme {
+  /// Background color of the navigation bar.
   final Color? backgroundColor;
+
+  /// Alignment of navigation items.
   final NavigationBarAlignment? alignment;
+
+  /// Layout direction (horizontal or vertical).
   final Axis? direction;
+
+  /// Spacing between navigation items.
   final double? spacing;
+
+  /// Type of label display (e.g., always show, hide, etc.).
   final NavigationLabelType? labelType;
+
+  /// Position of labels relative to icons.
   final NavigationLabelPosition? labelPosition;
+
+  /// Size variant for labels.
   final NavigationLabelSize? labelSize;
+
+  /// Internal padding of the navigation bar.
   final EdgeInsetsGeometry? padding;
 
+  /// Creates a [NavigationBarTheme].
+  ///
+  /// Parameters:
+  /// - [backgroundColor] (`Color?`, optional): Background color.
+  /// - [alignment] (`NavigationBarAlignment?`, optional): Item alignment.
+  /// - [direction] (`Axis?`, optional): Layout direction.
+  /// - [spacing] (`double?`, optional): Item spacing.
+  /// - [labelType] (`NavigationLabelType?`, optional): Label display type.
+  /// - [labelPosition] (`NavigationLabelPosition?`, optional): Label position.
+  /// - [labelSize] (`NavigationLabelSize?`, optional): Label size.
+  /// - [padding] (`EdgeInsetsGeometry?`, optional): Internal padding.
   const NavigationBarTheme({
     this.backgroundColor,
     this.alignment,
@@ -89,6 +115,19 @@ class NavigationBarTheme {
     this.padding,
   });
 
+  /// Creates a copy of this theme with the given fields replaced.
+  ///
+  /// Parameters:
+  /// - [backgroundColor] (`ValueGetter<Color?>?`, optional): New background color.
+  /// - [alignment] (`ValueGetter<NavigationBarAlignment?>?`, optional): New alignment.
+  /// - [direction] (`ValueGetter<Axis?>?`, optional): New direction.
+  /// - [spacing] (`ValueGetter<double?>?`, optional): New spacing.
+  /// - [labelType] (`ValueGetter<NavigationLabelType?>?`, optional): New label type.
+  /// - [labelPosition] (`ValueGetter<NavigationLabelPosition?>?`, optional): New label position.
+  /// - [labelSize] (`ValueGetter<NavigationLabelSize?>?`, optional): New label size.
+  /// - [padding] (`ValueGetter<EdgeInsetsGeometry?>?`, optional): New padding.
+  ///
+  /// Returns: A new [NavigationBarTheme] with updated properties.
   NavigationBarTheme copyWith({
     ValueGetter<Color?>? backgroundColor,
     ValueGetter<NavigationBarAlignment?>? alignment,
@@ -139,9 +178,15 @@ class NavigationBarTheme {
       );
 }
 
+/// Base class for navigation bar items.
+///
+/// Abstract widget class that all navigation items must extend.
+/// Provides common interface for items within [NavigationBar].
 abstract class NavigationBarItem extends Widget {
+  /// Creates a [NavigationBarItem].
   const NavigationBarItem({super.key});
 
+  /// Whether this item can be selected.
   bool get selectable;
 }
 
@@ -205,26 +250,79 @@ abstract class NavigationBarItem extends Widget {
 ///   ],
 /// );
 /// ```
+/// A flexible navigation container widget.
+///
+/// Provides a customizable navigation bar that can be configured for various
+/// layouts including horizontal bars, vertical rails, and expandable sidebars.
+/// Manages navigation item presentation and selection states.
+///
+/// Example:
+/// ```dart
+/// NavigationBar(
+///   index: selectedIndex,
+///   onSelected: (index) => setState(() => selectedIndex = index),
+///   children: [
+///     NavigationButton(child: Text('Home')),
+///     NavigationButton(child: Text('Settings')),
+///   ],
+/// )
+/// ```
 class NavigationBar extends StatefulWidget {
+  /// Background color of the navigation bar.
   final Color? backgroundColor;
+
+  /// List of navigation items to display.
   final List<NavigationBarItem> children;
+
+  /// Alignment of navigation items.
   final NavigationBarAlignment? alignment;
+
+  /// Layout direction (horizontal or vertical).
   final Axis? direction;
+
+  /// Spacing between navigation items.
   final double? spacing;
+
+  /// Type of label display.
   final NavigationLabelType? labelType;
+
+  /// Position of labels relative to icons.
   final NavigationLabelPosition? labelPosition;
+
+  /// Size variant for labels.
   final NavigationLabelSize? labelSize;
+
+  /// Internal padding of the navigation bar.
   final EdgeInsetsGeometry? padding;
+
+  /// Size constraints for the navigation bar.
   final BoxConstraints? constraints;
+
+  /// Whether the navigation bar expands to fill available space.
   final bool? expands;
+
+  /// Currently selected item index.
   final int? index;
+
+  /// Callback when an item is selected.
   final ValueChanged<int>? onSelected;
+
+  /// Surface opacity for the navigation bar background.
   final double? surfaceOpacity;
+
+  /// Surface blur amount for the navigation bar background.
   final double? surfaceBlur;
+
+  /// Whether the navigation bar is in expanded state (for collapsible bars).
   final bool? expanded;
+
+  /// Whether to keep cross-axis size when expanding/collapsing.
   final bool? keepCrossAxisSize;
+
+  /// Whether to keep main-axis size when expanding/collapsing.
   final bool? keepMainAxisSize;
 
+  /// Creates a [NavigationBar].
   const NavigationBar({
     super.key,
     this.backgroundColor,
@@ -969,6 +1067,14 @@ class _NavigationSidebarState extends State<NavigationSidebar>
   }
 }
 
+/// Determines when labels are shown in navigation items.
+///
+/// Values:
+/// - `none`: No labels shown.
+/// - `selected`: Labels shown only for selected items.
+/// - `all`: Labels always shown for all items.
+/// - `tooltip`: Labels shown as tooltips on hover.
+/// - `expanded`: Labels shown when navigation is expanded.
 enum NavigationLabelType { none, selected, all, tooltip, expanded }
 
 enum NavigationLabelPosition { start, end, top, bottom }

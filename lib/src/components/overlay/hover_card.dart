@@ -66,6 +66,17 @@ class HoverCardTheme {
     this.behavior,
   });
 
+  /// Creates a copy with specified fields replaced.
+  ///
+  /// Parameters:
+  /// - [debounce] (`ValueGetter<Duration?>?`, optional): New debounce duration getter.
+  /// - [wait] (`ValueGetter<Duration?>?`, optional): New wait duration getter.
+  /// - [popoverAlignment] (`ValueGetter<AlignmentGeometry?>?`, optional): New popover alignment getter.
+  /// - [anchorAlignment] (`ValueGetter<AlignmentGeometry?>?`, optional): New anchor alignment getter.
+  /// - [popoverOffset] (`ValueGetter<Offset?>?`, optional): New offset getter.
+  /// - [behavior] (`ValueGetter<HitTestBehavior?>?`, optional): New behavior getter.
+  ///
+  /// Returns: `HoverCardTheme` — new theme with updated values.
   HoverCardTheme copyWith({
     ValueGetter<Duration?>? debounce,
     ValueGetter<Duration?>? wait,

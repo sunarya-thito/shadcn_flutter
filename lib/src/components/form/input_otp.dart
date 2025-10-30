@@ -9,9 +9,17 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// and the height of the input containers. These properties can be
 /// set at the theme level to provide consistent styling across the application.
 class InputOTPTheme {
+  /// Horizontal spacing between OTP input fields.
   final double? spacing;
+
+  /// Height of each OTP input container.
   final double? height;
 
+  /// Creates an [InputOTPTheme].
+  ///
+  /// Parameters:
+  /// - [spacing] (`double?`, optional): Space between input fields.
+  /// - [height] (`double?`, optional): Height of input containers.
   const InputOTPTheme({this.spacing, this.height});
 
   /// Creates a copy of this theme with specified properties overridden.

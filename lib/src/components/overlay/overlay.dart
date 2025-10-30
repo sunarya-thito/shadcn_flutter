@@ -31,10 +31,21 @@ abstract class OverlayCompleter<T> {
   Future<void> get animationFuture;
 }
 
+/// Abstract handler for managing overlay presentation and lifecycle.
+///
+/// Provides common interface for different overlay types (popover, sheet, dialog)
+/// with customizable display, positioning, and interaction behavior.
 abstract class OverlayHandler {
+  /// Default popover overlay handler.
   static const OverlayHandler popover = PopoverOverlayHandler();
+
+  /// Default sheet overlay handler.
   static const OverlayHandler sheet = SheetOverlayHandler();
+
+  /// Default dialog overlay handler.
   static const OverlayHandler dialog = DialogOverlayHandler();
+
+  /// Creates an [OverlayHandler].
   const OverlayHandler();
   OverlayCompleter<T?> show<T>({
     required BuildContext context,
@@ -174,10 +185,21 @@ abstract class OverlayManager implements OverlayHandler {
   });
 }
 
+/// Layer widget managing different overlay handlers for the application.
+///
+/// Provides centralized overlay management for popovers, tooltips, and menus
+/// with customizable handlers for each type.
 class OverlayManagerLayer extends StatefulWidget {
+  /// Handler for popover overlays.
   final OverlayHandler popoverHandler;
+
+  /// Handler for tooltip overlays.
   final OverlayHandler tooltipHandler;
+
+  /// Handler for menu overlays.
   final OverlayHandler menuHandler;
+
+  /// Child widget wrapped by overlay management.
   final Widget child;
 
   const OverlayManagerLayer({

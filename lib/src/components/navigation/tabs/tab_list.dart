@@ -50,6 +50,15 @@ class TabListTheme {
     this.indicatorHeight,
   });
 
+  /// Creates a copy with specified fields replaced.
+  ///
+  /// Parameters:
+  /// - [borderColor] (`ValueGetter<Color?>?`, optional): new border color getter
+  /// - [borderWidth] (`ValueGetter<double?>?`, optional): new border width getter
+  /// - [indicatorColor] (`ValueGetter<Color?>?`, optional): new indicator color getter
+  /// - [indicatorHeight] (`ValueGetter<double?>?`, optional): new indicator height getter
+  ///
+  /// Returns: `TabListTheme` — new theme with updated values
   TabListTheme copyWith({
     ValueGetter<Color?>? borderColor,
     ValueGetter<double?>? borderWidth,

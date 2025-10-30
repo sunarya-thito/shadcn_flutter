@@ -50,17 +50,40 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
   @override
   final DatePickerController? controller;
 
+  /// Placeholder widget shown when no date is selected.
   final Widget? placeholder;
+
+  /// Presentation mode for date picker (dialog or popover).
   final PromptMode mode;
+
+  /// Initial calendar view to display.
   final CalendarView? initialView;
+
+  /// Alignment of popover relative to anchor.
   final AlignmentGeometry? popoverAlignment;
+
+  /// Alignment of anchor for popover positioning.
   final AlignmentGeometry? popoverAnchorAlignment;
+
+  /// Padding inside the popover.
   final EdgeInsetsGeometry? popoverPadding;
+
+  /// Title widget for dialog mode.
   final Widget? dialogTitle;
+
+  /// Initial view type (date, month, or year).
   final CalendarViewType? initialViewType;
+
+  /// Callback to determine date state (enabled/disabled).
   final DateStateBuilder? stateBuilder;
+
+  /// Order of date components in the input display.
   final List<DatePart>? datePartsOrder;
+
+  /// Separator widget between date parts.
   final InputPart? separator;
+
+  /// Custom placeholders for individual date parts.
   final Map<DatePart, Widget>? placeholders;
 
   /// Creates a [DateInput].
@@ -561,9 +584,16 @@ class TimeInput extends StatefulWidget with ControlledComponent<TimeOfDay?> {
   @override
   final ComponentController<TimeOfDay?>? controller;
 
+  /// Placeholder widget shown when no time is selected.
   final Widget? placeholder;
+
+  /// Whether to show seconds input field.
   final bool showSeconds;
+
+  /// Separator widget between time parts.
   final InputPart? separator;
+
+  /// Custom placeholders for individual time parts.
   final Map<TimePart, Widget>? placeholders;
 
   /// Creates a [TimeInput].
@@ -778,9 +808,16 @@ class DurationInput extends StatefulWidget with ControlledComponent<Duration?> {
   @override
   final ComponentController<Duration?>? controller;
 
+  /// Placeholder widget shown when no duration is selected.
   final Widget? placeholder;
+
+  /// Whether to show seconds input field.
   final bool showSeconds;
+
+  /// Separator widget between duration parts.
   final InputPart? separator;
+
+  /// Custom placeholders for individual time parts.
   final Map<TimePart, Widget>? placeholders;
 
   /// Creates a [DurationInput].
