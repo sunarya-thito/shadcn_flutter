@@ -1,227 +1,227 @@
 TODO:
-- [ ] lib/src/components/form/formatted_input.dart:119:  const StaticPart(this.text);
-- [ ] lib/src/components/form/formatted_input.dart:456:class FormattedValuePart {
-- [ ] lib/src/components/form/formatted_input.dart:462:  FormattedValuePart withValue(String value) {
-- [ ] lib/src/components/form/formatted_input.dart:457:  final InputPart part;
-- [ ] lib/src/components/form/formatted_input.dart:458:  final String? value;
-- [ ] lib/src/components/form/formatted_input.dart:460:  const FormattedValuePart(this.part, [this.value]);
-- [ ] lib/src/components/form/formatted_input.dart:483:class FormattedValue {
-- [ ] lib/src/components/form/formatted_input.dart:488:  Iterable<FormattedValuePart> get values =>
-- [ ] lib/src/components/form/formatted_input.dart:491:  FormattedValuePart? operator [](int index) {
-- [ ] lib/src/components/form/formatted_input.dart:484:  final List<FormattedValuePart> parts;
-- [ ] lib/src/components/form/formatted_input.dart:486:  const FormattedValue([this.parts = const []]);
-- [ ] lib/src/components/form/form_field.dart:146:class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
-- [ ] lib/src/components/form/form_field.dart:156:  T? get value => formValue;
-- [ ] lib/src/components/form/form_field.dart:176:  bool get enabled => widget.enabled ?? widget.onChanged != null;
-- [ ] lib/src/components/form/form_field.dart:158:  set value(T? value) {
-- [ ] lib/src/components/form/form_field.dart:235:  void prompt([T? value]) {
-- [ ] lib/src/components/form/form_field.dart:288:class ObjectFormFieldDialogResult<T> {
-- [ ] lib/src/components/form/form_field.dart:289:  final T? value;
-- [ ] lib/src/components/form/form_field.dart:291:  ObjectFormFieldDialogResult(this.value);
-- [ ] lib/src/components/form/input.dart:6:enum InputFeaturePosition {
-- [ ] lib/src/components/form/input.dart:7:  leading,
-- [ ] lib/src/components/form/input.dart:8:  trailing,
-- [ ] lib/src/components/form/input.dart:11:class InputHintFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:12:  final WidgetBuilder popupBuilder;
-- [ ] lib/src/components/form/input.dart:13:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:14:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:15:  final bool enableShortcuts;
-- [ ] lib/src/components/form/input.dart:16:  const InputHintFeature({
-- [ ] lib/src/components/form/input.dart:96:class InputShowHintIntent extends Intent {
-- [ ] lib/src/components/form/input.dart:97:  const InputShowHintIntent();
-- [ ] lib/src/components/form/input.dart:100:enum PasswordPeekMode {
-- [ ] lib/src/components/form/input.dart:101:  hold,
-- [ ] lib/src/components/form/input.dart:102:  toggle,
-- [ ] lib/src/components/form/input.dart:105:class InputPasswordToggleFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:106:  final PasswordPeekMode mode;
-- [ ] lib/src/components/form/input.dart:107:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:108:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:109:  final Widget? iconShow;
-- [ ] lib/src/components/form/input.dart:110:  const InputPasswordToggleFeature({
-- [ ] lib/src/components/form/input.dart:191:class InputClearFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:192:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:193:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:194:  const InputClearFeature({
-- [ ] lib/src/components/form/input.dart:233:class InputRevalidateFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:234:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:235:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:236:  const InputRevalidateFeature({
-- [ ] lib/src/components/form/input.dart:315:typedef SuggestionBuilder = FutureOr<Iterable<String>> Function(String query);
-- [ ] lib/src/components/form/input.dart:317:class InputAutoCompleteFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:318:  final SuggestionBuilder querySuggestions;
-- [ ] lib/src/components/form/input.dart:319:  final Widget child;
-- [ ] lib/src/components/form/input.dart:320:  final BoxConstraints? popoverConstraints;
-- [ ] lib/src/components/form/input.dart:321:  final PopoverConstraint? popoverWidthConstraint;
-- [ ] lib/src/components/form/input.dart:322:  final AlignmentDirectional? popoverAnchorAlignment;
-- [ ] lib/src/components/form/input.dart:323:  final AlignmentDirectional? popoverAlignment;
-- [ ] lib/src/components/form/input.dart:324:  final AutoCompleteMode mode;
-- [ ] lib/src/components/form/input.dart:326:  const InputAutoCompleteFeature({
-- [ ] lib/src/components/form/input.dart:393:class InputSpinnerFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:394:  final double step;
-- [ ] lib/src/components/form/input.dart:395:  final bool enableGesture;
-- [ ] lib/src/components/form/input.dart:396:  final double? invalidValue;
-- [ ] lib/src/components/form/input.dart:397:  const InputSpinnerFeature({
-- [ ] lib/src/components/form/input.dart:519:class InputCopyFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:520:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:521:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:522:  const InputCopyFeature({
-- [ ] lib/src/components/form/input.dart:561:class InputLeadingFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:562:  final Widget prefix;
-- [ ] lib/src/components/form/input.dart:563:  const InputLeadingFeature(
-- [ ] lib/src/components/form/input.dart:580:class InputTrailingFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:581:  final Widget suffix;
-- [ ] lib/src/components/form/input.dart:582:  const InputTrailingFeature(
-- [ ] lib/src/components/form/input.dart:600:class InputPasteFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:601:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:602:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:603:  const InputPasteFeature({
-- [ ] lib/src/components/form/input_otp.dart:17:  InputOTPTheme copyWith({
-- [ ] lib/src/components/form/input_otp.dart:12:  final double? spacing;
-- [ ] lib/src/components/form/input_otp.dart:13:  final double? height;
-- [ ] lib/src/components/form/input_otp.dart:15:  const InputOTPTheme({this.spacing, this.height});
-- [ ] lib/src/components/form/input_otp.dart:50:abstract class InputOTPChild {
-- [ ] lib/src/components/form/input_otp.dart:51:  static InputOTPChild get separator =>
-- [ ] lib/src/components/form/input_otp.dart:53:  static InputOTPChild get space =>
-- [ ] lib/src/components/form/input_otp.dart:55:  static InputOTPChild get empty => const WidgetInputOTPChild(SizedBox());
-- [ ] lib/src/components/form/input_otp.dart:120:  bool get hasValue;
-- [ ] lib/src/components/form/input_otp.dart:119:  Widget build(BuildContext context, InputOTPChildData data);
-- [ ] lib/src/components/form/input_otp.dart:56:  factory InputOTPChild.input({
-- [ ] lib/src/components/form/input_otp.dart:70:  factory InputOTPChild.character({
-- [ ] lib/src/components/form/input_otp.dart:118:  const InputOTPChild();
-- [ ] lib/src/components/form/input_otp.dart:123:typedef CodepointPredicate = bool Function(int codepoint);
-- [ ] lib/src/components/form/input_otp.dart:124:typedef CodepointUnaryOperator = int Function(int codepoint);
-- [ ] lib/src/components/form/input_otp.dart:126:class CharacterInputOTPChild extends InputOTPChild {
-- [ ] lib/src/components/form/input_otp.dart:134:  static bool isAlphabetLower(int codepoint) =>
-- [ ] lib/src/components/form/input_otp.dart:136:  static bool isAlphabetUpper(int codepoint) =>
-- [ ] lib/src/components/form/input_otp.dart:138:  static int lowerToUpper(int codepoint) =>
-- [ ] lib/src/components/form/input_otp.dart:140:  static int upperToLower(int codepoint) =>
-- [ ] lib/src/components/form/input_otp.dart:142:  static bool isDigit(int codepoint) =>
-- [ ] lib/src/components/form/input_otp.dart:145:  final CodepointPredicate? predicate;
-- [ ] lib/src/components/form/input_otp.dart:146:  final CodepointUnaryOperator? transform;
-- [ ] lib/src/components/form/input_otp.dart:147:  final bool obscured;
-- [ ] lib/src/components/form/input_otp.dart:148:  final bool readOnly;
-- [ ] lib/src/components/form/input_otp.dart:149:  final TextInputType? keyboardType;
-- [ ] lib/src/components/form/input_otp.dart:151:  const CharacterInputOTPChild({
-- [ ] lib/src/components/form/input_otp.dart:405:class WidgetInputOTPChild extends InputOTPChild {
-- [ ] lib/src/components/form/input_otp.dart:406:  final Widget child;
-- [ ] lib/src/components/form/input_otp.dart:408:  const WidgetInputOTPChild(this.child);
-- [ ] lib/src/components/form/input_otp.dart:426:class OTPSeparator extends StatelessWidget {
-- [ ] lib/src/components/form/input_otp.dart:427:  const OTPSeparator({super.key});
-- [ ] lib/src/components/form/input_otp.dart:440:class InputOTPChildData {
-- [ ] lib/src/components/form/input_otp.dart:465:  void changeValue(int? value) {
-- [ ] lib/src/components/form/input_otp.dart:441:  final FocusNode? previousFocusNode;
-- [ ] lib/src/components/form/input_otp.dart:442:  final FocusNode? focusNode;
-- [ ] lib/src/components/form/input_otp.dart:443:  final FocusNode? nextFocusNode;
-- [ ] lib/src/components/form/input_otp.dart:444:  final int index;
-- [ ] lib/src/components/form/input_otp.dart:445:  final int groupIndex;
-- [ ] lib/src/components/form/input_otp.dart:446:  final int groupLength;
-- [ ] lib/src/components/form/input_otp.dart:447:  final int relativeIndex;
-- [ ] lib/src/components/form/input_otp.dart:448:  final int? value;
-- [ ] lib/src/components/form/input_otp.dart:497:typedef OTPCodepointList = List<int?>;
-- [ ] lib/src/components/form/input_otp.dart:499:extension OTPCodepointListExtension on OTPCodepointList {
-- [ ] lib/src/components/form/input_otp.dart:500:  String otpToString() {
-- [ ] lib/src/components/form/input_otp.dart:552:  final List<InputOTPChild> children;
-- [ ] lib/src/components/form/input_otp.dart:553:  final OTPCodepointList? initialValue;
-- [ ] lib/src/components/form/input_otp.dart:554:  final ValueChanged<OTPCodepointList>? onChanged;
-- [ ] lib/src/components/form/input_otp.dart:555:  final ValueChanged<OTPCodepointList>? onSubmitted;
-- [ ] lib/src/components/form/input_otp.dart:557:  const InputOTP({
-- [ ] lib/src/components/form/item_picker.dart:284:Future<T?> showItemPicker<T>(
-- [ ] lib/src/components/form/item_picker.dart:382:Future<T?> showItemPickerDialog<T>(
-- [ ] lib/src/components/form/item_picker.dart:183:abstract class ItemChildDelegate<T> {
-- [ ] lib/src/components/form/item_picker.dart:185:  int? get itemCount;
-- [ ] lib/src/components/form/item_picker.dart:186:  T? operator [](int index);
-- [ ] lib/src/components/form/item_picker.dart:184:  const ItemChildDelegate();
-- [ ] lib/src/components/form/item_picker.dart:189:class ItemList<T> extends ItemChildDelegate<T> {
-- [ ] lib/src/components/form/item_picker.dart:190:  final List<T> items;
-- [ ] lib/src/components/form/item_picker.dart:191:  const ItemList(this.items);
-- [ ] lib/src/components/form/item_picker.dart:198:class ItemBuilder<T> extends ItemChildDelegate<T> {
-- [ ] lib/src/components/form/item_picker.dart:201:  final T? Function(int index) itemBuilder;
-- [ ] lib/src/components/form/item_picker.dart:202:  const ItemBuilder({this.itemCount, required this.itemBuilder});
-- [ ] lib/src/components/form/item_picker.dart:208:typedef ItemPickerBuilder<T> = Widget Function(BuildContext context, T item);
-- [ ] lib/src/components/form/item_picker.dart:210:abstract class ItemPickerLayout {
-- [ ] lib/src/components/form/item_picker.dart:214:  Widget build(
-- [ ] lib/src/components/form/item_picker.dart:211:  static const ListItemPickerLayout list = ListItemPickerLayout();
-- [ ] lib/src/components/form/item_picker.dart:212:  static const GridItemPickerLayout grid = GridItemPickerLayout();
-- [ ] lib/src/components/form/item_picker.dart:213:  const ItemPickerLayout();
-- [ ] lib/src/components/form/item_picker.dart:218:class ListItemPickerLayout extends ItemPickerLayout {
-- [ ] lib/src/components/form/item_picker.dart:219:  const ListItemPickerLayout();
-- [ ] lib/src/components/form/item_picker.dart:245:class GridItemPickerLayout extends ItemPickerLayout {
-- [ ] lib/src/components/form/item_picker.dart:249:  ItemPickerLayout call({int crossAxisCount = 4}) {
-- [ ] lib/src/components/form/item_picker.dart:246:  final int crossAxisCount;
-- [ ] lib/src/components/form/item_picker.dart:247:  const GridItemPickerLayout({this.crossAxisCount = 4});
-- [ ] lib/src/components/form/item_picker.dart:417:class ItemPickerDialog<T> extends StatefulWidget {
-- [ ] lib/src/components/form/item_picker.dart:418:  final ItemChildDelegate<T> items;
-- [ ] lib/src/components/form/item_picker.dart:419:  final ItemPickerBuilder<T> builder;
-- [ ] lib/src/components/form/item_picker.dart:420:  final ItemPickerLayout layout;
-- [ ] lib/src/components/form/item_picker.dart:421:  final T? value;
-- [ ] lib/src/components/form/item_picker.dart:422:  final ValueChanged<T?>? onChanged;
-- [ ] lib/src/components/form/item_picker.dart:423:  const ItemPickerDialog({
-- [ ] lib/src/components/form/item_picker.dart:459:class ItemPickerData {
-- [ ] lib/src/components/form/item_picker.dart:460:  final Object? value;
-- [ ] lib/src/components/form/item_picker.dart:461:  final ValueChanged<Object?>? onChanged;
-- [ ] lib/src/components/form/item_picker.dart:462:  final ItemPickerLayout layout;
-- [ ] lib/src/components/form/item_picker.dart:463:  const ItemPickerData({this.value, this.onChanged, required this.layout});
-- [ ] lib/src/components/form/item_picker.dart:478:class ItemPickerOption<T> extends StatelessWidget {
-- [ ] lib/src/components/form/item_picker.dart:479:  final T value;
-- [ ] lib/src/components/form/item_picker.dart:480:  final Widget? label;
-- [ ] lib/src/components/form/item_picker.dart:481:  final Widget child;
-- [ ] lib/src/components/form/item_picker.dart:482:  final AbstractButtonStyle? style;
-- [ ] lib/src/components/form/item_picker.dart:483:  final AbstractButtonStyle? selectedStyle;
-- [ ] lib/src/components/form/item_picker.dart:484:  const ItemPickerOption({
-- [ ] lib/src/components/form/multiple_choice.dart:313:class MultipleChoice<T> extends StatefulWidget {
-- [ ] lib/src/components/form/multiple_choice.dart:314:  final Widget child;
-- [ ] lib/src/components/form/multiple_choice.dart:315:  final T? value;
-- [ ] lib/src/components/form/multiple_choice.dart:316:  final ValueChanged<T?>? onChanged;
-- [ ] lib/src/components/form/multiple_choice.dart:317:  final bool? enabled;
-- [ ] lib/src/components/form/multiple_choice.dart:318:  final bool? allowUnselect;
-- [ ] lib/src/components/form/multiple_choice.dart:320:  const MultipleChoice({
-- [ ] lib/src/components/form/multiple_choice.dart:396:class MultipleAnswer<T> extends StatefulWidget {
-- [ ] lib/src/components/form/multiple_choice.dart:397:  final Widget child;
-- [ ] lib/src/components/form/multiple_choice.dart:398:  final Iterable<T>? value;
-- [ ] lib/src/components/form/multiple_choice.dart:399:  final ValueChanged<Iterable<T>?>? onChanged;
-- [ ] lib/src/components/form/multiple_choice.dart:400:  final bool? enabled;
-- [ ] lib/src/components/form/multiple_choice.dart:401:  final bool? allowUnselect;
-- [ ] lib/src/components/form/multiple_choice.dart:403:  const MultipleAnswer({
-- [ ] lib/src/components/form/object_input.dart:53:  final Widget? placeholder;
-- [ ] lib/src/components/form/object_input.dart:54:  final PromptMode mode;
-- [ ] lib/src/components/form/object_input.dart:55:  final CalendarView? initialView;
-- [ ] lib/src/components/form/object_input.dart:56:  final AlignmentGeometry? popoverAlignment;
-- [ ] lib/src/components/form/object_input.dart:57:  final AlignmentGeometry? popoverAnchorAlignment;
-- [ ] lib/src/components/form/object_input.dart:58:  final EdgeInsetsGeometry? popoverPadding;
-- [ ] lib/src/components/form/object_input.dart:59:  final Widget? dialogTitle;
-- [ ] lib/src/components/form/object_input.dart:60:  final CalendarViewType? initialViewType;
-- [ ] lib/src/components/form/object_input.dart:61:  final DateStateBuilder? stateBuilder;
-- [ ] lib/src/components/form/object_input.dart:62:  final List<DatePart>? datePartsOrder;
-- [ ] lib/src/components/form/object_input.dart:63:  final InputPart? separator;
-- [ ] lib/src/components/form/object_input.dart:64:  final Map<DatePart, Widget>? placeholders;
-- [ ] lib/src/components/form/object_input.dart:123:class NullableDate {
-- [ ] lib/src/components/form/object_input.dart:159:  DateTime get date {
-- [ ] lib/src/components/form/object_input.dart:163:  DateTime? get nullableDate {
-- [ ] lib/src/components/form/object_input.dart:147:  NullableDate copyWith({
-- [ ] lib/src/components/form/object_input.dart:170:  int? operator [](DatePart part) {
-- [ ] lib/src/components/form/object_input.dart:181:  Map<DatePart, int> toMap() {
-- [ ] lib/src/components/form/object_input.dart:124:  final int? year;
-- [ ] lib/src/components/form/object_input.dart:125:  final int? month;
-- [ ] lib/src/components/form/object_input.dart:126:  final int? day;
-- [ ] lib/src/components/form/object_input.dart:127:  NullableDate({this.year, this.month, this.day});
-- [ ] lib/src/components/form/object_input.dart:348:class NullableTimeOfDay {
-- [ ] lib/src/components/form/object_input.dart:385:  TimeOfDay? get toTimeOfDay {
-- [ ] lib/src/components/form/object_input.dart:373:  NullableTimeOfDay copyWith({
-- [ ] lib/src/components/form/object_input.dart:392:  static NullableTimeOfDay? fromTimeOfDay(TimeOfDay? timeOfDay) {
-- [ ] lib/src/components/form/object_input.dart:403:  int? operator [](TimePart part) {
-- [ ] lib/src/components/form/object_input.dart:414:  Map<TimePart, int> toMap() {
-- [ ] lib/src/components/form/object_input.dart:349:  final int? hour;
-- [ ] lib/src/components/form/object_input.dart:350:  final int? minute;
-- [ ] lib/src/components/form/object_input.dart:351:  final int? second;
-- [ ] lib/src/components/form/object_input.dart:353:  NullableTimeOfDay({this.hour, this.minute, this.second});
-- [ ] lib/src/components/form/object_input.dart:472:  final Widget? placeholder;
-- [ ] lib/src/components/form/object_input.dart:473:  final bool showSeconds;
-- [ ] lib/src/components/form/object_input.dart:474:  final InputPart? separator;
-- [ ] lib/src/components/form/object_input.dart:475:  final Map<TimePart, Widget>? placeholders;
-- [ ] lib/src/components/form/object_input.dart:689:  final Widget? placeholder;
-- [ ] lib/src/components/form/object_input.dart:690:  final bool showSeconds;
-- [ ] lib/src/components/form/object_input.dart:691:  final InputPart? separator;
-- [ ] lib/src/components/form/object_input.dart:692:  final Map<TimePart, Widget>? placeholders;
+- [x] lib/src/components/form/formatted_input.dart:119:  const StaticPart(this.text);
+- [x] lib/src/components/form/formatted_input.dart:456:class FormattedValuePart {
+- [x] lib/src/components/form/formatted_input.dart:462:  FormattedValuePart withValue(String value) {
+- [x] lib/src/components/form/formatted_input.dart:457:  final InputPart part;
+- [x] lib/src/components/form/formatted_input.dart:458:  final String? value;
+- [x] lib/src/components/form/formatted_input.dart:460:  const FormattedValuePart(this.part, [this.value]);
+- [x] lib/src/components/form/formatted_input.dart:483:class FormattedValue {
+- [x] lib/src/components/form/formatted_input.dart:488:  Iterable<FormattedValuePart> get values =>
+- [x] lib/src/components/form/formatted_input.dart:491:  FormattedValuePart? operator [](int index) {
+- [x] lib/src/components/form/formatted_input.dart:484:  final List<FormattedValuePart> parts;
+- [x] lib/src/components/form/formatted_input.dart:486:  const FormattedValue([this.parts = const []]);
+- [x] lib/src/components/form/form_field.dart:146:class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
+- [x] lib/src/components/form/form_field.dart:156:  T? get value => formValue;
+- [x] lib/src/components/form/form_field.dart:176:  bool get enabled => widget.enabled ?? widget.onChanged != null;
+- [x] lib/src/components/form/form_field.dart:158:  set value(T? value) {
+- [x] lib/src/components/form/form_field.dart:235:  void prompt([T? value]) {
+- [x] lib/src/components/form/form_field.dart:288:class ObjectFormFieldDialogResult<T> {
+- [x] lib/src/components/form/form_field.dart:289:  final T? value;
+- [x] lib/src/components/form/form_field.dart:291:  ObjectFormFieldDialogResult(this.value);
+- [x] lib/src/components/form/input.dart:6:enum InputFeaturePosition {
+- [x] lib/src/components/form/input.dart:7:  leading,
+- [x] lib/src/components/form/input.dart:8:  trailing,
+- [x] lib/src/components/form/input.dart:11:class InputHintFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:12:  final WidgetBuilder popupBuilder;
+- [x] lib/src/components/form/input.dart:13:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:14:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:15:  final bool enableShortcuts;
+- [x] lib/src/components/form/input.dart:16:  const InputHintFeature({
+- [x] lib/src/components/form/input.dart:96:class InputShowHintIntent extends Intent {
+- [x] lib/src/components/form/input.dart:97:  const InputShowHintIntent();
+- [x] lib/src/components/form/input.dart:100:enum PasswordPeekMode {
+- [x] lib/src/components/form/input.dart:101:  hold,
+- [x] lib/src/components/form/input.dart:102:  toggle,
+- [x] lib/src/components/form/input.dart:105:class InputPasswordToggleFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:106:  final PasswordPeekMode mode;
+- [x] lib/src/components/form/input.dart:107:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:108:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:109:  final Widget? iconShow;
+- [x] lib/src/components/form/input.dart:110:  const InputPasswordToggleFeature({
+- [x] lib/src/components/form/input.dart:191:class InputClearFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:192:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:193:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:194:  const InputClearFeature({
+- [x] lib/src/components/form/input.dart:233:class InputRevalidateFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:234:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:235:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:236:  const InputRevalidateFeature({
+- [x] lib/src/components/form/input.dart:315:typedef SuggestionBuilder = FutureOr<Iterable<String>> Function(String query);
+- [x] lib/src/components/form/input.dart:317:class InputAutoCompleteFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:318:  final SuggestionBuilder querySuggestions;
+- [x] lib/src/components/form/input.dart:319:  final Widget child;
+- [x] lib/src/components/form/input.dart:320:  final BoxConstraints? popoverConstraints;
+- [x] lib/src/components/form/input.dart:321:  final PopoverConstraint? popoverWidthConstraint;
+- [x] lib/src/components/form/input.dart:322:  final AlignmentDirectional? popoverAnchorAlignment;
+- [x] lib/src/components/form/input.dart:323:  final AlignmentDirectional? popoverAlignment;
+- [x] lib/src/components/form/input.dart:324:  final AutoCompleteMode mode;
+- [x] lib/src/components/form/input.dart:326:  const InputAutoCompleteFeature({
+- [x] lib/src/components/form/input.dart:393:class InputSpinnerFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:394:  final double step;
+- [x] lib/src/components/form/input.dart:395:  final bool enableGesture;
+- [x] lib/src/components/form/input.dart:396:  final double? invalidValue;
+- [x] lib/src/components/form/input.dart:397:  const InputSpinnerFeature({
+- [x] lib/src/components/form/input.dart:519:class InputCopyFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:520:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:521:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:522:  const InputCopyFeature({
+- [x] lib/src/components/form/input.dart:561:class InputLeadingFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:562:  final Widget prefix;
+- [x] lib/src/components/form/input.dart:563:  const InputLeadingFeature(
+- [x] lib/src/components/form/input.dart:580:class InputTrailingFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:581:  final Widget suffix;
+- [x] lib/src/components/form/input.dart:582:  const InputTrailingFeature(
+- [x] lib/src/components/form/input.dart:600:class InputPasteFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:601:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:602:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:603:  const InputPasteFeature({
+- [x] lib/src/components/form/input_otp.dart:17:  InputOTPTheme copyWith({
+- [x] lib/src/components/form/input_otp.dart:12:  final double? spacing;
+- [x] lib/src/components/form/input_otp.dart:13:  final double? height;
+- [x] lib/src/components/form/input_otp.dart:15:  const InputOTPTheme({this.spacing, this.height});
+- [x] lib/src/components/form/input_otp.dart:50:abstract class InputOTPChild {
+- [x] lib/src/components/form/input_otp.dart:51:  static InputOTPChild get separator =>
+- [x] lib/src/components/form/input_otp.dart:53:  static InputOTPChild get space =>
+- [x] lib/src/components/form/input_otp.dart:55:  static InputOTPChild get empty => const WidgetInputOTPChild(SizedBox());
+- [x] lib/src/components/form/input_otp.dart:120:  bool get hasValue;
+- [x] lib/src/components/form/input_otp.dart:119:  Widget build(BuildContext context, InputOTPChildData data);
+- [x] lib/src/components/form/input_otp.dart:56:  factory InputOTPChild.input({
+- [x] lib/src/components/form/input_otp.dart:70:  factory InputOTPChild.character({
+- [x] lib/src/components/form/input_otp.dart:118:  const InputOTPChild();
+- [x] lib/src/components/form/input_otp.dart:123:typedef CodepointPredicate = bool Function(int codepoint);
+- [x] lib/src/components/form/input_otp.dart:124:typedef CodepointUnaryOperator = int Function(int codepoint);
+- [x] lib/src/components/form/input_otp.dart:126:class CharacterInputOTPChild extends InputOTPChild {
+- [x] lib/src/components/form/input_otp.dart:134:  static bool isAlphabetLower(int codepoint) =>
+- [x] lib/src/components/form/input_otp.dart:136:  static bool isAlphabetUpper(int codepoint) =>
+- [x] lib/src/components/form/input_otp.dart:138:  static int lowerToUpper(int codepoint) =>
+- [x] lib/src/components/form/input_otp.dart:140:  static int upperToLower(int codepoint) =>
+- [x] lib/src/components/form/input_otp.dart:142:  static bool isDigit(int codepoint) =>
+- [x] lib/src/components/form/input_otp.dart:145:  final CodepointPredicate? predicate;
+- [x] lib/src/components/form/input_otp.dart:146:  final CodepointUnaryOperator? transform;
+- [x] lib/src/components/form/input_otp.dart:147:  final bool obscured;
+- [x] lib/src/components/form/input_otp.dart:148:  final bool readOnly;
+- [x] lib/src/components/form/input_otp.dart:149:  final TextInputType? keyboardType;
+- [x] lib/src/components/form/input_otp.dart:151:  const CharacterInputOTPChild({
+- [x] lib/src/components/form/input_otp.dart:405:class WidgetInputOTPChild extends InputOTPChild {
+- [x] lib/src/components/form/input_otp.dart:406:  final Widget child;
+- [x] lib/src/components/form/input_otp.dart:408:  const WidgetInputOTPChild(this.child);
+- [x] lib/src/components/form/input_otp.dart:426:class OTPSeparator extends StatelessWidget {
+- [x] lib/src/components/form/input_otp.dart:427:  const OTPSeparator({super.key});
+- [x] lib/src/components/form/input_otp.dart:440:class InputOTPChildData {
+- [x] lib/src/components/form/input_otp.dart:465:  void changeValue(int? value) {
+- [x] lib/src/components/form/input_otp.dart:441:  final FocusNode? previousFocusNode;
+- [x] lib/src/components/form/input_otp.dart:442:  final FocusNode? focusNode;
+- [x] lib/src/components/form/input_otp.dart:443:  final FocusNode? nextFocusNode;
+- [x] lib/src/components/form/input_otp.dart:444:  final int index;
+- [x] lib/src/components/form/input_otp.dart:445:  final int groupIndex;
+- [x] lib/src/components/form/input_otp.dart:446:  final int groupLength;
+- [x] lib/src/components/form/input_otp.dart:447:  final int relativeIndex;
+- [x] lib/src/components/form/input_otp.dart:448:  final int? value;
+- [x] lib/src/components/form/input_otp.dart:497:typedef OTPCodepointList = List<int?>;
+- [x] lib/src/components/form/input_otp.dart:499:extension OTPCodepointListExtension on OTPCodepointList {
+- [x] lib/src/components/form/input_otp.dart:500:  String otpToString() {
+- [x] lib/src/components/form/input_otp.dart:552:  final List<InputOTPChild> children;
+- [x] lib/src/components/form/input_otp.dart:553:  final OTPCodepointList? initialValue;
+- [x] lib/src/components/form/input_otp.dart:554:  final ValueChanged<OTPCodepointList>? onChanged;
+- [x] lib/src/components/form/input_otp.dart:555:  final ValueChanged<OTPCodepointList>? onSubmitted;
+- [x] lib/src/components/form/input_otp.dart:557:  const InputOTP({
+- [x] lib/src/components/form/item_picker.dart:284:Future<T?> showItemPicker<T>(
+- [x] lib/src/components/form/item_picker.dart:382:Future<T?> showItemPickerDialog<T>(
+- [x] lib/src/components/form/item_picker.dart:183:abstract class ItemChildDelegate<T> {
+- [x] lib/src/components/form/item_picker.dart:185:  int? get itemCount;
+- [x] lib/src/components/form/item_picker.dart:186:  T? operator [](int index);
+- [x] lib/src/components/form/item_picker.dart:184:  const ItemChildDelegate();
+- [x] lib/src/components/form/item_picker.dart:189:class ItemList<T> extends ItemChildDelegate<T> {
+- [x] lib/src/components/form/item_picker.dart:190:  final List<T> items;
+- [x] lib/src/components/form/item_picker.dart:191:  const ItemList(this.items);
+- [x] lib/src/components/form/item_picker.dart:198:class ItemBuilder<T> extends ItemChildDelegate<T> {
+- [x] lib/src/components/form/item_picker.dart:201:  final T? Function(int index) itemBuilder;
+- [x] lib/src/components/form/item_picker.dart:202:  const ItemBuilder({this.itemCount, required this.itemBuilder});
+- [x] lib/src/components/form/item_picker.dart:208:typedef ItemPickerBuilder<T> = Widget Function(BuildContext context, T item);
+- [x] lib/src/components/form/item_picker.dart:210:abstract class ItemPickerLayout {
+- [x] lib/src/components/form/item_picker.dart:214:  Widget build(
+- [x] lib/src/components/form/item_picker.dart:211:  static const ListItemPickerLayout list = ListItemPickerLayout();
+- [x] lib/src/components/form/item_picker.dart:212:  static const GridItemPickerLayout grid = GridItemPickerLayout();
+- [x] lib/src/components/form/item_picker.dart:213:  const ItemPickerLayout();
+- [x] lib/src/components/form/item_picker.dart:218:class ListItemPickerLayout extends ItemPickerLayout {
+- [x] lib/src/components/form/item_picker.dart:219:  const ListItemPickerLayout();
+- [x] lib/src/components/form/item_picker.dart:245:class GridItemPickerLayout extends ItemPickerLayout {
+- [x] lib/src/components/form/item_picker.dart:249:  ItemPickerLayout call({int crossAxisCount = 4}) {
+- [x] lib/src/components/form/item_picker.dart:246:  final int crossAxisCount;
+- [x] lib/src/components/form/item_picker.dart:247:  const GridItemPickerLayout({this.crossAxisCount = 4});
+- [x] lib/src/components/form/item_picker.dart:417:class ItemPickerDialog<T> extends StatefulWidget {
+- [x] lib/src/components/form/item_picker.dart:418:  final ItemChildDelegate<T> items;
+- [x] lib/src/components/form/item_picker.dart:419:  final ItemPickerBuilder<T> builder;
+- [x] lib/src/components/form/item_picker.dart:420:  final ItemPickerLayout layout;
+- [x] lib/src/components/form/item_picker.dart:421:  final T? value;
+- [x] lib/src/components/form/item_picker.dart:422:  final ValueChanged<T?>? onChanged;
+- [x] lib/src/components/form/item_picker.dart:423:  const ItemPickerDialog({
+- [x] lib/src/components/form/item_picker.dart:459:class ItemPickerData {
+- [x] lib/src/components/form/item_picker.dart:460:  final Object? value;
+- [x] lib/src/components/form/item_picker.dart:461:  final ValueChanged<Object?>? onChanged;
+- [x] lib/src/components/form/item_picker.dart:462:  final ItemPickerLayout layout;
+- [x] lib/src/components/form/item_picker.dart:463:  const ItemPickerData({this.value, this.onChanged, required this.layout});
+- [x] lib/src/components/form/item_picker.dart:478:class ItemPickerOption<T> extends StatelessWidget {
+- [x] lib/src/components/form/item_picker.dart:479:  final T value;
+- [x] lib/src/components/form/item_picker.dart:480:  final Widget? label;
+- [x] lib/src/components/form/item_picker.dart:481:  final Widget child;
+- [x] lib/src/components/form/item_picker.dart:482:  final AbstractButtonStyle? style;
+- [x] lib/src/components/form/item_picker.dart:483:  final AbstractButtonStyle? selectedStyle;
+- [x] lib/src/components/form/item_picker.dart:484:  const ItemPickerOption({
+- [x] lib/src/components/form/multiple_choice.dart:313:class MultipleChoice<T> extends StatefulWidget {
+- [x] lib/src/components/form/multiple_choice.dart:314:  final Widget child;
+- [x] lib/src/components/form/multiple_choice.dart:315:  final T? value;
+- [x] lib/src/components/form/multiple_choice.dart:316:  final ValueChanged<T?>? onChanged;
+- [x] lib/src/components/form/multiple_choice.dart:317:  final bool? enabled;
+- [x] lib/src/components/form/multiple_choice.dart:318:  final bool? allowUnselect;
+- [x] lib/src/components/form/multiple_choice.dart:320:  const MultipleChoice({
+- [x] lib/src/components/form/multiple_choice.dart:396:class MultipleAnswer<T> extends StatefulWidget {
+- [x] lib/src/components/form/multiple_choice.dart:397:  final Widget child;
+- [x] lib/src/components/form/multiple_choice.dart:398:  final Iterable<T>? value;
+- [x] lib/src/components/form/multiple_choice.dart:399:  final ValueChanged<Iterable<T>?>? onChanged;
+- [x] lib/src/components/form/multiple_choice.dart:400:  final bool? enabled;
+- [x] lib/src/components/form/multiple_choice.dart:401:  final bool? allowUnselect;
+- [x] lib/src/components/form/multiple_choice.dart:403:  const MultipleAnswer({
+- [x] lib/src/components/form/object_input.dart:53:  final Widget? placeholder;
+- [x] lib/src/components/form/object_input.dart:54:  final PromptMode mode;
+- [x] lib/src/components/form/object_input.dart:55:  final CalendarView? initialView;
+- [x] lib/src/components/form/object_input.dart:56:  final AlignmentGeometry? popoverAlignment;
+- [x] lib/src/components/form/object_input.dart:57:  final AlignmentGeometry? popoverAnchorAlignment;
+- [x] lib/src/components/form/object_input.dart:58:  final EdgeInsetsGeometry? popoverPadding;
+- [x] lib/src/components/form/object_input.dart:59:  final Widget? dialogTitle;
+- [x] lib/src/components/form/object_input.dart:60:  final CalendarViewType? initialViewType;
+- [x] lib/src/components/form/object_input.dart:61:  final DateStateBuilder? stateBuilder;
+- [x] lib/src/components/form/object_input.dart:62:  final List<DatePart>? datePartsOrder;
+- [x] lib/src/components/form/object_input.dart:63:  final InputPart? separator;
+- [x] lib/src/components/form/object_input.dart:64:  final Map<DatePart, Widget>? placeholders;
+- [x] lib/src/components/form/object_input.dart:123:class NullableDate {
+- [x] lib/src/components/form/object_input.dart:159:  DateTime get date {
+- [x] lib/src/components/form/object_input.dart:163:  DateTime? get nullableDate {
+- [x] lib/src/components/form/object_input.dart:147:  NullableDate copyWith({
+- [x] lib/src/components/form/object_input.dart:170:  int? operator [](DatePart part) {
+- [x] lib/src/components/form/object_input.dart:181:  Map<DatePart, int> toMap() {
+- [x] lib/src/components/form/object_input.dart:124:  final int? year;
+- [x] lib/src/components/form/object_input.dart:125:  final int? month;
+- [x] lib/src/components/form/object_input.dart:126:  final int? day;
+- [x] lib/src/components/form/object_input.dart:127:  NullableDate({this.year, this.month, this.day});
+- [x] lib/src/components/form/object_input.dart:348:class NullableTimeOfDay {
+- [x] lib/src/components/form/object_input.dart:385:  TimeOfDay? get toTimeOfDay {
+- [x] lib/src/components/form/object_input.dart:373:  NullableTimeOfDay copyWith({
+- [x] lib/src/components/form/object_input.dart:392:  static NullableTimeOfDay? fromTimeOfDay(TimeOfDay? timeOfDay) {
+- [x] lib/src/components/form/object_input.dart:403:  int? operator [](TimePart part) {
+- [x] lib/src/components/form/object_input.dart:414:  Map<TimePart, int> toMap() {
+- [x] lib/src/components/form/object_input.dart:349:  final int? hour;
+- [x] lib/src/components/form/object_input.dart:350:  final int? minute;
+- [x] lib/src/components/form/object_input.dart:351:  final int? second;
+- [x] lib/src/components/form/object_input.dart:353:  NullableTimeOfDay({this.hour, this.minute, this.second});
+- [x] lib/src/components/form/object_input.dart:472:  final Widget? placeholder;
+- [x] lib/src/components/form/object_input.dart:473:  final bool showSeconds;
+- [x] lib/src/components/form/object_input.dart:474:  final InputPart? separator;
+- [x] lib/src/components/form/object_input.dart:475:  final Map<TimePart, Widget>? placeholders;
+- [x] lib/src/components/form/object_input.dart:689:  final Widget? placeholder;
+- [x] lib/src/components/form/object_input.dart:690:  final bool showSeconds;
+- [x] lib/src/components/form/object_input.dart:691:  final InputPart? separator;
+- [x] lib/src/components/form/object_input.dart:692:  final Map<TimePart, Widget>? placeholders;
 - [ ] lib/src/components/form/radio_group.dart:22:  RadioTheme copyWith({
 - [ ] lib/src/components/form/radio_group.dart:14:  final Color? activeColor;
 - [ ] lib/src/components/form/radio_group.dart:15:  final Color? borderColor;
