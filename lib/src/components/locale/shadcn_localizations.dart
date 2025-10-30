@@ -418,25 +418,64 @@ abstract class ShadcnLocalizations {
 
   /// Button label: "Close".
   String get buttonClose;
+
+  /// Button label: "Save".
   String get buttonSave;
+
+  /// Button label: "Reset".
   String get buttonReset;
+
+  /// Time unit label: "Hour".
   String get timeHour;
+
+  /// Time unit label: "Minute".
   String get timeMinute;
+
+  /// Time unit label: "Second".
   String get timeSecond;
+
+  /// Time period: "AM" (ante meridiem).
   String get timeAM;
+
+  /// Time period: "PM" (post meridiem).
   String get timePM;
+
+  /// Color component label: "Red".
   String get colorRed;
+
+  /// Color component label: "Green".
   String get colorGreen;
+
+  /// Color component label: "Blue".
   String get colorBlue;
+
+  /// Color component label: "Alpha" (transparency).
   String get colorAlpha;
+
+  /// Color component label: "Hue".
   String get colorHue;
+
+  /// Color component label: "Saturation".
   String get colorSaturation;
+
+  /// Color component label: "Value" (brightness in HSV).
   String get colorValue;
+
+  /// Color component label: "Lightness" (in HSL).
   String get colorLightness;
+
+  /// Context menu: "Cut" action.
   String get menuCut;
+
+  /// Context menu: "Copy" action.
   String get menuCopy;
+
+  /// Context menu: "Paste" action.
   String get menuPaste;
+
+  /// Context menu: "Select All" action.
   String get menuSelectAll;
+
   /// Context menu: "Undo" action.
   String get menuUndo;
 
