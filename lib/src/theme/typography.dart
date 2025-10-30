@@ -276,6 +276,12 @@ class Typography {
     );
   }
 
+  /// Scales all typography font sizes by the given factor.
+  ///
+  /// Parameters:
+  /// - [factor] (`double`, required): Scaling factor to apply.
+  ///
+  /// Returns: `Typography` — scaled typography.
   Typography scale(double factor) {
     return Typography(
       sans: sans.fontSize == null
@@ -387,6 +393,14 @@ class Typography {
     );
   }
 
+  /// Linearly interpolates between two typographies.
+  ///
+  /// Parameters:
+  /// - [a] (`Typography`, required): Start typography.
+  /// - [b] (`Typography`, required): End typography.
+  /// - [t] (`double`, required): Interpolation position (0.0 to 1.0).
+  ///
+  /// Returns: `Typography` — interpolated typography.
   static Typography lerp(Typography a, Typography b, double t) {
     return Typography(
       sans: TextStyle.lerp(a.sans, b.sans, t)!,

@@ -472,20 +472,44 @@ class _AnimatedThemeState extends AnimatedWidgetBaseState<AnimatedTheme> {
 
 /// Properties for icon theming.
 ///
-/// Defines size and color for different icon sizes.
+/// Defines size and color for different icon sizes across the theme.
 class IconThemeProperties {
+  /// Icon theme for 4x-small icons (6px).
   final IconThemeData x4Small;
+
+  /// Icon theme for 3x-small icons (8px).
   final IconThemeData x3Small;
+
+  /// Icon theme for 2x-small icons (10px).
   final IconThemeData x2Small;
+
+  /// Icon theme for extra-small icons (12px).
   final IconThemeData xSmall;
+
+  /// Icon theme for small icons (16px).
   final IconThemeData small;
+
+  /// Icon theme for medium icons (20px).
   final IconThemeData medium;
+
+  /// Icon theme for large icons (24px).
   final IconThemeData large;
+
+  /// Icon theme for extra-large icons (32px).
   final IconThemeData xLarge;
+
+  /// Icon theme for 2x-large icons (40px).
   final IconThemeData x2Large;
+
+  /// Icon theme for 3x-large icons (48px).
   final IconThemeData x3Large;
+
+  /// Icon theme for 4x-large icons (56px).
   final IconThemeData x4Large;
 
+  /// Creates [IconThemeProperties] with default icon sizes.
+  ///
+  /// All parameters are optional and default to predefined sizes.
   const IconThemeProperties({
     this.x4Small = const IconThemeData(size: 6),
     this.x3Small = const IconThemeData(size: 8),
@@ -500,6 +524,11 @@ class IconThemeProperties {
     this.x4Large = const IconThemeData(size: 56),
   });
 
+  /// Creates a copy with updated icon themes.
+  ///
+  /// All parameters are optional getters. Omitted values retain their current value.
+  ///
+  /// Returns: `IconThemeProperties` — a new instance with updated values.
   IconThemeProperties copyWith({
     ValueGetter<IconThemeData>? x4Small,
     ValueGetter<IconThemeData>? x3Small,
@@ -528,6 +557,12 @@ class IconThemeProperties {
     );
   }
 
+  /// Scales all icon sizes by the given factor.
+  ///
+  /// Parameters:
+  /// - [factor] (`double`, required): Scaling factor to apply.
+  ///
+  /// Returns: `IconThemeProperties` — scaled icon theme properties.
   IconThemeProperties scale(double factor) {
     return IconThemeProperties(
       x4Small: x4Small.size == null
@@ -566,6 +601,14 @@ class IconThemeProperties {
     );
   }
 
+  /// Linearly interpolates between two icon theme properties.
+  ///
+  /// Parameters:
+  /// - [a] (`IconThemeProperties`, required): Start properties.
+  /// - [b] (`IconThemeProperties`, required): End properties.
+  /// - [t] (`double`, required): Interpolation position (0.0 to 1.0).
+  ///
+  /// Returns: `IconThemeProperties` — interpolated properties.
   static IconThemeProperties lerp(
     IconThemeProperties a,
     IconThemeProperties b,
@@ -628,9 +671,26 @@ class IconThemeProperties {
 }
 
 /// An inherited widget that provides component-specific theme data.
+///
+/// Allows components to provide custom theme data that overrides or extends
+/// the global theme. The type parameter `T` specifies the theme data type.
+///
+/// Example:
+/// ```dart
+/// ComponentTheme<ButtonTheme>(
+///   data: ButtonTheme(backgroundColor: Colors.blue),
+///   child: MyButton(),
+/// )
+/// ```
 class ComponentTheme<T> extends InheritedTheme {
+  /// The component theme data to provide to descendants.
   final T data;
 
+  /// Creates a [ComponentTheme].
+  ///
+  /// Parameters:
+  /// - [data] (`T`, required): Theme data for this component type.
+  /// - [child] (`Widget`, required): Child widget.
   const ComponentTheme({
     super.key,
     required this.data,
@@ -651,12 +711,22 @@ class ComponentTheme<T> extends InheritedTheme {
     );
   }
 
+  /// Gets the component theme data of type `T` from the closest ancestor.
+  ///
+  /// Throws if no [ComponentTheme] of type `T` is found.
+  ///
+  /// Returns: `T` — the component theme data.
   static T of<T>(BuildContext context) {
     final data = maybeOf<T>(context);
     assert(data != null, 'No ComponentTheme<$T> found in context');
     return data!;
   }
 
+  /// Gets the component theme data of type `T` from the closest ancestor.
+  ///
+  /// Returns `null` if no [ComponentTheme] of type `T` is found.
+  ///
+  /// Returns: `T?` — the component theme data, or null.
   static T? maybeOf<T>(BuildContext context) {
     final widget =
         context.dependOnInheritedWidgetOfExactType<ComponentTheme<T>>();
@@ -672,8 +742,18 @@ class ComponentTheme<T> extends InheritedTheme {
   }
 }
 
+/// Determines which theme mode to use.
+///
+/// - `system`: Follow system theme preference
+/// - `light`: Always use light theme
+/// - `dark`: Always use dark theme
 enum ThemeMode {
+  /// Follow the system theme (light or dark based on device settings).
   system,
+
+  /// Always use light theme.
   light,
+
+  /// Always use dark theme.
   dark,
 }
