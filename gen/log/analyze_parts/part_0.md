@@ -93,7 +93,7 @@ TODO:
 - [x] lib/src/components/menu/menu.dart:100:  PopoverController? get popoverController;
 - [x] lib/src/components/menu/menu.dart:97:  const MenuItem({super.key});
 - [x] lib/src/components/menu/menu.dart:103:class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
-- [ ] lib/src/components/menu/menu.dart:104:  final T? value;
+- [x] lib/src/components/menu/menu.dart:104:  final T? value;
 - [x] lib/src/components/menu/menu.dart:105:  final ContextedValueChanged<T>? onChanged;
 - [x] lib/src/components/menu/menu.dart:106:  final List<Widget> children;
 - [x] lib/src/components/menu/menu.dart:108:  const MenuRadioGroup({
@@ -185,7 +185,7 @@ TODO:
 - [x] lib/src/components/navigation/navigation_bar.dart:1080:enum NavigationLabelPosition { start, end, top, bottom }
 - [x] lib/src/components/navigation/navigation_bar.dart:1082:enum NavigationLabelSize { small, large }
 - [x] lib/src/components/navigation/navigation_bar.dart:1084:class NavigationChildControlData {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1085:  final int? index;
+- [x] lib/src/components/navigation/navigation_bar.dart:1085:  final int? index;
 - [x] lib/src/components/navigation/navigation_bar.dart:1086:  final int actualIndex;
 - [x] lib/src/components/navigation/navigation_bar.dart:1088:  NavigationChildControlData({this.index, required this.actualIndex});
 - [x] lib/src/components/navigation/navigation_bar.dart:1105:class NavigationControlData {
@@ -215,9 +215,9 @@ TODO:
 - [x] lib/src/components/navigation/navigation_bar.dart:1213:  const NavigationDivider({super.key, this.thickness, this.color});
 - [x] lib/src/components/navigation/navigation_bar.dart:1261:class NavigationItem extends AbstractNavigationButton {
 - [ ] lib/src/components/navigation/navigation_bar.dart:1262:  final AbstractButtonStyle? selectedStyle;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1263:  final bool? selected;
+- [x] lib/src/components/navigation/navigation_bar.dart:1263:  final bool? selected;
 - [x] lib/src/components/navigation/navigation_bar.dart:1264:  final ValueChanged<bool>? onChanged;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1265:  final int? index;
+- [x] lib/src/components/navigation/navigation_bar.dart:1265:  final int? index;
 - [x] lib/src/components/navigation/navigation_bar.dart:1266:  const NavigationItem({
 - [x] lib/src/components/navigation/navigation_bar.dart:1370:class NavigationButton extends AbstractNavigationButton {
 - [x] lib/src/components/navigation/navigation_bar.dart:1371:  final VoidCallback? onPressed;
@@ -249,8 +249,8 @@ TODO:
 - [x] lib/src/components/navigation/navigation_bar.dart:1666:  const NavigationLabel({
 - [x] lib/src/components/navigation/navigation_bar.dart:1867:typedef NavigationWidgetBuilder = Widget Function(
 - [x] lib/src/components/navigation/navigation_bar.dart:1870:class NavigationWidget extends StatelessWidget implements NavigationBarItem {
-- [ ] lib/src/components/navigation/navigation_bar.dart:1871:  final int? index;
-- [ ] lib/src/components/navigation/navigation_bar.dart:1872:  final Widget? child;
+- [x] lib/src/components/navigation/navigation_bar.dart:1871:  final int? index;
+- [x] lib/src/components/navigation/navigation_bar.dart:1872:  final Widget? child;
 - [x] lib/src/components/navigation/navigation_bar.dart:1873:  final NavigationWidgetBuilder? builder;
 - [x] lib/src/components/navigation/navigation_bar.dart:1875:  const NavigationWidget({super.key, this.index, required Widget this.child})
 - [x] lib/src/components/navigation/navigation_bar.dart:1878:  const NavigationWidget.builder({
@@ -268,15 +268,15 @@ TODO:
 - [x] lib/src/components/overlay/drawer.dart:1211:  final Size sizeDifference;
 - [x] lib/src/components/overlay/drawer.dart:1213:  BackdropTransformData(this.sizeDifference);
 - [x] lib/src/components/overlay/drawer.dart:1486:class DrawerLayerData {
-- [ ] lib/src/components/overlay/drawer.dart:1492:  Size? computeSize() {
+- [x] lib/src/components/overlay/drawer.dart:1492:  Size? computeSize() {
 - [x] lib/src/components/overlay/drawer.dart:1487:  final DrawerOverlayState overlay;
 - [ ] lib/src/components/overlay/drawer.dart:1488:  final DrawerLayerData? parent;
 - [x] lib/src/components/overlay/drawer.dart:1490:  const DrawerLayerData(this.overlay, this.parent);
 - [x] lib/src/components/overlay/drawer.dart:1510:class DrawerOverlay extends StatefulWidget {
 - [ ] lib/src/components/overlay/drawer.dart:1518:  static DrawerLayerData? maybeFind(BuildContext context, [bool root = false]) {
-- [ ] lib/src/components/overlay/drawer.dart:1528:  static DrawerLayerData? maybeFindMessenger(BuildContext context,
-- [ ] lib/src/components/overlay/drawer.dart:1511:  final Widget child;
-- [ ] lib/src/components/overlay/drawer.dart:1513:  const DrawerOverlay({super.key, required this.child});
+- [x] lib/src/components/overlay/drawer.dart:1528:  static DrawerLayerData? maybeFindMessenger(BuildContext context,
+- [x] lib/src/components/overlay/drawer.dart:1511:  final Widget child;
+- [x] lib/src/components/overlay/drawer.dart:1513:  const DrawerOverlay({super.key, required this.child});
 - [ ] lib/src/components/overlay/drawer.dart:1540:class DrawerOverlayState extends State<DrawerOverlay> {
 - [ ] lib/src/components/overlay/drawer.dart:1544:  void addEntry(DrawerOverlayEntry entry) {
 - [x] lib/src/components/overlay/drawer.dart:1550:  Size computeSize() {
@@ -336,20 +336,20 @@ TODO:
 - [x] lib/src/components/overlay/overlay.dart:25:abstract class OverlayCompleter<T> {
 - [x] lib/src/components/overlay/overlay.dart:28:  bool get isCompleted;
 - [x] lib/src/components/overlay/overlay.dart:29:  bool get isAnimationCompleted;
-- [ ] lib/src/components/overlay/overlay.dart:30:  Future<T?> get future;
+- [x] lib/src/components/overlay/overlay.dart:30:  Future<T?> get future;
 - [x] lib/src/components/overlay/overlay.dart:31:  Future<void> get animationFuture;
 - [x] lib/src/components/overlay/overlay.dart:26:  void remove();
 - [x] lib/src/components/overlay/overlay.dart:27:  void dispose();
-- [ ] lib/src/components/overlay/overlay.dart:50:  OverlayCompleter<T?> show<T>({
+- [x] lib/src/components/overlay/overlay.dart:50:  OverlayCompleter<T?> show<T>({
 - [x] lib/src/components/overlay/overlay.dart:80:class OverlayBarrier {
 - [x] lib/src/components/overlay/overlay.dart:81:  final EdgeInsetsGeometry padding;
 - [x] lib/src/components/overlay/overlay.dart:82:  final BorderRadiusGeometry borderRadius;
-- [ ] lib/src/components/overlay/overlay.dart:83:  final Color? barrierColor;
+- [x] lib/src/components/overlay/overlay.dart:83:  final Color? barrierColor;
 - [x] lib/src/components/overlay/overlay.dart:85:  const OverlayBarrier({
 - [x] lib/src/components/overlay/overlay.dart:92:abstract class OverlayManager implements OverlayHandler {
 - [x] lib/src/components/overlay/overlay.dart:93:  static OverlayManager of(BuildContext context) {
-- [ ] lib/src/components/overlay/overlay.dart:129:  OverlayCompleter<T?> showTooltip<T>({
-- [ ] lib/src/components/overlay/overlay.dart:158:  OverlayCompleter<T?> showMenu<T>({
+- [x] lib/src/components/overlay/overlay.dart:129:  OverlayCompleter<T?> showTooltip<T>({
+- [x] lib/src/components/overlay/overlay.dart:158:  OverlayCompleter<T?> showMenu<T>({
 - [x] lib/src/components/overlay/overlay.dart:205:  const OverlayManagerLayer({
 - [x] lib/src/components/overlay/popover.dart:309:typedef PopoverFutureVoidCallback<T> = Future<T> Function(T value);
 - [x] lib/src/components/overlay/popover.dart:311:enum PopoverConstraint {
@@ -381,7 +381,7 @@ TODO:
 - [x] lib/src/components/overlay/popover.dart:979:  bool get hasOpenPopover =>
 - [x] lib/src/components/overlay/popover.dart:983:  bool get hasMountedPopover =>
 - [x] lib/src/components/overlay/popover.dart:987:  Iterable<Popover> get openPopovers => List.unmodifiable(_openPopovers);
-- [ ] lib/src/components/overlay/popover.dart:989:  Future<T?> show<T>({
+- [x] lib/src/components/overlay/popover.dart:989:  Future<T?> show<T>({
 - [x] lib/src/components/overlay/popover.dart:1058:  void close([bool immediate = false]) {
 - [x] lib/src/components/overlay/popover.dart:1066:  void closeLater() {
 - [x] lib/src/components/overlay/popover.dart:1134:  void disposePopovers() {
@@ -447,30 +447,30 @@ TODO:
 - [x] lib/src/components/overlay/toast.dart:828:  final CapturedThemes? themes;
 - [ ] lib/src/components/overlay/toast.dart:829:  final CapturedData? data;
 - [ ] lib/src/components/overlay/toast.dart:830:  final VoidCallback? onClosed;
-- [ ] lib/src/components/overlay/toast.dart:831:  final Duration? showDuration;
-- [ ] lib/src/components/overlay/toast.dart:833:  ToastEntry({
+- [x] lib/src/components/overlay/toast.dart:831:  final Duration? showDuration;
+- [x] lib/src/components/overlay/toast.dart:833:  ToastEntry({
 - [ ] lib/src/components/overlay/toast.dart:846:class ToastEntryLayout extends StatefulWidget {
-- [ ] lib/src/components/overlay/toast.dart:847:  final ToastEntry entry;
+- [x] lib/src/components/overlay/toast.dart:847:  final ToastEntry entry;
 - [ ] lib/src/components/overlay/toast.dart:848:  final bool expanded;
 - [ ] lib/src/components/overlay/toast.dart:849:  final bool visible;
-- [ ] lib/src/components/overlay/toast.dart:850:  final bool dismissible;
+- [x] lib/src/components/overlay/toast.dart:850:  final bool dismissible;
 - [ ] lib/src/components/overlay/toast.dart:851:  final AlignmentGeometry previousAlignment;
 - [ ] lib/src/components/overlay/toast.dart:852:  final Curve curve;
-- [ ] lib/src/components/overlay/toast.dart:853:  final Duration duration;
+- [x] lib/src/components/overlay/toast.dart:853:  final Duration duration;
 - [ ] lib/src/components/overlay/toast.dart:854:  final CapturedThemes? themes;
 - [ ] lib/src/components/overlay/toast.dart:855:  final CapturedData? data;
-- [ ] lib/src/components/overlay/toast.dart:856:  final ValueListenable<bool> closing;
+- [x] lib/src/components/overlay/toast.dart:856:  final ValueListenable<bool> closing;
 - [ ] lib/src/components/overlay/toast.dart:857:  final VoidCallback onClosed;
 - [ ] lib/src/components/overlay/toast.dart:858:  final Offset collapsedOffset;
-- [ ] lib/src/components/overlay/toast.dart:859:  final double collapsedScale;
+- [x] lib/src/components/overlay/toast.dart:859:  final double collapsedScale;
 - [ ] lib/src/components/overlay/toast.dart:860:  final Curve expandingCurve;
 - [ ] lib/src/components/overlay/toast.dart:861:  final Duration expandingDuration;
-- [ ] lib/src/components/overlay/toast.dart:862:  final double collapsedOpacity;
-- [ ] lib/src/components/overlay/toast.dart:863:  final double entryOpacity;
-- [ ] lib/src/components/overlay/toast.dart:864:  final Widget child;
+- [x] lib/src/components/overlay/toast.dart:862:  final double collapsedOpacity;
+- [x] lib/src/components/overlay/toast.dart:863:  final double entryOpacity;
+- [x] lib/src/components/overlay/toast.dart:864:  final Widget child;
 - [ ] lib/src/components/overlay/toast.dart:865:  final Offset entryOffset;
 - [ ] lib/src/components/overlay/toast.dart:866:  final AlignmentGeometry entryAlignment;
-- [ ] lib/src/components/overlay/toast.dart:867:  final double spacing;
+- [x] lib/src/components/overlay/toast.dart:867:  final double spacing;
 - [ ] lib/src/components/overlay/toast.dart:868:  final int index;
 - [ ] lib/src/components/overlay/toast.dart:869:  final int actualIndex;
 - [ ] lib/src/components/overlay/toast.dart:870:  final VoidCallback? onClosing;
@@ -618,9 +618,9 @@ TODO:
 - [x] lib/src/theme/theme.dart:13:  final double sizeScaling;
 - [x] lib/src/theme/theme.dart:14:  final double textScaling;
 - [ ] lib/src/theme/theme.dart:16:  const AdaptiveScaling([double scaling = 1])
-- [ ] lib/src/theme/theme.dart:23:  const AdaptiveScaling.only({
+- [x] lib/src/theme/theme.dart:23:  const AdaptiveScaling.only({
 - [ ] lib/src/theme/theme.dart:55:  static AdaptiveScaling defaultScalingOf(BuildContext context) {
-- [ ] lib/src/theme/theme.dart:60:  static AdaptiveScaling defaultScaling(ThemeData theme) {
+- [x] lib/src/theme/theme.dart:60:  static AdaptiveScaling defaultScaling(ThemeData theme) {
 - [ ] lib/src/theme/theme.dart:70:  final AdaptiveScaling scaling;
 - [ ] lib/src/theme/theme.dart:71:  final Widget child;
 - [ ] lib/src/theme/theme.dart:73:  const AdaptiveScaler({
@@ -632,10 +632,10 @@ TODO:
 - [ ] lib/src/theme/theme.dart:151:  BorderRadius get borderRadiusXs => BorderRadius.circular(radiusXs);
 - [ ] lib/src/theme/theme.dart:153:  Radius get radiusXxlRadius => Radius.circular(radiusXxl);
 - [ ] lib/src/theme/theme.dart:154:  Radius get radiusXlRadius => Radius.circular(radiusXl);
-- [ ] lib/src/theme/theme.dart:155:  Radius get radiusLgRadius => Radius.circular(radiusLg);
+- [x] lib/src/theme/theme.dart:155:  Radius get radiusLgRadius => Radius.circular(radiusLg);
 - [ ] lib/src/theme/theme.dart:156:  Radius get radiusMdRadius => Radius.circular(radiusMd);
 - [ ] lib/src/theme/theme.dart:157:  Radius get radiusSmRadius => Radius.circular(radiusSm);
-- [ ] lib/src/theme/theme.dart:158:  Radius get radiusXsRadius => Radius.circular(radiusXs);
+- [x] lib/src/theme/theme.dart:158:  Radius get radiusXsRadius => Radius.circular(radiusXs);
 - [ ] lib/src/theme/theme.dart:160:  Brightness get brightness => colorScheme.brightness;
 - [ ] lib/src/theme/theme.dart:162:  ThemeData copyWith({
 - [ ] lib/src/theme/theme.dart:185:  static ThemeData lerp(
@@ -655,7 +655,7 @@ TODO:
 - [ ] lib/src/theme/theme.dart:286:  final ThemeData data;
 - [ ] lib/src/theme/theme.dart:287:  final Widget child;
 - [ ] lib/src/theme/theme.dart:289:  const AnimatedTheme({
-- [ ] lib/src/theme/theme.dart:350:  IconThemeProperties copyWith({
+- [x] lib/src/theme/theme.dart:350:  IconThemeProperties copyWith({
 - [ ] lib/src/theme/theme.dart:378:  IconThemeProperties scale(double factor) {
 - [ ] lib/src/theme/theme.dart:416:  static IconThemeProperties lerp(
 - [ ] lib/src/theme/theme.dart:324:  final IconThemeData x4Small;
@@ -671,7 +671,7 @@ TODO:
 - [ ] lib/src/theme/theme.dart:334:  final IconThemeData x4Large;
 - [ ] lib/src/theme/theme.dart:336:  const IconThemeProperties({
 - [ ] lib/src/theme/theme.dart:501:  static T of<T>(BuildContext context) {
-- [ ] lib/src/theme/theme.dart:507:  static T? maybeOf<T>(BuildContext context) {
+- [x] lib/src/theme/theme.dart:507:  static T? maybeOf<T>(BuildContext context) {
 - [ ] lib/src/theme/theme.dart:479:  final T data;
 - [ ] lib/src/theme/theme.dart:481:  const ComponentTheme({
 - [ ] lib/src/theme/theme.dart:522:enum ThemeMode {
@@ -685,11 +685,11 @@ TODO:
 - [x] lib/src/util.dart:132:double unlerpDouble(double value, double min, double max) {
 - [x] lib/src/util.dart:136:void swapItemInLists<T>(
 - [ ] lib/src/util.dart:146:BorderRadius? optionallyResolveBorderRadius(
-- [ ] lib/src/util.dart:225:BorderRadius subtractByBorder(BorderRadius radius, double borderWidth) {
-- [ ] lib/src/util.dart:242:bool isMobile(TargetPlatform platform) {
-- [ ] lib/src/util.dart:293:T tweenValue<T>(T begin, T end, double t) {
+- [x] lib/src/util.dart:225:BorderRadius subtractByBorder(BorderRadius radius, double borderWidth) {
+- [x] lib/src/util.dart:242:bool isMobile(TargetPlatform platform) {
+- [x] lib/src/util.dart:293:T tweenValue<T>(T begin, T end, double t) {
 - [ ] lib/src/util.dart:299:double wrapDouble(double value, double min, double max) {
-- [ ] lib/src/util.dart:336:Widget gap(double gap, {double? crossGap}) {
+- [x] lib/src/util.dart:336:Widget gap(double gap, {double? crossGap}) {
 - [ ] lib/src/util.dart:765:Iterable<Widget> join(Iterable<Widget> widgets, Widget separator) {
 - [ ] lib/src/util.dart:954:(bool enabled, Object? invokeResult) invokeActionOnFocusedWidget(
 - [ ] lib/src/util.dart:986:WordInfo getWordAtCaret(String text, int caret, [String separator = ' ']) {
@@ -711,10 +711,10 @@ TODO:
 - [ ] lib/src/util.dart:72:  int? indexOfOrNull(T obj, [int start = 0]) {
 - [ ] lib/src/util.dart:77:  int? lastIndexOfOrNull(T obj, [int? start]) {
 - [ ] lib/src/util.dart:82:  int? indexWhereOrNull(Predicate<T> test, [int start = 0]) {
-- [ ] lib/src/util.dart:87:  int? lastIndexWhereOrNull(Predicate<T> test, [int? start]) {
+- [x] lib/src/util.dart:87:  int? lastIndexWhereOrNull(Predicate<T> test, [int? start]) {
 - [x] lib/src/util.dart:92:  bool swapItem(T element, int targetIndex) {
 - [x] lib/src/util.dart:115:  bool swapItemWhere(Predicate<T> test, int targetIndex) {
-- [ ] lib/src/util.dart:124:  T? optGet(int index) {
+- [x] lib/src/util.dart:124:  T? optGet(int index) {
 - [x] lib/src/util.dart:162:extension FutureOrExtension<T> on FutureOr<T> {
 - [x] lib/src/util.dart:163:  FutureOr<R> map<R>(R Function(T value) transform) {
 - [x] lib/src/util.dart:170:  FutureOr<R> flatMap<R>(FutureOr<R> Function(T value) transform) {
@@ -722,18 +722,18 @@ TODO:
 - [ ] lib/src/util.dart:184:  FutureOr<T> catchError(Function onError,
 - [ ] lib/src/util.dart:193:extension AlignmentExtension on AlignmentGeometry {
 - [ ] lib/src/util.dart:194:  Alignment optionallyResolve(BuildContext context) {
-- [ ] lib/src/util.dart:207:extension BorderRadiusExtension on BorderRadiusGeometry {
-- [ ] lib/src/util.dart:208:  BorderRadius optionallyResolve(BuildContext context) {
+- [x] lib/src/util.dart:207:extension BorderRadiusExtension on BorderRadiusGeometry {
+- [x] lib/src/util.dart:208:  BorderRadius optionallyResolve(BuildContext context) {
 - [ ] lib/src/util.dart:216:extension EdgeInsetsExtension on EdgeInsetsGeometry {
 - [ ] lib/src/util.dart:217:  EdgeInsets optionallyResolve(BuildContext context) {
-- [ ] lib/src/util.dart:260:  final CapturedThemes? themes;
-- [ ] lib/src/util.dart:261:  final CapturedData? data;
+- [x] lib/src/util.dart:260:  final CapturedThemes? themes;
+- [x] lib/src/util.dart:261:  final CapturedData? data;
 - [ ] lib/src/util.dart:262:  final Widget child;
 - [ ] lib/src/util.dart:264:  const CapturedWrapper({
 - [ ] lib/src/util.dart:309:  final Widget child;
 - [ ] lib/src/util.dart:310:  final void Function() onWidgetTreeChange;
 - [ ] lib/src/util.dart:312:  const WidgetTreeChangeDetector({
-- [ ] lib/src/util.dart:323:class WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
+- [x] lib/src/util.dart:323:class WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
 - [ ] lib/src/util.dart:343:extension Joinable<T extends Widget> on List<T> {
 - [ ] lib/src/util.dart:344:  List<T> joinSeparator(T separator) {
 - [ ] lib/src/util.dart:356:extension IterableExtension<T> on Iterable<T> {
