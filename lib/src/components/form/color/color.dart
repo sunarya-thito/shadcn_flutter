@@ -784,13 +784,29 @@ class LinearColorGradient extends ColorGradient {
   }
 }
 
+/// A radial gradient for color values.
+///
+/// Creates a circular gradient radiating from a center point.
 class RadialColorGradient extends ColorGradient {
+  /// The color stops defining the gradient.
   final List<ColorStop> colors;
+
+  /// How the gradient tiles beyond its bounds.
   final TileMode tileMode;
+
+  /// The center point of the gradient.
   final AlignmentGeometry center;
+
+  /// The focal point of the gradient (for elliptical gradients).
   final AlignmentGeometry? focal;
+
+  /// The radius of the gradient (0.0 to 1.0).
   final double radius;
+
+  /// The focal radius for elliptical gradients.
   final double focalRadius;
+
+  /// Creates a radial color gradient.
   const RadialColorGradient({
     required this.colors,
     this.tileMode = TileMode.clamp,
@@ -895,12 +911,26 @@ class RadialColorGradient extends ColorGradient {
   }
 }
 
+/// A sweep (angular/conical) gradient for color values.
+///
+/// Creates a gradient that sweeps around a center point.
 class SweepColorGradient extends ColorGradient {
+  /// The color stops defining the gradient.
   final List<ColorStop> colors;
+
+  /// How the gradient tiles beyond its bounds.
   final TileMode tileMode;
+
+  /// The center point of the gradient.
   final AlignmentGeometry center;
+
+  /// The starting angle in radians.
   final double startAngle;
+
+  /// The ending angle in radians.
   final double endAngle;
+
+  /// Creates a sweep color gradient.
   const SweepColorGradient({
     required this.colors,
     this.tileMode = TileMode.clamp,

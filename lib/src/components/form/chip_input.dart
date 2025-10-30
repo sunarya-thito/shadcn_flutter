@@ -21,6 +21,7 @@ class ChipInputTheme {
   /// can override this default behavior.
   final bool? useChips;
 
+  /// The spacing between chips.
   final double? spacing;
 
   /// Creates a [ChipInputTheme].
@@ -85,6 +86,9 @@ class ChipEditingController<T> extends TextEditingController {
     return _nextChipIndex;
   }
 
+  /// Factory constructor creating a chip editing controller.
+  ///
+  /// Optionally initializes with [text] and [initialChips].
   factory ChipEditingController({String? text, List<T>? initialChips}) {
     StringBuffer buffer = StringBuffer();
     if (initialChips != null) {
@@ -122,8 +126,10 @@ class ChipEditingController<T> extends TextEditingController {
     }
   }
 
+  /// Returns an unmodifiable list of all chips in the controller.
   List<T> get chips => List.unmodifiable(_chipMap.values);
 
+  /// Sets the chips in this controller, replacing all existing chips.
   set chips(List<T> newChips) {
     String text = value.text;
     // remove chips that are not in newChips
@@ -154,6 +160,7 @@ class ChipEditingController<T> extends TextEditingController {
     );
   }
 
+  /// Removes all chips from the controller, leaving only plain text.
   void removeAllChips() {
     StringBuffer buffer = StringBuffer();
     String text = value.text;
@@ -294,6 +301,7 @@ class ChipEditingController<T> extends TextEditingController {
         context: context, style: style, withComposing: withComposing);
   }
 
+  /// Returns the plain text without chip characters.
   String get plainText {
     StringBuffer buffer = StringBuffer();
     String text = value.text;
@@ -306,11 +314,15 @@ class ChipEditingController<T> extends TextEditingController {
     return buffer.toString();
   }
 
+  /// Returns the text at the current cursor position.
   String get textAtCursor {
     final boundaries = _findChipTextBoundaries(selection.baseOffset);
     return value.text.substring(boundaries.start, boundaries.end);
   }
 
+  /// Inserts a chip at the cursor position by converting the text at cursor.
+  ///
+  /// Uses [chipConverter] to convert the text at cursor to a chip.
   void insertChipAtCursor(T? Function(String chipText) chipConverter) {
     final boundaries = _findChipTextBoundaries(selection.baseOffset);
     String chipText = value.text.substring(boundaries.start, boundaries.end);
@@ -322,6 +334,7 @@ class ChipEditingController<T> extends TextEditingController {
     }
   }
 
+  /// Clears the text at the current cursor position.
   void clearTextAtCursor() {
     final boundaries = _findChipTextBoundaries(selection.baseOffset);
     String text = value.text;
@@ -334,6 +347,7 @@ class ChipEditingController<T> extends TextEditingController {
     );
   }
 
+  /// Appends a chip at the end of the chip sequence.
   void appendChip(T chip) {
     // append chip at the last chip position
     // note: chip position is not always in order
@@ -358,6 +372,7 @@ class ChipEditingController<T> extends TextEditingController {
     _chipMap[chipIndex] = chip;
   }
 
+  /// Appends a chip at the current cursor position.
   void appendChipAtCursor(T chip) {
     // append chip at the cursor position
     final boundaries = _findChipTextBoundaries(selection.baseOffset);
@@ -372,6 +387,7 @@ class ChipEditingController<T> extends TextEditingController {
     _chipMap[chipIndex] = chip;
   }
 
+  /// Inserts a chip at a specific position in the text.
   void insertChip(T chip) {
     // insert chip at the start
     int chipIndex = _nextAvailableChipIndex;
@@ -421,6 +437,7 @@ class ChipEditingController<T> extends TextEditingController {
     return (start: start, end: end);
   }
 
+  /// Removes the specified chip from the controller.
   void removeChip(T chip) {
     int? chipIndex;
     _chipMap.forEach((key, value) {
@@ -460,27 +477,48 @@ abstract class _ChipProvider<T> {
   Widget? buildChip(BuildContext context, T chip);
 }
 
+/// Callback type for converting text to a chip.
+///
+/// Takes the chip text and returns a chip object, or null if conversion fails.
 typedef ChipSubmissionCallback<T> = T? Function(String chipText);
 
+/// A text input widget that supports inline chip elements.
+///
+/// Allows users to create chip tokens within a text field, useful for
+/// tags, email recipients, or any multi-item input scenario.
 class ChipInput<T> extends TextInputStatefulWidget {
+  /// Checks if a code unit represents a chip character.
   static bool isChipUnicode(int codeUnit) {
     return codeUnit >= ChipEditingController._chipStart &&
         codeUnit <= ChipEditingController._chipEnd;
   }
 
+  /// Checks if a string character is a chip character.
   static bool isChipCharacter(String character) {
     if (character.isEmpty) return false;
     int codeUnit = character.codeUnitAt(0);
     return isChipUnicode(codeUnit);
   }
 
+  /// Builder function for creating chip widgets.
   final ChipWidgetBuilder<T> chipBuilder;
+
+  /// Callback to convert text into a chip object.
   final ChipSubmissionCallback<T> onChipSubmitted;
+
+  /// Callback invoked when the list of chips changes.
   final ValueChanged<List<T>>? onChipsChanged;
+
+  /// Whether to display items as visual chips (defaults to theme setting).
   final bool? useChips;
+
+  /// Initial chips to display in the input.
   final List<T>? initialChips;
+
+  /// Whether to automatically insert autocomplete suggestions as chips.
   final bool autoInsertSuggestion;
 
+  /// Creates a chip input widget.
   const ChipInput({
     super.key,
     super.groupId,
@@ -570,6 +608,9 @@ class ChipInput<T> extends TextInputStatefulWidget {
   State<ChipInput<T>> createState() => ChipInputState();
 }
 
+/// State class for [ChipInput].
+///
+/// Manages the chip input's internal state and chip rendering.
 class ChipInputState<T> extends State<ChipInput<T>>
     with FormValueSupplier<List<T>, ChipInput<T>>
     implements _ChipProvider<T> {
@@ -691,6 +732,8 @@ class ChipInputState<T> extends State<ChipInput<T>>
   }
 }
 
+/// Intent for submitting a chip in the chip input.
 class ChipSubmitIntent extends Intent {
+  /// Creates a chip submit intent.
   const ChipSubmitIntent();
 }
