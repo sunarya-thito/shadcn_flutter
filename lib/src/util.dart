@@ -382,6 +382,16 @@ extension EdgeInsetsExtension on EdgeInsetsGeometry {
   }
 }
 
+/// Subtracts a border width from a border radius.
+///
+/// Reduces each corner's radius by the border width, ensuring the inner
+/// radius accounts for the border thickness. Prevents negative radii.
+///
+/// Parameters:
+/// - [radius] (`BorderRadius`, required): Original border radius.
+/// - [borderWidth] (`double`, required): Border width to subtract.
+///
+/// Returns: `BorderRadius` — adjusted border radius.
 BorderRadius subtractByBorder(BorderRadius radius, double borderWidth) {
   return BorderRadius.only(
     topLeft: _subtractSafe(radius.topLeft, Radius.circular(borderWidth)),
@@ -399,6 +409,14 @@ Radius _subtractSafe(Radius a, Radius b) {
   );
 }
 
+/// Determines if a platform is mobile.
+///
+/// Returns `true` for Android, iOS, and Fuchsia platforms.
+///
+/// Parameters:
+/// - [platform] (`TargetPlatform`, required): Platform to check.
+///
+/// Returns: `bool` — `true` if mobile, `false` otherwise.
 bool isMobile(TargetPlatform platform) {
   switch (platform) {
     case TargetPlatform.android:
@@ -450,12 +468,33 @@ class _CapturedWrapperState extends State<CapturedWrapper> {
   }
 }
 
+/// Linearly interpolates between two numeric values.
+///
+/// Uses the formula: `begin + (end - begin) * t`.
+///
+/// Parameters:
+/// - [begin] (`T`, required): Start value.
+/// - [end] (`T`, required): End value.
+/// - [t] (`double`, required): Interpolation factor (0.0 to 1.0).
+///
+/// Returns: `T` — interpolated value.
 T tweenValue<T>(T begin, T end, double t) {
   dynamic beginValue = begin;
   dynamic endValue = end;
   return (beginValue + (endValue - beginValue) * t) as T;
 }
 
+/// Wraps a value within a specified range.
+///
+/// If the value exceeds the range, it wraps around to the beginning.
+/// Returns the minimum value if the range is zero.
+///
+/// Parameters:
+/// - [value] (`double`, required): Value to wrap.
+/// - [min] (`double`, required): Minimum value of range.
+/// - [max] (`double`, required): Maximum value of range.
+///
+/// Returns: `double` — wrapped value within [min, max).
 double wrapDouble(double value, double min, double max) {
   final range = max - min;
   if (range == 0) {
@@ -466,9 +505,17 @@ double wrapDouble(double value, double min, double max) {
 
 /// A widget that detects changes in the widget tree.
 class WidgetTreeChangeDetector extends StatefulWidget {
+  /// The child widget to monitor.
   final Widget child;
+
+  /// Callback invoked when the widget tree changes.
   final void Function() onWidgetTreeChange;
 
+  /// Creates a [WidgetTreeChangeDetector].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): Child widget.
+  /// - [onWidgetTreeChange] (`VoidCallback`, required): Change callback.
   const WidgetTreeChangeDetector({
     super.key,
     required this.child,
@@ -480,6 +527,7 @@ class WidgetTreeChangeDetector extends StatefulWidget {
       WidgetTreeChangeDetectorState();
 }
 
+/// State for [WidgetTreeChangeDetector].
 class WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
   @override
   void initState() {
@@ -493,6 +541,13 @@ class WidgetTreeChangeDetectorState extends State<WidgetTreeChangeDetector> {
   }
 }
 
+/// Creates a gap widget with specified spacing.
+///
+/// Parameters:
+/// - [gap] (`double`, required): Main axis spacing.
+/// - [crossGap] (`double?`, optional): Cross axis spacing.
+///
+/// Returns: `Widget` — a Gap widget.
 Widget gap(double gap, {double? crossGap}) {
   return Gap(
     gap,
@@ -500,7 +555,14 @@ Widget gap(double gap, {double? crossGap}) {
   );
 }
 
+/// Extension for joining lists of widgets with a separator.
 extension Joinable<T extends Widget> on List<T> {
+  /// Joins widgets with a separator between each item.
+  ///
+  /// Parameters:
+  /// - [separator] (`T`, required): Widget to insert between items.
+  ///
+  /// Returns: `List<T>` — list with separators inserted.
   List<T> joinSeparator(T separator) {
     List<T> result = [];
     for (int i = 0; i < length; i++) {
