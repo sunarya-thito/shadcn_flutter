@@ -840,14 +840,40 @@ class CompareWith<T extends Comparable<T>> extends Validator<T> {
   int get hashCode => Object.hash(key, type, message);
 }
 
+/// A validator for ensuring password strength and security requirements.
+///
+/// [SafePasswordValidator] checks passwords against common security criteria:
+/// digits, lowercase letters, uppercase letters, and special characters.
+/// Each requirement can be individually enabled or disabled.
+///
+/// Example:
+/// ```dart
+/// SafePasswordValidator(
+///   requireDigit: true,
+///   requireLowercase: true,
+///   requireUppercase: true,
+///   requireSpecialChar: true,
+///   message: 'Password must meet security requirements',
+/// )
+/// ```
 class SafePasswordValidator extends Validator<String> {
+  /// Custom error message, or null to use default localized messages.
   final String?
       message; // if null, use default message from ShadcnLocalizations
+      
+  /// Whether password must contain at least one digit.
   final bool requireDigit;
+  
+  /// Whether password must contain at least one lowercase letter.
   final bool requireLowercase;
+  
+  /// Whether password must contain at least one uppercase letter.
   final bool requireUppercase;
+  
+  /// Whether password must contain at least one special character.
   final bool requireSpecialChar;
 
+  /// Creates a [SafePasswordValidator] with configurable requirements.
   const SafePasswordValidator(
       {this.requireDigit = true,
       this.requireLowercase = true,
@@ -906,12 +932,31 @@ class SafePasswordValidator extends Validator<String> {
       requireUppercase, requireSpecialChar, message);
 }
 
+/// A validator that checks if a numeric value meets a minimum threshold.
+///
+/// [MinValidator] ensures that numeric values are greater than (or equal to)
+/// a specified minimum value. Useful for enforcing minimum quantities, ages, etc.
+///
+/// Example:
+/// ```dart
+/// MinValidator<int>(
+///   18,
+///   inclusive: true,
+///   message: 'Must be at least 18 years old',
+/// )
+/// ```
 class MinValidator<T extends num> extends Validator<T> {
+  /// The minimum acceptable value.
   final T min;
+  
+  /// Whether the minimum value itself is acceptable (true) or must be exceeded (false).
   final bool inclusive;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [MinValidator] with the specified minimum value.
   const MinValidator(this.min, {this.inclusive = true, this.message});
 
   @override
@@ -952,12 +997,31 @@ class MinValidator<T extends num> extends Validator<T> {
   int get hashCode => Object.hash(min, inclusive, message);
 }
 
+/// A validator that checks if a numeric value does not exceed a maximum threshold.
+///
+/// [MaxValidator] ensures that numeric values are less than (or equal to)
+/// a specified maximum value. Useful for enforcing maximum quantities, limits, etc.
+///
+/// Example:
+/// ```dart
+/// MaxValidator<int>(
+///   100,
+///   inclusive: true,
+///   message: 'Must not exceed 100',
+/// )
+/// ```
 class MaxValidator<T extends num> extends Validator<T> {
+  /// The maximum acceptable value.
   final T max;
+  
+  /// Whether the maximum value itself is acceptable (true) or must not be reached (false).
   final bool inclusive;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [MaxValidator] with the specified maximum value.
   const MaxValidator(this.max, {this.inclusive = true, this.message});
 
   @override
@@ -998,13 +1062,35 @@ class MaxValidator<T extends num> extends Validator<T> {
   int get hashCode => Object.hash(max, inclusive, message);
 }
 
+/// A validator that checks if a numeric value falls within a specified range.
+///
+/// [RangeValidator] ensures values are between minimum and maximum bounds.
+/// Both bounds can be inclusive or exclusive depending on configuration.
+///
+/// Example:
+/// ```dart
+/// RangeValidator<double>(
+///   0.0,
+///   100.0,
+///   inclusive: true,
+///   message: 'Must be between 0 and 100',
+/// )
+/// ```
 class RangeValidator<T extends num> extends Validator<T> {
+  /// The minimum acceptable value.
   final T min;
+  
+  /// The maximum acceptable value.
   final T max;
+  
+  /// Whether the bounds are inclusive (true) or exclusive (false).
   final bool inclusive;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [RangeValidator] with the specified min and max bounds.
   const RangeValidator(this.min, this.max,
       {this.inclusive = true, this.message});
 
@@ -1047,11 +1133,27 @@ class RangeValidator<T extends num> extends Validator<T> {
   int get hashCode => Object.hash(min, max, inclusive, message);
 }
 
+/// A validator that checks if a string matches a regular expression pattern.
+///
+/// [RegexValidator] provides flexible pattern-based validation using regular
+/// expressions. Useful for validating formats like phone numbers, postal codes, etc.
+///
+/// Example:
+/// ```dart
+/// RegexValidator(
+///   RegExp(r'^\d{3}-\d{3}-\d{4}$'),
+///   message: 'Must be in format: XXX-XXX-XXXX',
+/// )
+/// ```
 class RegexValidator extends Validator<String> {
+  /// The regular expression pattern to match against.
   final RegExp pattern;
+  
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [RegexValidator] with the specified pattern.
   const RegexValidator(this.pattern, {this.message});
 
   @override
@@ -1080,11 +1182,23 @@ class RegexValidator extends Validator<String> {
   int get hashCode => Object.hash(pattern, message);
 }
 
-// email validator using email_validator package
+/// A validator that checks if a string is a valid email address.
+///
+/// [EmailValidator] uses the email_validator package to validate email
+/// addresses according to standard email format rules.
+///
+/// Example:
+/// ```dart
+/// EmailValidator(
+///   message: 'Please enter a valid email address',
+/// )
+/// ```
 class EmailValidator extends Validator<String> {
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates an [EmailValidator] with an optional custom message.
   const EmailValidator({this.message});
 
   @override
@@ -1111,10 +1225,23 @@ class EmailValidator extends Validator<String> {
   int get hashCode => message.hashCode;
 }
 
+/// A validator that checks if a string is a valid URL.
+///
+/// [URLValidator] validates URLs using Dart's Uri parsing capabilities
+/// to ensure the string represents a valid web address.
+///
+/// Example:
+/// ```dart
+/// URLValidator(
+///   message: 'Please enter a valid URL',
+/// )
+/// ```
 class URLValidator extends Validator<String> {
+  /// Custom error message, or null to use default localized message.
   final String?
       message; // if null, use default message from ShadcnLocalizations
 
+  /// Creates a [URLValidator] with an optional custom message.
   const URLValidator({this.message});
 
   @override
