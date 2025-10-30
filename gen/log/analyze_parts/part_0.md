@@ -64,19 +64,19 @@ TODO:
 - [x] lib\src\animation.dart:320:18
 - [x] lib\src\animation.dart:321:27
 - [x] lib\src\animation.dart:329:11
-- [ ] lib\src\collection.dart:1:6
-- [ ] lib\src\collection.dart:30:7
-- [ ] lib\src\collection.dart:34:3
-- [ ] lib\src\collection.dart:40:7
-- [ ] lib\src\collection.dart:47:3
+- [x] lib\src\collection.dart:1:6
+- [x] lib\src\collection.dart:30:7
+- [x] lib\src\collection.dart:34:3
+- [x] lib\src\collection.dart:40:7
+- [x] lib\src\collection.dart:47:3
 - [ ] lib\src\components\animation.dart:291:7
 - [ ] lib\src\components\animation.dart:323:5
-- [ ] lib\src\components\async.dart:5:9
-- [ ] lib\src\components\async.dart:8:7
-- [ ] lib\src\components\async.dart:9:21
-- [ ] lib\src\components\async.dart:10:34
-- [ ] lib\src\components\async.dart:11:12
-- [ ] lib\src\components\async.dart:13:9
+- [x] lib\src\components\async.dart:5:9
+- [x] lib\src\components\async.dart:8:7
+- [x] lib\src\components\async.dart:9:21
+- [x] lib\src\components\async.dart:10:34
+- [x] lib\src\components\async.dart:11:12
+- [x] lib\src\components\async.dart:13:9
 - [ ] lib\src\components\control\button.dart:213:14
 - [ ] lib\src\components\control\button.dart:214:29
 - [ ] lib\src\components\control\button.dart:215:16
