@@ -2025,14 +2025,42 @@ class ButtonStyle implements AbstractButtonStyle {
   }
 }
 
+/// Abstract base class for button theme customization.
+///
+/// [ButtonTheme] provides optional style property delegates that can override
+/// or modify the default button styling. Subclasses implement specific button
+/// variants (primary, secondary, outline, etc.) allowing theme-level customization
+/// of button appearances throughout an application.
+///
+/// Each property is a [ButtonStatePropertyDelegate] that receives the context,
+/// current states, and the default value, allowing for context-aware and
+/// state-dependent style modifications.
+///
+/// Implementations include [PrimaryButtonTheme], [SecondaryButtonTheme],
+/// [OutlineButtonTheme], and others for each button variant.
 abstract class ButtonTheme {
+  /// Optional decoration override (background, border, shadows).
   final ButtonStatePropertyDelegate<Decoration>? decoration;
+
+  /// Optional mouse cursor override.
   final ButtonStatePropertyDelegate<MouseCursor>? mouseCursor;
+
+  /// Optional padding override.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? padding;
+
+  /// Optional text style override.
   final ButtonStatePropertyDelegate<TextStyle>? textStyle;
+
+  /// Optional icon theme override.
   final ButtonStatePropertyDelegate<IconThemeData>? iconTheme;
+
+  /// Optional margin override.
   final ButtonStatePropertyDelegate<EdgeInsetsGeometry>? margin;
 
+  /// Creates a [ButtonTheme] with optional style property delegates.
+  ///
+  /// All parameters are optional, allowing selective override of specific
+  /// style properties while leaving others to use default values.
   const ButtonTheme(
       {this.decoration,
       this.mouseCursor,
@@ -2062,12 +2090,36 @@ abstract class ButtonTheme {
       '$runtimeType{decoration: $decoration, mouseCursor: $mouseCursor, padding: $padding, textStyle: $textStyle, iconTheme: $iconTheme, margin: $margin}';
 }
 
+/// Theme-aware button style that integrates with the component theme system.
+///
+/// [ComponentThemeButtonStyle] implements [AbstractButtonStyle] and provides
+/// automatic theme integration by looking up theme overrides from the widget tree's
+/// [ComponentTheme]. If a theme override is found, it's applied; otherwise, the
+/// fallback style is used.
+///
+/// This enables global button style customization through the theme system while
+/// maintaining type-safe access to specific button theme types.
+///
+/// Example:
+/// ```dart
+/// const ComponentThemeButtonStyle<PrimaryButtonTheme>(
+///   fallback: ButtonVariance.primary,
+/// )
+/// ```
 class ComponentThemeButtonStyle<T extends ButtonTheme>
     implements AbstractButtonStyle {
+  /// The fallback style used when no theme override is found.
   final AbstractButtonStyle fallback;
 
+  /// Creates a [ComponentThemeButtonStyle] with the specified fallback style.
+  ///
+  /// Parameters:
+  /// - [fallback] (required): The default style used when theme override is not available.
   const ComponentThemeButtonStyle({required this.fallback});
 
+  /// Looks up the button theme of type [T] from the component theme.
+  ///
+  /// Returns the theme instance if found in the widget tree, or `null` if not present.
   T? find(BuildContext context) {
     return ComponentTheme.maybeOf<T>(context);
   }
@@ -2129,7 +2181,23 @@ class ComponentThemeButtonStyle<T extends ButtonTheme>
   }
 }
 
+/// Extension methods for [ShapeDecoration] providing copyWith functionality.
+///
+/// Adds a `copyWith` method to [ShapeDecoration] for creating modified copies
+/// with selectively updated properties, similar to the pattern used in Flutter
+/// for other decoration types.
 extension ShapeDecorationExtension on ShapeDecoration {
+  /// Creates a copy of this [ShapeDecoration] with specified properties replaced.
+  ///
+  /// Parameters:
+  /// - [shape]: Replacement shape border
+  /// - [color]: Replacement fill color
+  /// - [gradient]: Replacement gradient
+  /// - [shadows]: Replacement shadow list
+  /// - [image]: Replacement decoration image
+  ///
+  /// Returns a new [ShapeDecoration] with the specified properties updated
+  /// and all other properties copied from the original.
   ShapeDecoration copyWith({
     ShapeBorder? shape,
     Color? color,
@@ -2147,7 +2215,29 @@ extension ShapeDecorationExtension on ShapeDecoration {
   }
 }
 
+/// Extension methods for [Decoration] providing type-safe copyWith operations.
+///
+/// Adds convenience methods to [Decoration] for creating modified copies when
+/// the decoration is either a [BoxDecoration] or [ShapeDecoration]. These methods
+/// handle type checking and provide appropriate defaults when the decoration
+/// doesn't match the expected type.
 extension DecorationExtension on Decoration {
+  /// Creates a [BoxDecoration] copy with specified properties replaced.
+  ///
+  /// If this decoration is a [BoxDecoration], creates a modified copy.
+  /// Otherwise, creates a new [BoxDecoration] with the provided properties.
+  ///
+  /// Parameters:
+  /// - [color]: Replacement or new background color
+  /// - [image]: Replacement or new decoration image
+  /// - [border]: Replacement or new border
+  /// - [borderRadius]: Replacement or new border radius
+  /// - [boxShadow]: Replacement or new shadow list
+  /// - [gradient]: Replacement or new gradient
+  /// - [shape]: Replacement or new box shape
+  /// - [backgroundBlendMode]: Replacement or new blend mode
+  ///
+  /// Returns a [BoxDecoration] with the specified properties.
   BoxDecoration copyWithIfBoxDecoration({
     Color? color,
     DecorationImage? image,
@@ -2184,6 +2274,19 @@ extension DecorationExtension on Decoration {
     );
   }
 
+  /// Creates a [ShapeDecoration] copy with specified properties replaced.
+  ///
+  /// If this decoration is a [ShapeDecoration], creates a modified copy.
+  /// Otherwise, creates a new [ShapeDecoration] with the provided properties.
+  ///
+  /// Parameters:
+  /// - [shape]: Replacement or new shape border
+  /// - [color]: Replacement or new fill color
+  /// - [gradient]: Replacement or new gradient
+  /// - [shadows]: Replacement or new shadow list
+  /// - [image]: Replacement or new decoration image
+  ///
+  /// Returns a [ShapeDecoration] with the specified properties.
   ShapeDecoration copyWithIfShapeDecoration({
     ShapeBorder? shape,
     Color? color,
@@ -2211,7 +2314,23 @@ extension DecorationExtension on Decoration {
   }
 }
 
+/// Theme configuration for primary button styling.
+///
+/// [PrimaryButtonTheme] extends [ButtonTheme] to provide theme-level customization
+/// for primary buttons. It can be registered in the component theme system to
+/// override default primary button styles throughout the application.
+///
+/// Example:
+/// ```dart
+/// PrimaryButtonTheme(
+///   decoration: (context, states, defaultValue) {
+///     // Customize primary button decoration
+///     return customDecoration;
+///   },
+/// )
+/// ```
 class PrimaryButtonTheme extends ButtonTheme {
+  /// Creates a [PrimaryButtonTheme] with optional style property delegates.
   const PrimaryButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2220,6 +2339,7 @@ class PrimaryButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   PrimaryButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2239,7 +2359,12 @@ class PrimaryButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for secondary button styling.
+///
+/// Provides theme-level customization for secondary buttons through the component
+/// theme system. Secondary buttons have muted styling suitable for supporting actions.
 class SecondaryButtonTheme extends ButtonTheme {
+  /// Creates a [SecondaryButtonTheme] with optional style property delegates.
   const SecondaryButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2248,6 +2373,7 @@ class SecondaryButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   SecondaryButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2267,7 +2393,12 @@ class SecondaryButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for outline button styling.
+///
+/// Provides theme-level customization for outline buttons through the component
+/// theme system. Outline buttons feature borders with transparent backgrounds.
 class OutlineButtonTheme extends ButtonTheme {
+  /// Creates an [OutlineButtonTheme] with optional style property delegates.
   const OutlineButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2276,6 +2407,7 @@ class OutlineButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   OutlineButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2295,7 +2427,12 @@ class OutlineButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for ghost button styling.
+///
+/// Provides theme-level customization for ghost buttons. Ghost buttons have minimal
+/// visual presence with no background or border by default.
 class GhostButtonTheme extends ButtonTheme {
+  /// Creates a [GhostButtonTheme] with optional style property delegates.
   const GhostButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2304,6 +2441,7 @@ class GhostButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   GhostButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2323,7 +2461,12 @@ class GhostButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for link button styling.
+///
+/// Provides theme-level customization for link buttons. Link buttons appear as
+/// inline hyperlinks with underline decoration.
 class LinkButtonTheme extends ButtonTheme {
+  /// Creates a [LinkButtonTheme] with optional style property delegates.
   const LinkButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2332,6 +2475,7 @@ class LinkButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   LinkButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2351,7 +2495,12 @@ class LinkButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for text button styling.
+///
+/// Provides theme-level customization for text buttons. Text buttons display only
+/// their text content without background or border decoration.
 class TextButtonTheme extends ButtonTheme {
+  /// Creates a [TextButtonTheme] with optional style property delegates.
   const TextButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2360,6 +2509,7 @@ class TextButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   TextButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2379,7 +2529,12 @@ class TextButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for destructive button styling.
+///
+/// Provides theme-level customization for destructive buttons. Destructive buttons
+/// use warning colors (typically red) for actions that delete or remove data.
 class DestructiveButtonTheme extends ButtonTheme {
+  /// Creates a [DestructiveButtonTheme] with optional style property delegates.
   const DestructiveButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2388,6 +2543,7 @@ class DestructiveButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   DestructiveButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2407,7 +2563,12 @@ class DestructiveButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for fixed button styling.
+///
+/// Provides theme-level customization for fixed buttons. Fixed buttons maintain
+/// consistent dimensions regardless of content.
 class FixedButtonTheme extends ButtonTheme {
+  /// Creates a [FixedButtonTheme] with optional style property delegates.
   const FixedButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2416,6 +2577,7 @@ class FixedButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   FixedButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2435,7 +2597,12 @@ class FixedButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for menu button styling.
+///
+/// Provides theme-level customization for menu buttons. Menu buttons are designed
+/// for triggering dropdown menus with appropriate spacing and styling.
 class MenuButtonTheme extends ButtonTheme {
+  /// Creates a [MenuButtonTheme] with optional style property delegates.
   const MenuButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2444,6 +2611,7 @@ class MenuButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   MenuButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2463,7 +2631,12 @@ class MenuButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for menubar button styling.
+///
+/// Provides theme-level customization for menubar buttons. Menubar buttons are
+/// optimized for horizontal menu bars with appropriate padding and hover effects.
 class MenubarButtonTheme extends ButtonTheme {
+  /// Creates a [MenubarButtonTheme] with optional style property delegates.
   const MenubarButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2472,6 +2645,7 @@ class MenubarButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   MenubarButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2491,7 +2665,12 @@ class MenubarButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for muted button styling.
+///
+/// Provides theme-level customization for muted buttons. Muted buttons use
+/// low-contrast colors for minimal visual impact while remaining functional.
 class MutedButtonTheme extends ButtonTheme {
+  /// Creates a [MutedButtonTheme] with optional style property delegates.
   const MutedButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2500,6 +2679,7 @@ class MutedButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   MutedButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
@@ -2519,7 +2699,12 @@ class MutedButtonTheme extends ButtonTheme {
   }
 }
 
+/// Theme configuration for card button styling.
+///
+/// Provides theme-level customization for card buttons. Card buttons feature
+/// subtle shadows and borders creating an elevated, card-like appearance.
 class CardButtonTheme extends ButtonTheme {
+  /// Creates a [CardButtonTheme] with optional style property delegates.
   const CardButtonTheme(
       {super.decoration,
       super.mouseCursor,
@@ -2528,6 +2713,7 @@ class CardButtonTheme extends ButtonTheme {
       super.iconTheme,
       super.margin});
 
+  /// Creates a copy of this theme with selectively replaced properties.
   CardButtonTheme copyWith({
     ValueGetter<ButtonStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<ButtonStatePropertyDelegate<MouseCursor>?>? mouseCursor,
