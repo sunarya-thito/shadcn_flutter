@@ -117,9 +117,13 @@ class CodeBlock extends StatelessWidget {
                   context: context,
                   builder: (context, overlay) {
                     return const Card(
-                      child: BasicLayout(
-                        leading: Icon(Icons.check),
-                        content: Text('Copied to clipboard'),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 8,
+                        children: [
+                          Icon(Icons.check),
+                          Text('Copied to clipboard'),
+                        ],
                       ),
                     );
                   },
