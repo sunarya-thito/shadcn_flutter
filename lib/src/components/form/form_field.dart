@@ -143,6 +143,11 @@ abstract class ObjectFormHandler<T> {
   }
 }
 
+/// State class for [ObjectFormField] managing form value and user interactions.
+///
+/// Handles value updates, popover/dialog display, and integrates with the
+/// form validation system. This state also determines whether the field is
+/// enabled based on the presence of an `onChanged` callback.
 class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     with FormValueSupplier<T, ObjectFormField<T>> {
   final PopoverController _popoverController = PopoverController();
@@ -153,8 +158,15 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     formValue = widget.value;
   }
 
+  /// Gets the current form value.
+  ///
+  /// Returns: The current value of type `T?`.
   T? get value => formValue;
 
+  /// Sets a new form value and notifies listeners.
+  ///
+  /// Parameters:
+  /// - [value] (`T?`, required): The new value to set.
   set value(T? value) {
     widget.onChanged?.call(value);
     formValue = value;
@@ -173,6 +185,9 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     }
   }
 
+  /// Whether this field is enabled.
+  ///
+  /// Returns true if explicitly enabled or if an `onChanged` callback exists.
   bool get enabled => widget.enabled ?? widget.onChanged != null;
 
   @override
@@ -232,6 +247,17 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     );
   }
 
+  /// Prompts the user to select or edit a value via dialog or popover.
+  ///
+  /// Displays the appropriate UI based on the configured [PromptMode].
+  ///
+  /// Parameters:
+  /// - [value] (`T?`, optional): An initial value to display in the prompt.
+  ///
+  /// Example:
+  /// ```dart
+  /// fieldState.prompt(initialValue);
+  /// ```
   void prompt([T? value]) {
     if (widget.mode == PromptMode.dialog) {
       _showDialog(value);
@@ -285,9 +311,23 @@ class _ObjectFormFieldDialog<T> extends StatefulWidget {
       _ObjectFormFieldDialogState<T>();
 }
 
+/// Holds the result value from an object form field dialog.
+///
+/// Used to pass the selected or edited value back from a dialog prompt.
+///
+/// Example:
+/// ```dart
+/// final result = ObjectFormFieldDialogResult<DateTime>(DateTime.now());
+/// Navigator.of(context).pop(result);
+/// ```
 class ObjectFormFieldDialogResult<T> {
+  /// The value selected or edited by the user.
   final T? value;
 
+  /// Creates an [ObjectFormFieldDialogResult].
+  ///
+  /// Parameters:
+  /// - [value] (`T?`, required): The result value.
   ObjectFormFieldDialogResult(this.value);
 }
 

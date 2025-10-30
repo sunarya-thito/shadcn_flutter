@@ -116,6 +116,15 @@ class StaticPart extends InputPart {
   /// The static text to display.
   final String text;
 
+  /// Creates a [StaticPart] with the specified static text.
+  ///
+  /// Parameters:
+  /// - [text] (`String`, required): The immutable text content to display.
+  ///
+  /// Example:
+  /// ```dart
+  /// const StaticPart('/')
+  /// ```
   const StaticPart(this.text);
 
   @override
@@ -453,12 +462,43 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
   }
 }
 
+/// Represents a part of a formatted value with its associated input part and value.
+///
+/// A [FormattedValuePart] pairs an [InputPart] definition with an optional
+/// string value, used to represent user input or parsed data within a
+/// formatted input field.
+///
+/// Example:
+/// ```dart
+/// final part = FormattedValuePart(DigitPart(), '5');
+/// final updated = part.withValue('7');
+/// ```
 class FormattedValuePart {
+  /// The input part definition that this value belongs to.
   final InputPart part;
+  
+  /// The actual string value for this part, or null if not set.
   final String? value;
 
+  /// Creates a [FormattedValuePart].
+  ///
+  /// Parameters:
+  /// - [part] (`InputPart`, required): The input part definition.
+  /// - [value] (`String?`, optional): The value for this part.
   const FormattedValuePart(this.part, [this.value]);
 
+  /// Creates a copy of this part with a new value.
+  ///
+  /// Parameters:
+  /// - [value] (`String`, required): The new value to associate with this part.
+  ///
+  /// Returns: A new [FormattedValuePart] with the updated value.
+  ///
+  /// Example:
+  /// ```dart
+  /// final original = FormattedValuePart(DigitPart(), '1');
+  /// final updated = original.withValue('2');
+  /// ```
   FormattedValuePart withValue(String value) {
     return FormattedValuePart(part, value);
   }
@@ -480,14 +520,58 @@ class FormattedValuePart {
   int get hashCode => Object.hash(part, value);
 }
 
+/// Represents a complete formatted value composed of multiple parts.
+///
+/// A [FormattedValue] holds a list of [FormattedValuePart] instances, where
+/// each part represents either static text or editable fields. It provides
+/// methods to access value parts (excluding static parts) and retrieve
+/// individual parts by index.
+///
+/// Example:
+/// ```dart
+/// final value = FormattedValue([
+///   FormattedValuePart(DigitPart(), '1'),
+///   FormattedValuePart(StaticPart('/'), null),
+///   FormattedValuePart(DigitPart(), '2'),
+/// ]);
+/// print(value.values.length); // 2 (only value parts)
+/// ```
 class FormattedValue {
+  /// The list of parts that make up this formatted value.
   final List<FormattedValuePart> parts;
 
+  /// Creates a [FormattedValue].
+  ///
+  /// Parameters:
+  /// - [parts] (`List<FormattedValuePart>`, default: `const []`): The parts
+  ///   composing this value.
   const FormattedValue([this.parts = const []]);
 
+  /// Returns an iterable of only the parts that can hold values.
+  ///
+  /// This excludes static parts like separators or fixed text.
   Iterable<FormattedValuePart> get values =>
       parts.where((part) => part.part.canHaveValue);
 
+  /// Retrieves the value part at the specified index.
+  ///
+  /// This indexes only the parts that can hold values (excluding static parts).
+  ///
+  /// Parameters:
+  /// - [index] (`int`, required): The zero-based index into value parts.
+  ///
+  /// Returns: The [FormattedValuePart] at the index, or null if out of bounds.
+  ///
+  /// Example:
+  /// ```dart
+  /// final value = FormattedValue([
+  ///   FormattedValuePart(DigitPart(), '1'),
+  ///   FormattedValuePart(StaticPart('/'), null),
+  ///   FormattedValuePart(DigitPart(), '2'),
+  /// ]);
+  /// print(value[0]?.value); // '1'
+  /// print(value[1]?.value); // '2'
+  /// ```
   FormattedValuePart? operator [](int index) {
     int partIndex = 0;
     for (var part in parts) {

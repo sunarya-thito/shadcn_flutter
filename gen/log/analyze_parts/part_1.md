@@ -1,80 +1,80 @@
 TODO:
-- [ ] lib/src/components/form/formatted_input.dart:119:  const StaticPart(this.text);
-- [ ] lib/src/components/form/formatted_input.dart:456:class FormattedValuePart {
-- [ ] lib/src/components/form/formatted_input.dart:462:  FormattedValuePart withValue(String value) {
-- [ ] lib/src/components/form/formatted_input.dart:457:  final InputPart part;
-- [ ] lib/src/components/form/formatted_input.dart:458:  final String? value;
-- [ ] lib/src/components/form/formatted_input.dart:460:  const FormattedValuePart(this.part, [this.value]);
-- [ ] lib/src/components/form/formatted_input.dart:483:class FormattedValue {
-- [ ] lib/src/components/form/formatted_input.dart:488:  Iterable<FormattedValuePart> get values =>
-- [ ] lib/src/components/form/formatted_input.dart:491:  FormattedValuePart? operator [](int index) {
-- [ ] lib/src/components/form/formatted_input.dart:484:  final List<FormattedValuePart> parts;
-- [ ] lib/src/components/form/formatted_input.dart:486:  const FormattedValue([this.parts = const []]);
-- [ ] lib/src/components/form/form_field.dart:146:class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
-- [ ] lib/src/components/form/form_field.dart:156:  T? get value => formValue;
-- [ ] lib/src/components/form/form_field.dart:176:  bool get enabled => widget.enabled ?? widget.onChanged != null;
-- [ ] lib/src/components/form/form_field.dart:158:  set value(T? value) {
-- [ ] lib/src/components/form/form_field.dart:235:  void prompt([T? value]) {
-- [ ] lib/src/components/form/form_field.dart:288:class ObjectFormFieldDialogResult<T> {
-- [ ] lib/src/components/form/form_field.dart:289:  final T? value;
-- [ ] lib/src/components/form/form_field.dart:291:  ObjectFormFieldDialogResult(this.value);
-- [ ] lib/src/components/form/input.dart:6:enum InputFeaturePosition {
-- [ ] lib/src/components/form/input.dart:7:  leading,
-- [ ] lib/src/components/form/input.dart:8:  trailing,
-- [ ] lib/src/components/form/input.dart:11:class InputHintFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:12:  final WidgetBuilder popupBuilder;
-- [ ] lib/src/components/form/input.dart:13:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:14:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:15:  final bool enableShortcuts;
-- [ ] lib/src/components/form/input.dart:16:  const InputHintFeature({
-- [ ] lib/src/components/form/input.dart:96:class InputShowHintIntent extends Intent {
-- [ ] lib/src/components/form/input.dart:97:  const InputShowHintIntent();
-- [ ] lib/src/components/form/input.dart:100:enum PasswordPeekMode {
-- [ ] lib/src/components/form/input.dart:101:  hold,
-- [ ] lib/src/components/form/input.dart:102:  toggle,
-- [ ] lib/src/components/form/input.dart:105:class InputPasswordToggleFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:106:  final PasswordPeekMode mode;
-- [ ] lib/src/components/form/input.dart:107:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:108:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:109:  final Widget? iconShow;
-- [ ] lib/src/components/form/input.dart:110:  const InputPasswordToggleFeature({
-- [ ] lib/src/components/form/input.dart:191:class InputClearFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:192:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:193:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:194:  const InputClearFeature({
-- [ ] lib/src/components/form/input.dart:233:class InputRevalidateFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:234:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:235:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:236:  const InputRevalidateFeature({
-- [ ] lib/src/components/form/input.dart:315:typedef SuggestionBuilder = FutureOr<Iterable<String>> Function(String query);
-- [ ] lib/src/components/form/input.dart:317:class InputAutoCompleteFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:318:  final SuggestionBuilder querySuggestions;
-- [ ] lib/src/components/form/input.dart:319:  final Widget child;
-- [ ] lib/src/components/form/input.dart:320:  final BoxConstraints? popoverConstraints;
-- [ ] lib/src/components/form/input.dart:321:  final PopoverConstraint? popoverWidthConstraint;
-- [ ] lib/src/components/form/input.dart:322:  final AlignmentDirectional? popoverAnchorAlignment;
-- [ ] lib/src/components/form/input.dart:323:  final AlignmentDirectional? popoverAlignment;
-- [ ] lib/src/components/form/input.dart:324:  final AutoCompleteMode mode;
-- [ ] lib/src/components/form/input.dart:326:  const InputAutoCompleteFeature({
-- [ ] lib/src/components/form/input.dart:393:class InputSpinnerFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:394:  final double step;
-- [ ] lib/src/components/form/input.dart:395:  final bool enableGesture;
-- [ ] lib/src/components/form/input.dart:396:  final double? invalidValue;
-- [ ] lib/src/components/form/input.dart:397:  const InputSpinnerFeature({
-- [ ] lib/src/components/form/input.dart:519:class InputCopyFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:520:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:521:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:522:  const InputCopyFeature({
-- [ ] lib/src/components/form/input.dart:561:class InputLeadingFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:562:  final Widget prefix;
-- [ ] lib/src/components/form/input.dart:563:  const InputLeadingFeature(
-- [ ] lib/src/components/form/input.dart:580:class InputTrailingFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:581:  final Widget suffix;
-- [ ] lib/src/components/form/input.dart:582:  const InputTrailingFeature(
-- [ ] lib/src/components/form/input.dart:600:class InputPasteFeature extends InputFeature {
-- [ ] lib/src/components/form/input.dart:601:  final InputFeaturePosition position;
-- [ ] lib/src/components/form/input.dart:602:  final Widget? icon;
-- [ ] lib/src/components/form/input.dart:603:  const InputPasteFeature({
+- [x] lib/src/components/form/formatted_input.dart:119:  const StaticPart(this.text);
+- [x] lib/src/components/form/formatted_input.dart:456:class FormattedValuePart {
+- [x] lib/src/components/form/formatted_input.dart:462:  FormattedValuePart withValue(String value) {
+- [x] lib/src/components/form/formatted_input.dart:457:  final InputPart part;
+- [x] lib/src/components/form/formatted_input.dart:458:  final String? value;
+- [x] lib/src/components/form/formatted_input.dart:460:  const FormattedValuePart(this.part, [this.value]);
+- [x] lib/src/components/form/formatted_input.dart:483:class FormattedValue {
+- [x] lib/src/components/form/formatted_input.dart:488:  Iterable<FormattedValuePart> get values =>
+- [x] lib/src/components/form/formatted_input.dart:491:  FormattedValuePart? operator [](int index) {
+- [x] lib/src/components/form/formatted_input.dart:484:  final List<FormattedValuePart> parts;
+- [x] lib/src/components/form/formatted_input.dart:486:  const FormattedValue([this.parts = const []]);
+- [x] lib/src/components/form/form_field.dart:146:class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
+- [x] lib/src/components/form/form_field.dart:156:  T? get value => formValue;
+- [x] lib/src/components/form/form_field.dart:176:  bool get enabled => widget.enabled ?? widget.onChanged != null;
+- [x] lib/src/components/form/form_field.dart:158:  set value(T? value) {
+- [x] lib/src/components/form/form_field.dart:235:  void prompt([T? value]) {
+- [x] lib/src/components/form/form_field.dart:288:class ObjectFormFieldDialogResult<T> {
+- [x] lib/src/components/form/form_field.dart:289:  final T? value;
+- [x] lib/src/components/form/form_field.dart:291:  ObjectFormFieldDialogResult(this.value);
+- [x] lib/src/components/form/input.dart:6:enum InputFeaturePosition {
+- [x] lib/src/components/form/input.dart:7:  leading,
+- [x] lib/src/components/form/input.dart:8:  trailing,
+- [x] lib/src/components/form/input.dart:11:class InputHintFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:12:  final WidgetBuilder popupBuilder;
+- [x] lib/src/components/form/input.dart:13:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:14:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:15:  final bool enableShortcuts;
+- [x] lib/src/components/form/input.dart:16:  const InputHintFeature({
+- [x] lib/src/components/form/input.dart:96:class InputShowHintIntent extends Intent {
+- [x] lib/src/components/form/input.dart:97:  const InputShowHintIntent();
+- [x] lib/src/components/form/input.dart:100:enum PasswordPeekMode {
+- [x] lib/src/components/form/input.dart:101:  hold,
+- [x] lib/src/components/form/input.dart:102:  toggle,
+- [x] lib/src/components/form/input.dart:105:class InputPasswordToggleFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:106:  final PasswordPeekMode mode;
+- [x] lib/src/components/form/input.dart:107:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:108:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:109:  final Widget? iconShow;
+- [x] lib/src/components/form/input.dart:110:  const InputPasswordToggleFeature({
+- [x] lib/src/components/form/input.dart:191:class InputClearFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:192:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:193:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:194:  const InputClearFeature({
+- [x] lib/src/components/form/input.dart:233:class InputRevalidateFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:234:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:235:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:236:  const InputRevalidateFeature({
+- [x] lib/src/components/form/input.dart:315:typedef SuggestionBuilder = FutureOr<Iterable<String>> Function(String query);
+- [x] lib/src/components/form/input.dart:317:class InputAutoCompleteFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:318:  final SuggestionBuilder querySuggestions;
+- [x] lib/src/components/form/input.dart:319:  final Widget child;
+- [x] lib/src/components/form/input.dart:320:  final BoxConstraints? popoverConstraints;
+- [x] lib/src/components/form/input.dart:321:  final PopoverConstraint? popoverWidthConstraint;
+- [x] lib/src/components/form/input.dart:322:  final AlignmentDirectional? popoverAnchorAlignment;
+- [x] lib/src/components/form/input.dart:323:  final AlignmentDirectional? popoverAlignment;
+- [x] lib/src/components/form/input.dart:324:  final AutoCompleteMode mode;
+- [x] lib/src/components/form/input.dart:326:  const InputAutoCompleteFeature({
+- [x] lib/src/components/form/input.dart:393:class InputSpinnerFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:394:  final double step;
+- [x] lib/src/components/form/input.dart:395:  final bool enableGesture;
+- [x] lib/src/components/form/input.dart:396:  final double? invalidValue;
+- [x] lib/src/components/form/input.dart:397:  const InputSpinnerFeature({
+- [x] lib/src/components/form/input.dart:519:class InputCopyFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:520:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:521:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:522:  const InputCopyFeature({
+- [x] lib/src/components/form/input.dart:561:class InputLeadingFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:562:  final Widget prefix;
+- [x] lib/src/components/form/input.dart:563:  const InputLeadingFeature(
+- [x] lib/src/components/form/input.dart:580:class InputTrailingFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:581:  final Widget suffix;
+- [x] lib/src/components/form/input.dart:582:  const InputTrailingFeature(
+- [x] lib/src/components/form/input.dart:600:class InputPasteFeature extends InputFeature {
+- [x] lib/src/components/form/input.dart:601:  final InputFeaturePosition position;
+- [x] lib/src/components/form/input.dart:602:  final Widget? icon;
+- [x] lib/src/components/form/input.dart:603:  const InputPasteFeature({
 - [ ] lib/src/components/form/input_otp.dart:17:  InputOTPTheme copyWith({
 - [ ] lib/src/components/form/input_otp.dart:12:  final double? spacing;
 - [ ] lib/src/components/form/input_otp.dart:13:  final double? height;
