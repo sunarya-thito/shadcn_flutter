@@ -310,37 +310,37 @@ TODO:
 - [x] lib/src/util.dart:987:  HSLColor toHSL() {
 - [x] lib/src/util.dart:991:  HSVColor toHSV() {
 - [x] lib/src/util.dart:996:extension HSLColorExtension on HSLColor {
-- [ ] lib/src/util.dart:997:  HSVColor toHSV() {
-- [ ] lib/src/util.dart:1016:extension HSVColorExtension on HSVColor {
-- [ ] lib/src/util.dart:1017:  HSLColor toHSL() {
-- [ ] lib/src/util.dart:1072:  TimeOfDay copyWith({
-- [ ] lib/src/util.dart:1038:  final int hour;
-- [ ] lib/src/util.dart:1039:  final int minute;
-- [ ] lib/src/util.dart:1040:  final int second;
-- [ ] lib/src/util.dart:1042:  const TimeOfDay({
-- [ ] lib/src/util.dart:1048:  const TimeOfDay.pm({
-- [ ] lib/src/util.dart:1054:  const TimeOfDay.am({
-- [ ] lib/src/util.dart:1060:  TimeOfDay.fromDateTime(DateTime dateTime)
-- [ ] lib/src/util.dart:1065:  TimeOfDay.fromDuration(Duration duration)
-- [ ] lib/src/util.dart:1070:  TimeOfDay.now() : this.fromDateTime(DateTime.now());
-- [ ] lib/src/util.dart:1128:extension TextEditingControllerExtension on TextEditingController {
-- [ ] lib/src/util.dart:1129:  String? get currentWord {
-- [ ] lib/src/util.dart:1143:typedef WordInfo = (int start, String word);
-- [ ] lib/src/util.dart:1144:typedef ReplacementInfo = (int start, String newText);
-- [ ] lib/src/util.dart:1195:mixin CachedValue {
-- [ ] lib/src/util.dart:1196:  bool shouldRebuild(covariant CachedValue oldValue);
-- [ ] lib/src/util.dart:1201:  final T value;
-- [ ] lib/src/util.dart:1202:  final Widget Function(BuildContext context, T value) builder;
-- [ ] lib/src/util.dart:1204:  const CachedValueWidget({
-- [ ] lib/src/util.dart:1239:typedef Convert<F, T> = T Function(F value);
-- [ ] lib/src/util.dart:1248:  B convertA(A value) => aToB(value);
-- [ ] lib/src/util.dart:1250:  A convertB(B value) => bToA(value);
-- [ ] lib/src/util.dart:1243:  final Convert<A, B> aToB;
-- [ ] lib/src/util.dart:1244:  final Convert<B, A> bToA;
-- [ ] lib/src/util.dart:1246:  const BiDirectionalConvert(this.aToB, this.bToA);
-- [ ] lib/src/util.dart:1278:  ConvertedController(
-- [ ] lib/src/util.dart:1331:extension TextEditingValueExtension on TextEditingValue {
-- [ ] lib/src/util.dart:1332:  TextEditingValue replaceText(String newText) {
-- [ ] lib/src/util.dart:1345:typedef OnContextedCallback<T extends Intent> = Object? Function(T intent,
-- [ ] lib/src/util.dart:1350:  final OnContextedCallback<T> onInvoke;
-- [ ] lib/src/util.dart:1352:  ContextCallbackAction({required this.onInvoke});
+- [x] lib/src/util.dart:997:  HSVColor toHSV() {
+- [x] lib/src/util.dart:1016:extension HSVColorExtension on HSVColor {
+- [x] lib/src/util.dart:1017:  HSLColor toHSL() {
+- [x] lib/src/util.dart:1072:  TimeOfDay copyWith({
+- [x] lib/src/util.dart:1038:  final int hour;
+- [x] lib/src/util.dart:1039:  final int minute;
+- [x] lib/src/util.dart:1040:  final int second;
+- [x] lib/src/util.dart:1042:  const TimeOfDay({
+- [x] lib/src/util.dart:1048:  const TimeOfDay.pm({
+- [x] lib/src/util.dart:1054:  const TimeOfDay.am({
+- [x] lib/src/util.dart:1060:  TimeOfDay.fromDateTime(DateTime dateTime)
+- [x] lib/src/util.dart:1065:  TimeOfDay.fromDuration(Duration duration)
+- [x] lib/src/util.dart:1070:  TimeOfDay.now() : this.fromDateTime(DateTime.now());
+- [x] lib/src/util.dart:1128:extension TextEditingControllerExtension on TextEditingController {
+- [x] lib/src/util.dart:1129:  String? get currentWord {
+- [x] lib/src/util.dart:1143:typedef WordInfo = (int start, String word);
+- [x] lib/src/util.dart:1144:typedef ReplacementInfo = (int start, String newText);
+- [x] lib/src/util.dart:1195:mixin CachedValue {
+- [x] lib/src/util.dart:1196:  bool shouldRebuild(covariant CachedValue oldValue);
+- [x] lib/src/util.dart:1201:  final T value;
+- [x] lib/src/util.dart:1202:  final Widget Function(BuildContext context, T value) builder;
+- [x] lib/src/util.dart:1204:  const CachedValueWidget({
+- [x] lib/src/util.dart:1239:typedef Convert<F, T> = T Function(F value);
+- [x] lib/src/util.dart:1248:  B convertA(A value) => aToB(value);
+- [x] lib/src/util.dart:1250:  A convertB(B value) => bToA(value);
+- [x] lib/src/util.dart:1243:  final Convert<A, B> aToB;
+- [x] lib/src/util.dart:1244:  final Convert<B, A> bToA;
+- [x] lib/src/util.dart:1246:  const BiDirectionalConvert(this.aToB, this.bToA);
+- [x] lib/src/util.dart:1278:  ConvertedController(
+- [x] lib/src/util.dart:1331:extension TextEditingValueExtension on TextEditingValue {
+- [x] lib/src/util.dart:1332:  TextEditingValue replaceText(String newText) {
+- [x] lib/src/util.dart:1345:typedef OnContextedCallback<T extends Intent> = Object? Function(T intent,
+- [x] lib/src/util.dart:1350:  final OnContextedCallback<T> onInvoke;
+- [x] lib/src/util.dart:1352:  ContextCallbackAction({required this.onInvoke});

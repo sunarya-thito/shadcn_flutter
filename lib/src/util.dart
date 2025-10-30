@@ -1487,42 +1487,85 @@ extension HSVColorExtension on HSVColor {
   }
 }
 
-/// Represents a time of day with hour and minute.
+/// Represents a time of day with hour, minute, and second.
+///
+/// Provides constructors for various time representations including
+/// AM/PM notation, DateTime conversion, and Duration conversion.
 class TimeOfDay {
+  /// Hour component (0-23).
   final int hour;
+
+  /// Minute component (0-59).
   final int minute;
+
+  /// Second component (0-59).
   final int second;
 
+  /// Creates a [TimeOfDay] with specified components.
+  ///
+  /// Parameters:
+  /// - [hour] (`int`, required): Hour (0-23).
+  /// - [minute] (`int`, required): Minute (0-59).
+  /// - [second] (`int`, default: 0): Second (0-59).
   const TimeOfDay({
     required this.hour,
     required this.minute,
     this.second = 0,
   });
 
+  /// Creates a PM time (adds 12 to the hour).
+  ///
+  /// Parameters:
+  /// - [hour] (`int`, required): Hour in 12-hour format (1-12).
+  /// - [minute] (`int`, required): Minute (0-59).
+  /// - [second] (`int`, default: 0): Second (0-59).
   const TimeOfDay.pm({
     required int hour,
     required this.minute,
     this.second = 0,
   }) : hour = hour + 12;
 
+  /// Creates an AM time.
+  ///
+  /// Parameters:
+  /// - [hour] (`int`, required): Hour in 12-hour format (0-11).
+  /// - [minute] (`int`, required): Minute (0-59).
+  /// - [second] (`int`, default: 0): Second (0-59).
   const TimeOfDay.am({
     required this.hour,
     required this.minute,
     this.second = 0,
   });
 
+  /// Creates a [TimeOfDay] from a [DateTime].
+  ///
+  /// Parameters:
+  /// - [dateTime] (`DateTime`, required): DateTime to extract time from.
   TimeOfDay.fromDateTime(DateTime dateTime)
       : hour = dateTime.hour,
         minute = dateTime.minute,
         second = dateTime.second;
 
+  /// Creates a [TimeOfDay] from a [Duration].
+  ///
+  /// Parameters:
+  /// - [duration] (`Duration`, required): Duration to convert.
   TimeOfDay.fromDuration(Duration duration)
       : hour = duration.inHours,
         minute = duration.inMinutes % 60,
         second = duration.inSeconds % 60;
 
+  /// Creates a [TimeOfDay] representing the current time.
   TimeOfDay.now() : this.fromDateTime(DateTime.now());
 
+  /// Creates a copy with specified fields replaced.
+  ///
+  /// Parameters:
+  /// - [hour] (`ValueGetter<int>?`, optional): New hour value.
+  /// - [minute] (`ValueGetter<int>?`, optional): New minute value.
+  /// - [second] (`ValueGetter<int>?`, optional): New second value.
+  ///
+  /// Returns: `TimeOfDay` — copy with updated values.
   TimeOfDay copyWith({
     ValueGetter<int>? hour,
     ValueGetter<int>? minute,
@@ -1726,15 +1769,36 @@ void clearActiveTextInput() {
   invokeActionOnFocusedWidget(intent);
 }
 
+/// Mixin for values that need custom rebuild logic.
+///
+/// Implement this mixin to control when a [CachedValueWidget] should rebuild
+/// based on custom comparison logic.
 mixin CachedValue {
+  /// Determines if the widget should rebuild when value changes.
+  ///
+  /// Parameters:
+  /// - [oldValue] (`CachedValue`, required): Previous value to compare against.
+  ///
+  /// Returns: `bool` — `true` if rebuild is needed.
   bool shouldRebuild(covariant CachedValue oldValue);
 }
 
 /// A widget that caches a computed value.
+///
+/// Caches the result of [builder] and only rebuilds when [value] changes.
+/// If [value] implements [CachedValue], uses custom rebuild logic.
 class CachedValueWidget<T> extends StatefulWidget {
+  /// The value to cache and pass to builder.
   final T value;
+
+  /// Builder function that creates the widget from the value.
   final Widget Function(BuildContext context, T value) builder;
 
+  /// Creates a [CachedValueWidget].
+  ///
+  /// Parameters:
+  /// - [value] (`T`, required): Value to cache.
+  /// - [builder] (`Widget Function(BuildContext, T)`, required): Widget builder.
   const CachedValueWidget({
     super.key,
     required this.value,
@@ -1770,17 +1834,41 @@ class _CachedValueWidgetState<T> extends State<CachedValueWidget<T>> {
   }
 }
 
+/// Function type for converting from type `F` to type `T`.
 typedef Convert<F, T> = T Function(F value);
 
 /// A bidirectional converter between types [A] and [B].
+///
+/// Encapsulates conversion logic in both directions, allowing seamless
+/// transformation between two types.
 class BiDirectionalConvert<A, B> {
+  /// Converter from type A to type B.
   final Convert<A, B> aToB;
+
+  /// Converter from type B to type A.
   final Convert<B, A> bToA;
 
+  /// Creates a [BiDirectionalConvert].
+  ///
+  /// Parameters:
+  /// - [aToB] (`Convert<A, B>`, required): A to B converter.
+  /// - [bToA] (`Convert<B, A>`, required): B to A converter.
   const BiDirectionalConvert(this.aToB, this.bToA);
 
+  /// Converts a value from type A to type B.
+  ///
+  /// Parameters:
+  /// - [value] (`A`, required): Value to convert.
+  ///
+  /// Returns: `B` — converted value.
   B convertA(A value) => aToB(value);
 
+  /// Converts a value from type B to type A.
+  ///
+  /// Parameters:
+  /// - [value] (`B`, required): Value to convert.
+  ///
+  /// Returns: `A` — converted value.
   A convertB(B value) => bToA(value);
 
   @override
@@ -1801,6 +1889,9 @@ class BiDirectionalConvert<A, B> {
 }
 
 /// A controller that converts between types [F] and [T].
+///
+/// Maintains bidirectional synchronization between two value notifiers
+/// with different types using a [BiDirectionalConvert].
 class ConvertedController<F, T> extends ChangeNotifier
     implements ComponentController<T> {
   final ValueNotifier<F> _other;
@@ -1809,6 +1900,11 @@ class ConvertedController<F, T> extends ChangeNotifier
   T _value;
   bool _isUpdating = false;
 
+  /// Creates a [ConvertedController].
+  ///
+  /// Parameters:
+  /// - [other] (`ValueNotifier<F>`, required): Source value notifier.
+  /// - [convert] (`BiDirectionalConvert<F, T>`, required): Bidirectional converter.
   ConvertedController(
       ValueNotifier<F> other, BiDirectionalConvert<F, T> convert)
       : _other = other,
@@ -1862,7 +1958,16 @@ class ConvertedController<F, T> extends ChangeNotifier
   }
 }
 
+/// Extension adding text replacement utilities to [TextEditingValue].
 extension TextEditingValueExtension on TextEditingValue {
+  /// Replaces the text while preserving selection within bounds.
+  ///
+  /// Adjusts the selection to stay within the new text length.
+  ///
+  /// Parameters:
+  /// - [newText] (`String`, required): Replacement text.
+  ///
+  /// Returns: `TextEditingValue` — value with new text and adjusted selection.
   TextEditingValue replaceText(String newText) {
     var selection = this.selection;
     selection = selection.copyWith(
@@ -1876,13 +1981,19 @@ extension TextEditingValueExtension on TextEditingValue {
   }
 }
 
+/// Callback type for context actions with optional context parameter.
 typedef OnContextedCallback<T extends Intent> = Object? Function(T intent,
     [BuildContext? context]);
 
 /// A context action that executes a callback with context.
 class ContextCallbackAction<T extends Intent> extends ContextAction<T> {
+  /// The callback to execute when the action is invoked.
   final OnContextedCallback<T> onInvoke;
 
+  /// Creates a [ContextCallbackAction].
+  ///
+  /// Parameters:
+  /// - [onInvoke] (`OnContextedCallback<T>`, required): Callback function.
   ContextCallbackAction({required this.onInvoke});
 
   @override
