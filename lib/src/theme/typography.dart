@@ -7,109 +7,109 @@ import '../../shadcn_flutter.dart';
 class Typography {
   /// Sans-serif font style.
   final TextStyle sans;
-  
+
   /// Monospace font style.
   final TextStyle mono;
-  
+
   /// Extra small text (12px).
   final TextStyle xSmall;
-  
+
   /// Small text (14px).
   final TextStyle small;
-  
+
   /// Base text size (16px).
   final TextStyle base;
-  
+
   /// Large text (18px).
   final TextStyle large;
-  
+
   /// Extra large text (20px).
   final TextStyle xLarge;
-  
+
   /// 2x large text (24px).
   final TextStyle x2Large;
-  
+
   /// 3x large text (30px).
   final TextStyle x3Large;
-  
+
   /// 4x large text (36px).
   final TextStyle x4Large;
-  
+
   /// 5x large text (48px).
   final TextStyle x5Large;
-  
+
   /// 6x large text (60px).
   final TextStyle x6Large;
-  
+
   /// 7x large text (72px).
   final TextStyle x7Large;
-  
+
   /// 8x large text (96px).
   final TextStyle x8Large;
-  
+
   /// 9x large text (144px).
   final TextStyle x9Large;
-  
+
   /// Thin font weight (100).
   final TextStyle thin;
-  
+
   /// Light font weight (300).
   final TextStyle light;
-  
+
   /// Extra light font weight (200).
   final TextStyle extraLight;
-  
+
   /// Normal font weight (400).
   final TextStyle normal;
-  
+
   /// Medium font weight (500).
   final TextStyle medium;
-  
+
   /// Semi-bold font weight (600).
   final TextStyle semiBold;
-  
+
   /// Bold font weight (700).
   final TextStyle bold;
-  
+
   /// Extra bold font weight (800).
   final TextStyle extraBold;
-  
+
   /// Black font weight (900).
   final TextStyle black;
-  
+
   /// Italic text style.
   final TextStyle italic;
-  
+
   /// Heading 1 style.
   final TextStyle h1;
-  
+
   /// Heading 2 style.
   final TextStyle h2;
-  
+
   /// Heading 3 style.
   final TextStyle h3;
-  
+
   /// Heading 4 style.
   final TextStyle h4;
-  
+
   /// Paragraph style.
   final TextStyle p;
-  
+
   /// Block quote style.
   final TextStyle blockQuote;
-  
+
   /// Inline code style.
   final TextStyle inlineCode;
-  
+
   /// Lead text style.
   final TextStyle lead;
-  
+
   /// Large text style.
   final TextStyle textLarge;
-  
+
   /// Small text style.
   final TextStyle textSmall;
-  
+
   /// Muted text style.
   final TextStyle textMuted;
 

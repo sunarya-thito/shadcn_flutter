@@ -99,8 +99,13 @@ class SelectableTextTheme {
   }
 
   @override
-  int get hashCode => Object.hash(cursorWidth, cursorHeight, cursorRadius,
-      cursorColor, selectionHeightStyle, selectionWidthStyle,
+  int get hashCode => Object.hash(
+      cursorWidth,
+      cursorHeight,
+      cursorRadius,
+      cursorColor,
+      selectionHeightStyle,
+      selectionWidthStyle,
       enableInteractiveSelection);
 
   @override

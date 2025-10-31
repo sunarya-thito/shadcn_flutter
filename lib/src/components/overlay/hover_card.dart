@@ -21,19 +21,19 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class HoverCardTheme {
   /// Duration to wait before hiding the hover card after mouse exit.
   final Duration? debounce;
-  
+
   /// Duration to wait before showing the hover card after mouse enter.
   final Duration? wait;
-  
+
   /// Alignment of the popover relative to its anchor.
   final AlignmentGeometry? popoverAlignment;
-  
+
   /// Alignment point on the anchor widget.
   final AlignmentGeometry? anchorAlignment;
-  
+
   /// Offset of the popover from its calculated position.
   final Offset? popoverOffset;
-  
+
   /// Hit test behavior for mouse interactions.
   final HitTestBehavior? behavior;
 
@@ -152,33 +152,34 @@ class HoverCardTheme {
 class HoverCard extends StatefulWidget {
   /// The child widget that triggers the hover card.
   final Widget child;
-  
+
   /// Duration to wait before hiding after mouse exit.
   final Duration? debounce;
-  
+
   /// Duration to wait before showing after mouse enter.
   final Duration? wait;
-  
+
   /// Builder function that creates the hover card content.
   final WidgetBuilder hoverBuilder;
-  
+
   /// Alignment of the popover relative to its anchor.
   final AlignmentGeometry? popoverAlignment;
-  
+
   /// Alignment point on the anchor widget.
   final AlignmentGeometry? anchorAlignment;
-  
+
   /// Offset of the popover from its calculated position.
   final Offset? popoverOffset;
-  
+
   /// Hit test behavior for mouse interactions.
   final HitTestBehavior? behavior;
-  
+
   /// Controller to programmatically manage the popover.
   final PopoverController? controller;
-  
+
   /// Custom overlay handler for popover display.
   final OverlayHandler? handler;
+
   /// Creates a [HoverCard].
   ///
   /// The [child] and [hoverBuilder] parameters are required.

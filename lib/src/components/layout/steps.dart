@@ -137,13 +137,10 @@ class Steps extends StatelessWidget {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     final compTheme = ComponentTheme.maybeOf<StepsTheme>(context);
-    final indicatorSize =
-        compTheme?.indicatorSize ?? 28 * scaling;
+    final indicatorSize = compTheme?.indicatorSize ?? 28 * scaling;
     final spacing = compTheme?.spacing ?? 18 * scaling;
-    final indicatorColor =
-        compTheme?.indicatorColor ?? theme.colorScheme.muted;
-    final connectorThickness =
-        compTheme?.connectorThickness ?? 1 * scaling;
+    final indicatorColor = compTheme?.indicatorColor ?? theme.colorScheme.muted;
+    final connectorThickness = compTheme?.connectorThickness ?? 1 * scaling;
     List<Widget> mapped = [];
     for (var i = 0; i < children.length; i++) {
       mapped.add(IntrinsicHeight(

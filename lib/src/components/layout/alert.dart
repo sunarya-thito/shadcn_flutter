@@ -175,7 +175,7 @@ class Alert extends StatelessWidget {
   ///
   /// Parameters:
   /// - [leading] (Widget?, optional): Icon or widget at the start
-  /// - [title] (Widget?, optional): Main heading or message  
+  /// - [title] (Widget?, optional): Main heading or message
   /// - [content] (Widget?, optional): Detailed description or body
   /// - [trailing] (Widget?, optional): Action buttons or dismissal controls
   ///

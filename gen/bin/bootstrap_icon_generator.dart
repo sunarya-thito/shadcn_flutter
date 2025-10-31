@@ -77,7 +77,8 @@ List<String> splitIntoWords(String text) {
 
     sb.write(char);
 
-    bool isEndOfWord = nextChar == null ||
+    bool isEndOfWord =
+        nextChar == null ||
         (_upperAlphaRegex.hasMatch(nextChar) && !isAllCaps) ||
         symbolSet.contains(nextChar);
 

@@ -7,7 +7,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 enum PromptMode {
   /// Display the editor in a modal dialog.
   dialog,
-  
+
   /// Display the editor in a popover overlay.
   popover,
 }
@@ -34,57 +34,57 @@ enum PromptMode {
 class ObjectFormField<T> extends StatefulWidget {
   /// The current value of the field.
   final T? value;
-  
+
   /// Called when the value changes.
   final ValueChanged<T?>? onChanged;
-  
+
   /// Widget displayed when no value is selected.
   final Widget placeholder;
-  
+
   /// Builds the display for the selected value.
   final Widget Function(BuildContext context, T value) builder;
-  
+
   /// Optional leading widget (e.g., icon).
   final Widget? leading;
-  
+
   /// Optional trailing widget (e.g., dropdown arrow).
   final Widget? trailing;
-  
+
   /// How the editor is presented (dialog or popover).
   final PromptMode mode;
-  
+
   /// Builds the editor widget.
   final Widget Function(BuildContext context, ObjectFormHandler<T> handler)
       editorBuilder;
-      
+
   /// Popover alignment relative to the trigger.
   final AlignmentGeometry? popoverAlignment;
-  
+
   /// Anchor alignment for popover positioning.
   final AlignmentGeometry? popoverAnchorAlignment;
-  
+
   /// Padding inside the popover.
   final EdgeInsetsGeometry? popoverPadding;
-  
+
   /// Title for the dialog mode.
   final Widget? dialogTitle;
-  
+
   /// Button size for the trigger.
   final ButtonSize? size;
-  
+
   /// Button density for the trigger.
   final ButtonDensity? density;
-  
+
   /// Button shape for the trigger.
   final ButtonShape? shape;
-  
+
   /// Custom dialog action buttons.
   final List<Widget> Function(
       BuildContext context, ObjectFormHandler<T> handler)? dialogActions;
-      
+
   /// Whether the field is enabled.
   final bool? enabled;
-  
+
   /// Whether to show the field decoration.
   final bool decorate;
 
@@ -122,13 +122,13 @@ class ObjectFormField<T> extends StatefulWidget {
 abstract class ObjectFormHandler<T> {
   /// Gets the current value.
   T? get value;
-  
+
   /// Sets the current value.
   set value(T? value);
-  
+
   /// Opens the editor with an optional initial value.
   void prompt([T? value]);
-  
+
   /// Closes the editor.
   Future<void> close();
 

@@ -8,8 +8,7 @@ class ShadcnFlutterPlatformImplementations {
   /// Called when the app is initialized.
   ///
   /// Platform implementations can override this to perform initialization tasks.
-  void onAppInitialized() {
-  }
+  void onAppInitialized() {}
 
   /// Called when the theme changes.
   ///

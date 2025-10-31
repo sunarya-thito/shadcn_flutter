@@ -148,8 +148,7 @@ class Scaffold extends StatefulWidget {
   final bool loadingProgressIndeterminate;
 
   /// Whether header floats above content (takes no layout space).
-  final bool
-      floatingHeader;
+  final bool floatingHeader;
 
   /// Whether footer floats above content (takes no layout space).
   final bool floatingFooter;

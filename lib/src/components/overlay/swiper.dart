@@ -28,40 +28,40 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class SwiperTheme {
   /// Whether the swiper should expand to fill available space.
   final bool? expands;
-  
+
   /// Whether the swiper can be dragged to dismiss.
   final bool? draggable;
-  
+
   /// Whether tapping the barrier dismisses the swiper.
   final bool? barrierDismissible;
-  
+
   /// Builder for custom backdrop content.
   final WidgetBuilder? backdropBuilder;
-  
+
   /// Whether to respect device safe areas.
   final bool? useSafeArea;
-  
+
   /// Whether to show the drag handle.
   final bool? showDragHandle;
-  
+
   /// Border radius for the swiper container.
   final BorderRadiusGeometry? borderRadius;
-  
+
   /// Size of the drag handle when displayed.
   final Size? dragHandleSize;
-  
+
   /// Whether to transform the backdrop when shown.
   final bool? transformBackdrop;
-  
+
   /// Opacity for surface effects.
   final double? surfaceOpacity;
-  
+
   /// Blur intensity for surface effects.
   final double? surfaceBlur;
-  
+
   /// Color of the modal barrier.
   final Color? barrierColor;
-  
+
   /// Hit test behavior for gesture detection.
   final HitTestBehavior? behavior;
 
@@ -123,8 +123,7 @@ class SwiperTheme {
       useSafeArea: useSafeArea == null ? this.useSafeArea : useSafeArea(),
       showDragHandle:
           showDragHandle == null ? this.showDragHandle : showDragHandle(),
-      borderRadius:
-          borderRadius == null ? this.borderRadius : borderRadius(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
       dragHandleSize:
           dragHandleSize == null ? this.dragHandleSize : dragHandleSize(),
       transformBackdrop: transformBackdrop == null
@@ -133,8 +132,7 @@ class SwiperTheme {
       surfaceOpacity:
           surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
       surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
-      barrierColor:
-          barrierColor == null ? this.barrierColor : barrierColor(),
+      barrierColor: barrierColor == null ? this.barrierColor : barrierColor(),
       behavior: behavior == null ? this.behavior : behavior(),
     );
   }
@@ -187,7 +185,7 @@ class SwiperTheme {
 ///
 /// Features:
 /// - Pluggable swiper behavior patterns
-/// - Built-in drawer and sheet implementations  
+/// - Built-in drawer and sheet implementations
 /// - Consistent API across swiper types
 /// - Configurable overlay properties
 ///
@@ -200,13 +198,13 @@ class SwiperTheme {
 abstract class SwiperHandler {
   /// Handler for drawer-style swipers with backdrop transformation.
   static const SwiperHandler drawer = DrawerSwiperHandler();
-  
+
   /// Handler for sheet-style swipers with minimal styling.
   static const SwiperHandler sheet = SheetSwiperHandler();
-  
+
   /// Creates a swiper handler.
   const SwiperHandler();
-  
+
   /// Creates a swiper overlay with the specified configuration.
   ///
   /// Parameters vary by implementation but commonly include position,
@@ -343,11 +341,11 @@ class SheetSwiperHandler extends SwiperHandler {
 /// A gesture-responsive widget that triggers overlay content through swiping.
 ///
 /// Detects swipe gestures on the child widget and displays overlay content
-/// using the configured handler (drawer or sheet style). Supports both 
+/// using the configured handler (drawer or sheet style). Supports both
 /// programmatic and gesture-based triggering with comprehensive customization.
 ///
 /// Features:
-/// - Gesture-based overlay triggering  
+/// - Gesture-based overlay triggering
 /// - Multiple handler implementations (drawer/sheet)
 /// - Configurable swipe sensitivity and behavior
 /// - Theme integration and visual customization
@@ -372,55 +370,55 @@ class SheetSwiperHandler extends SwiperHandler {
 class Swiper extends StatefulWidget {
   /// Whether swipe gestures are enabled.
   final bool enabled;
-  
+
   /// Position from which the overlay should appear.
   final OverlayPosition position;
-  
+
   /// Builder function that creates the overlay content.
   final WidgetBuilder builder;
-  
+
   /// Handler that defines the overlay behavior (drawer or sheet).
   final SwiperHandler handler;
-  
+
   /// Whether the overlay should expand to fill available space.
   final bool? expands;
-  
+
   /// Whether the overlay can be dragged to dismiss.
   final bool? draggable;
-  
+
   /// Whether tapping the barrier dismisses the overlay.
   final bool? barrierDismissible;
-  
+
   /// Builder for custom backdrop content.
   final WidgetBuilder? backdropBuilder;
-  
+
   /// Whether to respect device safe areas.
   final bool? useSafeArea;
-  
+
   /// Whether to show the drag handle.
   final bool? showDragHandle;
-  
+
   /// Border radius for the overlay container.
   final BorderRadiusGeometry? borderRadius;
-  
+
   /// Size of the drag handle when displayed.
   final Size? dragHandleSize;
-  
+
   /// Whether to transform the backdrop when shown.
   final bool? transformBackdrop;
-  
+
   /// Opacity for surface effects.
   final double? surfaceOpacity;
-  
+
   /// Blur intensity for surface effects.
   final double? surfaceBlur;
-  
+
   /// Color of the modal barrier.
   final Color? barrierColor;
-  
+
   /// The child widget that responds to swipe gestures.
   final Widget child;
-  
+
   /// Hit test behavior for gesture detection.
   final HitTestBehavior? behavior;
 

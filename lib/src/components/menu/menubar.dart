@@ -181,14 +181,14 @@ class Menubar extends StatefulWidget {
   /// can contain nested menu items for dropdown functionality. Items are
   /// displayed horizontally in the order provided.
   final List<MenuItem> children;
-  
+
   /// Positioning offset for submenu popovers when items are opened.
   ///
   /// Type: `Offset?`. If null, uses theme defaults or calculated values based
   /// on border presence. Controls where dropdown menus appear relative to
   /// their parent menu items.
   final Offset? popoverOffset;
-  
+
   /// Whether to draw a border around the menubar container.
   ///
   /// Type: `bool`, default: `true`. When true, the menubar is wrapped with
@@ -279,7 +279,7 @@ class MenubarState extends State<Menubar> {
   ///
   /// Parameters:
   /// - [context] (`BuildContext`, required): build context
-  /// - [theme] (`ThemeData`, required): theme data  
+  /// - [theme] (`ThemeData`, required): theme data
   /// - [subMenuOffset] (`Offset?`, optional): offset for submenu positioning
   /// - [border] (`bool`, required): whether to show border
   ///

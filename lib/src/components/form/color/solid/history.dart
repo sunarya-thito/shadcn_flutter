@@ -19,16 +19,16 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class ColorHistoryGrid extends StatelessWidget {
   /// The storage containing the color history.
   final ColorHistoryStorage storage;
-  
+
   /// Called when a color from the history is picked.
   final ValueChanged<Color>? onColorPicked;
-  
+
   /// Spacing between grid items.
   final double? spacing;
-  
+
   /// Number of columns in the grid.
   final int crossAxisCount;
-  
+
   /// The currently selected color to highlight.
   final Color? selectedColor;
 
@@ -145,22 +145,22 @@ abstract class ColorHistoryStorage implements Listenable {
   /// Parameters:
   /// - [color]: The color to add to the history.
   void addHistory(Color color);
-  
+
   /// Replaces the entire color history with a new list.
   ///
   /// Parameters:
   /// - [colors]: The new list of colors to set as the history.
   void setHistory(List<Color> colors);
-  
+
   /// Clears all colors from the history.
   void clear();
-  
+
   /// The maximum number of colors that can be stored in the history.
   int get capacity;
-  
+
   /// The list of recent colors, ordered from most to least recent.
   List<Color> get recentColors;
-  
+
   /// Finds the [ColorHistoryStorage] in the widget tree.
   static ColorHistoryStorage of(BuildContext context) {
     return Data.of<ColorHistoryStorage>(context);
@@ -186,13 +186,13 @@ abstract class ColorHistoryStorage implements Listenable {
 class RecentColorsScope extends StatefulWidget {
   /// Initial colors to populate the history.
   final List<Color> initialRecentColors;
-  
+
   /// Maximum number of colors to keep in the history.
   final int maxRecentColors;
-  
+
   /// Called when the recent colors list changes.
   final ValueChanged<List<Color>>? onRecentColorsChanged;
-  
+
   /// The child widget.
   final Widget child;
 

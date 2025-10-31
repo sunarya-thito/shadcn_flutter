@@ -146,11 +146,11 @@ class TooltipContainer extends StatelessWidget {
       backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
     }
     final padding = styleValue(
-            widgetValue: this.padding,
-            themeValue: compTheme?.padding,
-            defaultValue:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 6))
-        .resolve(Directionality.of(context)) *
+                widgetValue: this.padding,
+                themeValue: compTheme?.padding,
+                defaultValue:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6))
+            .resolve(Directionality.of(context)) *
         scaling;
     final borderRadius = styleValue(
         widgetValue: this.borderRadius,

@@ -23,19 +23,19 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 extension WidgetStateExtension on Set<WidgetState> {
   /// Whether the widget is in a disabled state.
   bool get disabled => contains(WidgetState.disabled);
-  
+
   /// Whether the widget is in an error state.
   bool get error => contains(WidgetState.error);
-  
+
   /// Whether the widget is in a selected state.
   bool get selected => contains(WidgetState.selected);
-  
+
   /// Whether the widget is in a pressed state.
   bool get pressed => contains(WidgetState.pressed);
-  
+
   /// Whether the widget is in a hovered state.
   bool get hovered => contains(WidgetState.hovered);
-  
+
   /// Whether the widget is in a focused state.
   bool get focused => contains(WidgetState.focused);
 }
@@ -279,18 +279,18 @@ class _ParamStatedWidget extends StatedWidget {
 class WidgetStatesProvider extends StatelessWidget {
   /// Optional controller for programmatic state management.
   final WidgetStatesController? controller;
-  
+
   /// Static set of widget states to provide.
   final Set<WidgetState>? states;
-  
+
   /// The child widget that can access the provided states.
   final Widget child;
-  
+
   /// Whether to inherit states from ancestor providers.
   ///
   /// When `true`, combines local states with inherited states.
   final bool inherit;
-  
+
   /// Whether this provider acts as a state boundary.
   final bool boundary;
 
@@ -486,121 +486,121 @@ class _BuilderStatedWidget extends StatedWidget {
 class Clickable extends StatefulWidget {
   /// The child widget displayed within the clickable area.
   final Widget child;
-  
+
   /// Whether the widget is enabled and can respond to interactions.
   final bool enabled;
-  
+
   /// Called when hover state changes.
   final ValueChanged<bool>? onHover;
-  
+
   /// Called when focus state changes.
   final ValueChanged<bool>? onFocus;
-  
+
   /// State-aware decoration for the widget.
   final WidgetStateProperty<Decoration?>? decoration;
-  
+
   /// State-aware mouse cursor style.
   final WidgetStateProperty<MouseCursor?>? mouseCursor;
-  
+
   /// State-aware padding around the child.
   final WidgetStateProperty<EdgeInsetsGeometry?>? padding;
-  
+
   /// State-aware text style applied to text descendants.
   final WidgetStateProperty<TextStyle?>? textStyle;
-  
+
   /// State-aware icon theme applied to icon descendants.
   final WidgetStateProperty<IconThemeData?>? iconTheme;
-  
+
   /// State-aware margin around the widget.
   final WidgetStateProperty<EdgeInsetsGeometry?>? margin;
-  
+
   /// State-aware transformation matrix.
   final WidgetStateProperty<Matrix4?>? transform;
-  
+
   /// Called when the widget is tapped (primary button).
   final VoidCallback? onPressed;
-  
+
   /// Called when the widget is double-tapped.
   final VoidCallback? onDoubleTap;
-  
+
   /// Focus node for keyboard focus management.
   final FocusNode? focusNode;
-  
+
   /// How to behave during hit testing.
   final HitTestBehavior behavior;
-  
+
   /// Whether to disable state transition animations.
   final bool disableTransition;
-  
+
   /// Keyboard shortcuts to handle.
   final Map<LogicalKeySet, Intent>? shortcuts;
-  
+
   /// Actions to handle for intents.
   final Map<Type, Action<Intent>>? actions;
-  
+
   /// Whether to show focus outline for accessibility.
   final bool focusOutline;
-  
+
   /// Whether to enable haptic/audio feedback.
   final bool enableFeedback;
-  
+
   /// Called when long-pressed.
   final VoidCallback? onLongPress;
-  
+
   /// Called on primary tap down.
   final GestureTapDownCallback? onTapDown;
-  
+
   /// Called on primary tap up.
   final GestureTapUpCallback? onTapUp;
-  
+
   /// Called when primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
-  
+
   /// Called on secondary (right-click) tap down.
   final GestureTapDownCallback? onSecondaryTapDown;
-  
+
   /// Called on secondary tap up.
   final GestureTapUpCallback? onSecondaryTapUp;
-  
+
   /// Called when secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
-  
+
   /// Called on tertiary (middle-click) tap down.
   final GestureTapDownCallback? onTertiaryTapDown;
-  
+
   /// Called on tertiary tap up.
   final GestureTapUpCallback? onTertiaryTapUp;
-  
+
   /// Called when tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
-  
+
   /// Called when long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
-  
+
   /// Called when long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
-  
+
   /// Called when long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
-  
+
   /// Called when long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
-  
+
   /// Called on secondary long press completion.
   final GestureLongPressUpCallback? onSecondaryLongPress;
-  
+
   /// Called on tertiary long press completion.
   final GestureLongPressUpCallback? onTertiaryLongPress;
-  
+
   /// Whether to disable hover visual effects.
   final bool disableHoverEffect;
-  
+
   /// Optional controller for programmatic state management.
   final WidgetStatesController? statesController;
-  
+
   /// Alignment for applying margin.
   final AlignmentGeometry? marginAlignment;
-  
+
   /// Whether to disable the focus outline.
   final bool disableFocusOutline;
 

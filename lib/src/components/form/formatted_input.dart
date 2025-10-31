@@ -11,7 +11,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class FormattedInputTheme {
   /// The height of the formatted input.
   final double? height;
-  
+
   /// Internal padding for the formatted input.
   final EdgeInsetsGeometry? padding;
 
@@ -54,7 +54,7 @@ class FormattedInputTheme {
 abstract class InputPart implements FormattedValuePart {
   /// Creates a static text part.
   const factory InputPart.static(String text) = StaticPart;
-  
+
   /// Creates an editable input part.
   const factory InputPart.editable({
     required int length,
@@ -63,16 +63,16 @@ abstract class InputPart implements FormattedValuePart {
     Widget? placeholder,
     required double width,
   }) = EditablePart;
-  
+
   /// Creates a custom widget part.
   const factory InputPart.widget(Widget widget) = WidgetPart;
 
   /// Creates an [InputPart].
   const InputPart();
-  
+
   /// Builds the widget for this part.
   Widget build(BuildContext context, FormattedInputData data);
-  
+
   /// A unique key identifying this part.
   Object? get partKey;
 
@@ -80,14 +80,17 @@ abstract class InputPart implements FormattedValuePart {
   bool get canHaveValue => false;
 
   @override
+
   /// The current value of this part, or null if it doesn't hold a value.
   String? get value => null;
 
   @override
+
   /// Returns this part.
   InputPart get part => this;
 
   @override
+
   /// Creates a copy of this part with the specified value.
   FormattedValuePart withValue(String value) {
     return FormattedValuePart(this, value);
@@ -174,19 +177,19 @@ class _StaticPartWidgetState extends State<_StaticPartWidget> {
 class EditablePart extends InputPart {
   /// The maximum length of text this part can hold.
   final int length;
-  
+
   /// Whether to obscure the text (e.g., for passwords).
   final bool obscureText;
-  
+
   /// Input formatters to apply to this part.
   final List<TextInputFormatter> inputFormatters;
-  
+
   /// The width of this input part.
   final double width;
-  
+
   /// Optional placeholder widget to display when empty.
   final Widget? placeholder;
-  
+
   /// Creates an [EditablePart] with the specified configuration.
   const EditablePart({
     required this.length,
@@ -476,7 +479,7 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
 class FormattedValuePart {
   /// The input part definition that this value belongs to.
   final InputPart part;
-  
+
   /// The actual string value for this part, or null if not set.
   final String? value;
 
@@ -891,22 +894,22 @@ class _FormattedInputState extends State<FormattedInput> {
 class FormattedInputData {
   /// The index of this part in the formatted input.
   final int partIndex;
-  
+
   /// The initial value for this part.
   final String? initialValue;
-  
+
   /// Whether this part is enabled for editing.
   final bool enabled;
-  
+
   /// The controller managing the overall formatted input.
   final FormattedInputController? controller;
-  
+
   /// The focus node for this specific part.
   final FocusNode? focusNode;
-  
+
   /// All focus nodes in the formatted input.
   final List<FocusNode> focusNodes;
-  
+
   /// Creates a [FormattedInputData].
   FormattedInputData({
     required this.partIndex,
@@ -965,42 +968,46 @@ typedef FormattedInputPopupBuilder<T> = Widget Function(
 class FormattedObjectInput<T> extends StatefulWidget
     with ControlledComponent<T?> {
   @override
+
   /// The initial value of the input.
   final T? initialValue;
-  
+
   @override
+
   /// Called when the value changes.
   final ValueChanged<T?>? onChanged;
-  
+
   /// Called when the individual parts change.
   final ValueChanged<List<String>>? onPartsChanged;
-  
+
   /// Builder for creating a custom popup widget.
   final FormattedInputPopupBuilder<T>? popupBuilder;
-  
+
   @override
+
   /// Whether the input is enabled.
   final bool enabled;
-  
+
   @override
+
   /// Optional controller for external control.
   final ComponentController<T?>? controller;
-  
+
   /// Converter between the object type and string parts.
   final BiDirectionalConvert<T?, List<String?>> converter;
-  
+
   /// The input parts that make up the formatted input.
   final List<InputPart> parts;
-  
+
   /// Alignment of the popover relative to the anchor.
   final AlignmentGeometry? popoverAlignment;
-  
+
   /// Anchor alignment for popover positioning.
   final AlignmentGeometry? popoverAnchorAlignment;
-  
+
   /// Offset for the popover position.
   final Offset? popoverOffset;
-  
+
   /// Icon displayed in the popover trigger.
   final Widget? popoverIcon;
 

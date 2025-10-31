@@ -8,8 +8,8 @@ class ButtonExample17 extends StatelessWidget {
     return Button(
       style: const ButtonStyle.primary()
           .withBackgroundColor(color: Colors.red, hoverColor: Colors.purple)
-      .withForegroundColor(color: Colors.white)
-      .withBorderRadius(hoverBorderRadius: BorderRadius.circular(16)),
+          .withForegroundColor(color: Colors.white)
+          .withBorderRadius(hoverBorderRadius: BorderRadius.circular(16)),
       onPressed: () {},
       leading: const Icon(Icons.sunny),
       child: const Text('Custom Button'),

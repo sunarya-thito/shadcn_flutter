@@ -61,16 +61,16 @@ class BasicTheme {
     return BasicTheme(
       leadingAlignment:
           leadingAlignment == null ? this.leadingAlignment : leadingAlignment(),
-      trailingAlignment:
-          trailingAlignment == null ? this.trailingAlignment : trailingAlignment(),
+      trailingAlignment: trailingAlignment == null
+          ? this.trailingAlignment
+          : trailingAlignment(),
       titleAlignment:
           titleAlignment == null ? this.titleAlignment : titleAlignment(),
       subtitleAlignment: subtitleAlignment == null
           ? this.subtitleAlignment
           : subtitleAlignment(),
-      contentAlignment: contentAlignment == null
-          ? this.contentAlignment
-          : contentAlignment(),
+      contentAlignment:
+          contentAlignment == null ? this.contentAlignment : contentAlignment(),
       contentSpacing:
           contentSpacing == null ? this.contentSpacing : contentSpacing(),
       titleSpacing: titleSpacing == null ? this.titleSpacing : titleSpacing(),

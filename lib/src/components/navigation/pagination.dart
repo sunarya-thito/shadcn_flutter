@@ -260,8 +260,7 @@ class Pagination extends StatelessWidget {
     );
   }
 
-  Widget _buildNextLabel(
-      ShadcnLocalizations localizations, bool showLabel) {
+  Widget _buildNextLabel(ShadcnLocalizations localizations, bool showLabel) {
     if (showLabel) {
       return GhostButton(
         onPressed: hasNext ? () => onPageChanged(page + 1) : null,

@@ -35,19 +35,19 @@ typedef WrapperBuilder = Widget Function(
 class Wrapper extends StatefulWidget {
   /// The child widget to be wrapped.
   final Widget child;
-  
+
   /// Optional builder function to wrap the child.
   ///
   /// If [wrap] is true and this is provided, the child will be wrapped
   /// using this builder function. If null, the child is returned as-is.
   final WrapperBuilder? builder;
-  
+
   /// Whether to apply the [builder] wrapper.
   ///
   /// When false, the [child] is returned directly regardless of [builder].
   /// Defaults to true.
   final bool wrap;
-  
+
   /// Whether to maintain the widget structure across rebuilds.
   ///
   /// When true, wraps the child in a [KeyedSubtree] to preserve the widget

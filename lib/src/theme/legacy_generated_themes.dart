@@ -33,7 +33,7 @@ void _assertNotThemeModeSystem(ThemeMode mode, String label) {
 /// using the RGB-based [ColorSchemes] class.
 class LegacyColorSchemes {
   const LegacyColorSchemes._();
-  
+
   /// Returns light zinc color scheme.
   static ColorScheme lightZinc() {
     return ColorScheme(

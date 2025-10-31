@@ -38,8 +38,10 @@ class CalendarTheme {
 enum CalendarViewType {
   /// Shows individual days in a month grid.
   date,
+
   /// Shows months in a year grid.
   month,
+
   /// Shows years in a decade grid.
   year,
 }
@@ -50,6 +52,7 @@ enum CalendarViewType {
 enum DateState {
   /// Date cannot be selected or clicked.
   disabled,
+
   /// Date is fully interactive and selectable.
   enabled,
 }
@@ -66,10 +69,13 @@ typedef DateStateBuilder = DateState Function(DateTime date);
 enum CalendarSelectionMode {
   /// No date selection allowed (display only).
   none,
+
   /// Only one date can be selected at a time.
   single,
+
   /// Two dates can be selected to form a date range.
   range,
+
   /// Multiple individual dates can be selected.
   multi,
 }
@@ -857,12 +863,16 @@ class MultiCalendarValue extends CalendarValue {
 enum CalendarValueLookup {
   /// Date is not part of any selection.
   none,
+
   /// Date is directly selected (single mode or exact match).
   selected,
+
   /// Date is the start of a selected range.
   start,
+
   /// Date is the end of a selected range.
   end,
+
   /// Date falls within a selected range but is not start/end.
   inRange
 }
@@ -1469,24 +1479,34 @@ class YearCalendar extends StatelessWidget {
 enum CalendarItemType {
   /// Normal unselected date.
   none,
+
   /// Current date highlighted.
   today,
+
   /// Single selected date or exact range boundary.
   selected,
+
   /// Date within a selected range but not start/end.
   inRange,
+
   /// Range start boundary in other months (same as startRangeSelected).
   startRange,
+
   /// Range end boundary in other months (same as endRangeSelected).
   endRange,
+
   /// Range start boundary in current month.
   startRangeSelected,
+
   /// Range end boundary in current month.
   endRangeSelected,
+
   /// Range start boundary in short ranges.
   startRangeSelectedShort,
+
   /// Range end boundary in short ranges (typically 2-day ranges).
   endRangeSelectedShort,
+
   /// Middle dates in short ranges (typically 2-day ranges).
   inRangeSelectedShort,
 }

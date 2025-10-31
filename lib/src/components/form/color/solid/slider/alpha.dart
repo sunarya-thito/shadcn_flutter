@@ -8,10 +8,10 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class AlphaPainter extends CustomPainter {
   /// Primary color for the checkerboard pattern.
   static const Color checkboardPrimary = Color(0xFFE0E0E0);
-  
+
   /// Secondary color for the checkerboard pattern.
   static const Color checkboardSecondary = Color(0xFFB0B0B0);
-  
+
   /// Size of each checkerboard square.
   static const double checkboardSize = 8.0;
 

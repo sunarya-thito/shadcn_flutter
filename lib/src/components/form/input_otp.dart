@@ -89,14 +89,14 @@ abstract class InputOTPChild {
   /// A visual separator between OTP groups (e.g., a dash or line).
   static InputOTPChild get separator =>
       const WidgetInputOTPChild(OTPSeparator());
-  
+
   /// Spacing between OTP input fields.
   static InputOTPChild get space =>
       const WidgetInputOTPChild(_InputOTPSpacing());
-  
+
   /// An empty placeholder that takes no space.
   static InputOTPChild get empty => const WidgetInputOTPChild(SizedBox());
-  
+
   /// Creates a customizable character input field.
   ///
   /// Parameters:
@@ -121,7 +121,7 @@ abstract class InputOTPChild {
         readOnly: readOnly,
         keyboardType: keyboardType,
       );
-  
+
   /// Creates a character input with alphabet and digit filtering.
   ///
   /// Parameters:
@@ -191,10 +191,10 @@ abstract class InputOTPChild {
       readOnly: readOnly,
     );
   }
-  
+
   /// Creates an [InputOTPChild].
   const InputOTPChild();
-  
+
   /// Builds the widget for this OTP child.
   ///
   /// Parameters:
@@ -203,7 +203,7 @@ abstract class InputOTPChild {
   ///
   /// Returns: The widget representing this OTP child.
   Widget build(BuildContext context, InputOTPChildData data);
-  
+
   /// Whether this child can hold a value (i.e., is an input field).
   bool get hasValue;
 }
@@ -253,7 +253,7 @@ class CharacterInputOTPChild extends InputOTPChild {
   /// Returns: `true` if the codepoint is a lowercase letter.
   static bool isAlphabetLower(int codepoint) =>
       codepoint >= _startAlphabetLower && codepoint <= _endAlphabetLower;
-  
+
   /// Tests if the codepoint is an uppercase letter (A-Z).
   ///
   /// Parameters:
@@ -262,7 +262,7 @@ class CharacterInputOTPChild extends InputOTPChild {
   /// Returns: `true` if the codepoint is an uppercase letter.
   static bool isAlphabetUpper(int codepoint) =>
       codepoint >= _startAlphabetUpper && codepoint <= _endAlphabetUpper;
-  
+
   /// Converts a lowercase letter to uppercase.
   ///
   /// Parameters:
@@ -271,7 +271,7 @@ class CharacterInputOTPChild extends InputOTPChild {
   /// Returns: The uppercase codepoint if lowercase, otherwise unchanged.
   static int lowerToUpper(int codepoint) =>
       isAlphabetLower(codepoint) ? codepoint - 32 : codepoint;
-  
+
   /// Converts an uppercase letter to lowercase.
   ///
   /// Parameters:
@@ -280,7 +280,7 @@ class CharacterInputOTPChild extends InputOTPChild {
   /// Returns: The lowercase codepoint if uppercase, otherwise unchanged.
   static int upperToLower(int codepoint) =>
       isAlphabetUpper(codepoint) ? codepoint + 32 : codepoint;
-  
+
   /// Tests if the codepoint is a digit (0-9).
   ///
   /// Parameters:
@@ -292,16 +292,16 @@ class CharacterInputOTPChild extends InputOTPChild {
 
   /// Predicate to validate allowed codepoints.
   final CodepointPredicate? predicate;
-  
+
   /// Function to transform codepoints before storing.
   final CodepointUnaryOperator? transform;
-  
+
   /// Whether to obscure the input character.
   final bool obscured;
-  
+
   /// Whether the input is read-only.
   final bool readOnly;
-  
+
   /// The keyboard type to use for input.
   final TextInputType? keyboardType;
 
@@ -642,28 +642,28 @@ class OTPSeparator extends StatelessWidget {
 class InputOTPChildData {
   /// Focus node for the previous input field.
   final FocusNode? previousFocusNode;
-  
+
   /// Focus node for this input field.
   final FocusNode? focusNode;
-  
+
   /// Focus node for the next input field.
   final FocusNode? nextFocusNode;
-  
+
   /// Overall index within all OTP children.
   final int index;
-  
+
   /// Index of the group this child belongs to.
   final int groupIndex;
-  
+
   /// Total number of children in this group.
   final int groupLength;
-  
+
   /// Relative index within the group.
   final int relativeIndex;
-  
+
   /// Current value (codepoint) of this input field.
   final int? value;
-  
+
   final _InputOTPState _state;
   final GlobalKey<_OTPCharacterInputState>? _key;
 
@@ -788,13 +788,13 @@ extension OTPCodepointListExtension on OTPCodepointList {
 class InputOTP extends StatefulWidget {
   /// The list of children defining input fields, separators, and spaces.
   final List<InputOTPChild> children;
-  
+
   /// Initial OTP codepoint values.
   final OTPCodepointList? initialValue;
-  
+
   /// Called when the OTP value changes.
   final ValueChanged<OTPCodepointList>? onChanged;
-  
+
   /// Called when the user submits the OTP (e.g., presses Enter on last field).
   final ValueChanged<OTPCodepointList>? onSubmitted;
 

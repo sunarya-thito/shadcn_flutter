@@ -52,7 +52,7 @@ mixin Choice<T> {
 
   /// Selects the specified item.
   void selectItem(T item);
-  
+
   /// Gets the currently selected items.
   Iterable<T>? get value;
 }
@@ -335,16 +335,16 @@ class ControlledMultipleChoice<T> extends StatelessWidget
 class MultipleChoice<T> extends StatefulWidget {
   /// The child widget tree containing choice items.
   final Widget child;
-  
+
   /// The currently selected value.
   final T? value;
-  
+
   /// Callback when the selection changes.
   final ValueChanged<T?>? onChanged;
-  
+
   /// Whether choices are enabled.
   final bool? enabled;
-  
+
   /// Whether the current selection can be unselected.
   final bool? allowUnselect;
 
@@ -457,16 +457,16 @@ class _MultipleChoiceState<T> extends State<MultipleChoice<T>>
 class MultipleAnswer<T> extends StatefulWidget {
   /// The child widget tree containing choice items.
   final Widget child;
-  
+
   /// The currently selected values.
   final Iterable<T>? value;
-  
+
   /// Callback when the selection changes.
   final ValueChanged<Iterable<T>?>? onChanged;
-  
+
   /// Whether choices are enabled.
   final bool? enabled;
-  
+
   /// Whether all selections can be unselected.
   final bool? allowUnselect;
 

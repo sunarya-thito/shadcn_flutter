@@ -184,91 +184,91 @@ class ShadcnApp extends StatefulWidget {
 
   /// The theme data for the app.
   final ThemeData theme;
-  
+
   /// The dark theme data for the app.
   final ThemeData? darkTheme;
-  
+
   /// Determines which theme will be used by the app.
   final ThemeMode themeMode;
-  
+
   /// The primary color to use for the app's widgets.
   final Color? color;
-  
+
   /// The background color for the app.
   final Color? background;
-  
+
   /// The initial locale for this app's [Localizations] widget.
   final Locale? locale;
 
   /// The delegates for this app's [Localizations] widget.
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
-  
+
   /// Callback that receives the list of locales and returns the best match.
   final LocaleListResolutionCallback? localeListResolutionCallback;
-  
+
   /// Callback that receives locale and supported locales and returns the best match.
   final LocaleResolutionCallback? localeResolutionCallback;
-  
+
   /// The list of locales that this app has been localized for.
   final Iterable<Locale> supportedLocales;
-  
+
   /// Whether to show the performance overlay.
   final bool showPerformanceOverlay;
-  
+
   /// Whether to show the semantics debugger.
   final bool showSemanticsDebugger;
-  
+
   /// Whether to show the debug banner.
   final bool debugShowCheckedModeBanner;
-  
+
   /// The default map of shortcuts to intents for the application.
   final Map<ShortcutActivator, Intent>? shortcuts;
-  
+
   /// The default map of intent types to actions for the application.
   final Map<Type, Action<Intent>>? actions;
-  
+
   /// The identifier to use for state restoration of the app.
   final String? restorationScopeId;
-  
+
   /// The scroll behavior for the app.
   final ScrollBehavior? scrollBehavior;
-  
+
   /// Whether to show the Material grid in debug mode.
   final bool debugShowMaterialGrid;
-  
+
   /// The Material theme to use for Material widgets.
   final m.ThemeData? materialTheme;
-  
+
   /// The Cupertino theme to use for Cupertino widgets.
   final c.CupertinoThemeData? cupertinoTheme;
-  
+
   /// Whether to disable the browser context menu.
   final bool disableBrowserContextMenu;
-  
+
   /// The initial list of recent colors.
   final List<Color> initialRecentColors;
-  
+
   /// The maximum number of recent colors to track.
   final int maxRecentColors;
-  
+
   /// Called when the list of recent colors changes.
   final ValueChanged<List<Color>>? onRecentColorsChanged;
-  
+
   /// Whether to snap widgets to physical pixels.
   final bool pixelSnap;
-  
+
   /// Whether to enable scroll interception.
   final bool enableScrollInterception;
-  
+
   /// The overlay handler for popovers.
   final OverlayHandler? popoverHandler;
-  
+
   /// The overlay handler for tooltips.
   final OverlayHandler? tooltipHandler;
-  
+
   /// The overlay handler for menus.
   final OverlayHandler? menuHandler;
-  
+
   /// Whether to animate theme changes.
   final bool enableThemeAnimation;
 
@@ -567,43 +567,43 @@ class _ShadcnAppState extends State<ShadcnApp> {
 class ShadcnLayer extends StatelessWidget {
   /// The child widget to wrap with shadcn infrastructure.
   final Widget? child;
-  
+
   /// The light theme data.
   final ThemeData theme;
-  
+
   /// The dark theme data.
   final ThemeData? darkTheme;
-  
+
   /// Determines which theme to use.
   final ThemeMode themeMode;
-  
+
   /// The scaling strategy for adaptive layouts.
   final AdaptiveScaling? scaling;
-  
+
   /// The initial list of recent colors.
   final List<Color> initialRecentColors;
-  
+
   /// The maximum number of recent colors to track.
   final int maxRecentColors;
-  
+
   /// Called when the list of recent colors changes.
   final ValueChanged<List<Color>>? onRecentColorsChanged;
-  
+
   /// A builder to wrap the child widget.
   final Widget Function(BuildContext context, Widget? child)? builder;
-  
+
   /// Whether to enable scroll interception.
   final bool enableScrollInterception;
-  
+
   /// The overlay handler for popovers.
   final OverlayHandler? popoverHandler;
-  
+
   /// The overlay handler for tooltips.
   final OverlayHandler? tooltipHandler;
-  
+
   /// The overlay handler for menus.
   final OverlayHandler? menuHandler;
-  
+
   /// Whether to animate theme changes.
   final bool enableThemeAnimation;
 
@@ -702,16 +702,16 @@ class ShadcnLayer extends StatelessWidget {
 class ShadcnAnimatedTheme extends StatelessWidget {
   /// The child widget to apply the theme to.
   final Widget child;
-  
+
   /// The theme data to animate to.
   final ThemeData data;
-  
+
   /// The duration of the animation.
   final Duration duration;
-  
+
   /// The curve for the animation.
   final Curve curve;
-  
+
   /// Called when the animation completes.
   final VoidCallback? onEnd;
 
@@ -802,7 +802,7 @@ class ShadcnRectArcTween extends RectTween {
   }
 
   late ShadcnPointArcTween _beginArc;
-  
+
   /// Gets the arc tween for the ending point of the rectangle.
   ShadcnPointArcTween? get endArc {
     if (end == null) {
@@ -1053,7 +1053,7 @@ class ShadcnPointArcTween extends Tween<Offset> {
 class ShadcnUI extends StatelessWidget {
   /// Optional text style override.
   final TextStyle? textStyle;
-  
+
   /// The child widget.
   final Widget child;
 

@@ -188,42 +188,42 @@ class RefreshTrigger extends StatefulWidget {
   /// Pull distance must exceed this value to activate the refresh callback.
   /// If null, uses theme or default value.
   final double? minExtent;
-  
+
   /// Maximum pull extent allowed.
   ///
   /// Limits how far the user can pull to prevent excessive stretching.
   /// If null, uses theme or default value.
   final double? maxExtent;
-  
+
   /// Callback invoked when refresh is triggered.
   ///
   /// Should return a Future that completes when the refresh operation finishes.
   /// While the Future is pending, the refresh indicator shows loading state.
   final FutureVoidCallback? onRefresh;
-  
+
   /// The scrollable child widget being refreshed.
   final Widget child;
-  
+
   /// Direction of the pull gesture.
   ///
   /// Defaults to [Axis.vertical] for standard top-down pull-to-refresh.
   final Axis direction;
-  
+
   /// Whether to reverse the pull direction.
   ///
   /// If true, pull gesture is inverted (e.g., pull down instead of up).
   final bool reverse;
-  
+
   /// Custom builder for the refresh indicator.
   ///
   /// If null, uses [defaultIndicatorBuilder].
   final RefreshIndicatorBuilder? indicatorBuilder;
-  
+
   /// Animation curve for extent changes.
   ///
   /// Controls how the pull extent animates during interactions.
   final Curve? curve;
-  
+
   /// Duration for the completion animation.
   ///
   /// Time to display the completion state before hiding the indicator.
@@ -722,13 +722,13 @@ class RefreshTriggerState extends State<RefreshTrigger>
 enum TriggerStage {
   /// Idle state, no refresh in progress.
   idle,
-  
+
   /// Pulling state, user is dragging the indicator.
   pulling,
-  
+
   /// Refreshing state, async refresh operation is executing.
   refreshing,
-  
+
   /// Completed state, refresh finished successfully.
   completed,
 }
@@ -740,16 +740,16 @@ enum TriggerStage {
 class RefreshTriggerStage {
   /// Current stage of the refresh lifecycle.
   final TriggerStage stage;
-  
+
   /// Animated pull extent value.
   ///
   /// Range depends on min/max extent configuration. Use [extentValue] for
   /// current numeric value.
   final Animation<double> extent;
-  
+
   /// Direction of the pull gesture.
   final Axis direction;
-  
+
   /// Whether the pull direction is reversed.
   final bool reverse;
 

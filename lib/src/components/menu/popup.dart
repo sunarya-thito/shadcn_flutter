@@ -46,8 +46,7 @@ class MenuPopupTheme {
       padding: padding == null ? this.padding : padding(),
       fillColor: fillColor == null ? this.fillColor : fillColor(),
       borderColor: borderColor == null ? this.borderColor : borderColor(),
-      borderRadius:
-          borderRadius == null ? this.borderRadius : borderRadius(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
     );
   }
 

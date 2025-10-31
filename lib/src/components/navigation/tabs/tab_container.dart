@@ -23,8 +23,7 @@ class TabContainerTheme {
   }) {
     return TabContainerTheme(
       builder: builder == null ? this.builder : builder(),
-      childBuilder:
-          childBuilder == null ? this.childBuilder : childBuilder(),
+      childBuilder: childBuilder == null ? this.childBuilder : childBuilder(),
     );
   }
 
@@ -146,6 +145,7 @@ class TabChildWidget extends StatelessWidget with TabChild {
   final Widget child;
 
   @override
+
   /// Whether this tab uses indexed positioning.
   ///
   /// Defaults to `false` unless specified in the constructor.
@@ -303,8 +303,9 @@ class TabContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<TabContainerTheme>(context);
-    final tabBuilder =
-        builder ?? compTheme?.builder ?? (context, children) => Column(children: children);
+    final tabBuilder = builder ??
+        compTheme?.builder ??
+        (context, children) => Column(children: children);
     final tabChildBuilder =
         childBuilder ?? compTheme?.childBuilder ?? ((_, __, child) => child);
 

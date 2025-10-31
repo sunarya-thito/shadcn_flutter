@@ -57,10 +57,10 @@ String colorToHex(Color color,
 /// ```dart
 /// // Create from a Flutter Color
 /// final derivative = ColorDerivative.fromColor(Colors.blue);
-/// 
+///
 /// // Modify saturation
 /// final desaturated = derivative.changeToHSVSaturation(0.5);
-/// 
+///
 /// // Convert back to Color
 /// final newColor = desaturated.toColor();
 /// ```
@@ -72,59 +72,59 @@ abstract base class ColorDerivative {
 
   /// Creates a [ColorDerivative] from an [HSVColor].
   const factory ColorDerivative.fromHSV(HSVColor color) = _HSVColor;
-  
+
   /// Creates a [ColorDerivative] from an [HSLColor].
   const factory ColorDerivative.fromHSL(HSLColor color) = _HSLColor;
 
   /// Creates a const [ColorDerivative].
   const ColorDerivative();
-  
+
   /// Converts this color derivative to a Flutter [Color].
   Color toColor();
-  
+
   /// Converts this color derivative to an [HSVColor].
   HSVColor toHSVColor();
-  
+
   /// Converts this color derivative to an [HSLColor].
   HSLColor toHSLColor();
-  
+
   /// Gets the opacity (alpha) value of this color, ranging from 0.0 to 1.0.
   double get opacity;
-  
+
   /// Gets the hue component in HSL color space, ranging from 0.0 to 360.0.
   double get hslHue;
-  
+
   /// Gets the saturation component in HSL color space, ranging from 0.0 to 1.0.
   double get hslSat;
-  
+
   /// Gets the lightness component in HSL color space, ranging from 0.0 to 1.0.
   double get hslVal;
-  
+
   /// Gets the hue component in HSV color space, ranging from 0.0 to 360.0.
   double get hsvHue;
-  
+
   /// Gets the saturation component in HSV color space, ranging from 0.0 to 1.0.
   double get hsvSat;
-  
+
   /// Gets the value (brightness) component in HSV color space, ranging from 0.0 to 1.0.
   double get hsvVal;
-  
+
   /// Gets the red component in RGB color space, ranging from 0 to 255.
   int get red;
-  
+
   /// Gets the green component in RGB color space, ranging from 0 to 255.
   int get green;
-  
+
   /// Gets the blue component in RGB color space, ranging from 0 to 255.
   int get blue;
-  
+
   /// Transforms this color derivative to match the internal representation of [old].
   ///
   /// This method preserves the color space representation (HSV or HSL) used by [old]
   /// while applying the color values from this derivative. This is useful when
   /// maintaining consistency in color space during transformations.
   ColorDerivative transform(ColorDerivative old);
-  
+
   /// Changes the opacity (alpha) value of this color.
   ///
   /// Parameters:
@@ -132,7 +132,7 @@ abstract base class ColorDerivative {
   ///
   /// Returns: A new [ColorDerivative] with the updated opacity.
   ColorDerivative changeToOpacity(double alpha);
-  
+
   /// Changes this color to the specified [color] while preserving the internal color space representation.
   ///
   /// Parameters:
@@ -479,7 +479,7 @@ abstract class ColorGradient {
   ///
   /// Returns: A new [ColorGradient] instance.
   ColorGradient copyWith();
-  
+
   /// Changes the color at the specified [index].
   ///
   /// Parameters:
@@ -488,7 +488,7 @@ abstract class ColorGradient {
   ///
   /// Returns: A new [ColorGradient] with the updated color.
   ColorGradient changeColorAt(int index, ColorDerivative color);
-  
+
   /// Changes the position of the color stop at the specified [index].
   ///
   /// Parameters:
@@ -497,7 +497,7 @@ abstract class ColorGradient {
   ///
   /// Returns: A new [ColorGradient] with the updated position.
   ColorGradient changePositionAt(int index, double position);
-  
+
   /// Changes both the color and position at the specified [index].
   ///
   /// Parameters:
@@ -508,7 +508,7 @@ abstract class ColorGradient {
   /// Returns: A new [ColorGradient] with both values updated.
   ColorGradient changeColorAndPositionAt(
       int index, ColorDerivative color, double position);
-      
+
   /// Inserts a new color stop at a specific position in the gradient.
   ///
   /// Parameters:
@@ -542,10 +542,10 @@ abstract class ColorGradient {
 class ColorStop {
   /// The color at this stop.
   final ColorDerivative color;
-  
+
   /// The position of this stop along the gradient, typically from 0.0 to 1.0.
   final double position;
-  
+
   /// Creates a [ColorStop] with the specified [color] and [position].
   const ColorStop({
     required this.color,
@@ -564,13 +564,13 @@ class ColorStop {
 abstract class GradientAngleGeometry {
   /// Creates a const [GradientAngleGeometry].
   const GradientAngleGeometry();
-  
+
   /// The angle of the gradient in radians.
   double get angle;
-  
+
   /// The beginning alignment of the gradient.
   AlignmentGeometry get begin;
-  
+
   /// The ending alignment of the gradient.
   AlignmentGeometry get end;
 
@@ -603,13 +603,15 @@ abstract class GradientAngleGeometry {
 /// ```
 class DirectionalGradientAngle extends GradientAngleGeometry {
   @override
+
   /// The angle of the gradient in radians.
   final double angle;
-  
+
   /// Creates a [DirectionalGradientAngle] with the specified [angle] in radians.
   const DirectionalGradientAngle(this.angle);
 
   @override
+
   /// The beginning alignment calculated from the angle.
   AlignmentGeometry get begin {
     final x = 0.5 + 0.5 * cos(angle);
@@ -618,6 +620,7 @@ class DirectionalGradientAngle extends GradientAngleGeometry {
   }
 
   @override
+
   /// The ending alignment calculated from the angle.
   AlignmentGeometry get end {
     final x = 0.5 + 0.5 * cos(angle + pi);
@@ -639,13 +642,15 @@ class DirectionalGradientAngle extends GradientAngleGeometry {
 /// ```
 class GradientAngle extends GradientAngleGeometry {
   @override
+
   /// The angle of the gradient in radians.
   final double angle;
-  
+
   /// Creates a [GradientAngle] with the specified [angle] in radians.
   const GradientAngle(this.angle);
 
   @override
+
   /// The beginning alignment calculated from the angle.
   AlignmentGeometry get begin {
     final x = 0.5 + 0.5 * cos(angle);
@@ -654,6 +659,7 @@ class GradientAngle extends GradientAngleGeometry {
   }
 
   @override
+
   /// The ending alignment calculated from the angle.
   AlignmentGeometry get end {
     final x = 0.5 + 0.5 * cos(angle + pi);
@@ -681,13 +687,13 @@ class GradientAngle extends GradientAngleGeometry {
 class LinearColorGradient extends ColorGradient {
   /// The list of color stops in the gradient.
   final List<ColorStop> colors;
-  
+
   /// The angle of the gradient.
   final GradientAngleGeometry angle;
-  
+
   /// How the gradient repeats beyond its bounds.
   final TileMode tileMode;
-  
+
   /// Creates a [LinearColorGradient] with the specified parameters.
   const LinearColorGradient({
     required this.colors,

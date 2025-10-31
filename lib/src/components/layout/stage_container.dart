@@ -1,6 +1,5 @@
 import 'dart:math';
 
-
 import '../../../shadcn_flutter.dart';
 
 /// Abstract base class for defining stage-based layout breakpoints.
@@ -104,7 +103,7 @@ class StagedBreakpoint implements StageBreakpoint {
 
   /// Creates a [StagedBreakpoint] with default responsive breakpoints.
   const StagedBreakpoint.defaultBreakpoints()
-    : breakpoints = _defaultBreakpoints;
+      : breakpoints = _defaultBreakpoints;
 
   @override
   double getMinWidth(double width) {

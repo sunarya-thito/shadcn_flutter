@@ -1,4 +1,3 @@
-
 import '../../../shadcn_flutter.dart';
 
 /// Theme configuration for [DatePicker] widget styling and behavior.
@@ -152,45 +151,49 @@ class DatePickerController extends ValueNotifier<DateTime?>
 class ControlledDatePicker extends StatelessWidget
     with ControlledComponent<DateTime?> {
   @override
+
   /// The initial date value.
   final DateTime? initialValue;
-  
+
   @override
+
   /// Called when the selected date changes.
   final ValueChanged<DateTime?>? onChanged;
-  
+
   @override
+
   /// Whether the date picker is enabled.
   final bool enabled;
-  
+
   @override
+
   /// Optional controller for programmatic access.
   final DatePickerController? controller;
 
   /// Widget displayed when no date is selected.
   final Widget? placeholder;
-  
+
   /// Presentation mode (popover or modal).
   final PromptMode? mode;
-  
+
   /// Initial calendar view to display.
   final CalendarView? initialView;
-  
+
   /// Popover alignment relative to the anchor.
   final AlignmentGeometry? popoverAlignment;
-  
+
   /// Anchor alignment for popover positioning.
   final AlignmentGeometry? popoverAnchorAlignment;
-  
+
   /// Internal padding for the popover.
   final EdgeInsetsGeometry? popoverPadding;
-  
+
   /// Title for the dialog when using modal mode.
   final Widget? dialogTitle;
-  
+
   /// Initial calendar view type.
   final CalendarViewType? initialViewType;
-  
+
   /// Builder for customizing date cell states.
   final DateStateBuilder? stateBuilder;
 

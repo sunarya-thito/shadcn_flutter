@@ -192,10 +192,10 @@ class ItemPicker<T> extends StatelessWidget {
 abstract class ItemChildDelegate<T> {
   /// Creates an [ItemChildDelegate].
   const ItemChildDelegate();
-  
+
   /// The total number of items, or null if infinite or unknown.
   int? get itemCount;
-  
+
   /// Retrieves the item at the specified index.
   ///
   /// Parameters:
@@ -216,16 +216,16 @@ abstract class ItemChildDelegate<T> {
 class ItemList<T> extends ItemChildDelegate<T> {
   /// The list of items.
   final List<T> items;
-  
+
   /// Creates an [ItemList].
   ///
   /// Parameters:
   /// - [items] (`List<T>`, required): The items to provide.
   const ItemList(this.items);
-  
+
   @override
   int get itemCount => items.length;
-  
+
   @override
   T operator [](int index) => items[index];
 }
@@ -243,12 +243,13 @@ class ItemList<T> extends ItemChildDelegate<T> {
 /// ```
 class ItemBuilder<T> extends ItemChildDelegate<T> {
   @override
+
   /// The total number of items, or null if infinite.
   final int? itemCount;
-  
+
   /// Builder function that returns an item for the given index.
   final T? Function(int index) itemBuilder;
-  
+
   /// Creates an [ItemBuilder].
   ///
   /// Parameters:
@@ -280,13 +281,13 @@ typedef ItemPickerBuilder<T> = Widget Function(BuildContext context, T item);
 abstract class ItemPickerLayout {
   /// A list layout for item pickers.
   static const ListItemPickerLayout list = ListItemPickerLayout();
-  
+
   /// A grid layout for item pickers (4 columns by default).
   static const GridItemPickerLayout grid = GridItemPickerLayout();
-  
+
   /// Creates an [ItemPickerLayout].
   const ItemPickerLayout();
-  
+
   /// Builds the widget for displaying items.
   ///
   /// Parameters:
@@ -347,7 +348,7 @@ class ListItemPickerLayout extends ItemPickerLayout {
 class GridItemPickerLayout extends ItemPickerLayout {
   /// Number of columns in the grid.
   final int crossAxisCount;
-  
+
   /// Creates a [GridItemPickerLayout].
   ///
   /// Parameters:
@@ -599,19 +600,19 @@ Future<T?> showItemPickerDialog<T>(
 class ItemPickerDialog<T> extends StatefulWidget {
   /// Delegate providing the items to display.
   final ItemChildDelegate<T> items;
-  
+
   /// Builder function for rendering each item.
   final ItemPickerBuilder<T> builder;
-  
+
   /// Layout strategy for displaying items.
   final ItemPickerLayout layout;
-  
+
   /// Currently selected value.
   final T? value;
-  
+
   /// Called when the selection changes.
   final ValueChanged<T?>? onChanged;
-  
+
   /// Creates an [ItemPickerDialog].
   ///
   /// Parameters:
@@ -663,13 +664,13 @@ class _ItemPickerDialogState<T> extends State<ItemPickerDialog<T>> {
 class ItemPickerData {
   /// The currently selected value.
   final Object? value;
-  
+
   /// Callback invoked when the selection changes.
   final ValueChanged<Object?>? onChanged;
-  
+
   /// The layout strategy being used.
   final ItemPickerLayout layout;
-  
+
   /// Creates an [ItemPickerData].
   ///
   /// Parameters:
@@ -707,19 +708,19 @@ class ItemPickerData {
 class ItemPickerOption<T> extends StatelessWidget {
   /// The value this option represents.
   final T value;
-  
+
   /// Optional label widget displayed with the option.
   final Widget? label;
-  
+
   /// The main child widget representing the option.
   final Widget child;
-  
+
   /// Custom style for the option when not selected.
   final AbstractButtonStyle? style;
-  
+
   /// Custom style for the option when selected.
   final AbstractButtonStyle? selectedStyle;
-  
+
   /// Creates an [ItemPickerOption].
   ///
   /// Parameters:

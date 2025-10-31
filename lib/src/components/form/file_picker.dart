@@ -28,7 +28,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   subtitle: Text('Drag files here or click to browse'),
 ///   hotDropEnabled: true,
 ///   onAdd: () => _selectFiles(),
-///   children: selectedFiles.map((file) => 
+///   children: selectedFiles.map((file) =>
 ///     FileItem(file: file, onRemove: () => _removeFile(file))
 ///   ).toList(),
 /// )
@@ -100,28 +100,28 @@ class FilePicker extends StatelessWidget {
 class FileItem extends StatelessWidget {
   /// Upload progress from 0.0 to 1.0, or null if not uploading.
   final double? uploadProgress;
-  
+
   /// Called when the remove button is pressed.
   final VoidCallback? onRemove;
-  
+
   /// Called when the retry button is pressed (for failed uploads).
   final VoidCallback? onRetry;
-  
+
   /// Called when the download button is pressed.
   final VoidCallback? onDownload;
-  
+
   /// Optional thumbnail widget for the file.
   final Widget? thumbnail;
-  
+
   /// Called when the preview button is pressed.
   final VoidCallback? onPreview;
-  
+
   /// Widget displaying the file name.
   final Widget fileName;
-  
+
   /// Optional widget displaying the file size.
   final Widget? fileSize;
-  
+
   /// Optional widget displaying the file type/format.
   final Widget? fileType;
 

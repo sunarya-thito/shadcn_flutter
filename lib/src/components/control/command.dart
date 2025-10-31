@@ -244,7 +244,7 @@ class Command extends StatefulWidget {
   ///   debounceDuration: Duration(milliseconds: 200),
   ///   searchPlaceholder: Text('Search commands...'),
   ///   builder: (context, query) async* {
-  ///     final filtered = commands.where((cmd) => 
+  ///     final filtered = commands.where((cmd) =>
   ///       cmd.name.toLowerCase().contains(query?.toLowerCase() ?? '')
   ///     );
   ///     yield filtered.map((cmd) => CommandItem(
@@ -319,151 +319,156 @@ class _CommandState extends State<Command> {
     final theme = Theme.of(context);
     bool canPop = Navigator.of(context).canPop();
     final localization = ShadcnLocalizations.of(context);
-    return SubFocusScope(autofocus: true, builder: (context, state) {
-      return Actions(
-        actions: {
-          NextItemIntent: CallbackAction<NextItemIntent>(
-            onInvoke: (intent) {
-              state.nextFocus();
-              return null;
+    return SubFocusScope(
+        autofocus: true,
+        builder: (context, state) {
+          return Actions(
+            actions: {
+              NextItemIntent: CallbackAction<NextItemIntent>(
+                onInvoke: (intent) {
+                  state.nextFocus();
+                  return null;
+                },
+              ),
+              PreviousItemIntent: CallbackAction<PreviousItemIntent>(
+                onInvoke: (intent) {
+                  state.nextFocus(TraversalDirection.up);
+                  return null;
+                },
+              ),
+              ActivateIntent: CallbackAction<ActivateIntent>(
+                onInvoke: (intent) {
+                  state.invokeActionOnFocused(intent);
+                  return null;
+                },
+              ),
             },
-          ),
-          PreviousItemIntent: CallbackAction<PreviousItemIntent>(
-            onInvoke: (intent) {
-              state.nextFocus(TraversalDirection.up);
-              return null;
-            },
-          ),
-          ActivateIntent: CallbackAction<ActivateIntent>(
-            onInvoke: (intent) {
-              state.invokeActionOnFocused(intent);
-              return null;
-            },
-          ),
-        },
-        child: Shortcuts(
-          shortcuts: {
-            LogicalKeySet(LogicalKeyboardKey.arrowUp):
-                const PreviousItemIntent(),
-            LogicalKeySet(LogicalKeyboardKey.arrowDown): const NextItemIntent(),
-            LogicalKeySet(LogicalKeyboardKey.enter): const ActivateIntent(),
-          },
-          child: IntrinsicWidth(
-            child: OutlinedContainer(
-              clipBehavior: Clip.hardEdge,
-              surfaceBlur: widget.surfaceBlur ?? theme.surfaceBlur,
-              surfaceOpacity: widget.surfaceOpacity ?? theme.surfaceOpacity,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ComponentTheme(
-                    data: const FocusOutlineTheme(
-                      border: Border.fromBorderSide(BorderSide.none),
-                    ),
-                    child: TextField(
-                      autofocus: widget.autofocus,
-                      border: const Border.fromBorderSide(BorderSide.none),
-                      borderRadius: BorderRadius.zero,
-                      controller: _controller,
-                      placeholder: widget.searchPlaceholder ??
-                          Text(ShadcnLocalizations.of(context).commandSearch),
-                      features: [
-                        InputFeature.leading(const Icon(LucideIcons.search)
-                            .iconSmall()
-                            .iconMutedForeground()),
-                        if (canPop)
-                          InputFeature.trailing(GhostButton(
-                            density: ButtonDensity.iconDense,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Icon(
-                              LucideIcons.x,
-                            ).iconSmall(),
-                          ))
-                      ],
-                    ),
-                  ),
-                  const Divider(),
-                  Expanded(
-                    child: StreamBuilder(
-                      stream: _currentRequest.stream,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          List<Widget> items = List.of(snapshot.data!);
-                          if (snapshot.connectionState ==
-                              ConnectionState.active) {
-                            items.add(IconTheme.merge(
-                              data: IconThemeData(
-                                color: theme.colorScheme.mutedForeground,
-                              ),
-                              child: const Center(
-                                      child: CircularProgressIndicator())
-                                  .withPadding(vertical: theme.scaling * 24),
-                            ));
-                          } else if (items.isEmpty) {
-                            return widget.emptyBuilder?.call(context) ??
-                                const CommandEmpty();
-                          }
-                          return ListView.separated(
-                            separatorBuilder: (context, index) =>
-                                const Divider(),
-                            padding: EdgeInsets.symmetric(
-                              vertical: theme.scaling * 2,
-                            ),
-                            shrinkWrap: true,
-                            itemCount: items.length,
-                            itemBuilder: (context, index) {
-                              return items[index];
-                            },
-                          );
-                        }
-                        return widget.loadingBuilder?.call(context) ??
-                            const Center(child: CircularProgressIndicator())
-                                .withPadding(vertical: theme.scaling * 24);
-                      },
-                    ),
-                  ),
-                  const Divider(),
-                  Container(
-                    color: theme.colorScheme.card,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: theme.scaling * 12,
-                      vertical: theme.scaling * 6,
-                    ),
-                    child: IntrinsicHeight(
-                      child: Row(
-                        spacing: theme.scaling * 8,
-                        children: [
-                          const KeyboardDisplay.fromActivator(
-                                  activator: SingleActivator(
-                                      LogicalKeyboardKey.arrowUp))
-                              .xSmall,
-                          Text(localization.commandMoveUp).muted.small,
-                          const VerticalDivider(),
-                          const KeyboardDisplay.fromActivator(
-                                  activator: SingleActivator(
-                                      LogicalKeyboardKey.arrowDown))
-                              .xSmall,
-                          Text(localization.commandMoveDown).muted.small,
-                          const VerticalDivider(),
-                          const KeyboardDisplay.fromActivator(
-                                  activator:
-                                      SingleActivator(LogicalKeyboardKey.enter))
-                              .xSmall,
-                          Text(localization.commandActivate).muted.small,
-                        ],
+            child: Shortcuts(
+              shortcuts: {
+                LogicalKeySet(LogicalKeyboardKey.arrowUp):
+                    const PreviousItemIntent(),
+                LogicalKeySet(LogicalKeyboardKey.arrowDown):
+                    const NextItemIntent(),
+                LogicalKeySet(LogicalKeyboardKey.enter): const ActivateIntent(),
+              },
+              child: IntrinsicWidth(
+                child: OutlinedContainer(
+                  clipBehavior: Clip.hardEdge,
+                  surfaceBlur: widget.surfaceBlur ?? theme.surfaceBlur,
+                  surfaceOpacity: widget.surfaceOpacity ?? theme.surfaceOpacity,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ComponentTheme(
+                        data: const FocusOutlineTheme(
+                          border: Border.fromBorderSide(BorderSide.none),
+                        ),
+                        child: TextField(
+                          autofocus: widget.autofocus,
+                          border: const Border.fromBorderSide(BorderSide.none),
+                          borderRadius: BorderRadius.zero,
+                          controller: _controller,
+                          placeholder: widget.searchPlaceholder ??
+                              Text(ShadcnLocalizations.of(context)
+                                  .commandSearch),
+                          features: [
+                            InputFeature.leading(const Icon(LucideIcons.search)
+                                .iconSmall()
+                                .iconMutedForeground()),
+                            if (canPop)
+                              InputFeature.trailing(GhostButton(
+                                density: ButtonDensity.iconDense,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Icon(
+                                  LucideIcons.x,
+                                ).iconSmall(),
+                              ))
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                      const Divider(),
+                      Expanded(
+                        child: StreamBuilder(
+                          stream: _currentRequest.stream,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              List<Widget> items = List.of(snapshot.data!);
+                              if (snapshot.connectionState ==
+                                  ConnectionState.active) {
+                                items.add(IconTheme.merge(
+                                  data: IconThemeData(
+                                    color: theme.colorScheme.mutedForeground,
+                                  ),
+                                  child: const Center(
+                                          child: CircularProgressIndicator())
+                                      .withPadding(
+                                          vertical: theme.scaling * 24),
+                                ));
+                              } else if (items.isEmpty) {
+                                return widget.emptyBuilder?.call(context) ??
+                                    const CommandEmpty();
+                              }
+                              return ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    const Divider(),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: theme.scaling * 2,
+                                ),
+                                shrinkWrap: true,
+                                itemCount: items.length,
+                                itemBuilder: (context, index) {
+                                  return items[index];
+                                },
+                              );
+                            }
+                            return widget.loadingBuilder?.call(context) ??
+                                const Center(child: CircularProgressIndicator())
+                                    .withPadding(vertical: theme.scaling * 24);
+                          },
+                        ),
+                      ),
+                      const Divider(),
+                      Container(
+                        color: theme.colorScheme.card,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: theme.scaling * 12,
+                          vertical: theme.scaling * 6,
+                        ),
+                        child: IntrinsicHeight(
+                          child: Row(
+                            spacing: theme.scaling * 8,
+                            children: [
+                              const KeyboardDisplay.fromActivator(
+                                      activator: SingleActivator(
+                                          LogicalKeyboardKey.arrowUp))
+                                  .xSmall,
+                              Text(localization.commandMoveUp).muted.small,
+                              const VerticalDivider(),
+                              const KeyboardDisplay.fromActivator(
+                                      activator: SingleActivator(
+                                          LogicalKeyboardKey.arrowDown))
+                                  .xSmall,
+                              Text(localization.commandMoveDown).muted.small,
+                              const VerticalDivider(),
+                              const KeyboardDisplay.fromActivator(
+                                      activator: SingleActivator(
+                                          LogicalKeyboardKey.enter))
+                                  .xSmall,
+                              Text(localization.commandActivate).muted.small,
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      );
-    });
+          );
+        });
   }
 }
 
@@ -487,7 +492,7 @@ class _CommandState extends State<Command> {
 class CommandCategory extends StatelessWidget {
   /// The list of command items in this category.
   final List<Widget> children;
-  
+
   /// Optional title widget displayed above the category items.
   final Widget? title;
 
@@ -552,13 +557,13 @@ class CommandCategory extends StatelessWidget {
 class CommandItem extends StatefulWidget {
   /// Optional widget displayed before the title (e.g., an icon).
   final Widget? leading;
-  
+
   /// The main title/label of the command item.
   final Widget title;
-  
+
   /// Optional widget displayed after the title (e.g., keyboard shortcut).
   final Widget? trailing;
-  
+
   /// Called when the item is selected/tapped.
   final VoidCallback? onTap;
 

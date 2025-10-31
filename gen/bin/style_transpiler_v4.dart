@@ -131,10 +131,14 @@ Map<String, Map<String, String>> parseCssFile(String filePath) {
   final Map<String, Map<String, String>> themes = {};
 
   // Split into root and dark sections
-  final rootMatch =
-      RegExp(r':root\s*\{([^}]+)\}', multiLine: true).firstMatch(content);
-  final darkMatch =
-      RegExp(r'\.dark\s*\{([^}]+)\}', multiLine: true).firstMatch(content);
+  final rootMatch = RegExp(
+    r':root\s*\{([^}]+)\}',
+    multiLine: true,
+  ).firstMatch(content);
+  final darkMatch = RegExp(
+    r'\.dark\s*\{([^}]+)\}',
+    multiLine: true,
+  ).firstMatch(content);
 
   if (rootMatch != null) {
     themes['light'] = _parseVariables(rootMatch.group(1)!);

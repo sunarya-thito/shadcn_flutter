@@ -212,20 +212,20 @@ class ControlledToggle extends StatelessWidget with ControlledComponent<bool> {
 class Toggle extends StatefulWidget {
   /// The current toggle state (on/off).
   final bool value;
-  
+
   /// Called when the toggle state changes.
   ///
   /// If `null`, the toggle is considered disabled and won't respond to user input.
   final ValueChanged<bool>? onChanged;
-  
+
   /// The widget displayed inside the toggle button.
   final Widget child;
-  
+
   /// The visual style for the button.
   ///
   /// Defaults to ghost style for a subtle appearance.
   final ButtonStyle style;
-  
+
   /// Whether the toggle button is enabled.
   ///
   /// If `null`, the button is enabled only when [onChanged] is not `null`.
@@ -365,103 +365,103 @@ class ToggleState extends State<Toggle> with FormValueSupplier<bool, Toggle> {
 class SelectedButton extends StatefulWidget {
   /// The current selection state of the button.
   final bool value;
-  
+
   /// Called when the selection state changes.
   ///
   /// If `null`, the button is disabled.
   final ValueChanged<bool>? onChanged;
-  
+
   /// The widget displayed inside the button.
   final Widget child;
-  
+
   /// The button style when not selected.
   ///
   /// Defaults to ghost style.
   final AbstractButtonStyle style;
-  
+
   /// The button style when selected.
   ///
   /// Defaults to secondary style.
   final AbstractButtonStyle selectedStyle;
-  
+
   /// Whether the button is enabled.
   ///
   /// If `null`, enabled state is determined by whether [onChanged] is non-null.
   final bool? enabled;
-  
+
   /// The alignment of the child within the button.
   final AlignmentGeometry? alignment;
-  
+
   /// The margin alignment for the button.
   final AlignmentGeometry? marginAlignment;
-  
+
   /// Whether to disable style transition animations.
   ///
   /// Defaults to `false`. When `true`, style changes are instant.
   final bool disableTransition;
-  
+
   /// Called when the hover state changes.
   final ValueChanged<bool>? onHover;
-  
+
   /// Called when the focus state changes.
   final ValueChanged<bool>? onFocus;
-  
+
   /// Whether to enable haptic/audio feedback.
   final bool? enableFeedback;
-  
+
   /// Called when a primary tap down event occurs.
   final GestureTapDownCallback? onTapDown;
-  
+
   /// Called when a primary tap up event occurs.
   final GestureTapUpCallback? onTapUp;
-  
+
   /// Called when a primary tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
-  
+
   /// Called when a secondary tap down event occurs.
   final GestureTapDownCallback? onSecondaryTapDown;
-  
+
   /// Called when a secondary tap up event occurs.
   final GestureTapUpCallback? onSecondaryTapUp;
-  
+
   /// Called when a secondary tap is cancelled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
-  
+
   /// Called when a tertiary tap down event occurs.
   final GestureTapDownCallback? onTertiaryTapDown;
-  
+
   /// Called when a tertiary tap up event occurs.
   final GestureTapUpCallback? onTertiaryTapUp;
-  
+
   /// Called when a tertiary tap is cancelled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
-  
+
   /// Called when a long press starts.
   final GestureLongPressStartCallback? onLongPressStart;
-  
+
   /// Called when a long press is released.
   final GestureLongPressUpCallback? onLongPressUp;
-  
+
   /// Called when a long press moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
-  
+
   /// Called when a long press ends.
   final GestureLongPressEndCallback? onLongPressEnd;
-  
+
   /// Called when a secondary long press completes.
   final GestureLongPressUpCallback? onSecondaryLongPress;
-  
+
   /// Called when a tertiary long press completes.
   final GestureLongPressUpCallback? onTertiaryLongPress;
-  
+
   /// Whether to disable the hover effect.
   ///
   /// Defaults to `false`.
   final bool disableHoverEffect;
-  
+
   /// Optional controller for programmatic state management.
   final WidgetStatesController? statesController;
-  
+
   /// Called when the button is pressed (tapped).
   final VoidCallback? onPressed;
 

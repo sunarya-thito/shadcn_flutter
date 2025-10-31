@@ -156,13 +156,13 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
 class NullableDate {
   /// The year component (nullable).
   final int? year;
-  
+
   /// The month component (nullable).
   final int? month;
-  
+
   /// The day component (nullable).
   final int? day;
-  
+
   /// Creates a [NullableDate].
   ///
   /// Parameters:
@@ -426,10 +426,10 @@ class _DateInputState extends State<DateInput> {
 class NullableTimeOfDay {
   /// The hour component (nullable, 0-23).
   final int? hour;
-  
+
   /// The minute component (nullable, 0-59).
   final int? minute;
-  
+
   /// The second component (nullable, 0-59).
   final int? second;
 

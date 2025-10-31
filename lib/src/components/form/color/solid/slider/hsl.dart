@@ -20,22 +20,22 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class HSLColorSlider extends StatefulWidget {
   /// The current HSL color value.
   final HSLColor color;
-  
+
   /// Called while the slider is being dragged.
   final ValueChanged<HSLColor>? onChanging;
-  
+
   /// Called when the slider interaction is complete.
   final ValueChanged<HSLColor>? onChanged;
-  
+
   /// The type of HSL component(s) this slider controls.
   final HSLColorSliderType sliderType;
-  
+
   /// Whether to reverse the slider direction.
   final bool reverse;
-  
+
   /// Corner radius for the slider.
   final Radius radius;
-  
+
   /// Padding around the slider.
   final EdgeInsets padding;
 
@@ -416,10 +416,10 @@ class _HSLColorSliderState extends State<HSLColorSlider> {
 class HSLColorSliderPainter extends CustomPainter {
   /// The type of slider being painted.
   final HSLColorSliderType sliderType;
-  
+
   /// The current HSL color.
   final HSLColor color;
-  
+
   /// Whether the gradient direction is reversed.
   final bool reverse;
 

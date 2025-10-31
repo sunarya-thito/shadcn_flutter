@@ -47,13 +47,13 @@ class ScrollableClientTheme {
       diagonalDragBehavior: diagonalDragBehavior == null
           ? this.diagonalDragBehavior
           : diagonalDragBehavior(),
-      dragStartBehavior:
-          dragStartBehavior == null ? this.dragStartBehavior : dragStartBehavior(),
+      dragStartBehavior: dragStartBehavior == null
+          ? this.dragStartBehavior
+          : dragStartBehavior(),
       keyboardDismissBehavior: keyboardDismissBehavior == null
           ? this.keyboardDismissBehavior
           : keyboardDismissBehavior(),
-      clipBehavior:
-          clipBehavior == null ? this.clipBehavior : clipBehavior(),
+      clipBehavior: clipBehavior == null ? this.clipBehavior : clipBehavior(),
       hitTestBehavior:
           hitTestBehavior == null ? this.hitTestBehavior : hitTestBehavior(),
       overscroll: overscroll == null ? this.overscroll : overscroll(),
@@ -211,16 +211,16 @@ class ScrollableClient extends StatelessWidget {
     final diag = diagonalDragBehavior ??
         compTheme?.diagonalDragBehavior ??
         DiagonalDragBehavior.none;
-    final dragStart =
-        dragStartBehavior ?? compTheme?.dragStartBehavior ?? DragStartBehavior.start;
+    final dragStart = dragStartBehavior ??
+        compTheme?.dragStartBehavior ??
+        DragStartBehavior.start;
     final keyboardDismiss = keyboardDismissBehavior ??
         compTheme?.keyboardDismissBehavior ??
         ScrollViewKeyboardDismissBehavior.manual;
     final clip = clipBehavior ?? compTheme?.clipBehavior ?? Clip.hardEdge;
     final hitTest =
         hitTestBehavior ?? compTheme?.hitTestBehavior ?? HitTestBehavior.opaque;
-    final bool overscroll =
-        this.overscroll ?? compTheme?.overscroll ?? false;
+    final bool overscroll = this.overscroll ?? compTheme?.overscroll ?? false;
 
     ScrollableDetails mainAxisDetails = switch (mainAxis) {
       Axis.vertical => verticalDetails,

@@ -1,7 +1,8 @@
 import 'dart:io';
 
 void main() {
-  String result = "import 'package:shadcn_flutter/shadcn_flutter.dart';\n"
+  String result =
+      "import 'package:shadcn_flutter/shadcn_flutter.dart';\n"
       "\n"
       "class Colors {\n";
   List<String> primaryNames = [];
@@ -92,16 +93,8 @@ const colors = {
   inherit: "inherit",
   current: "currentColor",
   transparent: "transparent",
-  black: {
-    hex: "#000000",
-    rgb: "rgb(0,0,0)",
-    hsl: "hsl(0,0%,0%)",
-  },
-  white: {
-    hex: "#ffffff",
-    rgb: "rgb(255,255,255)",
-    hsl: "hsl(0,0%,100%)",
-  },
+  black: {hex: "#000000", rgb: "rgb(0,0,0)", hsl: "hsl(0,0%,0%)"},
+  white: {hex: "#ffffff", rgb: "rgb(255,255,255)", hsl: "hsl(0,0%,100%)"},
   slate: [
     {
       scale: 50,
@@ -239,12 +232,7 @@ const colors = {
     },
   ],
   zinc: [
-    {
-      scale: 50,
-      hex: "#fafafa",
-      rgb: "rgb(250,250,250)",
-      hsl: "hsl(0,0%,98%)",
-    },
+    {scale: 50, hex: "#fafafa", rgb: "rgb(250,250,250)", hsl: "hsl(0,0%,98%)"},
     {
       scale: 100,
       hex: "#f4f4f5",
@@ -299,20 +287,10 @@ const colors = {
       rgb: "rgb(24,24,27)",
       hsl: "hsl(240,5.9%,10%)",
     },
-    {
-      scale: 950,
-      hex: "#09090b",
-      rgb: "rgb(9,9,11)",
-      hsl: "hsl(240,10%,3.9%)",
-    },
+    {scale: 950, hex: "#09090b", rgb: "rgb(9,9,11)", hsl: "hsl(240,10%,3.9%)"},
   ],
   neutral: [
-    {
-      scale: 50,
-      hex: "#fafafa",
-      rgb: "rgb(250,250,250)",
-      hsl: "hsl(0,0%,98%)",
-    },
+    {scale: 50, hex: "#fafafa", rgb: "rgb(250,250,250)", hsl: "hsl(0,0%,98%)"},
     {
       scale: 100,
       hex: "#f5f5f5",
@@ -343,36 +321,11 @@ const colors = {
       rgb: "rgb(115,115,115)",
       hsl: "hsl(0,0%,45.1%)",
     },
-    {
-      scale: 600,
-      hex: "#525252",
-      rgb: "rgb(82,82,82)",
-      hsl: "hsl(0,0%,32.2%)",
-    },
-    {
-      scale: 700,
-      hex: "#404040",
-      rgb: "rgb(64,64,64)",
-      hsl: "hsl(0,0%,25.1%)",
-    },
-    {
-      scale: 800,
-      hex: "#262626",
-      rgb: "rgb(38,38,38)",
-      hsl: "hsl(0,0%,14.9%)",
-    },
-    {
-      scale: 900,
-      hex: "#171717",
-      rgb: "rgb(23,23,23)",
-      hsl: "hsl(0,0%,9%)",
-    },
-    {
-      scale: 950,
-      hex: "#0a0a0a",
-      rgb: "rgb(10,10,10)",
-      hsl: "hsl(0,0%,3.9%)",
-    },
+    {scale: 600, hex: "#525252", rgb: "rgb(82,82,82)", hsl: "hsl(0,0%,32.2%)"},
+    {scale: 700, hex: "#404040", rgb: "rgb(64,64,64)", hsl: "hsl(0,0%,25.1%)"},
+    {scale: 800, hex: "#262626", rgb: "rgb(38,38,38)", hsl: "hsl(0,0%,14.9%)"},
+    {scale: 900, hex: "#171717", rgb: "rgb(23,23,23)", hsl: "hsl(0,0%,9%)"},
+    {scale: 950, hex: "#0a0a0a", rgb: "rgb(10,10,10)", hsl: "hsl(0,0%,3.9%)"},
   ],
   stone: [
     {
@@ -429,12 +382,7 @@ const colors = {
       rgb: "rgb(41,37,36)",
       hsl: "hsl(12,6.5%,15.1%)",
     },
-    {
-      scale: 900,
-      hex: "#1c1917",
-      rgb: "rgb(28,25,23)",
-      hsl: "hsl(24,9.8%,10%)",
-    },
+    {scale: 900, hex: "#1c1917", rgb: "rgb(28,25,23)", hsl: "hsl(24,9.8%,10%)"},
     {
       scale: 950,
       hex: "#0c0a09",

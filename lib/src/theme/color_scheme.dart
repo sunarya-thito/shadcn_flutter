@@ -51,16 +51,16 @@ class ChartColorScheme {
 
   /// Color for the first chart series.
   Color get chart1 => chartColors[0];
-  
+
   /// Color for the second chart series.
   Color get chart2 => chartColors[1];
-  
+
   /// Color for the third chart series.
   Color get chart3 => chartColors[2];
-  
+
   /// Color for the fourth chart series.
   Color get chart4 => chartColors[3];
-  
+
   /// Color for the fifth chart series.
   Color get chart5 => chartColors[4];
 }
@@ -71,7 +71,7 @@ class ChartColorScheme {
 /// and access to different shade values (50, 100, 200, ..., 950).
 class ColorShades implements Color, ColorSwatch {
   static const int _step = 100;
-  
+
   /// Standard shade values used in color palettes.
   ///
   /// Contains the standard Material Design shade values from lightest (50)
@@ -135,6 +135,7 @@ class ColorShades implements Color, ColorSwatch {
         lightnessStepDown: lightnessStepDown,
         lightnessStepUp: lightnessStepUp);
   }
+
   /// Creates color shades from an accent HSL color.
   ///
   /// Similar to [fromAccent] but takes an HSL color directly.
@@ -428,92 +429,92 @@ class ColorScheme implements ChartColorScheme {
     'chart4',
     'chart5',
   };
-  
+
   /// The brightness of this color scheme (light or dark).
   final Brightness brightness;
-  
+
   /// The background color.
   final Color background;
-  
+
   /// The foreground color (typically text).
   final Color foreground;
-  
+
   /// The card background color.
   final Color card;
-  
+
   /// The card foreground color.
   final Color cardForeground;
-  
+
   /// The popover background color.
   final Color popover;
-  
+
   /// The popover foreground color.
   final Color popoverForeground;
-  
+
   /// The primary brand color.
   final Color primary;
-  
+
   /// The foreground color for primary elements.
   final Color primaryForeground;
-  
+
   /// The secondary color.
   final Color secondary;
-  
+
   /// The foreground color for secondary elements.
   final Color secondaryForeground;
-  
+
   /// The muted background color.
   final Color muted;
-  
+
   /// The muted foreground color.
   final Color mutedForeground;
-  
+
   /// The accent color.
   final Color accent;
-  
+
   /// The foreground color for accented elements.
   final Color accentForeground;
-  
+
   /// The destructive action color (typically red).
   final Color destructive;
-  
+
   /// The foreground color for destructive elements.
   @Deprecated('Legacy color')
   final Color destructiveForeground;
-  
+
   /// The border color.
   final Color border;
-  
+
   /// The input field border color.
   final Color input;
-  
+
   /// The focus ring color.
   final Color ring;
-  
+
   /// The sidebar background color.
   final Color sidebar;
-  
+
   /// The sidebar foreground color.
   final Color sidebarForeground;
-  
+
   /// The sidebar primary color.
   final Color sidebarPrimary;
-  
+
   /// The sidebar primary foreground color.
   final Color sidebarPrimaryForeground;
-  
+
   /// The sidebar accent color.
   final Color sidebarAccent;
-  
+
   /// The sidebar accent foreground color.
   final Color sidebarAccentForeground;
-  
+
   /// The sidebar border color.
   final Color sidebarBorder;
-  
+
   /// The sidebar ring color.
   final Color sidebarRing;
-  
+
   @override
   final Color chart1;
   @override

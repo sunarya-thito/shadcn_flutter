@@ -20,22 +20,22 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class HSVColorSlider extends StatefulWidget {
   /// The current HSV color value.
   final HSVColor value;
-  
+
   /// Called while the slider is being dragged.
   final ValueChanged<HSVColor>? onChanging;
-  
+
   /// Called when the slider interaction is complete.
   final ValueChanged<HSVColor>? onChanged;
-  
+
   /// The type of HSV component(s) this slider controls.
   final HSVColorSliderType sliderType;
-  
+
   /// Whether to reverse the slider direction.
   final bool reverse;
-  
+
   /// Corner radius for the slider.
   final Radius radius;
-  
+
   /// Padding around the slider.
   final EdgeInsets padding;
 
@@ -427,10 +427,10 @@ class _HSVColorSliderState extends State<HSVColorSlider> {
 class HSVColorSliderPainter extends CustomPainter {
   /// The type of slider being painted.
   final HSVColorSliderType sliderType;
-  
+
   /// The current HSV color.
   final HSVColor color;
-  
+
   /// Whether the gradient direction is reversed.
   final bool reverse;
 

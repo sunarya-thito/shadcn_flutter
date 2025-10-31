@@ -71,10 +71,10 @@ typedef FileIconBuilder = Widget Function(String extension);
 class FileIconProvider extends StatelessWidget {
   /// Builder function for creating file icons.
   final FileIconBuilder? builder;
-  
+
   /// Map of file extensions to icon widgets.
   final Map<String, Widget>? icons;
-  
+
   /// The child widget.
   final Widget child;
 
@@ -83,14 +83,14 @@ class FileIconProvider extends StatelessWidget {
     super.key,
     FileIconBuilder this.builder = _buildFileIcon,
     required this.child,
-  })  : icons = null;
+  }) : icons = null;
 
   /// Creates a [FileIconProvider] using a static icon map.
   const FileIconProvider({
     super.key,
     required this.icons,
     required this.child,
-  })  : builder = null;
+  }) : builder = null;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +123,7 @@ class FileIconProvider extends StatelessWidget {
 class FileIconProviderData {
   /// Optional builder function for icons.
   final FileIconBuilder? builder;
-  
+
   /// Optional map of extension to icon widgets.
   final Map<String, Widget>? icons;
 

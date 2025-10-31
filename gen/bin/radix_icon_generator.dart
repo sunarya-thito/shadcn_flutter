@@ -3,9 +3,7 @@ import 'dart:io';
 import 'bootstrap_icon_generator.dart';
 import 'woff2otf.dart';
 
-const kUnsafeName = [
-  'switch',
-];
+const kUnsafeName = ['switch'];
 
 void main() {
   String fontFamily =

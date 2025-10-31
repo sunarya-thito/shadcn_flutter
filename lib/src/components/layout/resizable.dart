@@ -262,7 +262,7 @@ mixin ResizablePaneController implements ValueListenable<double> {
 /// Example:
 /// ```dart
 /// final controller = AbsoluteResizablePaneController(200);
-/// 
+///
 /// ResizablePane(
 ///   controller: controller,
 ///   child: Container(color: Colors.blue),
@@ -337,7 +337,7 @@ class AbsoluteResizablePaneController extends ChangeNotifier
 /// Example:
 /// ```dart
 /// final controller = FlexibleResizablePaneController(1.0);
-/// 
+///
 /// ResizablePane(
 ///   controller: controller,
 ///   child: Container(color: Colors.red),

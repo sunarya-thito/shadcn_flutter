@@ -41,19 +41,19 @@ typedef PreviewLabelBuilder = Widget Function(
 class EyeDropperLayer extends StatefulWidget {
   /// The child widget to wrap.
   final Widget child;
-  
+
   /// Alignment of the preview overlay.
   final AlignmentGeometry? previewAlignment;
-  
+
   /// Whether to show the magnified preview.
   final bool showPreview;
-  
+
   /// Size of the preview overlay.
   final Size? previewSize;
-  
+
   /// Magnification scale of the preview.
   final double previewScale;
-  
+
   /// Builder for custom preview label widgets.
   final PreviewLabelBuilder? previewLabelBuilder;
 
@@ -462,7 +462,7 @@ abstract class EyeDropperLayerScope {
   ///
   /// Returns: A [Future] that completes with the picked color, or null if cancelled.
   Future<Color?> promptPickColor([ColorHistoryStorage? historyStorage]);
-  
+
   /// Finds the root [EyeDropperLayerScope] in the widget tree.
   ///
   /// Searches up the tree to find the topmost eye dropper scope.
@@ -486,10 +486,10 @@ abstract class EyeDropperLayerScope {
 class EyeDropperResult {
   /// The size of the captured area.
   final Size size;
-  
+
   /// All colors in the captured area, stored row by row.
   final List<Color> colors;
-  
+
   /// The specific color that was picked by the user.
   final Color pickedColor;
 

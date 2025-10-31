@@ -165,46 +165,46 @@ class ColorInputTheme {
 class ColorInput extends StatefulWidget {
   /// The current color value.
   final ColorDerivative value;
-  
+
   /// Called when the color is being changed (while dragging sliders, etc.).
   final ValueChanged<ColorDerivative>? onChanging;
-  
+
   /// Called when the color change is complete (after releasing sliders, etc.).
   final ValueChanged<ColorDerivative>? onChanged;
-  
+
   /// Whether to show alpha (opacity) controls.
   final bool? showAlpha;
-  
+
   /// The initial color picker mode (HSV, HSL, etc.).
   final ColorPickerMode? initialMode;
-  
+
   /// Whether to enable the eye dropper (screen color sampling) feature.
   final bool? enableEyeDropper;
-  
+
   /// The alignment of the popover relative to the anchor.
   final AlignmentGeometry? popoverAlignment;
-  
+
   /// The alignment point on the anchor widget for popover positioning.
   final AlignmentGeometry? popoverAnchorAlignment;
-  
+
   /// Internal padding for the popover content.
   final EdgeInsetsGeometry? popoverPadding;
-  
+
   /// Widget displayed when no color is selected.
   final Widget? placeholder;
-  
+
   /// The mode for presenting the color picker (popover or modal).
   final PromptMode? promptMode;
-  
+
   /// Title widget for the dialog when using modal mode.
   final Widget? dialogTitle;
-  
+
   /// Whether to show color value labels.
   final bool? showLabel;
-  
+
   /// Whether the color input is enabled.
   final bool? enabled;
-  
+
   /// The layout orientation of the color input.
   final Axis? orientation;
 

@@ -1,4 +1,5 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
 const Map<String, IconData> kLucideIcons = {
   'aArrowDown': LucideIcons.aArrowDown,
   'aArrowUp': LucideIcons.aArrowUp,
@@ -19,7 +20,8 @@ const Map<String, IconData> kLucideIcons = {
   'alignCenter': LucideIcons.alignCenter,
   'alignEndHorizontal': LucideIcons.alignEndHorizontal,
   'alignEndVertical': LucideIcons.alignEndVertical,
-  'alignHorizontalDistributeCenter': LucideIcons.alignHorizontalDistributeCenter,
+  'alignHorizontalDistributeCenter':
+      LucideIcons.alignHorizontalDistributeCenter,
   'alignHorizontalDistributeEnd': LucideIcons.alignHorizontalDistributeEnd,
   'alignHorizontalDistributeStart': LucideIcons.alignHorizontalDistributeStart,
   'alignHorizontalJustifyCenter': LucideIcons.alignHorizontalJustifyCenter,

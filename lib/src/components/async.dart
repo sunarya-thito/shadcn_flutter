@@ -72,10 +72,10 @@ typedef FutureOrWidgetBuilder<T> = Widget Function(
 class FutureOrBuilder<T> extends StatelessWidget {
   /// The [FutureOr] value to track - can be either immediate or async.
   final FutureOr<T> future;
-  
+
   /// The builder function called to construct the widget.
   final FutureOrWidgetBuilder<T> builder;
-  
+
   /// An optional initial value to use before async completion.
   final T? initialValue;
 

@@ -19,7 +19,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class PhoneNumber {
   /// The country associated with this phone number.
   final Country country;
-  
+
   /// The phone number without the country code.
   final String number; // without country code
 

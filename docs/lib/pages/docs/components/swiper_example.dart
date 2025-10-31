@@ -16,10 +16,10 @@ class SwiperExample extends StatelessWidget {
       children: [
         WidgetUsageExample(
           title: 'Example 1',
-        path: 'lib/pages/docs/components/swiper/swiper_example_1.dart',
+          path: 'lib/pages/docs/components/swiper/swiper_example_1.dart',
           child: SwiperExample1(),
         ),
-    ],
+      ],
     );
   }
 }

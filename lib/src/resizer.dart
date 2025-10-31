@@ -30,19 +30,19 @@
 /// collapsed to a smaller size. Items can be marked as non-resizable.
 class ResizableItem {
   double _value;
-  
+
   /// Minimum size this item can be resized to.
   final double min;
-  
+
   /// Maximum size this item can be resized to.
   final double max;
-  
+
   /// Whether this item is currently in collapsed state.
   final bool collapsed;
-  
+
   /// Size of the item when collapsed. If null, collapsed size is 0.
   final double? collapsedSize;
-  
+
   /// Whether this item can be resized.
   final bool resizable;
   double? _newValue;
@@ -101,17 +101,17 @@ class _BorrowInfo {
 class Resizer {
   /// The list of resizable items being managed.
   final List<ResizableItem> items;
-  
+
   /// Ratio threshold for collapsing an item (0.0 to 1.0).
   /// When an item gets smaller than `min + (collapsedSize - min) * collapseRatio`,
   /// it will collapse.
   final double collapseRatio;
-  
+
   /// Ratio threshold for expanding a collapsed item (0.0 to 1.0).
   /// When dragging past `(min - collapsedSize) * expandRatio`,
   /// a collapsed item will expand.
   final double expandRatio;
-  
+
   /// Creates a resizer for the given [items].
   ///
   /// [collapseRatio] controls when items collapse (defaults to 0.5).

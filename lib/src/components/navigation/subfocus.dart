@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Callback function type for building SubFocusScope widgets.
-/// 
+///
 /// Receives the build context and the scope state for managing focus
 /// within the scope's widget tree.
 typedef SubFocusScopeBuilder = Widget Function(
@@ -373,7 +373,7 @@ class _SubFocusScopeState extends State<SubFocusScope> with SubFocusScopeState {
 /// Receives the build context and focus state for creating widgets that
 /// respond to focus changes and user interactions.
 /// Callback function type for building SubFocus widgets.
-/// 
+///
 /// Receives the build context and the focus state for managing focus
 /// presentation and behavior within the widget.
 ///

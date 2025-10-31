@@ -345,6 +345,7 @@ class SortableChildListDelegate<T> extends SortableListDelegate<T> {
 /// Useful for large or lazily-generated item sets.
 class SortableChildBuilderDelegate<T> extends SortableListDelegate<T> {
   @override
+
   /// The number of items, or `null` for infinite lists.
   final int? itemCount;
 

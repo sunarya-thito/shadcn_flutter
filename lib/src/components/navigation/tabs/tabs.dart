@@ -60,13 +60,11 @@ class TabsTheme {
     ValueGetter<BorderRadiusGeometry?>? borderRadius,
   }) {
     return TabsTheme(
-      containerPadding: containerPadding == null
-          ? this.containerPadding
-          : containerPadding(),
+      containerPadding:
+          containerPadding == null ? this.containerPadding : containerPadding(),
       tabPadding: tabPadding == null ? this.tabPadding : tabPadding(),
-      backgroundColor: backgroundColor == null
-          ? this.backgroundColor
-          : backgroundColor(),
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
       borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
     );
   }

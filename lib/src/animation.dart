@@ -23,7 +23,7 @@ import 'package:flutter/widgets.dart';
 ///   if (a == null || b == null) return null;
 ///   return a + (b - a) * t;
 /// };
-/// 
+///
 /// final result = doubleLerp(0.0, 100.0, 0.5); // Returns 50.0
 /// ```
 typedef PropertyLerp<T> = T? Function(T? a, T? b, double t);
@@ -48,7 +48,7 @@ typedef PropertyLerp<T> = T? Function(T? a, T? b, double t);
 ///   duration: const Duration(milliseconds: 300),
 /// );
 /// final animation = ControlledAnimation(controller);
-/// 
+///
 /// // Animate to 0.8 with ease-in curve
 /// animation.forward(0.8, Curves.easeIn);
 /// ```
@@ -336,7 +336,7 @@ class Transformers {
 /// ```
 mixin AnimatedMixin on TickerProviderStateMixin {
   final List<AnimatedProperty> _animatedProperties = [];
-  
+
   /// Creates a new animated property with a custom interpolation function.
   ///
   /// ## Type Parameters
@@ -576,10 +576,10 @@ class AnimatedProperty<T> {
 class AnimationRequest {
   /// The target value to animate to (typically 0.0 to 1.0).
   final double target;
-  
+
   /// The duration of the animation.
   final Duration duration;
-  
+
   /// The easing curve to apply during the animation.
   final Curve curve;
 
@@ -617,16 +617,16 @@ class AnimationRequest {
 class AnimationRunner {
   /// The starting value of the animation.
   final double from;
-  
+
   /// The ending value of the animation.
   final double to;
-  
+
   /// The total duration of the animation.
   final Duration duration;
-  
+
   /// The easing curve applied to the animation.
   final Curve curve;
-  
+
   double _progress = 0.0;
 
   /// Creates an animation runner with the specified parameters.
@@ -831,7 +831,7 @@ abstract class Keyframe<T> {
   ///
   /// The time this keyframe takes to complete.
   Duration get duration;
-  
+
   /// Computes the value for this keyframe at the given progress.
   ///
   /// ## Parameters
@@ -873,10 +873,10 @@ abstract class Keyframe<T> {
 class AbsoluteKeyframe<T> implements Keyframe<T> {
   /// The starting value of the animation.
   final T from;
-  
+
   /// The ending value of the animation.
   final T to;
-  
+
   @override
   final Duration duration;
 
@@ -927,7 +927,7 @@ class AbsoluteKeyframe<T> implements Keyframe<T> {
 class RelativeKeyframe<T> implements Keyframe<T> {
   /// The target value to animate to from the previous keyframe's end.
   final T target;
-  
+
   @override
   final Duration duration;
 
@@ -982,7 +982,7 @@ class RelativeKeyframe<T> implements Keyframe<T> {
 class StillKeyframe<T> implements Keyframe<T> {
   /// The value to hold, or `null` to use the previous keyframe's end value.
   final T? value;
-  
+
   @override
   final Duration duration;
 
@@ -1036,7 +1036,7 @@ class StillKeyframe<T> implements Keyframe<T> {
 class TimelineAnimatable<T> extends Animatable<T> {
   /// The total duration for this animatable.
   final Duration duration;
-  
+
   /// The underlying timeline animation.
   final TimelineAnimation<T> animation;
 
@@ -1110,10 +1110,10 @@ class TimelineAnimation<T> extends Animatable<T> {
 
   /// The interpolation function used for this timeline.
   final PropertyLerp<T> lerp;
-  
+
   /// The total duration of all keyframes combined.
   final Duration totalDuration;
-  
+
   /// The list of keyframes that make up this timeline.
   final List<Keyframe<T>> keyframes;
 

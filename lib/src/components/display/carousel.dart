@@ -500,7 +500,7 @@ class CarouselTheme {
 /// **Controlled carousel with custom navigation:**
 /// ```dart
 /// final controller = CarouselController();
-/// 
+///
 /// Carousel(
 ///   controller: controller,
 ///   itemCount: products.length,

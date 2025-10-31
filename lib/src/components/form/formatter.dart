@@ -32,10 +32,10 @@ TextSelection contraintToNewText(TextEditingValue newValue, String newText) {
 class TextInputFormatters {
   /// Converts all input text to uppercase.
   static const TextInputFormatter toUpperCase = _ToUpperCaseTextFormatter();
-  
+
   /// Converts all input text to lowercase.
   static const TextInputFormatter toLowerCase = _ToLowerCaseTextFormatter();
-  
+
   /// Creates a formatter for time input with leading zeros.
   ///
   /// Parameters:

@@ -48,9 +48,8 @@ class HiddenTheme {
       keepCrossAxisSize: keepCrossAxisSize == null
           ? this.keepCrossAxisSize
           : keepCrossAxisSize(),
-      keepMainAxisSize: keepMainAxisSize == null
-          ? this.keepMainAxisSize
-          : keepMainAxisSize(),
+      keepMainAxisSize:
+          keepMainAxisSize == null ? this.keepMainAxisSize : keepMainAxisSize(),
     );
   }
 
@@ -68,13 +67,13 @@ class HiddenTheme {
 
   @override
   int get hashCode => Object.hash(
-    direction,
-    duration,
-    curve,
-    reverse,
-    keepCrossAxisSize,
-    keepMainAxisSize,
-  );
+        direction,
+        duration,
+        curve,
+        reverse,
+        keepCrossAxisSize,
+        keepMainAxisSize,
+      );
 }
 
 /// A widget that conditionally hides its child with optional animation.

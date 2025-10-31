@@ -10,7 +10,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 enum InputFeaturePosition {
   /// Display the feature on the leading side.
   leading,
-  
+
   /// Display the feature on the trailing side.
   trailing,
 }
@@ -34,16 +34,16 @@ enum InputFeaturePosition {
 class InputHintFeature extends InputFeature {
   /// Builder for the hint popover content.
   final WidgetBuilder popupBuilder;
-  
+
   /// Custom icon to display (defaults to info icon).
   final Widget? icon;
-  
+
   /// Position of the hint button.
   final InputFeaturePosition position;
-  
+
   /// Whether to enable keyboard shortcut (F1) to show the hint.
   final bool enableShortcuts;
-  
+
   /// Creates an [InputHintFeature].
   ///
   /// Parameters:
@@ -149,7 +149,7 @@ class InputShowHintIntent extends Intent {
 enum PasswordPeekMode {
   /// Show password only while button is held down.
   hold,
-  
+
   /// Toggle password visibility on each press.
   toggle,
 }
@@ -173,16 +173,16 @@ enum PasswordPeekMode {
 class InputPasswordToggleFeature extends InputFeature {
   /// The mode for password peeking behavior.
   final PasswordPeekMode mode;
-  
+
   /// Position of the toggle button.
   final InputFeaturePosition position;
-  
+
   /// Icon to display when password is hidden.
   final Widget? icon;
-  
+
   /// Icon to display when password is shown.
   final Widget? iconShow;
-  
+
   /// Creates an [InputPasswordToggleFeature].
   ///
   /// Parameters:
@@ -293,10 +293,10 @@ class _InputPasswordToggleFeatureState
 class InputClearFeature extends InputFeature {
   /// Position of the clear button.
   final InputFeaturePosition position;
-  
+
   /// Custom icon for the clear button.
   final Widget? icon;
-  
+
   /// Creates an [InputClearFeature].
   ///
   /// Parameters:
@@ -360,10 +360,10 @@ class _InputClearFeatureState extends InputFeatureState<InputClearFeature> {
 class InputRevalidateFeature extends InputFeature {
   /// Position of the revalidate button.
   final InputFeaturePosition position;
-  
+
   /// Custom icon for the revalidate button.
   final Widget? icon;
-  
+
   /// Creates an [InputRevalidateFeature].
   ///
   /// Parameters:
@@ -482,22 +482,22 @@ typedef SuggestionBuilder = FutureOr<Iterable<String>> Function(String query);
 class InputAutoCompleteFeature extends InputFeature {
   /// Callback to provide suggestions for a given query.
   final SuggestionBuilder querySuggestions;
-  
+
   /// Child widget displayed in the suggestion list.
   final Widget child;
-  
+
   /// Constraints for the popover size.
   final BoxConstraints? popoverConstraints;
-  
+
   /// Width constraint for the popover.
   final PopoverConstraint? popoverWidthConstraint;
-  
+
   /// Anchor alignment for the popover.
   final AlignmentDirectional? popoverAnchorAlignment;
-  
+
   /// Popover alignment relative to the anchor.
   final AlignmentDirectional? popoverAlignment;
-  
+
   /// Autocomplete mode (e.g., popover or inline).
   final AutoCompleteMode mode;
 
@@ -600,13 +600,13 @@ class _AutoCompleteFeatureState
 class InputSpinnerFeature extends InputFeature {
   /// The amount to increment or decrement on each step.
   final double step;
-  
+
   /// Whether to enable gesture-based value adjustment.
   final bool enableGesture;
-  
+
   /// Default value when the input is invalid or empty.
   final double? invalidValue;
-  
+
   /// Creates an [InputSpinnerFeature].
   ///
   /// Parameters:
@@ -754,10 +754,10 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
 class InputCopyFeature extends InputFeature {
   /// Position of the copy button.
   final InputFeaturePosition position;
-  
+
   /// Custom icon for the copy button.
   final Widget? icon;
-  
+
   /// Creates an [InputCopyFeature].
   ///
   /// Parameters:
@@ -823,7 +823,7 @@ class _InputCopyFeatureState extends InputFeatureState<InputCopyFeature> {
 class InputLeadingFeature extends InputFeature {
   /// The widget to display on the leading side.
   final Widget prefix;
-  
+
   /// Creates an [InputLeadingFeature].
   ///
   /// Parameters:
@@ -865,7 +865,7 @@ class _InputLeadingFeatureState extends InputFeatureState<InputLeadingFeature> {
 class InputTrailingFeature extends InputFeature {
   /// The widget to display on the trailing side.
   final Widget suffix;
-  
+
   /// Creates an [InputTrailingFeature].
   ///
   /// Parameters:
@@ -908,10 +908,10 @@ class _InputTrailingFeatureState
 class InputPasteFeature extends InputFeature {
   /// Position of the paste button.
   final InputFeaturePosition position;
-  
+
   /// Custom icon for the paste button.
   final Widget? icon;
-  
+
   /// Creates an [InputPasteFeature].
   ///
   /// Parameters:
