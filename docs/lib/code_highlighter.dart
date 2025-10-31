@@ -67,6 +67,7 @@ class _CodeHighlighterState extends State<CodeHighlighter> {
           print(err);
           print(stackTrace);
         }
+        return Future.error(err, stackTrace);
       }),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
