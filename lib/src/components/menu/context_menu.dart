@@ -455,12 +455,34 @@ class MobileEditableTextContextMenu extends StatelessWidget {
 /// - [innerContext] (`BuildContext`, required): Build context.
 /// - [editableTextState] (`EditableTextState`, required): Text field state.
 /// - [undoHistoryController] (`UndoHistoryController?`, optional): Undo controller.
+/// - [platform] (`TargetPlatform?`, optional): Override platform detection.
+///
+/// Note: If [platform] is not provided, it will be inferred from the theme, and
+/// on web, it may be treated as mobile on small screens (width < height * 0.8).
 ///
 /// Returns: Platform-appropriate context menu widget.
 Widget buildEditableTextContextMenu(
     BuildContext innerContext, EditableTextState editableTextState,
-    [UndoHistoryController? undoHistoryController]) {
-  TargetPlatform platform = Theme.of(innerContext).platform;
+    {UndoHistoryController? undoHistoryController, TargetPlatform? platform}) {
+  if (platform == null) {
+    // First we check if the user specified a platform via the theme.
+    // When set, this one is favored.
+    platform ??= Theme.of(innerContext).specifiedPlatform;
+
+    // If the user did not specify a platform, we do some heuristics for web.
+    // On web, we may treat it as mobile on small screens.
+    if (kIsWeb && platform == null) {
+      final size = MediaQuery.of(innerContext).size;
+      // that is, if the width is significantly smaller than height
+      if (size.width < size.height * 0.8) {
+        // Treat as mobile on small web screens
+        platform = TargetPlatform.iOS;
+      }
+    }
+
+    // Finally, if still null, fall back to default platform.
+    platform ??= defaultTargetPlatform;
+  }
 
   switch (platform) {
     case TargetPlatform.android:
@@ -479,6 +501,8 @@ Widget buildEditableTextContextMenu(
         editableTextState: editableTextState,
         undoHistoryController: undoHistoryController,
       );
+    // flutter forks might have some additional platforms
+    // (e.g. flutter ohos has ohos platforms in TargetPlatform enum)
     // ignore: unreachable_switch_default
     default:
       return DesktopEditableTextContextMenu(

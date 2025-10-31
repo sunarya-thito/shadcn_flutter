@@ -216,6 +216,9 @@ class ThemeData {
   /// The current platform.
   TargetPlatform get platform => _platform ?? defaultTargetPlatform;
 
+  /// The specified platform, or null if not overridden.
+  TargetPlatform? get specifiedPlatform => _platform;
+
   /// At normal radius, the scaled radius is 24
   double get radiusXxl => radius * 24;
 
