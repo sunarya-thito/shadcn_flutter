@@ -114,6 +114,7 @@ import 'pages/docs/components/collapsible_example.dart';
 import 'pages/docs/components/color_picker_example.dart';
 import 'pages/docs/components/command_example.dart';
 import 'pages/docs/components/form_example.dart';
+import 'pages/docs/components/go_router_app_example.dart';
 import 'pages/docs/components/number_input_example.dart';
 
 const kEnablePersistentPath = false;
@@ -783,6 +784,13 @@ class MyAppState extends State<MyApp> {
             name: 'app',
             builder: (context, state) {
               return const AppExample();
+            },
+          ),
+          GoRoute(
+            path: 'go_router_app_example',
+            name: 'go_router_app_example',
+            builder: (context, state) {
+              return const GoRouterAppExample();
             },
           ),
           GoRoute(
