@@ -1,6 +1,15 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Controls which date components are shown by [DateInput].
+///
+/// - [dayMonthYear] shows day, month and year fields (default behavior).
+/// - [monthYear] shows only month and year fields (no day field).
+enum DateInputMode {
+  dayMonthYear,
+  monthYear,
+}
+
 /// Reactive date input field with integrated date picker and text editing.
 ///
 /// A high-level date input widget that combines text field functionality with
@@ -86,6 +95,12 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
   /// Custom placeholders for individual date parts.
   final Map<DatePart, Widget>? placeholders;
 
+  /// Mode to control which date components are shown.
+  ///
+  /// - [DateInputMode.dayMonthYear] (default): show day, month and year.
+  /// - [DateInputMode.monthYear]: show only month and year (no day field).
+  final DateInputMode dateMode;
+
   /// Creates a [DateInput].
   ///
   /// Either [controller] or [onChanged] should be provided for interactivity.
@@ -136,6 +151,7 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
     this.stateBuilder,
     this.datePartsOrder,
     this.separator,
+    this.dateMode = DateInputMode.dayMonthYear,
     this.placeholders,
   });
 
@@ -258,10 +274,22 @@ class NullableDate {
 class _DateInputState extends State<DateInput> {
   late ComponentController<NullableDate> _controller;
 
+  /// Resolve the effective date parts order.
+  ///
+  /// Priority:
+  /// 1. `widget.datePartsOrder` if provided by the caller.
+  /// 2. If `dateMode == monthYear` use [month, year].
+  /// 3. Otherwise use the localization default.
+  List<DatePart> _effectiveDatePartsOrder(BuildContext context) {
+    return widget.datePartsOrder ??
+        (widget.dateMode == DateInputMode.monthYear
+            ? <DatePart>[DatePart.month, DatePart.year]
+            : ShadcnLocalizations.of(context).datePartsOrder);
+  }
+
   NullableDate _convertToDateTime(List<String?> values) {
     Map<DatePart, String?> parts = {};
-    var datePartsOrder =
-        widget.datePartsOrder ?? ShadcnLocalizations.of(context).datePartsOrder;
+    var datePartsOrder = _effectiveDatePartsOrder(context);
     for (int i = 0; i < values.length; i++) {
       parts[datePartsOrder[i]] = values[i];
     }
@@ -280,11 +308,25 @@ class _DateInputState extends State<DateInput> {
   }
 
   List<String?> _convertFromDateTime(NullableDate? value) {
-    var datePartsOrder =
-        widget.datePartsOrder ?? ShadcnLocalizations.of(context).datePartsOrder;
+    var datePartsOrder = _effectiveDatePartsOrder(context);
     if (value == null) {
       return datePartsOrder.map((part) => null).toList();
     }
+
+    // If mode is month/year, only require month and year and allow day to be null.
+    if (widget.dateMode == DateInputMode.monthYear) {
+      return datePartsOrder.map((part) {
+        switch (part) {
+          case DatePart.year:
+            return value.year?.toString();
+          case DatePart.month:
+            return value.month?.toString();
+          case DatePart.day:
+            return null;
+        }
+      }).toList();
+    }
+
     var validDateTime = value.nullableDate;
     if (validDateTime == null) {
       return datePartsOrder.map((part) => null).toList();
@@ -362,13 +404,15 @@ class _DateInputState extends State<DateInput> {
 
   @override
   Widget build(BuildContext context) {
-    var datePartsOrder =
-        widget.datePartsOrder ?? ShadcnLocalizations.of(context).datePartsOrder;
+    var datePartsOrder = _effectiveDatePartsOrder(context);
     return FormattedObjectInput<NullableDate>(
       popupBuilder: (context, controller) {
         return SurfaceCard(
           child: DatePickerDialog(
-            initialViewType: widget.initialViewType ?? CalendarViewType.date,
+            initialViewType: widget.initialViewType ??
+                (widget.dateMode == DateInputMode.monthYear
+                    ? CalendarViewType.month
+                    : CalendarViewType.date),
             selectionMode: CalendarSelectionMode.single,
             initialValue: controller.value == null
                 ? null
@@ -380,7 +424,9 @@ class _DateInputState extends State<DateInput> {
               controller.value = NullableDate(
                 year: date?.year,
                 month: date?.month,
-                day: date?.day,
+                day: widget.dateMode == DateInputMode.monthYear
+                    ? null
+                    : date?.day,
               );
             },
           ),
