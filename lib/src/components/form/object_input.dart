@@ -3,10 +3,10 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Controls which date components are shown by [DateInput].
 ///
-/// - [dayMonthYear] shows day, month and year fields (default behavior).
+/// - [full] shows day, month and year fields (default behavior).
 /// - [monthYear] shows only month and year fields (no day field).
 enum DateInputMode {
-  dayMonthYear,
+  full,
   monthYear,
 }
 
@@ -97,7 +97,7 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
 
   /// Mode to control which date components are shown.
   ///
-  /// - [DateInputMode.dayMonthYear] (default): show day, month and year.
+  /// - [DateInputMode.full] (default): show day, month and year.
   /// - [DateInputMode.monthYear]: show only month and year (no day field).
   final DateInputMode dateMode;
 
@@ -151,7 +151,7 @@ class DateInput extends StatefulWidget with ControlledComponent<DateTime?> {
     this.stateBuilder,
     this.datePartsOrder,
     this.separator,
-    this.dateMode = DateInputMode.dayMonthYear,
+    this.dateMode = DateInputMode.full,
     this.placeholders,
   });
 
