@@ -1,13 +1,3 @@
-// Docs application entry point and router setup.
-//
-// This file wires up the Shadcn Flutter documentation app:
-// - Configures routes for each docs section and example wrapper using go_router.
-// - Loads docs metadata (docs.json), preferences, and theme.
-// - Hosts the component example wrappers (e.g., button_example.dart), which in
-//   turn display the actual demo units (e.g., button_example_1.dart).
-//
-// Note: This is scaffolding for the docs site, not a component demo itself.
-// Edits here should avoid changing runtime behavior; comments only.
 import 'dart:convert';
 import 'dart:io';
 

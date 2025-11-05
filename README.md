@@ -2,7 +2,8 @@
 
 # 🎨 shadcn_flutter
 
-**Beautifully designed components from shadcn/ui, now available for Flutter**
+**A cohesive shadcn/ui ecosystem for Flutter—components, theming, and
+tooling—ready to ditch Material and Cupertino**
 
 [![Pub Likes](https://img.shields.io/pub/likes/shadcn_flutter?style=for-the-badge&logo=dart&logoColor=white)](https://pub.dev/packages/shadcn_flutter)
 [![Pub Points](https://img.shields.io/pub/points/shadcn_flutter?style=for-the-badge&logo=dart&logoColor=white)](https://pub.dev/packages/shadcn_flutter)
@@ -12,8 +13,9 @@
 
 ---
 
-🚀 A comprehensive Flutter UI library inspired by shadcn/ui, providing elegant
-and customizable components for modern app development.
+🚀 A comprehensive Flutter UI ecosystem built on shadcn/ui: production‑ready
+components, primitives, theming, and tooling for mobile, web, and desktop.
+Interop with Material/Cupertino is optional—adopt incrementally or go all‑in.
 
 **[📚 Widget Catalog](https://sunarya-thito.github.io/shadcn_flutter/)** •
 **[📦 pub.dev](https://pub.dev/packages/shadcn_flutter)** •
@@ -24,9 +26,14 @@ and customizable components for modern app development.
 ## ✨ Features
 
 - 🎨 **70+ Beautiful Components** - From basic buttons to complex data tables
+- 🧩 **Ecosystem‑first** - Components, primitives, theming, and tooling aligned
+  with shadcn/ui
 - 🌙 **Dark/Light Mode** - Built-in theme switching with multiple color schemes
 - 📱 **Responsive Design** - Components that work seamlessly across all screen
   sizes
+- 🔁 **Incremental Adoption** - Works inside MaterialApp/CupertinoApp; mix and
+  match while you migrate
+- 🖥️📱 **All Platforms** - Android, iOS, Web, macOS, Windows, and Linux
 - 🎯 **Type Safe** - Full TypeScript-like experience with Dart's strong typing
 - 🚀 **Performance First** - Optimized components for smooth animations and
   interactions
@@ -126,6 +133,56 @@ feed to LLMs and editor assistants:
 
 - [`llms-full.txt`](https://sunarya-thito.github.io/shadcn_flutter/llms-full.txt) -
   Full component reference with props, methods, and usage examples
+
+## ❓ FAQ
+
+<details>
+<summary><strong>Does this replace Material/Cupertino?</strong></summary>
+
+Yes. shadcn_flutter is a standalone ecosystem built on the shadcn/ui design
+system. Interop with Material/Cupertino is optional so you can adopt it
+incrementally or go all‑in.
+
+</details>
+
+<details>
+<summary><strong>Can I use it with my existing MaterialApp/CupertinoApp?</strong></summary>
+
+Yes. Drop shadcn_flutter components into your app, keep your current routing
+(e.g., GoRouter) and state management, and migrate over time.
+
+</details>
+
+<details>
+<summary><strong>Does it support GoRouter?</strong></summary>
+
+Yes.
+
+</details>
+
+<details>
+<summary><strong>Which platforms are supported?</strong></summary>
+
+Android, iOS, Web, macOS, Windows, and Linux.
+
+</details>
+
+<details>
+<summary><strong>Can I use it commercially?</strong></summary>
+
+Yes. Free to use for personal and commercial projects. No attribution required.
+
+</details>
+
+<details>
+<summary><strong>Can I choose between Default and New York styles?</strong></summary>
+
+This package currently supports the New York style. If you need the default
+style of shadcn/ui, consider this package:
+[flutter-shadcn-ui](https://github.com/nank1ro/flutter-shadcn-ui) by
+[@nank1ro](https://x.com/nank1ro).
+
+</details>
 
 ## 🤝 Contributing & Support
 

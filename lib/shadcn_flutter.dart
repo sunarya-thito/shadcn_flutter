@@ -26,71 +26,8 @@ export 'package:flutter/widgets.dart'
         RadioGroup;
 // bundle from gap
 export 'package:gap/gap.dart';
-// hide pixel_snap overriden widgets
-// Column,
-// Row,
-// Text,
-// RichText,
-// Center,
-// FractionallySizedBox,
-// Align,
-// Baseline,
-// ConstrainedBox,
-// DecoratedBox,
-// Container,
-// FittedBox,
-// IntrinsicWidth,
-// LimitedBox,
-// OverflowBox,
-// Padding,
-// SizedBox,
-// SizedOverflowBox,
-// Positioned,
-// PhysicalModel,
-// CustomPaint,
-// Icon,
-// Image,
-// ImageIcon,
-// AnimatedAlign,
-// AnimatedContainer,
-// AnimatedCrossFade,
-// AnimatedPositioned,
-// AnimatedPhysicalModel,
-// AnimatedSize;
 // bundle from https://pub.dev/packages/phonecodes
 export 'package:phonecodes/phonecodes.dart' show Countries, Country;
-// export 'package:pixel_snap/widgets.dart'
-//     show
-//         Column,
-//         Row,
-//         Text,
-//         RichText,
-//         Center,
-//         FractionallySizedBox,
-//         Align,
-//         Baseline,
-//         ConstrainedBox,
-//         DecoratedBox,
-//         Container,
-//         FittedBox,
-//         IntrinsicWidth,
-//         LimitedBox,
-//         OverflowBox,
-//         Padding,
-//         SizedBox,
-//         SizedOverflowBox,
-//         Positioned,
-//         PhysicalModel,
-//         CustomPaint,
-//         Icon,
-//         Image,
-//         ImageIcon,
-//         AnimatedAlign,
-//         AnimatedContainer,
-//         AnimatedCrossFade,
-//         AnimatedPositioned,
-//         AnimatedPhysicalModel,
-//         AnimatedSize;
 // bundle from skeletonizer https://pub.dev/packages/skeletonizer
 export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 
@@ -177,15 +114,15 @@ export 'src/components/navigation/tabs/tab_container.dart';
 export 'src/components/navigation/tabs/tab_list.dart';
 export 'src/components/navigation/tabs/tab_pane.dart';
 export 'src/components/navigation/tabs/tabs.dart';
-export 'src/components/overlay/dialog.dart';
-export 'src/components/overlay/drawer.dart';
-export 'src/components/overlay/hover_card.dart';
+export 'src/components/overlay/dialog/dialog.dart';
+export 'src/components/overlay/side/drawer.dart';
+export 'src/components/overlay/popup/hover_card.dart';
 export 'src/components/overlay/overlay.dart';
-export 'src/components/overlay/popover.dart';
-export 'src/components/overlay/refresh_trigger.dart';
-export 'src/components/overlay/swiper.dart';
-export 'src/components/overlay/toast.dart';
-export 'src/components/overlay/tooltip.dart';
+export 'src/components/overlay/popup/old_popover.dart';
+export 'src/components/overlay/side/refresh_trigger.dart';
+export 'src/components/overlay/side/swiper.dart';
+export 'src/components/overlay/side/toast.dart';
+export 'src/components/overlay/popup/tooltip.dart';
 export 'src/components/text/selectable.dart';
 export 'src/components/text/text.dart';
 export 'src/icons/bootstrap_icons.dart';
