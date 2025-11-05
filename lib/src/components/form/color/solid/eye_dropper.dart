@@ -214,132 +214,135 @@ class _EyeDropperLayerState extends State<EyeDropperLayer>
     final theme = Theme.of(context);
     final previewSize =
         widget.previewSize ?? const Size(100, 100) * theme.scaling;
-    return Data<EyeDropperLayerScope>.inherit(
+    return ForwardableData<EyeDropperLayerScope>(
       data: this,
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTapDown: _preview != null && _session != null
-            ? (details) async {
-                _session!.completer.complete(_preview!.pickedColor);
-                if (mounted) {
-                  setState(() {
-                    _session = null;
-                    _preview = null;
-                    _currentPicking = null;
-                    _currentPosition = null;
-                  });
-                }
-              }
-            : null,
-        child: MouseRegion(
-          hitTestBehavior: HitTestBehavior.translucent,
-          onHover: _session != null
-              ? (details) {
-                  setState(() {
-                    _preview = _getPreview(
-                      details.localPosition,
-                      previewSize / widget.previewScale,
-                    );
-                    _currentPosition = details.localPosition;
-                  });
+      child: Data<EyeDropperLayerScope>.inherit(
+        data: this,
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTapDown: _preview != null && _session != null
+              ? (details) async {
+                  _session!.completer.complete(_preview!.pickedColor);
+                  if (mounted) {
+                    setState(() {
+                      _session = null;
+                      _preview = null;
+                      _currentPicking = null;
+                      _currentPosition = null;
+                    });
+                  }
                 }
               : null,
-          child: IgnorePointer(
-            ignoring: _session != null,
-            child: Stack(
-              fit: StackFit.passthrough,
-              children: [
-                RepaintBoundary(
-                  key: _repaintKey,
-                  child: widget.child,
-                ),
-                if (_currentPicking != null)
-                  Positioned.fill(
-                      child: Image(
-                    image: _currentPicking!.image!,
-                    fit: BoxFit.fill,
-                  )),
-                if (widget.showPreview &&
-                    _preview != null &&
-                    widget.previewAlignment != null)
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: Padding(
-                      padding: EdgeInsets.all(theme.scaling * 32),
-                      child: Align(
-                        alignment: widget.previewAlignment!,
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          alignment: Alignment.bottomCenter,
-                          fit: StackFit.passthrough,
-                          children: [
-                            SizedBox(
-                              width: previewSize.width,
-                              height: previewSize.height,
-                              child: CustomPaint(
-                                painter: _ColorPreviewPainter(
-                                  _preview!.colors,
-                                  _preview!.size,
-                                  theme.colorScheme.border,
-                                  1 * theme.scaling,
-                                  theme.colorScheme.primary,
-                                  2 * theme.scaling,
-                                  theme.colorScheme.background,
+          child: MouseRegion(
+            hitTestBehavior: HitTestBehavior.translucent,
+            onHover: _session != null
+                ? (details) {
+                    setState(() {
+                      _preview = _getPreview(
+                        details.localPosition,
+                        previewSize / widget.previewScale,
+                      );
+                      _currentPosition = details.localPosition;
+                    });
+                  }
+                : null,
+            child: IgnorePointer(
+              ignoring: _session != null,
+              child: Stack(
+                fit: StackFit.passthrough,
+                children: [
+                  RepaintBoundary(
+                    key: _repaintKey,
+                    child: widget.child,
+                  ),
+                  if (_currentPicking != null)
+                    Positioned.fill(
+                        child: Image(
+                      image: _currentPicking!.image!,
+                      fit: BoxFit.fill,
+                    )),
+                  if (widget.showPreview &&
+                      _preview != null &&
+                      widget.previewAlignment != null)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: Padding(
+                        padding: EdgeInsets.all(theme.scaling * 32),
+                        child: Align(
+                          alignment: widget.previewAlignment!,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            alignment: Alignment.bottomCenter,
+                            fit: StackFit.passthrough,
+                            children: [
+                              SizedBox(
+                                width: previewSize.width,
+                                height: previewSize.height,
+                                child: CustomPaint(
+                                  painter: _ColorPreviewPainter(
+                                    _preview!.colors,
+                                    _preview!.size,
+                                    theme.colorScheme.border,
+                                    1 * theme.scaling,
+                                    theme.colorScheme.primary,
+                                    2 * theme.scaling,
+                                    theme.colorScheme.background,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              bottom: -18 * theme.scaling,
-                              child: _buildPreviewLabel(
-                                context,
-                                _preview!.pickedColor,
-                              ),
-                            )
-                          ],
+                              Positioned(
+                                bottom: -18 * theme.scaling,
+                                child: _buildPreviewLabel(
+                                  context,
+                                  _preview!.pickedColor,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                if (widget.showPreview &&
-                    _preview != null &&
-                    widget.previewAlignment == null)
-                  Positioned(
-                    top: _currentPosition!.dy,
-                    left: _currentPosition!.dx,
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      alignment: Alignment.bottomCenter,
-                      fit: StackFit.passthrough,
-                      children: [
-                        SizedBox(
-                          width: previewSize.width,
-                          height: previewSize.height,
-                          child: CustomPaint(
-                            painter: _ColorPreviewPainter(
-                              _preview!.colors,
-                              _preview!.size,
-                              theme.colorScheme.border,
-                              1 * theme.scaling,
-                              theme.colorScheme.primary,
-                              2 * theme.scaling,
-                              theme.colorScheme.background,
+                  if (widget.showPreview &&
+                      _preview != null &&
+                      widget.previewAlignment == null)
+                    Positioned(
+                      top: _currentPosition!.dy,
+                      left: _currentPosition!.dx,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: Alignment.bottomCenter,
+                        fit: StackFit.passthrough,
+                        children: [
+                          SizedBox(
+                            width: previewSize.width,
+                            height: previewSize.height,
+                            child: CustomPaint(
+                              painter: _ColorPreviewPainter(
+                                _preview!.colors,
+                                _preview!.size,
+                                theme.colorScheme.border,
+                                1 * theme.scaling,
+                                theme.colorScheme.primary,
+                                2 * theme.scaling,
+                                theme.colorScheme.background,
+                              ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          bottom: -18 * theme.scaling,
-                          child: _buildPreviewLabel(
-                            context,
-                            _preview!.pickedColor,
-                          ),
-                        )
-                      ],
+                          Positioned(
+                            bottom: -18 * theme.scaling,
+                            child: _buildPreviewLabel(
+                              context,
+                              _preview!.pickedColor,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -481,14 +484,22 @@ abstract class EyeDropperLayerScope {
   ///
   /// Searches up the tree to find the topmost eye dropper scope.
   static EyeDropperLayerScope findRoot(BuildContext context) {
-    return Data.findRoot<EyeDropperLayerScope>(context);
+    return Data.maybeFindRoot<EyeDropperLayerScope>(context) ??
+        Data.maybeFindMessenger<EyeDropperLayerScope>(context) ??
+        (throw FlutterError(
+          'No EyeDropperLayerScope found in context. Make sure to wrap your widget tree with an EyeDropperLayer.',
+        ));
   }
 
   /// Finds the nearest [EyeDropperLayerScope] in the widget tree.
   ///
   /// Searches up the tree to find the closest eye dropper scope.
   static EyeDropperLayerScope find(BuildContext context) {
-    return Data.find<EyeDropperLayerScope>(context);
+    return Data.maybeFind<EyeDropperLayerScope>(context) ??
+        Data.maybeFindMessenger<EyeDropperLayerScope>(context) ??
+        (throw FlutterError(
+          'No EyeDropperLayerScope found in context. Make sure to wrap your widget tree with an EyeDropperLayer.',
+        ));
   }
 }
 
