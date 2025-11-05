@@ -441,33 +441,35 @@ class _ShadcnAppState extends State<ShadcnApp> {
   Widget _buildWidgetApp(BuildContext context) {
     final Color primaryColor = widget.color ?? widget.theme.colorScheme.primary;
     if (_usesRouter) {
-      return WidgetsApp.router(
-        key: GlobalObjectKey(this),
-        routeInformationProvider: widget.routeInformationProvider,
-        routeInformationParser: widget.routeInformationParser,
-        routerDelegate: widget.routerDelegate,
-        routerConfig: widget.routerConfig,
-        backButtonDispatcher: widget.backButtonDispatcher,
-        builder: _builder,
-        title: widget.title,
-        onGenerateTitle: widget.onGenerateTitle,
-        textStyle: widget.theme.typography.sans.copyWith(
-          color: widget.theme.colorScheme.foreground,
+      return DataMessengerRoot(
+        child: WidgetsApp.router(
+          key: GlobalObjectKey(this),
+          routeInformationProvider: widget.routeInformationProvider,
+          routeInformationParser: widget.routeInformationParser,
+          routerDelegate: widget.routerDelegate,
+          routerConfig: widget.routerConfig,
+          backButtonDispatcher: widget.backButtonDispatcher,
+          builder: _builder,
+          title: widget.title,
+          onGenerateTitle: widget.onGenerateTitle,
+          textStyle: widget.theme.typography.sans.copyWith(
+            color: widget.theme.colorScheme.foreground,
+          ),
+          color: primaryColor,
+          locale: widget.locale,
+          localizationsDelegates: _localizationsDelegates,
+          localeResolutionCallback: widget.localeResolutionCallback,
+          localeListResolutionCallback: widget.localeListResolutionCallback,
+          supportedLocales: widget.supportedLocales,
+          showPerformanceOverlay: widget.showPerformanceOverlay,
+          // checkerboardRasterCacheImages: widget.checkerboardRasterCacheImages,
+          // checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
+          showSemanticsDebugger: widget.showSemanticsDebugger,
+          debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
+          shortcuts: widget.shortcuts,
+          actions: widget.actions,
+          restorationScopeId: widget.restorationScopeId,
         ),
-        color: primaryColor,
-        locale: widget.locale,
-        localizationsDelegates: _localizationsDelegates,
-        localeResolutionCallback: widget.localeResolutionCallback,
-        localeListResolutionCallback: widget.localeListResolutionCallback,
-        supportedLocales: widget.supportedLocales,
-        showPerformanceOverlay: widget.showPerformanceOverlay,
-        // checkerboardRasterCacheImages: widget.checkerboardRasterCacheImages,
-        // checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
-        showSemanticsDebugger: widget.showSemanticsDebugger,
-        debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
-        shortcuts: widget.shortcuts,
-        actions: widget.actions,
-        restorationScopeId: widget.restorationScopeId,
       );
     }
 
@@ -520,37 +522,41 @@ class _ShadcnAppState extends State<ShadcnApp> {
       }
       return true;
     }());
-    return m.Theme(
-      data: widget.materialTheme ??
-          m.ThemeData.from(
-            colorScheme: m.ColorScheme.fromSeed(
-              seedColor: widget.theme.colorScheme.primary,
-              brightness: widget.theme.brightness,
-              surface: widget.theme.colorScheme.background,
-              primary: widget.theme.colorScheme.primary,
-              secondary: widget.theme.colorScheme.secondary,
-              error: widget.theme.colorScheme.destructive,
+    return Data<_ShadcnAppState>.inherit(
+      data: this,
+      child: m.Theme(
+        data: widget.materialTheme ??
+            m.ThemeData.from(
+              colorScheme: m.ColorScheme.fromSeed(
+                seedColor: widget.theme.colorScheme.primary,
+                brightness: widget.theme.brightness,
+                surface: widget.theme.colorScheme.background,
+                primary: widget.theme.colorScheme.primary,
+                secondary: widget.theme.colorScheme.secondary,
+                error: widget.theme.colorScheme.destructive,
+              ),
             ),
-          ),
-      child: c.CupertinoTheme(
-        data: widget.cupertinoTheme ??
-            c.CupertinoThemeData(
-              brightness: widget.theme.brightness,
-              primaryColor: widget.theme.colorScheme.primary,
-              barBackgroundColor: widget.theme.colorScheme.accent,
-              scaffoldBackgroundColor: widget.theme.colorScheme.background,
-              applyThemeToAll: true,
-              primaryContrastingColor:
-                  widget.theme.colorScheme.primaryForeground,
-            ),
-        child: m.Material(
-          color: widget.background ?? m.Colors.transparent,
-          child: m.ScaffoldMessenger(
-            child: ScrollConfiguration(
-              behavior: (widget.scrollBehavior ?? const ShadcnScrollBehavior()),
-              child: HeroControllerScope(
-                controller: _heroController,
-                child: result,
+        child: c.CupertinoTheme(
+          data: widget.cupertinoTheme ??
+              c.CupertinoThemeData(
+                brightness: widget.theme.brightness,
+                primaryColor: widget.theme.colorScheme.primary,
+                barBackgroundColor: widget.theme.colorScheme.accent,
+                scaffoldBackgroundColor: widget.theme.colorScheme.background,
+                applyThemeToAll: true,
+                primaryContrastingColor:
+                    widget.theme.colorScheme.primaryForeground,
+              ),
+          child: m.Material(
+            color: widget.background ?? m.Colors.transparent,
+            child: m.ScaffoldMessenger(
+              child: ScrollConfiguration(
+                behavior:
+                    (widget.scrollBehavior ?? const ShadcnScrollBehavior()),
+                child: HeroControllerScope(
+                  controller: _heroController,
+                  child: result,
+                ),
               ),
             ),
           ),
@@ -631,6 +637,7 @@ class ShadcnLayer extends StatelessWidget {
     var appScaling = scaling ?? AdaptiveScaler.defaultScaling(theme);
     var platformBrightness = MediaQuery.platformBrightnessOf(context);
     var mobileMode = isMobile(theme.platform);
+    var hasShadcnApp = Data.maybeOf<_ShadcnAppState>(context) != null;
     final scaledTheme = themeMode == ThemeMode.dark ||
             (themeMode == ThemeMode.system &&
                 platformBrightness == Brightness.dark)
@@ -654,34 +661,32 @@ class ShadcnLayer extends StatelessWidget {
         data: scaledTheme,
         child: Builder(builder: (context) {
           var theme = Theme.of(context);
-          return DataMessengerRoot(
-            child: ScrollViewInterceptor(
-              enabled: enableScrollInterception,
-              child: ShadcnSkeletonizerConfigLayer(
-                theme: theme,
-                child: DefaultTextStyle.merge(
-                  style: theme.typography.base.copyWith(
+          var scrollViewInterceptor = ScrollViewInterceptor(
+            enabled: enableScrollInterception,
+            child: ShadcnSkeletonizerConfigLayer(
+              theme: theme,
+              child: DefaultTextStyle.merge(
+                style: theme.typography.base.copyWith(
+                  color: theme.colorScheme.foreground,
+                ),
+                child: IconTheme.merge(
+                  data: theme.iconTheme.medium.copyWith(
                     color: theme.colorScheme.foreground,
                   ),
-                  child: IconTheme.merge(
-                    data: theme.iconTheme.medium.copyWith(
-                      color: theme.colorScheme.foreground,
-                    ),
-                    child: RecentColorsScope(
-                      initialRecentColors: initialRecentColors,
-                      maxRecentColors: maxRecentColors,
-                      onRecentColorsChanged: onRecentColorsChanged,
-                      child: EyeDropperLayer(
-                        child: KeyboardShortcutDisplayMapper(
-                          child: ToastLayer(
-                            child: builder != null
-                                ? Builder(
-                                    builder: (BuildContext context) {
-                                      return builder!(context, child);
-                                    },
-                                  )
-                                : child ?? const SizedBox.shrink(),
-                          ),
+                  child: RecentColorsScope(
+                    initialRecentColors: initialRecentColors,
+                    maxRecentColors: maxRecentColors,
+                    onRecentColorsChanged: onRecentColorsChanged,
+                    child: EyeDropperLayer(
+                      child: KeyboardShortcutDisplayMapper(
+                        child: ToastLayer(
+                          child: builder != null
+                              ? Builder(
+                                  builder: (BuildContext context) {
+                                    return builder!(context, child);
+                                  },
+                                )
+                              : child ?? const SizedBox.shrink(),
                         ),
                       ),
                     ),
@@ -690,6 +695,13 @@ class ShadcnLayer extends StatelessWidget {
               ),
             ),
           );
+          if (!hasShadcnApp) {
+            return DataMessengerRoot(
+              child: scrollViewInterceptor,
+            );
+          } else {
+            return scrollViewInterceptor;
+          }
         }),
       ),
     );
