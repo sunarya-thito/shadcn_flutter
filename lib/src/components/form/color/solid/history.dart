@@ -161,9 +161,18 @@ abstract class ColorHistoryStorage implements Listenable {
   /// The list of recent colors, ordered from most to least recent.
   List<Color> get recentColors;
 
-  /// Finds the [ColorHistoryStorage] in the widget tree.
+  /// Finds and listens the [ColorHistoryStorage] in the widget tree.
   static ColorHistoryStorage of(BuildContext context) {
     return Data.of<ColorHistoryStorage>(context);
+  }
+
+  /// Finds the [ColorHistoryStorage] in the widget tree.
+  static ColorHistoryStorage find(BuildContext context) {
+    return Data.maybeFind<ColorHistoryStorage>(context) ??
+        Data.maybeFindMessenger<ColorHistoryStorage>(context) ??
+        (throw FlutterError(
+          'No ColorHistoryStorage found in context. Make sure to wrap your widget tree with a RecentColorsScope.',
+        ));
   }
 }
 
