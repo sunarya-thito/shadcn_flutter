@@ -287,6 +287,7 @@ class _EyeDropperLayerState extends State<EyeDropperLayer>
                                   1 * theme.scaling,
                                   theme.colorScheme.primary,
                                   2 * theme.scaling,
+                                  theme.colorScheme.background,
                                 ),
                               ),
                             ),
@@ -324,6 +325,7 @@ class _EyeDropperLayerState extends State<EyeDropperLayer>
                               1 * theme.scaling,
                               theme.colorScheme.primary,
                               2 * theme.scaling,
+                              theme.colorScheme.background,
                             ),
                           ),
                         ),
@@ -363,6 +365,7 @@ class _ColorPreviewPainter extends CustomPainter {
   final double borderWidth;
   final Color selectedBorderColor;
   final double selectedBorderWidth;
+  final Color backgroundColor;
 
   _ColorPreviewPainter(
     this.colors,
@@ -371,6 +374,7 @@ class _ColorPreviewPainter extends CustomPainter {
     this.borderWidth,
     this.selectedBorderColor,
     this.selectedBorderWidth,
+    this.backgroundColor,
   );
 
   @override
@@ -381,6 +385,16 @@ class _ColorPreviewPainter extends CustomPainter {
           0, 0, size.width.floorToDouble(), size.height.floorToDouble()));
     canvas.clipPath(clipPath);
     final paint = Paint();
+
+    // draw the background as background color
+    paint.color = backgroundColor;
+    paint.style = PaintingStyle.fill;
+    canvas.drawRect(
+        Rect.fromLTWH(
+            0, 0, size.width.floorToDouble(), size.height.floorToDouble()),
+        paint);
+
+    // draw the color cells
     final cellSize = Size(size.width.floor() / this.size.width.floor(),
         size.height.floor() / this.size.height.floor());
     for (int y = 0; y < this.size.height.floor(); y++) {
