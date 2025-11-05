@@ -173,7 +173,7 @@ class DocsPageState extends State<DocsPage> {
       'Application',
       [
         ShadcnDocsPage('ShadcnApp', 'app'),
-        ShadcnDocsPage('ShadcnUI', 'wrapper'),
+        ShadcnDocsPage('ShadcnLayer', 'wrapper'),
       ],
     ),
     ShadcnDocsSection(
