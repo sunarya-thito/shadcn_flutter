@@ -39,5 +39,4 @@ jobs:
       run: |
         cd docs
         flutter pub get
-        flutter build docs
-    
+        flutter build web
