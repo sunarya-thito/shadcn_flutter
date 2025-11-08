@@ -69,12 +69,8 @@ class IntroductionPageState extends State<IntroductionPage> {
                       'Works inside MaterialApp and CupertinoApp; mix and match while you migrate.')
                   .li(),
               const Text(
-                      'Incremental adoption path for existing Material/Cupertino codebases.')
-                  .li(),
-              const Text(
                       'First-class support across Android, iOS, Web, macOS, Windows, and Linux.')
                   .li(),
-              const Text('Supports middle drag scrolling.').li(),
               const Text('Various widget extensions for typography purposes.')
                   .li(),
               const Text('Supports WebAssembly for better performance.').li(),

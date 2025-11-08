@@ -11,36 +11,38 @@ tooling—ready to ditch Material and Cupertino**
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/sunarya-thito?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sponsors/sunarya-thito)
 [![GitHub Repo stars](https://img.shields.io/github/stars/sunarya-thito/shadcn_flutter?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sunarya-thito/shadcn_flutter)
 
----
-
-🚀 A comprehensive Flutter UI ecosystem built on shadcn/ui: production‑ready
-components, primitives, theming, and tooling for mobile, web, and desktop.
-Interop with Material/Cupertino is optional—adopt incrementally or go all‑in.
-
 **[📚 Widget Catalog](https://sunarya-thito.github.io/shadcn_flutter/)** •
 **[📦 pub.dev](https://pub.dev/packages/shadcn_flutter)** •
 **[💬 Discord](https://discord.gg/ZzfBPQG4sV)**
 
 </div>
 
-## ✨ Features
+---
 
-- 🎨 **70+ Beautiful Components** - From basic buttons to complex data tables
-- 🧩 **Ecosystem‑first** - Components, primitives, theming, and tooling aligned
-  with shadcn/ui
-- 🌙 **Dark/Light Mode** - Built-in theme switching with multiple color schemes
-- 📱 **Responsive Design** - Components that work seamlessly across all screen
-  sizes
-- 🔁 **Incremental Adoption** - Works inside MaterialApp/CupertinoApp; mix and
-  match while you migrate
-- 🖥️📱 **All Platforms** - Android, iOS, Web, macOS, Windows, and Linux
-- 🎯 **Type Safe** - Full TypeScript-like experience with Dart's strong typing
-- 🚀 **Performance First** - Optimized components for smooth animations and
-  interactions
-- 🎨 **Customizable** - Easy theming and styling to match your brand
-- 📦 **Tree Shakable** - Import only what you need
+## Introduction
 
-## 🧩 Components Library
+Welcome to shadcn_flutter, a cohesive UI ecosystem built on the shadcn/ui design
+system for Flutter applications across mobile, web, and desktop. Rather than a
+one‑to‑one design‑system port, this project focuses on delivering a consistent,
+production‑ready experience that feels at home on every platform.
+
+> [!NOTE]
+> Already using Material or Cupertino? You can adopt shadcn_flutter
+> incrementally: mix components inside your existing MaterialApp/CupertinoApp,
+> keep your navigation (e.g., GoRouter), and align visuals with your
+> shadcn_flutter theme. Interop is optional—go all‑in when you're ready.
+
+## Features
+
+- 84 components and growing!
+- Standalone ecosystem: no Material or Cupertino requirement; optional interop
+  when needed.
+- shadcn/ui design tokens and ready-to-use New York theme.
+- Works inside MaterialApp and CupertinoApp; mix and match while you migrate.
+- First-class support across Android, iOS, Web, macOS, Windows, and Linux.
+- Various widget extensions for typography purposes.
+
+## Components Library
 
 ### Animation
 
@@ -126,7 +128,7 @@ Interop with Material/Cupertino is optional—adopt incrementally or go all‑in
 [![Context Menu](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/docs_images/context_menu.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/context_menu)
 [![Dropdown Menu](https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/docs_images/dropdown_menu.png)](https://sunarya-thito.github.io/shadcn_flutter/#/components/dropdown_menu)
 
-## 🧠 LLMs Support
+## LLMs Support
 
 This repository includes a prebuilt, machine‑friendly reference file you can
 feed to LLMs and editor assistants:
@@ -134,7 +136,7 @@ feed to LLMs and editor assistants:
 - [`llms-full.txt`](https://sunarya-thito.github.io/shadcn_flutter/llms-full.txt) -
   Full component reference with props, methods, and usage examples
 
-## ❓ FAQ
+## FAQ
 
 <details>
 <summary><strong>Does this replace Material/Cupertino?</strong></summary>
@@ -184,12 +186,12 @@ style of shadcn/ui, consider this package:
 
 </details>
 
-## 🤝 Contributing & Support
+## Contributing & Support
 
 We welcome contributions from the community! Here's how you can help make
 shadcn_flutter even better:
 
-### 🌟 Ways to Contribute
+### Ways to Contribute
 
 <div align="center">
 
@@ -200,29 +202,29 @@ shadcn_flutter even better:
 
 </div>
 
-#### 💰 Financial Support
+#### Financial Support
 
-- 💖 **[GitHub Sponsors](https://github.com/sponsors/sunarya-thito)** - Support
+- **[GitHub Sponsors](https://github.com/sponsors/sunarya-thito)** - Support
   ongoing development
-- 💰 **[PayPal](https://paypal.me/sunaryathito)** - Support ongoing development
-- ⭐ **Star the repository** - Help us reach more developers
-- 📢 **Share the project** - Spread the word in your community
+- **[PayPal](https://paypal.me/sunaryathito)** - Support ongoing development
+- **Star the repository** - Help us reach more developers
+- **Share the project** - Spread the word in your community
 
-#### 🛠️ Code Contributions
+#### Code Contributions
 
-- 🐛 **Bug fixes** - Help us squash those pesky bugs
-- ✨ **New features** - Add components or enhance existing ones
-- 📚 **Documentation** - Improve guides, examples, and API docs
-- 🧪 **Testing** - Write tests to improve reliability
+- **Bug fixes** - Help us squash those pesky bugs
+- **New features** - Add components or enhance existing ones
+- **Documentation** - Improve guides, examples, and API docs
+- **Testing** - Write tests to improve reliability
 
-#### 🗨️ Community Support
+#### Community Support
 
-- 💬 **[Join our Discord](https://discord.gg/ZzfBPQG4sV)** - Get help and
-  connect with other developers
-- 🤝 **Help others** - Answer questions and share your knowledge
-- 📝 **Write tutorials** - Create blog posts or video tutorials
+- **[Join our Discord](https://discord.gg/ZzfBPQG4sV)** - Get help and connect
+  with other developers
+- **Help others** - Answer questions and share your knowledge
+- **Write tutorials** - Create blog posts or video tutorials
 
-### 🏆 Recognition
+### Recognition
 
 This project is funded and maintained by the community. Every contribution, no
 matter how small, makes a difference and helps ensure the continued development
