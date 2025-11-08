@@ -195,6 +195,12 @@ class ColorPicker extends StatefulWidget {
   /// Whether to show alpha (opacity) controls.
   final bool showAlpha;
 
+  /// Whether to show the color history button.
+  final bool showHistoryButton;
+
+  /// Whether to show the color history panel initially.
+  final bool initialShowHistory;
+
   /// The initial color picker mode.
   final ColorPickerMode initialMode;
 
@@ -234,6 +240,8 @@ class ColorPicker extends StatefulWidget {
     this.spacing,
     this.controlSpacing,
     this.sliderSize,
+    this.showHistoryButton = true,
+    this.initialShowHistory = false,
   });
 
   @override
@@ -245,10 +253,13 @@ class _ColorPickerState extends State<ColorPicker> {
 
   ColorDerivative? _changingValue;
 
+  late bool _showHistory;
+
   @override
   void initState() {
     super.initState();
     _mode = widget.initialMode;
+    _showHistory = widget.initialShowHistory;
   }
 
   ColorDerivative get _effectiveValue {
@@ -273,10 +284,6 @@ class _ColorPickerState extends State<ColorPicker> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final componentTheme = ComponentTheme.maybeOf<ColorPickerTheme>(context);
-    final direction = styleValue(
-        defaultValue: Axis.vertical,
-        themeValue: componentTheme?.orientation,
-        widgetValue: widget.orientation);
     final spacing = styleValue(
         defaultValue: 12.0,
         themeValue: componentTheme?.spacing,
@@ -297,6 +304,16 @@ class _ColorPickerState extends State<ColorPicker> {
       onChanging: _onChanging,
       showAlpha: widget.showAlpha,
       mode: _mode,
+      enableEyeDropper: widget.enableEyeDropper,
+      onEyeDropperRequested: widget.onEyeDropperRequested,
+      showHistory: _showHistory,
+      showHistoryButton:
+          widget.showHistoryButton && orientation == Axis.vertical,
+      onShowHistoryChanged: (show) {
+        setState(() {
+          _showHistory = show;
+        });
+      },
       onModeChanged: (mode) {
         setState(() {
           _mode = mode;
@@ -310,38 +327,50 @@ class _ColorPickerState extends State<ColorPicker> {
       ),
     );
     var content = Flex(
-      direction: direction,
+      direction: orientation,
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: spacing,
-      children: [
-        Flexible(
-          child: AspectRatio(
-            aspectRatio: 1.0,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: 250.0 * theme.scaling,
-                minWidth: 250.0 * theme.scaling,
+      children: _showHistory && orientation == Axis.vertical
+          ? [
+              ColorHistoryGrid(
+                storage: ColorHistoryStorage.of(context),
+                onColorPicked: (value) {
+                  _onChanging(_effectiveValue.changeToColor(value));
+                  _onChanged(_effectiveValue.changeToColor(value));
+                },
+                selectedColor: _effectiveValue.toColor(),
               ),
-              child: buildSlider(context),
-            ),
-          ),
-        ),
-        if (direction == Axis.horizontal)
-          ...buildSliders(context)
-        else
-          IntrinsicWidth(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: controlSpacing,
-              children: [
-                if (direction == Axis.vertical) ...buildSliders(context),
-                colorControls,
-              ],
-            ),
-          ),
-      ],
+            ]
+          : [
+              Flexible(
+                child: AspectRatio(
+                  aspectRatio: 1.0,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: 150.0 * theme.scaling,
+                      minWidth: 150.0 * theme.scaling,
+                    ),
+                    child: buildSlider(context),
+                  ),
+                ),
+              ),
+              if (orientation == Axis.horizontal)
+                ...buildSliders(context)
+              else
+                IntrinsicWidth(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    spacing: controlSpacing,
+                    children: [
+                      if (orientation == Axis.vertical)
+                        ...buildSliders(context),
+                      colorControls,
+                    ],
+                  ),
+                ),
+            ],
     );
     if (orientation == Axis.horizontal) {
       return IntrinsicWidth(
@@ -416,6 +445,17 @@ class _ColorPickerState extends State<ColorPicker> {
             },
             sliderType: HSVColorSliderType.alpha,
           ),
+        ),
+      if (orientation == Axis.horizontal && widget.showHistoryButton)
+        ColorHistoryGrid(
+          storage: ColorHistoryStorage.of(context),
+          crossAxisCount: 2,
+          maxTotalColors: 14,
+          onColorPicked: (value) {
+            _onChanging(_effectiveValue.changeToColor(value));
+            _onChanged(_effectiveValue.changeToColor(value));
+          },
+          selectedColor: _effectiveValue.toColor(),
         ),
     ];
   }
@@ -508,6 +548,15 @@ class ColorControls extends StatelessWidget {
   /// Callback invoked when the eye dropper tool is requested.
   final VoidCallback? onEyeDropperRequested;
 
+  /// Whether the color history panel is shown.
+  final bool showHistory;
+
+  /// Callback invoked when the color history panel visibility changes.
+  final ValueChanged<bool>? onShowHistoryChanged;
+
+  /// Whether to show the color history button.
+  final bool showHistoryButton;
+
   /// Creates color controls.
   const ColorControls({
     super.key,
@@ -520,6 +569,9 @@ class ColorControls extends StatelessWidget {
     this.enableEyeDropper,
     this.onEyeDropperRequested,
     this.controlSpacing,
+    this.showHistory = false,
+    this.onShowHistoryChanged,
+    this.showHistoryButton = true,
   });
 
   @override
@@ -568,11 +620,22 @@ class ColorControls extends StatelessWidget {
                     }
                   },
             ),
-          Flexible(
+          if (showHistoryButton)
+            IconButton(
+              variance:
+                  showHistory ? ButtonVariance.primary : ButtonVariance.outline,
+              icon: Icon(
+                showHistory ? Icons.history_toggle_off : Icons.history,
+              ),
+              onPressed: () {
+                onShowHistoryChanged?.call(!showHistory);
+              },
+            ),
+          Expanded(
             child: ButtonGroup.horizontal(
               expands: true,
               children: [
-                Flexible(
+                Expanded(
                   child: Select<ColorPickerMode>(
                     value: mode,
                     itemBuilder: (context, value) {
