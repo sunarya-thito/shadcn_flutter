@@ -321,8 +321,8 @@ class _DateInputState extends State<DateInput> {
             return value.year?.toString();
           case DatePart.month:
             return value.month?.toString();
-          case DatePart.day:
-            return null;
+          default:
+            throw StateError('Unexpected DatePart: $part in monthYear mode');
         }
       }).toList();
     }
