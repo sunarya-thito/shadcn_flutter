@@ -3,10 +3,15 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Controls which date components are shown by [DateInput].
 ///
-/// - [full] shows day, month and year fields (default behavior).
-/// - [monthYear] shows only month and year fields (no day field).
+/// Use the values to configure whether the day component is visible.
+///
+/// - `DateInputMode.full`: show day, month and year fields (default).
+/// - `DateInputMode.monthYear`: show only month and year fields (no day field).
 enum DateInputMode {
+  /// Show day, month and year fields (default behavior).
   full,
+
+  /// Show only month and year fields; day field is hidden.
   monthYear,
 }
 
