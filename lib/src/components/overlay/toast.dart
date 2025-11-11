@@ -748,12 +748,15 @@ class _ToastLayerState extends State<ToastLayer> {
         ),
       );
     }
-    return Data.inherit(
+    return ForwardableData(
       data: this,
-      child: Stack(
-        clipBehavior: Clip.none,
-        fit: StackFit.passthrough,
-        children: children,
+      child: Data.inherit(
+        data: this,
+        child: Stack(
+          clipBehavior: Clip.none,
+          fit: StackFit.passthrough,
+          children: children,
+        ),
       ),
     );
   }

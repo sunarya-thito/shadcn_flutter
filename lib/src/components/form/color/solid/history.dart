@@ -32,6 +32,9 @@ class ColorHistoryGrid extends StatelessWidget {
   /// The currently selected color to highlight.
   final Color? selectedColor;
 
+  /// The amount of colors to display in the history.
+  final int? maxTotalColors;
+
   /// Creates a [ColorHistoryGrid].
   const ColorHistoryGrid({
     super.key,
@@ -40,6 +43,7 @@ class ColorHistoryGrid extends StatelessWidget {
     this.spacing,
     this.crossAxisCount = 10,
     this.selectedColor,
+    this.maxTotalColors,
   });
 
   Widget _buildGridTile(BuildContext context, Color? color, ThemeData theme) {
@@ -50,7 +54,7 @@ class ColorHistoryGrid extends StatelessWidget {
           style: ButtonStyle.outline(
             density: ButtonDensity.compact,
           ),
-          child: Icon(LucideIcons.x),
+          child: SizedBox.shrink(),
         ),
       );
     }
@@ -71,8 +75,25 @@ class ColorHistoryGrid extends StatelessWidget {
           onPressed: () {
             onColorPicked?.call(color);
           },
-          child: Container(
-            color: color,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                // readjust to prevent visual glitch
+                top: selectedColor != null && color == selectedColor ? -2 : 0,
+                left: selectedColor != null && color == selectedColor ? -2 : 0,
+                child: ClipRRect(
+                  borderRadius: theme.borderRadiusSm,
+                  child: CustomPaint(
+                    painter: AlphaPainter(),
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                child: Container(
+                  color: color,
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -87,14 +108,18 @@ class ColorHistoryGrid extends StatelessWidget {
         listenable: storage,
         builder: (context, child) {
           List<Widget> rows = [];
-          for (int i = 0; i < storage.capacity; i += crossAxisCount) {
+          for (int i = 0;
+              i < storage.capacity &&
+                  (maxTotalColors == null || i < maxTotalColors!);
+              i += crossAxisCount) {
             List<Widget> tiles = [];
             for (int j = 0; j < crossAxisCount; j++) {
               final index = i + j;
               final color = index < storage.recentColors.length
                   ? storage.recentColors[index]
                   : null;
-              if (index >= storage.capacity) {
+              if (index >= storage.capacity ||
+                  (maxTotalColors != null && i >= maxTotalColors!)) {
                 tiles.add(
                   const Expanded(
                     child: SizedBox(),
@@ -103,7 +128,11 @@ class ColorHistoryGrid extends StatelessWidget {
               } else {
                 tiles.add(
                   Expanded(
-                    child: _buildGridTile(context, color, theme),
+                    child: SizedBox(
+                      width: 32 * theme.scaling,
+                      height: 32 * theme.scaling,
+                      child: _buildGridTile(context, color, theme),
+                    ),
                   ),
                 );
               }
@@ -161,9 +190,18 @@ abstract class ColorHistoryStorage implements Listenable {
   /// The list of recent colors, ordered from most to least recent.
   List<Color> get recentColors;
 
-  /// Finds the [ColorHistoryStorage] in the widget tree.
+  /// Finds and listens the [ColorHistoryStorage] in the widget tree.
   static ColorHistoryStorage of(BuildContext context) {
     return Data.of<ColorHistoryStorage>(context);
+  }
+
+  /// Finds the [ColorHistoryStorage] in the widget tree.
+  static ColorHistoryStorage find(BuildContext context) {
+    return Data.maybeFind<ColorHistoryStorage>(context) ??
+        Data.maybeFindMessenger<ColorHistoryStorage>(context) ??
+        (throw FlutterError(
+          'No ColorHistoryStorage found in context. Make sure to wrap your widget tree with a RecentColorsScope.',
+        ));
   }
 }
 
@@ -276,9 +314,12 @@ class RecentColorsScopeState extends State<RecentColorsScope>
 
   @override
   Widget build(BuildContext context) {
-    return Data<ColorHistoryStorage>.inherit(
+    return ForwardableData<ColorHistoryStorage>(
       data: this,
-      child: widget.child,
+      child: Data<ColorHistoryStorage>.inherit(
+        data: this,
+        child: widget.child,
+      ),
     );
   }
 

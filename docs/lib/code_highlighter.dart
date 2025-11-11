@@ -19,19 +19,41 @@ class CodeHighlighter extends StatefulWidget {
   State<CodeHighlighter> createState() => _CodeHighlighterState();
 }
 
+class _HighlighterResult {
+  final bool success;
+  final HighlighterTheme theme;
+
+  _HighlighterResult({
+    required this.success,
+    required this.theme,
+  });
+}
+
 class _CodeHighlighterState extends State<CodeHighlighter> {
   static final Map<String, FutureOr<bool>> _initializedLanguages = {};
   static final Map<Brightness, FutureOr<HighlighterTheme>> _initializedThemes =
       {};
+
+  static const Set<String> supportedLanguages = {'dart', 'yaml'};
 
   static FutureOr<bool> initializeLanguage(String mode) {
     final current = _initializedLanguages[mode];
     if (current != null) {
       return current;
     }
+    if (!supportedLanguages.contains(mode)) {
+      return false;
+    }
     final future = Highlighter.initialize([mode]).then((_) {
       _initializedLanguages[mode] = true;
       return true;
+    }).catchError((err, stackTrace) {
+      if (kDebugMode) {
+        print(err);
+        print(stackTrace);
+      }
+      _initializedLanguages[mode] = false;
+      return false;
     });
     _initializedLanguages[mode] = future;
     return future;
@@ -52,10 +74,11 @@ class _CodeHighlighterState extends State<CodeHighlighter> {
     return future;
   }
 
-  FutureOr<HighlighterTheme> _request() {
+  FutureOr<_HighlighterResult> _request() {
     var brightness = Theme.of(context).brightness;
-    return initializeLanguage(widget.mode).then((_) {
-      return initializeTheme(brightness);
+    return initializeLanguage(widget.mode).then((success) async {
+      final theme = await initializeTheme(brightness);
+      return _HighlighterResult(success: success, theme: theme);
     });
   }
 
@@ -67,6 +90,7 @@ class _CodeHighlighterState extends State<CodeHighlighter> {
           print(err);
           print(stackTrace);
         }
+        return Future.error(err, stackTrace);
       }),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -81,8 +105,12 @@ class _CodeHighlighterState extends State<CodeHighlighter> {
           return Text('${snapshot.error}');
         }
         if (snapshot.hasData) {
-          return SelectableText.rich(
-              Highlighter(language: widget.mode, theme: snapshot.requireData)
+          return SelectableText.rich(!snapshot.requireData.success
+              ? TextSpan(
+                  text: widget.code,
+                )
+              : Highlighter(
+                      language: widget.mode, theme: snapshot.requireData.theme)
                   .highlight(widget.code));
         }
         return const Text('Empty');

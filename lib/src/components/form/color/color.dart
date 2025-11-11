@@ -272,6 +272,9 @@ final class _HSVColor extends ColorDerivative {
   const _HSVColor(this.color);
 
   @override
+  String toString() => color.toString();
+
+  @override
   Color toColor() {
     return color.toColor();
   }
@@ -365,6 +368,8 @@ final class _HSVColor extends ColorDerivative {
 final class _HSLColor extends ColorDerivative {
   final HSLColor color;
   const _HSLColor(this.color);
+  @override
+  String toString() => color.toString();
 
   @override
   Color toColor() {
