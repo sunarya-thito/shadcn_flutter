@@ -422,7 +422,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.45"
+    version: "0.0.46"
   shared_preferences:
     dependency: "direct main"
     description:
