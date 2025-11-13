@@ -884,7 +884,7 @@ class MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'shadcn/ui Flutter',
         scaling: AdaptiveScaling(scaling),
-        enableScrollInterception: true,
+        scrollInterceptionBehavior: const ScrollInterceptionBehavior(enabled: true),
         // popoverHandler: DialogOverlayHandler(),
         theme: ThemeData(
           colorScheme: colorScheme,
