@@ -88,6 +88,9 @@ class ObjectFormField<T> extends StatefulWidget {
   /// Whether to show the field decoration.
   final bool decorate;
 
+  /// Whether to inform value change callback immediately upon user interaction with the editor.
+  final bool? immediateValueChange;
+
   /// Creates an [ObjectFormField].
   const ObjectFormField({
     super.key,
@@ -109,6 +112,7 @@ class ObjectFormField<T> extends StatefulWidget {
     this.dialogActions,
     this.enabled,
     this.decorate = true,
+    this.immediateValueChange,
   });
 
   @override
@@ -208,6 +212,13 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
           dialogActions: widget.dialogActions,
           prompt: prompt,
           decorate: widget.decorate,
+          onChanged: (value) {
+            // by default, dialog will not immediately inform if value is changed
+            // but if its explicitly set to true, then we should inform
+            if (widget.immediateValueChange == true) {
+              widget.onChanged?.call(value);
+            }
+          },
         );
       },
     ).then((value) {
@@ -221,7 +232,9 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     value ??= formValue;
-    _popoverController.show(
+    T? delayedResult = value;
+    _popoverController
+        .show(
       context: context,
       alignment: widget.popoverAlignment ?? Alignment.topLeft,
       anchorAlignment: widget.popoverAnchorAlignment ?? Alignment.bottomLeft,
@@ -238,11 +251,22 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
           prompt: prompt,
           decorate: widget.decorate,
           onChanged: (value) {
-            if (mounted) {
+            // by default, popover will immediately inform any changes
+            // but if its explicitly set to false, then we should not inform
+            if (mounted && widget.immediateValueChange != false) {
               this.value = value;
+            } else {
+              delayedResult = value;
             }
           },
         );
+      },
+    )
+        .then(
+      (_) {
+        if (mounted && widget.immediateValueChange != true) {
+          this.value = delayedResult;
+        }
       },
     );
   }
@@ -295,6 +319,7 @@ class _ObjectFormFieldDialog<T> extends StatefulWidget {
       BuildContext context, ObjectFormHandler<T> handler)? dialogActions;
   final ValueChanged<T?> prompt;
   final bool decorate;
+  final ValueChanged<T?> onChanged;
 
   const _ObjectFormFieldDialog({
     super.key,
@@ -304,6 +329,7 @@ class _ObjectFormFieldDialog<T> extends StatefulWidget {
     this.dialogActions,
     required this.prompt,
     this.decorate = true,
+    required this.onChanged,
   });
 
   @override
@@ -353,6 +379,7 @@ class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>>
     } else {
       _value = value;
     }
+    widget.onChanged(value);
   }
 
   @override

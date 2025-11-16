@@ -1,6 +1,6 @@
 name: shadcn_flutter
 description: "Beautifully designed components from Shadcn/UI is now available for Flutter"
-version: 0.0.46
+version: 0.0.47
 homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 documentation: "https://sunarya-thito.github.io/shadcn_flutter/"
 repository: "https://github.com/sunarya-thito/shadcn_flutter"
@@ -48,38 +48,86 @@ flutter:
     fonts:
     - asset: "lib/fonts/Geist-Black.otf"
       weight: 800
+    - asset: "lib/fonts/Geist-BlackItalic.otf"
+      weight: 800
+      style: italic
     - asset: "lib/fonts/Geist-Bold.otf"
       weight: 700
+    - asset: "lib/fonts/Geist-BoldItalic.otf"
+      weight: 700
+      style: italic
+    - asset: "lib/fonts/Geist-ExtraLightItalic.otf"
+      weight: 200
+      style: italic
     - asset: "lib/fonts/Geist-Light.otf"
       weight: 300
+    - asset: "lib/fonts/Geist-LightItalic.otf"
+      weight: 300
+      style: italic
     - asset: "lib/fonts/Geist-Medium.otf"
       weight: 500
+    - asset: "lib/fonts/Geist-MediumItalic.otf"
+      weight: 500
+      style: italic
     - asset: "lib/fonts/Geist-SemiBold.otf"
       weight: 600
+    - asset: "lib/fonts/Geist-SemiBoldItalic.otf"
+      weight: 600
+      style: italic
     - asset: "lib/fonts/Geist-Thin.otf"
       weight: 100
+    - asset: "lib/fonts/Geist-ThinItalic.otf"
+      weight: 100
+      style: italic
     - asset: "lib/fonts/Geist-UltraBlack.otf"
       weight: 900
     - asset: "lib/fonts/Geist-UltraLight.otf"
       weight: 200
     - asset: "lib/fonts/Geist-Regular.otf"
       weight: 400
+    - asset: "lib/fonts/Geist-RegularItalic.otf"
+      weight: 400
+      style: italic
   - family: "GeistMono"
     fonts:
     - asset: "lib/fonts/GeistMono-Black.otf"
       weight: 800
+    - asset: "lib/fonts/GeistMono-BlackItalic.otf"
+      weight: 800
+      style: italic
     - asset: "lib/fonts/GeistMono-Bold.otf"
       weight: 700
+    - asset: "lib/fonts/GeistMono-BoldItalic.otf"
+      weight: 700
+      style: italic
+    - asset: "lib/fonts/GeistMono-ExtraLightItalic.otf"
+      weight: 200
+      style: italic
     - asset: "lib/fonts/GeistMono-Light.otf"
       weight: 300
+    - asset: "lib/fonts/GeistMono-LightItalic.otf"
+      weight: 300
+      style: italic
     - asset: "lib/fonts/GeistMono-Medium.otf"
       weight: 500
+    - asset: "lib/fonts/GeistMono-MediumItalic.otf"
+      weight: 500
+      style: italic
     - asset: "lib/fonts/GeistMono-Regular.otf"
       weight: 400
+    - asset: "lib/fonts/GeistMono-Italic.otf"
+      weight: 400
+      style: italic
     - asset: "lib/fonts/GeistMono-SemiBold.otf"
       weight: 600
+    - asset: "lib/fonts/GeistMono-SemiBoldItalic.otf"
+      weight: 600
+      style: italic
     - asset: "lib/fonts/GeistMono-Thin.otf"
       weight: 100
+    - asset: "lib/fonts/GeistMono-ThinItalic.otf"
+      weight: 100
+      style: italic
     - asset: "lib/fonts/GeistMono-UltraBlack.otf"
       weight: 900
     - asset: "lib/fonts/GeistMono-UltraLight.otf"

@@ -26,71 +26,8 @@ export 'package:flutter/widgets.dart'
         RadioGroup;
 // bundle from gap
 export 'package:gap/gap.dart';
-// hide pixel_snap overriden widgets
-// Column,
-// Row,
-// Text,
-// RichText,
-// Center,
-// FractionallySizedBox,
-// Align,
-// Baseline,
-// ConstrainedBox,
-// DecoratedBox,
-// Container,
-// FittedBox,
-// IntrinsicWidth,
-// LimitedBox,
-// OverflowBox,
-// Padding,
-// SizedBox,
-// SizedOverflowBox,
-// Positioned,
-// PhysicalModel,
-// CustomPaint,
-// Icon,
-// Image,
-// ImageIcon,
-// AnimatedAlign,
-// AnimatedContainer,
-// AnimatedCrossFade,
-// AnimatedPositioned,
-// AnimatedPhysicalModel,
-// AnimatedSize;
 // bundle from https://pub.dev/packages/phonecodes
 export 'package:phonecodes/phonecodes.dart' show Countries, Country;
-// export 'package:pixel_snap/widgets.dart'
-//     show
-//         Column,
-//         Row,
-//         Text,
-//         RichText,
-//         Center,
-//         FractionallySizedBox,
-//         Align,
-//         Baseline,
-//         ConstrainedBox,
-//         DecoratedBox,
-//         Container,
-//         FittedBox,
-//         IntrinsicWidth,
-//         LimitedBox,
-//         OverflowBox,
-//         Padding,
-//         SizedBox,
-//         SizedOverflowBox,
-//         Positioned,
-//         PhysicalModel,
-//         CustomPaint,
-//         Icon,
-//         Image,
-//         ImageIcon,
-//         AnimatedAlign,
-//         AnimatedContainer,
-//         AnimatedCrossFade,
-//         AnimatedPositioned,
-//         AnimatedPhysicalModel,
-//         AnimatedSize;
 // bundle from skeletonizer https://pub.dev/packages/skeletonizer
 export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 

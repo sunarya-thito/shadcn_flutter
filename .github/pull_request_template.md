@@ -61,11 +61,7 @@ CONTRIBUTING.md for details.
 - [ ] Exports updated in lib/shadcn_flutter.dart (for new public widgets)
 - [ ] A11y validated in docs (run_docs_web_semantics.bat)
 - [ ] Generators run when relevant:
-  - [ ] Icons (bootstrap/lucide/radix generators)
-  - [ ] Styles/Colors (style_transpiler_v4.dart or style_transpiler.dart,
-        color_generator.dart)
-  - [ ] LLMs / Guides (gen_llms.bat, gen_dotguides.bat)
-  - [ ] Analyzer task lists (docs_divide.dart)
+  - [ ] LLMs / Guides (gen_dotguides.bat)
 - [ ] CHANGELOG updated (if user-visible change)
 
 ## Additional notes

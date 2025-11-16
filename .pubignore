@@ -23,3 +23,9 @@ doc/api/
 /shadcn_flutter_test/
 /web_loaders/
 /wip/
+llms-include.txt
+gen_dotguides.bat
+gen_llms.bat
+run_docs_web_semantics.bat
+/colors/
+/gen/

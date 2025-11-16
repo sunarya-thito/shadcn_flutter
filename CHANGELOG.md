@@ -1,3 +1,12 @@
+## 0.0.47
+
+- Bug fixes
+  - Brought back color picker history panel
+  - Fixed color input button without label not showing
+  - Color picker popover now invokes onChanged after popover closed
+  - Color picker eye dropper now closes popover when eye dropping and then
+    reopened back when done
+
 ## 0.0.46
 
 - Breaking changes

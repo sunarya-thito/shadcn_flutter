@@ -61,6 +61,9 @@ class ColorInputTheme {
   /// The orientation of the color input layout.
   final Axis? orientation;
 
+  /// Whether to show the color history panel.
+  final bool? showHistory;
+
   /// Creates a [ColorInputTheme].
   ///
   /// All parameters are optional and fall back to framework defaults when null.
@@ -75,6 +78,7 @@ class ColorInputTheme {
     this.enableEyeDropper,
     this.showLabel,
     this.orientation,
+    this.showHistory,
   });
 
   /// Creates a copy of this theme with specified properties overridden.
@@ -91,6 +95,7 @@ class ColorInputTheme {
     ValueGetter<bool?>? enableEyeDropper,
     ValueGetter<bool?>? showLabel,
     ValueGetter<Axis?>? orientation,
+    ValueGetter<bool?>? showHistory,
   }) {
     return ColorInputTheme(
       showAlpha: showAlpha == null ? this.showAlpha : showAlpha(),
@@ -107,6 +112,7 @@ class ColorInputTheme {
           enableEyeDropper == null ? this.enableEyeDropper : enableEyeDropper(),
       orientation: orientation == null ? this.orientation : orientation(),
       showLabel: showLabel == null ? this.showLabel : showLabel(),
+      showHistory: showHistory == null ? this.showHistory : showHistory(),
     );
   }
 
@@ -122,6 +128,7 @@ class ColorInputTheme {
         other.pickerMode == pickerMode &&
         other.enableEyeDropper == enableEyeDropper &&
         other.orientation == orientation &&
+        other.showHistory == showHistory &&
         other.showLabel == showLabel;
   }
 
@@ -135,6 +142,7 @@ class ColorInputTheme {
       pickerMode,
       enableEyeDropper,
       orientation,
+      showHistory,
       showLabel);
 }
 
@@ -208,6 +216,9 @@ class ColorInput extends StatefulWidget {
   /// The layout orientation of the color input.
   final Axis? orientation;
 
+  /// Whether to show the color history button.
+  final bool showHistory;
+
   /// Creates a [ColorInput] widget.
   const ColorInput({
     super.key,
@@ -226,6 +237,7 @@ class ColorInput extends StatefulWidget {
     this.showLabel,
     this.orientation,
     this.enabled,
+    this.showHistory = true,
   });
 
   @override
@@ -247,6 +259,8 @@ class _ColorInputState extends State<ColorInput>
       formValue = widget.value;
     }
   }
+
+  final ValueNotifier<bool> _showHistoryNotifier = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -289,12 +303,18 @@ class _ColorInputState extends State<ColorInput>
         defaultValue: null,
         themeValue: componentTheme?.orientation,
         widgetValue: widget.orientation);
+    final showHistory = styleValue(
+        defaultValue: true,
+        themeValue: componentTheme?.showHistory,
+        widgetValue: widget.showHistory);
     return ObjectFormField(
       value: widget.value,
       placeholder: widget.placeholder ?? Text(locale.placeholderColorPicker),
+      immediateValueChange: promptMode == PromptMode.popover ? false : null,
       onChanged: (color) {
         if (color != null) {
           widget.onChanged?.call(color);
+          ColorHistoryStorage.find(context).addHistory(color.toColor());
         }
       },
       dialogTitle: widget.dialogTitle,
@@ -302,10 +322,18 @@ class _ColorInputState extends State<ColorInput>
       popoverAnchorAlignment: popoverAnchorAlignment,
       popoverPadding: popoverPadding,
       mode: promptMode,
+      density:
+          promptMode == PromptMode.popover ? ButtonDensity.iconDense : null,
       enabled: widget.enabled,
       builder: (context, value) {
         if (!showLabel) {
           return Container(
+            constraints: promptMode == PromptMode.popover
+                ? BoxConstraints(
+                    minWidth: 28 * theme.scaling,
+                    minHeight: 28 * theme.scaling,
+                  )
+                : const BoxConstraints(),
             decoration: BoxDecoration(
               color: value.toColor(),
               borderRadius: BorderRadius.circular(theme.radiusSm),
@@ -350,32 +378,62 @@ class _ColorInputState extends State<ColorInput>
                     result != null ? ColorDerivative.fromColor(result) : null);
               },
             ),
+          if (showHistory)
+            ListenableBuilder(
+                listenable: _showHistoryNotifier,
+                builder: (context, _) {
+                  return IconButton(
+                    variance: _showHistoryNotifier.value
+                        ? ButtonVariance.primary
+                        : ButtonVariance.outline,
+                    icon: Icon(LucideIcons.history, size: 16 * theme.scaling),
+                    onPressed: () {
+                      _showHistoryNotifier.value = !_showHistoryNotifier.value;
+                    },
+                  );
+                }),
         ];
       },
       editorBuilder: (context, handler) {
-        return ColorPicker(
-          value: handler.value!,
-          enableEyeDropper: enableEyeDropper,
-          onChanging: (color) {
-            widget.onChanging?.call(color);
-          },
-          onChanged: (color) {
-            handler.value = color;
-          },
-          initialMode: initialMode,
-          onEyeDropperRequested: () async {
-            await handler.close();
-            if (!context.mounted) return;
-            final result = await pickColorFromScreen(context);
-            if (result != null && context.mounted) {
-              ColorHistoryStorage.of(context).addHistory(result);
-            }
-            handler.prompt(
-                result != null ? ColorDerivative.fromColor(result) : null);
-          },
-          orientation: orientation,
-          showAlpha: showAlpha,
-        );
+        return ListenableBuilder(
+            listenable: _showHistoryNotifier,
+            builder: (context, _) {
+              return AnimatedSize(
+                duration: kDefaultDuration,
+                curve: Curves.easeInOut,
+                child: ColorPicker(
+                  // force rebuild when showHistory changes
+                  key: ValueKey(_showHistoryNotifier.value),
+                  value: handler.value ??
+                      ColorDerivative.fromColor(Color(0x00000000)),
+                  initialShowHistory: _showHistoryNotifier.value,
+                  enableEyeDropper:
+                      promptMode == PromptMode.popover && enableEyeDropper,
+                  showHistoryButton:
+                      showHistory && promptMode == PromptMode.popover,
+                  onChanging: (color) {
+                    widget.onChanging?.call(color);
+                  },
+                  onChanged: (color) {
+                    handler.value = color;
+                  },
+                  initialMode: initialMode,
+                  onEyeDropperRequested: () async {
+                    await handler.close();
+                    if (!context.mounted) return;
+                    final result = await pickColorFromScreen(context);
+                    if (result != null && context.mounted) {
+                      ColorHistoryStorage.of(context).addHistory(result);
+                    }
+                    handler.prompt(result != null
+                        ? ColorDerivative.fromColor(result)
+                        : null);
+                  },
+                  orientation: orientation,
+                  showAlpha: showAlpha,
+                ),
+              );
+            });
       },
     );
   }

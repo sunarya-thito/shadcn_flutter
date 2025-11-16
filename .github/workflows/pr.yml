@@ -32,11 +32,11 @@ jobs:
     - name: Get dependencies (root)
       run: flutter pub get
 
-    - name: Analyze (root)
-      run: flutter analyze --no-preamble --no-congratulate --no-pub
+    - name: Analyze code
+      run: flutter analyze
 
-    - name: Get dependencies and test (example)
+    - name: Build docs
       run: |
-        cd example
+        cd docs
         flutter pub get
-        flutter test
+        flutter build web

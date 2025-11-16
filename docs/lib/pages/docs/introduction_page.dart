@@ -31,25 +31,26 @@ class IntroductionPageState extends State<IntroductionPage> {
         children: [
           const Text('Introduction').h1(),
           const Text(
-                  'Beautifully designed components from Shadcn/UI is now available for Flutter.')
+                  'A cohesive shadcn/ui ecosystem for Flutter—components, theming, and tooling—ready to ditch Material and Cupertino.')
               .lead(),
           const Text(
-            'Welcome to shadcn_flutter, a versatile and comprehensive set '
-            'of UI components designed specifically for Flutter desktop and '
-            'web applications. With the growing popularity of Flutter for '
-            'building cross-platform apps, we recognized the need for a '
-            'toolkit that emphasizes the unique design requirements of '
-            'desktop and web interfaces.',
+            'Welcome to shadcn_flutter, a cohesive UI ecosystem built on the shadcn/ui design system '
+            'for Flutter applications across mobile, web, and desktop. Rather than a one‑to‑one '
+            'design‑system port, this project focuses on delivering a consistent, production‑ready '
+            'experience that feels at home on every platform.',
             textAlign: TextAlign.justify,
           ).p(),
           const Text(
-            '\tThis package provides a wide range of customizable '
-            'and responsive components that align with modern desktop and web '
-            'design principles. Whether you'
-            're building a sophisticated business '
-            'application, a sleek dashboard, or a productivity tool, our '
-            'components are designed to help you create professional and '
-            'polished UIs quickly and efficiently.',
+            '\tThis ecosystem provides a wide range of customizable and responsive components, primitives, '
+            'and theming aligned with modern shadcn/ui patterns. Whether you\'re building a mobile app, '
+            'a sleek web dashboard, or a desktop productivity tool, our components are designed to help '
+            'you ship professional, polished UIs quickly—without relying on Material or Cupertino.',
+            textAlign: TextAlign.justify,
+          ).p(),
+          const Text(
+            'Already using Material or Cupertino? You can adopt shadcn_flutter incrementally: mix components inside your '
+            'existing MaterialApp/CupertinoApp, keep your navigation (e.g., GoRouter), and align visuals with '
+            'your shadcn_flutter theme. Interop is optional—go all‑in when you\'re ready.',
             textAlign: TextAlign.justify,
           ).p(),
           const Text('Features').h2().anchored(featuresKey),
@@ -59,11 +60,17 @@ class IntroductionPageState extends State<IntroductionPage> {
             children: [
               const Text('84 components and growing!').li(),
               const Text(
-                      'Supports both Material and Cupertino Widgets with theme being able to adapt to the current shadcn_flutter theme.')
+                      'Standalone ecosystem: no Material or Cupertino requirement; optional interop when needed.')
                   .li(),
-              const Text('Pre-made themes from Shadcn/UI.').li(),
-              const Text('Supports mobile, web, and desktop platforms.').li(),
-              const Text('Supports middle drag scrolling.').li(),
+              const Text(
+                      'shadcn/ui design tokens and ready-to-use New York theme.')
+                  .li(),
+              const Text(
+                      'Works inside MaterialApp and CupertinoApp; mix and match while you migrate.')
+                  .li(),
+              const Text(
+                      'First-class support across Android, iOS, Web, macOS, Windows, and Linux.')
+                  .li(),
               const Text('Various widget extensions for typography purposes.')
                   .li(),
               const Text('Supports WebAssembly for better performance.').li(),
@@ -98,11 +105,20 @@ class IntroductionPageState extends State<IntroductionPage> {
                   child:
                       Text('Can I use this with Material/Cupertino Widgets?'),
                 ),
-                content: const Text('Sure you can! ').thenButton(
-                    onPressed: () {
-                      context.goNamed('external');
-                    },
-                    child: const Text('See this page!')),
+                content: const Text(
+                        'Yes. If your app already uses Material or Cupertino, shadcn_flutter plays nicely with both. ')
+                    .thenText('You can:')
+                    .thenText(
+                        '\n• Drop shadcn_flutter components into an existing MaterialApp/CupertinoApp')
+                    .thenText(
+                        '\n• Keep your current routing (e.g., GoRouter) and state management')
+                    .thenText(
+                        '\n• Adopt incrementally and go all‑in when ready for a full ecosystem switch ')
+                    .thenButton(
+                        onPressed: () {
+                          context.goNamed('external');
+                        },
+                        child: const Text('See interop guidance')),
               ),
               AccordionItem(
                 trigger: const AccordionTrigger(
