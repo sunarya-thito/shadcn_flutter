@@ -226,6 +226,25 @@ class NullableDate {
     return date;
   }
 
+  /// Converts to [DateTime] with default values if any part is null.
+  ///
+  /// Parameters:
+  /// - [defaultYear] (`int`, optional): Default year value (0-9999).
+  /// - [defaultMonth] (`int`, optional): Default month value (1-12).
+  /// - [defaultDay] (`int`, optional): Default day value (1-31).
+  ///
+  /// Returns: A [DateTime] instance with non-null parts.
+  DateTime? getDateTime(
+      {int? defaultYear = 0, int? defaultMonth = 0, int? defaultDay = 0}) {
+    int? year = this.year ?? defaultYear;
+    int? month = this.month ?? defaultMonth;
+    int? day = this.day ?? defaultDay;
+    if (year == null || month == null || day == null) {
+      return null;
+    }
+    return DateTime(year, month, day);
+  }
+
   /// Retrieves the value of a specific date part.
   ///
   /// Parameters:
@@ -285,7 +304,11 @@ class _DateInputState extends State<DateInput> {
     if (value == null) {
       return datePartsOrder.map((part) => null).toList();
     }
-    var validDateTime = value.nullableDate;
+    var validDateTime = value.getDateTime(
+      defaultYear: datePartsOrder.contains(DatePart.year) ? null : 0,
+      defaultMonth: datePartsOrder.contains(DatePart.month) ? null : 0,
+      defaultDay: datePartsOrder.contains(DatePart.day) ? null : 0,
+    );
     if (validDateTime == null) {
       return datePartsOrder.map((part) => null).toList();
     }
@@ -481,12 +504,31 @@ class NullableTimeOfDay {
 
   /// Converts to [TimeOfDay] if hour and minute are present.
   ///
-  /// Returns: A [TimeOfDay] instance, or null if hour or minute is missing.
+  /// Returns: A [TimeOfDay] instance, or null if hour, minute or second is null.
   TimeOfDay? get toTimeOfDay {
-    if (hour == null || minute == null) {
+    if (hour == null || minute == null || second == null) {
       return null;
     }
-    return TimeOfDay(hour: hour!, minute: minute!);
+    return TimeOfDay(hour: hour!, minute: minute!, second: second!);
+  }
+
+  /// Converts to [TimeOfDay] with default values if any part is null.
+  ///
+  /// Parameters:
+  /// - [defaultHour] (`int`, optional): Default hour value (0-23).
+  /// - [defaultMinute] (`int`, optional): Default minute value (0-59).
+  /// - [defaultSecond] (`int`, optional): Default second value (0-59).
+  ///
+  /// Returns: A [TimeOfDay] instance with non-null parts.
+  TimeOfDay? getTimeOfDay(
+      {int? defaultHour = 0, int? defaultMinute = 0, int? defaultSecond = 0}) {
+    int? hour = this.hour ?? defaultHour;
+    int? minute = this.minute ?? defaultMinute;
+    int? second = this.second ?? defaultSecond;
+    if (hour == null || minute == null || second == null) {
+      return null;
+    }
+    return TimeOfDay(hour: hour, minute: minute, second: second);
   }
 
   /// Creates a [NullableTimeOfDay] from a [TimeOfDay].
@@ -663,10 +705,16 @@ class _TimeInputState extends State<TimeInput> {
     if (value == null) {
       return [null, null, if (widget.showSeconds) null];
     }
+    final nullableTimeOfDay = value.getTimeOfDay(
+      defaultSecond: widget.showSeconds ? 0 : null,
+    );
+    if (nullableTimeOfDay == null) {
+      return [null, null, if (widget.showSeconds) null];
+    }
     return [
-      value.hour?.toString(),
-      value.minute?.toString(),
-      if (widget.showSeconds) value.second?.toString(),
+      nullableTimeOfDay.hour.toString(),
+      nullableTimeOfDay.minute.toString(),
+      if (widget.showSeconds) nullableTimeOfDay.second.toString(),
     ];
   }
 
@@ -887,10 +935,16 @@ class _DurationInputState extends State<DurationInput> {
     if (value == null) {
       return [null, null, if (widget.showSeconds) null];
     }
+    final nullableTimeOfDay = value.getTimeOfDay(
+      defaultSecond: widget.showSeconds ? 0 : null,
+    );
+    if (nullableTimeOfDay == null) {
+      return [null, null, if (widget.showSeconds) null];
+    }
     return [
-      value.hour?.toString(),
-      value.minute?.toString(),
-      if (widget.showSeconds) value.second?.toString(),
+      nullableTimeOfDay.hour.toString(),
+      nullableTimeOfDay.minute.toString(),
+      if (widget.showSeconds) nullableTimeOfDay.second.toString(),
     ];
   }
 
