@@ -7,13 +7,5 @@
       ],
       "type": "stdio"
     },
-    "your_library": {
-      "command": "some-mcp-command",
-      "args": [
-        "arg1",
-        "arg2"
-      ],
-      "type": "stdio"
-    }
   }
 }

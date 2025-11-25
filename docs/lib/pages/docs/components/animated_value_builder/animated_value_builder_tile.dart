@@ -27,7 +27,7 @@ class AnimatedValueBuilderTile extends StatelessWidget
                 end: material.Colors.blue,
                 lerp: material.Color.lerp,
                 duration: const Duration(seconds: 1),
-                mode: RepeatMode.pingPong,
+                mode: LoopingMode.pingPong,
                 builder: (context, value, child) {
                   return Container(
                     color: value,
@@ -41,7 +41,7 @@ class AnimatedValueBuilderTile extends StatelessWidget
               child: RepeatedAnimationBuilder(
                 start: 0.0,
                 end: 1.0,
-                mode: RepeatMode.pingPong,
+                mode: LoopingMode.pingPong,
                 duration: const Duration(seconds: 1),
                 builder: (context, value, child) {
                   // 0.0 - 0.5 = 0

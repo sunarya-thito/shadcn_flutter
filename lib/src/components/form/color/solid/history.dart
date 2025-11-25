@@ -119,7 +119,7 @@ class ColorHistoryGrid extends StatelessWidget {
                   ? storage.recentColors[index]
                   : null;
               if (index >= storage.capacity ||
-                  (maxTotalColors != null && i >= maxTotalColors!)) {
+                  (maxTotalColors != null && index >= maxTotalColors!)) {
                 tiles.add(
                   const Expanded(
                     child: SizedBox(),

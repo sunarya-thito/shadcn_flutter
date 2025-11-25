@@ -1,5 +1,11 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// Type definition for the save button in an object input form field.
+typedef ObjectInputSaveButton = PrimaryButton;
+
+/// Type definition for the cancel button in an object input form field.
+typedef ObjectInputCancelButton = OutlineButton;
+
 /// Defines how a form field editor is presented to the user.
 ///
 /// [PromptMode] determines whether the field editor appears in a modal
@@ -89,6 +95,7 @@ class ObjectFormField<T> extends StatefulWidget {
   final bool decorate;
 
   /// Whether to inform value change callback immediately upon user interaction with the editor.
+  /// If null, defaults to true for popover mode and false for dialog mode.
   final bool? immediateValueChange;
 
   /// Creates an [ObjectFormField].
@@ -216,13 +223,17 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
             // by default, dialog will not immediately inform if value is changed
             // but if its explicitly set to true, then we should inform
             if (widget.immediateValueChange == true) {
-              widget.onChanged?.call(value);
+              this.value = value;
             }
           },
         );
       },
     ).then((value) {
-      if (mounted && value is ObjectFormFieldDialogResult<T>) {
+      if (mounted &&
+          value is ObjectFormFieldDialogResult<T> &&
+          // in dialog, by default we do not inform immediate change
+          // so after dialog close, we should inform the final value
+          widget.immediateValueChange != true) {
         this.value = value.value;
       }
     });
@@ -264,7 +275,7 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     )
         .then(
       (_) {
-        if (mounted && widget.immediateValueChange != true) {
+        if (mounted && widget.immediateValueChange == false) {
           this.value = delayedResult;
         }
       },
@@ -415,12 +426,12 @@ class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>>
         actions: [
           if (widget.dialogActions != null)
             ...widget.dialogActions!(context, this),
-          SecondaryButton(
+          ObjectInputCancelButton(
               child: Text(localizations.buttonCancel),
               onPressed: () {
                 Navigator.of(context).pop();
               }),
-          PrimaryButton(
+          ObjectInputSaveButton(
               child: Text(localizations.buttonSave),
               onPressed: () {
                 Navigator.of(context).pop(ObjectFormFieldDialogResult(_value));

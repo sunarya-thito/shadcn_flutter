@@ -246,6 +246,8 @@ class ColorInput extends StatefulWidget {
 
 class _ColorInputState extends State<ColorInput>
     with FormValueSupplier<ColorDerivative, ColorInput> {
+  ColorDerivative? _changingValue;
+
   @override
   void initState() {
     super.initState();
@@ -315,6 +317,9 @@ class _ColorInputState extends State<ColorInput>
         if (color != null) {
           widget.onChanged?.call(color);
           ColorHistoryStorage.find(context).addHistory(color.toColor());
+          setState(() {
+            _changingValue = null;
+          });
         }
       },
       dialogTitle: widget.dialogTitle,
@@ -335,7 +340,7 @@ class _ColorInputState extends State<ColorInput>
                   )
                 : const BoxConstraints(),
             decoration: BoxDecoration(
-              color: value.toColor(),
+              color: (_changingValue ?? value).toColor(),
               borderRadius: BorderRadius.circular(theme.radiusSm),
               border: Border.all(color: theme.colorScheme.border),
             ),
@@ -413,6 +418,9 @@ class _ColorInputState extends State<ColorInput>
                       showHistory && promptMode == PromptMode.popover,
                   onChanging: (color) {
                     widget.onChanging?.call(color);
+                    setState(() {
+                      _changingValue = color;
+                    });
                   },
                   onChanged: (color) {
                     handler.value = color;

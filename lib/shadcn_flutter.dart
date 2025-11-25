@@ -2,11 +2,18 @@ library;
 
 // bundle from https://pub.dev/packages/country_flags
 export 'package:country_flags/country_flags.dart' show CountryFlag;
+
 // bundle cross_file
 export 'package:cross_file/cross_file.dart' show XFile;
+
 // bundle from data_widget
 export 'package:data_widget/data_widget.dart';
 export 'package:data_widget/extension.dart';
+
+// bundle from animation_kit
+export 'package:animation_kit/animation_kit.dart';
+
+// export text selection controls from cupertino
 export 'package:flutter/cupertino.dart'
     show
         cupertinoDesktopTextSelectionControls,
@@ -33,7 +40,6 @@ export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 
 export 'src/animation.dart';
 export 'src/collection.dart';
-export 'src/components/animation.dart';
 export 'src/components/async.dart';
 export 'src/components/chart/tracker.dart';
 export 'src/components/control/button.dart';

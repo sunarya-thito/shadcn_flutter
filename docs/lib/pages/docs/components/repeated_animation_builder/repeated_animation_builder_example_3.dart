@@ -29,7 +29,7 @@ class _RepeatedAnimationBuilderExample3State
           curve: Curves.linear,
           reverseCurve: Curves.easeInOutCubic,
           // Ping-pong between start and end, reversing the direction each cycle.
-          mode: RepeatMode.pingPongReverse,
+          mode: LoopingMode.pingPongReverse,
           builder: (context, value, child) {
             return Transform.translate(
               offset: value,

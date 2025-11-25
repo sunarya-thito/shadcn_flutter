@@ -14,7 +14,8 @@ class _FormattedInputExample2State extends State<FormattedInputExample2> {
     return Column(
       children: [
         DateInput(
-          // Built-in formatted control that parses and formats dates.
+          // Input only month and year
+          datePartsOrder: const [DatePart.month, DatePart.year],
           onChanged: (value) => setState(() => _selectedDate = value),
         ),
         const Gap(16),
