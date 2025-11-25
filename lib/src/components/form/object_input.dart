@@ -706,7 +706,9 @@ class _TimeInputState extends State<TimeInput> {
       return [null, null, if (widget.showSeconds) null];
     }
     final nullableTimeOfDay = value.getTimeOfDay(
-      defaultSecond: widget.showSeconds ? 0 : null,
+      defaultHour: null,
+      defaultMinute: null,
+      defaultSecond: widget.showSeconds ? null : 0,
     );
     if (nullableTimeOfDay == null) {
       return [null, null, if (widget.showSeconds) null];
@@ -936,7 +938,9 @@ class _DurationInputState extends State<DurationInput> {
       return [null, null, if (widget.showSeconds) null];
     }
     final nullableTimeOfDay = value.getTimeOfDay(
-      defaultSecond: widget.showSeconds ? 0 : null,
+      defaultHour: null,
+      defaultMinute: null,
+      defaultSecond: widget.showSeconds ? null : 0,
     );
     if (nullableTimeOfDay == null) {
       return [null, null, if (widget.showSeconds) null];
