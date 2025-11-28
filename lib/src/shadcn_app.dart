@@ -59,8 +59,6 @@ class ShadcnApp extends StatefulWidget {
     this.onRecentColorsChanged,
     this.pixelSnap = true,
     this.enableScrollInterception = true,
-    this.scrollInterceptionBehavior =
-        const ScrollInterceptionBehavior(enabled: true),
     this.darkTheme,
     this.themeMode = ThemeMode.system,
     this.popoverHandler,
@@ -113,7 +111,6 @@ class ShadcnApp extends StatefulWidget {
     this.onRecentColorsChanged,
     this.pixelSnap = true,
     this.enableScrollInterception = false,
-    this.scrollInterceptionBehavior = const ScrollInterceptionBehavior(),
     this.darkTheme,
     this.themeMode = ThemeMode.system,
     this.popoverHandler,
@@ -261,11 +258,7 @@ class ShadcnApp extends StatefulWidget {
   final bool pixelSnap;
 
   /// Whether to enable scroll interception.
-  @Deprecated('Use [scrollInterceptionBehavior] instead')
   final bool enableScrollInterception;
-
-  /// Used to enable scroll interception and set activation behavior.
-  final ScrollInterceptionBehavior scrollInterceptionBehavior;
 
   /// The overlay handler for popovers.
   final OverlayHandler? popoverHandler;
@@ -434,7 +427,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
       maxRecentColors: widget.maxRecentColors,
       onRecentColorsChanged: widget.onRecentColorsChanged,
       builder: widget.builder,
-      scrollInterceptionBehavior: widget.scrollInterceptionBehavior,
+      enableScrollInterception: widget.enableScrollInterception,
       darkTheme: widget.darkTheme,
       popoverHandler: widget.popoverHandler,
       tooltipHandler: widget.tooltipHandler,
@@ -606,11 +599,7 @@ class ShadcnLayer extends StatelessWidget {
   final Widget Function(BuildContext context, Widget? child)? builder;
 
   /// Whether to enable scroll interception.
-  @Deprecated('Use [scrollInterceptionBehavior] instead.')
   final bool enableScrollInterception;
-
-  /// Used to enable scroll interception and set activation behavior.
-  final ScrollInterceptionBehavior scrollInterceptionBehavior;
 
   /// The overlay handler for popovers.
   final OverlayHandler? popoverHandler;
@@ -635,8 +624,6 @@ class ShadcnLayer extends StatelessWidget {
     this.onRecentColorsChanged,
     this.builder,
     this.enableScrollInterception = false,
-    this.scrollInterceptionBehavior =
-        const ScrollInterceptionBehavior(enabled: false),
     this.darkTheme,
     this.themeMode = ThemeMode.system,
     this.popoverHandler,
@@ -675,7 +662,7 @@ class ShadcnLayer extends StatelessWidget {
         child: Builder(builder: (context) {
           var theme = Theme.of(context);
           var scrollViewInterceptor = ScrollViewInterceptor(
-            scrollInterceptionBehavior: scrollInterceptionBehavior,
+            enabled: enableScrollInterception,
             child: ShadcnSkeletonizerConfigLayer(
               theme: theme,
               child: DefaultTextStyle.merge(

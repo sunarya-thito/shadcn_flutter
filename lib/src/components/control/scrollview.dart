@@ -3,36 +3,20 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// ScrollInterceptionBehavior is used to decide scroll behavior by using hover or drag interactions.
-class ScrollInterceptionBehavior {
-  /// Whether scroll interception is enabled.
-  final bool enabled;
-
-  /// disables chrome like mmb toggle to activate scrolling on mouse movement.
-  final bool holdDrag;
-
-  /// By default scroll interception activated by dragging mmb interaction.
-  const ScrollInterceptionBehavior(
-      {this.enabled = false, this.holdDrag = true});
-}
-
 /// Widget that intercepts scroll events to simulate middle-button drag scrolling.
 ///
 /// Helps simulate middle-hold scroll on web and desktop platforms by intercepting
-/// pointer events and converting hover and drag gestures into scroll events.
-///
+/// pointer events and converting drag gestures into scroll events.
 class ScrollViewInterceptor extends StatefulWidget {
   /// The child widget to wrap with scroll interception functionality.
   final Widget child;
 
-  /// Used to enable scroll interception and set activation behavior.
-  final ScrollInterceptionBehavior scrollInterceptionBehavior;
+  /// Whether scroll interception is enabled.
+  final bool enabled;
 
   /// Creates a scroll view interceptor.
   const ScrollViewInterceptor(
-      {super.key,
-      required this.child,
-      required this.scrollInterceptionBehavior});
+      {super.key, required this.child, this.enabled = true});
 
   @override
   State<ScrollViewInterceptor> createState() => _ScrollViewInterceptorState();
@@ -42,7 +26,7 @@ class ScrollViewInterceptor extends StatefulWidget {
 const double kScrollDragSpeed = 0.02;
 
 /// The maximum scroll speed allowed (10.0).
-const double kMaxScrollSpeed = 10;
+const double kMaxScrollSpeed = 10.0;
 
 /// A custom pointer scroll event for desktop platforms.
 ///
@@ -147,38 +131,33 @@ class _ScrollViewInterceptorState extends State<ScrollViewInterceptor>
     }
   }
 
+  bool pointerMoved = false;
   @override
   Widget build(BuildContext context) {
-    if (!widget.scrollInterceptionBehavior.enabled) return widget.child;
+    if (!widget.enabled) return widget.child;
 
     return Stack(
       clipBehavior: Clip.none,
       fit: StackFit.passthrough,
       children: [
-        widget.scrollInterceptionBehavior.holdDrag
-            ? Listener(
-                onPointerDown: (event) {
-                  // check if middle button is pressed
-                  if (event.buttons != 4 || _ticker.isActive) return;
-                  _activate(event);
-                },
-                onPointerUp: (event) {
-                  if (_ticker.isActive) {
-                    _deactivate();
-                  }
-                },
-                onPointerMove: (event) {
-                  if (_ticker.isActive) {
-                    _lastOffset = event.position;
-                  }
-                },
-                child: widget.child,
-              )
-            : Listener(
-                onPointerDown: _toggleScrollMode,
-                // Absorbs unintended taps to the children.
-                child: AbsorbPointer(absorbing: _ticker.isActive, child: widget.child),
-              ),
+        Listener(
+          onPointerDown: (event) {
+            pointerMoved = false;
+            _toggleScrollMode(event);
+          },
+          onPointerUp: (event) {
+            if (_ticker.isActive && pointerMoved) {
+              _deactivate();
+            }
+          },
+          onPointerMove: (event) {
+            if (_ticker.isActive) {
+              pointerMoved = true;
+              _lastOffset = event.position;
+            }
+          },
+          child: widget.child,
+        ),
         if (_cursor != null)
           Positioned.fill(
             child: MouseRegion(
