@@ -22,7 +22,7 @@ class NumberTickerTile extends StatelessWidget implements IComponentPage {
           RepeatedAnimationBuilder(
             start: 0.0,
             end: 1234567.0,
-            mode: RepeatMode.pingPong,
+            mode: LoopingMode.pingPong,
             duration: const Duration(seconds: 5),
             builder: (context, value, child) {
               return Text(
@@ -39,7 +39,7 @@ class NumberTickerTile extends StatelessWidget implements IComponentPage {
             child: RepeatedAnimationBuilder(
               start: 1234567.0,
               end: 0.0,
-              mode: RepeatMode.pingPong,
+              mode: LoopingMode.pingPong,
               duration: const Duration(seconds: 5),
               builder: (context, value, child) {
                 return Text(

@@ -155,7 +155,8 @@ class ItemPicker<T> extends StatelessWidget {
                   title: title,
                   constraints: constraints,
                   onChanged: (value) {
-                    closeOverlay(context, value);
+                    handler.value = value;
+                    closeOverlay(context);
                   },
                 ),
               ),
@@ -171,7 +172,7 @@ class ItemPicker<T> extends StatelessWidget {
                 title: title,
                 constraints: constraints,
                 onChanged: (value) {
-                  closeOverlay(context, value);
+                  handler.value = value;
                 },
               ),
             );
@@ -516,7 +517,7 @@ class _InternalItemPicker<T> extends StatelessWidget {
               onChanged: onChanged,
             ),
           ),
-        )
+        ),
       ],
     );
   }

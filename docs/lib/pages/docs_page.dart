@@ -172,7 +172,8 @@ class DocsPageState extends State<DocsPage> {
     ShadcnDocsSection(
       'Application',
       [
-        ShadcnDocsPage('ShadcnApp', 'app'),
+        ShadcnDocsPage('App example', 'app'),
+        ShadcnDocsPage('Example with GoRouter', 'go_router_app_example'),
         ShadcnDocsPage('ShadcnLayer', 'wrapper'),
       ],
     ),

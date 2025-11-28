@@ -425,6 +425,13 @@ class _AccordionItemState extends State<AccordionItem>
       _theme = theme;
       _updateAnimations();
     }
+
+    if (accordion != null &&
+        accordion!._expanded.value == null &&
+        widget.expanded) {
+      accordion!._expanded.value = this;
+    }
+    _onExpandedChanged();
   }
 
   @override
@@ -435,13 +442,16 @@ class _AccordionItemState extends State<AccordionItem>
   }
 
   void _onExpandedChanged() {
-    if (_expanded.value != (accordion?._expanded.value == this)) {
-      _expanded.value = !_expanded.value;
-      if (_expanded.value) {
-        _expand();
-      } else {
-        _collapse();
-      }
+    final shouldBeExpanded = accordion?._expanded.value == this;
+    if (_expanded.value != shouldBeExpanded) {
+      setState(() {
+        _expanded.value = shouldBeExpanded;
+        if (shouldBeExpanded) {
+          _expand();
+        } else {
+          _collapse();
+        }
+      });
     }
   }
 
@@ -475,6 +485,7 @@ class _AccordionItemState extends State<AccordionItem>
           children: [
             widget.trigger,
             SizeTransition(
+              key: const ValueKey('accordion_size_transition'),
               sizeFactor: _easeInAnimation,
               axisAlignment: -1,
               child: Padding(

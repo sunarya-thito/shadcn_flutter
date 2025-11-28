@@ -437,6 +437,7 @@ void main() {
 - Use `pumpWidget` + `pump`/`pumpAndSettle` thoughtfully to advance animations.
 - For semantics: wrap in `SemanticsTester` and assert roles/labels.
 - For themes/RTL: run the same tests via helpers that rebuild with alternate `ThemeData` and `Directionality.rtl`.
+- Use helpers from `test_helper.dart` for common test setup and utilities.
 
 ---
 

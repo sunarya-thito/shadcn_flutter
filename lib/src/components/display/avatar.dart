@@ -209,15 +209,16 @@ class Avatar extends StatefulWidget implements AvatarWidget {
   /// String initials2 = Avatar.getInitials('Madonna'); // Returns 'MA'
   /// ```
   static String getInitials(String name) {
-    final List<String> parts = name.split(r'\s+');
+    if (name.trim().isEmpty) {
+      return '';
+    }
+    final List<String> parts = name
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((part) => part.isNotEmpty)
+        .toList();
     if (parts.isEmpty) {
-      // get the first 2 characters (title cased)
-      String first = name.substring(0, 1).toUpperCase();
-      if (name.length > 1) {
-        String second = name.substring(1, 2).toUpperCase();
-        return first + second;
-      }
-      return first;
+      return '';
     }
     // get the first two characters
     String first = parts[0].substring(0, 1).toUpperCase();

@@ -397,7 +397,7 @@ class BasicLayout extends StatelessWidget {
         widgetValue: this.contentAlignment,
         themeValue: compTheme?.contentAlignment,
         defaultValue: Alignment.topLeft);
-    return Row(
+    Widget child = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (leading != null)
@@ -450,6 +450,15 @@ class BasicLayout extends StatelessWidget {
           ),
       ],
     );
+
+    if (constraints != null) {
+      child = ConstrainedBox(
+        constraints: constraints!,
+        child: child,
+      );
+    }
+
+    return child;
   }
 }
 
