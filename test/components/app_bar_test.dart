@@ -309,8 +309,8 @@ void main() {
         (tester) async {
       expect(
         () => AppBar(
-          child: const Text('Child'),
           title: const Text('Title'),
+          child: const Text('Child'),
         ),
         throwsAssertionError,
       );
