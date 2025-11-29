@@ -39,12 +39,10 @@ void main() {
       // Enter hour
       await tester.enterText(find.byType(TextField).first, '10');
       await tester.pump();
-      print('After hour: $currentTime');
 
       // Enter minute
       await tester.enterText(find.byType(TextField).last, '30');
       await tester.pump();
-      print('After minute: $currentTime');
 
       expect(currentTime, isNotNull);
       expect(currentTime?.hour, equals(10));

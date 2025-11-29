@@ -42,17 +42,14 @@ void main() {
       // Enter year
       await tester.enterText(find.byType(TextField).last, '2023');
       await tester.pump();
-      print('After year: $currentDate');
 
       // Enter month
       await tester.enterText(find.byType(TextField).first, '1');
       await tester.pump();
-      print('After month: $currentDate');
 
       // Enter day
       await tester.enterText(find.byType(TextField).at(1), '1');
       await tester.pump();
-      print('After day: $currentDate');
 
       expect(currentDate, isNotNull);
       expect(currentDate?.year, equals(2023));

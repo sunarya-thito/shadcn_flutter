@@ -51,7 +51,6 @@ void main() {
         of: find.byType(ColorInput),
         matching: find.byType(OutlineButton),
       ));
-      print('Button enabled: ${button.enabled}');
       expect(button.enabled, isFalse);
     });
 
@@ -107,8 +106,6 @@ void main() {
         find.byKey(const Key('color_input_preview')),
       );
       final decoration2 = container2.decoration as BoxDecoration;
-      print(
-          'Found color: ${decoration2.color?.toARGB32()}, Expected: ${material.Colors.green.toARGB32()}');
       expect(decoration2.color?.toARGB32(),
           equals(material.Colors.green.toARGB32()));
     });
@@ -128,8 +125,6 @@ void main() {
         find.byKey(const Key('color_input_preview')),
       );
       final decoration = container.decoration as BoxDecoration;
-      print(
-          'Initial value color: ${decoration.color?.toARGB32()}, Expected: ${material.Colors.blue.toARGB32()}');
       expect(decoration.color?.toARGB32(),
           equals(material.Colors.blue.toARGB32()));
     });
