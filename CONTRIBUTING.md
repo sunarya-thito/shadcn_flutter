@@ -7,6 +7,19 @@ contributions across components, utilities, icons, docs, and developer tooling.
 If you get stuck, please open a discussion or hop into Discord:
 https://discord.gg/ZzfBPQG4sV
 
+## Before opening a pull request
+
+To ensure your contribution is accepted and to prevent wasted effort, please follow these steps before submitting a Pull Request (PR):
+
+1.  **Open an issue first**: Describe the problem you are solving or the feature you are proposing.
+2.  **Propose your solution**: Explain how you intend to fix the issue. This allows us to validate the problem and discuss the approach before you invest time in coding.
+    - Some issues might be better solved in user code rather than the library.
+    - We may have a specific design or architectural preference for the solution.
+3.  **Request assignment**: State in the issue that you would like to work on it and wait for it to be assigned to you.
+4.  **Link the issue**: When you open your PR, please link to the issue it resolves.
+
+PRs that do not follow this process may be closed if the solution is not aligned with the project's goals or if the problem is deemed invalid.
+
 ## Quick start
 
 - Flutter: >= 3.32.3
@@ -76,6 +89,11 @@ cd ..
   green.
 - Commits/PRs: use clear commit titles (Conventional Commits encouraged) and a
   concise PR description with screenshots/gifs for UI changes.
+- Scope: avoid editing files that are not related to your pull request.
+  - Do not include large diffs caused by formatting unrelated files.
+  - Do not commit build outputs or generated files unless strictly necessary.
+  - Do not include additional changes that were not stated in your proposal.
+    - If you want to add additional changes, please open another issue and PR, or edit your proposal and notify your assignee.
 
 ## Local development
 
