@@ -54,7 +54,7 @@ class ModalBackdrop extends StatelessWidget {
   /// Parameters:
   /// - [child] (Widget, required): content widget displayed above backdrop
   /// - [modal] (bool?, optional): enables modal behavior, defaults to true
-  /// - [surfaceClip] (bool?, optional): enables surface clipping, defaults to true  
+  /// - [surfaceClip] (bool?, optional): enables surface clipping, defaults to true
   /// - [borderRadius] (BorderRadiusGeometry?, optional): corner radius for cutout
   /// - [barrierColor] (Color?, optional): backdrop color, defaults to black with 80% opacity
   /// - [padding] (EdgeInsetsGeometry?, optional): padding around child

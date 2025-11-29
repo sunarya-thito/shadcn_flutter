@@ -39,6 +39,10 @@ class ColorPicker extends StatefulWidget {
   final ValueChanged<ColorDerivative>? onChanging;
   /// Whether to show alpha (opacity) controls.
   final bool showAlpha;
+  /// Whether to show the color history button.
+  final bool showHistoryButton;
+  /// Whether to show the color history panel initially.
+  final bool initialShowHistory;
   /// The initial color picker mode.
   final ColorPickerMode initialMode;
   /// Called when the color picker mode changes.
@@ -56,7 +60,7 @@ class ColorPicker extends StatefulWidget {
   /// Size of the color sliders.
   final double? sliderSize;
   /// Creates a [ColorPicker] widget.
-  const ColorPicker({super.key, required this.value, this.onChanged, this.onChanging, this.showAlpha = false, this.initialMode = ColorPickerMode.rgb, this.onModeChanged, this.enableEyeDropper, this.onEyeDropperRequested, this.orientation, this.spacing, this.controlSpacing, this.sliderSize});
+  const ColorPicker({super.key, required this.value, this.onChanged, this.onChanging, this.showAlpha = false, this.initialMode = ColorPickerMode.rgb, this.onModeChanged, this.enableEyeDropper, this.onEyeDropperRequested, this.orientation, this.spacing, this.controlSpacing, this.sliderSize, this.showHistoryButton = true, this.initialShowHistory = false});
   State<ColorPicker> createState();
 }
 ```

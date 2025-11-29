@@ -102,7 +102,7 @@ class Command extends StatefulWidget {
   ///   debounceDuration: Duration(milliseconds: 200),
   ///   searchPlaceholder: Text('Search commands...'),
   ///   builder: (context, query) async* {
-  ///     final filtered = commands.where((cmd) => 
+  ///     final filtered = commands.where((cmd) =>
   ///       cmd.name.toLowerCase().contains(query?.toLowerCase() ?? '')
   ///     );
   ///     yield filtered.map((cmd) => CommandItem(

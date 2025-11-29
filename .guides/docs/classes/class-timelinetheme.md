@@ -24,7 +24,7 @@ description: "Theme configuration for [Timeline] widgets."
 ///   child: MyTimelineWidget(),
 /// );
 /// ```
-class TimelineTheme {
+class TimelineTheme extends ComponentThemeData {
   /// Default constraints for the time column width.
   ///
   /// Controls the minimum and maximum width allocated for displaying time

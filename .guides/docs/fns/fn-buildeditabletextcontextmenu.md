@@ -5,5 +5,5 @@ description: "Builds an appropriate context menu for editable text based on plat
 
 Signature
 ```dart
-Widget buildEditableTextContextMenu(BuildContext innerContext, EditableTextState editableTextState, [UndoHistoryController? undoHistoryController]);
+Widget buildEditableTextContextMenu(BuildContext innerContext, EditableTextState editableTextState, {UndoHistoryController? undoHistoryController, TargetPlatform? platform});
 ```

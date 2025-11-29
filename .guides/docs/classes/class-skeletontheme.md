@@ -12,7 +12,7 @@ description: "Theme configuration for skeleton loading effects."
 ///
 /// The theme enables consistent skeleton styling across the application while
 /// allowing for customization of animation characteristics and visual appearance.
-class SkeletonTheme {
+class SkeletonTheme extends ComponentThemeData {
   /// The duration of one complete pulse animation cycle.
   ///
   /// Type: `Duration?`. If null, defaults to 1 second for a natural breathing

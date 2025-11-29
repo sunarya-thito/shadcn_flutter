@@ -5,7 +5,7 @@ description: "Theme configuration for [FadeScroll]."
 
 ```dart
 /// Theme configuration for [FadeScroll].
-class FadeScrollTheme {
+class FadeScrollTheme extends ComponentThemeData {
   /// The distance from the start before fading begins.
   final double? startOffset;
   /// The distance from the end before fading begins.

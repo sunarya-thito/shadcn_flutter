@@ -23,7 +23,7 @@ description: "Theme configuration for [Tracker] components."
 ///   child: MyTrackerWidget(),
 /// );
 /// ```
-class TrackerTheme {
+class TrackerTheme extends ComponentThemeData {
   /// Corner radius for the tracker container in logical pixels.
   ///
   /// Type: `double?`. Controls the rounding of tracker corners. If null,

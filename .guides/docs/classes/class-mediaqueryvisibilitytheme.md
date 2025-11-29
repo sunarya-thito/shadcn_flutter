@@ -5,7 +5,7 @@ description: "Theme configuration for [MediaQueryVisibility]."
 
 ```dart
 /// Theme configuration for [MediaQueryVisibility].
-class MediaQueryVisibilityTheme {
+class MediaQueryVisibilityTheme extends ComponentThemeData {
   /// Minimum width at which the child is shown.
   final double? minWidth;
   /// Maximum width at which the child is shown.

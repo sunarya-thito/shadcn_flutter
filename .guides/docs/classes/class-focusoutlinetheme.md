@@ -9,7 +9,7 @@ description: "Theme configuration for focus outline appearance."
 /// Defines styling properties for focus outlines that indicate which element
 /// has keyboard focus. Used by [FocusOutline] to apply consistent focus
 /// visualization across the application.
-class FocusOutlineTheme {
+class FocusOutlineTheme extends ComponentThemeData {
   /// The alignment offset of the outline relative to the widget bounds.
   ///
   /// Positive values expand the outline outward, negative values contract it.

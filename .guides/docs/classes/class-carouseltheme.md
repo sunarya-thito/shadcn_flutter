@@ -5,7 +5,7 @@ description: "Theme data for [Carousel]."
 
 ```dart
 /// Theme data for [Carousel].
-class CarouselTheme {
+class CarouselTheme extends ComponentThemeData {
   /// The alignment of carousel items.
   final CarouselAlignment? alignment;
   /// The scroll direction (horizontal or vertical).

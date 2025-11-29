@@ -5,7 +5,7 @@ description: "Theme for [HorizontalResizableDragger] and [VerticalResizableDragg
 
 ```dart
 /// Theme for [HorizontalResizableDragger] and [VerticalResizableDragger].
-class ResizableDraggerTheme {
+class ResizableDraggerTheme extends ComponentThemeData {
   /// Background color of the dragger.
   final Color? color;
   /// Border radius of the dragger.

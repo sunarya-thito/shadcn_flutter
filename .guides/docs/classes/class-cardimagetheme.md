@@ -21,7 +21,7 @@ description: "Theme configuration for [CardImage] components."
 ///   child: MyApp(),
 /// );
 /// ```
-class CardImageTheme {
+class CardImageTheme extends ComponentThemeData {
   /// Button style for the card.
   final AbstractButtonStyle? style;
   /// Layout direction for title/subtitle relative to the image.

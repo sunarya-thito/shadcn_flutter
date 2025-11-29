@@ -28,7 +28,7 @@ description: "Theme configuration for [Menubar] appearance and layout."
 /// )
 /// ```
 /// Theme for [Menubar].
-class MenubarTheme {
+class MenubarTheme extends ComponentThemeData {
   /// Whether to draw a border around the menubar container.
   ///
   /// Type: `bool?`. If null, uses the widget's border property. When true,

@@ -49,6 +49,8 @@ class ThemeData {
   const ThemeData.dark({this.colorScheme = ColorSchemes.darkDefaultColor, this.radius = 0.5, this.scaling = 1, this.typography = const Typography.geist(), this.iconTheme = const IconThemeProperties(), TargetPlatform? platform, this.surfaceOpacity, this.surfaceBlur});
   /// The current platform.
   TargetPlatform get platform;
+  /// The specified platform, or null if not overridden.
+  TargetPlatform? get specifiedPlatform;
   /// At normal radius, the scaled radius is 24
   double get radiusXxl;
   /// At normal radius, the scaled radius is 20

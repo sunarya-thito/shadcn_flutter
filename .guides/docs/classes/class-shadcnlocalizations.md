@@ -1,406 +1,602 @@
 ---
 title: "Class: ShadcnLocalizations"
-description: "Abstract base class for localized strings in Shadcn Flutter."
+description: "Callers can lookup localized strings with an instance of ShadcnLocalizations  returned by `ShadcnLocalizations."
 ---
 
 ```dart
-/// Abstract base class for localized strings in Shadcn Flutter.
+/// Callers can lookup localized strings with an instance of ShadcnLocalizations
+/// returned by `ShadcnLocalizations.of(context)`.
 ///
-/// Provides internationalization support for all user-facing text including
-/// form validation messages, date/time labels, command palette text, and more.
-/// Implementations provide locale-specific translations.
+/// Applications need to include `ShadcnLocalizations.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
 ///
-/// Example:
 /// ```dart
-/// final localizations = ShadcnLocalizations.of(context);
-/// print(localizations.formNotEmpty); // "This field cannot be empty"
+/// import 'locale/shadcn_localizations.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: ShadcnLocalizations.localizationsDelegates,
+///   supportedLocales: ShadcnLocalizations.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
 /// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the ShadcnLocalizations.supportedLocales
+/// property.
 abstract class ShadcnLocalizations {
-  /// Gets the localizations for the current context.
-  ///
-  /// Parameters:
-  /// - [context] (`BuildContext`, required): Build context.
-  ///
-  /// Returns: `ShadcnLocalizations` instance for the current locale.
+  ShadcnLocalizations(String locale);
+  final String localeName;
   static ShadcnLocalizations of(BuildContext context);
-  /// Creates a [ShadcnLocalizations].
-  const ShadcnLocalizations();
-  /// Validation message: "This field cannot be empty".
+  static const LocalizationsDelegate<ShadcnLocalizations> delegate = _ShadcnLocalizationsDelegate();
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[delegate, GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate, GlobalWidgetsLocalizations.delegate];
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[Locale('en')];
+  /// No description provided for @formNotEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'This field cannot be empty'**
   String get formNotEmpty;
-  /// Validation message: "Invalid value".
+  /// No description provided for @invalidValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid value'**
   String get invalidValue;
-  /// Validation message: "Invalid email address".
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email'**
   String get invalidEmail;
-  /// Validation message: "Invalid URL".
+  /// No description provided for @invalidURL.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid URL'**
   String get invalidURL;
-  /// Formats a number for display.
+  /// No description provided for @formLessThan.
   ///
-  /// Parameters:
-  /// - [value] (`double`, required): Number to format.
-  ///
-  /// Returns: `String` — formatted number.
-  String formatNumber(double value);
-  /// Validation message for values less than a threshold.
-  ///
-  /// Parameters:
-  /// - [value] (`double`, required): Threshold value.
-  ///
-  /// Returns: `String` — formatted validation message.
+  /// In en, this message translates to:
+  /// **'Must be less than {value}'**
   String formLessThan(double value);
-  /// Validation message for values greater than a threshold.
+  /// No description provided for @formGreaterThan.
   ///
-  /// Parameters:
-  /// - [value] (`double`, required): Threshold value.
-  ///
-  /// Returns: `String` — formatted validation message.
+  /// In en, this message translates to:
+  /// **'Must be greater than {value}'**
   String formGreaterThan(double value);
-  /// Validation message for values less than or equal to a threshold.
+  /// No description provided for @formLessThanOrEqualTo.
   ///
-  /// Parameters:
-  /// - [value] (`double`, required): Threshold value.
-  ///
-  /// Returns: `String` — formatted validation message.
+  /// In en, this message translates to:
+  /// **'Must be less than or equal to {value}'**
   String formLessThanOrEqualTo(double value);
-  /// Validation message for values greater than or equal to a threshold.
+  /// No description provided for @formGreaterThanOrEqualTo.
   ///
-  /// Parameters:
-  /// - [value] (`double`, required): Threshold value.
-  ///
-  /// Returns: `String` — formatted validation message.
+  /// In en, this message translates to:
+  /// **'Must be greater than or equal to {value}'**
   String formGreaterThanOrEqualTo(double value);
-  /// Validation message for values between two thresholds (inclusive).
+  /// No description provided for @formBetweenInclusively.
   ///
-  /// Parameters:
-  /// - [min] (`double`, required): Minimum value.
-  /// - [max] (`double`, required): Maximum value.
-  ///
-  /// Returns: `String` — formatted validation message.
+  /// In en, this message translates to:
+  /// **'Must be between {min} and {max} (inclusive)'**
   String formBetweenInclusively(double min, double max);
-  /// Validation message for values between two thresholds (exclusive).
+  /// No description provided for @formBetweenExclusively.
   ///
-  /// Parameters:
-  /// - [min] (`double`, required): Minimum value.
-  /// - [max] (`double`, required): Maximum value.
-  ///
-  /// Returns: `String` — formatted validation message.
+  /// In en, this message translates to:
+  /// **'Must be between {min} and {max} (exclusive)'**
   String formBetweenExclusively(double min, double max);
-  /// Validation message for string length less than a threshold.
+  /// No description provided for @formLengthLessThan.
   ///
-  /// Parameters:
-  /// - [value] (`int`, required): Maximum length.
-  ///
-  /// Returns: `String` — formatted validation message.
+  /// In en, this message translates to:
+  /// **'Must be at least {value} characters'**
   String formLengthLessThan(int value);
-  /// Validation message for string length greater than a threshold.
+  /// No description provided for @formLengthGreaterThan.
   ///
-  /// Parameters:
-  /// - [value] (`int`, required): Minimum length.
-  ///
-  /// Returns: `String` — formatted validation message.
+  /// In en, this message translates to:
+  /// **'Must be at most {value} characters'**
   String formLengthGreaterThan(int value);
-  /// Password validation message: "Must contain digits".
+  /// No description provided for @formPasswordDigits.
+  ///
+  /// In en, this message translates to:
+  /// **'Must contain at least one digit'**
   String get formPasswordDigits;
-  /// Password validation message: "Must contain lowercase letters".
+  /// No description provided for @formPasswordLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'Must contain at least one lowercase letter'**
   String get formPasswordLowercase;
-  /// Password validation message: "Must contain uppercase letters".
+  /// No description provided for @formPasswordUppercase.
+  ///
+  /// In en, this message translates to:
+  /// **'Must contain at least one uppercase letter'**
   String get formPasswordUppercase;
-  /// Password validation message: "Must contain special characters".
+  /// No description provided for @formPasswordSpecial.
+  ///
+  /// In en, this message translates to:
+  /// **'Must contain at least one special character'**
   String get formPasswordSpecial;
-  /// Order of date parts for the locale (e.g., [year, month, day] or [month, day, year]).
-  List<DatePart> get datePartsOrder;
-  /// Abbreviation for "year" (e.g., "Y" or "YYYY").
-  String get dateYearAbbreviation;
-  /// Abbreviation for "month" (e.g., "M" or "MM").
-  String get dateMonthAbbreviation;
-  /// Abbreviation for "day" (e.g., "D" or "DD").
-  String get dateDayAbbreviation;
-  /// Gets the abbreviation for a specific date part.
+  /// No description provided for @commandSearch.
   ///
-  /// Parameters:
-  /// - [part] (`DatePart`, required): The date part.
-  ///
-  /// Returns: `String` — abbreviation for the date part.
-  String getDatePartAbbreviation(DatePart part);
-  /// Command palette: "Search" placeholder text.
+  /// In en, this message translates to:
+  /// **'Type a command or search...'**
   String get commandSearch;
-  /// Command palette: "No results found" empty state text.
+  /// No description provided for @commandEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found.'**
   String get commandEmpty;
-  /// Date picker: "Select year" instruction text.
+  /// No description provided for @datePickerSelectYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a year'**
   String get datePickerSelectYear;
-  /// Abbreviated day name: "Mon".
+  /// No description provided for @abbreviatedMonday.
+  ///
+  /// In en, this message translates to:
+  /// **'Mo'**
   String get abbreviatedMonday;
-  /// Abbreviated day name: "Tue".
+  /// No description provided for @abbreviatedTuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tu'**
   String get abbreviatedTuesday;
-  /// Abbreviated day name: "Wed".
+  /// No description provided for @abbreviatedWednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'We'**
   String get abbreviatedWednesday;
-  /// Abbreviated day name: "Thu".
+  /// No description provided for @abbreviatedThursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Th'**
   String get abbreviatedThursday;
-  /// Abbreviated day name: "Fri".
+  /// No description provided for @abbreviatedFriday.
+  ///
+  /// In en, this message translates to:
+  /// **'Fr'**
   String get abbreviatedFriday;
-  /// Abbreviated day name: "Sat".
+  /// No description provided for @abbreviatedSaturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sa'**
   String get abbreviatedSaturday;
-  /// Abbreviated day name: "Sun".
+  /// No description provided for @abbreviatedSunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Su'**
   String get abbreviatedSunday;
-  /// Full month name: "January".
+  /// No description provided for @monthJanuary.
+  ///
+  /// In en, this message translates to:
+  /// **'January'**
   String get monthJanuary;
-  /// Full month name: "February".
+  /// No description provided for @monthFebruary.
+  ///
+  /// In en, this message translates to:
+  /// **'February'**
   String get monthFebruary;
-  /// Full month name: "March".
+  /// No description provided for @monthMarch.
+  ///
+  /// In en, this message translates to:
+  /// **'March'**
   String get monthMarch;
-  /// Full month name: "April".
+  /// No description provided for @monthApril.
+  ///
+  /// In en, this message translates to:
+  /// **'April'**
   String get monthApril;
-  /// Full month name: "May".
+  /// No description provided for @monthMay.
+  ///
+  /// In en, this message translates to:
+  /// **'May'**
   String get monthMay;
-  /// Full month name: "June".
+  /// No description provided for @monthJune.
+  ///
+  /// In en, this message translates to:
+  /// **'June'**
   String get monthJune;
-  /// Full month name: "July".
+  /// No description provided for @monthJuly.
+  ///
+  /// In en, this message translates to:
+  /// **'July'**
   String get monthJuly;
-  /// Full month name: "August".
+  /// No description provided for @monthAugust.
+  ///
+  /// In en, this message translates to:
+  /// **'August'**
   String get monthAugust;
-  /// Full month name: "September".
+  /// No description provided for @monthSeptember.
+  ///
+  /// In en, this message translates to:
+  /// **'September'**
   String get monthSeptember;
-  /// Full month name: "October".
+  /// No description provided for @monthOctober.
+  ///
+  /// In en, this message translates to:
+  /// **'October'**
   String get monthOctober;
-  /// Full month name: "November".
+  /// No description provided for @monthNovember.
+  ///
+  /// In en, this message translates to:
+  /// **'November'**
   String get monthNovember;
-  /// Full month name: "December".
+  /// No description provided for @monthDecember.
+  ///
+  /// In en, this message translates to:
+  /// **'December'**
   String get monthDecember;
-  /// Abbreviated month name: "Jan".
+  /// No description provided for @abbreviatedJanuary.
+  ///
+  /// In en, this message translates to:
+  /// **'Jan'**
   String get abbreviatedJanuary;
-  /// Abbreviated month name: "Feb".
+  /// No description provided for @abbreviatedFebruary.
+  ///
+  /// In en, this message translates to:
+  /// **'Feb'**
   String get abbreviatedFebruary;
-  /// Abbreviated month name: "Mar".
+  /// No description provided for @abbreviatedMarch.
+  ///
+  /// In en, this message translates to:
+  /// **'Mar'**
   String get abbreviatedMarch;
-  /// Abbreviated month name: "Apr".
+  /// No description provided for @abbreviatedApril.
+  ///
+  /// In en, this message translates to:
+  /// **'Apr'**
   String get abbreviatedApril;
-  /// Abbreviated month name: "May".
+  /// No description provided for @abbreviatedMay.
+  ///
+  /// In en, this message translates to:
+  /// **'May'**
   String get abbreviatedMay;
-  /// Abbreviated month name: "Jun".
+  /// No description provided for @abbreviatedJune.
+  ///
+  /// In en, this message translates to:
+  /// **'Jun'**
   String get abbreviatedJune;
-  /// Abbreviated month name: "Jul".
+  /// No description provided for @abbreviatedJuly.
+  ///
+  /// In en, this message translates to:
+  /// **'Jul'**
   String get abbreviatedJuly;
-  /// Abbreviated month name: "Aug".
+  /// No description provided for @abbreviatedAugust.
+  ///
+  /// In en, this message translates to:
+  /// **'Aug'**
   String get abbreviatedAugust;
-  /// Abbreviated month name: "Sep".
+  /// No description provided for @abbreviatedSeptember.
+  ///
+  /// In en, this message translates to:
+  /// **'Sep'**
   String get abbreviatedSeptember;
-  /// Abbreviated month name: "Oct".
+  /// No description provided for @abbreviatedOctober.
+  ///
+  /// In en, this message translates to:
+  /// **'Oct'**
   String get abbreviatedOctober;
-  /// Abbreviated month name: "Nov".
+  /// No description provided for @abbreviatedNovember.
+  ///
+  /// In en, this message translates to:
+  /// **'Nov'**
   String get abbreviatedNovember;
-  /// Abbreviated month name: "Dec".
+  /// No description provided for @abbreviatedDecember.
+  ///
+  /// In en, this message translates to:
+  /// **'Dec'**
   String get abbreviatedDecember;
-  /// Button label: "Cancel".
+  /// No description provided for @buttonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
   String get buttonCancel;
-  /// Button label: "OK".
-  String get buttonOk;
-  /// Button label: "Close".
-  String get buttonClose;
-  /// Button label: "Save".
+  /// No description provided for @buttonSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
   String get buttonSave;
-  /// Button label: "Reset".
-  String get buttonReset;
-  /// Time unit label: "Hour".
+  /// No description provided for @timeHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Hour'**
   String get timeHour;
-  /// Time unit label: "Minute".
+  /// No description provided for @timeMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'Minute'**
   String get timeMinute;
-  /// Time unit label: "Second".
+  /// No description provided for @timeSecond.
+  ///
+  /// In en, this message translates to:
+  /// **'Second'**
   String get timeSecond;
-  /// Time period: "AM" (ante meridiem).
+  /// No description provided for @timeAM.
+  ///
+  /// In en, this message translates to:
+  /// **'AM'**
   String get timeAM;
-  /// Time period: "PM" (post meridiem).
+  /// No description provided for @timePM.
+  ///
+  /// In en, this message translates to:
+  /// **'PM'**
   String get timePM;
-  /// Color component label: "Red".
+  /// No description provided for @colorRed.
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
   String get colorRed;
-  /// Color component label: "Green".
+  /// No description provided for @colorGreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
   String get colorGreen;
-  /// Color component label: "Blue".
+  /// No description provided for @colorBlue.
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
   String get colorBlue;
-  /// Color component label: "Alpha" (transparency).
+  /// No description provided for @colorAlpha.
+  ///
+  /// In en, this message translates to:
+  /// **'Alpha'**
   String get colorAlpha;
-  /// Color component label: "Hue".
+  /// No description provided for @colorHue.
+  ///
+  /// In en, this message translates to:
+  /// **'Hue'**
   String get colorHue;
-  /// Color component label: "Saturation".
+  /// No description provided for @colorSaturation.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
   String get colorSaturation;
-  /// Color component label: "Value" (brightness in HSV).
+  /// No description provided for @colorValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Val'**
   String get colorValue;
-  /// Color component label: "Lightness" (in HSL).
+  /// No description provided for @colorLightness.
+  ///
+  /// In en, this message translates to:
+  /// **'Lum'**
   String get colorLightness;
-  /// Context menu: "Cut" action.
+  /// No description provided for @menuCut.
+  ///
+  /// In en, this message translates to:
+  /// **'Cut'**
   String get menuCut;
-  /// Context menu: "Copy" action.
+  /// No description provided for @menuCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
   String get menuCopy;
-  /// Context menu: "Paste" action.
+  /// No description provided for @menuPaste.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste'**
   String get menuPaste;
-  /// Context menu: "Select All" action.
+  /// No description provided for @menuSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select All'**
   String get menuSelectAll;
-  /// Context menu: "Undo" action.
+  /// No description provided for @menuUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
   String get menuUndo;
-  /// Context menu: "Redo" action.
+  /// No description provided for @menuRedo.
+  ///
+  /// In en, this message translates to:
+  /// **'Redo'**
   String get menuRedo;
-  /// Context menu: "Delete" action.
+  /// No description provided for @menuDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
   String get menuDelete;
-  /// Context menu: "Share" action.
+  /// No description provided for @menuShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
   String get menuShare;
-  /// Context menu: "Search Web" action.
+  /// No description provided for @menuSearchWeb.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Web'**
   String get menuSearchWeb;
-  /// Context menu: "Live Text Input" action.
+  /// No description provided for @menuLiveTextInput.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Text Input'**
   String get menuLiveTextInput;
-  /// Formats a date and time for display.
+  /// No description provided for @placeholderDatePicker.
   ///
-  /// Parameters:
-  /// - [dateTime] (`DateTime`, required): Date/time to format.
-  /// - [showDate] (`bool`, default: `true`): Include date.
-  /// - [showTime] (`bool`, default: `true`): Include time.
-  /// - [showSeconds] (`bool`, default: `false`): Include seconds.
-  /// - [use24HourFormat] (`bool`, default: `true`): Use 24-hour format.
-  ///
-  /// Returns: `String` — formatted date/time.
-  String formatDateTime(DateTime dateTime, {bool showDate = true, bool showTime = true, bool showSeconds = false, bool use24HourFormat = true});
-  /// Formats a time of day for display.
-  ///
-  /// Parameters:
-  /// - [time] (`TimeOfDay`, required): Time to format.
-  /// - [use24HourFormat] (`bool`, default: `true`): Use 24-hour format.
-  /// - [showSeconds] (`bool`, default: `false`): Include seconds.
-  ///
-  /// Returns: `String` — formatted time.
-  String formatTimeOfDay(TimeOfDay time, {bool use24HourFormat = true, bool showSeconds = false});
-  /// Placeholder text: "Select a date".
+  /// In en, this message translates to:
+  /// **'Select a date'**
   String get placeholderDatePicker;
-  /// Placeholder text: "Select a time".
+  /// No description provided for @placeholderTimePicker.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a time'**
   String get placeholderTimePicker;
-  /// Placeholder text: "Select a color".
+  /// No description provided for @placeholderColorPicker.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a color'**
   String get placeholderColorPicker;
-  /// Button label: "Previous".
+  /// No description provided for @buttonPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
   String get buttonPrevious;
-  /// Button label: "Next".
+  /// No description provided for @buttonNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
   String get buttonNext;
-  /// Pull-to-refresh: "Pull to refresh" instruction.
+  /// No description provided for @refreshTriggerPull.
+  ///
+  /// In en, this message translates to:
+  /// **'Pull to refresh'**
   String get refreshTriggerPull;
-  /// Pull-to-refresh: "Release to refresh" instruction.
+  /// No description provided for @refreshTriggerRelease.
+  ///
+  /// In en, this message translates to:
+  /// **'Release to refresh'**
   String get refreshTriggerRelease;
-  /// Pull-to-refresh: "Refreshing..." status.
+  /// No description provided for @refreshTriggerRefreshing.
+  ///
+  /// In en, this message translates to:
+  /// **'Refreshing...'**
   String get refreshTriggerRefreshing;
-  /// Pull-to-refresh: "Complete" status.
+  /// No description provided for @refreshTriggerComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh complete'**
   String get refreshTriggerComplete;
-  /// Search placeholder: "Search country".
-  String get searchPlaceholderCountry;
-  /// Empty state: "No countries found".
-  String get emptyCountryList;
-  /// Toast notification: "Snippet copied".
-  String get toastSnippetCopied;
-  /// Color picker tab: "Recent".
+  /// No description provided for @colorPickerTabRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent'**
   String get colorPickerTabRecent;
-  /// Color picker tab: "RGB".
+  /// No description provided for @colorPickerTabRGB.
+  ///
+  /// In en, this message translates to:
+  /// **'RGB'**
   String get colorPickerTabRGB;
-  /// Color picker tab: "HSV".
+  /// No description provided for @colorPickerTabHSV.
+  ///
+  /// In en, this message translates to:
+  /// **'HSV'**
   String get colorPickerTabHSV;
-  /// Color picker tab: "HSL".
+  /// No description provided for @colorPickerTabHSL.
+  ///
+  /// In en, this message translates to:
+  /// **'HSL'**
   String get colorPickerTabHSL;
-  /// Color picker tab: "HEX".
+  /// No description provided for @colorPickerTabHEX.
+  ///
+  /// In en, this message translates to:
+  /// **'HEX'**
   String get colorPickerTabHEX;
-  /// Command palette: "Move up" hint.
+  /// No description provided for @commandMoveUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Move Up'**
   String get commandMoveUp;
-  /// Command palette: "Move down" hint.
+  /// No description provided for @commandMoveDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Move Down'**
   String get commandMoveDown;
-  /// Command palette: "Activate" hint.
+  /// No description provided for @commandActivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
   String get commandActivate;
-  /// Data table: Selected rows count message.
+  /// No description provided for @dataTableSelectedRows.
   ///
-  /// Parameters:
-  /// - [count] (`int`, required): Number of selected rows.
-  /// - [total] (`int`, required): Total number of rows.
-  ///
-  /// Returns: `String` — formatted message (e.g., "2 of 10 selected").
+  /// In en, this message translates to:
+  /// **'{count} of {total} row(s) selected.'**
   String dataTableSelectedRows(int count, int total);
-  /// Data table: "Next" button.
+  /// No description provided for @dataTableNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
   String get dataTableNext;
-  /// Data table: "Previous" button.
+  /// No description provided for @dataTablePrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
   String get dataTablePrevious;
-  /// Data table: "Columns" menu.
+  /// No description provided for @dataTableColumns.
+  ///
+  /// In en, this message translates to:
+  /// **'Columns'**
   String get dataTableColumns;
-  /// Gets the display name for a color picker mode.
+  /// No description provided for @timeDaysAbbreviation.
   ///
-  /// Parameters:
-  /// - [mode] (`ColorPickerMode`, required): Color picker mode.
-  ///
-  /// Returns: `String` — mode display name.
-  String getColorPickerMode(ColorPickerMode mode);
-  /// Gets the abbreviated weekday name for a given weekday constant.
-  ///
-  /// Parameters:
-  /// - [weekday] (int, required): Weekday constant from DateTime (DateTime.monday through DateTime.sunday)
-  ///
-  /// Returns the localized abbreviated weekday name (e.g., "Mon", "Tue").
-  ///
-  /// Throws [ArgumentError] if weekday is not a valid constant.
-  String getAbbreviatedWeekday(int weekday);
-  /// Gets the full month name for a given month constant.
-  ///
-  /// Parameters:
-  /// - [month] (int, required): Month constant from DateTime (DateTime.january through DateTime.december)
-  ///
-  /// Returns the localized full month name (e.g., "January", "February").
-  ///
-  /// Throws [ArgumentError] if month is not a valid constant.
-  String getMonth(int month);
-  /// Gets the abbreviated month name for a given month constant.
-  ///
-  /// Parameters:
-  /// - [month] (int, required): Month constant from DateTime (DateTime.january through DateTime.december)
-  ///
-  /// Returns the localized abbreviated month name (e.g., "Jan", "Feb").
-  ///
-  /// Throws [ArgumentError] if month is not a valid constant.
-  String getAbbreviatedMonth(int month);
-  /// Gets the abbreviated label for days in time displays (e.g., "d").
+  /// In en, this message translates to:
+  /// **'DD'**
   String get timeDaysAbbreviation;
-  /// Gets the abbreviated label for hours in time displays (e.g., "h").
+  /// No description provided for @timeHoursAbbreviation.
+  ///
+  /// In en, this message translates to:
+  /// **'HH'**
   String get timeHoursAbbreviation;
-  /// Gets the abbreviated label for minutes in time displays (e.g., "m").
+  /// No description provided for @timeMinutesAbbreviation.
+  ///
+  /// In en, this message translates to:
+  /// **'MM'**
   String get timeMinutesAbbreviation;
-  /// Gets the abbreviated label for seconds in time displays (e.g., "s").
+  /// No description provided for @timeSecondsAbbreviation.
+  ///
+  /// In en, this message translates to:
+  /// **'SS'**
   String get timeSecondsAbbreviation;
-  /// Gets the placeholder text for duration picker inputs.
+  /// No description provided for @placeholderDurationPicker.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a duration'**
   String get placeholderDurationPicker;
-  /// Formats a duration as a localized string.
+  /// No description provided for @durationDay.
   ///
-  /// Parameters:
-  /// - [duration] (Duration, required): The duration to format
-  /// - [showDays] (bool): Whether to show days component, defaults to true
-  /// - [showHours] (bool): Whether to show hours component, defaults to true
-  /// - [showMinutes] (bool): Whether to show minutes component, defaults to true
-  /// - [showSeconds] (bool): Whether to show seconds component, defaults to true
-  ///
-  /// Returns a formatted duration string (e.g., "2d 3h 45m 12s").
-  String formatDuration(Duration duration, {bool showDays = true, bool showHours = true, bool showMinutes = true, bool showSeconds = true});
-  /// Gets the full word for "day" in duration displays.
+  /// In en, this message translates to:
+  /// **'Day'**
   String get durationDay;
-  /// Gets the full word for "hour" in duration displays.
+  /// No description provided for @durationHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Hour'**
   String get durationHour;
-  /// Gets the full word for "minute" in duration displays.
+  /// No description provided for @durationMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'Minute'**
   String get durationMinute;
-  /// Gets the full word for "second" in duration displays.
+  /// No description provided for @durationSecond.
+  ///
+  /// In en, this message translates to:
+  /// **'Second'**
   String get durationSecond;
-  /// Gets the abbreviated label for a duration component.
-  ///
-  /// Parameters:
-  /// - [part] (DurationPart, required): The duration component type
-  ///
-  /// Returns the localized abbreviation string for the component (e.g., "d", "h", "m", "s").
-  String getDurationPartAbbreviation(DurationPart part);
-  /// Gets the abbreviated label for a time component.
-  ///
-  /// Parameters:
-  /// - [part] (TimePart, required): The time component type
-  ///
-  /// Returns the localized abbreviation string for the component (e.g., "h", "m", "s").
-  String getTimePartAbbreviation(TimePart part);
-  /// Gets a map of MIME types to their localized display names.
-  ///
-  /// Provides human-readable names for file types used in file pickers
-  /// and upload dialogs. The map keys are MIME type strings (e.g., "image/png")
-  /// and values are localized descriptions (e.g., "PNG Image").
-  Map<String, String> get localizedMimeTypes;
 }
 ```

@@ -49,6 +49,12 @@ class AppExample3 extends StatelessWidget {
           ),
         ),
       ]),
+      theme: const ThemeData(
+        colorScheme: ColorSchemes.lightGreen,
+      ),
+      darkTheme: const ThemeData.dark(
+        colorScheme: ColorSchemes.darkGreen,
+      ),
     );
   }
 }

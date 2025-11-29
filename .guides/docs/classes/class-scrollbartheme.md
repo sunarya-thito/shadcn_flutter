@@ -5,7 +5,7 @@ description: "Theme configuration for [Scrollbar]."
 
 ```dart
 /// Theme configuration for [Scrollbar].
-class ScrollbarTheme {
+class ScrollbarTheme extends ComponentThemeData {
   /// Color of the scrollbar thumb.
   final Color? color;
   /// Thickness of the scrollbar thumb.

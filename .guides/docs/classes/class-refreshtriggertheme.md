@@ -27,7 +27,7 @@ description: "Theme configuration for [RefreshTrigger]."
 ///   ),
 /// )
 /// ```
-class RefreshTriggerTheme {
+class RefreshTriggerTheme extends ComponentThemeData {
   /// Minimum pull extent required to trigger refresh.
   final double? minExtent;
   /// Maximum pull extent allowed.

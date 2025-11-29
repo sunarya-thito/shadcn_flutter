@@ -8,7 +8,7 @@ description: "Theme configuration for [OutlinedContainer] appearance."
 ///
 /// Defines styling properties including background color, border styles,
 /// shadows, padding, and surface effects for outlined containers.
-class OutlinedContainerTheme {
+class OutlinedContainerTheme extends ComponentThemeData {
   /// Background color for the container.
   final Color? backgroundColor;
   /// Color of the container's border.

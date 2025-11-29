@@ -21,7 +21,7 @@ description: "Theme configuration for [Stepper] components."
 ///   child: MyApp(),
 /// );
 /// ```
-class StepperTheme {
+class StepperTheme extends ComponentThemeData {
   /// Layout direction for the stepper.
   final Axis? direction;
   /// Size variant for step indicators.

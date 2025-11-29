@@ -11,7 +11,7 @@ description: "Abstract handler interface for swiper overlay implementations."
 ///
 /// Features:
 /// - Pluggable swiper behavior patterns
-/// - Built-in drawer and sheet implementations  
+/// - Built-in drawer and sheet implementations
 /// - Consistent API across swiper types
 /// - Configurable overlay properties
 ///

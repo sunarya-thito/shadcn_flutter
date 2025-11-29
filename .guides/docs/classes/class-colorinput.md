@@ -59,8 +59,10 @@ class ColorInput extends StatefulWidget {
   final bool? enabled;
   /// The layout orientation of the color input.
   final Axis? orientation;
+  /// Whether to show the color history button.
+  final bool showHistory;
   /// Creates a [ColorInput] widget.
-  const ColorInput({super.key, required this.value, this.onChanging, this.onChanged, this.showAlpha, this.initialMode, this.enableEyeDropper = true, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverPadding, this.placeholder, this.promptMode, this.dialogTitle, this.showLabel, this.orientation, this.enabled});
+  const ColorInput({super.key, required this.value, this.onChanging, this.onChanged, this.showAlpha, this.initialMode, this.enableEyeDropper = true, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverPadding, this.placeholder, this.promptMode, this.dialogTitle, this.showLabel, this.orientation, this.enabled, this.showHistory = true});
   State<ColorInput> createState();
 }
 ```

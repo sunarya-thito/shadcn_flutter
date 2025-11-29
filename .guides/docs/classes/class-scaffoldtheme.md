@@ -10,7 +10,7 @@ description: "Theme data for customizing [Scaffold] widget appearance."
 /// [Scaffold] widgets, including background colors for different sections,
 /// loading spark behavior, and keyboard avoidance settings. These properties
 /// can be set at the theme level to provide consistent styling across the application.
-class ScaffoldTheme {
+class ScaffoldTheme extends ComponentThemeData {
   /// Background color of the scaffold body.
   final Color? backgroundColor;
   /// Background color of the header section.

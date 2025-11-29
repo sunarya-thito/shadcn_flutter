@@ -12,7 +12,7 @@ description: "Theme configuration for [Checkbox] widget styling and visual appea
 ///
 /// Can be applied globally through [ComponentTheme] or used to override
 /// specific checkbox instances with custom styling.
-class CheckboxTheme {
+class CheckboxTheme extends ComponentThemeData {
   /// Color of the checkbox background when in unchecked state.
   ///
   /// Applied as the background color when the checkbox is unchecked.

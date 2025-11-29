@@ -5,7 +5,7 @@ description: "Theme data for the [RadioCard] widget."
 
 ```dart
 /// Theme data for the [RadioCard] widget.
-class RadioCardTheme {
+class RadioCardTheme extends ComponentThemeData {
   /// The cursor to use when the radio card is enabled.
   final MouseCursor? enabledCursor;
   /// The cursor to use when the radio card is disabled.

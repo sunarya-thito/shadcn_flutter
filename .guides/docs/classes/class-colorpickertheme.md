@@ -9,7 +9,7 @@ description: "Theme configuration for [ColorPicker] widget styling and layout."
 /// Defines visual and layout properties for color picker components including
 /// spacing, orientation, and feature availability. Applied globally through
 /// [ComponentTheme] or per-instance.
-class ColorPickerTheme {
+class ColorPickerTheme extends ComponentThemeData {
   /// Spacing between major color picker sections.
   final double? spacing;
   /// Spacing between individual controls within sections.

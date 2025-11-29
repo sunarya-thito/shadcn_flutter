@@ -17,7 +17,7 @@ description: "Theme configuration for hover-related widgets and behaviors."
 ///   hitTestBehavior: HitTestBehavior.opaque,
 /// )
 /// ```
-class HoverTheme {
+class HoverTheme extends ComponentThemeData {
   /// Debounce duration for repeated hover events.
   ///
   /// When set, hover callbacks are throttled to fire at most once per this duration.

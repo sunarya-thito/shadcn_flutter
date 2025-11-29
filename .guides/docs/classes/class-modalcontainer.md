@@ -12,7 +12,7 @@ description: "A container widget that provides consistent styling for modal cont
 ///
 /// Features:
 /// - Automatic full-screen mode detection
-/// - Surface styling with blur and opacity effects  
+/// - Surface styling with blur and opacity effects
 /// - Configurable borders and shadows
 /// - Clip behavior control
 /// - Theme integration

@@ -28,7 +28,7 @@ description: "Theme configuration for drawer and sheet overlays."
 ///   child: MyApp(),
 /// )
 /// ```
-class DrawerTheme {
+class DrawerTheme extends ComponentThemeData {
   /// Surface opacity for backdrop effects.
   final double? surfaceOpacity;
   /// Surface blur intensity for backdrop effects.

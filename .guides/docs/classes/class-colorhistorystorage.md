@@ -26,7 +26,9 @@ abstract class ColorHistoryStorage implements Listenable {
   int get capacity;
   /// The list of recent colors, ordered from most to least recent.
   List<Color> get recentColors;
-  /// Finds the [ColorHistoryStorage] in the widget tree.
+  /// Finds and listens the [ColorHistoryStorage] in the widget tree.
   static ColorHistoryStorage of(BuildContext context);
+  /// Finds the [ColorHistoryStorage] in the widget tree.
+  static ColorHistoryStorage find(BuildContext context);
 }
 ```

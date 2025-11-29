@@ -1,18 +1,16 @@
 ---
 title: "Enum: TimePart"
-description: "Represents the parts of a time-of-day that can be selected."
+description: "Represents a part of a time (hour, minute, or second)."
 ---
 
 ```dart
-/// Represents the parts of a time-of-day that can be selected.
-///
-/// Used by [TimePicker] to specify which time components are editable.
+/// Represents a part of a time (hour, minute, or second).
 enum TimePart {
-  /// Hour component (0-23 or 1-12 depending on format).
+  /// Hour component.
   hour,
-  /// Minute component (0-59).
+  /// Minute component.
   minute,
-  /// Second component (0-59).
+  /// Second component.
   second,
 }
 ```

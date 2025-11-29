@@ -22,7 +22,7 @@ description: "Theme configuration for [TabList] appearance and behavior."
 ///   child: TabList(...),
 /// )
 /// ```
-class TabListTheme {
+class TabListTheme extends ComponentThemeData {
   /// Color of the bottom border line separating tabs from content.
   ///
   /// Type: `Color?`. If null, uses the theme's border color. This creates

@@ -31,7 +31,7 @@ description: "A horizontal tab list widget for selecting between multiple tab co
 ///   onChanged: (index) => setState(() => currentTabIndex = index),
 ///   children: [
 ///     TabChild(child: Text('Tab 1')),
-///     TabChild(child: Text('Tab 2')), 
+///     TabChild(child: Text('Tab 2')),
 ///     TabChild(child: Text('Tab 3')),
 ///   ],
 /// )

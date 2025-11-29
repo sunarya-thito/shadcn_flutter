@@ -5,7 +5,7 @@ description: "A theme for [MenuPopup]."
 
 ```dart
 /// A theme for [MenuPopup].
-class MenuPopupTheme {
+class MenuPopupTheme extends ComponentThemeData {
   /// The opacity of the surface.
   final double? surfaceOpacity;
   /// The blur applied to the surface.

@@ -17,7 +17,7 @@ description: "Abstract base class for button theme customization."
 ///
 /// Implementations include [PrimaryButtonTheme], [SecondaryButtonTheme],
 /// [OutlineButtonTheme], and others for each button variant.
-abstract class ButtonTheme {
+abstract class ButtonTheme extends ComponentThemeData {
   /// Optional decoration override (background, border, shadows).
   final ButtonStatePropertyDelegate<Decoration>? decoration;
   /// Optional mouse cursor override.

@@ -13,7 +13,7 @@ description: "Theme data for customizing [Card] and [SurfaceCard] widget appeara
 ///
 /// The theme affects both regular cards and surface cards, with surface cards
 /// supporting additional blur and opacity effects for glassmorphism styling.
-class CardTheme {
+class CardTheme extends ComponentThemeData {
   /// Padding inside the card.
   final EdgeInsetsGeometry? padding;
   /// Whether the card is filled.

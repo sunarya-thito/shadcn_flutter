@@ -23,7 +23,7 @@ description: "Theme configuration for [TreeView] appearance and behavior."
 ///   child: TreeView(...),
 /// )
 /// ```
-class TreeTheme {
+class TreeTheme extends ComponentThemeData {
   /// The branch line style for connecting tree nodes.
   ///
   /// Type: `BranchLine?`. If null, uses BranchLine.path. Controls how visual

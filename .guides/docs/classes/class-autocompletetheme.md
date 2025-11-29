@@ -12,7 +12,7 @@ description: "Theme configuration for [AutoComplete] widget styling and behavior
 ///
 /// This theme can be applied globally through [ComponentTheme] or passed
 /// directly to individual [AutoComplete] widgets for per-instance customization.
-class AutoCompleteTheme {
+class AutoCompleteTheme extends ComponentThemeData {
   /// Constraints applied to the autocomplete popover container.
   ///
   /// Controls the maximum/minimum dimensions of the suggestion list popover.

@@ -5,7 +5,7 @@ description: "Theme for [ContextMenuPopup] and context menu widgets."
 
 ```dart
 /// Theme for [ContextMenuPopup] and context menu widgets.
-class ContextMenuTheme {
+class ContextMenuTheme extends ComponentThemeData {
   /// Surface opacity for the popup container.
   final double? surfaceOpacity;
   /// Surface blur for the popup container.

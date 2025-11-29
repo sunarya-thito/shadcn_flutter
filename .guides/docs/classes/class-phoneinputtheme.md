@@ -5,7 +5,7 @@ description: "Theme data for [PhoneInput]."
 
 ```dart
 /// Theme data for [PhoneInput].
-class PhoneInputTheme {
+class PhoneInputTheme extends ComponentThemeData {
   /// The padding of the [PhoneInput].
   final EdgeInsetsGeometry? padding;
   /// The border radius of the [PhoneInput].

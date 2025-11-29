@@ -25,7 +25,7 @@ description: "Theme configuration for [Avatar] and related avatar components."
 ///   child: MyAvatarWidget(),
 /// );
 /// ```
-class AvatarTheme {
+class AvatarTheme extends ComponentThemeData {
   /// Default size for avatar components in logical pixels.
   ///
   /// Controls the width and height of avatar containers. If null, defaults

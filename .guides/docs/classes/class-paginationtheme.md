@@ -10,7 +10,7 @@ description: "Theme data for customizing [Pagination] widget appearance."
 /// [Pagination] widgets, including spacing between controls and label display
 /// preferences. These properties can be set at the theme level to provide
 /// consistent styling across the application.
-class PaginationTheme {
+class PaginationTheme extends ComponentThemeData {
   /// The spacing between pagination controls.
   final double? gap;
   /// Whether to show the previous/next labels.

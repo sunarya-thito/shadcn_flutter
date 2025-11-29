@@ -12,7 +12,7 @@ description: "Controller for resizable panes with flexible (proportional) sizing
 /// Example:
 /// ```dart
 /// final controller = FlexibleResizablePaneController(1.0);
-/// 
+///
 /// ResizablePane(
 ///   controller: controller,
 ///   child: Container(color: Colors.red),

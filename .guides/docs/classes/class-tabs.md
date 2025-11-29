@@ -57,6 +57,8 @@ class Tabs extends StatelessWidget {
   ///
   /// Must be between 0 and `children.length - 1` inclusive.
   final int index;
+  /// Used to expand children horizontally
+  final bool expand;
   /// Callback invoked when the user selects a different tab.
   ///
   /// Called with the new tab index when the user taps a tab header.
@@ -78,7 +80,7 @@ class Tabs extends StatelessWidget {
   /// - [onChanged]: Tab selection callback (required)
   /// - [children]: List of tab children (required, non-empty)
   /// - [padding]: Custom tab padding (optional)
-  const Tabs({super.key, required this.index, required this.onChanged, required this.children, this.padding});
+  const Tabs({super.key, required this.index, required this.onChanged, required this.children, this.padding, this.expand = false});
   Widget build(BuildContext context);
 }
 ```

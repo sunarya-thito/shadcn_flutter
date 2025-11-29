@@ -5,7 +5,7 @@ description: "Theme for [Steps]."
 
 ```dart
 /// Theme for [Steps].
-class StepsTheme {
+class StepsTheme extends ComponentThemeData {
   /// Diameter of the step indicator circle.
   final double? indicatorSize;
   /// Gap between the indicator and the step content.

@@ -16,7 +16,7 @@ description: "An inherited widget that provides component-specific theme data."
 ///   child: MyButton(),
 /// )
 /// ```
-class ComponentTheme<T> extends InheritedTheme {
+class ComponentTheme<T extends ComponentThemeData> extends InheritedTheme {
   /// The component theme data to provide to descendants.
   final T data;
   /// Creates a [ComponentTheme].
@@ -31,13 +31,13 @@ class ComponentTheme<T> extends InheritedTheme {
   /// Throws if no [ComponentTheme] of type `T` is found.
   ///
   /// Returns: `T` — the component theme data.
-  static T of<T>(BuildContext context);
+  static T of<T extends ComponentThemeData>(BuildContext context);
   /// Gets the component theme data of type `T` from the closest ancestor.
   ///
   /// Returns `null` if no [ComponentTheme] of type `T` is found.
   ///
   /// Returns: `T?` — the component theme data, or null.
-  static T? maybeOf<T>(BuildContext context);
+  static T? maybeOf<T extends ComponentThemeData>(BuildContext context);
   bool updateShouldNotify(covariant ComponentTheme<T> oldWidget);
 }
 ```

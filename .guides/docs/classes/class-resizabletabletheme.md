@@ -17,7 +17,7 @@ description: "Theme configuration for resizable tables."
 ///   resizerColor: Colors.blue,
 /// )
 /// ```
-class ResizableTableTheme {
+class ResizableTableTheme extends ComponentThemeData {
   /// Base theme configuration for the table.
   final TableTheme? tableTheme;
   /// Thickness of the resize handle in pixels.

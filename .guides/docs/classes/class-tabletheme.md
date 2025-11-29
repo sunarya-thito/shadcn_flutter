@@ -27,7 +27,7 @@ description: "Theme configuration for [Table] components."
 ///   child: MyTableWidget(),
 /// );
 /// ```
-class TableTheme {
+class TableTheme extends ComponentThemeData {
   /// Border configuration for the entire table.
   ///
   /// Type: `Border?`. Defines the outer border of the table container.

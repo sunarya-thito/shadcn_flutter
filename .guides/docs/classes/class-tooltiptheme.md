@@ -10,7 +10,7 @@ description: "Theme data for customizing [TooltipContainer] widget appearance."
 /// tooltip containers, including surface effects, padding, colors,
 /// and border styling. These properties can be set at the theme level
 /// to provide consistent styling across the application.
-class TooltipTheme {
+class TooltipTheme extends ComponentThemeData {
   /// Opacity applied to the tooltip surface color.
   final double? surfaceOpacity;
   /// Blur amount for the tooltip surface.

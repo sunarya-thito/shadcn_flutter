@@ -98,7 +98,7 @@ class Collapsible extends StatefulWidget {
   /// Example (Controlled):
   /// ```dart
   /// bool _expanded = false;
-  /// 
+  ///
   /// Collapsible(
   ///   isExpanded: _expanded,
   ///   onExpansionChanged: (expanded) => setState(() => _expanded = !_expanded),

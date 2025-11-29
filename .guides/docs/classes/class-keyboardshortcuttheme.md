@@ -5,7 +5,7 @@ description: "Theme for keyboard shortcut displays."
 
 ```dart
 /// Theme for keyboard shortcut displays.
-class KeyboardShortcutTheme {
+class KeyboardShortcutTheme extends ComponentThemeData {
   /// Spacing between keys.
   final double? spacing;
   /// Padding inside each key display.

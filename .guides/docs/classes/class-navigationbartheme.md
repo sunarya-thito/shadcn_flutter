@@ -10,7 +10,7 @@ description: "Theme data for customizing [NavigationBar] widget appearance."
 /// [NavigationBar] widgets, including background colors, alignment, spacing,
 /// label presentation, and padding. These properties can be set at the theme level
 /// to provide consistent styling across the application.
-class NavigationBarTheme {
+class NavigationBarTheme extends ComponentThemeData {
   /// Background color of the navigation bar.
   final Color? backgroundColor;
   /// Alignment of navigation items.

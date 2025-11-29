@@ -22,7 +22,7 @@ description: "Theme configuration for hover card behavior and appearance."
 ///   child: MyApp(),
 /// )
 /// ```
-class HoverCardTheme {
+class HoverCardTheme extends ComponentThemeData {
   /// Duration to wait before hiding the hover card after mouse exit.
   final Duration? debounce;
   /// Duration to wait before showing the hover card after mouse enter.
