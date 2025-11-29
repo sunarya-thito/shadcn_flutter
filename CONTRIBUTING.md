@@ -219,7 +219,25 @@ Docs:
 - Update icon showcase pages in `docs/lib/pages/docs/icons_page.dart` if new
   sets are added.
 
-### 4) Theming and colors
+### 4) Translations
+
+- Localization files are located in `lib/l10n/`.
+- The source of truth is `shadcn_en.arb`.
+
+To add a new language:
+
+1. Create a new ARB file in `lib/l10n/` (e.g., `shadcn_es.arb` for Spanish).
+2. Copy the content from `shadcn_en.arb` to the new file.
+3. Update the `@@locale` key to the new locale code (e.g., `"@@locale": "es"`).
+4. Translate the values.
+5. Run `flutter gen-l10n` to generate the Dart code.
+
+To update existing translations:
+
+1. Modify the relevant ARB file in `lib/l10n/`.
+2. Run `flutter gen-l10n` to regenerate the Dart code.
+
+### 5) Theming and colors
 
 - Theme tokens and generated themes live under `lib/src/theme/`.
 - If you change color sources in `/colors/`, use the style transpilers to
