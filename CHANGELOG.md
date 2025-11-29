@@ -1,3 +1,17 @@
+## 0.0.48
+
+### Added
+
+- Added experimental Chat component (commit 1f809905, @sunarya-thito)
+- Added i18n infrastructure with ARB-based localization system (commit a93849a6, @sunarya-thito)
+  - New `l10n.yaml` configuration for localization
+  - ARB file support with `lib/l10n/shadcn_en.arb`
+  - Locale utilities and extensions for easier localization
+
+### Changed
+
+- Enhanced theme system with improved color schemes and theme extensions (commit 5cbbea41, @sunarya-thito)
+
 ## 0.0.47
 
 - Bug fixes
