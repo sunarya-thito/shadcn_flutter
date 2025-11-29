@@ -40,6 +40,7 @@ class _TableExample3State extends State<TableExample3> {
         dragDevices: {
           PointerDeviceKind.touch,
           PointerDeviceKind.mouse,
+          PointerDeviceKind.trackpad,
         },
         // Disable overscroll glow and bouncing to keep the table steady.
         overscroll: false,

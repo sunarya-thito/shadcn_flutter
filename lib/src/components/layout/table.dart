@@ -2686,6 +2686,21 @@ class RenderTableLayout extends RenderBox
     Map<int, double> frozenRows = {};
     Map<int, double> frozenColumns = {};
 
+    double effectiveHorizontalOffset = _horizontalOffset ?? 0;
+    double effectiveVerticalOffset = _verticalOffset ?? 0;
+
+    if (_viewportSize != null) {
+      double maxHorizontalScroll = max(0, size.width - _viewportSize!.width);
+      double maxVerticalScroll = max(0, size.height - _viewportSize!.height);
+      effectiveHorizontalOffset =
+          effectiveHorizontalOffset.clamp(0, maxHorizontalScroll);
+      effectiveVerticalOffset =
+          effectiveVerticalOffset.clamp(0, maxVerticalScroll);
+    } else {
+      effectiveHorizontalOffset = max(0, effectiveHorizontalOffset);
+      effectiveVerticalOffset = max(0, effectiveVerticalOffset);
+    }
+
     RenderBox? child = firstChild;
     while (child != null) {
       final parentData = child.parentData as TableParentData;
@@ -2710,52 +2725,59 @@ class RenderTableLayout extends RenderBox
         }
         child.layout(BoxConstraints.tightFor(width: width, height: height));
         final offset = result.getOffset(column, row);
-        double offsetX = offset.dx - (_horizontalOffset ?? 0);
-        double offsetY = offset.dy - (_verticalOffset ?? 0);
+        double offsetX = offset.dx;
+        double offsetY = offset.dy;
+
         if (frozenRow) {
-          double verticalOffset = _verticalOffset ?? 0;
-          verticalOffset = max(0, verticalOffset);
-          if (_viewportSize != null) {
-            double maxVerticalOffset = size.height - _viewportSize!.height;
-            verticalOffset = min(verticalOffset, maxVerticalOffset);
-          }
-          double offsetInViewport = offsetY;
+          double verticalOffset = effectiveVerticalOffset;
+          double offsetInViewport =
+              offsetY - (_viewportSize != null ? verticalOffset : 0);
+
           // make sure its visible on the viewport
           double minViewport = 0;
-          double maxViewport = constraints.minHeight;
+          double maxViewport = _viewportSize?.height ?? constraints.maxHeight;
+          if (maxViewport == double.infinity) {
+            maxViewport = size.height;
+          }
           for (int i = 0; i < row; i++) {
             var rowHeight = frozenRows[i] ?? 0;
             minViewport += rowHeight;
           }
           double verticalAdjustment = 0;
-          if (offsetInViewport < minViewport) {
+          if (_viewportSize != null && verticalOffset < 0) {
+            verticalAdjustment = verticalOffset;
+          } else if (offsetInViewport < minViewport) {
             verticalAdjustment = -offsetInViewport + minViewport;
           } else if (offsetInViewport + height > maxViewport) {
-            verticalAdjustment = maxViewport - offsetInViewport - height;
+            // Sticky bottom logic if needed, but for now just top sticking
+            // verticalAdjustment = maxViewport - offsetInViewport - height;
           }
           frozenRows[row] = max(frozenRows[row] ?? 0, height);
           offsetY += verticalAdjustment;
         }
         if (frozenColumn) {
-          double horizontalOffset = _horizontalOffset ?? 0;
-          horizontalOffset = max(0, horizontalOffset);
-          if (_viewportSize != null) {
-            double maxHorizontalOffset = size.width - _viewportSize!.width;
-            horizontalOffset = min(horizontalOffset, maxHorizontalOffset);
-          }
-          double offsetInViewport = offsetX;
+          double horizontalOffset = effectiveHorizontalOffset;
+          double offsetInViewport =
+              offsetX - (_viewportSize != null ? horizontalOffset : 0);
+
           // make sure its visible on the viewport
           double minViewport = 0;
-          double maxViewport = constraints.minWidth;
+          double maxViewport = _viewportSize?.width ?? constraints.maxWidth;
+          if (maxViewport == double.infinity) {
+            maxViewport = size.width;
+          }
           for (int i = 0; i < column; i++) {
             var columnWidth = frozenColumns[i] ?? 0;
             minViewport += columnWidth;
           }
           double horizontalAdjustment = 0;
-          if (offsetInViewport < minViewport) {
+          if (_viewportSize != null && horizontalOffset < 0) {
+            horizontalAdjustment = horizontalOffset;
+          } else if (offsetInViewport < minViewport) {
             horizontalAdjustment = -offsetInViewport + minViewport;
           } else if (offsetInViewport + width > maxViewport) {
-            horizontalAdjustment = maxViewport - offsetInViewport - width;
+            // Sticky right logic if needed
+            // horizontalAdjustment = maxViewport - offsetInViewport - width;
           }
           frozenColumns[column] = max(frozenColumns[column] ?? 0, width);
           offsetX += horizontalAdjustment;
