@@ -9,11 +9,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.none,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -27,11 +27,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.today,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -45,11 +45,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.selected,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -63,11 +63,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.inRange,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -81,11 +81,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.startRange,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -99,11 +99,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.endRange,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -117,11 +117,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.startRangeSelected,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -135,11 +135,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.endRangeSelected,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -153,11 +153,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.startRangeSelectedShort,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -171,11 +171,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.endRangeSelectedShort,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -189,11 +189,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.inRangeSelectedShort,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -209,12 +209,12 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.none,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
             onTap: () => tapped = true,
+            child: Text('15'),
           ),
         ),
       );
@@ -229,11 +229,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.none,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.disabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -250,13 +250,13 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.none,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
             width: 50,
             height: 50,
+            child: Text('15'),
           ),
         ),
       );
@@ -274,11 +274,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.none,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -297,11 +297,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.startRangeSelected,
             indexAtRow: 0,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -316,11 +316,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.endRangeSelected,
             indexAtRow: 6,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -335,11 +335,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.startRangeSelectedShort,
             indexAtRow: 0,
             rowCount: 7,
             state: DateState.enabled,
+            child: Text('15'),
           ),
         ),
       );
@@ -352,11 +352,11 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Icon(Icons.star),
             type: CalendarItemType.selected,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
+            child: Icon(Icons.star),
           ),
         ),
       );
@@ -369,12 +369,12 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
-            child: Text('15'),
             type: CalendarItemType.none,
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
             onTap: null,
+            child: Text('15'),
           ),
         ),
       );
@@ -390,11 +390,11 @@ void main() {
         await tester.pumpWidget(
           SimpleApp(
             child: CalendarItem(
-              child: Text('15'),
               type: type,
               indexAtRow: 1,
               rowCount: 7,
               state: DateState.enabled,
+              child: Text('15'),
             ),
           ),
         );
