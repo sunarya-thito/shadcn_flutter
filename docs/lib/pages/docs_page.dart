@@ -172,8 +172,8 @@ class DocsPageState extends State<DocsPage> {
     ShadcnDocsSection(
       'Application',
       [
-        ShadcnDocsPage('App example', 'app'),
-        ShadcnDocsPage('Example with GoRouter', 'go_router_app_example'),
+        ShadcnDocsPage('App Example', 'app'),
+        ShadcnDocsPage('GoRouter Example', 'go_router_app_example'),
         ShadcnDocsPage('ShadcnLayer', 'wrapper'),
       ],
     ),
@@ -207,6 +207,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Avatar', 'avatar'),
         ShadcnDocsPage('Avatar Group', 'avatar_group'),
         ShadcnDocsPage('Code Snippet', 'code_snippet'),
+        ShadcnDocsPage('Chat Bubble', 'chat', ShadcnFeatureTag.experimental),
         ShadcnDocsPage('Table', 'table'),
         ShadcnDocsPage('Tracker', 'tracker'),
       ],
@@ -237,8 +238,7 @@ class DocsPageState extends State<DocsPage> {
             ShadcnFeatureTag.workInProgress),
         ShadcnDocsPage('Date Picker', 'date_picker'),
         ShadcnDocsPage('Form', 'form'),
-        ShadcnDocsPage(
-            'Formatted Input', 'formatted_input', ShadcnFeatureTag.newFeature),
+        ShadcnDocsPage('Formatted Input', 'formatted_input'),
         ShadcnDocsPage('Text Input', 'input'),
         ShadcnDocsPage('AutoComplete', 'autocomplete'),
         ShadcnDocsPage('Number Input', 'number_input'),
@@ -254,8 +254,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Time Picker', 'time_picker'),
         ShadcnDocsPage('Toggle', 'toggle'),
         ShadcnDocsPage('Multi Select', 'multiselect'),
-        ShadcnDocsPage(
-            'Item Picker', 'item_picker', ShadcnFeatureTag.newFeature),
+        ShadcnDocsPage('Item Picker', 'item_picker'),
       ],
     ),
     ShadcnDocsSection(
@@ -293,7 +292,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Navigation Sidebar', 'navigation_sidebar'),
         ShadcnDocsPage('Dot Indicator', 'dot_indicator'),
         //
-        ShadcnDocsPage('Switcher', 'switcher', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Switcher', 'switcher'),
       ],
     ),
     ShadcnDocsSection(
@@ -304,7 +303,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Hover Card', 'hover_card'),
         ShadcnDocsPage('Popover', 'popover'),
         ShadcnDocsPage('Sheet', 'sheet'),
-        ShadcnDocsPage('Swiper', 'swiper', ShadcnFeatureTag.newFeature),
+        ShadcnDocsPage('Swiper', 'swiper'),
         ShadcnDocsPage('Tooltip', 'tooltip'),
         ShadcnDocsPage('Window', 'window', ShadcnFeatureTag.experimental),
       ],
