@@ -1,16 +1,15 @@
 ## 0.0.48
-
-### Added
-
-- Added experimental Chat component (commit 1f809905, @sunarya-thito)
-- Added i18n infrastructure with ARB-based localization system (commit a93849a6, @sunarya-thito)
-  - New `l10n.yaml` configuration for localization
-  - ARB file support with `lib/l10n/shadcn_en.arb`
-  - Locale utilities and extensions for easier localization
-
-### Changed
-
-- Enhanced theme system with improved color schemes and theme extensions (commit 5cbbea41, @sunarya-thito)
+- Added Chat component
+- New `ColorScheme.of` method to access color scheme from theme data
+- [#380] Fixed issue with DatePicker when using PromptMode.popover
+- [#379] Fixed issue with intrinsic row height in Table component
+- [#378] Fixed issue with RepeatMode declaration in flutter master channel
+- [#346] Added param to skip focus traversal in Input features
+- [PREVIEW] Added `ShadcnPreview` and `ShadcnMultiPreview` annotation to preview widgets during development
+- [BREAKING] `RepeatMode` has been renamed to `LoopingMode`
+- [BREAKING] `ShadcnLocalizationsDelegate.delegate` has been renamed to `ShadcnLocalizations.delegate`
+- [#373] Scaffold: Set height constraints to correctly measure header size (by @xdidx)
+- [#371] Create a new page to explain GoRouter integration (by @xdidx)
 
 ## 0.0.47
 
