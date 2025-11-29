@@ -281,20 +281,20 @@ flutter test --coverage test/components/
 - [x] ColorHistoryGrid
 - [x] ColorInput (FIXED: popover/enabled tests skipped)
 - [x] ColorPicker
-- [ ] Command
-- [ ] CommandCategory
-- [ ] CommandEmpty
-- [ ] CommandItem
-- [ ] ContextMenu
-- [ ] ContextMenuPopup
+- [x] Command
+- [x] CommandCategory
+- [x] CommandEmpty
+- [x] CommandItem
+- [x] ContextMenu
+- [x] ContextMenuPopup
 - [ ] ControlledCheckbox
-- [ ] ControlledColorInput
+- [x] ControlledColorInput
 - [ ] ControlledDatePicker
-- [ ] ControlledSlider
-- [ ] ControlledStarRating
-- [ ] ControlledSwitch
+- [x] ControlledSlider
+- [x] ControlledStarRating
+- [x] ControlledSwitch
 - [ ] ControlledTimePicker
-- [ ] ControlledToggle
+- [x] ControlledToggle
 - [ ] DashedContainer
 - [ ] DashedLine
 - [ ] DateInput
@@ -302,7 +302,7 @@ flutter test --coverage test/components/
 - [ ] DatePickerDialog
 - [ ] DateRangePicker
 - [ ] DefaultRefreshIndicator
-- [ ] DesktopEditableTextContextMenu
+- [x] DesktopEditableTextContextMenu
 - [ ] DestructiveBadge
 - [ ] DestructiveButton
 - [ ] Divider
@@ -354,7 +354,7 @@ flutter test --coverage test/components/
 - [ ] MenuPopup
 - [ ] MenuShortcut
 - [ ] Menubar
-- [ ] MobileEditableTextContextMenu
+- [x] MobileEditableTextContextMenu
 - [ ] ModalBackdrop
 - [ ] ModalContainer
 - [ ] MonthCalendar
@@ -409,11 +409,11 @@ flutter test --coverage test/components/
 - [ ] ShadcnLayer
 - [ ] ShadcnSkeletonizerConfigLayer
 - [ ] ShadcnUI
-- [ ] Slider
+- [x] Slider
 - [ ] SortableDragHandle
 - [ ] SortableLayer
 - [ ] StageContainer
-- [ ] StarRating
+- [x] StarRating
 - [ ] StepContainer
 - [ ] StepItem
 - [ ] StepNumber
@@ -425,7 +425,7 @@ flutter test --coverage test/components/
 - [ ] SubmitButton
 - [ ] SurfaceBlur
 - [ ] SurfaceCard
-- [ ] Switch
+- [x] Switch
 - [ ] Switcher
 - [ ] Swiper
 - [ ] TabButton
@@ -442,7 +442,7 @@ flutter test --coverage test/components/
 - [ ] Timeline
 - [ ] ToastEntryLayout
 - [ ] ToastLayer
-- [ ] Toggle
+- [x] Toggle
 - [ ] Tooltip
 - [ ] TooltipContainer
 - [ ] Tracker
