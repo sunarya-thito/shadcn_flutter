@@ -23,8 +23,8 @@ void main() {
         SimpleApp(
           child: Chip(
             leading: Icon(Icons.star),
-            child: Text('Chip Label'),
             trailing: Icon(Icons.close),
+            child: Text('Chip Label'),
           ),
         ),
       );
