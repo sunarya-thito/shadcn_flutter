@@ -7,7 +7,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// {@template selectable_text_theme}
 /// Theme data for [SelectableText] to customize cursor and selection behavior.
 /// {@endtemplate}
-class SelectableTextTheme {
+class SelectableTextTheme extends ComponentThemeData {
   /// Width of the text cursor in logical pixels.
   ///
   /// If `null`, uses the default cursor width from the platform or theme.

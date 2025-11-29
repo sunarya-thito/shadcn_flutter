@@ -20,7 +20,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   child: MyTimelineWidget(),
 /// );
 /// ```
-class TimelineTheme {
+class TimelineTheme extends ComponentThemeData {
   /// Default constraints for the time column width.
   ///
   /// Controls the minimum and maximum width allocated for displaying time

@@ -401,7 +401,7 @@ class SliderValue {
 }
 
 /// Theme for [Slider].
-class SliderTheme {
+class SliderTheme extends ComponentThemeData {
   /// Height of the track.
   final double? trackHeight;
 

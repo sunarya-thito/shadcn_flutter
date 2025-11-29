@@ -25,7 +25,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   child: MyApp(),
 /// )
 /// ```
-class SwiperTheme {
+class SwiperTheme extends ComponentThemeData {
   /// Whether the swiper should expand to fill available space.
   final bool? expands;
 

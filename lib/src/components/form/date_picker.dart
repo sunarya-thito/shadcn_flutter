@@ -8,7 +8,7 @@ import '../../../shadcn_flutter.dart';
 ///
 /// Supports comprehensive customization of date picker appearance, initial views,
 /// and interaction modes to match application design requirements.
-class DatePickerTheme {
+class DatePickerTheme extends ComponentThemeData {
   /// Default interaction mode for date picker triggers.
   ///
   /// Determines whether date selection opens a popover or modal dialog.

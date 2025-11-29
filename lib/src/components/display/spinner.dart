@@ -1,7 +1,7 @@
 import '../../../shadcn_flutter.dart';
 
 /// Theme configuration for spinner widgets.
-class SpinnerTheme {
+class SpinnerTheme extends ComponentThemeData {
   /// Color of the spinner elements.
   final Color? color;
 

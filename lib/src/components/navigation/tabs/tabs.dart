@@ -6,7 +6,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// [Tabs] widgets, including padding for the container and individual tabs,
 /// background colors, and border radius styling. These properties can be
 /// set at the theme level to provide consistent styling across the application.
-class TabsTheme {
+class TabsTheme extends ComponentThemeData {
   /// Padding around the entire tabs container.
   ///
   /// Defines the outer spacing for the tabs widget. If `null`,

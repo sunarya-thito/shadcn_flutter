@@ -8,7 +8,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///
 /// Defines visual properties for formatted input components including
 /// height and padding. Applied globally through [ComponentTheme] or per-instance.
-class FormattedInputTheme {
+class FormattedInputTheme extends ComponentThemeData {
   /// The height of the formatted input.
   final double? height;
 
@@ -320,8 +320,33 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
       hasPlaceholder: widget.placeholder != null,
       text: widget.data.initialValue,
     );
+    _controller.addListener(_onTextChanged);
     if (widget.data.controller != null) {
       widget.data.controller!.addListener(_onFormattedInputControllerChange);
+    }
+  }
+
+  void _onTextChanged() {
+    if (_updating) return;
+    _updating = true;
+    try {
+      if (widget.data.controller != null) {
+        var value = widget.data.controller!.value;
+        var parts = List<FormattedValuePart>.from(value.parts);
+        int valueIndex = 0;
+        for (int i = 0; i < parts.length; i++) {
+          if (parts[i].part.canHaveValue) {
+            if (valueIndex == widget.data.partIndex) {
+              parts[i] = parts[i].withValue(_controller.text);
+              break;
+            }
+            valueIndex++;
+          }
+        }
+        widget.data.controller!.value = FormattedValue(parts);
+      }
+    } finally {
+      _updating = false;
     }
   }
 
@@ -336,7 +361,9 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
         var value = widget.data.controller!.value;
         var part = value.values.elementAt(widget.data.partIndex);
         String newText = part.value ?? '';
-        _controller.value = _controller.value.replaceText(newText);
+        if (_controller.text != newText) {
+          _controller.value = _controller.value.replaceText(newText);
+        }
       }
     } finally {
       _updating = false;

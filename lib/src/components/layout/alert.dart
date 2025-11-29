@@ -8,7 +8,7 @@ import '../../../shadcn_flutter.dart';
 ///
 /// The theme integrates with the overall design system by using appropriate
 /// color schemes and scaling factors from [ThemeData].
-class AlertTheme {
+class AlertTheme extends ComponentThemeData {
   /// The internal padding around the alert content.
   ///
   /// Type: `EdgeInsetsGeometry?`. If null, uses default padding based on scaling.

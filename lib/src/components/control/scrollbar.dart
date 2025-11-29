@@ -7,7 +7,7 @@ import 'package:flutter/gestures.dart';
 import '../../../shadcn_flutter.dart';
 
 /// Theme configuration for [Scrollbar].
-class ScrollbarTheme {
+class ScrollbarTheme extends ComponentThemeData {
   /// Color of the scrollbar thumb.
   final Color? color;
 

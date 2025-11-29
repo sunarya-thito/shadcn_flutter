@@ -12,7 +12,7 @@ typedef KeyboardShortcutDisplayBuilder = Widget Function(
 );
 
 /// Theme for keyboard shortcut displays.
-class KeyboardShortcutTheme {
+class KeyboardShortcutTheme extends ComponentThemeData {
   /// Spacing between keys.
   final double? spacing;
 

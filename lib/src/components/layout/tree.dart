@@ -21,7 +21,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   child: TreeView(...),
 /// )
 /// ```
-class TreeTheme {
+class TreeTheme extends ComponentThemeData {
   /// The branch line style for connecting tree nodes.
   ///
   /// Type: `BranchLine?`. If null, uses BranchLine.path. Controls how visual

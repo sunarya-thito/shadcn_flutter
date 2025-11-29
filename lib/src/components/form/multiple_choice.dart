@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Theme data for [MultipleChoice] and [MultipleAnswer].
-class MultipleChoiceTheme {
+class MultipleChoiceTheme extends ComponentThemeData {
   /// Whether selections can be unselected.
   final bool? allowUnselect;
 

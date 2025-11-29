@@ -382,7 +382,7 @@ enum CarouselAlignment {
 }
 
 /// Theme data for [Carousel].
-class CarouselTheme {
+class CarouselTheme extends ComponentThemeData {
   /// The alignment of carousel items.
   final CarouselAlignment? alignment;
 

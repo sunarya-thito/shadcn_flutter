@@ -26,7 +26,7 @@ import 'package:flutter/cupertino.dart' as cupertino;
 /// [TextField] widgets, including border styling, fill state, padding,
 /// and border radius. These properties can be set at the theme level
 /// to provide consistent styling across the application.
-class TextFieldTheme {
+class TextFieldTheme extends ComponentThemeData {
   /// Border radius for text field corners.
   ///
   /// If `null`, uses default border radius from the theme.

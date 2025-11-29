@@ -38,7 +38,7 @@ typedef DrawerBuilder = Widget Function(BuildContext context, Size extraSize,
 ///   child: MyApp(),
 /// )
 /// ```
-class DrawerTheme {
+class DrawerTheme extends ComponentThemeData {
   /// Surface opacity for backdrop effects.
   final double? surfaceOpacity;
 
@@ -1670,9 +1670,11 @@ class DrawerOverlayState extends State<DrawerOverlay> {
   /// Parameters:
   /// - [entry] (DrawerOverlayEntry, required): Entry to remove
   void removeEntry(DrawerOverlayEntry entry) {
-    setState(() {
-      _entries.remove(entry);
-    });
+    if (mounted) {
+      setState(() {
+        _entries.remove(entry);
+      });
+    }
   }
 
   @override

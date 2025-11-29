@@ -19,7 +19,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   child: MyApp(),
 /// )
 /// ```
-class ModalBackdropTheme {
+class ModalBackdropTheme extends ComponentThemeData {
   /// Border radius applied to the modal surface.
   final BorderRadiusGeometry? borderRadius;
 

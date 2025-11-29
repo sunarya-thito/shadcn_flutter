@@ -1,10 +1,8 @@
 import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
-
-import '../../../shadcn_flutter.dart';
-import '../../resizer.dart';
+import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/src/resizer.dart';
 
 /// Theme configuration for [Table] components.
 ///
@@ -29,7 +27,7 @@ import '../../resizer.dart';
 ///   child: MyTableWidget(),
 /// );
 /// ```
-class TableTheme {
+class TableTheme extends ComponentThemeData {
   /// Border configuration for the entire table.
   ///
   /// Type: `Border?`. Defines the outer border of the table container.
@@ -284,7 +282,7 @@ class TableCellTheme {
 ///   resizerColor: Colors.blue,
 /// )
 /// ```
-class ResizableTableTheme {
+class ResizableTableTheme extends ComponentThemeData {
   /// Base theme configuration for the table.
   final TableTheme? tableTheme;
 
@@ -2247,7 +2245,7 @@ class RawCell extends ParentDataWidget<TableParentData> {
 ///
 /// Abstract class that defines how table columns and rows should be sized.
 /// Implementations include fixed, flexible, and intrinsic sizing modes.
-abstract class TableSize {
+abstract base class TableSize {
   /// Creates a [TableSize].
   const TableSize();
 }
@@ -2261,7 +2259,7 @@ abstract class TableSize {
 /// ```dart
 /// FlexTableSize(flex: 2.0, fit: FlexFit.tight)
 /// ```
-class FlexTableSize extends TableSize {
+final class FlexTableSize extends TableSize {
   /// Flex factor for space distribution. Defaults to 1.
   final double flex;
 
@@ -2281,7 +2279,7 @@ class FlexTableSize extends TableSize {
 /// ```dart
 /// FixedTableSize(150.0) // 150 pixels
 /// ```
-class FixedTableSize extends TableSize {
+final class FixedTableSize extends TableSize {
   /// The fixed size value in pixels.
   final double value;
 
@@ -2298,9 +2296,25 @@ class FixedTableSize extends TableSize {
 /// ```dart
 /// IntrinsicTableSize() // Size based on content
 /// ```
-class IntrinsicTableSize extends TableSize {
+final class IntrinsicTableSize extends TableSize {
   /// Creates an [IntrinsicTableSize].
   const IntrinsicTableSize();
+}
+
+/// Table size mode that uses a fractional value of the table's size.
+///
+/// Sizes the column/row based on a fractional value of the table's size.
+///
+/// Example:
+/// ```dart
+/// FractionalTableSize(0.5) // 50% of table size
+/// ```
+final class FractionalTableSize extends TableSize {
+  /// The fractional value of the table's size.
+  final double fraction;
+
+  /// Creates a [FractionalTableSize] with the specified fractional value.
+  const FractionalTableSize(this.fraction);
 }
 
 /// Predicate function to test if a cell matches certain criteria.
@@ -2696,8 +2710,8 @@ class RenderTableLayout extends RenderBox
         }
         child.layout(BoxConstraints.tightFor(width: width, height: height));
         final offset = result.getOffset(column, row);
-        double offsetX = offset.dx;
-        double offsetY = offset.dy;
+        double offsetX = offset.dx - (_horizontalOffset ?? 0);
+        double offsetY = offset.dy - (_verticalOffset ?? 0);
         if (frozenRow) {
           double verticalOffset = _verticalOffset ?? 0;
           verticalOffset = max(0, verticalOffset);
@@ -2705,7 +2719,7 @@ class RenderTableLayout extends RenderBox
             double maxVerticalOffset = size.height - _viewportSize!.height;
             verticalOffset = min(verticalOffset, maxVerticalOffset);
           }
-          double offsetInViewport = offsetY - verticalOffset;
+          double offsetInViewport = offsetY;
           // make sure its visible on the viewport
           double minViewport = 0;
           double maxViewport = constraints.minHeight;
@@ -2729,7 +2743,7 @@ class RenderTableLayout extends RenderBox
             double maxHorizontalOffset = size.width - _viewportSize!.width;
             horizontalOffset = min(horizontalOffset, maxHorizontalOffset);
           }
-          double offsetInViewport = offsetX - horizontalOffset;
+          double offsetInViewport = offsetX;
           // make sure its visible on the viewport
           double minViewport = 0;
           double maxViewport = constraints.minWidth;
@@ -2749,8 +2763,8 @@ class RenderTableLayout extends RenderBox
         parentData.frozenRow = frozenRow;
         parentData.frozenColumn = frozenColumn;
         parentData.offset = Offset(offsetX, offsetY);
-        child = childAfter(child);
       }
+      child = childAfter(child);
     }
 
     _layoutResult = result;
@@ -2838,6 +2852,11 @@ class RenderTableLayout extends RenderBox
       } else if (widthConstraint is FixedTableSize) {
         fixedWidth += widthConstraint.value;
         columnWidths[c] = max(columnWidths[c] ?? 0, widthConstraint.value);
+      } else if (widthConstraint is FractionalTableSize &&
+          constraints.hasBoundedWidth) {
+        double value = widthConstraint.fraction * constraints.maxWidth;
+        fixedWidth += value;
+        columnWidths[c] = max(columnWidths[c] ?? 0, value);
       }
     }
 
@@ -2891,10 +2910,11 @@ class RenderTableLayout extends RenderBox
             maxIntrinsicHeight = min(maxIntrinsicHeight, remainingHeight);
             int rowSpan = parentData.rowSpan ?? 1;
             // distribute the intrinsic height to all rows
+
             maxIntrinsicHeight = maxIntrinsicHeight / rowSpan;
             for (int i = 0; i < rowSpan; i++) {
               rowHeights[row + i] =
-                  max(columnWidths[row + i] ?? 0, maxIntrinsicHeight);
+                  max(rowHeights[row + i] ?? 0, maxIntrinsicHeight);
             }
           }
         }
@@ -2974,6 +2994,47 @@ class RenderTableLayout extends RenderBox
             }
           }
         }
+      }
+    }
+
+    // Second pass: recalculate intrinsic sizes if they depend on flex sizes
+    if (intrinsicComputer == null) {
+      child = lastChild;
+      while (child != null) {
+        final parentData = child.parentData as TableParentData;
+        if (parentData.computeSize) {
+          int? column = parentData.column;
+          int? row = parentData.row;
+          if (column != null && row != null) {
+            final heightConstraint = _height(row);
+            // Check if we need to recalculate height (Intrinsic row with Flex/Fixed column)
+            if (heightConstraint is IntrinsicTableSize) {
+              // If column was Flex, it now has a calculated width in columnWidths
+              // If column was Fixed, it's also in columnWidths
+              // We can use the actual column width now
+              int columnSpan = parentData.columnSpan ?? 1;
+              double availableWidth = 0;
+              for (int i = 0; i < columnSpan; i++) {
+                availableWidth += columnWidths[column + i] ?? 0;
+              }
+
+              if (availableWidth > 0) {
+                double maxIntrinsicHeight =
+                    child.getMaxIntrinsicHeight(availableWidth);
+                maxIntrinsicHeight = min(maxIntrinsicHeight, remainingHeight);
+
+                int rowSpan = parentData.rowSpan ?? 1;
+
+                maxIntrinsicHeight = maxIntrinsicHeight / rowSpan;
+                for (int i = 0; i < rowSpan; i++) {
+                  rowHeights[row + i] =
+                      max(rowHeights[row + i] ?? 0, maxIntrinsicHeight);
+                }
+              }
+            }
+          }
+        }
+        child = childBefore(child);
       }
     }
 

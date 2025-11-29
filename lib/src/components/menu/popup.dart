@@ -1,7 +1,7 @@
 import '../../../shadcn_flutter.dart';
 
 /// A theme for [MenuPopup].
-class MenuPopupTheme {
+class MenuPopupTheme extends ComponentThemeData {
   /// The opacity of the surface.
   final double? surfaceOpacity;
 

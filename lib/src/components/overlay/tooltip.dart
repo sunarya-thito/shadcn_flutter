@@ -8,7 +8,7 @@ import '../../../shadcn_flutter.dart';
 /// tooltip containers, including surface effects, padding, colors,
 /// and border styling. These properties can be set at the theme level
 /// to provide consistent styling across the application.
-class TooltipTheme {
+class TooltipTheme extends ComponentThemeData {
   /// Opacity applied to the tooltip surface color.
   final double? surfaceOpacity;
 

@@ -6,7 +6,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// badge types including [PrimaryBadge], [SecondaryBadge], [OutlineBadge],
 /// and [DestructiveBadge]. Each badge style can have its own button styling
 /// configuration to provide consistent appearance across the application.
-class BadgeTheme {
+class BadgeTheme extends ComponentThemeData {
   /// Style for [PrimaryBadge].
   final AbstractButtonStyle? primaryStyle;
 

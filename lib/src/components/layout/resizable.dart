@@ -6,7 +6,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/resizer.dart';
 
 /// Theme for [HorizontalResizableDragger] and [VerticalResizableDragger].
-class ResizableDraggerTheme {
+class ResizableDraggerTheme extends ComponentThemeData {
   /// Background color of the dragger.
   final Color? color;
 

@@ -22,7 +22,7 @@ import '../../../shadcn_flutter.dart';
 ///   child: MyCodeSnippetWidget(),
 /// );
 /// ```
-class CodeSnippetTheme {
+class CodeSnippetTheme extends ComponentThemeData {
   /// Background color of the code snippet container.
   ///
   /// Type: `Color?`. Used as the background color for the code display area.

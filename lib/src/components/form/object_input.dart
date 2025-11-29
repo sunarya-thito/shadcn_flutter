@@ -745,7 +745,9 @@ class _TimeInputState extends State<TimeInput> {
   }
 
   TimeOfDay? _convertFromNullableTimeOfDay(NullableTimeOfDay value) {
-    return value.toTimeOfDay;
+    return value.getTimeOfDay(
+      defaultSecond: widget.showSeconds ? null : 0,
+    );
   }
 
   @override

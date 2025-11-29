@@ -21,7 +21,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   child: MyCollapsibleWidget(),
 /// );
 /// ```
-class CollapsibleTheme {
+class CollapsibleTheme extends ComponentThemeData {
   /// Horizontal padding applied around [CollapsibleTrigger] content.
   ///
   /// Controls the internal spacing within the trigger area. If null,

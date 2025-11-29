@@ -8,7 +8,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///
 /// The theme can be applied through [ComponentTheme] or passed directly
 /// to individual [NavigationMenu] widgets for customization.
-class NavigationMenuTheme {
+class NavigationMenuTheme extends ComponentThemeData {
   /// Opacity of the popover surface.
   final double? surfaceOpacity;
 

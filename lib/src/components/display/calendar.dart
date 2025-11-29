@@ -5,7 +5,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///
 /// Provides styling options for calendar components, including arrow icon colors
 /// for navigation buttons and other visual elements.
-class CalendarTheme {
+class CalendarTheme extends ComponentThemeData {
   /// Color of navigation arrow icons.
   final Color? arrowIconColor;
 

@@ -18,7 +18,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   child: MyApp(),
 /// );
 /// ```
-class StepperTheme {
+class StepperTheme extends ComponentThemeData {
   /// Layout direction for the stepper.
   final Axis? direction;
 

@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Theme for [Chip].
-class ChipTheme {
+class ChipTheme extends ComponentThemeData {
   /// The padding inside the chip.
   final EdgeInsetsGeometry? padding;
 

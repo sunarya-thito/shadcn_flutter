@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Theme for [ContextMenuPopup] and context menu widgets.
-class ContextMenuTheme {
+class ContextMenuTheme extends ComponentThemeData {
   /// Surface opacity for the popup container.
   final double? surfaceOpacity;
 

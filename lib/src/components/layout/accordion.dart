@@ -138,7 +138,7 @@ class AccordionState extends State<Accordion> {
 ///   child: MyAccordionWidget(),
 /// );
 /// ```
-class AccordionTheme {
+class AccordionTheme extends ComponentThemeData {
   /// Duration of the expand/collapse animation.
   ///
   /// Controls how long it takes for accordion items to animate between
