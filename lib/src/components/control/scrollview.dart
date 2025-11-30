@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -27,7 +26,7 @@ class ScrollViewInterceptor extends StatefulWidget {
 const double kScrollDragSpeed = 0.02;
 
 /// The maximum scroll speed allowed (10.0).
-const double kMaxScrollSpeed = 10;
+const double kMaxScrollSpeed = 10.0;
 
 /// A custom pointer scroll event for desktop platforms.
 ///
@@ -104,38 +103,56 @@ class _ScrollViewInterceptorState extends State<ScrollViewInterceptor>
     }
   }
 
+  void _activate(PointerDownEvent event) {
+    _event = event;
+    _lastOffset = event.position;
+    _lastTime = null;
+    _ticker.start();
+    setState(() {
+      _cursor = SystemMouseCursors.allScroll;
+    });
+  }
+
+  void _deactivate() {
+    _ticker.stop();
+    _lastTime = null;
+    _event = null;
+    _lastOffset = null;
+    setState(() {
+      _cursor = null;
+    });
+  }
+
+  void _toggleScrollMode(PointerDownEvent event) {
+    if (_ticker.isActive) {
+      _deactivate();
+    } else if (event.buttons == 4) {
+      _activate(event);
+    }
+  }
+
+  bool pointerMoved = false;
   @override
   Widget build(BuildContext context) {
     if (!widget.enabled) return widget.child;
+
     return Stack(
       clipBehavior: Clip.none,
       fit: StackFit.passthrough,
       children: [
         Listener(
           onPointerDown: (event) {
-            // check if middle button is pressed
-            if (event.buttons != 4 || _ticker.isActive) return;
-            _event = event;
-            _lastOffset = event.position;
-            _lastTime = null;
-            _ticker.start();
-            setState(() {
-              _cursor = SystemMouseCursors.allScroll;
-            });
+            pointerMoved = false;
+            _toggleScrollMode(event);
           },
           onPointerUp: (event) {
-            if (_ticker.isActive) {
-              _ticker.stop();
-              _lastTime = null;
-              _event = null;
-              _lastOffset = null;
-              setState(() {
-                _cursor = null;
-              });
+            if (_ticker.isActive && pointerMoved) {
+              _deactivate();
             }
           },
           onPointerMove: (event) {
             if (_ticker.isActive) {
+              pointerMoved = true;
               _lastOffset = event.position;
             }
           },
@@ -144,6 +161,7 @@ class _ScrollViewInterceptorState extends State<ScrollViewInterceptor>
         if (_cursor != null)
           Positioned.fill(
             child: MouseRegion(
+              onHover: (event) => {_lastOffset = event.position},
               cursor: _cursor!,
               hitTestBehavior: HitTestBehavior.translucent,
             ),
