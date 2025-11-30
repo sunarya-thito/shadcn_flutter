@@ -95,6 +95,15 @@ abstract class InputPart implements FormattedValuePart {
   FormattedValuePart withValue(String value) {
     return FormattedValuePart(this, value);
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is InputPart && other.partKey == partKey;
+  }
+
+  @override
+  int get hashCode => partKey.hashCode;
 }
 
 /// A part that displays a custom widget.
@@ -112,6 +121,15 @@ class WidgetPart extends InputPart {
 
   @override
   Object? get partKey => widget.key;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is WidgetPart && other.widget == widget;
+  }
+
+  @override
+  int get hashCode => widget.hashCode;
 }
 
 /// A part that displays static, non-editable text.
@@ -142,6 +160,15 @@ class StaticPart extends InputPart {
   String toString() {
     return 'StaticPart{text: $text}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is StaticPart && other.text == text;
+  }
+
+  @override
+  int get hashCode => text.hashCode;
 }
 
 class _StaticPartWidget extends StatefulWidget {
@@ -221,6 +248,21 @@ class EditablePart extends InputPart {
   String toString() {
     return 'EditablePart{length: $length, obscureText: $obscureText, inputFormatters: $inputFormatters, width: $width, placeholder: $placeholder}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is EditablePart &&
+        other.length == length &&
+        other.obscureText == obscureText &&
+        listEquals(other.inputFormatters, inputFormatters) &&
+        other.width == width &&
+        other.placeholder == placeholder;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      length, obscureText, Object.hashAll(inputFormatters), width, placeholder);
 }
 
 class _EditablePartController extends TextEditingController {
@@ -380,6 +422,11 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
         hasPlaceholder: widget.placeholder != null,
         text: oldValue.text,
       );
+    } else if (widget.data.initialValue != oldWidget.data.initialValue) {
+      // Update text if initialValue changes externally
+      if (_controller.text != widget.data.initialValue) {
+        _controller.text = widget.data.initialValue ?? '';
+      }
     }
     if (oldWidget.data.controller != widget.data.controller) {
       if (oldWidget.data.controller != null) {
@@ -836,8 +883,9 @@ class _FormattedInputState extends State<FormattedInput> {
       } else {
         _focusNodes = _allocateFocusNodes(0, _focusNodes);
       }
-      if (widget.onChanged != null) {
-        widget.onChanged!(FormattedValue(parts));
+      var newValue = FormattedValue(parts);
+      if (widget.onChanged != null && newValue != _value) {
+        widget.onChanged!(newValue);
       }
     } finally {
       _updating = false;

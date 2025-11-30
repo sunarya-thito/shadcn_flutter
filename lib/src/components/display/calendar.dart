@@ -185,6 +185,24 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
     _yearSelectStart = (_view.year ~/ 16) * 16;
   }
 
+  @override
+  void didUpdateWidget(covariant DatePickerDialog oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialView != oldWidget.initialView ||
+        widget.initialValue != oldWidget.initialValue) {
+      _view =
+          widget.initialView ?? widget.initialValue?.view ?? CalendarView.now();
+      _alternateView = _view.next;
+      _yearSelectStart = (_view.year ~/ 16) * 16;
+    }
+    if (widget.initialValue != oldWidget.initialValue) {
+      _value = widget.initialValue;
+    }
+    if (widget.initialViewType != oldWidget.initialViewType) {
+      _viewType = widget.initialViewType;
+    }
+  }
+
   String getHeaderText(ShadcnLocalizations localizations, CalendarView view,
       CalendarViewType viewType) {
     if (viewType == CalendarViewType.date) {

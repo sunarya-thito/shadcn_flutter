@@ -2,4 +2,5 @@
 trigger: always_on
 ---
 
-Never use multi_replace_file_content
+Never edit the file partially, it will always corrupt the file.
+ALWAYS generate the whole file!
