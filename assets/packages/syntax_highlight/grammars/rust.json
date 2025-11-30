@@ -1,0 +1,148 @@
+{
+  "name": "Rust",
+  "version": "1.0.0",
+  "fileTypes": ["rs"],
+  "scopeName": "source.rust",
+  "foldingStartMarker": "\\{\\s*$",
+  "foldingStopMarker": "^\\s*\\}",
+  "patterns": [
+    {
+      "name": "meta.preprocessor.rust",
+      "match": "^(#!.*)$"
+    },
+    {
+      "name": "meta.use-declaration.rust",
+      "begin": "^\\s*use\\b",
+      "end": ";",
+      "patterns": [
+        {
+          "include": "#strings"
+        },
+        {
+          "name": "keyword.control.rust",
+          "match": "\\b(as)\\b"
+        }
+      ]
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#punctuation"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#strings"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.rust",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.rust",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.semi-colon.rust",
+          "match": ";"
+        },
+        {
+          "name": "punctuation.comma.rust",
+          "match": ","
+        },
+        {
+          "name": "punctuation.bracket.rust",
+          "match": "[\\[\\]{}()]"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.rust",
+          "match": "\\b(if|else|match|loop|while|for|break|continue|return|yield)\\b"
+        },
+        {
+          "name": "keyword.declaration.rust",
+          "match": "\\b(let|const|static|mut|ref|fn|struct|enum|impl|trait|type|mod|use|crate|extern|pub|self|super)\\b"
+        },
+        {
+          "name": "storage.modifier.rust",
+          "match": "\\b(async|move|unsafe|dyn)\\b"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.rust",
+          "match": "\\b(true|false|null)\\b"
+        },
+        {
+          "name": "constant.numeric.rust",
+          "match": "\\b\\d+(\\.\\d+)?([eE][+-]?\\d+)?\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.rust",
+          "match": "(\\+=|\\-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=|==|!=|<=|>=|&&|\\|\\||!|\\-|\\+|\\*|/|%|&|\\||\\^|<<|>>)"
+        },
+        {
+          "name": "keyword.operator.assignment.rust",
+          "match": "="
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.rust",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.rust",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.raw.rust",
+          "begin": "r#\"",
+          "end": "\"#"
+        },
+        {
+          "name": "string.quoted.char.rust",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.rust",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
