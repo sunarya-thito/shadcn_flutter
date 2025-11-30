@@ -1,6 +1,135 @@
 import 'dart:math';
 
+import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+/// A widget that constrains the width of its child based on a factor and aligns it.
+///
+/// This widget is used by [ChatBubble] to limit the width of the bubble relative to
+/// the available width and to align it within that space.
+///
+/// Parameters:
+/// - [widthFactor] (`double`, required): The fraction of the available width that the child should occupy.
+/// - [alignment] (`AxisAlignmentGeometry`, required): The alignment of the child within the available space.
+/// - [child] (`Widget`, required): The widget below this widget in the tree.
+class ChatConstrainedBox extends SingleChildRenderObjectWidget {
+  /// The fraction of the available width that the child should occupy.
+  final double widthFactor;
+
+  /// The alignment of the child within the available space.
+  final AxisAlignmentGeometry alignment;
+
+  /// Creates a [ChatConstrainedBox].
+  const ChatConstrainedBox({
+    required this.widthFactor,
+    required this.alignment,
+    required super.child,
+    super.key,
+  });
+
+  @override
+  RenderChatConstrainedBox createRenderObject(BuildContext context) {
+    return RenderChatConstrainedBox(
+      widthFactor: widthFactor,
+      alignment: alignment
+          .resolve(Directionality.maybeOf(context) ?? TextDirection.ltr),
+    );
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, RenderChatConstrainedBox renderObject) {
+    renderObject
+      ..widthFactor = widthFactor
+      ..alignment = alignment
+          .resolve(Directionality.maybeOf(context) ?? TextDirection.ltr);
+  }
+}
+
+/// A render object that constrains the width of its child and aligns it.
+///
+/// This render object implements the layout logic for [ChatConstrainedBox].
+class RenderChatConstrainedBox extends RenderShiftedBox {
+  double _widthFactor;
+  AxisAlignment _alignment;
+
+  /// Creates a [RenderChatConstrainedBox].
+  ///
+  /// Parameters:
+  /// - [widthFactor] (`double`, required): The fraction of the available width that the child should occupy.
+  /// - [alignment] (`AxisAlignment`, required): The alignment of the child within the available space.
+  /// - [child] (`RenderBox?`, optional): The child render object.
+  RenderChatConstrainedBox({
+    required double widthFactor,
+    required AxisAlignment alignment,
+    RenderBox? child,
+  })  : _widthFactor = widthFactor,
+        _alignment = alignment,
+        super(child);
+
+  /// The fraction of the available width that the child should occupy.
+  double get widthFactor => _widthFactor;
+
+  /// The alignment of the child within the available space.
+  AxisAlignment get alignment => _alignment;
+
+  /// Sets the width factor.
+  set widthFactor(double value) {
+    if (_widthFactor != value) {
+      _widthFactor = value;
+      markNeedsLayout();
+    }
+  }
+
+  /// Sets the alignment.
+  set alignment(AxisAlignment value) {
+    if (_alignment != value) {
+      _alignment = value;
+      markNeedsLayout();
+    }
+  }
+
+  @override
+  void performLayout() {
+    if (child == null) {
+      size = this.constraints.smallest;
+      return;
+    }
+    var constraints = this.constraints;
+    var newMaxWidth = constraints.maxWidth * _widthFactor;
+    constraints = constraints.copyWith(maxWidth: newMaxWidth, minWidth: 0);
+    child!.layout(constraints, parentUsesSize: true);
+    size = this
+        .constraints
+        .constrain(Size(this.constraints.maxWidth, child!.size.height));
+    double x = _alignment.alongValue(
+        Axis.horizontal, this.constraints.maxWidth - child!.size.width);
+    final data = child!.parentData as BoxParentData;
+    data.offset = Offset(x, 0);
+  }
+
+  @override
+  Size computeDryLayout(covariant BoxConstraints constraints) {
+    if (child == null) {
+      return constraints.smallest;
+    }
+    var newMaxWidth = constraints.maxWidth * _widthFactor;
+    var newConstraints =
+        constraints.copyWith(maxWidth: newMaxWidth, minWidth: 0);
+    Size childSize = child!.getDryLayout(newConstraints);
+    return constraints.constrain(Size(constraints.maxWidth, childSize.height));
+  }
+
+  @override
+  double computeMaxIntrinsicHeight(double width) {
+    return super.computeMaxIntrinsicHeight(width * _widthFactor);
+  }
+
+  @override
+  double computeMinIntrinsicHeight(double width) {
+    return super.computeMinIntrinsicHeight(width * _widthFactor);
+  }
+}
 
 /// Defines the theme for a [ChatGroup].
 class ChatGroupTheme extends ComponentThemeData {
@@ -88,6 +217,9 @@ class ChatTheme extends ComponentThemeData {
   /// The border of the chat bubble.
   final BorderSide? border;
 
+  /// The width factor of the chat bubble.
+  final double? widthFactor;
+
   /// Creates a [ChatTheme].
   ///
   /// Parameters:
@@ -97,6 +229,7 @@ class ChatTheme extends ComponentThemeData {
   /// - [borderRadius] (`BorderRadiusGeometry?`, optional): The border radius of the chat bubble.
   /// - [padding] (`EdgeInsetsGeometry?`, optional): The padding inside the chat bubble.
   /// - [border] (`BorderSide?`, optional): The border of the chat bubble.
+  /// - [widthFactor] (`double?`, optional): The width factor of the chat bubble.
   const ChatTheme({
     this.color,
     this.alignment,
@@ -104,6 +237,7 @@ class ChatTheme extends ComponentThemeData {
     this.borderRadius,
     this.padding,
     this.border,
+    this.widthFactor,
   });
 
   /// Creates a copy of this theme with the given fields replaced with the new values.
@@ -125,6 +259,7 @@ class ChatTheme extends ComponentThemeData {
     ValueGetter<BorderRadiusGeometry?>? borderRadius,
     ValueGetter<EdgeInsetsGeometry?>? padding,
     ValueGetter<BorderSide?>? border,
+    ValueGetter<double?>? widthFactor,
   }) {
     return ChatTheme(
       color: color == null ? this.color : color(),
@@ -133,12 +268,13 @@ class ChatTheme extends ComponentThemeData {
       borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
       padding: padding == null ? this.padding : padding(),
       border: border == null ? this.border : border(),
+      widthFactor: widthFactor == null ? this.widthFactor : widthFactor(),
     );
   }
 
   @override
   String toString() {
-    return 'ChatTheme(color: $color, alignment: $alignment, type: $type, borderRadius: $borderRadius, padding: $padding)';
+    return 'ChatTheme(color: $color, alignment: $alignment, type: $type, borderRadius: $borderRadius, padding: $padding, border: $border, widthFactor: $widthFactor)';
   }
 
   @override
@@ -150,12 +286,14 @@ class ChatTheme extends ComponentThemeData {
         other.type == type &&
         other.borderRadius == borderRadius &&
         other.padding == padding &&
-        other.border == border;
+        other.border == border &&
+        other.widthFactor == widthFactor;
   }
 
   @override
   int get hashCode {
-    return Object.hash(color, alignment, type, borderRadius, padding, border);
+    return Object.hash(
+        color, alignment, type, borderRadius, padding, border, widthFactor);
   }
 }
 
@@ -299,6 +437,7 @@ class ChatGroup extends StatelessWidget {
                     widgetValue: spacing,
                     themeValue: groupTheme?.spacing,
                     defaultValue: 2 * theme.scaling),
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   for (int i = 0; i < children.length; i++)
                     Data.inherit(
@@ -1115,6 +1254,9 @@ class ChatBubble extends StatelessWidget {
   /// The border radius of the chat bubble.
   final BorderRadiusGeometry? borderRadius;
 
+  /// The width factor of the chat bubble.
+  final double? widthFactor;
+
   /// Creates a [ChatBubble].
   ///
   /// Parameters:
@@ -1125,6 +1267,7 @@ class ChatBubble extends StatelessWidget {
   /// - [border] (`BorderSide?`, optional): The border of the chat bubble.
   /// - [padding] (`EdgeInsetsGeometry?`, optional): The padding inside the chat bubble.
   /// - [borderRadius] (`BorderRadiusGeometry?`, optional): The border radius of the chat bubble.
+  /// - [widthFactor] (`double?`, optional): The width factor of the chat bubble.
   const ChatBubble({
     super.key,
     required this.child,
@@ -1134,6 +1277,7 @@ class ChatBubble extends StatelessWidget {
     this.border,
     this.padding,
     this.borderRadius,
+    this.widthFactor,
   });
 
   @override
@@ -1150,14 +1294,19 @@ class ChatBubble extends StatelessWidget {
       themeValue: chatTheme?.type,
       defaultValue: ChatBubbleType.tail,
     );
-    final chatAlignment = alignment.asHorizontalAlignment(AxisAlignment.center);
     final effectiveData = (Data.maybeOf<ChatBubbleData>(context) ??
         ChatBubbleData(
           index: 0,
           length: 1,
         ));
-    return Align(
-      alignment: chatAlignment,
+    final widthFactor = styleValue(
+      widgetValue: this.widthFactor,
+      themeValue: chatTheme?.widthFactor,
+      defaultValue: 0.5,
+    );
+    return ChatConstrainedBox(
+      widthFactor: widthFactor,
+      alignment: alignment,
       child: ComponentTheme(
         data: chatTheme?.copyWith(
               color: color == null ? null : () => color,
@@ -1166,6 +1315,7 @@ class ChatBubble extends StatelessWidget {
               border: border == null ? null : () => border,
               padding: padding == null ? null : () => padding,
               borderRadius: borderRadius == null ? null : () => borderRadius,
+              widthFactor: widthFactor == 0.5 ? null : () => widthFactor,
             ) ??
             ChatTheme(
               color: color,
@@ -1174,6 +1324,7 @@ class ChatBubble extends StatelessWidget {
               border: border,
               padding: padding,
               borderRadius: borderRadius,
+              widthFactor: widthFactor,
             ),
         child: Builder(builder: (context) {
           return type.wrap(context, child, effectiveData, this);

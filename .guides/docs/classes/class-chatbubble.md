@@ -32,6 +32,8 @@ class ChatBubble extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   /// The border radius of the chat bubble.
   final BorderRadiusGeometry? borderRadius;
+  /// The width factor of the chat bubble.
+  final double? widthFactor;
   /// Creates a [ChatBubble].
   ///
   /// Parameters:
@@ -42,7 +44,8 @@ class ChatBubble extends StatelessWidget {
   /// - [border] (`BorderSide?`, optional): The border of the chat bubble.
   /// - [padding] (`EdgeInsetsGeometry?`, optional): The padding inside the chat bubble.
   /// - [borderRadius] (`BorderRadiusGeometry?`, optional): The border radius of the chat bubble.
-  const ChatBubble({super.key, required this.child, this.type, this.color, this.alignment, this.border, this.padding, this.borderRadius});
+  /// - [widthFactor] (`double?`, optional): The width factor of the chat bubble.
+  const ChatBubble({super.key, required this.child, this.type, this.color, this.alignment, this.border, this.padding, this.borderRadius, this.widthFactor});
   Widget build(BuildContext context);
 }
 ```

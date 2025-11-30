@@ -47,6 +47,7 @@ class _ChatExample1State extends State<ChatExample1> {
     return Column(
       spacing: 8,
       children: [
+        // ChatGroup example
         ChatGroup(
           color: Colors.blue,
           type: selfType,

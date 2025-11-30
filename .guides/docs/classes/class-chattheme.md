@@ -18,6 +18,8 @@ class ChatTheme extends ComponentThemeData {
   final EdgeInsetsGeometry? padding;
   /// The border of the chat bubble.
   final BorderSide? border;
+  /// The width factor of the chat bubble.
+  final double? widthFactor;
   /// Creates a [ChatTheme].
   ///
   /// Parameters:
@@ -27,7 +29,8 @@ class ChatTheme extends ComponentThemeData {
   /// - [borderRadius] (`BorderRadiusGeometry?`, optional): The border radius of the chat bubble.
   /// - [padding] (`EdgeInsetsGeometry?`, optional): The padding inside the chat bubble.
   /// - [border] (`BorderSide?`, optional): The border of the chat bubble.
-  const ChatTheme({this.color, this.alignment, this.type, this.borderRadius, this.padding, this.border});
+  /// - [widthFactor] (`double?`, optional): The width factor of the chat bubble.
+  const ChatTheme({this.color, this.alignment, this.type, this.borderRadius, this.padding, this.border, this.widthFactor});
   /// Creates a copy of this theme with the given fields replaced with the new values.
   ///
   /// Parameters:
@@ -40,7 +43,7 @@ class ChatTheme extends ComponentThemeData {
   ///
   /// Returns:
   /// A new [ChatTheme] with the specified values updated.
-  ChatTheme copyWith({ValueGetter<Color?>? color, ValueGetter<AxisAlignmentGeometry?>? alignment, ValueGetter<ChatBubbleType?>? type, ValueGetter<BorderRadiusGeometry?>? borderRadius, ValueGetter<EdgeInsetsGeometry?>? padding, ValueGetter<BorderSide?>? border});
+  ChatTheme copyWith({ValueGetter<Color?>? color, ValueGetter<AxisAlignmentGeometry?>? alignment, ValueGetter<ChatBubbleType?>? type, ValueGetter<BorderRadiusGeometry?>? borderRadius, ValueGetter<EdgeInsetsGeometry?>? padding, ValueGetter<BorderSide?>? border, ValueGetter<double?>? widthFactor});
   String toString();
   bool operator ==(Object other);
   int get hashCode;
