@@ -24,7 +24,7 @@ description: "Theme configuration for [NumberTicker] widgets."
 ///   child: MyApp(),
 /// );
 /// ```
-class NumberTickerTheme {
+class NumberTickerTheme extends ComponentThemeData {
   /// The default animation duration for number transitions.
   ///
   /// If null, individual [NumberTicker] widgets will use their own duration

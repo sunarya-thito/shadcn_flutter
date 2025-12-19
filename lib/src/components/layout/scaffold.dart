@@ -9,7 +9,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// [Scaffold] widgets, including background colors for different sections,
 /// loading spark behavior, and keyboard avoidance settings. These properties
 /// can be set at the theme level to provide consistent styling across the application.
-class ScaffoldTheme {
+class ScaffoldTheme extends ComponentThemeData {
   /// Background color of the scaffold body.
   final Color? backgroundColor;
 
@@ -43,9 +43,8 @@ class ScaffoldTheme {
     ValueGetter<bool?>? resizeToAvoidBottomInset,
   }) {
     return ScaffoldTheme(
-      backgroundColor: backgroundColor == null
-          ? this.backgroundColor
-          : backgroundColor(),
+      backgroundColor:
+          backgroundColor == null ? this.backgroundColor : backgroundColor(),
       headerBackgroundColor: headerBackgroundColor == null
           ? this.headerBackgroundColor
           : headerBackgroundColor(),
@@ -72,12 +71,12 @@ class ScaffoldTheme {
 
   @override
   int get hashCode => Object.hash(
-    backgroundColor,
-    headerBackgroundColor,
-    footerBackgroundColor,
-    showLoadingSparks,
-    resizeToAvoidBottomInset,
-  );
+        backgroundColor,
+        headerBackgroundColor,
+        footerBackgroundColor,
+        showLoadingSparks,
+        resizeToAvoidBottomInset,
+      );
 
   @override
   String toString() =>
@@ -349,8 +348,7 @@ class ScaffoldState extends State<Scaffold> {
     final viewInsets = MediaQuery.viewInsetsOf(context);
     return DrawerOverlay(
       child: Container(
-        color:
-            widget.backgroundColor ??
+        color: widget.backgroundColor ??
             compTheme?.backgroundColor ??
             theme.colorScheme.background,
         child: _ScaffoldFlex(
@@ -360,8 +358,7 @@ class ScaffoldState extends State<Scaffold> {
             buildHeader(context),
             LayoutBuilder(
               builder: (context, constraints) {
-                Widget child =
-                    (widget.resizeToAvoidBottomInset ??
+                Widget child = (widget.resizeToAvoidBottomInset ??
                         compTheme?.resizeToAvoidBottomInset ??
                         true)
                     ? Container(
@@ -717,9 +714,9 @@ class AppBar extends StatefulWidget {
     this.surfaceOpacity,
     this.useSafeArea = true,
   }) : assert(
-         child == null || title == null,
-         'Cannot provide both child and title',
-       );
+          child == null || title == null,
+          'Cannot provide both child and title',
+        );
 
   @override
   State<AppBar> createState() => _AppBarState();
@@ -741,23 +738,19 @@ class _AppBarState extends State<AppBar> {
             sigmaY: surfaceBlur ?? 0,
           ),
           child: Container(
-            color:
-                widget.backgroundColor ??
+            color: widget.backgroundColor ??
                 theme.colorScheme.card.scaleAlpha(surfaceOpacity ?? 1),
             alignment: widget.alignment,
-            padding:
-                widget.padding ??
+            padding: widget.padding ??
                 (const EdgeInsets.symmetric(horizontal: 18, vertical: 12) *
                     scaling),
             child: SafeArea(
-              top:
-                  widget.useSafeArea &&
+              top: widget.useSafeArea &&
                   barData?.isHeader == true &&
                   barData?.childIndex == 0,
               right: widget.useSafeArea,
               left: widget.useSafeArea,
-              bottom:
-                  widget.useSafeArea &&
+              bottom: widget.useSafeArea &&
                   barData?.isHeader == false &&
                   barData?.childIndex == (barData?.childrenCount ?? 0) - 1,
               child: SizedBox(
@@ -775,8 +768,7 @@ class _AppBarState extends State<AppBar> {
                         fit: widget.trailingExpanded
                             ? FlexFit.loose
                             : FlexFit.tight,
-                        child:
-                            widget.child ??
+                        child: widget.child ??
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -868,8 +860,8 @@ class _ScaffoldRenderFlex extends RenderBox
   _ScaffoldRenderFlex({
     required bool floatingHeader,
     required bool floatingFooter,
-  }) : _floatingHeader = floatingHeader,
-       _floatingFooter = floatingFooter;
+  })  : _floatingHeader = floatingHeader,
+        _floatingFooter = floatingFooter;
 
   bool _floatingHeader = false;
   bool _floatingFooter = false;
@@ -1083,15 +1075,15 @@ class _RenderScaffoldPadding extends RenderBox
     switch (_paddingType) {
       case _ScaffoldPaddingType.header:
         constraints = this.constraints.copyWith(
-          minHeight: parentData!._headerSize.value,
-          maxHeight: parentData._headerSize.value,
-        );
+              minHeight: parentData!._headerSize.value,
+              maxHeight: parentData._headerSize.value,
+            );
         break;
       case _ScaffoldPaddingType.footer:
         constraints = this.constraints.copyWith(
-          minHeight: parentData!._footerSize.value,
-          maxHeight: parentData._footerSize.value,
-        );
+              minHeight: parentData!._footerSize.value,
+              maxHeight: parentData._footerSize.value,
+            );
         break;
     }
     final child = firstChild;

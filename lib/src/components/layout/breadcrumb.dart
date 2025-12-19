@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import '../../../shadcn_flutter.dart';
 
 /// Theme for [Breadcrumb].
-class BreadcrumbTheme {
+class BreadcrumbTheme extends ComponentThemeData {
   /// Separator widget between breadcrumb items.
   final Widget? separator;
 

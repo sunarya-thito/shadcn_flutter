@@ -13,7 +13,7 @@ const kSwitchDuration = Duration(milliseconds: 100);
 ///
 /// Supports comprehensive customization of switch appearance including track
 /// colors, thumb colors, and layout properties to match application design.
-class SwitchTheme {
+class SwitchTheme extends ComponentThemeData {
   /// Color of the switch track when in the active/on state.
   ///
   /// Applied as the background color of the switch track when toggled on.

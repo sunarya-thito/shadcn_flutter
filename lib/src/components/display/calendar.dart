@@ -5,7 +5,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///
 /// Provides styling options for calendar components, including arrow icon colors
 /// for navigation buttons and other visual elements.
-class CalendarTheme {
+class CalendarTheme extends ComponentThemeData {
   /// Color of navigation arrow icons.
   final Color? arrowIconColor;
 
@@ -183,6 +183,24 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
     _viewType = widget.initialViewType;
     // _yearSelectStart = round year every 16 years so that it can fit 4x4 grid
     _yearSelectStart = (_view.year ~/ 16) * 16;
+  }
+
+  @override
+  void didUpdateWidget(covariant DatePickerDialog oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialView != oldWidget.initialView ||
+        widget.initialValue != oldWidget.initialValue) {
+      _view =
+          widget.initialView ?? widget.initialValue?.view ?? CalendarView.now();
+      _alternateView = _view.next;
+      _yearSelectStart = (_view.year ~/ 16) * 16;
+    }
+    if (widget.initialValue != oldWidget.initialValue) {
+      _value = widget.initialValue;
+    }
+    if (widget.initialViewType != oldWidget.initialViewType) {
+      _viewType = widget.initialViewType;
+    }
   }
 
   String getHeaderText(ShadcnLocalizations localizations, CalendarView view,

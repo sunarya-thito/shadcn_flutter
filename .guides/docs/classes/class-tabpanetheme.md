@@ -23,7 +23,7 @@ description: "Theme configuration for [TabPane] appearance and layout."
 /// )
 /// ```
 /// Theme for [TabPane].
-class TabPaneTheme {
+class TabPaneTheme extends ComponentThemeData {
   /// Border radius for the tab pane container and individual tabs.
   ///
   /// Type: `BorderRadiusGeometry?`. If null, uses the theme's large border radius.

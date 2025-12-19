@@ -25,7 +25,7 @@ description: "A file picker widget for selecting and managing file uploads."
 ///   subtitle: Text('Drag files here or click to browse'),
 ///   hotDropEnabled: true,
 ///   onAdd: () => _selectFiles(),
-///   children: selectedFiles.map((file) => 
+///   children: selectedFiles.map((file) =>
 ///     FileItem(file: file, onRemove: () => _removeFile(file))
 ///   ).toList(),
 /// )

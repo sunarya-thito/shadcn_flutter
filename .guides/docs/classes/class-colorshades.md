@@ -85,5 +85,7 @@ class ColorShades implements Color, ColorSwatch {
   double get r;
   Color withValues({double? alpha, double? red, double? green, double? blue, ColorSpace? colorSpace});
   int toARGB32();
+  int get hashCode;
+  bool operator ==(Object other);
 }
 ```

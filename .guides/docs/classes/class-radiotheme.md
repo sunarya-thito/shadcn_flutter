@@ -14,7 +14,7 @@ description: "Theme data for customizing [Radio] widget appearance."
 /// The theme affects the radio button's visual appearance in both
 /// selected and unselected states, including border, background,
 /// and active indicator colors.
-class RadioTheme {
+class RadioTheme extends ComponentThemeData {
   /// Color of the radio indicator when selected.
   final Color? activeColor;
   /// Border color of the radio button.

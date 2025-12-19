@@ -1,0 +1,188 @@
+{
+  "@@locale": "en",
+  "formNotEmpty": "This field cannot be empty",
+  "invalidValue": "Invalid value",
+  "invalidEmail": "Invalid email",
+  "invalidURL": "Invalid URL",
+  "formLessThan": "Must be less than {value}",
+  "@formLessThan": {
+    "placeholders": {
+      "value": {
+        "type": "double",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "formGreaterThan": "Must be greater than {value}",
+  "@formGreaterThan": {
+    "placeholders": {
+      "value": {
+        "type": "double",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "formLessThanOrEqualTo": "Must be less than or equal to {value}",
+  "@formLessThanOrEqualTo": {
+    "placeholders": {
+      "value": {
+        "type": "double",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "formGreaterThanOrEqualTo": "Must be greater than or equal to {value}",
+  "@formGreaterThanOrEqualTo": {
+    "placeholders": {
+      "value": {
+        "type": "double",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "formBetweenInclusively": "Must be between {min} and {max} (inclusive)",
+  "@formBetweenInclusively": {
+    "placeholders": {
+      "min": {
+        "type": "double",
+        "format": "decimalPattern"
+      },
+      "max": {
+        "type": "double",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "formBetweenExclusively": "Must be between {min} and {max} (exclusive)",
+  "@formBetweenExclusively": {
+    "placeholders": {
+      "min": {
+        "type": "double",
+        "format": "decimalPattern"
+      },
+      "max": {
+        "type": "double",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "formLengthLessThan": "Must be at least {value} characters",
+  "@formLengthLessThan": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "formLengthGreaterThan": "Must be at most {value} characters",
+  "@formLengthGreaterThan": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "formPasswordDigits": "Must contain at least one digit",
+  "formPasswordLowercase": "Must contain at least one lowercase letter",
+  "formPasswordUppercase": "Must contain at least one uppercase letter",
+  "formPasswordSpecial": "Must contain at least one special character",
+  "commandSearch": "Type a command or search...",
+  "commandEmpty": "No results found.",
+  "datePickerSelectYear": "Select a year",
+  "abbreviatedMonday": "Mo",
+  "abbreviatedTuesday": "Tu",
+  "abbreviatedWednesday": "We",
+  "abbreviatedThursday": "Th",
+  "abbreviatedFriday": "Fr",
+  "abbreviatedSaturday": "Sa",
+  "abbreviatedSunday": "Su",
+  "monthJanuary": "January",
+  "monthFebruary": "February",
+  "monthMarch": "March",
+  "monthApril": "April",
+  "monthMay": "May",
+  "monthJune": "June",
+  "monthJuly": "July",
+  "monthAugust": "August",
+  "monthSeptember": "September",
+  "monthOctober": "October",
+  "monthNovember": "November",
+  "monthDecember": "December",
+  "abbreviatedJanuary": "Jan",
+  "abbreviatedFebruary": "Feb",
+  "abbreviatedMarch": "Mar",
+  "abbreviatedApril": "Apr",
+  "abbreviatedMay": "May",
+  "abbreviatedJune": "Jun",
+  "abbreviatedJuly": "Jul",
+  "abbreviatedAugust": "Aug",
+  "abbreviatedSeptember": "Sep",
+  "abbreviatedOctober": "Oct",
+  "abbreviatedNovember": "Nov",
+  "abbreviatedDecember": "Dec",
+  "buttonCancel": "Cancel",
+  "buttonSave": "Save",
+  "timeHour": "Hour",
+  "timeMinute": "Minute",
+  "timeSecond": "Second",
+  "timeAM": "AM",
+  "timePM": "PM",
+  "colorRed": "Red",
+  "colorGreen": "Green",
+  "colorBlue": "Blue",
+  "colorAlpha": "Alpha",
+  "colorHue": "Hue",
+  "colorSaturation": "Sat",
+  "colorValue": "Val",
+  "colorLightness": "Lum",
+  "menuCut": "Cut",
+  "menuCopy": "Copy",
+  "menuPaste": "Paste",
+  "menuSelectAll": "Select All",
+  "menuUndo": "Undo",
+  "menuRedo": "Redo",
+  "menuDelete": "Delete",
+  "menuShare": "Share",
+  "menuSearchWeb": "Search Web",
+  "menuLiveTextInput": "Live Text Input",
+  "placeholderDatePicker": "Select a date",
+  "placeholderTimePicker": "Select a time",
+  "placeholderColorPicker": "Select a color",
+  "buttonPrevious": "Previous",
+  "buttonNext": "Next",
+  "refreshTriggerPull": "Pull to refresh",
+  "refreshTriggerRelease": "Release to refresh",
+  "refreshTriggerRefreshing": "Refreshing...",
+  "refreshTriggerComplete": "Refresh complete",
+  "colorPickerTabRecent": "Recent",
+  "colorPickerTabRGB": "RGB",
+  "colorPickerTabHSV": "HSV",
+  "colorPickerTabHSL": "HSL",
+  "colorPickerTabHEX": "HEX",
+  "commandMoveUp": "Move Up",
+  "commandMoveDown": "Move Down",
+  "commandActivate": "Select",
+  "dataTableSelectedRows": "{count} of {total} row(s) selected.",
+  "@dataTableSelectedRows": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "dataTableNext": "Next",
+  "dataTablePrevious": "Previous",
+  "dataTableColumns": "Columns",
+  "timeDaysAbbreviation": "DD",
+  "timeHoursAbbreviation": "HH",
+  "timeMinutesAbbreviation": "MM",
+  "timeSecondsAbbreviation": "SS",
+  "placeholderDurationPicker": "Select a duration",
+  "durationDay": "Day",
+  "durationHour": "Hour",
+  "durationMinute": "Minute",
+  "durationSecond": "Second"
+}

@@ -5,7 +5,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// {@template menu_theme}
 /// Styling options for menu widgets such as [MenuGroup] and [MenuButton].
 /// {@endtemplate}
-class MenuTheme {
+class MenuTheme extends ComponentThemeData {
   /// Default padding applied to each menu item.
   final EdgeInsets? itemPadding;
 

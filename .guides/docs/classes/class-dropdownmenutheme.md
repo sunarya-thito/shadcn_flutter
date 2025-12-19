@@ -5,7 +5,7 @@ description: "Theme for [DropdownMenu]."
 
 ```dart
 /// Theme for [DropdownMenu].
-class DropdownMenuTheme {
+class DropdownMenuTheme extends ComponentThemeData {
   /// Surface opacity for the popup container.
   final double? surfaceOpacity;
   /// Surface blur for the popup container.

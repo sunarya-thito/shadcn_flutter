@@ -7,7 +7,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// [StarRating] widgets, including colors for filled and unfilled stars,
 /// star sizing, and spacing between stars. These properties can be set
 /// at the theme level to provide consistent styling across the application.
-class StarRatingTheme {
+class StarRatingTheme extends ComponentThemeData {
   /// The color of the filled portion of the stars.
   final Color? activeColor;
 

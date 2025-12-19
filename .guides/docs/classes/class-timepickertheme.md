@@ -8,7 +8,7 @@ description: "Theme configuration for [TimePicker] widget appearance and behavio
 ///
 /// Defines default settings for time picker components including display
 /// format, popover positioning, and dialog customization.
-class TimePickerTheme {
+class TimePickerTheme extends ComponentThemeData {
   /// Mode for displaying the time picker (popover or dialog).
   final PromptMode? mode;
   /// Alignment of the popover relative to its anchor.

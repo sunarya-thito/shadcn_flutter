@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../../../shadcn_flutter.dart';
 
 /// Theme configuration for [FadeScroll].
-class FadeScrollTheme {
+class FadeScrollTheme extends ComponentThemeData {
   /// The distance from the start before fading begins.
   final double? startOffset;
 

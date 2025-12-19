@@ -5,7 +5,7 @@ description: "Theme data for [ScrollableClient]."
 
 ```dart
 /// Theme data for [ScrollableClient].
-class ScrollableClientTheme {
+class ScrollableClientTheme extends ComponentThemeData {
   /// Behavior for diagonal drag gestures.
   final DiagonalDragBehavior? diagonalDragBehavior;
   /// When drag gestures should start.

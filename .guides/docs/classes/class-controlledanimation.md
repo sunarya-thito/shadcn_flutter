@@ -24,7 +24,7 @@ description: "A controlled animation that wraps an [AnimationController] and pro
 ///   duration: const Duration(milliseconds: 300),
 /// );
 /// final animation = ControlledAnimation(controller);
-/// 
+///
 /// // Animate to 0.8 with ease-in curve
 /// animation.forward(0.8, Curves.easeIn);
 /// ```

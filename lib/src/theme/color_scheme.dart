@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 Color _fromAHSL(double a, double h, double s, double l) {
@@ -379,6 +380,15 @@ class ColorShades implements Color, ColorSwatch {
   int toARGB32() {
     return _primary.toARGB32();
   }
+
+  @override
+  int get hashCode => _primary.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ColorShades && mapEquals(other._colors, _colors);
+  }
 }
 
 /// Converts a Flutter [Color] to hexadecimal string representation.
@@ -399,6 +409,16 @@ String hexFromColor(Color color) {
 /// background, foreground, primary, secondary, destructive colors, etc.
 /// Also includes sidebar and chart colors.
 class ColorScheme implements ChartColorScheme {
+  /// Returns the color scheme for the given context.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): The build context.
+  ///
+  /// Returns the color scheme for the given context.
+  static ColorScheme of(BuildContext context) {
+    return Theme.of(context).colorScheme;
+  }
+
   /// Set of recognized color key names for the color scheme.
   ///
   /// Contains all valid color property names that can be used when

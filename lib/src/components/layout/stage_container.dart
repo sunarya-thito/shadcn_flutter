@@ -135,7 +135,7 @@ class StagedBreakpoint implements StageBreakpoint {
 /// Theme configuration for [StageContainer] responsive behavior.
 ///
 /// Defines default breakpoint strategy and padding for stage containers.
-class StageContainerTheme {
+class StageContainerTheme extends ComponentThemeData {
   /// The breakpoint strategy to use.
   final StageBreakpoint? breakpoint;
 

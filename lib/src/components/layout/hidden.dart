@@ -2,7 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Theme for [Hidden].
-class HiddenTheme {
+class HiddenTheme extends ComponentThemeData {
   /// Direction of the hidden transition.
   final Axis? direction;
 

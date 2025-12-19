@@ -31,8 +31,10 @@ class ColorHistoryGrid extends StatelessWidget {
   final int crossAxisCount;
   /// The currently selected color to highlight.
   final Color? selectedColor;
+  /// The amount of colors to display in the history.
+  final int? maxTotalColors;
   /// Creates a [ColorHistoryGrid].
-  const ColorHistoryGrid({super.key, required this.storage, this.onColorPicked, this.spacing, this.crossAxisCount = 10, this.selectedColor});
+  const ColorHistoryGrid({super.key, required this.storage, this.onColorPicked, this.spacing, this.crossAxisCount = 10, this.selectedColor, this.maxTotalColors});
   Widget build(BuildContext context);
 }
 ```

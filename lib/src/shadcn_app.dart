@@ -415,7 +415,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
       m.DefaultMaterialLocalizations.delegate,
       c.DefaultCupertinoLocalizations.delegate,
       DefaultWidgetsLocalizations.delegate,
-      ShadcnLocalizationsDelegate.delegate,
+      ShadcnLocalizations.delegate,
     ];
   }
 

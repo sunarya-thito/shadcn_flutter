@@ -8,7 +8,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///
 /// Supports comprehensive customization of color picker appearance, positioning,
 /// and functionality to match application design requirements.
-class ColorInputTheme {
+class ColorInputTheme extends ComponentThemeData {
   /// Whether to display alpha (transparency) controls by default.
   ///
   /// When true, color pickers include alpha/opacity sliders and inputs.
@@ -333,6 +333,7 @@ class _ColorInputState extends State<ColorInput>
       builder: (context, value) {
         if (!showLabel) {
           return Container(
+            key: const Key('color_input_preview'),
             constraints: promptMode == PromptMode.popover
                 ? BoxConstraints(
                     minWidth: 28 * theme.scaling,

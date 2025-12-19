@@ -6,7 +6,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// [Pagination] widgets, including spacing between controls and label display
 /// preferences. These properties can be set at the theme level to provide
 /// consistent styling across the application.
-class PaginationTheme {
+class PaginationTheme extends ComponentThemeData {
   /// The spacing between pagination controls.
   final double? gap;
 

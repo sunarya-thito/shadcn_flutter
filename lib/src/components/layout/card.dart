@@ -9,7 +9,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///
 /// The theme affects both regular cards and surface cards, with surface cards
 /// supporting additional blur and opacity effects for glassmorphism styling.
-class CardTheme {
+class CardTheme extends ComponentThemeData {
   /// Padding inside the card.
   final EdgeInsetsGeometry? padding;
 

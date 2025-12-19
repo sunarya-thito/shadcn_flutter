@@ -18,7 +18,7 @@ import 'package:shadcn_flutter/src/components/patch.dart';
 ///   resizeThickness: 4.0,
 /// )
 /// ```
-class WindowTheme {
+class WindowTheme extends ComponentThemeData {
   /// Height of the window's title bar in logical pixels.
   ///
   /// Determines the vertical space allocated for the title bar which typically

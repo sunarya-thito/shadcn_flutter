@@ -48,6 +48,15 @@ class NullableDate {
   ///
   /// Returns: A [DateTime] if complete, otherwise null.
   DateTime? get nullableDate;
+  /// Converts to [DateTime] with default values if any part is null.
+  ///
+  /// Parameters:
+  /// - [defaultYear] (`int`, optional): Default year value (0-9999).
+  /// - [defaultMonth] (`int`, optional): Default month value (1-12).
+  /// - [defaultDay] (`int`, optional): Default day value (1-31).
+  ///
+  /// Returns: A [DateTime] instance with non-null parts.
+  DateTime? getDateTime({int? defaultYear = 0, int? defaultMonth = 0, int? defaultDay = 0});
   /// Retrieves the value of a specific date part.
   ///
   /// Parameters:

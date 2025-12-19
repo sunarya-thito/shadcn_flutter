@@ -12,7 +12,7 @@ description: "Theme configuration for toast notification system."
 ///
 /// The theme supports advanced features like stacking behavior, expansion modes,
 /// and sophisticated animation timing for professional toast experiences.
-class ToastTheme {
+class ToastTheme extends ComponentThemeData {
   /// Maximum number of toast notifications to stack visually.
   ///
   /// Type: `int?`. If null, defaults to 3 stacked entries. Controls how many

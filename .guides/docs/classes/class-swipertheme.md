@@ -29,7 +29,7 @@ description: "Theme configuration for swiper overlay behavior and appearance."
 ///   child: MyApp(),
 /// )
 /// ```
-class SwiperTheme {
+class SwiperTheme extends ComponentThemeData {
   /// Whether the swiper should expand to fill available space.
   final bool? expands;
   /// Whether the swiper can be dragged to dismiss.

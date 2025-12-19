@@ -23,7 +23,7 @@ description: "Theme configuration for modal backdrop appearance and behavior."
 ///   child: MyApp(),
 /// )
 /// ```
-class ModalBackdropTheme {
+class ModalBackdropTheme extends ComponentThemeData {
   /// Border radius applied to the modal surface.
   final BorderRadiusGeometry? borderRadius;
   /// Padding around the modal content area.

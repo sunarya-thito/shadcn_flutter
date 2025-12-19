@@ -312,7 +312,7 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
       size: size,
       density: density,
       shape: shape,
-      onPressed: widget.onChanged == null ? null : prompt,
+      onPressed: enabled && widget.onChanged != null ? prompt : null,
       enabled: enabled,
       child: value == null
           ? widget.placeholder.muted()

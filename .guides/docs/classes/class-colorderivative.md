@@ -19,10 +19,10 @@ description: "An abstract base class representing a color that can be transforme
 /// ```dart
 /// // Create from a Flutter Color
 /// final derivative = ColorDerivative.fromColor(Colors.blue);
-/// 
+///
 /// // Modify saturation
 /// final desaturated = derivative.changeToHSVSaturation(0.5);
-/// 
+///
 /// // Convert back to Color
 /// final newColor = desaturated.toColor();
 /// ```

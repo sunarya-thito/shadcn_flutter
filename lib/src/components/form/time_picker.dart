@@ -5,7 +5,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///
 /// Defines default settings for time picker components including display
 /// format, popover positioning, and dialog customization.
-class TimePickerTheme {
+class TimePickerTheme extends ComponentThemeData {
   /// Mode for displaying the time picker (popover or dialog).
   final PromptMode? mode;
 
@@ -628,37 +628,6 @@ class DurationPickerController extends ValueNotifier<Duration?>
     with ComponentController<Duration?> {
   /// Creates a [DurationPickerController] with an initial value.
   DurationPickerController(super.value);
-}
-
-/// Represents the parts of a duration that can be selected.
-///
-/// Used by [DurationPicker] to specify which time units are editable.
-enum DurationPart {
-  /// Day component of the duration.
-  day,
-
-  /// Hour component of the duration.
-  hour,
-
-  /// Minute component of the duration.
-  minute,
-
-  /// Second component of the duration.
-  second,
-}
-
-/// Represents the parts of a time-of-day that can be selected.
-///
-/// Used by [TimePicker] to specify which time components are editable.
-enum TimePart {
-  /// Hour component (0-23 or 1-12 depending on format).
-  hour,
-
-  /// Minute component (0-59).
-  minute,
-
-  /// Second component (0-59).
-  second,
 }
 
 /// Widget for picking duration values with day, hour, minute, and second components.

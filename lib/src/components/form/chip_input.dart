@@ -13,7 +13,7 @@ typedef ChipWidgetBuilder<T> = Widget Function(BuildContext context, T chip);
 /// Defines visual properties and default behaviors for chip input components
 /// including popover constraints and chip rendering preferences. Applied globally
 /// through [ComponentTheme] or per-instance for customization.
-class ChipInputTheme {
+class ChipInputTheme extends ComponentThemeData {
   /// Whether to render selected items as interactive chip widgets by default.
   ///
   /// When true, selected items appear as dismissible chip widgets with close buttons.

@@ -28,7 +28,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   curve: Curves.easeInOut,
 /// )
 /// ```
-class OverflowMarqueeTheme {
+class OverflowMarqueeTheme extends ComponentThemeData {
   /// Scrolling direction of the marquee.
   final Axis? direction;
 

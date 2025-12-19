@@ -96,7 +96,7 @@ enum HSLColorSliderType {
 /// Defines visual and layout properties for color picker components including
 /// spacing, orientation, and feature availability. Applied globally through
 /// [ComponentTheme] or per-instance.
-class ColorPickerTheme {
+class ColorPickerTheme extends ComponentThemeData {
   /// Spacing between major color picker sections.
   final double? spacing;
 
@@ -165,6 +165,7 @@ class ColorPickerTheme {
 /// Features:
 /// - Multiple color modes (RGB, HSL, HSV, HEX)
 /// - Optional alpha/opacity control
+
 /// - Screen color sampling with eye dropper
 /// - Flexible layout orientation
 /// - Real-time color updates

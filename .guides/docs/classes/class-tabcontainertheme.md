@@ -7,7 +7,7 @@ description: "{@template tab_container_theme}  Theme data for [TabContainer] pro
 /// {@template tab_container_theme}
 /// Theme data for [TabContainer] providing default builders.
 /// {@endtemplate}
-class TabContainerTheme {
+class TabContainerTheme extends ComponentThemeData {
   /// Default builder for laying out tab children.
   final TabBuilder? builder;
   /// Default builder for wrapping each tab child.

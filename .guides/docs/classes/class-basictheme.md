@@ -9,7 +9,7 @@ description: "Theme configuration for [Basic] layout widgets."
 /// Defines default alignment, spacing, and padding properties for Basic
 /// layout components. These properties control how leading, trailing, title,
 /// subtitle, and content elements are positioned and spaced.
-class BasicTheme {
+class BasicTheme extends ComponentThemeData {
   /// Alignment for the leading widget.
   final AlignmentGeometry? leadingAlignment;
   /// Alignment for the trailing widget.

@@ -9,6 +9,6 @@ extension ThemeExtension on BuildContext {
   /// Get the theme data
   ThemeData get theme;
   /// Get component theme
-  T? componentTheme<T>();
+  T? componentTheme<T extends ComponentThemeData>();
 }
 ```

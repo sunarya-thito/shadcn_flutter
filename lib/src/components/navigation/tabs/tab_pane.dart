@@ -20,7 +20,7 @@ import 'package:shadcn_flutter/src/components/display/fade_scroll.dart';
 /// )
 /// ```
 /// Theme for [TabPane].
-class TabPaneTheme {
+class TabPaneTheme extends ComponentThemeData {
   /// Border radius for the tab pane container and individual tabs.
   ///
   /// Type: `BorderRadiusGeometry?`. If null, uses the theme's large border radius.

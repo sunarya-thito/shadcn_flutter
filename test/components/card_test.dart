@@ -97,7 +97,7 @@ void main() {
           child: Card(
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 blurRadius: 8.0,
                 offset: Offset(0, 4),
               )
@@ -218,7 +218,7 @@ void main() {
             borderWidth: 3.0,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: 0.3),
                 blurRadius: 12.0,
                 offset: Offset(0, 6),
               )

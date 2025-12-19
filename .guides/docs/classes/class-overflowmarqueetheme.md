@@ -30,7 +30,7 @@ description: "Theme configuration for [OverflowMarquee] scrolling text displays.
 ///   curve: Curves.easeInOut,
 /// )
 /// ```
-class OverflowMarqueeTheme {
+class OverflowMarqueeTheme extends ComponentThemeData {
   /// Scrolling direction of the marquee.
   final Axis? direction;
   /// Duration of one full scroll cycle.

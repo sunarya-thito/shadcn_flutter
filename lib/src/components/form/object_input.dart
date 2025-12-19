@@ -209,11 +209,11 @@ class NullableDate {
     );
   }
 
-  /// Converts to [DateTime], using 0 for missing parts.
+  /// Converts to [DateTime], using 1 for missing parts (month/day) to avoid year shift.
   ///
   /// Returns: A [DateTime] instance (may be invalid if parts are null/0).
   DateTime get date {
-    return DateTime(year ?? 0, month ?? 0, day ?? 0);
+    return DateTime(year ?? 0, month ?? 1, day ?? 1);
   }
 
   /// Converts to [DateTime] only if all parts are present.
@@ -235,7 +235,7 @@ class NullableDate {
   ///
   /// Returns: A [DateTime] instance with non-null parts.
   DateTime? getDateTime(
-      {int? defaultYear = 0, int? defaultMonth = 0, int? defaultDay = 0}) {
+      {int? defaultYear = 0, int? defaultMonth = 1, int? defaultDay = 1}) {
     int? year = this.year ?? defaultYear;
     int? month = this.month ?? defaultMonth;
     int? day = this.day ?? defaultDay;
@@ -306,8 +306,8 @@ class _DateInputState extends State<DateInput> {
     }
     var validDateTime = value.getDateTime(
       defaultYear: datePartsOrder.contains(DatePart.year) ? null : 0,
-      defaultMonth: datePartsOrder.contains(DatePart.month) ? null : 0,
-      defaultDay: datePartsOrder.contains(DatePart.day) ? null : 0,
+      defaultMonth: datePartsOrder.contains(DatePart.month) ? null : 1,
+      defaultDay: datePartsOrder.contains(DatePart.day) ? null : 1,
     );
     if (validDateTime == null) {
       return datePartsOrder.map((part) => null).toList();
@@ -359,7 +359,7 @@ class _DateInputState extends State<DateInput> {
   }
 
   DateTime? _convertFromNullableDate(NullableDate value) {
-    return value.nullableDate;
+    return value.getDateTime();
   }
 
   @override
@@ -745,7 +745,9 @@ class _TimeInputState extends State<TimeInput> {
   }
 
   TimeOfDay? _convertFromNullableTimeOfDay(NullableTimeOfDay value) {
-    return value.toTimeOfDay;
+    return value.getTimeOfDay(
+      defaultSecond: widget.showSeconds ? null : 0,
+    );
   }
 
   @override

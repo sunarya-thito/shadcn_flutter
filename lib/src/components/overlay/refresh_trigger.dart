@@ -42,7 +42,7 @@ typedef FutureVoidCallback = Future<void> Function();
 ///   ),
 /// )
 /// ```
-class RefreshTriggerTheme {
+class RefreshTriggerTheme extends ComponentThemeData {
   /// Minimum pull extent required to trigger refresh.
   final double? minExtent;
 

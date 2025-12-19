@@ -12,7 +12,7 @@ description: "Theme configuration for [ColorInput] widget styling and behavior."
 ///
 /// Supports comprehensive customization of color picker appearance, positioning,
 /// and functionality to match application design requirements.
-class ColorInputTheme {
+class ColorInputTheme extends ComponentThemeData {
   /// Whether to display alpha (transparency) controls by default.
   ///
   /// When true, color pickers include alpha/opacity sliders and inputs.
@@ -56,16 +56,18 @@ class ColorInputTheme {
   final bool? showLabel;
   /// The orientation of the color input layout.
   final Axis? orientation;
+  /// Whether to show the color history panel.
+  final bool? showHistory;
   /// Creates a [ColorInputTheme].
   ///
   /// All parameters are optional and fall back to framework defaults when null.
   /// The theme can be applied globally or to specific color input instances.
-  const ColorInputTheme({this.showAlpha, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverPadding, this.mode, this.pickerMode, this.enableEyeDropper, this.showLabel, this.orientation});
+  const ColorInputTheme({this.showAlpha, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverPadding, this.mode, this.pickerMode, this.enableEyeDropper, this.showLabel, this.orientation, this.showHistory});
   /// Creates a copy of this theme with specified properties overridden.
   ///
   /// Each parameter function is called only if provided, allowing selective
   /// overrides while preserving existing values for unspecified properties.
-  ColorInputTheme copyWith({ValueGetter<bool?>? showAlpha, ValueGetter<AlignmentGeometry?>? popoverAlignment, ValueGetter<AlignmentGeometry?>? popoverAnchorAlignment, ValueGetter<EdgeInsetsGeometry?>? popoverPadding, ValueGetter<PromptMode?>? mode, ValueGetter<ColorPickerMode?>? pickerMode, ValueGetter<bool?>? enableEyeDropper, ValueGetter<bool?>? showLabel, ValueGetter<Axis?>? orientation});
+  ColorInputTheme copyWith({ValueGetter<bool?>? showAlpha, ValueGetter<AlignmentGeometry?>? popoverAlignment, ValueGetter<AlignmentGeometry?>? popoverAnchorAlignment, ValueGetter<EdgeInsetsGeometry?>? popoverPadding, ValueGetter<PromptMode?>? mode, ValueGetter<ColorPickerMode?>? pickerMode, ValueGetter<bool?>? enableEyeDropper, ValueGetter<bool?>? showLabel, ValueGetter<Axis?>? orientation, ValueGetter<bool?>? showHistory});
   bool operator ==(Object other);
   int get hashCode;
 }

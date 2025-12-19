@@ -53,7 +53,7 @@ class PhoneNumber {
 }
 
 /// Theme data for [PhoneInput].
-class PhoneInputTheme {
+class PhoneInputTheme extends ComponentThemeData {
   /// The padding of the [PhoneInput].
   final EdgeInsetsGeometry? padding;
 

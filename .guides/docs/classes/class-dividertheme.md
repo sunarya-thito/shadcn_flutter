@@ -10,7 +10,7 @@ description: "Theme data for customizing [Divider] widget appearance."
 /// [Divider] widgets, including line color, dimensions, spacing, and
 /// child padding. These properties can be set at the theme level
 /// to provide consistent styling across the application.
-class DividerTheme {
+class DividerTheme extends ComponentThemeData {
   /// Color of the divider line.
   final Color? color;
   /// Height of the divider widget.

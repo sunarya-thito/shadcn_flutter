@@ -37,7 +37,7 @@ description: "A primary style badge widget for highlighting important informatio
 ///   leading: Icon(Icons.star, size: 16),
 ///   onPressed: () => _showNewItems(),
 /// );
-/// 
+///
 /// // Non-interactive status badge
 /// PrimaryBadge(
 ///   child: Text('5'),

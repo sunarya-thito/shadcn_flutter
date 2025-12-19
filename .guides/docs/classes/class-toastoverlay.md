@@ -36,7 +36,7 @@ abstract class ToastOverlay {
   ///     ),
   ///   );
   /// });
-  /// 
+  ///
   /// // Close programmatically after delay
   /// Timer(Duration(seconds: 2), toast.close);
   /// ```

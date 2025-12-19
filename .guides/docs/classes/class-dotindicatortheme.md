@@ -5,7 +5,7 @@ description: "Theme configuration for [DotIndicator] and its dot items."
 
 ```dart
 /// Theme configuration for [DotIndicator] and its dot items.
-class DotIndicatorTheme {
+class DotIndicatorTheme extends ComponentThemeData {
   /// Spacing between dots.
   final double? spacing;
   /// Padding around the dots container.

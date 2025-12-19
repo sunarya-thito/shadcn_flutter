@@ -8,7 +8,7 @@ typedef DotBuilder = Widget Function(
     BuildContext context, int index, bool active);
 
 /// Theme configuration for [DotIndicator] and its dot items.
-class DotIndicatorTheme {
+class DotIndicatorTheme extends ComponentThemeData {
   /// Spacing between dots.
   final double? spacing;
 

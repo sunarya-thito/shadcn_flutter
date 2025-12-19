@@ -7,7 +7,7 @@ description: "{@template menu_theme}  Styling options for menu widgets such as [
 /// {@template menu_theme}
 /// Styling options for menu widgets such as [MenuGroup] and [MenuButton].
 /// {@endtemplate}
-class MenuTheme {
+class MenuTheme extends ComponentThemeData {
   /// Default padding applied to each menu item.
   final EdgeInsets? itemPadding;
   /// Offset applied when showing a submenu.

@@ -9,7 +9,7 @@ description: "Theme configuration for [ChipInput] widget styling and behavior."
 /// Defines visual properties and default behaviors for chip input components
 /// including popover constraints and chip rendering preferences. Applied globally
 /// through [ComponentTheme] or per-instance for customization.
-class ChipInputTheme {
+class ChipInputTheme extends ComponentThemeData {
   /// Whether to render selected items as interactive chip widgets by default.
   ///
   /// When true, selected items appear as dismissible chip widgets with close buttons.

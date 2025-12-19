@@ -5,7 +5,7 @@ description: "Theme data for [MultipleChoice] and [MultipleAnswer]."
 
 ```dart
 /// Theme data for [MultipleChoice] and [MultipleAnswer].
-class MultipleChoiceTheme {
+class MultipleChoiceTheme extends ComponentThemeData {
   /// Whether selections can be unselected.
   final bool? allowUnselect;
   /// Creates a [MultipleChoiceTheme].

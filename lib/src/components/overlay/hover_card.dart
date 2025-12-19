@@ -18,7 +18,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   child: MyApp(),
 /// )
 /// ```
-class HoverCardTheme {
+class HoverCardTheme extends ComponentThemeData {
   /// Duration to wait before hiding the hover card after mouse exit.
   final Duration? debounce;
 

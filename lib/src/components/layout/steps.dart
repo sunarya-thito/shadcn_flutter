@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Theme for [Steps].
-class StepsTheme {
+class StepsTheme extends ComponentThemeData {
   /// Diameter of the step indicator circle.
   final double? indicatorSize;
 

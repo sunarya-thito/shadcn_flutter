@@ -8,7 +8,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///
 /// Defines visual properties for formatted input components including
 /// height and padding. Applied globally through [ComponentTheme] or per-instance.
-class FormattedInputTheme {
+class FormattedInputTheme extends ComponentThemeData {
   /// The height of the formatted input.
   final double? height;
 
@@ -95,6 +95,15 @@ abstract class InputPart implements FormattedValuePart {
   FormattedValuePart withValue(String value) {
     return FormattedValuePart(this, value);
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is InputPart && other.partKey == partKey;
+  }
+
+  @override
+  int get hashCode => partKey.hashCode;
 }
 
 /// A part that displays a custom widget.
@@ -112,6 +121,15 @@ class WidgetPart extends InputPart {
 
   @override
   Object? get partKey => widget.key;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is WidgetPart && other.widget == widget;
+  }
+
+  @override
+  int get hashCode => widget.hashCode;
 }
 
 /// A part that displays static, non-editable text.
@@ -142,6 +160,15 @@ class StaticPart extends InputPart {
   String toString() {
     return 'StaticPart{text: $text}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is StaticPart && other.text == text;
+  }
+
+  @override
+  int get hashCode => text.hashCode;
 }
 
 class _StaticPartWidget extends StatefulWidget {
@@ -221,6 +248,21 @@ class EditablePart extends InputPart {
   String toString() {
     return 'EditablePart{length: $length, obscureText: $obscureText, inputFormatters: $inputFormatters, width: $width, placeholder: $placeholder}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is EditablePart &&
+        other.length == length &&
+        other.obscureText == obscureText &&
+        listEquals(other.inputFormatters, inputFormatters) &&
+        other.width == width &&
+        other.placeholder == placeholder;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      length, obscureText, Object.hashAll(inputFormatters), width, placeholder);
 }
 
 class _EditablePartController extends TextEditingController {
@@ -320,8 +362,33 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
       hasPlaceholder: widget.placeholder != null,
       text: widget.data.initialValue,
     );
+    _controller.addListener(_onTextChanged);
     if (widget.data.controller != null) {
       widget.data.controller!.addListener(_onFormattedInputControllerChange);
+    }
+  }
+
+  void _onTextChanged() {
+    if (_updating) return;
+    _updating = true;
+    try {
+      if (widget.data.controller != null) {
+        var value = widget.data.controller!.value;
+        var parts = List<FormattedValuePart>.from(value.parts);
+        int valueIndex = 0;
+        for (int i = 0; i < parts.length; i++) {
+          if (parts[i].part.canHaveValue) {
+            if (valueIndex == widget.data.partIndex) {
+              parts[i] = parts[i].withValue(_controller.text);
+              break;
+            }
+            valueIndex++;
+          }
+        }
+        widget.data.controller!.value = FormattedValue(parts);
+      }
+    } finally {
+      _updating = false;
     }
   }
 
@@ -336,7 +403,9 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
         var value = widget.data.controller!.value;
         var part = value.values.elementAt(widget.data.partIndex);
         String newText = part.value ?? '';
-        _controller.value = _controller.value.replaceText(newText);
+        if (_controller.text != newText) {
+          _controller.value = _controller.value.replaceText(newText);
+        }
       }
     } finally {
       _updating = false;
@@ -353,6 +422,11 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
         hasPlaceholder: widget.placeholder != null,
         text: oldValue.text,
       );
+    } else if (widget.data.initialValue != oldWidget.data.initialValue) {
+      // Update text if initialValue changes externally
+      if (_controller.text != widget.data.initialValue) {
+        _controller.text = widget.data.initialValue ?? '';
+      }
     }
     if (oldWidget.data.controller != widget.data.controller) {
       if (oldWidget.data.controller != null) {
@@ -809,8 +883,9 @@ class _FormattedInputState extends State<FormattedInput> {
       } else {
         _focusNodes = _allocateFocusNodes(0, _focusNodes);
       }
-      if (widget.onChanged != null) {
-        widget.onChanged!(FormattedValue(parts));
+      var newValue = FormattedValue(parts);
+      if (widget.onChanged != null && newValue != _value) {
+        widget.onChanged!(newValue);
       }
     } finally {
       _updating = false;

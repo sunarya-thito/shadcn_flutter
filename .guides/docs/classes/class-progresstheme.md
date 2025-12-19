@@ -12,7 +12,7 @@ description: "Theme configuration for [Progress] components."
 ///
 /// The theme integrates seamlessly with the design system by leveraging
 /// theme scaling factors and color schemes for consistent visual presentation.
-class ProgressTheme {
+class ProgressTheme extends ComponentThemeData {
   /// The foreground color of the progress indicator.
   ///
   /// Type: `Color?`. If null, uses the default progress color from theme.

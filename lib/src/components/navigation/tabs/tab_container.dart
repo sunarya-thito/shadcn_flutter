@@ -3,7 +3,7 @@ import '../../../../shadcn_flutter.dart';
 /// {@template tab_container_theme}
 /// Theme data for [TabContainer] providing default builders.
 /// {@endtemplate}
-class TabContainerTheme {
+class TabContainerTheme extends ComponentThemeData {
   /// Default builder for laying out tab children.
   final TabBuilder? builder;
 

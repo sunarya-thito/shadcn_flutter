@@ -20,21 +20,18 @@ class WrapperExample1 extends StatelessWidget {
     // If you are using MaterialApp or CupertinoApp
     // but still want to use Shadcn UI theming and components,
     // you can wrap your app with ShadcnUI and Theme.
-    return const shadcn.Theme(
-      // Choose a Shadcn theme (dark here), then place ShadcnUI below it so
-      // descendants pick up tokens (colors, radius, typography, etc.).
-      data: shadcn.ThemeData.dark(),
-      child: shadcn.ShadcnUI(
-        child: shadcn.Scaffold(
-          headers: [
-            shadcn.AppBar(
-              title: Text('Shadcn UI Wrapper Example'),
-            ),
-            shadcn.Divider(),
-          ],
-          child: Center(
-            child: shadcn.Text('Hello, Shadcn Flutter!'),
+    return const shadcn.ShadcnLayer(
+      theme: shadcn.ThemeData(),
+      darkTheme: shadcn.ThemeData.dark(),
+      child: shadcn.Scaffold(
+        headers: [
+          shadcn.AppBar(
+            title: Text('Shadcn UI Wrapper Example'),
           ),
+          shadcn.Divider(),
+        ],
+        child: Center(
+          child: shadcn.Text('Hello, Shadcn Flutter!'),
         ),
       ),
     );

@@ -42,8 +42,17 @@ class NullableTimeOfDay {
   NullableTimeOfDay copyWith({ValueGetter<int?>? hour, ValueGetter<int?>? minute, ValueGetter<int?>? second});
   /// Converts to [TimeOfDay] if hour and minute are present.
   ///
-  /// Returns: A [TimeOfDay] instance, or null if hour or minute is missing.
+  /// Returns: A [TimeOfDay] instance, or null if hour, minute or second is null.
   TimeOfDay? get toTimeOfDay;
+  /// Converts to [TimeOfDay] with default values if any part is null.
+  ///
+  /// Parameters:
+  /// - [defaultHour] (`int`, optional): Default hour value (0-23).
+  /// - [defaultMinute] (`int`, optional): Default minute value (0-59).
+  /// - [defaultSecond] (`int`, optional): Default second value (0-59).
+  ///
+  /// Returns: A [TimeOfDay] instance with non-null parts.
+  TimeOfDay? getTimeOfDay({int? defaultHour = 0, int? defaultMinute = 0, int? defaultSecond = 0});
   /// Creates a [NullableTimeOfDay] from a [TimeOfDay].
   ///
   /// Parameters:

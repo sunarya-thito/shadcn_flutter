@@ -5,7 +5,7 @@ description: "Theme configuration for spinner widgets."
 
 ```dart
 /// Theme configuration for spinner widgets.
-class SpinnerTheme {
+class SpinnerTheme extends ComponentThemeData {
   /// Color of the spinner elements.
   final Color? color;
   /// Size of the spinner widget.

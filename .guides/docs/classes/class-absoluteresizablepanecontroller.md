@@ -12,7 +12,7 @@ description: "Controller for resizable panes with absolute (fixed) sizing."
 /// Example:
 /// ```dart
 /// final controller = AbsoluteResizablePaneController(200);
-/// 
+///
 /// ResizablePane(
 ///   controller: controller,
 ///   child: Container(color: Colors.blue),

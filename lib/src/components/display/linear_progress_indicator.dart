@@ -10,7 +10,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///
 /// The theme supports advanced features like spark effects for enhanced visual
 /// feedback and animation control for performance optimization scenarios.
-class LinearProgressIndicatorTheme {
+class LinearProgressIndicatorTheme extends ComponentThemeData {
   /// The primary color of the progress indicator fill.
   ///
   /// Type: `Color?`. If null, uses theme's primary color. Applied to the

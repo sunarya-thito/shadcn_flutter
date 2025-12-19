@@ -47,6 +47,7 @@ class _TableExample3State extends State<TableExample3> {
         dragDevices: {
           PointerDeviceKind.touch,
           PointerDeviceKind.mouse,
+          PointerDeviceKind.trackpad,
         },
         // Disable overscroll glow and bouncing to keep the table steady.
         overscroll: false,
@@ -64,5 +65,4 @@ class _TableExample3State extends State<TableExample3> {
                   verticalOffset: offset.dy,
                   // The viewport tells the table how much content area is visible.
                   viewportSize: viewportSize,
-                  // Fixed sizes for consistent cell dimensions.
 ```

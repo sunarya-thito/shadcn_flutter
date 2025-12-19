@@ -13,7 +13,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   hitTestBehavior: HitTestBehavior.opaque,
 /// )
 /// ```
-class HoverTheme {
+class HoverTheme extends ComponentThemeData {
   /// Debounce duration for repeated hover events.
   ///
   /// When set, hover callbacks are throttled to fire at most once per this duration.

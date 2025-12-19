@@ -673,6 +673,15 @@ class IconThemeProperties {
   }
 }
 
+/// A base class for component-specific theme data.
+///
+/// This class is used as a base class for component-specific theme data,
+/// whether as super class or as interface.
+abstract class ComponentThemeData {
+  /// Creates a [ComponentThemeData].
+  const ComponentThemeData();
+}
+
 /// An inherited widget that provides component-specific theme data.
 ///
 /// Allows components to provide custom theme data that overrides or extends
@@ -685,7 +694,7 @@ class IconThemeProperties {
 ///   child: MyButton(),
 /// )
 /// ```
-class ComponentTheme<T> extends InheritedTheme {
+class ComponentTheme<T extends ComponentThemeData> extends InheritedTheme {
   /// The component theme data to provide to descendants.
   final T data;
 
@@ -719,7 +728,7 @@ class ComponentTheme<T> extends InheritedTheme {
   /// Throws if no [ComponentTheme] of type `T` is found.
   ///
   /// Returns: `T` — the component theme data.
-  static T of<T>(BuildContext context) {
+  static T of<T extends ComponentThemeData>(BuildContext context) {
     final data = maybeOf<T>(context);
     assert(data != null, 'No ComponentTheme<$T> found in context');
     return data!;
@@ -730,7 +739,7 @@ class ComponentTheme<T> extends InheritedTheme {
   /// Returns `null` if no [ComponentTheme] of type `T` is found.
   ///
   /// Returns: `T?` — the component theme data, or null.
-  static T? maybeOf<T>(BuildContext context) {
+  static T? maybeOf<T extends ComponentThemeData>(BuildContext context) {
     final widget =
         context.dependOnInheritedWidgetOfExactType<ComponentTheme<T>>();
     if (widget == null) {

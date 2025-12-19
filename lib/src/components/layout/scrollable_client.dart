@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Theme data for [ScrollableClient].
-class ScrollableClientTheme {
+class ScrollableClientTheme extends ComponentThemeData {
   /// Behavior for diagonal drag gestures.
   final DiagonalDragBehavior? diagonalDragBehavior;
 

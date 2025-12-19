@@ -7,11 +7,11 @@ description: "A gesture-responsive widget that triggers overlay content through 
 /// A gesture-responsive widget that triggers overlay content through swiping.
 ///
 /// Detects swipe gestures on the child widget and displays overlay content
-/// using the configured handler (drawer or sheet style). Supports both 
+/// using the configured handler (drawer or sheet style). Supports both
 /// programmatic and gesture-based triggering with comprehensive customization.
 ///
 /// Features:
-/// - Gesture-based overlay triggering  
+/// - Gesture-based overlay triggering
 /// - Multiple handler implementations (drawer/sheet)
 /// - Configurable swipe sensitivity and behavior
 /// - Theme integration and visual customization

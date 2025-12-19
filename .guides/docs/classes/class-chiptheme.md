@@ -5,7 +5,7 @@ description: "Theme for [Chip]."
 
 ```dart
 /// Theme for [Chip].
-class ChipTheme {
+class ChipTheme extends ComponentThemeData {
   /// The padding inside the chip.
   final EdgeInsetsGeometry? padding;
   /// The default [Button] style of the chip.

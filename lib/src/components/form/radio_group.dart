@@ -10,7 +10,7 @@ import '../../../shadcn_flutter.dart';
 /// The theme affects the radio button's visual appearance in both
 /// selected and unselected states, including border, background,
 /// and active indicator colors.
-class RadioTheme {
+class RadioTheme extends ComponentThemeData {
   /// Color of the radio indicator when selected.
   final Color? activeColor;
 
@@ -384,7 +384,7 @@ class RadioCard<T> extends StatefulWidget {
 }
 
 /// Theme data for the [RadioCard] widget.
-class RadioCardTheme {
+class RadioCardTheme extends ComponentThemeData {
   /// The cursor to use when the radio card is enabled.
   final MouseCursor? enabledCursor;
 

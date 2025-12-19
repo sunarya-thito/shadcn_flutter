@@ -10,7 +10,7 @@ description: "Theme data for customizing [Select] widget appearance and behavior
 /// [Select] widgets, including popup constraints, positioning, styling, and
 /// interaction behaviors. These properties can be set at the theme level
 /// to provide consistent behavior across the application.
-class SelectTheme {
+class SelectTheme extends ComponentThemeData {
   /// Constraints for the popup menu size.
   final BoxConstraints? popupConstraints;
   /// Alignment of the popover relative to the anchor.

@@ -10,6 +10,13 @@ description: "The color scheme for shadcn_flutter applications."
 /// background, foreground, primary, secondary, destructive colors, etc.
 /// Also includes sidebar and chart colors.
 class ColorScheme implements ChartColorScheme {
+  /// Returns the color scheme for the given context.
+  ///
+  /// Parameters:
+  /// - [context] (BuildContext, required): The build context.
+  ///
+  /// Returns the color scheme for the given context.
+  static ColorScheme of(BuildContext context);
   /// Set of recognized color key names for the color scheme.
   ///
   /// Contains all valid color property names that can be used when

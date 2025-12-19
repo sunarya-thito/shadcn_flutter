@@ -8,7 +8,7 @@ description: "Theme configuration for calendar widgets."
 ///
 /// Provides styling options for calendar components, including arrow icon colors
 /// for navigation buttons and other visual elements.
-class CalendarTheme {
+class CalendarTheme extends ComponentThemeData {
   /// Color of navigation arrow icons.
   final Color? arrowIconColor;
   /// Creates a [CalendarTheme].

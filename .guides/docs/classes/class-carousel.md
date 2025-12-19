@@ -35,7 +35,7 @@ description: "Interactive carousel widget with automatic transitions and customi
 /// **Controlled carousel with custom navigation:**
 /// ```dart
 /// final controller = CarouselController();
-/// 
+///
 /// Carousel(
 ///   controller: controller,
 ///   itemCount: products.length,

@@ -60,8 +60,11 @@ class ObjectFormField<T> extends StatefulWidget {
   final bool? enabled;
   /// Whether to show the field decoration.
   final bool decorate;
+  /// Whether to inform value change callback immediately upon user interaction with the editor.
+  /// If null, defaults to true for popover mode and false for dialog mode.
+  final bool? immediateValueChange;
   /// Creates an [ObjectFormField].
-  const ObjectFormField({super.key, required this.value, this.onChanged, required this.placeholder, required this.builder, this.leading, this.trailing, this.mode = PromptMode.dialog, required this.editorBuilder, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverPadding, this.dialogTitle, this.size, this.density, this.shape, this.dialogActions, this.enabled, this.decorate = true});
+  const ObjectFormField({super.key, required this.value, this.onChanged, required this.placeholder, required this.builder, this.leading, this.trailing, this.mode = PromptMode.dialog, required this.editorBuilder, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverPadding, this.dialogTitle, this.size, this.density, this.shape, this.dialogActions, this.enabled, this.decorate = true, this.immediateValueChange});
   State<ObjectFormField<T>> createState();
 }
 ```

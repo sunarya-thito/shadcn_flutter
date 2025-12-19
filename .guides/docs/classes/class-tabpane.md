@@ -17,7 +17,7 @@ description: "A comprehensive tab pane widget with sortable tabs and integrated 
 /// Features:
 /// - Drag-and-drop sortable tabs with visual feedback
 /// - Horizontal scrolling with edge fade effects for tab overflow
-/// - Integrated content area with customizable styling  
+/// - Integrated content area with customizable styling
 /// - Leading and trailing widget support in the tab bar
 /// - Custom tab rendering through builder patterns
 /// - Comprehensive theming and styling options

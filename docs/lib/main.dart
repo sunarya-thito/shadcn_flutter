@@ -14,6 +14,7 @@ import 'package:docs/pages/docs/components/avatar_group_example.dart';
 import 'package:docs/pages/docs/components/calendar_example.dart';
 import 'package:docs/pages/docs/components/card_image_example.dart';
 import 'package:docs/pages/docs/components/carousel_example.dart';
+import 'package:docs/pages/docs/components/chat_example.dart';
 import 'package:docs/pages/docs/components/chip_example.dart';
 import 'package:docs/pages/docs/components/chip_input_example.dart';
 import 'package:docs/pages/docs/components/context_menu_example.dart';
@@ -788,6 +789,13 @@ class MyAppState extends State<MyApp> {
             name: 'wrapper',
             builder: (context, state) {
               return const WrapperExample();
+            },
+          ),
+          GoRoute(
+            path: 'chat',
+            name: 'chat',
+            builder: (context, state) {
+              return const ChatExample();
             },
           ),
         ]),

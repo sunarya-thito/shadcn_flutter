@@ -17,7 +17,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   child: MyApp(),
 /// );
 /// ```
-class CardImageTheme {
+class CardImageTheme extends ComponentThemeData {
   /// Button style for the card.
   final AbstractButtonStyle? style;
 

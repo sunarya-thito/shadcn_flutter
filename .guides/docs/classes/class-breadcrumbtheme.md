@@ -5,7 +5,7 @@ description: "Theme for [Breadcrumb]."
 
 ```dart
 /// Theme for [Breadcrumb].
-class BreadcrumbTheme {
+class BreadcrumbTheme extends ComponentThemeData {
   /// Separator widget between breadcrumb items.
   final Widget? separator;
   /// Padding around the breadcrumb row.

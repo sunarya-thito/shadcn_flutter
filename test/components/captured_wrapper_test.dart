@@ -86,7 +86,7 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CapturedWrapper(
-            child: Container(width: 50, height: 50),
+            child: SizedBox(width: 50, height: 50),
           ),
         ),
       );
@@ -153,7 +153,7 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CapturedWrapper(
-            child: Container(key: key, width: 100, height: 100),
+            child: SizedBox(key: key, width: 100, height: 100),
           ),
         ),
       );

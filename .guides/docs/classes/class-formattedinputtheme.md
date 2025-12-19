@@ -8,7 +8,7 @@ description: "Theme configuration for [FormattedInput] widget styling."
 ///
 /// Defines visual properties for formatted input components including
 /// height and padding. Applied globally through [ComponentTheme] or per-instance.
-class FormattedInputTheme {
+class FormattedInputTheme extends ComponentThemeData {
   /// The height of the formatted input.
   final double? height;
   /// Internal padding for the formatted input.
