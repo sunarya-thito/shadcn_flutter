@@ -362,7 +362,8 @@ class ScaffoldState extends State<Scaffold> {
                         compTheme?.resizeToAvoidBottomInset ??
                         true)
                     ? Container(
-                        padding: EdgeInsets.only(bottom: viewInsets.bottom),
+                        // Clamp to prevent negative padding on web when keyboard appears
+                        padding: EdgeInsets.only(bottom: viewInsets.bottom.clamp(0.0, double.infinity)),
                         child: MediaQuery(
                           data: MediaQuery.of(context).copyWith(
                             viewInsets: viewInsets.copyWith(bottom: 0),
