@@ -1,0 +1,127 @@
+{
+  "name": "CSS",
+  "version": "1.0.0",
+  "fileTypes": ["css"],
+  "scopeName": "source.css",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#rules"
+    },
+    {
+      "include": "#mediaQueries"
+    },
+    {
+      "include": "#keyframes"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.css",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "captures": {
+            "0": { "name": "punctuation.definition.comment.css" }
+          }
+        }
+      ]
+    },
+    "rules": {
+      "patterns": [
+        {
+          "name": "meta.rule-set.css",
+          "begin": "([a-zA-Z0-9\\-_*#.:\\[\\]\\s]+)\\s*(\\{)",
+          "beginCaptures": {
+            "1": { "name": "entity.name.selector.css" },
+            "2": { "name": "punctuation.definition.block.begin.css" }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.block.end.css" }
+          },
+          "patterns": [
+            {
+              "include": "#properties"
+            }
+          ]
+        }
+      ]
+    },
+    "properties": {
+      "patterns": [
+        {
+          "name": "meta.property.css",
+          "match": "\\b([a-zA-Z-]+)\\s*:",
+          "captures": {
+            "1": { "name": "support.type.property-name.css" }
+          }
+        },
+        {
+          "name": "meta.value.css",
+          "match": "(\\b[a-zA-Z0-9%\\#\\.,()\\s-]+)(;)?",
+          "captures": {
+            "1": { "name": "support.constant.property-value.css" },
+            "2": { "name": "punctuation.terminator.rule.css" }
+          }
+        }
+      ]
+    },
+    "mediaQueries": {
+      "patterns": [
+        {
+          "name": "meta.at-rule.media.css",
+          "begin": "@media\\s+([^{]+)\\s*\\{",
+          "beginCaptures": {
+            "1": { "name": "support.type.media-query.css" }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.block.end.css" }
+          },
+          "patterns": [
+            {
+              "include": "#rules"
+            }
+          ]
+        }
+      ]
+    },
+    "keyframes": {
+      "patterns": [
+        {
+          "name": "meta.at-rule.keyframes.css",
+          "begin": "@(keyframes|\\-webkit\\-keyframes)\\s+[a-zA-Z0-9-_]+\\s*\\{",
+          "beginCaptures": {
+            "1": { "name": "support.type.keyframes.css" }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.block.end.css" }
+          },
+          "patterns": [
+            {
+              "name": "meta.keyframe-block.css",
+              "begin": "([0-9]+%|from|to)\\s*\\{",
+              "beginCaptures": {
+                "1": { "name": "constant.numeric.keyframe-offset.css" }
+              },
+              "end": "\\}",
+              "endCaptures": {
+                "0": { "name": "punctuation.definition.block.end.css" }
+              },
+              "patterns": [
+                {
+                  "include": "#properties"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
