@@ -89,6 +89,7 @@ class AlertDialog extends StatefulWidget {
   /// based on theme scaling (24 * scaling). Controls spacing around
   /// all dialog content.
   final EdgeInsetsGeometry? padding;
+  final double? maxWidth;
 
   /// Creates an [AlertDialog].
   ///
@@ -128,6 +129,7 @@ class AlertDialog extends StatefulWidget {
     this.surfaceOpacity,
     this.barrierColor,
     this.padding,
+    this.maxWidth,
   });
 
   @override
@@ -137,61 +139,74 @@ class AlertDialog extends StatefulWidget {
 class _AlertDialogState extends State<AlertDialog> {
   @override
   Widget build(BuildContext context) {
-    var themeData = Theme.of(context);
-    var scaling = themeData.scaling;
+    final themeData = Theme.of(context);
+
+    final scaling = themeData.scaling;
+
     return ModalBackdrop(
       borderRadius: themeData.borderRadiusXxl,
-      barrierColor: widget.barrierColor ?? Colors.black.withValues(alpha: 0.8),
+      barrierColor: widget.barrierColor ?? Colors.black.withOpacity(0.8),
       surfaceClip: ModalBackdrop.shouldClipSurface(
-          widget.surfaceOpacity ?? themeData.surfaceOpacity),
-      child: ModalContainer(
-        fillColor: themeData.colorScheme.popover,
-        filled: true,
-        borderRadius: themeData.borderRadiusXxl,
-        borderWidth: 1 * scaling,
-        borderColor: themeData.colorScheme.muted,
-        padding: widget.padding ?? EdgeInsets.all(24 * scaling),
-        surfaceBlur: widget.surfaceBlur ?? themeData.surfaceBlur,
-        surfaceOpacity: widget.surfaceOpacity ?? themeData.surfaceOpacity,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Flexible(
-              child: Row(
+        widget.surfaceOpacity ?? themeData.surfaceOpacity,
+      ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: widget.maxWidth ??  MediaQuery.of(context).size.width * 0.5,
+        ),
+        child: ModalContainer(
+          fillColor: themeData.colorScheme.popover,
+          filled: true,
+          borderRadius: themeData.borderRadiusXxl,
+          borderWidth: 1 * scaling,
+          borderColor: themeData.colorScheme.muted,
+          padding: widget.padding ?? EdgeInsets.all(24 * scaling),
+          surfaceBlur: widget.surfaceBlur ?? themeData.surfaceOpacity,
+          surfaceOpacity: widget.surfaceOpacity ?? themeData.surfaceOpacity,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // HEADER
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
                 children: [
                   if (widget.leading != null)
-                    widget.leading!.iconXLarge().iconMutedForeground(),
-                  if (widget.title != null || widget.content != null)
-                    Flexible(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (widget.title != null)
-                            widget.title!.large().semiBold(),
-                          if (widget.content != null)
-                            widget.content!.small().muted(),
-                        ],
-                      ).gap(8 * scaling),
+                    Padding(
+                      padding: EdgeInsets.only(right: 16 * scaling),
+                      child: widget.leading!.iconXLarge().iconMutedForeground(),
                     ),
+                  if (widget.title != null)
+                    // Flexible is still needed for text wrapping in case the title is long
+                    Flexible(child: widget.title!.large().semiBold()),
                   if (widget.trailing != null)
-                    widget.trailing!.iconXLarge().iconMutedForeground(),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16 * scaling),
+                      child:
+                          widget.trailing!.iconXLarge().iconMutedForeground(),
+                    ),
                 ],
-              ).gap(16 * scaling),
-            ),
-            if (widget.actions != null && widget.actions!.isNotEmpty)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                // children: widget.actions!,
-                children: join(widget.actions!, SizedBox(width: 8 * scaling))
-                    .toList(),
               ),
-          ],
-        ).gap(16 * scaling),
+
+              if (widget.content != null) SizedBox(height: 16 * scaling),
+
+              // CONTENT (Scrollable area)
+              if (widget.content != null) widget.content!,
+
+              if (widget.actions != null && widget.actions!.isNotEmpty)
+                SizedBox(height: 24 * scaling),
+
+              // FOOTER
+              if (widget.actions != null && widget.actions!.isNotEmpty)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: join(
+                    widget.actions!,
+                    SizedBox(width: 8 * scaling),
+                  ).toList(),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }
